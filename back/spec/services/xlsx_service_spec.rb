@@ -162,36 +162,8 @@ describe XlsxService do
     end
   end
 
-  # TODO: move-old-proposals-test
-  describe 'generate_initiatives_xlsx' do
-    let(:initiatives) { create_list(:initiative, 2) }
-    let(:xlsx) { service.generate_initiatives_xlsx(initiatives) }
-    let(:workbook) { RubyXL::Parser.parse_buffer(xlsx) }
-    let(:worksheet) { workbook.worksheets[0] }
-
-    it 'exports a valid excel file' do
-      expect { workbook }.not_to raise_error
-    end
-
-    it 'contains a row for every initiative' do
-      expect(worksheet.sheet_data.size).to eq(initiatives.size + 1)
-    end
-
-    describe do
-      let(:xlsx) { service.generate_initiatives_xlsx(initiatives, view_private_attributes: false) }
-
-      it 'hides private attributes' do
-        custom_field = create(:custom_field, enabled: false)
-        expect(worksheet[0].cells.map(&:value)).not_to include 'author_id'
-        expect(worksheet[0].cells.map(&:value)).not_to include 'author_email'
-        expect(worksheet[0].cells.map(&:value)).not_to include 'assignee_email'
-        expect(worksheet[0].cells.map(&:value)).to include custom_field.title_multiloc['en']
-      end
-    end
-  end
-
   describe 'generate_comments_xlsx' do
-    let(:comments) { create_list(:comment, 5, post: create(:idea)) }
+    let(:comments) { create_list(:comment, 5, idea: create(:idea)) }
     let(:xlsx) { service.generate_comments_xlsx(comments) }
     let(:workbook) { RubyXL::Parser.parse_buffer(xlsx) }
     let(:worksheet) { workbook.worksheets[0] }

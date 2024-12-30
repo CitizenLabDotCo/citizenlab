@@ -88,8 +88,8 @@ RSpec.describe Comment do
         it 'has the same author hash on each comment when the author and project are the same' do
           idea1 = create(:idea, project: project)
           idea2 = create(:idea, project: project)
-          comment1 = create(:comment, author: author, post: idea1, anonymous: true)
-          comment2 = create(:comment, author: author, post: idea2, anonymous: true)
+          comment1 = create(:comment, author: author, idea: idea1, anonymous: true)
+          comment2 = create(:comment, author: author, idea: idea2, anonymous: true)
           expect(comment1.author_hash).to eq comment2.author_hash
         end
 
@@ -102,8 +102,8 @@ RSpec.describe Comment do
         it 'has a different author hash for comments by the same author in the same project when one comment is anonymous and the other is not' do
           idea1 = create(:idea, project: project)
           idea2 = create(:idea, project: project)
-          comment1 = create(:comment, author: author, post: idea1)
-          comment2 = create(:comment, author: author, post: idea2, anonymous: true)
+          comment1 = create(:comment, author: author, idea: idea1)
+          comment2 = create(:comment, author: author, idea: idea2, anonymous: true)
           expect(comment1.author_hash).not_to eq comment2.author_hash
         end
       end
@@ -130,28 +130,6 @@ RSpec.describe Comment do
           comment.update!(author: author)
           expect(comment.author_hash).not_to eq old_comment_hash
         end
-      end
-    end
-
-    # TODO: cleanup-after-proposals-migration
-    context 'Initiatives' do
-      it 'has the same author hash on all comments against initiatives' do
-        comment1 = create(:comment, author: author, idea: create(:initiative), anonymous: true)
-        comment2 = create(:comment, author: author, idea: create(:initiative), anonymous: true)
-        expect(comment1.author_hash).to eq comment2.author_hash
-      end
-
-      it 'has a different author hash for comments by the same author when one comment is anonymous and the other is not' do
-        comment1 = create(:comment, author: author, idea: create(:initiative))
-        comment2 = create(:comment, author: author, idea: create(:initiative), anonymous: true)
-        expect(comment1.author_hash).not_to eq comment2.author_hash
-      end
-
-      it 'generates a different author_hash if the author changes' do
-        comment = create(:comment, idea: create(:initiative))
-        old_comment_hash = comment.author_hash
-        comment.update!(author: author)
-        expect(comment.author_hash).not_to eq old_comment_hash
       end
     end
   end

@@ -78,10 +78,10 @@ module Notifications
           initiating_user_id: initiator_id,
           spam_report: spam_report,
           comment_id: spam_report.spam_reportable.id,
-          idea: spam_report.spam_reportable.post,
+          idea: spam_report.spam_reportable.idea,
           reason_code: activity.payload['reason_code'],
           other_reason: activity.payload['other_reason'],
-          project_id: spam_report.spam_reportable.post.project_id
+          project_id: spam_report.spam_reportable.idea.project_id
         }
 
         recipient_ids(initiator_id, attributes[:project_id]).map do |recipient_id|

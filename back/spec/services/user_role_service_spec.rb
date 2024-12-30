@@ -32,13 +32,6 @@ describe UserRoleService do
       expect(service.can_moderate?(idea, create(:user))).to be false
     end
 
-    it 'for an initiative' do
-      initiative = create(:initiative)
-
-      expect(service.can_moderate?(initiative, create(:admin))).to be true
-      expect(service.can_moderate?(initiative, create(:user))).to be false
-    end
-
     it 'for a comment' do
       proposal = create(:proposal)
       comment = create(:comment, idea: proposal)

@@ -6,7 +6,7 @@ class InternalCommentPolicy < ApplicationPolicy
       if user&.active? && user&.admin?
         scope.all
       elsif user&.active? && user&.project_moderator?
-        scope.where(post_id: Idea.where(project_id: user.moderatable_project_ids))
+        scope.where(idea_id: Idea.where(project_id: user.moderatable_project_ids))
       else
         raise Pundit::NotAuthorizedError, 'not allowed to view this action'
       end

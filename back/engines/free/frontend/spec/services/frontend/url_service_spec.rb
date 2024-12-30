@@ -8,22 +8,15 @@ describe Frontend::UrlService do
 
   describe '#model_to_url' do
     let(:idea) { create(:idea) }
-    let(:internal_comment1) { create(:internal_comment, idea: idea) }
-    let(:initiative) { create(:initiative) }
-    let(:internal_comment2) { create(:internal_comment, idea: initiative) }
+    let(:internal_comment) { create(:internal_comment, idea: idea) }
     let(:locale) { Locale.new('en') }
 
     it 'returns the correct url for an internal comment on an idea' do
-      expect(service.model_to_url(internal_comment1, locale: locale))
+      expect(service.model_to_url(internal_comment, locale: locale))
         .to eq(
-          "#{base_uri}/en/admin/projects/#{internal_comment1.post.project_id}" \
-          "/ideas/#{internal_comment1.post.id}##{internal_comment1.id}"
+          "#{base_uri}/en/admin/projects/#{internal_comment.idea.project_id}" \
+          "/ideas/#{internal_comment.idea.id}##{internal_comment.id}"
         )
-    end
-
-    it 'returns the correct url for an internal comment on an initiative' do
-      expect(service.model_to_url(internal_comment2, locale: locale))
-        .to eq("#{base_uri}/en/admin/initiatives/#{internal_comment2.post.id}##{internal_comment2.id}")
     end
 
     it 'returns the correct url for a phase' do
