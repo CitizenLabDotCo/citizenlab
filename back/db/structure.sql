@@ -528,7 +528,6 @@ ALTER TABLE IF EXISTS public.que_jobs ALTER COLUMN id DROP DEFAULT;
 ALTER TABLE IF EXISTS public.areas_static_pages ALTER COLUMN id DROP DEFAULT;
 DROP TABLE IF EXISTS public.verification_verifications;
 DROP TABLE IF EXISTS public.user_custom_fields_representativeness_ref_distributions;
-DROP VIEW IF EXISTS public.union_posts;
 DROP TABLE IF EXISTS public.topics;
 DROP TABLE IF EXISTS public.text_images;
 DROP TABLE IF EXISTS public.tenants;
@@ -3329,44 +3328,6 @@ CREATE TABLE public.topics (
     followers_count integer DEFAULT 0 NOT NULL,
     include_in_onboarding boolean DEFAULT false NOT NULL
 );
-
-
---
--- Name: union_posts; Type: VIEW; Schema: public; Owner: -
---
-
-CREATE VIEW public.union_posts AS
- SELECT ideas.id,
-    ideas.title_multiloc,
-    ideas.body_multiloc,
-    ideas.publication_status,
-    ideas.published_at,
-    ideas.author_id,
-    ideas.created_at,
-    ideas.updated_at,
-    ideas.likes_count,
-    ideas.location_point,
-    ideas.location_description,
-    ideas.comments_count,
-    ideas.slug,
-    ideas.official_feedbacks_count
-   FROM public.ideas
-UNION ALL
- SELECT initiatives.id,
-    initiatives.title_multiloc,
-    initiatives.body_multiloc,
-    initiatives.publication_status,
-    initiatives.published_at,
-    initiatives.author_id,
-    initiatives.created_at,
-    initiatives.updated_at,
-    initiatives.likes_count,
-    initiatives.location_point,
-    initiatives.location_description,
-    initiatives.comments_count,
-    initiatives.slug,
-    initiatives.official_feedbacks_count
-   FROM public.initiatives;
 
 
 --
@@ -7758,6 +7719,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20241220103433'),
 ('20241224115952'),
 ('20241226093506'),
-('20241230165323');
+('20241230165323'),
+('20241230165518');
 
 

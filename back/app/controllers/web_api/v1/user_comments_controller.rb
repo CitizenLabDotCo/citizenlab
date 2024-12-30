@@ -10,21 +10,20 @@ class WebApi::V1::UserCommentsController < ApplicationController
       .published
       .where(author_id: params[:user_id])
 
-    # Apply pagination to the posts, using the union_posts
-    # view and ordering by publication date.
-    joined_posts = UnionPost.joins('INNER JOIN comments ON comments.idea_id = union_posts.id')
+    # Apply pagination to the posts, ordering by publication date.
+    joined_posts = Idea.joins('INNER JOIN comments ON comments.idea_id = ideas.id')
     paged_posts = joined_posts.where(comments: { id: comment_allowed_ideas })
       .order(published_at: :desc)
-      .group('union_posts.id, union_posts.published_at') # Remove union_post duplicates
-      .select('union_posts.id')
+      .group('ideas.id, ideas.published_at')
+      .select('ideas.id')
     paged_posts = paginate paged_posts
 
     # Get the comments, grouped by the corresponding posts page.
     comments = Comment.where(idea_id: paged_posts)
       .where(author_id: params[:user_id])
       .includes(:idea)
-      .joins('LEFT OUTER JOIN union_posts ON comments.idea_id = union_posts.id')
-      .order('union_posts.published_at DESC, union_posts.id DESC, comments.created_at DESC')
+      .joins('LEFT OUTER JOIN ideas ON comments.idea_id = ideas.id')
+      .order('ideas.published_at DESC, ideas.id DESC, comments.created_at DESC')
 
     render json: {
       **WebApi::V1::CommentSerializer.new(comments, params: jsonapi_serializer_params, include: [:idea]).serializable_hash,
