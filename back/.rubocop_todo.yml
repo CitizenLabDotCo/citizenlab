@@ -221,7 +221,6 @@ Metrics/PerceivedComplexity:
 # Offense count: 2
 Naming/AccessorMethodName:
   Exclude:
-    - 'app/services/side_fx_initiative_service.rb'
     - 'engines/free/email_campaigns/app/models/email_campaigns/delivery.rb'
 
 # Offense count: 16
@@ -419,11 +418,6 @@ RSpec/RepeatedExample:
   Exclude:
     - 'engines/commercial/idea_assignment/spec/acceptance/ideas_spec.rb'
 
-# Offense count: 2
-RSpec/RepeatedExampleGroupDescription:
-  Exclude:
-    - 'engines/free/email_campaigns/spec/models/email_campaigns/campaigns/new_initiative_for_admin_spec.rb'
-
 # Offense count: 31
 # This cop supports safe autocorrection (--autocorrect).
 RSpec/ScatteredSetup:
@@ -533,11 +527,8 @@ Rails/FindEach:
 Rails/HasManyOrHasOneDependent:
   Exclude:
     - 'app/models/comment.rb'
-    - 'app/models/concerns/post.rb'
     - 'app/models/idea.rb'
     - 'app/models/idea_status.rb'
-    - 'app/models/initiative.rb'
-    - 'app/models/initiative_status.rb'
     - 'app/models/notification.rb'
     - 'app/models/user.rb'
 
@@ -555,11 +546,8 @@ Rails/I18nLocaleTexts:
 Rails/InverseOf:
   Exclude:
     - 'app/models/comment.rb'
-    - 'app/models/concerns/post.rb'
     - 'app/models/event.rb'
     - 'app/models/idea_status.rb'
-    - 'app/models/initiative.rb'
-    - 'app/models/initiative_status.rb'
     - 'app/models/phase.rb'
     - 'app/models/project.rb'
     - 'app/models/static_page.rb'
@@ -804,8 +792,6 @@ Style/ReturnNilInPredicateMethodDefinition:
     - 'app/policies/comment_reaction_policy.rb'
     - 'app/policies/folder_moderator_policy.rb'
     - 'app/policies/group_policy.rb'
-    - 'app/policies/initiative_comment_policy.rb'
-    - 'app/policies/initiative_reaction_policy.rb'
     - 'app/policies/project_folders/folder_policy.rb'
     - 'app/policies/project_policy.rb'
     - 'app/policies/stat_comment_policy.rb'
