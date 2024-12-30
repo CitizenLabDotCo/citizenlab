@@ -20,7 +20,7 @@ describe Permissions::IdeaPermissionsService do
 
   describe '"reacting_idea" denied_reason_for...' do
     context 'when in the current phase and reacting is not permitted' do
-      let(:current_phase_attrs) { { with_permissions: true } }
+      let(:current_phase_attrs) { { with_permissions: true, reacting_dislike_enabled: true } }
 
       it "returns 'user_not_verified' if permitted group requires verification" do
         permission = TimelineService.new.current_phase_not_archived(project).permissions.find_by(action: 'reacting_idea')
@@ -33,7 +33,7 @@ describe Permissions::IdeaPermissionsService do
 
     context 'for an unauthenticated visitor' do
       let(:user) { nil }
-      let(:project) { create(:single_phase_ideation_project, phase_attrs: { with_permissions: true }) }
+      let(:project) { create(:single_phase_ideation_project, phase_attrs: { with_permissions: true, reacting_dislike_enabled: true }) }
       let(:idea) { create(:idea, project: project, phases: project.phases) }
 
       it "returns 'user_not_signed_in' if reacting is not permitted and a permitted group requires verification" do

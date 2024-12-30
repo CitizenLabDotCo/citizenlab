@@ -32,4 +32,16 @@ describe SideFxProjectService do
       expect { service.before_create(project, user) }.not_to change(project, :default_assignee)
     end
   end
+
+  describe 'after_destroy_participation_data' do
+    it "logs a 'participation_data_destroyed' activity" do
+      expect { service.after_destroy_participation_data(project, user) }.to have_enqueued_job(LogActivityJob).with(
+        project,
+        'participation_data_destroyed',
+        user,
+        be_within(10).of(Time.now.to_i),
+        { project_id: project.id }
+      )
+    end
+  end
 end

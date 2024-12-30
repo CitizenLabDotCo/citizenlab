@@ -679,7 +679,7 @@ da:
         internal_comment_is_posted_on_unassigned_initiative: 'Intern kommentar er sendt på ikke-tildelt forslag'
         internal_comment_is_posted_on_unassigned_unmoderated_idea: 'Intern kommentar er sendt på ikke-tildelt input i ikke-administreret projekt'
         project_review_request: 'Moderator anmodede om en projektgennemgang'
-        project_review_state_change: 'Reviewer godkendte projektet'
+        project_review_state_change: 'Projektgodkender godkendte projektet'
         new_input_awaits_screening: 'Nye input venter på screening'
         new_input_is_published: 'Nye input offentliggøres'
         new_proposal_is_posted: 'Nyt borgerorslag er offentliggjort'
