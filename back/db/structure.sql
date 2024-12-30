@@ -1637,7 +1637,7 @@ CREATE TABLE public.phases (
     presentation_mode character varying DEFAULT 'card'::character varying,
     voting_max_total integer,
     poll_anonymous boolean DEFAULT false NOT NULL,
-    reacting_dislike_enabled boolean DEFAULT true NOT NULL,
+    reacting_dislike_enabled boolean DEFAULT false NOT NULL,
     ideas_count integer DEFAULT 0 NOT NULL,
     ideas_order character varying,
     input_term character varying DEFAULT 'idea'::character varying,
@@ -7802,9 +7802,8 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20241115141717'),
 ('20241125094000'),
 ('20241125094100'),
+('20241127074734'),
 ('20241127093339'),
 ('20241203151945'),
 ('20241204133717'),
 ('20241204144321');
-
-

@@ -1,11 +1,14 @@
 import React from 'react';
 
-import { Icon, colors } from '@citizenlab/cl2-component-library';
+import {
+  IconTooltip,
+  Box,
+  colors,
+  stylingConsts,
+} from '@citizenlab/cl2-component-library';
 import { isEmpty } from 'lodash-es';
 import { useParams } from 'react-router-dom';
 import { RouteType } from 'routes';
-import { Segment, Menu, Popup } from 'semantic-ui-react';
-import styled from 'styled-components';
 
 import { IIdeaStatusData } from 'api/idea_statuses/types';
 import useAuthUser from 'api/me/useAuthUser';
@@ -20,21 +23,10 @@ import { isAdmin } from 'utils/permissions/roles';
 
 import messages from '../../messages';
 
-import FilterSidebarPhases from './FilterSidebarPhases';
-import ProjectsMenu from './FilterSidebarProjects';
-import StatusesMenu from './FilterSidebarStatuses';
-import TopicsMenu from './FilterSidebarTopics';
-
-const InfoIcon = styled(Icon)`
-  fill: ${colors.teal700};
-  width: 20px;
-  height: 20px;
-  cursor: pointer;
-
-  &:hover {
-    fill: #000;
-  }
-`;
+import FilterSidebarPhases from './phases/FilterSidebarPhases';
+import FilterSidebarProjects from './projects/FilterSidebarProjects';
+import FilterSidebarStatuses from './statuses/FilterSidebarStatuses';
+import FilterSidebarTopics from './topics/FilterSidebarTopics';
 
 interface Props {
   phases?: IPhaseData[];
@@ -44,7 +36,7 @@ interface Props {
   selectedTopics?: string[] | null;
   selectedPhase: string | undefined;
   selectedProject?: string | null;
-  selectedStatus?: string | null;
+  selectedStatus?: string;
   onChangePhaseFilter?: (arg: string | null) => void;
   onChangeTopicsFilter?: (topics: string[]) => void;
   onChangeProjectFilter?: (projects: string[] | undefined) => void;
@@ -54,6 +46,8 @@ interface Props {
   visibleFilterMenus: string[];
   type: ManagerType;
 }
+
+const BORDER = `1px solid ${colors.divider}`;
 
 const FilterSidebar = ({
   onChangeActiveFilterMenu,
@@ -76,8 +70,8 @@ const FilterSidebar = ({
   const { projectId } = useParams();
   const { data: authUser } = useAuthUser();
   const { formatMessage } = useIntl();
-  const handleItemClick = (_event, data) => {
-    onChangeActiveFilterMenu(data.id);
+  const handleItemClick = (id: string) => {
+    onChangeActiveFilterMenu(id);
   };
 
   if (!authUser) return null;
@@ -125,13 +119,10 @@ const FilterSidebar = ({
         {title}
         {selectionSign}&nbsp;
         {active ? (
-          <Popup
+          <IconTooltip
             content={formatMessage(tooltipMessage)}
-            trigger={
-              <button>
-                <InfoIcon name="info-solid" />
-              </button>
-            }
+            icon="info-solid"
+            theme="light"
           />
         ) : null}
       </>
@@ -155,7 +146,7 @@ const FilterSidebar = ({
       name: tabName('topicsTab', selectedTopics, 'topics'),
       key: 'topics',
       content: (
-        <TopicsMenu
+        <FilterSidebarTopics
           selectableTopics={topics}
           selectedTopics={selectedTopics}
           onChangeTopicsFilter={onChangeTopicsFilter}
@@ -167,7 +158,7 @@ const FilterSidebar = ({
       name: tabName('projectsTab', selectedProject, 'projects'),
       key: 'projects',
       content: (
-        <ProjectsMenu
+        <FilterSidebarProjects
           projects={projects}
           selectedProject={selectedProject}
           onChangeProjectFilter={onChangeProjectFilter}
@@ -178,7 +169,7 @@ const FilterSidebar = ({
       name: tabName('statusesTab', selectedStatus, 'statuses'),
       key: 'statuses',
       content: (
-        <StatusesMenu
+        <FilterSidebarStatuses
           type={type}
           statuses={statuses}
           selectedStatus={selectedStatus}
@@ -198,28 +189,53 @@ const FilterSidebar = ({
   const selectedItem = items.find((i) => i.key === activeFilterMenu);
   return (
     <>
-      <Menu
-        tabular
-        attached="top"
-        size="tiny"
+      <Box
+        display="flex"
+        flexDirection="row"
         className="intercom-admin-input-manager-filter-sidebar"
       >
-        {items.map((item) => (
-          <Menu.Item
-            key={item.key}
-            id={item.key}
-            active={activeFilterMenu === item.key}
-            onClick={handleItemClick}
-            className={`intercom-admin-input-manager-filter-sidebar-${item.key}`}
-            data-cy={`e2e-admin-post-manager-filter-sidebar-${item.key}`}
-          >
-            {item.name}
-          </Menu.Item>
-        ))}
-      </Menu>
-      <Segment attached="bottom">{selectedItem.content}</Segment>
+        {items.map((item) => {
+          const active = activeFilterMenu === item.key;
+
+          return (
+            <Box
+              display="flex"
+              justifyContent="space-between"
+              alignItems="center"
+              w="100%"
+              as="button"
+              key={item.key}
+              id={item.key}
+              p="12px"
+              className={`intercom-admin-input-manager-filter-sidebar-${item.key}`}
+              data-cy={`e2e-admin-post-manager-filter-sidebar-${item.key}`}
+              {...getBorders(active)}
+              onClick={() => {
+                handleItemClick(item.key);
+              }}
+              cursor="pointer"
+            >
+              {item.name}
+            </Box>
+          );
+        })}
+      </Box>
+      <Box border={BORDER} borderRadius={stylingConsts.borderRadius} p="12px">
+        {selectedItem.content}
+      </Box>
     </>
   );
+};
+
+const getBorders = (active: boolean) => {
+  if (!active) return {};
+
+  return {
+    borderRadius: stylingConsts.borderRadius,
+    borderLeft: BORDER,
+    borderTop: BORDER,
+    borderRight: BORDER,
+  };
 };
 
 export default FilterSidebar;

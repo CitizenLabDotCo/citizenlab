@@ -84,7 +84,7 @@ const SortableProjectTopicList = memo(
       if (projectAllowedInputTopicIdToDelete) {
         deleteProjectAllowedInputTopic(projectAllowedInputTopicIdToDelete, {
           onSuccess: () => {
-            trackEventByName(tracks.projectTagsEdited, projectId);
+            trackEventByName(tracks.projectTagsEdited, { projectId });
             setShowConfirmationModal(false);
             setProjectAllowedInputTopicIdToDelete(null);
           },

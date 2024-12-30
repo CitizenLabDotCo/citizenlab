@@ -971,7 +971,6 @@
   "app.containers.AdminPage.ProjectEdit.defaultSorting": "Sorting",
   "app.containers.AdminPage.ProjectEdit.departments": "Τμήματα",
   "app.containers.AdminPage.ProjectEdit.descriptionTab": "Description",
-  "app.containers.AdminPage.ProjectEdit.disableDislikingTooltip": "Αυτό θα απενεργοποιήσει το disliking, αλλά το liking θα εξακολουθεί να είναι ενεργοποιημένο. Μπορείτε να απενεργοποιήσετε εντελώς την αντίδραση στην ενότητα Ενέργειες αυτής της καρτέλας.",
   "app.containers.AdminPage.ProjectEdit.disabled": "Disabled",
   "app.containers.AdminPage.ProjectEdit.dislikingMethodTitle": "Αριθμός αντιπαθειών ανά συμμετέχοντα",
   "app.containers.AdminPage.ProjectEdit.dislikingPosts": "Ενεργοποίηση αντιπάθειας",

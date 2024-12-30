@@ -20,6 +20,7 @@ import Tooltip from '../Tooltip';
 
 export const ContentWrapper = styled.div<{ tippytheme: 'light' | undefined }>`
   padding: 5px;
+  text-align: left;
 
   a {
     color: ${(props) =>

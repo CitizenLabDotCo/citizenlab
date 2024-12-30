@@ -150,7 +150,7 @@ const Dropdown: React.FC<Props> = ({
   className,
 }) => {
   const dropdownContentRef = useRef<HTMLDivElement | null>(null);
-  const nodeRef = useRef(null);
+  const nodeRef = useRef(null); // Needed to fix React StrictMode warning
   const footerRef = useRef<HTMLDivElement | null>(null);
   const triggerElement = useRef<HTMLElement | null>(null);
 
