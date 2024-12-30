@@ -83,7 +83,7 @@ export const AdminPublicationCard = ({
     >
       <CardImage imageUrl={imageUrl} alt={imageAltText} />
       <Title variant="h4" as="h3" mt="8px" mb="0px" color="tenantText">
-        {truncate(localize(publication_title_multiloc), 50)}
+        {localize(publication_title_multiloc)}
       </Title>
       <Box display="flex" flexDirection="row" alignItems="center" mt="8px">
         {type === 'folder' && (
