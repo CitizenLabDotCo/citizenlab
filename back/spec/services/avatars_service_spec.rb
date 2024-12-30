@@ -95,7 +95,7 @@ describe AvatarsService do
     it "doesn't return the same user twice" do
       u1 = create(:user)
       idea = create(:idea, author: u1)
-      create_list(:comment, 2, author: u1, post: idea)
+      create_list(:comment, 2, author: u1, idea: idea)
 
       result = service.avatars_for_idea(idea)
 
