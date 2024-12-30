@@ -36,7 +36,7 @@
     "detect-deadcode": "ts-prune -p app/tsconfig.json -i '(node_modules|utils/testUtils/rtl.tsx|utils/useDebugState.ts|utils/permissions|i18n|/*/*/__mocks__)' | (! grep -v 'used in module')",
     "dependency-cruiser": "depcruise app --validate",
     "storybook": "storybook dev -p 6006",
-    "build-storybook": "storybook build",
+    "build-storybook": "NODE_OPTIONS='--max-old-space-size=4096' storybook build",
     "chromatic": "chromatic --exit-once-uploaded",
     "generate-component-library-types": "tsc app/component-library/index.tsx --jsx react --esModuleInterop true --skipLibCheck --emitDeclarationOnly --declaration --declarationDir app/component-library/dist",
     "build-component-library": "rimraf ./app/component-library/dist && npm run generate-component-library-types && rollup -c ./app/component-library/rollup.config.cjs --bundleConfigAsCjs"
