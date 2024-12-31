@@ -1091,6 +1091,7 @@ function apiCreatePhase({
   nativeSurveyButtonMultiloc,
   nativeSurveyTitleMultiloc,
   presentation_mode,
+  reacting_dislike_enabled,
 }: {
   projectId: string;
   title: string;
@@ -1111,6 +1112,7 @@ function apiCreatePhase({
   votingMinTotal?: number;
   nativeSurveyButtonMultiloc?: Multiloc;
   nativeSurveyTitleMultiloc?: Multiloc;
+  reacting_dislike_enabled?: boolean;
 }) {
   return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
     const adminJwt = response.body.jwt;
@@ -1146,6 +1148,7 @@ function apiCreatePhase({
           voting_min_total: votingMinTotal,
           native_survey_button_multiloc: nativeSurveyButtonMultiloc,
           native_survey_title_multiloc: nativeSurveyTitleMultiloc,
+          reacting_dislike_enabled,
         },
       },
     });
