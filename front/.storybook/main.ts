@@ -1,4 +1,5 @@
 import { StorybookConfig } from '@storybook/react-vite';
+import { build } from 'vite';
 
 const APP_FOLDER_ALIASES = [
   'api',
@@ -16,21 +17,21 @@ const APP_FOLDER_ALIASES = [
   'routes',
   'translations',
   'typings',
-  'utils'
+  'utils',
 ].map((folder) => ({
   find: folder,
-  replacement: `${process.cwd()}/app/${folder}`
+  replacement: `${process.cwd()}/app/${folder}`,
 }));
 
 const COMPONENT_LIBRARY_ALIAS = {
   find: '@citizenlab/cl2-component-library',
-  replacement: `${process.cwd()}/app/component-library`
+  replacement: `${process.cwd()}/app/component-library`,
 };
 
 const CONSTANTS_ALIAS = {
   find: 'app/containers/App/constants',
-  replacement: `${process.cwd()}/app/containers/App/constants.ts`
-}
+  replacement: `${process.cwd()}/app/containers/App/constants.ts`,
+};
 
 const config: StorybookConfig = {
   stories: ['../app/**/*.stories.@(js|jsx|mjs|ts|tsx)'],
@@ -40,7 +41,7 @@ const config: StorybookConfig = {
     // This upgrade has breaking changes so those need to be dealt with first.
     // 'storybook-addon-react-router-v6',
     'storybook-react-intl',
-    '@storybook/addon-viewport'
+    '@storybook/addon-viewport',
   ],
   framework: '@storybook/react-vite',
   core: {
@@ -60,12 +61,15 @@ const config: StorybookConfig = {
         alias: [
           ...APP_FOLDER_ALIASES,
           COMPONENT_LIBRARY_ALIAS,
-          CONSTANTS_ALIAS
-        ]
+          CONSTANTS_ALIAS,
+        ],
       },
       define: {
-        'process.env': process.env
-      }
+        'process.env': process.env,
+      },
+      build: {
+        sourcemap: false,
+      },
     });
   },
   staticDirs: ['./public', './static'],
