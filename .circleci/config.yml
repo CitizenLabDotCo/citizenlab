@@ -667,7 +667,7 @@ jobs:
           paths:
             - /root/.npm
           key: v2-npm-cache-{{ checksum "package-lock.json" }}
-      - run: npm run chromatic
+      - run: npm run build-storybook && npx chromatic --exit-zero-on-changes -d storybook-static/
 
   # E2E TESTS
   e2e-setup-db:
