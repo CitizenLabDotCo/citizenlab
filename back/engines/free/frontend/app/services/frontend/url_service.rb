@@ -26,7 +26,7 @@ module Frontend
         slug = model_instance.slug
       when Comment # Comments do not have a path yet, we return the post path for now
         return model_to_path(model_instance.post)
-      when OfficialFeedback # Official feedback do not have a path yet, we return the post path for now
+      when OfficialFeedback # Official feedbacks do not have a path yet, we return the idea path for now
         return model_to_path(model_instance.idea)
       when InternalComment # Internal comments are only implemented in the Back Office / Admin UI
         if model_instance.post_type == 'Idea'

@@ -16,7 +16,7 @@ import { IPhaseData } from 'api/phases/types';
 import { IProjectData } from 'api/projects/types';
 import { ITopicData } from 'api/topics/types';
 
-import { ManagerType } from 'components/admin/PostManager';
+import { ManagerType, TFilterMenu } from 'components/admin/PostManager';
 
 import { useIntl } from 'utils/cl-intl';
 import { isAdmin } from 'utils/permissions/roles';
@@ -41,7 +41,7 @@ interface Props {
   onChangeTopicsFilter?: (topics: string[]) => void;
   onChangeProjectFilter?: (projects: string[] | undefined) => void;
   onChangeStatusFilter: (arg: string) => void;
-  activeFilterMenu: string | null;
+  activeFilterMenu: TFilterMenu;
   onChangeActiveFilterMenu: (arg: string) => void;
   visibleFilterMenus: string[];
   type: ManagerType;
@@ -129,8 +129,19 @@ const FilterSidebar = ({
     );
   };
 
-  const menuItems = {
-    phases: () => ({
+  const menuItems = [
+    {
+      name: tabName('projectsTab', selectedProject, 'projects'),
+      key: 'projects',
+      content: (
+        <FilterSidebarProjects
+          projects={projects}
+          selectedProject={selectedProject}
+          onChangeProjectFilter={onChangeProjectFilter}
+        />
+      ),
+    },
+    {
       name: tabName('timelineTab', selectedPhase, 'phases'),
       key: 'phases',
       content:
@@ -141,8 +152,8 @@ const FilterSidebar = ({
             onChangePhaseFilter={onChangePhaseFilter}
           />
         ) : null,
-    }),
-    topics: () => ({
+    },
+    {
       name: tabName('topicsTab', selectedTopics, 'topics'),
       key: 'topics',
       content: (
@@ -153,19 +164,8 @@ const FilterSidebar = ({
           linkToTagManager={getLinkToTagManager()}
         />
       ),
-    }),
-    projects: () => ({
-      name: tabName('projectsTab', selectedProject, 'projects'),
-      key: 'projects',
-      content: (
-        <FilterSidebarProjects
-          projects={projects}
-          selectedProject={selectedProject}
-          onChangeProjectFilter={onChangeProjectFilter}
-        />
-      ),
-    }),
-    statuses: () => ({
+    },
+    {
       name: tabName('statusesTab', selectedStatus, 'statuses'),
       key: 'statuses',
       content: (
@@ -176,25 +176,20 @@ const FilterSidebar = ({
           onChangeStatusFilter={onChangeStatusFilter}
         />
       ),
-    }),
-  };
+    },
+  ];
 
-  const filteredMenuItems = () => {
-    return visibleFilterMenus.map((menuName) => {
-      return menuItems[menuName]();
-    });
-  };
+  const filteredMenuItems = menuItems.filter((item) =>
+    visibleFilterMenus.includes(item.key)
+  );
+  const selectedItem =
+    filteredMenuItems.find((item) => item.key === activeFilterMenu) ||
+    filteredMenuItems[0];
 
-  const items = filteredMenuItems();
-  const selectedItem = items.find((i) => i.key === activeFilterMenu);
   return (
-    <>
-      <Box
-        display="flex"
-        flexDirection="row"
-        className="intercom-admin-input-manager-filter-sidebar"
-      >
-        {items.map((item) => {
+    <Box className="intercom-admin-input-manager-filter-sidebar">
+      <Box display="flex">
+        {filteredMenuItems.map((item) => {
           const active = activeFilterMenu === item.key;
 
           return (
@@ -223,7 +218,7 @@ const FilterSidebar = ({
       <Box border={BORDER} borderRadius={stylingConsts.borderRadius} p="12px">
         {selectedItem.content}
       </Box>
-    </>
+    </Box>
   );
 };
 
