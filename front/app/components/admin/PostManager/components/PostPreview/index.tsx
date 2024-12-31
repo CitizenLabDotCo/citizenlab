@@ -1,8 +1,9 @@
-import React, { useEffect, useState, lazy } from 'react';
+import React, { useEffect, useState, lazy, Suspense } from 'react';
 
 import { colors } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
+import FullPageSpinner from 'components/UI/FullPageSpinner';
 import SideModal from 'components/UI/SideModal';
 
 import { ManagerType, PreviewMode } from '../..';
@@ -75,13 +76,15 @@ const PostPreview = ({
 
   return (
     <SideModal opened={opened} close={handleOnClose}>
-      <IdeaPostPreview
-        onClose={handleOnClose}
-        ideaId={postId}
-        onSwitchPreviewMode={onSwitchPreviewMode}
-        mode={mode}
-        selectedPhaseId={selectedPhaseId}
-      />
+      <Suspense fallback={<FullPageSpinner />}>
+        <IdeaPostPreview
+          onClose={handleOnClose}
+          ideaId={postId}
+          onSwitchPreviewMode={onSwitchPreviewMode}
+          mode={mode}
+          selectedPhaseId={selectedPhaseId}
+        />
+      </Suspense>
     </SideModal>
   );
 };
