@@ -109,7 +109,7 @@ resource 'Mentions' do
       let!(:moderator_of_project) { create(:project_moderator, names.merge({ projects: [project] })) }
       let!(:moderator_of_other_project) { create(:project_moderator, names) }
 
-      let(:base_query_params) { { ideat_id: idea.id, mention: first_name } }
+      let(:base_query_params) { { idea_id: idea.id, mention: first_name } }
 
       example 'Does not include regular user, even if has commented on post' do
         create(:comment, idea: idea, author: regular_user)
