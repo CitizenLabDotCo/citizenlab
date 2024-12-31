@@ -16031,9 +16031,6 @@ models:
     - &web_ref_type
       key: 'website'
       name: 'Websites'
-  analytics/dimension_type:
-    - name: 'idea'
-      parent: 'post'
   analytics/dimension_locale:
     - name: 'en'
     - name: 'fr-BE'
