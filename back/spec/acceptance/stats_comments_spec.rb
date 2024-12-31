@@ -85,8 +85,6 @@ resource 'Stats - Comments' do
     context 'as a moderator' do
       before do
         header_token_for create(:project_moderator)
-        proposal = create(:proposal)
-        create(:comment, idea: proposal)
         create(:comment, idea: create(:idea, project: create(:private_admins_project)))
       end
 
