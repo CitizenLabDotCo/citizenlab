@@ -110,7 +110,7 @@ const RightColumnDesktop = ({
             )}
             {commentingEnabled && (
               <Box
-                pb="12px"
+                mb="12px"
                 px={participationMethod === 'proposals' ? '12px' : '0px'}
                 bg={colors.white}
               >
