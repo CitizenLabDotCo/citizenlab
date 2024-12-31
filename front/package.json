@@ -33,7 +33,7 @@
     "dependency-cruiser": "depcruise app --validate",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
-    "chromatic": "NODE_OPTIONS='--max-old-space-size=4096' chromatic --exit-once-uploaded",
+    "chromatic": "chromatic --exit-zero-on-changes -d storybook-static/",
     "generate-component-library-types": "tsc app/component-library/index.tsx --jsx react --esModuleInterop true --skipLibCheck --emitDeclarationOnly --declaration --declarationDir app/component-library/dist",
     "build-component-library": "rimraf ./app/component-library/dist && npm run generate-component-library-types && rollup -c ./app/component-library/rollup.config.cjs --bundleConfigAsCjs"
   },
