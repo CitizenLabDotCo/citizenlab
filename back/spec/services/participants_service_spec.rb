@@ -413,5 +413,17 @@ describe ParticipantsService do
       expect { service.destroy_participation_data(project) }
         .to change(Polls::Response, :count).by(-2)
     end
+
+    # Regression test
+    it 'does not delete ideas from other projects' do
+      idea = create(:idea)
+      voting_phase = create(:single_voting_phase)
+      idea_in_voting_phase = create(:idea, phases: [voting_phase], project: voting_phase.project)
+
+      service.destroy_participation_data(project)
+
+      expect(Idea.where(id: idea.id)).to exist
+      expect(Idea.where(id: idea_in_voting_phase.id)).to exist
+    end
   end
 end

@@ -106,6 +106,7 @@ const SelectFieldOption = memo(
               choice.title_multiloc[locale] = value;
               onChoiceUpdate(choice, index);
             }}
+            autoFocus={false}
           />
 
           {showImageSettings && (

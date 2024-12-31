@@ -29,6 +29,10 @@ class ProjectReview < ApplicationRecord
   belongs_to :requester, class_name: 'User', optional: true
   belongs_to :reviewer, class_name: 'User', optional: true
 
+  before_destroy :remove_notifications
+  # `dependent` is handled by the `before_destroy` callback.
+  has_many :notifications # rubocop:disable Rails/HasManyOrHasOneDependent
+
   validate :validate_create, on: :create
   validate :validate_update, on: :update
   validates :project_id, uniqueness: { case_sensitive: false } # UUIDs are case-insensitive
@@ -104,6 +108,12 @@ class ProjectReview < ApplicationRecord
       if reviewer_changed? && reviewer.present?
         errors.add(:reviewer, 'cannot be changed')
       end
+    end
+  end
+
+  def remove_notifications
+    notifications.each do |notification|
+      notification.destroy! unless notification.update(project_review: nil)
     end
   end
 end

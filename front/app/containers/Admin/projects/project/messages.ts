@@ -211,9 +211,9 @@ export default defineMessages({
     defaultMessage: 'Enable disliking',
   },
   disableDislikingTooltip: {
-    id: 'app.containers.AdminPage.ProjectEdit.disableDislikingTooltip',
+    id: 'app.containers.AdminPage.ProjectEdit.disableDislikingTooltip2',
     defaultMessage:
-      'This will disable disliking, but liking will still be enabled. You can disable reacting completely in the Actions section of this tab.',
+      'This will enable or disable disliking, but liking will still be enabled. We recommend leaving this disabled unless you are carrying out an option analysis.',
   },
   dislikingDisabled: {
     id: 'app.containers.AdminPage.ProjectEdit.downvotingDisabled',

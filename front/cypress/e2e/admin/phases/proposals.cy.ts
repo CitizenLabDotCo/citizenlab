@@ -9,7 +9,7 @@ describe('Admin: proposal phase', () => {
     cy.get('.e2e-project-general-form');
   });
 
-  it('creates a published project with a proposals phase', () => {
+  it('creates a project with a proposals phase', () => {
     cy.intercept('POST', '**/projects').as('createProject');
     const projectTitleEN = randomString();
     const projectTitleNLBE = randomString();
@@ -52,6 +52,7 @@ describe('Admin: proposal phase', () => {
     );
 
     cy.get('#e2e-view-project').click();
+    cy.wait(2000);
 
     // Verify proposal phase is created and published
     cy.get('#e2e-project-page').should('contain.text', projectTitleEN);

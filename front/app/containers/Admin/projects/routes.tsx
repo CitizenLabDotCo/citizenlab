@@ -79,6 +79,7 @@ export enum projectsRoutes {
   published = 'published',
   draft = 'draft',
   archived = 'archived',
+  pending = 'pending',
   projectIdeaId = ':projectId/ideas/:ideaId',
   projectSettings = ':projectId/settings',
   projectTraffic = 'traffic',
@@ -123,6 +124,7 @@ export type projectsRouteTypes =
   | AdminRoute<`${projectsRoutes.projects}/${projectsRoutes.published}`>
   | AdminRoute<`${projectsRoutes.projects}/${projectsRoutes.draft}`>
   | AdminRoute<`${projectsRoutes.projects}/${projectsRoutes.archived}`>
+  | AdminRoute<`${projectsRoutes.projects}/${projectsRoutes.pending}`>
   | AdminRoute<`${projectsRoutes.projects}/${projectsRoutes.new}`>
   | AdminRoute<`${projectsRoutes.projects}/${string}/ideas/${string}`>
   | AdminRoute<`${projectsRoutes.projects}/${string}/settings`>
@@ -206,6 +208,15 @@ const createAdminProjectsRoutes = () => {
           </PageLoading>
         ),
       },
+      {
+        path: projectsRoutes.pending,
+        element: (
+          <PageLoading>
+            <AdminProjectsList />
+          </PageLoading>
+        ),
+      },
+
       ...moduleConfiguration.routes['admin.project_templates'],
       ...moduleConfiguration.routes['admin.projects'],
       {

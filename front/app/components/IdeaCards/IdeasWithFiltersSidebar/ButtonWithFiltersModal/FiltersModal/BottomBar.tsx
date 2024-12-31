@@ -1,4 +1,4 @@
-import React, { memo, FormEvent } from 'react';
+import React, { FormEvent } from 'react';
 
 import { Box, colors } from '@citizenlab/cl2-component-library';
 
@@ -16,36 +16,31 @@ import messages from './messages';
 interface Props {
   onClick: (event: FormEvent) => void;
   ideaQueryParameters: InputFiltersProps['ideaQueryParameters'];
-  filtersActive: boolean;
 }
 
-const BottomBar = memo<Props>(
-  ({ onClick, ideaQueryParameters, filtersActive }) => {
-    const { data: ideasFilterCounts } =
-      useIdeasFilterCounts(ideaQueryParameters);
+const BottomBar = ({ onClick, ideaQueryParameters }: Props) => {
+  const { data: ideasFilterCounts } = useIdeasFilterCounts(ideaQueryParameters);
 
-    if (!ideasFilterCounts) return null;
+  if (!ideasFilterCounts) return null;
 
-    return (
-      <Box
-        background={colors.white}
-        p="16px"
-        pb="0"
-        flex="1"
-        borderTop={`1px solid ${colors.grey300}`}
-      >
-        <Button onClick={onClick} fullWidth={true}>
-          <FormattedMessage
-            {...messages.showXResults}
-            values={{
-              ideasCount: ideasFilterCounts.data.attributes.total,
-            }}
-          />
-        </Button>
-        <ResetFiltersButton filtersActive={filtersActive} />
-      </Box>
-    );
-  }
-);
-
+  return (
+    <Box
+      background={colors.white}
+      p="16px"
+      pb="0"
+      flex="1"
+      borderTop={`1px solid ${colors.grey300}`}
+    >
+      <Button onClick={onClick} fullWidth={true}>
+        <FormattedMessage
+          {...messages.showXResults}
+          values={{
+            ideasCount: ideasFilterCounts.data.attributes.total,
+          }}
+        />
+      </Button>
+      <ResetFiltersButton ideaQueryParameters={ideaQueryParameters} />
+    </Box>
+  );
+};
 export default BottomBar;

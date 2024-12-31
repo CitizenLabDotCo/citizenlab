@@ -1,7 +1,7 @@
 import React, { FormEvent } from 'react';
 
 import { parse } from 'qs';
-import { Helmet } from 'react-helmet';
+import { Helmet } from 'react-helmet-async';
 import { WrappedComponentProps } from 'react-intl';
 import { CLError, FormatMessage } from 'typings';
 

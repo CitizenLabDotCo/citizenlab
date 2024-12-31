@@ -182,7 +182,7 @@ const IdeasWithFiltersSidebar = ({
   const handleTopicsOnChange = useCallback(
     (topics: string[] | null) => {
       trackEventByName(tracks.topicsFilter, {
-        topics,
+        topics: topics?.toString(),
       });
 
       onUpdateQuery({ topics: topics ?? undefined });
@@ -190,17 +190,10 @@ const IdeasWithFiltersSidebar = ({
     [onUpdateQuery]
   );
 
-  const filtersActive = !!(
-    ideaQueryParameters.search ||
-    ideaQueryParameters.idea_status ||
-    ideaQueryParameters.topics
-  );
-
   const showInputFilterSidebar =
     biggerThanLargeTablet && selectedView === 'card';
 
   const inputFiltersProps: InputFiltersProps = {
-    filtersActive,
     ideasFilterCounts,
     numberOfSearchResults: ideasCount,
     ideaQueryParameters,
