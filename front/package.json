@@ -144,7 +144,7 @@
     "util": "0.12.5",
     "webfontloader": "1.6.28",
     "xlsx": "https://cdn.sheetjs.com/xlsx-0.20.3/xlsx-0.20.3.tgz",
-    "yup": "0.32.11"
+    "yup": "1.6.1"
   },
   "devDependencies": {
     "@babel/cli": "7.x",
