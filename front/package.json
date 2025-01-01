@@ -160,7 +160,7 @@
     "@rollup/plugin-commonjs": "25.0.7",
     "@rollup/plugin-node-resolve": "15.2.3",
     "@rollup/plugin-terser": "0.4.4",
-    "@rollup/plugin-typescript": "9.0.2",
+    "@rollup/plugin-typescript": "12.1.2",
     "@sentry/webpack-plugin": "1.18.8",
     "@storybook/addon-viewport": "8.1.6",
     "@storybook/builder-vite": "8.1.6",
