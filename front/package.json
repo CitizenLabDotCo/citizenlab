@@ -68,7 +68,7 @@
     "@sentry/react": "7.50.0",
     "@sentry/tracing": "7.50.0",
     "@sentry/utils": "7.51.0",
-    "@tanstack/react-query": "4.22.4",
+    "@tanstack/react-query": "5.62.11",
     "@tanstack/react-virtual": "3.0.0-beta.61",
     "@tippyjs/react": "4.2.6",
     "ajv": "8.12.0",
