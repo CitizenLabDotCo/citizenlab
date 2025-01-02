@@ -62,7 +62,7 @@ const EngagementFilter = ({
           onChange={(value) => {
             removeSearchParams([from, to]);
             value && updateSearchParams({ [selectValue]: value });
-            trackEventByName(tracks.engagementFilterUsed.name, {
+            trackEventByName(tracks.engagementFilterUsed, {
               type: selectValue,
             });
           }}

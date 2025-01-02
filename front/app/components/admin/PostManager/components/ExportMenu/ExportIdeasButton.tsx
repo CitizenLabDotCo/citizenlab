@@ -80,7 +80,7 @@ class ExportIdeasButton extends React.PureComponent<
     }
 
     // track this click for user analytics
-    trackEventByName(tracks.clickExportIdeas.name);
+    trackEventByName(tracks.clickExportIdeas);
   };
 
   render() {
