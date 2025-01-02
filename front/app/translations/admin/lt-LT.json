@@ -2676,7 +2676,7 @@
   "app.containers.admin.addCollaboratorsModal.giveManagerRights": "Suteikti vadybininko teises",
   "app.containers.admin.addCollaboratorsModal.hasReachedOrIsOverLimit": "Pasiekėte savo plano vietų limitą, bus pridėta 1 papildoma vieta.",
   "app.containers.admin.ideaStatuses.all.addIdeaStatus": "Pridėti būseną",
-  "app.containers.admin.ideaStatuses.all.defaultStatusDeleteButtonTooltip": "Numatytojo statuso negalima ištrinti.",
+  "app.containers.admin.ideaStatuses.all.defaultStatusDeleteButtonTooltip2": "Numatytųjų būsenų negalima ištrinti.",
   "app.containers.admin.ideaStatuses.all.deleteButtonLabel": "Ištrinti",
   "app.containers.admin.ideaStatuses.all.editButtonLabel": "Redaguoti",
   "app.containers.admin.ideaStatuses.all.editIdeaStatus": "Redaguoti būseną",
