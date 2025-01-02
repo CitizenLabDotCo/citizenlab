@@ -2676,7 +2676,7 @@
   "app.containers.admin.addCollaboratorsModal.giveManagerRights": "Dajte upraviteljska prava",
   "app.containers.admin.addCollaboratorsModal.hasReachedOrIsOverLimit": "Dosegli ste ograničenje uključenih sjedala u svoj plan, {noOfSeats} dodatna {noOfSeats, plural, one {sjedište} other {sjedala}} bit će dodan.",
   "app.containers.admin.ideaStatuses.all.addIdeaStatus": "Dodaj status",
-  "app.containers.admin.ideaStatuses.all.defaultStatusDeleteButtonTooltip": "Zadani status ne može se izbrisati.",
+  "app.containers.admin.ideaStatuses.all.defaultStatusDeleteButtonTooltip2": "Zadani statusi se ne mogu brisati.",
   "app.containers.admin.ideaStatuses.all.deleteButtonLabel": "Izbriši",
   "app.containers.admin.ideaStatuses.all.editButtonLabel": "Uredi",
   "app.containers.admin.ideaStatuses.all.editIdeaStatus": "Uredi status",
