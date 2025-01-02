@@ -289,11 +289,11 @@ resource 'Idea Custom Fields' do
                 }
               ]
             },
-            resource: { data: { id: custom_form.id, type: 'custom_form' } }
+            resource: { data: { id: CustomForm.first.id, type: 'custom_form' } }
           }
         })
         expect(json_response_body[:included].pluck(:type)).to match_array(
-          %w[image custom_field_option image custom_field_option]
+          %w[image custom_field_option image custom_field_option custom_form]
         )
       end
 
