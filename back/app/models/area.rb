@@ -28,8 +28,6 @@ class Area < ApplicationRecord
 
   has_many :areas_projects, dependent: :destroy
   has_many :projects, through: :areas_projects
-  has_many :areas_initiatives, dependent: :destroy
-  has_many :initiatives, through: :areas_initiatives
   has_many :followers, as: :followable, dependent: :destroy
 
   has_many :areas_static_pages, dependent: :restrict_with_error
