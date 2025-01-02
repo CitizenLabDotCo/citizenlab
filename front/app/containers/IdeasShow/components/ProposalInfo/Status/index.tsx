@@ -89,7 +89,7 @@ const Status = ({ idea, ideaStatus, compact = false }: Props) => {
         </Text>
       </Box>
       {showProgressBar && (
-        <Box mb="12px">
+        <Box mb="24px">
           <ReactionCounter
             idea={idea}
             barColor={theme.colors.tenantPrimary || colors.success}
