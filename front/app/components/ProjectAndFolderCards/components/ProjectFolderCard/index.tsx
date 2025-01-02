@@ -337,7 +337,7 @@ const ProjectFolderCard = memo<Props>(
     const handleProjectCardOnClick = useCallback(
       (projectFolderId: string) => () => {
         trackEventByName(tracks.clickOnProjectCard, {
-          extra: { projectFolderId },
+          projectFolderId,
         });
       },
       []
@@ -346,7 +346,7 @@ const ProjectFolderCard = memo<Props>(
     const handleProjectTitleOnClick = useCallback(
       (projectFolderId: string) => () => {
         trackEventByName(tracks.clickOnProjectTitle, {
-          extra: { projectFolderId },
+          projectFolderId,
         });
       },
       []

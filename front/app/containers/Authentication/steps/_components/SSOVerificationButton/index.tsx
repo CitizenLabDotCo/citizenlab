@@ -67,6 +67,14 @@ const SSOVerificationButton = ({
       label: messages.verifyKeycloak,
       icon: 'idporten',
     },
+    auth0: {
+      label: messages.verifyAuth0,
+      icon: 'shield-check',
+    },
+    bosa_fas: {
+      label: messages.verifyBosaFas,
+      icon: 'shield-check',
+    },
   };
 
   const buttonConfig = verificationButtonConfigs[methodName];
@@ -83,7 +91,9 @@ const SSOVerificationButton = ({
       const jwt = getJwt();
       window.location.href = `${AUTH_PATH}/${
         verificationMethod?.attributes.name
-      }?token=${jwt}&pathname=${removeUrlLocale(window.location.pathname)}`;
+      }?token=${jwt}&verification_pathname=${removeUrlLocale(
+        window.location.pathname
+      )}`;
     }
   };
 

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 
 import {
   Box,
@@ -359,6 +359,7 @@ const Modal: React.FC<Props> = ({
   hideCloseButton,
   returnFocusRef,
 }) => {
+  const nodeRef = useRef(null); // Needed to fix React StrictMode warning
   const [modalHasBeenOpened, setModalHasBeenOpened] = useState(false);
   const [windowDimensions, setWindowDimensions] = useState({
     windowWidth: window.innerWidth,
@@ -470,11 +471,17 @@ const Modal: React.FC<Props> = ({
           : desktopTransformTimeout
       }
       mountOnEnter
+      nodeRef={nodeRef}
       unmountOnExit
       enter
       exit={false}
     >
-      <Overlay id="e2e-modal-container" className={className} zIndex={zIndex}>
+      <Overlay
+        ref={nodeRef}
+        id="e2e-modal-container"
+        className={className}
+        zIndex={zIndex}
+      >
         <ModalContentContainerSwitch width={width}>
           <ModalContainer
             className={`modalcontent ${fixedHeight ? 'fixedHeight' : ''}`}

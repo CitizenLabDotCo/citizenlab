@@ -9,15 +9,15 @@ import useTopics from 'api/topics/useTopics';
 import TopicsFilter from 'components/FilterBoxes/TopicsFilter';
 
 interface Props {
-  selectedIdeaFilters: IIdeasFilterCountsQueryParameters;
+  ideaQueryParameters: IIdeasFilterCountsQueryParameters;
   selectedTopicIds: string[] | null | undefined;
   onChange: (arg: string[] | null) => void;
   className?: string;
 }
 
 const TopicFilterBox = memo<Props>(
-  ({ selectedTopicIds, selectedIdeaFilters, onChange, className }) => {
-    const ideaFiltersWithoutTopics = omit(selectedIdeaFilters, 'topics');
+  ({ selectedTopicIds, ideaQueryParameters, onChange, className }) => {
+    const ideaFiltersWithoutTopics = omit(ideaQueryParameters, 'topics');
 
     const { data: topics } = useTopics({
       sort: '-ideas_count',

@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Box } from '@citizenlab/cl2-component-library';
+import { Box, Toggle } from '@citizenlab/cl2-component-library';
 import { useNode } from '@craftjs/core';
 
 import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
@@ -21,12 +21,14 @@ const Settings = () => {
     titleMultiloc,
     descriptionMultiloc,
     buttonTextMultiloc,
+    hideAvatars,
   } = useNode((node) => ({
     publicationId: node.data.props.publicationId,
     publicationType: node.data.props.publicationType,
     titleMultiloc: node.data.props.titleMultiloc,
     descriptionMultiloc: node.data.props.descriptionMultiloc,
     buttonTextMultiloc: node.data.props.buttonTextMultiloc,
+    hideAvatars: node.data.props.hideAvatars,
   }));
 
   return (
@@ -76,7 +78,7 @@ const Settings = () => {
           }}
         />
       </Box>
-      <Box>
+      <Box mb="20px">
         <InputMultilocWithLocaleSwitcher
           id="spotlight-button-text-multiloc"
           type="text"
@@ -88,6 +90,13 @@ const Settings = () => {
           }
         />
       </Box>
+      <Toggle
+        checked={!hideAvatars}
+        onChange={() =>
+          setProp((props) => (props.hideAvatars = !props.hideAvatars))
+        }
+        label={formatMessage(messages.showAvatars)}
+      />
     </Box>
   );
 };

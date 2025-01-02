@@ -17,4 +17,12 @@ export default defineMessages({
     id: 'app.components.VerificationModal.verifyKeycloak',
     defaultMessage: 'Verify with ID-Porten',
   },
+  verifyAuth0: {
+    id: 'app.components.VerificationModal.verifyAuth0',
+    defaultMessage: 'Verify with NemID',
+  },
+  verifyBosaFas: {
+    id: 'app.components.VerificationModal.verifyBosaFas',
+    defaultMessage: 'Verify with itsme or eID',
+  },
 });

@@ -24,7 +24,7 @@ describe 'Vienna SAML employee authentication' do
 
     it 'sets the JWT auth token and redirects to home page' do
       expect(cookies[:cl2_jwt]).to be_present
-      expect(response).to redirect_to('/en/?')
+      expect(response).to redirect_to('/en/?sso_flow=signin&sso_success=true')
     end
   end
 end

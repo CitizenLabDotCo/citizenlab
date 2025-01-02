@@ -12,7 +12,7 @@ describe Permissions::PhasePermissionsService do
   context '"reacting_idea" denied_reason_for_action' do
     context 'when reacting is enabled' do
       let(:phase) { project.phases[1] }
-      let(:phases_config) { { sequence: 'xcx', c: { reacting_enabled: true }, x: { reacting_enabled: false } } }
+      let(:phases_config) { { sequence: 'xcx', c: { reacting_enabled: true, reacting_dislike_enabled: true }, x: { reacting_enabled: false } } }
 
       it 'returns nil' do
         expect(service.denied_reason_for_action('reacting_idea', reaction_mode: 'up')).to be_nil
@@ -21,7 +21,7 @@ describe Permissions::PhasePermissionsService do
     end
 
     context 'when reacting is enabled for that phase, but disabled for the current phase' do
-      let(:phases_config) { { sequence: 'xxcxx', c: { reacting_enabled: false }, x: { reacting_enabled: true } } }
+      let(:phases_config) { { sequence: 'xxcxx', c: { reacting_enabled: false }, x: { reacting_enabled: true, reacting_dislike_enabled: true } } }
 
       it 'returns nil' do
         expect(service.denied_reason_for_action('reacting_idea', reaction_mode: 'up')).to be_nil
@@ -33,8 +33,8 @@ describe Permissions::PhasePermissionsService do
       let(:phases_config) do
         {
           sequence: 'xxcxx',
-          c: { reacting_enabled: true },
-          x: { reacting_enabled: true, reacting_like_method: 'limited', reacting_like_limited_max: 2 }
+          c: { reacting_enabled: true, reacting_dislike_enabled: true },
+          x: { reacting_enabled: true, reacting_dislike_enabled: true, reacting_like_method: 'limited', reacting_like_limited_max: 2 }
         }
       end
 

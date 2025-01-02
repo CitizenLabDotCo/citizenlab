@@ -1,5 +1,6 @@
 import React from 'react';
 
+import { Box } from '@citizenlab/cl2-component-library';
 import { Multiloc } from 'typings';
 
 import useProjectFolderImage from 'api/project_folder_images/useProjectFolderImage';
@@ -22,6 +23,7 @@ interface Props {
   titleMultiloc?: Multiloc;
   descriptionMultiloc?: Multiloc;
   buttonTextMultiloc: Multiloc;
+  hideAvatars?: boolean;
 }
 
 const Spotlight = ({
@@ -30,10 +32,11 @@ const Spotlight = ({
   titleMultiloc,
   descriptionMultiloc,
   buttonTextMultiloc,
+  hideAvatars,
 }: Props) => {
   // If publicationType === 'project'
   const projectId = publicationType === 'project' ? publicationId : undefined;
-  const { data: project } = useProjectById(projectId);
+  const { data: project, isError: isErrorProject } = useProjectById(projectId);
   const projectImageId =
     project?.data.relationships.project_images?.data[0]?.id;
   const { data: projectImage } = useProjectImage({
@@ -43,7 +46,8 @@ const Spotlight = ({
 
   // If publicationType === 'folder'
   const folderId = publicationType === 'folder' ? publicationId : undefined;
-  const { data: folder } = useProjectFolderById(folderId);
+  const { data: folder, isError: isErrorFolder } =
+    useProjectFolderById(folderId);
   const folderImageId = folder?.data.relationships.images.data?.[0]?.id;
   const { data: folderImage } = useProjectFolderImage({
     folderId,
@@ -54,12 +58,17 @@ const Spotlight = ({
   const localize = useLocalize();
   const { formatMessage } = useIntl();
 
+  if (isErrorProject || isErrorFolder) {
+    return <Box />;
+  }
+
   if (!publicationId) {
     return (
       <SpotlightProjectInner
         title={formatMessage(messages.selectProjectOrFolder)}
         description={formatMessage(messages.pleaseSelectAProjectOrFolder)}
         loading={false}
+        hideAvatars={hideAvatars}
       />
     );
   }
@@ -98,6 +107,7 @@ const Spotlight = ({
       imgSrc={image?.data.attributes.versions.large ?? undefined}
       loading={getLoading()}
       avatarIds={avatarIds}
+      hideAvatars={hideAvatars}
       userCount={publication?.data.attributes.participants_count}
     />
   );

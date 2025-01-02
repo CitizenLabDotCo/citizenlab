@@ -111,6 +111,7 @@ ALTER TABLE IF EXISTS ONLY public.permissions_custom_fields DROP CONSTRAINT IF E
 ALTER TABLE IF EXISTS ONLY public.analytics_dimension_projects_fact_visits DROP CONSTRAINT IF EXISTS fk_rails_4ecebb6e8a;
 ALTER TABLE IF EXISTS ONLY public.initiative_images DROP CONSTRAINT IF EXISTS fk_rails_4df6f76970;
 ALTER TABLE IF EXISTS ONLY public.notifications DROP CONSTRAINT IF EXISTS fk_rails_4aea6afa11;
+ALTER TABLE IF EXISTS ONLY public.notifications DROP CONSTRAINT IF EXISTS fk_rails_47abdd0847;
 ALTER TABLE IF EXISTS ONLY public.notifications DROP CONSTRAINT IF EXISTS fk_rails_46dd2ccfd1;
 ALTER TABLE IF EXISTS ONLY public.email_campaigns_examples DROP CONSTRAINT IF EXISTS fk_rails_465d6356b2;
 ALTER TABLE IF EXISTS ONLY public.followers DROP CONSTRAINT IF EXISTS fk_rails_3d258d3942;
@@ -215,6 +216,7 @@ DROP INDEX IF EXISTS public.index_official_feedbacks_on_post;
 DROP INDEX IF EXISTS public.index_notifications_on_spam_report_id;
 DROP INDEX IF EXISTS public.index_notifications_on_recipient_id_and_read_at;
 DROP INDEX IF EXISTS public.index_notifications_on_recipient_id;
+DROP INDEX IF EXISTS public.index_notifications_on_project_review_id;
 DROP INDEX IF EXISTS public.index_notifications_on_post_status_id_and_post_status_type;
 DROP INDEX IF EXISTS public.index_notifications_on_post_status_id;
 DROP INDEX IF EXISTS public.index_notifications_on_post_id_and_post_type;
@@ -1635,7 +1637,7 @@ CREATE TABLE public.phases (
     presentation_mode character varying DEFAULT 'card'::character varying,
     voting_max_total integer,
     poll_anonymous boolean DEFAULT false NOT NULL,
-    reacting_dislike_enabled boolean DEFAULT true NOT NULL,
+    reacting_dislike_enabled boolean DEFAULT false NOT NULL,
     ideas_count integer DEFAULT 0 NOT NULL,
     ideas_order character varying,
     input_term character varying DEFAULT 'idea'::character varying,
@@ -2898,7 +2900,8 @@ CREATE TABLE public.notifications (
     internal_comment_id uuid,
     basket_id uuid,
     cosponsors_initiative_id uuid,
-    cosponsorship_id uuid
+    cosponsorship_id uuid,
+    project_review_id uuid
 );
 
 
@@ -5736,6 +5739,13 @@ CREATE INDEX index_notifications_on_post_status_id_and_post_status_type ON publi
 
 
 --
+-- Name: index_notifications_on_project_review_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_notifications_on_project_review_id ON public.notifications USING btree (project_review_id);
+
+
+--
 -- Name: index_notifications_on_recipient_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -6488,6 +6498,14 @@ ALTER TABLE ONLY public.email_campaigns_examples
 
 ALTER TABLE ONLY public.notifications
     ADD CONSTRAINT fk_rails_46dd2ccfd1 FOREIGN KEY (phase_id) REFERENCES public.phases(id);
+
+
+--
+-- Name: notifications fk_rails_47abdd0847; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.notifications
+    ADD CONSTRAINT fk_rails_47abdd0847 FOREIGN KEY (project_review_id) REFERENCES public.project_reviews(id);
 
 
 --
@@ -7784,8 +7802,8 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20241115141717'),
 ('20241125094000'),
 ('20241125094100'),
+('20241127074734'),
 ('20241127093339'),
 ('20241203151945'),
-('20241204133717');
-
-
+('20241204133717'),
+('20241204144321');

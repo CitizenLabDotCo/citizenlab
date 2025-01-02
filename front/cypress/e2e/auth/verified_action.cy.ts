@@ -80,7 +80,7 @@ describe.skip('Verified action', () => {
     // by manually doing the redirect another time.
     // No idea why it works like this, but it does.
     cy.visit(
-      `http://localhost:3000/en/projects/${projectSlug}?sso_response=true&sso_flow=signup&sso_verification_action=posting_idea&sso_verification_id=${phaseId}&sso_verification_type=phase`
+      `http://localhost:3000/en/projects/${projectSlug}?sso_success=true&sso_flow=signup&sso_verification_action=posting_idea&sso_verification_id=${phaseId}&sso_verification_type=phase`
     );
 
     // Make sure that custom fields window is opened

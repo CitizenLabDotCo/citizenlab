@@ -69,7 +69,7 @@ const Settings = () => {
   return (
     <Box my="20px">
       <Text mb="32px" color="textSecondary">
-        <FormattedMessage {...messages.inThisWidget} formatBold />
+        <FormattedMessage {...messages.withThisWidget} formatBold />
       </Text>
       <Box mb="40px">
         <TitleMultilocInput name="selection_title" />
