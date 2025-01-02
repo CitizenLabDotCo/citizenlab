@@ -22,7 +22,6 @@ module Seo
         :'project_folders_folders.updated_at', :'admin_publications.publication_status',
         :'admin_publications.publication_type', :'admin_publications.publication_id'
       ).includes(:admin_publication).where(admin_publications: { publication_status: %w[published archived] })
-      @initiatives = Initiative.select(:slug, :updated_at, :publication_status).where(publication_status: statuses)
       @pages = Pundit.policy_scope(nil, StaticPage).select(:slug, :updated_at)
       @ideas = Pundit.policy_scope(nil, Idea).select(:slug, :updated_at, :project_id).where(project_id: @projects.map(&:id))
     end
