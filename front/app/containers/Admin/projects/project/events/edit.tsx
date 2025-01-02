@@ -61,23 +61,23 @@ import { initializeEventTimes } from './utils';
 const EventMap = lazy(() => import('./components/EventMap'));
 
 const AdminProjectEventEdit = () => {
-  const { id, projectId } = useParams() as {
-    id: string;
-    projectId: string;
-  };
+  const { id: eventId, projectId } = useParams();
+
+  const isCreatingNewEvent = !eventId;
+
   const { width, containerRef } = useContainerWidthAndHeight();
   const { formatMessage } = useIntl();
   const theme = useTheme();
   const locale = useLocale();
 
   const { mutate: addEvent } = useAddEvent();
-  const { data: event, isInitialLoading } = useEvent(id);
+  const { data: event, isInitialLoading } = useEvent(eventId);
   const { mutate: updateEvent } = useUpdateEvent();
 
   // event files
   const { mutate: addEventFile } = useAddEventFile();
   const { mutate: deleteEventFile } = useDeleteEventFile();
-  const { data: remoteEventFiles } = useEventFiles(id);
+  const { data: remoteEventFiles } = useEventFiles(eventId);
 
   // event image
   const { mutate: addEventImage } = useAddEventImage();
@@ -92,7 +92,9 @@ const AdminProjectEventEdit = () => {
   const [submitState, setSubmitState] = useState<SubmitState>('disabled');
   const [eventFiles, setEventFiles] = useState<UploadFile[]>([]);
 
-  const [attributeDiff, setAttributeDiff] = useState<IEventProperties>({});
+  const [attributeDiff, setAttributeDiff] = useState<IEventProperties>(
+    isCreatingNewEvent ? initializeEventTimes() : {}
+  );
 
   const [attendanceOptionsVisible, setAttendanceOptionsVisible] =
     useState(false);
@@ -123,14 +125,6 @@ const AdminProjectEventEdit = () => {
         ...attributeDiff,
       }
     : { ...attributeDiff };
-
-  useEffect(() => {
-    // Check that the event has loaded and only then can we be sure if we are creating a new one or using an existing one
-    if (!isInitialLoading) {
-      if (event) return;
-      setAttributeDiff(initializeEventTimes());
-    }
-  }, [event, isInitialLoading]);
 
   // Set image value to remote image if present
   useEffect(() => {
@@ -307,10 +301,11 @@ const AdminProjectEventEdit = () => {
     if (
       (uploadedImage === null || !uploadedImage.remote) &&
       hasRemoteImage &&
-      remoteImageId
+      remoteImageId &&
+      eventId
     ) {
       deleteEventImage({
-        eventId: id,
+        eventId,
         imageId: remoteImageId,
       });
     }

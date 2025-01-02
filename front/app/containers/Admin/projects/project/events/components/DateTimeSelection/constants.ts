@@ -1,12 +1,13 @@
 const generateTimes = () => {
-  const times: string[] = [];
+  const times: Date[] = [];
 
   for (let hour = 0; hour < 24; hour++) {
     for (let minutes = 0; minutes < 60; minutes += 15) {
-      const hourString = hour < 10 ? `0${hour}` : `${hour}`;
-      const minuteString = minutes < 10 ? `0${minutes}` : `${minutes}`;
+      const date = new Date();
+      date.setHours(hour);
+      date.setMinutes(minutes);
 
-      times.push(`${hourString}:${minuteString}`);
+      times.push(date);
     }
   }
   return times;
