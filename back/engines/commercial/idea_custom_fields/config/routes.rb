@@ -12,6 +12,7 @@ IdeaCustomFields::Engine.routes.draw do
             defaults: { container_type: 'Project' }
           ) do
             patch 'update_all', on: :collection
+            get 'custom_form', on: :collection
             resources :custom_field_options, controller: '/web_api/v1/custom_field_options', only: %i[show]
           end
         end
@@ -23,6 +24,7 @@ IdeaCustomFields::Engine.routes.draw do
             defaults: { container_type: 'Phase' }
           ) do
             patch 'update_all', on: :collection
+            get 'custom_form', on: :collection
             get :as_geojson, on: :member, action: 'as_geojson'
             resources :custom_field_options, controller: '/web_api/v1/custom_field_options', only: %i[show]
           end

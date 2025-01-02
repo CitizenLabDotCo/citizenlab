@@ -24,7 +24,7 @@ module IdeaCustomFields
     }
 
     before_action :set_custom_field, only: %i[show as_geojson]
-    before_action :set_custom_form, only: %i[index update_all]
+    before_action :set_custom_form, only: %i[index update_all custom_form]
     skip_after_action :verify_policy_scoped
     rescue_from UpdatingFormWithInputError, with: :render_updating_form_with_input_error
 
@@ -79,6 +79,16 @@ module IdeaCustomFields
       ).serializable_hash
     rescue UpdateAllFailedError => e
       render json: { errors: e.errors }, status: :unprocessable_entity
+    end
+
+    # Only really needed for completeness of the API for the frontend (form also included in the serialized field response)
+    def custom_form
+      authorize CustomField.new(resource: @custom_form), :index?, policy_class: IdeaCustomFieldPolicy
+      render json: ::WebApi::V1::CustomFormSerializer.new(
+        @custom_form,
+        params: jsonapi_serializer_params,
+        include: []
+      ).serializable_hash
     end
 
     private
@@ -373,6 +383,7 @@ module IdeaCustomFields
     def set_custom_form
       container_id = params[secure_constantize(:container_id)]
       @container = secure_constantize(:container_class).find container_id
+
       @custom_form = CustomForm.find_or_initialize_by participation_context: @container
     end
 
