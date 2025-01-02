@@ -56,7 +56,7 @@ const SettingsPage = () => {
     },
     {
       name: 'proposal-statuses',
-      label: formatMessage(messages.tabProposalStatuses),
+      label: formatMessage(messages.tabProposalStatuses1),
       url: '/admin/settings/proposals/statuses',
     },
 
