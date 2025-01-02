@@ -288,7 +288,11 @@ const FormEdit = ({
         }
       );
     } catch (error) {
-      handleHookFormSubmissionError(error, setError, 'customFields');
+      const errorType =
+        error?.errors?.form[0].error == 'stale_data'
+          ? 'staleData'
+          : 'customFields';
+      handleHookFormSubmissionError(error, setError, errorType);
       setIsSubmitting(false);
     }
   };
@@ -388,7 +392,11 @@ const FormEdit = ({
                       <Error
                         marginTop="8px"
                         marginBottom="8px"
-                        text={formatMessage(messages.errorMessage)}
+                        text={formatMessage(
+                          errors['staleData']
+                            ? messages.staleDataErrorMessage
+                            : messages.errorMessage
+                        )}
                         scrollIntoView={false}
                       />
                     </Box>
