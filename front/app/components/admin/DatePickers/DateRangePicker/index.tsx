@@ -52,12 +52,12 @@ const DateRangePicker = ({
           selectedRange={selectedRange}
           selectionMode={selectionMode}
           onClickFrom={() => {
-            selectionMode
+            selectionMode === 'from'
               ? setSelectionMode(undefined)
               : setSelectionMode('from');
           }}
           onClickTo={() => {
-            selectionMode
+            selectionMode === 'to'
               ? setSelectionMode(undefined)
               : setSelectionMode('to');
           }}
