@@ -1,6 +1,7 @@
 import React from 'react';
 
 import { Box, colors } from '@citizenlab/cl2-component-library';
+import { useTheme } from 'styled-components';
 
 import useIdeaById from 'api/ideas/useIdeaById';
 import usePhases from 'api/phases/usePhases';
@@ -41,6 +42,7 @@ const RightColumnDesktop = ({
   authorId,
   className,
 }: Props) => {
+  const theme = useTheme();
   const { data: phases } = usePhases(projectId);
   const { data: idea } = useIdeaById(ideaId);
   const followEnabled = useFeatureFlag({
@@ -84,13 +86,17 @@ const RightColumnDesktop = ({
         {showInteractionsContainer && participationMethod && (
           <Box
             padding="20px"
-            borderRadius="3px"
+            borderRadius={theme.borderRadius}
             background={colors.background}
             mb="12px"
           >
             {participationMethod === 'proposals' && (
               <>
-                <Box p="12px" bg={colors.white}>
+                <Box
+                  p="12px"
+                  bg={colors.white}
+                  borderRadius={theme.borderRadius}
+                >
                   <ProposalInfo idea={idea} />
                 </Box>
                 <Divider />
