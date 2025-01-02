@@ -2676,7 +2676,7 @@
   "app.containers.admin.addCollaboratorsModal.giveManagerRights": "Managementrechte erteilen",
   "app.containers.admin.addCollaboratorsModal.hasReachedOrIsOverLimit": "Sie haben das Limit der in Ihrem Tarif enthaltenen Plätze erreicht, {noOfSeats} zusätzliche {noOfSeats, plural, one {seat} other {seats}} werden hinzugefügt.",
   "app.containers.admin.ideaStatuses.all.addIdeaStatus": "Status hinzufügen",
-  "app.containers.admin.ideaStatuses.all.defaultStatusDeleteButtonTooltip": "Der Standardstatus kann nicht gelöscht werden.",
+  "app.containers.admin.ideaStatuses.all.defaultStatusDeleteButtonTooltip2": "Standardstatus können nicht gelöscht werden.",
   "app.containers.admin.ideaStatuses.all.deleteButtonLabel": "Löschen",
   "app.containers.admin.ideaStatuses.all.editButtonLabel": "Bearbeiten",
   "app.containers.admin.ideaStatuses.all.editIdeaStatus": "Status bearbeiten",
