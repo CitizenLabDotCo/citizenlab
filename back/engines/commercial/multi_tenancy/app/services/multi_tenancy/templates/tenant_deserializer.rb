@@ -10,7 +10,6 @@ module MultiTenancy
     class TenantDeserializer
       USER_INPUT_CLASSES = [
         Idea,
-        Initiative,
         Comment
       ].to_set.freeze
 
