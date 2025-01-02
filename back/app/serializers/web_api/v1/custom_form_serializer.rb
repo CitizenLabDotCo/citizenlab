@@ -3,6 +3,6 @@
 class WebApi::V1::CustomFormSerializer < WebApi::V1::BaseSerializer
   attributes :updated_at
   attribute :opened_at do |_object|
-    Time.zone.now.to_fs(:db) # TODO: JS - not quite the same as coming from the db
+    Time.zone.now.strftime('%Y-%m-%dT%H:%M:%S.%LZ') # Same format as updated_at
   end
 end
