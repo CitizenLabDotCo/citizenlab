@@ -23,6 +23,10 @@ class AreaPolicy < ApplicationPolicy
     update?
   end
 
+  def with_visible_projects_counts?
+    true
+  end
+
   def reorder?
     update?
   end
