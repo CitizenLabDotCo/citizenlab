@@ -90,6 +90,8 @@ class Idea < ApplicationRecord
     delta_magnitude: proc { |idea| idea.comments_count }
   )
 
+  before_save :convert_wkt_geo_custom_field_values_to_geojson # Must appear before before_destroy
+
   belongs_to :assignee, class_name: 'User', optional: true
   belongs_to :manual_votes_last_updated_by, class_name: 'User', optional: true
 
@@ -99,9 +101,9 @@ class Idea < ApplicationRecord
   has_many :internal_comments, dependent: :destroy
 
   has_many :reactions, as: :reactable, dependent: :destroy
-  has_many :likes, -> { where(mode: 'up') }, as: :reactable, class_name: 'Reaction'
-  has_many :dislikes, -> { where(mode: 'down') }, as: :reactable, class_name: 'Reaction'
-  has_one :user_reaction, ->(user_id) { where(user_id: user_id) }, as: :reactable, class_name: 'Reaction'
+  has_many :likes, -> { where(mode: 'up') }, as: :reactable, class_name: 'Reaction', inverse_of: :reactable
+  has_many :dislikes, -> { where(mode: 'down') }, as: :reactable, class_name: 'Reaction', inverse_of: :reactable
+  has_one :user_reaction, ->(user_id) { where(user_id: user_id) }, as: :reactable, class_name: 'Reaction', inverse_of: :reactable
 
   has_many :spam_reports, as: :spam_reportable, class_name: 'SpamReport', dependent: :destroy
 
@@ -157,8 +159,6 @@ class Idea < ApplicationRecord
     before_validation :assign_defaults
     before_validation :sanitize_body_multiloc, if: :body_multiloc
   end
-
-  before_save :convert_wkt_geo_custom_field_values_to_geojson
 
   after_update :fix_comments_count_on_projects
 

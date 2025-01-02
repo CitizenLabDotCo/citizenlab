@@ -552,8 +552,6 @@ Rails/InverseOf:
     - 'app/models/concerns/post.rb'
     - 'app/models/event.rb'
     - 'app/models/idea_status.rb'
-    - 'app/models/initiative.rb'
-    - 'app/models/initiative_status.rb'
     - 'app/models/phase.rb'
     - 'app/models/project.rb'
     - 'app/models/static_page.rb'
