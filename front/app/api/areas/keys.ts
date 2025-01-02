@@ -7,9 +7,9 @@ const baseKey = { type: 'area' };
 const areasKeys = {
   all: () => [baseKey],
   lists: () => [{ ...baseKey, operation: 'list' }],
-  list: (params: IAreasQueryParams | { endpoint: 'count_by_area' }) => [
-    { ...baseKey, operation: 'list', parameters: params },
-  ],
+  list: (
+    params: IAreasQueryParams | { endpoint: 'with_visible_projects_counts' }
+  ) => [{ ...baseKey, operation: 'list', parameters: params }],
   items: () => [{ ...baseKey, operation: 'item' }],
   item: ({ id }: { id: string }) => [
     {
