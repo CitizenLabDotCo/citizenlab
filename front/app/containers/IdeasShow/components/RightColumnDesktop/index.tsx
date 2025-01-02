@@ -51,15 +51,12 @@ const RightColumnDesktop = ({
   const phase = getCurrentPhase(phases?.data);
   const votingConfig = getVotingMethodConfig(phase?.attributes.voting_method);
 
-  const ideaIsInParticipationContext =
-    // TODO: Fix this the next time the file is edited.
-    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-    phase && idea ? isIdeaInParticipationContext(idea, phase) : undefined;
+  const ideaIsInParticipationContext = phase
+    ? isIdeaInParticipationContext(idea, phase)
+    : undefined;
 
   const commentingEnabled =
-    // TODO: Fix this the next time the file is edited.
-    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-    !!idea?.data.attributes.action_descriptors.commenting_idea.enabled;
+    idea.data.attributes.action_descriptors.commenting_idea.enabled;
 
   const participationMethod = phase?.attributes.participation_method;
 
@@ -97,9 +94,7 @@ const RightColumnDesktop = ({
                 <ReactionControl styleType="shadow" ideaId={ideaId} size="4" />
               </Box>
             )}
-            {/* TODO: Fix this the next time the file is edited. */}
-            {/* eslint-disable-next-line @typescript-eslint/no-unnecessary-condition */}
-            {phase && ideaIsInParticipationContext && votingConfig && (
+            {ideaIsInParticipationContext && votingConfig && (
               <Box pb="24px" mb="24px" borderBottom="solid 1px #ccc">
                 {votingConfig.getIdeaPageVoteInput({
                   ideaId,
@@ -126,15 +121,8 @@ const RightColumnDesktop = ({
                 followableType="ideas"
                 followableId={ideaId}
                 followersCount={idea.data.attributes.followers_count}
-                // TODO: Fix this the next time the file is edited.
-                // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-                followerId={idea.data.relationships.user_follower?.data?.id}
+                followerId={idea.data.relationships.user_follower.data?.id}
                 toolTipType="input"
-                buttonStyle={
-                  participationMethod === 'proposals'
-                    ? 'secondary-outlined'
-                    : 'primary'
-                }
               />
             </Box>
           </Box>
