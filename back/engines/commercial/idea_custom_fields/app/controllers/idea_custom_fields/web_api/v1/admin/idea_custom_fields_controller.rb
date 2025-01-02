@@ -95,6 +95,7 @@ module IdeaCustomFields
     end
 
     # To try and avoid forms being overwritten with stale data, we check if the form has been updated since the form editor last loaded it
+    # But ONLY if the FE sends the form_last_updated_at param
     def raise_error_if_stale_form_data
       return unless update_all_params[:form_last_updated_at].present? &&
                     @custom_form.persisted? &&

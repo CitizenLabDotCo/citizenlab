@@ -79,7 +79,7 @@ resource 'Idea Custom Fields' do
           },
           id: an_instance_of(String),
           type: 'custom_field',
-          relationships: { options: { data: [] } }
+          relationships: { options: { data: [] }, resource: { data: { id: custom_form.id, type: 'custom_form' } } }
         })
         expect(json_response[:data][2]).to match({
           attributes: {
@@ -99,7 +99,7 @@ resource 'Idea Custom Fields' do
           },
           id: an_instance_of(String),
           type: 'custom_field',
-          relationships: { options: { data: [] } }
+          relationships: { options: { data: [] }, resource: { data: { id: custom_form.id, type: 'custom_form' } } }
         })
       end
 
@@ -182,7 +182,8 @@ resource 'Idea Custom Fields' do
                   type: 'custom_field_option'
                 }
               ]
-            }
+            },
+            resource: { data: { id: custom_form.id, type: 'custom_form' } }
           }
         })
         options = CustomField.find(json_response.dig(:data, 1, :id)).options
@@ -287,7 +288,8 @@ resource 'Idea Custom Fields' do
                   type: 'custom_field_option'
                 }
               ]
-            }
+            },
+            resource: { data: { id: custom_form.id, type: 'custom_form' } }
           }
         })
         expect(json_response_body[:included].pluck(:type)).to match_array(
@@ -393,7 +395,7 @@ resource 'Idea Custom Fields' do
           },
           id: an_instance_of(String),
           type: 'custom_field',
-          relationships: { options: { data: [] } }
+          relationships: { options: { data: [] }, resource: { data: { id: custom_form.id, type: 'custom_form' } } }
         })
       end
 
@@ -439,7 +441,7 @@ resource 'Idea Custom Fields' do
           expect(CustomFieldOptionImage.all.count).to eq 1
           expect(CustomFieldOption.find(option1.id).image).to be_nil
           expect(json_response_body[:included].pluck(:type)).to match_array(
-            %w[image custom_field_option custom_field_option]
+            %w[image custom_field_option custom_field_option custom_form]
           )
         end
 
@@ -483,7 +485,7 @@ resource 'Idea Custom Fields' do
             [new_image.reload.custom_field_option_id, image2.custom_field_option_id]
           )
           expect(json_response_body[:included].pluck(:type)).to match_array(
-            %w[image custom_field_option image custom_field_option]
+            %w[image custom_field_option image custom_field_option custom_form]
           )
         end
       end
@@ -659,7 +661,7 @@ resource 'Idea Custom Fields' do
           },
           id: an_instance_of(String),
           type: 'custom_field',
-          relationships: { options: { data: [] } }
+          relationships: { options: { data: [] }, resource: { data: { id: custom_form.id, type: 'custom_form' } } }
         })
       end
 
@@ -974,7 +976,7 @@ resource 'Idea Custom Fields' do
           },
           id: page1.id,
           type: 'custom_field',
-          relationships: { map_config: { data: nil }, options: { data: [] } }
+          relationships: { map_config: { data: nil }, options: { data: [] }, resource: { data: { id: custom_form.id, type: 'custom_form' } } }
         })
         expect(json_response[:data][1]).to match({
           attributes: {
@@ -1004,7 +1006,7 @@ resource 'Idea Custom Fields' do
           },
           id: field_to_update.id,
           type: 'custom_field',
-          relationships: { options: { data: [] } }
+          relationships: { options: { data: [] }, resource: { data: { id: custom_form.id, type: 'custom_form' } } }
         })
         expect(json_response[:data][2]).to match({
           attributes: {
@@ -1025,7 +1027,7 @@ resource 'Idea Custom Fields' do
           },
           id: page2.id,
           type: 'custom_field',
-          relationships: { map_config: { data: nil }, options: { data: [] } }
+          relationships: { map_config: { data: nil }, options: { data: [] }, resource: { data: { id: custom_form.id, type: 'custom_form' } } }
         })
         expect(json_response[:data][3]).to match({
           attributes: {
@@ -1046,7 +1048,7 @@ resource 'Idea Custom Fields' do
           },
           id: page3.id,
           type: 'custom_field',
-          relationships: { map_config: { data: nil }, options: { data: [] } }
+          relationships: { map_config: { data: nil }, options: { data: [] }, resource: { data: { id: custom_form.id, type: 'custom_form' } } }
         })
       end
 
@@ -1121,7 +1123,7 @@ resource 'Idea Custom Fields' do
           },
           id: page_to_update.id,
           type: 'custom_field',
-          relationships: { map_config: { data: nil }, options: { data: [] } }
+          relationships: { map_config: { data: nil }, options: { data: [] }, resource: { data: { id: custom_form.id, type: 'custom_form' } } }
         })
         expect(json_response[:data][1]).to match({
           attributes: {
@@ -1142,7 +1144,7 @@ resource 'Idea Custom Fields' do
           },
           id: page2.id,
           type: 'custom_field',
-          relationships: { map_config: { data: nil }, options: { data: [] } }
+          relationships: { map_config: { data: nil }, options: { data: [] }, resource: { data: { id: custom_form.id, type: 'custom_form' } } }
         })
         expect(json_response[:data][2]).to match({
           attributes: {
@@ -1163,7 +1165,7 @@ resource 'Idea Custom Fields' do
           },
           id: page3.id,
           type: 'custom_field',
-          relationships: { map_config: { data: nil }, options: { data: [] } }
+          relationships: { map_config: { data: nil }, options: { data: [] }, resource: { data: { id: custom_form.id, type: 'custom_form' } } }
         })
         expect(json_response[:data][3]).to match({
           attributes: {
@@ -1184,7 +1186,7 @@ resource 'Idea Custom Fields' do
           },
           id: page4.id,
           type: 'custom_field',
-          relationships: { map_config: { data: nil }, options: { data: [] } }
+          relationships: { map_config: { data: nil }, options: { data: [] }, resource: { data: { id: custom_form.id, type: 'custom_form' } } }
         })
       end
 
@@ -1260,7 +1262,7 @@ resource 'Idea Custom Fields' do
           },
           id: page_to_update.id,
           type: 'custom_field',
-          relationships: { map_config: { data: nil }, options: { data: [] } }
+          relationships: { map_config: { data: nil }, options: { data: [] }, resource: { data: { id: custom_form.id, type: 'custom_form' } } }
         })
         expect(json_response[:data][1]).to match({
           attributes: {
@@ -1281,7 +1283,7 @@ resource 'Idea Custom Fields' do
           },
           id: page2.id,
           type: 'custom_field',
-          relationships: { map_config: { data: nil }, options: { data: [] } }
+          relationships: { map_config: { data: nil }, options: { data: [] }, resource: { data: { id: custom_form.id, type: 'custom_form' } } }
         })
         expect(json_response[:data][2]).to match({
           attributes: {
@@ -1302,7 +1304,7 @@ resource 'Idea Custom Fields' do
           },
           id: page3.id,
           type: 'custom_field',
-          relationships: { map_config: { data: nil }, options: { data: [] } }
+          relationships: { map_config: { data: nil }, options: { data: [] }, resource: { data: { id: custom_form.id, type: 'custom_form' } } }
         })
         expect(json_response[:data][3]).to match({
           attributes: {
@@ -1323,7 +1325,7 @@ resource 'Idea Custom Fields' do
           },
           id: an_instance_of(String),
           type: 'custom_field',
-          relationships: { map_config: { data: nil }, options: { data: [] } }
+          relationships: { map_config: { data: nil }, options: { data: [] }, resource: { data: { id: custom_form.id, type: 'custom_form' } } }
         })
       end
 
@@ -1385,7 +1387,7 @@ resource 'Idea Custom Fields' do
           },
           id: an_instance_of(String),
           type: 'custom_field',
-          relationships: { map_config: { data: nil }, options: { data: [] } }
+          relationships: { map_config: { data: nil }, options: { data: [] }, resource: { data: { id: custom_form.id, type: 'custom_form' } } }
         })
         expect(json_response[:data][1]).to match({
           attributes: {
@@ -1406,7 +1408,7 @@ resource 'Idea Custom Fields' do
           },
           id: existing_page.id,
           type: 'custom_field',
-          relationships: { map_config: { data: nil }, options: { data: [] } }
+          relationships: { map_config: { data: nil }, options: { data: [] }, resource: { data: { id: custom_form.id, type: 'custom_form' } } }
         })
         expect(json_response[:data][2]).to match({
           attributes: {
@@ -1427,7 +1429,7 @@ resource 'Idea Custom Fields' do
           },
           id: an_instance_of(String),
           type: 'custom_field',
-          relationships: { map_config: { data: nil }, options: { data: [] } }
+          relationships: { map_config: { data: nil }, options: { data: [] }, resource: { data: { id: custom_form.id, type: 'custom_form' } } }
         })
       end
 
@@ -1492,7 +1494,7 @@ resource 'Idea Custom Fields' do
           },
           id: page_to_update.id,
           type: 'custom_field',
-          relationships: { map_config: { data: nil }, options: { data: [] } }
+          relationships: { map_config: { data: nil }, options: { data: [] }, resource: { data: { id: custom_form.id, type: 'custom_form' } } }
         })
         expect(json_response[:data][1]).to match({
           attributes: {
@@ -1513,7 +1515,7 @@ resource 'Idea Custom Fields' do
           },
           id: page2.id,
           type: 'custom_field',
-          relationships: { map_config: { data: nil }, options: { data: [] } }
+          relationships: { map_config: { data: nil }, options: { data: [] }, resource: { data: { id: custom_form.id, type: 'custom_form' } } }
         })
         expect(json_response[:data][2]).to match({
           attributes: {
@@ -1534,7 +1536,7 @@ resource 'Idea Custom Fields' do
           },
           id: page3.id,
           type: 'custom_field',
-          relationships: { map_config: { data: nil }, options: { data: [] } }
+          relationships: { map_config: { data: nil }, options: { data: [] }, resource: { data: { id: custom_form.id, type: 'custom_form' } } }
         })
       end
 
@@ -1590,7 +1592,7 @@ resource 'Idea Custom Fields' do
           },
           id: page_to_update.id,
           type: 'custom_field',
-          relationships: { map_config: { data: nil }, options: { data: [] } }
+          relationships: { map_config: { data: nil }, options: { data: [] }, resource: { data: { id: custom_form.id, type: 'custom_form' } } }
         })
         expect(json_response[:data][1]).to match({
           attributes: {
@@ -1611,7 +1613,7 @@ resource 'Idea Custom Fields' do
           },
           id: page2.id,
           type: 'custom_field',
-          relationships: { map_config: { data: nil }, options: { data: [] } }
+          relationships: { map_config: { data: nil }, options: { data: [] }, resource: { data: { id: custom_form.id, type: 'custom_form' } } }
         })
       end
 
@@ -1701,7 +1703,7 @@ resource 'Idea Custom Fields' do
           },
           id: page1.id,
           type: 'custom_field',
-          relationships: { map_config: { data: nil }, options: { data: [] } }
+          relationships: { map_config: { data: nil }, options: { data: [] }, resource: { data: { id: custom_form.id, type: 'custom_form' } } }
         })
         expect(json_response[:data][1]).to match({
           attributes: {
@@ -1731,7 +1733,7 @@ resource 'Idea Custom Fields' do
           },
           id: field_to_update.id,
           type: 'custom_field',
-          relationships: { options: { data: [] } }
+          relationships: { options: { data: [] }, resource: { data: { id: custom_form.id, type: 'custom_form' } } }
         })
         expect(json_response[:data][2]).to match({
           attributes: {
@@ -1752,7 +1754,7 @@ resource 'Idea Custom Fields' do
           },
           id: page2.id,
           type: 'custom_field',
-          relationships: { map_config: { data: nil }, options: { data: [] } }
+          relationships: { map_config: { data: nil }, options: { data: [] }, resource: { data: { id: custom_form.id, type: 'custom_form' } } }
         })
         expect(json_response[:data][3]).to match({
           attributes: {
@@ -1773,7 +1775,7 @@ resource 'Idea Custom Fields' do
           },
           id: an_instance_of(String),
           type: 'custom_field',
-          relationships: { map_config: { data: nil }, options: { data: [] } }
+          relationships: { map_config: { data: nil }, options: { data: [] }, resource: { data: { id: custom_form.id, type: 'custom_form' } } }
         })
       end
 
@@ -1864,7 +1866,7 @@ resource 'Idea Custom Fields' do
           },
           id: page1.id,
           type: 'custom_field',
-          relationships: { map_config: { data: nil }, options: { data: [] } }
+          relationships: { map_config: { data: nil }, options: { data: [] }, resource: { data: { id: custom_form.id, type: 'custom_form' } } }
         })
         expect(json_response[:data][1]).to match({
           attributes: {
@@ -1894,7 +1896,7 @@ resource 'Idea Custom Fields' do
           },
           id: field_to_update.id,
           type: 'custom_field',
-          relationships: { options: { data: [] } }
+          relationships: { options: { data: [] }, resource: { data: { id: custom_form.id, type: 'custom_form' } } }
         })
         expect(json_response[:data][2]).to match({
           attributes: {
@@ -1915,7 +1917,7 @@ resource 'Idea Custom Fields' do
           },
           id: page3.id,
           type: 'custom_field',
-          relationships: { map_config: { data: nil }, options: { data: [] } }
+          relationships: { map_config: { data: nil }, options: { data: [] }, resource: { data: { id: custom_form.id, type: 'custom_form' } } }
         })
         expect(json_response[:data][3]).to match({
           attributes: {
@@ -1936,7 +1938,7 @@ resource 'Idea Custom Fields' do
           },
           id: page2.id,
           type: 'custom_field',
-          relationships: { map_config: { data: nil }, options: { data: [] } }
+          relationships: { map_config: { data: nil }, options: { data: [] }, resource: { data: { id: custom_form.id, type: 'custom_form' } } }
         })
       end
 
@@ -2015,7 +2017,7 @@ resource 'Idea Custom Fields' do
           },
           id: page1.id,
           type: 'custom_field',
-          relationships: { map_config: { data: nil }, options: { data: [] } }
+          relationships: { map_config: { data: nil }, options: { data: [] }, resource: { data: { id: custom_form.id, type: 'custom_form' } } }
         })
         expect(json_response[:data][1]).to match({
           attributes: {
@@ -2043,7 +2045,7 @@ resource 'Idea Custom Fields' do
           },
           id: field_to_update.id,
           type: 'custom_field',
-          relationships: { options: { data: [] } }
+          relationships: { options: { data: [] }, resource: { data: { id: custom_form.id, type: 'custom_form' } } }
         })
         expect(json_response[:data][2]).to match({
           attributes: {
@@ -2064,7 +2066,7 @@ resource 'Idea Custom Fields' do
           },
           id: page2.id,
           type: 'custom_field',
-          relationships: { map_config: { data: nil }, options: { data: [] } }
+          relationships: { map_config: { data: nil }, options: { data: [] }, resource: { data: { id: custom_form.id, type: 'custom_form' } } }
         })
       end
 
@@ -2135,7 +2137,7 @@ resource 'Idea Custom Fields' do
           },
           id: page1.id,
           type: 'custom_field',
-          relationships: { map_config: { data: nil }, options: { data: [] } }
+          relationships: { map_config: { data: nil }, options: { data: [] }, resource: { data: { id: custom_form.id, type: 'custom_form' } } }
         })
         expect(json_response[:data][1]).to match({
           attributes: {
@@ -2163,7 +2165,7 @@ resource 'Idea Custom Fields' do
           },
           id: field_to_update.id,
           type: 'custom_field',
-          relationships: { options: { data: [] } }
+          relationships: { options: { data: [] }, resource: { data: { id: custom_form.id, type: 'custom_form' } } }
         })
       end
 
@@ -2218,7 +2220,7 @@ resource 'Idea Custom Fields' do
           },
           id: page1.id,
           type: 'custom_field',
-          relationships: { map_config: { data: nil }, options: { data: [] } }
+          relationships: { map_config: { data: nil }, options: { data: [] }, resource: { data: { id: custom_form.id, type: 'custom_form' } } }
         })
       end
 
@@ -2314,7 +2316,7 @@ resource 'Idea Custom Fields' do
           },
           id: page1.id,
           type: 'custom_field',
-          relationships: { map_config: { data: nil }, options: { data: [] } }
+          relationships: { map_config: { data: nil }, options: { data: [] }, resource: { data: { id: custom_form.id, type: 'custom_form' } } }
         })
         expect(json_response[:data][1]).to match({
           attributes: {
@@ -2344,7 +2346,7 @@ resource 'Idea Custom Fields' do
           },
           id: field_to_update.id,
           type: 'custom_field',
-          relationships: { options: { data: [] } }
+          relationships: { options: { data: [] }, resource: { data: { id: custom_form.id, type: 'custom_form' } } }
         })
         expect(json_response[:data][2]).to match({
           attributes: {
@@ -2365,7 +2367,7 @@ resource 'Idea Custom Fields' do
           },
           id: page2.id,
           type: 'custom_field',
-          relationships: { map_config: { data: nil }, options: { data: [] } }
+          relationships: { map_config: { data: nil }, options: { data: [] }, resource: { data: { id: custom_form.id, type: 'custom_form' } } }
         })
         expect(json_response[:data][3]).to match({
           attributes: {
@@ -2386,7 +2388,7 @@ resource 'Idea Custom Fields' do
           },
           id: page3.id,
           type: 'custom_field',
-          relationships: { map_config: { data: nil }, options: { data: [] } }
+          relationships: { map_config: { data: nil }, options: { data: [] }, resource: { data: { id: custom_form.id, type: 'custom_form' } } }
         })
       end
 
@@ -2463,7 +2465,7 @@ resource 'Idea Custom Fields' do
           },
           id: page1.id,
           type: 'custom_field',
-          relationships: { map_config: { data: nil }, options: { data: [] } }
+          relationships: { map_config: { data: nil }, options: { data: [] }, resource: { data: { id: custom_form.id, type: 'custom_form' } } }
         })
         expect(json_response[:data][1]).to match({
           attributes: {
@@ -2493,7 +2495,7 @@ resource 'Idea Custom Fields' do
           },
           id: field_to_update.id,
           type: 'custom_field',
-          relationships: { options: { data: [] } }
+          relationships: { options: { data: [] }, resource: { data: { id: custom_form.id, type: 'custom_form' } } }
         })
         expect(json_response[:data][2]).to match({
           attributes: {
@@ -2514,7 +2516,7 @@ resource 'Idea Custom Fields' do
           },
           id: an_instance_of(String),
           type: 'custom_field',
-          relationships: { map_config: { data: nil }, options: { data: [] } }
+          relationships: { map_config: { data: nil }, options: { data: [] }, resource: { data: { id: custom_form.id, type: 'custom_form' } } }
         })
       end
 
@@ -2626,7 +2628,7 @@ resource 'Idea Custom Fields' do
           },
           id: page1.id,
           type: 'custom_field',
-          relationships: { map_config: { data: nil }, options: { data: [] } }
+          relationships: { map_config: { data: nil }, options: { data: [] }, resource: { data: { id: custom_form.id, type: 'custom_form' } } }
         })
         expect(json_response[:data][1]).to match({
           attributes: {
@@ -2655,7 +2657,8 @@ resource 'Idea Custom Fields' do
                 id: added_option1.id,
                 type: 'custom_field_option'
               }
-            ] }
+            ] },
+            resource: { data: { id: custom_form.id, type: 'custom_form' } }
           }
         })
         expect(json_response[:data][2]).to match({
@@ -2685,7 +2688,8 @@ resource 'Idea Custom Fields' do
                 id: added_option2.id,
                 type: 'custom_field_option'
               }
-            ] }
+            ] },
+            resource: { data: { id: custom_form.id, type: 'custom_form' } }
           }
         })
         expect(json_response[:data][3]).to match({
@@ -2707,7 +2711,7 @@ resource 'Idea Custom Fields' do
           },
           id: an_instance_of(String),
           type: 'custom_field',
-          relationships: { map_config: { data: nil }, options: { data: [] } }
+          relationships: { map_config: { data: nil }, options: { data: [] }, resource: { data: { id: custom_form.id, type: 'custom_form' } } }
         })
         expect(json_response[:data][4]).to match({
           attributes: {
@@ -2728,7 +2732,7 @@ resource 'Idea Custom Fields' do
           },
           id: an_instance_of(String),
           type: 'custom_field',
-          relationships: { map_config: { data: nil }, options: { data: [] } }
+          relationships: { map_config: { data: nil }, options: { data: [] }, resource: { data: { id: custom_form.id, type: 'custom_form' } } }
         })
       end
 
@@ -2800,7 +2804,7 @@ resource 'Idea Custom Fields' do
           },
           id: page1.id,
           type: 'custom_field',
-          relationships: { map_config: { data: nil }, options: { data: [] } }
+          relationships: { map_config: { data: nil }, options: { data: [] }, resource: { data: { id: custom_form.id, type: 'custom_form' } } }
         })
         expect(json_response[:data][1]).to match({
           attributes: {
@@ -2830,7 +2834,7 @@ resource 'Idea Custom Fields' do
           },
           id: an_instance_of(String),
           type: 'custom_field',
-          relationships: { options: { data: [] } }
+          relationships: { options: { data: [] }, resource: { data: { id: custom_form.id, type: 'custom_form' } } }
         })
         expect(json_response[:data][2]).to match({
           attributes: {
@@ -2851,7 +2855,7 @@ resource 'Idea Custom Fields' do
           },
           id: an_instance_of(String),
           type: 'custom_field',
-          relationships: { map_config: { data: nil }, options: { data: [] } }
+          relationships: { map_config: { data: nil }, options: { data: [] }, resource: { data: { id: custom_form.id, type: 'custom_form' } } }
         })
       end
 
@@ -2947,7 +2951,7 @@ resource 'Idea Custom Fields' do
           },
           id: page1.id,
           type: 'custom_field',
-          relationships: { map_config: { data: nil }, options: { data: [] } }
+          relationships: { map_config: { data: nil }, options: { data: [] }, resource: { data: { id: custom_form.id, type: 'custom_form' } } }
         })
         expect(json_response[:data][1]).to match({
           attributes: {
@@ -2980,7 +2984,7 @@ resource 'Idea Custom Fields' do
           },
           id: field_to_update.id,
           type: 'custom_field',
-          relationships: { options: { data: [] } }
+          relationships: { options: { data: [] }, resource: { data: { id: custom_form.id, type: 'custom_form' } } }
         })
         expect(json_response[:data][2]).to match({
           attributes: {
@@ -3001,7 +3005,7 @@ resource 'Idea Custom Fields' do
           },
           id: page2.id,
           type: 'custom_field',
-          relationships: { map_config: { data: nil }, options: { data: [] } }
+          relationships: { map_config: { data: nil }, options: { data: [] }, resource: { data: { id: custom_form.id, type: 'custom_form' } } }
         })
         expect(json_response[:data][3]).to match({
           attributes: {
@@ -3022,7 +3026,7 @@ resource 'Idea Custom Fields' do
           },
           id: page3.id,
           type: 'custom_field',
-          relationships: { map_config: { data: nil }, options: { data: [] } }
+          relationships: { map_config: { data: nil }, options: { data: [] }, resource: { data: { id: custom_form.id, type: 'custom_form' } } }
         })
       end
 
@@ -3093,7 +3097,8 @@ resource 'Idea Custom Fields' do
                   type: 'custom_field_option'
                 }
               ]
-            }
+            },
+            resource: { data: { id: custom_form.id, type: 'custom_form' } }
           }
         })
         expect(CustomFieldOption.where(id: delete_option).count).to eq 0
