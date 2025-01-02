@@ -104,10 +104,15 @@ describe('Report builder Participants timeline widget', () => {
 
     // Set date range and compare with previous period
     cy.get('.e2e-statistic-delta').should('not.exist');
-    cy.get('#e2e-start-date-input')
-      .clear({ force: true })
-      .type(moment().subtract(5, 'day').format('DD/MM/YYYY'), { force: true });
-    cy.get('#e2e-content-builder-settings').click();
+
+    cy.get('.date-range-picker-from').first().click();
+    cy.get('.rdp-years_dropdown').first().select('2024');
+    cy.get('.rdp-week').eq(2).find('.rdp-day_button').first().click();
+
+    // Close picker again
+    cy.get('.date-range-picker-from').first().click({ force: true });
+
+    // cy.get('#e2e-content-builder-settings').click();
 
     cy.wait(1000);
 
