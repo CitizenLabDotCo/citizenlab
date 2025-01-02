@@ -2676,7 +2676,7 @@
   "app.containers.admin.addCollaboratorsModal.giveManagerRights": "Δώστε δικαιώματα διαχειριστή",
   "app.containers.admin.addCollaboratorsModal.hasReachedOrIsOverLimit": "Έχετε φτάσει στο όριο των θέσεων που περιλαμβάνονται στο πρόγραμμά σας, θα προστεθεί {noOfSeats} επιπλέον {noOfSeats, plural, one {θέση} other {θέσεις}}",
   "app.containers.admin.ideaStatuses.all.addIdeaStatus": "Προσθήκη κατάστασης",
-  "app.containers.admin.ideaStatuses.all.defaultStatusDeleteButtonTooltip": "Η προεπιλεγμένη κατάσταση δεν μπορεί να διαγραφεί.",
+  "app.containers.admin.ideaStatuses.all.defaultStatusDeleteButtonTooltip2": "Οι προεπιλεγμένες καταστάσεις δεν μπορούν να διαγραφούν.",
   "app.containers.admin.ideaStatuses.all.deleteButtonLabel": "Delete",
   "app.containers.admin.ideaStatuses.all.editButtonLabel": "Edit",
   "app.containers.admin.ideaStatuses.all.editIdeaStatus": "Επεξεργασία κατάστασης",
