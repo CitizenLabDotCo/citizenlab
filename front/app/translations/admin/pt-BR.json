@@ -2676,7 +2676,7 @@
   "app.containers.admin.addCollaboratorsModal.giveManagerRights": "Conceder direitos de gestor",
   "app.containers.admin.addCollaboratorsModal.hasReachedOrIsOverLimit": "Você atingiu o limite de licenças incluídas em seu plano, 1 licença adicional será adicionada.",
   "app.containers.admin.ideaStatuses.all.addIdeaStatus": "Adicionar status",
-  "app.containers.admin.ideaStatuses.all.defaultStatusDeleteButtonTooltip": "O status padrão não pode ser excluído",
+  "app.containers.admin.ideaStatuses.all.defaultStatusDeleteButtonTooltip2": "Os status padrão não podem ser excluídos.",
   "app.containers.admin.ideaStatuses.all.deleteButtonLabel": "Deletar",
   "app.containers.admin.ideaStatuses.all.editButtonLabel": "Editar",
   "app.containers.admin.ideaStatuses.all.editIdeaStatus": "Adicionar status",
