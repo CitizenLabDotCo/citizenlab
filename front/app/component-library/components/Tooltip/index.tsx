@@ -85,6 +85,12 @@ const TippyComponent = ({
   setKey: React.Dispatch<React.SetStateAction<number>>;
   tooltipId: React.MutableRefObject<string>;
 } & TooltipProps) => {
+  // This component sometimes crashes because of re-renders.
+  // This useCallback slightly improves the situation (i.e. it makes it
+  // slightly less likely for the component to crash).
+  // But in the end we just need to completely rewrite this whole component
+  // to fix the issue properly.
+  // https://www.notion.so/govocal/Fix-Tooltip-component-16f9663b7b2680a48aebdf2ace15d1f8
   const handleOnHidden = useCallback(() => {
     setIsFocused(undefined);
     setKey((prev) => prev + 1);
