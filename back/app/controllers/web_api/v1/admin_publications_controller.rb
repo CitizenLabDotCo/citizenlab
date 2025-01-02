@@ -53,20 +53,16 @@ class WebApi::V1::AdminPublicationsController < ApplicationController
 
     authorize @admin_publications, :index_select_and_order_by_ids?
 
-    # Replicate visible_children_counts_by_parent_id from the AdminPublicationsFilteringService
-    # as, unfortunately, we cannot use the service here due to our use of the 'in_order_of' command.
-    # If we invoke the service as we do in the index action, to create the counts as an instance var, we get the error:
-    # PG::InvalidColumnReference: ERROR:  for SELECT DISTINCT, ORDER BY expressions must appear in select list
-    visible_children_counts_by_parent_id = Hash.new(0).tap do |counts|
-      parent_ids = visible_not_draft_admin_publications.pluck(:parent_id).compact
-      parent_ids.each { |id| counts[id] += 1 }
-    end
+    # Initiailize the filtering in the AdminPublicationsFilteringService,
+    # so that we can use the visible_children_counts_by_parent_id in the serializer, via the jsonapi_serializer_params.
+    # Not part of the query chain, as in the index, as this raises an error due to conflics with the in_order_of method.
+    admin_publication_filterer.filter(visible_not_draft_admin_publications, params.merge(current_user: current_user))
 
     render json: linked_json(
       @admin_publications,
       WebApi::V1::AdminPublicationSerializer,
       params: jsonapi_serializer_params(
-        visible_children_count_by_parent_id: visible_children_counts_by_parent_id
+        visible_children_count_by_parent_id: admin_publication_filterer.visible_children_counts_by_parent_id
       ),
       include: included_for_publications
     )
