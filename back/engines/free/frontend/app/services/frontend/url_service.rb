@@ -57,8 +57,6 @@ module Frontend
         subroute = 'projects'
       when 'Idea'
         subroute = 'ideas'
-      when 'Initiative'
-        subroute = 'initiatives'
       when 'Page'
         subroute = 'pages'
       end

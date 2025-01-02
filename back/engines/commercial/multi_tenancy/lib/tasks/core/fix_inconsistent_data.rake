@@ -133,7 +133,6 @@ namespace :inconsistent_data do
           IdeaStatus => %i[title_multiloc description_multiloc],
           Idea => %i[title_multiloc body_multiloc],
           InitiativeStatus => %i[title_multiloc description_multiloc],
-          Initiative => %i[title_multiloc body_multiloc],
           OfficialFeedback => %i[body_multiloc author_multiloc],
           StaticPage => %i[title_multiloc body_multiloc],
           Phase => %i[title_multiloc description_multiloc],
@@ -186,26 +185,6 @@ namespace :inconsistent_data do
             end
           end
         end
-      end
-    end
-  end
-
-  task fix_machine_translations_without_translatables_for_initiatives: :environment do
-    # Can be deleted later
-
-    Tenant.all.each do |tenant|
-      Apartment::Tenant.switch(tenant.schema_name) do
-        MachineTranslations::MachineTranslation.where(translatable_type: 'Initiative')
-          .where.not(translatable_id: Initiative.ids)
-          .each(&:destroy!)
-      end
-    end
-  end
-
-  task fix_initiatives_with_non_admin_assignees: :environment do
-    Tenant.all.each do |tenant|
-      Apartment::Tenant.switch(tenant.schema_name) do
-        Initiative.where.not(assignee: User.admin).update_all(assignee_id: nil)
       end
     end
   end

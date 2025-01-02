@@ -6,12 +6,6 @@ class SideFxReactionService
   def after_create(reaction, current_user)
     InputStatusService.auto_transition_input!(reaction.reactable.reload) if reaction.reactable_type == 'Idea'
 
-    if reaction.reactable_type == 'Initiative'
-      AutomatedTransitionJob.perform_now
-
-      lock_initiative_editing_if_required(reaction)
-    end
-
     action = "#{reactable_type(reaction)}_#{reaction.mode == 'up' ? 'liked' : 'disliked'}"
     log_activity_job(reaction, action, current_user)
     create_followers reaction, current_user

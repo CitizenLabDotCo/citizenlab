@@ -25,12 +25,6 @@ Idea changed_title
 Idea deleted
 Idea published
 IdeaAssignment::Notifications::IdeaAssignedToYou created
-Initiative changed
-Initiative changed_body
-Initiative changed_status
-Initiative changed_title
-Initiative deleted
-Initiative published
 Invite accepted
 Invite created
 Invite deleted

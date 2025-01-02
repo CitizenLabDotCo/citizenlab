@@ -76,7 +76,6 @@ class ProjectsFinderService
 
     subquery = Follower
       .where(user_id: @user.id)
-      .where.not(followable_type: 'Initiative')
       .joins(
         'LEFT JOIN areas AS followed_areas ON followers.followable_type = \'Area\' ' \
         'AND followed_areas.id = followers.followable_id'
@@ -126,7 +125,6 @@ class ProjectsFinderService
     else
       subquery = Follower
         .where(user_id: @user&.id)
-        .where.not(followable_type: 'Initiative')
         .joins(
           'LEFT JOIN areas AS followed_areas ON followers.followable_type = \'Area\' ' \
           'AND followed_areas.id = followers.followable_id'

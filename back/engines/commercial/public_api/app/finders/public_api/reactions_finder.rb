@@ -2,7 +2,7 @@
 
 module PublicApi
   class ReactionsFinder
-    REACTABLE_TYPES = %w[Idea Initiative Comment IdeaComment InitiativeComment]
+    REACTABLE_TYPES = %w[Idea Comment IdeaComment]
 
     def initialize(scope, reactable_type: nil, user_id: nil)
       @scope = scope
@@ -34,8 +34,6 @@ module PublicApi
       case @reactable_type
       when 'IdeaComment'
         scope.where(reactable: Comment.where(post_type: 'Idea'))
-      when 'InitiativeComment'
-        scope.where(reactable: Comment.where(post_type: 'Initiative'))
       else
         scope.where(reactable_type: @reactable_type)
       end

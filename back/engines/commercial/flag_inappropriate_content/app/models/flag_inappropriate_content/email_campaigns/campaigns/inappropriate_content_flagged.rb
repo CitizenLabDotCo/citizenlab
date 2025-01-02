@@ -96,7 +96,7 @@ module FlagInappropriateContent
         }
 
         case data[:flaggable_type]
-        when Idea.name, Initiative.name
+        when Idea.name
           payload[:flaggable_title_multiloc] = data[:flaggable].title_multiloc
           payload[:flaggable_body_multiloc] = data[:flaggable].body_multiloc
         when Comment.name

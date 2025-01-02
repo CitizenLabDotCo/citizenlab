@@ -21,8 +21,7 @@ RSpec.describe EmailCampaigns::NewCommentForAdminMailer do
           post_title_multiloc: {
             en: 'Wiki Roulette'
           },
-          post_author_name: "K\u00c3\u00bcn Gremmelpret",
-          post_type: 'Initiative'
+          post_author_name: "K\u00c3\u00bcn Gremmelpret"
         }
       }
     end

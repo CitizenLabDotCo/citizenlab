@@ -3,7 +3,7 @@
 namespace :fix_existing_tenants do
   desc 'Fix the slugs for all existing tenants.'
   task fix_slugs: [:environment] do |_t, _args|
-    sluggable_classes = [Group, Idea, Initiative, Project, ProjectFolders::Folder, StaticPage, User]
+    sluggable_classes = [Group, Idea, Project, ProjectFolders::Folder, StaticPage, User]
 
     errors = {}
     changed = []
