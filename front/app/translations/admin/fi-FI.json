@@ -2676,7 +2676,7 @@
   "app.containers.admin.addCollaboratorsModal.giveManagerRights": "Anna johtajan oikeudet",
   "app.containers.admin.addCollaboratorsModal.hasReachedOrIsOverLimit": "Olet saavuttanut suunnitelmaasi sisältyvien paikkojen enimmäismäärän, 1 lisäpaikka lisätään.",
   "app.containers.admin.ideaStatuses.all.addIdeaStatus": "Lisää tila",
-  "app.containers.admin.ideaStatuses.all.defaultStatusDeleteButtonTooltip": "Oletustilaa ei voi poistaa.",
+  "app.containers.admin.ideaStatuses.all.defaultStatusDeleteButtonTooltip2": "Oletustiloja ei voi poistaa.",
   "app.containers.admin.ideaStatuses.all.deleteButtonLabel": "Poistaa",
   "app.containers.admin.ideaStatuses.all.editButtonLabel": "Muokata",
   "app.containers.admin.ideaStatuses.all.editIdeaStatus": "Muokkaa tilaa",
