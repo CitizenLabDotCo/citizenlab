@@ -53,6 +53,15 @@ RSpec.describe ReportBuilder::Queries::MethodsUsed do
         end_at: nil
       )
 
+      # Overlap, but project is in draft
+      project3 = create(:project, admin_publication: create(:admin_publication, publication_status: 'draft'))
+      create(
+        :information_phase,
+        project: project3,
+        start_at: Date.new(2021, 2, 11),
+        end_at: Date.new(2021, 3, 10)
+      )
+
       # Make TimeBoundariesParser work as expected
       AppConfiguration.instance.update!(created_at: Date.new(2020, 12, 31))
     end
