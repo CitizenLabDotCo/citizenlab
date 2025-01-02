@@ -84,12 +84,12 @@ const Status = ({ idea, ideaStatus, compact = false }: Props) => {
         </StatusHeading>
       </Box>
       <Box mb="24px" aria-live="polite">
-        <Text>
+        <Text m="0">
           <T value={ideaStatus.attributes.description_multiloc} />
         </Text>
       </Box>
       {showProgressBar && (
-        <Box mb="24px">
+        <Box mb="12px">
           <ReactionCounter
             idea={idea}
             barColor={theme.colors.tenantPrimary || colors.success}

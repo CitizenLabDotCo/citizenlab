@@ -11,6 +11,7 @@ import {
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
+import Divider from 'components/admin/Divider';
 import FollowUnfollow from 'components/FollowUnfollow';
 import ReactionControl from 'components/ReactionControl';
 import { showIdeaReactions } from 'components/ReactionControl/utils';
@@ -88,14 +89,19 @@ const RightColumnDesktop = ({
             mb="12px"
           >
             {participationMethod === 'proposals' && (
-              <Box bg="white" p="12px">
-                <ProposalInfo idea={idea} />
-              </Box>
+              <>
+                <Box p="12px" bg={colors.white}>
+                  <ProposalInfo idea={idea} />
+                </Box>
+                <Divider />
+              </>
             )}
+            {/* Doesn't show when participation method is proposals */}
             {showIdeaReactionControl && (
-              <Box pb="24px" mb="24px" borderBottom="solid 1px #ccc">
+              <>
                 <ReactionControl styleType="shadow" ideaId={ideaId} size="4" />
-              </Box>
+                <Divider />
+              </>
             )}
             {/* TODO: Fix this the next time the file is edited. */}
             {/* eslint-disable-next-line @typescript-eslint/no-unnecessary-condition */}
@@ -109,19 +115,11 @@ const RightColumnDesktop = ({
               </Box>
             )}
             {commentingEnabled && (
-              <Box
-                mb="12px"
-                px={participationMethod === 'proposals' ? '12px' : '0px'}
-                bg={colors.white}
-              >
+              <Box mb="12px" bg={colors.white}>
                 <GoToCommentsButton />
               </Box>
             )}
-            <Box
-              pb={participationMethod === 'proposals' ? '12px' : '0px'}
-              px={participationMethod === 'proposals' ? '12px' : '0px'}
-              bg={colors.white}
-            >
+            <Box bg={colors.white}>
               <FollowUnfollow
                 followableType="ideas"
                 followableId={ideaId}
