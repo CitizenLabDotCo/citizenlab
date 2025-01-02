@@ -45,19 +45,24 @@ class WebApi::V1::AdminPublicationsController < ApplicationController
   def index_select_and_order_by_ids
     ids = params[:ids]
 
-    admin_publications = policy_scope(AdminPublication.includes(:parent))
-    admin_publications = admin_publications.not_draft.where(id: ids).in_order_of(:id, ids)
+    visible_admin_publications = policy_scope(AdminPublication.includes(:parent))
+    admin_publications = visible_admin_publications.not_draft.where(id: ids).in_order_of(:id, ids)
 
     @admin_publications = paginate admin_publications
     @admin_publications = includes_publications(@admin_publications)
 
     authorize @admin_publications, :index_select_and_order_by_ids?
 
+    visible_children_counts_by_parent_id = Hash.new(0).tap do |counts|
+      parent_ids = visible_admin_publications.pluck(:parent_id).compact
+      parent_ids.each { |id| counts[id] += 1 }
+    end
+
     render json: linked_json(
       @admin_publications,
       WebApi::V1::AdminPublicationSerializer,
       params: jsonapi_serializer_params(
-        visible_children_count_by_parent_id: admin_publication_filterer.visible_children_counts_by_parent_id
+        visible_children_count_by_parent_id: visible_children_counts_by_parent_id
       ),
       include: included_for_publications
     )
