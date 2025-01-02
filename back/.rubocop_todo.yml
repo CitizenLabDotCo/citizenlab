@@ -527,11 +527,8 @@ Rails/FindEach:
 Rails/HasManyOrHasOneDependent:
   Exclude:
     - 'app/models/comment.rb'
-    - 'app/models/concerns/post.rb'
     - 'app/models/idea.rb'
     - 'app/models/idea_status.rb'
-    - 'app/models/initiative.rb'
-    - 'app/models/initiative_status.rb'
     - 'app/models/notification.rb'
     - 'app/models/user.rb'
 
@@ -549,7 +546,6 @@ Rails/I18nLocaleTexts:
 Rails/InverseOf:
   Exclude:
     - 'app/models/comment.rb'
-    - 'app/models/concerns/post.rb'
     - 'app/models/event.rb'
     - 'app/models/idea_status.rb'
     - 'app/models/phase.rb'
