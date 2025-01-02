@@ -17,19 +17,17 @@ import { TIMES } from './constants';
 const BUTTON_HEIGHT = 45;
 
 interface Props {
-  selectedDate: Date;
+  selectedTime: Date;
   onChange: (newDate: Date) => void;
 }
 
-const TimeInput = ({ selectedDate, onChange }: Props) => {
+const TimeInput = ({ selectedTime, onChange }: Props) => {
   const [visible, setVisible] = useState(false);
   const scrollContainerRef = useRef<HTMLDivElement | null>(null);
   const locale = useLocale();
 
-  const h = selectedDate.getHours();
-  const m = selectedDate.getMinutes();
-
-  console.log({ selectedDate, h, m });
+  const h = selectedTime.getHours();
+  const m = selectedTime.getMinutes();
 
   // In theory the Math.floor should not be necessary,
   // but just in case we will floor it to avoid
@@ -55,8 +53,10 @@ const TimeInput = ({ selectedDate, onChange }: Props) => {
 
   const handleButtonClick = (i: number) => {
     const time = TIMES[i];
-    const [hour, minute] = time.split(':').map(Number);
-    const newDate = new Date(selectedDate);
+    const hour = time.getHours();
+    const minute = time.getMinutes();
+
+    const newDate = new Date(selectedTime);
     newDate.setHours(hour);
     newDate.setMinutes(minute);
     onChange(newDate);
@@ -77,7 +77,7 @@ const TimeInput = ({ selectedDate, onChange }: Props) => {
         >
           {TIMES.map((time, i) => (
             <Button
-              key={time}
+              key={i}
               buttonStyle="text"
               aria-selected={i === timeIndex}
               tabIndex={i === timeIndex ? 0 : -1}
@@ -86,7 +86,7 @@ const TimeInput = ({ selectedDate, onChange }: Props) => {
               bgHoverColor={i === timeIndex ? colors.teal700 : colors.teal100}
               onClick={() => handleButtonClick(i)}
             >
-              {time}
+              {format(time, 'p', { locale: getLocale(locale) })}
             </Button>
           ))}
         </Box>
@@ -99,8 +99,7 @@ const TimeInput = ({ selectedDate, onChange }: Props) => {
         }}
         textColor={colors.black}
       >
-        {/* {TIMES[timeIndex]} */}
-        {format(selectedDate, 'hh:mm aaa', { locale: getLocale(locale) })}
+        {format(selectedTime, 'p', { locale: getLocale(locale) })}
       </Button>
     </Tooltip>
   );

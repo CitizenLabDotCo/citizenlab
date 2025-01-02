@@ -76,7 +76,7 @@ const DateTimeSelection = ({
             }}
           />
           <Box ml="12px">
-            <TimeInput selectedDate={startAtDate} onChange={updateStartAt} />
+            <TimeInput selectedTime={startAtDate} onChange={updateStartAt} />
           </Box>
         </Box>
         <ErrorComponent apiErrors={get(errors, 'start_at')} />
@@ -98,7 +98,7 @@ const DateTimeSelection = ({
             }}
           />
           <Box ml="12px">
-            <TimeInput selectedDate={endAtDate} onChange={updateEndAt} />
+            <TimeInput selectedTime={endAtDate} onChange={updateEndAt} />
           </Box>
         </Box>
         <ErrorComponent apiErrors={get(errors, 'end_at')} />
