@@ -2675,7 +2675,6 @@
   "app.containers.admin.addCollaboratorsModal.giveManagerRights": "Dar derechos de administrador",
   "app.containers.admin.addCollaboratorsModal.hasReachedOrIsOverLimit": "Ha alcanzado el límite de asientos incluidos en su plan, se añadirán {noOfSeats} asientos adicionales {noOfSeats, plural, one {} other {asientos}}",
   "app.containers.admin.ideaStatuses.all.addIdeaStatus": "Agregar estado",
-  "app.containers.admin.ideaStatuses.all.defaultStatusDeleteButtonTooltip": "El estado predeterminado no puede ser eliminado.",
   "app.containers.admin.ideaStatuses.all.deleteButtonLabel": "Eliminar",
   "app.containers.admin.ideaStatuses.all.editButtonLabel": "Editar",
   "app.containers.admin.ideaStatuses.all.editIdeaStatus": "Editar estado",

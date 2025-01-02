@@ -2675,7 +2675,6 @@
   "app.containers.admin.addCollaboratorsModal.giveManagerRights": "Yönetici hakları verin",
   "app.containers.admin.addCollaboratorsModal.hasReachedOrIsOverLimit": "Planınız dahilindeki koltuk sınırına ulaştınız, {noOfSeats} ek {noOfSeats, plural, one {koltuk} other {koltuk}} eklenecektir.",
   "app.containers.admin.ideaStatuses.all.addIdeaStatus": "Durum ekleyin",
-  "app.containers.admin.ideaStatuses.all.defaultStatusDeleteButtonTooltip": "Varsayılan durum silinemez.",
   "app.containers.admin.ideaStatuses.all.deleteButtonLabel": "Sil",
   "app.containers.admin.ideaStatuses.all.editButtonLabel": "Düzenle",
   "app.containers.admin.ideaStatuses.all.editIdeaStatus": "Durumu düzenleyin",
