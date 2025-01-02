@@ -43,7 +43,6 @@ describe Analytics::QueryRunnerService do
 
     it 'return filtered ideas count' do
       create(:idea)
-      create(:initiative)
 
       query_param = {
         fact: 'post',
