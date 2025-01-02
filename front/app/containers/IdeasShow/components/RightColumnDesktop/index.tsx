@@ -121,7 +121,7 @@ const RightColumnDesktop = ({
               </Box>
             )}
             {commentingEnabled && (
-              <Box mb="12px" bg={colors.white}>
+              <Box mb="12px">
                 <GoToCommentsButton />
               </Box>
             )}
