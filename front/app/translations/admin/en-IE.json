@@ -2676,7 +2676,7 @@
   "app.containers.admin.addCollaboratorsModal.giveManagerRights": "Give manager rights",
   "app.containers.admin.addCollaboratorsModal.hasReachedOrIsOverLimit": "You have reached the limit of included seats within your plan, 1 additional seat will be added.",
   "app.containers.admin.ideaStatuses.all.addIdeaStatus": "Add status",
-  "app.containers.admin.ideaStatuses.all.defaultStatusDeleteButtonTooltip": "The default status can not be deleted.",
+  "app.containers.admin.ideaStatuses.all.defaultStatusDeleteButtonTooltip2": "Default statuses cannot be deleted.",
   "app.containers.admin.ideaStatuses.all.deleteButtonLabel": "Delete",
   "app.containers.admin.ideaStatuses.all.editButtonLabel": "Edit",
   "app.containers.admin.ideaStatuses.all.editIdeaStatus": "Edit status",
