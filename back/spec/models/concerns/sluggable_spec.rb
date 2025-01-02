@@ -12,7 +12,7 @@ RSpec.describe Sluggable do
       {
         no_slug: :follower,
         slug_from_first_title: :group,
-        slug_on_publication: :initiative
+        slug_unless_invitation_pending: :user
       }
     end
 
@@ -39,12 +39,12 @@ RSpec.describe Sluggable do
       end
 
       it 'does not set a slug when the if-condition is false' do
-        sluggable = create(sluggable_factories[:slug_on_publication], publication_status: 'draft')
+        sluggable = create(sluggable_factories[:slug_unless_invitation_pending], invite_status: 'pending')
         expect(sluggable.slug).to be_blank
       end
 
       it 'sets a slug when the if-condition is true' do
-        sluggable = create(sluggable_factories[:slug_on_publication], publication_status: 'published')
+        sluggable = create(sluggable_factories[:slug_unless_invitation_pending], invite_status: 'accepted')
         expect(sluggable.slug).to be_present
       end
 

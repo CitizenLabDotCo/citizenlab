@@ -66,8 +66,6 @@ class SideFxUserService
   def after_roles_changed(current_user, user)
     gained_roles(user).each { |role| role_created_side_fx(role, user, current_user) }
     lost_roles(user).each { |role| role_destroyed_side_fx(role, user, current_user) }
-
-    clean_initiative_assignees_for_user! user
   end
 
   def role_created_side_fx(role, user, current_user)
@@ -105,14 +103,6 @@ class SideFxUserService
   def gained_roles(user)
     old_roles, new_roles = user.roles_previous_change
     new_roles.to_a - old_roles.to_a
-  end
-
-  # Ideally this method should be moved to the IdeaAssignmentService
-  # but this would create a dependency from the core to the engine.
-  def clean_initiative_assignees_for_user!(user)
-    return if UserRoleService.new.can_moderate_initiatives?(user)
-
-    user.assigned_initiatives.update_all(assignee_id: nil)
   end
 
   def create_followers(user)
