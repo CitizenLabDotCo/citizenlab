@@ -298,7 +298,7 @@ fr:
       yesterday: Hier
     comment_on_idea_you_follow:
       cta_reply_to: 'Répondre à %{commentAuthor}'
-      event_description: '%{authorNameFull} placed a reaction on ''%{inputTitle}''. Click the button below to continue the conversation with %{authorName}.'
+      event_description: '%{authorNameFull} a réagi à « %{inputTitle} ». Cliquez sur le bouton ci-dessous pour continuer la conversation avec %{authorName}.'
       main_header:
         idea: '%{authorName} a commenté une idée que vous suivez'
         question: '%{authorName} a commenté une question que vous suivez'
