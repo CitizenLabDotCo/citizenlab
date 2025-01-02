@@ -19,6 +19,8 @@ const Preview = () => {
   const { data: homepageLayout } = useHomepageLayout();
 
   const homepageContent = homepageLayout?.data.attributes.craftjs_json;
+  console.log('Viewer:');
+  console.log(homepageContent);
 
   return (
     <Box>
