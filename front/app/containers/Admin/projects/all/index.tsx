@@ -175,6 +175,7 @@ const AdminProjectsList = memo(({ className }: Props) => {
             justifyContent="flex-end"
             gap="12px"
             alignItems="center"
+            className="intercom-admin-projects-new-project-folder-buttons"
           >
             {isProjectFoldersEnabled && (
               <Tooltip
@@ -200,6 +201,7 @@ const AdminProjectsList = memo(({ className }: Props) => {
             <Box>
               <Button
                 data-cy="e2e-new-project-button"
+                className="intercom-admin-projects-new-project-button"
                 linkTo={'/admin/projects/new'}
                 icon="plus-circle"
                 buttonStyle="admin-dark"

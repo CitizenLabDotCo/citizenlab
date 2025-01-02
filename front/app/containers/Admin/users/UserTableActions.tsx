@@ -324,7 +324,7 @@ const UserTableActions = ({
             <Button
               ml="auto"
               onClick={exportUsers}
-              className={`export e2e-${exportType} hasLeftMargin`}
+              className={`export e2e-${exportType} hasLeftMargin intercom-users-export-users-button`}
               buttonStyle="admin-dark-text"
               whiteSpace="wrap"
               icon="user-data"

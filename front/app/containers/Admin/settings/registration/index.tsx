@@ -129,7 +129,7 @@ const SettingsRegistrationTab = () => {
           <FormattedMessage {...messages.registrationTitle} />
         </SectionTitle>
         <Box mb="60px" key={'signup_fields'}>
-          <SubSectionTitle>
+          <SubSectionTitle className="intercom-settings-tab-registration-helper-text">
             <FormattedMessage {...messages.signupFormText} />
           </SubSectionTitle>
           <SectionDescription>

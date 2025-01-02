@@ -518,7 +518,10 @@ const AdminProjectsProjectGeneral = () => {
 
   return (
     <Box ref={containerRef}>
-      <StyledForm className="e2e-project-general-form" onSubmit={onSubmit}>
+      <StyledForm
+        className="e2e-project-general-form intercom-projects-new-project-form"
+        onSubmit={onSubmit}
+      >
         <Section>
           {projectId && (
             <>
@@ -658,6 +661,7 @@ const AdminProjectsProjectGeneral = () => {
             py="8px"
           >
             <SubmitWrapper
+              className="intercom-projects-new-project-save-button"
               loading={processing}
               status={submitState}
               messages={{

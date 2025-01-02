@@ -1,5 +1,6 @@
 import React, { useMemo } from 'react';
 
+import { Box } from '@citizenlab/cl2-component-library';
 import { WrappedComponentProps } from 'react-intl';
 import { RouteType } from 'routes';
 
@@ -97,7 +98,7 @@ const HiddenNavbarItemList = ({
   };
 
   return (
-    <>
+    <Box className="intercom-admin-pages-menu-other-items">
       <Header itemsNotInNavbarPresent={itemsNotInNavbar.length > 0} />
 
       <List key={itemsNotInNavbar.length}>
@@ -119,7 +120,7 @@ const HiddenNavbarItemList = ({
           </Row>
         ))}
       </List>
-    </>
+    </Box>
   );
 };
 

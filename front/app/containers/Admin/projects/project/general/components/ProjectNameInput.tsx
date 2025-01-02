@@ -28,7 +28,7 @@ const ProjectNameInput = ({
   handleTitleMultilocOnChange,
 }: Props) => {
   return (
-    <StyledSectionField>
+    <StyledSectionField className="intercom-projects-new-project-name">
       <SubSectionTitle>
         <FormattedMessage {...messages.projectName} />
         <IconTooltip
