@@ -160,7 +160,7 @@ const UserTableActions = ({
   const showSelectAndExport = usersDataLength !== 0;
 
   const toggleAllUsers = () => {
-    trackEventByName(tracks.toggleAllUsers.name);
+    trackEventByName(tracks.toggleAllUsers);
     toggleSelectAll();
   };
 
@@ -228,7 +228,7 @@ const UserTableActions = ({
         setProcessing(false);
       };
 
-      trackEventByName(tracks.addUsersToGroup.name, {
+      trackEventByName(tracks.addUsersToGroup, {
         usersIds: usersIds.toString(),
         selectedGroupIds: selectedGroupIds.toString(),
       });
@@ -249,7 +249,7 @@ const UserTableActions = ({
         success();
         return true;
       } catch (error) {
-        trackEventByName(tracks.addedRedundantUserToGroup.name, {
+        trackEventByName(tracks.addedRedundantUserToGroup, {
           errorResponse: error.toString(),
         });
 

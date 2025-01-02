@@ -92,8 +92,8 @@ const InputListItem = () => {
         onSuccess: () => {
           trackEventByName(
             additionalCustomFieldIds?.includes(customFieldId)
-              ? tracks.removeQuestionFromAIAnalysis.name
-              : tracks.addQuestionToAIAnalysis.name
+              ? tracks.removeQuestionFromAIAnalysis
+              : tracks.addQuestionToAIAnalysis
           );
         },
       }
