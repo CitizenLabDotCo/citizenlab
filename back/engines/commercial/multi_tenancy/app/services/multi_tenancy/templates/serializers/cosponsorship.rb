@@ -3,10 +3,9 @@
 module MultiTenancy
   module Templates
     module Serializers
-      class InitiativesTopic
-        include Core
-
-        ref_attributes %i[initiative topic]
+      class Cosponsorship < Base
+        attribute :status
+        ref_attributes %i[idea user]
       end
     end
   end

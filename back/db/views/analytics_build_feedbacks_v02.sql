@@ -18,7 +18,7 @@ FROM (
     UNION ALL
 
     SELECT
-        post_id,
+        idea_id AS post_id,
         MIN(created_at) AS feedback_first_date,
         1 AS feedback_official,
         0 AS feedback_status_change

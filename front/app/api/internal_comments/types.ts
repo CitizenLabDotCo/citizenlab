@@ -32,7 +32,7 @@ export interface IInternalCommentData {
   type: 'internal_comment';
   attributes: IPresentInternalComment | IDeletedInternalComment;
   relationships: {
-    post: {
+    idea: {
       data: IRelationship;
     };
     author: {

@@ -15,25 +15,16 @@ module Frontend
       when Idea
         subroute = 'ideas'
         slug = model_instance.slug
-      when Initiative
-        subroute = 'initiatives'
-        slug = model_instance.slug
       when StaticPage
         subroute = 'pages'
         slug = model_instance.slug
       when User
         subroute = 'profile'
         slug = model_instance.slug
-      when Comment # Comments do not have a path yet, we return the post path for now
-        return model_to_path(model_instance.post)
-      when OfficialFeedback # Official feedbacks do not have a path yet, we return the idea path for now
+      when Comment, OfficialFeedback # Comments and official feedback do not have a path yet, we return the idea path for now
         return model_to_path(model_instance.idea)
       when InternalComment # Internal comments are only implemented in the Back Office / Admin UI
-        if model_instance.post_type == 'Idea'
-          return "admin/projects/#{model_instance.post.project_id}/ideas/#{model_instance.post.id}##{model_instance.id}"
-        elsif model_instance.post_type == 'Initiative'
-          return "admin/initiatives/#{model_instance.post.id}##{model_instance.id}"
-        end
+        return "admin/projects/#{model_instance.idea.project_id}/ideas/#{model_instance.idea.id}##{model_instance.id}"
       when ProjectFolders::Folder
         subroute = 'folders'
         slug = model_instance.slug

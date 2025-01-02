@@ -12,11 +12,11 @@ module Notifications
     end
 
     def recipients
-      [User.find_by(id: internal_comment&.post&.assignee_id)].compact
+      [User.find_by(id: internal_comment&.idea&.assignee_id)].compact
     end
 
     def preconditions_met?
-      post_type == 'Idea'
+      true
     end
 
     def notification_class

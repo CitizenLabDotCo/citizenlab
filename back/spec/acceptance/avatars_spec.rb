@@ -77,7 +77,7 @@ resource 'Avatars' do
       let(:context_type) { 'idea' }
       let(:context_id) { idea.id }
       let(:author_id) { idea.author.id }
-      let!(:commenter_ids) { Array.new(2) { create(:comment, post: idea).author.id } }
+      let!(:commenter_ids) { Array.new(2) { create(:comment, idea: idea).author.id } }
       let(:limit) { 2 }
 
       example_request 'List random user avatars on an idea (author and commenters)' do

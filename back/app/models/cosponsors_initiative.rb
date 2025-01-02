@@ -27,8 +27,6 @@ class CosponsorsInitiative < ApplicationRecord
   belongs_to :user
   belongs_to :initiative
 
-  has_many :notifications, dependent: :nullify
-
   validates :user, :initiative, presence: true
   validates :status, inclusion: { in: STATUSES }
 end

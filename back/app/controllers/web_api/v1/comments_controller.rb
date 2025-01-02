@@ -3,7 +3,6 @@
 class WebApi::V1::CommentsController < ApplicationController
   include BlockingProfanity
 
-  before_action :set_post_type_id_and_policy, only: %i[index index_xlsx create]
   before_action :set_comment, only: %i[children show update mark_as_deleted destroy]
   skip_after_action :verify_authorized, only: :index_xlsx
   skip_before_action :authenticate_user
@@ -13,8 +12,8 @@ class WebApi::V1::CommentsController < ApplicationController
 
   def index
     include_attrs = [author: [:unread_notifications]]
-    root_comments = policy_scope(Comment, policy_scope_class: @policy_class::Scope)
-      .where(post_type: @post_type, post_id: @post_id)
+    root_comments = policy_scope(Comment)
+      .where(idea_id: params[:idea_id])
       .where(parent: nil)
       .includes(*include_attrs)
 
@@ -74,45 +73,30 @@ class WebApi::V1::CommentsController < ApplicationController
   end
 
   def index_xlsx
-    if (@post_type == 'Idea') && params[:project].present?
+    if params[:project].present?
       authorize Project.find(params[:project]), :index_xlsx?
-    elsif @post_type == 'Idea'
-      authorize :idea_comment, :index_xlsx?
-    elsif @post_type == 'Initiative'
-      authorize :initiative_comment, :index_xlsx?
     else
-      raise "#{@post_type} has no comment policy defined"
+      authorize :comment, :index_xlsx?
     end
 
-    post_ids = params[@post_type.underscore.pluralize.to_sym]
-    @comments = policy_scope(Comment, policy_scope_class: @policy_class::Scope)
-      .where(post_type: @post_type)
-      .includes(:author, :"#{@post_type.underscore}")
+    @comments = policy_scope(Comment)
+      .includes(:author, :idea)
       .order(:lft)
-    if @post_type == 'Idea'
-      @comments = @comments.where(ideas: { project_id: UserRoleService.new.moderatable_projects(current_user) })
-      if params[:project].present?
-        @comments = @comments.where(ideas: { project_id: params[:project] })
-      end
+    @comments = @comments.where(ideas: { project_id: UserRoleService.new.moderatable_projects(current_user) })
+    if params[:project].present?
+      @comments = @comments.where(ideas: { project_id: params[:project] })
     end
-    @comments = @comments.where(post_id: post_ids) if post_ids.present?
+    @comments = @comments.where(idea_id: params[:ideas]) if params[:ideas].present?
 
     I18n.with_locale(current_user&.locale) do
       service = XlsxService.new
-      xlsx = case @post_type
-      when 'Idea'
-        service.generate_idea_comments_xlsx @comments, view_private_attributes: true
-      when 'Initiative'
-        service.generate_initiative_comments_xlsx @comments, view_private_attributes: policy(User).view_private_attributes?
-      else
-        raise "#{@post_type} has no functionality for exporting comments"
-      end
+      xlsx = service.generate_comments_xlsx @comments, view_private_attributes: true
       send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', filename: 'comments.xlsx'
     end
   end
 
   def children
-    @comments = policy_scope(Comment, policy_scope_class: @policy_class::Scope)
+    @comments = policy_scope(Comment)
       .where(parent: params[:id])
       .order(:lft)
     @comments = paginate @comments
@@ -141,10 +125,9 @@ class WebApi::V1::CommentsController < ApplicationController
 
   def create
     @comment = Comment.new comment_create_params
-    @comment.post_type = @post_type
-    @comment.post_id = @post_id
+    @comment.idea_id = params[:idea_id]
     @comment.author ||= current_user
-    authorize @comment, policy_class: @policy_class
+    authorize @comment
     if anonymous_not_allowed?
       render json: { errors: { base: [{ error: :anonymous_participation_not_allowed }] } }, status: :unprocessable_entity
       return
@@ -165,9 +148,7 @@ class WebApi::V1::CommentsController < ApplicationController
 
   def update
     @comment.attributes = comment_update_params
-    # We cannot pass policy class to permitted_attributes
-    # @comment.attributes = pundit_params_for(@comment).permit(@policy_class.new(pundit_user, @comment).permitted_attributes_for_update)
-    authorize @comment, policy_class: @policy_class
+    authorize @comment
     if anonymous_not_allowed?
       render json: { errors: { base: [{ error: :anonymous_participation_not_allowed }] } }, status: :unprocessable_entity
       return
@@ -219,24 +200,7 @@ class WebApi::V1::CommentsController < ApplicationController
 
   def set_comment
     @comment = Comment.find params[:id]
-    @post_type = @comment.post_type
-    set_policy_class
-    authorize @comment, policy_class: @policy_class
-  end
-
-  def set_post_type_id_and_policy
-    @post_type = params[:post]
-    @post_id = params[:"#{@post_type.underscore}_id"]
-    set_policy_class
-  end
-
-  def set_policy_class
-    @policy_class = case @post_type
-    when 'Idea' then IdeaCommentPolicy
-    when 'Initiative' then InitiativeCommentPolicy
-    else raise "#{@post_type} has no comment policy defined"
-    end
-    raise 'must not be blank' if @post_type.blank?
+    authorize @comment
   end
 
   def comment_create_params
@@ -270,13 +234,7 @@ class WebApi::V1::CommentsController < ApplicationController
   def anonymous_not_allowed?
     return false if !params.dig('comment', 'anonymous')
 
-    case @post_type
-    when 'Idea'
-      !TimelineService.new.current_phase_not_archived(@comment.post.project).allow_anonymous_participation
-    when 'Initiative'
-      !AppConfiguration.instance.settings.dig('initiatives', 'allow_anonymous_participation')
-    else raise "Unsupported post type #{@post_type}"
-    end
+    !TimelineService.new.current_phase_not_archived(@comment.idea.project).allow_anonymous_participation
   end
 end
 

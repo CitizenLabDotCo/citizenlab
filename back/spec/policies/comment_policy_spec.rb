@@ -2,14 +2,14 @@
 
 require 'rails_helper'
 
-describe IdeaCommentPolicy do
+describe CommentPolicy do
   subject { described_class.new(user, comment) }
 
-  let(:scope) { IdeaCommentPolicy::Scope.new(user, idea.comments) }
+  let(:scope) { CommentPolicy::Scope.new(user, idea.comments) }
 
   let!(:project) { create(:single_phase_ideation_project) }
   let!(:idea) { create(:idea, project: project, phases: project.phases) }
-  let!(:comment) { create(:comment, post: idea) }
+  let!(:comment) { create(:comment, idea: idea) }
   let!(:user) { create(:user) }
 
   context 'on comment on idea in a public project' do
@@ -55,7 +55,7 @@ describe IdeaCommentPolicy do
 
     context 'for blocked comment author' do
       let(:user) { create(:user, block_end_at: 5.days.from_now) }
-      let(:comment) { create(:comment, author: user, post: idea) }
+      let(:comment) { create(:comment, author: user, idea: idea) }
 
       it_behaves_like 'policy for blocked user'
     end
@@ -106,7 +106,7 @@ describe IdeaCommentPolicy do
 
   context "for a user on a comment on an idea in a private groups project where she's not member of a manual group with access" do
     let!(:project) { create(:private_groups_project) }
-    let!(:comment) { create(:comment, post: idea, author: user) }
+    let!(:comment) { create(:comment, idea: idea, author: user) }
 
     it { is_expected.not_to permit(:show)       }
     it { is_expected.not_to permit(:create)     }
@@ -121,7 +121,7 @@ describe IdeaCommentPolicy do
 
   context "for a user on a comment on an idea in a private groups project where she's a member of a manual group with access" do
     let!(:project) { create(:private_groups_project, user: user) }
-    let!(:comment) { create(:comment, post: idea, author: user) }
+    let!(:comment) { create(:comment, idea: idea, author: user) }
 
     it { is_expected.to     permit(:show)       }
     it { is_expected.to     permit(:create)     }
@@ -135,7 +135,7 @@ describe IdeaCommentPolicy do
   end
 
   context 'for a mortal user who owns the comment in a project where commenting is not permitted' do
-    let!(:comment) { create(:comment, post: idea, author: user) }
+    let!(:comment) { create(:comment, idea: idea, author: user) }
     let!(:project) do
       create(:single_phase_budgeting_project, phase_attrs: { with_permissions: true }).tap do |project|
         project.phases.first.permissions.find_by(action: 'commenting_idea')

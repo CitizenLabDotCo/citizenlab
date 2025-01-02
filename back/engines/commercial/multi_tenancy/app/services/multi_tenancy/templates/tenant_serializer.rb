@@ -32,7 +32,6 @@ module MultiTenancy
         email_campaigns = EmailCampaigns::Campaign.manual
         groups = Group.where(membership_type: 'manual')
         ideas = Idea.submitted_or_published
-        initiatives = Initiative.published
         users = User.where('invite_status IS NULL OR invite_status != ?', 'pending')
 
         {
@@ -50,7 +49,6 @@ module MultiTenancy
           EventImage => serialize_records(EventImage),
           Events::Attendance => serialize_records(Events::Attendance),
           IdeaStatus => serialize_records(IdeaStatus),
-          InitiativeStatus => serialize_records(InitiativeStatus),
           NavBarItem => serialize_records(NavBarItem),
           Permission => serialize_records(Permission),
           PermissionsCustomField => serialize_records(PermissionsCustomField),
@@ -101,19 +99,11 @@ module MultiTenancy
           IdeasPhase => serialize_records(IdeasPhase.where(idea: ideas)),
           IdeasTopic => serialize_records(IdeasTopic.where(idea: ideas)),
 
-          # Initiatives
-          Initiative => serialize_records(initiatives),
-          InitiativeStatusChange => serialize_records(InitiativeStatusChange.where(initiative: initiatives)),
-          AreasInitiative => serialize_records(AreasInitiative.where(initiative: initiatives)),
-          CosponsorsInitiative => serialize_records(CosponsorsInitiative.where(initiative: initiatives)),
-          InitiativeFile => serialize_records(InitiativeFile.where(initiative: initiatives)),
-          InitiativeImage => serialize_records(InitiativeImage.where(initiative: initiatives)),
-          InitiativesTopic => serialize_records(InitiativesTopic.where(initiative: initiatives)),
-
-          Comment => serialize_comments(ideas, initiatives),
-          InternalComment => serialize_internal_comments(ideas, initiatives),
-          Reaction => serialize_reactions(ideas).merge!(serialize_reactions(initiatives)),
+          Comment => serialize_comments(ideas),
+          InternalComment => serialize_internal_comments(ideas),
+          Reaction => serialize_reactions(ideas),
           OfficialFeedback => serialize_records(OfficialFeedback),
+          Cosponsorship => serialize_records(Cosponsorship.where(idea: ideas)),
 
           # Groups
           Group => serialize_records(groups),
@@ -127,7 +117,7 @@ module MultiTenancy
           # Users
           User => serialize_records(users),
           Membership => serialize_records(Membership.where(user: users)),
-          Follower => serialize_followers(users, initiatives),
+          Follower => serialize_followers(users),
 
           TextImage => serialize_records(TextImage.where(imageable: [
             CustomField.all,
@@ -136,8 +126,7 @@ module MultiTenancy
             Project.all,
             StaticPage.all,
             email_campaigns,
-            ideas,
-            initiatives
+            ideas
           ]))
         }
       end
@@ -225,10 +214,8 @@ module MultiTenancy
         serialize_records(scope.order(parent_id: :desc, ordering: :asc))
       end
 
-      def serialize_comments(*post_scopes)
-        comments = post_scopes.each_with_object({}) do |scope, hash|
-          hash.merge!(serialize_records(Comment.where(post: scope)))
-        end
+      def serialize_comments(scope)
+        comments = serialize_records(Comment.where(idea: scope))
 
         # The parent comments must be listed before their children since the
         # children comments reference their parent.
@@ -243,10 +230,8 @@ module MultiTenancy
         comments.slice(*ordered_ids)
       end
 
-      def serialize_internal_comments(*post_scopes)
-        internal_comments = post_scopes.each_with_object({}) do |scope, hash|
-          hash.merge!(serialize_records(InternalComment.where(post: scope)))
-        end
+      def serialize_internal_comments(scope)
+        internal_comments = serialize_records(InternalComment.where(idea: scope))
 
         # The parent internal_comments must be listed before their children since the
         # children internal_comments reference their parent.
@@ -261,21 +246,15 @@ module MultiTenancy
         internal_comments.slice(*ordered_ids)
       end
 
-      def serialize_reactions(post_scope)
-        post_reactions = Reaction.where.not(user_id: nil).where(reactable: post_scope)
-        comment_reactions = Reaction.where.not(user_id: nil).where(reactable: Comment.where(post: post_scope))
+      def serialize_reactions(scope)
+        post_reactions = Reaction.where.not(user_id: nil).where(reactable: scope)
+        comment_reactions = Reaction.where.not(user_id: nil).where(reactable: Comment.where(idea: scope))
         reactions = post_reactions.chain(comment_reactions)
         serialize_records(reactions)
       end
 
-      def serialize_followers(users, initiatives)
-        followers = Follower.where(user: users)
-
-        followers = followers
-          .where(followable: initiatives)
-          .or(followers.where.not(followable_type: 'Initiative'))
-
-        serialize_records(followers)
+      def serialize_followers(users)
+        serialize_records(Follower.where(user: users))
       end
     end
   end

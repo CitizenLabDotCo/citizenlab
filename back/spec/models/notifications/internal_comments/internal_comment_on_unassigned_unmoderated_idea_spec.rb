@@ -8,7 +8,7 @@ RSpec.describe Notifications::InternalComments::InternalCommentOnUnassignedUnmod
     let(:project_folder) { create(:project_folder, projects: [project]) }
     let(:idea) { create(:idea, project_id: project.id) }
     let!(:admin) { create(:admin) }
-    let(:internal_comment) { create(:internal_comment, post: idea) }
+    let(:internal_comment) { create(:internal_comment, idea: idea) }
 
     context 'when an admin should receive this notification' do
       let(:activity) { create(:activity, item: internal_comment, action: 'created') }
@@ -18,9 +18,9 @@ RSpec.describe Notifications::InternalComments::InternalCommentOnUnassignedUnmod
         expect(notifications.first).to have_attributes(
           recipient_id: admin.id,
           initiating_user_id: internal_comment.author_id,
-          post_id: idea.id,
+          idea_id: idea.id,
           internal_comment_id: internal_comment.id,
-          project_id: internal_comment.post.project_id
+          project_id: internal_comment.idea.project_id
         )
       end
     end
@@ -36,7 +36,7 @@ RSpec.describe Notifications::InternalComments::InternalCommentOnUnassignedUnmod
     end
 
     context 'when the recipient is the internal comment author' do
-      let(:internal_comment) { create(:internal_comment, author: admin, post: idea) }
+      let(:internal_comment) { create(:internal_comment, author: admin, idea: idea) }
 
       it_behaves_like 'no notification created'
     end
@@ -60,8 +60,8 @@ RSpec.describe Notifications::InternalComments::InternalCommentOnUnassignedUnmod
     end
 
     context "when the internal comment is a comment on the recipient's internal comment" do
-      let(:parent_internal_comment) { create(:internal_comment, post: idea, author: admin) }
-      let(:internal_comment) { create(:internal_comment, parent: parent_internal_comment, post: idea) }
+      let(:parent_internal_comment) { create(:internal_comment, idea: idea, author: admin) }
+      let(:internal_comment) { create(:internal_comment, parent: parent_internal_comment, idea: idea) }
 
       # Don't create this notification if the Activity (internal comment created)
       # should lead to a InternalCommentOnYourInternalComment notification to the recipient.
@@ -74,7 +74,7 @@ RSpec.describe Notifications::InternalComments::InternalCommentOnUnassignedUnmod
           :internal_comment,
           :with_mentions,
           mentioned_users: [admin],
-          post: idea
+          idea: idea
         )
       end
 
@@ -84,7 +84,7 @@ RSpec.describe Notifications::InternalComments::InternalCommentOnUnassignedUnmod
     end
 
     context 'when the recipient has already commented internally on the idea' do
-      let!(:_other_internal_comment) { create(:internal_comment, post: idea, author: admin) }
+      let!(:_other_internal_comment) { create(:internal_comment, idea: idea, author: admin) }
 
       # Don't create this notification if the Activity (internal comment created)
       # should lead to a InternalCommentOnIdeaYouCommentedInternallyOn notification to the recipient.

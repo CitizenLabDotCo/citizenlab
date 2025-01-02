@@ -87,26 +87,26 @@ describe MentionService do
     end
   end
 
-  describe 'users_from_post' do
+  describe 'users_from_idea' do
     before do
       @u1 = create(:user, first_name: 'jan', last_name: 'hoet')
       @u2 = create(:user, first_name: 'jantje', last_name: 'broek')
       @u3 = create(:user, first_name: 'rudolf', last_name: 'deer')
       @u4 = create(:user, first_name: 'janus', last_name: 'lurker')
       @idea = create(:idea, author: @u1)
-      create(:comment, post: @idea, author: @u2)
-      create(:comment, post: @idea, author: @u3)
+      create(:comment, idea: @idea, author: @u2)
+      create(:comment, idea: @idea, author: @u3)
       create(:comment)
     end
 
     it 'return the users from the idea that match the slug' do
-      result = service.users_from_post('ja', @idea, 5)
+      result = service.users_from_idea('ja', @idea, 5)
       expect(result.size).to eq 2
       expect(result).to match_array [@u1, @u2]
     end
 
     it 'handles character case gracefully' do
-      result = service.users_from_post('Ja', @idea, 5)
+      result = service.users_from_idea('Ja', @idea, 5)
       expect(result.size).to eq 2
       expect(result).to match_array [@u1, @u2]
     end

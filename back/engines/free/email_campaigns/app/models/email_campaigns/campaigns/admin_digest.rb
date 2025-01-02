@@ -205,7 +205,7 @@ module EmailCampaigns
       new_reactions = Reaction.where(reactable_id: idea_ids).where('created_at > ?', Time.now - days_ago)
       new_likes_counts = new_reactions.where(mode: 'up').group(:reactable_id).count
       new_dislikes_counts = new_reactions.where(mode: 'down').group(:reactable_id).count
-      new_comments_increases = Comment.where(post_id: idea_ids).where('created_at > ?', Time.now - days_ago).group(:post_id).count
+      new_comments_increases = Comment.where(idea_id: idea_ids).where('created_at > ?', Time.now - days_ago).group(:idea_id).count
 
       idea_ids.each_with_object({}) do |idea_id, object|
         likes = new_likes_counts[idea_id] || 0

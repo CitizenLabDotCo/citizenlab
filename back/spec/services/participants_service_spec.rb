@@ -21,10 +21,10 @@ describe ParticipantsService do
         idea = create(:idea, author: pp1)
       end
       travel_to Time.now - 6.days do
-        create(:comment, author: pp2, post: idea)
+        create(:comment, author: pp2, idea: idea)
       end
       travel_to Time.now - 2.days do
-        create(:comment, author: pp3, post: idea)
+        create(:comment, author: pp3, idea: idea)
         create(:idea, author: others.first, publication_status: 'draft')
       end
       create(:idea, author: pp4)
@@ -44,12 +44,12 @@ describe ParticipantsService do
         idea = create(:idea, author: pp1)
       end
       travel_to Time.now - 6.days do
-        create(:comment, post: idea, author: pp2)
+        create(:comment, idea: idea, author: pp2)
       end
       travel_to Time.now - 2.days do
-        create(:comment, post: idea, author: pp3)
+        create(:comment, idea: idea, author: pp3)
       end
-      create(:comment, post: idea, author: pp4)
+      create(:comment, idea: idea, author: pp4)
 
       expect(service.participants(since: (Time.now - 6.days)).map(&:dimension_user_id)).to match_array [pp2.id, pp3.id, pp4.id]
     end
@@ -67,9 +67,9 @@ describe ParticipantsService do
       # Create a bunch of ideas and comments with users (4 participants)
       idea1 = create(:idea, project: project, author: user) # 1
       idea2 = create(:idea, project: project) # 2
-      create(:comment, post: idea1) # 3
+      create(:comment, idea: idea1) # 3
       create(:idea, project: project) # 4
-      create(:comment, post: idea2, author: user)
+      create(:comment, idea: idea2, author: user)
 
       expect(service.project_participants_count(project)).to eq 4
     end
@@ -80,7 +80,7 @@ describe ParticipantsService do
 
       idea = create(:idea, project: project, author: user, anonymous: true)
       create(:idea, project: project, author: user, anonymous: true)
-      create(:comment, post: idea, author: user, anonymous: true)
+      create(:comment, idea: idea, author: user, anonymous: true)
 
       expect(service.project_participants_count(project)).to eq 1
     end
@@ -110,14 +110,14 @@ describe ParticipantsService do
       # Create a bunch of ideas and comments with users (4 participants)
       idea1 = create(:idea, project: project, author: pp1) # 1
       idea2 = create(:idea, project: project, author: pp2) # 2
-      create(:comment, post: idea1, author: pp3) # 3
+      create(:comment, idea: idea1, author: pp3) # 3
       create(:idea, project: project) # 4
-      create(:comment, post: idea2, author: pp1)
+      create(:comment, idea: idea2, author: pp1)
 
       # Create two ideas and a comment, anonymous, but all for the same user (1 participant)
       idea3 = create(:idea, project: project, author: pp4, anonymous: true)
       create(:idea, project: project, author: pp4, anonymous: true)
-      create(:comment, post: idea3, author: pp4, anonymous: true)
+      create(:comment, idea: idea3, author: pp4, anonymous: true)
 
       # Create another anonymous idea for another user (1 participant)
       create(:idea, project: project, anonymous: true)
@@ -138,20 +138,20 @@ describe ParticipantsService do
       idea1 = create(:idea, project: project, author: pp1)
       idea2 = create(:idea, project: project, author: pp2)
       create(:idea, project: project, author: pp3)
-      create(:comment, post: idea1, author: pp3)
-      create(:comment, post: idea2, author: pp3)
-      create(:comment, post: idea2, author: pp2)
+      create(:comment, idea: idea1, author: pp3)
+      create(:comment, idea: idea2, author: pp3)
+      create(:comment, idea: idea2, author: pp2)
       expect(service.project_participants_count_uncached(project)).to eq 3
 
       # Anonymous & participated already +2
       create(:idea, project: project, author: pp2, anonymous: true)
-      create(:comment, post: idea1, author: pp3, anonymous: true)
+      create(:comment, idea: idea1, author: pp3, anonymous: true)
       expect(service.project_participants_count_uncached(project)).to eq 5
 
       # Only participated anonymously +2
       create(:idea, project: project, author: pp4, anonymous: true)
-      create(:comment, post: idea1, author: pp4, anonymous: true)
-      create(:comment, post: idea1, author: pp5, anonymous: true)
+      create(:comment, idea: idea1, author: pp4, anonymous: true)
+      create(:comment, idea: idea1, author: pp5, anonymous: true)
       expect(service.project_participants_count_uncached(project)).to eq 7
 
       # 'everyone' surveys +2
@@ -176,8 +176,8 @@ describe ParticipantsService do
       idea2 = create(:idea, project: projects.last, anonymous: true) # 2
       create(:idea)
       pp2 = create(:user)
-      create(:comment, post: idea1, author: pp2) # 3
-      create(:comment, post: idea2, author: pp1)
+      create(:comment, idea: idea1, author: pp2) # 3
+      create(:comment, idea: idea2, author: pp1)
 
       expect(service.folder_participants_count(folder)).to eq 3
     end
@@ -197,16 +197,16 @@ describe ParticipantsService do
         idea = create(:idea, project: project, author: pp1, phases: project.phases)
       end
       travel_to Time.now - 6.days do
-        create(:comment, post: idea, author: pp2)
+        create(:comment, idea: idea, author: pp2)
         other_idea = create(:idea, project: other_project, author: others.first, phases: other_project.phases)
       end
       travel_to Time.now - 2.days do
         create(:reaction, reactable: idea, mode: 'up', user: pp3)
-        create(:comment, post: idea, author: pp2)
-        create(:comment, post: other_idea, author: others.last)
+        create(:comment, idea: idea, author: pp2)
+        create(:comment, idea: other_idea, author: others.last)
         create(:basket, ideas: [idea], phase: project.phases.first, user: pp5)
       end
-      create(:comment, post: idea, author: pp4)
+      create(:comment, idea: idea, author: pp4)
 
       expect(service.projects_participants([project]).map(&:id)).to match_array participants.map(&:id)
     end
@@ -242,15 +242,15 @@ describe ParticipantsService do
         idea = create(:idea, project: project, author: pp1)
       end
       travel_to Time.now - 6.days do
-        create(:comment, post: idea, author: pp2)
+        create(:comment, idea: idea, author: pp2)
         create(:idea, project: project, author: others.first)
       end
       travel_to Time.now - 2.days do
         create(:reaction, reactable: idea, mode: 'up', user: pp3)
-        create(:comment, post: idea, author: pp2)
+        create(:comment, idea: idea, author: pp2)
         create(:comment, author: others.last)
       end
-      create(:comment, post: idea, author: pp4)
+      create(:comment, idea: idea, author: pp4)
 
       expect(service.projects_participants([project], since: (Time.now - 5.days)).map(&:id)).to match_array [pp2.id, pp3.id, pp4.id]
     end
@@ -263,7 +263,7 @@ describe ParticipantsService do
       other = create(:user)
 
       i = create(:idea, project: project, author: pp1)
-      create(:comment, post: i, author: pp2)
+      create(:comment, idea: i, author: pp2)
       create(:reaction, reactable: i, user: pp3)
       create(:basket, ideas: [i], phase: project.phases.first, user: pp4)
       create(:idea, author: other)
@@ -279,7 +279,7 @@ describe ParticipantsService do
       other = create(:user)
 
       i = create(:idea, project: project, author: pp1)
-      c = create(:comment, post: i, author: pp2)
+      c = create(:comment, idea: i, author: pp2)
       create(:reaction, reactable: i, user: pp3)
       create(:reaction, reactable: c, user: pp4)
       create(:idea, author: other)
@@ -295,7 +295,7 @@ describe ParticipantsService do
       other = create(:user)
 
       i = create(:idea, project: project, author: pp1, phases: project.phases)
-      create(:comment, post: i, author: pp2)
+      create(:comment, idea: i, author: pp2)
       create(:reaction, reactable: i, user: pp3)
       create(:basket, ideas: [i], phase: project.phases.first, user: pp4)
       create(:idea, author: other)
@@ -334,7 +334,7 @@ describe ParticipantsService do
       create(:idea, topics: [t2, t3], author: pp2, project: project)
       create(:idea, topics: [t3], author: pp1, project: project)
       create(:idea, topics: [], author: others.first, project: project)
-      create(:comment, post: i1, author: pp3)
+      create(:comment, idea: i1, author: pp3)
 
       expect(service.topics_participants([t1, t2]).map(&:id)).to match_array participants.map(&:id)
     end
@@ -349,7 +349,7 @@ describe ParticipantsService do
       i1 = create(:idea, idea_status: s1, author: pp1)
       create(:idea, idea_status: s2, author: pp2)
       create(:idea, idea_status: s3, author: others.first)
-      create(:comment, post: i1, author: pp3)
+      create(:comment, idea: i1, author: pp3)
 
       expect(service.idea_statuses_participants([s1, s2]).map(&:id)).to match_array participants.map(&:id)
     end
@@ -371,7 +371,7 @@ describe ParticipantsService do
         idea = create(:idea, project: project, phases: [phase])
         create_list(:basket, 2, ideas: [idea], phase: phase)
         Basket.update_counts(phase)
-        create(:comment, post: idea)
+        create(:comment, idea: idea)
       end
 
       it 'does not delete ideas associated with the voting phase' do

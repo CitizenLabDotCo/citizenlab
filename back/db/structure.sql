@@ -16,6 +16,7 @@ ALTER TABLE IF EXISTS ONLY public.events_attendances DROP CONSTRAINT IF EXISTS f
 ALTER TABLE IF EXISTS ONLY public.comments DROP CONSTRAINT IF EXISTS fk_rails_f44b1e3c8a;
 ALTER TABLE IF EXISTS ONLY public.cosponsorships DROP CONSTRAINT IF EXISTS fk_rails_f32533b783;
 ALTER TABLE IF EXISTS ONLY public.report_builder_published_graph_data_units DROP CONSTRAINT IF EXISTS fk_rails_f21a19c203;
+ALTER TABLE IF EXISTS ONLY public.notifications DROP CONSTRAINT IF EXISTS fk_rails_f1d8986d29;
 ALTER TABLE IF EXISTS ONLY public.idea_files DROP CONSTRAINT IF EXISTS fk_rails_efb12f53ad;
 ALTER TABLE IF EXISTS ONLY public.static_pages_topics DROP CONSTRAINT IF EXISTS fk_rails_edc8786515;
 ALTER TABLE IF EXISTS ONLY public.polls_response_options DROP CONSTRAINT IF EXISTS fk_rails_e871bf6e26;
@@ -80,13 +81,13 @@ ALTER TABLE IF EXISTS ONLY public.analysis_additional_custom_fields DROP CONSTRA
 ALTER TABLE IF EXISTS ONLY public.notifications DROP CONSTRAINT IF EXISTS fk_rails_849e0c7eb7;
 ALTER TABLE IF EXISTS ONLY public.ideas_phases DROP CONSTRAINT IF EXISTS fk_rails_845d7ca944;
 ALTER TABLE IF EXISTS ONLY public.impact_tracking_pageviews DROP CONSTRAINT IF EXISTS fk_rails_82dc979276;
-ALTER TABLE IF EXISTS ONLY public.notifications DROP CONSTRAINT IF EXISTS fk_rails_828a073a04;
 ALTER TABLE IF EXISTS ONLY public.notifications DROP CONSTRAINT IF EXISTS fk_rails_81c11ef894;
 ALTER TABLE IF EXISTS ONLY public.areas_initiatives DROP CONSTRAINT IF EXISTS fk_rails_81a9922de4;
 ALTER TABLE IF EXISTS ONLY public.projects_topics DROP CONSTRAINT IF EXISTS fk_rails_812b6d9149;
 ALTER TABLE IF EXISTS ONLY public.projects_allowed_input_topics DROP CONSTRAINT IF EXISTS fk_rails_812b6d9149;
 ALTER TABLE IF EXISTS ONLY public.report_builder_reports DROP CONSTRAINT IF EXISTS fk_rails_81137213da;
 ALTER TABLE IF EXISTS ONLY public.polls_response_options DROP CONSTRAINT IF EXISTS fk_rails_80d00e60ae;
+ALTER TABLE IF EXISTS ONLY public.comments DROP CONSTRAINT IF EXISTS fk_rails_7fbb3b1416;
 ALTER TABLE IF EXISTS ONLY public.email_campaigns_campaign_email_commands DROP CONSTRAINT IF EXISTS fk_rails_7f284a4f09;
 ALTER TABLE IF EXISTS ONLY public.activities DROP CONSTRAINT IF EXISTS fk_rails_7e11bb717f;
 ALTER TABLE IF EXISTS ONLY public.analysis_questions DROP CONSTRAINT IF EXISTS fk_rails_74e779db86;
@@ -107,6 +108,7 @@ ALTER TABLE IF EXISTS ONLY public.idea_imports DROP CONSTRAINT IF EXISTS fk_rail
 ALTER TABLE IF EXISTS ONLY public.ideas DROP CONSTRAINT IF EXISTS fk_rails_5ac7668cd3;
 ALTER TABLE IF EXISTS ONLY public.cosponsors_initiatives DROP CONSTRAINT IF EXISTS fk_rails_5ac54ec4a5;
 ALTER TABLE IF EXISTS ONLY public.notifications DROP CONSTRAINT IF EXISTS fk_rails_575368d182;
+ALTER TABLE IF EXISTS ONLY public.notifications DROP CONSTRAINT IF EXISTS fk_rails_5471f55cd6;
 ALTER TABLE IF EXISTS ONLY public.identities DROP CONSTRAINT IF EXISTS fk_rails_5373344100;
 ALTER TABLE IF EXISTS ONLY public.permissions_custom_fields DROP CONSTRAINT IF EXISTS fk_rails_50335fc43f;
 ALTER TABLE IF EXISTS ONLY public.analytics_dimension_projects_fact_visits DROP CONSTRAINT IF EXISTS fk_rails_4ecebb6e8a;
@@ -138,6 +140,7 @@ ALTER TABLE IF EXISTS ONLY public.ideas DROP CONSTRAINT IF EXISTS fk_rails_0e5b4
 ALTER TABLE IF EXISTS ONLY public.invites DROP CONSTRAINT IF EXISTS fk_rails_0b6ac3e1da;
 ALTER TABLE IF EXISTS ONLY public.initiatives DROP CONSTRAINT IF EXISTS fk_rails_06c1835844;
 ALTER TABLE IF EXISTS ONLY public.invites DROP CONSTRAINT IF EXISTS fk_rails_06b2d7a3a8;
+ALTER TABLE IF EXISTS ONLY public.internal_comments DROP CONSTRAINT IF EXISTS fk_rails_04be8cf6ba;
 ALTER TABLE IF EXISTS ONLY public.events DROP CONSTRAINT IF EXISTS fk_rails_0434b48643;
 ALTER TABLE IF EXISTS ONLY public.analytics_dimension_locales_fact_visits DROP CONSTRAINT IF EXISTS fk_rails_00698f2e02;
 DROP TRIGGER IF EXISTS que_state_notify ON public.que_jobs;
@@ -217,18 +220,15 @@ DROP INDEX IF EXISTS public.index_notifications_on_spam_report_id;
 DROP INDEX IF EXISTS public.index_notifications_on_recipient_id_and_read_at;
 DROP INDEX IF EXISTS public.index_notifications_on_recipient_id;
 DROP INDEX IF EXISTS public.index_notifications_on_project_review_id;
-DROP INDEX IF EXISTS public.index_notifications_on_post_status_id_and_post_status_type;
-DROP INDEX IF EXISTS public.index_notifications_on_post_status_id;
-DROP INDEX IF EXISTS public.index_notifications_on_post_id_and_post_type;
 DROP INDEX IF EXISTS public.index_notifications_on_phase_id;
 DROP INDEX IF EXISTS public.index_notifications_on_official_feedback_id;
 DROP INDEX IF EXISTS public.index_notifications_on_invite_id;
 DROP INDEX IF EXISTS public.index_notifications_on_internal_comment_id;
 DROP INDEX IF EXISTS public.index_notifications_on_initiating_user_id;
 DROP INDEX IF EXISTS public.index_notifications_on_inappropriate_content_flag_id;
+DROP INDEX IF EXISTS public.index_notifications_on_idea_status_id;
 DROP INDEX IF EXISTS public.index_notifications_on_created_at;
 DROP INDEX IF EXISTS public.index_notifications_on_cosponsorship_id;
-DROP INDEX IF EXISTS public.index_notifications_on_cosponsors_initiative_id;
 DROP INDEX IF EXISTS public.index_notifications_on_basket_id;
 DROP INDEX IF EXISTS public.index_nav_bar_items_on_static_page_id;
 DROP INDEX IF EXISTS public.index_nav_bar_items_on_project_id;
@@ -244,10 +244,9 @@ DROP INDEX IF EXISTS public.index_invites_on_token;
 DROP INDEX IF EXISTS public.index_invites_on_inviter_id;
 DROP INDEX IF EXISTS public.index_invites_on_invitee_id;
 DROP INDEX IF EXISTS public.index_internal_comments_on_rgt;
-DROP INDEX IF EXISTS public.index_internal_comments_on_post_id;
-DROP INDEX IF EXISTS public.index_internal_comments_on_post;
 DROP INDEX IF EXISTS public.index_internal_comments_on_parent_id;
 DROP INDEX IF EXISTS public.index_internal_comments_on_lft;
+DROP INDEX IF EXISTS public.index_internal_comments_on_idea_id;
 DROP INDEX IF EXISTS public.index_internal_comments_on_created_at;
 DROP INDEX IF EXISTS public.index_internal_comments_on_author_id;
 DROP INDEX IF EXISTS public.index_initiatives_topics_on_topic_id;
@@ -339,10 +338,9 @@ DROP INDEX IF EXISTS public.index_cosponsors_initiatives_on_initiative_id;
 DROP INDEX IF EXISTS public.index_content_builder_layouts_content_buidable_type_id_code;
 DROP INDEX IF EXISTS public.index_common_passwords_on_password;
 DROP INDEX IF EXISTS public.index_comments_on_rgt;
-DROP INDEX IF EXISTS public.index_comments_on_post_id_and_post_type;
-DROP INDEX IF EXISTS public.index_comments_on_post_id;
 DROP INDEX IF EXISTS public.index_comments_on_parent_id;
 DROP INDEX IF EXISTS public.index_comments_on_lft;
+DROP INDEX IF EXISTS public.index_comments_on_idea_id;
 DROP INDEX IF EXISTS public.index_comments_on_created_at;
 DROP INDEX IF EXISTS public.index_comments_on_author_id;
 DROP INDEX IF EXISTS public.index_campaigns_groups;
@@ -529,7 +527,6 @@ ALTER TABLE IF EXISTS public.que_jobs ALTER COLUMN id DROP DEFAULT;
 ALTER TABLE IF EXISTS public.areas_static_pages ALTER COLUMN id DROP DEFAULT;
 DROP TABLE IF EXISTS public.verification_verifications;
 DROP TABLE IF EXISTS public.user_custom_fields_representativeness_ref_distributions;
-DROP VIEW IF EXISTS public.union_posts;
 DROP TABLE IF EXISTS public.topics;
 DROP TABLE IF EXISTS public.text_images;
 DROP TABLE IF EXISTS public.tenants;
@@ -1487,7 +1484,7 @@ CREATE TABLE public.baskets (
 CREATE TABLE public.comments (
     id uuid DEFAULT shared_extensions.gen_random_uuid() NOT NULL,
     author_id uuid,
-    post_id uuid,
+    idea_id uuid,
     parent_id uuid,
     lft integer NOT NULL,
     rgt integer NOT NULL,
@@ -1499,7 +1496,6 @@ CREATE TABLE public.comments (
     publication_status character varying DEFAULT 'published'::character varying NOT NULL,
     body_updated_at timestamp without time zone,
     children_count integer DEFAULT 0 NOT NULL,
-    post_type character varying,
     author_hash character varying,
     anonymous boolean DEFAULT false NOT NULL
 );
@@ -1704,8 +1700,8 @@ UNION ALL
     c.likes_count,
     c.dislikes_count
    FROM ((public.comments c
-     JOIN public.analytics_dimension_types adt ON ((((adt.name)::text = 'comment'::text) AND ((adt.parent)::text = lower((c.post_type)::text)))))
-     LEFT JOIN public.ideas i ON ((c.post_id = i.id)))
+     JOIN public.analytics_dimension_types adt ON ((((adt.name)::text = 'comment'::text) AND ((adt.parent)::text = 'idea'::text))))
+     LEFT JOIN public.ideas i ON ((c.idea_id = i.id)))
 UNION ALL
  SELECT r.id,
     r.user_id AS dimension_user_id,
@@ -1726,7 +1722,7 @@ UNION ALL
      JOIN public.analytics_dimension_types adt ON ((((adt.name)::text = 'reaction'::text) AND ((adt.parent)::text = lower((r.reactable_type)::text)))))
      LEFT JOIN public.ideas i ON ((i.id = r.reactable_id)))
      LEFT JOIN public.comments c ON ((c.id = r.reactable_id)))
-     LEFT JOIN public.ideas ic ON ((ic.id = c.post_id)))
+     LEFT JOIN public.ideas ic ON ((ic.id = c.idea_id)))
 UNION ALL
  SELECT pr.id,
     pr.user_id AS dimension_user_id,
@@ -2466,12 +2462,12 @@ CREATE VIEW public.idea_trending_infos AS
     GREATEST(comments_at.last_comment_at, likes_at.last_liked_at, ideas.published_at) AS last_activity_at,
     to_timestamp(round((((GREATEST(((comments_at.comments_count)::double precision * comments_at.mean_comment_at), (0)::double precision) + GREATEST(((likes_at.likes_count)::double precision * likes_at.mean_liked_at), (0)::double precision)) + date_part('epoch'::text, ideas.published_at)) / (((GREATEST((comments_at.comments_count)::numeric, 0.0) + GREATEST((likes_at.likes_count)::numeric, 0.0)) + 1.0))::double precision))) AS mean_activity_at
    FROM ((public.ideas
-     FULL JOIN ( SELECT comments.post_id AS idea_id,
+     FULL JOIN ( SELECT comments.idea_id,
             max(comments.created_at) AS last_comment_at,
             avg(date_part('epoch'::text, comments.created_at)) AS mean_comment_at,
-            count(comments.post_id) AS comments_count
+            count(comments.idea_id) AS comments_count
            FROM public.comments
-          GROUP BY comments.post_id) comments_at ON ((ideas.id = comments_at.idea_id)))
+          GROUP BY comments.idea_id) comments_at ON ((ideas.id = comments_at.idea_id)))
      FULL JOIN ( SELECT reactions.reactable_id,
             max(reactions.created_at) AS last_liked_at,
             avg(date_part('epoch'::text, reactions.created_at)) AS mean_liked_at,
@@ -2673,8 +2669,7 @@ CREATE TABLE public.initiatives_topics (
 CREATE TABLE public.internal_comments (
     id uuid DEFAULT shared_extensions.gen_random_uuid() NOT NULL,
     author_id uuid,
-    post_type character varying,
-    post_id uuid,
+    idea_id uuid,
     parent_id uuid,
     lft integer NOT NULL,
     rgt integer NOT NULL,
@@ -2806,9 +2801,8 @@ UNION ALL
     moderation_moderation_statuses.status AS moderation_status
    FROM (((public.comments
      LEFT JOIN public.moderation_moderation_statuses ON ((moderation_moderation_statuses.moderatable_id = comments.id)))
-     LEFT JOIN public.ideas ON ((ideas.id = comments.post_id)))
-     LEFT JOIN public.projects ON ((projects.id = ideas.project_id)))
-  WHERE ((comments.post_type)::text = 'Idea'::text);
+     LEFT JOIN public.ideas ON ((ideas.id = comments.idea_id)))
+     LEFT JOIN public.projects ON ((projects.id = ideas.project_id)));
 
 
 --
@@ -2836,7 +2830,7 @@ CREATE TABLE public.notifications (
     type character varying,
     read_at timestamp without time zone,
     recipient_id uuid,
-    post_id uuid,
+    idea_id uuid,
     comment_id uuid,
     project_id uuid,
     created_at timestamp without time zone NOT NULL,
@@ -2846,16 +2840,13 @@ CREATE TABLE public.notifications (
     invite_id uuid,
     reason_code character varying,
     other_reason character varying,
-    post_status_id uuid,
+    idea_status_id uuid,
     official_feedback_id uuid,
     phase_id uuid,
-    post_type character varying,
-    post_status_type character varying,
     project_folder_id uuid,
     inappropriate_content_flag_id uuid,
     internal_comment_id uuid,
     basket_id uuid,
-    cosponsors_initiative_id uuid,
     cosponsorship_id uuid,
     project_review_id uuid
 );
@@ -3335,44 +3326,6 @@ CREATE TABLE public.topics (
     followers_count integer DEFAULT 0 NOT NULL,
     include_in_onboarding boolean DEFAULT false NOT NULL
 );
-
-
---
--- Name: union_posts; Type: VIEW; Schema: public; Owner: -
---
-
-CREATE VIEW public.union_posts AS
- SELECT ideas.id,
-    ideas.title_multiloc,
-    ideas.body_multiloc,
-    ideas.publication_status,
-    ideas.published_at,
-    ideas.author_id,
-    ideas.created_at,
-    ideas.updated_at,
-    ideas.likes_count,
-    ideas.location_point,
-    ideas.location_description,
-    ideas.comments_count,
-    ideas.slug,
-    ideas.official_feedbacks_count
-   FROM public.ideas
-UNION ALL
- SELECT initiatives.id,
-    initiatives.title_multiloc,
-    initiatives.body_multiloc,
-    initiatives.publication_status,
-    initiatives.published_at,
-    initiatives.author_id,
-    initiatives.created_at,
-    initiatives.updated_at,
-    initiatives.likes_count,
-    initiatives.location_point,
-    initiatives.location_description,
-    initiatives.comments_count,
-    initiatives.slug,
-    initiatives.official_feedbacks_count
-   FROM public.initiatives;
 
 
 --
@@ -4813,6 +4766,13 @@ CREATE INDEX index_comments_on_created_at ON public.comments USING btree (create
 
 
 --
+-- Name: index_comments_on_idea_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_comments_on_idea_id ON public.comments USING btree (idea_id);
+
+
+--
 -- Name: index_comments_on_lft; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -4824,20 +4784,6 @@ CREATE INDEX index_comments_on_lft ON public.comments USING btree (lft);
 --
 
 CREATE INDEX index_comments_on_parent_id ON public.comments USING btree (parent_id);
-
-
---
--- Name: index_comments_on_post_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_comments_on_post_id ON public.comments USING btree (post_id);
-
-
---
--- Name: index_comments_on_post_id_and_post_type; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_comments_on_post_id_and_post_type ON public.comments USING btree (post_id, post_type);
 
 
 --
@@ -5478,6 +5424,13 @@ CREATE INDEX index_internal_comments_on_created_at ON public.internal_comments U
 
 
 --
+-- Name: index_internal_comments_on_idea_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_internal_comments_on_idea_id ON public.internal_comments USING btree (idea_id);
+
+
+--
 -- Name: index_internal_comments_on_lft; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -5489,20 +5442,6 @@ CREATE INDEX index_internal_comments_on_lft ON public.internal_comments USING bt
 --
 
 CREATE INDEX index_internal_comments_on_parent_id ON public.internal_comments USING btree (parent_id);
-
-
---
--- Name: index_internal_comments_on_post; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_internal_comments_on_post ON public.internal_comments USING btree (post_type, post_id);
-
-
---
--- Name: index_internal_comments_on_post_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_internal_comments_on_post_id ON public.internal_comments USING btree (post_id);
 
 
 --
@@ -5611,13 +5550,6 @@ CREATE INDEX index_notifications_on_basket_id ON public.notifications USING btre
 
 
 --
--- Name: index_notifications_on_cosponsors_initiative_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_notifications_on_cosponsors_initiative_id ON public.notifications USING btree (cosponsors_initiative_id);
-
-
---
 -- Name: index_notifications_on_cosponsorship_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -5629,6 +5561,13 @@ CREATE INDEX index_notifications_on_cosponsorship_id ON public.notifications USI
 --
 
 CREATE INDEX index_notifications_on_created_at ON public.notifications USING btree (created_at);
+
+
+--
+-- Name: index_notifications_on_idea_status_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_notifications_on_idea_status_id ON public.notifications USING btree (idea_status_id);
 
 
 --
@@ -5671,27 +5610,6 @@ CREATE INDEX index_notifications_on_official_feedback_id ON public.notifications
 --
 
 CREATE INDEX index_notifications_on_phase_id ON public.notifications USING btree (phase_id);
-
-
---
--- Name: index_notifications_on_post_id_and_post_type; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_notifications_on_post_id_and_post_type ON public.notifications USING btree (post_id, post_type);
-
-
---
--- Name: index_notifications_on_post_status_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_notifications_on_post_status_id ON public.notifications USING btree (post_status_id);
-
-
---
--- Name: index_notifications_on_post_status_id_and_post_status_type; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_notifications_on_post_status_id_and_post_status_type ON public.notifications USING btree (post_status_id, post_status_type);
 
 
 --
@@ -6250,6 +6168,14 @@ ALTER TABLE ONLY public.events
 
 
 --
+-- Name: internal_comments fk_rails_04be8cf6ba; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.internal_comments
+    ADD CONSTRAINT fk_rails_04be8cf6ba FOREIGN KEY (idea_id) REFERENCES public.ideas(id);
+
+
+--
 -- Name: invites fk_rails_06b2d7a3a8; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -6498,6 +6424,14 @@ ALTER TABLE ONLY public.identities
 
 
 --
+-- Name: notifications fk_rails_5471f55cd6; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.notifications
+    ADD CONSTRAINT fk_rails_5471f55cd6 FOREIGN KEY (idea_id) REFERENCES public.ideas(id);
+
+
+--
 -- Name: notifications fk_rails_575368d182; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -6658,6 +6592,14 @@ ALTER TABLE ONLY public.email_campaigns_campaign_email_commands
 
 
 --
+-- Name: comments fk_rails_7fbb3b1416; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.comments
+    ADD CONSTRAINT fk_rails_7fbb3b1416 FOREIGN KEY (idea_id) REFERENCES public.ideas(id);
+
+
+--
 -- Name: polls_response_options fk_rails_80d00e60ae; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -6703,14 +6645,6 @@ ALTER TABLE ONLY public.areas_initiatives
 
 ALTER TABLE ONLY public.notifications
     ADD CONSTRAINT fk_rails_81c11ef894 FOREIGN KEY (internal_comment_id) REFERENCES public.internal_comments(id);
-
-
---
--- Name: notifications fk_rails_828a073a04; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.notifications
-    ADD CONSTRAINT fk_rails_828a073a04 FOREIGN KEY (cosponsors_initiative_id) REFERENCES public.cosponsors_initiatives(id);
 
 
 --
@@ -7223,6 +7157,14 @@ ALTER TABLE ONLY public.static_pages_topics
 
 ALTER TABLE ONLY public.idea_files
     ADD CONSTRAINT fk_rails_efb12f53ad FOREIGN KEY (idea_id) REFERENCES public.ideas(id);
+
+
+--
+-- Name: notifications fk_rails_f1d8986d29; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.notifications
+    ADD CONSTRAINT fk_rails_f1d8986d29 FOREIGN KEY (idea_status_id) REFERENCES public.idea_statuses(id);
 
 
 --
@@ -7765,4 +7707,11 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20241203151945'),
 ('20241204133717'),
 ('20241204144321'),
-('20241220103433');
+('20241224115952'),
+('20241226093506'),
+('20241227103433'),
+('20241230165323'),
+('20241230165518'),
+('20241230172612');
+
+

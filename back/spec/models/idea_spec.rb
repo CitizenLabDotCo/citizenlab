@@ -559,7 +559,7 @@ RSpec.describe Idea do
     end
 
     it 'returns ideas with recent comments' do
-      create(:comment, post: old_idea, updated_at: 1.day.ago)
+      create(:comment, idea: old_idea, updated_at: 1.day.ago)
       expect(recent_ideas).to include old_idea
     end
 
@@ -569,8 +569,8 @@ RSpec.describe Idea do
     end
 
     it 'does not return duplicates' do
-      create(:comment, post: recent_idea, updated_at: 1.day.ago)
-      create(:comment, post: recent_idea, updated_at: 1.day.ago)
+      create(:comment, idea: recent_idea, updated_at: 1.day.ago)
+      create(:comment, idea: recent_idea, updated_at: 1.day.ago)
 
       recent_ids = recent_ideas.pluck(:id)
       expect(recent_ids.size).to eq 1

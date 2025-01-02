@@ -3,6 +3,7 @@
 require 'active_support/concern'
 
 module Post
+  # TODO: Merge with idea
   include PgSearch::Model
   include GeoJsonHelpers
   extend ActiveSupport::Concern
@@ -29,8 +30,8 @@ module Post
 
     has_many :activities, as: :item
 
-    has_many :comments, as: :post, dependent: :destroy
-    has_many :internal_comments, as: :post, dependent: :destroy
+    has_many :comments, dependent: :destroy
+    has_many :internal_comments, dependent: :destroy
 
     has_many :reactions, as: :reactable, dependent: :destroy
     has_many :likes, -> { where(mode: 'up') }, as: :reactable, class_name: 'Reaction'
@@ -40,7 +41,7 @@ module Post
     has_many :spam_reports, as: :spam_reportable, class_name: 'SpamReport', dependent: :destroy
 
     before_destroy :remove_notifications # Must occur before has_many :notifications (see https://github.com/rails/rails/issues/5205)
-    has_many :notifications, foreign_key: :post_id, dependent: :nullify
+    has_many :notifications, dependent: :nullify
 
     validates :publication_status, presence: true, inclusion: { in: PUBLICATION_STATUSES }
 
@@ -104,7 +105,7 @@ module Post
 
     def remove_notifications
       notifications.each do |notification|
-        unless notification.update post: nil
+        unless notification.update idea: nil
           notification.destroy!
         end
       end

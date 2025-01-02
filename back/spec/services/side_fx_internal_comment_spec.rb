@@ -6,7 +6,7 @@ describe SideFxInternalCommentService do
   let(:service) { described_class.new }
   let(:user) { create(:user) }
   let(:internal_comment) { create(:internal_comment) }
-  let(:project_id) { internal_comment.post.project_id }
+  let(:project_id) { internal_comment.idea.project_id }
 
   describe 'after_create' do
     it "logs a 'created' action when an internal comment is created" do
@@ -74,7 +74,7 @@ describe SideFxInternalCommentService do
 
       expectation = expect { service.after_update(internal_comment, user) }
       created_at = internal_comment.created_at.to_i
-      project_id = internal_comment.post.project_id
+      project_id = internal_comment.idea.project_id
       expectation.not_to enqueue_job(LogActivityJob)
         .with(
           internal_comment,

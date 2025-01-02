@@ -26,8 +26,8 @@ RSpec.describe EmailCampaigns::Campaigns::CommentOnIdeaYouFollow do
           comment_body_multiloc: notification.comment.body_multiloc,
           comment_url: an_instance_of(String),
           post_published_at: an_instance_of(String),
-          post_title_multiloc: notification.post.title_multiloc,
-          post_author_name: notification.post.author.full_name,
+          post_title_multiloc: notification.idea.title_multiloc,
+          post_author_name: notification.idea.author.full_name,
           post_input_term: 'idea',
           unfollow_url: an_instance_of(String)
         )

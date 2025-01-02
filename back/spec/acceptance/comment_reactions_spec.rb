@@ -12,7 +12,7 @@ resource 'Comment Reactions' do
     header 'Content-Type', 'application/json'
     @project = create(:single_phase_ideation_project)
     @idea = create(:idea, project: @project, phases: @project.phases)
-    @comment = create(:comment, post: @idea)
+    @comment = create(:comment, idea: @idea)
     @reactions = create_list(:reaction, 2, reactable: @comment)
   end
 
@@ -70,7 +70,7 @@ resource 'Comment Reactions' do
     end
 
     describe do
-      before { @comment.update!(post: create(:idea)) }
+      before { @comment.update!(idea: create(:idea)) }
 
       example 'Create a reaction on a comment of an idea', document: false do
         do_request
