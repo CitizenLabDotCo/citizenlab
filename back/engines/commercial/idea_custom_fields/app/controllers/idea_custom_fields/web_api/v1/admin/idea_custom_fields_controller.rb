@@ -109,7 +109,7 @@ module IdeaCustomFields
     def raise_error_if_stale_form_data
       return unless update_all_params[:form_last_updated_at].present? &&
                     @custom_form.persisted? &&
-                    @custom_form.updated_at.to_i > update_all_params[:form_last_updated_at].to_i
+                    @custom_form.updated_at.to_i > update_all_params[:form_last_updated_at].to_datetime.to_i
 
       raise UpdateAllFailedError, { form: [{ error: 'stale_data' }] }
     end

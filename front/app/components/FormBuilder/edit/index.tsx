@@ -22,6 +22,7 @@ import {
 import useFormCustomFields from 'api/custom_fields/useCustomFields';
 import useUpdateCustomField from 'api/custom_fields/useUpdateCustomFields';
 import { isNewCustomFieldObject } from 'api/custom_fields/util';
+import useCustomForm from 'api/custom_form/useCustomForm';
 import useFormSubmissionCount from 'api/submission_count/useSubmissionCount';
 
 import FormBuilderSettings from 'components/FormBuilder/components/FormBuilderSettings';
@@ -88,6 +89,13 @@ const FormEdit = ({
     projectId,
     phaseId: isFormPhaseSpecific ? phaseId : undefined,
   });
+
+  const { data: customForm } = useCustomForm({
+    projectId,
+    phaseId: isFormPhaseSpecific ? phaseId : undefined,
+  });
+  const formLastUpdatedAt = customForm?.data.attributes.updated_at;
+  const formOpenedAt = customForm?.data.attributes.opened_at; // TODO: This should not change
 
   const schema = object().shape({
     customFields: array().of(
@@ -267,8 +275,8 @@ const FormEdit = ({
           phaseId: isFormPhaseSpecific ? phaseId : undefined,
           customForm: {
             saveType: autosave ? 'auto' : 'manual',
-            // openedAt: null, // TODO: JS - Placeholders until we get the actual values from the CustomForm object
-            // lastUpdatedAt: null,
+            openedAt: formOpenedAt,
+            lastUpdatedAt: formLastUpdatedAt,
           },
         },
         {

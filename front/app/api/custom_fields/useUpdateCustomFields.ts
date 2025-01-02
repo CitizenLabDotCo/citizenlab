@@ -37,8 +37,8 @@ const updateCustomField = async ({
     body: {
       custom_fields: customFields,
       form_save_type: customForm.saveType,
-      // form_opened_at: customForm.openedAt,
-      // form_last_updated_at: customForm.lastUpdatedAt,
+      form_opened_at: customForm.openedAt,
+      form_last_updated_at: customForm.lastUpdatedAt,
     },
   });
 };
