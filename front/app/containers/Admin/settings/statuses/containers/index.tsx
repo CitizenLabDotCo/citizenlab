@@ -169,7 +169,7 @@ const IdeaStatuses = ({
                       tooltipContent={
                         customIdeaStatusesAllowed ? (
                           <FormattedMessage
-                            {...messages.defaultStatusDeleteButtonTooltip1}
+                            {...messages.defaultStatusDeleteButtonTooltip2}
                           />
                         ) : (
                           <FormattedMessage {...messages.pricingPlanUpgrade} />
