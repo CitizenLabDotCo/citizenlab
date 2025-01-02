@@ -110,7 +110,7 @@ describe('Report builder Participants timeline widget', () => {
     cy.get('.rdp-week').eq(2).find('.rdp-day_button').first().click();
 
     // Close picker again
-    cy.get('.date-range-picker-from').first().click({ force: true });
+    cy.get('.date-range-picker-from').first().click();
 
     // cy.get('#e2e-content-builder-settings').click();
 
