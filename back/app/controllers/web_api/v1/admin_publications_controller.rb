@@ -53,9 +53,9 @@ class WebApi::V1::AdminPublicationsController < ApplicationController
 
     authorize @admin_publications, :index_select_and_order_by_ids?
 
-    # Initiailize the filtering in the AdminPublicationsFilteringService,
+    # Initialize the filtering in the AdminPublicationsFilteringService,
     # so that we can use the visible_children_counts_by_parent_id in the serializer, via the jsonapi_serializer_params.
-    # Not part of the query chain, as in the index, as this raises an error due to conflics with the in_order_of method.
+    # Not part of the query chain, as in the index, as this raises an error due to conflict with the in_order_of method.
     admin_publication_filterer.filter(visible_not_draft_admin_publications, params.merge(current_user: current_user))
 
     render json: linked_json(
