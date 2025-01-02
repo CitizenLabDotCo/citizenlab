@@ -2676,7 +2676,7 @@
   "app.containers.admin.addCollaboratorsModal.giveManagerRights": "Rhoi hawliau rheolwr",
   "app.containers.admin.addCollaboratorsModal.hasReachedOrIsOverLimit": "Rydych chi wedi cyrraedd y terfyn o seddi sydd wedi'u cynnwys yn eich cynllun, bydd 1 sedd ychwanegol yn cael ei hychwanegu.",
   "app.containers.admin.ideaStatuses.all.addIdeaStatus": "Ychwanegu statws",
-  "app.containers.admin.ideaStatuses.all.defaultStatusDeleteButtonTooltip": "Ni ellir dileu'r statws rhagosodedig.",
+  "app.containers.admin.ideaStatuses.all.defaultStatusDeleteButtonTooltip2": "Nid oes modd dileu statws rhagosodedig.",
   "app.containers.admin.ideaStatuses.all.deleteButtonLabel": "Dileu",
   "app.containers.admin.ideaStatuses.all.editButtonLabel": "Golygu",
   "app.containers.admin.ideaStatuses.all.editIdeaStatus": "Golygu statws",
