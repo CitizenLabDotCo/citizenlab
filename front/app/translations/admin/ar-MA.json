@@ -2676,7 +2676,7 @@
   "app.containers.admin.addCollaboratorsModal.giveManagerRights": "امنح حقوق المدير",
   "app.containers.admin.addCollaboratorsModal.hasReachedOrIsOverLimit": "لقد وصلت إلى الحد الأقصى من المقاعد المضمنة في خطتك ، {noOfSeats} مقاعد إضافية {noOfSeats, plural, one {مقعد} other {مقاعد}} سوف تتم اضافته.",
   "app.containers.admin.ideaStatuses.all.addIdeaStatus": "إضافة حالة",
-  "app.containers.admin.ideaStatuses.all.defaultStatusDeleteButtonTooltip": "لا يمكن حذف الحالة الافتراضية.",
+  "app.containers.admin.ideaStatuses.all.defaultStatusDeleteButtonTooltip2": "لا يمكن حذف الحالات الافتراضية.",
   "app.containers.admin.ideaStatuses.all.deleteButtonLabel": "حذف",
   "app.containers.admin.ideaStatuses.all.editButtonLabel": "تعديل",
   "app.containers.admin.ideaStatuses.all.editIdeaStatus": "تعديل الحالة",
