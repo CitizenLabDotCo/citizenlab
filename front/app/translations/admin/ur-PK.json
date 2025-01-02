@@ -2676,7 +2676,7 @@
   "app.containers.admin.addCollaboratorsModal.giveManagerRights": "مینیجر کو حقوق دیں۔",
   "app.containers.admin.addCollaboratorsModal.hasReachedOrIsOverLimit": "آپ اپنے پلان میں شامل سیٹوں کی حد کو پہنچ گئے ہیں، 1 اضافی سیٹ شامل کی جائے گی۔",
   "app.containers.admin.ideaStatuses.all.addIdeaStatus": "حیثیت شامل کریں۔",
-  "app.containers.admin.ideaStatuses.all.defaultStatusDeleteButtonTooltip": "پہلے سے طے شدہ حیثیت کو حذف نہیں کیا جاسکتا۔",
+  "app.containers.admin.ideaStatuses.all.defaultStatusDeleteButtonTooltip2": "پہلے سے طے شدہ سٹیٹس کو حذف نہیں کیا جا سکتا۔",
   "app.containers.admin.ideaStatuses.all.deleteButtonLabel": "حذف کریں۔",
   "app.containers.admin.ideaStatuses.all.editButtonLabel": "ترمیم کریں۔",
   "app.containers.admin.ideaStatuses.all.editIdeaStatus": "حالت میں ترمیم کریں۔",
