@@ -61,12 +61,9 @@ import { initializeEventTimes } from './utils';
 const EventMap = lazy(() => import('./components/EventMap'));
 
 const AdminProjectEventEdit = () => {
-  const { id, projectId } = useParams() as {
-    id: string;
-    projectId: string;
-  };
+  const { id: eventId, projectId } = useParams();
 
-  const isCreatingNewEvent = !id;
+  const isCreatingNewEvent = !eventId;
 
   const { width, containerRef } = useContainerWidthAndHeight();
   const { formatMessage } = useIntl();
@@ -74,13 +71,13 @@ const AdminProjectEventEdit = () => {
   const locale = useLocale();
 
   const { mutate: addEvent } = useAddEvent();
-  const { data: event, isInitialLoading } = useEvent(id);
+  const { data: event, isInitialLoading } = useEvent(eventId);
   const { mutate: updateEvent } = useUpdateEvent();
 
   // event files
   const { mutate: addEventFile } = useAddEventFile();
   const { mutate: deleteEventFile } = useDeleteEventFile();
-  const { data: remoteEventFiles } = useEventFiles(id);
+  const { data: remoteEventFiles } = useEventFiles(eventId);
 
   // event image
   const { mutate: addEventImage } = useAddEventImage();
@@ -304,10 +301,11 @@ const AdminProjectEventEdit = () => {
     if (
       (uploadedImage === null || !uploadedImage.remote) &&
       hasRemoteImage &&
-      remoteImageId
+      remoteImageId &&
+      eventId
     ) {
       deleteEventImage({
-        eventId: id,
+        eventId,
         imageId: remoteImageId,
       });
     }
