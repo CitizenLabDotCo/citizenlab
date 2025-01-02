@@ -45,8 +45,8 @@ class WebApi::V1::AdminPublicationsController < ApplicationController
   def index_select_and_order_by_ids
     ids = params[:ids]
 
-    visible_admin_publications = policy_scope(AdminPublication.includes(:parent))
-    admin_publications = visible_admin_publications.not_draft.where(id: ids).in_order_of(:id, ids)
+    visible_not_draft_admin_publications = policy_scope(AdminPublication.includes(:parent)).not_draft
+    admin_publications = visible_not_draft_admin_publications.where(id: ids).in_order_of(:id, ids)
 
     @admin_publications = paginate admin_publications
     @admin_publications = includes_publications(@admin_publications)
@@ -58,7 +58,7 @@ class WebApi::V1::AdminPublicationsController < ApplicationController
     # If we invoke the service as we do in the index action, to create the counts as an instance var, we get the error:
     # PG::InvalidColumnReference: ERROR:  for SELECT DISTINCT, ORDER BY expressions must appear in select list
     visible_children_counts_by_parent_id = Hash.new(0).tap do |counts|
-      parent_ids = visible_admin_publications.pluck(:parent_id).compact
+      parent_ids = visible_not_draft_admin_publications.pluck(:parent_id).compact
       parent_ids.each { |id| counts[id] += 1 }
     end
 
