@@ -4,10 +4,10 @@ import { CLErrors } from 'typings';
 import fetcher from 'utils/cl-react-query/fetcher';
 
 import areasKeys from './keys';
-import { ProjectCountsByArea, AreasKeys } from './types';
+import { AreasWithProjectsCounts, AreasKeys } from './types';
 
 const fetchAreasWithProjectsCounts = () => {
-  return fetcher<ProjectCountsByArea>({
+  return fetcher<AreasWithProjectsCounts>({
     path: `/areas/with_visible_projects_counts`,
     action: 'get',
   });
@@ -15,9 +15,9 @@ const fetchAreasWithProjectsCounts = () => {
 
 const useAreasWithProjectsCounts = () => {
   return useQuery<
-    ProjectCountsByArea,
+    AreasWithProjectsCounts,
     CLErrors,
-    ProjectCountsByArea,
+    AreasWithProjectsCounts,
     AreasKeys
   >({
     queryKey: areasKeys.list({ endpoint: 'with_visible_projects_counts' }),

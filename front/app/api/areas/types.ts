@@ -57,15 +57,9 @@ export interface IAreaUpdate {
   include_in_onboarding?: boolean;
 }
 
-export interface ProjectCountsByArea {
+export interface AreasWithProjectsCounts {
   data: {
     type: 'counts_by_area';
-    attributes: {
-      counts: {
-        id: string;
-        title_multiloc: Multiloc;
-        count: number;
-      }[];
-    };
+    attributes: any;
   };
 }
