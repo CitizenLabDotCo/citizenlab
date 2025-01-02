@@ -2675,7 +2675,6 @@
   "app.containers.admin.addCollaboratorsModal.giveManagerRights": "Accorder les droits de gestionnaire",
   "app.containers.admin.addCollaboratorsModal.hasReachedOrIsOverLimit": "Vous avez atteint la limite de sièges inclus dans votre plan, 1 siège supplémentaire sera ajouté.",
   "app.containers.admin.ideaStatuses.all.addIdeaStatus": "Ajouter un statut",
-  "app.containers.admin.ideaStatuses.all.defaultStatusDeleteButtonTooltip": "Le statut par défaut ne peut pas être supprimé.",
   "app.containers.admin.ideaStatuses.all.deleteButtonLabel": "Supprimer",
   "app.containers.admin.ideaStatuses.all.editButtonLabel": "Modifier",
   "app.containers.admin.ideaStatuses.all.editIdeaStatus": "Modifier le statut",

@@ -2675,7 +2675,6 @@
   "app.containers.admin.addCollaboratorsModal.giveManagerRights": "ਮੈਨੇਜਰ ਨੂੰ ਅਧਿਕਾਰ ਦਿਓ",
   "app.containers.admin.addCollaboratorsModal.hasReachedOrIsOverLimit": "ਤੁਸੀਂ ਆਪਣੇ ਪਲਾਨ ਵਿੱਚ ਸ਼ਾਮਲ ਸੀਟਾਂ ਦੀ ਸੀਮਾ ਤੱਕ ਪਹੁੰਚ ਗਏ ਹੋ, 1 ਵਾਧੂ ਸੀਟ ਸ਼ਾਮਲ ਕੀਤੀ ਜਾਵੇਗੀ।",
   "app.containers.admin.ideaStatuses.all.addIdeaStatus": "ਸਥਿਤੀ ਸ਼ਾਮਲ ਕਰੋ",
-  "app.containers.admin.ideaStatuses.all.defaultStatusDeleteButtonTooltip": "ਡਿਫਾਲਟ ਸਥਿਤੀ ਨੂੰ ਮਿਟਾਇਆ ਨਹੀਂ ਜਾ ਸਕਦਾ ਹੈ।",
   "app.containers.admin.ideaStatuses.all.deleteButtonLabel": "ਮਿਟਾਓ",
   "app.containers.admin.ideaStatuses.all.editButtonLabel": "ਸੰਪਾਦਿਤ ਕਰੋ",
   "app.containers.admin.ideaStatuses.all.editIdeaStatus": "ਸਥਿਤੀ ਦਾ ਸੰਪਾਦਨ ਕਰੋ",

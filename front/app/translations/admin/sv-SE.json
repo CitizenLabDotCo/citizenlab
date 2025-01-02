@@ -2675,7 +2675,6 @@
   "app.containers.admin.addCollaboratorsModal.giveManagerRights": "Ge chefen rättigheter",
   "app.containers.admin.addCollaboratorsModal.hasReachedOrIsOverLimit": "Du har nått gränsen för antalet inkluderade platser i din plan, {noOfSeats} ytterligare {noOfSeats, plural, one {plats} other {platser}} kommer att läggas till.",
   "app.containers.admin.ideaStatuses.all.addIdeaStatus": "Lägg till status",
-  "app.containers.admin.ideaStatuses.all.defaultStatusDeleteButtonTooltip": "Standardstatusen kan inte tas bort.",
   "app.containers.admin.ideaStatuses.all.deleteButtonLabel": "Radera",
   "app.containers.admin.ideaStatuses.all.editButtonLabel": "Redigera",
   "app.containers.admin.ideaStatuses.all.editIdeaStatus": "Redigera status",

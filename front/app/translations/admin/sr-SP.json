@@ -2675,7 +2675,6 @@
   "app.containers.admin.addCollaboratorsModal.giveManagerRights": "Дајте менаџерска права",
   "app.containers.admin.addCollaboratorsModal.hasReachedOrIsOverLimit": "Достигли сте ограничење укључених места у оквиру вашег плана, биће додато 1 додатно место.",
   "app.containers.admin.ideaStatuses.all.addIdeaStatus": "Додај статус",
-  "app.containers.admin.ideaStatuses.all.defaultStatusDeleteButtonTooltip": "Подразумевани статус се не може избрисати.",
   "app.containers.admin.ideaStatuses.all.deleteButtonLabel": "Избриши",
   "app.containers.admin.ideaStatuses.all.editButtonLabel": "Уредити",
   "app.containers.admin.ideaStatuses.all.editIdeaStatus": "Уреди статус",
