@@ -27,10 +27,10 @@ export interface IAreaData {
     include_in_onboarding: boolean;
   };
   relationships: {
-    static_pages: {
+    static_pages?: {
       data: IRelationship[];
     };
-    user_follower: {
+    user_follower?: {
       data: IRelationship | null;
     };
   };
@@ -55,4 +55,17 @@ export interface IAreaUpdate {
   description_multiloc?: Multiloc;
   ordering?: number;
   include_in_onboarding?: boolean;
+}
+
+export interface ProjectCountsByArea {
+  data: {
+    type: 'counts_by_area';
+    attributes: {
+      counts: {
+        id: string;
+        title_multiloc: Multiloc;
+        count: number;
+      }[];
+    };
+  };
 }
