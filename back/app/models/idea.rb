@@ -90,7 +90,9 @@ class Idea < ApplicationRecord
     delta_magnitude: proc { |idea| idea.comments_count }
   )
 
-  before_save :convert_wkt_geo_custom_field_values_to_geojson # Must appear before before_destroy
+  # Must appear before before_destroy
+  before_save :convert_wkt_geo_custom_field_values_to_geojson
+  after_update :fix_comments_count_on_projects
 
   belongs_to :assignee, class_name: 'User', optional: true
   belongs_to :manual_votes_last_updated_by, class_name: 'User', optional: true
@@ -159,8 +161,6 @@ class Idea < ApplicationRecord
     before_validation :assign_defaults
     before_validation :sanitize_body_multiloc, if: :body_multiloc
   end
-
-  after_update :fix_comments_count_on_projects
 
   pg_search_scope :search_by_all,
     against: %i[title_multiloc body_multiloc custom_field_values slug],
