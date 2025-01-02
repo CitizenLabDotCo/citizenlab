@@ -101,7 +101,15 @@ const IdeaStatuses = ({
       ideation: messages.titleIdeaStatuses1,
       proposals: messages.titleProposalStatuses,
     };
+    const subtitleMessages: {
+      [key in IdeaStatusParticipationMethod]: MessageDescriptor;
+    } = {
+      ideation: messages.subtitleInputStatuses1,
+      proposals: messages.subtitleProposalStatuses,
+    };
+
     const titleMessage = titleMessages[variant];
+    const subtitleMessage = subtitleMessages[variant];
 
     return (
       <Section>
@@ -114,7 +122,7 @@ const IdeaStatuses = ({
           <FormattedMessage {...titleMessage} />
         </SectionTitle>
         <SectionDescription>
-          <FormattedMessage {...messages.subtitleInputStatuses1} />
+          <FormattedMessage {...subtitleMessage} />
         </SectionDescription>
         <ButtonWrapper>
           <Tooltip

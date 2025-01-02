@@ -22,6 +22,11 @@ export default defineMessages({
     defaultMessage:
       'Manage the status that can be assigned to participant input within a project. The status is publicly visible and helps in keeping participants informed.',
   },
+  subtitleProposalStatuses: {
+    id: 'app.containers.admin.ideaStatuses.all.subtitleProposalStatuses',
+    defaultMessage:
+      'Manage the status that can be assigned to proposals within a project. The status is publicly visible and helps in keeping participants informed.',
+  },
   manage: {
     id: 'app.containers.admin.ideaStatuses.all.manage',
     defaultMessage: 'Manage',
