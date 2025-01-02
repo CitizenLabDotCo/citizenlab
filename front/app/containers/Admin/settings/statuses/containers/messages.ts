@@ -13,6 +13,10 @@ export default defineMessages({
     id: 'app.containers.admin.ideaStatuses.all.titleIdeaStatuses1',
     defaultMessage: 'Edit input statuses',
   },
+  titleProposalStatuses: {
+    id: 'app.containers.admin.ideaStatuses.all.titleProposalStatuses',
+    defaultMessage: 'Edit proposal statuses',
+  },
   subtitleInputStatuses1: {
     id: 'app.containers.admin.ideaStatuses.all.subtitleInputStatuses1',
     defaultMessage:
