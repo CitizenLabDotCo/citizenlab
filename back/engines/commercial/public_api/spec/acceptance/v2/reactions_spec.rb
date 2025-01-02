@@ -53,16 +53,16 @@ resource 'Reactions' do
       expect(json_response_body[:reactions].first.keys).to match_array(
         %i[
           id mode reactable_id reactable_type created_at updated_at
-          user_id post_id project_id
+          user_id idea_id project_id
         ]
       )
 
       idea = json_response_body[:reactions].find { |r| r[:id] == idea_reactions.first.id }
-      expect(idea[:post_id]).to eq idea_reactions.first.reactable.id
+      expect(idea[:idea_id]).to eq idea_reactions.first.reactable.id
       expect(idea[:project_id]).to eq idea_reactions.first.reactable.project_id
 
       idea_comment = json_response_body[:reactions].find { |r| r[:id] == idea_comment_reaction.id }
-      expect(idea_comment[:post_id]).not_to be_nil
+      expect(idea_comment[:idea_id]).not_to be_nil
       expect(idea_comment[:project_id]).not_to be_nil
     end
 

@@ -12,7 +12,7 @@ class PublicApi::V2::ReactionSerializer < PublicApi::V2::BaseSerializer
 
   attribute(:reactable_type) { classname_to_type(object.reactable_type) }
 
-  attribute(:post_id) do
+  attribute(:idea_id) do
     case object.reactable_type
     when 'Idea'
       object.reactable.id

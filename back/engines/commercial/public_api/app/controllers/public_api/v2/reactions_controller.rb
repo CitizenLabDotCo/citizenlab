@@ -6,7 +6,7 @@ module PublicApi
 
     def index
       reactions = PublicApi::ReactionsFinder.new(Reaction.all, **finder_params).execute
-      list_items(reactions, V2::ReactionSerializer, includes: [reactable: :post])
+      list_items(reactions, V2::ReactionSerializer, includes: [reactable: :idea])
     end
 
     private
