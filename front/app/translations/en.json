@@ -757,6 +757,7 @@
   "app.components.formBuilder.shortAnswer": "Short answer",
   "app.components.formBuilder.showResponseToUsersToggleLabel": "Show response to users",
   "app.components.formBuilder.singleChoice": "Single choice",
+  "app.components.formBuilder.staleDataErrorMessage": "There has been a problem. This form has been saved more recently somewhere else. This may be because you or another user has it open for editing in another browser window. Please refresh the page to get the latest data from the server and then make your changes again.",
   "app.components.formBuilder.supportArticleLinkText": "this page",
   "app.components.formBuilder.tags": "Tags",
   "app.components.formBuilder.title": "Title",
