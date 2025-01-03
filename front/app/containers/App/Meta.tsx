@@ -29,6 +29,9 @@ const Meta = () => {
   const localize = useLocalize();
   const { pathname } = useLocation();
 
+  console.log('App meta:');
+  console.log({ homepageLayout });
+
   if (
     !isNilOrError(locale) &&
     !isNilOrError(tenant) &&
