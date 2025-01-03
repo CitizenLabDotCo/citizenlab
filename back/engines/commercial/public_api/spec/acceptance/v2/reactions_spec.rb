@@ -91,7 +91,7 @@ resource 'Reactions' do
           type: kind_of(String),
           title: 'Invalid value for an enum parameter',
           status: 400,
-          detail: "The value '#{reactable_type}' is not allowed for the parameter 'reactable_type'. Accepted values are: idea, initiative, comment, idea-comment, initiative-comment.",
+          detail: "The value '#{reactable_type}' is not allowed for the parameter 'reactable_type'. Accepted values are: idea, comment.",
           parameter_name: 'reactable_type',
           parameter_value: reactable_type,
           allowed_values: PublicApi::V2::ReactionsController::REACTABLE_TYPES
