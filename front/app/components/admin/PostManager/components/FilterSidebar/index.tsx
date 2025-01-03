@@ -115,8 +115,8 @@ const FilterSidebar = ({
     const active = activeFilterMenu === key;
     const selectionSign = isEmpty(selection) ? '' : '*';
     return (
-      <>
-        {title}
+      <Box display="flex" alignItems="center">
+        {active ? <b>{title}</b> : title}
         {selectionSign}&nbsp;
         {active ? (
           <IconTooltip
@@ -125,7 +125,7 @@ const FilterSidebar = ({
             theme="light"
           />
         ) : null}
-      </>
+      </Box>
     );
   };
 
@@ -194,9 +194,6 @@ const FilterSidebar = ({
 
           return (
             <Box
-              display="flex"
-              justifyContent="space-between"
-              alignItems="center"
               w="100%"
               as="button"
               key={item.key}
@@ -204,11 +201,13 @@ const FilterSidebar = ({
               p="12px"
               className={`intercom-admin-input-manager-filter-sidebar-${item.key}`}
               data-cy={`e2e-admin-post-manager-filter-sidebar-${item.key}`}
-              {...getBorders(active)}
               onClick={() => {
                 handleItemClick(item.key);
               }}
               cursor="pointer"
+              borderBottom={
+                active ? `3px solid ${colors.teal500}` : '3px solid transparent'
+              }
             >
               {item.name}
             </Box>
@@ -220,17 +219,6 @@ const FilterSidebar = ({
       </Box>
     </Box>
   );
-};
-
-const getBorders = (active: boolean) => {
-  if (!active) return {};
-
-  return {
-    borderRadius: stylingConsts.borderRadius,
-    borderLeft: BORDER,
-    borderTop: BORDER,
-    borderRight: BORDER,
-  };
 };
 
 export default FilterSidebar;
