@@ -313,8 +313,8 @@ module IdeaCustomFields
         sections: @section_count,
         fields: @field_count,
         params_size: params.to_s.size,
-        form_opened_at: update_all_params[:form_opened_at].to_datetime,
-        form_updated_at: @custom_form.updated_at.to_datetime
+        form_opened_at: update_all_params[:form_opened_at]&.to_datetime,
+        form_updated_at: @custom_form.updated_at&.to_datetime
       }
       SideFxCustomFormService.new.after_update @custom_form, current_user, update_payload
     end

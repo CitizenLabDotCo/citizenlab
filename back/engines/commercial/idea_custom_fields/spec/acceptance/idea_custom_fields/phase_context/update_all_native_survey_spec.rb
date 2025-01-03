@@ -3189,6 +3189,7 @@ resource 'Idea Custom Fields' do
         field2 = create(:custom_field, resource: custom_form, title_multiloc: { 'en' => 'Field 2' })
         request = {
           form_save_type: 'manual',
+          form_opened_at: '2025-01-03T11:42:22.783Z',
           custom_fields: [
             {
               id: page.id,
@@ -3217,7 +3218,7 @@ resource 'Idea Custom Fields' do
             'changed',
             User.first,
             kind_of(Integer),
-            payload: { save_type: 'manual', pages: 1, sections: 0, fields: 2, params_size: 877, form_opened_at: nil, form_updated_at: kind_of(Integer) },
+            payload: { save_type: 'manual', pages: 1, sections: 0, fields: 2, params_size: 969, form_opened_at: kind_of(DateTime), form_updated_at: kind_of(DateTime) },
             project_id: custom_form.project_id
           ).exactly(1).times
       end
