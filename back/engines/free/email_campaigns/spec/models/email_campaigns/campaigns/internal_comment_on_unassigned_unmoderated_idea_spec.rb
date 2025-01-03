@@ -12,7 +12,7 @@ RSpec.describe EmailCampaigns::Campaigns::InternalCommentOnUnassignedUnmoderated
   describe '#generate_commands' do
     let(:campaign) { create(:internal_comment_on_unassigned_unmoderated_idea_campaign) }
     let(:notification) { create(:internal_comment_on_unassigned_unmoderated_idea) }
-    let!(:post_image) { create(:idea_image, idea: notification.idea) }
+    let!(:idea_image) { create(:idea_image, idea: notification.idea) }
 
     include_examples 'internal_comment_campaign_generate_commands'
   end
