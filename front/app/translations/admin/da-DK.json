@@ -2687,7 +2687,7 @@
   "app.containers.admin.ideaStatuses.all.subtitleInputStatuses1": "Administrer den status, der kan tildeles deltagerinput i et projekt. Statussen er offentligt synlig og hjælper med at holde deltagerne informeret.",
   "app.containers.admin.ideaStatuses.all.subtitleProposalStatuses": "Administrer den status, der kan tildeles forslag i et projekt. Statussen er offentligt synlig og hjælper med at holde deltagerne informeret.",
   "app.containers.admin.ideaStatuses.all.titleIdeaStatuses1": "Rediger inputstatusser",
-  "app.containers.admin.ideaStatuses.all.titleProposalStatuses": "Rediger forslagsstatusser",
+  "app.containers.admin.ideaStatuses.all.titleProposalStatuses": "Rediger statusser for forslag",
   "app.containers.admin.ideaStatuses.form.acceptedFieldCodeDescription": "Valgt til implementering eller næste trin",
   "app.containers.admin.ideaStatuses.form.acceptedFieldCodeTitle": "Godkendt",
   "app.containers.admin.ideaStatuses.form.answeredFieldCodeDescription": "Officiel feedback givet",
