@@ -2,7 +2,7 @@ import { defineMessages } from 'react-intl';
 
 export default defineMessages({
   votesLeft: {
-    id: 'app.components.VoteInputs._shared.votesLeft',
+    id: 'app.components.VoteInputs._shared.votesLeft4',
     defaultMessage:
       'You have {votesLeft} / {totalNumberOfVotes} {totalNumberOfVotes, plural, =0 {{votesTerm}} one {{voteTerm}} other {{votesTerm}}} left.',
   },
