@@ -6,11 +6,16 @@ import fetcher from 'utils/cl-react-query/fetcher';
 import homepageBuilderKeys from './keys';
 import { IHomepageBuilderLayout, HomepageBuilderKeys } from './types';
 
-export const fetchHomepageBuilderLayout = () => {
-  return fetcher<IHomepageBuilderLayout>({
+export const fetchHomepageBuilderLayout = async () => {
+  const response = await fetcher<IHomepageBuilderLayout>({
     path: `/home_pages/content_builder_layouts/homepage`,
     action: 'get',
   });
+
+  console.log('fetchHomepageBuilderLayout:');
+  console.log(response);
+
+  return response;
 };
 
 const useHomepageLayout = () => {
