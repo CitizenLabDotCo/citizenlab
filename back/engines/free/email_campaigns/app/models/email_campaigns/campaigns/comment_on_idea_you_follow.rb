@@ -78,10 +78,10 @@ module EmailCampaigns
           comment_author_name: name_service.display_name!(notification.comment.author),
           comment_body_multiloc: notification.comment.body_multiloc,
           comment_url: Frontend::UrlService.new.model_to_url(notification.comment, locale: Locale.new(recipient.locale)),
-          post_published_at: notification.idea.published_at.iso8601,
-          post_title_multiloc: notification.idea.title_multiloc,
-          post_input_term: notification.idea.input_term,
-          post_author_name: name_service.display_name!(notification.idea.author),
+          idea_published_at: notification.idea.published_at.iso8601,
+          idea_title_multiloc: notification.idea.title_multiloc,
+          idea_input_term: notification.idea.input_term,
+          idea_author_name: name_service.display_name!(notification.idea.author),
           unfollow_url: Frontend::UrlService.new.unfollow_url(Follower.new(followable: notification.idea, user: recipient))
         }
       }]

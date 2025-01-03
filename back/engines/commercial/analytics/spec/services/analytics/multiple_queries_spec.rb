@@ -7,7 +7,6 @@ describe Analytics::MultipleQueries do
 
   before do
     create(:dimension_type, name: 'idea')
-    create(:dimension_type, name: 'initiative')
     create(:idea)
   end
 

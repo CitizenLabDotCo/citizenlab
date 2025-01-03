@@ -14,12 +14,12 @@ module EmailCampaigns
           internal_comment_author_name: 'Matthias Geeke',
           internal_comment_body: 'I also think this input is amazing!',
           internal_comment_url: 'http://localhost:3000/en/internal_comments/fake-url-comment-does-not-exist',
-          post_title_multiloc: { en: 'Permit paving of front gardens' },
-          post_body_multiloc: {
+          idea_title_multiloc: { en: 'Permit paving of front gardens' },
+          idea_body_multiloc: {
             en: 'There are many advantages to paving your front garden. Less cars on the road and more space for pedestrians.'
           },
-          post_type: 'Idea',
-          post_image_medium_url: IdeaImage.first.image.versions[:medium].url
+          idea_type: 'Idea',
+          idea_image_medium_url: IdeaImage.first.image.versions[:medium].url
         }
       }
 

@@ -49,15 +49,6 @@ FactoryBot.define do
           organization_type: 'medium_city',
           onboarding: true
         },
-        initiatives: {
-          enabled: true,
-          allowed: true,
-          reacting_threshold: 300,
-          days_limit: 90,
-          threshold_reached_message: { 'en' => 'Threshold reached' },
-          eligibility_criteria: { 'en' => 'Eligibility criteria' },
-          posting_tips: { 'en' => 'Posting tips' }
-        },
         user_confirmation: {
           enabled: false,
           allowed: false

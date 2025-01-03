@@ -2,7 +2,6 @@
 
 class SortByParamsService
   DEFAULT_IDEA_SORT = 'random'
-  DEFAULT_INITIATIVE_SORT = 'new'
   DEFAULT_EVENT_SORT = 'start_at'
   DEFAULT_ACTIVITY_SORT = '-acted_at'
 
@@ -47,26 +46,6 @@ class SortByParamsService
     end
   end
   # rubocop:enable Metrics/CyclomaticComplexity
-
-  def sort_initiatives(scope, params, current_user)
-    case params[:sort] || DEFAULT_INITIATIVE_SORT
-    when 'random' then scope.order_random(current_user)
-    when 'new' then scope.order_new(:desc)
-    when '-new' then scope.order_new(:asc)
-    when 'author_name' then scope.order_author_name(:desc)
-    when '-author_name' then scope.order_author_name(:asc)
-    when 'status' then scope.order_status(:desc)
-    when '-status' then scope.order_status(:asc)
-    when 'likes_count' then scope.order(likes_count: :desc)
-    when '-likes_count' then scope.order(likes_count: :asc)
-    when 'comments_count' then scope.order(comments_count: :desc)
-    when '-comments_count' then scope.order(comments_count: :asc)
-    when 'accepted_cosponsorships_count' then scope.order_accepted_cosponsorships(:desc)
-    when '-accepted_cosponsorships_count' then scope.order_accepted_cosponsorships(:asc)
-    else
-      raise "Unsupported sorting parameter #{params[:sort]}"
-    end
-  end
 
   def sort_events(scope, params)
     case params[:sort] || DEFAULT_EVENT_SORT

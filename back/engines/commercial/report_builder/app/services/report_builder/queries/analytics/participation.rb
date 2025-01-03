@@ -17,7 +17,7 @@ module ReportBuilder
         filters: {
           **date_filter('dimension_date_created', start_at, end_at),
           **project_filter('dimension_project_id', project_id),
-          'dimension_type.name': %w[idea initiative],
+          'dimension_type.name': %w[idea],
           publication_status: 'published'
         },
         groups: "dimension_date_created.#{interval(resolution)}",
@@ -33,7 +33,7 @@ module ReportBuilder
           **date_filter('dimension_date_created', start_at, end_at),
           **project_filter('dimension_project_id', project_id),
           'dimension_type.name': 'comment',
-          'dimension_type.parent': %w[idea initiative]
+          'dimension_type.parent': %w[idea]
         },
         groups: "dimension_date_created.#{interval(resolution)}",
         aggregations: {
@@ -85,7 +85,7 @@ module ReportBuilder
             **date_filter('dimension_date_created', compare_start_at, compare_end_at),
             **project_filter('dimension_project_id', project_id),
             'dimension_type.name': 'comment',
-            'dimension_type.parent': %w[idea initiative]
+            'dimension_type.parent': %w[idea]
           },
           aggregations: {
             all: 'count'

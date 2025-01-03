@@ -163,24 +163,6 @@ namespace :cl2_back do
           enabled: true,
           allowed: true
         },
-        initiatives: {
-          enabled: true,
-          allowed: true,
-          reacting_threshold: 300,
-          days_limit: 90,
-          threshold_reached_message: MultilocService.new.i18n_to_multiloc(
-            'initiatives.default_threshold_reached_message',
-            locales: CL2_SUPPORTED_LOCALES
-          ),
-          eligibility_criteria: MultilocService.new.i18n_to_multiloc(
-            'initiatives.default_eligibility_criteria',
-            locales: CL2_SUPPORTED_LOCALES
-          ),
-          posting_tips: MultilocService.new.i18n_to_multiloc(
-            'initiatives.default_posting_tips',
-            locales: CL2_SUPPORTED_LOCALES
-          )
-        },
         polls: {
           enabled: true,
           allowed: true

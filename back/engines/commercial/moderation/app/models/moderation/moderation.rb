@@ -49,7 +49,7 @@ module Moderation
     end
 
     def source_record
-      return unless %w[Idea Initiative Comment].include? moderatable_type
+      return unless %w[Idea Comment].include? moderatable_type
 
       moderatable_type.constantize.find(id)
     end
@@ -58,15 +58,8 @@ module Moderation
       case moderatable_type
       when 'Idea'
         { project: { id: project_id, slug: project_slug, title_multiloc: project_title_multiloc } }
-      when 'Initiative'
-        {}
       when 'Comment'
-        case post_type
-        when 'Idea'
-          { project: { id: project_id, slug: project_slug, title_multiloc: project_title_multiloc }, post_type.underscore.to_sym => { id: post_id, slug: post_slug, title_multiloc: post_title_multiloc } }
-        when 'Initiative'
-          { post_type.underscore.to_sym => { id: post_id, slug: post_slug, title_multiloc: post_title_multiloc } }
-        end
+        { project: { id: project_id, slug: project_slug, title_multiloc: project_title_multiloc }, post_type.underscore.to_sym => { id: post_id, slug: post_slug, title_multiloc: post_title_multiloc } }
       end
     end
   end

@@ -93,9 +93,9 @@ module EmailCampaigns
           comment_author_name: comment.author_name,
           comment_body_multiloc: comment.body_multiloc,
           comment_url: Frontend::UrlService.new.model_to_url(comment, locale: Locale.new(recipient.locale)),
-          post_published_at: idea.published_at.iso8601,
-          post_title_multiloc: idea.title_multiloc,
-          post_author_name: idea.author_name
+          idea_published_at: idea.published_at.iso8601,
+          idea_title_multiloc: idea.title_multiloc,
+          idea_author_name: idea.author_name
         }
       }]
     end

@@ -10,11 +10,11 @@ module EmailCampaigns
       command = {
         recipient: recipient_user,
         event_payload: {
-          post_id: idea.id,
-          post_title_multiloc: idea.title_multiloc,
-          post_body_multiloc: idea.body_multiloc,
-          post_url: Frontend::UrlService.new.model_to_url(idea, locale: Locale.new(recipient_user.locale)),
-          post_images: idea.idea_images.map do |image|
+          idea_id: idea.id,
+          idea_title_multiloc: idea.title_multiloc,
+          idea_body_multiloc: idea.body_multiloc,
+          idea_url: Frontend::UrlService.new.model_to_url(idea, locale: Locale.new(recipient_user.locale)),
+          idea_images: idea.idea_images.map do |image|
             {
               ordering: image.ordering,
               versions: image.image.versions.to_h { |k, v| [k.to_s, v.url] }

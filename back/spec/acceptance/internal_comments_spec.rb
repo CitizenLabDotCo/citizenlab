@@ -4,7 +4,7 @@ require 'rails_helper'
 require 'rspec_api_documentation/dsl'
 
 resource 'InternalComments' do
-  explanation 'Internal comments permit admins & moderators to discuss content (i.e. ideas &/or initiatives).'
+  explanation 'Internal comments permit admins & moderators to discuss content (i.e. ideas).'
 
   before { header 'Content-Type', 'application/json' }
 
@@ -284,7 +284,7 @@ resource 'InternalComments' do
           expect(internal_comment.reload.publication_status).to eq('deleted')
         end
 
-        example "[Unauthorized] Admin (not author) marks an internal comment on an initiative as 'deleted'" do
+        example "[Unauthorized] Admin (not author) marks an internal comment on an idea as 'deleted'" do
           internal_comment.update!(author: create(:admin))
 
           do_request

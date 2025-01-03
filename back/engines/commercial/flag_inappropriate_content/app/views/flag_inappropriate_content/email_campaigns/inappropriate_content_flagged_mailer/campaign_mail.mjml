@@ -19,13 +19,6 @@
         <p style="font-size: 14px; margin-top: 10px; color: #84939E;">
           <%= localize_for_recipient(event.flaggable_body_multiloc) %>
         </p>
-      <% when 'Initiative' %>
-        <h2 style="font-size: 18px; margin-top: 10px; margin-bottom: 10px;">
-          <%= localize_for_recipient(event.flaggable_title_multiloc) %>
-        </h2>
-        <p style="font-size: 14px; margin-top: 10px; color: #84939E;">
-          <%= localize_for_recipient(event.flaggable_body_multiloc) %>
-        </p>
       <% end %>
       
     </mj-text>

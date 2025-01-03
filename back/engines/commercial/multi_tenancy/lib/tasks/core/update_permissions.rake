@@ -40,17 +40,4 @@ namespace :fix_existing_tenants do
       end
     end
   end
-
-  desc 'Migrate initiatives posting_enabled before removal'
-  task migrate_initiatives_posting_enabled: [:environment] do |_t, _args|
-    tenants = Tenant.all.reject do |tenant|
-      tenant.configuration.settings.dig('initiatives', 'posting_enabled')
-    end
-
-    tenants.each do |tenant|
-      Apartment::Tenant.switch(tenant.schema_name) do
-        Permission.where(action: 'posting_initiative').update_all permitted_by: 'admins_moderators'
-      end
-    end
-  end
 end

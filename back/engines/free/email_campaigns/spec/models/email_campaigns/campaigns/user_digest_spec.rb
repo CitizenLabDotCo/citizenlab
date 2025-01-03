@@ -61,8 +61,6 @@ RSpec.describe EmailCampaigns::Campaigns::UserDigest do
       expect(
         command.dig(:event_payload, :top_ideas, 0, :top_comments, 0, :author_last_name)
       ).to eq("#{top_comment.author.last_name[0]}.")
-
-      # @todo No new initiatives and successful initiatives in this digest
     end
 
     it 'does not include native survey responses' do

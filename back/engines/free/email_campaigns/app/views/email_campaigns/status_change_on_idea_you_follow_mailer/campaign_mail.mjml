@@ -11,7 +11,7 @@
   </mj-column>
 </mj-section>
 
-<%= render partial: 'application/cta_button', locals: { href: event.post_url , message: format_message('cta_goto_input', component: 'general') } %>
+<%= render partial: 'application/cta_button', locals: { href: event.idea_url , message: format_message('cta_goto_input', component: 'general') } %>
 
 
 <% if AppConfiguration.instance.feature_activated?('follow') %>

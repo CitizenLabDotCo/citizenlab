@@ -10,18 +10,12 @@ describe SideFxReactionService do
     it "logs a 'liked' action when a like on an idea is created" do
       reaction = create(:reaction, mode: 'up', reactable: create(:idea))
       expect { service.after_create(reaction, user) }
-        .to have_enqueued_job(LogActivityJob)
-    end
-
-    it "logs a 'liked' action when a like on an initiative is created" do
-      reaction = create(:reaction, mode: 'up', reactable: create(:initiative))
-      expect { service.after_create(reaction, user) }
         .to(have_enqueued_job(LogActivityJob)
         .with do |reaction_arg, action, user_arg, _acted_at, options|
           expect(reaction_arg).to be_a(String)
-          expect(action).to eq('initiative_liked')
+          expect(action).to eq('idea_liked')
           expect(user_arg).to eq(user)
-          expect(options[:project_id]).to be_blank
+          expect(options[:project_id]).to be_present
         end)
     end
 
@@ -39,12 +33,12 @@ describe SideFxReactionService do
 
     # Test for regression of bugfix to prevent case where an exception occurs due to resource being
     # deleted before the job to log an Activity recording its creation is run. See CL-1962.
-    it "logs a 'liked' action when a like on an initiative is created and then immediately removed", active_job_inline_adapter: true do
-      reaction = create(:reaction, mode: 'up', reactable: create(:initiative))
+    it "logs a 'liked' action when a like on an idea is created and then immediately removed", active_job_inline_adapter: true do
+      reaction = create(:reaction, mode: 'up', reactable: create(:idea))
       reaction.destroy!
       allow(PublishActivityToRabbitJob).to receive(:perform_later)
       service.after_create(reaction, user)
-      expect(Activity.where(action: 'initiative_liked').first).to be_present
+      expect(Activity.where(action: 'idea_liked').first).to be_present
     end
 
     it 'creates a follower' do

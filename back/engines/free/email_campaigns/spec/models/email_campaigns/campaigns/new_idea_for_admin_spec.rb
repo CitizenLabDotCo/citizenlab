@@ -76,7 +76,7 @@ RSpec.describe EmailCampaigns::Campaigns::NewIdeaForAdmin do
     it 'generates a command with the desired payload and tracked content' do
       command = campaign.generate_commands(recipient: reciptient, activity: activity).first
 
-      expect(command.dig(:event_payload, :post_title_multiloc)).to eq title_multiloc
+      expect(command.dig(:event_payload, :idea_title_multiloc)).to eq title_multiloc
     end
 
     describe do

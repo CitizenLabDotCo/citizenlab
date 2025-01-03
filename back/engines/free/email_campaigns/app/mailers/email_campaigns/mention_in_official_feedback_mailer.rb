@@ -22,7 +22,7 @@ module EmailCampaigns
       format_message(
         'event_description',
         values: {
-          post: localize_for_recipient(event.post_title_multiloc),
+          post: localize_for_recipient(event.idea_title_multiloc),
           organizationName: organization_name
         }
       )

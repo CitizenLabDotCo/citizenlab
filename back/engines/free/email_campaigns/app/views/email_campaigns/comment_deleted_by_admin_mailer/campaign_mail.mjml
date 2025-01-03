@@ -39,4 +39,4 @@
 </mj-section>
 
 <!-- CTA button -->
-<%= render partial: 'application/cta_button', locals: { href: event.post_url, message: format_message('cta_view') } %>
+<%= render partial: 'application/cta_button', locals: { href: event.idea_url, message: format_message('cta_view') } %>

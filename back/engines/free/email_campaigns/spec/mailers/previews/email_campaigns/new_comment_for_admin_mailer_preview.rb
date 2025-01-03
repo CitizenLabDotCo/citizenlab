@@ -15,13 +15,12 @@ module EmailCampaigns
           comment_body_multiloc: {
             en: 'Ruh roooarrgh yrroonn wyaaaaaa ahuma hnn-rowr ma'
           },
-          comment_url: 'http://localhost:3000/en/initiatives/wiki-roulette',
-          post_published_at: '2019-08-23T14:04:13Z',
-          post_title_multiloc: {
+          comment_url: 'http://localhost:3000/en/ideas/wiki-roulette',
+          idea_published_at: '2019-08-23T14:04:13Z',
+          idea_title_multiloc: {
             en: 'Wiki Roulette'
           },
-          post_author_name: "K\u00c3\u00bcn Gremmelpret",
-          post_type: 'Initiative'
+          idea_author_name: "K\u00c3\u00bcn Gremmelpret"
         }
       }
 

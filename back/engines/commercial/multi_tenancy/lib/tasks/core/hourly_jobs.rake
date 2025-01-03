@@ -6,7 +6,6 @@ namespace :cl2back do
     now = Time.zone.now
     Tenant.creation_finalized.each do |tenant|
       Apartment::Tenant.switch(tenant.schema_name) do
-        AutomatedTransitionJob.perform_later
         CreatePeriodicActivitiesJob.perform_later now.to_i
         DeleteInvitesJob.perform_later
       end

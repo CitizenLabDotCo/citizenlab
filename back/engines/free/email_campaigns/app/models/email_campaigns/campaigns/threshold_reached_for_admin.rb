@@ -81,13 +81,9 @@ module EmailCampaigns
       end
       [{
         event_payload: {
-          post_title_multiloc: notification.idea.title_multiloc,
-          post_body_multiloc: notification.idea.body_multiloc,
-          post_published_at: notification.idea.published_at.iso8601,
-          post_author_name: notification.idea.author_name,
-          post_url: Frontend::UrlService.new.model_to_url(notification.idea, locale: Locale.new(recipient.locale)),
-          post_likes_count: notification.idea.likes_count,
-          post_comments_count: notification.idea.comments_count,
+          idea_title_multiloc: notification.idea.title_multiloc,
+          idea_author_name: notification.idea.author_name,
+          idea_url: Frontend::UrlService.new.model_to_url(notification.idea, locale: Locale.new(recipient.locale)),
           **assignee_attributes
         }
       }]

@@ -52,10 +52,6 @@ resource 'NavBarItems' do
       end
 
       context 'when NavBarItem is disabled by corresponding disabled feature' do
-        before do
-          SettingsService.new.deactivate_feature!('initiatives')
-        end
-
         example_request 'Does not list removed default but feature-disabled NavBarItems' do
           expect(codes).to include 'home'
           expect(codes).not_to include 'events'

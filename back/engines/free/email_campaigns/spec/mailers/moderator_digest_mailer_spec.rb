@@ -63,8 +63,7 @@ RSpec.describe EmailCampaigns::ModeratorDigestMailer do
           successful_proposals: []
         },
         tracked_content: {
-          idea_ids: [],
-          initiative_ids: []
+          idea_ids: []
         }
       }
     end
