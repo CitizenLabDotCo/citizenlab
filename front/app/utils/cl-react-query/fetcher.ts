@@ -129,8 +129,10 @@ async function fetcher({
       console.log('fetcher 2');
     }
   } catch (e) {
-    console.log('fetcher error');
-    console.log(e);
+    if (path === `/home_pages/content_builder_layouts/homepage`) {
+      console.log('fetcher error');
+      console.log(e);
+    }
     if (
       action === 'post' &&
       (response.status === 201 || response.status === 200)
@@ -158,8 +160,10 @@ async function fetcher({
 
   if (!response.ok) {
     const error = data as unknown as CLErrors;
-    console.log('fetcher error 2');
-    console.log(error);
+    if (path === `/home_pages/content_builder_layouts/homepage`) {
+      console.log('fetcher error 2');
+      console.log(error);
+    }
     handleBlockedUserError(response.status, error);
     // TODO: Fix this the next time the file is edited.
     // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
@@ -172,7 +176,9 @@ async function fetcher({
     // TODO: Fix this the next time the file is edited.
     // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     if (data) {
-      console.log('fetcher 3');
+      if (path === `/home_pages/content_builder_layouts/homepage`) {
+        console.log('fetcher 3');
+      }
       if (isArray(data.data)) {
         if (cacheIndividualItems) {
           data.data.forEach((entry) => {
@@ -191,11 +197,15 @@ async function fetcher({
           });
         }
       } else if (action === 'get' || action === 'post' || action === 'patch') {
-        console.log('fetcher 4');
-        console.log(action);
+        if (path === `/home_pages/content_builder_layouts/homepage`) {
+          console.log('fetcher 4');
+          console.log(action);
+        }
         if (data.data.id) {
-          console.log('fetcher 5');
-          console.log(data.data);
+          if (path === `/home_pages/content_builder_layouts/homepage`) {
+            console.log('fetcher 5');
+            console.log(data.data);
+          }
           queryClient.setQueryData(
             [
               {
