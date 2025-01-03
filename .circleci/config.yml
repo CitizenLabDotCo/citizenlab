@@ -212,7 +212,7 @@ jobs:
           docker login -u $DOCKER_USER -p $DOCKER_PASS
           docker push citizenlabdotco/back-ee:$CIRCLE_SHA1
 
-  back-build-arm-docker-image:
+  back-build-docker-arm-image:
     working_directory: ~/
     docker:
       - image: cimg/base:2021.03
