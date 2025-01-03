@@ -2,8 +2,8 @@
 
 module IdBogus
   # Fake method for testing purposes only
-  class BogusVerification
-    include Verification::VerificationMethod
+  class BogusVerification < IdMethod::Base
+    include IdMethod::VerificationMethod
 
     def verification_method_type
       :manual_sync

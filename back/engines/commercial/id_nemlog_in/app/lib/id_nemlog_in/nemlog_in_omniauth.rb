@@ -1,7 +1,8 @@
 # frozen_string_literal: true
 
 module IdNemlogIn
-  class NemlogInOmniauth < OmniauthMethods::Base
+  class NemlogInOmniauth < IdMethod::Base
+    include IdMethod::OmniAuthMethod
     include NemlogInVerification
 
     ENVIRONMENTS = {
@@ -108,11 +109,6 @@ module IdNemlogIn
     def locked_attributes
       %i[]
     end
-
-    # TODO: JS - implement single logout (if possible)
-    # def logout_url(_user)
-    #   URI.join(Frontend::UrlService.new.home_url, '/auth/nemlog_in/spslo').to_s
-    # end
 
     def email_always_present?
       false

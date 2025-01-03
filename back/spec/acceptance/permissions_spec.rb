@@ -109,7 +109,6 @@ resource 'Permissions' do
         expect(response_data[:id]).to eq @phase.permissions.first.id
         expect(response_data.dig(:attributes, :permitted_by)).to eq 'users'
         expect(response_data.dig(:relationships, :groups, :data).pluck(:id)).to match_array Group.all.pluck(:id)
-        # TODO: JS - Default Permissions fields will not be returned as relationships - are they needed?
       end
 
       example 'Get one group permission', document: false do
