@@ -17,6 +17,8 @@ const handleLoadImages = () => {
 
 const Preview = () => {
   const { data: homepageLayout } = useHomepageLayout();
+  console.log('Viewer:');
+  console.log({ homepageLayout });
 
   const homepageContent = homepageLayout?.data.attributes.craftjs_json;
 

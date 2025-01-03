@@ -180,29 +180,16 @@ async function fetcher({
         }
       } else if (action === 'get' || action === 'post' || action === 'patch') {
         if (data.data.id) {
-          // TODO REMOVE
-          if (path === `/home_pages/content_builder_layouts/homepage`) {
-            queryClient.setQueryData(
-              [
-                {
-                  type: data.data.type,
-                  operation: 'item',
-                },
-              ],
-              () => ({ data: data.data })
-            );
-          } else {
-            queryClient.setQueryData(
-              [
-                {
-                  type: data.data.type,
-                  parameters: { id: data.data.id },
-                  operation: 'item',
-                },
-              ],
-              () => ({ data: data.data })
-            );
-          }
+          queryClient.setQueryData(
+            [
+              {
+                type: data.data.type,
+                parameters: { id: data.data.id },
+                operation: 'item',
+              },
+            ],
+            () => ({ data: data.data })
+          );
         }
       }
       if (data.included) {

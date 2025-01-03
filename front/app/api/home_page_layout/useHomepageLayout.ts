@@ -12,6 +12,8 @@ export const fetchHomepageBuilderLayout = async () => {
     action: 'get',
   });
 
+  console.log({ response });
+
   return response;
 };
 
