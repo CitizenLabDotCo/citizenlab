@@ -123,6 +123,11 @@ const RightColumnDesktop = ({
                 followersCount={idea.data.attributes.followers_count}
                 followerId={idea.data.relationships.user_follower.data?.id}
                 toolTipType="input"
+                buttonStyle={
+                  participationMethod === 'proposals'
+                    ? 'secondary-outlined'
+                    : 'primary'
+                }
               />
             </Box>
           </Box>
