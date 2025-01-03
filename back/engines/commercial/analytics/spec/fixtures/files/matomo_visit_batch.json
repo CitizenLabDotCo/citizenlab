@@ -8,27 +8,6 @@
     "actionDetails": [
       {
         "type": "action",
-        "url": "http://localhost/nl-BE/initiatives",
-        "pageTitle": "/:locale/initiatives",
-        "pageIdAction": "3",
-        "idpageview": "fjnLxM",
-        "serverTimePretty": "Sep 8, 2022 16:36:54",
-        "pageId": "1",
-        "pageLoadTime": "7.13s",
-        "timeSpent": 40,
-        "timeSpentPretty": "40s",
-        "pageLoadTimeMilliseconds": "7133",
-        "pageviewPosition": "1",
-        "title": "/:locale/initiatives",
-        "subtitle": "http://localhost/nl-BE/initiatives",
-        "icon": "",
-        "iconSVG": "plugins/Morpheus/images/action.svg",
-        "timestamp": 1662655014,
-        "dimension3": "en-US",
-        "dimension4": null
-      },
-      {
-        "type": "action",
         "url": "http://localhost/nl-BE/events",
         "pageTitle": "/:locale/events",
         "pageIdAction": "7",

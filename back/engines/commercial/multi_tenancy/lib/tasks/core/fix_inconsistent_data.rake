@@ -132,7 +132,6 @@ namespace :inconsistent_data do
           Group => [:title_multiloc],
           IdeaStatus => %i[title_multiloc description_multiloc],
           Idea => %i[title_multiloc body_multiloc],
-          InitiativeStatus => %i[title_multiloc description_multiloc],
           OfficialFeedback => %i[body_multiloc author_multiloc],
           StaticPage => %i[title_multiloc body_multiloc],
           Phase => %i[title_multiloc description_multiloc],

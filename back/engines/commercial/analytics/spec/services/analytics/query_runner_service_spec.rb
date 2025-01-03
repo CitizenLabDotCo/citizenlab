@@ -5,10 +5,7 @@ require 'uri'
 
 describe Analytics::QueryRunnerService do
   describe '#run' do
-    before_all do
-      create(:dimension_type)
-      create(:dimension_type, name: 'initiative')
-    end
+    before_all { create(:dimension_type) }
 
     it 'return the ID field for each post' do
       ideas = create_list(:idea, 5)

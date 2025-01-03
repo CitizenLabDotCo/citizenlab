@@ -32,9 +32,7 @@ resource 'Reactions' do
 
     parameter(
       :reactable_type, <<~DESC.squish,
-        List only the reactions that were cast on a specific type of resource. 'initiative'
-        corresponds to proposals on the platform. 'idea-comment' and 'initiative-comment'
-        filter reactions on comments on ideas and comments on proposals, respectively.
+        List only the reactions that were cast on a specific type of resource.
       DESC
       required: false,
       in: 'query',

@@ -25,7 +25,7 @@ resource 'Analytics - FactPosts model' do
       end
 
       # Set up type dimensions
-      [{ name: 'idea', parent: 'post' }, { name: 'initiative', parent: 'post' }, { name: 'proposal', parent: 'post' }].each do |type|
+      [{ name: 'idea', parent: 'post' }, { name: 'proposal', parent: 'post' }].each do |type|
         create(:dimension_type, name: type[:name], parent: type[:parent])
       end
     end

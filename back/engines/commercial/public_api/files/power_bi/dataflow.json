@@ -82,12 +82,6 @@
         "queryGroupId": "ef306a21-8cca-4a9f-bad1-5b7964d57ac8",
         "loadEnabled": true
       },
-      "initiatives": {
-        "queryId": "cb45be5e-60dc-42ad-81a8-2cc14c008d10",
-        "queryName": "initiatives",
-        "queryGroupId": "ef306a21-8cca-4a9f-bad1-5b7964d57ac8",
-        "loadEnabled": true
-      },
       "project_topics": {
         "queryId": "3cfca4a3-5f0d-4540-8833-d0a7f8eadbd8",
         "queryName": "project_topics",
@@ -481,47 +475,6 @@
           "name": "FullRefreshPolicyPartition",
           "refreshTime": "2023-10-05T20:24:57.6079881+00:00",
           "location": "https://wabiweuepcdsap1.blob.core.windows.net:443/8e0a886d-5aa0-4d92-80f6-339d6311b9c6/users.csv?snapshot=2023-10-05T20%3A24%3A57.5793827Z"
-        }
-      ]
-    },
-    {
-      "$type": "LocalEntity",
-      "name": "initiatives",
-      "description": "",
-      "pbi:refreshPolicy": {
-        "$type": "FullRefreshPolicy",
-        "location": "initiatives.csv"
-      },
-      "attributes": [
-        { "name": "id", "dataType": "string" },
-        { "name": "title", "dataType": "string" },
-        { "name": "body", "dataType": "string" },
-        { "name": "author_id", "dataType": "string" },
-        { "name": "likes_count", "dataType": "int64" },
-        { "name": "dislikes_count", "dataType": "int64" },
-        { "name": "comments_count", "dataType": "int64" },
-        { "name": "published_at", "dataType": "dateTime" },
-        { "name": "publication_status", "dataType": "string" },
-        { "name": "created_at", "dataType": "dateTime" },
-        { "name": "updated_at", "dataType": "dateTime" },
-        { "name": "threshold_reached_at", "dataType": "dateTime" },
-        { "name": "location_point", "dataType": "string" },
-        { "name": "location_description", "dataType": "string" },
-        { "name": "slug", "dataType": "string" },
-        { "name": "official_feedbacks_count", "dataType": "int64" },
-        { "name": "assignee_id", "dataType": "string" },
-        { "name": "assigned_at", "dataType": "dateTime" },
-        { "name": "href", "dataType": "string" },
-        { "name": "title_multiloc", "dataType": "string" },
-        { "name": "body_multiloc", "dataType": "string" },
-        { "name": "data_refreshed_at", "dataType": "dateTime" },
-        { "name": "created_at_date", "dataType": "date" }
-      ],
-      "partitions": [
-        {
-          "name": "FullRefreshPolicyPartition",
-          "refreshTime": "2023-10-05T20:24:49.8891435+00:00",
-          "location": "https://wabiweuepcdsap1.blob.core.windows.net:443/8e0a886d-5aa0-4d92-80f6-339d6311b9c6/initiatives.csv?snapshot=2023-10-05T20%3A24%3A49.8698217Z"
         }
       ]
     },

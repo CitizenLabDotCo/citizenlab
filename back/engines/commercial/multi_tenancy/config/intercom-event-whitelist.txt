@@ -86,4 +86,3 @@ Reaction canceled_idea_like
 Reaction comment_liked
 Reaction idea_disliked
 Reaction idea_liked
-Reaction initiative_liked

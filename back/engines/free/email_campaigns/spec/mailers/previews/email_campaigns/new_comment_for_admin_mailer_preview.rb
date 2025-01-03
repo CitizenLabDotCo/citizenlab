@@ -15,7 +15,7 @@ module EmailCampaigns
           comment_body_multiloc: {
             en: 'Ruh roooarrgh yrroonn wyaaaaaa ahuma hnn-rowr ma'
           },
-          comment_url: 'http://localhost:3000/en/initiatives/wiki-roulette',
+          comment_url: 'http://localhost:3000/en/ideas/wiki-roulette',
           post_published_at: '2019-08-23T14:04:13Z',
           post_title_multiloc: {
             en: 'Wiki Roulette'

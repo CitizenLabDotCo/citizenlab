@@ -121,10 +121,6 @@ module Frontend
       "#{configuration.base_frontend_uri}/pages/privacy-policy"
     end
 
-    def initiatives_url(configuration = app_config_instance)
-      "#{configuration.base_frontend_uri}/initiatives"
-    end
-
     def admin_ideas_url(configuration = app_config_instance)
       "#{configuration.base_frontend_uri}/admin/ideas"
     end
@@ -137,10 +133,6 @@ module Frontend
       else
         "#{configuration.base_frontend_uri}/admin/projects/#{project_id}/settings"
       end
-    end
-
-    def admin_initiatives_url(configuration = app_config_instance)
-      "#{configuration.base_frontend_uri}/admin/initiatives"
     end
 
     def idea_edit_url(configuration, idea_id)

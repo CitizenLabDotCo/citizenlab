@@ -31,21 +31,6 @@ FactoryBot.define do
           'color_secondary' => Faker::Color.hex_color,
           'color_text' => Faker::Color.hex_color,
           'authentication_token_lifetime_in_days' => 30
-        },
-        'initiatives' => {
-          'enabled' => true,
-          'allowed' => true,
-          'reacting_threshold' => 300,
-          'days_limit' => 90,
-          'threshold_reached_message' =>
-            MultilocService.new.i18n_to_multiloc('initiatives.default_threshold_reached_message',
-              locales: %i[en nl-BE fr-FR]),
-          'eligibility_criteria' =>
-            MultilocService.new.i18n_to_multiloc('initiatives.default_eligibility_criteria',
-              locales: %i[en nl-BE fr-FR]),
-          'posting_tips' =>
-            MultilocService.new.i18n_to_multiloc('initiatives.default_posting_tips',
-              locales: %i[en nl-BE fr-FR])
         }
       }
     end
@@ -76,21 +61,6 @@ FactoryBot.define do
           'authentication_token_lifetime_in_days' => 30,
           'maximum_admins_number' => 10,
           'maximum_moderators_number' => 10
-        },
-        'initiatives' => {
-          'enabled' => true,
-          'allowed' => true,
-          'reacting_threshold' => 300,
-          'days_limit' => 90,
-          'threshold_reached_message' =>
-            MultilocService.new.i18n_to_multiloc('initiatives.default_threshold_reached_message',
-              locales: %i[en nl-BE fr-FR]),
-          'eligibility_criteria' =>
-            MultilocService.new.i18n_to_multiloc('initiatives.default_eligibility_criteria',
-              locales: %i[en nl-BE fr-FR]),
-          'posting_tips' =>
-            MultilocService.new.i18n_to_multiloc('initiatives.default_posting_tips',
-              locales: %i[en nl-BE fr-FR])
         }
       }
     end

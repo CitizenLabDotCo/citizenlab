@@ -13,56 +13,11 @@ namespace :fix_existing_tenants do
     end
   end
 
-  desc 'Delete new idea/initiative/comment for admin notifications'
+  desc 'Delete new idea/comment for admin notifications'
   task delete_admin_new_content_notifications: [:environment] do |_t, _args|
     Tenant.all.each do |tenant|
       Apartment::Tenant.switch(tenant.host.tr('.', '_')) do
-        types = ['Notifications::NewIdeaForAdmin', 'Notifications::NewCommentForAdmin',
-          'Notifications::NewInitiativeForAdmin']
-        # We first have to clear the types of the removed notifications,
-        # otherwise Rails will try to load the model subtype, try to
-        # find the corresponding model and fail.
-        Notification.where(type: types).update_all(type: nil)
-        Notification.where(type: nil).destroy_all
-      end
-    end
-  end
-
-  desc 'Delete official feedback and status change notifications after merging'
-  task delete_feedback_status_notifications: [:environment] do |_t, _args|
-    Tenant.all.each do |tenant|
-      Apartment::Tenant.switch(tenant.host.tr('.', '_')) do
-        types = [
-          'Notifications::OfficialFeedbackOnCommentedIdea',
-          'Notifications::OfficialFeedbackOnCommentedInitiative',
-          'Notifications::OfficialFeedbackOnReactedIdea',
-          'Notifications::OfficialFeedbackOnReactedInitiative',
-          'Notifications::OfficialFeedbackOnYourIdea',
-          'Notifications::OfficialFeedbackOnYourInitiative',
-          'Notifications::StatusChangeOnCommentedIdea',
-          'Notifications::StatusChangeOnCommentedInitiative',
-          'Notifications::StatusChangeOnReactedIdea',
-          'Notifications::StatusChangeOnReactedInitiative',
-          'Notifications::StatusChangeOfYourIdea',
-          'Notifications::StatusChangeOfYourInitiative'
-        ]
-        # We first have to clear the types of the removed notifications,
-        # otherwise Rails will try to load the model subtype, try to
-        # find the corresponding model and fail.
-        Notification.where(type: types).update_all(type: nil)
-        Notification.where(type: nil).destroy_all
-      end
-    end
-  end
-
-  desc 'Delete comment notifications after merging'
-  task delete_comment_notifications: [:environment] do |_t, _args|
-    Tenant.all.each do |tenant|
-      Apartment::Tenant.switch(tenant.host.tr('.', '_')) do
-        types = [
-          'Notifications::CommentOnYourIdea',
-          'Notifications::CommentOnYourInitiative'
-        ]
+        types = ['Notifications::NewIdeaForAdmin', 'Notifications::NewCommentForAdmin']
         # We first have to clear the types of the removed notifications,
         # otherwise Rails will try to load the model subtype, try to
         # find the corresponding model and fail.

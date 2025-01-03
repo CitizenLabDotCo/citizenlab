@@ -1,7 +1,7 @@
 <mj-section padding="25px" text-align="left">
   <mj-column border="1px solid #eaeaea" background-color="#fff" border-radius="5px">
     <mj-table>
-      <tr class="initiative">
+      <tr class="idea">
         <% if post_image_url %>
           <td style="padding: 15px 15px 0px 15px;">
             <span style="font-size: 24px; font-weight: 700; color: rgb(111, 119, 125);">
