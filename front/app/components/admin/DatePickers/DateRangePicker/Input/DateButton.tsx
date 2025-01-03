@@ -7,7 +7,7 @@ const StyledButton = styled(Box)<{ isSelected: boolean }>`
   ${({ isSelected }) =>
     isSelected
       ? `
-    background-color: ${colors.teal200};
+    background-color: ${colors.teal100};
   `
       : `
     &:hover {
