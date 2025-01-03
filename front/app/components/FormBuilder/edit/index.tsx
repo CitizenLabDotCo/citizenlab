@@ -165,7 +165,6 @@ const FormEdit = ({
     }
   }, [formCustomFields, isUpdatingForm, isFetching, reset]);
 
-  // const formOpenedAt = new Date(); // Used to log when the form was opened vs when it was saved
   let autosave: boolean = false; // Use to log autosave vs manual save
   const closeSettings = (triggerAutosave?: boolean) => {
     setSelectedField(undefined);
