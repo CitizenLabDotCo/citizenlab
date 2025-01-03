@@ -22,7 +22,7 @@
       </tr>
 
       <!-- (Conditional) Action item 1: Add an idea image -->
-      <% if event.post_images.empty? %>
+      <% if event.idea_images.empty? %>
         <tr>
           <td style="width:22px; padding-bottom:15px">
             <img style="vertical-align: middle; height: 22px;"
@@ -32,7 +32,7 @@
           <td style="padding-left: 10px; padding-bottom:15px">
             <%=
               format_message('action_add_image', values: {
-                addImageLink: "<a href=\"#{url_service.idea_edit_url(app_configuration, event.post_id)}\" style=\"text-decoration: underline;\">#{format_message('add_image')}</a>"
+                addImageLink: "<a href=\"#{url_service.idea_edit_url(app_configuration, event.idea_id)}\" style=\"text-decoration: underline;\">#{format_message('add_image')}</a>"
               }, escape_html: false)
             %>
           </td>
@@ -53,7 +53,7 @@
         <td style="padding-left: 10px; padding-bottom:15px">
           <%=
             format_message('action_share_fb', values: {
-              fbLink: "<a href=\"https://www.facebook.com/sharer/sharer.php?u=#{CGI.escape event.post_url}\" style=\"text-decoration: underline;\">Facebook</a>"
+              fbLink: "<a href=\"https://www.facebook.com/sharer/sharer.php?u=#{CGI.escape event.idea_url}\" style=\"text-decoration: underline;\">Facebook</a>"
             }, escape_html: false)
           %>
         </td>
@@ -74,7 +74,7 @@
         <td style="padding-left: 10px; padding-bottom:15px;">
           <%=
             format_message('action_share_twitter', values: {
-              twitterLink: "<a href=\"https://twitter.com/intent/tweet?text=#{CGI.escape event.post_url}\" style=\"text-decoration: underline;\">X</a>"
+              twitterLink: "<a href=\"https://twitter.com/intent/tweet?text=#{CGI.escape event.idea_url}\" style=\"text-decoration: underline;\">X</a>"
             }, escape_html: false)
           %>
         </td>
@@ -118,7 +118,7 @@
         <td style="padding-left: 10px; padding-bottom:15px;">
           <%=
             format_message('action_share_link', values: {
-              link: "<a href=\"#{event.post_url}\" style=\"text-decoration: underline;\">#{format_message('link')}</a>"
+              link: "<a href=\"#{event.idea_url}\" style=\"text-decoration: underline;\">#{format_message('link')}</a>"
             }, escape_html: false)
           %>
         </td>
@@ -133,4 +133,4 @@
   </mj-column>
 </mj-section>
 
-<%= render partial: 'application/cta_button', locals: { href: event.post_url, message: format_message("cta_goto_your.#{event.input_term}", component: 'general') } %>
+<%= render partial: 'application/cta_button', locals: { href: event.idea_url, message: format_message("cta_goto_your.#{event.input_term}", component: 'general') } %>

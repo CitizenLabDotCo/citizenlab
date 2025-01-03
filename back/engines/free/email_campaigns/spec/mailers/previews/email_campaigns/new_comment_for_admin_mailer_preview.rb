@@ -16,11 +16,11 @@ module EmailCampaigns
             en: 'Ruh roooarrgh yrroonn wyaaaaaa ahuma hnn-rowr ma'
           },
           comment_url: 'http://localhost:3000/en/ideas/wiki-roulette',
-          post_published_at: '2019-08-23T14:04:13Z',
-          post_title_multiloc: {
+          idea_published_at: '2019-08-23T14:04:13Z',
+          idea_title_multiloc: {
             en: 'Wiki Roulette'
           },
-          post_author_name: "K\u00c3\u00bcn Gremmelpret"
+          idea_author_name: "K\u00c3\u00bcn Gremmelpret"
         }
       }
 

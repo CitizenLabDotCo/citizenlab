@@ -18,10 +18,10 @@ RSpec.describe EmailCampaigns::CommentOnYourCommentMailer do
             'nl-BE': "<span class=\"cl-mention-user\" data-user-id=\"0b36289a-d95e-4998-bb8c-866cb58e0c90\" data-user-slug=\"lieve-kuypers\">@Lieve Kuypers</span> Dat zullen de pati\u00c3\u00abnten die op hun huisbezoek of thuisverpleging graag horen. ;) Sommige gezinnen hebben nu eenmaal nood aan meerdere wagens... "
           },
           comment_url: 'http://localhost:3000/nl-BE/ideas/afschaffen-of-versoepelen-wetgeving-rond-verharden-van-voortuin',
-          post_title_multiloc: {
+          idea_title_multiloc: {
             'nl-BE': 'Afschaffen of versoepelen wetgeving rond verharden van voortuin'
           },
-          post_type: 'Idea'
+          idea_type: 'Idea'
         }
       }
     end

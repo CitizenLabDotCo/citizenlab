@@ -19,7 +19,7 @@ RSpec.describe EmailCampaigns::Campaigns::IdeaPublished do
       command = campaign.generate_commands(recipient: user, activity: activity).first
 
       expect(command[:event_payload]).to include(
-        post_id: idea.id,
+        idea_id: idea.id,
         input_term: 'idea'
       )
     end

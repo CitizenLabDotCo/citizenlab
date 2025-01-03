@@ -75,19 +75,19 @@ module EmailCampaigns
 
       [{
         event_payload: {
-          post_title_multiloc: idea.title_multiloc,
-          post_body_multiloc: idea.body_multiloc,
-          post_author_name: name_service.display_name!(idea.author),
-          post_cosponsor_name: name_service.display_name!(cosponsor),
-          post_url: Frontend::UrlService.new.model_to_url(idea, locale: Locale.new(recipient.locale)),
-          post_image_medium_url: post_image_medium_url(idea)
+          idea_title_multiloc: idea.title_multiloc,
+          idea_body_multiloc: idea.body_multiloc,
+          idea_author_name: name_service.display_name!(idea.author),
+          idea_cosponsor_name: name_service.display_name!(cosponsor),
+          idea_url: Frontend::UrlService.new.model_to_url(idea, locale: Locale.new(recipient.locale)),
+          idea_image_medium_url: idea_image_medium_url(idea)
         }
       }]
     end
 
     private
 
-    def post_image_medium_url(idea)
+    def idea_image_medium_url(idea)
       image = idea&.idea_images&.first
       image.image.versions[:medium].url if image&.image&.versions
     end

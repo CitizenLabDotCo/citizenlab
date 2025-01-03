@@ -58,7 +58,7 @@ module EmailCampaigns
           comment_body_multiloc: notification.comment.body_multiloc,
           reason_code: notification.reason_code,
           other_reason: notification.other_reason,
-          post_url: Frontend::UrlService.new.model_to_url(notification.idea, locale: Locale.new(recipient.locale))
+          idea_url: Frontend::UrlService.new.model_to_url(notification.idea, locale: Locale.new(recipient.locale))
         }
       }]
     end

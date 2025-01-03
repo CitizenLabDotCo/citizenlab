@@ -5,11 +5,11 @@ module EmailCampaigns
     protected
 
     def subject
-      format_message('subject', values: { input_title: localize_for_recipient(event.post_title_multiloc) })
+      format_message('subject', values: { input_title: localize_for_recipient(event.idea_title_multiloc) })
     end
 
     def header_title
-      format_message("main_header.#{event.post_input_term}", values: { authorName: event.comment_author_name })
+      format_message("main_header.#{event.idea_input_term}", values: { authorName: event.comment_author_name })
     end
 
     def header_message
@@ -18,7 +18,7 @@ module EmailCampaigns
         values: {
           authorNameFull: event.comment_author_name,
           authorName: event.initiating_user_first_name,
-          inputTitle: localize_for_recipient(event.post_title_multiloc)
+          inputTitle: localize_for_recipient(event.idea_title_multiloc)
         }
       )
     end

@@ -12,7 +12,7 @@ module EmailCampaigns
 
     def header_title
       format_message('main_header', values: {
-        input_title: localize_for_recipient(event.post_title_multiloc)
+        input_title: localize_for_recipient(event.idea_title_multiloc)
       })
     end
 
