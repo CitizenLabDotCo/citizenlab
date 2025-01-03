@@ -24,7 +24,7 @@ RSpec.describe EmailCampaigns::Campaigns::StatusChangeOnIdeaYouFollow do
         event_payload: hash_including(
           idea_title_multiloc: notification.idea.title_multiloc,
           idea_url: an_instance_of(String),
-          idea_status_title_multiloc: notification.idea_status.title_multiloc,
+          idea_status_title_multiloc: notification.idea_status.title_multiloc
         )
       })
     end
