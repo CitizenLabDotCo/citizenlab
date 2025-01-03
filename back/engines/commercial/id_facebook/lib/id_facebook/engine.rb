@@ -6,7 +6,7 @@ module IdFacebook
 
     config.to_prepare do
       AppConfiguration::Settings.add_feature(IdFacebook::FeatureSpecification)
-      IdMethod.add_method('facebook', FacebookOmniauth.new) # TODO: JS - can we change this to 'id_facebook'?
+      IdMethod.add_method('facebook', FacebookOmniauth.new)
     end
   end
 end
