@@ -1,11 +1,14 @@
 import React from 'react';
 
-import { Icon, colors } from '@citizenlab/cl2-component-library';
+import {
+  IconTooltip,
+  Box,
+  colors,
+  stylingConsts,
+} from '@citizenlab/cl2-component-library';
 import { isEmpty } from 'lodash-es';
 import { useParams } from 'react-router-dom';
 import { RouteType } from 'routes';
-import { Segment, Menu, Popup } from 'semantic-ui-react';
-import styled from 'styled-components';
 
 import { IIdeaStatusData } from 'api/idea_statuses/types';
 import useAuthUser from 'api/me/useAuthUser';
@@ -13,7 +16,7 @@ import { IPhaseData } from 'api/phases/types';
 import { IProjectData } from 'api/projects/types';
 import { ITopicData } from 'api/topics/types';
 
-import { ManagerType } from 'components/admin/PostManager';
+import { ManagerType, TFilterMenu } from 'components/admin/PostManager';
 
 import { useIntl } from 'utils/cl-intl';
 import { isAdmin } from 'utils/permissions/roles';
@@ -24,17 +27,6 @@ import FilterSidebarPhases from './phases/FilterSidebarPhases';
 import FilterSidebarProjects from './projects/FilterSidebarProjects';
 import FilterSidebarStatuses from './statuses/FilterSidebarStatuses';
 import FilterSidebarTopics from './topics/FilterSidebarTopics';
-
-const InfoIcon = styled(Icon)`
-  fill: ${colors.teal700};
-  width: 20px;
-  height: 20px;
-  cursor: pointer;
-
-  &:hover {
-    fill: #000;
-  }
-`;
 
 interface Props {
   phases?: IPhaseData[];
@@ -49,11 +41,13 @@ interface Props {
   onChangeTopicsFilter?: (topics: string[]) => void;
   onChangeProjectFilter?: (projects: string[] | undefined) => void;
   onChangeStatusFilter: (arg: string) => void;
-  activeFilterMenu: string | null;
+  activeFilterMenu: TFilterMenu;
   onChangeActiveFilterMenu: (arg: string) => void;
   visibleFilterMenus: string[];
   type: ManagerType;
 }
+
+const BORDER = `1px solid ${colors.divider}`;
 
 const FilterSidebar = ({
   onChangeActiveFilterMenu,
@@ -76,8 +70,8 @@ const FilterSidebar = ({
   const { projectId } = useParams();
   const { data: authUser } = useAuthUser();
   const { formatMessage } = useIntl();
-  const handleItemClick = (_event, data) => {
-    onChangeActiveFilterMenu(data.id);
+  const handleItemClick = (id: string) => {
+    onChangeActiveFilterMenu(id);
   };
 
   if (!authUser) return null;
@@ -121,25 +115,33 @@ const FilterSidebar = ({
     const active = activeFilterMenu === key;
     const selectionSign = isEmpty(selection) ? '' : '*';
     return (
-      <>
-        {title}
+      <Box display="flex" alignItems="center">
+        {active ? <b>{title}</b> : title}
         {selectionSign}&nbsp;
         {active ? (
-          <Popup
+          <IconTooltip
             content={formatMessage(tooltipMessage)}
-            trigger={
-              <button>
-                <InfoIcon name="info-solid" />
-              </button>
-            }
+            icon="info-solid"
+            theme="light"
           />
         ) : null}
-      </>
+      </Box>
     );
   };
 
-  const menuItems = {
-    phases: () => ({
+  const menuItems = [
+    {
+      name: tabName('projectsTab', selectedProject, 'projects'),
+      key: 'projects',
+      content: (
+        <FilterSidebarProjects
+          projects={projects}
+          selectedProject={selectedProject}
+          onChangeProjectFilter={onChangeProjectFilter}
+        />
+      ),
+    },
+    {
       name: tabName('timelineTab', selectedPhase, 'phases'),
       key: 'phases',
       content:
@@ -150,8 +152,8 @@ const FilterSidebar = ({
             onChangePhaseFilter={onChangePhaseFilter}
           />
         ) : null,
-    }),
-    topics: () => ({
+    },
+    {
       name: tabName('topicsTab', selectedTopics, 'topics'),
       key: 'topics',
       content: (
@@ -162,19 +164,8 @@ const FilterSidebar = ({
           linkToTagManager={getLinkToTagManager()}
         />
       ),
-    }),
-    projects: () => ({
-      name: tabName('projectsTab', selectedProject, 'projects'),
-      key: 'projects',
-      content: (
-        <FilterSidebarProjects
-          projects={projects}
-          selectedProject={selectedProject}
-          onChangeProjectFilter={onChangeProjectFilter}
-        />
-      ),
-    }),
-    statuses: () => ({
+    },
+    {
       name: tabName('statusesTab', selectedStatus, 'statuses'),
       key: 'statuses',
       content: (
@@ -185,40 +176,48 @@ const FilterSidebar = ({
           onChangeStatusFilter={onChangeStatusFilter}
         />
       ),
-    }),
-  };
+    },
+  ];
 
-  const filteredMenuItems = () => {
-    return visibleFilterMenus.map((menuName) => {
-      return menuItems[menuName]();
-    });
-  };
+  const filteredMenuItems = menuItems.filter((item) =>
+    visibleFilterMenus.includes(item.key)
+  );
+  const selectedItem =
+    filteredMenuItems.find((item) => item.key === activeFilterMenu) ||
+    filteredMenuItems[0];
 
-  const items = filteredMenuItems();
-  const selectedItem = items.find((i) => i.key === activeFilterMenu);
   return (
-    <>
-      <Menu
-        tabular
-        attached="top"
-        size="tiny"
-        className="intercom-admin-input-manager-filter-sidebar"
-      >
-        {items.map((item) => (
-          <Menu.Item
-            key={item.key}
-            id={item.key}
-            active={activeFilterMenu === item.key}
-            onClick={handleItemClick}
-            className={`intercom-admin-input-manager-filter-sidebar-${item.key}`}
-            data-cy={`e2e-admin-post-manager-filter-sidebar-${item.key}`}
-          >
-            {item.name}
-          </Menu.Item>
-        ))}
-      </Menu>
-      <Segment attached="bottom">{selectedItem.content}</Segment>
-    </>
+    <Box className="intercom-admin-input-manager-filter-sidebar">
+      <Box display="flex">
+        {filteredMenuItems.map((item) => {
+          const active = activeFilterMenu === item.key;
+
+          return (
+            <Box
+              w="100%"
+              as="button"
+              key={item.key}
+              id={item.key}
+              p="12px"
+              className={`intercom-admin-input-manager-filter-sidebar-${item.key}`}
+              data-cy={`e2e-admin-post-manager-filter-sidebar-${item.key}`}
+              onClick={() => {
+                handleItemClick(item.key);
+              }}
+              cursor="pointer"
+              borderBottom={
+                active ? `3px solid ${colors.teal500}` : '3px solid transparent'
+              }
+            >
+              {item.name}
+            </Box>
+          );
+        })}
+      </Box>
+      <Box border={BORDER} borderRadius={stylingConsts.borderRadius} p="12px">
+        {selectedItem.content}
+      </Box>
+    </Box>
   );
 };
 

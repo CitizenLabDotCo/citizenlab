@@ -608,6 +608,26 @@ resource 'AdminPublication' do
         expect(json_response[:data].size).to eq 0
       end
     end
+
+    get 'web_api/v1/admin_publications/select_and_order_by_ids' do
+      with_options scope: :page do
+        parameter :number, 'Page number'
+        parameter :size, 'Number of projects per page'
+      end
+      parameter :ids, 'Filter and order by IDs', required: false
+
+      example 'Includes correct counts of visible children', document: false do
+        group_project = create(:project, visible_to: 'groups')
+        draft_project = create(:project, admin_publication_attributes: { publication_status: 'draft' })
+        folder_with_children = create(:project_folder, projects: [published_projects[0], group_project, draft_project])
+
+        do_request(ids: [folder_with_children.admin_publication.id])
+
+        expect(status).to eq(200)
+        json_response = json_parse(response_body)
+        expect(json_response[:data].first.dig(:attributes, :visible_children_count)).to eq 1
+      end
+    end
   end
 
   context 'when not logged in' do

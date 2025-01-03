@@ -114,7 +114,7 @@ const IdeasWidget = () => {
 
   const handleShowCodeClick = () => {
     setCodeModalOpened(true);
-    trackEventByName(tracks.clickAdminExportHTML.name);
+    trackEventByName(tracks.clickAdminExportHTML);
   };
 
   return (

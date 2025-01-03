@@ -28,7 +28,7 @@ const TimeFilter = () => {
           published_at_from: from?.format('YYYY-MM-DD'),
           published_at_to: to?.format('YYYY-MM-DD'),
         });
-        trackEventByName(tracks.timeFilterUsed.name, {
+        trackEventByName(tracks.timeFilterUsed, {
           from: from?.format('YYYY-MM-DD'),
           to: to?.format('YYYY-MM-DD'),
         });
