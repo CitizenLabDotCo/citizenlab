@@ -502,7 +502,6 @@
   "app.components.VoteControl.budgetingNotPossible": "Η πραγματοποίηση αλλαγών στον προϋπολογισμό σας δεν είναι δυνατή αυτή τη στιγμή.",
   "app.components.VoteControl.budgetingNotVerified": "Παρακαλούμε {verifyAccountLink} για να συνεχίσετε.",
   "app.components.VoteInputs._shared.currencyLeft": "Σας έχει απομείνει {budgetLeft} / {totalBudget} {currency}",
-  "app.components.VoteInputs._shared.votesLeft3": "Έχετε {votesLeft} / {totalNumberOfVotes} {totalNumberOfVotes, plural, =0 {{votesTerm}} one {{voteTerm}} other {{votesTerm}}} αριστερά",
   "app.components.VoteInputs.budgeting.AddToBasketButton.basketAlreadySubmitted": "Έχετε ήδη υποβάλει τον προϋπολογισμό σας. Κάντε κλικ στο \"Τροποποίηση του προϋπολογισμού σας\" για να αλλάξετε τον προϋπολογισμό σας.",
   "app.components.VoteInputs.budgeting.AddToBasketButton.basketAlreadySubmittedIdeaPage": "Έχετε ήδη υποβάλει τον προϋπολογισμό σας. Για να αλλάξετε τον προϋπολογισμό σας, επιστρέψτε στη σελίδα του έργου και κάντε κλικ στην επιλογή \"Τροποποίηση του προϋπολογισμού σας\".",
   "app.components.VoteInputs.budgeting.AddToBasketButton.phaseNotActive": "Ο προϋπολογισμός δεν είναι διαθέσιμος, δεδομένου ότι η φάση αυτή δεν είναι ενεργή.",
