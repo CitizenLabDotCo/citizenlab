@@ -37,12 +37,11 @@ class WebApi::V1::NavBarItemsController < ApplicationController
   def removed_default_items
     authorize NavBarItem
     used_codes = NavBarItem.distinct.pluck(:code)
-    rejected_codes = (used_codes).uniq
     @items = NavBarItemService.new.default_items.reject do |item|
       # Not using set difference to have an
       # explicit guarantee of preserving the
       # ordering.
-      rejected_codes.include? item.code
+      used_codes.include? item.code
     end
     render json: WebApi::V1::NavBarItemSerializer.new(@items, params: jsonapi_serializer_params).serializable_hash
   end
