@@ -4,8 +4,7 @@ const baseKey = { type: 'custom_form' };
 
 const customFormKeys = {
   all: () => [baseKey],
-  items: () => [{ ...baseKey, operation: 'item' }],
-  item: (params: { id: string }) => [
+  item: (params: { projectId: string; phaseId?: string }) => [
     { ...baseKey, operation: 'item', parameters: params },
   ],
 } satisfies QueryKeys;

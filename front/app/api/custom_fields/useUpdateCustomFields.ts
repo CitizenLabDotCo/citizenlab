@@ -4,6 +4,7 @@ import { CLErrors } from 'typings';
 import fetcher from 'utils/cl-react-query/fetcher';
 
 import customFieldsKeys from './keys';
+import customFormKeys from 'api/custom_form/keys';
 import { ICustomField, ICustomFieldResponse } from './types';
 
 type IUpdateCustomFieldProperties = {
@@ -50,6 +51,12 @@ const useUpdateCustomField = () => {
     onSuccess: (_, variables) => {
       queryClient.invalidateQueries({
         queryKey: customFieldsKeys.list({
+          projectId: variables.projectId,
+          phaseId: variables.phaseId,
+        }),
+      });
+      queryClient.invalidateQueries({
+        queryKey: customFormKeys.item({
           projectId: variables.projectId,
           phaseId: variables.phaseId,
         }),

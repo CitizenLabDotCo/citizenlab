@@ -95,7 +95,8 @@ const FormEdit = ({
     phaseId: isFormPhaseSpecific ? phaseId : undefined,
   });
   const formLastUpdatedAt = customForm?.data.attributes.updated_at;
-  const formOpenedAt = customForm?.data.attributes.opened_at; // TODO: This should not change
+
+  const formOpenedAt = customForm?.data.attributes.opened_at; // TODO: JS - This should not change - wrap in useEffect?
 
   const schema = object().shape({
     customFields: array().of(

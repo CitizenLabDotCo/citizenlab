@@ -11,9 +11,9 @@ export default defineMessages({
       'There is a problem, please fix the issue to be able to save your changes',
   },
   staleDataErrorMessage: {
-    id: 'app.components.formBuilder.staleDataErrorMessage',
+    id: 'app.components.formBuilder.staleDataErrorMessage2',
     defaultMessage:
-      'There has been a problem. This form has been saved more recently somewhere else. This may be because you or another user has it open for editing in another browser window. Please refresh the page to get the latest data from the server and then make your changes again.',
+      'There has been a problem. This input form has been saved more recently somewhere else. This may be because you or another user has it open for editing in another browser window. Please refresh the page to get the latest form and then make your changes again.',
   },
   emptyOptionError: {
     id: 'app.components.formBuilder.emptyOptionError',
