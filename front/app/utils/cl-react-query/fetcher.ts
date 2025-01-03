@@ -191,20 +191,18 @@ async function fetcher({
               ],
               () => ({ data: data.data })
             );
-            return;
+          } else {
+            queryClient.setQueryData(
+              [
+                {
+                  type: data.data.type,
+                  parameters: { id: data.data.id },
+                  operation: 'item',
+                },
+              ],
+              () => ({ data: data.data })
+            );
           }
-          // TODO REMOVE
-
-          queryClient.setQueryData(
-            [
-              {
-                type: data.data.type,
-                parameters: { id: data.data.id },
-                operation: 'item',
-              },
-            ],
-            () => ({ data: data.data })
-          );
         }
       }
       if (data.included) {
