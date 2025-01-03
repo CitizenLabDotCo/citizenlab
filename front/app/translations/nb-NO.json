@@ -502,7 +502,7 @@
   "app.components.VoteControl.budgetingNotPossible": "Det er ikke mulig å gjøre endringer i budsjettet ditt på nåværende tidspunkt.",
   "app.components.VoteControl.budgetingNotVerified": "Vennligst {verifyAccountLink} for å fortsette.",
   "app.components.VoteInputs._shared.currencyLeft": "Du har {budgetLeft} / {totalBudget} {currency} igjen",
-  "app.components.VoteInputs._shared.votesLeft3": "Du har {votesLeft} / {totalNumberOfVotes} {totalNumberOfVotes, plural, =0 {{votesTerm}} one {~{voteTerm}} other {~{votesTerm}~}} igjen",
+  "app.components.VoteInputs._shared.votesLeft": "Du har {votesLeft} / {totalNumberOfVotes} {totalNumberOfVotes, plural, =0 {{votesTerm}} one {{voteTerm}} other {{votesTerm}~}} igjen.",
   "app.components.VoteInputs.budgeting.AddToBasketButton.basketAlreadySubmitted": "Du har allerede sendt inn budsjettet ditt. Klikk på \"Endre budsjettet\" for å endre budsjettet.",
   "app.components.VoteInputs.budgeting.AddToBasketButton.basketAlreadySubmittedIdeaPage": "Du har allerede sendt inn budsjettet ditt. Hvis du vil endre budsjettet, går du tilbake til prosjektsiden og klikker på \"Endre budsjettet\".",
   "app.components.VoteInputs.budgeting.AddToBasketButton.phaseNotActive": "Budsjettering er ikke tilgjengelig, siden denne fasen ikke er aktiv.",
