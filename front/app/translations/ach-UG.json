@@ -502,7 +502,7 @@
   "app.components.VoteControl.budgetingNotPossible": "crwdns3873939:0crwdne3873939:0",
   "app.components.VoteControl.budgetingNotVerified": "crwdns3873941:0{verifyAccountLink}crwdne3873941:0",
   "app.components.VoteInputs._shared.currencyLeft": "crwdns3873943:0{budgetLeft}crwdnd3873943:0{totalBudget}crwdnd3873943:0{currency}crwdne3873943:0",
-  "app.components.VoteInputs._shared.votesLeft": "crwdns3896989:0votesLeft={votesLeft}crwdnd3896989:0totalNumberOfVotes={totalNumberOfVotes}crwdnd3896989:0totalNumberOfVotes={totalNumberOfVotes}crwdnd3896989:0votesTerm={votesTerm}crwdnd3896989:0voteTerm={voteTerm}crwdnd3896989:0votesTerm={votesTerm}crwdne3896989:0",
+  "app.components.VoteInputs._shared.votesLeft4": "crwdns3896991:0votesLeft={votesLeft}crwdnd3896991:0totalNumberOfVotes={totalNumberOfVotes}crwdnd3896991:0totalNumberOfVotes={totalNumberOfVotes}crwdnd3896991:0votesTerm={votesTerm}crwdnd3896991:0voteTerm={voteTerm}crwdnd3896991:0votesTerm={votesTerm}crwdne3896991:0",
   "app.components.VoteInputs.budgeting.AddToBasketButton.basketAlreadySubmitted": "crwdns3873947:0crwdne3873947:0",
   "app.components.VoteInputs.budgeting.AddToBasketButton.basketAlreadySubmittedIdeaPage": "crwdns3873949:0crwdne3873949:0",
   "app.components.VoteInputs.budgeting.AddToBasketButton.phaseNotActive": "crwdns3873951:0crwdne3873951:0",
