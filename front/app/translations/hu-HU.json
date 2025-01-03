@@ -502,7 +502,7 @@
   "app.components.VoteControl.budgetingNotPossible": "A költségkeret módosítása jelenleg nem lehetséges.",
   "app.components.VoteControl.budgetingNotVerified": "Kérjük, {verifyAccountLink} a folytatáshoz.",
   "app.components.VoteInputs._shared.currencyLeft": "{budgetLeft} / {totalBudget} {currency} maradt",
-  "app.components.VoteInputs._shared.votesLeft": "{votesLeft} / {totalNumberOfVotes} {totalNumberOfVotes, plural, =0 {{votesTerm}} one {{voteTerm}} other {{votesTerm}}} balra.",
+  "app.components.VoteInputs._shared.votesLeft4": "{votesLeft} / {totalNumberOfVotes} {totalNumberOfVotes, plural, =0 {{votesTerm}} one {{voteTerm}} other {{votesTerm}}} balra.",
   "app.components.VoteInputs.budgeting.AddToBasketButton.basketAlreadySubmitted": "Már elküldte a költségvetését. A költségkeret módosításához kattintson a \"Költségkeret módosítása\" gombra.",
   "app.components.VoteInputs.budgeting.AddToBasketButton.basketAlreadySubmittedIdeaPage": "Már elküldte a költségvetését. A költségkeret módosításához lépjen vissza a projekt oldalára, és kattintson a \"Költségkeret módosítása\" gombra.",
   "app.components.VoteInputs.budgeting.AddToBasketButton.phaseNotActive": "Költségvetés nem érhető el, mivel ez a fázis nem aktív.",
