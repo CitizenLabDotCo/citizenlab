@@ -37,9 +37,7 @@ const Published = ({ titleMultiloc }: Props) => {
 
   if (!adminPublications) return null;
   if (adminPublications.length === 0) {
-    return (
-      <EmptyState titleMultiloc={titleMultiloc} explanation={messages.noData} />
-    );
+    return <EmptyState title={title} explanation={messages.noData} />;
   }
 
   return (

@@ -31,9 +31,7 @@ const OpenToParticipation = ({ titleMultiloc }: Props) => {
 
   if (!projects) return null;
   if (projects.length === 0) {
-    return (
-      <EmptyState titleMultiloc={titleMultiloc} explanation={messages.noData} />
-    );
+    return <EmptyState title={title} explanation={messages.noData} />;
   }
 
   return (
