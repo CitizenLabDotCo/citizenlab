@@ -84,10 +84,7 @@ models:
             resolvedName: 'OpenToParticipation'
           nodes: []
           props:
-            titleMultiloc:
-              en: 'Open to participation'
-              nl-BE: 'Open voor deelname'
-              fr-BE: 'Ouvert à la participation'
+            titleMultiloc: {}
           custom: {}
           hidden: false
           parent: 'ROOT'
