@@ -1181,7 +1181,6 @@
   "app.containers.admin.ReportBuilder.charts.usersByGender": "Users by gender",
   "app.containers.admin.ReportBuilder.charts.visitorTimeline": "Visitor timeline",
   "app.containers.admin.ideaStatuses.all.addIdeaStatus": "Add status",
-  "app.containers.admin.ideaStatuses.all.defaultStatusDeleteButtonTooltip": "The default status can not be deleted.",
   "app.containers.admin.ideaStatuses.all.deleteButtonLabel": "Șterge",
   "app.containers.admin.ideaStatuses.all.editButtonLabel": "Editați",
   "app.containers.admin.ideaStatuses.all.editIdeaStatus": "Edit status",

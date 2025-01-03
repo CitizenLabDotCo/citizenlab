@@ -3,6 +3,7 @@ import React from 'react';
 import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 
+import { IdeaStatusParticipationMethod } from 'api/idea_statuses/types';
 import useIdeaStatus from 'api/idea_statuses/useIdeaStatus';
 import useIdeaStatuses from 'api/idea_statuses/useIdeaStatuses';
 import useUpdateIdeaStatus from 'api/idea_statuses/useUpdateIdeaStatus';
@@ -27,7 +28,7 @@ const StyledSectionTitle = styled(SectionTitle)`
   margin-bottom: 20px;
 `;
 
-const Edit = ({ variant }: { variant: 'ideation' | 'proposals' }) => {
+const Edit = ({ variant }: { variant: IdeaStatusParticipationMethod }) => {
   const { data: ideaStatuses } = useIdeaStatuses({
     participation_method: variant,
   });

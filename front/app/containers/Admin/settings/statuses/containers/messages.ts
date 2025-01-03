@@ -13,10 +13,19 @@ export default defineMessages({
     id: 'app.containers.admin.ideaStatuses.all.titleIdeaStatuses1',
     defaultMessage: 'Edit input statuses',
   },
+  titleProposalStatuses: {
+    id: 'app.containers.admin.ideaStatuses.all.titleProposalStatuses',
+    defaultMessage: 'Edit proposal statuses',
+  },
   subtitleInputStatuses1: {
     id: 'app.containers.admin.ideaStatuses.all.subtitleInputStatuses1',
     defaultMessage:
       'Manage the status that can be assigned to participant input within a project. The status is publicly visible and helps in keeping participants informed.',
+  },
+  subtitleProposalStatuses: {
+    id: 'app.containers.admin.ideaStatuses.all.subtitleProposalStatuses',
+    defaultMessage:
+      'Manage the status that can be assigned to proposals within a project. The status is publicly visible and helps in keeping participants informed.',
   },
   manage: {
     id: 'app.containers.admin.ideaStatuses.all.manage',
@@ -27,9 +36,9 @@ export default defineMessages({
     defaultMessage:
       'Statuses currently assigned to an input cannot be deleted. You can remove/change the status from existing inputs in the {manageTab} tab.',
   },
-  defaultStatusDeleteButtonTooltip: {
-    id: 'app.containers.admin.ideaStatuses.all.defaultStatusDeleteButtonTooltip',
-    defaultMessage: 'The default status can not be deleted.',
+  defaultStatusDeleteButtonTooltip2: {
+    id: 'app.containers.admin.ideaStatuses.all.defaultStatusDeleteButtonTooltip2',
+    defaultMessage: 'Default statuses cannot be deleted.',
   },
   lockedStatusTooltip: {
     id: 'app.containers.admin.ideaStatuses.all.lockedStatusTooltip',

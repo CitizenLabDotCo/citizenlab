@@ -16,6 +16,7 @@ import { string, object } from 'yup';
 
 import {
   automatedInputStatusCodes,
+  IdeaStatusParticipationMethod,
   inputStatusCodes,
   TIdeaStatusCode,
 } from 'api/idea_statuses/types';
@@ -45,7 +46,7 @@ export type Props = {
   onSubmit: (formValues: FormValues) => void | Promise<void>;
   defaultValues?: Partial<FormValues>;
   showCategorySelector?: boolean;
-  variant: 'ideation' | 'proposals';
+  variant: IdeaStatusParticipationMethod;
 };
 
 const StyledSection = styled(Section)`

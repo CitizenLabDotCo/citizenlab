@@ -1265,7 +1265,6 @@
   "app.containers.admin.ReportBuilder.charts.usersByGender": "Users by gender",
   "app.containers.admin.ReportBuilder.charts.visitorTimeline": "Visitor timeline",
   "app.containers.admin.ideaStatuses.all.addIdeaStatus": "Statusimik ilanngussigit",
-  "app.containers.admin.ideaStatuses.all.defaultStatusDeleteButtonTooltip": "Statusi nalinginnaasoq peerneqarsinaanngilaq.",
   "app.containers.admin.ideaStatuses.all.deleteButtonLabel": "Delete",
   "app.containers.admin.ideaStatuses.all.editButtonLabel": "Edit",
   "app.containers.admin.ideaStatuses.all.editIdeaStatus": "Statusi allanngortiteruk",

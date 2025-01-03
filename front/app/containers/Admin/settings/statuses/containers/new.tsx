@@ -2,6 +2,7 @@ import React from 'react';
 
 import styled from 'styled-components';
 
+import { IdeaStatusParticipationMethod } from 'api/idea_statuses/types';
 import useAddIdeaStatus from 'api/idea_statuses/useAddIdeaStatus';
 import useIdeaStatuses from 'api/idea_statuses/useIdeaStatuses';
 
@@ -21,7 +22,11 @@ const StyledSectionTitle = styled(SectionTitle)`
   margin-bottom: 20px;
 `;
 
-const NewIdeaStatus = ({ variant }: { variant: 'ideation' | 'proposals' }) => {
+const NewIdeaStatus = ({
+  variant,
+}: {
+  variant: IdeaStatusParticipationMethod;
+}) => {
   const { data: ideaStatuses } = useIdeaStatuses({
     participation_method: variant,
   });

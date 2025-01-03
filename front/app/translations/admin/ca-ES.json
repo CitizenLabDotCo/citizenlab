@@ -1534,7 +1534,6 @@
   "app.containers.admin.addCollaboratorsModal.giveManagerRights": "Donar drets de gestor",
   "app.containers.admin.addCollaboratorsModal.hasReachedOrIsOverLimit": "Has arribat al límit de seients inclosos dins del teu pla, {noOfSeats} addicionals {noOfSeats, plural, one {seient} other {seients}} s'afegirà.",
   "app.containers.admin.ideaStatuses.all.addIdeaStatus": "Afegir un estat",
-  "app.containers.admin.ideaStatuses.all.defaultStatusDeleteButtonTooltip": "L'estat predeterminat no es pot eliminar.",
   "app.containers.admin.ideaStatuses.all.deleteButtonLabel": "Delete",
   "app.containers.admin.ideaStatuses.all.editButtonLabel": "Edit",
   "app.containers.admin.ideaStatuses.all.editIdeaStatus": "Edita l'estat",

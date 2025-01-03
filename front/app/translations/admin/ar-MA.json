@@ -1193,7 +1193,6 @@
   "app.containers.admin.ReportBuilder.charts.usersByGender": "المستخدمون بحسب الجنس",
   "app.containers.admin.ReportBuilder.charts.visitorTimeline": "المخطط الزمني للزائر",
   "app.containers.admin.ideaStatuses.all.addIdeaStatus": "إضافة حالة",
-  "app.containers.admin.ideaStatuses.all.defaultStatusDeleteButtonTooltip": "لا يمكن حذف الحالة الافتراضية.",
   "app.containers.admin.ideaStatuses.all.deleteButtonLabel": "حذف",
   "app.containers.admin.ideaStatuses.all.editButtonLabel": "تعديل",
   "app.containers.admin.ideaStatuses.all.editIdeaStatus": "تعديل الحالة",
