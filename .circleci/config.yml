@@ -212,6 +212,22 @@ jobs:
           docker login -u $DOCKER_USER -p $DOCKER_PASS
           docker push citizenlabdotco/back-ee:$CIRCLE_SHA1
 
+  back-build-arm-docker-image:
+    working_directory: ~/
+    docker:
+      - image: cimg/base:2021.03
+    resource_class: arm.medium
+    steps:
+      - echo_pipeline_parameters
+      - shallow-clone
+      - setup_remote_docker:
+          docker_layer_caching: true
+      - run: |
+          docker build -t citizenlabdotco/back-ee:$CIRCLE_SHA1 --build-arg BUNDLE_JOBS=4 -f citizenlab/back/Dockerfile citizenlab/.
+      - run: |
+          docker login -u $DOCKER_USER -p $DOCKER_PASS
+          docker push citizenlabdotco/back-ee:$CIRCLE_SHA1
+
   back-lint:
     resource_class: medium
     executor:
@@ -849,6 +865,15 @@ workflows:
             equal: ["production", << pipeline.git.branch >>]
     jobs:
       - back-build-docker-image:
+          filters:
+            branches:
+              ignore:
+                - crowdin_master
+                - /l10n_.*/
+          context:
+            - docker-hub-access
+            - citizenlab-ee-environment
+      - back-build-docker-arm-image:
           filters:
             branches:
               ignore:
