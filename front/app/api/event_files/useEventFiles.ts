@@ -7,14 +7,14 @@ import { isNilOrError } from 'utils/helperUtils';
 import eventFilesKeys from './keys';
 import { IEventFiles, EventFilesKeys } from './types';
 
-const fetchEvents = ({ eventId }: { eventId: string }) => {
+const fetchEvents = ({ eventId }: { eventId: string | undefined }) => {
   return fetcher<IEventFiles>({
     path: `/events/${eventId}/files`,
     action: 'get',
   });
 };
 
-const useEventFiles = (eventId: string) => {
+const useEventFiles = (eventId: string | undefined) => {
   return useQuery<IEventFiles, CLErrors, IEventFiles, EventFilesKeys>({
     queryKey: eventFilesKeys.list({ eventId }),
     queryFn: () => fetchEvents({ eventId }),

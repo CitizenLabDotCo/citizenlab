@@ -120,7 +120,6 @@
   "app.components.admin.ContentBuilder.Widgets.SurveyQuestionResultWidget.untilNow": "{date} jusqu'à maintenant",
   "app.components.admin.DatePhasePicker.Input.openEnded": "Continu",
   "app.components.admin.DatePhasePicker.Input.selectDate": "Sélectionnez une date",
-  "app.components.admin.DateTimePicker.time": "Heure",
   "app.components.admin.Graphs": "Aucune donnée disponible avec les filtres actuels.",
   "app.components.admin.Graphs.noDataShort": "Pas de données disponibles.",
   "app.components.admin.GraphsCards.CommentsByTime.hooks.useCommentsByTime.timeSeries": "Commentaires",

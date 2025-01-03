@@ -13,11 +13,10 @@ import {
   stylingConsts,
 } from '@citizenlab/cl2-component-library';
 import { isEmpty, get, isError } from 'lodash-es';
-import moment from 'moment';
 import { useParams } from 'react-router-dom';
 import { RouteType } from 'routes';
 import { useTheme } from 'styled-components';
-import { Multiloc, CLError, UploadFile } from 'typings';
+import { Multiloc, UploadFile } from 'typings';
 
 import useAddEventFile from 'api/event_files/useAddEventFile';
 import useDeleteEventFile from 'api/event_files/useDeleteEventFile';
@@ -36,7 +35,6 @@ import useLocale from 'hooks/useLocale';
 
 import projectMessages from 'containers/Admin/projects/project/general/messages';
 
-import DateTimePicker from 'components/admin/DatePickers/DateTimePicker';
 import { Section, SectionTitle, SectionField } from 'components/admin/Section';
 import SubmitWrapper from 'components/admin/SubmitWrapper';
 import Button from 'components/UI/Button';
@@ -50,51 +48,36 @@ import QuillMultilocWithLocaleSwitcher from 'components/UI/QuillEditor/QuillMult
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
-import {
-  roundToNearestMultipleOfFive,
-  calculateRoundedEndDate,
-} from 'utils/dateUtils';
 import { convertUrlToUploadFile } from 'utils/fileUtils';
 import { isNilOrError } from 'utils/helperUtils';
 import { geocode } from 'utils/locationTools';
 import { defaultAdminCardPadding } from 'utils/styleConstants';
 
+import DateTimeSelection from './components/DateTimeSelection';
 import messages from './messages';
+import { SubmitState, ErrorType, ApiErrorType } from './types';
+import { initializeEventTimes } from './utils';
 
 const EventMap = lazy(() => import('./components/EventMap'));
 
-export type SubmitState = 'disabled' | 'enabled' | 'error' | 'success';
-type ErrorType =
-  | Error
-  | CLError[]
-  | {
-      [fieldName: string]: CLError[];
-    };
-
-type ApiErrorType =
-  | Error
-  | {
-      [fieldName: string]: CLError[];
-    };
-
 const AdminProjectEventEdit = () => {
-  const { id, projectId } = useParams() as {
-    id: string;
-    projectId: string;
-  };
+  const { id: eventId, projectId } = useParams();
+
+  const isCreatingNewEvent = !eventId;
+
   const { width, containerRef } = useContainerWidthAndHeight();
   const { formatMessage } = useIntl();
   const theme = useTheme();
   const locale = useLocale();
 
   const { mutate: addEvent } = useAddEvent();
-  const { data: event, isInitialLoading } = useEvent(id);
+  const { data: event, isInitialLoading } = useEvent(eventId);
   const { mutate: updateEvent } = useUpdateEvent();
 
   // event files
   const { mutate: addEventFile } = useAddEventFile();
   const { mutate: deleteEventFile } = useDeleteEventFile();
-  const { data: remoteEventFiles } = useEventFiles(id);
+  const { data: remoteEventFiles } = useEventFiles(eventId);
 
   // event image
   const { mutate: addEventImage } = useAddEventImage();
@@ -109,7 +92,10 @@ const AdminProjectEventEdit = () => {
   const [submitState, setSubmitState] = useState<SubmitState>('disabled');
   const [eventFiles, setEventFiles] = useState<UploadFile[]>([]);
 
-  const [attributeDiff, setAttributeDiff] = useState<IEventProperties>({});
+  const [attributeDiff, setAttributeDiff] = useState<IEventProperties>(
+    isCreatingNewEvent ? initializeEventTimes() : {}
+  );
+
   const [attendanceOptionsVisible, setAttendanceOptionsVisible] =
     useState(false);
   const [uploadedImage, setUploadedImage] = useState<UploadFile | null>(null);
@@ -139,25 +125,6 @@ const AdminProjectEventEdit = () => {
         ...attributeDiff,
       }
     : { ...attributeDiff };
-
-  useEffect(() => {
-    // Check that the event has loaded and only then can we be sure if we are creating a new one or using an existing one
-    if (!isInitialLoading) {
-      const initialRoundedStartDate = roundToNearestMultipleOfFive(new Date());
-      const initialRoundedEndDate = calculateRoundedEndDate(
-        initialRoundedStartDate
-      );
-
-      setAttributeDiff({
-        start_at: event
-          ? event.data.attributes.start_at
-          : initialRoundedStartDate.toISOString(),
-        end_at: event
-          ? event.data.attributes.end_at
-          : initialRoundedEndDate.toISOString(),
-      });
-    }
-  }, [event, isInitialLoading]);
 
   // Set image value to remote image if present
   useEffect(() => {
@@ -293,59 +260,13 @@ const AdminProjectEventEdit = () => {
     setErrors({});
   };
 
-  const handleDateTimePickerOnChange =
-    (name: 'start_at' | 'end_at') => (time: moment.Moment) => {
-      if (!isInitialLoading) {
-        setSubmitState('enabled');
-        setAttributeDiff((previousState) => {
-          const newAttributes = {
-            ...previousState,
-            [name]: time.toISOString(),
-          };
-
-          // If the start time is changed, update the end time
-          if (name === 'start_at' && newAttributes['start_at']) {
-            const duration = newAttributes['end_at']
-              ? moment
-                  .duration(
-                    moment(newAttributes['end_at']).diff(
-                      moment(previousState['start_at'])
-                    )
-                  )
-                  .asMinutes()
-              : 30;
-
-            newAttributes['end_at'] = calculateRoundedEndDate(
-              new Date(newAttributes['start_at']),
-              duration
-            ).toISOString();
-          } else if (name === 'end_at' && newAttributes['end_at']) {
-            const isStartDateAfterEndDate =
-              newAttributes['start_at'] && newAttributes['end_at']
-                ? newAttributes['start_at'] > newAttributes['end_at']
-                : false;
-
-            if (isStartDateAfterEndDate) {
-              const duration = moment
-                .duration(
-                  moment(previousState['end_at']).diff(
-                    moment(newAttributes['start_at'])
-                  )
-                )
-                .asMinutes();
-
-              newAttributes['start_at'] = calculateRoundedEndDate(
-                new Date(newAttributes['end_at']),
-                -duration
-              ).toISOString();
-            }
-          }
-
-          return newAttributes;
-        });
-        setErrors({});
-      }
-    };
+  const handleDateTimePickerOnChange = (
+    value: React.SetStateAction<IEventProperties>
+  ) => {
+    setSubmitState('enabled');
+    setAttributeDiff(value);
+    setErrors({});
+  };
 
   const handleOnImageAdd = (imageFiles: UploadFile[]) => {
     setSubmitState('enabled');
@@ -380,10 +301,11 @@ const AdminProjectEventEdit = () => {
     if (
       (uploadedImage === null || !uploadedImage.remote) &&
       hasRemoteImage &&
-      remoteImageId
+      remoteImageId &&
+      eventId
     ) {
       deleteEventImage({
-        eventId: id,
+        eventId,
         imageId: remoteImageId,
       });
     }
@@ -644,37 +566,22 @@ const AdminProjectEventEdit = () => {
                   />
                 </SectionField>
               )}
+
               <Title variant="h4" color="primary" style={{ fontWeight: '600' }}>
                 {formatMessage(messages.eventDates)}
               </Title>
-              <Box display="flex" flexDirection="column" maxWidth="400px">
-                <SectionField style={{ width: 'auto' }}>
-                  <Label>
-                    <FormattedMessage {...messages.dateStartLabel} />
-                  </Label>
-                  <DateTimePicker
-                    value={eventAttrs.start_at}
-                    onChange={handleDateTimePickerOnChange('start_at')}
-                  />
-                  <ErrorComponent apiErrors={get(errors, 'start_at')} />
-                </SectionField>
-
-                <SectionField>
-                  <Label>
-                    <FormattedMessage {...messages.datesEndLabel} />
-                  </Label>
-                  <DateTimePicker
-                    value={eventAttrs.end_at}
-                    onChange={handleDateTimePickerOnChange('end_at')}
-                  />
-                  <ErrorComponent apiErrors={get(errors, 'end_at')} />
-                </SectionField>
-              </Box>
+              {eventAttrs.start_at && eventAttrs.end_at && (
+                <DateTimeSelection
+                  startAt={eventAttrs.start_at}
+                  endAt={eventAttrs.end_at}
+                  errors={errors}
+                  setAttributeDiff={handleDateTimePickerOnChange}
+                />
+              )}
 
               <Title variant="h4" color="primary" style={{ fontWeight: '600' }}>
                 {formatMessage(messages.eventLocation)}
               </Title>
-
               <SectionField>
                 <Box mt="16px" maxWidth="400px">
                   <Input

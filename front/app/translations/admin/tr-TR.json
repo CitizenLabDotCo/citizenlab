@@ -120,7 +120,6 @@
   "app.components.admin.ContentBuilder.Widgets.SurveyQuestionResultWidget.untilNow": "{date} şimdiye kadar",
   "app.components.admin.DatePhasePicker.Input.openEnded": "Açık uçlu",
   "app.components.admin.DatePhasePicker.Input.selectDate": "Tarih seçiniz",
-  "app.components.admin.DateTimePicker.time": "Zaman",
   "app.components.admin.Graphs": "Mevcut filtrelerle ilgili veri yok.",
   "app.components.admin.Graphs.noDataShort": "Veri mevcut değil.",
   "app.components.admin.GraphsCards.CommentsByTime.hooks.useCommentsByTime.timeSeries": "Zaman içindeki yorumlar",
