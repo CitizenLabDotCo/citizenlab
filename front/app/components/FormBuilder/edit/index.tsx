@@ -96,7 +96,13 @@ const FormEdit = ({
   });
   const formLastUpdatedAt = customForm?.data.attributes.updated_at;
 
-  const formOpenedAt = customForm?.data.attributes.opened_at; // TODO: JS - This should not change - wrap in useEffect?
+  // Set the form opened at date from the API date only when the form is first loaded
+  const [formOpenedAt, setFormOpenedAt] = useState('');
+  useEffect(() => {
+    if (formOpenedAt === '' && customForm?.data.attributes.opened_at) {
+      setFormOpenedAt(customForm?.data.attributes.opened_at);
+    }
+  }, [customForm]);
 
   const schema = object().shape({
     customFields: array().of(

@@ -81,7 +81,6 @@ module IdeaCustomFields
       render json: { errors: e.errors }, status: :unprocessable_entity
     end
 
-    # Only really needed for completeness of the API for the frontend (form also included in the serialized field response)
     def custom_form
       authorize CustomField.new(resource: @custom_form), :index?, policy_class: IdeaCustomFieldPolicy
       render json: ::WebApi::V1::CustomFormSerializer.new(
@@ -314,8 +313,8 @@ module IdeaCustomFields
         sections: @section_count,
         fields: @field_count,
         params_size: params.to_s.size,
-        form_opened_at: update_all_params[:form_opened_at],
-        form_updated_at: @custom_form.updated_at.to_i
+        form_opened_at: update_all_params[:form_opened_at].to_datetime,
+        form_updated_at: @custom_form.updated_at.to_datetime
       }
       SideFxCustomFormService.new.after_update @custom_form, current_user, update_payload
     end
