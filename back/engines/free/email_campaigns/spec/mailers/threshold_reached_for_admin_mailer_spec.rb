@@ -14,13 +14,13 @@ RSpec.describe EmailCampaigns::ThresholdReachedForAdminMailer do
       {
         recipient: recipient,
         event_payload: {
-          post_title_multiloc: notification.idea.title_multiloc,
-          post_body_multiloc: notification.idea.body_multiloc,
-          post_published_at: notification.idea.published_at.iso8601,
-          post_author_name: notification.idea.author_name,
-          post_url: Frontend::UrlService.new.model_to_url(notification.idea, locale: Locale.new(recipient.locale)),
-          post_likes_count: notification.idea.likes_count,
-          post_comments_count: notification.idea.comments_count,
+          idea_title_multiloc: notification.idea.title_multiloc,
+          idea_body_multiloc: notification.idea.body_multiloc,
+          idea_published_at: notification.idea.published_at.iso8601,
+          idea_author_name: notification.idea.author_name,
+          idea_url: Frontend::UrlService.new.model_to_url(notification.idea, locale: Locale.new(recipient.locale)),
+          idea_likes_count: notification.idea.likes_count,
+          idea_comments_count: notification.idea.comments_count,
           assignee_first_name: notification.idea.assignee.first_name,
           assignee_last_name: notification.idea.assignee.last_name
         }
@@ -44,7 +44,7 @@ RSpec.describe EmailCampaigns::ThresholdReachedForAdminMailer do
     end
 
     it 'assigns cta url' do
-      expect(mail.body.encoded).to match(command.dig(:event_payload, :post_url))
+      expect(mail.body.encoded).to match(command.dig(:event_payload, :idea_url))
     end
   end
 end

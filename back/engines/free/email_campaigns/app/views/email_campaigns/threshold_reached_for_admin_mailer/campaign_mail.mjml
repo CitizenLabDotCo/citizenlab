@@ -7,10 +7,10 @@
   <mj-column border="1px solid #eaeaea" padding="20px 25px" background-color="#fff" border-radius="5px">
     <mj-text>
       <h2 style="font-size: 18px; margin-top: 10px; margin-bottom: 10px;">
-        <%= localize_for_recipient(event.post_title_multiloc) %>
+        <%= localize_for_recipient(event.idea_title_multiloc) %>
       </h2>
       <p style="margin-top: 10px; color: #84939E;">
-        <%= format_message('by_author', component: 'general', values: { authorName: event.post_author_name }) %>
+        <%= format_message('by_author', component: 'general', values: { authorName: event.idea_author_name }) %>
       </p>
     </mj-text>
   </mj-column>
@@ -18,4 +18,4 @@
 
 
 <!-- CTA button -->
-<%= render 'application/cta_button', href: event.post_url, message: format_message('cta_process_initiative') %>
+<%= render 'application/cta_button', href: event.idea_url, message: format_message('cta_process_initiative') %>

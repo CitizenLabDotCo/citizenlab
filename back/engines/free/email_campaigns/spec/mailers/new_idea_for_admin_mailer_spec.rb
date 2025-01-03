@@ -66,11 +66,11 @@ RSpec.describe EmailCampaigns::NewIdeaForAdminMailer do
         {
           recipient: recipient,
           event_payload: {
-            post_submitted_at: input.submitted_at&.iso8601,
-            post_published_at: input.published_at&.iso8601,
-            post_title_multiloc: input.title_multiloc,
-            post_author_name: input.author_name,
-            post_url: Frontend::UrlService.new.model_to_url(input, locale: Locale.new(recipient.locale))
+            idea_submitted_at: input.submitted_at&.iso8601,
+            idea_published_at: input.published_at&.iso8601,
+            idea_title_multiloc: input.title_multiloc,
+            idea_author_name: input.author_name,
+            idea_url: Frontend::UrlService.new.model_to_url(input, locale: Locale.new(recipient.locale))
           }
         }
       end
