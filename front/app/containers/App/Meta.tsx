@@ -16,7 +16,6 @@ import { useIntl } from 'utils/cl-intl';
 import getAlternateLinks from 'utils/cl-router/getAlternateLinks';
 import getCanonicalLink from 'utils/cl-router/getCanonicalLink';
 import { imageSizes } from 'utils/fileUtils';
-import { isNilOrError } from 'utils/helperUtils';
 
 import messages from './messages';
 
@@ -29,12 +28,10 @@ const Meta = () => {
   const localize = useLocalize();
   const { pathname } = useLocation();
 
-  if (
-    !isNilOrError(locale) &&
-    !isNilOrError(tenant) &&
-    !isNilOrError(homepageLayout)
-  ) {
+  if (tenant && homepageLayout) {
     const tenantLocales = tenant.data.attributes.settings.core.locales;
+    const favicon = tenant.data.attributes.favicon;
+    const settings = tenant.data.attributes.settings;
 
     // TODO: Fix this the next time the file is edited.
     // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
@@ -44,27 +41,23 @@ const Meta = () => {
         )?.props.image?.imageUrl
       : '';
 
-    const organizationNameMultiLoc =
-      tenant.data.attributes.settings.core.organization_name;
+    const organizationNameMultiLoc = settings.core.organization_name;
     const organizationName = localize(organizationNameMultiLoc);
     const url = `https://${tenant.data.attributes.host}`;
-    const fbAppId =
-      tenant.data.attributes.settings.facebook_login &&
-      tenant.data.attributes.settings.facebook_login.app_id;
+    const fbAppId = settings.facebook_login && settings.facebook_login.app_id;
 
-    const metaTitleMultiLoc = tenant.data.attributes.settings.core.meta_title;
+    const metaTitleMultiLoc = settings.core.meta_title;
     const metaTitle =
       localize(metaTitleMultiLoc) || formatMessage(messages.metaTitle1);
 
-    const metaDescriptionMultiLoc =
-      tenant.data.attributes.settings.core.meta_description;
+    const metaDescriptionMultiLoc = settings.core.meta_description;
     let metaDescription = localize(metaDescriptionMultiLoc);
     metaDescription =
       metaDescription || formatMessage(messages.appMetaDescription);
     const googleSearchConsoleMetaAttribute =
-      tenant.data.attributes.settings.core.google_search_console_meta_attribute;
+      settings.core.google_search_console_meta_attribute;
 
-    const lifecycleStage = tenant.data.attributes.settings.core.lifecycle_stage;
+    const lifecycleStage = settings.core.lifecycle_stage;
     const blockIndexing = !['active', 'churned'].includes(lifecycleStage);
 
     // Show default tags only in the backoffice.
@@ -126,34 +119,26 @@ const Meta = () => {
         <meta property="fb:app_id" content={fbAppId} />
         <meta property="og:site_name" content={organizationName} />
         <meta name="application-name" content={organizationName} />
-        {tenant.data.attributes.favicon &&
-          tenant.data.attributes.favicon.medium && (
-            <link
-              rel="icon"
-              sizes="32x32"
-              href={tenant.data.attributes.favicon.medium}
-            />
-          )}
-        {tenant.data.attributes.favicon &&
-          tenant.data.attributes.favicon.small && (
-            <link
-              rel="icon"
-              sizes="16x16"
-              href={tenant.data.attributes.favicon.small}
-            />
-          )}
-        {tenant.data.attributes.favicon &&
-          tenant.data.attributes.favicon.large && (
-            <link
-              rel="apple-touch-icon"
-              sizes="152x152"
-              href={tenant.data.attributes.favicon.large}
-            />
-          )}
-        {tenant.data.attributes.favicon &&
-          tenant.data.attributes.favicon.large && (
-            <link rel="manifest" href={`${API_PATH}/manifest.json`} />
-          )}
+        {favicon && (
+          <>
+            {favicon.medium && (
+              <link rel="icon" sizes="32x32" href={favicon.medium} />
+            )}
+            {favicon.small && (
+              <link rel="icon" sizes="16x16" href={favicon.small} />
+            )}
+            {favicon.large && (
+              <>
+                <link
+                  rel="apple-touch-icon"
+                  sizes="152x152"
+                  href={favicon.large}
+                />
+                <link rel="manifest" href={`${API_PATH}/manifest.json`} />
+              </>
+            )}
+          </>
+        )}
       </Helmet>
     );
   }

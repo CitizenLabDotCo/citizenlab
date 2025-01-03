@@ -72,7 +72,7 @@ const Root = () => {
       <OutletsProvider>
         <HelmetProvider>
           <LanguageProvider>
-            <HistoryRouter history={history as any}>
+            <HistoryRouter history={history}>
               <App>
                 <Routes />
               </App>
