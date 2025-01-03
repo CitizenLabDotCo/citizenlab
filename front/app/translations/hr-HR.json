@@ -502,7 +502,7 @@
   "app.components.VoteControl.budgetingNotPossible": "U ovom trenutku nije moguće izmijeniti proračun.",
   "app.components.VoteControl.budgetingNotVerified": "Molimo vas da {verifyAccountLink} kako biste nastavili.",
   "app.components.VoteInputs._shared.currencyLeft": "Ostalo vam je {budgetLeft} / {totalBudget} {currency}",
-  "app.components.VoteInputs._shared.votesLeft": "Imate {votesLeft} / {totalNumberOfVotes} {totalNumberOfVotes, plural, =0 {{votesTerm}} one {{voteTerm}} other {{votesTerm}}} lijevo.",
+  "app.components.VoteInputs._shared.votesLeft4": "Imate {votesLeft} / {totalNumberOfVotes} {totalNumberOfVotes, plural, =0 {{votesTerm}} one {{voteTerm}} other {{votesTerm}}} lijevo.",
   "app.components.VoteInputs.budgeting.AddToBasketButton.basketAlreadySubmitted": "Već ste predali svoj proračun. Kliknite \"Izmijenite proračun\" da biste promijenili proračun.",
   "app.components.VoteInputs.budgeting.AddToBasketButton.basketAlreadySubmittedIdeaPage": "Već ste predali svoj proračun. Da biste promijenili svoj proračun, vratite se na stranicu projekta i kliknite \"Izmijenite svoj proračun\".",
   "app.components.VoteInputs.budgeting.AddToBasketButton.phaseNotActive": "Proračun nije dostupan jer ova faza nije aktivna.",
