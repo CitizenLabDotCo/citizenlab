@@ -60,6 +60,7 @@ fallback_locales =
     it
     kl
     lb
+    lt
     lv
     nb
     nl
