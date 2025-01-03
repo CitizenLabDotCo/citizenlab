@@ -4,11 +4,10 @@ import { Multiloc } from 'typings';
 
 import useAdminPublications from 'api/admin_publications/useAdminPublications';
 
-import useLocalize from 'hooks/useLocalize';
-
 import AdminPublicationsCarrousel from '../_shared/AdminPublicationsCarrousel';
 import Skeleton from '../_shared/AdminPublicationsCarrousel/Skeleton';
 import EmptyState from '../_shared/EmptyState';
+import useLocalizeWithFallback from '../_shared/useLocalizeWithFallback';
 
 import messages from './messages';
 import Settings from './Settings';
@@ -18,7 +17,7 @@ interface Props {
 }
 
 const Published = ({ titleMultiloc }: Props) => {
-  const localize = useLocalize();
+  const localizeWithFallback = useLocalizeWithFallback();
 
   const { data, hasNextPage, fetchNextPage, isInitialLoading } =
     useAdminPublications({
@@ -30,7 +29,7 @@ const Published = ({ titleMultiloc }: Props) => {
     });
 
   const adminPublications = data?.pages.map((page) => page.data).flat();
-  const title = localize(titleMultiloc);
+  const title = localizeWithFallback(titleMultiloc, publishedTitle);
 
   if (isInitialLoading) {
     return <Skeleton title={title} />;
