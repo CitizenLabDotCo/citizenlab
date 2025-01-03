@@ -13,7 +13,8 @@ import { IAdminPublicationData } from 'api/admin_publications/types';
 
 import useLocalize from 'hooks/useLocalize';
 
-import { SortableRow, SortableList } from 'components/admin/ResourceList';
+import SortableList from 'components/admin/ResourceList/SortableList';
+import SortableRow from 'components/admin/ResourceList/SortableRow';
 
 const StyledSortableRow = styled(SortableRow)`
   .e2e-admin-list-row {

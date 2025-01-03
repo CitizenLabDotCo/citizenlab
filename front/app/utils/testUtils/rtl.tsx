@@ -20,6 +20,7 @@ window.scrollTo = jest.fn();
 global.URL.createObjectURL = jest.fn();
 Element.prototype.scrollTo = jest.fn();
 Element.prototype.scrollIntoView = jest.fn();
+document.execCommand = jest.fn();
 
 const AllTheProviders = ({ children }: { children: ReactNode }) => {
   return (

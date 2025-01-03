@@ -7,7 +7,8 @@ import { IPermissionsCustomFieldData } from 'api/permissions_custom_fields/types
 import usePermissionsCustomFields from 'api/permissions_custom_fields/usePermissionsCustomFields';
 import useReorderPermissionsCustomField from 'api/permissions_custom_fields/useReorderPermissionsCustomField';
 
-import { SortableList, SortableRow } from 'components/admin/ResourceList';
+import SortableList from 'components/admin/ResourceList/SortableList';
+import SortableRow from 'components/admin/ResourceList/SortableRow';
 
 import { FormattedMessage } from 'utils/cl-intl';
 

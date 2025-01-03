@@ -9,8 +9,8 @@ import Link from 'utils/cl-router/Link';
 import { isNilOrError, stopPropagation } from 'utils/helperUtils';
 
 import messages from '../../messages';
-import { DeletedUser } from '../UserLink';
 import NotificationWrapper from '../NotificationWrapper';
+import { DeletedUser } from '../UserLink';
 
 interface Props {
   notification: IMentionInOfficialFeedbackNotificationData;

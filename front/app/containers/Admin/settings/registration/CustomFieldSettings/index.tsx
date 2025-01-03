@@ -20,11 +20,9 @@ import { isBuiltInField, isHiddenField } from 'api/user_custom_fields/util';
 
 import customfieldMessages from 'containers/Admin/settings/registration/CustomFieldRoutes/messages';
 
-import {
-  SortableList,
-  SortableRow,
-  TextCell,
-} from 'components/admin/ResourceList';
+import { TextCell } from 'components/admin/ResourceList';
+import SortableList from 'components/admin/ResourceList/SortableList';
+import SortableRow from 'components/admin/ResourceList/SortableRow';
 import {
   Section,
   SectionTitle,
