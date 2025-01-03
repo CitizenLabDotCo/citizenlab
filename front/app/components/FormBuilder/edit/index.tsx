@@ -100,9 +100,9 @@ const FormEdit = ({
   const [formOpenedAt, setFormOpenedAt] = useState<string | undefined>();
   useEffect(() => {
     if (!formOpenedAt && customForm?.data.attributes.opened_at) {
-      setFormOpenedAt(customForm?.data.attributes.opened_at);
+      setFormOpenedAt(customForm.data.attributes.opened_at);
     }
-  }, [customForm]);
+  }, [formOpenedAt, customForm]);
 
   const schema = object().shape({
     customFields: array().of(

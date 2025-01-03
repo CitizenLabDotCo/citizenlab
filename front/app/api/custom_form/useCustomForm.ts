@@ -19,7 +19,7 @@ const fetchCustomForm = ({ projectId, phaseId }: ICustomFormParameters) => {
 
 const useCustomForm = ({ projectId, phaseId }: ICustomFormParameters) => {
   return useQuery<ICustomForm, CLErrors, ICustomForm, CustomFormKeys>({
-    queryKey: customFormKeys.item({ projectId: projectId, phaseId: phaseId }),
+    queryKey: customFormKeys.item({ projectId, phaseId }),
     queryFn: () =>
       fetchCustomForm({
         projectId,
