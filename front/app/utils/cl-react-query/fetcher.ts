@@ -180,6 +180,21 @@ async function fetcher({
         }
       } else if (action === 'get' || action === 'post' || action === 'patch') {
         if (data.data.id) {
+          // TODO REMOVE
+          if (path === `/home_pages/content_builder_layouts/homepage`) {
+            queryClient.setQueryData(
+              [
+                {
+                  type: data.data.type,
+                  operation: 'item',
+                },
+              ],
+              () => ({ data: data.data })
+            );
+            return;
+          }
+          // TODO REMOVE
+
           queryClient.setQueryData(
             [
               {

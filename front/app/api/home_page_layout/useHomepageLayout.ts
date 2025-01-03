@@ -23,7 +23,7 @@ const useHomepageLayout = () => {
     HomepageBuilderKeys
   >({
     queryKey: homepageBuilderKeys.items(),
-    queryFn: () => fetchHomepageBuilderLayout(),
+    queryFn: fetchHomepageBuilderLayout,
   });
 };
 
