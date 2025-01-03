@@ -40,13 +40,13 @@ export const NotificationsPopup = () => {
 
   const handleCloseNotifications = () => {
     markAllAsRead();
-    trackEventByName(tracks.clickCloseNotifications.name);
+    trackEventByName(tracks.clickCloseNotifications);
     setIsNotificationsPopupOpen(false);
   };
 
   const handleOpenNotifications = () => {
     setIsNotificationsPopupOpen(true);
-    trackEventByName(tracks.clickOpenNotifications.name);
+    trackEventByName(tracks.clickOpenNotifications);
   };
 
   return (
