@@ -18,12 +18,6 @@ class SideFxReactionService
 
   private
 
-  def lock_initiative_editing_if_required(reaction)
-    return if reaction.reactable.editing_locked || reaction.user_id == reaction.reactable.author_id
-
-    reaction.reactable.update!(editing_locked: true)
-  end
-
   def reactable_type(reaction)
     reaction.reactable_type.underscore
   end

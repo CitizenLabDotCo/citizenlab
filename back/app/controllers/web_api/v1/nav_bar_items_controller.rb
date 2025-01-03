@@ -37,7 +37,7 @@ class WebApi::V1::NavBarItemsController < ApplicationController
   def removed_default_items
     authorize NavBarItem
     used_codes = NavBarItem.distinct.pluck(:code)
-    rejected_codes = (used_codes + NavBarItemPolicy.feature_disabled_codes).uniq
+    rejected_codes = (used_codes).uniq
     @items = NavBarItemService.new.default_items.reject do |item|
       # Not using set difference to have an
       # explicit guarantee of preserving the

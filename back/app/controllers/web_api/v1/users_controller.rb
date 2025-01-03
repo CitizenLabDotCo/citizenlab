@@ -3,8 +3,8 @@
 class WebApi::V1::UsersController < ApplicationController
   include BlockingProfanity
 
-  before_action :set_user, only: %i[show update destroy ideas_count initiatives_count comments_count block unblock]
-  skip_before_action :authenticate_user, only: %i[create show check by_slug by_invite ideas_count initiatives_count comments_count]
+  before_action :set_user, only: %i[show update destroy ideas_count comments_count block unblock]
+  skip_before_action :authenticate_user, only: %i[create show check by_slug by_invite ideas_count comments_count]
 
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
 
@@ -194,10 +194,6 @@ class WebApi::V1::UsersController < ApplicationController
   def blocked_count
     authorize :user, :blocked_count?
     render json: raw_json({ count: User.all.blocked.count }, type: 'blocked_users_count'), status: :ok
-  end
-
-  def initiatives_count
-    render json: raw_json({ count: policy_scope(@user.initiatives.published).count }), status: :ok
   end
 
   def comments_count
