@@ -16,8 +16,6 @@ const ContentBuilderFrame = memo(
 
     useEffect(() => {
       if (editorData) {
-        console.log('Frame:');
-        console.log(editorData);
         actions.deserialize(editorData);
 
         if (onLoadImages) {
