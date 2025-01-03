@@ -85,9 +85,7 @@ resource 'Stats - Comments' do
     context 'as a moderator' do
       before do
         header_token_for create(:project_moderator)
-        initiative = create(:initiative)
-        create(:comment, post: initiative)
-        create(:comment, post: create(:idea, project: create(:private_admins_project)))
+        create(:comment, idea: create(:idea, project: create(:private_admins_project)))
       end
 
       example 'Count all comments (as a moderator)', document: false do
@@ -129,10 +127,10 @@ resource 'Stats - Comments' do
             idea2 = create(:idea, topics: [@topic2], project: project)
             idea3 = create(:idea, topics: [@topic1, @topic2], project: project)
             create(:idea)
-            create(:comment, post: idea1)
-            create(:comment, post: idea1)
-            create(:comment, post: idea2)
-            create(:comment, post: idea3)
+            create(:comment, idea: idea1)
+            create(:comment, idea: idea1)
+            create(:comment, idea: idea2)
+            create(:comment, idea: idea3)
           end
           create(:comment)
         end
@@ -155,8 +153,8 @@ resource 'Stats - Comments' do
           travel_to start_at + 5.days do
             @project = create(:project)
             idea = create(:idea_with_topics, topics_count: 2, project: @project)
-            create(:comment, post: idea)
-            create(:comment, post: create(:idea_with_topics))
+            create(:comment, idea: idea)
+            create(:comment, idea: create(:idea_with_topics))
           end
         end
 
@@ -183,8 +181,8 @@ resource 'Stats - Comments' do
           travel_to start_at + 3.days do
             @group = create(:group)
             idea = create(:idea_with_topics, topics_count: 2)
-            create(:comment, post: idea, author: create(:user, manual_groups: [@group]))
-            create(:comment, post: create(:idea_with_topics))
+            create(:comment, idea: idea, author: create(:user, manual_groups: [@group]))
+            create(:comment, idea: create(:idea_with_topics))
           end
         end
 
@@ -230,10 +228,10 @@ resource 'Stats - Comments' do
             idea2 = create(:idea, topics: [@topic2], project: project)
             idea3 = create(:idea, topics: [@topic1, @topic2], project: project)
             create(:idea)
-            create(:comment, post: idea1)
-            create(:comment, post: idea1)
-            create(:comment, post: idea2)
-            create(:comment, post: idea3)
+            create(:comment, idea: idea1)
+            create(:comment, idea: idea1)
+            create(:comment, idea: idea2)
+            create(:comment, idea: idea3)
           end
           create(:comment)
         end
@@ -258,8 +256,8 @@ resource 'Stats - Comments' do
           travel_to start_at + 5.days do
             @project = create(:project)
             idea = create(:idea_with_topics, topics_count: 2, project: @project)
-            create(:comment, post: idea)
-            create(:comment, post: create(:idea_with_topics))
+            create(:comment, idea: idea)
+            create(:comment, idea: create(:idea_with_topics))
           end
         end
 
@@ -287,8 +285,8 @@ resource 'Stats - Comments' do
           travel_to start_at + 3.days do
             @group = create(:group)
             idea = create(:idea_with_topics, topics_count: 2)
-            create(:comment, post: idea, author: create(:user, manual_groups: [@group]))
-            create(:comment, post: create(:idea_with_topics))
+            create(:comment, idea: idea, author: create(:user, manual_groups: [@group]))
+            create(:comment, idea: create(:idea_with_topics))
           end
         end
 
@@ -327,10 +325,10 @@ resource 'Stats - Comments' do
             idea2 = create(:idea, project: @project1)
             idea3 = create(:idea, project: @project2)
             create(:idea)
-            create(:comment, post: idea1)
-            create(:comment, post: idea1)
-            create(:comment, post: idea2)
-            create(:comment, post: idea3)
+            create(:comment, idea: idea1)
+            create(:comment, idea: idea1)
+            create(:comment, idea: idea2)
+            create(:comment, idea: idea3)
           end
         end
 
@@ -357,8 +355,8 @@ resource 'Stats - Comments' do
             project = create(:project, allowed_input_topics: [@topic])
             idea1 = create(:idea, topics: [@topic], project: project)
             idea2 = create(:idea_with_topics)
-            create(:comment, post: idea1)
-            create(:comment, post: idea2)
+            create(:comment, idea: idea1)
+            create(:comment, idea: idea2)
           end
         end
 
@@ -381,8 +379,8 @@ resource 'Stats - Comments' do
             @group = create(:group)
             project = create(:project)
             idea = create(:idea, project: project)
-            create(:comment, post: idea, author: create(:user, manual_groups: [@group]))
-            create(:comment, post: idea)
+            create(:comment, idea: idea, author: create(:user, manual_groups: [@group]))
+            create(:comment, idea: idea)
           end
         end
 
@@ -419,10 +417,10 @@ resource 'Stats - Comments' do
             idea2 = create(:idea, project: @project1)
             idea3 = create(:idea, project: @project2)
             create(:idea)
-            create(:comment, post: idea1)
-            create(:comment, post: idea1)
-            create(:comment, post: idea2)
-            create(:comment, post: idea3)
+            create(:comment, idea: idea1)
+            create(:comment, idea: idea1)
+            create(:comment, idea: idea2)
+            create(:comment, idea: idea3)
           end
         end
 
@@ -455,8 +453,8 @@ resource 'Stats - Comments' do
             project = create(:project, allowed_input_topics: [@topic])
             idea1 = create(:idea, topics: [@topic], project: project)
             idea2 = create(:idea_with_topics)
-            create(:comment, post: idea1)
-            create(:comment, post: idea2)
+            create(:comment, idea: idea1)
+            create(:comment, idea: idea2)
           end
         end
 
@@ -481,8 +479,8 @@ resource 'Stats - Comments' do
             @group = create(:group)
             project = create(:project)
             idea = create(:idea, project: project)
-            create(:comment, post: idea, author: create(:user, manual_groups: [@group]))
-            create(:comment, post: idea)
+            create(:comment, idea: idea, author: create(:user, manual_groups: [@group]))
+            create(:comment, idea: idea)
           end
         end
 

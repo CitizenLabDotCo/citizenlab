@@ -24,7 +24,7 @@ class Permission < ApplicationRecord
   PERMITTED_BIES = %w[everyone everyone_confirmed_email users admins_moderators verified].freeze
   ACTIONS = {
     # NOTE: Order of actions in each array is used when using :order_by_action
-    nil => %w[visiting following posting_initiative commenting_initiative reacting_initiative attending_event],
+    nil => %w[visiting following attending_event],
     'information' => %w[attending_event],
     'ideation' => %w[posting_idea commenting_idea reacting_idea attending_event],
     'proposals' => %w[posting_idea commenting_idea reacting_idea attending_event],

@@ -24,7 +24,7 @@ resource 'Moderations' do
     @m2 = create(
       :comment,
       body_multiloc: { 'en' => 'I\'m glad there\'s still heroes around' },
-      post: @m3,
+      idea: @m3,
       created_at: @time - 1.hour
     )
     @m4 = create(

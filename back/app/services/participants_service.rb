@@ -22,25 +22,6 @@ class ParticipantsService
       .where(dimension_date_created_id: since..to)
   end
 
-  def initiatives_participants(initiatives)
-    participants = User.none
-
-    # Posting
-    participants = participants.or(User.where(id: initiatives.select(:author_id)))
-
-    # Commenting
-    comments = Comment.where(post: initiatives)
-    participants = participants.or(User.where(id: comments.select(:author_id)))
-
-    # Initiative reacting
-    reactions = Reaction.where(reactable: initiatives)
-    participants = participants.or(User.where(id: reactions.select(:user_id)))
-
-    # Comment reacting
-    reactions = Reaction.where(reactable: comments)
-    participants.or(User.where(id: reactions.select(:user_id)))
-  end
-
   def ideas_participants(ideas, options = {})
     since = options[:since]
     actions = options[:actions] || PROJECT_PARTICIPANT_ACTIONS
@@ -57,7 +38,7 @@ class ParticipantsService
     end
 
     # Commenting
-    comments = Comment.where(post_id: ideas)
+    comments = Comment.where(idea: ideas)
     if actions.include? :commenting
       comments_since = if since
         comments.where('created_at::date >= (?)::date', since)
@@ -199,7 +180,7 @@ class ParticipantsService
       .destroy_all
 
     # Destroy comments, reactions and baskets data
-    Comment.where(post: project.ideas).destroy_all
+    Comment.where(idea: project.ideas).destroy_all
     Reaction.where(reactable: project.ideas).destroy_all
     Basket.where(phase: project.phases).destroy_all
 

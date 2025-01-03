@@ -15,8 +15,7 @@ module BlockingProfanity
 
   DEFAULT_CLASS_ATTRS = {
     Comment.name => [:body_multiloc],
-    Idea.name => %i[title_multiloc body_multiloc location_description],
-    Initiative.name => %i[title_multiloc body_multiloc location_description]
+    Idea.name => %i[title_multiloc body_multiloc location_description]
   }.freeze
 
   # Can be turned on in settings - extended_blocking = true

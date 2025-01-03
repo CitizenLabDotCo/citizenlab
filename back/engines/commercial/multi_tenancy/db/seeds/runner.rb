@@ -16,7 +16,6 @@ require_relative 'events'
 require_relative 'followers'
 require_relative 'groups'
 require_relative 'ideas'
-require_relative 'initiatives'
 require_relative 'internal_comments'
 require_relative 'invites'
 require_relative 'permissions'
@@ -44,20 +43,17 @@ module MultiTenancy
         small: {
           num_users: 5,
           num_projects: 1,
-          num_ideas: 4,
-          num_initiatives: 3
+          num_ideas: 4
         },
         medium: {
           num_users: 10,
           num_projects: 5,
-          num_ideas: 15,
-          num_initiatives: 10
+          num_ideas: 15
         },
         large: {
           num_users: 50,
           num_projects: 20,
-          num_ideas: 100,
-          num_initiatives: 60
+          num_ideas: 100
         }
       }.freeze
 
@@ -111,11 +107,7 @@ module MultiTenancy
         MultiTenancy::Seeds::ProjectFolders.new(runner: self).run
         MultiTenancy::Seeds::Projects.new(runner: self).run
         MultiTenancy::Seeds::Ideas.new(runner: self).run
-        MultiTenancy::Seeds::Initiatives.new(runner: self).run
         MultiTenancy::Seeds::InternalComments.new(runner: self).run
-
-        InitiativeStatusService.new.automated_transitions!
-
         MultiTenancy::Seeds::Baskets.new(runner: self).run
         MultiTenancy::Seeds::Groups.new(runner: self).run
         MultiTenancy::Seeds::StaticPages.new(runner: self).run
@@ -150,11 +142,6 @@ module MultiTenancy
         SEED_SIZES.dig(seed_size, :num_ideas)
       end
 
-      # @return [Integer] Number of iniatives to be seeded
-      def num_initiatives
-        SEED_SIZES.dig(seed_size, :num_initiatives)
-      end
-
       # @return [Float] default map center
       def map_center
         MAP_CENTER
@@ -185,15 +172,16 @@ module MultiTenancy
 
       # Creates nested comments for a given post
       def create_comment_tree(post, parent, depth = 0)
-        amount = rand(2 / (depth + 1))
-        amount.times do |_i|
+        return if depth > 1
+
+        rand(1..4).times do |_i|
           c = Comment.create!({
             body_multiloc: {
               'en' => Faker::Lorem.paragraphs.map { |p| "<p>#{p}</p>" }.join,
               'nl-BE' => Faker::Lorem.paragraphs.map { |p| "<p>#{p}</p>" }.join
             },
             author: rand_instance(User.normal_user),
-            post: post,
+            idea: post,
             parent: parent,
             created_at: Faker::Date.between(from: (parent ? parent.created_at : post.published_at), to: Time.zone.now)
           })

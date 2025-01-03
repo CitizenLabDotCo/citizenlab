@@ -22,14 +22,14 @@ RSpec.describe Comment do
 
       expect(idea.internal_comments_count).to eq 0
 
-      create(:internal_comment, post: idea)
+      create(:internal_comment, idea: idea)
 
       expect(idea.reload.internal_comments_count).to eq 1
     end
 
     it 'decrements the internal_comments_count of idea for a deleted internal_comment' do
       idea = create(:idea, project: create(:project))
-      internal_comment = create(:internal_comment, post: idea)
+      internal_comment = create(:internal_comment, idea: idea)
 
       expect(idea.reload.internal_comments_count).to eq 1
 
@@ -40,7 +40,7 @@ RSpec.describe Comment do
 
     it 'decrements the internal_comments_count of idea for a destroyed internal_comment' do
       idea = create(:idea, project: create(:project))
-      internal_comment = create(:internal_comment, post: idea)
+      internal_comment = create(:internal_comment, idea: idea)
 
       expect(idea.reload.internal_comments_count).to eq 1
 

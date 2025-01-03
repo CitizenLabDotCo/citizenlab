@@ -28,11 +28,6 @@ class WebApi::V1::InitiativeStatusChangesController < ApplicationController
       render json: { errors: { base: [{ error: 'initiative_status_transition_without_change' }] } }, status: :unprocessable_entity
       return
     end
-    if attributes[:official_feedback_attributes].present? # If not nil nor empty hash
-      attributes[:official_feedback_attributes].merge! post_id: @initiative.id, post_type: 'Initiative'
-    else
-      attributes.except! :official_feedback_attributes
-    end
     @change = InitiativeStatusChange.new attributes
     @change.initiative = @initiative
     @change.user ||= current_user
@@ -41,8 +36,7 @@ class WebApi::V1::InitiativeStatusChangesController < ApplicationController
     if InitiativeStatusService.new.transition_allowed?(
       @initiative,
       @initiative.initiative_status,
-      @change.initiative_status,
-      with_feedback: attributes[:official_feedback_attributes].present? || attributes[:official_feedback_id]
+      @change.initiative_status
     )
       if @change.save
         SideFxInitiativeStatusChangeService.new.after_create @change, current_user
@@ -72,12 +66,7 @@ class WebApi::V1::InitiativeStatusChangesController < ApplicationController
   def status_change_params
     params.require(:initiative_status_change).permit(
       :initiative_status_id,
-      :user_id,
-      :official_feedback_id,
-      official_feedback_attributes: [
-        body_multiloc: CL2_SUPPORTED_LOCALES,
-        author_multiloc: CL2_SUPPORTED_LOCALES
-      ]
+      :user_id
     )
   end
 end

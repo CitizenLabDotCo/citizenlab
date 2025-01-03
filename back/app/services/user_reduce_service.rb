@@ -91,7 +91,6 @@ class UserReduceService
       participants = participants_service.project_participants project
       [project.id, participants.map(&:id)]
     end
-    context_participants['global'] = participants_service.initiatives_participants(Initiative.all).map(&:id)
 
     scope.each do |user|
       set = Set.new

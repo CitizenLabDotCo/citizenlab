@@ -9,11 +9,11 @@ module EmailCampaigns
       notification = Notifications::CommentOnIdeaYouFollow.create!(
         recipient_id: recipient_user.id,
         initiating_user: comment.author,
-        post: comment.post,
+        post: comment.idea,
         comment: comment,
-        project_id: comment.post.project_id
+        project_id: comment.idea.project_id
       )
-      comment.post.phases.first.update!(input_term: 'question') if comment.post.phases.any?
+      comment.idea.phases.first.update!(input_term: 'question') if comment.idea.phases.any?
       activity = Activity.new(item: notification, action: 'created')
 
       campaign = EmailCampaigns::Campaigns::CommentOnIdeaYouFollow.first

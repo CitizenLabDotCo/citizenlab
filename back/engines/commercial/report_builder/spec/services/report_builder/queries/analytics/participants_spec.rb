@@ -51,14 +51,14 @@ RSpec.describe ReportBuilder::Queries::Analytics::Participants do
       # Create a bunch of ideas and comments with users (4 participants)
       idea1 = create(:idea, project: project, author: pp1, created_at: @date_september) # 1
       idea2 = create(:idea, project: project, author: pp2, created_at: @date_september) # 2
-      create(:comment, post: idea1, author: pp3, created_at: @date_september) # 3
+      create(:comment, idea: idea1, author: pp3, created_at: @date_september) # 3
       create(:idea, project: project, created_at: @date_september) # 4
-      create(:comment, post: idea2, author: pp1, created_at: @date_september)
+      create(:comment, idea: idea2, author: pp1, created_at: @date_september)
 
       # Create two ideas and a comment, anonymous, but all for the same user (1 participant)
       idea3 = create(:idea, project: project, author: pp4, anonymous: true, created_at: @date_september)
       create(:idea, project: project, author: pp4, anonymous: true, created_at: @date_september)
-      create(:comment, post: idea3, author: pp4, anonymous: true, created_at: @date_september)
+      create(:comment, idea: idea3, author: pp4, anonymous: true, created_at: @date_september)
 
       # Create another anonymous idea for another user (1 participant)
       create(:idea, project: project, anonymous: true, created_at: @date_september)

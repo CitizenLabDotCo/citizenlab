@@ -201,20 +201,7 @@ class WebApi::V1::UsersController < ApplicationController
   end
 
   def comments_count
-    count = 0
-    published_comments = @user.comments.published
-    if !params[:post_type] || params[:post_type] == 'Idea'
-      count += policy_scope(
-        published_comments.where(post_type: 'Idea'),
-        policy_scope_class: IdeaCommentPolicy::Scope
-      ).count
-    end
-    if !params[:post_type] || params[:post_type] == 'Initiative'
-      count += policy_scope(
-        published_comments.where(post_type: 'Initiative'),
-        policy_scope_class: InitiativeCommentPolicy::Scope
-      ).count
-    end
+    count = policy_scope(@user.comments.published).count
     render json: raw_json({ count: count }), status: :ok
   end
 

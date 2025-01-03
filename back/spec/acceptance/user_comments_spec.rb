@@ -21,21 +21,20 @@ resource 'Comments' do
     describe do
       before do
         @i1 = create(:idea, published_at: Time.zone.now)
-        @i2 = create(:initiative, published_at: 1.day.ago)
+        @i2 = create(:idea, published_at: 1.day.ago)
         @i3 = create(:idea, published_at: 3.days.ago)
         @user = create(:user)
-        @c1 = create(:comment, post: @i2, author: @user, created_at: 1.hour.ago)
-        @c2 = create(:comment, post: @i1, author: @user)
-        @c3 = create(:comment, post: @i2, author: @user, created_at: Time.zone.now)
+        @c1 = create(:comment, idea: @i2, author: @user, created_at: 1.hour.ago)
+        @c2 = create(:comment, idea: @i1, author: @user)
+        @c3 = create(:comment, idea: @i2, author: @user, created_at: Time.zone.now)
         @c4 = create(:comment)
-        @c5 = create(:comment, post: @i3, author: @user)
-        @c6 = create(:comment, post: @i1)
+        @c5 = create(:comment, idea: @i3, author: @user)
+        @c6 = create(:comment, idea: @i1)
       end
 
       let(:user_id) { @user.id }
       let(:size) { 2 }
 
-      # TODO: posting_initiative
       example_request 'List the comments of a user' do
         expect(status).to eq(200)
         json_response = json_parse(response_body)

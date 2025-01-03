@@ -58,7 +58,7 @@ describe SmartGroups::Rules::ParticipatedInProject do
     let_it_be(:idea1) { create(:idea, project: project1, author: user1) }
     let_it_be(:propsal1) { create(:proposal, project: project1, author: user4) }
     let_it_be(:reaction) { create(:reaction, reactable: idea1, user: user2) }
-    let_it_be(:comment) { create(:comment, post: idea1, author: user3) }
+    let_it_be(:comment) { create(:comment, idea: idea1, author: user3) }
     let_it_be(:idea2) { create(:idea, project: project2, author: user3) }
 
     it "correctly filters on 'in' predicate" do
