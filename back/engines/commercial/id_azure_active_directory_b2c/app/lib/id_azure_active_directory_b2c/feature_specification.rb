@@ -41,7 +41,7 @@ module IdAzureActiveDirectoryB2c
 
     add_setting 'policy_name', schema: {
       title: 'Policy (User Flow, User Journey) Name',
-      description: "The name of the policy (user flow, user journey) in the Azure AD B2C tenant. This is the policy that is used for sign-in and sign-up. tenant_name, tenant_id, and policy_name are used together to form such configuration URL https://{tenant_name}.b2clogin.com/tfp/{tenant_id}/{policy_name}/v2.0/.well-known/openid-configuration that returns JSON configuration.",
+      description: 'The name of the policy (user flow, user journey) in the Azure AD B2C tenant. This is the policy that is used for sign-in and sign-up. tenant_name, tenant_id, and policy_name are used together to form such configuration URL https://{tenant_name}.b2clogin.com/tfp/{tenant_id}/{policy_name}/v2.0/.well-known/openid-configuration that returns JSON configuration.',
       type: 'string',
       private: true
     }
@@ -63,7 +63,7 @@ module IdAzureActiveDirectoryB2c
       title: 'Logo',
       description: 'The full URL to the logo image that is shown on the authentication button. Logo should be approx. 25px in height.',
       type: 'string',
-      pattern: "^https:\/\/.+"
+      pattern: '^https://.+'
     }
 
     add_setting 'login_mechanism_name', schema: {
