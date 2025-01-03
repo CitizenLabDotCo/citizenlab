@@ -52,10 +52,14 @@ const DateRangePicker = ({
           selectedRange={selectedRange}
           selectionMode={selectionMode}
           onClickFrom={() => {
-            setSelectionMode('from');
+            selectionMode === 'from'
+              ? setSelectionMode(undefined)
+              : setSelectionMode('from');
           }}
           onClickTo={() => {
-            setSelectionMode('to');
+            selectionMode === 'to'
+              ? setSelectionMode(undefined)
+              : setSelectionMode('to');
           }}
         />
       </Tooltip>

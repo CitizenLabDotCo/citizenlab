@@ -29,7 +29,11 @@ const Input = ({
 
   return (
     <InputContainer>
-      <DateButton isSelected={selectionMode === 'from'} onClick={onClickFrom}>
+      <DateButton
+        className="date-range-picker-from"
+        isSelected={selectionMode === 'from'}
+        onClick={onClickFrom}
+      >
         {selectedRange.from
           ? selectedRange.from.toLocaleDateString()
           : selectDate}

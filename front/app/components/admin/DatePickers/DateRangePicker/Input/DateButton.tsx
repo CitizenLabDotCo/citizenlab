@@ -18,14 +18,22 @@ const StyledButton = styled(Box)<{ isSelected: boolean }>`
 
 interface Props {
   children: string;
+  className?: string;
   isSelected: boolean;
   mr?: string;
   onClick: () => void;
 }
 
-const DateButton = ({ children, isSelected, mr, onClick }: Props) => {
+const DateButton = ({
+  children,
+  className,
+  isSelected,
+  mr,
+  onClick,
+}: Props) => {
   return (
     <StyledButton
+      className={className}
       as="button"
       px="8px"
       py="4px"
