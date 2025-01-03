@@ -1,6 +1,6 @@
 import { MouseEvent, FC } from 'react';
 
-import { WrappedComponentProps } from 'react-intl';
+import { MessageDescriptor } from 'react-intl';
 import { RouteType } from 'routes';
 
 import { TAppConfigurationSetting } from 'api/app_configuration/types';
@@ -11,6 +11,8 @@ import {
 } from 'containers/App/constants';
 
 import { TFieldName } from 'components/UI/Error';
+
+import { FormatMessageValues } from 'utils/cl-intl/useIntl';
 
 declare global {
   interface Function {
@@ -157,4 +159,7 @@ export type Override<T, U> = Pick<T, Exclude<keyof T, keyof U>> & U;
 
 export type Percentage = `${number}%`;
 
-export type FormatMessage = WrappedComponentProps['intl']['formatMessage'];
+export type FormatMessage = (
+  messageDescriptor: MessageDescriptor,
+  values?: FormatMessageValues
+) => string;
