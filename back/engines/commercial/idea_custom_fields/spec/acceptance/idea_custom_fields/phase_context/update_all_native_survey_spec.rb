@@ -323,7 +323,7 @@ resource 'Idea Custom Fields' do
       example '[error] form_last_updated_at provided is before the date the form was last updated (ie this has been updated by another user/tab)' do
         custom_form.save!
         request = {
-          form_last_updated_at: 123_456,
+          form_last_updated_at: DateTime.now - 1.day,
           custom_fields: [
             {
               input_type: 'page',
