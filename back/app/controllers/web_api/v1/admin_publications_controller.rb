@@ -45,13 +45,18 @@ class WebApi::V1::AdminPublicationsController < ApplicationController
   def index_select_and_order_by_ids
     ids = params[:ids]
 
-    admin_publications = policy_scope(AdminPublication.includes(:parent))
-    admin_publications = admin_publications.not_draft.where(id: ids).in_order_of(:id, ids)
+    visible_not_draft_admin_publications = policy_scope(AdminPublication.includes(:parent)).not_draft
+    admin_publications = visible_not_draft_admin_publications.where(id: ids).in_order_of(:id, ids)
 
     @admin_publications = paginate admin_publications
     @admin_publications = includes_publications(@admin_publications)
 
     authorize @admin_publications, :index_select_and_order_by_ids?
+
+    # Initialize the filtering in the AdminPublicationsFilteringService,
+    # so that we can use the visible_children_counts_by_parent_id in the serializer, via the jsonapi_serializer_params.
+    # Not part of query chain, unlike the index action, as this raises an error due to conflict with in_order_of method.
+    admin_publication_filterer.filter(visible_not_draft_admin_publications, params.merge(current_user: current_user))
 
     render json: linked_json(
       @admin_publications,
