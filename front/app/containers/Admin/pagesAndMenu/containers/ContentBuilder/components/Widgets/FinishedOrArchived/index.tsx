@@ -5,11 +5,10 @@ import { Multiloc } from 'typings';
 import { FinishedOrArchived as FinishedOrArchivedType } from 'api/projects_mini/types';
 import useProjectsMini from 'api/projects_mini/useProjectsMini';
 
-import useLocalize from 'hooks/useLocalize';
-
 import EmptyState from '../_shared/EmptyState';
 import ProjectCarrousel from '../_shared/ProjectCarrousel';
 import Skeleton from '../_shared/ProjectCarrousel/Skeleton';
+import useLocalizeWithFallback from '../_shared/useLocalizeWithFallback';
 
 import messages from './messages';
 import Settings from './Settings';
@@ -20,7 +19,7 @@ interface Props {
 }
 
 const FinishedOrArchived = ({ titleMultiloc, filterBy }: Props) => {
-  const localize = useLocalize();
+  const localizeWithFallback = useLocalizeWithFallback();
 
   const { data, hasNextPage, fetchNextPage, isInitialLoading } =
     useProjectsMini({
@@ -29,7 +28,7 @@ const FinishedOrArchived = ({ titleMultiloc, filterBy }: Props) => {
     });
 
   const projects = data?.pages.map((page) => page.data).flat();
-  const title = localize(titleMultiloc);
+  const title = localizeWithFallback(titleMultiloc, messages.youSaidWeDid);
 
   if (isInitialLoading) {
     return <Skeleton title={title} />;
