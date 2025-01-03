@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 
+import { DateRange } from '../_shared/typings';
+
 import { patchDisabledRanges } from './patchDisabledRanges';
-import { DateRange } from './typings';
 
 import DatePhasePicker from '.';
 
