@@ -1425,6 +1425,27 @@
             "default": true
           }
         }
+      },
+
+      "verification": {
+        "type": "object",
+        "title": "Verification",
+        "description": "Use a pre-defined list to verify user identities during registration.",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": false },
+          "enabled": { "type": "boolean", "default": false },
+          "verification_methods": {
+            "title": "Verification Methods",
+            "private": true,
+            "type": "array",
+            "default": [],
+            "items": {
+              "anyOf": <%= ::Verification::VerificationService.new.all_methods_json_schema %>
+            }
+          }
+        }
       }
     },
   "dependencies": {

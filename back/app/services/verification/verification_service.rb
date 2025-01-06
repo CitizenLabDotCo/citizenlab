@@ -14,6 +14,24 @@ module Verification
       all_methods.find { |m| m.name == name }
     end
 
+    # To list all the methods in admin HQ settings
+    def all_methods_json_schema
+      all_methods.map do |method|
+        {
+          type: 'object',
+          title: method.name,
+          required: ['name'],
+          properties: {
+            name: { type: 'string', enum: [method.name], default: method.name, readOnly: true },
+            **method.config_parameters.to_h do |cp|
+              parameter_schema = method.respond_to?(:config_parameters_schema) && method.config_parameters_schema[cp]
+              [cp, parameter_schema || { type: 'string', private: 'true' }]
+            end
+          }
+        }
+      end.to_json
+    end
+
     def find_verification_group(groups)
       groups.select { |group| group.membership_type == 'rules' }.find do |group|
         group.rules.find do |rule|
