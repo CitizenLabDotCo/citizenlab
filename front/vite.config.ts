@@ -1,10 +1,9 @@
 import path from 'path';
 
-// import { sentryVitePlugin } from '@sentry/vite-plugin';
+import { sentryVitePlugin } from '@sentry/vite-plugin';
 import react from '@vitejs/plugin-react';
 import dotenv from 'dotenv';
 import { defineConfig } from 'vite';
-// import checker from 'vite-plugin-checker';
 import commonjs from 'vite-plugin-commonjs';
 import { createHtmlPlugin } from 'vite-plugin-html';
 import tsconfigPaths from 'vite-plugin-tsconfig-paths';
@@ -21,6 +20,7 @@ export default defineConfig(({ mode }) => {
   const isDev = mode === 'development';
   const isProd = mode === 'production';
   const isTestBuild = process.env.TEST_BUILD === 'true';
+  const sourceMapToSentry = !isDev && !isTestBuild && process.env.CI;
 
   const API_HOST = process.env.API_HOST || 'localhost';
   const API_PORT = process.env.API_PORT || '4000';
@@ -64,13 +64,6 @@ export default defineConfig(({ mode }) => {
     },
     plugins: [
       react(),
-      // checker({
-      //   overlay: { initialIsOpen: false },
-      //   typescript: true,
-      //   eslint: {
-      //     lintCommand: `eslint "${process.cwd()}/app/**/*.{js,jsx,ts,tsx}" --ignore-pattern app/__generated__/`,
-      //   },
-      // }),
       commonjs(),
       tsconfigPaths(), // Support for TS path aliases
       createHtmlPlugin({
@@ -80,18 +73,18 @@ export default defineConfig(({ mode }) => {
           },
         },
       }),
-      // sentryVitePlugin({
-      //   url: 'https://sentry.hq.citizenlab.co/',
-      //   authToken: process.env.SENTRY_AUTH_TOKEN,
-      //   org: 'citizenlab',
-      //   project: 'cl2-front',
-      //   release: {
-      //     name: process.env.CIRCLE_BUILD_NUM,
-      //     deploy: {
-      //       env: mode,
-      //     },
-      //   },
-      // }),
+      ...[
+        sourceMapToSentry &&
+          sentryVitePlugin({
+            url: 'https://sentry.hq.citizenlab.co/',
+            authToken: process.env.SENTRY_AUTH_TOKEN,
+            org: 'citizenlab',
+            project: 'cl2-front',
+            release: {
+              name: process.env.CIRCLE_BUILD_NUM,
+            },
+          }),
+      ],
     ],
     build: {
       outDir: '../build',
