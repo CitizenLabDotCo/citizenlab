@@ -125,17 +125,15 @@ const RightColumnDesktop = ({
                 <GoToCommentsButton />
               </Box>
             )}
-            <Box bg={colors.white}>
-              <FollowUnfollow
-                followableType="ideas"
-                followableId={ideaId}
-                followersCount={idea.data.attributes.followers_count}
-                // TODO: Fix this the next time the file is edited.
-                // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-                followerId={idea.data.relationships.user_follower?.data?.id}
-                toolTipType="input"
-              />
-            </Box>
+            <FollowUnfollow
+              followableType="ideas"
+              followableId={ideaId}
+              followersCount={idea.data.attributes.followers_count}
+              // TODO: Fix this the next time the file is edited.
+              // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+              followerId={idea.data.relationships.user_follower?.data?.id}
+              toolTipType="input"
+            />
           </Box>
         )}
         <Cosponsorship ideaId={ideaId} />
