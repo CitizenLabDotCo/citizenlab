@@ -13,12 +13,9 @@ import { getNavbarItemSlug } from 'api/navbar/util';
 import NavbarItemRow from 'containers/Admin/pagesAndMenu/containers/NavigationSettings/NavbarItemRow';
 import { ADMIN_PAGES_MENU_PATH } from 'containers/Admin/pagesAndMenu/routes';
 
-import {
-  LockedRow,
-  SortableList,
-  SortableRow,
-} from 'components/admin/ResourceList';
-import { Item } from 'components/admin/ResourceList/SortableList';
+import LockedRow from 'components/admin/ResourceList/LockedRow';
+import SortableList, { Item } from 'components/admin/ResourceList/SortableList';
+import SortableRow from 'components/admin/ResourceList/SortableRow';
 import { SubSectionTitle } from 'components/admin/Section';
 
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';

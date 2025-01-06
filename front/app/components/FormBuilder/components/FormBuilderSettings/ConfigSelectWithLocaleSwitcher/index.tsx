@@ -24,7 +24,8 @@ import { ICustomFieldInputType, IOptionsType } from 'api/custom_fields/types';
 
 import usePrevious from 'hooks/usePrevious';
 
-import { List, Row, SortableRow } from 'components/admin/ResourceList';
+import { List, Row } from 'components/admin/ResourceList';
+import SortableRow from 'components/admin/ResourceList/SortableRow';
 import { SectionField } from 'components/admin/Section';
 import { generateTempId } from 'components/FormBuilder/utils';
 import Error, { TFieldName } from 'components/UI/Error';
