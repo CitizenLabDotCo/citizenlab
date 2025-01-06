@@ -45,20 +45,21 @@ const RightColumnDesktop = ({
   const followEnabled = useFeatureFlag({
     name: 'follow',
   });
-
-  if (!idea) return null;
-
   const phase = getCurrentPhase(phases?.data);
-  const votingConfig = getVotingMethodConfig(phase?.attributes.voting_method);
 
-  const ideaIsInParticipationContext = phase
-    ? isIdeaInParticipationContext(idea, phase)
-    : undefined;
+  if (!idea || !phase) return null;
+
+  const votingConfig = getVotingMethodConfig(phase.attributes.voting_method);
+
+  const ideaIsInParticipationContext = isIdeaInParticipationContext(
+    idea,
+    phase
+  );
 
   const commentingEnabled =
     idea.data.attributes.action_descriptors.commenting_idea.enabled;
 
-  const participationMethod = phase?.attributes.participation_method;
+  const participationMethod = phase.attributes.participation_method;
 
   const showIdeaReactionControl = showIdeaReactions(
     idea.data,
@@ -67,6 +68,7 @@ const RightColumnDesktop = ({
 
   const showInteractionsContainer =
     ideaIsInParticipationContext || commentingEnabled || followEnabled;
+
   return (
     <Box
       flex={`0 0 ${rightColumnWidthDesktop}px`}
@@ -77,7 +79,7 @@ const RightColumnDesktop = ({
       className={className}
     >
       <Box display="flex" flexDirection="column">
-        {showInteractionsContainer && participationMethod && (
+        {showInteractionsContainer && (
           <Box
             padding="20px"
             borderRadius="3px"
