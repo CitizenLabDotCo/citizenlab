@@ -214,7 +214,7 @@ describe Permissions::IdeaPermissionsService do
     end
 
     context 'when permitted group requires verification' do
-      let(:current_phase_attrs) { { with_permissions: true } }
+      let(:current_phase_attrs) { { with_permissions: true, reacting_dislike_enabled: true } }
 
       context 'when in the current phase and reacting is not permitted' do
         it "returns 'user_not_verified'" do
