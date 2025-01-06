@@ -74,7 +74,10 @@ const ProjectInfoSideBar = memo<Props>(
             >
               <Tooltip
                 disabled={!isAdmin(authUser)}
-                placement="bottom"
+                // If the tooltip is very close to the top of the screen,
+                // it will hide under the project CTA bar but it has a low chance of
+                // happening (only in projects with no/short description and we've scrolled up the tooltip the most we can).
+                placement="auto"
                 content={formatMessage(messages.liveDataMessage)}
               >
                 <Box
