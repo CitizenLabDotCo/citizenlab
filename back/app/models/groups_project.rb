@@ -12,9 +12,8 @@
 #
 # Indexes
 #
-#  index_groups_projects_on_group_id                 (group_id)
-#  index_groups_projects_on_group_id_and_project_id  (group_id,project_id) UNIQUE
-#  index_groups_projects_on_project_id               (project_id)
+#  index_groups_projects_on_group_id    (group_id)
+#  index_groups_projects_on_project_id  (project_id)
 #
 # Foreign Keys
 #
