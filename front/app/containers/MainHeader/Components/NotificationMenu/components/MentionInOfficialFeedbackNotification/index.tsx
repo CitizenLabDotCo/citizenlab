@@ -9,8 +9,8 @@ import Link from 'utils/cl-router/Link';
 import { isNilOrError, stopPropagation } from 'utils/helperUtils';
 
 import messages from '../../messages';
-import { DeletedUser } from '../Notification';
 import NotificationWrapper from '../NotificationWrapper';
+import { DeletedUser } from '../UserLink';
 
 interface Props {
   notification: IMentionInOfficialFeedbackNotificationData;
@@ -36,9 +36,7 @@ const MentionInCommentNotification = memo<Props>((props) => {
         {...messages.mentionInOfficialFeedback}
         values={{
           officialName: deletedUser ? (
-            <DeletedUser>
-              <FormattedMessage {...messages.deletedUser} />
-            </DeletedUser>
+            <DeletedUser />
           ) : (
             <Link
               to={`/profile/${notification.attributes.initiating_user_slug}`}

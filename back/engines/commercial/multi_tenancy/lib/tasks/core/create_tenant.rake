@@ -328,6 +328,10 @@ namespace :cl2_back do
         project_review: {
           enabled: true,
           allowed: true
+        },
+        platform_templates: {
+          enabled: false,
+          allowed: false
         }
       }
     )

@@ -13,6 +13,7 @@ import { CLErrors } from 'typings';
 
 import useLocale from 'hooks/useLocale';
 
+import { trackEventByName } from 'utils/analytics';
 import { useIntl } from 'utils/cl-intl';
 
 import ButtonBar from './Components/ButtonBar';
@@ -20,6 +21,7 @@ import Fields from './Components/Fields';
 import FormWrapper from './Components/FormWrapper';
 import messages from './messages';
 import { parseRequiredMultilocsData } from './parseRequiredMultilocs';
+import tracks from './tracks';
 import { ApiErrorGetter, AjvErrorGetter, FormData } from './typings';
 import { sanitizeFormData, isValidData, customAjv } from './utils';
 
@@ -123,6 +125,11 @@ const Form = memo(
         }
         try {
           await onSubmit(submissionData);
+          if (isSurvey) {
+            trackEventByName(tracks.surveyFormSubmitted);
+          } else {
+            trackEventByName(tracks.ideaFormSubmitted);
+          }
         } catch (e) {
           setScrollToError(true);
           setApiErrors(e.errors);

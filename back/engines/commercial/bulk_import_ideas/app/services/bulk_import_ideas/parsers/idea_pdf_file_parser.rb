@@ -181,7 +181,7 @@ module BulkImportIdeas::Parsers
       # 2. If multi select (array) combine the two sets of values
       custom_field_values = custom_field_values.to_h do |name, value|
         if value.is_a?(Array)
-          value += form_parsed_idea_row[:custom_field_values][name]
+          value += form_parsed_idea_row[:custom_field_values][name] || [] # Add nothing if not present
           value.uniq!
         end
         [name, value]

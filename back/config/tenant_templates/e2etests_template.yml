@@ -55,12 +55,7 @@ models:
             errors: []
             hasError: false
           displayName: 'HomepageBanner'
-          custom:
-            title:
-              id: 'app.containers.admin.ContentBuilder.homepage.homepageBanner'
-              defaultMessage: 'Homepage banner'
-            noPointerEvents: true
-            noDelete: true
+          custom: {}
           parent: 'ROOT'
           hidden: false
           nodes: []
@@ -70,10 +65,7 @@ models:
             resolvedName: 'FollowedItems'
           nodes: []
           props:
-            titleMultiloc:
-              en: 'For you'
-              nl-BE: 'Voor jou'
-              fr-BE: 'Pour vous'
+            titleMultiloc: {}
           custom: {}
           hidden: false
           parent: 'ROOT'
@@ -85,10 +77,7 @@ models:
             resolvedName: 'OpenToParticipation'
           nodes: []
           props:
-            titleMultiloc:
-              en: 'Open to participation'
-              nl-BE: 'Open voor deelname'
-              fr-BE: 'Ouvert à la participation'
+            titleMultiloc: {}
           custom: {}
           hidden: false
           parent: 'ROOT'
@@ -101,10 +90,7 @@ models:
           nodes: []
           props:
             filterBy: 'finished_and_archived'
-            titleMultiloc:
-              en: 'You said, we did...'
-              nl-BE: 'Jij zei, wij deden...'
-              fr-BE: "La boucle est bouclée"
+            titleMultiloc: {}
           custom: {}
           hidden: false
           parent: 'ROOT'
@@ -116,10 +102,7 @@ models:
             resolvedName: 'Projects'
           isCanvas: false
           props:
-            currentlyWorkingOnText:
-              en: ''
-              nl-BE: ''
-              fr-BE: ''
+            currentlyWorkingOnText: {}
           displayName: 'Projects'
           custom:
             title:

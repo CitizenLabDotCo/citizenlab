@@ -11,18 +11,21 @@ import {
 } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
+import useProjectReview from 'api/project_reviews/useProjectReview';
 import useProjectById from 'api/projects/useProjectById';
+import useUserById from 'api/users/useUserById';
 
-import useFeatureFlag from 'hooks/useFeatureFlag';
 import useLocalize from 'hooks/useLocalize';
 
 import NavigationTabs from 'components/admin/NavigationTabs';
 import Button from 'components/UI/Button';
 
 import { FormattedMessage, MessageDescriptor, useIntl } from 'utils/cl-intl';
+import { getFullName } from 'utils/textUtils';
 
 import messages from './messages';
 import PublicationStatus from './PublicationStatus';
+import ReviewFlow from './ReviewFlow';
 import ShareLink from './ShareLink';
 
 const StyledTitle = styled(Title)`
@@ -37,9 +40,11 @@ interface Props {
 }
 
 const ProjectHeader = ({ projectId }: Props) => {
-  const shareLinkEnabled = useFeatureFlag({ name: 'project_preview_link' });
-
   const { data: project } = useProjectById(projectId);
+  const { data: projectReview } = useProjectReview(projectId);
+  const { data: approver } = useUserById(
+    projectReview?.data.relationships.reviewer?.data?.id
+  );
 
   const { formatMessage } = useIntl();
   const localize = useLocalize();
@@ -74,7 +79,11 @@ const ProjectHeader = ({ projectId }: Props) => {
           <StyledTitle color="primary" variant="h4" my="0px">
             {localize(project.data.attributes.title_multiloc)}
           </StyledTitle>
-          <Box display="flex" gap="12px">
+          <Box
+            display="flex"
+            gap="8px"
+            className="intercom-projects-project-header-buttons"
+          >
             <Button
               linkTo={`/projects/${project.data.attributes.slug}`}
               buttonStyle="secondary-outlined"
@@ -84,22 +93,21 @@ const ProjectHeader = ({ projectId }: Props) => {
               id="e2e-view-project"
             />
             <PublicationStatus project={project} />
+            <ShareLink
+              projectId={project.data.id}
+              projectSlug={project.data.attributes.slug}
+              token={project.data.attributes.preview_token}
+            />
             <Button
               linkTo={`/admin/projects/${project.data.id}/settings`}
               buttonStyle="secondary-outlined"
-              icon="settings"
               size="s"
               padding="4px 8px"
             >
-              {formatMessage(messages.projectSettings)}
+              {formatMessage(messages.settings)}
             </Button>
-            {shareLinkEnabled && (
-              <ShareLink
-                projectId={project.data.id}
-                projectSlug={project.data.attributes.slug}
-                token={project.data.attributes.preview_token}
-              />
-            )}
+
+            <ReviewFlow project={project.data} />
           </Box>
         </Box>
         <Box display="flex" gap="8px">
@@ -109,7 +117,7 @@ const ProjectHeader = ({ projectId }: Props) => {
             size="s"
             padding="0px"
           >
-            <Box display="flex" alignItems="center">
+            <Box display="flex" alignItems="center" gap="4px">
               <Icon
                 name={visibilityIcon}
                 fill={colors.coolGrey600}
@@ -120,7 +128,7 @@ const ProjectHeader = ({ projectId }: Props) => {
               </Text>
             </Box>
           </Button>
-          <Text color="coolGrey600" fontSize="s" my="0px">
+          <Text color="coolGrey600" fontSize="s" mb="0px" mt="2px">
             ·
           </Text>
           <Tooltip
@@ -171,7 +179,7 @@ const ProjectHeader = ({ projectId }: Props) => {
               </Box>
             }
           >
-            <Box display="flex" alignItems="center">
+            <Box display="flex" alignItems="center" gap="4px">
               <Icon name="user" fill={colors.coolGrey600} width="16px" />
               <Text color="coolGrey600" fontSize="s" m="0px">
                 {formatMessage(messages.participants, {
@@ -180,6 +188,21 @@ const ProjectHeader = ({ projectId }: Props) => {
               </Text>
             </Box>
           </Tooltip>
+          {approver && (
+            <>
+              <Text color="coolGrey600" fontSize="s" mb="0px" mt="2px">
+                ·
+              </Text>
+              <Box display="flex" alignItems="center" gap="4px">
+                <Icon name="check-circle" fill={colors.green500} width="16px" />
+                <Text color="coolGrey600" fontSize="s" m="0px">
+                  {formatMessage(messages.approvedBy, {
+                    name: getFullName(approver.data),
+                  })}
+                </Text>
+              </Box>
+            </>
+          )}
         </Box>
       </Box>
     </NavigationTabs>

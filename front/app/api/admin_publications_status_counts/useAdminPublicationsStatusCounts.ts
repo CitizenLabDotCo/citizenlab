@@ -10,6 +10,7 @@ import { IStatusCounts, AdminPublicationsStatusCountsKeys } from './types';
 
 export const fetchStatusCounts = ({
   rootLevelOnly,
+  removeNotAllowedParents,
   publicationStatusFilter,
   childrenOfId,
   topicIds,
@@ -25,6 +26,7 @@ export const fetchStatusCounts = ({
       'page[size]': undefined,
       'page[number]': undefined,
       depth: rootLevelOnly ? 0 : undefined,
+      remove_not_allowed_parents: removeNotAllowedParents,
       publication_statuses: publicationStatusFilter,
       folder: childrenOfId,
       topics: topicIds,

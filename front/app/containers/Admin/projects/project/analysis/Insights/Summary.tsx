@@ -54,8 +54,8 @@ const Summary = ({ insight }: Props) => {
         },
         {
           onSuccess: () => {
-            trackEventByName(tracks.summaryDeleted.name, {
-              extra: { analysisId },
+            trackEventByName(tracks.summaryDeleted, {
+              analysisId,
             });
           },
         }

@@ -1,5 +1,6 @@
 import React, { memo, useCallback, useState, useEffect } from 'react';
 
+import { RouteType } from 'routes';
 import styled from 'styled-components';
 
 import useAuthUser from 'api/me/useAuthUser';
@@ -19,7 +20,6 @@ import { invalidateQueryCache } from 'utils/cl-react-query/resetQueryCache';
 import { isNilOrError } from 'utils/helperUtils';
 
 import VerificationMethods from './VerificationMethods';
-import { RouteType } from 'routes';
 
 const Container = styled.div`
   display: flex;

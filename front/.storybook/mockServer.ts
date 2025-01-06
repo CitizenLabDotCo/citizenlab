@@ -16,6 +16,9 @@ import projectImagesEndpoints from '../app/api/project_images/__mocks__/_mockSer
 // phases mock data
 import phasesEndpoints from '../app/api/phases/__mocks__/_mockServer';
 
+// phases mini mock data
+import phasesMiniEndpoints from '../app/api/phases_mini/__mocks__/_mockServer';
+
 // baskets mock data
 import basketsEndpoints from '../app/api/baskets/__mocks__/_mockServer';
 
@@ -49,6 +52,8 @@ const endpoints = {
   ...projectImagesEndpoints,
 
   ...phasesEndpoints,
+
+  ...phasesMiniEndpoints,
 
   ...basketsEndpoints,
 

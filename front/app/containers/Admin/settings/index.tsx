@@ -63,9 +63,9 @@ const SettingsPage = () => {
     ...(projectReviewEnabled
       ? [
           {
-            name: 'approval',
+            name: 'project-review',
             label: formatMessage(messages.tabApproval),
-            url: '/admin/settings/approval',
+            url: '/admin/settings/review',
           } as ITab,
         ]
       : []),
@@ -84,12 +84,13 @@ const SettingsPage = () => {
         description={messages.helmetDescription}
       />
       <NavigationTabs>
-        {tabs.map(({ url, label }) => (
+        {tabs.map(({ url, label, name }) => (
           <Tab
             label={label}
             url={url}
             key={url}
             active={isTopBarNavActive('/admin/settings', pathname, url)}
+            className={`intercom-settings-tab-${name}`}
           />
         ))}
       </NavigationTabs>
