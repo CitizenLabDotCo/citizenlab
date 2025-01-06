@@ -1,6 +1,6 @@
 {
   "EmailSettingsPage.emailSettings": "Innstillinger for e-post",
-  "EmailSettingsPage.initialUnsubscribeError": "Det oppstod et problem med å avslutte påmeldingen på denne kampanjen, vennligst prøv igjen.",
+  "EmailSettingsPage.initialUnsubscribeError": "Det oppstod et problem med å melde deg av denne kampanjen, vennligst prøv igjen.",
   "EmailSettingsPage.initialUnsubscribeLoading": "Forespørselen din er under behandling, vennligst vent...",
   "EmailSettingsPage.initialUnsubscribeSuccess": "Du har meldt deg av {campaignTitle}.",
   "UI.FormComponents.optional": "valgfritt",
@@ -608,7 +608,7 @@
   "app.components.followUnfollow.followTooltipInputPage2": "Følgende utløser e-postoppdateringer om statusendringer, offisielle oppdateringer og kommentarer. Du kan når som helst gå til {unsubscribeLink} .",
   "app.components.followUnfollow.followTooltipProjects2": "Følgende utløser e-postoppdateringer om endringer i prosjektet. Du kan når som helst sende {unsubscribeLink} .",
   "app.components.followUnfollow.unFollow": "Ikke følg",
-  "app.components.followUnfollow.unsubscribe": "avslutte abonnementet",
+  "app.components.followUnfollow.unsubscribe": "meld av",
   "app.components.followUnfollow.unsubscribeUrl": "/profil/rediger",
   "app.components.form.ErrorDisplay.guidelinesLinkText": "våre retningslinjer",
   "app.components.form.ErrorDisplay.next": "Neste",
