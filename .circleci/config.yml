@@ -200,14 +200,16 @@ jobs:
   back-build-docker-image:
     working_directory: ~/
     docker:
-      - image: cimg/base:2021.03
+      - image: cimg/base:2025.01
     steps:
       - echo_pipeline_parameters
       - shallow-clone
       - setup_remote_docker:
           docker_layer_caching: true
       - run: |
-          docker build -t citizenlabdotco/back-ee:$CIRCLE_SHA1 --build-arg BUNDLE_JOBS=4 -f citizenlab/back/Dockerfile citizenlab/.
+          docker buildx create --use --name mybuild node-amd64
+          docker buildx create --append --name mybuild node-arm64
+          docker buildx build --platform linux/amd64,linux/arm64 -t citizenlabdotco/back-ee:$CIRCLE_SHA1 --build-arg BUNDLE_JOBS=4 -f citizenlab/back/Dockerfile citizenlab/.
       - run: |
           docker login -u $DOCKER_USER -p $DOCKER_PASS
           docker push citizenlabdotco/back-ee:$CIRCLE_SHA1
