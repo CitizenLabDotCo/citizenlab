@@ -954,6 +954,7 @@ workflows:
             branches:
               only:
                 - master
+                - TAN-3359-ARM-hosting
       - back-deploy-to-swarm:
           name: Deploy to staging
           requires:
