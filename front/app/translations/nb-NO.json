@@ -351,7 +351,7 @@
   "app.components.ProjectArchivedIndicator.previewProjectExplanation": "Kun synlig for moderatorer og de som har en forhåndsvisningskobling.",
   "app.components.ProjectCard.a11y_projectDescription": "Prosjektbeskrivelse:",
   "app.components.ProjectCard.a11y_projectTitle": "Prosjekttittel:",
-  "app.components.ProjectCard.addYourOption": "Legg til ditt valg",
+  "app.components.ProjectCard.addYourOption": "Legg til ditt forslag",
   "app.components.ProjectCard.allocateYourBudget": "Fordel budsjettet ditt",
   "app.components.ProjectCard.archived": "Gjennomført",
   "app.components.ProjectCard.comment": "Kommentar",
