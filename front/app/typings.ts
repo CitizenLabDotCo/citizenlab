@@ -41,6 +41,7 @@ export interface ITab {
   active?: boolean | ((pathname: string) => boolean);
   feature?: TAppConfigurationSetting;
   statusLabel?: string;
+  className?: string;
 }
 
 export type CellConfiguration<ComponentProps> = {
