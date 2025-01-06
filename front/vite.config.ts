@@ -12,6 +12,7 @@ import tsconfigPaths from 'vite-plugin-tsconfig-paths';
 dotenv.config({
   path: path.join(process.cwd(), '../env_files/front-safe.env'),
 });
+
 dotenv.config({
   path: path.join(process.cwd(), '../env_files/front-secret.env'),
 });
@@ -138,8 +139,8 @@ export default defineConfig(({ mode }) => {
         CROWDIN_PLUGIN_ENABLED: !!process.env.CROWDIN_PLUGIN_ENABLED,
         SEGMENT_API_KEY: JSON.stringify(process.env.SEGMENT_API_KEY),
         INTERCOM_APP_ID: JSON.stringify(process.env.INTERCOM_APP_ID),
-        SENTRY_DSN: JSON.stringify(process.env.SENTRY_DSN),
-        SENTRY_ENV: JSON.stringify(process.env.SENTRY_ENV),
+        SENTRY_DSN: process.env.SENTRY_DSN,
+        SENTRY_ENV: process.env.SENTRY_ENV,
         SENTRY_AUTH_TOKEN: JSON.stringify(process.env.SENTRY_AUTH_TOKEN),
         CI: JSON.stringify(process.env.CI),
         CIRCLECI: JSON.stringify(process.env.CIRCLECI),
