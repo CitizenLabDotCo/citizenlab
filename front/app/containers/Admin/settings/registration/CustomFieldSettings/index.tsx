@@ -124,7 +124,7 @@ const CustomFieldSettings = () => {
   };
 
   return (
-    <Section>
+    <Section className="intercom-settings-tab-registration-fields">
       <SectionTitle>
         <FormattedMessage {...messages.registrationFields} />
       </SectionTitle>
@@ -223,7 +223,7 @@ const CustomFieldSettings = () => {
                       )}
                       {!isHiddenField(field) && (
                         <Button
-                          className={`e2e-custom-field-edit-btn e2e-${field.attributes.title_multiloc['en-GB']}`}
+                          className={`e2e-custom-field-edit-btn e2e-${field.attributes.title_multiloc['en-GB']} intercom-settings-tab-registration-fields-edit`}
                           linkTo={`/admin/settings/registration/custom-fields/${field.id}/field-settings`}
                           buttonStyle="secondary-outlined"
                           icon="edit"
@@ -245,6 +245,7 @@ const CustomFieldSettings = () => {
         buttonStyle="admin-dark"
         icon="plus-circle"
         linkTo="/admin/settings/registration/custom-fields/new"
+        className="intercom-settings-tab-registration-fields-new"
       >
         <FormattedMessage {...messages.addAFieldButton} />
       </Button>

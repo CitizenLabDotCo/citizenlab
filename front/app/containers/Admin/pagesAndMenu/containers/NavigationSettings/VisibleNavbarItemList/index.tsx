@@ -1,5 +1,6 @@
 import React from 'react';
 
+import { Box } from '@citizenlab/cl2-component-library';
 import { WrappedComponentProps } from 'react-intl';
 
 import useDeleteCustomPage from 'api/custom_pages/useDeleteCustomPage';
@@ -74,7 +75,7 @@ const VisibleNavbarItemList = ({
     return navbarItem.relationships.project.data !== null;
   };
   return (
-    <>
+    <Box className="intercom-admin-pages-menu-navigation-items">
       <SubSectionTitle>
         <FormattedMessage {...messages.navigationItems} />
       </SubSectionTitle>
@@ -133,7 +134,7 @@ const VisibleNavbarItemList = ({
           </>
         )}
       </SortableList>
-    </>
+    </Box>
   );
 };
 

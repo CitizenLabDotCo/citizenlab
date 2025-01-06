@@ -115,7 +115,7 @@ const AuthorFilters = () => {
                   option.attributes.key
                 ),
               });
-              trackEventByName(tracks.authorFilterUsed.name, {
+              trackEventByName(tracks.authorFilterUsed, {
                 type: 'gender',
               });
             }}
@@ -158,7 +158,7 @@ const AuthorFilters = () => {
                   option.attributes.key
                 ),
               });
-              trackEventByName(tracks.authorFilterUsed.name, {
+              trackEventByName(tracks.authorFilterUsed, {
                 type: 'domicile',
               });
             }}
@@ -181,7 +181,7 @@ const AuthorFilters = () => {
                   updateSearchParams({
                     [birthyearUrlQueryParamFromKey]: option.value,
                   });
-                  trackEventByName(tracks.authorFilterUsed.name, {
+                  trackEventByName(tracks.authorFilterUsed, {
                     type: 'birthyear',
                   });
                 }}
@@ -197,7 +197,7 @@ const AuthorFilters = () => {
                   updateSearchParams({
                     [birthyearUrlQueryParamToKey]: option.value,
                   });
-                  trackEventByName(tracks.authorFilterUsed.name, {
+                  trackEventByName(tracks.authorFilterUsed, {
                     type: 'birthyear',
                   });
                 }}
