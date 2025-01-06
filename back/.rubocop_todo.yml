@@ -724,13 +724,6 @@ Style/OpenStructUse:
     - 'spec/lib/omniauth_methods/google_spec.rb'
     - 'spec/services/track_intercom_service_spec.rb'
 
-# Offense count: 2
-# Configuration parameters: AllowedMethods.
-# AllowedMethods: respond_to_missing?
-Style/OptionalBooleanParameter:
-  Exclude:
-    - 'app/services/posts_filtering_service.rb'
-
 # Offense count: 1
 # This cop supports unsafe autocorrection (--autocorrect-all).
 # Configuration parameters: Methods.
