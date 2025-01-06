@@ -608,7 +608,7 @@
   "app.components.followUnfollow.followTooltipInputPage2": "Følgende utløser e-postoppdateringer om statusendringer, offisielle oppdateringer og kommentarer. Du kan når som helst gå til {unsubscribeLink} .",
   "app.components.followUnfollow.followTooltipProjects2": "Følgende utløser e-postoppdateringer om endringer i prosjektet. Du kan når som helst sende {unsubscribeLink} .",
   "app.components.followUnfollow.unFollow": "Ikke følg",
-  "app.components.followUnfollow.unsubscribe": "avslutte abonnementet",
+  "app.components.followUnfollow.unsubscribe": "meld av",
   "app.components.followUnfollow.unsubscribeUrl": "/profil/rediger",
   "app.components.form.ErrorDisplay.guidelinesLinkText": "våre retningslinjer",
   "app.components.form.ErrorDisplay.next": "Neste",
