@@ -1,14 +1,21 @@
 import { uniq } from 'lodash-es';
 import { Multiloc } from 'typings';
 
+import { ParticipationMethod } from 'api/phases/types';
+
 import { Keys } from 'utils/cl-react-query/types';
 
 import ideaStatusesKeys from './keys';
 
 export type IdeaStatusesKeys = Keys<typeof ideaStatusesKeys>;
 
+export type IdeaStatusParticipationMethod = Extract<
+  ParticipationMethod,
+  'ideation' | 'proposals'
+>;
+
 export type IdeaStatusesQueryParams = {
-  participation_method?: 'ideation' | 'proposals';
+  participation_method?: IdeaStatusParticipationMethod;
 };
 
 type InputStatusCode =
@@ -25,7 +32,7 @@ type InputStatusCode =
   | 'ineligible';
 
 export const inputStatusCodes: Record<
-  'ideation' | 'proposals',
+  IdeaStatusParticipationMethod,
   InputStatusCode[]
 > = {
   ideation: [
@@ -74,7 +81,7 @@ export interface IIdeaStatusData {
     ideas_count?: number;
     locked: boolean;
     can_manually_transition_to: boolean;
-    participation_method: 'ideation' | 'proposals';
+    participation_method: IdeaStatusParticipationMethod;
   };
 }
 
@@ -84,7 +91,7 @@ export interface IIdeaStatusAdd {
   color?: string;
   code?: TIdeaStatusCode;
   ordering?: number;
-  participation_method: 'ideation' | 'proposals';
+  participation_method: IdeaStatusParticipationMethod;
 }
 
 export interface IIdeaStatusUpdate {
@@ -93,7 +100,7 @@ export interface IIdeaStatusUpdate {
   color?: string;
   code?: TIdeaStatusCode;
   ordering?: number;
-  participation_method: 'ideation' | 'proposals';
+  participation_method: IdeaStatusParticipationMethod;
 }
 
 export interface IIdeaStatus {
