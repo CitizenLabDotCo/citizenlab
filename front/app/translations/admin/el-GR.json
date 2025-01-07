@@ -2661,7 +2661,7 @@
   "app.modules.commercial.analytics.admin.components.ProjectStatus.totalProjectsToolTip": "Ο αριθμός των έργων που είναι ορατά στην πλατφόρμα",
   "app.modules.commercial.analytics.admin.components.Proposals.proposals": "Προτάσεις",
   "app.modules.commercial.analytics.admin.components.Proposals.successfulProposals": "Επιτυχημένες προτάσεις",
-  "app.modules.commercial.analytics.admin.components.Proposals.successfulProposalsToolTip": "Προτάσεις που έχουν φθάσει το απαιτούμενο όριο ψήφου",
+  "app.modules.commercial.analytics.admin.components.Proposals.successfulProposalsToolTip": "Προτάσεις που έχουν φθάσει το απαιτούμενο όριο ψηφοφορίας",
   "app.modules.commercial.analytics.admin.components.Proposals.totalProposals": "Σύνολο προτάσεων",
   "app.modules.commercial.analytics.admin.components.RegistrationsCard.newRegistrations": "Νέες εγγραφές",
   "app.modules.commercial.analytics.admin.components.RegistrationsCard.registrationRate": "Ποσοστό εγγραφής",
