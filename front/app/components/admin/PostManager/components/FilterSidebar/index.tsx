@@ -25,7 +25,7 @@ import messages from '../../messages';
 
 import FilterSidebarPhases from './phases/FilterSidebarPhases';
 import FilterSidebarProjects from './projects/FilterSidebarProjects';
-import FilterSidebarStatuses from './statuses/FilterSidebarStatuses';
+import StatusFilters from './statuses/StatusFilters';
 import FilterSidebarTopics from './topics/FilterSidebarTopics';
 
 interface Props {
@@ -169,7 +169,7 @@ const FilterSidebar = ({
       name: tabName('statusesTab', selectedStatus, 'statuses'),
       key: 'statuses',
       content: (
-        <FilterSidebarStatuses
+        <StatusFilters
           type={type}
           statuses={statuses}
           selectedStatus={selectedStatus}
