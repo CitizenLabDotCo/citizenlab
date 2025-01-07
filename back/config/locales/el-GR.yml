@@ -41,32 +41,32 @@ el:
     proposed: προτεινόμενη
     proposed_description: Η ιδέα αυτή έχει προταθεί στην πόλη
     viewed: προβλήθηκε
-    viewed_description: Αυτή η ιδέα έχει δει κάποιος από την πόλη
+    viewed_description: Αυτή η καταχώρηση έχει προβληθεί από τον διαχειριστή του έργου.
     under_consideration: υπό εξέταση
-    under_consideration_description: Η ιδέα αυτή έχει ληφθεί υπόψη από την πόλη
+    under_consideration_description: Αυτή η καταχώρηση έχει ληφθεί υπόψη από τον υπεύθυνο του έργου.
     accepted: έγινε αποδεκτό
-    accepted_description: Η ιδέα αυτή έχει γίνει αποδεκτή και θα υλοποιηθεί από την πόλη
+    accepted_description: Αυτή η ιδέα έχει γίνει αποδεκτή και θα υλοποιηθεί από τον διαχειριστή του έργου.
     implemented: υλοποιήθηκε
     implemented_description: Η ιδέα αυτή εφαρμόστηκε από την πόλη
     rejected: απορρίφθηκε
     rejected_description: Η ιδέα αυτή έχει απορριφθεί
     expired: λήξει
-    expired_description: λήξει
+    expired_description: Αυτή η καταχώρηση δεν είναι πλέον ενεργή και έχει κλείσει λόγω χρονικών περιορισμών ή αδράνειας.
     threshold_reached: Επίτευξη ορίου
-    threshold_reached_description: Επίτευξη ορίου
-    answered: απάντησε το
-    answered_description: απάντησε το
-    ineligible: μη επιλέξιμες
-    ineligible_description: μη επιλέξιμες
+    threshold_reached_description: Αυτή η καταχώρηση έχει συγκεντρώσει την απαιτούμενη υποστήριξη και θα εξεταστεί άμεσα για περαιτέρω ενέργειες.
+    answered: απαντήθηκε
+    answered_description: Ο διαχειριστής του έργου έχει δημοσιεύσει μια επίσημη απάντηση σχετικά με αυτήν την καταχώρηση.
+    ineligible: δεν πληροί τις προϋποθέσεις
+    ineligible_description: Αυτή η καταχώρηση έχει ελεγχθεί και, δυστυχώς, έχει απορριφθεί. Έχει δοθεί επίσημη ενημέρωση με περισσότερες λεπτομέρειες.
   initiative_statuses:
     review_pending: εκκρεμεί αναθεώρηση
     review_pending_description: εκκρεμεί αναθεώρηση
-    changes_requested: ζητούμενες αλλαγές
-    changes_requested_description: ζητούμενες αλλαγές
+    changes_requested: ζητούνται αλλαγές
+    changes_requested_description: ζητούνται αλλαγές
     proposed: προτεινόμενη
     proposed_description: προτεινόμενη
-    expired: λήξει
-    expired_description: λήξει
+    expired: έληξε
+    expired_description: έληξε
     threshold_reached: Επίτευξη ορίου
     threshold_reached_description: Επίτευξη ορίου
     answered: απάντησε το
