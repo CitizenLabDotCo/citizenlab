@@ -759,7 +759,7 @@
   "app.containers.Admin.initiatives.proposalEligibilityCriteria": "Uygunluk kriterleri",
   "app.containers.Admin.initiatives.proposalEligibilityCriteriaInfo": "Bir teklifin uygun olup olmadığına karar vermek için kullanacağınız kriterlerin net bir tanımını yapın.",
   "app.containers.Admin.initiatives.proposalSuccessMessage": "Başarı mesajı",
-  "app.containers.Admin.initiatives.proposalSuccessMessageInfo": "Teklif sahiplerinin, teklifleri oylama eşiğine zamanında ulaştığında ne bekleyebileceklerine dair net bir açıklama yapın.",
+  "app.containers.Admin.initiatives.proposalSuccessMessageInfo": "Teklif sahiplerinin, teklifleri zaman içinde oylama eşiğine ulaştığında neler bekleyebileceklerine dair net bir açıklama yapın.",
   "app.containers.Admin.initiatives.proposalsPageBody": "Teklifler bilgi sayfası",
   "app.containers.Admin.initiatives.proposalsPageBodyInfo": "{proposalsPageLink}adresinin içeriğini değiştirin.",
   "app.containers.Admin.initiatives.proposalsPageLinkText": "tekli̇fler bi̇lgi̇ sayfasi",
