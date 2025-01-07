@@ -17,9 +17,8 @@ import { string, object } from 'yup';
 import {
   automatedInputStatusCodes,
   IdeaStatusParticipationMethod,
-  ideationInputStatusCodes,
+  inputStatusCodes,
   InputStatusCode,
-  proposalsInputStatusCodes,
 } from 'api/idea_statuses/types';
 
 import { Section, SectionField } from 'components/admin/Section';
@@ -113,10 +112,7 @@ const IdeaStatusForm = ({
     }
   };
 
-  const codes = {
-    proposals: proposalsInputStatusCodes,
-    ideation: ideationInputStatusCodes,
-  }[variant];
+  const codes = inputStatusCodes[variant];
   const allowedCodes = codes.filter(
     (code) => !automatedInputStatusCodes.has(code)
   );

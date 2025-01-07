@@ -57,6 +57,11 @@ export const proposalsInputStatusCodes: ProposalsStatusCode[] = [
   'custom',
 ];
 
+export const inputStatusCodes = {
+  ideation: ideationInputStatusCodes,
+  proposals: proposalsInputStatusCodes,
+};
+
 export const automatedInputStatusCodes: Set<InputStatusCode> = new Set([
   'proposed',
   'threshold_reached',
