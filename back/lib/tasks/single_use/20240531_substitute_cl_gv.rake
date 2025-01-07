@@ -69,7 +69,9 @@ def rake_20240531_substitute_gv(str)
     / citizenlab/i => ' Go Vocal',
     /ЦитизенЛаб (?!nv)/i => 'Go Vocal \1', # Do not match "ЦитизенЛаб NV"
     / ЦитизенЛаб/i => ' Go Vocal',
-    /go vocal nv/i => 'CitizenLab NV'
+    /go vocal nv/i => 'Go Vocal NV',
+    /CitizenLab NV/i => 'Go Vocal NV',
+    /ЦитизенЛаб/i => 'Go Vocal' # Now we can change to new company name
   }
   allowed_chars_before = '>'
   allowed_chars_after = ".,:<'`"
