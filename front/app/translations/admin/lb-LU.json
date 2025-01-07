@@ -94,7 +94,7 @@
   "app.components.SeatInfo.managerSeatsTooltip": "Folder/project managers can manage an unlimited number of folders/projects. You can {visitHelpCenter} to learn more about the different roles.",
   "app.components.SeatInfo.managersIncludedText": "{managerSeats} manager seats included",
   "app.components.SeatInfo.remainingSeats": "Remaining seats",
-  "app.components.SeatInfo.rolesSupportPage": "https://support.citizenlab.co/en/articles/2672884-what-are-the-different-roles-on-the-platform",
+  "app.components.SeatInfo.rolesSupportPage": "https://support.citizenlab.co/en/articles/2672884-what-are-the-different-rolles-on-the-platform",
   "app.components.SeatInfo.totalSeats": "Total seats",
   "app.components.SeatInfo.totalSeatsTooltip": "This shows the summed number of seats within your plan and additional seats you have purchased.",
   "app.components.SeatInfo.usedSeats": "Used seats",
