@@ -2590,7 +2590,6 @@
   "app.containers.admin.ContentBuilder.IframeMultiloc.embedIframeTitleTooltip": "ومن المفيد توفير هذه المعلومات للمستخدمين الذين يعتمدون على قارئ الشاشة أو أي تقنية مساعدة أخرى.",
   "app.containers.admin.ContentBuilder.IframeMultiloc.embedIframeUrlLabel": "عنوان موقع ويب",
   "app.containers.admin.ContentBuilder.IframeMultiloc.embedIframeUrlLabelTooltip": "عنوان URL الكامل لموقع الويب الذي تريد تضمينه.",
-  "app.containers.admin.ContentBuilder.IframeMultiloc.iframeDescription": "عرض المحتوى من موقع ويب خارجي على صفحتك في HTML iFrame.",
   "app.containers.admin.ContentBuilder.IframeMultiloc.iframeEmbedVisitLinkMessage": "تفضل بزيارة صفحة الدعم الخاصة بنا",
   "app.containers.admin.ContentBuilder.IframeMultiloc.iframeHeightPlaceholder": "300",
   "app.containers.admin.ContentBuilder.IframeMultiloc.iframeInvalidWhitelistUrlErrorMessage": "عذرًا، لا يمكن تضمين هذا المحتوى. {visitLinkMessage} لمعرفة المزيد.",

@@ -2590,7 +2590,6 @@
   "app.containers.admin.ContentBuilder.IframeMultiloc.embedIframeTitleTooltip": "Podanie tych informacji jest przydatne dla użytkowników korzystających z czytnika ekranu lub innych technologii wspomagających.",
   "app.containers.admin.ContentBuilder.IframeMultiloc.embedIframeUrlLabel": "Adres strony internetowej",
   "app.containers.admin.ContentBuilder.IframeMultiloc.embedIframeUrlLabelTooltip": "Pełny adres URL strony internetowej, którą chcesz osadzić.",
-  "app.containers.admin.ContentBuilder.IframeMultiloc.iframeDescription": "Wyświetlaj zawartość zewnętrznej witryny na swojej stronie w ramce HTML iFrame.",
   "app.containers.admin.ContentBuilder.IframeMultiloc.iframeEmbedVisitLinkMessage": "Odwiedź naszą stronę wsparcia",
   "app.containers.admin.ContentBuilder.IframeMultiloc.iframeHeightPlaceholder": "300",
   "app.containers.admin.ContentBuilder.IframeMultiloc.iframeInvalidWhitelistUrlErrorMessage": "Przepraszamy, nie można osadzić tej treści. {visitLinkMessage} , aby dowiedzieć się więcej.",

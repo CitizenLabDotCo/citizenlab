@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useCallback } from 'react';
 
 import { Box, stylingConsts } from '@citizenlab/cl2-component-library';
 import { SerializedNodes } from '@craftjs/core';
@@ -39,6 +39,22 @@ const HomepageBuilderPage = () => {
 
   const [imageUploading, setImageUploading] = useState(false);
 
+  // DO NOT REMOVE THESE useCallbacks, without them the content builder
+  // becomes horribly slow
+  const handleErrors = useCallback((newErrors: ContentBuilderErrors) => {
+    setContentBuilderErrors((contentBuilderErrors) => ({
+      ...contentBuilderErrors,
+      ...newErrors,
+    }));
+  }, []);
+
+  const handleDeleteElement = useCallback((id: string) => {
+    setContentBuilderErrors((contentBuilderErrors) => {
+      const { [id]: _id, ...rest } = contentBuilderErrors;
+      return rest;
+    });
+  }, []);
+
   if (isNilOrError(locales)) {
     return null;
   }
@@ -46,20 +62,6 @@ const HomepageBuilderPage = () => {
   const hasError =
     Object.values(contentBuilderErrors).filter((node) => node.hasError).length >
     0;
-
-  const handleErrors = (newErrors: ContentBuilderErrors) => {
-    setContentBuilderErrors((contentBuilderErrors) => ({
-      ...contentBuilderErrors,
-      ...newErrors,
-    }));
-  };
-
-  const handleDeleteElement = (id: string) => {
-    setContentBuilderErrors((contentBuilderErrors) => {
-      const { [id]: _id, ...rest } = contentBuilderErrors;
-      return rest;
-    });
-  };
 
   const getEditorData = () => {
     if (

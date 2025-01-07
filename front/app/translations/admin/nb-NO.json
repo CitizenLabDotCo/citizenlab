@@ -2590,7 +2590,6 @@
   "app.containers.admin.ContentBuilder.IframeMultiloc.embedIframeTitleTooltip": "Det er nyttig å gi denne informasjonen til brukere som er avhengige av skjermleser eller andre hjelpemidler.",
   "app.containers.admin.ContentBuilder.IframeMultiloc.embedIframeUrlLabel": "Nettadresse",
   "app.containers.admin.ContentBuilder.IframeMultiloc.embedIframeUrlLabelTooltip": "Full URL til nettstedet du vil bygge inn.",
-  "app.containers.admin.ContentBuilder.IframeMultiloc.iframeDescription": "Vis innhold fra et eksternt nettsted på siden din i en HTML iFrame.",
   "app.containers.admin.ContentBuilder.IframeMultiloc.iframeEmbedVisitLinkMessage": "Besøk vår supportside",
   "app.containers.admin.ContentBuilder.IframeMultiloc.iframeHeightPlaceholder": "300",
   "app.containers.admin.ContentBuilder.IframeMultiloc.iframeInvalidWhitelistUrlErrorMessage": "Beklager, dette innholdet kunne ikke legges inn. {visitLinkMessage} for å lære mer.",

@@ -2590,7 +2590,6 @@
   "app.containers.admin.ContentBuilder.IframeMultiloc.embedIframeTitleTooltip": "Ekran okuyucu veya başka bir yardımcı teknoloji kullanan kullanıcılar için bu bilgilerin sağlanması yararlıdır.",
   "app.containers.admin.ContentBuilder.IframeMultiloc.embedIframeUrlLabel": "Web sitesi adresi",
   "app.containers.admin.ContentBuilder.IframeMultiloc.embedIframeUrlLabelTooltip": "Yerleştirmek istediğiniz web sitesinin tam URL'si.",
-  "app.containers.admin.ContentBuilder.IframeMultiloc.iframeDescription": "Harici bir web sitesindeki içeriği sayfanızda bir HTML iFrame içinde görüntüleyin.",
   "app.containers.admin.ContentBuilder.IframeMultiloc.iframeEmbedVisitLinkMessage": "Destek sayfamızı ziyaret edin",
   "app.containers.admin.ContentBuilder.IframeMultiloc.iframeHeightPlaceholder": "300",
   "app.containers.admin.ContentBuilder.IframeMultiloc.iframeInvalidWhitelistUrlErrorMessage": "Üzgünüz, bu içerik yerleştirilemedi. {visitLinkMessage} adresinden daha fazla bilgi edinebilirsiniz.",
