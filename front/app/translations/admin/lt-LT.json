@@ -120,7 +120,6 @@
   "app.components.admin.ContentBuilder.Widgets.SurveyQuestionResultWidget.untilNow": "{date} iki šiol",
   "app.components.admin.DatePhasePicker.Input.openEnded": "Atviro tipo",
   "app.components.admin.DatePhasePicker.Input.selectDate": "Pasirinkite datą",
-  "app.components.admin.DateTimePicker.time": "Laikas",
   "app.components.admin.Graphs": "Nėra duomenų apie dabartinius filtrus.",
   "app.components.admin.Graphs.noDataShort": "Duomenų nėra.",
   "app.components.admin.GraphsCards.CommentsByTime.hooks.useCommentsByTime.timeSeries": "Pastabos laikui bėgant",

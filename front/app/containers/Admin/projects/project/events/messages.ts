@@ -112,7 +112,7 @@ export default defineMessages({
   attendanceSupportArticleLink: {
     id: 'app.containers.AdminPage.ProjectEvents.attendanceSupportArticleLink',
     defaultMessage:
-      'https://support.citizenlab.co/en/articles/5481527-adding-events-to-your-platform',
+      'https://support.govocal.com/en/articles/5481527-adding-events-to-your-platform',
   },
   refineOnMapInstructions: {
     id: 'app.containers.AdminPage.ProjectEvents.refineOnMapInstructions',
