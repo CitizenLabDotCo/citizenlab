@@ -81,9 +81,8 @@ class WebApi::V1::PermissionsController < ApplicationController
 
   def user_ui_and_json_multiloc_schemas(fields)
     json_schemas = JsonFormsService.new.user_ui_and_json_multiloc_schemas(fields)
-    json_schemas.tap do |schemas|
-      mark_locked_json_forms_fields(schemas) if current_user
-    end
+    mark_locked_json_forms_fields(json_schemas) if current_user
+    json_schemas
   end
 
   def permissions_update_service
