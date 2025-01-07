@@ -514,7 +514,7 @@ de:
       title_native_survey_not_submitted: 'Fast geschafft! Reichen Sie Ihre Antworten ein'
       body_native_survey_not_submitted: 'Sie haben begonnen, Ihre Antworten zu %{phaseTitle} zu teilen, haben sie aber nicht eingereicht. Die Einsendungen wird am %{phaseEndDate} geschlossen. Klicken Sie auf den Button unten, um dort fortzufahren, wo Sie aufgehört haben.'
       body_native_survey_not_submitted_no_date: 'Sie haben begonnen, Ihre Antworten zu %{phaseTitle} zu teilen, haben sie aber nicht abgeschickt. Klicken Sie auf den BUtton unten, um dort fortzufahren, wo Sie aufgehört haben.'
-      cta_complete_your_survey_response: 'Umfrage fortsetzen'
+      cta_complete_your_survey_response: 'Beantwortung der Umfrage fortsetzen'
     voting_basket_not_submitted:
       subject: '%{organizationName}: Sie haben Ihre Stimmen nicht abgegeben'
       preheader: 'Sie haben Ihre Stimme nicht auf der Beteiligungsplattform von %{organizationName} abgegeben'
