@@ -122,7 +122,7 @@ export default ({
                 voteTypeDescription: getVoteTypeDescription(),
                 optionAnalysisArticleLink: (
                   <a
-                    href="https://support.citizenlab.co/en/articles/8124630-voting-and-prioritization-methods-for-enhanced-decision-making"
+                    href="https://support.govocal.com/en/articles/8124630-voting-and-prioritization-methods-for-enhanced-decision-making"
                     target="_blank"
                     rel="noreferrer"
                   >

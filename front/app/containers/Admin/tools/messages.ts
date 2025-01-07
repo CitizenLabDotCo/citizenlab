@@ -29,7 +29,7 @@ export default defineMessages({
   workshopsSupportLink: {
     id: 'app.containers.Admin.tools.workshopsSupportLink',
     defaultMessage:
-      'https://support.citizenlab.co/en/articles/4155778-setting-up-an-online-workshop',
+      'https://support.govocal.com/en/articles/4155778-setting-up-an-online-workshop',
   },
   widgetTitle: {
     id: 'app.containers.Admin.tools.widgetTitle',

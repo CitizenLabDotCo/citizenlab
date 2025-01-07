@@ -56,7 +56,7 @@ export default defineMessages({
   supportLinkUrl: {
     id: 'app.containers.Admin.tools.powerBITemplates.supportLinkUrl',
     defaultMessage:
-      'https://support.citizenlab.co/en/articles/8512834-use-citizenlab-data-in-powerbi',
+      'https://support.govocal.com/en/articles/8512834-use-citizenlab-data-in-powerbi',
   },
   supportLinkText: {
     id: 'app.containers.Admin.tools.powerBITemplates.supportLinkText',
