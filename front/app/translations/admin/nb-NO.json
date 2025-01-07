@@ -120,6 +120,8 @@
   "app.components.admin.ContentBuilder.Widgets.SurveyQuestionResultWidget.untilNow": "{date} inntil nå",
   "app.components.admin.DatePhasePicker.Input.openEnded": "Åpen",
   "app.components.admin.DatePhasePicker.Input.selectDate": "Velg dato",
+  "app.components.admin.DatePickers.DateRangePicker.Calendar.clearEndDate": "Klar sluttdato",
+  "app.components.admin.DatePickers.DateRangePicker.Calendar.clearStartDate": "Klar startdato",
   "app.components.admin.Graphs": "Ingen data tilgjengelig med de nåværende filtrene.",
   "app.components.admin.Graphs.noDataShort": "Ingen tilgjengelige data.",
   "app.components.admin.GraphsCards.CommentsByTime.hooks.useCommentsByTime.timeSeries": "Kommentarer over tid",

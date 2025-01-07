@@ -120,6 +120,8 @@
   "app.components.admin.ContentBuilder.Widgets.SurveyQuestionResultWidget.untilNow": "{date} حتى الآن",
   "app.components.admin.DatePhasePicker.Input.openEnded": "نهاية مفتوحة",
   "app.components.admin.DatePhasePicker.Input.selectDate": "حدد التاريخ",
+  "app.components.admin.DatePickers.DateRangePicker.Calendar.clearEndDate": "تاريخ النهاية واضح",
+  "app.components.admin.DatePickers.DateRangePicker.Calendar.clearStartDate": "تاريخ البدء واضح",
   "app.components.admin.Graphs": "لا تتوفر أي بيانات باستخدام عوامل التصفية الحالية.",
   "app.components.admin.Graphs.noDataShort": "لا تتوفر أي بيانات.",
   "app.components.admin.GraphsCards.CommentsByTime.hooks.useCommentsByTime.timeSeries": "التعليقات بمرور الوقت",

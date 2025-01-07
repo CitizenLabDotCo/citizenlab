@@ -120,6 +120,8 @@
   "app.components.admin.ContentBuilder.Widgets.SurveyQuestionResultWidget.untilNow": "{date} şimdiye kadar",
   "app.components.admin.DatePhasePicker.Input.openEnded": "Açık uçlu",
   "app.components.admin.DatePhasePicker.Input.selectDate": "Tarih seçiniz",
+  "app.components.admin.DatePickers.DateRangePicker.Calendar.clearEndDate": "Bitiş tarihini temizleyin",
+  "app.components.admin.DatePickers.DateRangePicker.Calendar.clearStartDate": "Net başlangıç tarihi",
   "app.components.admin.Graphs": "Mevcut filtrelerle ilgili veri yok.",
   "app.components.admin.Graphs.noDataShort": "Veri mevcut değil.",
   "app.components.admin.GraphsCards.CommentsByTime.hooks.useCommentsByTime.timeSeries": "Zaman içindeki yorumlar",
