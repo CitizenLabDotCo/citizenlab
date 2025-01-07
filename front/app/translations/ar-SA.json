@@ -759,6 +759,7 @@
   "app.components.formBuilder.shortAnswer": "إجابة مختصرة",
   "app.components.formBuilder.showResponseToUsersToggleLabel": "إظهار الاستجابة للمستخدمين",
   "app.components.formBuilder.singleChoice": "اختيار أحادي",
+  "app.components.formBuilder.staleDataErrorMessage2": "حدثت مشكلة. تم حفظ نموذج الإدخال هذا مؤخرًا في مكان آخر. قد يكون السبب في ذلك هو أنك أو مستخدم آخر قام بفتحه للتحرير في نافذة متصفح أخرى. يرجى تحديث الصفحة للحصول على أحدث نموذج ثم إجراء التغييرات مرة أخرى.",
   "app.components.formBuilder.supportArticleLinkText": "هذه الصفحة",
   "app.components.formBuilder.tags": "وسوم",
   "app.components.formBuilder.title": "العنوان",
