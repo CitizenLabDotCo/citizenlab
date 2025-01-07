@@ -120,7 +120,6 @@
   "app.components.admin.ContentBuilder.Widgets.SurveyQuestionResultWidget.untilNow": "{date} اب تک",
   "app.components.admin.DatePhasePicker.Input.openEnded": "کھلا ختم ہوا۔",
   "app.components.admin.DatePhasePicker.Input.selectDate": "تاریخ منتخب کریں۔",
-  "app.components.admin.DateTimePicker.time": "وقت",
   "app.components.admin.Graphs": "موجودہ فلٹرز کے ساتھ کوئی ڈیٹا دستیاب نہیں ہے۔",
   "app.components.admin.Graphs.noDataShort": "کوئی ڈیٹا دستیاب نہیں ہے۔",
   "app.components.admin.GraphsCards.CommentsByTime.hooks.useCommentsByTime.timeSeries": "وقت کے ساتھ تبصرے",

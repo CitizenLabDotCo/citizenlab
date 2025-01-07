@@ -229,27 +229,6 @@ export function getLocalisedDateString(dateString: string | null | undefined) {
   return dateString && moment(dateString, 'YYYY-MM-DD').format('LL');
 }
 
-export function roundToNearestMultipleOfFive(date: Date): Date {
-  const minutes = date.getMinutes();
-  const roundedMinutes = Math.ceil(minutes / 5) * 5;
-  return new Date(
-    date.getFullYear(),
-    date.getMonth(),
-    date.getDate(),
-    date.getHours(),
-    roundedMinutes
-  );
-}
-
-export function calculateRoundedEndDate(
-  startDate: Date,
-  durationInMinutes = 30
-): Date {
-  const endDate = new Date(startDate);
-  endDate.setMinutes(startDate.getMinutes() + durationInMinutes);
-  return endDate;
-}
-
 export const userTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
 
 // Why do we need this function?

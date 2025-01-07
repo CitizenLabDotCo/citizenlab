@@ -17,6 +17,7 @@ const DateSinglePicker = ({
   startMonth,
   endMonth,
   defaultMonth,
+  placement = 'bottom',
   onChange,
 }: Props) => {
   const [calendarOpen, setCalendarOpen] = useState(false);
@@ -44,7 +45,7 @@ const DateSinglePicker = ({
             />
           </Box>
         }
-        placement="bottom"
+        placement={placement}
         visible={calendarOpen}
       >
         <Input
