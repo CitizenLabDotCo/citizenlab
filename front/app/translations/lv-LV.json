@@ -1441,7 +1441,7 @@
   "app.containers.InitiativesShow.pending1": "gaida",
   "app.containers.InitiativesShow.postedBy": "Priekšlikums, ko ievietojis {authorName}",
   "app.containers.InitiativesShow.postedByShort": "Iesūtīja {authorName}",
-  "app.containers.InitiativesShow.reportAsSpamModalTitle": "Kāpēc jūs vēlaties ziņot par šo kā surogātpastu?",
+  "app.containers.InitiativesShow.reportAsSpamModalTitle": "Kāpēc jūs vēlaties ziņot par to kā par surogātpastu?",
   "app.containers.InitiativesShow.titleCosponsorsTile": "Šā priekšlikuma līdzpriekšsēdētāji",
   "app.containers.InitiativesShow.twitterMessage": "Balsot par {initiativeTitle} par",
   "app.containers.InitiativesShow.whatsAppMessage": "{initiativeTitle} | no līdzdalības platformas {orgName}",
