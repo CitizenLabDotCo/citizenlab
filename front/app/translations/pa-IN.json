@@ -502,6 +502,7 @@
   "app.components.VoteControl.budgetingNotPossible": "ਤੁਹਾਡੇ ਬਜਟ ਵਿੱਚ ਬਦਲਾਅ ਕਰਨਾ ਇਸ ਸਮੇਂ ਸੰਭਵ ਨਹੀਂ ਹੈ।",
   "app.components.VoteControl.budgetingNotVerified": "ਜਾਰੀ ਰੱਖਣ ਲਈ ਕਿਰਪਾ ਕਰਕੇ {verifyAccountLink} ।",
   "app.components.VoteInputs._shared.currencyLeft": "ਤੁਹਾਡੇ ਕੋਲ {budgetLeft} / {totalBudget} {currency} ਬਾਕੀ ਹੈ",
+  "app.components.VoteInputs._shared.votesLeft3": "ਤੁਹਾਡੇ ਕੋਲ {votesLeft} / {totalNumberOfVotes} {totalNumberOfVotes, plural, =0 {{votesTerm}} one {{voteTerm}} other {{votesTerm}}} ਖੱਬੇ",
   "app.components.VoteInputs.budgeting.AddToBasketButton.basketAlreadySubmitted": "ਤੁਸੀਂ ਪਹਿਲਾਂ ਹੀ ਆਪਣਾ ਬਜਟ ਪੇਸ਼ ਕਰ ਚੁੱਕੇ ਹੋ। ਆਪਣਾ ਬਜਟ ਬਦਲਣ ਲਈ \"ਆਪਣੇ ਬਜਟ ਨੂੰ ਸੋਧੋ\" 'ਤੇ ਕਲਿੱਕ ਕਰੋ।",
   "app.components.VoteInputs.budgeting.AddToBasketButton.basketAlreadySubmittedIdeaPage": "ਤੁਸੀਂ ਪਹਿਲਾਂ ਹੀ ਆਪਣਾ ਬਜਟ ਪੇਸ਼ ਕਰ ਚੁੱਕੇ ਹੋ। ਆਪਣਾ ਬਜਟ ਬਦਲਣ ਲਈ, ਪ੍ਰੋਜੈਕਟ ਪੰਨੇ 'ਤੇ ਵਾਪਸ ਜਾਓ ਅਤੇ \"ਆਪਣੇ ਬਜਟ ਨੂੰ ਸੋਧੋ\" 'ਤੇ ਕਲਿੱਕ ਕਰੋ।",
   "app.components.VoteInputs.budgeting.AddToBasketButton.phaseNotActive": "ਬਜਟ ਉਪਲਬਧ ਨਹੀਂ ਹੈ, ਕਿਉਂਕਿ ਇਹ ਪੜਾਅ ਕਿਰਿਆਸ਼ੀਲ ਨਹੀਂ ਹੈ।",
