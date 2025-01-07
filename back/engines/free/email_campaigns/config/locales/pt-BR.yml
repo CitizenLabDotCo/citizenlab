@@ -282,7 +282,7 @@ pt:
       cta_reply_to: 'Dê feedback para %{authorName}'
       days_ago: '%{numberOfDays} dias atrás'
       event_description: '%{authorName} publicou uma nova ideia em sua plataforma. Descubra-a agora, dê um feedback ou altere seu status!'
-      main_header: '%{firstName}Você está interessado em saber se uma nova ideia foi publicada em sua plataforma?'
+      main_header: '%{firstName}Você está interessado em saber que uma nova ideia foi publicada em sua plataforma?'
       subject: 'Uma nova postagem foi publicada na plataforma %{organizationName}'
       preheader: '%{authorName} publicou uma nova ideia em sua plataforma'
       today: Hoje
@@ -455,7 +455,7 @@ pt:
       action_published_idea: 'Ideia publicada'
       action_send_email: 'Envie a seus contatos um %{sendEmailLink}'
       action_share_fb: 'Informe seus amigos em %{fbLink}'
-      action_share_link: 'Compartilhe-o em qualquer canal, copiando o endereço %{link}'
+      action_share_link: 'Compartilhe-o em qualquer canal, copiando o link %{link}'
       action_share_twitter: 'Informe seus seguidores em %{twitterLink}'
       add_image: 'Adicionar uma imagem'
       cta_view_idea: 'Vá para a sua ideia'
