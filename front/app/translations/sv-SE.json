@@ -233,7 +233,7 @@
   "app.components.InitiativeForm.cosponsorSubtextBeforeInput": "Det krävs att du har minst {noOfCosponsorsText} på ditt förslag. Bjud in medsponsorer genom fältet nedan. De inbjudna medsponsorerna kommer att få ett e-postmeddelande.",
   "app.components.InitiativeForm.cosponsorSubtextBeforeInputNote": "Dina medhjälpare behöver ett konto på denna webbplats för att visas i listan.",
   "app.components.InitiativeForm.cosponsorsEmptyError": "Lägg till det antal sponsorer som krävs",
-  "app.components.InitiativeForm.cosponsorsLabel": "Stödjande parter",
+  "app.components.InitiativeForm.cosponsorsLabel": "Medhjälpare",
   "app.components.InitiativeForm.cosponsorsMaxError": "Du kan bara lägga till {maxNumberOfCosponsors} sponsorer",
   "app.components.InitiativeForm.cosponsorsPlaceholder": "Börja skriva in ett namn för att söka",
   "app.components.InitiativeForm.descriptionBodyLengthError": "Beskrivningen måste vara minst 30 tecken lång",
