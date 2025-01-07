@@ -759,6 +759,7 @@
   "app.components.formBuilder.shortAnswer": "Réponse courte",
   "app.components.formBuilder.showResponseToUsersToggleLabel": "Afficher la réponse aux utilisateurs",
   "app.components.formBuilder.singleChoice": "Choix unique",
+  "app.components.formBuilder.staleDataErrorMessage2": "Il y a eu un problème. Ce formulaire de saisie a été enregistré plus récemment ailleurs. Cela peut être dû au fait que vous ou un autre utilisateur l'avez ouvert pour modification dans une autre fenêtre du navigateur. Veuillez actualiser la page pour obtenir le formulaire le plus récent et effectuer à nouveau vos modifications.",
   "app.components.formBuilder.supportArticleLinkText": "cette page",
   "app.components.formBuilder.tags": "Étiquettes",
   "app.components.formBuilder.title": "Titre",
