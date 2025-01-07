@@ -49,13 +49,13 @@ el:
     rejected: απορρίφθηκε
     rejected_description: Η ιδέα αυτή έχει απορριφθεί
     expired: λήξει
-    expired_description: expired
+    expired_description: λήξει
     threshold_reached: Επίτευξη ορίου
     threshold_reached_description: Επίτευξη ορίου
     answered: απάντησε το
-    answered_description: answered
+    answered_description: απάντησε το
     ineligible: μη επιλέξιμες
-    ineligible_description: ineligible
+    ineligible_description: μη επιλέξιμες
   initiative_statuses:
     review_pending: εκκρεμεί αναθεώρηση
     review_pending_description: εκκρεμεί αναθεώρηση
