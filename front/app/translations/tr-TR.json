@@ -502,6 +502,7 @@
   "app.components.VoteControl.budgetingNotPossible": "Bütçenizde değişiklik yapmanız şu an için mümkün değil.",
   "app.components.VoteControl.budgetingNotVerified": "Devam etmek için lütfen {verifyAccountLink}.",
   "app.components.VoteInputs._shared.currencyLeft": "{budgetLeft} / {totalBudget} {currency} adresiniz kaldı",
+  "app.components.VoteInputs._shared.votesLeft4": "{votesLeft} / {totalNumberOfVotes} {totalNumberOfVotes, plural, =0 {{votesTerm}} one {{voteTerm}} other {{votesTerm}}} kaldı.",
   "app.components.VoteInputs.budgeting.AddToBasketButton.basketAlreadySubmitted": "Bütçenizi zaten gönderdiniz. Bütçenizi değiştirmek için \"Bütçenizi değiştirin\" seçeneğine tıklayın.",
   "app.components.VoteInputs.budgeting.AddToBasketButton.basketAlreadySubmittedIdeaPage": "Bütçenizi zaten gönderdiniz. Bütçenizi değiştirmek için proje sayfasına geri dönün ve \"Bütçenizi değiştirin\" seçeneğine tıklayın.",
   "app.components.VoteInputs.budgeting.AddToBasketButton.phaseNotActive": "Bu aşama aktif olmadığı için bütçeleme mevcut değildir.",

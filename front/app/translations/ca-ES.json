@@ -502,6 +502,7 @@
   "app.components.VoteControl.budgetingNotPossible": "No és possible fer canvis al pressupost en aquest moment.",
   "app.components.VoteControl.budgetingNotVerified": "{verifyAccountLink} per continuar.",
   "app.components.VoteInputs._shared.currencyLeft": "{totalBudget} {currency} {budgetLeft}",
+  "app.components.VoteInputs._shared.votesLeft4": "Tens {votesLeft} / {totalNumberOfVotes} {totalNumberOfVotes, plural, =0 {{votesTerm}} one {{voteTerm}} other {{votesTerm}}} a l'esquerra.",
   "app.components.VoteInputs.budgeting.AddToBasketButton.basketAlreadySubmitted": "Ja heu enviat el vostre pressupost. Feu clic a \"Modifica el pressupost\" per canviar el pressupost.",
   "app.components.VoteInputs.budgeting.AddToBasketButton.basketAlreadySubmittedIdeaPage": "Ja heu enviat el vostre pressupost. Per canviar el pressupost, torneu a la pàgina del projecte i feu clic a \"Modifica el pressupost\".",
   "app.components.VoteInputs.budgeting.AddToBasketButton.phaseNotActive": "El pressupost no està disponible, ja que aquesta fase no està activa.",

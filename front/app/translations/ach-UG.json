@@ -502,7 +502,7 @@
   "app.components.VoteControl.budgetingNotPossible": "crwdns213748:0crwdne213748:0",
   "app.components.VoteControl.budgetingNotVerified": "crwdns213750:0{verifyAccountLink}crwdne213750:0",
   "app.components.VoteInputs._shared.currencyLeft": "crwdns836145:0{budgetLeft}crwdnd836145:0{totalBudget}crwdnd836145:0{currency}crwdne836145:0",
-  "app.components.VoteInputs._shared.votesLeft3": "crwdns836147:0votesLeft={votesLeft}crwdnd836147:0totalNumberOfVotes={totalNumberOfVotes}crwdnd836147:0totalNumberOfVotes={totalNumberOfVotes}crwdnd836147:0votesTerm={votesTerm}crwdnd836147:0voteTerm={voteTerm}crwdnd836147:0votesTerm={votesTerm}crwdne836147:0",
+  "app.components.VoteInputs._shared.votesLeft4": "crwdns3909033:0votesLeft={votesLeft}crwdnd3909033:0totalNumberOfVotes={totalNumberOfVotes}crwdnd3909033:0totalNumberOfVotes={totalNumberOfVotes}crwdnd3909033:0votesTerm={votesTerm}crwdnd3909033:0voteTerm={voteTerm}crwdnd3909033:0votesTerm={votesTerm}crwdne3909033:0",
   "app.components.VoteInputs.budgeting.AddToBasketButton.basketAlreadySubmitted": "crwdns777611:0crwdne777611:0",
   "app.components.VoteInputs.budgeting.AddToBasketButton.basketAlreadySubmittedIdeaPage": "crwdns777613:0crwdne777613:0",
   "app.components.VoteInputs.budgeting.AddToBasketButton.phaseNotActive": "crwdns3338605:0crwdne3338605:0",

@@ -502,6 +502,7 @@
   "app.components.VoteControl.budgetingNotPossible": "Derzeit können keine Änderungen an Ihrem Budget vorgenommen werden.\n",
   "app.components.VoteControl.budgetingNotVerified": "Bitte {verifyAccountLink}, um fortzufahren.\n",
   "app.components.VoteInputs._shared.currencyLeft": "Sie haben {budgetLeft} / {totalBudget} {currency} übrig",
+  "app.components.VoteInputs._shared.votesLeft4": "Sie haben noch {votesLeft} / {totalNumberOfVotes} {totalNumberOfVotes, plural, =0 {{votesTerm}} one {{voteTerm}} other {{votesTerm}}} übrig.",
   "app.components.VoteInputs.budgeting.AddToBasketButton.basketAlreadySubmitted": "Sie haben Ihr Budget bereits eingereicht. Klicken Sie auf \"Budget ändern\", um Ihr Budget zu ändern.",
   "app.components.VoteInputs.budgeting.AddToBasketButton.basketAlreadySubmittedIdeaPage": "Sie haben Ihr Budget bereits eingereicht. Um Ihr Budget zu ändern, gehen Sie zurück zur Projektseite und klicken Sie auf \"Budget ändern\".",
   "app.components.VoteInputs.budgeting.AddToBasketButton.phaseNotActive": "Budgetierung ist nicht möglich, da diese Phase nicht aktiv ist.",
