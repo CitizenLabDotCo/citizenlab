@@ -120,7 +120,7 @@
   "app.components.admin.ContentBuilder.Widgets.SurveyQuestionResultWidget.untilNow": "{date} until now",
   "app.components.admin.DatePhasePicker.Input.openEnded": "Open ended",
   "app.components.admin.DatePhasePicker.Input.selectDate": "Select date",
-  "app.components.admin.DateTimePicker.time": "Time",
+  "app.components.admin.DateTimePicker.time": "Idő",
   "app.components.admin.Graphs": "No data available with the current filters.",
   "app.components.admin.Graphs.noDataShort": "No data available.",
   "app.components.admin.GraphsCards.CommentsByTime.hooks.useCommentsByTime.timeSeries": "Comments over time",
