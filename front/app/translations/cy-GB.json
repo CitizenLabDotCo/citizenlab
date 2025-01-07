@@ -759,6 +759,7 @@
   "app.components.formBuilder.shortAnswer": "Ateb byr",
   "app.components.formBuilder.showResponseToUsersToggleLabel": "Dangos ymateb i ddefnyddwyr",
   "app.components.formBuilder.singleChoice": "Dewis sengl",
+  "app.components.formBuilder.staleDataErrorMessage2": "Mae problem wedi bod. Mae'r ffurflen fewnbynnu hon wedi'i chadw'n fwy diweddar yn rhywle arall. Gall hyn fod oherwydd eich bod chi neu ddefnyddiwr arall yn ei agor i'w olygu mewn ffenestr porwr arall. Adnewyddwch y dudalen i gael y ffurflen ddiweddaraf ac yna gwnewch eich newidiadau eto.",
   "app.components.formBuilder.supportArticleLinkText": "y dudalen hon",
   "app.components.formBuilder.tags": "Tagiau",
   "app.components.formBuilder.title": "Teitl",
