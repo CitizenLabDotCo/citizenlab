@@ -57,7 +57,10 @@ export const proposalsInputStatusCodes: ProposalsStatusCode[] = [
   'custom',
 ];
 
-export const inputStatusCodes = {
+export const inputStatusCodes: Record<
+  IdeaStatusParticipationMethod,
+  InputStatusCode[]
+> = {
   ideation: ideationInputStatusCodes,
   proposals: proposalsInputStatusCodes,
 };
