@@ -410,7 +410,7 @@ lt:
       header_message: 'Dalyvavimo platformoje %{organizationName} ką tik paskelbtas šis projektas:'
       preheader: 'Paskelbtas naujas projektas'
     status_change_on_idea_you_follow:
-      status_change: 'Naujasis šios idėjos statusas yra "%{ideaStatus}".'
+      status_change: 'Naujas šios idėjos statusas yra "%{ideaStatus}".'
       header_message: '%{organizationName} atnaujino idėjos "%{ideaTitle}" statusą savo skaitmeninėje dalyvavimo platformoje.'
       header_title: 'Idėja, kurią sekate, turi naują statusą'
       subject: 'Pakeista sekamos idėjos būsena'
@@ -463,7 +463,7 @@ lt:
       link: nuoroda
       main_header: '%{firstName}, paskelbėte savo pirmąją idėją!'
       message_get_votes: 'Savo idėja pasiekite daugiau žmonių:'
-      preheader: '%{firstName}sveikiname paskelbus pirmąją idėją %{organizationName}platformoje. Dabar rinkite paramą savo idėjai'
+      preheader: '%{firstName}, sveikiname paskelbus pirmąją idėją %{organizationName}platformoje. Dabar rinkite paramą savo idėjai'
       see_you: 'Iki pasimatymo platformoje!'
       send_email: el. paštas
       subject: 'Jūsų pirmoji idėja %{organizationName}platformoje'
