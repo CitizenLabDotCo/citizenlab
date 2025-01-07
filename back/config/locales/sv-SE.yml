@@ -45,7 +45,7 @@ sv:
     accepted: accepterad
     accepted_description: Denna idé har accepterats och kommer att genomföras av staden
     implemented: genomfördes
-    implemented_description: Denna idé har förverkligats av staden
+    implemented_description: Denna idé har genomförts av staden
     rejected: avvisad
     rejected_description: Denna idé har avvisats
     expired: utgått
