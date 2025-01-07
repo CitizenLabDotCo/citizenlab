@@ -1,12 +1,11 @@
 import React, { MouseEvent } from 'react';
 
-import { Box, Text } from '@citizenlab/cl2-component-library';
+import { Box, Divider, Text } from '@citizenlab/cl2-component-library';
 import { xor } from 'lodash-es';
 import { RouteType } from 'routes';
 
 import { ITopicData } from 'api/topics/types';
 
-import Divider from 'components/admin/Divider';
 import Button from 'components/UI/Button';
 
 import { FormattedMessage } from 'utils/cl-intl';
