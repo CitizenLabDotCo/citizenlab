@@ -37,6 +37,8 @@ const HomePage = () => {
     }
   }, [pressedLetterAKey, userHasAdminAccess]);
 
+  console.log('re-rendering homepage...');
+
   return (
     <>
       <HomePageMeta />

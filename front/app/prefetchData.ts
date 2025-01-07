@@ -24,7 +24,7 @@ const prefetchData = () => {
 
   if (isHomepage(pathname)) {
     queryClient.prefetchQuery({
-      queryKey: homepageBuilderKeys.items(),
+      queryKey: homepageBuilderKeys.item({ variant: 'homepage' }),
       queryFn: fetchHomepageBuilderLayout,
     });
   }
