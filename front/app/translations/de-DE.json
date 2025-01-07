@@ -759,6 +759,7 @@
   "app.components.formBuilder.shortAnswer": "Kurze Antwort",
   "app.components.formBuilder.showResponseToUsersToggleLabel": "Zeige Antwort an Nutzer*innen",
   "app.components.formBuilder.singleChoice": "Einfachauswahl",
+  "app.components.formBuilder.staleDataErrorMessage2": "Es ist ein Problem aufgetreten. Dieses Eingabeformular wurde vor kurzem an einem anderen Ort gespeichert. Das kann daran liegen, dass Sie oder ein anderer Benutzer es in einem anderen Browserfenster zur Bearbeitung geöffnet haben. Bitte aktualisieren Sie die Seite, um das neueste Formular zu erhalten, und nehmen Sie dann Ihre Änderungen erneut vor.",
   "app.components.formBuilder.supportArticleLinkText": "dieser Seite",
   "app.components.formBuilder.tags": "Themen-Tags",
   "app.components.formBuilder.title": "Titel",
