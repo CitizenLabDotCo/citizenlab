@@ -59,7 +59,7 @@ el:
       "voting_last_chance": Τελευταία ευκαιρία να ψηφίσετε
       "voting_phase_started": Νέα φάση έργου με ψηφοφορία
       "voting_results": Αποτελέσματα ψηφοφορίας
-      "your_input_in_screening": Εκκρεμεί ο έλεγχος της συμβολής μου
+      "your_input_in_screening": Εκκρεμεί ο έλεγχος της πρότασής μου
     general:
       by_author: 'από %{authorName}'
       author_wrote: '%{authorName} έγραψε:'
@@ -80,7 +80,7 @@ el:
         question: 'Πηγαίνετε στην ερώτησή σας'
         contribution: 'Πηγαίνετε στη συνεισφορά σας'
         project: 'Πηγαίνετε στο έργο σας'
-        issue: 'Πηγαίνετε στο θέμα σας'
+        issue: 'Πηγαίνετε στο πρόβλημά σας'
         option: 'Πηγαίνετε στην επιλογή σας'
         proposal: 'Μεταβείτε στην πρότασή σας'
         initiative: 'Πηγαίνετε στην πρωτοβουλία σας'
@@ -101,13 +101,13 @@ el:
       "link_terms_conditions": "Όροι & Προϋποθέσεις"
       "link_unsubscribe": "Διαγραφή"
       "powered_by": "Υποστηρίζεται από"
-      "recipient_statement": "Αυτό το μήνυμα ηλεκτρονικού ταχυδρομείου σας εστάλη από την Go Vocal για λογαριασμό του %{organizationName}, επειδή είστε εγγεγραμμένος χρήστης του %{organizationLink}."
-      "unsubscribe_statement": "Μπορείτε να επισκεφθείτε τη διεύθυνση %{unsubscribeLink} εάν δεν θέλετε να λαμβάνετε αυτά τα μηνύματα ηλεκτρονικού ταχυδρομείου στο μέλλον."
+      "recipient_statement": "Αυτό το e-mail σας εστάλη από την Go Vocal εκ μέρους του %{organizationName}, επειδή είστε εγγεγραμμένος χρήστης του %{organizationLink}."
+      "unsubscribe_statement": "Σε περίπτωση που δεν επιθυμείτε να λαμβάνετε πλέον αυτά τα μηνύματα ηλεκτρονικού ταχυδρομείου, μπορείτε να επισκεφθείτε τη διεύθυνση %{unsubscribeLink}."
       "unsubscribe_text": "διαγραφή"
     follow:
       "unfollow_here": "Λάβατε αυτή την ειδοποίηση εξαιτίας ενός στοιχείου που ακολουθείτε. <a href=\"%{unfollow_url}\">Μπορείτε να το ακυρώσετε εδώ.</a>"
     manual:
-      preheader: 'Έχετε αλληλογραφία από το %{organizationName}'
+      preheader: 'Λάβατε μια ενημέρωση από το %{organizationName}'
     comment_deleted_by_admin:
       reason: 'Ο λόγος για τον οποίο διαγράφηκε το σχόλιό σας:'
       cta_view: 'Δείτε αυτή την ιδέα'
@@ -126,7 +126,7 @@ el:
       text_introduction: 'Επιμεληθήκαμε για εσάς τις πληροφορίες που προκάλεσαν τη μεγαλύτερη δραστηριότητα την τελευταία εβδομάδα. Μάθετε τι συμβαίνει στην πλατφόρμα σας!'
       cta_visit_the_platform: 'Επισκεφθείτε την πλατφόρμα σας'
       new_users: 'Νέοι χρήστες'
-      new_inputs: 'Νέες εισροές'
+      new_inputs: 'Νέες ιδέες'
       new_comments: 'Νέα σχόλια'
       title_activity_past_week: 'Δραστηριότητα της προηγούμενης εβδομάδας'
       title_no_activity_past_week: 'Δεν υπήρξε καμία δραστηριότητα την προηγούμενη εβδομάδα'
@@ -164,9 +164,9 @@ el:
       yesterday: Χθες
     cosponsor_of_your_idea:
       cta_reply_to: 'Δείτε την πρότασή σας'
-      event_description: 'Συγχαρητήρια! Το %{cosponsorName} αποδέχτηκε την πρόσκλησή σας να συνδιοργανώσει την πρότασή σας.'
+      event_description: 'Συγχαρητήρια! Ο %{cosponsorName} αποδέχτηκε την πρόσκλησή σας να συνυποστηρίξει την πρότασή σας.'
       main_header: '%{cosponsorName} αποδέχθηκε την πρόσκλησή σας να συνυποστηρίξει την πρότασή σας'
-      subject: '%{cosponsorName} αποδέχθηκε την πρόσκλησή σας να συνυποστηρίξει την πρότασή σας'
+      subject: '%{cosponsorName} Αποδέχθηκε την πρόσκλησή σας να συνυποστηρίξει την πρότασή σας'
       preheader: '%{cosponsorName} αποδέχθηκε την πρόσκλησή σας να συνυποστηρίξει την πρότασή σας'
     cosponsor_of_your_initiative:
       cta_reply_to: 'Δείτε την πρότασή σας'
@@ -179,7 +179,7 @@ el:
       preheader: 'Ψηφίδα παραλήπτη της ιστοσελίδας %{organizationName}'
       title_your_weekly_report: '%{firstName}, η συμβολή των πολιτών περιμένει τα σχόλιά σας'
       cta_manage_your_input: 'Διαχειριστείτε τις εισροές σας'
-      x_inputs_need_your_feedback: 'εισροές χρειάζονται τα σχόλιά σας'
+      x_inputs_need_your_feedback: 'οι ιδέες χρειάζονται τα σχόλιά σας'
       title_assignment_past_week: 'Τελευταίες ιδέες που σας έχουν ανατεθεί'
       title_no_assignment_past_week: 'Δεν σας ανατέθηκαν νέες ιδέες την περασμένη εβδομάδα'
       yesterday_by_author: 'Χθες από %{author}'
