@@ -18,7 +18,7 @@ export type IdeaStatusesQueryParams = {
 };
 
 export type InputStatusCode =
-type InputStatusCode =
+  | 'prescreening'
   | 'proposed'
   | 'viewed'
   | 'under_consideration'
@@ -36,6 +36,7 @@ export const inputStatusCodes: Record<
   InputStatusCode[]
 > = {
   ideation: [
+    'prescreening',
     'proposed',
     'viewed',
     'under_consideration',
@@ -45,6 +46,7 @@ export const inputStatusCodes: Record<
     'custom',
   ],
   proposals: [
+    'prescreening',
     'proposed',
     'threshold_reached',
     'expired',
