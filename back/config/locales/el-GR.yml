@@ -52,19 +52,19 @@ el:
     expired_description: λήξει
     threshold_reached: Επίτευξη ορίου
     threshold_reached_description: Επίτευξη ορίου
-    answered: απάντησε το
+    answered: απαντήθηκε
     answered_description: απάντησε το
-    ineligible: μη επιλέξιμες
+    ineligible: δεν πληροί τις προϋποθέσεις
     ineligible_description: μη επιλέξιμες
   initiative_statuses:
     review_pending: εκκρεμεί αναθεώρηση
     review_pending_description: εκκρεμεί αναθεώρηση
-    changes_requested: ζητούμενες αλλαγές
-    changes_requested_description: ζητούμενες αλλαγές
+    changes_requested: ζητούνται αλλαγές
+    changes_requested_description: ζητούνται αλλαγές
     proposed: προτεινόμενη
     proposed_description: προτεινόμενη
-    expired: λήξει
-    expired_description: λήξει
+    expired: έληξε
+    expired_description: έληξε
     threshold_reached: Επίτευξη ορίου
     threshold_reached_description: Επίτευξη ορίου
     answered: απάντησε το
