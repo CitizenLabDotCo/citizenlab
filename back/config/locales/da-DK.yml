@@ -256,7 +256,7 @@ da:
       author_email: 'Forfatter e-mail'
       author_fullname: 'Forfatterens navn'
       author_id: 'Forfatter ID'
-      budget: 'Budget'
+      budget: 'Budsjett'
       comments_count: 'Kommentarer'
       cost: 'Omkostninger'
       created_at: 'Indsendt på'

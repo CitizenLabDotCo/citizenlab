@@ -265,7 +265,7 @@ el:
       email: 'Ηλεκτρονικό ταχυδρομείο'
       first_name: 'Όνομα(-α)'
       image_url: 'URL εικόνας'
-      input_id: 'ID'
+      input_id: 'Ταυτότητα'
       manual_votes: 'Ψηφοφορία εκτός σύνδεσης'
       input_url: 'ΔΙΕΎΘΥΝΣΗ URL'
       last_name: 'Επώνυμο'
@@ -350,7 +350,7 @@ el:
     am: Είμαι
     formats:
       hour_of_day: "%H:%M"
-    pm: pm
+    pm: μμ
   voting_method:
     default_voting_term_singular: "ψήφος"
     default_voting_term_plural: "ψήφοι"
