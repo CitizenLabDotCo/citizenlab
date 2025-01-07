@@ -43,7 +43,7 @@ hu:
     under_consideration: mérlegelés alatt
     under_consideration_description: Ezt az elképzelést a város figyelembe vette
     accepted: elfogadott
-    accepted_description: Ezt az elképzelést a város elfogadta és megvalósítja
+    accepted_description: Ezt az elképzelést a város elfogadta és meg is fogja valósítani
     implemented: végrehajtva
     implemented_description: Ezt az ötletet a város megvalósította
     rejected: elutasítva
@@ -284,7 +284,7 @@ hu:
       option2: '2. lehetőség'
     form_end_page:
       title: 'Köszönjük a részvételt'
-      description: "Kérjük, küldje el válaszait az alábbi „Küldés” gombra kattintva."
+      description: "Kérjük, küldje el válaszait az alábbi „Küldés” lehetőség kiválasztásával."
     pdf_export:
       personal_data: 'Személyes adatok'
       personal_data_explanation_public: "Hozzászólásodat elküldjük %{organizationName}online részvételi platformjára. Ha azt szeretné, hogy az Ön neve jelenjen meg a bemenet szerzőjeként, és e-mailben kapja meg a bemenetével kapcsolatos frissítéseket, kérjük, töltse ki az alábbi mezőket ezen az oldalon, és mi létrehozunk Önnek egy fiókot. Az Ön e-mailje nem lesz nyilvános, és csak %{organizationName}fogja használni. Ha névtelen szeretne maradni, vagy nem járul hozzá ahhoz, hogy személyes adatait ilyen módon használjuk fel, akkor ezeket üresen hagyhatja."
