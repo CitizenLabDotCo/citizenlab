@@ -32,20 +32,19 @@ interface Props {
 }
 
 const FilterSidebarStatusesItem = ({ status, active, onClick }: Props) => {
-  const { phaseId } = useParams() as { phaseId: string };
+  const { phaseId } = useParams();
   const { data: phase } = usePhase(phaseId);
-
   const preScreeningFeatureFlag =
     phase?.data.attributes.participation_method === 'ideation'
       ? 'prescreening_ideation'
       : 'prescreening';
-
+  const preScreeningFeatureEnabled = useFeatureFlag({
+    name: preScreeningFeatureFlag,
+  });
   const preScreeningFeatureAllowed = useFeatureFlag({
     name: preScreeningFeatureFlag,
     onlyCheckAllowed: true,
   });
-  const phasePrescreeningEnabled =
-    phase?.data.attributes.prescreening_enabled === true;
 
   const [{ canDrop, isOver }, drop] = useDrop({
     accept: 'IDEA',
@@ -59,16 +58,16 @@ const FilterSidebarStatusesItem = ({ status, active, onClick }: Props) => {
     }),
   });
 
+  const phasePrescreeningEnabled =
+    phase?.data.attributes.prescreening_enabled === true;
   const showAutomaticStatusTooltip =
     status.attributes.can_manually_transition_to === false;
-
-  const prescreeningButtonIsDisabled =
+  const prescreeningIsEnabled =
     status.attributes.code === 'prescreening' &&
-    (!phasePrescreeningEnabled || !preScreeningFeatureAllowed);
-
-  const prescreeningTooltipIsDisabled =
-    status.attributes.code !== 'prescreening' ||
-    (phasePrescreeningEnabled && preScreeningFeatureAllowed);
+    phasePrescreeningEnabled &&
+    preScreeningFeatureEnabled;
+  const isEnabled = prescreeningIsEnabled || true;
+  const prescreeningTooltipIsDisabled = !prescreeningIsEnabled;
 
   return (
     <div ref={drop}>
@@ -90,7 +89,7 @@ const FilterSidebarStatusesItem = ({ status, active, onClick }: Props) => {
           <StatusButton
             onClick={onClick}
             active={active || (isOver && canDrop)}
-            disabled={prescreeningButtonIsDisabled}
+            disabled={!isEnabled}
           >
             <Box
               display="flex"
