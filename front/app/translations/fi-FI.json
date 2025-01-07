@@ -759,6 +759,7 @@
   "app.components.formBuilder.shortAnswer": "Lyhyt vastaus",
   "app.components.formBuilder.showResponseToUsersToggleLabel": "Näytä vastaus käyttäjille",
   "app.components.formBuilder.singleChoice": "Yksittäinen valinta",
+  "app.components.formBuilder.staleDataErrorMessage2": "On ollut ongelma. Tämä syöttölomake on tallennettu äskettäin jonnekin muualle. Tämä voi johtua siitä, että sinä tai joku toinen käyttäjä on avannut sen muokkausta varten toisessa selainikkunassa. Päivitä sivu saadaksesi uusimman lomakkeen ja tee sitten muutokset uudelleen.",
   "app.components.formBuilder.supportArticleLinkText": "tämä sivu",
   "app.components.formBuilder.tags": "Tunnisteet",
   "app.components.formBuilder.title": "Otsikko",
