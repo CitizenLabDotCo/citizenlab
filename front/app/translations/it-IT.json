@@ -759,6 +759,7 @@
   "app.components.formBuilder.shortAnswer": "Risposta breve",
   "app.components.formBuilder.showResponseToUsersToggleLabel": "Mostrare la risposta agli utenti",
   "app.components.formBuilder.singleChoice": "Scelta singola",
+  "app.components.formBuilder.staleDataErrorMessage2": "Si è verificato un problema. Questo modulo di inserimento è stato salvato più di recente da un'altra parte. Ciò potrebbe essere dovuto al fatto che tu o un altro utente lo avete aperto per la modifica in un'altra finestra del browser. Aggiorna la pagina per ottenere il modulo più recente e poi apporta nuovamente le tue modifiche.",
   "app.components.formBuilder.supportArticleLinkText": "questa pagina",
   "app.components.formBuilder.tags": "Tag",
   "app.components.formBuilder.title": "Titolo",
