@@ -4,12 +4,12 @@ el:
       "manual": Επίσημα μηνύματα
       "manual_project_participants": Επίσημα μηνύματα προς τους συμμετέχοντες στο έργο
       "admin_rights_received": Δικαιώματα διαχειριστή
-      "comment_deleted_by_admin": Διαγράψτε το σχόλιό μου
-      "comment_marked_as_spam": Σχόλιο spam αναφορά
+      "comment_deleted_by_admin": Διαγραφή του σχολίου μου
+      "comment_marked_as_spam": Αναφορά ανεπιθύμητου σχολίου
       "comment_on_your_comment": Μια απάντηση στο σχόλιό μου
-      "comment_on_idea_you_follow": Ένα σχόλιο για μια ιδέα που ακολουθείτε
+      "comment_on_idea_you_follow": Ένα σχόλιο σε μια ιδέα που ακολουθείτε
       "comment_on_initiative_you_follow": Ένα σχόλιο σχετικά με μια πρόταση που ακολουθείτε
-      "cosponsor_of_your_initiative": Ένας χρήστης αποδέχεται την πρόσκλησή μου να συνυπογράψει την πρότασή μου
+      "cosponsor_of_your_initiative": Ένας χρήστης αποδέχεται την πρόσκληση να συνυπογράψει την πρότασή μου
       "event_registration_confirmation": Επιβεβαίωση εγγραφής στην εκδήλωση
       "first_idea_published": Δημοσίευση της πρώτης μου ιδέας
       "idea_marked_as_spam": Αναφορά spam ιδεών
