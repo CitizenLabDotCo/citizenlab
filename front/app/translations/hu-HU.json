@@ -759,6 +759,7 @@
   "app.components.formBuilder.shortAnswer": "Rövid válasz",
   "app.components.formBuilder.showResponseToUsersToggleLabel": "Válasz megjelenítése a felhasználóknak",
   "app.components.formBuilder.singleChoice": "Egyetlen választás",
+  "app.components.formBuilder.staleDataErrorMessage2": "Probléma lépett fel. Ezt a beviteli űrlapot a közelmúltban máshová mentették. Ennek az lehet az oka, hogy Ön vagy egy másik felhasználó megnyitotta szerkesztésre egy másik böngészőablakban. Kérjük, frissítse az oldalt a legfrissebb űrlap eléréséhez, majd hajtsa végre újra a módosításokat.",
   "app.components.formBuilder.supportArticleLinkText": "ezt az oldalt",
   "app.components.formBuilder.tags": "Címkék",
   "app.components.formBuilder.title": "Cím",
