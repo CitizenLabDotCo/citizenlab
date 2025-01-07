@@ -759,6 +759,7 @@
   "app.components.formBuilder.shortAnswer": "Σύντομη απάντηση",
   "app.components.formBuilder.showResponseToUsersToggleLabel": "Εμφάνιση απάντησης στους χρήστες",
   "app.components.formBuilder.singleChoice": "Ενιαία επιλογή",
+  "app.components.formBuilder.staleDataErrorMessage2": "Υπήρξε ένα πρόβλημα. Αυτή η φόρμα εισαγωγής έχει αποθηκευτεί πιο πρόσφατα κάπου αλλού. Αυτό μπορεί να οφείλεται στο γεγονός ότι εσείς ή κάποιος άλλος χρήστης την έχει ανοίξει για επεξεργασία σε άλλο παράθυρο του προγράμματος περιήγησης. Παρακαλούμε ανανεώστε τη σελίδα για να λάβετε την πιο πρόσφατη φόρμα και στη συνέχεια κάντε ξανά τις αλλαγές σας.",
   "app.components.formBuilder.supportArticleLinkText": "αυτή τη σελίδα",
   "app.components.formBuilder.tags": "Ετικέτες",
   "app.components.formBuilder.title": "Τίτλος",
