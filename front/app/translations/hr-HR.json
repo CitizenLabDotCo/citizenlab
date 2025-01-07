@@ -759,6 +759,7 @@
   "app.components.formBuilder.shortAnswer": "Kraći odgovor",
   "app.components.formBuilder.showResponseToUsersToggleLabel": "Prikaži odgovor korisnicima",
   "app.components.formBuilder.singleChoice": "Jedan izbor",
+  "app.components.formBuilder.staleDataErrorMessage2": "Došlo je do problema. Ovaj obrazac za unos nedavno je spremljen negdje drugdje. To može biti zato što ste ga vi ili drugi korisnik otvorili za uređivanje u drugom prozoru preglednika. Osvježite stranicu kako biste dobili najnoviji obrazac i zatim ponovno izvršite promjene.",
   "app.components.formBuilder.supportArticleLinkText": "ova stranica",
   "app.components.formBuilder.tags": "Oznake",
   "app.components.formBuilder.title": "Naslov",
