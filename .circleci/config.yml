@@ -212,6 +212,7 @@ jobs:
           docker login -u $DOCKER_USER -p $DOCKER_PASS
           docker push citizenlabdotco/back-ee:amd64-$CIRCLE_SHA1
 
+  # We're doing a separate, parallel job for ARM64 builds as opposed to using docker buildx to do a single multi-arch build job, because the performance of the emulated ARM64 build on x86 is very poor, delaying the CI pipeline.
   back-build-docker-image-arm64:
     working_directory: ~/
     docker:
