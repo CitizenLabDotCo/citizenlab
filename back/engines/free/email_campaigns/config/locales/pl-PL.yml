@@ -281,7 +281,7 @@ pl:
       commented: '%{authorFirstName} skomentował:'
       cta_reply_to: 'Prześlij opinię na adres %{authorName}'
       days_ago: '%{numberOfDays} dni temu'
-      event_description: '%{authorName} opublikował nowy pomysł na Twojej platformie. Odkryj go teraz, przekaż opinię lub zmień jego status!'
+      event_description: '%{authorName} opublikował nowy pomysł na Twojej platformie. Odkryj go teraz, wyraź swoją opinię lub zmień jego status!'
       main_header: '%{firstName}nowy pomysł został opublikowany na twojej platformie'
       subject: 'Nowy post został opublikowany na platformie %{organizationName}.'
       preheader: '%{authorName} opublikowałeś nowy pomysł na swojej platformie'
