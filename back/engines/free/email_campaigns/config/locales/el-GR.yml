@@ -471,7 +471,7 @@ el:
       cta_go_to_project: "Μεταβείτε στις ρυθμίσεις του έργου"
     status_change_on_idea_you_follow:
       status_change: 'Η συγκριμένη ιδέα ενημερώθηκε σε ''%{status}'''
-      header_message: '%{organizationName} updated the status of the input ''%{input_title}'' on their digital participation platform.'
+      header_message: '%{organizationName} ενημέρωσε την κατάσταση της ιδέας "%{input_title}" στην ψηφιακή πλατφόρμα συμμετοχής.'
       header_title: 'An input you follow has a new status'
       subject: 'The status of "%{input_title}" has changed'
       preheader: 'An input you follow has a new status'
