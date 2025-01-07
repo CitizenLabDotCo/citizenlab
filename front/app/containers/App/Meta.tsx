@@ -29,9 +29,9 @@ const Meta = () => {
   const { pathname } = useLocation();
 
   if (tenant && homepageLayout) {
-    const tenantLocales = tenant.data.attributes.settings.core.locales;
     const favicon = tenant.data.attributes.favicon;
     const settings = tenant.data.attributes.settings;
+    const tenantLocales = settings.core.locales;
 
     // TODO: Fix this the next time the file is edited.
     // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
