@@ -2006,7 +2006,7 @@
   "app.containers.UsersShowPage.noEventsForUser": "You have not attended any events yet.",
   "app.containers.UsersShowPage.postsWithCount": "Objave ({ideasCount})",
   "app.containers.UsersShowPage.projectFolders": "Project folders",
-  "app.containers.UsersShowPage.projects": "Projects",
+  "app.containers.UsersShowPage.projects": "Projekti",
   "app.containers.UsersShowPage.proposals": "Proposals",
   "app.containers.UsersShowPage.seeInitiative": "See proposal",
   "app.containers.UsersShowPage.seePost": "Pogledajte post",
