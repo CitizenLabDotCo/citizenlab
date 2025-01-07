@@ -220,7 +220,7 @@ export default defineMessages({
   supportButtonLink: {
     id: 'app.containers.Admin.emails.supportButtonLink',
     defaultMessage:
-      'https://support.citizenlab.co/en/articles/2762939-what-are-automated-emails',
+      'https://support.govocal.com/en/articles/2762939-what-are-automated-emails',
   },
   sentToUsers: {
     id: 'app.containers.Admin.emails.sentToUsers',
