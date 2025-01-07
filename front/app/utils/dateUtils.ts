@@ -259,7 +259,7 @@ export const userTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
 // This means that if we are west of UTC, e.g. in Brazil,
 // The date will be interpreted as 21:00 the previous day.
 // This function makes sure that the date is always interpreted as midnight in the user's timezone.
-const backendDatestringRegex = /^\d{4}-\d{2}-\d{2}$/;
+const backendDatestringRegex = /^\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01])$/;
 
 export const parseBackendDateString = (_dateString?: string) => {
   if (!_dateString) return undefined;
