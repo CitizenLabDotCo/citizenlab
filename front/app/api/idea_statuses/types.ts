@@ -1,4 +1,3 @@
-import { uniq } from 'lodash-es';
 import { Multiloc } from 'typings';
 
 import { ParticipationMethod } from 'api/phases/types';
@@ -18,7 +17,8 @@ export type IdeaStatusesQueryParams = {
   participation_method?: IdeaStatusParticipationMethod;
 };
 
-type InputStatusCode =
+export type InputStatusCode =
+  | 'prescreening'
   | 'proposed'
   | 'viewed'
   | 'under_consideration'
@@ -36,6 +36,7 @@ export const inputStatusCodes: Record<
   InputStatusCode[]
 > = {
   ideation: [
+    'prescreening',
     'proposed',
     'viewed',
     'under_consideration',
@@ -45,6 +46,7 @@ export const inputStatusCodes: Record<
     'custom',
   ],
   proposals: [
+    'prescreening',
     'proposed',
     'threshold_reached',
     'expired',
@@ -52,7 +54,7 @@ export const inputStatusCodes: Record<
     'ineligible',
     'custom',
   ],
-};
+} as const;
 
 export const automatedInputStatusCodes: Set<InputStatusCode> = new Set([
   'proposed',
@@ -60,22 +62,13 @@ export const automatedInputStatusCodes: Set<InputStatusCode> = new Set([
   'expired',
 ]);
 
-const allMergedInputStatusCodes = uniq(
-  Object.keys(inputStatusCodes)
-    .map(function (v) {
-      return inputStatusCodes[v];
-    })
-    .flat()
-);
-export type TIdeaStatusCode = (typeof allMergedInputStatusCodes)[number];
-
 export interface IIdeaStatusData {
   id: string;
   type: string;
   attributes: {
     title_multiloc: Multiloc;
     color: string;
-    code: TIdeaStatusCode;
+    code: InputStatusCode;
     ordering: number;
     description_multiloc: Multiloc;
     ideas_count?: number;
@@ -89,7 +82,7 @@ export interface IIdeaStatusAdd {
   title_multiloc: Multiloc;
   description_multiloc?: Multiloc;
   color?: string;
-  code?: TIdeaStatusCode;
+  code?: InputStatusCode;
   ordering?: number;
   participation_method: IdeaStatusParticipationMethod;
 }
@@ -98,7 +91,7 @@ export interface IIdeaStatusUpdate {
   title_multiloc?: Multiloc;
   description_multiloc?: Multiloc;
   color?: string;
-  code?: TIdeaStatusCode;
+  code?: InputStatusCode;
   ordering?: number;
   participation_method: IdeaStatusParticipationMethod;
 }
