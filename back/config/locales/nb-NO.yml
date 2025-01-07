@@ -20,15 +20,15 @@ nb:
     hu-HU: Ungarsk
     it-IT: Italiensk
     kl-GL: Grønlandsk
-    lb-LU: luxembourgsk
-    lv-LV: latvisk
-    mi: Maori
+    lb-LU: Luxembourgsk
+    lv-LV: Latvisk
+    mi: maori
     nb-NO: Norsk (bokmål)
-    nl-BE: nederlandsk (Belgia)
+    nl-BE: Nederlandsk (Belgia)
     nl-NL: Nederlandsk
     pl-PL: Polsk
     pt-BR: Portugisisk (Brasil)
-    ro-RO: rumensk
+    ro-RO: Rumensk
     sr-Latn: Serbisk (latin)
     sr-SP: Serbisk (kyrillisk)
     sv-SE: Svensk
@@ -293,8 +293,8 @@ nb:
       description_text_2: "Du er i ferd med å sende inn svarene dine. Ved å klikke på \"Send inn\" gir du oss tillatelse til å analysere svarene dine.<br/>Etter at du har sendt inn, vil du ikke lenger kunne gå tilbake og endre noen av svarene dine."
     pdf_export:
       personal_data: 'Personopplysninger'
-      personal_data_explanation_public: "Vi sender innspillet ditt til %{organizationName}sin online plattform for deltakelse. Hvis du vil at navnet ditt skal vises som forfatter av dette innspillet og motta oppdateringer som er relevante for innspillet ditt via e-post, kan du fylle ut følgende felt på denne siden, så oppretter vi en konto for deg. E-postadressen din vil ikke bli offentliggjort og vil kun bli brukt av %{organizationName}. Hvis du ønsker å være anonym, eller ikke godtar at vi bruker personopplysningene dine på denne måten, kan du la dem være tomme."
-      personal_data_explanation_private: "Vi sender inn innspillene dine til %{organizationName}sin online plattform for deltakelse. Hvis du ønsker å motta oppdateringer som er relevante for innspillene dine via e-post, kan du fylle ut følgende felt på denne siden, så oppretter vi en konto for deg. Opplysningene dine vil ikke bli offentliggjort og vil kun bli brukt av %{organizationName}. Hvis du ikke godtar at vi bruker personopplysningene dine på denne måten, kan du la dem stå tomme."
+      personal_data_explanation_public: "Vi sender innspillet ditt til %{organizationName} sin digitale medvirkningsplattform. Hvis du vil at navnet ditt skal vises som forfatter av dette innspillet, og motta oppdateringer som er relevante for innspillet ditt via e-post, kan du fylle ut følgende felt på denne siden. Da opprettes en konto for deg. E-postadressen din vil ikke bli offentliggjort, og vil kun bli brukt av %{organizationName}. Hvis du ønsker å være anonym, eller ikke godtar at vi bruker personopplysningene dine på denne måten, kan du la feltene stå tomme."
+      personal_data_explanation_private: "Vi sender inn innspillene dine til %{organizationName} sin digitale medvirkningsplattform. Hvis du ønsker å motta oppdateringer som er relevante for innspillene dine via e-post, kan du fylle ut følgende felt på denne siden. Da opprettes en konto for deg. Opplysningene dine vil ikke bli offentliggjort, og vil kun bli brukt av %{organizationName}. Hvis du ikke godtar at vi bruker personopplysningene dine på denne måten, kan du la feltene stå tomme."
       first_name: 'Fornavn(er)'
       last_name: 'Etternavn'
       email_address: 'E-postadresse'
@@ -319,7 +319,7 @@ nb:
     title_suffix: 'Kopi'
   confirmations_mailer:
     send_confirmation_code:
-      subject: "Bekreft e-postadressen din for %{organizationName}sin plattform for deltakelse"
+      subject: "Bekreft e-postadressen din for %{organizationName} sin medvirkningsplattform"
       preheader: 'Bekreft e-postadressen din for %{organizationName}'
       header: "Din bekreftelseskode"
       header_message: "Hei %{firstName}!"
@@ -335,16 +335,16 @@ nb:
   user_blocked_mailer:
     send_user_blocked_email:
       subject: 'Kontoen din har blitt midlertidig deaktivert'
-      preheader: 'Kontoen din på deltakerplattformen på %{organizationName} er midlertidig deaktivert'
+      preheader: 'Kontoen din på medvirkningsplattformen til %{organizationName} er midlertidig deaktivert'
       title_user_blocked: 'Kontoen din har blitt midlertidig deaktivert'
-      paragraph_1_without_reason: "Kontoen din på deltakelsesplattformen %{organizationName} er midlertidig deaktivert på grunn av brudd på retningslinjene for fellesskapet."
-      paragraph_1_with_reason: "Kontoen din på deltakerplattformen på %{organizationName} er midlertidig deaktivert av følgende grunn:"
+      paragraph_1_without_reason: "Kontoen din på medvirkningsplattformen %{organizationName} er midlertidig deaktivert på grunn av brudd på retningslinjene for fellesskapet."
+      paragraph_1_with_reason: "Kontoen din på medvirkningsplattformen til %{organizationName} er midlertidig deaktivert av følgende grunn:"
       for_more_information: "For mer informasjon om dette, se %{termsAndConditionsPage}"
       you_can_sign_in_again_from: "Du kan logge på igjen fra %{date}"
   user:
     anon_first_name: "Bruker"
   time:
-    am: am
+    am: AM
     formats:
       hour_of_day: "%l %p"
     pm: pm
