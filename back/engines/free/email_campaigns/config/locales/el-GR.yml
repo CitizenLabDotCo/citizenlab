@@ -10,7 +10,7 @@ el:
       "comment_on_idea_you_follow": Ένα σχόλιο για μια ιδέα που ακολουθείτε
       "comment_on_initiative_you_follow": Ένα σχόλιο σχετικά με μια πρόταση που ακολουθείτε
       "cosponsor_of_your_initiative": Ένας χρήστης αποδέχεται την πρόσκλησή μου να συνυπογράψει την πρότασή μου
-      "cosponsor_of_your_idea": Ένας χρήστης αποδέχεται την πρόσκλησή μου να συνυπογράψει την πρότασή μου
+      "cosponsor_of_your_idea": Ένας χρήστης αποδέχεται την πρόσκληση να συνυπογράψει την πρότασή μου
       "event_registration_confirmation": Επιβεβαίωση εγγραφής στην εκδήλωση
       "idea_marked_as_spam": Αναφορά spam ιδεών
       "idea_published": Δημοσίευση της ιδέας μου
@@ -18,7 +18,7 @@ el:
       "initiative_marked_as_spam": Έκθεση για την ανεπιθύμητη αλληλογραφία της πρότασης
       "initiative_published": Δημοσίευση της πρότασής μου
       "invitation_to_cosponsor_initiative": Πρόσκληση για συν-χορηγία πρότασης
-      "invitation_to_cosponsor_idea": Πρόσκληση για συν-χορηγία πρότασης
+      "invitation_to_cosponsor_idea": Πρόσκληση για να συν-υποστηρίξετε μια πρόταση
       "initiative_resubmitted_for_review": Η πρόταση υποβάλλεται εκ νέου για επανεξέταση
       "invite_received": Προσκλήσεις
       "invite_reminder": Υπενθύμιση πρόσκλησης
@@ -43,8 +43,8 @@ el:
       "project_phase_started": Νέα φάση του έργου
       "project_phase_upcoming": Επόμενη νέα φάση έργου
       "project_published": Δημοσιευμένο έργο
-      "project_review_request": Αίτημα αναθεώρησης έργου
-      "project_review_state_change": Έργο εγκεκριμένο
+      "project_review_request": Αίτημα αξιολόγησης του έργου
+      "project_review_state_change": Το έργο εγκρίθηκε
       "status_change_on_idea_you_follow": Αλλαγή κατάστασης μιας ιδέας που ακολουθείτε
       "status_change_on_initiative_you_follow": Αλλαγή κατάστασης μιας πρότασης που ακολουθείτε
       "threshold_reached_for_admin": Η πρόταση έφθασε το κατώτατο όριο ψήφου
@@ -54,7 +54,7 @@ el:
       "assignee_digest": Εβδομαδιαία επισκόπηση των ιδεών που έχουν ανατεθεί
       "user_digest": Εβδομαδιαία επισκόπηση
       "voting_basket_submitted": Επιβεβαίωση της ψηφοφορίας
-      "native_survey_not_submitted": Έρευνα που δεν υποβλήθηκε
+      "native_survey_not_submitted": Η έρευνα δεν υποβλήθηκε
       "voting_basket_not_submitted": Ψήφοι που δεν υποβλήθηκαν
       "voting_last_chance": Τελευταία ευκαιρία να ψηφίσετε
       "voting_phase_started": Νέα φάση έργου με ψηφοφορία
