@@ -2676,7 +2676,7 @@
   "app.containers.admin.addCollaboratorsModal.giveManagerRights": "Gitt Manager Rechter",
   "app.containers.admin.addCollaboratorsModal.hasReachedOrIsOverLimit": "Dir hutt d'Limite vun abegraff Sëtzer bannent Ärem Plang erreecht, {noOfSeats} zousätzlech {noOfSeats, plural, one {sitz} other {Plaze}} wäert dobäi ginn.",
   "app.containers.admin.ideaStatuses.all.addIdeaStatus": "Add status",
-  "app.containers.admin.ideaStatuses.all.defaultStatusDeleteButtonTooltip": "The default status can not be deleted.",
+  "app.containers.admin.ideaStatuses.all.defaultStatusDeleteButtonTooltip": "De Standardstatus kann net geläscht ginn.",
   "app.containers.admin.ideaStatuses.all.deleteButtonLabel": "Delete",
   "app.containers.admin.ideaStatuses.all.editButtonLabel": "Edit",
   "app.containers.admin.ideaStatuses.all.editIdeaStatus": "Edit status",
