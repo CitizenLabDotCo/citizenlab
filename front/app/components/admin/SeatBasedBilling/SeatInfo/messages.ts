@@ -101,7 +101,7 @@ export default defineMessages({
   rolesSupportPage: {
     id: 'app.components.SeatInfo.rolesSupportPage',
     defaultMessage:
-      'https://support.citizenlab.co/en/articles/2672884-what-are-the-different-roles-on-the-platform',
+      'https://support.govocal.com/en/articles/2672884-what-are-the-different-roles-on-the-platform',
   },
   visitHelpCenter: {
     id: 'app.components.SeatInfo.visitHelpCenter',

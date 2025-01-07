@@ -182,7 +182,7 @@ export default defineMessages({
   readMoreLink: {
     id: 'app.containers.AdminPage.Users.GroupCreation.readMoreLink',
     defaultMessage:
-      'http://support.citizenlab.co/nl-opstartgids/stap-2-configureer-de-belangrijkste-settings/maak-eventueel-verschillende-gebruikersgroepen-aan',
+      'http://support.govocal.com/nl-opstartgids/stap-2-configureer-de-belangrijkste-settings/maak-eventueel-verschillende-gebruikersgroepen-aan',
   },
   modalHeaderStep1: {
     id: 'app.containers.AdminPage.Users.GroupCreation.modalHeaderStep1',
