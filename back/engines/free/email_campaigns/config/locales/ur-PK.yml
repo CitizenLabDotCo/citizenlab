@@ -278,7 +278,7 @@ ur:
       subject: 'کسی نے %{organizationName}کے پلیٹ فارم پر ایک نئی تجویز شائع کی۔'
       preheader: '%{authorName} نے آپ کے پلیٹ فارم پر ایک نئی تجویز شائع کی۔'
     new_idea_for_admin:
-      commented: '%{authorFirstName} نے تبصرہ کیا:'
+      commented: '%{authorFirstName} تبصرہ کیا:'
       cta_reply_to: '%{authorName}کو رائے دیں۔'
       days_ago: '%{numberOfDays} دن پہلے'
       event_description: '%{authorName} نے آپ کے پلیٹ فارم پر ایک نیا آئیڈیا شائع کیا ہے۔ اسے ابھی دریافت کریں، کچھ رائے دیں یا اس کی حیثیت تبدیل کریں!'
