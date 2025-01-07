@@ -289,7 +289,7 @@
   "app.components.app.containers.AdminPage.ProjectEdit.expireDateLimitRequired": "Antal dage er påkrævet",
   "app.components.app.containers.AdminPage.ProjectEdit.expireDaysLimit": "Antal dage til at nå minimumsantallet af stemmer",
   "app.components.app.containers.AdminPage.ProjectEdit.googleFormsTooltip": "Du kan finde flere oplysninger om, hvordan du indlejrer et link til Google Forms, i {googleFormsTooltipLink}.",
-  "app.components.app.containers.AdminPage.ProjectEdit.googleFormsTooltipLink": "https://support.citizenlab.co/articles/5050525",
+  "app.components.app.containers.AdminPage.ProjectEdit.googleFormsTooltipLink": "https://support.govocal.com/en/articles/7025887-creating-an-external-survey-project#h_163e33df30",
   "app.components.app.containers.AdminPage.ProjectEdit.googleFormsTooltipLinkText": "denne supportartikel",
   "app.components.app.containers.AdminPage.ProjectEdit.ideaTerm": "{tenantName, select, DeloitteDK {Indlæg} other {Idé}}",
   "app.components.app.containers.AdminPage.ProjectEdit.inputTermSelectLabel": "Hvad skal et input hedde?",
