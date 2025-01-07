@@ -502,6 +502,7 @@
   "app.components.VoteControl.budgetingNotPossible": "Nid yw'n bosibl gwneud newidiadau i'ch cyllideb ar hyn o bryd.",
   "app.components.VoteControl.budgetingNotVerified": "Os gwelwch yn dda {verifyAccountLink} i barhau.",
   "app.components.VoteInputs._shared.currencyLeft": "Mae gennych {budgetLeft} / {totalBudget} {currency} ar ôl",
+  "app.components.VoteInputs._shared.votesLeft3": "Mae gennych {votesLeft} / {totalNumberOfVotes} {totalNumberOfVotes, plural, =0 {{votesTerm}} one {{voteTerm}} other {{votesTerm}}} chwith",
   "app.components.VoteInputs.budgeting.AddToBasketButton.basketAlreadySubmitted": "Rydych chi eisoes wedi cyflwyno'ch cyllideb. Cliciwch \"Addasu eich cyllideb\" i newid eich cyllideb.",
   "app.components.VoteInputs.budgeting.AddToBasketButton.basketAlreadySubmittedIdeaPage": "Rydych chi eisoes wedi cyflwyno'ch cyllideb. I newid eich cyllideb, ewch yn ôl i dudalen y prosiect a chliciwch ar \"Addasu eich cyllideb\".",
   "app.components.VoteInputs.budgeting.AddToBasketButton.phaseNotActive": "Nid oes cyllidebu ar gael, gan nad yw'r cam hwn yn weithredol.",
