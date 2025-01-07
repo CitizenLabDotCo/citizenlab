@@ -25,7 +25,7 @@ const ToggleShowFollowPreferences = ({ isEnabled, onChange }: Props) => {
   };
 
   return (
-    <Box>
+    <Box className="intercom-settings-tab-registration-follow-preferences">
       <SubSectionTitle>
         <FormattedMessage {...messages.askFollowPreferences} />
       </SubSectionTitle>

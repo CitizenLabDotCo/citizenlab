@@ -1,6 +1,16 @@
 import { randomString, randomEmail } from '../../support/commands';
 import moment = require('moment');
 
+function checkSelectedAssigneeFilter(optionLabelText: string) {
+  cy.get('#e2e-select-assignee-filter')
+    .find(':selected')
+    .should('have.text', optionLabelText);
+}
+
+function selectAssigneeFilter(optionLabelText: string) {
+  cy.get('#e2e-select-assignee-filter').select(optionLabelText);
+}
+
 describe('Input manager', () => {
   beforeEach(() => {
     cy.setAdminLoginCookie();
@@ -9,11 +19,7 @@ describe('Input manager', () => {
   describe('Assignee filter', () => {
     it('Filters on All ideas', () => {
       cy.visit('/admin/ideas/');
-
-      // grab and open assignee filter menu
-      cy.get('#e2e-select-assignee-filter').click();
-      // click on All ideas filter
-      cy.get('#e2e-assignee-filter-all-posts').click();
+      checkSelectedAssigneeFilter('Any administrator');
       // check that number of ideas on first page is 10
       cy.get('.e2e-idea-manager-idea-row').should('have.length', 10);
     });
@@ -61,10 +67,10 @@ describe('Input manager', () => {
 
             // do a refresh for the new idea to appear
             cy.visit('/admin/ideas/');
-            // grab and open assignee filter menu
-            cy.get('#e2e-select-assignee-filter').click();
             // click on Assigned to me filter
-            cy.get('#e2e-assignee-filter-assigned-to-user').click();
+            const optionLabelText = 'Assigned to me';
+            selectAssigneeFilter(optionLabelText);
+            checkSelectedAssigneeFilter(optionLabelText);
             // Check whether the newly created idea is assigned to the user
             cy.get('.e2e-idea-manager-idea-row').contains(ideaTitle);
           });
@@ -153,10 +159,7 @@ describe('Input manager', () => {
   describe('Idea preview ', () => {
     it('Opens when you click an idea title, then closes with X button', () => {
       cy.visit('/admin/ideas/');
-      // grab and open assignee filter menu
-      cy.get('#e2e-select-assignee-filter').click();
-      // click on All ideas filter
-      cy.get('#e2e-assignee-filter-all-posts').click();
+      checkSelectedAssigneeFilter('Any administrator');
       // click on title of first idea
       cy.get('.e2e-idea-manager-idea-title')
         .first()
@@ -260,25 +263,19 @@ describe('Input manager', () => {
 
     it('Assigns a user to an idea', () => {
       cy.visit('/admin/ideas/');
-
-      // Select unassigned in assignee filter
-      cy.get('#e2e-select-assignee-filter').click();
-      cy.get('#e2e-assignee-filter-unassigned').click();
+      const optionLabelText1 = 'Unassigned';
+      selectAssigneeFilter(optionLabelText1);
+      checkSelectedAssigneeFilter(optionLabelText1);
       // Pick first idea in idea table and assign it to our user
       cy.wait(500);
-      cy.get('.e2e-idea-manager-idea-row')
+      cy.get('#post-row-select-assignee')
         .first()
-        .find('.e2e-post-manager-post-row-assignee-select')
-        .scrollIntoView({ offset: { top: 100, left: 0 } })
-        .click()
-        .contains(`${newAdminFirstName} ${newAdminLastName}`)
-        .click({ force: true });
+        .select(`Assigned to ${newAdminFirstName} ${newAdminLastName}`);
       // Select this user in the assignee filter
-      cy.get('#e2e-select-assignee-filter')
-        .click()
-        .find('.e2e-assignee-filter-other-user')
-        .contains(`Assigned to ${newAdminFirstName} ${newAdminLastName}`)
-        .click({ force: true });
+      const optionLabelText2 = `Assigned to ${newAdminFirstName} ${newAdminLastName}`;
+      selectAssigneeFilter(optionLabelText2);
+      checkSelectedAssigneeFilter(optionLabelText2);
+
       // Check if idea is there
       cy.get('.e2e-idea-manager-idea-row').should('have.length', 1);
     });

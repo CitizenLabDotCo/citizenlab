@@ -84,7 +84,7 @@ const Status = ({ idea, ideaStatus, compact = false }: Props) => {
         </StatusHeading>
       </Box>
       <Box mb="24px" aria-live="polite">
-        <Text>
+        <Text m="0">
           <T value={ideaStatus.attributes.description_multiloc} />
         </Text>
       </Box>

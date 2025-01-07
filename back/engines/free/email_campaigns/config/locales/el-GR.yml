@@ -393,7 +393,7 @@ el:
       main_header: '''%{post}'' έχει ένα νέο εσωτερικό σχόλιο'
       preheader: '''%{post}'' έχει ένα νέο εσωτερικό σχόλιο'
     official_feedback_on_idea_you_follow:
-      header_message: 'Ο/η %{feedback_author_name} ενημέρωσε για την %{input_title}''.'
+      header_message: 'Ο/η %{feedback_author_name} ενημέρωσε τη %{input_title}''.'
       header_title: 'Υπάρχει μια ενημέρωση για "%{input_title}"'
       subject: 'Μία νέα επίσημη ενημέρωση δημοσιεύτηκε στο "%{input_title}"'
       preheader: 'Υπάρχει μια ενημέρωση σχετικά με μια πρόταση που ψηφίσατε'
@@ -471,10 +471,10 @@ el:
       cta_go_to_project: "Μεταβείτε στις ρυθμίσεις του έργου"
     status_change_on_idea_you_follow:
       status_change: 'Η συγκριμένη ιδέα ενημερώθηκε σε ''%{status}'''
-      header_message: '%{organizationName} updated the status of the input ''%{input_title}'' on their digital participation platform.'
-      header_title: 'An input you follow has a new status'
-      subject: 'The status of "%{input_title}" has changed'
-      preheader: 'An input you follow has a new status'
+      header_message: '%{organizationName} ενημέρωσε την κατάσταση της ιδέας "%{input_title}" στην ψηφιακή πλατφόρμα συμμετοχής.'
+      header_title: 'Η κατάσταση μιας ιδέας που ακολουθείτε έχει ενημερωθεί'
+      subject: 'Η κατάσταση του "%{input_title}" έχει αλλάξει'
+      preheader: 'Η κατάσταση μιας ιδέας που ακολουθείτε έχει ενημερωθεί'
     status_change_on_initiative_you_follow:
       status_change: 'Η νέα κατάσταση της πρότασης αυτής είναι "%{initiativeStatus}".'
       header_message: 'Η κατάσταση της πρότασης "%{initiativeTitle}" ενημερώθηκε στην ψηφιακή πλατφόρμα συμμετοχής της %{organizationName}.'

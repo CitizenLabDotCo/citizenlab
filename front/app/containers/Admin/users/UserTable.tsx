@@ -80,7 +80,7 @@ const UsersTable = ({
   }
 
   const handleChangeRoles = (user: IUserData, changeToNormalUser: boolean) => {
-    trackEventByName(tracks.adminChangeRole.name);
+    trackEventByName(tracks.adminChangeRole);
 
     if (authUser.data.id === user.id) {
       eventEmitter.emit<JSX.Element>(
@@ -96,21 +96,19 @@ const UsersTable = ({
   };
 
   const handleSortingOnChange = (sort: IQueryParameters['sort']) => () => {
-    trackEventByName(tracks.sortChange.name, {
-      extra: {
-        sort,
-      },
+    trackEventByName(tracks.sortChange, {
+      sort,
     });
     onChangeSorting(sort);
   };
 
   const handlePaginationClick = (pageNumber: number) => {
-    trackEventByName(tracks.pagination.name);
+    trackEventByName(tracks.pagination);
     onChangePage(pageNumber);
   };
 
   const handleUserToggle = (userId: string) => () => {
-    trackEventByName(tracks.toggleOneUser.name);
+    trackEventByName(tracks.toggleOneUser);
     handleSelect(userId);
   };
 

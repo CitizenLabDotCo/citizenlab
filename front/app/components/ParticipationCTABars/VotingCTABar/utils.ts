@@ -103,7 +103,7 @@ export const getVoteSubmissionDisabledExplanation = (
     if (minBudgetRequiredNotReached) {
       return formatMessage(messages.minBudgetNotReached, {
         votesMinimum: minBudget.toLocaleString(),
-        currency,
+        currency: currency ?? '',
       });
     }
   }
@@ -168,7 +168,7 @@ export const getVotesCounter = (
     return formatMessage(messages.currencyLeft, {
       budgetLeft: budgetLeft.toLocaleString(),
       totalBudget: voting_max_total.toLocaleString(),
-      currency,
+      currency: currency ?? '',
     });
   }
 

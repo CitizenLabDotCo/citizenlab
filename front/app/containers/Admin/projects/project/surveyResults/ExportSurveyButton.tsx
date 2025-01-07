@@ -33,8 +33,8 @@ export default class ExportSurveyButton extends React.PureComponent<
   }
 
   trackExportSurvey = () => {
-    trackEventByName(tracks.clickExportSurvey.name, {
-      extra: { ...this.props },
+    trackEventByName(tracks.clickExportSurvey, {
+      phaseId: this.props.phaseId,
     });
   };
 

@@ -177,7 +177,7 @@ export const GroupsListPanel = ({ onCreateGroup, className }: Props) => {
 
   const handleCreateGroup = (event) => {
     event.preventDefault();
-    trackEventByName(tracks.createGroup.name);
+    trackEventByName(tracks.createGroup);
     onCreateGroup();
   };
 
@@ -226,7 +226,7 @@ export const GroupsListPanel = ({ onCreateGroup, className }: Props) => {
         </MenuLink>
       )}
       <Separator />
-      <MenuTitle>
+      <MenuTitle className="intercom-users-groups-sidebar-section">
         <FormattedMessage tagName="h2" {...messages.groupsTitle} />
         <ButtonWrapper>
           <AddGroupButton
@@ -267,7 +267,11 @@ export const GroupsListPanel = ({ onCreateGroup, className }: Props) => {
           ))}
       </GroupsList>
       <Box display="flex" flexGrow={1} />
-      <Button linkTo="/admin/users/invitations" icon="email">
+      <Button
+        linkTo="/admin/users/invitations"
+        icon="email"
+        className="intercom-users-invite-users-button"
+      >
         <FormattedMessage {...messages.inviteUsers} />
       </Button>
     </Container>

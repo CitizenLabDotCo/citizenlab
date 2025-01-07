@@ -1,6 +1,7 @@
 import React from 'react';
 
 import { Box, colors } from '@citizenlab/cl2-component-library';
+import { useTheme } from 'styled-components';
 
 import useIdeaById from 'api/ideas/useIdeaById';
 import usePhases from 'api/phases/usePhases';
@@ -11,6 +12,7 @@ import {
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
+import Divider from 'components/admin/Divider';
 import FollowUnfollow from 'components/FollowUnfollow';
 import ReactionControl from 'components/ReactionControl';
 import { showIdeaReactions } from 'components/ReactionControl/utils';
@@ -40,6 +42,7 @@ const RightColumnDesktop = ({
   authorId,
   className,
 }: Props) => {
+  const theme = useTheme();
   const { data: phases } = usePhases(projectId);
   const { data: idea } = useIdeaById(ideaId);
   const followEnabled = useFeatureFlag({
@@ -83,19 +86,28 @@ const RightColumnDesktop = ({
         {showInteractionsContainer && participationMethod && (
           <Box
             padding="20px"
-            borderRadius="3px"
+            borderRadius={theme.borderRadius}
             background={colors.background}
             mb="12px"
           >
             {participationMethod === 'proposals' && (
-              <Box bg="white" p="12px">
-                <ProposalInfo idea={idea} />
-              </Box>
+              <>
+                <Box
+                  p="12px"
+                  bg={colors.white}
+                  borderRadius={theme.borderRadius}
+                >
+                  <ProposalInfo idea={idea} />
+                </Box>
+                <Divider />
+              </>
             )}
+            {/* Doesn't show when participation method is proposals */}
             {showIdeaReactionControl && (
-              <Box pb="24px" mb="24px" borderBottom="solid 1px #ccc">
+              <>
                 <ReactionControl styleType="shadow" ideaId={ideaId} size="4" />
-              </Box>
+                <Divider />
+              </>
             )}
             {/* TODO: Fix this the next time the file is edited. */}
             {/* eslint-disable-next-line @typescript-eslint/no-unnecessary-condition */}
@@ -109,34 +121,19 @@ const RightColumnDesktop = ({
               </Box>
             )}
             {commentingEnabled && (
-              <Box
-                pb="12px"
-                px={participationMethod === 'proposals' ? '12px' : '0px'}
-                bg={colors.white}
-              >
+              <Box mb="12px">
                 <GoToCommentsButton />
               </Box>
             )}
-            <Box
-              pb={participationMethod === 'proposals' ? '12px' : '0px'}
-              px={participationMethod === 'proposals' ? '12px' : '0px'}
-              bg={colors.white}
-            >
-              <FollowUnfollow
-                followableType="ideas"
-                followableId={ideaId}
-                followersCount={idea.data.attributes.followers_count}
-                // TODO: Fix this the next time the file is edited.
-                // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-                followerId={idea.data.relationships.user_follower?.data?.id}
-                toolTipType="input"
-                buttonStyle={
-                  participationMethod === 'proposals'
-                    ? 'secondary-outlined'
-                    : 'primary'
-                }
-              />
-            </Box>
+            <FollowUnfollow
+              followableType="ideas"
+              followableId={ideaId}
+              followersCount={idea.data.attributes.followers_count}
+              // TODO: Fix this the next time the file is edited.
+              // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+              followerId={idea.data.relationships.user_follower?.data?.id}
+              toolTipType="input"
+            />
           </Box>
         )}
         <Cosponsorship ideaId={ideaId} />
