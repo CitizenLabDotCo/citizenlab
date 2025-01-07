@@ -59,17 +59,17 @@ el:
       "voting_last_chance": Τελευταία ευκαιρία να ψηφίσετε
       "voting_phase_started": Νέα φάση έργου με ψηφοφορία
       "voting_results": Αποτελέσματα ψηφοφορίας
-      "your_input_in_screening": Η συμβολή μου περιμένει τον έλεγχο
+      "your_input_in_screening": Εκκρεμεί ο έλεγχος της συμβολής μου
     general:
       by_author: 'από %{authorName}'
       author_wrote: '%{authorName} έγραψε:'
       cta_goto_idea: 'Πηγαίνετε σε αυτή την ιδέα'
-      cta_goto_input: 'Πηγαίνετε σε αυτή την είσοδο'
+      cta_goto_input: 'Μάθετε περισσότερα για την πρόταση'
       cta_goto:
-        idea: 'Πηγαίνετε σε αυτή την ιδέα'
-        question: 'Πηγαίνετε σε αυτή την ερώτηση'
-        contribution: 'Πηγαίνετε σε αυτή τη συνεισφορά'
-        project: 'Πηγαίνετε σε αυτό το έργο'
+        idea: 'Μάθετε περισσότερα για την ιδέα'
+        question: 'Πηγαίνετε σε αυτήν την ερώτηση'
+        contribution: 'Πηγαίνετε σε αυτή την πρόταση'
+        project: 'Μεταβείτε στο έργο'
         issue: 'Μεταβείτε σε αυτό το θέμα'
         option: 'Μεταβείτε σε αυτή την επιλογή'
         proposal: 'Μεταβείτε στην παρούσα πρόταση'
