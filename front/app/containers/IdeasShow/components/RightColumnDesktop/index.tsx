@@ -133,11 +133,6 @@ const RightColumnDesktop = ({
               // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
               followerId={idea.data.relationships.user_follower?.data?.id}
               toolTipType="input"
-              buttonStyle={
-                participationMethod === 'proposals'
-                  ? 'secondary-outlined'
-                  : 'primary'
-              }
             />
           </Box>
         )}
