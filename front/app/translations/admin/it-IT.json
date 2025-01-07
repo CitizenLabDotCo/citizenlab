@@ -2678,7 +2678,7 @@
   "app.containers.admin.addCollaboratorsModal.giveManagerRights": "Attribuire i diritti di manager",
   "app.containers.admin.addCollaboratorsModal.hasReachedOrIsOverLimit": "È stato raggiunto il limite di posti inclusi nel piano, {noOfSeats} aggiuntivi {noOfSeats, plural, one {posto} other {posti}} saranno aggiunti.",
   "app.containers.admin.ideaStatuses.all.addIdeaStatus": "Add status",
-  "app.containers.admin.ideaStatuses.all.defaultStatusDeleteButtonTooltip": "The default status can not be deleted.",
+  "app.containers.admin.ideaStatuses.all.defaultStatusDeleteButtonTooltip": "Lo stato predefinito non può essere cancellato.",
   "app.containers.admin.ideaStatuses.all.deleteButtonLabel": "Delete",
   "app.containers.admin.ideaStatuses.all.editButtonLabel": "Edit",
   "app.containers.admin.ideaStatuses.all.editIdeaStatus": "Edit status",
