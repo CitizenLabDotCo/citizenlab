@@ -34,12 +34,13 @@ class SurveyResultsGeneratorService < FieldVisitorService
     maybe_skipped_fields = []
     @fields.each_with_index do |field, index|
       # Check which fields appear between this field and the page we potentially skip to
-      rest_of_fields = @fields[index+1..-1]
+      rest_of_fields = @fields[index + 1..]
       field[:logic]['rules']&.each do |rule|
         page_id = rule['goto_page_id']
         rest_of_fields.each do |f|
           break if f[:id] == page_id
           next if f[:input_type] == 'page'
+
           maybe_skipped_fields << f[:id]
         end
       end
