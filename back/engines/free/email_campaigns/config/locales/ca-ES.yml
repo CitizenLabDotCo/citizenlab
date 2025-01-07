@@ -278,7 +278,7 @@ ca:
       subject: 'Algú va publicar una nova proposta a la plataforma de %{organizationName}'
       preheader: '%{authorName} ha publicat una nova proposta a la teva plataforma'
     new_idea_for_admin:
-      commented: '%{authorFirstName} ha comentat:'
+      commented: '%{authorFirstName} va comentar:'
       cta_reply_to: 'Envieu comentaris a %{authorName}'
       days_ago: 'fa %{numberOfDays} dies'
       event_description: '%{authorName} ha publicat una nova idea a la teva plataforma. Descobriu-lo ara, feu-ne un comentari o canvieu-ne l''estat!'
@@ -459,7 +459,7 @@ ca:
       action_share_twitter: 'Informa als teus seguidors a %{twitterLink}'
       add_image: 'Afegeix una imatge'
       cta_view_idea: 'Ves a la teva idea'
-      event_description: '%{firstName}, felicitats per la teva primera idea a la plataforma de participació de %{organizationName}. Se us notificarà quan la gent interacciona amb la vostra idea. Descobriu quins passos podeu seguir a continuació.'
+      event_description: '%{firstName}, felicitats per la teva primera idea a la plataforma de participació de %{organizationName}. Rebràs una notificació quan la gent interacciona amb la teva idea. Descobriu quins passos podeu seguir a continuació.'
       link: enllaç
       main_header: '%{firstName}, has publicat la teva primera idea!'
       message_get_votes: 'Arribeu a més persones amb la vostra idea:'
