@@ -17,7 +17,7 @@ export type IdeaStatusesQueryParams = {
   participation_method?: IdeaStatusParticipationMethod;
 };
 
-export type InputStatusCode =
+type IdeationStatusCode =
   | 'prescreening'
   | 'proposed'
   | 'viewed'
@@ -25,36 +25,37 @@ export type InputStatusCode =
   | 'accepted'
   | 'rejected'
   | 'implemented'
-  | 'custom'
+  | 'custom';
+type ProposalsStatusCode =
+  | 'prescreening'
+  | 'proposed'
   | 'threshold_reached'
   | 'expired'
   | 'answered'
-  | 'ineligible';
+  | 'ineligible'
+  | 'custom';
+export type InputStatusCode = IdeationStatusCode | ProposalsStatusCode;
 
-export const inputStatusCodes: Record<
-  IdeaStatusParticipationMethod,
-  InputStatusCode[]
-> = {
-  ideation: [
-    'prescreening',
-    'proposed',
-    'viewed',
-    'under_consideration',
-    'accepted',
-    'rejected',
-    'implemented',
-    'custom',
-  ],
-  proposals: [
-    'prescreening',
-    'proposed',
-    'threshold_reached',
-    'expired',
-    'answered',
-    'ineligible',
-    'custom',
-  ],
-} as const;
+export const ideationInputStatusCodes: IdeationStatusCode[] = [
+  'prescreening',
+  'proposed',
+  'viewed',
+  'under_consideration',
+  'accepted',
+  'rejected',
+  'implemented',
+  'custom',
+];
+
+export const proposalsInputStatusCodes: ProposalsStatusCode[] = [
+  'prescreening',
+  'proposed',
+  'threshold_reached',
+  'expired',
+  'answered',
+  'ineligible',
+  'custom',
+];
 
 export const automatedInputStatusCodes: Set<InputStatusCode> = new Set([
   'proposed',
