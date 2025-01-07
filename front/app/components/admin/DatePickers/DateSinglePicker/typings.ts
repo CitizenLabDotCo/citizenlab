@@ -1,3 +1,6 @@
+// eslint-disable-next-line no-restricted-imports
+import Tippy from '@tippyjs/react';
+
 export interface CalendarProps {
   startMonth?: Date;
   endMonth?: Date;
@@ -9,4 +12,5 @@ export interface CalendarProps {
 export interface Props extends CalendarProps {
   id?: string;
   disabled?: boolean;
+  placement?: React.ComponentProps<typeof Tippy>['placement'];
 }

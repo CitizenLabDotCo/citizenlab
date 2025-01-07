@@ -329,7 +329,7 @@ export default defineMessages({
   surveyServiceTooltipLink: {
     id: 'app.containers.AdminPage.ProjectEdit.surveyServiceTooltipLink1',
     defaultMessage:
-      'https://support.citizenlab.co/en/articles/7025887-creating-an-external-survey-project',
+      'https://support.govocal.com/en/articles/7025887-creating-an-external-survey-project',
   },
   surveyServiceTooltip: {
     id: 'app.containers.AdminPage.ProjectEdit.surveyServiceTooltip',
@@ -452,7 +452,7 @@ export default defineMessages({
   },
   hiddenFieldsSupportArticleUrl: {
     id: 'app.components.admin.PostManager.hiddenFieldsSupportArticleUrl',
-    defaultMessage: 'https://support.citizenlab.co/en/articles/1641202',
+    defaultMessage: 'https://support.govocal.com/en/articles/1641202',
   },
   // #input_term_copy
   ideaTerm: {
@@ -534,7 +534,7 @@ export default defineMessages({
   googleFormsTooltipLink: {
     id: 'app.components.app.containers.AdminPage.ProjectEdit.googleFormsTooltipLink',
     defaultMessage:
-      'https://support.citizenlab.co/en/articles/5050525-how-to-embed-your-google-forms-survey-in-a-project-phase',
+      'https://support.govocal.com/en/articles/5050525-how-to-embed-your-google-forms-survey-in-a-project-phase',
   },
   googleFormsTooltipLinkText: {
     id: 'app.components.app.containers.AdminPage.ProjectEdit.googleFormsTooltipLinkText',

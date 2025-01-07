@@ -14,8 +14,8 @@ import { isAdmin } from 'utils/permissions/roles';
 import { ManagerType } from '../../..';
 import messages from '../../../messages';
 
-import FilterSidebarStatusesItem from './FilterSidebarStatusesItem';
 import StatusButton from './StatusButton';
+import StatusFilter from './StatusFilter';
 
 interface Props {
   type: ManagerType;
@@ -24,7 +24,7 @@ interface Props {
   onChangeStatusFilter: (status: string | null) => void;
 }
 
-const FilterSidebarStatuses = ({
+const StatusFilters = ({
   statuses,
   selectedStatus,
   onChangeStatusFilter,
@@ -73,7 +73,7 @@ const FilterSidebarStatuses = ({
         </Box>
       )}
       {statuses.map((status) => (
-        <FilterSidebarStatusesItem
+        <StatusFilter
           key={status.id}
           status={status}
           active={isActive(status.id)}
@@ -84,4 +84,4 @@ const FilterSidebarStatuses = ({
   );
 };
 
-export default FilterSidebarStatuses;
+export default StatusFilters;

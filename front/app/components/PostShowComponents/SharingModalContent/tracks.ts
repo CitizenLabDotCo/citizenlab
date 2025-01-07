@@ -1,5 +1,3 @@
 export default {
-  sharingModalOpened: {
-    name: 'Idea social sharing modal opened',
-  },
+  sharingModalOpened: 'Idea social sharing modal opened',
 };

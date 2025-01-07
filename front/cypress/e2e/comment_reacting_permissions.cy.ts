@@ -48,6 +48,7 @@ describe('Comment reacting permissions for active users', () => {
     it("doesn't let unverified users reaction", () => {
       cy.setLoginCookie(unverifiedEmail, unverifiedPassword);
       cy.visit('ideas/verified-idea');
+      cy.wait(1000);
       cy.get('.e2e-comment-reaction').click();
       cy.get('#e2e-verification-wizard-root').should('exist');
     });

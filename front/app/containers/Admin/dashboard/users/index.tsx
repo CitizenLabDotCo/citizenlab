@@ -39,7 +39,7 @@ export class UsersDashboard extends PureComponent<Props, State> {
   };
 
   handleOnGroupFilter = (filter) => {
-    trackEventByName(tracks.filteredOnGroup.name, { group: filter });
+    trackEventByName(tracks.filteredOnGroup, { group: filter });
     this.setState({
       currentGroupFilter: filter.value,
       currentGroupFilterLabel: filter.label,

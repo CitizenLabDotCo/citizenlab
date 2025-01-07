@@ -4,11 +4,10 @@ import { Multiloc } from 'typings';
 
 import useProjectsMini from 'api/projects_mini/useProjectsMini';
 
-import useLocalize from 'hooks/useLocalize';
-
 import EmptyState from '../_shared/EmptyState';
 import ProjectCarrousel from '../_shared/ProjectCarrousel';
 import Skeleton from '../_shared/ProjectCarrousel/Skeleton';
+import useLocalizeWithFallback from '../_shared/useLocalizeWithFallback';
 
 import messages from './messages';
 import Settings from './Settings';
@@ -18,13 +17,13 @@ interface Props {
 }
 
 const OpenToParticipation = ({ titleMultiloc }: Props) => {
-  const localize = useLocalize();
+  const localizeWithFallback = useLocalizeWithFallback();
   const { data, hasNextPage, fetchNextPage, isInitialLoading } =
     useProjectsMini({
       endpoint: 'with_active_participatory_phase',
     });
   const projects = data?.pages.map((page) => page.data).flat();
-  const title = localize(titleMultiloc);
+  const title = localizeWithFallback(titleMultiloc, openToParticipationTitle);
 
   if (isInitialLoading) {
     return <Skeleton title={title} />;
@@ -32,9 +31,7 @@ const OpenToParticipation = ({ titleMultiloc }: Props) => {
 
   if (!projects) return null;
   if (projects.length === 0) {
-    return (
-      <EmptyState titleMultiloc={titleMultiloc} explanation={messages.noData} />
-    );
+    return <EmptyState title={title} explanation={messages.noData} />;
   }
 
   return (

@@ -2,7 +2,6 @@ import React from 'react';
 
 import { Box, Text } from '@citizenlab/cl2-component-library';
 import { useNode } from '@craftjs/core';
-import moment, { Moment } from 'moment';
 import { IOption, Multiloc } from 'typings';
 
 import DateRangePicker from 'components/admin/DatePickers/DateRangePicker';
@@ -10,6 +9,7 @@ import { getComparedTimeRange } from 'components/admin/GraphCards/_utils/query';
 import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
 
 import { useIntl } from 'utils/cl-intl';
+import { parseBackendDateString, toBackendDateString } from 'utils/dateUtils';
 
 import ProjectFilter from '../../_shared/ProjectFilter';
 import messages from '../messages';
@@ -70,15 +70,13 @@ export const DateRangeInput = ({
   const { formatMessage } = useIntl();
   const {
     actions: { setProp },
-    startAtMoment,
-    endAtMoment,
+    startAt,
+    endAt,
     compareStartAt,
     compareEndAt,
   } = useNode((node) => ({
-    startAtMoment: node.data.props.startAt
-      ? moment(node.data.props.startAt)
-      : null,
-    endAtMoment: node.data.props.endAt ? moment(node.data.props.endAt) : null,
+    startAt: node.data.props.startAt,
+    endAt: node.data.props.endAt,
     compareStartAt: node.data.props.compareStartAt,
     compareEndAt: node.data.props.compareEndAt,
   }));
@@ -89,12 +87,12 @@ export const DateRangeInput = ({
     startDate,
     endDate,
   }: {
-    startDate: Moment | null;
-    endDate: Moment | null;
+    startDate: string | undefined;
+    endDate: string | undefined;
   }) => {
     setProp((props: ChartWidgetProps) => {
-      props.startAt = startDate?.format('YYYY-MM-DD');
-      props.endAt = endDate?.format('YYYY-MM-DD');
+      props.startAt = startDate;
+      props.endAt = endDate;
     });
 
     if (resetComparePeriod) {
@@ -126,11 +124,21 @@ export const DateRangeInput = ({
       <Text variant="bodyM" color="textSecondary" mb="5px">
         {label ?? formatMessage(messages.analyticsChartDateRange)}
       </Text>
-      <DateRangePicker
-        startDate={startAtMoment}
-        endDate={endAtMoment}
-        onDatesChange={handleChangeTimeRange}
-      />
+      <Box w="100%" display="flex">
+        <DateRangePicker
+          selectedRange={{
+            from: parseBackendDateString(startAt),
+            to: parseBackendDateString(endAt),
+          }}
+          numberOfMonths={1}
+          onUpdateRange={({ from, to }) => {
+            handleChangeTimeRange({
+              startDate: toBackendDateString(from),
+              endDate: toBackendDateString(to),
+            });
+          }}
+        />
+      </Box>
     </Box>
   );
 };

@@ -57,6 +57,6 @@ export default defineMessages({
   iframeSupportLink: {
     id: 'app.containers.admin.ContentBuilder.IframeMultiloc.iframeSupportLink',
     defaultMessage:
-      'https://support.citizenlab.co/en/articles/6354058-embedding-elements-in-the-content-builder-to-enrich-project-descriptions',
+      'https://support.govocal.com/en/articles/6354058-embedding-elements-in-the-content-builder-to-enrich-project-descriptions',
   },
 });

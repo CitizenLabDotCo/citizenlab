@@ -1,8 +1,9 @@
 import React from 'react';
 
 import { PreviewMode } from 'components/admin/PostManager';
-import AdminIdeaContent from 'components/admin/PostManager/components/PostPreview/Idea/AdminIdeaContent';
-import AdminIdeaEdit from 'components/admin/PostManager/components/PostPreview/Idea/AdminIdeaEdit';
+
+import AdminIdeaContent from './AdminIdeaContent';
+import AdminIdeaEdit from './AdminIdeaEdit';
 
 export interface Props {
   onClose: () => void;

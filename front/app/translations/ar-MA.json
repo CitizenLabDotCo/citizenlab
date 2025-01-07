@@ -502,7 +502,7 @@
   "app.components.VoteControl.budgetingNotPossible": "لا يُمكن إجراء تغييرات في ميزانيتك في الوقت الحالي.",
   "app.components.VoteControl.budgetingNotVerified": "يُرجى {verifyAccountLink} للاستمرار.",
   "app.components.VoteInputs._shared.currencyLeft": "لديك {budgetLeft} {totalBudget} {currency}",
-  "app.components.VoteInputs._shared.votesLeft3": "لديك {votesLeft} {totalNumberOfVotes} {totalNumberOfVotes, plural, =0 {{votesTerm}} one {{voteTerm}} other {{votesTerm}}} غادر",
+  "app.components.VoteInputs._shared.votesLeft4": "لقد تبقى لديك {votesLeft} / {totalNumberOfVotes} {totalNumberOfVotes, plural, =0 {{votesTerm}} one {{voteTerm}} other {{votesTerm}}} .",
   "app.components.VoteInputs.budgeting.AddToBasketButton.basketAlreadySubmitted": "لقد قدمت بالفعل ميزانيتك. انقر فوق \"تعديل ميزانيتك\" لتغيير ميزانيتك.",
   "app.components.VoteInputs.budgeting.AddToBasketButton.basketAlreadySubmittedIdeaPage": "لقد قدمت بالفعل ميزانيتك. لتغيير ميزانيتك ، ارجع إلى صفحة المشروع وانقر على \"تعديل ميزانيتك\".",
   "app.components.VoteInputs.budgeting.AddToBasketButton.phaseNotActive": "الميزانية غير متاحة، لأن هذه المرحلة غير نشطة.",

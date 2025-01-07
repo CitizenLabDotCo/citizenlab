@@ -502,7 +502,7 @@
   "app.components.VoteControl.budgetingNotPossible": "No es posible realizar cambios en tu presupuesto en este momento.",
   "app.components.VoteControl.budgetingNotVerified": "{VerifyAccountLink} para continuar.",
   "app.components.VoteInputs._shared.currencyLeft": "Te queda {budgetLeft} / {totalBudget} {currency}",
-  "app.components.VoteInputs._shared.votesLeft3": "Quedan {votesLeft} / {totalNumberOfVotes} {totalNumberOfVotes, plural, =0 {{votesTerm}} one {{voteTerm}} other {{votesTerm}}}",
+  "app.components.VoteInputs._shared.votesLeft4": "Quedan {votesLeft} / {totalNumberOfVotes} {totalNumberOfVotes, plural, =0 {{votesTerm}} one {{voteTerm}} other {{votesTerm}}}",
   "app.components.VoteInputs.budgeting.AddToBasketButton.basketAlreadySubmitted": "Ya has enviado tu presupuesto. Haz clic en \"Modificar tu presupuesto\" para cambiar tu presupuesto.",
   "app.components.VoteInputs.budgeting.AddToBasketButton.basketAlreadySubmittedIdeaPage": "Ya has enviado tu presupuesto. Para modificar tu presupuesto, vuelve a la página del proyecto y haz clic en \"Modificar tu presupuesto\".",
   "app.components.VoteInputs.budgeting.AddToBasketButton.phaseNotActive": "El ejercicio de asignación de presupuesto no está disponible, ya que esta fase no está activa.",

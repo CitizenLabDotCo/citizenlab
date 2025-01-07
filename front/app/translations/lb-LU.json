@@ -502,7 +502,7 @@
   "app.components.VoteControl.budgetingNotPossible": "Et ass momentan net méiglech, Äre Budget ze änneren.",
   "app.components.VoteControl.budgetingNotVerified": "Wgl. {verifyAccountLink}, fir weider ze fueren. ",
   "app.components.VoteInputs._shared.currencyLeft": "Dir {currency} {totalBudget} {budgetLeft}",
-  "app.components.VoteInputs._shared.votesLeft3": "Dir {totalNumberOfVotes} {votesLeft} {totalNumberOfVotes, plural, =0 {{votesTerm}} one {{voteTerm}} other {{votesTerm}}} lénks",
+  "app.components.VoteInputs._shared.votesLeft4": "Dir hutt {votesLeft} / {totalNumberOfVotes} {totalNumberOfVotes, plural, =0 {{votesTerm}} one {{voteTerm}} other {{votesTerm}}} lénks.",
   "app.components.VoteInputs.budgeting.AddToBasketButton.basketAlreadySubmitted": "Dir hutt Äre Budget scho virgeluecht. Klickt op \"Ännere Budget änneren\" fir Äre Budget z'änneren.",
   "app.components.VoteInputs.budgeting.AddToBasketButton.basketAlreadySubmittedIdeaPage": "Dir hutt Äre Budget scho virgeluecht. Fir Äert Budget z'änneren, gitt zréck op d'Projet Säit a klickt \"Ännere Budget änneren\".",
   "app.components.VoteInputs.budgeting.AddToBasketButton.phaseNotActive": "Budgetéierung ass net verfügbar, well dës Phase net aktiv ass.",

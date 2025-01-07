@@ -34,7 +34,7 @@ const AddTag = ({ onCreateTag }: { onCreateTag?: (tagId: string) => void }) => {
       },
       {
         onSuccess: (data) => {
-          trackEventByName(tracks.manualTagCreated.name, {
+          trackEventByName(tracks.manualTagCreated, {
             analysisId,
             name,
           });
