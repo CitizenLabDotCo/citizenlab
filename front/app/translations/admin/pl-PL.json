@@ -120,6 +120,8 @@
   "app.components.admin.ContentBuilder.Widgets.SurveyQuestionResultWidget.untilNow": "{date} aż do teraz",
   "app.components.admin.DatePhasePicker.Input.openEnded": "Otwarty",
   "app.components.admin.DatePhasePicker.Input.selectDate": "Wybierz datę",
+  "app.components.admin.DatePickers.DateRangePicker.Calendar.clearEndDate": "Wyczyść datę końcową",
+  "app.components.admin.DatePickers.DateRangePicker.Calendar.clearStartDate": "Jasna data rozpoczęcia",
   "app.components.admin.Graphs": "Brak danych dla obecnie stosowanych filtrów.",
   "app.components.admin.Graphs.noDataShort": "Brak dostępnych danych.",
   "app.components.admin.GraphsCards.CommentsByTime.hooks.useCommentsByTime.timeSeries": "Uwagi na przestrzeni czasu",

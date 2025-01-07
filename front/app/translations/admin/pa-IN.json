@@ -120,6 +120,8 @@
   "app.components.admin.ContentBuilder.Widgets.SurveyQuestionResultWidget.untilNow": "{date} ਹੁਣ ਤੱਕ",
   "app.components.admin.DatePhasePicker.Input.openEnded": "ਖੁੱਲ੍ਹਾ ਸਮਾਪਤ ਹੋਇਆ",
   "app.components.admin.DatePhasePicker.Input.selectDate": "ਮਿਤੀ ਚੁਣੋ",
+  "app.components.admin.DatePickers.DateRangePicker.Calendar.clearEndDate": "ਸਮਾਪਤੀ ਮਿਤੀ ਸਾਫ਼ ਕਰੋ",
+  "app.components.admin.DatePickers.DateRangePicker.Calendar.clearStartDate": "ਸ਼ੁਰੂਆਤੀ ਤਾਰੀਖ ਸਾਫ਼ ਕਰੋ",
   "app.components.admin.Graphs": "ਮੌਜੂਦਾ ਫਿਲਟਰਾਂ ਨਾਲ ਕੋਈ ਡਾਟਾ ਉਪਲਬਧ ਨਹੀਂ ਹੈ।",
   "app.components.admin.Graphs.noDataShort": "ਕੋਈ ਡਾਟਾ ਉਪਲਬਧ ਨਹੀਂ ਹੈ।",
   "app.components.admin.GraphsCards.CommentsByTime.hooks.useCommentsByTime.timeSeries": "ਸਮੇਂ ਦੇ ਨਾਲ ਟਿੱਪਣੀਆਂ",
