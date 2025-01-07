@@ -144,7 +144,7 @@ export default defineMessages({
   imageSupportPageURL: {
     id: 'app.containers.AdminPage.ProjectEdit.imageSupportPageURL',
     defaultMessage:
-      'https://support.citizenlab.co/en/articles/1346397-what-are-the-recommended-dimensions-and-sizes-of-the-platform-images',
+      'https://support.govocal.com/en/articles/1346397-what-are-the-recommended-dimensions-and-sizes-of-the-platform-images',
   },
   supportPageLinkText: {
     id: 'app.containers.AdminPage.ProjectEdit.supportPageLinkText',

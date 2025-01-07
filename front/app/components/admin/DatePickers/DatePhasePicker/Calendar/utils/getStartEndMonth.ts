@@ -1,6 +1,6 @@
 import { addYears } from 'date-fns';
 
-import { DateRange } from '../../typings';
+import { DateRange } from 'components/admin/DatePickers/_shared/typings';
 
 interface GetStartMonthProps {
   startMonth?: Date;

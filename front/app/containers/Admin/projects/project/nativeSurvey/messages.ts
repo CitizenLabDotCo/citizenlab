@@ -120,7 +120,7 @@ export default defineMessages({
   supportArticleLink: {
     id: 'app.containers.AdminPage.ProjectEdit.survey.supportArticleLink2',
     defaultMessage:
-      'https://support.citizenlab.co/en/articles/6673873-creating-an-in-platform-survey',
+      'https://support.govocal.com/en/articles/6673873-creating-an-in-platform-survey',
   },
   surveyEnd: {
     id: 'app.containers.AdminPage.ProjectEdit.formBuilder.surveyEnd2',
