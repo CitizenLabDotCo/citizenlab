@@ -14,6 +14,7 @@ import { isAdmin } from 'utils/permissions/roles';
 import { ManagerType } from '../../..';
 import messages from '../../../messages';
 
+import ScreeningStatusFilter from './ScreeningStatusFilter';
 import StatusButton from './StatusButton';
 import StatusFilter from './StatusFilter';
 
@@ -72,14 +73,23 @@ const StatusFilters = ({
           </Button>
         </Box>
       )}
-      {statuses.map((status) => (
-        <StatusFilter
-          key={status.id}
-          status={status}
-          active={isActive(status.id)}
-          onClick={() => handleItemClick(status.id)}
-        />
-      ))}
+      {statuses.map((status) =>
+        status.attributes.code === 'prescreening' ? (
+          <ScreeningStatusFilter
+            key={status.id}
+            status={status}
+            active={isActive(status.id)}
+            onClick={() => handleItemClick(status.id)}
+          />
+        ) : (
+          <StatusFilter
+            key={status.id}
+            status={status}
+            active={isActive(status.id)}
+            onClick={() => handleItemClick(status.id)}
+          />
+        )
+      )}
     </Box>
   );
 };
