@@ -120,15 +120,13 @@ const RightColumnDesktop = ({
                 <GoToCommentsButton />
               </Box>
             )}
-            <Box bg={colors.white}>
-              <FollowUnfollow
-                followableType="ideas"
-                followableId={ideaId}
-                followersCount={idea.data.attributes.followers_count}
-                followerId={idea.data.relationships.user_follower.data?.id}
-                toolTipType="input"
-              />
-            </Box>
+            <FollowUnfollow
+              followableType="ideas"
+              followableId={ideaId}
+              followersCount={idea.data.attributes.followers_count}
+              followerId={idea.data.relationships.user_follower.data?.id}
+              toolTipType="input"
+            />
           </Box>
         )}
         <Cosponsorship ideaId={ideaId} />

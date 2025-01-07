@@ -49,7 +49,7 @@ const SharingModalContent = ({ postId, className, title, subtitle }: Props) => {
   const localize = useLocalize();
 
   useEffect(() => {
-    trackEventByName(tracks.sharingModalOpened.name, {
+    trackEventByName(tracks.sharingModalOpened, {
       postId,
       postType: 'idea',
     });

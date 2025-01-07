@@ -79,7 +79,11 @@ const ProjectHeader = ({ projectId }: Props) => {
           <StyledTitle color="primary" variant="h4" my="0px">
             {localize(project.data.attributes.title_multiloc)}
           </StyledTitle>
-          <Box display="flex" gap="8px">
+          <Box
+            display="flex"
+            gap="8px"
+            className="intercom-projects-project-header-buttons"
+          >
             <Button
               linkTo={`/projects/${project.data.attributes.slug}`}
               buttonStyle="secondary-outlined"

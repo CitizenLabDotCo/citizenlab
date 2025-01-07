@@ -36,7 +36,7 @@ const QuestionInput = ({ onClose }: { onClose: () => void }) => {
       },
       {
         onSuccess: () => {
-          trackEventByName(tracks.questionCreated.name, {
+          trackEventByName(tracks.questionCreated, {
             analysisId,
           });
           onClose();

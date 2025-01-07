@@ -1,5 +1,6 @@
 import React from 'react';
 
+import { Box } from '@citizenlab/cl2-component-library';
 import { WrappedComponentProps } from 'react-intl';
 
 import useDeleteCustomPage from 'api/custom_pages/useDeleteCustomPage';
@@ -12,12 +13,9 @@ import { getNavbarItemSlug } from 'api/navbar/util';
 import NavbarItemRow from 'containers/Admin/pagesAndMenu/containers/NavigationSettings/NavbarItemRow';
 import { ADMIN_PAGES_MENU_PATH } from 'containers/Admin/pagesAndMenu/routes';
 
-import {
-  LockedRow,
-  SortableList,
-  SortableRow,
-} from 'components/admin/ResourceList';
-import { Item } from 'components/admin/ResourceList/SortableList';
+import LockedRow from 'components/admin/ResourceList/LockedRow';
+import SortableList, { Item } from 'components/admin/ResourceList/SortableList';
+import SortableRow from 'components/admin/ResourceList/SortableRow';
 import { SubSectionTitle } from 'components/admin/Section';
 
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
@@ -77,7 +75,7 @@ const VisibleNavbarItemList = ({
     return navbarItem.relationships.project.data !== null;
   };
   return (
-    <>
+    <Box className="intercom-admin-pages-menu-navigation-items">
       <SubSectionTitle>
         <FormattedMessage {...messages.navigationItems} />
       </SubSectionTitle>
@@ -136,7 +134,7 @@ const VisibleNavbarItemList = ({
           </>
         )}
       </SortableList>
-    </>
+    </Box>
   );
 };
 

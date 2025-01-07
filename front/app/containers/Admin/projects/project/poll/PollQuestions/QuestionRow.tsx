@@ -5,7 +5,8 @@ import styled from 'styled-components';
 
 import { IPollQuestionData } from 'api/poll_questions/types';
 
-import { SortableRow, TextCell } from 'components/admin/ResourceList';
+import { TextCell } from 'components/admin/ResourceList';
+import SortableRow from 'components/admin/ResourceList/SortableRow';
 import T from 'components/T';
 import Button from 'components/UI/Button';
 
