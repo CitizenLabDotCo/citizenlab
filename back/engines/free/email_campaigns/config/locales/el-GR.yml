@@ -77,8 +77,8 @@ el:
       "link_terms_conditions": "Όροι & Προϋποθέσεις"
       "link_unsubscribe": "Διαγραφή"
       "powered_by": "Υποστηρίζεται από"
-      "recipient_statement": "Αυτό το μήνυμα ηλεκτρονικού ταχυδρομείου σας εστάλη από την Go Vocal για λογαριασμό του %{organizationName}, επειδή είστε εγγεγραμμένος χρήστης του %{organizationLink}."
-      "unsubscribe_statement": "Μπορείτε να επισκεφθείτε τη διεύθυνση %{unsubscribeLink} εάν δεν θέλετε να λαμβάνετε αυτά τα μηνύματα ηλεκτρονικού ταχυδρομείου στο μέλλον."
+      "recipient_statement": "Αυτό το e-mail σας εστάλη από την Go Vocal εκ μέρους του %{organizationName}, επειδή είστε εγγεγραμμένος χρήστης του %{organizationLink}."
+      "unsubscribe_statement": "Σε περίπτωση που δεν επιθυμείτε να λαμβάνετε πλέον αυτά τα μηνύματα ηλεκτρονικού ταχυδρομείου, μπορείτε να επισκεφθείτε τη διεύθυνση %{unsubscribeLink}."
       "unsubscribe_text": "διαγραφή"
     follow:
       "unfollow_here": "Λάβατε αυτή την ειδοποίηση εξαιτίας ενός στοιχείου που ακολουθείτε. <a href=\"%{unfollow_url}\">Μπορείτε να το ακυρώσετε εδώ.</a>"
