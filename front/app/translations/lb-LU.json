@@ -759,6 +759,7 @@
   "app.components.formBuilder.shortAnswer": "Kuerzäntwert",
   "app.components.formBuilder.showResponseToUsersToggleLabel": "Äntwert de Benotzer weisen",
   "app.components.formBuilder.singleChoice": "Single Choice",
+  "app.components.formBuilder.staleDataErrorMessage2": "Et gouf e Problem. Dësen Input Formulaire gouf méi viru kuerzem anzwousch anescht gespäichert. Dëst kann sinn well Dir oder en anere Benotzer et opgemaach huet fir an enger anerer Browserfenster z'änneren. Erfrëscht w.e.g. d'Säit fir dee leschte Formulaire ze kréien an dann erëm Är Ännerungen ze maachen.",
   "app.components.formBuilder.supportArticleLinkText": "dës Säit",
   "app.components.formBuilder.tags": "Taggen",
   "app.components.formBuilder.title": "Titel",
