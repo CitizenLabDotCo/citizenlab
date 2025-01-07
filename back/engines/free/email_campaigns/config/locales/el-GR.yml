@@ -10,7 +10,7 @@ el:
       "comment_on_idea_you_follow": Ένα σχόλιο για μια ιδέα που ακολουθείτε
       "comment_on_initiative_you_follow": Ένα σχόλιο σχετικά με μια πρόταση που ακολουθείτε
       "cosponsor_of_your_initiative": Ένας χρήστης αποδέχεται την πρόσκλησή μου να συνυπογράψει την πρότασή μου
-      "cosponsor_of_your_idea": Ένας χρήστης αποδέχεται την πρόσκλησή μου να συνυπογράψει την πρότασή μου
+      "cosponsor_of_your_idea": Ένας χρήστης αποδέχεται την πρόσκληση να συνυπογράψει την πρότασή μου
       "event_registration_confirmation": Επιβεβαίωση εγγραφής στην εκδήλωση
       "idea_marked_as_spam": Αναφορά spam ιδεών
       "idea_published": Δημοσίευση της ιδέας μου
@@ -18,7 +18,7 @@ el:
       "initiative_marked_as_spam": Έκθεση για την ανεπιθύμητη αλληλογραφία της πρότασης
       "initiative_published": Δημοσίευση της πρότασής μου
       "invitation_to_cosponsor_initiative": Πρόσκληση για συν-χορηγία πρότασης
-      "invitation_to_cosponsor_idea": Πρόσκληση για συν-χορηγία πρότασης
+      "invitation_to_cosponsor_idea": Πρόσκληση για να συν-υποστηρίξετε μια πρόταση
       "initiative_resubmitted_for_review": Η πρόταση υποβάλλεται εκ νέου για επανεξέταση
       "invite_received": Προσκλήσεις
       "invite_reminder": Υπενθύμιση πρόσκλησης
@@ -43,8 +43,8 @@ el:
       "project_phase_started": Νέα φάση του έργου
       "project_phase_upcoming": Επόμενη νέα φάση έργου
       "project_published": Δημοσιευμένο έργο
-      "project_review_request": Αίτημα αναθεώρησης έργου
-      "project_review_state_change": Έργο εγκεκριμένο
+      "project_review_request": Αίτημα αξιολόγησης του έργου
+      "project_review_state_change": Το έργο εγκρίθηκε
       "status_change_on_idea_you_follow": Αλλαγή κατάστασης μιας ιδέας που ακολουθείτε
       "status_change_on_initiative_you_follow": Αλλαγή κατάστασης μιας πρότασης που ακολουθείτε
       "threshold_reached_for_admin": Η πρόταση έφθασε το κατώτατο όριο ψήφου
@@ -54,22 +54,22 @@ el:
       "assignee_digest": Εβδομαδιαία επισκόπηση των ιδεών που έχουν ανατεθεί
       "user_digest": Εβδομαδιαία επισκόπηση
       "voting_basket_submitted": Επιβεβαίωση της ψηφοφορίας
-      "native_survey_not_submitted": Έρευνα που δεν υποβλήθηκε
+      "native_survey_not_submitted": Η έρευνα δεν υποβλήθηκε
       "voting_basket_not_submitted": Ψήφοι που δεν υποβλήθηκαν
       "voting_last_chance": Τελευταία ευκαιρία να ψηφίσετε
       "voting_phase_started": Νέα φάση έργου με ψηφοφορία
       "voting_results": Αποτελέσματα ψηφοφορίας
-      "your_input_in_screening": Η συμβολή μου περιμένει τον έλεγχο
+      "your_input_in_screening": Εκκρεμεί ο έλεγχος της συμβολής μου
     general:
       by_author: 'από %{authorName}'
       author_wrote: '%{authorName} έγραψε:'
       cta_goto_idea: 'Πηγαίνετε σε αυτή την ιδέα'
-      cta_goto_input: 'Πηγαίνετε σε αυτή την είσοδο'
+      cta_goto_input: 'Μάθετε περισσότερα για την πρόταση'
       cta_goto:
-        idea: 'Πηγαίνετε σε αυτή την ιδέα'
-        question: 'Πηγαίνετε σε αυτή την ερώτηση'
-        contribution: 'Πηγαίνετε σε αυτή τη συνεισφορά'
-        project: 'Πηγαίνετε σε αυτό το έργο'
+        idea: 'Μάθετε περισσότερα για την ιδέα'
+        question: 'Πηγαίνετε σε αυτήν την ερώτηση'
+        contribution: 'Πηγαίνετε σε αυτή την πρόταση'
+        project: 'Μεταβείτε στο έργο'
         issue: 'Μεταβείτε σε αυτό το θέμα'
         option: 'Μεταβείτε σε αυτή την επιλογή'
         proposal: 'Μεταβείτε στην παρούσα πρόταση'
@@ -393,7 +393,7 @@ el:
       main_header: '''%{post}'' έχει ένα νέο εσωτερικό σχόλιο'
       preheader: '''%{post}'' έχει ένα νέο εσωτερικό σχόλιο'
     official_feedback_on_idea_you_follow:
-      header_message: 'Ο/η %{feedback_author_name} ενημέρωσε για την %{input_title}''.'
+      header_message: 'Ο/η %{feedback_author_name} ενημέρωσε τη %{input_title}''.'
       header_title: 'Υπάρχει μια ενημέρωση για "%{input_title}"'
       subject: 'Μία νέα επίσημη ενημέρωση δημοσιεύτηκε στο "%{input_title}"'
       preheader: 'Υπάρχει μια ενημέρωση σχετικά με μια πρόταση που ψηφίσατε'
@@ -472,9 +472,9 @@ el:
     status_change_on_idea_you_follow:
       status_change: 'Η συγκριμένη ιδέα ενημερώθηκε σε ''%{status}'''
       header_message: '%{organizationName} ενημέρωσε την κατάσταση της ιδέας "%{input_title}" στην ψηφιακή πλατφόρμα συμμετοχής.'
-      header_title: 'An input you follow has a new status'
-      subject: 'The status of "%{input_title}" has changed'
-      preheader: 'An input you follow has a new status'
+      header_title: 'Η κατάσταση μιας ιδέας που ακολουθείτε έχει ενημερωθεί'
+      subject: 'Η κατάσταση του "%{input_title}" έχει αλλάξει'
+      preheader: 'Η κατάσταση μιας ιδέας που ακολουθείτε έχει ενημερωθεί'
     status_change_on_initiative_you_follow:
       status_change: 'Η νέα κατάσταση της πρότασης αυτής είναι "%{initiativeStatus}".'
       header_message: 'Η κατάσταση της πρότασης "%{initiativeTitle}" ενημερώθηκε στην ψηφιακή πλατφόρμα συμμετοχής της %{organizationName}.'
