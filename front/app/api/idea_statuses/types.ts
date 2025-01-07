@@ -36,7 +36,7 @@ type ProposalsStatusCode =
   | 'custom';
 export type InputStatusCode = IdeationStatusCode | ProposalsStatusCode;
 
-export const ideationInputStatusCodes: IdeationStatusCode[] = [
+const ideationInputStatusCodes: IdeationStatusCode[] = [
   'prescreening',
   'proposed',
   'viewed',
@@ -47,7 +47,7 @@ export const ideationInputStatusCodes: IdeationStatusCode[] = [
   'custom',
 ];
 
-export const proposalsInputStatusCodes: ProposalsStatusCode[] = [
+const proposalsInputStatusCodes: ProposalsStatusCode[] = [
   'prescreening',
   'proposed',
   'threshold_reached',
@@ -59,7 +59,7 @@ export const proposalsInputStatusCodes: ProposalsStatusCode[] = [
 
 export const inputStatusCodes: Record<
   IdeaStatusParticipationMethod,
-  InputStatusCode[]
+  IdeationStatusCode[] | ProposalsStatusCode[]
 > = {
   ideation: ideationInputStatusCodes,
   proposals: proposalsInputStatusCodes,
