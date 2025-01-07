@@ -74,7 +74,9 @@ const ProjectInfoSideBar = memo<Props>(
             >
               <Tooltip
                 disabled={!isAdmin(authUser)}
-                placement="bottom"
+                // Needs to be "left" at the time of writing
+                // to ensure the tooltip doesn't slip under the project CTA bar.
+                placement="left"
                 content={formatMessage(messages.liveDataMessage)}
               >
                 <Box

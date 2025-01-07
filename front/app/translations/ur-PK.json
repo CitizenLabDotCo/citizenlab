@@ -502,7 +502,7 @@
   "app.components.VoteControl.budgetingNotPossible": "اپنے بجٹ میں تبدیلیاں کرنا اس وقت ممکن نہیں ہے۔",
   "app.components.VoteControl.budgetingNotVerified": "جاری رکھنے کے لیے براہ کرم {verifyAccountLink} ۔",
   "app.components.VoteInputs._shared.currencyLeft": "آپ کے پاس {budgetLeft} / {totalBudget} {currency} باقی ہے",
-  "app.components.VoteInputs._shared.votesLeft3": "آپ کے پاس {votesLeft} / {totalNumberOfVotes} {totalNumberOfVotes, plural, =0 {{votesTerm}} one {{voteTerm}} other {{votesTerm}}} بائیں",
+  "app.components.VoteInputs._shared.votesLeft4": "آپ کے پاس {votesLeft} / {totalNumberOfVotes} {totalNumberOfVotes, plural, =0 {{votesTerm}} one {{voteTerm}} other {{votesTerm}}} بائیں۔",
   "app.components.VoteInputs.budgeting.AddToBasketButton.basketAlreadySubmitted": "آپ اپنا بجٹ پہلے ہی جمع کر چکے ہیں۔ اپنا بجٹ تبدیل کرنے کے لیے \"اپنے بجٹ میں ترمیم کریں\" پر کلک کریں۔",
   "app.components.VoteInputs.budgeting.AddToBasketButton.basketAlreadySubmittedIdeaPage": "آپ اپنا بجٹ پہلے ہی جمع کر چکے ہیں۔ اپنا بجٹ تبدیل کرنے کے لیے، پراجیکٹ کے صفحہ پر واپس جائیں اور \"اپنے بجٹ میں ترمیم کریں\" پر کلک کریں۔",
   "app.components.VoteInputs.budgeting.AddToBasketButton.phaseNotActive": "بجٹ دستیاب نہیں ہے، کیونکہ یہ مرحلہ فعال نہیں ہے۔",
