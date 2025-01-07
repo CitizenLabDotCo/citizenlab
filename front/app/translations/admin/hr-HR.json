@@ -289,7 +289,7 @@
   "app.components.app.containers.AdminPage.ProjectEdit.expireDateLimitRequired": "Potreban je broj dana",
   "app.components.app.containers.AdminPage.ProjectEdit.expireDaysLimit": "Broj dana za postizanje minimalnog broja glasova",
   "app.components.app.containers.AdminPage.ProjectEdit.googleFormsTooltip": "Više informacija o tome kako ugraditi vezu za Google Forms može se pronaći na {googleFormsTooltipLink}.",
-  "app.components.app.containers.AdminPage.ProjectEdit.googleFormsTooltipLink": "https://support.citizenlab.co/articles/5050525",
+  "app.components.app.containers.AdminPage.ProjectEdit.googleFormsTooltipLink": "https://support.govocal.com/en/articles/7025887-creating-an-external-survey-project#h_163e33df30",
   "app.components.app.containers.AdminPage.ProjectEdit.googleFormsTooltipLinkText": "ovaj članak podrške",
   "app.components.app.containers.AdminPage.ProjectEdit.ideaTerm": "Ideja",
   "app.components.app.containers.AdminPage.ProjectEdit.inputTermSelectLabel": "Kako bi ovaj unos trebao zvati?",
