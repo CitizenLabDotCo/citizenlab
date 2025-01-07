@@ -15,7 +15,7 @@ import { ManagerType } from '../../..';
 import messages from '../../../messages';
 
 import StatusButton from './StatusButton';
-import StatusFilterItem from './StatusFilterItem';
+import StatusFilter from './StatusFilter';
 
 interface Props {
   type: ManagerType;
@@ -73,7 +73,7 @@ const StatusFilters = ({
         </Box>
       )}
       {statuses.map((status) => (
-        <StatusFilterItem
+        <StatusFilter
           key={status.id}
           status={status}
           active={isActive(status.id)}

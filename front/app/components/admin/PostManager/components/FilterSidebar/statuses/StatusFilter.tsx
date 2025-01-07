@@ -31,7 +31,7 @@ interface Props {
   onClick: () => void;
 }
 
-const StatusFilterItem = ({ status, active, onClick }: Props) => {
+const StatusFilter = ({ status, active, onClick }: Props) => {
   const { phaseId } = useParams() as { phaseId: string };
   const { data: phase } = usePhase(phaseId);
 
@@ -123,4 +123,4 @@ const StatusFilterItem = ({ status, active, onClick }: Props) => {
   );
 };
 
-export default StatusFilterItem;
+export default StatusFilter;
