@@ -315,6 +315,25 @@ resource 'Ideas' do
       end
     end
 
+    get 'web_api/v1/ideas/:id/as_xlsx' do
+      let(:project) { create(:project_with_active_native_survey_phase) }
+      let(:idea) { create(:idea, project: project, phases: project.phases, author: @user) }
+      let(:id) { idea.id }
+
+      example_request 'Export one idea by id' do
+        expect(status).to eq 200
+      end
+
+      describe do
+        let(:other_idea) { create(:idea, project: project, phases: project.phases) }
+
+        example '[error] Export an idea by id of which you are not the author', document: false do
+          do_request id: other_idea.id
+          expect(status).to eq 401
+        end
+      end
+    end
+
     get 'web_api/v1/ideas/by_slug/:slug' do
       let(:idea) { create(:idea) }
       let(:slug) { idea.slug }
