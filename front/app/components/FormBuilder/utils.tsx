@@ -111,15 +111,12 @@ export function getAdditionalSettings(
             platformLocale={platformLocale}
             inputType={field.input_type}
           />
-          {field.input_type !== 'ranking' && (
-            <MultiselectSettings
-              selectOptionsName={`customFields.${field.index}.options`}
-              minimumSelectCountName={`customFields.${field.index}.minimum_select_count`}
-              maximumSelectCountName={`customFields.${field.index}.maximum_select_count`}
-              selectCountToggleName={`customFields.${field.index}.select_count_enabled`}
-            />
-          )}
-
+          <MultiselectSettings
+            selectOptionsName={`customFields.${field.index}.options`}
+            minimumSelectCountName={`customFields.${field.index}.minimum_select_count`}
+            maximumSelectCountName={`customFields.${field.index}.maximum_select_count`}
+            selectCountToggleName={`customFields.${field.index}.select_count_enabled`}
+          />
           <SelectSettings
             inputType={field.input_type}
             randomizeName={`customFields.${field.index}.random_option_ordering`}
