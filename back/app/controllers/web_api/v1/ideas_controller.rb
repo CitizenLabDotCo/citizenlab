@@ -104,6 +104,10 @@ class WebApi::V1::IdeasController < ApplicationController
     render_show Idea.find params[:id]
   end
 
+  def show_xlsx
+    # TODO
+  end
+
   def by_slug
     render_show Idea.find_by!(slug: params[:slug])
   end

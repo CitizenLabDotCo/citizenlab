@@ -72,6 +72,10 @@ class IdeaPolicy < ApplicationPolicy
     active? && (owner? || UserRoleService.new.can_moderate_project?(record.project, user))
   end
 
+  def show_xlsx?
+    record.author_id == user.id
+  end
+
   def by_slug?
     show?
   end
