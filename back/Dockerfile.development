@@ -43,8 +43,6 @@ COPY back/Gemfile back/Gemfile.* back/.ruby-version ./
 COPY back/engines ./engines
 COPY back/lib/citizen_lab.rb ./lib/
 
-RUN gem install bundler:2.4.20
-
 COPY back/. .
 
 EXPOSE 4000
