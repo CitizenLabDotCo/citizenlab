@@ -2,7 +2,7 @@
 
 module PublicApi
   class ReactionsFinder
-    REACTABLE_TYPES = %w[Idea Initiative Comment IdeaComment InitiativeComment]
+    REACTABLE_TYPES = %w[Idea Comment]
 
     def initialize(scope, reactable_type: nil, user_id: nil)
       @scope = scope
@@ -31,14 +31,7 @@ module PublicApi
         raise ArgumentError, "Invalid reactable_type: '#{@reactable_type}'."
       end
 
-      case @reactable_type
-      when 'IdeaComment'
-        scope.where(reactable: Comment.where(post_type: 'Idea'))
-      when 'InitiativeComment'
-        scope.where(reactable: Comment.where(post_type: 'Initiative'))
-      else
-        scope.where(reactable_type: @reactable_type)
-      end
+      scope.where(reactable_type: @reactable_type)
     end
   end
 end
