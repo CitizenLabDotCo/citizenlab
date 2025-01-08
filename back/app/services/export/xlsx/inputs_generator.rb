@@ -15,7 +15,7 @@ module Export
         end
       end
 
-      def generate_for_input(_input)
+      def generate_for_input(input)
         create_stream do |workbook|
           create_input_sheet(workbook, input)
         end
@@ -62,7 +62,7 @@ module Export
       end
 
       def create_input_sheet(workbook, input)
-        sheet_generator = InputSheetGenerator.new [input], input.phase
+        sheet_generator = InputSheetGenerator.new [input], input.creation_phase
         sheet_name = MultilocService.new.t input.title_multiloc
         sheet_generator.generate_sheet(workbook, sheet_name)
       end
