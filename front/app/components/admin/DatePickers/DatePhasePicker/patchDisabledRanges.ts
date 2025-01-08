@@ -1,6 +1,6 @@
 import { addDays } from 'date-fns';
 
-import { DateRange } from './typings';
+import { DateRange } from '../_shared/typings';
 
 /**
  * Utility to handle the case where the last disabled range is open,

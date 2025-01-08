@@ -29,7 +29,7 @@ export default defineMessages({
   supportArticleLink: {
     id: 'app.containers.Admin.projects.project.survey.upsell.supportArticleLink',
     defaultMessage:
-      'https://support.citizenlab.co/en/articles/8316692-ai-analysis',
+      'https://support.govocal.com/en/articles/8316692-ai-analysis',
   },
   button: {
     id: 'app.containers.Admin.projects.project.survey.upsell.button',

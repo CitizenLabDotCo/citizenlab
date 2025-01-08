@@ -37,6 +37,8 @@ RUN apt-get update                                        \
    jpegoptim                                              \
    optipng                                                \
    pngquant                                               \
+   # jemalloc
+   libjemalloc2 \
    # tiktoken_ruby
    clang                                                  \
    && curl -sL https://deb.nodesource.com/setup_18.x  | bash - \

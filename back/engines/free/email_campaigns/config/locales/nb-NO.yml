@@ -425,7 +425,7 @@ nb:
       x_ideas: '%{numberOfIdeas} ideer'
     project_folder_moderation_rights_received:
       cta_view_folder_button: 'Vis denne mappen'
-      message_added_as_folderadmin: 'Du har fått mappeadministratorrettigheter på %{organizationName}for følgende mappe:'
+      message_added_as_folderadmin: 'Du har fått mappeadministratorrettigheter på %{organizationName} for følgende mappe:'
       no_projects: 'Ingen prosjekter ennå'
       preheader: 'En administrator av deltakerplattformen på %{organizationName} har nettopp gjort deg til administrator for følgende mappe'
       subject: 'Du ble prosjektmappeansvarlig på medvirkningsplattformen %{organizationName}'
