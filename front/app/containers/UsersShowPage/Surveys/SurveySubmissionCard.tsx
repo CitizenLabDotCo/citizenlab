@@ -4,14 +4,15 @@ import { Box, Button, Title, colors } from '@citizenlab/cl2-component-library';
 
 import { IdeaMini } from 'api/user_survey_submissions/types';
 
+import { downloadSurveySubmission } from './utils';
+
 interface Props {
   ideaMini: IdeaMini;
 }
 
 const SurveySubmissionCard = ({ ideaMini }: Props) => {
   const handleClick = () => {
-    // TODO download shit
-    console.log(ideaMini);
+    downloadSurveySubmission(ideaMini.id);
   };
 
   return (
