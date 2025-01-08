@@ -76,6 +76,12 @@ export const LogicSettings = ({
     }));
   }
 
+  // Add options for 'any_other_answer' and 'no_answer'
+  if (answers) {
+    answers.push({ key: 'any_other_answer', label: 'Any other answer' });
+    answers.push({ key: 'no_answer', label: 'No answer' });
+  }
+
   return (
     <>
       {field.input_type === 'page' ? (

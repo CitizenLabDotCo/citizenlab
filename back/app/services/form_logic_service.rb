@@ -186,8 +186,8 @@ class FormLogicService
   end
 
   def ui_schema_hide_rule_for(field, value)
-    if field.support_options?
-      value = value == 'no_answer' ? nil : option_index[value].key
+    if field.support_options? && !value == ('no_answer')
+      value = option_index[value].key
     end
     {
       effect: 'HIDE',
@@ -328,8 +328,9 @@ class FormLogicService
         rule['goto_page_id'] = page_temp_ids_to_ids_mapping[target_id]
       end
 
-      # Remove any select options that do not exist
-      if field.input_type == 'select' && field.options.pluck(:id).exclude?(rule['if'])
+      # Remove any select options that do not exist - unless 'any_other_answer' or 'no_answer'
+      allowed_if_values = field.options.pluck(:id) + %w[any_other_answer no_answer]
+      if field.input_type == 'select' && allowed_if_values.exclude?(rule['if'])
         rules.delete(rule)
       end
     end

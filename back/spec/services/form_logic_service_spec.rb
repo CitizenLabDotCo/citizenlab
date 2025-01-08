@@ -541,7 +541,7 @@ describe FormLogicService do
           condition: {
             scope: "#/properties/#{question2.key}",
             schema: {
-              enum: [nil]
+              enum: ['no_answer']
             }
           }
         }])
