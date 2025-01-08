@@ -11,7 +11,7 @@ export interface Response {
   links: ILinks;
 }
 
-interface IdeaMini {
+export interface IdeaMini {
   id: string;
   type: 'idea_mini';
   attributes: {
