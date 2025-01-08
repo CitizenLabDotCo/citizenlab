@@ -32,7 +32,7 @@ class FormLogicService
       elsif field.section?
         valid_section_logic_structure?(field)
       else
-        valid_field_logic_structure?(field) && valid_rules?(field) && field.required?
+        valid_field_logic_structure?(field) && valid_rules?(field)
       end
       all_valid && field_valid
     end
