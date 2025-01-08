@@ -186,7 +186,7 @@ class FormLogicService
   end
 
   def ui_schema_hide_rule_for(field, value)
-    if field.support_options? && !value == ('no_answer')
+    if field.support_options? && value != 'no_answer'
       value = option_index[value].key
     end
     {

@@ -43,6 +43,10 @@ const Logic = ({
 
   const pageMessage = formatMessage(messages.page);
 
+  const specialLogicRules = field.logic?.rules?.filter((rule) =>
+    ['any_other_answer', 'no_answer'].includes(rule.if.toString())
+  );
+
   return (
     <Box>
       {field.input_type === 'select' &&
@@ -76,6 +80,7 @@ const Logic = ({
             </Box>
           );
         })}
+
       {field.input_type === 'linear_scale' &&
         field.maximum &&
         getLinearScaleOptions(field.maximum).map((option) => {
@@ -120,6 +125,28 @@ const Logic = ({
           )}
         />
       )}
+      {specialLogicRules &&
+        specialLogicRules.map((rule) => {
+          const key = `${field.temp_id || field.id}_${rule.if}`;
+          return (
+            <Box key={key}>
+              <QuestionRuleDisplay
+                isRuleValid={isRuleValid(
+                  rule,
+                  field.temp_id || field.id,
+                  formCustomFields
+                )}
+                answerTitle={rule?.if.toString()}
+                targetPage={getTitleFromPageId(
+                  rule?.goto_page_id,
+                  formEndMessage,
+                  pageMessage,
+                  fieldNumbers
+                )}
+              />
+            </Box>
+          );
+        })}
     </Box>
   );
 };
