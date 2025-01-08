@@ -1,10 +1,9 @@
 import React from 'react';
 
-import { Box, Text } from '@citizenlab/cl2-component-library';
+import { Box, Divider, Text } from '@citizenlab/cl2-component-library';
 
 import { IProjectData } from 'api/projects/types';
 
-import Divider from 'components/admin/Divider';
 import Button from 'components/UI/Button';
 
 import { FormattedMessage } from 'utils/cl-intl';

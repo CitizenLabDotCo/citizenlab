@@ -49,7 +49,7 @@ const AccessibilityStatement = () => {
                       <FormattedMessage
                         {...messages.intro2022}
                         values={{
-                          citizenLabLink: (
+                          goVocalLink: (
                             <a
                               href="https://www.govocal.com/"
                               target="_blank"

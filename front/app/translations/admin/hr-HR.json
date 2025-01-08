@@ -2590,7 +2590,7 @@
   "app.containers.admin.ContentBuilder.IframeMultiloc.embedIframeTitleTooltip": "Korisno je pružiti ove informacije korisnicima koji se oslanjaju na čitač zaslona ili drugu pomoćnu tehnologiju.",
   "app.containers.admin.ContentBuilder.IframeMultiloc.embedIframeUrlLabel": "Adresa web stranice",
   "app.containers.admin.ContentBuilder.IframeMultiloc.embedIframeUrlLabelTooltip": "Puni URL web stranice koju želite ugraditi.",
-  "app.containers.admin.ContentBuilder.IframeMultiloc.iframeDescription": "Prikažite sadržaj s vanjske web stranice na svojoj stranici u HTML iFrameu.",
+  "app.containers.admin.ContentBuilder.IframeMultiloc.iframeDescription3": "Prikažite sadržaj s vanjske web stranice na svojoj stranici u HTML iFrameu. Imajte na umu da se ne može ugraditi svaka stranica. Ako imate problema s ugradnjom stranice, provjerite s vlasnikom stranice je li konfigurirana za dopuštanje ugradnje.",
   "app.containers.admin.ContentBuilder.IframeMultiloc.iframeEmbedVisitLinkMessage": "Posjetite našu stranicu za podršku",
   "app.containers.admin.ContentBuilder.IframeMultiloc.iframeHeightPlaceholder": "300",
   "app.containers.admin.ContentBuilder.IframeMultiloc.iframeInvalidWhitelistUrlErrorMessage": "Nažalost, ovaj sadržaj nije moguće ugraditi. {visitLinkMessage} da biste saznali više.",
