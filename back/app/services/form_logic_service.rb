@@ -186,8 +186,8 @@ class FormLogicService
   end
 
   def ui_schema_hide_rule_for(field, value)
-    if field.input_type == 'select'
-      value = option_index[value].key
+    if field.support_options?
+      value = value == 'no_answer' ? nil : option_index[value].key
     end
     {
       effect: 'HIDE',

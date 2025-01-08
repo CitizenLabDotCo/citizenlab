@@ -441,12 +441,6 @@ describe FormLogicService do
 
     context 'when any other answer triggers going to another page' do
       before do
-        # question2.update!(logic: {
-        #   'rules' => [
-        #     { 'if' => option1.id, 'goto_page_id' => page4.id },
-        #     { 'if' => option2.id, 'goto_page_id' => page4.id }
-        #   ]
-        # })
         question2.update!(logic: {
           'rules' => [
             { 'if' => 'any_other_answer', 'goto_page_id' => page4.id }
@@ -524,6 +518,34 @@ describe FormLogicService do
             }
           }
         }])
+        expect(form_logic.ui_schema_rules_for(page5)).to be_nil
+      end
+    end
+
+    context 'when no answer (empty field) triggers going to another page' do
+      before do
+        question2.update!(logic: {
+          'rules' => [
+            { 'if' => 'no_answer', 'goto_page_id' => page4.id }
+          ]
+        })
+      end
+
+      it 'returns a UI schema with rules for the given page' do
+        expect(form_logic.ui_schema_rules_for(page1)).to be_nil
+        expect(form_logic.ui_schema_rules_for(question1)).to be_nil
+        expect(form_logic.ui_schema_rules_for(page2)).to be_nil
+        expect(form_logic.ui_schema_rules_for(question2)).to be_nil
+        expect(form_logic.ui_schema_rules_for(page3)).to eq([{
+          effect: 'HIDE',
+          condition: {
+            scope: "#/properties/#{question2.key}",
+            schema: {
+              enum: [nil]
+            }
+          }
+        }])
+        expect(form_logic.ui_schema_rules_for(page4)).to be_nil
         expect(form_logic.ui_schema_rules_for(page5)).to be_nil
       end
     end
