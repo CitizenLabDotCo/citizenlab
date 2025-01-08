@@ -323,6 +323,9 @@ resource 'Ideas' do
 
       example_request 'Export one idea by id' do
         expect(status).to eq 200
+        worksheet = RubyXL::Parser.parse_buffer(response_body).worksheets[0]
+        # worksheet.map { |r| r.cells.map(&:value) }
+        binding.pry
       end
 
       describe do
