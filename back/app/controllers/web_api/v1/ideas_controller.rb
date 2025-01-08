@@ -86,6 +86,16 @@ class WebApi::V1::IdeasController < ApplicationController
     end
   end
 
+  def index_survey_submissions
+    ideas = Idea
+      .where(author: current_user)
+      .scope(:native_survey)
+
+    ideas = paginate ideas
+
+    render json: linked_json(ideas, WebApi::V1::IdeaMiniSerializer, params: jsonapi_serializer_params)
+  end
+
   def filter_counts
     ideas = IdeasFinder.new(
       params,
