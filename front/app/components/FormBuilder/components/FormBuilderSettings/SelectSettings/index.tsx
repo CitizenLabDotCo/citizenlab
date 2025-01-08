@@ -39,7 +39,7 @@ const SelectSettings = ({
           }
         />
       </Box>
-      {inputType !== 'multiselect_image' && (
+      {inputType !== 'multiselect_image' && inputType !== 'ranking' && (
         <Box mb="24px">
           <Toggle
             name={dropdownLayoutName}

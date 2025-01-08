@@ -77,6 +77,8 @@ const ConfigSelectWithLocaleSwitcher = ({
   const prevImageQueries = usePrevious(customFieldOptionImages);
   const [optionImages, setOptionImages] = useState<OptionImageType>();
 
+  const showOtherOptionToggle = inputType !== 'ranking';
+
   useEffect(() => {
     if (
       // TODO: Fix this the next time the file is edited.
@@ -349,23 +351,27 @@ const ConfigSelectWithLocaleSwitcher = ({
                   />
                 )}
 
-                <Box mt="24px" data-cy="e2e-other-option-toggle">
-                  <Toggle
-                    label={
-                      <Box display="flex">
-                        {formatMessage(messages.otherOption)}
-                        <Box pl="4px">
-                          <IconTooltip
-                            placement="top-start"
-                            content={formatMessage(messages.otherOptionTooltip)}
-                          />
+                {showOtherOptionToggle && (
+                  <Box mt="24px" data-cy="e2e-other-option-toggle">
+                    <Toggle
+                      label={
+                        <Box display="flex">
+                          {formatMessage(messages.otherOption)}
+                          <Box pl="4px">
+                            <IconTooltip
+                              placement="top-start"
+                              content={formatMessage(
+                                messages.otherOptionTooltip
+                              )}
+                            />
+                          </Box>
                         </Box>
-                      </Box>
-                    }
-                    checked={hasOtherOption}
-                    onChange={toggleOtherOption}
-                  />
-                </Box>
+                      }
+                      checked={hasOtherOption}
+                      onChange={toggleOtherOption}
+                    />
+                  </Box>
+                )}
               </SectionField>
             </Box>
           );
