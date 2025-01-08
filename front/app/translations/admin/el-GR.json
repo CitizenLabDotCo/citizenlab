@@ -2694,7 +2694,7 @@
   "app.containers.admin.project.permissions.permissionsSelectionLabel": "Selection",
   "app.containers.admin.project.permissions.permissionsSelectionLabelDescription": "Μπορούν να συμμετέχουν χρήστες σε συγκεκριμένες ομάδες χρηστών. Μπορείτε να διαχειριστείτε τις ομάδες χρηστών στην καρτέλα \"Χρήστες\".",
   "app.containers.admin.project.permissions.viewingRightsTitle": "Ποιος μπορεί να δει αυτό το έργο;",
-  "app.modules.commercial.analytics.admin.components.ActiveUsersCard.cardTitleTooltipMessage3": "Οι συμμετέχοντες είναι χρήστες ή επισκέπτες που συμμετείχαν σε ένα έργο, δημοσίευσαν ή αλληλεπίδρασαν με μια πρόταση, παρακολούθησαν εκδηλώσεις ή παρακολούθησαν πράγματα.",
+  "app.modules.commercial.analytics.admin.components.ActiveUsersCard.cardTitleTooltipMessage3": "Οι συμμετέχοντες είναι χρήστες ή επισκέπτες που συμμετείχαν σε ένα έργο, δημοσίευσαν ή αλληλεπίδρασαν με μια πρόταση, παρακολούθησαν εκδηλώσεις ή ακολούθησαν άλλες καταχωρήσεις.",
   "app.modules.commercial.analytics.admin.components.ActiveUsersCard.participants": "Συμμετέχοντες",
   "app.modules.commercial.analytics.admin.components.ActiveUsersCard.participationRate": "Ποσοστό συμμετοχής",
   "app.modules.commercial.analytics.admin.components.ActiveUsersCard.participationRateTooltip3": "Ποσοστό των επισκεπτών που γίνονται συμμετέχοντες. Μετρώνται μόνο οι συμμετέχοντες και οι επισκέπτες που αποδέχθηκαν τα cookies.",
