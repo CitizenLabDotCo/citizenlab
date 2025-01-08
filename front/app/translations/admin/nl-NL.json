@@ -2590,6 +2590,7 @@
   "app.containers.admin.ContentBuilder.IframeMultiloc.embedIframeTitleTooltip": "Het is nuttig om deze informatie te verstrekken aan gebruikers die afhankelijk zijn van een schermlezer of andere ondersteunende technologie.",
   "app.containers.admin.ContentBuilder.IframeMultiloc.embedIframeUrlLabel": "Website adres",
   "app.containers.admin.ContentBuilder.IframeMultiloc.embedIframeUrlLabelTooltip": "Volledige URL van de website die je wilt insluiten.",
+  "app.containers.admin.ContentBuilder.IframeMultiloc.iframeDescription3": "Inhoud van een externe website op je pagina weergeven in een HTML iFrame. Niet elke pagina kan worden ingesloten. Als je problemen hebt met het insluiten van een pagina, controleer dan bij de eigenaar van de pagina of deze is geconfigureerd om insluiten toe te staan.",
   "app.containers.admin.ContentBuilder.IframeMultiloc.iframeEmbedVisitLinkMessage": "Bekijk onze supportpagina",
   "app.containers.admin.ContentBuilder.IframeMultiloc.iframeHeightPlaceholder": "300",
   "app.containers.admin.ContentBuilder.IframeMultiloc.iframeInvalidWhitelistUrlErrorMessage": "Sorry, deze content kan niet worden ingesloten. {visitLinkMessage} voor meer informatie.",
