@@ -388,6 +388,7 @@ RSpec.describe SurveyResultsGeneratorService do
           grouped: false,
           totalResponseCount: 27,
           questionResponseCount: 4,
+          maybeSkippedByLogic: false,
           textResponses: [
             { answer: 'Blue' },
             { answer: 'Green' },
@@ -410,6 +411,7 @@ RSpec.describe SurveyResultsGeneratorService do
           {
             customFieldId: unanswered_text_field.id,
             inputType: 'text',
+            maybeSkippedByLogic: false,
             question: { 'en' => 'Nobody wants to answer me' },
             required: false,
             grouped: false,
@@ -430,6 +432,7 @@ RSpec.describe SurveyResultsGeneratorService do
             question: { 'en' => 'What is your favourite recipe?' },
             required: false,
             grouped: false,
+            maybeSkippedByLogic: false,
             totalResponseCount: 27,
             questionResponseCount: 0,
             textResponses: []
@@ -450,6 +453,7 @@ RSpec.describe SurveyResultsGeneratorService do
           },
           required: false,
           grouped: false,
+          maybeSkippedByLogic: false,
           totalResponseCount: 27,
           questionResponseCount: 4,
           totalPickCount: 33,
@@ -623,6 +627,7 @@ RSpec.describe SurveyResultsGeneratorService do
           },
           required: true,
           grouped: false,
+          maybeSkippedByLogic: false,
           totalResponseCount: 27,
           questionResponseCount: 22,
           totalPickCount: 27,
@@ -698,6 +703,7 @@ RSpec.describe SurveyResultsGeneratorService do
             },
             required: true,
             grouped: true,
+            maybeSkippedByLogic: false,
             totalResponseCount: 27,
             questionResponseCount: 22,
             totalPickCount: 27,
@@ -774,6 +780,7 @@ RSpec.describe SurveyResultsGeneratorService do
           },
           required: true,
           grouped: false,
+          maybeSkippedByLogic: false,
           totalResponseCount: 27,
           questionResponseCount: 6,
           totalPickCount: 27,
@@ -913,6 +920,7 @@ RSpec.describe SurveyResultsGeneratorService do
             },
             required: true,
             grouped: true,
+            maybeSkippedByLogic: false,
             totalResponseCount: 27,
             questionResponseCount: 6,
             totalPickCount: 27,
@@ -1023,6 +1031,7 @@ RSpec.describe SurveyResultsGeneratorService do
           },
           required: false,
           grouped: false,
+          maybeSkippedByLogic: false,
           totalResponseCount: 27,
           questionResponseCount: 3,
           totalPickCount: 27,
@@ -1107,6 +1116,7 @@ RSpec.describe SurveyResultsGeneratorService do
           question: { 'en' => 'Upload a file' },
           required: false,
           grouped: false,
+          maybeSkippedByLogic: false,
           totalResponseCount: 27,
           questionResponseCount: 1,
           files: [
@@ -1128,6 +1138,7 @@ RSpec.describe SurveyResultsGeneratorService do
           question: { 'en' => 'Upload a file' },
           required: false,
           grouped: false,
+          maybeSkippedByLogic: false,
           totalResponseCount: 27,
           questionResponseCount: 1,
           files: [
@@ -1148,6 +1159,7 @@ RSpec.describe SurveyResultsGeneratorService do
           question: { 'en' => 'Where should the new nursery be located?' },
           required: false,
           grouped: false,
+          maybeSkippedByLogic: false,
           questionResponseCount: 2,
           totalResponseCount: 27,
           customFieldId: point_field.id,
@@ -1171,6 +1183,7 @@ RSpec.describe SurveyResultsGeneratorService do
           question: { 'en' => 'Where should we build the new bicycle path?' },
           required: false,
           grouped: false,
+          maybeSkippedByLogic: false,
           questionResponseCount: 2,
           totalResponseCount: 27,
           customFieldId: line_field.id,
@@ -1194,6 +1207,7 @@ RSpec.describe SurveyResultsGeneratorService do
           question: { 'en' => 'Where should we build the new housing?' },
           required: false,
           grouped: false,
+          maybeSkippedByLogic: false,
           questionResponseCount: 2,
           totalResponseCount: 27,
           customFieldId: polygon_field.id,
@@ -1217,6 +1231,7 @@ RSpec.describe SurveyResultsGeneratorService do
           question: { 'en' => 'How many cats would you like?' },
           required: false,
           grouped: false,
+          maybeSkippedByLogic: false,
           questionResponseCount: 1,
           totalResponseCount: 27,
           customFieldId: number_field.id,
@@ -1229,6 +1244,29 @@ RSpec.describe SurveyResultsGeneratorService do
       it 'returns the results for a number field' do
         expect(generated_results[:results][12]).to match expected_result_number
       end
+    end
+  end
+
+  describe 'maybe_skipped_fields' do
+    # TODO: JS - Add some more tests here
+    it 'returns the IDs of fields that may have been skipped by logic' do
+      mock_fields = [
+        { id: '1', input_type: 'page', logic: {} },
+        { id: '2', input_type: 'select', logic: { 'rules' => [{ 'if' => 'a', 'goto_page_id' => '6' }] } },
+        { id: '3', input_type: 'page', logic: {} },
+        { id: '4', input_type: 'text', logic: {} }, # May be skipped
+        { id: '5', input_type: 'text', logic: {} }, # May be skipped
+        { id: '6', input_type: 'page', logic: {} }
+      ]
+      expect(generator.send(:maybe_skipped_fields, mock_fields)).to eq %w[4 5]
+    end
+
+    it 'returns nothing if no logic' do
+      mock_fields = [
+        { id: 1234, input_type: 'page', logic: {} },
+        { id: 5678, input_type: 'text', logic: {} }
+      ]
+      expect(generator.send(:maybe_skipped_fields, mock_fields)).to eq []
     end
   end
 end
