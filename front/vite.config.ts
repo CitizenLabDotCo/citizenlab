@@ -4,6 +4,7 @@ import { sentryVitePlugin } from '@sentry/vite-plugin';
 import react from '@vitejs/plugin-react';
 import dotenv from 'dotenv';
 import { defineConfig } from 'vite';
+import checker from 'vite-plugin-checker';
 import commonjs from 'vite-plugin-commonjs';
 import { createHtmlPlugin } from 'vite-plugin-html';
 import tsconfigPaths from 'vite-plugin-tsconfig-paths';
@@ -67,6 +68,10 @@ export default defineConfig(({ mode }) => {
       react(),
       commonjs(),
       tsconfigPaths(), // Support for TS path aliases
+      checker({
+        typescript: true,
+        overlay: false,
+      }),
       createHtmlPlugin({
         inject: {
           data: {
