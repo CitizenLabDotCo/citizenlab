@@ -84,7 +84,7 @@ const ReviewFlow = ({ project }: { project: IProjectData }) => {
         >
           <Button
             buttonStyle="admin-dark"
-            icon="send"
+            icon="sendd"
             onClick={publishProject}
             processing={isUpdatingProjectLoading}
             size="s"

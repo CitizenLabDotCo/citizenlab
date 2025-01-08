@@ -69,7 +69,9 @@ export default defineConfig(({ mode }) => {
       commonjs(),
       tsconfigPaths(), // Support for TS path aliases
       checker({
-        typescript: true,
+        typescript: {
+          tsconfigPath: path.resolve(__dirname, 'app/tsconfig.json'),
+        },
         overlay: false,
       }),
       createHtmlPlugin({
