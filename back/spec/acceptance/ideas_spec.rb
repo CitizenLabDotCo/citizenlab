@@ -187,6 +187,22 @@ resource 'Ideas' do
       end
     end
 
+    get 'web_api/v1/ideas/survey_submissions' do
+      describe do
+        before do
+          @project = create(:single_phase_native_survey_project)
+          @idea = create(:native_survey_response, project: @project, author: @user)
+          @idea_another_user = create(:native_survey_response, project: @project)
+        end
+
+        example_request 'List all survey submissions of user' do
+          expect(status).to eq 200
+          json_response = json_parse(response_body)
+          expect(json_response[:data].pluck(:id)).to eq [@idea.id]
+        end
+      end
+    end
+
     get 'web_api/v1/ideas/filter_counts' do
       describe do
         before do

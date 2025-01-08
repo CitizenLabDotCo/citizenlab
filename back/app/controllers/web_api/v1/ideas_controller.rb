@@ -89,8 +89,8 @@ class WebApi::V1::IdeasController < ApplicationController
   def index_survey_submissions
     ideas = Idea
       .where(author: current_user)
-      .scope(:submitted_or_published)
-      .scope(:native_survey)
+      .submitted_or_published
+      .native_survey
 
     ideas = paginate ideas
 
