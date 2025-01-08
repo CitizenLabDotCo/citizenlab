@@ -14,6 +14,7 @@ resource 'Ideas' do
     before do
       @user = user
       header_token_for user
+      create(:idea_status_proposed)
     end
 
     get 'web_api/v1/ideas/as_markers' do
@@ -317,7 +318,7 @@ resource 'Ideas' do
 
     get 'web_api/v1/ideas/:id/as_xlsx' do
       let(:project) { create(:project_with_active_native_survey_phase) }
-      let(:idea) { build(:native_survey_response, project: project, author: @user) }
+      let(:idea) { create(:native_survey_response, project: project, author: @user) }
       let(:id) { idea.id }
 
       example_request 'Export one idea by id' do
@@ -325,7 +326,7 @@ resource 'Ideas' do
       end
 
       describe do
-        let(:other_idea) { build(:native_survey_response, project: project) }
+        let(:other_idea) { create(:native_survey_response, project: project) }
         let(:id) { other_idea.id }
 
         example '[error] Export an idea by id of which you are not the author', document: false do

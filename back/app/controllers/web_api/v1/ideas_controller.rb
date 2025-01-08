@@ -105,7 +105,6 @@ class WebApi::V1::IdeasController < ApplicationController
   end
 
   def show_xlsx
-    binding.pry
     idea = Idea.find params[:id]
     authorize idea, :show_xlsx?
 
