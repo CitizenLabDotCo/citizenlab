@@ -63,12 +63,10 @@ const ScreeningStatusFilter = ({ status, active, onClick }: Props) => {
     status.attributes.can_manually_transition_to === false;
 
   const prescreeningButtonIsDisabled =
-    status.attributes.code === 'prescreening' &&
-    (!phasePrescreeningEnabled || !preScreeningFeatureAllowed);
+    !phasePrescreeningEnabled || !preScreeningFeatureAllowed;
 
   const prescreeningTooltipIsDisabled =
-    status.attributes.code !== 'prescreening' ||
-    (phasePrescreeningEnabled && preScreeningFeatureAllowed);
+    phasePrescreeningEnabled && preScreeningFeatureAllowed;
 
   return (
     <div ref={drop}>
