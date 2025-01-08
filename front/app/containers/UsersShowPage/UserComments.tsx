@@ -110,7 +110,7 @@ export const UserComments = () => {
   if (commentsList.length > 0) {
     const commentGroups = groupBy(
       commentsList,
-      (comment) => comment.relationships.post.data.id
+      (comment) => comment.relationships.idea.data.id
     );
 
     return (
