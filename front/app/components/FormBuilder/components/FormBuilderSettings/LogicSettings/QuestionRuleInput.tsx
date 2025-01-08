@@ -77,6 +77,7 @@ export const QuestionRuleInput = ({
         goto_page_id: page.value.toString(),
       };
       setRuleIsInvalid(!isRuleValid(newRule, fieldId, fields));
+
       if (logic.rules) {
         const newRulesArray = logic.rules;
         newRulesArray.push(newRule);
@@ -84,6 +85,7 @@ export const QuestionRuleInput = ({
       } else {
         logic.rules = [newRule];
       }
+
       // Update rule variable
       const required =
         // TODO: Fix this the next time the file is edited.
