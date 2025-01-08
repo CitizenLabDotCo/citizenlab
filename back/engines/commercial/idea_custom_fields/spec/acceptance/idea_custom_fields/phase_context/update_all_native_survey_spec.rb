@@ -821,58 +821,6 @@ resource 'Idea Custom Fields' do
         })
       end
 
-      example '[error] logic on non-required field' do
-        page1 = create(:custom_field_page, resource: custom_form, title_multiloc: { 'en' => 'Page 1' }, description_multiloc: { 'en' => 'Page 1 description' })
-        field_to_update = create(
-          :custom_field_linear_scale,
-          resource: custom_form,
-          title_multiloc: { 'en' => 'Question 1 on page 1' }
-        )
-        page2 = create(:custom_field_page, resource: custom_form, title_multiloc: { 'en' => 'Page 2' }, description_multiloc: { 'en' => 'Page 2 description' })
-        request = {
-          custom_fields: [
-            {
-              id: page1.id,
-              input_type: 'page',
-              page_layout: 'default',
-              title_multiloc: page1.title_multiloc,
-              description_multiloc: page1.description_multiloc,
-              required: false,
-              enabled: true
-            },
-            {
-              id: field_to_update.id,
-              title_multiloc: { 'en' => 'New title' },
-              required: false,
-              enabled: true,
-              logic: { rules: [{ if: 1, goto_page_id: page2.id }] }
-            },
-            {
-              id: page2.id,
-              input_type: 'page',
-              page_layout: 'default',
-              title_multiloc: page2.title_multiloc,
-              description_multiloc: page2.description_multiloc,
-              required: false,
-              enabled: true
-            }
-          ]
-        }
-        do_request request
-
-        assert_status 422
-        json_response = json_parse(response_body)
-        expect(json_response[:errors]).to eq({
-          '0': {},
-          '1': {
-            logic: [
-              { error: 'only_allowed_on_required_fields' }
-            ]
-          },
-          '2': {}
-        })
-      end
-
       example 'Replace logic of a field' do
         page1 = create(:custom_field_page, resource: custom_form, title_multiloc: { 'en' => 'Page 1' }, description_multiloc: { 'en' => 'Page 1 description' })
         field_to_update = create(

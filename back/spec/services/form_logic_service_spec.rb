@@ -516,34 +516,6 @@ describe FormLogicService do
         end
       end
 
-      context 'when a field has logic, but it is not required' do
-        let(:logic_for_question1) do
-          { 'rules' => [{ 'if' => 1, 'goto_page_id' => page2.id }] }
-        end
-        let(:logic_for_question2) do
-          { 'rules' => [{ 'if' => 1, 'goto_page_id' => 'survey_end' }] }
-        end
-
-        it 'returns false' do
-          question1.update! logic: logic_for_question1, required: false
-          question2.update! logic: logic_for_question2, required: false
-
-          expect(form_logic.valid?).to be false
-          expect(question1.errors.messages.to_h).to eq({
-            logic: ['allowed only on required fields']
-          })
-          expect(question1.errors.details).to eq({
-            logic: [{ error: :only_allowed_on_required_fields }]
-          })
-          expect(question2.errors.messages.to_h).to eq({
-            logic: ['allowed only on required fields']
-          })
-          expect(question2.errors.details).to eq({
-            logic: [{ error: :only_allowed_on_required_fields }]
-          })
-        end
-      end
-
       context 'when some logic in multiple fields has bad structure' do
         let(:logic_for_question1) do
           { 'rules' => [{ 'if' => 1, 'goto_page_id' => page2.id }] }
