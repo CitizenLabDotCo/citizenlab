@@ -15,6 +15,12 @@ module Export
         end
       end
 
+      def generate_for_input(_input)
+        create_stream do |workbook|
+          create_input_sheet(workbook, input)
+        end
+      end
+
       private
 
       def eager_load_phase(phase_id)
@@ -52,6 +58,12 @@ module Export
         inputs = eager_load_inputs(phase.ideas.submitted_or_published)
         sheet_generator = InputSheetGenerator.new inputs, phase
         sheet_name = MultilocService.new.t phase.title_multiloc
+        sheet_generator.generate_sheet(workbook, sheet_name)
+      end
+
+      def create_input_sheet(workbook, input)
+        sheet_generator = InputSheetGenerator.new [input], input.phase
+        sheet_name = MultilocService.new.t input.title_multiloc
         sheet_generator.generate_sheet(workbook, sheet_name)
       end
 

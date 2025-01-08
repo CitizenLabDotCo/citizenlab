@@ -105,7 +105,13 @@ class WebApi::V1::IdeasController < ApplicationController
   end
 
   def show_xlsx
-    # TODO
+    idea = Ideas.find params[:id]
+    authorize idea, :show_xlsx?
+
+    I18n.with_locale(current_user&.locale) do
+      xlsx = Export::Xlsx::InputsGenerator.new.generate_for_input(input)
+      send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', filename: 'survey_response.xlsx'
+    end
   end
 
   def by_slug
