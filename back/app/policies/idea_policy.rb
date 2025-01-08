@@ -48,6 +48,10 @@ class IdeaPolicy < ApplicationPolicy
     active_admin?
   end
 
+  def index_survey_submissions?
+    !!user
+  end
+
   def create?
     return false if user&.blocked?
     return true if record.draft?
@@ -73,7 +77,7 @@ class IdeaPolicy < ApplicationPolicy
   end
 
   def show_xlsx?
-    record.author_id == user.id
+    owner?
   end
 
   def by_slug?
