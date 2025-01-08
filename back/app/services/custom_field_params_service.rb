@@ -5,7 +5,7 @@ class CustomFieldParamsService
     allowed_fields.each do |field|
       # Perhaps we could apply the visitor pattern here
       case field.input_type
-      when 'multiselect', 'multiselect_image'
+      when 'multiselect', 'multiselect_image', 'ranking'
         fields_with_array_keys[field.key.to_sym] = []
       when 'file_upload', 'shapefile_upload'
         fields_with_array_keys[field.key.to_sym] = %i[id content name]
