@@ -186,7 +186,10 @@ class CustomField < ApplicationRecord
   end
 
   def accept(visitor)
-    visitor.send "visit_#{input_type}", self
+    visitor_method = :"visit_#{input_type}"
+    raise "Unsupported input type: #{input_type}" if !visitor.respond_to? visitor_method
+
+    visitor.send visitor_method, self
   end
 
   # Special behaviour for ideation section 1
