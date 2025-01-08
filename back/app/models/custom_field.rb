@@ -237,6 +237,8 @@ class CustomField < ApplicationRecord
       visitor.visit_topic_ids self
     when 'cosponsor_ids'
       visitor.visit_cosponsor_ids self
+    when 'ranking'
+      visitor.visit_ranking self
     else
       raise "Unsupported input type: #{input_type}"
     end
