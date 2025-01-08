@@ -279,7 +279,13 @@ class FormLogicService
       end
       pages_to_hide.each do |page|
         rules_accu[page.id] ||= []
-        rules_accu[page.id] << ui_schema_hide_rule_for(field, value)
+        if value == 'any_other_answer' && field.support_options?
+          field.options.each do |option|
+            rules_accu[page.id] << ui_schema_hide_rule_for(field, option.id) unless logic.keys.include?(option.id)
+          end
+        else
+          rules_accu[page.id] << ui_schema_hide_rule_for(field, value)
+        end
       end
     end
   end

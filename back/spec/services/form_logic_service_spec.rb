@@ -438,6 +438,95 @@ describe FormLogicService do
         }])
       end
     end
+
+    context 'when any other answer triggers going to another page' do
+      before do
+        # question2.update!(logic: {
+        #   'rules' => [
+        #     { 'if' => option1.id, 'goto_page_id' => page4.id },
+        #     { 'if' => option2.id, 'goto_page_id' => page4.id }
+        #   ]
+        # })
+        question2.update!(logic: {
+          'rules' => [
+            { 'if' => 'any_other_answer', 'goto_page_id' => page4.id }
+          ]
+        })
+      end
+
+      it 'returns a UI schema with rules for the given page' do
+        expect(form_logic.ui_schema_rules_for(page1)).to be_nil
+        expect(form_logic.ui_schema_rules_for(question1)).to be_nil
+        expect(form_logic.ui_schema_rules_for(page2)).to be_nil
+        expect(form_logic.ui_schema_rules_for(question2)).to be_nil
+        expect(form_logic.ui_schema_rules_for(page3)).to eq([{
+                                                               effect: 'HIDE',
+                                                               condition: {
+                                                                 scope: "#/properties/#{question2.key}",
+                                                                 schema: {
+                                                                   enum: [option1.key]
+                                                                 }
+                                                               }
+                                                             },
+                                                             {
+                                                               effect: 'HIDE',
+                                                               condition: {
+                                                                 scope: "#/properties/#{question2.key}",
+                                                                 schema: {
+                                                                   enum: [option2.key]
+                                                                 }
+                                                               }
+                                                             }])
+        expect(form_logic.ui_schema_rules_for(page4)).to be_nil
+        expect(form_logic.ui_schema_rules_for(page5)).to be_nil
+      end
+    end
+
+    context 'when one answer triggers going to one page and any other answer triggers going to another page' do
+      before do
+        question2.update!(logic: {
+          'rules' => [
+            { 'if' => option1.id, 'goto_page_id' => page4.id },
+            { 'if' => 'any_other_answer', 'goto_page_id' => page5.id }
+          ]
+        })
+      end
+
+      it 'returns a UI schema with rules for the given page' do
+        expect(form_logic.ui_schema_rules_for(page1)).to be_nil
+        expect(form_logic.ui_schema_rules_for(question1)).to be_nil
+        expect(form_logic.ui_schema_rules_for(page2)).to be_nil
+        expect(form_logic.ui_schema_rules_for(question2)).to be_nil
+        expect(form_logic.ui_schema_rules_for(page3)).to eq([{
+                                                               effect: 'HIDE',
+                                                               condition: {
+                                                                 scope: "#/properties/#{question2.key}",
+                                                                 schema: {
+                                                                   enum: [option1.key]
+                                                                 }
+                                                               }
+                                                             },
+                                                             {
+                                                               effect: 'HIDE',
+                                                               condition: {
+                                                                 scope: "#/properties/#{question2.key}",
+                                                                 schema: {
+                                                                   enum: [option2.key]
+                                                                 }
+                                                               }
+                                                             }])
+        expect(form_logic.ui_schema_rules_for(page4)).to eq([{
+                                                               effect: 'HIDE',
+                                                               condition: {
+                                                                 scope: "#/properties/#{question2.key}",
+                                                                 schema: {
+                                                                   enum: [option2.key]
+                                                                 }
+                                                               }
+                                                             }])
+        expect(form_logic.ui_schema_rules_for(page5)).to be_nil
+      end
+    end
   end
 
   describe '#valid?' do
@@ -461,7 +550,9 @@ describe FormLogicService do
             { 'rules' => [{ 'if' => 1, 'goto_page_id' => 'survey_end' }] },
             { 'rules' => [
               { 'if' => 1, 'goto_page_id' => page2.id },
-              { 'if' => 2, 'goto_page_id' => page4.id }
+              { 'if' => 2, 'goto_page_id' => page4.id },
+              { 'if' => 'no_answer', 'goto_page_id' => page2.id },
+              { 'if' => 'any_other_answer', 'goto_page_id' => page2.id }
             ] }
           ].each do |good_logic|
             question1.update! logic: good_logic, required: true
@@ -480,7 +571,9 @@ describe FormLogicService do
         let(:logic_for_question2) do
           { 'rules' => [
             { 'if' => 1, 'goto_page_id' => 'survey_end' },
-            { 'if' => 2, 'goto_page_id' => page4.id }
+            { 'if' => 2, 'goto_page_id' => page4.id },
+            { 'if' => 'no_answer', 'goto_page_id' => 'survey_end' },
+            { 'if' => 'any_other_answer', 'goto_page_id' => page4.id }
           ] }
         end
 
