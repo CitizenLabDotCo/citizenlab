@@ -317,15 +317,29 @@ resource 'Ideas' do
     end
 
     get 'web_api/v1/ideas/:id/as_xlsx' do
-      let(:project) { create(:project_with_active_native_survey_phase) }
-      let(:idea) { create(:native_survey_response, project: project, author: @user) }
-      let(:id) { idea.id }
+      let!(:project) { create(:single_phase_native_survey_project) }
+      let!(:extra_field_key) { 'new_custom_field_name1' }
+      let!(:extra_field_answer) { 'new_custom_field_value1' }
+      let!(:form) { create(:custom_form, participation_context: project.phases.first) }
+      let!(:text_field) { create(:custom_field_text, key: extra_field_key, required: true, resource: form) }
+      let!(:idea) do
+        idea = create(:native_survey_response, project: project, author: @user)
+        idea.custom_field_values = { extra_field_key => extra_field_answer }
+        idea.save!
+        idea
+      end
+      let!(:id) { idea.id }
 
       example_request 'Export one idea by id' do
         expect(status).to eq 200
         worksheet = RubyXL::Parser.parse_buffer(response_body).worksheets[0]
-        # worksheet.map { |r| r.cells.map(&:value) }
-        binding.pry
+
+        flat_values = worksheet.map { |r| r.cells.map(&:value) }
+        question_title = flat_values[0][1]
+        expect(question_title).to eq text_field.title_multiloc['en']
+
+        question_answer = flat_values[1][1]
+        expect(question_answer).to eq extra_field_answer
       end
 
       describe do
