@@ -114,7 +114,7 @@ interface Props {
 
 interface TabData
   extends Omit<ITab, 'name' | 'url' | 'feature' | 'statusLabel' | 'active'> {
-  path: 'submissions' | 'comments' | 'following' | 'events';
+  path: 'submissions' | 'surveys' | 'comments' | 'following' | 'events';
   className?: string;
   icon: IconNames;
   active: boolean;
@@ -170,6 +170,12 @@ const UserNavbar = memo<Props>(({ user }) => {
       active: pathname.endsWith('submissions'),
       path: 'submissions',
       icon: 'idea',
+    },
+    {
+      label: 'Surveys',
+      active: pathname.endsWith('surveys'),
+      path: 'surveys',
+      icon: 'survey',
     },
     {
       label: formatMessage(messages.commentsWithCount, {
