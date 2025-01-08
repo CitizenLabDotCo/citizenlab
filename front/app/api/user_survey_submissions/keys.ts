@@ -1,7 +1,7 @@
 import { QueryKeys } from 'utils/cl-react-query/types';
 
 const baseKey = {
-  type: 'user_ideas_count',
+  type: 'idea_mini',
 };
 
 const userSurveySubmissionsKeys = {
