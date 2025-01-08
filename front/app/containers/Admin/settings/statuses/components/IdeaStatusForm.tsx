@@ -18,7 +18,7 @@ import {
   automatedInputStatusCodes,
   IdeaStatusParticipationMethod,
   inputStatusCodes,
-  TIdeaStatusCode,
+  InputStatusCode,
 } from 'api/idea_statuses/types';
 
 import { Section, SectionField } from 'components/admin/Section';
@@ -37,7 +37,7 @@ import messages from './messages';
 
 export interface FormValues {
   color: string;
-  code: TIdeaStatusCode;
+  code: InputStatusCode;
   title_multiloc: Multiloc;
   description_multiloc: Multiloc;
 }

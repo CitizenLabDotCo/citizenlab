@@ -15,6 +15,7 @@ const Divider = ({
     borderTop={`1px solid ${colors.divider}`}
     margin="1em 0"
     padding="0"
+    width="100%"
     {...rest}
   />
 );
