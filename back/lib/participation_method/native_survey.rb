@@ -8,7 +8,8 @@ module ParticipationMethod
 
     def allowed_extra_field_input_types
       %w[page number linear_scale text multiline_text select multiselect
-        multiselect_image file_upload shapefile_upload point line polygon]
+        multiselect_image file_upload shapefile_upload point line polygon
+        ranking]
     end
 
     def assign_defaults(input)

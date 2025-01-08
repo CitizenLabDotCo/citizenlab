@@ -110,7 +110,7 @@ class CustomField < ApplicationRecord
   end
 
   def support_options?
-    %w[select multiselect select_image multiselect_image].include?(input_type)
+    %w[select multiselect select_image multiselect_image ranking].include?(input_type)
   end
 
   def support_free_text_value?
