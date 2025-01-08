@@ -4,7 +4,6 @@
 namespace :postcodes do
   desc 'Adds a list of custom field options to the specified custom field & reorders all alphabetically'
   task :add_custom_field_options, %i[host url id locale] => [:environment] do |_t, args|
-    pp args[:url]
     options = open(args[:url]).readlines.map(&:strip)
     Apartment::Tenant.switch(args[:host].tr('.', '_')) do
       locale = args[:locale] || AppConfiguration.instance.settings.dig('core', 'locales').first
