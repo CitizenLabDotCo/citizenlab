@@ -283,8 +283,8 @@ export default defineMessages({
     defaultMessage: 'Cancel',
   },
   logicAnyOtherAnswer: {
-    id: 'app.components.formBuilder.logicAnyOtherAnswer',
-    defaultMessage: 'Any other answer',
+    id: 'app.components.formBuilder.logicAnyOtherAnswer2',
+    defaultMessage: 'Any answer not otherwise configured',
   },
   logicNoAnswer: {
     id: 'app.components.formBuilder.logicNoAnswer',
