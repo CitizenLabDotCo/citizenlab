@@ -93,6 +93,10 @@ const IdeationInputs = ({
   prescreening_enabled,
   togglePrescreeningEnabled,
 }: Props) => {
+  const prescreeningIdeationEnabled = useFeatureFlag({
+    name: 'prescreening_ideation',
+  });
+
   return (
     <>
       <AnonymousPostingToggle
@@ -108,9 +112,7 @@ const IdeationInputs = ({
       {
         // Remove the following condition when pricing decision made
         // And add feature flag with onlyCheckAllowed back into prescreeningFeatureAllowed
-        useFeatureFlag({
-          name: 'prescreening_ideation',
-        }) && (
+        prescreeningIdeationEnabled && (
           <PrescreeningToggle
             prescreening_enabled={prescreening_enabled}
             togglePrescreeningEnabled={togglePrescreeningEnabled}

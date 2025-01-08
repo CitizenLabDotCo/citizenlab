@@ -59,7 +59,7 @@ class CustomField < ApplicationRecord
   INPUT_TYPES = %w[
     checkbox date file_upload files html html_multiloc image_files linear_scale multiline_text multiline_text_multiloc
     multiselect multiselect_image number page point line polygon select select_image shapefile_upload text text_multiloc
-    topic_ids section cosponsor_ids
+    topic_ids section cosponsor_ids ranking
   ].freeze
   CODES = %w[
     author_id birthyear body_multiloc budget domicile education gender idea_files_attributes idea_images_attributes
@@ -110,7 +110,7 @@ class CustomField < ApplicationRecord
   end
 
   def support_options?
-    %w[select multiselect select_image multiselect_image].include?(input_type)
+    %w[select multiselect select_image multiselect_image ranking].include?(input_type)
   end
 
   def support_free_text_value?
@@ -186,60 +186,10 @@ class CustomField < ApplicationRecord
   end
 
   def accept(visitor)
-    case input_type
-    when 'checkbox'
-      visitor.visit_checkbox self
-    when 'date'
-      visitor.visit_date self
-    when 'files'
-      visitor.visit_files self
-    when 'file_upload'
-      visitor.visit_file_upload self
-    when 'html'
-      visitor.visit_html self
-    when 'html_multiloc'
-      visitor.visit_html_multiloc self
-    when 'image_files'
-      visitor.visit_image_files self
-    when 'linear_scale'
-      visitor.visit_linear_scale self
-    when 'multiline_text'
-      visitor.visit_multiline_text self
-    when 'multiline_text_multiloc'
-      visitor.visit_multiline_text_multiloc self
-    when 'multiselect'
-      visitor.visit_multiselect self
-    when 'multiselect_image'
-      visitor.visit_multiselect_image self
-    when 'number'
-      visitor.visit_number self
-    when 'page'
-      visitor.visit_page self
-    when 'point'
-      visitor.visit_point self
-    when 'line'
-      visitor.visit_line self
-    when 'polygon'
-      visitor.visit_polygon self
-    when 'section'
-      visitor.visit_section self
-    when 'select'
-      visitor.visit_select self
-    when 'select_image'
-      visitor.visit_select_image self
-    when 'shapefile_upload'
-      visitor.visit_shapefile_upload self
-    when 'text'
-      visitor.visit_text self
-    when 'text_multiloc'
-      visitor.visit_text_multiloc self
-    when 'topic_ids'
-      visitor.visit_topic_ids self
-    when 'cosponsor_ids'
-      visitor.visit_cosponsor_ids self
-    else
-      raise "Unsupported input type: #{input_type}"
-    end
+    visitor_method = :"visit_#{input_type}"
+    raise "Unsupported input type: #{input_type}" if !visitor.respond_to? visitor_method
+
+    visitor.send visitor_method, self
   end
 
   # Special behaviour for ideation section 1

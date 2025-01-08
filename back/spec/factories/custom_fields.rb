@@ -267,6 +267,22 @@ FactoryBot.define do
       input_type { 'number' }
     end
 
+    factory :custom_field_ranking do
+      title_multiloc do
+        {
+          'en' => 'Rank your favourite means of public transport'
+        }
+      end
+      input_type { 'ranking' }
+
+      trait :with_options do
+        after(:create) do |cf|
+          create(:custom_field_option, custom_field: cf, key: 'by_train')
+          create(:custom_field_option, custom_field: cf, key: 'by_bike')
+        end
+      end
+    end
+
     factory :custom_field_birthyear do
       key { 'birthyear' }
       title_multiloc { { en: 'birthyear' } }
