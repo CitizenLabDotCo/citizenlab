@@ -2,7 +2,6 @@
 
 require 'rails_helper'
 
-# TODO: move-old-proposals-test
 RSpec.describe EmailCampaigns::CosponsorOfYourIdeaMailer do
   describe 'campaign_mail' do
     let_it_be(:recipient) { create(:user, locale: 'en') }
