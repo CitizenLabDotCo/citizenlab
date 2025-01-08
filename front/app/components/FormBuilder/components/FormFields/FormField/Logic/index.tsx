@@ -43,9 +43,13 @@ const Logic = ({
 
   const pageMessage = formatMessage(messages.page);
 
-  const specialLogicRules = field.logic?.rules?.filter((rule) =>
+  const catchAllLogicRules = field.logic?.rules?.filter((rule) =>
     ['any_other_answer', 'no_answer'].includes(rule.if.toString())
   );
+  const catchAllLogicMessages = {
+    any_other_answer: formatMessage(messages.logicAnyOtherAnswer),
+    no_answer: formatMessage(messages.logicNoAnswer),
+  };
 
   return (
     <Box>
@@ -125,8 +129,8 @@ const Logic = ({
           )}
         />
       )}
-      {specialLogicRules &&
-        specialLogicRules.map((rule) => {
+      {catchAllLogicRules &&
+        catchAllLogicRules.map((rule) => {
           const key = `${field.temp_id || field.id}_${rule.if}`;
           return (
             <Box key={key}>
@@ -136,7 +140,7 @@ const Logic = ({
                   field.temp_id || field.id,
                   formCustomFields
                 )}
-                answerTitle={rule?.if.toString()}
+                answerTitle={catchAllLogicMessages[rule?.if.toString()]}
                 targetPage={getTitleFromPageId(
                   rule?.goto_page_id,
                   formEndMessage,

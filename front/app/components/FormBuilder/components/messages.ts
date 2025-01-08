@@ -282,4 +282,12 @@ export default defineMessages({
     id: 'app.components.formBuilder.cancelLeaveBuilderButtonText',
     defaultMessage: 'Cancel',
   },
+  logicAnyOtherAnswer: {
+    id: 'app.components.formBuilder.logicAnyOtherAnswer',
+    defaultMessage: 'Any other answer',
+  },
+  logicNoAnswer: {
+    id: 'app.components.formBuilder.logicNoAnswer',
+    defaultMessage: 'No answer',
+  },
 });
