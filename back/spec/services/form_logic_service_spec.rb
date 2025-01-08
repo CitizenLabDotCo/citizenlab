@@ -460,23 +460,23 @@ describe FormLogicService do
         expect(form_logic.ui_schema_rules_for(page2)).to be_nil
         expect(form_logic.ui_schema_rules_for(question2)).to be_nil
         expect(form_logic.ui_schema_rules_for(page3)).to eq([{
-                                                               effect: 'HIDE',
-                                                               condition: {
-                                                                 scope: "#/properties/#{question2.key}",
-                                                                 schema: {
-                                                                   enum: [option1.key]
-                                                                 }
-                                                               }
-                                                             },
-                                                             {
-                                                               effect: 'HIDE',
-                                                               condition: {
-                                                                 scope: "#/properties/#{question2.key}",
-                                                                 schema: {
-                                                                   enum: [option2.key]
-                                                                 }
-                                                               }
-                                                             }])
+          effect: 'HIDE',
+          condition: {
+            scope: "#/properties/#{question2.key}",
+            schema: {
+              enum: [option1.key]
+            }
+          }
+        },
+          {
+            effect: 'HIDE',
+            condition: {
+              scope: "#/properties/#{question2.key}",
+              schema: {
+                enum: [option2.key]
+              }
+            }
+          }])
         expect(form_logic.ui_schema_rules_for(page4)).to be_nil
         expect(form_logic.ui_schema_rules_for(page5)).to be_nil
       end
@@ -498,32 +498,32 @@ describe FormLogicService do
         expect(form_logic.ui_schema_rules_for(page2)).to be_nil
         expect(form_logic.ui_schema_rules_for(question2)).to be_nil
         expect(form_logic.ui_schema_rules_for(page3)).to eq([{
-                                                               effect: 'HIDE',
-                                                               condition: {
-                                                                 scope: "#/properties/#{question2.key}",
-                                                                 schema: {
-                                                                   enum: [option1.key]
-                                                                 }
-                                                               }
-                                                             },
-                                                             {
-                                                               effect: 'HIDE',
-                                                               condition: {
-                                                                 scope: "#/properties/#{question2.key}",
-                                                                 schema: {
-                                                                   enum: [option2.key]
-                                                                 }
-                                                               }
-                                                             }])
+          effect: 'HIDE',
+          condition: {
+            scope: "#/properties/#{question2.key}",
+            schema: {
+              enum: [option1.key]
+            }
+          }
+        },
+          {
+            effect: 'HIDE',
+            condition: {
+              scope: "#/properties/#{question2.key}",
+              schema: {
+                enum: [option2.key]
+              }
+            }
+          }])
         expect(form_logic.ui_schema_rules_for(page4)).to eq([{
-                                                               effect: 'HIDE',
-                                                               condition: {
-                                                                 scope: "#/properties/#{question2.key}",
-                                                                 schema: {
-                                                                   enum: [option2.key]
-                                                                 }
-                                                               }
-                                                             }])
+          effect: 'HIDE',
+          condition: {
+            scope: "#/properties/#{question2.key}",
+            schema: {
+              enum: [option2.key]
+            }
+          }
+        }])
         expect(form_logic.ui_schema_rules_for(page5)).to be_nil
       end
     end
