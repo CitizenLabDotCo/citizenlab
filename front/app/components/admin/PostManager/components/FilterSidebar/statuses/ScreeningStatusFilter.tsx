@@ -11,6 +11,7 @@ import usePhase from 'api/phases/usePhase';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
+import { ManagerType } from 'components/admin/PostManager';
 import T from 'components/T';
 
 import { FormattedMessage } from 'utils/cl-intl';
@@ -29,9 +30,10 @@ interface Props {
   status: IIdeaStatusData;
   active: boolean;
   onClick: () => void;
+  type: ManagerType;
 }
 
-const ScreeningStatusFilter = ({ status, active, onClick }: Props) => {
+const ScreeningStatusFilter = ({ status, active, onClick, type }: Props) => {
   const { phaseId } = useParams() as { phaseId: string };
   const { data: phase } = usePhase(phaseId);
 
@@ -44,8 +46,9 @@ const ScreeningStatusFilter = ({ status, active, onClick }: Props) => {
     name: preScreeningFeatureFlag,
     onlyCheckAllowed: true,
   });
-  const phasePrescreeningEnabled =
-    phase?.data.attributes.prescreening_enabled === true;
+  const preScreeningFeatureEnabled = useFeatureFlag({
+    name: preScreeningFeatureFlag,
+  });
 
   const [{ canDrop, isOver }, drop] = useDrop({
     accept: 'IDEA',
@@ -59,30 +62,51 @@ const ScreeningStatusFilter = ({ status, active, onClick }: Props) => {
     }),
   });
 
+  // Do not show the Screening status in the general input manager,
+  // as this filter is configured at a project level.
+  if (type === 'AllIdeas') return null;
+
   const showAutomaticStatusTooltip =
     status.attributes.can_manually_transition_to === false;
 
-  const prescreeningButtonIsDisabled =
-    !phasePrescreeningEnabled || !preScreeningFeatureAllowed;
+  const phasePrescreeningEnabled =
+    phase?.data.attributes.prescreening_enabled === true;
+  // Checking for the phase setting is enough here.
+  // We don't need to check for the feature flag here. We check if something is enabled at the configuration level,
+  // which means the phase setting in this case.
+  const prescreeningButtonIsDisabled = !phasePrescreeningEnabled;
 
-  const prescreeningTooltipIsDisabled =
-    phasePrescreeningEnabled && preScreeningFeatureAllowed;
+  const showPrescreeningPhaseSettingIsDisabledTooltip =
+    // If the feature is enabled
+    preScreeningFeatureEnabled &&
+    // and it's not enabled for this phase, show this tooltip to inform.
+    !phasePrescreeningEnabled;
+  // If the feature is not commercially allowed, show the upsell tooltip
+  const showPrescreeningUpsellTooltip = !preScreeningFeatureAllowed;
+  // This is messy and the component should probably be split in a real and dummy component (when the feature is not allowed)
+  const tooltipEnabled =
+    showPrescreeningPhaseSettingIsDisabledTooltip ||
+    showPrescreeningUpsellTooltip;
 
   return (
     <div ref={drop}>
       <Tooltip
         content={
+          // We can't have both tooltips at the same time: if the upsell tooltip is shown,
+          // the phase setting tooltip should not be shown.
+          // The feature needs to be allowed before the phase setting is even visible.
           <div>
-            {!preScreeningFeatureAllowed ? (
+            {showPrescreeningUpsellTooltip && (
               <FormattedMessage {...messages.prescreeningTooltipUpsell} />
-            ) : (
+            )}
+            {showPrescreeningPhaseSettingIsDisabledTooltip && (
               <FormattedMessage
                 {...messages.prescreeningTooltipPhaseDisabled}
               />
             )}
           </div>
         }
-        disabled={prescreeningTooltipIsDisabled}
+        disabled={!tooltipEnabled}
       >
         <Box>
           <StatusButton
