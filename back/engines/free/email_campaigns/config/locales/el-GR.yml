@@ -208,7 +208,7 @@ el:
       subject: 'Έχετε μια αποστολή στην πλατφόρμα %{organizationName}'
       preheader_initiative: 'Σας έχει ανατεθεί η πρόταση της ιστοσελίδας %{authorName}'
     invitation_to_cosponsor_idea:
-      cta_reply_to: 'Συν-χορηγός αυτής της πρότασης'
+      cta_reply_to: 'Συν-υποστηρικτής της πρότασης'
       event_description: '%{authorName} δημιούργησε μια νέα πρόταση και θα ήθελε να τη συνυποστηρίξετε.'
       event_description_cosponsoring: 'Η συνυποστήριξη μιας πρότασης σημαίνει ότι <strong>το όνομά σας θα εμφανίζεται</strong> μαζί με τα ονόματα των άλλων συνυποστηρικτών της πρότασης.'
       event_description_before_action: 'Για να δείτε την πρόταση και να αποδεχτείτε την πρόσκληση, πρέπει να είστε συνδεδεμένοι στο λογαριασμό σας.'
