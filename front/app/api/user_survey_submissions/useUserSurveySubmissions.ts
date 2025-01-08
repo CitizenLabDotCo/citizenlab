@@ -7,7 +7,7 @@ import userSurveySubmissionsKeys from './keys';
 import { Response, UserSurveySubmissionsKeys } from './types';
 
 const fetchUserSurveySubmissions = async () => {
-  return fetcher({
+  return fetcher<Response>({
     path: '/ideas/survey_submissions',
     action: 'get',
   });
