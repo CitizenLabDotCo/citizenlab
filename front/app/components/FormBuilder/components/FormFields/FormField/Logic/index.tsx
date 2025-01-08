@@ -45,7 +45,7 @@ const Logic = ({
 
   return (
     <Box>
-      {field.input_type === 'select' &&
+      {['select', 'multiselect'].includes(field.input_type) &&
         field.options &&
         field.options.map((option) => {
           const optionRule = getOptionRule(option, field);
