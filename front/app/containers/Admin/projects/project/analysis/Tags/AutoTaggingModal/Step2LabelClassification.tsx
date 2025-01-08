@@ -4,6 +4,7 @@ import {
   Box,
   Button,
   CheckboxWithLabel,
+  Divider,
   Text,
   Title,
 } from '@citizenlab/cl2-component-library';
@@ -11,8 +12,6 @@ import { xor } from 'lodash-es';
 import { useParams } from 'react-router-dom';
 
 import useAnalysisTags from 'api/analysis_tags/useAnalysisTags';
-
-import Divider from 'components/admin/Divider';
 
 import { useIntl } from 'utils/cl-intl';
 

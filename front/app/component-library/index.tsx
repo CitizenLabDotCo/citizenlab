@@ -29,6 +29,7 @@ import ColorIndicator from './components/ColorIndicator';
 import ColorPickerInput, {
   Props as ColorPickerInputProps,
 } from './components/ColorPickerInput';
+import Divider from './components/Divider';
 import Dropdown, { DropdownListItem } from './components/Dropdown';
 import Error from './components/Error';
 import Icon, { IconProps, IconNames } from './components/Icon';
@@ -197,4 +198,5 @@ export {
   ListItem,
   Tooltip,
   Shimmer,
+  Divider,
 };

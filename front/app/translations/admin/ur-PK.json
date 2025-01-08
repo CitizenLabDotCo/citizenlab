@@ -2590,6 +2590,7 @@
   "app.containers.admin.ContentBuilder.IframeMultiloc.embedIframeTitleTooltip": "یہ معلومات ان صارفین کے لیے فراہم کرنا مفید ہے جو اسکرین ریڈر یا دیگر معاون ٹیکنالوجی پر انحصار کرتے ہیں۔",
   "app.containers.admin.ContentBuilder.IframeMultiloc.embedIframeUrlLabel": "ویب سائٹ کا پتہ",
   "app.containers.admin.ContentBuilder.IframeMultiloc.embedIframeUrlLabelTooltip": "جس ویب سائٹ کو آپ ایمبیڈ کرنا چاہتے ہیں اس کا مکمل URL۔",
+  "app.containers.admin.ContentBuilder.IframeMultiloc.iframeDescription3": "کسی بیرونی ویب سائٹ سے مواد کو اپنے صفحہ پر HTML iFrame میں ڈسپلے کریں۔ نوٹ کریں کہ ہر صفحہ کو سرایت نہیں کیا جا سکتا۔ اگر آپ کو کسی صفحہ کو سرایت کرنے میں پریشانی ہو رہی ہے، تو صفحہ کے مالک سے معلوم کریں کہ آیا یہ سرایت کرنے کی اجازت دینے کے لیے ترتیب دیا گیا ہے۔",
   "app.containers.admin.ContentBuilder.IframeMultiloc.iframeEmbedVisitLinkMessage": "ہمارے سپورٹ پیج پر جائیں۔",
   "app.containers.admin.ContentBuilder.IframeMultiloc.iframeHeightPlaceholder": "300",
   "app.containers.admin.ContentBuilder.IframeMultiloc.iframeInvalidWhitelistUrlErrorMessage": "معذرت، یہ مواد سرایت نہیں ہو سکا۔ مزید جاننے کے لیے {visitLinkMessage} ۔",
