@@ -9,14 +9,13 @@ import {
   Icon,
   IconButton,
   Tooltip,
+  Divider,
 } from '@citizenlab/cl2-component-library';
 
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useRefreshProjectPreviewToken from 'api/projects/useRefreshProjectPreviewToken';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
-
-import Divider from 'components/admin/Divider';
 
 import { trackEventByName } from 'utils/analytics';
 import { useIntl } from 'utils/cl-intl';
