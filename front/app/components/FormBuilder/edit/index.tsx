@@ -231,6 +231,10 @@ const FormEdit = ({
           random_option_ordering: field.random_option_ordering,
           dropdown_layout: field.dropdown_layout,
         }),
+        ...(field.input_type === 'ranking' && {
+          options: field.options || {},
+          random_option_ordering: field.random_option_ordering,
+        }),
         ...(field.input_type === 'linear_scale' && {
           linear_scale_label_1_multiloc:
             field.linear_scale_label_1_multiloc || {},
