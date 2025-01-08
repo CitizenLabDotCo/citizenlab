@@ -78,7 +78,6 @@ Rails.application.routes.draw do
       resources :idea_statuses do
         patch 'reorder', on: :member
       end
-      resources :initiative_statuses, only: %i[index show]
 
       resources :location, only: [] do
         get :autocomplete, on: :collection
@@ -286,10 +285,6 @@ Rails.application.routes.draw do
 
       scope 'mentions', controller: 'mentions' do
         get 'users'
-      end
-
-      scope 'action_descriptors', controller: 'action_descriptors' do
-        get 'initiatives'
       end
 
       resources :baskets, except: [:index] do

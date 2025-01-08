@@ -567,7 +567,6 @@ DROP TABLE IF EXISTS public.maps_layers;
 DROP TABLE IF EXISTS public.machine_translations_machine_translations;
 DROP TABLE IF EXISTS public.internal_comments;
 DROP TABLE IF EXISTS public.initiatives_topics;
-DROP VIEW IF EXISTS public.initiative_initiative_statuses;
 DROP TABLE IF EXISTS public.initiatives;
 DROP TABLE IF EXISTS public.initiative_statuses;
 DROP TABLE IF EXISTS public.initiative_status_changes;
@@ -2633,22 +2632,6 @@ CREATE TABLE public.initiatives (
     followers_count integer DEFAULT 0 NOT NULL,
     editing_locked boolean DEFAULT false NOT NULL
 );
-
-
---
--- Name: initiative_initiative_statuses; Type: VIEW; Schema: public; Owner: -
---
-
-CREATE VIEW public.initiative_initiative_statuses AS
- SELECT initiative_status_changes.initiative_id,
-    initiative_status_changes.initiative_status_id
-   FROM (((public.initiatives
-     JOIN ( SELECT initiative_status_changes_1.initiative_id,
-            max(initiative_status_changes_1.created_at) AS last_status_changed_at
-           FROM public.initiative_status_changes initiative_status_changes_1
-          GROUP BY initiative_status_changes_1.initiative_id) initiatives_with_last_status_change ON ((initiatives.id = initiatives_with_last_status_change.initiative_id)))
-     JOIN public.initiative_status_changes ON (((initiatives.id = initiative_status_changes.initiative_id) AND (initiatives_with_last_status_change.last_status_changed_at = initiative_status_changes.created_at))))
-     JOIN public.initiative_statuses ON ((initiative_statuses.id = initiative_status_changes.initiative_status_id)));
 
 
 --

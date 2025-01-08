@@ -39,8 +39,8 @@ RSpec.describe EmailCampaigns::CosponsorOfYourIdeaMailer do
     end
 
     it 'assigns cta url' do
-      post_url = Frontend::UrlService.new.model_to_url(proposal, locale: Locale.new(recipient.locale))
-      expect(mail.body.encoded).to match(post_url)
+      proposal_url = Frontend::UrlService.new.model_to_url(proposal, locale: Locale.new(recipient.locale))
+      expect(mail.body.encoded).to match(proposal_url)
     end
   end
 end

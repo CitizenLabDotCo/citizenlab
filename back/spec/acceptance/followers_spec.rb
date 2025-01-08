@@ -18,7 +18,7 @@ resource 'Followers' do
       parameter :number, 'Page number'
       parameter :size, 'Number of followers per page'
     end
-    parameter :followable_type, 'One of: "Project", "ProjectFolders::Folder", "Initiative", "Idea"', required: false
+    parameter :followable_type, 'One of: "Project", "ProjectFolders::Folder", "Idea"', required: false
 
     describe do
       let!(:project_follows) { create_list(:project, 2).map { |project| create(:follower, user: user, followable: project) } }

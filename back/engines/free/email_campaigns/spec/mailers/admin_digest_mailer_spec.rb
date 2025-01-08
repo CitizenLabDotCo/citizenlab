@@ -17,11 +17,9 @@ RSpec.describe EmailCampaigns::AdminDigestMailer do
           statistics: {
             activities: {
               new_ideas: { increase: 1 },
-              new_initiatives: { increase: 1 },
               new_reactions: { increase: 1 },
               new_comments: { increase: 1 },
               total_ideas: 1,
-              total_initiatives: 2,
               total_users: 3
             },
             users: {

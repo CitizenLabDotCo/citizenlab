@@ -527,11 +527,8 @@ Rails/FindEach:
 Rails/HasManyOrHasOneDependent:
   Exclude:
     - 'app/models/comment.rb'
-    - 'app/models/concerns/post.rb'
     - 'app/models/idea.rb'
     - 'app/models/idea_status.rb'
-    - 'app/models/initiative.rb'
-    - 'app/models/initiative_status.rb'
     - 'app/models/notification.rb'
     - 'app/models/user.rb'
 
@@ -549,11 +546,8 @@ Rails/I18nLocaleTexts:
 Rails/InverseOf:
   Exclude:
     - 'app/models/comment.rb'
-    - 'app/models/concerns/post.rb'
     - 'app/models/event.rb'
     - 'app/models/idea_status.rb'
-    - 'app/models/initiative.rb'
-    - 'app/models/initiative_status.rb'
     - 'app/models/phase.rb'
     - 'app/models/project.rb'
     - 'app/models/static_page.rb'
@@ -729,13 +723,6 @@ Style/OpenStructUse:
     - 'spec/lib/omniauth_methods/azure_active_directory_spec.rb'
     - 'spec/lib/omniauth_methods/google_spec.rb'
     - 'spec/services/track_intercom_service_spec.rb'
-
-# Offense count: 2
-# Configuration parameters: AllowedMethods.
-# AllowedMethods: respond_to_missing?
-Style/OptionalBooleanParameter:
-  Exclude:
-    - 'app/services/posts_filtering_service.rb'
 
 # Offense count: 1
 # This cop supports unsafe autocorrection (--autocorrect-all).

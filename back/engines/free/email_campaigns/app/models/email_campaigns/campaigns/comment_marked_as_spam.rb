@@ -78,7 +78,7 @@ module EmailCampaigns
         event_payload: {
           initiating_user_first_name: notification.initiating_user&.first_name,
           initiating_user_last_name: notification.initiating_user&.last_name,
-          post_title_multiloc: notification.idea.title_multiloc,
+          idea_title_multiloc: notification.idea.title_multiloc,
           comment_author_name: notification.comment.author_name,
           comment_body_multiloc: notification.comment.body_multiloc,
           comment_url: Frontend::UrlService.new.model_to_url(notification.comment, locale: Locale.new(recipient.locale)),

@@ -5,7 +5,6 @@ require 'rails_helper'
 RSpec.describe Analytics::FactParticipation do
   context 'without dimension types being present' do
     let!(:idea) { create(:idea) }
-    let!(:initiative) { create(:initiative) }
 
     it 'no participations will be returned' do
       expect(described_class.count).to eq(0)

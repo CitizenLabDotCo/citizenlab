@@ -12,7 +12,7 @@ RSpec.describe EmailCampaigns::Campaigns::InternalCommentOnIdeaYouCommentedInter
   describe '#generate_commands' do
     let(:campaign) { create(:internal_comment_on_idea_you_commented_internally_on_campaign) }
     let(:notification) { create(:internal_comment_on_idea_you_commented_internally_on) }
-    let!(:post_image) { create(:idea_image, idea: notification.idea) }
+    let!(:idea_image) { create(:idea_image, idea: notification.idea) }
 
     include_examples 'internal_comment_campaign_generate_commands'
   end

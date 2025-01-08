@@ -23,10 +23,6 @@ class UserRoleService
     end
   end
 
-  def can_moderate_initiatives?(user)
-    user&.admin?
-  end
-
   def can_moderate_project?(project, user)
     user.admin? ||
       (project.persisted? && user.project_moderator?(project.id)) ||

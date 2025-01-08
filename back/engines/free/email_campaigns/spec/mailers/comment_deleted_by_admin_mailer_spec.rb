@@ -15,7 +15,7 @@ RSpec.describe EmailCampaigns::CommentDeletedByAdminMailer do
           comment_body_multiloc: comment.body_multiloc,
           reason_code: 'other',
           other_reason: "I don't tolerate criticism",
-          post_url: Frontend::UrlService.new.model_to_url(comment, locale: Locale.new(recipient.locale))
+          idea_url: Frontend::UrlService.new.model_to_url(comment, locale: Locale.new(recipient.locale))
         }
       }
     end

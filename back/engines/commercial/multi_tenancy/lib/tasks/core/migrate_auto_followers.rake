@@ -9,9 +9,6 @@ namespace :fix_existing_tenants do
         Idea.all.each do |idea|
           remove_reacted_post_followers idea
         end
-        Initiative.all.each do |initiative|
-          remove_reacted_post_followers initiative
-        end
       rescue StandardError => e
         puts "An error occurred: #{e.message}"
       end

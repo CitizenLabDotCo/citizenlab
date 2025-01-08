@@ -14,7 +14,7 @@ module EmailCampaigns
           comment_body_multiloc: comment.body_multiloc,
           reason_code: 'other',
           other_reason: "I don't tolerate criticism",
-          post_url: Frontend::UrlService.new.model_to_url(comment, locale: Locale.new(recipient_user.locale))
+          idea_url: Frontend::UrlService.new.model_to_url(comment, locale: Locale.new(recipient_user.locale))
         }
       }
       campaign = EmailCampaigns::Campaigns::CommentDeletedByAdmin.first
