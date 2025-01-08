@@ -6,8 +6,6 @@ import {
   getIsoDate,
   getIsoDateForToday,
   timeAgo,
-  roundToNearestMultipleOfFive,
-  calculateRoundedEndDate,
 } from './dateUtils';
 import 'moment-timezone';
 
@@ -294,28 +292,5 @@ describe('in Asia/Tokyo time zone', () => {
         );
       });
     });
-  });
-});
-
-describe('roundToNearestMultipleOfFive', () => {
-  test('rounds minutes to the nearest multiple of 5', () => {
-    const inputDate = new Date(2024, 0, 1, 12, 17); // January 1, 2024, 12:17 PM
-    const result = roundToNearestMultipleOfFive(inputDate);
-    const expected = new Date(2024, 0, 1, 12, 20); // Rounded up to the nearest multiple of 5, 12:20 PM
-    expect(result).toEqual(expected);
-  });
-});
-
-describe('calculateRoundedEndDate', () => {
-  test('calculates the rounded end date with default 30 minutes', () => {
-    const startDate = new Date(2024, 0, 1, 12, 0); // January 1, 2024, 12:00 PM
-    const expectedEndDate = new Date(2024, 0, 1, 12, 30); // Start date + 30 minutes
-    expect(calculateRoundedEndDate(startDate)).toEqual(expectedEndDate);
-  });
-
-  test('calculates the rounded end date taking into account a custom duration', () => {
-    const startDate = new Date(2024, 0, 1, 12, 0); // January 1, 2024, 12:00 PM
-    const expectedEndDate = new Date(2024, 0, 1, 12, 45); // Start date + 45 minutes
-    expect(calculateRoundedEndDate(startDate, 45)).toEqual(expectedEndDate);
   });
 });

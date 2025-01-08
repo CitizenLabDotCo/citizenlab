@@ -75,7 +75,7 @@ const Message = styled.p`
 interface Props
   extends Omit<
     OriginalButtonProps,
-    'className' | 'text' | 'disabled' | 'setSubmitButtonRef' | 'processing'
+    'text' | 'disabled' | 'setSubmitButtonRef' | 'processing'
   > {
   status: ISubmitState;
   loading: boolean;
@@ -135,7 +135,7 @@ const SubmitWrapper = (props: Props) => {
   return (
     <Wrapper aria-live="polite" fullWidth={!!fullWidth}>
       <Button
-        className="e2e-submit-wrapper-button"
+        className={`e2e-submit-wrapper-button ${props.className ?? ''}`}
         buttonStyle={style}
         processing={loading}
         disabled={isSubmitButtonDisabled}

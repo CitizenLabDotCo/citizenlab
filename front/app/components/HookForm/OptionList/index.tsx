@@ -16,7 +16,8 @@ import { SupportedLocale, CLError, RHFErrors, Multiloc } from 'typings';
 
 import { IOptionsType } from 'api/custom_fields/types';
 
-import { List, SortableRow } from 'components/admin/ResourceList';
+import { List } from 'components/admin/ResourceList';
+import SortableRow from 'components/admin/ResourceList/SortableRow';
 import { SectionField } from 'components/admin/Section';
 import { generateTempId } from 'components/FormBuilder/utils';
 import Error, { TFieldName } from 'components/UI/Error';

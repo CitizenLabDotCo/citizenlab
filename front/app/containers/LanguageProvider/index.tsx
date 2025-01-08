@@ -10,6 +10,14 @@ import { localeStream } from 'utils/localeStream';
 import CustomIntlContext from './CustomIntlContext';
 import { AllMessages, IntlShapes } from './types';
 
+type TranslationModule = { default: Record<string, string> };
+
+const messagesGlob: Record<string, () => Promise<TranslationModule>> =
+  import.meta.glob('/i18n/*.ts') as Record<
+    string,
+    () => Promise<TranslationModule>
+  >;
+
 interface Props {
   children: React.ReactNode;
 }
@@ -32,23 +40,22 @@ const LanguageProvider = ({ children }: Props) => {
     if (!tenantLocales) return;
 
     for (const locale of tenantLocales) {
-      // TODO: Fix this the next time the file is edited.
       // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-      if (!messages[locale]) {
-        import(`i18n/${locale}`).then((translationMessages) => {
+      if (!messages[locale] && messagesGlob[`/i18n/${locale}.ts`]) {
+        messagesGlob[`/i18n/${locale}.ts`]().then((module) => {
           const intlCache = createIntlCache();
 
           const intlShape = createIntl(
             {
               locale,
-              messages: translationMessages.default,
+              messages: module.default,
             },
             intlCache
           );
 
           setMessages((prevState) => ({
             ...prevState,
-            [locale]: translationMessages.default,
+            [locale]: module.default,
           }));
           setIntlShapes((prevState) => ({
             ...prevState,

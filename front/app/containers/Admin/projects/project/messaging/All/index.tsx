@@ -15,8 +15,8 @@ import { isDraft } from 'api/campaigns/util';
 import DraftCampaignRow from 'components/admin/Email/DraftCampaignRow';
 import SentCampaignRow from 'components/admin/Email/SentCampaignRow';
 import { ButtonWrapper } from 'components/admin/PageWrapper';
-import Pagination from 'components/Pagination';
 import { List } from 'components/admin/ResourceList';
+import Pagination from 'components/Pagination';
 
 import { FormattedMessage } from 'utils/cl-intl';
 import { getPageNumberFromUrl } from 'utils/paginationUtils';

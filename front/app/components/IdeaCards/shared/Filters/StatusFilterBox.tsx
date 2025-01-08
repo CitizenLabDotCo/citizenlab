@@ -1,5 +1,6 @@
 import React from 'react';
 
+import { IdeaStatusParticipationMethod } from 'api/idea_statuses/types';
 import useIdeaStatuses from 'api/idea_statuses/useIdeaStatuses';
 import { IIdeasFilterCountsQueryParameters } from 'api/ideas_filter_counts/types';
 import useIdeasFilterCounts from 'api/ideas_filter_counts/useIdeasFilterCounts';
@@ -11,7 +12,7 @@ interface Props {
   ideaQueryParameters: IIdeasFilterCountsQueryParameters;
   onChange: (arg: string | null) => void;
   className?: string;
-  participationMethod?: 'ideation' | 'proposals';
+  participationMethod?: IdeaStatusParticipationMethod;
 }
 
 const StatusFilterBox = ({

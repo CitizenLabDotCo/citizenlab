@@ -9,7 +9,8 @@ import useUpdateProjectFolderMembership from 'api/projects/useUpdateProjectFolde
 
 import ProjectRow from 'containers/Admin/projects/components/ProjectRow';
 
-import { SortableList, SortableRow } from 'components/admin/ResourceList';
+import SortableList from 'components/admin/ResourceList/SortableList';
+import SortableRow from 'components/admin/ResourceList/SortableRow';
 
 import { FormattedMessage } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';

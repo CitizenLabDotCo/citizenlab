@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 
 import {
   Box,
+  Divider,
   Text,
   colors,
   fontSizes,
@@ -14,7 +15,6 @@ import useAnalysisInput from 'api/analysis_inputs/useAnalysisInput';
 import useAnalysisUserById from 'api/analysis_users/useAnalysisUserById';
 import usePhase from 'api/phases/usePhase';
 
-import Divider from 'components/admin/Divider';
 import Avatar from 'components/Avatar';
 import Button from 'components/UI/Button';
 

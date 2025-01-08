@@ -1,8 +1,12 @@
 import React from 'react';
 
+import { setTranslations } from 'components/admin/ContentBuilder/LanguageProvider/__mocks__/i18nLoader';
+
 import { render, screen, waitFor } from 'utils/testUtils/rtl';
 
 import FullScreenPreview from '.';
+
+jest.mock('components/admin/ContentBuilder/LanguageProvider/i18nLoader');
 
 let mockLocale = 'en';
 
@@ -77,6 +81,14 @@ document.getElementById = (id, ...args) => {
 };
 
 describe('Preview Content', () => {
+  beforeEach(() => {
+    // Reset translations to default before each test
+    setTranslations({
+      en: { message: 'Hello', title: 'Test Project' },
+      'fr-FR': { message: 'Bonjour', title: 'Test Projet' },
+    });
+  });
+
   it('should render', async () => {
     render(<FullScreenPreview />);
     await waitFor(() => {

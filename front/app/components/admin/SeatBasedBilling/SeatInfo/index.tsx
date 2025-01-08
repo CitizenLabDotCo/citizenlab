@@ -49,11 +49,13 @@ const SeatInfo = ({ seatType }: SeatInfoProps) => {
   const { pathname } = useLocation();
   const { data: appConfiguration } = useAppConfiguration();
   const { data: seats } = useSeats();
-  const adminsAndMangersLink: RouteType =
-    // TODO: Fix this the next time the file is edited.
-    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-    '/admin/users/admins' || '/admin/users/moderators';
-  const isOnAdminsAndManagersPage = pathname.includes(adminsAndMangersLink);
+  const adminsAndManagersLinks: RouteType[] = [
+    '/admin/users/admins',
+    '/admin/users/moderators',
+  ];
+  const isOnAdminsOrManagersPage = adminsAndManagersLinks.some((link) =>
+    pathname.includes(link)
+  );
 
   const maximumSeatNumbers: SeatNumbersType = {
     admin:
@@ -71,6 +73,8 @@ const SeatInfo = ({ seatType }: SeatInfoProps) => {
         .additional_moderators_number,
   };
   const additionalSeats = additionalSeatNumbers[seatType];
+  const linkTo =
+    seatType === 'admin' ? '/admin/users/admins' : '/admin/users/moderators';
 
   // Maximum seat number being null means that there are unlimited seats so we don't show the seat info
   if (isNil(maximumSeatNumber) || !seats) {
@@ -159,8 +163,8 @@ const SeatInfo = ({ seatType }: SeatInfoProps) => {
           <Text fontSize="xl" my="4px" data-cy={`e2e-${seatType}-used-seats`}>
             {usedSeats}
           </Text>
-          {!isOnAdminsAndManagersPage && usedSeats > 0 && (
-            <StyledLink target="_blank" to={adminsAndMangersLink}>
+          {!isOnAdminsOrManagersPage && usedSeats > 0 && (
+            <StyledLink target="_blank" to={linkTo}>
               <Text variant="bodyXs" my="0px" color="coolGrey600">
                 {formatMessage(messages.view)}
               </Text>

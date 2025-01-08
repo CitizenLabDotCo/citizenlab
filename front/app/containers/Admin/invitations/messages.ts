@@ -90,7 +90,7 @@ export default defineMessages({
   moderatorLabelTooltipLink: {
     id: 'app.containers.Admin.Invitations.moderatorLabelTooltipLink',
     defaultMessage:
-      'http://support.citizenlab.co/en-your-citizenlab-platform-step-by-step/set-up/pointing-out-the-right-project-moderators',
+      'http://support.govocal.com/en-your-citizenlab-platform-step-by-step/set-up/pointing-out-the-right-project-moderators',
   },
   moderatorLabelTooltipLinkText: {
     id: 'app.containers.Admin.Invitations.moderatorLabelTooltipLinkText',
@@ -189,7 +189,7 @@ export default defineMessages({
   invitesSupportPageURL: {
     id: 'app.containers.Admin.Invitations.invitesSupportPageURL',
     defaultMessage:
-      'http://support.citizenlab.co/en/articles/1771605-invite-people-to-the-platform',
+      'http://support.govocal.com/en/articles/1771605-invite-people-to-the-platform',
   },
   tabInviteUsers: {
     id: 'app.containers.Admin.Invitations.tabInviteUsers',

@@ -66,7 +66,7 @@ const AutomatedEmails = () => {
   };
 
   return (
-    <>
+    <Box className="intercom-messaging-automated-emails-page">
       <Box mb="28px">
         <Title color="primary">
           <FormattedMessage {...messages.automatedEmails} />
@@ -92,7 +92,7 @@ const AutomatedEmails = () => {
           onClose={() => setExampleModalCampaignId(null)}
         />
       )}
-    </>
+    </Box>
   );
 };
 

@@ -10,11 +10,9 @@ import useUserCustomFieldOptions from 'api/user_custom_fields_options/useUserCus
 import useLocalize from 'hooks/useLocalize';
 
 import { ButtonWrapper } from 'components/admin/PageWrapper';
-import {
-  SortableList,
-  SortableRow,
-  TextCell,
-} from 'components/admin/ResourceList';
+import { TextCell } from 'components/admin/ResourceList';
+import SortableList from 'components/admin/ResourceList/SortableList';
+import SortableRow from 'components/admin/ResourceList/SortableRow';
 import Button from 'components/UI/Button';
 
 import { injectIntl } from 'utils/cl-intl';

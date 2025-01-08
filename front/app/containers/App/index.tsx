@@ -99,16 +99,31 @@ const App = ({ children }: Props) => {
 
   useEffect(() => {
     if (appConfiguration && !isAppInitialized) {
+      // Set the default timezone
       moment.tz.setDefault(
         appConfiguration.data.attributes.settings.core.timezone
+      );
+
+      // Dynamically load Moment.js locales
+      const localeImports = import.meta.glob(
+        '/node_modules/moment/locale/*.js'
       );
 
       uniq(
         appConfiguration.data.attributes.settings.core.locales
           .filter((locale) => locale !== 'en')
           .map((locale) => appLocalesMomentPairs[locale])
-      ).forEach((locale) => require(`moment/locale/${locale}.js`));
+      ).forEach((locale) => {
+        const localePath = `/node_modules/moment/locale/${locale}.js`;
+        const loadLocale = localeImports[localePath];
 
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+        if (loadLocale) {
+          loadLocale();
+        }
+      });
+
+      // Weglot initialization
       if (appConfiguration.data.attributes.settings.core.weglot_api_key) {
         const script = document.createElement('script');
         script.async = false;
@@ -125,6 +140,7 @@ const App = ({ children }: Props) => {
         script.src = 'https://cdn.weglot.com/weglot.min.js';
       }
 
+      // Custom Adobe fonts or custom font URLs
       if (
         appConfiguration.data.attributes.style &&
         appConfiguration.data.attributes.style.customFontAdobeId
@@ -149,6 +165,7 @@ const App = ({ children }: Props) => {
           const fontURL = (
             appConfiguration.data.attributes.style as IAppConfigurationStyle
           ).customFontURL;
+
           if (fontName !== undefined && fontURL !== undefined) {
             WebfontLoader.load({
               custom: {

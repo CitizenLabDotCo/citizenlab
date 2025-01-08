@@ -14,9 +14,8 @@ import useAddReport from 'api/reports/useAddReport';
 
 import reportTitleIsTaken from 'containers/Admin/reporting/utils/reportTitleIsTaken';
 
-import DateRangePicker, {
-  Dates,
-} from 'components/admin/DatePickers/DateRangePicker';
+import { DateRange } from 'components/admin/DatePickers/_shared/typings';
+import DateRangePicker from 'components/admin/DatePickers/DateRangePicker';
 import Button from 'components/UI/Button';
 import Error from 'components/UI/Error';
 import Modal from 'components/UI/Modal';
@@ -44,7 +43,7 @@ const CreateReportModal = ({ open, onClose }: Props) => {
   const [selectedProjectId, setSelectedProjectId] = useState<
     string | undefined
   >();
-  const [dates, setDates] = useState<Dates>({ startDate: null, endDate: null });
+  const [dates, setDates] = useState<Partial<DateRange>>({});
 
   const [errorMessage, setErrorMessage] = useState<string | undefined>();
   const { formatMessage } = useIntl();
@@ -53,7 +52,7 @@ const CreateReportModal = ({ open, onClose }: Props) => {
   const blockSubmit =
     reportTitleTooShort ||
     (template === 'project' ? selectedProjectId === undefined : false) ||
-    (template === 'platform' ? !dates.startDate || !dates.endDate : false);
+    (template === 'platform' ? !dates.from || !dates.to : false);
 
   const handleProjectFilter = (option: IOption) => {
     setSelectedProjectId(option.value === '' ? undefined : option.value);
@@ -124,12 +123,8 @@ const CreateReportModal = ({ open, onClose }: Props) => {
           </Box>
         )}
         {template === 'platform' && (
-          <Box width="100%" mt="12px">
-            <DateRangePicker
-              startDate={dates.startDate}
-              endDate={dates.endDate}
-              onDatesChange={setDates}
-            />
+          <Box width="100%" mt="12px" display="flex">
+            <DateRangePicker selectedRange={dates} onUpdateRange={setDates} />
           </Box>
         )}
         {errorMessage && (
