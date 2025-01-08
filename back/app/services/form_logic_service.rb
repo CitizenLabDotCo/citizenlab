@@ -32,7 +32,7 @@ class FormLogicService
       elsif field.section?
         valid_section_logic_structure?(field)
       else
-        valid_field_logic_structure?(field) && valid_rules?(field) && required?(field)
+        valid_field_logic_structure?(field) && valid_rules?(field) && field.required?
       end
       all_valid && field_valid
     end
@@ -51,13 +51,6 @@ class FormLogicService
   private
 
   attr_reader :fields, :field_index, :option_index
-
-  def required?(field)
-    return true if field.required?
-
-    add_not_required_error(field)
-    false
-  end
 
   def valid_field_logic_structure?(field)
     logic = field.logic
@@ -139,10 +132,6 @@ class FormLogicService
 
   def add_not_allowed_on_section_error(field)
     field.errors.add(:logic, :not_allowed_on_section_fields, message: 'not allowed on section fields')
-  end
-
-  def add_not_required_error(field)
-    field.errors.add(:logic, :only_allowed_on_required_fields, message: 'allowed only on required fields')
   end
 
   def add_invalid_structure_error(field)
