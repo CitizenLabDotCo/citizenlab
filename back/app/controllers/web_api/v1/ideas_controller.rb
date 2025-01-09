@@ -94,7 +94,14 @@ class WebApi::V1::IdeasController < ApplicationController
 
     ideas = paginate ideas
 
-    render json: linked_json(ideas, WebApi::V1::IdeaMiniSerializer, params: jsonapi_serializer_params)
+    ideas.includes(:project)
+
+    render json: linked_json(
+      ideas,
+      WebApi::V1::IdeaSerializer,
+      params: jsonapi_serializer_params,
+      include: [:project]
+    )
   end
 
   def filter_counts
