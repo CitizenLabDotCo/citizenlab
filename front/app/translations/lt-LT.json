@@ -742,7 +742,6 @@
   "app.components.formBuilder.question": "Klausimas",
   "app.components.formBuilder.questionCannotBeDeleted": "Šio klausimo negalima ištrinti.",
   "app.components.formBuilder.questionDescriptionOptional": "Klausimo aprašymas (neprivaloma)",
-  "app.components.formBuilder.questionLogicHelperTextDefault": "Jei prie atsakymo nepridedama jokios logikos, forma bus tvarkoma įprasta tvarka. Į klausimą pridėjus logikos, jis taps privalomas pagal numatytuosius nustatymus. Daugiau informacijos rasite svetainėje {supportPageLink}.",
   "app.components.formBuilder.questionTitle": "Klausimo pavadinimas",
   "app.components.formBuilder.randomize": "Atsitiktinė atranka",
   "app.components.formBuilder.randomizeToolTip": "Kiekvieno naudotojo atsakymų eiliškumas bus nustatomas atsitiktine tvarka.",

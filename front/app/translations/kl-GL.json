@@ -516,7 +516,6 @@
   "app.components.formBuilder.question": "Question",
   "app.components.formBuilder.questionCannotBeDeleted": "This question can't be deleted.",
   "app.components.formBuilder.questionDescriptionOptional": "Question description (optional)",
-  "app.components.formBuilder.questionLogicHelperTextDefault": "If no logic is added to an answer, the form will follow its normal flow. Adding logic to a question will make it required by default. For more information, visit {supportPageLink}",
   "app.components.formBuilder.questionTitle": "Question title",
   "app.components.formBuilder.range": "Range",
   "app.components.formBuilder.removeAnswer": "Remove answer",
