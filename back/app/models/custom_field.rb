@@ -120,7 +120,7 @@ class CustomField < ApplicationRecord
   end
 
   def supports_xlsx_export?
-    return false if field.code == 'idea_images_attributes' # Is this still applicable?
+    return false if code == 'idea_images_attributes' # Is this still applicable?
 
     %w[page section].exclude?(input_type)
   end
