@@ -264,7 +264,7 @@ el:
       event_description: '%{authorNameFull} έθεσε μια αντίδραση στην ιδέα "%{ideaTitle}". Κάντε κλικ στο παρακάτω κουμπί για να συνεχίσετε τη συζήτηση με το %{authorName}.'
       main_header: '%{authorName} σχολίασε μια ιδέα που ακολουθείτε'
       subject: 'Υπάρχει ένα νέο σχόλιο σε μια ιδέα που ακολουθείτε'
-      preheader: '%{authorName} άφησε ένα σχόλιο για μια ιδέα για το %{organizationName}'
+      preheader: '%{authorName} άφησε ένα σχόλιο σε μια ιδέα για το %{organizationName}'
     comment_on_initiative_you_follow:
       cta_reply_to: 'Απάντηση στο %{commentAuthor}'
       event_description: '%{authorNameFull} τοποθέτησε μια αντίδραση στην πρωτοβουλία "%{initiativeTitle}". Κάντε κλικ στο παρακάτω κουμπί για να συνεχίσετε τη συζήτηση με το %{authorName}.'
@@ -406,9 +406,9 @@ el:
       preheader: 'Μια νέα φάση θα ξεκινήσει σύντομα για το %{projectName}'
     project_published:
       subject: 'Ένα νέο έργο δημοσιεύθηκε στην πλατφόρμα %{organizationName}.'
-      header_title: 'Δημοσιεύθηκε ένα νέο έργο'
+      header_title: 'Ένα νέο έργο δημοσιεύτηκε'
       header_message: 'Η πλατφόρμα συμμετοχής του %{organizationName} μόλις δημοσίευσε το ακόλουθο έργο:'
-      preheader: 'Δημοσιεύθηκε ένα νέο έργο'
+      preheader: 'Ένα νέο έργο δημοσιεύτηκε'
     status_change_on_idea_you_follow:
       status_change: 'Το νέο καθεστώς αυτής της ιδέας είναι ''%{ideaStatus}'''
       header_message: '%{organizationName} ενημέρωσε την κατάσταση της ιδέας "%{ideaTitle}" στην ψηφιακή πλατφόρμα συμμετοχής τους.'
