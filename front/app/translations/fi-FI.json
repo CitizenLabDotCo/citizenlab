@@ -742,7 +742,6 @@
   "app.components.formBuilder.question": "Kysymys",
   "app.components.formBuilder.questionCannotBeDeleted": "Tätä kysymystä ei voi poistaa.",
   "app.components.formBuilder.questionDescriptionOptional": "Kysymyksen kuvaus (valinnainen)",
-  "app.components.formBuilder.questionLogicHelperTextDefault": "Jos vastaukseen ei lisätä logiikkaa, lomake noudattaa normaalia kulkuaan. Logiikan lisääminen kysymykseen tekee siitä oletuksena pakollisen. Lisätietoja on osoitteessa {supportPageLink}",
   "app.components.formBuilder.questionTitle": "Kysymyksen otsikko",
   "app.components.formBuilder.randomize": "Satunnaista",
   "app.components.formBuilder.randomizeToolTip": "Vastausten järjestys satunnaistetaan käyttäjää kohti",
