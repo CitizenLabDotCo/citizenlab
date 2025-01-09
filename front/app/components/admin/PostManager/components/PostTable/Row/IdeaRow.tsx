@@ -465,6 +465,7 @@ const IdeaRow = ({
         onUpdatePhases={onUpdateIdeaPhases}
         onUpdateTopics={onUpdateIdeaTopics}
         onUpdateStatus={onUpdateIdeaStatus}
+        type={type}
       />
       <PhaseDeselectModal
         open={phaseDeselectModalOpen}

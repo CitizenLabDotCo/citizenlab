@@ -5,7 +5,7 @@ import { Tr, Td, colors } from '@citizenlab/cl2-component-library';
 import { IIdeaStatusData } from 'api/idea_statuses/types';
 import { IPhaseData } from 'api/phases/types';
 
-import { TFilterMenu } from '../../..';
+import { ManagerType, TFilterMenu } from '../../..';
 
 import IdeasStatusSelector from './selectors/IdeasStatusSelector';
 import PhasesSelector from './selectors/PhasesSelector';
@@ -26,6 +26,7 @@ interface Props {
   onUpdatePhases?: (id: string[]) => void;
   onUpdateTopics: (id: string[]) => void;
   onUpdateStatus: (id: string) => void;
+  type: ManagerType;
 }
 
 const SubRow = ({
@@ -41,6 +42,7 @@ const SubRow = ({
   onUpdatePhases,
   onUpdateTopics,
   onUpdateStatus,
+  type,
 }: Props) => {
   return (
     <Tr className={className} background={active ? colors.grey300 : undefined}>
@@ -67,6 +69,7 @@ const SubRow = ({
             statuses={statuses as IIdeaStatusData[]}
             selectedStatus={selectedStatus}
             onUpdateStatus={onUpdateStatus}
+            type={type}
           />
         )}
       </Td>
