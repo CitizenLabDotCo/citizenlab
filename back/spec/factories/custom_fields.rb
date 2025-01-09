@@ -277,8 +277,8 @@ FactoryBot.define do
 
       trait :with_options do
         after(:create) do |cf|
-          create(:custom_field_option, custom_field: cf, key: 'by_train')
-          create(:custom_field_option, custom_field: cf, key: 'by_bike')
+          create(:custom_field_option, custom_field: cf, key: 'by_train', title_multiloc: { 'en' => 'By train' })
+          create(:custom_field_option, custom_field: cf, key: 'by_bike', title_multiloc: { 'en' => 'By bike' })
         end
       end
     end
