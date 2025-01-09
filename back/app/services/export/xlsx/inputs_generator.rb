@@ -56,14 +56,16 @@ module Export
 
       def create_phase_sheet(workbook, phase)
         inputs = eager_load_inputs(phase.ideas.submitted_or_published)
-        sheet_generator = InputSheetGenerator.new inputs, phase
-        sheet_name = MultilocService.new.t phase.title_multiloc
-        sheet_generator.generate_sheet(workbook, sheet_name)
+        generate_sheet(workbook, inputs, phase)
       end
 
       def create_input_sheet(workbook, input)
-        sheet_generator = InputSheetGenerator.new [input], input.creation_phase
-        sheet_name = MultilocService.new.t input.title_multiloc
+        generate_sheet(workbook, [input], input.creation_phase)
+      end
+
+      def generate_sheet(workbook, inputs, phase)
+        sheet_generator = InputSheetGenerator.new inputs, phase
+        sheet_name = MultilocService.new.t phase.title_multiloc
         sheet_generator.generate_sheet(workbook, sheet_name)
       end
 
