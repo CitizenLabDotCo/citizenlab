@@ -2,17 +2,17 @@ import React from 'react';
 
 import { Box, Button, Title, colors } from '@citizenlab/cl2-component-library';
 
-import { IdeaMini } from 'api/user_survey_submissions/types';
+import { IIdeaData } from 'api/ideas/types';
 
 import { downloadSurveySubmission } from './utils';
 
 interface Props {
-  ideaMini: IdeaMini;
+  idea: IIdeaData;
 }
 
-const SurveySubmissionCard = ({ ideaMini }: Props) => {
+const SurveySubmissionCard = ({ idea }: Props) => {
   const handleClick = () => {
-    downloadSurveySubmission(ideaMini.id);
+    downloadSurveySubmission(idea.id);
   };
 
   return (

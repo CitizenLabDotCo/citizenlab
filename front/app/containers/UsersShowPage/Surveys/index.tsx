@@ -10,9 +10,9 @@ const Surveys = () => {
   const { data } = useUserSurveySubmissions();
   return (
     <Box>
-      {data?.data.map((ideaMini) => (
-        <Box display="inline" key={ideaMini.id}>
-          <SurveySubmissionCard ideaMini={ideaMini} />
+      {data?.data.map((idea) => (
+        <Box display="inline" key={idea.id}>
+          <SurveySubmissionCard idea={idea} />
         </Box>
       ))}
     </Box>
