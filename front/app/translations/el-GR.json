@@ -1486,7 +1486,7 @@
   "app.containers.InitiativesNewPage.metaDescription1": "Ξεκινήστε τη δική σας πρόταση και κάντε τη φωνή σας να ακουστεί από το {orgName}",
   "app.containers.InitiativesNewPage.metaTitle1": "Ξεκινήστε μια πρόταση | {orgName}",
   "app.containers.InitiativesNewPage.notEditableOnceReviewed": "Δεν θα είναι δυνατή η επεξεργασία της μετά την εξέταση και την έγκρισή της.",
-  "app.containers.InitiativesNewPage.notEditableOnceVoted": "Δεν θα είναι δυνατόν να το επεξεργαστείτε μόλις κάποιος το ψηφίσει.",
+  "app.containers.InitiativesNewPage.notEditableOnceVoted": "Δεν θα είναι δυνατή η επεξεργασία του όταν κάποιος το ψηφίσει.",
   "app.containers.InitiativesNewPage.orgName": "{orgName}",
   "app.containers.InitiativesNewPage.tipsTitle": "Ορισμένες ειδικές συμβουλές για την ανάρτηση της πρότασής σας",
   "app.containers.InitiativesNewPage.unkownAddress": "Άγνωστη διεύθυνση",
