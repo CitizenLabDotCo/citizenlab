@@ -247,6 +247,7 @@ describe Export::Xlsx::InputSheetGenerator do
       let!(:dog_option) do
         create(:custom_field_option, custom_field: multiselect_field, key: 'dog', title_multiloc: { 'en' => 'Dog' })
       end
+      let!(:ranking_field) { create(:custom_field_ranking, :with_options, resource: form) }
 
       let(:survey_response1) do
         create(
@@ -254,7 +255,7 @@ describe Export::Xlsx::InputSheetGenerator do
           project: phase.project,
           creation_phase: phase,
           phases: [phase],
-          custom_field_values: { multiselect_field.key => %w[cat dog] }
+          custom_field_values: { multiselect_field.key => %w[cat dog], ranking_field.key => %w[by_train by_bike] }
         )
       end
       let(:survey_response2) do
@@ -272,7 +273,7 @@ describe Export::Xlsx::InputSheetGenerator do
           project: phase.project,
           creation_phase: phase,
           phases: [phase],
-          custom_field_values: { multiselect_field.key => %w[dog] },
+          custom_field_values: { multiselect_field.key => %w[dog], ranking_field.key => %w[by_bike by_train] },
           author: nil
         )
       end
@@ -292,6 +293,7 @@ describe Export::Xlsx::InputSheetGenerator do
               column_headers: [
                 'ID',
                 'What are your favourite pets?',
+                'Rank your favourite means of public transport',
                 'Author ID',
                 'Submitted at',
                 'Project'
@@ -300,6 +302,7 @@ describe Export::Xlsx::InputSheetGenerator do
                 [
                   survey_response1.id,
                   'Cat, Dog',
+                  'By train, By bike',
                   survey_response1.author_id,
                   an_instance_of(DateTime), # created_at
                   phase.project.title_multiloc['en']
@@ -307,6 +310,7 @@ describe Export::Xlsx::InputSheetGenerator do
                 [
                   survey_response2.id,
                   'Cat',
+                  '',
                   survey_response2.author_id,
                   an_instance_of(DateTime), # created_at
                   phase.project.title_multiloc['en']
@@ -314,6 +318,7 @@ describe Export::Xlsx::InputSheetGenerator do
                 [
                   survey_response3.id,
                   'Dog',
+                  'By bike, By train',
                   survey_response3.author_id,
                   an_instance_of(DateTime), # created_at
                   phase.project.title_multiloc['en']
