@@ -309,9 +309,9 @@ el:
         option: '%{authorName} σχολίασε μια επιλογή που ακολουθείτε'
         proposal: '%{authorName} σχολίασε μια πρόταση που ακολουθείτε'
         initiative: '%{authorName} σχολιάσατε μια πρωτοβουλία που ακολουθείτε'
-        petition: '%{authorName} σχολίασε μια αίτηση που ακολουθείς'
+        petition: '%{authorName} σχολίασε ένα αίτημα που ακολουθείτε'
       subject: 'Υπάρχει ένα νέο σχόλιο στο "%{input_title}"'
-      preheader: '%{authorName} άφησε ένα σχόλιο για μια ιδέα για το %{organizationName}'
+      preheader: '%{authorName} άφησε ένα σχόλιο σε μια ιδέα για το %{organizationName}'
     comment_on_initiative_you_follow:
       cta_reply_to: 'Απάντηση στο %{commentAuthor}'
       event_description: '%{authorNameFull} τοποθέτησε μια αντίδραση στην πρωτοβουλία "%{initiativeTitle}". Κάντε κλικ στο παρακάτω κουμπί για να συνεχίσετε τη συζήτηση με το %{authorName}.'
@@ -325,13 +325,13 @@ el:
       subject: 'Κάποιος δημοσίευσε μια νέα πρόταση στην πλατφόρμα %{organizationName}'
       preheader: '%{authorName} δημοσίευσε μια νέα πρόταση στην πλατφόρμα σας'
     new_idea_for_admin:
-      main_header_publication: 'Μια νέα είσοδος έχει δημοσιευτεί στην πλατφόρμα σας'
-      event_description_publication: '%{authorName} έχει υποβάλει μια νέα είσοδο στην πλατφόρμα σας. Ανακαλύψτε την τώρα, δώστε κάποια σχόλια ή αλλάξτε την κατάστασή της!'
-      cta_publication: 'Ανατροφοδότηση στο %{authorName}'
-      main_header_prescreening: 'Μια εισαγωγή απαιτεί την αναθεώρησή σας'
-      event_description_prescreening: '%{authorName} έχει υποβάλει μια νέα είσοδο στην πλατφόρμα σας.'
-      input_not_visible_prescreening: '<b>Η είσοδος δεν θα είναι ορατή</b> μέχρι να τροποποιήσετε την κατάστασή της.'
-      cta_prescreening: 'Επανεξέταση της εισόδου'
+      main_header_publication: 'Μια νέα καταχώρηση έχει αναρτηθεί στην πλατφόρμα σας'
+      event_description_publication: '%{authorName} δημοσίευσε μια νέα πρόταση στην πλατφόρμα σας. Ανακαλύψτε την τώρα, δώστε κάποια σχόλια ή αλλάξτε την κατάστασή της!'
+      cta_publication: 'Δώστε σχόλια στον %{authorName}'
+      main_header_prescreening: 'Μια καταχώρηση πρέπει να εξεταστεί από εσάς'
+      event_description_prescreening: '%{authorName} έχει κάνει μια νέα καταχώρηση στην πλατφόρμα σας.'
+      input_not_visible_prescreening: '<b>Η καταχώρηση δε θα είναι ορατή</b> μέχρι να τροποποιήσετε την κατάστασή της.'
+      cta_prescreening: 'Έλεγχος της καταχώρησης'
       days_ago: '%{numberOfDays} ημέρες πριν'
       preheader: '%{authorName} δημοσίευσε μια νέα ιδέα στην πλατφόρμα σας'
       today: Σήμερα
@@ -392,10 +392,10 @@ el:
       main_header: '''%{post}'' έχει ένα νέο εσωτερικό σχόλιο'
       preheader: '''%{post}'' έχει ένα νέο εσωτερικό σχόλιο'
     official_feedback_on_idea_you_follow:
-      header_message: 'Ο/η %{feedback_author_name} ενημέρωσε τη %{input_title}''.'
+      header_message: '%{feedback_author_name} έκανε μια ενημέρωση σχετικά με το ''%{input_title}''.'
       header_title: 'Υπάρχει μια ενημέρωση για "%{input_title}"'
       subject: 'Μία νέα επίσημη ενημέρωση δημοσιεύτηκε στο "%{input_title}"'
-      preheader: 'Υπάρχει μια ενημέρωση σχετικά με μια πρόταση που ψηφίσατε'
+      preheader: 'Υπάρχει μια ενημέρωση σε μια εγγραφή που ακολουθείτε'
     official_feedback_on_initiative_you_follow:
       header_message: '%{officialName} ενημέρωσε σχετικά με την πρόταση "%{initiativeTitle}". Κάντε κλικ στο παρακάτω κουμπί για να μπείτε στη συζήτηση με το %{organizationName}.'
       header_title: 'Υπάρχει μια ενημέρωση σχετικά με μια πρόταση που ακολουθείτε'
@@ -455,9 +455,9 @@ el:
       preheader: 'Μια νέα φάση θα ξεκινήσει σύντομα για το %{projectName}'
     project_published:
       subject: 'Ένα νέο έργο δημοσιεύθηκε στην πλατφόρμα %{organizationName}.'
-      header_title: 'Δημοσιεύθηκε ένα νέο έργο'
+      header_title: 'Ένα νέο έργο δημοσιεύτηκε'
       header_message: 'Η πλατφόρμα συμμετοχής του %{organizationName} μόλις δημοσίευσε το ακόλουθο έργο:'
-      preheader: 'Δημοσιεύθηκε ένα νέο έργο'
+      preheader: 'Ένα νέο έργο δημοσιεύτηκε'
     status_change_on_idea_you_follow:
       status_change: 'Η συγκριμένη ιδέα ενημερώθηκε σε ''%{status}'''
       header_message: '%{organizationName} ενημέρωσε την κατάσταση της ιδέας "%{input_title}" στην ψηφιακή πλατφόρμα συμμετοχής.'
