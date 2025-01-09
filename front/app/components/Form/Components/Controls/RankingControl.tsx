@@ -19,25 +19,18 @@ import {
 import { DragAndDropResult } from 'components/FormBuilder/edit/utils';
 import { FormLabel } from 'components/UI/FormComponents';
 
-import { useIntl } from 'utils/cl-intl';
 import { getLabel, sanitizeForClassname } from 'utils/JSONFormUtils';
 
 import ErrorDisplay from '../ErrorDisplay';
 import VerificationIcon from '../VerificationIcon';
 
-import { getSubtextElement } from './controlUtils';
+import { getOptions, getSubtextElement } from './controlUtils';
 
 const StyledSelect = styled(Select)`
-  padding: 0px !important;
-  margin: 0px;
   min-width: 52px;
   margin-right: 12px;
-  margin-top: auto;
-  margin-bottom: auto;
 
   select {
-    padding-right: 0px !important;
-    font-size: 16px !important;
     padding: 4px !important;
     border: solid 1px ${(props) => props.theme.colors.tenantPrimary};
     color: ${(props) => props.theme.colors.tenantPrimary};
@@ -60,50 +53,38 @@ const RankingControl = ({
   id,
   visible,
 }: ControlProps) => {
-  console.log({ data });
   const theme = useTheme();
-  const { formatMessage } = useIntl();
   const [didBlur, setDidBlur] = useState(false);
 
-  // Step 1: Get the options from the schema
-  //   const options = getOptions(schema, 'ranking'); Uncomment once implemented on BE;
-  const [options, setOptions] = useState([
-    {
-      value: 'car_zy2',
-      label:
-        'Here is the car option is a much longer label than the rest of the options to test the wrapping behaviour in the box.',
-    },
-    {
-      value: 'bus_nlw',
-      label: 'Bus',
-    },
-    {
-      value: 'train_nlw',
-      label: 'Train',
-    },
-    {
-      value: 'walking_nlw',
-      label: 'Walking',
-    },
-  ]);
+  // If form data present, generate an array of options in that ranking order.
+  // Otherwise, use the options from the JSON schema.
+  const optionsFromSchema = getOptions(schema, 'ranking');
 
-  // Step 2: From data, get the current ranking order of the options
-  if (data) {
-    const optionsFromData = data.map((optionKey: string) => {
-      return options.find((option) => option.value === optionKey);
-    });
+  const optionsFromData = data?.map((optionKey: string) => {
+    // Return list of options in the order of the data
+    return optionsFromSchema.find(
+      (option: IOption) => option.value === optionKey
+    );
+  });
 
-    setOptions(optionsFromData);
+  const [options, setOptions] = useState(
+    data ? optionsFromData : optionsFromSchema // Default to the order from the schema if no data present
+  );
+
+  if (!visible) {
+    return null;
   }
 
-  const updateData = (newOptionsOrdered: IOption[]) => {
-    const newOptionsData = newOptionsOrdered.map((option) => option.value);
-
-    console.log(newOptionsData);
-    handleChange(path, newOptionsData);
+  // updateData: Function to update the form data with a specific option order.
+  const updateData = (newOptionOrder: IOption[]) => {
+    setOptions(newOptionOrder);
+    handleChange(
+      path,
+      newOptionOrder.map((option: IOption) => option.value) // We only store keys in the form data
+    );
   };
 
-  // Step 3: When reordered, create new array + update the data
+  // reorderFields: Function to reorder and save the options after a drag and drop.
   const reorderFields = (result: DragAndDropResult) => {
     const { source, destination } = result;
     if (!destination) return;
@@ -111,27 +92,33 @@ const RankingControl = ({
     const sourceIndex = source.index;
     const destinationIndex = destination.index;
 
-    const reorderedOptions = Array.from(options);
-    const [removed] = reorderedOptions.splice(sourceIndex, 1);
-    reorderedOptions.splice(destinationIndex, 0, removed);
-    setOptions(reorderedOptions);
-    updateData(reorderedOptions);
+    moveOptionInArray(sourceIndex, destinationIndex);
   };
 
-  // Step 4: When reordered using select, update the data
-
-  if (!visible) {
-    return null;
-  }
-
-  const numberIndexSelectOptions = options.map((_option, index) => ({
-    value: index + 1,
-    label: `${index + 1}`,
-  }));
-
-  const getChoiceIndex = (option: IOption) => {
-    return options.findIndex((o) => o.value === option.value) + 1;
+  // getIndexOfOption: Function to get the index of a specific option in the options array.
+  const getIndexOfOption = (currentOption: IOption) => {
+    return (
+      options.findIndex(
+        (option: IOption) => option.value === currentOption.value
+      ) + 1
+    );
   };
+
+  // moveOptionInArray: Move an option in the array to a new index & update the form data.
+  const moveOptionInArray = (sourceIndex: number, destinationIndex: number) => {
+    const newOptions = options;
+    const [removed] = newOptions.splice(sourceIndex, 1);
+    newOptions.splice(destinationIndex, 0, removed);
+    updateData(newOptions);
+  };
+
+  // selectDropdownOptions: For the select dropdown, generate the index number options.
+  const selectDropdownOptions = options.map(
+    (_option: IOption, index: number) => ({
+      value: index + 1,
+      label: `${index + 1}`,
+    })
+  );
 
   return (
     <>
@@ -172,15 +159,11 @@ const RankingControl = ({
                     >
                       <Box display="flex">
                         <StyledSelect
-                          options={numberIndexSelectOptions}
-                          value={getChoiceIndex(option)}
+                          options={selectDropdownOptions}
+                          value={getIndexOfOption(option)}
                           onChange={(selectedOption) => {
-                            const newOptions = Array.from(options);
                             const newIndex = selectedOption.value - 1;
-                            newOptions.splice(index, 1);
-                            newOptions.splice(newIndex, 0, option);
-                            setOptions(newOptions);
-                            updateData(newOptions);
+                            moveOptionInArray(index, newIndex);
                           }}
                         />
 
