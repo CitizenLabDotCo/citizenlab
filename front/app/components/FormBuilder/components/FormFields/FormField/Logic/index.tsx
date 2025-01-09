@@ -43,7 +43,7 @@ const Logic = ({
 
   const pageMessage = formatMessage(messages.page);
 
-  const catchAllLogicRules = field.logic?.rules?.filter((rule) =>
+  const catchAllLogicRules = field.logic.rules?.filter((rule) =>
     ['any_other_answer', 'no_answer'].includes(rule.if.toString())
   );
   const catchAllLogicMessages = {
@@ -140,9 +140,9 @@ const Logic = ({
                   field.temp_id || field.id,
                   formCustomFields
                 )}
-                answerTitle={catchAllLogicMessages[rule?.if.toString()]}
+                answerTitle={catchAllLogicMessages[rule.if.toString()]}
                 targetPage={getTitleFromPageId(
-                  rule?.goto_page_id,
+                  rule.goto_page_id,
                   formEndMessage,
                   pageMessage,
                   fieldNumbers
