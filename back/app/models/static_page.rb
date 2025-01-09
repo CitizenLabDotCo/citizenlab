@@ -91,7 +91,17 @@ class StaticPage < ApplicationRecord
 
   validates :bottom_info_section_enabled, inclusion: [true, false]
   validates :bottom_info_section_multiloc, multiloc: { presence: false, html: true }
-  validates :areas, length: { is: 1 }, if: -> { projects_filter_type == self.class.projects_filter_types.fetch(:areas) }
+  validates(
+    :areas, length: { is: 1 },
+    if: lambda do
+      # The validation is skipped when loading a tenant template because it assumes the
+      # existence of AreasStaticPage records that are not created yet. (When loading a
+      # tenant template, AreasStaticPage records are created after StaticPage records
+      # because of their `belongs_to :static_page` association that references StaticPage
+      # records.)
+      projects_filter_type == self.class.projects_filter_types.fetch(:areas) && !Current.loading_tenant_template
+    end
+  )
   validates(
     :topics, length: { minimum: 1 },
     if: lambda do
