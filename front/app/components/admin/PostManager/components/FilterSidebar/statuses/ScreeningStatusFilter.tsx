@@ -53,47 +53,54 @@ const ScreeningStatusFilter = ({ status, active, onClick }: Props) => {
     phasePrescreeningEnabled && preScreeningFeatureAllowed;
 
   return (
-    <Tooltip
-      content={
-        <div>
-          {!preScreeningFeatureAllowed ? (
-            <FormattedMessage {...messages.prescreeningTooltipUpsell} />
-          ) : (
-            <FormattedMessage {...messages.prescreeningTooltipPhaseDisabled} />
-          )}
-        </div>
-      }
-      disabled={prescreeningTooltipIsDisabled}
-    >
-      <Box>
-        <StatusButton
-          onClick={onClick}
-          active={active}
-          disabled={prescreeningButtonIsDisabled}
-        >
-          <Box
-            display="flex"
-            alignItems="center"
-            justifyContent="flex-start"
-            w="100%"
-          >
-            <ColorIndicator bgColor={status.attributes.color} />
-            <Box display="flex" alignItems="center" gap="4px">
-              <StatusText>
-                <T value={status.attributes.title_multiloc} />
-              </StatusText>
-              <IconTooltip
-                theme="light"
-                iconSize="16px"
-                content={
-                  <FormattedMessage {...messages.automatedStatusTooltipText} />
-                }
+    // Div wrapping is needed to make the filter take full width.
+    <div>
+      <Tooltip
+        content={
+          <div>
+            {!preScreeningFeatureAllowed ? (
+              <FormattedMessage {...messages.prescreeningTooltipUpsell} />
+            ) : (
+              <FormattedMessage
+                {...messages.prescreeningTooltipPhaseDisabled}
               />
+            )}
+          </div>
+        }
+        disabled={prescreeningTooltipIsDisabled}
+      >
+        <Box>
+          <StatusButton
+            onClick={onClick}
+            active={active}
+            disabled={prescreeningButtonIsDisabled}
+          >
+            <Box
+              display="flex"
+              alignItems="center"
+              justifyContent="flex-start"
+              w="100%"
+            >
+              <ColorIndicator bgColor={status.attributes.color} />
+              <Box display="flex" alignItems="center" gap="4px">
+                <StatusText>
+                  <T value={status.attributes.title_multiloc} />
+                </StatusText>
+                <IconTooltip
+                  theme="light"
+                  iconSize="16px"
+                  content={
+                    <FormattedMessage
+                      {...messages.automatedStatusTooltipText}
+                    />
+                  }
+                />
+              </Box>
             </Box>
-          </Box>
-        </StatusButton>
-      </Box>
-    </Tooltip>
+          </StatusButton>
+        </Box>
+      </Tooltip>
+    </div>
   );
 };
 
