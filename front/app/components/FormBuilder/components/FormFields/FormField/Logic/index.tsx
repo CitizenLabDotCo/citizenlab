@@ -43,10 +43,12 @@ const Logic = ({
 
   const pageMessage = formatMessage(messages.page);
 
+  // Add the additional catch all logic options
+  const catchAllTypes = field.required
+    ? ['any_other_answer']
+    : ['any_other_answer', 'no_answer'];
   const catchAllLogicRules = field.logic.rules
-    ?.filter((rule) =>
-      ['any_other_answer', 'no_answer'].includes(rule.if.toString())
-    )
+    ?.filter((rule) => catchAllTypes.includes(rule.if.toString()))
     .sort((a, b) => a.if.toString().localeCompare(b.if.toString())); // sort to ensure consistent order
   const catchAllLogicMessages = {
     any_other_answer: formatMessage(messages.logicAnyOtherAnswer),

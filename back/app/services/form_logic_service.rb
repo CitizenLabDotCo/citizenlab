@@ -242,7 +242,7 @@ class FormLogicService
       accu[value] = target_id unless value == 'any_other_answer'
     end
 
-    # Fill in rules for 'any_other_answer'
+    # Fill in IDs for 'any_other_answer' rule
     any_other_answer_rule = rules.find { |rule| rule['if'] == 'any_other_answer' }
     if any_other_answer_rule
       target_id = any_other_answer_rule['goto_page_id']
@@ -255,6 +255,11 @@ class FormLogicService
           logic[scale_value] = target_id unless logic.key?(scale_value)
         end
       end
+    end
+
+    # If there is page logic and question logic on a non-required field, but with no 'no_answer' then we need to explicitly create it
+    if !field.required && next_page_id && logic && !logic.key?('no_answer')
+      logic['no_answer'] = next_page_id
     end
 
     # Then apply page-level logic if no question-level logic is present.
@@ -328,7 +333,9 @@ class FormLogicService
       end
 
       # Remove any select options that do not exist - unless 'any_other_answer' or 'no_answer'
-      allowed_if_values = field.options.pluck(:id) + %w[any_other_answer no_answer]
+      allowed_if_values = field.options.pluck(:id)
+      allowed_if_values << 'any_other_answer'
+      allowed_if_values << 'no_answer' unless field.required?
       if field.support_options? && allowed_if_values.exclude?(rule['if'])
         rules.delete(rule)
       end
