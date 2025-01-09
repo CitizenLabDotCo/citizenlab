@@ -11,6 +11,7 @@ import usePhase from 'api/phases/usePhase';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
+import { ManagerType } from 'components/admin/PostManager';
 import T from 'components/T';
 
 import { FormattedMessage } from 'utils/cl-intl';
@@ -29,23 +30,20 @@ interface Props {
   status: IIdeaStatusData;
   active: boolean;
   onClick: () => void;
+  type: ManagerType;
 }
 
-const ScreeningStatusFilter = ({ status, active, onClick }: Props) => {
+const ScreeningStatusFilter = ({ status, active, onClick, type }: Props) => {
   const { phaseId } = useParams() as { phaseId: string };
   const { data: phase } = usePhase(phaseId);
-
   const preScreeningFeatureFlag =
     phase?.data.attributes.participation_method === 'ideation'
       ? 'prescreening_ideation'
       : 'prescreening';
-
   const preScreeningFeatureAllowed = useFeatureFlag({
     name: preScreeningFeatureFlag,
     onlyCheckAllowed: true,
   });
-  const phasePrescreeningEnabled =
-    phase?.data.attributes.prescreening_enabled === true;
 
   const [{ canDrop, isOver }, drop] = useDrop({
     accept: 'IDEA',
@@ -59,12 +57,18 @@ const ScreeningStatusFilter = ({ status, active, onClick }: Props) => {
     }),
   });
 
+  // Prescreening is a special status that can be configured in a project,
+  // so we don't want to show it in a context without projects to not get status conflicts
+  // (e.g. the general input manager has ideas from all projects,
+  // including those without the prescreening status filter)
+  if (type === 'AllIdeas') return null;
+
+  const phasePrescreeningEnabled =
+    phase?.data.attributes.prescreening_enabled === true;
   const showAutomaticStatusTooltip =
     status.attributes.can_manually_transition_to === false;
-
   const prescreeningButtonIsDisabled =
     !phasePrescreeningEnabled || !preScreeningFeatureAllowed;
-
   const prescreeningTooltipIsDisabled =
     phasePrescreeningEnabled && preScreeningFeatureAllowed;
 
