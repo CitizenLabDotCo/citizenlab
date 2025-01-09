@@ -119,6 +119,12 @@ class CustomField < ApplicationRecord
     %w[select_image multiselect_image].include?(input_type)
   end
 
+  def supports_xlsx_export?
+    return false if field.code == 'idea_images_attributes' # Is this still applicable?
+
+    %w[page section].exclude?(input_type)
+  end
+
   def built_in?
     !!code
   end

@@ -52,7 +52,7 @@ class CustomFieldParamsService
   def supported_keys_in_custom_field_values(custom_field)
     case custom_field.input_type
     when 'multiselect', 'multiselect_image', 'ranking'
-      []
+      [] # Array-like value
     when 'file_upload', 'shapefile_upload'
       %i[id content name]
     when 'html_multiloc', 'multiline_text_multiloc', 'text_multiloc'
