@@ -391,7 +391,7 @@
   "app.components.ProjectCard.finished": "Afgelopen",
   "app.components.ProjectCard.joinDiscussion": "Neem deel aan de discussie",
   "app.components.ProjectCard.learnMore": "Lees meer",
-  "app.components.ProjectCard.reaction": "Reactie",
+  "app.components.ProjectCard.reaction": "Reageren",
   "app.components.ProjectCard.remaining": "{timeRemaining} resterend",
   "app.components.ProjectCard.reviewDocument": "Bekijk het document",
   "app.components.ProjectCard.submitAnIssue": "Voeg een reactie toe",
