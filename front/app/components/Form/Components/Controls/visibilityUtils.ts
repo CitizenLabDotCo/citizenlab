@@ -94,6 +94,9 @@ const evaluateCondition = (
     return value === condition.expectedValue;
   } else if (isSchemaCondition(condition)) {
     const value = resolveData(data, getConditionScope(condition, path));
+    if (condition.schema.enum?.includes('no_answer') && value === undefined) {
+      return true;
+    }
     return ajv.validate(condition.schema, value);
   } else {
     // unknown condition
