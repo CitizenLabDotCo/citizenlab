@@ -339,6 +339,7 @@ describe Export::Xlsx::InputSheetGenerator do
                   'ID',
                   'What are your favourite pets?',
                   'Type your answer',
+                  'Rank your favourite means of public transport',
                   'Author ID',
                   'Submitted at',
                   'Project'
@@ -348,6 +349,7 @@ describe Export::Xlsx::InputSheetGenerator do
                     survey_response1.id,
                     'Cat, Dog, Other',
                     'Fish',
+                    '',
                     survey_response1.author_id,
                     an_instance_of(DateTime), # created_at
                     phase.project.title_multiloc['en']
@@ -355,6 +357,7 @@ describe Export::Xlsx::InputSheetGenerator do
                   [
                     survey_response2.id,
                     'Cat',
+                    '',
                     '',
                     survey_response2.author_id,
                     an_instance_of(DateTime), # created_at
@@ -364,6 +367,7 @@ describe Export::Xlsx::InputSheetGenerator do
                     survey_response3.id,
                     'Dog',
                     '',
+                    'By bike, By train',
                     survey_response3.author_id,
                     an_instance_of(DateTime), # created_at
                     phase.project.title_multiloc['en']
@@ -392,6 +396,7 @@ describe Export::Xlsx::InputSheetGenerator do
                 column_headers: [
                   'ID',
                   'What are your favourite pets?',
+                  'Rank your favourite means of public transport',
                   'Author name',
                   'Author email',
                   'Author ID',
@@ -411,6 +416,7 @@ describe Export::Xlsx::InputSheetGenerator do
               column_headers: [
                 'ID',
                 'What are your favourite pets?',
+                'Rank your favourite means of public transport',
                 'Author name',
                 'Author email',
                 'Author ID',
@@ -421,6 +427,7 @@ describe Export::Xlsx::InputSheetGenerator do
                 [
                   survey_response1.id,
                   'Cat, Dog',
+                  'By train, By bike',
                   survey_response1.author_name,
                   survey_response1.author.email,
                   survey_response1.author_id,
@@ -430,6 +437,7 @@ describe Export::Xlsx::InputSheetGenerator do
                 [
                   survey_response2.id,
                   'Cat',
+                  '',
                   survey_response2.author_name,
                   survey_response2.author.email,
                   survey_response2.author_id,
@@ -439,6 +447,7 @@ describe Export::Xlsx::InputSheetGenerator do
                 [
                   survey_response3.id,
                   'Dog',
+                  'By bike, By train',
                   nil,
                   nil,
                   nil,
