@@ -259,15 +259,14 @@ class FormLogicService
 
     # Then apply page-level logic if no question-level logic is present.
     if next_page_id
-      case field.input_type
-      when 'select'
+      if field.support_options?
         field.options.each do |option|
           value = option.id
           next if logic.key?(value)
 
           logic[value] = next_page_id
         end
-      when 'linear_scale'
+      elsif field.linear_scale?
         (1..field.maximum).each do |value|
           next if logic.key?(value)
 
@@ -330,7 +329,7 @@ class FormLogicService
 
       # Remove any select options that do not exist - unless 'any_other_answer' or 'no_answer'
       allowed_if_values = field.options.pluck(:id) + %w[any_other_answer no_answer]
-      if field.input_type == 'select' && allowed_if_values.exclude?(rule['if'])
+      if field.support_options? && allowed_if_values.exclude?(rule['if'])
         rules.delete(rule)
       end
     end

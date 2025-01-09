@@ -205,9 +205,9 @@ export default defineMessages({
     defaultMessage: 'Form end',
   },
   questionLogicHelperText: {
-    id: 'app.components.formBuilder.questionLogicHelperTextDefault',
+    id: 'app.components.formBuilder.questionLogicHelperTextDefault2',
     defaultMessage:
-      'If no logic is added to an answer, the form will follow its normal flow. Adding logic to a question will make it required by default. For more information, visit {supportPageLink}',
+      'If no logic is added to an answer, the form will follow its normal flow. For more information, visit {supportPageLink}',
   },
   pagesLogicHelperText: {
     id: 'app.components.formBuilder.pagesLogicHelperTextDefault',
