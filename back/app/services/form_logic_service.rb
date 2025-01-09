@@ -236,6 +236,26 @@ class FormLogicService
 
     # Question-level logic trumps page-level logic.
     # So start collecting question-level logic.
+    logic = question_level_logic_for_field(field, rules, next_page_id)
+
+    # Then apply page-level logic if no question-level logic is present.
+    logic = page_level_logic_for_field(logic, field, next_page_id) if next_page_id
+
+    # Finally add the rules for the collected logic.
+    logic.each do |value, target_page_id|
+      pages_to_hide = if target_page_id == 'survey_end'
+        pages_after(index)
+      else
+        pages_in_between(index, target_page_id)
+      end
+      pages_to_hide.each do |page|
+        rules_accu[page.id] ||= []
+        rules_accu[page.id] << ui_schema_hide_rule_for(field, value)
+      end
+    end
+  end
+
+  def question_level_logic_for_field(field, rules, next_page_id)
     logic = rules.each_with_object({}) do |rule, accu|
       value = rule['if']
       target_id = rule['goto_page_id']
@@ -261,37 +281,25 @@ class FormLogicService
     if !field.required && next_page_id && logic && !logic.key?('no_answer')
       logic['no_answer'] = next_page_id
     end
+    logic
+  end
 
-    # Then apply page-level logic if no question-level logic is present.
-    if next_page_id
-      if field.support_options?
-        field.options.each do |option|
-          value = option.id
-          next if logic.key?(value)
+  def page_level_logic_for_field(logic, field, next_page_id)
+    if field.support_options?
+      field.options.each do |option|
+        value = option.id
+        next if logic.key?(value)
 
-          logic[value] = next_page_id
-        end
-      elsif field.linear_scale?
-        (1..field.maximum).each do |value|
-          next if logic.key?(value)
+        logic[value] = next_page_id
+      end
+    elsif field.linear_scale?
+      (1..field.maximum).each do |value|
+        next if logic.key?(value)
 
-          logic[value] = next_page_id
-        end
+        logic[value] = next_page_id
       end
     end
-
-    # Finally add the rules for the collected logic.
-    logic.each do |value, target_page_id|
-      pages_to_hide = if target_page_id == 'survey_end'
-        pages_after(index)
-      else
-        pages_in_between(index, target_page_id)
-      end
-      pages_to_hide.each do |page|
-        rules_accu[page.id] ||= []
-        rules_accu[page.id] << ui_schema_hide_rule_for(field, value)
-      end
-    end
+    logic
   end
 
   def pages_after(index)

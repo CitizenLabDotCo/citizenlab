@@ -125,7 +125,7 @@ describe FormLogicService do
         expect(form_logic.ui_schema_rules_for(question1)).to be_nil
         expect(form_logic.ui_schema_rules_for(page2)).to be_nil
         expect(form_logic.ui_schema_rules_for(question2)).to be_nil
-        expect(form_logic.ui_schema_rules_for(page3)).to eq([{
+        expect(form_logic.ui_schema_rules_for(page3)).to match_array([{
           effect: 'HIDE',
           condition: {
             type: 'HIDEPAGE',
@@ -147,8 +147,16 @@ describe FormLogicService do
               enum: [option1.key]
             }
           }
+        }, {
+          effect: 'HIDE',
+          condition: {
+            scope: "#/properties/#{question2.key}",
+            schema: {
+              enum: ['no_answer']
+            }
+          }
         }])
-        expect(form_logic.ui_schema_rules_for(page4)).to eq([{
+        expect(form_logic.ui_schema_rules_for(page4)).to match_array([{
           effect: 'HIDE',
           condition: {
             type: 'HIDEPAGE',
@@ -160,6 +168,14 @@ describe FormLogicService do
             scope: "#/properties/#{question2.key}",
             schema: {
               enum: [option1.key]
+            }
+          }
+        }, {
+          effect: 'HIDE',
+          condition: {
+            scope: "#/properties/#{question2.key}",
+            schema: {
+              enum: ['no_answer']
             }
           }
         }])
@@ -212,6 +228,15 @@ describe FormLogicService do
               type: 'HIDEPAGE',
               pageId: page1.id
             }
+          },
+          {
+            effect: 'HIDE',
+            condition: {
+              scope: "#/properties/#{question1.key}",
+              schema: {
+                enum: ['no_answer']
+              }
+            }
           }
         ])
         expect(form_logic.ui_schema_rules_for(question2)).to be_nil
@@ -240,6 +265,15 @@ describe FormLogicService do
               type: 'HIDEPAGE',
               pageId: page1.id
             }
+          },
+          {
+            effect: 'HIDE',
+            condition: {
+              scope: "#/properties/#{question1.key}",
+              schema: {
+                enum: ['no_answer']
+              }
+            }
           }
         ])
         expect(form_logic.ui_schema_rules_for(page4)).to match_array([
@@ -266,6 +300,15 @@ describe FormLogicService do
             condition: {
               type: 'HIDEPAGE',
               pageId: page1.id
+            }
+          },
+          {
+            effect: 'HIDE',
+            condition: {
+              scope: "#/properties/#{question1.key}",
+              schema: {
+                enum: ['no_answer']
+              }
             }
           }
         ])
