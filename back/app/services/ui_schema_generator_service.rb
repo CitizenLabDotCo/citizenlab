@@ -91,6 +91,12 @@ class UiSchemaGeneratorService < FieldVisitorService
     end
   end
 
+  def visit_select(field)
+    default(field).tap do |ui_field|
+      ui_field[:options][:enumNames] = field.ordered_options.map { |option| multiloc_service.t(option.title_multiloc) }
+    end
+  end
+
   def default(field)
     {
       type: 'Control',
@@ -116,10 +122,6 @@ class UiSchemaGeneratorService < FieldVisitorService
     }.tap do |options|
       unless field.multiloc?
         options[:input_type] = field.input_type
-        field.ordered_options.map { |option| multiloc_service.t(option.title_multiloc) }
-        if field.input_type == 'select'
-          options[:enumNames] = field.ordered_options.map { |option| multiloc_service.t(option.title_multiloc) }
-        end
       end
     end
   end

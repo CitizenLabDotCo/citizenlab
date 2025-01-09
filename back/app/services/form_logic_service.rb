@@ -186,7 +186,7 @@ class FormLogicService
   end
 
   def ui_schema_hide_rule_for(field, value)
-    if field.input_type == 'select'
+    if field.input_type == 'select' # TODO: Find out how this should work for ranking
       value = option_index[value].key
     end
     {
@@ -254,7 +254,7 @@ class FormLogicService
     end
     # Then apply page-level logic if no question-level logic is present.
     if next_page_id
-      case field.input_type
+      case field.input_type # TODO: Find out how this should work for ranking
       when 'select'
         field.options.each do |option|
           value = option.id
@@ -323,7 +323,7 @@ class FormLogicService
       end
 
       # Remove any select options that do not exist
-      if field.input_type == 'select' && field.options.pluck(:id).exclude?(rule['if'])
+      if field.input_type == 'select' && field.options.pluck(:id).exclude?(rule['if']) # TODO: Find out how this should work for ranking
         rules.delete(rule)
       end
     end
