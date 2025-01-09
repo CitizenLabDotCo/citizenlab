@@ -7,9 +7,10 @@ type DragProps = {
   id: string;
   index: number;
   children: React.ReactNode;
+  useBorder?: boolean;
 };
 
-export const Drag = ({ id, index, ...props }: DragProps) => {
+export const Drag = ({ id, index, useBorder = true, ...props }: DragProps) => {
   return (
     <Draggable draggableId={id} index={index}>
       {(provided, snapshot) => {
@@ -18,7 +19,9 @@ export const Drag = ({ id, index, ...props }: DragProps) => {
             <div {...provided.dragHandleProps}>
               <Box
                 border={
-                  snapshot.isDragging ? `1px solid ${colors.teal}` : undefined
+                  snapshot.isDragging && useBorder
+                    ? `1px solid ${colors.teal}`
+                    : undefined
                 }
               >
                 {props.children}
