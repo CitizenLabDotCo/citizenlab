@@ -1,7 +1,5 @@
 import { ILinks } from 'typings';
 
-import { IIdeaData } from 'api/ideas/types';
-
 import { Keys } from 'utils/cl-react-query/types';
 
 import userSurveySubmissionsKeys from './keys';
@@ -9,6 +7,19 @@ import userSurveySubmissionsKeys from './keys';
 export type UserSurveySubmissionsKeys = Keys<typeof userSurveySubmissionsKeys>;
 
 export interface Response {
-  data: IIdeaData[];
+  data: IdeaMiniData[];
   links: ILinks;
+}
+
+export interface IdeaMiniData {
+  id: string;
+  type: 'idea_mini';
+  relationships: {
+    creation_phase: {
+      data: {
+        id: string;
+        type: 'phase';
+      };
+    };
+  };
 }
