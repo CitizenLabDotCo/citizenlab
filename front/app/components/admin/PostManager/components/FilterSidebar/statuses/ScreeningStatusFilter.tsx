@@ -59,9 +59,6 @@ const ScreeningStatusFilter = ({ status, active, onClick }: Props) => {
     }),
   });
 
-  const showAutomaticStatusTooltip =
-    status.attributes.can_manually_transition_to === false;
-
   const prescreeningButtonIsDisabled =
     !phasePrescreeningEnabled || !preScreeningFeatureAllowed;
 
@@ -101,17 +98,15 @@ const ScreeningStatusFilter = ({ status, active, onClick }: Props) => {
                 <StatusText>
                   <T value={status.attributes.title_multiloc} />
                 </StatusText>
-                {showAutomaticStatusTooltip && (
-                  <IconTooltip
-                    theme="light"
-                    iconSize="16px"
-                    content={
-                      <FormattedMessage
-                        {...messages.automatedStatusTooltipText}
-                      />
-                    }
-                  />
-                )}
+                <IconTooltip
+                  theme="light"
+                  iconSize="16px"
+                  content={
+                    <FormattedMessage
+                      {...messages.automatedStatusTooltipText}
+                    />
+                  }
+                />
               </Box>
             </Box>
           </StatusButton>
