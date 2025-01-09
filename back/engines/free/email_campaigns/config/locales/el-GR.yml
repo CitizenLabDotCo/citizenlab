@@ -260,7 +260,7 @@ el:
       today: Σήμερα
       yesterday: Χθες
     comment_on_idea_you_follow:
-      cta_reply_to: 'Απάντηση στο %{commentAuthor}'
+      cta_reply_to: 'Απαντήστε στο %{commentAuthor}'
       event_description: '%{authorNameFull} έθεσε μια αντίδραση στην ιδέα "%{ideaTitle}". Κάντε κλικ στο παρακάτω κουμπί για να συνεχίσετε τη συζήτηση με το %{authorName}.'
       main_header: '%{authorName} σχολίασε μια ιδέα που ακολουθείτε'
       subject: 'Υπάρχει ένα νέο σχόλιο σε μια ιδέα που ακολουθείτε'
