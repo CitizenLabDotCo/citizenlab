@@ -80,12 +80,15 @@ export const LogicSettings = ({
   if (answers) {
     answers.push({
       key: 'any_other_answer',
-      label: formatMessage(messages.logicAnyOtherAnswer),
+      label: formatMessage(messages.logicPanelAnyOtherAnswer),
     });
-    answers.push({
-      key: 'no_answer',
-      label: formatMessage(messages.logicNoAnswer),
-    });
+    // TODO: JS - changing required does not update this value unless refreshed
+    if (!field.required) {
+      answers.push({
+        key: 'no_answer',
+        label: formatMessage(messages.logicPanelNoAnswer),
+      });
+    }
   }
 
   return (
