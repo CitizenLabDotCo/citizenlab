@@ -21,7 +21,7 @@ const SurveySubmissionCard = ({ idea }: Props) => {
     downloadSurveySubmission(idea.id);
   };
 
-  if (!project) return;
+  if (!project) return null;
 
   return (
     <Box
