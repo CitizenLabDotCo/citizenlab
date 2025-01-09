@@ -94,9 +94,7 @@ export const QuestionRuleInput = ({
       logic.rules = logic.rules.filter((rule) => rule.if !== answer.key);
     }
     // Update rule variable
-    const required =
-      logic.rules && logic.rules.length > 0 ? true : field.required;
-    setValue(name, { ...field, logic, required }, { shouldDirty: true });
+    setValue(name, { ...field, logic }, { shouldDirty: true });
     trigger();
   };
 

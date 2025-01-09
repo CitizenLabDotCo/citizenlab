@@ -287,7 +287,7 @@ export default defineMessages({
     defaultMessage: 'Any other answer',
   },
   logicNoAnswer: {
-    id: 'app.components.formBuilder.logicNoAnswer',
+    id: 'app.components.formBuilder.logicNoAnswer2',
     defaultMessage: 'Not answered',
   },
   logicPanelAnyOtherAnswer: {
