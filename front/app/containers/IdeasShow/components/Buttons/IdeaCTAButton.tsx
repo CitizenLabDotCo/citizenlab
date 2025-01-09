@@ -2,7 +2,7 @@ import React from 'react';
 
 import { IconNames } from '@citizenlab/cl2-component-library';
 
-import Button from 'components/UI/Button';
+import Button from 'components/UI/ButtonWithLink';
 
 interface Props {
   className?: string;

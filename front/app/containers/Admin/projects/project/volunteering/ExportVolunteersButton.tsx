@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import useCauses from 'api/causes/useCauses';
 import { exportVolunteers } from 'api/causes/util';
 
-import Button from 'components/UI/Button';
+import Button from 'components/UI/ButtonWithLink';
 
 import { FormattedMessage } from 'utils/cl-intl';
 

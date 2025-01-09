@@ -7,7 +7,7 @@ import { ICampaignData } from 'api/campaigns/types';
 import useDeleteCampaign from 'api/campaigns/useDeleteCampaign';
 
 import PreviewFrame from 'components/admin/Email/PreviewFrame';
-import Button from 'components/UI/Button';
+import ButtonWithLink from 'components/UI/ButtonWithLink';
 
 import { useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
@@ -48,14 +48,14 @@ const DraftCampaignDetails = ({ campaign }: Props) => {
     <>
       <PreviewFrame campaignId={campaign.id} />
       <ButtonWrapper>
-        <Button
+        <ButtonWithLink
           buttonStyle="delete"
           icon="delete"
           onClick={handleDelete}
           processing={isLoading}
         >
           {formatMessage(messages.deleteCampaignButton)}
-        </Button>
+        </ButtonWithLink>
       </ButtonWrapper>
     </>
   );

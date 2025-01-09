@@ -9,7 +9,7 @@ import useFollowers from 'api/follow_unfollow/useFollowers';
 import IdeaCard from 'components/IdeaCard';
 import ProjectFolderCard from 'components/ProjectAndFolderCards/components/ProjectFolderCard';
 import ProjectCard from 'components/ProjectCard';
-import Button from 'components/UI/Button';
+import Button from 'components/UI/ButtonWithLink';
 
 import { ScreenReaderOnly } from 'utils/a11y';
 import { FormattedMessage, useIntl } from 'utils/cl-intl';

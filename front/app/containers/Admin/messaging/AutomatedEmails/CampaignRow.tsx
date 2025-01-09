@@ -5,7 +5,7 @@ import { isUndefined } from 'lodash-es';
 
 import useUpdateCampaign from 'api/campaigns/useUpdateCampaign';
 
-import Button from 'components/UI/Button';
+import Button from 'components/UI/ButtonWithLink';
 
 import { FormattedMessage } from 'utils/cl-intl';
 

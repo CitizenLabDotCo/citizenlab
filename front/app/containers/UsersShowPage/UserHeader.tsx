@@ -21,7 +21,7 @@ import useFeatureFlag from 'hooks/useFeatureFlag';
 import blockUserMessages from 'components/admin/UserBlockModals/messages';
 import Avatar from 'components/Avatar';
 import T from 'components/T';
-import Button from 'components/UI/Button';
+import Button from 'components/UI/ButtonWithLink';
 import MoreActionsMenu, { IAction } from 'components/UI/MoreActionsMenu';
 import QuillEditedContent from 'components/UI/QuillEditedContent';
 
