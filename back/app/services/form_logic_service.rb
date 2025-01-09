@@ -239,8 +239,24 @@ class FormLogicService
     logic = rules.each_with_object({}) do |rule, accu|
       value = rule['if']
       target_id = rule['goto_page_id']
-      accu[value] = target_id
+      accu[value] = target_id unless value == 'any_other_answer'
     end
+
+    # Fill in rules for 'any_other_answer'
+    any_other_answer_rule = rules.find { |rule| rule['if'] == 'any_other_answer' }
+    if any_other_answer_rule
+      target_id = any_other_answer_rule['goto_page_id']
+      if field.support_options?
+        field.options.each do |option|
+          logic[option.id] = target_id unless logic.key?(option.id)
+        end
+      elsif field.linear_scale?
+        (1..field.maximum).each do |scale_value|
+          logic[scale_value] = target_id unless logic.key?(scale_value)
+        end
+      end
+    end
+
     # Then apply page-level logic if no question-level logic is present.
     if next_page_id
       case field.input_type
@@ -259,6 +275,7 @@ class FormLogicService
         end
       end
     end
+
     # Finally add the rules for the collected logic.
     logic.each do |value, target_page_id|
       pages_to_hide = if target_page_id == 'survey_end'
@@ -268,19 +285,7 @@ class FormLogicService
       end
       pages_to_hide.each do |page|
         rules_accu[page.id] ||= []
-        if value == 'any_other_answer'
-          if field.support_options?
-            field.options.each do |option|
-              rules_accu[page.id] << ui_schema_hide_rule_for(field, option.id) unless logic.key?(option.id)
-            end
-          elsif field.linear_scale?
-            (1..field.maximum).each do |scale_value|
-              rules_accu[page.id] << ui_schema_hide_rule_for(field, scale_value) unless logic.key?(scale_value)
-            end
-          end
-        else
-          rules_accu[page.id] << ui_schema_hide_rule_for(field, value)
-        end
+        rules_accu[page.id] << ui_schema_hide_rule_for(field, value)
       end
     end
   end

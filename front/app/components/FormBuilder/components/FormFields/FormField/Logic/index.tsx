@@ -43,9 +43,11 @@ const Logic = ({
 
   const pageMessage = formatMessage(messages.page);
 
-  const catchAllLogicRules = field.logic.rules?.filter((rule) =>
-    ['any_other_answer', 'no_answer'].includes(rule.if.toString())
-  );
+  const catchAllLogicRules = field.logic.rules
+    ?.filter((rule) =>
+      ['any_other_answer', 'no_answer'].includes(rule.if.toString())
+    )
+    .sort((a, b) => a.if.toString().localeCompare(b.if.toString())); // sort to ensure consistent order
   const catchAllLogicMessages = {
     any_other_answer: formatMessage(messages.logicAnyOtherAnswer),
     no_answer: formatMessage(messages.logicNoAnswer),
