@@ -522,6 +522,70 @@ describe FormLogicService do
       end
     end
 
+    context 'when one answer triggers going to one page and any other answer triggers going to another page for linear scale' do
+      before do
+        question1.update!(logic: {
+          'rules' => [
+            { 'if' => 1, 'goto_page_id' => page3.id },
+            { 'if' => 'any_other_answer', 'goto_page_id' => page4.id }
+          ]
+        })
+      end
+
+      it 'returns a UI schema with rules for the given page' do
+        expect(form_logic.ui_schema_rules_for(page1)).to be_nil
+        expect(form_logic.ui_schema_rules_for(question1)).to be_nil
+        expect(form_logic.ui_schema_rules_for(page2)).to eq([{
+          effect: 'HIDE',
+          condition: {
+            scope: "#/properties/#{question1.key}",
+            schema: {
+              enum: [1]
+            }
+          }
+        },
+          {
+            effect: 'HIDE',
+            condition: {
+              scope: "#/properties/#{question1.key}",
+              schema: {
+                enum: [2]
+              }
+            }
+          },
+          {
+            effect: 'HIDE',
+            condition: {
+              scope: "#/properties/#{question1.key}",
+              schema: {
+                enum: [3]
+              }
+            }
+          }])
+        expect(form_logic.ui_schema_rules_for(question2)).to be_nil
+        expect(form_logic.ui_schema_rules_for(page3)).to eq([{
+          effect: 'HIDE',
+          condition: {
+            scope: "#/properties/#{question1.key}",
+            schema: {
+              enum: [2]
+            }
+          }
+        },
+          {
+            effect: 'HIDE',
+            condition: {
+              scope: "#/properties/#{question1.key}",
+              schema: {
+                enum: [3]
+              }
+            }
+          }])
+        expect(form_logic.ui_schema_rules_for(page4)).to be_nil
+        expect(form_logic.ui_schema_rules_for(page5)).to be_nil
+      end
+    end
+
     context 'when no answer (empty field) triggers going to another page' do
       before do
         question2.update!(logic: {

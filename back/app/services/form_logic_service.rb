@@ -268,9 +268,15 @@ class FormLogicService
       end
       pages_to_hide.each do |page|
         rules_accu[page.id] ||= []
-        if value == 'any_other_answer' && field.support_options?
-          field.options.each do |option|
-            rules_accu[page.id] << ui_schema_hide_rule_for(field, option.id) unless logic.key?(option.id)
+        if value == 'any_other_answer'
+          if field.support_options?
+            field.options.each do |option|
+              rules_accu[page.id] << ui_schema_hide_rule_for(field, option.id) unless logic.key?(option.id)
+            end
+          elsif field.linear_scale?
+            (1..field.maximum).each do |scale_value|
+              rules_accu[page.id] << ui_schema_hide_rule_for(field, scale_value) unless logic.key?(scale_value)
+            end
           end
         else
           rules_accu[page.id] << ui_schema_hide_rule_for(field, value)
