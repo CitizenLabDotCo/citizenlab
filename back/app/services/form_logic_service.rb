@@ -262,7 +262,7 @@ class FormLogicService
       accu[value] = target_id unless value == 'any_other_answer'
     end
 
-    # Fill in IDs for 'any_other_answer' rule
+    # Fill in option IDs for 'any_other_answer' rule
     any_other_answer_rule = rules.find { |rule| rule['if'] == 'any_other_answer' }
     if any_other_answer_rule
       target_id = any_other_answer_rule['goto_page_id']
