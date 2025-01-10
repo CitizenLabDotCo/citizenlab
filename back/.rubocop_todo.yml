@@ -813,14 +813,6 @@ Style/RedundantArgument:
   Exclude:
     - 'app/services/profanity_service.rb'
 
-# Offense count: 3
-# This cop supports safe autocorrection (--autocorrect).
-Style/RedundantCurrentDirectoryInPath:
-  Exclude:
-    - 'spec/acceptance/areas_spec.rb'
-    - 'spec/acceptance/experiments_spec.rb'
-    - 'spec/acceptance/topics_spec.rb'
-
 # Offense count: 1
 # This cop supports safe autocorrection (--autocorrect).
 Style/RedundantDoubleSplatHashBraces:
