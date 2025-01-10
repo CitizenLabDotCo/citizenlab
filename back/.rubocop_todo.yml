@@ -153,12 +153,6 @@ Lint/OrAssignmentToConstant:
     - 'config/initializers/bunny.rb'
 
 # Offense count: 1
-# This cop supports safe autocorrection (--autocorrect).
-Lint/RedundantCopDisableDirective:
-  Exclude:
-    - 'db/migrate/20230718214736_add_two_initiative_statuses_and_update_colors_and_ordering.rb'
-
-# Offense count: 1
 # This cop supports unsafe autocorrection (--autocorrect-all).
 # Configuration parameters: AllowedMethods.
 # AllowedMethods: instance_of?, kind_of?, is_a?, eql?, respond_to?, equal?, presence, present?
