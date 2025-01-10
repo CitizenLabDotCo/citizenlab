@@ -523,15 +523,6 @@ Rails/Date:
     - 'engines/commercial/smart_groups/spec/rules/custom_field_date_spec.rb'
     - 'engines/commercial/smart_groups/spec/rules/registration_completed_at_spec.rb'
 
-# Offense count: 2
-# This cop supports safe autocorrection (--autocorrect).
-# Configuration parameters: EnforcedStyle.
-# SupportedStyles: slashes, arguments
-Rails/FilePath:
-  Exclude:
-    - 'app/models/user.rb'
-    - 'engines/free/surveys/app/models/surveys/response.rb'
-
 # Offense count: 131
 # This cop supports unsafe autocorrection (--autocorrect-all).
 # Configuration parameters: AllowedMethods, AllowedPatterns.
