@@ -56,19 +56,17 @@ const RankingControl = ({
   const theme = useTheme();
   const [didBlur, setDidBlur] = useState(false);
 
-  // If form data present, generate an array of options in that ranking order.
-  // Otherwise, use the options from the JSON schema.
+  // Generate the options:
+  // If form data present, generate array of options in that ranking order.
+  // Otherwise, use the option order from the JSON schema.
   const optionsFromSchema = getOptions(schema, 'ranking');
-
   const optionsFromData = data?.map((optionKey: string) => {
-    // Return list of options in the order of the data
     return optionsFromSchema.find(
       (option: IOption) => option.value === optionKey
     );
   });
-
   const [options, setOptions] = useState(
-    data ? optionsFromData : optionsFromSchema // Default to the order from the schema if no data present
+    data ? optionsFromData : optionsFromSchema
   );
 
   if (!visible) {
@@ -80,12 +78,12 @@ const RankingControl = ({
     setOptions(newOptionOrder);
     handleChange(
       path,
-      newOptionOrder.map((option: IOption) => option.value) // We only store keys in the form data
+      newOptionOrder.map((option: IOption) => option.value) // We only store array of keys in the form data
     );
   };
 
-  // reorderFields: Function to reorder and save the options after a drag and drop.
-  const reorderFields = (result: DragAndDropResult) => {
+  // reorderFieldsAfterDrag: Function to reorder and save the options after a drag and drop.
+  const reorderFieldsAfterDrag = (result: DragAndDropResult) => {
     const { source, destination } = result;
     if (!destination) return;
 
@@ -95,7 +93,7 @@ const RankingControl = ({
     moveOptionInArray(sourceIndex, destinationIndex);
   };
 
-  // getIndexOfOption: Function to get the index of a specific option in the options array.
+  // getIndexOfOption: Function to get the index of a specific option in the current options array.
   const getIndexOfOption = (currentOption: IOption) => {
     return (
       options.findIndex(
@@ -104,7 +102,7 @@ const RankingControl = ({
     );
   };
 
-  // moveOptionInArray: Move an option in the array to a new index & update the form data.
+  // moveOptionInArray: Function to move an option in the array to a new index & update the form data.
   const moveOptionInArray = (sourceIndex: number, destinationIndex: number) => {
     const newOptions = options;
     const [removed] = newOptions.splice(sourceIndex, 1);
@@ -133,12 +131,12 @@ const RankingControl = ({
         <Box flexGrow={1}>
           <DragAndDrop
             onDragEnd={(result: DragAndDropResult) => {
-              reorderFields(result);
+              reorderFieldsAfterDrag(result);
               setDidBlur(true);
             }}
           >
-            <Drop id="droppable" type="test">
-              {options.map((option, index) => (
+            <Drop id="droppable" type="rankOptions">
+              {options.map((option: IOption, index: number) => (
                 <Drag
                   key={option.value}
                   id={option.value}
@@ -164,11 +162,12 @@ const RankingControl = ({
                           onChange={(selectedOption) => {
                             const newIndex = selectedOption.value - 1;
                             moveOptionInArray(index, newIndex);
+                            setDidBlur(true);
                           }}
                         />
 
                         <Text
-                          maxWidth="82%"
+                          maxWidth="80%"
                           my="auto"
                           color="tenantPrimary"
                           p="0px"
