@@ -523,14 +523,6 @@ Rails/Date:
     - 'engines/commercial/smart_groups/spec/rules/custom_field_date_spec.rb'
     - 'engines/commercial/smart_groups/spec/rules/registration_completed_at_spec.rb'
 
-# Offense count: 1
-# This cop supports safe autocorrection (--autocorrect).
-# Configuration parameters: Severity, Include.
-# Include: app/models/**/*.rb
-Rails/EnumSyntax:
-  Exclude:
-    - 'app/models/static_page.rb'
-
 # Offense count: 2
 # This cop supports safe autocorrection (--autocorrect).
 # Configuration parameters: EnforcedStyle.
