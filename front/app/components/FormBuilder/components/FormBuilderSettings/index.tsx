@@ -89,6 +89,7 @@ const FormBuilderSettings = ({
   const fieldType = watch(`customFields.${field.index}.input_type`);
   const showTabbedSettings = [
     'multiselect',
+    'multiselect_image',
     'linear_scale',
     'select',
     'page',
