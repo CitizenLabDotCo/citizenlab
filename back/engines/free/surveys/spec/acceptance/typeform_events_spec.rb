@@ -7,7 +7,7 @@ resource 'Typeform Events' do
   explanation 'Endpoint that receives webhook events from Typeform'
 
   before(:all) do
-    @cached_secret_token_typeform = ENV['SECRET_TOKEN_TYPEFORM']
+    @cached_secret_token_typeform = ENV.fetch('SECRET_TOKEN_TYPEFORM', nil)
     ENV['SECRET_TOKEN_TYPEFORM'] = 'awesome_secret_token'
   end
 
