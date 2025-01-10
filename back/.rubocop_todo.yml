@@ -829,13 +829,6 @@ Style/RedundantFilterChain:
     - 'spec/acceptance/memberships_spec.rb'
     - 'spec/acceptance/project_moderators_spec.rb'
 
-# Offense count: 2
-# This cop supports safe autocorrection (--autocorrect).
-Style/RedundantRegexpArgument:
-  Exclude:
-    - 'app/services/notification_service.rb'
-    - 'engines/commercial/public_api/app/controllers/web_api/v1/power_bi_templates_controller.rb'
-
 # Offense count: 10
 # This cop supports unsafe autocorrection (--autocorrect-all).
 # Configuration parameters: AllowedMethods, AllowedPatterns.
