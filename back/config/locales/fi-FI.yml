@@ -312,7 +312,7 @@ fi:
       page: 'Sivu'
       date_published: 'Julkaisupäivä (pp-kk-vvvv)'
       instructions: 'Ohjeet'
-      write_as_clearly: 'Kirjoita <b>selkeästi</b> niin kuin voit – nämä lomakkeet voidaan skannata'
+      write_as_clearly: 'Kirjoita mahdollisimman selkeällä käsialalla'
       write_in_language: 'Kirjoita vastauksesi samalla kielellä kuin tämä lomake'
       linear_scale_print_description: 'Kirjoita vain numero väliltä %{min_label} ja %{max_label}'
   project_copy:
