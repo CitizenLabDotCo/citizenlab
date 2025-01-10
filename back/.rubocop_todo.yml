@@ -807,13 +807,6 @@ Style/OpenStructUse:
     - 'spec/services/track_intercom_service_spec.rb'
 
 # Offense count: 1
-# This cop supports unsafe autocorrection (--autocorrect-all).
-# Configuration parameters: Methods.
-Style/RedundantArgument:
-  Exclude:
-    - 'app/services/profanity_service.rb'
-
-# Offense count: 1
 # This cop supports safe autocorrection (--autocorrect).
 Style/RedundantDoubleSplatHashBraces:
   Exclude:
