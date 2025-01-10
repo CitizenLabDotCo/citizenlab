@@ -798,12 +798,6 @@ Style/OpenStructUse:
     - 'spec/lib/omniauth_methods/google_spec.rb'
     - 'spec/services/track_intercom_service_spec.rb'
 
-# Offense count: 1
-# This cop supports safe autocorrection (--autocorrect).
-Style/RedundantDoubleSplatHashBraces:
-  Exclude:
-    - 'engines/commercial/analysis/app/lib/analysis/LLM/azure_open_ai.rb'
-
 # Offense count: 5
 # This cop supports unsafe autocorrection (--autocorrect-all).
 Style/RedundantFilterChain:
