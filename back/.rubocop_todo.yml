@@ -14,14 +14,6 @@ Bundler/OrderedGems:
   Exclude:
     - 'Gemfile'
 
-# Offense count: 2
-# This cop supports safe autocorrection (--autocorrect).
-# Configuration parameters: EnforcedStyle.
-# SupportedStyles: have_no, not_to
-Capybara/NegationMatcher:
-  Exclude:
-    - 'engines/free/email_campaigns/spec/mailers/event_registration_confirmation_mailer_spec.rb'
-
 # Offense count: 61
 # This cop supports unsafe autocorrection (--autocorrect-all).
 # Configuration parameters: EnforcedStyle, NonImplicitAssociationMethodNames.
