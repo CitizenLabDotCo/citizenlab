@@ -3,7 +3,7 @@
 module IdGentRrn
   class WijkBudgetApi
     include HTTParty
-    debug_output $stdout if Rails.env.development? || Rails.env.test?
+    debug_output $stdout if Rails.env.local?
 
     def initialize(api_key:, environment:)
       @api_key = api_key
