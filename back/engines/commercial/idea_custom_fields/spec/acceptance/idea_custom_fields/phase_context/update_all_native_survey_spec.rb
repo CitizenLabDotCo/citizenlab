@@ -379,6 +379,62 @@ resource 'Idea Custom Fields' do
         })
       end
 
+      example 'Update select field with logic' do
+        field_to_update = create(:custom_field_select, :with_options, resource: custom_form)
+        request = {
+          custom_fields: [
+            {
+              input_type: 'page',
+              page_layout: 'default'
+            },
+            {
+              id: field_to_update.id,
+              title_multiloc: { 'en' => 'Select a value' },
+              description_multiloc: { 'en' => 'Description of question' },
+              required: true,
+              logic: {
+                rules: [
+                  {
+                    if: 'any_other_answer',
+                    goto_page_id: 'survey_end'
+                  }
+                ]
+              },
+              enabled: true
+            }
+          ]
+        }
+        do_request request
+
+        assert_status 200
+        json_response = json_parse(response_body)
+        expect(json_response[:data].size).to eq 2
+        expect(json_response[:data][1]).to match({
+          attributes: {
+            code: nil,
+            created_at: an_instance_of(String),
+            description_multiloc: { en: 'Description of question' },
+            dropdown_layout: false,
+            enabled: true,
+            input_type: 'select',
+            key: an_instance_of(String),
+            ordering: 1,
+            required: true,
+            title_multiloc: { en: 'Select a value' },
+            updated_at: an_instance_of(String),
+            logic: { rules: [{
+              if: 'any_other_answer',
+              goto_page_id: 'survey_end'
+            }] },
+            random_option_ordering: false,
+            constraints: {}
+          },
+          id: an_instance_of(String),
+          relationships: { options: { data: an_instance_of(Array) } },
+          type: 'custom_field'
+        })
+      end
+
       context 'Update custom field options with images' do
         let!(:page) { create(:custom_field_page, resource: custom_form) }
         let!(:field) { create(:custom_field_multiselect_image, resource: custom_form) }
@@ -818,58 +874,6 @@ resource 'Idea Custom Fields' do
               { error: 'invalid_structure' }
             ]
           }
-        })
-      end
-
-      example '[error] logic on non-required field' do
-        page1 = create(:custom_field_page, resource: custom_form, title_multiloc: { 'en' => 'Page 1' }, description_multiloc: { 'en' => 'Page 1 description' })
-        field_to_update = create(
-          :custom_field_linear_scale,
-          resource: custom_form,
-          title_multiloc: { 'en' => 'Question 1 on page 1' }
-        )
-        page2 = create(:custom_field_page, resource: custom_form, title_multiloc: { 'en' => 'Page 2' }, description_multiloc: { 'en' => 'Page 2 description' })
-        request = {
-          custom_fields: [
-            {
-              id: page1.id,
-              input_type: 'page',
-              page_layout: 'default',
-              title_multiloc: page1.title_multiloc,
-              description_multiloc: page1.description_multiloc,
-              required: false,
-              enabled: true
-            },
-            {
-              id: field_to_update.id,
-              title_multiloc: { 'en' => 'New title' },
-              required: false,
-              enabled: true,
-              logic: { rules: [{ if: 1, goto_page_id: page2.id }] }
-            },
-            {
-              id: page2.id,
-              input_type: 'page',
-              page_layout: 'default',
-              title_multiloc: page2.title_multiloc,
-              description_multiloc: page2.description_multiloc,
-              required: false,
-              enabled: true
-            }
-          ]
-        }
-        do_request request
-
-        assert_status 422
-        json_response = json_parse(response_body)
-        expect(json_response[:errors]).to eq({
-          '0': {},
-          '1': {
-            logic: [
-              { error: 'only_allowed_on_required_fields' }
-            ]
-          },
-          '2': {}
         })
       end
 

@@ -91,8 +91,10 @@ const validateSchemaCondition = (
   if (Array.isArray(value)) {
     // For arrays, check if at least one element passes validation. Important for multi-select and image-select
     return value.some((val) => ajv.validate(schema, val));
+  } else if (schema.enum?.includes('no_answer') && value === undefined) {
+    return true;
   }
-  // For single values, validate directly
+
   return ajv.validate(schema, value);
 };
 
@@ -141,19 +143,13 @@ const evalVisibility = (
   ajv: Ajv,
   pages?: PageType[]
 ): boolean => {
-  if (
-    !uischema.ruleArray || // TODO: Fix this the next time the file is edited.
-    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-    (uischema.ruleArray && uischema.ruleArray.length === 0)
-  ) {
+  if (!uischema.ruleArray || uischema.ruleArray.length === 0) {
     return true;
   }
 
   const fulfilledRule = uischema.ruleArray.every((currentRule) => {
     const pageWithId = (pages || []).find(
-      // TODO: Fix this the next time the file is edited.
-      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-      (page) => page.options?.id === currentRule.condition?.pageId
+      (page) => page.options.id === currentRule.condition.pageId
     );
     const hasQuestionRule = pageWithId?.elements.find(
       (element) => element.options?.hasRule

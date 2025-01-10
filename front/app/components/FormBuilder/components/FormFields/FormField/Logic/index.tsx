@@ -43,6 +43,18 @@ const Logic = ({
 
   const pageMessage = formatMessage(messages.page);
 
+  // Add the additional catch all logic options
+  const catchAllTypes = field.required
+    ? ['any_other_answer']
+    : ['any_other_answer', 'no_answer'];
+  const catchAllLogicRules = field.logic.rules
+    ?.filter((rule) => catchAllTypes.includes(rule.if.toString()))
+    .sort((a, b) => a.if.toString().localeCompare(b.if.toString())); // sort to ensure consistent order
+  const catchAllLogicMessages = {
+    any_other_answer: formatMessage(messages.logicAnyOtherAnswer),
+    no_answer: formatMessage(messages.logicNoAnswer),
+  };
+
   return (
     <Box>
       {['select', 'multiselect'].includes(field.input_type) &&
@@ -76,6 +88,7 @@ const Logic = ({
             </Box>
           );
         })}
+
       {field.input_type === 'linear_scale' &&
         field.maximum &&
         getLinearScaleOptions(field.maximum).map((option) => {
@@ -120,6 +133,28 @@ const Logic = ({
           )}
         />
       )}
+      {catchAllLogicRules &&
+        catchAllLogicRules.map((rule) => {
+          const key = `${field.temp_id || field.id}_${rule.if}`;
+          return (
+            <Box key={key}>
+              <QuestionRuleDisplay
+                isRuleValid={isRuleValid(
+                  rule,
+                  field.temp_id || field.id,
+                  formCustomFields
+                )}
+                answerTitle={catchAllLogicMessages[rule.if.toString()]}
+                targetPage={getTitleFromPageId(
+                  rule.goto_page_id,
+                  formEndMessage,
+                  pageMessage,
+                  fieldNumbers
+                )}
+              />
+            </Box>
+          );
+        })}
     </Box>
   );
 };

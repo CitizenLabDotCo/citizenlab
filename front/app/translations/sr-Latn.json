@@ -742,7 +742,6 @@
   "app.components.formBuilder.question": "Pitanje",
   "app.components.formBuilder.questionCannotBeDeleted": "Ovo pitanje ne može se izbrisati.",
   "app.components.formBuilder.questionDescriptionOptional": "Opis pitanja (opcionalno)",
-  "app.components.formBuilder.questionLogicHelperTextDefault": "Ako odgovoru nije dodata logika, obrazac će pratiti svoj normalni tok. Dodavanje logike pitanju učiniće da ona podrazumevano bude obavezna. Za više informacija, posetite {supportPageLink}",
   "app.components.formBuilder.questionTitle": "Naslov pitanja",
   "app.components.formBuilder.randomize": "Randomize",
   "app.components.formBuilder.randomizeToolTip": "The order of the answers will be randomized per user",
