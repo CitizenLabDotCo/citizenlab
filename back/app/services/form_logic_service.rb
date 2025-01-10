@@ -186,7 +186,7 @@ class FormLogicService
   end
 
   def ui_schema_hide_rule_for(field, value)
-    if field.input_type == 'select'
+    if field.input_type == 'select' || field.input_type == 'multiselect'
       value = option_index[value].key
     end
     {
@@ -255,7 +255,7 @@ class FormLogicService
     # Then apply page-level logic if no question-level logic is present.
     if next_page_id
       case field.input_type
-      when 'select'
+      when 'select', 'multiselect'
         field.options.each do |option|
           value = option.id
           next if logic.key?(value)
