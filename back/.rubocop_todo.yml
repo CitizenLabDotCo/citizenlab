@@ -262,14 +262,6 @@ Performance/CollectionLiteralInLoop:
 RSpec/AnyInstance:
   Enabled: false
 
-# Offense count: 5
-# This cop supports safe autocorrection (--autocorrect).
-RSpec/BeEmpty:
-  Exclude:
-    - 'engines/commercial/smart_groups/spec/rules/participated_in_idea_status_spec.rb'
-    - 'engines/commercial/smart_groups/spec/rules/participated_in_project_spec.rb'
-    - 'engines/commercial/smart_groups/spec/rules/participated_in_topic_spec.rb'
-
 # Offense count: 6
 RSpec/BeforeAfterAll:
   Exclude:
