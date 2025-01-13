@@ -26,6 +26,7 @@ const SurveySubmissionCard = ({ ideaMini }: Props) => {
   const { data: phase } = usePhase(
     ideaMini.relationships.creation_phase.data.id
   );
+
   const smallerThanTablet = useBreakpoint('tablet');
   const localize = useLocalize();
 
