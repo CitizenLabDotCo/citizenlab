@@ -3,11 +3,6 @@ require 'json'
 namespace :custom_fields do
   desc 'Sets code: null for education custom fields'
   task :set_education_code_null, [] => [:environment] do
-    # Reduce logging when developing (to more closely match the production environment)
-    # dev_null = Logger.new('/dev/null')
-    # Rails.logger = dev_null
-    # ActiveRecord::Base.logger = dev_null
-
     reporter = ScriptReporter.new
     Tenant.safe_switch_each do |tenant|
       puts "\nProcessing tenant #{tenant.host} \n\n"
