@@ -76,7 +76,7 @@ const SurveySubmissionCard = ({ ideaMini }: Props) => {
             >
               {localize(phase.data.attributes.title_multiloc)}
             </Title>
-            <Body />
+            <Body ideaMini={ideaMini} />
           </Link>
         </Box>
         <Box marginTop="auto">

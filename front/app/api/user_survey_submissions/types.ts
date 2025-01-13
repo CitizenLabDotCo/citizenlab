@@ -15,7 +15,7 @@ export interface IdeaMiniData {
   id: string;
   type: 'idea_mini';
   attributes: {
-    created_at: string;
+    published_at: string | null;
   };
   relationships: {
     creation_phase: {
