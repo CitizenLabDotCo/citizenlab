@@ -1811,6 +1811,7 @@
   "app.containers.UsersEditPage.verifiedIdentitySubtitle": "Du kan delta i prosjekter som krever verifisering.",
   "app.containers.UsersEditPage.verifiedIdentityTitle": "Du er bekreftet",
   "app.containers.UsersEditPage.verifyNow": "Bekreft nå",
+  "app.containers.UsersShowPage.Surveys.SurveySubmissionCard.downloadYourResponses": "Last ned svarene dine",
   "app.containers.UsersShowPage.a11y_likesCount": "{likesCount, plural, =0 {ingen likes} one {1 like} other {# likes}}",
   "app.containers.UsersShowPage.a11y_postCommentPostedIn": "Innspill som denne kommentaren ble lagt ut som svar på:",
   "app.containers.UsersShowPage.areas": "Områder",
