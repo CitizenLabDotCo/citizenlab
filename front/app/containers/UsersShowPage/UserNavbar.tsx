@@ -16,6 +16,7 @@ import useEventsByUserId from 'api/events/useEventsByUserId';
 import useAuthUser from 'api/me/useAuthUser';
 import useUserCommentsCount from 'api/user_comments_count/useUserCommentsCount';
 import useUserIdeasCount from 'api/user_ideas_count/useUserIdeasCount';
+import useUserSurveySubmissions from 'api/user_survey_submissions/useUserSurveySubmissions';
 import { IUserData } from 'api/users/types';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
@@ -131,6 +132,7 @@ const UserNavbar = memo<Props>(({ user }) => {
   });
   const { data: events } = useEventsByUserId(user.id);
   const { data: authUser } = useAuthUser();
+  const { data: surveySubmissions } = useUserSurveySubmissions();
 
   const eventsCount = events?.data.length;
   // TODO: Fix this the next time the file is edited.
@@ -142,6 +144,7 @@ const UserNavbar = memo<Props>(({ user }) => {
   // TODO: Fix this the next time the file is edited.
   // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   const showFollowingTab = isFollowingEnabled && authUser?.data?.id === user.id;
+  const surveySubmissionsCount = surveySubmissions?.data.length;
 
   const followingTab: TabData = {
     label: formatMessage(messages.followingWithCount, {
@@ -172,7 +175,9 @@ const UserNavbar = memo<Props>(({ user }) => {
       icon: 'idea',
     },
     {
-      label: 'Surveys',
+      label: formatMessage(messages.surveyResponses, {
+        responses: surveySubmissionsCount ?? 0,
+      }),
       active: pathname.endsWith('surveys'),
       path: 'surveys',
       icon: 'survey',
