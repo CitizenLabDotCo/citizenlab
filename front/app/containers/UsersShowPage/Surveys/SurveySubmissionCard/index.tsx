@@ -16,12 +16,14 @@ import useLocalize from 'hooks/useLocalize';
 
 import Container from 'components/IdeaCard/Container';
 
+import { useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
 import Link from 'utils/cl-router/Link';
 
 import { downloadSurveySubmission } from '../utils';
 
 import Body from './Body';
+import messages from './messages';
 
 interface Props {
   ideaMini: IdeaMiniData;
@@ -37,6 +39,7 @@ const SurveySubmissionCard = ({ ideaMini }: Props) => {
 
   const smallerThanTablet = useBreakpoint('tablet');
   const localize = useLocalize();
+  const { formatMessage } = useIntl();
 
   const handleClickDownload = () => {
     downloadSurveySubmission(ideaMini.id);
@@ -81,7 +84,7 @@ const SurveySubmissionCard = ({ ideaMini }: Props) => {
         </Box>
         <Box marginTop="auto">
           <Button w="auto" onClick={handleClickDownload}>
-            Click here to download
+            {formatMessage(messages.downloadYourResponses)}
           </Button>
         </Box>
       </Box>
