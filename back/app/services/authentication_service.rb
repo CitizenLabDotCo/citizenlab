@@ -2,7 +2,7 @@
 
 class AuthenticationService
   def all_methods
-    IdMethod.all_methods.select { |_, v| v.auth? }
+    IdMethod.all_methods.filter_map { |k, v| [k, v] if v.auth? }.to_h
   end
 
   def method_by_provider(provider)
