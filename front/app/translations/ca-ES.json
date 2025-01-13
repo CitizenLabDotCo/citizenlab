@@ -1811,6 +1811,7 @@
   "app.containers.UsersEditPage.verifiedIdentitySubtitle": "Podeu participar en projectes que requereixin verificació.",
   "app.containers.UsersEditPage.verifiedIdentityTitle": "Esteu verificat",
   "app.containers.UsersEditPage.verifyNow": "Verificar ara",
+  "app.containers.UsersShowPage.Surveys.SurveySubmissionCard.downloadYourResponses": "Descarrega les teves respostes",
   "app.containers.UsersShowPage.a11y_likesCount": "{likesCount, plural, =0 {sense likes} one {1 m'agrada} other {#m'agrada}}",
   "app.containers.UsersShowPage.a11y_postCommentPostedIn": "Introduïu que aquest comentari s'ha publicat en resposta a:",
   "app.containers.UsersShowPage.areas": "Àrees",
