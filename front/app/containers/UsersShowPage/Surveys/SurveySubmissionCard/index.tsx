@@ -8,6 +8,7 @@ import {
 } from '@citizenlab/cl2-component-library';
 
 import usePhase from 'api/phases/usePhase';
+import useProjectById from 'api/projects/useProjectById';
 import { IdeaMiniData } from 'api/user_survey_submissions/types';
 
 import useLocalize from 'hooks/useLocalize';
@@ -26,17 +27,20 @@ const SurveySubmissionCard = ({ ideaMini }: Props) => {
   const { data: phase } = usePhase(
     ideaMini.relationships.creation_phase.data.id
   );
+  const { data: project } = useProjectById(
+    ideaMini.relationships.project.data.id
+  );
 
   const smallerThanTablet = useBreakpoint('tablet');
   const localize = useLocalize();
 
-  const handleClick = () => {
+  const handleClickDownload = () => {
     downloadSurveySubmission(ideaMini.id);
   };
 
-  const slug = 'TODO';
+  if (!phase || !project) return null;
 
-  if (!phase) return null;
+  const { slug } = project.data.attributes;
 
   return (
     <Container>
@@ -51,7 +55,7 @@ const SurveySubmissionCard = ({ ideaMini }: Props) => {
         overflowX="hidden"
       >
         <Box mb={smallerThanTablet ? '24px' : '8px'}>
-          <Link to={`/ideas/${slug}?go_back=true`} onClick={handleClick}>
+          <Link to={`/projects/${slug}`}>
             <Title
               variant="h3"
               mt="4px"
@@ -64,7 +68,7 @@ const SurveySubmissionCard = ({ ideaMini }: Props) => {
           </Link>
         </Box>
         <Box marginTop="auto">
-          <Button w="auto" onClick={handleClick}>
+          <Button w="auto" onClick={handleClickDownload}>
             Click here to download
           </Button>
         </Box>

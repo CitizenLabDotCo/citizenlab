@@ -21,5 +21,11 @@ export interface IdeaMiniData {
         type: 'phase';
       };
     };
+    project: {
+      data: {
+        id: string;
+        type: 'project';
+      };
+    };
   };
 }
