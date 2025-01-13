@@ -190,7 +190,7 @@
   "app.components.IdeaCards.filters.mostDiscussed": "Meest besproken",
   "app.components.IdeaCards.filters.newest": "Nieuw",
   "app.components.IdeaCards.filters.oldest": "Oud",
-  "app.components.IdeaCards.filters.popular": "Meest geliked",
+  "app.components.IdeaCards.filters.popular": "Meest geliket",
   "app.components.IdeaCards.filters.random": "Willekeurig",
   "app.components.IdeaCards.filters.sortBy": "Sorteren op",
   "app.components.IdeaCards.filters.sortChangedScreenreaderMessage": "Sortering veranderd naar: {currentSortType}",
