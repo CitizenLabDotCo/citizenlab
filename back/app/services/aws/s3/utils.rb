@@ -50,7 +50,8 @@ module Aws
 
           next unless destination_key
 
-          copy_source = "#{source_bucket}/#{key}"
+          # According to the AWS documentation, the copy_source parameter must be URL-encoded.
+          copy_source = CGI.escape("#{source_bucket}/#{key}")
 
           dest_s3_client.copy_object(
             bucket: dest_bucket,

@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class AddTwoInitiativeStatusesAndUpdateColorsAndOrdering < ActiveRecord::Migration[7.0]
-  class StubInitiativeStatus < ActiveRecord::Base # rubocop:disable Rails/ApplicationRecord
+  class StubInitiativeStatus < ActiveRecord::Base
     self.table_name = 'initiative_statuses'
   end
 

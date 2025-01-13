@@ -68,7 +68,7 @@ describe Export::Xlsx::InputSheetGenerator do
           )
         end
         let!(:attachment1) { create(:idea_file, idea: ideation_response1) }
-        let!(:comments) { create_list(:comment, 1, post: ideation_response1) }
+        let!(:comments) { create_list(:comment, 1, idea: ideation_response1) }
         let!(:likes) { create_list(:reaction, 2, reactable: ideation_response1) }
         let!(:dislikes) { create_list(:dislike, 1, reactable: ideation_response1) }
         let(:inputs) { [ideation_response1.reload] }
@@ -158,7 +158,7 @@ describe Export::Xlsx::InputSheetGenerator do
             name: 'david.csv'
           )
         end
-        let!(:comments) { create_list(:comment, 1, post: ideation_response1) }
+        let!(:comments) { create_list(:comment, 1, idea: ideation_response1) }
         let!(:likes) { create_list(:reaction, 2, reactable: ideation_response1) }
         let!(:dislikes) { create_list(:dislike, 1, reactable: ideation_response1) }
         let(:inputs) { [ideation_response1.reload] }
@@ -578,7 +578,7 @@ describe Export::Xlsx::InputSheetGenerator do
           )
         end
         let!(:attachment1) { create(:idea_file, idea: ideation_response1) }
-        let!(:comments) { create_list(:comment, 1, post: ideation_response1) }
+        let!(:comments) { create_list(:comment, 1, idea: ideation_response1) }
         let!(:likes) { create_list(:reaction, 1, reactable: ideation_response1) }
         let!(:baskets) do
           create_list(:basket, 2, phase: phase, ideas: [ideation_response1]).each(&:update_counts!)
@@ -668,7 +668,7 @@ describe Export::Xlsx::InputSheetGenerator do
             name: 'david.csv'
           )
         end
-        let!(:comments) { create_list(:comment, 1, post: ideation_response1) }
+        let!(:comments) { create_list(:comment, 1, idea: ideation_response1) }
         let!(:likes) { create_list(:reaction, 2, reactable: ideation_response1) }
         let!(:baskets) do
           create_list(:basket, 2, phase: phase, ideas: [ideation_response1]).each do |basket|
