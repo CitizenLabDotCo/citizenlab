@@ -1,21 +1,30 @@
 import React from 'react';
 
-import { Box } from '@citizenlab/cl2-component-library';
+import { media } from '@citizenlab/cl2-component-library';
+import styled from 'styled-components';
 
 import useUserSurveySubmissions from 'api/user_survey_submissions/useUserSurveySubmissions';
 
 import SurveySubmissionCard from './SurveySubmissionCard';
 
+const Container = styled.div`
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-grap: 20px;
+
+  ${media.phone`
+    grid-template-columns: 1fr;
+  `}
+`;
+
 const Surveys = () => {
   const { data } = useUserSurveySubmissions();
   return (
-    <Box>
+    <Container>
       {data?.data.map((ideaMini) => (
-        <Box display="inline" key={ideaMini.id}>
-          <SurveySubmissionCard ideaMini={ideaMini} />
-        </Box>
+        <SurveySubmissionCard ideaMini={ideaMini} key={ideaMini.id} />
       ))}
-    </Box>
+    </Container>
   );
 };
 
