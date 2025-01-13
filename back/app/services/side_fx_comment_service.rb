@@ -47,8 +47,7 @@ class SideFxCommentService
   def before_destroy(comment, user); end
 
   def after_destroy(frozen_comment, user)
-    # Refresh the count of project participants by clearing the cache
-    ParticipantsService.new.clear_project_participants_count_cache(frozen_comment.post.project) if frozen_comment.post.project
+    ParticipantsService.new.clear_project_participants_count_cache(frozen_comment.idea.project)
 
     serialized_comment = clean_time_attributes(frozen_comment.attributes)
     LogActivityJob.perform_later(encode_frozen_resource(frozen_comment), 'deleted', user, Time.now.to_i, payload: { comment: serialized_comment })
@@ -57,10 +56,7 @@ class SideFxCommentService
   private
 
   def check_participation_context(comment, user)
-    idea = comment.post if comment.post_type == 'Idea'
-    return unless idea
-
-    disallowed_reason = Permissions::IdeaPermissionsService.new(idea, user).denied_reason_for_action('commenting_idea')
+    disallowed_reason = Permissions::IdeaPermissionsService.new(comment.idea, user).denied_reason_for_action('commenting_idea')
     return unless disallowed_reason
 
     raise ClErrors::TransactionError.new(error_key: disallowed_reason)
@@ -96,13 +92,12 @@ class SideFxCommentService
   end
 
   def create_followers(comment, user)
-    Follower.find_or_create_by(followable: comment.post, user: user)
-    return if comment.post_type != 'Idea'
+    Follower.find_or_create_by(followable: comment.idea, user: user)
 
-    Follower.find_or_create_by(followable: comment.post.project, user: user)
-    return if !comment.post.project.in_folder?
+    Follower.find_or_create_by(followable: comment.idea.project, user: user)
+    return if !comment.idea.project.in_folder?
 
-    Follower.find_or_create_by(followable: comment.post.project.folder, user: user)
+    Follower.find_or_create_by(followable: comment.idea.project.folder, user: user)
   end
 end
 

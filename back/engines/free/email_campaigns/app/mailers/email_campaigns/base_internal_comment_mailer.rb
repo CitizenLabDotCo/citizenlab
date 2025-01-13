@@ -5,11 +5,11 @@ module EmailCampaigns
     protected
 
     def subject
-      format_message('subject', values: { post: localize_for_recipient(event.post_title_multiloc) })
+      format_message('subject', values: { post: localize_for_recipient(event.idea_title_multiloc) })
     end
 
     def header_title
-      format_message('main_header', values: { post: localize_for_recipient(event.post_title_multiloc) })
+      format_message('main_header', values: { post: localize_for_recipient(event.idea_title_multiloc) })
     end
 
     def header_message
@@ -17,7 +17,7 @@ module EmailCampaigns
     end
 
     def preheader
-      format_message('preheader', values: { post: localize_for_recipient(event.post_title_multiloc) })
+      format_message('preheader', values: { post: localize_for_recipient(event.idea_title_multiloc) })
     end
   end
 end

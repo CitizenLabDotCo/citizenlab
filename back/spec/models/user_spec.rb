@@ -14,8 +14,6 @@ RSpec.describe User do
 
     it { is_expected.to have_many(:ideas).dependent(:nullify) }
     it { is_expected.to have_many(:idea_imports).dependent(:nullify) }
-    it { is_expected.to have_many(:initiatives).dependent(:nullify) }
-    it { is_expected.to have_many(:assigned_initiatives).class_name('Initiative').dependent(:nullify) }
     it { is_expected.to have_many(:comments).dependent(:nullify) }
     it { is_expected.to have_many(:internal_comments).dependent(:nullify) }
     it { is_expected.to have_many(:official_feedbacks).dependent(:nullify) }

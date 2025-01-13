@@ -9,7 +9,7 @@ import {
   getTheme,
   stylingConsts,
 } from '@citizenlab/cl2-component-library';
-import { configureScope } from '@sentry/react';
+import * as Sentry from '@sentry/react';
 import GlobalStyle from 'global-styles';
 import 'intersection-observer';
 import { includes, uniq } from 'lodash-es';
@@ -241,10 +241,8 @@ const App = ({ children }: Props) => {
 
   useEffect(() => {
     if (authUser) {
-      configureScope((scope) => {
-        scope.setUser({
-          id: authUser.data.id,
-        });
+      Sentry.getCurrentScope()?.setUser({
+        id: authUser.data.id,
       });
     }
   }, [authUser]);

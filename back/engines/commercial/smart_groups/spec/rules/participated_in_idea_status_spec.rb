@@ -57,7 +57,7 @@ describe SmartGroups::Rules::ParticipatedInIdeaStatus do
     let_it_be(:user4) { create(:user) }
     let_it_be(:idea1) { create(:idea, idea_status: idea_status1, author: user1) }
     let_it_be(:reaction) { create(:reaction, reactable: idea1, user: user2) }
-    let_it_be(:comment) { create(:comment, post: idea1, author: user3) }
+    let_it_be(:comment) { create(:comment, idea: idea1, author: user3) }
     let_it_be(:proposal1) { create(:proposal, idea_status: proposal_status1, author: user3) }
 
     it "correctly filters on 'in' predicate" do
@@ -111,7 +111,7 @@ describe SmartGroups::Rules::ParticipatedInIdeaStatus do
     it "correctly filters on 'reacted_comment_in' predicate" do
       rule = described_class.new('reacted_comment_in', [idea_status1.id])
       expect { @users = rule.filter(User) }.not_to exceed_query_limit(1)
-      expect(@users).to match_array []
+      expect(@users).to be_empty
     end
 
     it "correctly filters on 'not_reacted_comment_in' predicate" do

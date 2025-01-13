@@ -2590,7 +2590,7 @@
   "app.containers.admin.ContentBuilder.IframeMultiloc.embedIframeTitleTooltip": "Det är användbart att tillhandahålla denna information för användare som förlitar sig på en skärmläsare eller annan hjälpteknik.",
   "app.containers.admin.ContentBuilder.IframeMultiloc.embedIframeUrlLabel": "Adress till webbplatsen",
   "app.containers.admin.ContentBuilder.IframeMultiloc.embedIframeUrlLabelTooltip": "Fullständig URL för den webbplats du vill bädda in.",
-  "app.containers.admin.ContentBuilder.IframeMultiloc.iframeDescription": "Visa innehåll från en extern webbplats på din sida i en HTML iFrame.",
+  "app.containers.admin.ContentBuilder.IframeMultiloc.iframeDescription3": "Visa innehåll från en extern webbplats på din sida i en HTML iFrame. Observera att inte alla sidor kan bäddas in. Om du har problem med att bädda in en sida ska du kontrollera med sidans ägare om den är konfigurerad för att tillåta inbäddning.",
   "app.containers.admin.ContentBuilder.IframeMultiloc.iframeEmbedVisitLinkMessage": "Besök vår supportsida",
   "app.containers.admin.ContentBuilder.IframeMultiloc.iframeHeightPlaceholder": "300",
   "app.containers.admin.ContentBuilder.IframeMultiloc.iframeInvalidWhitelistUrlErrorMessage": "Tyvärr kunde detta innehåll inte bäddas in. {visitLinkMessage} för att få veta mer.",
