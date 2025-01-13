@@ -1811,6 +1811,7 @@
   "app.containers.UsersEditPage.verifiedIdentitySubtitle": "يمكنك المشاركة في المشاريع التي يمكن الوصول إليها فقط من قبل المواطنين الذين تم التحقق من هوياتهم.",
   "app.containers.UsersEditPage.verifiedIdentityTitle": "تم التحقق من هويتك",
   "app.containers.UsersEditPage.verifyNow": "تحقق الآن",
+  "app.containers.UsersShowPage.Surveys.SurveySubmissionCard.downloadYourResponses": "تنزيل ردودكم",
   "app.containers.UsersShowPage.a11y_likesCount": "{likesCount, plural, =0 {لا يحب} one {1 إعجاب} other {# الإعجابات}}",
   "app.containers.UsersShowPage.a11y_postCommentPostedIn": "المنشور الذي نُشر به هذا التعليق:",
   "app.containers.UsersShowPage.areas": "المناطق",
