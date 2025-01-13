@@ -1811,6 +1811,7 @@
   "app.containers.UsersEditPage.verifiedIdentitySubtitle": "Puoi partecipare a progetti che richiedono una verifica.",
   "app.containers.UsersEditPage.verifiedIdentityTitle": "Sei verificato",
   "app.containers.UsersEditPage.verifyNow": "Verifica ora",
+  "app.containers.UsersShowPage.Surveys.SurveySubmissionCard.downloadYourResponses": "Scarica le tue risposte",
   "app.containers.UsersShowPage.a11y_likesCount": "{likesCount, plural, =0 {nessun like} one {1 like} other {# Mi piace}}",
   "app.containers.UsersShowPage.a11y_postCommentPostedIn": "Ingresso che questo commento è stato pubblicato in risposta a:",
   "app.containers.UsersShowPage.areas": "Aree",
