@@ -759,6 +759,7 @@
   "app.components.formBuilder.shortAnswer": "ਛੋਟਾ ਜਵਾਬ",
   "app.components.formBuilder.showResponseToUsersToggleLabel": "ਉਪਭੋਗਤਾਵਾਂ ਨੂੰ ਜਵਾਬ ਦਿਖਾਓ",
   "app.components.formBuilder.singleChoice": "ਸਿੰਗਲ ਚੋਣ",
+  "app.components.formBuilder.staleDataErrorMessage2": "ਕੋਈ ਸਮੱਸਿਆ ਆਈ ਹੈ। ਇਹ ਇਨਪੁਟ ਫਾਰਮ ਹਾਲ ਹੀ ਵਿੱਚ ਕਿਤੇ ਹੋਰ ਸੁਰੱਖਿਅਤ ਕੀਤਾ ਗਿਆ ਹੈ। ਇਹ ਇਸ ਲਈ ਹੋ ਸਕਦਾ ਹੈ ਕਿਉਂਕਿ ਤੁਸੀਂ ਜਾਂ ਕਿਸੇ ਹੋਰ ਉਪਭੋਗਤਾ ਨੇ ਇਸਨੂੰ ਕਿਸੇ ਹੋਰ ਬ੍ਰਾਊਜ਼ਰ ਵਿੰਡੋ ਵਿੱਚ ਸੰਪਾਦਨ ਲਈ ਖੋਲ੍ਹਿਆ ਹੈ। ਕਿਰਪਾ ਕਰਕੇ ਨਵੀਨਤਮ ਫਾਰਮ ਪ੍ਰਾਪਤ ਕਰਨ ਲਈ ਪੰਨੇ ਨੂੰ ਤਾਜ਼ਾ ਕਰੋ ਅਤੇ ਫਿਰ ਆਪਣੇ ਬਦਲਾਅ ਦੁਬਾਰਾ ਕਰੋ।",
   "app.components.formBuilder.supportArticleLinkText": "ਇਹ ਪੰਨਾ",
   "app.components.formBuilder.tags": "ਟੈਗਸ",
   "app.components.formBuilder.title": "ਸਿਰਲੇਖ",
