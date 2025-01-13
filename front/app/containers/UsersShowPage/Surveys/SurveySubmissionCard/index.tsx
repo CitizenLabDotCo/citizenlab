@@ -21,6 +21,8 @@ import Link from 'utils/cl-router/Link';
 
 import { downloadSurveySubmission } from '../utils';
 
+import Body from './Body';
+
 interface Props {
   ideaMini: IdeaMiniData;
 }
@@ -74,7 +76,7 @@ const SurveySubmissionCard = ({ ideaMini }: Props) => {
             >
               {localize(phase.data.attributes.title_multiloc)}
             </Title>
-            {/* {!hideBody && <Body idea={idea} />} */}
+            <Body />
           </Link>
         </Box>
         <Box marginTop="auto">
