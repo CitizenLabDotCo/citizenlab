@@ -14,6 +14,9 @@ export interface Response {
 export interface IdeaMiniData {
   id: string;
   type: 'idea_mini';
+  attributes: {
+    created_at: string;
+  };
   relationships: {
     creation_phase: {
       data: {
