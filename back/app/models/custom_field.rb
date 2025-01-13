@@ -125,6 +125,16 @@ class CustomField < ApplicationRecord
     %w[page section].exclude?(input_type)
   end
 
+  def average_rankings(scope)
+    ActiveRecord::Base.connection.execute(
+      <<-SQL.squish
+        SELECT value#>>'{}' AS value_text, AVG(ordinality)
+        FROM users u, jsonb_array_elements(u.custom_field_values->'#{key}') WITH ORDINALITY
+        GROUP BY value
+      SQL
+    ).pluck('value_text', 'avg').to_h
+  end
+
   def built_in?
     !!code
   end

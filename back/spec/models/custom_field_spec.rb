@@ -617,19 +617,16 @@ RSpec.describe CustomField do
       # 2. Map each field option key in the array to a hash where the keys are the option keys and the values are the index positions (ranks) of the options in the array
       # 3. Calculate the average rank for each field option key
 
-      result = ActiveRecord::Base.connection.execute(
-        <<-SQL.squish
-          SELECT value, AVG(ordinality)
-          FROM users u, jsonb_array_elements(u.custom_field_values->'#{field.key}') WITH ORDINALITY
-          GROUP BY value
-        SQL
-      )
-      byebug
-      User.select("jsonb_array_elements(custom_field_values->'#{field.key}') FOR ORDINALITY").map do |user|
-        byebug
-      end
+      # result = ActiveRecord::Base.connection.execute(
+      #   <<-SQL.squish
+      #     SELECT value, AVG(ordinality)
+      #     FROM users u, jsonb_array_elements(u.custom_field_values->'#{field.key}') WITH ORDINALITY
+      #     GROUP BY value
+      #   SQL
+      # )
+      # byebug
       
-      expect(field.average_rank(User.all)).to eq({ 'by_bike' => 2, 'by_foot' => 2.75, 'by_train' => 2.5, 'by_horse' => 2.75 })
+      expect(field.average_rankings(User.all)).to eq({ 'by_bike' => 2, 'by_foot' => 2.75, 'by_train' => 2.5, 'by_horse' => 2.75 })
     end
   end
 end
