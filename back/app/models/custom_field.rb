@@ -129,8 +129,10 @@ class CustomField < ApplicationRecord
     # This basically starts from all combinations of scope ID, option key (value)
     # and position (ordinality) and then calculates the average position for each
     # option. "#>> '{}'" is used to unescape the double quotes in the JSONB value.
-    in_sql_scope_ids = "(#{scope.pluck(:id).map { |id| "'#{id}'" }.join(',')})"
-    ActiveRecord::Base.connection.execute(
+    return {} if input_type != 'ranking'
+
+    in_sql_scope_ids = "(#{scope.ids.map { |id| "'#{id}'" }.join(',')})"
+    result = ActiveRecord::Base.connection.execute(
       <<-SQL.squish
         SELECT value #>> '{}' AS option_key, AVG(ordinality)
         FROM #{scope.table.name} u, jsonb_array_elements(u.custom_field_values->'#{key}') WITH ORDINALITY
@@ -138,7 +140,37 @@ class CustomField < ApplicationRecord
         AND u.custom_field_values->'#{key}' IS NOT NULL
         GROUP BY value
       SQL
-    ).pluck('option_key', 'avg').to_h
+    )
+    result.pluck('option_key', 'avg').to_h
+  end
+
+  def rankings_counts(scope)
+    # This basically starts from all combinations of scope ID, option key (value)
+    # and position (ordinality) and then calculates the count for each option and
+    # position. "#>> '{}'" is used to unescape the double quotes in the JSONB
+    # value.
+    return {} if input_type != 'ranking'
+
+    in_sql_scope_ids = "(#{scope.ids.map { |id| "'#{id}'" }.join(',')})"
+    result = ActiveRecord::Base.connection.execute(
+      <<-SQL.squish
+        SELECT value #>> '{}' AS option_key, ordinality, COUNT(*)
+        FROM #{scope.table.name} u, jsonb_array_elements(u.custom_field_values->'#{key}') WITH ORDINALITY
+        WHERE u.id IN #{in_sql_scope_ids}
+        AND u.custom_field_values->'#{key}' IS NOT NULL
+        GROUP BY value, ordinality
+      SQL
+    )
+    # Transform array of triplets into a hash of hashes
+    result
+      .pluck('option_key', 'ordinality', 'count')
+      .group_by(&:shift)
+      .transform_values do |ordinalities| 
+        ordinalities
+          .group_by(&:shift)
+          .transform_values(&:first)
+          .transform_values(&:first)
+      end
   end
 
   def built_in?

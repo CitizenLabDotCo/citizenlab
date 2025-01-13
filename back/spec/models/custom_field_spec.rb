@@ -608,7 +608,51 @@ RSpec.describe CustomField do
       create(:idea, custom_field_values: { field.key => ['by_bike', 'by_foot', 'by_train', 'by_horse'] })
       excluded_idea = create(:idea, custom_field_values: { field.key => ['by_bike', 'by_horse', 'by_foot', 'by_train'] })
       
-      expect(field.average_rankings(Idea.where.not(id: [excluded_idea.id]))).to eq({ 'by_bike' => 2, 'by_foot' => 2.75, 'by_train' => 2.5, 'by_horse' => 2.75 })
+      expect(field.average_rankings(Idea.where.not(id: [excluded_idea.id]))).to eq({
+        'by_bike' => 2,
+        'by_foot' => 2.75,
+        'by_train' => 2.5,
+        'by_horse' => 2.75
+      })
+    end
+  end
+
+  describe '#rankings_counts' do
+    let!(:field) { create(:custom_field_ranking) }
+    let!(:option1) { create(:custom_field_option, custom_field: field, key: 'by_foot') }
+    let!(:option1) { create(:custom_field_option, custom_field: field, key: 'by_bike') }
+    let!(:option1) { create(:custom_field_option, custom_field: field, key: 'by_train') }
+    let!(:option1) { create(:custom_field_option, custom_field: field, key: 'by_horse') }
+
+    it 'works' do
+      create(:idea, custom_field_values: { field.key => ['by_bike', 'by_horse', 'by_train', 'by_foot'] })
+      create(:idea, custom_field_values: { field.key => ['by_train', 'by_bike', 'by_foot', 'by_horse'] })
+      create(:idea, custom_field_values: {})
+      create(:idea, custom_field_values: { field.key => ['by_horse', 'by_foot', 'by_train', 'by_bike'] })
+      create(:idea, custom_field_values: { field.key => ['by_bike', 'by_foot', 'by_train', 'by_horse'] })
+      excluded_idea = create(:idea, custom_field_values: { field.key => ['by_bike', 'by_horse', 'by_foot', 'by_train'] })
+      
+      expect(field.rankings_counts(Idea.where.not(id: [excluded_idea.id]))).to eq({
+        'by_foot' => {
+          2 => 2,
+          3 => 1,
+          4 => 1
+        },
+        'by_bike' => {
+          1 => 2,
+          2 => 1,
+          4 => 1
+        },
+        'by_train' => {
+          1 => 1,
+          3 => 3
+        },
+        'by_horse' => {
+          1 => 1,
+          2 => 1,
+          4 => 2
+        }
+      })
     end
   end
 end
