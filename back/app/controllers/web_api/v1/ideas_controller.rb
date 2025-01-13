@@ -94,13 +94,15 @@ class WebApi::V1::IdeasController < ApplicationController
 
     ideas = paginate ideas
 
-    ideas.includes(:creation_phase)
+    ideas
+      .includes(:creation_phase)
+      .includes(:project)
 
     render json: linked_json(
       ideas,
       WebApi::V1::IdeaMiniSerializer,
       params: jsonapi_serializer_params,
-      include: [:creation_phase]
+      include: %i[creation_phase project]
     )
   end
 
