@@ -83,7 +83,7 @@ const SurveySubmissionCard = ({ ideaMini }: Props) => {
           </Link>
         </Box>
         <Box marginTop="auto">
-          <Button w="auto" onClick={handleClickDownload}>
+          <Button w="auto" onClick={handleClickDownload} buttonStyle="text">
             {formatMessage(messages.downloadYourResponses)}
           </Button>
         </Box>
