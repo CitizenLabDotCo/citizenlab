@@ -50,7 +50,6 @@ Rails.application.routes.draw do
         end
 
         get :as_xlsx, on: :collection, action: 'index_xlsx'
-        get :as_xlsx, on: :member, action: 'show_xlsx'
         get :mini, on: :collection, action: 'index_mini'
         get :survey_submissions, on: :collection, action: 'index_survey_submissions'
         get 'by_slug/:slug', on: :collection, to: 'ideas#by_slug'
@@ -73,6 +72,7 @@ Rails.application.routes.draw do
         get 'comments/as_xlsx', on: :collection, to: 'comments#index_xlsx'
 
         get :similarities, on: :member
+        get :as_xlsx, on: :member, action: 'show_xlsx'
       end
 
       resources :background_jobs, only: %i[index]
