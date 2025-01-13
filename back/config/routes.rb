@@ -20,20 +20,6 @@ Rails.application.routes.draw do
       concern :followable do
         resources :followers, only: [:create]
       end
-      concern :post do
-        resources :comments, shallow: true,
-          concerns: %i[reactable spam_reportable],
-          defaults: { reactable: 'Comment', spam_reportable: 'Comment' } do
-          get :children, on: :member
-          post :mark_as_deleted, on: :member
-        end
-        resources :internal_comments, except: [:destroy], shallow: true do
-          get :children, on: :member
-          patch :mark_as_deleted, on: :member
-        end
-        get 'comments/as_xlsx', on: :collection, to: 'comments#index_xlsx'
-        resources :official_feedback, shallow: true
-      end
       concern :spam_reportable do
         resources :spam_reports, shallow: true
       end
@@ -55,8 +41,8 @@ Rails.application.routes.draw do
       resources :activities, only: [:index]
 
       resources :ideas,
-        concerns: %i[reactable spam_reportable post followable permissionable],
-        defaults: { reactable: 'Idea', spam_reportable: 'Idea', post: 'Idea', followable: 'Idea', parent_param: :idea_id } do
+        concerns: %i[reactable spam_reportable followable permissionable],
+        defaults: { reactable: 'Idea', spam_reportable: 'Idea', followable: 'Idea', parent_param: :idea_id } do
         resources :images, defaults: { container_type: 'Idea' }
         resources :files, defaults: { container_type: 'Idea' }
         resources :cosponsorships, defaults: { container_type: 'Idea' } do
@@ -70,23 +56,21 @@ Rails.application.routes.draw do
         get :filter_counts, on: :collection
         get :json_forms_schema, on: :member
         get 'draft/:phase_id', on: :collection, to: 'ideas#draft_by_phase'
+
+        resources :official_feedback, shallow: true
+        resources :comments, shallow: true,
+          concerns: %i[reactable spam_reportable],
+          defaults: { reactable: 'Comment', spam_reportable: 'Comment' } do
+          get :children, on: :member
+          post :mark_as_deleted, on: :member
+        end
+        resources :internal_comments, except: [:destroy], shallow: true do
+          get :children, on: :member
+          patch :mark_as_deleted, on: :member
+        end
+        get 'comments/as_xlsx', on: :collection, to: 'comments#index_xlsx'
+
         get :similarities, on: :member
-      end
-
-      resources :initiatives,
-        concerns: %i[reactable spam_reportable post followable],
-        defaults: { reactable: 'Initiative', spam_reportable: 'Initiative', post: 'Initiative', followable: 'Initiative' } do
-        resources :images, defaults: { container_type: 'Initiative' }
-        resources :files, defaults: { container_type: 'Initiative' }
-
-        resources :initiative_status_changes, shallow: true, except: %i[update destroy]
-
-        get :as_xlsx, on: :collection, action: 'index_xlsx'
-        get 'by_slug/:slug', on: :collection, to: 'initiatives#by_slug'
-        get :as_markers, on: :collection, action: 'index_initiative_markers'
-        get :filter_counts, on: :collection
-        get :allowed_transitions, on: :member
-        patch :accept_cosponsorship_invite, on: :member
       end
 
       resources :background_jobs, only: %i[index]
@@ -94,7 +78,6 @@ Rails.application.routes.draw do
       resources :idea_statuses do
         patch 'reorder', on: :member
       end
-      resources :initiative_statuses, only: %i[index show]
 
       resources :location, only: [] do
         get :autocomplete, on: :collection
@@ -116,7 +99,6 @@ Rails.application.routes.draw do
         get 'by_slug/:slug', on: :collection, to: 'users#by_slug'
         get 'by_invite/:token', on: :collection, to: 'users#by_invite'
         get 'ideas_count', on: :member
-        get 'initiatives_count', on: :member
         get 'comments_count', on: :member
         get 'blocked_count', on: :collection
         get 'check/:email', on: :collection, to: 'users#check', constraints: { email: /.*/ }
@@ -143,6 +125,9 @@ Rails.application.routes.draw do
 
       resources :areas do
         resources :followers, only: [:create], defaults: { followable: 'Area' }
+        collection do
+          get 'with_visible_projects_counts', to: 'areas#with_visible_projects_counts'
+        end
       end
 
       resources :followers, except: %i[create update]
@@ -282,8 +267,6 @@ Rails.application.routes.draw do
           get 'ideas_by_project_as_xlsx'
         end
 
-        get 'initiatives_count', controller: 'stats_initiatives'
-
         with_options controller: 'stats_comments' do
           get 'comments_count'
           get 'comments_by_topic'
@@ -305,10 +288,6 @@ Rails.application.routes.draw do
 
       scope 'mentions', controller: 'mentions' do
         get 'users'
-      end
-
-      scope 'action_descriptors', controller: 'action_descriptors' do
-        get 'initiatives'
       end
 
       resources :baskets, except: [:index] do

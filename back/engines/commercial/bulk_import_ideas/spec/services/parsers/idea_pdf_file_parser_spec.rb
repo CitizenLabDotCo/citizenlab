@@ -291,6 +291,18 @@ describe BulkImportIdeas::Parsers::IdeaPdfFileParser do
       row = service.send(:merge_parsed_ideas_into_idea_row, form_parsed_idea, text_parsed_idea, nil)
       expect(row[:custom_field_values][:multiselect_field]).to match %w[that this]
     end
+
+    it 'uses text parser answers when no custom fields at all are found in form_parsed_idea' do
+      form_parsed_idea[:fields].delete('A text field')
+      form_parsed_idea[:fields].delete('Select field')
+      form_parsed_idea[:fields].delete('Another select field')
+      form_parsed_idea[:fields].delete('Multi select field')
+      row = service.send(:merge_parsed_ideas_into_idea_row, form_parsed_idea, text_parsed_idea, nil)
+      expect(row[:custom_field_values]).to match({
+        another_select_field: 'no',
+        multiselect_field: %w[that]
+      })
+    end
   end
 
   describe 'parse_rows' do

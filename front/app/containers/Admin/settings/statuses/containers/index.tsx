@@ -3,19 +3,20 @@ import React from 'react';
 import { Spinner, Box, Tooltip } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
-import { IIdeaStatusData } from 'api/idea_statuses/types';
+import {
+  IdeaStatusParticipationMethod,
+  IIdeaStatusData,
+} from 'api/idea_statuses/types';
 import useIdeaStatuses from 'api/idea_statuses/useIdeaStatuses';
 import useReorderIdeaStatus from 'api/idea_statuses/useReorderIdeaStatus';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import { ButtonWrapper } from 'components/admin/PageWrapper';
-import {
-  LockedRow,
-  SortableList,
-  SortableRow,
-  TextCell,
-} from 'components/admin/ResourceList';
+import { TextCell } from 'components/admin/ResourceList';
+import LockedRow from 'components/admin/ResourceList/LockedRow';
+import SortableList from 'components/admin/ResourceList/SortableList';
+import SortableRow from 'components/admin/ResourceList/SortableRow';
 import {
   Section,
   SectionTitle,
@@ -25,7 +26,7 @@ import T from 'components/T';
 import Button from 'components/UI/Button';
 import Warning from 'components/UI/Warning';
 
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage, MessageDescriptor } from 'utils/cl-intl';
 
 import DeleteStatusButton from '../components/DeleteStatusButton';
 import EditStatusButton from '../components/EditStatusButton';
@@ -51,7 +52,11 @@ const FlexTextCell = styled(TextCell)`
   align-items: center;
 `;
 
-const IdeaStatuses = ({ variant }: { variant: 'ideation' | 'proposals' }) => {
+const IdeaStatuses = ({
+  variant,
+}: {
+  variant: IdeaStatusParticipationMethod;
+}) => {
   const { data: ideaStatuses, isLoading } = useIdeaStatuses({
     participation_method: variant,
   });
@@ -85,11 +90,24 @@ const IdeaStatuses = ({ variant }: { variant: 'ideation' | 'proposals' }) => {
   }
 
   if (ideaStatuses) {
-    // TODO: Fix this the next time the file is edited.
-    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-    const defaultStatuses = ideaStatuses?.data.filter(
+    const defaultStatuses = ideaStatuses.data.filter(
       (ideaStatus) => ideaStatus.attributes.locked === true
     );
+    const titleMessages: {
+      [key in IdeaStatusParticipationMethod]: MessageDescriptor;
+    } = {
+      ideation: messages.titleIdeaStatuses1,
+      proposals: messages.titleProposalStatuses,
+    };
+    const subtitleMessages: {
+      [key in IdeaStatusParticipationMethod]: MessageDescriptor;
+    } = {
+      ideation: messages.subtitleInputStatuses1,
+      proposals: messages.subtitleProposalStatuses,
+    };
+
+    const titleMessage = titleMessages[variant];
+    const subtitleMessage = subtitleMessages[variant];
 
     return (
       <Section>
@@ -99,10 +117,10 @@ const IdeaStatuses = ({ variant }: { variant: 'ideation' | 'proposals' }) => {
           </Warning>
         )}
         <SectionTitle>
-          <FormattedMessage {...messages.titleIdeaStatuses1} />
+          <FormattedMessage {...titleMessage} />
         </SectionTitle>
         <SectionDescription>
-          <FormattedMessage {...messages.subtitleInputStatuses1} />
+          <FormattedMessage {...subtitleMessage} />
         </SectionDescription>
         <ButtonWrapper>
           <Tooltip
@@ -149,7 +167,7 @@ const IdeaStatuses = ({ variant }: { variant: 'ideation' | 'proposals' }) => {
                       tooltipContent={
                         customIdeaStatusesAllowed ? (
                           <FormattedMessage
-                            {...messages.defaultStatusDeleteButtonTooltip}
+                            {...messages.defaultStatusDeleteButtonTooltip2}
                           />
                         ) : (
                           <FormattedMessage {...messages.pricingPlanUpgrade} />

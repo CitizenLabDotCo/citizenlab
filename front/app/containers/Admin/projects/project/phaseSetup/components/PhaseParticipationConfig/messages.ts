@@ -13,7 +13,7 @@ export default defineMessages({
   konveioSupportPageURL: {
     id: 'app.components.app.containers.AdminPage.ProjectEdit.konveioSupportPageURL',
     defaultMessage:
-      'https://support.citizenlab.co/en/articles/7946532-embedding-konveio-pdf-documents-for-collecting-feedback',
+      'https://support.govocal.com/en/articles/7946532-embedding-konveio-pdf-documents-for-collecting-feedback',
   },
   konveioSupportArticle: {
     id: 'app.components.app.containers.AdminPage.ProjectEdit.konveioSupportArticle',

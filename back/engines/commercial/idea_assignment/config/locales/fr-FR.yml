@@ -1,7 +1,7 @@
 fr:
   email_campaigns:
     campaign_type_description:
-      "idea_assigned_to_you": Attribution en ma faveur d'une idée
+      "idea_assigned_to_you": Une contribution m'a été assignée
     admin_campaign_type_description:
       "idea_assigned_to_you": Attribution d'une idée - administrateurs et administrateurs projet
     idea_assigned_to_you:

@@ -127,7 +127,6 @@ const CallToAction = ({
   const theme = useTheme();
   const isSmallerThanTablet = useBreakpoint('tablet');
   const lоcalize = useLocalize();
-  const isSmallerThanSmallTablet = useBreakpoint('tablet');
 
   return (
     <Box
@@ -161,7 +160,7 @@ const CallToAction = ({
                 buttonStyle="text"
                 textColor={theme.colors.tenantPrimary}
                 textDecorationHover="underline"
-                fullWidth={isSmallerThanSmallTablet}
+                fullWidth={isSmallerThanTablet}
                 linkTo={getLink(secondaryButtonLink)}
                 scrollToTop
                 openLinkInNewTab={openInNewTab(secondaryButtonLink)}

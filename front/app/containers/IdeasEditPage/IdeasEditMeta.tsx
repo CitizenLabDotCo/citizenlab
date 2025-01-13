@@ -1,6 +1,6 @@
 import React, { memo } from 'react';
 
-import { Helmet } from 'react-helmet';
+import { Helmet } from 'react-helmet-async';
 
 import useIdeaById from 'api/ideas/useIdeaById';
 import useAuthUser from 'api/me/useAuthUser';

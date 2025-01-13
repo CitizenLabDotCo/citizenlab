@@ -34,15 +34,18 @@ const AdminProjectIdeas = () => {
   const inputImporterEnabled = useFeatureFlag({
     name: 'input_importer',
   });
-  const { projectId, phaseId } = useParams() as {
-    projectId: string;
-    phaseId: string;
-  };
+  const { projectId, phaseId } = useParams();
   const { data: project } = useProjectById(projectId);
   const { data: phases } = usePhases(projectId);
   const { data: phase } = usePhase(phaseId);
 
-  if (!project) return null;
+  if (
+    project === undefined ||
+    projectId === undefined ||
+    phaseId === undefined
+  ) {
+    return null;
+  }
 
   return (
     <>
@@ -106,19 +109,14 @@ const AdminProjectIdeas = () => {
             ))}
         </Box>
       </Box>
-
-      {/* TODO: Fix this the next time the file is edited. */}
-      {/* eslint-disable-next-line @typescript-eslint/no-unnecessary-condition */}
-      {project && (
-        <InputManager
-          key={phaseId}
-          projectId={project.data.id}
-          phases={phases?.data}
-          phaseId={phaseId}
-          visibleFilterMenus={timelineProjectVisibleFilterMenus}
-          defaultFilterMenu={defaultTimelineProjectVisibleFilterMenu}
-        />
-      )}
+      <InputManager
+        key={phaseId}
+        projectId={projectId}
+        phases={phases?.data}
+        phaseId={phaseId}
+        visibleFilterMenus={timelineProjectVisibleFilterMenus}
+        defaultFilterMenu={defaultTimelineProjectVisibleFilterMenu}
+      />
     </>
   );
 };

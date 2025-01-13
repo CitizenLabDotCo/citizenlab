@@ -69,7 +69,7 @@ class ExportCommentsButton extends React.PureComponent<
     }
 
     // track this click for user analytics
-    trackEventByName(tracks.clickExportComments.name);
+    trackEventByName(tracks.clickExportComments);
   };
 
   render() {

@@ -18,7 +18,7 @@ import useInvites from 'api/invites/useInvites';
 
 import { API_PATH } from 'containers/App/constants';
 
-import Pagination from 'components/admin/Pagination';
+import Pagination from 'components/Pagination';
 import Button from 'components/UI/Button';
 import SearchInput from 'components/UI/SearchInput';
 

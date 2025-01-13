@@ -1,13 +1,13 @@
 import React from 'react';
 
-import { Box, Text } from '@citizenlab/cl2-component-library';
+import { Box, Divider, Text } from '@citizenlab/cl2-component-library';
 import { RouteType } from 'routes';
 
 import useAnalyses from 'api/analyses/useAnalyses';
 import { ParticipationMethod } from 'api/phases/types';
 
-import Divider from 'components/admin/Divider';
 import Button from 'components/UI/Button';
+import Warning from 'components/UI/Warning';
 
 import { useIntl } from 'utils/cl-intl';
 
@@ -42,6 +42,8 @@ const Analyses = ({
       )
     : analyses?.data;
 
+  const hasRelevantAnalyses = relevantAnalyses && relevantAnalyses.length > 0;
+
   const projectLink: RouteType =
     participationMethod === 'ideation'
       ? `/admin/projects/${projectId}/phases/${phaseId}/ideas`
@@ -67,6 +69,16 @@ const Analyses = ({
 
   return (
     <div>
+      {phaseId && hasRelevantAnalyses && (
+        <Box mb="16px">
+          <Warning>
+            <Text p="0px" m="0px" fontSize="s" color="teal700">
+              {formatMessage(messages.dragAiContentInfo)}
+            </Text>
+          </Warning>
+        </Box>
+      )}
+
       {projectId &&
         relevantAnalyses?.map((analysis) => (
           <Insights

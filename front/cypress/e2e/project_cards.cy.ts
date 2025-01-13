@@ -125,8 +125,12 @@ describe('Native survey project card', () => {
   });
 
   it('Correct CTA button on card is shown', () => {
-    cy.contains('Take the survey').should('exist');
-    cy.contains('Take the survey').click({ force: true });
+    const cardCTA = cy
+      .get('.e2e-project-card')
+      .first()
+      .contains('Take the survey');
+    cardCTA.should('exist');
+    cardCTA.click({ force: true });
     cy.url().should('include', `/projects/${projectSlug}`);
   });
 

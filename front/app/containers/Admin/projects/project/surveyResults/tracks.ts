@@ -1,5 +1,3 @@
 export default {
-  clickExportSurvey: {
-    name: 'Export Survey results clicked',
-  },
+  clickExportSurvey: 'Export Survey results clicked',
 };

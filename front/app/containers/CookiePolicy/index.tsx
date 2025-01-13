@@ -2,7 +2,7 @@ import React from 'react';
 
 import { Box, colors } from '@citizenlab/cl2-component-library';
 import { darken } from 'polished';
-import { Helmet } from 'react-helmet';
+import { Helmet } from 'react-helmet-async';
 import styled from 'styled-components';
 
 import {

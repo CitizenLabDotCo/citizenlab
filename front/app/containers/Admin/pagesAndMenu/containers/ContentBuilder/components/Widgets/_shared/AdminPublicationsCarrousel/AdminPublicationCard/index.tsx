@@ -7,6 +7,7 @@ import {
   Title,
   useBreakpoint,
 } from '@citizenlab/cl2-component-library';
+import { useTheme } from 'styled-components';
 
 import { IAdminPublicationData } from 'api/admin_publications/types';
 import useProjectFolderImage from 'api/project_folder_images/useProjectFolderImage';
@@ -56,6 +57,7 @@ export const AdminPublicationCard = ({
   const { formatMessage } = useIntl();
   const localize = useLocalize();
   const isSmallerThanPhone = useBreakpoint('phone');
+  const theme = useTheme();
 
   const cardWidth = isSmallerThanPhone ? SMALL_CARD_WIDTH : BIG_CARD_WIDTH;
 
@@ -70,6 +72,7 @@ export const AdminPublicationCard = ({
   return (
     <CardContainer
       as={Link}
+      scrollToTop
       tabIndex={0}
       w={`${cardWidth}px`}
       ml={ml}
@@ -80,7 +83,7 @@ export const AdminPublicationCard = ({
     >
       <CardImage imageUrl={imageUrl} alt={imageAltText} />
       <Title variant="h4" as="h3" mt="8px" mb="0px" color="tenantText">
-        {truncate(localize(publication_title_multiloc), 50)}
+        {localize(publication_title_multiloc)}
       </Title>
       <Box display="flex" flexDirection="row" alignItems="center" mt="8px">
         {type === 'folder' && (
@@ -91,6 +94,7 @@ export const AdminPublicationCard = ({
               ml="-2px"
               mr="4px"
               mt="0px"
+              fill={theme.colors.tenantPrimary}
             />
             <Text m="0px" mr="12px">
               {formatMessage(messages.xProjects, {
@@ -104,6 +108,9 @@ export const AdminPublicationCard = ({
           size={16}
           limit={3}
           userCount={userCount}
+          participantsTextFontSize="m"
+          showParticipantText={!isSmallerThanPhone}
+          userCountBubbleFontSize={10}
         />
       </Box>
       <Text mt="8px" mb="0">

@@ -1,13 +1,13 @@
 import React from 'react';
 
-import { StatusLabel, colors } from '@citizenlab/cl2-component-library';
+import { Box, StatusLabel, colors } from '@citizenlab/cl2-component-library';
 
 import { IDeliveryData } from 'api/campaign_deliveries/types';
 import useUserById from 'api/users/useUserById';
 
-import Pagination from 'components/admin/Pagination';
 import { List, Row, TextCell } from 'components/admin/ResourceList';
 import Avatar from 'components/Avatar';
+import Pagination from 'components/Pagination';
 
 import { FormattedMessage } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
@@ -80,20 +80,24 @@ const RecipientsTable = ({
   }
 
   return (
-    <List className={className} key={deliveries.map((d) => d.id).join()}>
-      {deliveries.map((recipient) => (
-        <TableRow
-          recipient={recipient}
-          userId={recipient.relationships.user.data.id}
-          key={recipient.id}
-        />
-      ))}
+    <>
+      <Box mb="24px">
+        <List className={className} key={deliveries.map((d) => d.id).join()}>
+          {deliveries.map((recipient) => (
+            <TableRow
+              recipient={recipient}
+              userId={recipient.relationships.user.data.id}
+              key={recipient.id}
+            />
+          ))}
+        </List>
+      </Box>
       <Pagination
         currentPage={currentPage}
         totalPages={lastPage}
         loadPage={onChangePage}
       />
-    </List>
+    </>
   );
 };
 

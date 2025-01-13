@@ -1,4 +1,4 @@
-import React, { Suspense, lazy, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
@@ -13,6 +13,7 @@ import { getTopicIds } from 'api/project_allowed_input_topics/util/getProjectTop
 import { IProjectData } from 'api/projects/types';
 import useTopics from 'api/topics/useTopics';
 
+import PostPreview from 'components/admin/PostManager/components/PostPreview';
 import Outlet from 'components/Outlet';
 import SearchInput from 'components/UI/SearchInput';
 
@@ -23,7 +24,6 @@ import { getPageNumberFromUrl, getSortDirection } from 'utils/paginationUtils';
 import ActionBar from './components/ActionBar';
 import FilterSidebar from './components/FilterSidebar';
 import IdeasCount from './components/IdeasCount';
-import InfoSidebar from './components/InfoSidebar';
 import PostTable from './components/PostTable';
 import IdeaFeedbackToggle from './components/TopLevelFilters/IdeaFeedbackToggle';
 
@@ -38,14 +38,10 @@ import {
   TopActionBar,
 } from '.';
 
-const LazyPostPreview = lazy(
-  () => import('components/admin/PostManager/components/PostPreview')
-);
-
 interface Props {
   // When the PostManager is used in /admin/projects, we pass down the current project id as a prop
   projectId?: string | null;
-  phaseId?: string | null;
+  phaseId?: string;
   visibleFilterMenus: TFilterMenu[]; // cannot be empty.
   defaultFilterMenu: TFilterMenu;
   phases?: TPhases;
@@ -357,18 +353,15 @@ const InputManager = ({
             openPreview={openPreview}
           />
         </MiddleColumn>
-        <InfoSidebar postIds={[...selection]} openPreview={openPreview} />
       </ThreeColumns>
-      <Suspense fallback={null}>
-        <LazyPostPreview
-          type={type}
-          postId={previewPostId}
-          selectedPhaseId={selectedPhaseId}
-          mode={previewMode}
-          onClose={closePreview}
-          onSwitchPreviewMode={switchPreviewMode}
-        />
-      </Suspense>
+      <PostPreview
+        type={type}
+        postId={previewPostId}
+        selectedPhaseId={selectedPhaseId}
+        mode={previewMode}
+        onClose={closePreview}
+        onSwitchPreviewMode={switchPreviewMode}
+      />
     </>
   );
 };

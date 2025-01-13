@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { Box } from '@citizenlab/cl2-component-library';
-import { Helmet } from 'react-helmet';
+import { Helmet } from 'react-helmet-async';
 
 import {
   Container,
@@ -49,7 +49,7 @@ const AccessibilityStatement = () => {
                       <FormattedMessage
                         {...messages.intro2022}
                         values={{
-                          citizenLabLink: (
+                          goVocalLink: (
                             <a
                               href="https://www.govocal.com/"
                               target="_blank"

@@ -1,25 +1,16 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState } from 'react';
 
-import { useBreakpoint, Title } from '@citizenlab/cl2-component-library';
+import { useBreakpoint } from '@citizenlab/cl2-component-library';
 import useInstanceId from 'component-library/hooks/useInstanceId';
-import { debounce } from 'lodash-es';
 import { useInView } from 'react-intersection-observer';
 
 import { IAdminPublicationData } from 'api/admin_publications/types';
 
-import { DEFAULT_PADDING } from 'components/admin/ContentBuilder/constants';
-
 import { CARD_GAP } from '../BaseCarrousel/constants';
-import { CarrouselContainer, CardContainer } from '../BaseCarrousel/Containers';
-import Gradient from '../BaseCarrousel/Gradient';
-import HorizontalScroll from '../BaseCarrousel/HorizontalScroll';
+import { CardContainer } from '../BaseCarrousel/Containers';
 import LoadMoreCard from '../BaseCarrousel/LoadMoreCard';
-import ScrollButton from '../BaseCarrousel/ScrollButton';
-import SkipButton from '../BaseCarrousel/SkipButton';
-import {
-  getUpdatedButtonVisibility,
-  skipCarrousel,
-} from '../BaseCarrousel/utils';
+import ScrollableCarrousel from '../BaseCarrousel/ScrollableCarrousel';
+import { skipCarrousel } from '../BaseCarrousel/ScrollableCarrousel/utils';
 
 import AdminPublicationCard from './AdminPublicationCard';
 import { BIG_CARD_WIDTH, SMALL_CARD_WIDTH } from './constants';
@@ -42,8 +33,7 @@ const AdminPublicationsCarrousel = ({
   const [scrollContainerRef, setScrollContainerRef] = useState<
     HTMLDivElement | undefined
   >(undefined);
-  const [showPreviousButton, setShowPreviousButton] = useState(false);
-  const [showNextButton, setShowNextButton] = useState(false);
+
   const [blockLoadMore, setBlockLoadMore] = useState(false);
 
   const isSmallerThanPhone = useBreakpoint('phone');
@@ -65,34 +55,6 @@ const AdminPublicationsCarrousel = ({
     },
   });
 
-  const handleButtonVisiblity = useCallback(
-    (ref: HTMLDivElement, hasMore: boolean) => {
-      if (isSmallerThanPhone) return;
-      const { showNextButton, showPreviousButton } = getUpdatedButtonVisibility(
-        ref,
-        hasMore
-      );
-
-      setShowNextButton(showNextButton);
-      setShowPreviousButton(showPreviousButton);
-    },
-    [isSmallerThanPhone]
-  );
-
-  useEffect(() => {
-    if (!scrollContainerRef) return;
-
-    const handler = debounce(() => {
-      handleButtonVisiblity(scrollContainerRef, hasMore);
-    }, 100);
-
-    scrollContainerRef.addEventListener('scroll', handler);
-
-    return () => {
-      scrollContainerRef.removeEventListener('scroll', handler);
-    };
-  }, [scrollContainerRef, hasMore, handleButtonVisiblity]);
-
   const handleKeyDown = (e: React.KeyboardEvent<any>) => {
     if (e.code === 'Escape') {
       skipCarrousel(endId);
@@ -108,66 +70,28 @@ const AdminPublicationsCarrousel = ({
   };
 
   return (
-    <>
-      <CarrouselContainer className={className}>
-        <Title
-          variant="h2"
-          mt="0px"
-          ml={isSmallerThanPhone ? DEFAULT_PADDING : undefined}
-          color="tenantText"
-        >
-          {title}
-        </Title>
-        <SkipButton onSkip={() => skipCarrousel(endId)} />
-        <HorizontalScroll
-          setRef={(ref) => {
-            if (ref) {
-              setScrollContainerRef(ref);
-              handleButtonVisiblity(ref, hasMore);
-            }
-          }}
-        >
-          {adminPublications.map((adminPublication) => (
-            <CardContainer key={adminPublication.id}>
-              <AdminPublicationCard
-                ml={isSmallerThanPhone ? `${CARD_GAP}px` : undefined}
-                mr={isSmallerThanPhone ? undefined : `${CARD_GAP}px`}
-                adminPublication={adminPublication}
-                onKeyDown={handleKeyDown}
-              />
-            </CardContainer>
-          ))}
-          {hasMore && <LoadMoreCard width={cardWidth} cardRef={ref} />}
-        </HorizontalScroll>
-        {showPreviousButton && !isSmallerThanPhone && (
-          <>
-            <ScrollButton
-              variant="left"
-              top="200px"
-              onClick={() => {
-                if (!scrollContainerRef) return;
-                scrollContainerRef.scrollLeft -= cardWidth + CARD_GAP;
-              }}
-            />
-            <Gradient variant="left" />
-          </>
-        )}
-        {showNextButton && !isSmallerThanPhone && (
-          <>
-            <ScrollButton
-              variant="right"
-              top="200px"
-              onClick={() => {
-                if (!scrollContainerRef) return;
-                scrollContainerRef.scrollLeft += cardWidth + CARD_GAP;
-              }}
-            />
-            <Gradient variant="right" />
-          </>
-        )}
-      </CarrouselContainer>
-      <i id={endId} />
-    </>
+    <ScrollableCarrousel
+      className={className}
+      title={title}
+      scrollContainerRef={scrollContainerRef}
+      setScrollContainerRef={setScrollContainerRef}
+      cardWidth={cardWidth}
+      scrollButtonTop={200}
+      hasMore={hasMore}
+      endId={endId}
+    >
+      {adminPublications.map((adminPublication) => (
+        <CardContainer key={adminPublication.id}>
+          <AdminPublicationCard
+            ml={isSmallerThanPhone ? `${CARD_GAP}px` : undefined}
+            mr={isSmallerThanPhone ? undefined : `${CARD_GAP}px`}
+            adminPublication={adminPublication}
+            onKeyDown={handleKeyDown}
+          />
+        </CardContainer>
+      ))}
+      {hasMore && <LoadMoreCard width={cardWidth} cardRef={ref} />}
+    </ScrollableCarrousel>
   );
 };
 

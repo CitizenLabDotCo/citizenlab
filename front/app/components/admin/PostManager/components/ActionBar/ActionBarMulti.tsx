@@ -1,13 +1,12 @@
 import React, { useState } from 'react';
 
-import { Button, Icon } from 'semantic-ui-react';
-
 import useDeleteIdea from 'api/ideas/useDeleteIdea';
 
 import WarningModal from 'components/WarningModal';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 
+import DeleteButton from './DeleteButton';
 import messages from './messages';
 
 interface Props {
@@ -45,13 +44,12 @@ const ActionBarMulti = ({ selection, resetSelection }: Props) => {
 
   return (
     <>
-      <Button negative={true} basic={true} onClick={openWarningModal}>
-        <Icon name="delete" />
+      <DeleteButton onClick={openWarningModal}>
         <FormattedMessage
           {...deleteMessage}
           values={{ count: selection.size }}
         />
-      </Button>
+      </DeleteButton>
       <WarningModal
         open={warningModalOpen}
         isLoading={isLoadingDeleteIdea}

@@ -26,7 +26,6 @@ const IdeaCards = (props: Props) => {
   return (
     <Box
       w="100%"
-      h="100%"
       maxWidth="1166px"
       display="flex"
       flexDirection={smallerThanPhone ? 'column' : 'row'}

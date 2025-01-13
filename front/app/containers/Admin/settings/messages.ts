@@ -32,13 +32,13 @@ export default defineMessages({
     id: 'app.containers.AdminPage.SettingsPage.tabInputStatuses',
     defaultMessage: 'Input statuses',
   },
-  tabProposalStatuses: {
-    id: 'app.containers.AdminPage.SettingsPage.tabProposalStatuses',
-    defaultMessage: 'Proposals statuses',
+  tabProposalStatuses1: {
+    id: 'app.containers.AdminPage.SettingsPage.tabProposalStatuses1',
+    defaultMessage: 'Proposal statuses',
   },
   tabApproval: {
-    id: 'app.containers.AdminPage.SettingsPage.tabApproval',
-    defaultMessage: 'Approval',
+    id: 'app.containers.AdminPage.SettingsPage.tabProjectApproval',
+    defaultMessage: 'Project approval',
   },
   tabPolicies: {
     id: 'app.containers.AdminPage.SettingsPage.tabPolicies',

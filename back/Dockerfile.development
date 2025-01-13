@@ -11,6 +11,7 @@ RUN apt-get update && apt-get install -qq -y --no-install-recommends \
       optipng              \
       jpegoptim            \
       pngquant             \
+      libjemalloc2         \
       libgeos-dev          \
       libgmp3-dev          \
       netcat-openbsd       \

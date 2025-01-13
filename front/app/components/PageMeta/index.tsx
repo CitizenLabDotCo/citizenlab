@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { isError } from 'lodash-es';
-import { Helmet } from 'react-helmet';
+import { Helmet } from 'react-helmet-async';
 import { MessageDescriptor } from 'react-intl';
 
 import useAuthUser from 'api/me/useAuthUser';

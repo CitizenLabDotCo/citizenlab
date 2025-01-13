@@ -25,7 +25,7 @@ resource 'Analytics - FactPosts model' do
       end
 
       # Set up type dimensions
-      [{ name: 'idea', parent: 'post' }, { name: 'initiative', parent: 'post' }, { name: 'proposal', parent: 'post' }].each do |type|
+      [{ name: 'idea', parent: 'post' }, { name: 'proposal', parent: 'post' }].each do |type|
         create(:dimension_type, name: type[:name], parent: type[:parent])
       end
     end
@@ -78,31 +78,6 @@ resource 'Analytics - FactPosts model' do
       assert_status 200
       expect(response_data[:attributes]).to match_array([
         { 'dimension_date_created.month': '2022-09', count: 2 }
-      ])
-    end
-
-    # TODO: cleanup-after-proposals-migration
-    example 'correctly filters initiatives by status', document: false do
-      create(:initiative, created_at: @dates[0])
-      create(:initiative, created_at: @dates[1])
-      create(:initiative, created_at: @dates[2])
-
-      do_request({
-        query: {
-          fact: 'post',
-          filters: {
-            'dimension_type.name': 'initiative',
-            publication_status: 'published',
-            'dimension_status.code': 'threshold_reached'
-          },
-          aggregations: {
-            all: 'count'
-          }
-        }
-      })
-      assert_status 200
-      expect(response_data[:attributes]).to match_array([
-        { count: 0 }
       ])
     end
   end

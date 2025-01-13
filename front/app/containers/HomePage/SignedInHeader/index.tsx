@@ -68,7 +68,8 @@ const SignedInHeader = ({
 
   const handleSkip = (name: OnboardingCampaignName) => () => {
     trackEventByName(tracks.clickSkipButton, {
-      extra: { location: 'signed-in header', context: name },
+      location: 'signed-in header',
+      context: name,
     });
     dismissOnboardingCampaign(name);
   };

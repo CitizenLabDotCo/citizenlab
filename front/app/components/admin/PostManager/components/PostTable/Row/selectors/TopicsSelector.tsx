@@ -1,18 +1,21 @@
-import React, { memo, useCallback, FormEvent } from 'react';
+import React, { memo, useCallback } from 'react';
 
+import {
+  IconButton,
+  colors,
+  Box,
+  stylingConsts,
+  Text,
+} from '@citizenlab/cl2-component-library';
 import { pull } from 'lodash-es';
-import { Label, Icon } from 'semantic-ui-react';
-import styled from 'styled-components';
 
 import useTopics from 'api/topics/useTopics';
 
 import T from 'components/T';
 
-import { isNilOrError } from 'utils/helperUtils';
+import { useIntl } from 'utils/cl-intl';
 
-const StyledLabel = styled(Label)`
-  white-space: nowrap;
-`;
+import messages from '../messages';
 
 interface Props {
   selectedTopics: string[];
@@ -20,31 +23,57 @@ interface Props {
 }
 
 const TopicsSelector = memo<Props>(({ selectedTopics, onUpdateTopics }) => {
+  const { formatMessage } = useIntl();
   const { data: topics } = useTopics();
   const filteredTopics = topics?.data.filter((topic) =>
     selectedTopics.includes(topic.id)
   );
   const handleTopicDelete = useCallback(
-    (topicId: string) => (event: FormEvent) => {
-      event.stopPropagation();
+    (topicId: string) => {
       const newSelectedTopics = pull(selectedTopics, topicId);
       onUpdateTopics(newSelectedTopics);
     },
     [selectedTopics, onUpdateTopics]
   );
 
-  if (!isNilOrError(topics)) {
+  if (filteredTopics) {
     return (
-      <>
+      <Box display="flex" gap="8px">
         {filteredTopics?.map((topic) => {
           return (
-            <StyledLabel key={topic.id} color="teal" basic={true}>
-              <T value={topic.attributes.title_multiloc} />
-              <Icon name="delete" onClick={handleTopicDelete(topic.id)} />
-            </StyledLabel>
+            <Box
+              key={topic.id}
+              border={`1px solid ${colors.teal}`}
+              borderRadius={stylingConsts.borderRadius}
+              display="flex"
+              w="fit-content"
+              alignItems="center"
+              gap="4px"
+              pl="8px"
+              py="4px"
+            >
+              <Text
+                as="span"
+                m="0"
+                fontWeight="semi-bold"
+                fontSize="xs"
+                color="teal"
+              >
+                <T value={topic.attributes.title_multiloc} />
+              </Text>
+              <IconButton
+                iconName="close"
+                onClick={() => handleTopicDelete(topic.id)}
+                a11y_buttonActionMessage={formatMessage(messages.removeTopic)}
+                iconColor={colors.teal}
+                iconColorOnHover={colors.teal}
+                iconWidth="16px"
+                iconHeight="16px"
+              />
+            </Box>
           );
         })}
-      </>
+      </Box>
     );
   }
 

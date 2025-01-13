@@ -143,7 +143,7 @@ exports.appGraphqlLocalePairs = {
   itIt: 'it-IT',
   klGl: 'kl-GL',
   lbLu: 'lb-LU',
-  ltLT: 'lt',
+  ltLT: 'lt-LT',
   lvLv: 'lv-LV',
   mi: 'mi',
   nb: 'nb',

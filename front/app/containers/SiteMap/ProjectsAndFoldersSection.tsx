@@ -27,6 +27,7 @@ const ProjectsAndFoldersSection = ({ projectsSectionRef }: Props) => {
   const { data } = useAdminPublications({
     publicationStatusFilter: ['draft', 'published', 'archived'],
     rootLevelOnly: true,
+    removeNotAllowedParents: true,
   });
 
   const adminPublications = data?.pages.map((page) => page.data).flat();

@@ -72,7 +72,7 @@ class UserFilterConditions extends React.PureComponent<Props, State> {
   };
 
   handleOnAddRule = () => {
-    trackEventByName(tracks.conditionAdd.name);
+    trackEventByName(tracks.conditionAdd);
     const newRules = clone(this.props.rules);
     newRules.push({});
     this.props.onChange(newRules);

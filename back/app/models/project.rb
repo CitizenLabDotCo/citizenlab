@@ -136,6 +136,8 @@ class Project < ApplicationRecord
 
   alias project_id id
 
+  delegate :ever_published?, :never_published?, to: :admin_publication, allow_nil: true
+
   class << self
     def search_ids_by_all_including_patches(term)
       result = defined?(super) ? super : []

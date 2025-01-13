@@ -87,6 +87,14 @@ class AdminPublication < ApplicationRecord
     publication_status == 'published'
   end
 
+  def ever_published?
+    first_published_at.present?
+  end
+
+  def never_published?
+    !ever_published?
+  end
+
   def draft?
     publication_status == 'draft'
   end

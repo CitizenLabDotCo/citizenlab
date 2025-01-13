@@ -4,10 +4,9 @@ import { Multiloc } from 'typings';
 
 import useProjectsMini from 'api/projects_mini/useProjectsMini';
 
-import useLocalize from 'hooks/useLocalize';
-
 import EmptyState from '../_shared/EmptyState';
 import ProjectCarrousel from '../_shared/ProjectCarrousel';
+import useLocalizeWithFallback from '../_shared/useLocalizeWithFallback';
 
 import messages from './messages';
 import Settings from './Settings';
@@ -17,19 +16,17 @@ interface Props {
 }
 
 const FollowedItems = ({ titleMultiloc }: Props) => {
-  const localize = useLocalize();
+  const localizeWithFallback = useLocalizeWithFallback();
 
   const { data, hasNextPage, fetchNextPage } = useProjectsMini({
     endpoint: 'for_followed_item',
   });
   const projects = data?.pages.map((page) => page.data).flat();
-  const title = localize(titleMultiloc);
+  const title = localizeWithFallback(titleMultiloc, messages.defaultTitle);
 
   if (!projects) return null;
   if (projects.length === 0) {
-    return (
-      <EmptyState titleMultiloc={titleMultiloc} explanation={messages.noData} />
-    );
+    return <EmptyState title={title} explanation={messages.noData} />;
   }
 
   return (

@@ -26,7 +26,7 @@ const ShimmerBox = styled(Box)<{ $bgColor: string }>`
   animation: ${shimmerAnimation} 2s infinite;
 `;
 
-const Shimmer = ({ bgColor = colors.black, ...props }: BoxProps) => {
+const Shimmer = ({ bgColor = colors.grey300, ...props }: BoxProps) => {
   return <ShimmerBox $bgColor={bgColor} {...props} aria-hidden={true} />;
 };
 

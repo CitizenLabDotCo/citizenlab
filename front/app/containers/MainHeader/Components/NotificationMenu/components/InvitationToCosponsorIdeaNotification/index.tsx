@@ -7,13 +7,12 @@ import { getInputTerm } from 'api/phases/utils';
 import useProjectById from 'api/projects/useProjectById';
 
 import { FormattedMessage } from 'utils/cl-intl';
-import Link from 'utils/cl-router/Link';
-import { isNilOrError, stopPropagation } from 'utils/helperUtils';
+import { isNilOrError } from 'utils/helperUtils';
 import { getInputTermMessage } from 'utils/i18n';
 
 import messages from '../../messages';
-import { DeletedUser } from '../Notification';
 import NotificationWrapper from '../NotificationWrapper';
+import UserLink from '../UserLink';
 
 interface Props {
   notification: IInvitationToCosponsorIdeaNotificationData;
@@ -31,9 +30,7 @@ const InvitationToCosponsorIdeaNotification = memo<Props>((props) => {
 
   if (!isNilOrError(project)) {
     const inputTerm = getInputTerm(phases?.data);
-    const deletedUser =
-      isNilOrError(notification.attributes.initiating_user_first_name) ||
-      isNilOrError(notification.attributes.initiating_user_slug);
+
     return (
       <NotificationWrapper
         linkTo={`/ideas/${notification.attributes.post_slug}`}
@@ -54,17 +51,11 @@ const InvitationToCosponsorIdeaNotification = memo<Props>((props) => {
             proposal: messages.invitationToCosponsorProposal,
           })}
           values={{
-            name: deletedUser ? (
-              <DeletedUser>
-                <FormattedMessage {...messages.deletedUser} />
-              </DeletedUser>
-            ) : (
-              <Link
-                to={`/profile/${notification.attributes.initiating_user_slug}`}
-                onClick={stopPropagation}
-              >
-                {notification.attributes.initiating_user_first_name}
-              </Link>
+            name: (
+              <UserLink
+                userName={notification.attributes.initiating_user_first_name}
+                userSlug={notification.attributes.initiating_user_slug}
+              />
             ),
           }}
         />

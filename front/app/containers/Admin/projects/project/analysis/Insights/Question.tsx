@@ -5,6 +5,7 @@ import {
   IconButton,
   colors,
   IconTooltip,
+  Divider,
 } from '@citizenlab/cl2-component-library';
 import { useParams, useSearchParams } from 'react-router-dom';
 
@@ -13,8 +14,6 @@ import useDeleteAnalysisInsight from 'api/analysis_insights/useDeleteAnalysisIns
 import useAnalysisQuestion from 'api/analysis_questions/useAnalysisQuestion';
 
 import tracks from 'containers/Admin/projects/project/analysis/tracks';
-
-import Divider from 'components/admin/Divider';
 
 import { trackEventByName } from 'utils/analytics';
 import { useIntl } from 'utils/cl-intl';
@@ -54,8 +53,8 @@ const Question = ({ insight }: Props) => {
         },
         {
           onSuccess: () => {
-            trackEventByName(tracks.questionDeleted.name, {
-              extra: { analysisId },
+            trackEventByName(tracks.questionDeleted, {
+              analysisId,
             });
           },
         }

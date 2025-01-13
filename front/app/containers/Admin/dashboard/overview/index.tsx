@@ -75,7 +75,10 @@ const OverviewDashboard = () => {
 
   const handleOnProjectFilter = useCallback(
     (filter: { value: string; label: string }) => {
-      trackEventByName(tracks.filteredOnProject.name, { project: filter });
+      trackEventByName(tracks.filteredOnProject, {
+        filterValue: filter.value,
+        filterLabel: filter.label,
+      });
 
       setCurrentProjectFilter(filter.value);
       setCurrentProjectFilterLabel(filter.label);
@@ -84,7 +87,7 @@ const OverviewDashboard = () => {
   );
 
   const onResourceByTopicChange = useCallback((option) => {
-    trackEventByName(tracks.choseResource.name, {
+    trackEventByName(tracks.choseResource, {
       newResource: option,
       graph: 'resourceByTopic',
     });
@@ -93,7 +96,7 @@ const OverviewDashboard = () => {
   }, []);
 
   const onResourceByProjectChange = useCallback((option) => {
-    trackEventByName(tracks.choseResource.name, {
+    trackEventByName(tracks.choseResource, {
       newResource: option,
       graph: 'resourceByProject',
     });

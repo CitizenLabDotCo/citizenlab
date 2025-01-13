@@ -1,6 +1,7 @@
 import React from 'react';
 
 import { Box, colors, Text } from '@citizenlab/cl2-component-library';
+import { FontSizesType } from 'component-library/utils/styleUtils';
 import { isNumber } from 'lodash-es';
 import styled from 'styled-components';
 
@@ -47,6 +48,8 @@ interface Props {
   className?: string;
   userCount?: number;
   showParticipantText?: boolean;
+  participantsTextFontSize?: FontSizesType;
+  userCountBubbleFontSize?: number;
 }
 
 export const AvatarBubbles = ({
@@ -57,7 +60,9 @@ export const AvatarBubbles = ({
   className,
   userCount,
   showParticipantText = true,
+  participantsTextFontSize = 's',
   limit = 4,
+  userCountBubbleFontSize,
 }: Props) => {
   const { formatMessage } = useIntl();
   const { data: randomAvatars } = useRandomAvatars({
@@ -149,7 +154,7 @@ export const AvatarBubbles = ({
                 alignItems="center"
               >
                 <Text
-                  fontSize="s"
+                  fontSize={participantsTextFontSize}
                   textAlign="left"
                   my="0px"
                   aria-hidden="true"
@@ -184,14 +189,16 @@ export const AvatarBubbles = ({
                   display="flex"
                 >
                   <Text
-                    fontSize="s"
                     color="white"
                     display="flex"
+                    m="0"
                     style={{
-                      fontSize: getFontSize(
-                        bubbleSize,
-                        remainingUsers.toString().length
-                      ),
+                      fontSize:
+                        userCountBubbleFontSize ??
+                        getFontSize(
+                          bubbleSize,
+                          remainingUsers.toString().length
+                        ),
                     }}
                   >
                     +{truncatedUserCount}

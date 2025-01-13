@@ -35,4 +35,8 @@ export default defineMessages({
     defaultMessage:
       'Reporting with AI is not included in your current plan. Talk to your Government Success Manager to unlock this feature.',
   },
+  dragAiContentInfo: {
+    id: 'containers.Admin.reporting.components.ReportBuilder.Widgets.Analysis.dragAiContentInfo',
+    defaultMessage: 'Use the ☰ icon below to drag AI content into your report.',
+  },
 });

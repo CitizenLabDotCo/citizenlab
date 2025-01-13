@@ -75,6 +75,7 @@ export interface ITabItem {
   name: string;
   label: string | JSX.Element;
   icon?: IconNames;
+  className?: string;
 }
 
 export interface Props {
@@ -113,7 +114,7 @@ const Tabs = memo<Props>(
             key={item.name}
             className={`${selectedValue === item.name ? 'selected' : ''} ${
               index === 0 ? 'first' : ''
-            } ${index + 1 === items.length ? 'last' : ''}`}
+            } ${index + 1 === items.length ? 'last' : ''} ${item.className}`}
             onMouseDown={removeFocusAfterMouseClick}
             onClick={handleTabOnClick}
             data-itemvalue={item.name}

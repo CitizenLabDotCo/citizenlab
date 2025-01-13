@@ -52,9 +52,9 @@ const TranslateButton = ({ idea, translateButtonClicked, onClick }: Props) => {
 
   const onTranslateIdea = () => {
     if (translateButtonClicked) {
-      trackEventByName(tracks.clickGoBackToOriginalIdeaCopyButton.name);
+      trackEventByName(tracks.clickGoBackToOriginalIdeaCopyButton);
     } else {
-      trackEventByName(tracks.clickTranslateIdeaButton.name);
+      trackEventByName(tracks.clickTranslateIdeaButton);
     }
     onClick(!translateButtonClicked);
   };

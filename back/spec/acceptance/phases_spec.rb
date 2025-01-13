@@ -241,7 +241,7 @@ resource 'Phases' do
         expect(json_response.dig(:data, :attributes, :submission_enabled)).to be true
         expect(json_response.dig(:data, :attributes, :commenting_enabled)).to be true
         expect(json_response.dig(:data, :attributes, :reacting_enabled)).to be true
-        expect(json_response.dig(:data, :attributes, :reacting_dislike_enabled)).to be true
+        expect(json_response.dig(:data, :attributes, :reacting_dislike_enabled)).to be false
         expect(json_response.dig(:data, :attributes, :reacting_like_method)).to eq 'unlimited'
         expect(json_response.dig(:data, :attributes, :reacting_like_limited_max)).to eq 10
         expect(json_response.dig(:data, :attributes, :start_at)).to eq start_at.to_s
@@ -380,7 +380,7 @@ resource 'Phases' do
           expect(json_response.dig(:data, :attributes, :submission_enabled)).to be true
           expect(json_response.dig(:data, :attributes, :commenting_enabled)).to be true
           expect(json_response.dig(:data, :attributes, :reacting_enabled)).to be true
-          expect(json_response.dig(:data, :attributes, :reacting_dislike_enabled)).to be true
+          expect(json_response.dig(:data, :attributes, :reacting_dislike_enabled)).to be false
           expect(json_response.dig(:data, :attributes, :reacting_like_method)).to eq 'unlimited'
           expect(json_response.dig(:data, :attributes, :reacting_like_limited_max)).to eq 10
         end

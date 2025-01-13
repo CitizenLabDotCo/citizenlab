@@ -1,4 +1,5 @@
 import { randomString, randomEmail } from '../support/commands';
+import moment = require('moment');
 
 describe('Idea card component', () => {
   const firstName = randomString();
@@ -9,21 +10,39 @@ describe('Idea card component', () => {
   const ideaContent = Math.random().toString(36);
   const commentContent = randomString();
   let projectId: string;
+  let projectSlug: string;
   let ideaId: string;
   let userId: string;
-  let parentCommentId: string;
-  let childCommentId: string;
 
   before(() => {
-    cy.apiSignup(firstName, lastName, email, password)
-      .then((user) => {
-        userId = user.body.data.id;
-        return cy.getProjectBySlug('an-idea-bring-it-to-your-council');
-      })
+    cy.apiCreateProject({
+      title: randomString(20),
+      descriptionPreview: randomString(),
+      description: randomString(),
+      publicationStatus: 'published',
+    })
       .then((project) => {
         projectId = project.body.data.id;
+        projectSlug = project.body.data.attributes.slug;
+
+        return cy.apiCreatePhase({
+          projectId,
+          title: randomString(),
+          startAt: moment().subtract(9, 'month').format('DD/MM/YYYY'),
+          participationMethod: 'ideation',
+          canPost: true,
+          canComment: true,
+          canReact: true,
+          reacting_dislike_enabled: true,
+        });
+      })
+      .then(() => {
+        return cy.apiSignup(firstName, lastName, email, password);
+      })
+      .then((user) => {
+        userId = user.body.data.id;
         return cy.apiCreateIdea({
-          projectId: project?.body.data.id,
+          projectId,
           ideaTitle,
           ideaContent,
         });
@@ -33,11 +52,13 @@ describe('Idea card component', () => {
         return cy.apiAddComment(ideaId, commentContent);
       })
       .then((parentComment) => {
-        parentCommentId = parentComment.body.data.id;
-        return cy.apiAddComment(ideaId, commentContent, parentCommentId);
+        return cy.apiAddComment(
+          ideaId,
+          commentContent,
+          parentComment.body.data.id
+        );
       })
-      .then((childComment) => {
-        childCommentId = childComment.body.data.id;
+      .then(() => {
         cy.wait(500);
       });
   });
@@ -46,7 +67,7 @@ describe('Idea card component', () => {
     cy.setLoginCookie(email, password);
 
     // visit ideas page and sort idea cards by newest first
-    cy.visit('/projects/an-idea-bring-it-to-your-council');
+    cy.visit(`/projects/${projectSlug}`);
 
     cy.wait(2000);
     cy.get('#e2e-ideas-list');
@@ -117,9 +138,7 @@ describe('Idea card component', () => {
   });
 
   after(() => {
-    cy.apiRemoveComment(childCommentId);
-    cy.apiRemoveComment(parentCommentId);
-    cy.apiRemoveIdea(ideaId);
+    cy.apiRemoveProject(projectId);
     cy.apiRemoveUser(userId);
   });
 });

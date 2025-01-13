@@ -33,4 +33,8 @@ export default defineMessages({
     id: 'app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.CraftComponents.SpotlightProject.folder',
     defaultMessage: 'folder',
   },
+  showAvatars: {
+    id: 'app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.CraftComponents.SpotlightProject.showAvatars',
+    defaultMessage: 'Show avatars',
+  },
 });

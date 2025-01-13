@@ -67,6 +67,7 @@ const ProjectAndFolderCards = ({
       {
         publicationStatusFilter: PUBLICATION_STATUSES,
         rootLevelOnly,
+        removeNotAllowedParents: true,
         topicIds,
         areaIds,
         search,
@@ -85,6 +86,7 @@ const ProjectAndFolderCards = ({
     pageSize: 6,
     publicationStatusFilter: getPublicationStatuses(currentTab),
     rootLevelOnly,
+    removeNotAllowedParents: true,
     topicIds,
     areaIds,
     search,
@@ -134,6 +136,7 @@ const ProjectAndFolderCardsWrapper = (props: Props) => {
     {
       publicationStatusFilter: PUBLICATION_STATUSES,
       rootLevelOnly: true,
+      removeNotAllowedParents: true,
     }
   );
 

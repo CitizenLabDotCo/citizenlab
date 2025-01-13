@@ -157,7 +157,7 @@ const ReportBuilderToolbox = ({
               id="e2e-report-builder-ai-tab"
               onClick={() => {
                 setSelectedTab('ai');
-                trackEventByName(tracks.openReportBuilderAITab.name);
+                trackEventByName(tracks.openReportBuilderAITab);
               }}
               buttonStyle={selectedTab === 'ai' ? 'secondary-outlined' : 'text'}
             >

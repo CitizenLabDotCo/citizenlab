@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Helmet } from 'react-helmet';
+import { Helmet } from 'react-helmet-async';
 
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import { IUser } from 'api/users/types';

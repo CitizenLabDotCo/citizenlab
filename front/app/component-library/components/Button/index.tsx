@@ -385,7 +385,6 @@ function getButtonStyle(
       border-color: ${borderDisabledColor};
       opacity: ${opacityDisabled};
       cursor: not-allowed;
-      pointer-events: none;
 
       ${ButtonText} {
         color: ${textDisabledColor};

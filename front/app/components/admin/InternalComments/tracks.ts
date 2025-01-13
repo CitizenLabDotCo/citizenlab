@@ -22,10 +22,6 @@ export default {
   clickCommentUpvoteButton: 'Clicked on the upvote button of a comment',
   clickCommentCancelUpvoteButton:
     'Clicked on the cancel upvote button of a comment',
-  childCommentProfanityError: {
-    name: 'Profane child comment blocked',
-  },
-  parentCommentProfanityError: {
-    name: 'Profane parent comment blocked',
-  },
+  childCommentProfanityError: 'Profane child comment blocked',
+  parentCommentProfanityError: 'Profane parent comment blocked',
 };

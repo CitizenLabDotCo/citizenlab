@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 
-import { colors, Text } from '@citizenlab/cl2-component-library';
-import { Icon } from 'semantic-ui-react';
+import { Box, Text, Title } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
 import { IPollOptionData } from 'api/poll_options/types';
@@ -9,7 +8,7 @@ import useDeletePollOption from 'api/poll_options/useDeletePollOption';
 import usePollOptions from 'api/poll_options/usePollOptions';
 import { IPollQuestionData } from 'api/poll_questions/types';
 
-import { Row, TextCell, List } from 'components/admin/ResourceList';
+import { List } from 'components/admin/ResourceList';
 import T from 'components/T';
 import Button from 'components/UI/Button';
 
@@ -24,17 +23,8 @@ import OptionRow from './OptionRow';
 
 const Container = styled.div``;
 
-const OptionsContainer = styled.div`
-  margin-left: 67px;
-`;
-
 const StyledButton = styled(Button)`
   margin-bottom: 20px;
-`;
-
-const DisabledDragHandle = styled.div`
-  color: ${colors.coolGrey600};
-  padding: 1rem;
 `;
 
 interface Props {
@@ -65,26 +55,19 @@ const OptionForm = ({ question, collapse }: Props) => {
 
   return (
     <Container key={question.id} id={question.id} className="e2e-options-form">
-      <Row>
-        <DisabledDragHandle>
-          <Icon name="sort" />
-        </DisabledDragHandle>
-        <TextCell className="expand">
-          <b>
-            <FormattedMessage
-              {...messages.optionsFormHeader}
-              values={{
-                questionTitle: (
-                  <Text display="inline" fontWeight="normal">
-                    <T value={question.attributes.title_multiloc} />
-                  </Text>
-                ),
-              }}
-            />
-          </b>
-        </TextCell>
-      </Row>
-      <OptionsContainer>
+      <Title variant="h4" color="primary">
+        <FormattedMessage
+          {...messages.optionsFormHeader}
+          values={{
+            questionTitle: (
+              <Text display="inline" fontWeight="normal" as="span">
+                <T value={question.attributes.title_multiloc} />
+              </Text>
+            ),
+          }}
+        />
+      </Title>
+      <Box>
         <List
           key={
             isNilOrError(pollOptions)
@@ -139,7 +122,7 @@ const OptionForm = ({ question, collapse }: Props) => {
             </StyledButton>
           )}
         </List>
-      </OptionsContainer>
+      </Box>
     </Container>
   );
 };

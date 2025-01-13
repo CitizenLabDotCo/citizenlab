@@ -131,7 +131,12 @@ export function trackPage(path: string, properties = {}) {
   });
 }
 
-export function trackEventByName(eventName: string, properties = {}) {
+type Properties = Record<string, string | number | boolean | undefined | null>;
+
+export function trackEventByName(
+  eventName: string,
+  properties: Properties = {}
+) {
   events$.next({
     properties,
     name: eventName,

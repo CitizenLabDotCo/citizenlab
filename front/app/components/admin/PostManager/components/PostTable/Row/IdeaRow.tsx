@@ -3,7 +3,6 @@ import React, { ChangeEvent, useState, MouseEvent } from 'react';
 import { Box, colors, Td, Badge } from '@citizenlab/cl2-component-library';
 import { uniq, isEmpty } from 'lodash-es';
 import { useDrag } from 'react-dnd';
-import { Icon } from 'semantic-ui-react';
 import { CellConfiguration, SupportedLocale, Override } from 'typings';
 
 import { IIdeaStatusData } from 'api/idea_statuses/types';
@@ -33,6 +32,7 @@ import IdeaOfficialFeedbackModal, {
   getIdeaOfficialFeedbackModalEventName,
 } from '../../IdeaOfficialFeedbackModal';
 
+import LikeIndicator from './LikeIndicator';
 import PhaseDeselectModal from './PhaseDeselectModal';
 import StyledRow from './StyledRow';
 import SubRow from './SubRow';
@@ -227,12 +227,12 @@ const IdeaRow = ({
     },
     {
       name: 'up',
-      Component: ({ idea }) => {
+      Component: ({ idea }: IdeaCellComponentProps) => {
         return (
-          <>
-            <Icon name="thumbs up" />
-            {idea.attributes.likes_count}
-          </>
+          <LikeIndicator
+            likeCount={idea.attributes.likes_count}
+            iconName="vote-up"
+          />
         );
       },
     },
@@ -242,10 +242,10 @@ const IdeaRow = ({
             name: 'down',
             Component: ({ idea }: IdeaCellComponentProps) => {
               return (
-                <>
-                  <Icon name="thumbs down" />
-                  {idea.attributes.dislikes_count}
-                </>
+                <LikeIndicator
+                  likeCount={idea.attributes.dislikes_count}
+                  iconName="vote-down"
+                />
               );
             },
           },

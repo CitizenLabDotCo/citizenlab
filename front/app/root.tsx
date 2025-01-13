@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { StrictMode, useEffect } from 'react';
 
 import 'assets/css/reset.min.css';
 import 'assets/fonts/fonts.css';
@@ -6,13 +6,13 @@ import 'tippy.js/dist/tippy.css';
 import 'tippy.js/themes/light.css';
 
 import * as Sentry from '@sentry/react';
-import { wrapUseRoutes } from '@sentry/react';
-import { BrowserTracing } from '@sentry/tracing';
+import { wrapUseRoutesV6 } from '@sentry/react';
 import { QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import modules from 'modules';
 // eslint-disable-next-line react/no-deprecated
 import { render } from 'react-dom';
+import { HelmetProvider } from 'react-helmet-async';
 import {
   createRoutesFromChildren,
   matchRoutes,
@@ -36,21 +36,20 @@ Sentry.init({
   dsn: process.env.SENTRY_DSN,
   environment: process.env.SENTRY_ENV,
   integrations: [
-    new BrowserTracing({
-      routingInstrumentation: Sentry.reactRouterV6Instrumentation(
-        useEffect,
-        useLocation,
-        useNavigationType,
-        createRoutesFromChildren,
-        matchRoutes
-      ),
+    Sentry.browserTracingIntegration(),
+    Sentry.reactRouterV6BrowserTracingIntegration({
+      useEffect: React.useEffect,
+      useLocation,
+      useNavigationType,
+      createRoutesFromChildren,
+      matchRoutes,
     }),
   ],
   tracesSampleRate: 0.05,
   sendClientReports: false,
 });
 
-const useSentryRoutes = wrapUseRoutes(useRoutes);
+const useSentryRoutes = wrapUseRoutesV6(useRoutes);
 const routes = createRoutes();
 
 function Routes() {
@@ -69,13 +68,15 @@ const Root = () => {
   return (
     <QueryClientProvider client={queryClient}>
       <OutletsProvider>
-        <LanguageProvider>
-          <HistoryRouter history={history as any}>
-            <App>
-              <Routes />
-            </App>
-          </HistoryRouter>
-        </LanguageProvider>
+        <HelmetProvider>
+          <LanguageProvider>
+            <HistoryRouter history={history}>
+              <App>
+                <Routes />
+              </App>
+            </HistoryRouter>
+          </LanguageProvider>
+        </HelmetProvider>
       </OutletsProvider>
       <ReactQueryDevtools initialIsOpen={false} />
     </QueryClientProvider>
@@ -86,7 +87,16 @@ const mountApplication = () => {
   try {
     modules.beforeMountApplication();
   } finally {
-    render(<Root />, document.getElementById('app'));
+    // We don't want to use StrictMode during E2E tests, since it causes test failures due to
+    // some issues with the re-rendering & re-running of effects in the JSONForms and react-select libraries.
+    window.Cypress
+      ? render(<Root />, document.getElementById('app'))
+      : render(
+          <StrictMode>
+            <Root />
+          </StrictMode>,
+          document.getElementById('app')
+        );
   }
 };
 

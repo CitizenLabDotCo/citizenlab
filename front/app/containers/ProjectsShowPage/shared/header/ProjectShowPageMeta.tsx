@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Helmet } from 'react-helmet';
+import { Helmet } from 'react-helmet-async';
 
 import useAuthUser from 'api/me/useAuthUser';
 import { IProjectData } from 'api/projects/types';

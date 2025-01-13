@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
 class WebApi::V1::AreasController < ApplicationController
-  before_action :set_area, except: %i[index create]
+  before_action :set_area, except: %i[index create with_visible_projects_counts]
   before_action :set_side_effects_service, only: %i[create update destroy]
-  skip_before_action :authenticate_user, only: %i[index show]
+  skip_before_action :authenticate_user, only: %i[index show with_visible_projects_counts]
 
   def index
     areas_filterer = AreasFilteringService.new
@@ -84,6 +84,35 @@ class WebApi::V1::AreasController < ApplicationController
     else
       render json: { errors: @area.errors.details }, status: :unprocessable_entity
     end
+  end
+
+  # Index-like action, that returns all areas, along with an additional `visible_projects_count` attribute.
+  # The `visible_projects_count` attribute is calculated by considering the number of associated projects
+  # and projects with `include_all_areas: true`, in the subset of projects that are visible to the user.
+  # It orders the areas firstly by the number of visible projects, secondly by their `ordering` value.
+  def with_visible_projects_counts
+    authorize :area, :with_visible_projects_counts?
+
+    projects = policy_scope(Project).not_draft
+    all_areas_project_count = projects.where(include_all_areas: true).count
+
+    areas = policy_scope(Area)
+      .left_joins(:areas_projects)
+      .joins("LEFT JOIN (#{projects.select(:id).to_sql}) AS filtered_projects " \
+             'ON filtered_projects.id = areas_projects.project_id')
+      .group('areas.id')
+      .select('areas.*', "COUNT(DISTINCT filtered_projects.id) + #{all_areas_project_count} AS visible_projects_count")
+      .order('visible_projects_count DESC, areas.ordering ASC')
+
+    areas = paginate areas
+
+    render json: linked_json(
+      areas,
+      WebApi::V1::AreaSerializer,
+      params: jsonapi_serializer_params(
+        counts_of_visible_projects_by_area: areas.map { |area| { id: area.id, count: area.visible_projects_count } }
+      )
+    )
   end
 
   private

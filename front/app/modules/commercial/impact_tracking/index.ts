@@ -1,17 +1,13 @@
 import createRoutes from 'routes';
 
 import { API_PATH } from 'containers/App/constants';
+import authenticationTracks from 'containers/Authentication/tracks';
 
 import { events$, pageChanges$ } from 'utils/analytics';
 import { getJwt } from 'utils/auth/jwt';
 import fetcher from 'utils/cl-react-query/fetcher';
 import matchPath, { getAllPathsFromRoutes } from 'utils/matchPath';
 import { ModuleConfiguration } from 'utils/moduleUtils';
-
-const signUpInTracks = {
-  signInEmailPasswordCompleted: 'Sign in - email & password sign-in completed',
-  signUpFlowCompleted: 'Sign up flow completed',
-};
 
 let sessionId: string | undefined;
 let allAppPaths: string[] | undefined;
@@ -101,8 +97,8 @@ const configuration: ModuleConfiguration = {
 
     events$.subscribe((event) => {
       if (
-        event.name === signUpInTracks.signInEmailPasswordCompleted ||
-        event.name === signUpInTracks.signUpFlowCompleted
+        event.name === authenticationTracks.signInEmailPasswordCompleted ||
+        event.name === authenticationTracks.signUpFlowCompleted
       ) {
         upgradeSession();
       }

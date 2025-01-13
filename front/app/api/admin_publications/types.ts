@@ -17,7 +17,9 @@ export interface IQueryParameters {
   pageNumber?: number;
   pageSize?: number;
   rootLevelOnly?: boolean;
+  removeNotAllowedParents?: boolean;
   onlyProjects?: boolean;
+  review_state?: 'pending' | 'approved';
   filter_is_moderator_of?: boolean;
   filter_user_is_moderator_of?: string;
   include_publications?: boolean;

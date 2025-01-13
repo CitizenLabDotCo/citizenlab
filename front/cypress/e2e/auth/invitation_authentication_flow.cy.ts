@@ -55,9 +55,10 @@ describe('Invitation authentication flow', () => {
     cy.setAdminLoginCookie();
     cy.visit('/admin/users/invitations');
     cy.get('input[type=file]').selectFile('cypress/fixtures/invites.xlsx');
-    cy.get('.e2e-submit-wrapper-button button').click();
+    cy.wait(1000); // wait for the button to become enabled after file selection
+    cy.get('.e2e-submit-wrapper-button').click();
     cy.wait('@postInvitesRequest');
-    cy.get('.e2e-submit-wrapper-button button').contains('Success');
+    cy.get('.e2e-submit-wrapper-button').contains('Success');
     cy.visit('/admin/users/invitations/all');
     cy.contains('jack@johnson.com');
     cy.contains('Jack Johnson');

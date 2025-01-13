@@ -133,7 +133,6 @@ describe('Timeline project with survey phase', () => {
         projectId,
         title: phaseTitle,
         startAt: '2018-03-01',
-        endAt: '2025-01-01',
         participationMethod: 'survey',
         canComment: true,
         canPost: true,

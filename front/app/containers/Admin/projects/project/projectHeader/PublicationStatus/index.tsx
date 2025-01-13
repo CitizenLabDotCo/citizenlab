@@ -8,6 +8,7 @@ import {
   IconNames,
   Text,
   colors,
+  stylingConsts,
 } from '@citizenlab/cl2-component-library';
 import moment from 'moment';
 
@@ -101,6 +102,29 @@ const PublicationStatus = ({ project }: { project: IProject }) => {
     });
     setIsPickerOpen(false);
   };
+
+  if (!project.data.attributes.first_published_at) {
+    return (
+      <Box
+        display="flex"
+        alignItems="center"
+        gap="8px"
+        as="span"
+        padding="4px 8px"
+        border={`1px solid ${colors.borderDark}`}
+        borderRadius={stylingConsts.borderRadius}
+      >
+        <Icon
+          name={publicationStatusIcon}
+          fill={publicationStatusIconColor}
+          width="20px"
+        />
+        <Text color="coolGrey600" m="0px">
+          {formatMessage(statusMessage)}
+        </Text>
+      </Box>
+    );
+  }
 
   return (
     <Box position="relative">

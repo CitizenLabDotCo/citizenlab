@@ -25,7 +25,6 @@ import { getInstructionMessage } from './utils';
 
 const StyledMultipleSelect = styled(MultipleSelect)`
   flex-grow: 1;
-  z-index: 800 !important;
 `;
 
 const MultiSelectControl = ({
@@ -70,9 +69,7 @@ const MultiSelectControl = ({
             options={options}
             onChange={(vals) => {
               setDidBlur(true);
-              // TODO: Fix this the next time the file is edited.
-              // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-              if (vals?.length === 0) {
+              if (vals.length === 0) {
                 handleChange(path, undefined);
               } else {
                 handleChange(
@@ -82,18 +79,14 @@ const MultiSelectControl = ({
               }
             }}
             inputId={sanitizeForClassname(id)}
-            // TODO: Fix this the next time the file is edited.
-            // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-            disabled={uischema?.options?.readonly}
+            disabled={uischema.options?.readonly}
             // On phones, the keyboard that appears is too large
             // and covers the options. So we disable the search functionality
             isSearchable={!isSmallerThanPhone}
           />
         </Box>
 
-        {/* TODO: Fix this the next time the file is edited. */}
-        {/* eslint-disable-next-line @typescript-eslint/no-unnecessary-condition */}
-        <VerificationIcon show={uischema?.options?.verificationLocked} />
+        <VerificationIcon show={uischema.options?.verificationLocked} />
       </Box>
       <Box mt="4px">
         <ErrorDisplay
@@ -114,9 +107,7 @@ export const multiSelectControlTester = (
   jsonSchema: JsonSchema
 ) => {
   if (
-    // TODO: Fix this the next time the file is edited.
-    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-    uiSchema?.options?.input_type === 'multiselect' &&
+    uiSchema.options?.input_type === 'multiselect' &&
     dropdownLayoutTester(uiSchema, jsonSchema)
   ) {
     return 1000;

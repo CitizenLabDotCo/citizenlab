@@ -54,12 +54,7 @@ models:
             errors: []
             hasError: false
           displayName: 'HomepageBanner'
-          custom:
-            title:
-              id: 'app.containers.admin.ContentBuilder.homepage.homepageBanner'
-              defaultMessage: 'Homepage banner'
-            noPointerEvents: true
-            noDelete: true
+          custom: {}
           parent: 'ROOT'
           hidden: false
           nodes: []
@@ -69,10 +64,7 @@ models:
             resolvedName: 'FollowedItems'
           nodes: []
           props:
-            titleMultiloc:
-              en: 'For you'
-              nl-BE: 'Voor jou'
-              fr-BE: 'Pour vous'
+            titleMultiloc: {}
           custom: {}
           hidden: false
           parent: 'ROOT'
@@ -84,10 +76,7 @@ models:
             resolvedName: 'OpenToParticipation'
           nodes: []
           props:
-            titleMultiloc:
-              en: 'Open to participation'
-              nl-BE: 'Open voor deelname'
-              fr-BE: 'Ouvert à la participation'
+            titleMultiloc: {}
           custom: {}
           hidden: false
           parent: 'ROOT'
@@ -100,10 +89,7 @@ models:
           nodes: []
           props:
             filterBy: 'finished_and_archived'
-            titleMultiloc:
-              en: 'You said, we did...'
-              nl-BE: 'Jij zei, wij deden...'
-              fr-BE: "La boucle est bouclée"
+            titleMultiloc: {}
           custom: {}
           hidden: false
           parent: 'ROOT'
@@ -202,49 +188,6 @@ models:
       color: '#8B0000'
       description_multiloc: idea_statuses.ineligible_description
       participation_method: proposals
-  initiative_status:
-    -
-      title_multiloc: initiative_statuses.review_pending
-      ordering: 50
-      code: review_pending
-      color: '#767676'
-      description_multiloc: initiative_statuses.review_pending_description
-    -
-      title_multiloc: initiative_statuses.changes_requested
-      ordering: 100
-      code: changes_requested
-      color: '#BDBDBD'
-      description_multiloc: initiative_statuses.changes_requested_description
-    -
-      title_multiloc: initiative_statuses.proposed
-      ordering: 150
-      code: proposed
-      color: '#BEE7EB'
-      description_multiloc: initiative_statuses.proposed_description
-    -
-      title_multiloc: initiative_statuses.threshold_reached
-      ordering: 200
-      code: threshold_reached
-      color: '#40B8C5'
-      description_multiloc: initiative_statuses.threshold_reached_description
-    -
-      title_multiloc: initiative_statuses.answered
-      ordering: 300
-      code: answered
-      color: '#147985'
-      description_multiloc: initiative_statuses.answered_description
-    -
-      title_multiloc: initiative_statuses.expired
-      ordering: 400
-      code: expired
-      color: '#FF672F'
-      description_multiloc: initiative_statuses.expired_description
-    -
-      title_multiloc: initiative_statuses.ineligible
-      ordering: 500
-      code: ineligible
-      color: '#E52516'
-      description_multiloc: initiative_statuses.ineligible_description
   topic:
     - &topic-nature
       title_multiloc: topics.nature

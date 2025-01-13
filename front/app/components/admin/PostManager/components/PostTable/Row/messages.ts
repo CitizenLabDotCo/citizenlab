@@ -10,4 +10,8 @@ export default defineMessages({
     defaultMessage:
       'You are trying to remove this idea from a phase where it has received votes. If you do this, these votes will be lost. Are you sure you want to remove this idea from this phase?',
   },
+  removeTopic: {
+    id: 'app.components.admin.PostManager.components.PostTable.Row.removeTopic',
+    defaultMessage: 'Remove topic',
+  },
 });

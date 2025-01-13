@@ -5,6 +5,7 @@ import {
   Box,
   colors,
   fontSizes,
+  Divider,
 } from '@citizenlab/cl2-component-library';
 import { useQueryClient } from '@tanstack/react-query';
 import { saveAs } from 'file-saver';
@@ -21,7 +22,6 @@ import usersKeys from 'api/users/keys';
 
 import { API_PATH } from 'containers/App/constants';
 
-import Divider from 'components/admin/Divider';
 import T from 'components/T';
 import Button from 'components/UI/Button';
 import Checkbox from 'components/UI/Checkbox';
@@ -160,7 +160,7 @@ const UserTableActions = ({
   const showSelectAndExport = usersDataLength !== 0;
 
   const toggleAllUsers = () => {
-    trackEventByName(tracks.toggleAllUsers.name);
+    trackEventByName(tracks.toggleAllUsers);
     toggleSelectAll();
   };
 
@@ -228,11 +228,9 @@ const UserTableActions = ({
         setProcessing(false);
       };
 
-      trackEventByName(tracks.addUsersToGroup.name, {
-        extra: {
-          usersIds,
-          selectedGroupIds,
-        },
+      trackEventByName(tracks.addUsersToGroup, {
+        usersIds: usersIds.toString(),
+        selectedGroupIds: selectedGroupIds.toString(),
       });
 
       if (isArray(usersIds)) {
@@ -251,10 +249,8 @@ const UserTableActions = ({
         success();
         return true;
       } catch (error) {
-        trackEventByName(tracks.addedRedundantUserToGroup.name, {
-          extra: {
-            errorResponse: error,
-          },
+        trackEventByName(tracks.addedRedundantUserToGroup, {
+          errorResponse: error.toString(),
         });
 
         // if error because users already part of group(s)
@@ -328,7 +324,7 @@ const UserTableActions = ({
             <Button
               ml="auto"
               onClick={exportUsers}
-              className={`export e2e-${exportType} hasLeftMargin`}
+              className={`export e2e-${exportType} hasLeftMargin intercom-users-export-users-button`}
               buttonStyle="admin-dark-text"
               whiteSpace="wrap"
               icon="user-data"

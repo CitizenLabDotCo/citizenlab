@@ -37,12 +37,6 @@ const Header = styled.div`
   width: 100%;
   display: flex;
   justify-content: space-between;
-  padding-bottom: 30px;
-  margin-bottom: 30px;
-
-  ${media.phone`
-    margin-bottom: 21px;
-  `}
 
   ${isRtl`
     flex-direction: row-reverse;

@@ -1,5 +1,3 @@
 export default {
-  shareButtonClicked: {
-    name: 'Share button clicked',
-  },
+  shareButtonClicked: 'Share button clicked',
 };

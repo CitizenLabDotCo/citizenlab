@@ -6,7 +6,7 @@ describe IdeaReactionPolicy do
   subject(:policy) { described_class.new(user, reaction) }
 
   let(:scope) { IdeaReactionPolicy::Scope.new(user, Reaction) }
-  let(:project) { create(:single_phase_ideation_project) }
+  let(:project) { create(:single_phase_ideation_project, phase_attrs: { reacting_dislike_enabled: true }) }
   let(:reactable) { create(:idea, project: project, phases: project.phases) }
   let!(:reaction) { create(:reaction, reactable: reactable) }
 

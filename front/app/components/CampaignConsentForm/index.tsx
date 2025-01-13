@@ -37,13 +37,13 @@ import {
 import { groupCampaignsConsent, sortGroupedCampaignConsents } from './utils';
 
 type Props = {
-  trackEventName?: string;
+  trackEventName: string;
   runOnSave?: () => void;
   unsubscriptionToken?: string | null;
 };
 
 const CampaignConsentForm = ({
-  trackEventName = 'Default email notification settings changed',
+  trackEventName,
   runOnSave,
   unsubscriptionToken,
 }: Props) => {
@@ -146,15 +146,15 @@ const CampaignConsentForm = ({
         })
       );
 
+    const consentChangesObject: Record<string, any> = Object.fromEntries(
+      Object.values(consentChanges).map((consent: IConsentChanges) => [
+        consent.campaignConsentId,
+        consent.consented,
+      ])
+    );
+
     trackEventByName(trackEventName, {
-      extra: {
-        consentChanges: Object.fromEntries(
-          Object.values(consentChanges).map((consent: IConsentChanges) => [
-            consent.campaignConsentId,
-            consent.consented,
-          ])
-        ),
-      },
+      consentChanges: JSON.stringify(consentChangesObject),
     });
 
     setShowFeedback(false);

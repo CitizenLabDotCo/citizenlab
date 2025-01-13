@@ -14,7 +14,6 @@ const FiltersModal = lazy(() => import('./FiltersModal'));
 
 const ButtonWithFiltersModal = ({
   ideaQueryParameters,
-  onClearFilters,
   ...filtersProps
 }: InputFiltersProps) => {
   const isSmallerThanTablet = useBreakpoint('tablet');
@@ -45,7 +44,6 @@ const ButtonWithFiltersModal = ({
         <FiltersModal
           opened={filtersModalOpened}
           ideaQueryParameters={ideaQueryParameters}
-          onClearFilters={onClearFilters}
           onClose={closeModal}
           {...filtersProps}
         />

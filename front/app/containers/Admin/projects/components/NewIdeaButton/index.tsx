@@ -31,7 +31,7 @@ const NewIdeaButton = ({ linkTo, inputTerm }: Props) => {
       linkTo={linkTo}
       onClick={() => {
         trackEventByName(tracks.clickNewIdea.name, {
-          extra: { pathnameFrom: pathname },
+          pathnameFrom: pathname,
         });
       }}
       text={formatMessage(
