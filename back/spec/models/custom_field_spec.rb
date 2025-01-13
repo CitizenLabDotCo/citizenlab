@@ -619,8 +619,9 @@ RSpec.describe CustomField do
 
       result = ActiveRecord::Base.connection.execute(
         <<-SQL.squish
-          SELECT *
+          SELECT value, AVG(ordinality)
           FROM users u, jsonb_array_elements(u.custom_field_values->'#{field.key}') WITH ORDINALITY
+          GROUP BY value
         SQL
       )
       byebug
