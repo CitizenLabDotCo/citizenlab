@@ -592,4 +592,43 @@ RSpec.describe CustomField do
       expect(field.nth_linear_scale_multiloc(7)).to eq({ 'en' => 'I am label 7 multiloc' })
     end
   end
+
+  describe '#average_rank' do
+    let!(:field) { create(:custom_field_ranking) }
+    let!(:option1) { create(:custom_field_option, custom_field: field, key: 'by_foot') }
+    let!(:option1) { create(:custom_field_option, custom_field: field, key: 'by_bike') }
+    let!(:option1) { create(:custom_field_option, custom_field: field, key: 'by_train') }
+    let!(:option1) { create(:custom_field_option, custom_field: field, key: 'by_horse') }
+
+    it 'works' do
+      user1 = create(:user, custom_field_values: { field.key => ['by_bike', 'by_horse', 'by_train', 'by_foot'] })
+      user2 = create(:user, custom_field_values: { field.key => ['by_train', 'by_bike', 'by_foot', 'by_horse'] })
+      # user3 = create(:user, custom_field_values: {})
+      user4 = create(:user, custom_field_values: { field.key => ['by_horse', 'by_foot', 'by_train', 'by_bike'] })
+      user5 = create(:user, custom_field_values: { field.key => ['by_bike', 'by_foot', 'by_train', 'by_horse'] })
+
+      # bike: avg(1, 2, 4, 1) = 2
+      # foot: avg(4, 3, 2, 2) = 2.75
+      # train: avg(3, 1, 3, 3) = 2.5
+      # horse: avg(2, 4, 1, 4) = 2.75
+
+      # Select the average rank of the field for each option key in custom_field_values
+      # 1. Select the custom_field_values for the field
+      # 2. Map each field option key in the array to a hash where the keys are the option keys and the values are the index positions (ranks) of the options in the array
+      # 3. Calculate the average rank for each field option key
+
+      result = ActiveRecord::Base.connection.execute(
+        <<-SQL.squish
+          SELECT *
+          FROM users u, jsonb_array_elements(u.custom_field_values->'#{field.key}') WITH ORDINALITY
+        SQL
+      )
+      byebug
+      User.select("jsonb_array_elements(custom_field_values->'#{field.key}') FOR ORDINALITY").map do |user|
+        byebug
+      end
+      
+      expect(field.average_rank(User.all)).to eq({ 'by_bike' => 2, 'by_foot' => 2.75, 'by_train' => 2.5, 'by_horse' => 2.75 })
+    end
+  end
 end
