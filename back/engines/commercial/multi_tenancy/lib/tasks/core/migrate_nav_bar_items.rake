@@ -13,7 +13,7 @@ namespace :migrate_nav_bar_items do
       %w[about information],
       %w[privacy-policy privacy-policy],
       %w[terms-and-conditions terms-and-conditions],
-      %w[faq faq], %w[proposals initiatives]
+      %w[faq faq]
     ]
     Tenant.all.each do |tenant|
       puts tenant.host
@@ -28,7 +28,7 @@ namespace :migrate_nav_bar_items do
   end
 
   task :add_default_items, [] => [:environment] do
-    codes_and_feature_names = [%w[proposals initiatives], %w[all_input ideas_overview], %w[events events_page]]
+    codes_and_feature_names = [%w[all_input ideas_overview], %w[events events_page]]
     codes_and_slugs = [%w[about information], %w[faq faq]]
     Tenant.all.each do |tenant|
       puts tenant.host
@@ -50,38 +50,6 @@ namespace :migrate_nav_bar_items do
             unless item.save
               puts "Failed to add nav bar item #{code}"
             end
-          end
-        end
-      end
-    end
-  end
-
-  task :delete_referenced_success_stories, [] => [:environment] do
-    Tenant.all.each do |tenant|
-      puts tenant.host
-      Apartment::Tenant.switch(tenant.schema_name) do
-        config = AppConfiguration.instance
-        slugs = config.settings.dig('initiatives', 'success_stories')&.map { |s| s['page_slug'] } || []
-        StaticPage.where(slug: slugs).each do |page|
-          unless page.destroy
-            puts "Failed to delete page #{page.slug}"
-          end
-        end
-      end
-    end
-  end
-
-  task :delete_cookie_policy_success_stories, [] => [:environment] do
-    Tenant.all.each do |tenant|
-      puts tenant.host
-      Apartment::Tenant.switch(tenant.schema_name) do
-        unless StaticPage.find_by(slug: 'cookie-policy')&.destroy
-          puts 'Failed to delete cookie policy'
-        end
-        slugs = %w[initiatives-success-1 initiatives-success-2 initiatives-success-3 initiatives-success-4]
-        StaticPage.where(slug: slugs).each do |page|
-          unless page.destroy
-            puts "Failed to delete page #{page.slug}"
           end
         end
       end

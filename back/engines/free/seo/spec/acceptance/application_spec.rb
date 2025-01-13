@@ -60,7 +60,6 @@ resource 'SEO' do
         projects = create_list(:project, project_count)
         create(:project_folder)
         create_list(:idea, idea_count, project: projects.first)
-        create(:initiative)
         create(:proposal)
         create(:idea_status_proposed)
         @native_survey_response = create(:native_survey_response)

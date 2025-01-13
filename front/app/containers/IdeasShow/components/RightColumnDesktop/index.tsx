@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Box, colors } from '@citizenlab/cl2-component-library';
+import { Box, colors, Divider } from '@citizenlab/cl2-component-library';
 import { useTheme } from 'styled-components';
 
 import useIdeaById from 'api/ideas/useIdeaById';
@@ -12,7 +12,6 @@ import {
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
-import Divider from 'components/admin/Divider';
 import FollowUnfollow from 'components/FollowUnfollow';
 import ReactionControl from 'components/ReactionControl';
 import { showIdeaReactions } from 'components/ReactionControl/utils';

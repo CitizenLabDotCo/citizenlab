@@ -8,35 +8,23 @@ da:
       "comment_marked_as_spam": Rapportering af kommentar-spam
       "comment_on_your_comment": Et svar på min kommentar
       "comment_on_idea_you_follow": En kommentar til en idé, som du følger
-      "comment_on_initiative_you_follow": En kommentar til et forslag, som du følger
-      "cosponsor_of_your_initiative": En bruger accepterer min invitation til at være medstiller på mit forslag
       "cosponsor_of_your_idea": En bruger accepterer min invitation til at være medstiller på mit forslag
       "event_registration_confirmation": Bekræftelse af tilmelding til begivenhed
       "idea_marked_as_spam": Rapportering af idé-spam
       "idea_published": Publicering af min idé
-      "initiative_assigned_to_you": Tildeling af et forslag til mig
-      "initiative_marked_as_spam": Rapportering af forslag-spam
-      "initiative_published": Publicering af mit forslag
-      "invitation_to_cosponsor_initiative": Invitation til at være medstiller på et forslag
       "invitation_to_cosponsor_idea": Invitation til at være medstiller på et forslag
-      "initiative_resubmitted_for_review": Forslaget indsendes igen til gennemgang
       "invite_received": Invitation
       "invite_reminder": Invitationspåmindelse
       "internal_comment_on_idea_assigned_to_you": Intern kommentar til input, der er tildelt mig
       "internal_comment_on_idea_you_commented_internally_on": Intern kommentar til input jeg kommenterede internt på
       "internal_comment_on_idea_you_moderate": Intern kommentar til input i projekt eller mappe jeg administrerer
-      "internal_comment_on_initiative_assigned_to_you": Intern kommentar til forslag som jeg har fået tildelt
-      "internal_comment_on_initiative_you_commented_internally_on": Intern kommentar til forslag jeg kommenterede på
-      "internal_comment_on_unassigned_initiative": Intern kommentar til ikke-tildelt forslag
       "internal_comment_on_unassigned_unmoderated_idea": Intern kommentar til ikke-tildelt input i ikke-administreret projekt
       "internal_comment_on_your_internal_comment": Intern kommentar til min interne kommentar
       "mention_in_official_feedback": Nævnelse i en opdatering
       "mention_in_internal_comment": Nævnes i en intern kommentar
       "new_comment_for_admin": Ny kommentar i et projekt jeg modererer
       "new_idea_for_admin": Ny idé i et projekt jeg modererer
-      "new_initiative_for_admin": Nyt forslag
       "official_feedback_on_idea_you_follow": Opdatering af en idé, som du følger
-      "official_feedback_on_initiative_you_follow": Opdatering på et forslag, som du følger
       "password_reset": Nulstilling af adgangskode
       "project_moderation_rights_received": Rettigheder til projektmoderering modtaget
       "project_folder_moderation_rights_received": Projekt-mappens moderationsrettigheder modtaget
@@ -46,7 +34,6 @@ da:
       "project_review_request": Anmodning om projektgennemgang
       "project_review_state_change": Projekt godkendt
       "status_change_on_idea_you_follow": Statusændring af en idé, som du følger
-      "status_change_on_initiative_you_follow": Statusændring på et forslag, som du følger
       "threshold_reached_for_admin": Forslag har nået stemmegrænsen
       "welcome": Efter registrering
       "admin_digest": Ugentlig oversigt for administratorer
@@ -73,7 +60,6 @@ da:
         issue: 'Gå til denne udgave'
         option: 'Gå til denne mulighed'
         proposal: 'Gå til dette forslag'
-        initiative: 'Gå til dette initiativ'
         petition: 'Gå til denne underskriftsindsamling'
       cta_goto_your:
         idea: 'Gå til din idé'
@@ -83,7 +69,6 @@ da:
         issue: 'Gå til dit problem'
         option: 'Gå til din valgmulighed'
         proposal: 'Gå til dit forslag'
-        initiative: 'Gå til dit initiativ'
         petition: 'Gå til din underskriftsindsamling'
       cta_goto_proposal: 'Gå til dette forslag'
       cta_goto_project: 'Gå til dette projekt'
@@ -130,7 +115,6 @@ da:
       new_comments: 'Nye kommentarer'
       title_activity_past_week: 'Seneste uges aktivitet'
       title_no_activity_past_week: 'Der var ingen aktivitet i sidste uge'
-      title_initiatives_past_week: 'Nye forslag for den sidste uge'
       reached_threshold: 'Nåede tærsklen'
       yesterday_by_author: 'I går af %{author}'
       today_by_author: 'I dag af %{author}'
@@ -168,12 +152,6 @@ da:
       main_header: '%{cosponsorName} har accepteret din invitation til at være medstiller på dit forslag'
       subject: '%{cosponsorName} har accepteret din invitation til at være medstiller på dit forslag'
       preheader: '%{cosponsorName} har accepteret din invitation til at være medstiller på dit forslag'
-    cosponsor_of_your_initiative:
-      cta_reply_to: 'Se dit forslag'
-      event_description_initiative: 'Tillykke! %{cosponsorName} har accepteret din invitation til at være medstiller på dit forslag.'
-      main_header: '%{cosponsorName} har accepteret din invitation til at være medstiller på dit forslag'
-      subject: '%{cosponsorName} har accepteret din invitation til at være medstiller på dit dit forslag'
-      preheader_initiative: '%{cosponsorName} har accepteret din invitation til at være medstiller på dit forslag'
     assignee_digest:
       subject: 'Ideer der kræver din tilbagemelding: %{numberIdeas}'
       preheader: 'Repræsentantsammenfatning for %{organizationName}'
@@ -194,20 +172,6 @@ da:
       preheader: 'Reagér på denne spamrapport'
       reported_this_because: '%{reporterFirstName} rapporterede dette fordi:'
       title_spam_report: '%{firstName} %{lastName} rapporterede spam'
-    initiative_marked_as_spam:
-      cta_review_initiative: 'Anmeld forslag'
-      report_inappropriate_offensive_content: 'Jeg fandt dette indhold upassende eller stødende.'
-      report_not_an_initiative: 'Dette indhold er ikke en forslag og hører ikke til her.'
-      subject: 'Du har en spam-rapport på platformen for %{organizationName}'
-      preheader: 'Tag handling ud fra denne spamrapport'
-      reported_this_because: '%{reporterFirstName} rapporterede dette fordi:'
-      title_spam_report: '%{firstName} %{lastName} rapporterede spam'
-    initiative_assigned_to_you:
-      cta_reply_to: 'Giv feedback til %{authorName}'
-      event_description_initiative: 'Et forslag er blevet tildelt dig. Giv feedback ved at skrive en opdatering eller ved at ændre dets status.'
-      main_header: '%{firstName}, du har en ny tildeling'
-      subject: 'Du har en ny tildeling på platformen for %{organizationName}'
-      preheader_initiative: 'Du er blevet tildelt %{authorName}s forslag'
     invitation_to_cosponsor_idea:
       cta_reply_to: 'Vær medstiller på dette forslag'
       event_description: '%{authorName} har stillet et nyt forslag og vil gerne have dig til at være medstiller på det.'
@@ -217,22 +181,6 @@ da:
       main_header: 'Du er blevet inviteret til at være medstiller på et forslag'
       subject: 'Du er blevet inviteret til at være medstiller på et forslag'
       preheader: 'Du er blevet inviteret til at være medstiller på forslaget fra %{authorName}'
-    invitation_to_cosponsor_initiative:
-      cta_reply_to: 'Vær medstiller på dette forslag'
-      event_description_initiative: '%{authorName} har stillet et nyt forslag og vil gerne have dig til at være medstiller på det.'
-      event_description_cosponsoring: 'At være medstiller på et forslag betyder, at <strong>dit navn vil blive vist</strong> sammen med navnene på de øvrige medstillere.'
-      event_description_before_action: 'For at se forslaget og acceptere invitationen, skal du være logget ind på din konto.'
-      event_description_action: 'Klik nedenfor for at se forslaget.'
-      main_header: 'Du er blevet inviteret til at være medstiller på et forslag'
-      subject: 'Du er blevet inviteret til at være medstiller på et forslag'
-      preheader_initiative: 'Du er blevet inviteret til at være medstiller på forslaget fra %{authorName}'
-    initiative_resubmitted_for_review:
-      by_author: 'af %{authorName}'
-      cta_reply_to: 'Giv feedback til %{authorName}'
-      event_description_initiative: 'Et forslag er blevet genindsendt til gennemgang. Giv feedback ved at skrive en officiel opdatering eller ved at ændre status.'
-      main_header: '%{firstName}du har et forslag, der skal gennemgås'
-      subject: 'Du har et forslag, der skal gennemgås på platformen %{organizationName}'
-      preheader_initiative: 'Forslaget fra %{authorName} er blevet genfremsendt til gennemgang'
     invite_reminder:
       cta_accept_invitation: 'Acceptér din invitation'
       invitation_header: 'Din invitation er afventende'
@@ -247,20 +195,6 @@ da:
       invitation_expiry_message: 'Denne invitation udløber om %{expiryDays} dage.'
       preheader: '%{organizationName} sendte dig en invitation til at deltage i deres deltagelsesplatform.'
       subject: 'Du er inviteret til at deltage i platformen for %{organizationName}'
-    initiative_published:
-      action_add_image: '%{addImageLink} for at øge synlighed'
-      action_published_initiative: 'Udgivet forslag'
-      action_send_email: 'Send dine kontakter en %{sendEmailLink}'
-      action_share_fb: 'Fortæl dine venner på %{fbLink}'
-      action_share_link: 'Del det via enhver kanal ved at kopiere %{link}'
-      action_share_twitter: 'Informer dine følgere på %{twitterLink}'
-      link: link
-      main_header: 'Tillykke! Dit forslag er nu offentliggjort og er klar til at indsamle stemmer.'
-      message_next_steps: '%{userFirstName}, dit forslag er nu offentliggjort på %{organizationName}s digitale platform, og er dermed klar til at blive delt i dit netværk og indsamle stemmer. Du får besked, når dit forslag får stemmer eller kommentarer.'
-      message_get_votes: 'Nå stemmetærsklen:'
-      preheader: 'Tak for at du deler dit forslag, %{initiativeTitle}, for %{organizationName}. Det næste skridt er at få support for dit forslag ved at dele den med hele dit netværk.'
-      send_email: e-mail
-      subject: 'Dit forslag blev publiceret på platformen for %{organizationName}'
     mention_in_comment:
       cta_reply_to: 'Svar %{commentAuthor}'
       event_description: '%{commentAuthorFull} har nævnt dig i sin kommentar til idéen ''%{post}''. Klik på linket herunder for at starte en samtale med %{commentAuthor}'
@@ -309,22 +243,9 @@ da:
         issue: '%{authorName} kommenterede et emne, du følger'
         option: '%{authorName} kommenterede en mulighed, du følger'
         proposal: '%{authorName} kommenterede på et initiativ, du følger'
-        initiative: '%{authorName} kommenterede et initiativ, du følger'
         petition: '%{authorName} kommenterede en underskriftindsamling, du følger'
       subject: 'Der er en ny kommentar til "%{input_title}"'
       preheader: '%{authorName} efterlod en kommentar til en idé til %{organizationName}'
-    comment_on_initiative_you_follow:
-      cta_reply_to: 'Svar til %{commentAuthor}'
-      event_description: '%{authorNameFull} gav en reaktion på dit forslag "%{initiativeTitle}". Klik på knappen nedenfor for at fortsætte samtalen med %{authorName}.'
-      main_header: '%{commentAuthor} kommenterede på et initiativ, du følger'
-      subject: 'Der er en ny kommentar til det forslag, du følger'
-      preheader: '%{authorName} efterlod en kommentar til et forslag til %{organizationName}'
-    new_initiative_for_admin:
-      cta_reply_to: 'Giv feedback til %{authorName}'
-      event_description: '%{authorName} har offentliggjort et nyt forslag på din platform. Se den nu, giv feedback på den, eller ændr dens status!'
-      main_header: '%{firstName}, der er blevet offentliggjort et nyt forslag på din platform'
-      subject: 'Nogen offentliggjorde et nyt forslag på platformen til %{organizationName}'
-      preheader: '%{authorName} offentliggjorde et nyt forslag på din platform'
     new_idea_for_admin:
       main_header_publication: 'der er blevet offentliggjort et nyt input på jeres platform'
       event_description_publication: '%{authorName} har offentliggjort et nyt input på jeres platform. Se det nu, giv feedback eller ændr dets status!'
@@ -368,24 +289,6 @@ da:
       subject: '''%{post}'' har en ny intern kommentar'
       main_header: '''%{post}'' har en ny intern kommentar'
       preheader: '''%{post}'' har en ny intern kommentar'
-    internal_comment_on_initiative_assigned_to_you:
-      cta_reply_to: 'Se kommentar fra %{firstName}'
-      event_description: '%{authorNameFull} har kommenteret internt på et forslag, som du har fået tildelt.'
-      subject: '''%{post}'' har en ny intern kommentar'
-      main_header: '''%{post}'' har en ny intern kommentar'
-      preheader: '''%{post}'' har en ny intern kommentar'
-    internal_comment_on_initiative_you_commented_internally_on:
-      cta_reply_to: 'Se kommentar fra %{firstName}'
-      event_description: '%{authorNameFull} kommenterede internt på et forslag, du kommenterede på internt.'
-      subject: '''%{post}'' har en ny intern kommentar'
-      main_header: '''%{post}'' har en ny intern kommentar'
-      preheader: '''%{post}'' har en ny intern kommentar'
-    internal_comment_on_unassigned_initiative:
-      cta_reply_to: 'Se kommentar fra %{firstName}'
-      event_description: '%{authorNameFull} kommenterede internt på et ikke-tildelt forslag.'
-      subject: '''%{post}'' har en ny intern kommentar'
-      main_header: '''%{post}'' har en ny intern kommentar'
-      preheader: '''%{post}'' har en ny intern kommentar'
     internal_comment_on_unassigned_unmoderated_idea:
       cta_reply_to: 'Se kommentar fra %{firstName}'
       event_description: '%{authorNameFull} kommenterede internt på et ikke-tildelt input i et ikke-administreret projekt.'
@@ -397,11 +300,6 @@ da:
       header_title: 'Der er en opdatering på "%{input_title}"'
       subject: 'Officiel feedback blev lagt ud på "%{input_title}"'
       preheader: 'Der er en opdatering på et input, du følger'
-    official_feedback_on_initiative_you_follow:
-      header_message: '%{officialName} har en opdatering til forslaget ''%{initiativeTitle}''. Klik på knappen nedenfor for at læse hele opdateringen med %{organizationName}.'
-      header_title: 'Der er en opdatering på et forslag, du følger'
-      subject: 'Et forslag, du følger, har modtaget en officiel opdatering på platformen %{organizationName}'
-      preheader: 'Der er en opdatering på et forslag, du følger'
     mention_in_official_feedback:
       cta_reply_to: 'Svar til %{organizationName}'
       event_description: '%{organizationName} har nævnt dig i sin kommentar til ideen ''%{post}''. Klik på linket herunder for at gå ind i samtalen med %{organizationName}'
@@ -475,12 +373,6 @@ da:
       header_title: 'Et input, du følger, har fået ny status'
       subject: 'Status for "%{input_title}" er ændret'
       preheader: 'Et input, du følger, har fået ny status'
-    status_change_on_initiative_you_follow:
-      status_change: 'Den nye status for dette forslag er ''%{initiativeStatus}'''
-      header_message: 'Status for forslag ''%{initiativeTitle}'' er blevet opdateret på den digitale borgerinddragelsesplatform for %{organizationName}.'
-      header_title: 'Et forslag du følger har fået en ny status'
-      subject: 'Status for et forslag du følger er ændret'
-      preheader: 'Et forslag du følger har fået en ny status'
     user_digest:
       subject: "Ugentlig opdatering af deltagelsesplatformen for %{organizationName}"
       commented: "%{authorFirstName} kommenterede:"
@@ -521,7 +413,6 @@ da:
         issue: 'Dit nummer er blevet udgivet'
         option: 'Din mulighed er blevet offentliggjort'
         proposal: 'Dit forslag er blevet offentliggjort'
-        initiative: 'Dit initiativ er blevet offentliggjort'
         petition: 'Din underskriftsindsamling er blevet offentliggjort'
       main_header: 'Du slog en idé op! Lad os sikre, at den bliver læst.'
       header_message: 'Lad os sørge for, at den bliver læst.'
@@ -545,7 +436,6 @@ da:
         issue: 'Dit problem er i "%{prescreening_status_title}"'
         option: 'Din mulighed er i "%{prescreening_status_title}"'
         proposal: 'Dit forslag er i "%{prescreening_status_title}"'
-        initiative: 'Dit initiativ er i "%{prescreening_status_title}"'
         petition: 'Din underskriftsindsamling er i "%{prescreening_status_title}"'
       message: '"%{input_title}" bliver synlig for andre, når den er blevet gennemgået og godkendt.'
       subject: '"%{input_title}" er næsten udgivet'
@@ -674,9 +564,6 @@ da:
         internal_comment_is_posted_on_idea_in_project_or_folder_user_manages: 'Intern kommentar på input i projekt eller mappe, som brugeren administrerer'
         internal_comment_is_posted_on_idea_user_has_commented_internally_on: 'Intern kommentar på input, som brugeren har kommenteret internt på'
         internal_comment_is_posted_on_idea_user_moderates: 'Intern kommentar på input, som brugeren modererer'
-        internal_comment_is_posted_on_initiative_assigned_to_user: 'Intern kommentar er postet på forslag tildelt bruger'
-        internal_comment_is_posted_on_initiative_user_has_commented_internally_on: 'Intern kommentar er postet på forslag, som brugeren har kommenteret internt på'
-        internal_comment_is_posted_on_unassigned_initiative: 'Intern kommentar er sendt på ikke-tildelt forslag'
         internal_comment_is_posted_on_unassigned_unmoderated_idea: 'Intern kommentar er sendt på ikke-tildelt input i ikke-administreret projekt'
         project_review_request: 'Moderator anmodede om en projektgennemgang'
         project_review_state_change: 'Projektgodkender godkendte projektet'
