@@ -1468,7 +1468,7 @@
   "app.containers.NewAuthModal.steps.EmailSignUp.email": "Email",
   "app.containers.NewAuthModal.steps.EmailSignUp.emailFormatError": "Provide an email address in the correct format, for example name@provider.com",
   "app.containers.NewAuthModal.steps.EmailSignUp.emailMissingError": "Provide an email address",
-  "app.containers.NewAuthModal.steps.EmailSignUp.enterYourEmailAddress": "Enter your email address to continue.",
+  "app.containers.NewAuthModal.steps.EmailSignUp.enterYourEmailAddress": "Please enter your email address to continue.",
   "app.containers.NewAuthModal.steps.Password.forgotPassword": "Forgot password?",
   "app.containers.NewAuthModal.steps.Password.logInToYourAccount": "Log in to your account: {account}",
   "app.containers.NewAuthModal.steps.Password.noPasswordError": "Please enter your password",
