@@ -1811,6 +1811,7 @@
   "app.containers.UsersEditPage.verifiedIdentitySubtitle": "Galite dalyvauti projektuose, kuriuos reikia patikrinti.",
   "app.containers.UsersEditPage.verifiedIdentityTitle": "Jūs esate patvirtintas",
   "app.containers.UsersEditPage.verifyNow": "Patikrinti dabar",
+  "app.containers.UsersShowPage.Surveys.SurveySubmissionCard.downloadYourResponses": "Atsisiųskite savo atsakymus",
   "app.containers.UsersShowPage.a11y_likesCount": "{likesCount, plural, =0 {nepatinka} one {1 patinka} other {# patinka}}",
   "app.containers.UsersShowPage.a11y_postCommentPostedIn": "Įvestis, į kurią šis komentaras buvo paskelbtas kaip atsakas į:",
   "app.containers.UsersShowPage.areas": "Sritys",
