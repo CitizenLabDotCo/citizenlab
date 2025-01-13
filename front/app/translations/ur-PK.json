@@ -1811,6 +1811,7 @@
   "app.containers.UsersEditPage.verifiedIdentitySubtitle": "آپ ان منصوبوں میں حصہ لے سکتے ہیں جن کی تصدیق کی ضرورت ہوتی ہے۔",
   "app.containers.UsersEditPage.verifiedIdentityTitle": "آپ تصدیق شدہ ہیں۔",
   "app.containers.UsersEditPage.verifyNow": "ابھی تصدیق کریں۔",
+  "app.containers.UsersShowPage.Surveys.SurveySubmissionCard.downloadYourResponses": "اپنے جوابات ڈاؤن لوڈ کریں۔",
   "app.containers.UsersShowPage.a11y_likesCount": "{likesCount, plural, =0 {کوئی پسند نہیں} one {1 پسند} other {# پسند}}",
   "app.containers.UsersShowPage.a11y_postCommentPostedIn": "ان پٹ جس کے جواب میں یہ تبصرہ پوسٹ کیا گیا تھا:",
   "app.containers.UsersShowPage.areas": "علاقے",
