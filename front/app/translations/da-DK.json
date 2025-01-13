@@ -1811,6 +1811,7 @@
   "app.containers.UsersEditPage.verifiedIdentitySubtitle": "Du kan deltage i projekter, der kun er tilgængelige for bekræftede borgere.",
   "app.containers.UsersEditPage.verifiedIdentityTitle": "Du er en bekræftet borger",
   "app.containers.UsersEditPage.verifyNow": "Verificer nu",
+  "app.containers.UsersShowPage.Surveys.SurveySubmissionCard.downloadYourResponses": "Download dine svar",
   "app.containers.UsersShowPage.a11y_likesCount": "{likesCount, plural, =0 {ingen likes} one {1 like} other {# likes}}",
   "app.containers.UsersShowPage.a11y_postCommentPostedIn": "Idé, hvoraf denne kommentar blev slået op:",
   "app.containers.UsersShowPage.areas": "Områder",
