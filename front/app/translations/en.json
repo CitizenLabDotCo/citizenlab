@@ -1837,6 +1837,7 @@
   "app.containers.UsersShowPage.projects": "Projects",
   "app.containers.UsersShowPage.proposals": "Proposals",
   "app.containers.UsersShowPage.seePost": "See submission",
+  "app.containers.UsersShowPage.surveyResponses": "Responses ({responses})",
   "app.containers.UsersShowPage.topics": "Topics",
   "app.containers.UsersShowPage.tryAgain": "An error has occurred, please try again later.",
   "app.containers.UsersShowPage.userShowPageMetaDescription": "This is the profile page of {firstName} {lastName} on the online participation platform of {orgName}. Here is an overview of all of their input.",
