@@ -88,6 +88,7 @@ class WebApi::V1::IdeasController < ApplicationController
 
   def index_survey_submissions
     ideas = policy_scope(Idea)
+      .where(author: current_user)
       .submitted_or_published
       .native_survey
 
