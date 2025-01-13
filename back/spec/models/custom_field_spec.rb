@@ -625,14 +625,14 @@ RSpec.describe CustomField do
     let!(:option1) { create(:custom_field_option, custom_field: field, key: 'by_horse') }
 
     it 'works' do
-      create(:idea, custom_field_values: { field.key => ['by_bike', 'by_horse', 'by_train', 'by_foot'] })
-      create(:idea, custom_field_values: { field.key => ['by_train', 'by_bike', 'by_foot', 'by_horse'] })
-      create(:idea, custom_field_values: {})
-      create(:idea, custom_field_values: { field.key => ['by_horse', 'by_foot', 'by_train', 'by_bike'] })
-      create(:idea, custom_field_values: { field.key => ['by_bike', 'by_foot', 'by_train', 'by_horse'] })
-      excluded_idea = create(:idea, custom_field_values: { field.key => ['by_bike', 'by_horse', 'by_foot', 'by_train'] })
+      create(:user, custom_field_values: { field.key => ['by_bike', 'by_horse', 'by_train', 'by_foot'] })
+      create(:user, custom_field_values: { field.key => ['by_train', 'by_bike', 'by_foot', 'by_horse'] })
+      create(:user, custom_field_values: {})
+      create(:user, custom_field_values: { field.key => ['by_horse', 'by_foot', 'by_train', 'by_bike'] })
+      create(:user, custom_field_values: { field.key => ['by_bike', 'by_foot', 'by_train', 'by_horse'] })
+      excluded_user = create(:user, custom_field_values: { field.key => ['by_bike', 'by_horse', 'by_foot', 'by_train'] })
       
-      expect(field.rankings_counts(Idea.where.not(id: [excluded_idea.id]))).to eq({
+      expect(field.rankings_counts(User.where.not(id: [excluded_user.id]))).to eq({
         'by_foot' => {
           2 => 2,
           3 => 1,
