@@ -18,10 +18,10 @@ const Container = styled.div`
 `;
 
 const Surveys = () => {
-  const { data } = useUserSurveySubmissions();
+  const { data: surveySubmissions } = useUserSurveySubmissions();
   return (
     <Container>
-      {data?.data.map((ideaMini) => (
+      {surveySubmissions?.data.map((ideaMini) => (
         <SurveySubmissionCard ideaMini={ideaMini} key={ideaMini.id} />
       ))}
     </Container>
