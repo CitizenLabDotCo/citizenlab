@@ -1811,6 +1811,7 @@
   "app.containers.UsersEditPage.verifiedIdentitySubtitle": "Možete učestvovati u projektima koji zahtevaju verifikaciju.",
   "app.containers.UsersEditPage.verifiedIdentityTitle": "Verifikovani ste",
   "app.containers.UsersEditPage.verifyNow": "Potvrdite sada",
+  "app.containers.UsersShowPage.Surveys.SurveySubmissionCard.downloadYourResponses": "Download your responses",
   "app.containers.UsersShowPage.a11y_likesCount": "{likesCount, plural, =0 {нема лајкова} one {1 лике} other {# свиђа}}",
   "app.containers.UsersShowPage.a11y_postCommentPostedIn": "Objava u kojoj je ovaj komentar objavljen:",
   "app.containers.UsersShowPage.areas": "Areas",
