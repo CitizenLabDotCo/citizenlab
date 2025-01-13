@@ -126,13 +126,19 @@ class CustomField < ApplicationRecord
   end
 
   def average_rankings(scope)
+    # This basically starts from all combinations of scope ID, option key (value)
+    # and position (ordinality) and then calculates the average position for each
+    # option. "#>> '{}'" is used to unescape the double quotes in the JSONB value.
+    in_sql_scope_ids = "(#{scope.pluck(:id).map { |id| "'#{id}'" }.join(',')})"
     ActiveRecord::Base.connection.execute(
       <<-SQL.squish
-        SELECT value#>>'{}' AS value_text, AVG(ordinality)
-        FROM users u, jsonb_array_elements(u.custom_field_values->'#{key}') WITH ORDINALITY
+        SELECT value #>> '{}' AS option_key, AVG(ordinality)
+        FROM #{scope.table.name} u, jsonb_array_elements(u.custom_field_values->'#{key}') WITH ORDINALITY
+        WHERE u.id IN #{in_sql_scope_ids}
+        AND u.custom_field_values->'#{key}' IS NOT NULL
         GROUP BY value
       SQL
-    ).pluck('value_text', 'avg').to_h
+    ).pluck('option_key', 'avg').to_h
   end
 
   def built_in?
