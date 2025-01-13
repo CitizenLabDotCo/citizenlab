@@ -6,6 +6,7 @@ import {
   Title,
   useBreakpoint,
 } from '@citizenlab/cl2-component-library';
+import { RouteType } from 'routes';
 
 import usePhase from 'api/phases/usePhase';
 import useProjectById from 'api/projects/useProjectById';
@@ -15,6 +16,7 @@ import useLocalize from 'hooks/useLocalize';
 
 import Container from 'components/IdeaCard/Container';
 
+import clHistory from 'utils/cl-router/history';
 import Link from 'utils/cl-router/Link';
 
 import { downloadSurveySubmission } from '../utils';
@@ -42,8 +44,16 @@ const SurveySubmissionCard = ({ ideaMini }: Props) => {
 
   const { slug } = project.data.attributes;
 
+  const projectUrl = `/projects/${slug}` satisfies RouteType;
+
+  const handleClickCard = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    e.preventDefault();
+    clHistory.push(projectUrl);
+  };
+
   return (
-    <Container>
+    <Container onClick={handleClickCard}>
       <Box
         display="flex"
         flexDirection="column"
@@ -55,7 +65,7 @@ const SurveySubmissionCard = ({ ideaMini }: Props) => {
         overflowX="hidden"
       >
         <Box mb={smallerThanTablet ? '24px' : '8px'}>
-          <Link to={`/projects/${slug}`}>
+          <Link to={projectUrl}>
             <Title
               variant="h3"
               mt="4px"
