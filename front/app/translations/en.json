@@ -1811,6 +1811,7 @@
   "app.containers.UsersEditPage.verifiedIdentitySubtitle": "You can participate in projects that require verification.",
   "app.containers.UsersEditPage.verifiedIdentityTitle": "You are verified",
   "app.containers.UsersEditPage.verifyNow": "Verify now",
+  "app.containers.UsersShowPage.Surveys.SurveySubmissionCard.downloadYourResponses": "Download your responses",
   "app.containers.UsersShowPage.a11y_likesCount": "{likesCount, plural, =0 {no likes} one {1 like} other {# likes}}",
   "app.containers.UsersShowPage.a11y_postCommentPostedIn": "Input that this comment was posted in response to:",
   "app.containers.UsersShowPage.areas": "Areas",
