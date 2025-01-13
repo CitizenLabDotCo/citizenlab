@@ -138,8 +138,6 @@ tr:
         title: Doğum yılı
       domicile:
         title: İkamet yeri
-      education:
-        title: Eğitim
     ideas:
       title:
         title: Başlık
@@ -207,14 +205,6 @@ tr:
       unspecified: Diğer
     domicile:
       outside: Başka bir yer
-    education:
-      ISCED2: Ortaokul
-      ISCED3: Lise
-      ISCED4: Orta öğretim sonrası yüksek öğretim dışı eğitim
-      ISCED5: Ön lisans
-      ISCED6: Lisans veya eşdeğeri
-      ISCED7: Yüksek lisans veya eşdeğeri
-      ISCED8: Doktora veya eşdeğeri
   reset_password_mailer:
     send_reset_password:
       preheader: '%{organizationName}için şifrenizi sıfırlayın'
