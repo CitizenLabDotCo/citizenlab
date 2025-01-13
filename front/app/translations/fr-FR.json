@@ -1811,6 +1811,7 @@
   "app.containers.UsersEditPage.verifiedIdentitySubtitle": "Vous pouvez participer à des projets qui ne sont accessibles qu'aux citoyens vérifiés.",
   "app.containers.UsersEditPage.verifiedIdentityTitle": "Vous êtes un citoyen vérifié",
   "app.containers.UsersEditPage.verifyNow": "Vérifier maintenant",
+  "app.containers.UsersShowPage.Surveys.SurveySubmissionCard.downloadYourResponses": "Téléchargez vos réponses",
   "app.containers.UsersShowPage.a11y_likesCount": "{likesCount, plural, =0 {pas de j'aime} one {1 j'aime} other {# j'aime}}",
   "app.containers.UsersShowPage.a11y_postCommentPostedIn": "Message dans lequel ce commentaire a été publié :",
   "app.containers.UsersShowPage.areas": "Zones géographiques",
