@@ -1327,6 +1327,18 @@
           "allowed": { "type": "boolean", "default": false },
           "enabled": { "type": "boolean", "default": false }
         }
+      },
+
+      "remove_go_vocal_branding": {
+        "type": "object",
+        "title": "Remove Go Vocal branding",
+        "description": "Currently limited to removing 'powered by Go Vocal' from email footers.",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": false },
+          "enabled": { "type": "boolean", "default": false }
+        }
       }
     },
   "dependencies": {
