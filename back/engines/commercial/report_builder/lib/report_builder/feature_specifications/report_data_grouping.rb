@@ -27,6 +27,10 @@ module ReportBuilder
         false
       end
 
+      def self.pricing
+        true
+      end
+
       def self.dependencies
         %w[report_builder]
       end

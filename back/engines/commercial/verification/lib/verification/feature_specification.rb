@@ -18,6 +18,10 @@ module Verification
       'Use a pre-defined list to verify user identities during registration.'
     end
 
+    def self.pricing
+      true
+    end
+
     add_setting 'verification_methods', required: true, schema: {
       title: 'Verification Methods',
       private: true,
