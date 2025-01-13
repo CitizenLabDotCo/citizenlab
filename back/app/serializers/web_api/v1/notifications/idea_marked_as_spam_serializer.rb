@@ -15,10 +15,10 @@ class WebApi::V1::Notifications::IdeaMarkedAsSpamSerializer < WebApi::V1::Notifi
   end
 
   attribute :post_title_multiloc do |object|
-    object.post&.title_multiloc
+    object.idea&.title_multiloc
   end
 
   attribute :post_slug do |object|
-    object.post&.slug
+    object.idea&.slug
   end
 end

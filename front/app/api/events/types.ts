@@ -72,6 +72,8 @@ export interface IEvents {
 }
 
 export interface IEventProperties {
+  start_at?: string;
+  end_at?: string;
   project_id?: string;
   title_multiloc?: Multiloc;
   description_multiloc?: Multiloc;
@@ -80,8 +82,6 @@ export interface IEventProperties {
   address_1?: string | null;
   location_point_geojson?: GeoJSON.Point | null;
   online_link?: string;
-  start_at?: string;
-  end_at?: string;
   attend_button_multiloc?: Multiloc;
   using_url?: RouteType;
 }

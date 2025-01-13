@@ -229,23 +229,58 @@ export function getLocalisedDateString(dateString: string | null | undefined) {
   return dateString && moment(dateString, 'YYYY-MM-DD').format('LL');
 }
 
-export function roundToNearestMultipleOfFive(date: Date): Date {
-  const minutes = date.getMinutes();
-  const roundedMinutes = Math.ceil(minutes / 5) * 5;
-  return new Date(
-    date.getFullYear(),
-    date.getMonth(),
-    date.getDate(),
-    date.getHours(),
-    roundedMinutes
-  );
-}
+export const userTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
 
-export function calculateRoundedEndDate(
-  startDate: Date,
-  durationInMinutes = 30
-): Date {
-  const endDate = new Date(startDate);
-  endDate.setMinutes(startDate.getMinutes() + durationInMinutes);
-  return endDate;
-}
+// Why do we need this function?
+// The backend sends dates in the format "YYYY-MM-DD" without a time component.
+// When we parse this date in the frontend, it is interpreted as
+// midnight in UTC.
+// This means that if we are west of UTC, e.g. in Brazil,
+// The date will be interpreted as 21:00 the previous day.
+// This function makes sure that the date is always interpreted as midnight in the user's timezone.
+const backendDatestringRegex = /^\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01])$/;
+
+export const parseBackendDateString = (_dateString?: string) => {
+  if (!_dateString) return undefined;
+
+  let dateString = _dateString;
+
+  // Sometimes, e.g. in the craftjson layouts,
+  // we still have old reports using datestrings like
+  // 2023-01-13T14:54:51.5151
+  // This was an implementation bug- we should have used
+  // the yyyy-MM-DD from the start.
+  // But for now, we need to handle this case.
+  // TODO: fix this properly in a migration.
+  if (dateString.length > 10) {
+    dateString = dateString.slice(0, 10);
+  }
+
+  if (!dateString.match(backendDatestringRegex)) {
+    throw new Error('Invalid date string');
+  }
+
+  const day = dateString.split('-').map(Number)[2];
+  const date = new Date(dateString);
+
+  const parsedDay = date.getDate();
+
+  if (day === parsedDay) {
+    date.setHours(0, 0, 0, 0);
+  } else {
+    date.setHours(24, 0, 0, 0);
+  }
+
+  return date;
+};
+
+export const toBackendDateString = (date?: Date) => {
+  if (!date) return undefined;
+  const monthNumber = date.getMonth() + 1;
+  const dayNumber = date.getDate();
+
+  const month = monthNumber < 10 ? `0${monthNumber}` : monthNumber;
+  const day = dayNumber < 10 ? `0${dayNumber}` : dayNumber;
+
+  return `${date.getFullYear()}-${month}-${day}`;
+};

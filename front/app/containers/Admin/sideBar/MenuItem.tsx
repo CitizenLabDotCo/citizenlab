@@ -137,7 +137,7 @@ const MenuItem = ({ navItem }: Props) => {
           <FormattedMessage {...messages.proposalsTooltip} />
         </Box>
       }
-      placement="right"
+      placement="bottom-end"
       disabled={!isItemDisabled}
       theme="dark"
     >

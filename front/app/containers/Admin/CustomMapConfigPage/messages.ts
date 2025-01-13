@@ -67,7 +67,7 @@ export default defineMessages({
   supportArticleUrl: {
     id: 'app.containers.AdminPage.ProjectEdit.MapTab.supportArticleUrl2',
     defaultMessage:
-      'https://support.citizenlab.co/en/articles/7022129-collecting-input-and-feedback-list-and-map-view',
+      'https://support.govocal.com/en/articles/7022129-collecting-input-and-feedback-list-and-map-view',
   },
   layersTooltip: {
     id: 'app.containers.AdminPage.ProjectEdit.MapTab.layersTooltip',

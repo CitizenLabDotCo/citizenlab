@@ -8,6 +8,8 @@ import styled from 'styled-components';
 
 import useLocale from 'hooks/useLocale';
 
+import { userTimezone } from 'utils/dateUtils';
+
 import { getLocale } from '../../_shared/locales';
 import { Props } from '../typings';
 
@@ -144,7 +146,6 @@ const Calendar = ({
   defaultMonth,
   onUpdateRange,
 }: Props) => {
-  const userTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
   const startMonth = getStartMonth({
     startMonth: _startMonth,
     selectedRange,

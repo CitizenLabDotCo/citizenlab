@@ -58,7 +58,7 @@ describe SmartGroups::Rules::ParticipatedInProject do
     let_it_be(:idea1) { create(:idea, project: project1, author: user1) }
     let_it_be(:propsal1) { create(:proposal, project: project1, author: user4) }
     let_it_be(:reaction) { create(:reaction, reactable: idea1, user: user2) }
-    let_it_be(:comment) { create(:comment, post: idea1, author: user3) }
+    let_it_be(:comment) { create(:comment, idea: idea1, author: user3) }
     let_it_be(:idea2) { create(:idea, project: project2, author: user3) }
 
     it "correctly filters on 'in' predicate" do
@@ -112,7 +112,7 @@ describe SmartGroups::Rules::ParticipatedInProject do
     it "correctly filters on 'reacted_comment_in' predicate" do
       rule = described_class.new('reacted_comment_in', [project1.id])
       expect { @users = rule.filter(User) }.not_to exceed_query_limit(1)
-      expect(@users).to match_array []
+      expect(@users).to be_empty
     end
 
     it "correctly filters on 'not_reacted_comment_in' predicate" do
@@ -124,7 +124,7 @@ describe SmartGroups::Rules::ParticipatedInProject do
     it "correctly filters on 'voted_in' predicate" do
       rule = described_class.new('voted_in', [project1.id])
       expect { @users = rule.filter(User) }.not_to exceed_query_limit(1)
-      expect(@users).to match_array []
+      expect(@users).to be_empty
     end
 
     it "correctly filters on 'not_voted_in' predicate" do
@@ -136,7 +136,7 @@ describe SmartGroups::Rules::ParticipatedInProject do
     it "correctly filters on 'volunteered_in' predicate" do
       rule = described_class.new('volunteered_in', [project1.id])
       expect { @users = rule.filter(User) }.not_to exceed_query_limit(1)
-      expect(@users).to match_array []
+      expect(@users).to be_empty
     end
 
     it "correctly filters on 'not_volunteered_in' predicate" do

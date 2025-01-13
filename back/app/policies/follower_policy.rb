@@ -33,8 +33,6 @@ class FollowerPolicy < ApplicationPolicy
         ProjectPolicy
       when 'ProjectFolders::Folder'
         ProjectFolders::FolderPolicy
-      when 'Initiative'
-        InitiativePolicy
       when 'Idea'
         IdeaPolicy
       when 'Topic'

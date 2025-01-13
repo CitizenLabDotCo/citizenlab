@@ -162,7 +162,7 @@ jobs:
   slack-invalid-data-success:
     resource_class: small
     docker:
-      - image: cimg/base:2021.03
+      - image: cimg/base:2025.01
     steps:
       - slack/notify:
           event: pass
@@ -173,7 +173,7 @@ jobs:
     resource_class: small
     executor:
       name: cl2-back
-      image-tag: $CIRCLE_SHA1
+      image-tag: amd64-$CIRCLE_SHA1
     working_directory: /cl2_back
     environment:
       RAILS_ENV: development
@@ -192,31 +192,48 @@ jobs:
     resource_class: small
     executor:
       name: cl2-back
-      image-tag: $CIRCLE_SHA1
+      image-tag: amd64-$CIRCLE_SHA1
     working_directory: /cl2_back
     steps:
       - run: bundle exec license_finder
 
-  back-build-docker-image:
+  back-build-docker-image-amd64:
     working_directory: ~/
     docker:
-      - image: cimg/base:2021.03
+      - image: cimg/base:2025.01
     steps:
       - echo_pipeline_parameters
       - shallow-clone
       - setup_remote_docker:
           docker_layer_caching: true
       - run: |
-          docker build -t citizenlabdotco/back-ee:$CIRCLE_SHA1 --build-arg BUNDLE_JOBS=4 -f citizenlab/back/Dockerfile citizenlab/.
+          docker build -t citizenlabdotco/back-ee:amd64-$CIRCLE_SHA1 --build-arg BUNDLE_JOBS=4 -f citizenlab/back/Dockerfile citizenlab/.
       - run: |
           docker login -u $DOCKER_USER -p $DOCKER_PASS
-          docker push citizenlabdotco/back-ee:$CIRCLE_SHA1
+          docker push citizenlabdotco/back-ee:amd64-$CIRCLE_SHA1
+
+  # We're doing a separate, parallel job for ARM64 builds as opposed to using docker buildx to do a single multi-arch build job, because the performance of the emulated ARM64 build on x86 is very poor, delaying the CI pipeline.
+  back-build-docker-image-arm64:
+    working_directory: ~/
+    docker:
+      - image: cimg/base:2025.01
+    resource_class: arm.medium
+    steps:
+      - echo_pipeline_parameters
+      - shallow-clone
+      - setup_remote_docker:
+          docker_layer_caching: false
+      - run: |
+          docker build -t citizenlabdotco/back-ee:arm64-$CIRCLE_SHA1 --build-arg BUNDLE_JOBS=4 -f citizenlab/back/Dockerfile citizenlab/.
+      - run: |
+          docker login -u $DOCKER_USER -p $DOCKER_PASS
+          docker push citizenlabdotco/back-ee:arm64-$CIRCLE_SHA1
 
   back-lint:
     resource_class: medium
     executor:
       name: cl2-back
-      image-tag: $CIRCLE_SHA1
+      image-tag: amd64-$CIRCLE_SHA1
     working_directory: /cl2_back
     environment:
       RAILS_ENV: development
@@ -227,7 +244,7 @@ jobs:
     resource_class: small
     executor:
       name: cl2-back
-      image-tag: $CIRCLE_SHA1
+      image-tag: amd64-$CIRCLE_SHA1
     working_directory: /cl2_back
     parallelism: 8
     environment:
@@ -246,7 +263,7 @@ jobs:
     resource_class: small
     executor:
       name: cl2-back
-      image-tag: $CIRCLE_SHA1
+      image-tag: amd64-$CIRCLE_SHA1
     working_directory: /cl2_back
     environment:
       RAILS_ENV: test
@@ -268,7 +285,7 @@ jobs:
     resource_class: small
     executor:
       name: cl2-back
-      image-tag: $CIRCLE_SHA1
+      image-tag: amd64-$CIRCLE_SHA1
     working_directory: /cl2_back
     steps:
       - attach_workspace:
@@ -279,7 +296,7 @@ jobs:
     resource_class: small
     executor:
       name: cl2-back
-      image-tag: $CIRCLE_SHA1
+      image-tag: amd64-$CIRCLE_SHA1
     working_directory: /cl2_back
     environment:
       RAILS_ENV: test
@@ -297,7 +314,7 @@ jobs:
   back-trigger-deploy:
     resource_class: small
     docker:
-      - image: cimg/base:2021.03
+      - image: cimg/base:2025.01
     steps:
       - echo_pipeline_parameters
       - run: |
@@ -311,7 +328,7 @@ jobs:
   back-push-deployment-docker-image:
     resource_class: small
     docker:
-      - image: cimg/base:2021.03
+      - image: cimg/base:2025.01
     parameters:
       image_tag:
         type: string
@@ -320,10 +337,15 @@ jobs:
       - echo_pipeline_parameters
       - setup_remote_docker
       - run: docker login -u $DOCKER_USER -p $DOCKER_PASS
-      - run: docker pull citizenlabdotco/back-ee:<< parameters.image_tag >>
-      - run: docker tag citizenlabdotco/back-ee:<< parameters.image_tag >> citizenlabdotco/back-ee:$CIRCLE_BRANCH
-      - deploy:
-          command: docker push citizenlabdotco/back-ee:$CIRCLE_BRANCH
+      - run: |
+          docker manifest create citizenlabdotco/back-ee:$CIRCLE_BRANCH \
+            citizenlabdotco/back-ee:amd64-<< parameters.image_tag >> \
+            citizenlabdotco/back-ee:arm64-<< parameters.image_tag >>
+          docker manifest annotate citizenlabdotco/back-ee:$CIRCLE_BRANCH \
+            citizenlabdotco/back-ee:amd64-<< parameters.image_tag >> --os linux --arch amd64
+          docker manifest annotate citizenlabdotco/back-ee:$CIRCLE_BRANCH \
+            citizenlabdotco/back-ee:arm64-<< parameters.image_tag >> --os linux --arch arm64
+          docker manifest push citizenlabdotco/back-ee:$CIRCLE_BRANCH
 
   back-deploy-to-swarm:
     resource_class: small
@@ -355,7 +377,7 @@ jobs:
   back-generate-tenant-templates:
     resource_class: small
     docker:
-      - image: cimg/base:2021.03
+      - image: cimg/base:2025.01
     parameters:
       ssh_host:
         type: string
@@ -371,7 +393,7 @@ jobs:
   back-deploy-developer-documentation:
     resource_class: small
     docker:
-      - image: cimg/base:2021.03
+      - image: cimg/base:2025.01
     steps:
       - echo_pipeline_parameters
       - run: |
@@ -385,7 +407,7 @@ jobs:
   check-for-inconsistent-data:
     resource_class: small
     docker:
-      - image: cimg/base:2021.03
+      - image: cimg/base:2025.01
     parameters:
       ssh_host:
         type: string
@@ -558,7 +580,7 @@ jobs:
   front-trigger-deploy:
     resource_class: small
     docker:
-      - image: cimg/base:2021.03
+      - image: cimg/base:2025.01
     steps:
       - echo_pipeline_parameters
       - when:
@@ -846,7 +868,16 @@ workflows:
         - not:
             equal: ["production", << pipeline.git.branch >>]
     jobs:
-      - back-build-docker-image:
+      - back-build-docker-image-amd64:
+          filters:
+            branches:
+              ignore:
+                - crowdin_master
+                - /l10n_.*/
+          context:
+            - docker-hub-access
+            - citizenlab-ee-environment
+      - back-build-docker-image-arm64:
           filters:
             branches:
               ignore:
@@ -860,13 +891,13 @@ workflows:
             - docker-hub-access
             - citizenlab-ee-environment
           requires:
-            - back-build-docker-image
+            - back-build-docker-image-amd64
       - back-bundle-audit:
           context:
             - docker-hub-access
             - citizenlab-ee-environment
           requires:
-            - back-build-docker-image
+            - back-build-docker-image-amd64
           filters:
             branches:
               ignore:
@@ -877,7 +908,7 @@ workflows:
             - docker-hub-access
             - citizenlab-ee-environment
           requires:
-            - back-build-docker-image
+            - back-build-docker-image-amd64
           filters:
             branches:
               ignore:
@@ -888,13 +919,13 @@ workflows:
             - docker-hub-access
             - citizenlab-ee-environment
           requires:
-            - back-build-docker-image
+            - back-build-docker-image-amd64
       - back-docs-not-blocking:
           context:
             - docker-hub-access
             - citizenlab-ee-environment
           requires:
-            - back-build-docker-image
+            - back-build-docker-image-amd64
           filters:
             branches:
               only:
@@ -939,7 +970,14 @@ workflows:
   back-deploy-production:
     when: << pipeline.parameters.back >>
     jobs:
-      - back-build-docker-image:
+      - back-build-docker-image-amd64:
+          filters:
+            branches:
+              only: production
+          context:
+            - docker-hub-access
+            - citizenlab-ee-environment
+      - back-build-docker-image-arm64:
           filters:
             branches:
               only: production
@@ -954,7 +992,8 @@ workflows:
                 - production
           image_tag: $CIRCLE_SHA1
           requires:
-            - back-build-docker-image
+            - back-build-docker-image-amd64
+            - back-build-docker-image-arm64
       - back-deploy-developer-documentation:
           context: circleci-api-token
           filters:
@@ -1207,7 +1246,7 @@ workflows:
   manual-templates:
     when: << pipeline.parameters.templates >>
     jobs:
-      - back-build-docker-image:
+      - back-build-docker-image-amd64:
           context:
             - docker-hub-access
             - citizenlab-ee-environment
@@ -1283,7 +1322,7 @@ workflows:
             - slack-dev-notifications-tenant-templates
           <<: *slack-fail-post-step-templates
           requires:
-            - back-build-docker-image
+            - back-build-docker-image-amd64
             - "Europe (Frankfurt)"
             - "Europe (Paris)"
             - "Europe (Stockholm)"
@@ -1318,7 +1357,7 @@ workflows:
               only:
                 - production
     jobs:
-      - back-build-docker-image:
+      - back-build-docker-image-amd64:
           context:
             - docker-hub-access
             - citizenlab-ee-environment
@@ -1394,7 +1433,7 @@ workflows:
             - slack-dev-notifications-tenant-templates
           <<: *slack-fail-post-step-templates
           requires:
-            - back-build-docker-image
+            - back-build-docker-image-amd64
             - "Europe (Frankfurt)"
             - "Europe (Paris)"
             - "Europe (Stockholm)"
