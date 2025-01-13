@@ -30,7 +30,7 @@ require 'rails_helper'
 # the state of the request. Especially large strings are stored in fixtures.
 describe OmniAuth::Strategies::AzureActiveDirectory do
   let(:app) { ->(_) { [200, {}, ['Hello world.']] } }
-  let(:x5c) { Rails.root.join('engines/commercial/id_azure_active_directory/spec/fixtures/x5c.txt').read }
+  let(:x5c) { IdAzureActiveDirectory::Engine.root.join('spec/fixtures/x5c.txt').read }
 
   # These values were used to create the "successful" id_token JWT.
   let(:client_id) { 'the client id' }
