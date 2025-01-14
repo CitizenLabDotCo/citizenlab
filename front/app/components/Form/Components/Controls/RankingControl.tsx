@@ -161,11 +161,11 @@ const RankingControl = ({
                         >
                           <Box display="flex">
                             <ScreenReaderOnly>
-                              <Label htmlFor={`select-${option.value}`}>
+                              <Label>
                                 {`${option.label}. ${
-                                  getRankOfOption(option) === ''
-                                    ? formatMessage(messages.noRankSelected)
-                                    : formatMessage(messages.currentRank)
+                                  getRankOfOption(option)
+                                    ? formatMessage(messages.currentRank)
+                                    : formatMessage(messages.noRankSelected)
                                 }`}
                               </Label>
                             </ScreenReaderOnly>
@@ -193,7 +193,7 @@ const RankingControl = ({
                               color="tenantPrimary"
                               p="0px"
                               m="0px"
-                              aria-hidden={true}
+                              aria-hidden
                             >
                               {option.label}
                             </Text>
