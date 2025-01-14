@@ -14,7 +14,7 @@ type Props = {
   dropdownLayoutName: string;
 };
 
-const SelectSettings = ({
+const OptionsSettings = ({
   inputType,
   randomizeName,
   dropdownLayoutName,
@@ -61,4 +61,4 @@ const SelectSettings = ({
   );
 };
 
-export default SelectSettings;
+export default OptionsSettings;
