@@ -223,9 +223,10 @@ describe ActivitiesService do
 
     describe '#create_phase_ended_activities' do
       let(:now) { Time.parse '2022-07-01 10:00:00 +0000' }
+      let(:date_now) { Date.parse '2022-07-01' }
 
       it 'logs phase ended activity when a phase has ended' do
-        phase = create(:budgeting_phase, start_at: now - 10.days, end_at: now - 1.hour)
+        phase = create(:budgeting_phase, start_at: now - 10.days, end_at: date_now - 1.day)
         expect { service.create_periodic_activities(now: now) }
           .to have_enqueued_job(LogActivityJob)
           .with(phase, 'ended', nil, now, project_id: phase.project_id)
