@@ -46,7 +46,7 @@ interface Props {
   inputType: ICustomFieldInputType;
 }
 
-const ConfigSelectWithLocaleSwitcher = ({
+const ConfigOptionsWithLocaleSwitcher = ({
   onSelectedLocaleChange,
   name,
   locales,
@@ -381,4 +381,4 @@ const ConfigSelectWithLocaleSwitcher = ({
   );
 };
 
-export default ConfigSelectWithLocaleSwitcher;
+export default ConfigOptionsWithLocaleSwitcher;
