@@ -2,18 +2,20 @@ import React from 'react';
 
 import { RouteType } from 'routes';
 
-import Button from 'components/UI/Button';
-
 import { render, screen } from 'utils/testUtils/rtl';
 
-describe('Button', () => {
+import ButtonWithLink from '.';
+
+describe('ButtonWithLink', () => {
   it('should render correctly as button', () => {
-    render(<Button>Test</Button>);
+    render(<ButtonWithLink>Test</ButtonWithLink>);
     expect(screen.getByText('Test')).toBeInTheDocument();
     expect(screen.getByRole('button')).toHaveTextContent('Test');
   });
   it('should render correctly as external link', () => {
-    render(<Button linkTo="https://www.google.com">Test</Button>);
+    render(
+      <ButtonWithLink linkTo="https://www.google.com">Test</ButtonWithLink>
+    );
     expect(screen.getByText('Test')).toBeInTheDocument();
     expect(screen.getByRole('link')).toHaveTextContent('Test');
     expect(screen.getByRole('link')).toHaveAttribute(
@@ -22,7 +24,7 @@ describe('Button', () => {
     );
   });
   it('should render correctly as internal link', () => {
-    render(<Button linkTo={'/test' as RouteType}>Test</Button>);
+    render(<ButtonWithLink linkTo={'/test' as RouteType}>Test</ButtonWithLink>);
     expect(screen.getByText('Test')).toBeInTheDocument();
     expect(screen.getByRole('link')).toHaveTextContent('Test');
     expect(screen.getByRole('link')).toHaveAttribute('href', '/en/test');
@@ -30,9 +32,9 @@ describe('Button', () => {
 
   it('should not render a link when disabled', () => {
     render(
-      <Button linkTo={'/test' as RouteType} disabled>
+      <ButtonWithLink linkTo={'/test' as RouteType} disabled>
         Test
-      </Button>
+      </ButtonWithLink>
     );
     expect(screen.getByText('Test')).toBeInTheDocument();
     expect(screen.queryByRole('link')).not.toBeInTheDocument();

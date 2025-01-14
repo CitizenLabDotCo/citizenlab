@@ -16,7 +16,7 @@ import useAnalysisUserById from 'api/analysis_users/useAnalysisUserById';
 import usePhase from 'api/phases/usePhase';
 
 import Avatar from 'components/Avatar';
-import Button from 'components/UI/Button';
+import Button from 'components/UI/ButtonWithLink';
 
 import { trackEventByName } from 'utils/analytics';
 import { useIntl } from 'utils/cl-intl';

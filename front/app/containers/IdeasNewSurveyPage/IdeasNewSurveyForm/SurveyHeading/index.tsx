@@ -17,7 +17,7 @@ import ideasKeys from 'api/ideas/keys';
 import useAuthUser from 'api/me/useAuthUser';
 import useProjectBySlug from 'api/projects/useProjectBySlug';
 
-import Button from 'components/UI/Button';
+import Button from 'components/UI/ButtonWithLink';
 import Modal from 'components/UI/Modal';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';

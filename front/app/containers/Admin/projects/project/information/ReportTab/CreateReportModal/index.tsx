@@ -16,7 +16,7 @@ import useAddReport from 'api/reports/useAddReport';
 
 import otherModalMessages from 'containers/Admin/reporting/components/ReportBuilderPage/messages';
 
-import Button from 'components/UI/Button';
+import Button from 'components/UI/ButtonWithLink';
 import Error from 'components/UI/Error';
 import Modal from 'components/UI/Modal';
 import PhaseFilter from 'components/UI/PhaseFilter';

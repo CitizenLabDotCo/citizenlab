@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { Box, Icon, fontSizes } from '@citizenlab/cl2-component-library';
 import { WrappedComponentProps } from 'react-intl';
 
-import Button from 'components/UI/Button';
+import Button from 'components/UI/ButtonWithLink';
 
 import { injectIntl } from 'utils/cl-intl';
 

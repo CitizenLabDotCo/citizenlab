@@ -6,7 +6,7 @@ import moment, { Moment } from 'moment';
 import styled from 'styled-components';
 
 import DateRangePicker from 'components/admin/DatePickers/DateRangePicker';
-import Button from 'components/UI/Button';
+import Button from 'components/UI/ButtonWithLink';
 
 import { FormattedMessage } from 'utils/cl-intl';
 
