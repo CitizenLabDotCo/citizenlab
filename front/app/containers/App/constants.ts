@@ -226,3 +226,74 @@ export const appLocalesMomentPairs = {
   'tr-TR': 'tr',
   'ur-PK': 'ur',
 };
+
+export async function localeGetter(localeName: string) {
+  switch (localeName) {
+    case 'ar-ma':
+      return await import('moment/dist/locale/ar-ma');
+    case 'ar-sa':
+      return await import('moment/dist/locale/ar-sa');
+    case 'ca':
+      return await import('moment/dist/locale/ca');
+    case 'cy':
+      return await import('moment/dist/locale/cy');
+    case 'da':
+      return await import('moment/dist/locale/da');
+    case 'de':
+      return await import('moment/dist/locale/de');
+    case 'el':
+      return await import('moment/dist/locale/el');
+    case 'en-ca':
+      return await import('moment/dist/locale/en-ca');
+    case 'en-gb':
+      return await import('moment/dist/locale/en-gb');
+    case 'en-ie':
+      return await import('moment/dist/locale/en-ie');
+    case 'es':
+      return await import('moment/dist/locale/es');
+    case 'fi':
+      return await import('moment/dist/locale/fi');
+    case 'fr':
+      return await import('moment/dist/locale/fr');
+    case 'hr':
+      return await import('moment/dist/locale/hr');
+    case 'hu':
+      return await import('moment/dist/locale/hu');
+    case 'it':
+      return await import('moment/dist/locale/it');
+    case 'lb':
+      return await import('moment/dist/locale/lb');
+    case 'lt':
+      return await import('moment/dist/locale/lt');
+    case 'lv':
+      return await import('moment/dist/locale/lv');
+    case 'mi':
+      return await import('moment/dist/locale/mi');
+    case 'nb':
+      return await import('moment/dist/locale/nb');
+    case 'nl-be':
+      return await import('moment/dist/locale/nl-be');
+    case 'nl':
+      return await import('moment/dist/locale/nl');
+    case 'pa-in':
+      return await import('moment/dist/locale/pa-in');
+    case 'pl':
+      return await import('moment/dist/locale/pl');
+    case 'pt-br':
+      return await import('moment/dist/locale/pt-br');
+    case 'ro':
+      return await import('moment/dist/locale/ro');
+    case 'sr':
+      // You mapped both 'sr-Latn' and 'sr-SP' to 'sr'
+      return await import('moment/dist/locale/sr');
+    case 'sv':
+      return await import('moment/dist/locale/sv');
+    case 'tr':
+      return await import('moment/dist/locale/tr');
+    case 'ur':
+      return await import('moment/dist/locale/ur');
+    default:
+      console.warn(`No matching locale import for: ${localeName}`);
+      return null; // Explicit return for unmatched cases
+  }
+}
