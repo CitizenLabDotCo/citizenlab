@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState } from 'react';
 
 import { Box } from '@citizenlab/cl2-component-library';
 import { debounce } from 'lodash-es';
@@ -11,6 +11,7 @@ import useAdminPublications from 'api/admin_publications/useAdminPublications';
 import selectStyles from 'components/UI/MultipleSelect/styles';
 
 import OptionLabel from './OptionLabel';
+import useDebounce from './useDebounce';
 import { LoadMore, getOptionId, getOptions } from './utils';
 
 interface Props {
@@ -23,7 +24,7 @@ const AdminPublicationSearchInput = ({
   adminPublicationIds,
   onChange,
 }: Props) => {
-  const [visibleSearchTerm, setVisibleSearchTerm] = useState('');
+  // const [visibleSearchTerm, setVisibleSearchTerm] = useState('');
   const [search, setSearch] = useState('');
   const theme = useTheme();
 
@@ -39,15 +40,14 @@ const AdminPublicationSearchInput = ({
     pageSize: 6,
   });
 
-  const inputChangeDebounced = useMemo(() => {
+  const debouncedChangeSearch = useDebounce(() => {
     return debounce((searchTerm: string) => {
       setSearch(searchTerm);
     }, 200);
-  }, []);
+  });
 
   const handleInputChange = (searchTerm: string) => {
-    setVisibleSearchTerm(searchTerm);
-    inputChangeDebounced(searchTerm);
+    setSearch(searchTerm);
   };
 
   const options = getOptions(
@@ -64,21 +64,19 @@ const AdminPublicationSearchInput = ({
         backspaceRemovesValue={false}
         menuShouldScrollIntoView={true}
         value={null}
-        inputValue={visibleSearchTerm}
+        inputValue={search}
         placeholder={''}
         isDisabled={!adminPublicationIds || isFetching}
         options={options}
         getOptionValue={getOptionId}
-        getOptionLabel={(option) =>
-          (
-            <OptionLabel
-              option={option}
-              hasNextPage={hasNextPage}
-              isLoading={isFetchingNextPage}
-              fetchNextPage={fetchNextPage}
-            />
-          ) as any
-        }
+        getOptionLabel={(option) => (
+          <OptionLabel
+            option={option}
+            hasNextPage={hasNextPage}
+            isLoading={isFetchingNextPage}
+            fetchNextPage={fetchNextPage}
+          />
+        )}
         menuPlacement="auto"
         styles={selectStyles(theme)}
         filterOption={() => true}
