@@ -178,7 +178,7 @@ class WebApi::V1::ProjectsController < ApplicationController
 
   def copy
     source_project = Project.find(params[:id])
-    dest_folder = source_project.folder if UserRoleService.new.can_moderate?(source_project.folder, current_user)
+    dest_folder = source_project.folder if user_role_service.can_moderate?(source_project.folder, current_user)
 
     # The authorization of this action is more complex than usual. It works in two steps:
     # - Check if the user can copy the source project.
@@ -191,6 +191,7 @@ class WebApi::V1::ProjectsController < ApplicationController
     # approach allows us to return early in some cases without performing the actual copy, which can be expensive.
     # The dummy project must be `save`d before the authorization check to ensure the admin publication is created.
     # A final authorization check is performed afterward on the actual copied project.
+    # We also need to add a new project moderator role to the assignee if the assignee is a moderator of the source.
     Project.transaction do
       source_project.dup.tap do |p|
         p.assign_attributes(slug: nil, admin_publication_attributes: {
@@ -198,7 +199,17 @@ class WebApi::V1::ProjectsController < ApplicationController
           parent_id: dest_folder&.admin_publication&.id
         })
 
+        assignee = User.find_by(id: source_project&.default_assignee_id)
+        reassign_moderator = assignee && user_role_service.can_moderate?(source_project, assignee) && !assignee.admin?
+        p.default_assignee_id = nil if reassign_moderator
+
         p.save!
+
+        if reassign_moderator
+          assignee.roles << { type: 'project_moderator', project_id: p.id }
+          assignee.save!
+        end
+
         authorize(p, :create?)
       end
 
@@ -370,6 +381,10 @@ class WebApi::V1::ProjectsController < ApplicationController
       }),
       include: %i[project_images current_phase]
     )
+  end
+
+  def user_role_service
+    @user_role_service ||= UserRoleService.new
   end
 end
 
