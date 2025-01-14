@@ -326,9 +326,12 @@ export async function localeGetter(localeName: string) {
       // @ts-ignore
       return await import('moment/dist/locale/ro');
     case 'sr':
-      // You mapped both 'sr-Latn' and 'sr-SP' to 'sr'
+    case 'sr-Latn':
       // @ts-ignore
       return await import('moment/dist/locale/sr');
+    case 'sr-SP':
+      // @ts-ignore
+      return await import('moment/dist/locale/sr-cyrl');
     case 'sv':
       // @ts-ignore
       return await import('moment/dist/locale/sv');
