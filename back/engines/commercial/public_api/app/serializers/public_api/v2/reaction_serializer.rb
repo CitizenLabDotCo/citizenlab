@@ -17,7 +17,7 @@ class PublicApi::V2::ReactionSerializer < PublicApi::V2::BaseSerializer
     when 'Idea'
       object.reactable.id
     when 'Comment'
-      object.reactable.idea_id
+      object.reactable&.idea_id
     end
   end
 
@@ -26,7 +26,7 @@ class PublicApi::V2::ReactionSerializer < PublicApi::V2::BaseSerializer
     when 'Idea'
       object.reactable.project_id
     when 'Comment'
-      object.reactable.idea.project_id
+      object.reactable&.idea&.project_id
     end
   end
 end

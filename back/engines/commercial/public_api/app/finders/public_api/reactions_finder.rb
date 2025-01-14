@@ -12,6 +12,7 @@ module PublicApi
 
     def execute
       @scope
+        .where(reactable_type: REACTABLE_TYPES) # TODO: Can remove this when all initiative data has been removed from DB
         .then { |scope| filter_by_user_id(scope) }
         .then { |scope| filter_by_reactable_type(scope) }
     end

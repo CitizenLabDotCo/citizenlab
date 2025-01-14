@@ -759,6 +759,7 @@
   "app.components.formBuilder.shortAnswer": "Īsa atbilde",
   "app.components.formBuilder.showResponseToUsersToggleLabel": "Rādīt atbildi lietotājiem",
   "app.components.formBuilder.singleChoice": "Viena izvēle",
+  "app.components.formBuilder.staleDataErrorMessage2": "Ir radusies problēma. Šī ievades veidlapa nesen ir saglabāta citur. Tas var būt tāpēc, ka jūs vai cits lietotājs to ir atvēris rediģēšanai citā pārlūkprogrammas logā. Lūdzu, atsvaidziniet lapu, lai iegūtu jaunāko veidlapu, un pēc tam atkal veiciet izmaiņas.",
   "app.components.formBuilder.supportArticleLinkText": "šo lapu",
   "app.components.formBuilder.tags": "Tags",
   "app.components.formBuilder.title": "Nosaukums",
