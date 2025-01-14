@@ -2071,6 +2071,7 @@
   "app.utils.IdeasNewPage.proposalFormTitle": "Add new proposal",
   "app.utils.IdeasNewPage.questionFormTitle": "Add new question",
   "app.utils.IdeasNewPage.surveyTitle": "Survey",
+  "app.utils.Promessagesjects.youCanRetrace": "You can retrace your submission by showing this unique identifier:",
   "app.utils.actionDescriptors.attendingEventMissingRequirements": "You must complete your profile to attend this event.",
   "app.utils.actionDescriptors.attendingEventNotInGroup": "You do not meet the requirements to attend this event.",
   "app.utils.actionDescriptors.attendingEventNotPermitted": "You are not permitted to attend this event.",
