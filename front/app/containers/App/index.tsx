@@ -180,7 +180,7 @@ const App = ({ children }: Props) => {
       }
       setIsAppInitialized(true);
     }
-  }, [appConfiguration, isAppInitialized]);
+  }, [appConfiguration, isAppInitialized, locale]);
 
   useEffect(() => {
     const handleCustomRedirect = () => {
