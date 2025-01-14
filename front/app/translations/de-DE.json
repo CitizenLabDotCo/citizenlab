@@ -1710,7 +1710,7 @@
   "app.containers.ProjectsShowPage.shared.ParticipationPermission.logInLinkText": "anmelden",
   "app.containers.ProjectsShowPage.shared.ParticipationPermission.signUpLinkText": "registrieren",
   "app.containers.ProjectsShowPage.shared.ParticipationPermission.verificationLinkText": "Konto verifizieren.",
-  "app.containers.ProjectsShowPage.shared.document_annotation.documentAnnotationDisabledMaybeNotPermitted": "Nur bestimmte Nutzer*innen können dieses Dokument einsehen. Bitte zuerst {signUpLink} oder {logInLink}.",
+  "app.containers.ProjectsShowPage.shared.document_annotation.documentAnnotationDisabledMaybeNotPermitted": "Nur bestimmte Nutzer*innen können dieses Dokument kommentieren. Bitte zuerst {signUpLink} oder {logInLink}.",
   "app.containers.ProjectsShowPage.shared.document_annotation.documentAnnotationDisabledNotActivePhase1": "Dieses Dokument kann nur überprüft werden, wenn diese Phase aktiv ist.",
   "app.containers.ProjectsShowPage.shared.document_annotation.documentAnnotationDisabledNotActiveUser": "Bitte {completeRegistrationLink} , um das Dokument zu lesen.",
   "app.containers.ProjectsShowPage.shared.document_annotation.documentAnnotationDisabledNotPermitted": "Leider sind Sie nicht berechtigt, dieses Dokument zu kommentieren.",
