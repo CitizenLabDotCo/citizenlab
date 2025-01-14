@@ -84,23 +84,8 @@ export const FormField = ({
 
   const hasErrors = !!errors.customFields?.[index];
 
+  // NOTE: We always show the default page logic on a page field
   const showLogicOnRow = field.input_type !== 'page' ? field.logic.rules : true;
-
-  // TODO: Change to next page name
-  const findNextPageAfterCurrentPage = () => {
-    const index = formCustomFields.findIndex((item) => item.id === field.id);
-    if (index !== -1) {
-      const nextPage = formCustomFields
-        .slice(index + 1)
-        .find((item) => item.input_type === 'page');
-      if (nextPage?.id) return nextPage.id; // Temp ID needed here?
-    }
-    return 'survey_end';
-  };
-
-  const defaultNextPage = findNextPageAfterCurrentPage();
-  // if (field.input_type === 'page') console.log('nextPage', defaultNextPage);
-  console.log('nextPage', defaultNextPage);
 
   const isFieldGrouping = ['page', 'section'].includes(field.input_type);
 
