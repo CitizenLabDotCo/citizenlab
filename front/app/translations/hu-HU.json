@@ -2071,6 +2071,7 @@
   "app.utils.IdeasNewPage.proposalFormTitle": "Új ajánlat hozzáadása",
   "app.utils.IdeasNewPage.questionFormTitle": "Új kérdés hozzáadása",
   "app.utils.IdeasNewPage.surveyTitle": "Felmérés",
+  "app.utils.Promessagesjects.ifYouLaterDecide": "Ha később úgy dönt, hogy válaszát el kívánja távolítani, kérjük, vegye fel velünk a kapcsolatot a következő egyedi azonosítóval:",
   "app.utils.actionDescriptors.attendingEventMissingRequirements": "Az eseményen való részvételhez ki kell töltenie a profilját.",
   "app.utils.actionDescriptors.attendingEventNotInGroup": "Nem felel meg az eseményen való részvétel feltételeinek.",
   "app.utils.actionDescriptors.attendingEventNotPermitted": "Ön nem vehet részt ezen az eseményen.",
