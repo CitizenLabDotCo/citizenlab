@@ -250,7 +250,12 @@ const nativeSurveyConfig: ParticipationMethodConfig = {
             <Text textAlign="center" color="coolGrey600">
               <FormattedMessage {...messages.ifYouLaterDecide} />
             </Text>
-            <Text textAlign="center" color="tenantPrimary" fontWeight="bold">
+            <Text
+              textAlign="center"
+              color="tenantPrimary"
+              fontWeight="bold"
+              id="idea-id-success-modal"
+            >
               {ideaId}
             </Text>
           </>
