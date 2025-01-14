@@ -108,14 +108,18 @@ const App = ({ children }: Props) => {
         appConfiguration.data.attributes.settings.core.timezone
       );
 
-      // Dynamically load Moment.js locales
       uniq(
         appConfiguration.data.attributes.settings.core.locales
-          .filter((locale) => locale !== 'en')
-          .map((locale) => appLocalesMomentPairs[locale])
-      ).map(async (locale) => {
+          .filter((loc) => loc !== 'en')
+          .map((loc) => appLocalesMomentPairs[loc])
+      ).map(async (loc) => {
         try {
-          return await localeGetter(locale);
+          // Dynamically import the locale only if it matches the current locale.
+          // This ensures we only load the required locale when needed.
+          // If the locale changes, the appropriate one will be imported in some other code.
+          if (loc === locale) {
+            return await localeGetter(loc);
+          }
         } catch (error) {
           console.error(`Error processing locale: ${locale}`, error);
         }
@@ -211,11 +215,26 @@ const App = ({ children }: Props) => {
 
   useEffect(() => {
     const subscriptions = [
-      locale$.subscribe((locale) => {
-        const momentLoc = appLocalesMomentPairs[locale] || 'en';
-        moment.locale(momentLoc);
-        setLocale(locale);
+      locale$.subscribe(async (locale) => {
+        try {
+          const momentLoc = appLocalesMomentPairs[locale] || 'en';
+
+          // No need to import for English
+          if (momentLoc !== 'en') {
+            await localeGetter(momentLoc);
+          }
+
+          // After localeGetter, set the moment locale
+          moment.locale(momentLoc);
+          setLocale(locale);
+        } catch (error) {
+          console.error(
+            `Failed to load Moment.js locale for ${locale}:`,
+            error
+          );
+        }
       }),
+
       eventEmitter
         .observeEvent('deleteProfileAndShowSuccessModal')
         .subscribe(() => {
