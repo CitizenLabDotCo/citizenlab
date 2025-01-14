@@ -23,14 +23,11 @@ const Settings = () => {
   }));
 
   const handleAdd = (adminPublication?: IAdminPublicationData | LoadMore) => {
-    // if (!adminPublication) return;
-    // if (!isAdminPublication(adminPublication)) return;
+    if (!adminPublication) return;
+    if (!isAdminPublication(adminPublication)) return;
 
     setProp((props) => {
-      props.adminPublicationIds =
-        adminPublication && isAdminPublication(adminPublication)
-          ? [...adminPublicationIds, adminPublication.id]
-          : [...adminPublicationIds];
+      props.adminPublicationIds = [...adminPublicationIds, adminPublication.id];
     });
   };
 
