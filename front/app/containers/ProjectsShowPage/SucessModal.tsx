@@ -35,8 +35,6 @@ const SuccessModal = ({ projectId }: Props) => {
   );
   const { data: idea } = useIdeaById(newIdeaIdParam);
 
-  console.log({ newIdeaIdParam, idea });
-
   const [showModal, setShowModal] = useState<boolean>(false);
 
   const ready = isReady(project?.data, phases);
@@ -52,6 +50,8 @@ const SuccessModal = ({ projectId }: Props) => {
   }, [showModalParam]);
 
   if (!ready) return null;
+  // If there is a newIdeaIdParam, wait for idea to load
+  if (newIdeaIdParam && !idea) return null;
 
   const phaseInUrl =
     phaseIdParam && phases ? getPhase(phaseIdParam, phases.data) : undefined;
@@ -64,6 +64,13 @@ const SuccessModal = ({ projectId }: Props) => {
   const config = getMethodConfig(participationMethod);
 
   const handleClose = () => setShowModal(false);
+
+  // If the idea has no author relationship,
+  // it was either created through 'anyone' permissions or with
+  // the anonymous toggle on. In these cases, we show the idea id in the modal.
+  const showIdeaIdInModal = idea
+    ? !idea.data.relationships.author?.data
+    : false;
 
   return (
     <Modal opened={showModal} close={handleClose} hasSkipButton={false}>
@@ -78,7 +85,7 @@ const SuccessModal = ({ projectId }: Props) => {
         <Box mt="24px">
           {config.getModalContent({
             ideaId: newIdeaIdParam,
-            showIdeaId: true,
+            showIdeaId: showIdeaIdInModal,
           })}
         </Box>
       </Box>
