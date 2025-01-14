@@ -26,7 +26,11 @@ import useDeleteSelf from 'api/users/useDeleteSelf';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
-import { appLocalesMomentPairs, locales } from 'containers/App/constants';
+import {
+  appLocalesMomentPairs,
+  localeGetter,
+  locales,
+} from 'containers/App/constants';
 import Authentication from 'containers/Authentication';
 import MainHeader from 'containers/MainHeader';
 
@@ -104,24 +108,17 @@ const App = ({ children }: Props) => {
         appConfiguration.data.attributes.settings.core.timezone
       );
 
-      // Dynamically load Moment.js locales
-      const localeImports = import.meta.glob(
-        '/node_modules/moment/locale/*.js'
+      const locales = appConfiguration.data.attributes.settings.core.locales;
+      const uniqLocales = uniq(
+        locales
+          .filter((loc) => loc !== 'en')
+          .map((loc) => appLocalesMomentPairs[loc])
       );
-
-      uniq(
-        appConfiguration.data.attributes.settings.core.locales
-          .filter((locale) => locale !== 'en')
-          .map((locale) => appLocalesMomentPairs[locale])
-      ).forEach((locale) => {
-        const localePath = `/node_modules/moment/locale/${locale}.js`;
-        const loadLocale = localeImports[localePath];
-
-        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-        if (loadLocale) {
-          loadLocale();
-        }
-      });
+      try {
+        uniqLocales.map(async (momentLocale) => localeGetter(momentLocale));
+      } catch (error) {
+        console.warn('Could not load all Moment.js locales', error);
+      }
 
       // Weglot initialization
       if (appConfiguration.data.attributes.settings.core.weglot_api_key) {
