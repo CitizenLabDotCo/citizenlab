@@ -30,7 +30,6 @@ const AdminPublicationSearchInput = ({
     data: adminPublications,
     fetchNextPage,
     hasNextPage,
-    isFetching,
     isFetchingNextPage,
   } = useAdminPublications({
     search,
