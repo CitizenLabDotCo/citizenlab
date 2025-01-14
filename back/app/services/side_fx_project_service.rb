@@ -26,6 +26,15 @@ class SideFxProjectService
   end
 
   def after_copy(source_project, copied_project, user, start_time)
+    assignee = User.find_by(id: source_project&.default_assignee_id)
+    reassign_moderator = assignee && UserRoleService.new.can_moderate?(source_project, assignee) && !assignee.admin?
+
+    if reassign_moderator
+      assignee.roles << { type: 'project_moderator', project_id: copied_project.id }
+      assignee.save!
+      copied_project.update!(default_assignee_id: assignee.id)
+    end
+
     LogActivityJob.perform_later(
       copied_project,
       'local_copy_created',
