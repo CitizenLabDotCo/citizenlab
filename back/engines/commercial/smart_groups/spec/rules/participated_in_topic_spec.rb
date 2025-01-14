@@ -102,7 +102,7 @@ describe SmartGroups::Rules::ParticipatedInTopic do
     it "correctly filters on 'reacted_idea_in' predicate" do
       rule = described_class.new('reacted_idea_in', [@topic1.id])
       expect { @ids = rule.filter(User).ids }.not_to exceed_query_limit(1)
-      expect(@ids).to match_array []
+      expect(@ids).to be_empty
     end
 
     it "correctly filters on 'not_reacted_idea_in' predicate" do

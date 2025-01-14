@@ -759,6 +759,7 @@
   "app.components.formBuilder.shortAnswer": "Krótka odpowiedź",
   "app.components.formBuilder.showResponseToUsersToggleLabel": "Pokaż odpowiedź dla użytkowników",
   "app.components.formBuilder.singleChoice": "Pojedynczy wybór",
+  "app.components.formBuilder.staleDataErrorMessage2": "Wystąpił problem. Ten formularz wejściowy został ostatnio zapisany w innym miejscu. Może to być spowodowane tym, że Ty lub inny użytkownik ma go otwartego do edycji w innym oknie przeglądarki. Odśwież stronę, aby uzyskać najnowszy formularz, a następnie wprowadź zmiany ponownie.",
   "app.components.formBuilder.supportArticleLinkText": "ta strona",
   "app.components.formBuilder.tags": "Tagi",
   "app.components.formBuilder.title": "Tytuł",

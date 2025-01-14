@@ -39,7 +39,7 @@ class StaticPage < ApplicationRecord
 
   slug from: proc { |page| page.title_multiloc.values.find(&:present?) }
 
-  enum projects_filter_type: { no_filter: 'no_filter', areas: 'areas', topics: 'topics' }
+  enum :projects_filter_type, { no_filter: 'no_filter', areas: 'areas', topics: 'topics' }
 
   has_one :nav_bar_item, dependent: :destroy
   has_many :static_page_files, -> { order(:ordering) }, dependent: :destroy

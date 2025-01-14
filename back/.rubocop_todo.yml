@@ -14,14 +14,6 @@ Bundler/OrderedGems:
   Exclude:
     - 'Gemfile'
 
-# Offense count: 2
-# This cop supports safe autocorrection (--autocorrect).
-# Configuration parameters: EnforcedStyle.
-# SupportedStyles: have_no, not_to
-Capybara/NegationMatcher:
-  Exclude:
-    - 'engines/free/email_campaigns/spec/mailers/event_registration_confirmation_mailer_spec.rb'
-
 # Offense count: 61
 # This cop supports unsafe autocorrection (--autocorrect-all).
 # Configuration parameters: EnforcedStyle, NonImplicitAssociationMethodNames.
@@ -153,12 +145,6 @@ Lint/OrAssignmentToConstant:
     - 'config/initializers/bunny.rb'
 
 # Offense count: 1
-# This cop supports safe autocorrection (--autocorrect).
-Lint/RedundantCopDisableDirective:
-  Exclude:
-    - 'db/migrate/20230718214736_add_two_initiative_statuses_and_update_colors_and_ordering.rb'
-
-# Offense count: 1
 # This cop supports unsafe autocorrection (--autocorrect-all).
 # Configuration parameters: AllowedMethods.
 # AllowedMethods: instance_of?, kind_of?, is_a?, eql?, respond_to?, equal?, presence, present?
@@ -267,14 +253,6 @@ Performance/CollectionLiteralInLoop:
 # Offense count: 91
 RSpec/AnyInstance:
   Enabled: false
-
-# Offense count: 5
-# This cop supports safe autocorrection (--autocorrect).
-RSpec/BeEmpty:
-  Exclude:
-    - 'engines/commercial/smart_groups/spec/rules/participated_in_idea_status_spec.rb'
-    - 'engines/commercial/smart_groups/spec/rules/participated_in_project_spec.rb'
-    - 'engines/commercial/smart_groups/spec/rules/participated_in_topic_spec.rb'
 
 # Offense count: 6
 RSpec/BeforeAfterAll:
@@ -537,23 +515,6 @@ Rails/Date:
     - 'engines/commercial/smart_groups/spec/rules/custom_field_date_spec.rb'
     - 'engines/commercial/smart_groups/spec/rules/registration_completed_at_spec.rb'
 
-# Offense count: 1
-# This cop supports safe autocorrection (--autocorrect).
-# Configuration parameters: Severity, Include.
-# Include: app/models/**/*.rb
-Rails/EnumSyntax:
-  Exclude:
-    - 'app/models/static_page.rb'
-
-# Offense count: 2
-# This cop supports safe autocorrection (--autocorrect).
-# Configuration parameters: EnforcedStyle.
-# SupportedStyles: slashes, arguments
-Rails/FilePath:
-  Exclude:
-    - 'app/models/user.rb'
-    - 'engines/free/surveys/app/models/surveys/response.rb'
-
 # Offense count: 131
 # This cop supports unsafe autocorrection (--autocorrect-all).
 # Configuration parameters: AllowedMethods, AllowedPatterns.
@@ -763,14 +724,6 @@ Style/CollectionCompact:
   Exclude:
     - 'app/services/project_copy_service.rb'
 
-# Offense count: 2
-# This cop supports safe autocorrection (--autocorrect).
-# Configuration parameters: AllowedVars.
-Style/FetchEnvVar:
-  Exclude:
-    - 'config/initializers/bunny.rb'
-    - 'engines/free/surveys/spec/acceptance/typeform_events_spec.rb'
-
 # Offense count: 2995
 # This cop supports safe autocorrection (--autocorrect).
 # Configuration parameters: EnforcedStyle, EnforcedShorthandSyntax, UseHashRocketsWithSymbolValues, PreferHashRocketsForNonAlnumEndingSymbols.
@@ -806,27 +759,6 @@ Style/OpenStructUse:
     - 'spec/lib/omniauth_methods/google_spec.rb'
     - 'spec/services/track_intercom_service_spec.rb'
 
-# Offense count: 1
-# This cop supports unsafe autocorrection (--autocorrect-all).
-# Configuration parameters: Methods.
-Style/RedundantArgument:
-  Exclude:
-    - 'app/services/profanity_service.rb'
-
-# Offense count: 3
-# This cop supports safe autocorrection (--autocorrect).
-Style/RedundantCurrentDirectoryInPath:
-  Exclude:
-    - 'spec/acceptance/areas_spec.rb'
-    - 'spec/acceptance/experiments_spec.rb'
-    - 'spec/acceptance/topics_spec.rb'
-
-# Offense count: 1
-# This cop supports safe autocorrection (--autocorrect).
-Style/RedundantDoubleSplatHashBraces:
-  Exclude:
-    - 'engines/commercial/analysis/app/lib/analysis/LLM/azure_open_ai.rb'
-
 # Offense count: 5
 # This cop supports unsafe autocorrection (--autocorrect-all).
 Style/RedundantFilterChain:
@@ -836,20 +768,6 @@ Style/RedundantFilterChain:
     - 'engines/commercial/multi_tenancy/lib/tasks/core/trim_idea_titles.rake'
     - 'spec/acceptance/memberships_spec.rb'
     - 'spec/acceptance/project_moderators_spec.rb'
-
-# Offense count: 2
-# This cop supports safe autocorrection (--autocorrect).
-Style/RedundantRegexpArgument:
-  Exclude:
-    - 'app/services/notification_service.rb'
-    - 'engines/commercial/public_api/app/controllers/web_api/v1/power_bi_templates_controller.rb'
-
-# Offense count: 1
-# This cop supports safe autocorrection (--autocorrect).
-# Configuration parameters: AllowMultipleReturnValues.
-Style/RedundantReturn:
-  Exclude:
-    - 'engines/free/surveys/app/services/surveys/typeform_webhook_manager.rb'
 
 # Offense count: 10
 # This cop supports unsafe autocorrection (--autocorrect-all).
