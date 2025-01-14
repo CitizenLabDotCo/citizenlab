@@ -2,7 +2,6 @@ import React from 'react';
 
 import { IconTooltip, Box, Tooltip } from '@citizenlab/cl2-component-library';
 import ColorIndicator from 'component-library/components/ColorIndicator';
-import { useDrop } from 'react-dnd';
 import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 
@@ -32,7 +31,7 @@ interface Props {
 }
 
 const ScreeningStatusFilter = ({ status, active, onClick }: Props) => {
-  const { phaseId } = useParams() as { phaseId: string };
+  const { phaseId } = useParams();
   const { data: phase } = usePhase(phaseId);
 
   const preScreeningFeatureFlag =
@@ -47,21 +46,6 @@ const ScreeningStatusFilter = ({ status, active, onClick }: Props) => {
   const phasePrescreeningEnabled =
     phase?.data.attributes.prescreening_enabled === true;
 
-  const [{ canDrop, isOver }, drop] = useDrop({
-    accept: 'IDEA',
-    drop: () => ({
-      type: 'status',
-      id: status.id,
-    }),
-    collect: (monitor) => ({
-      isOver: monitor.isOver(),
-      canDrop: monitor.canDrop(),
-    }),
-  });
-
-  const showAutomaticStatusTooltip =
-    status.attributes.can_manually_transition_to === false;
-
   const prescreeningButtonIsDisabled =
     !phasePrescreeningEnabled || !preScreeningFeatureAllowed;
 
@@ -69,7 +53,8 @@ const ScreeningStatusFilter = ({ status, active, onClick }: Props) => {
     phasePrescreeningEnabled && preScreeningFeatureAllowed;
 
   return (
-    <div ref={drop}>
+    // Div wrapping is needed to make the filter take full width.
+    <div>
       <Tooltip
         content={
           <div>
@@ -87,7 +72,7 @@ const ScreeningStatusFilter = ({ status, active, onClick }: Props) => {
         <Box>
           <StatusButton
             onClick={onClick}
-            active={active || (isOver && canDrop)}
+            active={active}
             disabled={prescreeningButtonIsDisabled}
           >
             <Box
@@ -101,17 +86,15 @@ const ScreeningStatusFilter = ({ status, active, onClick }: Props) => {
                 <StatusText>
                   <T value={status.attributes.title_multiloc} />
                 </StatusText>
-                {showAutomaticStatusTooltip && (
-                  <IconTooltip
-                    theme="light"
-                    iconSize="16px"
-                    content={
-                      <FormattedMessage
-                        {...messages.automatedStatusTooltipText}
-                      />
-                    }
-                  />
-                )}
+                <IconTooltip
+                  theme="light"
+                  iconSize="16px"
+                  content={
+                    <FormattedMessage
+                      {...messages.automatedStatusTooltipText}
+                    />
+                  }
+                />
               </Box>
             </Box>
           </StatusButton>
