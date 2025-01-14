@@ -1,5 +1,7 @@
 import React, { ReactNode } from 'react';
 
+import { Box, Title, Text } from '@citizenlab/cl2-component-library';
+
 import { IIdea } from 'api/ideas/types';
 import { IPhaseData, ParticipationMethod } from 'api/phases/types';
 import { getCurrentPhase, getInputTerm } from 'api/phases/utils';
@@ -42,9 +44,10 @@ type FormSubmissionMethodProps = {
 };
 
 type ModalContentMethodProps = {
-  ideaIdForSocialSharing?: string;
+  ideaId?: string;
   title?: string;
   subtitle?: string;
+  showIdeaId?: boolean;
 };
 
 type FormTitleMethodProps = {
@@ -123,10 +126,10 @@ const ideationConfig: ParticipationMethodConfig = {
   },
   postType: 'defaultInput',
   getModalContent: (props: ModalContentMethodProps) => {
-    if (props.ideaIdForSocialSharing && props.title && props.subtitle) {
+    if (props.ideaId && props.title && props.subtitle) {
       return (
         <SharingModalContent
-          postId={props.ideaIdForSocialSharing}
+          postId={props.ideaId}
           title={props.title}
           subtitle={props.subtitle}
         />
@@ -186,10 +189,10 @@ const proposalsConfig: ParticipationMethodConfig = {
   },
   postType: 'defaultInput',
   getModalContent: (props: ModalContentMethodProps) => {
-    if (props.ideaIdForSocialSharing && props.title && props.subtitle) {
+    if (props.ideaId && props.title && props.subtitle) {
       return (
         <SharingModalContent
-          postId={props.ideaIdForSocialSharing}
+          postId={props.ideaId}
           title={props.title}
           subtitle={props.subtitle}
         />
@@ -239,13 +242,17 @@ const nativeSurveyConfig: ParticipationMethodConfig = {
     }
   },
   postType: 'nativeSurvey',
-  getModalContent: (props: ModalContentMethodProps) => {
+  getModalContent: ({ ideaId, showIdeaId }: ModalContentMethodProps) => {
     return (
-      <FormattedMessage
-        {...messages.onSurveySubmission}
-        {...props}
-        data-cy="e2e-survey-success-message"
-      />
+      <Box>
+        <Title variant="h2" textAlign="center" mt="0">
+          <FormattedMessage
+            {...messages.onSurveySubmission}
+            data-cy="e2e-survey-success-message"
+          />
+        </Title>
+        {ideaId && showIdeaId && <Text>{ideaId}</Text>}
+      </Box>
     );
   },
   showInputManager: false,

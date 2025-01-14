@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
-import { Box, Title, Image } from '@citizenlab/cl2-component-library';
+import { Box, Image } from '@citizenlab/cl2-component-library';
 import rocket from 'assets/img/rocket.png';
 import { useSearchParams } from 'react-router-dom';
 
@@ -68,9 +68,7 @@ const SuccessModal = ({ projectId }: Props) => {
         justifyContent="center"
       >
         <Image width="80px" height="80px" src={rocket} alt="" />
-        <Title variant="h2" textAlign="center">
-          {config.getModalContent({})}
-        </Title>
+        <Box mt="24px">{config.getModalContent({})}</Box>
       </Box>
     </Modal>
   );
