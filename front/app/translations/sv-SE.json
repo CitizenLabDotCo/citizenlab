@@ -2071,6 +2071,7 @@
   "app.utils.IdeasNewPage.proposalFormTitle": "Lägg till nytt förslag",
   "app.utils.IdeasNewPage.questionFormTitle": "Lägg till ny fråga",
   "app.utils.IdeasNewPage.surveyTitle": "Undersökning",
+  "app.utils.Promessagesjects.ifYouLaterDecide": "Om du senare bestämmer dig för att du vill att ditt svar ska tas bort, vänligen kontakta oss med följande unika identifierare:",
   "app.utils.actionDescriptors.attendingEventMissingRequirements": "Du måste fylla i din profil för att delta i detta evenemang.",
   "app.utils.actionDescriptors.attendingEventNotInGroup": "Du uppfyller inte kraven för att delta i detta evenemang.",
   "app.utils.actionDescriptors.attendingEventNotPermitted": "Du har inte rätt att närvara vid detta evenemang.",
