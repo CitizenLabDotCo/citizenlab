@@ -193,7 +193,13 @@ const FormEdit = ({
         ...(field.input_type === 'page' && {
           temp_id: field.temp_id,
         }),
-        ...(['linear_scale', 'select', 'page'].includes(field.input_type)
+        ...([
+          'multiselect',
+          'linear_scale',
+          'select',
+          'page',
+          'multiselect_image',
+        ].includes(field.input_type)
           ? {
               logic: field.logic,
             }

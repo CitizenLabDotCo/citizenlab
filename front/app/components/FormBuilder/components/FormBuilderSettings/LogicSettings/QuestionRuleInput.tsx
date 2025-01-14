@@ -75,6 +75,7 @@ export const QuestionRuleInput = ({
         goto_page_id: page.value.toString(),
       };
       setRuleIsInvalid(!isRuleValid(newRule, fieldId, fields));
+
       if (logic.rules) {
         const newRulesArray = logic.rules;
         newRulesArray.push(newRule);
@@ -82,7 +83,6 @@ export const QuestionRuleInput = ({
       } else {
         logic.rules = [newRule];
       }
-
       setValue(name, { ...field, logic }, { shouldDirty: true });
       trigger();
     }

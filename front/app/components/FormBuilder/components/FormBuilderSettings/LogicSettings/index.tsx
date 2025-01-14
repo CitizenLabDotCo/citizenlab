@@ -65,6 +65,7 @@ export const LogicSettings = ({
           label: option.title_multiloc[locale]?.toString(),
         }))
     : undefined;
+
   // For Linear Scale Field
   if (field.input_type === 'linear_scale') {
     const linearScaleOptionArray = Array.from(

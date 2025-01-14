@@ -85,6 +85,11 @@ const ProposalsInputs = ({
   prescreening_enabled,
   togglePrescreeningEnabled,
 }: Props) => {
+  const prescreeningFeatureAllowed = useFeatureFlag({
+    name: 'prescreening',
+    onlyCheckAllowed: true,
+  });
+
   return (
     <>
       <CustomFieldPicker
@@ -134,10 +139,7 @@ const ProposalsInputs = ({
       <PrescreeningToggle
         prescreening_enabled={prescreening_enabled}
         togglePrescreeningEnabled={togglePrescreeningEnabled}
-        prescreeningFeatureAllowed={useFeatureFlag({
-          name: 'prescreening',
-          onlyCheckAllowed: true,
-        })}
+        prescreeningFeatureAllowed={prescreeningFeatureAllowed}
       />
       <UserActions
         submission_enabled={submission_enabled || false}
