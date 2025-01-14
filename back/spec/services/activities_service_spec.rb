@@ -233,7 +233,7 @@ describe ActivitiesService do
       end
 
       it 'does not log a phase ended activity when one has already been logged' do
-        phase = create(:budgeting_phase, start_at: now - 10.days, end_at: now - 1.hour)
+        phase = create(:budgeting_phase, start_at: now - 10.days, end_at: date_now - 1.day)
         create(:activity, item: phase, action: 'ended')
         expect { service.create_periodic_activities(now: now) }
           .not_to have_enqueued_job(LogActivityJob)
@@ -241,7 +241,7 @@ describe ActivitiesService do
       end
 
       it 'does not log a phase ended activity when the phase has not ended' do
-        phase = create(:budgeting_phase, start_at: now - 10.days, end_at: now)
+        phase = create(:budgeting_phase, start_at: now - 10.days, end_at: date_now)
         expect { service.create_periodic_activities(now: now) }
           .not_to have_enqueued_job(LogActivityJob)
           .with(phase, 'ended', nil, now, project_id: phase.project_id)
