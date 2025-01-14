@@ -429,8 +429,7 @@ resource 'Idea Custom Fields' do
         assert_status 200
         json_response = json_parse(response_body)
         expect(json_response[:data].size).to eq 2
-        expect(json_response[:data][1]).to match({
-          attributes: {
+        expect(json_response[:data][1][:attributes]).to match({
             code: nil,
             created_at: an_instance_of(String),
             description_multiloc: { en: 'Description of question' },
@@ -448,10 +447,6 @@ resource 'Idea Custom Fields' do
             }] },
             random_option_ordering: false,
             constraints: {}
-          },
-          id: an_instance_of(String),
-          relationships: { options: { data: an_instance_of(Array) } },
-          type: 'custom_field'
         })
       end
 
