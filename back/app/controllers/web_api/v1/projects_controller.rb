@@ -196,7 +196,7 @@ class WebApi::V1::ProjectsController < ApplicationController
     # A final authorization check is performed afterward on the actual copied project.
     #
     # We also set default_assignee_id: nil if the assignee is a project moderator of the source,
-    # to avoid validation error due to assignee not being moderator of the new project. In such cases,
+    # to avoid validation error due to assignee not being moderator of the new dummy project. In such cases,
     # we later add the new project moderator role to the assignee and reset default_assignee in sidefx.after_copy.
     Project.transaction do
       source_project.dup.tap do |p|
@@ -221,7 +221,7 @@ class WebApi::V1::ProjectsController < ApplicationController
       authorize(copy, :create?)
     end
 
-    sidefx.after_copy(source_project, project, current_user, start_time, reassign_moderator)
+    sidefx.after_copy(source_project, project, current_user, start_time, reassign_moderator: reassign_moderator)
 
     render json: WebApi::V1::ProjectSerializer.new(
       project,

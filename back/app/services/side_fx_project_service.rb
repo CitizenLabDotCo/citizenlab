@@ -25,9 +25,9 @@ class SideFxProjectService
     after_publish project, user if project.admin_publication.published?
   end
 
-  def after_copy(source_project, copied_project, user, start_time, reassign_moderator = false)
+  def after_copy(source_project, copied_project, user, start_time, reassign_moderator: false)
     if reassign_moderator
-      assignee = source_project&.default_assignee
+      assignee = source_project.default_assignee
       assignee.roles << { type: 'project_moderator', project_id: copied_project.id }
       assignee.save!
       copied_project.update!(default_assignee_id: assignee.id)

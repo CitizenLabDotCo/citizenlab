@@ -173,7 +173,7 @@ describe SideFxProjectService do
       moderator = create(:project_moderator, projects: [source_project])
       source_project.update!(default_assignee: moderator)
 
-      service.after_copy(source_project, copied_project, user, Time.now, true)
+      service.after_copy(source_project, copied_project, user, Time.now, reassign_moderator: true)
 
       expect(copied_project.default_assignee).to eq(moderator)
       expect(UserRoleService.new.can_moderate?(copied_project, moderator.reload)).to be true
