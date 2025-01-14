@@ -2071,6 +2071,7 @@
   "app.utils.IdeasNewPage.proposalFormTitle": "Yeni teklif ekleyin",
   "app.utils.IdeasNewPage.questionFormTitle": "Yeni soru ekleyin",
   "app.utils.IdeasNewPage.surveyTitle": "Anket",
+  "app.utils.Promessagesjects.ifYouLaterDecide": "Daha sonra yanıtınızın kaldırılmasını istediğinize karar verirseniz, lütfen aşağıdaki benzersiz tanımlayıcı ile bizimle iletişime geçin:",
   "app.utils.actionDescriptors.attendingEventMissingRequirements": "Bu etkinliğe katılmak için profilinizi tamamlamanız gerekmektedir.",
   "app.utils.actionDescriptors.attendingEventNotInGroup": "Bu etkinliğe katılmak için gereken şartları karşılamıyorsunuz.",
   "app.utils.actionDescriptors.attendingEventNotPermitted": "Bu etkinliğe katılmanıza izin verilmemektedir.",
