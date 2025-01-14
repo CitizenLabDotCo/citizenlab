@@ -108,17 +108,18 @@ const App = ({ children }: Props) => {
         appConfiguration.data.attributes.settings.core.timezone
       );
 
-      const locales = appConfiguration.data.attributes.settings.core.locales;
-      const uniqLocales = uniq(
-        locales
-          .filter((loc) => loc !== 'en')
-          .map((loc) => appLocalesMomentPairs[loc])
-      );
-      try {
-        uniqLocales.map(async (momentLocale) => localeGetter(momentLocale));
-      } catch (error) {
-        console.warn('Could not load all Moment.js locales', error);
-      }
+      // Dynamically load Moment.js locales
+      uniq(
+        appConfiguration.data.attributes.settings.core.locales
+          .filter((locale) => locale !== 'en')
+          .map((locale) => appLocalesMomentPairs[locale])
+      ).map(async (locale) => {
+        try {
+          return await localeGetter(locale);
+        } catch (error) {
+          console.error(`Error processing locale: ${locale}`, error);
+        }
+      });
 
       // Weglot initialization
       if (appConfiguration.data.attributes.settings.core.weglot_api_key) {
@@ -238,7 +239,7 @@ const App = ({ children }: Props) => {
 
   useEffect(() => {
     if (authUser) {
-      Sentry.getCurrentScope()?.setUser({
+      Sentry.getCurrentScope().setUser({
         id: authUser.data.id,
       });
     }
