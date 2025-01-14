@@ -245,7 +245,16 @@ const nativeSurveyConfig: ParticipationMethodConfig = {
             data-cy="e2e-survey-success-message"
           />
         </Title>
-        {ideaId && showIdeaId && <Text>{ideaId}</Text>}
+        {ideaId && showIdeaId && (
+          <>
+            <Text textAlign="center" color="coolGrey600">
+              <FormattedMessage {...messages.youCanRetrace} />
+            </Text>
+            <Text textAlign="center" color="tenantPrimary" fontWeight="bold">
+              {ideaId}
+            </Text>
+          </>
+        )}
       </Box>
     );
   },
