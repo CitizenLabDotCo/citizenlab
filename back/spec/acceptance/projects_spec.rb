@@ -646,7 +646,7 @@ resource 'Projects' do
         expect(copied_project.default_assignee_id).to eq moderator.id
 
         assignee = User.find(moderator.id)
-        expect(UserRoleService.new.can_moderate?(source_project, assignee)).to be true
+        expect(UserRoleService.new.can_moderate?(copied_project, assignee)).to be true
       end
     end
 

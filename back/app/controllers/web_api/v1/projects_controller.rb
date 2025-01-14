@@ -180,7 +180,7 @@ class WebApi::V1::ProjectsController < ApplicationController
     source_project = Project.find(params[:id])
     dest_folder = source_project.folder if user_role_service.can_moderate?(source_project.folder, current_user)
 
-    assignee = User.find_by(id: source_project&.default_assignee_id)
+    assignee = source_project&.default_assignee
     reassign_moderator = assignee && user_role_service.can_moderate?(source_project, assignee) && !assignee.admin?
 
     # The authorization of this action is more complex than usual. It works in two steps:
@@ -221,7 +221,7 @@ class WebApi::V1::ProjectsController < ApplicationController
       authorize(copy, :create?)
     end
 
-    sidefx.after_copy(source_project, project, current_user, start_time)
+    sidefx.after_copy(source_project, project, current_user, start_time, reassign_moderator)
 
     render json: WebApi::V1::ProjectSerializer.new(
       project,
