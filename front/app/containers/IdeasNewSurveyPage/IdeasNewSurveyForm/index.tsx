@@ -260,10 +260,10 @@ const IdeasNewSurveyForm = ({ project, phaseId }: Props) => {
     setInitialFormData(newData);
 
     if (published) {
+      console.log({ ideaId, idea });
       clearDraftIdea(phaseId);
       participationMethodConfig.onFormSubmission({
         project: project.data,
-        ideaId,
         idea,
       });
     }

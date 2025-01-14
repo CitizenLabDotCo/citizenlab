@@ -1,6 +1,7 @@
 import React, { ReactNode } from 'react';
 
 import { Box, Title, Text } from '@citizenlab/cl2-component-library';
+import { stringify } from 'qs';
 
 import { IIdea } from 'api/ideas/types';
 import { IPhaseData, ParticipationMethod } from 'api/phases/types';
@@ -38,7 +39,6 @@ export const defaultSortingOptions = [
 
 type FormSubmissionMethodProps = {
   project?: IProjectData;
-  ideaId?: string;
   idea?: IIdea;
   phaseId?: string;
 };
@@ -109,17 +109,15 @@ const ideationConfig: ParticipationMethodConfig = {
   supportsVotes: true,
   supportsComments: true,
   supportsTopicsCustomField: true,
-  onFormSubmission: (props: FormSubmissionMethodProps) => {
-    if (props.ideaId && props.idea) {
-      const urlParameters = `?new_idea_id=${props.ideaId}`;
+  onFormSubmission: ({ idea, phaseId }: FormSubmissionMethodProps) => {
+    if (idea) {
+      const urlParameters = `?new_idea_id=${idea.data.id}`;
       // TODO: Fix this the next time the file is edited.
       // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-      if (props.idea) {
+      if (idea) {
         clHistory.push({
-          pathname: `/ideas/${props.idea.data.attributes.slug}`,
-          search: urlParameters.concat(
-            props.phaseId ? `&phase_id=${props.phaseId}` : ''
-          ),
+          pathname: `/ideas/${idea.data.attributes.slug}`,
+          search: urlParameters.concat(phaseId ? `&phase_id=${phaseId}` : ''),
         });
       }
     }
@@ -172,19 +170,13 @@ const proposalsConfig: ParticipationMethodConfig = {
   supportsVotes: false,
   supportsComments: true,
   supportsTopicsCustomField: true,
-  onFormSubmission: (props: FormSubmissionMethodProps) => {
-    if (props.ideaId && props.idea) {
-      const urlParameters = `?new_idea_id=${props.ideaId}`;
-      // TODO: Fix this the next time the file is edited.
-      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-      if (props.idea) {
-        clHistory.push({
-          pathname: `/ideas/${props.idea.data.attributes.slug}`,
-          search: urlParameters.concat(
-            props.phaseId ? `&phase_id=${props.phaseId}` : ''
-          ),
-        });
-      }
+  onFormSubmission: ({ idea, phaseId }: FormSubmissionMethodProps) => {
+    if (idea) {
+      const urlParameters = `?new_idea_id=${idea.data.id}`;
+      clHistory.push({
+        pathname: `/ideas/${idea.data.attributes.slug}`,
+        search: urlParameters.concat(phaseId ? `&phase_id=${phaseId}` : ''),
+      });
     }
   },
   postType: 'defaultInput',
@@ -229,15 +221,17 @@ const proposalsConfig: ParticipationMethodConfig = {
 const nativeSurveyConfig: ParticipationMethodConfig = {
   showInputCount: true,
   formEditor: 'surveyEditor',
-  onFormSubmission: (props: FormSubmissionMethodProps) => {
-    if (props.project) {
+  onFormSubmission: ({ idea, project, phaseId }: FormSubmissionMethodProps) => {
+    const searchParams: Record<string, string> = { show_modal: 'true' };
+    if (phaseId) searchParams.phase_id = phaseId;
+    if (idea) searchParams.new_idea_id = idea.data.id;
+
+    const searchParamsString = stringify(searchParams);
+
+    if (project) {
       clHistory.push({
-        // TODO: Fix this the next time the file is edited.
-        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-        pathname: `/projects/${props.project?.attributes.slug}`,
-        search: `?show_modal=true`.concat(
-          props.phaseId ? `&phase_id=${props.phaseId}` : ''
-        ),
+        pathname: `/projects/${project.attributes.slug}`,
+        search: searchParamsString,
       });
     }
   },
@@ -341,19 +335,14 @@ const votingConfig: ParticipationMethodConfig = {
     return null;
   },
   postType: 'defaultInput',
-  onFormSubmission: (props: FormSubmissionMethodProps) => {
-    if (props.ideaId && props.idea) {
-      const urlParameters = `?new_idea_id=${props.ideaId}`;
-      // TODO: Fix this the next time the file is edited.
-      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-      if (props.idea) {
-        clHistory.push({
-          pathname: `/ideas/${props.idea.data.attributes.slug}`,
-          search: urlParameters.concat(
-            props.phaseId ? `&phase_id=${props.phaseId}` : ''
-          ),
-        });
-      }
+  onFormSubmission: ({ idea, phaseId }: FormSubmissionMethodProps) => {
+    if (idea) {
+      const urlParameters = `?new_idea_id=${idea.data.id}`;
+
+      clHistory.push({
+        pathname: `/ideas/${idea.data.attributes.slug}`,
+        search: urlParameters.concat(phaseId ? `&phase_id=${phaseId}` : ''),
+      });
     }
   },
   getFormTitle: (props: FormTitleMethodProps) => {
