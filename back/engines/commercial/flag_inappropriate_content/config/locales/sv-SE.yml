@@ -8,8 +8,8 @@ sv:
       subject: 'Ett inlägg på din plattform har flaggats för granskning'
       header_title: 'Ett inlägg på din plattform har flaggats för granskning'
       comment_author: '%{authorName} kommenterade:'
-      idea_author: '%{authorName} skickade ett inlägg:'
-      initiative_author: '%{authorName} skickade ett förslag:'
+      idea_author: '%{authorName} skickade in ett inlägg:'
+      initiative_author: '%{authorName} lämnat in ett förslag:'
       automatically_flagged: >
         Det här inlägget upptäcktes automatiskt som potentiellt innehållande olämpligt innehåll. Vi skickar det här meddelandet till dig så att du kan granska inlägget i enlighet med dina egna riktlinjer för moderering.
       how_to_review: >

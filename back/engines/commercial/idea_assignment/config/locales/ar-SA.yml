@@ -1,13 +1,13 @@
 ar:
   email_campaigns:
     campaign_type_description:
-      "idea_assigned_to_you": تعيين فكرة إلي
+      "idea_assigned_to_you": إسناد فكرة لي
     admin_campaign_type_description:
-      "idea_assigned_to_you": تعيين الفكرة - المسؤولين ومديري المشاريع
+      "idea_assigned_to_you": تكليف فكرة - المشرفون ومديرو المشاريع
     idea_assigned_to_you:
       by_author: 'بواسطة %{authorName}'
       cta_reply_to: 'قدّم ملاحظاتك لـ %{authorName}'
-      event_description_idea: 'تم تعيين فكرة إليك. قدّم ملاحظاتك من خلال كتابة تحديث رسمي أو بتغيير حالتها.'
+      event_description_idea: 'لقد تم تكليفك بفكرة. قم بإبداء رأيك من خلال كتابة تحديث رسمي أو تغيير حالتها.'
       main_header: '%{firstName}، لديك مهمة جديدة'
-      subject: 'لديك مهمة على المنصة الخاصة بـ %{organizationName}'
-      preheader_idea: 'تم تعيين فكرة %{authorName} إليك'
+      subject: 'لديك مهمة على منصة %{organizationName}'
+      preheader_idea: 'لقد تم إسناد فكرة %{authorName} إليك'

@@ -1,13 +1,13 @@
 sr-Cyrl:
   email_campaigns:
     campaign_type_description:
-      "idea_assigned_to_you": Додељивање идеје мени
+      "idea_assigned_to_you": Assignment of an idea to me
     admin_campaign_type_description:
-      "idea_assigned_to_you": Задатак идеје - администратори и пројект менаџери
+      "idea_assigned_to_you": Assignment of an idea - admins and project managers
     idea_assigned_to_you:
       by_author: 'од %{authorName}'
       cta_reply_to: 'Дајте повратну информацију %{authorName}'
-      event_description_idea: 'Идеја вам је додељена. Дајте повратне информације писањем званичног ажурирања или променом његовог статуса.'
-      main_header: '%{firstName}, имате нови задатак'
-      subject: 'Имате задатак на платформи од %{organizationName}'
-      preheader_idea: 'Идеја %{authorName} је додељена вама'
+      event_description_idea: 'An idea has been assigned to you. Give feedback by writing an official update or by changing its status.'
+      main_header: '%{firstName}, you have a new assignment'
+      subject: 'You have an assignment on the platform of %{organizationName}'
+      preheader_idea: 'The idea of %{authorName} has been assigned to you'

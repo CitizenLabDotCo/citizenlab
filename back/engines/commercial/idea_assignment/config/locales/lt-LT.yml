@@ -1,0 +1,13 @@
+lt:
+  email_campaigns:
+    campaign_type_description:
+      "idea_assigned_to_you": Idėjos priskyrimas man
+    admin_campaign_type_description:
+      "idea_assigned_to_you": Idėjos priskyrimas - administratoriams ir projektų vadovams
+    idea_assigned_to_you:
+      by_author: 'pagal %{authorName}'
+      cta_reply_to: 'Pateikite atsiliepimus adresu %{authorName}'
+      event_description_idea: 'Jums priskirta idėja. Pateikite atsiliepimus rašydami oficialų atnaujinimą arba keisdami jos būseną.'
+      main_header: '%{firstName}, turite naują užduotį'
+      subject: 'Turite užduotį %{organizationName}platformoje.'
+      preheader_idea: 'Jums priskirta %{authorName} idėja'

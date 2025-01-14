@@ -1,13 +1,13 @@
 lb:
   email_campaigns:
     campaign_type_description:
-      "idea_assigned_to_you": Eng Iddi gouf mir zougewisen
+      "idea_assigned_to_you": Aufgab vun enger Iddi fir mech
     admin_campaign_type_description:
-      "idea_assigned_to_you": Zouuerdung vun enger Iddi - Verwalteren a Projetsmanageren
+      "idea_assigned_to_you": Aufgab vun enger Iddi - Administrateuren a Projet Manager
     idea_assigned_to_you:
       by_author: 'vun %{authorName}'
       cta_reply_to: '%{authorName} Feedback ginn'
-      event_description_idea: 'Eng Iddi ass Iech zougewise ginn. Gitt Feedback, andeem Dir en offizielle Kommentar schreift oder de Status ännert.'
-      main_header: '%{firstName}, Dir hutt eng nei Zouweisung'
-      subject: 'Dir hutt eng Zouweisung op der Plattform vun %{organizationName}'
-      preheader_idea: 'D’Iddi vun %{authorName} ass iech zougewise ginn'
+      event_description_idea: 'Eng Iddi gouf Iech zougewisen. Gitt Feedback andeems Dir en offiziellen Update schreift oder duerch säi Status z''änneren.'
+      main_header: '%{firstName}, Dir hutt eng nei Aufgab'
+      subject: 'Dir hutt eng Aufgab op der Plattform vun %{organizationName}'
+      preheader_idea: 'D''Iddi vu %{authorName} gouf Iech zougewisen'

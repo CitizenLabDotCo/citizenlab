@@ -452,7 +452,7 @@ cy:
     first_idea_published:
       action_add_image: '%{addImageLink} i gynyddu gwelededd'
       action_comment: '%{textComment} ar syniadau presennol'
-      action_published_idea: 'Syniad wedi''i gyhoeddi'
+      action_published_idea: 'Syniad cyhoeddedig'
       action_send_email: 'Anfonwch %{sendEmailLink}i''ch cysylltiadau'
       action_share_fb: 'Rhowch wybod i''ch ffrindiau ar %{fbLink}'
       action_share_link: 'Rhannwch ef trwy unrhyw sianel trwy gopïo''r %{link}'
@@ -475,7 +475,7 @@ cy:
       preheader: 'Dyma beth allwch chi ei wneud ar y platfform o %{organizationName}'
     idea_published:
       action_add_image: '%{addImageLink} i gynyddu gwelededd'
-      action_published_idea: 'Syniad wedi''i gyhoeddi'
+      action_published_idea: 'Syniad cyhoeddedig'
       action_send_email: 'Anfonwch %{sendEmailLink}i''ch cysylltiadau'
       action_share_fb: 'Rhowch wybod i''ch ffrindiau ar %{fbLink}'
       action_share_link: 'Rhannwch ef trwy unrhyw sianel trwy gopïo''r %{link}'
