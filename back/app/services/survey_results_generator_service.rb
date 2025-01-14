@@ -47,6 +47,14 @@ class SurveyResultsGeneratorService < FieldVisitorService
     visit_select_base(field)
   end
 
+  def visit_ranking(field)
+    core_field_attributes(field, base_responses(field).size).merge({
+      average_rankings: field.average_rankings(inputs),
+      rankings_counts: field.rankings_counts(inputs),
+      multilocs: get_multilocs(field)
+    })
+  end
+
   def visit_text(field)
     answers = get_text_responses(field.key)
     response_count = answers.size
@@ -195,7 +203,7 @@ class SurveyResultsGeneratorService < FieldVisitorService
     attributes
   end
 
-  def get_multilocs(field, group_field)
+  def get_multilocs(field, group_field = nil)
     multilocs = { answer: get_option_multilocs(field) }
     multilocs[:group] = get_option_multilocs(group_field) if group_field
     multilocs

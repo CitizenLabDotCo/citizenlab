@@ -620,9 +620,9 @@ RSpec.describe CustomField do
   describe '#rankings_counts' do
     let!(:field) { create(:custom_field_ranking) }
     let!(:option1) { create(:custom_field_option, custom_field: field, key: 'by_foot') }
-    let!(:option1) { create(:custom_field_option, custom_field: field, key: 'by_bike') }
-    let!(:option1) { create(:custom_field_option, custom_field: field, key: 'by_train') }
-    let!(:option1) { create(:custom_field_option, custom_field: field, key: 'by_horse') }
+    let!(:option2) { create(:custom_field_option, custom_field: field, key: 'by_bike') }
+    let!(:option3) { create(:custom_field_option, custom_field: field, key: 'by_train') }
+    let!(:option4) { create(:custom_field_option, custom_field: field, key: 'by_horse') }
 
     it 'works' do
       create(:user, custom_field_values: { field.key => ['by_bike', 'by_horse', 'by_train', 'by_foot'] })
@@ -634,6 +634,7 @@ RSpec.describe CustomField do
       
       expect(field.rankings_counts(User.where.not(id: [excluded_user.id]))).to eq({
         'by_foot' => {
+          1 => 0,
           2 => 2,
           3 => 1,
           4 => 1
@@ -641,15 +642,19 @@ RSpec.describe CustomField do
         'by_bike' => {
           1 => 2,
           2 => 1,
+          3 => 0,
           4 => 1
         },
         'by_train' => {
           1 => 1,
-          3 => 3
+          2 => 0,
+          3 => 3,
+          4 => 0
         },
         'by_horse' => {
           1 => 1,
           2 => 1,
+          3 => 0,
           4 => 2
         }
       })
