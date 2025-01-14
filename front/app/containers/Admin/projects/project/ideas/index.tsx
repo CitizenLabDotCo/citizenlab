@@ -12,7 +12,7 @@ import useFeatureFlag from 'hooks/useFeatureFlag';
 import InputManager, {
   TFilterMenu,
 } from 'components/admin/PostManager/InputManager';
-import Button from 'components/UI/Button';
+import Button from 'components/UI/ButtonWithLink';
 import Warning from 'components/UI/Warning';
 
 import { FormattedMessage } from 'utils/cl-intl';

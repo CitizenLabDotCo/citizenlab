@@ -23,7 +23,7 @@ import {
   SectionDescription,
 } from 'components/admin/Section';
 import T from 'components/T';
-import Button from 'components/UI/Button';
+import Button from 'components/UI/ButtonWithLink';
 import Warning from 'components/UI/Warning';
 
 import { FormattedMessage, MessageDescriptor } from 'utils/cl-intl';

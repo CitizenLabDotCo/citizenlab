@@ -18,8 +18,8 @@ RSpec.describe Notifications::ThresholdReachedForAdmin do
       expect(notifications.size).to eq(2)
       expect(notifications).to include(have_attributes(
         recipient_id: recipient.id,
-        post_id: proposal.id,
-        post_status_id: status.id,
+        idea_id: proposal.id,
+        idea_status_id: status.id,
         initiating_user: nil
       ))
       expect(notifications).to include(have_attributes(

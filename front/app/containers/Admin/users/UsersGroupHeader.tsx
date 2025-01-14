@@ -7,7 +7,7 @@ import { MembershipType } from 'api/groups/types';
 
 import Outlet from 'components/Outlet';
 import T from 'components/T';
-import Button from 'components/UI/Button';
+import Button from 'components/UI/ButtonWithLink';
 
 import { FormattedMessage } from 'utils/cl-intl';
 

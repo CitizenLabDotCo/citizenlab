@@ -3,7 +3,7 @@ import React, { FormEvent } from 'react';
 import { RouteType } from 'routes';
 import styled from 'styled-components';
 
-import Button from 'components/UI/Button';
+import Button from 'components/UI/ButtonWithLink';
 
 import { FormattedMessage, MessageDescriptor } from 'utils/cl-intl';
 

@@ -9,7 +9,7 @@ module EmailCampaigns
     end
 
     def subject
-      format_message('subject', values: { input_title: localize_for_recipient(event.post_title_multiloc) })
+      format_message('subject', values: { input_title: localize_for_recipient(event.idea_title_multiloc) })
     end
 
     def header_title
@@ -20,7 +20,7 @@ module EmailCampaigns
       format_message(
         'header_message',
         values: {
-          input_title: localize_for_recipient(event.post_title_multiloc),
+          input_title: localize_for_recipient(event.idea_title_multiloc),
           organizationName: organization_name
         }
       )

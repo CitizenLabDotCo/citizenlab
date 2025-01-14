@@ -196,46 +196,6 @@ describe FollowerPolicy do
     end
   end
 
-  context 'for an initiative' do
-    let(:followable) { create(:initiative) }
-
-    context 'for a resident' do
-      let(:user) { create(:user) }
-
-      it { is_expected.not_to permit(:show) }
-      it { is_expected.not_to permit(:create) }
-      it { is_expected.not_to permit(:destroy) }
-
-      it 'does not index the follower' do
-        expect(scope.resolve.size).to eq 0
-      end
-    end
-
-    context 'for the following user' do
-      let(:user) { following_user }
-
-      it { is_expected.to permit(:show) }
-      it { is_expected.to permit(:create) }
-      it { is_expected.to permit(:destroy) }
-
-      it 'indexes the follower' do
-        expect(scope.resolve.size).to eq 1
-      end
-    end
-
-    context 'for an admin' do
-      let(:user) { create(:admin) }
-
-      it { is_expected.not_to permit(:show)    }
-      it { is_expected.not_to permit(:create)  }
-      it { is_expected.not_to permit(:destroy) }
-
-      it 'does not index the follower' do
-        expect(scope.resolve.size).to eq 0
-      end
-    end
-  end
-
   context 'for a topic' do
     let(:followable) { create(:topic) }
 

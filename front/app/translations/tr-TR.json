@@ -759,6 +759,7 @@
   "app.components.formBuilder.shortAnswer": "Kısa cevap",
   "app.components.formBuilder.showResponseToUsersToggleLabel": "Kullanıcılara yanıt gösterin",
   "app.components.formBuilder.singleChoice": "Tek seçenek",
+  "app.components.formBuilder.staleDataErrorMessage2": "Bir sorun oluştu. Bu giriş formu yakın zamanda başka bir yere kaydedilmiş. Bunun nedeni sizin veya başka bir kullanıcının formu başka bir tarayıcı penceresinde düzenlemeye açmış olması olabilir. Lütfen en son formu almak için sayfayı yenileyin ve ardından değişikliklerinizi tekrar yapın.",
   "app.components.formBuilder.supportArticleLinkText": "bu sayfa",
   "app.components.formBuilder.tags": "Etiketler",
   "app.components.formBuilder.title": "Başlık",

@@ -16,7 +16,7 @@ import { scrollTo } from 'containers/Authentication/SuccessActions/actions/scrol
 import messages from 'containers/ProjectsShowPage/messages';
 
 import IdeaButton from 'components/IdeaButton';
-import Button from 'components/UI/Button';
+import Button from 'components/UI/ButtonWithLink';
 
 import { isFixableByAuthentication } from 'utils/actionDescriptors';
 import { FormattedMessage } from 'utils/cl-intl';

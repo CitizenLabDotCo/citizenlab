@@ -16,7 +16,7 @@ import useGraphqlTenantLocales from 'hooks/useGraphqlTenantLocales';
 import useLocalize from 'hooks/useLocalize';
 
 import T from 'components/T';
-import Button from 'components/UI/Button';
+import Button from 'components/UI/ButtonWithLink';
 import Centerer from 'components/UI/Centerer';
 import QuillEditedContent from 'components/UI/QuillEditedContent';
 

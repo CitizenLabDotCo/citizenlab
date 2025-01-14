@@ -10,7 +10,7 @@ import { rgba } from 'polished';
 import styled from 'styled-components';
 
 import ContentContainer from 'components/ContentContainer';
-import Button from 'components/UI/Button';
+import Button from 'components/UI/ButtonWithLink';
 import CloseIconButton from 'components/UI/CloseIconButton';
 
 import { FormattedMessage } from 'utils/cl-intl';

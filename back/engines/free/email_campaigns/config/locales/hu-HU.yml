@@ -8,35 +8,23 @@ hu:
       "comment_marked_as_spam": Megjegyzés spamjelentés
       "comment_on_your_comment": Válasz a hozzászólásomra
       "comment_on_idea_you_follow": Megjegyzés egy Ön által követett ötlethez
-      "comment_on_initiative_you_follow": Megjegyzés az Ön által követett javaslathoz
-      "cosponsor_of_your_initiative": Egy felhasználó elfogadja a meghívásomat, hogy társszponzorálja ajánlatomat
       "cosponsor_of_your_idea": Egy felhasználó elfogadja a meghívásomat, hogy társszponzorálja ajánlatomat
       "event_registration_confirmation": Esemény regisztráció megerősítése
       "idea_marked_as_spam": Idea spam jelentés
       "idea_published": Hozzászólásom közzététele
-      "initiative_assigned_to_you": Javaslat hozzárendelése hozzám
-      "initiative_marked_as_spam": Javaslat spamjelentés
-      "initiative_published": Javaslatom közzététele
-      "invitation_to_cosponsor_initiative": Felhívás egy javaslat társszponzorálására
       "invitation_to_cosponsor_idea": Felhívás egy javaslat társszponzorálására
-      "initiative_resubmitted_for_review": A javaslatot újra benyújtották felülvizsgálatra
       "invite_received": Meghívás
       "invite_reminder": Meghívó emlékeztető
       "internal_comment_on_idea_assigned_to_you": Belső megjegyzés a hozzám rendelt bevitelhez
       "internal_comment_on_idea_you_commented_internally_on": Belső megjegyzés a bemenethez, amelyhez belső megjegyzést tettem
       "internal_comment_on_idea_you_moderate": Belső megjegyzés az általam kezelt projektben vagy mappában lévő bevitelhez
-      "internal_comment_on_initiative_assigned_to_you": Belső megjegyzés a hozzám rendelt javaslathoz
-      "internal_comment_on_initiative_you_commented_internally_on": Belső észrevétel a javaslathoz Belső észrevételt tettem
-      "internal_comment_on_unassigned_initiative": Belső megjegyzés a hozzá nem rendelt javaslathoz
       "internal_comment_on_unassigned_unmoderated_idea": Belső megjegyzés a nem felügyelt projektben lévő hozzá nem rendelt bemenethez
       "internal_comment_on_your_internal_comment": Belső megjegyzés a belső megjegyzésemhez
       "mention_in_official_feedback": Említse meg a frissítésben
       "mention_in_internal_comment": Említse meg egy belső megjegyzésben
       "new_comment_for_admin": Új megjegyzés egy általam moderált projektben
       "new_idea_for_admin": Új bemenet egy általam moderált projektben
-      "new_initiative_for_admin": Új javaslat
       "official_feedback_on_idea_you_follow": Frissítse a követett bemenetet
-      "official_feedback_on_initiative_you_follow": Frissítse az Ön által követett javaslatot
       "password_reset": Jelszó visszaállítása
       "project_moderation_rights_received": A projekt moderálási jogai megkapták
       "project_folder_moderation_rights_received": Mappakezelői jogok megérkeztek
@@ -46,7 +34,6 @@ hu:
       "project_review_request": Projekt felülvizsgálati kérelem
       "project_review_state_change": Projekt jóváhagyva
       "status_change_on_idea_you_follow": A követett bemenet állapotának változása
-      "status_change_on_initiative_you_follow": Az Ön által követett javaslat állapotváltozása
       "threshold_reached_for_admin": A javaslat elérte a szavazati küszöböt
       "welcome": Regisztráció után
       "admin_digest": Heti áttekintés rendszergazdáknak
@@ -73,7 +60,6 @@ hu:
         issue: 'Tovább a kérdéshez'
         option: 'Menjen erre a lehetőségre'
         proposal: 'Tovább a javaslathoz'
-        initiative: 'Menj ehhez a kezdeményezéshez'
         petition: 'Tovább a petícióhoz'
       cta_goto_your:
         idea: 'Menj az ötletedhez'
@@ -83,7 +69,6 @@ hu:
         issue: 'Menjen a problémájához'
         option: 'Menjen a választott lehetőségre'
         proposal: 'Menjen az ajánlatához'
-        initiative: 'Menj a kezdeményezésedre'
         petition: 'Menj a petíciódhoz'
       cta_goto_proposal: 'Tovább a javaslathoz'
       cta_goto_project: 'Ugrás ehhez a projekthez'
@@ -130,7 +115,6 @@ hu:
       new_comments: 'Új megjegyzések'
       title_activity_past_week: 'Az elmúlt hét tevékenysége'
       title_no_activity_past_week: 'Az elmúlt héten nem volt tevékenység'
-      title_initiatives_past_week: 'Az elmúlt hét új javaslatai'
       reached_threshold: 'Elérte a küszöböt'
       yesterday_by_author: 'Tegnap %{author}'
       today_by_author: 'Ma %{author}'
@@ -168,12 +152,6 @@ hu:
       main_header: '%{cosponsorName} elfogadta a felkérését, hogy társszponzorálja ajánlatát'
       subject: '%{cosponsorName} elfogadta a felkérését, hogy társszponzorálja ajánlatát'
       preheader: '%{cosponsorName} elfogadta a felkérését, hogy társszponzorálja ajánlatát'
-    cosponsor_of_your_initiative:
-      cta_reply_to: 'Tekintse meg ajánlatát'
-      event_description_initiative: 'Gratulálok! %{cosponsorName} elfogadta a felkérését, hogy társszponzorálja ajánlatát.'
-      main_header: '%{cosponsorName} elfogadta a felkérését, hogy társszponzorálja ajánlatát'
-      subject: '%{cosponsorName} elfogadta a felkérését, hogy társszponzorálja ajánlatát'
-      preheader_initiative: '%{cosponsorName} elfogadta a felkérését, hogy társszponzorálja ajánlatát'
     assignee_digest:
       subject: 'Visszajelzést igénylő bemenetek: %{numberIdeas}'
       preheader: 'A %{organizationName}hozzárendelt kivonata'
@@ -194,20 +172,6 @@ hu:
       preheader: 'Cselekedjen a spamjelentés alapján'
       reported_this_because: '%{reporterFirstName} jelentette ezt, mert:'
       title_spam_report: '%{firstName} %{lastName} spamet jelentett'
-    initiative_marked_as_spam:
-      cta_review_initiative: 'Tekintse át a javaslatot'
-      report_inappropriate_offensive_content: 'Ezt a tartalmat nem helyénvalónak vagy sértőnek tartom.'
-      report_not_an_initiative: 'Ez a tartalom nem ajánlat, és nem tartozik ide.'
-      subject: 'Spamjelentése van a %{organizationName}platformon'
-      preheader: 'Cselekedjen a spamjelentés alapján'
-      reported_this_because: '%{reporterFirstName} jelentette ezt, mert:'
-      title_spam_report: '%{firstName} %{lastName} spamet jelentett'
-    initiative_assigned_to_you:
-      cta_reply_to: 'Visszajelzés küldése a %{authorName}címre'
-      event_description_initiative: 'Egy ajánlatot rendeltek hozzád. Visszajelzést küldhet hivatalos frissítés írásával vagy állapotának megváltoztatásával.'
-      main_header: '%{firstName}, új feladatod van'
-      subject: 'Önnek van egy megbízása a %{organizationName}platformon'
-      preheader_initiative: 'A %{authorName} ajánlatát Önhöz rendeltük'
     invitation_to_cosponsor_idea:
       cta_reply_to: 'Támogatja ezt a javaslatot'
       event_description: '%{authorName} új javaslatot hozott létre, és szeretné, ha társszponzorálná.'
@@ -217,22 +181,6 @@ hu:
       main_header: 'Önt felkérték egy javaslat társszponzorálására'
       subject: 'Önt felkérték egy javaslat társszponzorálására'
       preheader: 'Önt meghívták, hogy támogassa a %{authorName}javaslatát'
-    invitation_to_cosponsor_initiative:
-      cta_reply_to: 'Támogatja ezt a javaslatot'
-      event_description_initiative: '%{authorName} új javaslatot hozott létre, és szeretné, ha társszponzorálná.'
-      event_description_cosponsoring: 'Egy ajánlat társszponzorálása azt jelenti, hogy <strong>az Ön neve</strong> jelenik meg a javaslat többi társszponzorának nevével együtt.'
-      event_description_before_action: 'Az ajánlat megtekintéséhez és a meghívás elfogadásához be kell jelentkeznie fiókjába.'
-      event_description_action: 'Az ajánlat elolvasásához kattintson az alábbi gombra.'
-      main_header: 'Önt felkérték egy javaslat társszponzorálására'
-      subject: 'Önt felkérték egy javaslat társszponzorálására'
-      preheader_initiative: 'Meghívást kapott, hogy társszponzorálja a %{authorName}javaslatát'
-    initiative_resubmitted_for_review:
-      by_author: 'készítette: %{authorName}'
-      cta_reply_to: 'Visszajelzés küldése a %{authorName}címre'
-      event_description_initiative: 'Egy javaslatot újra benyújtottak felülvizsgálatra. Visszajelzést küldhet hivatalos frissítés írásával vagy állapotának megváltoztatásával.'
-      main_header: '%{firstName}, van egy felülvizsgálati javaslata'
-      subject: 'Van egy felülvizsgálati javaslata a %{organizationName}platformon'
-      preheader_initiative: 'A %{authorName} javaslatát újra benyújtották felülvizsgálatra'
     invite_reminder:
       cta_accept_invitation: 'Fogadja el a meghívást'
       invitation_header: 'Meghívása függőben van'
@@ -247,20 +195,6 @@ hu:
       invitation_expiry_message: 'Ez a meghívó %{expiryDays} napon belül lejár.'
       preheader: '%{organizationName} meghívót küldött Önnek, hogy csatlakozzon a részvételi platformjukhoz.'
       subject: 'Meghívják, hogy csatlakozzon a %{organizationName}platformjához'
-    initiative_published:
-      action_add_image: '%{addImageLink} a láthatóság növeléséhez'
-      action_published_initiative: 'Közzétett javaslat'
-      action_send_email: 'Küldje el névjegyeit egy %{sendEmailLink}'
-      action_share_fb: 'Értesítse ismerőseit a %{fbLink}oldalon'
-      action_share_link: 'Oszd meg bármelyik csatornán a %{link}másolásával'
-      action_share_twitter: 'Tájékoztassa követőit a %{twitterLink}címen'
-      link: link
-      main_header: 'Ajánlatot tettél! Gyűjtsünk hozzá támogatást.'
-      message_next_steps: '%{userFirstName}, ajánlatát sikeresen közzétettük a %{organizationName}részvételi platformján. Értesítést kap, ha az emberek kapcsolatba lépnek az ajánlatával. Az alábbiakban megtudhatja, milyen további lépéseket tehet.'
-      message_get_votes: 'Szavazási küszöb elérése:'
-      preheader: 'Köszönjük, hogy megosztotta ajánlatát %{initiativeTitle} a %{organizationName}számára. A következő lépés az, hogy támogatást kapjon az ajánlatához azáltal, hogy megosztja azt a hálózatán.'
-      send_email: email
-      subject: 'Az Ön javaslata a %{organizationName}platformon jelent meg'
     mention_in_comment:
       cta_reply_to: 'Válasz %{commentAuthor}'
       event_description: '%{commentAuthorFull} megemlített téged a ''%{post}'' ötlethez fűzött megjegyzésében. Kattintson az alábbi linkre, hogy belépjen a beszélgetésbe %{commentAuthor}-vel'
@@ -309,22 +243,9 @@ hu:
         issue: '%{authorName} megjegyzést fűzött egy Ön által követett problémához'
         option: '%{authorName} megjegyzést fűzött egy általad követett lehetőséghez'
         proposal: '%{authorName} megjegyzést fűzött egy Ön által követett javaslathoz'
-        initiative: '%{authorName} megjegyzést fűzött egy általad követett kezdeményezéshez'
         petition: '%{authorName} megjegyzést fűzött egy Ön által követett petícióhoz'
       subject: 'Új megjegyzés érkezett a következőhöz: "%{input_title}"'
       preheader: '%{authorName} megjegyzést írt egy ötlethez a következőhöz: %{organizationName}'
-    comment_on_initiative_you_follow:
-      cta_reply_to: 'Válasz %{commentAuthor}'
-      event_description: '%{authorNameFull} reagált a ''%{initiativeTitle}'' javaslatra. Kattintson az alábbi gombra a beszélgetés folytatásához %{authorName}.'
-      main_header: '%{commentAuthor} megjegyzést fűzött egy Ön által követett javaslathoz'
-      subject: 'Új megjegyzés érkezett az Ön által követett javaslathoz'
-      preheader: '%{authorName} megjegyzést írt a %{organizationName}javaslatához'
-    new_initiative_for_admin:
-      cta_reply_to: 'Visszajelzés küldése a %{authorName}címre'
-      event_description: 'A %{authorName} új ajánlatot tett közzé az Ön platformján. Fedezze fel most, adjon visszajelzést, vagy módosítsa az állapotát!'
-      main_header: '%{firstName}, új ajánlatot tettek közzé az Ön platformján'
-      subject: 'Valaki új javaslatot tett közzé a %{organizationName}platformon'
-      preheader: '%{authorName} új ajánlatot tett közzé az Ön platformján'
     new_idea_for_admin:
       main_header_publication: 'Új bemenetet tettek közzé a platformján'
       event_description_publication: '%{authorName} új bevitelt küldött az Ön platformjára. Fedezze fel most, adjon visszajelzést, vagy módosítsa az állapotát!'
@@ -368,24 +289,6 @@ hu:
       subject: 'Új belső megjegyzés a következőhöz: ''%{post}'''
       main_header: 'Új belső megjegyzés a következőhöz: ''%{post}'''
       preheader: 'Új belső megjegyzés a következőhöz: ''%{post}'''
-    internal_comment_on_initiative_assigned_to_you:
-      cta_reply_to: '%{firstName}megjegyzésének megtekintése'
-      event_description: '%{authorNameFull} belső megjegyzést fűzött egy Önhöz rendelt javaslathoz.'
-      subject: 'Új belső megjegyzés a következőhöz: ''%{post}'''
-      main_header: 'Új belső megjegyzés a következőhöz: ''%{post}'''
-      preheader: 'Új belső megjegyzés a következőhöz: ''%{post}'''
-    internal_comment_on_initiative_you_commented_internally_on:
-      cta_reply_to: '%{firstName}megjegyzésének megtekintése'
-      event_description: '%{authorNameFull} belső megjegyzést fűzött egy olyan javaslathoz, amelyhez Ön belsőleg megjegyzést fűzött.'
-      subject: 'Új belső megjegyzés a következőhöz: ''%{post}'''
-      main_header: 'Új belső megjegyzés a következőhöz: ''%{post}'''
-      preheader: 'Új belső megjegyzés a következőhöz: ''%{post}'''
-    internal_comment_on_unassigned_initiative:
-      cta_reply_to: '%{firstName}megjegyzésének megtekintése'
-      event_description: '%{authorNameFull} belső megjegyzést fűzött egy hozzá nem rendelt javaslathoz.'
-      subject: 'Új belső megjegyzés a következőhöz: ''%{post}'''
-      main_header: 'Új belső megjegyzés a következőhöz: ''%{post}'''
-      preheader: 'Új belső megjegyzés a következőhöz: ''%{post}'''
     internal_comment_on_unassigned_unmoderated_idea:
       cta_reply_to: '%{firstName}megjegyzésének megtekintése'
       event_description: '%{authorNameFull} belső megjegyzést fűzött egy nem felügyelt projekt hozzá nem rendelt bemenetéhez.'
@@ -397,11 +300,6 @@ hu:
       header_title: 'Frissítés érkezett a következőhöz: "%{input_title}"'
       subject: 'A hivatalos visszajelzés a következő helyen jelent meg: "%{input_title}"'
       preheader: 'Frissítés érkezett az Ön által követett bemenethez'
-    official_feedback_on_initiative_you_follow:
-      header_message: '%{officialName} frissítette a ''%{initiativeTitle}'' javaslatot. Kattintson az alábbi gombra, hogy belépjen a beszélgetésbe a következővel: %{organizationName}.'
-      header_title: 'Frissítés érkezett az Ön által követett javaslattal kapcsolatban'
-      subject: 'Az Ön által követett javaslat hivatalos frissítést kapott a %{organizationName}platformon'
-      preheader: 'Frissítés érkezett az Ön által követett javaslattal kapcsolatban'
     mention_in_official_feedback:
       cta_reply_to: 'Válasz %{organizationName}'
       event_description: '%{organizationName} megemlített téged a „%{post}” ötlettel kapcsolatos visszajelzésében. Kattintson az alábbi linkre, hogy belépjen a beszélgetésbe %{organizationName}-vel'
@@ -475,12 +373,6 @@ hu:
       header_title: 'A követett bemenetnek új állapota van'
       subject: 'A "%{input_title}" állapota megváltozott'
       preheader: 'A követett bemenetnek új állapota van'
-    status_change_on_initiative_you_follow:
-      status_change: 'Ennek az ajánlatnak az új állapota: „%{initiativeStatus}”'
-      header_message: 'A „%{initiativeTitle}” ajánlat állapota frissítve lett a %{organizationName}digitális részvételi platformján.'
-      header_title: 'Az Ön által követett javaslat új állapotot kapott'
-      subject: 'Az Ön által követett ajánlat állapota megváltozott'
-      preheader: 'Az Ön által követett javaslat új állapotot kapott'
     user_digest:
       subject: "Ezen a héten a %{organizationName}részvételi platformján"
       commented: "%{authorFirstName} hozzászólt:"
@@ -521,7 +413,6 @@ hu:
         issue: 'Az Ön problémája megjelent'
         option: 'Az Ön opcióját közzétettük'
         proposal: 'Az Ön javaslata megjelent'
-        initiative: 'Kezdeményezésed megjelent'
         petition: 'Petícióját közzétették'
       main_header: 'Ön közzétette: "%{input_title}"'
       header_message: 'Gondoskodjunk róla, hogy elolvassák.'
@@ -545,7 +436,6 @@ hu:
         issue: 'A probléma itt található: "%{prescreening_status_title}"'
         option: 'Az Ön beállítása a következőben található: "%{prescreening_status_title}"'
         proposal: 'Az Ön ajánlata a következőben található: "%{prescreening_status_title}"'
-        initiative: 'Az Ön kezdeményezése a következőben található: "%{prescreening_status_title}"'
         petition: 'Az Ön petíciója itt található: "%{prescreening_status_title}"'
       message: 'A(z) "%{input_title}" a felülvizsgálat és jóváhagyás után mások számára látható lesz.'
       subject: '"%{input_title}" majdnem megjelent'
@@ -674,9 +564,6 @@ hu:
         internal_comment_is_posted_on_idea_in_project_or_folder_user_manages: 'A belső megjegyzések a projektben vagy a felhasználó által kezelt mappában találhatók'
         internal_comment_is_posted_on_idea_user_has_commented_internally_on: 'A belső megjegyzés a bemenetre kerül közzétételre, amelyhez a felhasználó belső megjegyzést fűzött'
         internal_comment_is_posted_on_idea_user_moderates: 'A belső megjegyzéseket a bemeneti felhasználói moderátorokon teszik közzé'
-        internal_comment_is_posted_on_initiative_assigned_to_user: 'A felhasználóhoz rendelt ajánlathoz belső megjegyzés kerül közzétételre'
-        internal_comment_is_posted_on_initiative_user_has_commented_internally_on: 'A belső megjegyzés az ajánlathoz kerül közzétételre, amelyhez a felhasználó belső megjegyzést fűzött'
-        internal_comment_is_posted_on_unassigned_initiative: 'A belső megjegyzés a hozzá nem rendelt ajánlathoz kerül közzétételre'
         internal_comment_is_posted_on_unassigned_unmoderated_idea: 'A belső megjegyzés a nem felügyelt projekt hozzá nem rendelt bemenetére kerül közzétételre'
         project_review_request: 'A moderátor a projekt felülvizsgálatát kérte'
         project_review_state_change: 'A bíráló jóváhagyta a projektet'
