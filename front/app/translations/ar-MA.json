@@ -742,7 +742,6 @@
   "app.components.formBuilder.question": "سؤال",
   "app.components.formBuilder.questionCannotBeDeleted": "لا يمكن حذف هذا السؤال.",
   "app.components.formBuilder.questionDescriptionOptional": "وصف السؤال (اختياري)",
-  "app.components.formBuilder.questionLogicHelperTextDefault": "إذا لم يُضاف أساس منطقي إلى إجابة، فسيتبع النموذج مساره العادي. إذا أضيف أساس منطقي إلى سؤال، فسيصبح مطلوبًا بشكل افتراضي. لمزيد من المعلومات، تفضل بزيارة {supportPageLink}",
   "app.components.formBuilder.questionTitle": "عنوان السؤال",
   "app.components.formBuilder.randomize": "عشوائية",
   "app.components.formBuilder.randomizeToolTip": "سيتم ترتيب الإجابات بشكل عشوائي لكل مستخدم",

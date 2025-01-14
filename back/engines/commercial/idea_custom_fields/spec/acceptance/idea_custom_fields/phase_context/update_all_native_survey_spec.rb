@@ -399,6 +399,62 @@ resource 'Idea Custom Fields' do
         })
       end
 
+      example 'Update select field with logic' do
+        field_to_update = create(:custom_field_select, :with_options, resource: custom_form)
+        request = {
+          custom_fields: [
+            {
+              input_type: 'page',
+              page_layout: 'default'
+            },
+            {
+              id: field_to_update.id,
+              title_multiloc: { 'en' => 'Select a value' },
+              description_multiloc: { 'en' => 'Description of question' },
+              required: true,
+              logic: {
+                rules: [
+                  {
+                    if: 'any_other_answer',
+                    goto_page_id: 'survey_end'
+                  }
+                ]
+              },
+              enabled: true
+            }
+          ]
+        }
+        do_request request
+
+        assert_status 200
+        json_response = json_parse(response_body)
+        expect(json_response[:data].size).to eq 2
+        expect(json_response[:data][1]).to match({
+          attributes: {
+            code: nil,
+            created_at: an_instance_of(String),
+            description_multiloc: { en: 'Description of question' },
+            dropdown_layout: false,
+            enabled: true,
+            input_type: 'select',
+            key: an_instance_of(String),
+            ordering: 1,
+            required: true,
+            title_multiloc: { en: 'Select a value' },
+            updated_at: an_instance_of(String),
+            logic: { rules: [{
+              if: 'any_other_answer',
+              goto_page_id: 'survey_end'
+            }] },
+            random_option_ordering: false,
+            constraints: {}
+          },
+          id: an_instance_of(String),
+          relationships: { options: { data: an_instance_of(Array) } },
+          type: 'custom_field'
+        })
+      end
+
       context 'Update custom field options with images' do
         let!(:page) { create(:custom_field_page, resource: custom_form) }
         let!(:field) { create(:custom_field_multiselect_image, resource: custom_form) }

@@ -15,6 +15,7 @@ import {
   Scopable,
   composeWithUi,
   resolveData,
+  JsonSchema,
 } from '@jsonforms/core';
 import Ajv from 'ajv';
 import { has } from 'lodash-es';
@@ -73,6 +74,30 @@ const getConditionScope = (condition: Scopable, path: string): string => {
   return composeWithUi(condition, path);
 };
 
+/**
+ * Validates a schema condition.
+ * Handles both single values and arrays of values.
+ *
+ * @param value - The resolved value to validate (single or array).
+ * @param schema - The JSON schema to validate against.
+ * @param ajv - The AJV instance for validation.
+ * @returns {boolean} - True if the value or any array item matches the schema.
+ */
+const validateSchemaCondition = (
+  value: any,
+  schema: JsonSchema,
+  ajv: Ajv
+): boolean => {
+  if (Array.isArray(value)) {
+    // For arrays, check if at least one element passes validation. Important for multi-select and image-select
+    return value.some((val) => ajv.validate(schema, val));
+  } else if (schema.enum?.includes('no_answer') && value === undefined) {
+    return true;
+  }
+
+  return ajv.validate(schema, value);
+};
+
 const evaluateCondition = (
   data: any,
   condition: Condition,
@@ -93,8 +118,9 @@ const evaluateCondition = (
     const value = resolveData(data, getConditionScope(condition, path));
     return value === condition.expectedValue;
   } else if (isSchemaCondition(condition)) {
+    // Schema condition: validates the resolved value(s) against the schema
     const value = resolveData(data, getConditionScope(condition, path));
-    return ajv.validate(condition.schema, value);
+    return validateSchemaCondition(value, condition.schema, ajv);
   } else {
     // unknown condition
     return true;

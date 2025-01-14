@@ -742,7 +742,6 @@
   "app.components.formBuilder.question": "Fro",
   "app.components.formBuilder.questionCannotBeDeleted": "Dës Fro kann net geläscht ginn.",
   "app.components.formBuilder.questionDescriptionOptional": "Froebeschreiwung (optionell)",
-  "app.components.formBuilder.questionLogicHelperTextDefault": "Wann der Äntwert keng Logik bäigefüügt ass, gëllt deen normalen Oflaf fir de Formulaire. Duerch d’Bäifüge vun enger Logik, gëtt se standardméisseg erfuerderlech. Weider Informatioune fannt Dir op {supportPageLink}",
   "app.components.formBuilder.questionTitle": "Froen-Titel",
   "app.components.formBuilder.randomize": "Randomiséieren",
   "app.components.formBuilder.randomizeToolTip": "D'Uerdnung vun den Äntwerten gëtt pro Benotzer zoufälleg",
