@@ -2,8 +2,10 @@ import React, { useState } from 'react';
 
 import {
   Box,
+  Button,
   Icon,
   IOption,
+  Label,
   Select,
   Text,
 } from '@citizenlab/cl2-component-library';
@@ -19,27 +21,34 @@ import {
 import { DragAndDropResult } from 'components/FormBuilder/edit/utils';
 import { FormLabel } from 'components/UI/FormComponents';
 
+import { ScreenReaderOnly } from 'utils/a11y';
+import { useIntl } from 'utils/cl-intl';
 import { getLabel, sanitizeForClassname } from 'utils/JSONFormUtils';
 
 import ErrorDisplay from '../ErrorDisplay';
-import VerificationIcon from '../VerificationIcon';
 
 import { getOptions, getSubtextElement } from './controlUtils';
+import messages from './messages';
 
 const StyledSelect = styled(Select)`
   min-width: 52px;
   margin-right: 12px;
 
   select {
-    padding: 4px !important;
+    padding: 4px;
     border: solid 1px ${(props) => props.theme.colors.tenantPrimary};
     color: ${(props) => props.theme.colors.tenantPrimary};
   }
 
   svg {
     fill: ${(props) => props.theme.colors.tenantPrimary} !important;
-    width: 16px !important;
+    width: 16px;
   }
+`;
+
+const Ul = styled.ul`
+  padding: 0;
+  list-style-type: none;
 `;
 
 const RankingControl = ({
@@ -51,35 +60,30 @@ const RankingControl = ({
   uischema,
   required,
   id,
-  visible,
 }: ControlProps) => {
   const theme = useTheme();
+  const { formatMessage } = useIntl();
   const [didBlur, setDidBlur] = useState(false);
 
-  // Generate the options:
-  // If form data present, generate array of options in that ranking order.
-  // Otherwise, use the option order from the JSON schema.
+  // If form data present, get options in that ranking order.
+  // Otherwise, get option order from the JSON schema.
   const optionsFromSchema = getOptions(schema, 'ranking');
   const optionsFromData = data?.map((optionKey: string) => {
-    return optionsFromSchema.find(
+    return optionsFromSchema?.find(
       (option: IOption) => option.value === optionKey
     );
   });
-  const [options, setOptions] = useState(
-    data ? optionsFromData : optionsFromSchema
-  );
 
-  if (!visible) {
-    return null;
-  }
+  const options = optionsFromData || optionsFromSchema;
 
   // updateData: Function to update the form data with a specific option order.
-  const updateData = (newOptionOrder: IOption[]) => {
-    setOptions(newOptionOrder);
+  const updateData = (newOptionOrder: IOption[] | undefined) => {
     handleChange(
       path,
-      newOptionOrder.map((option: IOption) => option.value) // We only store array of keys in the form data
+      // In form data we only store an array of option keys
+      newOptionOrder?.map((option: IOption) => option.value)
     );
+    setDidBlur(true);
   };
 
   // reorderFieldsAfterDrag: Function to reorder and save the options after a drag and drop.
@@ -93,25 +97,24 @@ const RankingControl = ({
     moveOptionInArray(sourceIndex, destinationIndex);
   };
 
-  // getIndexOfOption: Function to get the index of a specific option in the current options array.
-  const getIndexOfOption = (currentOption: IOption) => {
-    return (
-      options.findIndex(
-        (option: IOption) => option.value === currentOption.value
-      ) + 1
-    );
+  // getRankOfOption: Function to get the rank of a specific option in the current options array.
+  const getRankOfOption = (currentOption: IOption) => {
+    return data
+      ? options.findIndex(
+          (option: IOption) => option.value === currentOption.value
+        ) + 1
+      : '';
   };
 
   // moveOptionInArray: Function to move an option in the array to a new index & update the form data.
   const moveOptionInArray = (sourceIndex: number, destinationIndex: number) => {
-    const newOptions = options;
-    const [removed] = newOptions.splice(sourceIndex, 1);
-    newOptions.splice(destinationIndex, 0, removed);
-    updateData(newOptions);
+    const [removed] = options.splice(sourceIndex, 1);
+    options.splice(destinationIndex, 0, removed);
+    updateData(options);
   };
 
-  // selectDropdownOptions: For the select dropdown, generate the index number options.
-  const selectDropdownOptions = options.map(
+  // rankDropdownOptions: For the select dropdown, generate the rank number options.
+  const rankDropdownOptions = options.map(
     (_option: IOption, index: number) => ({
       value: index + 1,
       label: `${index + 1}`,
@@ -126,73 +129,107 @@ const RankingControl = ({
         optional={!required}
         subtextValue={getSubtextElement(uischema.options?.description)}
         subtextSupportsHtml
+        id={`ranking-question-label-${id}`}
       />
-      <Box display="flex" flexDirection="row" overflow="visible">
+      <Box display="flex" flexDirection="row" flexGrow={1}>
         <Box flexGrow={1}>
           <DragAndDrop
             onDragEnd={(result: DragAndDropResult) => {
               reorderFieldsAfterDrag(result);
-              setDidBlur(true);
             }}
           >
             <Drop id="droppable" type="rankOptions">
-              {options.map((option: IOption, index: number) => (
-                <Drag
-                  key={option.value}
-                  id={option.value}
-                  index={index}
-                  useBorder={false}
-                >
-                  <Box
-                    style={{ cursor: 'grab' }}
-                    mb="12px"
-                    background={theme.colors.tenantPrimaryLighten95}
-                    borderRadius="3px"
-                    border={`1px solid ${theme.colors.tenantPrimary}`}
-                  >
-                    <Box
-                      padding="18px 20px 18px 20px"
-                      display="flex"
-                      justifyContent="space-between"
+              <Ul aria-labelledby={`ranking-question-label-${id}`}>
+                {options.map((option: IOption, index: number) => (
+                  <li key={option.value}>
+                    <Drag
+                      index={index}
+                      useBorder={false}
+                      id={`ranking-item-${option.value}`}
                     >
-                      <Box display="flex">
-                        <StyledSelect
-                          options={selectDropdownOptions}
-                          value={getIndexOfOption(option)}
-                          onChange={(selectedOption) => {
-                            const newIndex = selectedOption.value - 1;
-                            moveOptionInArray(index, newIndex);
-                            setDidBlur(true);
-                          }}
-                        />
-
-                        <Text
-                          maxWidth="80%"
-                          my="auto"
-                          color="tenantPrimary"
-                          p="0px"
-                          m="0px"
+                      <Box
+                        style={{ cursor: 'grab' }}
+                        mb="12px"
+                        background={theme.colors.tenantPrimaryLighten95}
+                        borderRadius={theme.borderRadius}
+                        border={`1px solid ${theme.colors.tenantPrimary}`}
+                      >
+                        <Box
+                          padding="18px 20px 18px 20px"
+                          display="flex"
+                          justifyContent="space-between"
                         >
-                          {option.label}
-                        </Text>
-                      </Box>
+                          <Box display="flex">
+                            <ScreenReaderOnly>
+                              <Label htmlFor={`select-${option.value}`}>
+                                {`${option.label}. ${
+                                  getRankOfOption(option) === ''
+                                    ? formatMessage(messages.noRankSelected)
+                                    : formatMessage(messages.currentRank)
+                                }`}
+                              </Label>
+                            </ScreenReaderOnly>
 
-                      <Box flexShrink={0} my="auto">
-                        <Icon
-                          height="18px"
-                          name="drag-handle"
-                          fill={theme.colors.tenantPrimary}
-                        />
+                            <StyledSelect
+                              options={rankDropdownOptions}
+                              value={getRankOfOption(option)}
+                              onChange={(selectedOption) => {
+                                moveOptionInArray(
+                                  index,
+                                  selectedOption.value - 1
+                                );
+
+                                // For a11y, focus the list item again after reordering.
+                                (
+                                  document.querySelector(
+                                    `[data-rbd-drag-handle-draggable-id="ranking-item-${option.value}"]`
+                                  ) as HTMLElement
+                                ).focus();
+                              }}
+                            />
+                            <Text
+                              maxWidth="80%"
+                              my="auto"
+                              color="tenantPrimary"
+                              p="0px"
+                              m="0px"
+                              aria-hidden={true}
+                            >
+                              {option.label}
+                            </Text>
+                          </Box>
+
+                          <Box flexShrink={0} my="auto">
+                            <Icon
+                              height="18px"
+                              name="drag-handle"
+                              fill={theme.colors.tenantPrimary}
+                            />
+                          </Box>
+                        </Box>
                       </Box>
-                    </Box>
-                  </Box>
-                </Drag>
-              ))}
+                    </Drag>
+                  </li>
+                ))}
+              </Ul>
             </Drop>
           </DragAndDrop>
+          {data !== undefined && (
+            <Box display="flex">
+              <Button
+                p="0px"
+                buttonStyle="text"
+                textColor={theme.colors.tenantPrimary}
+                textDecoration="underline"
+                text={formatMessage(messages.clearAll)}
+                onClick={() => {
+                  updateData(undefined);
+                  setDidBlur(true);
+                }}
+              />
+            </Box>
+          )}
         </Box>
-
-        <VerificationIcon show={uischema.options?.verificationLocked} />
       </Box>
       <Box mt="4px">
         <ErrorDisplay
