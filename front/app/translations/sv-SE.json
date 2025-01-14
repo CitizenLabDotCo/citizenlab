@@ -759,6 +759,7 @@
   "app.components.formBuilder.shortAnswer": "Kort svar",
   "app.components.formBuilder.showResponseToUsersToggleLabel": "Visa svar för användare",
   "app.components.formBuilder.singleChoice": "Ett enda val",
+  "app.components.formBuilder.staleDataErrorMessage2": "Det har uppstått ett problem. Det här inmatningsformuläret har nyligen sparats någon annanstans. Det kan bero på att du eller någon annan användare har det öppet för redigering i ett annat webbläsarfönster. Uppdatera sidan för att få det senaste formuläret och gör sedan dina ändringar igen.",
   "app.components.formBuilder.supportArticleLinkText": "denna sida",
   "app.components.formBuilder.tags": "Ämnen",
   "app.components.formBuilder.title": "Titel",
@@ -965,7 +966,7 @@
   "app.containers.AccessibilityStatement.feedbackProcessTitle": "Återkopplingsprocess",
   "app.containers.AccessibilityStatement.govocalAddress2022": "Boulevard Pachéco 34, 1000 Brussels, Belgien",
   "app.containers.AccessibilityStatement.headTitle": "Tillgänglighetsutlåtande | {orgName}",
-  "app.containers.AccessibilityStatement.intro2022": "{citizenLabLink} har åtagit sig att tillhandahålla en plattform som är tillgänglig för alla användare, oavsett teknik eller förmåga. Nuvarande relevanta tillgänglighetsstandarder följs i vårt pågående arbete med att maximera våra plattformars tillgänglighet och användbarhet för alla användare.",
+  "app.containers.AccessibilityStatement.intro2022": "{goVocalLink} har åtagit sig att tillhandahålla en plattform som är tillgänglig för alla användare, oavsett teknik eller förmåga. Nuvarande relevanta tillgänglighetsstandarder följs i vårt pågående arbete med att maximera våra plattformars tillgänglighet och användbarhet för alla användare.",
   "app.containers.AccessibilityStatement.mapping": "Kartläggning",
   "app.containers.AccessibilityStatement.mapping_1": "Kartor på plattformen uppfyller delvis tillgänglighetsstandarder. Kartans omfattning, zoom och UI-widgets kan styras med hjälp av ett tangentbord när du visar kartor. Administratörer kan också konfigurera stilen för kartlager i backoffice eller med hjälp av Esri-integrationen för att skapa mer tillgängliga färgpaletter och symbologi. Att använda olika linje- eller polygonstilar (t.ex. streckade linjer) hjälper också till att skilja kartlager när det är möjligt, och även om sådan styling inte kan konfigureras i vår plattform för närvarande kan den konfigureras om du använder kartor med Esri-integrationen.",
   "app.containers.AccessibilityStatement.mapping_2": "Kartorna i plattformen är inte fullt tillgängliga eftersom de inte presenterar baskartor, kartlager eller trender i data på ett hörbart sätt för användare som använder skärmläsare. Fullt tillgängliga kartor skulle behöva presentera kartlagren på ett hörbart sätt och beskriva relevanta trender i data. Dessutom är kartritning med linjer och polygoner i undersökningar inte tillgänglig eftersom former inte kan ritas med hjälp av ett tangentbord. Alternativa inmatningsmetoder är inte tillgängliga i nuläget på grund av teknisk komplexitet.",
