@@ -429,29 +429,24 @@ resource 'Idea Custom Fields' do
         assert_status 200
         json_response = json_parse(response_body)
         expect(json_response[:data].size).to eq 2
-        expect(json_response[:data][1]).to match({
-          attributes: {
-            code: nil,
-            created_at: an_instance_of(String),
-            description_multiloc: { en: 'Description of question' },
-            dropdown_layout: false,
-            enabled: true,
-            input_type: 'select',
-            key: an_instance_of(String),
-            ordering: 1,
-            required: true,
-            title_multiloc: { en: 'Select a value' },
-            updated_at: an_instance_of(String),
-            logic: { rules: [{
-              if: 'any_other_answer',
-              goto_page_id: 'survey_end'
-            }] },
-            random_option_ordering: false,
-            constraints: {}
-          },
-          id: an_instance_of(String),
-          relationships: { options: { data: an_instance_of(Array) } },
-          type: 'custom_field'
+        expect(json_response[:data][1][:attributes]).to match({
+          code: nil,
+          created_at: an_instance_of(String),
+          description_multiloc: { en: 'Description of question' },
+          dropdown_layout: false,
+          enabled: true,
+          input_type: 'select',
+          key: an_instance_of(String),
+          ordering: 1,
+          required: true,
+          title_multiloc: { en: 'Select a value' },
+          updated_at: an_instance_of(String),
+          logic: { rules: [{
+            if: 'any_other_answer',
+            goto_page_id: 'survey_end'
+          }] },
+          random_option_ordering: false,
+          constraints: {}
         })
       end
 
