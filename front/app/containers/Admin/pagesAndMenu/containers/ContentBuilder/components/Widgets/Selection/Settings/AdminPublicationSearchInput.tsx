@@ -69,16 +69,14 @@ const AdminPublicationSearchInput = ({
         isDisabled={!adminPublicationIds || isFetching}
         options={options}
         getOptionValue={getOptionId}
-        getOptionLabel={(option) =>
-          (
-            <OptionLabel
-              option={option}
-              hasNextPage={hasNextPage}
-              isLoading={isFetchingNextPage}
-              fetchNextPage={fetchNextPage}
-            />
-          ) as any
-        }
+        getOptionLabel={(option) => (
+          <OptionLabel
+            option={option}
+            hasNextPage={hasNextPage}
+            isLoading={isFetchingNextPage}
+            fetchNextPage={fetchNextPage}
+          />
+        )}
         menuPlacement="auto"
         styles={selectStyles(theme)}
         filterOption={() => true}
@@ -90,7 +88,7 @@ const AdminPublicationSearchInput = ({
         }}
         onChange={onChange}
         closeMenuOnScroll={false}
-        closeMenuOnSelect={false}
+        closeMenuOnSelect
       />
     </Box>
   );
