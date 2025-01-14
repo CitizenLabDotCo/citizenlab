@@ -37,7 +37,7 @@ import projectMessages from 'containers/Admin/projects/project/general/messages'
 
 import { Section, SectionTitle, SectionField } from 'components/admin/Section';
 import SubmitWrapper from 'components/admin/SubmitWrapper';
-import Button from 'components/UI/Button';
+import Button from 'components/UI/ButtonWithLink';
 import ErrorComponent from 'components/UI/Error';
 import FileUploader from 'components/UI/FileUploader';
 import GoBackButton from 'components/UI/GoBackButton';

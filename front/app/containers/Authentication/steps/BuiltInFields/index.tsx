@@ -18,7 +18,7 @@ import {
 
 import Input from 'components/HookForm/Input';
 import PasswordInput from 'components/HookForm/PasswordInput';
-import Button from 'components/UI/Button';
+import Button from 'components/UI/ButtonWithLink';
 import { DEFAULT_MINIMUM_PASSWORD_LENGTH } from 'components/UI/PasswordInput';
 
 import { trackEventByName } from 'utils/analytics';

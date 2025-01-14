@@ -21,7 +21,7 @@ interface ButtonContainerProps extends ComponentLibraryButtonContainerProps {
   'data-cy'?: string;
 }
 
-const ButtonWrapper = ({
+const ButtonWithLink = ({
   linkTo,
   openLinkInNewTab,
   disabled,
@@ -67,6 +67,6 @@ const ButtonWrapper = ({
   return <Button as={link} disabled={disabled} {...rest} />;
 };
 
-export default ButtonWrapper;
+export default ButtonWithLink;
 
 export type { Props, ButtonContainerProps, ButtonStyles, ButtonProps };
