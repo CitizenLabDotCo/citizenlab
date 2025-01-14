@@ -227,70 +227,116 @@ export const appLocalesMomentPairs = {
   'ur-PK': 'ur',
 };
 
+/**
+ * Dynamically imports the Moment.js locale file for the given locale name.
+ *
+ * This function uses `@ts-ignore` as a workaround for TypeScript's lack of built-in type definitions
+ * for Moment.js locale files under 'moment/dist/locale/*'. By using dynamic imports, we avoid bundling
+ * all locales at build time, reducing the application size and improving performance.
+ *
+ * Note:
+ * - Vite has limitations with dynamic imports for files in node_modules. This implementation addresses
+ *   those limitations by explicitly mapping locale names to their corresponding import paths.
+ *
+ * Reference:
+ * - Vite issue: https://github.com/vitejs/vite/issues/14102
+ *
+ */
 export async function localeGetter(localeName: string) {
   switch (localeName) {
     case 'ar-ma':
+      // @ts-ignore
       return await import('moment/dist/locale/ar-ma');
     case 'ar-sa':
+      // @ts-ignore
       return await import('moment/dist/locale/ar-sa');
     case 'ca':
+      // @ts-ignore
       return await import('moment/dist/locale/ca');
     case 'cy':
+      // @ts-ignore
       return await import('moment/dist/locale/cy');
     case 'da':
+      // @ts-ignore
       return await import('moment/dist/locale/da');
     case 'de':
+      // @ts-ignore
       return await import('moment/dist/locale/de');
     case 'el':
+      // @ts-ignore
       return await import('moment/dist/locale/el');
     case 'en-ca':
+      // @ts-ignore
       return await import('moment/dist/locale/en-ca');
     case 'en-gb':
+      // @ts-ignore
       return await import('moment/dist/locale/en-gb');
     case 'en-ie':
+      // @ts-ignore
       return await import('moment/dist/locale/en-ie');
     case 'es':
+      // @ts-ignore
       return await import('moment/dist/locale/es');
     case 'fi':
+      // @ts-ignore
       return await import('moment/dist/locale/fi');
     case 'fr':
+      // @ts-ignore
       return await import('moment/dist/locale/fr');
     case 'hr':
+      // @ts-ignore
       return await import('moment/dist/locale/hr');
     case 'hu':
+      // @ts-ignore
       return await import('moment/dist/locale/hu');
     case 'it':
+      // @ts-ignore
       return await import('moment/dist/locale/it');
     case 'lb':
+      // @ts-ignore
       return await import('moment/dist/locale/lb');
     case 'lt':
+      // @ts-ignore
       return await import('moment/dist/locale/lt');
     case 'lv':
+      // @ts-ignore
       return await import('moment/dist/locale/lv');
     case 'mi':
+      // @ts-ignore
       return await import('moment/dist/locale/mi');
     case 'nb':
+      // @ts-ignore
       return await import('moment/dist/locale/nb');
     case 'nl-be':
+      // @ts-ignore
       return await import('moment/dist/locale/nl-be');
     case 'nl':
+      // @ts-ignore
       return await import('moment/dist/locale/nl');
     case 'pa-in':
+      // @ts-ignore
       return await import('moment/dist/locale/pa-in');
     case 'pl':
+      // @ts-ignore
       return await import('moment/dist/locale/pl');
     case 'pt-br':
+      // @ts-ignore
       return await import('moment/dist/locale/pt-br');
     case 'ro':
+      // @ts-ignore
       return await import('moment/dist/locale/ro');
     case 'sr':
       // You mapped both 'sr-Latn' and 'sr-SP' to 'sr'
+      // @ts-ignore
       return await import('moment/dist/locale/sr');
     case 'sv':
+      // @ts-ignore
       return await import('moment/dist/locale/sv');
     case 'tr':
+      // @ts-ignore
       return await import('moment/dist/locale/tr');
     case 'ur':
+      // @ts-ignore
       return await import('moment/dist/locale/ur');
     default:
       console.warn(`No matching locale import for: ${localeName}`);
