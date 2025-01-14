@@ -26,6 +26,9 @@ import MultilocInputLayout, {
 import MultiSelectControl, {
   multiSelectControlTester,
 } from 'components/Form/Components/Controls/MultiSelectControl';
+import RankingControl, {
+  rankingControlTester,
+} from 'components/Form/Components/Controls/RankingControl';
 import SingleSelectControl, {
   singleSelectControlTester,
 } from 'components/Form/Components/Controls/SingleSelectControl';
@@ -115,6 +118,8 @@ export {
   MultiSelectControl,
   multiSelectControlTester,
   MultiSelectCheckboxControl,
+  rankingControlTester,
+  RankingControl,
   multiSelectCheckboxControlTester,
   ImageMultichoiceControl,
   imageMultichoiceControlTester,
