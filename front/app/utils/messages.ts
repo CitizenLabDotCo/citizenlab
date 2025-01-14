@@ -239,9 +239,9 @@ export default defineMessages({
     id: 'app.containers.Projects.noPastEvents',
     defaultMessage: 'No past events to display',
   },
-  youCanRetrace: {
-    id: 'app.utils.Promessagesjects.youCanRetrace',
+  ifYouLaterDecide: {
+    id: 'app.utils.Promessagesjects.ifYouLaterDecide',
     defaultMessage:
-      'You can retrace your submission by showing this unique identifier:',
+      'If you later decide that you want your response to be removed, please contact us with the following unique identifier:',
   },
 });
