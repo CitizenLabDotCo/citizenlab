@@ -2071,6 +2071,7 @@
   "app.utils.IdeasNewPage.proposalFormTitle": "Ychwanegu cynnig newydd",
   "app.utils.IdeasNewPage.questionFormTitle": "Ychwanegu cwestiwn newydd",
   "app.utils.IdeasNewPage.surveyTitle": "Arolwg",
+  "app.utils.Promessagesjects.ifYouLaterDecide": "Os byddwch yn penderfynu’n ddiweddarach eich bod am i’ch ymateb gael ei ddileu, cysylltwch â ni gyda’r dynodwr unigryw canlynol:",
   "app.utils.actionDescriptors.attendingEventMissingRequirements": "Rhaid i chi gwblhau eich proffil i fynychu'r digwyddiad hwn.",
   "app.utils.actionDescriptors.attendingEventNotInGroup": "Nid ydych yn bodloni'r gofynion i fynychu'r digwyddiad hwn.",
   "app.utils.actionDescriptors.attendingEventNotPermitted": "Ni chaniateir i chi fynychu'r digwyddiad hwn.",
