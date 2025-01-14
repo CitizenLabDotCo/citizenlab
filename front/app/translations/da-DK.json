@@ -2071,6 +2071,7 @@
   "app.utils.IdeasNewPage.proposalFormTitle": "Tilføj nyt forslag",
   "app.utils.IdeasNewPage.questionFormTitle": "Tilføj nyt spørgsmål",
   "app.utils.IdeasNewPage.surveyTitle": "Spørgeundersøgelse",
+  "app.utils.Promessagesjects.ifYouLaterDecide": "Hvis du senere beslutter, at du vil have dit svar fjernet, bedes du kontakte os med følgende unikke identifikation:",
   "app.utils.actionDescriptors.attendingEventMissingRequirements": "Du skal udfylde din profil for at deltage i dette arrangement.",
   "app.utils.actionDescriptors.attendingEventNotInGroup": "Du opfylder ikke kravene til at deltage i dette arrangement.",
   "app.utils.actionDescriptors.attendingEventNotPermitted": "Du må ikke deltage i dette arrangement.",
