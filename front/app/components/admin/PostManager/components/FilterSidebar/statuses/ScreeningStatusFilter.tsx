@@ -2,7 +2,6 @@ import React from 'react';
 
 import { IconTooltip, Box, Tooltip } from '@citizenlab/cl2-component-library';
 import ColorIndicator from 'component-library/components/ColorIndicator';
-import { useDrop } from 'react-dnd';
 import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 
@@ -50,24 +49,9 @@ const ScreeningStatusFilter = ({ status, active, onClick, type }: Props) => {
     name: preScreeningFeatureFlag,
   });
 
-  const [{ canDrop, isOver }, drop] = useDrop({
-    accept: 'IDEA',
-    drop: () => ({
-      type: 'status',
-      id: status.id,
-    }),
-    collect: (monitor) => ({
-      isOver: monitor.isOver(),
-      canDrop: monitor.canDrop(),
-    }),
-  });
-
   // Do not show the Screening status in the general input manager,
   // as this filter is configured at a project level.
   if (type === 'AllIdeas') return null;
-
-  const showAutomaticStatusTooltip =
-    status.attributes.can_manually_transition_to === false;
 
   const phasePrescreeningEnabled =
     phase?.data.attributes.prescreening_enabled === true;
@@ -89,7 +73,8 @@ const ScreeningStatusFilter = ({ status, active, onClick, type }: Props) => {
     showPrescreeningUpsellTooltip;
 
   return (
-    <div ref={drop}>
+    // Div wrapping is needed to make the filter take full width.
+    <div>
       <Tooltip
         content={
           // We can't have both tooltips at the same time: if the upsell tooltip is shown,
@@ -111,7 +96,7 @@ const ScreeningStatusFilter = ({ status, active, onClick, type }: Props) => {
         <Box>
           <StatusButton
             onClick={onClick}
-            active={active || (isOver && canDrop)}
+            active={active}
             disabled={prescreeningButtonIsDisabled}
           >
             <Box
@@ -125,17 +110,15 @@ const ScreeningStatusFilter = ({ status, active, onClick, type }: Props) => {
                 <StatusText>
                   <T value={status.attributes.title_multiloc} />
                 </StatusText>
-                {showAutomaticStatusTooltip && (
-                  <IconTooltip
-                    theme="light"
-                    iconSize="16px"
-                    content={
-                      <FormattedMessage
-                        {...messages.automatedStatusTooltipText}
-                      />
-                    }
-                  />
-                )}
+                <IconTooltip
+                  theme="light"
+                  iconSize="16px"
+                  content={
+                    <FormattedMessage
+                      {...messages.automatedStatusTooltipText}
+                    />
+                  }
+                />
               </Box>
             </Box>
           </StatusButton>
