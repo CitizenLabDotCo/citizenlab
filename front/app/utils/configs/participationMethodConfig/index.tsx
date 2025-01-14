@@ -248,7 +248,7 @@ const nativeSurveyConfig: ParticipationMethodConfig = {
         {ideaId && showIdeaId && (
           <>
             <Text textAlign="center" color="coolGrey600">
-              <FormattedMessage {...messages.youCanRetrace} />
+              <FormattedMessage {...messages.ifYouLaterDecide} />
             </Text>
             <Text textAlign="center" color="tenantPrimary" fontWeight="bold">
               {ideaId}
