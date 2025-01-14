@@ -261,7 +261,7 @@ fr:
       yesterday: Hier
     comment_on_idea_you_follow:
       cta_reply_to: 'Répondre à %{commentAuthor}'
-      event_description: '%{authorNameFull} a réagi à votre idée « %{ideaTitle} ». Cliquez sur le bouton ci-dessous pour continuer la conversation avec %{authorName}.'
+      event_description: '%{authorNameFull} a réagi à l''idée « %{ideaTitle} ». Cliquez sur le bouton ci-dessous pour continuer la conversation avec %{authorName}.'
       main_header: '%{authorName} a commenté une idée que vous suivez'
       subject: 'Il y a un nouveau commentaire sur une idée que vous suivez'
       preheader: '%{authorName} a publié un commentaire sur une idée pour %{organizationName}'
@@ -343,7 +343,7 @@ fr:
       main_header: '%{post}" a un nouveau commentaire interne'
       preheader: '%{post}" a un nouveau commentaire interne'
     official_feedback_on_idea_you_follow:
-      header_message: '"%{officialName} a publié un message officiel concernant l''idée « %{ideaTitle} ». Cliquez sur le bouton ci-dessous pour poursuivre la conversation avec %{officialName}.'
+      header_message: '%{officialName} a publié un message officiel au sujet de l''idée « %{ideaTitle} ». Cliquez sur le bouton ci-dessous pour continuer la conversation avec %{officialName}.'
       header_title: 'Il y a une mise à jour sur une idée que vous suivez'
       subject: 'Une idée que vous suivez a reçu une mise à jour officielle sur la plateforme de %{organizationName}'
       preheader: 'Il y a une mise à jour sur une idée que vous suivez'
