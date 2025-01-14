@@ -55,6 +55,17 @@ const Logic = ({
     no_answer: formatMessage(messages.logicNoAnswer),
   };
 
+  const findNextPageAfterCurrentPage = () => {
+    const index = formCustomFields.findIndex((item) => item.id === field.id);
+    if (index !== -1) {
+      const nextPage = formCustomFields
+        .slice(index + 1)
+        .find((item) => item.input_type === 'page');
+      if (nextPage?.id) return nextPage.id; // Temp ID needed here?
+    }
+    return 'survey_end';
+  };
+
   return (
     <Box>
       {['select', 'multiselect', 'multiselect_image'].includes(
@@ -128,11 +139,12 @@ const Logic = ({
             field.logic.next_page_id
           )}
           targetPage={getTitleFromPageId(
-            field.logic.next_page_id,
+            field.logic.next_page_id || findNextPageAfterCurrentPage(),
             formEndMessage,
             pageMessage,
             fieldNumbers
           )}
+          isDefaultPage={!field.logic.next_page_id}
         />
       )}
       {catchAllLogicRules.map((rule) => {

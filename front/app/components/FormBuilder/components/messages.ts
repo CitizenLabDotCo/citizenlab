@@ -298,4 +298,9 @@ export default defineMessages({
     id: 'app.components.formBuilder.logicPanelNoAnswer',
     defaultMessage: 'If not answered',
   },
+  pageRuleTooltip: {
+    id: 'app.components.formBuilder.pageRuleTooltip',
+    defaultMessage:
+      'This is the default next page. You can change this in the logic tab of the page configuration.',
+  },
 });
