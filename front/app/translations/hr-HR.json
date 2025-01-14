@@ -2071,6 +2071,7 @@
   "app.utils.IdeasNewPage.proposalFormTitle": "Dodajte novi prijedlog",
   "app.utils.IdeasNewPage.questionFormTitle": "Dodaj novo pitanje",
   "app.utils.IdeasNewPage.surveyTitle": "Upitnik",
+  "app.utils.Promessagesjects.ifYouLaterDecide": "Ako kasnije odlučite da želite da se vaš odgovor ukloni, kontaktirajte nas sa sljedećim jedinstvenim identifikatorom:",
   "app.utils.actionDescriptors.attendingEventMissingRequirements": "Morate ispuniti svoj profil da biste prisustvovali ovom događaju.",
   "app.utils.actionDescriptors.attendingEventNotInGroup": "Ne ispunjavate uvjete za prisustvovanje ovom događaju.",
   "app.utils.actionDescriptors.attendingEventNotPermitted": "Nije vam dopušteno prisustvovati ovom događaju.",

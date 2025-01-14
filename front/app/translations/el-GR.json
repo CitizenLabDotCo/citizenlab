@@ -2071,6 +2071,7 @@
   "app.utils.IdeasNewPage.proposalFormTitle": "Προσθήκη νέας πρότασης",
   "app.utils.IdeasNewPage.questionFormTitle": "Προσθήκη νέας ερώτησης",
   "app.utils.IdeasNewPage.surveyTitle": "Έρευνα",
+  "app.utils.Promessagesjects.ifYouLaterDecide": "Εάν αργότερα αποφασίσετε ότι θέλετε να αφαιρεθεί η απάντησή σας, παρακαλούμε επικοινωνήστε μαζί μας με το ακόλουθο μοναδικό αναγνωριστικό:",
   "app.utils.actionDescriptors.attendingEventMissingRequirements": "Πρέπει να συμπληρώσετε το προφίλ σας για να παρακολουθήσετε αυτή την εκδήλωση.",
   "app.utils.actionDescriptors.attendingEventNotInGroup": "Δεν πληροίτε τις προϋποθέσεις για να παρακολουθήσετε αυτή την εκδήλωση.",
   "app.utils.actionDescriptors.attendingEventNotPermitted": "Δεν επιτρέπεται να παρευρεθείτε σε αυτή την εκδήλωση.",

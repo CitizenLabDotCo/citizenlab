@@ -2071,6 +2071,7 @@
   "app.utils.IdeasNewPage.proposalFormTitle": "Afegeix una nova proposta",
   "app.utils.IdeasNewPage.questionFormTitle": "Afegiu una pregunta nova",
   "app.utils.IdeasNewPage.surveyTitle": "Enquesta",
+  "app.utils.Promessagesjects.ifYouLaterDecide": "Si més tard decidiu que voleu que s'elimini la vostra resposta, poseu-vos en contacte amb nosaltres amb l'identificador únic següent:",
   "app.utils.actionDescriptors.attendingEventMissingRequirements": "Has d'omplir el teu perfil per assistir a aquest esdeveniment.",
   "app.utils.actionDescriptors.attendingEventNotInGroup": "No compleixes els requisits per assistir a aquest esdeveniment.",
   "app.utils.actionDescriptors.attendingEventNotPermitted": "No teniu permís per assistir a aquest esdeveniment.",
