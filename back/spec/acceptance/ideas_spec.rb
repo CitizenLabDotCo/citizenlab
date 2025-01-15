@@ -358,7 +358,7 @@ resource 'Ideas' do
         expect(question_answer).to eq extra_field_answer
       end
 
-      describe do
+      describe 'Errors' do
         let(:other_idea) { create(:native_survey_response, project: project) }
         let(:id) { other_idea.id }
 
