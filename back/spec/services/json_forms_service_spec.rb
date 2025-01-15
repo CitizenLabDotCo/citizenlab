@@ -132,8 +132,9 @@ describe JsonFormsService do
           create(:custom_field, key: 'field4', input_type: 'multiselect'),
           create(:custom_field, key: 'field5', input_type: 'checkbox'),
           create(:custom_field, key: 'field6', input_type: 'date'),
-          create(:custom_field, key: 'field7', input_type: 'multiline_text', enabled: false, required: true),
-          create(:custom_field, key: 'field8', input_type: 'text', hidden: true, enabled: true)
+          create(:custom_field_ranking, :with_options, key: 'field7'),
+          create(:custom_field, key: 'field8', input_type: 'multiline_text', enabled: false, required: true),
+          create(:custom_field, key: 'field9', input_type: 'text', hidden: true, enabled: true)
         ]
         create(:custom_field_option, key: 'option1', custom_field: fields[2])
         create(:custom_field_option, key: 'option2', custom_field: fields[2])
@@ -201,6 +202,15 @@ describe JsonFormsService do
               description: 'Which councils are you attending in our city?'
             },
             scope: '#/properties/field6'
+          },
+          {
+            type: 'Control',
+            label: 'Rank your favourite means of public transport',
+            options: {
+              input_type: 'ranking',
+              description: 'Which councils are you attending in our city?'
+            },
+            scope: '#/properties/field7'
           }
         ])
       end

@@ -9,7 +9,7 @@ module Export
         @include_private_attributes = phase.pmethod.supports_private_attributes_in_export?
         @participation_method = phase.pmethod
         @value_visitor = Xlsx::ValueVisitor
-        @fields_in_form = IdeaCustomFieldsService.new(participation_method.custom_form).reportable_fields
+        @fields_in_form = IdeaCustomFieldsService.new(participation_method.custom_form).all_fields.filter(&:supports_xlsx_export?)
         @multiloc_service = MultilocService.new(app_configuration: AppConfiguration.instance)
         @url_service = Frontend::UrlService.new
       end

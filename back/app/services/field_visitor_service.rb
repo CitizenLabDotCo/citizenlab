@@ -97,6 +97,10 @@ class FieldVisitorService
     default(field)
   end
 
+  def visit_ranking(field)
+    default(field)
+  end
+
   def visit_page(field)
     default(field)
   end
