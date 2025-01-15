@@ -46,7 +46,8 @@ class WebApi::V1::AdminPublicationsController < ApplicationController
     ids = params[:ids]
 
     visible_not_draft_admin_publications = policy_scope(AdminPublication.includes(:parent)).not_draft
-    admin_publications = admin_publication_filterer.filter(visible_not_draft_admin_publications, params.merge(current_user: current_user, remove_not_allowed_parents: true))
+    admin_publications = admin_publication_filterer.filter(visible_not_draft_admin_publications,
+      params.merge(current_user: current_user, remove_not_allowed_parents: true))
 
     # Performance-wise it is not optimal to break the query-chain like this, but it avoids a conflict
     # between the in_order_of method and SELECT_DISTINCT that can be included elsewhere in the query chain.
