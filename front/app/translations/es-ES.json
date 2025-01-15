@@ -1838,7 +1838,7 @@
   "app.containers.UsersShowPage.projects": "Proyectos",
   "app.containers.UsersShowPage.proposals": "Propuestas",
   "app.containers.UsersShowPage.seePost": "Ver publicación",
-  "app.containers.UsersShowPage.surveyResponses": "Respuestas ({responses})",
+  "app.containers.UsersShowPage.surveyResponses": "({responses}) respuestas ",
   "app.containers.UsersShowPage.topics": "Temas",
   "app.containers.UsersShowPage.tryAgain": "Un error ha ocurrido, por favor inténtalo más tarde.",
   "app.containers.UsersShowPage.userShowPageMetaDescription": "Esta es la página de perfil de {firstName} {lastName} en la plataforma de participación en línea de {orgName}. Esta es una descripción general de todas sus publicaciones.",
