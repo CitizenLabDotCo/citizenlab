@@ -12,7 +12,7 @@ import {
 import * as Sentry from '@sentry/react';
 import GlobalStyle from 'global-styles';
 import 'intersection-observer';
-import { includes } from 'lodash-es';
+import { includes, uniq } from 'lodash-es';
 import 'moment-timezone';
 import moment from 'moment';
 import { useLocation } from 'react-router-dom';
@@ -99,25 +99,7 @@ const App = ({ children }: Props) => {
 
   useEffect(() => {
     const momentLocale = appLocalesMomentPairs[locale] || 'en';
-
-    async function loadMomentLocaleFile(momentLocale: string) {
-      try {
-        // Dynamically import the locale only if it matches the current locale.
-        // This ensures we only load the required locale when needed.
-        // If the locale changes, the appropriate one will be imported in some other code.
-        await localeGetter(momentLocale);
-      } catch (error) {
-        console.error(`Error processing locale: ${locale}`, error);
-      }
-    }
-    // No need to import for English
-    if (momentLocale === 'en') {
-      moment.locale(momentLocale);
-    } else {
-      loadMomentLocaleFile(momentLocale).then(() => {
-        moment.locale(momentLocale);
-      });
-    }
+    moment.locale(momentLocale);
   }, [locale]);
 
   useEffect(() => {
