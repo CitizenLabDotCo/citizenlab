@@ -23,7 +23,7 @@ describe('useDeleteProjectFolderFile', () => {
       wrapper: createQueryClientWrapper(),
     });
 
-    await act(async () => {
+    act(() => {
       result.current.mutate({
         projectFolderId: 'folderId',
         fileId: 'fileId',

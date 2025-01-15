@@ -24,7 +24,7 @@ describe('useAddProjectFolderFile', () => {
       wrapper: createQueryClientWrapper(),
     });
 
-    await act(async () => {
+    act(() => {
       result.current.mutate({
         projectFolderId: 'projectFolderId',
         file: 'file base 64',
