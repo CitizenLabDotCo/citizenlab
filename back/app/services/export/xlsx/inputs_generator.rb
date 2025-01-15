@@ -4,7 +4,7 @@ module Export
       def generate_inputs_for_phase(phase_id)
         phase = eager_load_phase(phase_id)
         create_stream do |workbook|
-          create_phase_sheet(workbook, phase)
+          generate_phase_sheet(workbook, phase)
         end
       end
 
@@ -17,7 +17,7 @@ module Export
 
       def generate_for_input(input)
         create_stream do |workbook|
-          create_input_sheet(workbook, input)
+          generate_input_sheet(workbook, input)
         end
       end
 
@@ -50,16 +50,16 @@ module Export
         project.phases.each do |phase|
           next if !phase.pmethod.supports_exports?
 
-          create_phase_sheet(workbook, phase)
+          generate_phase_sheet(workbook, phase)
         end
       end
 
-      def create_phase_sheet(workbook, phase)
+      def generate_phase_sheet(workbook, phase)
         inputs = eager_load_inputs(phase.ideas.submitted_or_published)
         generate_sheet(workbook, inputs, phase)
       end
 
-      def create_input_sheet(workbook, input)
+      def generate_input_sheet(workbook, input)
         generate_sheet(workbook, [input], input.creation_phase)
       end
 
