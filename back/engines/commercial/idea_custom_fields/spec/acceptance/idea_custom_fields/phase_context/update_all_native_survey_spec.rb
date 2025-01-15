@@ -220,6 +220,108 @@ resource 'Idea Custom Fields' do
         })
       end
 
+      example 'Add a ranking custom field with options' do
+        request = {
+          custom_fields: [
+            {
+              input_type: 'page',
+              page_layout: 'default'
+            },
+            {
+              input_type: 'ranking',
+              title_multiloc: { en: 'Inserted field' },
+              required: false,
+              enabled: true,
+              random_option_ordering: true,
+              options: [
+                {
+                  title_multiloc: { en: 'Option 1' }
+                },
+                {
+                  title_multiloc: { en: 'Option 2' }
+                }
+              ]
+            }
+          ]
+        }
+        do_request request
+
+        assert_status 200
+        json_response = json_parse response_body
+
+        expect(json_response[:data].size).to eq 2
+        expect(json_response[:data][1]).to match({
+          attributes: {
+            code: nil,
+            created_at: an_instance_of(String),
+            description_multiloc: {},
+            # dropdown_layout: false,
+            enabled: true,
+            input_type: 'ranking',
+            key: Regexp.new('inserted_field'),
+            ordering: 1,
+            required: false,
+            # select_count_enabled: false,
+            # maximum_select_count: nil,
+            # minimum_select_count: nil,
+            title_multiloc: { en: 'Inserted field' },
+            updated_at: an_instance_of(String),
+            logic: {},
+            constraints: {},
+            random_option_ordering: true
+          },
+          id: an_instance_of(String),
+          type: 'custom_field',
+          relationships: {
+            options: {
+              data: [
+                {
+                  id: an_instance_of(String),
+                  type: 'custom_field_option'
+                },
+                {
+                  id: an_instance_of(String),
+                  type: 'custom_field_option'
+                }
+              ]
+            }
+          }
+        })
+        options = CustomField.find(json_response.dig(:data, 1, :id)).options
+        json_option1 = json_response[:included].find do |json_option|
+          json_option[:id] == options.first.id
+        end
+        json_option2 = json_response[:included].find do |json_option|
+          json_option[:id] == options.last.id
+        end
+        expect(json_option1).to match({
+          id: options.first.id,
+          type: 'custom_field_option',
+          attributes: {
+            key: an_instance_of(String),
+            title_multiloc: { en: 'Option 1' },
+            ordering: 0,
+            other: false,
+            created_at: an_instance_of(String),
+            updated_at: an_instance_of(String)
+          },
+          relationships: { image: { data: nil } }
+        })
+        expect(json_option2).to match({
+          id: options.last.id,
+          type: 'custom_field_option',
+          attributes: {
+            key: an_instance_of(String),
+            title_multiloc: { en: 'Option 2' },
+            ordering: 1,
+            other: false,
+            created_at: an_instance_of(String),
+            updated_at: an_instance_of(String)
+          },
+          relationships: { image: { data: nil } }
+        })
+      end
+
       example 'Add a custom field with image options' do
         image1 = create(:custom_field_option_image, custom_field_option: nil)
         image2 = create(:custom_field_option_image, custom_field_option: nil)

@@ -126,6 +126,13 @@ class JsonSchemaGeneratorService < FieldVisitorService
     select
   end
 
+  def visit_ranking(field)
+    visit_multiselect(field).tap do |schema_item|
+      schema_item[:minItems] = field.options.size
+      schema_item[:maxItems] = field.options.size
+    end
+  end
+
   def visit_checkbox(_field)
     { type: 'boolean' }
   end

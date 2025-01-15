@@ -23,6 +23,10 @@ export default defineMessages({
     id: 'app.components.formBuilder.shortAnswer',
     defaultMessage: 'Short answer',
   },
+  ranking: {
+    id: 'app.components.formBuilder.ranking',
+    defaultMessage: 'Ranking',
+  },
   longAnswer: {
     id: 'app.components.formBuilder.longAnswer',
     defaultMessage: 'Long answer',

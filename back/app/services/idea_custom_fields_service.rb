@@ -17,14 +17,6 @@ class IdeaCustomFieldsService
     end
   end
 
-  def reportable_fields
-    # idea_images_attributes is not supported by XlsxService.
-    # Page and section fields do not capture data, so they are excluded.
-    all_fields.select do |field|
-      field.code != 'idea_images_attributes' && field.input_type != 'page' && field.input_type != 'section'
-    end
-  end
-
   def visible_fields
     enabled_fields
   end
@@ -40,13 +32,13 @@ class IdeaCustomFieldsService
 
   # Used in the printable PDF export
   def printable_fields
-    ignore_field_types = %w[section page date files image_files point file_upload shapefile_upload topic_ids cosponsor_ids]
+    ignore_field_types = %w[section page date files image_files point file_upload shapefile_upload topic_ids cosponsor_ids ranking]
     fields = enabled_fields.reject { |field| ignore_field_types.include? field.input_type }
     insert_other_option_text_fields(fields)
   end
 
   def importable_fields
-    ignore_field_types = %w[page section date files image_files file_upload shapefile_upload point line polygon cosponsor_ids]
+    ignore_field_types = %w[page section date files image_files file_upload shapefile_upload point line polygon cosponsor_ids ranking]
     enabled_fields_with_other_options.reject { |field| ignore_field_types.include? field.input_type }
   end
 

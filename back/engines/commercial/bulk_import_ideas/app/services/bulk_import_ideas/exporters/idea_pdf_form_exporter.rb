@@ -247,7 +247,7 @@ module BulkImportIdeas::Exporters
 
         pdf_group.move_down 5.mm
 
-        case field_type
+        case field_type # TODO: Find out how this should work for ranking
         when 'select'
           render_single_choice(pdf_group, custom_field)
         when 'multiselect'

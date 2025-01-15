@@ -325,6 +325,32 @@ RSpec.describe JsonSchemaGeneratorService do
     end
   end
 
+  describe '#visit_ranking' do
+    let(:field) { create(:custom_field_ranking, :with_options, key: field_key, required: true) }
+
+    it 'returns the schema for the given field' do
+      expect(generator.visit_ranking(field)).to eq({
+        type: 'array',
+        uniqueItems: true,
+        maxItems: 2,
+        minItems: 2,
+        items: {
+          type: 'string',
+          oneOf: [
+            {
+              const: 'by_train',
+              title: 'By train'
+            },
+            {
+              const: 'by_bike',
+              title: 'By bike'
+            }
+          ]
+        }
+      })
+    end
+  end
+
   describe '#visit_multiselect_image' do
     context 'when there are images associated with options' do
       let(:field) { create(:custom_field_select, input_type: 'multiselect_image', key: 'field_key', required: true) }
