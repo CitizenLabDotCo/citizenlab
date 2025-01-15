@@ -1812,7 +1812,7 @@
   "app.containers.UsersEditPage.verifiedIdentitySubtitle": "ਤੁਸੀਂ ਉਹਨਾਂ ਪ੍ਰੋਜੈਕਟਾਂ ਵਿੱਚ ਹਿੱਸਾ ਲੈ ਸਕਦੇ ਹੋ ਜਿਹਨਾਂ ਲਈ ਤਸਦੀਕ ਦੀ ਲੋੜ ਹੁੰਦੀ ਹੈ।",
   "app.containers.UsersEditPage.verifiedIdentityTitle": "ਤੁਸੀਂ ਪ੍ਰਮਾਣਿਤ ਹੋ",
   "app.containers.UsersEditPage.verifyNow": "ਹੁਣੇ ਪੁਸ਼ਟੀ ਕਰੋ",
-  "app.containers.UsersShowPage.Surveys.SurveySubmissionCard.downloadYourResponses": "ਆਪਣੇ ਜਵਾਬ ਡਾਊਨਲੋਡ ਕਰੋ",
+  "app.containers.UsersShowPage.Surveys.SurveySubmissionCard.downloadYourResponses2": "ਆਪਣੇ ਜਵਾਬ ਡਾਊਨਲੋਡ ਕਰੋ (.xlsx)",
   "app.containers.UsersShowPage.a11y_likesCount": "{likesCount, plural, =0 {ਕੋਈ ਪਸੰਦ ਨਹੀਂ} one {1 ਪਸੰਦ} other {# ਪਸੰਦ}}",
   "app.containers.UsersShowPage.a11y_postCommentPostedIn": "ਇਨਪੁਟ ਜੋ ਕਿ ਇਹ ਟਿੱਪਣੀ ਇਸਦੇ ਜਵਾਬ ਵਿੱਚ ਪੋਸਟ ਕੀਤੀ ਗਈ ਸੀ:",
   "app.containers.UsersShowPage.areas": "ਖੇਤਰ",
