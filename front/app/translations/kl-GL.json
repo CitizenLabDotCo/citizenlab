@@ -1812,7 +1812,7 @@
   "app.containers.UsersEditPage.verifiedIdentitySubtitle": "Suliniutit innuttaasunuinnaq peqataaffigineqarsinnaasut peqataaffigisinnaavatit.",
   "app.containers.UsersEditPage.verifiedIdentityTitle": "Innuttaasutut peqataasutut nalunaarsorneqarputit",
   "app.containers.UsersEditPage.verifyNow": "Maanna uppernarsaagit",
-  "app.containers.UsersShowPage.Surveys.SurveySubmissionCard.downloadYourResponses": "Download your responses",
+  "app.containers.UsersShowPage.Surveys.SurveySubmissionCard.downloadYourResponses2": "Download your responses (.xlsx)",
   "app.containers.UsersShowPage.a11y_likesCount": "{likesCount, plural, =0 {no likes} one {1 like} other {# likes}}",
   "app.containers.UsersShowPage.a11y_postCommentPostedIn": "Oqaaseqaatip uuma sumi saqqummiunneqarsimanera pillugu saqqummiussigit:",
   "app.containers.UsersShowPage.areas": "Areas",
