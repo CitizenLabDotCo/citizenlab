@@ -1,4 +1,4 @@
-import { RankingsCount } from 'api/survey_results/types';
+import { RankingsCounts } from 'api/survey_results/types';
 
 export type AverageRanking = {
   resultRank: number;
@@ -9,21 +9,6 @@ export type AverageRanking = {
 export type OptionWithRanks = {
   rankOption: string;
   rankCounts: [string, number][];
-};
-
-// addResultRanking
-// Description: Adds the final result rank number (E.g. #1, #2, etc.) for the options based on the average ranks.
-export const addResultRanking = (optionArrayWithRanks: AverageRanking[]) => {
-  optionArrayWithRanks.forEach((option, index) => {
-    const otherRanks = optionArrayWithRanks
-      .filter((_, i) => i !== index)
-      .map((option) => option.averageRank);
-
-    const resultRank =
-      otherRanks.filter((rank) => rank < option.averageRank).length + 1;
-
-    option.resultRank = resultRank;
-  });
 };
 
 // createOptionsWithAverageRanks
@@ -41,7 +26,7 @@ export const createOptionsWithAverageRanks = (
     });
   });
 
-  // Add the final result rank number for the options
+  // Add the final result rank number for the options to the array
   addResultRanking(optionsWithRanks);
 
   // Sort the options by average rank
@@ -50,10 +35,29 @@ export const createOptionsWithAverageRanks = (
   return optionsWithRanks;
 };
 
+// addResultRanking
+// Description: Adds the final result rank number (E.g. #1, #2, etc.) for the options based on the average ranks.
+export const addResultRanking = (optionArrayWithRanks: AverageRanking[]) => {
+  optionArrayWithRanks.forEach((option, index) => {
+    // Get an array without the current option
+    const otherOptionsWithRanks = optionArrayWithRanks
+      .filter((_, i) => i !== index)
+      .map((option) => option.averageRank);
+
+    // Calculate the resulting rank number for the option
+    const resultRank =
+      otherOptionsWithRanks.filter((rank) => rank < option.averageRank).length +
+      1;
+
+    // Update the orginal array option with the result rank
+    option.resultRank = resultRank;
+  });
+};
+
 // createOptionsWithRanksArray
 // Description: Creates an array of objects from the rankings_counts result object.
 export const createOptionsWithDetailedRanks = (
-  rankings_counts: RankingsCount
+  rankings_counts: RankingsCounts
 ) => {
   const optionsWithDetailedRanks: OptionWithRanks[] = [];
 
@@ -84,6 +88,6 @@ export const returnRankPercentageString = (
   totalQuestionResponses: number
 ) => {
   return `${(((rankCount ? rankCount : 0) / totalQuestionResponses) * 100)
-    .toFixed(1)
-    .replace(/[.,]0$/, '')}%`;
+    .toFixed(1) // Round to 1 decimal
+    .replace(/[.,]0$/, '')}%`; // Remove any trailing zeros
 };
