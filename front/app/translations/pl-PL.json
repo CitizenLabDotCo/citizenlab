@@ -2071,6 +2071,8 @@
   "app.utils.IdeasNewPage.proposalFormTitle": "Dodaj nową propozycję",
   "app.utils.IdeasNewPage.questionFormTitle": "Dodaj nowe pytanie",
   "app.utils.IdeasNewPage.surveyTitle": "Ankieta",
+  "app.utils.Projects.sendSurveySubmission": "Wyślij identyfikator ankiety na mój adres e-mail",
+  "app.utils.Projects.surveySubmission": "Przesyłanie ankiet",
   "app.utils.Promessagesjects.ifYouLaterDecide": "Jeśli później zdecydujesz, że chcesz, aby Twoja odpowiedź została usunięta, skontaktuj się z nami, podając następujący unikalny identyfikator:",
   "app.utils.actionDescriptors.attendingEventMissingRequirements": "Aby wziąć udział w tym wydarzeniu, musisz uzupełnić swój profil.",
   "app.utils.actionDescriptors.attendingEventNotInGroup": "Nie spełniasz wymagań, aby wziąć udział w tym wydarzeniu.",
