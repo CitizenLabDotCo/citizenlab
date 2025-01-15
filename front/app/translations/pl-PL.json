@@ -1812,7 +1812,7 @@
   "app.containers.UsersEditPage.verifiedIdentitySubtitle": "Możesz uczestniczyć w projektach, które są dostępne tylko dla zweryfikowanych obywateli.",
   "app.containers.UsersEditPage.verifiedIdentityTitle": "Konto zweryfikowane",
   "app.containers.UsersEditPage.verifyNow": "Zweryfikuj teraz",
-  "app.containers.UsersShowPage.Surveys.SurveySubmissionCard.downloadYourResponses": "Pobierz swoje odpowiedzi",
+  "app.containers.UsersShowPage.Surveys.SurveySubmissionCard.downloadYourResponses2": "Pobierz swoje odpowiedzi (.xlsx)",
   "app.containers.UsersShowPage.a11y_likesCount": "{likesCount, plural, =0 {brak polubień} one {1 polubienie} other {# likes}}",
   "app.containers.UsersShowPage.a11y_postCommentPostedIn": "Post, w którym został zamieszczony ten komentarz:",
   "app.containers.UsersShowPage.areas": "Obszary",
