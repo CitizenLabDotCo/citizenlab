@@ -2,7 +2,7 @@
 
 module IdCriipto
   module CriiptoVerification
-    include Verification::VerificationMethod
+    include IdMethod::VerificationMethod
 
     DK_MIT_ID = 'DK MitID'
     DEFAULT_UID_FIELD_PATTERN = '%{uuid}'

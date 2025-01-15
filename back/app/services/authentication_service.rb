@@ -1,23 +1,8 @@
 # frozen_string_literal: true
 
 class AuthenticationService
-  @all_methods = {
-    'facebook' => OmniauthMethods::Facebook.new,
-    'google' => OmniauthMethods::Google.new,
-    'azureactivedirectory' => OmniauthMethods::AzureActiveDirectory.new,
-    'azureactivedirectory_b2c' => OmniauthMethods::AzureActiveDirectoryB2c.new
-  }
-
-  class << self
-    attr_reader :all_methods
-
-    def add_method(name, authentication_method)
-      @all_methods[name.to_s] = authentication_method
-    end
-  end
-
   def all_methods
-    self.class.all_methods
+    IdMethod.all_methods.filter_map { |k, v| [k, v] if v.auth? }.to_h
   end
 
   def method_by_provider(provider)

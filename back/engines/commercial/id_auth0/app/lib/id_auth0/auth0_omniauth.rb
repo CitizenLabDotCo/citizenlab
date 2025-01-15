@@ -1,7 +1,8 @@
 # frozen_string_literal: true
 
 module IdAuth0
-  class Auth0Omniauth < OmniauthMethods::Base
+  class Auth0Omniauth < IdMethod::Base
+    include IdMethod::OmniAuthMethod
     include Auth0Verification
 
     # @param [AppConfiguration] configuration

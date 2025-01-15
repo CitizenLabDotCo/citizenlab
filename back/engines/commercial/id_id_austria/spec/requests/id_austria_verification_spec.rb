@@ -240,7 +240,6 @@ context 'id_austria verification' do
       configuration.save!
     end
 
-    # TODO: JS - User confirmation is not required - why?
     context 'email confirmation enabled' do
       before do
         configuration = AppConfiguration.instance
