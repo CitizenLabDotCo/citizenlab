@@ -12,19 +12,23 @@ import { OptionWithRanks, returnRankPercentageString } from './utils';
 type Props = {
   optionsWithDetailedRanks: OptionWithRanks[];
   questionResponseCount: number;
-  rank: number;
+  option: string;
 };
 
 const DetailedRankView = ({
   optionsWithDetailedRanks,
   questionResponseCount,
-  rank,
+  option,
 }: Props) => {
   const { formatMessage } = useIntl();
 
+  const optionForDetailedView = optionsWithDetailedRanks.find(
+    (optionWithRanks) => optionWithRanks.rankOption === option
+  );
+
   return (
     <Box mb="8px">
-      {optionsWithDetailedRanks[rank].rankCounts.map((rankCount, index) => {
+      {optionForDetailedView?.rankCounts.map((rankCount, index) => {
         // Note:
         // rankCount[0] = The rank value (E.g. #1, #2, etc.)
         // rankCount[1] = Number of people who chose this rank value for the option.
@@ -34,8 +38,8 @@ const DetailedRankView = ({
         return (
           <Box ml="54px" display="flex" key={index}>
             <Text my="8px">
-              {formatMessage(messages.resultRank, {
-                resultRank: index + 1,
+              {formatMessage(messages.rank, {
+                rank: rankCount[0],
               })}
             </Text>
 
@@ -49,7 +53,7 @@ const DetailedRankView = ({
 
             <Text my="8px" color="coolGrey600" ml="auto">
               {formatMessage(messages.xChoices, {
-                numberChoices: choseRankForOptionCount || 0,
+                numberChoices: choseRankForOptionCount,
               })}
             </Text>
 

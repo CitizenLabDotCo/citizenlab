@@ -5,9 +5,9 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.survey.formResults.averageRank',
     defaultMessage: '<b>#{averageRank}</b> average',
   },
-  resultRank: {
-    id: 'app.containers.Admin.projects.project.survey.formResults.resultRank',
-    defaultMessage: '#{resultRank}',
+  rank: {
+    id: 'app.containers.Admin.projects.project.survey.formResults.rank',
+    defaultMessage: '#{rank}',
   },
   viewDetails: {
     id: 'app.containers.Admin.projects.project.survey.formResults.viewDetails',

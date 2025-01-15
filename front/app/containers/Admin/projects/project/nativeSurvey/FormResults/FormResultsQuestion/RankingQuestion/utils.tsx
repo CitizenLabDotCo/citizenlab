@@ -7,7 +7,6 @@ export type AverageRanking = {
 };
 
 export type OptionWithRanks = {
-  rankValue: number;
   rankOption: string;
   rankCounts: [string, number][];
 };
@@ -58,7 +57,7 @@ export const createOptionsWithDetailedRanks = (
 ) => {
   const optionsWithDetailedRanks: OptionWithRanks[] = [];
 
-  Object.entries(rankings_counts).forEach((rankingCount, index) => {
+  Object.entries(rankings_counts).forEach((rankingCount) => {
     // Note:
     // rankingCount[0] = Option key
     // rankingCount[1] = Object containing all rank values and the number of times they were chosen for the option.
@@ -70,7 +69,6 @@ export const createOptionsWithDetailedRanks = (
     });
 
     optionsWithDetailedRanks.push({
-      rankValue: index + 1,
       rankOption: rankingCount[0],
       rankCounts: choicePerRankCounts,
     });

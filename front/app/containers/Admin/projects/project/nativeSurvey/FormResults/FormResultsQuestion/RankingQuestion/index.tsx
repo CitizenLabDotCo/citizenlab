@@ -45,7 +45,7 @@ const RankingQuestion = (result: { result: ResultUngrouped }) => {
 
   return (
     <Box pt="16px" width="520px">
-      {optionsWithAverageRanks.map((option, index) => {
+      {optionsWithAverageRanks.map((option) => {
         return (
           <Box key={option.optionKey}>
             <Box
@@ -55,13 +55,15 @@ const RankingQuestion = (result: { result: ResultUngrouped }) => {
             >
               <Box display="flex">
                 <Text mr="20px" my="auto">
-                  {formatMessage(messages.resultRank, {
-                    resultRank: option.resultRank,
+                  {formatMessage(messages.rank, {
+                    rank: option.resultRank,
                   })}
                 </Text>
 
                 <Text
-                  p="4px"
+                  py="4px"
+                  px="8px"
+                  maxWidth="380px"
                   style={{
                     border: `1px solid ${colors.divider}`,
                     borderRadius: theme.borderRadius,
@@ -85,7 +87,7 @@ const RankingQuestion = (result: { result: ResultUngrouped }) => {
               <DetailedRankView
                 optionsWithDetailedRanks={optionsWithDetailedRanks}
                 questionResponseCount={questionResponseCount}
-                rank={index}
+                option={option.optionKey}
               />
             )}
           </Box>
