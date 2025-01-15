@@ -1812,7 +1812,7 @@
   "app.containers.UsersEditPage.verifiedIdentitySubtitle": "Μπορείτε να συμμετέχετε σε έργα που απαιτούν επαλήθευση.",
   "app.containers.UsersEditPage.verifiedIdentityTitle": "Έχετε επαληθευτεί",
   "app.containers.UsersEditPage.verifyNow": "Επαλήθευση τώρα",
-  "app.containers.UsersShowPage.Surveys.SurveySubmissionCard.downloadYourResponses": "Κατεβάστε τις απαντήσεις σας",
+  "app.containers.UsersShowPage.Surveys.SurveySubmissionCard.downloadYourResponses2": "Κατεβάστε τις απαντήσεις σας (.xlsx)",
   "app.containers.UsersShowPage.a11y_likesCount": "{likesCount, plural, =0 {Δεν μου αρέσει} one {1 like} other {# likes}}",
   "app.containers.UsersShowPage.a11y_postCommentPostedIn": "Εισήγηση στην οποία δημοσιεύτηκε αυτό το σχόλιο ως απάντηση:",
   "app.containers.UsersShowPage.areas": "Περιοχές",
