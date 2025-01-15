@@ -1,6 +1,6 @@
 import mediaQuery from 'css-mediaquery';
 
-import { renderHook } from '../../utils/testUtils/rtl';
+import { renderHook } from '../utils/testUtils/rtl';
 
 import useBreakpoint from './useBreakpoint';
 

@@ -1,6 +1,6 @@
 import { replaceRaf } from 'raf-stub';
 
-import { renderHook, waitFor, act } from '../../utils/testUtils/rtl';
+import { renderHook, waitFor, act } from '../utils/testUtils/rtl';
 
 import useWindowSize from './useWindowSize';
 
