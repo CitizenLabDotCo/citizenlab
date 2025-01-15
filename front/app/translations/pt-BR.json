@@ -1812,7 +1812,7 @@
   "app.containers.UsersEditPage.verifiedIdentitySubtitle": "Você pode participar de projetos que são acessíveis apenas aos cidadãos verificados.",
   "app.containers.UsersEditPage.verifiedIdentityTitle": "Você é um usuário confirmado",
   "app.containers.UsersEditPage.verifyNow": "Verifique agora",
-  "app.containers.UsersShowPage.Surveys.SurveySubmissionCard.downloadYourResponses": "Baixe suas respostas",
+  "app.containers.UsersShowPage.Surveys.SurveySubmissionCard.downloadYourResponses2": "Faça o download de suas respostas (.xlsx)",
   "app.containers.UsersShowPage.a11y_likesCount": "{likesCount, plural, =0 {sem gostos} one {1 gosto} other {# likes}}",
   "app.containers.UsersShowPage.a11y_postCommentPostedIn": "Publicação em que este comentário foi publicado:",
   "app.containers.UsersShowPage.areas": "Áreas",
