@@ -138,8 +138,6 @@ en-GB:
         title: Year of birth
       domicile:
         title: Place of residence
-      education:
-        title: Education
     ideas:
       title:
         title: Title
@@ -207,14 +205,6 @@ en-GB:
       unspecified: Other
     domicile:
       outside: Somewhere else
-    education:
-      ISCED2: Lower secondary education
-      ISCED3: Upper secondary education
-      ISCED4: Post-secondary non-tertiary education
-      ISCED5: Short-cycle tertiary education
-      ISCED6: Bachelor or equivalent
-      ISCED7: Master or equivalent
-      ISCED8: Doctoral or equivalent
   reset_password_mailer:
     send_reset_password:
       preheader: 'Reset your password for %{organizationName}'

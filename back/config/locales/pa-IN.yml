@@ -138,8 +138,6 @@ pa:
         title: ਜਨਮ ਦਾ ਸਾਲ
       domicile:
         title: ਨਿਵਾਸ ਸਥਾਨ
-      education:
-        title: ਸਿੱਖਿਆ
     ideas:
       title:
         title: ਸਿਰਲੇਖ
@@ -207,14 +205,6 @@ pa:
       unspecified: ਹੋਰ
     domicile:
       outside: ਕਿਤੇ ਹੋਰ
-    education:
-      ISCED2: ਹੇਠਲੀ ਸੈਕੰਡਰੀ ਸਿੱਖਿਆ
-      ISCED3: ਉੱਚ ਸੈਕੰਡਰੀ ਸਿੱਖਿਆ
-      ISCED4: ਪੋਸਟ-ਸੈਕੰਡਰੀ ਗੈਰ-ਤੀਜੀ ਸਿੱਖਿਆ
-      ISCED5: ਛੋਟਾ-ਚੱਕਰ ਤੀਸਰੀ ਸਿੱਖਿਆ
-      ISCED6: ਬੈਚਲਰ ਜਾਂ ਬਰਾਬਰ
-      ISCED7: ਮਾਸਟਰ ਜਾਂ ਬਰਾਬਰ
-      ISCED8: ਡਾਕਟੋਰਲ ਜਾਂ ਬਰਾਬਰ
   reset_password_mailer:
     send_reset_password:
       preheader: '%{organizationName}ਲਈ ਆਪਣਾ ਪਾਸਵਰਡ ਰੀਸੈਟ ਕਰੋ'

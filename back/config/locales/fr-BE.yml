@@ -138,8 +138,6 @@ fr-BE:
         title: Année de naissance
       domicile:
         title: Localité
-      education:
-        title: Éducation
     ideas:
       title:
         title: Titre
@@ -207,14 +205,6 @@ fr-BE:
       unspecified: Autre
     domicile:
       outside: Autre lieu
-    education:
-      ISCED2: Education secondaire (1er cycle)
-      ISCED3: Education secondaire (2nd cycle)
-      ISCED4: Education supérieure
-      ISCED5: Education supérieure (cycle court)
-      ISCED6: Licence, Bachelier ou équivalent
-      ISCED7: Master ou équivalent
-      ISCED8: Doctorat ou équivalent
   reset_password_mailer:
     send_reset_password:
       preheader: 'Réinitialisez votre mot de passe pour %{organizationName}'

@@ -138,8 +138,6 @@ ur:
         title: پیدائش کا سال
       domicile:
         title: رہائش کی جگہ
-      education:
-        title: تعلیم
     ideas:
       title:
         title: عنوان
@@ -207,14 +205,6 @@ ur:
       unspecified: دیگر
     domicile:
       outside: کہیں اور
-    education:
-      ISCED2: لوئر سیکنڈری تعلیم
-      ISCED3: اعلیٰ ثانوی تعلیم
-      ISCED4: بعد از ثانوی غیر ترتیری تعلیم
-      ISCED5: مختصر دور کی ترتیری تعلیم
-      ISCED6: بیچلر یا اس کے مساوی
-      ISCED7: ماسٹر یا اس کے برابر
-      ISCED8: ڈاکٹریٹ یا اس کے مساوی
   reset_password_mailer:
     send_reset_password:
       preheader: '%{organizationName}کے لیے اپنا پاس ورڈ دوبارہ ترتیب دیں۔'

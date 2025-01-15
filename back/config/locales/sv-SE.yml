@@ -138,8 +138,6 @@ sv:
         title: Födelseår
       domicile:
         title: Bostadsort
-      education:
-        title: Utbildning
     ideas:
       title:
         title: Titel
@@ -207,14 +205,6 @@ sv:
       unspecified: Annat
     domicile:
       outside: Någon annanstans
-    education:
-      ISCED2: Grundskola
-      ISCED3: Gymnasium
-      ISCED4: Eftergymnasial utbildning, ej högskola
-      ISCED5: Kortare högskoleutbildning
-      ISCED6: Kandidatexamen eller motsvarande
-      ISCED7: Masterexamen eller motsvarande
-      ISCED8: Doktorsexamen eller motsvarande
   reset_password_mailer:
     send_reset_password:
       preheader: 'Återställ ditt lösenord för %{organizationName}'

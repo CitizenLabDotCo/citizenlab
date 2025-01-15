@@ -138,8 +138,6 @@ de:
         title: Altersgruppe
       domicile:
         title: Wohnort
-      education:
-        title: Höchster Bildungsabschluss
     ideas:
       title:
         title: Titel
@@ -207,14 +205,6 @@ de:
       unspecified: Divers
     domicile:
       outside: Anderer Ort
-    education:
-      ISCED2: Kein Schulabschluss
-      ISCED3: Grund- / Haupt- /Realschulabschluss
-      ISCED4: Gymnasium (Abitur)
-      ISCED5: Abgeschlossene Ausbildung
-      ISCED6: Bachelor oder gleichwertiger Abschluss
-      ISCED7: Master oder gleichwertiger Abschluss
-      ISCED8: Doktortitel oder gleichwertiger Abschluss
   reset_password_mailer:
     send_reset_password:
       preheader: 'Passwort für %{organizationName} zurücksetzen'

@@ -138,8 +138,6 @@ nb:
         title: Fødselsår
       domicile:
         title: Bosted
-      education:
-        title: Utdanning
     ideas:
       title:
         title: Tittel
@@ -207,14 +205,6 @@ nb:
       unspecified: Annet
     domicile:
       outside: Et annet sted
-    education:
-      ISCED2: Grunnskoleutdanning
-      ISCED3: Videregående opplæring
-      ISCED4: Etter- og videreutdanning utenfor videregående skole
-      ISCED5: Kort høyere utdanning
-      ISCED6: Bachelor eller tilsvarende
-      ISCED7: Master eller tilsvarende
-      ISCED8: Doktorgrad eller tilsvarende
   reset_password_mailer:
     send_reset_password:
       preheader: 'Tilbakestill passordet ditt for %{organizationName}'

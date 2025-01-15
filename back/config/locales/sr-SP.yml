@@ -138,8 +138,6 @@ sr-Cyrl:
         title: Година рођења
       domicile:
         title: Место становања
-      education:
-        title: образовање
     ideas:
       title:
         title: Наслов
@@ -207,14 +205,6 @@ sr-Cyrl:
       unspecified: Остало
     domicile:
       outside: Негде другде
-    education:
-      ISCED2: Ниже средње образовање
-      ISCED3: Више средње образовање
-      ISCED4: Нетерцијарно образовање након средње школе
-      ISCED5: Кратки циклус терцијарног образовања
-      ISCED6: Бацхелор или еквивалент
-      ISCED7: Мастер или еквивалент
-      ISCED8: Докторске или еквивалентне
   reset_password_mailer:
     send_reset_password:
       preheader: 'Reset your password for %{organizationName}'

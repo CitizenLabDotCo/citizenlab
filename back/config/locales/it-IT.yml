@@ -138,8 +138,6 @@ it:
         title: Anno di nascita
       domicile:
         title: Luogo di residenza
-      education:
-        title: Educazione
     ideas:
       title:
         title: Titolo
@@ -207,14 +205,6 @@ it:
       unspecified: Altro
     domicile:
       outside: Da qualche altra parte
-    education:
-      ISCED2: Istruzione secondaria inferiore
-      ISCED3: Istruzione secondaria superiore
-      ISCED4: Istruzione post-secondaria non terziaria
-      ISCED5: Istruzione terziaria a ciclo breve
-      ISCED6: Laurea o equivalente
-      ISCED7: Master o equivalente
-      ISCED8: Dottorato o equivalente
   reset_password_mailer:
     send_reset_password:
       preheader: 'Reimposta la tua password per %{organizationName}'
