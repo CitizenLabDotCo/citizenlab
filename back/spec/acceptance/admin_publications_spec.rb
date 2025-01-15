@@ -627,6 +627,18 @@ resource 'AdminPublication' do
         json_response = json_parse(response_body)
         expect(json_response[:data].first.dig(:attributes, :visible_children_count)).to eq 1
       end
+
+      example 'Does not includes folders containing only non-visible children', document: false do
+        group_project = create(:project, visible_to: 'groups')
+        draft_project = create(:project, admin_publication_attributes: { publication_status: 'draft' })
+        folder_with_non_visible_children = create(:project_folder, projects: [group_project, draft_project])
+
+        do_request(ids: [folder_with_non_visible_children.admin_publication.id])
+
+        expect(status).to eq(200)
+        json_response = json_parse(response_body)
+        expect(json_response[:data]).to be_empty
+      end
     end
   end
 
