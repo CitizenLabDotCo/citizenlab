@@ -2071,6 +2071,8 @@
   "app.utils.IdeasNewPage.proposalFormTitle": "Legg til nytt forslag",
   "app.utils.IdeasNewPage.questionFormTitle": "Legg til nytt spørsmål",
   "app.utils.IdeasNewPage.surveyTitle": "Spørreundersøkelse",
+  "app.utils.Projects.sendSurveySubmission": "Send identifikator for innsending av undersøkelsen til min e-post",
+  "app.utils.Projects.surveySubmission": "Innsending av spørreundersøkelse",
   "app.utils.Promessagesjects.ifYouLaterDecide": "Hvis du senere bestemmer deg for at du vil at svaret ditt skal fjernes, ber vi deg kontakte oss med følgende unike identifikator:",
   "app.utils.actionDescriptors.attendingEventMissingRequirements": "Du må fylle ut profilen din for å delta på dette arrangementet.",
   "app.utils.actionDescriptors.attendingEventNotInGroup": "Du oppfyller ikke kravene for å delta på dette arrangementet.",
