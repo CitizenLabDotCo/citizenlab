@@ -23,10 +23,7 @@ import { getOtherControlKey } from 'components/Form/utils';
 
 import { PageType } from '../Layouts/utils';
 
-interface ConditionWithPageId
-  extends Condition,
-    Scopable,
-    SchemaBasedCondition {
+interface ConditionWithPageId extends Condition, SchemaBasedCondition {
   pageId?: string;
 }
 

@@ -63,7 +63,7 @@ const StyledBox = styled(Box)<{ innerBorders?: InnerBorders }>`
     `
       : ''}
 `;
-type Props = BoxProps & {
+type Props = Omit<BoxProps, 'border'> & {
   innerBorders?: InnerBorders;
 };
 
