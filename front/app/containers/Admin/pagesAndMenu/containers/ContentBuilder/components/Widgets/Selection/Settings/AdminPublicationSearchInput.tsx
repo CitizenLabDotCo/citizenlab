@@ -77,7 +77,7 @@ const AdminPublicationSearchInput = ({
             fetchNextPage={fetchNextPage}
           />
         )}
-        menuPlacement="auto"
+        menuPlacement="top"
         styles={selectStyles(theme)}
         filterOption={() => true}
         onInputChange={handleInputChange}
@@ -88,7 +88,7 @@ const AdminPublicationSearchInput = ({
         }}
         onChange={onChange}
         closeMenuOnScroll={false}
-        closeMenuOnSelect
+        closeMenuOnSelect={false}
       />
     </Box>
   );
