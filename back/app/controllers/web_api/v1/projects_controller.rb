@@ -178,7 +178,10 @@ class WebApi::V1::ProjectsController < ApplicationController
 
   def copy
     source_project = Project.find(params[:id])
-    dest_folder = source_project.folder if UserRoleService.new.can_moderate?(source_project.folder, current_user)
+    dest_folder = source_project.folder if user_role_service.can_moderate?(source_project.folder, current_user)
+
+    assignee = source_project&.default_assignee
+    reassign_moderator = assignee && user_role_service.can_moderate?(source_project, assignee) && !assignee.admin?
 
     # The authorization of this action is more complex than usual. It works in two steps:
     # - Check if the user can copy the source project.
@@ -191,6 +194,10 @@ class WebApi::V1::ProjectsController < ApplicationController
     # approach allows us to return early in some cases without performing the actual copy, which can be expensive.
     # The dummy project must be `save`d before the authorization check to ensure the admin publication is created.
     # A final authorization check is performed afterward on the actual copied project.
+    #
+    # We also set default_assignee_id: nil if the assignee is a project moderator of the source,
+    # to avoid validation error due to assignee not being moderator of the new dummy project. In such cases,
+    # we later add the new project moderator role to the assignee and reset default_assignee in sidefx.after_copy.
     Project.transaction do
       source_project.dup.tap do |p|
         p.assign_attributes(slug: nil, admin_publication_attributes: {
@@ -198,7 +205,10 @@ class WebApi::V1::ProjectsController < ApplicationController
           parent_id: dest_folder&.admin_publication&.id
         })
 
+        p.default_assignee_id = nil if reassign_moderator
+
         p.save!
+
         authorize(p, :create?)
       end
 
@@ -211,7 +221,7 @@ class WebApi::V1::ProjectsController < ApplicationController
       authorize(copy, :create?)
     end
 
-    sidefx.after_copy(source_project, project, current_user, start_time)
+    sidefx.after_copy(source_project, project, current_user, start_time, reassign_moderator: reassign_moderator)
 
     render json: WebApi::V1::ProjectSerializer.new(
       project,
@@ -370,6 +380,10 @@ class WebApi::V1::ProjectsController < ApplicationController
       }),
       include: %i[project_images current_phase]
     )
+  end
+
+  def user_role_service
+    @user_role_service ||= UserRoleService.new
   end
 end
 
