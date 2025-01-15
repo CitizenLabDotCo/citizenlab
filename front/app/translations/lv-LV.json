@@ -1812,7 +1812,7 @@
   "app.containers.UsersEditPage.verifiedIdentitySubtitle": "Varat piedalīties projektos, kuros nepieciešama pārbaude.",
   "app.containers.UsersEditPage.verifiedIdentityTitle": "Jūs esat pārbaudīts",
   "app.containers.UsersEditPage.verifyNow": "Pārbaudīt tagad",
-  "app.containers.UsersShowPage.Surveys.SurveySubmissionCard.downloadYourResponses": "Lejupielādējiet savas atbildes",
+  "app.containers.UsersShowPage.Surveys.SurveySubmissionCard.downloadYourResponses2": "Lejupielādējiet savas atbildes (.xlsx)",
   "app.containers.UsersShowPage.a11y_likesCount": "{likesCount, plural, =0 {nav patīk} one {1 patīk} other {# patīk}}",
   "app.containers.UsersShowPage.a11y_postCommentPostedIn": "Ievadīts, ka šis komentārs tika publicēts, atbildot uz:",
   "app.containers.UsersShowPage.areas": "Jomas",
