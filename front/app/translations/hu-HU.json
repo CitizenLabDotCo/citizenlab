@@ -1812,7 +1812,7 @@
   "app.containers.UsersEditPage.verifiedIdentitySubtitle": "Részt vehet olyan projektekben, amelyek ellenőrzést igényelnek.",
   "app.containers.UsersEditPage.verifiedIdentityTitle": "Ön igazolva van",
   "app.containers.UsersEditPage.verifyNow": "Igazoljon most",
-  "app.containers.UsersShowPage.Surveys.SurveySubmissionCard.downloadYourResponses": "Töltse le válaszait",
+  "app.containers.UsersShowPage.Surveys.SurveySubmissionCard.downloadYourResponses2": "Töltse le válaszait (.xlsx)",
   "app.containers.UsersShowPage.a11y_likesCount": "{likesCount, plural, =0 {nincs lájk} one {1 tetszik} other {# tetszik}}",
   "app.containers.UsersShowPage.a11y_postCommentPostedIn": "Írja be, hogy ezt a megjegyzést válaszként tették közzé:",
   "app.containers.UsersShowPage.areas": "Területek",
