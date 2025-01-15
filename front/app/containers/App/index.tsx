@@ -98,26 +98,25 @@ const App = ({ children }: Props) => {
   const redirectsEnabled = useFeatureFlag({ name: 'redirects' });
 
   useEffect(() => {
+    const momentLocale = appLocalesMomentPairs[locale] || 'en';
+
     async function loadMomentLocaleFile(momentLocale: string) {
       try {
         // Dynamically import the locale only if it matches the current locale.
         // This ensures we only load the required locale when needed.
         // If the locale changes, the appropriate one will be imported in some other code.
-        if (momentLocale !== 'en') {
-          await localeGetter(momentLocale);
-        }
-        // After localeGetter, set the moment locale
-        moment.locale(momentLoc);
+        await localeGetter(momentLocale);
       } catch (error) {
         console.error(`Error processing locale: ${locale}`, error);
       }
     }
-
-    const momentLoc = appLocalesMomentPairs[locale] || 'en';
-
     // No need to import for English
-    if (momentLoc !== 'en') {
-      loadMomentLocaleFile(momentLoc);
+    if (momentLocale === 'en') {
+      moment.locale(momentLocale);
+    } else {
+      loadMomentLocaleFile(momentLocale).then(() => {
+        moment.locale(momentLocale);
+      });
     }
   }, [locale]);
 
