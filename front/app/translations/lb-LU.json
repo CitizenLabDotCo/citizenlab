@@ -1812,7 +1812,7 @@
   "app.containers.UsersEditPage.verifiedIdentitySubtitle": "Dir kënnt u Projeten deelhuelen, déi just fir iwwerpréifte Benotzer zougänglech sinn. ",
   "app.containers.UsersEditPage.verifiedIdentityTitle": "Dir sidd en iwwerpréifte Benotzer",
   "app.containers.UsersEditPage.verifyNow": "Elo iwwerpréiwen",
-  "app.containers.UsersShowPage.Surveys.SurveySubmissionCard.downloadYourResponses": "Luet Är Äntwerten erof",
+  "app.containers.UsersShowPage.Surveys.SurveySubmissionCard.downloadYourResponses2": "Luet Är Äntwerten erof (.xlsx)",
   "app.containers.UsersShowPage.a11y_likesCount": "{likesCount, plural, =0 {keng Likes} one {1 gär} other {#gefällt}}",
   "app.containers.UsersShowPage.a11y_postCommentPostedIn": "Bäitrag, an deem dëse Kommentar als Äntwert gepost gouf:",
   "app.containers.UsersShowPage.areas": "Beräicher",
