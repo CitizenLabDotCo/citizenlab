@@ -66,8 +66,10 @@ describe('Input form builder', () => {
     cy.get('#idea-form');
     cy.contains('Add new idea').should('exist');
     // add a title and description
-    cy.get('#e2e-idea-title-input input').type(ideaTitle);
-    cy.get('#e2e-idea-description-input .ql-editor').type(ideaContent);
+    cy.get('#e2e-idea-title-input input').click().type(ideaTitle);
+    cy.get('#e2e-idea-description-input .ql-editor').type(ideaContent, {
+      force: true,
+    });
 
     // verify the title and description
     cy.get('#e2e-idea-title-input input').should('contain.value', ideaTitle);
@@ -149,7 +151,7 @@ describe('Input form builder', () => {
     cy.get('#idea-form');
     cy.contains('Add new idea').should('exist');
     // add a title and description
-    cy.get('#e2e-idea-title-input input').type(ideaTitle);
+    cy.get('#e2e-idea-title-input input').click().type(ideaTitle);
     cy.get('#e2e-idea-description-input .ql-editor').type(ideaContent);
 
     // verify the title and description
