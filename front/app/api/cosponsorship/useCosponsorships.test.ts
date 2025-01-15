@@ -1,4 +1,4 @@
-import { renderHook } from '@testing-library/react-hooks';
+import { renderHook, waitFor } from 'utils/testUtils/rtl';
 import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
 
@@ -25,7 +25,7 @@ describe('useCosponsorships', () => {
   afterAll(() => server.close());
 
   it('returns data correctly', async () => {
-    const { result, waitFor } = renderHook(() => useCosponsorships(params), {
+    const { result } = renderHook(() => useCosponsorships(params), {
       wrapper: createQueryClientWrapper(),
     });
 
@@ -44,7 +44,7 @@ describe('useCosponsorships', () => {
       })
     );
 
-    const { result, waitFor } = renderHook(() => useCosponsorships(params), {
+    const { result } = renderHook(() => useCosponsorships(params), {
       wrapper: createQueryClientWrapper(),
     });
 

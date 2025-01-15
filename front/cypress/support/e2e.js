@@ -8,3 +8,7 @@ Cypress.on('uncaught:exception', (error) => {
 
   return true;
 });
+
+Cypress.Keyboard.defaults({
+  keystrokeDelay: 0,
+});

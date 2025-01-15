@@ -1,8 +1,8 @@
-import { renderHook, act } from '@testing-library/react-hooks';
 import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
+import { renderHook, waitFor, act } from 'utils/testUtils/rtl';
 
 import { navbarItemsData } from './__mocks__/useNavbarItems';
 import useReorderNavbarItems from './useReorderNavbarItems';
@@ -19,7 +19,7 @@ describe('useReorderNavbarItems', () => {
   afterAll(() => server.close());
 
   it('mutates data correctly', async () => {
-    const { result, waitFor } = renderHook(() => useReorderNavbarItems(), {
+    const { result } = renderHook(() => useReorderNavbarItems(), {
       wrapper: createQueryClientWrapper(),
     });
 
@@ -41,7 +41,7 @@ describe('useReorderNavbarItems', () => {
       })
     );
 
-    const { result, waitFor } = renderHook(() => useReorderNavbarItems(), {
+    const { result } = renderHook(() => useReorderNavbarItems(), {
       wrapper: createQueryClientWrapper(),
     });
     act(() => {

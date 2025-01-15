@@ -1,4 +1,4 @@
-import { renderHook, act } from '@testing-library/react-hooks';
+import { renderHook, waitFor, act } from 'utils/testUtils/rtl';
 import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
 
@@ -19,7 +19,7 @@ describe('useUpdateUser', () => {
   afterAll(() => server.close());
 
   it('mutates data correctly', async () => {
-    const { result, waitFor } = renderHook(() => useUpdateUser(), {
+    const { result } = renderHook(() => useUpdateUser(), {
       wrapper: createQueryClientWrapper(),
     });
 
@@ -41,7 +41,7 @@ describe('useUpdateUser', () => {
       })
     );
 
-    const { result, waitFor } = renderHook(() => useUpdateUser(), {
+    const { result } = renderHook(() => useUpdateUser(), {
       wrapper: createQueryClientWrapper(),
     });
     act(() => {

@@ -1,8 +1,8 @@
-import { renderHook, act } from '@testing-library/react-hooks';
 import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
+import { renderHook, waitFor, act } from 'utils/testUtils/rtl';
 
 import { projectDescriptionBuilderLayoutData } from './__mocks__/projectDescriptionBuilderLayout';
 import useAddProjectDescriptionBuilderLayout from './useAddProjectDescriptionBuilderLayout';
@@ -24,7 +24,7 @@ describe('useAddProjectDescriptionBuilderLayout', () => {
   afterAll(() => server.close());
 
   it('mutates data correctly', async () => {
-    const { result, waitFor } = renderHook(
+    const { result } = renderHook(
       () => useAddProjectDescriptionBuilderLayout(),
       {
         wrapper: createQueryClientWrapper(),
@@ -51,7 +51,7 @@ describe('useAddProjectDescriptionBuilderLayout', () => {
       })
     );
 
-    const { result, waitFor } = renderHook(
+    const { result } = renderHook(
       () => useAddProjectDescriptionBuilderLayout(),
       {
         wrapper: createQueryClientWrapper(),

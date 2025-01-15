@@ -1,8 +1,8 @@
-import { renderHook, act } from '@testing-library/react-hooks';
 import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
+import { renderHook, waitFor, act } from 'utils/testUtils/rtl';
 
 import { commentsData } from './__mocks__/useComments';
 import useAddCommentToIdea from './useAddCommentToIdea';
@@ -20,7 +20,7 @@ describe('useAddCommentToIdea', () => {
   afterAll(() => server.close());
 
   it('mutates data correctly', async () => {
-    const { result, waitFor } = renderHook(() => useAddCommentToIdea(), {
+    const { result } = renderHook(() => useAddCommentToIdea(), {
       wrapper: createQueryClientWrapper(),
     });
 
@@ -43,7 +43,7 @@ describe('useAddCommentToIdea', () => {
       })
     );
 
-    const { result, waitFor } = renderHook(() => useAddCommentToIdea(), {
+    const { result } = renderHook(() => useAddCommentToIdea(), {
       wrapper: createQueryClientWrapper(),
     });
 

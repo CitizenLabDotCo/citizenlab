@@ -1,4 +1,4 @@
-import { renderHook, act } from '@testing-library/react-hooks';
+import { renderHook, waitFor, act } from 'utils/testUtils/rtl';
 import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
 
@@ -19,7 +19,7 @@ describe('useCopyProject', () => {
   afterAll(() => server.close());
 
   it('mutates data correctly', async () => {
-    const { result, waitFor } = renderHook(() => useCopyProject(), {
+    const { result } = renderHook(() => useCopyProject(), {
       wrapper: createQueryClientWrapper(),
     });
 
@@ -38,7 +38,7 @@ describe('useCopyProject', () => {
       })
     );
 
-    const { result, waitFor } = renderHook(() => useCopyProject(), {
+    const { result } = renderHook(() => useCopyProject(), {
       wrapper: createQueryClientWrapper(),
     });
 

@@ -1,4 +1,4 @@
-import { renderHook } from '@testing-library/react-hooks';
+import { renderHook, waitFor } from 'utils/testUtils/rtl';
 import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
 
@@ -26,7 +26,7 @@ describe('useAnalyses', () => {
   afterAll(() => server.close());
 
   it('returns data correctly', async () => {
-    const { result, waitFor } = renderHook(() => useAnalyses(params), {
+    const { result } = renderHook(() => useAnalyses(params), {
       wrapper: createQueryClientWrapper(),
     });
 
@@ -45,7 +45,7 @@ describe('useAnalyses', () => {
       })
     );
 
-    const { result, waitFor } = renderHook(() => useAnalyses(params), {
+    const { result } = renderHook(() => useAnalyses(params), {
       wrapper: createQueryClientWrapper(),
     });
 
