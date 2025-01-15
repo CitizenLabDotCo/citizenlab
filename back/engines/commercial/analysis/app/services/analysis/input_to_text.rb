@@ -57,7 +57,7 @@ module Analysis
           #{override_field_labels.map do |field_id, abbreviation|
               "#{abbreviation}: #{@multiloc_service.t(@custom_fields.find { |cf| cf.id == field_id }.title_multiloc)}\n"
             end.join}
-          
+
           #{formatted_inputs}
         __OUTPUT__
       else
@@ -84,16 +84,17 @@ module Analysis
       options_by_key = custom_field.options.index_by(&:key)
       value_for_llm = case custom_field.input_type
       when 'ranking'
-        input.custom_field_values[custom_field.key]&.map.with_index do |option_key, index|
+        stored_value = input.custom_field_values[custom_field.key]
+        (stored_value || []).map.with_index do |option_key, index|
           title_multiloc = options_by_key[option_key]&.title_multiloc
           option_title = title_multiloc ? @multiloc_service.t(title_multiloc) : ''
           "#{index + 1}. #{option_title}"
-        end&.join("\n")
+        end.join("\n")
       else
         vv = Export::Xlsx::ValueVisitor.new(input, options_by_key, app_configuration: @app_configuration)
         custom_field.accept(vv)
       end
-      
+
       @memoized_field_values[input.id][custom_field.id] = value_for_llm
     end
 
