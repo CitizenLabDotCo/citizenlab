@@ -122,7 +122,7 @@ const App = ({ children }: Props) => {
           // If the locale changes, the appropriate one will be imported in some other code.
           await localeGetter(momentLocale);
         } catch (error) {
-          console.error(`Error processing locale: ${locale}`, error);
+          console.error(`Error processing locale: ${momentLocale}`, error);
         }
       });
 
