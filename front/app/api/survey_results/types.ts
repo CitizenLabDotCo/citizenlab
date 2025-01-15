@@ -51,7 +51,11 @@ type BaseResult = {
 
 export type ResultUngrouped = BaseResult & {
   grouped: false;
-  answers: Answer[];
+  answers?: Answer[];
+
+  // Rankings
+  average_rankings?: Record<string, string>;
+  rankings_counts?: Record<string, Record<string, number>>;
 
   // Undefined for text and file upload questions
   multilocs?: AnswerMultilocs;
