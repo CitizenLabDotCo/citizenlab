@@ -2071,6 +2071,8 @@
   "app.utils.IdeasNewPage.proposalFormTitle": "Pridėti naują pasiūlymą",
   "app.utils.IdeasNewPage.questionFormTitle": "Pridėti naują klausimą",
   "app.utils.IdeasNewPage.surveyTitle": "Apklausa",
+  "app.utils.Projects.sendSurveySubmission": "Siųsti apklausos pateikimo identifikatorių į mano el. paštą",
+  "app.utils.Projects.surveySubmission": "Apklausos pateikimas",
   "app.utils.Promessagesjects.ifYouLaterDecide": "Jei vėliau nuspręsite, kad norite, jog jūsų atsakymas būtų pašalintas, susisiekite su mumis nurodydami šį unikalų identifikatorių:",
   "app.utils.actionDescriptors.attendingEventMissingRequirements": "Norėdami dalyvauti šiame renginyje, turite užpildyti savo profilį.",
   "app.utils.actionDescriptors.attendingEventNotInGroup": "Neatitinkate reikalavimų, kad galėtumėte dalyvauti šiame renginyje.",
