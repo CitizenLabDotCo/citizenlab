@@ -1,4 +1,4 @@
-import { renderHook, act } from '@testing-library/react-hooks';
+import { renderHook, waitFor, act } from 'utils/testUtils/rtl';
 import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
 
@@ -21,7 +21,7 @@ describe('useCopyReport', () => {
   afterAll(() => server.close());
 
   it('mutates data correctly', async () => {
-    const { result, waitFor } = renderHook(() => useCopyReport(), {
+    const { result } = renderHook(() => useCopyReport(), {
       wrapper: createQueryClientWrapper(),
     });
 
@@ -38,7 +38,7 @@ describe('useCopyReport', () => {
       http.post(apiCopyPath, () => HttpResponse.json(null, { status: 500 }))
     );
 
-    const { result, waitFor } = renderHook(() => useCopyReport(), {
+    const { result } = renderHook(() => useCopyReport(), {
       wrapper: createQueryClientWrapper(),
     });
 

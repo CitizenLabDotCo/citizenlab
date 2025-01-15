@@ -1,4 +1,4 @@
-import { renderHook } from 'utils/testUtils/rtl';
+import { renderHook, waitFor } from 'utils/testUtils/rtl';
 import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
 
@@ -20,7 +20,7 @@ describe('useEventFiles', () => {
   afterAll(() => server.close());
 
   it('returns data correctly', async () => {
-    const { result, waitFor } = renderHook(() => useEventFiles('1'), {
+    const { result } = renderHook(() => useEventFiles('1'), {
       wrapper: createQueryClientWrapper(),
     });
 
@@ -39,7 +39,7 @@ describe('useEventFiles', () => {
       })
     );
 
-    const { result, waitFor } = renderHook(() => useEventFiles('1'), {
+    const { result } = renderHook(() => useEventFiles('1'), {
       wrapper: createQueryClientWrapper(),
     });
 

@@ -1,4 +1,4 @@
-import { renderHook } from '@testing-library/react-hooks';
+import { renderHook, waitFor } from 'utils/testUtils/rtl';
 import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
 
@@ -25,7 +25,7 @@ describe('useAnalysisInsights', () => {
   afterAll(() => server.close());
 
   it('returns data correctly', async () => {
-    const { result, waitFor } = renderHook(() => useAnalysisInsights(params), {
+    const { result } = renderHook(() => useAnalysisInsights(params), {
       wrapper: createQueryClientWrapper(),
     });
 
@@ -44,7 +44,7 @@ describe('useAnalysisInsights', () => {
       })
     );
 
-    const { result, waitFor } = renderHook(() => useAnalysisInsights(params), {
+    const { result } = renderHook(() => useAnalysisInsights(params), {
       wrapper: createQueryClientWrapper(),
     });
 

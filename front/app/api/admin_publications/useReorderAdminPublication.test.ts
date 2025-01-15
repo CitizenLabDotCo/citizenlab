@@ -1,8 +1,8 @@
-import { renderHook, act } from '@testing-library/react-hooks';
 import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
+import { renderHook, act, waitFor } from 'utils/testUtils/rtl';
 
 import { mockFolderChildAdminPublicationsList } from './__mocks__/useAdminPublications';
 import useReorderAdminPublication from './useReorderAdminPublication';
@@ -22,7 +22,7 @@ describe('useReorderAdminPublication', () => {
   afterAll(() => server.close());
 
   it('mutates data correctly', async () => {
-    const { result, waitFor } = renderHook(() => useReorderAdminPublication(), {
+    const { result } = renderHook(() => useReorderAdminPublication(), {
       wrapper: createQueryClientWrapper(),
     });
 
@@ -46,7 +46,7 @@ describe('useReorderAdminPublication', () => {
       })
     );
 
-    const { result, waitFor } = renderHook(() => useReorderAdminPublication(), {
+    const { result } = renderHook(() => useReorderAdminPublication(), {
       wrapper: createQueryClientWrapper(),
     });
     act(() => {

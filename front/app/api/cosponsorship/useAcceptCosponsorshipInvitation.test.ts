@@ -1,4 +1,4 @@
-import { renderHook, act } from '@testing-library/react-hooks';
+import { renderHook, waitFor, act } from 'utils/testUtils/rtl';
 import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
 
@@ -19,12 +19,9 @@ describe('useAcceptCosponsorshipInvitation', () => {
   afterAll(() => server.close());
 
   it('mutates data correctly', async () => {
-    const { result, waitFor } = renderHook(
-      () => useAcceptCosponsorshipInvitation(),
-      {
-        wrapper: createQueryClientWrapper(),
-      }
-    );
+    const { result } = renderHook(() => useAcceptCosponsorshipInvitation(), {
+      wrapper: createQueryClientWrapper(),
+    });
 
     act(() => {
       result.current.mutate({
@@ -44,12 +41,9 @@ describe('useAcceptCosponsorshipInvitation', () => {
       })
     );
 
-    const { result, waitFor } = renderHook(
-      () => useAcceptCosponsorshipInvitation(),
-      {
-        wrapper: createQueryClientWrapper(),
-      }
-    );
+    const { result } = renderHook(() => useAcceptCosponsorshipInvitation(), {
+      wrapper: createQueryClientWrapper(),
+    });
     act(() => {
       result.current.mutate({
         ideaId: 'ideaId',

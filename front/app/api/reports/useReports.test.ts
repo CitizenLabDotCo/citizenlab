@@ -1,4 +1,4 @@
-import { renderHook } from 'utils/testUtils/rtl';
+import { renderHook, waitFor } from 'utils/testUtils/rtl';
 import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
 
@@ -17,7 +17,7 @@ describe('useReports', () => {
   afterAll(() => server.close());
 
   it('returns data correctly', async () => {
-    const { result, waitFor } = renderHook(() => useReports(), {
+    const { result } = renderHook(() => useReports(), {
       wrapper: createQueryClientWrapper(),
     });
 
@@ -36,7 +36,7 @@ describe('useReports', () => {
       })
     );
 
-    const { result, waitFor } = renderHook(() => useReports(), {
+    const { result } = renderHook(() => useReports(), {
       wrapper: createQueryClientWrapper(),
     });
 

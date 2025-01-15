@@ -1,4 +1,4 @@
-import { renderHook, act } from '@testing-library/react-hooks';
+import { renderHook, waitFor, act } from 'utils/testUtils/rtl';
 import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
 
@@ -20,7 +20,7 @@ describe('useAddProjectFolder', () => {
   afterAll(() => server.close());
 
   it('mutates data correctly', async () => {
-    const { result, waitFor } = renderHook(() => useAddProjectFolder(), {
+    const { result } = renderHook(() => useAddProjectFolder(), {
       wrapper: createQueryClientWrapper(),
     });
 
@@ -63,7 +63,7 @@ describe('useAddProjectFolder', () => {
       })
     );
 
-    const { result, waitFor } = renderHook(() => useAddProjectFolder(), {
+    const { result } = renderHook(() => useAddProjectFolder(), {
       wrapper: createQueryClientWrapper(),
     });
 

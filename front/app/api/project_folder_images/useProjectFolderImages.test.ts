@@ -1,4 +1,4 @@
-import { renderHook } from 'utils/testUtils/rtl';
+import { renderHook, waitFor } from 'utils/testUtils/rtl';
 import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
 
@@ -23,7 +23,7 @@ describe('useProjectFolderImages', () => {
   afterAll(() => server.close());
 
   it('returns data correctly', async () => {
-    const { result, waitFor } = renderHook(
+    const { result } = renderHook(
       () => useProjectFolderImages({ folderId: 'projectFolderId' }),
       {
         wrapper: createQueryClientWrapper(),
@@ -45,7 +45,7 @@ describe('useProjectFolderImages', () => {
       })
     );
 
-    const { result, waitFor } = renderHook(
+    const { result } = renderHook(
       () => useProjectFolderImages({ folderId: 'projectFolderId' }),
       {
         wrapper: createQueryClientWrapper(),

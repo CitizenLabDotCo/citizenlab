@@ -1,4 +1,4 @@
-import { renderHook, act } from '@testing-library/react-hooks';
+import { renderHook, waitFor, act } from 'utils/testUtils/rtl';
 import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
 
@@ -22,7 +22,7 @@ describe('useReorderProjectAllowedInputTopics', () => {
   afterAll(() => server.close());
 
   it('mutates data correctly', async () => {
-    const { result, waitFor } = renderHook(
+    const { result } = renderHook(
       () => useReorderProjectAllowedInputTopics({ projectId: '1' }),
       {
         wrapper: createQueryClientWrapper(),
@@ -47,7 +47,7 @@ describe('useReorderProjectAllowedInputTopics', () => {
       })
     );
 
-    const { result, waitFor } = renderHook(
+    const { result } = renderHook(
       () => useReorderProjectAllowedInputTopics({ projectId: '1' }),
       {
         wrapper: createQueryClientWrapper(),

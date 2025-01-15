@@ -1,4 +1,4 @@
-import { renderHook, act } from '@testing-library/react-hooks';
+import { renderHook, waitFor, act } from 'utils/testUtils/rtl';
 import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
 
@@ -18,12 +18,9 @@ describe('useDeleteIdeaOfficialFeedback', () => {
   afterAll(() => server.close());
 
   it('mutates data correctly', async () => {
-    const { result, waitFor } = renderHook(
-      () => useDeleteIdeaOfficialFeedback(),
-      {
-        wrapper: createQueryClientWrapper(),
-      }
-    );
+    const { result } = renderHook(() => useDeleteIdeaOfficialFeedback(), {
+      wrapper: createQueryClientWrapper(),
+    });
 
     act(() => {
       result.current.mutate('id');
@@ -39,12 +36,9 @@ describe('useDeleteIdeaOfficialFeedback', () => {
       })
     );
 
-    const { result, waitFor } = renderHook(
-      () => useDeleteIdeaOfficialFeedback(),
-      {
-        wrapper: createQueryClientWrapper(),
-      }
-    );
+    const { result } = renderHook(() => useDeleteIdeaOfficialFeedback(), {
+      wrapper: createQueryClientWrapper(),
+    });
 
     act(() => {
       result.current.mutate('id');
