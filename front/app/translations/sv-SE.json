@@ -1812,7 +1812,7 @@
   "app.containers.UsersEditPage.verifiedIdentitySubtitle": "Du kan delta i projekt som kräver verifiering.",
   "app.containers.UsersEditPage.verifiedIdentityTitle": "Du är verifierad",
   "app.containers.UsersEditPage.verifyNow": "Verifiera nu",
-  "app.containers.UsersShowPage.Surveys.SurveySubmissionCard.downloadYourResponses": "Ladda ner dina svar",
+  "app.containers.UsersShowPage.Surveys.SurveySubmissionCard.downloadYourResponses2": "Ladda ner dina svar (.xlsx)",
   "app.containers.UsersShowPage.a11y_likesCount": "{likesCount, plural, =0 {inga likes} one {1 gilla} other {# likes}}",
   "app.containers.UsersShowPage.a11y_postCommentPostedIn": "Indata som den här kommentaren publicerades som svar på:",
   "app.containers.UsersShowPage.areas": "Områden",
