@@ -49,7 +49,7 @@ class IdeaPolicy < ApplicationPolicy
   end
 
   def index_survey_submissions?
-    !!user
+    active?
   end
 
   def create?

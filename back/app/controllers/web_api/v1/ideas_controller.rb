@@ -126,7 +126,7 @@ class WebApi::V1::IdeasController < ApplicationController
 
   def show_xlsx
     idea = Idea.find params[:id]
-    authorize idea, :show_xlsx?
+    authorize idea
 
     I18n.with_locale(current_user&.locale) do
       xlsx = Export::Xlsx::InputsGenerator.new.generate_for_input(idea)
