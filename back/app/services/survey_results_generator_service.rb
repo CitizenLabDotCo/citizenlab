@@ -14,11 +14,14 @@ class SurveyResultsGeneratorService < FieldVisitorService
   def generate_results(field_id: nil)
     if field_id
       field = find_question(field_id)
-      visit field
+      result = visit field
+      add_maybe_skipped_by_logic_to_result result
     else
       results = fields.filter_map do |f|
         visit f
       end
+      results = add_maybe_skipped_by_logic_to_results results
+
       {
         results: results,
         totalSubmissions: inputs.size
@@ -323,5 +326,36 @@ class SurveyResultsGeneratorService < FieldVisitorService
     end
 
     answer_titles
+  end
+
+  def add_maybe_skipped_by_logic_to_results(results)
+    results.map do |result|
+      result[:maybeSkippedByLogic] = result[:customFieldId].in?(maybe_skipped_fields(@fields))
+      result
+    end
+  end
+
+  def add_maybe_skipped_by_logic_to_result(result)
+    result[:maybeSkippedByLogic] = result[:customFieldId].in?(maybe_skipped_fields(@fields))
+    result
+  end
+
+  def maybe_skipped_fields(fields)
+    # Does a field potentially get skipped by logic - check each field and flag if so
+    maybe_skipped_fields = []
+    fields.each_with_index do |field, index|
+      # Check which fields appear between this field and the page we potentially skip to
+      rest_of_fields = fields[index + 1..]
+      field[:logic]['rules']&.each do |rule|
+        page_id = rule['goto_page_id']
+        rest_of_fields.each do |f|
+          break if f[:id] == page_id
+          next if f[:input_type] == 'page'
+
+          maybe_skipped_fields << f[:id]
+        end
+      end
+    end
+    maybe_skipped_fields.uniq
   end
 end

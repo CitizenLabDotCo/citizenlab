@@ -720,6 +720,7 @@ resource 'Phases' do
             question: { en: 'What are your favourite pets?' },
             required: true,
             grouped: false,
+            maybeSkippedByLogic: false,
             totalResponseCount: 2,
             questionResponseCount: 2,
             totalPickCount: 3,
