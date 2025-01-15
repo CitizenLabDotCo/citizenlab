@@ -747,6 +747,7 @@
   "app.components.formBuilder.randomize": "Randomize",
   "app.components.formBuilder.randomizeToolTip": "The order of the answers will be randomized per user",
   "app.components.formBuilder.range": "Range",
+  "app.components.formBuilder.ranking": "Ranking",
   "app.components.formBuilder.removeAnswer": "Remove answer",
   "app.components.formBuilder.required": "Required",
   "app.components.formBuilder.requiredToggleLabel": "Make answering this question required",

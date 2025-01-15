@@ -13,7 +13,10 @@ module IdeaCustomFields
         idea_custom_fields = ideas.map(&:project).flat_map do |project|
           next unless project.custom_form
 
-          ::IdeaCustomFieldsService.new(project.custom_form).reportable_fields.reject(&:built_in?)
+          ::IdeaCustomFieldsService.new(project.custom_form)
+            .all_fields
+            .filter(&:supports_xlsx_export?)
+            .reject(&:built_in?)
         end
 
         # options keys are only unique in the scope of their field, namespacing to avoid collisions

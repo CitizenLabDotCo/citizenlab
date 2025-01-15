@@ -46,7 +46,7 @@ interface Props {
   inputType: ICustomFieldInputType;
 }
 
-const ConfigSelectWithLocaleSwitcher = ({
+const ConfigOptionsWithLocaleSwitcher = ({
   onSelectedLocaleChange,
   name,
   locales,
@@ -76,6 +76,8 @@ const ConfigSelectWithLocaleSwitcher = ({
   const customFieldOptionImages = useCustomFieldOptionImages(imageIds);
   const prevImageQueries = usePrevious(customFieldOptionImages);
   const [optionImages, setOptionImages] = useState<OptionImageType>();
+
+  const showOtherOptionToggle = inputType !== 'ranking';
 
   useEffect(() => {
     if (
@@ -349,23 +351,27 @@ const ConfigSelectWithLocaleSwitcher = ({
                   />
                 )}
 
-                <Box mt="24px" data-cy="e2e-other-option-toggle">
-                  <Toggle
-                    label={
-                      <Box display="flex">
-                        {formatMessage(messages.otherOption)}
-                        <Box pl="4px">
-                          <IconTooltip
-                            placement="top-start"
-                            content={formatMessage(messages.otherOptionTooltip)}
-                          />
+                {showOtherOptionToggle && (
+                  <Box mt="24px" data-cy="e2e-other-option-toggle">
+                    <Toggle
+                      label={
+                        <Box display="flex">
+                          {formatMessage(messages.otherOption)}
+                          <Box pl="4px">
+                            <IconTooltip
+                              placement="top-start"
+                              content={formatMessage(
+                                messages.otherOptionTooltip
+                              )}
+                            />
+                          </Box>
                         </Box>
-                      </Box>
-                    }
-                    checked={hasOtherOption}
-                    onChange={toggleOtherOption}
-                  />
-                </Box>
+                      }
+                      checked={hasOtherOption}
+                      onChange={toggleOtherOption}
+                    />
+                  </Box>
+                )}
               </SectionField>
             </Box>
           );
@@ -375,4 +381,4 @@ const ConfigSelectWithLocaleSwitcher = ({
   );
 };
 
-export default ConfigSelectWithLocaleSwitcher;
+export default ConfigOptionsWithLocaleSwitcher;

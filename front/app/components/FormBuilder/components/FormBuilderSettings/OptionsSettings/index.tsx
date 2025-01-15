@@ -14,7 +14,7 @@ type Props = {
   dropdownLayoutName: string;
 };
 
-const SelectSettings = ({
+const OptionsSettings = ({
   inputType,
   randomizeName,
   dropdownLayoutName,
@@ -39,7 +39,7 @@ const SelectSettings = ({
           }
         />
       </Box>
-      {inputType !== 'multiselect_image' && (
+      {inputType !== 'multiselect_image' && inputType !== 'ranking' && (
         <Box mb="24px">
           <Toggle
             name={dropdownLayoutName}
@@ -61,4 +61,4 @@ const SelectSettings = ({
   );
 };
 
-export default SelectSettings;
+export default OptionsSettings;

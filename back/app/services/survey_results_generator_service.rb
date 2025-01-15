@@ -6,7 +6,7 @@ class SurveyResultsGeneratorService < FieldVisitorService
     @group_mode = group_mode
     @group_field_id = group_field_id
     form = phase.custom_form || CustomForm.new(participation_context: phase)
-    @fields = IdeaCustomFieldsService.new(form).enabled_fields # It would be nice if we could use reportable_fields instead
+    @fields = IdeaCustomFieldsService.new(form).enabled_fields
     @inputs = phase.ideas.native_survey.published
     @locales = AppConfiguration.instance.settings('core', 'locales')
   end
@@ -45,6 +45,14 @@ class SurveyResultsGeneratorService < FieldVisitorService
 
   def visit_multiselect_image(field)
     visit_select_base(field)
+  end
+
+  def visit_ranking(field)
+    core_field_attributes(field, base_responses(field).size).merge({
+      average_rankings: field.average_rankings(inputs),
+      rankings_counts: field.rankings_counts(inputs),
+      multilocs: get_multilocs(field)
+    })
   end
 
   def visit_text(field)
@@ -195,7 +203,7 @@ class SurveyResultsGeneratorService < FieldVisitorService
     attributes
   end
 
-  def get_multilocs(field, group_field)
+  def get_multilocs(field, group_field = nil)
     multilocs = { answer: get_option_multilocs(field) }
     multilocs[:group] = get_option_multilocs(group_field) if group_field
     multilocs
