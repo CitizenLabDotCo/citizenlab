@@ -17,7 +17,6 @@ import 'moment-timezone';
 import moment from 'moment';
 import { useLocation } from 'react-router-dom';
 import styled, { ThemeProvider } from 'styled-components';
-import { SupportedLocale } from 'typings';
 
 import { IAppConfigurationStyle } from 'api/app_configuration/types';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
@@ -25,6 +24,7 @@ import useAuthUser from 'api/me/useAuthUser';
 import useDeleteSelf from 'api/users/useDeleteSelf';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
+import useLocale from 'hooks/useLocale';
 
 import {
   appLocalesMomentPairs,
@@ -47,7 +47,6 @@ import {
   isIdeaShowPage,
   isPage,
 } from 'utils/helperUtils';
-import { localeStream } from 'utils/localeStream';
 import { usePermission } from 'utils/permissions';
 import { isAdmin, isModerator } from 'utils/permissions/roles';
 
@@ -78,12 +77,12 @@ interface Props {
   children: React.ReactNode;
 }
 
-const locale$ = localeStream().observable;
-
 const App = ({ children }: Props) => {
   const isSmallerThanTablet = useBreakpoint('tablet');
   const location = useLocation();
   const { formatMessage } = useIntl();
+  const locale = useLocale();
+  const momentLocale = appLocalesMomentPairs[locale] || 'en';
 
   const { mutate: signOutAndDeleteAccount } = useDeleteSelf();
   const [isAppInitialized, setIsAppInitialized] = useState(false);
@@ -97,9 +96,37 @@ const App = ({ children }: Props) => {
   ] = useState(false);
   const [userSuccessfullyDeleted, setUserSuccessfullyDeleted] = useState(false);
 
-  const [locale, setLocale] = useState<SupportedLocale | null>(null);
-
   const redirectsEnabled = useFeatureFlag({ name: 'redirects' });
+
+  useEffect(() => {
+    moment.locale(momentLocale);
+  }, [momentLocale]);
+
+  useEffect(() => {
+    if (!appConfiguration) return;
+
+    const appConfigMomentLocales = uniq(
+      appConfiguration.data.attributes.settings.core.locales
+        .filter((loc) => loc !== 'en')
+        .map((loc) => appLocalesMomentPairs[loc])
+    );
+
+    async function importMomentLocaleFilePromise(momentLocale: string) {
+      try {
+        await localeGetter(momentLocale);
+      } catch (error) {
+        console.error(`Error processing locale: ${momentLocale}`, error);
+      }
+    }
+
+    Promise.all(
+      appConfigMomentLocales.map((appConfigMomentLocale) =>
+        importMomentLocaleFilePromise(appConfigMomentLocale)
+      )
+    ).then(() => {
+      moment.locale(momentLocale);
+    });
+  }, [appConfiguration, momentLocale]);
 
   useEffect(() => {
     if (appConfiguration && !isAppInitialized) {
@@ -107,23 +134,6 @@ const App = ({ children }: Props) => {
       moment.tz.setDefault(
         appConfiguration.data.attributes.settings.core.timezone
       );
-
-      uniq(
-        appConfiguration.data.attributes.settings.core.locales
-          .filter((loc) => loc !== 'en')
-          .map((loc) => appLocalesMomentPairs[loc])
-      ).map(async (loc) => {
-        try {
-          // Dynamically import the locale only if it matches the current locale.
-          // This ensures we only load the required locale when needed.
-          // If the locale changes, the appropriate one will be imported in some other code.
-          if (loc === locale) {
-            return await localeGetter(loc);
-          }
-        } catch (error) {
-          console.error(`Error processing locale: ${locale}`, error);
-        }
-      });
 
       // Weglot initialization
       if (appConfiguration.data.attributes.settings.core.weglot_api_key) {
@@ -180,7 +190,7 @@ const App = ({ children }: Props) => {
       }
       setIsAppInitialized(true);
     }
-  }, [appConfiguration, isAppInitialized, locale]);
+  }, [appConfiguration, isAppInitialized]);
 
   useEffect(() => {
     const handleCustomRedirect = () => {
@@ -215,26 +225,6 @@ const App = ({ children }: Props) => {
 
   useEffect(() => {
     const subscriptions = [
-      locale$.subscribe(async (locale) => {
-        try {
-          const momentLoc = appLocalesMomentPairs[locale] || 'en';
-
-          // No need to import for English
-          if (momentLoc !== 'en') {
-            await localeGetter(momentLoc);
-          }
-
-          // After localeGetter, set the moment locale
-          moment.locale(momentLoc);
-          setLocale(locale);
-        } catch (error) {
-          console.error(
-            `Failed to load Moment.js locale for ${locale}:`,
-            error
-          );
-        }
-      }),
-
       eventEmitter
         .observeEvent('deleteProfileAndShowSuccessModal')
         .subscribe(() => {
@@ -337,7 +327,7 @@ const App = ({ children }: Props) => {
           <Spinner />
         </Box>
       )}
-      <ThemeProvider theme={{ ...theme, isRtl: !!locale?.startsWith('ar') }}>
+      <ThemeProvider theme={{ ...theme, isRtl: locale.startsWith('ar') }}>
         <GlobalStyle />
         <Box
           className={appContainerClassName}

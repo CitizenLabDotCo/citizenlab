@@ -246,103 +246,135 @@ export async function localeGetter(localeName: string) {
   switch (localeName) {
     case 'ar-ma':
       // @ts-ignore
-      return await import('moment/dist/locale/ar-ma');
+      await import('moment/dist/locale/ar-ma');
+      break;
     case 'ar-sa':
       // @ts-ignore
-      return await import('moment/dist/locale/ar-sa');
+      await import('moment/dist/locale/ar-sa');
+      break;
     case 'ca':
       // @ts-ignore
-      return await import('moment/dist/locale/ca');
+      await import('moment/dist/locale/ca');
+      break;
     case 'cy':
       // @ts-ignore
-      return await import('moment/dist/locale/cy');
+      await import('moment/dist/locale/cy');
+      break;
     case 'da':
       // @ts-ignore
-      return await import('moment/dist/locale/da');
+      await import('moment/dist/locale/da');
+      break;
     case 'de':
       // @ts-ignore
-      return await import('moment/dist/locale/de');
+      await import('moment/dist/locale/de');
+      break;
     case 'el':
       // @ts-ignore
-      return await import('moment/dist/locale/el');
+      await import('moment/dist/locale/el');
+      break;
     case 'en-ca':
       // @ts-ignore
-      return await import('moment/dist/locale/en-ca');
+      await import('moment/dist/locale/en-ca');
+      break;
     case 'en-gb':
       // @ts-ignore
-      return await import('moment/dist/locale/en-gb');
+      await import('moment/dist/locale/en-gb');
+      break;
     case 'en-ie':
       // @ts-ignore
-      return await import('moment/dist/locale/en-ie');
+      await import('moment/dist/locale/en-ie');
+      break;
     case 'es':
       // @ts-ignore
-      return await import('moment/dist/locale/es');
+      await import('moment/dist/locale/es');
+      break;
     case 'fi':
       // @ts-ignore
-      return await import('moment/dist/locale/fi');
+      await import('moment/dist/locale/fi');
+      break;
     case 'fr':
       // @ts-ignore
-      return await import('moment/dist/locale/fr');
+      await import('moment/dist/locale/fr');
+      break;
     case 'hr':
       // @ts-ignore
-      return await import('moment/dist/locale/hr');
+      await import('moment/dist/locale/hr');
+      break;
     case 'hu':
       // @ts-ignore
-      return await import('moment/dist/locale/hu');
+      await import('moment/dist/locale/hu');
+      break;
     case 'it':
       // @ts-ignore
-      return await import('moment/dist/locale/it');
+      await import('moment/dist/locale/it');
+      break;
     case 'lb':
       // @ts-ignore
-      return await import('moment/dist/locale/lb');
+      await import('moment/dist/locale/lb');
+      break;
     case 'lt':
       // @ts-ignore
-      return await import('moment/dist/locale/lt');
+      await import('moment/dist/locale/lt');
+      break;
     case 'lv':
       // @ts-ignore
-      return await import('moment/dist/locale/lv');
+      await import('moment/dist/locale/lv');
+      break;
     case 'mi':
       // @ts-ignore
-      return await import('moment/dist/locale/mi');
+      await import('moment/dist/locale/mi');
+      break;
     case 'nb':
       // @ts-ignore
-      return await import('moment/dist/locale/nb');
+      await import('moment/dist/locale/nb');
+      break;
     case 'nl-be':
       // @ts-ignore
-      return await import('moment/dist/locale/nl-be');
+      await import('moment/dist/locale/nl-be');
+      break;
     case 'nl':
       // @ts-ignore
-      return await import('moment/dist/locale/nl');
+      await import('moment/dist/locale/nl');
+      break;
     case 'pa-in':
       // @ts-ignore
-      return await import('moment/dist/locale/pa-in');
+      await import('moment/dist/locale/pa-in');
+      break;
     case 'pl':
       // @ts-ignore
-      return await import('moment/dist/locale/pl');
+      await import('moment/dist/locale/pl');
+      break;
     case 'pt-br':
       // @ts-ignore
-      return await import('moment/dist/locale/pt-br');
+      await import('moment/dist/locale/pt-br');
+      break;
     case 'ro':
       // @ts-ignore
-      return await import('moment/dist/locale/ro');
+      await import('moment/dist/locale/ro');
+      break;
     case 'sr':
     case 'sr-Latn':
       // @ts-ignore
-      return await import('moment/dist/locale/sr');
+      await import('moment/dist/locale/sr');
+      break;
     case 'sr-SP':
       // @ts-ignore
-      return await import('moment/dist/locale/sr-cyrl');
+      await import('moment/dist/locale/sr-cyrl');
+      break;
     case 'sv':
       // @ts-ignore
-      return await import('moment/dist/locale/sv');
+      await import('moment/dist/locale/sv');
+      break;
     case 'tr':
       // @ts-ignore
-      return await import('moment/dist/locale/tr');
+      await import('moment/dist/locale/tr');
+      break;
     case 'ur':
       // @ts-ignore
-      return await import('moment/dist/locale/ur');
+      await import('moment/dist/locale/ur');
+      break;
     default:
       console.warn(`No matching locale import for: ${localeName}`);
-      return null; // Explicit return for unmatched cases
+      break;
   }
 }
