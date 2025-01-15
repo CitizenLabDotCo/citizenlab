@@ -16,7 +16,7 @@ import reportTitleIsTaken from 'containers/Admin/reporting/utils/reportTitleIsTa
 
 import { DateRange } from 'components/admin/DatePickers/_shared/typings';
 import DateRangePicker from 'components/admin/DatePickers/DateRangePicker';
-import Button from 'components/UI/Button';
+import Button from 'components/UI/ButtonWithLink';
 import Error from 'components/UI/Error';
 import Modal from 'components/UI/Modal';
 import ProjectFilter from 'components/UI/ProjectFilter';

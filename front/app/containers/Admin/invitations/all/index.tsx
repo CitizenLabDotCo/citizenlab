@@ -19,7 +19,7 @@ import useInvites from 'api/invites/useInvites';
 import { API_PATH } from 'containers/App/constants';
 
 import Pagination from 'components/Pagination';
-import Button from 'components/UI/Button';
+import Button from 'components/UI/ButtonWithLink';
 import SearchInput from 'components/UI/SearchInput';
 
 import { FormattedMessage } from 'utils/cl-intl';

@@ -9,7 +9,7 @@ import { Omit } from 'typings';
 import Button, {
   ButtonStyles,
   Props as OriginalButtonProps,
-} from 'components/UI/Button';
+} from 'components/UI/ButtonWithLink';
 
 import { FormattedMessage, MessageDescriptor } from 'utils/cl-intl';
 

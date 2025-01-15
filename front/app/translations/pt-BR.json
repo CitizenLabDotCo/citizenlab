@@ -759,6 +759,7 @@
   "app.components.formBuilder.shortAnswer": "Resposta curta",
   "app.components.formBuilder.showResponseToUsersToggleLabel": "Mostrar resposta aos usuários",
   "app.components.formBuilder.singleChoice": "Escolha única",
+  "app.components.formBuilder.staleDataErrorMessage2": "Houve um problema. Este formulário de entrada foi salvo mais recentemente em outro lugar. Isso pode ocorrer porque você ou outro usuário o abriu para edição em outra janela do navegador. Atualize a página para obter o formulário mais recente e, em seguida, faça suas alterações novamente.",
   "app.components.formBuilder.supportArticleLinkText": "esta página",
   "app.components.formBuilder.tags": "Etiquetas",
   "app.components.formBuilder.title": "Título",
