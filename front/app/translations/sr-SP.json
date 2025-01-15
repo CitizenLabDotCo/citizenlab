@@ -1812,7 +1812,7 @@
   "app.containers.UsersEditPage.verifiedIdentitySubtitle": "Можете учествовати у пројектима који захтевају верификацију.",
   "app.containers.UsersEditPage.verifiedIdentityTitle": "Верификовани сте",
   "app.containers.UsersEditPage.verifyNow": "Потврдите сада",
-  "app.containers.UsersShowPage.Surveys.SurveySubmissionCard.downloadYourResponses": "Download your responses",
+  "app.containers.UsersShowPage.Surveys.SurveySubmissionCard.downloadYourResponses2": "Download your responses (.xlsx)",
   "app.containers.UsersShowPage.a11y_likesCount": "{likesCount, plural, =0 {нема лајкова} one {1 лике} other {# свиђа}}",
   "app.containers.UsersShowPage.a11y_postCommentPostedIn": "Унесите да је овај коментар објављен као одговор на:",
   "app.containers.UsersShowPage.areas": "Подручја",
