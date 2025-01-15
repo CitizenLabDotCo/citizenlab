@@ -7,6 +7,7 @@ import PageLoading from 'components/UI/PageLoading';
 const UsersShowPage = lazy(() => import('./'));
 const Following = lazy(() => import('./Following'));
 const Submissions = lazy(() => import('./Submissions'));
+const Surveys = lazy(() => import('./Surveys'));
 const UserComments = lazy(() => import('./UserComments'));
 const UserEvents = lazy(() => import('./UserEvents'));
 
@@ -18,12 +19,14 @@ enum userShowPageRoutes {
   comments = 'comments',
   following = 'following',
   events = 'events',
+  surveys = 'surveys',
 }
 
 export type userShowPageRouteTypes =
   | ``
   | `/${userShowPageRoutes.profile}/${string}`
   | `/${userShowPageRoutes.profile}/${string}/${userShowPageRoutes.submissions}`
+  | `/${userShowPageRoutes.profile}/${string}/${userShowPageRoutes.surveys}`
   | `/${userShowPageRoutes.profile}/${string}/${userShowPageRoutes.comments}`
   | `/${userShowPageRoutes.profile}/${string}/${userShowPageRoutes.following}`
   | `/${userShowPageRoutes.profile}/${string}/${userShowPageRoutes.events}`;
@@ -46,6 +49,16 @@ export default () => ({
         <PageLoading>
           <div role="tabpanel" aria-labelledby="tab-submissions" tabIndex={0}>
             <Submissions />
+          </div>
+        </PageLoading>
+      ),
+    },
+    {
+      path: userShowPageRoutes.surveys,
+      element: (
+        <PageLoading>
+          <div role="tabpanel" aria-labelledby="tab-surveys" tabIndex={0}>
+            <Surveys />
           </div>
         </PageLoading>
       ),

@@ -86,6 +86,26 @@ class WebApi::V1::IdeasController < ApplicationController
     end
   end
 
+  def index_survey_submissions
+    ideas = policy_scope(Idea)
+      .where(author: current_user)
+      .submitted_or_published
+      .native_survey
+
+    ideas = paginate ideas
+
+    ideas
+      .includes(:creation_phase)
+      .includes(:project)
+
+    render json: linked_json(
+      ideas,
+      WebApi::V1::IdeaMiniSerializer,
+      params: jsonapi_serializer_params,
+      include: %i[creation_phase project]
+    )
+  end
+
   def filter_counts
     ideas = IdeasFinder.new(
       params,
@@ -102,6 +122,16 @@ class WebApi::V1::IdeasController < ApplicationController
 
   def show
     render_show Idea.find params[:id]
+  end
+
+  def show_xlsx
+    idea = Idea.find params[:id]
+    authorize idea
+
+    I18n.with_locale(current_user&.locale) do
+      xlsx = Export::Xlsx::InputsGenerator.new.generate_for_input(idea)
+      send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', filename: 'survey_response.xlsx'
+    end
   end
 
   def by_slug
