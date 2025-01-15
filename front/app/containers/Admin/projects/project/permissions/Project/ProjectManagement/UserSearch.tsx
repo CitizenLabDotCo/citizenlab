@@ -8,7 +8,7 @@ import { IUserData } from 'api/users/types';
 
 import useExceedsSeats from 'hooks/useExceedsSeats';
 
-import Button from 'components/UI/Button';
+import Button from 'components/UI/ButtonWithLink';
 import UserSelect from 'components/UI/UserSelect';
 
 import { useIntl } from 'utils/cl-intl';

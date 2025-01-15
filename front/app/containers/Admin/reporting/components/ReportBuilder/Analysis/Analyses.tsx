@@ -6,7 +6,7 @@ import { RouteType } from 'routes';
 import useAnalyses from 'api/analyses/useAnalyses';
 import { ParticipationMethod } from 'api/phases/types';
 
-import Button from 'components/UI/Button';
+import Button from 'components/UI/ButtonWithLink';
 import Warning from 'components/UI/Warning';
 
 import { useIntl } from 'utils/cl-intl';

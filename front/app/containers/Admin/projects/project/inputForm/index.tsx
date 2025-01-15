@@ -13,7 +13,7 @@ import PDFExportModal, {
 import { API_PATH } from 'containers/App/constants';
 
 import { SectionTitle, SectionDescription } from 'components/admin/Section';
-import Button from 'components/UI/Button';
+import Button from 'components/UI/ButtonWithLink';
 
 import { FormattedMessage } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';

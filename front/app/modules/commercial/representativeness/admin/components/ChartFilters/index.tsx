@@ -5,7 +5,7 @@ import { IOption } from 'typings';
 
 import ProjectFilter from 'containers/Admin/dashboard/components/filters/ProjectFilter';
 
-import Button from 'components/UI/Button';
+import Button from 'components/UI/ButtonWithLink';
 
 import { FormattedMessage } from 'utils/cl-intl';
 

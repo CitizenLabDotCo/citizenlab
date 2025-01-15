@@ -7,7 +7,7 @@ import useAuthUser from 'api/me/useAuthUser';
 
 import { triggerAuthenticationFlow } from 'containers/Authentication/events';
 
-import Button from 'components/UI/Button';
+import Button from 'components/UI/ButtonWithLink';
 import Centerer from 'components/UI/Centerer';
 
 import { useIntl } from 'utils/cl-intl';

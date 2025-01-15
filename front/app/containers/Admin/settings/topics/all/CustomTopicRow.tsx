@@ -9,7 +9,7 @@ import { ITopicData } from 'api/topics/types';
 import useLocalize from 'hooks/useLocalize';
 
 import { Row } from 'components/admin/ResourceList';
-import Button from 'components/UI/Button';
+import Button from 'components/UI/ButtonWithLink';
 
 import { FormattedMessage } from 'utils/cl-intl';
 import Link from 'utils/cl-router/Link';

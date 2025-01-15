@@ -6,7 +6,7 @@ import { IAdminPublicationData } from 'api/admin_publications/types';
 
 import useLocalize from 'hooks/useLocalize';
 
-import Button from 'components/UI/Button';
+import Button from 'components/UI/ButtonWithLink';
 
 import { LoadMore, isAdminPublication } from './utils';
 

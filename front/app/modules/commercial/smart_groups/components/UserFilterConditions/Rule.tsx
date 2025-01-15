@@ -4,7 +4,7 @@ import { colors } from '@citizenlab/cl2-component-library';
 import { pick, clone, omit } from 'lodash-es';
 import styled from 'styled-components';
 
-import Button from 'components/UI/Button';
+import Button from 'components/UI/ButtonWithLink';
 
 import { FormattedMessage } from 'utils/cl-intl';
 
