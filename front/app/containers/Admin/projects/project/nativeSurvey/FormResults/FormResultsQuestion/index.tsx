@@ -17,6 +17,7 @@ import LineLocationQuestion from './MappingQuestions/LineLocationQuestion';
 import PointLocationQuestion from './MappingQuestions/PointLocationQuestion';
 import PolygonLocationQuestion from './MappingQuestions/PolygonLocationQuestion';
 import NumberQuestion from './NumberQuestion';
+import RankingQuestion from './RankingQuestion';
 import TextQuestion from './TextQuestion';
 
 type FormResultsQuestionProps = {
@@ -36,6 +37,7 @@ const FormResultsQuestion = ({
 
   const {
     answers,
+    average_rankings,
     textResponses,
     pointResponses,
     lineResponses,
@@ -50,21 +52,16 @@ const FormResultsQuestion = ({
     files,
   } = result;
 
+  const isRanking = !!average_rankings;
   const isMultipleChoiceAndHasAnswers = !!answers;
   const hasTextResponses = textResponses && textResponses.length > 0;
   const hasNumberResponses = numberResponses && numberResponses.length > 0;
   const isPointAndHasAnswers =
-    // TODO: Fix this the next time the file is edited.
-    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-    inputType === 'point' && pointResponses && pointResponses?.length > 0;
+    inputType === 'point' && pointResponses && pointResponses.length > 0;
   const isLineAndHasAnswers =
-    // TODO: Fix this the next time the file is edited.
-    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-    inputType === 'line' && lineResponses && lineResponses?.length > 0;
+    inputType === 'line' && lineResponses && lineResponses.length > 0;
   const isPolygonAndHasAnswers =
-    // TODO: Fix this the next time the file is edited.
-    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-    inputType === 'polygon' && polygonResponses && polygonResponses?.length > 0;
+    inputType === 'polygon' && polygonResponses && polygonResponses.length > 0;
 
   return (
     <>
@@ -78,8 +75,7 @@ const FormResultsQuestion = ({
           totalSubmissions={totalSubmissions}
           totalResponses={questionResponseCount}
         />
-        {/* TODO: Fix this the next time the file is edited. */}
-        {/* eslint-disable-next-line @typescript-eslint/no-unnecessary-condition */}
+        {isRanking && <RankingQuestion result={result} />}
         {isMultipleChoiceAndHasAnswers && (
           <SurveyBars questionResult={result} colorScheme={COLOR_SCHEME} />
         )}
