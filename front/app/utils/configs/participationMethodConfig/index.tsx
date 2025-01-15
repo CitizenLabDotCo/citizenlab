@@ -1,6 +1,5 @@
 import React, { ReactNode } from 'react';
 
-import { Box, Title, Text } from '@citizenlab/cl2-component-library';
 import { stringify } from 'qs';
 
 import { IIdea } from 'api/ideas/types';
@@ -24,6 +23,8 @@ import clHistory from 'utils/cl-router/history';
 import { FormattedMessage } from '../../cl-intl';
 import { isNilOrError, NilOrError } from '../../helperUtils';
 import messages from '../../messages';
+
+import NativeSurveyModalContent from './NativeSurveyModalContent';
 
 export const defaultSortingOptions = [
   { text: <FormattedMessage {...messages.trending} />, value: 'trending' },
@@ -237,31 +238,7 @@ const nativeSurveyConfig: ParticipationMethodConfig = {
   },
   postType: 'nativeSurvey',
   getModalContent: ({ ideaId, showIdeaId }: ModalContentMethodProps) => {
-    return (
-      <Box>
-        <Title variant="h2" textAlign="center" mt="0">
-          <FormattedMessage
-            {...messages.onSurveySubmission}
-            data-cy="e2e-survey-success-message"
-          />
-        </Title>
-        {ideaId && showIdeaId && (
-          <>
-            <Text textAlign="center" color="coolGrey600">
-              <FormattedMessage {...messages.ifYouLaterDecide} />
-            </Text>
-            <Text
-              textAlign="center"
-              color="tenantPrimary"
-              fontWeight="bold"
-              id="idea-id-success-modal"
-            >
-              {ideaId}
-            </Text>
-          </>
-        )}
-      </Box>
-    );
+    return <NativeSurveyModalContent ideaId={ideaId} showIdeaId={showIdeaId} />;
   },
   showInputManager: false,
   renderCTABar: (props: CTABarProps) => {
