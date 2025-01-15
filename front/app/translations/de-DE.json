@@ -2071,6 +2071,8 @@
   "app.utils.IdeasNewPage.proposalFormTitle": "Neuen Vorschlag hinzufügen",
   "app.utils.IdeasNewPage.questionFormTitle": "Eine neue Frage hinzufügen ",
   "app.utils.IdeasNewPage.surveyTitle": "Umfrage",
+  "app.utils.Projects.sendSurveySubmission": "Kennung für die Übermittlung der Umfrage an meine E-Mail senden",
+  "app.utils.Projects.surveySubmission": "Einreichung der Umfrage",
   "app.utils.Promessagesjects.ifYouLaterDecide": "Wenn Sie später entscheiden, dass Ihre Antwort entfernt werden soll, kontaktieren Sie uns bitte unter Angabe der folgenden eindeutigen Kennung:",
   "app.utils.actionDescriptors.attendingEventMissingRequirements": "Sie müssen Ihr Profil ausfüllen, um an dieser Veranstaltung teilnehmen zu können.",
   "app.utils.actionDescriptors.attendingEventNotInGroup": "Sie erfüllen nicht die Voraussetzungen für die Teilnahme an dieser Veranstaltung.",
