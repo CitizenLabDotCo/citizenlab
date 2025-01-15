@@ -13,8 +13,8 @@ import DetailedRankView from './DetailedRankView';
 import DetailedViewButton from './DetailedViewButton';
 import messages from './messages';
 import {
-  createAverageRankingsArray,
-  createOptionsWithRanksArray,
+  createOptionsWithAverageRanks,
+  createOptionsWithDetailedRanks,
 } from './utils';
 
 const RankingQuestion = (result: { result: ResultUngrouped }) => {
@@ -25,7 +25,9 @@ const RankingQuestion = (result: { result: ResultUngrouped }) => {
   const [showDetails, setShowDetails] = useState(false);
 
   const {
+    // average_rankings: Average rank value for each option.
     average_rankings,
+    // rankings_counts: Detailed ranking counts = the number of times an option was chosen for each rank level.
     rankings_counts,
     multilocs,
     questionResponseCount,
@@ -35,15 +37,17 @@ const RankingQuestion = (result: { result: ResultUngrouped }) => {
     return null;
   }
 
-  // Create arrays for the average rankings and detailed ranking counts for options
-  const averageRanks = createAverageRankingsArray(average_rankings);
-  const optionsWithRanks = createOptionsWithRanksArray(rankings_counts);
+  // Create arrays for the average ranks and detailed rank counts
+  const optionsWithAverageRanks =
+    createOptionsWithAverageRanks(average_rankings);
+  const optionsWithDetailedRanks =
+    createOptionsWithDetailedRanks(rankings_counts);
 
   return (
     <Box pt="16px" width="520px">
-      {averageRanks.map((avgRanking, index) => {
+      {optionsWithAverageRanks.map((option, index) => {
         return (
-          <Box key={avgRanking.optionKey}>
+          <Box key={option.optionKey}>
             <Box
               display="flex"
               justifyContent="space-between"
@@ -52,7 +56,7 @@ const RankingQuestion = (result: { result: ResultUngrouped }) => {
               <Box display="flex">
                 <Text mr="20px" my="auto">
                   {formatMessage(messages.resultRank, {
-                    resultRank: avgRanking.resultRank,
+                    resultRank: option.resultRank,
                   })}
                 </Text>
 
@@ -63,18 +67,14 @@ const RankingQuestion = (result: { result: ResultUngrouped }) => {
                     borderRadius: theme.borderRadius,
                   }}
                 >
-                  {
-                    multilocs.answer[avgRanking.optionKey].title_multiloc[
-                      locale
-                    ]
-                  }
+                  {multilocs.answer[option.optionKey].title_multiloc[locale]}
                 </Text>
               </Box>
               <Box my="auto">
                 <Text>
                   {formatMessage(messages.averageRank, {
-                    averageRank: avgRanking.averageRank
-                      .toFixed(1)
+                    averageRank: option.averageRank
+                      .toFixed(1) // Round to 1 decimal
                       .replace(/[.,]0$/, ''), // Remove any trailing zeros
                     b: (chunks) => <b>{chunks}</b>,
                   })}
@@ -83,7 +83,7 @@ const RankingQuestion = (result: { result: ResultUngrouped }) => {
             </Box>
             {showDetails && (
               <DetailedRankView
-                optionsWithRanks={optionsWithRanks}
+                optionsWithDetailedRanks={optionsWithDetailedRanks}
                 questionResponseCount={questionResponseCount}
                 rank={index}
               />

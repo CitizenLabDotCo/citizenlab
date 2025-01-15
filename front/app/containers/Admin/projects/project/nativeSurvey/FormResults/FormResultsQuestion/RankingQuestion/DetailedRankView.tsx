@@ -7,28 +7,32 @@ import ProgressBar from 'components/UI/ProgressBar';
 import { useIntl } from 'utils/cl-intl';
 
 import messages from './messages';
-import { OptionWithRanks, returnPercentageString } from './utils';
+import { OptionWithRanks, returnRankPercentageString } from './utils';
 
 type Props = {
-  optionsWithRanks: OptionWithRanks[];
+  optionsWithDetailedRanks: OptionWithRanks[];
   questionResponseCount: number;
   rank: number;
 };
 
 const DetailedRankView = ({
-  optionsWithRanks,
+  optionsWithDetailedRanks,
   questionResponseCount,
   rank,
 }: Props) => {
   const { formatMessage } = useIntl();
 
   return (
-    <Box>
-      {optionsWithRanks[rank].rankCounts.map((rankCount, index) => {
-        const choseRankForOptionCount = rankCount[1]; // Number of people who chose this rank for this option
+    <Box mb="8px">
+      {optionsWithDetailedRanks[rank].rankCounts.map((rankCount, index) => {
+        // Note:
+        // rankCount[0] = The rank value (E.g. #1, #2, etc.)
+        // rankCount[1] = Number of people who chose this rank value for the option.
+
+        const choseRankForOptionCount = rankCount[1];
 
         return (
-          <Box ml="60px" display="flex" key={index} alignContent="center">
+          <Box ml="54px" display="flex" key={index}>
             <Text my="8px">
               {formatMessage(messages.resultRank, {
                 resultRank: index + 1,
@@ -43,19 +47,14 @@ const DetailedRankView = ({
               />
             </Box>
 
-            <Text
-              my="8px"
-              style={{ flexShrink: 0 }}
-              color="coolGrey600"
-              ml="auto"
-            >
+            <Text my="8px" color="coolGrey600" ml="auto">
               {formatMessage(messages.xChoices, {
                 numberChoices: choseRankForOptionCount || 0,
               })}
             </Text>
 
             <Text my="8px" ml="12px">
-              {returnPercentageString(
+              {returnRankPercentageString(
                 choseRankForOptionCount,
                 questionResponseCount
               )}
