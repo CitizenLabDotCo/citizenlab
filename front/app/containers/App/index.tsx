@@ -127,6 +127,23 @@ const App = ({ children }: Props) => {
         appConfiguration.data.attributes.settings.core.timezone
       );
 
+      const appConfigMomentLocales = uniq(
+        appConfiguration.data.attributes.settings.core.locales
+          .filter((loc) => loc !== 'en')
+          .map((loc) => appLocalesMomentPairs[loc])
+      );
+
+      appConfigMomentLocales.forEach(async (momentLocale) => {
+        try {
+          // Dynamically import the locale only if it matches the current locale.
+          // This ensures we only load the required locale when needed.
+          // If the locale changes, the appropriate one will be imported in some other code.
+          await localeGetter(momentLocale);
+        } catch (error) {
+          console.error(`Error processing locale: ${locale}`, error);
+        }
+      });
+
       // Weglot initialization
       if (appConfiguration.data.attributes.settings.core.weglot_api_key) {
         const script = document.createElement('script');
