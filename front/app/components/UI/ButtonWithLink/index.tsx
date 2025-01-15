@@ -29,7 +29,10 @@ const ButtonWithLink = ({
   ...rest
 }: Props) => {
   const isExternalLink =
-    linkTo && (linkTo.startsWith('http') || linkTo.startsWith('www'));
+    linkTo &&
+    (linkTo.startsWith('http') ||
+      linkTo.startsWith('www') ||
+      linkTo.startsWith('mailto'));
 
   const link =
     linkTo && !disabled
