@@ -58,6 +58,7 @@ const StatusFilter = ({ status, active, onClick }: Props) => {
               <StatusText>
                 <T value={status.attributes.title_multiloc} />
               </StatusText>
+              {/* You can't drop inputs on an "automatic status", for which we show this tooltip */}
               {showAutomaticStatusTooltip && (
                 <IconTooltip
                   theme="light"
