@@ -1812,7 +1812,7 @@
   "app.containers.UsersEditPage.verifiedIdentitySubtitle": "Doğrulama gerektiren projelere katılabilirsiniz.",
   "app.containers.UsersEditPage.verifiedIdentityTitle": "Doğrulama işleminiz tamamlandı",
   "app.containers.UsersEditPage.verifyNow": "Şimdi doğrula",
-  "app.containers.UsersShowPage.Surveys.SurveySubmissionCard.downloadYourResponses": "Yanıtlarınızı indirin",
+  "app.containers.UsersShowPage.Surveys.SurveySubmissionCard.downloadYourResponses2": "Yanıtlarınızı indirin (.xlsx)",
   "app.containers.UsersShowPage.a11y_likesCount": "{likesCount, plural, =0 {beğeni yok} one {1 beğeni} other {# beğeni}}",
   "app.containers.UsersShowPage.a11y_postCommentPostedIn": "Bu yorumun yanıt olarak yayınlandığı girdi:",
   "app.containers.UsersShowPage.areas": "Alanlar",
