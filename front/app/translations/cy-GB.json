@@ -1812,7 +1812,7 @@
   "app.containers.UsersEditPage.verifiedIdentitySubtitle": "Gallwch gymryd rhan mewn prosiectau sydd angen eu dilysu.",
   "app.containers.UsersEditPage.verifiedIdentityTitle": "Rydych chi wedi'ch gwirio",
   "app.containers.UsersEditPage.verifyNow": "Gwiriwch nawr",
-  "app.containers.UsersShowPage.Surveys.SurveySubmissionCard.downloadYourResponses": "Lawrlwythwch eich ymatebion",
+  "app.containers.UsersShowPage.Surveys.SurveySubmissionCard.downloadYourResponses2": "Lawrlwythwch eich ymatebion (.xlsx)",
   "app.containers.UsersShowPage.a11y_likesCount": "{likesCount, plural, =0 {dim hoff bethau} one {1 hoffi} other {# hoffi}}",
   "app.containers.UsersShowPage.a11y_postCommentPostedIn": "Mewnbwn bod y sylw hwn wedi’i bostio mewn ymateb i:",
   "app.containers.UsersShowPage.areas": "Ardaloedd",
