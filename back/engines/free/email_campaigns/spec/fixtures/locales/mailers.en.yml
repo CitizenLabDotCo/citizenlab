@@ -8,31 +8,20 @@ en:
       "comment_marked_as_spam": Comment spam report
       "comment_on_your_comment": A reply on my comment
       "comment_on_idea_you_follow": A comment on an idea that you follow
-      "comment_on_initiative_you_follow": A comment on a proposal that you follow
-      "cosponsor_of_your_initiative": A user accepts my invitation to co-sponor my proposal
       "idea_marked_as_spam": Idea spam report
       "idea_published": Publication of my input
-      "initiative_assigned_to_you": Assignment of a proposal to me
-      "initiative_marked_as_spam": Proposal spam report
-      "initiative_published": Publication of my proposal
       "internal_comment_on_idea_assigned_to_you": Internal comment on input assigned to me
       "internal_comment_on_idea_you_commented_internally_on": Internal comment on input I commented internally on
       "internal_comment_on_idea_you_moderate": Internal comment on input in project or folder I manage
-      "internal_comment_on_initiative_assigned_to_you": Internal comment on proposal assigned to me
-      "internal_comment_on_initiative_you_commented_internally_on": Internal comment on proposal I commented internally on
-      "internal_comment_on_unassigned_initiative": Internal comment on unassigned proposal
       "internal_comment_on_unassigned_unmoderated_idea": Internal comment on unassigned input in unmanaged project
       "internal_comment_on_your_internal_comment": Internal comment on my internal comment
       "invite_received": Invitation
       "invite_reminder": Invitation reminder
-      "invitation_to_cosponsor_initiative": Invitation to co-sponsor a proposal
       "mention_in_internal_comment": Mention in an internal comment
       "mention_in_official_feedback": Mention in an update
       "new_comment_for_admin": New comment in a project I moderate
       "new_idea_for_admin": New input in a project I moderate
-      "new_initiative_for_admin": New proposal
       "official_feedback_on_idea_you_follow": Update on an input that you follow
-      "official_feedback_on_initiative_you_follow": Update on a proposal that you follow
       "password_reset": Password reset
       "project_moderation_rights_received": Project moderation rights received
       "project_folder_moderation_rights_received": Project folder moderation rights received
@@ -40,7 +29,6 @@ en:
       "project_phase_upcoming": Upcoming new project phase
       "project_published": Project published
       "status_change_on_idea_you_follow": Status change of an input that you follow
-      "status_change_on_initiative_you_follow": Status change of a proposal that you follow
       "threshold_reached_for_admin": Proposal reached the voting threshold
       "welcome": After registration
       "admin_digest": Weekly overview for admins
@@ -99,8 +87,6 @@ en:
       new_comments: 'New comments'
       title_activity_past_week: 'Activity of the past week'
       title_no_activity_past_week: 'There was no activity in the past week'
-      title_initiatives_past_week: 'New proposals of the past week'
-      title_successful_initiatives_past_week: 'Proposals that reached the threshold in the past week'
       yesterday_by_author: 'Yesterday by %{author}'
       today_by_author: 'Today by %{author}'
       x_days_ago_by_author: '%{x} days ago by %{author}'
@@ -131,12 +117,6 @@ en:
       today: Today
       wrong_content: 'The comment is not relevant.'
       yesterday: Yesterday
-    cosponsor_of_your_initiative:
-      cta_reply_to: 'View your proposal'
-      event_description_initiative: 'Congratulations! %{cosponsorName} has accepted your invitation to co-sponsor your proposal.'
-      main_header: '%{cosponsorName} has accepted your invitation to co-sponsor your proposal'
-      subject: '%{cosponsorName} has accepted your invitation to co-sponsor your proposal'
-      preheader_initiative: '%{cosponsorName} has accepted your invitation to co-sponsor your proposal'
     assignee_digest:
       subject: 'Ideas requiring your feedback: %{numberIdeas}'
       preheader: 'Assignee digest of %{organizationName}'
@@ -149,9 +129,6 @@ en:
       today_by_author: 'Today by %{author}'
       x_days_ago_by_author: '%{x} days ago by %{author}'
       idea_section: Ideas
-      initiative_section: Proposals
-      title_initiatives_past_week: 'New proposals assigned to you'
-      title_successful_initiatives_past_week: 'Proposals assigned to you that reached the threshold'
     idea_marked_as_spam:
       cta_review_idea: 'Review idea'
       report_inappropriate_offensive_content: 'I find this content inappropriate or offensive.'
@@ -160,20 +137,6 @@ en:
       preheader: 'Act upon this spam report'
       reported_this_because: '%{reporterFirstName} reported this because:'
       title_spam_report: '%{firstName} %{lastName} reported spam'
-    initiative_marked_as_spam:
-      cta_review_initiative: 'Review proposal'
-      report_inappropriate_offensive_content: 'I find this content inappropriate or offensive.'
-      report_not_an_initiative: 'This content is not a proposal and does not belong here.'
-      subject: 'You have a spam report on the platform of %{organizationName}'
-      preheader: 'Act upon this spam report'
-      reported_this_because: '%{reporterFirstName} reported this because:'
-      title_spam_report: '%{firstName} %{lastName} reported spam'
-    initiative_assigned_to_you:
-      cta_reply_to: 'Give feedback to %{authorName}'
-      event_description_initiative: 'An proposal has been assigned to you. Give feedback by writing an official update or by changing its status.'
-      main_header: '%{firstName}, you have a new assignment'
-      subject: 'You have an assignment on the platform of %{organizationName}'
-      preheader_initiative: 'The proposal of %{authorName} has been assigned to you'
     invite_reminder:
       cta_accept_invitation: 'Accept your invitation'
       invitation_header: 'Your invitation is pending'
@@ -197,29 +160,6 @@ en:
       main_header: 'You have been invited to co-sponsor a proposal'
       subject: 'You have been invited to co-sponsor a proposal'
       preheader: 'You have been invited to co-sponsor the proposal of %{authorName}'
-    invitation_to_cosponsor_initative:
-      cta_reply_to: 'Co-sponsor this proposal'
-      event_description_initiative: '%{authorName} has created a new proposal and would like you to co-sponsor it.'
-      event_description_cosponsoring: 'Co-sponsoring a proposal means that <strong>your name will be displayed</strong> with the names of other co-sponsors of the proposal'
-      event_description_before_action: 'To see the proposal and accept the invitation, you must be logged in to your account.'
-      event_description_action: 'Click below to read the proposal'
-      main_header: 'You have been invited to co-sponsor a proposal'
-      subject: 'You have been invited to co-sponsor a proposal'
-      preheader_initiative: 'You have been invited to co-sponsor the proposal of %{authorName}'
-    initiative_published:
-      action_add_image: '%{addImageLink} to increase visibility'
-      action_published_initiative: 'Published proposal'
-      action_send_email: 'Send your contacts an %{sendEmailLink}'
-      action_share_fb: 'Let your friends know on %{fbLink}'
-      action_share_link: 'Share it via any channel by copying the %{link}'
-      action_share_twitter: 'Inform your followers on %{twitterLink}'
-      link: link
-      main_header: 'You posted a proposal! Let''s gather support for it.'
-      message_next_steps: '%{userFirstName}, your proposal has successfully been published on the participation platform of %{organizationName}. You will be notified when people interact with your proposal. Find out what next steps you can take below.'
-      message_get_votes: 'Reach the voting threshold:'
-      preheader: 'Thank you for sharing your proposal %{initiativeTitle} for %{organizationName}. The next step is to get support for your proposal by sharing it across your network.'
-      send_email: email
-      subject: 'Your proposal was published on the platform of %{organizationName}'
     new_comment_on_commented_idea:
       cta_reply_to: 'Reply to %{commentAuthor}'
       event_description: '%{commentAuthorFull} also wrote a comment on the idea ''%{ideaTitle}'' on the participation platform of %{organizationName}. Click the button below to start the conversation with %{commentAuthor}.'
@@ -252,13 +192,6 @@ en:
       yesterday_by_author: 'Yesterday by %{author}'
       today_by_author: 'Today by %{author}'
       x_days_ago_by_author: '%{x} days ago by %{author}'
-    new_comment_on_commented_initiative:
-      commented: '%{commentAuthor} wrote:'
-      cta_reply_to: 'Reply to %{commentAuthor}'
-      event_description: '%{commentAuthorFull} also wrote a comment on the proposal ''%{initiativeTitle}'' on the participation platform of %{organizationName}. Click the button below to start the conversation with %{commentAuthor}.'
-      main_header: '%{commentAuthor} wrote a comment on the same proposal'
-      subject: 'There''s another comment on the proposal you commented on'
-      preheader: '%{commentAuthor} also left a comment on an proposal for %{organizationName}'
     new_comment_for_admin:
       commented: '%{authorFirstName} commented:'
       cta_reply_to: 'View %{commentAuthor}''s comment'
@@ -275,18 +208,6 @@ en:
       main_header: '%{authorName} commented on an idea you follow'
       subject: 'There''s a new comment on an idea you follow'
       preheader: '%{authorName} left a comment on an idea for %{organizationName}'
-    comment_on_initiative_you_follow:
-      cta_reply_to: 'Reply to %{commentAuthor}'
-      event_description: '%{authorNameFull} placed a reaction on the initiative ''%{initiativeTitle}''. Click the button below to continue the conversation with %{authorName}.'
-      main_header: '%{commentAuthor} commented on an initiative you follow'
-      subject: 'There''s a new comment on the proposal you follow'
-      preheader: '%{authorName} left a comment on an initiative for %{organizationName}'
-    new_initiative_for_admin:
-      cta_reply_to: 'Give feedback to %{authorName}'
-      event_description: '%{authorName} has published a new proposal on your platform. Discover it now, give some feedback or change its status!'
-      main_header: '%{firstName}, a new proposal has been published on your platform'
-      subject: 'Someone published a new proposal on the platform of %{organizationName}'
-      preheader: '%{authorName} published a new proposal on your platform'
     new_idea_for_admin:
       new_idea_for_admin:
       main_header_publication: '%{firstName}, a new input has been published on your platform'
@@ -331,24 +252,6 @@ en:
       subject: '''%{post}'' has a new internal comment'
       main_header: '''%{post}'' has a new internal comment'
       preheader: '''%{post}'' has a new internal comment'
-    internal_comment_on_initiative_assigned_to_you:
-      cta_reply_to: 'View comment by %{firstName}'
-      event_description: '%{authorNameFull} commented internally on a proposal assigned to you.'
-      subject: '''%{post}'' has a new internal comment'
-      main_header: '''%{post}'' has a new internal comment'
-      preheader: '''%{post}'' has a new internal comment'
-    internal_comment_on_initiative_you_commented_internally_on:
-      cta_reply_to: 'View comment by %{firstName}'
-      event_description: '%{authorNameFull} commented internally on a proposal you commented internally on.'
-      subject: '''%{post}'' has a new internal comment'
-      main_header: '''%{post}'' has a new internal comment'
-      preheader: '''%{post}'' has a new internal comment'
-    internal_comment_on_unassigned_initiative:
-      cta_reply_to: 'View comment by %{firstName}'
-      event_description: '%{authorNameFull} commented internally on an unassigned proposal.'
-      subject: '''%{post}'' has a new internal comment'
-      main_header: '''%{post}'' has a new internal comment'
-      preheader: '''%{post}'' has a new internal comment'
     internal_comment_on_unassigned_unmoderated_idea:
       cta_reply_to: 'View comment by %{firstName}'
       event_description: '%{authorNameFull} commented internally on an unassigned input in an unmanaged project.'
@@ -360,11 +263,6 @@ en:
       header_title: 'There''s an update on an input you follow'
       subject: 'An input you follow has received an official update on the platform of %{organizationName}'
       preheader: 'There''s an update on an input you follow'
-    official_feedback_on_initiative_you_follow:
-      header_message: '%{officialName} gave an update on the proposal ''%{initiativeTitle}''. Click the button below to enter the conversation with %{organizationName}.'
-      header_title: 'There''s an update on a proposal you follow'
-      subject: 'A proposal you follow has received an official update on the platform of %{organizationName}'
-      preheader: 'There''s an update on a proposal you follow'
     mention_in_official_feedback:
       cta_reply_to: 'Reply to %{organizationName}'
       event_description: '%{organizationName} mentioned you in their feedback on the idea ''%{post}‘. Click the link below to enter the conversation with %{organizationName}'
@@ -428,12 +326,6 @@ en:
       header_title: 'An input you follow has a new status'
       subject: 'The status of "%{input_title}" has changed'
       preheader: 'An input you follow has a new status'
-    status_change_on_initiative_you_follow:
-      status_change: 'The new status of this proposal is ''%{initiativeStatus}'''
-      header_message: 'The status of the proposal ''%{initiativeTitle}'' has been updated on the digital participation platform of %{organizationName}.'
-      header_title: 'A proposal you follow has a new status'
-      subject: 'The status of a proposal you follow has changed'
-      preheader: 'A proposal you follow has a new status'
     user_digest:
       subject: "Your activity on the participation platform of %{organizationName}"
       commented: "%{authorFirstName} commented:"

@@ -1,6 +1,12 @@
 import React, { memo } from 'react';
 
-import { Box, Icon, colors, Text } from '@citizenlab/cl2-component-library';
+import {
+  Box,
+  Icon,
+  colors,
+  Text,
+  Divider,
+} from '@citizenlab/cl2-component-library';
 import { isEmpty } from 'lodash-es';
 import { useParams } from 'react-router-dom';
 
@@ -8,7 +14,6 @@ import useAnalysis from 'api/analyses/useAnalysis';
 import { IInputsData } from 'api/analysis_inputs/types';
 import useAnalysisUserById from 'api/analysis_users/useAnalysisUserById';
 
-import Divider from 'components/admin/Divider';
 import T from 'components/T';
 
 import { trackEventByName } from 'utils/analytics';

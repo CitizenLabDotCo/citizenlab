@@ -1,6 +1,11 @@
 import React, { lazy, Suspense, useState } from 'react';
 
-import { Box, Badge, Tooltip } from '@citizenlab/cl2-component-library';
+import {
+  Box,
+  Badge,
+  Tooltip,
+  Divider,
+} from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
 import useIdeaImages from 'api/idea_images/useIdeaImages';
@@ -13,7 +18,6 @@ import useLocalize from 'hooks/useLocalize';
 
 import ProjectLink from 'containers/EventsShowPage/components/ProjectLink';
 
-import Divider from 'components/admin/Divider';
 import ErrorToast from 'components/ErrorToast';
 import FollowUnfollow from 'components/FollowUnfollow';
 import Body from 'components/PostShowComponents/Body';
