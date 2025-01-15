@@ -320,7 +320,10 @@ describe('isPageCategorization', () => {
       properties: {},
       required: ['short_answer'],
     };
-    const isPage = isPageCategorization(uiSchema, jsonSchema);
+    const isPage = isPageCategorization(uiSchema, jsonSchema, {
+      rootSchema: jsonSchema,
+      config: {},
+    });
     expect(isPage).toEqual(true);
   });
 
@@ -349,7 +352,10 @@ describe('isPageCategorization', () => {
       properties: {},
       required: ['short_answer'],
     };
-    const isPage = isPageCategorization(uiSchema, jsonSchema);
+    const isPage = isPageCategorization(uiSchema, jsonSchema, {
+      rootSchema: jsonSchema,
+      config: {},
+    });
     expect(isPage).toEqual(false);
   });
 });

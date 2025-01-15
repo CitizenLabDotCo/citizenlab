@@ -1,8 +1,8 @@
-import { renderHook, act } from '@testing-library/react-hooks';
 import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
+import { renderHook, waitFor, act } from 'utils/testUtils/rtl';
 
 import useDeleteProjectFile from './useDeleteProjectFile';
 const apiPath = '*projects/:projectId/files/:fileId';
@@ -18,7 +18,7 @@ describe('useDeleteProjectFile', () => {
   afterAll(() => server.close());
 
   it('mutates data correctly', async () => {
-    const { result, waitFor } = renderHook(() => useDeleteProjectFile(), {
+    const { result } = renderHook(() => useDeleteProjectFile(), {
       wrapper: createQueryClientWrapper(),
     });
 
@@ -39,7 +39,7 @@ describe('useDeleteProjectFile', () => {
       })
     );
 
-    const { result, waitFor } = renderHook(() => useDeleteProjectFile(), {
+    const { result } = renderHook(() => useDeleteProjectFile(), {
       wrapper: createQueryClientWrapper(),
     });
 

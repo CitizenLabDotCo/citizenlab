@@ -8,7 +8,7 @@ import { ThemeProvider } from 'styled-components';
 import GlobalStyle from '../../global-styles';
 import { getTheme } from '../styleUtils';
 
-const AllTheProviders: FC = ({ children }) => {
+const AllTheProviders: FC = ({ children }: { children?: React.ReactNode }) => {
   return (
     <HelmetProvider>
       <ThemeProvider theme={getTheme(null)}>

@@ -1,8 +1,8 @@
-import { renderHook, act } from '@testing-library/react-hooks';
 import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
+import { renderHook, waitFor, act } from 'utils/testUtils/rtl';
 
 import { pollOptionsData } from './__mocks__/usePollOptions';
 import useUpdatePollOption from './useUpdatePollOption';
@@ -20,7 +20,7 @@ describe('useUpdatePollOption', () => {
   afterAll(() => server.close());
 
   it('mutates data correctly', async () => {
-    const { result, waitFor } = renderHook(() => useUpdatePollOption(), {
+    const { result } = renderHook(() => useUpdatePollOption(), {
       wrapper: createQueryClientWrapper(),
     });
 
@@ -43,7 +43,7 @@ describe('useUpdatePollOption', () => {
       })
     );
 
-    const { result, waitFor } = renderHook(() => useUpdatePollOption(), {
+    const { result } = renderHook(() => useUpdatePollOption(), {
       wrapper: createQueryClientWrapper(),
     });
 

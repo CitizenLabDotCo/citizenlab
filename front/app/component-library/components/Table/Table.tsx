@@ -63,10 +63,9 @@ const StyledBox = styled(Box)<{ innerBorders?: InnerBorders }>`
     `
       : ''}
 `;
-
-export interface Props extends BoxProps {
+type Props = BoxProps & {
   innerBorders?: InnerBorders;
-}
+};
 
 const Table = ({ children, innerBorders, ...otherProps }: Props) => (
   <StyledBox
