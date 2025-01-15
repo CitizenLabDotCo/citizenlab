@@ -2071,6 +2071,8 @@
   "app.utils.IdeasNewPage.proposalFormTitle": "Aggiungi una nuova proposta",
   "app.utils.IdeasNewPage.questionFormTitle": "Aggiungi una nuova domanda",
   "app.utils.IdeasNewPage.surveyTitle": "Sondaggio",
+  "app.utils.Projects.sendSurveySubmission": "Invia l'identificativo per l'invio dell'indagine alla mia e-mail",
+  "app.utils.Projects.surveySubmission": "Invio del sondaggio",
   "app.utils.Promessagesjects.ifYouLaterDecide": "Se in seguito decidi di voler rimuovere la tua risposta, contattaci con il seguente identificativo univoco:",
   "app.utils.actionDescriptors.attendingEventMissingRequirements": "Per partecipare a questo evento devi completare il tuo profilo.",
   "app.utils.actionDescriptors.attendingEventNotInGroup": "Non hai i requisiti per partecipare a questo evento.",
