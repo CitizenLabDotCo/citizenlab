@@ -387,8 +387,14 @@ jobs:
             EOF
       - deploy:
           name: Deploy the stack
+          # Down nodes are removed before deploying the stack. These nodes are produced by
+          # the auto-scaling group and build up over time. When terminated, ASG nodes
+          # don't leave the swarm gracefully. As a result, these "zombie" nodes can
+          # disrupt the swarm and lead to various issues such as deployment updates
+          # failing on some nodes.
           command: |
             ssh << parameters.ssh_user >>@<< parameters.ssh_host >> -o StrictHostKeyChecking=no \<<<EOF
+              docker node ls | grep Down | awk '{print $1}' | xargs -n25 docker node rm && \
               cd cl2-deployment && \
               docker stack deploy \
                 --compose-file << parameters.compose_file >> \
