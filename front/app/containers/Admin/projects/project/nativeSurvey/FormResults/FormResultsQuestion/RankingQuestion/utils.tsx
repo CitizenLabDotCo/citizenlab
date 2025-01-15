@@ -59,6 +59,10 @@ export const createOptionsWithDetailedRanks = (
   const optionsWithDetailedRanks: OptionWithRanks[] = [];
 
   Object.entries(rankings_counts).forEach((rankingCount, index) => {
+    // Note:
+    // rankingCount[0] = Option key
+    // rankingCount[1] = Object containing all rank values and the number of times they were chosen for the option.
+
     const choicePerRankCounts: [string, number][] = [];
 
     Object.entries(rankingCount[1]).forEach((rankCount) => {
