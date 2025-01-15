@@ -1,7 +1,13 @@
-export const getMailLink = (ideaId: string, bodyStr: string) => {
-  const mailto = 'mailto:email@example.com';
-  const subject = '?subject=Survey identifier';
-  const body = `&body=${bodyStr} ${ideaId}`;
+interface GetMailLinkParams {
+  email?: string;
+  subject: string;
+  body: string;
+}
 
-  return mailto + subject + body;
+export const getMailLink = ({ email, subject, body }: GetMailLinkParams) => {
+  const mailto = `mailto:${email ?? ''}`;
+  const subjectParam = `?subject=${subject}`;
+  const bodyParam = `&body=${body}`;
+
+  return mailto + subjectParam + bodyParam;
 };

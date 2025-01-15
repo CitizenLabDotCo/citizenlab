@@ -2,9 +2,11 @@ import React from 'react';
 
 import { Box, Title, Text } from '@citizenlab/cl2-component-library';
 
+import useAuthUser from 'api/me/useAuthUser';
+
 import ButtonWithLink from 'components/UI/ButtonWithLink';
 
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
 
 import messages from '../../messages';
 
@@ -16,6 +18,9 @@ interface Props {
 }
 
 const NativeSurveyModalContent = ({ ideaId, showIdeaId }: Props) => {
+  const { data: authUser } = useAuthUser();
+  const { formatMessage } = useIntl();
+
   return (
     <Box>
       <Title variant="h2" textAlign="center" mt="0">
@@ -34,11 +39,21 @@ const NativeSurveyModalContent = ({ ideaId, showIdeaId }: Props) => {
             color="tenantPrimary"
             fontWeight="bold"
             id="idea-id-success-modal"
+            mb="8px"
           >
             {ideaId}
           </Text>
-          <ButtonWithLink linkTo={getMailLink(ideaId, 'Identifier: ')}>
-            Mail survey identifier
+          <ButtonWithLink
+            linkTo={getMailLink({
+              email: authUser?.data.attributes.email,
+              subject: formatMessage(messages.surveySubmission),
+              body: `Identifier: ${ideaId}`,
+            })}
+            buttonStyle="text"
+            w="auto"
+            icon="email"
+          >
+            <FormattedMessage {...messages.sendSurveySubmission} />
           </ButtonWithLink>
         </>
       )}
