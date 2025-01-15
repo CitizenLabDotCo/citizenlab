@@ -710,7 +710,6 @@ resource 'Phases' do
         do_request
         expect(status).to eq 200
 
-        byebug
         expect(response_data[:type]).to eq 'survey_results'
         expect(response_data.dig(:attributes, :totalSubmissions)).to eq 2
         expect(response_data.dig(:attributes, :results).count).to eq 1

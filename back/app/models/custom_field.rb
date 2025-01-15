@@ -165,7 +165,7 @@ class CustomField < ApplicationRecord
     result
       .pluck('option_key', 'ordinality', 'count')
       .group_by(&:shift)
-      .transform_values do |rankings_counts| 
+      .transform_values do |rankings_counts|
         (1..options.size).to_h do |ranking|
           count = rankings_counts.find { |rc| rc.first == ranking }&.last || 0
           [ranking, count]
