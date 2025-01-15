@@ -45,35 +45,31 @@ const StatusFilter = ({ status, active, onClick }: Props) => {
 
   return (
     <div ref={drop}>
-      <Box>
-        <StatusButton onClick={onClick} active={active || (isOver && canDrop)}>
-          <Box
-            display="flex"
-            alignItems="center"
-            justifyContent="flex-start"
-            w="100%"
-          >
-            <ColorIndicator bgColor={status.attributes.color} />
-            <Box display="flex" alignItems="center" gap="4px">
-              <StatusText>
-                <T value={status.attributes.title_multiloc} />
-              </StatusText>
-              {/* You can't drop inputs on an "automatic status", for which we show this tooltip */}
-              {showAutomaticStatusTooltip && (
-                <IconTooltip
-                  theme="light"
-                  iconSize="16px"
-                  content={
-                    <FormattedMessage
-                      {...messages.automatedStatusTooltipText}
-                    />
-                  }
-                />
-              )}
-            </Box>
+      <StatusButton onClick={onClick} active={active || (isOver && canDrop)}>
+        <Box
+          display="flex"
+          alignItems="center"
+          justifyContent="flex-start"
+          w="100%"
+        >
+          <ColorIndicator bgColor={status.attributes.color} />
+          <Box display="flex" alignItems="center" gap="4px">
+            <StatusText>
+              <T value={status.attributes.title_multiloc} />
+            </StatusText>
+            {/* You can't drop inputs on an "automatic status", for which we show this tooltip */}
+            {showAutomaticStatusTooltip && (
+              <IconTooltip
+                theme="light"
+                iconSize="16px"
+                content={
+                  <FormattedMessage {...messages.automatedStatusTooltipText} />
+                }
+              />
+            )}
           </Box>
-        </StatusButton>
-      </Box>
+        </Box>
+      </StatusButton>
     </div>
   );
 };
