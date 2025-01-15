@@ -1840,7 +1840,6 @@
   "app.containers.AdminPage.ProjectEdit.survey.optional2": "Dewisol",
   "app.containers.AdminPage.ProjectEdit.survey.pagesLogicHelperText2": "Os na ychwanegir rhesymeg, bydd yr arolwg yn dilyn ei lif arferol. Am ragor o wybodaeth, ewch i {supportPageLink}",
   "app.containers.AdminPage.ProjectEdit.survey.point": "Lleoliad",
-  "app.containers.AdminPage.ProjectEdit.survey.questionLogicHelperText2": "Os na ychwanegir rhesymeg at ateb, bydd yr arolwg yn dilyn ei lif arferol. Bydd ychwanegu rhesymeg at gwestiwn yn ei gwneud yn ofynnol yn ddiofyn. Am ragor o wybodaeth, ewch i {supportPageLink}",
   "app.containers.AdminPage.ProjectEdit.survey.quitReportConfirmationQuestion": "Ydych chi'n siŵr eich bod am adael?",
   "app.containers.AdminPage.ProjectEdit.survey.quitReportInfo2": "Ni fydd eich newidiadau presennol yn cael eu cadw.",
   "app.containers.AdminPage.ProjectEdit.survey.required2": "Angenrheidiol",

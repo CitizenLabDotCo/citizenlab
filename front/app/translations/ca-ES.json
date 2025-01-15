@@ -742,7 +742,6 @@
   "app.components.formBuilder.question": "Pregunta",
   "app.components.formBuilder.questionCannotBeDeleted": "Aquesta pregunta no es pot suprimir.",
   "app.components.formBuilder.questionDescriptionOptional": "Descripció de la pregunta (opcional)",
-  "app.components.formBuilder.questionLogicHelperTextDefault": "Si no s'afegeix cap lògica a una resposta, el formulari seguirà el seu flux normal. Afegir lògica a una pregunta la farà necessària per defecte. Per a més informació, visiteu {supportPageLink}",
   "app.components.formBuilder.questionTitle": "Títol de la pregunta",
   "app.components.formBuilder.randomize": "Aleatoritzar",
   "app.components.formBuilder.randomizeToolTip": "L'ordre de les respostes serà aleatoritzat per usuari",

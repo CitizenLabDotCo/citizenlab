@@ -1840,7 +1840,6 @@
   "app.containers.AdminPage.ProjectEdit.survey.optional2": "Pasirinktinai",
   "app.containers.AdminPage.ProjectEdit.survey.pagesLogicHelperText2": "Jei logikos nepridėta, apklausa vyks įprasta tvarka. Daugiau informacijos rasite svetainėje {supportPageLink}.",
   "app.containers.AdminPage.ProjectEdit.survey.point": "Vieta",
-  "app.containers.AdminPage.ProjectEdit.survey.questionLogicHelperText2": "Jei prie atsakymo nepridedama jokios logikos, apklausa vyks įprasta tvarka. Į klausimą pridėjus logikos, jis taps privalomas pagal numatytuosius nustatymus. Daugiau informacijos rasite svetainėje {supportPageLink}.",
   "app.containers.AdminPage.ProjectEdit.survey.quitReportConfirmationQuestion": "Ar tikrai norite išvykti?",
   "app.containers.AdminPage.ProjectEdit.survey.quitReportInfo2": "Dabartiniai pakeitimai nebus išsaugoti.",
   "app.containers.AdminPage.ProjectEdit.survey.required2": "Reikalinga",

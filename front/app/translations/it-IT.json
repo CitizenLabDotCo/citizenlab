@@ -742,7 +742,6 @@
   "app.components.formBuilder.question": "Domanda",
   "app.components.formBuilder.questionCannotBeDeleted": "Questa domanda non può essere cancellata.",
   "app.components.formBuilder.questionDescriptionOptional": "Descrizione della domanda (facoltativa)",
-  "app.components.formBuilder.questionLogicHelperTextDefault": "Se non viene aggiunta alcuna logica a una risposta, il modulo seguirà il suo normale flusso. L'aggiunta di logica a una domanda la renderà obbligatoria per impostazione predefinita. Per ulteriori informazioni, visitare {supportPageLink}",
   "app.components.formBuilder.questionTitle": "Titolo della domanda",
   "app.components.formBuilder.randomize": "Randomizzare",
   "app.components.formBuilder.randomizeToolTip": "L'ordine delle risposte sarà randomizzato per ogni utente.",

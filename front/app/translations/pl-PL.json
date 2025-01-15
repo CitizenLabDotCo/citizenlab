@@ -742,7 +742,6 @@
   "app.components.formBuilder.question": "Pytanie",
   "app.components.formBuilder.questionCannotBeDeleted": "To pytanie nie może być usunięte.",
   "app.components.formBuilder.questionDescriptionOptional": "Opis pytania (nieobowiązkowo)",
-  "app.components.formBuilder.questionLogicHelperTextDefault": "Jeśli do odpowiedzi nie zostanie dodana żadna logika, formularz będzie podążał za swoim normalnym przepływem. Dodanie logiki do pytania spowoduje, że będzie ono domyślnie wymagane. Aby uzyskać więcej informacji, odwiedź {supportPageLink}",
   "app.components.formBuilder.questionTitle": "Tytuł pytania",
   "app.components.formBuilder.randomize": "Losuj",
   "app.components.formBuilder.randomizeToolTip": "Kolejność odpowiedzi będzie losowa dla każdego użytkownika",

@@ -742,7 +742,6 @@
   "app.components.formBuilder.question": "سوال",
   "app.components.formBuilder.questionCannotBeDeleted": "اس سوال کو حذف نہیں کیا جا سکتا۔",
   "app.components.formBuilder.questionDescriptionOptional": "سوال کی تفصیل (اختیاری)",
-  "app.components.formBuilder.questionLogicHelperTextDefault": "اگر جواب میں کوئی منطق شامل نہیں کی جاتی ہے، تو فارم اپنے معمول کے بہاؤ کی پیروی کرے گا۔ کسی سوال میں منطق شامل کرنے سے اسے بطور ڈیفالٹ مطلوب ہو جائے گا۔ مزید معلومات کے لیے {supportPageLink}پر جائیں۔",
   "app.components.formBuilder.questionTitle": "سوال کا عنوان",
   "app.components.formBuilder.randomize": "بے ترتیب کرنا",
   "app.components.formBuilder.randomizeToolTip": "جوابات کی ترتیب فی صارف بے ترتیب ہو جائے گی۔",

@@ -742,7 +742,6 @@
   "app.components.formBuilder.question": "Fråga",
   "app.components.formBuilder.questionCannotBeDeleted": "Den här frågan kan inte tas bort.",
   "app.components.formBuilder.questionDescriptionOptional": "Frågebeskrivning (valfri)",
-  "app.components.formBuilder.questionLogicHelperTextDefault": "Om ingen logik läggs till för ett svar kommer formuläret att följa sitt normala flöde. Om du lägger till logik för en fråga blir den som standard obligatorisk. Mer information finns på {supportPageLink}",
   "app.components.formBuilder.questionTitle": "Frågetitel",
   "app.components.formBuilder.randomize": "Slumpmässigt",
   "app.components.formBuilder.randomizeToolTip": "Ordningen på svaren kommer att slumpas per användare",

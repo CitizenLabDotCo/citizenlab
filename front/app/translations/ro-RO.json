@@ -430,7 +430,6 @@
   "app.components.formBuilder.question": "Întrebare",
   "app.components.formBuilder.questionCannotBeDeleted": "Această întrebare nu poate fi ștearsă.",
   "app.components.formBuilder.questionDescriptionOptional": "Descrierea întrebării (opțional)",
-  "app.components.formBuilder.questionLogicHelperTextDefault": "Dacă nu se adaugă nicio logică la un răspuns, formularul își va urma cursul normal. Adăugarea logicii la o întrebare o va face obligatorie în mod implicit. Pentru mai multe informații, vizitați {supportPageLink}",
   "app.components.formBuilder.questionTitle": "Titlul întrebării",
   "app.components.formBuilder.range": "Gama",
   "app.components.formBuilder.removeAnswer": "Eliminați răspunsul",

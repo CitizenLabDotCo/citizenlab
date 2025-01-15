@@ -742,7 +742,6 @@
   "app.components.formBuilder.question": "Pregunta",
   "app.components.formBuilder.questionCannotBeDeleted": "Esta pregunta no se puede eliminar.",
   "app.components.formBuilder.questionDescriptionOptional": "Descripción de la pregunta (opcional)",
-  "app.components.formBuilder.questionLogicHelperTextDefault": "Si no se añade lógica a una respuesta, el formulario seguirá su flujo normal. Si se añade lógica a una pregunta, ésta será obligatoria por defecto. Para más información, visite {supportPageLink}",
   "app.components.formBuilder.questionTitle": "Título de la pregunta",
   "app.components.formBuilder.randomize": "Aleatoriza",
   "app.components.formBuilder.randomizeToolTip": "El orden de las respuestas será aleatorio por usuario",

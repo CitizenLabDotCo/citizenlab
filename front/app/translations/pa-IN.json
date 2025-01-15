@@ -742,7 +742,6 @@
   "app.components.formBuilder.question": "ਸਵਾਲ",
   "app.components.formBuilder.questionCannotBeDeleted": "ਇਸ ਸਵਾਲ ਨੂੰ ਮਿਟਾਇਆ ਨਹੀਂ ਜਾ ਸਕਦਾ।",
   "app.components.formBuilder.questionDescriptionOptional": "ਸਵਾਲ ਦਾ ਵੇਰਵਾ (ਵਿਕਲਪਿਕ)",
-  "app.components.formBuilder.questionLogicHelperTextDefault": "ਜੇਕਰ ਕਿਸੇ ਜਵਾਬ ਵਿੱਚ ਕੋਈ ਤਰਕ ਨਹੀਂ ਜੋੜਿਆ ਜਾਂਦਾ ਹੈ, ਤਾਂ ਫਾਰਮ ਇਸਦੇ ਆਮ ਪ੍ਰਵਾਹ ਦੀ ਪਾਲਣਾ ਕਰੇਗਾ। ਕਿਸੇ ਸਵਾਲ ਵਿੱਚ ਤਰਕ ਜੋੜਨਾ ਇਸਨੂੰ ਮੂਲ ਰੂਪ ਵਿੱਚ ਲੋੜੀਂਦਾ ਬਣਾ ਦੇਵੇਗਾ। ਹੋਰ ਜਾਣਕਾਰੀ ਲਈ, {supportPageLink}'ਤੇ ਜਾਓ",
   "app.components.formBuilder.questionTitle": "ਸਵਾਲ ਦਾ ਸਿਰਲੇਖ",
   "app.components.formBuilder.randomize": "ਰੈਂਡਮਾਈਜ਼ ਕਰੋ",
   "app.components.formBuilder.randomizeToolTip": "ਜਵਾਬਾਂ ਦਾ ਕ੍ਰਮ ਪ੍ਰਤੀ ਉਪਭੋਗਤਾ ਲਈ ਬੇਤਰਤੀਬ ਕੀਤਾ ਜਾਵੇਗਾ",

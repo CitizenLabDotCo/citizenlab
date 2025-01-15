@@ -1840,7 +1840,6 @@
   "app.containers.AdminPage.ProjectEdit.survey.optional2": "Valinnainen",
   "app.containers.AdminPage.ProjectEdit.survey.pagesLogicHelperText2": "Jos logiikkaa ei lisätä, kysely noudattaa normaalia kulkuaan. Lisätietoja on osoitteessa {supportPageLink}",
   "app.containers.AdminPage.ProjectEdit.survey.point": "Sijainti",
-  "app.containers.AdminPage.ProjectEdit.survey.questionLogicHelperText2": "Jos vastaukseen ei lisätä logiikkaa, kysely noudattaa normaalia kulkuaan. Logiikan lisääminen kysymykseen tekee siitä oletuksena pakollisen. Lisätietoja on osoitteessa {supportPageLink}",
   "app.containers.AdminPage.ProjectEdit.survey.quitReportConfirmationQuestion": "Oletko varma, että haluat lähteä?",
   "app.containers.AdminPage.ProjectEdit.survey.quitReportInfo2": "Nykyisiä muutoksiasi ei tallenneta.",
   "app.containers.AdminPage.ProjectEdit.survey.required2": "Edellytetään",

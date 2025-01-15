@@ -742,7 +742,6 @@
   "app.components.formBuilder.question": "Cwestiwn",
   "app.components.formBuilder.questionCannotBeDeleted": "Nid oes modd dileu'r cwestiwn hwn.",
   "app.components.formBuilder.questionDescriptionOptional": "Disgrifiad o'r cwestiwn (dewisol)",
-  "app.components.formBuilder.questionLogicHelperTextDefault": "Os na ychwanegir rhesymeg at ateb, bydd y ffurf yn dilyn ei llif normal. Bydd ychwanegu rhesymeg at gwestiwn yn ei gwneud yn ofynnol yn ddiofyn. Am ragor o wybodaeth, ewch i {supportPageLink}",
   "app.components.formBuilder.questionTitle": "Teitl y cwestiwn",
   "app.components.formBuilder.randomize": "Ar hap",
   "app.components.formBuilder.randomizeToolTip": "Bydd trefn yr atebion ar hap fesul defnyddiwr",

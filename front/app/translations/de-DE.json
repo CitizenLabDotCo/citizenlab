@@ -742,7 +742,6 @@
   "app.components.formBuilder.question": "Frage",
   "app.components.formBuilder.questionCannotBeDeleted": "Diese Frage kann nicht gelöscht werden.",
   "app.components.formBuilder.questionDescriptionOptional": "Beschreibung der Frage (optional)",
-  "app.components.formBuilder.questionLogicHelperTextDefault": "Wenn einer Antwort keine Logik hinzugefügt wird, folgt das Formular seinem normalen Ablauf. Wenn Sie einer Frage eine Logik hinzufügen, wird diese standardmäßig erforderlich. Weitere Informationen finden Sie auf {supportPageLink}.",
   "app.components.formBuilder.questionTitle": "Titel der Frage",
   "app.components.formBuilder.randomize": "Randomisieren",
   "app.components.formBuilder.randomizeToolTip": "Die Reihenfolge der Antworten wird für jede*n Nutzer*in zufällig festgelegt",

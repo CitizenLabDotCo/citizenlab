@@ -742,7 +742,6 @@
   "app.components.formBuilder.question": "Ερώτηση",
   "app.components.formBuilder.questionCannotBeDeleted": "Αυτή η ερώτηση δεν μπορεί να διαγραφεί.",
   "app.components.formBuilder.questionDescriptionOptional": "Περιγραφή της ερώτησης (προαιρετική)",
-  "app.components.formBuilder.questionLogicHelperTextDefault": "Εάν δεν προστεθεί λογική σε μια απάντηση, η φόρμα θα ακολουθήσει την κανονική της ροή. Η προσθήκη λογικής σε μια ερώτηση θα την καταστήσει υποχρεωτική από προεπιλογή. Για περισσότερες πληροφορίες, επισκεφθείτε τη διεύθυνση {supportPageLink}",
   "app.components.formBuilder.questionTitle": "Τίτλος ερώτησης",
   "app.components.formBuilder.randomize": "Τυχαία επιλογή",
   "app.components.formBuilder.randomizeToolTip": "Η σειρά των απαντήσεων θα είναι τυχαία ανά χρήστη",

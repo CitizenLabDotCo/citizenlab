@@ -1840,7 +1840,6 @@
   "app.containers.AdminPage.ProjectEdit.survey.optional2": "Optional",
   "app.containers.AdminPage.ProjectEdit.survey.pagesLogicHelperText2": "Wenn keine Logik hinzugefügt wird, folgt die Umfrage ihrem normalen Ablauf. Weitere Informationen finden Sie auf {supportPageLink}",
   "app.containers.AdminPage.ProjectEdit.survey.point": "Standort",
-  "app.containers.AdminPage.ProjectEdit.survey.questionLogicHelperText2": "Wenn einer Antwort keine Logik hinzugefügt wird, folgt die Umfrage ihrem normalen Ablauf. Wenn Sie einer Frage eine Logik hinzufügen, wird sie standardmäßig erforderlich. Weitere Informationen finden Sie auf {supportPageLink}.",
   "app.containers.AdminPage.ProjectEdit.survey.quitReportConfirmationQuestion": "Sind Sie sicher, dass Sie das Fenster schließen möchten ohne zu speichern?",
   "app.containers.AdminPage.ProjectEdit.survey.quitReportInfo2": "Aktuelle Änderungen werden nicht gespeichert.",
   "app.containers.AdminPage.ProjectEdit.survey.required2": "Erforderlich",

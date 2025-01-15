@@ -45,6 +45,7 @@ export const LogicSettings = ({
   const locale = useLocale();
   const selectOptions = watch(`customFields.${field.index}.options`);
   const linearScaleMaximum = watch(`customFields.${field.index}.maximum`);
+  const fieldRequired = watch(`customFields.${field.index}.required`);
 
   if (isNilOrError(locale)) {
     return null;
@@ -64,6 +65,7 @@ export const LogicSettings = ({
           label: option.title_multiloc[locale]?.toString(),
         }))
     : undefined;
+
   // For Linear Scale Field
   if (field.input_type === 'linear_scale') {
     const linearScaleOptionArray = Array.from(
@@ -74,6 +76,20 @@ export const LogicSettings = ({
       key: option,
       label: option.toString(),
     }));
+  }
+
+  // Add options for 'any_other_answer' and 'no_answer'
+  if (answers) {
+    answers.push({
+      key: 'any_other_answer',
+      label: formatMessage(messages.logicPanelAnyOtherAnswer),
+    });
+    if (!fieldRequired) {
+      answers.push({
+        key: 'no_answer',
+        label: formatMessage(messages.logicPanelNoAnswer),
+      });
+    }
   }
 
   return (
