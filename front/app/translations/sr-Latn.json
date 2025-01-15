@@ -2071,6 +2071,8 @@
   "app.utils.IdeasNewPage.proposalFormTitle": "Add new proposal",
   "app.utils.IdeasNewPage.questionFormTitle": "Dodajte novo pitanje",
   "app.utils.IdeasNewPage.surveyTitle": "Upitnik",
+  "app.utils.Projects.sendSurveySubmission": "Send survey submission identifier to my email",
+  "app.utils.Projects.surveySubmission": "Survey submission",
   "app.utils.Promessagesjects.ifYouLaterDecide": "If you later decide that you want your response to be removed, please contact us with the following unique identifier:",
   "app.utils.actionDescriptors.attendingEventMissingRequirements": "You must complete your profile to attend this event.",
   "app.utils.actionDescriptors.attendingEventNotInGroup": "You do not meet the requirements to attend this event.",
