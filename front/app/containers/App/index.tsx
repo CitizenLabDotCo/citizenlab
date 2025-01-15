@@ -82,6 +82,7 @@ const App = ({ children }: Props) => {
   const location = useLocation();
   const { formatMessage } = useIntl();
   const locale = useLocale();
+  const momentLocale = appLocalesMomentPairs[locale] || 'en';
 
   const { mutate: signOutAndDeleteAccount } = useDeleteSelf();
   const [isAppInitialized, setIsAppInitialized] = useState(false);
@@ -98,9 +99,34 @@ const App = ({ children }: Props) => {
   const redirectsEnabled = useFeatureFlag({ name: 'redirects' });
 
   useEffect(() => {
-    const momentLocale = appLocalesMomentPairs[locale] || 'en';
     moment.locale(momentLocale);
-  }, [locale]);
+  }, [momentLocale]);
+
+  useEffect(() => {
+    if (!appConfiguration) return;
+
+    const appConfigMomentLocales = uniq(
+      appConfiguration.data.attributes.settings.core.locales
+        .filter((loc) => loc !== 'en')
+        .map((loc) => appLocalesMomentPairs[loc])
+    );
+
+    async function importMomentLocaleFilePromise(momentLocale: string) {
+      try {
+        await localeGetter(momentLocale);
+      } catch (error) {
+        console.error(`Error processing locale: ${momentLocale}`, error);
+      }
+    }
+
+    Promise.all(
+      appConfigMomentLocales.map((appConfigMomentLocale) =>
+        importMomentLocaleFilePromise(appConfigMomentLocale)
+      )
+    ).then(() => {
+      moment.locale(momentLocale);
+    });
+  }, [appConfiguration, momentLocale]);
 
   useEffect(() => {
     if (appConfiguration && !isAppInitialized) {
@@ -108,23 +134,6 @@ const App = ({ children }: Props) => {
       moment.tz.setDefault(
         appConfiguration.data.attributes.settings.core.timezone
       );
-
-      const appConfigMomentLocales = uniq(
-        appConfiguration.data.attributes.settings.core.locales
-          .filter((loc) => loc !== 'en')
-          .map((loc) => appLocalesMomentPairs[loc])
-      );
-
-      appConfigMomentLocales.forEach(async (momentLocale) => {
-        try {
-          // Dynamically import the locale only if it matches the current locale.
-          // This ensures we only load the required locale when needed.
-          // If the locale changes, the appropriate one will be imported in some other code.
-          await localeGetter(momentLocale);
-        } catch (error) {
-          console.error(`Error processing locale: ${momentLocale}`, error);
-        }
-      });
 
       // Weglot initialization
       if (appConfiguration.data.attributes.settings.core.weglot_api_key) {
