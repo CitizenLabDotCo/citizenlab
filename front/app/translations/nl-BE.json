@@ -1812,7 +1812,7 @@
   "app.containers.UsersEditPage.verifiedIdentitySubtitle": "Je kan deelnemen aan projecten die alleen toegankelijk zijn voor geverifieerde burgers.",
   "app.containers.UsersEditPage.verifiedIdentityTitle": "Je bent een geverifieerde burger",
   "app.containers.UsersEditPage.verifyNow": "Verifieer je nu",
-  "app.containers.UsersShowPage.Surveys.SurveySubmissionCard.downloadYourResponses": "Download je reacties",
+  "app.containers.UsersShowPage.Surveys.SurveySubmissionCard.downloadYourResponses2": "Download je antwoorden (.xlsx)",
   "app.containers.UsersShowPage.a11y_likesCount": "{likesCount, plural, =0 {geen likes} one {1 like} other {# likes}}",
   "app.containers.UsersShowPage.a11y_postCommentPostedIn": "Bijdrage waarop deze reactie is gepost:",
   "app.containers.UsersShowPage.areas": "Gebieden",
