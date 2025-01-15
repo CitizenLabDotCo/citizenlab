@@ -12,7 +12,10 @@ import { useIntl } from 'utils/cl-intl';
 import DetailedRankView from './DetailedRankView';
 import DetailedViewButton from './DetailedViewButton';
 import messages from './messages';
-import { createAverageRankingsArray, createRankCountsArray } from './utils';
+import {
+  createAverageRankingsArray,
+  createOptionsWithRanksArray,
+} from './utils';
 
 const RankingQuestion = (result: { result: ResultUngrouped }) => {
   const theme = useTheme();
@@ -32,13 +35,13 @@ const RankingQuestion = (result: { result: ResultUngrouped }) => {
     return null;
   }
 
-  // Create arrays for the average rankings and detailed ranking counts
-  const rankingCounts = createRankCountsArray(rankings_counts);
-  const avgerageRankings = createAverageRankingsArray(average_rankings);
+  // Create arrays for the average rankings and detailed ranking counts for options
+  const averageRanks = createAverageRankingsArray(average_rankings);
+  const optionsWithRanks = createOptionsWithRanksArray(rankings_counts);
 
   return (
     <Box pt="16px" width="520px">
-      {avgerageRankings.map((avgRanking, index) => {
+      {averageRanks.map((avgRanking, index) => {
         return (
           <Box key={avgRanking.optionKey}>
             <Box
@@ -80,9 +83,9 @@ const RankingQuestion = (result: { result: ResultUngrouped }) => {
             </Box>
             {showDetails && (
               <DetailedRankView
-                rankingCounts={rankingCounts}
+                optionsWithRanks={optionsWithRanks}
                 questionResponseCount={questionResponseCount}
-                index={index}
+                rank={index}
               />
             )}
           </Box>

@@ -1,10 +1,12 @@
+import { RankingsCount } from 'api/survey_results/types';
+
 export type AverageRanking = {
   resultRank: number;
   optionKey: string;
   averageRank: number;
 };
 
-export type RankingsCount = {
+export type OptionWithRanks = {
   rankValue: number;
   rankOption: string;
   rankCounts: [string, number][];
@@ -45,24 +47,24 @@ export const createAverageRankingsArray = (
   return avgRankings;
 };
 
-export const createRankCountsArray = (rankings_counts: object) => {
-  const rankingsCounts: RankingsCount[] = [];
+export const createOptionsWithRanksArray = (rankings_counts: RankingsCount) => {
+  const optionsWithRanks: OptionWithRanks[] = [];
 
   Object.entries(rankings_counts).forEach((rankingCount, index) => {
-    const rankCounts: [string, number][] = [];
+    const choicePerRankCounts: [string, number][] = [];
 
     Object.entries(rankingCount[1]).forEach((rankCount) => {
-      rankCounts.push([rankCount[0], rankCount[1] as number]);
+      choicePerRankCounts.push([rankCount[0], rankCount[1]]);
     });
 
-    rankingsCounts.push({
+    optionsWithRanks.push({
       rankValue: index + 1,
       rankOption: rankingCount[0],
-      rankCounts,
+      rankCounts: choicePerRankCounts,
     });
   });
 
-  return rankingsCounts;
+  return optionsWithRanks;
 };
 
 export const returnPercentageString = (

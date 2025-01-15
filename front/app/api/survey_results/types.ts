@@ -49,13 +49,16 @@ type BaseResult = {
   textResponses?: { answer: string }[];
 };
 
+export type RankingsCount = Record<string, Record<string, number>>;
+export type AverageRankings = Record<string, string>;
+
 export type ResultUngrouped = BaseResult & {
   grouped: false;
   answers?: Answer[];
 
   // Rankings
-  average_rankings?: Record<string, string>;
-  rankings_counts?: Record<string, Record<string, number>>;
+  average_rankings?: AverageRankings;
+  rankings_counts?: RankingsCount;
 
   // Undefined for text and file upload questions
   multilocs?: AnswerMultilocs;
