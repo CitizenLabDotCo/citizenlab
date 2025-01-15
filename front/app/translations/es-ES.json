@@ -2071,6 +2071,8 @@
   "app.utils.IdeasNewPage.proposalFormTitle": "Añadir nueva propuesta",
   "app.utils.IdeasNewPage.questionFormTitle": "Agregar nueva pregunta",
   "app.utils.IdeasNewPage.surveyTitle": "Consulta",
+  "app.utils.Projects.sendSurveySubmission": "Enviar el identificador de envío de la encuesta a mi correo electrónico",
+  "app.utils.Projects.surveySubmission": "Envío de encuestas",
   "app.utils.Promessagesjects.ifYouLaterDecide": "Si más adelante decides que quieres que se elimine tu respuesta, ponte en contacto con nosotros con el siguiente identificador único:",
   "app.utils.actionDescriptors.attendingEventMissingRequirements": "Debes completar tu perfil para asistir a este acto.",
   "app.utils.actionDescriptors.attendingEventNotInGroup": "No cumples los requisitos para asistir a este acto.",
