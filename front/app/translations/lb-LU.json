@@ -2071,6 +2071,8 @@
   "app.utils.IdeasNewPage.proposalFormTitle": "Füügt nei Propositioun",
   "app.utils.IdeasNewPage.questionFormTitle": "Nei Fro bäifügen",
   "app.utils.IdeasNewPage.surveyTitle": "Ëmfro",
+  "app.utils.Projects.sendSurveySubmission": "Schéckt Ëmfro Soumissioun Identifizéierer op meng E-Mail",
+  "app.utils.Projects.surveySubmission": "Ëmfro Soumissioun",
   "app.utils.Promessagesjects.ifYouLaterDecide": "Wann Dir spéider décidéiert datt Dir wëllt datt Är Äntwert ewechgeholl gëtt, kontaktéiert eis w.e.g. mat dem folgenden eenzegaartegen Identifizéierer:",
   "app.utils.actionDescriptors.attendingEventMissingRequirements": "Dir musst Äre Profil komplett fir dëst Evenement deelzehuelen.",
   "app.utils.actionDescriptors.attendingEventNotInGroup": "Dir entsprécht net den Ufuerderunge fir dëst Evenement deelzehuelen.",
