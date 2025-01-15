@@ -10,7 +10,6 @@ describe AnonymizeUserService do
       create(:custom_field_birthyear)
       create(:custom_field_gender, :with_options)
       create(:custom_field_domicile)
-      create(:custom_field_education, :with_options, enabled: true)
     end
 
     it "anonymizes confidential parts of the user's attributes" do

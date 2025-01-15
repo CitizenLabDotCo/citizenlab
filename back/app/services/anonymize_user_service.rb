@@ -57,7 +57,7 @@ class AnonymizeUserService
   def random_custom_field_values(user: nil)
     custom_field_values = {}
     if user
-      properties = %w[gender education birthyear]
+      properties = %w[gender birthyear]
       user[:custom_field_values].each do |property, value|
         if properties.include? property
           custom_field_values[property] = value
@@ -66,7 +66,6 @@ class AnonymizeUserService
     end
     custom_field_values['gender'] ||= User::GENDERS.sample
     custom_field_values['birthyear'] ||= random_birthyear
-    custom_field_values['education'] ||= rand(2..8).to_s
     custom_field_values
   end
 
