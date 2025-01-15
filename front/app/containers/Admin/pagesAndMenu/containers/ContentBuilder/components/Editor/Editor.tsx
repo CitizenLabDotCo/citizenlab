@@ -22,6 +22,8 @@ const Editor: React.FC<EditorProps> = ({
   onNodesChange,
   children,
 }) => {
+  // Needed because craftjs/core does not support onRender prop being directly added with a value of undefined
+  const onRenderProp = !isPreview ? { onRender: RenderNode } : {};
   return (
     <CraftEditor
       resolver={resolver}
@@ -30,11 +32,11 @@ const Editor: React.FC<EditorProps> = ({
         error: 'red',
         transition: 'none',
       }}
-      onRender={isPreview ? undefined : RenderNode}
       enabled={isPreview ? false : true}
       onNodesChange={(data) => {
         onNodesChange && onNodesChange(data.getSerializedNodes());
       }}
+      {...onRenderProp}
     >
       {children}
     </CraftEditor>
