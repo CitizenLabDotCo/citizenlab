@@ -2071,6 +2071,8 @@
   "app.utils.IdeasNewPage.proposalFormTitle": "Lisää uusi ehdotus",
   "app.utils.IdeasNewPage.questionFormTitle": "Lisää uusi kysymys",
   "app.utils.IdeasNewPage.surveyTitle": "Kysely",
+  "app.utils.Projects.sendSurveySubmission": "Lähetä kyselyn lähetyksen tunniste sähköpostiini",
+  "app.utils.Projects.surveySubmission": "Kyselyn lähetys",
   "app.utils.Promessagesjects.ifYouLaterDecide": "Jos päätät myöhemmin, että haluat poistaa vastauksesi, ota meihin yhteyttä seuraavalla yksilöllisellä tunnisteella:",
   "app.utils.actionDescriptors.attendingEventMissingRequirements": "Sinun on täytettävä profiilisi osallistuaksesi tähän tapahtumaan.",
   "app.utils.actionDescriptors.attendingEventNotInGroup": "Et täytä vaatimuksia osallistuaksesi tähän tapahtumaan.",
