@@ -10,7 +10,7 @@ import SurveySubmissionCard from './SurveySubmissionCard';
 const Container = styled.div`
   display: grid;
   grid-template-columns: 1fr 1fr;
-  grid-grap: 20px;
+  grid-gap: 20px;
 
   ${media.phone`
     grid-template-columns: 1fr;
