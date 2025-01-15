@@ -1812,7 +1812,7 @@
   "app.containers.UsersEditPage.verifiedIdentitySubtitle": "Voit osallistua todentamista vaativiin projekteihin.",
   "app.containers.UsersEditPage.verifiedIdentityTitle": "Sinut on vahvistettu",
   "app.containers.UsersEditPage.verifyNow": "Vahvista nyt",
-  "app.containers.UsersShowPage.Surveys.SurveySubmissionCard.downloadYourResponses": "Lataa vastauksesi",
+  "app.containers.UsersShowPage.Surveys.SurveySubmissionCard.downloadYourResponses2": "Lataa vastauksesi (.xlsx)",
   "app.containers.UsersShowPage.a11y_likesCount": "{likesCount, plural, =0 {ei tykkää} one {1 tykkäys} other {# tykkää}}",
   "app.containers.UsersShowPage.a11y_postCommentPostedIn": "Kirjoita, että tämä kommentti lähetettiin vastauksena:",
   "app.containers.UsersShowPage.areas": "Alueet",
