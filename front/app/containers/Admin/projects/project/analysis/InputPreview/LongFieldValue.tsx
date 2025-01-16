@@ -293,19 +293,17 @@ const FieldValue = ({ projectId, phaseId, customFieldId, input }: Props) => {
                       <Text mr="8px" my="auto">
                         #{index + 1}
                       </Text>
-                      <Text
-                        m="0px"
-                        p="4px 8px"
-                        style={{
-                          border: `1px solid ${theme.colors.divider}`,
-                          borderRadius: theme.borderRadius,
-                        }}
+                      <Box
+                        border={`1px solid ${theme.colors.divider}`}
+                        borderRadius={theme.borderRadius}
                       >
-                        <SelectOptionText
-                          customFieldId={customField.data.id}
-                          selectedOptionKey={optionKey}
-                        />
-                      </Text>
+                        <Text m="4px 8px">
+                          <SelectOptionText
+                            customFieldId={customField.data.id}
+                            selectedOptionKey={optionKey}
+                          />
+                        </Text>
+                      </Box>
                     </Box>
                   ))}
                 </>
