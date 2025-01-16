@@ -12,7 +12,7 @@ import styled from 'styled-components';
 
 import useReportBuilderEnabled from 'api/reports/useReportBuilderEnabled';
 
-import Button from 'components/UI/Button';
+import Button from 'components/UI/ButtonWithLink';
 
 import { FormattedMessage } from 'utils/cl-intl';
 

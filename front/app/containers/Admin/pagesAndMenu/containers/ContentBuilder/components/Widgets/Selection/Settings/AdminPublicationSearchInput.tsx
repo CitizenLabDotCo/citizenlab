@@ -14,8 +14,7 @@ import OptionLabel from './OptionLabel';
 import { LoadMore, getOptionId, getOptions } from './utils';
 
 interface Props {
-  /* adminPublicationsIds is undefined if fetching new selections */
-  adminPublicationIds?: string[];
+  adminPublicationIds: string[];
   onChange: (option?: IAdminPublicationData | LoadMore) => void;
 }
 
@@ -31,7 +30,6 @@ const AdminPublicationSearchInput = ({
     data: adminPublications,
     fetchNextPage,
     hasNextPage,
-    isFetching,
     isFetchingNextPage,
   } = useAdminPublications({
     search,
@@ -66,20 +64,17 @@ const AdminPublicationSearchInput = ({
         value={null}
         inputValue={visibleSearchTerm}
         placeholder={''}
-        isDisabled={!adminPublicationIds || isFetching}
         options={options}
         getOptionValue={getOptionId}
-        getOptionLabel={(option) =>
-          (
-            <OptionLabel
-              option={option}
-              hasNextPage={hasNextPage}
-              isLoading={isFetchingNextPage}
-              fetchNextPage={fetchNextPage}
-            />
-          ) as any
-        }
-        menuPlacement="auto"
+        getOptionLabel={(option) => (
+          <OptionLabel
+            option={option}
+            hasNextPage={hasNextPage}
+            isLoading={isFetchingNextPage}
+            fetchNextPage={fetchNextPage}
+          />
+        )}
+        menuPlacement="top"
         styles={selectStyles(theme)}
         filterOption={() => true}
         onInputChange={handleInputChange}

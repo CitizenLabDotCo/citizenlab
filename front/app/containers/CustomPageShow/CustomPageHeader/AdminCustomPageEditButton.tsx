@@ -6,7 +6,7 @@ import useAuthUser from 'api/me/useAuthUser';
 
 import { adminCustomPageContentPath } from 'containers/Admin/pagesAndMenu/routes';
 
-import Button from 'components/UI/Button';
+import Button from 'components/UI/ButtonWithLink';
 
 import { injectIntl } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';

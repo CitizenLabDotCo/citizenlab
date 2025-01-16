@@ -13,7 +13,7 @@ import useUpdateMapConfig from 'api/map_config/useUpdateMapConfig';
 
 import { SubSectionTitle } from 'components/admin/Section';
 import { goToMapLocation } from 'components/EsriMap/utils';
-import Button from 'components/UI/Button';
+import Button from 'components/UI/ButtonWithLink';
 import Error from 'components/UI/Error';
 
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';

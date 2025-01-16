@@ -3,7 +3,7 @@ import React from 'react';
 import { Tooltip, Box, TooltipProps } from '@citizenlab/cl2-component-library';
 import { RouteType } from 'routes';
 
-import Button from 'components/UI/Button';
+import Button from 'components/UI/ButtonWithLink';
 
 import { FormattedMessage } from 'utils/cl-intl';
 

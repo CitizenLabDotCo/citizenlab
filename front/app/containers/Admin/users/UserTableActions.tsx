@@ -23,7 +23,7 @@ import usersKeys from 'api/users/keys';
 import { API_PATH } from 'containers/App/constants';
 
 import T from 'components/T';
-import Button from 'components/UI/Button';
+import Button from 'components/UI/ButtonWithLink';
 import Checkbox from 'components/UI/Checkbox';
 import SearchInput from 'components/UI/SearchInput';
 

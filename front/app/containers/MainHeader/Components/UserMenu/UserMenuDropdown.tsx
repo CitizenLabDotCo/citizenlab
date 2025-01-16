@@ -11,7 +11,7 @@ import useAuthUser from 'api/me/useAuthUser';
 import { triggerAuthenticationFlow } from 'containers/Authentication/events';
 import { showOnboarding } from 'containers/Authentication/useSteps/stepConfig/utils';
 
-import Button from 'components/UI/Button';
+import Button from 'components/UI/ButtonWithLink';
 
 import { FormattedMessage } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';

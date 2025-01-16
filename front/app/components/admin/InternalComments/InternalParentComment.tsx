@@ -10,7 +10,7 @@ import useInternalComment from 'api/internal_comments/useInternalComment';
 import useInternalComments from 'api/internal_comments/useInternalComments';
 
 import commentsMessages from 'components/PostShowComponents/Comments/messages';
-import Button from 'components/UI/Button';
+import Button from 'components/UI/ButtonWithLink';
 
 import { FormattedMessage } from 'utils/cl-intl';
 
