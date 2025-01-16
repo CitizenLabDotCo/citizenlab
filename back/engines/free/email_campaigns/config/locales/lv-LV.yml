@@ -496,6 +496,14 @@ lv:
       event_description: 'Projekts "%{projectName}" aicina jūs balsot starp %{numIdeas} iespējām:'
       cta_message: 'Noklikšķiniet uz pogas zemāk, lai piedalītos'
       cta_vote: 'Dodieties uz platformu, lai balsotu'
+    survey_submitted:
+      subject: '%{organizationName}: Paldies par atbildi! 🎉'
+      main_header: 'Paldies, ka dalījāties savās pārdomās par "%{projectName}"!'
+      your_input_submitted: 'Jūsu dati par "%{projectName}" ir veiksmīgi iesniegti.'
+      if_you_would_like_to_review: 'Ja vēlaties pārskatīt savu iesniegumu, atbildes varat lejupielādēt zemāk.'
+      your_submission_has_id: 'Jūsu iesniegumam ir šāds unikāls identifikators:'
+      you_can_use_this_id: 'Šo identifikatoru varat izmantot, lai sazinātos ar platformas administratoriem, ja vēlaties, lai jūsu iesniegums tiktu dzēsts.'
+      download_responses: 'Lejupielādējiet savas atbildes'
     admin_labels:
       recipient_role:
         admins: 'Administratoriem'
