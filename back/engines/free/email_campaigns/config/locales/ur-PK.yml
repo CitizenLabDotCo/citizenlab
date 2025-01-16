@@ -496,6 +496,14 @@ ur:
       event_description: 'پروجیکٹ "%{projectName}" آپ کو %{numIdeas} اختیارات کے درمیان ووٹ دینے کے لیے کہہ رہا ہے:'
       cta_message: 'حصہ لینے کے لیے نیچے دیئے گئے بٹن پر کلک کریں۔'
       cta_vote: 'ووٹ دینے کے لیے پلیٹ فارم پر جائیں۔'
+    survey_submitted:
+      subject: '%{organizationName}: آپ کے جواب کا شکریہ! 🎉'
+      main_header: '"%{projectName}" پر اپنے خیالات بانٹنے کے لیے آپ کا شکریہ!'
+      your_input_submitted: '"%{projectName}" کے لیے آپ کا ان پٹ کامیابی کے ساتھ جمع کر دیا گیا ہے۔'
+      if_you_would_like_to_review: 'اگر آپ اپنی جمع آوری کا جائزہ لینا چاہتے ہیں، تو آپ نیچے اپنے جوابات ڈاؤن لوڈ کر سکتے ہیں۔'
+      your_submission_has_id: 'آپ کی جمع آوری میں درج ذیل منفرد شناخت کنندہ ہے:'
+      you_can_use_this_id: 'آپ اس شناخت کنندہ کو پلیٹ فارم کے منتظمین سے رابطہ کرنے کے لیے استعمال کر سکتے ہیں اگر آپ چاہتے ہیں کہ آپ کی جمع آوری ہٹا دی جائے۔'
+      download_responses: 'اپنے جوابات ڈاؤن لوڈ کریں۔'
     admin_labels:
       recipient_role:
         admins: 'ایڈمنز کو'
