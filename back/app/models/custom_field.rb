@@ -145,26 +145,20 @@ class CustomField < ApplicationRecord
     # value.
     return {} if input_type != 'ranking'
 
-    in_sql_scope_ids = "(#{scope.ids.map { |id| "'#{id}'" }.join(',')})"
-    result = ActiveRecord::Base.connection.execute(
-      <<-SQL.squish
-        SELECT value #>> '{}' AS option_key, ordinality, COUNT(*)
-        FROM #{scope.table.name} u, jsonb_array_elements(u.custom_field_values->'#{key}') WITH ORDINALITY
-        WHERE u.id IN #{in_sql_scope_ids}
-        AND u.custom_field_values->'#{key}' IS NOT NULL
-        GROUP BY value, ordinality
-      SQL
-    )
-    # Transform array of triplets into a hash of hashes
-    result
-      .pluck('option_key', 'ordinality', 'count')
-      .group_by(&:shift)
-      .transform_values do |rankings_counts|
-        (1..options.size).to_h do |ranking|
-          count = rankings_counts.find { |rc| rc.first == ranking }&.last || 0
-          [ranking, count]
-        end
+    query_result = scope
+      .where.not("custom_field_values ->> '#{key}' IS NULL")
+      .joins("CROSS JOIN jsonb_array_elements(custom_field_values->'#{key}') WITH ORDINALITY AS elem(value, ordinality)")
+      .group("elem.value #>> '{}'", 'elem.ordinality')
+      .count
+
+    # Transform pair to ordinality hash into a hash of hashes
+    options.pluck(:key).to_h do |option_key|
+      rankings_counts = (1..options.size).to_h do |ranking| 
+        count = query_result[[option_key, ranking]] || 0
+        [ranking, count]
       end
+      [option_key, rankings_counts]
+    end
   end
 
   def built_in?
