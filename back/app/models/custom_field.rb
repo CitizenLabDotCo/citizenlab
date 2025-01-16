@@ -152,12 +152,11 @@ class CustomField < ApplicationRecord
       .count
 
     # Transform pair to ordinality hash into a hash of hashes
-    options.pluck(:key).to_h do |option_key|
-      rankings_counts = (1..options.size).to_h do |ranking| 
-        count = query_result[[option_key, ranking]] || 0
-        [ranking, count]
+    options.pluck(:key).each_with_object({}) do |option_key, result|
+      rankings_counts = (1..options.size).each_with_object({}) do |ranking, counts|
+        counts[ranking] = query_result[[option_key, ranking]] || 0
       end
-      [option_key, rankings_counts]
+      result[option_key] = rankings_counts
     end
   end
 
