@@ -496,6 +496,14 @@ de:
       event_description: 'Für das Projekt "%{projectName}" können Sie aus %{numIdeas} Optionen wählen:'
       cta_message: 'Auf den Button klicken, um teilzunehmen'
       cta_vote: 'Zur Plattform, um abzustimmen'
+    survey_submitted:
+      subject: '%{organizationName}: Vielen Dank für Ihre Antwort! 🎉'
+      main_header: 'Danke, dass Sie Ihre Gedanken zu "%{projectName}" mit uns teilen!'
+      your_input_submitted: 'Ihre Eingabe für "%{projectName}" wurde erfolgreich versendet.'
+      if_you_would_like_to_review: 'Wenn Sie Ihren Beitrag überprüfen möchten, können Sie Ihre Antworten unten herunterladen.'
+      your_submission_has_id: 'Ihr Beitrag hat die folgende eindeutige Kennung:'
+      you_can_use_this_id: 'Sie können diese Kennung verwenden, um die Administratoren der Plattform zu kontaktieren, falls Sie möchten, dass Ihr Beitrag entfernt wird.'
+      download_responses: 'Laden Sie Ihre Antworten herunter'
     admin_labels:
       recipient_role:
         admins: 'An Admins'
