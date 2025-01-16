@@ -49,14 +49,13 @@ const ScreeningStatusFilter = ({ status, active, onClick, type }: Props) => {
     name: preScreeningFeatureFlag,
   });
 
-  const phasePrescreeningEnabled =
+  const phaseSettingEnabled =
     phase?.data.attributes.prescreening_enabled === true;
-  const prescreeningButtonIsEnabled =
-    type === 'AllIdeas' || phasePrescreeningEnabled;
+  const statusFilterIsEnabled = type === 'AllIdeas' || phaseSettingEnabled;
   const showPhaseSettingIsDisabledTooltip =
     (type === 'ProjectIdeas' || type === 'ProjectProposals') &&
     preScreeningFeatureEnabled &&
-    !phasePrescreeningEnabled;
+    !phaseSettingEnabled;
   const showPrescreeningUpsellTooltip = !preScreeningFeatureAllowed;
   const tooltipEnabled =
     showPhaseSettingIsDisabledTooltip || showPrescreeningUpsellTooltip;
@@ -88,7 +87,7 @@ const ScreeningStatusFilter = ({ status, active, onClick, type }: Props) => {
           <StatusButton
             onClick={onClick}
             active={active}
-            disabled={!prescreeningButtonIsEnabled}
+            disabled={!statusFilterIsEnabled}
           >
             <Box
               display="flex"
@@ -101,7 +100,7 @@ const ScreeningStatusFilter = ({ status, active, onClick, type }: Props) => {
                 <StatusText>
                   <T value={status.attributes.title_multiloc} />
                 </StatusText>
-                {prescreeningButtonIsEnabled && (
+                {statusFilterIsEnabled && (
                   <IconTooltip
                     theme="light"
                     iconSize="16px"
