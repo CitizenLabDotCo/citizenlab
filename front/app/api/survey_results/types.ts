@@ -37,8 +37,10 @@ export type AnswerMultilocsGrouped = AnswerMultilocs & {
 type BaseResult = {
   inputType: ICustomFieldInputType;
   question: Multiloc;
+  description: Multiloc;
   customFieldId: string;
   required: boolean;
+  logic: boolean;
   totalResponseCount: number;
   totalPickCount: number;
   questionResponseCount: number;

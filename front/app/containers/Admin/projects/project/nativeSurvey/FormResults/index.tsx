@@ -11,6 +11,7 @@ import { useIntl } from 'utils/cl-intl';
 import messages from '../messages';
 
 import FormResultsQuestion from './FormResultsQuestion';
+import FormResultsPage from './FormResultsPage';
 import ViewSingleSubmissionNotice from './FormResultsQuestion/components/ViewSingleSubmissionNotice';
 
 const FormResults = () => {
@@ -44,6 +45,9 @@ const FormResults = () => {
       result.inputType === 'text' || result.inputType === 'multiline_text'
   );
 
+  let pageNumber = 0;
+  let questionNumber = 0;
+
   return (
     <Box width="100%">
       <Box width="100%">
@@ -56,17 +60,37 @@ const FormResults = () => {
           customFieldId={firstTextQuestion.customFieldId}
         />
       )}
-      <Box>
+      <Box mt="24px">
         {totalSubmissions > 0 &&
           results.map((result, index) => {
-            return (
-              <FormResultsQuestion
-                key={index}
-                questionNumber={index + 1}
-                result={result}
-                totalSubmissions={totalSubmissions}
-              />
-            );
+            if (result.inputType == 'page') {
+              pageNumber++;
+              return (
+                <FormResultsPage
+                  key={index}
+                  pageNumber={pageNumber}
+                  result={result}
+                  totalSubmissions={totalSubmissions}
+                />
+              );
+            } else {
+              questionNumber++;
+              return (
+                <Box
+                  border="1px solid #e0e0e0"
+                  borderRadius="4px"
+                  p="10px 20px 10px 20px"
+                  mb="20px"
+                >
+                  <FormResultsQuestion
+                    key={index}
+                    questionNumber={questionNumber}
+                    result={result}
+                    totalSubmissions={totalSubmissions}
+                  />
+                </Box>
+              );
+            }
           })}
       </Box>
     </Box>

@@ -376,6 +376,11 @@ RSpec.describe SurveyResultsGeneratorService do
         expect(generated_results[:results].pluck(:customFieldId)).not_to include page_field.id
         expect(generated_results[:results].pluck(:customFieldId)).not_to include disabled_multiselect_field.id
       end
+
+      it 'returns pages when return_pages is true' do
+        generated_results = generator.generate_results(return_pages: true)
+        expect(generated_results[:results].count).to eq 14
+      end
     end
 
     describe 'text fields' do
@@ -1229,8 +1234,10 @@ RSpec.describe SurveyResultsGeneratorService do
         {
           inputType: 'number',
           question: { 'en' => 'How many cats would you like?' },
+          description: {},
           required: false,
           grouped: false,
+          logic: false,
           maybeSkippedByLogic: false,
           questionResponseCount: 1,
           totalResponseCount: 27,

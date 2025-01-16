@@ -11,16 +11,19 @@ class SurveyResultsGeneratorService < FieldVisitorService
     @locales = AppConfiguration.instance.settings('core', 'locales')
   end
 
-  def generate_results(field_id: nil)
+  def generate_results(field_id: nil, return_pages: false)
     if field_id
       field = find_question(field_id)
       result = visit field
       add_maybe_skipped_by_logic_to_result result
     else
       results = fields.filter_map do |f|
+        next if f[:input_type] == 'page' && !return_pages
+
         visit f
       end
       results = add_maybe_skipped_by_logic_to_results results
+      results = add_page_response_count_to_results results
 
       {
         results: results,
@@ -96,6 +99,10 @@ class SurveyResultsGeneratorService < FieldVisitorService
     responses_to_geographic_input_type(field)
   end
 
+  def visit_page(field)
+    core_field_attributes(field, 0) # TODO: Update this later on by looking at all the results
+  end
+
   private
 
   attr_reader :group_mode, :group_field_id, :fields, :inputs, :locales
@@ -104,11 +111,13 @@ class SurveyResultsGeneratorService < FieldVisitorService
     {
       inputType: field.input_type,
       question: field.title_multiloc,
+      description: field.description_multiloc,
       customFieldId: field.id,
       required: field.required,
       grouped: !!group_field_id,
       totalResponseCount: @inputs.count,
-      questionResponseCount: response_count
+      questionResponseCount: response_count,
+      logic: field.logic != {},
     }
   end
 
@@ -209,8 +218,10 @@ class SurveyResultsGeneratorService < FieldVisitorService
       return build_linear_scale_multilocs(field)
     end
 
+    options_with_rules =  field.logic[:rules]&.pluck(:if) # TODO: Linear scale logic
+
     field.options.each_with_object({}) do |option, accu|
-      option_detail = { title_multiloc: option.title_multiloc }
+      option_detail = { title_multiloc: option.title_multiloc, id: option.id, logic: !!options_with_rules&.include?(option.id) }
       option_detail[:image] = option.image&.image&.versions&.transform_values(&:url) if field.support_option_images?
       accu[option.key] = option_detail
     end
@@ -358,4 +369,21 @@ class SurveyResultsGeneratorService < FieldVisitorService
     end
     maybe_skipped_fields.uniq
   end
+
+  def add_page_response_count_to_results(results)
+    current_page_index = nil
+    max_response_count = 0
+    results.each_with_index do |result, index|
+      if result[:inputType] == 'page'
+        results[current_page_index][:questionResponseCount] = max_response_count unless current_page_index.nil?
+        current_page_index = index
+        max_response_count = 0
+      else
+        max_response_count = result[:questionResponseCount] if result[:questionResponseCount] > max_response_count
+      end
+    end
+    results[current_page_index][:questionResponseCount] = max_response_count
+    results
+  end
+
 end

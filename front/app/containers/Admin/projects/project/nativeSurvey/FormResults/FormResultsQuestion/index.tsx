@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Box, Title, colors } from '@citizenlab/cl2-component-library';
+import { Box, Title, colors, Text } from '@citizenlab/cl2-component-library';
 import { snakeCase } from 'lodash-es';
 
 import { ResultUngrouped } from 'api/survey_results/types';
@@ -43,11 +43,13 @@ const FormResultsQuestion = ({
     numberResponses,
     inputType,
     question,
+    description,
     required,
     questionResponseCount,
     customFieldId,
     mapConfigId,
     files,
+    logic,
   } = result;
 
   const isMultipleChoiceAndHasAnswers = !!answers;
@@ -68,7 +70,7 @@ const FormResultsQuestion = ({
 
   return (
     <>
-      <Box data-cy={`e2e-${snakeCase(localize(question))}`} mb="56px">
+      <Box data-cy={`e2e-${snakeCase(localize(question))}`} mb="24px">
         <Title variant="h3" mt="12px" mb="12px">
           {questionNumber}. <T value={question} />
         </Title>
@@ -77,7 +79,12 @@ const FormResultsQuestion = ({
           required={required}
           totalSubmissions={totalSubmissions}
           totalResponses={questionResponseCount}
+          logic={logic}
         />
+
+        <Text variant="bodyS" color="textSecondary" mt="12px" mb="12px">
+          <T value={description} supportHtml={true} />
+        </Text>
         {/* TODO: Fix this the next time the file is edited. */}
         {/* eslint-disable-next-line @typescript-eslint/no-unnecessary-condition */}
         {isMultipleChoiceAndHasAnswers && (
