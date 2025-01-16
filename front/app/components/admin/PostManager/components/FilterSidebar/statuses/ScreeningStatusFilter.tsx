@@ -51,10 +51,13 @@ const ScreeningStatusFilter = ({ status, active, onClick, type }: Props) => {
 
   const phasePrescreeningEnabled =
     phase?.data.attributes.prescreening_enabled === true;
-  // Checking for the phase setting is enough here.
   // We don't need to check for the feature flag here. We check if something is enabled at the configuration level,
   // which means the phase setting in this case.
-  const prescreeningButtonIsDisabled = !phasePrescreeningEnabled;
+  // Also, we don't want to disable the filter in the general input manager.
+  // Doing so would make it impossible to see the status of ideas that are in the prescreening phase
+  // Or require heavy requests to determine if any inputs have the screening status.
+  const prescreeningButtonIsDisabled =
+    type !== 'AllIdeas' && !phasePrescreeningEnabled;
 
   const showPrescreeningPhaseSettingIsDisabledTooltip =
     // If the feature is enabled
@@ -108,15 +111,17 @@ const ScreeningStatusFilter = ({ status, active, onClick, type }: Props) => {
                 <StatusText>
                   <T value={status.attributes.title_multiloc} />
                 </StatusText>
-                <IconTooltip
-                  theme="light"
-                  iconSize="16px"
-                  content={
-                    <FormattedMessage
-                      {...messages.automatedStatusTooltipText}
-                    />
-                  }
-                />
+                {
+                  <IconTooltip
+                    theme="light"
+                    iconSize="16px"
+                    content={
+                      <FormattedMessage
+                        {...messages.automatedStatusTooltipText}
+                      />
+                    }
+                  />
+                }
               </Box>
             </Box>
           </StatusButton>
