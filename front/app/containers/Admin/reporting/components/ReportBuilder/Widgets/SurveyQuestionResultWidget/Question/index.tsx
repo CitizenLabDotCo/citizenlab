@@ -78,7 +78,7 @@ const SurveyQuestionResult = ({
         />
       ) : (
         <>
-          {attributes.inputType === 'ranking' && (
+          {attributes.inputType === 'ranking' && !attributes.grouped && (
             <Box>
               <RankingQuestion result={attributes} hideDetailsButton={true} />
             </Box>

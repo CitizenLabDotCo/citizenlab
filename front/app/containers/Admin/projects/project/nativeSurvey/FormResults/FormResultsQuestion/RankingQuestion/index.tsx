@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { Box, colors, Text } from '@citizenlab/cl2-component-library';
 import { useTheme } from 'styled-components';
 
-import { ResultGrouped, ResultUngrouped } from 'api/survey_results/types';
+import { ResultUngrouped } from 'api/survey_results/types';
 
 import useLocale from 'hooks/useLocale';
 
@@ -18,7 +18,7 @@ import {
 } from './utils';
 
 type Props = {
-  result: ResultGrouped | ResultUngrouped;
+  result: ResultUngrouped;
   hideDetailsButton: boolean;
 };
 
