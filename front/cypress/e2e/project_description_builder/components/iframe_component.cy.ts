@@ -74,7 +74,8 @@ describe('Project description builder Iframe component', () => {
     // Try invalid URL
     cy.get('#e2e-content-builder-iframe-url-input')
       .clear()
-      .type('https://citizen');
+      .type('https://citizen')
+      .blur();
     cy.get('.e2e-error-message').should('be.visible');
     // Check that save is disabled
     cy.contains('Save').should('have.attr', 'aria-disabled', 'true');
@@ -86,7 +87,8 @@ describe('Project description builder Iframe component', () => {
     // Type valid URL
     cy.get('#e2e-content-builder-iframe-url-input')
       .clear()
-      .type('https://citizenlabco.typeform.com/to/cZtXQzTf');
+      .type('https://citizenlabco.typeform.com/to/cZtXQzTf')
+      .blur();
     // Check that save is enabled
     cy.contains('Save').should('be.enabled');
     // Check that red border is gone

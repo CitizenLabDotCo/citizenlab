@@ -30,7 +30,7 @@ module Surveys
     validates :survey_service, presence: true, inclusion: { in: SurveyPhase::SURVEY_SERVICES }
     validates :external_survey_id, presence: true
 
-    ANSWERS_JSON_SCHEMA_STR = Rails.root.join('engines', 'free', 'surveys', 'config', 'schemas', 'response_answers.json_schema').read
+    ANSWERS_JSON_SCHEMA_STR = Rails.root.join('engines/free/surveys/config/schemas/response_answers.json_schema').read
     ANSWERS_JSON_SCHEMA = JSON.parse(ANSWERS_JSON_SCHEMA_STR)
 
     validates :answers, presence: true, json: { schema: ANSWERS_JSON_SCHEMA_STR }

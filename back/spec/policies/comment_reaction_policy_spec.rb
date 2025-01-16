@@ -8,7 +8,7 @@ describe CommentReactionPolicy do
   let(:scope) { CommentReactionPolicy::Scope.new(user, Reaction) }
   let(:project) { create(:single_phase_ideation_project) }
   let(:idea) { create(:idea, project: project, phases: project.phases) }
-  let(:comment) { create(:comment, post: idea) }
+  let(:comment) { create(:comment, idea: idea) }
 
   context 'for a visitor' do
     let!(:reaction) { create(:reaction, reactable: comment) }

@@ -37,7 +37,7 @@ export interface ICommentData {
   type: 'comment';
   attributes: IPresentComment | IDeletedComment;
   relationships: {
-    post: {
+    idea: {
       data: IRelationship;
     };
     author: {

@@ -8,7 +8,7 @@ import useMarkInternalCommentForDeletion from 'api/internal_comments/useMarkInte
 import useAuthUser from 'api/me/useAuthUser';
 
 import commentsMessages from 'components/PostShowComponents/Comments/messages';
-import Button from 'components/UI/Button';
+import Button from 'components/UI/ButtonWithLink';
 import Modal from 'components/UI/Modal';
 import MoreActionsMenu, { IAction } from 'components/UI/MoreActionsMenu';
 

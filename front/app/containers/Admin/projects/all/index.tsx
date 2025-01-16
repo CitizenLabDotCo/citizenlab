@@ -23,7 +23,7 @@ import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import NavigationTabs from 'components/admin/NavigationTabs';
 import Tab from 'components/admin/NavigationTabs/Tab';
-import Button from 'components/UI/Button';
+import Button from 'components/UI/ButtonWithLink';
 import SearchInput from 'components/UI/SearchInput';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';

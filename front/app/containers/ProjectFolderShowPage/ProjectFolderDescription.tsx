@@ -16,7 +16,7 @@ import useProjectFolderFiles from 'api/project_folder_files/useProjectFolderFile
 import { IProjectFolderData } from 'api/project_folders/types';
 
 import T from 'components/T';
-import Button from 'components/UI/Button';
+import Button from 'components/UI/ButtonWithLink';
 import FileAttachments from 'components/UI/FileAttachments';
 import QuillEditedContent from 'components/UI/QuillEditedContent';
 

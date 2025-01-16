@@ -1,0 +1,26 @@
+<mj-section padding="25px" text-align="left">
+  <mj-column border="1px solid #eaeaea" background-color="#fff" border-radius="5px">
+    <mj-table>
+      <tr class="idea">
+        <% if idea_image_url %>
+          <td style="padding: 15px 15px 0px 15px;">
+            <span style="font-size: 24px; font-weight: 700; color: rgb(111, 119, 125);">
+              <%= image_tag(idea_image_url, width: '100%') %>
+            </span>
+          </td>
+        <% end %>
+      </tr>
+    </mj-table>
+    <mj-text padding="25px">
+      <h2 style="font-size: 18px; margin-top: 10px; margin-bottom: 10px;">
+        <%= localize_for_recipient(idea_title_multiloc) %>
+      </h2>
+      <p style="margin-top: 10px; color: #84939E;">
+        <%= localize_for_recipient(idea_body_multiloc)&.html_safe %>
+      </p>
+      <% if event['idea_author_name'] %>
+        <p style="color:#8D8D8D;"><%= "by #{event['idea_author_name']}" %></p>
+      <% end %>
+    </mj-text>
+  </mj-column>
+</mj-section>

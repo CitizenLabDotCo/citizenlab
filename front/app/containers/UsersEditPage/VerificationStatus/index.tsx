@@ -16,7 +16,7 @@ import messages from 'containers/UsersEditPage/messages';
 
 import Avatar from 'components/Avatar';
 import FeatureFlag from 'components/FeatureFlag';
-import Button from 'components/UI/Button';
+import Button from 'components/UI/ButtonWithLink';
 import { FormSection } from 'components/UI/FormComponents';
 
 import { FormattedMessage } from 'utils/cl-intl';

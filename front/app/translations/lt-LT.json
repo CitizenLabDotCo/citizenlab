@@ -759,6 +759,7 @@
   "app.components.formBuilder.shortAnswer": "Trumpas atsakymas",
   "app.components.formBuilder.showResponseToUsersToggleLabel": "Rodyti atsakymą naudotojams",
   "app.components.formBuilder.singleChoice": "Vienas pasirinkimas",
+  "app.components.formBuilder.staleDataErrorMessage2": "Iškilo problema. Ši įvesties forma neseniai buvo išsaugota kitoje vietoje. Taip gali būti todėl, kad jūs arba kitas naudotojas ją atidarėte redaguoti kitame naršyklės lange. Atnaujinkite puslapį, kad gautumėte naujausią formą, ir vėl atlikite pakeitimus.",
   "app.components.formBuilder.supportArticleLinkText": "šiame puslapyje",
   "app.components.formBuilder.tags": "Žymos",
   "app.components.formBuilder.title": "Pavadinimas",

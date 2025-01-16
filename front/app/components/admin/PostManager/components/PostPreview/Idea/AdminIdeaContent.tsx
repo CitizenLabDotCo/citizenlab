@@ -33,7 +33,7 @@ import DropdownMap from 'components/PostShowComponents/DropdownMap';
 import OfficialFeedback from 'components/PostShowComponents/OfficialFeedback';
 import Title from 'components/PostShowComponents/Title';
 import T from 'components/T';
-import Button from 'components/UI/Button';
+import Button from 'components/UI/ButtonWithLink';
 import FileAttachments from 'components/UI/FileAttachments';
 
 import { useIntl, FormattedMessage } from 'utils/cl-intl';

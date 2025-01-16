@@ -9,7 +9,7 @@ resource 'Campaigns' do
   before do
     @manual_campaigns = create_list(:manual_campaign, 4)
     @manual_project_participants_campaign = create(:manual_project_participants_campaign)
-    @automated_campaigns = create_list(:official_feedback_on_initiative_you_follow_campaign, 2)
+    @automated_campaigns = create_list(:official_feedback_on_idea_you_follow_campaign, 2)
   end
 
   context 'as an admin' do

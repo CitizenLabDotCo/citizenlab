@@ -4,7 +4,7 @@ import { Box, Divider, Text } from '@citizenlab/cl2-component-library';
 
 import { IProjectData } from 'api/projects/types';
 
-import Button from 'components/UI/Button';
+import Button from 'components/UI/ButtonWithLink';
 
 import { FormattedMessage } from 'utils/cl-intl';
 

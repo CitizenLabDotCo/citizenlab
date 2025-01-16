@@ -31,7 +31,7 @@ class IdeaStatus < ApplicationRecord
 
   before_validation :strip_title
   before_destroy :remove_notifications # Must occur before has_many :notifications (see https://github.com/rails/rails/issues/5205)
-  has_many :notifications, foreign_key: :post_status_id, dependent: :nullify
+  has_many :notifications, dependent: :nullify
 
   validates :title_multiloc, presence: true, multiloc: { presence: true }
   validates :description_multiloc, presence: true, multiloc: { presence: true }
@@ -59,7 +59,7 @@ class IdeaStatus < ApplicationRecord
 
   def remove_notifications
     notifications.each do |notification|
-      unless notification.update post_status: nil
+      unless notification.update idea_status: nil
         notification.destroy!
       end
     end

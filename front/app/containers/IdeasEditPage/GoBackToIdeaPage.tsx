@@ -6,7 +6,7 @@ import { IIdeaData } from 'api/ideas/types';
 
 import useLocalize from 'hooks/useLocalize';
 
-import Button from 'components/UI/Button';
+import Button from 'components/UI/ButtonWithLink';
 
 import { ScreenReaderOnly } from 'utils/a11y';
 
