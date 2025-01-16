@@ -11,7 +11,7 @@ module EmailCampaigns
     recipient_filter :filter_recipient
 
     def mailer_class
-      IdeaPublishedMailer
+      SurveySubmittedMailer
     end
 
     def activity_triggers
