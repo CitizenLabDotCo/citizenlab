@@ -686,7 +686,7 @@ resource 'Projects' do
 
       context 'as a folder moderator' do
         let(:folder) { create(:project_folder, projects: [source_project]) }
- 
+
         before do
           header 'Content-Type', 'application/json'
           @user = create(:user, roles: [{ type: 'project_folder_moderator', project_folder_id: folder.id }])
