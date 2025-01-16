@@ -500,7 +500,8 @@ en:
       subject: '%{organizationName}: Thank you for your response! 🎉'
       main_header: 'Thank you for sharing your thoughts on %{projectName}!'
       body_1: 'Test body 1'
-      body_2: 'Test body 2'
+      body_2: 'Test body 2',
+      download_responses: 'Download your responses'
     admin_labels:
       recipient_role:
         admins: 'To admins'
