@@ -496,6 +496,14 @@ hu:
       event_description: 'A "%{projectName}" projekt arra kér, hogy szavazzon a %{numIdeas} opciók között:'
       cta_message: 'A részvételhez kattintson az alábbi gombra'
       cta_vote: 'Menjen a platformra szavazni'
+    survey_submitted:
+      subject: '%{organizationName}: Köszönöm válaszát! 🎉'
+      main_header: 'Köszönjük, hogy megosztotta gondolatait a következővel kapcsolatban: "%{projectName}"!'
+      your_input_submitted: 'A "%{projectName}" beírása sikeresen elküldve.'
+      if_you_would_like_to_review: 'Ha szeretné felülvizsgálni beadványát, lentebb letöltheti válaszait.'
+      your_submission_has_id: 'Beadványának a következő egyedi azonosítója van:'
+      you_can_use_this_id: 'Ezzel az azonosítóval kapcsolatba léphet a platform adminisztrátoraival abban az esetben, ha el szeretné távolítani a beküldött anyagot.'
+      download_responses: 'Töltse le válaszait'
     admin_labels:
       recipient_role:
         admins: 'Az adminoknak'
