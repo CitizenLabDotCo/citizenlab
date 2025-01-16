@@ -2073,6 +2073,7 @@
   "app.utils.IdeasNewPage.surveyTitle": "Felmérés",
   "app.utils.Projects.sendSurveySubmission": "Küldje el a kérdőív benyújtásának azonosítóját az e-mail címemre",
   "app.utils.Projects.surveySubmission": "Felmérés benyújtása",
+  "app.utils.Projects.yourResponseHasTheFollowingId": "Válaszának a következő azonosítója van: {identifier}",
   "app.utils.Promessagesjects.ifYouLaterDecide": "Ha később úgy dönt, hogy válaszát el kívánja távolítani, kérjük, vegye fel velünk a kapcsolatot a következő egyedi azonosítóval:",
   "app.utils.actionDescriptors.attendingEventMissingRequirements": "Az eseményen való részvételhez ki kell töltenie a profilját.",
   "app.utils.actionDescriptors.attendingEventNotInGroup": "Nem felel meg az eseményen való részvétel feltételeinek.",
