@@ -673,7 +673,7 @@ resource 'Projects' do
           header_token_for @user
         end
 
-        example 'Copy a project in a folder', document: false do
+        example 'Copying a project in a folder copies to root', document: false do
           create(:project_folder, projects: [source_project])
 
           do_request
@@ -693,7 +693,7 @@ resource 'Projects' do
           header_token_for @user
         end
 
-        example_request 'Copy a project in a folder', document: false do
+        example_request 'Copying a project in a folder copies to the same folder', document: false do
           assert_status 201
 
           copied_project = Project.find(json_response.dig(:data, :id))
