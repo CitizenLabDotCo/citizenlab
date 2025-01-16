@@ -2073,6 +2073,7 @@
   "app.utils.IdeasNewPage.surveyTitle": "Aptauja",
   "app.utils.Projects.sendSurveySubmission": "Nosūtīt aptaujas iesniegšanas identifikatoru uz manu e-pastu",
   "app.utils.Projects.surveySubmission": "Aptaujas iesniegšana",
+  "app.utils.Projects.yourResponseHasTheFollowingId": "Jūsu atbildei ir šāds identifikators: {identifier}.",
   "app.utils.Promessagesjects.ifYouLaterDecide": "Ja vēlāk nolemjat, ka vēlaties, lai jūsu atbilde tiktu dzēsta, lūdzu, sazinieties ar mums, norādot šādu unikālu identifikatoru:",
   "app.utils.actionDescriptors.attendingEventMissingRequirements": "Lai piedalītos šajā pasākumā, jums ir jāaizpilda savs profils.",
   "app.utils.actionDescriptors.attendingEventNotInGroup": "Jūs neatbilstat prasībām, lai piedalītos šajā pasākumā.",
