@@ -42,9 +42,12 @@ module EmailCampaigns
       idea = activity.item
       return [] if idea.participation_method_on_creation.supports_public_visibility?
 
+      project = idea.project
+
       [{
         event_payload: {
-          idea_id: idea.id
+          idea_id: idea.id,
+          project_title_multiloc: project.title_multiloc,
         }
       }]
     end
