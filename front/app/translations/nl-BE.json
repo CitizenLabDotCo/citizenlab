@@ -2073,6 +2073,7 @@
   "app.utils.IdeasNewPage.surveyTitle": "Enquête",
   "app.utils.Projects.sendSurveySubmission": "Verzend de identificatiecode voor het indienen van een enquête naar mijn e-mail",
   "app.utils.Projects.surveySubmission": "Inzending enquête",
+  "app.utils.Projects.yourResponseHasTheFollowingId": "Je antwoord heeft de volgende identificatiecode: {identifier}",
   "app.utils.Promessagesjects.ifYouLaterDecide": "Als je later besluit dat je je reactie wilt laten verwijderen, neem dan contact met ons op met de volgende unieke identificatiecode:",
   "app.utils.actionDescriptors.attendingEventMissingRequirements": "Vul je profiel verder aan om bij deze activiteit aanwezig te kunnen zijn.",
   "app.utils.actionDescriptors.attendingEventNotInGroup": "Je voldoet niet aan de vereisten om bij deze activiteit aanwezig te zijn.",
