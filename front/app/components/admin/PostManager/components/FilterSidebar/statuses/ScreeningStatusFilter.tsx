@@ -50,6 +50,7 @@ const ScreeningStatusFilter = ({ status, active, onClick, type }: Props) => {
     name: 'prescreening',
   });
 
+  // Both ideation and proposal phases use the same setting.
   const phaseSettingEnabled =
     phase?.data.attributes.prescreening_enabled === true;
   const statusFilterIsEnabled =
