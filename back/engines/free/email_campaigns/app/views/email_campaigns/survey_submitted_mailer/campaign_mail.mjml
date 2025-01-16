@@ -2,10 +2,7 @@
 <mj-section padding="0 25px 10px">
   <mj-column>
     <mj-text>
-      <p style="margin-bottom: 20px; font-weight: 700;">
-        TODO CHANGE
-      </p>
-      <p><%= format_message('body_1') %></p>
+      <p><%= format_message('body_1', values: { projectName: localize_for_recipient(event.project_title_multiloc) }) %></p>
       <p><%= format_message('body_2') %></p>
     </mj-text>
   </mj-column>
