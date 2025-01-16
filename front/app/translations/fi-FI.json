@@ -2073,6 +2073,7 @@
   "app.utils.IdeasNewPage.surveyTitle": "Kysely",
   "app.utils.Projects.sendSurveySubmission": "Lähetä kyselyn lähetyksen tunniste sähköpostiini",
   "app.utils.Projects.surveySubmission": "Kyselyn lähetys",
+  "app.utils.Projects.yourResponseHasTheFollowingId": "Vastauksesi sisältää seuraavan tunnisteen: {identifier}",
   "app.utils.Promessagesjects.ifYouLaterDecide": "Jos päätät myöhemmin, että haluat poistaa vastauksesi, ota meihin yhteyttä seuraavalla yksilöllisellä tunnisteella:",
   "app.utils.actionDescriptors.attendingEventMissingRequirements": "Sinun on täytettävä profiilisi osallistuaksesi tähän tapahtumaan.",
   "app.utils.actionDescriptors.attendingEventNotInGroup": "Et täytä vaatimuksia osallistuaksesi tähän tapahtumaan.",
