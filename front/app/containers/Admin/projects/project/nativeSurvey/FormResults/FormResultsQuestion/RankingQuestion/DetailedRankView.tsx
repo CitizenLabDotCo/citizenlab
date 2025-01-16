@@ -7,10 +7,10 @@ import ProgressBar from 'components/UI/ProgressBar';
 import { useIntl } from 'utils/cl-intl';
 
 import messages from './messages';
-import { OptionWithRanks, returnRankPercentageString } from './utils';
+import { OptionDetailedRanks, returnRankPercentageString } from './utils';
 
 type Props = {
-  optionWithDetailedRanks: OptionWithRanks;
+  optionWithDetailedRanks: OptionDetailedRanks;
   questionResponseCount: number;
 };
 

@@ -47,7 +47,7 @@ const RankingQuestion = (result: { result: ResultUngrouped }) => {
     <Box pt="16px" width="520px">
       {optionsWithAverageRanks.map((option) => {
         const currentOptionWithDetailedRanks = optionsWithDetailedRanks.find(
-          (optionWithRanks) => optionWithRanks.rankOption === option.optionKey
+          (optionWithRanks) => optionWithRanks.optionKey === option.optionKey
         );
 
         return (
