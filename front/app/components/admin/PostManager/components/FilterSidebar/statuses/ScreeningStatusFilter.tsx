@@ -56,8 +56,8 @@ const ScreeningStatusFilter = ({ status, active, onClick, type }: Props) => {
   // Also, we don't want to disable the filter in the general input manager.
   // Doing so would make it impossible to see the status of ideas that are in the prescreening phase
   // Or require heavy requests to determine if any inputs have the screening status.
-  const prescreeningButtonIsDisabled =
-    type !== 'AllIdeas' && !phasePrescreeningEnabled;
+  const prescreeningButtonIsEnabled =
+    type === 'AllIdeas' || phasePrescreeningEnabled;
 
   const showPrescreeningPhaseSettingIsDisabledTooltip =
     // If the feature is enabled
@@ -98,7 +98,7 @@ const ScreeningStatusFilter = ({ status, active, onClick, type }: Props) => {
           <StatusButton
             onClick={onClick}
             active={active}
-            disabled={prescreeningButtonIsDisabled}
+            disabled={!prescreeningButtonIsEnabled}
           >
             <Box
               display="flex"
@@ -111,7 +111,7 @@ const ScreeningStatusFilter = ({ status, active, onClick, type }: Props) => {
                 <StatusText>
                   <T value={status.attributes.title_multiloc} />
                 </StatusText>
-                {
+                {prescreeningButtonIsEnabled && (
                   <IconTooltip
                     theme="light"
                     iconSize="16px"
@@ -121,7 +121,7 @@ const ScreeningStatusFilter = ({ status, active, onClick, type }: Props) => {
                       />
                     }
                   />
-                }
+                )}
               </Box>
             </Box>
           </StatusButton>
