@@ -496,6 +496,14 @@ cy:
       event_description: 'Mae''r prosiect "%{projectName}" yn gofyn i chi bleidleisio rhwng %{numIdeas} opsiynau:'
       cta_message: 'Cliciwch ar y botwm isod i gymryd rhan'
       cta_vote: 'Ewch i''r platfform i bleidleisio'
+    survey_submitted:
+      subject: '%{organizationName}: Diolch am eich ymateb! 🎉'
+      main_header: 'Diolch am rannu eich meddyliau ar "%{projectName}"!'
+      your_input_submitted: 'Mae eich mewnbwn ar gyfer "%{projectName}" wedi ei gyflwyno''n llwyddiannus.'
+      if_you_would_like_to_review: 'Os hoffech adolygu eich cyflwyniad, gallwch lawrlwytho eich ymatebion isod.'
+      your_submission_has_id: 'Mae gan eich cyflwyniad y dynodwr unigryw canlynol:'
+      you_can_use_this_id: 'Gallwch ddefnyddio''r dynodwr hwn i gysylltu â gweinyddwyr y platfform rhag ofn eich bod am i''ch cyflwyniad gael ei ddileu.'
+      download_responses: 'Lawrlwythwch eich ymatebion'
     admin_labels:
       recipient_role:
         admins: 'I weinyddwyr'
