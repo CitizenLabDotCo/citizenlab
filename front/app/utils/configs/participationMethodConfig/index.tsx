@@ -113,14 +113,11 @@ const ideationConfig: ParticipationMethodConfig = {
   onFormSubmission: ({ idea, phaseId }: FormSubmissionMethodProps) => {
     if (idea) {
       const urlParameters = `?new_idea_id=${idea.data.id}`;
-      // TODO: Fix this the next time the file is edited.
-      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-      if (idea) {
-        clHistory.push({
-          pathname: `/ideas/${idea.data.attributes.slug}`,
-          search: urlParameters.concat(phaseId ? `&phase_id=${phaseId}` : ''),
-        });
-      }
+
+      clHistory.push({
+        pathname: `/ideas/${idea.data.attributes.slug}`,
+        search: urlParameters.concat(phaseId ? `&phase_id=${phaseId}` : ''),
+      });
     }
   },
   postType: 'defaultInput',
