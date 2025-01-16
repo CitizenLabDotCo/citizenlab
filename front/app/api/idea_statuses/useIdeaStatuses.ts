@@ -24,9 +24,30 @@ const useIdeaStatuses = ({
   enabled?: boolean;
   queryParams?: IdeaStatusesQueryParams;
 }) => {
+  const prescreeningIdeationEnabled = useFeatureFlag({
+    name: 'prescreening_ideation',
+  });
+  const prescreeningProposalsEnabled = useFeatureFlag({
+    name: 'prescreening',
+  });
+  const excludeScreeningStatusDefaults: {
+    [key in IdeaStatusParticipationMethod]: boolean;
+  } = {
+    ideation: !prescreeningIdeationEnabled,
+    proposals: !prescreeningProposalsEnabled,
+  };
+  const excludeScreeningStatus =
+    typeof queryParams.exclude_screening_status === 'boolean'
+      ? queryParams.exclude_screening_status
+      : excludeScreeningStatusDefaults[queryParams.participation_method];
+  const finalQueryParams = {
+    ...queryParams,
+    exclude_screening_status: excludeScreeningStatus,
+  };
+
   return useQuery<IIdeaStatuses, CLErrors, IIdeaStatuses, IdeaStatusesKeys>({
-    queryKey: ideaStatusesKeys.list(queryParams),
-    queryFn: () => fetchIdeaStatuses(queryParams),
+    queryKey: ideaStatusesKeys.list(finalQueryParams),
+    queryFn: () => fetchIdeaStatuses(finalQueryParams),
     enabled,
   });
 };
