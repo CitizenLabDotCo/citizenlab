@@ -644,7 +644,7 @@ resource 'Projects' do
         copied_project = Project.find(json_response.dig(:data, :id))
         expect(copied_project.admin_publication.publication_status).to eq 'draft'
       end
-      
+
       example 'Copy a project in a folder', document: false do
         folder = create(:project_folder, projects: [source_project])
 
