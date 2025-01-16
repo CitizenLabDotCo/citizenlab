@@ -496,6 +496,11 @@ en:
       event_description: 'The project "%{projectName}" is asking you to vote between %{numIdeas} options:'
       cta_message: 'Click the button below to participate'
       cta_vote: 'Go to the platform to vote'
+    survey_submitted:
+      subject: '%{organizationName}: Thank you for your response! 🎉'
+      main_header: 'Thank you for sharing your thoughts on %{projectName}!'
+      body_1: 'Test body 1'
+      body_2: 'Test body 2'
     admin_labels:
       recipient_role:
         admins: 'To admins'

@@ -5,15 +5,19 @@ module EmailCampaigns
     protected
 
     def subject
-      # format_message("subject.#{event.input_term}")
+      format_message("subject")
     end
 
     private
 
     def header_title
-      # format_message('main_header', values: {
-      #   input_title: localize_for_recipient(event.idea_title_multiloc)
-      # })
+      format_message('main_header', values: {
+        projectName: localize_for_recipient(event.project_title_multiloc)
+      })
+    end
+
+    def header_message
+      nil
     end
 
     def preheader
