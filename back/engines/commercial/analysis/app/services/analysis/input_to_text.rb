@@ -47,7 +47,7 @@ module Analysis
       end
 
       formatted_inputs = inputs
-        .map { |input| formatted(input, **options.merge(override_field_labels: override_field_labels)) }
+        .map { |input| formatted(input, **options, override_field_labels: override_field_labels) }
         .reject { |text| text.strip.blank? }
         .join("\n---\n")
 
