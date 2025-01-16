@@ -31,7 +31,7 @@ interface Props {
 }
 
 const ScreeningStatusFilter = ({ status, active, onClick }: Props) => {
-  const { phaseId } = useParams() as { phaseId: string };
+  const { phaseId } = useParams();
   const { data: phase } = usePhase(phaseId);
 
   const preScreeningFeatureFlag =
