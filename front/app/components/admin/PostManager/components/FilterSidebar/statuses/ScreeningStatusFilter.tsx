@@ -55,23 +55,23 @@ const ScreeningStatusFilter = ({ status, active, onClick, type }: Props) => {
   const statusFilterIsEnabled =
     // We only show ideation inputs in the general input manager, so we don't need to check
     // for the proposals screening feature being allowed here.
-    ((type === 'AllIdeas' ||
-      (type === 'ProjectIdeas' && phaseSettingEnabled)) &&
-      prescreeningIdeationFeatureEnabled) ||
-    (type === 'ProjectProposals' &&
-      phaseSettingEnabled &&
-      prescreeningProposalsFeatureEnabled);
+    (prescreeningIdeationFeatureEnabled &&
+      (type === 'AllIdeas' ||
+        (type === 'ProjectIdeas' && phaseSettingEnabled))) ||
+    (prescreeningProposalsFeatureEnabled &&
+      type === 'ProjectProposals' &&
+      phaseSettingEnabled);
   const showPhaseSettingIsDisabledTooltip =
-    ((type === 'ProjectIdeas' && prescreeningIdeationFeatureEnabled) ||
-      (type === 'ProjectProposals' && prescreeningProposalsFeatureEnabled)) &&
+    ((prescreeningIdeationFeatureEnabled && type === 'ProjectIdeas') ||
+      (prescreeningProposalsFeatureEnabled && type === 'ProjectProposals')) &&
     !phaseSettingEnabled;
 
   const showPrescreeningUpsellTooltip =
     // We only show ideation inputs in the general input manager, so we don't need to check
     // for the proposals screening feature being allowed here.
-    ((type === 'AllIdeas' || type === 'ProjectIdeas') &&
-      !prescreeningIdeationAllowed) ||
-    (type === 'ProjectProposals' && !prescreeningProposalsAllowed);
+    (!prescreeningIdeationAllowed &&
+      (type === 'AllIdeas' || type === 'ProjectIdeas')) ||
+    (!prescreeningProposalsAllowed && type === 'ProjectProposals');
   const tooltipEnabled =
     showPhaseSettingIsDisabledTooltip || showPrescreeningUpsellTooltip;
 
