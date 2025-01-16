@@ -52,7 +52,15 @@ const ScreeningStatusFilter = ({ status, active, onClick, type }: Props) => {
 
   const phaseSettingEnabled =
     phase?.data.attributes.prescreening_enabled === true;
-  const statusFilterIsEnabled = type === 'AllIdeas' || phaseSettingEnabled;
+  const statusFilterIsEnabled =
+    // We only show ideation inputs in the general input manager, so we don't need to check
+    // for the proposals screening feature being allowed here.
+    ((type === 'AllIdeas' ||
+      (type === 'ProjectIdeas' && phaseSettingEnabled)) &&
+      prescreeningIdeationFeatureEnabled) ||
+    (type === 'ProjectProposals' &&
+      phaseSettingEnabled &&
+      prescreeningProposalsFeatureEnabled);
   const showPhaseSettingIsDisabledTooltip =
     ((type === 'ProjectIdeas' && prescreeningIdeationFeatureEnabled) ||
       (type === 'ProjectProposals' && prescreeningProposalsFeatureEnabled)) &&
