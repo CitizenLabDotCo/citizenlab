@@ -53,14 +53,13 @@ const ScreeningStatusFilter = ({ status, active, onClick, type }: Props) => {
     phase?.data.attributes.prescreening_enabled === true;
   const prescreeningButtonIsEnabled =
     type === 'AllIdeas' || phasePrescreeningEnabled;
-  const showPrescreeningPhaseSettingIsDisabledTooltip =
+  const showPhaseSettingIsDisabledTooltip =
     preScreeningFeatureEnabled &&
     type !== 'AllIdeas' &&
     !phasePrescreeningEnabled;
   const showPrescreeningUpsellTooltip = !preScreeningFeatureAllowed;
   const tooltipEnabled =
-    showPrescreeningPhaseSettingIsDisabledTooltip ||
-    showPrescreeningUpsellTooltip;
+    showPhaseSettingIsDisabledTooltip || showPrescreeningUpsellTooltip;
 
   return (
     // Div wrapping is needed to make the filter take full width.
@@ -76,7 +75,7 @@ const ScreeningStatusFilter = ({ status, active, onClick, type }: Props) => {
             {showPrescreeningUpsellTooltip && (
               <FormattedMessage {...messages.prescreeningTooltipUpsell} />
             )}
-            {showPrescreeningPhaseSettingIsDisabledTooltip && (
+            {showPhaseSettingIsDisabledTooltip && (
               <FormattedMessage
                 {...messages.prescreeningTooltipPhaseDisabled}
               />
