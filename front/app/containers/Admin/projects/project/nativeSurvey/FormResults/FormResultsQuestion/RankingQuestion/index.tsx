@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { Box, colors, Text } from '@citizenlab/cl2-component-library';
 import { useTheme } from 'styled-components';
 
-import { ResultUngrouped } from 'api/survey_results/types';
+import { ResultGrouped, ResultUngrouped } from 'api/survey_results/types';
 
 import useLocale from 'hooks/useLocale';
 
@@ -17,7 +17,12 @@ import {
   createOptionsWithDetailedRanks,
 } from './utils';
 
-const RankingQuestion = (result: { result: ResultUngrouped }) => {
+type Props = {
+  result: ResultGrouped | ResultUngrouped;
+  hideDetailsButton: boolean;
+};
+
+const RankingQuestion = ({ result, hideDetailsButton = false }: Props) => {
   const theme = useTheme();
   const locale = useLocale();
   const { formatMessage } = useIntl();
@@ -31,7 +36,7 @@ const RankingQuestion = (result: { result: ResultUngrouped }) => {
     rankings_counts,
     multilocs,
     questionResponseCount,
-  } = result.result;
+  } = result;
 
   if (!average_rankings || !rankings_counts || !multilocs) {
     return null;
@@ -97,10 +102,12 @@ const RankingQuestion = (result: { result: ResultUngrouped }) => {
           </Box>
         );
       })}
-      <DetailedViewButton
-        showDetails={showDetails}
-        setShowDetails={setShowDetails}
-      />
+      {!hideDetailsButton && (
+        <DetailedViewButton
+          showDetails={showDetails}
+          setShowDetails={setShowDetails}
+        />
+      )}
     </Box>
   );
 };

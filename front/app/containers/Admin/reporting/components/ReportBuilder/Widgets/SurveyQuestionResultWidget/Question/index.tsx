@@ -8,6 +8,7 @@ import { GroupMode } from 'api/graph_data_units/requestTypes';
 import useLocalize from 'hooks/useLocalize';
 
 import InputType from 'containers/Admin/projects/project/nativeSurvey/FormResults/FormResultsQuestion/InputType';
+import RankingQuestion from 'containers/Admin/projects/project/nativeSurvey/FormResults/FormResultsQuestion/RankingQuestion';
 
 import Legend from 'components/admin/Graphs/Legend';
 import { DEFAULT_CATEGORICAL_COLORS } from 'components/admin/Graphs/styling';
@@ -77,6 +78,11 @@ const SurveyQuestionResult = ({
         />
       ) : (
         <>
+          {attributes.inputType === 'ranking' && (
+            <Box>
+              <RankingQuestion result={attributes} hideDetailsButton={true} />
+            </Box>
+          )}
           <SurveyBars
             questionResult={attributes}
             colorScheme={DEFAULT_CATEGORICAL_COLORS}
