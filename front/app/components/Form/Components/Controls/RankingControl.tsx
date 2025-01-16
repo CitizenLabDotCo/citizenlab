@@ -33,6 +33,8 @@ import messages from './messages';
 const StyledSelect = styled(Select)`
   min-width: 52px;
   margin-right: 12px;
+  margin-top: auto;
+  margin-bottom: auto;
 
   select {
     padding: 4px;
@@ -200,7 +202,7 @@ const RankingControl = ({
                             </Text>
                           </Box>
 
-                          <Box flexShrink={0} my="auto">
+                          <Box flexShrink={0} my="auto" pl="8px">
                             <Icon
                               height="18px"
                               name="drag-handle"
