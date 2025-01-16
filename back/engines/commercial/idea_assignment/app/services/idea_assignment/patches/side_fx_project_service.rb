@@ -5,12 +5,12 @@ module IdeaAssignment
     module SideFxProjectService
       def after_create(project, current_user)
         super
-        set_default_assignee!(project, current_user) unless project.default_assignee
+        set_default_assignee!(project, current_user)
       end
 
       def after_copy(source_project, copied_project, current_user, start_time)
         super
-        set_default_assignee!(copied_project, current_user) unless copied_project.default_assignee
+        set_default_assignee!(copied_project, current_user)
       end
 
       private
@@ -24,7 +24,9 @@ module IdeaAssignment
       end
 
       def set_default_assignee!(project, current_user)
-        project.default_assignee ||= current_user&.super_admin? ? ::User.oldest_admin : current_user
+        return if project.default_assignee
+
+        project.default_assignee = current_user&.super_admin? ? ::User.oldest_admin : current_user
         project.save!
       end
     end
