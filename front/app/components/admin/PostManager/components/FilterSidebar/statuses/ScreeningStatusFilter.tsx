@@ -35,14 +35,12 @@ interface Props {
 const ScreeningStatusFilter = ({ status, active, onClick, type }: Props) => {
   const { phaseId } = useParams();
   const { data: phase } = usePhase(phaseId);
-
-  const preScreeningFeatureFlag =
-    phase?.data.attributes.participation_method === 'ideation'
-      ? 'prescreening_ideation'
-      : 'prescreening';
-
-  const preScreeningFeatureAllowed = useFeatureFlag({
-    name: preScreeningFeatureFlag,
+  const prescreeningIdeationAllowed = useFeatureFlag({
+    name: 'prescreening_ideation',
+    onlyCheckAllowed: true,
+  });
+  const prescreeningProposalsAllowed = useFeatureFlag({
+    name: 'prescreening',
     onlyCheckAllowed: true,
   });
   const prescreeningIdeationFeatureEnabled = useFeatureFlag({
@@ -59,7 +57,10 @@ const ScreeningStatusFilter = ({ status, active, onClick, type }: Props) => {
     ((type === 'ProjectIdeas' && prescreeningIdeationFeatureEnabled) ||
       (type === 'ProjectProposals' && prescreeningProposalsFeatureEnabled)) &&
     !phaseSettingEnabled;
-  const showPrescreeningUpsellTooltip = !preScreeningFeatureAllowed;
+
+  const showPrescreeningUpsellTooltip =
+    (type === 'ProjectIdeas' && !prescreeningIdeationAllowed) ||
+    (type === 'ProjectProposals' && !prescreeningProposalsAllowed);
   const tooltipEnabled =
     showPhaseSettingIsDisabledTooltip || showPrescreeningUpsellTooltip;
 
