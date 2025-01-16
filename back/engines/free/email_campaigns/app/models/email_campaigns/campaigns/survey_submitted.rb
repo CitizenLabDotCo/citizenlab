@@ -46,7 +46,6 @@ module EmailCampaigns
 
       [{
         event_payload: {
-          idea_id: idea.id,
           project_title_multiloc: project.title_multiloc,
         }
       }]
