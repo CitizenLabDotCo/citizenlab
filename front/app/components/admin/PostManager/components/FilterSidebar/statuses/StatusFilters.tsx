@@ -79,7 +79,6 @@ const StatusFilters = ({
             status={status}
             active={isActive(status.id)}
             onClick={() => handleItemClick(status.id)}
-            type={type}
           />
         ) : (
           <StatusFilter

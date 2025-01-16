@@ -10,7 +10,6 @@ import usePhase from 'api/phases/usePhase';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
-import { ManagerType } from 'components/admin/PostManager';
 import T from 'components/T';
 
 import { FormattedMessage } from 'utils/cl-intl';
@@ -29,10 +28,9 @@ interface Props {
   status: IIdeaStatusData;
   active: boolean;
   onClick: () => void;
-  type: ManagerType;
 }
 
-const ScreeningStatusFilter = ({ status, active, onClick, type }: Props) => {
+const ScreeningStatusFilter = ({ status, active, onClick }: Props) => {
   const { phaseId } = useParams() as { phaseId: string };
   const { data: phase } = usePhase(phaseId);
 
