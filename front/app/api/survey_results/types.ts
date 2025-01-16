@@ -10,6 +10,7 @@ export type SurveyResultsKeys = Keys<typeof surveyResultsKeys>;
 
 export type IParameters = {
   phaseId: string | null;
+  filterLogicOptionIds: string[];
 };
 
 export interface Answer {

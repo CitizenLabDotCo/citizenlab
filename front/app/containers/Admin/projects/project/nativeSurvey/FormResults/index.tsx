@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import { Box, Text } from '@citizenlab/cl2-component-library';
 import { useParams } from 'react-router-dom';
@@ -21,13 +21,28 @@ const FormResults = () => {
   };
   const { formatMessage } = useIntl();
   const { data: project } = useProjectById(projectId);
+  const [filterLogicOptionIds, setFilterLogicOptionIds] = useState(
+    [] as string[]
+  );
   const { data: formResults } = useFormResults({
     phaseId,
+    filterLogicOptionIds,
   });
 
   if (!formResults || !project) {
     return null;
   }
+
+  const addRemoveLogicOptionIds = (optionId: string) => {
+    if (filterLogicOptionIds.includes(optionId)) {
+      setFilterLogicOptionIds(
+        filterLogicOptionIds.filter((id) => id !== optionId)
+      );
+    } else {
+      setFilterLogicOptionIds([...filterLogicOptionIds, optionId]);
+    }
+  };
+  console.log(addRemoveLogicOptionIds);
 
   const { totalSubmissions, results } = formResults.data.attributes;
 

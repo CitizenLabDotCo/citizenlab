@@ -6,25 +6,31 @@ import fetcher from 'utils/cl-react-query/fetcher';
 import surveyResultsKeys from './keys';
 import { SurveyResultsKeys, IParameters, SurveyResultsType } from './types';
 
-const getSurveyResultsEndpoint = (phaseId: string | null) => {
-  return `phases/${phaseId}/survey_results`;
+const getSurveyResultsEndpoint = (
+  phaseId: string | null,
+  filterLogicOptionIds: string[]
+) => {
+  const optionIds = filterLogicOptionIds.join(',');
+  const path = `phases/${phaseId}/survey_results`;
+  return path + (optionIds ? `?filter_logic_option_ids=${optionIds}` : '');
 };
 
-const fetchSurveyResults = ({ phaseId }: IParameters) =>
+const fetchSurveyResults = ({ phaseId, filterLogicOptionIds }: IParameters) =>
   fetcher<SurveyResultsType>({
-    path: `/${getSurveyResultsEndpoint(phaseId)}`,
+    path: `/${getSurveyResultsEndpoint(phaseId, filterLogicOptionIds)}`,
     action: 'get',
   });
 
-const useSurveyResults = ({ phaseId }: IParameters) => {
+const useSurveyResults = ({ phaseId, filterLogicOptionIds }: IParameters) => {
+  console.log(filterLogicOptionIds);
   return useQuery<
     SurveyResultsType,
     CLErrors,
     SurveyResultsType,
     SurveyResultsKeys
   >({
-    queryKey: surveyResultsKeys.item({ phaseId }),
-    queryFn: () => fetchSurveyResults({ phaseId }),
+    queryKey: surveyResultsKeys.item({ phaseId, filterLogicOptionIds }),
+    queryFn: () => fetchSurveyResults({ phaseId, filterLogicOptionIds }),
   });
 };
 
