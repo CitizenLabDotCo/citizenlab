@@ -51,24 +51,27 @@ const ScreeningStatusFilter = ({ status, active, onClick, type }: Props) => {
 
   const phasePrescreeningEnabled =
     phase?.data.attributes.prescreening_enabled === true;
-  // We don't need to check for the feature flag here. We check if something is enabled at the configuration level,
-  // which means the phase setting in this case.
-  // Also, we don't want to disable the filter in the general input manager.
-  // Doing so would make it impossible to see the status of ideas that are in the prescreening phase
-  // Or require heavy requests to determine if any inputs have the screening status.
+  /*
+    - In the general input manager ("AllIdeas"), we don't want to disable the filter in the general input manager. 
+    Doing so would make it impossible to see the status of ideas that are in the prescreening phase
+    or require heavy requests to determine if any inputs have the screening status.
+    - In the phase input managers, we check if something is enabled at the configuration level
+    (which means the phase setting in this case). 
+  */
   const prescreeningButtonIsEnabled =
     type === 'AllIdeas' || phasePrescreeningEnabled;
 
+  /*
+    If the feature is enabled
+    and we're not in the general input manager
+    and it's not enabled for this phase, show this tooltip to inform.
+  */
   const showPrescreeningPhaseSettingIsDisabledTooltip =
-    // If the feature is enabled
     preScreeningFeatureEnabled &&
-    // and we're not in the general input manager
     type !== 'AllIdeas' &&
-    // and it's not enabled for this phase, show this tooltip to inform.
     !phasePrescreeningEnabled;
   // If the feature is not commercially allowed, show the upsell tooltip
   const showPrescreeningUpsellTooltip = !preScreeningFeatureAllowed;
-  // This is messy and the component should probably be split in a real and dummy component (when the feature is not allowed)
   const tooltipEnabled =
     showPrescreeningPhaseSettingIsDisabledTooltip ||
     showPrescreeningUpsellTooltip;
@@ -78,9 +81,11 @@ const ScreeningStatusFilter = ({ status, active, onClick, type }: Props) => {
     <div>
       <Tooltip
         content={
-          // We can't have both tooltips at the same time: if the upsell tooltip is shown,
-          // the phase setting tooltip should not be shown.
-          // The feature needs to be allowed before the phase setting is even visible.
+          /*
+            We can't have both tooltips at the same time: if the upsell tooltip is shown,
+            the phase setting tooltip should not be shown.
+            The feature needs to be allowed before the phase setting is even visible.
+          */
           <div>
             {showPrescreeningUpsellTooltip && (
               <FormattedMessage {...messages.prescreeningTooltipUpsell} />
