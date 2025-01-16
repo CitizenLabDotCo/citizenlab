@@ -252,4 +252,8 @@ export default defineMessages({
     id: 'app.utils.Projects.surveySubmission',
     defaultMessage: 'Survey submission',
   },
+  yourResponseHasTheFollowingId: {
+    id: 'app.utils.Projects.yourResponseHasTheFollowingId',
+    defaultMessage: 'Your response has the following identifier: {identifier}',
+  },
 });

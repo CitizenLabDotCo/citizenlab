@@ -47,7 +47,9 @@ const NativeSurveyModalContent = ({ ideaId, showIdeaId }: Props) => {
             linkTo={getMailLink({
               email: authUser?.data.attributes.email,
               subject: formatMessage(messages.surveySubmission),
-              body: `Identifier: ${ideaId}`,
+              body: formatMessage(messages.yourResponseHasTheFollowingId, {
+                identifier: ideaId,
+              }),
             })}
             buttonStyle="text"
             w="auto"
