@@ -496,6 +496,14 @@ fr:
       event_description: 'Le projet "%{projectName}" vous invite à exprimer votre préférence parmi %{numIdeas} options :'
       cta_message: 'Cliquez sur le bouton ci-dessous pour participer'
       cta_vote: 'Se rendre sur la plateforme pour voter'
+    survey_submitted:
+      subject: '%{organizationName}: Merci pour votre réponse ! 🎉'
+      main_header: 'Merci de nous faire part de vos réflexions sur "%{projectName}" !'
+      your_input_submitted: 'Votre contribution pour "%{projectName}" a été soumise avec succès.'
+      if_you_would_like_to_review: 'Si vous souhaitez revoir votre soumission, vous pouvez télécharger vos réponses ci-dessous.'
+      your_submission_has_id: 'Votre soumission porte l''identifiant unique suivant :'
+      you_can_use_this_id: 'Vous pouvez utiliser cet identifiant pour contacter les administrateurs de la plateforme au cas où vous souhaiteriez que votre soumission soit supprimée.'
+      download_responses: 'Téléchargez vos réponses'
     admin_labels:
       recipient_role:
         admins: 'Aux administrateurs'
