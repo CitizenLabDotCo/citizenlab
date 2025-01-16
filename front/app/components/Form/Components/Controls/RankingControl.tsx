@@ -142,7 +142,7 @@ const RankingControl = ({
             <Drop id="droppable" type="rankOptions">
               <Ul aria-labelledby={`ranking-question-label-${id}`}>
                 {options.map((option: IOption, index: number) => (
-                  <li key={option.value}>
+                  <li key={option.value} aria-roledescription="sortable">
                     <Drag
                       index={index}
                       useBorder={false}
