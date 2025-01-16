@@ -5,7 +5,9 @@ module EmailCampaigns
     protected
 
     def subject
-      format_message("subject")
+      format_message("subject", values: {
+        organizationName: organization_name,
+      })
     end
 
     private
