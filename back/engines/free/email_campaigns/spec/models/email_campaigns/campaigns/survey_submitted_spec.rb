@@ -28,17 +28,15 @@ RSpec.describe EmailCampaigns::Campaigns::SurveySubmitted do
       )
     end
 
-    # describe do
-    #   let(:idea) do
-    #     project = create(:single_phase_native_survey_project)
-    #     create(:idea, author: user, project: project, creation_phase: project.phases.first)
-    #   end
+    describe 'no commands generated' do
+      let(:idea) { create(:idea, author: user) }
+      let(:activity) { create(:activity, item: idea, action: 'published', user: user) }
 
-    #   it "doesn't get triggered for a native survey response" do
-    #     commands = campaign.generate_commands recipient: user, activity: activity
+      it "doesn't get triggered for a regular idea" do
+        commands = campaign.generate_commands recipient: user, activity: activity
 
-    #     expect(commands).to be_empty
-    #   end
-    # end
+        expect(commands).to be_empty
+      end
+    end
   end
 end
