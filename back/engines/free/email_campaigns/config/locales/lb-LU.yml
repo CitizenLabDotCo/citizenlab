@@ -496,6 +496,14 @@ lb:
       event_description: 'De Projet "%{projectName}" freet Iech tëscht %{numIdeas} Optiounen ze stëmmen:'
       cta_message: 'Klickt op de Knäppchen hei ënnen fir matzemaachen'
       cta_vote: 'Gitt op d''Plattform fir ze wielen'
+    survey_submitted:
+      subject: '%{organizationName}: Merci fir Är Äntwert! 🎉'
+      main_header: 'Merci fir Är Gedanken iwwer "%{projectName}" ze deelen!'
+      your_input_submitted: 'Ären Input fir "%{projectName}" gouf erfollegräich ofginn.'
+      if_you_would_like_to_review: 'Wann Dir Är Soumissioun wëllt iwwerpréiwen, kënnt Dir Är Äntwerten hei ënnen eroflueden.'
+      your_submission_has_id: 'Är Soumissioun huet de folgenden eenzegaartegen Identifizéierer:'
+      you_can_use_this_id: 'Dir kënnt dësen Identifizéierer benotze fir d''Plattformadministrateuren ze kontaktéieren am Fall wou Dir wëllt datt Är Soumissioun ewechgeholl gëtt.'
+      download_responses: 'Luet Är Äntwerten erof'
     admin_labels:
       recipient_role:
         admins: 'An den Admins'
