@@ -2073,6 +2073,7 @@
   "app.utils.IdeasNewPage.surveyTitle": "Spørgeundersøgelse",
   "app.utils.Projects.sendSurveySubmission": "Send identifikator for indsendelse af undersøgelse til min e-mail",
   "app.utils.Projects.surveySubmission": "Indsendelse af undersøgelse",
+  "app.utils.Projects.yourResponseHasTheFollowingId": "Dit svar har følgende identifikation: {identifier}",
   "app.utils.Promessagesjects.ifYouLaterDecide": "Hvis du senere beslutter, at du vil have dit svar fjernet, bedes du kontakte os med følgende unikke identifikation:",
   "app.utils.actionDescriptors.attendingEventMissingRequirements": "Du skal udfylde din profil for at deltage i dette arrangement.",
   "app.utils.actionDescriptors.attendingEventNotInGroup": "Du opfylder ikke kravene til at deltage i dette arrangement.",
