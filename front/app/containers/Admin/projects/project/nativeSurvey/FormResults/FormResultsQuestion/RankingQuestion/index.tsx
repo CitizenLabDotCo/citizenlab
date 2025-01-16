@@ -19,7 +19,7 @@ import {
 
 type Props = {
   result: ResultUngrouped;
-  hideDetailsButton: boolean;
+  hideDetailsButton?: boolean;
 };
 
 const RankingQuestion = ({ result, hideDetailsButton = false }: Props) => {
