@@ -223,6 +223,7 @@ const UserNavbar = memo<Props>(({ user }) => {
           tabIndex={tab.active ? 0 : -1}
           onKeyDown={(event) => handleKeyDownTab(event, tab.path)}
           ref={(el) => el && (tabsRef.current[tab.path] = el)}
+          aria-controls={`tab-${tab.path}`}
         >
           <Border aria-hidden />
           <TabIcon name={tab.icon} ariaHidden />
