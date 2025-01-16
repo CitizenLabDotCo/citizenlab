@@ -21,7 +21,7 @@ class SideFxCustomFieldOptionService
 
   def after_destroy(frozen_custom_field_option, current_user)
     custom_field = frozen_custom_field_option.custom_field
-    if custom_field&.resource_type == 'CustomForm' && custom_field&.input_type == 'select' # TODO: Find out how this should work for ranking
+    if custom_field&.resource_type == 'CustomForm' && custom_field&.input_type == 'select'
       FormLogicService.new([frozen_custom_field_option.custom_field])
         .remove_select_logic_option_from_custom_fields(frozen_custom_field_option)
     end

@@ -122,7 +122,7 @@ module EmailCampaigns
       ps = ParticipantsService.new
       participants_increase = ps.projects_participants([project], since: (Time.now - days_ago)).size
       ideas = Idea.published.where(project_id: project.id).load
-      comments = Comment.where(post_id: ideas.map(&:id))
+      comments = Comment.where(idea_id: ideas.map(&:id))
       {
         new_ideas_increase: stat_increase(ideas.filter_map(&:published_at)),
         new_comments_increase: stat_increase(comments.filter_map(&:created_at)),

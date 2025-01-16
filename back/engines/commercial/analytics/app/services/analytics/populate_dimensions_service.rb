@@ -13,12 +13,9 @@ module Analytics
       def populate_types
         types = [
           { name: 'idea', parent: 'post' },
-          { name: 'initiative', parent: 'post' },
           { name: 'proposal', parent: 'post' },
-          { name: 'comment', parent: 'initiative' },
           { name: 'comment', parent: 'idea' },
           { name: 'comment', parent: 'proposal' },
-          { name: 'reaction', parent: 'initiative' },
           { name: 'reaction', parent: 'idea' },
           { name: 'reaction', parent: 'comment' },
           { name: 'poll', parent: nil },
@@ -43,8 +40,7 @@ module Analytics
 
         tenant_creation = AppConfiguration.instance.created_at
         first_idea = Idea.order(:created_at).limit(1).pluck(:created_at)[0]
-        first_initiative = Initiative.order(:created_at).limit(1).pluck(:created_at)[0]
-        first_activity_date = [tenant_creation, first_idea, first_initiative].compact.min.to_date
+        first_activity_date = [tenant_creation, first_idea].compact.min.to_date
 
         if Analytics::DimensionDate.none?
           from = first_activity_date

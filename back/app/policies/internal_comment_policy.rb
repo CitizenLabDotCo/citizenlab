@@ -6,7 +6,7 @@ class InternalCommentPolicy < ApplicationPolicy
       if user&.active? && user&.admin?
         scope.all
       elsif user&.active? && user&.project_moderator?
-        scope.where(post_id: Idea.where(project_id: user.moderatable_project_ids))
+        scope.where(idea_id: Idea.where(project_id: user.moderatable_project_ids))
       else
         raise Pundit::NotAuthorizedError, 'not allowed to view this action'
       end
@@ -44,13 +44,7 @@ class InternalCommentPolicy < ApplicationPolicy
   private
 
   def internal_commenter?
-    if record.post_type == 'Idea'
-      active? && (admin? || UserRoleService.new.can_moderate?(record.post, user))
-    elsif record.post_type == 'Initiative'
-      active? && admin?
-    else
-      false
-    end
+    active? && (admin? || UserRoleService.new.can_moderate?(record.idea, user))
   end
 
   def internal_comment_author?

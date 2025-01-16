@@ -3,7 +3,7 @@
 FactoryBot.define do
   factory :comment do
     author
-    association :post, factory: :idea
+    idea
     parent { nil }
     publication_status { 'published' }
     body_multiloc do
@@ -11,10 +11,6 @@ FactoryBot.define do
         'en' => '<p>I think this is a very good idea!</p>',
         'nl-BE' => '<p>Geweldig idee!</p>'
       }
-    end
-
-    trait :on_initiative do
-      association :post, factory: :initiative
     end
 
     factory :comment_with_mentions do
@@ -35,7 +31,7 @@ FactoryBot.define do
 
   factory :nested_comment do
     author
-    association :post, factory: :idea
+    idea
     association :parent, factory: :comment
     publication_status { 'published' }
     body_multiloc do

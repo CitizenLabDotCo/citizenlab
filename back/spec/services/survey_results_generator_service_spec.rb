@@ -344,7 +344,7 @@ RSpec.describe SurveyResultsGeneratorService do
       custom_field_values: {
         select_field.key => 'la',
         multiselect_image_field.key => ['school'],
-        ranking_field.key => %w[by_bike by_train by_foot],
+        ranking_field.key => %w[by_bike by_train by_foot]
       },
       author: female_user
     )
@@ -1052,7 +1052,7 @@ RSpec.describe SurveyResultsGeneratorService do
             'by_bike' => {
               1 => 3,
               2 => 1,
-              3 => 0              
+              3 => 0
             },
             'by_foot' => {
               1 => 0,
