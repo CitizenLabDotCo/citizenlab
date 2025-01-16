@@ -286,29 +286,32 @@ const FieldValue = ({ projectId, phaseId, customFieldId, input }: Props) => {
               <Title variant="h5" m="0px">
                 <T value={customField.data.attributes.title_multiloc} />
               </Title>
-              {!rawValue && (
+              {rawValue ? (
+                <>
+                  {rawValue.map((optionKey: string, index: number) => (
+                    <Box key={optionKey} display="flex" mt="8px">
+                      <Text mr="8px" my="auto">
+                        #{index + 1}
+                      </Text>
+                      <Text
+                        m="0px"
+                        p="4px 8px"
+                        style={{
+                          border: `1px solid ${theme.colors.divider}`,
+                          borderRadius: theme.borderRadius,
+                        }}
+                      >
+                        <SelectOptionText
+                          customFieldId={customField.data.id}
+                          selectedOptionKey={optionKey}
+                        />
+                      </Text>
+                    </Box>
+                  ))}
+                </>
+              ) : (
                 <Text m="0px">{formatMessage(messages.noAnswer)}</Text>
               )}
-              {rawValue?.map((optionKey: string, index: number) => (
-                <Box key={optionKey} display="flex" mt="8px">
-                  <Text mr="8px" my="auto">
-                    #{index + 1}
-                  </Text>
-                  <Text
-                    m="0px"
-                    p="4px 8px"
-                    style={{
-                      border: `1px solid ${theme.colors.divider}`,
-                      borderRadius: theme.borderRadius,
-                    }}
-                  >
-                    <SelectOptionText
-                      customFieldId={customField.data.id}
-                      selectedOptionKey={optionKey}
-                    />
-                  </Text>
-                </Box>
-              ))}
             </Box>
           );
         }
