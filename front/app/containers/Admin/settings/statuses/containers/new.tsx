@@ -28,7 +28,7 @@ const NewIdeaStatus = ({
   variant: IdeaStatusParticipationMethod;
 }) => {
   const { data: ideaStatuses } = useIdeaStatuses({
-    participation_method: variant,
+    queryParams: { participation_method: variant },
   });
   const { mutateAsync: addIdeaStatus } = useAddIdeaStatus();
   const tenantLocales = useAppConfigurationLocales();
