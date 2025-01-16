@@ -1,4 +1,4 @@
-import { RankingsCounts } from 'api/survey_results/types';
+import { AverageRankings, RankingsCounts } from 'api/survey_results/types';
 
 export type OptionAverageRank = {
   resultRank: number;
@@ -14,7 +14,7 @@ export type OptionDetailedRanks = {
 // createOptionsWithAverageRanks
 // Description: Creates an array of objects from the average_rankings result object.
 export const createOptionsWithAverageRanks = (
-  average_rankings: Record<string, string>
+  average_rankings: AverageRankings
 ) => {
   const optionsWithRanks: OptionAverageRank[] = [];
 
@@ -39,15 +39,16 @@ export const createOptionsWithAverageRanks = (
 // Description: Adds the final result rank number (E.g. #1, #2, etc.) for the options based on the average ranks.
 export const addResultRanking = (optionArrayWithRanks: OptionAverageRank[]) => {
   optionArrayWithRanks.forEach((option, index) => {
-    // Get an array without the current option
-    const otherOptionsWithRanks = optionArrayWithRanks
-      .filter((_, i) => i !== index)
-      .map((option) => option.averageRank);
+    // Get array of options without the current option
+    const otherOptionsWithRanks = optionArrayWithRanks.filter(
+      (_, i) => i !== index
+    );
 
     // Calculate the resulting rank number for the option
     const resultRank =
-      otherOptionsWithRanks.filter((rank) => rank < option.averageRank).length +
-      1;
+      otherOptionsWithRanks.filter(
+        (rank) => rank.averageRank < option.averageRank
+      ).length + 1;
 
     // Update the orginal array option with the result rank
     option.resultRank = resultRank;
