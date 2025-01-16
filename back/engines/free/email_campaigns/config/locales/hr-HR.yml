@@ -496,6 +496,14 @@ hr:
       event_description: 'Projekt "%{projectName}" vas poziva da glasate između %{numIdeas} opcije:'
       cta_message: 'Za sudjelovanje kliknite gumb ispod'
       cta_vote: 'Idite na platformu za glasanje'
+    survey_submitted:
+      subject: '%{organizationName}: Hvala vam na odgovoru! 🎉'
+      main_header: 'Hvala što ste podijelili svoje mišljenje o "%{projectName}"!'
+      your_input_submitted: 'Vaš unos za "%{projectName}" je uspješno poslan.'
+      if_you_would_like_to_review: 'Ako želite pregledati svoj podnesak, svoje odgovore možete preuzeti u nastavku.'
+      your_submission_has_id: 'Vaš podnesak ima sljedeći jedinstveni identifikator:'
+      you_can_use_this_id: 'Možete koristiti ovaj identifikator za kontaktiranje administratora platforme u slučaju da želite da se vaš podnesak ukloni.'
+      download_responses: 'Preuzmite svoje odgovore'
     admin_labels:
       recipient_role:
         admins: 'Adminima'
