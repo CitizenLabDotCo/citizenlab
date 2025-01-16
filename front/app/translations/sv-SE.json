@@ -2073,6 +2073,7 @@
   "app.utils.IdeasNewPage.surveyTitle": "Undersökning",
   "app.utils.Projects.sendSurveySubmission": "Skicka identifierare för enkätinlämning till min e-post",
   "app.utils.Projects.surveySubmission": "Inlämning av enkät",
+  "app.utils.Projects.yourResponseHasTheFollowingId": "Ditt svar har följande identifierare: {identifier}",
   "app.utils.Promessagesjects.ifYouLaterDecide": "Om du senare bestämmer dig för att du vill att ditt svar ska tas bort, vänligen kontakta oss med följande unika identifierare:",
   "app.utils.actionDescriptors.attendingEventMissingRequirements": "Du måste fylla i din profil för att delta i detta evenemang.",
   "app.utils.actionDescriptors.attendingEventNotInGroup": "Du uppfyller inte kraven för att delta i detta evenemang.",
