@@ -2073,6 +2073,7 @@
   "app.utils.IdeasNewPage.surveyTitle": "الاستبيان",
   "app.utils.Projects.sendSurveySubmission": "إرسال معرف إرسال الاستطلاع إلى بريدي الإلكتروني",
   "app.utils.Projects.surveySubmission": "إرسال الاستطلاع",
+  "app.utils.Projects.yourResponseHasTheFollowingId": "إجابتك تحتوي على المعرف التالي: {identifier}",
   "app.utils.Promessagesjects.ifYouLaterDecide": "إذا قررت لاحقًا أنك تريد إزالة ردك، فيرجى الاتصال بنا باستخدام المعرف الفريد التالي:",
   "app.utils.actionDescriptors.attendingEventMissingRequirements": "يجب عليك إكمال ملفك الشخصي لحضور هذا الحدث.",
   "app.utils.actionDescriptors.attendingEventNotInGroup": "أنت لا تستوفي المتطلبات اللازمة لحضور هذا الحدث.",
