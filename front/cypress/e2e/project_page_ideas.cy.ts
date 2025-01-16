@@ -379,6 +379,7 @@ describe('timeline project with no active ideation phase', () => {
       .then(() => {
         cy.setAdminLoginCookie();
         cy.visit(`/projects/${projectTitle}`);
+        cy.wait(1000);
       });
   });
 
