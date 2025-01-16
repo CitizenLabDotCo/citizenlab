@@ -193,10 +193,14 @@ class WebApi::V1::ProjectsController < ApplicationController
     # A final authorization check is performed afterward on the actual copied project.
     Project.transaction do
       source_project.dup.tap do |p|
-        p.assign_attributes(slug: nil, admin_publication_attributes: {
-          publication_status: 'draft',
-          parent_id: dest_folder&.admin_publication&.id
-        })
+        p.assign_attributes(
+          slug: nil,
+          default_assignee_id: nil,
+          admin_publication_attributes: {
+            publication_status: 'draft',
+            parent_id: dest_folder&.admin_publication&.id
+          }
+        )
 
         p.save!
         authorize(p, :create?)
