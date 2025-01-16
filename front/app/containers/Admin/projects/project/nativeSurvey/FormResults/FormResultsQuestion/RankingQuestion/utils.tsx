@@ -87,7 +87,7 @@ export const returnRankPercentageString = (
   rankCount: number,
   totalQuestionResponses: number
 ) => {
-  return `${(((rankCount ? rankCount : 0) / totalQuestionResponses) * 100)
-    .toFixed(1) // Round to 1 decimal
-    .replace(/[.,]0$/, '')}%`; // Remove any trailing zeros
+  return `${parseFloat(
+    (((rankCount ? rankCount : 0) / totalQuestionResponses) * 100).toFixed(1)
+  )}%`;
 };

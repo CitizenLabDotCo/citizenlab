@@ -79,9 +79,7 @@ const RankingQuestion = (result: { result: ResultUngrouped }) => {
               <Box my="auto">
                 <Text>
                   {formatMessage(messages.averageRank, {
-                    averageRank: option.averageRank
-                      .toFixed(1) // Round to 1 decimal
-                      .replace(/[.,]0$/, ''), // Remove any trailing zeros
+                    averageRank: parseFloat(option.averageRank.toFixed(1)), // Round to 1 decimal
                     b: (chunks) => <b>{chunks}</b>,
                   })}
                 </Text>
