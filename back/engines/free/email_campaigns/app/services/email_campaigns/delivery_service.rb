@@ -39,6 +39,7 @@ module EmailCampaigns
       Campaigns::ProjectReviewRequest,
       Campaigns::ProjectReviewStateChange,
       Campaigns::StatusChangeOnIdeaYouFollow,
+      Campaigns::SurveySubmitted,
       Campaigns::ThresholdReachedForAdmin,
       Campaigns::UserDigest,
       Campaigns::VotingBasketNotSubmitted,
