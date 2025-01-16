@@ -665,6 +665,41 @@ resource 'Projects' do
         copied_project = Project.find(json_response.dig(:data, :id))
         expect(copied_project.default_assignee_id).to eq @user.id
       end
+
+      context 'as a project moderator' do
+        before do
+          header 'Content-Type', 'application/json'
+          @user = create(:user, roles: [{ type: 'project_moderator', project_id: source_project.id }])
+          header_token_for @user
+        end
+
+        example 'Copy a project in a folder', document: false do
+          create(:project_folder, projects: [source_project])
+  
+          do_request
+          assert_status 201
+  
+          copied_project = Project.find(json_response.dig(:data, :id))
+          expect(copied_project.folder_id).to be_nil
+        end
+      end
+
+      context 'as a folder moderator' do
+        let(:folder) { create(:project_folder, projects: [source_project])}
+        
+        before do
+          header 'Content-Type', 'application/json'
+          @user = create(:user, roles: [{ type: 'project_folder_moderator', project_folder_id: folder.id }])
+          header_token_for @user
+        end
+
+        example_request 'Copy a project in a folder', document: false do
+          assert_status 201
+  
+          copied_project = Project.find(json_response.dig(:data, :id))
+          expect(copied_project.folder_id).to eq folder.id
+        end
+      end
     end
 
     get 'web_api/v1/projects/:id/as_xlsx' do
