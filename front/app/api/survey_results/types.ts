@@ -54,7 +54,7 @@ export type AverageRankings = Record<string, string>;
 
 export type ResultUngrouped = BaseResult & {
   grouped: false;
-  answers?: Answer[];
+  answers: Answer[];
 
   // Rankings
   average_rankings?: AverageRankings;
