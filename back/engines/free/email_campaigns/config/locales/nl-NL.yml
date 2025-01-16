@@ -498,8 +498,8 @@ nl:
       cta_vote: 'Ga naar het platform om te stemmen'
     survey_submitted:
       subject: '%{organizationName}: Bedankt voor je reactie! 🎉'
-      main_header: 'Bedankt voor het delen van je gedachten over "%{projectName}"!'
-      your_input_submitted: 'Je input voor "%{projectName}" is succesvol ingediend.'
+      main_header: 'Bedankt voor het delen van je mening over "%{projectName}"!'
+      your_input_submitted: 'Je invoer voor "%{projectName}" is succesvol ingediend.'
       if_you_would_like_to_review: 'Als je je inzending nog eens wilt bekijken, kun je je reacties hieronder downloaden.'
       your_submission_has_id: 'Je inzending heeft de volgende unieke identificatiecode:'
       you_can_use_this_id: 'Je kunt deze identificatiecode gebruiken om contact op te nemen met de beheerders van het platform als je wilt dat je inzending wordt verwijderd.'
