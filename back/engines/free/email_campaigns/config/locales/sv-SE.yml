@@ -496,6 +496,14 @@ sv:
       event_description: 'Projektet "%{projectName}" ber dig att rösta mellan %{numIdeas} alternativ:'
       cta_message: 'Klicka på knappen nedan för att delta'
       cta_vote: 'Gå till plattformen för att rösta'
+    survey_submitted:
+      subject: '%{organizationName}: Tack för ditt svar! 🎉'
+      main_header: 'Tack för att du delar dina tankar om "%{projectName}"!'
+      your_input_submitted: 'Din input för "%{projectName}" har skickats in framgångsrikt.'
+      if_you_would_like_to_review: 'Om du vill granska din ansökan kan du ladda ner dina svar nedan.'
+      your_submission_has_id: 'Din inlämning har följande unika identifierare:'
+      you_can_use_this_id: 'Du kan använda den här identifieraren för att kontakta plattformsadministratörerna om du vill att ditt bidrag ska tas bort.'
+      download_responses: 'Ladda ner dina svar'
     admin_labels:
       recipient_role:
         admins: 'Till administratörer'
