@@ -2073,6 +2073,7 @@
   "app.utils.IdeasNewPage.surveyTitle": "Enquesta",
   "app.utils.Projects.sendSurveySubmission": "Envia l'identificador d'enviament de l'enquesta al meu correu electrònic",
   "app.utils.Projects.surveySubmission": "Presentació de l'enquesta",
+  "app.utils.Projects.yourResponseHasTheFollowingId": "La vostra resposta té l'identificador següent: {identifier}",
   "app.utils.Promessagesjects.ifYouLaterDecide": "Si més tard decidiu que voleu que s'elimini la vostra resposta, poseu-vos en contacte amb nosaltres amb l'identificador únic següent:",
   "app.utils.actionDescriptors.attendingEventMissingRequirements": "Has d'omplir el teu perfil per assistir a aquest esdeveniment.",
   "app.utils.actionDescriptors.attendingEventNotInGroup": "No compleixes els requisits per assistir a aquest esdeveniment.",
