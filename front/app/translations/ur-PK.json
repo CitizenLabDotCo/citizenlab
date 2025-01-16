@@ -2073,6 +2073,7 @@
   "app.utils.IdeasNewPage.surveyTitle": "سروے",
   "app.utils.Projects.sendSurveySubmission": "سروے جمع کرانے والے شناخت کنندہ کو میرے ای میل پر بھیجیں۔",
   "app.utils.Projects.surveySubmission": "سروے جمع کروانا",
+  "app.utils.Projects.yourResponseHasTheFollowingId": "آپ کے جواب میں درج ذیل شناخت کنندہ ہے: {identifier}",
   "app.utils.Promessagesjects.ifYouLaterDecide": "اگر آپ بعد میں فیصلہ کرتے ہیں کہ آپ اپنے جواب کو ہٹانا چاہتے ہیں، تو براہ کرم درج ذیل منفرد شناخت کنندہ کے ساتھ ہم سے رابطہ کریں:",
   "app.utils.actionDescriptors.attendingEventMissingRequirements": "اس تقریب میں شرکت کے لیے آپ کو اپنا پروفائل مکمل کرنا ہوگا۔",
   "app.utils.actionDescriptors.attendingEventNotInGroup": "آپ اس تقریب میں شرکت کی ضروریات کو پورا نہیں کرتے ہیں۔",
