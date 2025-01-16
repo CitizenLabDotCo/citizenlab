@@ -496,6 +496,14 @@ tr:
       event_description: '"%{projectName}" projesi sizden %{numIdeas} seçenekleri arasında oylama yapmanızı istiyor:'
       cta_message: 'Katılmak için aşağıdaki butona tıklayın'
       cta_vote: 'Oy vermek için platforma gidin'
+    survey_submitted:
+      subject: '%{organizationName}: Cevabınız için teşekkür ederim! 🎉'
+      main_header: '"%{projectName}" hakkındaki düşüncelerinizi paylaştığınız için teşekkür ederiz!'
+      your_input_submitted: '"%{projectName}" için girdiniz başarıyla gönderildi.'
+      if_you_would_like_to_review: 'Gönderinizi gözden geçirmek isterseniz, yanıtlarınızı aşağıdan indirebilirsiniz.'
+      your_submission_has_id: 'Gönderiniz aşağıdaki benzersiz tanımlayıcıya sahiptir:'
+      you_can_use_this_id: 'Gönderinizin kaldırılmasını istemeniz durumunda platform yöneticileriyle iletişime geçmek için bu tanımlayıcıyı kullanabilirsiniz.'
+      download_responses: 'Yanıtlarınızı indirin'
     admin_labels:
       recipient_role:
         admins: 'Yöneticilere'
