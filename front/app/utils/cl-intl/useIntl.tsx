@@ -17,13 +17,7 @@ import { localeStream } from 'utils/localeStream';
 
 export type FormatMessageValues =
   | {
-      [key: string]:
-        | string
-        | number
-        | boolean
-        | Date
-        // This lets us use tags in translations (E.g. <b>bold</b>)
-        | ((chunks: any) => JSX.Element);
+      [key: string]: string | number | boolean | Date;
     }
   | undefined;
 

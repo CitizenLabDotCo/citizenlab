@@ -7,7 +7,7 @@ import { ResultUngrouped } from 'api/survey_results/types';
 
 import useLocale from 'hooks/useLocale';
 
-import { useIntl } from 'utils/cl-intl';
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
 
 import DetailedRankView from './DetailedRankView';
 import DetailedViewButton from './DetailedViewButton';
@@ -78,10 +78,13 @@ const RankingQuestion = (result: { result: ResultUngrouped }) => {
               </Box>
               <Box my="auto">
                 <Text>
-                  {formatMessage(messages.averageRank, {
-                    averageRank: parseFloat(option.averageRank.toFixed(1)), // Round to 1 decimal
-                    b: (chunks) => <b>{chunks}</b>,
-                  })}
+                  <FormattedMessage
+                    {...messages.averageRank}
+                    values={{
+                      averageRank: parseFloat(option.averageRank.toFixed(1)),
+                      b: (chunks: React.ReactNode) => <b>{chunks}</b>,
+                    }}
+                  />
                 </Text>
               </Box>
             </Box>
