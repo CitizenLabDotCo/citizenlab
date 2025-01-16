@@ -46,6 +46,7 @@ module EmailCampaigns
 
       [{
         event_payload: {
+          idea_id: idea.id,
           project_title_multiloc: project.title_multiloc,
           profile_url: "#{Frontend::UrlService.new.home_url}/profile/#{recipient.slug}/surveys"
         }
