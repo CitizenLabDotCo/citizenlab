@@ -45,16 +45,19 @@ const ScreeningStatusFilter = ({ status, active, onClick, type }: Props) => {
     name: preScreeningFeatureFlag,
     onlyCheckAllowed: true,
   });
-  const preScreeningFeatureEnabled = useFeatureFlag({
-    name: preScreeningFeatureFlag,
+  const prescreeningIdeationFeatureEnabled = useFeatureFlag({
+    name: 'prescreening_ideation',
+  });
+  const prescreeningProposalsFeatureEnabled = useFeatureFlag({
+    name: 'prescreening',
   });
 
   const phaseSettingEnabled =
     phase?.data.attributes.prescreening_enabled === true;
   const statusFilterIsEnabled = type === 'AllIdeas' || phaseSettingEnabled;
   const showPhaseSettingIsDisabledTooltip =
-    (type === 'ProjectIdeas' || type === 'ProjectProposals') &&
-    preScreeningFeatureEnabled &&
+    ((type === 'ProjectIdeas' && prescreeningIdeationFeatureEnabled) ||
+      (type === 'ProjectProposals' && prescreeningProposalsFeatureEnabled)) &&
     !phaseSettingEnabled;
   const showPrescreeningUpsellTooltip = !preScreeningFeatureAllowed;
   const tooltipEnabled =
