@@ -634,6 +634,17 @@ resource 'Projects' do
         copied_project = Project.find(json_response.dig(:data, :id))
         expect(copied_project.title_multiloc['en']).to include(source_project.title_multiloc['en'])
       end
+
+      example 'Copy a project with a project moderator as default_assignee', document: false do
+        moderator = create(:project_moderator, projects: [source_project])
+        source_project.update!(default_assignee: moderator)
+
+        do_request
+        assert_status 201
+
+        copied_project = Project.find(json_response.dig(:data, :id))
+        expect(copied_project.default_assignee_id).to eq @user.id
+      end
     end
 
     get 'web_api/v1/projects/:id/as_xlsx' do
