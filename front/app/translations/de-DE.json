@@ -1812,7 +1812,7 @@
   "app.containers.UsersEditPage.verifiedIdentitySubtitle": "Sie können an Projekten teilnehmen, die eine Registrierung erfordern.",
   "app.containers.UsersEditPage.verifiedIdentityTitle": "Sie sind verifiziert",
   "app.containers.UsersEditPage.verifyNow": "Jetzt verifizieren",
-  "app.containers.UsersShowPage.Surveys.SurveySubmissionCard.downloadYourResponses2": "Laden Sie Ihre Antworten herunter (.xlsx)",
+  "app.containers.UsersShowPage.Surveys.SurveySubmissionCard.downloadYourResponses2": "Antworten herunterladen (.xlsx)",
   "app.containers.UsersShowPage.a11y_likesCount": "{likesCount, plural, =0 {0 gefällt mir} one {1 gefällt mir} other {# gefällt mir}}",
   "app.containers.UsersShowPage.a11y_postCommentPostedIn": "Beitrag, in dem dieser Kommentar gepostet wurde:\n",
   "app.containers.UsersShowPage.areas": "Gebiete",
