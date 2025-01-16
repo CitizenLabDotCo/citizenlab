@@ -8,6 +8,11 @@ module IdeaAssignment
         set_default_assignee!(project, current_user) unless project.default_assignee
       end
 
+      def after_copy(source_project, copied_project, current_user, start_time)
+        super
+        set_default_assignee!(copied_project, current_user) unless copied_project.default_assignee
+      end
+
       private
 
       def after_folder_changed(project, current_user)
