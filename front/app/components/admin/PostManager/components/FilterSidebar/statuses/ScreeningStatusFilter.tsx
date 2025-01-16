@@ -51,26 +51,12 @@ const ScreeningStatusFilter = ({ status, active, onClick, type }: Props) => {
 
   const phasePrescreeningEnabled =
     phase?.data.attributes.prescreening_enabled === true;
-  /*
-    - In the general input manager ("AllIdeas"), we don't want to disable the filter in the general input manager. 
-    Doing so would make it impossible to see the status of ideas that are in the prescreening phase
-    or require heavy requests to determine if any inputs have the screening status.
-    - In the phase input managers, we check if something is enabled at the configuration level
-    (which means the phase setting in this case). 
-  */
   const prescreeningButtonIsEnabled =
     type === 'AllIdeas' || phasePrescreeningEnabled;
-
-  /*
-    If the feature is enabled
-    and we're not in the general input manager
-    and it's not enabled for this phase, show this tooltip to inform.
-  */
   const showPrescreeningPhaseSettingIsDisabledTooltip =
     preScreeningFeatureEnabled &&
     type !== 'AllIdeas' &&
     !phasePrescreeningEnabled;
-  // If the feature is not commercially allowed, show the upsell tooltip
   const showPrescreeningUpsellTooltip = !preScreeningFeatureAllowed;
   const tooltipEnabled =
     showPrescreeningPhaseSettingIsDisabledTooltip ||
