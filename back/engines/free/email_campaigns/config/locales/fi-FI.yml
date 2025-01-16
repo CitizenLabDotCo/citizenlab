@@ -34,6 +34,7 @@ fi:
       "project_review_request": Hankearviointipyyntö
       "project_review_state_change": Projekti hyväksytty
       "status_change_on_idea_you_follow": Seuraamasi idean tilanmuutos
+      "survey_submitted": Kysely lähetetty
       "threshold_reached_for_admin": Ehdotus saavutti äänestyskynnyksen
       "welcome": Rekisteröinnin jälkeen
       "admin_digest": Viikoittainen yleiskatsaus ylläpitäjille
