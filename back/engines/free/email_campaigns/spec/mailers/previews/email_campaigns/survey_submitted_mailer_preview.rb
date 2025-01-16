@@ -11,6 +11,7 @@ module EmailCampaigns
         recipient: recipient_user,
         event_payload: {
           project_title_multiloc: project.title_multiloc,
+          profile_url: "#{Frontend::UrlService.new.home_url}/profile/#{recipient_user.slug}/surveys"
         }
       }
 
