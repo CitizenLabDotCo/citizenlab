@@ -49,10 +49,6 @@ const ScreeningStatusFilter = ({ status, active, onClick, type }: Props) => {
     name: preScreeningFeatureFlag,
   });
 
-  // Do not show the Screening status in the general input manager,
-  // as this filter is configured at a project level.
-  if (type === 'AllIdeas') return null;
-
   const phasePrescreeningEnabled =
     phase?.data.attributes.prescreening_enabled === true;
   // Checking for the phase setting is enough here.
