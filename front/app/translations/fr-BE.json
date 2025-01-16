@@ -2073,6 +2073,7 @@
   "app.utils.IdeasNewPage.surveyTitle": "Enquête",
   "app.utils.Projects.sendSurveySubmission": "Envoyer l'identifiant de l'enquête à mon adresse électronique",
   "app.utils.Projects.surveySubmission": "Soumission de l'enquête",
+  "app.utils.Projects.yourResponseHasTheFollowingId": "Votre réponse porte l'identifiant suivant : {identifier}",
   "app.utils.Promessagesjects.ifYouLaterDecide": "Si vous décidez par la suite que vous souhaitez que votre réponse soit supprimée, veuillez nous contacter en utilisant l'identifiant unique suivant :",
   "app.utils.actionDescriptors.attendingEventMissingRequirements": "Vous devez compléter votre profil pour participer à cet événement.",
   "app.utils.actionDescriptors.attendingEventNotInGroup": "Vous ne remplissez pas les conditions pour participer à cet événement.",
