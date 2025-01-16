@@ -2073,6 +2073,7 @@
   "app.utils.IdeasNewPage.surveyTitle": "Survey",
   "app.utils.Projects.sendSurveySubmission": "Send survey submission identifier to my email",
   "app.utils.Projects.surveySubmission": "Survey submission",
+  "app.utils.Projects.yourResponseHasTheFollowingId": "Your response has the following identifier: {identifier}",
   "app.utils.Promessagesjects.ifYouLaterDecide": "If you later decide that you want your response to be removed, please contact us with the following unique identifier:",
   "app.utils.actionDescriptors.attendingEventMissingRequirements": "You must complete your profile to attend this event.",
   "app.utils.actionDescriptors.attendingEventNotInGroup": "You do not meet the requirements to attend this event.",
