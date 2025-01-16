@@ -635,6 +635,26 @@ resource 'Projects' do
         expect(copied_project.title_multiloc['en']).to include(source_project.title_multiloc['en'])
       end
 
+      example 'Copy non-draft project', document: false do
+        expect(source_project.admin_publication.publication_status).not_to eq 'draft'
+
+        do_request
+        assert_status 201
+
+        copied_project = Project.find(json_response.dig(:data, :id))
+        expect(copied_project.admin_publication.publication_status).to eq 'draft'
+      end
+      
+      example 'Copy a project in a folder', document: false do
+        folder = create(:project_folder, projects: [source_project])
+
+        do_request
+        assert_status 201
+
+        copied_project = Project.find(json_response.dig(:data, :id))
+        expect(copied_project.folder_id).to eq folder.id
+      end
+
       example 'Copy a project with a project moderator as default_assignee', document: false do
         moderator = create(:project_moderator, projects: [source_project])
         source_project.update!(default_assignee: moderator)
