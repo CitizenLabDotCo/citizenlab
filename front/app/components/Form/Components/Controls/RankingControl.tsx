@@ -108,9 +108,10 @@ const RankingControl = ({
 
   // moveOptionInArray: Function to move an option in the array to a new index & update the form data.
   const moveOptionInArray = (sourceIndex: number, destinationIndex: number) => {
-    const [removed] = options.splice(sourceIndex, 1);
-    options.splice(destinationIndex, 0, removed);
-    updateData(options);
+    const updatedOptions = [...options];
+    const [removed] = updatedOptions.splice(sourceIndex, 1);
+    updatedOptions.splice(destinationIndex, 0, removed);
+    updateData(updatedOptions);
   };
 
   // rankDropdownOptions: For the select dropdown, generate the rank number options.
