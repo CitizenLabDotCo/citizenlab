@@ -113,6 +113,9 @@ const ScreeningStatusFilter = ({ status, active, onClick, type }: Props) => {
                         {...messages.automatedStatusTooltipText}
                       />
                     }
+                    // In certain edge cases we show the upsell tooltip as well,
+                    // so we need to make sure they don't overlap.
+                    placement="bottom"
                   />
                 )}
               </Box>
