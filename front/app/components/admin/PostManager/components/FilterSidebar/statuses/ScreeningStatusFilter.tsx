@@ -54,8 +54,8 @@ const ScreeningStatusFilter = ({ status, active, onClick, type }: Props) => {
   const prescreeningButtonIsEnabled =
     type === 'AllIdeas' || phasePrescreeningEnabled;
   const showPhaseSettingIsDisabledTooltip =
+    (type === 'ProjectIdeas' || type === 'ProjectProposals') &&
     preScreeningFeatureEnabled &&
-    type !== 'AllIdeas' &&
     !phasePrescreeningEnabled;
   const showPrescreeningUpsellTooltip = !preScreeningFeatureAllowed;
   const tooltipEnabled =
