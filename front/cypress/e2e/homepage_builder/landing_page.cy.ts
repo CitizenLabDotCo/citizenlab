@@ -5,6 +5,14 @@ describe('Landing page - not signed in', () => {
     cy.goToLandingPage();
   });
 
+  it('is accessible', () => {
+    cy.injectAxe();
+    // shows the page
+    cy.get('#e2e-landing-page');
+    cy.wait(3000);
+    cy.checkA11y();
+  });
+
   it('shows the correct content', () => {
     // shows the page
     cy.get('#e2e-landing-page');
@@ -89,6 +97,15 @@ describe('Landing page - signed in', () => {
       userId = user.body.data.id;
       cy.setLoginCookie(email, password);
     });
+  });
+
+  it('is accessible', () => {
+    cy.goToLandingPage();
+    cy.injectAxe();
+    // shows the page
+    cy.get('#e2e-landing-page');
+    cy.wait(3000);
+    cy.checkA11y();
   });
 
   it('shows correct content', () => {

@@ -63,6 +63,16 @@ describe('Profile Page', () => {
     cy.wait(1000);
   });
 
+  it('is accessible', () => {
+    cy.injectAxe();
+    // shows the page
+    cy.get('#e2e-usersshowpage');
+    cy.wait(2000);
+    cy.checkA11y(undefined, {
+      includedImpacts: ['critical', 'serious'],
+    });
+  });
+
   it('shows the page, and main infos', () => {
     cy.get('#e2e-usersshowpage-fullname').contains(
       `${newUserName} ${newUserSurname}`

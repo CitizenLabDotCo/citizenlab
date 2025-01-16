@@ -98,8 +98,13 @@ const Title = ({
       textColor={textColor}
       role={role}
       aria-haspopup={ariaHasPopup}
+      aria-labelledby="FilterSelectorTitleText"
     >
-      <Text className="FilterSelectorTitleText" textColor={textColor}>
+      <Text
+        className="FilterSelectorTitleText"
+        textColor={textColor}
+        id="FilterSelectorTitleText"
+      >
         {title}
       </Text>
       <DropdownIcon
