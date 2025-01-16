@@ -12,6 +12,7 @@ export type IIdeaCustomFieldInputType =
   | 'multiline_text'
   | 'select'
   | 'multiselect'
+  | 'ranking'
   | 'checkbox'
   | 'date'
   | 'linear_scale'

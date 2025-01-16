@@ -10,6 +10,7 @@ import {
 } from '@citizenlab/cl2-component-library';
 import { xor } from 'lodash-es';
 import { FormattedDate } from 'react-intl';
+import { useTheme } from 'styled-components';
 
 import { IInputsData } from 'api/analysis_inputs/types';
 import useIdeaCustomField from 'api/idea_custom_fields/useIdeaCustomField';
@@ -98,6 +99,7 @@ const FilterToggleButton = ({ customFieldId, value }) => {
  * representation of the value of the custom field for that input
  */
 const FieldValue = ({ projectId, phaseId, customFieldId, input }: Props) => {
+  const theme = useTheme();
   const { formatMessage } = useIntl();
 
   const containerId: { projectId?: string; phaseId?: string } = {};
@@ -275,6 +277,38 @@ const FieldValue = ({ projectId, phaseId, customFieldId, input }: Props) => {
                   formatMessage(messages.noAnswer)
                 )}
               </Text>
+            </Box>
+          );
+        }
+        case 'ranking': {
+          return (
+            <Box>
+              <Title variant="h5" m="0px">
+                <T value={customField.data.attributes.title_multiloc} />
+              </Title>
+              {!rawValue && (
+                <Text m="0px">{formatMessage(messages.noAnswer)}</Text>
+              )}
+              {rawValue?.map((optionKey: string, index: number) => (
+                <Box key={optionKey} display="flex" mt="8px">
+                  <Text mr="8px" my="auto">
+                    #{index + 1}
+                  </Text>
+                  <Text
+                    m="0px"
+                    p="4px 8px"
+                    style={{
+                      border: `1px solid ${theme.colors.divider}`,
+                      borderRadius: theme.borderRadius,
+                    }}
+                  >
+                    <SelectOptionText
+                      customFieldId={customField.data.id}
+                      selectedOptionKey={optionKey}
+                    />
+                  </Text>
+                </Box>
+              ))}
             </Box>
           );
         }
