@@ -1840,7 +1840,6 @@
   "app.containers.AdminPage.ProjectEdit.survey.optional2": "Optional",
   "app.containers.AdminPage.ProjectEdit.survey.pagesLogicHelperText1": "If no logic is added, the survey will follow its normal flow. If both the page and its questions have logic, the question logic will take precedence. Ensure this aligns with your intended survey flow. For more information, visit {supportPageLink}",
   "app.containers.AdminPage.ProjectEdit.survey.point": "Location",
-  "app.containers.AdminPage.ProjectEdit.survey.questionLogicHelperText3": "If no logic is added to an answer, the survey will follow its normal flow. For more information, visit {supportPageLink}",
   "app.containers.AdminPage.ProjectEdit.survey.quitReportConfirmationQuestion": "Are you sure you want to leave?",
   "app.containers.AdminPage.ProjectEdit.survey.quitReportInfo2": "Your current changes won't be saved.",
   "app.containers.AdminPage.ProjectEdit.survey.required2": "Required",
