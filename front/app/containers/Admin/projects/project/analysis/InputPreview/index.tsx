@@ -27,7 +27,7 @@ import { useSelectedInputContext } from '../SelectedInputContext';
 import Taggings from '../Taggings';
 import tracks from '../tracks';
 
-import LongFieldValue from './LongFieldValue';
+import LongFieldValue from './components/LongFieldValue';
 import messages from './messages';
 
 const InputListItem = () => {
