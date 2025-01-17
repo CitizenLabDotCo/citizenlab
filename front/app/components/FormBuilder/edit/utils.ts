@@ -111,3 +111,103 @@ export const getReorderedFields = (
 
   return getFlatGroupStructure(updatedGroups);
 };
+
+export enum ConflictType {
+  MULTIPLE_GOTO_IN_MULTISELECT = 'MULTIPLE_GOTO_IN_MULTISELECT',
+  QUESTION_VS_PAGE_LOGIC = 'QUESTION_VS_PAGE_LOGIC',
+  INTER_QUESTION_CONFLICT = 'INTER_QUESTION_CONFLICT',
+  UNREACHABLE_PAGE = 'UNREACHABLE_PAGE',
+}
+
+export interface Conflict {
+  conflictType: ConflictType;
+  pageId: string;
+  message: string; // Human-readable explanation
+}
+
+export function detectConflictsByPage(
+  groupedData: NestedGroupingStructure[]
+): Record<string, Conflict[] | undefined> {
+  // The result structure: an object with keys = pageId, values = array of Conflict
+  const conflictsByPage: Record<string, Conflict[] | undefined> = {};
+
+  // A small helper to add a conflict for a specific page
+  function addConflict(pageId: string, conflict: Conflict) {
+    if (!conflictsByPage[pageId]) {
+      conflictsByPage[pageId] = [];
+    }
+    conflictsByPage[pageId].push(conflict);
+  }
+
+  // 1. MULTIPLE_GOTO_IN_MULTISELECT
+  groupedData.forEach((pageGroup) => {
+    const { groupElement, questions } = pageGroup;
+    const pageId = groupElement.id;
+
+    questions.forEach((question) => {
+      if (question.input_type === 'multiselect' && question.logic.rules) {
+        const distinctGotoIds = new Set(
+          question.logic.rules.map((rule) => rule.goto_page_id)
+        );
+        // If multiple distinct goto_page_id exist, there's a conflict
+        if (distinctGotoIds.size > 1 && question.logic.rules.length > 1) {
+          addConflict(pageId, {
+            conflictType: ConflictType.MULTIPLE_GOTO_IN_MULTISELECT,
+            pageId,
+            message: `Multi-select question ${question.id} on page ${pageId} can lead to multiple different pages.`,
+          });
+        }
+      }
+    });
+  });
+
+  // 2. QUESTION VS. PAGE-LEVEL LOGIC
+  groupedData.forEach((pageGroup) => {
+    const pageId = pageGroup.groupElement.id;
+    const pageNextId = pageGroup.groupElement.logic.next_page_id;
+
+    if (pageNextId) {
+      // Gather distinct goto_page_ids from questions
+      const questionGotoIds = new Set<string>();
+      pageGroup.questions.forEach((question) => {
+        question.logic.rules?.forEach((rule) => {
+          questionGotoIds.add(rule.goto_page_id);
+        });
+      });
+
+      // If we have questionGotoIds that differ from pageNextId, flag a conflict
+      for (const gotoId of questionGotoIds) {
+        if (gotoId !== pageNextId) {
+          addConflict(pageId, {
+            conflictType: ConflictType.QUESTION_VS_PAGE_LOGIC,
+            pageId,
+            message: `Page ${pageId} has next_page_id=${pageNextId}, but a question leads to ${gotoId}.`,
+          });
+        }
+      }
+    }
+  });
+
+  // 3. INTER-QUESTION CONFLICT
+  groupedData.forEach((pageGroup) => {
+    const pageId = pageGroup.groupElement.id;
+    const allGotoIds = new Set<string>();
+
+    pageGroup.questions.forEach((question) => {
+      question.logic.rules?.forEach((rule) => {
+        allGotoIds.add(rule.goto_page_id);
+      });
+    });
+
+    // If we have more than one distinct goto ID, it's a conflict
+    if (allGotoIds.size > 1) {
+      addConflict(pageId, {
+        conflictType: ConflictType.INTER_QUESTION_CONFLICT,
+        pageId,
+        message: `Page ${pageId} has multiple questions leading to different pages.`,
+      });
+    }
+  });
+
+  return conflictsByPage;
+}
