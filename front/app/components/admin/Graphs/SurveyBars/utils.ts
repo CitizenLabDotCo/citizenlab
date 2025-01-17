@@ -32,6 +32,7 @@ export const parseQuestionResult = (
 
       return {
         label,
+        logicFilterId: null,
         image,
         count,
         percentage: roundPercentage(count, totalPickCount, 1),
@@ -67,6 +68,14 @@ export const parseQuestionResult = (
       answer === null
         ? noAnswerCopy
         : localize(multilocs.answer[answer].title_multiloc);
+    const logicFilterId =
+      answer !== null && multilocs.answer[answer].logic
+        ? multilocs.answer[answer].id
+        : null;
+    // TODO: JS - Find out what the null condition from the question will be
+    if (answer !== null) {
+      console.log('Logic', multilocs.answer[answer].logic);
+    }
 
     const image = answer ? multilocs.answer[answer].image : undefined;
 
@@ -74,6 +83,7 @@ export const parseQuestionResult = (
 
     return {
       label,
+      logicFilterId,
       image,
       count,
       percentage,

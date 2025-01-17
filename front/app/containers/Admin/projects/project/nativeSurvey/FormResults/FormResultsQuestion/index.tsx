@@ -23,6 +23,7 @@ type FormResultsQuestionProps = {
   questionNumber: number;
   result: ResultUngrouped;
   totalSubmissions: number;
+  toggleLogicOptionIds?: (optionId: string) => void;
 };
 
 const COLOR_SCHEME = [colors.primary];
@@ -31,6 +32,7 @@ const FormResultsQuestion = ({
   questionNumber,
   result,
   totalSubmissions,
+  toggleLogicOptionIds,
 }: FormResultsQuestionProps) => {
   const localize = useLocalize();
 
@@ -88,7 +90,11 @@ const FormResultsQuestion = ({
         {/* TODO: Fix this the next time the file is edited. */}
         {/* eslint-disable-next-line @typescript-eslint/no-unnecessary-condition */}
         {isMultipleChoiceAndHasAnswers && (
-          <SurveyBars questionResult={result} colorScheme={COLOR_SCHEME} />
+          <SurveyBars
+            questionResult={result}
+            colorScheme={COLOR_SCHEME}
+            toggleLogicOptionIds={toggleLogicOptionIds}
+          />
         )}
         {hasTextResponses && (
           <TextQuestion

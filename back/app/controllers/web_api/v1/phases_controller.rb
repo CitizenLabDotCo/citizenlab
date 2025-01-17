@@ -67,7 +67,8 @@ class WebApi::V1::PhasesController < ApplicationController
   end
 
   def survey_results
-    results = SurveyResultsGeneratorService.new(@phase).generate_results(return_pages: true)
+    logic_option_ids = params[:filter_logic_option_ids].present? ? params[:filter_logic_option_ids].split(',') : nil
+    results = SurveyResultsGeneratorService.new(@phase).generate_results(return_pages: true, logic_option_ids: logic_option_ids)
     render json: raw_json(results)
   end
 
@@ -136,7 +137,6 @@ class WebApi::V1::PhasesController < ApplicationController
       :reacting_threshold,
       :expire_days_limit,
       :manual_voters_amount,
-      :logic_option_ids,
       {
         title_multiloc: CL2_SUPPORTED_LOCALES,
         description_multiloc: CL2_SUPPORTED_LOCALES,

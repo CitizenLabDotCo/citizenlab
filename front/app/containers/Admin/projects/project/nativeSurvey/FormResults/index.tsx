@@ -33,7 +33,7 @@ const FormResults = () => {
     return null;
   }
 
-  const addRemoveLogicOptionIds = (optionId: string) => {
+  const toggleLogicOptionIds = (optionId: string) => {
     if (filterLogicOptionIds.includes(optionId)) {
       setFilterLogicOptionIds(
         filterLogicOptionIds.filter((id) => id !== optionId)
@@ -42,7 +42,6 @@ const FormResults = () => {
       setFilterLogicOptionIds([...filterLogicOptionIds, optionId]);
     }
   };
-  console.log(addRemoveLogicOptionIds);
 
   const { totalSubmissions, results } = formResults.data.attributes;
 
@@ -102,6 +101,7 @@ const FormResults = () => {
                     questionNumber={questionNumber}
                     result={result}
                     totalSubmissions={totalSubmissions}
+                    toggleLogicOptionIds={toggleLogicOptionIds}
                   />
                 </Box>
               );

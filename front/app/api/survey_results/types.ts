@@ -20,6 +20,8 @@ export interface Answer {
 
 export type MultilocAnswer = {
   title_multiloc: Multiloc;
+  id: string;
+  logic: boolean;
   image?: ImageSizes;
 };
 

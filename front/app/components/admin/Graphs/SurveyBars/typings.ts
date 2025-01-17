@@ -6,6 +6,7 @@ export type Answer = {
   count: number;
   percentage: number;
   bars: Bar[];
+  logicFilterId: string | null;
 };
 
 export type Bar = {

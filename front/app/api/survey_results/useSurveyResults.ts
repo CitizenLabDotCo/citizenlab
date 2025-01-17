@@ -11,6 +11,7 @@ const getSurveyResultsEndpoint = (
   filterLogicOptionIds: string[]
 ) => {
   const optionIds = filterLogicOptionIds.join(',');
+  console.log('OPTIONIDS', optionIds);
   const path = `phases/${phaseId}/survey_results`;
   return path + (optionIds ? `?filter_logic_option_ids=${optionIds}` : '');
 };
@@ -22,7 +23,6 @@ const fetchSurveyResults = ({ phaseId, filterLogicOptionIds }: IParameters) =>
   });
 
 const useSurveyResults = ({ phaseId, filterLogicOptionIds }: IParameters) => {
-  console.log(filterLogicOptionIds);
   return useQuery<
     SurveyResultsType,
     CLErrors,

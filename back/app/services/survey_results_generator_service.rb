@@ -11,12 +11,14 @@ class SurveyResultsGeneratorService < FieldVisitorService
     @locales = AppConfiguration.instance.settings('core', 'locales')
   end
 
-  def generate_results(field_id: nil, return_pages: false)
+  def generate_results(field_id: nil, return_pages: false, logic_option_ids: nil)
     if field_id
       field = find_question(field_id)
       result = visit field
       add_maybe_skipped_by_logic_to_result result
     else
+      fields = remove_fields_hidden_by_logic_option(@fields, logic_option_ids)
+
       results = fields.filter_map do |f|
         next if f[:input_type] == 'page' && !return_pages
 
@@ -30,6 +32,42 @@ class SurveyResultsGeneratorService < FieldVisitorService
         totalSubmissions: inputs.size
       }
     end
+  end
+
+  def remove_fields_hidden_by_logic_option(fields, logic_option_ids)
+    return fields unless logic_option_ids.present?
+
+    # Get an array of the fields that the options are linked to vs the page we should skip to
+    all_logic_rules = {}
+    fields.each do |f|
+      rules = f[:logic]['rules']
+      next unless rules.present?
+      rules.each do |r|
+        next unless logic_option_ids.include? r['if']
+
+        all_logic_rules[f[:id]] = r['goto_page_id']
+      end
+    end
+
+    # Now hide any fields between each field and the pages that should be skipped to
+    # TODO: If the page has already been skipped will this work? Will likely hide all of them
+    # Maybe need to get the min / max of the fields to hide
+    all_logic_rules.each do |field_id, goto_page_id|
+      skip = false
+      fields = fields.filter_map do |f|
+        if f[:id] == goto_page_id
+          skip = false
+        end
+        next if skip
+        if f[:id] == field_id
+          skip = true
+        end
+        f
+      end
+    end
+
+    # TODO: JS - Add in the pages skipped by page logic
+    fields
   end
 
   def visit_number(field)
@@ -218,7 +256,7 @@ class SurveyResultsGeneratorService < FieldVisitorService
       return build_linear_scale_multilocs(field)
     end
 
-    options_with_rules =  field.logic[:rules]&.pluck(:if) # TODO: Linear scale logic
+    options_with_rules = field.logic['rules']&.pluck('if') # TODO: JS - Linear scale logic
 
     field.options.each_with_object({}) do |option, accu|
       option_detail = { title_multiloc: option.title_multiloc, id: option.id, logic: !!options_with_rules&.include?(option.id) }
