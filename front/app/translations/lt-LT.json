@@ -2085,7 +2085,6 @@
   "app.utils.errors.default.ajv_error_birthyear_required": "Įrašykite savo gimimo metus",
   "app.utils.errors.default.ajv_error_date_any": "Prašome įrašyti galiojančią datą",
   "app.utils.errors.default.ajv_error_domicile_required": "Įrašykite savo gyvenamąją vietą",
-  "app.utils.errors.default.ajv_error_education_required": "Įveskite savo išsilavinimo lygį",
   "app.utils.errors.default.ajv_error_gender_required": "Įrašykite savo lytį",
   "app.utils.errors.default.ajv_error_invalid": "Negalioja",
   "app.utils.errors.default.ajv_error_maxItems": "Negalima įtraukti daugiau nei {limit, plural, one {# elementas} other {# elementai}}",
