@@ -153,6 +153,16 @@ export const LogicSettings = ({
                 </Warning>
               )}
           </Box>
+          {['multiselect', 'multiselect_image'].includes(field.input_type) && (
+            <Box mb="24px">
+              {builderConfig &&
+                !isNilOrError(builderConfig.supportArticleLink) && (
+                  <Warning>
+                    <FormattedMessage {...messages.multipleChoiceHelperText} />
+                  </Warning>
+                )}
+            </Box>
+          )}
           {answers &&
             answers.map((answer) => (
               <Box key={answer.key}>
