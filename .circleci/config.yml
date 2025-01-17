@@ -372,7 +372,7 @@ jobs:
       - run:
           name: Pull Docker image and run pre-deployment tasks
           command: |
-            ssh << parameters.ssh_user >>@<< parameters.ssh_host >> -o StrictHostKeyChecking=no <<EOF
+            ssh << parameters.ssh_user >>@<< parameters.ssh_host >> -o StrictHostKeyChecking=no \<<EOF
             docker pull citizenlabdotco/back-ee:$CIRCLE_BRANCH && \
             docker run \
               --env-file cl2-deployment/<< parameters.env_file >> \
@@ -393,7 +393,7 @@ jobs:
           # disrupt the swarm and lead to various issues such as deployment updates
           # failing on some nodes.
           command: |
-            ssh << parameters.ssh_user >>@<< parameters.ssh_host >> -o StrictHostKeyChecking=no <<EOF
+            ssh << parameters.ssh_user >>@<< parameters.ssh_host >> -o StrictHostKeyChecking=no \<<EOF
               docker node ls | grep Down | awk '{print $1}' | xargs -n25 docker node rm && \
               cd cl2-deployment && \
               docker stack deploy \
