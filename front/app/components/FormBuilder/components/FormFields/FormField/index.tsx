@@ -20,7 +20,7 @@ import {
 } from 'api/custom_fields/types';
 import useDuplicateMapConfig from 'api/map_config/useDuplicateMapConfig';
 
-import { Conflict, ConflictType } from 'components/FormBuilder/edit/utils';
+import { Conflict } from 'components/FormBuilder/edit/utils';
 import {
   FormBuilderConfig,
   builtInFieldKeys,
@@ -29,7 +29,7 @@ import {
 import Modal from 'components/UI/Modal';
 import MoreActionsMenu from 'components/UI/MoreActionsMenu';
 
-import { MessageDescriptor, useIntl } from 'utils/cl-intl';
+import { useIntl } from 'utils/cl-intl';
 
 import { FlexibleRow } from '../../FlexibleRow';
 import { getFieldBackgroundColor } from '../utils';
@@ -38,63 +38,7 @@ import FieldTitle from './FieldTitle';
 import IconsAndBadges from './IconsAndBadges';
 import Logic from './Logic';
 import messages from './messages';
-
-/**
- * Returns the appropriate message descriptor based on an array of conflicts for a page.
- * @param conflicts - Array of Conflict objects for the page
- * @returns The MessageDescriptor for the translated string
- */
-export function getConflictMessageKey(
-  conflicts: Conflict[] | undefined
-): MessageDescriptor | undefined {
-  const conflictTypes = new Set(
-    (conflicts ?? []).map((conflict) => conflict.conflictType)
-  );
-  if (
-    conflictTypes.has(ConflictType.MULTIPLE_GOTO_IN_MULTISELECT) &&
-    conflictTypes.has(ConflictType.QUESTION_VS_PAGE_LOGIC) &&
-    conflictTypes.has(ConflictType.INTER_QUESTION_CONFLICT)
-  ) {
-    return messages.multipleConflictTypes;
-  }
-
-  if (
-    conflictTypes.has(ConflictType.MULTIPLE_GOTO_IN_MULTISELECT) &&
-    conflictTypes.has(ConflictType.QUESTION_VS_PAGE_LOGIC)
-  ) {
-    return messages.multipleGotoInMultiSelectAndQuestionVsPageLogic;
-  }
-
-  if (
-    conflictTypes.has(ConflictType.MULTIPLE_GOTO_IN_MULTISELECT) &&
-    conflictTypes.has(ConflictType.INTER_QUESTION_CONFLICT)
-  ) {
-    return messages.multipleGotoInMultiSelectAndInterQuestionConflict;
-  }
-
-  if (
-    conflictTypes.has(ConflictType.QUESTION_VS_PAGE_LOGIC) &&
-    conflictTypes.has(ConflictType.INTER_QUESTION_CONFLICT)
-  ) {
-    return messages.questionVsPageLogicAndInterQuestionConflict;
-  }
-
-  // Individual conflict types
-  if (conflictTypes.has(ConflictType.MULTIPLE_GOTO_IN_MULTISELECT)) {
-    return messages.multipleGotoInMultiSelect;
-  }
-
-  if (conflictTypes.has(ConflictType.QUESTION_VS_PAGE_LOGIC)) {
-    return messages.questionVsPageLogic;
-  }
-
-  if (conflictTypes.has(ConflictType.INTER_QUESTION_CONFLICT)) {
-    return messages.interQuestionConflict;
-  }
-
-  // No conflicts found
-  return undefined;
-}
+import { getConflictMessageKey } from './utils';
 
 const FormFieldsContainer = styled(Box)`
   &:hover {

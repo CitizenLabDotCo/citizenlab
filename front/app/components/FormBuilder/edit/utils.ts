@@ -122,7 +122,6 @@ export enum ConflictType {
 export interface Conflict {
   conflictType: ConflictType;
   pageId: string;
-  message: string; // Human-readable explanation
 }
 
 export function detectConflictsByPage(
@@ -136,7 +135,7 @@ export function detectConflictsByPage(
     if (!conflictsByPage[pageId]) {
       conflictsByPage[pageId] = [];
     }
-    conflictsByPage[pageId].push(conflict);
+    conflictsByPage[pageId]!.push(conflict);
   }
 
   // 1. MULTIPLE_GOTO_IN_MULTISELECT
@@ -145,7 +144,10 @@ export function detectConflictsByPage(
     const pageId = groupElement.id;
 
     questions.forEach((question) => {
-      if (question.input_type === 'multiselect' && question.logic.rules) {
+      if (
+        ['multiselect', 'multiselect_image'].includes(question.input_type) &&
+        question.logic.rules
+      ) {
         const distinctGotoIds = new Set(
           question.logic.rules.map((rule) => rule.goto_page_id)
         );
@@ -154,7 +156,6 @@ export function detectConflictsByPage(
           addConflict(pageId, {
             conflictType: ConflictType.MULTIPLE_GOTO_IN_MULTISELECT,
             pageId,
-            message: `Multi-select question ${question.id} on page ${pageId} can lead to multiple different pages.`,
           });
         }
       }
@@ -181,7 +182,6 @@ export function detectConflictsByPage(
           addConflict(pageId, {
             conflictType: ConflictType.QUESTION_VS_PAGE_LOGIC,
             pageId,
-            message: `Page ${pageId} has next_page_id=${pageNextId}, but a question leads to ${gotoId}.`,
           });
         }
       }
@@ -204,7 +204,6 @@ export function detectConflictsByPage(
       addConflict(pageId, {
         conflictType: ConflictType.INTER_QUESTION_CONFLICT,
         pageId,
-        message: `Page ${pageId} has multiple questions leading to different pages.`,
       });
     }
   });
