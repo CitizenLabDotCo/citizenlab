@@ -115,7 +115,7 @@ const App = ({ children }: Props) => {
     if (!appConfiguration) return;
 
     const appConfigMomentLocales = [
-      // The set ensures that locales are unique
+      // The set ensures that locales are unique. Some of our locales share the same moment locale.
       ...new Set(
         appConfiguration.data.attributes.settings.core.locales
           .filter((loc) => loc !== 'en')
