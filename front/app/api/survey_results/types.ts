@@ -47,6 +47,8 @@ type BaseResult = {
   totalResponseCount: number;
   totalPickCount: number;
   questionResponseCount: number;
+  questionNumber: number;
+  pageNumber: number;
   numberResponses?: { answer: number }[];
 
   // Defined for text questions,
@@ -88,4 +90,10 @@ export interface SurveyResultsType {
     type: 'survey_results';
     attributes: SurveyResultAttributes;
   };
+}
+
+export interface LogicConfig {
+  toggleLogicOptionIds: (optionId: string) => void;
+  filterLogicOptionIds: string[];
+  isLoading: boolean;
 }

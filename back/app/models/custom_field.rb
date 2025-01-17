@@ -45,6 +45,8 @@
 # The older react json form version works only with text number multiline_text select multiselect checkbox date
 # The other types will fail for user custom fields and render a shallow schema for idea custom fields with only the required, hidden, title and description.
 class CustomField < ApplicationRecord
+  attr_accessor :question_number, :page_number # Used for survey results in context of whole form
+
   acts_as_list column: :ordering, top_of_list: 0, scope: [:resource_id]
 
   has_many :options, -> { order(:ordering) }, dependent: :destroy, class_name: 'CustomFieldOption', inverse_of: :custom_field

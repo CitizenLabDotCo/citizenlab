@@ -3,7 +3,7 @@ import React from 'react';
 import { Box, Title, colors, Text } from '@citizenlab/cl2-component-library';
 import { snakeCase } from 'lodash-es';
 
-import { ResultUngrouped } from 'api/survey_results/types';
+import { LogicConfig, ResultUngrouped } from 'api/survey_results/types';
 
 import useLocalize from 'hooks/useLocalize';
 
@@ -20,19 +20,17 @@ import NumberQuestion from './NumberQuestion';
 import TextQuestion from './TextQuestion';
 
 type FormResultsQuestionProps = {
-  questionNumber: number;
   result: ResultUngrouped;
   totalSubmissions: number;
-  toggleLogicOptionIds?: (optionId: string) => void;
+  logicConfig: LogicConfig;
 };
 
 const COLOR_SCHEME = [colors.primary];
 
 const FormResultsQuestion = ({
-  questionNumber,
   result,
   totalSubmissions,
-  toggleLogicOptionIds,
+  logicConfig,
 }: FormResultsQuestionProps) => {
   const localize = useLocalize();
 
@@ -46,6 +44,7 @@ const FormResultsQuestion = ({
     inputType,
     question,
     description,
+    questionNumber,
     required,
     questionResponseCount,
     customFieldId,
@@ -93,7 +92,7 @@ const FormResultsQuestion = ({
           <SurveyBars
             questionResult={result}
             colorScheme={COLOR_SCHEME}
-            toggleLogicOptionIds={toggleLogicOptionIds}
+            logicConfig={logicConfig}
           />
         )}
         {hasTextResponses && (

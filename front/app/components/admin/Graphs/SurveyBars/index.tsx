@@ -9,7 +9,11 @@ import {
   Text,
 } from '@citizenlab/cl2-component-library';
 
-import { ResultUngrouped, ResultGrouped } from 'api/survey_results/types';
+import {
+  ResultUngrouped,
+  ResultGrouped,
+  LogicConfig,
+} from 'api/survey_results/types';
 
 import useLocalize from 'hooks/useLocalize';
 
@@ -22,14 +26,10 @@ import { parseQuestionResult } from './utils';
 interface Props {
   questionResult: ResultUngrouped | ResultGrouped;
   colorScheme: string[];
-  toggleLogicOptionIds?: (optionId: string) => void;
+  logicConfig?: LogicConfig;
 }
 
-const SurveyBars = ({
-  questionResult,
-  colorScheme,
-  toggleLogicOptionIds,
-}: Props) => {
+const SurveyBars = ({ questionResult, colorScheme, logicConfig }: Props) => {
   const localize = useLocalize();
   const { formatMessage } = useIntl();
 
@@ -78,16 +78,19 @@ const SurveyBars = ({
                 <Text variant="bodyM" m="0">
                   {label}
                 </Text>
-                {logicFilterId && toggleLogicOptionIds && (
+
+                {logicFilterId && logicConfig && (
                   <Button
                     p="0px"
                     m="0px"
-                    bgColor={colors.white}
-                    // icon="logic"
-                    // processing={isApproving}
-                    // disabled={isApproving || importing}
+                    bgColor={
+                      logicConfig.filterLogicOptionIds.includes(logicFilterId)
+                        ? colors.coolGrey300
+                        : colors.white
+                    }
+                    processing={logicConfig.isLoading}
                     onClick={() => {
-                      toggleLogicOptionIds(logicFilterId);
+                      logicConfig.toggleLogicOptionIds(logicFilterId);
                     }}
                   >
                     <Icon

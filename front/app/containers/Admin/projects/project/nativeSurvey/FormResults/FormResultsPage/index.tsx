@@ -20,13 +20,11 @@ import messages from '../messages';
 import { useIntl } from 'utils/cl-intl';
 
 type FormResultsPageProps = {
-  pageNumber: number;
   result: ResultUngrouped;
   totalSubmissions: number;
 };
 
 const FormResultsPage = ({
-  pageNumber,
   result,
   totalSubmissions,
 }: FormResultsPageProps) => {
@@ -34,7 +32,7 @@ const FormResultsPage = ({
   const { formatMessage } = useIntl();
   const theme = useTheme();
 
-  const { question, questionResponseCount, logic } = result;
+  const { question, pageNumber, questionResponseCount, logic } = result;
 
   const pageTitle = <T value={question} />;
 

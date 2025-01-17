@@ -24,7 +24,7 @@ const FormResults = () => {
   const [filterLogicOptionIds, setFilterLogicOptionIds] = useState(
     [] as string[]
   );
-  const { data: formResults } = useFormResults({
+  const { data: formResults, isLoading: isLoadingResults } = useFormResults({
     phaseId,
     filterLogicOptionIds,
   });
@@ -59,8 +59,11 @@ const FormResults = () => {
       result.inputType === 'text' || result.inputType === 'multiline_text'
   );
 
-  let pageNumber = 0;
-  let questionNumber = 0;
+  const logicConfig = {
+    toggleLogicOptionIds: toggleLogicOptionIds,
+    filterLogicOptionIds: filterLogicOptionIds,
+    isLoading: isLoadingResults,
+  };
 
   return (
     <Box width="100%">
@@ -78,17 +81,14 @@ const FormResults = () => {
         {totalSubmissions > 0 &&
           results.map((result, index) => {
             if (result.inputType == 'page') {
-              pageNumber++;
               return (
                 <FormResultsPage
                   key={index}
-                  pageNumber={pageNumber}
                   result={result}
                   totalSubmissions={totalSubmissions}
                 />
               );
             } else {
-              questionNumber++;
               return (
                 <Box
                   border="1px solid #e0e0e0"
@@ -98,10 +98,9 @@ const FormResults = () => {
                 >
                   <FormResultsQuestion
                     key={index}
-                    questionNumber={questionNumber}
                     result={result}
                     totalSubmissions={totalSubmissions}
-                    toggleLogicOptionIds={toggleLogicOptionIds}
+                    logicConfig={logicConfig}
                   />
                 </Box>
               );

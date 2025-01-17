@@ -68,14 +68,12 @@ export const parseQuestionResult = (
       answer === null
         ? noAnswerCopy
         : localize(multilocs.answer[answer].title_multiloc);
+
     const logicFilterId =
       answer !== null && multilocs.answer[answer].logic
         ? multilocs.answer[answer].id
         : null;
     // TODO: JS - Find out what the null condition from the question will be
-    if (answer !== null) {
-      console.log('Logic', multilocs.answer[answer].logic);
-    }
 
     const image = answer ? multilocs.answer[answer].image : undefined;
 

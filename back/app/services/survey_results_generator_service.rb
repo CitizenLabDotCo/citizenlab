@@ -17,13 +17,15 @@ class SurveyResultsGeneratorService < FieldVisitorService
       result = visit field
       add_maybe_skipped_by_logic_to_result result
     else
-      fields = remove_fields_hidden_by_logic_option(@fields, logic_option_ids)
+      fields = add_question_numbers_to_fields @fields
+      fields = remove_fields_hidden_by_logic_option(fields, logic_option_ids)
 
       results = fields.filter_map do |f|
         next if f[:input_type] == 'page' && !return_pages
 
         visit f
       end
+
       results = add_maybe_skipped_by_logic_to_results results
       results = add_page_response_count_to_results results
 
@@ -34,39 +36,55 @@ class SurveyResultsGeneratorService < FieldVisitorService
     end
   end
 
+  def add_question_numbers_to_fields(fields)
+    question_number = 0
+    page_number = 0
+    fields.map do |field|
+      if field[:input_type] == 'page'
+        page_number += 1
+        field.question_number = nil
+        field.page_number = page_number
+      else
+        question_number += 1
+        field.question_number = question_number
+        field.page_number = nil
+      end
+      field
+    end
+  end
+
   def remove_fields_hidden_by_logic_option(fields, logic_option_ids)
     return fields unless logic_option_ids.present?
 
     # Get an array of the fields that the options are linked to vs the page we should skip to
-    all_logic_rules = {}
+    question_logic = {}
     fields.each do |f|
       rules = f[:logic]['rules']
       next unless rules.present?
       rules.each do |r|
         next unless logic_option_ids.include? r['if']
 
-        all_logic_rules[f[:id]] = r['goto_page_id']
+        question_logic[f[:id]] = r['goto_page_id']
       end
     end
 
-    # Now hide any fields between each field and the pages that should be skipped to
-    # TODO: If the page has already been skipped will this work? Will likely hide all of them
-    # Maybe need to get the min / max of the fields to hide
-    all_logic_rules.each do |field_id, goto_page_id|
+    skip_fields = []
+    question_logic.each do |field_id, goto_page_id|
       skip = false
-      fields = fields.filter_map do |f|
-        if f[:id] == goto_page_id
-          skip = false
-        end
-        next if skip
-        if f[:id] == field_id
-          skip = true
-        end
-        f
+      fields.each do |f|
+        skip = false if f[:id] == goto_page_id
+        skip_fields << f[:id] if skip
+        skip = true if f[:id] == field_id
       end
     end
+
+    fields = fields.reject { |f| skip_fields.include?(f[:id]) }
 
     # TODO: JS - Add in the pages skipped by page logic
+
+    # Should be able to find all the pages with logic left in the fields now and do the same as above
+
+
     fields
   end
 
@@ -155,6 +173,8 @@ class SurveyResultsGeneratorService < FieldVisitorService
       grouped: !!group_field_id,
       totalResponseCount: @inputs.count,
       questionResponseCount: response_count,
+      questionNumber: field.question_number,
+      pageNumber: field.page_number,
       logic: field.logic != {},
     }
   end
