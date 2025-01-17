@@ -12,7 +12,7 @@ import {
 import * as Sentry from '@sentry/react';
 import GlobalStyle from 'global-styles';
 import 'intersection-observer';
-import { includes, uniq } from 'lodash-es';
+import { includes } from 'lodash-es';
 import moment from 'moment-timezone';
 import { useLocation } from 'react-router-dom';
 import styled, { ThemeProvider } from 'styled-components';
@@ -76,6 +76,16 @@ interface Props {
   children: React.ReactNode;
 }
 
+const importedLocales = new Set();
+async function importMomentLocaleFilePromise(momentLocale: string) {
+  try {
+    await localeGetter(momentLocale);
+    importedLocales.add(momentLocale);
+  } catch (error) {
+    console.error(`Error processing locale: ${momentLocale}`, error);
+  }
+}
+
 const App = ({ children }: Props) => {
   const isSmallerThanTablet = useBreakpoint('tablet');
   const location = useLocation();
@@ -104,26 +114,24 @@ const App = ({ children }: Props) => {
   useEffect(() => {
     if (!appConfiguration) return;
 
-    // uniq is needed because some of our locales share the same moment locale
-    const appConfigMomentLocales = uniq(
-      appConfiguration.data.attributes.settings.core.locales
-        .filter((loc) => loc !== 'en')
-        .map((loc) => appLocalesMomentPairs[loc])
-    );
-
-    async function importMomentLocaleFilePromise(momentLocale: string) {
-      try {
-        await localeGetter(momentLocale);
-      } catch (error) {
-        console.error(`Error processing locale: ${momentLocale}`, error);
-      }
-    }
-
-    Promise.all(
-      appConfigMomentLocales.map((appConfigMomentLocale) =>
-        importMomentLocaleFilePromise(appConfigMomentLocale)
+    const appConfigMomentLocales = [
+      // The set ensures that locales are unique
+      ...new Set(
+        appConfiguration.data.attributes.settings.core.locales
+          .filter((loc) => loc !== 'en')
+          .map((loc) => appLocalesMomentPairs[loc])
+      ),
+    ];
+    const importPromises = appConfigMomentLocales
+      .filter(
+        (appConfigMomentLocale) => !importedLocales.has(appConfigMomentLocale)
       )
-    ).then(() => {
+      .map((appConfigMomentLocale) =>
+        importMomentLocaleFilePromise(appConfigMomentLocale)
+      );
+
+    Promise.all(importPromises).then(() => {
+      // The latest imported locale file would overwrite the moment locale (for some reason).
       moment.locale(momentLocale);
     });
   }, [appConfiguration, momentLocale]);
