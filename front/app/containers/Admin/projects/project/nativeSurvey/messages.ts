@@ -126,11 +126,6 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.formBuilder.surveyEnd2',
     defaultMessage: 'Survey end',
   },
-  questionLogicHelperText: {
-    id: 'app.containers.AdminPage.ProjectEdit.survey.questionLogicHelperText3',
-    defaultMessage:
-      'If no logic is added to an answer, the survey will follow its normal flow. For more information, visit {supportPageLink}',
-  },
   pagesLogicHelperText: {
     id: 'app.containers.AdminPage.ProjectEdit.survey.pagesLogicHelperText1',
     defaultMessage:

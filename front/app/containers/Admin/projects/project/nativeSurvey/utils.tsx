@@ -25,7 +25,6 @@ export const nativeSurveyConfig: FormBuilderConfig = {
   formSavedSuccessMessage: messages.successMessage,
   supportArticleLink: messages.supportArticleLink,
   formEndPageLogicOption: messages.surveyEnd,
-  questionLogicHelperText: messages.questionLogicHelperText,
   pagesLogicHelperText: messages.pagesLogicHelperText,
 
   toolboxFieldsToExclude: [],

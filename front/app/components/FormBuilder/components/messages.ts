@@ -204,11 +204,6 @@ export default defineMessages({
     id: 'app.components.formBuilder.formEnd',
     defaultMessage: 'Form end',
   },
-  questionLogicHelperText: {
-    id: 'app.components.formBuilder.questionLogicHelperTextDefault2',
-    defaultMessage:
-      'If no logic is added to an answer, the form will follow its normal flow. For more information, visit {supportPageLink}',
-  },
   multipleChoiceHelperText: {
     id: 'app.components.formBuilder.multipleChoiceHelperText',
     defaultMessage:
