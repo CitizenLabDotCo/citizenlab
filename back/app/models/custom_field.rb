@@ -48,6 +48,7 @@ class CustomField < ApplicationRecord
   acts_as_list column: :ordering, top_of_list: 0, scope: [:resource_id]
 
   has_many :options, -> { order(:ordering) }, dependent: :destroy, class_name: 'CustomFieldOption', inverse_of: :custom_field
+  has_many :statements, -> { order(:ordering) }, dependent: :destroy, class_name: 'CustomFieldStatement', inverse_of: :custom_field
   has_many :text_images, as: :imageable, dependent: :destroy
   accepts_nested_attributes_for :text_images
 
@@ -59,7 +60,7 @@ class CustomField < ApplicationRecord
   INPUT_TYPES = %w[
     checkbox date file_upload files html html_multiloc image_files linear_scale multiline_text multiline_text_multiloc
     multiselect multiselect_image number page point line polygon select select_image shapefile_upload text text_multiloc
-    topic_ids section cosponsor_ids ranking
+    topic_ids section cosponsor_ids ranking matrix_linear_scale
   ].freeze
   CODES = %w[
     author_id birthyear body_multiloc budget domicile education gender idea_files_attributes idea_images_attributes
@@ -89,6 +90,7 @@ class CustomField < ApplicationRecord
   validates :minimum_select_count, comparison: { greater_than_or_equal_to: 0 }, if: :multiselect?, allow_nil: true
   validates :page_layout, presence: true, inclusion: { in: PAGE_LAYOUTS }, if: :page?
   validates :page_layout, absence: true, unless: :page?
+  validates :statements, presence: true, if: :supports_statements?
 
   before_validation :set_default_enabled
   before_validation :set_default_answer_visible_to
@@ -123,6 +125,10 @@ class CustomField < ApplicationRecord
     return false if code == 'idea_images_attributes' # Is this still applicable?
 
     %w[page section].exclude?(input_type)
+  end
+
+  def supports_statements?
+    input_type == 'matrix_linear_scale'
   end
 
   def average_rankings(scope)

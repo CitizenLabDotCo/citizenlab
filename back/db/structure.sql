@@ -103,6 +103,7 @@ ALTER TABLE IF EXISTS ONLY public.idea_imports DROP CONSTRAINT IF EXISTS fk_rail
 ALTER TABLE IF EXISTS ONLY public.notifications DROP CONSTRAINT IF EXISTS fk_rails_67be9591a3;
 ALTER TABLE IF EXISTS ONLY public.idea_imports DROP CONSTRAINT IF EXISTS fk_rails_636c77bdd1;
 ALTER TABLE IF EXISTS ONLY public.internal_comments DROP CONSTRAINT IF EXISTS fk_rails_617a7ea994;
+ALTER TABLE IF EXISTS ONLY public.custom_field_statements DROP CONSTRAINT IF EXISTS fk_rails_60fc8ba3ee;
 ALTER TABLE IF EXISTS ONLY public.analysis_taggings DROP CONSTRAINT IF EXISTS fk_rails_604cfbcd8d;
 ALTER TABLE IF EXISTS ONLY public.idea_imports DROP CONSTRAINT IF EXISTS fk_rails_5ea1f11fd5;
 ALTER TABLE IF EXISTS ONLY public.ideas DROP CONSTRAINT IF EXISTS fk_rails_5ac7668cd3;
@@ -328,6 +329,8 @@ DROP INDEX IF EXISTS public.index_email_campaigns_campaign_email_commands_on_rec
 DROP INDEX IF EXISTS public.index_dismissals_on_campaign_name_and_user_id;
 DROP INDEX IF EXISTS public.index_custom_forms_on_participation_context;
 DROP INDEX IF EXISTS public.index_custom_fields_on_resource_type_and_resource_id;
+DROP INDEX IF EXISTS public.index_custom_field_statements_on_key;
+DROP INDEX IF EXISTS public.index_custom_field_statements_on_custom_field_id;
 DROP INDEX IF EXISTS public.index_custom_field_options_on_custom_field_id_and_key;
 DROP INDEX IF EXISTS public.index_custom_field_options_on_custom_field_id;
 DROP INDEX IF EXISTS public.index_custom_field_option_images_on_custom_field_option_id;
@@ -492,6 +495,7 @@ ALTER TABLE IF EXISTS ONLY public.email_campaigns_campaigns_groups DROP CONSTRAI
 ALTER TABLE IF EXISTS ONLY public.email_campaigns_campaign_email_commands DROP CONSTRAINT IF EXISTS email_campaigns_campaign_email_commands_pkey;
 ALTER TABLE IF EXISTS ONLY public.custom_forms DROP CONSTRAINT IF EXISTS custom_forms_pkey;
 ALTER TABLE IF EXISTS ONLY public.custom_fields DROP CONSTRAINT IF EXISTS custom_fields_pkey;
+ALTER TABLE IF EXISTS ONLY public.custom_field_statements DROP CONSTRAINT IF EXISTS custom_field_statements_pkey;
 ALTER TABLE IF EXISTS ONLY public.custom_field_options DROP CONSTRAINT IF EXISTS custom_field_options_pkey;
 ALTER TABLE IF EXISTS ONLY public.custom_field_option_images DROP CONSTRAINT IF EXISTS custom_field_option_images_pkey;
 ALTER TABLE IF EXISTS ONLY public.cosponsorships DROP CONSTRAINT IF EXISTS cosponsorships_pkey;
@@ -600,6 +604,7 @@ DROP TABLE IF EXISTS public.email_campaigns_campaigns_groups;
 DROP TABLE IF EXISTS public.email_campaigns_campaign_email_commands;
 DROP TABLE IF EXISTS public.custom_forms;
 DROP TABLE IF EXISTS public.custom_fields;
+DROP TABLE IF EXISTS public.custom_field_statements;
 DROP TABLE IF EXISTS public.custom_field_options;
 DROP TABLE IF EXISTS public.custom_field_option_images;
 DROP TABLE IF EXISTS public.cosponsorships;
@@ -2109,6 +2114,21 @@ CREATE TABLE public.custom_field_options (
 
 
 --
+-- Name: custom_field_statements; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.custom_field_statements (
+    id uuid DEFAULT gen_random_uuid() NOT NULL,
+    custom_field_id uuid NOT NULL,
+    title_multiloc jsonb DEFAULT '{}'::jsonb NOT NULL,
+    key character varying NOT NULL,
+    ordering integer NOT NULL,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
 -- Name: custom_fields; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -3603,6 +3623,14 @@ ALTER TABLE ONLY public.custom_field_options
 
 
 --
+-- Name: custom_field_statements custom_field_statements_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.custom_field_statements
+    ADD CONSTRAINT custom_field_statements_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: custom_fields custom_fields_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -4837,6 +4865,20 @@ CREATE INDEX index_custom_field_options_on_custom_field_id ON public.custom_fiel
 --
 
 CREATE UNIQUE INDEX index_custom_field_options_on_custom_field_id_and_key ON public.custom_field_options USING btree (custom_field_id, key);
+
+
+--
+-- Name: index_custom_field_statements_on_custom_field_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_custom_field_statements_on_custom_field_id ON public.custom_field_statements USING btree (custom_field_id);
+
+
+--
+-- Name: index_custom_field_statements_on_key; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_custom_field_statements_on_key ON public.custom_field_statements USING btree (key);
 
 
 --
@@ -6455,6 +6497,14 @@ ALTER TABLE ONLY public.analysis_taggings
 
 
 --
+-- Name: custom_field_statements fk_rails_60fc8ba3ee; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.custom_field_statements
+    ADD CONSTRAINT fk_rails_60fc8ba3ee FOREIGN KEY (custom_field_id) REFERENCES public.custom_fields(id);
+
+
+--
 -- Name: internal_comments fk_rails_617a7ea994; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -7695,6 +7745,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20241227103433'),
 ('20241230165323'),
 ('20241230165518'),
-('20241230172612');
+('20241230172612'),
+('20250117121004');
 
 
