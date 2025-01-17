@@ -116,7 +116,6 @@ const Spotlight = ({
               src={imgSrc}
               width="100%"
               maxWidth="630px"
-              height={isSmallerThanPhone ? '188px' : '350px'}
               alt="placeholder"
               borderRadius={stylingConsts.borderRadius}
               objectFit="cover"
@@ -127,7 +126,8 @@ const Spotlight = ({
                 <Shimmer
                   w="100%"
                   maxWidth="630px"
-                  height={isSmallerThanPhone ? '188px' : '350px'}
+                  aspectRatio="4 / 3"
+                  // height={isSmallerThanPhone ? '188px' : '350px'}
                   borderRadius={stylingConsts.borderRadius}
                   bgColor={colors.grey300}
                 />
