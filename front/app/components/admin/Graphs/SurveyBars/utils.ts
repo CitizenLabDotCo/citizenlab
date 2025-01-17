@@ -62,31 +62,33 @@ export const parseQuestionResult = (
   const { multilocs, answers, totalPickCount } = result;
   if (!multilocs) throw new Error('Multilocs are missing');
 
-  return answers.map(({ count, answer }) => {
-    const label =
-      answer === null
-        ? noAnswerCopy
-        : localize(multilocs.answer[answer].title_multiloc);
+  return (
+    answers?.map(({ count, answer }) => {
+      const label =
+        answer === null
+          ? noAnswerCopy
+          : localize(multilocs.answer[answer].title_multiloc);
 
-    const image = answer ? multilocs.answer[answer].image : undefined;
+      const image = answer ? multilocs.answer[answer].image : undefined;
 
-    const percentage = roundPercentage(count, totalPickCount, 1);
+      const percentage = roundPercentage(count, totalPickCount, 1);
 
-    return {
-      label,
-      image,
-      count,
-      percentage,
-      bars: [
-        {
-          type: 'single',
-          percentage,
-          count,
-          color: colorScheme[0],
-        },
-      ],
-    };
-  });
+      return {
+        label,
+        image,
+        count,
+        percentage,
+        bars: [
+          {
+            type: 'single',
+            percentage,
+            count,
+            color: colorScheme[0],
+          },
+        ],
+      };
+    }) || []
+  );
 };
 
 export const EMPTY_COLOR = colors.coolGrey300;
