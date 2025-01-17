@@ -12,7 +12,7 @@ import {
 import * as Sentry from '@sentry/react';
 import GlobalStyle from 'global-styles';
 import 'intersection-observer';
-import { includes } from 'lodash-es';
+import { includes, uniq } from 'lodash-es';
 import moment from 'moment-timezone';
 import { useLocation } from 'react-router-dom';
 import styled, { ThemeProvider } from 'styled-components';
@@ -104,6 +104,7 @@ const App = ({ children }: Props) => {
   useEffect(() => {
     if (!appConfiguration) return;
 
+    // uniq is needed because some of our locales share the same moment locale
     const appConfigMomentLocales = uniq(
       appConfiguration.data.attributes.settings.core.locales
         .filter((loc) => loc !== 'en')
