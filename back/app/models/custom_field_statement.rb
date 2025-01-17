@@ -6,7 +6,7 @@ class CustomFieldStatement < ApplicationRecord
 
   validates :title_multiloc, presence: true, multiloc: { presence: true }
   validates :key, presence: true, uniqueness: { scope: [:custom_field_id] },
-    format: { with: /\A[\w-]+\z/, message: 'can only consist of word characters or dashes' }
+    format: { with: /\A[\w-]+\z/ } # Can only consist of word characters or dashes
   validates :custom_field, presence: true
 
   private
