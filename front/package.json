@@ -61,7 +61,7 @@
     "@segment/snippet": "5.2.1",
     "@sentry/react": "8.48.0",
     "@sentry/utils": "7.51.0",
-    "@tanstack/react-query": "4.22.4",
+    "@tanstack/react-query": "5.62.11",
     "@tanstack/react-virtual": "3.0.0-beta.61",
     "@tippyjs/react": "4.2.6",
     "ajv": "8.12.0",
