@@ -6,6 +6,7 @@ import {
   Text,
   colors,
   Button,
+  IconTooltip,
 } from '@citizenlab/cl2-component-library';
 import { get } from 'lodash-es';
 import { rgba } from 'polished';
@@ -19,6 +20,7 @@ import {
 } from 'api/custom_fields/types';
 import useDuplicateMapConfig from 'api/map_config/useDuplicateMapConfig';
 
+import { Conflict, ConflictType } from 'components/FormBuilder/edit/utils';
 import {
   FormBuilderConfig,
   builtInFieldKeys,
@@ -27,7 +29,7 @@ import {
 import Modal from 'components/UI/Modal';
 import MoreActionsMenu from 'components/UI/MoreActionsMenu';
 
-import { useIntl } from 'utils/cl-intl';
+import { MessageDescriptor, useIntl } from 'utils/cl-intl';
 
 import { FlexibleRow } from '../../FlexibleRow';
 import { getFieldBackgroundColor } from '../utils';
@@ -36,6 +38,63 @@ import FieldTitle from './FieldTitle';
 import IconsAndBadges from './IconsAndBadges';
 import Logic from './Logic';
 import messages from './messages';
+
+/**
+ * Returns the appropriate message descriptor based on an array of conflicts for a page.
+ * @param conflicts - Array of Conflict objects for the page
+ * @returns The MessageDescriptor for the translated string
+ */
+export function getConflictMessageKey(
+  conflicts: Conflict[] | undefined
+): MessageDescriptor | undefined {
+  const conflictTypes = new Set(
+    (conflicts ?? []).map((conflict) => conflict.conflictType)
+  );
+  if (
+    conflictTypes.has(ConflictType.MULTIPLE_GOTO_IN_MULTISELECT) &&
+    conflictTypes.has(ConflictType.QUESTION_VS_PAGE_LOGIC) &&
+    conflictTypes.has(ConflictType.INTER_QUESTION_CONFLICT)
+  ) {
+    return messages.multipleConflictTypes;
+  }
+
+  if (
+    conflictTypes.has(ConflictType.MULTIPLE_GOTO_IN_MULTISELECT) &&
+    conflictTypes.has(ConflictType.QUESTION_VS_PAGE_LOGIC)
+  ) {
+    return messages.multipleGotoInMultiSelectAndQuestionVsPageLogic;
+  }
+
+  if (
+    conflictTypes.has(ConflictType.MULTIPLE_GOTO_IN_MULTISELECT) &&
+    conflictTypes.has(ConflictType.INTER_QUESTION_CONFLICT)
+  ) {
+    return messages.multipleGotoInMultiSelectAndInterQuestionConflict;
+  }
+
+  if (
+    conflictTypes.has(ConflictType.QUESTION_VS_PAGE_LOGIC) &&
+    conflictTypes.has(ConflictType.INTER_QUESTION_CONFLICT)
+  ) {
+    return messages.questionVsPageLogicAndInterQuestionConflict;
+  }
+
+  // Individual conflict types
+  if (conflictTypes.has(ConflictType.MULTIPLE_GOTO_IN_MULTISELECT)) {
+    return messages.multipleGotoInMultiSelect;
+  }
+
+  if (conflictTypes.has(ConflictType.QUESTION_VS_PAGE_LOGIC)) {
+    return messages.questionVsPageLogic;
+  }
+
+  if (conflictTypes.has(ConflictType.INTER_QUESTION_CONFLICT)) {
+    return messages.interQuestionConflict;
+  }
+
+  // No conflicts found
+  return undefined;
+}
 
 const FormFieldsContainer = styled(Box)`
   &:hover {
@@ -51,6 +110,7 @@ type Props = {
   builderConfig: FormBuilderConfig;
   fieldNumbers: Record<string, number>;
   closeSettings: (triggerAutosave?: boolean) => void;
+  conflicts?: Conflict[];
 };
 
 export const FormField = ({
@@ -60,6 +120,7 @@ export const FormField = ({
   builderConfig,
   fieldNumbers,
   closeSettings,
+  conflicts,
 }: Props) => {
   const {
     watch,
@@ -83,6 +144,7 @@ export const FormField = ({
   const { mutateAsync: duplicateMapConfig } = useDuplicateMapConfig();
 
   const hasErrors = !!errors.customFields?.[index];
+  const message = getConflictMessageKey(conflicts);
 
   const showLogicOnRow =
     // TODO: Fix this the next time the file is edited.
@@ -313,20 +375,31 @@ export const FormField = ({
             ml={isFieldGrouping ? '8px' : '32px'}
           >
             <Box display="flex" alignItems="center" height="100%" flex="2">
-              <Box display="block">
-                <FieldTitle
-                  hasErrors={hasErrors}
-                  field={field}
-                  fieldNumber={fieldNumbers[field.id]}
-                />
-                {showLogicOnRow && (
-                  <Logic
+              <Box display="flex" alignItems="center" justifyContent="center">
+                <Box display="block">
+                  <FieldTitle
+                    hasErrors={hasErrors}
                     field={field}
-                    formCustomFields={formCustomFields}
-                    fieldNumbers={fieldNumbers}
-                    formEndPageLogicOption={formEndPageLogicOption}
+                    fieldNumber={fieldNumbers[field.id]}
                   />
-                )}
+                  {showLogicOnRow && (
+                    <Logic
+                      field={field}
+                      formCustomFields={formCustomFields}
+                      fieldNumbers={fieldNumbers}
+                      formEndPageLogicOption={formEndPageLogicOption}
+                    />
+                  )}
+                </Box>
+                <Box ml="8px">
+                  {message && (
+                    <IconTooltip
+                      iconColor={colors.coolGrey300}
+                      content={formatMessage(message)}
+                      icon="warning"
+                    />
+                  )}
+                </Box>
               </Box>
             </Box>
             <Box
