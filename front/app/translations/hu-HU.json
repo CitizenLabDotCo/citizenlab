@@ -742,7 +742,6 @@
   "app.components.formBuilder.question": "Kérdés",
   "app.components.formBuilder.questionCannotBeDeleted": "Ezt a kérdést nem lehet törölni.",
   "app.components.formBuilder.questionDescriptionOptional": "Kérdés leírása (nem kötelező)",
-  "app.components.formBuilder.questionLogicHelperTextDefault": "Ha nem adunk hozzá logikát a válaszhoz, az űrlap a normál menetét követi. Ha logikát ad egy kérdéshez, az alapértelmezés szerint szükségessé válik. További információért keresse fel a {supportPageLink}webhelyet",
   "app.components.formBuilder.questionTitle": "Kérdés címe",
   "app.components.formBuilder.randomize": "Véletlenszerűvé",
   "app.components.formBuilder.randomizeToolTip": "A válaszok sorrendje felhasználónként véletlenszerű lesz",

@@ -742,7 +742,6 @@
   "app.components.formBuilder.question": "Jautājums",
   "app.components.formBuilder.questionCannotBeDeleted": "Šo jautājumu nevar dzēst.",
   "app.components.formBuilder.questionDescriptionOptional": "Jautājuma apraksts (pēc izvēles)",
-  "app.components.formBuilder.questionLogicHelperTextDefault": "Ja atbildei nav pievienota loģika, veidlapa darbosies saskaņā ar parasto plūsmu. Ja jautājumam pievienosiet loģiku, pēc noklusējuma tas būs obligāts. Lai iegūtu vairāk informācijas, apmeklējiet vietni {supportPageLink}.",
   "app.components.formBuilder.questionTitle": "Jautājuma nosaukums",
   "app.components.formBuilder.randomize": "Randomizēt",
   "app.components.formBuilder.randomizeToolTip": "Atbilžu secība katram lietotājam tiks mainīta pēc nejaušības principa.",

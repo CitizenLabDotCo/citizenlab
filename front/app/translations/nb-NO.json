@@ -742,7 +742,6 @@
   "app.components.formBuilder.question": "Spørsmål",
   "app.components.formBuilder.questionCannotBeDeleted": "Dette spørsmålet kan ikke slettes.",
   "app.components.formBuilder.questionDescriptionOptional": "Beskrivelse av spørsmålet (valgfritt)",
-  "app.components.formBuilder.questionLogicHelperTextDefault": "Hvis ingen logikk legges til i et svar, vil skjemaet følge den normale flyten. Hvis du legger til logikk i et spørsmål, blir det obligatorisk som standard. For mer informasjon, besøk {supportPageLink}",
   "app.components.formBuilder.questionTitle": "Tittel på spørsmålet",
   "app.components.formBuilder.randomize": "Randomiser",
   "app.components.formBuilder.randomizeToolTip": "Rekkefølgen på svarene vil bli randomisert per bruker",

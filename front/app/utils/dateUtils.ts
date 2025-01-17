@@ -1,5 +1,5 @@
 import { isString } from 'lodash-es';
-import moment, { unitOfTime, Moment } from 'moment-timezone';
+import momentTimezone, { unitOfTime, Moment } from 'moment-timezone';
 import { SupportedLocale } from 'typings';
 
 import { IEventData } from 'api/events/types';
@@ -9,7 +9,7 @@ import { IResolution } from 'components/admin/ResolutionControl';
 export function getIsoDateForToday(): string {
   // this is based on the user's timezone in moment, so
   // will return based on the current day of the user's browser
-  return moment().format('YYYY-MM-DD');
+  return momentTimezone().format('YYYY-MM-DD');
 }
 
 // type required for timeAgo function
@@ -88,7 +88,7 @@ type SingleDate = string;
 type BeginAndEndDate = [string, string | null];
 export function pastPresentOrFuture(input: SingleDate | BeginAndEndDate) {
   const currentIsoDate = getIsoDateForToday();
-  const momentCurrentDate = moment(currentIsoDate, 'YYYY-MM-DD');
+  const momentCurrentDate = momentTimezone(currentIsoDate, 'YYYY-MM-DD');
 
   // if input is a string representing one date
   if (isString(input)) {
@@ -128,12 +128,12 @@ export function pastPresentOrFuture(input: SingleDate | BeginAndEndDate) {
 // so we respect the user's current timezone
 export function getIsoDate(date: string) {
   // respects user's timezone
-  return moment(new Date(date)).format('YYYY-MM-DD');
+  return momentTimezone(new Date(date)).format('YYYY-MM-DD');
 }
 
 export function getIsoDateUtc(date: string) {
   // by using moment.utc, we ignore timezone offsets which could cause bugs
-  return moment.utc(new Date(date)).format('YYYY-MM-DD');
+  return momentTimezone.utc(new Date(date)).format('YYYY-MM-DD');
 }
 
 export const momentToIsoDate = (moment: Moment | null | undefined) => {
@@ -146,10 +146,10 @@ export function getPeriodRemainingUntil(
   timeUnit: unitOfTime.Diff
 ): number {
   // Parse the target date in the tenant's timezone
-  const targetDate = moment.tz(date, tenantTimezone);
+  const targetDate = momentTimezone.tz(date, tenantTimezone);
 
   // Get the current date at midnight in the tenant's timezone
-  const now = moment.tz(tenantTimezone).startOf('day');
+  const now = momentTimezone.tz(tenantTimezone).startOf('day');
 
   // Calculate and return the difference
   return targetDate.diff(now, timeUnit);
@@ -167,14 +167,14 @@ export function convertSecondsToDDHHMM(seconds: number) {
 }
 
 export function toThreeLetterMonth(date: string, resolution: IResolution) {
-  return moment
+  return momentTimezone
     .utc(date, 'YYYY-MM-DD')
     .format(resolution === 'month' ? 'MMM' : 'DD MMM');
 }
 
 export function toFullMonth(date: string, resolution: IResolution) {
   if (resolution === 'week') {
-    const startWeek = moment.utc(date, 'YYYY-MM-DD');
+    const startWeek = momentTimezone.utc(date, 'YYYY-MM-DD');
     const endWeek = startWeek.clone().add({ day: 7 });
 
     const sameYear = startWeek.year() === endWeek.year();
@@ -194,7 +194,7 @@ export function toFullMonth(date: string, resolution: IResolution) {
     return `${startWeek.format('MMMM DD')} - ${endWeek.format('DD, YYYY')}`;
   }
 
-  return moment
+  return momentTimezone
     .utc(date, 'YYYY-MM-DD')
     .format(resolution === 'month' ? 'MMMM YYYY' : 'MMMM DD, YYYY');
 }
@@ -208,8 +208,8 @@ export function showDotAfterDay(locale: SupportedLocale) {
 
 // Function used to get the event dates in a localized string format
 export function getEventDateString(event: IEventData) {
-  const startMoment = moment(event.attributes.start_at);
-  const endMoment = moment(event.attributes.end_at);
+  const startMoment = momentTimezone(event.attributes.start_at);
+  const endMoment = momentTimezone(event.attributes.end_at);
 
   const isEventMultipleDays =
     startMoment.dayOfYear() !== endMoment.dayOfYear() ||
@@ -226,7 +226,7 @@ export function getEventDateString(event: IEventData) {
 
 // Get a single date in local format - for example for voting phase end date
 export function getLocalisedDateString(dateString: string | null | undefined) {
-  return dateString && moment(dateString, 'YYYY-MM-DD').format('LL');
+  return dateString && momentTimezone(dateString, 'YYYY-MM-DD').format('LL');
 }
 
 export const userTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone;

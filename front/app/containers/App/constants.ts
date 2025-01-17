@@ -226,3 +226,155 @@ export const appLocalesMomentPairs = {
   'tr-TR': 'tr',
   'ur-PK': 'ur',
 };
+
+/**
+ * Dynamically imports the Moment.js locale file for the given locale name.
+ *
+ * This function uses `@ts-ignore` as a workaround for TypeScript's lack of built-in type definitions
+ * for Moment.js locale files under 'moment/dist/locale/*'. By using dynamic imports, we avoid bundling
+ * all locales at build time, reducing the application size and improving performance.
+ *
+ * Note:
+ * - Vite has limitations with dynamic imports for files in node_modules. This implementation addresses
+ *   those limitations by explicitly mapping locale names to their corresponding import paths.
+ *
+ * Reference:
+ * - Vite issue: https://github.com/vitejs/vite/issues/14102
+ *
+ */
+export async function localeGetter(localeName: string) {
+  switch (localeName) {
+    case 'ar-ma':
+      // @ts-ignore
+      await import('moment/dist/locale/ar-ma');
+      break;
+    case 'ar-sa':
+      // @ts-ignore
+      await import('moment/dist/locale/ar-sa');
+      break;
+    case 'ca':
+      // @ts-ignore
+      await import('moment/dist/locale/ca');
+      break;
+    case 'cy':
+      // @ts-ignore
+      await import('moment/dist/locale/cy');
+      break;
+    case 'da':
+      // @ts-ignore
+      await import('moment/dist/locale/da');
+      break;
+    case 'de':
+      // @ts-ignore
+      await import('moment/dist/locale/de');
+      break;
+    case 'el':
+      // @ts-ignore
+      await import('moment/dist/locale/el');
+      break;
+    case 'en-ca':
+      // @ts-ignore
+      await import('moment/dist/locale/en-ca');
+      break;
+    case 'en-gb':
+      // @ts-ignore
+      await import('moment/dist/locale/en-gb');
+      break;
+    case 'en-ie':
+      // @ts-ignore
+      await import('moment/dist/locale/en-ie');
+      break;
+    case 'es':
+      // @ts-ignore
+      await import('moment/dist/locale/es');
+      break;
+    case 'fi':
+      // @ts-ignore
+      await import('moment/dist/locale/fi');
+      break;
+    case 'fr':
+      // @ts-ignore
+      await import('moment/dist/locale/fr');
+      break;
+    case 'hr':
+      // @ts-ignore
+      await import('moment/dist/locale/hr');
+      break;
+    case 'hu':
+      // @ts-ignore
+      await import('moment/dist/locale/hu');
+      break;
+    case 'it':
+      // @ts-ignore
+      await import('moment/dist/locale/it');
+      break;
+    case 'lb':
+      // @ts-ignore
+      await import('moment/dist/locale/lb');
+      break;
+    case 'lt':
+      // @ts-ignore
+      await import('moment/dist/locale/lt');
+      break;
+    case 'lv':
+      // @ts-ignore
+      await import('moment/dist/locale/lv');
+      break;
+    case 'mi':
+      // @ts-ignore
+      await import('moment/dist/locale/mi');
+      break;
+    case 'nb':
+      // @ts-ignore
+      await import('moment/dist/locale/nb');
+      break;
+    case 'nl-be':
+      // @ts-ignore
+      await import('moment/dist/locale/nl-be');
+      break;
+    case 'nl':
+      // @ts-ignore
+      await import('moment/dist/locale/nl');
+      break;
+    case 'pa-in':
+      // @ts-ignore
+      await import('moment/dist/locale/pa-in');
+      break;
+    case 'pl':
+      // @ts-ignore
+      await import('moment/dist/locale/pl');
+      break;
+    case 'pt-br':
+      // @ts-ignore
+      await import('moment/dist/locale/pt-br');
+      break;
+    case 'ro':
+      // @ts-ignore
+      await import('moment/dist/locale/ro');
+      break;
+    case 'sr':
+    case 'sr-Latn':
+      // @ts-ignore
+      await import('moment/dist/locale/sr');
+      break;
+    case 'sr-SP':
+      // @ts-ignore
+      await import('moment/dist/locale/sr-cyrl');
+      break;
+    case 'sv':
+      // @ts-ignore
+      await import('moment/dist/locale/sv');
+      break;
+    case 'tr':
+      // @ts-ignore
+      await import('moment/dist/locale/tr');
+      break;
+    case 'ur':
+      // @ts-ignore
+      await import('moment/dist/locale/ur');
+      break;
+    default:
+      console.warn(`No matching locale import for: ${localeName}`);
+      break;
+  }
+}
