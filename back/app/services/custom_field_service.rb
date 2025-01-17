@@ -75,7 +75,7 @@ class CustomFieldService
     end
   end
 
-  def generate_key(title, other = false)
+  def generate_key(title, other: false)
     return 'other' if other == true
 
     keyify(title)
