@@ -132,9 +132,9 @@ export default defineMessages({
       'If no logic is added to an answer, the survey will follow its normal flow. For more information, visit {supportPageLink}',
   },
   pagesLogicHelperText: {
-    id: 'app.containers.AdminPage.ProjectEdit.survey.pagesLogicHelperText2',
+    id: 'app.containers.AdminPage.ProjectEdit.survey.pagesLogicHelperText1',
     defaultMessage:
-      'If no logic is added, the survey will follow its normal flow. For more information, visit {supportPageLink}',
+      'If no logic is added, the survey will follow its normal flow. If both the page and its questions have logic, the question logic will take precedence. Ensure this aligns with your intended survey flow. For more information, visit {supportPageLink}',
   },
   multiselect: {
     id: 'app.containers.AdminPage.ProjectEdit.survey.multiselectText2',
