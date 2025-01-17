@@ -134,7 +134,6 @@ const Spotlight = ({
                   w="100%"
                   maxWidth="630px"
                   aspectRatio={CARD_IMAGE_ASPECT_RATIO_STR}
-                  // height={isSmallerThanPhone ? '188px' : '350px'}
                   borderRadius={stylingConsts.borderRadius}
                   bgColor={colors.grey300}
                 />
