@@ -394,7 +394,8 @@ jobs:
           # failing on some nodes.
           command: |
             ssh << parameters.ssh_user >>@<< parameters.ssh_host >> -o StrictHostKeyChecking=no \<<EOF
-              docker node ls | grep Down | awk '{print $1}' | xargs -n25 docker node rm && \
+              down_nodes=$(docker node ls | grep Down | awk '{print $1}') && \
+              [ -n "$down_nodes" ] && echo "$down_nodes" | xargs -n25 docker node rm || echo "No down nodes found." && \
               cd cl2-deployment && \
               docker stack deploy \
                 --compose-file << parameters.compose_file >> \
