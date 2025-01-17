@@ -131,17 +131,11 @@ class CustomField < ApplicationRecord
     # option. "#>> '{}'" is used to unescape the double quotes in the JSONB value.
     return {} if input_type != 'ranking'
 
-    in_sql_scope_ids = "(#{scope.ids.map { |id| "'#{id}'" }.join(',')})"
-    result = ActiveRecord::Base.connection.execute(
-      <<-SQL.squish
-        SELECT value #>> '{}' AS option_key, AVG(ordinality)
-        FROM #{scope.table.name} u, jsonb_array_elements(u.custom_field_values->'#{key}') WITH ORDINALITY
-        WHERE u.id IN #{in_sql_scope_ids}
-        AND u.custom_field_values->'#{key}' IS NOT NULL
-        GROUP BY value
-      SQL
-    )
-    result.pluck('option_key', 'avg').to_h
+    scope
+      .where.not("custom_field_values ->> '#{key}' IS NULL")
+      .joins("CROSS JOIN jsonb_array_elements(custom_field_values->'#{key}') WITH ORDINALITY AS elem(value, ordinality)")
+      .group("elem.value #>> '{}'")
+      .average('elem.ordinality')
   end
 
   def rankings_counts(scope)
@@ -151,26 +145,18 @@ class CustomField < ApplicationRecord
     # value.
     return {} if input_type != 'ranking'
 
-    in_sql_scope_ids = "(#{scope.ids.map { |id| "'#{id}'" }.join(',')})"
-    result = ActiveRecord::Base.connection.execute(
-      <<-SQL.squish
-        SELECT value #>> '{}' AS option_key, ordinality, COUNT(*)
-        FROM #{scope.table.name} u, jsonb_array_elements(u.custom_field_values->'#{key}') WITH ORDINALITY
-        WHERE u.id IN #{in_sql_scope_ids}
-        AND u.custom_field_values->'#{key}' IS NOT NULL
-        GROUP BY value, ordinality
-      SQL
-    )
-    # Transform array of triplets into a hash of hashes
-    result
-      .pluck('option_key', 'ordinality', 'count')
-      .group_by(&:shift)
-      .transform_values do |rankings_counts|
-        (1..options.size).to_h do |ranking|
-          count = rankings_counts.find { |rc| rc.first == ranking }&.last || 0
-          [ranking, count]
-        end
+    query_result = scope
+      .where.not("custom_field_values ->> '#{key}' IS NULL")
+      .joins("CROSS JOIN jsonb_array_elements(custom_field_values->'#{key}') WITH ORDINALITY AS elem(value, ordinality)")
+      .group("elem.value #>> '{}'", 'elem.ordinality')
+      .count
+
+    # Transform pair to ordinality hash into a hash of hashes
+    options.pluck(:key).index_with do |option_key|
+      (1..options.size).index_with do |ranking|
+        query_result[[option_key, ranking]] || 0
       end
+    end
   end
 
   def built_in?
