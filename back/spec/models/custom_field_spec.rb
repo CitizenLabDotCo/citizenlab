@@ -115,6 +115,15 @@ end
 RSpec.describe CustomField do
   let(:field) { described_class.new input_type: 'not_important_for_this_test' }
 
+  describe 'factories' do
+    it 'create a valid matrix linear scale field' do
+      field = create(:custom_field_matrix_linear_scale)
+
+      expect(field).to be_valid
+      expect(field.statements).to be_present
+    end
+  end
+
   describe '#logic?' do
     it 'returns true when there is logic' do
       field.logic = { 'rules' => [{ if: 2, goto_page_id: 'some_page_id' }] }
