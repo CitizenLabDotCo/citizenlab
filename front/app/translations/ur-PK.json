@@ -737,7 +737,6 @@
   "app.components.formBuilder.otherOptionTooltip": "شرکاء کو حسب ضرورت جواب داخل کرنے کی اجازت دیں اگر فراہم کردہ جوابات ان کی ترجیح سے میل نہیں کھاتے ہیں۔",
   "app.components.formBuilder.page": "صفحہ",
   "app.components.formBuilder.pageRuleLabel": "اگلا صفحہ ہے:",
-  "app.components.formBuilder.pagesLogicHelperTextDefault": "اگر کوئی منطق شامل نہیں کی جاتی ہے، تو فارم اپنے معمول کے بہاؤ کی پیروی کرے گا۔ مزید معلومات کے لیے {supportPageLink}پر جائیں۔",
   "app.components.formBuilder.proposedBudget": "مجوزہ بجٹ",
   "app.components.formBuilder.question": "سوال",
   "app.components.formBuilder.questionCannotBeDeleted": "اس سوال کو حذف نہیں کیا جا سکتا۔",

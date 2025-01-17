@@ -1838,7 +1838,6 @@
   "app.containers.AdminPage.ProjectEdit.survey.noSurveyResponses2": "Још нема одговора на анкету",
   "app.containers.AdminPage.ProjectEdit.survey.openForResponses2": "Отворено за одговоре",
   "app.containers.AdminPage.ProjectEdit.survey.optional2": "Опционо",
-  "app.containers.AdminPage.ProjectEdit.survey.pagesLogicHelperText2": "Ако се не дода логика, анкета ће пратити свој нормалан ток. За више информација посетите {supportPageLink}",
   "app.containers.AdminPage.ProjectEdit.survey.point": "Location",
   "app.containers.AdminPage.ProjectEdit.survey.quitReportConfirmationQuestion": "Јесте ли сигурни да желите да одете?",
   "app.containers.AdminPage.ProjectEdit.survey.quitReportInfo2": "Ваше тренутне промене неће бити сачуване.",

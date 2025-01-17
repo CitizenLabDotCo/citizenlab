@@ -737,7 +737,6 @@
   "app.components.formBuilder.otherOptionTooltip": "Caniatáu i gyfranogwyr nodi ymateb personol os nad yw'r atebion a ddarparwyd yn cyfateb i'w dewis",
   "app.components.formBuilder.page": "Tudalen",
   "app.components.formBuilder.pageRuleLabel": "Y dudalen nesaf yw:",
-  "app.components.formBuilder.pagesLogicHelperTextDefault": "Os na ychwanegir rhesymeg, bydd y ffurf yn dilyn ei llif normal. Am ragor o wybodaeth, ewch i {supportPageLink}",
   "app.components.formBuilder.proposedBudget": "Cyllideb arfaethedig",
   "app.components.formBuilder.question": "Cwestiwn",
   "app.components.formBuilder.questionCannotBeDeleted": "Nid oes modd dileu'r cwestiwn hwn.",

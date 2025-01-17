@@ -737,7 +737,6 @@
   "app.components.formBuilder.otherOptionTooltip": "ļaut dalībniekiem ievadīt pielāgotu atbildi, ja piedāvātās atbildes neatbilst viņu vēlmēm.",
   "app.components.formBuilder.page": "Lapa",
   "app.components.formBuilder.pageRuleLabel": "Nākamā lapa ir:",
-  "app.components.formBuilder.pagesLogicHelperTextDefault": "Ja loģika nav pievienota, veidlapa darbosies saskaņā ar parasto plūsmu. Lai iegūtu vairāk informācijas, apmeklējiet vietni {supportPageLink}.",
   "app.components.formBuilder.proposedBudget": "Ierosinātais budžets",
   "app.components.formBuilder.question": "Jautājums",
   "app.components.formBuilder.questionCannotBeDeleted": "Šo jautājumu nevar dzēst.",

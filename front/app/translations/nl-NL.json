@@ -737,7 +737,6 @@
   "app.components.formBuilder.otherOptionTooltip": "Deelnemers toestaan een aangepast antwoord in te voeren als de verstrekte antwoorden niet overeenkomen met hun voorkeur",
   "app.components.formBuilder.page": "Pagina",
   "app.components.formBuilder.pageRuleLabel": "Volgende pagina is:",
-  "app.components.formBuilder.pagesLogicHelperTextDefault": "Als er geen logica wordt toegevoegd, volgt de vragenlijst zijn normale verloop. Ga voor meer informatie naar {supportPageLink}",
   "app.components.formBuilder.proposedBudget": "Voorgesteld budget",
   "app.components.formBuilder.question": "Vraag",
   "app.components.formBuilder.questionCannotBeDeleted": "Deze vraag kan niet worden verwijderd.",

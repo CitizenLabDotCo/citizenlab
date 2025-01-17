@@ -737,7 +737,6 @@
   "app.components.formBuilder.otherOptionTooltip": "Permet als participants introduir una resposta personalitzada si les respostes proporcionades no coincideixen amb les seves preferències",
   "app.components.formBuilder.page": "Pàgina",
   "app.components.formBuilder.pageRuleLabel": "La pàgina següent és:",
-  "app.components.formBuilder.pagesLogicHelperTextDefault": "Si no s'afegeix cap lògica, el formulari seguirà el seu flux normal. Per a més informació, visiteu {supportPageLink}",
   "app.components.formBuilder.proposedBudget": "Proposta de pressupost",
   "app.components.formBuilder.question": "Pregunta",
   "app.components.formBuilder.questionCannotBeDeleted": "Aquesta pregunta no es pot suprimir.",

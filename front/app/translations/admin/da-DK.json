@@ -1838,7 +1838,6 @@
   "app.containers.AdminPage.ProjectEdit.survey.noSurveyResponses2": "Ingen besvarelser i undersøgelsen endnu",
   "app.containers.AdminPage.ProjectEdit.survey.openForResponses2": "Åben for besvarelser",
   "app.containers.AdminPage.ProjectEdit.survey.optional2": "Valgfri",
-  "app.containers.AdminPage.ProjectEdit.survey.pagesLogicHelperText2": "Hvis der ikke tilføjes nogen logik, vil undersøgelsen følge sit normale forløb. Du kan få flere oplysninger på {supportPageLink}",
   "app.containers.AdminPage.ProjectEdit.survey.point": "Placering",
   "app.containers.AdminPage.ProjectEdit.survey.quitReportConfirmationQuestion": "Er du sikker på, at du vil rejse?",
   "app.containers.AdminPage.ProjectEdit.survey.quitReportInfo2": "Dine nuværende ændringer bliver ikke gemt.",

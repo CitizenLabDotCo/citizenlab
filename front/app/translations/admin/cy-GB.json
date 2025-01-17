@@ -1838,7 +1838,6 @@
   "app.containers.AdminPage.ProjectEdit.survey.noSurveyResponses2": "Dim ymatebion i'r arolwg eto",
   "app.containers.AdminPage.ProjectEdit.survey.openForResponses2": "Ar agor ar gyfer ymatebion",
   "app.containers.AdminPage.ProjectEdit.survey.optional2": "Dewisol",
-  "app.containers.AdminPage.ProjectEdit.survey.pagesLogicHelperText2": "Os na ychwanegir rhesymeg, bydd yr arolwg yn dilyn ei lif arferol. Am ragor o wybodaeth, ewch i {supportPageLink}",
   "app.containers.AdminPage.ProjectEdit.survey.point": "Lleoliad",
   "app.containers.AdminPage.ProjectEdit.survey.quitReportConfirmationQuestion": "Ydych chi'n siŵr eich bod am adael?",
   "app.containers.AdminPage.ProjectEdit.survey.quitReportInfo2": "Ni fydd eich newidiadau presennol yn cael eu cadw.",

@@ -737,7 +737,6 @@
   "app.components.formBuilder.otherOptionTooltip": "Anna osallistujien kirjoittaa mukautettu vastaus, jos annetut vastaukset eivät vastaa heidän mieltymyksiään",
   "app.components.formBuilder.page": "Sivu",
   "app.components.formBuilder.pageRuleLabel": "Seuraava sivu on:",
-  "app.components.formBuilder.pagesLogicHelperTextDefault": "Jos logiikkaa ei lisätä, lomake noudattaa normaalia kulkuaan. Lisätietoja on osoitteessa {supportPageLink}",
   "app.components.formBuilder.proposedBudget": "Ehdotettu budjetti",
   "app.components.formBuilder.question": "Kysymys",
   "app.components.formBuilder.questionCannotBeDeleted": "Tätä kysymystä ei voi poistaa.",

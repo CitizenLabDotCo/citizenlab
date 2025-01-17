@@ -737,7 +737,6 @@
   "app.components.formBuilder.otherOptionTooltip": "Dopustite sudionicima da unesu prilagođeni odgovor ako ponuđeni odgovori ne odgovaraju njihovim željama",
   "app.components.formBuilder.page": "Stranica",
   "app.components.formBuilder.pageRuleLabel": "Sljedeća stranica je:",
-  "app.components.formBuilder.pagesLogicHelperTextDefault": "Ako se ne doda nikakva logika, obrazac će slijediti svoj uobičajeni tijek. Za više informacija posjetite {supportPageLink}",
   "app.components.formBuilder.proposedBudget": "Predloženi proračun",
   "app.components.formBuilder.question": "Pitanje",
   "app.components.formBuilder.questionCannotBeDeleted": "Ovo se pitanje ne može izbrisati.",

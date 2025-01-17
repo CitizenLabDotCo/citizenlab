@@ -425,7 +425,6 @@
   "app.components.formBuilder.optional": "Opțional",
   "app.components.formBuilder.page": "Pagina",
   "app.components.formBuilder.pageRuleLabel": "Pagina următoare este:",
-  "app.components.formBuilder.pagesLogicHelperTextDefault": "Dacă nu se adaugă nicio logică, formularul va urma fluxul normal. Pentru mai multe informații, vizitați {supportPageLink}",
   "app.components.formBuilder.proposedBudget": "Buget propus",
   "app.components.formBuilder.question": "Întrebare",
   "app.components.formBuilder.questionCannotBeDeleted": "Această întrebare nu poate fi ștearsă.",

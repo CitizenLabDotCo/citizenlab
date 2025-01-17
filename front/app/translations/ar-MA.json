@@ -737,7 +737,6 @@
   "app.components.formBuilder.otherOptionTooltip": "اسمح للمشاركين بإدخال استجابة مخصصة إذا كانت الإجابات المقدمة لا تتطابق مع تفضيلاتهم",
   "app.components.formBuilder.page": "الصفحة",
   "app.components.formBuilder.pageRuleLabel": "الصفحة التالية هي:",
-  "app.components.formBuilder.pagesLogicHelperTextDefault": "إذا لم يُضاف أساس منطقي، فسيتبع النموذج مساره العادي. لمزيد من المعلومات، تفضل بزيارة {supportPageLink}",
   "app.components.formBuilder.proposedBudget": "ميزانية مقترحة",
   "app.components.formBuilder.question": "سؤال",
   "app.components.formBuilder.questionCannotBeDeleted": "لا يمكن حذف هذا السؤال.",

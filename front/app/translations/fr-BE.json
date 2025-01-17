@@ -737,7 +737,6 @@
   "app.components.formBuilder.otherOptionTooltip": "Permettre aux participants de saisir une réponse personnalisée si les options proposées ne leur conviennent pas",
   "app.components.formBuilder.page": "Page",
   "app.components.formBuilder.pageRuleLabel": "La page suivante est :",
-  "app.components.formBuilder.pagesLogicHelperTextDefault": "Si aucune logique n'est ajoutée, le formulaire suivra son cours normal. Pour plus d'informations, visitez {supportPageLink}",
   "app.components.formBuilder.proposedBudget": "Budget proposé",
   "app.components.formBuilder.question": "Question",
   "app.components.formBuilder.questionCannotBeDeleted": "Cette question ne peut pas être supprimée.",

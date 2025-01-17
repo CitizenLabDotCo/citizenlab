@@ -737,7 +737,6 @@
   "app.components.formBuilder.otherOptionTooltip": "Leisti dalyviams įvesti pasirinktinį atsakymą, jei pateikti atsakymai neatitinka jų pageidavimų.",
   "app.components.formBuilder.page": "Puslapis",
   "app.components.formBuilder.pageRuleLabel": "Kitas puslapis yra:",
-  "app.components.formBuilder.pagesLogicHelperTextDefault": "Jei nepridėta jokios logikos, forma bus tvarkoma įprastai. Daugiau informacijos rasite svetainėje {supportPageLink}.",
   "app.components.formBuilder.proposedBudget": "Siūlomas biudžetas",
   "app.components.formBuilder.question": "Klausimas",
   "app.components.formBuilder.questionCannotBeDeleted": "Šio klausimo negalima ištrinti.",

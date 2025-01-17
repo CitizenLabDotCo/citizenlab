@@ -1838,7 +1838,6 @@
   "app.containers.AdminPage.ProjectEdit.survey.noSurveyResponses2": "Aptaujas atbildes vēl nav saņemtas",
   "app.containers.AdminPage.ProjectEdit.survey.openForResponses2": "Atvērts atbilžu saņemšanai",
   "app.containers.AdminPage.ProjectEdit.survey.optional2": "Pēc izvēles",
-  "app.containers.AdminPage.ProjectEdit.survey.pagesLogicHelperText2": "Ja loģika nav pievienota, apsekojums norisināsies saskaņā ar parasto gaitu. Lai iegūtu vairāk informācijas, apmeklējiet {supportPageLink}.",
   "app.containers.AdminPage.ProjectEdit.survey.point": "Atrašanās vieta",
   "app.containers.AdminPage.ProjectEdit.survey.quitReportConfirmationQuestion": "Vai esat pārliecināts, ka vēlaties doties prom?",
   "app.containers.AdminPage.ProjectEdit.survey.quitReportInfo2": "Pašreizējās izmaiņas netiks saglabātas.",

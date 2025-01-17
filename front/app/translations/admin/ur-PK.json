@@ -1838,7 +1838,6 @@
   "app.containers.AdminPage.ProjectEdit.survey.noSurveyResponses2": "ابھی تک کوئی سروے کے جوابات نہیں ہیں۔",
   "app.containers.AdminPage.ProjectEdit.survey.openForResponses2": "جوابات کے لیے کھولیں۔",
   "app.containers.AdminPage.ProjectEdit.survey.optional2": "اختیاری",
-  "app.containers.AdminPage.ProjectEdit.survey.pagesLogicHelperText2": "اگر کوئی منطق شامل نہیں کی جاتی ہے، تو سروے اپنے معمول کے بہاؤ کی پیروی کرے گا۔ مزید معلومات کے لیے {supportPageLink}پر جائیں۔",
   "app.containers.AdminPage.ProjectEdit.survey.point": "مقام",
   "app.containers.AdminPage.ProjectEdit.survey.quitReportConfirmationQuestion": "کیا آپ واقعی چھوڑنا چاہتے ہیں؟",
   "app.containers.AdminPage.ProjectEdit.survey.quitReportInfo2": "آپ کی موجودہ تبدیلیاں محفوظ نہیں ہوں گی۔",

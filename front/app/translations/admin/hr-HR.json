@@ -1838,7 +1838,6 @@
   "app.containers.AdminPage.ProjectEdit.survey.noSurveyResponses2": "Još nema odgovora na upitnik",
   "app.containers.AdminPage.ProjectEdit.survey.openForResponses2": "Otvori za odgovore",
   "app.containers.AdminPage.ProjectEdit.survey.optional2": "Nije obavezno",
-  "app.containers.AdminPage.ProjectEdit.survey.pagesLogicHelperText2": "Ako se ne doda nikakva logika, upitnik će slijediti svoj uobičajeni tijek. Za više informacija posjetite {supportPageLink}",
   "app.containers.AdminPage.ProjectEdit.survey.point": "Mjesto",
   "app.containers.AdminPage.ProjectEdit.survey.quitReportConfirmationQuestion": "Sigurno želite napustiti?",
   "app.containers.AdminPage.ProjectEdit.survey.quitReportInfo2": "Vaše trenutne promjene neće biti spremljene.",

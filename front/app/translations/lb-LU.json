@@ -737,7 +737,6 @@
   "app.components.formBuilder.otherOptionTooltip": "Erlaabt d'Participanten eng personaliséiert Äntwert anzeginn wann déi geliwwert Äntwerten net mat hirer Preferenz entspriechen",
   "app.components.formBuilder.page": "Säit",
   "app.components.formBuilder.pageRuleLabel": "Nächst Säit ass:",
-  "app.components.formBuilder.pagesLogicHelperTextDefault": "Wa keng Logik bäigefüügt ass, gëllt deen normalen Oflaf fir de Formulaire. Weider Informatioune fannd Dir op {supportPageLink}",
   "app.components.formBuilder.proposedBudget": "Proposéierte Budget",
   "app.components.formBuilder.question": "Fro",
   "app.components.formBuilder.questionCannotBeDeleted": "Dës Fro kann net geläscht ginn.",
