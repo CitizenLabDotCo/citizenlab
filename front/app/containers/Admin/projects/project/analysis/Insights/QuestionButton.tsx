@@ -15,7 +15,7 @@ import useAnalysisFilterParams from '../hooks/useAnalysisFilterParams';
 import messages from './messages';
 
 const QuestionButton = ({ onClick }: { onClick: () => void }) => {
-  const askAQuestionEnabled = useFeatureFlag({
+  const askAQuestionAllowed = useFeatureFlag({
     name: 'ask_a_question',
     onlyCheckAllowed: true,
   });
@@ -41,9 +41,9 @@ const QuestionButton = ({ onClick }: { onClick: () => void }) => {
   const tooManyInputs =
     preCheck?.data.attributes.impossible_reason === 'too_many_inputs';
 
-  const questionPossible = !tooManyInputs && askAQuestionEnabled;
+  const questionPossible = !tooManyInputs && askAQuestionAllowed;
 
-  const tooltipContent = !askAQuestionEnabled
+  const tooltipContent = !askAQuestionAllowed
     ? formatMessage(messages.askAQuestionUpsellMessage)
     : tooManyInputs
     ? formatMessage(messages.tooManyInputs)
@@ -66,7 +66,7 @@ const QuestionButton = ({ onClick }: { onClick: () => void }) => {
           buttonStyle="admin-dark"
           processing={isLoadingPreCheck}
           onClick={onClick}
-          disabled={!questionPossible || !askAQuestionEnabled}
+          disabled={!questionPossible || !askAQuestionAllowed}
           whiteSpace="wrap"
         >
           {formatMessage(messages.askQuestion)}
