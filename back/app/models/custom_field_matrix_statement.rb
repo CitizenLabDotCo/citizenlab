@@ -1,3 +1,24 @@
+# == Schema Information
+#
+# Table name: custom_field_matrix_statements
+#
+#  id              :uuid             not null, primary key
+#  custom_field_id :uuid             not null
+#  title_multiloc  :jsonb            not null
+#  key             :string           not null
+#  ordering        :integer          not null
+#  created_at      :datetime         not null
+#  updated_at      :datetime         not null
+#
+# Indexes
+#
+#  index_custom_field_matrix_statements_on_custom_field_id  (custom_field_id)
+#  index_custom_field_matrix_statements_on_key              (key)
+#
+# Foreign Keys
+#
+#  fk_rails_...  (custom_field_id => custom_fields.id)
+#
 class CustomFieldMatrixStatement < ApplicationRecord
   belongs_to :custom_field
 
