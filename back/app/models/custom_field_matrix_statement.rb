@@ -38,6 +38,6 @@ class CustomFieldMatrixStatement < ApplicationRecord
 
   def generate_key
     title = title_multiloc.values.first
-    self.key ||= (title && CustomFieldService.new.generate_key(title))
+    self.key ||= title && CustomFieldService.new.generate_key(title)
   end
 end
