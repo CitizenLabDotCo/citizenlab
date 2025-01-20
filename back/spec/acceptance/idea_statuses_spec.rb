@@ -21,8 +21,6 @@ resource 'IdeaStatuses' do
       let(:participation_method) { 'ideation' }
 
       example_request 'List all ideation input statuses' do
-        pp "ideation: #{AppConfiguration.instance.feature_activated?('prescreening_ideation')}"
-        pp "proposals: #{AppConfiguration.instance.feature_activated?('prescreening')}"
         assert_status 200
         json_response = json_parse(response_body)
         expect(json_response[:data].size).to eq 3
