@@ -3,7 +3,7 @@ fr:
     campaign_type_description:
       "idea_assigned_to_you": Une idée vous est assignée
     admin_campaign_type_description:
-      "idea_assigned_to_you": Attribution d'une idée - administrateurs et administrateurs projet
+      "idea_assigned_to_you": Assignation d'une idée - administrateurs et gestionnaires de projet
     idea_assigned_to_you:
       by_author: 'par %{authorName}'
       cta_reply_to: 'Faites votre retour à %{authorName}'
