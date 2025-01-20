@@ -8,15 +8,15 @@ class NavBarItemPolicy < ApplicationPolicy
   end
 
   def removed_default_items?
-    user&.active? && user&.admin?
+    user&.active? && user.admin?
   end
 
   def create?
-    user&.active? && user&.admin?
+    user&.active? && user.admin?
   end
 
   def update?
-    user&.active? && user&.admin?
+    user&.active? && user.admin?
   end
 
   def reorder?
