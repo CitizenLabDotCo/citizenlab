@@ -2086,7 +2086,6 @@
   "app.utils.errors.default.ajv_error_birthyear_required": "براہ کرم اپنی پیدائش کا سال بھریں۔",
   "app.utils.errors.default.ajv_error_date_any": "براہ کرم ایک درست تاریخ بھریں۔",
   "app.utils.errors.default.ajv_error_domicile_required": "براہ کرم اپنی رہائش کی جگہ پُر کریں۔",
-  "app.utils.errors.default.ajv_error_education_required": "براہ کرم اپنی تعلیمی سطح کو پُر کریں۔",
   "app.utils.errors.default.ajv_error_gender_required": "براہ کرم اپنی جنس بھریں۔",
   "app.utils.errors.default.ajv_error_invalid": "ناجائز ہے۔",
   "app.utils.errors.default.ajv_error_maxItems": "{limit, plural, one {# آئٹم} other {# آئٹمز}}سے زیادہ شامل نہیں ہو سکتے",
