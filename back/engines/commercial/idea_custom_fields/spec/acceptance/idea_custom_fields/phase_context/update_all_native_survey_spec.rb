@@ -408,6 +408,8 @@ resource 'Idea Custom Fields' do
               title_multiloc: { en: 'Inserted field' },
               required: false,
               enabled: true,
+              linear_scale_label_1_multiloc: { 'en' => 'Closest' },
+              linear_scale_label_7_multiloc: { 'en' => 'Furthest' },
               matrix_statements: [
                 {
                   title_multiloc: { en: 'Statement 1' }
@@ -439,7 +441,15 @@ resource 'Idea Custom Fields' do
             updated_at: an_instance_of(String),
             logic: {},
             constraints: {},
-            random_option_ordering: false
+            random_option_ordering: false,
+            linear_scale_label_1_multiloc: { en: 'Closest' },
+            linear_scale_label_2_multiloc: {},
+            linear_scale_label_3_multiloc: {},
+            linear_scale_label_4_multiloc: {},
+            linear_scale_label_5_multiloc: {},
+            linear_scale_label_6_multiloc: {},
+            linear_scale_label_7_multiloc: { en: 'Furthest' },
+            maximum: nil
           },
           id: an_instance_of(String),
           type: 'custom_field',

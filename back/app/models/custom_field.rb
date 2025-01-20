@@ -127,6 +127,10 @@ class CustomField < ApplicationRecord
     %w[page section].exclude?(input_type)
   end
 
+  def supports_linear_scale?
+    %w[linear_scale matrix_linear_scale].include?(input_type)
+  end
+
   def supports_matrix_statements?
     input_type == 'matrix_linear_scale'
   end
