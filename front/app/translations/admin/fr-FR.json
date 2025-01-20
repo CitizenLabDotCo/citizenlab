@@ -1076,7 +1076,7 @@
   "app.containers.Admin.projects.project.survey.formResults.averageRank": "<b>#{averageRank}</b> moyenne",
   "app.containers.Admin.projects.project.survey.formResults.exportGeoJSON": "Exporter au format GeoJSON",
   "app.containers.Admin.projects.project.survey.formResults.exportGeoJSONTooltip2": "Exportez les réponses à cette question dans un fichier GeoJSON. Chaque réponse apparaîtra sous la forme d'une entité GeoJSON. Pour chaque entité, toutes les autres réponses de cette personne aux autres questions de l'enquête seront aussi listées dans l'objet \"properties\" de cette entité.",
-  "app.containers.Admin.projects.project.survey.formResults.hideDetails": "Cacher les détails",
+  "app.containers.Admin.projects.project.survey.formResults.hideDetails": "Masquer les détails",
   "app.containers.Admin.projects.project.survey.formResults.rank": "#{rank}",
   "app.containers.Admin.projects.project.survey.formResults.viewDetails": "Voir les détails",
   "app.containers.Admin.projects.project.survey.formResults.xChoices": "{numberChoices, plural, no {{numberChoices} choix} one {{numberChoices} choix} other {{numberChoices} choix}}",
