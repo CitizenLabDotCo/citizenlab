@@ -759,6 +759,7 @@
   "app.components.formBuilder.shortAnswer": "Kratak odgovor",
   "app.components.formBuilder.showResponseToUsersToggleLabel": "Prikaži odgovor korisnicima",
   "app.components.formBuilder.singleChoice": "Jedan izbor",
+  "app.components.formBuilder.staleDataErrorMessage2": "There has been a problem. This input form has been saved more recently somewhere else. This may be because you or another user has it open for editing in another browser window. Please refresh the page to get the latest form and then make your changes again.",
   "app.components.formBuilder.supportArticleLinkText": "ova stranica",
   "app.components.formBuilder.tags": "Kategorije",
   "app.components.formBuilder.title": "Naslov",

@@ -15,7 +15,7 @@ import {
 
 import FormWrapper from 'components/Form/Components/FormWrapper';
 import { isValidData, customAjv } from 'components/Form/utils';
-import Button from 'components/UI/Button';
+import Button from 'components/UI/ButtonWithLink';
 import UserCustomFieldsForm from 'components/UserCustomFields';
 
 import { trackEventByName } from 'utils/analytics';

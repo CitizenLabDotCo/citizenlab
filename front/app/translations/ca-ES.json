@@ -759,6 +759,7 @@
   "app.components.formBuilder.shortAnswer": "Resposta curta",
   "app.components.formBuilder.showResponseToUsersToggleLabel": "Mostra la resposta als usuaris",
   "app.components.formBuilder.singleChoice": "Opció única",
+  "app.components.formBuilder.staleDataErrorMessage2": "Hi ha hagut un problema. Aquest formulari d'entrada s'ha desat més recentment en un altre lloc. Això pot ser perquè vostè o un altre usuari el teniu obert per editar-lo en una altra finestra del navegador. Actualitzeu la pàgina per obtenir el formulari més recent i, a continuació, torneu a fer els vostres canvis.",
   "app.components.formBuilder.supportArticleLinkText": "aquesta pàgina",
   "app.components.formBuilder.tags": "Etiquetes",
   "app.components.formBuilder.title": "Títol",

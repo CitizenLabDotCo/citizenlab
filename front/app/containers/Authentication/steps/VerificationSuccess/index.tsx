@@ -8,7 +8,7 @@ import useAuthUser from 'api/me/useAuthUser';
 import { Title } from 'containers/Authentication/steps/AuthProviders/styles';
 
 import Avatar from 'components/Avatar';
-import Button from 'components/UI/Button';
+import Button from 'components/UI/ButtonWithLink';
 
 import { FormattedMessage } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';

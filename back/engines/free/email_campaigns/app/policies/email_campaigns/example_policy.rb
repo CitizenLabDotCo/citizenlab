@@ -4,7 +4,7 @@ module EmailCampaigns
   class ExamplePolicy < ApplicationPolicy
     class Scope < ApplicationPolicy::Scope
       def resolve
-        if user&.active? && user&.admin?
+        if user&.active? && user.admin?
           scope.all
         else
           scope.none
@@ -13,11 +13,11 @@ module EmailCampaigns
     end
 
     def index?
-      user&.active? && user&.admin?
+      user&.active? && user.admin?
     end
 
     def show?
-      user&.active? && user&.admin?
+      user&.active? && user.admin?
     end
   end
 end

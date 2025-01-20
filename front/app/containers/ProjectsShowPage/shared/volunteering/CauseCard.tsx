@@ -23,7 +23,7 @@ import { IProject } from 'api/projects/types';
 import { triggerAuthenticationFlow } from 'containers/Authentication/events';
 
 import T from 'components/T';
-import Button from 'components/UI/Button';
+import Button from 'components/UI/ButtonWithLink';
 import Image from 'components/UI/Image';
 import QuillEditedContent from 'components/UI/QuillEditedContent';
 

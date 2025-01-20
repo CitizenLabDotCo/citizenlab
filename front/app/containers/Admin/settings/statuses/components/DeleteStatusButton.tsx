@@ -9,7 +9,7 @@ import {
 
 import useDeleteIdeaStatus from 'api/idea_statuses/useDeleteIdeaStatus';
 
-import Button from 'components/UI/Button';
+import Button from 'components/UI/ButtonWithLink';
 
 import { FormattedMessage } from 'utils/cl-intl';
 
