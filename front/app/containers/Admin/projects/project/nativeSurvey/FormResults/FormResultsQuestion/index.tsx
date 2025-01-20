@@ -81,57 +81,55 @@ const FormResultsQuestion = ({
                 />
               );
             case 'text':
-              if (textResponses) {
-                return (
+              return (
+                textResponses && (
                   <TextQuestion
                     textResponses={textResponses}
                     customFieldId={customFieldId}
                     hasOtherResponses={!!answers}
                   />
-                );
-              }
-              return null;
+                )
+              );
+
             case 'number': {
-              if (numberResponses) {
-                return <NumberQuestion numberResponses={numberResponses} />;
-              }
-              return null;
+              return (
+                numberResponses && (
+                  <NumberQuestion numberResponses={numberResponses} />
+                )
+              );
             }
             case 'point': {
-              if (pointResponses) {
-                return (
+              return (
+                pointResponses && (
                   <PointLocationQuestion
                     pointResponses={pointResponses}
                     mapConfigId={mapConfigId}
                     customFieldId={customFieldId}
                   />
-                );
-              }
-              return null;
+                )
+              );
             }
             case 'line': {
-              if (lineResponses) {
-                return (
+              return (
+                lineResponses && (
                   <LineLocationQuestion
                     lineResponses={lineResponses}
                     mapConfigId={mapConfigId}
                     customFieldId={customFieldId}
                   />
-                );
-              }
-              return null;
+                )
+              );
             }
             case 'polygon': {
-              if (polygonResponses) {
-                return (
+              return (
+                polygonResponses && (
                   <PolygonLocationQuestion
                     polygonResponses={polygonResponses}
                     mapConfigId={mapConfigId}
                     customFieldId={customFieldId}
                   />
-                );
-              }
-              return null;
+                )
+              );
             }
             default:
               return null;
