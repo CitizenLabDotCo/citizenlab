@@ -12,7 +12,6 @@ import {
 import * as Sentry from '@sentry/react';
 import GlobalStyle from 'global-styles';
 import 'intersection-observer';
-import { includes } from 'lodash-es';
 import moment from 'moment-timezone';
 import { useLocation } from 'react-router-dom';
 import styled, { ThemeProvider } from 'styled-components';
@@ -161,10 +160,7 @@ const App = ({ children }: Props) => {
       }
 
       // Custom Adobe fonts or custom font URLs
-      if (
-        appConfiguration.data.attributes.style &&
-        appConfiguration.data.attributes.style.customFontAdobeId
-      ) {
+      if (appConfiguration.data.attributes.style?.customFontAdobeId) {
         import('webfontloader').then((WebfontLoader) => {
           WebfontLoader.load({
             typekit: {
@@ -174,10 +170,7 @@ const App = ({ children }: Props) => {
             },
           });
         });
-      } else if (
-        appConfiguration.data.attributes.style &&
-        appConfiguration.data.attributes.style.customFontURL
-      ) {
+      } else if (appConfiguration.data.attributes.style?.customFontURL) {
         import('webfontloader').then((WebfontLoader) => {
           const fontName = (
             appConfiguration.data.attributes.style as IAppConfigurationStyle
@@ -204,20 +197,18 @@ const App = ({ children }: Props) => {
     const handleCustomRedirect = () => {
       const { pathname } = location;
       const urlSegments = pathname.replace(/^\/+/g, '').split('/');
+      const localeInUrl = urlSegments[0];
       const pathnameWithoutLocale = removeLocale(pathname).pathname?.replace(
         /\//,
         ''
       );
 
-      if (
-        appConfiguration &&
-        appConfiguration.data.attributes.settings.redirects
-      ) {
+      if (appConfiguration?.data.attributes.settings.redirects) {
         const { rules } = appConfiguration.data.attributes.settings.redirects;
         rules.forEach((rule) => {
           if (
             urlSegments.length > 1 &&
-            includes(locales, urlSegments[0]) &&
+            locales.includes(localeInUrl) &&
             pathnameWithoutLocale === rule.path
           ) {
             window.location.href = rule.target;
