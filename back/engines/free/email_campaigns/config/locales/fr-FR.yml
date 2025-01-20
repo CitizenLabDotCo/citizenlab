@@ -502,8 +502,8 @@ fr:
       main_header: 'Merci d''avoir partagé votre avis sur « %{projectName} » !'
       your_input_submitted: 'Votre contribution pour « %{projectName} » a été soumise avec succès.'
       if_you_would_like_to_review: 'Si vous souhaitez revoir votre soumission, vous pouvez télécharger vos réponses ci-dessous.'
-      your_submission_has_id: 'Votre soumission porte l''identifiant unique suivant :'
-      you_can_use_this_id: 'Vous pouvez utiliser cet identifiant pour contacter les administrateurs de la plateforme au cas où vous souhaiteriez que votre soumission soit supprimée.'
+      your_submission_has_id: 'Votre soumission a l''identifiant unique suivant :'
+      you_can_use_this_id: 'Vous pouvez utiliser cet identifiant pour contacter les administrateurs de la plateforme si vous souhaitez que votre soumission soit supprimée.'
       download_responses: 'Téléchargez vos réponses'
     admin_labels:
       recipient_role:
