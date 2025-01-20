@@ -4,9 +4,9 @@ module EmailCampaigns
   class CampaignPolicy < ApplicationPolicy
     class Scope < ApplicationPolicy::Scope
       def resolve
-        if user&.active? && user&.admin?
+        if user&.active? && user.admin?
           scope.all
-        elsif user&.active? && user&.project_moderator?
+        elsif user&.active? && user.project_moderator?
           scope.manageable_by_project_moderator.automatic.or(
             scope.manageable_by_project_moderator.manual.where(context_id: user.moderatable_project_ids)
           )
@@ -24,7 +24,7 @@ module EmailCampaigns
       if record.manual?
         can_access_and_modify?
       else
-        user&.active? && user&.admin?
+        user&.active? && user.admin?
       end
     end
 
@@ -32,7 +32,7 @@ module EmailCampaigns
       if record.manual?
         !(record.respond_to?(:sent?) && record.sent?) && can_access_and_modify?
       else
-        user&.active? && user&.admin?
+        user&.active? && user.admin?
       end
     end
 
