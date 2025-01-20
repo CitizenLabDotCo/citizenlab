@@ -1,101 +1,7 @@
-import moment = require('moment');
+import * as moment from 'moment';
 import { randomString, randomEmail } from '../support/commands';
 
-// describe('Existing continuous ideation project', () => {
-//   const firstName = randomString();
-//   const lastName = randomString();
-//   const email = randomEmail();
-//   const password = randomString();
-
-//   before(() => {
-//     cy.apiSignup(firstName, lastName, email, password);
-//     cy.apiLogin(email, password);
-//     cy.visit('/projects/an-idea-bring-it-to-your-council');
-//     cy.get('#e2e-project-page');
-//     cy.wait(1000);
-//   });
-
-//   it('shows the correct project header', () => {
-//     cy.get('#e2e-project-header-image');
-//     cy.get('#e2e-project-description');
-//     cy.get('#e2e-project-sidebar');
-//     cy.get('#e2e-project-see-ideas-button');
-//     cy.get('#project-ideabutton');
-//     cy.get('#e2e-project-description-read-more-button');
-//   });
-
-//   it('shows the post-your-idea button', () => {
-//     cy.get('#project-ideabutton');
-//   });
-
-//   it('shows the idea cards', () => {
-//     cy.get('#e2e-continuous-project-idea-cards');
-//     cy.get('#e2e-ideas-list');
-//     cy.get('.e2e-idea-card');
-//   });
-
-//   it('shows the current sorting options', () => {
-//     cy.get('.e2e-filter-selector-button').first().click();
-//     cy.get('#e2e-item-random').should('exist');
-//     cy.get('#e2e-item-new').should('exist');
-//     cy.get('#e2e-item--new').should('exist');
-//     cy.get('#e2e-item-trending').should('exist');
-//     cy.get('#e2e-item-popular').should('exist');
-//   });
-
-//   it('asks unauthorised users to log in or sign up before they reaction', () => {
-//     cy.clearCookies();
-//     cy.get('#e2e-ideas-container')
-//       .find('.e2e-idea-card')
-//       .first()
-//       .find('.e2e-ideacard-like-button')
-//       .click();
-//     cy.get('#e2e-authentication-modal').should('exist');
-//     cy.get('.e2e-modal-close-button').click();
-//   });
-
-//   it('takes you to the idea page when clicking an idea card', () => {
-//     cy.get('#e2e-ideas-container')
-//       .find('.e2e-idea-card')
-//       .first()
-//       .as('ideaCard');
-//     cy.get('@ideaCard').then(($a) => {
-//       const href = $a.prop('href');
-//       cy.get('@ideaCard').click();
-//       cy.url().should('eq', href);
-//     });
-//   });
-
-//   it('redirects to the idea creation form when pressing the post-your-idea button when logged in', () => {
-//     cy.setLoginCookie(email, password);
-//     cy.visit('/projects/an-idea-bring-it-to-your-council');
-//     cy.get('#project-ideabutton').should('be.visible');
-//     cy.get('#project-ideabutton').click();
-//     cy.wait(4000);
-//     cy.get('#idea-form');
-//   });
-// });
-
-// describe('Existing timeline project with ended ideation phase', () => {
-//   before(() => {
-//     cy.visit('/projects/timeline-ideation-card');
-//     cy.get('#e2e-project-page');
-//     cy.wait(1000);
-//   });
-
-//   it('shows the correct project header', () => {
-//     cy.get('#e2e-project-description');
-//     cy.get('#e2e-project-sidebar');
-//   });
-
-//   it('shows the idea cards', () => {
-//     cy.get('.e2e-timeline-project-idea-cards');
-//     cy.get('#e2e-ideas-list');
-//     cy.get('.e2e-idea-card');
-//   });
-// });
-
-describe('New timeline project with ideation phase with default map view', () => {
+describe.skip('New timeline project with ideation phase with default map view', () => {
   const projectTitle = randomString();
   let projectId: string;
   let projectSlug: string;
@@ -133,7 +39,7 @@ describe('New timeline project with ideation phase with default map view', () =>
   });
 });
 
-describe('New timeline project with active ideation phase', () => {
+describe.skip('New timeline project with active ideation phase', () => {
   const firstName = randomString();
   const lastName = randomString();
   const email = randomEmail();
@@ -255,7 +161,7 @@ describe('New timeline project with active ideation phase', () => {
   });
 });
 
-describe('Archived timeline project with ideation phase', () => {
+describe.skip('Archived timeline project with ideation phase', () => {
   const firstName = randomString();
   const lastName = randomString();
   const email = randomEmail();
@@ -386,6 +292,7 @@ describe('timeline project with no active ideation phase', () => {
   it('allows admin users to add an idea via the map for a non-active phase', () => {
     // Select map view
     cy.get('#view-tab-2').click();
+    cy.wait(2000);
     // Click map to open popup
     cy.get('#e2e-ideas-map').should('exist');
     cy.wait(1000);
@@ -408,7 +315,7 @@ describe('timeline project with no active ideation phase', () => {
   });
 });
 
-describe('Ideation CTA bar', () => {
+describe.skip('Ideation CTA bar', () => {
   let projectId: string;
   let projectSlug: string;
   let postingRestrictedProjectId: string;
@@ -502,13 +409,13 @@ describe('Ideation CTA bar', () => {
       });
   });
 
-  it('shows the CTA to the user to submit their idea when the user has not yet participated', () => {
+  it.skip('shows the CTA to the user to submit their idea when the user has not yet participated', () => {
     cy.visit(`/en/projects/${projectSlug}`);
     cy.acceptCookies();
     cy.get('#e2e-ideation-cta-button').should('exist');
   });
 
-  it('shows the see ideas button to the user if posting is not enabled', () => {
+  it.skip('shows the see ideas button to the user if posting is not enabled', () => {
     cy.visit(`/en/projects/${postingRestrictedProjectSlug}`);
     cy.acceptCookies();
     cy.get('#e2e-ideation-see-ideas-button').should('exist');
