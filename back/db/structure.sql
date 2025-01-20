@@ -2142,7 +2142,11 @@ CREATE TABLE public.custom_fields (
     linear_scale_label_5_multiloc jsonb DEFAULT '{}'::jsonb NOT NULL,
     linear_scale_label_6_multiloc jsonb DEFAULT '{}'::jsonb NOT NULL,
     linear_scale_label_7_multiloc jsonb DEFAULT '{}'::jsonb NOT NULL,
-    dropdown_layout boolean DEFAULT false NOT NULL
+    dropdown_layout boolean DEFAULT false NOT NULL,
+    linear_scale_label_8_multiloc jsonb DEFAULT '{}'::jsonb NOT NULL,
+    linear_scale_label_9_multiloc jsonb DEFAULT '{}'::jsonb NOT NULL,
+    linear_scale_label_10_multiloc jsonb DEFAULT '{}'::jsonb NOT NULL,
+    linear_scale_label_11_multiloc jsonb DEFAULT '{}'::jsonb NOT NULL
 );
 
 
@@ -7695,6 +7699,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20241227103433'),
 ('20241230165323'),
 ('20241230165518'),
-('20241230172612');
+('20241230172612'),
+('20250120125531');
 
 
