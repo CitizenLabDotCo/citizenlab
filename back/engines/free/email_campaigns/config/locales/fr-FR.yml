@@ -499,7 +499,7 @@ fr:
       cta_vote: 'Se rendre sur la plateforme pour voter'
     survey_submitted:
       subject: '%{organizationName}: Merci pour votre réponse ! 🎉'
-      main_header: 'Merci de nous faire part de vos réflexions sur "%{projectName}" !'
+      main_header: 'Merci d''avoir partagé votre avis sur « %{projectName} » !'
       your_input_submitted: 'Votre contribution pour « %{projectName} » a été soumise avec succès.'
       if_you_would_like_to_review: 'Si vous souhaitez revoir votre soumission, vous pouvez télécharger vos réponses ci-dessous.'
       your_submission_has_id: 'Votre soumission porte l''identifiant unique suivant :'
