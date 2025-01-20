@@ -1,7 +1,7 @@
 import * as moment from 'moment';
 import { randomString, randomEmail } from '../support/commands';
 
-describe.skip('New timeline project with ideation phase with default map view', () => {
+describe('New timeline project with ideation phase with default map view', () => {
   const projectTitle = randomString();
   let projectId: string;
   let projectSlug: string;
@@ -39,7 +39,7 @@ describe.skip('New timeline project with ideation phase with default map view', 
   });
 });
 
-describe.skip('New timeline project with active ideation phase', () => {
+describe('New timeline project with active ideation phase', () => {
   const firstName = randomString();
   const lastName = randomString();
   const email = randomEmail();
@@ -161,7 +161,7 @@ describe.skip('New timeline project with active ideation phase', () => {
   });
 });
 
-describe.skip('Archived timeline project with ideation phase', () => {
+describe('Archived timeline project with ideation phase', () => {
   const firstName = randomString();
   const lastName = randomString();
   const email = randomEmail();
@@ -315,7 +315,7 @@ describe('timeline project with no active ideation phase', () => {
   });
 });
 
-describe.skip('Ideation CTA bar', () => {
+describe('Ideation CTA bar', () => {
   let projectId: string;
   let projectSlug: string;
   let postingRestrictedProjectId: string;
@@ -409,13 +409,13 @@ describe.skip('Ideation CTA bar', () => {
       });
   });
 
-  it.skip('shows the CTA to the user to submit their idea when the user has not yet participated', () => {
+  it('shows the CTA to the user to submit their idea when the user has not yet participated', () => {
     cy.visit(`/en/projects/${projectSlug}`);
     cy.acceptCookies();
     cy.get('#e2e-ideation-cta-button').should('exist');
   });
 
-  it.skip('shows the see ideas button to the user if posting is not enabled', () => {
+  it('shows the see ideas button to the user if posting is not enabled', () => {
     cy.visit(`/en/projects/${postingRestrictedProjectSlug}`);
     cy.acceptCookies();
     cy.get('#e2e-ideation-see-ideas-button').should('exist');
