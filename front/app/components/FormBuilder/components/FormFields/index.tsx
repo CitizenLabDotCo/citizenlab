@@ -87,15 +87,18 @@ const FormFields = ({
   });
 
   const conflictsByPage = detectConflictsByPage(nestedGroupData);
+  const hasConflicts = Object.keys(conflictsByPage).length > 0;
   const fieldNumbers = getFieldNumbers(formCustomFields);
 
   return (
     <>
-      <Box mb="16px">
-        <Warning type="caution">
-          {formatMessage(messages.conflictsWarning)}
-        </Warning>
-      </Box>
+      {hasConflicts && (
+        <Box mb="16px">
+          <Warning type="caution">
+            {formatMessage(messages.conflictsWarning)}
+          </Warning>
+        </Box>
+      )}
       <Box
         borderRadius="3px"
         boxShadow="0px 2px 4px rgba(0, 0, 0, 0.2)"
