@@ -11,7 +11,7 @@ import useLocale from 'hooks/useLocale';
 import usePrevious from 'hooks/usePrevious';
 
 import { TextCell, Row } from 'components/admin/ResourceList';
-import Button from 'components/UI/Button';
+import Button from 'components/UI/ButtonWithLink';
 
 import { FormattedMessage } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';

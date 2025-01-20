@@ -8,35 +8,23 @@ nl-BE:
       "comment_marked_as_spam": Reactie spammelding
       "comment_on_your_comment": Een antwoord op mijn reactie
       "comment_on_idea_you_follow": Een reactie op een idee dat je volgt
-      "comment_on_initiative_you_follow": Een reactie op een voorstel dat je volgt
-      "cosponsor_of_your_initiative": Een gebruiker accepteert mijn uitnodiging om mijn voorstel te steunen
       "cosponsor_of_your_idea": Een gebruiker accepteert mijn uitnodiging om mijn voorstel te steunen
       "event_registration_confirmation": Bevestiging registratie event
       "idea_marked_as_spam": Idee spammelding
       "idea_published": Posten van mijn idee
-      "initiative_assigned_to_you": Toewijzing van een voorstel aan mij
-      "initiative_marked_as_spam": Voorstel spammelding
-      "initiative_published": Posten van mijn voorstel
-      "invitation_to_cosponsor_initiative": Uitnodiging om een voorstel te steunen
       "invitation_to_cosponsor_idea": Uitnodiging om een voorstel te steunen
-      "initiative_resubmitted_for_review": Voorstel opnieuw ingediend voor beoordeling
       "invite_received": Uitnodiging
       "invite_reminder": Herinnering uitnodiging
       "internal_comment_on_idea_assigned_to_you": Interne reactie op aan mij toegewezen bijdrage
       "internal_comment_on_idea_you_commented_internally_on": Interne reactie op een bijdrage waarop ik intern heb gereageerd
       "internal_comment_on_idea_you_moderate": Interne reactie op een bijdrage in een project of map die ik beheer
-      "internal_comment_on_initiative_assigned_to_you": Interne reactie op een voorstel dat aan mij is toegewezen
-      "internal_comment_on_initiative_you_commented_internally_on": Interne reactie op een voorstel waarop ik intern heb gereageerd
-      "internal_comment_on_unassigned_initiative": Interne reactie op een niet-toegewezen voorstel
       "internal_comment_on_unassigned_unmoderated_idea": Interne reactie op een niet-toegewezen bijdrage in een onbeheerd project
       "internal_comment_on_your_internal_comment": Interne reactie op mijn interne reactie
       "mention_in_official_feedback": Vermelding in een update
       "mention_in_internal_comment": Vermelding in een interne reactie
       "new_comment_for_admin": Nieuwe reactie in een project dat ik modereer
       "new_idea_for_admin": Nieuw idee in een project dat ik modereer
-      "new_initiative_for_admin": Nieuw voorstel
       "official_feedback_on_idea_you_follow": Update over een idee dat je volgt
-      "official_feedback_on_initiative_you_follow": Update over een voorstel dat je volgt
       "password_reset": Herstel wachtwoord
       "project_moderation_rights_received": Projectbeheerdersrechten ontvangen
       "project_folder_moderation_rights_received": Mapbeheerdersrechten ontvangen
@@ -46,7 +34,6 @@ nl-BE:
       "project_review_request": Projectbeoordelingsverzoek
       "project_review_state_change": Project goedgekeurd
       "status_change_on_idea_you_follow": Statuswijziging van een idee dat je volgt
-      "status_change_on_initiative_you_follow": Statuswijziging van een voorstel dat je volgt
       "threshold_reached_for_admin": Een voorstel bereikte het benodigd aantal stemmen
       "welcome": Na registratie
       "admin_digest": Weekoverzicht voor admins
@@ -73,7 +60,6 @@ nl-BE:
         issue: 'Ga naar deze reactie'
         option: 'Ga naar deze optie'
         proposal: 'Ga naar dit voorstel'
-        initiative: 'Ga naar dit initiatief'
         petition: 'Ga naar deze petitie'
       cta_goto_your:
         idea: 'Ga naar je idee'
@@ -83,7 +69,6 @@ nl-BE:
         issue: 'Ga naar je reactie'
         option: 'Ga naar je optie'
         proposal: 'Ga naar je voorstel'
-        initiative: 'Ga naar je initiatief'
         petition: 'Ga naar je petitie'
       cta_goto_proposal: 'Ga naar dit voorstel'
       cta_goto_project: 'Ga naar dit project'
@@ -130,7 +115,6 @@ nl-BE:
       new_comments: 'Nieuwe reacties'
       title_activity_past_week: 'Activiteit van de afgelopen week'
       title_no_activity_past_week: 'Er was geen activiteit in de afgelopen week'
-      title_initiatives_past_week: 'Nieuwe voorstellen van de afgelopen week'
       reached_threshold: 'Drempel bereikt'
       yesterday_by_author: 'Gisteren door %{author}'
       today_by_author: 'Vandaag door %{author}'
@@ -168,12 +152,6 @@ nl-BE:
       main_header: '%{cosponsorName} heeft je uitnodiging om je voorstel te steunen geaccepteerd'
       subject: '%{cosponsorName} heeft je uitnodiging om je voorstel te steunen geaccepteerd'
       preheader: '%{cosponsorName} heeft je uitnodiging om je voorstel te steunen geaccepteerd'
-    cosponsor_of_your_initiative:
-      cta_reply_to: 'Bekijk je voorstel'
-      event_description_initiative: 'Gefeliciteerd! %{cosponsorName} heeft je uitnodiging om je voorstel te steunen geaccepteerd.'
-      main_header: '%{cosponsorName} heeft je uitnodiging om je voorstel te steunen geaccepteerd'
-      subject: '%{cosponsorName} heeft je uitnodiging om je voorstel te steunen geaccepteerd'
-      preheader_initiative: '%{cosponsorName} heeft je uitnodiging om je voorstel te steunen geaccepteerd'
     assignee_digest:
       subject: 'Aantal ideeën die je feedback nodig hebben: %{numberIdeas}'
       preheader: 'Overzicht van %{organizationName}'
@@ -194,20 +172,6 @@ nl-BE:
       preheader: 'Neem actie'
       reported_this_because: '%{reporterFirstName} rapporteerde dit omdat:'
       title_spam_report: '%{firstName} %{lastName} heeft spam gemeld'
-    initiative_marked_as_spam:
-      cta_review_initiative: 'Review dit voorstel'
-      report_inappropriate_offensive_content: 'Ik vind deze inhoud ongepast of aanstootgevend.'
-      report_not_an_initiative: 'Dit is geen voorstel en hoort hier niet thuis.'
-      subject: 'Je hebt een spamrapport op het platform van %{organizationName}'
-      preheader: 'Neem actie'
-      reported_this_because: '%{reporterFirstName} rapporteerde dit omdat:'
-      title_spam_report: '%{firstName} %{lastName} heeft spam gemeld'
-    initiative_assigned_to_you:
-      cta_reply_to: 'Geef feedback op %{authorName}'
-      event_description_initiative: 'Je kreeg een voorstel toegewezen. Geef feedback door het schrijven van een officiële update of door het wijzigen van de status van dit voorstel.'
-      main_header: '%{firstName}, je hebt een nieuwe toewijzing'
-      subject: 'Je hebt een toewijzing op het platform van %{organizationName}'
-      preheader_initiative: 'Je kreeg het voorstel van %{authorName} toegewezen'
     invitation_to_cosponsor_idea:
       cta_reply_to: 'Steun dit voorstel'
       event_description: '%{authorName} heeft een nieuw voorstel gemaakt en wil graag dat jij het steunt.'
@@ -217,22 +181,6 @@ nl-BE:
       main_header: 'Je bent uitgenodigd om een voorstel te steunen'
       subject: 'Je bent uitgenodigd om een voorstel te steunen'
       preheader: 'Je bent uitgenodigd om het voorstel van %{authorName} te steunen'
-    invitation_to_cosponsor_initiative:
-      cta_reply_to: 'Steun dit voorstel'
-      event_description_initiative: '%{authorName} heeft een nieuw voorstel gemaakt en wil graag dat jij het steunt.'
-      event_description_cosponsoring: 'Ondersteuner zijn van een voorstel betekent dat <strong>jouw naam wordt weergegeven</strong> met de namen van andere ondersteuners van het voorstel.'
-      event_description_before_action: 'Om het voorstel te zien en de uitnodiging te accepteren, moet je ingelogd zijn met je account.'
-      event_description_action: 'Klik hieronder om het voorstel te lezen.'
-      main_header: 'Je bent uitgenodigd om een voorstel te steunen'
-      subject: 'Je bent uitgenodigd om een voorstel te steunen'
-      preheader_initiative: 'Je bent uitgenodigd om het voorstel van %{authorName} te steunen'
-    initiative_resubmitted_for_review:
-      by_author: 'door %{authorName}'
-      cta_reply_to: 'Geef %{authorName} feedback'
-      event_description_initiative: 'Een voorstel is opnieuw ingediend voor beoordeling. Geef feedback door een officiële update te schrijven of door de status te wijzigen.'
-      main_header: '%{firstName}, je hebt een voorstel om te beoordelen'
-      subject: 'Je moet een voorstel beoordelen op het platform van %{organizationName}'
-      preheader_initiative: 'Het voorstel van %{authorName} is opnieuw ter beoordeling ingediend'
     invite_reminder:
       cta_accept_invitation: 'Accepteer je uitnodiging'
       invitation_header: 'Je hebt je uitnodiging nog niet geaccepteerd'
@@ -247,20 +195,6 @@ nl-BE:
       invitation_expiry_message: 'Deze uitnodiging verloopt over %{expiryDays} dagen.'
       preheader: '%{organizationName} stuurde je een uitnodiging om je te registreren op hun participatieplatform.'
       subject: 'Je bent uitgenodigd om je te registeren op het participatieplatform van %{organizationName}'
-    initiative_published:
-      action_add_image: '%{addImageLink} om de visibiliteit van je idee te vergroten'
-      action_published_initiative: 'Geplaatst voorstel'
-      action_send_email: 'Stuur je contactpersonen een %{sendEmailLink}'
-      action_share_fb: 'Breng je vrienden op de hoogte op %{fbLink}'
-      action_share_link: 'Deel het op een kanaal naar keuze met deze %{link}'
-      action_share_twitter: 'Informeer je volgers op %{twitterLink}'
-      link: link
-      main_header: 'Je hebt een voorstel geplaatst! Nu is het tijd om er steun voor te verzamelen.'
-      message_next_steps: '%{userFirstName}, je voorstel werd succesvol geplaatst op het participatieplatform van %{organizationName}. Je wordt op de hoogte gebracht wanneer anderen op je voorstel reageren. Ontdek hieronder welke volgende stappen je kan nemen.'
-      message_get_votes: 'Bereik het benodigd aantal stemmen:'
-      preheader: 'Bedankt voor het delen van je voorstel %{initiativeTitle} voor %{organizationName}. De volgende stap is steun zoeken door het te delen in je netwerk.'
-      send_email: e-mail
-      subject: 'Je voorstel werd gepubliceerd op het platform van %{organizationName}'
     mention_in_comment:
       cta_reply_to: 'Antwoord op %{commentAuthor}'
       event_description: '%{commentAuthorFull} heeft je genoemd in zijn reactie op het idee ''%{post}''. Klik op onderstaande link om in gesprek te gaan met %{commentAuthor}'
@@ -309,22 +243,9 @@ nl-BE:
         issue: '%{authorName} heeft gereageerd op een reactie die je volgt'
         option: '%{authorName} heeft gereageerd op een optie die je volgt'
         proposal: '%{authorName} heeft gereageerd op een voorstel dat je volgt'
-        initiative: '%{authorName} heeft gereageerd op een initiatief dat je volgt'
         petition: '%{authorName} heeft gereageerd op een petitie die je volgt'
       subject: 'There''s a new comment on "%{input_title}"'
       preheader: '%{authorName} heeft een reactie achtergelaten op een idee voor %{organizationName}'
-    comment_on_initiative_you_follow:
-      cta_reply_to: 'Reageer op %{commentAuthor}'
-      event_description: '%{authorNameFull} heeft gereageerd op het voorstel ''%{initiativeTitle}''. Klik op de onderstaande knop om het gesprek voort te zetten met %{authorName}.'
-      main_header: '%{commentAuthor} heeft gereageerd op een voorstel dat je volgt'
-      subject: 'Er is een nieuwe reactie op het voorstel dat je volgt'
-      preheader: '%{authorName} heeft een reactie achtergelaten op een voorstel voor %{organizationName}'
-    new_initiative_for_admin:
-      cta_reply_to: 'Geef feedback op %{authorName}'
-      event_description: '%{authorName} plaatste een nieuw voorstel op je platform. Ontdek het, geef feedback of wijzig de status!'
-      main_header: '%{firstName}, er werd een nieuw voorstel geplaatst op je platform'
-      subject: 'Iemand plaatste een nieuw voorstel op het platform van %{organizationName}'
-      preheader: '%{authorName} heeft een nieuw voorstel geplaatst op jouw platform'
     new_idea_for_admin:
       main_header_publication: 'Er is een nieuwe invoer gepubliceerd op je platform'
       event_description_publication: '%{authorName} heeft een nieuwe bijdrage ingediend op jouw platform. Ontdek het nu, geef feedback of verander de status!'
@@ -368,24 +289,6 @@ nl-BE:
       subject: '''%{post}'' heeft een nieuwe interne reactie'
       main_header: '''%{post}'' heeft een nieuwe interne reactie'
       preheader: '''%{post}'' heeft een nieuwe interne reactie'
-    internal_comment_on_initiative_assigned_to_you:
-      cta_reply_to: 'Bekijk de reactie van %{firstName}'
-      event_description: '%{authorNameFull} heeft een interne reactie gegeven op een aan jou toegewezen voorstel.'
-      subject: '''%{post}'' heeft een nieuwe interne reactie'
-      main_header: '''%{post}'' heeft een nieuwe interne reactie'
-      preheader: '''%{post}'' heeft een nieuwe interne reactie'
-    internal_comment_on_initiative_you_commented_internally_on:
-      cta_reply_to: 'Bekijk de reactie van %{firstName}'
-      event_description: '%{authorNameFull} gaf een interne reactie op een voorstel waar je intern op reageerde.'
-      subject: '''%{post}'' heeft een nieuwe interne reactie'
-      main_header: '''%{post}'' heeft een nieuwe interne reactie'
-      preheader: '''%{post}'' heeft een nieuwe interne reactie'
-    internal_comment_on_unassigned_initiative:
-      cta_reply_to: 'Bekijk de reactie van %{firstName}'
-      event_description: '%{authorNameFull} heeft een interne reactie gegeven op een niet-toegewezen voorstel.'
-      subject: '''%{post}'' heeft een nieuwe interne reactie'
-      main_header: '''%{post}'' heeft een nieuwe interne reactie'
-      preheader: '''%{post}'' heeft een nieuwe interne reactie'
     internal_comment_on_unassigned_unmoderated_idea:
       cta_reply_to: 'Bekijk de reactie van %{firstName}'
       event_description: '%{authorNameFull} heeft een interne reactie gegeven op een niet-toegewezen bijdrage in een onbeheerd project.'
@@ -397,11 +300,6 @@ nl-BE:
       header_title: 'There''s an update on "%{input_title}"'
       subject: 'Official feedback was posted on "%{input_title}"'
       preheader: 'There''s an update on an input you follow'
-    official_feedback_on_initiative_you_follow:
-      header_message: '%{officialName} gaf een update over het voorstel ''%{initiativeTitle}''. Klik op de onderstaande knop om het gesprek voort te zetten met %{organizationName}.'
-      header_title: 'Er is een update over een voorstel dat je volgt'
-      subject: 'Een voorstel dat je volgt, heeft een officiële update gekregen op het platform van %{organizationName}'
-      preheader: 'Er is een update over een voorstel dat je volgt'
     mention_in_official_feedback:
       cta_reply_to: 'Antwoord op %{organizationName}'
       event_description: '%{organizationName} heeft je genoemd in hun feedback op het idee ''%{post}''. Klik op onderstaande knop om in gesprek te gaan met %{organizationName}'
@@ -475,12 +373,6 @@ nl-BE:
       header_title: 'An input you follow has a new status'
       subject: 'The status of "%{input_title}" has changed'
       preheader: 'An input you follow has a new status'
-    status_change_on_initiative_you_follow:
-      status_change: 'De nieuwe status van dit voorstel is ''%{initiativeStatus}'''
-      header_message: 'De status van het voorstel ''%{initiativeTitle}'' is bijgewerkt op het digitale participatieplatform van %{organizationName}.'
-      header_title: 'Een voorstel dat je volgt, heeft een nieuwe status'
-      subject: 'De status van een voorstel dat je volgt, is gewijzigd'
-      preheader: 'Een voorstel dat je volgt, heeft een nieuwe status'
     user_digest:
       subject: "Wekelijkse update van het participatieplatform van %{organizationName}"
       commented: "%{authorFirstName} schreef:"
@@ -521,7 +413,6 @@ nl-BE:
         issue: 'Je reactie is gepubliceerd'
         option: 'Je optie is gepubliceerd'
         proposal: 'Je voorstel is gepubliceerd'
-        initiative: 'Je initiatief is gepubliceerd'
         petition: 'Je petitie is gepubliceerd'
       main_header: 'Je hebt "%{input_title}" geplaatst'
       header_message: 'Laten we ervoor zorgen dat het gelezen wordt.'
@@ -545,7 +436,6 @@ nl-BE:
         issue: 'Je reactie staat in "%{prescreening_status_title}"'
         option: 'Je optie staat op "%{prescreening_status_title}"'
         proposal: 'Je voorstel staat in "%{prescreening_status_title}"'
-        initiative: 'Je initiatief staat in "%{prescreening_status_title}"'
         petition: 'Je petitie staat in "%{prescreening_status_title}"'
       message: '"%{input_title}" wordt zichtbaar voor anderen zodra het is beoordeeld en goedgekeurd.'
       subject: '"%{input_title}" is bijna gepubliceerd'
@@ -674,9 +564,6 @@ nl-BE:
         internal_comment_is_posted_on_idea_in_project_or_folder_user_manages: 'Interne reactie is geplaatst op bijdrage in project of map die gebruiker beheert'
         internal_comment_is_posted_on_idea_user_has_commented_internally_on: 'Interne reactie is geplaatst op bijdrage waar gebruiker interne reactie op heeft gegeven'
         internal_comment_is_posted_on_idea_user_moderates: 'Interne reactie is geplaatst op bijdrage die gebruiker modereert'
-        internal_comment_is_posted_on_initiative_assigned_to_user: 'Interne reactie is geplaatst op aan gebruiker toegewezen voorstel'
-        internal_comment_is_posted_on_initiative_user_has_commented_internally_on: 'Interne reactie is geplaatst op voorstel waar gebruiker interne reactie op heeft gegeven'
-        internal_comment_is_posted_on_unassigned_initiative: 'Interne reactie is geplaatst op niet-toegewezen voorstel'
         internal_comment_is_posted_on_unassigned_unmoderated_idea: 'Interne reactie is geplaatst op niet-toegewezen bijdrage in onbeheerd project'
         project_review_request: 'Moderator heeft een projectbeoordeling aangevraagd'
         project_review_state_change: 'Reviewer heeft het project goedgekeurd'

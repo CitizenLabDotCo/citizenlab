@@ -2,7 +2,7 @@ import React, { ReactElement } from 'react';
 
 import { Box, colors } from '@citizenlab/cl2-component-library';
 
-import Button from 'components/UI/Button';
+import Button from 'components/UI/ButtonWithLink';
 import Error from 'components/UI/Error';
 
 import { FormattedMessage } from 'utils/cl-intl';
