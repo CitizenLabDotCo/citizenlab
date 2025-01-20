@@ -143,6 +143,10 @@ module Frontend
       "#{home_url(options)}/reset-confirmation-code"
     end
 
+    def profile_surveys_url(user_slug, options = {})
+    "#{home_url(options)}/profile/#{user_slug}/surveys"
+    end
+
     private
 
     # @return [AppConfiguration]
