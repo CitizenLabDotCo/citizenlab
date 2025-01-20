@@ -138,8 +138,6 @@ lb:
         title: Gebuertsjoer
       domicile:
         title: Wunnuert
-      education:
-        title: Formatioun
     ideas:
       title:
         title: Titel
@@ -207,14 +205,6 @@ lb:
       unspecified: Aner
     domicile:
       outside: Anzwousch anescht
-    education:
-      ISCED2: Formation secondaire 1. Zyklus
-      ISCED3: Formation secondaire 2. Zyklus
-      ISCED4: Net-tertiär Formatioun no der Formatioun secondaire
-      ISCED5: Tertäir Formatioun kuerzen Zyklus
-      ISCED6: Bachelor oder entspriechend
-      ISCED7: Master oder entspriechend
-      ISCED8: Doktorgrad oder entspriechend
   reset_password_mailer:
     send_reset_password:
       preheader: 'Reset Äert Passwuert fir %{organizationName}'
