@@ -90,7 +90,7 @@ class CustomField < ApplicationRecord
   validates :minimum_select_count, comparison: { greater_than_or_equal_to: 0 }, if: :multiselect?, allow_nil: true
   validates :page_layout, presence: true, inclusion: { in: PAGE_LAYOUTS }, if: :page?
   validates :page_layout, absence: true, unless: :page?
-  validates :matrix_statements, presence: true, if: :supports_matrix_statements?
+  # validates :matrix_statements, presence: true, if: :supports_matrix_statements?
 
   before_validation :set_default_enabled
   before_validation :set_default_answer_visible_to

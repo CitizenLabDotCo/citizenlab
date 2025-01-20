@@ -399,6 +399,102 @@ resource 'Idea Custom Fields' do
         )
       end
 
+      example 'Add a matrix linear scale field with statements' do
+        custom_form # Ensure custom form is created
+        request = {
+          custom_fields: [
+            {
+              input_type: 'page',
+              page_layout: 'default'
+            },
+            {
+              input_type: 'matrix_linear_scale',
+              title_multiloc: { en: 'Inserted field' },
+              required: false,
+              enabled: true,
+              matrix_statements: [
+                {
+                  title_multiloc: { en: 'Statement 1' }
+                },
+                {
+                  title_multiloc: { en: 'Statement 2' }
+                }
+              ]
+            }
+          ]
+        }
+        do_request request
+
+        assert_status 200
+        json_response = json_parse response_body
+
+        expect(json_response[:data].size).to eq 2
+        expect(json_response[:data][1]).to match({
+          attributes: {
+            code: nil,
+            created_at: an_instance_of(String),
+            description_multiloc: {},
+            enabled: true,
+            input_type: 'matrix_linear_scale',
+            key: Regexp.new('inserted_field'),
+            ordering: 1,
+            required: false,
+            title_multiloc: { en: 'Inserted field' },
+            updated_at: an_instance_of(String),
+            logic: {},
+            constraints: {},
+            random_option_ordering: false
+          },
+          id: an_instance_of(String),
+          type: 'custom_field',
+          relationships: {
+            matrix_statements: {
+              data: [
+                {
+                  id: an_instance_of(String),
+                  type: 'custom_field_matrix_statement'
+                },
+                {
+                  id: an_instance_of(String),
+                  type: 'custom_field_matrix_statement'
+                }
+              ]
+            },
+            options: { data: [] },
+            resource: { data: { id: custom_form.id, type: 'custom_form' } }
+          }
+        })
+        statements = CustomField.find(json_response.dig(:data, 1, :id)).matrix_statements
+        json_statement1 = json_response[:included].find do |json_statement|
+          json_statement[:id] == statements.first.id
+        end
+        json_statement2 = json_response[:included].find do |json_statement|
+          json_statement[:id] == statements.last.id
+        end
+        expect(json_statement1).to match({
+          id: statements.first.id,
+          type: 'custom_field_matrix_statement',
+          attributes: {
+            key: an_instance_of(String),
+            title_multiloc: { en: 'Statement 1' },
+            ordering: 0,
+            created_at: an_instance_of(String),
+            updated_at: an_instance_of(String)
+          }
+        })
+        expect(json_statement2).to match({
+          id: statements.last.id,
+          type: 'custom_field_matrix_statement',
+          attributes: {
+            key: an_instance_of(String),
+            title_multiloc: { en: 'Statement 2' },
+            ordering: 1,
+            created_at: an_instance_of(String),
+            updated_at: an_instance_of(String)
+          }
+        })
+      end
+
       example '[error] Add a field of unsupported input_type' do
         request = {
           custom_fields: [

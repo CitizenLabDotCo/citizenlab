@@ -47,6 +47,9 @@ class WebApi::V1::CustomFieldSerializer < WebApi::V1::BaseSerializer
   }
 
   has_many :options, record_type: :custom_field_option, serializer: ::WebApi::V1::CustomFieldOptionSerializer
+  has_many :matrix_statements, record_type: :custom_field_matrix_statement, serializer: ::WebApi::V1::CustomFieldMatrixStatementSerializer, if: proc { |field|
+    field.supports_matrix_statements?
+  }
   has_one :resource, record_type: :custom_form, serializer: ::WebApi::V1::CustomFormSerializer
 end
 

@@ -20,9 +20,13 @@
 #  fk_rails_...  (custom_field_id => custom_fields.id)
 #
 class CustomFieldMatrixStatement < ApplicationRecord
+  # non-persisted attribute to enable form copying
+  attribute :temp_id, :string, default: nil
+
   belongs_to :custom_field
 
-  attribute :key, :string, default: -> { generate_key }
+  # attribute :key, :string, default: -> { generate_key }
+  before_validation :generate_key, on: :create
   acts_as_list column: :ordering, top_of_list: 0, scope: :custom_field
 
   validates :title_multiloc, presence: true, multiloc: { presence: true }
@@ -34,6 +38,6 @@ class CustomFieldMatrixStatement < ApplicationRecord
 
   def generate_key
     title = title_multiloc.values.first
-    title && CustomFieldService.new.generate_key(title)
+    self.key ||= (title && CustomFieldService.new.generate_key(title))
   end
 end
