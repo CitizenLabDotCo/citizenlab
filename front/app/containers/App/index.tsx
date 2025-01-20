@@ -13,6 +13,8 @@ import * as Sentry from '@sentry/react';
 import GlobalStyle from 'global-styles';
 import 'intersection-observer';
 import { includes } from 'lodash-es';
+// moment-timezone extends the regular moment library,
+// so there's no need to import both moment and moment-timezone
 import moment from 'moment-timezone';
 import { useLocation } from 'react-router-dom';
 import styled, { ThemeProvider } from 'styled-components';
