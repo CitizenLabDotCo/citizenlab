@@ -2086,7 +2086,6 @@
   "app.utils.errors.default.ajv_error_birthyear_required": "crwdns216132:0crwdne216132:0",
   "app.utils.errors.default.ajv_error_date_any": "crwdns216134:0crwdne216134:0",
   "app.utils.errors.default.ajv_error_domicile_required": "crwdns216136:0crwdne216136:0",
-  "app.utils.errors.default.ajv_error_education_required": "crwdns216138:0crwdne216138:0",
   "app.utils.errors.default.ajv_error_gender_required": "crwdns216140:0crwdne216140:0",
   "app.utils.errors.default.ajv_error_invalid": "crwdns216142:0crwdne216142:0",
   "app.utils.errors.default.ajv_error_maxItems": "crwdns216144:0limit={limit}crwdne216144:0",
