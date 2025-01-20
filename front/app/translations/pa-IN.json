@@ -2086,7 +2086,6 @@
   "app.utils.errors.default.ajv_error_birthyear_required": "ਕਿਰਪਾ ਕਰਕੇ ਆਪਣਾ ਜਨਮ ਸਾਲ ਭਰੋ",
   "app.utils.errors.default.ajv_error_date_any": "ਕਿਰਪਾ ਕਰਕੇ ਇੱਕ ਵੈਧ ਮਿਤੀ ਭਰੋ",
   "app.utils.errors.default.ajv_error_domicile_required": "ਕਿਰਪਾ ਕਰਕੇ ਆਪਣੇ ਨਿਵਾਸ ਸਥਾਨ ਨੂੰ ਭਰੋ",
-  "app.utils.errors.default.ajv_error_education_required": "ਕਿਰਪਾ ਕਰਕੇ ਆਪਣਾ ਸਿੱਖਿਆ ਪੱਧਰ ਭਰੋ",
   "app.utils.errors.default.ajv_error_gender_required": "ਕਿਰਪਾ ਕਰਕੇ ਆਪਣਾ ਲਿੰਗ ਭਰੋ",
   "app.utils.errors.default.ajv_error_invalid": "ਅਵੈਧ ਹੈ",
   "app.utils.errors.default.ajv_error_maxItems": "{limit, plural, one {ਤੋਂ ਵੱਧ ਆਈਟਮਾਂ ਨੂੰ ਸ਼ਾਮਲ ਨਹੀਂ ਕੀਤਾ ਜਾ ਸਕਦਾ} other {# ਆਈਟਮਾਂ}}",

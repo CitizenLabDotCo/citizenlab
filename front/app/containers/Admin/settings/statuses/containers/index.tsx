@@ -58,7 +58,7 @@ const IdeaStatuses = ({
   variant: IdeaStatusParticipationMethod;
 }) => {
   const { data: ideaStatuses, isLoading } = useIdeaStatuses({
-    participation_method: variant,
+    queryParams: { participation_method: variant },
   });
   const { mutate: reorderIdeaStatus } = useReorderIdeaStatus();
   const customIdeaStatusesAllowed = useFeatureFlag({

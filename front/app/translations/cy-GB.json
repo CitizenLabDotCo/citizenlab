@@ -2086,7 +2086,6 @@
   "app.utils.errors.default.ajv_error_birthyear_required": "Llenwch eich blwyddyn geni",
   "app.utils.errors.default.ajv_error_date_any": "Cwblhewch ddyddiad dilys",
   "app.utils.errors.default.ajv_error_domicile_required": "Llenwch eich man preswylio",
-  "app.utils.errors.default.ajv_error_education_required": "Cwblhewch eich lefel addysg",
   "app.utils.errors.default.ajv_error_gender_required": "Llenwch eich rhyw",
   "app.utils.errors.default.ajv_error_invalid": "Yn annilys",
   "app.utils.errors.default.ajv_error_maxItems": "Ni ellir cynnwys mwy na {limit, plural, one {# eitem} other {# eitem}}",
