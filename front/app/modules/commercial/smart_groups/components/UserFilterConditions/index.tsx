@@ -7,7 +7,7 @@ import styled from 'styled-components';
 
 import tracks from 'containers/Admin/users/tracks';
 
-import Button from 'components/UI/Button';
+import Button from 'components/UI/ButtonWithLink';
 import Error from 'components/UI/Error';
 
 import { trackEventByName } from 'utils/analytics';

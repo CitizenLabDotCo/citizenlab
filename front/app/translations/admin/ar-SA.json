@@ -908,7 +908,6 @@
   "app.containers.Admin.projects.all.PDFExportModal.selectIdeationPhase": "الرجاء تحديد مرحلة التفكير.",
   "app.containers.Admin.projects.all.askPersonalData": "اسأل البيانات الشخصية",
   "app.containers.Admin.projects.all.clickExportToPDFIdeaForm": "الأسئلة غير المدعومة حاليًا: الصور والعلامات وتحميل الملفات.",
-  "app.containers.Admin.projects.all.clickExportToPDFSurvey3": "الأسئلة غير المدعومة حاليًا: أسئلة رسم الخرائط (إسقاط الدبوس، رسم المسار ورسم المنطقة)، وأسئلة اختيار الصورة وأسئلة تحميل الملف.",
   "app.containers.Admin.projects.all.components.archived": "مؤرشف",
   "app.containers.Admin.projects.all.components.draft": "مسوّدة",
   "app.containers.Admin.projects.all.components.manageButtonLabel": "إدارة",

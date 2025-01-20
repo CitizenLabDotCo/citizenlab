@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 
 import { Box, colors, Tooltip } from '@citizenlab/cl2-component-library';
 
-import Button from 'components/UI/Button';
+import Button from 'components/UI/ButtonWithLink';
 import Warning from 'components/UI/Warning';
 
 import { FormattedMessage } from 'utils/cl-intl';

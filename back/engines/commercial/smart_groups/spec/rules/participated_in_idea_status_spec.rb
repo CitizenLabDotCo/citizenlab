@@ -111,7 +111,7 @@ describe SmartGroups::Rules::ParticipatedInIdeaStatus do
     it "correctly filters on 'reacted_comment_in' predicate" do
       rule = described_class.new('reacted_comment_in', [idea_status1.id])
       expect { @users = rule.filter(User) }.not_to exceed_query_limit(1)
-      expect(@users).to match_array []
+      expect(@users).to be_empty
     end
 
     it "correctly filters on 'not_reacted_comment_in' predicate" do

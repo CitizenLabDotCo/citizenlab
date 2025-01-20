@@ -22,6 +22,7 @@ import {
 import useFormCustomFields from 'api/custom_fields/useCustomFields';
 import useUpdateCustomField from 'api/custom_fields/useUpdateCustomFields';
 import { isNewCustomFieldObject } from 'api/custom_fields/util';
+import useCustomForm from 'api/custom_form/useCustomForm';
 import useFormSubmissionCount from 'api/submission_count/useSubmissionCount';
 
 import FormBuilderSettings from 'components/FormBuilder/components/FormBuilderSettings';
@@ -89,6 +90,20 @@ const FormEdit = ({
     phaseId: isFormPhaseSpecific ? phaseId : undefined,
   });
 
+  const { data: customForm } = useCustomForm({
+    projectId,
+    phaseId: isFormPhaseSpecific ? phaseId : undefined,
+  });
+  const formLastUpdatedAt = customForm?.data.attributes.updated_at;
+
+  // Set the form opened at date from the API date only when the form is first loaded
+  const [formOpenedAt, setFormOpenedAt] = useState<string | undefined>();
+  useEffect(() => {
+    if (!formOpenedAt && customForm?.data.attributes.opened_at) {
+      setFormOpenedAt(customForm.data.attributes.opened_at);
+    }
+  }, [formOpenedAt, customForm]);
+
   const schema = object().shape({
     customFields: array().of(
       object().shape({
@@ -150,12 +165,21 @@ const FormEdit = ({
     }
   }, [formCustomFields, isUpdatingForm, isFetching, reset]);
 
+  let autosave: boolean = false; // Use to log autosave vs manual save
   const closeSettings = (triggerAutosave?: boolean) => {
     setSelectedField(undefined);
 
-    // If autosave is enabled & no submission have come in yet, save
-    if (triggerAutosave && autosaveEnabled && totalSubmissions === 0) {
-      onFormSubmit(getValues());
+    // If autosave is enabled, no submission have come in yet and there are changes, save
+    if (
+      triggerAutosave &&
+      autosaveEnabled &&
+      totalSubmissions === 0 &&
+      isDirty
+    ) {
+      autosave = true;
+      onFormSubmit(getValues()).then(() => {
+        autosave = false;
+      });
     }
   };
 
@@ -259,6 +283,11 @@ const FormEdit = ({
           projectId,
           customFields: finalResponseArray,
           phaseId: isFormPhaseSpecific ? phaseId : undefined,
+          customForm: {
+            saveType: autosave ? 'auto' : 'manual',
+            openedAt: formOpenedAt,
+            lastUpdatedAt: formLastUpdatedAt,
+          },
         },
         {
           onSuccess: () => {
@@ -269,7 +298,11 @@ const FormEdit = ({
         }
       );
     } catch (error) {
-      handleHookFormSubmissionError(error, setError, 'customFields');
+      const errorType =
+        error?.errors?.form[0].error === 'stale_data'
+          ? 'staleData'
+          : 'customFields';
+      handleHookFormSubmissionError(error, setError, errorType);
       setIsSubmitting(false);
     }
   };
@@ -369,7 +402,11 @@ const FormEdit = ({
                       <Error
                         marginTop="8px"
                         marginBottom="8px"
-                        text={formatMessage(messages.errorMessage)}
+                        text={formatMessage(
+                          errors['staleData']
+                            ? messages.staleDataErrorMessage
+                            : messages.errorMessage
+                        )}
                         scrollIntoView={false}
                       />
                     </Box>

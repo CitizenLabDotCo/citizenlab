@@ -124,4 +124,8 @@ export default defineMessages({
     id: 'app.components.form.controls.currentRank',
     defaultMessage: 'Current rank: ',
   },
+  rankingInstructions: {
+    id: 'app.components.form.controls.rankingInstructions',
+    defaultMessage: 'Drag and drop to rank options.',
+  },
 });

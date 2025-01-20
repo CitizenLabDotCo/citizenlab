@@ -908,7 +908,6 @@
   "app.containers.Admin.projects.all.PDFExportModal.selectIdeationPhase": "براہ کرم ایک آئیڈییشن مرحلہ منتخب کریں۔",
   "app.containers.Admin.projects.all.askPersonalData": "ذاتی ڈیٹا پوچھیں۔",
   "app.containers.Admin.projects.all.clickExportToPDFIdeaForm": "سوالات فی الحال تعاون یافتہ نہیں ہیں: امیجز، ٹیگز اور فائل اپ لوڈ۔",
-  "app.containers.Admin.projects.all.clickExportToPDFSurvey3": "سوالات فی الحال تعاون یافتہ نہیں ہیں: نقشہ سازی کے سوالات (ڈراپ پن، ڈرا روٹ اور ڈرا ایریا)، تصویر کے انتخاب کے سوالات اور فائل اپ لوڈ کے سوالات۔",
   "app.containers.Admin.projects.all.components.archived": "محفوظ شدہ",
   "app.containers.Admin.projects.all.components.draft": "مسودہ",
   "app.containers.Admin.projects.all.components.manageButtonLabel": "ترمیم کریں۔",

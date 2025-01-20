@@ -7,7 +7,7 @@ import { Multiloc } from 'typings';
 
 import { ButtonWrapper } from 'components/admin/PageWrapper';
 import { SectionField } from 'components/admin/Section';
-import Button from 'components/UI/Button';
+import Button from 'components/UI/ButtonWithLink';
 import Collapse from 'components/UI/Collapse';
 import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
 
