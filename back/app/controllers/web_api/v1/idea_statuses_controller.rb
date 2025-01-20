@@ -92,9 +92,24 @@ class WebApi::V1::IdeaStatusesController < ApplicationController
   end
 
   def apply_index_filters
-    return if params[:participation_method].blank?
+    participation_method = params[:participation_method]
+    return if participation_method.blank?
 
-    @idea_statuses = @idea_statuses.where(participation_method: params[:participation_method])
+    @idea_statuses = @idea_statuses.where(participation_method: participation_method)
+
+    if prescreening_feature_inactive?(participation_method) || params[:exclude_screening_status] == 'true'
+      @idea_statuses = @idea_statuses.where.not(code: 'prescreening')
+    end
+  end
+
+  def prescreening_feature_inactive?(participation_method)
+    if participation_method == 'ideation' && !AppConfiguration.instance.feature_activated?('prescreening_ideation')
+      return true
+    elsif participation_method == 'proposals' && !AppConfiguration.instance.feature_activated?('prescreening')
+      return true
+    end
+
+    false
   end
 
   def idea_status_params_for_create
