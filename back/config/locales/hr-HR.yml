@@ -138,8 +138,6 @@ hr:
         title: Godina rođenja
       domicile:
         title: Mjesto prebivališta
-      education:
-        title: Obrazovanje
     ideas:
       title:
         title: Naslov
@@ -207,14 +205,6 @@ hr:
       unspecified: Ostalo
     domicile:
       outside: Negdje drugdje
-    education:
-      ISCED2: Osnovna škola
-      ISCED3: Gimnazija
-      ISCED4: Strukovna škola
-      ISCED5: Viša škola
-      ISCED6: Prvostupnik ili ekvivalentno
-      ISCED7: Magistar ili ekvivalentno
-      ISCED8: Doktor znanosti ili ekvivalentno
   reset_password_mailer:
     send_reset_password:
       preheader: 'Ponovno postavite lozinku za %{organizationName}'
