@@ -12,11 +12,11 @@ class InvitePolicy < ApplicationPolicy
   end
 
   def index_xlsx?
-    user&.active? && user&.admin?
+    user&.active? && user.admin?
   end
 
   def create?
-    user&.active? && user&.admin?
+    user&.active? && user.admin?
   end
 
   def count_new_seats?
@@ -28,19 +28,19 @@ class InvitePolicy < ApplicationPolicy
   end
 
   def bulk_create?
-    user&.active? && user&.admin?
+    user&.active? && user.admin?
   end
 
   def bulk_create_xlsx?
-    user&.active? && user&.admin?
+    user&.active? && user.admin?
   end
 
   def example_xlsx?
-    user&.active? && user&.admin?
+    user&.active? && user.admin?
   end
 
   def destroy?
-    user&.active? && user&.admin?
+    user&.active? && user.admin?
   end
 
   def accept?

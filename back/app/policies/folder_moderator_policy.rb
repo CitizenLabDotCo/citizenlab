@@ -6,7 +6,7 @@ class FolderModeratorPolicy < ApplicationPolicy
       if user&.project_folder_moderator?
         moderated_folders = user.moderated_project_folders
         scope.project_folder_moderator(moderated_folders.pluck(:id))
-      elsif user&.active? && user&.admin?
+      elsif user&.active? && user.admin?
         scope.project_folder_moderator
       else
         raise Pundit::NotAuthorizedError, 'not allowed to view this action'
@@ -23,7 +23,7 @@ class FolderModeratorPolicy < ApplicationPolicy
   end
 
   def create?
-    user&.active? && user&.admin?
+    user&.active? && user.admin?
   end
 
   def destroy?
