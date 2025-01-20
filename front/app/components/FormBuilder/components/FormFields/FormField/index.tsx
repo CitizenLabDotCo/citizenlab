@@ -90,10 +90,8 @@ export const FormField = ({
   const hasErrors = !!errors.customFields?.[index];
   const message = getConflictMessageKey(conflicts);
 
-  const showLogicOnRow =
-    // TODO: Fix this the next time the file is edited.
-    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-    field.input_type !== 'page' ? field.logic?.rules : field.logic;
+  // NOTE: We always show the default page logic on a page field
+  const showLogicOnRow = field.input_type !== 'page' ? field.logic.rules : true;
 
   const isFieldGrouping = ['page', 'section'].includes(field.input_type);
 
