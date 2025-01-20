@@ -138,8 +138,6 @@ es-CL:
         title: Año de nacimiento
       domicile:
         title: Lugar de residencia
-      education:
-        title: Educación
     ideas:
       title:
         title: Título
@@ -207,14 +205,6 @@ es-CL:
       unspecified: Otro
     domicile:
       outside: En algun otro lugar
-    education:
-      ISCED2: Educación Básica
-      ISCED3: Eduación Media
-      ISCED4: Educación Media-Técnica
-      ISCED5: Educación técnica profesional
-      ISCED6: Carrera profesional
-      ISCED7: Master
-      ISCED8: Doctorado
   reset_password_mailer:
     send_reset_password:
       preheader: 'Restablece tu contraseña en %{organizationName}'
