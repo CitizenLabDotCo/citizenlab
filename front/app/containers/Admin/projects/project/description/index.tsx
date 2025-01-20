@@ -18,7 +18,7 @@ import {
   SectionDescription,
 } from 'components/admin/Section';
 import ProjectDescriptionBuilderToggle from 'components/ProjectDescriptionBuilder/ProjectDescriptionBuilderToggle';
-import Button from 'components/UI/Button';
+import Button from 'components/UI/ButtonWithLink';
 import Error from 'components/UI/Error';
 import QuillMultilocWithLocaleSwitcher from 'components/UI/QuillEditor/QuillMultilocWithLocaleSwitcher';
 import TextAreaMultilocWithLocaleSwitcher from 'components/UI/TextAreaMultilocWithLocaleSwitcher';

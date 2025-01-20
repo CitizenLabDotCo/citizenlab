@@ -17,7 +17,7 @@ import Input from 'components/HookForm/Input';
 import PasswordInput from 'components/HookForm/PasswordInput';
 import commentsMessages from 'components/PostShowComponents/Comments/messages';
 import { StyledPasswordIconTooltip } from 'components/smallForm';
-import Button from 'components/UI/Button';
+import Button from 'components/UI/ButtonWithLink';
 import Error from 'components/UI/Error';
 import { DEFAULT_MINIMUM_PASSWORD_LENGTH } from 'components/UI/PasswordInput';
 

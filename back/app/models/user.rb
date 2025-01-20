@@ -52,13 +52,14 @@ class User < ApplicationRecord
   include UserRoles
   include UserGroups
   include UserConfirmation
+  include UserVerification
   include UserPasswordValidations
   include PgSearch::Model
 
   GENDERS = %w[male female unspecified].freeze
   INVITE_STATUSES = %w[pending accepted].freeze
   EMAIL_REGEX = /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\z/i
-  EMAIL_DOMAIN_BLACKLIST = Rails.root.join('config', 'domain_blacklist.txt').readlines.map(&:strip).freeze
+  EMAIL_DOMAIN_BLACKLIST = Rails.root.join('config/domain_blacklist.txt').readlines.map(&:strip).freeze
 
   slug from: proc { |user| UserSlugService.new.generate_slug(user, user.full_name) }, if: proc { |user| !user.invite_pending? }
 
@@ -384,4 +385,3 @@ end
 
 User.include(IdeaAssignment::Extensions::User)
 User.include(ReportBuilder::Patches::User)
-User.include(Verification::Patches::User)

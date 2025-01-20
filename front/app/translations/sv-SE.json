@@ -759,6 +759,7 @@
   "app.components.formBuilder.shortAnswer": "Kort svar",
   "app.components.formBuilder.showResponseToUsersToggleLabel": "Visa svar för användare",
   "app.components.formBuilder.singleChoice": "Ett enda val",
+  "app.components.formBuilder.staleDataErrorMessage2": "Det har uppstått ett problem. Det här inmatningsformuläret har nyligen sparats någon annanstans. Det kan bero på att du eller någon annan användare har det öppet för redigering i ett annat webbläsarfönster. Uppdatera sidan för att få det senaste formuläret och gör sedan dina ändringar igen.",
   "app.components.formBuilder.supportArticleLinkText": "denna sida",
   "app.components.formBuilder.tags": "Ämnen",
   "app.components.formBuilder.title": "Titel",

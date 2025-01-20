@@ -18,7 +18,7 @@ import useLocalize from 'hooks/useLocalize';
 import EventAttendanceButton from 'components/EventAttendanceButton';
 import ScreenReadableEventDate from 'components/ScreenReadableEventDate';
 import T from 'components/T';
-import Button from 'components/UI/Button';
+import ButtonWithLink from 'components/UI/ButtonWithLink';
 import Image from 'components/UI/Image';
 
 import { useIntl } from 'utils/cl-intl';
@@ -242,7 +242,7 @@ const EventInformation = ({ event }: Props) => {
           these are not clickable because the primary link is extending
           the hitbox over the whole card */}
         {isPastEvent ? (
-          <Button
+          <ButtonWithLink
             ml="auto"
             width={'100%'}
             bgColor={theme.colors.tenantPrimary}
@@ -256,7 +256,7 @@ const EventInformation = ({ event }: Props) => {
             ariaLabel={localize(event.attributes.title_multiloc)}
           >
             {formatMessage(messages.readMore)}
-          </Button>
+          </ButtonWithLink>
         ) : (
           <EventAttendanceButton event={event} />
         )}

@@ -18,7 +18,7 @@ import useApproveOfflineIdeas from 'api/import_ideas/useApproveOfflineIdeas';
 import useImportedIdeaMetadata from 'api/import_ideas/useImportedIdeaMetadata';
 import useImportedIdeas from 'api/import_ideas/useImportedIdeas';
 
-import Button from 'components/UI/Button';
+import Button from 'components/UI/ButtonWithLink';
 import Error from 'components/UI/Error';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';

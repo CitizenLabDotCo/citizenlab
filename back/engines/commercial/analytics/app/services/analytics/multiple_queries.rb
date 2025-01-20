@@ -37,9 +37,9 @@ module Analytics
       paginations = add_pagination_url(paginations)
 
       unless json_query_input.instance_of?(Array)
-        results = results.empty? ? results : results[0]
-        paginations = paginations.empty? ? paginations : paginations[0]
-        errors = errors.key?(0) ? errors[0] : errors
+        results = results.first unless results.empty?
+        paginations = paginations.first unless paginations.empty?
+        errors = errors[0] if errors.key?(0)
       end
 
       [results, errors, paginations]

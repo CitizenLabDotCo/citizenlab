@@ -14,7 +14,7 @@ import useLocalize from 'hooks/useLocalize';
 import { triggerAuthenticationFlow } from 'containers/Authentication/events';
 import { SuccessAction } from 'containers/Authentication/SuccessActions/actions';
 
-import Button, { Props as ButtonProps } from 'components/UI/Button';
+import Button, { Props as ButtonProps } from 'components/UI/ButtonWithLink';
 
 import { getIdeaPostingRules } from 'utils/actionTakingRules';
 import { trackEventByName } from 'utils/analytics';

@@ -12,7 +12,7 @@ import { Controller, useFormContext } from 'react-hook-form';
 
 import { IFlatCustomField, LogicType } from 'api/custom_fields/types';
 
-import Button from 'components/UI/Button';
+import Button from 'components/UI/ButtonWithLink';
 import Error from 'components/UI/Error';
 
 import { FormattedMessage } from 'utils/cl-intl';

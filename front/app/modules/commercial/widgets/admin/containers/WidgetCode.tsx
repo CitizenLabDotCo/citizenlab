@@ -6,7 +6,7 @@ import GetAppConfiguration, {
 } from 'resources/GetAppConfiguration';
 import styled from 'styled-components';
 
-import Button from 'components/UI/Button';
+import Button from 'components/UI/ButtonWithLink';
 
 import { FormattedMessage } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';

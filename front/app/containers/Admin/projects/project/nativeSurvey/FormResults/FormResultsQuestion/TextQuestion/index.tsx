@@ -10,20 +10,21 @@ import TextResponses from './TextResponses';
 
 interface Props {
   textResponses: { answer: string }[];
-  showAnalysis?: boolean;
   customFieldId: string;
   hasOtherResponses?: boolean;
 }
 
 const TextQuestion = ({
   textResponses,
-  showAnalysis = true,
   customFieldId,
   hasOtherResponses,
 }: Props) => {
-  const isAnalysisEnabled = useFeatureFlag({
+  const isAnalysisAllowed = useFeatureFlag({
     name: 'analysis',
     onlyCheckAllowed: true,
+  });
+  const isAnalysisEnabled = useFeatureFlag({
+    name: 'analysis',
   });
 
   return (
@@ -35,8 +36,8 @@ const TextQuestion = ({
         />
       </Box>
       <Box flex="1">
-        {!isAnalysisEnabled && showAnalysis && <AnalysisUpsell />}
-        {isAnalysisEnabled && showAnalysis && !hasOtherResponses && (
+        {!isAnalysisAllowed && <AnalysisUpsell />}
+        {isAnalysisEnabled && !hasOtherResponses && (
           <Analysis
             customFieldId={customFieldId}
             textResponsesCount={textResponses.length}

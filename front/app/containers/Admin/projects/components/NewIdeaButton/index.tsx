@@ -5,7 +5,7 @@ import { RouteType } from 'routes';
 
 import { InputTerm } from 'api/phases/types';
 
-import Button from 'components/UI/Button';
+import Button from 'components/UI/ButtonWithLink';
 
 import { trackEventByName } from 'utils/analytics';
 import { useIntl } from 'utils/cl-intl';

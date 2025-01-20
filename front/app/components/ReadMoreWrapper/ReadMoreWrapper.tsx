@@ -17,7 +17,7 @@ import { Multiloc } from 'typings';
 import messages from 'containers/ProjectsShowPage/messages';
 
 import T from 'components/T';
-import Button from 'components/UI/Button';
+import Button from 'components/UI/ButtonWithLink';
 import QuillEditedContent from 'components/UI/QuillEditedContent';
 
 import { FormattedMessage } from 'utils/cl-intl';
