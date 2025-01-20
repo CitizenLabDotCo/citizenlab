@@ -138,8 +138,6 @@ lt:
         title: Gimimo metai
       domicile:
         title: Gyvenamoji vieta
-      education:
-        title: Švietimas
     ideas:
       title:
         title: Pavadinimas
@@ -207,14 +205,6 @@ lt:
       unspecified: Kita
     domicile:
       outside: Kažkur kitur
-    education:
-      ISCED2: Žemesnysis vidurinis išsilavinimas
-      ISCED3: Aukštesnysis vidurinis išsilavinimas
-      ISCED4: Aukštasis ne aukštojo mokslo išsilavinimas
-      ISCED5: Trumpalaikis tretinis išsilavinimas
-      ISCED6: Bakalauro arba lygiavertis išsilavinimas
-      ISCED7: Magistro laipsnis arba lygiavertis kvalifikacinis laipsnis
-      ISCED8: daktaro laipsnis arba lygiavertis laipsnis
   reset_password_mailer:
     send_reset_password:
       preheader: 'Iš naujo nustatykite slaptažodį %{organizationName}'
