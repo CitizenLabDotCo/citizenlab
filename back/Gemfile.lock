@@ -682,8 +682,8 @@ GEM
     graphql (2.4.4)
       base64
       fiber-storage
-    groupdate (4.3.0)
-      activesupport (>= 5)
+    groupdate (6.5.1)
+      activesupport (>= 7)
     grpc (1.63.0-aarch64-linux)
       google-protobuf (~> 3.25)
       googleapis-common-protos-types (~> 1.0)
@@ -719,7 +719,7 @@ GEM
     httpclient (2.8.3)
     httpi (3.0.1)
       rack
-    i18n (1.14.6)
+    i18n (1.14.7)
       concurrent-ruby (~> 1.0)
     icalendar (2.10.1)
       ice_cube (~> 0.16)
@@ -1280,7 +1280,7 @@ DEPENDENCIES
   frontend!
   google-cloud-document_ai (~> 1.4)
   google_tag_manager!
-  groupdate (~> 4.1)
+  groupdate (~> 6.5)
   icalendar (~> 2.10)
   ice_cube (~> 0.16)
   id_auth0!
