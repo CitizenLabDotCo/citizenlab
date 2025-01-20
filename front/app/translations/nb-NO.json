@@ -1407,7 +1407,7 @@
   "app.containers.IdeasShow.proposals.VoteControl.moreInfo": "Mer informasjon",
   "app.containers.IdeasShow.proposals.VoteControl.vote": "Stemme",
   "app.containers.IdeasShow.proposals.VoteControl.voted": "Stemte",
-  "app.containers.IdeasShow.proposals.VoteControl.votedText": "You'll get notified when this initiative goes to the next step. {x, plural, =0 {There's {xDays} left.} one {There's {xDays} left.} other {There are {xDays} left.}}",
+  "app.containers.IdeasShow.proposals.VoteControl.votedText": "Du vil bli informert når forslaget går til neste fase. {x, plural, =0 {Det er {xDays} igjen.} one {Det er {xDays} igjen.} other {Det er {xDays} igjen.}}",
   "app.containers.IdeasShow.proposals.VoteControl.votedTitle": "Din stemme har blitt sendt inn!",
   "app.containers.IdeasShow.proposals.VoteControl.votingNotPermitted1": "Dessverre kan du ikke stemme over dette forslaget. Les hvorfor på {link}.",
   "app.containers.IdeasShow.proposals.VoteControl.xDays": "{x, plural, =0 {mindre enn en dag} one {én dag} other {# dager}}",
