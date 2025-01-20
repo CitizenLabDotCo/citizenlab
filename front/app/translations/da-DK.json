@@ -759,6 +759,7 @@
   "app.components.formBuilder.shortAnswer": "Kort svar",
   "app.components.formBuilder.showResponseToUsersToggleLabel": "Vis svar til brugerne",
   "app.components.formBuilder.singleChoice": "Enkelt valg",
+  "app.components.formBuilder.staleDataErrorMessage2": "Der er opstået et problem. Denne inputformular er for nylig blevet gemt et andet sted. Det kan skyldes, at du eller en anden bruger har den åben til redigering i et andet browservindue. Opdater venligst siden for at få den nyeste formular, og foretag derefter dine ændringer igen.",
   "app.components.formBuilder.supportArticleLinkText": "denne side",
   "app.components.formBuilder.tags": "Mærker",
   "app.components.formBuilder.title": "Titel",
