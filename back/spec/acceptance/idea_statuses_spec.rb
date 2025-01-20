@@ -21,6 +21,8 @@ resource 'IdeaStatuses' do
       let(:participation_method) { 'ideation' }
 
       example_request 'List all ideation input statuses' do
+        pp "ideation: #{AppConfiguration.instance.feature_activated?('prescreening_ideation')}"
+        pp "proposals: #{AppConfiguration.instance.feature_activated?('prescreening')}"
         assert_status 200
         json_response = json_parse(response_body)
         expect(json_response[:data].size).to eq 3
@@ -34,8 +36,21 @@ resource 'IdeaStatuses' do
       let(:participation_method) { 'ideation' }
       let!(:prescreening_status) { create(:idea_status, code: 'prescreening') }
 
+      context 'when prescreening_ideation feature is NOT active' do
+        example_request 'List all ideation input statuses excludes prescreening status' do
+          expect(AppConfiguration.instance.feature_activated?('prescreening_ideation')).to be false
+
+          assert_status 200
+          json_response = json_parse(response_body)
+          expect(json_response[:data].size).to eq 3
+          expect(json_response[:data].all? { |status| status.dig(:attributes, :participation_method) == 'ideation' }).to be true
+          expect(json_response[:data].pluck(:id)).not_to include prescreening_status.id
+        end
+      end
+
       context 'when prescreening_ideation feature is active' do
         before { SettingsService.new.activate_feature! 'prescreening_ideation' }
+        after { SettingsService.new.deactivate_feature! 'prescreening_ideation' }
 
         example 'List all ideation input statuses includes prescreening status', document: false do
           do_request
@@ -59,18 +74,6 @@ resource 'IdeaStatuses' do
           end
         end
       end
-
-      context 'when prescreening_ideation feature is NOT active' do
-        before { SettingsService.new.deactivate_feature! 'prescreening_ideation' }
-
-        example_request 'List all ideation input statuses excludes prescreening status' do
-          assert_status 200
-          json_response = json_parse(response_body)
-          expect(json_response[:data].size).to eq 3
-          expect(json_response[:data].all? { |status| status.dig(:attributes, :participation_method) == 'ideation' }).to be true
-          expect(json_response[:data].pluck(:id)).not_to include prescreening_status.id
-        end
-      end
     end
 
     context 'when admin' do
@@ -89,10 +92,23 @@ resource 'IdeaStatuses' do
       let(:participation_method) { 'proposals' }
       let!(:prescreening_status) { create(:proposals_status, code: 'prescreening') }
 
-      context 'when prescreening feature IS active' do
-        before { SettingsService.new.activate_feature! 'prescreening' }
+      context 'when prescreening feature is NOT active' do
+        before { SettingsService.new.deactivate_feature! 'prescreening' }
+        after { SettingsService.new.activate_feature! 'prescreening' }
 
+        example_request 'List all proposals statuses excludes prescreening status' do
+          assert_status 200
+          json_response = json_parse(response_body)
+          expect(json_response[:data].size).to eq 2
+          expect(json_response[:data].all? { |status| status.dig(:attributes, :participation_method) == 'proposals' }).to be true
+          expect(json_response[:data].pluck(:id)).not_to include prescreening_status.id
+        end
+      end
+
+      context 'when prescreening feature IS active' do
         example 'List all proposals input statuses includes prescreening status', document: false do
+          expect(AppConfiguration.instance.feature_activated?('prescreening')).to be true
+
           do_request
           assert_status 200
           json_response = json_parse(response_body)
@@ -112,18 +128,6 @@ resource 'IdeaStatuses' do
             expect(json_response[:data].size).to eq 2
             expect(json_response[:data].pluck(:id)).not_to include prescreening_status.id
           end
-        end
-      end
-
-      context 'when prescreening feature is NOT active' do
-        before { SettingsService.new.deactivate_feature! 'prescreening' }
-
-        example_request 'List all proposals statuses excludes prescreening status' do
-          assert_status 200
-          json_response = json_parse(response_body)
-          expect(json_response[:data].size).to eq 2
-          expect(json_response[:data].all? { |status| status.dig(:attributes, :participation_method) == 'proposals' }).to be true
-          expect(json_response[:data].pluck(:id)).not_to include prescreening_status.id
         end
       end
     end
