@@ -317,25 +317,20 @@ module IdeaCustomFields
     end
 
     def create_statement!(statement_params, field, errors, field_index, statement_index)
-      create_params = statement_params.except('temp_id')
-      statement = CustomFieldMatrixStatement.new create_params.merge(custom_field: field)
-      # SideFxCustomFieldMatrixStatementService.new.before_create statement, current_user
+      statement = CustomFieldMatrixStatement.new statement_params.merge(custom_field: field)
       if statement.save
-        # SideFxCustomFieldMatrixStatementService.new.after_create statement, current_user
+        SideFxCustomFieldMatrixStatementService.new.after_create statement, current_user
       else
         add_statements_errors statement.errors.details, errors, field_index, statement_index
-        false
       end
     end
 
     def update_statement!(statement, statement_params, errors, field_index, statement_index)
-      update_params = statement_params.except('image_id')
-      statement.assign_attributes update_params
-      return true unless statement.changed?
+      statement.assign_attributes statement_params
+      return if !statement.changed?
 
-      # SideFxCustomFieldMatrixStatementService.new.before_update statement, current_user
       if statement.save
-        # SideFxCustomFieldMatrixStatementService.new.after_update statement, current_user
+        SideFxCustomFieldMatrixStatementService.new.after_update statement, current_user
       else
         add_statements_errors statement.errors.details, errors, field_index, statement_index
       end
@@ -343,7 +338,7 @@ module IdeaCustomFields
 
     def delete_statement!(statement)
       statement.destroy!
-      # SideFxCustomFieldMatrixStatementService.new.after_destroy statement, current_user
+      SideFxCustomFieldMatrixStatementService.new.after_destroy statement, current_user
     end
 
     def add_statements_errors(statements_errors, errors, field_index, statement_index)
