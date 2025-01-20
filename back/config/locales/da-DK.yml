@@ -37,15 +37,15 @@ da:
     outside: et andet sted
   idea_statuses:
     proposed: foreslået
-    proposed_description: Denne idé er blevet foreslået til byen
+    proposed_description: Denne idé er blevet foreslået til kommunen
     viewed: set
-    viewed_description: Denne idé er blevet set af en person fra byen
+    viewed_description: Denne idé er blevet set af en person fra kommunen
     under_consideration: I gang
-    under_consideration_description: Denne idé er blevet taget i betragtning af byen
+    under_consideration_description: Denne idé er blevet taget i betragtning af kommunen
     accepted: accepteret
-    accepted_description: Denne ide er blevet accepteret og vil blive implementeret af byen
+    accepted_description: Denne ide er blevet accepteret og vil blive implementeret af kommunen
     implemented: implementeret
-    implemented_description: Denne ide er blevet implementeret af byen
+    implemented_description: Denne ide er blevet implementeret af kommunen
     rejected: afvist
     rejected_description: Denne ide er blevet afvist
     expired: udløbet
