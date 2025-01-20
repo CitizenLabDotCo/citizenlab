@@ -26,6 +26,7 @@ import useAnalysisFilterParams from '../hooks/useAnalysisFilterParams';
 import messages from '../messages';
 import tracks from '../tracks';
 
+import TitleMultilocLongField from './LongFieldValues/TitleMultiloc';
 import LineMapPreview from './MapPreview/LineMapPreview';
 import PointMapPreview from './MapPreview/PointMapPreview';
 import PolygonMapPreview from './MapPreview/PolygonMapPreview';
@@ -117,16 +118,7 @@ const FieldValue = ({ projectId, phaseId, customFieldId, input }: Props) => {
 
   switch (customField.data.attributes.code) {
     case 'title_multiloc':
-      return (
-        <Box>
-          <Title variant="h3" my="0px">
-            <T
-              value={input.attributes[customField.data.attributes.key]}
-              supportHtml={true}
-            />
-          </Title>
-        </Box>
-      );
+      return <TitleMultilocLongField input={input} customField={customField} />;
     case 'body_multiloc':
       return (
         <Text>

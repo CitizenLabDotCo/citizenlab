@@ -17,7 +17,12 @@ import {
   createOptionsWithDetailedRanks,
 } from './utils';
 
-const RankingQuestion = (result: { result: ResultUngrouped }) => {
+type Props = {
+  result: ResultUngrouped;
+  hideDetailsButton?: boolean;
+};
+
+const RankingQuestion = ({ result, hideDetailsButton = false }: Props) => {
   const theme = useTheme();
   const locale = useLocale();
   const { formatMessage } = useIntl();
@@ -31,7 +36,7 @@ const RankingQuestion = (result: { result: ResultUngrouped }) => {
     rankings_counts,
     multilocs,
     questionResponseCount,
-  } = result.result;
+  } = result;
 
   if (!average_rankings || !rankings_counts || !multilocs) {
     return null;
@@ -97,10 +102,12 @@ const RankingQuestion = (result: { result: ResultUngrouped }) => {
           </Box>
         );
       })}
-      <DetailedViewButton
-        showDetails={showDetails}
-        setShowDetails={setShowDetails}
-      />
+      {!hideDetailsButton && (
+        <DetailedViewButton
+          showDetails={showDetails}
+          setShowDetails={setShowDetails}
+        />
+      )}
     </Box>
   );
 };
