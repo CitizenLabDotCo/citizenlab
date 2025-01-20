@@ -908,7 +908,6 @@
   "app.containers.Admin.projects.all.PDFExportModal.selectIdeationPhase": "Valitse ideavaihe.",
   "app.containers.Admin.projects.all.askPersonalData": "Kysy henkilötietoja",
   "app.containers.Admin.projects.all.clickExportToPDFIdeaForm": "Kysymyksiä ei tällä hetkellä tueta: kuvat, tunnisteet ja tiedostojen lataus.",
-  "app.containers.Admin.projects.all.clickExportToPDFSurvey3": "Kysymyksiä ei tällä hetkellä tueta: kartoituskysymykset (pudotusneula, piirrä reitti ja piirustusalue), kuvan valintakysymykset ja tiedostojen latauskysymykset.",
   "app.containers.Admin.projects.all.components.archived": "Arkistoitu",
   "app.containers.Admin.projects.all.components.draft": "Luonnos",
   "app.containers.Admin.projects.all.components.manageButtonLabel": "Muokata",

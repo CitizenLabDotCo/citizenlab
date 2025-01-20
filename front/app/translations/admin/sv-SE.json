@@ -908,7 +908,6 @@
   "app.containers.Admin.projects.all.PDFExportModal.selectIdeationPhase": "Vänligen välj en idéfas.",
   "app.containers.Admin.projects.all.askPersonalData": "Fråga om personuppgifter",
   "app.containers.Admin.projects.all.clickExportToPDFIdeaForm": "Frågor som för närvarande inte stöds: Bilder, Taggar och Filuppladdning.",
-  "app.containers.Admin.projects.all.clickExportToPDFSurvey3": "Frågor som för närvarande inte stöds: Kartfrågor (drop pin, draw route och draw area), bildvalsfrågor och frågor om filuppladdning.",
   "app.containers.Admin.projects.all.components.archived": "Arkiverad",
   "app.containers.Admin.projects.all.components.draft": "Utkast",
   "app.containers.Admin.projects.all.components.manageButtonLabel": "Hantera",

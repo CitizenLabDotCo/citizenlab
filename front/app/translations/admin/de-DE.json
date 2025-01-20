@@ -908,7 +908,6 @@
   "app.containers.Admin.projects.all.PDFExportModal.selectIdeationPhase": "Bitte wählen Sie eine Phase mit einer Ideenfindung aus.",
   "app.containers.Admin.projects.all.askPersonalData": "Persönliche Daten erfragen",
   "app.containers.Admin.projects.all.clickExportToPDFIdeaForm": "Fragen, die derzeit nicht unterstützt werden: Bilder, Themen-Tags und Anhänge hochladen.",
-  "app.containers.Admin.projects.all.clickExportToPDFSurvey3": "Fragen, die derzeit nicht unterstützt werden: Mapping-Fragen (Pin setzen, Route und Bereich einzeichnen), Bildauswahlfragen und Fragen zum Hochladen von Dateien.",
   "app.containers.Admin.projects.all.components.archived": "Archiviert",
   "app.containers.Admin.projects.all.components.draft": "Entwurf",
   "app.containers.Admin.projects.all.components.manageButtonLabel": "Bearbeiten",
