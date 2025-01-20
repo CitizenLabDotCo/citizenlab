@@ -1,13 +1,6 @@
 import React, { useMemo } from 'react';
 
-import {
-  Box,
-  Button,
-  colors,
-  Icon,
-  Image,
-  Text,
-} from '@citizenlab/cl2-component-library';
+import { Box, Image, Text } from '@citizenlab/cl2-component-library';
 
 import {
   ResultUngrouped,
@@ -22,6 +15,7 @@ import { useIntl } from 'utils/cl-intl';
 import Bar from './Bar';
 import messages from './messages';
 import { parseQuestionResult } from './utils';
+import LogicIcon from 'containers/Admin/projects/project/nativeSurvey/FormResults/LogicIcon';
 
 interface Props {
   questionResult: ResultUngrouped | ResultGrouped;
@@ -41,6 +35,8 @@ const SurveyBars = ({ questionResult, colorScheme, logicConfig }: Props) => {
       formatMessage(messages.noAnswer)
     );
   }, [questionResult, colorScheme, localize, formatMessage]);
+
+  console.log(answers);
 
   return (
     <Box
@@ -75,33 +71,16 @@ const SurveyBars = ({ questionResult, colorScheme, logicConfig }: Props) => {
                 alignItems="center"
                 my="12px"
               >
-                <Text variant="bodyM" m="0">
-                  {label}
-                </Text>
-
-                {logicFilterId && logicConfig && (
-                  <Button
-                    p="0px"
-                    m="0px"
-                    bgColor={
-                      logicConfig.filterLogicOptionIds.includes(logicFilterId)
-                        ? colors.coolGrey300
-                        : colors.white
-                    }
-                    processing={logicConfig.isLoading}
-                    onClick={() => {
-                      logicConfig.toggleLogicOptionIds(logicFilterId);
-                    }}
-                  >
-                    <Icon
-                      fill={colors.coolGrey500}
-                      width="18px"
-                      name="logic"
-                      my="auto"
-                      mx="5px"
-                    />
-                  </Button>
-                )}
+                <Box display="flex">
+                  <Text variant="bodyM" m="0">
+                    {label}
+                  </Text>
+                  <LogicIcon
+                    logicFilterId={logicFilterId}
+                    logicConfig={logicConfig}
+                    type="option"
+                  />
+                </Box>
                 <Text variant="bodyS" color="textSecondary" m="0">
                   {formatMessage(messages.choiceCount, {
                     choiceCount: count,

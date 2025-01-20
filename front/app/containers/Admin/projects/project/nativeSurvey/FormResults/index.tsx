@@ -21,25 +21,23 @@ const FormResults = () => {
   };
   const { formatMessage } = useIntl();
   const { data: project } = useProjectById(projectId);
-  const [filterLogicOptionIds, setFilterLogicOptionIds] = useState(
-    [] as string[]
+  const [filterLogicIds, setFilterLogicIds] = useState(
+    [] as string[] // Array of page or option ids to pass to the API
   );
   const { data: formResults, isLoading: isLoadingResults } = useFormResults({
     phaseId,
-    filterLogicOptionIds,
+    filterLogicIds,
   });
 
   if (!formResults || !project) {
     return null;
   }
 
-  const toggleLogicOptionIds = (optionId: string) => {
-    if (filterLogicOptionIds.includes(optionId)) {
-      setFilterLogicOptionIds(
-        filterLogicOptionIds.filter((id) => id !== optionId)
-      );
+  const toggleLogicIds = (logicId: string) => {
+    if (filterLogicIds.includes(logicId)) {
+      setFilterLogicIds(filterLogicIds.filter((id) => id !== logicId));
     } else {
-      setFilterLogicOptionIds([...filterLogicOptionIds, optionId]);
+      setFilterLogicIds([...filterLogicIds, logicId]);
     }
   };
 
@@ -60,8 +58,8 @@ const FormResults = () => {
   );
 
   const logicConfig = {
-    toggleLogicOptionIds: toggleLogicOptionIds,
-    filterLogicOptionIds: filterLogicOptionIds,
+    toggleLogicIds: toggleLogicIds,
+    filterLogicIds: filterLogicIds,
     isLoading: isLoadingResults,
   };
 
@@ -86,23 +84,17 @@ const FormResults = () => {
                   key={index}
                   result={result}
                   totalSubmissions={totalSubmissions}
+                  logicConfig={logicConfig}
                 />
               );
             } else {
               return (
-                <Box
-                  border="1px solid #e0e0e0"
-                  borderRadius="4px"
-                  p="10px 20px 10px 20px"
-                  mb="20px"
-                >
-                  <FormResultsQuestion
-                    key={index}
-                    result={result}
-                    totalSubmissions={totalSubmissions}
-                    logicConfig={logicConfig}
-                  />
-                </Box>
+                <FormResultsQuestion
+                  key={index}
+                  result={result}
+                  totalSubmissions={totalSubmissions}
+                  logicConfig={logicConfig}
+                />
               );
             }
           })}

@@ -1,15 +1,9 @@
 import React from 'react';
 
-import {
-  Box,
-  colors,
-  Icon,
-  Text,
-  Title,
-} from '@citizenlab/cl2-component-library';
+import { Box, colors, Text, Title } from '@citizenlab/cl2-component-library';
 import { snakeCase } from 'lodash-es';
 
-import { ResultUngrouped } from 'api/survey_results/types';
+import { LogicConfig, ResultUngrouped } from 'api/survey_results/types';
 
 import useLocalize from 'hooks/useLocalize';
 
@@ -18,23 +12,44 @@ import { useTheme } from 'styled-components';
 
 import messages from '../messages';
 import { useIntl } from 'utils/cl-intl';
+import LogicIcon from 'containers/Admin/projects/project/nativeSurvey/FormResults/LogicIcon';
 
 type FormResultsPageProps = {
   result: ResultUngrouped;
   totalSubmissions: number;
+  logicConfig: LogicConfig;
 };
 
 const FormResultsPage = ({
   result,
   totalSubmissions,
+  logicConfig,
 }: FormResultsPageProps) => {
   const localize = useLocalize();
   const { formatMessage } = useIntl();
   const theme = useTheme();
 
-  const { question, pageNumber, questionResponseCount, logic } = result;
+  const {
+    question,
+    pageNumber,
+    questionResponseCount,
+    customFieldId,
+    logicNextPageId,
+  } = result;
 
   const pageTitle = <T value={question} />;
+
+  if (result.hidden) {
+    return (
+      <Box borderLeft={`4px solid ${colors.coolGrey300}`} pl="12px">
+        <Text color={'grey500'}>
+          {formatMessage(messages.page)} {pageNumber}
+          {pageTitle && <>: {pageTitle}</>}
+          {formatMessage(messages.hiddenByLogic)}
+        </Text>
+      </Box>
+    );
+  }
 
   return (
     <Box
@@ -44,24 +59,21 @@ const FormResultsPage = ({
       pl="12px"
     >
       <Title variant="h3" mt="12px" mb="12px">
-        Page {pageNumber}
+        {formatMessage(messages.page)} {pageNumber}
         {pageTitle && <>: {pageTitle}</>}
       </Title>
-      <Text variant="bodyS" color="textSecondary" mt="12px" mb="12px">
-        {`${questionResponseCount}/${totalSubmissions} ${formatMessage(
-          messages.responses
-        ).toLowerCase()}`}
-
-        {logic && (
-          <Icon
-            fill={colors.coolGrey500}
-            width="18px"
-            name="logic"
-            my="auto"
-            ml="12px"
-          />
-        )}
-      </Text>
+      <Box display="flex">
+        <Text variant="bodyS" color="textSecondary" mt="0" mb="4px">
+          {`${questionResponseCount}/${totalSubmissions} ${formatMessage(
+            messages.responses
+          ).toLowerCase()}`}
+        </Text>
+        <LogicIcon
+          logicFilterId={logicNextPageId ? customFieldId : null}
+          logicConfig={logicConfig}
+          type="page"
+        />
+      </Box>
     </Box>
   );
 };

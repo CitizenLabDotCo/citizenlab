@@ -10,7 +10,7 @@ export type SurveyResultsKeys = Keys<typeof surveyResultsKeys>;
 
 export type IParameters = {
   phaseId: string | null;
-  filterLogicOptionIds: string[];
+  filterLogicIds: string[];
 };
 
 export interface Answer {
@@ -21,7 +21,7 @@ export interface Answer {
 export type MultilocAnswer = {
   title_multiloc: Multiloc;
   id: string;
-  logic: boolean;
+  logicNextPageId: string | null;
   image?: ImageSizes;
 };
 
@@ -43,12 +43,13 @@ type BaseResult = {
   description: Multiloc;
   customFieldId: string;
   required: boolean;
-  logic: boolean;
+  hidden: boolean;
   totalResponseCount: number;
   totalPickCount: number;
   questionResponseCount: number;
   questionNumber: number;
   pageNumber: number;
+  logicNextPageId: string | null;
   numberResponses?: { answer: number }[];
 
   // Defined for text questions,
@@ -93,7 +94,7 @@ export interface SurveyResultsType {
 }
 
 export interface LogicConfig {
-  toggleLogicOptionIds: (optionId: string) => void;
-  filterLogicOptionIds: string[];
+  toggleLogicIds: (optionId: string) => void;
+  filterLogicIds: string[];
   isLoading: boolean;
 }

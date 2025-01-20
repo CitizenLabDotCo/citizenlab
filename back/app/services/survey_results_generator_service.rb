@@ -11,14 +11,12 @@ class SurveyResultsGeneratorService < FieldVisitorService
     @locales = AppConfiguration.instance.settings('core', 'locales')
   end
 
-  def generate_results(field_id: nil, return_pages: false, logic_option_ids: nil)
+  def generate_results(field_id: nil, return_pages: false, logic_ids: [])
     if field_id
       field = find_question(field_id)
-      result = visit field
-      add_maybe_skipped_by_logic_to_result result
+      visit field
     else
-      fields = add_question_numbers_to_fields @fields
-      fields = remove_fields_hidden_by_logic_option(fields, logic_option_ids)
+      fields = flag_fields_hidden_by_logic_ids(@fields, logic_ids)
 
       results = fields.filter_map do |f|
         next if f[:input_type] == 'page' && !return_pages
@@ -26,7 +24,7 @@ class SurveyResultsGeneratorService < FieldVisitorService
         visit f
       end
 
-      results = add_maybe_skipped_by_logic_to_results results
+      results = add_question_numbers_to_results results
       results = add_page_response_count_to_results results
 
       {
@@ -36,39 +34,42 @@ class SurveyResultsGeneratorService < FieldVisitorService
     end
   end
 
-  def add_question_numbers_to_fields(fields)
+  def add_question_numbers_to_results(results)
     question_number = 0
     page_number = 0
-    fields.map do |field|
-      if field[:input_type] == 'page'
+    results.map do |result|
+      if result[:inputType] == 'page'
         page_number += 1
-        field.question_number = nil
-        field.page_number = page_number
+        result[:questionNumber] = nil
+        result[:pageNumber] = page_number
       else
         question_number += 1
-        field.question_number = question_number
-        field.page_number = nil
+        result[:questionNumber] = question_number
+        result[:pageNumber] = nil
       end
-      field
+      result
     end
   end
 
-  def remove_fields_hidden_by_logic_option(fields, logic_option_ids)
-    return fields unless logic_option_ids.present?
+  def flag_fields_hidden_by_logic_ids(fields, logic_ids)
+    return fields unless logic_ids.present?
 
-    # Get an array of the fields that the options are linked to vs the page we should skip to
+    skip_fields = []
+
+    # Question level logic - get field each option_id is linked to
     question_logic = {}
     fields.each do |f|
-      rules = f[:logic]['rules']
+
+      rules = f.logic['rules']
       next unless rules.present?
       rules.each do |r|
-        next unless logic_option_ids.include? r['if']
+        next unless logic_ids.include? r['if']
 
-        question_logic[f[:id]] = r['goto_page_id']
+        question_logic[f.id] = r['goto_page_id']
       end
     end
 
-    skip_fields = []
+    # Work out which fields are skipped by question level logic
     question_logic.each do |field_id, goto_page_id|
       skip = false
       fields.each do |f|
@@ -78,14 +79,37 @@ class SurveyResultsGeneratorService < FieldVisitorService
       end
     end
 
-    fields = fields.reject { |f| skip_fields.include?(f[:id]) }
+    # Page logic
+    page_logic = {}
+    fields.each do |f|
+      next unless f.logic['next_page_id'].present? && logic_ids.include?(f.id)
 
-    # TODO: JS - Add in the pages skipped by page logic
+      page_logic[f.id] = f.logic['next_page_id']
+    end
 
-    # Should be able to find all the pages with logic left in the fields now and do the same as above
+    page_logic.each do |page_id, goto_page_id|
+      skip = false
+      skip_from_next_page = false
+      fields.each do |f|
+        if f[:id] == goto_page_id
+          skip = false
+          skip_from_next_page = false
+        end
+        skip = true if skip_from_next_page && f[:input_type] == 'page'
+        skip_fields << f[:id] if skip
+        skip_from_next_page = true if f[:id] == page_id
+      end
+    end
 
+    # binding.pry
 
-    fields
+    # Work out which fields are skipped by page level logic
+    #         # TODO: JS - if it is page level then it needs to ignore fields until the next page in sequence
+
+    fields.map do |field|
+      field.hidden = skip_fields.include?(field[:id])
+      field
+    end
   end
 
   def visit_number(field)
@@ -156,7 +180,9 @@ class SurveyResultsGeneratorService < FieldVisitorService
   end
 
   def visit_page(field)
-    core_field_attributes(field, 0) # TODO: Update this later on by looking at all the results
+    result = core_field_attributes(field, 0) # Response count gets updated later by looking at all the results
+    result[:logicNextPageId] = field.logic['next_page_id']
+    result
   end
 
   private
@@ -173,9 +199,8 @@ class SurveyResultsGeneratorService < FieldVisitorService
       grouped: !!group_field_id,
       totalResponseCount: @inputs.count,
       questionResponseCount: response_count,
-      questionNumber: field.question_number,
-      pageNumber: field.page_number,
-      logic: field.logic != {},
+      logicNextPageId: nil,
+      hidden: field.hidden
     }
   end
 
@@ -276,10 +301,9 @@ class SurveyResultsGeneratorService < FieldVisitorService
       return build_linear_scale_multilocs(field)
     end
 
-    options_with_rules = field.logic['rules']&.pluck('if') # TODO: JS - Linear scale logic
-
     field.options.each_with_object({}) do |option, accu|
-      option_detail = { title_multiloc: option.title_multiloc, id: option.id, logic: !!options_with_rules&.include?(option.id) }
+      logic_next_page_id = field.logic['rules']&.find{ |r| r['if'] == option.id }&.dig('goto_page_id')
+      option_detail = { title_multiloc: option.title_multiloc, id: option.id, logicNextPageId: logic_next_page_id }
       option_detail[:image] = option.image&.image&.versions&.transform_values(&:url) if field.support_option_images?
       accu[option.key] = option_detail
     end
@@ -395,37 +419,6 @@ class SurveyResultsGeneratorService < FieldVisitorService
     end
 
     answer_titles
-  end
-
-  def add_maybe_skipped_by_logic_to_results(results)
-    results.map do |result|
-      result[:maybeSkippedByLogic] = result[:customFieldId].in?(maybe_skipped_fields(@fields))
-      result
-    end
-  end
-
-  def add_maybe_skipped_by_logic_to_result(result)
-    result[:maybeSkippedByLogic] = result[:customFieldId].in?(maybe_skipped_fields(@fields))
-    result
-  end
-
-  def maybe_skipped_fields(fields)
-    # Does a field potentially get skipped by logic - check each field and flag if so
-    maybe_skipped_fields = []
-    fields.each_with_index do |field, index|
-      # Check which fields appear between this field and the page we potentially skip to
-      rest_of_fields = fields[index + 1..]
-      field[:logic]['rules']&.each do |rule|
-        page_id = rule['goto_page_id']
-        rest_of_fields.each do |f|
-          break if f[:id] == page_id
-          next if f[:input_type] == 'page'
-
-          maybe_skipped_fields << f[:id]
-        end
-      end
-    end
-    maybe_skipped_fields.uniq
   end
 
   def add_page_response_count_to_results(results)

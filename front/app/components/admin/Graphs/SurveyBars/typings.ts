@@ -1,5 +1,6 @@
 import { ImageSizes } from 'typings';
 
+// TODO: JS - Think this typing is repeated
 export type Answer = {
   label: string;
   image?: ImageSizes;

@@ -177,4 +177,22 @@ export default defineMessages({
     defaultMessage:
       'https://storymaps.arcgis.com/collections/9dd9f03ac2554da4af78b42020fb40c1?item=13',
   },
+  page: {
+    id: 'app.containers.Admin.projects.project.survey.page',
+    defaultMessage: 'Page',
+  },
+  hiddenByLogic: {
+    id: 'app.containers.Admin.projects.project.survey.hiddenByLogic',
+    defaultMessage: ' - hidden by logic',
+  },
+  logicSkipTooltipPage: {
+    id: 'app.containers.Admin.projects.project.survey.logicSkipTooltipPage',
+    defaultMessage:
+      'Logic on this page skips all questions until Page 4. Click to hide or show the skipped questions.',
+  },
+  logicSkipTooltipOption: {
+    id: 'app.containers.Admin.projects.project.survey.logicSkipTooltipOption',
+    defaultMessage:
+      'Logic skips all questions until Page 4 when a user selects this answer. Click to hide or show the skipped questions.',
+  },
 });

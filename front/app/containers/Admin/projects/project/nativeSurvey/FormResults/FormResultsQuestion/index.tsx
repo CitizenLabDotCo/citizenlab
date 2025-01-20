@@ -50,7 +50,6 @@ const FormResultsQuestion = ({
     customFieldId,
     mapConfigId,
     files,
-    logic,
   } = result;
 
   const isMultipleChoiceAndHasAnswers = !!answers;
@@ -69,8 +68,15 @@ const FormResultsQuestion = ({
     // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     inputType === 'polygon' && polygonResponses && polygonResponses?.length > 0;
 
+  if (result.hidden) return null;
+
   return (
-    <>
+    <Box
+      border="1px solid #e0e0e0"
+      borderRadius="4px"
+      p="10px 20px 10px 20px"
+      mb="20px"
+    >
       <Box data-cy={`e2e-${snakeCase(localize(question))}`} mb="24px">
         <Title variant="h3" mt="12px" mb="12px">
           {questionNumber}. <T value={question} />
@@ -80,7 +86,6 @@ const FormResultsQuestion = ({
           required={required}
           totalSubmissions={totalSubmissions}
           totalResponses={questionResponseCount}
-          logic={logic}
         />
 
         <Text variant="bodyS" color="textSecondary" mt="12px" mb="12px">
@@ -136,7 +141,7 @@ const FormResultsQuestion = ({
           </Box>
         )}
       </Box>
-    </>
+    </Box>
   );
 };
 

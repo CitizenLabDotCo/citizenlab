@@ -54,7 +54,7 @@ class WebApi::V1::PhasesController < ApplicationController
   def destroy
     sidefx.before_destroy(@phase, current_user)
     phase = ActiveRecord::Base.transaction do
-      @phase.ideas.each(&:destroy!) if !@phase.pmethod.transitive?
+      @phase.ideas.each(&:destroy!) unless @phase.pmethod.transitive?
 
       @phase.destroy
     end
@@ -67,8 +67,8 @@ class WebApi::V1::PhasesController < ApplicationController
   end
 
   def survey_results
-    logic_option_ids = params[:filter_logic_option_ids].present? ? params[:filter_logic_option_ids].split(',') : nil
-    results = SurveyResultsGeneratorService.new(@phase).generate_results(return_pages: true, logic_option_ids: logic_option_ids)
+    logic_ids = params[:filter_logic_ids].present? ? params[:filter_logic_ids].split(',') : nil # Array of page and option IDs
+    results = SurveyResultsGeneratorService.new(@phase).generate_results(return_pages: true, logic_ids: logic_ids)
     render json: raw_json(results)
   end
 

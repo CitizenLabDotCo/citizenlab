@@ -17,6 +17,11 @@ describe('parseQuestionResult', () => {
       totalResponseCount: 4,
       questionResponseCount: 4,
       totalPickCount: 4,
+      description: {},
+      questionNumber: 1,
+      pageNumber: 1,
+      hidden: false,
+      logicNextPageId: null,
       answers: [
         {
           answer: 'select_option_1_q90',
@@ -50,11 +55,15 @@ describe('parseQuestionResult', () => {
             title_multiloc: {
               en: 'select: Option 1',
             },
+            id: '1',
+            logicNextPageId: null,
           },
           select_option_2_sj8: {
             title_multiloc: {
               en: 'select: Option 2',
             },
+            id: '1',
+            logicNextPageId: null,
           },
         },
         group: {
@@ -62,16 +71,22 @@ describe('parseQuestionResult', () => {
             title_multiloc: {
               en: 'Male',
             },
+            id: '1',
+            logicNextPageId: null,
           },
           female: {
             title_multiloc: {
               en: 'Female',
             },
+            id: '1',
+            logicNextPageId: null,
           },
           unspecified: {
             title_multiloc: {
               en: 'Other',
             },
+            id: '1',
+            logicNextPageId: null,
           },
         },
       },
@@ -139,9 +154,14 @@ describe('parseQuestionResult', () => {
       customFieldId: '894c900b-fc12-4aaa-884b-e313cea89321',
       required: false,
       grouped: true,
+      hidden: false,
       totalResponseCount: 4,
       questionResponseCount: 4,
       totalPickCount: 8,
+      description: {},
+      questionNumber: 1,
+      pageNumber: 1,
+      logicNextPageId: null,
       answers: [
         {
           answer: 'multiselect_option_1_s2e',
@@ -183,11 +203,15 @@ describe('parseQuestionResult', () => {
             title_multiloc: {
               en: 'multiselect: Option 1',
             },
+            id: '1',
+            logicNextPageId: null,
           },
           multiselect_option_2_3c7: {
             title_multiloc: {
               en: 'multiselect: Option 2',
             },
+            id: '1',
+            logicNextPageId: null,
           },
         },
         group: {
@@ -195,16 +219,22 @@ describe('parseQuestionResult', () => {
             title_multiloc: {
               en: 'Male',
             },
+            id: '1',
+            logicNextPageId: null,
           },
           female: {
             title_multiloc: {
               en: 'Female',
             },
+            id: '1',
+            logicNextPageId: null,
           },
           unspecified: {
             title_multiloc: {
               en: 'Other',
             },
+            id: '1',
+            logicNextPageId: null,
           },
         },
       },
