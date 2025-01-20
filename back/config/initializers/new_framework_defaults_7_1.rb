@@ -186,7 +186,7 @@ Rails.application.config.precompile_filter_parameters = true
 # recommended to explicitly define the serialization method for each column
 # rather than to rely on a global default.
 #++
-# Rails.application.config.active_record.default_column_serializer = nil
+Rails.application.config.active_record.default_column_serializer = nil
 
 ###
 # Enable a performance optimization that serializes Active Record models
