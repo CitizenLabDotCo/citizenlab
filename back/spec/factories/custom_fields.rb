@@ -319,7 +319,7 @@ FactoryBot.define do
       linear_scale_label_6_multiloc { {} }
       linear_scale_label_7_multiloc { {} }
 
-      statements { build_list(:custom_field_statement, 2) }
+      statements { build_list(:custom_field_matrix_statement, 2) }
     end
 
     factory :custom_field_birthyear do

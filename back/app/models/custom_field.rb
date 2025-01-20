@@ -48,7 +48,7 @@ class CustomField < ApplicationRecord
   acts_as_list column: :ordering, top_of_list: 0, scope: [:resource_id]
 
   has_many :options, -> { order(:ordering) }, dependent: :destroy, class_name: 'CustomFieldOption', inverse_of: :custom_field
-  has_many :statements, -> { order(:ordering) }, dependent: :destroy, class_name: 'CustomFieldStatement', inverse_of: :custom_field
+  has_many :matrix_statements, -> { order(:ordering) }, dependent: :destroy, class_name: 'CustomFieldMatrixStatement', inverse_of: :custom_field
   has_many :text_images, as: :imageable, dependent: :destroy
   accepts_nested_attributes_for :text_images
 
@@ -90,7 +90,7 @@ class CustomField < ApplicationRecord
   validates :minimum_select_count, comparison: { greater_than_or_equal_to: 0 }, if: :multiselect?, allow_nil: true
   validates :page_layout, presence: true, inclusion: { in: PAGE_LAYOUTS }, if: :page?
   validates :page_layout, absence: true, unless: :page?
-  validates :statements, presence: true, if: :supports_statements?
+  validates :matrix_statements, presence: true, if: :supports_statements?
 
   before_validation :set_default_enabled
   before_validation :set_default_answer_visible_to
@@ -127,7 +127,7 @@ class CustomField < ApplicationRecord
     %w[page section].exclude?(input_type)
   end
 
-  def supports_statements?
+  def supports_matrix_statements?
     input_type == 'matrix_linear_scale'
   end
 

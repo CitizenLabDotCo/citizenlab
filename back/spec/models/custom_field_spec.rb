@@ -120,7 +120,7 @@ RSpec.describe CustomField do
       field = create(:custom_field_matrix_linear_scale)
 
       expect(field).to be_valid
-      expect(field.statements).to be_present
+      expect(field.matrix_statements).to be_present
     end
   end
 

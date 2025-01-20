@@ -1,4 +1,4 @@
-class CustomFieldStatement < ApplicationRecord
+class CustomFieldMatrixStatement < ApplicationRecord
   belongs_to :custom_field
 
   attribute :key, :string, default: -> { generate_key }
