@@ -138,8 +138,6 @@ da:
         title: Fødselsår
       domicile:
         title: Lokalområde
-      education:
-        title: Uddannelse
     ideas:
       title:
         title: Titel
@@ -207,14 +205,6 @@ da:
       unspecified: Andet
     domicile:
       outside: Et andet sted
-    education:
-      ISCED2: Grundskole
-      ISCED3: Ungdomsuddannelse
-      ISCED4: Videregående uddannelse
-      ISCED5: Kort videregående uddannelse
-      ISCED6: Bachelorgrad eller tilsvarende
-      ISCED7: Kandidatgrad eller tilsvarende
-      ISCED8: Ph.d. eller tilsvarende
   reset_password_mailer:
     send_reset_password:
       preheader: 'Nulstil din adgangskode til %{organizationName}'
