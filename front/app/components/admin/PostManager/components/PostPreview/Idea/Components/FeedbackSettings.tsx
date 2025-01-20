@@ -48,10 +48,12 @@ const FeedbackSettings = ({ projectId, ideaId, className }: Props) => {
   const { data: idea } = useIdeaById(ideaId);
   const { data: appConfig } = useAppConfiguration();
   const { data: statuses } = useIdeaStatuses({
-    participation_method:
-      phase?.data.attributes.participation_method === 'proposals'
-        ? 'proposals'
-        : 'ideation',
+    queryParams: {
+      participation_method:
+        phase?.data.attributes.participation_method === 'proposals'
+          ? 'proposals'
+          : 'ideation',
+    },
   });
   const { mutate: updateIdea } = useUpdateIdea();
   const { data: prospectAssignees } = useUsers({

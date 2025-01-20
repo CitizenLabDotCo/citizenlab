@@ -9,7 +9,7 @@ import useProjectById from 'api/projects/useProjectById';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import ProjectProposalsManager from 'components/admin/PostManager/ProjectProposalsManager';
-import Button from 'components/UI/Button';
+import Button from 'components/UI/ButtonWithLink';
 
 import { FormattedMessage } from 'utils/cl-intl';
 

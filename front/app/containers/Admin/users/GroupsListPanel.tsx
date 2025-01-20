@@ -14,7 +14,7 @@ import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import Outlet from 'components/Outlet';
 import T from 'components/T';
-import Button from 'components/UI/Button';
+import Button from 'components/UI/ButtonWithLink';
 
 import { trackEventByName } from 'utils/analytics';
 import FormattedMessage from 'utils/cl-intl/FormattedMessage';

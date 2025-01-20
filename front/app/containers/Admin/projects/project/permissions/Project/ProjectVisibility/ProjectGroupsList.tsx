@@ -14,7 +14,7 @@ import useProjectGroups from 'api/project_groups/useProjectGroups';
 import useLocalize from 'hooks/useLocalize';
 
 import { List, Row } from 'components/admin/ResourceList';
-import Button from 'components/UI/Button';
+import Button from 'components/UI/ButtonWithLink';
 import MultipleSelect from 'components/UI/MultipleSelect';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';

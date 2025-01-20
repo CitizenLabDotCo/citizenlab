@@ -14,7 +14,7 @@ import SortableList from 'components/admin/ResourceList/SortableList';
 import SortableRow from 'components/admin/ResourceList/SortableRow';
 import { StyledLink } from 'components/admin/Section';
 import T from 'components/T';
-import Button from 'components/UI/Button';
+import Button from 'components/UI/ButtonWithLink';
 import Modal, {
   ModalContentContainer,
   Content,

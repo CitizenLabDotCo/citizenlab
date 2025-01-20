@@ -4,7 +4,7 @@ import { Box, colors, fontSizes } from '@citizenlab/cl2-component-library';
 import { darken } from 'polished';
 import styled from 'styled-components';
 
-import Button from 'components/UI/Button';
+import Button from 'components/UI/ButtonWithLink';
 import Modal from 'components/UI/Modal';
 
 import { trackEventByName } from 'utils/analytics';

@@ -759,6 +759,7 @@
   "app.components.formBuilder.shortAnswer": "مختصر جواب",
   "app.components.formBuilder.showResponseToUsersToggleLabel": "صارفین کو جواب دکھائیں۔",
   "app.components.formBuilder.singleChoice": "واحد انتخاب",
+  "app.components.formBuilder.staleDataErrorMessage2": "ایک مسئلہ ہو گیا ہے۔ یہ ان پٹ فارم حال ہی میں کہیں اور محفوظ کیا گیا ہے۔ اس کی وجہ یہ ہو سکتی ہے کہ آپ یا کسی دوسرے صارف نے اسے کسی اور براؤزر ونڈو میں ترمیم کے لیے کھول دیا ہے۔ تازہ ترین فارم حاصل کرنے کے لیے براہ کرم صفحہ کو ریفریش کریں اور پھر اپنی تبدیلیاں دوبارہ کریں۔",
   "app.components.formBuilder.supportArticleLinkText": "یہ صفحہ",
   "app.components.formBuilder.tags": "ٹیگز",
   "app.components.formBuilder.title": "عنوان",

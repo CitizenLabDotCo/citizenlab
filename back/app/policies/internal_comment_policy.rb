@@ -3,9 +3,9 @@
 class InternalCommentPolicy < ApplicationPolicy
   class Scope < ApplicationPolicy::Scope
     def resolve
-      if user&.active? && user&.admin?
+      if user&.active? && user.admin?
         scope.all
-      elsif user&.active? && user&.project_moderator?
+      elsif user&.active? && user.project_moderator?
         scope.where(idea_id: Idea.where(project_id: user.moderatable_project_ids))
       else
         raise Pundit::NotAuthorizedError, 'not allowed to view this action'

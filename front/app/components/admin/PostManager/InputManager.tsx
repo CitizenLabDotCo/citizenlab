@@ -73,7 +73,7 @@ const InputManager = ({
   });
   const { data: ideas } = useIdeas(queryParameters);
   const { data: ideaStatuses } = useIdeaStatuses({
-    participation_method: 'ideation',
+    queryParams: { participation_method: 'ideation' },
   });
   const { data: ideaTopics } = useTopics();
   const { data: projectAllowedInputTopics } = useProjectAllowedInputTopics({

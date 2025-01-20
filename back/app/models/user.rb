@@ -52,6 +52,7 @@ class User < ApplicationRecord
   include UserRoles
   include UserGroups
   include UserConfirmation
+  include UserVerification
   include UserPasswordValidations
   include PgSearch::Model
 
@@ -381,4 +382,3 @@ end
 
 User.include(IdeaAssignment::Extensions::User)
 User.include(ReportBuilder::Patches::User)
-User.include(Verification::Patches::User)

@@ -6,7 +6,7 @@ import { RouteType } from 'routes';
 
 import { ITopicData } from 'api/topics/types';
 
-import Button from 'components/UI/Button';
+import Button from 'components/UI/ButtonWithLink';
 
 import { FormattedMessage } from 'utils/cl-intl';
 

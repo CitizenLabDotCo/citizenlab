@@ -7,7 +7,7 @@ import { useForm, FormProvider } from 'react-hook-form';
 import styled from 'styled-components';
 import { string, object, number, boolean, array } from 'yup';
 
-import Button from 'components/UI/Button';
+import Button from 'components/UI/ButtonWithLink';
 import Modal from 'components/UI/Modal';
 
 import { trackEventByName } from 'utils/analytics';

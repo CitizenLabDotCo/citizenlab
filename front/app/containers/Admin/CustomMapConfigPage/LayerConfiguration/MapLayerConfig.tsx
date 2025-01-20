@@ -22,7 +22,7 @@ import {
   SectionField,
   SubSectionTitle,
 } from 'components/admin/Section';
-import Button from 'components/UI/Button';
+import Button from 'components/UI/ButtonWithLink';
 import Error from 'components/UI/Error';
 import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
 
