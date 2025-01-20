@@ -30,6 +30,7 @@ interface Props {
   locale: SupportedLocale;
   removeOption: (index: number) => void;
   onChoiceUpdate: (choice: IOptionsType, index: number) => void;
+  onMultilinePaste?: (lines: string[], index: number) => void;
   optionImages: OptionImageType | undefined;
 }
 
@@ -42,6 +43,7 @@ const SelectFieldOption = memo(
     locale,
     removeOption,
     onChoiceUpdate,
+    onMultilinePaste,
     optionImages,
   }: Props) => {
     const [isUploading, setIsUploading] = useState(false);
@@ -107,6 +109,13 @@ const SelectFieldOption = memo(
               onChoiceUpdate(choice, index);
             }}
             autoFocus={false}
+            onMultilinePaste={
+              onMultilinePaste
+                ? (lines) => {
+                    onMultilinePaste(lines, index);
+                  }
+                : undefined
+            }
           />
 
           {showImageSettings && (

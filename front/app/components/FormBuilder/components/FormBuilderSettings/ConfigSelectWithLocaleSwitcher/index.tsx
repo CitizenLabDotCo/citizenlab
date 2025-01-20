@@ -311,9 +311,12 @@ const ConfigSelectWithLocaleSwitcher = ({
                                   locale={selectedLocale}
                                   inputType={inputType}
                                   canDeleteLastOption={canDeleteLastOption}
+                                  optionImages={optionImages}
                                   removeOption={removeOption}
                                   onChoiceUpdate={updateChoice}
-                                  optionImages={optionImages}
+                                  onMultilinePaste={(lines, index) => {
+                                    console.log({ lines, index });
+                                  }}
                                 />
                               </SortableRow>
                             )}
