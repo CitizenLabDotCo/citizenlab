@@ -103,9 +103,8 @@ class WebApi::V1::IdeaStatusesController < ApplicationController
   end
 
   def prescreening_feature_inactive?(participation_method)
-    if participation_method == 'ideation' && !AppConfiguration.instance.feature_activated?('prescreening_ideation')
-      return true
-    elsif participation_method == 'proposals' && !AppConfiguration.instance.feature_activated?('prescreening')
+    if (participation_method == 'ideation' && !AppConfiguration.instance.feature_activated?('prescreening_ideation')) ||
+        (participation_method == 'proposals' && !AppConfiguration.instance.feature_activated?('prescreening'))
       return true
     end
 
