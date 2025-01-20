@@ -10,6 +10,7 @@ resource 'IdeaStatuses' do
 
   get 'web_api/v1/idea_statuses' do
     parameter :participation_method, 'Filter by participation method. Either "ideation" or "proposals".', required: false
+    parameter :exclude_screening_status, 'Exclude the prescreening status from the list.', required: false
 
     before_all do
       create_list(:idea_status, 3)
@@ -27,16 +28,47 @@ resource 'IdeaStatuses' do
       end
     end
 
-    context 'when resident' do
+    context "when resident and participation method 'ideation'" do
       before { resident_header_token }
 
-      let(:participation_method) { 'proposals' }
+      let(:participation_method) { 'ideation' }
+      let!(:prescreening_status) { create(:idea_status, code: 'prescreening') }
 
-      example_request 'List all proposals input statuses' do
-        assert_status 200
-        json_response = json_parse(response_body)
-        expect(json_response[:data].size).to eq 2
-        expect(json_response[:data].all? { |status| status.dig(:attributes, :participation_method) == 'proposals' }).to be true
+      context 'when prescreening_ideation feature is NOT active' do
+        before { SettingsService.new.deactivate_feature! 'prescreening_ideation' }
+
+        example_request 'List all ideation input statuses excludes prescreening status' do
+          assert_status 200
+          json_response = json_parse(response_body)
+          expect(json_response[:data].size).to eq 3
+          expect(json_response[:data].all? { |status| status.dig(:attributes, :participation_method) == 'ideation' }).to be true
+        end
+      end
+
+      context 'when prescreening_ideation feature is active' do
+        before { SettingsService.new.activate_feature! 'prescreening_ideation' }
+
+        example 'List all ideation input statuses includes prescreening status', document: false do
+          do_request
+          assert_status 200
+          json_response = json_parse(response_body)
+
+          expect(json_response[:data].size).to eq 4
+          expect(json_response[:data].pluck(:id)).to include prescreening_status.id
+        end
+
+        context "when passed exclude_screening_status: 'true'" do
+          let(:exclude_screening_status) { 'true' }
+  
+          example 'List all ideation input statuses excludes prescreening status', document: false do
+            do_request
+            assert_status 200
+            json_response = json_parse(response_body)
+  
+            expect(json_response[:data].size).to eq 3
+            expect(json_response[:data].pluck(:id)).to_not include prescreening_status.id
+          end
+        end
       end
     end
 
@@ -47,6 +79,51 @@ resource 'IdeaStatuses' do
         assert_status 200
         json_response = json_parse(response_body)
         expect(json_response[:data].size).to eq 5
+      end
+    end
+
+    context "when admin and participation method 'proposals'" do
+      before { admin_header_token }
+
+      let(:participation_method) { 'proposals' }
+      let!(:prescreening_status) { create(:proposals_status, code: 'prescreening') }
+  
+      context 'when prescreening feature is NOT active' do
+        before { SettingsService.new.deactivate_feature! 'prescreening' }
+
+        example_request 'List all proposals statuses excludes prescreening status' do
+          assert_status 200
+          json_response = json_parse(response_body)
+          expect(json_response[:data].size).to eq 2
+          expect(json_response[:data].all? { |status| status.dig(:attributes, :participation_method) == 'proposals' }).to be true
+          expect(json_response[:data].pluck(:id)).to_not include prescreening_status.id
+        end
+      end
+  
+      context 'when prescreening feature IS active' do
+        before { SettingsService.new.activate_feature! 'prescreening' }
+  
+        example 'List all proposals input statuses includes prescreening status', document: false do
+          do_request
+          assert_status 200
+          json_response = json_parse(response_body)
+  
+          expect(json_response[:data].size).to eq 3
+          expect(json_response[:data].pluck(:id)).to include prescreening_status.id
+        end
+  
+        context "when passed exclude_screening_status: 'true'" do
+          let(:exclude_screening_status) { 'true' }
+  
+          example 'List all proposals input statuses excludes prescreening status', document: false do
+            do_request
+            assert_status 200
+            json_response = json_parse(response_body)
+  
+            expect(json_response[:data].size).to eq 2
+            expect(json_response[:data].pluck(:id)).to_not include prescreening_status.id
+          end
+        end
       end
     end
   end
