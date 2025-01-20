@@ -2071,7 +2071,7 @@
   "app.utils.IdeasNewPage.proposalFormTitle": "Ajouter une nouvelle proposition",
   "app.utils.IdeasNewPage.questionFormTitle": "Ajoutez une nouvelle question",
   "app.utils.IdeasNewPage.surveyTitle": "Enquête",
-  "app.utils.Projects.sendSurveySubmission": "Envoyer l'identifiant de l'enquête à mon adresse électronique",
+  "app.utils.Projects.sendSurveySubmission": "Envoyer l'identifiant de la soumission à mon adresse e-mail",
   "app.utils.Projects.surveySubmission": "Soumission de l'enquête",
   "app.utils.Projects.yourResponseHasTheFollowingId": "Votre réponse a l'identifiant suivant : {identifier}",
   "app.utils.Promessagesjects.ifYouLaterDecide": "Si vous souhaitez que votre réponse soit supprimée, veuillez nous contacter en utilisant l'identifiant suivant :",
