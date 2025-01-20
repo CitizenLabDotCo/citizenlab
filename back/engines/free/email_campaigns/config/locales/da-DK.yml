@@ -42,7 +42,7 @@ da:
       "project_phase_started": Ny projektfase
       "project_phase_upcoming": Kommende ny projektfase
       "project_published": Projekt offentliggjort
-      "status_change_on_idea_you_follow": Statusændring af en idé, som du følger
+      "status_change_on_idea_you_follow": Statusændring på en idé, som du følger
       "status_change_on_initiative_you_follow": Statusændring på et forslag, som du følger
       "threshold_reached_for_admin": Forslag har nået stemmegrænsen
       "welcome": Efter registrering
@@ -281,7 +281,7 @@ da:
       commented: '%{authorFirstName} kommenterede:'
       cta_reply_to: 'Giv feedback til %{authorName}'
       days_ago: '%{numberOfDays} dage siden'
-      event_description: '%{authorName} har offentliggjort en ny idé på din platform. Se den nu, giv feedback på den, eller skift idéens status !'
+      event_description: '%{authorName} har offentliggjort en ny idé på din platform. Se den nu, giv feedback på den, eller skift idéens status!'
       main_header: '%{firstName}, der er blevet offentliggjort en ny idé på din platform'
       subject: 'Nogen offentliggjorde en ny idé på %{organizationName}s platform'
       preheader: '%{authorName} offentliggjorde en ny idé på din platform'
@@ -492,7 +492,7 @@ da:
       subject: 'Din idé på %{organizationName}s platform '
       message_next_steps: ""
     your_proposed_initiatives_digest:
-      subject: 'Ugentlige opdateringer af dit forslag'
+      subject: 'Ugentlige opdateringer på dit forslag'
       preheader: 'Hvad skete der med dit forslag i sidste uge?'
       title_your_weekly_report: 'Hvordan klarer dit forslag sig?'
       text_introduction: 'Du kan find nøgletallene for dit forslag nedenfor. Hvis du vil skabe yderligere opmærksomhed omkring dit forslag, kan du med fordel gå til dit forslags side, hvorfra du kan dele det på dine sociale medier eller via andre digitale kanaler.'
