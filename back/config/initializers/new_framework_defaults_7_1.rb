@@ -66,7 +66,7 @@ Rails.application.config.active_record.encryption.support_sha1_for_non_determini
 # For example, it is possible to create an index for a non existing column.
 # See https://www.sqlite.org/quirks.html#double_quoted_string_literals_are_accepted for more details.
 #++
-# Rails.application.config.active_record.sqlite3_adapter_strict_strings_by_default = true
+Rails.application.config.active_record.sqlite3_adapter_strict_strings_by_default = true
 
 ###
 # Disable deprecated singular associations names.
