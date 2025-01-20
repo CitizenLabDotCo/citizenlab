@@ -540,7 +540,7 @@ da:
       subject: '"%{input_title}" er næsten udgivet'
       preheader: 'Den er i øjeblikket på %{prescreening_status_title}'
     your_proposed_initiatives_digest:
-      subject: 'Ugentlige opdateringer af dit forslag'
+      subject: 'Ugentlige opdateringer på dit forslag'
       preheader: 'Hvad skete der med dit forslag i sidste uge?'
       title_your_weekly_report: 'Hvordan klarer dit forslag sig?'
       text_introduction: 'Du kan find nøgletallene for dit forslag nedenfor. Hvis du vil skabe yderligere opmærksomhed omkring dit forslag, kan du med fordel gå til dit forslags side, hvorfra du kan dele det på dine sociale medier eller via andre digitale kanaler.'
