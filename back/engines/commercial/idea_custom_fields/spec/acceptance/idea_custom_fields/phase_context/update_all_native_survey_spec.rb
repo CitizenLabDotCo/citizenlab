@@ -501,6 +501,100 @@ resource 'Idea Custom Fields' do
         })
       end
 
+      example 'Update a matrix linear scale field, add, delete and update statements' do
+        field_to_update = create(
+          :custom_field_matrix_linear_scale, 
+          resource: custom_form,
+          linear_scale_label_5_multiloc: { 'en' => 'Furthest' }
+        )
+        update_statement_id, delete_statement_id = field_to_update.matrix_statement_ids
+
+        request = {
+          custom_fields: [
+            {
+              input_type: 'page',
+              page_layout: 'default'
+            },
+            {
+              id: field_to_update.id,
+              title_multiloc: { en: 'Updated field' },
+              linear_scale_label_5_multiloc: { 'en' => 'Farthest' },
+              maximum: 5,
+              matrix_statements: [
+                { 
+                  title_multiloc: { en: 'Inserted statement' }
+                },
+                {
+                  id: update_statement_id,
+                  title_multiloc: { en: 'Updated statement' }
+                }
+              ]
+            }
+          ]
+        }
+        do_request request
+
+        assert_status 200
+        json_response = json_parse response_body
+
+        expect(json_response[:data].size).to eq 2
+        expect(json_response[:data][1]).to match({
+          attributes: hash_including(
+            input_type: 'matrix_linear_scale',
+            title_multiloc: { en: 'Updated field' },
+            linear_scale_label_5_multiloc: { en: 'Farthest' },
+            maximum: 5
+          ),
+          id: an_instance_of(String),
+          type: 'custom_field',
+          relationships: {
+            matrix_statements: {
+              data: [
+                {
+                  id: an_instance_of(String),
+                  type: 'custom_field_matrix_statement'
+                },
+                { 
+                  id: update_statement_id,
+                  type: 'custom_field_matrix_statement'
+                }
+              ]
+            },
+            options: { data: [] },
+            resource: { data: { id: custom_form.id, type: 'custom_form' } }
+          }
+        })
+        json_insert_statement = json_response[:included].find do |json_statement|
+          json_statement[:id] != update_statement_id && json_statement[:type] == 'custom_field_matrix_statement'
+        end
+        json_update_statement = json_response[:included].find do |json_statement|
+          json_statement[:id] == update_statement_id
+        end
+        expect(json_insert_statement).to match({
+          id: an_instance_of(String),
+          type: 'custom_field_matrix_statement',
+          attributes: {
+            key: an_instance_of(String),
+            title_multiloc: { en: 'Inserted statement' },
+            ordering: 0,
+            created_at: an_instance_of(String),
+            updated_at: an_instance_of(String)
+          }
+        })
+        expect(json_update_statement).to match({
+          id: update_statement_id,
+          type: 'custom_field_matrix_statement',
+          attributes: {
+            key: an_instance_of(String),
+            title_multiloc: { en: 'Updated statement' },
+            ordering: 1,
+            created_at: an_instance_of(String),
+            updated_at: an_instance_of(String)
+          }
+        })
+        expect(field_to_update.reload.matrix_statement_ids).not_to include(delete_statement_id)
+      end
+
       example '[error] Add a field of unsupported input_type' do
         request = {
           custom_fields: [
