@@ -194,6 +194,13 @@ const ConfigSelectWithLocaleSwitcher = ({
     [update]
   );
 
+  const handleMultilinePaste = useCallback(
+    (lines, index) => {
+      console.log({ lines, index });
+    },
+    [update]
+  );
+
   const defaultOptionValues = [{}];
   const errors = get(formContextErrors, name) as RHFErrors;
   const apiError = errors?.error && ([errors] as CLError[]);
@@ -276,6 +283,9 @@ const ConfigSelectWithLocaleSwitcher = ({
                         return aValue - bValue;
                       })
                       .map((choice, index) => {
+                        const isLast = index === choices.length - 1;
+                        const isEmpty = !!choice.title_multiloc[selectedLocale];
+
                         return (
                           <Box key={index}>
                             {choice.other === true ? (
@@ -314,9 +324,11 @@ const ConfigSelectWithLocaleSwitcher = ({
                                   optionImages={optionImages}
                                   removeOption={removeOption}
                                   onChoiceUpdate={updateChoice}
-                                  onMultilinePaste={(lines, index) => {
-                                    console.log({ lines, index });
-                                  }}
+                                  onMultilinePaste={
+                                    isLast && isEmpty
+                                      ? handleMultilinePaste
+                                      : undefined
+                                  }
                                 />
                               </SortableRow>
                             )}
