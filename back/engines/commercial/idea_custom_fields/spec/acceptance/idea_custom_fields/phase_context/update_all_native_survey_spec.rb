@@ -26,7 +26,7 @@ resource 'Idea Custom Fields' do
     end
 
     let(:context) { create(:native_survey_phase) }
-    let(:custom_form) { create(:custom_form, participation_context: context) }
+    let!(:custom_form) { create(:custom_form, participation_context: context) }
     let(:phase_id) { context.id }
 
     context 'when admin' do
@@ -282,7 +282,7 @@ resource 'Idea Custom Fields' do
                 }
               ]
             },
-            resource: { data: { id: an_instance_of(String), type: 'custom_form' } }
+            resource: { data: { id: custom_form.id, type: 'custom_form' } }
           }
         })
         options = CustomField.find(json_response.dig(:data, 1, :id)).options
@@ -397,7 +397,6 @@ resource 'Idea Custom Fields' do
       end
 
       example 'Add a matrix linear scale field with statements' do
-        custom_form # Ensure custom form is created
         request = {
           custom_fields: [
             {
