@@ -197,6 +197,7 @@ const ConfigSelectWithLocaleSwitcher = ({
   const handleMultilinePaste = useCallback(
     (lines, index) => {
       if (!selectedLocale) return;
+      if (lines.length > 20) return;
 
       updateFormOnMultlinePaste({
         update,
