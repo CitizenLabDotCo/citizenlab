@@ -360,7 +360,11 @@ resource 'Idea Custom Fields' do
               linear_scale_label_4_multiloc: { 'en' => 'Neutral' },
               linear_scale_label_5_multiloc: { 'en' => 'High-ish' },
               linear_scale_label_6_multiloc: { 'en' => 'High' },
-              linear_scale_label_7_multiloc: { 'en' => 'Highest' }
+              linear_scale_label_7_multiloc: { 'en' => 'Highest' },
+              linear_scale_label_8_multiloc: {},
+              linear_scale_label_9_multiloc: {},
+              linear_scale_label_10_multiloc: {},
+              linear_scale_label_11_multiloc: {},
             }
           ]
         }
@@ -389,6 +393,10 @@ resource 'Idea Custom Fields' do
             linear_scale_label_5_multiloc: { en: 'High-ish' },
             linear_scale_label_6_multiloc: { en: 'High' },
             linear_scale_label_7_multiloc: { en: 'Highest' },
+            linear_scale_label_8_multiloc: {},
+            linear_scale_label_9_multiloc: {},
+            linear_scale_label_10_multiloc: {},
+            linear_scale_label_11_multiloc: {},
             logic: {},
             random_option_ordering: false,
             constraints: {}
@@ -928,6 +936,10 @@ resource 'Idea Custom Fields' do
               linear_scale_label_5_multiloc: { 'en' => 'Strongly agree' },
               linear_scale_label_6_multiloc: {},
               linear_scale_label_7_multiloc: {},
+              linear_scale_label_8_multiloc: {},
+              linear_scale_label_9_multiloc: {},
+              linear_scale_label_10_multiloc: {},
+              linear_scale_label_11_multiloc: {},
               logic: {
                 rules: [{ if: 2, goto_page_id: page3.id }]
               }
@@ -998,6 +1010,10 @@ resource 'Idea Custom Fields' do
             linear_scale_label_5_multiloc: field_to_update.linear_scale_label_5_multiloc.symbolize_keys,
             linear_scale_label_6_multiloc: field_to_update.linear_scale_label_6_multiloc.symbolize_keys,
             linear_scale_label_7_multiloc: field_to_update.linear_scale_label_7_multiloc.symbolize_keys,
+            linear_scale_label_8_multiloc: field_to_update.linear_scale_label_8_multiloc.symbolize_keys,
+            linear_scale_label_9_multiloc: field_to_update.linear_scale_label_9_multiloc.symbolize_keys,
+            linear_scale_label_10_multiloc: field_to_update.linear_scale_label_10_multiloc.symbolize_keys,
+            linear_scale_label_11_multiloc: field_to_update.linear_scale_label_11_multiloc.symbolize_keys,
             logic: {
               rules: [{ if: 2, goto_page_id: page3.id }]
             },
@@ -1655,6 +1671,10 @@ resource 'Idea Custom Fields' do
               linear_scale_label_5_multiloc: { 'en' => 'Strongly agree' },
               linear_scale_label_6_multiloc: {},
               linear_scale_label_7_multiloc: {},
+              linear_scale_label_8_multiloc: {},
+              linear_scale_label_9_multiloc: {},
+              linear_scale_label_10_multiloc: {},
+              linear_scale_label_11_multiloc: {},
               logic: {
                 rules: [{ if: 2, goto_page_id: 'TEMP-ID-1' }]
               }
@@ -1725,6 +1745,10 @@ resource 'Idea Custom Fields' do
             linear_scale_label_5_multiloc: field_to_update.linear_scale_label_5_multiloc.symbolize_keys,
             linear_scale_label_6_multiloc: field_to_update.linear_scale_label_6_multiloc.symbolize_keys,
             linear_scale_label_7_multiloc: field_to_update.linear_scale_label_7_multiloc.symbolize_keys,
+            linear_scale_label_8_multiloc: field_to_update.linear_scale_label_8_multiloc.symbolize_keys,
+            linear_scale_label_9_multiloc: field_to_update.linear_scale_label_9_multiloc.symbolize_keys,
+            linear_scale_label_10_multiloc: field_to_update.linear_scale_label_10_multiloc.symbolize_keys,
+            linear_scale_label_11_multiloc: field_to_update.linear_scale_label_11_multiloc.symbolize_keys,
             logic: {
               rules: [{ if: 2, goto_page_id: json_response[:data][3][:id] }]
             },
@@ -1819,6 +1843,10 @@ resource 'Idea Custom Fields' do
               linear_scale_label_5_multiloc: { 'en' => 'Strongly agree' },
               linear_scale_label_6_multiloc: {},
               linear_scale_label_7_multiloc: {},
+              linear_scale_label_8_multiloc: {},
+              linear_scale_label_9_multiloc: {},
+              linear_scale_label_10_multiloc: {},
+              linear_scale_label_11_multiloc: {},
               logic: {
                 rules: [{ if: 1, goto_page_id: page2.id }]
               }
@@ -1888,6 +1916,10 @@ resource 'Idea Custom Fields' do
             linear_scale_label_5_multiloc: field_to_update.linear_scale_label_5_multiloc.symbolize_keys,
             linear_scale_label_6_multiloc: field_to_update.linear_scale_label_6_multiloc.symbolize_keys,
             linear_scale_label_7_multiloc: field_to_update.linear_scale_label_7_multiloc.symbolize_keys,
+            linear_scale_label_8_multiloc: field_to_update.linear_scale_label_8_multiloc.symbolize_keys,
+            linear_scale_label_9_multiloc: field_to_update.linear_scale_label_9_multiloc.symbolize_keys,
+            linear_scale_label_10_multiloc: field_to_update.linear_scale_label_10_multiloc.symbolize_keys,
+            linear_scale_label_11_multiloc: field_to_update.linear_scale_label_11_multiloc.symbolize_keys,
             logic: {
               rules: [{ if: 1, goto_page_id: page2.id }]
             },
@@ -1980,6 +2012,10 @@ resource 'Idea Custom Fields' do
               linear_scale_label_5_multiloc: { 'en' => 'Strongly agree' },
               linear_scale_label_6_multiloc: {},
               linear_scale_label_7_multiloc: {},
+              linear_scale_label_8_multiloc: {},
+              linear_scale_label_9_multiloc: {},
+              linear_scale_label_10_multiloc: {},
+              linear_scale_label_11_multiloc: {},
               logic: {}
             },
             {
@@ -2039,6 +2075,10 @@ resource 'Idea Custom Fields' do
             linear_scale_label_5_multiloc: field_to_update.linear_scale_label_5_multiloc.symbolize_keys,
             linear_scale_label_6_multiloc: field_to_update.linear_scale_label_6_multiloc.symbolize_keys,
             linear_scale_label_7_multiloc: field_to_update.linear_scale_label_7_multiloc.symbolize_keys,
+            linear_scale_label_8_multiloc: field_to_update.linear_scale_label_8_multiloc.symbolize_keys,
+            linear_scale_label_9_multiloc: field_to_update.linear_scale_label_9_multiloc.symbolize_keys,
+            linear_scale_label_10_multiloc: field_to_update.linear_scale_label_10_multiloc.symbolize_keys,
+            linear_scale_label_11_multiloc: field_to_update.linear_scale_label_11_multiloc.symbolize_keys,
             logic: {},
             constraints: {},
             random_option_ordering: false
@@ -2109,6 +2149,10 @@ resource 'Idea Custom Fields' do
               linear_scale_label_5_multiloc: { 'en' => 'Strongly agree' },
               linear_scale_label_6_multiloc: {},
               linear_scale_label_7_multiloc: {},
+              linear_scale_label_8_multiloc: {},
+              linear_scale_label_9_multiloc: {},
+              linear_scale_label_10_multiloc: {},
+              linear_scale_label_11_multiloc: {},
               logic: {}
             }
           ]
@@ -2159,6 +2203,10 @@ resource 'Idea Custom Fields' do
             linear_scale_label_5_multiloc: field_to_update.linear_scale_label_5_multiloc.symbolize_keys,
             linear_scale_label_6_multiloc: field_to_update.linear_scale_label_6_multiloc.symbolize_keys,
             linear_scale_label_7_multiloc: field_to_update.linear_scale_label_7_multiloc.symbolize_keys,
+            linear_scale_label_8_multiloc: field_to_update.linear_scale_label_8_multiloc.symbolize_keys,
+            linear_scale_label_9_multiloc: field_to_update.linear_scale_label_9_multiloc.symbolize_keys,
+            linear_scale_label_10_multiloc: field_to_update.linear_scale_label_10_multiloc.symbolize_keys,
+            linear_scale_label_11_multiloc: field_to_update.linear_scale_label_11_multiloc.symbolize_keys,
             logic: {},
             constraints: {},
             random_option_ordering: false
@@ -2268,6 +2316,10 @@ resource 'Idea Custom Fields' do
               linear_scale_label_5_multiloc: { 'en' => 'Strongly agree' },
               linear_scale_label_6_multiloc: {},
               linear_scale_label_7_multiloc: {},
+              linear_scale_label_8_multiloc: {},
+              linear_scale_label_9_multiloc: {},
+              linear_scale_label_10_multiloc: {},
+              linear_scale_label_11_multiloc: {},
               logic: {
                 rules: [{ if: 2, goto_page_id: page3.id }]
               }
@@ -2338,6 +2390,10 @@ resource 'Idea Custom Fields' do
             linear_scale_label_5_multiloc: field_to_update.linear_scale_label_5_multiloc.symbolize_keys,
             linear_scale_label_6_multiloc: field_to_update.linear_scale_label_6_multiloc.symbolize_keys,
             linear_scale_label_7_multiloc: field_to_update.linear_scale_label_7_multiloc.symbolize_keys,
+            linear_scale_label_8_multiloc: field_to_update.linear_scale_label_8_multiloc.symbolize_keys,
+            linear_scale_label_9_multiloc: field_to_update.linear_scale_label_9_multiloc.symbolize_keys,
+            linear_scale_label_10_multiloc: field_to_update.linear_scale_label_10_multiloc.symbolize_keys,
+            linear_scale_label_11_multiloc: field_to_update.linear_scale_label_11_multiloc.symbolize_keys,
             logic: {
               rules: [{ if: 2, goto_page_id: page3.id }]
             },
@@ -2426,6 +2482,10 @@ resource 'Idea Custom Fields' do
               linear_scale_label_5_multiloc: { 'en' => 'Strongly agree' },
               linear_scale_label_6_multiloc: {},
               linear_scale_label_7_multiloc: {},
+              linear_scale_label_8_multiloc: {},
+              linear_scale_label_9_multiloc: {},
+              linear_scale_label_10_multiloc: {},
+              linear_scale_label_11_multiloc: {},
               logic: {
                 rules: [{ if: 2, goto_page_id: 'TEMP-ID-1' }]
               }
@@ -2487,6 +2547,10 @@ resource 'Idea Custom Fields' do
             linear_scale_label_5_multiloc: field_to_update.linear_scale_label_5_multiloc.symbolize_keys,
             linear_scale_label_6_multiloc: field_to_update.linear_scale_label_6_multiloc.symbolize_keys,
             linear_scale_label_7_multiloc: field_to_update.linear_scale_label_7_multiloc.symbolize_keys,
+            linear_scale_label_8_multiloc: field_to_update.linear_scale_label_8_multiloc.symbolize_keys,
+            linear_scale_label_9_multiloc: field_to_update.linear_scale_label_9_multiloc.symbolize_keys,
+            linear_scale_label_10_multiloc: field_to_update.linear_scale_label_10_multiloc.symbolize_keys,
+            linear_scale_label_11_multiloc: field_to_update.linear_scale_label_11_multiloc.symbolize_keys,
             logic: {
               rules: [{ if: 2, goto_page_id: json_response[:data][2][:id] }]
             },
@@ -2764,6 +2828,10 @@ resource 'Idea Custom Fields' do
               linear_scale_label_5_multiloc: { 'en' => 'High-ish' },
               linear_scale_label_6_multiloc: { 'en' => 'High' },
               linear_scale_label_7_multiloc: { 'en' => 'Highest' },
+              linear_scale_label_8_multiloc: {},
+              linear_scale_label_9_multiloc: {},
+              linear_scale_label_10_multiloc: {},
+              linear_scale_label_11_multiloc: {},
               logic: {
                 rules: [{ if: 2, goto_page_id: 'TEMP-ID-1' }]
               }
@@ -2826,6 +2894,10 @@ resource 'Idea Custom Fields' do
             linear_scale_label_5_multiloc: { en: 'High-ish' },
             linear_scale_label_6_multiloc: { en: 'High' },
             linear_scale_label_7_multiloc: { en: 'Highest' },
+            linear_scale_label_8_multiloc: {},
+            linear_scale_label_9_multiloc: {},
+            linear_scale_label_10_multiloc: {},
+            linear_scale_label_11_multiloc: {},
             logic: {
               rules: [{ if: 2, goto_page_id: json_response[:data][2][:id] }]
             },
@@ -2900,6 +2972,10 @@ resource 'Idea Custom Fields' do
               linear_scale_label_5_multiloc: { 'en' => 'Strongly agree' },
               linear_scale_label_6_multiloc: {},
               linear_scale_label_7_multiloc: {},
+              linear_scale_label_8_multiloc: {},
+              linear_scale_label_9_multiloc: {},
+              linear_scale_label_10_multiloc: {},
+              linear_scale_label_11_multiloc: {},
               logic: {
                 rules: [
                   { if: 1, goto_page_id: page2.id },
@@ -2973,6 +3049,10 @@ resource 'Idea Custom Fields' do
             linear_scale_label_5_multiloc: field_to_update.linear_scale_label_5_multiloc.symbolize_keys,
             linear_scale_label_6_multiloc: field_to_update.linear_scale_label_6_multiloc.symbolize_keys,
             linear_scale_label_7_multiloc: field_to_update.linear_scale_label_7_multiloc.symbolize_keys,
+            linear_scale_label_8_multiloc: field_to_update.linear_scale_label_8_multiloc.symbolize_keys,
+            linear_scale_label_9_multiloc: field_to_update.linear_scale_label_9_multiloc.symbolize_keys,
+            linear_scale_label_10_multiloc: field_to_update.linear_scale_label_10_multiloc.symbolize_keys,
+            linear_scale_label_11_multiloc: field_to_update.linear_scale_label_11_multiloc.symbolize_keys,
             logic: {
               rules: [
                 { if: 1, goto_page_id: page2.id },
