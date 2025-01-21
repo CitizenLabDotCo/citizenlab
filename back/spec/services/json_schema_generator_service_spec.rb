@@ -616,7 +616,7 @@ RSpec.describe JsonSchemaGeneratorService do
   end
 
   describe '#visit_matrix_linear_scale' do
-    let(:field) do 
+    let(:field) do
       create(:custom_field_matrix_linear_scale, required: true, maximum: 5, key: field_key)
     end
 

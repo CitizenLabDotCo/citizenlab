@@ -115,7 +115,7 @@ class SurveyResultsGeneratorService < FieldVisitorService
       customFieldId: field.id,
       required: field.required,
       grouped: !!group_field_id,
-      totalResponseCount: @inputs.count,
+      totalResponseCount: @inputs.size,
       questionResponseCount: response_count
     }
   end

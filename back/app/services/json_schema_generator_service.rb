@@ -288,7 +288,7 @@ class JsonSchemaGeneratorService < FieldVisitorService
       type: 'object',
       minProperties: (field.required ? field.matrix_statement_ids.size : 0),
       maxProperties: field.matrix_statement_ids.size,
-      properties: field.matrix_statements.pluck(:key).map(&:to_sym).index_with do |key|
+      properties: field.matrix_statements.pluck(:key).map(&:to_sym).index_with do
         {
           type: 'number',
           minimum: 1,
