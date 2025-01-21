@@ -11,7 +11,6 @@ export type TooltipProps = Omit<
 > & {
   width?: BoxProps['w'];
   height?: BoxProps['h'];
-  useWrapper?: boolean;
 };
 
 const useActiveElement = () => {
