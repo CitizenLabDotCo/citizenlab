@@ -68,6 +68,7 @@ export const inputStatusCodes: Record<
 };
 
 export const automatedInputStatusCodes: Set<InputStatusCode> = new Set([
+  'prescreening',
   'proposed',
   'threshold_reached',
   'expired',
