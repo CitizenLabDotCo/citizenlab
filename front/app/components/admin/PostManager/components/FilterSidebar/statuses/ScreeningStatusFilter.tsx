@@ -116,6 +116,7 @@ const ScreeningStatusFilter = ({ status, active, onClick, type }: Props) => {
                 <StatusText>
                   <T value={status.attributes.title_multiloc} />
                 </StatusText>
+                {/* This tooltip would show up underneath other tooltips while the filter was disabled. */}
                 {statusFilterIsEnabled && (
                   <IconTooltip
                     theme="light"
