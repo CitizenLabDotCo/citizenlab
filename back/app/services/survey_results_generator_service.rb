@@ -14,7 +14,8 @@ class SurveyResultsGeneratorService < FieldVisitorService
   def generate_results(field_id: nil, return_pages: false, logic_ids: [])
     if field_id
       field = find_question(field_id)
-      visit field
+      result = visit field
+      cleanup_single_result(result)
     else
       fields = flag_fields_hidden_by_logic_ids(@fields, logic_ids)
 
@@ -32,102 +33,6 @@ class SurveyResultsGeneratorService < FieldVisitorService
         results: results,
         totalSubmissions: inputs.size
       }
-    end
-  end
-
-  def add_question_numbers_to_results(results)
-    question_number = 0
-    page_number = 0
-    results = results.map do |result|
-      if result[:inputType] == 'page'
-        page_number += 1
-        result[:questionNumber] = nil
-        result[:pageNumber] = page_number
-      else
-        question_number += 1
-        result[:questionNumber] = question_number
-        result[:pageNumber] = nil
-      end
-      result
-    end
-  end
-
-  # Replace logicNextPageId with logicNextPageNumber - used by FE in logic tooltip
-  def add_logic_next_page_numbers_to_results(results)
-    results.map do |result|
-      # Replace in page logic
-      next_page = results.find { |r| r[:customFieldId] == result[:logicNextPageId] }
-      result[:logicNextPageNumber] = next_page ? next_page[:pageNumber] : nil
-      result.delete(:logicNextPageId)
-
-      # Do the same for select options
-      if result[:inputType] == 'select' || result[:inputType] == 'multiselect'
-        new_multilocs_answer = result[:multilocs][:answer].map do |key, answer|
-          next_page = results.find { |r| r[:customFieldId] == answer[:logicNextPageId] }
-          answer[:logicNextPageNumber] = next_page ? next_page[:pageNumber] : nil
-          answer.delete(:logicNextPageId)
-          [key, answer]
-        end.to_h
-        result[:multilocs][:answer] = new_multilocs_answer
-      end
-
-      result
-    end
-  end
-
-  def flag_fields_hidden_by_logic_ids(fields, logic_ids)
-    return fields unless logic_ids.present?
-
-    skip_fields = []
-
-    # Question level logic - get field each option_id is linked to
-    question_logic = {}
-    fields.each do |f|
-
-      rules = f.logic['rules']
-      next unless rules.present?
-      rules.each do |r|
-        next unless logic_ids.include? r['if']
-
-        question_logic[f.id] = r['goto_page_id']
-      end
-    end
-
-    # Work out which fields are skipped by question level logic
-    question_logic.each do |field_id, goto_page_id|
-      skip = false
-      fields.each do |f|
-        skip = false if f[:id] == goto_page_id
-        skip_fields << f[:id] if skip
-        skip = true if f[:id] == field_id
-      end
-    end
-
-    # Page logic
-    page_logic = {}
-    fields.each do |f|
-      next unless f.logic['next_page_id'].present? && logic_ids.include?(f.id)
-
-      page_logic[f.id] = f.logic['next_page_id']
-    end
-
-    page_logic.each do |page_id, goto_page_id|
-      skip = false
-      skip_from_next_page = false
-      fields.each do |f|
-        if f[:id] == goto_page_id
-          skip = false
-          skip_from_next_page = false
-        end
-        skip = true if skip_from_next_page && f[:input_type] == 'page'
-        skip_fields << f[:id] if skip
-        skip_from_next_page = true if f[:id] == page_id
-      end
-    end
-
-    fields.map do |field|
-      field.hidden = skip_fields.include?(field[:id])
-      field
     end
   end
 
@@ -218,7 +123,9 @@ class SurveyResultsGeneratorService < FieldVisitorService
       grouped: !!group_field_id,
       totalResponseCount: @inputs.count,
       questionResponseCount: response_count,
-      logicNextPageId: nil,
+      pageNumber: nil,
+      questionNumber: nil,
+      logicNextPageNumber: nil,
       hidden: field.hidden
     }
   end
@@ -321,7 +228,7 @@ class SurveyResultsGeneratorService < FieldVisitorService
     end
 
     field.options.each_with_object({}) do |option, accu|
-      logic_next_page_id = field.logic['rules']&.find{ |r| r['if'] == option.id }&.dig('goto_page_id')
+      logic_next_page_id = field.logic['rules']&.find { |r| r['if'] == option.id }&.dig('goto_page_id')
       option_detail = { title_multiloc: option.title_multiloc, id: option.id, logicNextPageId: logic_next_page_id }
       option_detail[:image] = option.image&.image&.versions&.transform_values(&:url) if field.support_option_images?
       accu[option.key] = option_detail
@@ -448,12 +355,129 @@ class SurveyResultsGeneratorService < FieldVisitorService
         results[current_page_index][:questionResponseCount] = max_response_count unless current_page_index.nil?
         current_page_index = index
         max_response_count = 0
-      else
-        max_response_count = result[:questionResponseCount] if result[:questionResponseCount] > max_response_count
+      elsif result[:questionResponseCount] > max_response_count
+        max_response_count = result[:questionResponseCount]
       end
     end
-    results[current_page_index][:questionResponseCount] = max_response_count
+    results[current_page_index][:questionResponseCount] = max_response_count unless current_page_index.nil?
     results
   end
 
+  def add_question_numbers_to_results(results)
+    question_number = 0
+    page_number = 0
+    results.map do |result|
+      if result[:inputType] == 'page'
+        page_number += 1
+        result[:questionNumber] = nil
+        result[:pageNumber] = page_number
+      else
+        question_number += 1
+        result[:questionNumber] = question_number
+        result[:pageNumber] = nil
+      end
+      result
+    end
+  end
+
+  # Replace logicNextPageId with logicNextPageNumber - used by FE in logic tooltip
+  def add_logic_next_page_numbers_to_results(results)
+    results.map do |result|
+      # Replace in page logic
+      next_page = results.find { |r| r[:customFieldId] == result[:logicNextPageId] }
+      result[:logicNextPageNumber] = next_page ? next_page[:pageNumber] : nil
+      result.delete(:logicNextPageId)
+
+      # Do the same for select options
+      if select_input_type? result[:inputType]
+        result[:multilocs][:answer]&.each_value do |answer|
+          next_page = results.find { |r| r[:customFieldId] == answer[:logicNextPageId] }
+          answer[:logicNextPageNumber] = next_page ? next_page[:pageNumber] : nil
+          answer.delete(:logicNextPageId)
+        end
+        result[:multilocs][:group]&.each_value do |group|
+          group.delete(:id)
+          group.delete(:logicNextPageId)
+        end
+      end
+
+      result
+    end
+  end
+
+  def flag_fields_hidden_by_logic_ids(fields, logic_ids)
+    return fields if logic_ids.blank?
+
+    skip_fields = []
+
+    # Question level logic - get field each option_id is linked to
+    question_logic = {}
+    fields.each do |f|
+      rules = f.logic['rules']
+      next if rules.blank?
+
+      rules.each do |r|
+        next unless logic_ids.include? r['if']
+
+        question_logic[f.id] = r['goto_page_id']
+      end
+    end
+
+    # Work out which fields are skipped by question level logic
+    question_logic.each do |field_id, goto_page_id|
+      skip = false
+      fields.each do |f|
+        skip = false if f[:id] == goto_page_id
+        skip_fields << f[:id] if skip
+        skip = true if f[:id] == field_id
+      end
+    end
+
+    # Page logic
+    page_logic = {}
+    fields.each do |f|
+      next unless f.logic['next_page_id'].present? && logic_ids.include?(f.id)
+
+      page_logic[f.id] = f.logic['next_page_id']
+    end
+
+    page_logic.each do |page_id, goto_page_id|
+      skip = false
+      skip_from_next_page = false
+      fields.each do |f|
+        if f[:id] == goto_page_id
+          skip = false
+          skip_from_next_page = false
+        end
+        skip = true if skip_from_next_page && f[:input_type] == 'page'
+        skip_fields << f[:id] if skip
+        skip_from_next_page = true if f[:id] == page_id
+      end
+    end
+
+    fields.map do |field|
+      field.hidden = skip_fields.include?(field[:id])
+      field
+    end
+  end
+
+  def cleanup_single_result(result)
+    # Logic not used on single result so temp values need cleaning up
+    result.delete(:logicNextPageId)
+    if select_input_type? result[:inputType]
+      result[:multilocs][:answer]&.each_value do |answer|
+        answer[:logicNextPageNumber] = nil
+        answer.delete(:logicNextPageId)
+      end
+      result[:multilocs][:group]&.each_value do |group|
+        group.delete(:id)
+        group.delete(:logicNextPageId)
+      end
+    end
+    result
+  end
+
+  def select_input_type?(input_type)
+    %w[select multiselect linear_scale multiselect_image].include? input_type
+  end
 end

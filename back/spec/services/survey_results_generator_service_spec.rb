@@ -174,6 +174,7 @@ RSpec.describe SurveyResultsGeneratorService do
       title_multiloc: {
         'en' => 'Upload a file'
       },
+      description_multiloc: {},
       required: false
     )
   end
@@ -185,6 +186,7 @@ RSpec.describe SurveyResultsGeneratorService do
       title_multiloc: {
         'en' => 'Upload a file'
       },
+      description_multiloc: {},
       required: false
     )
   end
@@ -393,7 +395,11 @@ RSpec.describe SurveyResultsGeneratorService do
           grouped: false,
           totalResponseCount: 27,
           questionResponseCount: 4,
-          maybeSkippedByLogic: false,
+          description: {},
+          hidden: false,
+          pageNumber: nil,
+          questionNumber: 1,
+          logicNextPageNumber: nil,
           textResponses: [
             { answer: 'Blue' },
             { answer: 'Green' },
@@ -408,6 +414,7 @@ RSpec.describe SurveyResultsGeneratorService do
       end
 
       it 'returns a single result for a text field' do
+        expected_result_text_field[:questionNumber] = nil # Question number is null when requesting a single result
         expect(generator.generate_results(field_id: text_field.id)).to match expected_result_text_field
       end
 
@@ -416,7 +423,11 @@ RSpec.describe SurveyResultsGeneratorService do
           {
             customFieldId: unanswered_text_field.id,
             inputType: 'text',
-            maybeSkippedByLogic: false,
+            description: {},
+            hidden: false,
+            pageNumber: nil,
+            questionNumber: 7,
+            logicNextPageNumber: nil,
             question: { 'en' => 'Nobody wants to answer me' },
             required: false,
             grouped: false,
@@ -437,7 +448,11 @@ RSpec.describe SurveyResultsGeneratorService do
             question: { 'en' => 'What is your favourite recipe?' },
             required: false,
             grouped: false,
-            maybeSkippedByLogic: false,
+            description: {},
+            hidden: false,
+            pageNumber: nil,
+            questionNumber: 2,
+            logicNextPageNumber: nil,
             totalResponseCount: 27,
             questionResponseCount: 0,
             textResponses: []
@@ -458,7 +473,11 @@ RSpec.describe SurveyResultsGeneratorService do
           },
           required: false,
           grouped: false,
-          maybeSkippedByLogic: false,
+          description: {},
+          hidden: false,
+          pageNumber: nil,
+          questionNumber: 3,
+          logicNextPageNumber: nil,
           totalResponseCount: 27,
           questionResponseCount: 4,
           totalPickCount: 33,
@@ -472,11 +491,11 @@ RSpec.describe SurveyResultsGeneratorService do
           ],
           multilocs: {
             answer: {
-              'cat' => { title_multiloc: { 'en' => 'Cat', 'fr-FR' => 'Chat', 'nl-NL' => 'Kat' } },
-              'cow' => { title_multiloc: { 'en' => 'Cow', 'fr-FR' => 'Vache', 'nl-NL' => 'Koe' } },
-              'dog' => { title_multiloc: { 'en' => 'Dog', 'fr-FR' => 'Chien', 'nl-NL' => 'Hond' } },
-              'no_response' => { title_multiloc: { 'en' => 'Nothing', 'fr-FR' => 'Rien', 'nl-NL' => 'Niets' } },
-              'pig' => { title_multiloc: { 'en' => 'Pig', 'fr-FR' => 'Porc', 'nl-NL' => 'Varken' } }
+              'cat' => { title_multiloc: { 'en' => 'Cat', 'fr-FR' => 'Chat', 'nl-NL' => 'Kat' }, id: an_instance_of(String), logicNextPageNumber: nil },
+              'cow' => { title_multiloc: { 'en' => 'Cow', 'fr-FR' => 'Vache', 'nl-NL' => 'Koe' }, id: an_instance_of(String), logicNextPageNumber: nil },
+              'dog' => { title_multiloc: { 'en' => 'Dog', 'fr-FR' => 'Chien', 'nl-NL' => 'Hond' }, id: an_instance_of(String), logicNextPageNumber: nil },
+              'no_response' => { title_multiloc: { 'en' => 'Nothing', 'fr-FR' => 'Rien', 'nl-NL' => 'Niets' }, id: an_instance_of(String), logicNextPageNumber: nil },
+              'pig' => { title_multiloc: { 'en' => 'Pig', 'fr-FR' => 'Porc', 'nl-NL' => 'Varken' }, id: an_instance_of(String), logicNextPageNumber: nil }
             }
           }
         }
@@ -488,6 +507,7 @@ RSpec.describe SurveyResultsGeneratorService do
         end
 
         it 'returns a single result for multiselect' do
+          expected_result_multiselect[:questionNumber] = nil
           expect(generator.generate_results(field_id: multiselect_field.id)).to match expected_result_multiselect
         end
       end
@@ -495,6 +515,7 @@ RSpec.describe SurveyResultsGeneratorService do
       context 'with grouping' do
         let(:expected_result_multiselect_with_user_field_grouping) do
           expected_result_multiselect.tap do |result|
+            result[:questionNumber] = nil
             result[:grouped] = true
             result[:legend] = ['male', 'female', 'unspecified', nil]
             result[:answers] = [
@@ -548,6 +569,7 @@ RSpec.describe SurveyResultsGeneratorService do
 
         let(:expected_result_multiselect_with_select_field_grouping) do
           expected_result_multiselect.tap do |result|
+            result[:questionNumber] = nil
             result[:grouped] = true
             result[:legend] = ['la', 'ny', 'other', nil]
             result[:answers] = [
@@ -632,7 +654,11 @@ RSpec.describe SurveyResultsGeneratorService do
           },
           required: true,
           grouped: false,
-          maybeSkippedByLogic: false,
+          description: { 'en' => 'Please indicate how strong you agree or disagree.' },
+          hidden: false,
+          pageNumber: nil,
+          questionNumber: nil,
+          logicNextPageNumber: nil,
           totalResponseCount: 27,
           questionResponseCount: 22,
           totalPickCount: 27,
@@ -648,19 +674,20 @@ RSpec.describe SurveyResultsGeneratorService do
           ],
           multilocs: {
             answer: {
-              1 => { title_multiloc: { 'en' => '1 - Strongly disagree', 'fr-FR' => "1 - Pas du tout d'accord", 'nl-NL' => '1 - Helemaal niet mee eens' } },
-              2 => { title_multiloc: { 'en' => '2 - Disagree', 'fr-FR' => '2 - Être en désaccord', 'nl-NL' => '2 - Niet mee eens' } },
-              3 => { title_multiloc: { 'en' => '3 - Slightly disagree', 'fr-FR' => '3 - Plutôt en désaccord', 'nl-NL' => '3 - Enigszins oneens' } },
-              4 => { title_multiloc: { 'en' => '4 - Neutral', 'fr-FR' => '4 - Neutre', 'nl-NL' => '4 - Neutraal' } },
-              5 => { title_multiloc: { 'en' => '5 - Slightly agree', 'fr-FR' => "5 - Plutôt d'accord", 'nl-NL' => '5 - Enigszins eens' } },
-              6 => { title_multiloc: { 'en' => '6 - Agree', 'fr-FR' => "6 - D'accord", 'nl-NL' => '6 - Mee eens' } },
-              7 => { title_multiloc: { 'en' => '7 - Strongly agree', 'fr-FR' => "7 - Tout à fait d'accord", 'nl-NL' => '7 - Strerk mee eens' } }
+              1 => { title_multiloc: { 'en' => '1 - Strongly disagree', 'fr-FR' => "1 - Pas du tout d'accord", 'nl-NL' => '1 - Helemaal niet mee eens' }, logicNextPageNumber: nil },
+              2 => { title_multiloc: { 'en' => '2 - Disagree', 'fr-FR' => '2 - Être en désaccord', 'nl-NL' => '2 - Niet mee eens' }, logicNextPageNumber: nil },
+              3 => { title_multiloc: { 'en' => '3 - Slightly disagree', 'fr-FR' => '3 - Plutôt en désaccord', 'nl-NL' => '3 - Enigszins oneens' }, logicNextPageNumber: nil },
+              4 => { title_multiloc: { 'en' => '4 - Neutral', 'fr-FR' => '4 - Neutre', 'nl-NL' => '4 - Neutraal' }, logicNextPageNumber: nil },
+              5 => { title_multiloc: { 'en' => '5 - Slightly agree', 'fr-FR' => "5 - Plutôt d'accord", 'nl-NL' => '5 - Enigszins eens' }, logicNextPageNumber: nil },
+              6 => { title_multiloc: { 'en' => '6 - Agree', 'fr-FR' => "6 - D'accord", 'nl-NL' => '6 - Mee eens' }, logicNextPageNumber: nil },
+              7 => { title_multiloc: { 'en' => '7 - Strongly agree', 'fr-FR' => "7 - Tout à fait d'accord", 'nl-NL' => '7 - Strerk mee eens' }, logicNextPageNumber: nil }
             }
           }
         }
       end
 
       it 'returns the results for a linear scale field' do
+        expected_result_linear_scale[:questionNumber] = 4
         expect(generated_results[:results][3]).to match expected_result_linear_scale
       end
 
@@ -708,7 +735,11 @@ RSpec.describe SurveyResultsGeneratorService do
             },
             required: true,
             grouped: true,
-            maybeSkippedByLogic: false,
+            description: { 'en' => 'Please indicate how strong you agree or disagree.' },
+            hidden: false,
+            pageNumber: nil,
+            questionNumber: nil,
+            logicNextPageNumber: nil,
             totalResponseCount: 27,
             questionResponseCount: 22,
             totalPickCount: 27,
@@ -743,13 +774,13 @@ RSpec.describe SurveyResultsGeneratorService do
             ],
             multilocs: {
               answer: {
-                1 => { title_multiloc: { 'en' => '1 - Strongly disagree', 'fr-FR' => "1 - Pas du tout d'accord", 'nl-NL' => '1 - Helemaal niet mee eens' } },
-                2 => { title_multiloc: { 'en' => '2 - Disagree', 'fr-FR' => '2 - Être en désaccord', 'nl-NL' => '2 - Niet mee eens' } },
-                3 => { title_multiloc: { 'en' => '3 - Slightly disagree', 'fr-FR' => '3 - Plutôt en désaccord', 'nl-NL' => '3 - Enigszins oneens' } },
-                4 => { title_multiloc: { 'en' => '4 - Neutral', 'fr-FR' => '4 - Neutre', 'nl-NL' => '4 - Neutraal' } },
-                5 => { title_multiloc: { 'en' => '5 - Slightly agree', 'fr-FR' => "5 - Plutôt d'accord", 'nl-NL' => '5 - Enigszins eens' } },
-                6 => { title_multiloc: { 'en' => '6 - Agree', 'fr-FR' => "6 - D'accord", 'nl-NL' => '6 - Mee eens' } },
-                7 => { title_multiloc: { 'en' => '7 - Strongly agree', 'fr-FR' => "7 - Tout à fait d'accord", 'nl-NL' => '7 - Strerk mee eens' } }
+                1 => hash_including(title_multiloc: { 'en' => '1 - Strongly disagree', 'fr-FR' => "1 - Pas du tout d'accord", 'nl-NL' => '1 - Helemaal niet mee eens' }),
+                2 => hash_including(title_multiloc: { 'en' => '2 - Disagree', 'fr-FR' => '2 - Être en désaccord', 'nl-NL' => '2 - Niet mee eens' }),
+                3 => hash_including(title_multiloc: { 'en' => '3 - Slightly disagree', 'fr-FR' => '3 - Plutôt en désaccord', 'nl-NL' => '3 - Enigszins oneens' }),
+                4 => hash_including(title_multiloc: { 'en' => '4 - Neutral', 'fr-FR' => '4 - Neutre', 'nl-NL' => '4 - Neutraal' }),
+                5 => hash_including(title_multiloc: { 'en' => '5 - Slightly agree', 'fr-FR' => "5 - Plutôt d'accord", 'nl-NL' => '5 - Enigszins eens' }),
+                6 => hash_including(title_multiloc: { 'en' => '6 - Agree', 'fr-FR' => "6 - D'accord", 'nl-NL' => '6 - Mee eens' }),
+                7 => hash_including(title_multiloc: { 'en' => '7 - Strongly agree', 'fr-FR' => "7 - Tout à fait d'accord", 'nl-NL' => '7 - Strerk mee eens' })
               },
               group: {
                 'la' => { title_multiloc: { 'en' => 'Los Angeles', 'fr-FR' => 'Los Angeles', 'nl-NL' => 'Los Angeles' } },
@@ -785,7 +816,11 @@ RSpec.describe SurveyResultsGeneratorService do
           },
           required: true,
           grouped: false,
-          maybeSkippedByLogic: false,
+          description: {},
+          hidden: false,
+          pageNumber: nil,
+          questionNumber: nil,
+          logicNextPageNumber: nil,
           totalResponseCount: 27,
           questionResponseCount: 6,
           totalPickCount: 27,
@@ -797,9 +832,9 @@ RSpec.describe SurveyResultsGeneratorService do
           ],
           multilocs: {
             answer: {
-              'la' => { title_multiloc: { 'en' => 'Los Angeles', 'fr-FR' => 'Los Angeles', 'nl-NL' => 'Los Angeles' } },
-              'ny' => { title_multiloc: { 'en' => 'New York', 'fr-FR' => 'New York', 'nl-NL' => 'New York' } },
-              'other' => { title_multiloc: { 'en' => 'Other', 'fr-FR' => 'Autre', 'nl-NL' => 'Ander' } }
+              'la' => hash_including(title_multiloc: { 'en' => 'Los Angeles', 'fr-FR' => 'Los Angeles', 'nl-NL' => 'Los Angeles' }),
+              'ny' => hash_including(title_multiloc: { 'en' => 'New York', 'fr-FR' => 'New York', 'nl-NL' => 'New York' }),
+              'other' => hash_including(title_multiloc: { 'en' => 'Other', 'fr-FR' => 'Autre', 'nl-NL' => 'Ander' })
             }
           },
           textResponses: [
@@ -812,6 +847,7 @@ RSpec.describe SurveyResultsGeneratorService do
 
       context 'without grouping' do
         it 'returns the correct results for a select field' do
+          expected_result_select[:questionNumber] = 5
           expect(generated_results[:results][4]).to match expected_result_select
         end
 
@@ -925,7 +961,11 @@ RSpec.describe SurveyResultsGeneratorService do
             },
             required: true,
             grouped: true,
-            maybeSkippedByLogic: false,
+            description: {},
+            hidden: false,
+            pageNumber: nil,
+            questionNumber: nil,
+            logicNextPageNumber: nil,
             totalResponseCount: 27,
             questionResponseCount: 6,
             totalPickCount: 27,
@@ -968,9 +1008,9 @@ RSpec.describe SurveyResultsGeneratorService do
             ],
             multilocs: {
               answer: {
-                'la' => { title_multiloc: { 'en' => 'Los Angeles', 'fr-FR' => 'Los Angeles', 'nl-NL' => 'Los Angeles' } },
-                'ny' => { title_multiloc: { 'en' => 'New York', 'fr-FR' => 'New York', 'nl-NL' => 'New York' } },
-                'other' => { title_multiloc: { 'en' => 'Other', 'fr-FR' => 'Autre', 'nl-NL' => 'Ander' } }
+                'la' => hash_including(title_multiloc: { 'en' => 'Los Angeles', 'fr-FR' => 'Los Angeles', 'nl-NL' => 'Los Angeles' }),
+                'ny' => hash_including(title_multiloc: { 'en' => 'New York', 'fr-FR' => 'New York', 'nl-NL' => 'New York' }),
+                'other' => hash_including(title_multiloc: { 'en' => 'Other', 'fr-FR' => 'Autre', 'nl-NL' => 'Ander' })
               },
               group: {
                 1 => { title_multiloc: { 'en' => '1 - Strongly disagree', 'fr-FR' => "1 - Pas du tout d'accord", 'nl-NL' => '1 - Helemaal niet mee eens' } },
@@ -1036,7 +1076,11 @@ RSpec.describe SurveyResultsGeneratorService do
           },
           required: false,
           grouped: false,
-          maybeSkippedByLogic: false,
+          description: {},
+          hidden: false,
+          pageNumber: nil,
+          questionNumber: 6,
+          logicNextPageNumber: nil,
           totalResponseCount: 27,
           questionResponseCount: 3,
           totalPickCount: 27,
@@ -1121,7 +1165,11 @@ RSpec.describe SurveyResultsGeneratorService do
           question: { 'en' => 'Upload a file' },
           required: false,
           grouped: false,
-          maybeSkippedByLogic: false,
+          description: {},
+          hidden: false,
+          pageNumber: nil,
+          questionNumber: 8,
+          logicNextPageNumber: nil,
           totalResponseCount: 27,
           questionResponseCount: 1,
           files: [
@@ -1143,7 +1191,11 @@ RSpec.describe SurveyResultsGeneratorService do
           question: { 'en' => 'Upload a file' },
           required: false,
           grouped: false,
-          maybeSkippedByLogic: false,
+          description: {},
+          hidden: false,
+          pageNumber: nil,
+          questionNumber: 9,
+          logicNextPageNumber: nil,
           totalResponseCount: 27,
           questionResponseCount: 1,
           files: [
@@ -1164,7 +1216,11 @@ RSpec.describe SurveyResultsGeneratorService do
           question: { 'en' => 'Where should the new nursery be located?' },
           required: false,
           grouped: false,
-          maybeSkippedByLogic: false,
+          description: {},
+          hidden: false,
+          pageNumber: nil,
+          questionNumber: 10,
+          logicNextPageNumber: nil,
           questionResponseCount: 2,
           totalResponseCount: 27,
           customFieldId: point_field.id,
@@ -1188,7 +1244,11 @@ RSpec.describe SurveyResultsGeneratorService do
           question: { 'en' => 'Where should we build the new bicycle path?' },
           required: false,
           grouped: false,
-          maybeSkippedByLogic: false,
+          description: {},
+          hidden: false,
+          pageNumber: nil,
+          questionNumber: 11,
+          logicNextPageNumber: nil,
           questionResponseCount: 2,
           totalResponseCount: 27,
           customFieldId: line_field.id,
@@ -1212,7 +1272,11 @@ RSpec.describe SurveyResultsGeneratorService do
           question: { 'en' => 'Where should we build the new housing?' },
           required: false,
           grouped: false,
-          maybeSkippedByLogic: false,
+          description: {},
+          hidden: false,
+          pageNumber: nil,
+          questionNumber: 12,
+          logicNextPageNumber: nil,
           questionResponseCount: 2,
           totalResponseCount: 27,
           customFieldId: polygon_field.id,
@@ -1234,11 +1298,13 @@ RSpec.describe SurveyResultsGeneratorService do
         {
           inputType: 'number',
           question: { 'en' => 'How many cats would you like?' },
-          description: {},
           required: false,
           grouped: false,
-          logic: false,
-          maybeSkippedByLogic: false,
+          description: {},
+          hidden: false,
+          pageNumber: nil,
+          questionNumber: 13,
+          logicNextPageNumber: nil,
           questionResponseCount: 1,
           totalResponseCount: 27,
           customFieldId: number_field.id,
@@ -1251,29 +1317,6 @@ RSpec.describe SurveyResultsGeneratorService do
       it 'returns the results for a number field' do
         expect(generated_results[:results][12]).to match expected_result_number
       end
-    end
-  end
-
-  describe 'maybe_skipped_fields' do
-    # TODO: JS - Add some more tests here
-    it 'returns the IDs of fields that may have been skipped by logic' do
-      mock_fields = [
-        { id: '1', input_type: 'page', logic: {} },
-        { id: '2', input_type: 'select', logic: { 'rules' => [{ 'if' => 'a', 'goto_page_id' => '6' }] } },
-        { id: '3', input_type: 'page', logic: {} },
-        { id: '4', input_type: 'text', logic: {} }, # May be skipped
-        { id: '5', input_type: 'text', logic: {} }, # May be skipped
-        { id: '6', input_type: 'page', logic: {} }
-      ]
-      expect(generator.send(:maybe_skipped_fields, mock_fields)).to eq %w[4 5]
-    end
-
-    it 'returns nothing if no logic' do
-      mock_fields = [
-        { id: 1234, input_type: 'page', logic: {} },
-        { id: 5678, input_type: 'text', logic: {} }
-      ]
-      expect(generator.send(:maybe_skipped_fields, mock_fields)).to eq []
     end
   end
 end
