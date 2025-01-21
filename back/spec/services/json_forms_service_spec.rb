@@ -133,6 +133,7 @@ describe JsonFormsService do
           create(:custom_field, key: 'field5', input_type: 'checkbox'),
           create(:custom_field, key: 'field6', input_type: 'date'),
           create(:custom_field_ranking, :with_options, key: 'field7'),
+          # create(:custom_field_matrix_linear_scale, key: 'field8'),
           create(:custom_field, key: 'field8', input_type: 'multiline_text', enabled: false, required: true),
           create(:custom_field, key: 'field9', input_type: 'text', hidden: true, enabled: true)
         ]

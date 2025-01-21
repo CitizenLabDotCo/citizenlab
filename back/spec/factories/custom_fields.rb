@@ -296,30 +296,18 @@ FactoryBot.define do
           'en' => 'Strongly disagree'
         }
       end
-      linear_scale_label_2_multiloc do
-        {
-          'en' => 'Disagree'
-        }
-      end
-      linear_scale_label_3_multiloc do
-        {
-          'en' => 'Neutral'
-        }
-      end
-      linear_scale_label_4_multiloc do
-        {
-          'en' => 'Agree'
-        }
-      end
       linear_scale_label_5_multiloc do
         {
           'en' => 'Strongly agree'
         }
       end
-      linear_scale_label_6_multiloc { {} }
-      linear_scale_label_7_multiloc { {} }
 
-      matrix_statements { build_list(:custom_field_matrix_statement, 2) }
+      matrix_statements do 
+        [
+          build(:custom_field_matrix_statement, title_multiloc: { 'en' => 'We should send more animals into space' }, key: 'send_more_animals_to_space'),
+          build(:custom_field_matrix_statement, title_multiloc: { 'en' => 'We should ride our bicycles more often' }, key: 'ride_bycicles_more_often')
+        ]
+      end
     end
 
     factory :custom_field_birthyear do

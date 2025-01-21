@@ -614,4 +614,30 @@ RSpec.describe JsonSchemaGeneratorService do
       })
     end
   end
+
+  describe '#visit_matrix_linear_scale' do
+    let(:field) do 
+      create(:custom_field_matrix_linear_scale, required: true, maximum: 5, key: field_key)
+    end
+
+    it 'returns the schema for the given field' do
+      expect(generator.visit_matrix_linear_scale(field)).to eq({
+        type: 'object',
+        minProperties: 2,
+        maxProperties: 2,
+        properties: {
+          send_more_animals_to_space: {
+            type: 'number',
+            minimum: 1,
+            maximum: 5
+          },
+          ride_bycicles_more_often: {
+            type: 'number',
+            minimum: 1,
+            maximum: 5
+          }
+        }
+      })
+    end
+  end
 end
