@@ -2707,6 +2707,8 @@
   "app.containers.admin.ideaStatuses.form.implementedFieldCodeTitle": "Gweithredwyd",
   "app.containers.admin.ideaStatuses.form.ineligibleFieldCodeDescription": "Mae'r cynnig yn anghymwys",
   "app.containers.admin.ideaStatuses.form.ineligibleFieldCodeTitle": "Anghymwys",
+  "app.containers.admin.ideaStatuses.form.prescreeningFieldCodeDescription": "Aros am sgrinio",
+  "app.containers.admin.ideaStatuses.form.prescreeningFieldCodeTitle": "Rhag-sgrinio",
   "app.containers.admin.ideaStatuses.form.proposedFieldCodeDescription": "Wedi'i gyflwyno'n llwyddiannus fel cynnig i'w ystyried",
   "app.containers.admin.ideaStatuses.form.proposedFieldCodeTitle": "Arfaethedig",
   "app.containers.admin.ideaStatuses.form.rejectedFieldCodeDescription": "Yn anghymwys neu heb ei ddewis i symud ymlaen",
