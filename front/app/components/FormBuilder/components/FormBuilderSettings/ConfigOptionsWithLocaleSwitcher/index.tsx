@@ -36,6 +36,7 @@ import { isNilOrError } from 'utils/helperUtils';
 
 import messages from './messages';
 import SelectFieldOption, { OptionImageType } from './SelectFieldOption';
+import { getAddButtonText, getFieldLabelText, ListType } from './utils';
 
 interface Props {
   name: string;
@@ -44,6 +45,7 @@ interface Props {
   allowDeletingAllOptions?: boolean;
   platformLocale: SupportedLocale;
   inputType: ICustomFieldInputType;
+  listType?: ListType;
 }
 
 const ConfigOptionsWithLocaleSwitcher = ({
@@ -51,6 +53,7 @@ const ConfigOptionsWithLocaleSwitcher = ({
   name,
   locales,
   allowDeletingAllOptions = false,
+  listType = 'default',
   platformLocale,
   inputType,
 }: Props) => {
@@ -70,14 +73,16 @@ const ConfigOptionsWithLocaleSwitcher = ({
   );
   const { formatMessage } = useIntl();
   const selectOptions = useWatch({ name });
+
   const imageIds = selectOptions
-    .filter((selectOption) => selectOption.image_id)
-    .map((selectOption) => selectOption.image_id);
+    .filter((selectOption) => selectOption?.image_id)
+    .map((selectOption) => selectOption?.image_id);
   const customFieldOptionImages = useCustomFieldOptionImages(imageIds);
   const prevImageQueries = usePrevious(customFieldOptionImages);
   const [optionImages, setOptionImages] = useState<OptionImageType>();
 
-  const showOtherOptionToggle = inputType !== 'ranking';
+  const showOtherOptionToggle =
+    inputType !== 'ranking' && inputType !== 'matrix_linear_scale';
 
   useEffect(() => {
     if (
@@ -254,7 +259,7 @@ const ConfigOptionsWithLocaleSwitcher = ({
                   marginBottom="12px"
                 >
                   <Box marginTop="4px" marginRight="8px">
-                    <Label>{formatMessage(messages.fieldLabel)}</Label>
+                    <Label>{formatMessage(getFieldLabelText(listType))}</Label>
                   </Box>
                   <Box>
                     <LocaleSwitcher
@@ -329,7 +334,7 @@ const ConfigOptionsWithLocaleSwitcher = ({
                   buttonStyle="secondary-outlined"
                   data-cy="e2e-add-answer"
                   onClick={addOption}
-                  text={formatMessage(messages.addAnswer)}
+                  text={formatMessage(getAddButtonText(listType))}
                   type="button"
                 />
 

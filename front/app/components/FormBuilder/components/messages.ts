@@ -27,6 +27,10 @@ export default defineMessages({
     id: 'app.components.formBuilder.ranking',
     defaultMessage: 'Ranking',
   },
+  matrix: {
+    id: 'app.components.formBuilder.matrix',
+    defaultMessage: 'Matrix',
+  },
   longAnswer: {
     id: 'app.components.formBuilder.longAnswer',
     defaultMessage: 'Long answer',

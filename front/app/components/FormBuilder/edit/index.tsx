@@ -259,7 +259,11 @@ const FormEdit = ({
           options: field.options || {},
           random_option_ordering: field.random_option_ordering,
         }),
-        ...(field.input_type === 'linear_scale' && {
+        ...(field.input_type === 'matrix_linear_scale' && {
+          matrix_statements: field.matrix_statements || {},
+        }),
+        ...((field.input_type === 'linear_scale' ||
+          field.input_type === 'matrix_linear_scale') && {
           linear_scale_label_1_multiloc:
             field.linear_scale_label_1_multiloc || {},
           linear_scale_label_2_multiloc:

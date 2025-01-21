@@ -20,6 +20,11 @@ const OptionsSettings = ({
   dropdownLayoutName,
 }: Props) => {
   const { formatMessage } = useIntl();
+  const inputTypesNoDropdown = [
+    'multiselect_image',
+    'ranking',
+    'matrix_linear_scale',
+  ];
 
   return (
     <>
@@ -39,7 +44,7 @@ const OptionsSettings = ({
           }
         />
       </Box>
-      {inputType !== 'multiselect_image' && inputType !== 'ranking' && (
+      {!inputTypesNoDropdown.includes(inputType) && (
         <Box mb="24px">
           <Toggle
             name={dropdownLayoutName}

@@ -1,5 +1,6 @@
 import React from 'react';
 
+import { Box, Title } from '@citizenlab/cl2-component-library';
 import { uuid4 } from '@sentry/utils';
 import { MessageDescriptor } from 'react-intl';
 import { RouteType } from 'routes';
@@ -101,6 +102,36 @@ export function getAdditionalSettings(
   }
 
   switch (inputType) {
+    case 'matrix_linear_scale':
+      return (
+        <Box mb="24px">
+          <Title mt="40px" color="coolGrey600" variant="h4">
+            Columns
+          </Title>
+          <LinearScaleSettings
+            platformLocale={platformLocale}
+            maximumName={`customFields.${field.index}.maximum`}
+            labelBaseName={`customFields.${field.index}`}
+            locales={locales}
+          />
+
+          <Title mt="40px" color="coolGrey600" variant="h4">
+            Rows
+          </Title>
+          <ConfigOptionsWithLocaleSwitcher
+            name={`customFields.${field.index}.matrix_statements`}
+            locales={locales}
+            platformLocale={platformLocale}
+            inputType={field.input_type}
+            listType="statement"
+          />
+          <OptionsSettings
+            inputType={field.input_type}
+            randomizeName={`customFields.${field.index}.random_option_ordering`}
+            dropdownLayoutName={`customFields.${field.index}.dropdown_layout`}
+          />
+        </Box>
+      );
     case 'multiselect_image':
     case 'multiselect':
       return (
@@ -282,6 +313,9 @@ const getInputTypeStringKey = (
       break;
     case 'ranking':
       translatedStringKey = messages.ranking;
+      break;
+    case 'matrix_linear_scale':
+      translatedStringKey = messages.matrix;
       break;
   }
 

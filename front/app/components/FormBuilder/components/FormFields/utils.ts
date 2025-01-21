@@ -90,6 +90,8 @@ const getCustomFieldBadgeLabel = (
       return messages.drawArea;
     case 'ranking':
       return messages.ranking;
+    case 'matrix_linear_scale':
+      return messages.matrix;
     default:
       return messages.default;
   }

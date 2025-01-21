@@ -97,6 +97,11 @@ const FormBuilderToolbox = ({
             title_multiloc: {},
           },
         ],
+        matrix_statements: [
+          {
+            title_multiloc: {},
+          },
+        ],
         enabled: true,
       },
       index
@@ -216,6 +221,15 @@ const FormBuilderToolbox = ({
           data-cy="e2e-ranking"
           fieldsToExclude={builderConfig.toolboxFieldsToExclude}
           inputType="ranking"
+          disabled={isCustomFieldsDisabled}
+        />
+        <ToolboxItem
+          icon="survey-matrix"
+          label={formatMessage(messages.matrix)}
+          onClick={() => addField('matrix_linear_scale')}
+          data-cy="e2e-matrix"
+          fieldsToExclude={builderConfig.toolboxFieldsToExclude}
+          inputType="matrix_linear_scale"
           disabled={isCustomFieldsDisabled}
         />
         <ToolboxItem
