@@ -122,6 +122,10 @@ export default defineMessages({
     id: 'app.containers.admin.ideaStatuses.form.prescreeningFieldCodeDescription',
     defaultMessage: 'Awaiting screening',
   },
+  customFieldCodeDescription: {
+    id: 'app.containers.admin.ideaStatuses.form.customFieldCodeDescription',
+    defaultMessage: 'Define your own status',
+  },
   saveStatus: {
     id: 'app.containers.admin.ideaStatuses.form.saveStatus',
     defaultMessage: 'Save status',

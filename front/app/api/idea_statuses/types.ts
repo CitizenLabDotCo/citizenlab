@@ -19,59 +19,35 @@ export type IdeaStatusesQueryParams = {
   exclude_screening_status?: boolean;
 };
 
-type IdeationStatusCode =
-  | 'prescreening'
-  | 'proposed'
+/* Ideation status codes */
+type LockedIdeationInputStatusCode = 'prescreening' | 'proposed';
+export type NonLockedIdeationInputStatusCode =
   | 'viewed'
   | 'under_consideration'
   | 'accepted'
   | 'rejected'
   | 'implemented'
   | 'custom';
-type ProposalsStatusCode =
+type IdeationStatusCode =
+  | LockedIdeationInputStatusCode
+  | NonLockedIdeationInputStatusCode;
+
+/* Proposal status codes */
+type LockedProposalInputStatusCode =
   | 'prescreening'
   | 'proposed'
   | 'threshold_reached'
-  | 'expired'
+  | 'expired';
+export type NonLockedProposalInputStatusCode =
   | 'answered'
   | 'ineligible'
   | 'custom';
+type ProposalsStatusCode =
+  | LockedProposalInputStatusCode
+  | NonLockedProposalInputStatusCode;
+
+/* Input status codes */
 export type InputStatusCode = IdeationStatusCode | ProposalsStatusCode;
-
-const ideationInputStatusCodes: IdeationStatusCode[] = [
-  'prescreening',
-  'proposed',
-  'viewed',
-  'under_consideration',
-  'accepted',
-  'rejected',
-  'implemented',
-  'custom',
-];
-
-const proposalsInputStatusCodes: ProposalsStatusCode[] = [
-  'prescreening',
-  'proposed',
-  'threshold_reached',
-  'expired',
-  'answered',
-  'ineligible',
-  'custom',
-];
-
-export const inputStatusCodes: Record<
-  IdeaStatusParticipationMethod,
-  IdeationStatusCode[] | ProposalsStatusCode[]
-> = {
-  ideation: ideationInputStatusCodes,
-  proposals: proposalsInputStatusCodes,
-};
-
-export const automatedInputStatusCodes: Set<InputStatusCode> = new Set([
-  'proposed',
-  'threshold_reached',
-  'expired',
-]);
 
 export interface IIdeaStatusData {
   id: string;
