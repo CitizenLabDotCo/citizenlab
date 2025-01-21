@@ -76,15 +76,15 @@ module Analytics
     def matomo_site_id
       app_config = AppConfiguration.instance
       site_id = app_config.settings.dig('matomo', 'tenant_site_id')
-      default_site_id = ENV['DEFAULT_MATOMO_TENANT_SITE_ID']
+      default_site_id = ENV.fetch('DEFAULT_MATOMO_TENANT_SITE_ID')
       lifecycle = app_config.settings.dig('core', 'lifecycle_stage')
 
-      if (site_id.blank? || site_id == default_site_id) && ['active', 'trial'].include?(lifecycle)
+      if (site_id.blank? || site_id == default_site_id) && %w[active trial].include?(lifecycle)
         raise MatomoMisconfigurationError, <<~MSG
           Matomo site (= #{site_id.inspect}) for tenant '#{app_config.id}' is misconfigured.
         MSG
       end
-     
+
      site_id
     end
 

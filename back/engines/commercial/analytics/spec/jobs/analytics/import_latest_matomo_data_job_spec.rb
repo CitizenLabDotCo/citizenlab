@@ -105,17 +105,13 @@ RSpec.describe Analytics::ImportLatestMatomoDataJob do
 
   context 'when tenant has demo lifecycle' do
     before do
-      original_config = AppConfiguration.instance
-      demo_settings = original_config.settings.deep_dup
-      demo_settings['core']['lifecycle_stage'] = 'demo'
-      
-      allow(AppConfiguration).to receive(:instance).and_return(
-        double(
-          id: original_config.id,
-          created_at: original_config.created_at,
-          settings: demo_settings
-        )
-      )
+      AppConfiguration.instance.settings['core']['lifecycle_stage'] = 'demo'
+      AppConfiguration.instance.save!(validate: false)
+    end
+
+    after do
+      AppConfiguration.instance.settings['core']['lifecycle_stage'] = 'active'
+      AppConfiguration.instance.save!(validate: false)
     end
 
     it 'does not raise an error if the configured matomo site is the default one' do
@@ -125,7 +121,7 @@ RSpec.describe Analytics::ImportLatestMatomoDataJob do
 
       expect(AppConfiguration.instance.settings.dig('core', 'lifecycle_stage')).to eq('demo')
       expect { described_class.perform_now(Tenant.current.id) }
-        .to_not raise_error(described_class::MatomoMisconfigurationError)
+        .not_to raise_error(described_class::MatomoMisconfigurationError)
     end
   end
 end
