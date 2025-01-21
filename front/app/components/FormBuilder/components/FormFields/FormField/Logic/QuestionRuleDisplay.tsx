@@ -34,16 +34,10 @@ export const QuestionRuleDisplay = ({
   return (
     <Box
       display="flex"
-      ml="52px"
+      ml="30px"
       height="24px"
       data-cy="e2e-field-rule-display"
     >
-      <Icon
-        fill={isRuleValid ? colors.coolGrey500 : colors.error}
-        width="18px"
-        name="logic"
-        my="auto"
-      />
       <Text my="auto" pl="8px" pr="4px" color="coolGrey600" fontSize="s">
         {answer}
       </Text>

@@ -6,8 +6,9 @@ import {
   colors,
   Icon,
   Badge,
-  IconTooltip,
 } from '@citizenlab/cl2-component-library';
+
+import Link from 'utils/cl-router/Link';
 
 // Intl
 import { FormattedMessage } from 'utils/cl-intl';
@@ -30,7 +31,7 @@ export const PageRuleDisplay = ({
   return (
     <Box
       display="flex"
-      ml="52px"
+      ml="36px"
       height="24px"
       data-cy="e2e-field-rule-display"
     >
@@ -39,22 +40,21 @@ export const PageRuleDisplay = ({
           isRuleValid
             ? isDefaultPage
               ? colors.coolGrey300
-              : colors.coolGrey500
+              : colors.teal300
             : colors.error
         }
         width="18px"
-        name="logic"
+        name="arrow-right"
         my="auto"
       />
       <Text
         my="auto"
         pl="8px"
-        pr="4px"
         color={isDefaultPage ? 'coolGrey500' : 'blue500'}
         fontSize="s"
         fontStyle={isDefaultPage ? 'italic' : 'normal'}
       >
-        <FormattedMessage {...messages.nextPageLabel} />
+        <FormattedMessage {...messages.continuePageLabel} />
       </Text>
       <Text
         my="auto"
@@ -64,14 +64,10 @@ export const PageRuleDisplay = ({
         fontWeight={isDefaultPage ? 'normal' : 'bold'}
         fontStyle={isDefaultPage ? 'italic' : 'normal'}
       >
-        {targetPage}
+        <Link to="/pages/faq" target="_blank">
+          {targetPage}
+        </Link>
       </Text>
-      {isDefaultPage && (
-        <IconTooltip
-          iconColor={colors.coolGrey300}
-          content={<FormattedMessage {...messages.pageRuleTooltip} />}
-        />
-      )}
       {!isRuleValid && (
         <Box my="auto" ml="8px">
           <Badge

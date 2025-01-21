@@ -20,6 +20,7 @@ import {
   getTitleFromAnswerId,
   getTitleFromPageId,
 } from './utils';
+import { findNextPageAfterCurrentPage } from 'components/FormBuilder/utils';
 
 interface Props {
   field: IFlatCustomField;
@@ -53,17 +54,6 @@ const Logic = ({
   const catchAllLogicMessages = {
     any_other_answer: formatMessage(messages.logicAnyOtherAnswer),
     no_answer: formatMessage(messages.logicNoAnswer),
-  };
-
-  const findNextPageAfterCurrentPage = () => {
-    const index = formCustomFields.findIndex((item) => item.id === field.id);
-    if (index !== -1) {
-      const nextPage = formCustomFields
-        .slice(index + 1)
-        .find((item) => item.input_type === 'page');
-      if (nextPage?.id) return nextPage.id; // Temp ID needed here?
-    }
-    return 'survey_end';
   };
 
   return (
@@ -139,7 +129,8 @@ const Logic = ({
             field.logic.next_page_id
           )}
           targetPage={getTitleFromPageId(
-            field.logic.next_page_id || findNextPageAfterCurrentPage(),
+            field.logic.next_page_id ||
+              findNextPageAfterCurrentPage(formCustomFields, field.id),
             formEndMessage,
             pageMessage,
             fieldNumbers
