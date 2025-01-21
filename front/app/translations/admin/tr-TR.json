@@ -2707,6 +2707,8 @@
   "app.containers.admin.ideaStatuses.form.implementedFieldCodeTitle": "Uygulandı",
   "app.containers.admin.ideaStatuses.form.ineligibleFieldCodeDescription": "Teklif uygun değildir",
   "app.containers.admin.ideaStatuses.form.ineligibleFieldCodeTitle": "Uygun değil",
+  "app.containers.admin.ideaStatuses.form.prescreeningFieldCodeDescription": "Tarama bekleniyor",
+  "app.containers.admin.ideaStatuses.form.prescreeningFieldCodeTitle": "Ön Tarama",
   "app.containers.admin.ideaStatuses.form.proposedFieldCodeDescription": "Değerlendirilecek bir öneri olarak gönderildi",
   "app.containers.admin.ideaStatuses.form.proposedFieldCodeTitle": "Önerilen",
   "app.containers.admin.ideaStatuses.form.rejectedFieldCodeDescription": "Devam etmek için uygun değil veya seçilmedi",

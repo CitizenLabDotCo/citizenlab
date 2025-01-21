@@ -34,6 +34,7 @@ lt:
       "project_review_request": Projekto peržiūros prašymas
       "project_review_state_change": Patvirtintas projektas
       "status_change_on_idea_you_follow": Įvesties, kurią sekate, būsenos pasikeitimas
+      "survey_submitted": Pateikta apklausa
       "threshold_reached_for_admin": Pasiūlymas pasiekė balsavimo ribą
       "welcome": Po registracijos
       "admin_digest": Savaitės apžvalga administratoriams
@@ -496,6 +497,14 @@ lt:
       event_description: 'Projekte "%{projectName}" prašoma balsuoti už vieną iš %{numIdeas} variantų:'
       cta_message: 'Spustelėkite toliau esantį mygtuką ir dalyvaukite'
       cta_vote: 'Eikite į platformą ir balsuokite'
+    survey_submitted:
+      subject: '%{organizationName}: Dėkojame už atsakymą! 🎉'
+      main_header: 'Dėkojame, kad dalijatės mintimis apie "%{projectName}"!'
+      your_input_submitted: 'Jūsų įvestis "%{projectName}" buvo sėkmingai pateikta.'
+      if_you_would_like_to_review: 'Jei norite peržiūrėti savo pateiktą informaciją, toliau galite atsisiųsti savo atsakymus.'
+      your_submission_has_id: 'Jūsų pateiktai paraiškai suteiktas šis unikalus identifikatorius:'
+      you_can_use_this_id: 'Šį identifikatorių galite naudoti norėdami susisiekti su platformos administratoriais, jei norite, kad jūsų pateikta informacija būtų pašalinta.'
+      download_responses: 'Atsisiųskite savo atsakymus'
     admin_labels:
       recipient_role:
         admins: 'Administratoriams'

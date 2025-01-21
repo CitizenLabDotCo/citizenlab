@@ -121,4 +121,8 @@ export default defineMessages({
     defaultMessage:
       '{likesCount, plural, =0 {no likes} one {1 like} other {# likes}}',
   },
+  surveyResponses: {
+    id: 'app.containers.UsersShowPage.surveyResponses',
+    defaultMessage: 'Responses ({responses})',
+  },
 });
