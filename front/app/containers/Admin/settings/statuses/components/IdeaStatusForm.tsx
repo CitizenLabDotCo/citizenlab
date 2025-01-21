@@ -29,7 +29,7 @@ import RadioGroup from 'components/HookForm/RadioGroup';
 import Radio from 'components/HookForm/RadioGroup/Radio';
 import TextAreaMultilocWithLocaleSwitcher from 'components/HookForm/TextAreaMultilocWithLocaleSwitcher';
 
-import { FormattedMessage, useIntl } from 'utils/cl-intl';
+import { FormattedMessage, MessageDescriptor, useIntl } from 'utils/cl-intl';
 import { handleHookFormSubmissionError } from 'utils/errorUtils';
 import validateMultilocForEveryLocale from 'utils/yup/validateMultilocForEveryLocale';
 
@@ -117,6 +117,37 @@ const IdeaStatusForm = ({
     (code) => !automatedInputStatusCodes.has(code)
   );
   const dedupedCodes = [...new Set(allowedCodes)];
+  const codeTitleMessages: { [key in InputStatusCode]: MessageDescriptor } = {
+    proposed: messages.proposedFieldCodeTitle,
+    viewed: messages.viewedFieldCodeTitle,
+    under_consideration: messages.under_considerationFieldCodeTitle,
+    accepted: messages.acceptedFieldCodeTitle,
+    implemented: messages.implementedFieldCodeTitle,
+    rejected: messages.rejectedFieldCodeTitle,
+    custom: messages.customFieldCodeTitle,
+    threshold_reached: messages.thresholdReachedFieldCodeTitle,
+    expired: messages.expiredFieldCodeTitle,
+    answered: messages.answeredFieldCodeTitle,
+    ineligible: messages.ineligibleFieldCodeTitle,
+  };
+  const codeDescriptionMessages: {
+    [key in InputStatusCode]: MessageDescriptor;
+  } = {
+    proposed: messages.proposedFieldCodeDescription,
+    viewed: messages.viewedFieldCodeDescription,
+    under_consideration: messages.under_considerationFieldCodeDescription,
+    accepted: messages.acceptedFieldCodeDescription,
+    implemented: messages.implementedFieldCodeDescription,
+    rejected: messages.rejectedFieldCodeDescription,
+    custom: messages.customFieldCodeDescription,
+    threshold_reached: messages.thresholdReachedFieldCodeDescription,
+    expired: messages.expiredFieldCodeDescription,
+    answered: messages.answeredFieldCodeDescription,
+    ineligible: messages.ineligibleFieldCodeDescription,
+  };
+  const codeTitleMessage = (code: InputStatusCode) => codeTitleMessages[code];
+  const codeDescriptionMessage = (code: InputStatusCode) =>
+    codeDescriptionMessages[code];
 
   return (
     <FormProvider {...methods}>
@@ -167,46 +198,11 @@ const IdeaStatusForm = ({
                     label={
                       <LabelText>
                         <span className="header">
-                          {formatMessage(
-                            {
-                              proposed: messages.proposedFieldCodeTitle,
-                              viewed: messages.viewedFieldCodeTitle,
-                              under_consideration:
-                                messages.under_considerationFieldCodeTitle,
-                              accepted: messages.acceptedFieldCodeTitle,
-                              implemented: messages.implementedFieldCodeTitle,
-                              rejected: messages.rejectedFieldCodeTitle,
-                              custom: messages.customFieldCodeTitle,
-                              threshold_reached:
-                                messages.thresholdReachedFieldCodeTitle,
-                              expired: messages.expiredFieldCodeTitle,
-                              answered: messages.answeredFieldCodeTitle,
-                              ineligible: messages.ineligibleFieldCodeTitle,
-                            }[code]
-                          )}
+                          {formatMessage(codeTitleMessage(code))}
                         </span>
-                        {code !== 'custom' && (
-                          <span className="description">
-                            {formatMessage(
-                              {
-                                proposed: messages.proposedFieldCodeDescription,
-                                viewed: messages.viewedFieldCodeDescription,
-                                under_consideration:
-                                  messages.under_considerationFieldCodeDescription,
-                                accepted: messages.acceptedFieldCodeDescription,
-                                implemented:
-                                  messages.implementedFieldCodeDescription,
-                                rejected: messages.rejectedFieldCodeDescription,
-                                threshold_reached:
-                                  messages.thresholdReachedFieldCodeDescription,
-                                expired: messages.expiredFieldCodeDescription,
-                                answered: messages.answeredFieldCodeDescription,
-                                ineligible:
-                                  messages.ineligibleFieldCodeDescription,
-                              }[code]
-                            )}
-                          </span>
-                        )}
+                        <span className="description">
+                          {formatMessage(codeDescriptionMessage(code))}
+                        </span>
                       </LabelText>
                     }
                     id={`${code}-input`}

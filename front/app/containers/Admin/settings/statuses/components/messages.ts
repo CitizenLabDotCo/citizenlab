@@ -114,6 +114,10 @@ export default defineMessages({
     id: 'app.containers.admin.ideaStatuses.form.ineligibleFieldCodeDescription',
     defaultMessage: 'Proposal is ineligible',
   },
+  customFieldCodeDescription: {
+    id: 'app.containers.admin.ideaStatuses.form.customFieldCodeDescription',
+    defaultMessage: 'Define your own status',
+  },
   saveStatus: {
     id: 'app.containers.admin.ideaStatuses.form.saveStatus',
     defaultMessage: 'Save status',
