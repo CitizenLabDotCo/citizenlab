@@ -2,7 +2,10 @@ import React from 'react';
 
 import { Box } from '@citizenlab/cl2-component-library';
 
-import { IFlatCustomField } from 'api/custom_fields/types';
+import {
+  ICustomFieldSettingsTab,
+  IFlatCustomField,
+} from 'api/custom_fields/types';
 
 import useLocale from 'hooks/useLocale';
 
@@ -27,6 +30,7 @@ interface Props {
   fieldNumbers: Record<string, number>;
   formCustomFields: IFlatCustomField[];
   formEndPageLogicOption?: MessageDescriptor;
+  handleOpenSettings: (defaultTab: ICustomFieldSettingsTab) => void;
 }
 
 const Logic = ({
@@ -34,6 +38,7 @@ const Logic = ({
   fieldNumbers,
   formCustomFields,
   formEndPageLogicOption,
+  handleOpenSettings,
 }: Props) => {
   const { formatMessage } = useIntl();
   const locale = useLocale();
@@ -87,6 +92,7 @@ const Logic = ({
                   pageMessage,
                   fieldNumbers
                 )}
+                handleOpenSettings={handleOpenSettings}
               />
             </Box>
           );
@@ -117,6 +123,7 @@ const Logic = ({
                   pageMessage,
                   fieldNumbers
                 )}
+                handleOpenSettings={handleOpenSettings}
               />
             </Box>
           );
@@ -136,6 +143,7 @@ const Logic = ({
             fieldNumbers
           )}
           isDefaultPage={!field.logic.next_page_id}
+          handleOpenSettings={handleOpenSettings}
         />
       )}
       {catchAllLogicRules.map((rule) => {
@@ -155,6 +163,7 @@ const Logic = ({
                 pageMessage,
                 fieldNumbers
               )}
+              handleOpenSettings={handleOpenSettings}
             />
           </Box>
         );

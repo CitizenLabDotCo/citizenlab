@@ -12,17 +12,20 @@ import {
 import { FormattedMessage } from 'utils/cl-intl';
 
 import messages from '../../../messages';
+import { ICustomFieldSettingsTab } from 'api/custom_fields/types';
 
 interface Props {
   answerTitle: string | undefined;
   targetPage: string | undefined;
   isRuleValid: boolean;
+  handleOpenSettings: (defaultTab: ICustomFieldSettingsTab) => void;
 }
 
 export const QuestionRuleDisplay = ({
   answerTitle,
   targetPage,
   isRuleValid,
+  handleOpenSettings,
 }: Props) => {
   if (!(answerTitle && targetPage)) {
     return null;
@@ -47,7 +50,17 @@ export const QuestionRuleDisplay = ({
         name="arrow-right"
         my="auto"
       />
-      <Text my="auto" px="4px" color="coolGrey600" fontSize="s">
+      <Text
+        my="auto"
+        px="4px"
+        color="coolGrey600"
+        fontSize="s"
+        textDecoration="underline"
+        onClick={(e) => {
+          e.stopPropagation();
+          handleOpenSettings('logic');
+        }}
+      >
         {targetPage}
       </Text>
       {!isRuleValid && (

@@ -8,23 +8,24 @@ import {
   Badge,
 } from '@citizenlab/cl2-component-library';
 
-import Link from 'utils/cl-router/Link';
-
 // Intl
 import { FormattedMessage } from 'utils/cl-intl';
 
 import messages from '../../../messages';
+import { ICustomFieldSettingsTab } from 'api/custom_fields/types';
 
 interface Props {
   targetPage: string | undefined;
   isRuleValid: boolean;
   isDefaultPage: boolean;
+  handleOpenSettings: (defaultTab: ICustomFieldSettingsTab) => void;
 }
 
 export const PageRuleDisplay = ({
   targetPage,
   isRuleValid,
   isDefaultPage,
+  handleOpenSettings,
 }: Props) => {
   if (!targetPage) return null;
 
@@ -63,10 +64,13 @@ export const PageRuleDisplay = ({
         fontSize="s"
         fontWeight={isDefaultPage ? 'normal' : 'bold'}
         fontStyle={isDefaultPage ? 'italic' : 'normal'}
+        textDecoration="underline"
+        onClick={(e) => {
+          e.stopPropagation();
+          handleOpenSettings('logic');
+        }}
       >
-        <Link to="/pages/faq" target="_blank">
-          {targetPage}
-        </Link>
+        {targetPage}
       </Text>
       {!isRuleValid && (
         <Box my="auto" ml="8px">

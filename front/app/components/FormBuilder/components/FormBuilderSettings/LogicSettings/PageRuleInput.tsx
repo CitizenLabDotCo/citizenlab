@@ -187,7 +187,7 @@ export const PageRuleInput = ({
                         <Icon
                           width="24px"
                           fill={`${colors.coolGrey600}`}
-                          name="plus-circle"
+                          name="edit"
                         />
                       </Button>
                     </Box>

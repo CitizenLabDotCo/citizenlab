@@ -13,6 +13,7 @@ import { useFormContext, useFieldArray } from 'react-hook-form';
 import styled from 'styled-components';
 
 import {
+  ICustomFieldSettingsTab,
   IFlatCustomField,
   IFlatCustomFieldWithIndex,
   IOptionsType,
@@ -99,8 +100,8 @@ export const FormField = ({
     !(field?.input_type !== groupingType || isGroupDeletable) ||
     get(lockedAttributes, 'enabled', false);
 
-  const editFieldAndValidate = () => {
-    onEditField({ ...field, index });
+  const editFieldAndValidate = (defaultTab: ICustomFieldSettingsTab) => {
+    onEditField({ ...field, index, defaultTab });
     trigger();
   };
 
@@ -295,7 +296,7 @@ export const FormField = ({
         key={field.id}
         background={getFieldBackgroundColor(selectedFieldId, field, hasErrors)}
         onClick={() => {
-          editFieldAndValidate();
+          editFieldAndValidate('content');
         }}
         data-cy="e2e-field-row"
       >
@@ -323,6 +324,7 @@ export const FormField = ({
                     formCustomFields={formCustomFields}
                     fieldNumbers={fieldNumbers}
                     formEndPageLogicOption={formEndPageLogicOption}
+                    handleOpenSettings={editFieldAndValidate}
                   />
                 )}
               </Box>
