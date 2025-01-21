@@ -364,7 +364,7 @@ resource 'Idea Custom Fields' do
               linear_scale_label_8_multiloc: {},
               linear_scale_label_9_multiloc: {},
               linear_scale_label_10_multiloc: {},
-              linear_scale_label_11_multiloc: {},
+              linear_scale_label_11_multiloc: {}
             }
           ]
         }
