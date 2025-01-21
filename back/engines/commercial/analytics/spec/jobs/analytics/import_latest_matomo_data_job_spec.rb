@@ -69,12 +69,67 @@ RSpec.describe Analytics::ImportLatestMatomoDataJob do
     end
   end
 
-  it 'raises an error if the configured matomo site is the default one' do
-    stub_const('ENV', ENV.to_h.merge(
-      'DEFAULT_MATOMO_TENANT_SITE_ID' => AppConfiguration.instance.settings('matomo', 'tenant_site_id')
-    ))
+  context 'when tenant has active lifecycle' do
+    it 'raises an error if the configured matomo site is the default one' do
+      stub_const('ENV', ENV.to_h.merge(
+        'DEFAULT_MATOMO_TENANT_SITE_ID' => AppConfiguration.instance.settings('matomo', 'tenant_site_id')
+      ))
 
-    expect { described_class.perform_now(Tenant.current.id) }
-      .to raise_error(described_class::MatomoMisconfigurationError)
+      expect(AppConfiguration.instance.settings.dig('core', 'lifecycle_stage')).to eq('active')
+      expect { described_class.perform_now(Tenant.current.id) }
+        .to raise_error(described_class::MatomoMisconfigurationError)
+    end
+  end
+
+  context 'when tenant has trial lifecycle' do
+    before do
+      AppConfiguration.instance.settings['core']['lifecycle_stage'] = 'trial'
+      AppConfiguration.instance.save!
+    end
+
+    after do
+      AppConfiguration.instance.settings['core']['lifecycle_stage'] = 'active'
+      AppConfiguration.instance.save!
+    end
+
+    it 'raises an error if the configured matomo site is the default one' do
+      stub_const('ENV', ENV.to_h.merge(
+        'DEFAULT_MATOMO_TENANT_SITE_ID' => AppConfiguration.instance.settings('matomo', 'tenant_site_id')
+      ))
+
+      expect(AppConfiguration.instance.settings.dig('core', 'lifecycle_stage')).to eq('trial')
+      expect { described_class.perform_now(Tenant.current.id) }
+        .to raise_error(described_class::MatomoMisconfigurationError)
+    end
+  end
+
+  context 'when tenant has demo lifecycle' do
+    before do
+      original_config = AppConfiguration.instance
+      demo_settings = original_config.settings.deep_dup
+      demo_settings['core']['lifecycle_stage'] = 'demo'
+      
+      allow(AppConfiguration).to receive(:instance).and_return(
+        double(
+          id: original_config.id,
+          created_at: original_config.created_at,
+          settings: demo_settings
+        )
+      )
+    end
+
+    it 'does not raise an error if the configured matomo site is the default one' do
+      pp AppConfiguration.instance.settings.dig('core', 'lifecycle_stage')
+      lifecycle = AppConfiguration.instance.settings.dig('core', 'lifecycle_stage')
+      pp ['active', 'trial'].include?(lifecycle)
+
+      stub_const('ENV', ENV.to_h.merge(
+        'DEFAULT_MATOMO_TENANT_SITE_ID' => AppConfiguration.instance.settings('matomo', 'tenant_site_id')
+      ))
+
+      expect(AppConfiguration.instance.settings.dig('core', 'lifecycle_stage')).to eq('demo')
+      expect { described_class.perform_now(Tenant.current.id) }
+        .to_not raise_error(described_class::MatomoMisconfigurationError)
+    end
   end
 end
