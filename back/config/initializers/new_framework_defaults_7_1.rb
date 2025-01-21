@@ -206,7 +206,7 @@ Rails.application.config.active_record.default_column_serializer = nil
 # This matches the behaviour of all other callbacks.
 # In previous versions of Rails, they ran in the inverse order.
 #++
-# Rails.application.config.active_record.run_after_transaction_callbacks_in_order_defined = true
+Rails.application.config.active_record.run_after_transaction_callbacks_in_order_defined = true
 
 ###
 # Whether a `transaction` block is committed or rolled back when exited via `return`, `break` or `throw`.
