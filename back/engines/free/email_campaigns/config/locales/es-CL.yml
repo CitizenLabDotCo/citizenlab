@@ -498,12 +498,12 @@ es-CL:
       cta_message: 'Haz clic en el botón de abajo para participar'
       cta_vote: 'Ir a la plataforma para votar'
     survey_submitted:
-      subject: '%{organizationName}Gracias por tu respuesta. 🎉'
+      subject: '%{organizationName}: Gracias por tu respuesta. 🎉'
       main_header: '¡Gracias por compartir tu opinión sobre "%{projectName}"!'
-      your_input_submitted: 'Tu entrada para "%{projectName}" se ha enviado correctamente.'
-      if_you_would_like_to_review: 'Si quieres revisar tu presentación, puedes descargar tus respuestas a continuación.'
+      your_input_submitted: 'Tu aporte en "%{projectName}" se ha enviado correctamente.'
+      if_you_would_like_to_review: 'Si quieres revisar tu aporte, puedes descargar tus respuestas a continuación.'
       your_submission_has_id: 'Tu envío tiene el siguiente identificador único:'
-      you_can_use_this_id: 'Puedes utilizar este identificador para ponerte en contacto con los administradores de la plataforma en caso de que quieras que se elimine tu envío.'
+      you_can_use_this_id: 'Puedes utilizar este identificador para ponerte en contacto con los administradores de la plataforma en caso de que quieras que se elimine tu aporte.'
       download_responses: 'Descarga tus respuestas'
     admin_labels:
       recipient_role:
