@@ -2,17 +2,19 @@ import React from 'react';
 
 import { Box, colors, Text, Title } from '@citizenlab/cl2-component-library';
 import { snakeCase } from 'lodash-es';
+import { useTheme } from 'styled-components';
 
 import { LogicConfig, ResultUngrouped } from 'api/survey_results/types';
 
 import useLocalize from 'hooks/useLocalize';
 
+import LogicIcon from 'containers/Admin/projects/project/nativeSurvey/FormResults/LogicIcon';
+
 import T from 'components/T';
-import { useTheme } from 'styled-components';
+
+import { useIntl } from 'utils/cl-intl';
 
 import messages from '../messages';
-import { useIntl } from 'utils/cl-intl';
-import LogicIcon from 'containers/Admin/projects/project/nativeSurvey/FormResults/LogicIcon';
 
 type FormResultsPageProps = {
   result: ResultUngrouped;

@@ -1,12 +1,16 @@
+import React from 'react';
+
 import {
   Button,
   colors,
   Icon,
   Tooltip,
 } from '@citizenlab/cl2-component-library';
-import React from 'react';
+
 import { LogicConfig } from 'api/survey_results/types';
+
 import { useIntl } from 'utils/cl-intl';
+
 import messages from './messages';
 
 interface LogicIconProps {
@@ -24,12 +28,10 @@ const LogicIcon = ({
 }: LogicIconProps) => {
   const { formatMessage } = useIntl();
 
-  console.log(logicFilterId, nextPageNumber);
-
   if (!logicConfig || !logicFilterId || !nextPageNumber) return null;
 
   const tooltipContent = formatMessage(
-    type == 'page'
+    type === 'page'
       ? messages.logicSkipTooltipPage
       : messages.logicSkipTooltipOption,
     {

@@ -10,8 +10,8 @@ import { useIntl } from 'utils/cl-intl';
 
 import messages from '../messages';
 
-import FormResultsQuestion from './FormResultsQuestion';
 import FormResultsPage from './FormResultsPage';
+import FormResultsQuestion from './FormResultsQuestion';
 import ViewSingleSubmissionNotice from './FormResultsQuestion/components/ViewSingleSubmissionNotice';
 
 const FormResults = () => {
@@ -58,8 +58,8 @@ const FormResults = () => {
   );
 
   const logicConfig = {
-    toggleLogicIds: toggleLogicIds,
-    filterLogicIds: filterLogicIds,
+    toggleLogicIds,
+    filterLogicIds,
     isLoading: isLoadingResults,
   };
 
@@ -78,7 +78,7 @@ const FormResults = () => {
       <Box mt="24px">
         {totalSubmissions > 0 &&
           results.map((result, index) => {
-            if (result.inputType == 'page') {
+            if (result.inputType === 'page') {
               return (
                 <FormResultsPage
                   key={index}

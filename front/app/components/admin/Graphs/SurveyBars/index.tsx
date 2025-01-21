@@ -10,12 +10,13 @@ import {
 
 import useLocalize from 'hooks/useLocalize';
 
+import LogicIcon from 'containers/Admin/projects/project/nativeSurvey/FormResults/LogicIcon';
+
 import { useIntl } from 'utils/cl-intl';
 
 import Bar from './Bar';
 import messages from './messages';
 import { parseQuestionResult } from './utils';
-import LogicIcon from 'containers/Admin/projects/project/nativeSurvey/FormResults/LogicIcon';
 
 interface Props {
   questionResult: ResultUngrouped | ResultGrouped;
