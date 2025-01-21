@@ -80,7 +80,6 @@ module Analytics
       lifecycle = app_config.settings.dig('core', 'lifecycle_stage')
 
       if (site_id.blank? || site_id == default_site_id) && ['active', 'trial'].include?(lifecycle)
-        puts "lifecycle: #{lifecycle}"
         raise MatomoMisconfigurationError, <<~MSG
           Matomo site (= #{site_id.inspect}) for tenant '#{app_config.id}' is misconfigured.
         MSG

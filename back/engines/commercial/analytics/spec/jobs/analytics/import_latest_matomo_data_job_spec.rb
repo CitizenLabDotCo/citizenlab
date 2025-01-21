@@ -119,10 +119,6 @@ RSpec.describe Analytics::ImportLatestMatomoDataJob do
     end
 
     it 'does not raise an error if the configured matomo site is the default one' do
-      pp AppConfiguration.instance.settings.dig('core', 'lifecycle_stage')
-      lifecycle = AppConfiguration.instance.settings.dig('core', 'lifecycle_stage')
-      pp ['active', 'trial'].include?(lifecycle)
-
       stub_const('ENV', ENV.to_h.merge(
         'DEFAULT_MATOMO_TENANT_SITE_ID' => AppConfiguration.instance.settings('matomo', 'tenant_site_id')
       ))
