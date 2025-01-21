@@ -2706,6 +2706,8 @@
   "app.containers.admin.ideaStatuses.form.implementedFieldCodeTitle": "Realizovano",
   "app.containers.admin.ideaStatuses.form.ineligibleFieldCodeDescription": "Proposal is ineligible",
   "app.containers.admin.ideaStatuses.form.ineligibleFieldCodeTitle": "Ineligible",
+  "app.containers.admin.ideaStatuses.form.prescreeningFieldCodeDescription": "Awaiting screening",
+  "app.containers.admin.ideaStatuses.form.prescreeningFieldCodeTitle": "Prescreening",
   "app.containers.admin.ideaStatuses.form.proposedFieldCodeDescription": "Uspešno poslato kao predlog koji je potrebno razmotriti",
   "app.containers.admin.ideaStatuses.form.proposedFieldCodeTitle": "Predloženo",
   "app.containers.admin.ideaStatuses.form.rejectedFieldCodeDescription": "Neprihvatljivo ili nije odabrano za dalji proces",

@@ -74,6 +74,10 @@ export default defineMessages({
     id: 'app.containers.admin.ideaStatuses.form.ineligibleFieldCodeTitle',
     defaultMessage: 'Ineligible',
   },
+  prescreeningFieldCodeTitle: {
+    id: 'app.containers.admin.ideaStatuses.form.prescreeningFieldCodeTitle',
+    defaultMessage: 'Prescreening',
+  },
   proposedFieldCodeDescription: {
     id: 'app.containers.admin.ideaStatuses.form.proposedFieldCodeDescription',
     defaultMessage: 'Successfully submitted as a proposal for consideration',
@@ -113,6 +117,10 @@ export default defineMessages({
   ineligibleFieldCodeDescription: {
     id: 'app.containers.admin.ideaStatuses.form.ineligibleFieldCodeDescription',
     defaultMessage: 'Proposal is ineligible',
+  },
+  prescreeningFieldCodeDescription: {
+    id: 'app.containers.admin.ideaStatuses.form.prescreeningFieldCodeDescription',
+    defaultMessage: 'Awaiting screening',
   },
   saveStatus: {
     id: 'app.containers.admin.ideaStatuses.form.saveStatus',

@@ -138,8 +138,6 @@ pt:
         title: Ano do nascimento
       domicile:
         title: Endereço
-      education:
-        title: Educação
     ideas:
       title:
         title: Assunto
@@ -207,14 +205,6 @@ pt:
       unspecified: Outros
     domicile:
       outside: Em outro lugar
-    education:
-      ISCED2: Educação infantil
-      ISCED3: Ensino fundamental
-      ISCED4: Ensino médio
-      ISCED5: Ensino técnico
-      ISCED6: Ensino superior
-      ISCED7: Mestrado ou equivalente
-      ISCED8: Doutorado ou equivalente
   reset_password_mailer:
     send_reset_password:
       preheader: 'Redefinir sua senha para %{organizationName}'

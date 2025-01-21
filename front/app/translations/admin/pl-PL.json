@@ -2706,6 +2706,8 @@
   "app.containers.admin.ideaStatuses.form.implementedFieldCodeTitle": "Wdrożony",
   "app.containers.admin.ideaStatuses.form.ineligibleFieldCodeDescription": "Wniosek nie kwalifikuje się",
   "app.containers.admin.ideaStatuses.form.ineligibleFieldCodeTitle": "Nie kwalifikuje się",
+  "app.containers.admin.ideaStatuses.form.prescreeningFieldCodeDescription": "Oczekiwanie na badanie przesiewowe",
+  "app.containers.admin.ideaStatuses.form.prescreeningFieldCodeTitle": "Kontrola wstępna",
   "app.containers.admin.ideaStatuses.form.proposedFieldCodeDescription": "Skutecznie przedłożony jako wniosek do rozpatrzenia",
   "app.containers.admin.ideaStatuses.form.proposedFieldCodeTitle": "Zaproponowany",
   "app.containers.admin.ideaStatuses.form.rejectedFieldCodeDescription": "Niekwalifikujący się lub niewybrany do dalszego etapu",

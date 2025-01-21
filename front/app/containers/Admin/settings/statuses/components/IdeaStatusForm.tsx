@@ -182,6 +182,7 @@ const IdeaStatusForm = ({
                               expired: messages.expiredFieldCodeTitle,
                               answered: messages.answeredFieldCodeTitle,
                               ineligible: messages.ineligibleFieldCodeTitle,
+                              prescreening: messages.prescreeningFieldCodeTitle,
                             }[code]
                           )}
                         </span>
@@ -203,6 +204,8 @@ const IdeaStatusForm = ({
                                 answered: messages.answeredFieldCodeDescription,
                                 ineligible:
                                   messages.ineligibleFieldCodeDescription,
+                                prescreening:
+                                  messages.prescreeningFieldCodeDescription,
                               }[code]
                             )}
                           </span>

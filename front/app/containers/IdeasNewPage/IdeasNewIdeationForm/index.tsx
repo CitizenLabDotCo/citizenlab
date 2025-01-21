@@ -175,10 +175,8 @@ const IdeasNewIdeationForm = ({ project, phaseId }: Props) => {
       anonymous: postAnonymously ? true : undefined,
     });
 
-    const ideaId = idea.data.id;
     participationMethodConfig?.onFormSubmission({
       project: project.data,
-      ideaId,
       idea,
     });
     setLoading(false);

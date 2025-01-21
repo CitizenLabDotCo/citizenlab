@@ -2706,6 +2706,8 @@
   "app.containers.admin.ideaStatuses.form.implementedFieldCodeTitle": "Implementeret",
   "app.containers.admin.ideaStatuses.form.ineligibleFieldCodeDescription": "Forslaget er ikke støtteberettiget",
   "app.containers.admin.ideaStatuses.form.ineligibleFieldCodeTitle": "Ikke støtteberettiget",
+  "app.containers.admin.ideaStatuses.form.prescreeningFieldCodeDescription": "Afventer screening",
+  "app.containers.admin.ideaStatuses.form.prescreeningFieldCodeTitle": "Forudgående screening",
   "app.containers.admin.ideaStatuses.form.proposedFieldCodeDescription": "Afleveret som et forslag til overvejelse",
   "app.containers.admin.ideaStatuses.form.proposedFieldCodeTitle": "Foreslået",
   "app.containers.admin.ideaStatuses.form.rejectedFieldCodeDescription": "Ikke kvalificeret eller ikke valgt til at komme videre",

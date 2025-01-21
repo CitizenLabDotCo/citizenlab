@@ -2706,6 +2706,8 @@
   "app.containers.admin.ideaStatuses.form.implementedFieldCodeTitle": "Implemented",
   "app.containers.admin.ideaStatuses.form.ineligibleFieldCodeDescription": "Proposal is ineligible",
   "app.containers.admin.ideaStatuses.form.ineligibleFieldCodeTitle": "Ineligible",
+  "app.containers.admin.ideaStatuses.form.prescreeningFieldCodeDescription": "Awaiting screening",
+  "app.containers.admin.ideaStatuses.form.prescreeningFieldCodeTitle": "Prescreening",
   "app.containers.admin.ideaStatuses.form.proposedFieldCodeDescription": "Successfully submitted as a proposal for consideration",
   "app.containers.admin.ideaStatuses.form.proposedFieldCodeTitle": "Proposed",
   "app.containers.admin.ideaStatuses.form.rejectedFieldCodeDescription": "Ineligible or not selected to move forward",

@@ -2706,6 +2706,8 @@
   "app.containers.admin.ideaStatuses.form.implementedFieldCodeTitle": "Umgesetzt",
   "app.containers.admin.ideaStatuses.form.ineligibleFieldCodeDescription": "Der Vorschlag ist nicht zulässig",
   "app.containers.admin.ideaStatuses.form.ineligibleFieldCodeTitle": "Unzulässig",
+  "app.containers.admin.ideaStatuses.form.prescreeningFieldCodeDescription": "Warten auf Vorabprüfung",
+  "app.containers.admin.ideaStatuses.form.prescreeningFieldCodeTitle": "Vorabprüfung",
   "app.containers.admin.ideaStatuses.form.proposedFieldCodeDescription": "Erfolgreich als Vorschlag zur Prüfung eingereicht",
   "app.containers.admin.ideaStatuses.form.proposedFieldCodeTitle": "Vorgeschlagen",
   "app.containers.admin.ideaStatuses.form.rejectedFieldCodeDescription": "Nicht wählbar oder nicht zum Weitermachen ausgewählt",

@@ -2706,6 +2706,8 @@
   "app.containers.admin.ideaStatuses.form.implementedFieldCodeTitle": "Implementirano",
   "app.containers.admin.ideaStatuses.form.ineligibleFieldCodeDescription": "Prijedlog ne ispunjava uvjete",
   "app.containers.admin.ideaStatuses.form.ineligibleFieldCodeTitle": "Ne ispunjava uvjete",
+  "app.containers.admin.ideaStatuses.form.prescreeningFieldCodeDescription": "Čeka se projekcija",
+  "app.containers.admin.ideaStatuses.form.prescreeningFieldCodeTitle": "Prescreening",
   "app.containers.admin.ideaStatuses.form.proposedFieldCodeDescription": "Uspješno poslano kao prijedlog koji je potrebno razmotriti",
   "app.containers.admin.ideaStatuses.form.proposedFieldCodeTitle": "Predloženo",
   "app.containers.admin.ideaStatuses.form.rejectedFieldCodeDescription": "Neprihvatljivo ili nije odabrano za daljnje postupanje",
