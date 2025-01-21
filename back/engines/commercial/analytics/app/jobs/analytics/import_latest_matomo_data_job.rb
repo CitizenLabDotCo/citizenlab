@@ -85,7 +85,7 @@ module Analytics
         MSG
       end
 
-     site_id
+      site_id
     end
 
     class MatomoMisconfigurationError < RuntimeError; end
