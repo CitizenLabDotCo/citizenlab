@@ -70,7 +70,7 @@ export const parseQuestionResult = (
         : localize(multilocs.answer[answer].title_multiloc);
 
     const logicFilterId =
-      answer !== null && multilocs.answer[answer].logicNextPageId
+      answer !== null && multilocs.answer[answer].logicNextPageNumber
         ? multilocs.answer[answer].id
         : null;
     // TODO: JS - Find out what the null condition from the question will be

@@ -34,7 +34,7 @@ const FormResultsPage = ({
     pageNumber,
     questionResponseCount,
     customFieldId,
-    logicNextPageId,
+    logicNextPageNumber,
   } = result;
 
   const pageTitle = <T value={question} />;
@@ -69,8 +69,9 @@ const FormResultsPage = ({
           ).toLowerCase()}`}
         </Text>
         <LogicIcon
-          logicFilterId={logicNextPageId ? customFieldId : null}
+          logicFilterId={logicNextPageNumber ? customFieldId : null}
           logicConfig={logicConfig}
+          nextPageNumber={logicNextPageNumber}
           type="page"
         />
       </Box>

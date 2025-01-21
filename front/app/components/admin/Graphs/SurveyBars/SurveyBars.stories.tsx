@@ -53,7 +53,7 @@ const ungroupedData: ResultUngrouped = {
   questionNumber: 1,
   pageNumber: 1,
   hidden: false,
-  logicNextPageId: null,
+  logicNextPageNumber: null,
   answers: [
     {
       answer: 'multiselect_option_1_s2e',
@@ -75,14 +75,14 @@ const ungroupedData: ResultUngrouped = {
           en: 'multiselect: Option 1',
         },
         id: '1',
-        logicNextPageId: null,
+        logicNextPageNumber: null,
       },
       multiselect_option_2_3c7: {
         title_multiloc: {
           en: 'multiselect: Option 2',
         },
         id: '1',
-        logicNextPageId: null,
+        logicNextPageNumber: null,
       },
     },
   },
@@ -110,7 +110,7 @@ const groupedData: ResultGrouped = {
   questionNumber: 1,
   pageNumber: 1,
   hidden: false,
-  logicNextPageId: null,
+  logicNextPageNumber: null,
   answers: [
     {
       answer: 'multiselect_option_1_s2e',
@@ -153,14 +153,14 @@ const groupedData: ResultGrouped = {
           en: 'multiselect: Option 1',
         },
         id: '1',
-        logicNextPageId: null,
+        logicNextPageNumber: null,
       },
       multiselect_option_2_3c7: {
         title_multiloc: {
           en: 'multiselect: Option 2',
         },
         id: '1',
-        logicNextPageId: null,
+        logicNextPageNumber: null,
       },
     },
     group: {
@@ -169,21 +169,21 @@ const groupedData: ResultGrouped = {
           en: 'Male',
         },
         id: '1',
-        logicNextPageId: null,
+        logicNextPageNumber: null,
       },
       female: {
         title_multiloc: {
           en: 'Female',
         },
         id: '1',
-        logicNextPageId: null,
+        logicNextPageNumber: null,
       },
       unspecified: {
         title_multiloc: {
           en: 'Other',
         },
         id: '1',
-        logicNextPageId: null,
+        logicNextPageNumber: null,
       },
     },
   },

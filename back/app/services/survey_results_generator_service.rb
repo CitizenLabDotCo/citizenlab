@@ -26,6 +26,7 @@ class SurveyResultsGeneratorService < FieldVisitorService
 
       results = add_question_numbers_to_results results
       results = add_page_response_count_to_results results
+      results = add_logic_next_page_numbers_to_results(results)
 
       {
         results: results,
@@ -37,7 +38,7 @@ class SurveyResultsGeneratorService < FieldVisitorService
   def add_question_numbers_to_results(results)
     question_number = 0
     page_number = 0
-    results.map do |result|
+    results = results.map do |result|
       if result[:inputType] == 'page'
         page_number += 1
         result[:questionNumber] = nil
@@ -47,6 +48,29 @@ class SurveyResultsGeneratorService < FieldVisitorService
         result[:questionNumber] = question_number
         result[:pageNumber] = nil
       end
+      result
+    end
+  end
+
+  # Replace logicNextPageId with logicNextPageNumber - used by FE in logic tooltip
+  def add_logic_next_page_numbers_to_results(results)
+    results.map do |result|
+      # Replace in page logic
+      next_page = results.find { |r| r[:customFieldId] == result[:logicNextPageId] }
+      result[:logicNextPageNumber] = next_page ? next_page[:pageNumber] : nil
+      result.delete(:logicNextPageId)
+
+      # Do the same for select options
+      if result[:inputType] == 'select' || result[:inputType] == 'multiselect'
+        new_multilocs_answer = result[:multilocs][:answer].map do |key, answer|
+          next_page = results.find { |r| r[:customFieldId] == answer[:logicNextPageId] }
+          answer[:logicNextPageNumber] = next_page ? next_page[:pageNumber] : nil
+          answer.delete(:logicNextPageId)
+          [key, answer]
+        end.to_h
+        result[:multilocs][:answer] = new_multilocs_answer
+      end
+
       result
     end
   end
@@ -100,11 +124,6 @@ class SurveyResultsGeneratorService < FieldVisitorService
         skip_from_next_page = true if f[:id] == page_id
       end
     end
-
-    # binding.pry
-
-    # Work out which fields are skipped by page level logic
-    #         # TODO: JS - if it is page level then it needs to ignore fields until the next page in sequence
 
     fields.map do |field|
       field.hidden = skip_fields.include?(field[:id])

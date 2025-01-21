@@ -12,18 +12,29 @@ import messages from './messages';
 interface LogicIconProps {
   logicConfig?: LogicConfig;
   logicFilterId: string | null;
+  nextPageNumber: number | null;
   type: 'page' | 'option';
 }
 
-const LogicIcon = ({ logicConfig, logicFilterId, type }: LogicIconProps) => {
+const LogicIcon = ({
+  logicConfig,
+  logicFilterId,
+  nextPageNumber,
+  type,
+}: LogicIconProps) => {
   const { formatMessage } = useIntl();
 
-  if (!logicConfig || !logicFilterId) return null;
+  console.log(logicFilterId, nextPageNumber);
+
+  if (!logicConfig || !logicFilterId || !nextPageNumber) return null;
 
   const tooltipContent = formatMessage(
     type == 'page'
       ? messages.logicSkipTooltipPage
-      : messages.logicSkipTooltipOption
+      : messages.logicSkipTooltipOption,
+    {
+      pageNumber: nextPageNumber,
+    }
   );
 
   return (

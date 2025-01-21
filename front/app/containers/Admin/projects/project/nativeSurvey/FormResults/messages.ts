@@ -188,11 +188,11 @@ export default defineMessages({
   logicSkipTooltipPage: {
     id: 'app.containers.Admin.projects.project.survey.logicSkipTooltipPage',
     defaultMessage:
-      'Logic on this page skips all questions until Page 4. Click to hide or show the skipped questions.',
+      'Logic on this page skips all questions until Page { pageNumber }. Click to hide or show the skipped questions.',
   },
   logicSkipTooltipOption: {
     id: 'app.containers.Admin.projects.project.survey.logicSkipTooltipOption',
     defaultMessage:
-      'Logic skips all questions until Page 4 when a user selects this answer. Click to hide or show the skipped questions.',
+      'Logic skips all questions until Page { pageNumber } when a user selects this answer. Click to hide or show the skipped questions.',
   },
 });

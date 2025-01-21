@@ -26,7 +26,7 @@ export const surveyResultsResponse: SurveyResultsType = {
           questionNumber: 1,
           pageNumber: 1,
           hidden: false,
-          logicNextPageId: null,
+          logicNextPageNumber: null,
           answers: [
             {
               answer: 'option1',
@@ -38,7 +38,7 @@ export const surveyResultsResponse: SurveyResultsType = {
               option1: {
                 title_multiloc: { en: 'Option 1' },
                 id: '1',
-                logicNextPageId: null,
+                logicNextPageNumber: null,
               },
             },
           },
@@ -58,7 +58,7 @@ export const surveyResultsResponse: SurveyResultsType = {
           questionNumber: 1,
           pageNumber: 1,
           hidden: false,
-          logicNextPageId: null,
+          logicNextPageNumber: null,
           answers: [
             {
               answer: 'option_a',
@@ -70,7 +70,7 @@ export const surveyResultsResponse: SurveyResultsType = {
               option_a: {
                 title_multiloc: { en: 'Option A' },
                 id: '1',
-                logicNextPageId: null,
+                logicNextPageNumber: null,
               },
             },
           },

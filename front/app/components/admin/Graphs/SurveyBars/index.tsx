@@ -36,8 +36,6 @@ const SurveyBars = ({ questionResult, colorScheme, logicConfig }: Props) => {
     );
   }, [questionResult, colorScheme, localize, formatMessage]);
 
-  console.log(answers);
-
   return (
     <Box
       className={`e2e-survey-question-${
@@ -78,6 +76,7 @@ const SurveyBars = ({ questionResult, colorScheme, logicConfig }: Props) => {
                   <LogicIcon
                     logicFilterId={logicFilterId}
                     logicConfig={logicConfig}
+                    nextPageNumber={3}
                     type="option"
                   />
                 </Box>

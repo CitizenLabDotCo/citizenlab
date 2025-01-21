@@ -21,7 +21,7 @@ export interface Answer {
 export type MultilocAnswer = {
   title_multiloc: Multiloc;
   id: string;
-  logicNextPageId: string | null;
+  logicNextPageNumber: string | null;
   image?: ImageSizes;
 };
 
@@ -49,7 +49,7 @@ type BaseResult = {
   questionResponseCount: number;
   questionNumber: number;
   pageNumber: number;
-  logicNextPageId: string | null;
+  logicNextPageNumber: number | null;
   numberResponses?: { answer: number }[];
 
   // Defined for text questions,
