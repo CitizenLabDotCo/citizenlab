@@ -232,7 +232,7 @@ describe JsonFormsService do
               linear_scale_label6: '',
               linear_scale_label7: ''
             }
-          },
+          }
         ])
       end
     end
