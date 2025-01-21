@@ -302,7 +302,7 @@ FactoryBot.define do
         }
       end
 
-      matrix_statements do 
+      matrix_statements do
         [
           build(:custom_field_matrix_statement, title_multiloc: { 'en' => 'We should send more animals into space' }, key: 'send_more_animals_to_space'),
           build(:custom_field_matrix_statement, title_multiloc: { 'en' => 'We should ride our bicycles more often' }, key: 'ride_bycicles_more_often')

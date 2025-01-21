@@ -133,9 +133,9 @@ describe JsonFormsService do
           create(:custom_field, key: 'field5', input_type: 'checkbox'),
           create(:custom_field, key: 'field6', input_type: 'date'),
           create(:custom_field_ranking, :with_options, key: 'field7'),
-          # create(:custom_field_matrix_linear_scale, key: 'field8'),
-          create(:custom_field, key: 'field8', input_type: 'multiline_text', enabled: false, required: true),
-          create(:custom_field, key: 'field9', input_type: 'text', hidden: true, enabled: true)
+          create(:custom_field_matrix_linear_scale, key: 'field8'),
+          create(:custom_field, key: 'field9', input_type: 'multiline_text', enabled: false, required: true),
+          create(:custom_field, key: 'field10', input_type: 'text', hidden: true, enabled: true)
         ]
         create(:custom_field_option, key: 'option1', custom_field: fields[2])
         create(:custom_field_option, key: 'option2', custom_field: fields[2])
@@ -212,6 +212,26 @@ describe JsonFormsService do
               description: 'Which councils are you attending in our city?'
             },
             scope: '#/properties/field7'
+          },
+          {
+            type: 'Control',
+            scope: '#/properties/field8',
+            label: 'Please indicate how strong you agree or disagree with the following statements.',
+            options: {
+              description: 'Which councils are you attending in our city?',
+              input_type: 'matrix_linear_scale',
+              statements: [
+                { key: 'send_more_animals_to_space', label: 'We should send more animals into space' },
+                { key: 'ride_bycicles_more_often', label: 'We should ride our bicycles more often' }
+              ],
+              linear_scale_label1: 'Strongly disagree',
+              linear_scale_label2: '',
+              linear_scale_label3: '',
+              linear_scale_label4: '',
+              linear_scale_label5: 'Strongly agree',
+              linear_scale_label6: '',
+              linear_scale_label7: ''
+            }
           }
         ])
       end
