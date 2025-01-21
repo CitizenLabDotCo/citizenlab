@@ -6,6 +6,7 @@ import {
   colors,
   Icon,
   Badge,
+  IconTooltip,
 } from '@citizenlab/cl2-component-library';
 
 // Intl
@@ -16,9 +17,14 @@ import messages from '../../../messages';
 interface Props {
   targetPage: string | undefined;
   isRuleValid: boolean;
+  isDefaultPage: boolean;
 }
 
-export const PageRuleDisplay = ({ targetPage, isRuleValid }: Props) => {
+export const PageRuleDisplay = ({
+  targetPage,
+  isRuleValid,
+  isDefaultPage,
+}: Props) => {
   if (!targetPage) return null;
 
   return (
@@ -29,17 +35,43 @@ export const PageRuleDisplay = ({ targetPage, isRuleValid }: Props) => {
       data-cy="e2e-field-rule-display"
     >
       <Icon
-        fill={isRuleValid ? colors.coolGrey500 : colors.error}
+        fill={
+          isRuleValid
+            ? isDefaultPage
+              ? colors.coolGrey300
+              : colors.coolGrey500
+            : colors.error
+        }
         width="18px"
         name="logic"
         my="auto"
       />
-      <Text my="auto" pl="8px" pr="4px" color="blue500" fontSize="s">
+      <Text
+        my="auto"
+        pl="8px"
+        pr="4px"
+        color={isDefaultPage ? 'coolGrey500' : 'blue500'}
+        fontSize="s"
+        fontStyle={isDefaultPage ? 'italic' : 'normal'}
+      >
         <FormattedMessage {...messages.nextPageLabel} />
       </Text>
-      <Text my="auto" px="4px" color="blue500" fontSize="s" fontWeight="bold">
+      <Text
+        my="auto"
+        px="4px"
+        color={isDefaultPage ? 'coolGrey500' : 'blue500'}
+        fontSize="s"
+        fontWeight={isDefaultPage ? 'normal' : 'bold'}
+        fontStyle={isDefaultPage ? 'italic' : 'normal'}
+      >
         {targetPage}
       </Text>
+      {isDefaultPage && (
+        <IconTooltip
+          iconColor={colors.coolGrey300}
+          content={<FormattedMessage {...messages.pageRuleTooltip} />}
+        />
+      )}
       {!isRuleValid && (
         <Box my="auto" ml="8px">
           <Badge
