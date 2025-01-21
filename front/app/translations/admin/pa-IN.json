@@ -2707,8 +2707,6 @@
   "app.containers.admin.ideaStatuses.form.implementedFieldCodeTitle": "ਲਾਗੂ ਕੀਤਾ",
   "app.containers.admin.ideaStatuses.form.ineligibleFieldCodeDescription": "ਪ੍ਰਸਤਾਵ ਅਯੋਗ ਹੈ",
   "app.containers.admin.ideaStatuses.form.ineligibleFieldCodeTitle": "ਅਯੋਗ",
-  "app.containers.admin.ideaStatuses.form.prescreeningFieldCodeDescription": "ਸਕ੍ਰੀਨਿੰਗ ਦੀ ਉਡੀਕ ਕੀਤੀ ਜਾ ਰਹੀ ਹੈ",
-  "app.containers.admin.ideaStatuses.form.prescreeningFieldCodeTitle": "ਪ੍ਰੀਸਕਰੀਨਿੰਗ",
   "app.containers.admin.ideaStatuses.form.proposedFieldCodeDescription": "ਵਿਚਾਰ ਲਈ ਇੱਕ ਪ੍ਰਸਤਾਵ ਦੇ ਰੂਪ ਵਿੱਚ ਸਫਲਤਾਪੂਰਵਕ ਸਪੁਰਦ ਕੀਤਾ ਗਿਆ",
   "app.containers.admin.ideaStatuses.form.proposedFieldCodeTitle": "ਪ੍ਰਸਤਾਵਿਤ",
   "app.containers.admin.ideaStatuses.form.rejectedFieldCodeDescription": "ਅੱਗੇ ਵਧਣ ਲਈ ਅਯੋਗ ਜਾਂ ਨਹੀਂ ਚੁਣਿਆ ਗਿਆ",
