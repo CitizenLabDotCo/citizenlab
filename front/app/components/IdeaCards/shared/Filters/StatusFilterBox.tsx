@@ -27,7 +27,7 @@ const StatusFilterBox = ({
   phase,
 }: Props) => {
   /* 
-    On project phase pages. If the phase setting is undefined: the BE's default is to exclude the screening status when the prescreening_ideation feature is not enabled. If prescreening_ideation is enabled, the phase setting should be defined (either true or false) for new phases. For old phases, that were created before the feature was introduced, the setting is undefined. This will result in excludeScreeningStatus being true (!undefined).
+    On project phase pages. If the phase setting is undefined: the BE's default is to exclude the screening status when the prescreening_ideation feature is not enabled (or prescreening feature for proposals). If prescreening_ideation (or prescreening) is enabled, the phase setting should be defined (either true or false) for new phases. For old phases, that were created before the feature was introduced, the setting is undefined. This will result in excludeScreeningStatus being true (!undefined).
     
     On the All inputs page, with no phase, we follow default BE behavior: show all statuses if the prescreening_ideation feature is enabled (similar to general input manager behavior). 
   */
