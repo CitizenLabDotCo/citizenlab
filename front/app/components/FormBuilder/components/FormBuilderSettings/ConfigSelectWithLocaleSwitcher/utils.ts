@@ -2,7 +2,7 @@ import { SupportedLocale } from 'typings';
 
 import { IOptionsType } from 'api/custom_fields/types';
 
-import { generateTempId } from 'components/FormBuilder/utils';
+import { generateTempId } from 'utils/helperUtils';
 
 interface AllowMultilinePasteParams {
   options: IOptionsType[];
@@ -69,9 +69,11 @@ export const updateFormOnMultlinePaste = ({
   });
 };
 
+const REMOVABLE_PREFIXES = new Set(['•', '-']);
+
 const sanitizeLine = (line: string) => {
   const trimmedLine = line.trim();
-  const cleanedLine = trimmedLine.startsWith('-')
+  const cleanedLine = REMOVABLE_PREFIXES.has(trimmedLine[0])
     ? trimmedLine.slice(1)
     : trimmedLine;
   return cleanedLine.trim();

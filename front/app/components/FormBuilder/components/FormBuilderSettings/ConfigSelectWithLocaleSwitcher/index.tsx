@@ -27,12 +27,11 @@ import usePrevious from 'hooks/usePrevious';
 import { List, Row } from 'components/admin/ResourceList';
 import SortableRow from 'components/admin/ResourceList/SortableRow';
 import { SectionField } from 'components/admin/Section';
-import { generateTempId } from 'components/FormBuilder/utils';
 import Error, { TFieldName } from 'components/UI/Error';
 
 import { useIntl } from 'utils/cl-intl';
 import { convertUrlToUploadFile } from 'utils/fileUtils';
-import { isNilOrError } from 'utils/helperUtils';
+import { generateTempId, isNilOrError } from 'utils/helperUtils';
 
 import messages from './messages';
 import SelectFieldOption, { OptionImageType } from './SelectFieldOption';
