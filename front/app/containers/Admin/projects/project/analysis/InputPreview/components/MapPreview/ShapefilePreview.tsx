@@ -19,8 +19,8 @@ import { FormData } from 'components/Form/typings';
 
 import { useIntl } from 'utils/cl-intl';
 
-import messages from './messages';
-import { setLayerRenderer } from './utils';
+import messages from '../../messages';
+import { setLayerRenderer } from '../../utils';
 
 type Props = {
   inputId: string;
