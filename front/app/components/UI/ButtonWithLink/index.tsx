@@ -26,7 +26,10 @@ type Ref = HTMLButtonElement;
 const ButtonWithLink = forwardRef<Ref, Props>(
   ({ linkTo, openLinkInNewTab, disabled, scrollToTop, ...rest }, ref) => {
     const isExternalLink =
-      linkTo && (linkTo.startsWith('http') || linkTo.startsWith('www'));
+      linkTo &&
+      (linkTo.startsWith('http') ||
+        linkTo.startsWith('www') ||
+        linkTo.startsWith('mailto'));
 
     const link =
       linkTo && !disabled
