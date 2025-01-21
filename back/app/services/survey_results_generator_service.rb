@@ -424,17 +424,17 @@ class SurveyResultsGeneratorService < FieldVisitorService
       end
 
       # Add any_other_answer logic
-      any_other_answer_page = f.logic['rules'].find {|r| r['if'] == 'any_other_answer'}&.dig('goto_page_id')
+      any_other_answer_page = f.logic['rules'].find { |r| r['if'] == 'any_other_answer' }&.dig('goto_page_id')
       next if any_other_answer_page.nil?
 
-      question_logic << { f.id => any_other_answer_page } unless (logic_ids & f.options.pluck(:id)).empty?
+      question_logic << { f.id => any_other_answer_page } if logic_ids.intersect?(f.options.pluck(:id))
     end
 
     # TODO: JS - Option 1 is now hiding all of them!!
 
     # Work out which fields are skipped by question level logic
     question_logic.each do |logic|
-      field_id =  logic.first[0]
+      field_id = logic.first[0]
       goto_page_id = logic.first[1]
 
       skip = false

@@ -30,8 +30,6 @@ export const parseQuestionResult = (
 
       const image = answer ? multilocs.answer[answer].image : undefined;
 
-      console.log(answer);
-
       return {
         label,
         logicFilterId: null,

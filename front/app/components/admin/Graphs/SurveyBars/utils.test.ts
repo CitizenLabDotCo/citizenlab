@@ -98,6 +98,8 @@ describe('parseQuestionResult', () => {
         label: 'select: Option 1',
         count: 2,
         percentage: 50,
+        logicFilterId: null,
+        logicNextPageNumber: null,
         bars: [
           {
             type: 'single',
@@ -111,6 +113,8 @@ describe('parseQuestionResult', () => {
         label: 'select: Option 2',
         count: 2,
         percentage: 50,
+        logicFilterId: null,
+        logicNextPageNumber: null,
         bars: [
           {
             type: 'single',
@@ -124,6 +128,8 @@ describe('parseQuestionResult', () => {
         label: 'No answer',
         count: 0,
         percentage: 0,
+        logicFilterId: null,
+        logicNextPageNumber: null,
         bars: [
           {
             type: 'single',
@@ -246,6 +252,8 @@ describe('parseQuestionResult', () => {
         label: 'multiselect: Option 1',
         count: 4,
         percentage: 50,
+        logicFilterId: null,
+        logicNextPageNumber: null,
         bars: [
           {
             type: 'first',
@@ -265,6 +273,8 @@ describe('parseQuestionResult', () => {
         label: 'multiselect: Option 2',
         count: 4,
         percentage: 50,
+        logicFilterId: null,
+        logicNextPageNumber: null,
         bars: [
           {
             type: 'first',
@@ -284,6 +294,8 @@ describe('parseQuestionResult', () => {
         label: 'No answer',
         count: 0,
         percentage: 0,
+        logicFilterId: null,
+        logicNextPageNumber: null,
         bars: [
           {
             type: 'single',
