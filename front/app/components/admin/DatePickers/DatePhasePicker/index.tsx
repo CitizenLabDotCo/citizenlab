@@ -48,11 +48,13 @@ const DatePhasePicker = ({
         visible={calendarOpen}
         width="1200px"
       >
-        <Input
-          selectedRange={selectedRange}
-          selectedRangeIsOpenEnded={selectedRangeIsOpenEnded}
-          onClick={() => setCalendarOpen((open) => !open)}
-        />
+        <div>
+          <Input
+            selectedRange={selectedRange}
+            selectedRangeIsOpenEnded={selectedRangeIsOpenEnded}
+            onClick={() => setCalendarOpen((open) => !open)}
+          />
+        </div>
       </Tooltip>
     </ClickOutsideContainer>
   );
