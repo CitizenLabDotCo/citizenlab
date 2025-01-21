@@ -631,7 +631,7 @@ RSpec.describe JsonSchemaGeneratorService do
             minimum: 1,
             maximum: 5
           },
-          ride_bycicles_more_often: {
+          ride_bicycles_more_often: {
             type: 'number',
             minimum: 1,
             maximum: 5

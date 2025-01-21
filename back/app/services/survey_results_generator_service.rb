@@ -72,6 +72,32 @@ class SurveyResultsGeneratorService < FieldVisitorService
     visit_select_base(field)
   end
 
+  def visit_matrix_linear_scale(field)
+    core_field_attributes(field).merge({
+      multilocs: { answer: build_linear_scale_multilocs(field) },
+      linear_scales: field.matrix_statements.pluck(:key).index_with do |statement_key|
+          matrix_linear_scale_statements(statement_key, field)
+      end
+    })
+  end
+
+  def matrix_linear_scale_statements(statement_key, field)
+    query_result = inputs.group("custom_field_values->'#{field.key}'->'#{statement_key}'").count
+    answers = (1..field.maximum).reverse_each.map do |answer|
+      { answer: answer, count: (query_result[answer] || 0) }
+    end
+    question_response_count = answers.sum { |a| a[:count] }
+    answers.each do |answer|
+      answer[:percentage] = question_response_count > 0 ? (answer[:count].to_f / question_response_count) : 0.0
+    end
+    answers += [{ answer: nil, count: (query_result[nil] || 0) }]
+    {
+      question: field.matrix_statements.find { |s| s.key == statement_key }.title_multiloc,
+      questionResponseCount: question_response_count,
+      answers:
+    }
+  end
+
   def visit_file_upload(field)
     file_ids = inputs
       .select("custom_field_values->'#{field.key}'->'id' as value")
