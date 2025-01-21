@@ -718,9 +718,13 @@ resource 'Phases' do
             customFieldId: multiselect_field.id,
             inputType: 'multiselect',
             question: { en: 'What are your favourite pets?' },
+            description: {},
             required: true,
             grouped: false,
-            maybeSkippedByLogic: false,
+            hidden: false,
+            pageNumber: nil,
+            questionNumber: 1,
+            logicNextPageNumber: nil,
             totalResponseCount: 2,
             questionResponseCount: 2,
             totalPickCount: 3,
@@ -731,8 +735,8 @@ resource 'Phases' do
             ],
             multilocs: {
               answer: {
-                cat: { title_multiloc: { en: 'Cat' } },
-                dog: { title_multiloc: { en: 'Dog' } }
+                cat: { title_multiloc: { en: 'Cat' }, id: cat_option.id, logicNextPageNumber: nil },
+                dog: { title_multiloc: { en: 'Dog' }, id: dog_option.id, logicNextPageNumber: nil }
               }
             }
           }

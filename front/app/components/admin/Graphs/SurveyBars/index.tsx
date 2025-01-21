@@ -44,7 +44,18 @@ const SurveyBars = ({ questionResult, colorScheme, logicConfig }: Props) => {
       }-bars`}
     >
       {answers.map(
-        ({ label, logicFilterId, count, percentage, image, bars }, index) => (
+        (
+          {
+            label,
+            logicFilterId,
+            logicNextPageNumber,
+            count,
+            percentage,
+            image,
+            bars,
+          },
+          index
+        ) => (
           <Box
             key={index}
             maxWidth="524px"
@@ -77,7 +88,7 @@ const SurveyBars = ({ questionResult, colorScheme, logicConfig }: Props) => {
                   <LogicIcon
                     logicFilterId={logicFilterId}
                     logicConfig={logicConfig}
-                    nextPageNumber={3}
+                    nextPageNumber={logicNextPageNumber}
                     type="option"
                   />
                 </Box>

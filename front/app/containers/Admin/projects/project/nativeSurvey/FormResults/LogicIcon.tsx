@@ -27,6 +27,7 @@ const LogicIcon = ({
   type,
 }: LogicIconProps) => {
   const { formatMessage } = useIntl();
+  console.log(logicFilterId, nextPageNumber);
 
   if (!logicConfig || !logicFilterId || !nextPageNumber) return null;
 

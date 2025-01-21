@@ -30,9 +30,12 @@ export const parseQuestionResult = (
 
       const image = answer ? multilocs.answer[answer].image : undefined;
 
+      console.log(answer);
+
       return {
         label,
         logicFilterId: null,
+        logicNextPageNumber: null,
         image,
         count,
         percentage: roundPercentage(count, totalPickCount, 1),
@@ -75,6 +78,9 @@ export const parseQuestionResult = (
         : null;
     // TODO: JS - Find out what the null condition from the question will be
 
+    const logicNextPageNumber =
+      answer !== null ? multilocs.answer[answer].logicNextPageNumber : null;
+
     const image = answer ? multilocs.answer[answer].image : undefined;
 
     const percentage = roundPercentage(count, totalPickCount, 1);
@@ -82,6 +88,7 @@ export const parseQuestionResult = (
     return {
       label,
       logicFilterId,
+      logicNextPageNumber,
       image,
       count,
       percentage,

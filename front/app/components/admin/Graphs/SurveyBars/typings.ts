@@ -8,6 +8,7 @@ export type Answer = {
   percentage: number;
   bars: Bar[];
   logicFilterId: string | null;
+  logicNextPageNumber: number | null;
 };
 
 export type Bar = {

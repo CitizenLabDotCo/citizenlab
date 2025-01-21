@@ -21,7 +21,7 @@ export interface Answer {
 export type MultilocAnswer = {
   title_multiloc: Multiloc;
   id: string;
-  logicNextPageNumber: string | null;
+  logicNextPageNumber: number | null;
   image?: ImageSizes;
 };
 

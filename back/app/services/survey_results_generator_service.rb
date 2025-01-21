@@ -227,9 +227,10 @@ class SurveyResultsGeneratorService < FieldVisitorService
       return build_linear_scale_multilocs(field)
     end
 
+    any_other_answer_page_id = field.logic['rules']&.find { |r| r['if'] == 'any_other_answer' }&.dig('goto_page_id')
     field.options.each_with_object({}) do |option, accu|
       logic_next_page_id = field.logic['rules']&.find { |r| r['if'] == option.id }&.dig('goto_page_id')
-      option_detail = { title_multiloc: option.title_multiloc, id: option.id, logicNextPageId: logic_next_page_id }
+      option_detail = { title_multiloc: option.title_multiloc, id: option.id, logicNextPageId: logic_next_page_id || any_other_answer_page_id }
       option_detail[:image] = option.image&.image&.versions&.transform_values(&:url) if field.support_option_images?
       accu[option.key] = option_detail
     end
@@ -411,20 +412,31 @@ class SurveyResultsGeneratorService < FieldVisitorService
     skip_fields = []
 
     # Question level logic - get field each option_id is linked to
-    question_logic = {}
+    question_logic = []
     fields.each do |f|
       rules = f.logic['rules']
       next if rules.blank?
 
       rules.each do |r|
-        next unless logic_ids.include? r['if']
-
-        question_logic[f.id] = r['goto_page_id']
+        if logic_ids.include? r['if']
+          question_logic << { f.id => r['goto_page_id'] }
+        end
       end
+
+      # Add any_other_answer logic
+      any_other_answer_page = f.logic['rules'].find {|r| r['if'] == 'any_other_answer'}&.dig('goto_page_id')
+      next if any_other_answer_page.nil?
+
+      question_logic << { f.id => any_other_answer_page } unless (logic_ids & f.options.pluck(:id)).empty?
     end
 
+    # TODO: JS - Option 1 is now hiding all of them!!
+
     # Work out which fields are skipped by question level logic
-    question_logic.each do |field_id, goto_page_id|
+    question_logic.each do |logic|
+      field_id =  logic.first[0]
+      goto_page_id = logic.first[1]
+
       skip = false
       fields.each do |f|
         skip = false if f[:id] == goto_page_id
