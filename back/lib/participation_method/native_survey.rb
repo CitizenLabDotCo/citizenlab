@@ -68,6 +68,13 @@ module ParticipationMethod
               title_multiloc: multiloc_service.i18n_to_multiloc('form_builder.default_select_field.option2')
             )
           ]
+        ),
+        CustomField.new(
+          id: SecureRandom.uuid,
+          key: CustomFieldService.new.generate_key('survey_end', false),
+          resource: custom_form,
+          input_type: 'page',
+          page_layout: 'default',
         )
       ]
     end

@@ -91,20 +91,8 @@ class InputUiSchemaGeneratorService < UiSchemaGeneratorService
         field_schemas << field_schema
       end
     end
-    field_schemas << end_page_schema
-    field_schemas
-  end
 
-  def end_page_schema
-    {
-      type: 'Page',
-      options: {
-        id: 'survey_end',
-        title: I18n.t('form_builder.form_end_page.title_text'),
-        description: I18n.t('form_builder.form_end_page.description_text_2')
-      },
-      elements: []
-    }
+    field_schemas
   end
 
   def categorization_schema_with(input_term, elements)
