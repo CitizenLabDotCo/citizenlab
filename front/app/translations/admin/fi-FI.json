@@ -2707,6 +2707,8 @@
   "app.containers.admin.ideaStatuses.form.implementedFieldCodeTitle": "Toteutettu",
   "app.containers.admin.ideaStatuses.form.ineligibleFieldCodeDescription": "Ehdotus ei kelpaa",
   "app.containers.admin.ideaStatuses.form.ineligibleFieldCodeTitle": "Ei kelpaa",
+  "app.containers.admin.ideaStatuses.form.prescreeningFieldCodeDescription": "Seulontaa odotellessa",
+  "app.containers.admin.ideaStatuses.form.prescreeningFieldCodeTitle": "Esiseulonta",
   "app.containers.admin.ideaStatuses.form.proposedFieldCodeDescription": "Onnistuneesti toimitettu ehdotuksena käsiteltäväksi",
   "app.containers.admin.ideaStatuses.form.proposedFieldCodeTitle": "Ehdotettu",
   "app.containers.admin.ideaStatuses.form.rejectedFieldCodeDescription": "Ei kelvollinen tai ei valittu siirtymään eteenpäin",

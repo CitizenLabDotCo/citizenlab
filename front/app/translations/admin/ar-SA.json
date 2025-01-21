@@ -2707,6 +2707,8 @@
   "app.containers.admin.ideaStatuses.form.implementedFieldCodeTitle": "منفَّذ",
   "app.containers.admin.ideaStatuses.form.ineligibleFieldCodeDescription": "الاقتراح غير مؤهل",
   "app.containers.admin.ideaStatuses.form.ineligibleFieldCodeTitle": "غير مؤهل",
+  "app.containers.admin.ideaStatuses.form.prescreeningFieldCodeDescription": "في انتظار الفحص",
+  "app.containers.admin.ideaStatuses.form.prescreeningFieldCodeTitle": "الفحص المسبق",
   "app.containers.admin.ideaStatuses.form.proposedFieldCodeDescription": "تم التقديم بنجاح كمقترح للدراسة",
   "app.containers.admin.ideaStatuses.form.proposedFieldCodeTitle": "مقترح",
   "app.containers.admin.ideaStatuses.form.rejectedFieldCodeDescription": "غير مؤهل أو غير محدد للمضي قدمًا",
