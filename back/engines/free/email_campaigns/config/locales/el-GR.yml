@@ -366,10 +366,10 @@ el:
     project_review_state_change:
       subject: '"%{projectTitle}" έχει εγκριθεί'
       header: '%{reviewerName} ενέκρινε το σχέδιο "%{projectTitle}"'
-      header_message: "Το έργο είναι τώρα έτοιμο να τεθεί σε λειτουργία. Μπορείτε να το δημοσιεύσετε όποτε είστε έτοιμοι!"
+      header_message: "Το έργο είναι τώρα έτοιμο να βγει ζωντανά. Μπορείτε να το δημοσιεύσετε όποτε είστε έτοιμοι!"
       cta_go_to_project: "Μεταβείτε στις ρυθμίσεις του έργου"
     status_change_on_idea_you_follow:
-      status_change: 'Η συγκριμένη ιδέα ενημερώθηκε σε ''%{status}'''
+      status_change: 'Η συγκριμένη καταχώρηση ενημερώθηκε σε ''%{status}'''
       header_message: '%{organizationName} ενημέρωσε την κατάσταση της ιδέας "%{input_title}" στην ψηφιακή πλατφόρμα συμμετοχής.'
       header_title: 'Η κατάσταση μιας ιδέας που ακολουθείτε έχει ενημερωθεί'
       subject: 'Η κατάσταση του "%{input_title}" έχει αλλάξει'
