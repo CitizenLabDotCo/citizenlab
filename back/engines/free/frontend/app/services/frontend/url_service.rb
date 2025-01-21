@@ -144,7 +144,7 @@ module Frontend
     end
 
     def profile_surveys_url(user_slug, options = {})
-    "#{home_url(options)}/profile/#{user_slug}/surveys"
+      "#{home_url(options)}/profile/#{user_slug}/surveys"
     end
 
     private
