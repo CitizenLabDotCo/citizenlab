@@ -48,6 +48,13 @@ const AutoTagTargetContainer = styled.div`
   }
 `;
 
+const AutoTagGrid = styled.div`
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-auto-rows: 1fr;
+  gap: 16px;
+`;
+
 type Props = {
   onSelectMethod: (tagType: AutoTaggingMethod) => void;
   isLoading: boolean;
@@ -142,7 +149,7 @@ const Step1 = ({
         </AutoTagTargetContainer>
       </Box>
       <Title variant="h4">{formatMessage(messages.howToTag)}</Title>
-      <Box display="flex" gap="16px" flexWrap="wrap">
+      <AutoTagGrid>
         <AutoTagOption
           tagType="nlp_topic"
           title={formatMessage(messages.fullyAutomatedTitle)}
@@ -214,7 +221,7 @@ const Step1 = ({
         >
           {formatMessage(messages.languageTagDescription)}
         </AutoTagOption>
-      </Box>
+      </AutoTagGrid>
     </>
   );
 };

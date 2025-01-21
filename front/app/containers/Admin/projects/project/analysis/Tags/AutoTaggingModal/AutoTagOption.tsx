@@ -21,6 +21,7 @@ import messages from '../messages';
 import Tag from '../Tag';
 
 const AutoTagMethodContainer = styled.div<{ isDisabled: boolean }>`
+  height: 100%;
   background-color: ${colors.grey100};
   border-radius: 3px;
   padding: 16px;
@@ -60,13 +61,14 @@ const AutoTagOption = ({
 }: Props) => {
   const { formatMessage } = useIntl();
   return (
-    <Box w="30%">
+    <Box height="100%">
       <Tooltip
         content={
           <p>{formatMessage(messages.advancedAutotaggingUpsellMessage)}</p>
         }
         zIndex={9999999}
         disabled={!isDisabled}
+        height="100%"
       >
         <AutoTagMethodContainer
           onClick={isDisabled || isLoading ? undefined : () => onSelect()}

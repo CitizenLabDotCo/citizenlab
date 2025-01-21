@@ -142,6 +142,9 @@ const Combobox = ({
             id={`${baseID}-label`}
             role="combobox"
             aria-haspopup="listbox"
+            ariaLabel={
+              typeof currentTitle === 'string' ? currentTitle : undefined
+            }
           >
             <Box display="flex" gap="8px">
               {currentTitle}
