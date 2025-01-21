@@ -36,6 +36,7 @@ import { isNilOrError } from 'utils/helperUtils';
 
 import messages from './messages';
 import SelectFieldOption, { OptionImageType } from './SelectFieldOption';
+import { allowMultilinePaste, updateFormOnMultlinePaste } from './utils';
 
 interface Props {
   name: string;
@@ -196,9 +197,18 @@ const ConfigSelectWithLocaleSwitcher = ({
 
   const handleMultilinePaste = useCallback(
     (lines, index) => {
-      console.log({ lines, index });
+      if (!selectedLocale) return;
+
+      updateFormOnMultlinePaste({
+        update,
+        append,
+        locale: selectedLocale,
+        lines,
+        index,
+        options: selectOptions,
+      });
     },
-    [update]
+    [update, append, selectOptions, selectedLocale]
   );
 
   const defaultOptionValues = [{}];
@@ -283,8 +293,11 @@ const ConfigSelectWithLocaleSwitcher = ({
                         return aValue - bValue;
                       })
                       .map((choice, index) => {
-                        const isLast = index === choices.length - 1;
-                        const isEmpty = !!choice.title_multiloc[selectedLocale];
+                        const multilinePasteAllowed = allowMultilinePaste({
+                          options,
+                          index,
+                          locale: selectedLocale,
+                        });
 
                         return (
                           <Box key={index}>
@@ -325,7 +338,7 @@ const ConfigSelectWithLocaleSwitcher = ({
                                   removeOption={removeOption}
                                   onChoiceUpdate={updateChoice}
                                   onMultilinePaste={
-                                    isLast && isEmpty
+                                    multilinePasteAllowed
                                       ? handleMultilinePaste
                                       : undefined
                                   }

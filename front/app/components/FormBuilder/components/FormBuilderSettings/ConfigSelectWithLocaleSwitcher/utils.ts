@@ -2,6 +2,8 @@ import { SupportedLocale } from 'typings';
 
 import { IOptionsType } from 'api/custom_fields/types';
 
+import { generateTempId } from 'components/FormBuilder/utils';
+
 interface AllowMultilinePasteParams {
   options: IOptionsType[];
   index: number;
@@ -25,20 +27,44 @@ export const allowMultilinePaste = ({
   return true;
 };
 
-// interface UpdateFormOnMultilinePasteParams {
-//   update: (index: number, newOption: IOptionsType) => void;
-//   locale: SupportedLocale;
-//   lines: string[];
-//   index: number;
-//   options: IOptionsType[];
-// }
+interface UpdateFormOnMultilinePasteParams {
+  update: (index: number, newOption: IOptionsType) => void;
+  append: (newOption: IOptionsType) => void;
+  locale: SupportedLocale;
+  lines: string[];
+  index: number;
+  options: IOptionsType[];
+}
 
-// export const updateFormOnMultlinePaste = ({
-//   update,
-//   locale,
-//   lines,
-//   index,
-//   options
-// }: UpdateFormOnMultilinePasteParams) => {
+export const updateFormOnMultlinePaste = ({
+  update,
+  append,
+  locale,
+  lines,
+  index,
+  options,
+}: UpdateFormOnMultilinePasteParams) => {
+  lines.forEach((line, i) => {
+    const optionIndex = index + i;
+    const option =
+      optionIndex >= options.length ? undefined : options[optionIndex];
 
-// }
+    if (option) {
+      update(optionIndex, {
+        ...option,
+        title_multiloc: {
+          ...option.title_multiloc,
+          [locale]: line,
+        },
+        ...(!option.id && !option.temp_id ? { temp_id: generateTempId() } : {}),
+      });
+    } else {
+      append({
+        title_multiloc: {
+          [locale]: line,
+        },
+        temp_id: generateTempId(),
+      });
+    }
+  });
+};
