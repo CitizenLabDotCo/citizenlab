@@ -2707,6 +2707,8 @@
   "app.containers.admin.ideaStatuses.form.implementedFieldCodeTitle": "Uitgevoerd",
   "app.containers.admin.ideaStatuses.form.ineligibleFieldCodeDescription": "Voorstel komt niet in aanmerking",
   "app.containers.admin.ideaStatuses.form.ineligibleFieldCodeTitle": "Komt niet in aanmerking",
+  "app.containers.admin.ideaStatuses.form.prescreeningFieldCodeDescription": "In afwachting van screening",
+  "app.containers.admin.ideaStatuses.form.prescreeningFieldCodeTitle": "Voorscreening",
   "app.containers.admin.ideaStatuses.form.proposedFieldCodeDescription": "Succesvol ingediend als voorstel voor overweging",
   "app.containers.admin.ideaStatuses.form.proposedFieldCodeTitle": "Voorgesteld",
   "app.containers.admin.ideaStatuses.form.rejectedFieldCodeDescription": "Niet in aanmerking komend of niet geselecteerd om verder te gaan",
