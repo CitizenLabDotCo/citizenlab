@@ -2707,8 +2707,6 @@
   "app.containers.admin.ideaStatuses.form.implementedFieldCodeTitle": "Genomfördes",
   "app.containers.admin.ideaStatuses.form.ineligibleFieldCodeDescription": "Förslaget är inte stödberättigande",
   "app.containers.admin.ideaStatuses.form.ineligibleFieldCodeTitle": "Ej valbar",
-  "app.containers.admin.ideaStatuses.form.prescreeningFieldCodeDescription": "Väntar på screening",
-  "app.containers.admin.ideaStatuses.form.prescreeningFieldCodeTitle": "Förhandsgranskning",
   "app.containers.admin.ideaStatuses.form.proposedFieldCodeDescription": "Skickades in som ett förslag för behandling",
   "app.containers.admin.ideaStatuses.form.proposedFieldCodeTitle": "Föreslagen",
   "app.containers.admin.ideaStatuses.form.rejectedFieldCodeDescription": "Oberättigad eller inte vald för att gå vidare",
