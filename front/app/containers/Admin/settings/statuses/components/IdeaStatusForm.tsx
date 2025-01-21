@@ -129,6 +129,7 @@ const IdeaStatusForm = ({
     expired: messages.expiredFieldCodeTitle,
     answered: messages.answeredFieldCodeTitle,
     ineligible: messages.ineligibleFieldCodeTitle,
+    prescreening: messages.prescreeningFieldCodeTitle,
   };
   const codeDescriptionMessages: {
     [key in InputStatusCode]: MessageDescriptor;
@@ -144,6 +145,7 @@ const IdeaStatusForm = ({
     expired: messages.expiredFieldCodeDescription,
     answered: messages.answeredFieldCodeDescription,
     ineligible: messages.ineligibleFieldCodeDescription,
+    prescreening: messages.prescreeningFieldCodeDescription,
   };
   const codeTitleMessage = (code: InputStatusCode) => codeTitleMessages[code];
   const codeDescriptionMessage = (code: InputStatusCode) =>
