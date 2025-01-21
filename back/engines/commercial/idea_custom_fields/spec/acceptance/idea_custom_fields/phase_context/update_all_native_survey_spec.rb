@@ -503,7 +503,7 @@ resource 'Idea Custom Fields' do
 
       example 'Update a matrix linear scale field, add, delete and update statements' do
         field_to_update = create(
-          :custom_field_matrix_linear_scale, 
+          :custom_field_matrix_linear_scale,
           resource: custom_form,
           linear_scale_label_5_multiloc: { 'en' => 'Furthest' }
         )
@@ -521,7 +521,7 @@ resource 'Idea Custom Fields' do
               linear_scale_label_5_multiloc: { 'en' => 'Farthest' },
               maximum: 5,
               matrix_statements: [
-                { 
+                {
                   title_multiloc: { en: 'Inserted statement' }
                 },
                 {
@@ -554,7 +554,7 @@ resource 'Idea Custom Fields' do
                   id: an_instance_of(String),
                   type: 'custom_field_matrix_statement'
                 },
-                { 
+                {
                   id: update_statement_id,
                   type: 'custom_field_matrix_statement'
                 }
