@@ -1,4 +1,4 @@
-import React, { MouseEvent, KeyboardEvent } from 'react';
+import React, { MouseEvent, KeyboardEvent, forwardRef } from 'react';
 
 import styled, { css } from 'styled-components';
 
@@ -66,7 +66,6 @@ export type IconButtonProps = {
   buttonType?: 'submit' | 'button' | 'reset';
   transform?: string;
   opacity?: number;
-  iconRef?: React.Ref<any>;
   disabled?: boolean;
 } & BoxPositionProps &
   BoxMarginProps &
@@ -75,57 +74,63 @@ export type IconButtonProps = {
   BoxDisplayProps &
   BoxZIndexProps;
 
-const IconButton = ({
-  className,
-  id,
-  iconName,
-  onClick,
-  a11y_buttonActionMessage,
-  iconWidth = '24px',
-  iconHeight = '24px',
-  iconColor,
-  iconColorOnHover,
-  ariaHidden,
-  ariaExpanded,
-  ariaControls,
-  buttonType,
-  opacity,
-  transform,
-  iconRef,
-  disabled,
-  ...rest
-}: IconButtonProps) => {
-  return (
-    <StyledBox
-      as="button"
-      className={className ?? ''}
-      id={id}
-      onClick={onClick}
-      iconColorOnHover={iconColorOnHover}
-      aria-expanded={ariaExpanded}
-      aria-controls={ariaControls}
-      aria-hidden={ariaHidden}
-      type={buttonType}
-      display="flex"
-      alignItems="center"
-      justifyContent="center"
-      opacity={opacity}
-      disabled={disabled}
-      role="button"
-      ref={iconRef}
-      {...rest}
-    >
-      <StyledIcon
-        name={iconName}
-        title={a11y_buttonActionMessage}
-        ariaHidden={false}
-        width={iconWidth}
-        height={iconHeight}
-        iconColor={iconColor}
-        transform={transform}
-      />
-    </StyledBox>
-  );
-};
+type Ref = HTMLButtonElement;
+
+const IconButton = forwardRef<Ref, IconButtonProps>(
+  (
+    {
+      className,
+      id,
+      iconName,
+      onClick,
+      a11y_buttonActionMessage,
+      iconWidth = '24px',
+      iconHeight = '24px',
+      iconColor,
+      iconColorOnHover,
+      ariaHidden,
+      ariaExpanded,
+      ariaControls,
+      buttonType,
+      opacity,
+      transform,
+      disabled,
+      ...rest
+    },
+    ref
+  ) => {
+    return (
+      <StyledBox
+        as="button"
+        className={className ?? ''}
+        id={id}
+        onClick={onClick}
+        iconColorOnHover={iconColorOnHover}
+        aria-expanded={ariaExpanded}
+        aria-controls={ariaControls}
+        aria-hidden={ariaHidden}
+        type={buttonType}
+        display="flex"
+        alignItems="center"
+        justifyContent="center"
+        opacity={opacity}
+        disabled={disabled}
+        role="button"
+        ref={ref}
+        {...rest}
+      >
+        <StyledIcon
+          name={iconName}
+          title={a11y_buttonActionMessage}
+          ariaHidden={false}
+          width={iconWidth}
+          height={iconHeight}
+          iconColor={iconColor}
+          transform={transform}
+        />
+      </StyledBox>
+    );
+  }
+);
 
 export default IconButton;

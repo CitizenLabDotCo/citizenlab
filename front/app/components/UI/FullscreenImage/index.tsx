@@ -111,7 +111,7 @@ const FullscreenImage = ({ src, altText }: Props) => {
             onClick={toggleFullscreen}
           >
             <IconButton
-              iconRef={fullscreenButtonRef}
+              ref={fullscreenButtonRef}
               buttonType="button"
               iconName="layout-white-space"
               a11y_buttonActionMessage={formatMessage(messages.expandImage)}
