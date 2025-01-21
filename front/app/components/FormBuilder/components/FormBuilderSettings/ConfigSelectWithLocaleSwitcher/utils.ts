@@ -54,17 +54,25 @@ export const updateFormOnMultlinePaste = ({
         ...option,
         title_multiloc: {
           ...option.title_multiloc,
-          [locale]: line,
+          [locale]: sanitizeLine(line),
         },
         ...(!option.id && !option.temp_id ? { temp_id: generateTempId() } : {}),
       });
     } else {
       append({
         title_multiloc: {
-          [locale]: line,
+          [locale]: sanitizeLine(line),
         },
         temp_id: generateTempId(),
       });
     }
   });
+};
+
+const sanitizeLine = (line: string) => {
+  const trimmedLine = line.trim();
+  const cleanedLine = trimmedLine.startsWith('-')
+    ? trimmedLine.slice(1)
+    : trimmedLine;
+  return cleanedLine.trim();
 };
