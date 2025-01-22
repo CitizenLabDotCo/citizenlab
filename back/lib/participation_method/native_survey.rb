@@ -71,7 +71,7 @@ module ParticipationMethod
         ),
         CustomField.new(
           id: SecureRandom.uuid,
-          key: CustomFieldService.new.generate_key('survey_end', false),
+          key: 'survey_end',
           resource: custom_form,
           input_type: 'page',
           page_layout: 'default',
