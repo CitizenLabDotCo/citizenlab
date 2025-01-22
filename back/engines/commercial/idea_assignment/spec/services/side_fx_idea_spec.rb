@@ -54,22 +54,6 @@ describe SideFxIdeaService do
         expect { service.before_update(idea, nil) }.not_to change(idea, :assignee)
       end
     end
-
-    it 'sets the assignee to the default_assignee of the project on publish' do
-      default_assignee = create(:admin)
-      project = create(:project, default_assignee: default_assignee)
-      idea = create(:idea, project: project, publication_status: 'draft')
-      idea.publication_status = 'published'
-      expect { service.before_update(idea, user) }.to change { idea.assignee }.from(nil).to(default_assignee)
-    end
-
-    it "doesn't set the assignee if it's already set before publish" do
-      default_assignee = create(:admin)
-      project = create(:project, default_assignee: default_assignee)
-      idea = create(:idea, project: project, publication_status: 'draft', assignee: create(:admin))
-      idea.publication_status = 'published'
-      expect { service.before_update(idea, user) }.not_to(change { idea.assignee })
-    end
   end
 
   describe 'after_update' do

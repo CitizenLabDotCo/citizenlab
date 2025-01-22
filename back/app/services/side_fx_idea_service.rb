@@ -29,7 +29,7 @@ class SideFxIdeaService
     log_activities_if_cosponsors_added(idea, user)
   end
 
-  def before_update(idea, user)
+  def before_update(idea, _user)
     @old_cosponsor_ids = idea.cosponsor_ids
     @old_phase_ids = idea.phase_ids
     idea.body_multiloc = TextImageService.new.swap_data_images_multiloc(idea.body_multiloc, field: :body_multiloc, imageable: idea)
