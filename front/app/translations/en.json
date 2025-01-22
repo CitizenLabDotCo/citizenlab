@@ -755,6 +755,7 @@
   "app.components.formBuilder.required": "Required",
   "app.components.formBuilder.requiredToggleLabel": "Make answering this question required",
   "app.components.formBuilder.ruleForAnswerLabel": "If answer is:",
+  "app.components.formBuilder.ruleForAnswerLabelMultiselect": "If answers include:",
   "app.components.formBuilder.save": "Save",
   "app.components.formBuilder.section": "Section",
   "app.components.formBuilder.sectionCannotBeDeleted": "This section can't be deleted.",
