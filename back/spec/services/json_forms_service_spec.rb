@@ -222,7 +222,7 @@ describe JsonFormsService do
               input_type: 'matrix_linear_scale',
               statements: [
                 { key: 'send_more_animals_to_space', label: 'We should send more animals into space' },
-                { key: 'ride_bycicles_more_often', label: 'We should ride our bicycles more often' }
+                { key: 'ride_bicycles_more_often', label: 'We should ride our bicycles more often' }
               ],
               linear_scale_label1: 'Strongly disagree',
               linear_scale_label2: '',
