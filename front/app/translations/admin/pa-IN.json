@@ -2695,6 +2695,7 @@
   "app.containers.admin.ideaStatuses.form.answeredFieldCodeTitle": "ਜਵਾਬ ਦਿੱਤਾ",
   "app.containers.admin.ideaStatuses.form.category": "ਸ਼੍ਰੇਣੀ",
   "app.containers.admin.ideaStatuses.form.categoryDescription": "ਕਿਰਪਾ ਕਰਕੇ ਉਹ ਸ਼੍ਰੇਣੀ ਚੁਣੋ ਜੋ ਤੁਹਾਡੀ ਸਥਿਤੀ ਨੂੰ ਸਭ ਤੋਂ ਵਧੀਆ ਦਰਸਾਉਂਦੀ ਹੈ। ਇਹ ਚੋਣ ਸਾਡੇ ਵਿਸ਼ਲੇਸ਼ਣ ਟੂਲ ਨੂੰ ਪੋਸਟਾਂ ਦੀ ਵਧੇਰੇ ਸਹੀ ਪ੍ਰਕਿਰਿਆ ਅਤੇ ਵਿਸ਼ਲੇਸ਼ਣ ਕਰਨ ਵਿੱਚ ਮਦਦ ਕਰੇਗੀ।",
+  "app.containers.admin.ideaStatuses.form.customFieldCodeDescription": "ਆਪਣੀ ਸਥਿਤੀ ਨੂੰ ਪਰਿਭਾਸ਼ਿਤ ਕਰੋ",
   "app.containers.admin.ideaStatuses.form.customFieldCodeTitle": "ਹੋਰ",
   "app.containers.admin.ideaStatuses.form.fieldColor": "ਰੰਗ",
   "app.containers.admin.ideaStatuses.form.fieldDescription": "ਸਥਿਤੀ ਦਾ ਵਰਣਨ",
