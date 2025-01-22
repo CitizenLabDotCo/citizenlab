@@ -1283,8 +1283,6 @@
   "app.containers.admin.ideaStatuses.form.fieldTitleError": "Oqaatsinut tamanut statusimik atsiigit",
   "app.containers.admin.ideaStatuses.form.implementedFieldCodeDescription": "Atuutilersinneqarpoq",
   "app.containers.admin.ideaStatuses.form.implementedFieldCodeTitle": "Atuutilerpoq",
-  "app.containers.admin.ideaStatuses.form.proposedFieldCodeDescription": "Siunnersuutitut eqqarsaatersuutigisassatut nassiunneqarpoq",
-  "app.containers.admin.ideaStatuses.form.proposedFieldCodeTitle": "Siunnersuutigineqartoq",
   "app.containers.admin.ideaStatuses.form.rejectedFieldCodeDescription": "Atorunnaarsinneqartut imaluunniit suliareqqitassatut toqqagaanngitsut",
   "app.containers.admin.ideaStatuses.form.rejectedFieldCodeTitle": "Toqqarneqanngilaq",
   "app.containers.admin.ideaStatuses.form.saveStatus": "Save status",
