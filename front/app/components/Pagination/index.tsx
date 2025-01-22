@@ -9,7 +9,10 @@ import {
 import { rgba } from 'polished';
 import styled from 'styled-components';
 
+import { useIntl } from 'utils/cl-intl';
 import { removeFocusAfterMouseClick } from 'utils/helperUtils';
+
+import messages from './messages';
 
 const ContainerInner = styled.div`
   display: flex;
@@ -124,6 +127,7 @@ const Pagination = ({
   useColorsTheme,
   loadPage,
 }: Props) => {
+  const { formatMessage } = useIntl();
   const calculateMenuItems = (currentPage: number, totalPages: number) => {
     const current = currentPage;
     const last = totalPages;
@@ -183,6 +187,7 @@ const Pagination = ({
             onClick={goTo(currentPage - 1)}
             disabled={currentPage === 1}
             className={currentPage === 1 ? 'disabled' : ''}
+            aria-label={formatMessage(messages.back)}
           >
             <ChevronIcon name="chevron-right" />
           </Back>
@@ -209,6 +214,7 @@ const Pagination = ({
             onClick={goTo(currentPage + 1)}
             disabled={currentPage === totalPages}
             className={currentPage === totalPages ? 'disabled' : ''}
+            aria-label={formatMessage(messages.next)}
           >
             <ChevronIcon name="chevron-right" />
           </Next>
