@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { MessageDescriptor } from 'react-intl';
-import { FormatMessage } from 'typings';
+import { FormatMessage, SupportedLocale } from 'typings';
 
 import { IAppConfiguration } from 'api/app_configuration/types';
 import { IPhaseData, VotingMethod } from 'api/phases/types';
@@ -47,6 +47,7 @@ export type GetStatusDescriptionProps = {
   appConfig?: IAppConfiguration;
   localize: Localize;
   formatMessage: FormatMessage;
+  locale: SupportedLocale;
 };
 
 type IdeaCardVoteInputProps = {
@@ -107,6 +108,7 @@ const budgetingConfig: VotingMethodConfig = {
     phase,
     submissionState,
     appConfig,
+    locale,
   }: GetStatusDescriptionProps) => {
     const currency =
       appConfig?.data.attributes.settings.core.currency.toString();
@@ -115,20 +117,26 @@ const budgetingConfig: VotingMethodConfig = {
 
     if (submissionState === 'hasNotSubmitted') {
       const minBudget = phase.attributes.voting_min_total;
+      const maxBudget = phase.attributes.voting_max_total;
+      const optionCount = phase.attributes.ideas_count;
 
       return (
         <>
-          <FormattedMessage
-            values={{
-              b: (chunks) => (
-                <strong style={{ fontWeight: 'bold' }}>{chunks}</strong>
-              ),
-              currency,
-              optionCount: phase.attributes.ideas_count,
-              maxBudget: phase.attributes.voting_max_total?.toLocaleString(),
-            }}
-            {...messages.budgetingSubmissionInstructionsTotalBudget}
-          />
+          {typeof maxBudget === 'number' && (
+            <FormattedMessage
+              values={{
+                b: (chunks) => (
+                  <strong style={{ fontWeight: 'bold' }}>{chunks}</strong>
+                ),
+                optionCount,
+                maxBudget: new Intl.NumberFormat(locale, {
+                  style: 'currency',
+                  currency,
+                }).format(maxBudget),
+              }}
+              {...messages.budgetingSubmissionInstructionsTotalBudget1}
+            />
+          )}
           <ul>
             <li>
               <FormattedMessage
