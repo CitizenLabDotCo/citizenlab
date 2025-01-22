@@ -156,25 +156,19 @@ const budgetingConfig: VotingMethodConfig = {
       );
     }
     if (submissionState === 'hasSubmitted') {
-      // TODO: Fix this the next time the file is edited.
-      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-      if (phase?.attributes.end_at) {
+      if (phase.attributes.end_at) {
         return (
           <FormattedMessage
             values={{
               b: (chunks) => (
                 <strong style={{ fontWeight: 'bold' }}>{chunks}</strong>
               ),
-              // TODO: Fix this the next time the file is edited.
-              // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-              endDate: getLocalisedDateString(phase?.attributes.end_at),
+              endDate: getLocalisedDateString(phase.attributes.end_at),
             }}
             {...messages.budgetingSubmittedInstructions}
           />
         );
-        // TODO: Fix this the next time the file is edited.
-        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-      } else if (phase && !phase.attributes.end_at) {
+      } else if (!phase.attributes.end_at) {
         return (
           <FormattedMessage
             values={{
@@ -196,25 +190,19 @@ const budgetingConfig: VotingMethodConfig = {
           {...messages.budgetingSubmittedInstructionsContinuous}
         />
       );
-      // TODO: Fix this the next time the file is edited.
-      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-    } else if (submissionState === 'submissionEnded') {
+    }
+    // submissionState is 'hasEnded'
+    else {
       return (
         <FormattedMessage
           values={{
             b: (chunks) => (
               <strong style={{ fontWeight: 'bold' }}>{chunks}</strong>
             ),
-            // TODO: Fix this the next time the file is edited.
-            // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-            endDate: getLocalisedDateString(phase?.attributes.end_at),
-            // TODO: Fix this the next time the file is edited.
-            // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-            maxBudget: phase?.attributes.voting_max_total?.toLocaleString(),
             currency,
-            // TODO: Fix this the next time the file is edited.
-            // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-            optionCount: phase?.attributes.ideas_count,
+            endDate: getLocalisedDateString(phase.attributes.end_at),
+            maxBudget: phase.attributes.voting_max_total?.toLocaleString(),
+            optionCount: phase.attributes.ideas_count,
           }}
           {...messages.budgetParticipationEnded}
         />
