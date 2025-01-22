@@ -29,10 +29,7 @@ module Cl2Back
   class Application < Rails::Application
     require_dependency Rails.root.join('lib/citizen_lab')
 
-    config.load_defaults 7.0
-
-    # To be removed once we move to +load_defaults 7.1+:
-    config.add_autoload_paths_to_load_path = false
+    config.load_defaults 7.1
 
     # Configuration for the application, engines, and railties goes here.
     #
