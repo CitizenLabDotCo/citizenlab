@@ -9,19 +9,19 @@ type DragProps = {
   children: React.ReactNode;
 };
 
-export const Drag = ({ id, index, ...props }: DragProps) => {
+export const Drag = ({ id, index, children }: DragProps) => {
   return (
     <Draggable draggableId={id} index={index}>
       {(provided, snapshot) => {
         return (
-          <div ref={provided.innerRef} {...provided.draggableProps} {...props}>
+          <div ref={provided.innerRef} {...provided.draggableProps}>
             <div {...provided.dragHandleProps}>
               <Box
                 border={
                   snapshot.isDragging ? `1px solid ${colors.teal}` : undefined
                 }
               >
-                {props.children}
+                {children}
               </Box>
             </div>
           </div>

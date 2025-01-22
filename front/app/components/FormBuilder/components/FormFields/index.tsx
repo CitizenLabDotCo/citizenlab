@@ -8,14 +8,10 @@ import {
   IFlatCustomFieldWithIndex,
 } from 'api/custom_fields/types';
 
-import useLocale from 'hooks/useLocale';
-
 import {
   builtInFieldKeys,
   FormBuilderConfig,
 } from 'components/FormBuilder/utils';
-
-import { isNilOrError } from 'utils/helperUtils';
 
 import { DragAndDropResult, NestedGroupingStructure } from '../../edit/utils';
 import { DragAndDrop, Drag, Drop } from '../DragAndDrop';
@@ -45,12 +41,7 @@ const FormFields = ({
   closeSettings,
 }: FormFieldsProps) => {
   const { watch, trigger } = useFormContext();
-  const locale = useLocale();
   const formCustomFields: IFlatCustomField[] = watch('customFields');
-
-  if (isNilOrError(locale)) {
-    return null;
-  }
 
   const shouldShowField = (field: IFlatCustomField) => {
     if (builtInFieldKeys.includes(field.key)) {
@@ -59,9 +50,15 @@ const FormFields = ({
     return true;
   };
 
+  // We filter out the survey end because we add it manually at the end
+  const formCustomFieldsWithoutLastPage = formCustomFields.filter((field) => {
+    return field.key !== 'survey_end';
+  });
+  const lastPage = formCustomFields[formCustomFields.length - 1];
+
   const nestedGroupData: NestedGroupingStructure[] = [];
 
-  formCustomFields.forEach((field) => {
+  formCustomFieldsWithoutLastPage.forEach((field) => {
     if (['page', 'section'].includes(field.input_type)) {
       nestedGroupData.push({
         groupElement: field,
@@ -70,9 +67,7 @@ const FormFields = ({
       });
     } else {
       const lastGroupElement = nestedGroupData[nestedGroupData.length - 1];
-      // TODO: Fix this the next time the file is edited.
-      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-      lastGroupElement?.questions.push({
+      lastGroupElement.questions.push({
         ...field,
       });
     }
@@ -136,6 +131,16 @@ const FormFields = ({
           })}
         </Drop>
       </DragAndDrop>
+      <Box>
+        <FormField
+          field={lastPage}
+          selectedFieldId={selectedFieldId}
+          onEditField={onEditField}
+          builderConfig={builderConfig}
+          fieldNumbers={fieldNumbers}
+          closeSettings={closeSettings}
+        />
+      </Box>
       {formCustomFields.length > 0 && (
         <Box height="1px" borderTop={`1px solid ${colors.divider}`} />
       )}
