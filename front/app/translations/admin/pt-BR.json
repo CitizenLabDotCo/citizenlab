@@ -2695,6 +2695,7 @@
   "app.containers.admin.ideaStatuses.form.answeredFieldCodeTitle": "Respondido",
   "app.containers.admin.ideaStatuses.form.category": "Categoria",
   "app.containers.admin.ideaStatuses.form.categoryDescription": "Por favor selecione a categoria que melhor represente o seu status. Esta seleção ajudará a nossa ferramenta de análise a processar e analisar posts com mais precisão.",
+  "app.containers.admin.ideaStatuses.form.customFieldCodeDescription": "Defina seu próprio status",
   "app.containers.admin.ideaStatuses.form.customFieldCodeTitle": "Outros",
   "app.containers.admin.ideaStatuses.form.fieldColor": "Cor",
   "app.containers.admin.ideaStatuses.form.fieldDescription": "Descrição do status",
