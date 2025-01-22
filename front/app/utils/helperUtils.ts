@@ -1,3 +1,4 @@
+import { uuid4 } from '@sentry/utils';
 import { trim, isUndefined } from 'lodash-es';
 import { SupportedLocale, Multiloc, GraphqlLocale } from 'typings';
 
@@ -223,3 +224,7 @@ export function hexToRGBA(hex: string, alpha: number) {
 export const classNames = (...classes: (string | undefined)[]) => {
   return classes.filter(Boolean).join(' ');
 };
+
+export function generateTempId() {
+  return `TEMP-ID-${uuid4()}`;
+}

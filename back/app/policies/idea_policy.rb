@@ -48,6 +48,10 @@ class IdeaPolicy < ApplicationPolicy
     active_admin?
   end
 
+  def index_survey_submissions?
+    active?
+  end
+
   def create?
     return false if user&.blocked?
     return true if record.draft?
@@ -70,6 +74,10 @@ class IdeaPolicy < ApplicationPolicy
     end
 
     active? && (owner? || UserRoleService.new.can_moderate_project?(record.project, user))
+  end
+
+  def show_xlsx?
+    owner?
   end
 
   def by_slug?

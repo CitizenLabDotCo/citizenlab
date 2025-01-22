@@ -1,6 +1,5 @@
 import React from 'react';
 
-import { uuid4 } from '@sentry/utils';
 import { MessageDescriptor } from 'react-intl';
 import { RouteType } from 'routes';
 import { SupportedLocale } from 'typings';
@@ -79,10 +78,6 @@ export const getIsPostingEnabled = (
 
   return false;
 };
-
-export function generateTempId() {
-  return `TEMP-ID-${uuid4()}`;
-}
 
 // TODO: BE key for survey end options should be replaced with form_end, then we can update this value.
 export const formEndOption = 'survey_end';
