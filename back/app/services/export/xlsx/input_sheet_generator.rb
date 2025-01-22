@@ -73,6 +73,13 @@ module Export
         ComputedFieldForReport.new(column_header_for('longitude'), ->(input) { input.location_point&.coordinates&.first })
       end
 
+      def matrix_statement_report_field(statement)
+        ComputedFieldForReport.new(
+          multiloc_service.t(statement.title_multiloc),
+          ->(input) { input.custom_field_values.dig(statement.custom_field.key, statement.key) }
+        )
+      end
+
       def created_at_report_field
         ComputedFieldForReport.new(column_header_for('created_at'), ->(input) { input.created_at })
       end
@@ -143,6 +150,12 @@ module Export
             if field.code == 'location_description'
               input_fields << latitude_report_field
               input_fields << longitude_report_field
+            end
+            if field.input_type == 'matrix_linear_scale'
+              input_fields += field.matrix_statements.map do |statement|
+                matrix_statement_report_field(statement)
+              end
+              next
             end
             input_fields << Export::CustomFieldForExport.new(field, @value_visitor)
             input_fields << Export::CustomFieldForExport.new(field.other_option_text_field, @value_visitor) if field.other_option_text_field
