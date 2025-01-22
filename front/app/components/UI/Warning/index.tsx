@@ -73,7 +73,6 @@ export interface Props {
   children: string | JSX.Element;
   icon?: IconNames;
   className?: string;
-  type?: 'caution' | 'info';
 }
 
 const Warning = ({ children, icon, className }: Props) => {
