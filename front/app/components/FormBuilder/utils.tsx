@@ -36,6 +36,7 @@ export const builtInFieldKeys = [
 export type BuiltInKeyType = (typeof builtInFieldKeys)[number];
 
 export type FormBuilderConfig = {
+  type: 'survey' | 'input_form';
   formBuilderTitle: MessageDescriptor;
   viewFormLinkCopy: MessageDescriptor;
   formSavedSuccessMessage: MessageDescriptor;

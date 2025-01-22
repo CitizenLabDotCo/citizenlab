@@ -10,6 +10,7 @@ import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
 export const ideationConfig: FormBuilderConfig = {
+  type: 'input_form',
   formBuilderTitle: messages.inputForm,
   viewFormLinkCopy: messages.viewFormLinkCopy,
   formSavedSuccessMessage: messages.successMessage,
@@ -54,6 +55,7 @@ export const ideationConfig: FormBuilderConfig = {
 };
 
 export const proposalsConfig: FormBuilderConfig = {
+  type: 'input_form',
   formBuilderTitle: messages.inputForm,
   viewFormLinkCopy: messages.viewFormLinkCopy,
   formSavedSuccessMessage: messages.successMessage,

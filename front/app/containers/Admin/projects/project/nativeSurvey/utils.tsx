@@ -19,6 +19,7 @@ import AccessRightsNotice from './AccessRightsNotice';
 import messages from './messages';
 
 export const nativeSurveyConfig: FormBuilderConfig = {
+  type: 'survey',
   formBuilderTitle: messages.survey,
   viewFormLinkCopy: messages.viewSurvey,
   toolboxTitle: messages.addSurveyContent,
