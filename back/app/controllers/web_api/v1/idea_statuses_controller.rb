@@ -104,7 +104,7 @@ class WebApi::V1::IdeaStatusesController < ApplicationController
 
   def prescreening_feature_active?(participation_method)
     (participation_method == 'ideation' && AppConfiguration.instance.feature_activated?('prescreening_ideation')) ||
-    (participation_method == 'proposals' && AppConfiguration.instance.feature_activated?('prescreening'))
+      (participation_method == 'proposals' && AppConfiguration.instance.feature_activated?('prescreening'))
   end
 
   def idea_status_params_for_create
