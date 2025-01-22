@@ -31,7 +31,7 @@ const proposalCodeDescriptionMessages: {
   ineligible: messages.ineligibleFieldCodeDescription,
 };
 
-const proposalCodeTitleMessage = (code: NonLockedProposalInputStatusCode) =>
+const codeTitleMessage = (code: NonLockedProposalInputStatusCode) =>
   proposalCodeTitleMessages[code];
 const codeDescriptionMessage = (code: NonLockedProposalInputStatusCode) =>
   proposalCodeDescriptionMessages[code];
@@ -47,7 +47,7 @@ const ProposalStatusCategories = () => {
           label={
             <LabelText>
               <span className="header">
-                {formatMessage(proposalCodeTitleMessage(code))}
+                {formatMessage(codeTitleMessage(code))}
               </span>
               <span className="description">
                 {formatMessage(codeDescriptionMessage(code))}
