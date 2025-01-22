@@ -30,8 +30,6 @@ export const PageRuleDisplay = ({
 }: Props) => {
   if (!targetPage) return null;
 
-  console.log('targetPage', targetPage);
-
   return (
     <Box
       display="flex"
