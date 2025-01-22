@@ -79,9 +79,19 @@ const FormBuilderSettings = ({
   const tabNotActiveBorder = `1px solid ${colors.grey400}`;
   const tabActiveBorder = `4px solid ${colors.primary}`;
   const fieldType = watch(`customFields.${field.index}.input_type`);
-  const showTabbedSettings = ['linear_scale', 'select', 'page'].includes(
-    fieldType
-  );
+
+  const getShowTabbedSettings = () => {
+    const isFieldWithLogicTab = ['linear_scale', 'select', 'page'].includes(
+      fieldType
+    );
+
+    if (!isFieldWithLogicTab) return false;
+    if (fieldType === 'page' && field.key === 'survey_end') return false;
+
+    return true;
+  };
+
+  const showTabbedSettings = getShowTabbedSettings();
 
   return (
     <Box
