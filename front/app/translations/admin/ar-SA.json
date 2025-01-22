@@ -2695,6 +2695,7 @@
   "app.containers.admin.ideaStatuses.form.answeredFieldCodeTitle": "أجاب",
   "app.containers.admin.ideaStatuses.form.category": "الفئة",
   "app.containers.admin.ideaStatuses.form.categoryDescription": "يرجى تحديد الفئة الأنسب للتعبير عن حالتك. من شأن هذا التحديد مساعدة أداة التحليلات التابعة لنا في معالجة المنشورات وتحليلها بمزيد من الدقة.",
+  "app.containers.admin.ideaStatuses.form.customFieldCodeDescription": "حدد حالتك الخاصة",
   "app.containers.admin.ideaStatuses.form.customFieldCodeTitle": "آخر",
   "app.containers.admin.ideaStatuses.form.fieldColor": "اللون",
   "app.containers.admin.ideaStatuses.form.fieldDescription": "وصف الحالة",
