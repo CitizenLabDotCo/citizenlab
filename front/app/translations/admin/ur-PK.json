@@ -2706,8 +2706,6 @@
   "app.containers.admin.ideaStatuses.form.implementedFieldCodeTitle": "لاگو کیا",
   "app.containers.admin.ideaStatuses.form.ineligibleFieldCodeDescription": "تجویز نا اہل ہے۔",
   "app.containers.admin.ideaStatuses.form.ineligibleFieldCodeTitle": "نااہل",
-  "app.containers.admin.ideaStatuses.form.prescreeningFieldCodeDescription": "اسکریننگ کا انتظار ہے۔",
-  "app.containers.admin.ideaStatuses.form.prescreeningFieldCodeTitle": "پری اسکریننگ",
   "app.containers.admin.ideaStatuses.form.proposedFieldCodeDescription": "غور کے لیے ایک تجویز کے طور پر کامیابی کے ساتھ پیش کر دیا گیا۔",
   "app.containers.admin.ideaStatuses.form.proposedFieldCodeTitle": "تجویز کردہ",
   "app.containers.admin.ideaStatuses.form.rejectedFieldCodeDescription": "آگے بڑھنے کے لیے نااہل یا منتخب نہیں کیا گیا۔",

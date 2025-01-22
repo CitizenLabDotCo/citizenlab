@@ -2706,8 +2706,6 @@
   "app.containers.admin.ideaStatuses.form.implementedFieldCodeTitle": "Implementado",
   "app.containers.admin.ideaStatuses.form.ineligibleFieldCodeDescription": "A proposta não é elegível",
   "app.containers.admin.ideaStatuses.form.ineligibleFieldCodeTitle": "Inelegível",
-  "app.containers.admin.ideaStatuses.form.prescreeningFieldCodeDescription": "Aguardando triagem",
-  "app.containers.admin.ideaStatuses.form.prescreeningFieldCodeTitle": "Pré-triagem",
   "app.containers.admin.ideaStatuses.form.proposedFieldCodeDescription": "Submetido com sucesso como proposta para consideração",
   "app.containers.admin.ideaStatuses.form.proposedFieldCodeTitle": "Proposta",
   "app.containers.admin.ideaStatuses.form.rejectedFieldCodeDescription": "Inelegível ou não selecionado para avançar",

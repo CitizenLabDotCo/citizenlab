@@ -2706,8 +2706,6 @@
   "app.containers.admin.ideaStatuses.form.implementedFieldCodeTitle": "Įgyvendinta",
   "app.containers.admin.ideaStatuses.form.ineligibleFieldCodeDescription": "Pasiūlymas neatitinka reikalavimų",
   "app.containers.admin.ideaStatuses.form.ineligibleFieldCodeTitle": "Netinkamas",
-  "app.containers.admin.ideaStatuses.form.prescreeningFieldCodeDescription": "Laukiama patikros",
-  "app.containers.admin.ideaStatuses.form.prescreeningFieldCodeTitle": "Išankstinė atranka",
   "app.containers.admin.ideaStatuses.form.proposedFieldCodeDescription": "Sėkmingai pateiktas svarstyti pasiūlymas",
   "app.containers.admin.ideaStatuses.form.proposedFieldCodeTitle": "Siūloma",
   "app.containers.admin.ideaStatuses.form.rejectedFieldCodeDescription": "Netinkami arba neatrinkti tolesniam darbui",
