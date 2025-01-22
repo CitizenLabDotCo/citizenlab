@@ -9,10 +9,11 @@ import {
 } from '@citizenlab/cl2-component-library';
 
 // Intl
+import { ICustomFieldSettingsTab } from 'api/custom_fields/types';
+
 import { FormattedMessage } from 'utils/cl-intl';
 
 import messages from '../../../messages';
-import { ICustomFieldSettingsTab } from 'api/custom_fields/types';
 
 interface Props {
   targetPage: string | undefined;
@@ -29,10 +30,12 @@ export const PageRuleDisplay = ({
 }: Props) => {
   if (!targetPage) return null;
 
+  console.log('targetPage', targetPage);
+
   return (
     <Box
       display="flex"
-      ml="36px"
+      ml="44px"
       height="24px"
       data-cy="e2e-field-rule-display"
     >

@@ -222,6 +222,10 @@ export default defineMessages({
     id: 'app.components.formBuilder.ruleForAnswerLabel',
     defaultMessage: 'If answer is:',
   },
+  ruleForAnswerLabelMultiselect: {
+    id: 'app.components.formBuilder.ruleForAnswerLabelMultiselect',
+    defaultMessage: 'If answers include:',
+  },
   pageRuleLabel: {
     id: 'app.components.formBuilder.pageRuleLabel',
     defaultMessage: 'Next page is:',

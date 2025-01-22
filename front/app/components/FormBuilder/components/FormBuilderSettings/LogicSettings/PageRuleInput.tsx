@@ -12,6 +12,9 @@ import { Controller, useFormContext } from 'react-hook-form';
 
 import { IFlatCustomField, LogicType } from 'api/custom_fields/types';
 
+import { getTitleFromPageId } from 'components/FormBuilder/components/FormFields/FormField/Logic/utils';
+import { getFieldNumbers } from 'components/FormBuilder/components/utils';
+import { findNextPageAfterCurrentPage } from 'components/FormBuilder/utils';
 import Button from 'components/UI/ButtonWithLink';
 import Error from 'components/UI/Error';
 
@@ -19,9 +22,6 @@ import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import { isPageRuleValid } from 'utils/yup/validateLogic';
 
 import messages from '../../messages';
-import { findNextPageAfterCurrentPage } from 'components/FormBuilder/utils';
-import { getFieldNumbers } from 'components/FormBuilder/components/utils';
-import { getTitleFromPageId } from 'components/FormBuilder/components/FormFields/FormField/Logic/utils';
 
 type RuleInputProps = {
   name: string;

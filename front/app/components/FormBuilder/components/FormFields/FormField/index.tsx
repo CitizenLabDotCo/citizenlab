@@ -318,15 +318,6 @@ export const FormField = ({
                   field={field}
                   fieldNumber={fieldNumbers[field.id]}
                 />
-                {showLogicOnRow && (
-                  <Logic
-                    field={field}
-                    formCustomFields={formCustomFields}
-                    fieldNumbers={fieldNumbers}
-                    formEndPageLogicOption={formEndPageLogicOption}
-                    handleOpenSettings={editFieldAndValidate}
-                  />
-                )}
               </Box>
             </Box>
             <Box
@@ -341,6 +332,7 @@ export const FormField = ({
               />
             </Box>
           </Box>
+
           <Box
             mr="32px"
             ml="12px"
@@ -359,6 +351,15 @@ export const FormField = ({
             />
           </Box>
         </FlexibleRow>
+        {showLogicOnRow && (
+          <Logic
+            field={field}
+            formCustomFields={formCustomFields}
+            fieldNumbers={fieldNumbers}
+            formEndPageLogicOption={formEndPageLogicOption}
+            handleOpenSettings={editFieldAndValidate}
+          />
+        )}
       </FormFieldsContainer>
       <Modal
         opened={showDeleteModal}

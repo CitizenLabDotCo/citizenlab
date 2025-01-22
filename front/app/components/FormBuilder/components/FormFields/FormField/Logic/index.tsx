@@ -9,6 +9,8 @@ import {
 
 import useLocale from 'hooks/useLocale';
 
+import { findNextPageAfterCurrentPage } from 'components/FormBuilder/utils';
+
 import { MessageDescriptor, useIntl } from 'utils/cl-intl';
 import { isPageRuleValid, isRuleValid } from 'utils/yup/validateLogic';
 
@@ -23,7 +25,6 @@ import {
   getTitleFromAnswerId,
   getTitleFromPageId,
 } from './utils';
-import { findNextPageAfterCurrentPage } from 'components/FormBuilder/utils';
 
 interface Props {
   field: IFlatCustomField;
@@ -62,7 +63,13 @@ const Logic = ({
   };
 
   return (
-    <Box>
+    <Box
+      display="flex"
+      flexDirection="column"
+      alignItems="stretch"
+      pb="12px"
+      mt="-8px"
+    >
       {['select', 'multiselect', 'multiselect_image'].includes(
         field.input_type
       ) &&
@@ -74,27 +81,22 @@ const Logic = ({
           }`;
 
           return (
-            <Box key={key}>
-              <QuestionRuleDisplay
-                isRuleValid={isRuleValid(
-                  optionRule,
-                  field.temp_id || field.id,
-                  formCustomFields
-                )}
-                answerTitle={getTitleFromAnswerId(
-                  field,
-                  optionRule?.if,
-                  locale
-                )}
-                targetPage={getTitleFromPageId(
-                  optionRule?.goto_page_id,
-                  formEndMessage,
-                  pageMessage,
-                  fieldNumbers
-                )}
-                handleOpenSettings={handleOpenSettings}
-              />
-            </Box>
+            <QuestionRuleDisplay
+              key={key}
+              isRuleValid={isRuleValid(
+                optionRule,
+                field.temp_id || field.id,
+                formCustomFields
+              )}
+              answerTitle={getTitleFromAnswerId(field, optionRule?.if, locale)}
+              targetPage={getTitleFromPageId(
+                optionRule?.goto_page_id,
+                formEndMessage,
+                pageMessage,
+                fieldNumbers
+              )}
+              handleOpenSettings={handleOpenSettings}
+            />
           );
         })}
 
@@ -105,27 +107,26 @@ const Logic = ({
           const key = `${field.temp_id || field.id}_${option.key}`;
 
           return (
-            <Box key={key}>
-              <QuestionRuleDisplay
-                isRuleValid={isRuleValid(
-                  linearScaleRule,
-                  field.temp_id || field.id,
-                  formCustomFields
-                )}
-                answerTitle={getTitleFromAnswerId(
-                  field,
-                  linearScaleRule?.if,
-                  locale
-                )}
-                targetPage={getTitleFromPageId(
-                  linearScaleRule?.goto_page_id,
-                  formEndMessage,
-                  pageMessage,
-                  fieldNumbers
-                )}
-                handleOpenSettings={handleOpenSettings}
-              />
-            </Box>
+            <QuestionRuleDisplay
+              key={key}
+              isRuleValid={isRuleValid(
+                linearScaleRule,
+                field.temp_id || field.id,
+                formCustomFields
+              )}
+              answerTitle={getTitleFromAnswerId(
+                field,
+                linearScaleRule?.if,
+                locale
+              )}
+              targetPage={getTitleFromPageId(
+                linearScaleRule?.goto_page_id,
+                formEndMessage,
+                pageMessage,
+                fieldNumbers
+              )}
+              handleOpenSettings={handleOpenSettings}
+            />
           );
         })}
       {field.input_type === 'page' && (
@@ -149,23 +150,22 @@ const Logic = ({
       {catchAllLogicRules.map((rule) => {
         const key = `${field.temp_id || field.id}_${rule.if}`;
         return (
-          <Box key={key}>
-            <QuestionRuleDisplay
-              isRuleValid={isRuleValid(
-                rule,
-                field.temp_id || field.id,
-                formCustomFields
-              )}
-              answerTitle={catchAllLogicMessages[rule.if.toString()]}
-              targetPage={getTitleFromPageId(
-                rule.goto_page_id,
-                formEndMessage,
-                pageMessage,
-                fieldNumbers
-              )}
-              handleOpenSettings={handleOpenSettings}
-            />
-          </Box>
+          <QuestionRuleDisplay
+            key={key}
+            isRuleValid={isRuleValid(
+              rule,
+              field.temp_id || field.id,
+              formCustomFields
+            )}
+            answerTitle={catchAllLogicMessages[rule.if.toString()]}
+            targetPage={getTitleFromPageId(
+              rule.goto_page_id,
+              formEndMessage,
+              pageMessage,
+              fieldNumbers
+            )}
+            handleOpenSettings={handleOpenSettings}
+          />
         );
       })}
     </Box>
