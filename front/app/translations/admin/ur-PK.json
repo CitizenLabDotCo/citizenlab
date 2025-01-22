@@ -2695,6 +2695,7 @@
   "app.containers.admin.ideaStatuses.form.answeredFieldCodeTitle": "جواب دیا۔",
   "app.containers.admin.ideaStatuses.form.category": "زمرہ",
   "app.containers.admin.ideaStatuses.form.categoryDescription": "براہ کرم وہ زمرہ منتخب کریں جو آپ کی حیثیت کی بہترین نمائندگی کرے۔ اس انتخاب سے ہمارے تجزیاتی ٹول کو پوسٹس پر مزید درست طریقے سے کارروائی اور تجزیہ کرنے میں مدد ملے گی۔",
+  "app.containers.admin.ideaStatuses.form.customFieldCodeDescription": "اپنی حیثیت کی وضاحت کریں۔",
   "app.containers.admin.ideaStatuses.form.customFieldCodeTitle": "دیگر",
   "app.containers.admin.ideaStatuses.form.fieldColor": "رنگ",
   "app.containers.admin.ideaStatuses.form.fieldDescription": "اسٹیٹس کی تفصیل",
