@@ -75,6 +75,7 @@ class SurveyResultsGeneratorService < FieldVisitorService
   def visit_matrix_linear_scale(field)
     core_field_attributes(field).merge({
       multilocs: { answer: build_linear_scale_multilocs(field) },
+      # legend: generate_answer_keys(group_field) if group_field
       linear_scales: matrix_linear_scale_statements(field)
     })
   end
@@ -138,15 +139,8 @@ class SurveyResultsGeneratorService < FieldVisitorService
 
   def visit_select_base(field)
     query = inputs
-    if group_field_id
-      if group_mode == 'user_field'
-        # Single user field grouped result
-        group_field = CustomField.find(group_field_id)
-        query = query.joins(:author)
-      else
-        # Single form field grouped result
-        group_field = find_question(group_field_id)
-      end
+    query = query.joins(:author) if group_mode == 'user_field'
+    if group_field
       raise "Unsupported group field type: #{group_field.input_type}" unless %w[select linear_scale].include?(group_field.input_type)
       raise "Unsupported question type: #{field.input_type}" unless %w[select multiselect linear_scale multiselect_image].include?(field.input_type)
 
@@ -154,7 +148,7 @@ class SurveyResultsGeneratorService < FieldVisitorService
         select_field_query(field, as: 'answer'),
         select_field_query(group_field, as: 'group')
       )
-      answers = construct_grouped_answers(query, field, group_field)
+      answers = construct_grouped_answers(query, field)
     else
       query = query.select(
         select_field_query(field, as: 'answer')
@@ -167,7 +161,7 @@ class SurveyResultsGeneratorService < FieldVisitorService
     answers = answers.sort_by { |a| a[:answer] == 'other' ? 1 : 0 } # other should always be last
 
     # Build response
-    build_select_response(answers, field, group_field)
+    build_select_response(answers, field)
   end
 
   def select_field_query(field, as: 'answer')
@@ -216,23 +210,23 @@ class SurveyResultsGeneratorService < FieldVisitorService
     })
   end
 
-  def build_select_response(answers, field, group_field)
+  def build_select_response(answers, field)
     # TODO: This is an additional query for selects so performance issue here
     question_response_count = inputs.where("custom_field_values->'#{field.key}' IS NOT NULL").count
 
     attributes = core_field_attributes(field, response_count: question_response_count).merge({
       totalPickCount: answers.pluck(:count).sum,
       answers: answers,
-      multilocs: get_multilocs(field, group_field)
+      multilocs: get_multilocs(field)
     })
 
     attributes[:textResponses] = get_text_responses("#{field.key}_other") if field.other_option_text_field
-    attributes[:legend] = generate_answer_keys(group_field) if group_field.present?
+    attributes[:legend] = generate_answer_keys(group_field) if group_field
 
     attributes
   end
 
-  def get_multilocs(field, group_field = nil)
+  def get_multilocs(field)
     multilocs = { answer: get_option_multilocs(field) }
     multilocs[:group] = get_option_multilocs(group_field) if group_field
     multilocs
@@ -281,7 +275,7 @@ class SurveyResultsGeneratorService < FieldVisitorService
     end
   end
 
-  def construct_grouped_answers(query, question_field, group_field)
+  def construct_grouped_answers(query, question_field)
     answer_keys = generate_answer_keys(question_field)
     group_field_keys = generate_answer_keys(group_field)
 
@@ -360,5 +354,17 @@ class SurveyResultsGeneratorService < FieldVisitorService
     end
 
     answer_titles
+  end
+
+  def group_field
+    @group_field ||= if group_field_id
+      if group_mode == 'user_field'
+        CustomField.find(group_field_id)
+      else
+        find_question(group_field_id)
+      end
+    else
+      false
+    end
   end
 end

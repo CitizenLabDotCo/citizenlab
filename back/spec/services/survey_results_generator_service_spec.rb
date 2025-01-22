@@ -294,7 +294,7 @@ RSpec.describe SurveyResultsGeneratorService do
         number_field.key => 42,
         matrix_linear_scale_field.key => {
           'send_more_animals_to_space' => 1,
-          'ride_bicycles_more_often' => 4
+          'ride_bicycles_more_often' => 3
         }
       },
       idea_files: [idea_file1, idea_file2],
@@ -348,7 +348,7 @@ RSpec.describe SurveyResultsGeneratorService do
         multiselect_image_field.key => ['house'],
         matrix_linear_scale_field.key => {
           'send_more_animals_to_space' => 3,
-          'ride_bicycles_more_often' => 3
+          'ride_bicycles_more_often' => 4
         }
       },
       author: male_user
@@ -864,108 +864,71 @@ RSpec.describe SurveyResultsGeneratorService do
         expect(generator.generate_results(field_id: matrix_linear_scale_field.id)).to match expected_result_matrix_linear_scale
       end
 
-      # context 'when not all minimum and maximum labels are configured for linear scale fields' do
-      #   let(:expected_result_linear_scale_without_min_and_max_labels) do
-      #     expected_result_linear_scale.tap do |result|
-      #       result[:multilocs][:answer][1][:title_multiloc] = {
-      #         'en' => '1',
-      #         'fr-FR' => "1 - Pas du tout d'accord",
-      #         'nl-NL' => '1'
-      #       }
-      #       result[:multilocs][:answer][5][:title_multiloc] = {
-      #         'en' => '5 - Slightly agree',
-      #         'fr-FR' => '5',
-      #         'nl-NL' => '5'
-      #       }
-      #     end
-      #   end
+      context 'with grouping' do
+        let(:grouped_matrix_linear_scale_results) do
+          {
+          customFieldId: matrix_linear_scale_field.id,
+          inputType: 'matrix_linear_scale',
+          question: {
+            'en' => 'Please indicate how strong you agree or disagree with the following statements.'
+          },
+          required: false,
+          grouped: true,
+          totalResponseCount: 27,
+          questionResponseCount: 5,
+          multilocs: {
+            answer: {
+              1 => { title_multiloc: { 'en' => '1 - Strongly disagree', 'fr-FR' => '1', 'nl-NL' => '1' } },
+              2 => { title_multiloc: { 'en' => '2', 'fr-FR' => '2', 'nl-NL' => '2' } },
+              3 => { title_multiloc: { 'en' => '3', 'fr-FR' => '3', 'nl-NL' => '3' } },
+              4 => { title_multiloc: { 'en' => '4', 'fr-FR' => '4', 'nl-NL' => '4' } },
+              5 => { title_multiloc: { 'en' => '5 - Strongly agree', 'fr-FR' => '5', 'nl-NL' => '5' } }
+            },
+            group: {
+              'male' => { 'en' => 'Male' },
+              'female' => { 'en' => 'Female' }
+            }
+          },
+          legend: ['male', 'female', 'nil'],
+          linear_scales: {
+            'send_more_animals_to_space' => {
+              question: {
+                'en' => 'We should send more animals into space'
+              },
+              questionResponseCount: 4,
+              answers: [
+                { answer: 5, count: 0, percentage: 0.0, groups: [] },
+                { answer: 4, count: 1, percentage: 0.25, groups: [ { count: 1, group: 'male' } ] },
+                { answer: 3, count: 1, percentage: 0.25, groups: [ { count: 1, group: 'male' } ] },
+                { answer: 2, count: 0, percentage: 0.0, groups: [] },
+                { answer: 1, count: 2, percentage: 0.5, groups: [ { count: 1, group: 'male' }, { count: 1, group: 'female' } ] },
+                { answer: nil, count: 23 }
+              ]
+            },
+            'ride_bicycles_more_often' => {
+              question: {
+                'en' => 'We should ride our bicycles more often'
+              },
+              questionResponseCount: 4,
+              answers: [
+                { answer: 5, count: 0, percentage: 0.0, groups: [] },
+                { answer: 4, count: 2, percentage: 0.5, groups: [ { count: 2, group: 'female' } ] },
+                { answer: 3, count: 2, percentage: 0.5, groups: [ { count: 2, group: 'male' } ] },
+                { answer: 2, count: 0, percentage: 0.0, groups: [] },
+                { answer: 1, count: 0, percentage: 0.0, groups: [] },
+                { answer: nil, count: 23 }
+              ]
+            }
+          }
+        }
+        end
 
-      #   before do
-      #     linear_scale_field.update!(
-      #       linear_scale_label_1_multiloc: { 'fr-FR' => "Pas du tout d'accord" },
-      #       linear_scale_label_5_multiloc: { 'en' => 'Slightly agree' }
-      #     )
-      #   end
-
-      #   it 'returns minimum and maximum labels as numbers' do
-      #     expect(generator.generate_results(field_id: linear_scale_field.id)).to match expected_result_linear_scale_without_min_and_max_labels
-      #   end
-      # end
-
-      # context 'with grouping' do
-      #   let(:grouped_linear_scale_results) do
-      #     {
-      #       customFieldId: linear_scale_field.id,
-      #       inputType: 'linear_scale',
-      #       question: {
-      #         'en' => 'Do you agree with the vision?',
-      #         'fr-FR' => "Êtes-vous d'accord avec la vision ?",
-      #         'nl-NL' => 'Ben je het eens met de visie?'
-      #       },
-      #       required: true,
-      #       grouped: true,
-      #       totalResponseCount: 27,
-      #       questionResponseCount: 22,
-      #       totalPickCount: 27,
-      #       answers: [
-      #         { answer: 7, count: 3, groups: [
-      #           { count: 3, group: nil }
-      #         ] },
-      #         { answer: 6, count: 2, groups: [
-      #           { count: 2, group: nil }
-      #         ] },
-      #         { answer: 5, count: 1, groups: [
-      #           { count: 1, group: nil }
-      #         ] },
-      #         { answer: 4, count: 1, groups: [
-      #           { count: 1, group: 'la' }
-      #         ] },
-      #         { answer: 3, count: 8, groups: [
-      #           { count: 1, group: 'ny' },
-      #           { count: 7, group: nil }
-      #         ] },
-      #         { answer: 2, count: 5, groups: [
-      #           { count: 5, group: nil }
-      #         ] },
-      #         { answer: 1, count: 2, groups: [
-      #           { count: 2, group: nil }
-      #         ] },
-      #         { answer: nil, count: 5, groups: [
-      #           { count: 1, group: 'la' },
-      #           { count: 3, group: 'other' },
-      #           { count: 1, group: nil }
-      #         ] }
-      #       ],
-      #       multilocs: {
-      #         answer: {
-      #           1 => { title_multiloc: { 'en' => '1 - Strongly disagree', 'fr-FR' => "1 - Pas du tout d'accord", 'nl-NL' => '1 - Helemaal niet mee eens' } },
-      #           2 => { title_multiloc: { 'en' => '2 - Disagree', 'fr-FR' => '2 - Être en désaccord', 'nl-NL' => '2 - Niet mee eens' } },
-      #           3 => { title_multiloc: { 'en' => '3 - Slightly disagree', 'fr-FR' => '3 - Plutôt en désaccord', 'nl-NL' => '3 - Enigszins oneens' } },
-      #           4 => { title_multiloc: { 'en' => '4 - Neutral', 'fr-FR' => '4 - Neutre', 'nl-NL' => '4 - Neutraal' } },
-      #           5 => { title_multiloc: { 'en' => '5 - Slightly agree', 'fr-FR' => "5 - Plutôt d'accord", 'nl-NL' => '5 - Enigszins eens' } },
-      #           6 => { title_multiloc: { 'en' => '6 - Agree', 'fr-FR' => "6 - D'accord", 'nl-NL' => '6 - Mee eens' } },
-      #           7 => { title_multiloc: { 'en' => '7 - Strongly agree', 'fr-FR' => "7 - Tout à fait d'accord", 'nl-NL' => '7 - Strerk mee eens' } }
-      #         },
-      #         group: {
-      #           'la' => { title_multiloc: { 'en' => 'Los Angeles', 'fr-FR' => 'Los Angeles', 'nl-NL' => 'Los Angeles' } },
-      #           'ny' => { title_multiloc: { 'en' => 'New York', 'fr-FR' => 'New York', 'nl-NL' => 'New York' } },
-      #           'other' => { title_multiloc: { 'en' => 'Other', 'fr-FR' => 'Autre', 'nl-NL' => 'Ander' } }
-      #         }
-      #       },
-      #       legend: ['la', 'ny', 'other', nil]
-      #     }
-      #   end
-
-      #   it 'returns a grouped result for a linear scale field' do
-      #     generator = described_class.new(survey_phase,
-      #       group_mode: 'survey_question',
-      #       group_field_id: select_field.id)
-      #     result = generator.generate_results(
-      #       field_id: linear_scale_field.id
-      #     )
-      #     expect(result).to match grouped_linear_scale_results
-      #   end
-      # end
+        it 'returns a grouped result for a matrix linear scale field' do
+          generator = described_class.new(survey_phase, group_mode: 'survey_question', group_field_id: gender_user_custom_field.id)
+          result = generator.generate_results(field_id: matrix_linear_scale_field.id)
+          expect(result).to match grouped_matrix_linear_scale_results
+        end
+      end
     end
 
     describe 'select field' do
