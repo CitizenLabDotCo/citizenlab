@@ -64,6 +64,7 @@ module IdeaCustomFields
     def update_all
       authorize CustomField.new(resource: @custom_form), :update_all?, policy_class: IdeaCustomFieldPolicy
       raise_error_if_stale_form_data
+      raise_error_if_no_end_page
 
       page_temp_ids_to_ids_mapping = {}
       option_temp_ids_to_ids_mapping = {}
@@ -111,6 +112,13 @@ module IdeaCustomFields
                     @custom_form.updated_at.to_i > update_all_params[:form_last_updated_at].to_datetime.to_i
 
       raise UpdateAllFailedError, { form: [{ error: 'stale_data' }] }
+    end
+
+    def raise_error_if_no_end_page
+      last_field = @custom_form.custom_fields.last
+      return if last_field.key == 'end_page' && last_field.input_type == 'page'
+
+      raise UpdateAllFailedError, { form: [{ error: 'no_end_page' }] }
     end
 
     def update_fields!(page_temp_ids_to_ids_mapping, option_temp_ids_to_ids_mapping, errors)
