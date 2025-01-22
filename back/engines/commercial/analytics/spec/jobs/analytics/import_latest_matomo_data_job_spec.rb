@@ -72,8 +72,8 @@ RSpec.describe Analytics::ImportLatestMatomoDataJob do
   describe 'MatomoMisconfigurationError' do
     before do
       stub_const('ENV', ENV.to_h.merge(
-          'DEFAULT_MATOMO_TENANT_SITE_ID' => AppConfiguration.instance.settings('matomo', 'tenant_site_id')
-        ))  
+        'DEFAULT_MATOMO_TENANT_SITE_ID' => AppConfiguration.instance.settings('matomo', 'tenant_site_id')
+      ))
     end
 
     context 'when tenant has active lifecycle' do
