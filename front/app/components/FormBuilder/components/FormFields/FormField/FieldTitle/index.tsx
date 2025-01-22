@@ -48,17 +48,15 @@ const FieldTitle = ({ hasErrors, field, fieldNumber }: Props) => {
       {hasErrors && (
         <Icon ml="12px" width="20px" fill={colors.error} name="alert-circle" />
       )}
-      {field.key !== 'survey_end' && (
-        <Box w="12px%" mr="12px">
-          <Icon
-            ml={hasErrors ? '8px' : '12px'}
-            width="12px"
-            fill={titleColor}
-            name="sort"
-            pb="4px"
-          />
-        </Box>
-      )}
+      <Box w="12px%" mr="12px">
+        <Icon
+          ml={hasErrors ? '8px' : '12px'}
+          width="12px"
+          fill={titleColor}
+          name={field.key === 'survey_end' ? 'lock' : 'sort'}
+          pb="4px"
+        />
+      </Box>
       <Box display="flex" flexWrap="wrap">
         <Text
           as="span"
