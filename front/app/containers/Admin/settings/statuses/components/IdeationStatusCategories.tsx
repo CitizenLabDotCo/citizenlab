@@ -37,7 +37,7 @@ const ideationCodeDescriptionMessages: {
   accepted: messages.acceptedFieldCodeDescription,
   rejected: messages.rejectedFieldCodeDescription,
   implemented: messages.implementedFieldCodeDescription,
-  custom: messages.customFieldCodeDescription,
+  custom: messages.customFieldCodeDescription1,
 };
 
 const codeTitleMessage = (code: NonLockedIdeationInputStatusCode) =>

@@ -26,7 +26,7 @@ const proposalCodeTitleMessages: {
 const proposalCodeDescriptionMessages: {
   [key in NonLockedProposalInputStatusCode]: MessageDescriptor;
 } = {
-  custom: messages.customFieldCodeDescription,
+  custom: messages.customFieldCodeDescription1,
   answered: messages.answeredFieldCodeDescription,
   ineligible: messages.ineligibleFieldCodeDescription,
 };
