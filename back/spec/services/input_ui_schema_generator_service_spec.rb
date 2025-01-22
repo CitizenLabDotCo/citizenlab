@@ -797,7 +797,7 @@ RSpec.describe InputUiSchemaGeneratorService do
           create(
             :custom_field_page,
             resource: custom_form,
-            key: 'this_is_the_end_of_the_survey',
+            key: 'survey_end',
             title_multiloc: { 'en' => 'This is the end of the survey' },
             description_multiloc: { 'en' => 'Thank you for participating 🚀' }
           )
@@ -866,15 +866,6 @@ RSpec.describe InputUiSchemaGeneratorService do
                   description: 'Thank you for participating 🚀',
                   page_layout: 'default',
                   map_config_id: nil
-                },
-                elements: []
-              },
-              {
-                type: 'Page',
-                options: {
-                  id: 'survey_end',
-                  title: 'Almost done',
-                  description: "You are about to submit your answers. By clicking 'Submit' you give us permission to analyse your answers.<br/>After you submit, you will no longer be able to go back and change any of your answers."
                 },
                 elements: []
               }
@@ -960,6 +951,15 @@ RSpec.describe InputUiSchemaGeneratorService do
             description_multiloc: { 'en' => '' }
           )
         end
+        let!(:page_end) do
+          create(
+            :custom_field_page,
+            resource: custom_form,
+            key: 'survey_end',
+            title_multiloc: { 'en' => 'Almost done' },
+            description_multiloc: { 'en' => "You are about to submit your answers. By clicking 'Submit' you give us permission to analyse your answers.<br/>After you submit, you will no longer be able to go back and change any of your answers." }
+          )
+        end
 
         before do
           field_in_page2.update!(logic: {
@@ -973,7 +973,7 @@ RSpec.describe InputUiSchemaGeneratorService do
         end
 
         it 'includes rules for logic & other field for "other" option' do
-          ui_schema = generator.generate_for [page1, field_in_page1, page2, field_in_page2, field_in_page2.other_option_text_field, page3]
+          ui_schema = generator.generate_for [page1, field_in_page1, page2, field_in_page2, field_in_page2.other_option_text_field, page3, page_end]
           expect(ui_schema['en']).to eq({
             type: 'Categorization',
             options: {

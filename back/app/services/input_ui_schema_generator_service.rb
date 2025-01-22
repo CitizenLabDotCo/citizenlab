@@ -92,6 +92,8 @@ class InputUiSchemaGeneratorService < UiSchemaGeneratorService
       end
     end
 
+    binding.pry
+
     field_schemas
   end
 
