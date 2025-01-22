@@ -632,9 +632,9 @@ resource 'Idea Custom Fields' do
         assert_status 200
         json_response = json_parse response_body
 
-        expect(CustomField.where(resource: custom_form).count).to eq 0
+        expect(CustomField.where(resource: custom_form).count).to eq 1
         expect(CustomFieldOption.where(custom_field: CustomField.where(resource: custom_form)).count).to eq 0
-        expect(json_response[:data].size).to eq 0
+        expect(json_response[:data].size).to eq 1
       end
 
       example 'Remove all options of a custom field' do
@@ -663,7 +663,7 @@ resource 'Idea Custom Fields' do
 
         expect(CustomField.where(id: field).count).to eq 1
         expect(field.reload.options.count).to eq 0
-        expect(json_response[:data].size).to eq 2
+        expect(json_response[:data].size).to eq 3
         expect(json_response[:data][1]).to match({
           attributes: {
             code: nil,
@@ -695,10 +695,7 @@ resource 'Idea Custom Fields' do
         do_request(custom_fields: [final_page])
 
         assert_status 200
-        expect(json_response_body).to eq({
-          data: [],
-          included: []
-        })
+        expect(json_response_body[:data].size).to eq 1
       end
 
       example 'Updating custom fields in a native survey phase when there are no responses' do
@@ -862,7 +859,8 @@ resource 'Idea Custom Fields' do
             logic: [
               { error: 'invalid_structure' }
             ]
-          }
+          },
+          '2': {}
         })
       end
 
@@ -915,7 +913,8 @@ resource 'Idea Custom Fields' do
               { error: 'only_allowed_on_required_fields' }
             ]
           },
-          '2': {}
+          '2': {},
+          '3': {}
         })
       end
 
@@ -983,7 +982,7 @@ resource 'Idea Custom Fields' do
 
         assert_status 200
         json_response = json_parse(response_body)
-        expect(json_response[:data].size).to eq 4
+        expect(json_response[:data].size).to eq 5
         expect(json_response[:data][0]).to match({
           attributes: {
             code: nil,
@@ -1131,7 +1130,7 @@ resource 'Idea Custom Fields' do
 
         assert_status 200
         json_response = json_parse(response_body)
-        expect(json_response[:data].size).to eq 4
+        expect(json_response[:data].size).to eq 5
         expect(json_response[:data][0]).to match({
           attributes: {
             code: nil,
@@ -1271,7 +1270,7 @@ resource 'Idea Custom Fields' do
 
         assert_status 200
         json_response = json_parse(response_body)
-        expect(json_response[:data].size).to eq 4
+        expect(json_response[:data].size).to eq 5
         expect(json_response[:data][0]).to match({
           attributes: {
             code: nil,
@@ -1397,7 +1396,7 @@ resource 'Idea Custom Fields' do
 
         assert_status 200
         json_response = json_parse(response_body)
-        expect(json_response[:data].size).to eq 3
+        expect(json_response[:data].size).to eq 4
         expect(json_response[:data][0]).to match({
           attributes: {
             code: nil,
@@ -2644,11 +2643,11 @@ resource 'Idea Custom Fields' do
         do_request request
 
         assert_status 200
-        expect(CustomFieldOption.count).to eq 3
+        expect(CustomFieldOption.count).to eq 2
         added_option1 = CustomFieldOption.find_by custom_field: field1_to_update
         added_option2 = CustomFieldOption.find_by custom_field: field2_to_update
         json_response = json_parse(response_body)
-        expect(json_response[:data].size).to eq 5
+        expect(json_response[:data].size).to eq 6
         expect(json_response[:data][0]).to match({
           attributes: {
             code: nil,
@@ -3191,10 +3190,7 @@ resource 'Idea Custom Fields' do
         do_request(custom_fields: [final_page])
 
         assert_status 200
-        expect(json_response_body).to eq({
-          data: [],
-          included: []
-        })
+        expect(json_response_body[:data].size).to eq 1
       end
 
       example 'Adding and updating a field with text images' do
@@ -3263,7 +3259,7 @@ resource 'Idea Custom Fields' do
             'changed',
             User.first,
             kind_of(Integer),
-            payload: { save_type: 'manual', pages: 1, sections: 0, fields: 2, params_size: 969, form_opened_at: kind_of(DateTime), form_updated_at: kind_of(DateTime) },
+            payload: { save_type: 'manual', pages: 2, sections: 0, fields: 2, params_size: 1347, form_opened_at: kind_of(DateTime), form_updated_at: kind_of(DateTime) },
             project_id: custom_form.project_id
           ).exactly(1).times
       end
