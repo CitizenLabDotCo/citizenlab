@@ -7,18 +7,29 @@ describe SideFxIdeaService do
   let(:user) { create(:user) }
 
   describe 'before create' do
+    let(:default_assignee) { create (:admin) }
+    let(:project) { create(:project, default_assignee: default_assignee) }
+
     it 'sets the assignee to the default_assignee of the project' do
-      default_assignee = create(:admin)
-      project = create(:project, default_assignee: default_assignee)
-      idea = build(:idea, project: project)
+      idea = build(:idea, assignee: nil, project: project)
+      service.before_create(idea, user)
+      expect(idea.assignee).to eq default_assignee
+    end
+
+    it 'sets assignee for a draft idea' do
+      idea = build(:idea, project: project, assignee: nil, publication_status: 'draft')
+      service.before_create(idea, user)
+      expect(idea.assignee).to eq default_assignee
+    end
+
+    it 'sets assignee for a submitted idea' do
+      idea = build(:idea, project: project, assignee: nil, publication_status: 'submitted')
       service.before_create(idea, user)
       expect(idea.assignee).to eq default_assignee
     end
 
     it "doesn't change the assignee if it's already set" do
-      default_assignee = create(:admin)
       assignee = build(:admin)
-      project = create(:project, default_assignee: default_assignee)
       idea = build(:idea, project: project, assignee: assignee)
       service.before_create(idea, user)
       expect(idea.assignee).to eq assignee
