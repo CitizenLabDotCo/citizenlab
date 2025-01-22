@@ -306,8 +306,8 @@ describe Export::Xlsx::InputSheetGenerator do
                   survey_response1.id,
                   'Cat, Dog',
                   'By train, By bike',
-                  '',
-                  '',
+                  nil,
+                  nil,
                   survey_response1.author_id,
                   an_instance_of(DateTime), # created_at
                   phase.project.title_multiloc['en']
@@ -316,8 +316,8 @@ describe Export::Xlsx::InputSheetGenerator do
                   survey_response2.id,
                   'Cat',
                   '',
-                  '3',
-                  '4',
+                  3,
+                  4,
                   survey_response2.author_id,
                   an_instance_of(DateTime), # created_at
                   phase.project.title_multiloc['en']
@@ -326,8 +326,8 @@ describe Export::Xlsx::InputSheetGenerator do
                   survey_response3.id,
                   'Dog',
                   'By bike, By train',
-                  '',
-                  '',
+                  nil,
+                  nil,
                   survey_response3.author_id,
                   an_instance_of(DateTime), # created_at
                   phase.project.title_multiloc['en']

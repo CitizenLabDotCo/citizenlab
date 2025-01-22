@@ -152,8 +152,8 @@ module Export
               input_fields << longitude_report_field
             end
             if field.input_type == 'matrix_linear_scale'
-              input_fields += field.matrix_statements.map do |statement|
-                matrix_statement_report_field(statement)
+              field.matrix_statements.each do |statement|
+                input_fields << matrix_statement_report_field(statement)
               end
               next
             end
