@@ -31,6 +31,9 @@ module Cl2Back
 
     config.load_defaults 7.0
 
+    # To be removed once we move to +load_defaults 7.1+:
+    config.add_autoload_paths_to_load_path = false
+
     # Configuration for the application, engines, and railties goes here.
     #
     # These settings can be overridden in specific environments using the files
