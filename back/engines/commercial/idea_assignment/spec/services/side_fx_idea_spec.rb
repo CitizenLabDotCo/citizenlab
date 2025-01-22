@@ -7,7 +7,7 @@ describe SideFxIdeaService do
   let(:user) { create(:user) }
 
   describe 'before create' do
-    let(:default_assignee) { create (:admin) }
+    let(:default_assignee) { create(:admin) }
     let(:project) { create(:project, default_assignee: default_assignee) }
 
     it 'sets the assignee to the default_assignee of the project' do
