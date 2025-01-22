@@ -25,7 +25,6 @@ class CustomFieldMatrixStatement < ApplicationRecord
 
   belongs_to :custom_field
 
-  # attribute :key, :string, default: -> { generate_key }
   before_validation :generate_key, on: :create
   acts_as_list column: :ordering, top_of_list: 0, scope: :custom_field
 
