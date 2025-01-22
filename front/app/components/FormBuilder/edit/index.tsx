@@ -147,7 +147,7 @@ const FormEdit = ({
     reset,
   } = methods;
 
-  const { append, move, replace } = useFieldArray({
+  const { append, move, replace, insert } = useFieldArray({
     name: 'customFields',
     control,
   });
@@ -192,14 +192,22 @@ const FormEdit = ({
     }
   };
 
-  const onAddField = (field: IFlatCreateCustomField, index: number) => {
+  const onAddField = (field: IFlatCreateCustomField) => {
+    if (!formCustomFields) return;
+
+    // We insert the new field at the index of the last
+    // field, which means that it will be inserted before
+    // the last field. This is because the last field is the
+    // 'survey end' page, which should always be the last field.
+    const index = formCustomFields.length - 1;
+
     const newField = {
       ...field,
       index,
     };
 
     if (isNewCustomFieldObject(newField)) {
-      append(newField);
+      insert(index, newField);
       setSelectedField(newField);
     }
   };

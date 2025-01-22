@@ -8,12 +8,10 @@ import {
   colors,
 } from '@citizenlab/cl2-component-library';
 import { get } from 'lodash-es';
-import { useFormContext } from 'react-hook-form';
 
 import {
   ICustomFieldInputType,
   IFlatCreateCustomField,
-  IFlatCustomField,
 } from 'api/custom_fields/types';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
@@ -31,7 +29,7 @@ import LayoutFields from './LayoutFields';
 import ToolboxItem from './ToolboxItem';
 
 interface FormBuilderToolboxProps {
-  onAddField: (field: IFlatCreateCustomField, index: number) => void;
+  onAddField: (field: IFlatCreateCustomField) => void;
   builderConfig: FormBuilderConfig;
   move: (indexA: number, indexB: number) => void;
 }
@@ -49,8 +47,6 @@ const FormBuilderToolbox = ({
     name: 'form_mapping',
   });
 
-  const { watch } = useFormContext();
-  const formCustomFields: IFlatCustomField[] = watch('customFields');
   const isCustomFieldsDisabled =
     !isInputFormCustomFieldsFlagEnabled &&
     !builderConfig.alwaysShowCustomFields;
@@ -66,38 +62,34 @@ const FormBuilderToolbox = ({
   if (isNilOrError(locale)) return null;
 
   const addField = (inputType: ICustomFieldInputType) => {
-    const index = !isNilOrError(formCustomFields) ? formCustomFields.length : 0;
-    onAddField(
-      {
-        id: `${Math.floor(Date.now() * Math.random())}`,
-        temp_id: generateTempId(),
-        logic: {
-          ...(inputType !== 'page' ? { rules: [] } : undefined),
-        },
-        isLocalOnly: true,
-        description_multiloc: {},
-        input_type: inputType,
-        required: false,
-        title_multiloc: {
-          [locale]: '',
-        },
-        linear_scale_label_1_multiloc: {},
-        linear_scale_label_2_multiloc: {},
-        linear_scale_label_3_multiloc: {},
-        linear_scale_label_4_multiloc: {},
-        linear_scale_label_5_multiloc: {},
-        linear_scale_label_6_multiloc: {},
-        linear_scale_label_7_multiloc: {},
-        maximum: 5,
-        options: [
-          {
-            title_multiloc: {},
-          },
-        ],
-        enabled: true,
+    onAddField({
+      id: `${Math.floor(Date.now() * Math.random())}`,
+      temp_id: generateTempId(),
+      logic: {
+        ...(inputType !== 'page' ? { rules: [] } : undefined),
       },
-      index
-    );
+      isLocalOnly: true,
+      description_multiloc: {},
+      input_type: inputType,
+      required: false,
+      title_multiloc: {
+        [locale]: '',
+      },
+      linear_scale_label_1_multiloc: {},
+      linear_scale_label_2_multiloc: {},
+      linear_scale_label_3_multiloc: {},
+      linear_scale_label_4_multiloc: {},
+      linear_scale_label_5_multiloc: {},
+      linear_scale_label_6_multiloc: {},
+      linear_scale_label_7_multiloc: {},
+      maximum: 5,
+      options: [
+        {
+          title_multiloc: {},
+        },
+      ],
+      enabled: true,
+    });
   };
 
   return (
