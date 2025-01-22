@@ -15,17 +15,15 @@ module IdeaAssignment
         # remove_duplicate_survey_responses_on_publish(idea)
         return unless idea.assignee_id_previously_changed?
 
-        initiating_user = user_for_activity_on_anonymizable_item(idea, @automatic_assignment ? nil : user)
-        LogActivityJob.perform_later(idea, 'changed_assignee', initiating_user, idea.updated_at.to_i,
+        LogActivityJob.perform_later(idea, 'changed_assignee', user, idea.updated_at.to_i,
           payload: { change: idea.assignee_id_previous_change })
       end
 
-      def before_publish(idea, user)
+      def before_create(idea, user)
         super
         return if idea.assignee
 
         idea.assignee = IdeaAssignmentService.new.automatically_assigned_idea_assignee idea
-        @automatic_assignment = true if idea.assignee
       end
 
       private

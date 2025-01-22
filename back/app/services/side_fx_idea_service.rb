@@ -4,14 +4,11 @@ class SideFxIdeaService
   include SideFxHelper
 
   def initialize
-    @automatic_assignment = false
     @old_phase_ids = []
     @old_cosponsor_ids = []
   end
 
-  def before_create(idea, user)
-    before_publish idea, user if idea.published?
-  end
+  def before_create(idea, user); end
 
   def after_create(idea, user)
     idea.update!(body_multiloc: TextImageService.new.swap_data_images_multiloc(idea.body_multiloc, field: :body_multiloc, imageable: idea))
@@ -37,7 +34,6 @@ class SideFxIdeaService
     @old_phase_ids = idea.phase_ids
     idea.body_multiloc = TextImageService.new.swap_data_images_multiloc(idea.body_multiloc, field: :body_multiloc, imageable: idea)
     idea.publication_status = 'published' if idea.submitted_or_published? && idea.idea_status&.public_post?
-    before_publish idea, user if idea.will_be_published?
   end
 
   def after_update(idea, user)
@@ -133,8 +129,6 @@ class SideFxIdeaService
   end
 
   private
-
-  def before_publish(idea, _user); end
 
   def after_submission(idea, user)
     add_autoreaction(idea)
