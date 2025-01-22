@@ -241,6 +241,8 @@
   "app.components.PagesForm.savePage": "Desar la pàgina",
   "app.components.PagesForm.saveSuccess": "Pàgina desada correctament.",
   "app.components.PagesForm.titleMissingOneLanguageError": "Proporcioneu el títol d'almenys un idioma",
+  "app.components.Pagination.back": "Pàgina anterior",
+  "app.components.Pagination.next": "Pàgina següent",
   "app.components.ParticipationCTABars.VotingCTABar.budgetExceedsLimit": "Has gastat {votesCast}, que supera el límit d' {votesLimit}. Si us plau, traieu alguns articles de la vostra cistella i torneu-ho a provar.",
   "app.components.ParticipationCTABars.VotingCTABar.currencyLeft": "Queden {budgetLeft} / {totalBudget} {currency}",
   "app.components.ParticipationCTABars.VotingCTABar.minBudgetNotReached2": "Heu de gastar un mínim de {votesMinimum} {currency} abans de poder enviar la vostra cistella.",
