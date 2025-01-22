@@ -10,12 +10,12 @@ import {
 import { darken } from 'polished';
 import styled from 'styled-components';
 
-const Container = styled.div<{ background: string }>`
+const Container = styled.div`
   display: flex;
   align-items: center;
   padding: 14px;
   border-radius: ${(props) => props.theme.borderRadius};
-  background: ${(props) => props.background};
+  background: ${colors.teal100};
 
   ${isRtl`
     flex-direction: row-reverse;
@@ -76,12 +76,10 @@ export interface Props {
   type?: 'caution' | 'info';
 }
 
-const Warning = ({ children, icon, className, type = 'info' }: Props) => {
-  const usedIcon = icon || (type === 'info' ? 'info-outline' : 'warning');
-  const background = type === 'info' ? colors.teal100 : '#FFF3CD';
+const Warning = ({ children, icon, className }: Props) => {
   return (
-    <Container className={`${className || ''}`} background={background}>
-      <StyledIcon name={usedIcon} />
+    <Container className={`${className || ''}`}>
+      <StyledIcon name={icon || 'info-outline'} />
       <Text>{children}</Text>
     </Container>
   );
