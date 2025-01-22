@@ -341,23 +341,25 @@ export const FormField = ({
               />
             </Box>
           </Box>
-          <Box
-            mr="32px"
-            ml="12px"
-            display="flex"
-            alignItems="center"
-            justifyContent="center"
-            h="100%"
-          >
-            <MoreActionsMenu
-              showLabel={false}
-              color={colors.textSecondary}
-              actions={actions}
-              onClick={(event) => event.stopPropagation()}
-              data-cy="e2e-more-field-actions"
-              ref={moreActionsButtonRef}
-            />
-          </Box>
+          {field.key !== 'survey_end' && (
+            <Box
+              mr="32px"
+              ml="12px"
+              display="flex"
+              alignItems="center"
+              justifyContent="center"
+              h="100%"
+            >
+              <MoreActionsMenu
+                showLabel={false}
+                color={colors.textSecondary}
+                actions={actions}
+                onClick={(event) => event.stopPropagation()}
+                data-cy="e2e-more-field-actions"
+                ref={moreActionsButtonRef}
+              />
+            </Box>
+          )}
         </FlexibleRow>
       </FormFieldsContainer>
       <Modal
