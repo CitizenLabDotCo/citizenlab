@@ -186,13 +186,23 @@ export default defineMessages({
     defaultMessage: ' - hidden by logic',
   },
   logicSkipTooltipPage: {
-    id: 'app.containers.Admin.projects.project.survey.logicSkipTooltipPage',
+    id: 'app.containers.Admin.projects.project.survey.logicSkipTooltipPage3',
     defaultMessage:
-      'Logic on this page skips all questions until Page { pageNumber }. Click to hide or show the skipped questions.',
+      'Logic on this page skips all pages until page { pageNumber }. Click to hide or show the skipped pages and questions.',
   },
   logicSkipTooltipOption: {
-    id: 'app.containers.Admin.projects.project.survey.logicSkipTooltipOption',
+    id: 'app.containers.Admin.projects.project.survey.logicSkipTooltipOption3',
     defaultMessage:
-      'Logic skips all questions until Page { pageNumber } when a user selects this answer. Click to hide or show the skipped questions.',
+      'Logic on this answer skips all pages until page { pageNumber } when a user selects this answer. Click to hide or show the skipped pages and questions.',
+  },
+  logicSkipTooltipPageSurveyEnd: {
+    id: 'app.containers.Admin.projects.project.survey.logicSkipTooltipPageSurveyEnd',
+    defaultMessage:
+      'Logic on this page skips to the survey end. Click to hide or show the skipped pages and questions.',
+  },
+  logicSkipTooltipOptionSurveyEnd: {
+    id: 'app.containers.Admin.projects.project.survey.logicSkipTooltipOptionSurveyEnd',
+    defaultMessage:
+      'Logic on this answer skips to the survey end when a user selects this answer. Click to hide or show the skipped pages and questions.',
   },
 });

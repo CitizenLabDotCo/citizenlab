@@ -1,11 +1,6 @@
 import React from 'react';
 
-import {
-  Button,
-  colors,
-  Icon,
-  Tooltip,
-} from '@citizenlab/cl2-component-library';
+import { Button, colors, Tooltip } from '@citizenlab/cl2-component-library';
 
 import { LogicConfig } from 'api/survey_results/types';
 
@@ -30,9 +25,14 @@ const LogicIcon = ({
 
   if (!logicConfig || !logicFilterId || !nextPageNumber) return null;
 
+  // Note: 999 is a special number used for the survey end
   const tooltipContent = formatMessage(
     type === 'page'
-      ? messages.logicSkipTooltipPage
+      ? nextPageNumber === 999
+        ? messages.logicSkipTooltipPageSurveyEnd
+        : messages.logicSkipTooltipPage
+      : nextPageNumber === 999
+      ? messages.logicSkipTooltipOptionSurveyEnd
       : messages.logicSkipTooltipOption,
     {
       pageNumber: nextPageNumber,
@@ -47,27 +47,26 @@ const LogicIcon = ({
       content={tooltipContent}
     >
       <Button
-        p="0px"
-        m="0px"
+        p="4px"
+        m="0"
         ml="12px"
+        icon="logic"
         bgColor={
           logicConfig.filterLogicIds.includes(logicFilterId)
-            ? colors.coolGrey300
+            ? colors.green500
             : colors.white
         }
-        processing={logicConfig.isLoading}
+        iconColor={
+          logicConfig.filterLogicIds.includes(logicFilterId)
+            ? colors.white
+            : colors.coolGrey500
+        }
+        iconSize="18px"
+        processing={logicConfig.isLoading} // TODO: JS - why is this always false?
         onClick={() => {
           logicConfig.toggleLogicIds(logicFilterId);
         }}
-      >
-        <Icon
-          fill={colors.coolGrey500}
-          width="18px"
-          name="logic"
-          my="auto"
-          mx="5px"
-        />
-      </Button>
+      />
     </Tooltip>
   );
 };

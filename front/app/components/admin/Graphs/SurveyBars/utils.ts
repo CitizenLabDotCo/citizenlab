@@ -16,9 +16,6 @@ export const parseQuestionResult = (
 ): Answer[] => {
   if (result.grouped) {
     const { multilocs, answers, totalPickCount } = result;
-    // TODO: Fix this the next time the file is edited.
-    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-    if (!multilocs) throw new Error('Multilocs are missing');
 
     const colorSchemeMap = constructColorSchemeMap(result.legend, colorScheme);
 
@@ -72,7 +69,9 @@ export const parseQuestionResult = (
 
     const logicFilterId =
       answer !== null && multilocs.answer[answer].logicNextPageNumber
-        ? multilocs.answer[answer].id
+        ? result.inputType === 'linear_scale'
+          ? `${result.customFieldId}_${answer}`
+          : multilocs.answer[answer].id
         : null;
     // TODO: JS - Find out what the null condition from the question will be
 

@@ -334,7 +334,9 @@ class SurveyResultsGeneratorService < FieldVisitorService
 
   def build_linear_scale_multilocs(field)
     answer_titles = (1..field.maximum).index_with do |value|
-      { title_multiloc: locales.index_with { |_locale| value.to_s } }
+      logic_next_page_id = field.logic['rules']&.find { |r| r['if'] == value }&.dig('goto_page_id')
+      option_id = "#{field.id}_#{value}" # Create a unique ID for this option in the full results so we can filter logic
+      { title_multiloc: locales.index_with { |_locale| value.to_s }, id: option_id, logicNextPageId: logic_next_page_id }
     end
 
     answer_titles.each_key do |value|
@@ -382,11 +384,13 @@ class SurveyResultsGeneratorService < FieldVisitorService
   end
 
   # Replace logicNextPageId with logicNextPageNumber - used by FE in logic tooltip
+  # Note: 999 is a special number used for the survey end
   def add_logic_next_page_numbers_to_results(results)
     results.map do |result|
       # Replace in page logic
       next_page = results.find { |r| r[:customFieldId] == result[:logicNextPageId] }
       result[:logicNextPageNumber] = next_page ? next_page[:pageNumber] : nil
+      result[:logicNextPageNumber] = 999 if result[:logicNextPageId] == 'survey_end'
       result.delete(:logicNextPageId)
 
       # Do the same for select options
@@ -394,6 +398,7 @@ class SurveyResultsGeneratorService < FieldVisitorService
         result[:multilocs][:answer]&.each_value do |answer|
           next_page = results.find { |r| r[:customFieldId] == answer[:logicNextPageId] }
           answer[:logicNextPageNumber] = next_page ? next_page[:pageNumber] : nil
+          answer[:logicNextPageNumber] = 999 if answer[:logicNextPageId] == 'survey_end'
           answer.delete(:logicNextPageId)
         end
         result[:multilocs][:group]&.each_value do |group|
@@ -411,49 +416,37 @@ class SurveyResultsGeneratorService < FieldVisitorService
 
     skip_fields = []
 
-    # Question level logic - get field each option_id is linked to
-    question_logic = []
+    # Work out which logic applies to the logic_ids passed in to filter
+    field_logic = []
     fields.each do |f|
+      # Question level logic - get field each option_id is linked to
       rules = f.logic['rules']
-      next if rules.blank?
+      unless rules.blank?
+        rules.each do |r|
+          if_id = f.input_type == 'linear_scale' ? "#{f.id}_#{r['if']}" : r['if']
+          if logic_ids.include? if_id
+            field_logic << { f.id => r['goto_page_id'] }
+            logic_ids.delete if_id # Remove so that it doesn't turn up in any_other_answer later
+          end
+        end
 
-      rules.each do |r|
-        if logic_ids.include? r['if']
-          question_logic << { f.id => r['goto_page_id'] }
+        # Add any_other_answer logic
+        any_other_answer_page = rules.find { |r| r['if'] == 'any_other_answer' }&.dig('goto_page_id')
+        if any_other_answer_page
+          field_logic << { f.id => any_other_answer_page } if logic_ids.intersect?(f.options.pluck(:id))
         end
       end
 
-      # Add any_other_answer logic
-      any_other_answer_page = f.logic['rules'].find { |r| r['if'] == 'any_other_answer' }&.dig('goto_page_id')
-      next if any_other_answer_page.nil?
-
-      question_logic << { f.id => any_other_answer_page } if logic_ids.intersect?(f.options.pluck(:id))
-    end
-
-    # TODO: JS - Option 1 is now hiding all of them!!
-
-    # Work out which fields are skipped by question level logic
-    question_logic.each do |logic|
-      field_id = logic.first[0]
-      goto_page_id = logic.first[1]
-
-      skip = false
-      fields.each do |f|
-        skip = false if f[:id] == goto_page_id
-        skip_fields << f[:id] if skip
-        skip = true if f[:id] == field_id
+      # Add page logic
+      if f.logic['next_page_id'].present? && logic_ids.include?(f.id)
+        field_logic << { f.id => f.logic['next_page_id'] }
       end
     end
 
-    # Page logic
-    page_logic = {}
-    fields.each do |f|
-      next unless f.logic['next_page_id'].present? && logic_ids.include?(f.id)
-
-      page_logic[f.id] = f.logic['next_page_id']
-    end
-
-    page_logic.each do |page_id, goto_page_id|
+    # Now work out which pages and fields should be hidden
+    field_logic.each do |logic|
+      field_id = logic.first[0]
+      goto_page_id = logic.first[1]
       skip = false
       skip_from_next_page = false
       fields.each do |f|
@@ -463,7 +456,7 @@ class SurveyResultsGeneratorService < FieldVisitorService
         end
         skip = true if skip_from_next_page && f[:input_type] == 'page'
         skip_fields << f[:id] if skip
-        skip_from_next_page = true if f[:id] == page_id
+        skip_from_next_page = true if f[:id] == field_id
       end
     end
 
