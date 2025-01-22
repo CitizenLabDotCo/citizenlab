@@ -20,6 +20,7 @@ export type IdeaStatusesQueryParams = {
 };
 
 /* Ideation status codes */
+// Locked status codes are defined in the BE: LOCKED_CODES in models/idea_status.rb
 type LockedIdeationInputStatusCode = 'prescreening' | 'proposed';
 export type NonLockedIdeationInputStatusCode =
   | 'viewed'
@@ -33,6 +34,7 @@ type IdeationStatusCode =
   | NonLockedIdeationInputStatusCode;
 
 /* Proposal status codes */
+// Locked status codes are defined in the BE: LOCKED_CODES in models/idea_status.rb
 type LockedProposalInputStatusCode =
   | 'prescreening'
   | 'proposed'
