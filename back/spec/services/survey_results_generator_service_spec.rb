@@ -885,11 +885,12 @@ RSpec.describe SurveyResultsGeneratorService do
               5 => { title_multiloc: { 'en' => '5 - Strongly agree', 'fr-FR' => '5', 'nl-NL' => '5' } }
             },
             group: {
-              'male' => { 'en' => 'Male' },
-              'female' => { 'en' => 'Female' }
+              'male' => { title_multiloc: instance_of(Hash) },
+              'female' => { title_multiloc: instance_of(Hash) },
+              'unspecified' => { title_multiloc: instance_of(Hash) }
             }
           },
-          legend: ['male', 'female', 'nil'],
+          legend: ['male', 'female', 'unspecified', nil],
           linear_scales: {
             'send_more_animals_to_space' => {
               question: {
@@ -924,7 +925,7 @@ RSpec.describe SurveyResultsGeneratorService do
         end
 
         it 'returns a grouped result for a matrix linear scale field' do
-          generator = described_class.new(survey_phase, group_mode: 'survey_question', group_field_id: gender_user_custom_field.id)
+          generator = described_class.new(survey_phase, group_mode: 'user_field', group_field_id: gender_user_custom_field.id)
           result = generator.generate_results(field_id: matrix_linear_scale_field.id)
           expect(result).to match grouped_matrix_linear_scale_results
         end
