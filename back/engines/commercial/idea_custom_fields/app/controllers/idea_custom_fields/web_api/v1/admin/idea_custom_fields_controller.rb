@@ -115,8 +115,8 @@ module IdeaCustomFields
     end
 
     def raise_error_if_no_end_page
-      last_field = @custom_form.custom_fields.last
-      return if last_field.key == 'end_page' && last_field.input_type == 'page'
+      last_field = update_all_params.fetch(:custom_fields).last
+      return if last_field['key'] == 'survey_end' && last_field['input_type'] == 'page'
 
       raise UpdateAllFailedError, { form: [{ error: 'no_end_page' }] }
     end
