@@ -51,9 +51,12 @@ const FormFields = ({
   };
 
   // We filter out the survey end because we add it manually at the end
+  // (only relevant for survey, not for input form)
   const formCustomFieldsWithoutLastPage = formCustomFields.filter((field) => {
     return field.key !== 'survey_end';
   });
+
+  // Also on relevant for survey
   const lastPage = formCustomFields[formCustomFields.length - 1];
 
   const nestedGroupData: NestedGroupingStructure[] = [];
@@ -131,16 +134,18 @@ const FormFields = ({
           })}
         </Drop>
       </DragAndDrop>
-      <Box>
-        <FormField
-          field={lastPage}
-          selectedFieldId={selectedFieldId}
-          onEditField={onEditField}
-          builderConfig={builderConfig}
-          fieldNumbers={fieldNumbers}
-          closeSettings={closeSettings}
-        />
-      </Box>
+      {lastPage.key === 'survey_end' && (
+        <Box>
+          <FormField
+            field={lastPage}
+            selectedFieldId={selectedFieldId}
+            onEditField={onEditField}
+            builderConfig={builderConfig}
+            fieldNumbers={fieldNumbers}
+            closeSettings={closeSettings}
+          />
+        </Box>
+      )}
       {formCustomFields.length > 0 && (
         <Box height="1px" borderTop={`1px solid ${colors.divider}`} />
       )}
