@@ -2140,7 +2140,6 @@
   "app.utils.votingMethodUtils.budgetingSubmissionInstructionsMinBudget": "Minimalni potrebni proračun je {amount} {currency}.",
   "app.utils.votingMethodUtils.budgetingSubmissionInstructionsOnceYouAreDone": "Kada ste gotovi, kliknite \"Pošalji\" da pošaljete svoj proračun.",
   "app.utils.votingMethodUtils.budgetingSubmissionInstructionsPreferredOptions": "Odaberite željene opcije dodirom na \"Dodaj\".",
-  "app.utils.votingMethodUtils.budgetingSubmissionInstructionsTotalBudget": "Imate ukupno <b>{maxBudget} {currency} za raspodjelu između {optionCount} opcije</b>.",
   "app.utils.votingMethodUtils.budgetingSubmittedInstructions2": "<b>Čestitamo, vaš proračun je predan!</b> Možete provjeriti svoje opcije ispod u bilo kojem trenutku ili ih izmijeniti prije <b>{endDate}</b>.",
   "app.utils.votingMethodUtils.budgetingSubmittedInstructionsContinuous": "<b>Čestitamo, vaš proračun je predan!</b> Možete provjeriti svoje opcije ispod u bilo kojem trenutku ili ih izmijeniti.",
   "app.utils.votingMethodUtils.budgetingSubmittedInstructionsNoEndDate": "<b>Čestitamo, vaš proračun je predan!</b> Možete provjeriti svoje opcije u nastavku u bilo kojem trenutku.",

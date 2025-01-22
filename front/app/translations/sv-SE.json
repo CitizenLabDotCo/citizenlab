@@ -2140,7 +2140,6 @@
   "app.utils.votingMethodUtils.budgetingSubmissionInstructionsMinBudget": "Den minsta budget som krävs är {amount} {currency}.",
   "app.utils.votingMethodUtils.budgetingSubmissionInstructionsOnceYouAreDone": "När du är klar klickar du på \"Skicka\" för att skicka in din budget.",
   "app.utils.votingMethodUtils.budgetingSubmissionInstructionsPreferredOptions": "Välj önskade alternativ genom att trycka på \"Lägg till\".",
-  "app.utils.votingMethodUtils.budgetingSubmissionInstructionsTotalBudget": "Du har totalt <b>{maxBudget} {currency} att fördela mellan {optionCount} alternativ</b>.",
   "app.utils.votingMethodUtils.budgetingSubmittedInstructions2": "<b>Grattis, din budget har skickats in!</b> Du kan när som helst kontrollera dina alternativ nedan eller ändra dem före <b>{endDate}</b>.",
   "app.utils.votingMethodUtils.budgetingSubmittedInstructionsContinuous": "<b>Grattis, din budget har skickats in!</b> Du kan när som helst kontrollera dina alternativ nedan eller ändra dem.",
   "app.utils.votingMethodUtils.budgetingSubmittedInstructionsNoEndDate": "<b>Grattis, din budget har skickats in!</b> Du kan när som helst kontrollera dina alternativ nedan.",

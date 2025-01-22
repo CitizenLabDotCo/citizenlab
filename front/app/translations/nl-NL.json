@@ -2140,7 +2140,6 @@
   "app.utils.votingMethodUtils.budgetingSubmissionInstructionsMinBudget": "Het minimaal vereiste budget is {amount} {currency}.",
   "app.utils.votingMethodUtils.budgetingSubmissionInstructionsOnceYouAreDone": "Als je klaar bent, klik je op \"Verzenden\" om je budget in te dienen.",
   "app.utils.votingMethodUtils.budgetingSubmissionInstructionsPreferredOptions": "Selecteer je voorkeursopties door op \"Toevoegen\" te klikken.",
-  "app.utils.votingMethodUtils.budgetingSubmissionInstructionsTotalBudget": "Je hebt in totaal <b>{maxBudget} {currency} te verdelen over {optionCount} opties</b>.",
   "app.utils.votingMethodUtils.budgetingSubmittedInstructions2": "<b>Gefeliciteerd, je budget is ingediend!</b> Je kunt je opties hieronder op elk moment controleren of wijzigen tot en met <b>{endDate}</b>.",
   "app.utils.votingMethodUtils.budgetingSubmittedInstructionsContinuous": "<b>Gefeliciteerd, je budget is ingediend!</b> Je kunt je opties hieronder op elk moment bekijken of wijzigen.",
   "app.utils.votingMethodUtils.budgetingSubmittedInstructionsNoEndDate": "<b>Gefeliciteerd, je budget is ingediend!</b> Je kunt hieronder op elk moment je opties bekijken.",

@@ -2140,7 +2140,6 @@
   "app.utils.votingMethodUtils.budgetingSubmissionInstructionsMinBudget": "De Minimum néideg Budget ass {amount} {currency}.",
   "app.utils.votingMethodUtils.budgetingSubmissionInstructionsOnceYouAreDone": "Wann Dir fäerdeg sidd, klickt op \"Ofginn\" fir Äre verdeelte Budget ze validéieren.",
   "app.utils.votingMethodUtils.budgetingSubmissionInstructionsPreferredOptions": "Wielt Äre gewënschte Projet andeems Dir op \"Bäisetzen\" klickt.",
-  "app.utils.votingMethodUtils.budgetingSubmissionInstructionsTotalBudget": "Dir hutt  <b>{maxBudget} {currency} zur Verfügung fir tëscht {optionCount} Optiounen</b> ze verdeelen.",
   "app.utils.votingMethodUtils.budgetingSubmittedInstructions2": "<b>Gratulatioun, Äre Budget gouf virgeluecht!</b> Dir kënnt Är Optiounen hei ënnen zu all Moment iwwerpréiwen oder se virum <b>{endDate}</b>änneren.",
   "app.utils.votingMethodUtils.budgetingSubmittedInstructionsContinuous": "<b>Gratulatioun, Äre Budget gouf virgeluecht!</b> Dir kënnt Är Optiounen hei ënnen zu all Moment iwwerpréiwen oder se änneren.",
   "app.utils.votingMethodUtils.budgetingSubmittedInstructionsNoEndDate": "<b>Gratulatioun, Äre Budget gouf virgeluecht!</b> Dir kënnt Är Optiounen hei ënnen zu all Moment kontrolléieren.",

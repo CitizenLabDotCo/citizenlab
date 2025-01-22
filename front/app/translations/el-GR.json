@@ -2140,7 +2140,6 @@
   "app.utils.votingMethodUtils.budgetingSubmissionInstructionsMinBudget": "Ο ελάχιστος απαιτούμενος προϋπολογισμός είναι {amount} {currency}.",
   "app.utils.votingMethodUtils.budgetingSubmissionInstructionsOnceYouAreDone": "Μόλις τελειώσετε, κάντε κλικ στο κουμπί \"Υποβολή\" για να υποβάλετε τον προϋπολογισμό σας.",
   "app.utils.votingMethodUtils.budgetingSubmissionInstructionsPreferredOptions": "Επιλέξτε τις προτιμώμενες επιλογές σας πατώντας το κουμπί \"Προσθήκη\".",
-  "app.utils.votingMethodUtils.budgetingSubmissionInstructionsTotalBudget": "Έχετε συνολικά <b>{maxBudget} {currency} να διανείμετε μεταξύ των επιλογών {optionCount}</b>.",
   "app.utils.votingMethodUtils.budgetingSubmittedInstructions2": "<b>Συγχαρητήρια, ο προϋπολογισμός σας υποβλήθηκε!</b> Μπορείτε να ελέγξετε τις επιλογές σας παρακάτω ανά πάσα στιγμή ή να τις τροποποιήσετε πριν από τη διεύθυνση <b>{endDate}</b>.",
   "app.utils.votingMethodUtils.budgetingSubmittedInstructionsContinuous": "<b>Συγχαρητήρια, ο προϋπολογισμός σας υποβλήθηκε!</b> Μπορείτε να ελέγξετε τις επιλογές σας παρακάτω ανά πάσα στιγμή ή να τις τροποποιήσετε.",
   "app.utils.votingMethodUtils.budgetingSubmittedInstructionsNoEndDate": "<b>Συγχαρητήρια, ο προϋπολογισμός σας υποβλήθηκε!</b> Μπορείτε να ελέγξετε τις επιλογές σας παρακάτω ανά πάσα στιγμή.",

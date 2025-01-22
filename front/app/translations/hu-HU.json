@@ -2140,7 +2140,6 @@
   "app.utils.votingMethodUtils.budgetingSubmissionInstructionsMinBudget": "A minimálisan szükséges költségkeret {amount} {currency}.",
   "app.utils.votingMethodUtils.budgetingSubmissionInstructionsOnceYouAreDone": "Ha elkészült, kattintson a \"Küldés\" gombra a költségkeret elküldéséhez.",
   "app.utils.votingMethodUtils.budgetingSubmissionInstructionsPreferredOptions": "Válassza ki a kívánt opciókat a \"Hozzáadás\" gomb megérintésével.",
-  "app.utils.votingMethodUtils.budgetingSubmissionInstructionsTotalBudget": "Összesen <b>{maxBudget} {currency} van, amelyet {optionCount}</b>opciók között oszthat el.",
   "app.utils.votingMethodUtils.budgetingSubmittedInstructions2": "<b>Gratulálunk, költségkeretét elküldtük!</b> Az alábbi beállításokat bármikor ellenőrizheti, vagy <b>{endDate}</b>előtt módosíthatja.",
   "app.utils.votingMethodUtils.budgetingSubmittedInstructionsContinuous": "<b>Gratulálunk, költségkeretét elküldtük!</b> Az alábbi beállításokat bármikor ellenőrizheti, vagy módosíthatja.",
   "app.utils.votingMethodUtils.budgetingSubmittedInstructionsNoEndDate": "<b>Gratulálunk, költségkeretét elküldtük!</b> Az alábbi lehetőségeket bármikor ellenőrizheti.",

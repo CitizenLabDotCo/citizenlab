@@ -2140,7 +2140,6 @@
   "app.utils.votingMethodUtils.budgetingSubmissionInstructionsMinBudget": "Minimālais nepieciešamais budžets ir {amount} {currency}.",
   "app.utils.votingMethodUtils.budgetingSubmissionInstructionsOnceYouAreDone": "Kad esat pabeidzis, noklikšķiniet uz \"Iesniegt\", lai iesniegtu budžetu.",
   "app.utils.votingMethodUtils.budgetingSubmissionInstructionsPreferredOptions": "Izvēlieties vēlamās opcijas, piesitot \"Pievienot\".",
-  "app.utils.votingMethodUtils.budgetingSubmissionInstructionsTotalBudget": "Jums ir kopā <b>{maxBudget} {currency} , ko sadalīt starp {optionCount} iespējām</b>.",
   "app.utils.votingMethodUtils.budgetingSubmittedInstructions2": "<b>Apsveicam, jūsu budžets ir iesniegts!</b> Jebkurā brīdī varat pārbaudīt turpmāk norādītās iespējas vai mainīt tās pirms <b>{endDate}</b>.",
   "app.utils.votingMethodUtils.budgetingSubmittedInstructionsContinuous": "<b>Apsveicam, jūsu budžets ir iesniegts!</b> Jebkurā brīdī varat pārbaudīt turpmāk norādītās iespējas vai tās mainīt.",
   "app.utils.votingMethodUtils.budgetingSubmittedInstructionsNoEndDate": "<b>Apsveicam, jūsu budžets ir iesniegts!</b> Turpmāk jebkurā brīdī varat pārbaudīt savas iespējas.",

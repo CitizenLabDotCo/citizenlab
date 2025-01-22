@@ -2140,7 +2140,6 @@
   "app.utils.votingMethodUtils.budgetingSubmissionInstructionsMinBudget": "Vaadittu vähimmäisbudjetti on {amount} {currency}.",
   "app.utils.votingMethodUtils.budgetingSubmissionInstructionsOnceYouAreDone": "Kun olet valmis, napsauta \"Lähetä\" lähettääksesi budjettisi.",
   "app.utils.votingMethodUtils.budgetingSubmissionInstructionsPreferredOptions": "Valitse haluamasi vaihtoehdot napauttamalla \"Lisää\".",
-  "app.utils.votingMethodUtils.budgetingSubmissionInstructionsTotalBudget": "Sinulla on yhteensä <b>{maxBudget} {currency} jakaaksesi {optionCount} vaihtoehdon</b>välillä.",
   "app.utils.votingMethodUtils.budgetingSubmittedInstructions2": "<b>Onnittelut, budjettisi on lähetetty!</b> Voit tarkistaa vaihtoehdot alta milloin tahansa tai muokata niitä ennen <b>{endDate}</b>.",
   "app.utils.votingMethodUtils.budgetingSubmittedInstructionsContinuous": "<b>Onnittelut, budjettisi on lähetetty!</b> Voit tarkistaa vaihtoehdot alta milloin tahansa tai muokata niitä.",
   "app.utils.votingMethodUtils.budgetingSubmittedInstructionsNoEndDate": "<b>Onnittelut, budjettisi on lähetetty!</b> Voit tarkistaa vaihtoehdot alta milloin tahansa.",
