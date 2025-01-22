@@ -14,9 +14,7 @@ import {
   builtInFieldKeys,
   FormBuilderConfig,
 } from 'components/FormBuilder/utils';
-import Warning from 'components/UI/Warning';
 
-import { useIntl } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
 
 import {
@@ -28,7 +26,6 @@ import { DragAndDrop, Drag, Drop } from '../DragAndDrop';
 import { getFieldNumbers } from '../utils';
 
 import { FormField } from './FormField';
-import messages from './messages';
 
 export const pageDNDType = 'droppable-page';
 export const questionDNDType = 'droppable-question';
@@ -54,7 +51,6 @@ const FormFields = ({
   const { watch, trigger } = useFormContext();
   const locale = useLocale();
   const formCustomFields: IFlatCustomField[] = watch('customFields');
-  const { formatMessage } = useIntl();
 
   if (isNilOrError(locale)) {
     return null;
@@ -87,18 +83,10 @@ const FormFields = ({
   });
 
   const conflictsByPage = detectConflictsByPage(nestedGroupData);
-  const hasConflicts = Object.keys(conflictsByPage).length > 0;
   const fieldNumbers = getFieldNumbers(formCustomFields);
 
   return (
     <>
-      {hasConflicts && (
-        <Box mb="16px">
-          <Warning type="caution">
-            {formatMessage(messages.conflictsWarning)}
-          </Warning>
-        </Box>
-      )}
       <Box
         borderRadius="3px"
         boxShadow="0px 2px 4px rgba(0, 0, 0, 0.2)"
