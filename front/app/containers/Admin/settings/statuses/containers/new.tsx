@@ -43,7 +43,7 @@ const NewIdeaStatus = ({
 
   if (tenantLocales && ideaStatuses) {
     return (
-      <Section>
+      <Section data-testid={'e2e-new-status-page'}>
         <GoBackButton onClick={goBack} />
         <StyledSectionTitle>
           <FormattedMessage {...messages.addIdeaStatus} />
