@@ -65,4 +65,8 @@ export default defineMessages({
     defaultMessage:
       'This page has multiple logic rules applied: multi-select question logic, page-level logic, and inter-question logic. When these conditions overlap, question logic will take precedence over page logic, and the furthest page will be shown. Review the logic to ensure it aligns with your intended flow.',
   },
+  conflictingLogic: {
+    id: 'app.components.formBuilder.logicConflicts.conflictingLogic',
+    defaultMessage: 'Conflicting logic',
+  },
 });

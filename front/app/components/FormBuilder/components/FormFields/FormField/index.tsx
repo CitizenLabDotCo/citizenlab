@@ -6,7 +6,8 @@ import {
   Text,
   colors,
   Button,
-  IconTooltip,
+  Badge,
+  Tooltip,
 } from '@citizenlab/cl2-component-library';
 import { get } from 'lodash-es';
 import { rgba } from 'polished';
@@ -333,15 +334,6 @@ export const FormField = ({
                     />
                   )}
                 </Box>
-                <Box ml="8px">
-                  {message && (
-                    <IconTooltip
-                      iconColor={colors.coolGrey300}
-                      content={formatMessage(message)}
-                      icon="warning"
-                    />
-                  )}
-                </Box>
               </Box>
             </Box>
             <Box
@@ -350,6 +342,15 @@ export const FormField = ({
               justifyContent="flex-end"
               alignItems="center"
             >
+              {message && (
+                <Tooltip content={formatMessage(message)} theme="dark">
+                  <Box>
+                    <Badge color={colors.orange500} className="inverse">
+                      {formatMessage(messages.conflictingLogic)}
+                    </Badge>
+                  </Box>
+                </Tooltip>
+              )}
               <IconsAndBadges
                 field={field}
                 displayBuiltInFields={displayBuiltInFields}
