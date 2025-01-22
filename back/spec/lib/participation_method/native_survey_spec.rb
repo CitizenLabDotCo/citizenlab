@@ -57,7 +57,7 @@ RSpec.describe ParticipationMethod::NativeSurvey do
       # in the database, but not necessarily in memory.
       phase_in_db = Phase.find(phase.id)
 
-      expect(phase_in_db.custom_form.custom_fields.size).to eq 2
+      expect(phase_in_db.custom_form.custom_fields.size).to eq 3
 
       question_page = phase_in_db.custom_form.custom_fields[0]
       expect(question_page.title_multiloc).to eq({})
