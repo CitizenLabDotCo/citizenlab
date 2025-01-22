@@ -2,8 +2,6 @@ import { SupportedLocale } from 'typings';
 
 import { IFlatCustomField, IOptionsType } from 'api/custom_fields/types';
 
-import { formEndOption } from 'components/FormBuilder/utils';
-
 import { isNilOrError } from 'utils/helperUtils';
 
 export const getOptionRule = (
@@ -75,12 +73,10 @@ export const getTitleFromAnswerId = (
 
 export const getTitleFromPageId = (
   pageId: string | number | undefined,
-  formEndMessage: string,
   pageMessage: string,
   fieldNumbers: Record<string, number>
 ) => {
   if (!pageId) return;
-  if (pageId === formEndOption) return formEndMessage;
 
   return `${pageMessage} ${fieldNumbers[pageId]}`;
 };

@@ -17,7 +17,6 @@ import {
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 
 import {
-  formEndOption,
   getTranslatedStringKey,
   FormBuilderConfig,
 } from 'components/FormBuilder/utils';
@@ -61,9 +60,7 @@ const FormBuilderSettings = ({
     const fieldNumbers = getFieldNumbers(formCustomFields);
     const pageArray: { value: string; label: string }[] = [];
 
-    // TODO: Fix this the next time the file is edited.
-    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-    formCustomFields?.forEach((field) => {
+    formCustomFields.forEach((field) => {
       if (field.input_type === 'page') {
         pageArray.push({
           value: field.temp_id || field.id,
@@ -71,12 +68,7 @@ const FormBuilderSettings = ({
         });
       }
     });
-    pageArray.push({
-      value: formEndOption,
-      label: `${formatMessage(
-        builderConfig.formEndPageLogicOption || messages.formEnd
-      )}`,
-    });
+
     return pageArray;
   };
 

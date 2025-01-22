@@ -28,19 +28,9 @@ interface Props {
   formEndPageLogicOption?: MessageDescriptor;
 }
 
-const Logic = ({
-  field,
-  fieldNumbers,
-  formCustomFields,
-  formEndPageLogicOption,
-}: Props) => {
+const Logic = ({ field, fieldNumbers, formCustomFields }: Props) => {
   const { formatMessage } = useIntl();
   const locale = useLocale();
-
-  const formEndMessage = formatMessage(
-    formEndPageLogicOption || messages.formEnd
-  );
-
   const pageMessage = formatMessage(messages.page);
 
   return (
@@ -68,7 +58,6 @@ const Logic = ({
                 )}
                 targetPage={getTitleFromPageId(
                   optionRule?.goto_page_id,
-                  formEndMessage,
                   pageMessage,
                   fieldNumbers
                 )}
@@ -97,7 +86,6 @@ const Logic = ({
                 )}
                 targetPage={getTitleFromPageId(
                   linearScaleRule?.goto_page_id,
-                  formEndMessage,
                   pageMessage,
                   fieldNumbers
                 )}
@@ -114,7 +102,6 @@ const Logic = ({
           )}
           targetPage={getTitleFromPageId(
             field.logic.next_page_id,
-            formEndMessage,
             pageMessage,
             fieldNumbers
           )}
