@@ -97,7 +97,7 @@ class WebApi::V1::IdeaStatusesController < ApplicationController
 
     @idea_statuses = @idea_statuses.where(participation_method: participation_method)
 
-    if prescreening_feature_inactive?(participation_method) || params[:exclude_screening_status] == 'true'
+    if prescreening_feature_inactive?(participation_method)
       @idea_statuses = @idea_statuses.where.not(code: 'prescreening')
     end
   end

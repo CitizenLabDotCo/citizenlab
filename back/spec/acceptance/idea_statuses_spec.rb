@@ -10,7 +10,6 @@ resource 'IdeaStatuses' do
 
   get 'web_api/v1/idea_statuses' do
     parameter :participation_method, 'Filter by participation method. Either "ideation" or "proposals".', required: false
-    parameter :exclude_screening_status, 'Exclude the prescreening status from the list.', required: false
 
     before_all do
       create_list(:idea_status, 3)
@@ -58,19 +57,6 @@ resource 'IdeaStatuses' do
           expect(json_response[:data].size).to eq 4
           expect(json_response[:data].pluck(:id)).to include prescreening_status.id
         end
-
-        context "when passed exclude_screening_status: 'true'" do
-          let(:exclude_screening_status) { 'true' }
-
-          example 'List all ideation input statuses excludes prescreening status', document: false do
-            do_request
-            assert_status 200
-            json_response = json_parse(response_body)
-
-            expect(json_response[:data].size).to eq 3
-            expect(json_response[:data].pluck(:id)).not_to include prescreening_status.id
-          end
-        end
       end
     end
 
@@ -113,19 +99,6 @@ resource 'IdeaStatuses' do
 
           expect(json_response[:data].size).to eq 3
           expect(json_response[:data].pluck(:id)).to include prescreening_status.id
-        end
-
-        context "when passed exclude_screening_status: 'true'" do
-          let(:exclude_screening_status) { 'true' }
-
-          example 'List all proposals input statuses excludes prescreening status', document: false do
-            do_request
-            assert_status 200
-            json_response = json_parse(response_body)
-
-            expect(json_response[:data].size).to eq 2
-            expect(json_response[:data].pluck(:id)).not_to include prescreening_status.id
-          end
         end
       end
     end
