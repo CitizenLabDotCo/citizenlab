@@ -354,6 +354,23 @@ resource 'Idea Custom Fields' do
         expect(json_response).to eq({ :errors => { :form => [{ :error => 'stale_data' }] } })
       end
 
+      example '[error] last custom field is not survey_end' do
+        custom_form.save!
+        request = {
+          custom_fields: [
+            {
+              input_type: 'page',
+              page_layout: 'default'
+            }
+          ]
+        }
+        do_request request
+
+        assert_status 422
+        json_response = json_parse response_body
+        expect(json_response).to eq({ :errors => { :form => [{ :error => 'no_end_page' }] } })
+      end
+
       example 'Update linear_scale field' do
         field_to_update = create(:custom_field_linear_scale, resource: custom_form)
         create(:custom_field, resource: custom_form) # field to destroy
