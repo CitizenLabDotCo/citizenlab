@@ -6,7 +6,7 @@ class WebApi::V1::CustomFieldMatrixStatementsController < ApplicationController
   skip_before_action :authenticate_user
 
   def index
-    @statements = policy_scope(CustomFieldMatrixStatment).where(custom_field: @custom_field).order(:ordering)
+    @statements = policy_scope(CustomFieldMatrixStatement).where(custom_field: @custom_field).order(:ordering)
     render json: WebApi::V1::CustomFieldMatrixStatementSerializer.new(@statements, params: jsonapi_serializer_params).serializable_hash
   end
 

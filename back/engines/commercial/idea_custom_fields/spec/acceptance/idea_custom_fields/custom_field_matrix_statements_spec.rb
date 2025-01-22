@@ -11,36 +11,66 @@ resource 'Idea Custom Field Matrix Statements' do
   let(:statement) { custom_field.matrix_statements.first }
   let(:id) { statement.id }
 
-  get 'web_api/v1/admin/projects/:project_id/custom_fields/:custom_field_id/custom_field_matrix_statements/:id' do
+  context 'transitive (ideation or proposals)' do
     let(:project) { create(:project) }
     let(:custom_form) { create(:custom_form, participation_context: project) }
     let(:project_id) { project.id }
 
-    context 'when admin' do
-      before { admin_header_token }
+    get 'web_api/v1/admin/projects/:project_id/custom_fields/:custom_field_id/custom_field_matrix_statements' do
+      context 'when admin' do
+        before { admin_header_token }
 
-      example_request 'Get one matrix statement by id' do
-        assert_status 200
-        expect(response_data[:type]).to eq 'custom_field_matrix_statement'
-        expect(response_data[:id]).to eq id
-        expect(response_data[:attributes][:title_multiloc].stringify_keys).to eq statement.title_multiloc
+        example_request 'Get all matrix statements for a given custom field' do
+          assert_status 200
+          expect(response_data.size).to eq 2
+          expect(response_data.pluck(:id)).to eq custom_field.matrix_statement_ids
+          expect(response_data.pluck(attributes: :title_multiloc)).to eq custom_field.matrix_statements.pluck(&:title_multiloc)
+        end
+      end
+    end
+
+    get 'web_api/v1/admin/projects/:project_id/custom_fields/:custom_field_id/custom_field_matrix_statements/:id' do
+      context 'when admin' do
+        before { admin_header_token }
+
+        example_request 'Get one matrix statement by id' do
+          assert_status 200
+          expect(response_data[:type]).to eq 'custom_field_matrix_statement'
+          expect(response_data[:id]).to eq id
+          expect(response_data[:attributes][:title_multiloc].stringify_keys).to eq statement.title_multiloc
+        end
       end
     end
   end
 
-  get 'web_api/v1/admin/phases/:phase_id/custom_fields/:custom_field_id/custom_field_matrix_statements/:id' do
+  context 'non-transitive (native surveys)' do
     let(:phase) { create(:native_survey_phase) }
     let(:custom_form) { create(:custom_form, participation_context: phase) }
     let(:phase_id) { phase.id }
 
-    context 'when admin' do
-      before { admin_header_token }
+    get 'web_api/v1/admin/phases/:phase_id/custom_fields/:custom_field_id/custom_field_matrix_statements' do
+      context 'when admin' do
+        before { admin_header_token }
 
-      example_request 'Get one matrix statement by id' do
-        assert_status 200
-        expect(response_data[:type]).to eq 'custom_field_matrix_statement'
-        expect(response_data[:id]).to eq id
-        expect(response_data[:attributes][:title_multiloc].stringify_keys).to eq statement.title_multiloc
+        example_request 'Get all matrix statements for a given custom field' do
+          assert_status 200
+          expect(response_data.size).to eq 2
+          expect(response_data.pluck(:id)).to eq custom_field.matrix_statement_ids
+          expect(response_data.pluck(attributes: :title_multiloc)).to eq custom_field.matrix_statements.pluck(&:title_multiloc)
+        end
+      end
+    end
+
+    get 'web_api/v1/admin/phases/:phase_id/custom_fields/:custom_field_id/custom_field_matrix_statements/:id' do
+      context 'when admin' do
+        before { admin_header_token }
+
+        example_request 'Get one matrix statement by id' do
+          assert_status 200
+          expect(response_data[:type]).to eq 'custom_field_matrix_statement'
+          expect(response_data[:id]).to eq id
+          expect(response_data[:attributes][:title_multiloc].stringify_keys).to eq statement.title_multiloc
+        end
       end
     end
   end
