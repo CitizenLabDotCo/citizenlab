@@ -10,4 +10,9 @@ describe('Ideation status form', () => {
     cy.get('[data-testid="e2e-add-status-button"]').click();
     cy.get('[data-testid="e2e-new-status-page"]').should('exist');
   });
+
+  it('Shows the form when editing an existing ideation input status', () => {
+    cy.get('[data-testid="e2e-edit-status-button"]').first().click();
+    cy.get('[data-testid="e2e-edit-status-page"]').should('exist');
+  });
 });
