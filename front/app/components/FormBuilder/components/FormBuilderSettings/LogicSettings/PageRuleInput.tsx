@@ -39,21 +39,17 @@ export const PageRuleInput = ({
   validationError,
 }: RuleInputProps) => {
   const { setValue, watch, trigger, control } = useFormContext();
-  const logic = watch(name) as LogicType;
+  const logic = watch(name) as LogicType | undefined;
   const fields: IFlatCustomField[] = watch('customFields');
   const [selectedPage, setSelectedPage] = useState<string | null | undefined>(
-    // TODO: Fix this the next time the file is edited.
-    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-    logic && logic?.next_page_id ? logic.next_page_id : undefined
+    logic?.next_page_id ? logic.next_page_id : undefined
   );
   const [showRuleInput, setShowRuleInput] = useState<boolean>(
     selectedPage ? true : false
   );
   const [isRuleInvalid, setIsRuleInvalid] = useState(
     selectedPage
-      ? // TODO: Fix this the next time the file is edited.
-        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-        !isPageRuleValid(fields, fieldId, logic?.next_page_id)
+      ? !isPageRuleValid(fields, fieldId, logic?.next_page_id)
       : false
   );
   const onSelectionChange = (page: IOption) => {
