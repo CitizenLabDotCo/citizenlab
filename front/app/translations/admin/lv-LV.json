@@ -2707,8 +2707,6 @@
   "app.containers.admin.ideaStatuses.form.implementedFieldCodeTitle": "Īstenots",
   "app.containers.admin.ideaStatuses.form.ineligibleFieldCodeDescription": "Priekšlikums nav atbilstīgs",
   "app.containers.admin.ideaStatuses.form.ineligibleFieldCodeTitle": "Neatbilstoši",
-  "app.containers.admin.ideaStatuses.form.prescreeningFieldCodeDescription": "Gaida skrīningu",
-  "app.containers.admin.ideaStatuses.form.prescreeningFieldCodeTitle": "Iepriekšēja pārbaude",
   "app.containers.admin.ideaStatuses.form.proposedFieldCodeDescription": "Veiksmīgi iesniegts izskatīšanai kā priekšlikums",
   "app.containers.admin.ideaStatuses.form.proposedFieldCodeTitle": "Ierosināts",
   "app.containers.admin.ideaStatuses.form.rejectedFieldCodeDescription": "Neatbilstošs vai nav izvēlēts virzīšanai tālāk",
