@@ -478,7 +478,7 @@ export function getTheme(tenant: any = null): MainThemeProps {
         ? transparentize(0.75, core.color_main)
         : transparentize(0.75, '#ef0071'),
       tenantPrimaryLighten95: core
-        ? transparentize(0.95, core.color_main)
+        ? RGBAtoRGB(transparentize(0.95, core.color_main), 0.05)
         : transparentize(0.95, '#ef0071'),
     },
     fontFamily,
@@ -535,4 +535,18 @@ export function hexToRgb(hex: any) {
         b: parseInt(result[3], 16),
       }
     : null;
+}
+
+function RGBAtoRGB(rgba: string, alpha: number) {
+  const rgbaValues: RegExpMatchArray | null = rgba.match(/\d+/g);
+
+  if (rgbaValues) {
+    const r = Math.round((1 - alpha) * 255 + alpha * parseFloat(rgbaValues[0]));
+    const g = Math.round((1 - alpha) * 255 + alpha * parseFloat(rgbaValues[1]));
+    const b = Math.round((1 - alpha) * 255 + alpha * parseFloat(rgbaValues[2]));
+
+    return `rgba(${r},${g},${b}, 1.0)`;
+  }
+
+  return '';
 }

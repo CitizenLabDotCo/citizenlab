@@ -48,20 +48,15 @@ const LinearScaleControl = ({
   const getAriaValueText = useCallback(
     (value: number, total: number) => {
       // If the value has a label, read it out
-      // TODO: Fix this the next time the file is edited.
-      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-      if (uischema?.options?.[`linear_scale_label${value}`]) {
+      if (uischema.options?.[`linear_scale_label${value}`]) {
         return formatMessage(messages.valueOutOfTotalWithLabel, {
           value,
           total,
           label: uischema.options[`linear_scale_label${value}`],
         });
-        // TODO: Fix this the next time the file is edited.
-        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       }
       // If we don't have a label but we do have a maximum, read out the current value & maximum label
-      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-      else if (uischema?.options?.[`linear_scale_label${maximum}`]) {
+      else if (uischema.options?.[`linear_scale_label${maximum}`]) {
         return formatMessage(messages.valueOutOfTotalWithMaxExplanation, {
           value,
           total,
