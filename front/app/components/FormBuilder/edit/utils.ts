@@ -1,6 +1,6 @@
 import { IFlatCustomField } from 'api/custom_fields/types';
 
-import { questionDNDType } from 'components/FormBuilder/components/FormFields';
+import { questionDNDType } from 'components/FormBuilder/components/FormFields/constants';
 
 const reorder = <ListType>(
   list: ListType[],
@@ -67,8 +67,10 @@ export const getReorderedFields = (
   const sourceGroupId = source.droppableId;
   const destinationGroupId = destination.droppableId;
 
+  // REODERING QUESTION
   if (type === questionDNDType) {
     if (sourceGroupId === destinationGroupId) {
+      // REORDERING QUESTION WITHIN SAME GROUP
       const updatedOrder = reorder<IFlatCustomField>(
         getGroupQuestions(nestedGroupData, sourceGroupId),
         source.index,
@@ -82,6 +84,7 @@ export const getReorderedFields = (
 
       return getFlatGroupStructure(updatedGroups);
     } else {
+      // REORDERING QUESTION TO DIFFERENT GROUP
       const sourceOrder = getGroupQuestions(nestedGroupData, sourceGroupId);
       const destinationOrder = getGroupQuestions(
         nestedGroupData,
@@ -103,6 +106,7 @@ export const getReorderedFields = (
     }
   }
 
+  // REORDERING GROUP
   const updatedGroups = reorder<NestedGroupingStructure>(
     nestedGroupData,
     source.index,
