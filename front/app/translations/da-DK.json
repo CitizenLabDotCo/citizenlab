@@ -1805,7 +1805,7 @@
   "app.containers.Projects.xOptionsInFinalPhase": "{ideasCount, plural, one {# valgmulighed} other {# valgmuligheder}} i slutfasen",
   "app.containers.Projects.xParticipants": "{participantsCount, plural, one {# deltager} other {# deltagere}}",
   "app.containers.Projects.xPetitions": "{ideasCount, plural, no {# forslag} one {# forslag} other {# forslag}}",
-  "app.containers.Projects.xPetitionsInCurrentPhase": "{ideasCount, plural, no {# petitions} one {# petition} other {# petitions}} in the current phase",
+  "app.containers.Projects.xPetitionsInCurrentPhase": "{ideasCount, plural, no {# forslag} one {# forslag} other {# forslag}} i den aktuelle fase",
   "app.containers.Projects.xPetitionsInFinalPhase": "{ideasCount, plural, no {# forslag} one {# forslag} other {# forslag}} i slutfasen",
   "app.containers.Projects.xPhases": "{phasesCount, plural, one {# fase} other {# faser}}",
   "app.containers.Projects.xProjects": "{ideasCount, plural, one {# projekt} other {# projekter}}",
