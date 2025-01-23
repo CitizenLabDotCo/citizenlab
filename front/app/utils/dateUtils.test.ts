@@ -1,4 +1,6 @@
-import moment from 'moment';
+// moment-timezone extends the regular moment library,
+// so there's no need to import both moment and moment-timezone
+import moment from 'moment-timezone';
 
 import {
   pastPresentOrFuture,
@@ -7,7 +9,6 @@ import {
   getIsoDateForToday,
   timeAgo,
 } from './dateUtils';
-import 'moment-timezone';
 
 // test date is 1AM June 15 2020 UTC time (Z)
 const testDateStr = '2020-06-15T01:00:00Z';

@@ -14,6 +14,7 @@ resource 'Ideas' do
     before do
       @user = user
       header_token_for user
+      create(:idea_status_proposed)
     end
 
     get 'web_api/v1/ideas/as_markers' do
@@ -186,6 +187,22 @@ resource 'Ideas' do
       end
     end
 
+    get 'web_api/v1/ideas/survey_submissions' do
+      describe do
+        before do
+          @project = create(:single_phase_native_survey_project)
+          @idea = create(:native_survey_response, project: @project, author: @user)
+          @idea_another_user = create(:native_survey_response, project: @project)
+        end
+
+        example_request 'List all survey submissions of user' do
+          expect(status).to eq 200
+          json_response = json_parse(response_body)
+          expect(json_response[:data].pluck(:id)).to eq [@idea.id]
+        end
+      end
+    end
+
     get 'web_api/v1/ideas/filter_counts' do
       describe do
         before do
@@ -312,6 +329,43 @@ resource 'Ideas' do
           user_reaction: { data: { id: user_reaction.id, type: 'reaction' } },
           cosponsors: { data: [{ id: cosponsorship.user_id, type: 'user' }] }
         )
+      end
+    end
+
+    get 'web_api/v1/ideas/:id/as_xlsx' do
+      let!(:project) { create(:single_phase_native_survey_project) }
+      let!(:extra_field_key) { 'new_custom_field_name1' }
+      let!(:extra_field_answer) { 'new_custom_field_value1' }
+      let!(:form) { create(:custom_form, participation_context: project.phases.first) }
+      let!(:text_field) { create(:custom_field_text, key: extra_field_key, required: true, resource: form) }
+      let!(:idea) do
+        idea = create(:native_survey_response, project: project, author: @user)
+        idea.custom_field_values = { extra_field_key => extra_field_answer }
+        idea.save!
+        idea
+      end
+      let!(:id) { idea.id }
+
+      example_request 'Export one idea by id' do
+        expect(status).to eq 200
+        worksheet = RubyXL::Parser.parse_buffer(response_body).worksheets[0]
+
+        flat_values = worksheet.map { |r| r.cells.map(&:value) }
+        question_title = flat_values[0][1]
+        expect(question_title).to eq text_field.title_multiloc['en']
+
+        question_answer = flat_values[1][1]
+        expect(question_answer).to eq extra_field_answer
+      end
+
+      describe 'Errors' do
+        let(:other_idea) { create(:native_survey_response, project: project) }
+        let(:id) { other_idea.id }
+
+        example '[error] Export an idea by id of which you are not the author', document: false do
+          do_request id: other_idea.id
+          expect(status).to eq 401
+        end
       end
     end
 

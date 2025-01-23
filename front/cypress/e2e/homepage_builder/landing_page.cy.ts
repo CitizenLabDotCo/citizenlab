@@ -50,6 +50,10 @@ describe('Landing page - not signed in', () => {
     // shows a "show more" button underneath the project cards
     cy.get('.e2e-project-cards-show-more-button');
 
+    // is accessible
+    cy.injectAxe();
+    cy.checkA11y();
+
     // shows the signed-out header CTA button, and shows the sign up/in modal when clicked
     cy.get('.e2e-signed-out-header-cta-button').click();
     cy.get('#e2e-authentication-modal');
@@ -119,6 +123,10 @@ describe('Landing page - signed in', () => {
       const text = $el.text();
       expect(text).to.match(signedInHeaderEnglish);
     });
+
+    // Is accessible
+    cy.injectAxe();
+    cy.checkA11y();
   });
 
   after(() => {
