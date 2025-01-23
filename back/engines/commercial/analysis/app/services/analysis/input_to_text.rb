@@ -84,12 +84,7 @@ module Analysis
       options_by_key = custom_field.options.index_by(&:key)
       value_for_llm = case custom_field.input_type
       when 'ranking'
-        stored_value = input.custom_field_values[custom_field.key]
-        (stored_value || []).map.with_index do |option_key, index|
-          title_multiloc = options_by_key[option_key]&.title_multiloc
-          option_title = title_multiloc ? @multiloc_service.t(title_multiloc) : ''
-          "#{index + 1}. #{option_title}"
-        end.join("\n")
+        ranking_field_value(input, custom_field, options_by_key)
       else
         vv = Export::Xlsx::ValueVisitor.new(input, options_by_key, app_configuration: @app_configuration)
         custom_field.accept(vv)
@@ -105,6 +100,15 @@ module Analysis
 
       value = truncate_values ? full_value&.truncate(truncate_values) : full_value
       obj[label] = value
+    end
+
+    def ranking_field_value(input, custom_field, options_by_key)
+      stored_value = input.custom_field_values[custom_field.key]
+      (stored_value || []).map.with_index do |option_key, index|
+        title_multiloc = options_by_key[option_key]&.title_multiloc
+        option_title = title_multiloc ? @multiloc_service.t(title_multiloc) : ''
+        "#{index + 1}. #{option_title}"
+      end.join("\n")
     end
   end
 end
