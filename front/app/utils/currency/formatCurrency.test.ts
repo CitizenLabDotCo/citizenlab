@@ -18,7 +18,7 @@ describe('formatCurrency', () => {
     // USD is a currency that uses the $ symbol before the amount, without a space.
     expect(formatCurrency('en', 'USD', 100)).toEqual(`$100`);
 
-    // Depending on convention in each nation, the symbol can either precede or follow the value,
+    // With EUR, depending on convention in each nation, the symbol can either precede or follow the value,
     // e.g., €10 or 10 €, often with an intervening space.
     expect(formatCurrency('nl-BE', 'EUR', 100)).toEqual(
       `€${nonBreakingSpace}100`
