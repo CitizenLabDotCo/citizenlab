@@ -54,7 +54,7 @@ const validateLogic = (message: string) => {
       logic: object(),
     })
     .when('input_type', (input_type: string, schema) => {
-      if (['select', 'linear_scale'].includes(input_type)) {
+      if (['select', 'linear_scale', 'rating'].includes(input_type)) {
         return schema.test(
           'rules reference prior pages',
           message,
