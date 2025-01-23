@@ -17,6 +17,14 @@ class IdeaCustomFieldsService
     end
   end
 
+  def xlsx_exportable_fields
+    all_fields.filter(&:supports_xlsx_export?)
+  end
+
+  def geojson_supported_fields
+    all_fields.filter(&:supports_geojson?)
+  end
+
   def visible_fields
     enabled_fields
   end
