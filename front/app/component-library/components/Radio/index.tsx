@@ -106,6 +106,7 @@ export type Props = {
   buttonColor?: string | undefined;
   className?: string;
   isRequired?: boolean;
+  onKeyDown?: React.KeyboardEventHandler<HTMLInputElement>;
 } & BoxPaddingProps &
   BoxMarginProps;
 
@@ -121,6 +122,7 @@ const Radio = ({
   className,
   isRequired,
   usePrimaryBorder = false,
+  onKeyDown,
   onChange: _onChange,
   ...rest
 }: Props) => {
@@ -175,6 +177,7 @@ const Radio = ({
         onBlur={handleOnBlur}
         required={isRequired}
         readOnly
+        onKeyDown={onKeyDown}
       />
       <CustomRadio
         className={`${inputFocused ? 'focused' : ''}

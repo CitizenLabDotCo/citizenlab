@@ -163,31 +163,72 @@ const MatrixControl = ({
                       max-width="100px"
                     >
                       <Text m="4px" color="tenantPrimary">
-                        {statement.label || index + 1}
+                        {statement?.label || index + 1}
                       </Text>
                     </Box>
                   </StickyTd>
-                  {columnsFromSchema.map((_, index) => {
+                  {columnsFromSchema.map((_, columnIndex) => {
                     return (
-                      <StyledTd key={index}>
+                      <StyledTd key={`radio-${columnIndex}-${index}`}>
                         <Box
                           min-width="84px"
                           display="flex"
                           justifyContent="center"
                         >
                           <StyledRadio
+                            onKeyDown={(e) => {
+                              if (e.key === 'Enter') {
+                                e.preventDefault();
+                                handleChange(path, {
+                                  ...data,
+                                  [statement.key]: columnIndex + 1,
+                                });
+                              }
+
+                              //   if (e.key === 'Tab') {
+                              //     e.preventDefault();
+                              //     // Move to next group of radio buttons
+                              //     document
+                              //       .getElementById(
+                              //         `${id}-${index + 1}-${0}-radio`
+                              //       )
+                              //       ?.focus();
+                              //   }
+                              //   if (e.key === 'ArrowLeft') {
+                              //     e.preventDefault();
+                              //     e.stopPropagation();
+                              //     document
+                              //       .getElementById(
+                              //         `${id}-${index}-${columnIndex - 1}-radio`
+                              //       )
+                              //       ?.focus();
+                              //   }
+                              //   if (e.key === 'ArrowRight') {
+                              //     console.log(
+                              //         'right!!'
+                              //     )
+                              //     e.preventDefault();
+                              //     e.stopPropagation();
+                              //     document
+                              //       .getElementById(
+                              //         `${id}-${index}-${columnIndex + 1}-radio`
+                              //       )
+                              //       ?.focus();
+                              //   }
+                            }}
                             currentValue={data?.[statement.key] - 1}
-                            value={index}
+                            value={columnIndex}
                             label={
-                              <ScreenReaderOnly>
+                              <ScreenReaderOnly tabIndex={-1}>
                                 {getAriaValueText(
-                                  index + 1,
+                                  columnIndex + 1,
                                   columnsFromSchema.length
                                 )}
-                                {statements[index].label}
+                                {statements[index]?.label}
                               </ScreenReaderOnly>
                             }
-                            name={`${index}-radio-group`}
+                            name={`${id}-${index}-${columnIndex}-radio-group`}
+                            id={`${id}-${index}-${columnIndex}-radio`}
                             onChange={(value) => {
                               if (data && data?.length === statements?.length) {
                                 setDidBlur(true);
