@@ -24,9 +24,6 @@ const FormattedCurrency = ({
     } else if (currency === 'CRE') {
       return <>{formatMessage(messages.credits)}</>;
     } else {
-      {
-        /* TAN-3584 */
-      }
       return <>{currency}</>;
     }
   }

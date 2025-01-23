@@ -101,7 +101,6 @@ export const getVoteSubmissionDisabledExplanation = (
     const minBudgetRequiredNotReached = minBudgetRequired && !minBudgetReached;
 
     if (minBudgetRequiredNotReached) {
-      // TAN-3584
       return formatMessage(messages.minBudgetNotReached, {
         votesMinimum: minBudget.toLocaleString(),
         currency: currency ?? '',
@@ -166,7 +165,6 @@ export const getVotesCounter = (
 
     const budgetLeft = voting_max_total - numberOfVotesCast;
 
-    // TAN-3584
     return formatMessage(messages.currencyLeft, {
       budgetLeft: budgetLeft.toLocaleString(),
       totalBudget: voting_max_total.toLocaleString(),
