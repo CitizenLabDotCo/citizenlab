@@ -9,7 +9,7 @@ import { OnboardingType } from 'api/users/types';
 
 import Areas from 'components/Areas';
 import Topics from 'components/Topics';
-import Button from 'components/UI/Button';
+import Button from 'components/UI/ButtonWithLink';
 
 import { useIntl } from 'utils/cl-intl';
 

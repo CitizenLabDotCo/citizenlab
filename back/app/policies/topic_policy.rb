@@ -8,11 +8,11 @@ class TopicPolicy < ApplicationPolicy
   end
 
   def create?
-    user&.active? && user&.admin?
+    user&.active? && user.admin?
   end
 
   def update?
-    user&.active? && user&.admin?
+    user&.active? && user.admin?
   end
 
   def reorder?

@@ -8,7 +8,7 @@ import useComment from 'api/comments/useComment';
 import useComments from 'api/comments/useComments';
 import useIdeaById from 'api/ideas/useIdeaById';
 
-import Button from 'components/UI/Button';
+import Button from 'components/UI/ButtonWithLink';
 
 import { FormattedMessage } from 'utils/cl-intl';
 import { isNil, isNilOrError } from 'utils/helperUtils';

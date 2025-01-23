@@ -11,7 +11,7 @@ import useFeatureFlag from 'hooks/useFeatureFlag';
 import SectionFormWrapper from 'containers/Admin/pagesAndMenu/components/SectionFormWrapper';
 import customPageMessages from 'containers/Admin/pagesAndMenu/containers/CustomPages/messages';
 
-import Button from 'components/UI/Button';
+import Button from 'components/UI/ButtonWithLink';
 
 import { useIntl } from 'utils/cl-intl';
 

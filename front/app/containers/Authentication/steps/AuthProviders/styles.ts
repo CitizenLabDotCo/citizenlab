@@ -6,7 +6,7 @@ import {
 } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
-import Button from 'components/UI/Button';
+import Button from 'components/UI/ButtonWithLink';
 
 export const FormContainer = styled.div<{ inModal: boolean }>`
   display: flex;

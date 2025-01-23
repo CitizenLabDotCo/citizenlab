@@ -1,4 +1,6 @@
 import { isString } from 'lodash-es';
+// moment-timezone extends the regular moment library,
+// so there's no need to import both moment and moment-timezone
 import moment, { unitOfTime, Moment } from 'moment-timezone';
 import { SupportedLocale } from 'typings';
 

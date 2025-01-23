@@ -3,7 +3,7 @@ import React, { PureComponent } from 'react';
 import { WrappedComponentProps } from 'react-intl';
 import styled from 'styled-components';
 
-import Button from 'components/UI/Button';
+import Button from 'components/UI/ButtonWithLink';
 import { FormSection, FormSectionTitle } from 'components/UI/FormComponents';
 import Modal from 'components/UI/Modal';
 

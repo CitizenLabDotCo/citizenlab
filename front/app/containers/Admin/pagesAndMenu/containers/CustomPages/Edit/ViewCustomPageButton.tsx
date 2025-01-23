@@ -3,7 +3,7 @@ import React from 'react';
 import { WrappedComponentProps } from 'react-intl';
 import { RouteType } from 'routes';
 
-import Button from 'components/UI/Button';
+import Button from 'components/UI/ButtonWithLink';
 
 import { injectIntl } from 'utils/cl-intl';
 

@@ -95,7 +95,7 @@ class ActivitiesService
   end
 
   def create_phase_ended_activities(now)
-    Phase.published.where(end_at: ..now).each do |phase|
+    Phase.published.where(end_at: ..now - 1.day).each do |phase|
       if Activity.find_by(item: phase, action: 'ended').nil?
         LogActivityJob.perform_later(phase, 'ended', nil, now)
       end

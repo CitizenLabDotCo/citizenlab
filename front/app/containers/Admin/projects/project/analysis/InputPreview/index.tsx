@@ -16,7 +16,7 @@ import useAnalysisUserById from 'api/analysis_users/useAnalysisUserById';
 import usePhase from 'api/phases/usePhase';
 
 import Avatar from 'components/Avatar';
-import Button from 'components/UI/Button';
+import Button from 'components/UI/ButtonWithLink';
 
 import { trackEventByName } from 'utils/analytics';
 import { useIntl } from 'utils/cl-intl';
@@ -27,7 +27,7 @@ import { useSelectedInputContext } from '../SelectedInputContext';
 import Taggings from '../Taggings';
 import tracks from '../tracks';
 
-import LongFieldValue from './LongFieldValue';
+import LongFieldValue from './components/LongFieldValue';
 import messages from './messages';
 
 const InputListItem = () => {

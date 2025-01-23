@@ -4,7 +4,7 @@ import React from 'react';
 
 import { exportSurveyResults } from 'api/survey_results/utils';
 
-import Button from 'components/UI/Button';
+import Button from 'components/UI/ButtonWithLink';
 
 import { trackEventByName } from 'utils/analytics';
 import { FormattedMessage } from 'utils/cl-intl';

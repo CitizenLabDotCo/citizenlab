@@ -15,6 +15,8 @@ export type IdeaStatusParticipationMethod = Extract<
 
 export type IdeaStatusesQueryParams = {
   participation_method?: IdeaStatusParticipationMethod;
+  // Not ready for usage yet
+  exclude_screening_status?: boolean;
 };
 
 type IdeationStatusCode =

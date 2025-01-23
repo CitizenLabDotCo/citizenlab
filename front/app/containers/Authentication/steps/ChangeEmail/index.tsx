@@ -8,7 +8,7 @@ import { string, object } from 'yup';
 import { SetError } from 'containers/Authentication/typings';
 
 import Input from 'components/HookForm/Input';
-import Button from 'components/UI/Button';
+import Button from 'components/UI/ButtonWithLink';
 
 import { useIntl } from 'utils/cl-intl';
 import {

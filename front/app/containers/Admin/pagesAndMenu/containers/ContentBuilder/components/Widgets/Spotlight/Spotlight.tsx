@@ -14,7 +14,7 @@ import {
 import { DEFAULT_PADDING } from 'components/admin/ContentBuilder/constants';
 import AvatarBubbles from 'components/AvatarBubbles';
 import Skeleton from 'components/AvatarBubbles/Skeleton';
-import Button from 'components/UI/Button';
+import Button from 'components/UI/ButtonWithLink';
 import QuillEditedContent from 'components/UI/QuillEditedContent';
 
 import { DEFAULT_Y_PADDING } from '../constants';
