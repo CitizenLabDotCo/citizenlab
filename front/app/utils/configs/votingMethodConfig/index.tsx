@@ -1,9 +1,9 @@
 import React from 'react';
 
 import { MessageDescriptor } from 'react-intl';
-import { FormatMessage } from 'typings';
+import { FormatMessage, SupportedLocale } from 'typings';
 
-import { IAppConfiguration } from 'api/app_configuration/types';
+import { TCurrency } from 'api/app_configuration/types';
 import { IPhaseData, VotingMethod } from 'api/phases/types';
 import { IProjectData } from 'api/projects/types';
 
@@ -17,6 +17,7 @@ import AssignSingleVoteBox from 'components/VoteInputs/single/AssignSingleVoteBo
 import AssignSingleVoteButton from 'components/VoteInputs/single/AssignSingleVoteButton';
 
 import { FormattedMessage } from 'utils/cl-intl';
+import formatCurrency from 'utils/currency/formatCurrency';
 import { getLocalisedDateString } from 'utils/dateUtils';
 
 import messages from './messages';
@@ -44,9 +45,10 @@ export type GetStatusDescriptionProps = {
   project: IProjectData;
   submissionState: VoteSubmissionState;
   phase?: IPhaseData;
-  appConfig?: IAppConfiguration;
+  currency: TCurrency;
   localize: Localize;
   formatMessage: FormatMessage;
+  locale: SupportedLocale;
 };
 
 type IdeaCardVoteInputProps = {
@@ -66,7 +68,6 @@ export type VotingMethodConfig = {
     project,
     phase,
     submissionState,
-    appConfig,
   }: GetStatusDescriptionProps) => JSX.Element | null;
   getIdeaCardVoteInput: ({
     ideaId,
@@ -106,11 +107,9 @@ const budgetingConfig: VotingMethodConfig = {
   getStatusDescription: ({
     phase,
     submissionState,
-    appConfig,
+    currency,
+    locale,
   }: GetStatusDescriptionProps) => {
-    const currency =
-      appConfig?.data.attributes.settings.core.currency.toString();
-
     if (!phase) return null;
 
     if (submissionState === 'hasNotSubmitted') {
@@ -135,13 +134,13 @@ const budgetingConfig: VotingMethodConfig = {
                 {...messages.budgetingSubmissionInstructionsPreferredOptions}
               />
             </li>
+            {/* TODO */}
             {typeof minBudget === 'number' && minBudget > 0 ? (
               <li>
                 <FormattedMessage
-                  {...messages.budgetingSubmissionInstructionsMinBudget}
+                  {...messages.budgetingSubmissionInstructionsMinBudget1}
                   values={{
-                    amount: minBudget,
-                    currency,
+                    amount: formatCurrency(locale, currency, minBudget),
                   }}
                 />
               </li>
