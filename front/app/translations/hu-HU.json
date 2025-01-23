@@ -241,6 +241,8 @@
   "app.components.PagesForm.savePage": "Oldal mentése",
   "app.components.PagesForm.saveSuccess": "Az oldal sikeresen mentve.",
   "app.components.PagesForm.titleMissingOneLanguageError": "Adjon címet legalább egy nyelvhez",
+  "app.components.Pagination.back": "Előző oldal",
+  "app.components.Pagination.next": "Következő oldal",
   "app.components.ParticipationCTABars.VotingCTABar.budgetExceedsLimit": "{votesCast}elköltött, ami meghaladja a {votesLimit}korlátot. Kérjük, vegyen ki néhány terméket a kosárból, és próbálja újra.",
   "app.components.ParticipationCTABars.VotingCTABar.currencyLeft": "{budgetLeft} / {totalBudget} {currency} balra",
   "app.components.ParticipationCTABars.VotingCTABar.minBudgetNotReached2": "Legalább {votesMinimum} {currency} -t kell költenie, mielőtt elküldheti kosarát.",

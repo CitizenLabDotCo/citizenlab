@@ -241,6 +241,8 @@
   "app.components.PagesForm.savePage": "Säit spéicheren",
   "app.components.PagesForm.saveSuccess": "Säit erfollegräich gespäichert.",
   "app.components.PagesForm.titleMissingOneLanguageError": "Stellt en Titel fir mindestems eng Sprooch bereet",
+  "app.components.Pagination.back": "Virdrun Säit",
+  "app.components.Pagination.next": "Nächst Säit",
   "app.components.ParticipationCTABars.VotingCTABar.budgetExceedsLimit": "Dir hutt {votesCast}ausginn, wat d'Limite vun {votesLimit}iwwerschreift. Huelt w.e.g. e puer Elementer aus Ärem Kuerf a probéiert nach eng Kéier.",
   "app.components.ParticipationCTABars.VotingCTABar.currencyLeft": "{budgetLeft} / {totalBudget} {currency}",
   "app.components.ParticipationCTABars.VotingCTABar.minBudgetNotReached2": "Dir musst op d'mannst {votesMinimum} {currency} ausginn ier Dir Äre Kuerf ofginn.",

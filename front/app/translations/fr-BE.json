@@ -241,6 +241,8 @@
   "app.components.PagesForm.savePage": "Sauvegarder la page",
   "app.components.PagesForm.saveSuccess": "Page sauvegardée avec succès.",
   "app.components.PagesForm.titleMissingOneLanguageError": "Fournir un titre pour au moins une langue",
+  "app.components.Pagination.back": "Page précédente",
+  "app.components.Pagination.next": "Page suivante",
   "app.components.ParticipationCTABars.VotingCTABar.budgetExceedsLimit": "Vous avez dépensé {votesCast}, ce qui dépasse la limite de {votesLimit}. Veuillez retirer quelques options de votre panier et réessayer.",
   "app.components.ParticipationCTABars.VotingCTABar.currencyLeft": "{budgetLeft} / {totalBudget} {currency} restant",
   "app.components.ParticipationCTABars.VotingCTABar.minBudgetNotReached2": "Vous devez dépenser un minimum de {votesMinimum} {currency} avant de pouvoir soumettre votre panier.",

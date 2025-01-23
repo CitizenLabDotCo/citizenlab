@@ -241,6 +241,8 @@
   "app.components.PagesForm.savePage": "Cadw tudalen",
   "app.components.PagesForm.saveSuccess": "Llwyddwyd i gadw'r dudalen.",
   "app.components.PagesForm.titleMissingOneLanguageError": "Rhowch deitl ar gyfer o leiaf un iaith",
+  "app.components.Pagination.back": "Tudalen flaenorol",
+  "app.components.Pagination.next": "Tudalen nesaf",
   "app.components.ParticipationCTABars.VotingCTABar.budgetExceedsLimit": "Gwarioch {votesCast}, sy'n fwy na'r terfyn o {votesLimit}. Tynnwch rai eitemau o'ch basged a rhowch gynnig arall arni.",
   "app.components.ParticipationCTABars.VotingCTABar.currencyLeft": "{budgetLeft} / {totalBudget} {currency} chwith",
   "app.components.ParticipationCTABars.VotingCTABar.minBudgetNotReached2": "Mae angen i chi wario o leiaf {votesMinimum} {currency} cyn y gallwch gyflwyno'ch basged.",
