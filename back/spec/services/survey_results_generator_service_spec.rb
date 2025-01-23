@@ -19,7 +19,7 @@ RSpec.describe SurveyResultsGeneratorService do
 
   # Set-up custom form
   let_it_be(:form) { create(:custom_form, participation_context: survey_phase) }
-  let_it_be(:page_field) { create(:custom_field_page, resource: form) }
+  let_it_be(:page_field) { create(:custom_field_page, logic: { next_page_id: 'survey_end' }, resource: form) }
   let_it_be(:text_field) do
     create(
       :custom_field,
@@ -110,6 +110,7 @@ RSpec.describe SurveyResultsGeneratorService do
         'fr-FR' => "Tout à fait d'accord",
         'nl-NL' => 'Strerk mee eens'
       },
+      logic: { rules: [{ if: 2, goto_page_id: 'survey_end' }, { if: 'no_answer', goto_page_id: 'survey_end' }] },
       required: true
     )
   end
@@ -387,6 +388,7 @@ RSpec.describe SurveyResultsGeneratorService do
         expect(page_result[:questionResponseCount]).to eq(22)
         expect(page_result[:pageNumber]).to eq(1)
         expect(page_result[:questionNumber]).to be_nil
+        expect(page_result[:logic]).to eq({ nextPageNumber: 999, numQuestionsSkipped: 0 })
       end
     end
 
@@ -683,13 +685,13 @@ RSpec.describe SurveyResultsGeneratorService do
           multilocs: {
             answer: {
               1 => { title_multiloc: { 'en' => '1 - Strongly disagree', 'fr-FR' => "1 - Pas du tout d'accord", 'nl-NL' => '1 - Helemaal niet mee eens' }, id: "#{linear_scale_field.id}_1", logic: {} },
-              2 => { title_multiloc: { 'en' => '2 - Disagree', 'fr-FR' => '2 - Être en désaccord', 'nl-NL' => '2 - Niet mee eens' }, id: "#{linear_scale_field.id}_2", logic: {} },
+              2 => { title_multiloc: { 'en' => '2 - Disagree', 'fr-FR' => '2 - Être en désaccord', 'nl-NL' => '2 - Niet mee eens' }, id: "#{linear_scale_field.id}_2", logic: { nextPageNumber: 999, numQuestionsSkipped: 0 } },
               3 => { title_multiloc: { 'en' => '3 - Slightly disagree', 'fr-FR' => '3 - Plutôt en désaccord', 'nl-NL' => '3 - Enigszins oneens' }, id: "#{linear_scale_field.id}_3", logic: {} },
               4 => { title_multiloc: { 'en' => '4 - Neutral', 'fr-FR' => '4 - Neutre', 'nl-NL' => '4 - Neutraal' }, id: "#{linear_scale_field.id}_4", logic: {} },
               5 => { title_multiloc: { 'en' => '5 - Slightly agree', 'fr-FR' => "5 - Plutôt d'accord", 'nl-NL' => '5 - Enigszins eens' }, id: "#{linear_scale_field.id}_5", logic: {} },
               6 => { title_multiloc: { 'en' => '6 - Agree', 'fr-FR' => "6 - D'accord", 'nl-NL' => '6 - Mee eens' }, id: "#{linear_scale_field.id}_6", logic: {} },
               7 => { title_multiloc: { 'en' => '7 - Strongly agree', 'fr-FR' => "7 - Tout à fait d'accord", 'nl-NL' => '7 - Strerk mee eens' }, id: "#{linear_scale_field.id}_7", logic: {} },
-              'no_answer' => { title_multiloc: {}, id: "#{linear_scale_field.id}_no_answer", logic: {} }
+              'no_answer' => { title_multiloc: {}, id: "#{linear_scale_field.id}_no_answer", logic: { nextPageNumber: 999, numQuestionsSkipped: 0 } }
             }
           }
         }
@@ -701,6 +703,9 @@ RSpec.describe SurveyResultsGeneratorService do
       end
 
       it 'returns a single result for a linear scale field' do
+        # First remove logic from expected result - not returned in single result
+        expected_result_linear_scale[:multilocs][:answer][2][:logic] = {}
+        expected_result_linear_scale[:multilocs][:answer]['no_answer'][:logic] = {}
         expect(generator.generate_results(field_id: linear_scale_field.id)).to match expected_result_linear_scale
       end
 
@@ -717,6 +722,9 @@ RSpec.describe SurveyResultsGeneratorService do
               'fr-FR' => '5',
               'nl-NL' => '5'
             }
+            # And remove logic again
+            result[:multilocs][:answer][2][:logic] = {}
+            result[:multilocs][:answer]['no_answer'][:logic] = {}
           end
         end
 
@@ -1633,8 +1641,6 @@ RSpec.describe SurveyResultsGeneratorService do
     end
 
     let(:results) { generator.send(:add_logic_to_results, results_without_logic, logic_ids: []) }
-
-    # TODO: JS - we need some tests to make sure that the logic IDs are correctly added in the first place
 
     it 'returns logic information for single select options' do
       select_result = results[1]
