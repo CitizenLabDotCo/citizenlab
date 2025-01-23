@@ -137,8 +137,6 @@ const FormEdit = ({
     ),
   });
 
-  console.log('defaultValues: ', defaultValues);
-
   const methods = useForm({
     mode: 'onBlur',
     defaultValues,
