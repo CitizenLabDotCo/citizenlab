@@ -70,6 +70,11 @@ class IdeaCustomFieldsService
     constraints = @participation_method.constraints[field.code&.to_sym]
     return unless constraints
 
+    # Convert ActionController::Parameters to a hash before making comparisons, as equality
+    # between ActionController::Parameters and Hash has been deprecated and will always
+    # return false.
+    field_params = field_params.to_h if field_params.is_a?(ActionController::Parameters)
+
     constraints[:locks]&.each do |attribute, value|
       if value == true && field_params[attribute] != field[attribute] && !section1_title?(field, attribute)
         field.errors.add :constraints, "Cannot change #{attribute}. It is locked."

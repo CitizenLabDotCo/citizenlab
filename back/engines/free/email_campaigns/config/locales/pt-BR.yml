@@ -34,6 +34,7 @@ pt:
       "project_review_request": Solicitação de revisão do projeto
       "project_review_state_change": Projeto aprovado
       "status_change_on_idea_you_follow": Mudança de status de uma ideia que você segue
+      "survey_submitted": Pesquisa enviada
       "threshold_reached_for_admin": Proposta atingiu o limite de votação
       "welcome": Após o cadastro
       "admin_digest": Resumo semanal para gestores
@@ -496,6 +497,14 @@ pt:
       event_description: 'O projeto "%{projectName}" está pedindo para você votar entre %{numIdeas} opções:'
       cta_message: 'Clique no botão abaixo para participar'
       cta_vote: 'Acesse a plataforma para votar'
+    survey_submitted:
+      subject: '%{organizationName}: Obrigado por sua resposta! 🎉'
+      main_header: 'Obrigado por compartilhar o que você pensa sobre "%{projectName}"!'
+      your_input_submitted: 'Sua entrada para "%{projectName}" foi enviada com sucesso.'
+      if_you_would_like_to_review: 'Se quiser revisar seu envio, você pode fazer o download das respostas abaixo.'
+      your_submission_has_id: 'Seu envio tem o seguinte identificador exclusivo:'
+      you_can_use_this_id: 'Você pode usar esse identificador para entrar em contato com os administradores da plataforma, caso queira que seu envio seja removido.'
+      download_responses: 'Baixe suas respostas'
     admin_labels:
       recipient_role:
         admins: 'Aos administradores'

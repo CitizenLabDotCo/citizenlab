@@ -1,9 +1,9 @@
 import { useState } from 'react';
 
-import { uuid4 } from '@sentry/utils';
+import { v4 as uuidv4 } from 'uuid';
 
 const useInstanceId = () => {
-  return useState(() => uuid4())[0];
+  return useState(() => uuidv4())[0];
 };
 
 export default useInstanceId;
