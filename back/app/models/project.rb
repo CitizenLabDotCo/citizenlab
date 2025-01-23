@@ -130,7 +130,7 @@ class Project < ApplicationRecord
 
   scope :user_groups_visible, lambda { |user|
     user_groups = Group.joins(:projects).where(projects: self).with_user(user)
-    project_ids = GroupsProject.where(projects: self).where(groups: user_groups).select(:project_id).distinct
+    project_ids = GroupsProject.where(project: self).where(group: user_groups).select(:project_id)
     where(id: project_ids)
   }
 

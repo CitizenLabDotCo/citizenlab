@@ -31,6 +31,9 @@ module Cl2Back
 
     config.load_defaults 7.0
 
+    # To be removed once we move to +load_defaults 7.1+:
+    config.add_autoload_paths_to_load_path = false
+
     # Configuration for the application, engines, and railties goes here.
     #
     # These settings can be overridden in specific environments using the files
@@ -86,12 +89,6 @@ module Cl2Back
 
     config.middleware.use ActionDispatch::Cookies # Required for all session management
     config.middleware.use ActionDispatch::Session::CookieStore, config.session_options
-
-    # In Rails 6.1+, Active Record provides a new internal API for connection
-    # management. Single database applications do not need to make any changes except to
-    # opt-in to the new behavior. In Rails 7.0, the legacy connection handling has been
-    # deprecated.
-    config.active_record.legacy_connection_handling = false
 
     # Dump the database schema as SQL (`structure.sql`) instead of Ruby (`schema.rb`).
     config.active_record.schema_format = :sql
