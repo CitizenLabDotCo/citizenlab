@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useCallback } from 'react';
+import React, { useRef } from 'react';
 
 import {
   Box,
@@ -14,7 +14,7 @@ import { useTheme } from 'styled-components';
 
 import { FormLabel } from 'components/UI/FormComponents';
 
-import { FormattedMessage, useIntl } from 'utils/cl-intl';
+import { FormattedMessage } from 'utils/cl-intl';
 import { getLabel, sanitizeForClassname } from 'utils/JSONFormUtils';
 
 import ErrorDisplay from '../ErrorDisplay';
@@ -36,47 +36,11 @@ const RatingControl = ({
 }: ControlProps) => {
   const isSmallerThanPhone = useBreakpoint('phone');
   const theme = useTheme();
-  const { formatMessage } = useIntl();
 
   const minimum = 1;
   const maximum = schema.maximum ?? 10; // Seven since the maximum number of options is 10
   const answerNotPublic = uischema.options?.answer_visible_to === 'admins';
   const sliderRef = useRef<HTMLDivElement>(null);
-
-  const getAriaValueText = useCallback(
-    (value: number, total: number) => {
-      // If the value has a label, read it out
-      if (uischema.options?.[`linear_scale_label${value}`]) {
-        return formatMessage(messages.valueOutOfTotalWithLabel, {
-          value,
-          total,
-          label: uischema.options[`linear_scale_label${value}`],
-        });
-      }
-      // If we don't have a label but we do have a maximum, read out the current value & maximum label
-      else if (uischema.options?.[`linear_scale_label${maximum}`]) {
-        return formatMessage(messages.valueOutOfTotalWithMaxExplanation, {
-          value,
-          total,
-          maxValue: maximum,
-          maxLabel: uischema.options[`linear_scale_label${maximum}`],
-        });
-      }
-      // Otherwise, just read out the value and the maximum value
-      return formatMessage(messages.valueOutOfTotal, { value, total });
-    },
-    [maximum, uischema.options, formatMessage]
-  );
-
-  useEffect(() => {
-    if (sliderRef.current) {
-      sliderRef.current.setAttribute('aria-valuenow', String(data || minimum));
-      sliderRef.current.setAttribute(
-        'aria-valuetext',
-        getAriaValueText(data || minimum, maximum)
-      );
-    }
-  }, [data, getAriaValueText, minimum, maximum]);
 
   if (!visible) {
     return null;
@@ -115,22 +79,9 @@ const RatingControl = ({
     handleChange(path, newValue);
     if (sliderRef.current) {
       sliderRef.current.setAttribute('aria-valuenow', String(newValue));
-      sliderRef.current.setAttribute(
-        'aria-valuetext',
-        getAriaValueText(newValue, maximum)
-      );
     }
     event.preventDefault();
   };
-
-  // Put all labels from the UI Schema in an array so we can easily access them
-  const labelsFromSchema = Array.from({ length: maximum }, (_, index) => {
-    return uischema.options?.[`linear_scale_label${index + 1}`];
-  });
-
-  // Get an array of the middle value labels so we can determine how to show them in the UI
-  const middleValueLabels = labelsFromSchema.slice(1, -1); // Get only the middle values
-  const hasOnlyMinOrMaxLabels = middleValueLabels.every((label) => !label); // There should be no middle value labels
 
   return (
     <>
@@ -147,7 +98,7 @@ const RatingControl = ({
         </Text>
       )}
       <Box
-        data-testid="linearScaleControl"
+        data-testid="ratingControl"
         role="slider"
         ref={sliderRef}
         aria-valuemin={minimum}
@@ -173,7 +124,9 @@ const RatingControl = ({
               >
                 <Button
                   py="12px"
-                  id={`linear-scale-option-${visualIndex}`}
+                  id={`${sanitizeForClassname(
+                    id
+                  )}-rating-option-${visualIndex}`}
                   tabIndex={-1}
                   aria-pressed={data === visualIndex}
                   borderColor={theme.colors.tenantPrimary}
@@ -206,55 +159,6 @@ const RatingControl = ({
               </Box>
             );
           })}
-        </Box>
-        <Box
-          width="100%"
-          display={isSmallerThanPhone ? 'block' : 'flex'}
-          justifyContent="space-between"
-        >
-          {hasOnlyMinOrMaxLabels && !isSmallerThanPhone ? ( // For desktop view when only min and/or max labels are present
-            <>
-              <Box maxWidth={'50%'}>
-                <Text mt="8px" mb="0px" color="textSecondary">
-                  {labelsFromSchema[0]}
-                </Text>
-              </Box>
-              <Box maxWidth={'50%'}>
-                <Text mt={'8px'} m="0px" color="textSecondary">
-                  {labelsFromSchema[labelsFromSchema.length - 1]}
-                </Text>
-              </Box>
-            </>
-          ) : (
-            // Show labels as list underneath the buttons when more than 3 labels OR on mobile devices
-            <Box maxWidth={'100%'}>
-              {labelsFromSchema.map((label, index) => (
-                <Box display="flex" key={`${path}-${index}`}>
-                  {label && (
-                    <>
-                      <Text
-                        mt="8px"
-                        mb="0px"
-                        mr="8px"
-                        color="textSecondary"
-                        style={{ textAlign: 'center' }}
-                      >
-                        {`${index + 1}.`}
-                      </Text>
-                      <Text
-                        mt="8px"
-                        mb="0px"
-                        color="textSecondary"
-                        style={{ textAlign: 'center' }}
-                      >
-                        {label}
-                      </Text>
-                    </>
-                  )}
-                </Box>
-              ))}
-            </Box>
-          )}
         </Box>
         <VerificationIcon show={uischema.options?.verificationLocked} />
       </Box>

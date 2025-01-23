@@ -5,7 +5,7 @@ import { render, screen } from 'utils/testUtils/rtl';
 
 import { ErrorToReadProvider } from '../Fields/ErrorToReadContext';
 
-import LinearScaleControl from './LinearScaleControl';
+import RatingControl from './RatingControl';
 
 const intl = getDummyIntlObject();
 const handleChange = jest.fn();
@@ -26,7 +26,7 @@ const mockJSONSchema = {
 const mockUISchema: any = {
   type: 'Control',
   scope: '#/properties/rating',
-  label: 'Linear scale',
+  label: 'Rating field',
   options: {
     description: '',
     minimum_label: 'Strongly disagree',
@@ -41,27 +41,27 @@ const props = {
   errors: '',
   schema: mockJSONSchema,
   rootSchema: mockJSONSchema,
-  label: 'Linear scale',
+  label: 'Rating field',
   uischema: mockUISchema,
   id: '#/properties/rating',
   enabled: true,
   visible: true,
 };
 
-describe('LinearScaleControl', () => {
-  it('renders LinearScaleControl', () => {
+describe('RatingControl', () => {
+  it('renders RatingControl', () => {
     render(
       <ErrorToReadProvider>
-        <LinearScaleControl {...props} />
+        <RatingControl {...props} />
       </ErrorToReadProvider>
     );
-    expect(screen.getByTestId('linearScaleControl')).toBeInTheDocument();
+    expect(screen.getByTestId('ratingControl')).toBeInTheDocument();
   });
 
   it("doesn't show optional for required fields", () => {
     render(
       <ErrorToReadProvider>
-        <LinearScaleControl {...props} />
+        <RatingControl {...props} />
       </ErrorToReadProvider>
     );
     expect(screen.queryByText('(optional)')).toBeNull();
@@ -71,7 +71,7 @@ describe('LinearScaleControl', () => {
     props.schema.required = [];
     render(
       <ErrorToReadProvider>
-        <LinearScaleControl {...props} />
+        <RatingControl {...props} />
       </ErrorToReadProvider>
     );
     expect(screen.getByText('(optional)')).toBeInTheDocument();
