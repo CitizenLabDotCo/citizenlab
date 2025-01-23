@@ -20,11 +20,7 @@ const OptionsSettings = ({
   dropdownLayoutName,
 }: Props) => {
   const { formatMessage } = useIntl();
-  const inputTypesNoDropdown = [
-    'multiselect_image',
-    'ranking',
-    'matrix_linear_scale',
-  ];
+  const inputTypesNoDropdown = ['multiselect_image', 'ranking'];
 
   return (
     <>
