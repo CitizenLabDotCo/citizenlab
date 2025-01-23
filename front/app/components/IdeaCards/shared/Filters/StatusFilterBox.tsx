@@ -12,7 +12,7 @@ interface Props {
   ideaQueryParameters: IIdeasFilterCountsQueryParameters;
   onChange: (arg: string | null) => void;
   className?: string;
-  participationMethod?: IdeaStatusParticipationMethod;
+  participationMethod: IdeaStatusParticipationMethod;
 }
 
 const StatusFilterBox = ({

@@ -241,6 +241,8 @@
   "app.components.PagesForm.savePage": "Gem side",
   "app.components.PagesForm.saveSuccess": "Siden er gemt.",
   "app.components.PagesForm.titleMissingOneLanguageError": "Angiv titel for mindst ét sprog",
+  "app.components.Pagination.back": "Forrige side",
+  "app.components.Pagination.next": "Næste side",
   "app.components.ParticipationCTABars.VotingCTABar.budgetExceedsLimit": "Du har brugt {votesCast}, hvilket overskrider grænsen på {votesLimit}. Fjern venligst nogle varer fra din kurv, og prøv igen.",
   "app.components.ParticipationCTABars.VotingCTABar.currencyLeft": "{budgetLeft} / {totalBudget} {currency} tilbage",
   "app.components.ParticipationCTABars.VotingCTABar.minBudgetNotReached2": "Du skal bruge mindst {votesMinimum} {currency} , før du kan indsende din kurv.",

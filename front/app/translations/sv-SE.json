@@ -241,6 +241,8 @@
   "app.components.PagesForm.savePage": "Spara sida",
   "app.components.PagesForm.saveSuccess": "Sidan har sparats.",
   "app.components.PagesForm.titleMissingOneLanguageError": "Ange titel för minst ett språk",
+  "app.components.Pagination.back": "Föregående sida",
+  "app.components.Pagination.next": "Nästa sida",
   "app.components.ParticipationCTABars.VotingCTABar.budgetExceedsLimit": "Du har använt {votesCast}, vilket överskrider gränsen för {votesLimit}. Ta bort några artiklar från din varukorg och försök igen.",
   "app.components.ParticipationCTABars.VotingCTABar.currencyLeft": "{budgetLeft} / {totalBudget} {currency} vänster",
   "app.components.ParticipationCTABars.VotingCTABar.minBudgetNotReached2": "Du måste spendera minst {votesMinimum} {currency} innan du kan skicka din korg.",

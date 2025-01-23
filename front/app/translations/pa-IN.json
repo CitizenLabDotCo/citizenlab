@@ -241,6 +241,8 @@
   "app.components.PagesForm.savePage": "ਪੰਨਾ ਸੁਰੱਖਿਅਤ ਕਰੋ",
   "app.components.PagesForm.saveSuccess": "ਪੰਨਾ ਸਫਲਤਾਪੂਰਵਕ ਸੁਰੱਖਿਅਤ ਕੀਤਾ ਗਿਆ।",
   "app.components.PagesForm.titleMissingOneLanguageError": "ਘੱਟੋ-ਘੱਟ ਇੱਕ ਭਾਸ਼ਾ ਲਈ ਸਿਰਲੇਖ ਪ੍ਰਦਾਨ ਕਰੋ",
+  "app.components.Pagination.back": "ਪਿਛਲਾ ਪੰਨਾ",
+  "app.components.Pagination.next": "ਅਗਲਾ ਪੰਨਾ",
   "app.components.ParticipationCTABars.VotingCTABar.budgetExceedsLimit": "ਤੁਸੀਂ {votesCast}ਖਰਚ ਕੀਤਾ, ਜੋ {votesLimit}ਦੀ ਸੀਮਾ ਤੋਂ ਵੱਧ ਹੈ। ਕਿਰਪਾ ਕਰਕੇ ਆਪਣੀ ਟੋਕਰੀ ਵਿੱਚੋਂ ਕੁਝ ਆਈਟਮਾਂ ਹਟਾਓ ਅਤੇ ਦੁਬਾਰਾ ਕੋਸ਼ਿਸ਼ ਕਰੋ।",
   "app.components.ParticipationCTABars.VotingCTABar.currencyLeft": "{budgetLeft} / {totalBudget} {currency} ਖੱਬੇ",
   "app.components.ParticipationCTABars.VotingCTABar.minBudgetNotReached2": "ਆਪਣੀ ਟੋਕਰੀ ਜਮ੍ਹਾਂ ਕਰਾਉਣ ਤੋਂ ਪਹਿਲਾਂ ਤੁਹਾਨੂੰ ਘੱਟੋ-ਘੱਟ {votesMinimum} {currency} ਖਰਚ ਕਰਨ ਦੀ ਲੋੜ ਹੈ।",

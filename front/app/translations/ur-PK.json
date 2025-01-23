@@ -241,6 +241,8 @@
   "app.components.PagesForm.savePage": "صفحہ محفوظ کریں۔",
   "app.components.PagesForm.saveSuccess": "صفحہ کامیابی کے ساتھ محفوظ ہو گیا۔",
   "app.components.PagesForm.titleMissingOneLanguageError": "کم از کم ایک زبان کے لیے عنوان فراہم کریں۔",
+  "app.components.Pagination.back": "پچھلا صفحہ",
+  "app.components.Pagination.next": "اگلا صفحہ",
   "app.components.ParticipationCTABars.VotingCTABar.budgetExceedsLimit": "آپ نے {votesCast}خرچ کیا، جو {votesLimit}کی حد سے زیادہ ہے۔ براہ کرم اپنی ٹوکری سے کچھ آئٹمز ہٹائیں اور دوبارہ کوشش کریں۔",
   "app.components.ParticipationCTABars.VotingCTABar.currencyLeft": "{budgetLeft} / {totalBudget} {currency} بائیں",
   "app.components.ParticipationCTABars.VotingCTABar.minBudgetNotReached2": "اپنی ٹوکری جمع کروانے سے پہلے آپ کو کم از کم {votesMinimum} {currency} خرچ کرنے کی ضرورت ہے۔",
