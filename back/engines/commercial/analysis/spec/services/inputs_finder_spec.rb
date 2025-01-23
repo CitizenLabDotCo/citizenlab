@@ -293,6 +293,11 @@ describe Analysis::InputsFinder do
       expect(output).to contain_exactly(input1, input2)
     end
 
+    it 'filters correctly on custom_field with input_type rating' do
+      @params = { "input_custom_#{custom_field_rating.id}": [1, 2] }
+      expect(output).to contain_exactly(input1, input2)
+    end
+
     it 'errors when the parameter is not an array' do
       @params = { 'input_custom_20cb54f4-ad15-4e96-86d2-10cf5a95bd29': 'some_value' }
       expect { output }.to raise_error(ArgumentError)
@@ -320,6 +325,11 @@ describe Analysis::InputsFinder do
 
     it 'returns items with no value on on an array with a nil value with input type linear_scale' do
       @params = { "input_custom_#{custom_field_linear_scale.id}": [nil] }
+      expect(output).to contain_exactly(input0)
+    end
+
+    it 'returns items with no value on on an array with a nil value with input type rating' do
+      @params = { "input_custom_#{custom_field_rating.id}": [nil] }
       expect(output).to contain_exactly(input0)
     end
   end
@@ -385,6 +395,11 @@ describe Analysis::InputsFinder do
 
     it 'filters correctly on custom_field with input_type linear_scale' do
       @params = { "input_custom_#{custom_field_linear_scale.id}_from": 1, "input_custom_#{custom_field_linear_scale.id}_to": 2 }
+      expect(output).to contain_exactly(input1, input2)
+    end
+
+    it 'filters correctly on custom_field with input_type rating' do
+      @params = { "input_custom_#{custom_field_rating.id}_from": 1, "input_custom_#{custom_field_rating.id}_to": 2 }
       expect(output).to contain_exactly(input1, input2)
     end
   end
