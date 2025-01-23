@@ -132,6 +132,7 @@ const budgetingConfig: VotingMethodConfig = {
                 maxBudget: new Intl.NumberFormat(locale, {
                   style: 'currency',
                   currency,
+                  maximumFractionDigits: 0,
                 }).format(maxBudget),
               }}
               {...messages.budgetingSubmissionInstructionsTotalBudget1}
