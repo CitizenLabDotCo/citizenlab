@@ -245,7 +245,6 @@
   "app.components.Pagination.next": "الصفحة التالية",
   "app.components.ParticipationCTABars.VotingCTABar.budgetExceedsLimit": "لقد أنفقت {votesCast}، وهو ما يتجاوز حد {votesLimit}. الرجاء إزالة بعض العناصر من سلتك وحاول مرة أخرى.",
   "app.components.ParticipationCTABars.VotingCTABar.currencyLeft": "{budgetLeft} {totalBudget} {currency}",
-  "app.components.ParticipationCTABars.VotingCTABar.minBudgetNotReached2": "تحتاج إلى إنفاق ما لا يقل عن {votesMinimum} {currency} قبل أن تتمكن من إرسال سلتك.",
   "app.components.ParticipationCTABars.VotingCTABar.noVotesCast2": "تحتاج إلى التصويت قبل أن تتمكن من إرسال {votesTerm}.",
   "app.components.ParticipationCTABars.VotingCTABar.nothingInBasket": "تحتاج إلى إضافة شيء ما إلى سلتك قبل أن تتمكن من إرسالها.",
   "app.components.ParticipationCTABars.VotingCTABar.seeOtherOptions2": "انظر الخيارات",

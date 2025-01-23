@@ -245,7 +245,6 @@
   "app.components.Pagination.next": "Nākamā lapa",
   "app.components.ParticipationCTABars.VotingCTABar.budgetExceedsLimit": "Jūs iztērējāt {votesCast}, kas pārsniedz {votesLimit}noteikto limitu. Lūdzu, izņemiet dažas preces no sava groza un mēģiniet vēlreiz.",
   "app.components.ParticipationCTABars.VotingCTABar.currencyLeft": "{budgetLeft} / {totalBudget} {currency} pa kreisi",
-  "app.components.ParticipationCTABars.VotingCTABar.minBudgetNotReached2": "Pirms varat iesniegt savu grozu, jums ir jāiztērē vismaz {votesMinimum} {currency} .",
   "app.components.ParticipationCTABars.VotingCTABar.noVotesCast2": "Pirms varat iesniegt savu pieteikumu vietnē {votesTerm}, jums ir jābalso.",
   "app.components.ParticipationCTABars.VotingCTABar.nothingInBasket": "Pirms nosūtīšanas grozā ir kaut kas jāpievieno.",
   "app.components.ParticipationCTABars.VotingCTABar.seeOtherOptions2": "Skatīt iespējas",

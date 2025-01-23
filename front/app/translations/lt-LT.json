@@ -245,7 +245,6 @@
   "app.components.Pagination.next": "Kitas puslapis",
   "app.components.ParticipationCTABars.VotingCTABar.budgetExceedsLimit": "Išleidote {votesCast}, o tai viršija {votesLimit}limitą. Išimkite keletą prekių iš savo krepšelio ir pabandykite dar kartą.",
   "app.components.ParticipationCTABars.VotingCTABar.currencyLeft": "{budgetLeft} / {totalBudget} {currency} left",
-  "app.components.ParticipationCTABars.VotingCTABar.minBudgetNotReached2": "Prieš pateikdami savo krepšelį turite išleisti mažiausiai {votesMinimum} {currency} .",
   "app.components.ParticipationCTABars.VotingCTABar.noVotesCast2": "Prieš pateikdami {votesTerm}, turite balsuoti.",
   "app.components.ParticipationCTABars.VotingCTABar.nothingInBasket": "Prieš pateikdami užsakymą, turite ką nors įtraukti į krepšelį.",
   "app.components.ParticipationCTABars.VotingCTABar.seeOtherOptions2": "Žiūrėti parinktis",

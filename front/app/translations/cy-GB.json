@@ -245,7 +245,6 @@
   "app.components.Pagination.next": "Tudalen nesaf",
   "app.components.ParticipationCTABars.VotingCTABar.budgetExceedsLimit": "Gwarioch {votesCast}, sy'n fwy na'r terfyn o {votesLimit}. Tynnwch rai eitemau o'ch basged a rhowch gynnig arall arni.",
   "app.components.ParticipationCTABars.VotingCTABar.currencyLeft": "{budgetLeft} / {totalBudget} {currency} chwith",
-  "app.components.ParticipationCTABars.VotingCTABar.minBudgetNotReached2": "Mae angen i chi wario o leiaf {votesMinimum} {currency} cyn y gallwch gyflwyno'ch basged.",
   "app.components.ParticipationCTABars.VotingCTABar.noVotesCast2": "Mae angen i chi bleidleisio cyn y gallwch gyflwyno eich {votesTerm}.",
   "app.components.ParticipationCTABars.VotingCTABar.nothingInBasket": "Mae angen i chi ychwanegu rhywbeth at eich basged cyn y gallwch ei gyflwyno.",
   "app.components.ParticipationCTABars.VotingCTABar.seeOtherOptions2": "Gweler opsiynau",
