@@ -221,7 +221,9 @@ const FormEdit = ({
         ...(field.input_type === 'page' && {
           temp_id: field.temp_id,
         }),
-        ...(['linear_scale', 'select', 'page'].includes(field.input_type)
+        ...(['linear_scale', 'select', 'page', 'rating'].includes(
+          field.input_type
+        )
           ? {
               logic: field.logic,
             }
@@ -282,6 +284,9 @@ const FormEdit = ({
             field.linear_scale_label_10_multiloc || {},
           linear_scale_label_11_multiloc:
             field.linear_scale_label_11_multiloc || {},
+          maximum: field.maximum?.toString() || '5',
+        }),
+        ...(field.input_type === 'rating' && {
           maximum: field.maximum?.toString() || '5',
         }),
       }));
