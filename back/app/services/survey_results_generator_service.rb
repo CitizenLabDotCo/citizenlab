@@ -63,6 +63,10 @@ class SurveyResultsGeneratorService < FieldVisitorService
     visit_select_base(field)
   end
 
+  def visit_rating(field)
+    visit_select_base(field)
+  end
+
   def visit_file_upload(field)
     file_ids = inputs
       .select("custom_field_values->'#{field.key}'->'id' as value")
@@ -129,8 +133,8 @@ class SurveyResultsGeneratorService < FieldVisitorService
         # Single form field grouped result
         group_field = find_question(group_field_id)
       end
-      raise "Unsupported group field type: #{group_field.input_type}" unless %w[select linear_scale].include?(group_field.input_type)
-      raise "Unsupported question type: #{field.input_type}" unless %w[select multiselect linear_scale multiselect_image].include?(field.input_type)
+      raise "Unsupported group field type: #{group_field.input_type}" unless %w[select linear_scale rating].include?(group_field.input_type)
+      raise "Unsupported question type: #{field.input_type}" unless %w[select multiselect linear_scale rating multiselect_image].include?(field.input_type)
 
       query = query.select(
         select_field_query(field, as: 'answer'),
@@ -145,7 +149,7 @@ class SurveyResultsGeneratorService < FieldVisitorService
     end
 
     # Sort correctly
-    answers = answers.sort_by { |a| -a[:count] } unless field.input_type == 'linear_scale'
+    answers = answers.sort_by { |a| -a[:count] } unless %w[linear_scale rating].include?(field.input_type)
     answers = answers.sort_by { |a| a[:answer] == 'other' ? 1 : 0 } # other should always be last
 
     # Build response
@@ -155,7 +159,7 @@ class SurveyResultsGeneratorService < FieldVisitorService
   def select_field_query(field, as: 'answer')
     table = field.resource_type == 'User' ? 'users' : 'ideas'
 
-    if %w[select linear_scale].include? field.input_type
+    if %w[select linear_scale rating].include? field.input_type
       "COALESCE(#{table}.custom_field_values->'#{field.key}', 'null') as #{as}"
     elsif %w[multiselect multiselect_image].include? field.input_type
       %{

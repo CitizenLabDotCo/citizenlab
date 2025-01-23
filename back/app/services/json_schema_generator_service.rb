@@ -255,6 +255,14 @@ class JsonSchemaGeneratorService < FieldVisitorService
     }
   end
 
+  def visit_rating(field)
+    {
+      type: 'number',
+      minimum: 1,
+      maximum: field.maximum
+    }
+  end
+
   def visit_file_upload(_field)
     {
       type: 'object',
