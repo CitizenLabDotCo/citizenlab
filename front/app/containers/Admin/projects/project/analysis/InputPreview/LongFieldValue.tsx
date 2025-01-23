@@ -165,6 +165,7 @@ const FieldValue = ({ projectId, phaseId, customFieldId, input }: Props) => {
             </Box>
           );
         case 'number':
+        case 'rating':
         case 'linear_scale': {
           return (
             <Box>
