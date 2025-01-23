@@ -117,7 +117,8 @@ export const getVotesCounter = (
   localize: Localize,
   phase: IPhaseData,
   numberOfVotesCast: number,
-  currency: TCurrency | undefined
+  currency: TCurrency,
+  locale: SupportedLocale
 ) => {
   const { voting_method, voting_max_total } = phase.attributes;
 
@@ -166,10 +167,9 @@ export const getVotesCounter = (
 
     const budgetLeft = voting_max_total - numberOfVotesCast;
 
-    return formatMessage(messages.currencyLeft, {
-      budgetLeft: budgetLeft.toLocaleString(),
-      totalBudget: voting_max_total.toLocaleString(),
-      currency: currency ?? '',
+    return formatMessage(messages.currencyLeft1, {
+      budgetLeft: formatCurrency(locale, currency, budgetLeft),
+      totalBudget: formatCurrency(locale, currency, voting_max_total),
     });
   }
 

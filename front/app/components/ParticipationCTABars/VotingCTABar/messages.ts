@@ -31,9 +31,9 @@ export default defineMessages({
   },
 
   // votes count
-  currencyLeft: {
-    id: 'app.components.ParticipationCTABars.VotingCTABar.currencyLeft',
-    defaultMessage: '{budgetLeft} / {totalBudget} {currency} left',
+  currencyLeft1: {
+    id: 'app.components.ParticipationCTABars.VotingCTABar.currencyLeft1',
+    defaultMessage: '{budgetLeft} / {totalBudget} left',
   },
   votesLeft: {
     id: 'app.components.ParticipationCTABars.VotingCTABar.votesLeft2',
