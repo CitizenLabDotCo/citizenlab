@@ -106,7 +106,6 @@ const AddToBasketBox = memo(({ ideaId, phase }: Props) => {
                     currency,
                     voting_max_total
                   ),
-                  currency,
                 }}
               />
             </Text>
