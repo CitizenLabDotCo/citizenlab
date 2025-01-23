@@ -1751,7 +1751,7 @@ RSpec.describe SurveyResultsGeneratorService do
     end
 
     context 'next page numbers and questions skipped' do
-      let(:results) { described_class.new(phase).send(:add_logic_to_results, results_without_logic, logic_ids: []) }
+      let(:results) { generator.send(:add_logic_to_results, results_without_logic, logic_ids: []) }
 
       # TODO: JS - we need some tests to make sure that the logic IDs are correctly added in the first place
       # TODO: JS - Finish these tests
