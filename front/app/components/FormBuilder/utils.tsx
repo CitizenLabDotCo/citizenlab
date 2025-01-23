@@ -16,7 +16,7 @@ import { isNilOrError } from 'utils/helperUtils';
 
 import ConfigSelectWithLocaleSwitcher from './components/FormBuilderSettings/ConfigSelectWithLocaleSwitcher';
 import FieldGroupSettings from './components/FormBuilderSettings/FieldGroupSettings';
-import LinearScaleSettings from './components/FormBuilderSettings/LinearScaleSettings';
+import LinearAndRatingSettings from './components/FormBuilderSettings/LinearAndRatingSettings';
 import MultiselectSettings from './components/FormBuilderSettings/MultiselectSettings';
 import PageLayoutSettings from './components/FormBuilderSettings/PageLayoutSettings';
 import PointSettings from './components/FormBuilderSettings/PointSettings';
@@ -160,11 +160,12 @@ export function getAdditionalSettings(
     case 'linear_scale':
     case 'rating':
       return (
-        <LinearScaleSettings
+        <LinearAndRatingSettings
           platformLocale={platformLocale}
           maximumName={`customFields.${field.index}.maximum`}
           labelBaseName={`customFields.${field.index}`}
           locales={locales}
+          inputType={inputType}
         />
       );
     case 'point':

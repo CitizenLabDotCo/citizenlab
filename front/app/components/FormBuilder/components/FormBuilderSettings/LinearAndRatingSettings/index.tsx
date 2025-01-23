@@ -12,31 +12,35 @@ interface Props {
   onSelectedLocaleChange?: (locale: SupportedLocale) => void;
   locales: SupportedLocale[];
   platformLocale: SupportedLocale;
+  inputType: 'linear_scale' | 'rating';
 }
 
-const LinearScaleSettings = ({
+const LinearAndRatingSettings = ({
   onSelectedLocaleChange,
   maximumName,
   labelBaseName,
   platformLocale,
   locales,
+  inputType,
 }: Props) => {
   return (
     <>
       <Box mb="16px">
         <RangeInput maximumName={maximumName} />
       </Box>
-      <Box mb="32px">
-        <ScaleLabelInput
-          platformLocale={platformLocale}
-          labelBaseName={labelBaseName}
-          maximumName={maximumName}
-          onSelectedLocaleChange={onSelectedLocaleChange}
-          locales={locales}
-        />
-      </Box>
+      {inputType === 'linear_scale' && (
+        <Box mb="32px">
+          <ScaleLabelInput
+            platformLocale={platformLocale}
+            labelBaseName={labelBaseName}
+            maximumName={maximumName}
+            onSelectedLocaleChange={onSelectedLocaleChange}
+            locales={locales}
+          />
+        </Box>
+      )}
     </>
   );
 };
 
-export default LinearScaleSettings;
+export default LinearAndRatingSettings;
