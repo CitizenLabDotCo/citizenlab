@@ -1,6 +1,6 @@
 import { IFlatCustomField } from 'api/custom_fields/types';
 
-import { clearOptionIds } from './utils';
+import { clearOptionAndStatementIds } from './utils';
 
 describe('clearOptionIds', () => {
   const customFields: IFlatCustomField[] = [
@@ -47,7 +47,7 @@ describe('clearOptionIds', () => {
   ];
 
   it('should remove the ID from field options', () => {
-    const resultCustomFields = clearOptionIds(customFields);
+    const resultCustomFields = clearOptionAndStatementIds(customFields);
     expect(resultCustomFields[0]?.options?.[0].id).toBe(undefined);
     expect(resultCustomFields[0]?.options?.[1].id).toBe(undefined);
   });
