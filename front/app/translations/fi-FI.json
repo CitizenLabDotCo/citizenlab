@@ -503,7 +503,6 @@
   "app.components.VoteControl.budgetingNotPermitted": "Osallistuva budjetointi ei ole tällä hetkellä käytössä.",
   "app.components.VoteControl.budgetingNotPossible": "Budjettimuutosten tekeminen ei ole tällä hetkellä mahdollista.",
   "app.components.VoteControl.budgetingNotVerified": "Ole hyvä ja {verifyAccountLink} jatkaaksesi.",
-  "app.components.VoteInputs._shared.currencyLeft": "Sinulla on {budgetLeft} / {totalBudget} {currency} jäljellä",
   "app.components.VoteInputs._shared.votesLeft4": "Sinulla on {votesLeft} / {totalNumberOfVotes} {totalNumberOfVotes, plural, =0 {{votesTerm}} one {{voteTerm}} other {{votesTerm}}} jäljellä.",
   "app.components.VoteInputs.budgeting.AddToBasketButton.basketAlreadySubmitted": "Olet jo lähettänyt budjettisi. Napsauta \"Muokkaa budjettiasi\" muuttaaksesi budjettiasi.",
   "app.components.VoteInputs.budgeting.AddToBasketButton.basketAlreadySubmittedIdeaPage": "Olet jo lähettänyt budjettisi. Jos haluat muuttaa budjettiasi, palaa projektisivulle ja napsauta \"Muokkaa budjettiasi\".",
