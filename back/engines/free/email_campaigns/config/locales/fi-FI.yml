@@ -34,6 +34,7 @@ fi:
       "project_review_request": Hankearviointipyyntö
       "project_review_state_change": Projekti hyväksytty
       "status_change_on_idea_you_follow": Seuraamasi idean tilanmuutos
+      "survey_submitted": Kysely lähetetty
       "threshold_reached_for_admin": Ehdotus saavutti äänestyskynnyksen
       "welcome": Rekisteröinnin jälkeen
       "admin_digest": Viikoittainen yleiskatsaus ylläpitäjille
@@ -496,6 +497,14 @@ fi:
       event_description: 'Projekti "%{projectName}" pyytää sinua äänestämään %{numIdeas} vaihtoehdon välillä:'
       cta_message: 'Klikkaa alla olevaa painiketta osallistuaksesi'
       cta_vote: 'Mene foorumille äänestämään'
+    survey_submitted:
+      subject: '%{organizationName}: Kiitos vastauksestasi! 🎉'
+      main_header: 'Kiitos, että jaoit ajatuksesi aiheesta "%{projectName}"!'
+      your_input_submitted: 'Syötteesi "%{projectName}" on lähetetty onnistuneesti.'
+      if_you_would_like_to_review: 'Jos haluat tarkistaa lähetyksesi, voit ladata vastauksesi alta.'
+      your_submission_has_id: 'Lähetykselläsi on seuraava yksilöllinen tunniste:'
+      you_can_use_this_id: 'Tämän tunnuksen avulla voit ottaa yhteyttä alustan ylläpitäjiin, jos haluat, että lähetyksesi poistetaan.'
+      download_responses: 'Lataa vastauksesi'
     admin_labels:
       recipient_role:
         admins: 'järjestelmänvalvojille'

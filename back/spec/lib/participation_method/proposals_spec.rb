@@ -216,7 +216,6 @@ RSpec.describe ParticipationMethod::Proposals do
 
   its(:additional_export_columns) { is_expected.to eq %w[manual_votes] }
   its(:allowed_ideas_orders) { is_expected.to eq %w[trending random popular -new new comments_count] }
-  its(:proposed_budget_in_form?) { is_expected.to be false }
   its(:return_disabled_actions?) { is_expected.to be false }
   its(:supports_assignment?) { is_expected.to be true }
   its(:supports_built_in_fields?) { is_expected.to be true }
@@ -236,4 +235,10 @@ RSpec.describe ParticipationMethod::Proposals do
   its(:use_reactions_as_votes?) { is_expected.to be true }
   its(:transitive?) { is_expected.to be false }
   its(:supports_private_attributes_in_export?) { is_expected.to be true }
+
+  describe 'proposed_budget_in_form?' do # private method
+    it 'is expected to be false' do
+      expect(participation_method.send(:proposed_budget_in_form?)).to be false
+    end
+  end
 end

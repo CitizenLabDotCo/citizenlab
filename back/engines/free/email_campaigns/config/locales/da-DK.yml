@@ -34,6 +34,7 @@ da:
       "project_review_request": Anmodning om projektgennemgang
       "project_review_state_change": Projekt godkendt
       "status_change_on_idea_you_follow": Statusændring af en idé, som du følger
+      "survey_submitted": Undersøgelse indsendt
       "threshold_reached_for_admin": Forslag har nået stemmegrænsen
       "welcome": Efter registrering
       "admin_digest": Ugentlig oversigt for administratorer
@@ -496,6 +497,14 @@ da:
       event_description: 'Projektet "%{projectName}" beder dig om at stemme mellem %{numIdeas} muligheder:'
       cta_message: 'Klik på knappen nedenfor for at deltage'
       cta_vote: 'Gå til platformen for at stemme'
+    survey_submitted:
+      subject: '%{organizationName}: Tak for dit svar! 🎉'
+      main_header: 'Tak, fordi du delte dine tanker om "%{projectName}"!'
+      your_input_submitted: 'Dit input til "%{projectName}" er blevet sendt korrekt.'
+      if_you_would_like_to_review: 'Hvis du gerne vil se dit bidrag igen, kan du downloade dine svar nedenfor.'
+      your_submission_has_id: 'Din indsendelse har følgende unikke identifikation:'
+      you_can_use_this_id: 'Du kan bruge denne identifikator til at kontakte platformens administratorer, hvis du vil have dit bidrag fjernet.'
+      download_responses: 'Download dine svar'
     admin_labels:
       recipient_role:
         admins: 'Til administratorer'

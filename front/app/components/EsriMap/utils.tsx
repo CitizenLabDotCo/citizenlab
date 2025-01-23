@@ -17,8 +17,8 @@ import MapView from '@arcgis/core/views/MapView';
 import WebMap from '@arcgis/core/WebMap';
 import Popup from '@arcgis/core/widgets/Popup';
 import { colors } from '@citizenlab/cl2-component-library';
-import { uuid4 } from '@sentry/utils';
 import { transparentize } from 'polished';
+import { v4 as uuidv4 } from 'uuid';
 
 import { IMapConfig } from 'api/map_config/types';
 import { IMapLayerAttributes } from 'api/map_layers/types';
@@ -574,7 +574,7 @@ export const createEsriGeoJsonLayers = (
 
     // create new geojson layer using the created url
     const geoJsonLayer = new GeoJSONLayer({
-      id: `${uuid4()}`,
+      id: `${uuidv4()}`,
       url,
       customParameters: {
         layerId: layer.id,

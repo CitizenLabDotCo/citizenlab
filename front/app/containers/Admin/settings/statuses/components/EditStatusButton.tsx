@@ -36,6 +36,7 @@ const EditStatusButton = ({
           buttonStyle="secondary-outlined"
           icon="edit"
           disabled={buttonDisabled}
+          data-testid="e2e-edit-status-button"
         >
           <FormattedMessage {...messages.editButtonLabel} />
         </Button>
