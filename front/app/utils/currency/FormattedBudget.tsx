@@ -1,13 +1,15 @@
 import React from 'react';
 
 import { Icon } from '@citizenlab/cl2-component-library';
-import { FormattedNumber } from 'react-intl';
 import styled from 'styled-components';
 
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 
+import useLocale from 'hooks/useLocale';
+
 import { useIntl } from 'utils/cl-intl';
 
+import formatCurrency from './formatCurrency';
 import messages from './messages';
 
 const StyledIcon = styled(Icon)`
@@ -24,6 +26,7 @@ interface Props {
 const FormattedBudget = ({ value }: Props) => {
   const { data: appConfiguration } = useAppConfiguration();
   const { formatMessage, formatNumber } = useIntl();
+  const locale = useLocale();
 
   if (!appConfiguration) return null;
 
@@ -50,15 +53,7 @@ const FormattedBudget = ({ value }: Props) => {
       </>
     );
   } else {
-    return (
-      <FormattedNumber
-        value={value}
-        style="currency"
-        currency={currency}
-        minimumFractionDigits={0}
-        maximumFractionDigits={0}
-      />
-    );
+    return <>{formatCurrency(locale, currency, value)}</>;
   }
 };
 
