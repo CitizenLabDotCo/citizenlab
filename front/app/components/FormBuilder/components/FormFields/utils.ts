@@ -78,6 +78,8 @@ const getCustomFieldBadgeLabel = (
       return messages.number;
     case 'linear_scale':
       return messages.linearScale;
+    case 'rating':
+      return messages.rating;
     case 'shapefile_upload':
       return messages.shapefileUpload;
     case 'file_upload':

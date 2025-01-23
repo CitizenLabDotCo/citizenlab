@@ -214,6 +214,15 @@ const FormBuilderToolbox = ({
           disabled={isCustomFieldsDisabled}
         />
         <ToolboxItem
+          icon="ranking"
+          label={formatMessage(messages.rating)}
+          onClick={() => addField('rating')}
+          data-cy="e2e-rating"
+          fieldsToExclude={builderConfig.toolboxFieldsToExclude}
+          inputType="rating"
+          disabled={isCustomFieldsDisabled}
+        />
+        <ToolboxItem
           icon="survey-number-field"
           label={formatMessage(messages.number)}
           onClick={() => addField('number')}
