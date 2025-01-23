@@ -1,4 +1,4 @@
-import { FormatMessage } from 'typings';
+import { FormatMessage, SupportedLocale } from 'typings';
 
 import { TCurrency } from 'api/app_configuration/types';
 import { IPhaseData } from 'api/phases/types';
@@ -9,6 +9,7 @@ import voteInputMessages from 'components/VoteInputs/_shared/messages';
 
 import { getPermissionsDisabledMessage } from 'utils/actionDescriptors';
 import { DisabledReason } from 'utils/actionDescriptors/types';
+import formatCurrency from 'utils/currency/formatCurrency';
 import { isNil } from 'utils/helperUtils';
 
 import messages from './messages';
@@ -19,7 +20,8 @@ export const getVoteSubmissionDisabledExplanation = (
   phase: IPhaseData,
   permissionsDisabledReason: DisabledReason | null,
   numberOfVotesCast: number,
-  currency: TCurrency | undefined
+  currency: TCurrency,
+  locale: SupportedLocale
 ) => {
   const { voting_method } = phase.attributes;
   const maxVotes = phase.attributes.voting_max_total;
@@ -84,8 +86,8 @@ export const getVoteSubmissionDisabledExplanation = (
       if (isNil(maxVotes)) return;
 
       return formatMessage(messages.budgetExceedsLimit, {
-        votesCast: numberOfVotesCast.toLocaleString(),
-        votesLimit: maxVotes.toLocaleString(),
+        votesCast: formatCurrency(locale, currency, numberOfVotesCast),
+        votesLimit: formatCurrency(locale, currency, maxVotes),
       });
     }
 
@@ -101,9 +103,8 @@ export const getVoteSubmissionDisabledExplanation = (
     const minBudgetRequiredNotReached = minBudgetRequired && !minBudgetReached;
 
     if (minBudgetRequiredNotReached) {
-      return formatMessage(messages.minBudgetNotReached, {
-        votesMinimum: minBudget.toLocaleString(),
-        currency: currency ?? '',
+      return formatMessage(messages.minBudgetNotReached1, {
+        votesMinimum: formatCurrency(locale, currency, minBudget),
       });
     }
   }

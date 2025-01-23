@@ -245,7 +245,6 @@
   "app.components.Pagination.next": "Sonraki sayfa",
   "app.components.ParticipationCTABars.VotingCTABar.budgetExceedsLimit": "{votesLimit}limitini aşan {votesCast}harcaması yaptınız. Lütfen sepetinizden bazı ürünleri kaldırın ve tekrar deneyin.",
   "app.components.ParticipationCTABars.VotingCTABar.currencyLeft": "{budgetLeft} / {totalBudget} {currency} sol",
-  "app.components.ParticipationCTABars.VotingCTABar.minBudgetNotReached2": "Sepetinizi gönderebilmeniz için en az {votesMinimum} {currency} adresinde harcama yapmanız gerekmektedir.",
   "app.components.ParticipationCTABars.VotingCTABar.noVotesCast2": "{votesTerm}adresini gönderebilmeniz için önce oy kullanmanız gerekmektedir.",
   "app.components.ParticipationCTABars.VotingCTABar.nothingInBasket": "Göndermeden önce sepetinize bir şey eklemeniz gerekir.",
   "app.components.ParticipationCTABars.VotingCTABar.seeOtherOptions2": "Seçenekleri görün",

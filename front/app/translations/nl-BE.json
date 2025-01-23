@@ -245,7 +245,6 @@
   "app.components.Pagination.next": "Volgende",
   "app.components.ParticipationCTABars.VotingCTABar.budgetExceedsLimit": "Je hebt {votesCast} uitgegeven, wat meer is dan de limiet van {votesLimit}. Verwijder enkele items uit je winkelmandje en probeer het opnieuw.",
   "app.components.ParticipationCTABars.VotingCTABar.currencyLeft": "{budgetLeft} / {totalBudget} {currency} over",
-  "app.components.ParticipationCTABars.VotingCTABar.minBudgetNotReached2": "Je moet minimaal {votesMinimum} {currency} uitgeven voordat je je mandje kunt versturen.",
   "app.components.ParticipationCTABars.VotingCTABar.noVotesCast2": "Je moet stemmen voordat je je {votesTerm} kan verzenden.",
   "app.components.ParticipationCTABars.VotingCTABar.nothingInBasket": "Je moet iets aan je mandje toevoegen voordat je het kunt versturen.",
   "app.components.ParticipationCTABars.VotingCTABar.seeOtherOptions2": "Bekijk opties",

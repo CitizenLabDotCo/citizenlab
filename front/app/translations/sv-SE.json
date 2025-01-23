@@ -245,7 +245,6 @@
   "app.components.Pagination.next": "Nästa sida",
   "app.components.ParticipationCTABars.VotingCTABar.budgetExceedsLimit": "Du har använt {votesCast}, vilket överskrider gränsen för {votesLimit}. Ta bort några artiklar från din varukorg och försök igen.",
   "app.components.ParticipationCTABars.VotingCTABar.currencyLeft": "{budgetLeft} / {totalBudget} {currency} vänster",
-  "app.components.ParticipationCTABars.VotingCTABar.minBudgetNotReached2": "Du måste spendera minst {votesMinimum} {currency} innan du kan skicka din korg.",
   "app.components.ParticipationCTABars.VotingCTABar.noVotesCast2": "Du måste rösta innan du kan skicka in din {votesTerm}.",
   "app.components.ParticipationCTABars.VotingCTABar.nothingInBasket": "Du måste lägga till något i din varukorg innan du kan skicka den.",
   "app.components.ParticipationCTABars.VotingCTABar.seeOtherOptions2": "Se alternativ",

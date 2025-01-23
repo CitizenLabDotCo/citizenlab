@@ -245,7 +245,6 @@
   "app.components.Pagination.next": "Következő oldal",
   "app.components.ParticipationCTABars.VotingCTABar.budgetExceedsLimit": "{votesCast}elköltött, ami meghaladja a {votesLimit}korlátot. Kérjük, vegyen ki néhány terméket a kosárból, és próbálja újra.",
   "app.components.ParticipationCTABars.VotingCTABar.currencyLeft": "{budgetLeft} / {totalBudget} {currency} balra",
-  "app.components.ParticipationCTABars.VotingCTABar.minBudgetNotReached2": "Legalább {votesMinimum} {currency} -t kell költenie, mielőtt elküldheti kosarát.",
   "app.components.ParticipationCTABars.VotingCTABar.noVotesCast2": "A {votesTerm}beküldése előtt szavaznia kell.",
   "app.components.ParticipationCTABars.VotingCTABar.nothingInBasket": "Mielőtt elküldené, hozzá kell adnia valamit a kosarához.",
   "app.components.ParticipationCTABars.VotingCTABar.seeOtherOptions2": "Lásd a lehetőségeket",

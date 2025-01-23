@@ -245,7 +245,6 @@
   "app.components.Pagination.next": "اگلا صفحہ",
   "app.components.ParticipationCTABars.VotingCTABar.budgetExceedsLimit": "آپ نے {votesCast}خرچ کیا، جو {votesLimit}کی حد سے زیادہ ہے۔ براہ کرم اپنی ٹوکری سے کچھ آئٹمز ہٹائیں اور دوبارہ کوشش کریں۔",
   "app.components.ParticipationCTABars.VotingCTABar.currencyLeft": "{budgetLeft} / {totalBudget} {currency} بائیں",
-  "app.components.ParticipationCTABars.VotingCTABar.minBudgetNotReached2": "اپنی ٹوکری جمع کروانے سے پہلے آپ کو کم از کم {votesMinimum} {currency} خرچ کرنے کی ضرورت ہے۔",
   "app.components.ParticipationCTABars.VotingCTABar.noVotesCast2": "اپنا {votesTerm}جمع کروانے سے پہلے آپ کو ووٹ دینا ہوگا۔",
   "app.components.ParticipationCTABars.VotingCTABar.nothingInBasket": "آپ کو اپنی ٹوکری میں کچھ شامل کرنے کی ضرورت ہے اس سے پہلے کہ آپ اسے جمع کر سکیں۔",
   "app.components.ParticipationCTABars.VotingCTABar.seeOtherOptions2": "اختیارات دیکھیں",
