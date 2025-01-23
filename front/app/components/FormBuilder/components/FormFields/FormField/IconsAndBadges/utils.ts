@@ -45,6 +45,8 @@ const getCustomFieldIcon = (inputType: ICustomFieldInputType): IconNames => {
       return 'survey-number-field';
     case 'linear_scale':
       return 'survey-linear-scale';
+    case 'rating':
+      return 'ranking';
     case 'section':
       return 'section';
     case 'file_upload':
