@@ -15,8 +15,11 @@ import useVoting from 'api/baskets_ideas/useVoting';
 import useIdeaById from 'api/ideas/useIdeaById';
 import { IPhaseData } from 'api/phases/types';
 
+import useLocale from 'hooks/useLocale';
+
 import { ScreenReaderOnly } from 'utils/a11y';
 import { FormattedMessage } from 'utils/cl-intl';
+import formatCurrency from 'utils/currency/formatCurrency';
 import FormattedBudget from 'utils/currency/FormattedBudget';
 import { isNil } from 'utils/helperUtils';
 
@@ -64,17 +67,23 @@ const AddToBasketBox = memo(({ ideaId, phase }: Props) => {
   const { data: idea } = useIdeaById(ideaId);
   const { data: appConfig } = useAppConfiguration();
   const { numberOfVotesCast } = useVoting();
+  const locale = useLocale();
 
   const ideaBudget = idea?.data.attributes.budget;
   const actionDescriptor = idea?.data.attributes.action_descriptors.voting;
   const { voting_max_total } = phase.attributes;
 
-  if (!actionDescriptor || !ideaBudget || isNil(voting_max_total)) {
+  if (
+    !actionDescriptor ||
+    !ideaBudget ||
+    isNil(voting_max_total) ||
+    !appConfig
+  ) {
     return null;
   }
 
   const budgetLeft = voting_max_total - (numberOfVotesCast ?? 0);
-  const currency = appConfig?.data.attributes.settings.core.currency;
+  const currency = appConfig.data.attributes.settings.core.currency;
 
   return (
     <IdeaPageContainer
@@ -89,10 +98,14 @@ const AddToBasketBox = memo(({ ideaId, phase }: Props) => {
             <FormattedBudget value={ideaBudget} />
             <Text mb="0px" mt="8px" color="grey600" fontSize="xs">
               <FormattedMessage
-                {...messages.currencyLeft}
+                {...messages.currencyLeft1}
                 values={{
-                  budgetLeft: budgetLeft.toLocaleString(),
-                  totalBudget: voting_max_total.toLocaleString(),
+                  budgetLeft: formatCurrency(locale, currency, budgetLeft),
+                  totalBudget: formatCurrency(
+                    locale,
+                    currency,
+                    voting_max_total
+                  ),
                   currency,
                 }}
               />
