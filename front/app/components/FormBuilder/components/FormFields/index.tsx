@@ -48,18 +48,12 @@ const FormFields = ({
     return true;
   };
 
-  // We filter out the survey end because we add it manually at the end
-  // (only relevant for survey, not for input form)
-  const formCustomFieldsWithoutLastPage = formCustomFields.filter((field) => {
-    return field.key !== 'survey_end';
-  });
-
-  // Also on relevant for survey
+  // Only relevant for survey
   const lastPage = formCustomFields[formCustomFields.length - 1];
 
   const nestedGroupData: NestedGroupingStructure[] = [];
 
-  formCustomFieldsWithoutLastPage.forEach((field) => {
+  formCustomFields.forEach((field) => {
     if (['page', 'section'].includes(field.input_type)) {
       nestedGroupData.push({
         groupElement: field,
@@ -86,6 +80,13 @@ const FormFields = ({
       >
         <Drop id="droppable" type={pageDNDType}>
           {nestedGroupData.map((grouping, pageIndex) => {
+            // Only relevant for survey
+            if (lastPage.key === 'survey_end' && grouping.id === lastPage.id) {
+              // Skip rendering FormField for last page, as it's rendered separately
+              // (see below)
+              return null;
+            }
+
             return (
               <Drag key={grouping.id} id={grouping.id} index={pageIndex}>
                 <FormField
@@ -132,6 +133,7 @@ const FormFields = ({
           })}
         </Drop>
       </DragAndDrop>
+      {/* Only relevant for survey */}
       {lastPage.key === 'survey_end' && (
         <Box>
           <FormField
