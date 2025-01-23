@@ -1,4 +1,5 @@
 import { ImageSizes } from 'typings';
+
 import { ResultLogic } from 'api/survey_results/types';
 
 export type Answer = {

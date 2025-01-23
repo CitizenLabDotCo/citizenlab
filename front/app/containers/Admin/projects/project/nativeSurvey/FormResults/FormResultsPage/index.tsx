@@ -66,7 +66,7 @@ const FormResultsPage = ({
           ).toLowerCase()}`}
         </Text>
         <LogicIcon
-          logicFilterId={logic?.nextPageNumber ? customFieldId : null}
+          logicFilterId={logic.nextPageNumber ? customFieldId : null}
           logicConfig={logicConfig}
           fieldLogic={logic}
           type="page"

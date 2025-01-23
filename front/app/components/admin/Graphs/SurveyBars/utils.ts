@@ -66,13 +66,11 @@ export const parseQuestionResult = (
     const multilocsAnswer = multilocs.answer[answerKey];
 
     const label =
-      answer === null
-        ? noAnswerCopy
-        : localize(multilocsAnswer?.title_multiloc);
-    const image = multilocsAnswer?.image;
+      answer === null ? noAnswerCopy : localize(multilocsAnswer.title_multiloc);
+    const image = multilocsAnswer.image;
     const percentage = roundPercentage(count, totalPickCount, 1);
-    const logic = multilocsAnswer?.logic;
-    const logicFilterId = multilocsAnswer?.id;
+    const logic = multilocsAnswer.logic;
+    const logicFilterId = multilocsAnswer.id;
 
     return {
       label,

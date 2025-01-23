@@ -23,8 +23,9 @@ const LogicIcon = ({
 }: LogicIconProps) => {
   const { formatMessage } = useIntl();
 
-  if (!logicConfig || !logicFilterId || !fieldLogic?.nextPageNumber)
+  if (!logicConfig || !logicFilterId || !fieldLogic?.nextPageNumber) {
     return null;
+  }
 
   // Note: 999 is a special number used for the survey end
   const tooltipContent = formatMessage(
@@ -37,7 +38,7 @@ const LogicIcon = ({
       : messages.logicSkipTooltipOption,
     {
       pageNumber: fieldLogic.nextPageNumber,
-      numQuestionsSkipped: fieldLogic?.numQuestionsSkipped || 0,
+      numQuestionsSkipped: fieldLogic.numQuestionsSkipped || 0,
     }
   );
 
