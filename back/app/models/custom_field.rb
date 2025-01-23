@@ -61,7 +61,7 @@ class CustomField < ApplicationRecord
 
   FIELDABLE_TYPES = %w[User CustomForm].freeze
   INPUT_TYPES = %w[
-    checkbox date file_upload files html html_multiloc image_files linear_scale multiline_text multiline_text_multiloc
+    checkbox date file_upload files html html_multiloc image_files linear_scale rating multiline_text multiline_text_multiloc
     multiselect multiselect_image number page point line polygon select select_image shapefile_upload text text_multiloc
     topic_ids section cosponsor_ids
   ].freeze
@@ -165,6 +165,10 @@ class CustomField < ApplicationRecord
     input_type == 'linear_scale'
   end
 
+  def rating?
+    input_type == 'rating'
+  end
+
   def page_or_section?
     page? || section?
   end
@@ -207,6 +211,8 @@ class CustomField < ApplicationRecord
       visitor.visit_image_files self
     when 'linear_scale'
       visitor.visit_linear_scale self
+    when 'rating'
+      visitor.visit_rating self
     when 'multiline_text'
       visitor.visit_multiline_text self
     when 'multiline_text_multiloc'
