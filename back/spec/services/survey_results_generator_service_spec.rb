@@ -379,6 +379,17 @@ RSpec.describe SurveyResultsGeneratorService do
       end
     end
 
+    describe 'page fields' do
+      it 'returns correct values for a page field in full results' do
+        page_result = generated_results[:results][0]
+        expect(page_result[:inputType]).to eq 'page'
+        expect(page_result[:totalResponseCount]).to eq(27)
+        expect(page_result[:questionResponseCount]).to eq(22)
+        expect(page_result[:pageNumber]).to eq(1)
+        expect(page_result[:questionNumber]).to be_nil
+      end
+    end
+
     describe 'text fields' do
       let(:expected_result_text_field) do
         {
@@ -489,7 +500,8 @@ RSpec.describe SurveyResultsGeneratorService do
               'cow' => { title_multiloc: { 'en' => 'Cow', 'fr-FR' => 'Vache', 'nl-NL' => 'Koe' }, id: an_instance_of(String), logic: {} },
               'dog' => { title_multiloc: { 'en' => 'Dog', 'fr-FR' => 'Chien', 'nl-NL' => 'Hond' }, id: an_instance_of(String), logic: {} },
               'no_response' => { title_multiloc: { 'en' => 'Nothing', 'fr-FR' => 'Rien', 'nl-NL' => 'Niets' }, id: an_instance_of(String), logic: {} },
-              'pig' => { title_multiloc: { 'en' => 'Pig', 'fr-FR' => 'Porc', 'nl-NL' => 'Varken' }, id: an_instance_of(String), logic: {} }
+              'pig' => { title_multiloc: { 'en' => 'Pig', 'fr-FR' => 'Porc', 'nl-NL' => 'Varken' }, id: an_instance_of(String), logic: {} },
+              'no_answer' => { title_multiloc: {}, id: an_instance_of(String), logic: {} }
             }
           }
         }
@@ -556,7 +568,8 @@ RSpec.describe SurveyResultsGeneratorService do
             result[:multilocs][:group] = {
               'female' => { title_multiloc: { 'en' => 'youth council', 'fr-FR' => 'conseil des jeunes', 'nl-NL' => 'jeugdraad' } },
               'male' => { title_multiloc: { 'en' => 'youth council', 'fr-FR' => 'conseil des jeunes', 'nl-NL' => 'jeugdraad' } },
-              'unspecified' => { title_multiloc: { 'en' => 'youth council', 'fr-FR' => 'conseil des jeunes', 'nl-NL' => 'jeugdraad' } }
+              'unspecified' => { title_multiloc: { 'en' => 'youth council', 'fr-FR' => 'conseil des jeunes', 'nl-NL' => 'jeugdraad' } },
+              'no_answer' => { title_multiloc: {} }
             }
           end
         end
@@ -612,7 +625,8 @@ RSpec.describe SurveyResultsGeneratorService do
             result[:multilocs][:group] = {
               'la' => { title_multiloc: { 'en' => 'Los Angeles', 'fr-FR' => 'Los Angeles', 'nl-NL' => 'Los Angeles' } },
               'ny' => { title_multiloc: { 'en' => 'New York', 'fr-FR' => 'New York', 'nl-NL' => 'New York' } },
-              'other' => { title_multiloc: { 'en' => 'Other', 'fr-FR' => 'Autre', 'nl-NL' => 'Ander' } }
+              'other' => { title_multiloc: { 'en' => 'Other', 'fr-FR' => 'Autre', 'nl-NL' => 'Ander' } },
+              'no_answer' => { title_multiloc: {} }
             }
           end
         end
@@ -674,7 +688,8 @@ RSpec.describe SurveyResultsGeneratorService do
               4 => { title_multiloc: { 'en' => '4 - Neutral', 'fr-FR' => '4 - Neutre', 'nl-NL' => '4 - Neutraal' }, id: "#{linear_scale_field.id}_4", logic: {} },
               5 => { title_multiloc: { 'en' => '5 - Slightly agree', 'fr-FR' => "5 - Plutôt d'accord", 'nl-NL' => '5 - Enigszins eens' }, id: "#{linear_scale_field.id}_5", logic: {} },
               6 => { title_multiloc: { 'en' => '6 - Agree', 'fr-FR' => "6 - D'accord", 'nl-NL' => '6 - Mee eens' }, id: "#{linear_scale_field.id}_6", logic: {} },
-              7 => { title_multiloc: { 'en' => '7 - Strongly agree', 'fr-FR' => "7 - Tout à fait d'accord", 'nl-NL' => '7 - Strerk mee eens' }, id: "#{linear_scale_field.id}_7", logic: {} }
+              7 => { title_multiloc: { 'en' => '7 - Strongly agree', 'fr-FR' => "7 - Tout à fait d'accord", 'nl-NL' => '7 - Strerk mee eens' }, id: "#{linear_scale_field.id}_7", logic: {} },
+              'no_answer' => { title_multiloc: {}, id: "#{linear_scale_field.id}_no_answer", logic: {} }
             }
           }
         }
@@ -774,12 +789,14 @@ RSpec.describe SurveyResultsGeneratorService do
                 4 => hash_including(title_multiloc: { 'en' => '4 - Neutral', 'fr-FR' => '4 - Neutre', 'nl-NL' => '4 - Neutraal' }),
                 5 => hash_including(title_multiloc: { 'en' => '5 - Slightly agree', 'fr-FR' => "5 - Plutôt d'accord", 'nl-NL' => '5 - Enigszins eens' }),
                 6 => hash_including(title_multiloc: { 'en' => '6 - Agree', 'fr-FR' => "6 - D'accord", 'nl-NL' => '6 - Mee eens' }),
-                7 => hash_including(title_multiloc: { 'en' => '7 - Strongly agree', 'fr-FR' => "7 - Tout à fait d'accord", 'nl-NL' => '7 - Strerk mee eens' })
+                7 => hash_including(title_multiloc: { 'en' => '7 - Strongly agree', 'fr-FR' => "7 - Tout à fait d'accord", 'nl-NL' => '7 - Strerk mee eens' }),
+                'no_answer' => hash_including(title_multiloc: {})
               },
               group: {
                 'la' => { title_multiloc: { 'en' => 'Los Angeles', 'fr-FR' => 'Los Angeles', 'nl-NL' => 'Los Angeles' } },
                 'ny' => { title_multiloc: { 'en' => 'New York', 'fr-FR' => 'New York', 'nl-NL' => 'New York' } },
-                'other' => { title_multiloc: { 'en' => 'Other', 'fr-FR' => 'Autre', 'nl-NL' => 'Ander' } }
+                'other' => { title_multiloc: { 'en' => 'Other', 'fr-FR' => 'Autre', 'nl-NL' => 'Ander' } },
+                'no_answer' => { title_multiloc: {} }
               }
             },
             legend: ['la', 'ny', 'other', nil]
@@ -828,7 +845,8 @@ RSpec.describe SurveyResultsGeneratorService do
             answer: {
               'la' => hash_including(title_multiloc: { 'en' => 'Los Angeles', 'fr-FR' => 'Los Angeles', 'nl-NL' => 'Los Angeles' }),
               'ny' => hash_including(title_multiloc: { 'en' => 'New York', 'fr-FR' => 'New York', 'nl-NL' => 'New York' }),
-              'other' => hash_including(title_multiloc: { 'en' => 'Other', 'fr-FR' => 'Autre', 'nl-NL' => 'Ander' })
+              'other' => hash_including(title_multiloc: { 'en' => 'Other', 'fr-FR' => 'Autre', 'nl-NL' => 'Ander' }),
+              'no_answer' => hash_including(title_multiloc: {})
             }
           },
           textResponses: [
@@ -894,7 +912,8 @@ RSpec.describe SurveyResultsGeneratorService do
             result[:multilocs][:group] = {
               'female' => { title_multiloc: { 'en' => 'youth council', 'fr-FR' => 'conseil des jeunes', 'nl-NL' => 'jeugdraad' } },
               'male' => { title_multiloc: { 'en' => 'youth council', 'fr-FR' => 'conseil des jeunes', 'nl-NL' => 'jeugdraad' } },
-              'unspecified' => { title_multiloc: { 'en' => 'youth council', 'fr-FR' => 'conseil des jeunes', 'nl-NL' => 'jeugdraad' } }
+              'unspecified' => { title_multiloc: { 'en' => 'youth council', 'fr-FR' => 'conseil des jeunes', 'nl-NL' => 'jeugdraad' } },
+              'no_answer' => { title_multiloc: {} }
             }
           end
         end
@@ -939,7 +958,8 @@ RSpec.describe SurveyResultsGeneratorService do
             result[:multilocs][:group] = {
               area_1_key => { title_multiloc: domicile_user_custom_field.options[0].title_multiloc },
               area_2_key => { title_multiloc: domicile_user_custom_field.options[1].title_multiloc },
-              somewhere_else_key => { title_multiloc: domicile_user_custom_field.options.last.title_multiloc }
+              somewhere_else_key => { title_multiloc: domicile_user_custom_field.options.last.title_multiloc },
+              'no_answer' => { title_multiloc: {} }
             }
           end
         end
@@ -1004,7 +1024,8 @@ RSpec.describe SurveyResultsGeneratorService do
               answer: {
                 'la' => hash_including(title_multiloc: { 'en' => 'Los Angeles', 'fr-FR' => 'Los Angeles', 'nl-NL' => 'Los Angeles' }),
                 'ny' => hash_including(title_multiloc: { 'en' => 'New York', 'fr-FR' => 'New York', 'nl-NL' => 'New York' }),
-                'other' => hash_including(title_multiloc: { 'en' => 'Other', 'fr-FR' => 'Autre', 'nl-NL' => 'Ander' })
+                'other' => hash_including(title_multiloc: { 'en' => 'Other', 'fr-FR' => 'Autre', 'nl-NL' => 'Ander' }),
+                'no_answer' => hash_including(title_multiloc: {})
               },
               group: {
                 1 => { title_multiloc: { 'en' => '1 - Strongly disagree', 'fr-FR' => "1 - Pas du tout d'accord", 'nl-NL' => '1 - Helemaal niet mee eens' } },
@@ -1013,7 +1034,8 @@ RSpec.describe SurveyResultsGeneratorService do
                 4 => { title_multiloc: { 'en' => '4 - Neutral', 'fr-FR' => '4 - Neutre', 'nl-NL' => '4 - Neutraal' } },
                 5 => { title_multiloc: { 'en' => '5 - Slightly agree', 'fr-FR' => "5 - Plutôt d'accord", 'nl-NL' => '5 - Enigszins eens' } },
                 6 => { title_multiloc: { 'en' => '6 - Agree', 'fr-FR' => "6 - D'accord", 'nl-NL' => '6 - Mee eens' } },
-                7 => { title_multiloc: { 'en' => '7 - Strongly agree', 'fr-FR' => "7 - Tout à fait d'accord", 'nl-NL' => '7 - Strerk mee eens' } }
+                7 => { title_multiloc: { 'en' => '7 - Strongly agree', 'fr-FR' => "7 - Tout à fait d'accord", 'nl-NL' => '7 - Strerk mee eens' } },
+                'no_answer' => { title_multiloc: {} }
               }
             },
             legend: [7, 6, 5, 4, 3, 2, 1, nil],
@@ -1102,7 +1124,8 @@ RSpec.describe SurveyResultsGeneratorService do
                   medium: end_with('.png'),
                   small: end_with('.png')
                 }
-              )
+              ),
+              'no_answer' => hash_including(title_multiloc: {})
             }
           }
         }
@@ -1310,6 +1333,468 @@ RSpec.describe SurveyResultsGeneratorService do
 
       it 'returns the results for a number field' do
         expect(generated_results[:results][13]).to match expected_result_number
+      end
+    end
+  end
+
+  describe 'add_logic_to_results' do
+    # NOTE: Most of the object below is not needed for the tests, but it's included for completeness
+    let_it_be(:results_without_logic) do
+      [
+        {
+          inputType: 'page',
+          question: {},
+          description: {},
+          customFieldId: 'PAGE_1',
+          required: false,
+          grouped: false,
+          hidden: false,
+          totalResponseCount: 2,
+          questionResponseCount: 2,
+          pageNumber: 1,
+          questionNumber: nil,
+          logic: {}
+        },
+        {
+          inputType: 'select',
+          question: {
+            en: 'Your question'
+          },
+          description: {
+            en: '<p>This is a <strong>question</strong> description</p>'
+          },
+          customFieldId: 'SELECT_1',
+          required: false,
+          grouped: false,
+          hidden: false,
+          totalResponseCount: 2,
+          questionResponseCount: 2,
+          pageNumber: nil,
+          questionNumber: 1,
+          logic: {},
+          totalPickCount: 2,
+          answers: [
+            {
+              answer: 'option_1',
+              count: 1
+            },
+            {
+              answer: 'option_3',
+              count: 1
+            },
+            {
+              answer: 'option_2',
+              count: 0
+            },
+            {
+              answer: nil,
+              count: 0
+            }
+          ],
+          multilocs: {
+            answer: {
+              option_1: {
+                title_multiloc: {
+                  en: 'Option 1 is a really long option what happens here'
+                },
+                id: 'SELECT_1_OPTION_1',
+                logic: {
+                  nextPageId: 'PAGE_3'
+                }
+              },
+              option_2: {
+                title_multiloc: {
+                  en: 'Option 2'
+                },
+                id: 'SELECT_1_OPTION_2',
+                logic: {
+                  nextPageId: 'PAGE_2'
+                }
+              },
+              option_3: {
+                title_multiloc: {
+                  en: 'Option 3'
+                },
+                id: 'SELECT_1_OPTION_3',
+                logic: {
+                  nextPageId: 'PAGE_4'
+                }
+              },
+              no_answer: {
+                title_multiloc: {},
+                id: 'SELECT_OPTION_no_answer',
+                logic: {}
+              }
+            }
+          }
+        },
+        {
+          inputType: 'page',
+          question: {
+            en: 'Page 2'
+          },
+          description: {},
+          customFieldId: 'PAGE_2',
+          required: false,
+          grouped: false,
+          hidden: false,
+          totalResponseCount: 2,
+          questionResponseCount: 1,
+          pageNumber: 2,
+          questionNumber: nil,
+          logic: {
+            nextPageId: 'survey_end'
+          }
+        },
+        {
+          inputType: 'text',
+          question: {
+            en: 'Short answer'
+          },
+          description: {},
+          customFieldId: 'TEXT_FIELD_1',
+          required: false,
+          grouped: false,
+          hidden: false,
+          totalResponseCount: 2,
+          questionResponseCount: 0,
+          pageNumber: nil,
+          questionNumber: 2,
+          logic: {},
+          textResponses: []
+        },
+        {
+          inputType: 'linear_scale',
+          question: {
+            en: 'Linear scale'
+          },
+          description: {},
+          customFieldId: 'LINEAR_SCALE_1',
+          required: false,
+          grouped: false,
+          hidden: false,
+          totalResponseCount: 2,
+          questionResponseCount: 1,
+          pageNumber: nil,
+          questionNumber: 3,
+          logic: {},
+          totalPickCount: 2,
+          answers: [
+            { answer: 5, count: 0 },
+            { answer: 4, count: 0 },
+            { answer: 3, count: 1 },
+            { answer: 2, count: 0 },
+            {
+              answer: 1,
+              count: 0
+            },
+            {
+              answer: nil,
+              count: 1
+            }
+          ],
+          multilocs: {
+            answer: {
+              '1': {
+                title_multiloc: {
+                  en: '1'
+                },
+                id: 'LINEAR_SCALE_OPTION_1',
+                logic: {
+                  nextPageId: nil
+                }
+              },
+              '2': {
+                title_multiloc: {
+                  en: '2'
+                },
+                id: 'LINEAR_SCALE_OPTION_2',
+                logic: {
+                  nextPageId: 'PAGE_3'
+                }
+              },
+              '3': {
+                title_multiloc: {
+                  en: '3'
+                },
+                id: 'LINEAR_SCALE_OPTION_3',
+                logic: {
+                  nextPageId: 'PAGE_4'
+                }
+              },
+              '4': {
+                title_multiloc: {
+                  en: '4'
+                },
+                id: 'LINEAR_SCALE_OPTION_4',
+                logic: {
+                  nextPageId: nil
+                }
+              },
+              '5': {
+                title_multiloc: {
+                  en: '5'
+                },
+                id: 'LINEAR_SCALE_OPTION_5',
+                logic: {
+                  nextPageId: nil
+                }
+              },
+              no_answer: {
+                title_multiloc: {},
+                id: 'LINEAR_SCALE_OPTION_no_answer',
+                logic: {
+                  nextPageId: 'survey_end'
+                }
+              }
+            }
+          }
+        },
+        {
+          inputType: 'multiselect',
+          question: {
+            en: 'Multiple choice'
+          },
+          description: {},
+          customFieldId: 'MULTISELECT_1',
+          required: false,
+          grouped: false,
+          hidden: false,
+          totalResponseCount: 2,
+          questionResponseCount: 1,
+          pageNumber: nil,
+          questionNumber: 4,
+          logic: {},
+          totalPickCount: 3,
+          answers: [
+            {
+              answer: 'option_1',
+              count: 1
+            },
+            {
+              answer: 'option_2',
+              count: 1
+            },
+            {
+              answer: nil,
+              count: 1
+            },
+            {
+              answer: 'option_3',
+              count: 0
+            }
+          ],
+          multilocs: {
+            answer: {
+              this: {
+                title_multiloc: {
+                  en: 'Option 1'
+                },
+                id: 'MULTISELECT_1_OPTION_1',
+                logic: {
+                  nextPageId: nil
+                }
+              },
+              that: {
+                title_multiloc: {
+                  en: 'Option 2'
+                },
+                id: 'MULTISELECT_1_OPTION_2',
+                logic: {
+                  nextPageId: nil
+                }
+              },
+              another: {
+                title_multiloc: {
+                  en: 'Option 3'
+                },
+                id: 'MULTISELECT_1_OPTION_3',
+                logic: {
+                  nextPageId: 'd6832184-5445-444b-9cda-8b159097bd31'
+                }
+              },
+              no_answer: {
+                title_multiloc: {},
+                id: 'MULTISELECT_1_OPTION_no_answer',
+                logic: {
+                  nextPageId: 'survey_end'
+                }
+              }
+            }
+          }
+        },
+        {
+          inputType: 'page',
+          question: {
+            en: 'Page 3'
+          },
+          description: {},
+          customFieldId: 'PAGE_3',
+          required: false,
+          grouped: false,
+          hidden: false,
+          totalResponseCount: 2,
+          questionResponseCount: 0,
+          pageNumber: 3,
+          questionNumber: nil,
+          logic: {}
+        },
+        {
+          inputType: 'select',
+          question: {
+            en: 'Single choice'
+          },
+          description: {},
+          customFieldId: 'SELECT_2',
+          required: false,
+          grouped: false,
+          hidden: false,
+          totalResponseCount: 2,
+          questionResponseCount: 0,
+          pageNumber: nil,
+          questionNumber: 5,
+          logic: {},
+          totalPickCount: 2,
+          answers: [
+            {
+              answer: nil,
+              count: 2
+            },
+            {
+              answer: 'option1',
+              count: 0
+            },
+            {
+              answer: 'option2',
+              count: 0
+            }
+          ],
+          multilocs: {
+            answer: {
+              option_1: {
+                title_multiloc: {
+                  en: 'Option 2'
+                },
+                id: 'SELECT_2_OPTION_1',
+                logic: {
+                  nextPageId: 'survey_end'
+                }
+              },
+              option_2: {
+                title_multiloc: {
+                  en: 'Option 2'
+                },
+                id: 'SELECT_2_OPTION_2',
+                logic: {
+                  nextPageId: nil
+                }
+              },
+              no_answer: {
+                title_multiloc: {},
+                id: 'SELECT_2_no_answer',
+                logic: {}
+              }
+            }
+          }
+        },
+        {
+          inputType: 'text',
+          question: {
+            en: 'Another short answer'
+          },
+          description: {},
+          customFieldId: 'TEXT_3',
+          required: false,
+          grouped: false,
+          hidden: false,
+          totalResponseCount: 2,
+          questionResponseCount: 0,
+          pageNumber: nil,
+          questionNumber: 6,
+          logic: {},
+          textResponses: []
+        },
+        {
+          inputType: 'page',
+          question: {
+            en: 'Page 4'
+          },
+          description: {},
+          customFieldId: 'PAGE_4',
+          required: false,
+          grouped: false,
+          hidden: false,
+          totalResponseCount: 2,
+          questionResponseCount: 0,
+          pageNumber: 4,
+          questionNumber: nil,
+          logic: {}
+        },
+        {
+          inputType: 'text',
+          question: {
+            en: 'Another short answer'
+          },
+          description: {},
+          customFieldId: 'TEXT_4',
+          required: false,
+          grouped: false,
+          hidden: false,
+          totalResponseCount: 2,
+          questionResponseCount: 0,
+          pageNumber: nil,
+          questionNumber: 7,
+          logic: {},
+          textResponses: []
+        }
+      ]
+    end
+
+    context 'next page numbers and questions skipped' do
+      let(:results) { described_class.new(phase).send(:add_logic_to_results, results_without_logic, logic_ids: []) }
+
+      # TODO: JS - we need some tests to make sure that the logic IDs are correctly added in the first place
+      # TODO: JS - Finish these tests
+
+      it 'transforms logic information for single select options' do
+        select_field = results[1]
+        expect(select_field[:multilocs][:answer][:option_1][:logic]).to match(
+          { nextPageNumber: 3, numQuestionsSkipped: 3 }
+        )
+
+        expect(select_field[:multilocs][:answer][:option_2][:logic]).to match(
+          { nextPageNumber: 2, numQuestionsSkipped: 0 }
+        )
+        expect(select_field[:multilocs][:answer][:option_3][:logic]).to match(
+          { nextPageNumber: 4, numQuestionsSkipped: 5 }
+        )
+      end
+    end
+
+    context 'when filtering by logic_ids' do
+      it 'flags no fields as hidden if no logic IDs are provided' do
+        results = generator.send(:add_logic_to_results, results_without_logic, [])
+        expect(results.pluck(:hidden)).to eq(
+          [false, false, false, false, false, false, false, false, false, false, false]
+        )
+      end
+
+      it 'flags fields as hidden when a page ID is provided' do
+        logic_ids = ['PAGE_2']
+        results = generator.send(:add_logic_to_results, results_without_logic, logic_ids)
+        hidden_field_ids = results.select { |r| r[:hidden] == true }.pluck(:customFieldId)
+        expect(hidden_field_ids).to eq(
+          %w[PAGE_3 SELECT_2 TEXT_3 PAGE_4 TEXT_4]
+        )
+      end
+
+      it 'flags fields as hidden when select option IDs are passed in' do
+        logic_ids = %w[SELECT_1_OPTION_1 SELECT_1_OPTION_3]
+        results = generator.send(:add_logic_to_results, results_without_logic, logic_ids)
+        hidden_field_ids = results.select { |r| r[:hidden] == true }.pluck(:customFieldId)
+        expect(hidden_field_ids).to eq(
+          %w[PAGE_2 TEXT_FIELD_1 LINEAR_SCALE_1 MULTISELECT_1 PAGE_3 SELECT_2 TEXT_3]
+        )
       end
     end
   end

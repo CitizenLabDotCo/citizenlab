@@ -231,11 +231,7 @@ class SurveyResultsGeneratorService < FieldVisitorService
       accu[option.key] = option_detail
     end
 
-    # Add a multiloc for no answer only if there is no_answer logic
-    no_answer_logic_page = field.logic['rules']&.find { |r| r['if'] == 'no_answer' }&.dig('goto_page_id')
-    if no_answer_logic_page
-      answer_multilocs['no_answer'] = { title_multiloc: {}, id: "#{field.id}_no_answer", logic: { nextPageId: no_answer_logic_page } }
-    end
+    answer_multilocs['no_answer'] = no_answer_option_multiloc field
 
     answer_multilocs
   end
@@ -255,13 +251,19 @@ class SurveyResultsGeneratorService < FieldVisitorService
       answer_multilocs[value][:title_multiloc].merge! labels
     end
 
-    # Add a multiloc for no answer only if there is no_answer logic
-    no_answer_logic_page = field.logic['rules']&.find { |r| r['if'] == 'no_answer' }&.dig('goto_page_id')
-    if no_answer_logic_page
-      answer_multilocs['no_answer'] = { title_multiloc: {}, id: "#{field.id}_no_answer", logic: { nextPageId: no_answer_logic_page } }
-    end
+    answer_multilocs['no_answer'] = no_answer_option_multiloc field
 
     answer_multilocs
+  end
+
+  # Add a multiloc for no_answer - title empty as it is defined on FE
+  def no_answer_option_multiloc(field)
+    no_answer_logic_page = field.logic['rules']&.find { |r| r['if'] == 'no_answer' }&.dig('goto_page_id')
+    {
+      title_multiloc: {},
+      id: "#{field.id}_no_answer",
+      logic: no_answer_logic_page ? { nextPageId: no_answer_logic_page } : {}
+    }
   end
 
   def get_text_responses(field_key)
@@ -399,7 +401,7 @@ class SurveyResultsGeneratorService < FieldVisitorService
     # Replace logicNextPageId with logicNextPageNumber - used by FE in logic tooltip
     # Note: 999 is a special number used for the survey end
     # And work out how which questions are skipped by logic
-    results = results.map do |result|
+    results = results.deep_dup.map do |result|
       # Replace in page logic
       logic_next_page_id = result[:logic][:nextPageId]
       field_id = result[:customFieldId]
@@ -412,7 +414,7 @@ class SurveyResultsGeneratorService < FieldVisitorService
         logic_skipped_fields = logic_get_skipped_field_ids(results, field_id, logic_next_page_id)
         result[:logic][:numQuestionsSkipped] = logic_skipped_fields.size
         if logic_ids.include?(field_id)
-          results_to_hide += logic_skipped_fields
+          results_to_hide += logic_skipped_fields.pluck(:id)
         end
       end
       result[:logic].delete(:nextPageId)

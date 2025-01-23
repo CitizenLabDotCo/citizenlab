@@ -34,15 +34,18 @@ const FormResultsPage = ({
   const { question, pageNumber, questionResponseCount, customFieldId, logic } =
     result;
 
-  const pageTitle = <T value={question} />;
+  const hasTitle = Object.values(question).filter((v) => v !== '').length > 0;
 
   if (result.hidden) {
     return (
       <Box borderLeft={`4px solid ${colors.coolGrey300}`} pl="12px">
         <Text color={'grey500'}>
           {formatMessage(messages.page)} {pageNumber}
-          {pageTitle && <>: {pageTitle}</>}
-          {formatMessage(messages.hiddenByLogic)}
+          {hasTitle && (
+            <>
+              : <T value={question} />
+            </>
+          )}
         </Text>
       </Box>
     );
@@ -52,12 +55,16 @@ const FormResultsPage = ({
     <Box
       data-cy={`e2e-${snakeCase(localize(question))}`}
       mb="24px"
-      borderLeft={`4px solid ${theme.colors.tenantPrimary}`}
       pl="12px"
+      borderLeft={`4px solid ${theme.colors.tenantPrimary}`}
     >
       <Title variant="h3" mt="12px" mb="12px">
         {formatMessage(messages.page)} {pageNumber}
-        {pageTitle && <>: {pageTitle}</>}
+        {hasTitle && (
+          <>
+            : <T value={question} />
+          </>
+        )}
       </Title>
       <Box display="flex">
         <Text variant="bodyS" color="textSecondary" mt="0" mb="4px">
