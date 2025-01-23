@@ -1,6 +1,6 @@
 import { IFlatCustomField } from 'api/custom_fields/types';
 
-import { questionDNDType } from 'components/FormBuilder/components/FormFields';
+import { questionDNDType } from 'components/FormBuilder/components/FormFields/constants';
 
 const reorder = <ListType>(
   list: ListType[],

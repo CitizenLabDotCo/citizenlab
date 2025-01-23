@@ -13,8 +13,6 @@ describe('getReorderedFields', () => {
               input_type: 'section',
               title_multiloc: {
                 en: 'What is your idea?',
-                'nl-BE': 'Wat is je idee?',
-                'fr-BE': 'Quelle est votre idée ?',
               },
               required: false,
               ordering: 0,
@@ -45,8 +43,6 @@ describe('getReorderedFields', () => {
             input_type: 'section',
             title_multiloc: {
               en: 'What is your idea?',
-              'nl-BE': 'Wat is je idee?',
-              'fr-BE': 'Quelle est votre idée ?',
             },
             required: false,
             ordering: 0,
