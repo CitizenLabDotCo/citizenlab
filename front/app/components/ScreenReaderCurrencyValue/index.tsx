@@ -11,7 +11,7 @@ interface Props {
   amount: number;
   currency: TCurrency;
 }
-
+// TAN-3584
 const ScreenReaderCurrencyValue = ({ amount, currency }: Props) => {
   const { formatMessage } = useIntl();
 

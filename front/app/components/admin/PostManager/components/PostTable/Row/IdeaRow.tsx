@@ -20,12 +20,12 @@ import Checkbox from 'components/UI/Checkbox';
 
 import { trackEventByName } from 'utils/analytics';
 import { useIntl } from 'utils/cl-intl';
+import FormattedBudget from 'utils/currency/FormattedBudget';
 import { timeAgo } from 'utils/dateUtils';
 import eventEmitter from 'utils/eventEmitter';
 import { isNilOrError } from 'utils/helperUtils';
 
 import { TFilterMenu, ManagerType } from '../../..';
-import FormattedBudget from '../../../../../../utils/currency/FormattedBudget';
 import messages from '../../../messages';
 import tracks from '../../../tracks';
 import IdeaOfficialFeedbackModal, {

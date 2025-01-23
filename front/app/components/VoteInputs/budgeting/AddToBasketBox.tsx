@@ -88,6 +88,7 @@ const AddToBasketBox = memo(({ ideaId, phase }: Props) => {
           <Box>
             <FormattedBudget value={ideaBudget} />
             <Text mb="0px" mt="8px" color="grey600" fontSize="xs">
+              {/* TAN-3584 */}
               <FormattedMessage
                 {...messages.currencyLeft}
                 values={{

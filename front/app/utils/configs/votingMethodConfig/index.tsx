@@ -135,6 +135,7 @@ const budgetingConfig: VotingMethodConfig = {
                 {...messages.budgetingSubmissionInstructionsPreferredOptions}
               />
             </li>
+            {/* TAN-3584 */}
             {typeof minBudget === 'number' && minBudget > 0 ? (
               <li>
                 <FormattedMessage

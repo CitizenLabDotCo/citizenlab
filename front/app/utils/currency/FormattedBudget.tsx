@@ -53,6 +53,7 @@ const FormattedBudget = ({
       );
     } else {
       return (
+        // TAN-3584
         <FormattedNumber
           value={value}
           style="currency"
