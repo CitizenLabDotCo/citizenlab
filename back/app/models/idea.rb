@@ -284,8 +284,6 @@ class Idea < ApplicationRecord
   end
 
   def will_be_submitted?
-    # It would be better to foresee separate endpoints for publication,
-    # rather than relying on Rails dirty to detect publication.
     from, to = publication_status_change
     from != 'submitted' && to == 'submitted'
   end
