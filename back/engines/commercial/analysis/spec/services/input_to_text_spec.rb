@@ -204,7 +204,7 @@ describe Analysis::InputToText do
   it 'generates multiple lines for matrix linear scale fields' do
     custom_field = create(:custom_field_matrix_linear_scale)
     create(:custom_field_matrix_statement, custom_field: custom_field, key: 'more_benches_in_park', title_multiloc: { en: 'We need more benches in the park' })
-    service = described_class.new([custom_field])
+    service = described_class.new([custom_field.reload])
 
     input = build(
       :idea,

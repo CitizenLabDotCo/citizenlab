@@ -85,9 +85,10 @@ module Analysis
       value_for_llm = case custom_field.input_type
       when 'ranking'
         ranking_field_value(input, custom_field, options_by_key)
+      when 'matrix_linear_scale'
+        matrix_linear_scale_field_value(input, custom_field)
       else
-        vv = Export::Xlsx::ValueVisitor.new(input, options_by_key, app_configuration: @app_configuration)
-        custom_field.accept(vv)
+        xlsx_field_value(input, custom_field, options_by_key)
       end
 
       @memoized_field_values[input.id][custom_field.id] = value_for_llm
@@ -109,6 +110,25 @@ module Analysis
         option_title = title_multiloc ? @multiloc_service.t(title_multiloc) : ''
         "#{index + 1}. #{option_title}"
       end.join("\n")
+    end
+
+    def matrix_linear_scale_field_value(input, custom_field)
+      stored_values = input.custom_field_values[custom_field.key]
+      return '' if !stored_values
+
+      statements_by_key = custom_field.matrix_statements.index_by(&:key)
+      stored_values.map do |statement_key, value|
+        title_multiloc = statements_by_key[statement_key]&.title_multiloc
+        statement_title = title_multiloc ? @multiloc_service.t(title_multiloc) : ''
+        label_multiloc = custom_field.nth_linear_scale_multiloc(value)
+        value_str = label_multiloc.present? ? "#{value} (#{@multiloc_service.t(label_multiloc)})" : value.to_s
+        "#{statement_title} - #{value_str}"
+      end.join("\n")
+    end
+
+    def xlsx_field_value(input, custom_field, options_by_key)
+      vv = Export::Xlsx::ValueVisitor.new(input, options_by_key, app_configuration: @app_configuration)
+      custom_field.accept(vv)
     end
   end
 end
