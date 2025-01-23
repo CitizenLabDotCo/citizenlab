@@ -256,15 +256,11 @@ resource 'Idea Custom Fields' do
             code: nil,
             created_at: an_instance_of(String),
             description_multiloc: {},
-            # dropdown_layout: false,
             enabled: true,
             input_type: 'ranking',
             key: Regexp.new('inserted_field'),
             ordering: 1,
             required: false,
-            # select_count_enabled: false,
-            # maximum_select_count: nil,
-            # minimum_select_count: nil,
             title_multiloc: { en: 'Inserted field' },
             updated_at: an_instance_of(String),
             logic: {},
@@ -285,7 +281,8 @@ resource 'Idea Custom Fields' do
                   type: 'custom_field_option'
                 }
               ]
-            }
+            },
+            resource: { data: { id: an_instance_of(String), type: 'custom_form' } }
           }
         })
         options = CustomField.find(json_response.dig(:data, 1, :id)).options
