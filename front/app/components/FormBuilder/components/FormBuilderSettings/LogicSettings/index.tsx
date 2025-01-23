@@ -64,8 +64,8 @@ export const LogicSettings = ({
           label: option.title_multiloc[locale]?.toString(),
         }))
     : undefined;
-  // For Linear Scale Field
-  if (field.input_type === 'linear_scale') {
+  // For Linear Scale and Rating Fields
+  if (['linear_scale', 'rating'].includes(field.input_type)) {
     const linearScaleOptionArray = Array.from(
       { length: linearScaleMaximum },
       (_, i) => i + 1
