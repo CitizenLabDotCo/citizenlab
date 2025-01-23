@@ -59,6 +59,15 @@ const useCustomFields = ({
         // TODO: Fix this the next time the file is edited.
         // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
         map_config_id: customField.relationships?.map_config?.data?.id,
+        matrix_statements:
+          statementsForCustomField.length > 0
+            ? statementsForCustomField.map((statement) => ({
+                id: statement.data?.data.id,
+                title_multiloc:
+                  statement.data?.data.attributes.title_multiloc || {},
+                temp_id: statement.data?.data.attributes.temp_id,
+              }))
+            : [],
         options:
           optionsForCustomField.length > 0
             ? optionsForCustomField.map((option) => ({
@@ -70,15 +79,6 @@ const useCustomFields = ({
                 // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
                 image_id: option.data?.data.relationships.image?.data?.id,
                 temp_id: option.data?.data.attributes.temp_id,
-              }))
-            : [],
-        matrix_statements:
-          statementsForCustomField.length > 0
-            ? statementsForCustomField.map((statement) => ({
-                id: statement.data?.data.id,
-                title_multiloc:
-                  statement.data?.data.attributes.title_multiloc || {},
-                temp_id: statement.data?.data.attributes.temp_id,
               }))
             : [],
       };

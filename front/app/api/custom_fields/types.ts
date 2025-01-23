@@ -50,7 +50,6 @@ export type IOptionsType = {
 export type IMatrixStatementsType = {
   id?: string;
   title_multiloc: Multiloc;
-  other?: boolean;
   temp_id?: string;
 };
 

@@ -39,14 +39,13 @@ const useCustomFieldStatements = ({
   customFields,
 }: CustomFieldStatements) => {
   const customFieldsStatementIds =
-    customFields?.data.flatMap(
-      (customField) =>
-        customField.relationships.matrix_statements?.data.map(
-          (option) => option.id
-        ) || ''
+    customFields?.data.flatMap((customField) =>
+      customField.relationships.matrix_statements?.data.map(
+        (statement) => statement.id
+      )
     ) || [];
 
-  const getCustomFieldIdBasedOnStatementId = (statementId: string) => {
+  const getCustomFieldIdBasedOnStatementId = (statementId?: string) => {
     const customField = customFields?.data.find((customField) =>
       customField.relationships.matrix_statements?.data.find(
         (statement) => statement.id === statementId
@@ -57,6 +56,7 @@ const useCustomFieldStatements = ({
 
   const queries = customFieldsStatementIds.map((id) => {
     return {
+      enabled: !!id,
       queryKey: customFieldStatementKeys.item({
         id,
       }),
@@ -69,6 +69,7 @@ const useCustomFieldStatements = ({
         }),
     };
   });
+
   return useQueries<CustomFieldsStatementsReturnType>({ queries });
 };
 

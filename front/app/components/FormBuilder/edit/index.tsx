@@ -41,6 +41,7 @@ import { isNilOrError } from 'utils/helperUtils';
 import validateElementTitle from 'utils/yup/validateElementTitle';
 import validateLogic from 'utils/yup/validateLogic';
 import validateOneOptionForMultiSelect from 'utils/yup/validateOneOptionForMultiSelect';
+import validateOneStatementForMatrix from 'utils/yup/validateOneStatementForMatrix';
 
 import messages from '../messages';
 import { FormBuilderConfig } from '../utils';
@@ -117,6 +118,10 @@ const FormEdit = ({
           formatMessage(messages.emptyTitleMessage),
           { multiselect_image: formatMessage(messages.emptyImageOptionError) }
         ),
+        matrix_statements: validateOneStatementForMatrix(
+          formatMessage(messages.emptyStatementError),
+          formatMessage(messages.emptyTitleStatementMessage)
+        ),
         maximum: number(),
         linear_scale_label_1_multiloc: object(),
         linear_scale_label_2_multiloc: object(),
@@ -132,6 +137,8 @@ const FormEdit = ({
     ),
   });
 
+  console.log('defaultValues: ', defaultValues);
+
   const methods = useForm({
     mode: 'onBlur',
     defaultValues,
@@ -146,6 +153,11 @@ const FormEdit = ({
     getValues,
     reset,
   } = methods;
+
+  // TODO: Remove this when problem is fixed correctly!
+  useEffect(() => {
+    reset(defaultValues);
+  }, [defaultValues, reset]);
 
   const { append, move, replace } = useFieldArray({
     name: 'customFields',
@@ -185,6 +197,7 @@ const FormEdit = ({
 
   // Remove copy_from param on save to avoid overwriting a saved survey when reloading
   const [searchParams, setSearchParams] = useSearchParams();
+
   const resetCopyFrom = () => {
     if (searchParams.has('copy_from')) {
       searchParams.delete('copy_from');

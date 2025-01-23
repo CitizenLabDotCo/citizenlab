@@ -125,11 +125,6 @@ export function getAdditionalSettings(
             inputType={field.input_type}
             listType="statement"
           />
-          <OptionsSettings
-            inputType={field.input_type}
-            randomizeName={`customFields.${field.index}.random_option_ordering`}
-            dropdownLayoutName={`customFields.${field.index}.dropdown_layout`}
-          />
         </Box>
       );
     case 'multiselect_image':
