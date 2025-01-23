@@ -1179,6 +1179,18 @@
         }
       },
 
+      "posthog_user_tracking": {
+        "type": "object",
+        "title": "Posthog user tracking",
+        "description": "Enables the tracking of user interactions for analysis and product research purposes. Requires active consent from the customer.",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": true },
+          "enabled": { "type": "boolean", "default": false }
+        }
+      },
+
       "analysis": {
         "type": "object",
         "title": "AI-powered analysis for surveys and ideation",
