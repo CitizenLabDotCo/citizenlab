@@ -158,6 +158,7 @@ export function getAdditionalSettings(
     case 'section':
       return <FieldGroupSettings locale={platformLocale} field={field} />;
     case 'linear_scale':
+    case 'rating':
       return (
         <LinearScaleSettings
           platformLocale={platformLocale}
@@ -248,6 +249,9 @@ const getInputTypeStringKey = (
       break;
     case 'linear_scale':
       translatedStringKey = messages.linearScale;
+      break;
+    case 'rating':
+      translatedStringKey = messages.rating;
       break;
     case 'file_upload':
       translatedStringKey = messages.fileUpload;
