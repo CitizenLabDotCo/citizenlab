@@ -1,7 +1,3 @@
-import { Keys } from 'utils/cl-react-query/types';
-
-import customFieldStatementKeys from './keys';
-
 export interface ICustomFieldStatementParameters {
   id?: string;
   projectId: string;
@@ -28,5 +24,3 @@ export interface IFormCustomFieldStatementData {
 export interface IFormCustomFieldStatement {
   data: IFormCustomFieldStatementData;
 }
-
-export type CustomFieldStatementKeys = Keys<typeof customFieldStatementKeys>;
