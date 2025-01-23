@@ -34,6 +34,7 @@ nb:
       "project_review_request": Forespørsel om prosjektgjennomgang
       "project_review_state_change": Prosjektet er godkjent
       "status_change_on_idea_you_follow": Statusendring for en inngang som du følger
+      "survey_submitted": Innsendt spørreundersøkelse
       "threshold_reached_for_admin": Forslaget nådde terskelen for avstemning
       "welcome": Etter registrering
       "admin_digest": Ukentlig oversikt for administratorer
@@ -496,6 +497,14 @@ nb:
       event_description: 'Prosjektet "%{projectName}" ber deg om å stemme mellom %{numIdeas} alternativer:'
       cta_message: 'Klikk på knappen nedenfor for å delta'
       cta_vote: 'Gå til plattformen for å stemme'
+    survey_submitted:
+      subject: '%{organizationName}: Takk for svaret ditt! 🎉'
+      main_header: 'Takk for at du deler dine tanker om "%{projectName}"!'
+      your_input_submitted: 'Ditt innspill for "%{projectName}" har blitt sendt inn.'
+      if_you_would_like_to_review: 'Hvis du ønsker å se gjennom det du har sendt inn, kan du laste ned svarene nedenfor.'
+      your_submission_has_id: 'Din innsending har følgende unike identifikator:'
+      you_can_use_this_id: 'Du kan bruke denne identifikatoren til å kontakte plattformadministratorene hvis du vil at innsendingen din skal fjernes.'
+      download_responses: 'Last ned svarene dine'
     admin_labels:
       recipient_role:
         admins: 'Til administratorer'
