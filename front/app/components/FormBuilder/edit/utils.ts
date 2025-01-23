@@ -61,8 +61,6 @@ export const getReorderedFields = (
   result: DragAndDropResult,
   nestedGroupData: NestedGroupingStructure[]
 ): IFlatCustomField[] | undefined => {
-  console.log({ result, nestedGroupData });
-
   const { type, source, destination } = result;
   if (!destination) return;
 
@@ -84,10 +82,7 @@ export const getReorderedFields = (
           : { ...field, questions: updatedOrder }
       );
 
-      // return getFlatGroupStructure(updatedGroups);
-      const x = getFlatGroupStructure(updatedGroups);
-      // console.log({ x });
-      return x;
+      return getFlatGroupStructure(updatedGroups);
     } else {
       // REORDERING QUESTION TO DIFFERENT GROUP
       const sourceOrder = getGroupQuestions(nestedGroupData, sourceGroupId);
@@ -107,10 +102,7 @@ export const getReorderedFields = (
           : group
       );
 
-      // return getFlatGroupStructure(updatedGroups);
-      const x = getFlatGroupStructure(updatedGroups);
-      // console.log({ x });
-      return x;
+      return getFlatGroupStructure(updatedGroups);
     }
   }
 
@@ -121,8 +113,5 @@ export const getReorderedFields = (
     destination.index
   );
 
-  // return getFlatGroupStructure(updatedGroups);
-  const x = getFlatGroupStructure(updatedGroups);
-  // console.log({ x });
-  return x;
+  return getFlatGroupStructure(updatedGroups);
 };
