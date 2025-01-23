@@ -43,21 +43,23 @@ const NewIdeaStatus = ({
 
   if (tenantLocales && ideaStatuses) {
     return (
-      <Section>
+      <div data-testid="e2e-new-status-page">
         <GoBackButton onClick={goBack} />
-        <StyledSectionTitle>
-          <FormattedMessage {...messages.addIdeaStatus} />
-        </StyledSectionTitle>
-        <IdeaStatusForm
-          defaultValues={{
-            color: '#b5b5b5',
-            code: 'custom',
-          }}
-          onSubmit={handleSubmit}
-          showCategorySelector
-          variant={variant}
-        />
-      </Section>
+        <Section>
+          <StyledSectionTitle>
+            <FormattedMessage {...messages.addIdeaStatus} />
+          </StyledSectionTitle>
+          <IdeaStatusForm
+            defaultValues={{
+              color: '#b5b5b5',
+              code: 'custom',
+            }}
+            onSubmit={handleSubmit}
+            showCategorySelector
+            variant={variant}
+          />
+        </Section>
+      </div>
     );
   }
 

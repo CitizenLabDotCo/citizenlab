@@ -132,6 +132,7 @@ const IdeaStatuses = ({
           >
             <Box>
               <Button
+                data-testid="e2e-add-status-button"
                 buttonStyle="admin-dark"
                 icon="plus-circle"
                 linkTo={`/admin/settings/${variant}/statuses/new`}
