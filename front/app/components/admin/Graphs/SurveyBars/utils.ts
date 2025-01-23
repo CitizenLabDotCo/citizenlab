@@ -30,7 +30,7 @@ export const parseQuestionResult = (
       return {
         label,
         logicFilterId: null,
-        logicNextPageNumber: null,
+        logic: {},
         image,
         count,
         percentage: roundPercentage(count, totalPickCount, 1),
@@ -62,30 +62,22 @@ export const parseQuestionResult = (
   if (!multilocs) throw new Error('Multilocs are missing');
 
   return answers.map(({ count, answer }) => {
+    const answerKey = answer === null ? 'no_answer' : answer;
+    const multilocsAnswer = multilocs.answer[answerKey];
+
     const label =
       answer === null
         ? noAnswerCopy
-        : localize(multilocs.answer[answer].title_multiloc);
-
-    const logicFilterId =
-      answer !== null && multilocs.answer[answer].logicNextPageNumber
-        ? result.inputType === 'linear_scale'
-          ? `${result.customFieldId}_${answer}`
-          : multilocs.answer[answer].id
-        : null;
-    // TODO: JS - Find out what the null condition from the question will be
-
-    const logicNextPageNumber =
-      answer !== null ? multilocs.answer[answer].logicNextPageNumber : null;
-
-    const image = answer ? multilocs.answer[answer].image : undefined;
-
+        : localize(multilocsAnswer?.title_multiloc);
+    const image = multilocsAnswer?.image;
     const percentage = roundPercentage(count, totalPickCount, 1);
+    const logic = multilocsAnswer?.logic;
+    const logicFilterId = multilocsAnswer?.id;
 
     return {
       label,
       logicFilterId,
-      logicNextPageNumber,
+      logic,
       image,
       count,
       percentage,

@@ -186,23 +186,23 @@ export default defineMessages({
     defaultMessage: ' - hidden by logic',
   },
   logicSkipTooltipPage: {
-    id: 'app.containers.Admin.projects.project.survey.logicSkipTooltipPage3',
+    id: 'app.containers.Admin.projects.project.survey.logicSkipTooltipPage4',
     defaultMessage:
-      'Logic on this page skips all pages until page { pageNumber }. Click to hide or show the skipped pages and questions.',
+      'Logic on this page skips all pages until page { pageNumber } ({ numQuestionsSkipped } questions skipped). Click to hide or show the skipped pages and questions.',
   },
   logicSkipTooltipOption: {
-    id: 'app.containers.Admin.projects.project.survey.logicSkipTooltipOption3',
+    id: 'app.containers.Admin.projects.project.survey.logicSkipTooltipOption4',
     defaultMessage:
-      'Logic on this answer skips all pages until page { pageNumber } when a user selects this answer. Click to hide or show the skipped pages and questions.',
+      'When a user selects this answer logic skips all pages until page { pageNumber } ({ numQuestionsSkipped } questions skipped). Click to hide or show the skipped pages and questions.',
   },
   logicSkipTooltipPageSurveyEnd: {
-    id: 'app.containers.Admin.projects.project.survey.logicSkipTooltipPageSurveyEnd',
+    id: 'app.containers.Admin.projects.project.survey.logicSkipTooltipPageSurveyEnd2',
     defaultMessage:
-      'Logic on this page skips to the survey end. Click to hide or show the skipped pages and questions.',
+      'Logic on this page skips to the survey end ({ numQuestionsSkipped } questions skipped). Click to hide or show the skipped pages and questions.',
   },
   logicSkipTooltipOptionSurveyEnd: {
-    id: 'app.containers.Admin.projects.project.survey.logicSkipTooltipOptionSurveyEnd',
+    id: 'app.containers.Admin.projects.project.survey.logicSkipTooltipOptionSurveyEnd2',
     defaultMessage:
-      'Logic on this answer skips to the survey end when a user selects this answer. Click to hide or show the skipped pages and questions.',
+      'When a user selects this answer logic skips to the survey end ({ numQuestionsSkipped } questions skipped). Click to hide or show the skipped pages and questions.',
   },
 });

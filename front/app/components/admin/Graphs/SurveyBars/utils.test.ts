@@ -21,7 +21,7 @@ describe('parseQuestionResult', () => {
       questionNumber: 1,
       pageNumber: 1,
       hidden: false,
-      logicNextPageNumber: null,
+      logic: {},
       answers: [
         {
           answer: 'select_option_1_q90',
@@ -56,14 +56,14 @@ describe('parseQuestionResult', () => {
               en: 'select: Option 1',
             },
             id: '1',
-            logicNextPageNumber: null,
+            logic: {},
           },
           select_option_2_sj8: {
             title_multiloc: {
               en: 'select: Option 2',
             },
             id: '1',
-            logicNextPageNumber: null,
+            logic: {},
           },
         },
         group: {
@@ -72,21 +72,21 @@ describe('parseQuestionResult', () => {
               en: 'Male',
             },
             id: '1',
-            logicNextPageNumber: null,
+            logic: {},
           },
           female: {
             title_multiloc: {
               en: 'Female',
             },
             id: '1',
-            logicNextPageNumber: null,
+            logic: {},
           },
           unspecified: {
             title_multiloc: {
               en: 'Other',
             },
             id: '1',
-            logicNextPageNumber: null,
+            logic: {},
           },
         },
       },
@@ -99,7 +99,7 @@ describe('parseQuestionResult', () => {
         count: 2,
         percentage: 50,
         logicFilterId: null,
-        logicNextPageNumber: null,
+        logic: {},
         bars: [
           {
             type: 'single',
@@ -114,7 +114,7 @@ describe('parseQuestionResult', () => {
         count: 2,
         percentage: 50,
         logicFilterId: null,
-        logicNextPageNumber: null,
+        logic: {},
         bars: [
           {
             type: 'single',
@@ -129,7 +129,7 @@ describe('parseQuestionResult', () => {
         count: 0,
         percentage: 0,
         logicFilterId: null,
-        logicNextPageNumber: null,
+        logic: {},
         bars: [
           {
             type: 'single',
@@ -167,7 +167,7 @@ describe('parseQuestionResult', () => {
       description: {},
       questionNumber: 1,
       pageNumber: 1,
-      logicNextPageNumber: null,
+      logic: {},
       answers: [
         {
           answer: 'multiselect_option_1_s2e',
@@ -210,14 +210,14 @@ describe('parseQuestionResult', () => {
               en: 'multiselect: Option 1',
             },
             id: '1',
-            logicNextPageNumber: null,
+            logic: {},
           },
           multiselect_option_2_3c7: {
             title_multiloc: {
               en: 'multiselect: Option 2',
             },
             id: '1',
-            logicNextPageNumber: null,
+            logic: {},
           },
         },
         group: {
@@ -226,21 +226,21 @@ describe('parseQuestionResult', () => {
               en: 'Male',
             },
             id: '1',
-            logicNextPageNumber: null,
+            logic: {},
           },
           female: {
             title_multiloc: {
               en: 'Female',
             },
             id: '1',
-            logicNextPageNumber: null,
+            logic: {},
           },
           unspecified: {
             title_multiloc: {
               en: 'Other',
             },
             id: '1',
-            logicNextPageNumber: null,
+            logic: {},
           },
         },
       },
@@ -253,7 +253,7 @@ describe('parseQuestionResult', () => {
         count: 4,
         percentage: 50,
         logicFilterId: null,
-        logicNextPageNumber: null,
+        logic: {},
         bars: [
           {
             type: 'first',
@@ -274,7 +274,7 @@ describe('parseQuestionResult', () => {
         count: 4,
         percentage: 50,
         logicFilterId: null,
-        logicNextPageNumber: null,
+        logic: {},
         bars: [
           {
             type: 'first',
@@ -295,7 +295,7 @@ describe('parseQuestionResult', () => {
         count: 0,
         percentage: 0,
         logicFilterId: null,
-        logicNextPageNumber: null,
+        logic: {},
         bars: [
           {
             type: 'single',

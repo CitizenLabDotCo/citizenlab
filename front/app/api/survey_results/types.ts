@@ -21,7 +21,10 @@ export interface Answer {
 export type MultilocAnswer = {
   title_multiloc: Multiloc;
   id: string;
-  logicNextPageNumber: number | null;
+  logic: {
+    nextPageNumber?: number;
+    numQuestionsSkipped?: number;
+  };
   image?: ImageSizes;
 };
 
@@ -49,12 +52,17 @@ type BaseResult = {
   questionResponseCount: number;
   questionNumber: number;
   pageNumber: number;
-  logicNextPageNumber: number | null;
+  logic: ResultLogic;
   numberResponses?: { answer: number }[];
 
   // Defined for text questions,
   // and for select questions with "other" option
   textResponses?: { answer: string }[];
+};
+
+export type ResultLogic = {
+  nextPageNumber?: number;
+  numQuestionsSkipped?: number;
 };
 
 export type ResultUngrouped = BaseResult & {

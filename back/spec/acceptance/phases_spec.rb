@@ -724,7 +724,7 @@ resource 'Phases' do
             hidden: false,
             pageNumber: nil,
             questionNumber: 1,
-            logicNextPageNumber: nil,
+            logic: {},
             totalResponseCount: 2,
             questionResponseCount: 2,
             totalPickCount: 3,
@@ -735,8 +735,8 @@ resource 'Phases' do
             ],
             multilocs: {
               answer: {
-                cat: { title_multiloc: { en: 'Cat' }, id: cat_option.id, logicNextPageNumber: nil },
-                dog: { title_multiloc: { en: 'Dog' }, id: dog_option.id, logicNextPageNumber: nil }
+                cat: { title_multiloc: { en: 'Cat' }, id: cat_option.id, logic: {} },
+                dog: { title_multiloc: { en: 'Dog' }, id: dog_option.id, logic: {} }
               }
             }
           }

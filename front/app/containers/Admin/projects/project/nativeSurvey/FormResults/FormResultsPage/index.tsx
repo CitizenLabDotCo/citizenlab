@@ -31,13 +31,8 @@ const FormResultsPage = ({
   const { formatMessage } = useIntl();
   const theme = useTheme();
 
-  const {
-    question,
-    pageNumber,
-    questionResponseCount,
-    customFieldId,
-    logicNextPageNumber,
-  } = result;
+  const { question, pageNumber, questionResponseCount, customFieldId, logic } =
+    result;
 
   const pageTitle = <T value={question} />;
 
@@ -71,9 +66,9 @@ const FormResultsPage = ({
           ).toLowerCase()}`}
         </Text>
         <LogicIcon
-          logicFilterId={logicNextPageNumber ? customFieldId : null}
+          logicFilterId={logic?.nextPageNumber ? customFieldId : null}
           logicConfig={logicConfig}
-          nextPageNumber={logicNextPageNumber}
+          fieldLogic={logic}
           type="page"
         />
       </Box>

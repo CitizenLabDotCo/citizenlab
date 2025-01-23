@@ -2,7 +2,7 @@ import React from 'react';
 
 import { Button, colors, Tooltip } from '@citizenlab/cl2-component-library';
 
-import { LogicConfig } from 'api/survey_results/types';
+import { LogicConfig, ResultLogic } from 'api/survey_results/types';
 
 import { useIntl } from 'utils/cl-intl';
 
@@ -11,31 +11,33 @@ import messages from './messages';
 interface LogicIconProps {
   logicConfig?: LogicConfig;
   logicFilterId: string | null;
-  nextPageNumber: number | null;
+  fieldLogic?: ResultLogic;
   type: 'page' | 'option';
 }
 
 const LogicIcon = ({
   logicConfig,
   logicFilterId,
-  nextPageNumber,
+  fieldLogic,
   type,
 }: LogicIconProps) => {
   const { formatMessage } = useIntl();
 
-  if (!logicConfig || !logicFilterId || !nextPageNumber) return null;
+  if (!logicConfig || !logicFilterId || !fieldLogic?.nextPageNumber)
+    return null;
 
   // Note: 999 is a special number used for the survey end
   const tooltipContent = formatMessage(
     type === 'page'
-      ? nextPageNumber === 999
+      ? fieldLogic.nextPageNumber === 999
         ? messages.logicSkipTooltipPageSurveyEnd
         : messages.logicSkipTooltipPage
-      : nextPageNumber === 999
+      : fieldLogic.nextPageNumber === 999
       ? messages.logicSkipTooltipOptionSurveyEnd
       : messages.logicSkipTooltipOption,
     {
-      pageNumber: nextPageNumber,
+      pageNumber: fieldLogic.nextPageNumber,
+      numQuestionsSkipped: fieldLogic?.numQuestionsSkipped || 0,
     }
   );
 

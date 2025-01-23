@@ -1,6 +1,6 @@
 import { ImageSizes } from 'typings';
+import { ResultLogic } from 'api/survey_results/types';
 
-// TODO: JS - Think this typing is repeated
 export type Answer = {
   label: string;
   image?: ImageSizes;
@@ -8,7 +8,7 @@ export type Answer = {
   percentage: number;
   bars: Bar[];
   logicFilterId: string | null;
-  logicNextPageNumber: number | null;
+  logic: ResultLogic;
 };
 
 export type Bar = {
