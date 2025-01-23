@@ -395,23 +395,19 @@ class SurveyResultsGeneratorService < FieldVisitorService
     end
   end
 
+  # Replace logicNextPageId with logicNextPageNumber & add number used by FE in logic tooltip
+  # Add hidden flag to results based on logic ids supplied for filtering
   def add_logic_to_results(results, logic_ids)
     results_to_hide = []
 
-    # Replace logicNextPageId with logicNextPageNumber - used by FE in logic tooltip
-    # Note: 999 is a special number used for the survey end
-    # And work out how which questions are skipped by logic
     results = results.deep_dup.map do |result|
-      # Replace in page logic
+      # Transform page logic
       logic_next_page_id = result[:logic][:nextPageId]
       field_id = result[:customFieldId]
       if logic_next_page_id
-        # TODO: JS - repeated logic - refactor into method
-        next_page = results.find { |r| r[:customFieldId] == logic_next_page_id }
-        result[:logic][:nextPageNumber] = next_page ? next_page[:pageNumber] : nil
-        result[:logic][:nextPageNumber] = 999 if logic_next_page_id == 'survey_end'
+        result[:logic][:nextPageNumber] = logic_next_page_number(logic_next_page_id, results)
 
-        logic_skipped_fields = logic_get_skipped_field_ids(results, field_id, logic_next_page_id)
+        logic_skipped_fields = logic_skipped_field_ids(results, field_id, logic_next_page_id)
         result[:logic][:numQuestionsSkipped] = logic_skipped_fields.size
         if logic_ids.include?(field_id)
           results_to_hide += logic_skipped_fields.pluck(:id)
@@ -420,15 +416,13 @@ class SurveyResultsGeneratorService < FieldVisitorService
       result[:logic].delete(:nextPageId)
 
       if select_input_type? result[:inputType]
-        # Do the same for select options
+        # Transform select option logic
         result[:multilocs][:answer]&.each_value do |answer|
           logic_next_page_id = answer[:logic][:nextPageId]
           if logic_next_page_id
-            next_page = results.find { |r| r[:customFieldId] == logic_next_page_id }
-            answer[:logic][:nextPageNumber] = next_page ? next_page[:pageNumber] : nil
-            answer[:logic][:nextPageNumber] = 999 if logic_next_page_id == 'survey_end'
+            answer[:logic][:nextPageNumber] = logic_next_page_number(logic_next_page_id, results)
 
-            logic_skipped_fields = logic_get_skipped_field_ids(results, field_id, logic_next_page_id)
+            logic_skipped_fields = logic_skipped_field_ids(results, field_id, logic_next_page_id)
             answer[:logic][:numQuestionsSkipped] = logic_skipped_fields.count { |f| f[:question] == true }
             if logic_ids.include?(answer[:id])
               results_to_hide += logic_skipped_fields.pluck(:id)
@@ -454,7 +448,14 @@ class SurveyResultsGeneratorService < FieldVisitorService
     end
   end
 
-  def logic_get_skipped_field_ids(results, field_id, goto_page_id)
+  def logic_next_page_number(logic_next_page_id, results)
+    next_page = results.find { |r| r[:customFieldId] == logic_next_page_id }
+    next_page_number = next_page ? next_page[:pageNumber] : nil
+    next_page_number = 999 if logic_next_page_id == 'survey_end' # NOTE: 999 is a special number used for the survey end
+    next_page_number
+  end
+
+  def logic_skipped_field_ids(results, field_id, goto_page_id)
     skip = false
     skip_from_next_page = false
     skip_fields = []

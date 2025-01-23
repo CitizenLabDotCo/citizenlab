@@ -1339,6 +1339,7 @@ RSpec.describe SurveyResultsGeneratorService do
 
   describe 'add_logic_to_results' do
     # NOTE: Most of the object below is not needed for the tests, but it's included for completeness
+    # Field IDs & Page IDs that would be uuids normally are replaced here for readability
     let_it_be(:results_without_logic) do
       [
         {
@@ -1357,12 +1358,8 @@ RSpec.describe SurveyResultsGeneratorService do
         },
         {
           inputType: 'select',
-          question: {
-            en: 'Your question'
-          },
-          description: {
-            en: '<p>This is a <strong>question</strong> description</p>'
-          },
+          question: { en: 'Select question 1' },
+          description: {},
           customFieldId: 'SELECT_1',
           required: false,
           grouped: false,
@@ -1374,51 +1371,27 @@ RSpec.describe SurveyResultsGeneratorService do
           logic: {},
           totalPickCount: 2,
           answers: [
-            {
-              answer: 'option_1',
-              count: 1
-            },
-            {
-              answer: 'option_3',
-              count: 1
-            },
-            {
-              answer: 'option_2',
-              count: 0
-            },
-            {
-              answer: nil,
-              count: 0
-            }
+            { answer: 'option_1', count: 1 },
+            { answer: 'option_3', count: 1 },
+            { answer: 'option_2', count: 0 },
+            { answer: nil, count: 0 }
           ],
           multilocs: {
             answer: {
               option_1: {
-                title_multiloc: {
-                  en: 'Option 1 is a really long option what happens here'
-                },
+                title_multiloc: { en: 'Option 1' },
                 id: 'SELECT_1_OPTION_1',
-                logic: {
-                  nextPageId: 'PAGE_3'
-                }
+                logic: { nextPageId: 'PAGE_3' }
               },
               option_2: {
-                title_multiloc: {
-                  en: 'Option 2'
-                },
+                title_multiloc: { en: 'Option 2' },
                 id: 'SELECT_1_OPTION_2',
-                logic: {
-                  nextPageId: 'PAGE_2'
-                }
+                logic: { nextPageId: 'PAGE_2' }
               },
               option_3: {
-                title_multiloc: {
-                  en: 'Option 3'
-                },
+                title_multiloc: { en: 'Option 3' },
                 id: 'SELECT_1_OPTION_3',
-                logic: {
-                  nextPageId: 'PAGE_4'
-                }
+                logic: { nextPageId: 'PAGE_4' }
               },
               no_answer: {
                 title_multiloc: {},
@@ -1430,9 +1403,7 @@ RSpec.describe SurveyResultsGeneratorService do
         },
         {
           inputType: 'page',
-          question: {
-            en: 'Page 2'
-          },
+          question: { en: 'Page 2' },
           description: {},
           customFieldId: 'PAGE_2',
           required: false,
@@ -1442,15 +1413,11 @@ RSpec.describe SurveyResultsGeneratorService do
           questionResponseCount: 1,
           pageNumber: 2,
           questionNumber: nil,
-          logic: {
-            nextPageId: 'survey_end'
-          }
+          logic: { nextPageId: 'survey_end' }
         },
         {
           inputType: 'text',
-          question: {
-            en: 'Short answer'
-          },
+          question: { en: 'Text field 1' },
           description: {},
           customFieldId: 'TEXT_FIELD_1',
           required: false,
@@ -1465,9 +1432,7 @@ RSpec.describe SurveyResultsGeneratorService do
         },
         {
           inputType: 'linear_scale',
-          question: {
-            en: 'Linear scale'
-          },
+          question: { en: 'Linear scale question 1' },
           description: {},
           customFieldId: 'LINEAR_SCALE_1',
           required: false,
@@ -1484,77 +1449,47 @@ RSpec.describe SurveyResultsGeneratorService do
             { answer: 4, count: 0 },
             { answer: 3, count: 1 },
             { answer: 2, count: 0 },
-            {
-              answer: 1,
-              count: 0
-            },
-            {
-              answer: nil,
-              count: 1
-            }
+            { answer: 1, count: 0 },
+            { answer: nil, count: 1 }
           ],
           multilocs: {
             answer: {
               '1': {
-                title_multiloc: {
-                  en: '1'
-                },
+                title_multiloc: { en: '1' },
                 id: 'LINEAR_SCALE_OPTION_1',
-                logic: {
-                  nextPageId: nil
-                }
+                logic: { nextPageId: nil }
               },
               '2': {
-                title_multiloc: {
-                  en: '2'
-                },
+                title_multiloc: { en: '2' },
                 id: 'LINEAR_SCALE_OPTION_2',
-                logic: {
-                  nextPageId: 'PAGE_3'
-                }
+                logic: { nextPageId: 'PAGE_3' }
               },
               '3': {
-                title_multiloc: {
-                  en: '3'
-                },
+                title_multiloc: { en: '3' },
                 id: 'LINEAR_SCALE_OPTION_3',
-                logic: {
-                  nextPageId: 'PAGE_4'
-                }
+                logic: { nextPageId: 'PAGE_4' }
               },
               '4': {
-                title_multiloc: {
-                  en: '4'
-                },
+                title_multiloc: { en: '4' },
                 id: 'LINEAR_SCALE_OPTION_4',
-                logic: {
-                  nextPageId: nil
-                }
+                logic: { nextPageId: nil }
               },
               '5': {
-                title_multiloc: {
-                  en: '5'
-                },
+                title_multiloc: { en: '5' },
                 id: 'LINEAR_SCALE_OPTION_5',
-                logic: {
-                  nextPageId: nil
-                }
+                logic: { nextPageId: nil }
               },
               no_answer: {
                 title_multiloc: {},
                 id: 'LINEAR_SCALE_OPTION_no_answer',
-                logic: {
-                  nextPageId: 'survey_end'
-                }
+                logic: { nextPageId: 'survey_end' }
               }
             }
           }
         },
         {
           inputType: 'multiselect',
-          question: {
-            en: 'Multiple choice'
-          },
+          question: { en: 'Multiselect question 1' },
           description: {},
           customFieldId: 'MULTISELECT_1',
           required: false,
@@ -1567,67 +1502,39 @@ RSpec.describe SurveyResultsGeneratorService do
           logic: {},
           totalPickCount: 3,
           answers: [
-            {
-              answer: 'option_1',
-              count: 1
-            },
-            {
-              answer: 'option_2',
-              count: 1
-            },
-            {
-              answer: nil,
-              count: 1
-            },
-            {
-              answer: 'option_3',
-              count: 0
-            }
+            { answer: 'option_1', count: 1 },
+            { answer: 'option_2', count: 1 },
+            { answer: nil, count: 1 },
+            { answer: 'option_3', count: 0 }
           ],
           multilocs: {
             answer: {
-              this: {
-                title_multiloc: {
-                  en: 'Option 1'
-                },
+              option_1: {
+                title_multiloc: { en: 'Option 1' },
                 id: 'MULTISELECT_1_OPTION_1',
-                logic: {
-                  nextPageId: nil
-                }
+                logic: { nextPageId: nil }
               },
-              that: {
-                title_multiloc: {
-                  en: 'Option 2'
-                },
+              option_2: {
+                title_multiloc: { en: 'Option 2' },
                 id: 'MULTISELECT_1_OPTION_2',
-                logic: {
-                  nextPageId: nil
-                }
+                logic: { nextPageId: nil }
               },
-              another: {
-                title_multiloc: {
-                  en: 'Option 3'
-                },
+              option_3: {
+                title_multiloc: { en: 'Option 3' },
                 id: 'MULTISELECT_1_OPTION_3',
-                logic: {
-                  nextPageId: 'd6832184-5445-444b-9cda-8b159097bd31'
-                }
+                logic: { nextPageId: 'PAGE_4' }
               },
               no_answer: {
                 title_multiloc: {},
                 id: 'MULTISELECT_1_OPTION_no_answer',
-                logic: {
-                  nextPageId: 'survey_end'
-                }
+                logic: { nextPageId: 'survey_end' }
               }
             }
           }
         },
         {
           inputType: 'page',
-          question: {
-            en: 'Page 3'
-          },
+          question: { en: 'Page 3' },
           description: {},
           customFieldId: 'PAGE_3',
           required: false,
@@ -1641,9 +1548,7 @@ RSpec.describe SurveyResultsGeneratorService do
         },
         {
           inputType: 'select',
-          question: {
-            en: 'Single choice'
-          },
+          question: { en: 'Select field 2' },
           description: {},
           customFieldId: 'SELECT_2',
           required: false,
@@ -1656,38 +1561,21 @@ RSpec.describe SurveyResultsGeneratorService do
           logic: {},
           totalPickCount: 2,
           answers: [
-            {
-              answer: nil,
-              count: 2
-            },
-            {
-              answer: 'option1',
-              count: 0
-            },
-            {
-              answer: 'option2',
-              count: 0
-            }
+            { answer: nil, count: 2 },
+            { answer: 'option_1', count: 0 },
+            { answer: 'option_2', count: 0 }
           ],
           multilocs: {
             answer: {
               option_1: {
-                title_multiloc: {
-                  en: 'Option 2'
-                },
+                title_multiloc: { en: 'Option 2' },
                 id: 'SELECT_2_OPTION_1',
-                logic: {
-                  nextPageId: 'survey_end'
-                }
+                logic: { nextPageId: 'survey_end' }
               },
               option_2: {
-                title_multiloc: {
-                  en: 'Option 2'
-                },
+                title_multiloc: { en: 'Option 2' },
                 id: 'SELECT_2_OPTION_2',
-                logic: {
-                  nextPageId: nil
-                }
+                logic: { nextPageId: nil }
               },
               no_answer: {
                 title_multiloc: {},
@@ -1699,9 +1587,7 @@ RSpec.describe SurveyResultsGeneratorService do
         },
         {
           inputType: 'text',
-          question: {
-            en: 'Another short answer'
-          },
+          question: { en: 'Text field 3' },
           description: {},
           customFieldId: 'TEXT_3',
           required: false,
@@ -1716,9 +1602,7 @@ RSpec.describe SurveyResultsGeneratorService do
         },
         {
           inputType: 'page',
-          question: {
-            en: 'Page 4'
-          },
+          question: { en: 'Page 4' },
           description: {},
           customFieldId: 'PAGE_4',
           required: false,
@@ -1732,9 +1616,7 @@ RSpec.describe SurveyResultsGeneratorService do
         },
         {
           inputType: 'text',
-          question: {
-            en: 'Another short answer'
-          },
+          question: { en: 'Text field 4' },
           description: {},
           customFieldId: 'TEXT_4',
           required: false,
@@ -1750,25 +1632,48 @@ RSpec.describe SurveyResultsGeneratorService do
       ]
     end
 
-    context 'next page numbers and questions skipped' do
-      let(:results) { generator.send(:add_logic_to_results, results_without_logic, logic_ids: []) }
+    let(:results) { generator.send(:add_logic_to_results, results_without_logic, logic_ids: []) }
 
-      # TODO: JS - we need some tests to make sure that the logic IDs are correctly added in the first place
-      # TODO: JS - Finish these tests
+    # TODO: JS - we need some tests to make sure that the logic IDs are correctly added in the first place
 
-      it 'transforms logic information for single select options' do
-        select_field = results[1]
-        expect(select_field[:multilocs][:answer][:option_1][:logic]).to match(
-          { nextPageNumber: 3, numQuestionsSkipped: 3 }
-        )
+    it 'returns logic information for single select options' do
+      select_result = results[1]
+      expect(select_result[:multilocs][:answer][:option_1][:logic]).to match(
+        { nextPageNumber: 3, numQuestionsSkipped: 3 }
+      )
+      expect(select_result[:multilocs][:answer][:option_3][:logic]).to match(
+        { nextPageNumber: 4, numQuestionsSkipped: 5 }
+      )
+    end
 
-        expect(select_field[:multilocs][:answer][:option_2][:logic]).to match(
-          { nextPageNumber: 2, numQuestionsSkipped: 0 }
-        )
-        expect(select_field[:multilocs][:answer][:option_3][:logic]).to match(
-          { nextPageNumber: 4, numQuestionsSkipped: 5 }
-        )
-      end
+    it 'returns logic information for a page linking to survey end' do
+      page_result = results[2]
+      expect(page_result[:logic]).to match(
+        { nextPageNumber: 999, numQuestionsSkipped: 5 }
+      )
+    end
+
+    it 'returns logic information for a linear scale field' do
+      linear_scale_result = results[4]
+      expect(linear_scale_result[:multilocs][:answer][:'2'][:logic]).to match(
+        { nextPageNumber: 3, numQuestionsSkipped: 0 }
+      )
+      expect(linear_scale_result[:multilocs][:answer][:'3'][:logic]).to match(
+        { nextPageNumber: 4, numQuestionsSkipped: 2 }
+      )
+      expect(linear_scale_result[:multilocs][:answer][:no_answer][:logic]).to match(
+        { nextPageNumber: 999, numQuestionsSkipped: 3 }
+      )
+    end
+
+    it 'returns logic information for a multiselect field' do
+      multiselect_result = results[5]
+      expect(multiselect_result[:multilocs][:answer][:option_3][:logic]).to match(
+        { nextPageNumber: 4, numQuestionsSkipped: 2 }
+      )
+      expect(multiselect_result[:multilocs][:answer][:no_answer][:logic]).to match(
+        { nextPageNumber: 999, numQuestionsSkipped: 3 }
+      )
     end
 
     context 'when filtering by logic_ids' do
@@ -1794,6 +1699,52 @@ RSpec.describe SurveyResultsGeneratorService do
         hidden_field_ids = results.select { |r| r[:hidden] == true }.pluck(:customFieldId)
         expect(hidden_field_ids).to eq(
           %w[PAGE_2 TEXT_FIELD_1 LINEAR_SCALE_1 MULTISELECT_1 PAGE_3 SELECT_2 TEXT_3]
+        )
+      end
+
+      it 'flags fields as hidden when linear scale IDs are passed in' do
+        logic_ids = %w[LINEAR_SCALE_OPTION_2]
+        results = generator.send(:add_logic_to_results, results_without_logic, logic_ids)
+        hidden_field_ids = results.select { |r| r[:hidden] == true }.pluck(:customFieldId)
+        expect(hidden_field_ids).to eq([])
+
+        logic_ids = %w[LINEAR_SCALE_OPTION_2 LINEAR_SCALE_OPTION_3]
+        results = generator.send(:add_logic_to_results, results_without_logic, logic_ids)
+        hidden_field_ids = results.select { |r| r[:hidden] == true }.pluck(:customFieldId)
+        expect(hidden_field_ids).to eq(
+          %w[PAGE_3 SELECT_2 TEXT_3]
+        )
+
+        logic_ids = %w[LINEAR_SCALE_OPTION_2 LINEAR_SCALE_OPTION_no_answer]
+        results = generator.send(:add_logic_to_results, results_without_logic, logic_ids)
+        hidden_field_ids = results.select { |r| r[:hidden] == true }.pluck(:customFieldId)
+        expect(hidden_field_ids).to eq(
+          %w[PAGE_3 SELECT_2 TEXT_3 PAGE_4 TEXT_4]
+        )
+      end
+
+      it 'flags fields as hidden when multiselect IDs are passed in' do
+        logic_ids = %w[MULTISELECT_1_OPTION_3]
+        results = generator.send(:add_logic_to_results, results_without_logic, logic_ids)
+        hidden_field_ids = results.select { |r| r[:hidden] == true }.pluck(:customFieldId)
+        expect(hidden_field_ids).to eq(
+          %w[PAGE_3 SELECT_2 TEXT_3]
+        )
+
+        logic_ids = %w[MULTISELECT_1_OPTION_no_answer]
+        results = generator.send(:add_logic_to_results, results_without_logic, logic_ids)
+        hidden_field_ids = results.select { |r| r[:hidden] == true }.pluck(:customFieldId)
+        expect(hidden_field_ids).to eq(
+          %w[PAGE_3 SELECT_2 TEXT_3 PAGE_4 TEXT_4]
+        )
+      end
+
+      it 'flags fields as hidden when a mix of option IDs and page IDs are passed in' do
+        logic_ids = %w[SELECT_1_OPTION_1 SELECT_1_OPTION_3 PAGE_2 LINEAR_SCALE_OPTION_3 MULTISELECT_1_OPTION_3]
+        results = generator.send(:add_logic_to_results, results_without_logic, logic_ids)
+        hidden_field_ids = results.select { |r| r[:hidden] == true }.pluck(:customFieldId)
+        expect(hidden_field_ids).to eq(
+          %w[PAGE_2 TEXT_FIELD_1 LINEAR_SCALE_1 MULTISELECT_1 PAGE_3 SELECT_2 TEXT_3 PAGE_4 TEXT_4]
         )
       end
     end
