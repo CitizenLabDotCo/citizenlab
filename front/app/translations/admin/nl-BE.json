@@ -2695,6 +2695,7 @@
   "app.containers.admin.ideaStatuses.form.answeredFieldCodeTitle": "Beantwoord",
   "app.containers.admin.ideaStatuses.form.category": "Categorie",
   "app.containers.admin.ideaStatuses.form.categoryDescription": "Selecteer de categorie die je status het best omschrijft. Deze selectie zal onze analysetool helpen om berichten nauwkeuriger te verwerken en te analyseren.",
+  "app.containers.admin.ideaStatuses.form.customFieldCodeDescription1": "Past niet bij een van de andere opties",
   "app.containers.admin.ideaStatuses.form.customFieldCodeTitle": "Overige",
   "app.containers.admin.ideaStatuses.form.fieldColor": "Kleur",
   "app.containers.admin.ideaStatuses.form.fieldDescription": "Statusbeschrijving",

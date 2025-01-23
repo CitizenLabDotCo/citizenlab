@@ -2695,6 +2695,7 @@
   "app.containers.admin.ideaStatuses.form.answeredFieldCodeTitle": "Odpowiedź",
   "app.containers.admin.ideaStatuses.form.category": "Kategoria",
   "app.containers.admin.ideaStatuses.form.categoryDescription": "Proszę wybrać kategorię, która najlepiej odzwierciedla Twój status. Wybór ten pomoże naszemu narzędziu analitycznemu dokładniej przetwarzać i analizować dane.",
+  "app.containers.admin.ideaStatuses.form.customFieldCodeDescription1": "Nie pasuje do żadnej z pozostałych opcji",
   "app.containers.admin.ideaStatuses.form.customFieldCodeTitle": "Inne",
   "app.containers.admin.ideaStatuses.form.fieldColor": "Kolor",
   "app.containers.admin.ideaStatuses.form.fieldDescription": "Opis statusu",

@@ -2695,6 +2695,7 @@
   "app.containers.admin.ideaStatuses.form.answeredFieldCodeTitle": "Besvaret",
   "app.containers.admin.ideaStatuses.form.category": "Kategori",
   "app.containers.admin.ideaStatuses.form.categoryDescription": "Vælg den kategori, der bedst repræsenterer din status. Dette valg hjælper vores analyseværktøj med mere nøjagtig behandling og analyse af indlæg.",
+  "app.containers.admin.ideaStatuses.form.customFieldCodeDescription1": "Matcher ikke nogen af de andre muligheder",
   "app.containers.admin.ideaStatuses.form.customFieldCodeTitle": "Andet",
   "app.containers.admin.ideaStatuses.form.fieldColor": "Farve",
   "app.containers.admin.ideaStatuses.form.fieldDescription": "Status beskrivelse",

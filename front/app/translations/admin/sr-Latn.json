@@ -2695,6 +2695,7 @@
   "app.containers.admin.ideaStatuses.form.answeredFieldCodeTitle": "Answered",
   "app.containers.admin.ideaStatuses.form.category": "Kategorija",
   "app.containers.admin.ideaStatuses.form.categoryDescription": "Izaberite kategoriju koja najbolje predstavlja vaš status. Ovaj izbor će pomoći našem analitičkom alatu da preciznije obrađuje i analizira postove.",
+  "app.containers.admin.ideaStatuses.form.customFieldCodeDescription1": "Not matching any of the other options",
   "app.containers.admin.ideaStatuses.form.customFieldCodeTitle": "Drugo",
   "app.containers.admin.ideaStatuses.form.fieldColor": "Boja",
   "app.containers.admin.ideaStatuses.form.fieldDescription": "Opis statusa",

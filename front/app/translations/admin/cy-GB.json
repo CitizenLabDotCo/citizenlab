@@ -2695,6 +2695,7 @@
   "app.containers.admin.ideaStatuses.form.answeredFieldCodeTitle": "Atebwyd",
   "app.containers.admin.ideaStatuses.form.category": "Categori",
   "app.containers.admin.ideaStatuses.form.categoryDescription": "Dewiswch y categori sy'n cynrychioli eich statws orau. Bydd y dewis hwn yn helpu ein hofferyn dadansoddeg i brosesu a dadansoddi postiadau yn fwy cywir.",
+  "app.containers.admin.ideaStatuses.form.customFieldCodeDescription1": "Ddim yn cyfateb i unrhyw un o'r opsiynau eraill",
   "app.containers.admin.ideaStatuses.form.customFieldCodeTitle": "Arall",
   "app.containers.admin.ideaStatuses.form.fieldColor": "Lliw",
   "app.containers.admin.ideaStatuses.form.fieldDescription": "Disgrifiad Statws",

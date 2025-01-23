@@ -2695,6 +2695,7 @@
   "app.containers.admin.ideaStatuses.form.answeredFieldCodeTitle": "Cevaplandı",
   "app.containers.admin.ideaStatuses.form.category": "Kategori",
   "app.containers.admin.ideaStatuses.form.categoryDescription": "Lütfen durumunuzu en iyi yansıtan kategoriyi seçin. Bu seçim, analiz aracımızın yayınları daha doğru bir şekilde işlemesine ve analiz etmesine yardımcı olacaktır.",
+  "app.containers.admin.ideaStatuses.form.customFieldCodeDescription1": "Diğer seçeneklerden hiçbiriyle eşleşmiyor",
   "app.containers.admin.ideaStatuses.form.customFieldCodeTitle": "Diğer",
   "app.containers.admin.ideaStatuses.form.fieldColor": "Renk",
   "app.containers.admin.ideaStatuses.form.fieldDescription": "Durum Açıklaması",
