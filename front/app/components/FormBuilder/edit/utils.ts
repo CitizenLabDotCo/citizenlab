@@ -69,8 +69,10 @@ export const getReorderedFields = (
   const sourceGroupId = source.droppableId;
   const destinationGroupId = destination.droppableId;
 
+  // REODERING QUESTION
   if (type === questionDNDType) {
     if (sourceGroupId === destinationGroupId) {
+      // REORDERING QUESTION WITHIN SAME GROUP
       const updatedOrder = reorder<IFlatCustomField>(
         getGroupQuestions(nestedGroupData, sourceGroupId),
         source.index,
@@ -84,9 +86,10 @@ export const getReorderedFields = (
 
       // return getFlatGroupStructure(updatedGroups);
       const x = getFlatGroupStructure(updatedGroups);
-      console.log({ x });
+      // console.log({ x });
       return x;
     } else {
+      // REORDERING QUESTION TO DIFFERENT GROUP
       const sourceOrder = getGroupQuestions(nestedGroupData, sourceGroupId);
       const destinationOrder = getGroupQuestions(
         nestedGroupData,
@@ -106,11 +109,12 @@ export const getReorderedFields = (
 
       // return getFlatGroupStructure(updatedGroups);
       const x = getFlatGroupStructure(updatedGroups);
-      console.log({ x });
+      // console.log({ x });
       return x;
     }
   }
 
+  // REORDERING GROUP
   const updatedGroups = reorder<NestedGroupingStructure>(
     nestedGroupData,
     source.index,
@@ -119,6 +123,6 @@ export const getReorderedFields = (
 
   // return getFlatGroupStructure(updatedGroups);
   const x = getFlatGroupStructure(updatedGroups);
-  console.log({ x });
+  // console.log({ x });
   return x;
 };
