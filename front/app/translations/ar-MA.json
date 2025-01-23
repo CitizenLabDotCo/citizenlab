@@ -241,6 +241,8 @@
   "app.components.PagesForm.savePage": "حفظ الصفحة",
   "app.components.PagesForm.saveSuccess": "تم حفظ الصفحة بنجاح.",
   "app.components.PagesForm.titleMissingOneLanguageError": "أدخل العنوان بلغة واحدة على الأقل",
+  "app.components.Pagination.back": "الصفحة السابقة",
+  "app.components.Pagination.next": "الصفحة التالية",
   "app.components.ParticipationCTABars.VotingCTABar.budgetExceedsLimit": "لقد أنفقت {votesCast}، وهو ما يتجاوز حد {votesLimit}. الرجاء إزالة بعض العناصر من سلتك وحاول مرة أخرى.",
   "app.components.ParticipationCTABars.VotingCTABar.currencyLeft": "{budgetLeft} {totalBudget} {currency}",
   "app.components.ParticipationCTABars.VotingCTABar.minBudgetNotReached2": "تحتاج إلى إنفاق ما لا يقل عن {votesMinimum} {currency} قبل أن تتمكن من إرسال سلتك.",

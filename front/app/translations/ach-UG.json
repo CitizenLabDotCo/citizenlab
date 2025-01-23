@@ -241,6 +241,8 @@
   "app.components.PagesForm.savePage": "crwdns213346:0crwdne213346:0",
   "app.components.PagesForm.saveSuccess": "crwdns213348:0crwdne213348:0",
   "app.components.PagesForm.titleMissingOneLanguageError": "crwdns213350:0crwdne213350:0",
+  "app.components.Pagination.back": "crwdns4015941:0crwdne4015941:0",
+  "app.components.Pagination.next": "crwdns4015943:0crwdne4015943:0",
   "app.components.ParticipationCTABars.VotingCTABar.budgetExceedsLimit": "crwdns777551:0{votesCast}crwdnd777551:0{votesLimit}crwdne777551:0",
   "app.components.ParticipationCTABars.VotingCTABar.currencyLeft": "crwdns836131:0{budgetLeft}crwdnd836131:0{totalBudget}crwdnd836131:0{currency}crwdne836131:0",
   "app.components.ParticipationCTABars.VotingCTABar.minBudgetNotReached2": "crwdns836133:0{votesMinimum}crwdnd836133:0{currency}crwdne836133:0",

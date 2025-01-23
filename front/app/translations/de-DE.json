@@ -241,6 +241,8 @@
   "app.components.PagesForm.savePage": "Seite speichern",
   "app.components.PagesForm.saveSuccess": "Seite erfolgreich gespeichert.",
   "app.components.PagesForm.titleMissingOneLanguageError": "Geben Sie einen Titel für mindestens eine Sprache ein",
+  "app.components.Pagination.back": "Vorherige Seite",
+  "app.components.Pagination.next": "Nächste Seite",
   "app.components.ParticipationCTABars.VotingCTABar.budgetExceedsLimit": "Sie haben {votesCast} verwendet, was das Limit von {votesLimit} überschreitet. Bitte entfernen Sie einige Beiträge aus Ihrem Warenkorb und versuchen Sie es erneut.",
   "app.components.ParticipationCTABars.VotingCTABar.currencyLeft": "noch {budgetLeft} / {totalBudget} {currency} übrig",
   "app.components.ParticipationCTABars.VotingCTABar.minBudgetNotReached2": "Sie müssen mindestens {votesMinimum} {currency} ausgeben, bevor Sie Ihren Warenkorb abschicken können.",

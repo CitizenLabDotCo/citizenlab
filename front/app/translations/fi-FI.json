@@ -241,6 +241,8 @@
   "app.components.PagesForm.savePage": "Tallenna sivu",
   "app.components.PagesForm.saveSuccess": "Sivu tallennettu onnistuneesti.",
   "app.components.PagesForm.titleMissingOneLanguageError": "Anna otsikko vähintään yhdelle kielelle",
+  "app.components.Pagination.back": "Edellinen sivu",
+  "app.components.Pagination.next": "Seuraava sivu",
   "app.components.ParticipationCTABars.VotingCTABar.budgetExceedsLimit": "Käytit {votesCast}, mikä ylittää rajan {votesLimit}. Poista joitakin tuotteita ostoskoristasi ja yritä uudelleen.",
   "app.components.ParticipationCTABars.VotingCTABar.currencyLeft": "{budgetLeft} / {totalBudget} {currency} vasemmalle",
   "app.components.ParticipationCTABars.VotingCTABar.minBudgetNotReached2": "Sinun on käytettävä vähintään {votesMinimum} {currency} ennen kuin voit lähettää ostoskorin.",
