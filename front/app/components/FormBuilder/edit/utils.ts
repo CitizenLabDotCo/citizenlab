@@ -83,9 +83,9 @@ export const getReorderedFields = (
       );
 
       // return getFlatGroupStructure(updatedGroups);
-      const result = getFlatGroupStructure(updatedGroups);
-      console.log({ result });
-      return result;
+      const x = getFlatGroupStructure(updatedGroups);
+      console.log({ x });
+      return x;
     } else {
       const sourceOrder = getGroupQuestions(nestedGroupData, sourceGroupId);
       const destinationOrder = getGroupQuestions(
@@ -105,9 +105,9 @@ export const getReorderedFields = (
       );
 
       // return getFlatGroupStructure(updatedGroups);
-      const result = getFlatGroupStructure(updatedGroups);
-      console.log({ result });
-      return result;
+      const x = getFlatGroupStructure(updatedGroups);
+      console.log({ x });
+      return x;
     }
   }
 
@@ -117,5 +117,8 @@ export const getReorderedFields = (
     destination.index
   );
 
-  return getFlatGroupStructure(updatedGroups);
+  // return getFlatGroupStructure(updatedGroups);
+  const x = getFlatGroupStructure(updatedGroups);
+  console.log({ x });
+  return x;
 };
