@@ -62,9 +62,13 @@ const MatrixControl = ({
   const statements = uischema.options?.statements;
   const tableDivRef = useRef<HTMLDivElement>(null);
 
-  // Put all linear scale labels from the UI Schema in an array so we can easily access them
-  const columnsFromSchema = Array.from({ length: 7 }, (_, index) => {
-    return uischema.options?.[`linear_scale_label${index + 1}`];
+  // Determine maximum number of columns in the table
+  const maxColumns = schema.properties?.[statements[0].key].maximum;
+  const maximum = maxColumns || 7; // Seven since the maximum number of options is 7
+
+  // Put all linear scale labels from the UI Schema in an array so we can easily use them
+  const columnsFromSchema = Array.from({ length: maximum }, (_, index) => {
+    return uischema.options?.[`linear_scale_label${index + 1}`] || index + 1;
   }).filter((label) => label !== '');
 
   // Add scroll event to check whether the table should have a dashed border (indicating it can be scrolled)
@@ -94,8 +98,6 @@ const MatrixControl = ({
 
   const getAriaValueText = useCallback(
     (value: number, total: number) => {
-      const maximum = schema.maximum ?? 7; // Seven since the maximum number of options is 7
-
       // If the value has a label, read it out
       if (uischema.options?.[`linear_scale_label${value}`]) {
         return formatMessage(messages.valueOutOfTotalWithLabel, {
@@ -116,7 +118,7 @@ const MatrixControl = ({
       // Otherwise, just read out the value and the maximum value
       return formatMessage(messages.valueOutOfTotal, { value, total });
     },
-    [schema.maximum, uischema.options, formatMessage]
+    [maximum, uischema.options, formatMessage]
   );
 
   return (
@@ -127,13 +129,14 @@ const MatrixControl = ({
         optional={!required}
         subtextValue={getSubtextElement(uischema.options?.description)}
         subtextSupportsHtml
-        id={`ranking-question-label-${id}`}
+        id={`matrix-question-label-${id}`}
       />
 
       <Box position="relative" width="100%" overflowX="auto" ref={tableDivRef}>
         <table
           width={'100%'}
           style={{ borderCollapse: 'separate', borderSpacing: '0px 8px' }}
+          aria-labelledby={`matrix-question-label-${id}`}
         >
           <thead>
             <StledTh />
@@ -173,7 +176,7 @@ const MatrixControl = ({
                           justifyContent="center"
                         >
                           <StyledRadio
-                            currentValue={data?.[statement.key]}
+                            currentValue={data?.[statement.key] - 1}
                             value={index}
                             label={
                               <ScreenReaderOnly>
@@ -181,6 +184,7 @@ const MatrixControl = ({
                                   index + 1,
                                   columnsFromSchema.length
                                 )}
+                                {statements[index].label}
                               </ScreenReaderOnly>
                             }
                             name={`${index}-radio-group`}
@@ -190,7 +194,7 @@ const MatrixControl = ({
                               }
                               handleChange(path, {
                                 ...data,
-                                [statement.key]: value,
+                                [statement.key]: value + 1,
                               });
                             }}
                           />
@@ -222,7 +226,11 @@ const MatrixControl = ({
       <Box mt="4px">
         <ErrorDisplay
           inputId={sanitizeForClassname(id)}
-          ajvErrors={errors}
+          ajvErrors={
+            errors === 'Is invalid'
+              ? formatMessage(messages.allStatementsError)
+              : errors
+          }
           fieldPath={path}
           didBlur={didBlur}
         />

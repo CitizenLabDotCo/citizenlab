@@ -128,4 +128,8 @@ export default defineMessages({
     id: 'app.components.form.controls.rankingInstructions',
     defaultMessage: 'Drag and drop to rank options.',
   },
+  allStatementsError: {
+    id: 'app.components.form.controls.allStatementsError',
+    defaultMessage: 'An answer must be selected for all statements.',
+  },
 });
