@@ -15,6 +15,7 @@ export type IIdeaCustomFieldInputType =
   | 'checkbox'
   | 'date'
   | 'linear_scale'
+  | 'rating'
   | 'file_upload'
   | 'shapefile_upload'
   | 'point'

@@ -22,6 +22,7 @@ export type ICustomFieldInputType =
   | 'number'
   | 'select'
   | 'linear_scale'
+  | 'rating'
   | 'section'
   | 'page'
   | 'file_upload'
