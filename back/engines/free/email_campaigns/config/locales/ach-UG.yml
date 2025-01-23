@@ -34,6 +34,7 @@ ach:
       "project_review_request": crwdns4003037:0crwdne4003037:0
       "project_review_state_change": crwdns4003039:0crwdne4003039:0
       "status_change_on_idea_you_follow": crwdns4003041:0crwdne4003041:0
+      "survey_submitted": crwdns4051365:0crwdne4051365:0
       "threshold_reached_for_admin": crwdns4003043:0crwdne4003043:0
       "welcome": crwdns4003045:0crwdne4003045:0
       "admin_digest": crwdns4003047:0crwdne4003047:0
@@ -496,6 +497,14 @@ ach:
       event_description: 'crwdns4003847:0%{projectName}crwdnd4003847:0%{numIdeas}crwdne4003847:0'
       cta_message: 'crwdns4003849:0crwdne4003849:0'
       cta_vote: 'crwdns4003851:0crwdne4003851:0'
+    survey_submitted:
+      subject: 'crwdns4051367:0%{organizationName}crwdne4051367:0'
+      main_header: 'crwdns4051369:0%{projectName}crwdne4051369:0'
+      your_input_submitted: 'crwdns4051371:0%{projectName}crwdne4051371:0'
+      if_you_would_like_to_review: 'crwdns4051373:0crwdne4051373:0'
+      your_submission_has_id: 'crwdns4051375:0crwdne4051375:0'
+      you_can_use_this_id: 'crwdns4051377:0crwdne4051377:0'
+      download_responses: 'crwdns4051379:0crwdne4051379:0'
     admin_labels:
       recipient_role:
         admins: 'crwdns4003853:0crwdne4003853:0'
