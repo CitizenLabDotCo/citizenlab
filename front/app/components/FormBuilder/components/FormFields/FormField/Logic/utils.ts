@@ -40,7 +40,7 @@ export const getLinearScaleRule = (
   return undefined;
 };
 
-export const getLinearScaleOptions = (maximum: number) => {
+export const getLinearOrRatingOptions = (maximum: number) => {
   const linearScaleOptionArray = Array.from(
     { length: maximum },
     (_, i) => i + 1

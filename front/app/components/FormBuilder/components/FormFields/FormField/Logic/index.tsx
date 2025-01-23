@@ -16,7 +16,7 @@ import { QuestionRuleDisplay } from './QuestionRuleDisplay';
 import {
   getOptionRule,
   getLinearScaleRule,
-  getLinearScaleOptions,
+  getLinearOrRatingOptions,
   getTitleFromAnswerId,
   getTitleFromPageId,
 } from './utils';
@@ -76,9 +76,9 @@ const Logic = ({
             </Box>
           );
         })}
-      {field.input_type === 'linear_scale' &&
+      {['linear_scale', 'rating'].includes(field.input_type) &&
         field.maximum &&
-        getLinearScaleOptions(field.maximum).map((option) => {
+        getLinearOrRatingOptions(field.maximum).map((option) => {
           const linearScaleRule = getLinearScaleRule(option, field);
           const key = `${field.temp_id || field.id}_${option.key}`;
 
