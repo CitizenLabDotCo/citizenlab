@@ -349,6 +349,8 @@ describe Export::Xlsx::InputSheetGenerator do
                   'What are your favourite pets?',
                   'Type your answer',
                   'Rank your favourite means of public transport',
+                  'We should send more animals into space',
+                  'We should ride our bicycles more often',
                   'Author ID',
                   'Submitted at',
                   'Project'
@@ -359,6 +361,8 @@ describe Export::Xlsx::InputSheetGenerator do
                     'Cat, Dog, Other',
                     'Fish',
                     '',
+                    nil,
+                    nil,
                     survey_response1.author_id,
                     an_instance_of(DateTime), # created_at
                     phase.project.title_multiloc['en']
@@ -368,6 +372,8 @@ describe Export::Xlsx::InputSheetGenerator do
                     'Cat',
                     '',
                     '',
+                    3,
+                    4,
                     survey_response2.author_id,
                     an_instance_of(DateTime), # created_at
                     phase.project.title_multiloc['en']
@@ -377,6 +383,8 @@ describe Export::Xlsx::InputSheetGenerator do
                     'Dog',
                     '',
                     'By bike, By train',
+                    nil,
+                    nil,
                     survey_response3.author_id,
                     an_instance_of(DateTime), # created_at
                     phase.project.title_multiloc['en']
@@ -406,6 +414,8 @@ describe Export::Xlsx::InputSheetGenerator do
                   'ID',
                   'What are your favourite pets?',
                   'Rank your favourite means of public transport',
+                  'We should send more animals into space',
+                  'We should ride our bicycles more often',
                   'Author name',
                   'Author email',
                   'Author ID',
@@ -426,6 +436,8 @@ describe Export::Xlsx::InputSheetGenerator do
                 'ID',
                 'What are your favourite pets?',
                 'Rank your favourite means of public transport',
+                'We should send more animals into space',
+                'We should ride our bicycles more often',
                 'Author name',
                 'Author email',
                 'Author ID',
@@ -437,6 +449,8 @@ describe Export::Xlsx::InputSheetGenerator do
                   survey_response1.id,
                   'Cat, Dog',
                   'By train, By bike',
+                  nil,
+                  nil,
                   survey_response1.author_name,
                   survey_response1.author.email,
                   survey_response1.author_id,
@@ -447,6 +461,8 @@ describe Export::Xlsx::InputSheetGenerator do
                   survey_response2.id,
                   'Cat',
                   '',
+                  3,
+                  4,
                   survey_response2.author_name,
                   survey_response2.author.email,
                   survey_response2.author_id,
@@ -457,6 +473,8 @@ describe Export::Xlsx::InputSheetGenerator do
                   survey_response3.id,
                   'Dog',
                   'By bike, By train',
+                  nil,
+                  nil,
                   nil,
                   nil,
                   nil,
