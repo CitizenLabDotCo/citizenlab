@@ -31,12 +31,12 @@ resource 'IdeaStatuses' do
         create(:idea_status, code: 'prescreening')
         create(:proposals_status, code: 'proposed')
 
-        do_request exclude_codes: ['prescreening', 'proposed']
+        do_request exclude_codes: %w[prescreening proposed]
 
         assert_status 200
         json_response = json_parse(response_body)
         expect(json_response[:data].size).to eq 5
-        expect(json_response[:data].none? { |status| status.dig(:attributes, :code).in? ['prescreening', 'proposed'] })
+        expect(json_response[:data].none? { |status| status.dig(:attributes, :code).in? %w[prescreening proposed] })
           .to be true
       end
     end
