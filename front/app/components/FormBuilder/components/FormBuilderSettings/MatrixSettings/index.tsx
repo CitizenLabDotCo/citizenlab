@@ -22,7 +22,7 @@ const MatrixSettings = ({ field, locales, platformLocale }: Props) => {
   const { formatMessage } = useIntl();
 
   return (
-    <Box mb="24px">
+    <Box mb="12px">
       <Title mt="40px" color="coolGrey600" variant="h4">
         {formatMessage(messages.columns)}
       </Title>

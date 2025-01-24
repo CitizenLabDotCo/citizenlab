@@ -736,6 +736,8 @@
   "app.components.formBuilder.mapping": "Mapping",
   "app.components.formBuilder.mappingNotInCurrentLicense": "Survey mapping features are not included in your current license. Reach out to your GovSuccess Manager to learn more.",
   "app.components.formBuilder.matrix": "Matrix",
+  "app.components.formBuilder.matrixSettings.columns": "Columns",
+  "app.components.formBuilder.matrixSettings.rows": "Rows",
   "app.components.formBuilder.multipleChoice": "Multiple choice",
   "app.components.formBuilder.multipleChoiceImage": "Image choice",
   "app.components.formBuilder.multiselect.maximum": "Maximum",
