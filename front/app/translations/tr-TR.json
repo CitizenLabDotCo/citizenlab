@@ -2136,7 +2136,6 @@
   "app.utils.votingMethodUtils.budgetingPreSubmissionWarning": "<b>Siz \"Gönder \"e tıklayana kadar bütçeniz</b> sayılmayacaktır.",
   "app.utils.votingMethodUtils.budgetingSubmissionInstructionsOnceYouAreDone": "İşiniz bittiğinde, bütçenizi göndermek için \"Gönder\" düğmesine tıklayın.",
   "app.utils.votingMethodUtils.budgetingSubmissionInstructionsPreferredOptions": "\"Ekle\" üzerine dokunarak tercih ettiğiniz seçenekleri seçin.",
-  "app.utils.votingMethodUtils.budgetingSubmissionInstructionsTotalBudget": "{optionCount} seçenekleri</b>arasında dağıtmak için toplam <b>{maxBudget} {currency} tutarına sahipsiniz.",
   "app.utils.votingMethodUtils.budgetingSubmittedInstructions2": "<b>Tebrikler, bütçeniz gönderildi!</b> Aşağıdaki seçeneklerinizi istediğiniz zaman kontrol edebilir veya <b>{endDate}</b>adresinden önce değiştirebilirsiniz.",
   "app.utils.votingMethodUtils.budgetingSubmittedInstructionsContinuous": "<b>Tebrikler, bütçeniz gönderildi!</b> Aşağıdaki seçeneklerinizi istediğiniz zaman kontrol edebilir veya değiştirebilirsiniz.",
   "app.utils.votingMethodUtils.budgetingSubmittedInstructionsNoEndDate": "<b>Tebrikler, bütçeniz gönderildi!</b> Aşağıdaki seçeneklerinizi istediğiniz zaman kontrol edebilirsiniz.",

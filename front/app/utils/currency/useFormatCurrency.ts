@@ -7,6 +7,8 @@ import { useIntl } from 'utils/cl-intl';
 import formatCurrency from './formatCurrency';
 import messages from './messages';
 
+export type UseFormatCurrencyReturn = ReturnType<typeof useFormatCurrency>;
+
 const useFormatCurrency = () => {
   const locale = useLocale();
   const { data: appConfig } = useAppConfiguration();

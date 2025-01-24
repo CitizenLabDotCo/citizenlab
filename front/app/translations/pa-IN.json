@@ -2136,7 +2136,6 @@
   "app.utils.votingMethodUtils.budgetingPreSubmissionWarning": "<b>ਤੁਹਾਡੇ ਬਜਟ ਨੂੰ</b> ਨਹੀਂ ਗਿਣਿਆ ਜਾਵੇਗਾ ਜਦੋਂ ਤੱਕ ਤੁਸੀਂ \"ਸਬਮਿਟ\" 'ਤੇ ਕਲਿੱਕ ਨਹੀਂ ਕਰਦੇ",
   "app.utils.votingMethodUtils.budgetingSubmissionInstructionsOnceYouAreDone": "ਇੱਕ ਵਾਰ ਜਦੋਂ ਤੁਸੀਂ ਪੂਰਾ ਕਰ ਲੈਂਦੇ ਹੋ, ਤਾਂ ਆਪਣਾ ਬਜਟ ਜਮ੍ਹਾ ਕਰਨ ਲਈ \"ਸਬਮਿਟ\" 'ਤੇ ਕਲਿੱਕ ਕਰੋ।",
   "app.utils.votingMethodUtils.budgetingSubmissionInstructionsPreferredOptions": "\"ਜੋੜੋ\" 'ਤੇ ਟੈਪ ਕਰਕੇ ਆਪਣੇ ਪਸੰਦੀਦਾ ਵਿਕਲਪਾਂ ਦੀ ਚੋਣ ਕਰੋ।",
-  "app.utils.votingMethodUtils.budgetingSubmissionInstructionsTotalBudget": "ਤੁਹਾਡੇ ਕੋਲ {optionCount} ਵਿਕਲਪਾਂ</b>ਵਿਚਕਾਰ ਵੰਡਣ ਲਈ ਕੁੱਲ <b>{maxBudget} {currency} ਹਨ।",
   "app.utils.votingMethodUtils.budgetingSubmittedInstructions2": "<b>ਵਧਾਈਆਂ, ਤੁਹਾਡਾ ਬਜਟ ਜਮ੍ਹਾਂ ਕਰ ਦਿੱਤਾ ਗਿਆ ਹੈ!</b> ਤੁਸੀਂ ਕਿਸੇ ਵੀ ਸਮੇਂ ਹੇਠਾਂ ਆਪਣੇ ਵਿਕਲਪਾਂ ਦੀ ਜਾਂਚ ਕਰ ਸਕਦੇ ਹੋ ਜਾਂ ਉਹਨਾਂ ਨੂੰ <b>{endDate}</b>ਤੋਂ ਪਹਿਲਾਂ ਸੋਧ ਸਕਦੇ ਹੋ।",
   "app.utils.votingMethodUtils.budgetingSubmittedInstructionsContinuous": "<b>ਵਧਾਈਆਂ, ਤੁਹਾਡਾ ਬਜਟ ਜਮ੍ਹਾਂ ਕਰ ਦਿੱਤਾ ਗਿਆ ਹੈ!</b> ਤੁਸੀਂ ਕਿਸੇ ਵੀ ਸਮੇਂ ਹੇਠਾਂ ਆਪਣੇ ਵਿਕਲਪਾਂ ਦੀ ਜਾਂਚ ਕਰ ਸਕਦੇ ਹੋ ਜਾਂ ਉਹਨਾਂ ਨੂੰ ਸੋਧ ਸਕਦੇ ਹੋ।",
   "app.utils.votingMethodUtils.budgetingSubmittedInstructionsNoEndDate": "<b>ਵਧਾਈਆਂ, ਤੁਹਾਡਾ ਬਜਟ ਜਮ੍ਹਾਂ ਕਰ ਦਿੱਤਾ ਗਿਆ ਹੈ!</b> ਤੁਸੀਂ ਕਿਸੇ ਵੀ ਸਮੇਂ ਹੇਠਾਂ ਆਪਣੇ ਵਿਕਲਪਾਂ ਦੀ ਜਾਂਚ ਕਰ ਸਕਦੇ ਹੋ।",

@@ -2136,7 +2136,6 @@
   "app.utils.votingMethodUtils.budgetingPreSubmissionWarning": "<b>Költségkerete nem számítható</b> mindaddig, amíg a \"Küldés\" gombra nem kattint.",
   "app.utils.votingMethodUtils.budgetingSubmissionInstructionsOnceYouAreDone": "Ha elkészült, kattintson a \"Küldés\" gombra a költségkeret elküldéséhez.",
   "app.utils.votingMethodUtils.budgetingSubmissionInstructionsPreferredOptions": "Válassza ki a kívánt opciókat a \"Hozzáadás\" gomb megérintésével.",
-  "app.utils.votingMethodUtils.budgetingSubmissionInstructionsTotalBudget": "Összesen <b>{maxBudget} {currency} van, amelyet {optionCount}</b>opciók között oszthat el.",
   "app.utils.votingMethodUtils.budgetingSubmittedInstructions2": "<b>Gratulálunk, költségkeretét elküldtük!</b> Az alábbi beállításokat bármikor ellenőrizheti, vagy <b>{endDate}</b>előtt módosíthatja.",
   "app.utils.votingMethodUtils.budgetingSubmittedInstructionsContinuous": "<b>Gratulálunk, költségkeretét elküldtük!</b> Az alábbi beállításokat bármikor ellenőrizheti, vagy módosíthatja.",
   "app.utils.votingMethodUtils.budgetingSubmittedInstructionsNoEndDate": "<b>Gratulálunk, költségkeretét elküldtük!</b> Az alábbi lehetőségeket bármikor ellenőrizheti.",

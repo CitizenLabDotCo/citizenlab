@@ -2136,7 +2136,6 @@
   "app.utils.votingMethodUtils.budgetingPreSubmissionWarning": "<b>Dit budget vil ikke blive talt med</b> , før du klikker på \"Send\".",
   "app.utils.votingMethodUtils.budgetingSubmissionInstructionsOnceYouAreDone": "Når du er færdig, skal du klikke på \"Send\" for at indsende dit budget.",
   "app.utils.votingMethodUtils.budgetingSubmissionInstructionsPreferredOptions": "Vælg dine foretrukne indstillinger ved at trykke på \"Tilføj\".",
-  "app.utils.votingMethodUtils.budgetingSubmissionInstructionsTotalBudget": "Du har i alt <b>{maxBudget} {currency} at fordele mellem {optionCount} muligheder</b>.",
   "app.utils.votingMethodUtils.budgetingSubmittedInstructions2": "<b>Tillykke, dit budget er blevet indsendt!</b> Du kan til enhver tid tjekke dine valg nedenfor eller ændre dem før <b>{endDate}</b>.",
   "app.utils.votingMethodUtils.budgetingSubmittedInstructionsContinuous": "<b>Tillykke, dit budget er blevet indsendt!</b> Du kan til enhver tid tjekke dine valg nedenfor eller ændre dem.",
   "app.utils.votingMethodUtils.budgetingSubmittedInstructionsNoEndDate": "<b>Tillykke, dit budget er blevet indsendt!</b> Du kan til enhver tid tjekke dine muligheder nedenfor.",
