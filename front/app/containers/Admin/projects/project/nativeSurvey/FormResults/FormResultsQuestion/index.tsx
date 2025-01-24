@@ -78,7 +78,7 @@ const FormResultsQuestion = ({
       mb="20px"
     >
       <Box data-cy={`e2e-${snakeCase(localize(question))}`} mb="24px">
-        <Title variant="h3" mt="12px" mb="12px">
+        <Title variant="h4" mt="12px" mb="12px">
           {questionNumber}. <T value={question} />
         </Title>
         <InputType
