@@ -2057,6 +2057,8 @@
   "app.utils.AdminPage.ProjectEdit.shareInformation": "Informatiounen deelen",
   "app.utils.FormattedCurrency.credits": "Kreditter",
   "app.utils.FormattedCurrency.tokens": "Jetonen",
+  "app.utils.FormattedCurrency.xCredits": "{numberOfCredits, plural, =0 {# Credits} one {# Kredit} other {# Credits}}",
+  "app.utils.FormattedCurrency.xTokens": "{numberOfTokens, plural, =0 {# Tokens} one {# Token} other {# Tokens}}",
   "app.utils.IdeaCards.mostDiscussed": "Déi meescht diskutéiert",
   "app.utils.IdeaCards.mostReacted": "Déi meescht Reaktiounen",
   "app.utils.IdeaCards.newest": "Neisten",
