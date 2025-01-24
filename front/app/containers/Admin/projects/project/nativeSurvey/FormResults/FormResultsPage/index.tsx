@@ -40,7 +40,9 @@ const FormResultsPage = ({
   if (result.hidden) {
     return (
       <Box borderLeft={`4px solid ${colors.coolGrey300}`} pl="12px">
-        <Text color={'grey500'}>{pageTitle}</Text>
+        <Text color={'grey500'}>
+          {pageTitle} {formatMessage(messages.hiddenByLogic)}
+        </Text>
       </Box>
     );
   }

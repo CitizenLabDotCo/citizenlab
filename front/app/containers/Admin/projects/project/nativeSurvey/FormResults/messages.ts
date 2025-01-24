@@ -182,8 +182,8 @@ export default defineMessages({
     defaultMessage: 'Page',
   },
   hiddenByLogic: {
-    id: 'app.containers.Admin.projects.project.survey.hiddenByLogic',
-    defaultMessage: ' - hidden by logic',
+    id: 'app.containers.Admin.projects.project.survey.hiddenByLogic2',
+    defaultMessage: ' - Hidden by logic',
   },
   logicSkipTooltipPage: {
     id: 'app.containers.Admin.projects.project.survey.logicSkipTooltipPage4',
