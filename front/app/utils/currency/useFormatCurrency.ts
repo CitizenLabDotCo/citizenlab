@@ -14,17 +14,15 @@ const useFormatCurrency = () => {
   const { formatMessage, formatNumber } = useIntl();
 
   if (currency === 'TOK') {
-    return (amount: number) => formatNumber(amount);
+    return (amount: number) =>
+      formatMessage(messages.xTokens, { numberOfTokens: formatNumber(amount) });
   }
 
   if (currency === 'CRE') {
     return (amount: number) =>
-      formatMessage(
-        amount === 1 ? messages.oneCredit : messages.multipleCredits,
-        {
-          numberOfTokens: formatNumber(amount),
-        }
-      );
+      formatMessage(messages.xCredits, {
+        numberOfCredits: formatNumber(amount),
+      });
   }
 
   return (amount: number) => formatCurrency(locale, currency, amount);

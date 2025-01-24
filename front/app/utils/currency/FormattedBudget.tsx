@@ -41,12 +41,9 @@ const FormattedBudget = ({ value }: Props) => {
   } else if (currency === 'CRE') {
     return (
       <>
-        {formatMessage(
-          value === 1 ? messages.oneCredit : messages.multipleCredits,
-          {
-            numberOfTokens: formatNumber(value),
-          }
-        )}
+        {formatMessage(messages.xCredits, {
+          numberOfCredits: formatNumber(value),
+        })}
       </>
     );
   } else {
