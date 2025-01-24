@@ -19,6 +19,7 @@ import { FormattedMessage } from 'utils/cl-intl';
 import { isPageRuleValid } from 'utils/yup/validateLogic';
 
 import messages from '../../messages';
+
 import { PageListType } from './index';
 
 type RuleInputProps = {
@@ -94,23 +95,21 @@ export const PageRuleInput = ({
                         width="320px"
                         data-cy="e2e-rule-input-select"
                       >
-                        {pages && (
-                          <Select
-                            value={selectedPage}
-                            options={pages}
-                            label={
-                              <Text
-                                mb="0px"
-                                margin="0px"
-                                color="coolGrey600"
-                                fontSize="s"
-                              >
-                                <FormattedMessage {...messages.pageRuleLabel} />
-                              </Text>
-                            }
-                            onChange={onSelectionChange}
-                          />
-                        )}
+                        <Select
+                          value={selectedPage}
+                          options={pages}
+                          label={
+                            <Text
+                              mb="0px"
+                              margin="0px"
+                              color="coolGrey600"
+                              fontSize="s"
+                            >
+                              <FormattedMessage {...messages.pageRuleLabel} />
+                            </Text>
+                          }
+                          onChange={onSelectionChange}
+                        />
                       </Box>
                       <Box ml="auto" flexGrow={0} flexShrink={0}>
                         <Button

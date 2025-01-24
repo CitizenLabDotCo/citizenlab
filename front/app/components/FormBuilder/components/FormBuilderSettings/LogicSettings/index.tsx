@@ -103,14 +103,13 @@ export const LogicSettings = ({
 
   // Current and previous pages should be disabled in select options
   let disablePage = true;
-  const pages: PageListType =
-    pageOptions?.map((page) => {
-      page.disabled = disablePage;
-      if (page.value === getCurrentPageId(field.id)) {
-        disablePage = false;
-      }
-      return page;
-    }) || null;
+  const pages: PageListType = pageOptions.map((page) => {
+    page.disabled = disablePage;
+    if (page.value === getCurrentPageId(field.id)) {
+      disablePage = false;
+    }
+    return page;
+  });
 
   return (
     <>

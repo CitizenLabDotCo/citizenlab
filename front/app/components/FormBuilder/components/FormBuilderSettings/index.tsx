@@ -101,7 +101,7 @@ const FormBuilderSettings = ({
 
     let pageId = '';
     let currentPageId: string | null = null;
-    formCustomFields?.forEach((field) => {
+    formCustomFields.forEach((field) => {
       if (field.input_type === 'page') pageId = field.id;
       if (field.id === questionId) currentPageId = pageId;
     });
