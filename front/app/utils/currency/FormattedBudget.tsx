@@ -5,12 +5,9 @@ import styled from 'styled-components';
 
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 
-import useLocale from 'hooks/useLocale';
-
 import { useIntl } from 'utils/cl-intl';
 
-import formatCurrency from './formatCurrency';
-import messages from './messages';
+import useFormatCurrency from './useFormatCurrency';
 
 const StyledIcon = styled(Icon)`
   margin-top: 3px;
@@ -25,8 +22,8 @@ interface Props {
 
 const FormattedBudget = ({ value }: Props) => {
   const { data: appConfiguration } = useAppConfiguration();
-  const { formatMessage, formatNumber } = useIntl();
-  const locale = useLocale();
+  const { formatNumber } = useIntl();
+  const formatCurrency = useFormatCurrency();
 
   if (!appConfiguration) return null;
 
@@ -41,16 +38,8 @@ const FormattedBudget = ({ value }: Props) => {
         {formatNumber(value)}
       </>
     );
-  } else if (currency === 'CRE') {
-    return (
-      <>
-        {formatMessage(messages.xCredits, {
-          numberOfCredits: formatNumber(value),
-        })}
-      </>
-    );
   } else {
-    return <>{formatCurrency(locale, currency, value)}</>;
+    return <>{formatCurrency(value)}</>;
   }
 };
 
