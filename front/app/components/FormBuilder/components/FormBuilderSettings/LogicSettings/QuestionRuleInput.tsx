@@ -23,6 +23,7 @@ import { useIntl } from 'utils/cl-intl';
 import { isRuleValid } from 'utils/yup/validateLogic';
 
 import messages from '../../messages';
+import { FormattedMessage } from 'react-intl';
 
 type QuestionRuleInputProps = {
   fieldId: string;
@@ -211,7 +212,9 @@ export const QuestionRuleInput = ({
                             color="coolGrey600"
                             fontSize="s"
                           >
-                            {ruleForAnswerLabel}
+                            <FormattedMessage
+                              {...messages.goToPageInputLabel}
+                            />
                           </Text>
                         }
                         onChange={onSelectionChange}
