@@ -152,9 +152,19 @@ const FormEdit = ({
     reset,
   } = methods;
 
-  // TODO: Remove this when problem is fixed correctly!
+  // Reset the form when the persisted default values change
   useEffect(() => {
-    reset(defaultValues);
+    // This is only run twice:
+    // 1. When the form is first opened and we need to wait for any matrix statements to be fetched
+    // and
+    // 2. When the form is changed/saved and we need to wait again for any matrix statements to be fetched
+    if (
+      defaultValues.customFields.some(
+        (field) => field.input_type === 'matrix_linear_scale'
+      )
+    ) {
+      reset(defaultValues);
+    }
   }, [defaultValues, reset]);
 
   const { append, move, replace } = useFieldArray({
