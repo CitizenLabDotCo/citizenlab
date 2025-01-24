@@ -20,6 +20,7 @@ interface Props {
   phase: IPhase | undefined;
 }
 
+// TODO: All comments in this file indicate we should probably split this in an "all inputs" and "phase" version.
 const StatusFilterBox = ({
   selectedStatusId,
   onChange,
