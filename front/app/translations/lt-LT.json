@@ -2057,6 +2057,8 @@
   "app.utils.AdminPage.ProjectEdit.shareInformation": "Dalytis informacija",
   "app.utils.FormattedCurrency.credits": "kreditai",
   "app.utils.FormattedCurrency.tokens": "žetonai",
+  "app.utils.FormattedCurrency.xCredits": "{numberOfCredits, plural, =0 {# kreditai} one {# kreditai} other {# kreditai}}",
+  "app.utils.FormattedCurrency.xTokens": "{numberOfTokens, plural, =0 {# žetonai} one {# žetonas} other {# žetonai}}",
   "app.utils.IdeaCards.mostDiscussed": "Daugiausia diskusijų",
   "app.utils.IdeaCards.mostReacted": "Dauguma reakcijų",
   "app.utils.IdeaCards.newest": "Naujausias",
