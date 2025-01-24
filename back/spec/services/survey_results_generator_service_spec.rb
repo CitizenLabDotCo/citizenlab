@@ -1379,24 +1379,24 @@ RSpec.describe SurveyResultsGeneratorService do
           logic: {},
           totalPickCount: 2,
           answers: [
-            { answer: 'option_1', count: 1 },
-            { answer: 'option_3', count: 1 },
-            { answer: 'option_2', count: 0 },
+            { answer: 'option1', count: 1 },
+            { answer: 'option3', count: 1 },
+            { answer: 'option2', count: 0 },
             { answer: nil, count: 0 }
           ],
           multilocs: {
             answer: {
-              option_1: {
+              option1: {
                 title_multiloc: { en: 'Option 1' },
                 id: 'SELECT_1_OPTION_1',
                 logic: { nextPageId: 'PAGE_3' }
               },
-              option_2: {
+              option2: {
                 title_multiloc: { en: 'Option 2' },
                 id: 'SELECT_1_OPTION_2',
                 logic: { nextPageId: 'PAGE_2' }
               },
-              option_3: {
+              option3: {
                 title_multiloc: { en: 'Option 3' },
                 id: 'SELECT_1_OPTION_3',
                 logic: { nextPageId: 'PAGE_4' }
@@ -1510,24 +1510,24 @@ RSpec.describe SurveyResultsGeneratorService do
           logic: {},
           totalPickCount: 3,
           answers: [
-            { answer: 'option_1', count: 1 },
-            { answer: 'option_2', count: 1 },
+            { answer: 'option1', count: 1 },
+            { answer: 'option2', count: 1 },
             { answer: nil, count: 1 },
-            { answer: 'option_3', count: 0 }
+            { answer: 'option3', count: 0 }
           ],
           multilocs: {
             answer: {
-              option_1: {
+              option1: {
                 title_multiloc: { en: 'Option 1' },
                 id: 'MULTISELECT_1_OPTION_1',
                 logic: { nextPageId: nil }
               },
-              option_2: {
+              option2: {
                 title_multiloc: { en: 'Option 2' },
                 id: 'MULTISELECT_1_OPTION_2',
                 logic: { nextPageId: nil }
               },
-              option_3: {
+              option3: {
                 title_multiloc: { en: 'Option 3' },
                 id: 'MULTISELECT_1_OPTION_3',
                 logic: { nextPageId: 'PAGE_4' }
@@ -1570,17 +1570,17 @@ RSpec.describe SurveyResultsGeneratorService do
           totalPickCount: 2,
           answers: [
             { answer: nil, count: 2 },
-            { answer: 'option_1', count: 0 },
-            { answer: 'option_2', count: 0 }
+            { answer: 'option1', count: 0 },
+            { answer: 'option2', count: 0 }
           ],
           multilocs: {
             answer: {
-              option_1: {
+              option1: {
                 title_multiloc: { en: 'Option 2' },
                 id: 'SELECT_2_OPTION_1',
                 logic: { nextPageId: 'survey_end' }
               },
-              option_2: {
+              option2: {
                 title_multiloc: { en: 'Option 2' },
                 id: 'SELECT_2_OPTION_2',
                 logic: { nextPageId: nil }
@@ -1644,10 +1644,10 @@ RSpec.describe SurveyResultsGeneratorService do
 
     it 'returns logic information for single select options' do
       select_result = results[1]
-      expect(select_result[:multilocs][:answer][:option_1][:logic]).to match(
+      expect(select_result[:multilocs][:answer][:option1][:logic]).to match(
         { nextPageNumber: 3, numQuestionsSkipped: 3 }
       )
-      expect(select_result[:multilocs][:answer][:option_3][:logic]).to match(
+      expect(select_result[:multilocs][:answer][:option3][:logic]).to match(
         { nextPageNumber: 4, numQuestionsSkipped: 5 }
       )
     end
@@ -1674,7 +1674,7 @@ RSpec.describe SurveyResultsGeneratorService do
 
     it 'returns logic information for a multiselect field' do
       multiselect_result = results[5]
-      expect(multiselect_result[:multilocs][:answer][:option_3][:logic]).to match(
+      expect(multiselect_result[:multilocs][:answer][:option3][:logic]).to match(
         { nextPageNumber: 4, numQuestionsSkipped: 2 }
       )
       expect(multiselect_result[:multilocs][:answer][:no_answer][:logic]).to match(
