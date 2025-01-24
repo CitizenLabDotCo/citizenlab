@@ -8,6 +8,8 @@ import { useIntl } from 'utils/cl-intl';
 
 import messages from './messages';
 
+const inputTypesNoDropdown = ['multiselect_image', 'ranking'];
+
 type Props = {
   inputType: string;
   randomizeName: string;
@@ -20,7 +22,6 @@ const OptionsSettings = ({
   dropdownLayoutName,
 }: Props) => {
   const { formatMessage } = useIntl();
-  const inputTypesNoDropdown = ['multiselect_image', 'ranking'];
 
   return (
     <>

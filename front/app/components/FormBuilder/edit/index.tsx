@@ -137,8 +137,6 @@ const FormEdit = ({
     ),
   });
 
-  console.log('defaultValues: ', defaultValues);
-
   const methods = useForm({
     mode: 'onBlur',
     defaultValues,
@@ -154,9 +152,21 @@ const FormEdit = ({
     reset,
   } = methods;
 
-  // TODO: Remove this when problem is fixed correctly!
+  // ToDo: Would be better to find another way to achieve this, but I wasn't able to find a solution
+  // which didn't result in the form builder UI refreshing on every save.
   useEffect(() => {
-    reset(defaultValues);
+    // Reset the form when the persisted default values change
+    // This is only run twice:
+    // 1. When the form is first opened and we need to wait for any matrix statements to be fetched
+    // and
+    // 2. When the form is changed/saved and we need to wait again for any matrix statements to be fetched
+    if (
+      defaultValues.customFields.some(
+        (field) => field.input_type === 'matrix_linear_scale'
+      )
+    ) {
+      reset(defaultValues);
+    }
   }, [defaultValues, reset]);
 
   const { append, move, replace } = useFieldArray({

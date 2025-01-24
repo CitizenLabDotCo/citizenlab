@@ -19,10 +19,10 @@ const fetchIdeaStatuses = (queryParams: IdeaStatusesQueryParams) =>
 
 const useIdeaStatuses = ({
   enabled = true,
-  queryParams = {},
+  queryParams,
 }: {
   enabled?: boolean;
-  queryParams?: IdeaStatusesQueryParams;
+  queryParams: IdeaStatusesQueryParams;
 }) => {
   return useQuery<IIdeaStatuses, CLErrors, IIdeaStatuses, IdeaStatusesKeys>({
     queryKey: ideaStatusesKeys.list(queryParams),

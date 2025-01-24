@@ -18,22 +18,14 @@ const validateOneStatementForMatrix = (
           .test(
             'one-statement',
             noStatementGenericMessage,
-            (
-              matrix_statements: IMatrixStatementsType[],
-              testContext: TestContext
-            ) => {
-              if (testContext.parent.key === 'topic_ids') {
-                return true;
-              }
-              // TODO: Fix this the next time the file is edited.
-              // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-              return matrix_statements
-                ? matrix_statements.some((statement: IMatrixStatementsType) => {
-                    return Object.values(statement.title_multiloc).some(
-                      (value: string) => value !== ''
-                    );
-                  })
-                : false;
+            (matrix_statements: IMatrixStatementsType[]) => {
+              return matrix_statements.some(
+                (statement: IMatrixStatementsType) => {
+                  return Object.values(statement.title_multiloc).some(
+                    (value: string) => value !== ''
+                  );
+                }
+              );
             }
           )
           .test(
@@ -46,20 +38,16 @@ const validateOneStatementForMatrix = (
               if (testContext.parent.key === 'topic_ids') {
                 return true;
               }
-              // TODO: Fix this the next time the file is edited.
-              // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-              return matrix_statements
-                ? matrix_statements.every(
-                    (statement: IMatrixStatementsType) => {
-                      return (
-                        Object.keys(statement.title_multiloc).length > 0 &&
-                        Object.values(statement.title_multiloc).some(
-                          (value: string) => value !== ''
-                        )
-                      );
-                    }
-                  )
-                : false;
+              return matrix_statements.every(
+                (statement: IMatrixStatementsType) => {
+                  return (
+                    Object.keys(statement.title_multiloc).length > 0 &&
+                    Object.values(statement.title_multiloc).some(
+                      (value: string) => value !== ''
+                    )
+                  );
+                }
+              );
             }
           );
       }

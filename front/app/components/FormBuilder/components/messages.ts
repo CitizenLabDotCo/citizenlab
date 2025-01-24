@@ -290,4 +290,24 @@ export default defineMessages({
     id: 'app.components.formBuilder.cancelLeaveBuilderButtonText',
     defaultMessage: 'Cancel',
   },
+  stronglyDisagree: {
+    id: 'app.components.formBuilder.stronglyDisagree',
+    defaultMessage: 'Strongly disagree',
+  },
+  disagree: {
+    id: 'app.components.formBuilder.disagree',
+    defaultMessage: 'Disagree',
+  },
+  neutral: {
+    id: 'app.components.formBuilder.neutral',
+    defaultMessage: 'Neutral',
+  },
+  agree: {
+    id: 'app.components.formBuilder.agree',
+    defaultMessage: 'Agree',
+  },
+  stronglyAgree: {
+    id: 'app.components.formBuilder.stronglyAgree',
+    defaultMessage: 'Strongly agree',
+  },
 });

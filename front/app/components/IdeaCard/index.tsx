@@ -1,16 +1,8 @@
 import React, { useEffect } from 'react';
 
-import {
-  useBreakpoint,
-  Box,
-  defaultCardStyle,
-  defaultCardHoverStyle,
-  media,
-  Title,
-} from '@citizenlab/cl2-component-library';
+import { useBreakpoint, Box, Title } from '@citizenlab/cl2-component-library';
 import { useSearchParams } from 'react-router-dom';
 import { RouteType } from 'routes';
-import styled from 'styled-components';
 
 import useIdeaImage from 'api/idea_images/useIdeaImage';
 import { IIdea } from 'api/ideas/types';
@@ -32,6 +24,7 @@ import { scrollToElement } from 'utils/scroll';
 
 import Body from './Body';
 import CardImage from './CardImage';
+import Container from './Container';
 import Footer from './Footer';
 import Interactions from './Interactions';
 
@@ -43,20 +36,6 @@ export interface Props {
   hideIdeaStatus?: boolean;
   showFollowButton?: boolean;
 }
-
-const Container = styled(Box)`
-  display: block;
-  ${defaultCardStyle};
-  cursor: pointer;
-  ${defaultCardHoverStyle};
-  width: 100%;
-  display: flex;
-  padding: 17px;
-
-  ${media.tablet`
-    flex-direction: column;
-  `}
-`;
 
 const IdeaLoading = (props: Props) => {
   const { data: idea } = useIdeaById(props.ideaId);
@@ -146,7 +125,6 @@ const IdeaCard = ({
       className={`e2e-card e2e-idea-card`}
       id={idea.data.id}
       onClick={handleClick}
-      height="100%"
     >
       <CardImage
         phase={phaseData}

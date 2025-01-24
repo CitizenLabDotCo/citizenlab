@@ -1,19 +1,19 @@
-import { IAttributes } from 'api/custom_fields/types';
-
-import { Keys } from 'utils/cl-react-query/types';
-
-import customFieldStatementKeys from './keys';
-
 export interface ICustomFieldStatementParameters {
   id?: string;
   projectId: string;
   phaseId?: string;
   customFieldId?: string;
 }
-export type StatementAttributes = Omit<
-  IAttributes,
-  'description_multiloc' | 'input_type' | 'required' | 'enabled'
->;
+export type StatementAttributes = {
+  title_multiloc: {
+    [locale: string]: string;
+  };
+  key: string;
+  ordering: number;
+  created_at: string;
+  updated_at: string;
+  temp_id?: string;
+};
 
 export interface IFormCustomFieldStatementData {
   id: string;
@@ -24,5 +24,3 @@ export interface IFormCustomFieldStatementData {
 export interface IFormCustomFieldStatement {
   data: IFormCustomFieldStatementData;
 }
-
-export type CustomFieldStatementKeys = Keys<typeof customFieldStatementKeys>;

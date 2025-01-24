@@ -27,16 +27,22 @@ import usePrevious from 'hooks/usePrevious';
 import { List, Row } from 'components/admin/ResourceList';
 import SortableRow from 'components/admin/ResourceList/SortableRow';
 import { SectionField } from 'components/admin/Section';
-import { generateTempId } from 'components/FormBuilder/utils';
 import Error, { TFieldName } from 'components/UI/Error';
 
 import { useIntl } from 'utils/cl-intl';
 import { convertUrlToUploadFile } from 'utils/fileUtils';
-import { isNilOrError } from 'utils/helperUtils';
+import { generateTempId, isNilOrError } from 'utils/helperUtils';
 
 import messages from './messages';
 import SelectFieldOption, { OptionImageType } from './SelectFieldOption';
-import { getAddButtonText, getFieldLabelText, ListType } from './utils';
+import {
+  getAddButtonText,
+  getFieldLabelText,
+  ListType,
+  allowMultilinePaste,
+  updateFormOnMultlinePaste,
+  inputTypesNoOther,
+} from './utils';
 
 interface Props {
   name: string;
@@ -48,7 +54,7 @@ interface Props {
   listType?: ListType;
 }
 
-const ConfigOptionsWithLocaleSwitcher = ({
+const ConfigSelectWithLocaleSwitcher = ({
   onSelectedLocaleChange,
   name,
   locales,
@@ -80,9 +86,6 @@ const ConfigOptionsWithLocaleSwitcher = ({
   const customFieldOptionImages = useCustomFieldOptionImages(imageIds);
   const prevImageQueries = usePrevious(customFieldOptionImages);
   const [optionImages, setOptionImages] = useState<OptionImageType>();
-
-  const showOtherOptionToggle =
-    inputType !== 'ranking' && inputType !== 'matrix_linear_scale';
 
   useEffect(() => {
     if (
@@ -201,6 +204,23 @@ const ConfigOptionsWithLocaleSwitcher = ({
     [update]
   );
 
+  const handleMultilinePaste = useCallback(
+    (lines, index) => {
+      if (!selectedLocale) return;
+      if (lines.length > 20) return;
+
+      updateFormOnMultlinePaste({
+        update,
+        append,
+        locale: selectedLocale,
+        lines,
+        index,
+        options: selectOptions,
+      });
+    },
+    [update, append, selectOptions, selectedLocale]
+  );
+
   const defaultOptionValues = [{}];
   const errors = get(formContextErrors, name) as RHFErrors;
   const apiError = errors?.error && ([errors] as CLError[]);
@@ -283,6 +303,12 @@ const ConfigOptionsWithLocaleSwitcher = ({
                         return aValue - bValue;
                       })
                       .map((choice, index) => {
+                        const multilinePasteAllowed = allowMultilinePaste({
+                          options,
+                          index,
+                          locale: selectedLocale,
+                        });
+
                         return (
                           <Box key={index}>
                             {choice.other === true ? (
@@ -318,9 +344,14 @@ const ConfigOptionsWithLocaleSwitcher = ({
                                   locale={selectedLocale}
                                   inputType={inputType}
                                   canDeleteLastOption={canDeleteLastOption}
+                                  optionImages={optionImages}
                                   removeOption={removeOption}
                                   onChoiceUpdate={updateChoice}
-                                  optionImages={optionImages}
+                                  onMultilinePaste={
+                                    multilinePasteAllowed
+                                      ? handleMultilinePaste
+                                      : undefined
+                                  }
                                 />
                               </SortableRow>
                             )}
@@ -356,7 +387,7 @@ const ConfigOptionsWithLocaleSwitcher = ({
                   />
                 )}
 
-                {showOtherOptionToggle && (
+                {!inputTypesNoOther.includes(inputType) && (
                   <Box mt="24px" data-cy="e2e-other-option-toggle">
                     <Toggle
                       label={
@@ -386,4 +417,4 @@ const ConfigOptionsWithLocaleSwitcher = ({
   );
 };
 
-export default ConfigOptionsWithLocaleSwitcher;
+export default ConfigSelectWithLocaleSwitcher;

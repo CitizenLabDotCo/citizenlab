@@ -23,12 +23,12 @@ import useDuplicateMapConfig from 'api/map_config/useDuplicateMapConfig';
 import {
   FormBuilderConfig,
   builtInFieldKeys,
-  generateTempId,
 } from 'components/FormBuilder/utils';
 import Modal from 'components/UI/Modal';
 import MoreActionsMenu from 'components/UI/MoreActionsMenu';
 
 import { useIntl } from 'utils/cl-intl';
+import { generateTempId } from 'utils/helperUtils';
 
 import { FlexibleRow } from '../../FlexibleRow';
 import { getFieldBackgroundColor } from '../utils';

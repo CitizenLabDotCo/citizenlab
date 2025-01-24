@@ -1,7 +1,5 @@
 import React from 'react';
 
-import { Box, Title } from '@citizenlab/cl2-component-library';
-import { uuid4 } from '@sentry/utils';
 import { MessageDescriptor } from 'react-intl';
 import { RouteType } from 'routes';
 import { SupportedLocale } from 'typings';
@@ -18,6 +16,7 @@ import { isNilOrError } from 'utils/helperUtils';
 import ConfigOptionsWithLocaleSwitcher from './components/FormBuilderSettings/ConfigOptionsWithLocaleSwitcher';
 import FieldGroupSettings from './components/FormBuilderSettings/FieldGroupSettings';
 import LinearScaleSettings from './components/FormBuilderSettings/LinearScaleSettings';
+import MatrixSettings from './components/FormBuilderSettings/MatrixSettings';
 import MultiselectSettings from './components/FormBuilderSettings/MultiselectSettings';
 import OptionsSettings from './components/FormBuilderSettings/OptionsSettings';
 import PageLayoutSettings from './components/FormBuilderSettings/PageLayoutSettings';
@@ -82,10 +81,6 @@ export const getIsPostingEnabled = (
   return false;
 };
 
-export function generateTempId() {
-  return `TEMP-ID-${uuid4()}`;
-}
-
 // TODO: BE key for survey end options should be replaced with form_end, then we can update this value.
 export const formEndOption = 'survey_end';
 
@@ -104,28 +99,11 @@ export function getAdditionalSettings(
   switch (inputType) {
     case 'matrix_linear_scale':
       return (
-        <Box mb="24px">
-          <Title mt="40px" color="coolGrey600" variant="h4">
-            Columns
-          </Title>
-          <LinearScaleSettings
-            platformLocale={platformLocale}
-            maximumName={`customFields.${field.index}.maximum`}
-            labelBaseName={`customFields.${field.index}`}
-            locales={locales}
-          />
-
-          <Title mt="40px" color="coolGrey600" variant="h4">
-            Rows
-          </Title>
-          <ConfigOptionsWithLocaleSwitcher
-            name={`customFields.${field.index}.matrix_statements`}
-            locales={locales}
-            platformLocale={platformLocale}
-            inputType={field.input_type}
-            listType="statement"
-          />
-        </Box>
+        <MatrixSettings
+          field={field}
+          locales={locales}
+          platformLocale={platformLocale}
+        />
       );
     case 'multiselect_image':
     case 'multiselect':

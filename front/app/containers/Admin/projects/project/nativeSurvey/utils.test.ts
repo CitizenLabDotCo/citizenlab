@@ -40,15 +40,31 @@ describe('clearOptionIds', () => {
       linear_scale_label_5_multiloc: {},
       linear_scale_label_6_multiloc: {},
       linear_scale_label_7_multiloc: {},
+      matrix_statements: [
+        {
+          id: '96e275e5b8194c7b85ac615665930d22',
+          title_multiloc: {
+            en: 'Statement 1',
+          },
+        },
+        {
+          id: '1f911f35352d4e2082b30b8afb92d081',
+          title_multiloc: {
+            en: 'Statement 2',
+          },
+        },
+      ],
       ordering: 1,
       updated_at: '2024-01-01T00:00:00.000Z',
       created_at: '2024-01-01T00:00:00.000Z',
     },
   ];
 
-  it('should remove the ID from field options', () => {
+  it('should remove the ID from field options and statements', () => {
     const resultCustomFields = clearOptionAndStatementIds(customFields);
     expect(resultCustomFields[0]?.options?.[0].id).toBe(undefined);
     expect(resultCustomFields[0]?.options?.[1].id).toBe(undefined);
+    expect(resultCustomFields[0]?.matrix_statements?.[0].id).toBe(undefined);
+    expect(resultCustomFields[0]?.matrix_statements?.[1].id).toBe(undefined);
   });
 });

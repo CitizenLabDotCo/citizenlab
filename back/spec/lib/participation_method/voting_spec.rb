@@ -165,7 +165,6 @@ RSpec.describe ParticipationMethod::Voting do
   end
 
   its(:allowed_ideas_orders) { is_expected.to eq ['random'] }
-  its(:proposed_budget_in_form?) { is_expected.to be true }
   its(:return_disabled_actions?) { is_expected.to be false }
   its(:supports_assignment?) { is_expected.to be true }
   its(:supports_built_in_fields?) { is_expected.to be true }
@@ -185,4 +184,10 @@ RSpec.describe ParticipationMethod::Voting do
   its(:use_reactions_as_votes?) { is_expected.to be false }
   its(:transitive?) { is_expected.to be true }
   its(:supports_private_attributes_in_export?) { is_expected.to be true }
+
+  describe 'proposed_budget_in_form?' do # private method
+    it 'is expected to be true' do
+      expect(participation_method.send(:proposed_budget_in_form?)).to be true
+    end
+  end
 end

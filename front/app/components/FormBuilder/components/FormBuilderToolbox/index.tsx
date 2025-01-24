@@ -19,13 +19,10 @@ import {
 import useFeatureFlag from 'hooks/useFeatureFlag';
 import useLocale from 'hooks/useLocale';
 
-import {
-  generateTempId,
-  FormBuilderConfig,
-} from 'components/FormBuilder/utils';
+import { FormBuilderConfig } from 'components/FormBuilder/utils';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
-import { isNilOrError } from 'utils/helperUtils';
+import { generateTempId, isNilOrError } from 'utils/helperUtils';
 
 import messages from '../messages';
 
@@ -84,11 +81,36 @@ const FormBuilderToolbox = ({
         title_multiloc: {
           [locale]: '',
         },
-        linear_scale_label_1_multiloc: {},
-        linear_scale_label_2_multiloc: {},
-        linear_scale_label_3_multiloc: {},
-        linear_scale_label_4_multiloc: {},
-        linear_scale_label_5_multiloc: {},
+        linear_scale_label_1_multiloc: {
+          [locale]:
+            inputType === 'matrix_linear_scale'
+              ? formatMessage(messages.stronglyDisagree)
+              : '',
+        },
+        linear_scale_label_2_multiloc: {
+          [locale]:
+            inputType === 'matrix_linear_scale'
+              ? formatMessage(messages.disagree)
+              : '',
+        },
+        linear_scale_label_3_multiloc: {
+          [locale]:
+            inputType === 'matrix_linear_scale'
+              ? formatMessage(messages.neutral)
+              : '',
+        },
+        linear_scale_label_4_multiloc: {
+          [locale]:
+            inputType === 'matrix_linear_scale'
+              ? formatMessage(messages.agree)
+              : '',
+        },
+        linear_scale_label_5_multiloc: {
+          [locale]:
+            inputType === 'matrix_linear_scale'
+              ? formatMessage(messages.stronglyAgree)
+              : '',
+        },
         linear_scale_label_6_multiloc: {},
         linear_scale_label_7_multiloc: {},
         maximum: 5,
