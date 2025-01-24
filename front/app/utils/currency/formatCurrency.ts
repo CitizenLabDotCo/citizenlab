@@ -4,7 +4,7 @@ import { TCurrency } from 'api/app_configuration/types';
 
 function formatCurrency(
   locale: SupportedLocale,
-  currency: TCurrency,
+  currency: TCurrency | undefined,
   amount: number,
   { maximumFractionDigits = 0 }: { maximumFractionDigits?: number } = {}
 ) {
