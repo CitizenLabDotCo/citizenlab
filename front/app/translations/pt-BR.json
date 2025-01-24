@@ -2142,7 +2142,7 @@
   "app.utils.votingMethodUtils.budgetingSubmissionInstructionsMinBudget1": "O orçamento mínimo exigido é {amount}.",
   "app.utils.votingMethodUtils.budgetingSubmissionInstructionsOnceYouAreDone": "Quando tiver terminado, clique em \"Enviar\" para apresentar o seu orçamento.",
   "app.utils.votingMethodUtils.budgetingSubmissionInstructionsPreferredOptions": "Selecione as suas opções preferidas tocando em \"Adicionar\".",
-  "app.utils.votingMethodUtils.budgetingSubmissionInstructionsTotalBudget": "Você tem um total de <b>{maxBudget} {currency} para distribuir entre {optionCount} opções</b>.",
+  "app.utils.votingMethodUtils.budgetingSubmissionInstructionsTotalBudget2": "Você tem um total de <b>{maxBudget} para distribuir entre as opções de {optionCount} </b>.",
   "app.utils.votingMethodUtils.budgetingSubmittedInstructions2": "<b>Parabéns, o seu orçamento foi enviado!</b> Pode verificar as suas opções abaixo em qualquer momento ou modificá-las antes de <b>{endDate}</b>.",
   "app.utils.votingMethodUtils.budgetingSubmittedInstructionsContinuous": "<b>Parabéns, o seu orçamento foi enviado!</b> Pode verificar as suas opções abaixo em qualquer momento ou modificá-las.",
   "app.utils.votingMethodUtils.budgetingSubmittedInstructionsNoEndDate": "<b>Parabéns, seu orçamento foi enviado!</b> Você pode verificar suas opções abaixo a qualquer momento.",
