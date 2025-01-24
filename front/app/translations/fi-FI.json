@@ -2057,6 +2057,8 @@
   "app.utils.AdminPage.ProjectEdit.shareInformation": "Jakaa tietoa",
   "app.utils.FormattedCurrency.credits": "krediittejä",
   "app.utils.FormattedCurrency.tokens": "rahakkeita",
+  "app.utils.FormattedCurrency.xCredits": "{numberOfCredits, plural, =0 {# krediittiä} one {# luotto} other {# krediittiä}}",
+  "app.utils.FormattedCurrency.xTokens": "{numberOfTokens, plural, =0 {# rahakkeita} one {# token} other {# rahakkeita}}",
   "app.utils.IdeaCards.mostDiscussed": "Eniten keskusteltu",
   "app.utils.IdeaCards.mostReacted": "Suurin osa reaktioista",
   "app.utils.IdeaCards.newest": "Uusin",
