@@ -8,11 +8,13 @@ function formatCurrency(
   amount: number,
   { maximumFractionDigits = 0 }: { maximumFractionDigits?: number } = {}
 ) {
-  return new Intl.NumberFormat(locale, {
-    style: 'currency',
+  const formatter = new Intl.NumberFormat(locale, {
+    style: currency ? 'currency' : 'decimal',
     currency,
     maximumFractionDigits,
-  }).format(amount);
+  });
+
+  return formatter.format(amount);
 }
 
 export default formatCurrency;
