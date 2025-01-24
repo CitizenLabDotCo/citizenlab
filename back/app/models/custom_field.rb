@@ -59,7 +59,7 @@ class CustomField < ApplicationRecord
   INPUT_TYPES = %w[
     checkbox date file_upload files html html_multiloc image_files linear_scale multiline_text multiline_text_multiloc
     multiselect multiselect_image number page point line polygon select select_image shapefile_upload text text_multiloc
-    topic_ids section cosponsor_ids
+    topic_ids section cosponsor_ids ranking
   ].freeze
   CODES = %w[
     author_id birthyear body_multiloc budget domicile gender idea_files_attributes idea_images_attributes
@@ -102,15 +102,13 @@ class CustomField < ApplicationRecord
   scope :required, -> { where(required: true) }
   scope :not_hidden, -> { where(hidden: false) }
   scope :hidden, -> { where(hidden: true) }
-  scope :support_multiple_values, -> { where(input_type: 'multiselect') }
-  scope :support_single_value, -> { where.not(input_type: 'multiselect') }
 
   def logic?
     logic.present? && logic != { 'rules' => [] }
   end
 
   def support_options?
-    %w[select multiselect select_image multiselect_image].include?(input_type)
+    %w[select multiselect select_image multiselect_image ranking].include?(input_type)
   end
 
   def support_free_text_value?
@@ -119,6 +117,46 @@ class CustomField < ApplicationRecord
 
   def support_option_images?
     %w[select_image multiselect_image].include?(input_type)
+  end
+
+  def supports_xlsx_export?
+    return false if code == 'idea_images_attributes' # Is this still applicable?
+
+    %w[page section].exclude?(input_type)
+  end
+
+  def average_rankings(scope)
+    # This basically starts from all combinations of scope ID, option key (value)
+    # and position (ordinality) and then calculates the average position for each
+    # option. "#>> '{}'" is used to unescape the double quotes in the JSONB value.
+    return {} if input_type != 'ranking'
+
+    scope
+      .where.not("custom_field_values ->> '#{key}' IS NULL")
+      .joins("CROSS JOIN jsonb_array_elements(custom_field_values->'#{key}') WITH ORDINALITY AS elem(value, ordinality)")
+      .group("elem.value #>> '{}'")
+      .average('elem.ordinality')
+  end
+
+  def rankings_counts(scope)
+    # This basically starts from all combinations of scope ID, option key (value)
+    # and position (ordinality) and then calculates the count for each option and
+    # position. "#>> '{}'" is used to unescape the double quotes in the JSONB
+    # value.
+    return {} if input_type != 'ranking'
+
+    query_result = scope
+      .where.not("custom_field_values ->> '#{key}' IS NULL")
+      .joins("CROSS JOIN jsonb_array_elements(custom_field_values->'#{key}') WITH ORDINALITY AS elem(value, ordinality)")
+      .group("elem.value #>> '{}'", 'elem.ordinality')
+      .count
+
+    # Transform pair to ordinality hash into a hash of hashes
+    options.pluck(:key).index_with do |option_key|
+      (1..options.size).index_with do |ranking|
+        query_result[[option_key, ranking]] || 0
+      end
+    end
   end
 
   def built_in?
@@ -186,60 +224,10 @@ class CustomField < ApplicationRecord
   end
 
   def accept(visitor)
-    case input_type
-    when 'checkbox'
-      visitor.visit_checkbox self
-    when 'date'
-      visitor.visit_date self
-    when 'files'
-      visitor.visit_files self
-    when 'file_upload'
-      visitor.visit_file_upload self
-    when 'html'
-      visitor.visit_html self
-    when 'html_multiloc'
-      visitor.visit_html_multiloc self
-    when 'image_files'
-      visitor.visit_image_files self
-    when 'linear_scale'
-      visitor.visit_linear_scale self
-    when 'multiline_text'
-      visitor.visit_multiline_text self
-    when 'multiline_text_multiloc'
-      visitor.visit_multiline_text_multiloc self
-    when 'multiselect'
-      visitor.visit_multiselect self
-    when 'multiselect_image'
-      visitor.visit_multiselect_image self
-    when 'number'
-      visitor.visit_number self
-    when 'page'
-      visitor.visit_page self
-    when 'point'
-      visitor.visit_point self
-    when 'line'
-      visitor.visit_line self
-    when 'polygon'
-      visitor.visit_polygon self
-    when 'section'
-      visitor.visit_section self
-    when 'select'
-      visitor.visit_select self
-    when 'select_image'
-      visitor.visit_select_image self
-    when 'shapefile_upload'
-      visitor.visit_shapefile_upload self
-    when 'text'
-      visitor.visit_text self
-    when 'text_multiloc'
-      visitor.visit_text_multiloc self
-    when 'topic_ids'
-      visitor.visit_topic_ids self
-    when 'cosponsor_ids'
-      visitor.visit_cosponsor_ids self
-    else
-      raise "Unsupported input type: #{input_type}"
-    end
+    visitor_method = :"visit_#{input_type}"
+    raise "Unsupported input type: #{input_type}" if !visitor.respond_to? visitor_method
+
+    visitor.send visitor_method, self
   end
 
   # Special behaviour for ideation section 1

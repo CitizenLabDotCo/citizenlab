@@ -31,20 +31,6 @@ describe IdeaCustomFieldsService do
       end
     end
 
-    describe 'reportable_fields' do
-      it 'excludes disabled fields, pages, sections and idea_images_attributes' do
-        output = service.reportable_fields
-        expect(output.map(&:code)).to eq %w[
-          title_multiloc
-          body_multiloc
-          idea_files_attributes
-          topic_ids
-          location_description
-          proposed_budget
-        ]
-      end
-    end
-
     describe 'visible_fields' do
       it 'excludes disabled fields' do
         output = service.visible_fields
@@ -145,25 +131,6 @@ describe IdeaCustomFieldsService do
           'idea_images_attributes',
           'idea_files_attributes',
           'ideation_section3',
-          'topic_ids',
-          'proposed_budget',
-          nil,
-          nil
-        ]
-      end
-    end
-
-    describe 'reportable_fields' do
-      it 'excludes disabled fields, pages, sections and idea_images_attributes' do
-        topic_field = custom_form.custom_fields.find_by(code: 'topic_ids')
-        topic_field.update!(enabled: false)
-        custom_form.custom_fields.find_by(code: 'location_description').destroy!
-
-        output = service.reportable_fields
-        expect(output.map(&:code)).to eq [
-          'title_multiloc',
-          'body_multiloc',
-          'idea_files_attributes',
           'topic_ids',
           'proposed_budget',
           nil,
