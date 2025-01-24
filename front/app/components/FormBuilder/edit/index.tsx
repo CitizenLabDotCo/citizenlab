@@ -152,8 +152,10 @@ const FormEdit = ({
     reset,
   } = methods;
 
-  // Reset the form when the persisted default values change
+  // ToDo: Would be better to find another way to achieve, but I wasn't able to find a solution
+  // which didn't result in the UI refreshing on every save.
   useEffect(() => {
+    // Reset the form when the persisted default values change
     // This is only run twice:
     // 1. When the form is first opened and we need to wait for any matrix statements to be fetched
     // and
