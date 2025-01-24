@@ -55,7 +55,7 @@ const MatrixControl = ({
   const { formatMessage } = useIntl();
   const [didBlur, setDidBlur] = useState(false);
   const statements = uischema.options?.statements;
-  const tableDivRef = useRef<HTMLDivElement>(null); // Used to apple border styling on scroll
+  const tableDivRef = useRef<HTMLDivElement>(null); // Used to apply border styling on scroll
 
   // Determine maximum number of columns in the table
   const maxColumns = schema.properties?.[statements[0].key].maximum || 7; // Default 7 which is the maximum number of columns
@@ -70,14 +70,15 @@ const MatrixControl = ({
   // border which indicates it can be horizontally scrolled
   useEffect(() => {
     const checkApplyBorder = () => {
-      if (tableDivRef.current) {
+      const tableElement = tableDivRef.current;
+      if (tableElement) {
         if (
-          tableDivRef.current.scrollLeft + 4 >= // 4 is used as a small offset to make sure it "catches" correctly
-          tableDivRef.current.scrollWidth - tableDivRef.current.clientWidth
+          tableElement.scrollLeft + 4 >= // 4 is used as a small offset to make sure it "catches" correctly
+          tableElement.scrollWidth - tableElement.clientWidth
         ) {
-          tableDivRef.current.style.borderRight = 'none';
+          tableElement.style.borderRight = 'none';
         } else {
-          tableDivRef.current.style.borderRight = `1px dashed ${theme.colors.tenantPrimaryLighten75}`;
+          tableElement.style.borderRight = `1px dashed ${theme.colors.tenantPrimaryLighten75}`;
         }
       }
     };
@@ -194,7 +195,7 @@ const MatrixControl = ({
                             id={`${id}-${index}-${columnIndex}-radio`}
                             onChange={(value) => {
                               if (data && data?.length === statements?.length) {
-                                // Don't blue before the user has had a chance to fill in all statements
+                                // Don't blur before the user has had a chance to fill in all statements
                                 setDidBlur(true);
                               }
                               handleChange(path, {
