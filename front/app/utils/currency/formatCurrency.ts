@@ -1,10 +1,10 @@
 import { SupportedLocale } from 'typings';
 
-import { TCurrency } from 'api/app_configuration/types';
+import { TCountryCurrency } from 'api/app_configuration/types';
 
 function formatCurrency(
   locale: SupportedLocale,
-  currency: TCurrency | undefined,
+  currency: TCountryCurrency | undefined,
   amount: number,
   { maximumFractionDigits = 0 }: { maximumFractionDigits?: number } = {}
 ) {
