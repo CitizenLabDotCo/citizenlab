@@ -2056,8 +2056,6 @@
   "app.utils.AdminPage.ProjectEdit.inputAndFeedback": "Colete comentários e feedback",
   "app.utils.AdminPage.ProjectEdit.shareInformation": "Compartilhar informação",
   "app.utils.FormattedCurrency.credits": "créditos",
-  "app.utils.FormattedCurrency.multipleCredits": "{numberOfTokens} créditos",
-  "app.utils.FormattedCurrency.oneCredit": "1 crédito",
   "app.utils.FormattedCurrency.tokens": "fichas",
   "app.utils.IdeaCards.mostDiscussed": "Mais discutido",
   "app.utils.IdeaCards.mostReacted": "Mais reações",

@@ -2056,8 +2056,6 @@
   "app.utils.AdminPage.ProjectEdit.inputAndFeedback": "Beiträge und Feedback sammeln",
   "app.utils.AdminPage.ProjectEdit.shareInformation": "Informationen teilen",
   "app.utils.FormattedCurrency.credits": "Guthaben",
-  "app.utils.FormattedCurrency.multipleCredits": "{numberOfTokens} Guthaben",
-  "app.utils.FormattedCurrency.oneCredit": "1 Guthaben",
   "app.utils.FormattedCurrency.tokens": "Wertmarken",
   "app.utils.IdeaCards.mostDiscussed": "Meist diskutiert",
   "app.utils.IdeaCards.mostReacted": "Meiste Reaktionen",
