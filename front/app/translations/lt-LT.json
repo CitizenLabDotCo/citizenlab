@@ -2142,7 +2142,7 @@
   "app.utils.votingMethodUtils.budgetingSubmissionInstructionsMinBudget1": "Mažiausias reikalaujamas biudžetas yra {amount}.",
   "app.utils.votingMethodUtils.budgetingSubmissionInstructionsOnceYouAreDone": "Baigę spauskite \"Pateikti\", kad pateiktumėte savo biudžetą.",
   "app.utils.votingMethodUtils.budgetingSubmissionInstructionsPreferredOptions": "Pasirinkite pageidaujamas parinktis bakstelėdami \"Add\".",
-  "app.utils.votingMethodUtils.budgetingSubmissionInstructionsTotalBudget": "Iš viso turite <b>{maxBudget} {currency} , kuriuos galite paskirstyti {optionCount} parinktims</b>.",
+  "app.utils.votingMethodUtils.budgetingSubmissionInstructionsTotalBudget2": "Iš viso <b>{maxBudget} galite paskirstyti {optionCount} parinktims</b>.",
   "app.utils.votingMethodUtils.budgetingSubmittedInstructions2": "<b>Sveikiname, jūsų biudžetas pateiktas!</b> Toliau esančias parinktis galite patikrinti bet kuriuo metu arba pakeisti prieš tai. <b>{endDate}</b>.",
   "app.utils.votingMethodUtils.budgetingSubmittedInstructionsContinuous": "<b>Sveikiname, jūsų biudžetas pateiktas!</b> Bet kuriuo metu galite patikrinti toliau pateiktas parinktis arba jas keisti.",
   "app.utils.votingMethodUtils.budgetingSubmittedInstructionsNoEndDate": "<b>Sveikiname, jūsų biudžetas pateiktas!</b> Toliau bet kuriuo metu galite patikrinti savo galimybes.",
