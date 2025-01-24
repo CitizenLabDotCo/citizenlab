@@ -58,7 +58,7 @@ RUN curl -fsSL https://www.postgresql.org/media/keys/ACCC4CF8.asc | gpg --yes --
 
 WORKDIR /cl2_back
 
-RUN gem install bundler:2.4.20
+RUN gem install bundler:2.5.9
 
 COPY --from=dependency_files /app .
 
