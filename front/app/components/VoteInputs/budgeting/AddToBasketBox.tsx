@@ -10,17 +10,14 @@ import {
 } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
-import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useVoting from 'api/baskets_ideas/useVoting';
 import useIdeaById from 'api/ideas/useIdeaById';
 import { IPhaseData } from 'api/phases/types';
 
-import useLocale from 'hooks/useLocale';
-
 import { ScreenReaderOnly } from 'utils/a11y';
 import { FormattedMessage } from 'utils/cl-intl';
-import formatCurrency from 'utils/currency/formatCurrency';
 import FormattedBudget from 'utils/currency/FormattedBudget';
+import useFormatCurrency from 'utils/currency/useFormatCurrency';
 import { isNil } from 'utils/helperUtils';
 
 import AddToBasketButton from './AddToBasketButton';
@@ -65,25 +62,18 @@ interface Props {
 
 const AddToBasketBox = memo(({ ideaId, phase }: Props) => {
   const { data: idea } = useIdeaById(ideaId);
-  const { data: appConfig } = useAppConfiguration();
   const { numberOfVotesCast } = useVoting();
-  const locale = useLocale();
+  const formatCurrency = useFormatCurrency();
 
   const ideaBudget = idea?.data.attributes.budget;
   const actionDescriptor = idea?.data.attributes.action_descriptors.voting;
   const { voting_max_total } = phase.attributes;
 
-  if (
-    !actionDescriptor ||
-    !ideaBudget ||
-    isNil(voting_max_total) ||
-    !appConfig
-  ) {
+  if (!actionDescriptor || !ideaBudget || isNil(voting_max_total)) {
     return null;
   }
 
   const budgetLeft = voting_max_total - (numberOfVotesCast ?? 0);
-  const currency = appConfig.data.attributes.settings.core.currency;
 
   return (
     <IdeaPageContainer
@@ -100,12 +90,8 @@ const AddToBasketBox = memo(({ ideaId, phase }: Props) => {
               <FormattedMessage
                 {...messages.currencyLeft1}
                 values={{
-                  budgetLeft: formatCurrency(locale, currency, budgetLeft),
-                  totalBudget: formatCurrency(
-                    locale,
-                    currency,
-                    voting_max_total
-                  ),
+                  budgetLeft: formatCurrency(budgetLeft),
+                  totalBudget: formatCurrency(voting_max_total),
                 }}
               />
             </Text>

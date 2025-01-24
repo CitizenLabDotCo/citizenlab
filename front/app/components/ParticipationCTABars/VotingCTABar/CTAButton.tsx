@@ -16,12 +16,12 @@ import useVoting from 'api/baskets_ideas/useVoting';
 import { IPhaseData } from 'api/phases/types';
 import { IProjectData } from 'api/projects/types';
 
-import useLocale from 'hooks/useLocale';
 import useLocalize from 'hooks/useLocalize';
 
 import { ScreenReaderOnly } from 'utils/a11y';
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
+import useFormatCurrency from 'utils/currency/useFormatCurrency';
 import { scrollToElement } from 'utils/scroll';
 
 import messages from '../messages';
@@ -71,7 +71,7 @@ const CTAButton = ({ phase, project }: Props) => {
   const { mutate: updateBasket } = useUpdateBasket();
   const { numberOfVotesCast, processing: votingProcessing } = useVoting();
   const { data: appConfig } = useAppConfiguration();
-  const locale = useLocale();
+  const formatCurrency = useFormatCurrency();
   const theme = useTheme();
   const { formatMessage } = useIntl();
   const localize = useLocalize();
@@ -138,8 +138,7 @@ const CTAButton = ({ phase, project }: Props) => {
     phase,
     permissionsDisabledReason,
     numberOfVotesCast,
-    appConfig.data.attributes.settings.core.currency,
-    locale
+    formatCurrency
   );
 
   return (

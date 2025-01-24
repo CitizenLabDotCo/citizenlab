@@ -2,12 +2,10 @@ import React, { useMemo } from 'react';
 
 import { Text } from '@citizenlab/cl2-component-library';
 
-import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useBasket from 'api/baskets/useBasket';
 import useVoting from 'api/baskets_ideas/useVoting';
 import { getCurrentPhase, getLastPhase } from 'api/phases/utils';
 
-import useLocale from 'hooks/useLocale';
 import useLocalize from 'hooks/useLocalize';
 
 import ErrorToast from 'components/ErrorToast';
@@ -18,16 +16,16 @@ import {
 } from 'components/ParticipationCTABars/utils';
 
 import { useIntl } from 'utils/cl-intl';
+import useFormatCurrency from 'utils/currency/useFormatCurrency';
 
 import CTAButton from './CTAButton';
 import { getVotesCounter } from './utils';
 
 const VotingCTABar = ({ phases, project }: CTABarProps) => {
   const { numberOfVotesCast } = useVoting();
-  const { data: appConfig } = useAppConfiguration();
   const { formatMessage } = useIntl();
   const localize = useLocalize();
-  const locale = useLocale();
+  const formatCurrency = useFormatCurrency();
 
   const currentPhase = useMemo(() => {
     return getCurrentPhase(phases) || getLastPhase(phases);
@@ -42,19 +40,16 @@ const VotingCTABar = ({ phases, project }: CTABarProps) => {
   }
 
   const votingMethod = currentPhase?.attributes.voting_method;
-  if (!votingMethod || numberOfVotesCast === undefined || !appConfig) {
+  if (!votingMethod || numberOfVotesCast === undefined) {
     return null;
   }
-
-  const currency = appConfig.data.attributes.settings.core.currency;
 
   const votesCounter = getVotesCounter(
     formatMessage,
     localize,
     currentPhase,
     numberOfVotesCast,
-    currency,
-    locale
+    formatCurrency
   );
 
   const submittedAt = basket?.data.attributes.submitted_at || null;
