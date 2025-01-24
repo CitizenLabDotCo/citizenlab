@@ -48,7 +48,6 @@ export type GetStatusDescriptionProps = {
   appConfig?: IAppConfiguration;
   localize: Localize;
   formatMessage: FormatMessage;
-  locale: SupportedLocale;
   formatCurrency: UseFormatCurrencyReturn;
 };
 

@@ -18,7 +18,6 @@ import useUpdateBasket from 'api/baskets/useUpdateBasket';
 import { IPhaseData, VotingMethod } from 'api/phases/types';
 import { IProjectData } from 'api/projects/types';
 
-import useLocale from 'hooks/useLocale';
 import useLocalize from 'hooks/useLocalize';
 
 import Warning from 'components/UI/Warning';
@@ -49,7 +48,6 @@ const unsubmitBasket = async (
 
 const StatusModule = ({ votingMethod, phase, project }: StatusModuleProps) => {
   const { data: appConfig } = useAppConfiguration();
-  const locale = useLocale();
   const formatCurrency = useFormatCurrency();
 
   const theme = useTheme();
@@ -118,7 +116,6 @@ const StatusModule = ({ votingMethod, phase, project }: StatusModuleProps) => {
                 appConfig,
                 localize,
                 formatMessage,
-                locale,
                 formatCurrency,
               })}
           </Box>
