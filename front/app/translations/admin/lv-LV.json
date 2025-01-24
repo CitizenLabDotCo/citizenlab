@@ -908,7 +908,6 @@
   "app.containers.Admin.projects.all.PDFExportModal.selectIdeationPhase": "Lūdzu, izvēlieties ideju fāzi.",
   "app.containers.Admin.projects.all.askPersonalData": "Pieprasīt personas datus",
   "app.containers.Admin.projects.all.clickExportToPDFIdeaForm": "Jautājumi, kas pašlaik netiek atbalstīti: Attēli, birkas un failu augšupielāde.",
-  "app.containers.Admin.projects.all.clickExportToPDFSurvey3": "Jautājumi, kas pašlaik netiek atbalstīti: kartēšanas jautājumi (nolaižot piespraudi, uzzīmēt maršrutu un uzzīmēt apgabalu), attēlu izvēles jautājumi un failu augšupielādes jautājumi.",
   "app.containers.Admin.projects.all.components.archived": "Arhivēts",
   "app.containers.Admin.projects.all.components.draft": "Melnraksts",
   "app.containers.Admin.projects.all.components.manageButtonLabel": "Rediģēt",
