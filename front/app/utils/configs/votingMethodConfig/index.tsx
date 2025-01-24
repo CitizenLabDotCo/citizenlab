@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { MessageDescriptor } from 'react-intl';
-import { FormatMessage, SupportedLocale } from 'typings';
+import { FormatMessage } from 'typings';
 
 import { IAppConfiguration } from 'api/app_configuration/types';
 import { IPhaseData, VotingMethod } from 'api/phases/types';
