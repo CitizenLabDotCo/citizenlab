@@ -2053,8 +2053,6 @@
   "app.utils.AdminPage.ProjectEdit.inputAndFeedback": "Recolliu aportacions i comentaris",
   "app.utils.AdminPage.ProjectEdit.shareInformation": "Compartir informació",
   "app.utils.FormattedCurrency.credits": "crèdits",
-  "app.utils.FormattedCurrency.multipleCredits": "{numberOfTokens} crèdits",
-  "app.utils.FormattedCurrency.oneCredit": "1 crèdit",
   "app.utils.FormattedCurrency.tokens": "fitxes",
   "app.utils.IdeaCards.mostDiscussed": "El més discutit",
   "app.utils.IdeaCards.mostReacted": "La majoria de reaccions",

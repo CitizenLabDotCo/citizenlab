@@ -314,7 +314,7 @@ export type TCurrency = TCustomCurrency | TCountryCurrency;
 type TCustomCurrency =
   // token, credit
   'TOK' | 'CRE';
-type TCountryCurrency =
+export type TCountryCurrency =
   // currencies associated with countries, e.g. EUR and USD
   // list is based on the currencies.rb file
   | 'AED'

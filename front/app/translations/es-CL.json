@@ -2053,8 +2053,6 @@
   "app.utils.AdminPage.ProjectEdit.inputAndFeedback": "Recopilar aportes y retroalimentaciones",
   "app.utils.AdminPage.ProjectEdit.shareInformation": "Comparte información",
   "app.utils.FormattedCurrency.credits": "créditos",
-  "app.utils.FormattedCurrency.multipleCredits": "{numberOfTokens} créditos",
-  "app.utils.FormattedCurrency.oneCredit": "1 crédito",
   "app.utils.FormattedCurrency.tokens": "fichas",
   "app.utils.IdeaCards.mostDiscussed": "Lo más discutido",
   "app.utils.IdeaCards.mostReacted": "Con más reacciones",

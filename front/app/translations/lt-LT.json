@@ -2053,8 +2053,6 @@
   "app.utils.AdminPage.ProjectEdit.inputAndFeedback": "Rinkti informaciją ir atsiliepimus",
   "app.utils.AdminPage.ProjectEdit.shareInformation": "Dalytis informacija",
   "app.utils.FormattedCurrency.credits": "kreditai",
-  "app.utils.FormattedCurrency.multipleCredits": "{numberOfTokens} kreditai",
-  "app.utils.FormattedCurrency.oneCredit": "1 kreditas",
   "app.utils.FormattedCurrency.tokens": "žetonai",
   "app.utils.IdeaCards.mostDiscussed": "Daugiausia diskusijų",
   "app.utils.IdeaCards.mostReacted": "Dauguma reakcijų",

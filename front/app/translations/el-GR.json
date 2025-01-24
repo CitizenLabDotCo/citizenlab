@@ -2053,8 +2053,6 @@
   "app.utils.AdminPage.ProjectEdit.inputAndFeedback": "Συλλογή εισηγήσεων και ανατροφοδότησης",
   "app.utils.AdminPage.ProjectEdit.shareInformation": "Κοινοποιείστε πληροφορίες",
   "app.utils.FormattedCurrency.credits": "μονάδες",
-  "app.utils.FormattedCurrency.multipleCredits": "{numberOfTokens} μονάδες",
-  "app.utils.FormattedCurrency.oneCredit": "1 μονάδα",
   "app.utils.FormattedCurrency.tokens": "διακριτικά",
   "app.utils.IdeaCards.mostDiscussed": "Τα πιο συζητημένα",
   "app.utils.IdeaCards.mostReacted": "Οι περισσότερες αντιδράσεις",

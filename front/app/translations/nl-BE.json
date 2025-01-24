@@ -2053,8 +2053,6 @@
   "app.utils.AdminPage.ProjectEdit.inputAndFeedback": "Input en/of feedback verzamelen",
   "app.utils.AdminPage.ProjectEdit.shareInformation": "Informatie delen",
   "app.utils.FormattedCurrency.credits": "credits",
-  "app.utils.FormattedCurrency.multipleCredits": "{numberOfTokens} credits",
-  "app.utils.FormattedCurrency.oneCredit": "1 krediet",
   "app.utils.FormattedCurrency.tokens": "penningen",
   "app.utils.IdeaCards.mostDiscussed": "Meest besproken",
   "app.utils.IdeaCards.mostReacted": "De meeste reacties",
