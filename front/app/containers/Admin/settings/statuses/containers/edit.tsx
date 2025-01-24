@@ -55,7 +55,7 @@ const Edit = ({ variant }: { variant: IdeaStatusParticipationMethod }) => {
     const { color, title_multiloc, description_multiloc, code, locked } =
       ideaStatus.data.attributes;
     return (
-      <>
+      <div data-testid="e2e-edit-status-page">
         <StyledGoBackButton onClick={goBack} />
         <Section>
           <StyledSectionTitle>
@@ -73,7 +73,7 @@ const Edit = ({ variant }: { variant: IdeaStatusParticipationMethod }) => {
             variant={variant}
           />
         </Section>
-      </>
+      </div>
     );
   }
 

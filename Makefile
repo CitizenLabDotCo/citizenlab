@@ -8,7 +8,6 @@
 # 1. replacing $$ with $
 # 2. replacing variables in ${} with some values, so `-u ${CIRCLE_CI_TOKEN}:` becomes `-u XXX:`
 
-# in a makefile, "release_pr" is called a target
 release_pr:
 	@./scripts/create_release_pr.sh
 

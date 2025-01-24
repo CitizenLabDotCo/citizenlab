@@ -142,6 +142,10 @@ FactoryBot.define do
     enabled { true }
   end
 
+  factory :survey_submitted_campaign, class: EmailCampaigns::Campaigns::SurveySubmitted do
+    enabled { true }
+  end
+
   factory :threshold_reached_for_admin_campaign, class: EmailCampaigns::Campaigns::ThresholdReachedForAdmin do
     enabled { true }
   end
