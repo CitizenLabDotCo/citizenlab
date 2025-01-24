@@ -19,17 +19,13 @@ import { FormattedMessage } from 'utils/cl-intl';
 import { isPageRuleValid } from 'utils/yup/validateLogic';
 
 import messages from '../../messages';
+import { PageListType } from './index';
 
 type RuleInputProps = {
   name: string;
   fieldId: string;
   validationError?: string;
-  pages:
-    | {
-        value: string | undefined;
-        label: string;
-      }[]
-    | undefined;
+  pages: PageListType;
 };
 
 export const PageRuleInput = ({

@@ -95,6 +95,19 @@ const FormBuilderSettings = ({
     'page',
   ].includes(fieldType);
 
+  // Which page is the current question on?
+  const getCurrentPageId = (questionId: string) => {
+    if (fieldType === 'page') return field.id;
+
+    let pageId = '';
+    let currentPageId: string | null = null;
+    formCustomFields?.forEach((field) => {
+      if (field.input_type === 'page') pageId = field.id;
+      if (field.id === questionId) currentPageId = pageId;
+    });
+    return currentPageId;
+  };
+
   return (
     <Box
       right="0"
@@ -176,6 +189,7 @@ const FormBuilderSettings = ({
         <LogicSettings
           pageOptions={getPageList()}
           field={field}
+          getCurrentPageId={getCurrentPageId}
           key={field.index}
           builderConfig={builderConfig}
         />
