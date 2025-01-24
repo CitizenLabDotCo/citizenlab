@@ -83,8 +83,8 @@ export default defineMessages({
     defaultMessage:
       '{numberOfVotes} {numberOfVotes, plural, =0 {{votesTerm}} one {{voteTerm}} other {{votesTerm}}}',
   },
-  budgetingSubmissionInstructionsTotalBudget1: {
-    id: 'app.utils.votingMethodUtils.budgetingSubmissionInstructionsTotalBudget1',
+  budgetingSubmissionInstructionsTotalBudget2: {
+    id: 'app.utils.votingMethodUtils.budgetingSubmissionInstructionsTotalBudget2',
     defaultMessage:
       'You have a total of <b>{maxBudget} to distribute between {optionCount} options</b>.',
   },

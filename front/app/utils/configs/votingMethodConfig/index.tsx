@@ -128,7 +128,7 @@ const budgetingConfig: VotingMethodConfig = {
                 optionCount,
                 maxBudget: formatCurrency(maxBudget),
               }}
-              {...messages.budgetingSubmissionInstructionsTotalBudget1}
+              {...messages.budgetingSubmissionInstructionsTotalBudget2}
             />
           )}
           <ul>
