@@ -908,7 +908,7 @@
   "app.containers.Admin.projects.all.PDFExportModal.selectIdeationPhase": "Wielt w.e.g. eng Iddiphase.",
   "app.containers.Admin.projects.all.askPersonalData": "Frot perséinlech Donnéeën",
   "app.containers.Admin.projects.all.clickExportToPDFIdeaForm": "Froen déi momentan net ënnerstëtzt ginn: Biller, Tags a Datei Eroplueden.",
-  "app.containers.Admin.projects.all.clickExportToPDFSurvey3": "Questions not currently supported: Mapping questions (drop pin, draw route and draw area), image choice questions and file upload questions.",
+  "app.containers.Admin.projects.all.clickExportToPDFSurvey3": "Froen déi momentan net ënnerstëtzt ginn: Kartéierungsfroen (drop Pin, Zeechnen Route an Zeechnen Beräich), Bildwahl Froen a Fichier Eroplueden Froen.",
   "app.containers.Admin.projects.all.components.archived": "Archived",
   "app.containers.Admin.projects.all.components.draft": "Draft",
   "app.containers.Admin.projects.all.components.manageButtonLabel": "Edit",
