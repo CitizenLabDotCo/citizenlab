@@ -2057,6 +2057,8 @@
   "app.utils.AdminPage.ProjectEdit.shareInformation": "Del information",
   "app.utils.FormattedCurrency.credits": "kreditter",
   "app.utils.FormattedCurrency.tokens": "tokens",
+  "app.utils.FormattedCurrency.xCredits": "{numberOfCredits, plural, =0 {# credits} one {# credit} other {# credits}}",
+  "app.utils.FormattedCurrency.xTokens": "{numberOfTokens, plural, =0 {# tokens} one {# token} other {# tokens}}",
   "app.utils.IdeaCards.mostDiscussed": "Mest diskuteret",
   "app.utils.IdeaCards.mostReacted": "Flest stemmer",
   "app.utils.IdeaCards.newest": "Nyeste",
