@@ -908,7 +908,7 @@
   "app.containers.Admin.projects.all.PDFExportModal.selectIdeationPhase": "Kérjük, válasszon ötletelési fázist.",
   "app.containers.Admin.projects.all.askPersonalData": "Kérjen személyes adatokat",
   "app.containers.Admin.projects.all.clickExportToPDFIdeaForm": "Jelenleg nem támogatott kérdések: képek, címkék és fájlfeltöltés.",
-  "app.containers.Admin.projects.all.clickExportToPDFSurvey3": "Questions not currently supported: Mapping questions (drop pin, draw route and draw area), image choice questions and file upload questions.",
+  "app.containers.Admin.projects.all.clickExportToPDFSurvey3": "Jelenleg nem támogatott kérdések: feltérképezési kérdések (leugró gombostű, útvonal rajzolása és rajzolási terület), képválasztási kérdések és fájlfeltöltési kérdések.",
   "app.containers.Admin.projects.all.components.archived": "Archived",
   "app.containers.Admin.projects.all.components.draft": "Draft",
   "app.containers.Admin.projects.all.components.manageButtonLabel": "Edit",
