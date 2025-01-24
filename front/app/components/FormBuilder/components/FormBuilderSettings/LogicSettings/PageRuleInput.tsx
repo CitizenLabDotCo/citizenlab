@@ -12,10 +12,13 @@ import { Controller, useFormContext } from 'react-hook-form';
 
 import { IFlatCustomField, LogicType } from 'api/custom_fields/types';
 
+import { getTitleFromPageId } from 'components/FormBuilder/components/FormFields/FormField/Logic/utils';
+import { getFieldNumbers } from 'components/FormBuilder/components/utils';
+import { findNextPageAfterCurrentPage } from 'components/FormBuilder/utils';
 import Button from 'components/UI/ButtonWithLink';
 import Error from 'components/UI/Error';
 
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import { isPageRuleValid } from 'utils/yup/validateLogic';
 
 import messages from '../../messages';
@@ -38,6 +41,7 @@ export const PageRuleInput = ({
   fieldId,
   validationError,
 }: RuleInputProps) => {
+  const { formatMessage } = useIntl();
   const { setValue, watch, trigger, control } = useFormContext();
   const logic = watch(name) as LogicType;
   const fields: IFlatCustomField[] = watch('customFields');
@@ -75,6 +79,14 @@ export const PageRuleInput = ({
       trigger();
     }
   };
+
+  // Get the default next page when no rule is set
+  const defaultNextPage = getTitleFromPageId(
+    findNextPageAfterCurrentPage(fields, fieldId),
+    formatMessage(messages.formEnd),
+    formatMessage(messages.page),
+    getFieldNumbers(fields)
+  );
 
   return (
     <>
@@ -151,8 +163,9 @@ export const PageRuleInput = ({
                       flexShrink={0}
                       flexWrap="wrap"
                     >
-                      <Text color="coolGrey600" fontSize="s">
-                        <FormattedMessage {...messages.pageRuleLabel} />
+                      <Text color="coolGrey600" fontSize="s" fontStyle="italic">
+                        <FormattedMessage {...messages.pageRuleLabel} />{' '}
+                        {defaultNextPage}
                       </Text>
                     </Box>
                     <Box
@@ -174,7 +187,7 @@ export const PageRuleInput = ({
                         <Icon
                           width="24px"
                           fill={`${colors.coolGrey600}`}
-                          name="plus-circle"
+                          name="edit"
                         />
                       </Button>
                     </Box>

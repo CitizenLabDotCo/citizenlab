@@ -222,13 +222,17 @@ export default defineMessages({
     id: 'app.components.formBuilder.ruleForAnswerLabel',
     defaultMessage: 'If answer is:',
   },
+  ruleForAnswerLabelMultiselect: {
+    id: 'app.components.formBuilder.ruleForAnswerLabelMultiselect',
+    defaultMessage: 'If answers include:',
+  },
   pageRuleLabel: {
     id: 'app.components.formBuilder.pageRuleLabel',
     defaultMessage: 'Next page is:',
   },
-  nextPageLabel: {
-    id: 'app.components.formBuilder.nextPageLabel',
-    defaultMessage: 'Next:',
+  continuePageLabel: {
+    id: 'app.components.formBuilder.continuePageLabel',
+    defaultMessage: 'Continues to',
   },
   supportArticleLinkText: {
     id: 'app.components.formBuilder.supportArticleLinkText',
@@ -297,10 +301,5 @@ export default defineMessages({
   logicPanelNoAnswer: {
     id: 'app.components.formBuilder.logicPanelNoAnswer',
     defaultMessage: 'If not answered',
-  },
-  pageRuleTooltip: {
-    id: 'app.components.formBuilder.pageRuleTooltip',
-    defaultMessage:
-      'This is the default next page. You can change this in the logic tab of the page configuration.',
   },
 });

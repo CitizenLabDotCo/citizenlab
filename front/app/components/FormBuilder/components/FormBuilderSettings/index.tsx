@@ -10,6 +10,7 @@ import {
 import { useFormContext } from 'react-hook-form';
 
 import {
+  ICustomFieldSettingsTab,
   IFlatCustomField,
   IFlatCustomFieldWithIndex,
 } from 'api/custom_fields/types';
@@ -48,7 +49,9 @@ const FormBuilderSettings = ({
   formHasSubmissions,
 }: Props) => {
   const locales = useAppConfigurationLocales();
-  const [currentTab, setCurrentTab] = useState<'content' | 'logic'>('content');
+  const [currentTab, setCurrentTab] = useState<ICustomFieldSettingsTab>(
+    field.defaultTab || 'content'
+  );
   const { formatMessage } = useIntl();
   const { watch } = useFormContext();
   const formCustomFields: IFlatCustomField[] = watch('customFields');

@@ -120,8 +120,11 @@ export type IFlatCustomField = Omit<
     map_config?: { data: IRelationship };
   };
 
+export type ICustomFieldSettingsTab = 'content' | 'logic';
+
 export type IFlatCustomFieldWithIndex = IFlatCustomField & {
   index: number;
+  defaultTab?: ICustomFieldSettingsTab;
 };
 
 type Optional<T, K extends keyof T> = Pick<Partial<T>, K> & Omit<T, K>;
