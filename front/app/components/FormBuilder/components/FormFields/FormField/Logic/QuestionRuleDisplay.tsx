@@ -79,7 +79,7 @@ export const QuestionRuleDisplay = ({
         {!isRuleValid && (
           <Box my="auto" ml="12px" display="inline">
             <Badge
-              style={{ padding: '2px 6px 2px 6px' }}
+              style={{ padding: '2px 6px' }}
               className="inverse"
               color={colors.error}
             >
