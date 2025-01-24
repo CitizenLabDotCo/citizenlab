@@ -41,6 +41,7 @@ const StatusFilterBox = ({
       prescreeningIdeationEnabled;
   const { data: ideaStatuses } = useIdeaStatuses({
     queryParams: {
+      // ideation is the fallback when we have no participationMethod (and are on the All inputs page as such).
       participation_method: participationMethod || 'ideation',
       ...(!showScreeningStatus && { exclude_codes: ['prescreening'] }),
     },
