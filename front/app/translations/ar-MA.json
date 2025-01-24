@@ -2056,8 +2056,6 @@
   "app.utils.AdminPage.ProjectEdit.inputAndFeedback": "تجميع المدخلات والملاحظات",
   "app.utils.AdminPage.ProjectEdit.shareInformation": "إتاحة المعلومات للمشاركة",
   "app.utils.FormattedCurrency.credits": "رمز/رموز ائتمان",
-  "app.utils.FormattedCurrency.multipleCredits": "{numberOfTokens} رمز/رموز ائتمان",
-  "app.utils.FormattedCurrency.oneCredit": "رمز ائتمان واحد",
   "app.utils.FormattedCurrency.tokens": "رمز/رموز مميزة",
   "app.utils.IdeaCards.mostDiscussed": "الأكثر مناقشة",
   "app.utils.IdeaCards.mostReacted": "معظم ردود الفعل",

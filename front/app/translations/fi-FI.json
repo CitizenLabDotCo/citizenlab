@@ -2056,8 +2056,6 @@
   "app.utils.AdminPage.ProjectEdit.inputAndFeedback": "Kerää palautetta ja palautetta",
   "app.utils.AdminPage.ProjectEdit.shareInformation": "Jakaa tietoa",
   "app.utils.FormattedCurrency.credits": "krediittejä",
-  "app.utils.FormattedCurrency.multipleCredits": "{numberOfTokens} krediittiä",
-  "app.utils.FormattedCurrency.oneCredit": "1 luotto",
   "app.utils.FormattedCurrency.tokens": "rahakkeita",
   "app.utils.IdeaCards.mostDiscussed": "Eniten keskusteltu",
   "app.utils.IdeaCards.mostReacted": "Suurin osa reaktioista",
