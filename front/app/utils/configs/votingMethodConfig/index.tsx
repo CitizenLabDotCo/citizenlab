@@ -134,7 +134,6 @@ const budgetingConfig: VotingMethodConfig = {
                 {...messages.budgetingSubmissionInstructionsPreferredOptions}
               />
             </li>
-            {/* TODO */}
             {typeof minBudget === 'number' && minBudget > 0 ? (
               <li>
                 <FormattedMessage
