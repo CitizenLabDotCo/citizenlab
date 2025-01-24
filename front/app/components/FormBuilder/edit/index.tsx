@@ -152,8 +152,8 @@ const FormEdit = ({
     reset,
   } = methods;
 
-  // ToDo: Would be better to find another way to achieve, but I wasn't able to find a solution
-  // which didn't result in the UI refreshing on every save.
+  // ToDo: Would be better to find another way to achieve this, but I wasn't able to find a solution
+  // which didn't result in the form builder UI refreshing on every save.
   useEffect(() => {
     // Reset the form when the persisted default values change
     // This is only run twice:

@@ -5,8 +5,10 @@ import { IOptionsType } from 'api/custom_fields/types';
 import { generateTempId } from 'utils/helperUtils';
 
 import messages from './messages';
+
 export type ListType = 'statement' | 'default';
 
+export const inputTypesNoOther = ['ranking', 'matrix_linear_scale'];
 interface AllowMultilinePasteParams {
   options: IOptionsType[];
   index: number;

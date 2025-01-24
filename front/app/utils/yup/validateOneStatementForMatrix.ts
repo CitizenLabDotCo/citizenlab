@@ -18,14 +18,7 @@ const validateOneStatementForMatrix = (
           .test(
             'one-statement',
             noStatementGenericMessage,
-            (
-              matrix_statements: IMatrixStatementsType[],
-              testContext: TestContext
-            ) => {
-              if (testContext.parent.key === 'topic_ids') {
-                return true;
-              }
-
+            (matrix_statements: IMatrixStatementsType[]) => {
               return matrix_statements.some(
                 (statement: IMatrixStatementsType) => {
                   return Object.values(statement.title_multiloc).some(

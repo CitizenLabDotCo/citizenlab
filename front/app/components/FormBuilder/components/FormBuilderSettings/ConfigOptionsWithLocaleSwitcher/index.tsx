@@ -41,6 +41,7 @@ import {
   ListType,
   allowMultilinePaste,
   updateFormOnMultlinePaste,
+  inputTypesNoOther,
 } from './utils';
 
 interface Props {
@@ -85,9 +86,6 @@ const ConfigSelectWithLocaleSwitcher = ({
   const customFieldOptionImages = useCustomFieldOptionImages(imageIds);
   const prevImageQueries = usePrevious(customFieldOptionImages);
   const [optionImages, setOptionImages] = useState<OptionImageType>();
-
-  const showOtherOptionToggle =
-    inputType !== 'ranking' && inputType !== 'matrix_linear_scale';
 
   useEffect(() => {
     if (
@@ -389,7 +387,7 @@ const ConfigSelectWithLocaleSwitcher = ({
                   />
                 )}
 
-                {showOtherOptionToggle && (
+                {!inputTypesNoOther.includes(inputType) && (
                   <Box mt="24px" data-cy="e2e-other-option-toggle">
                     <Toggle
                       label={
