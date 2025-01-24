@@ -2142,7 +2142,7 @@
   "app.utils.votingMethodUtils.budgetingSubmissionInstructionsMinBudget1": "crwdns4061557:0{amount}crwdne4061557:0",
   "app.utils.votingMethodUtils.budgetingSubmissionInstructionsOnceYouAreDone": "crwdns4043835:0crwdne4043835:0",
   "app.utils.votingMethodUtils.budgetingSubmissionInstructionsPreferredOptions": "crwdns4043837:0crwdne4043837:0",
-  "app.utils.votingMethodUtils.budgetingSubmissionInstructionsTotalBudget": "crwdns4043839:0{maxBudget}crwdnd4043839:0{currency}crwdnd4043839:0{optionCount}crwdne4043839:0",
+  "app.utils.votingMethodUtils.budgetingSubmissionInstructionsTotalBudget2": "crwdns4073389:0{maxBudget}crwdnd4073389:0{optionCount}crwdne4073389:0",
   "app.utils.votingMethodUtils.budgetingSubmittedInstructions2": "crwdns4043841:0{endDate}crwdne4043841:0",
   "app.utils.votingMethodUtils.budgetingSubmittedInstructionsContinuous": "crwdns4043843:0crwdne4043843:0",
   "app.utils.votingMethodUtils.budgetingSubmittedInstructionsNoEndDate": "crwdns4043845:0crwdne4043845:0",
