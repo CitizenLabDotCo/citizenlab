@@ -3,14 +3,12 @@
   <mj-column>
     <mj-text>
       <p><%= format_message('your_input_submitted', values: { projectName: localize_for_recipient(event.project_title_multiloc) }) %></p>
-      <p><%= format_message('if_you_would_like_to_review') %></p>
       <p><%= format_message('your_submission_has_id') %></p>
       <p style="font-weight: bold;"><%= event.idea_id %></p>
       <p><%= format_message('you_can_use_this_id') %></p>
     </mj-text>
   </mj-column>
 </mj-section>
-
-<% if has_password %>
+<% if event.has_password %>
   <%= render partial: 'application/cta_button', locals: { href: event.profile_url, message: format_message("download_responses") } %>
 <% end %>

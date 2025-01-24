@@ -10,9 +10,10 @@ module EmailCampaigns
       command = {
         recipient: recipient_user,
         event_payload: {
-          idea_id: project.ideas.first.id,
+          idea_id: "1234",
           project_title_multiloc: project.title_multiloc,
-          profile_url: "#{Frontend::UrlService.new.home_url}/profile/#{recipient_user.slug}/surveys"
+          profile_url: "#{Frontend::UrlService.new.home_url}/profile/#{recipient_user.slug}/surveys",
+          has_password: true
         }
       }
 
