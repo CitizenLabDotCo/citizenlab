@@ -37,13 +37,8 @@ const StledTh = styled.th`
   min-width: 84px;
 
   p {
-    word-break: break-word !important;
+    word-break: break-word;
   }
-`;
-
-const StyledRadio = styled(Radio)`
-  margin-right: auto;
-  margin-left: auto;
 `;
 
 const MatrixControl = ({
@@ -60,30 +55,28 @@ const MatrixControl = ({
   const { formatMessage } = useIntl();
   const [didBlur, setDidBlur] = useState(false);
   const statements = uischema.options?.statements;
-  const tableDivRef = useRef<HTMLDivElement>(null);
+  const tableDivRef = useRef<HTMLDivElement>(null); // Used to apple border styling on scroll
 
   // Determine maximum number of columns in the table
-  const maxColumns = schema.properties?.[statements[0].key].maximum;
-  const maximum = maxColumns || 7; // Seven since the maximum number of options is 7
+  const maxColumns = schema.properties?.[statements[0].key].maximum || 7; // Default 7 which is the maximum number of columns
 
   // Put all linear scale labels from the UI Schema in an array so we can easily use them
-  const columnsFromSchema = Array.from({ length: maximum }, (_, index) => {
+  const columnsFromSchema = Array.from({ length: maxColumns }, (_, index) => {
+    // Use number value (index + 1) if no text label is set
     return uischema.options?.[`linear_scale_label${index + 1}`] || index + 1;
   }).filter((label) => label !== '');
 
-  // Add scroll event to check whether the table should have a dashed border (indicating it can be scrolled)
+  // Add scroll event to check whether the table should have a dashed
+  // border which indicates it can be horizontally scrolled
   useEffect(() => {
     const checkApplyBorder = () => {
       if (tableDivRef.current) {
-        // Check if the table can be scrolled further to the right
         if (
-          tableDivRef.current.scrollLeft + 4 >=
+          tableDivRef.current.scrollLeft + 4 >= // 4 is used as a small offset to make sure it "catches" correctly
           tableDivRef.current.scrollWidth - tableDivRef.current.clientWidth
         ) {
-          // No - remove the dashed border
           tableDivRef.current.style.borderRight = 'none';
         } else {
-          // Yes - add the dashed border
           tableDivRef.current.style.borderRight = `1px dashed ${theme.colors.tenantPrimaryLighten75}`;
         }
       }
@@ -107,18 +100,18 @@ const MatrixControl = ({
         });
       }
       // If we don't have a label but we do have a maximum, read out the current value & maximum label
-      else if (uischema.options?.[`linear_scale_label${maximum}`]) {
+      else if (uischema.options?.[`linear_scale_label${maxColumns}`]) {
         return formatMessage(messages.valueOutOfTotalWithMaxExplanation, {
           value,
           total,
-          maxValue: maximum,
-          maxLabel: uischema.options[`linear_scale_label${maximum}`],
+          maxValue: maxColumns,
+          maxLabel: uischema.options[`linear_scale_label${maxColumns}`],
         });
       }
       // Otherwise, just read out the value and the maximum value
       return formatMessage(messages.valueOutOfTotal, { value, total });
     },
-    [maximum, uischema.options, formatMessage]
+    [maxColumns, uischema.options, formatMessage]
   );
 
   return (
@@ -132,7 +125,7 @@ const MatrixControl = ({
         id={`matrix-question-label-${id}`}
       />
 
-      <Box position="relative" width="100%" overflowX="auto" ref={tableDivRef}>
+      <Box overflowX="auto" ref={tableDivRef}>
         <table
           width={'100%'}
           style={{ borderCollapse: 'separate', borderSpacing: '0px 8px' }}
@@ -163,7 +156,7 @@ const MatrixControl = ({
                       max-width="100px"
                     >
                       <Text m="4px" color="tenantPrimary">
-                        {statement?.label || index + 1}
+                        {statement?.label}
                       </Text>
                     </Box>
                   </StickyTd>
@@ -175,7 +168,8 @@ const MatrixControl = ({
                           display="flex"
                           justifyContent="center"
                         >
-                          <StyledRadio
+                          <Radio
+                            mx="auto"
                             onKeyDown={(e) => {
                               if (e.key === 'Enter') {
                                 e.preventDefault();
@@ -184,42 +178,11 @@ const MatrixControl = ({
                                   [statement.key]: columnIndex + 1,
                                 });
                               }
-
-                              //   if (e.key === 'Tab') {
-                              //     e.preventDefault();
-                              //     // Move to next group of radio buttons
-                              //     document
-                              //       .getElementById(
-                              //         `${id}-${index + 1}-${0}-radio`
-                              //       )
-                              //       ?.focus();
-                              //   }
-                              //   if (e.key === 'ArrowLeft') {
-                              //     e.preventDefault();
-                              //     e.stopPropagation();
-                              //     document
-                              //       .getElementById(
-                              //         `${id}-${index}-${columnIndex - 1}-radio`
-                              //       )
-                              //       ?.focus();
-                              //   }
-                              //   if (e.key === 'ArrowRight') {
-                              //     console.log(
-                              //         'right!!'
-                              //     )
-                              //     e.preventDefault();
-                              //     e.stopPropagation();
-                              //     document
-                              //       .getElementById(
-                              //         `${id}-${index}-${columnIndex + 1}-radio`
-                              //       )
-                              //       ?.focus();
-                              //   }
                             }}
                             currentValue={data?.[statement.key] - 1}
                             value={columnIndex}
                             label={
-                              <ScreenReaderOnly tabIndex={-1}>
+                              <ScreenReaderOnly>
                                 {getAriaValueText(
                                   columnIndex + 1,
                                   columnsFromSchema.length
@@ -231,6 +194,7 @@ const MatrixControl = ({
                             id={`${id}-${index}-${columnIndex}-radio`}
                             onChange={(value) => {
                               if (data && data?.length === statements?.length) {
+                                // Don't blue before the user has had a chance to fill in all statements
                                 setDidBlur(true);
                               }
                               handleChange(path, {
@@ -284,7 +248,6 @@ export default withJsonFormsControlProps(MatrixControl);
 
 export const matrixControlTester = (uiSchema: UISchemaElement) => {
   if (uiSchema.options?.input_type === 'matrix_linear_scale') {
-    // ToDo: Change this to 'matrix' when it's implemented
     return 1200;
   }
   return -1;

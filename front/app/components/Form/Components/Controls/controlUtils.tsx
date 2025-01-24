@@ -56,15 +56,3 @@ export const getOptions = (
     );
   }
 };
-
-// Given a schema and field type, returns the matrix statements
-export const getMatrixStatements = (schema: JsonSchema) => {
-  return (
-    (!Array.isArray(schema.items) &&
-      schema.items?.oneOf?.map((statement) => ({
-        value: statement.const as string,
-        label: (statement.title || statement.const) as string,
-      }))) ||
-    null
-  );
-};
