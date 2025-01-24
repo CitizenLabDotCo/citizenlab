@@ -18,7 +18,6 @@ import useUpdateBasket from 'api/baskets/useUpdateBasket';
 import { IPhaseData, VotingMethod } from 'api/phases/types';
 import { IProjectData } from 'api/projects/types';
 
-import useLocale from 'hooks/useLocale';
 import useLocalize from 'hooks/useLocalize';
 
 import Warning from 'components/UI/Warning';
