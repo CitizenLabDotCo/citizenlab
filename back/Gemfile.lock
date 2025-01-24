@@ -508,7 +508,7 @@ GEM
       msgpack (~> 1.2)
     browser (6.1.0)
     builder (3.3.0)
-    bullet (7.1.6)
+    bullet (8.0.0)
       activesupport (>= 3.0.0)
       uniform_notifier (~> 1.11)
     bundler-audit (0.9.1)
@@ -1298,7 +1298,7 @@ DEPENDENCIES
   bootsnap (~> 1)
   browser (~> 6.1)
   bulk_import_ideas!
-  bullet
+  bullet (~> 8.0.0)
   bundler-audit
   bunny (>= 2.7.2)
   byebug
