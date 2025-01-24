@@ -244,7 +244,7 @@
   "app.components.Pagination.back": "Vorherige Seite",
   "app.components.Pagination.next": "Nächste Seite",
   "app.components.ParticipationCTABars.VotingCTABar.budgetExceedsLimit": "Sie haben {votesCast} verwendet, was das Limit von {votesLimit} überschreitet. Bitte entfernen Sie einige Beiträge aus Ihrem Warenkorb und versuchen Sie es erneut.",
-  "app.components.ParticipationCTABars.VotingCTABar.currencyLeft1": "noch {budgetLeft} / {totalBudget}  übrig",
+  "app.components.ParticipationCTABars.VotingCTABar.currencyLeft1": "noch {budgetLeft} / {totalBudget} übrig",
   "app.components.ParticipationCTABars.VotingCTABar.minBudgetNotReached1": "Sie müssen mindestens {votesMinimum} ausgeben, bevor Sie Ihr Budget abschicken können.",
   "app.components.ParticipationCTABars.VotingCTABar.noVotesCast2": "Sie müssen abstimmen, bevor Sie Ihre {votesTerm} einreichen können.",
   "app.components.ParticipationCTABars.VotingCTABar.nothingInBasket": "Sie müssen etwas zu Ihrem Warenkorb hinzufügen, bevor Sie ihn abschicken können.",
