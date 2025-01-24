@@ -17,6 +17,7 @@ import AssignSingleVoteBox from 'components/VoteInputs/single/AssignSingleVoteBo
 import AssignSingleVoteButton from 'components/VoteInputs/single/AssignSingleVoteButton';
 
 import { FormattedMessage } from 'utils/cl-intl';
+import { UseFormatCurrencyReturn } from 'utils/currency/useFormatCurrency';
 import { getLocalisedDateString } from 'utils/dateUtils';
 
 import messages from './messages';
@@ -48,6 +49,7 @@ export type GetStatusDescriptionProps = {
   localize: Localize;
   formatMessage: FormatMessage;
   locale: SupportedLocale;
+  formatCurrency: UseFormatCurrencyReturn;
 };
 
 type IdeaCardVoteInputProps = {
@@ -108,7 +110,7 @@ const budgetingConfig: VotingMethodConfig = {
     phase,
     submissionState,
     appConfig,
-    locale,
+    formatCurrency,
   }: GetStatusDescriptionProps) => {
     const currency =
       appConfig?.data.attributes.settings.core.currency.toString();
@@ -129,11 +131,7 @@ const budgetingConfig: VotingMethodConfig = {
                   <strong style={{ fontWeight: 'bold' }}>{chunks}</strong>
                 ),
                 optionCount,
-                maxBudget: new Intl.NumberFormat(locale, {
-                  style: 'currency',
-                  currency,
-                  maximumFractionDigits: 0,
-                }).format(maxBudget),
+                maxBudget: formatCurrency(maxBudget),
               }}
               {...messages.budgetingSubmissionInstructionsTotalBudget1}
             />

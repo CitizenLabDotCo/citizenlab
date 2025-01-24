@@ -25,6 +25,7 @@ import Warning from 'components/UI/Warning';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import { getVotingMethodConfig } from 'utils/configs/votingMethodConfig';
+import useFormatCurrency from 'utils/currency/useFormatCurrency';
 import { getLocalisedDateString, pastPresentOrFuture } from 'utils/dateUtils';
 
 import ConfettiSvg from './ConfettiSvg';
@@ -49,6 +50,7 @@ const unsubmitBasket = async (
 const StatusModule = ({ votingMethod, phase, project }: StatusModuleProps) => {
   const { data: appConfig } = useAppConfiguration();
   const locale = useLocale();
+  const formatCurrency = useFormatCurrency();
 
   const theme = useTheme();
   const isSmallerThanPhone = useBreakpoint('phone');
@@ -117,6 +119,7 @@ const StatusModule = ({ votingMethod, phase, project }: StatusModuleProps) => {
                 localize,
                 formatMessage,
                 locale,
+                formatCurrency,
               })}
           </Box>
           {showDate && phase.attributes.end_at && (
