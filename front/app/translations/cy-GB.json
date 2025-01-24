@@ -2142,7 +2142,7 @@
   "app.utils.votingMethodUtils.budgetingSubmissionInstructionsMinBudget1": "Isafswm y gyllideb ofynnol yw {amount}.",
   "app.utils.votingMethodUtils.budgetingSubmissionInstructionsOnceYouAreDone": "Ar ôl i chi orffen, cliciwch \"Cyflwyno\" i gyflwyno'ch cyllideb.",
   "app.utils.votingMethodUtils.budgetingSubmissionInstructionsPreferredOptions": "Dewiswch eich hoff opsiynau trwy dapio ar \"Ychwanegu\".",
-  "app.utils.votingMethodUtils.budgetingSubmissionInstructionsTotalBudget": "Mae gennych chi gyfanswm o <b>{maxBudget} {currency} i ddosbarthu rhwng {optionCount} opsiynau</b>.",
+  "app.utils.votingMethodUtils.budgetingSubmissionInstructionsTotalBudget2": "Mae gennych chi gyfanswm o <b>{maxBudget} i'w ddosbarthu rhwng {optionCount} opsiynau</b>.",
   "app.utils.votingMethodUtils.budgetingSubmittedInstructions2": "<b>Llongyfarchiadau, mae eich cyllideb wedi'i chyflwyno!</b> Gallwch wirio'ch opsiynau isod ar unrhyw adeg neu eu haddasu cyn <b>{endDate}</b>.",
   "app.utils.votingMethodUtils.budgetingSubmittedInstructionsContinuous": "<b>Llongyfarchiadau, mae eich cyllideb wedi'i chyflwyno!</b> Gallwch wirio'ch opsiynau isod ar unrhyw adeg neu eu haddasu.",
   "app.utils.votingMethodUtils.budgetingSubmittedInstructionsNoEndDate": "<b>Llongyfarchiadau, mae eich cyllideb wedi'i chyflwyno!</b> Gallwch wirio'ch opsiynau isod unrhyw bryd.",
