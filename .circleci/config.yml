@@ -178,15 +178,7 @@ jobs:
     environment:
       RAILS_ENV: development
     steps:
-      # GHSA-xc9x-jj77-9p9j
-      # Solutions: upgrade Nokogiri (requires newer Ruby) or
-      # Compile and link Nokogiri against new libxml2
-      # https://github.com/sparklemotion/nokogiri/security/advisories/GHSA-xc9x-jj77-9p9j
-      #
-      # CVE-2023-51774
-      # It has been fixed by upgrading to json-jwt to 1.16.6, but the CVE data has not
-      # been updated yet. So we can safely ignore it.
-      - run: bundle exec bundle-audit check --update --ignore GHSA-xc9x-jj77-9p9j CVE-2023-51774
+      - run: bundle exec bundle-audit check --update
 
   back-license-check:
     resource_class: small

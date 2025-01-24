@@ -10,7 +10,7 @@ module Export
         @phase = phase
         @field = field
         @inputs = phase.ideas.native_survey.published
-        @fields_in_form = IdeaCustomFieldsService.new(phase.custom_form).reportable_fields
+        @fields_in_form = IdeaCustomFieldsService.new(phase.custom_form).all_fields.filter(&:supports_xlsx_export?)
         @multiloc_service = MultilocService.new(app_configuration: @app_configuration)
         @value_visitor = Geojson::ValueVisitor
       end

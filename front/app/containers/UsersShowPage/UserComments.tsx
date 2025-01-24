@@ -114,7 +114,7 @@ export const UserComments = () => {
     );
 
     return (
-      <Container className="e2e-profile-comments">
+      <Container className="e2e-profile-comments" id="tab-comments">
         <ScreenReaderOnly>
           <FormattedMessage
             tagName="h2"

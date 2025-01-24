@@ -1,5 +1,7 @@
 import React, { ReactNode } from 'react';
 
+import { stringify } from 'qs';
+
 import { IIdea } from 'api/ideas/types';
 import { IPhaseData, ParticipationMethod } from 'api/phases/types';
 import { getCurrentPhase, getInputTerm } from 'api/phases/utils';
@@ -22,6 +24,8 @@ import { FormattedMessage } from '../../cl-intl';
 import { isNilOrError, NilOrError } from '../../helperUtils';
 import messages from '../../messages';
 
+import NativeSurveyModalContent from './NativeSurveyModalContent';
+
 export const defaultSortingOptions = [
   { text: <FormattedMessage {...messages.trending} />, value: 'trending' },
   {
@@ -36,15 +40,15 @@ export const defaultSortingOptions = [
 
 type FormSubmissionMethodProps = {
   project?: IProjectData;
-  ideaId?: string;
   idea?: IIdea;
   phaseId?: string;
 };
 
 type ModalContentMethodProps = {
-  ideaIdForSocialSharing?: string;
+  ideaId?: string;
   title?: string;
   subtitle?: string;
+  showIdeaId?: boolean;
 };
 
 type FormTitleMethodProps = {
@@ -106,27 +110,22 @@ const ideationConfig: ParticipationMethodConfig = {
   supportsVotes: true,
   supportsComments: true,
   supportsTopicsCustomField: true,
-  onFormSubmission: (props: FormSubmissionMethodProps) => {
-    if (props.ideaId && props.idea) {
-      const urlParameters = `?new_idea_id=${props.ideaId}`;
-      // TODO: Fix this the next time the file is edited.
-      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-      if (props.idea) {
-        clHistory.push({
-          pathname: `/ideas/${props.idea.data.attributes.slug}`,
-          search: urlParameters.concat(
-            props.phaseId ? `&phase_id=${props.phaseId}` : ''
-          ),
-        });
-      }
+  onFormSubmission: ({ idea, phaseId }: FormSubmissionMethodProps) => {
+    if (idea) {
+      const urlParameters = `?new_idea_id=${idea.data.id}`;
+
+      clHistory.push({
+        pathname: `/ideas/${idea.data.attributes.slug}`,
+        search: urlParameters.concat(phaseId ? `&phase_id=${phaseId}` : ''),
+      });
     }
   },
   postType: 'defaultInput',
   getModalContent: (props: ModalContentMethodProps) => {
-    if (props.ideaIdForSocialSharing && props.title && props.subtitle) {
+    if (props.ideaId && props.title && props.subtitle) {
       return (
         <SharingModalContent
-          postId={props.ideaIdForSocialSharing}
+          postId={props.ideaId}
           title={props.title}
           subtitle={props.subtitle}
         />
@@ -169,27 +168,21 @@ const proposalsConfig: ParticipationMethodConfig = {
   supportsVotes: false,
   supportsComments: true,
   supportsTopicsCustomField: true,
-  onFormSubmission: (props: FormSubmissionMethodProps) => {
-    if (props.ideaId && props.idea) {
-      const urlParameters = `?new_idea_id=${props.ideaId}`;
-      // TODO: Fix this the next time the file is edited.
-      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-      if (props.idea) {
-        clHistory.push({
-          pathname: `/ideas/${props.idea.data.attributes.slug}`,
-          search: urlParameters.concat(
-            props.phaseId ? `&phase_id=${props.phaseId}` : ''
-          ),
-        });
-      }
+  onFormSubmission: ({ idea, phaseId }: FormSubmissionMethodProps) => {
+    if (idea) {
+      const urlParameters = `?new_idea_id=${idea.data.id}`;
+      clHistory.push({
+        pathname: `/ideas/${idea.data.attributes.slug}`,
+        search: urlParameters.concat(phaseId ? `&phase_id=${phaseId}` : ''),
+      });
     }
   },
   postType: 'defaultInput',
   getModalContent: (props: ModalContentMethodProps) => {
-    if (props.ideaIdForSocialSharing && props.title && props.subtitle) {
+    if (props.ideaId && props.title && props.subtitle) {
       return (
         <SharingModalContent
-          postId={props.ideaIdForSocialSharing}
+          postId={props.ideaId}
           title={props.title}
           subtitle={props.subtitle}
         />
@@ -226,27 +219,23 @@ const proposalsConfig: ParticipationMethodConfig = {
 const nativeSurveyConfig: ParticipationMethodConfig = {
   showInputCount: true,
   formEditor: 'surveyEditor',
-  onFormSubmission: (props: FormSubmissionMethodProps) => {
-    if (props.project) {
+  onFormSubmission: ({ idea, project, phaseId }: FormSubmissionMethodProps) => {
+    const searchParams: Record<string, string> = { show_modal: 'true' };
+    if (phaseId) searchParams.phase_id = phaseId;
+    if (idea) searchParams.new_idea_id = idea.data.id;
+
+    const searchParamsString = stringify(searchParams);
+
+    if (project) {
       clHistory.push({
-        // TODO: Fix this the next time the file is edited.
-        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-        pathname: `/projects/${props.project?.attributes.slug}`,
-        search: `?show_modal=true`.concat(
-          props.phaseId ? `&phase_id=${props.phaseId}` : ''
-        ),
+        pathname: `/projects/${project.attributes.slug}`,
+        search: searchParamsString,
       });
     }
   },
   postType: 'nativeSurvey',
-  getModalContent: (props: ModalContentMethodProps) => {
-    return (
-      <FormattedMessage
-        {...messages.onSurveySubmission}
-        {...props}
-        data-cy="e2e-survey-success-message"
-      />
-    );
+  getModalContent: ({ ideaId, showIdeaId }: ModalContentMethodProps) => {
+    return <NativeSurveyModalContent ideaId={ideaId} showIdeaId={showIdeaId} />;
   },
   showInputManager: false,
   renderCTABar: (props: CTABarProps) => {
@@ -334,19 +323,14 @@ const votingConfig: ParticipationMethodConfig = {
     return null;
   },
   postType: 'defaultInput',
-  onFormSubmission: (props: FormSubmissionMethodProps) => {
-    if (props.ideaId && props.idea) {
-      const urlParameters = `?new_idea_id=${props.ideaId}`;
-      // TODO: Fix this the next time the file is edited.
-      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-      if (props.idea) {
-        clHistory.push({
-          pathname: `/ideas/${props.idea.data.attributes.slug}`,
-          search: urlParameters.concat(
-            props.phaseId ? `&phase_id=${props.phaseId}` : ''
-          ),
-        });
-      }
+  onFormSubmission: ({ idea, phaseId }: FormSubmissionMethodProps) => {
+    if (idea) {
+      const urlParameters = `?new_idea_id=${idea.data.id}`;
+
+      clHistory.push({
+        pathname: `/ideas/${idea.data.attributes.slug}`,
+        search: urlParameters.concat(phaseId ? `&phase_id=${phaseId}` : ''),
+      });
     }
   },
   getFormTitle: (props: FormTitleMethodProps) => {

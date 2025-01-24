@@ -51,6 +51,10 @@ module Export
         option_titles.join(VALUE_SEPARATOR)
       end
 
+      def visit_ranking(field)
+        visit_multiselect(field)
+      end
+
       def visit_multiselect_image(field)
         visit_multiselect(field)
       end

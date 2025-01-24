@@ -66,7 +66,7 @@ const Following = () => {
   trackEventByName(tracks.browseFollowsInActivityPage);
 
   return (
-    <Box display="flex" w="100%" flexDirection="column">
+    <Box display="flex" w="100%" flexDirection="column" id="tab-following">
       {isSmallerThanPhone && (
         <Title mt="0px" variant="h3" as="h1">
           <FormattedMessage

@@ -267,6 +267,22 @@ FactoryBot.define do
       input_type { 'number' }
     end
 
+    factory :custom_field_ranking do
+      title_multiloc do
+        {
+          'en' => 'Rank your favourite means of public transport'
+        }
+      end
+      input_type { 'ranking' }
+
+      trait :with_options do
+        after(:create) do |cf|
+          create(:custom_field_option, custom_field: cf, key: 'by_train', title_multiloc: { 'en' => 'By train' })
+          create(:custom_field_option, custom_field: cf, key: 'by_bike', title_multiloc: { 'en' => 'By bike' })
+        end
+      end
+    end
+
     factory :custom_field_birthyear do
       key { 'birthyear' }
       title_multiloc { { en: 'birthyear' } }
@@ -294,26 +310,6 @@ FactoryBot.define do
       title_multiloc { { 'en' => 'domicile' } }
       code { 'domicile' }
       input_type { 'select' }
-    end
-
-    factory :custom_field_education do
-      key { 'education' }
-      title_multiloc { { 'en' => 'education' } }
-      code { 'education' }
-      input_type { 'select' }
-      enabled { false }
-
-      trait :with_options do
-        after(:create) do |cf|
-          create(:custom_field_option, custom_field: cf, key: '2')
-          create(:custom_field_option, custom_field: cf, key: '3')
-          create(:custom_field_option, custom_field: cf, key: '4')
-          create(:custom_field_option, custom_field: cf, key: '5')
-          create(:custom_field_option, custom_field: cf, key: '6')
-          create(:custom_field_option, custom_field: cf, key: '7')
-          create(:custom_field_option, custom_field: cf, key: '8')
-        end
-      end
     end
   end
 end

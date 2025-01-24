@@ -1,5 +1,6 @@
 import { trim, isUndefined } from 'lodash-es';
 import { SupportedLocale, Multiloc, GraphqlLocale } from 'typings';
+import { v4 as uuidv4 } from 'uuid';
 
 import { locales } from 'containers/App/constants';
 
@@ -223,3 +224,7 @@ export function hexToRGBA(hex: string, alpha: number) {
 export const classNames = (...classes: (string | undefined)[]) => {
   return classes.filter(Boolean).join(' ');
 };
+
+export function generateTempId() {
+  return `TEMP-ID-${uuidv4()}`;
+}
