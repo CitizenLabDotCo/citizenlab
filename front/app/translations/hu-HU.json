@@ -2057,6 +2057,8 @@
   "app.utils.AdminPage.ProjectEdit.shareInformation": "Ossza meg az információkat",
   "app.utils.FormattedCurrency.credits": "krediteket",
   "app.utils.FormattedCurrency.tokens": "zsetonok",
+  "app.utils.FormattedCurrency.xCredits": "{numberOfCredits, plural, =0 {# kredit} one {# kredit} other {# kredit}}",
+  "app.utils.FormattedCurrency.xTokens": "{numberOfTokens, plural, =0 {# tokenek} one {# token} other {# tokenek}}",
   "app.utils.IdeaCards.mostDiscussed": "A legtöbbet megvitatták",
   "app.utils.IdeaCards.mostReacted": "A legtöbb reakció",
   "app.utils.IdeaCards.newest": "Legújabb",
