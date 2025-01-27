@@ -1,6 +1,17 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 
-import { Box, Button, Radio, Text } from '@citizenlab/cl2-component-library';
+import {
+  Box,
+  Button,
+  Radio,
+  Table,
+  Tbody,
+  Td,
+  Text,
+  Th,
+  Thead,
+  Tr,
+} from '@citizenlab/cl2-component-library';
 import { ControlProps, UISchemaElement } from '@jsonforms/core';
 import { withJsonFormsControlProps } from '@jsonforms/react';
 import styled, { useTheme } from 'styled-components';
@@ -16,7 +27,7 @@ import ErrorDisplay from '../ErrorDisplay';
 import { getSubtextElement } from './controlUtils';
 import messages from './messages';
 
-const StickyTd = styled.td`
+const StickyTd = styled(Td)`
   background: ${(props) => props.theme.colors.tenantPrimaryLighten95};
   position: sticky;
   inset-inline-start: 0px;
@@ -24,20 +35,13 @@ const StickyTd = styled.td`
   flex-grow: 1;
 `;
 
-const StyledTd = styled.td`
+const StyledTd = styled(Td)`
   background: ${(props) => props.theme.colors.tenantPrimaryLighten95};
+  max-width: 100px;
 
   .circle {
     margin-right: 0px;
     border: 1px solid ${(props) => props.theme.colors.tenantPrimary};
-  }
-`;
-
-const StledTh = styled.th`
-  min-width: 84px;
-
-  p {
-    word-break: break-word;
   }
 `;
 
@@ -127,39 +131,42 @@ const MatrixControl = ({
       />
 
       <Box overflowX="auto" ref={tableDivRef}>
-        <table
+        <Table
           width={'100%'}
           style={{ borderCollapse: 'separate', borderSpacing: '0px 8px' }}
           aria-labelledby={`matrix-question-label-${id}`}
         >
-          <thead>
-            <StledTh />
+          <Thead>
+            <Th minWidth="84px" />
             {columnsFromSchema.map((column, index) => {
               return (
-                <StledTh key={index}>
-                  <div title={column}>
-                    <Text m="0px" p="0px" mx="auto" color={'tenantPrimary'}>
+                <Th minWidth="84px" key={index}>
+                  <Box title={column} display="flex" justifyContent="center">
+                    <Text
+                      textAlign="center"
+                      m="0px"
+                      p="0px"
+                      mx="auto"
+                      color={'tenantPrimary'}
+                    >
                       {column}
                     </Text>
-                  </div>
-                </StledTh>
+                  </Box>
+                </Th>
               );
             })}
-          </thead>
-          <tbody>
+          </Thead>
+          <Tbody>
             {statements.map((statement, index) => {
               return (
-                <tr key={index}>
-                  <StickyTd>
-                    <Box
-                      background={theme.colors.tenantPrimaryLighten95}
-                      p="8px"
-                      max-width="100px"
-                    >
-                      <Text m="4px" color="tenantPrimary">
-                        {statement?.label}
-                      </Text>
-                    </Box>
+                <Tr key={index}>
+                  <StickyTd
+                    background={theme.colors.tenantPrimaryLighten95}
+                    max-width="100px"
+                  >
+                    <Text m="4px" color="tenantPrimary">
+                      {statement?.label}
+                    </Text>
                   </StickyTd>
                   {columnsFromSchema.map((_, columnIndex) => {
                     return (
@@ -208,11 +215,11 @@ const MatrixControl = ({
                       </StyledTd>
                     );
                   })}
-                </tr>
+                </Tr>
               );
             })}
-          </tbody>
-        </table>
+          </Tbody>
+        </Table>
       </Box>
       {data !== undefined && (
         <Box display="flex">
