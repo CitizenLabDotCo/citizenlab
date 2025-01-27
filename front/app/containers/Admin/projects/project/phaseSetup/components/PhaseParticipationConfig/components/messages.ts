@@ -161,4 +161,9 @@ export default defineMessages({
     id: 'app.components.formBuilder.cancelMethodChange1',
     defaultMessage: 'Cancel',
   },
+  successMessageTooltip: {
+    id: 'app.components.formBuilder.successMessageTooltip',
+    defaultMessage:
+      'You must save this phase before you can preview the success message.',
+  },
 });

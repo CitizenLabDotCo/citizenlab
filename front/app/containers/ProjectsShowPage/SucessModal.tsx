@@ -51,8 +51,6 @@ const SuccessModal = ({ projectId, previewSuccessMessage }: Props) => {
     removeSearchParams(['show_modal', 'phase_id', 'new_idea_id']);
   }, [showModalParam]);
 
-  console.log('ShowModal', showModal, showModalParam);
-
   if (!ready) return null;
   // If there is a newIdeaIdParam, wait for idea to load
   if (newIdeaIdParam && !idea) return null;

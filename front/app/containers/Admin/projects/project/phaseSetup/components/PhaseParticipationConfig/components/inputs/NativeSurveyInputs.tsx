@@ -1,6 +1,11 @@
-import React, { useState } from 'react';
+import React from 'react';
 
-import { Box, IconTooltip, Text } from '@citizenlab/cl2-component-library';
+import {
+  Box,
+  IconTooltip,
+  Text,
+  Tooltip,
+} from '@citizenlab/cl2-component-library';
 import { CLErrors, Multiloc } from 'typings';
 
 import { IPhase, IUpdatedPhaseProperties } from 'api/phases/types';
@@ -13,6 +18,7 @@ import { SectionField, SubSectionTitle } from 'components/admin/Section';
 import Button from 'components/UI/ButtonWithLink';
 import Error from 'components/UI/Error';
 import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
+import QuillMultilocWithLocaleSwitcher from 'components/UI/QuillEditor/QuillMultilocWithLocaleSwitcher';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 
@@ -143,30 +149,33 @@ const NativeSurveyInputs = ({
           Success message
           {/*<FormattedMessage {...parentMessages.surveyTitleLabel} />*/}
         </SubSectionTitle>
-        <InputMultilocWithLocaleSwitcher
+        <QuillMultilocWithLocaleSwitcher
           id="success"
-          type="text"
           valueMultiloc={formData.form_success_multiloc}
           onChange={handleFormSuccessChange}
         />
         <Error apiErrors={apiErrors && apiErrors.form_success_multiloc} />
-        {phase && (
-          <>
-            <Button
-              onClick={() => {
-                clHistory.push({
-                  search: `?show_modal=true`,
-                });
-              }}
-            >
-              Preview
-            </Button>
-            <SuccessModal
-              projectId={phase?.data.relationships.project.data.id}
-              previewSuccessMessage={formData.form_success_multiloc}
-            />
-          </>
-        )}
+
+        <Tooltip
+          disabled={!!project?.data.id}
+          placement="left"
+          content={formatMessage(messages.successMessageTooltip)}
+        >
+          <Button
+            onClick={() => {
+              clHistory.push({
+                search: `?show_modal=true`,
+              });
+            }}
+            disabled={!project?.data.id}
+          >
+            Preview
+          </Button>
+        </Tooltip>
+        <SuccessModal
+          projectId={project?.data.id || ''}
+          previewSuccessMessage={formData.form_success_multiloc}
+        />
       </SectionField>
     </>
   );
