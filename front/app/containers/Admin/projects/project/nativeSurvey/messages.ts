@@ -136,6 +136,10 @@ export default defineMessages({
     defaultMessage:
       'If no logic is added, the survey will follow its normal flow. For more information, visit {supportPageLink}',
   },
+  ranking: {
+    id: 'app.containers.AdminPage.ProjectEdit.survey.ranking2',
+    defaultMessage: 'Ranking',
+  },
   multiselect: {
     id: 'app.containers.AdminPage.ProjectEdit.survey.multiselectText2',
     defaultMessage: 'Multiple choice - choose many',

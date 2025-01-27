@@ -461,6 +461,27 @@ RSpec.describe UiSchemaGeneratorService do
     end
   end
 
+  describe '#visit_ranking' do
+    let(:field) do
+      create(
+        :custom_field_ranking,
+        :with_options,
+        key: field_key,
+        title_multiloc: { 'en' => 'Ranking field title' },
+        description_multiloc: { 'en' => 'Ranking field description' }
+      )
+    end
+
+    it 'returns the schema for the given field' do
+      expect(generator.visit_ranking(field)).to eq({
+        type: 'Control',
+        scope: "#/properties/#{field_key}",
+        label: 'Ranking field title',
+        options: { input_type: field.input_type, description: 'Ranking field description' }
+      })
+    end
+  end
+
   describe '#visit_checkbox' do
     let(:field) do
       create(

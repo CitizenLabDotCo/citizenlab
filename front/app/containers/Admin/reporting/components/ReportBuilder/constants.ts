@@ -7,6 +7,7 @@ export const SURVEY_QUESTION_INPUT_TYPES = new Set([
   'linear_scale',
   'rating',
   'multiselect_image',
+  'ranking',
   'point',
   'line',
   'polygon',

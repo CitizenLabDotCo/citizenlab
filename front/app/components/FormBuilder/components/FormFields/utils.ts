@@ -90,6 +90,8 @@ const getCustomFieldBadgeLabel = (
       return messages.drawRoute;
     case 'polygon':
       return messages.drawArea;
+    case 'ranking':
+      return messages.ranking;
     default:
       return messages.default;
   }

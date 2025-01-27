@@ -6,7 +6,7 @@ class SurveyResultsGeneratorService < FieldVisitorService
     @group_mode = group_mode
     @group_field_id = group_field_id
     form = phase.custom_form || CustomForm.new(participation_context: phase)
-    @fields = IdeaCustomFieldsService.new(form).enabled_fields # It would be nice if we could use reportable_fields instead
+    @fields = IdeaCustomFieldsService.new(form).enabled_fields
     @inputs = phase.ideas.native_survey.published
     @locales = AppConfiguration.instance.settings('core', 'locales')
   end
@@ -30,7 +30,7 @@ class SurveyResultsGeneratorService < FieldVisitorService
     responses = base_responses(field)
     response_count = responses.size
 
-    core_field_attributes(field, response_count).merge({
+    core_field_attributes(field, response_count:).merge({
       numberResponses: responses
     })
   end
@@ -47,10 +47,19 @@ class SurveyResultsGeneratorService < FieldVisitorService
     visit_select_base(field)
   end
 
+  def visit_ranking(field)
+    core_field_attributes(field).merge({
+      average_rankings: field.average_rankings(inputs),
+      rankings_counts: field.rankings_counts(inputs),
+      multilocs: get_multilocs(field)
+    })
+  end
+
   def visit_text(field)
     answers = get_text_responses(field.key)
     response_count = answers.size
-    core_field_attributes(field, response_count).merge({
+
+    core_field_attributes(field, response_count:).merge({
       textResponses: answers
     })
   end
@@ -76,7 +85,8 @@ class SurveyResultsGeneratorService < FieldVisitorService
       { name: file.name, url: file.file.url }
     end
     response_count = files.size
-    core_field_attributes(field, response_count).merge({
+
+    core_field_attributes(field, response_count:).merge({
       files: files
     })
   end
@@ -101,7 +111,8 @@ class SurveyResultsGeneratorService < FieldVisitorService
 
   attr_reader :group_mode, :group_field_id, :fields, :inputs, :locales
 
-  def core_field_attributes(field, response_count)
+  def core_field_attributes(field, response_count: nil)
+    response_count ||= base_responses(field).size
     {
       inputType: field.input_type,
       question: field.title_multiloc,
@@ -177,8 +188,7 @@ class SurveyResultsGeneratorService < FieldVisitorService
   def responses_to_geographic_input_type(field)
     responses = base_responses(field)
     response_count = responses.size
-
-    core_field_attributes(field, response_count).merge({
+    core_field_attributes(field, response_count:).merge({
       mapConfigId: field&.map_config&.id, "#{field.input_type}Responses": responses
     })
   end
@@ -187,7 +197,7 @@ class SurveyResultsGeneratorService < FieldVisitorService
     # TODO: This is an additional query for selects so performance issue here
     question_response_count = inputs.where("custom_field_values->'#{field.key}' IS NOT NULL").count
 
-    attributes = core_field_attributes(field, question_response_count).merge({
+    attributes = core_field_attributes(field, response_count: question_response_count).merge({
       totalPickCount: answers.pluck(:count).sum,
       answers: answers,
       multilocs: get_multilocs(field, group_field)
@@ -199,7 +209,7 @@ class SurveyResultsGeneratorService < FieldVisitorService
     attributes
   end
 
-  def get_multilocs(field, group_field)
+  def get_multilocs(field, group_field = nil)
     multilocs = { answer: get_option_multilocs(field) }
     multilocs[:group] = get_option_multilocs(group_field) if group_field
     multilocs

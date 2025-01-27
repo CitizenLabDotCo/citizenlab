@@ -58,6 +58,8 @@ import {
   ShapefileUploadControl,
   CosponsorsControl,
   cosponsorsControlTester,
+  rankingControlTester,
+  RankingControl,
 } from 'components/Form/Components/Controls';
 
 const commonRenderers = [
@@ -69,6 +71,7 @@ const commonRenderers = [
   { tester: singleSelectControlTester, renderer: SingleSelectControl },
   { tester: SingleSelectEnumControlTester, renderer: SingleSelectEnumControl },
   { tester: multiSelectControlTester, renderer: MultiSelectControl },
+  { tester: rankingControlTester, renderer: RankingControl },
   { tester: WYSIWYGControlTester, renderer: WYSIWYGControl },
   { tester: descriptionControlTester, renderer: DescriptionControl },
   { tester: topicsControlTester, renderer: TopicsControl },
