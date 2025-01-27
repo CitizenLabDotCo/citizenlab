@@ -23,7 +23,7 @@ export default defineMessages({
   },
   formSuccessMessageLabel: {
     id: 'app.containers.AdminPage.ProjectTimeline.formSuccessMessageLabel',
-    defaultMessage: 'Success message',
+    defaultMessage: 'Custom success message',
   },
   previewSurveyCTALabel: {
     id: 'app.containers.AdminPage.ProjectTimeline.previewSurveyCTALabel',
