@@ -47,7 +47,7 @@ export const getTenantColourByPercentage = (
   tenantPrimary: string
 ) => {
   // Return tenantPrimary colour and alpha based on a percentage
-  return hexToRGBA(tenantPrimary, percentage / 100);
+  return hexToRGBA(tenantPrimary, percentage === 0 ? 0.01 : percentage / 100);
 };
 
 // getPercentageTextBorder

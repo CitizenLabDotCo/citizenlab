@@ -51,7 +51,7 @@ const MatrixQuestion = ({ result }: Props) => {
                 key={statementWithResult.statementKey}
                 style={{ background: 'white' }}
               >
-                <Box display="flex" minHeight="100px">
+                <Box display="flex" minHeight="80px">
                   <Text m="0px" my="auto">
                     {statementWithResult.statementMultiloc[locale]}
                   </Text>
@@ -68,18 +68,15 @@ const MatrixQuestion = ({ result }: Props) => {
                     <td
                       key={linearScaleLabel.value}
                       style={{
-                        background:
-                          percentage &&
-                          getTenantColourByPercentage(
-                            percentage,
-                            theme.colors.tenantPrimary
-                          ),
+                        background: getTenantColourByPercentage(
+                          percentage,
+                          theme.colors.tenantPrimary
+                        ),
                       }}
                     >
                       <Box display="flex" justifyContent="center">
                         <Text
                           my="auto"
-                          p="0px"
                           fontSize="s"
                           color={percentage >= 75 ? 'white' : 'textPrimary'}
                           style={{
