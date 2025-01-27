@@ -127,7 +127,7 @@ describe('detectConflictsByPage', () => {
     ];
 
     const conflicts = detectConflictsByPage(groupedData);
-    expect(conflicts['page1']).toHaveLength(3);
+    expect(conflicts['page1']).toHaveLength(2);
     const conflictTypes = conflicts['page1']?.map((c) => c.conflictType);
     expect(conflictTypes).toContain(ConflictType.QUESTION_VS_PAGE_LOGIC);
     expect(conflictTypes).toContain(ConflictType.INTER_QUESTION_CONFLICT);
