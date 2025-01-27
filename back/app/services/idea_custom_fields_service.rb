@@ -124,7 +124,7 @@ class IdeaCustomFieldsService
 
   def duplicate_all_fields
     fields = all_fields
-    logic_id_map = { survey_end: 'survey_end' }
+    logic_id_map = {}
     copied_fields = fields.map do |field|
       # Duplicate fields to return with a new id
       copied_field = field.dup
@@ -168,7 +168,7 @@ class IdeaCustomFieldsService
           rule
         end
       elsif field.logic['next_page_id']
-        field.logic['next_page_id'] = logic_id_map[field.logic['next_page_id']] unless field.logic['next_page_id'] == 'survey_end'
+        field.logic['next_page_id'] = logic_id_map[field.logic['next_page_id']]
       end
       field
     end
