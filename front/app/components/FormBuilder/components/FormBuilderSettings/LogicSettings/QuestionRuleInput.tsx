@@ -19,11 +19,10 @@ import {
 import Button from 'components/UI/ButtonWithLink';
 import Error from 'components/UI/Error';
 
-import { useIntl } from 'utils/cl-intl';
+import { useIntl, FormattedMessage } from 'utils/cl-intl';
 import { isRuleValid } from 'utils/yup/validateLogic';
 
 import messages from '../../messages';
-import { FormattedMessage } from 'react-intl';
 
 type QuestionRuleInputProps = {
   fieldId: string;
