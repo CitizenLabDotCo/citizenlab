@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { Box, Image } from '@citizenlab/cl2-component-library';
 import rocket from 'assets/img/rocket.png';
 import { useSearchParams } from 'react-router-dom';
+import { Multiloc } from 'typings';
 
 import useIdeaById from 'api/ideas/useIdeaById';
 import usePhases from 'api/phases/usePhases';
@@ -18,7 +19,6 @@ import {
 } from 'utils/configs/participationMethodConfig';
 
 import { isReady } from './utils';
-import { Multiloc } from 'typings';
 
 interface Props {
   projectId: string;
@@ -76,7 +76,7 @@ const SuccessModal = ({ projectId, previewSuccessMessage }: Props) => {
 
   const successMessage =
     previewSuccessMessage ||
-    participationContext?.attributes.form_success_multiloc ||
+    participationContext.attributes.form_success_multiloc ||
     undefined;
 
   return (
@@ -93,7 +93,7 @@ const SuccessModal = ({ projectId, previewSuccessMessage }: Props) => {
           {config.getModalContent({
             ideaId: newIdeaIdParam,
             showIdeaId: showIdeaIdInModal,
-            successMessage: successMessage,
+            successMessage,
           })}
         </Box>
       </Box>

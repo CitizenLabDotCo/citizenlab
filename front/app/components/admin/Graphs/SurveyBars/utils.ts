@@ -63,7 +63,7 @@ export const parseQuestionResult = (
   if (!multilocs) throw new Error('Multilocs are missing');
 
   return (
-    answers?.map(({ count, answer }) => {
+    answers.map(({ count, answer }) => {
       const label =
         answer === null
           ? noAnswerCopy

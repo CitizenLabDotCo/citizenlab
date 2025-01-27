@@ -13,6 +13,8 @@ import useProjectById from 'api/projects/useProjectById';
 
 import useLocalize from 'hooks/useLocalize';
 
+import SuccessModal from 'containers/ProjectsShowPage/SucessModal';
+
 import AnonymousPostingToggle from 'components/admin/AnonymousPostingToggle/AnonymousPostingToggle';
 import { SectionField, SubSectionTitle } from 'components/admin/Section';
 import Button from 'components/UI/ButtonWithLink';
@@ -21,11 +23,10 @@ import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLoca
 import QuillMultilocWithLocaleSwitcher from 'components/UI/QuillEditor/QuillMultilocWithLocaleSwitcher';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
+import clHistory from 'utils/cl-router/history';
 
 import parentMessages from '../../../../messages';
 import messages from '../messages';
-import SuccessModal from 'containers/ProjectsShowPage/SucessModal';
-import clHistory from 'utils/cl-router/history';
 
 interface Props {
   allow_anonymous_participation: boolean | null | undefined;
@@ -61,8 +62,6 @@ const NativeSurveyInputs = ({
   const { data: project } = useProjectById(
     phase?.data.relationships.project.data.id
   );
-
-  console.log(formData.form_success_multiloc);
 
   return (
     <>
@@ -148,8 +147,7 @@ const NativeSurveyInputs = ({
 
       <SectionField>
         <SubSectionTitle>
-          Success message
-          {/*<FormattedMessage {...parentMessages.surveyTitleLabel} />*/}
+          <FormattedMessage {...parentMessages.formSuccessMessageLabel} />
         </SubSectionTitle>
         <QuillMultilocWithLocaleSwitcher
           id="success"

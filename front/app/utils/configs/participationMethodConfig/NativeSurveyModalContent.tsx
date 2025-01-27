@@ -1,20 +1,21 @@
 import React from 'react';
 
 import { Box, Title, Text } from '@citizenlab/cl2-component-library';
+import { Multiloc } from 'typings';
 
 import useAuthUser from 'api/me/useAuthUser';
 
+import useLocalize from 'hooks/useLocalize';
+
+import T from 'components/T';
 import ButtonWithLink from 'components/UI/ButtonWithLink';
+import QuillEditedContent from 'components/UI/QuillEditedContent';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 
 import messages from '../../messages';
 
 import { getMailLink } from './utils';
-import { Multiloc } from 'typings';
-import useLocalize from 'hooks/useLocalize';
-import QuillEditedContent from 'components/UI/QuillEditedContent';
-import T from 'components/T';
 
 interface Props {
   ideaId?: string;

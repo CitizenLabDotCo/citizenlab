@@ -21,6 +21,10 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectTimeline.surveyCTALabel',
     defaultMessage: 'Button',
   },
+  formSuccessMessageLabel: {
+    id: 'app.containers.AdminPage.ProjectTimeline.formSuccessMessageLabel',
+    defaultMessage: 'Success message',
+  },
   previewSurveyCTALabel: {
     id: 'app.containers.AdminPage.ProjectTimeline.previewSurveyCTALabel',
     defaultMessage: 'Preview',

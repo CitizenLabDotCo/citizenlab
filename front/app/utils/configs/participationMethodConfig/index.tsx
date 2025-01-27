@@ -1,6 +1,7 @@
 import React, { ReactNode } from 'react';
 
 import { stringify } from 'qs';
+import { Multiloc } from 'typings';
 
 import { IIdea } from 'api/ideas/types';
 import { IPhaseData, ParticipationMethod } from 'api/phases/types';
@@ -25,7 +26,6 @@ import { isNilOrError, NilOrError } from '../../helperUtils';
 import messages from '../../messages';
 
 import NativeSurveyModalContent from './NativeSurveyModalContent';
-import { Multiloc } from 'typings';
 
 export const defaultSortingOptions = [
   { text: <FormattedMessage {...messages.trending} />, value: 'trending' },
