@@ -908,7 +908,7 @@
   "app.containers.Admin.projects.all.PDFExportModal.selectIdeationPhase": "Please select an ideation phase.",
   "app.containers.Admin.projects.all.askPersonalData": "Ask personal data",
   "app.containers.Admin.projects.all.clickExportToPDFIdeaForm": "Questions not currently supported: Images, Tags and File Upload.",
-  "app.containers.Admin.projects.all.clickExportToPDFSurvey4": "Questions not currently supported: Mapping questions (drop pin, draw route and draw area), image choice questions, ranking questions and file upload questions.",
+  "app.containers.Admin.projects.all.clickExportToPDFSurvey5": "Questions not currently supported: Mapping questions (drop pin, draw route and draw area), image choice questions, ranking questions, matrix questions and file upload questions.",
   "app.containers.Admin.projects.all.components.archived": "Archived",
   "app.containers.Admin.projects.all.components.draft": "Draft",
   "app.containers.Admin.projects.all.components.manageButtonLabel": "Edit",
