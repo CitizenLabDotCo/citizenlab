@@ -148,6 +148,9 @@ const NativeSurveyInputs = ({
       <SectionField>
         <SubSectionTitle>
           <FormattedMessage {...parentMessages.formSuccessMessageLabel} />
+          <IconTooltip
+            content={formatMessage(parentMessages.formSuccessMessageTooltip)}
+          />
         </SubSectionTitle>
         <QuillMultilocWithLocaleSwitcher
           id="success"

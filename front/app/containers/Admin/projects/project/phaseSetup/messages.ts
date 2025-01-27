@@ -25,6 +25,11 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectTimeline.formSuccessMessageLabel',
     defaultMessage: 'Custom success message',
   },
+  formSuccessMessageTooltip: {
+    id: 'app.containers.AdminPage.ProjectTimeline.formSuccessMessageTooltip',
+    defaultMessage:
+      'This is the message shown to participants after they have submitted the form. If nothing is provided here then the message will default to: "Thank you. Your response has been received."',
+  },
   previewSurveyCTALabel: {
     id: 'app.containers.AdminPage.ProjectTimeline.previewSurveyCTALabel',
     defaultMessage: 'Preview',
