@@ -14,6 +14,7 @@ import {
 } from '@citizenlab/cl2-component-library';
 import { ControlProps, UISchemaElement } from '@jsonforms/core';
 import { withJsonFormsControlProps } from '@jsonforms/react';
+import { RGBAtoRGB } from 'component-library/utils/styleUtils';
 import styled, { useTheme } from 'styled-components';
 
 import { FormLabel } from 'components/UI/FormComponents';
@@ -28,7 +29,8 @@ import { getSubtextElement } from './controlUtils';
 import messages from './messages';
 
 const StickyTd = styled(Td)`
-  background: ${(props) => props.theme.colors.tenantPrimaryLighten95};
+  background: ${(props) =>
+    RGBAtoRGB(props.theme.colors.tenantPrimaryLighten95, 0.05)};
   position: sticky;
   inset-inline-start: 0px;
   z-index: 1;
@@ -36,7 +38,8 @@ const StickyTd = styled(Td)`
 `;
 
 const StyledTd = styled(Td)`
-  background: ${(props) => props.theme.colors.tenantPrimaryLighten95};
+  background: ${(props) =>
+    RGBAtoRGB(props.theme.colors.tenantPrimaryLighten95, 0.05)};
   max-width: 100px;
 
   .circle {
