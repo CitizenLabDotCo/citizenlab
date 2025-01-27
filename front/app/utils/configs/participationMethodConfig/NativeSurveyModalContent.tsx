@@ -13,6 +13,8 @@ import messages from '../../messages';
 import { getMailLink } from './utils';
 import { Multiloc } from 'typings';
 import useLocalize from 'hooks/useLocalize';
+import QuillEditedContent from 'components/UI/QuillEditedContent';
+import T from 'components/T';
 
 interface Props {
   ideaId?: string;
@@ -29,14 +31,21 @@ const NativeSurveyModalContent = ({
   const { formatMessage } = useIntl();
   const localize = useLocalize();
 
-  const successMessageDisplay =
-    localize(successMessage) || formatMessage(messages.onSurveySubmission);
+  const customSuccessMessage = !!localize(successMessage);
 
   return (
     <Box>
-      <Title variant="h2" textAlign="center" mt="0">
-        <Box data-cy="e2e-survey-success-message">{successMessageDisplay}</Box>
-      </Title>
+      {customSuccessMessage ? (
+        <QuillEditedContent>
+          <T value={successMessage} supportHtml={true} />
+        </QuillEditedContent>
+      ) : (
+        <Title variant="h2" textAlign="center" mt="0">
+          <Box data-cy="e2e-survey-success-message">
+            <FormattedMessage {...messages.onSurveySubmission} />
+          </Box>
+        </Title>
+      )}
       {ideaId && showIdeaId && (
         <>
           <Text textAlign="center" color="coolGrey600">

@@ -62,6 +62,8 @@ const NativeSurveyInputs = ({
     phase?.data.relationships.project.data.id
   );
 
+  console.log(formData.form_success_multiloc);
+
   return (
     <>
       <AnonymousPostingToggle
