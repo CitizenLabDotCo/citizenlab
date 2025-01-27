@@ -71,8 +71,8 @@ const MatrixLongField = ({ customField, rawValue }: Props) => {
               justifyContent="space-between"
               gap="12px"
             >
-              <Box maxWidth="50%">
-                <Text mr="8px" my="auto">
+              <Box my="auto" maxWidth="50%">
+                <Text m="0px" mr="8px">
                   {result.statementTitle?.[locale]}
                 </Text>
               </Box>
@@ -83,7 +83,7 @@ const MatrixLongField = ({ customField, rawValue }: Props) => {
                 borderRadius={theme.borderRadius}
                 my="auto"
               >
-                <Text m="4px 8px">
+                <Text m="0px" p="4px">
                   {result.valueLabel?.[locale] || result.value}
                 </Text>
               </Box>
