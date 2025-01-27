@@ -8,7 +8,7 @@ import { ResultUngrouped } from 'api/survey_results/types';
 import useLocale from 'hooks/useLocale';
 
 import {
-  getColourByPercentage,
+  getTenantColourByPercentage,
   getLinearScaleLabelsArray,
   getPercentage,
   getPercentageTextBorder,
@@ -70,7 +70,7 @@ const MatrixQuestion = ({ result }: Props) => {
                       style={{
                         background:
                           percentage &&
-                          getColourByPercentage(
+                          getTenantColourByPercentage(
                             percentage,
                             theme.colors.tenantPrimary
                           ),

@@ -40,13 +40,13 @@ export type LinearScaleMultilocs = {
   label: Multiloc;
 };
 
-// getColourByPercentage
+// getTenantColourByPercentage
 // Description: Return tenantPrimary colour and alpha based on a percentage
-export const getColourByPercentage = (
+export const getTenantColourByPercentage = (
   percentage: number,
   tenantPrimary: string
 ) => {
-  // Return tenantPrimary colour and alpha based on the percentage
+  // Return tenantPrimary colour and alpha based on a percentage
   return hexToRGBA(tenantPrimary, percentage / 100);
 };
 
@@ -83,15 +83,16 @@ export const getPercentage = (
 export const getStatementsWithResultsArray = (result: ResultUngrouped) => {
   const statementsWithResults: StatementWithResult[] = [];
 
-  Object.entries(result.linear_scales || {}).forEach(
-    (linearScaleAnswer: [string, MatrixLinearScaleResult]) => {
-      statementsWithResults.push({
-        statementKey: linearScaleAnswer[0],
-        statementMultiloc: linearScaleAnswer[1].question,
-        answers: linearScaleAnswer[1].answers,
-      });
-    }
-  );
+  result.linear_scales &&
+    Object.entries(result.linear_scales).forEach(
+      (linearScaleAnswer: [string, MatrixLinearScaleResult]) => {
+        statementsWithResults.push({
+          statementKey: linearScaleAnswer[0],
+          statementMultiloc: linearScaleAnswer[1].question,
+          answers: linearScaleAnswer[1].answers,
+        });
+      }
+    );
 
   return statementsWithResults;
 };
