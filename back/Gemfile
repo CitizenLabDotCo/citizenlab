@@ -127,7 +127,7 @@ gem 'bunny', '>= 2.7.2'
 gem 'faker'
 gem 'order_as_specified'
 gem 'scenic'
-gem 'ice_cube', '~> 0.16'
+gem 'ice_cube', '~> 0.17'
 gem 'prawn', '~> 2.5'
 gem 'prawn-grouping', '~> 0.2.0'
 
