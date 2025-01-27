@@ -1083,9 +1083,12 @@ RSpec.describe InputUiSchemaGeneratorService do
               {
                 type: 'Page',
                 options: {
-                  id: 'survey_end',
+                  input_type: 'page',
+                  id: page_end.id,
+                  map_config_id: nil, 
+                  page_layout: 'default',
                   title: 'Almost done',
-                  description: "You are about to submit your answers. By clicking 'Submit' you give us permission to analyse your answers.<br/>After you submit, you will no longer be able to go back and change any of your answers."
+                  description: "You are about to submit your answers. By clicking 'Submit' you give us permission to analyse your answers.<br>After you submit, you will no longer be able to go back and change any of your answers."
                 },
                 elements: []
               }

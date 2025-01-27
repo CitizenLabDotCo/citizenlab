@@ -277,8 +277,11 @@ class FormLogicService
   def pages_in_between(index, page_id)
     pages = []
     index += 1
+    last_page_id = fields.last.id
+
     while index < fields.size
       return pages if fields[index].id == page_id
+      return pages if fields[index].id == last_page_id
 
       pages << fields[index] if fields[index].page?
       index += 1
