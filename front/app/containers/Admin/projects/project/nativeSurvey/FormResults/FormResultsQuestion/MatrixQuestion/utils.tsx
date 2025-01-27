@@ -40,6 +40,8 @@ export type LinearScaleMultilocs = {
   label: Multiloc;
 };
 
+// FUNCTIONS
+
 // getTenantColourByPercentage
 // Description: Return tenantPrimary colour and alpha based on a percentage
 export const getTenantColourByPercentage = (
@@ -47,14 +49,13 @@ export const getTenantColourByPercentage = (
   tenantPrimary: string
 ) => {
   // Return tenantPrimary colour and alpha based on a percentage
-  return hexToRGBA(tenantPrimary, percentage === 0 ? 0.01 : percentage / 100);
+  return hexToRGBA(tenantPrimary, percentage === 0 ? 0.05 : percentage / 100);
 };
 
 // getPercentageTextBorder
 // Description: Return text border style based on a percentage
 export const getPercentageTextBorder = (percentage: number) => {
-  const textBorderColor =
-    percentage && percentage >= 75 ? colors.textPrimary : 'white';
+  const textBorderColor = percentage >= 75 ? colors.textPrimary : 'white';
 
   return `-1px 0 ${textBorderColor}, 0 1px ${textBorderColor}, 1px 0 ${textBorderColor}, 0 -1px ${textBorderColor}`;
 };

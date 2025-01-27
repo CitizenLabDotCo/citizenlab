@@ -25,32 +25,29 @@ const MatrixQuestion = ({ result }: Props) => {
   const theme = useTheme();
   const locale = useLocale();
 
-  // Create arrays for the statements & answers and linear scale labels
+  // Create arrays for the statements & answers and linear scale
+  // labels so they are easier to work with.
   const statementsWithResults = getStatementsWithResultsArray(result);
   const linearScaleLabels = getLinearScaleLabelsArray(result);
 
   return (
-    <Box pt="16px" width="100%" maxWidth="100vw" overflowX="auto">
+    <Box pt="16px" overflowX="auto">
       <table style={{ borderCollapse: 'separate', borderSpacing: '8px 8px' }}>
         <thead>
-          <th />
-          {linearScaleLabels.map((linearScaleMultiloc) => (
-            <StledTh key={linearScaleMultiloc.value}>
-              <Text m="0px">{linearScaleMultiloc.label[locale]}</Text>
-            </StledTh>
-          ))}
+          <tr>
+            <th />
+            {linearScaleLabels.map((linearScaleMultiloc) => (
+              <StledTh key={linearScaleMultiloc.value}>
+                <Text m="0px">{linearScaleMultiloc.label[locale]}</Text>
+              </StledTh>
+            ))}
+          </tr>
         </thead>
 
         <tbody>
           {statementsWithResults.map((statementWithResult) => (
-            <tr
-              key={statementWithResult.statementKey}
-              style={{ background: theme.colors.tenantPrimaryLighten95 }}
-            >
-              <StickyTd
-                key={statementWithResult.statementKey}
-                style={{ background: 'white' }}
-              >
+            <tr key={statementWithResult.statementKey}>
+              <StickyTd style={{ background: 'white' }}>
                 <Box display="flex" minHeight="80px">
                   <Text m="0px" my="auto">
                     {statementWithResult.statementMultiloc[locale]}
@@ -59,6 +56,7 @@ const MatrixQuestion = ({ result }: Props) => {
               </StickyTd>
               <>
                 {linearScaleLabels.map((linearScaleLabel) => {
+                  // Get percentage of respondents who chose this value
                   const percentage = getPercentage(
                     statementWithResult,
                     linearScaleLabel
