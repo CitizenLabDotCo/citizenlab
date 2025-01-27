@@ -45,6 +45,7 @@ module MultiTenancy
         attribute(:document_annotation_embed_url, if: :document_annotation?)
         attribute(:native_survey_title_multiloc, if: :native_survey?)
         attribute(:native_survey_button_multiloc, if: :native_survey?)
+        attribute(:form_success_multiloc, if: :native_survey?)
       end
     end
   end

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import { Box, IconTooltip, Text } from '@citizenlab/cl2-component-library';
 import { CLErrors, Multiloc } from 'typings';
@@ -18,6 +18,8 @@ import { FormattedMessage, useIntl } from 'utils/cl-intl';
 
 import parentMessages from '../../../../messages';
 import messages from '../messages';
+import SuccessModal from 'containers/ProjectsShowPage/SucessModal';
+import clHistory from 'utils/cl-router/history';
 
 interface Props {
   allow_anonymous_participation: boolean | null | undefined;
@@ -32,6 +34,10 @@ interface Props {
     locale: string | undefined
   ) => void;
   handleSurveyCTAChange: (value: Multiloc, locale: string | undefined) => void;
+  handleFormSuccessChange: (
+    value: Multiloc,
+    locale: string | undefined
+  ) => void;
 }
 
 const NativeSurveyInputs = ({
@@ -42,6 +48,7 @@ const NativeSurveyInputs = ({
   handleAllowAnonymousParticipationOnChange,
   handleSurveyTitleChange,
   handleSurveyCTAChange,
+  handleFormSuccessChange,
 }: Props) => {
   const { formatMessage } = useIntl();
   const localize = useLocalize();
@@ -129,6 +136,37 @@ const NativeSurveyInputs = ({
         >
           {localize(formData.native_survey_button_multiloc)}
         </Button>
+      </SectionField>
+
+      <SectionField>
+        <SubSectionTitle>
+          Success message
+          {/*<FormattedMessage {...parentMessages.surveyTitleLabel} />*/}
+        </SubSectionTitle>
+        <InputMultilocWithLocaleSwitcher
+          id="success"
+          type="text"
+          valueMultiloc={formData.form_success_multiloc}
+          onChange={handleFormSuccessChange}
+        />
+        <Error apiErrors={apiErrors && apiErrors.form_success_multiloc} />
+        {phase && (
+          <>
+            <Button
+              onClick={() => {
+                clHistory.push({
+                  search: `?show_modal=true`,
+                });
+              }}
+            >
+              Preview
+            </Button>
+            <SuccessModal
+              projectId={phase?.data.relationships.project.data.id}
+              previewSuccessMessage={formData.form_success_multiloc}
+            />
+          </>
+        )}
       </SectionField>
     </>
   );

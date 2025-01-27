@@ -11,23 +11,31 @@ import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import messages from '../../messages';
 
 import { getMailLink } from './utils';
+import { Multiloc } from 'typings';
+import useLocalize from 'hooks/useLocalize';
 
 interface Props {
   ideaId?: string;
   showIdeaId?: boolean;
+  successMessage?: Multiloc;
 }
 
-const NativeSurveyModalContent = ({ ideaId, showIdeaId }: Props) => {
+const NativeSurveyModalContent = ({
+  ideaId,
+  showIdeaId,
+  successMessage,
+}: Props) => {
   const { data: authUser } = useAuthUser();
   const { formatMessage } = useIntl();
+  const localize = useLocalize();
+
+  const successMessageDisplay =
+    localize(successMessage) || formatMessage(messages.onSurveySubmission);
 
   return (
     <Box>
       <Title variant="h2" textAlign="center" mt="0">
-        <FormattedMessage
-          {...messages.onSurveySubmission}
-          data-cy="e2e-survey-success-message"
-        />
+        <Box data-cy="e2e-survey-success-message">{successMessageDisplay}</Box>
       </Title>
       {ideaId && showIdeaId && (
         <>

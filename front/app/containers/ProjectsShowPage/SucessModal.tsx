@@ -18,12 +18,14 @@ import {
 } from 'utils/configs/participationMethodConfig';
 
 import { isReady } from './utils';
+import { Multiloc } from 'typings';
 
 interface Props {
   projectId: string;
+  previewSuccessMessage?: Multiloc;
 }
 
-const SuccessModal = ({ projectId }: Props) => {
+const SuccessModal = ({ projectId, previewSuccessMessage }: Props) => {
   const { data: project } = useProjectById(projectId);
   const { data: phases } = usePhases(projectId);
 
@@ -49,6 +51,8 @@ const SuccessModal = ({ projectId }: Props) => {
     removeSearchParams(['show_modal', 'phase_id', 'new_idea_id']);
   }, [showModalParam]);
 
+  console.log('ShowModal', showModal, showModalParam);
+
   if (!ready) return null;
   // If there is a newIdeaIdParam, wait for idea to load
   if (newIdeaIdParam && !idea) return null;
@@ -72,6 +76,11 @@ const SuccessModal = ({ projectId }: Props) => {
     ? !idea.data.relationships.author?.data
     : false;
 
+  const successMessage =
+    previewSuccessMessage ||
+    participationContext?.attributes.form_success_multiloc ||
+    undefined;
+
   return (
     <Modal opened={showModal} close={handleClose} hasSkipButton={false}>
       <Box
@@ -86,6 +95,7 @@ const SuccessModal = ({ projectId }: Props) => {
           {config.getModalContent({
             ideaId: newIdeaIdParam,
             showIdeaId: showIdeaIdInModal,
+            successMessage: successMessage,
           })}
         </Box>
       </Box>

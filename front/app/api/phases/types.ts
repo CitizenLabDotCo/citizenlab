@@ -75,6 +75,7 @@ export interface IPhaseAttributes {
   report_public: boolean;
   native_survey_title_multiloc?: Multiloc;
   native_survey_button_multiloc?: Multiloc;
+  form_success_multiloc?: Multiloc;
   prescreening_enabled?: boolean;
   manual_voters_amount?: number;
 }
@@ -122,6 +123,7 @@ export interface IUpdatedPhaseProperties {
   };
   native_survey_title_multiloc?: Multiloc;
   native_survey_button_multiloc?: Multiloc;
+  form_success_multiloc?: Multiloc;
   prescreening_enabled?: boolean | null;
   allow_anonymous_participation?: boolean;
   expire_days_limit?: number;

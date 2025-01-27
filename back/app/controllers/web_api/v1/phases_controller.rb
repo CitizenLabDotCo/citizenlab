@@ -143,6 +143,7 @@ class WebApi::V1::PhasesController < ApplicationController
         voting_term_plural_multiloc: CL2_SUPPORTED_LOCALES,
         native_survey_title_multiloc: CL2_SUPPORTED_LOCALES,
         native_survey_button_multiloc: CL2_SUPPORTED_LOCALES,
+        form_success_multiloc: CL2_SUPPORTED_LOCALES,
         campaigns_settings: Phase::CAMPAIGNS
       }
     ]

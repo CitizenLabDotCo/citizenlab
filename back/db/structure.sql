@@ -1603,7 +1603,8 @@ CREATE TABLE public.phases (
     manual_votes_count integer DEFAULT 0 NOT NULL,
     manual_voters_amount integer,
     manual_voters_last_updated_by_id uuid,
-    manual_voters_last_updated_at timestamp(6) without time zone
+    manual_voters_last_updated_at timestamp(6) without time zone,
+    form_success_multiloc jsonb DEFAULT '{}'::jsonb NOT NULL
 );
 
 
@@ -7695,6 +7696,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20241227103433'),
 ('20241230165323'),
 ('20241230165518'),
-('20241230172612');
+('20241230172612'),
+('20250127101544');
 
 

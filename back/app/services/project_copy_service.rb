@@ -334,6 +334,7 @@ class ProjectCopyService < TemplateService # rubocop:disable Metrics/ClassLength
       if yml_phase['participation_method'] == 'native_survey'
         yml_phase['native_survey_title_multiloc'] = phase.native_survey_title_multiloc
         yml_phase['native_survey_button_multiloc'] = phase.native_survey_button_multiloc
+        yml_phase['form_success_multiloc'] = phase.form_success_multiloc
       end
 
       store_ref yml_phase, phase.id, :phase

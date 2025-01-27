@@ -49,7 +49,8 @@ module MultiTenancy
           end_at: nil,
           campaigns_settings: { project_phase_started: true },
           native_survey_title_multiloc: { 'en' => 'Survey' },
-          native_survey_button_multiloc: { 'en' => 'Take the survey' }
+          native_survey_button_multiloc: { 'en' => 'Take the survey' },
+          form_success_multiloc: {}
         )
         project.project_images.create!(image: Rails.root.join("spec/fixtures/image#{rand(20)}.png").open)
       end

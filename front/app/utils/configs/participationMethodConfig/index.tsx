@@ -25,6 +25,7 @@ import { isNilOrError, NilOrError } from '../../helperUtils';
 import messages from '../../messages';
 
 import NativeSurveyModalContent from './NativeSurveyModalContent';
+import { Multiloc } from 'typings';
 
 export const defaultSortingOptions = [
   { text: <FormattedMessage {...messages.trending} />, value: 'trending' },
@@ -49,6 +50,7 @@ type ModalContentMethodProps = {
   title?: string;
   subtitle?: string;
   showIdeaId?: boolean;
+  successMessage?: Multiloc;
 };
 
 type FormTitleMethodProps = {
@@ -234,8 +236,18 @@ const nativeSurveyConfig: ParticipationMethodConfig = {
     }
   },
   postType: 'nativeSurvey',
-  getModalContent: ({ ideaId, showIdeaId }: ModalContentMethodProps) => {
-    return <NativeSurveyModalContent ideaId={ideaId} showIdeaId={showIdeaId} />;
+  getModalContent: ({
+    ideaId,
+    showIdeaId,
+    successMessage,
+  }: ModalContentMethodProps) => {
+    return (
+      <NativeSurveyModalContent
+        ideaId={ideaId}
+        showIdeaId={showIdeaId}
+        successMessage={successMessage}
+      />
+    );
   },
   showInputManager: false,
   renderCTABar: (props: CTABarProps) => {

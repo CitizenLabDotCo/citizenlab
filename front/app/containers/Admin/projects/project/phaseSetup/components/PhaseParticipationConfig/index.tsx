@@ -367,6 +367,13 @@ const PhaseParticipationConfig = ({
     }));
   };
 
+  const handleFormSuccessChange = (successMessage: Multiloc) => {
+    updateFormData((state) => ({
+      ...state,
+      form_success_multiloc: successMessage,
+    }));
+  };
+
   const surveyProviders = {
     typeform: typeform_enabled,
     enalyzer: enalyzer_enabled,
@@ -589,6 +596,7 @@ const PhaseParticipationConfig = ({
             }
             handleSurveyTitleChange={handleSurveyTitleChange}
             handleSurveyCTAChange={handleSurveyCTAChange}
+            handleFormSuccessChange={handleFormSuccessChange}
           />
         )}
         {participation_method === 'survey' && (
