@@ -31,6 +31,7 @@ import messages from './messages';
 const StickyTd = styled(Td)`
   background: ${(props) =>
     RGBAtoRGB(props.theme.colors.tenantPrimaryLighten95, 0.05)};
+  max-width: 100px;
   position: sticky;
   inset-inline-start: 0px;
   z-index: 1;
@@ -163,10 +164,7 @@ const MatrixControl = ({
             {statements.map((statement, index) => {
               return (
                 <Tr key={index}>
-                  <StickyTd
-                    background={theme.colors.tenantPrimaryLighten95}
-                    max-width="100px"
-                  >
+                  <StickyTd>
                     <Text m="4px" color="tenantPrimary">
                       {statement?.label}
                     </Text>
