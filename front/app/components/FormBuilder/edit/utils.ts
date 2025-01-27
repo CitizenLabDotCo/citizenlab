@@ -191,16 +191,32 @@ export function detectConflictsByPage(
   // 3. INTER-QUESTION CONFLICT
   groupedData.forEach((pageGroup) => {
     const pageId = pageGroup.groupElement.id;
-    const allGotoIds = new Set<string>();
 
-    pageGroup.questions.forEach((question) => {
-      question.logic.rules?.forEach((rule) => {
-        allGotoIds.add(rule.goto_page_id);
-      });
-    });
+    // Track whether we encounter a conflict
+    let conflictDetected = false;
 
-    // If we have more than one distinct goto ID, it's a conflict
-    if (allGotoIds.size > 1) {
+    // Track if any question has a goto_page_id rule
+    let questionWithGotoExists = false;
+
+    for (const question of pageGroup.questions) {
+      const questionGotoIds = Array.from(
+        new Set(question.logic.rules?.map((rule) => rule.goto_page_id) || [])
+      );
+
+      // If the question has at least one goto_page_id
+      if (questionGotoIds.length > 0) {
+        if (questionWithGotoExists) {
+          // Conflict detected if a second question has a goto_page_id
+          conflictDetected = true;
+          break;
+        } else {
+          questionWithGotoExists = true;
+        }
+      }
+    }
+
+    // If a conflict is detected, add it
+    if (conflictDetected) {
       addConflict(pageId, {
         conflictType: ConflictType.INTER_QUESTION_CONFLICT,
         pageId,
