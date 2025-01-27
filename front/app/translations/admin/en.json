@@ -1971,6 +1971,7 @@
   "app.containers.AdminPage.ProjectTimeline.endDatePlaceholder": "End Date",
   "app.containers.AdminPage.ProjectTimeline.fileUploadLabel": "Attachments (max 50MB)",
   "app.containers.AdminPage.ProjectTimeline.formSuccessMessageLabel": "Custom success message",
+  "app.containers.AdminPage.ProjectTimeline.formSuccessMessageTooltip": "This is the message shown to participants after they have submitted the form. If nothing is provided here then the message will default to: \"Thank you. Your response has been received.\"",
   "app.containers.AdminPage.ProjectTimeline.newPhaseTitle": "New Phase",
   "app.containers.AdminPage.ProjectTimeline.noEndDateDescription": "This phase doesn't have a predefined end date.",
   "app.containers.AdminPage.ProjectTimeline.noEndDateWarningBullet1": "Some methods' results sharing (such as voting results) won't be triggered until an end date is selected.",
