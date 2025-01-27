@@ -750,7 +750,7 @@
   "app.components.formBuilder.otherOptionTooltip": "Allow participants to enter a custom response if the provided answers do not match their preference",
   "app.components.formBuilder.page": "Page",
   "app.components.formBuilder.pageRuleLabel": "Next page is:",
-  "app.components.formBuilder.pagesLogicHelperTextDefault": "If no logic is added, the form will follow its normal flow. For more information, visit {supportPageLink}",
+  "app.components.formBuilder.pagesLogicHelperTextDefault1": "If no logic is added, the form will follow its normal flow. If both the page and its questions have logic, the question logic will take precedence. Ensure this aligns with your intended flow For more information, visit {supportPageLink}",
   "app.components.formBuilder.proposedBudget": "Proposed budget",
   "app.components.formBuilder.question": "Question",
   "app.components.formBuilder.questionCannotBeDeleted": "This question can't be deleted.",
