@@ -245,7 +245,7 @@
   "app.components.Pagination.next": "Næste side",
   "app.components.ParticipationCTABars.VotingCTABar.budgetExceedsLimit": "Du har brugt {votesCast}, hvilket overskrider grænsen på {votesLimit}. Fjern venligst nogle varer fra din kurv, og prøv igen.",
   "app.components.ParticipationCTABars.VotingCTABar.currencyLeft1": "{budgetLeft} / {totalBudget}  tilbage",
-  "app.components.ParticipationCTABars.VotingCTABar.minBudgetNotReached1": "Du skal bruge mindst {votesMinimum}  , før du kan indsende din kurv.",
+  "app.components.ParticipationCTABars.VotingCTABar.minBudgetNotReached1": "Du skal bruge mindst {votesMinimum} før du kan indsende din kurv.",
   "app.components.ParticipationCTABars.VotingCTABar.noVotesCast2": "Du skal stemme, før du kan indsende din {votesTerm}.",
   "app.components.ParticipationCTABars.VotingCTABar.nothingInBasket": "Du skal tilføje noget til din kurv, før du kan sende den.",
   "app.components.ParticipationCTABars.VotingCTABar.seeOtherOptions2": "Se muligheder",
