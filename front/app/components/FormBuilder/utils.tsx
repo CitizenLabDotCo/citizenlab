@@ -271,3 +271,17 @@ export const getTranslatedStringKey = (
     ? getBuiltInFieldStringKey(key)
     : getInputTypeStringKey(inputType);
 };
+
+export const findNextPageAfterCurrentPage = (
+  allFields: IFlatCustomField[],
+  fieldId: string
+) => {
+  const index = allFields.findIndex((item) => item.id === fieldId);
+  if (index !== -1) {
+    const nextPage = allFields
+      .slice(index + 1)
+      .find((item) => item.input_type === 'page');
+    if (nextPage?.id) return nextPage.id;
+  }
+  return 'survey_end';
+};

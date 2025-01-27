@@ -2,9 +2,14 @@ import React from 'react';
 
 import { Box } from '@citizenlab/cl2-component-library';
 
-import { IFlatCustomField } from 'api/custom_fields/types';
+import {
+  ICustomFieldSettingsTab,
+  IFlatCustomField,
+} from 'api/custom_fields/types';
 
 import useLocale from 'hooks/useLocale';
+
+import { findNextPageAfterCurrentPage } from 'components/FormBuilder/utils';
 
 import { MessageDescriptor, useIntl } from 'utils/cl-intl';
 import { isPageRuleValid, isRuleValid } from 'utils/yup/validateLogic';
@@ -26,6 +31,7 @@ interface Props {
   fieldNumbers: Record<string, number>;
   formCustomFields: IFlatCustomField[];
   formEndPageLogicOption?: MessageDescriptor;
+  handleOpenSettings: (defaultTab: ICustomFieldSettingsTab) => void;
 }
 
 const Logic = ({
@@ -33,6 +39,7 @@ const Logic = ({
   fieldNumbers,
   formCustomFields,
   formEndPageLogicOption,
+  handleOpenSettings,
 }: Props) => {
   const { formatMessage } = useIntl();
   const locale = useLocale();
@@ -55,19 +62,14 @@ const Logic = ({
     no_answer: formatMessage(messages.logicNoAnswer),
   };
 
-  const findNextPageAfterCurrentPage = () => {
-    const index = formCustomFields.findIndex((item) => item.id === field.id);
-    if (index !== -1) {
-      const nextPage = formCustomFields
-        .slice(index + 1)
-        .find((item) => item.input_type === 'page');
-      if (nextPage?.id) return nextPage.id; // Temp ID needed here?
-    }
-    return 'survey_end';
-  };
-
   return (
-    <Box>
+    <Box
+      display="flex"
+      flexDirection="column"
+      alignItems="stretch"
+      pb="12px"
+      mt="-8px"
+    >
       {['select', 'multiselect', 'multiselect_image'].includes(
         field.input_type
       ) &&
@@ -79,26 +81,22 @@ const Logic = ({
           }`;
 
           return (
-            <Box key={key}>
-              <QuestionRuleDisplay
-                isRuleValid={isRuleValid(
-                  optionRule,
-                  field.temp_id || field.id,
-                  formCustomFields
-                )}
-                answerTitle={getTitleFromAnswerId(
-                  field,
-                  optionRule?.if,
-                  locale
-                )}
-                targetPage={getTitleFromPageId(
-                  optionRule?.goto_page_id,
-                  formEndMessage,
-                  pageMessage,
-                  fieldNumbers
-                )}
-              />
-            </Box>
+            <QuestionRuleDisplay
+              key={key}
+              isRuleValid={isRuleValid(
+                optionRule,
+                field.temp_id || field.id,
+                formCustomFields
+              )}
+              answerTitle={getTitleFromAnswerId(field, optionRule?.if, locale)}
+              targetPage={getTitleFromPageId(
+                optionRule?.goto_page_id,
+                formEndMessage,
+                pageMessage,
+                fieldNumbers
+              )}
+              handleOpenSettings={handleOpenSettings}
+            />
           );
         })}
 
@@ -109,26 +107,26 @@ const Logic = ({
           const key = `${field.temp_id || field.id}_${option.key}`;
 
           return (
-            <Box key={key}>
-              <QuestionRuleDisplay
-                isRuleValid={isRuleValid(
-                  linearScaleRule,
-                  field.temp_id || field.id,
-                  formCustomFields
-                )}
-                answerTitle={getTitleFromAnswerId(
-                  field,
-                  linearScaleRule?.if,
-                  locale
-                )}
-                targetPage={getTitleFromPageId(
-                  linearScaleRule?.goto_page_id,
-                  formEndMessage,
-                  pageMessage,
-                  fieldNumbers
-                )}
-              />
-            </Box>
+            <QuestionRuleDisplay
+              key={key}
+              isRuleValid={isRuleValid(
+                linearScaleRule,
+                field.temp_id || field.id,
+                formCustomFields
+              )}
+              answerTitle={getTitleFromAnswerId(
+                field,
+                linearScaleRule?.if,
+                locale
+              )}
+              targetPage={getTitleFromPageId(
+                linearScaleRule?.goto_page_id,
+                formEndMessage,
+                pageMessage,
+                fieldNumbers
+              )}
+              handleOpenSettings={handleOpenSettings}
+            />
           );
         })}
       {field.input_type === 'page' && (
@@ -139,33 +137,35 @@ const Logic = ({
             field.logic.next_page_id
           )}
           targetPage={getTitleFromPageId(
-            field.logic.next_page_id || findNextPageAfterCurrentPage(),
+            field.logic.next_page_id ||
+              findNextPageAfterCurrentPage(formCustomFields, field.id),
             formEndMessage,
             pageMessage,
             fieldNumbers
           )}
           isDefaultPage={!field.logic.next_page_id}
+          handleOpenSettings={handleOpenSettings}
         />
       )}
       {catchAllLogicRules.map((rule) => {
         const key = `${field.temp_id || field.id}_${rule.if}`;
         return (
-          <Box key={key}>
-            <QuestionRuleDisplay
-              isRuleValid={isRuleValid(
-                rule,
-                field.temp_id || field.id,
-                formCustomFields
-              )}
-              answerTitle={catchAllLogicMessages[rule.if.toString()]}
-              targetPage={getTitleFromPageId(
-                rule.goto_page_id,
-                formEndMessage,
-                pageMessage,
-                fieldNumbers
-              )}
-            />
-          </Box>
+          <QuestionRuleDisplay
+            key={key}
+            isRuleValid={isRuleValid(
+              rule,
+              field.temp_id || field.id,
+              formCustomFields
+            )}
+            answerTitle={catchAllLogicMessages[rule.if.toString()]}
+            targetPage={getTitleFromPageId(
+              rule.goto_page_id,
+              formEndMessage,
+              pageMessage,
+              fieldNumbers
+            )}
+            handleOpenSettings={handleOpenSettings}
+          />
         );
       })}
     </Box>

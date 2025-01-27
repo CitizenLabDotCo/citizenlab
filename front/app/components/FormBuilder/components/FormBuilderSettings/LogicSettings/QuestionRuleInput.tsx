@@ -19,10 +19,11 @@ import {
 import Button from 'components/UI/ButtonWithLink';
 import Error from 'components/UI/Error';
 
-import { FormattedMessage } from 'utils/cl-intl';
+import { useIntl } from 'utils/cl-intl';
 import { isRuleValid } from 'utils/yup/validateLogic';
 
 import messages from '../../messages';
+import { FormattedMessage } from 'react-intl';
 
 type QuestionRuleInputProps = {
   fieldId: string;
@@ -44,6 +45,7 @@ export const QuestionRuleInput = ({
   answer,
   validationError,
 }: QuestionRuleInputProps) => {
+  const { formatMessage } = useIntl();
   const { setValue, watch, trigger, control } = useFormContext();
   const field: IFlatCustomField = watch(name);
   const logic: LogicType = field.logic;
@@ -102,6 +104,12 @@ export const QuestionRuleInput = ({
     answer.key &&
     ['any_other_answer', 'no_answer'].includes(answer.key.toString());
 
+  const ruleForAnswerLabel = ['multiselect', 'multiselect_image'].includes(
+    field.input_type
+  )
+    ? formatMessage(messages.ruleForAnswerLabelMultiselect)
+    : formatMessage(messages.ruleForAnswerLabel);
+
   return (
     <>
       <Controller
@@ -141,7 +149,7 @@ export const QuestionRuleInput = ({
                       flexWrap="wrap"
                     >
                       <Text color={'coolGrey600'} fontSize="s">
-                        <FormattedMessage {...messages.ruleForAnswerLabel} />
+                        {ruleForAnswerLabel}
                       </Text>
                     </Box>
                     <Box
