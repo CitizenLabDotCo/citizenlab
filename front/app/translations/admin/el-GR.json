@@ -1553,8 +1553,6 @@
   "app.containers.admin.ideaStatuses.form.fieldTitleError": "Παρέχετε ένα όνομα κατάστασης για όλες τις γλώσσες",
   "app.containers.admin.ideaStatuses.form.implementedFieldCodeDescription": "Εφαρμόστηκε επιτυχώς",
   "app.containers.admin.ideaStatuses.form.implementedFieldCodeTitle": "Υλοποιήθηκε",
-  "app.containers.admin.ideaStatuses.form.proposedFieldCodeDescription": "Υποβλήθηκε επιτυχώς ως πρόταση προς εξέταση",
-  "app.containers.admin.ideaStatuses.form.proposedFieldCodeTitle": "Προτεινόμενο",
   "app.containers.admin.ideaStatuses.form.rejectedFieldCodeDescription": "Μη επιλέξιμο ή δεν επιλέχθηκε για να προωθηθεί",
   "app.containers.admin.ideaStatuses.form.rejectedFieldCodeTitle": "Μη επιλεγμένο",
   "app.containers.admin.ideaStatuses.form.saveStatus": "Αποθήκευση κατάστασης",

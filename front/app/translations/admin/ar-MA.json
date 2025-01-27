@@ -1211,8 +1211,6 @@
   "app.containers.admin.ideaStatuses.form.fieldTitleError": "إدخال اسم حالة لكل اللغات",
   "app.containers.admin.ideaStatuses.form.implementedFieldCodeDescription": "تم التنفيذ بنجاح",
   "app.containers.admin.ideaStatuses.form.implementedFieldCodeTitle": "منفَّذ",
-  "app.containers.admin.ideaStatuses.form.proposedFieldCodeDescription": "تم التقديم بنجاح كمقترح للدراسة",
-  "app.containers.admin.ideaStatuses.form.proposedFieldCodeTitle": "مقترح",
   "app.containers.admin.ideaStatuses.form.rejectedFieldCodeDescription": "غير مؤهل أو غير محدد للمضي قدمًا",
   "app.containers.admin.ideaStatuses.form.rejectedFieldCodeTitle": "غير محدد",
   "app.containers.admin.ideaStatuses.form.saveStatus": "حفظ الحالة",

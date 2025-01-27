@@ -29,7 +29,7 @@ module Cl2Back
   class Application < Rails::Application
     require_dependency Rails.root.join('lib/citizen_lab')
 
-    config.load_defaults 7.0
+    config.load_defaults 7.1
 
     # Configuration for the application, engines, and railties goes here.
     #
@@ -86,12 +86,6 @@ module Cl2Back
 
     config.middleware.use ActionDispatch::Cookies # Required for all session management
     config.middleware.use ActionDispatch::Session::CookieStore, config.session_options
-
-    # In Rails 6.1+, Active Record provides a new internal API for connection
-    # management. Single database applications do not need to make any changes except to
-    # opt-in to the new behavior. In Rails 7.0, the legacy connection handling has been
-    # deprecated.
-    config.active_record.legacy_connection_handling = false
 
     # Dump the database schema as SQL (`structure.sql`) instead of Ruby (`schema.rb`).
     config.active_record.schema_format = :sql
