@@ -64,7 +64,7 @@ module IdeaCustomFields
     def update_all
       authorize CustomField.new(resource: @custom_form), :update_all?, policy_class: IdeaCustomFieldPolicy
       raise_error_if_stale_form_data
-      raise_error_if_no_end_page
+      raise_error_if_no_end_page_for_survey
 
       page_temp_ids_to_ids_mapping = {}
       option_temp_ids_to_ids_mapping = {}
@@ -114,7 +114,10 @@ module IdeaCustomFields
       raise UpdateAllFailedError, { form: [{ error: 'stale_data' }] }
     end
 
-    def raise_error_if_no_end_page
+    def raise_error_if_no_end_page_for_survey
+      is_survey = @custom_form.participation_context.pmethod.class.method_str == 'survey'
+      return unless is_survey
+
       last_field = update_all_params.fetch(:custom_fields).last
       return if last_field['key'] == 'survey_end' && last_field['input_type'] == 'page'
 
