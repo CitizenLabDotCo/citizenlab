@@ -30,10 +30,6 @@ export default defineMessages({
     defaultMessage:
       'Please select the category that best represents your status. This selection will help our analytics tool to more accurately process and analyze posts.',
   },
-  proposedFieldCodeTitle: {
-    id: 'app.containers.admin.ideaStatuses.form.proposedFieldCodeTitle',
-    defaultMessage: 'Proposed',
-  },
   viewedFieldCodeTitle: {
     id: 'app.containers.admin.ideaStatuses.form.viewedFieldCodeTitle',
     defaultMessage: 'Viewed',
@@ -58,14 +54,6 @@ export default defineMessages({
     id: 'app.containers.admin.ideaStatuses.form.customFieldCodeTitle',
     defaultMessage: 'Other',
   },
-  thresholdReachedFieldCodeTitle: {
-    id: 'app.containers.admin.ideaStatuses.form.thresholdReachedFieldCodeTitle',
-    defaultMessage: 'Threshold reached',
-  },
-  expiredFieldCodeTitle: {
-    id: 'app.containers.admin.ideaStatuses.form.expiredFieldCodeTitle',
-    defaultMessage: 'Expired',
-  },
   answeredFieldCodeTitle: {
     id: 'app.containers.admin.ideaStatuses.form.answeredFieldCodeTitle',
     defaultMessage: 'Answered',
@@ -73,14 +61,6 @@ export default defineMessages({
   ineligibleFieldCodeTitle: {
     id: 'app.containers.admin.ideaStatuses.form.ineligibleFieldCodeTitle',
     defaultMessage: 'Ineligible',
-  },
-  prescreeningFieldCodeTitle: {
-    id: 'app.containers.admin.ideaStatuses.form.prescreeningFieldCodeTitle',
-    defaultMessage: 'Prescreening',
-  },
-  proposedFieldCodeDescription: {
-    id: 'app.containers.admin.ideaStatuses.form.proposedFieldCodeDescription',
-    defaultMessage: 'Successfully submitted as a proposal for consideration',
   },
   viewedFieldCodeDescription: {
     id: 'app.containers.admin.ideaStatuses.form.viewedFieldCodeDescription',
@@ -102,14 +82,6 @@ export default defineMessages({
     id: 'app.containers.admin.ideaStatuses.form.rejectedFieldCodeDescription',
     defaultMessage: 'Ineligible or not selected to move forward',
   },
-  thresholdReachedFieldCodeDescription: {
-    id: 'app.containers.admin.ideaStatuses.form.thresholdReachedFieldCodeDescription',
-    defaultMessage: 'Proposal has reached the required support threshold',
-  },
-  expiredFieldCodeDescription: {
-    id: 'app.containers.admin.ideaStatuses.form.expiredFieldCodeDescription',
-    defaultMessage: 'Proposal has expired',
-  },
   answeredFieldCodeDescription: {
     id: 'app.containers.admin.ideaStatuses.form.answeredFieldCodeDescription',
     defaultMessage: 'Official feedback provided',
@@ -118,9 +90,9 @@ export default defineMessages({
     id: 'app.containers.admin.ideaStatuses.form.ineligibleFieldCodeDescription',
     defaultMessage: 'Proposal is ineligible',
   },
-  prescreeningFieldCodeDescription: {
-    id: 'app.containers.admin.ideaStatuses.form.prescreeningFieldCodeDescription',
-    defaultMessage: 'Awaiting screening',
+  customFieldCodeDescription1: {
+    id: 'app.containers.admin.ideaStatuses.form.customFieldCodeDescription1',
+    defaultMessage: 'Not matching any of the other options',
   },
   saveStatus: {
     id: 'app.containers.admin.ideaStatuses.form.saveStatus',

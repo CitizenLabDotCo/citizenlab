@@ -14,7 +14,7 @@ COPY back/engines ./engines
 RUN find engines -type f -not -name "*.gemspec" -not -name "version.rb" -print0 | xargs -0 rm -rf \
    && find engines -type d -empty -delete
 
-FROM ruby:3.3.1-slim
+FROM ruby:3.3.4-slim
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
 RUN apt-get update                                        \
@@ -57,8 +57,6 @@ RUN curl -fsSL https://www.postgresql.org/media/keys/ACCC4CF8.asc | gpg --yes --
     && apt-get update && apt-get install -y postgresql-client-16
 
 WORKDIR /cl2_back
-
-RUN gem install bundler:2.4.20
 
 COPY --from=dependency_files /app .
 

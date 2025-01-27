@@ -20,7 +20,7 @@ module IdeaAssignment
           payload: { change: idea.assignee_id_previous_change })
       end
 
-      def before_publish(idea, user)
+      def before_publish_or_submit(idea, user)
         super
         return if idea.assignee
 

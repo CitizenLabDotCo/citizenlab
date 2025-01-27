@@ -19,13 +19,10 @@ import {
 import useFeatureFlag from 'hooks/useFeatureFlag';
 import useLocale from 'hooks/useLocale';
 
-import {
-  generateTempId,
-  FormBuilderConfig,
-} from 'components/FormBuilder/utils';
+import { FormBuilderConfig } from 'components/FormBuilder/utils';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
-import { isNilOrError } from 'utils/helperUtils';
+import { generateTempId, isNilOrError } from 'utils/helperUtils';
 
 import messages from '../messages';
 
@@ -211,6 +208,15 @@ const FormBuilderToolbox = ({
           data-cy="e2e-linear-scale"
           fieldsToExclude={builderConfig.toolboxFieldsToExclude}
           inputType="linear_scale"
+          disabled={isCustomFieldsDisabled}
+        />
+        <ToolboxItem
+          icon="survey-ranking"
+          label={formatMessage(messages.ranking)}
+          onClick={() => addField('ranking')}
+          data-cy="e2e-ranking"
+          fieldsToExclude={builderConfig.toolboxFieldsToExclude}
+          inputType="ranking"
           disabled={isCustomFieldsDisabled}
         />
         <ToolboxItem
