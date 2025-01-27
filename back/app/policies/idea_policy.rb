@@ -25,7 +25,7 @@ class IdeaPolicy < ApplicationPolicy
           .left_outer_joins(project: [:admin_publication])
           .published
           .where_pmethod(&:supports_public_visibility?)
-          .where(projects: project_scope)
+          .where(project: project_scope)
       end
     end
 

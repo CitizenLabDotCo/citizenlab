@@ -1553,8 +1553,6 @@
   "app.containers.admin.ideaStatuses.form.fieldTitleError": "Proporcioneu un nom d'estat per a tots els llenguatges",
   "app.containers.admin.ideaStatuses.form.implementedFieldCodeDescription": "Implementat amb èxit",
   "app.containers.admin.ideaStatuses.form.implementedFieldCodeTitle": "Implementat",
-  "app.containers.admin.ideaStatuses.form.proposedFieldCodeDescription": "S'ha presentat correctament com a proposta per a la seva consideració",
-  "app.containers.admin.ideaStatuses.form.proposedFieldCodeTitle": "Proposat",
   "app.containers.admin.ideaStatuses.form.rejectedFieldCodeDescription": "Inelegible o no seleccionat per avançar",
   "app.containers.admin.ideaStatuses.form.rejectedFieldCodeTitle": "No seleccionat",
   "app.containers.admin.ideaStatuses.form.saveStatus": "Desa l'estat",

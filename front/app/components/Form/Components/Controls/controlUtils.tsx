@@ -19,10 +19,10 @@ export const getSubtextElement = (description: string) => {
 // Given a schema and field type, returns the options for a given array field
 export const getOptions = (
   schema: JsonSchema,
-  fieldType: 'singleEnum' | 'single' | 'multi',
+  fieldType: 'singleEnum' | 'single' | 'multi' | 'ranking',
   uiSchema?: ControlElement
 ) => {
-  if (fieldType === 'multi') {
+  if (fieldType === 'multi' || fieldType === 'ranking') {
     return (
       (!Array.isArray(schema.items) &&
         schema.items?.oneOf?.map((option) => ({
