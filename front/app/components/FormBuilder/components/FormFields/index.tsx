@@ -25,10 +25,8 @@ import {
 import { DragAndDrop, Drag, Drop } from '../DragAndDrop';
 import { getFieldNumbers } from '../utils';
 
+import { pageDNDType, questionDNDType } from './constants';
 import { FormField } from './FormField';
-
-export const pageDNDType = 'droppable-page';
-export const questionDNDType = 'droppable-question';
 
 interface FormFieldsProps {
   onEditField: (field: IFlatCustomFieldWithIndex) => void;

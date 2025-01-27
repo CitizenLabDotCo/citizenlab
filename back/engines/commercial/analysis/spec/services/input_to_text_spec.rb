@@ -179,5 +179,25 @@ describe Analysis::InputToText do
         TEXT
       )
     end
+
+    it 'generates multiple lines for ranking fields' do
+      custom_field = create(:custom_field_ranking, :with_options)
+      service = described_class.new([custom_field])
+
+      input = build(
+        :idea,
+        custom_field_values: {
+          custom_field.key => %w[by_bike by_train]
+        }
+      )
+
+      expect(service.formatted(input)).to eq(
+        <<~TEXT
+          ### Rank your favourite means of public transport
+          1. By bike
+          2. By train
+        TEXT
+      )
+    end
   end
 end

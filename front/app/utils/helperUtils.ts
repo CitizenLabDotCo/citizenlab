@@ -1,6 +1,6 @@
-import { uuid4 } from '@sentry/utils';
 import { trim, isUndefined } from 'lodash-es';
 import { SupportedLocale, Multiloc, GraphqlLocale } from 'typings';
+import { v4 as uuidv4 } from 'uuid';
 
 import { locales } from 'containers/App/constants';
 
@@ -226,5 +226,5 @@ export const classNames = (...classes: (string | undefined)[]) => {
 };
 
 export function generateTempId() {
-  return `TEMP-ID-${uuid4()}`;
+  return `TEMP-ID-${uuidv4()}`;
 }

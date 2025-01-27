@@ -13,13 +13,13 @@ import { IPhaseData } from 'api/phases/types';
 
 import { isNilOrError } from 'utils/helperUtils';
 
-import ConfigSelectWithLocaleSwitcher from './components/FormBuilderSettings/ConfigSelectWithLocaleSwitcher';
+import ConfigOptionsWithLocaleSwitcher from './components/FormBuilderSettings/ConfigOptionsWithLocaleSwitcher';
 import FieldGroupSettings from './components/FormBuilderSettings/FieldGroupSettings';
 import LinearScaleSettings from './components/FormBuilderSettings/LinearScaleSettings';
 import MultiselectSettings from './components/FormBuilderSettings/MultiselectSettings';
+import OptionsSettings from './components/FormBuilderSettings/OptionsSettings';
 import PageLayoutSettings from './components/FormBuilderSettings/PageLayoutSettings';
 import PointSettings from './components/FormBuilderSettings/PointSettings';
-import SelectSettings from './components/FormBuilderSettings/SelectSettings';
 import messages from './components/messages';
 
 export const builtInFieldKeys = [
@@ -99,7 +99,7 @@ export function getAdditionalSettings(
     case 'multiselect':
       return (
         <>
-          <ConfigSelectWithLocaleSwitcher
+          <ConfigOptionsWithLocaleSwitcher
             name={`customFields.${field.index}.options`}
             locales={locales}
             platformLocale={platformLocale}
@@ -111,7 +111,23 @@ export function getAdditionalSettings(
             maximumSelectCountName={`customFields.${field.index}.maximum_select_count`}
             selectCountToggleName={`customFields.${field.index}.select_count_enabled`}
           />
-          <SelectSettings
+          <OptionsSettings
+            inputType={field.input_type}
+            randomizeName={`customFields.${field.index}.random_option_ordering`}
+            dropdownLayoutName={`customFields.${field.index}.dropdown_layout`}
+          />
+        </>
+      );
+    case 'ranking':
+      return (
+        <>
+          <ConfigOptionsWithLocaleSwitcher
+            name={`customFields.${field.index}.options`}
+            locales={locales}
+            platformLocale={platformLocale}
+            inputType={field.input_type}
+          />
+          <OptionsSettings
             inputType={field.input_type}
             randomizeName={`customFields.${field.index}.random_option_ordering`}
             dropdownLayoutName={`customFields.${field.index}.dropdown_layout`}
@@ -121,13 +137,13 @@ export function getAdditionalSettings(
     case 'select':
       return (
         <>
-          <ConfigSelectWithLocaleSwitcher
+          <ConfigOptionsWithLocaleSwitcher
             name={`customFields.${field.index}.options`}
             locales={locales}
             platformLocale={platformLocale}
             inputType={field.input_type}
           />
-          <SelectSettings
+          <OptionsSettings
             inputType={field.input_type}
             randomizeName={`customFields.${field.index}.random_option_ordering`}
             dropdownLayoutName={`customFields.${field.index}.dropdown_layout`}
@@ -257,6 +273,9 @@ const getInputTypeStringKey = (
       break;
     case 'polygon':
       translatedStringKey = messages.drawArea;
+      break;
+    case 'ranking':
+      translatedStringKey = messages.ranking;
       break;
   }
 
