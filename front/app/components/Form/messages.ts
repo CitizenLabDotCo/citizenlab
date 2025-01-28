@@ -43,4 +43,8 @@ export default defineMessages({
     id: 'app.components.form.ErrorDisplay.save',
     defaultMessage: 'Save',
   },
+  backToProject: {
+    id: 'app.components.form.backToProject',
+    defaultMessage: 'Back to project',
+  },
 });

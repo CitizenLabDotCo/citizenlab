@@ -12,7 +12,7 @@ import { useTheme } from 'styled-components';
 
 import LanguageSelector from 'containers/MainHeader/Components/LanguageSelector';
 
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage, MessageDescriptor } from 'utils/cl-intl';
 
 import messages from '../../messages';
 
@@ -28,6 +28,12 @@ const ICON_VALUES: Record<PageVariant, IconNames> = {
   other: 'chevron-right',
   submission: 'send',
   'after-submission': 'check',
+};
+
+const BUTTON_MESSAGES: Record<PageVariant, MessageDescriptor> = {
+  other: messages.next,
+  submission: messages.submit,
+  'after-submission': messages.backToProject,
 };
 
 interface Props {
@@ -97,11 +103,7 @@ const PageControlButtons = ({
           boxShadow={defaultStyles.boxShadow}
           processing={isLoading}
         >
-          <FormattedMessage
-            {...(pageVariant === 'submission'
-              ? messages.submit
-              : messages.next)}
-          />
+          <FormattedMessage {...BUTTON_MESSAGES[pageVariant]} />
         </Button>
       </Box>
     </Box>
