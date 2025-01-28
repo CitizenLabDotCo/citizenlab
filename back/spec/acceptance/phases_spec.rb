@@ -211,6 +211,7 @@ resource 'Phases' do
         parameter :campaigns_settings, "A hash, only including keys in #{Phase::CAMPAIGNS} and with only boolean values", required: true
         parameter :native_survey_title_multiloc, 'A title for the native survey.'
         parameter :native_survey_button_multiloc, 'Text for native survey call to action button.'
+        parameter :form_success_multiloc, 'Custom text for the form success message - native surveys only.'
         parameter :prescreening_enabled, 'Do inputs need to go through pre-screening before being published? Defaults to false', required: false
       end
 
@@ -354,6 +355,7 @@ resource 'Phases' do
         let(:phase) { build(:native_survey_phase) }
         let(:native_survey_title_multiloc) { { 'en' => 'Planning survey' } }
         let(:native_survey_button_multiloc) { { 'en' => 'Fill in the form' } }
+        let(:form_success_multiloc) { { 'en' => 'Finished' } }
 
         example 'Create a native survey phase', document: false do
           do_request
@@ -371,8 +373,10 @@ resource 'Phases' do
           expect(phase_in_db.end_at).to eq end_at
           expect(phase_in_db.native_survey_title_multiloc['en']).to eq 'Planning survey'
           expect(phase_in_db.native_survey_button_multiloc['en']).to eq 'Fill in the form'
+          expect(phase_in_db.form_success_multiloc['en']).to eq 'Finished'
           expect(json_response.dig(:data, :attributes, :native_survey_title_multiloc, :en)).to eq 'Planning survey'
           expect(json_response.dig(:data, :attributes, :native_survey_button_multiloc, :en)).to eq 'Fill in the form'
+          expect(json_response.dig(:data, :attributes, :form_success_multiloc, :en)).to eq 'Finished'
 
           # A native survey phase still has some ideation-related state, all column defaults.
           expect(phase_in_db.input_term).to eq 'idea'
