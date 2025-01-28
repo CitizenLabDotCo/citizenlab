@@ -199,7 +199,7 @@ const MatrixControl = ({
                                 {statements[index]?.label}
                               </ScreenReaderOnly>
                             }
-                            name={`${id}-${index}-${columnIndex}-radio-group`}
+                            name={`radio-group-${statement.key}-${id}`}
                             id={`${id}-${index}-${columnIndex}-radio`}
                             onChange={(value) => {
                               if (data && data?.length === statements?.length) {
@@ -229,7 +229,14 @@ const MatrixControl = ({
             buttonStyle="text"
             textColor={theme.colors.tenantPrimary}
             textDecoration="underline"
-            text={formatMessage(messages.clearAll)}
+            text={
+              <>
+                <ScreenReaderOnly>
+                  {formatMessage(messages.clearAllScreenreader)}
+                </ScreenReaderOnly>
+                <Box aria-hidden>{formatMessage(messages.clearAll)}</Box>
+              </>
+            }
             onClick={() => {
               handleChange(path, undefined);
               setDidBlur(true);
