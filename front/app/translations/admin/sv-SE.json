@@ -1845,6 +1845,7 @@
   "app.containers.AdminPage.ProjectEdit.survey.optional2": "Valfritt",
   "app.containers.AdminPage.ProjectEdit.survey.pagesLogicHelperText2": "Om ingen logik läggs till kommer undersökningen att följa sitt normala flöde. Om du vill ha mer information kan du besöka {supportPageLink}",
   "app.containers.AdminPage.ProjectEdit.survey.point": "Plats",
+  "app.containers.AdminPage.ProjectEdit.survey.questionLogicHelperText3": "Om ingen logik läggs till i ett svar följer enkäten sitt normala flöde. För mer information, besök {supportPageLink}",
   "app.containers.AdminPage.ProjectEdit.survey.quitReportConfirmationQuestion": "Är du säker på att du vill lämna?",
   "app.containers.AdminPage.ProjectEdit.survey.quitReportInfo2": "Dina nuvarande ändringar kommer inte att sparas.",
   "app.containers.AdminPage.ProjectEdit.survey.ranking2": "Ranking",
