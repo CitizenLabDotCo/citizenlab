@@ -5,7 +5,7 @@ import {
   Text,
   useBreakpoint,
   Button,
-  colors,
+  Icon,
 } from '@citizenlab/cl2-component-library';
 import { ControlProps } from '@jsonforms/core';
 import { withJsonFormsControlProps } from '@jsonforms/react';
@@ -120,7 +120,6 @@ const RatingControl = ({
                 flexBasis={100 / maximum}
                 key={`${path}-radio-${visualIndex}`}
                 minWidth={getButtonWidth()}
-                padding="16px, 20px, 16px, 20px"
               >
                 <Button
                   py="12px"
@@ -129,32 +128,27 @@ const RatingControl = ({
                   )}-rating-option-${visualIndex}`}
                   tabIndex={-1}
                   aria-pressed={data === visualIndex}
-                  borderColor={theme.colors.tenantPrimary}
-                  borderHoverColor={theme.colors.tenantPrimary}
-                  bgColor={
-                    data === visualIndex
-                      ? theme.colors.tenantPrimary
-                      : theme.colors.tenantPrimaryLighten95
-                  }
-                  bgHoverColor={
-                    data === visualIndex
-                      ? theme.colors.tenantPrimary
-                      : theme.colors.tenantPrimaryLighten75
-                  }
-                  textHoverColor={
-                    data === visualIndex
-                      ? colors.white
-                      : theme.colors.tenantPrimary
-                  }
-                  textColor={
-                    data === visualIndex
-                      ? colors.white
-                      : theme.colors.tenantPrimary
-                  }
+                  px="0"
                   width="100%"
                   onClick={() => handleChange(path, visualIndex)}
+                  buttonStyle="text"
                 >
-                  {visualIndex}
+                  <Box
+                    display="flex"
+                    flexDirection="column"
+                    alignItems="center"
+                    gap="4px"
+                  >
+                    <Icon
+                      name={data >= visualIndex ? 'ratingFilled' : 'rating'}
+                      fill={
+                        data >= visualIndex
+                          ? theme.colors.tenantPrimary
+                          : theme.colors.tenantPrimaryLighten75
+                      }
+                    />
+                    {visualIndex}
+                  </Box>
                 </Button>
               </Box>
             );
