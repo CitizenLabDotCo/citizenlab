@@ -1,6 +1,15 @@
 import React from 'react';
 
-import { Box, Text } from '@citizenlab/cl2-component-library';
+import {
+  Box,
+  Table,
+  Tbody,
+  Td,
+  Text,
+  Th,
+  Thead,
+  Tr,
+} from '@citizenlab/cl2-component-library';
 import { useTheme } from 'styled-components';
 
 import { ResultUngrouped } from 'api/survey_results/types';
@@ -14,7 +23,6 @@ import {
   getPercentageTextBorder,
   getStatementsWithResultsArray,
   StickyTd,
-  StledTh,
 } from './utils';
 
 type Props = {
@@ -31,23 +39,28 @@ const MatrixQuestion = ({ result }: Props) => {
   const linearScaleLabels = getLinearScaleLabelsArray(result);
 
   return (
-    <Box pt="16px" overflowX="auto">
-      <table style={{ borderCollapse: 'separate', borderSpacing: '8px 8px' }}>
-        <thead>
-          <tr>
-            <th />
+    <Box overflowX="auto">
+      <Table borderSpacing="8px 8px" display="block">
+        <Thead>
+          <Tr>
+            <Th borderBottom="none !important" />
             {linearScaleLabels.map((linearScaleMultiloc) => (
-              <StledTh key={linearScaleMultiloc.value}>
+              <Th
+                width="84px"
+                minWidth="84px"
+                borderBottom="none !important"
+                key={linearScaleMultiloc.value}
+              >
                 <Text m="0px">{linearScaleMultiloc.label[locale]}</Text>
-              </StledTh>
+              </Th>
             ))}
-          </tr>
-        </thead>
+          </Tr>
+        </Thead>
 
-        <tbody>
+        <Tbody>
           {statementsWithResults.map((statementWithResult) => (
-            <tr key={statementWithResult.statementKey}>
-              <StickyTd style={{ background: 'white' }}>
+            <Tr key={statementWithResult.statementKey}>
+              <StickyTd>
                 <Box display="flex" minHeight="80px">
                   <Text m="0px" my="auto">
                     {statementWithResult.statementMultiloc[locale]}
@@ -63,36 +76,32 @@ const MatrixQuestion = ({ result }: Props) => {
                   );
 
                   return (
-                    <td
+                    <Td
                       key={linearScaleLabel.value}
-                      style={{
-                        background: getTenantColourByPercentage(
-                          percentage,
-                          theme.colors.tenantPrimary
-                        ),
-                      }}
+                      background={getTenantColourByPercentage(
+                        percentage,
+                        theme.colors.tenantPrimary
+                      )}
                     >
                       <Box display="flex" justifyContent="center">
                         <Text
                           my="auto"
                           fontSize="s"
                           color={percentage >= 75 ? 'white' : 'textPrimary'}
-                          style={{
-                            textShadow: getPercentageTextBorder(percentage),
-                          }}
+                          textShadow={getPercentageTextBorder(percentage)}
                           fontWeight="semi-bold"
                         >
                           {`${percentage}%`}
                         </Text>
                       </Box>
-                    </td>
+                    </Td>
                   );
                 })}
               </>
-            </tr>
+            </Tr>
           ))}
-        </tbody>
-      </table>
+        </Tbody>
+      </Table>
     </Box>
   );
 };
