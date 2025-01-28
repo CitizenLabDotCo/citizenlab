@@ -18,7 +18,7 @@ const validSchema = {
         rules: [
           {
             if: '34f0d355-34b9-4653-a43e-49b86a752b63',
-            goto_page_id: 'survey_end',
+            goto_page_id: '6b4cde0a-0715-40dc-904d-74cb7f65d7ba',
           },
         ],
       },

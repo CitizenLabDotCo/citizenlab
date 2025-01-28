@@ -13,7 +13,7 @@ export const isRuleValid = (
   fieldBeingValidatedId: string,
   fields: IFlatCustomField[]
 ) => {
-  if ((rule && rule.goto_page_id === 'survey_end') || rule === undefined) {
+  if (rule === undefined) {
     return true;
   }
 
@@ -36,7 +36,7 @@ export const isPageRuleValid = (
   sourcePageId: string,
   nextPageId?: string
 ) => {
-  if (nextPageId === 'survey_end' || !nextPageId) {
+  if (!nextPageId) {
     return true;
   }
   const indexOfTargetPage = fields.findIndex(

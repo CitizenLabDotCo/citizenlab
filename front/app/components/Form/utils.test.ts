@@ -456,7 +456,7 @@ describe('getFormSchemaAndData', () => {
         {
           type: 'Page',
           options: {
-            id: 'survey_end',
+            id: '0e414233-2323-4c4a-b3b5-66c3674d7bb4',
             title: 'Thanks for participating',
             description:
               "Please submit your answers by selecting 'Submit' below.",
