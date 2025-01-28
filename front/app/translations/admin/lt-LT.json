@@ -908,7 +908,6 @@
   "app.containers.Admin.projects.all.PDFExportModal.selectIdeationPhase": "Pasirinkite idėjos kūrimo etapą.",
   "app.containers.Admin.projects.all.askPersonalData": "Paprašyti asmens duomenų",
   "app.containers.Admin.projects.all.clickExportToPDFIdeaForm": "Šiuo metu nepalaikomi klausimai: Vaizdai, žymos ir failų įkėlimas.",
-  "app.containers.Admin.projects.all.clickExportToPDFSurvey4": "Šiuo metu nepalaikomi klausimai: Klausimai, susiję su žemėlapių sudarymu (nuleisti smeigtuką, nubraižyti maršrutą ir nubraižyti plotą), paveikslėlių pasirinkimo klausimai, reitingavimo klausimai ir failų įkėlimo klausimai.",
   "app.containers.Admin.projects.all.components.archived": "Archyvuota",
   "app.containers.Admin.projects.all.components.draft": "Projektas",
   "app.containers.Admin.projects.all.components.manageButtonLabel": "Redaguoti",

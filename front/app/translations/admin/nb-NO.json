@@ -908,7 +908,6 @@
   "app.containers.Admin.projects.all.PDFExportModal.selectIdeationPhase": "Vennligst velg en idéfase.",
   "app.containers.Admin.projects.all.askPersonalData": "Be om personopplysninger",
   "app.containers.Admin.projects.all.clickExportToPDFIdeaForm": "Spørsmål som ikke støttes for øyeblikket: Bilder, tagger og filopplasting.",
-  "app.containers.Admin.projects.all.clickExportToPDFSurvey4": "Spørsmål som ikke støttes for øyeblikket: Kartleggingsspørsmål (slipp nål, tegn rute og tegn område), bildevalgspørsmål, rangeringsspørsmål og filopplastingsspørsmål.",
   "app.containers.Admin.projects.all.components.archived": "Gjennomført",
   "app.containers.Admin.projects.all.components.draft": "Utkast",
   "app.containers.Admin.projects.all.components.manageButtonLabel": "Rediger",

@@ -908,7 +908,6 @@
   "app.containers.Admin.projects.all.PDFExportModal.selectIdeationPhase": "Wybierz fazę tworzenia pomysłu.",
   "app.containers.Admin.projects.all.askPersonalData": "Zapytaj o dane osobowe",
   "app.containers.Admin.projects.all.clickExportToPDFIdeaForm": "Pytania, które nie są obecnie obsługiwane: Obrazy, Tagi i Przesyłanie plików.",
-  "app.containers.Admin.projects.all.clickExportToPDFSurvey4": "Pytania obecnie nieobsługiwane: Pytania dotyczące mapowania (upuść pinezkę, narysuj trasę i narysuj obszar), pytania dotyczące wyboru obrazka, pytania rankingowe i pytania dotyczące przesyłania plików.",
   "app.containers.Admin.projects.all.components.archived": "Zarchiwizowany",
   "app.containers.Admin.projects.all.components.draft": "Szkic",
   "app.containers.Admin.projects.all.components.manageButtonLabel": "Zarządzaj",
