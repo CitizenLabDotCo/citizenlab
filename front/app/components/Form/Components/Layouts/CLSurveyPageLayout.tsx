@@ -94,7 +94,7 @@ const CLSurveyPageLayout = memo(
     const [userPagePath] = useState<PageType[]>([]);
     const [scrollToError, setScrollToError] = useState(false);
     const [percentageAnswered, setPercentageAnswered] = useState<number>(1);
-    const showSubmit = currentStep === uiPages.length - 1;
+    const showSubmit = currentStep === uiPages.length - 2;
     const dataCyValue = showSubmit ? 'e2e-submit-form' : 'e2e-next-page';
     const hasPreviousPage = currentStep !== 0;
 
