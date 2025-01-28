@@ -1,6 +1,7 @@
 import { UseQueryOptions, useQueries } from '@tanstack/react-query';
 
 import { ICustomFields } from 'api/custom_fields/types';
+import { IIdeaCustomFieldData } from 'api/idea_custom_fields/types';
 
 import fetcher from 'utils/cl-react-query/fetcher';
 
@@ -27,7 +28,7 @@ const fetchCustomFieldStatements = ({
 };
 
 type CustomFieldStatements = Omit<ICustomFieldStatementParameters, 'id'> & {
-  customFields?: ICustomFields;
+  customFields?: ICustomFields | { data: IIdeaCustomFieldData[] };
 };
 
 type CustomFieldsStatementsReturnType =
@@ -47,7 +48,7 @@ const useCustomFieldStatements = ({
 
   const getCustomFieldIdBasedOnStatementId = (statementId?: string) => {
     const customField = customFields?.data.find((customField) =>
-      customField.relationships.matrix_statements?.data.find(
+      customField.relationships?.matrix_statements?.data.find(
         (statement) => statement.id === statementId
       )
     );

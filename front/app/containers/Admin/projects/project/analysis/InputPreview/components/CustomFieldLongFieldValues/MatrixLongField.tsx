@@ -5,7 +5,6 @@ import { useParams, useSearchParams } from 'react-router-dom';
 import { useTheme } from 'styled-components';
 
 import useCustomFieldStatements from 'api/custom_field_statements/useCustomFieldStatements';
-import useRawCustomFields from 'api/custom_fields/useRawCustomFields';
 import { IIdeaCustomField } from 'api/idea_custom_fields/types';
 
 import useLocale from 'hooks/useLocale';
@@ -25,22 +24,20 @@ const MatrixLongField = ({ customField, rawValue }: Props) => {
   const theme = useTheme();
   const locale = useLocale();
   const { formatMessage } = useIntl();
-
-  const projectId = useParams<{ projectId: string }>().projectId || '';
   const [searchParams] = useSearchParams();
+
+  // Get phase and project from URL
   const phaseId = searchParams.get('phase_id') || '';
+  const projectId = useParams<{ projectId: string }>().projectId || '';
 
-  const result = useRawCustomFields({
-    projectId,
-    phaseId,
-  });
-
+  // Get the statements data for the custom field
   const statements = useCustomFieldStatements({
     projectId,
     phaseId,
-    customFields: result.data,
+    customFields: { data: [customField.data] },
   });
 
+  // Create an array for the results with statement data, so it's easier to work with
   const resultArray =
     rawValue &&
     Object.entries(rawValue).map(([key, value]) => {

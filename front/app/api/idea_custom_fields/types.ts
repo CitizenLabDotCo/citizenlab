@@ -61,6 +61,9 @@ export interface IIdeaCustomFieldData {
     custom_field_options: {
       data: IRelationship;
     };
+    matrix_statements: {
+      data: IRelationship[];
+    };
     current_ref_distribution: {
       data: IRelationship;
     };
