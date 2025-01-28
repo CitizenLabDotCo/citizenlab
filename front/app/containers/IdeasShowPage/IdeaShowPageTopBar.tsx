@@ -10,6 +10,7 @@ import { lighten } from 'polished';
 import { useSearchParams } from 'react-router-dom';
 import styled from 'styled-components';
 
+import useIdeaStatuses from 'api/idea_statuses/useIdeaStatuses';
 import useIdeaById from 'api/ideas/useIdeaById';
 import useAuthUser from 'api/me/useAuthUser';
 import { IPhaseData } from 'api/phases/types';
@@ -89,6 +90,22 @@ const IdeaShowPageTopBar = ({
   const isProposalPhase =
     phase?.attributes.participation_method === 'proposals';
 
+  const { data: proposalsStatuses } = useIdeaStatuses({
+    queryParams: {
+      participation_method: 'proposals',
+    },
+    enabled: true,
+  });
+
+  const ideaStatusId = idea?.data.relationships.idea_status.data?.id;
+  const ideaStatusCode = ideaStatusId
+    ? proposalsStatuses?.data.find((status) => status.id === ideaStatusId)
+        ?.attributes.code ?? null
+    : null;
+
+  const nonVotingProposalStatus =
+    ideaStatusCode === 'expired' || ideaStatusCode === 'ineligible';
+
   useEffect(() => {
     removeSearchParams(['go_back']);
   }, []);
@@ -139,15 +156,16 @@ const IdeaShowPageTopBar = ({
         </Left>
         <Right>
           {/* Only visible if not voting */}
-          {phase?.attributes.participation_method !== 'voting' && ( // To reduce bias we want to hide the reactions during voting methods
-            <ReactionControl
-              size="1"
-              styleType="border"
-              ideaId={ideaId}
-              disabledReactionClick={onDisabledReactClick}
-              variant={isProposalPhase ? 'text' : 'icon'}
-            />
-          )}
+          {phase?.attributes.participation_method !== 'voting' &&
+            !nonVotingProposalStatus && ( // To reduce bias we want to hide the reactions during voting methods
+              <ReactionControl
+                size="1"
+                styleType="border"
+                ideaId={ideaId}
+                disabledReactionClick={onDisabledReactClick}
+                variant={isProposalPhase ? 'text' : 'icon'}
+              />
+            )}
           {/* Only visible if voting */}
           {ideaId && phase && ideaIsInParticipationContext && (
             <Box mr="8px">
