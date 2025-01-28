@@ -137,13 +137,15 @@ const UserNavbar = memo<Props>(({ user }) => {
   const eventsCount = events?.data.length;
   // TODO: Fix this the next time the file is edited.
   // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-  const showEventTab = authUser?.data?.id === user.id;
+
   const isFollowingEnabled = useFeatureFlag({
     name: 'follow',
   });
-  // TODO: Fix this the next time the file is edited.
-  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-  const showFollowingTab = isFollowingEnabled && authUser?.data?.id === user.id;
+
+  const isAuthUser = authUser?.data.id === user.id;
+  const showEventTab = isAuthUser;
+  const showSurveySubmissionsTab = isAuthUser;
+  const showFollowingTab = isFollowingEnabled && isAuthUser;
   const surveySubmissionsCount = surveySubmissions?.data.length;
 
   const followingTab: TabData = {
@@ -174,14 +176,18 @@ const UserNavbar = memo<Props>(({ user }) => {
       path: 'submissions',
       icon: 'idea',
     },
-    {
-      label: formatMessage(messages.surveyResponses, {
-        responses: surveySubmissionsCount ?? 0,
-      }),
-      active: pathname.endsWith('surveys'),
-      path: 'surveys',
-      icon: 'survey',
-    },
+    ...(showSurveySubmissionsTab
+      ? [
+          {
+            label: formatMessage(messages.surveyResponses, {
+              responses: surveySubmissionsCount ?? 0,
+            }),
+            active: pathname.endsWith('surveys'),
+            path: 'surveys',
+            icon: 'survey',
+          } as const,
+        ]
+      : []),
     {
       label: formatMessage(messages.commentsWithCount, {
         commentsCount: commentsCount?.data.attributes.count || 0,
