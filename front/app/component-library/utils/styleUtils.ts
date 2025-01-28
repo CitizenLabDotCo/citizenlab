@@ -475,11 +475,11 @@ export function getTheme(tenant: any = null): MainThemeProps {
       // tenantPrimary variants to use for lightened/darkened variants
       // instead of using Polished library functions directly.
       tenantPrimaryLighten75: core
-        ? RGBAtoRGB(transparentize(0.75, core.color_main), 0.25)
-        : RGBAtoRGB(transparentize(0.75, '#ef0071'), 0.25),
+        ? transparentize(0.75, core.color_main)
+        : transparentize(0.75, '#ef0071'),
       tenantPrimaryLighten95: core
-        ? RGBAtoRGB(transparentize(0.95, core.color_main), 0.05)
-        : RGBAtoRGB(transparentize(0.95, '#ef0071'), 0.05),
+        ? transparentize(0.95, core.color_main)
+        : transparentize(0.95, '#ef0071'),
     },
     fontFamily,
     fontSizes,
@@ -540,7 +540,7 @@ export function hexToRgb(hex: any) {
 // RGBAtoRGB
 // Description: Function to convert RGBA color to RGB representation by blending it with a white background.
 // https://stackoverflow.com/a/71532946
-function RGBAtoRGB(rgba: string, alpha: number) {
+export function RGBAtoRGB(rgba: string, alpha: number) {
   const rgbaValues: RegExpMatchArray | null = rgba.match(/\d+/g);
 
   if (rgbaValues) {
