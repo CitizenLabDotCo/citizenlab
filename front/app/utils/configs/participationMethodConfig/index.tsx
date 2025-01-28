@@ -217,20 +217,6 @@ const proposalsConfig: ParticipationMethodConfig = {
 const nativeSurveyConfig: ParticipationMethodConfig = {
   showInputCount: true,
   formEditor: 'surveyEditor',
-  // onFormSubmission: ({ idea, project, phaseId }: FormSubmissionMethodProps) => {
-  //   const searchParams: Record<string, string> = { show_modal: 'true' };
-  //   if (phaseId) searchParams.phase_id = phaseId;
-  //   if (idea) searchParams.new_idea_id = idea.data.id;
-
-  //   const searchParamsString = stringify(searchParams);
-
-  //   if (project) {
-  //     clHistory.push({
-  //       pathname: `/projects/${project.attributes.slug}`,
-  //       search: searchParamsString,
-  //     });
-  //   }
-  // },
   onFormSubmission: () => {},
   postType: 'nativeSurvey',
   getModalContent: ({ ideaId, showIdeaId }: ModalContentMethodProps) => {

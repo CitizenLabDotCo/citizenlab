@@ -20,6 +20,7 @@ import {
   useJsonForms,
   JsonFormsDispatch,
 } from '@jsonforms/react';
+import { stringify } from 'qs';
 import { useParams, useSearchParams } from 'react-router-dom';
 import { useTheme } from 'styled-components';
 
@@ -51,6 +52,7 @@ import QuillEditedContent from 'components/UI/QuillEditedContent';
 import Warning from 'components/UI/Warning';
 
 import { useIntl } from 'utils/cl-intl';
+import clHistory from 'utils/cl-router/history';
 import eventEmitter from 'utils/eventEmitter';
 
 import {
@@ -238,7 +240,17 @@ const CLSurveyPageLayout = memo(
       }
 
       if (pageVariant === 'after-submission') {
-        // TODO redirect
+        const searchParams: Record<string, string> = { show_modal: 'true' };
+        if (phaseId) searchParams.phase_id = phaseId;
+        // if (idea) searchParams.new_idea_id = idea.data.id;
+
+        const searchParamsString = stringify(searchParams);
+
+        clHistory.push({
+          pathname: `/projects/${slug}`,
+          search: searchParamsString,
+        });
+
         return;
       }
 
