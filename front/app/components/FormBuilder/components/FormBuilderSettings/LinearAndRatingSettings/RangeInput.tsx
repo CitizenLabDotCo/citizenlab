@@ -15,9 +15,10 @@ import messages from './messages';
 
 interface Props {
   maximumName: string;
+  inputType: 'linear_scale' | 'rating';
 }
 
-const RangeInput = ({ maximumName }: Props) => {
+const RangeInput = ({ maximumName, inputType }: Props) => {
   const { control, setValue } = useFormContext();
   const defaultValues = [{}];
   const { formatMessage } = useIntl();
@@ -33,7 +34,8 @@ const RangeInput = ({ maximumName }: Props) => {
     { value: 9, label: '9' },
     { value: 10, label: '10' },
     { value: 11, label: '11' },
-  ];
+  ].filter((option) => (inputType === 'rating' ? option.value <= 10 : true));
+
   return (
     <Controller
       name={maximumName}
