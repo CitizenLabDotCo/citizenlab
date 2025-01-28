@@ -13,7 +13,7 @@ import useProjectById from 'api/projects/useProjectById';
 
 import useLocalize from 'hooks/useLocalize';
 
-import SuccessModal from 'containers/ProjectsShowPage/SucessModal';
+import SuccessModal from 'containers/ProjectsShowPage/SuccessModal';
 
 import AnonymousPostingToggle from 'components/admin/AnonymousPostingToggle/AnonymousPostingToggle';
 import { SectionField, SubSectionTitle } from 'components/admin/Section';

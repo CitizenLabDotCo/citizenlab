@@ -44,7 +44,7 @@ import ProjectCTABar from './ProjectCTABar';
 import ProjectHeader from './shared/header/ProjectHeader';
 import ProjectShowPageMeta from './shared/header/ProjectShowPageMeta';
 import { maxPageWidth } from './styles';
-import SuccessModal from './SucessModal';
+import SuccessModal from './SuccessModal';
 import TimelineContainer from './timeline';
 
 const confetti = new JSConfetti();
