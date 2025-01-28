@@ -6,19 +6,15 @@ import fetcher from 'utils/cl-react-query/fetcher';
 import surveyResultsKeys from './keys';
 import { SurveyResultsKeys, IParameters, SurveyResultsType } from './types';
 
-const getSurveyResultsEndpoint = (
-  phaseId: string | null,
-  filterLogicIds: string[]
-) => {
-  const logicIds = filterLogicIds.join(',');
-  const path = `phases/${phaseId}/survey_results`;
-  return path + (logicIds ? `?filter_logic_ids=${logicIds}` : '');
+const getSurveyResultsEndpoint = (phaseId: string | null) => {
+  return `phases/${phaseId}/survey_results`;
 };
 
 const fetchSurveyResults = ({ phaseId, filterLogicIds }: IParameters) =>
   fetcher<SurveyResultsType>({
-    path: `/${getSurveyResultsEndpoint(phaseId, filterLogicIds)}`,
+    path: `/${getSurveyResultsEndpoint(phaseId)}`,
     action: 'get',
+    queryParams: filterLogicIds ? { filter_logic_ids: filterLogicIds } : {},
   });
 
 const useSurveyResults = ({ phaseId, filterLogicIds }: IParameters) => {
