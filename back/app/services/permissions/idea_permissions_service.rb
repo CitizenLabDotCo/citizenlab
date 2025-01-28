@@ -4,7 +4,8 @@ module Permissions
       idea_not_in_current_phase: 'idea_not_in_current_phase',
       votes_exist: 'votes_exist',
       published_after_screening: 'published_after_screening',
-      not_author: 'not_author'
+      not_author: 'not_author',
+      not_reactable_status_code: 'not_reactable_status_code'
     }.freeze
 
     def initialize(idea, user, user_requirements_service: nil)
@@ -34,6 +35,8 @@ module Permissions
         reason = super
         return reason if reason
         return if user && UserRoleService.new.can_moderate_project?(idea.project, user)
+
+        return IDEA_DENIED_REASONS[:not_reactable_status_code] if IdeaStatus::REACTING_NOT_ALLOWED_CODES.include?(idea&.idea_status&.code)
 
         # The input does not need to be in the current phase for editing.
         # We preserved the behaviour that was already there, but we're not
