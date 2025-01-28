@@ -66,7 +66,7 @@ export const getFilteredDataForUserPath = (
   userRoute: PageType[],
   data: any
 ) => {
-  const filteredData = { data };
+  const filteredData = { data: { ...data } };
   forOwn(data, (value, key) => {
     filteredData.data[key] = keyPresentInPageRoute(key, userRoute)
       ? value

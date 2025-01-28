@@ -215,6 +215,9 @@ const CLSurveyPageLayout = memo(
     };
 
     const handleNextAndSubmit = async () => {
+      const currentPageCategorization = uiPages[currentStep];
+      userPagePath.push(uiPages[currentStep]);
+
       if (showSubmit && onSubmit) {
         setIsLoading(true);
         data.publication_status = 'published';
@@ -222,8 +225,6 @@ const CLSurveyPageLayout = memo(
         return;
       }
 
-      const currentPageCategorization = uiPages[currentStep];
-      userPagePath.push(uiPages[currentStep]);
       if (
         customAjv.validate(
           getPageSchema(
