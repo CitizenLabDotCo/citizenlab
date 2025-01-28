@@ -220,7 +220,7 @@ const FormBuilderToolbox = ({
           disabled={isCustomFieldsDisabled}
         />
         <ToolboxItem
-          icon="ranking"
+          icon="rating"
           label={formatMessage(messages.rating)}
           onClick={() => addField('rating')}
           data-cy="e2e-rating"
