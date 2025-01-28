@@ -46,7 +46,7 @@ const StickyTd = styled(Td)`
     `}
 
   ${media.desktop`
-      min-width: 220px;
+      min-width: 200px;
     `}
 `;
 
