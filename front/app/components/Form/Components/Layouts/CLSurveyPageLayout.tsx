@@ -43,6 +43,7 @@ import {
   PageType,
   getFilteredDataForUserPath,
   getFormCompletionPercentage,
+  getPageVariant,
 } from 'components/Form/Components/Layouts/utils';
 import { FormContext } from 'components/Form/contexts';
 import { customAjv } from 'components/Form/utils';
@@ -94,8 +95,8 @@ const CLSurveyPageLayout = memo(
     const [userPagePath] = useState<PageType[]>([]);
     const [scrollToError, setScrollToError] = useState(false);
     const [percentageAnswered, setPercentageAnswered] = useState<number>(1);
-    const showSubmit = currentStep === uiPages.length - 2;
-    const dataCyValue = showSubmit ? 'e2e-submit-form' : 'e2e-next-page';
+
+    const pageVariant = getPageVariant(currentStep, uiPages.length);
     const hasPreviousPage = currentStep !== 0;
 
     const draggableDivRef = useRef<HTMLDivElement>(null);
@@ -236,7 +237,12 @@ const CLSurveyPageLayout = memo(
         return;
       }
 
-      if (showSubmit) {
+      if (pageVariant === 'after-submission') {
+        // TODO redirect
+        return;
+      }
+
+      if (pageVariant === 'submission') {
         setIsLoading(true);
         data.publication_status = 'published';
         await onSubmit(getFilteredDataForUserPath(userPagePath, data), true);
@@ -489,10 +495,8 @@ const CLSurveyPageLayout = memo(
             handleNextAndSubmit={handleNextAndSubmit}
             handlePrevious={handlePrevious}
             hasPreviousPage={hasPreviousPage}
-            currentStep={currentStep}
             isLoading={isLoading}
-            showSubmit={showSubmit}
-            dataCyValue={dataCyValue}
+            pageVariant={pageVariant}
           />
         </Box>
       </>
