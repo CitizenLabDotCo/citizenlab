@@ -627,6 +627,7 @@
   "app.components.form.controls.allStatementsError": "An answer must be selected for all statements.",
   "app.components.form.controls.back": "Back",
   "app.components.form.controls.clearAll": "Clear all",
+  "app.components.form.controls.clearAllScreenreader": "Clear all answers from above matrix question",
   "app.components.form.controls.clickOnMapMultipleToAdd3": "Click on the map to draw. Then, drag on points to move them.",
   "app.components.form.controls.clickOnMapToAddOrType": "Click on the map or type an address below to add your answer.",
   "app.components.form.controls.confirm": "Confirm",
