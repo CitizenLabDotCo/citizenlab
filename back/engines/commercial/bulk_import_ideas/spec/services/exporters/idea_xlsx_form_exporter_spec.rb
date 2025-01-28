@@ -79,6 +79,7 @@ describe BulkImportIdeas::Exporters::IdeaXlsxFormExporter do
         'Multiline text field',
         'Number field',
         'Linear scale field',
+        'Rating field',
         'Select field',
         'Type your answer',
         'Multi select field',
