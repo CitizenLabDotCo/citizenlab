@@ -37,7 +37,7 @@ const MatrixLongField = ({ customField, rawValue }: Props) => {
     customFields: { data: [customField.data] },
   });
 
-  // Create an array for the results with statement data, so it's easier to work with
+  // Create an array for the results with statement and lienar scale data, so it's simpler to work with
   const resultArray =
     rawValue &&
     Object.entries(rawValue).map(([key, value]) => {
