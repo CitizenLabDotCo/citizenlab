@@ -72,9 +72,7 @@ const MatrixLongField = ({ customField, rawValue }: Props) => {
               gap="12px"
             >
               <Box my="auto" maxWidth="50%">
-                <Text m="0px" mr="8px">
-                  {result.statementTitle?.[locale]}
-                </Text>
+                <Text m="0px">{result.statementTitle?.[locale]}</Text>
               </Box>
 
               <Box
