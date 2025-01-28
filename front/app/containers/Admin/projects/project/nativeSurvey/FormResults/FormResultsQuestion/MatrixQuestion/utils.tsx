@@ -1,4 +1,4 @@
-import { colors, Td, Th } from '@citizenlab/cl2-component-library';
+import { colors, Td } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 import { Multiloc } from 'typings';
 
@@ -17,12 +17,6 @@ export const StickyTd = styled(Td)`
   inset-inline-start: 0px;
   z-index: 1;
   flex-grow: 1;
-`;
-
-export const StyledTh = styled(Th)`
-  width: 84px;
-  min-width: 84px;
-  border-bottom: none !important;
 `;
 
 // TYPES
