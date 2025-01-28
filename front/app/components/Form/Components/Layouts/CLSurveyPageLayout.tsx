@@ -215,38 +215,40 @@ const CLSurveyPageLayout = memo(
     };
 
     const handleNextAndSubmit = async () => {
+      if (!onSubmit) return;
+
       const currentPageCategorization = uiPages[currentStep];
       userPagePath.push(uiPages[currentStep]);
 
-      if (showSubmit && onSubmit) {
-        setIsLoading(true);
-        data.publication_status = 'published';
-        await onSubmit(getFilteredDataForUserPath(userPagePath, data), true);
+      const isValid = customAjv.validate(
+        getPageSchema(
+          schema,
+          currentPageCategorization,
+          formState.core?.data,
+          customAjv
+        ),
+        getSanitizedFormData(data)
+      );
+
+      if (!isValid) {
+        setShowAllErrors?.(true);
+        setScrollToError(true);
         return;
       }
 
-      if (
-        customAjv.validate(
-          getPageSchema(
-            schema,
-            currentPageCategorization,
-            formState.core?.data,
-            customAjv
-          ),
-          getSanitizedFormData(data)
-        )
-      ) {
-        scrollToTop();
+      if (showSubmit) {
+        setIsLoading(true);
+        data.publication_status = 'published';
+        await onSubmit(getFilteredDataForUserPath(userPagePath, data), true);
+      } else {
         data.publication_status = 'draft';
         data.latest_complete_page = currentStep;
-        onSubmit?.({ data }, false);
-        setCurrentStep(currentStep + 1);
-
-        setIsLoading(false);
-      } else {
-        setShowAllErrors?.(true);
-        setScrollToError(true);
+        await onSubmit({ data }, false);
       }
+
+      scrollToTop();
+      setCurrentStep(currentStep + 1);
+      setIsLoading(false);
     };
 
     const handlePrevious = () => {
