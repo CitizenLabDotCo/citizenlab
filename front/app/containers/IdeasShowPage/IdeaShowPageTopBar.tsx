@@ -103,8 +103,8 @@ const IdeaShowPageTopBar = ({
         ?.attributes.code ?? null
     : null;
 
-  const nonVotingProposalStatus =
-    ideaStatusCode === 'expired' || ideaStatusCode === 'ineligible';
+  const VotableIdeaStatus =
+    ideaStatusCode !== 'expired' && ideaStatusCode !== 'ineligible';
 
   useEffect(() => {
     removeSearchParams(['go_back']);
@@ -157,7 +157,7 @@ const IdeaShowPageTopBar = ({
         <Right>
           {/* Only visible if not voting */}
           {phase?.attributes.participation_method !== 'voting' &&
-            !nonVotingProposalStatus && ( // To reduce bias we want to hide the reactions during voting methods
+            VotableIdeaStatus && ( // To reduce bias we want to hide the reactions during voting methods
               <ReactionControl
                 size="1"
                 styleType="border"
