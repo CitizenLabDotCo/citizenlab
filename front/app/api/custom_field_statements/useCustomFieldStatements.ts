@@ -10,7 +10,7 @@ import {
   IFormCustomFieldStatement,
 } from './types';
 
-const fetchCustomFieldStatements = ({
+const fetchCustomFieldStatement = ({
   projectId,
   phaseId,
   customFieldId,
@@ -61,7 +61,7 @@ const useCustomFieldStatements = ({
         id,
       }),
       queryFn: () =>
-        fetchCustomFieldStatements({
+        fetchCustomFieldStatement({
           projectId,
           phaseId,
           id,
