@@ -1,6 +1,6 @@
 import { QueryKeys } from 'utils/cl-react-query/types';
 
-const baseKey = { type: 'custom_field_statement' };
+const baseKey = { type: 'custom_field_matrix_statement' };
 
 const customFieldStatementKeys = {
   all: () => [baseKey],
