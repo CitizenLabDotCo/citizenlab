@@ -6,6 +6,7 @@ import { useSearchParams } from 'react-router-dom';
 import { Multiloc } from 'typings';
 
 import useIdeaById from 'api/ideas/useIdeaById';
+import { ParticipationMethod } from 'api/phases/types';
 import usePhases from 'api/phases/usePhases';
 import { getCurrentPhase } from 'api/phases/utils';
 import useProjectById from 'api/projects/useProjectById';
@@ -22,10 +23,13 @@ import { isReady } from './utils';
 
 interface Props {
   projectId: string;
-  previewSuccessMessage?: Multiloc;
+  preview?: {
+    participationMethod: ParticipationMethod;
+    successMessage?: Multiloc;
+  };
 }
 
-const SuccessModal = ({ projectId, previewSuccessMessage }: Props) => {
+const SuccessModal = ({ projectId, preview }: Props) => {
   const { data: project } = useProjectById(projectId);
   const { data: phases } = usePhases(projectId);
 
@@ -39,7 +43,7 @@ const SuccessModal = ({ projectId, previewSuccessMessage }: Props) => {
 
   const [showModal, setShowModal] = useState<boolean>(false);
 
-  const ready = isReady(project?.data, phases);
+  const ready = isReady(project?.data, phases) || !!preview;
 
   useEffect(() => {
     if (showModalParam) {
@@ -52,6 +56,7 @@ const SuccessModal = ({ projectId, previewSuccessMessage }: Props) => {
   }, [showModalParam]);
 
   if (!ready) return null;
+
   // If there is a newIdeaIdParam, wait for idea to load
   if (newIdeaIdParam && !idea) return null;
 
@@ -59,6 +64,7 @@ const SuccessModal = ({ projectId, previewSuccessMessage }: Props) => {
     phaseIdParam && phases ? getPhase(phaseIdParam, phases.data) : undefined;
   const participationContext = phaseInUrl ?? getCurrentPhase(phases?.data);
   const participationMethod =
+    preview?.participationMethod ||
     participationContext?.attributes.participation_method;
 
   if (!participationMethod) return null;
@@ -75,8 +81,8 @@ const SuccessModal = ({ projectId, previewSuccessMessage }: Props) => {
     : false;
 
   const successMessage =
-    previewSuccessMessage ||
-    participationContext.attributes.form_success_multiloc ||
+    preview?.successMessage ||
+    participationContext?.attributes.form_success_multiloc ||
     undefined;
 
   return (

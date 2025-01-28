@@ -1,11 +1,6 @@
 import React from 'react';
 
-import {
-  Box,
-  IconTooltip,
-  Text,
-  Tooltip,
-} from '@citizenlab/cl2-component-library';
+import { Box, IconTooltip, Text } from '@citizenlab/cl2-component-library';
 import { CLErrors, Multiloc } from 'typings';
 
 import { IPhase, IUpdatedPhaseProperties } from 'api/phases/types';
@@ -159,25 +154,24 @@ const NativeSurveyInputs = ({
         />
         <Error apiErrors={apiErrors && apiErrors.form_success_multiloc} />
 
-        <Tooltip
-          disabled={!!project?.data.id}
-          placement="left"
-          content={formatMessage(messages.successMessageTooltip)}
+        <Button
+          width="fit-content"
+          onClick={() => {
+            clHistory.push({
+              search: `?show_modal=true`,
+            });
+          }}
+          mt="12px"
         >
-          <Button
-            onClick={() => {
-              clHistory.push({
-                search: `?show_modal=true`,
-              });
-            }}
-            disabled={!project?.data.id}
-          >
-            Preview
-          </Button>
-        </Tooltip>
+          Preview
+        </Button>
+
         <SuccessModal
           projectId={project?.data.id || ''}
-          previewSuccessMessage={formData.form_success_multiloc}
+          preview={{
+            participationMethod: 'native_survey',
+            successMessage: formData.form_success_multiloc,
+          }}
         />
       </SectionField>
     </>
