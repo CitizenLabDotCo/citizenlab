@@ -7,9 +7,8 @@ import {
   Button,
   colors,
 } from '@citizenlab/cl2-component-library';
-import { ControlProps } from '@jsonforms/core';
+import { ControlProps, UISchemaElement } from '@jsonforms/core';
 import { withJsonFormsControlProps } from '@jsonforms/react';
-import { UiSchema } from 'react-jsonschema-form';
 import { useTheme } from 'styled-components';
 
 import { FormLabel } from 'components/UI/FormComponents';
@@ -281,7 +280,7 @@ const LinearScaleControl = ({
 
 export default withJsonFormsControlProps(LinearScaleControl);
 
-export const linearScaleControlTester = (schema: UiSchema) => {
+export const linearScaleControlTester = (schema: UISchemaElement) => {
   // TODO: Fix this the next time the file is edited.
   // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   if (schema?.options?.linear_scale_label1?.length >= 0) {
