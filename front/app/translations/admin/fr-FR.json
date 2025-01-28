@@ -1845,6 +1845,7 @@
   "app.containers.AdminPage.ProjectEdit.survey.optional2": "Facultatif",
   "app.containers.AdminPage.ProjectEdit.survey.pagesLogicHelperText2": "Si aucune logique n'est ajoutée, l'enquête suivra son cours normal. Pour plus d'informations, visitez {supportPageLink}",
   "app.containers.AdminPage.ProjectEdit.survey.point": "Lieu",
+  "app.containers.AdminPage.ProjectEdit.survey.questionLogicHelperText3": "Si aucune logique n'est ajoutée à une réponse, l'enquête suivra son cours normal. Pour plus d'informations, visitez le site {supportPageLink}",
   "app.containers.AdminPage.ProjectEdit.survey.quitReportConfirmationQuestion": "Voulez-vous vraiment quitter?",
   "app.containers.AdminPage.ProjectEdit.survey.quitReportInfo2": "Tes modifications actuelles ne seront pas sauvegardées.",
   "app.containers.AdminPage.ProjectEdit.survey.ranking2": "Classement",
