@@ -863,6 +863,73 @@ RSpec.describe SurveyResultsGeneratorService do
       it 'returns a single result for a linear scale field' do
         expect(generator.generate_results(field_id: matrix_linear_scale_field.id)).to match expected_result_matrix_linear_scale
       end
+
+      context 'with grouping' do
+        let(:grouped_matrix_linear_scale_results) do
+          {
+            customFieldId: matrix_linear_scale_field.id,
+            inputType: 'matrix_linear_scale',
+            question: {
+              'en' => 'Please indicate how strong you agree or disagree with the following statements.'
+            },
+            required: false,
+            grouped: true,
+            totalResponseCount: 27,
+            questionResponseCount: 5,
+            multilocs: {
+              answer: {
+                1 => { title_multiloc: { 'en' => '1 - Strongly disagree', 'fr-FR' => '1', 'nl-NL' => '1' } },
+                2 => { title_multiloc: { 'en' => '2', 'fr-FR' => '2', 'nl-NL' => '2' } },
+                3 => { title_multiloc: { 'en' => '3', 'fr-FR' => '3', 'nl-NL' => '3' } },
+                4 => { title_multiloc: { 'en' => '4', 'fr-FR' => '4', 'nl-NL' => '4' } },
+                5 => { title_multiloc: { 'en' => '5 - Strongly agree', 'fr-FR' => '5', 'nl-NL' => '5' } }
+              },
+              group: {
+                'male' => { title_multiloc: instance_of(Hash) },
+                'female' => { title_multiloc: instance_of(Hash) },
+                'unspecified' => { title_multiloc: instance_of(Hash) }
+              }
+            },
+            legend: ['male', 'female', 'unspecified', nil],
+            linear_scales: {
+              'send_more_animals_to_space' => {
+                question: {
+                  'en' => 'We should send more animals into space'
+                },
+                questionResponseCount: 4,
+                answers: [
+                  { answer: 5, count: 0, percentage: 0.0, groups: [] },
+                  { answer: 4, count: 1, percentage: 0.25, groups: [{ count: 1, group: 'male' }] },
+                  { answer: 3, count: 1, percentage: 0.25, groups: [{ count: 1, group: 'male' }] },
+                  { answer: 2, count: 0, percentage: 0.0, groups: [] },
+                  { answer: 1, count: 2, percentage: 0.5, groups: [{ count: 1, group: 'male' }, { count: 1, group: 'female' }] },
+                  { answer: nil, count: 23 }
+                ]
+              },
+              'ride_bicycles_more_often' => {
+                question: {
+                  'en' => 'We should ride our bicycles more often'
+                },
+                questionResponseCount: 4,
+                answers: [
+                  { answer: 5, count: 0, percentage: 0.0, groups: [] },
+                  { answer: 4, count: 2, percentage: 0.5, groups: [{ count: 2, group: 'female' }] },
+                  { answer: 3, count: 2, percentage: 0.5, groups: [{ count: 2, group: 'male' }] },
+                  { answer: 2, count: 0, percentage: 0.0, groups: [] },
+                  { answer: 1, count: 0, percentage: 0.0, groups: [] },
+                  { answer: nil, count: 23 }
+                ]
+              }
+            }
+          }
+        end
+
+        it 'returns a grouped result for a matrix linear scale field' do
+          generator = described_class.new(survey_phase, group_mode: 'user_field', group_field_id: gender_user_custom_field.id)
+          result = generator.generate_results(field_id: matrix_linear_scale_field.id)
+          expect(result).to match grouped_matrix_linear_scale_results
+        end
+      end
     end
 
     describe 'select field' do
