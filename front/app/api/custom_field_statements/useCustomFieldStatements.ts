@@ -1,13 +1,13 @@
 import { UseQueryOptions, useQueries } from '@tanstack/react-query';
 
 import { ICustomFields } from 'api/custom_fields/types';
-import { IIdeaCustomFieldData } from 'api/idea_custom_fields/types';
 
 import fetcher from 'utils/cl-react-query/fetcher';
 
 import customFieldStatementKeys from './keys';
 import {
   ICustomFieldStatementParameters,
+  IdeaCustomFields,
   IFormCustomFieldStatement,
 } from './types';
 
@@ -28,7 +28,7 @@ const fetchCustomFieldStatements = ({
 };
 
 type CustomFieldStatements = Omit<ICustomFieldStatementParameters, 'id'> & {
-  customFields?: ICustomFields | { data: IIdeaCustomFieldData[] };
+  customFields?: ICustomFields | IdeaCustomFields;
 };
 
 type CustomFieldsStatementsReturnType =

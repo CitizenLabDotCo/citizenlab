@@ -1,9 +1,16 @@
+import { IIdeaCustomFieldData } from 'api/idea_custom_fields/types';
+
 export interface ICustomFieldStatementParameters {
   id?: string;
   projectId: string;
   phaseId?: string;
   customFieldId?: string;
 }
+
+export type IdeaCustomFields = {
+  data: IIdeaCustomFieldData[];
+};
+
 export type StatementAttributes = {
   title_multiloc: {
     [locale: string]: string;
