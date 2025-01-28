@@ -257,6 +257,7 @@ resource 'Ideas' do
         [
           { factory: :custom_field_number, value: 42 },
           { factory: :custom_field_linear_scale, value: 3 },
+          { factory: :custom_field_rating, value: 3 },
           { factory: :custom_field_text, value: 'test value' },
           { factory: :custom_field_multiline_text, value: 'test value' },
           { factory: :custom_field_select, options: [:with_options], value: 'option1' },
