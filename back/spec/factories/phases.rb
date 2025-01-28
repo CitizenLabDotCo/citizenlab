@@ -106,6 +106,7 @@ FactoryBot.define do
       participation_method { 'native_survey' }
       native_survey_title_multiloc { { 'en' => 'Survey', 'nl-BE' => 'Vragenlijst' } }
       native_survey_button_multiloc { { 'en' => 'Take the survey', 'nl-BE' => 'De enquete invullen' } }
+      form_success_multiloc { {} }
       factory :active_native_survey_phase do
         after(:create) do |phase, _evaluator|
           phase.start_at = Time.now - 7.days
