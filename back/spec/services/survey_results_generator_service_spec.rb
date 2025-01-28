@@ -1642,6 +1642,8 @@ RSpec.describe SurveyResultsGeneratorService do
 
     let(:results) { generator.send(:add_logic_to_results, results_without_logic, logic_ids: []) }
 
+    before { generator.send(:add_question_numbers_to_results, results_without_logic) }
+
     it 'returns logic information for single select options' do
       select_result = results[1]
       expect(select_result[:multilocs][:answer][:option1][:logic]).to match(
@@ -1655,7 +1657,7 @@ RSpec.describe SurveyResultsGeneratorService do
     it 'returns logic information for a page linking to survey end' do
       page_result = results[2]
       expect(page_result[:logic]).to match(
-        { nextPageNumber: 999, numQuestionsSkipped: 5 }
+        { nextPageNumber: 999, numQuestionsSkipped: 3 }
       )
     end
 
