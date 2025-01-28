@@ -908,7 +908,6 @@
   "app.containers.Admin.projects.all.PDFExportModal.selectIdeationPhase": "Por favor, selecione uma fase de idealização.",
   "app.containers.Admin.projects.all.askPersonalData": "Solicitar dados pessoais",
   "app.containers.Admin.projects.all.clickExportToPDFIdeaForm": "Perguntas não suportadas no momento: Imagens, tags e upload de arquivos.",
-  "app.containers.Admin.projects.all.clickExportToPDFSurvey4": "Perguntas não suportadas no momento: Perguntas de mapeamento (drop pin, draw route e draw area), perguntas de escolha de imagem, perguntas de classificação e perguntas de upload de arquivo.",
   "app.containers.Admin.projects.all.components.archived": "Arquivado",
   "app.containers.Admin.projects.all.components.draft": "Rascunho",
   "app.containers.Admin.projects.all.components.manageButtonLabel": "Gerenciar",
