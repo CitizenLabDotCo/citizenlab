@@ -54,7 +54,6 @@ export interface IUserAttributes {
   gender?: 'male' | 'female' | 'unspecified';
   birthyear?: number;
   domicile?: string;
-  education?: string;
   verified?: boolean;
   no_name?: boolean;
   display_name?: string | null;

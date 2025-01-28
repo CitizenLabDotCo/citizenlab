@@ -34,6 +34,7 @@ pl:
       "project_review_request": Żądanie przeglądu projektu
       "project_review_state_change": Projekt zatwierdzony
       "status_change_on_idea_you_follow": Zmiana statusu pomysłu, za którym podążasz
+      "survey_submitted": Przesłana ankieta
       "threshold_reached_for_admin": Propozycja osiągnęła próg poparcia w głosowaniu
       "welcome": Po rejestracji
       "admin_digest": Tygodniowy przegląd dla administratorów
@@ -496,6 +497,14 @@ pl:
       event_description: 'Projekt "%{projectName}" prosi Cię o głosowanie pomiędzy opcjami %{numIdeas} :'
       cta_message: 'Kliknij poniższy przycisk, aby wziąć udział'
       cta_vote: 'Przejdź do platformy, aby zagłosować'
+    survey_submitted:
+      subject: '%{organizationName}Dziękuję za twoją odpowiedź! 🎉'
+      main_header: 'Dziękujemy za podzielenie się Twoimi przemyśleniami na temat "%{projectName}"!'
+      your_input_submitted: 'Twoje dane wejściowe dla "%{projectName}" zostały przesłane pomyślnie.'
+      if_you_would_like_to_review: 'Jeśli chcesz przejrzeć swoje zgłoszenie, możesz pobrać swoje odpowiedzi poniżej.'
+      your_submission_has_id: 'Twoje zgłoszenie ma następujący unikalny identyfikator:'
+      you_can_use_this_id: 'Możesz użyć tego identyfikatora, aby skontaktować się z administratorami platformy, jeśli chcesz, aby Twoje zgłoszenie zostało usunięte.'
+      download_responses: 'Pobierz swoje odpowiedzi'
     admin_labels:
       recipient_role:
         admins: 'Do administratorów'

@@ -86,6 +86,26 @@ class WebApi::V1::IdeasController < ApplicationController
     end
   end
 
+  def index_survey_submissions
+    ideas = policy_scope(Idea)
+      .where(author: current_user)
+      .submitted_or_published
+      .native_survey
+
+    ideas = paginate ideas
+
+    ideas
+      .includes(:creation_phase)
+      .includes(:project)
+
+    render json: linked_json(
+      ideas,
+      WebApi::V1::IdeaMiniSerializer,
+      params: jsonapi_serializer_params,
+      include: %i[creation_phase project]
+    )
+  end
+
   def filter_counts
     ideas = IdeasFinder.new(
       params,
@@ -102,6 +122,16 @@ class WebApi::V1::IdeasController < ApplicationController
 
   def show
     render_show Idea.find params[:id]
+  end
+
+  def show_xlsx
+    idea = Idea.find params[:id]
+    authorize idea
+
+    I18n.with_locale(current_user&.locale) do
+      xlsx = Export::Xlsx::InputsGenerator.new.generate_for_input(idea)
+      send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', filename: 'survey_response.xlsx'
+    end
   end
 
   def by_slug
@@ -207,20 +237,28 @@ class WebApi::V1::IdeasController < ApplicationController
     CustomFieldService.new.compact_custom_field_values! update_params[:custom_field_values]
     input.set_manual_votes(update_params[:manual_votes_amount], current_user) if update_params[:manual_votes_amount]
 
+    update_errors = nil
     ActiveRecord::Base.transaction do # Assigning relationships cause database changes
-      input.assign_attributes update_params
+      input.assign_attributes(update_params)
       sidefx.before_update(input, current_user)
       input.phase_ids = phase_ids if phase_ids
-      authorize input
-      if not_allowed_update_errors(input)
-        render json: not_allowed_update_errors(input), status: :unprocessable_entity
-        return # rubocop:disable Rails/TransactionExitStatement
-      end
+
+      authorize(input)
+
+      update_errors = not_allowed_update_errors(input)
+      raise ActiveRecord::Rollback if update_errors
+
       verify_profanity input
+    end
+
+    if update_errors
+      render json: update_errors, status: :unprocessable_entity
+      return
     end
 
     save_options = {}
     save_options[:context] = :publication if params.dig(:idea, :publication_status) == 'published'
+
     ActiveRecord::Base.transaction do
       if input.save(**save_options)
         sidefx.after_update(input, current_user)

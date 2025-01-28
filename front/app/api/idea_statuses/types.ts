@@ -14,64 +14,42 @@ export type IdeaStatusParticipationMethod = Extract<
 >;
 
 export type IdeaStatusesQueryParams = {
-  participation_method?: IdeaStatusParticipationMethod;
+  participation_method: IdeaStatusParticipationMethod;
   // Not ready for usage yet
   exclude_screening_status?: boolean;
 };
 
-type IdeationStatusCode =
-  | 'prescreening'
-  | 'proposed'
+/* Ideation status codes */
+// Locked status codes are defined in the BE: LOCKED_CODES in models/idea_status.rb
+type LockedIdeationInputStatusCode = 'prescreening' | 'proposed';
+export type NonLockedIdeationInputStatusCode =
   | 'viewed'
   | 'under_consideration'
   | 'accepted'
   | 'rejected'
   | 'implemented'
   | 'custom';
-type ProposalsStatusCode =
+type IdeationStatusCode =
+  | LockedIdeationInputStatusCode
+  | NonLockedIdeationInputStatusCode;
+
+/* Proposal status codes */
+// Locked status codes are defined in the BE: LOCKED_CODES in models/idea_status.rb
+type LockedProposalInputStatusCode =
   | 'prescreening'
   | 'proposed'
   | 'threshold_reached'
-  | 'expired'
+  | 'expired';
+export type NonLockedProposalInputStatusCode =
   | 'answered'
   | 'ineligible'
   | 'custom';
+type ProposalsStatusCode =
+  | LockedProposalInputStatusCode
+  | NonLockedProposalInputStatusCode;
+
+/* Input status codes */
 export type InputStatusCode = IdeationStatusCode | ProposalsStatusCode;
-
-const ideationInputStatusCodes: IdeationStatusCode[] = [
-  'prescreening',
-  'proposed',
-  'viewed',
-  'under_consideration',
-  'accepted',
-  'rejected',
-  'implemented',
-  'custom',
-];
-
-const proposalsInputStatusCodes: ProposalsStatusCode[] = [
-  'prescreening',
-  'proposed',
-  'threshold_reached',
-  'expired',
-  'answered',
-  'ineligible',
-  'custom',
-];
-
-export const inputStatusCodes: Record<
-  IdeaStatusParticipationMethod,
-  IdeationStatusCode[] | ProposalsStatusCode[]
-> = {
-  ideation: ideationInputStatusCodes,
-  proposals: proposalsInputStatusCodes,
-};
-
-export const automatedInputStatusCodes: Set<InputStatusCode> = new Set([
-  'proposed',
-  'threshold_reached',
-  'expired',
-]);
 
 export interface IIdeaStatusData {
   id: string;

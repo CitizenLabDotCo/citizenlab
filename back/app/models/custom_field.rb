@@ -63,7 +63,7 @@ class CustomField < ApplicationRecord
     topic_ids section cosponsor_ids ranking matrix_linear_scale
   ].freeze
   CODES = %w[
-    author_id birthyear body_multiloc budget domicile education gender idea_files_attributes idea_images_attributes
+    author_id birthyear body_multiloc budget domicile gender idea_files_attributes idea_images_attributes
     ideation_section1 ideation_section2 ideation_section3 location_description proposed_budget title_multiloc topic_ids cosponsor_ids
   ].freeze
   VISIBLE_TO_PUBLIC = 'public'
