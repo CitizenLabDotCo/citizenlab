@@ -20,6 +20,7 @@ import {
   useJsonForms,
   JsonFormsDispatch,
 } from '@jsonforms/react';
+import { stringify } from 'qs';
 import { useParams, useSearchParams } from 'react-router-dom';
 import { useTheme } from 'styled-components';
 
@@ -43,6 +44,7 @@ import {
   PageType,
   getFilteredDataForUserPath,
   getFormCompletionPercentage,
+  getPageVariant,
 } from 'components/Form/Components/Layouts/utils';
 import { FormContext } from 'components/Form/contexts';
 import { customAjv } from 'components/Form/utils';
@@ -50,6 +52,7 @@ import QuillEditedContent from 'components/UI/QuillEditedContent';
 import Warning from 'components/UI/Warning';
 
 import { useIntl } from 'utils/cl-intl';
+import clHistory from 'utils/cl-router/history';
 import eventEmitter from 'utils/eventEmitter';
 
 import {
@@ -94,8 +97,8 @@ const CLSurveyPageLayout = memo(
     const [userPagePath] = useState<PageType[]>([]);
     const [scrollToError, setScrollToError] = useState(false);
     const [percentageAnswered, setPercentageAnswered] = useState<number>(1);
-    const showSubmit = currentStep === uiPages.length - 1;
-    const dataCyValue = showSubmit ? 'e2e-submit-form' : 'e2e-next-page';
+
+    const pageVariant = getPageVariant(currentStep, uiPages.length);
     const hasPreviousPage = currentStep !== 0;
 
     const draggableDivRef = useRef<HTMLDivElement>(null);
@@ -215,37 +218,55 @@ const CLSurveyPageLayout = memo(
     };
 
     const handleNextAndSubmit = async () => {
-      if (showSubmit && onSubmit) {
-        setIsLoading(true);
-        data.publication_status = 'published';
-        await onSubmit(getFilteredDataForUserPath(userPagePath, data), true);
-        return;
-      }
+      if (!onSubmit) return;
 
       const currentPageCategorization = uiPages[currentStep];
       userPagePath.push(uiPages[currentStep]);
-      if (
-        customAjv.validate(
-          getPageSchema(
-            schema,
-            currentPageCategorization,
-            formState.core?.data,
-            customAjv
-          ),
-          getSanitizedFormData(data)
-        )
-      ) {
-        scrollToTop();
-        data.publication_status = 'draft';
-        data.latest_complete_page = currentStep;
-        onSubmit?.({ data }, false);
-        setCurrentStep(currentStep + 1);
 
-        setIsLoading(false);
-      } else {
+      const isValid = customAjv.validate(
+        getPageSchema(
+          schema,
+          currentPageCategorization,
+          formState.core?.data,
+          customAjv
+        ),
+        getSanitizedFormData(data)
+      );
+
+      if (!isValid) {
         setShowAllErrors?.(true);
         setScrollToError(true);
+        return;
       }
+
+      if (pageVariant === 'after-submission') {
+        const searchParams: Record<string, string> = { show_modal: 'true' };
+        if (phaseId) searchParams.phase_id = phaseId;
+        // if (idea) searchParams.new_idea_id = idea.data.id;
+
+        const searchParamsString = stringify(searchParams);
+
+        clHistory.push({
+          pathname: `/projects/${slug}`,
+          search: searchParamsString,
+        });
+
+        return;
+      }
+
+      if (pageVariant === 'submission') {
+        setIsLoading(true);
+        data.publication_status = 'published';
+        await onSubmit(getFilteredDataForUserPath(userPagePath, data), true);
+      } else {
+        data.publication_status = 'draft';
+        data.latest_complete_page = currentStep;
+        await onSubmit({ data }, false);
+      }
+
+      scrollToTop();
+      setCurrentStep(currentStep + 1);
+      setIsLoading(false);
     };
 
     const handlePrevious = () => {
@@ -486,10 +507,8 @@ const CLSurveyPageLayout = memo(
             handleNextAndSubmit={handleNextAndSubmit}
             handlePrevious={handlePrevious}
             hasPreviousPage={hasPreviousPage}
-            currentStep={currentStep}
             isLoading={isLoading}
-            showSubmit={showSubmit}
-            dataCyValue={dataCyValue}
+            pageVariant={pageVariant}
           />
         </Box>
       </>

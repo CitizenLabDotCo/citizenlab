@@ -76,8 +76,8 @@ module ParticipationMethod
           resource: custom_form,
           input_type: 'page',
           page_layout: 'default',
-          title_multiloc: multiloc_service.i18n_to_multiloc('form_builder.form_end_page.title_text'),
-          description_multiloc: multiloc_service.i18n_to_multiloc('form_builder.form_end_page.description_text_2')
+          title_multiloc: multiloc_service.i18n_to_multiloc('form_builder.form_end_page.title_text_3'),
+          description_multiloc: multiloc_service.i18n_to_multiloc('form_builder.form_end_page.description_text_3')
         )
       ]
     end

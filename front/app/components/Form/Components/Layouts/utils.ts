@@ -66,7 +66,7 @@ export const getFilteredDataForUserPath = (
   userRoute: PageType[],
   data: any
 ) => {
-  const filteredData = { data };
+  const filteredData = { data: { ...data } };
   forOwn(data, (value, key) => {
     filteredData.data[key] = keyPresentInPageRoute(key, userRoute)
       ? value
@@ -182,3 +182,15 @@ export function getFormCompletionPercentage(
 
   return percentage;
 }
+
+export const getPageVariant = (currentStep: number, numberOfPages: number) => {
+  if (currentStep === numberOfPages - 1) {
+    return 'after-submission';
+  }
+
+  if (currentStep === numberOfPages - 2) {
+    return 'submission';
+  }
+
+  return 'other';
+};
