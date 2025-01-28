@@ -255,8 +255,8 @@ en:
       option1: 'Option 1'
       option2: 'Option 2'
     form_end_page:
-      title_text: 'Almost done'
-      description_text_2: "You are about to submit your answers. By clicking 'Submit' you give us permission to analyse your answers.<br/>After you submit, you will no longer be able to go back and change any of your answers."
+      title_text_3: 'Thank you for your submission!'
+      description_text_3: "Click the button below to go back to the project."
     pdf_export:
       personal_data: 'Personal data'
       personal_data_explanation_public: "We will submit your input to %{organizationName}'s online participation platform. If you want your name to be displayed as author of this input and receive updates relevant to your input by email, please fill out the following fields on this page and we will create an account for you. Your email will not be public and will only be used by %{organizationName}. If you want to remain anonymous, or do not agree for us to use your personal data in this way, you can leave them empty."
