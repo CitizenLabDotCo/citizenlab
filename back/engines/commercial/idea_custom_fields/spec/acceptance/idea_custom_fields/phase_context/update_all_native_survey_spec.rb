@@ -521,7 +521,7 @@ resource 'Idea Custom Fields' do
               description_multiloc: { 'en' => 'Description of question' },
               required: true,
               enabled: true,
-              maximum: 7,
+              maximum: 7
             }
           ]
         }
