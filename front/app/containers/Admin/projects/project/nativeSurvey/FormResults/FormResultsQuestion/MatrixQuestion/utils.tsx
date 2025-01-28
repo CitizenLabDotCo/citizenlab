@@ -1,4 +1,4 @@
-import { colors } from '@citizenlab/cl2-component-library';
+import { colors, Td } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 import { Multiloc } from 'typings';
 
@@ -11,21 +11,12 @@ import {
 import { hexToRGBA } from 'utils/helperUtils';
 
 // STYLED COMPONENTS
-export const StickyTd = styled.td`
+export const StickyTd = styled(Td)`
   max-width: 180px;
   position: sticky;
   inset-inline-start: 0px;
   z-index: 1;
   flex-grow: 1;
-`;
-
-export const StledTh = styled.th`
-  width: 84px;
-  min-width: 84px;
-
-  p {
-    word-break: break-word;
-  }
 `;
 
 // TYPES

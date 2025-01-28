@@ -116,6 +116,10 @@ export default defineMessages({
     id: 'app.components.form.controls.clearAll',
     defaultMessage: 'Clear all',
   },
+  clearAllScreenreader: {
+    id: 'app.components.form.controls.clearAllScreenreader',
+    defaultMessage: 'Clear all answers from above matrix question',
+  },
   noRankSelected: {
     id: 'app.components.form.controls.noRankSelected',
     defaultMessage: 'No rank selected',
