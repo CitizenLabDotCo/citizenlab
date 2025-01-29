@@ -46,6 +46,8 @@ describe('Form builder single choice field', () => {
     cy.visit(
       `admin/projects/${projectId}/phases/${phaseId}/native-survey/edit`
     );
+    cy.get('[data-cy="e2e-single-choice"]');
+    cy.wait(2000);
     cy.get('[data-cy="e2e-single-choice"]').click();
     cy.get('form').submit();
     cy.contains('Provide a question title').should('exist');
@@ -68,6 +70,8 @@ describe('Form builder single choice field', () => {
       `admin/projects/${projectId}/phases/${phaseId}/native-survey/edit`
     );
     cy.acceptCookies();
+    cy.get('[data-cy="e2e-single-choice"]');
+    cy.wait(2000);
     cy.get('[data-cy="e2e-single-choice"]').click();
     cy.get('[data-cy="e2e-other-option-toggle"]')
       .find('input')
@@ -81,8 +85,8 @@ describe('Form builder single choice field', () => {
     cy.contains('Survey').should('exist');
     cy.get('#e2e-single-select-control').should('exist');
 
-    // Try going to the next page without filling in the survey
-    cy.get('[data-cy="e2e-next-page"]').click();
+    // Try submitting without entering data for required field
+    cy.get('[data-cy="e2e-submit-form"]').click();
 
     // verify that an error is shown and that we stay on the page
     cy.get('.e2e-error-message').should('exist');
@@ -101,12 +105,13 @@ describe('Form builder single choice field', () => {
       })
       .type(otherAnswer, { force: true });
 
-    // Go to the next page
-    cy.get('[data-cy="e2e-next-page"]').click();
-
     // Save survey response
     cy.get('[data-cy="e2e-submit-form"]').should('exist');
     cy.get('[data-cy="e2e-submit-form"]').click();
+
+    // Check that we're on final page and return to project
+    cy.get('[data-cy="e2e-after-submission"]').should('exist');
+    cy.get('[data-cy="e2e-after-submission"]').click();
 
     // Check that we show a success message
     cy.get('[data-cy="e2e-survey-success-message"]').should('exist');
