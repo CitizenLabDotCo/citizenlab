@@ -8,7 +8,7 @@ import useLocalize from 'hooks/useLocalize';
 
 import { useIntl } from 'utils/cl-intl';
 
-import Bar from './Bar';
+import HorizontalBar from './HorizontalBar';
 import messages from './messages';
 import { parseQuestionResult } from './utils';
 
@@ -68,7 +68,7 @@ const SurveyBars = ({ questionResult, colorScheme }: Props) => {
               </Text>
             </Box>
             {bars.map((bar, index) => (
-              <Bar key={index} {...bar} />
+              <HorizontalBar key={index} {...bar} />
             ))}
           </Box>
         </Box>
