@@ -40,13 +40,16 @@ class WebApi::V1::CustomFieldSerializer < WebApi::V1::BaseSerializer
     :linear_scale_label_5_multiloc,
     :linear_scale_label_6_multiloc,
     :linear_scale_label_7_multiloc,
-    if: proc { |object, _params| object.linear_scale? }
+    if: proc { |object, _params| object.supports_linear_scale? }
 
   attributes :select_count_enabled, :maximum_select_count, :minimum_select_count, if: proc { |object, _params|
     object.multiselect?
   }
 
   has_many :options, record_type: :custom_field_option, serializer: ::WebApi::V1::CustomFieldOptionSerializer
+  has_many :matrix_statements, record_type: :custom_field_matrix_statement, serializer: ::WebApi::V1::CustomFieldMatrixStatementSerializer, if: proc { |field|
+    field.supports_matrix_statements?
+  }
   has_one :resource, record_type: :custom_form, serializer: ::WebApi::V1::CustomFormSerializer
 end
 

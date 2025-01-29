@@ -76,7 +76,7 @@ class CustomFieldOption < ApplicationRecord
     title = title_multiloc.values.first
     return unless title
 
-    self.key = CustomFieldService.new.generate_key(title, other) do |key_proposal|
+    self.key = CustomFieldService.new.generate_key(title, other:) do |key_proposal|
       self.class.find_by(key: key_proposal, custom_field: custom_field)
     end
   end
