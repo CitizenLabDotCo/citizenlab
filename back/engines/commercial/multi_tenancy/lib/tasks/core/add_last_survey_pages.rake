@@ -32,6 +32,8 @@ namespace :cl2back do
             description_multiloc: multiloc_service.i18n_to_multiloc('form_builder.form_end_page.description_text_3')
           )
 
+          last_page.save!
+
           # Replace previous mentions of 'survey_end' with the new last page id
           custom_fields.each do |field|
             if field.input_type == 'page'
