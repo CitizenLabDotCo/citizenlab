@@ -14,7 +14,7 @@ import {
 } from '@citizenlab/cl2-component-library';
 import { ControlProps, UISchemaElement } from '@jsonforms/core';
 import { withJsonFormsControlProps } from '@jsonforms/react';
-import { RGBAtoRGB } from 'component-library/utils/styleUtils';
+import { media, RGBAtoRGB } from 'component-library/utils/styleUtils';
 import styled, { useTheme } from 'styled-components';
 
 import { FormLabel } from 'components/UI/FormComponents';
@@ -31,11 +31,23 @@ import messages from './messages';
 const StickyTd = styled(Td)`
   background: ${(props) =>
     RGBAtoRGB(props.theme.colors.tenantPrimaryLighten95, 0.05)};
-  max-width: 100px;
+
   position: sticky;
   inset-inline-start: 0px;
   z-index: 1;
   flex-grow: 1;
+
+  ${media.phone`
+    min-width: 120px;
+    `}
+
+  ${media.tablet`
+    min-width: 180px;
+    `}
+
+  ${media.desktop`
+      min-width: 200px;
+    `}
 `;
 
 const StyledTd = styled(Td)`

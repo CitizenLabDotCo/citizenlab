@@ -7,6 +7,7 @@ import fetcher from 'utils/cl-react-query/fetcher';
 import customFieldStatementKeys from './keys';
 import {
   ICustomFieldStatementParameters,
+  IdeaCustomFields,
   IFormCustomFieldStatement,
 } from './types';
 
@@ -27,7 +28,7 @@ const fetchCustomFieldStatement = ({
 };
 
 type CustomFieldStatements = Omit<ICustomFieldStatementParameters, 'id'> & {
-  customFields?: ICustomFields;
+  customFields?: ICustomFields | IdeaCustomFields;
 };
 
 type CustomFieldsStatementsReturnType =
@@ -47,7 +48,7 @@ const useCustomFieldStatements = ({
 
   const getCustomFieldIdBasedOnStatementId = (statementId?: string) => {
     const customField = customFields?.data.find((customField) =>
-      customField.relationships.matrix_statements?.data.find(
+      customField.relationships?.matrix_statements?.data.find(
         (statement) => statement.id === statementId
       )
     );
