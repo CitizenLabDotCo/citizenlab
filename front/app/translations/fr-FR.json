@@ -726,7 +726,7 @@
   "app.components.formBuilder.locationDescription": "Emplacement",
   "app.components.formBuilder.logic": "Logique",
   "app.components.formBuilder.logicAnyOtherAnswer": "Toute autre réponse",
-  "app.components.formBuilder.logicConflicts.conflictingLogic": "Logique contradictoire",
+  "app.components.formBuilder.logicConflicts.conflictingLogic": "Règles logiques incompatibles",
   "app.components.formBuilder.logicConflicts.interQuestionConflict": "Cette page contient des questions qui mènent à différentes pages. Si les participants répondent à plusieurs questions, la page la plus éloignée sera affichée. Veillez à ce que ce comportement corresponde au flux prévu.",
   "app.components.formBuilder.logicConflicts.multipleConflictTypes": "Plusieurs règles logiques sont appliquées à cette page : logique des questions à sélection multiple, logique au niveau de la page et logique inter-questions. Lorsque ces conditions se chevauchent, la logique de la question est prioritaire sur celle de la page et la page la plus éloignée est affichée. Examinez la logique pour vous assurer qu'elle s'aligne sur le flux que vous avez prévu.",
   "app.components.formBuilder.logicConflicts.multipleGotoInMultiSelect": "Cette page contient une question à choix multiples où les options mènent à différentes pages. Si les participants sélectionnent plusieurs options, la page la plus éloignée sera affichée. Veillez à ce que ce comportement corresponde au flux prévu.",
