@@ -12,7 +12,7 @@ import RankingQuestion from 'containers/Admin/projects/project/nativeSurvey/Form
 
 import Legend from 'components/admin/Graphs/Legend';
 import { DEFAULT_CATEGORICAL_COLORS } from 'components/admin/Graphs/styling';
-import SurveyBarsHorizontal from 'components/admin/Graphs/SurveyBars/SurveyBarsHorizontal';
+import SurveyBarsVertical from 'components/admin/Graphs/SurveyBars/SurveyBarsVertical';
 
 import { useIntl } from 'utils/cl-intl';
 
@@ -83,7 +83,7 @@ const SurveyQuestionResult = ({
               <RankingQuestion result={attributes} hideDetailsButton={true} />
             </Box>
           )}
-          <SurveyBarsHorizontal
+          <SurveyBarsVertical
             questionResult={attributes}
             colorScheme={DEFAULT_CATEGORICAL_COLORS}
           />
