@@ -2061,8 +2061,6 @@
   "app.utils.AdminPage.ProjectEdit.inputAndFeedback": "Zbieranie inicjatyw i informacji zwrotnych",
   "app.utils.AdminPage.ProjectEdit.shareInformation": "Podziel się informacjami",
   "app.utils.FormattedCurrency.credits": "kredyty",
-  "app.utils.FormattedCurrency.multipleCredits": "{numberOfTokens} kredytów",
-  "app.utils.FormattedCurrency.oneCredit": "1 kredyt",
   "app.utils.FormattedCurrency.tokens": "tokeny",
   "app.utils.IdeaCards.mostDiscussed": "Najczęściej omawiane",
   "app.utils.IdeaCards.mostReacted": "Większość reakcji",

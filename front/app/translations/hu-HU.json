@@ -2061,8 +2061,6 @@
   "app.utils.AdminPage.ProjectEdit.inputAndFeedback": "Gyűjtsön bemeneteket és visszajelzéseket",
   "app.utils.AdminPage.ProjectEdit.shareInformation": "Ossza meg az információkat",
   "app.utils.FormattedCurrency.credits": "krediteket",
-  "app.utils.FormattedCurrency.multipleCredits": "{numberOfTokens} kredit",
-  "app.utils.FormattedCurrency.oneCredit": "1 kredit",
   "app.utils.FormattedCurrency.tokens": "zsetonok",
   "app.utils.IdeaCards.mostDiscussed": "A legtöbbet megvitatták",
   "app.utils.IdeaCards.mostReacted": "A legtöbb reakció",
