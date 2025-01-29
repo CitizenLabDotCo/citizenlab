@@ -68,7 +68,9 @@ describe('Project description builder White space component', () => {
       `/admin/project-description-builder/projects/${projectId}/description`
     );
 
-    cy.get('.e2e-white-space').click();
+    cy.get('.e2e-white-space').click({
+      force: true,
+    });
     cy.get('#e2e-delete-button').click();
     cy.get('#e2e-content-builder-topbar-save').click();
     cy.wait('@saveProjectDescriptionBuilder');

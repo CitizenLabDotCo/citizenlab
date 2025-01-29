@@ -64,7 +64,9 @@ describe('Project proposal new page', () => {
     cy.get('#idea-form');
     cy.contains('Add new idea').should('exist'); // Change to proposal later
     // add a title and description
-    cy.get('#e2e-idea-title-input input').click().type(proposalTitle);
+    cy.get('#e2e-idea-title-input input')
+      .click()
+      .type(proposalTitle, { delay: 0 });
     cy.get('#e2e-idea-description-input .ql-editor').type(proposalContent);
 
     // verify the title and description

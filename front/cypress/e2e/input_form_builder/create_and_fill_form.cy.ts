@@ -66,7 +66,7 @@ describe('Input form builder', () => {
     cy.get('#idea-form');
     cy.contains('Add new idea').should('exist');
     // add a title and description
-    cy.get('#e2e-idea-title-input input').click().type(ideaTitle);
+    cy.get('#e2e-idea-title-input input').click().type(ideaTitle, { delay: 0 });
     cy.get('#e2e-idea-description-input .ql-editor').type(ideaContent, {
       force: true,
     });
@@ -93,9 +93,8 @@ describe('Input form builder', () => {
     );
     cy.wait('@locationSearch', { timeout: 10000 });
 
-    cy.get('.e2e-idea-form-location-input-field input').type(
-      '{downArrow}{enter}'
-    );
+    cy.get('.e2e-idea-form-location-input-field input').type('{downArrow}');
+    cy.get('.e2e-idea-form-location-input-field input').type('{enter}');
 
     // verify that image and file upload components are present
     cy.get('#e2e-idea-image-upload').should('exist');
@@ -151,7 +150,7 @@ describe('Input form builder', () => {
     cy.get('#idea-form');
     cy.contains('Add new idea').should('exist');
     // add a title and description
-    cy.get('#e2e-idea-title-input input').click().type(ideaTitle);
+    cy.get('#e2e-idea-title-input input').click().type(ideaTitle, { delay: 0 });
     cy.get('#e2e-idea-description-input .ql-editor').type(ideaContent);
 
     // verify the title and description
