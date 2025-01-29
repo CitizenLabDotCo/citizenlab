@@ -941,12 +941,12 @@ RSpec.describe SurveyResultsGeneratorService do
                 answer: nil,
                 count: 21,
                 groups: [
-                  { count: 3, group: 7 },
-                  { count: 2, group: 6 },
-                  { count: 1, group: 5 },
-                  { count: 7, group: 3 },
-                  { count: 5, group: 2 },
                   { count: 2, group: 1 },
+                  { count: 5, group: 2 },
+                  { count: 7, group: 3 },
+                  { count: 1, group: 5 },
+                  { count: 2, group: 6 },
+                  { count: 3, group: 7 },
                   { count: 1, group: nil }
                 ]
               },
@@ -989,7 +989,7 @@ RSpec.describe SurveyResultsGeneratorService do
                 7 => { title_multiloc: { 'en' => '7 - Strongly agree', 'fr-FR' => "7 - Tout à fait d'accord", 'nl-NL' => '7 - Strerk mee eens' } }
               }
             },
-            legend: [7, 6, 5, 4, 3, 2, 1, nil],
+            legend: [ 1, 2, 3, 4, 5, 6, 7, nil],
             textResponses: [
               { answer: 'Austin' },
               { answer: 'Miami' },
