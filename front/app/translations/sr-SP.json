@@ -2136,6 +2136,7 @@
   "app.utils.participationMethodConfig.voting.votingNotSignedIn2": "You must log in or register to vote.",
   "app.utils.participationMethodConfig.voting.votingNotVerified": "You must verify your account before you can vote.",
   "app.utils.votingMethodUtils.budget": "буџета",
+  "app.utils.votingMethodUtils.budgetParticipationEnded1": "<b>Submitting budgets closed on {endDate}.</b> Participants had a total of <b>{maxBudget} each to distribute between {optionCount} options.</b>",
   "app.utils.votingMethodUtils.budgetSubmitted": "Буџет је поднет",
   "app.utils.votingMethodUtils.budgetSubmittedWithIcon": "Буџет је поднет 🎉",
   "app.utils.votingMethodUtils.budgetingNotInGroup": "You do not meet the requirements to assign budgets.",
