@@ -12,7 +12,6 @@ import {
 } from '@citizenlab/cl2-component-library';
 import { useTheme } from 'styled-components';
 
-import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useBasket from 'api/baskets/useBasket';
 import useUpdateBasket from 'api/baskets/useUpdateBasket';
 import { IPhaseData, VotingMethod } from 'api/phases/types';
@@ -47,7 +46,6 @@ const unsubmitBasket = async (
 };
 
 const StatusModule = ({ votingMethod, phase, project }: StatusModuleProps) => {
-  const { data: appConfig } = useAppConfiguration();
   const formatCurrency = useFormatCurrency();
 
   const theme = useTheme();
@@ -77,9 +75,6 @@ const StatusModule = ({ votingMethod, phase, project }: StatusModuleProps) => {
   const showDate = !phaseHasEnded && basketStatus === 'hasNotSubmitted';
   const basketCount =
     phase.attributes.baskets_count || project.attributes.baskets_count;
-
-  if (!appConfig) return null;
-  const currency = appConfig.data.attributes.settings.core.currency;
 
   return (
     <Box boxShadow={defaultStyles.boxShadow} id="voting-status-module">
@@ -116,7 +111,6 @@ const StatusModule = ({ votingMethod, phase, project }: StatusModuleProps) => {
                 project,
                 phase,
                 submissionState: basketStatus,
-                currency,
                 localize,
                 formatMessage,
                 formatCurrency,

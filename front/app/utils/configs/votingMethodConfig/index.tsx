@@ -3,7 +3,6 @@ import React from 'react';
 import { MessageDescriptor } from 'react-intl';
 import { FormatMessage } from 'typings';
 
-import { TCurrency } from 'api/app_configuration/types';
 import { IPhaseData, VotingMethod } from 'api/phases/types';
 import { IProjectData } from 'api/projects/types';
 
@@ -45,7 +44,6 @@ export type GetStatusDescriptionProps = {
   project: IProjectData;
   submissionState: VoteSubmissionState;
   phase?: IPhaseData;
-  currency: TCurrency;
   localize: Localize;
   formatMessage: FormatMessage;
   formatCurrency: UseFormatCurrencyReturn;
@@ -107,7 +105,6 @@ const budgetingConfig: VotingMethodConfig = {
   getStatusDescription: ({
     phase,
     submissionState,
-    currency,
     formatCurrency,
   }: GetStatusDescriptionProps) => {
     if (!phase) return null;
@@ -197,9 +194,12 @@ const budgetingConfig: VotingMethodConfig = {
           {...messages.budgetingSubmittedInstructionsContinuous}
         />
       );
+    } else if (
       // TODO: Fix this the next time the file is edited.
       // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-    } else if (submissionState === 'submissionEnded') {
+      submissionState === 'submissionEnded' &&
+      typeof phase.attributes.voting_max_total === 'number'
+    ) {
       return (
         <FormattedMessage
           values={{
@@ -211,13 +211,12 @@ const budgetingConfig: VotingMethodConfig = {
             endDate: getLocalisedDateString(phase?.attributes.end_at),
             // TODO: Fix this the next time the file is edited.
             // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-            maxBudget: phase?.attributes.voting_max_total?.toLocaleString(),
-            currency,
+            maxBudget: formatCurrency(phase.attributes.voting_max_total),
             // TODO: Fix this the next time the file is edited.
             // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
             optionCount: phase?.attributes.ideas_count,
           }}
-          {...messages.budgetParticipationEnded}
+          {...messages.budgetParticipationEnded1}
         />
       );
     }
