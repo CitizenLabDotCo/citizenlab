@@ -29,8 +29,8 @@ const FormattedBudget = ({ value }: Props) => {
 
   const currency = appConfiguration.data.attributes.settings.core.currency;
 
-  // custom implementations for custom currencies
-  // see appConfiguration.ts for all currencies
+  // Custom implementations for 'TOK' currency for this component.
+  // Others are dealt with by the useFormatCurrency hook.
   if (currency === 'TOK') {
     return (
       <>
@@ -39,6 +39,7 @@ const FormattedBudget = ({ value }: Props) => {
       </>
     );
   } else {
+    //
     return <>{formatCurrency(value)}</>;
   }
 };
