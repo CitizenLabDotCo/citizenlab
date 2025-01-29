@@ -255,8 +255,8 @@ it:
       option1: 'Opzione 1'
       option2: 'Opzione 2'
     form_end_page:
-      title_text: 'Quasi finito'
-      description_text_2: "Stai per inviare le tue risposte. Cliccando su \"Invia\" ci autorizzi ad analizzare le tue risposte.<br/>Dopo l'invio, non potrai più tornare indietro e modificare le tue risposte."
+      title_text_3: 'Grazie per aver condiviso il tuo contributo!'
+      description_text_3: "Il tuo contributo è stato inviato con successo."
     pdf_export:
       personal_data: 'Dati personali'
       personal_data_explanation_public: "Invieremo il tuo contributo alla piattaforma di partecipazione online di %{organizationName}. Se vuoi che il tuo nome venga visualizzato come autore di questo contributo e ricevere via e-mail gli aggiornamenti relativi al tuo contributo, compila i seguenti campi in questa pagina e creeremo un account per te. Il tuo indirizzo e-mail non sarà pubblico e sarà utilizzato solo da %{organizationName}. Se vuoi rimanere anonimo o non sei d'accordo che i tuoi dati personali vengano utilizzati in questo modo, puoi lasciarli vuoti."
