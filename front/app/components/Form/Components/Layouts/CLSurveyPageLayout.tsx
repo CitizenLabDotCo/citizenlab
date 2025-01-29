@@ -24,6 +24,7 @@ import { stringify } from 'qs';
 import { useParams, useSearchParams } from 'react-router-dom';
 import { useTheme } from 'styled-components';
 
+import { IIdea } from 'api/ideas/types';
 import { IMapConfig } from 'api/map_config/types';
 import useMapConfigById from 'api/map_config/useMapConfigById';
 import useProjectMapConfig from 'api/map_config/useProjectMapConfig';
@@ -97,6 +98,7 @@ const CLSurveyPageLayout = memo(
     const [userPagePath] = useState<PageType[]>([]);
     const [scrollToError, setScrollToError] = useState(false);
     const [percentageAnswered, setPercentageAnswered] = useState<number>(1);
+    const [ideaId, setIdeaId] = useState<string>();
 
     const pageVariant = getPageVariant(currentStep, uiPages.length);
     const hasPreviousPage = currentStep !== 0;
@@ -257,7 +259,11 @@ const CLSurveyPageLayout = memo(
       if (pageVariant === 'submission') {
         setIsLoading(true);
         data.publication_status = 'published';
-        await onSubmit(getFilteredDataForUserPath(userPagePath, data), true);
+        const idea: IIdea = await onSubmit(
+          getFilteredDataForUserPath(userPagePath, data),
+          true
+        );
+        setIdeaId(idea.data.id);
       } else {
         data.publication_status = 'draft';
         data.latest_complete_page = currentStep;

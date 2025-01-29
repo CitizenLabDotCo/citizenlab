@@ -266,6 +266,8 @@ const IdeasNewSurveyForm = ({ project, phaseId }: Props) => {
         idea,
       });
     }
+
+    return idea;
   };
 
   function calculateDynamicHeight() {
