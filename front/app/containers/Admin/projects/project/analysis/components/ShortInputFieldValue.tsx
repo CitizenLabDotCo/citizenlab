@@ -107,6 +107,9 @@ const ShortInputFieldValue = ({ customField, rawValue }: Props) => {
     case 'polygon': {
       return null;
     }
+    case 'ranking': {
+      return null;
+    }
     default: {
       // Makes TS throw a compile error in case we're not covering for an input_type
       const exhaustiveCheck: never = customField.data.attributes.input_type;
