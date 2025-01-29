@@ -105,11 +105,7 @@ describe('Form builder number field', () => {
     cy.get('[data-cy="e2e-after-submission"]').should('exist');
     cy.get('[data-cy="e2e-after-submission"]').click();
 
-    // Check that we show a success message
-    cy.get('[data-cy="e2e-survey-success-message"]').should('exist');
-    // close modal
-    cy.get('.e2e-modal-close-button').click();
-    // check that the modal is no longer on the page
-    cy.get('#e2e-modal-container').should('have.length', 0);
+    // Make sure we're back at the project
+    cy.url().should('include', `projects/${projectSlug}`);
   });
 });
