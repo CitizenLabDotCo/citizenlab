@@ -255,8 +255,8 @@ lv:
       option1: '1. variants'
       option2: '2. variants'
     form_end_page:
-      title_text: 'Gandrīz pabeigts'
-      description_text_2: "Jūs gatavojaties iesniegt savas atbildes. Noklikšķinot uz \"Iesniegt\", jūs atļaujat mums analizēt jūsu atbildes.<br/>Pēc iesniegšanas jūs vairs nevarēsiet atgriezties un mainīt savas atbildes."
+      title_text_3: 'Paldies, ka dalījāties ar savu ieguldījumu!'
+      description_text_3: "Jūsu dati ir veiksmīgi iesniegti."
     pdf_export:
       personal_data: 'Personas dati'
       personal_data_explanation_public: "Mēs iesniegsim jūsu viedokli tiešsaistes līdzdalības platformā %{organizationName}. Ja vēlaties, lai jūsu vārds un uzvārds būtu redzams kā šī ieguldījuma autors un jūs saņemtu jauninājumus, kas saistīti ar jūsu ieguldījumu, pa e-pastu, lūdzu, aizpildiet turpmāk norādītos laukus šajā lapā, un mēs izveidosim jums kontu. Jūsu e-pasts nebūs publiski pieejams, un to izmantos tikai %{organizationName}. Ja vēlaties palikt anonīms vai nepiekrītat, ka mēs šādā veidā izmantojam jūsu personas datus, varat tos atstāt tukšus."
