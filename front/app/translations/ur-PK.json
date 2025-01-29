@@ -2136,6 +2136,7 @@
   "app.utils.participationMethodConfig.voting.votingNotSignedIn2": "ووٹ دینے کے لیے آپ کو لاگ ان یا رجسٹر ہونا چاہیے۔",
   "app.utils.participationMethodConfig.voting.votingNotVerified": "ووٹ دینے سے پہلے آپ کو اپنے اکاؤنٹ کی تصدیق کرنی ہوگی۔",
   "app.utils.votingMethodUtils.budget": "بجٹ",
+  "app.utils.votingMethodUtils.budgetParticipationEnded1": "<b>بجٹ جمع کروانا {endDate}کو بند ہو گیا۔</b> شرکاء کے پاس کل <b>{maxBudget} ہر ایک کو {optionCount} اختیارات کے درمیان تقسیم کرنا تھا۔</b>",
   "app.utils.votingMethodUtils.budgetSubmitted": "بجٹ جمع کرایا",
   "app.utils.votingMethodUtils.budgetSubmittedWithIcon": "بجٹ پیش کر دیا گیا 🎉",
   "app.utils.votingMethodUtils.budgetingNotInGroup": "آپ بجٹ تفویض کرنے کی ضروریات کو پورا نہیں کرتے ہیں۔",
