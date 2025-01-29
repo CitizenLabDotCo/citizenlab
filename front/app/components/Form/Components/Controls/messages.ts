@@ -112,4 +112,20 @@ export default defineMessages({
     id: 'app.components.form.controls.cosponsorsPlaceholder',
     defaultMessage: 'Start typing a name to search',
   },
+  clearAll: {
+    id: 'app.components.form.controls.clearAll',
+    defaultMessage: 'Clear all',
+  },
+  noRankSelected: {
+    id: 'app.components.form.controls.noRankSelected',
+    defaultMessage: 'No rank selected',
+  },
+  currentRank: {
+    id: 'app.components.form.controls.currentRank',
+    defaultMessage: 'Current rank: ',
+  },
+  rankingInstructions: {
+    id: 'app.components.form.controls.rankingInstructions',
+    defaultMessage: 'Drag and drop to rank options.',
+  },
 });
