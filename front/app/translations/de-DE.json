@@ -1683,7 +1683,7 @@
   "app.containers.ProjectsShowPage.shared.document_annotation.documentAnnotationDisabledNotActiveUser": "Bitte {completeRegistrationLink} , um das Dokument zu lesen.",
   "app.containers.ProjectsShowPage.shared.document_annotation.documentAnnotationDisabledNotPermitted": "Leider sind Sie nicht berechtigt, dieses Dokument zu kommentieren.",
   "app.containers.ProjectsShowPage.shared.document_annotation.documentAnnotationDisabledNotVerified": "Für die Durchsicht dieses Dokuments ist eine Verifizierung Ihres Kontos erforderlich. {verificationLink}",
-  "app.containers.ProjectsShowPage.shared.document_annotation.documentAnnotationDisabledProjectInactive": "Das Dokument ist nicht mehr verfügbar, da dieses Projekt nicht mehr aktiv ist.",
+  "app.containers.ProjectsShowPage.shared.document_annotation.documentAnnotationDisabledProjectInactive": "Das Dokument ist nicht verfügbar, da dieses Projekt nicht aktiv ist.",
   "app.containers.ProjectsShowPage.timeline.VotingResults.ProgressBar.numberManualVoters2": "{manualVoters, plural, one {(davon 1 analog)} other {(davon # analog)}}",
   "app.containers.ProjectsShowPage.timeline.VotingResults.ProgressBar.numberOfPicks": "{baskets, plural, one {1 Option} other {# Optionen}}",
   "app.containers.ProjectsShowPage.timeline.VotingResults.ProgressBars.budgetingTooltip1": "Der Prozentsatz der Teilnehmenden, die diese Option gewählt haben.",
