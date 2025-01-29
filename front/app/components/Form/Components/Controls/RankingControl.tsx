@@ -134,7 +134,12 @@ const RankingControl = ({
         subtextSupportsHtml
         id={`ranking-question-label-${id}`}
       />
-      <Box display="flex" flexDirection="row" flexGrow={1}>
+      <Box
+        display="flex"
+        flexDirection="row"
+        flexGrow={1}
+        id="e2e-ranking-control"
+      >
         <Box flexGrow={1}>
           <DragAndDrop
             onDragEnd={(result: DragAndDropResult) => {

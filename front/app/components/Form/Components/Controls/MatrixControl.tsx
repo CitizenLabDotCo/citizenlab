@@ -146,7 +146,7 @@ const MatrixControl = ({
         id={`matrix-question-label-${id}`}
       />
 
-      <Box overflowX="auto" ref={tableDivRef}>
+      <Box overflowX="auto" ref={tableDivRef} id="e2e-matrix-control">
         <Table
           width={'100%'}
           style={{ borderCollapse: 'separate', borderSpacing: '0px 8px' }}
