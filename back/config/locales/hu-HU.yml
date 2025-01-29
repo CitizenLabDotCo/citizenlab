@@ -255,8 +255,8 @@ hu:
       option1: '1. lehetőség'
       option2: '2. lehetőség'
     form_end_page:
-      title_text: 'Majdnem kész'
-      description_text_2: "Arra készül, hogy elküldje válaszait. A „Küldés” gombra kattintva engedélyt ad nekünk válaszainak elemzésére.<br/>A beküldés után többé nem léphet vissza és módosíthatja a válaszait."
+      title_text_3: 'Köszönjük, hogy megosztotta véleményét!'
+      description_text_3: "Befejezését sikeresen elküldte."
     pdf_export:
       personal_data: 'Személyes adatok'
       personal_data_explanation_public: "Hozzászólásodat elküldjük %{organizationName}online részvételi platformjára. Ha azt szeretné, hogy az Ön neve jelenjen meg a bemenet szerzőjeként, és e-mailben kapja meg a bemenetével kapcsolatos frissítéseket, kérjük, töltse ki az alábbi mezőket ezen az oldalon, és mi létrehozunk Önnek egy fiókot. Az Ön e-mailje nem lesz nyilvános, és csak %{organizationName}fogja használni. Ha névtelen szeretne maradni, vagy nem járul hozzá ahhoz, hogy személyes adatait ilyen módon használjuk fel, akkor ezeket üresen hagyhatja."
