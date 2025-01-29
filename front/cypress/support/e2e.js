@@ -12,5 +12,5 @@ Cypress.on('uncaught:exception', (error) => {
 });
 
 Cypress.Keyboard.defaults({
-  keystrokeDelay: 25,
+  keystrokeDelay: 30,
 });
