@@ -35,9 +35,26 @@ namespace :cl2back do
           # Replace previous mentions of 'survey_end' with the new last page id
           custom_fields.each do |field|
             if field.input_type == 'page'
-              # TODO
+              if field.logic['next_page_id'] == 'survey_end'
+                field.logic['next_page_id'] = last_page.id
+                field.save!
+              end
             else
-              # TODO
+              any_field_updated = false
+
+              rules = field.logic['rules']
+              if rules.present?
+                rules.each do |rule|
+                  if rule['goto_page_id'] == 'survey_end'
+                    rule['goto_page_id'] = last_page.id
+                    any_field_updated = true
+                  end
+                end
+
+                if any_field_updated
+                  field.save!
+                end
+              end
             end
           end
         end
