@@ -116,7 +116,7 @@ export const getReorderedFields = (
   return getFlatGroupStructure(updatedGroups);
 };
 
-export enum ConflictType {
+export enum LogicConflictType {
   MULTIPLE_GOTO_IN_MULTISELECT = 'MULTIPLE_GOTO_IN_MULTISELECT',
   QUESTION_VS_PAGE_LOGIC = 'QUESTION_VS_PAGE_LOGIC',
   INTER_QUESTION_CONFLICT = 'INTER_QUESTION_CONFLICT',
@@ -124,7 +124,7 @@ export enum ConflictType {
 }
 
 export interface Conflict {
-  conflictType: ConflictType;
+  conflictType: LogicConflictType;
   pageId: string;
 }
 
@@ -163,7 +163,7 @@ export function detectConflictsByPage(
         );
         if (distinctGotoIds.size > 1 && question.logic.rules.length > 1) {
           addConflict(pageId, {
-            conflictType: ConflictType.MULTIPLE_GOTO_IN_MULTISELECT,
+            conflictType: LogicConflictType.MULTIPLE_GOTO_IN_MULTISELECT,
             pageId,
           });
         }
@@ -189,7 +189,7 @@ export function detectConflictsByPage(
       for (const gotoId of questionGotoIdsForPage) {
         if (gotoId !== pageNextId) {
           addConflict(pageId, {
-            conflictType: ConflictType.QUESTION_VS_PAGE_LOGIC,
+            conflictType: LogicConflictType.QUESTION_VS_PAGE_LOGIC,
             pageId,
           });
           break; // Once we find a mismatch, we can stop
@@ -201,7 +201,7 @@ export function detectConflictsByPage(
     // If more than 1 question on the page has a goto
     if (questionsWithGotoCount > 1) {
       addConflict(pageId, {
-        conflictType: ConflictType.INTER_QUESTION_CONFLICT,
+        conflictType: LogicConflictType.INTER_QUESTION_CONFLICT,
         pageId,
       });
     }

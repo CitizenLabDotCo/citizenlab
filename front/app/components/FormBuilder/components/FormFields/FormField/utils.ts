@@ -1,6 +1,6 @@
 import { MessageDescriptor } from 'react-intl';
 
-import { Conflict, ConflictType } from 'components/FormBuilder/edit/utils';
+import { Conflict, LogicConflictType } from 'components/FormBuilder/edit/utils';
 
 import messages from './messages';
 
@@ -16,44 +16,44 @@ export function getConflictMessageKey(
     (conflicts ?? []).map((conflict) => conflict.conflictType)
   );
   if (
-    conflictTypes.has(ConflictType.MULTIPLE_GOTO_IN_MULTISELECT) &&
-    conflictTypes.has(ConflictType.QUESTION_VS_PAGE_LOGIC) &&
-    conflictTypes.has(ConflictType.INTER_QUESTION_CONFLICT)
+    conflictTypes.has(LogicConflictType.MULTIPLE_GOTO_IN_MULTISELECT) &&
+    conflictTypes.has(LogicConflictType.QUESTION_VS_PAGE_LOGIC) &&
+    conflictTypes.has(LogicConflictType.INTER_QUESTION_CONFLICT)
   ) {
     return messages.multipleConflictTypes;
   }
 
   if (
-    conflictTypes.has(ConflictType.MULTIPLE_GOTO_IN_MULTISELECT) &&
-    conflictTypes.has(ConflictType.QUESTION_VS_PAGE_LOGIC)
+    conflictTypes.has(LogicConflictType.MULTIPLE_GOTO_IN_MULTISELECT) &&
+    conflictTypes.has(LogicConflictType.QUESTION_VS_PAGE_LOGIC)
   ) {
     return messages.multipleGotoInMultiSelectAndQuestionVsPageLogic;
   }
 
   if (
-    conflictTypes.has(ConflictType.MULTIPLE_GOTO_IN_MULTISELECT) &&
-    conflictTypes.has(ConflictType.INTER_QUESTION_CONFLICT)
+    conflictTypes.has(LogicConflictType.MULTIPLE_GOTO_IN_MULTISELECT) &&
+    conflictTypes.has(LogicConflictType.INTER_QUESTION_CONFLICT)
   ) {
     return messages.multipleGotoInMultiSelectAndInterQuestionConflict;
   }
 
   if (
-    conflictTypes.has(ConflictType.QUESTION_VS_PAGE_LOGIC) &&
-    conflictTypes.has(ConflictType.INTER_QUESTION_CONFLICT)
+    conflictTypes.has(LogicConflictType.QUESTION_VS_PAGE_LOGIC) &&
+    conflictTypes.has(LogicConflictType.INTER_QUESTION_CONFLICT)
   ) {
     return messages.questionVsPageLogicAndInterQuestionConflict;
   }
 
   // Individual conflict types
-  if (conflictTypes.has(ConflictType.MULTIPLE_GOTO_IN_MULTISELECT)) {
+  if (conflictTypes.has(LogicConflictType.MULTIPLE_GOTO_IN_MULTISELECT)) {
     return messages.multipleGotoInMultiSelect;
   }
 
-  if (conflictTypes.has(ConflictType.QUESTION_VS_PAGE_LOGIC)) {
+  if (conflictTypes.has(LogicConflictType.QUESTION_VS_PAGE_LOGIC)) {
     return messages.questionVsPageLogic;
   }
 
-  if (conflictTypes.has(ConflictType.INTER_QUESTION_CONFLICT)) {
+  if (conflictTypes.has(LogicConflictType.INTER_QUESTION_CONFLICT)) {
     return messages.interQuestionConflict;
   }
 

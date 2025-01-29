@@ -1,7 +1,7 @@
 import { IFlatCustomField } from 'api/custom_fields/types';
 
 import {
-  ConflictType,
+  LogicConflictType,
   detectConflictsByPage,
   getReorderedFields,
   NestedGroupingStructure,
@@ -261,7 +261,7 @@ describe('detectConflictsByPage', () => {
     const conflicts = detectConflictsByPage(groupedData);
     expect(conflicts['page1']).toBeDefined();
     expect(conflicts['page1']?.[0].conflictType).toBe(
-      ConflictType.MULTIPLE_GOTO_IN_MULTISELECT
+      LogicConflictType.MULTIPLE_GOTO_IN_MULTISELECT
     );
   });
 
@@ -291,7 +291,7 @@ describe('detectConflictsByPage', () => {
     const conflicts = detectConflictsByPage(groupedData);
     expect(conflicts['page1']).toBeDefined();
     expect(conflicts['page1']?.[0].conflictType).toBe(
-      ConflictType.QUESTION_VS_PAGE_LOGIC
+      LogicConflictType.QUESTION_VS_PAGE_LOGIC
     );
   });
 
@@ -313,7 +313,7 @@ describe('detectConflictsByPage', () => {
     const conflicts = detectConflictsByPage(groupedData);
     expect(conflicts['page1']).toBeDefined();
     expect(conflicts['page1']?.[0].conflictType).toBe(
-      ConflictType.INTER_QUESTION_CONFLICT
+      LogicConflictType.INTER_QUESTION_CONFLICT
     );
   });
 
@@ -339,7 +339,7 @@ describe('detectConflictsByPage', () => {
     const conflicts = detectConflictsByPage(groupedData);
     expect(conflicts['page1']).toHaveLength(2);
     const conflictTypes = conflicts['page1']?.map((c) => c.conflictType);
-    expect(conflictTypes).toContain(ConflictType.QUESTION_VS_PAGE_LOGIC);
-    expect(conflictTypes).toContain(ConflictType.INTER_QUESTION_CONFLICT);
+    expect(conflictTypes).toContain(LogicConflictType.QUESTION_VS_PAGE_LOGIC);
+    expect(conflictTypes).toContain(LogicConflictType.INTER_QUESTION_CONFLICT);
   });
 });
