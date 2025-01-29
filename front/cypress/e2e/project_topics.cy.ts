@@ -48,6 +48,7 @@ describe('Project topics', () => {
 
       // Add custom topic
       cy.get('#e2e-add-custom-topic-button').click();
+      cy.wait(1000);
       cy.clickLocaleSwitcherAndType(topicTitle);
       cy.get('#e2e-submit-wrapper-button').click();
       cy.wait(1000);
@@ -64,6 +65,7 @@ describe('Project topics', () => {
       // create a topic
       cy.visit('admin/settings/topics');
       cy.get('#e2e-add-custom-topic-button').click();
+      cy.wait(1000);
       cy.clickLocaleSwitcherAndType(topicTitle);
       cy.get('#e2e-submit-wrapper-button').click();
       cy.wait(1000);
@@ -98,6 +100,7 @@ describe('Project topics', () => {
       // create a topic
       cy.visit('admin/settings/topics');
       cy.get('#e2e-add-custom-topic-button').click();
+      cy.wait(1000);
       cy.clickLocaleSwitcherAndType(topicTitle);
       cy.get('#e2e-submit-wrapper-button').click();
       cy.wait(1000);
@@ -141,6 +144,7 @@ describe('Project topics', () => {
       // create a topic
       cy.visit('admin/settings/topics');
       cy.get('#e2e-add-custom-topic-button').click();
+      cy.wait(1000);
       cy.clickLocaleSwitcherAndType(topicTitle);
       cy.get('#e2e-submit-wrapper-button').click();
       cy.wait(1000);
@@ -170,6 +174,7 @@ describe('Project topics', () => {
       // create a topic
       cy.visit('admin/settings/topics');
       cy.get('#e2e-add-custom-topic-button').click();
+      cy.wait(1000);
       cy.clickLocaleSwitcherAndType(topicTitle);
       cy.get('#e2e-submit-wrapper-button').click();
       cy.wait(1000);
@@ -222,6 +227,7 @@ describe('Project topics', () => {
       // create a topic in the topic manager
       cy.visit('admin/settings/topics');
       cy.get('#e2e-add-custom-topic-button').click();
+      cy.wait(1000);
       cy.clickLocaleSwitcherAndType(topicTitle);
       cy.get('#e2e-submit-wrapper-button').click();
       cy.wait(1000);
@@ -252,6 +258,7 @@ describe('Project topics', () => {
       // create a topic in the topic manager
       cy.visit('admin/settings/topics');
       cy.get('#e2e-add-custom-topic-button').click();
+      cy.wait(1000);
       cy.clickLocaleSwitcherAndType(topicTitle);
       cy.get('#e2e-submit-wrapper-button').click();
       cy.wait(1000);
