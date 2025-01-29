@@ -255,8 +255,8 @@ hr:
       option1: '1. opcija'
       option2: '2. opcija'
     form_end_page:
-      title_text: 'Skoro gotovo'
-      description_text_2: "Upravo ćete poslati svoje odgovore. Klikom na 'Pošalji' dajete nam dopuštenje da analiziramo vaše odgovore.<br/>Nakon što pošaljete, više se nećete moći vratiti i promijeniti nijedan od svojih odgovora."
+      title_text_3: 'Hvala što ste podijelili svoj doprinos!'
+      description_text_3: "Vaš unos je uspješno poslan."
     pdf_export:
       personal_data: 'Osobni podaci'
       personal_data_explanation_public: "Poslat ćemo vaš doprinos online platformi za sudjelovanje %{organizationName}. Ako želite da se vaše ime prikaže kao autor ovog unosa i da putem e-pošte primate ažuriranja relevantna za vaš unos, ispunite sljedeća polja na ovoj stranici i mi ćemo za vas kreirati račun. Vaša e-pošta neće biti javna i koristit će je samo %{organizationName}. Ukoliko želite ostati anonimni ili ne pristajete na korištenje Vaših osobnih podataka na ovaj način, možete ih ostaviti prazne."
