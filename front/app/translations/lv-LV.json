@@ -2061,8 +2061,6 @@
   "app.utils.AdminPage.ProjectEdit.inputAndFeedback": "Iegūtie dati un atsauksmes",
   "app.utils.AdminPage.ProjectEdit.shareInformation": "Kopīgot informāciju",
   "app.utils.FormattedCurrency.credits": "kredīti",
-  "app.utils.FormattedCurrency.multipleCredits": "{numberOfTokens} kredīti",
-  "app.utils.FormattedCurrency.oneCredit": "1 kredīts",
   "app.utils.FormattedCurrency.tokens": "žetoni",
   "app.utils.IdeaCards.mostDiscussed": "Visvairāk apspriesto",
   "app.utils.IdeaCards.mostReacted": "Lielākā daļa reakciju",

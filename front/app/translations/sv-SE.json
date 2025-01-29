@@ -2061,8 +2061,6 @@
   "app.utils.AdminPage.ProjectEdit.inputAndFeedback": "Samla in indata och återkoppling",
   "app.utils.AdminPage.ProjectEdit.shareInformation": "Dela information",
   "app.utils.FormattedCurrency.credits": "krediter",
-  "app.utils.FormattedCurrency.multipleCredits": "{numberOfTokens} krediter",
-  "app.utils.FormattedCurrency.oneCredit": "1 kredit",
   "app.utils.FormattedCurrency.tokens": "token",
   "app.utils.IdeaCards.mostDiscussed": "Mest diskuterade",
   "app.utils.IdeaCards.mostReacted": "Flest reaktioner",

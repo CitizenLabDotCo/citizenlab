@@ -2061,8 +2061,6 @@
   "app.utils.AdminPage.ProjectEdit.inputAndFeedback": "ਇਨਪੁਟ ਅਤੇ ਫੀਡਬੈਕ ਇਕੱਠਾ ਕਰੋ",
   "app.utils.AdminPage.ProjectEdit.shareInformation": "ਜਾਣਕਾਰੀ ਸਾਂਝੀ ਕਰੋ",
   "app.utils.FormattedCurrency.credits": "ਕ੍ਰੈਡਿਟ",
-  "app.utils.FormattedCurrency.multipleCredits": "{numberOfTokens} ਕ੍ਰੈਡਿਟ",
-  "app.utils.FormattedCurrency.oneCredit": "1 ਕ੍ਰੈਡਿਟ",
   "app.utils.FormattedCurrency.tokens": "ਟੋਕਨ",
   "app.utils.IdeaCards.mostDiscussed": "ਸਭ ਤੋਂ ਵੱਧ ਚਰਚਾ ਕੀਤੀ",
   "app.utils.IdeaCards.mostReacted": "ਜ਼ਿਆਦਾਤਰ ਪ੍ਰਤੀਕਰਮ",
