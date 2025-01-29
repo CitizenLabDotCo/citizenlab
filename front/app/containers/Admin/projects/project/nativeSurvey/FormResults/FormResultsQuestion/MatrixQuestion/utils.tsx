@@ -15,6 +15,7 @@ export const StickyTd = styled(Td)`
   max-width: 180px;
   position: sticky;
   inset-inline-start: 0px;
+  background: white;
   z-index: 1;
   flex-grow: 1;
 `;
