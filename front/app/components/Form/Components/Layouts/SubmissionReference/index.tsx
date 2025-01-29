@@ -20,33 +20,35 @@ const SubmissionReference = ({ ideaId }: Props) => {
   const { data: authUser } = useAuthUser();
 
   return (
-    <Box>
-      <Text textAlign="center" color="coolGrey600">
+    <Box w="100%" p="24px">
+      <Text color="tenantText">
         <FormattedMessage {...messages.ifYouLaterDecide} />
       </Text>
       <Text
-        textAlign="center"
-        color="tenantPrimary"
+        color="tenantText"
         fontWeight="bold"
         id="idea-id-success-modal"
         mb="8px"
       >
         {ideaId}
       </Text>
-      <ButtonWithLink
-        linkTo={getMailLink({
-          email: authUser?.data.attributes.email,
-          subject: formatMessage(messages.surveySubmission),
-          body: formatMessage(messages.yourResponseHasTheFollowingId, {
-            identifier: ideaId,
-          }),
-        })}
-        buttonStyle="text"
-        w="auto"
-        icon="email"
-      >
-        <FormattedMessage {...messages.sendSurveySubmission} />
-      </ButtonWithLink>
+      <Box w="100%" display="flex">
+        <ButtonWithLink
+          linkTo={getMailLink({
+            email: authUser?.data.attributes.email,
+            subject: formatMessage(messages.surveySubmission),
+            body: formatMessage(messages.yourResponseHasTheFollowingId, {
+              identifier: ideaId,
+            }),
+          })}
+          buttonStyle="text"
+          w="auto"
+          icon="email"
+          paddingLeft="0"
+        >
+          <FormattedMessage {...messages.sendSurveySubmission} />
+        </ButtonWithLink>
+      </Box>
     </Box>
   );
 };

@@ -462,7 +462,6 @@ const CLSurveyPageLayout = memo(
                   );
                 })}
               </Box>
-
               {ideaId && pageVariant === 'after-submission' && (
                 <SubmissionReference ideaId={ideaId} />
               )}
