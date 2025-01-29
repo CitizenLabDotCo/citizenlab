@@ -2062,6 +2062,8 @@
   "app.utils.AdminPage.ProjectEdit.shareInformation": "Kopīgot informāciju",
   "app.utils.FormattedCurrency.credits": "kredīti",
   "app.utils.FormattedCurrency.tokens": "žetoni",
+  "app.utils.FormattedCurrency.xCredits": "{numberOfCredits, plural, =0 {# kredīti} one {# kredīts} other {# kredīti}}",
+  "app.utils.FormattedCurrency.xTokens": "{numberOfTokens, plural, =0 {# žetoni} one {# žetons} other {# žetoni}}",
   "app.utils.IdeaCards.mostDiscussed": "Visvairāk apspriesto",
   "app.utils.IdeaCards.mostReacted": "Lielākā daļa reakciju",
   "app.utils.IdeaCards.newest": "Jaunākais",

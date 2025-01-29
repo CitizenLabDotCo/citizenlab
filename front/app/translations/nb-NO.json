@@ -2062,6 +2062,8 @@
   "app.utils.AdminPage.ProjectEdit.shareInformation": "Del informasjon",
   "app.utils.FormattedCurrency.credits": "studiepoeng",
   "app.utils.FormattedCurrency.tokens": "symboler",
+  "app.utils.FormattedCurrency.xCredits": "{numberOfCredits, plural, =0 {~ ~ # credits} one {~ # credit} other {~ # credits}}",
+  "app.utils.FormattedCurrency.xTokens": "{numberOfTokens, plural, =0 {~ # tokens} one {# token} other {# tokens}}",
   "app.utils.IdeaCards.mostDiscussed": "Mest diskutert",
   "app.utils.IdeaCards.mostReacted": "De fleste reaksjonene",
   "app.utils.IdeaCards.newest": "Nyeste",

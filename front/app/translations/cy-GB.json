@@ -2062,6 +2062,8 @@
   "app.utils.AdminPage.ProjectEdit.shareInformation": "Rhannu gwybodaeth",
   "app.utils.FormattedCurrency.credits": "credydau",
   "app.utils.FormattedCurrency.tokens": "tocynnau",
+  "app.utils.FormattedCurrency.xCredits": "{numberOfCredits, plural, =0 {# credyd} one {# credyd} other {# credyd}}",
+  "app.utils.FormattedCurrency.xTokens": "{numberOfTokens, plural, =0 {# tocyn} one {# tocyn} other {# tocyn}}",
   "app.utils.IdeaCards.mostDiscussed": "Trafodwyd fwyaf",
   "app.utils.IdeaCards.mostReacted": "Y rhan fwyaf o adweithiau",
   "app.utils.IdeaCards.newest": "mwyaf newydd",

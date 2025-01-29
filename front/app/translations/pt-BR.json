@@ -2062,6 +2062,8 @@
   "app.utils.AdminPage.ProjectEdit.shareInformation": "Compartilhar informação",
   "app.utils.FormattedCurrency.credits": "créditos",
   "app.utils.FormattedCurrency.tokens": "fichas",
+  "app.utils.FormattedCurrency.xCredits": "{numberOfCredits, plural, =0 {# créditos} one {# crédito} other {# créditos}}",
+  "app.utils.FormattedCurrency.xTokens": "{numberOfTokens, plural, =0 {# tokens} one {# token} other {# tokens}}",
   "app.utils.IdeaCards.mostDiscussed": "Mais discutido",
   "app.utils.IdeaCards.mostReacted": "Mais reações",
   "app.utils.IdeaCards.newest": "Mais recente",

@@ -2062,6 +2062,8 @@
   "app.utils.AdminPage.ProjectEdit.shareInformation": "Podijelite informacije",
   "app.utils.FormattedCurrency.credits": "krediti",
   "app.utils.FormattedCurrency.tokens": "tokeni",
+  "app.utils.FormattedCurrency.xCredits": "{numberOfCredits, plural, =0 {# kredit} one {# kredit} other {# kredit}}",
+  "app.utils.FormattedCurrency.xTokens": "{numberOfTokens, plural, =0 {# tokeni} one {# token} other {# tokeni}}",
   "app.utils.IdeaCards.mostDiscussed": "Najviše raspravljano",
   "app.utils.IdeaCards.mostReacted": "Većina reakcija",
   "app.utils.IdeaCards.newest": "Najnoviji",
