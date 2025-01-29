@@ -100,8 +100,13 @@ describe('New timeline project with active ideation phase', () => {
           canReact: true,
         });
       })
-      .then(() => {
-        return cy.apiCreateIdea({ projectId, ideaTitle, ideaContent });
+      .then((phase) => {
+        return cy.apiCreateIdea({
+          projectId,
+          ideaTitle,
+          ideaContent,
+          phaseIds: [phase.body.data.id],
+        });
       })
       .then((idea) => {
         ideaId = idea.body.data.id;
