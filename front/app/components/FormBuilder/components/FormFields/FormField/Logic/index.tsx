@@ -32,6 +32,7 @@ const Logic = ({ field, fieldNumbers, formCustomFields }: Props) => {
   const { formatMessage } = useIntl();
   const locale = useLocale();
   const pageMessage = formatMessage(messages.page);
+  const lastPageMessage = formatMessage(messages.lastPage);
 
   return (
     <Box>
@@ -59,7 +60,9 @@ const Logic = ({ field, fieldNumbers, formCustomFields }: Props) => {
                 targetPage={getTitleFromPageId(
                   optionRule?.goto_page_id,
                   pageMessage,
-                  fieldNumbers
+                  fieldNumbers,
+                  formCustomFields,
+                  lastPageMessage
                 )}
               />
             </Box>
@@ -87,7 +90,9 @@ const Logic = ({ field, fieldNumbers, formCustomFields }: Props) => {
                 targetPage={getTitleFromPageId(
                   linearScaleRule?.goto_page_id,
                   pageMessage,
-                  fieldNumbers
+                  fieldNumbers,
+                  formCustomFields,
+                  lastPageMessage
                 )}
               />
             </Box>
@@ -103,7 +108,9 @@ const Logic = ({ field, fieldNumbers, formCustomFields }: Props) => {
           targetPage={getTitleFromPageId(
             field.logic.next_page_id,
             pageMessage,
-            fieldNumbers
+            fieldNumbers,
+            formCustomFields,
+            lastPageMessage
           )}
         />
       )}

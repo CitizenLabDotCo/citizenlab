@@ -60,8 +60,16 @@ const FormBuilderSettings = ({
     const fieldNumbers = getFieldNumbers(formCustomFields);
     const pageArray: { value: string; label: string }[] = [];
 
-    formCustomFields.forEach((field) => {
-      if (field.input_type === 'page') {
+    formCustomFields.forEach((field, i) => {
+      const isLastPage =
+        field.input_type === 'page' && i === formCustomFields.length - 1;
+
+      if (isLastPage) {
+        pageArray.push({
+          value: field.temp_id || field.id,
+          label: formatMessage(messages.lastPage),
+        });
+      } else if (field.input_type === 'page') {
         pageArray.push({
           value: field.temp_id || field.id,
           label: `${formatMessage(messages.page)} ${fieldNumbers[field.id]}`,

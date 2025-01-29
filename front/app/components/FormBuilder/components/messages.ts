@@ -286,4 +286,8 @@ export default defineMessages({
     id: 'app.components.formBuilder.cancelLeaveBuilderButtonText',
     defaultMessage: 'Cancel',
   },
+  lastPage: {
+    id: 'app.components.formBuilder.lastPage',
+    defaultMessage: 'Ending',
+  },
 });

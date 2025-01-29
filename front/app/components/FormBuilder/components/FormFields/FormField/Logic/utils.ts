@@ -72,11 +72,18 @@ export const getTitleFromAnswerId = (
 };
 
 export const getTitleFromPageId = (
-  pageId: string | number | undefined,
+  pageId: string | undefined,
   pageMessage: string,
-  fieldNumbers: Record<string, number>
+  fieldNumbers: Record<string, number>,
+  formCustomFields: IFlatCustomField[],
+  lastPageMessage: string
 ) => {
   if (!pageId) return;
+
+  const lastCustomField = formCustomFields[formCustomFields.length - 1];
+  if (pageId === lastCustomField.id) {
+    return lastPageMessage;
+  }
 
   return `${pageMessage} ${fieldNumbers[pageId]}`;
 };
