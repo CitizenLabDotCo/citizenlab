@@ -20,6 +20,11 @@ export const StickyTd = styled(Td)`
   flex-grow: 1;
 `;
 
+// StyledTd needed so the report pdf has the correct colours
+export const StyledTd = styled(Td)`
+  -webkit-print-color-adjust: exact;
+`;
+
 // TYPES
 export type StatementWithResult = {
   statementKey: string;

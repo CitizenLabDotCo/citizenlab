@@ -4,7 +4,6 @@ import {
   Box,
   Table,
   Tbody,
-  Td,
   Text,
   Th,
   Thead,
@@ -23,6 +22,7 @@ import {
   getPercentageTextBorder,
   getStatementsWithResultsArray,
   StickyTd,
+  StyledTd,
 } from './utils';
 
 type Props = {
@@ -76,7 +76,7 @@ const MatrixQuestion = ({ result }: Props) => {
                   );
 
                   return (
-                    <Td
+                    <StyledTd
                       key={linearScaleLabel.value}
                       background={getTenantColourByPercentage(
                         percentage,
@@ -94,7 +94,7 @@ const MatrixQuestion = ({ result }: Props) => {
                           {`${percentage}%`}
                         </Text>
                       </Box>
-                    </Td>
+                    </StyledTd>
                   );
                 })}
               </>
