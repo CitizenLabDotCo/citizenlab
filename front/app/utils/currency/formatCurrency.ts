@@ -12,6 +12,7 @@ function formatCurrency(
     style: currency ? 'currency' : 'decimal',
     currency,
     maximumFractionDigits,
+    currencyDisplay: 'code',
   });
 
   return formatter.format(amount);
