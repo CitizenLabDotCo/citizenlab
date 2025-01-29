@@ -1084,7 +1084,7 @@
   "app.containers.Admin.projects.project.survey.logicSkipTooltipOption4": "Als een gebruiker dit antwoord selecteert, slaat de logica alle pagina's over tot pagina {pageNumber} ({numQuestionsSkipped} overgeslagen vragen). Klik om de overgeslagen pagina's en vragen te verbergen of te tonen.",
   "app.containers.Admin.projects.project.survey.logicSkipTooltipOptionSurveyEnd2": "Als een gebruiker dit antwoord selecteert, gaat de logica naar het einde van de enquête ({numQuestionsSkipped} overgeslagen vragen). Klik op om de overgeslagen pagina's en vragen te verbergen of weer te geven.",
   "app.containers.Admin.projects.project.survey.logicSkipTooltipPage4": "Logica op deze pagina slaat alle pagina's over tot pagina {pageNumber} ({numQuestionsSkipped} vragen overgeslagen). Klik om de overgeslagen pagina's en vragen te verbergen of te tonen.",
-  "app.containers.Admin.projects.project.survey.logicSkipTooltipPageSurveyEnd2": "Logica op deze pagina slaat over naar het einde van de enquête ({numQuestionsSkipped} overgeslagen vragen). Klik om de overgeslagen pagina's en vragen te verbergen of weer te geven.",
+  "app.containers.Admin.projects.project.survey.logicSkipTooltipPageSurveyEnd2": "Logica op deze pagina slaat over naar het einde van de vragenlijst ({numQuestionsSkipped} overgeslagen vragen). Klik om de overgeslagen pagina's en vragen te verbergen of weer te geven.",
   "app.containers.Admin.projects.project.survey.newAnalysis": "Nieuwe analyse",
   "app.containers.Admin.projects.project.survey.nextInsight": "Volgende inzicht",
   "app.containers.Admin.projects.project.survey.openAnalysis": "Open AI-analyse",
