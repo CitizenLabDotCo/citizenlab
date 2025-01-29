@@ -908,7 +908,6 @@
   "app.containers.Admin.projects.all.PDFExportModal.selectIdeationPhase": "Selecteer een ideeënfase.",
   "app.containers.Admin.projects.all.askPersonalData": "Vraag persoonlijke gegevens",
   "app.containers.Admin.projects.all.clickExportToPDFIdeaForm": "Vragen die momenteel niet worden ondersteund: Afbeeldingen, Tags en Bestanden uploaden.",
-  "app.containers.Admin.projects.all.clickExportToPDFSurvey4": "Vragen die momenteel niet worden ondersteund: kaart-gerelateerde vragen (pin prikken, route tekenen, en gebied tekenen), afbeelding vragen, rangschikking vragen en bestand upload vragen.",
   "app.containers.Admin.projects.all.components.archived": "Gearchiveerd",
   "app.containers.Admin.projects.all.components.draft": "Concept",
   "app.containers.Admin.projects.all.components.manageButtonLabel": "Beheren",
