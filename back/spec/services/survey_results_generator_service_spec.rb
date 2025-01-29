@@ -242,6 +242,22 @@ RSpec.describe SurveyResultsGeneratorService do
     )
   end
 
+  let_it_be(:ranking_field) do
+    create(
+      :custom_field_ranking,
+      resource: form,
+      title_multiloc: {
+        'en' => 'Rank your favourite means of public transport'
+      },
+      required: false,
+      options: [
+        create(:custom_field_option, key: 'by_foot', title_multiloc: { 'en' => 'By foot', 'fr-FR' => 'À pied', 'nl-NL' => 'Te voet' }),
+        create(:custom_field_option, key: 'by_bike', title_multiloc: { 'en' => 'By bike', 'fr-FR' => 'À vélo', 'nl-NL' => 'Met de fiets' }),
+        create(:custom_field_option, key: 'by_train', title_multiloc: { 'en' => 'By train', 'fr-FR' => 'En train', 'nl-NL' => 'Met de trein' })
+      ]
+    )
+  end
+
   let_it_be(:gender_user_custom_field) do
     create(:custom_field_gender, :with_options)
   end
@@ -269,6 +285,7 @@ RSpec.describe SurveyResultsGeneratorService do
         text_field.key => 'Red',
         multiselect_field.key => %w[cat dog],
         select_field.key => 'ny',
+        ranking_field.key => %w[by_bike by_train by_foot],
         file_upload_field.key => { 'id' => idea_file1.id, 'name' => idea_file1.name },
         shapefile_upload_field.key => { 'id' => idea_file2.id, 'name' => idea_file2.name },
         point_field.key => { type: 'Point', coordinates: [42.42, 24.24] },
@@ -288,6 +305,7 @@ RSpec.describe SurveyResultsGeneratorService do
         text_field.key => 'Blue',
         multiselect_field.key => %w[cow pig cat],
         select_field.key => 'la',
+        ranking_field.key => %w[by_train by_bike by_foot],
         point_field.key => { type: 'Point', coordinates: [11.22, 33.44] },
         line_field.key => { type: 'LineString', coordinates: [[1.2, 2.3], [3.4, 4.5]] },
         polygon_field.key => { type: 'Polygon', coordinates: [[[1.2, 2.3], [3.4, 4.5], [5.6, 6.7], [1.2, 2.3]]] },
@@ -316,6 +334,7 @@ RSpec.describe SurveyResultsGeneratorService do
         text_field.key => 'Pink',
         multiselect_field.key => %w[dog cat cow],
         select_field.key => 'other',
+        ranking_field.key => %w[by_bike by_foot by_train],
         "#{select_field.key}_other" => 'Miami',
         multiselect_image_field.key => ['house']
       },
@@ -327,7 +346,8 @@ RSpec.describe SurveyResultsGeneratorService do
       phases: phases_of_inputs,
       custom_field_values: {
         select_field.key => 'la',
-        multiselect_image_field.key => ['school']
+        multiselect_image_field.key => ['school'],
+        ranking_field.key => %w[by_bike by_train by_foot]
       },
       author: female_user
     )
@@ -376,6 +396,7 @@ RSpec.describe SurveyResultsGeneratorService do
 
       it 'returns the correct fields and structure' do
         expect(generated_results[:results].count).to eq 14
+        expect(generated_results[:results].pluck(:customFieldId)).not_to include page_field.id
         expect(generated_results[:results].pluck(:customFieldId)).not_to include disabled_multiselect_field.id
       end
     end
@@ -1074,6 +1095,57 @@ RSpec.describe SurveyResultsGeneratorService do
           )
 
           expect(result).to match expected_result_select_sliced_by_linear_scale
+        end
+      end
+    end
+
+    describe 'ranking field' do
+      let(:expected_result_ranking) do
+        {
+          customFieldId: ranking_field.id,
+          inputType: 'ranking',
+          question: {
+            'en' => 'Rank your favourite means of public transport'
+          },
+          required: false,
+          grouped: false,
+          totalResponseCount: 27,
+          questionResponseCount: 4,
+          average_rankings: {
+            'by_bike' => 1.25,
+            'by_foot' => 2.75,
+            'by_train' => 2
+          },
+          rankings_counts: {
+            'by_bike' => {
+              1 => 3,
+              2 => 1,
+              3 => 0
+            },
+            'by_foot' => {
+              1 => 0,
+              2 => 1,
+              3 => 3
+            },
+            'by_train' => {
+              1 => 1,
+              2 => 2,
+              3 => 1
+            }
+          },
+          multilocs: {
+            answer: {
+              'by_foot' => { title_multiloc: { 'en' => 'By foot', 'fr-FR' => 'À pied', 'nl-NL' => 'Te voet' } },
+              'by_bike' => { title_multiloc: { 'en' => 'By bike', 'fr-FR' => 'À vélo', 'nl-NL' => 'Met de fiets' } },
+              'by_train' => { title_multiloc: { 'en' => 'By train', 'fr-FR' => 'En train', 'nl-NL' => 'Met de trein' } }
+            }
+          }
+        }
+      end
+
+      context 'without grouping' do
+        it 'returns the correct results for a ranking field' do
+          expect(generated_results[:results][13]).to match expected_result_ranking
         end
       end
     end

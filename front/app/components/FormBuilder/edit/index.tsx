@@ -261,6 +261,10 @@ const FormEdit = ({
           random_option_ordering: field.random_option_ordering,
           dropdown_layout: field.dropdown_layout,
         }),
+        ...(field.input_type === 'ranking' && {
+          options: field.options || {},
+          random_option_ordering: field.random_option_ordering,
+        }),
         ...(field.input_type === 'linear_scale' && {
           linear_scale_label_1_multiloc:
             field.linear_scale_label_1_multiloc || {},
@@ -425,20 +429,13 @@ const FormEdit = ({
                     />
                   )}
                   {showWarnings()}
-                  <Box
-                    borderRadius="3px"
-                    boxShadow="0px 2px 4px rgba(0, 0, 0, 0.2)"
-                    bgColor="white"
-                    minHeight="300px"
-                  >
-                    <FormFields
-                      onEditField={setSelectedField}
-                      selectedFieldId={selectedField?.id}
-                      handleDragEnd={reorderFields}
-                      builderConfig={builderConfig}
-                      closeSettings={closeSettings}
-                    />
-                  </Box>
+                  <FormFields
+                    onEditField={setSelectedField}
+                    selectedFieldId={selectedField?.id}
+                    handleDragEnd={reorderFields}
+                    builderConfig={builderConfig}
+                    closeSettings={closeSettings}
+                  />
                 </Box>
               </Box>
               <Box flex={!isNilOrError(selectedField) ? '1' : '0'}>

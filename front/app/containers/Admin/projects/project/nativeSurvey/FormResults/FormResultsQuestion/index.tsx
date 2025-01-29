@@ -7,25 +7,18 @@ import { LogicConfig, ResultUngrouped } from 'api/survey_results/types';
 
 import useLocalize from 'hooks/useLocalize';
 
-import SurveyBars from 'components/admin/Graphs/SurveyBars';
 import T from 'components/T';
 
 import Files from '../Files';
 
+import FormResultQuestionValue from './components/FormResultsQuestionValue';
 import InputType from './InputType';
-import LineLocationQuestion from './MappingQuestions/LineLocationQuestion';
-import PointLocationQuestion from './MappingQuestions/PointLocationQuestion';
-import PolygonLocationQuestion from './MappingQuestions/PolygonLocationQuestion';
-import NumberQuestion from './NumberQuestion';
-import TextQuestion from './TextQuestion';
 
 type FormResultsQuestionProps = {
   result: ResultUngrouped;
   totalSubmissions: number;
   logicConfig: LogicConfig;
 };
-
-const COLOR_SCHEME = [colors.primary];
 
 const FormResultsQuestion = ({
   result,
@@ -36,22 +29,16 @@ const FormResultsQuestion = ({
 
   const {
     answers,
-    textResponses,
-    pointResponses,
-    lineResponses,
-    polygonResponses,
-    numberResponses,
     inputType,
     question,
     description,
     questionNumber,
     required,
     questionResponseCount,
-    customFieldId,
-    mapConfigId,
     files,
   } = result;
 
+  // FROM MINE
   const isMultipleChoiceAndHasAnswers = !!answers;
   const hasTextResponses = textResponses && textResponses.length > 0;
   const hasNumberResponses = numberResponses && numberResponses.length > 0;
@@ -69,6 +56,7 @@ const FormResultsQuestion = ({
     inputType === 'polygon' && polygonResponses && polygonResponses?.length > 0;
 
   if (result.hidden) return null;
+  // END FROM MINE
 
   return (
     <Box
@@ -87,7 +75,9 @@ const FormResultsQuestion = ({
           totalSubmissions={totalSubmissions}
           totalResponses={questionResponseCount}
         />
-
+        // FROM THEIRS
+        <FormResultQuestionValue result={result} />
+        // FROM THEIRS // FROM MINE
         <Text variant="bodyS" color="textSecondary" mt="12px" mb="12px">
           <T value={description} supportHtml={true} />
         </Text>
@@ -131,9 +121,8 @@ const FormResultsQuestion = ({
             customFieldId={customFieldId}
           />
         )}
+        // END FROM MINE
         {files && files.length > 0 && (
-          // TODO: Fix this the next time the file is edited.
-          // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
           <Box display="flex" gap="24px" mt={answers ? '20px' : '0'} w="50%">
             <Box flex="1">
               <Files files={files} />

@@ -58,7 +58,7 @@ const IdeaStatuses = ({
   variant: IdeaStatusParticipationMethod;
 }) => {
   const { data: ideaStatuses, isLoading } = useIdeaStatuses({
-    participation_method: variant,
+    queryParams: { participation_method: variant },
   });
   const { mutate: reorderIdeaStatus } = useReorderIdeaStatus();
   const customIdeaStatusesAllowed = useFeatureFlag({
@@ -132,6 +132,7 @@ const IdeaStatuses = ({
           >
             <Box>
               <Button
+                data-testid="e2e-add-status-button"
                 buttonStyle="admin-dark"
                 icon="plus-circle"
                 linkTo={`/admin/settings/${variant}/statuses/new`}

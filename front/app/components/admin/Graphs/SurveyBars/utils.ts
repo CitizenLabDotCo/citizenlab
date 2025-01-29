@@ -61,34 +61,38 @@ export const parseQuestionResult = (
   const { multilocs, answers, logic, totalPickCount } = result;
   if (!multilocs) throw new Error('Multilocs are missing');
 
-  return answers.map(({ count, answer }) => {
-    const answerKey = answer === null ? 'no_answer' : answer;
-    const multilocsAnswer = multilocs.answer[answerKey];
+  return (
+    answers?.map(({ count, answer }) => {
+      const answerKey = answer === null ? 'no_answer' : answer;
+      const multilocsAnswer = multilocs.answer[answerKey];
 
-    const label =
-      answer === null ? noAnswerCopy : localize(multilocsAnswer.title_multiloc);
-    const image = multilocsAnswer?.image;
-    const percentage = roundPercentage(count, totalPickCount, 1);
-    const logicForAnswer = logic.answer?.[answerKey];
-    const logicFilterId = logic.answer?.[answerKey]?.id || null;
+      const label =
+        answer === null
+          ? noAnswerCopy
+          : localize(multilocsAnswer.title_multiloc);
+      const image = multilocsAnswer?.image;
+      const percentage = roundPercentage(count, totalPickCount, 1);
+      const logicForAnswer = logic.answer?.[answerKey];
+      const logicFilterId = logic.answer?.[answerKey]?.id || null;
 
-    return {
-      label,
-      logicFilterId,
-      logic: logicForAnswer,
-      image,
-      count,
-      percentage,
-      bars: [
-        {
-          type: 'single',
-          percentage,
-          count,
-          color: colorScheme[0],
-        },
-      ],
-    };
-  });
+      return {
+        label,
+        logicFilterId,
+        logic: logicForAnswer,
+        image,
+        count,
+        percentage,
+        bars: [
+          {
+            type: 'single',
+            percentage,
+            count,
+            color: colorScheme[0],
+          },
+        ],
+      };
+    }) || []
+  );
 };
 
 export const EMPTY_COLOR = colors.coolGrey300;

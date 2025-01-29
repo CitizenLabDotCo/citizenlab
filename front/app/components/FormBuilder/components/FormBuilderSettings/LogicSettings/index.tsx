@@ -19,10 +19,18 @@ import messages from '../../messages';
 import { PageRuleInput } from './PageRuleInput';
 import { QuestionRuleInput } from './QuestionRuleInput';
 
+export type PageListType =
+  | {
+      value: string | undefined;
+      label: string;
+      disabled?: boolean;
+    }[];
+
 type LogicSettingsProps = {
-  pageOptions: { value: string; label: string }[];
+  pageOptions: PageListType;
   field: IFlatCustomFieldWithIndex;
   builderConfig: FormBuilderConfig | undefined;
+  getCurrentPageId: (questionId: string) => string | null;
 };
 
 export type AnswersType =
@@ -36,6 +44,7 @@ export const LogicSettings = ({
   pageOptions,
   field,
   builderConfig,
+  getCurrentPageId,
 }: LogicSettingsProps) => {
   const { formatMessage } = useIntl();
   const {
@@ -92,6 +101,16 @@ export const LogicSettings = ({
     }
   }
 
+  // Current and previous pages should be disabled in select options
+  let disablePage = true;
+  const pages: PageListType = pageOptions.map((page) => {
+    page.disabled = disablePage;
+    if (page.value === getCurrentPageId(field.id)) {
+      disablePage = false;
+    }
+    return page;
+  });
+
   return (
     <>
       {field.input_type === 'page' ? (
@@ -124,35 +143,21 @@ export const LogicSettings = ({
             fieldId={field.temp_id || field.id}
             validationError={validationError}
             name={`customFields.${field.index}.logic`}
-            pages={pageOptions}
+            pages={pages}
           />
         </>
       ) : (
         <>
-          <Box mb="24px">
-            {builderConfig &&
-              !isNilOrError(builderConfig.supportArticleLink) && (
-                <Warning>
-                  <FormattedMessage
-                    {...(builderConfig.questionLogicHelperText ||
-                      messages.questionLogicHelperText)}
-                    values={{
-                      supportPageLink: (
-                        <a
-                          href={formatMessage(builderConfig.supportArticleLink)}
-                          target="_blank"
-                          rel="noreferrer"
-                        >
-                          <FormattedMessage
-                            {...messages.supportArticleLinkText}
-                          />
-                        </a>
-                      ),
-                    }}
-                  />
-                </Warning>
-              )}
-          </Box>
+          {['multiselect', 'multiselect_image'].includes(field.input_type) && (
+            <Box mb="24px">
+              {builderConfig &&
+                !isNilOrError(builderConfig.supportArticleLink) && (
+                  <Warning>
+                    <FormattedMessage {...messages.multipleChoiceHelperText} />
+                  </Warning>
+                )}
+            </Box>
+          )}
           {answers &&
             answers.map((answer) => (
               <Box key={answer.key}>
