@@ -255,7 +255,7 @@ fr-BE:
       option1: 'Option 1'
       option2: 'Option 2'
     form_end_page:
-      title_text_3: 'Merci de nous avoir fait part de vos commentaires !'
+      title_text_3: 'Merci pour votre participation !'
       description_text_3: "Votre contribution a été soumise avec succès."
     pdf_export:
       personal_data: 'Données personnelles'
