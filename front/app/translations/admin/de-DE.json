@@ -908,7 +908,7 @@
   "app.containers.Admin.projects.all.PDFExportModal.selectIdeationPhase": "Bitte wählen Sie eine Phase mit einer Ideenfindung aus.",
   "app.containers.Admin.projects.all.askPersonalData": "Persönliche Daten erfragen",
   "app.containers.Admin.projects.all.clickExportToPDFIdeaForm": "Fragen, die derzeit nicht unterstützt werden: Bilder, Themen-Tags und Anhänge hochladen.",
-  "app.containers.Admin.projects.all.clickExportToPDFSurvey5": "Derzeit nicht unterstützte Fragen: Mapping-Fragen (Stecknadel fallen lassen, Route zeichnen und Bereich zeichnen), Bildauswahlfragen, Ranking-Fragen, Matrix-Fragen und Dateiupload-Fragen.",
+  "app.containers.Admin.projects.all.clickExportToPDFSurvey5": "Derzeit nicht unterstützte Fragen: Mapping-Fragen (Stecknadel setzen, Route zeichnen und Bereich zeichnen), Bildauswahlfragen, Ranking-Fragen, Matrix-Fragen und Dateiupload-Fragen.",
   "app.containers.Admin.projects.all.components.archived": "Archiviert",
   "app.containers.Admin.projects.all.components.draft": "Entwurf",
   "app.containers.Admin.projects.all.components.manageButtonLabel": "Bearbeiten",
