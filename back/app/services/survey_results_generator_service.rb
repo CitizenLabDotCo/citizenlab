@@ -216,7 +216,7 @@ class SurveyResultsGeneratorService < FieldVisitorService
   end
 
   def get_option_multilocs(field)
-    if ['linear_scale', 'rating'].include?(field.input_type)
+    if %w[linear_scale rating].include?(field.input_type)
       return build_scaled_input_multilocs(field)
     end
 
@@ -305,7 +305,7 @@ class SurveyResultsGeneratorService < FieldVisitorService
   end
 
   def generate_answer_keys(field)
-    (field.input_type.in?(['linear_scale', 'rating']) ? (1..field.maximum).reverse_each.to_a : field.options.map(&:key)) + [nil]
+    (field.input_type.in?(%w[linear_scale rating]) ? (1..field.maximum).reverse_each.to_a : field.options.map(&:key)) + [nil]
   end
 
   # Convert stored user keys for domicile field to match the options keys eg "f6319053-d521-4b28-9d71-a3693ec95f45" => "north_london_8rg"
@@ -329,11 +329,19 @@ class SurveyResultsGeneratorService < FieldVisitorService
     end
 
     answer_titles.each_key do |value|
-      labels = field.input_type == 'linear_scale' ?
-        field.nth_linear_scale_multiloc(value).transform_values { |label| label.present? ? "#{value} - #{label}" : value }
-        : {}
-
-      answer_titles[value][:title_multiloc].merge! labels
+      labels = {}
+    
+      if field.input_type == 'linear_scale'
+        labels = field.nth_linear_scale_multiloc(value).transform_values do |label|
+          if label.present?
+            "#{value} - #{label}"
+          else
+            value
+          end
+        end
+      end
+    
+      answer_titles[value][:title_multiloc].merge!(labels)
     end
 
     answer_titles
