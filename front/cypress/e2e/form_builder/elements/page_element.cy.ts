@@ -89,8 +89,8 @@ describe('Form builder page element', () => {
     cy.get('[data-cy="e2e-after-submission"]').should('exist');
     cy.get('[data-cy="e2e-after-submission"]').click();
 
-    // Check that we show a success message on submit
-    cy.get('[data-cy="e2e-survey-success-message"]').should('exist');
+    // Make sure we're back at the project
+    cy.url().should('include', `projects/${projectSlug}`);
   });
 
   it('does not let the user delete the page if there is only one page', () => {
