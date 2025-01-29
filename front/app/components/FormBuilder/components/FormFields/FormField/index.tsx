@@ -95,11 +95,13 @@ export const FormField = ({
   const isGroupDeletable =
     formCustomFields.filter((field) => field.input_type === groupingType)
       .length > 1;
+
   const isDeleteShown =
     // TODO: Fix this the next time the file is edited.
     // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     !(field?.input_type !== groupingType || isGroupDeletable) ||
-    get(lockedAttributes, 'enabled', false);
+    get(lockedAttributes, 'enabled', false) ||
+    fieldNumbers[field.id] === 1;
 
   const editFieldAndValidate = () => {
     onEditField({ ...field, index });
