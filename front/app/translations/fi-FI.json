@@ -2126,7 +2126,6 @@
   "app.utils.participationMethodConfig.voting.votingNotSignedIn2": "Sinun tulee kirjautua sisään tai rekisteröityä äänestääksesi.",
   "app.utils.participationMethodConfig.voting.votingNotVerified": "Sinun on vahvistettava tilisi ennen kuin voit äänestää.",
   "app.utils.votingMethodUtils.budget": "budjetti",
-  "app.utils.votingMethodUtils.budgetParticipationEnded": "<b>Budjettien lähetys päättyi {endDate}.</b> Osallistujilla oli yhteensä <b>{maxBudget} {currency} jokaisella jaettavaksi {optionCount} vaihtoehdon välillä.</b>",
   "app.utils.votingMethodUtils.budgetSubmitted": "Budjetti lähetetty",
   "app.utils.votingMethodUtils.budgetSubmittedWithIcon": "Budjetti lähetetty 🎉",
   "app.utils.votingMethodUtils.budgetingNotInGroup": "Et täytä budjettien määrittämisvaatimuksia.",

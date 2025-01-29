@@ -1383,7 +1383,6 @@
   "app.utils.notInGroup": "You do not meet the requirements to participate.",
   "app.utils.participationMethod.onSurveySubmission": "Thank you. Your response has been received.",
   "app.utils.votingMethodUtils.budget": "budget",
-  "app.utils.votingMethodUtils.budgetParticipationEnded": "<b>Submitting budgets closed on {endDate}.</b> Participants had a total of <b>{maxBudget} {currency} each to distribute between {optionCount} options.</b>",
   "app.utils.votingMethodUtils.budgetSubmitted": "Budget submitted",
   "app.utils.votingMethodUtils.budgetSubmittedWithIcon": "Budget submitted 🎉",
   "app.utils.votingMethodUtils.budgetingPreSubmissionWarning": "<b>Your budget will not be counted</b> until you click \"Submit\"",

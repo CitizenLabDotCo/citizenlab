@@ -2126,7 +2126,6 @@
   "app.utils.participationMethodConfig.voting.votingNotSignedIn2": "Norėdami balsuoti, turite prisijungti arba užsiregistruoti.",
   "app.utils.participationMethodConfig.voting.votingNotVerified": "Prieš balsuodami turite patvirtinti savo paskyrą.",
   "app.utils.votingMethodUtils.budget": "biudžetas",
-  "app.utils.votingMethodUtils.budgetParticipationEnded": "<b>Biudžetų teikimas baigtas {endDate}.</b> Dalyviai turėjo iš viso <b> po{maxBudget} {currency} , kuriuos galėjo paskirstyti {optionCount} variantams.</b>",
   "app.utils.votingMethodUtils.budgetSubmitted": "Pateiktas biudžetas",
   "app.utils.votingMethodUtils.budgetSubmittedWithIcon": "Pateiktas biudžetas 🎉",
   "app.utils.votingMethodUtils.budgetingNotInGroup": "Neatitinkate reikalavimų, kad galėtumėte priskirti biudžetus.",

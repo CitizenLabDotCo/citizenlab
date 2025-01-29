@@ -2126,7 +2126,6 @@
   "app.utils.participationMethodConfig.voting.votingNotSignedIn2": "Oy kullanmak için giriş yapmalı veya kayıt olmalısınız.",
   "app.utils.participationMethodConfig.voting.votingNotVerified": "Oy kullanabilmeniz için hesabınızı doğrulamanız gerekmektedir.",
   "app.utils.votingMethodUtils.budget": "BÜTÇE",
-  "app.utils.votingMethodUtils.budgetParticipationEnded": "<b>Bütçe gönderimi {endDate}tarihinde sona ermiştir.</b> Katılımcıların her biri {optionCount} seçenekleri arasında dağıtmak üzere toplam <b>{maxBudget} {currency} bütçesine sahipti.</b>",
   "app.utils.votingMethodUtils.budgetSubmitted": "Sunulan bütçe",
   "app.utils.votingMethodUtils.budgetSubmittedWithIcon": "Bütçe sunuldu 🎉",
   "app.utils.votingMethodUtils.budgetingNotInGroup": "Bütçe atamak için gereken koşulları karşılamıyorsunuz.",

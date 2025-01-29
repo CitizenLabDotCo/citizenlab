@@ -2126,7 +2126,6 @@
   "app.utils.participationMethodConfig.voting.votingNotSignedIn2": "Rhaid i chi fewngofnodi neu gofrestru i bleidleisio.",
   "app.utils.participationMethodConfig.voting.votingNotVerified": "Rhaid i chi wirio'ch cyfrif cyn y gallwch chi bleidleisio.",
   "app.utils.votingMethodUtils.budget": "cyllideb",
-  "app.utils.votingMethodUtils.budgetParticipationEnded": "<b>Cyflwyno cyllidebau a gaewyd ar {endDate}.</b> Roedd gan y cyfranogwyr gyfanswm o <b>{maxBudget} {currency} yr un i'w dosbarthu rhwng {optionCount} opsiynau.</b>",
   "app.utils.votingMethodUtils.budgetSubmitted": "Cyllideb wedi'i chyflwyno",
   "app.utils.votingMethodUtils.budgetSubmittedWithIcon": "Cyllideb wedi'i chyflwyno 🎉",
   "app.utils.votingMethodUtils.budgetingNotInGroup": "Nid ydych yn bodloni'r gofynion i neilltuo cyllidebau.",

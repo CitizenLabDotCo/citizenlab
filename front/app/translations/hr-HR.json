@@ -2126,7 +2126,6 @@
   "app.utils.participationMethodConfig.voting.votingNotSignedIn2": "Za glasanje se morate prijaviti ili registrirati.",
   "app.utils.participationMethodConfig.voting.votingNotVerified": "Morate potvrditi svoj račun prije nego što možete glasati.",
   "app.utils.votingMethodUtils.budget": "proračun",
-  "app.utils.votingMethodUtils.budgetParticipationEnded": "<b>Predaja proračuna zatvorena je {endDate}.</b> Sudionika je svaki imao ukupno <b>{maxBudget} {currency} za raspodjelu između {optionCount} opcija.</b>",
   "app.utils.votingMethodUtils.budgetSubmitted": "Predan proračun",
   "app.utils.votingMethodUtils.budgetSubmittedWithIcon": "Predan proračun 🎉",
   "app.utils.votingMethodUtils.budgetingNotInGroup": "Ne ispunjavate uvjete za dodjelu proračuna.",

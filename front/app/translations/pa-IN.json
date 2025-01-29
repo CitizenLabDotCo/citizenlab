@@ -2126,7 +2126,6 @@
   "app.utils.participationMethodConfig.voting.votingNotSignedIn2": "ਵੋਟ ਪਾਉਣ ਲਈ ਤੁਹਾਨੂੰ ਲੌਗ ਇਨ ਜਾਂ ਰਜਿਸਟਰ ਕਰਨਾ ਪਵੇਗਾ।",
   "app.utils.participationMethodConfig.voting.votingNotVerified": "ਵੋਟ ਪਾਉਣ ਤੋਂ ਪਹਿਲਾਂ ਤੁਹਾਨੂੰ ਆਪਣੇ ਖਾਤੇ ਦੀ ਪੁਸ਼ਟੀ ਕਰਨੀ ਚਾਹੀਦੀ ਹੈ।",
   "app.utils.votingMethodUtils.budget": "ਬਜਟ",
-  "app.utils.votingMethodUtils.budgetParticipationEnded": "<b>ਬਜਟ ਜਮ੍ਹਾ ਕਰਨਾ {endDate}ਨੂੰ ਬੰਦ ਹੋ ਗਿਆ।</b> ਭਾਗੀਦਾਰਾਂ ਕੋਲ ਕੁੱਲ <b>{maxBudget} {currency} ਹਰੇਕ ਨੂੰ {optionCount} ਵਿਕਲਪਾਂ ਵਿਚਕਾਰ ਵੰਡਣ ਲਈ ਸੀ।</b>",
   "app.utils.votingMethodUtils.budgetSubmitted": "ਬਜਟ ਪੇਸ਼ ਕੀਤਾ",
   "app.utils.votingMethodUtils.budgetSubmittedWithIcon": "ਬਜਟ ਪੇਸ਼ ਕੀਤਾ ਗਿਆ 🎉",
   "app.utils.votingMethodUtils.budgetingNotInGroup": "ਤੁਸੀਂ ਬਜਟ ਨਿਰਧਾਰਤ ਕਰਨ ਦੀਆਂ ਲੋੜਾਂ ਨੂੰ ਪੂਰਾ ਨਹੀਂ ਕਰਦੇ ਹੋ।",

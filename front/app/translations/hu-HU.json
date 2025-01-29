@@ -2126,7 +2126,6 @@
   "app.utils.participationMethodConfig.voting.votingNotSignedIn2": "A szavazáshoz be kell jelentkezned vagy regisztrálnod kell.",
   "app.utils.participationMethodConfig.voting.votingNotVerified": "A szavazás előtt igazolnia kell fiókját.",
   "app.utils.votingMethodUtils.budget": "költségvetés",
-  "app.utils.votingMethodUtils.budgetParticipationEnded": "<b>Költségkeretek benyújtása: {endDate}.</b> A résztvevőknek összesen <b>{maxBudget} {currency} volt, amit {optionCount} opciók között oszthattak el.</b>",
   "app.utils.votingMethodUtils.budgetSubmitted": "Költségvetés benyújtva",
   "app.utils.votingMethodUtils.budgetSubmittedWithIcon": "Költségvetés elküldve 🎉",
   "app.utils.votingMethodUtils.budgetingNotInGroup": "Nem felel meg a költségvetés hozzárendelésének követelményeinek.",
