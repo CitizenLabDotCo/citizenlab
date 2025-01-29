@@ -24,6 +24,7 @@ import Warning from 'components/UI/Warning';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import { getVotingMethodConfig } from 'utils/configs/votingMethodConfig';
+import useFormatCurrency from 'utils/currency/useFormatCurrency';
 import { getLocalisedDateString, pastPresentOrFuture } from 'utils/dateUtils';
 
 import ConfettiSvg from './ConfettiSvg';
@@ -47,6 +48,7 @@ const unsubmitBasket = async (
 
 const StatusModule = ({ votingMethod, phase, project }: StatusModuleProps) => {
   const { data: appConfig } = useAppConfiguration();
+  const formatCurrency = useFormatCurrency();
 
   const theme = useTheme();
   const isSmallerThanPhone = useBreakpoint('phone');
@@ -75,6 +77,9 @@ const StatusModule = ({ votingMethod, phase, project }: StatusModuleProps) => {
   const showDate = !phaseHasEnded && basketStatus === 'hasNotSubmitted';
   const basketCount =
     phase.attributes.baskets_count || project.attributes.baskets_count;
+
+  if (!appConfig) return null;
+  const currency = appConfig.data.attributes.settings.core.currency;
 
   return (
     <Box boxShadow={defaultStyles.boxShadow} id="voting-status-module">
@@ -111,9 +116,10 @@ const StatusModule = ({ votingMethod, phase, project }: StatusModuleProps) => {
                 project,
                 phase,
                 submissionState: basketStatus,
-                appConfig,
+                currency,
                 localize,
                 formatMessage,
+                formatCurrency,
               })}
           </Box>
           {showDate && phase.attributes.end_at && (

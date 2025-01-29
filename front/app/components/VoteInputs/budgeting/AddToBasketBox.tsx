@@ -10,7 +10,6 @@ import {
 } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
-import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useVoting from 'api/baskets_ideas/useVoting';
 import useIdeaById from 'api/ideas/useIdeaById';
 import { IPhaseData } from 'api/phases/types';
@@ -18,6 +17,7 @@ import { IPhaseData } from 'api/phases/types';
 import { ScreenReaderOnly } from 'utils/a11y';
 import { FormattedMessage } from 'utils/cl-intl';
 import FormattedBudget from 'utils/currency/FormattedBudget';
+import useFormatCurrency from 'utils/currency/useFormatCurrency';
 import { isNil } from 'utils/helperUtils';
 
 import AddToBasketButton from './AddToBasketButton';
@@ -62,8 +62,8 @@ interface Props {
 
 const AddToBasketBox = memo(({ ideaId, phase }: Props) => {
   const { data: idea } = useIdeaById(ideaId);
-  const { data: appConfig } = useAppConfiguration();
   const { numberOfVotesCast } = useVoting();
+  const formatCurrency = useFormatCurrency();
 
   const ideaBudget = idea?.data.attributes.budget;
   const actionDescriptor = idea?.data.attributes.action_descriptors.voting;
@@ -74,7 +74,6 @@ const AddToBasketBox = memo(({ ideaId, phase }: Props) => {
   }
 
   const budgetLeft = voting_max_total - (numberOfVotesCast ?? 0);
-  const currency = appConfig?.data.attributes.settings.core.currency;
 
   return (
     <IdeaPageContainer
@@ -89,11 +88,10 @@ const AddToBasketBox = memo(({ ideaId, phase }: Props) => {
             <FormattedBudget value={ideaBudget} />
             <Text mb="0px" mt="8px" color="grey600" fontSize="xs">
               <FormattedMessage
-                {...messages.currencyLeft}
+                {...messages.currencyLeft1}
                 values={{
-                  budgetLeft: budgetLeft.toLocaleString(),
-                  totalBudget: voting_max_total.toLocaleString(),
-                  currency,
+                  budgetLeft: formatCurrency(budgetLeft),
+                  totalBudget: formatCurrency(voting_max_total),
                 }}
               />
             </Text>
