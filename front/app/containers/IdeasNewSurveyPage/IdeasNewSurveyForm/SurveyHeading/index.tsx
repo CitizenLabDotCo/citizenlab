@@ -9,7 +9,7 @@ import {
   stylingConsts,
   Title,
 } from '@citizenlab/cl2-component-library';
-import { useParams } from 'react-router-dom';
+import { useParams, useSearchParams } from 'react-router-dom';
 import { RouteType } from 'routes';
 import styled from 'styled-components';
 
@@ -54,12 +54,26 @@ const SurveyHeading = ({ titleText, phaseId }: Props) => {
   const closeModal = () => {
     setShowLeaveModal(false);
   };
+  const [searchParams] = useSearchParams();
+
+  const hasBeenSubmitted = !!searchParams.get('idea_id');
 
   if (!project) return null;
 
   const showEditSurveyButton =
     !isSmallerThanPhone && canModerateProject(project.data, authUser);
   const linkToSurveyBuilder: RouteType = `/admin/projects/${project.data.id}/phases/${phaseId}/native-survey/edit`;
+
+  const returnToProject = () => {
+    clHistory.push(`/projects/${projectSlug}`);
+    // We need to invalidate any previously cached draft idea.
+    // Invalidating the draft while "in" the survey (I.e. In the useUpdateIdea
+    // when survey page next/previous buttons clicked) causes issues.
+    // TODO: Find a better solution for this.
+    queryClient.invalidateQueries({
+      queryKey: ideasKeys.item({ id: phaseId }),
+    });
+  };
 
   return (
     <>
@@ -106,7 +120,12 @@ const SurveyHeading = ({ titleText, phaseId }: Props) => {
             iconName="close"
             onClick={(event) => {
               event?.preventDefault();
-              openModal();
+
+              if (hasBeenSubmitted) {
+                returnToProject();
+              } else {
+                openModal();
+              }
             }}
             iconColor={colors.textSecondary}
             iconColorOnHover={colors.black}
@@ -149,16 +168,7 @@ const SurveyHeading = ({ titleText, phaseId }: Props) => {
               buttonStyle={authUser ? 'primary' : 'delete'}
               width="100%"
               mb={isSmallerThanPhone ? '16px' : undefined}
-              onClick={() => {
-                clHistory.push(`/projects/${projectSlug}`);
-                // We need to invalidate any previously cached draft idea.
-                // Invalidating the draft while "in" the survey (I.e. In the useUpdateIdea
-                // when survey page next/previous buttons clicked) causes issues.
-                // TODO: Find a better solution for this.
-                queryClient.invalidateQueries({
-                  queryKey: ideasKeys.item({ id: phaseId }),
-                });
-              }}
+              onClick={returnToProject}
             >
               <FormattedMessage {...messages.confirmLeaveFormButtonText} />
             </Button>

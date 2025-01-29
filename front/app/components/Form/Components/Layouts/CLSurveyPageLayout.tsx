@@ -53,6 +53,7 @@ import Warning from 'components/UI/Warning';
 
 import { useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
+import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 import eventEmitter from 'utils/eventEmitter';
 
 import {
@@ -98,7 +99,7 @@ const CLSurveyPageLayout = memo(
     const [userPagePath] = useState<PageType[]>([]);
     const [scrollToError, setScrollToError] = useState(false);
     const [percentageAnswered, setPercentageAnswered] = useState<number>(1);
-    const [ideaId, setIdeaId] = useState<string>();
+    const ideaId = searchParams.get('idea_id');
 
     const pageVariant = getPageVariant(currentStep, uiPages.length);
     const hasPreviousPage = currentStep !== 0;
@@ -253,7 +254,7 @@ const CLSurveyPageLayout = memo(
           getFilteredDataForUserPath(userPagePath, data),
           true
         );
-        setIdeaId(idea.data.id);
+        updateSearchParams({ idea_id: idea.data.id });
       } else {
         data.publication_status = 'draft';
         data.latest_complete_page = currentStep;
