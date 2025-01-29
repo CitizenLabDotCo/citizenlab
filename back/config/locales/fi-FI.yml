@@ -255,8 +255,8 @@ fi:
       option1: 'Vaihtoehto 1'
       option2: 'Vaihtoehto 2'
     form_end_page:
-      title_text: 'Melkein valmis'
-      description_text_2: "Olet lähettämässä vastauksesi. Napsauttamalla 'Lähetä' annat meille luvan analysoida vastauksiasi.<br/>Lähettämisen jälkeen et voi enää palata takaisin ja muuttaa vastauksiasi."
+      title_text_3: 'Kiitos palautteen jakamisesta!'
+      description_text_3: "Palautteesi on lähetetty onnistuneesti."
     pdf_export:
       personal_data: 'Henkilökohtaiset tiedot'
       personal_data_explanation_public: "Lähetämme palautetta %{organizationName}:n online-osallistumisalustalle. Jos haluat, että nimesi näytetään tämän syötteen kirjoittajana ja että saat sähköpostiisi syöttöäsi koskevia päivityksiä, täytä seuraavat tämän sivun kentät, niin luomme sinulle tilin. Sähköpostisi ei ole julkinen, ja vain %{organizationName}käyttää sitä. Jos haluat pysyä nimettömänä tai et suostu siihen, että käytämme henkilötietojasi tällä tavalla, voit jättää ne tyhjiksi."
