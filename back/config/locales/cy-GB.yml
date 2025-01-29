@@ -255,8 +255,8 @@ cy:
       option1: 'Opsiwn 1'
       option2: 'Opsiwn 2'
     form_end_page:
-      title_text: 'Bron wedi''i wneud'
-      description_text_2: "Rydych ar fin cyflwyno eich atebion. Drwy glicio ar 'Cyflwyno' rydych yn rhoi caniatâd i ni ddadansoddi eich atebion.<br/>Ar ôl i chi gyflwyno, ni fyddwch yn gallu mynd yn ôl a newid unrhyw un o'ch atebion mwyach."
+      title_text_3: 'Diolch am rannu eich mewnbwn!'
+      description_text_3: "Mae eich mewnbwn wedi'i gyflwyno'n llwyddiannus."
     pdf_export:
       personal_data: 'Data personol'
       personal_data_explanation_public: "Byddwn yn cyflwyno eich mewnbwn i %{organizationName}'s llwyfan cyfranogiad ar-lein. Os hoffech i'ch enw gael ei arddangos fel awdur y mewnbwn hwn a derbyn diweddariadau sy'n berthnasol i'ch mewnbwn trwy e-bost, llenwch y meysydd canlynol ar y dudalen hon a byddwn yn creu cyfrif i chi. Ni fydd eich e-bost yn gyhoeddus a bydd yn cael ei ddefnyddio gan %{organizationName}yn unig. Os ydych am aros yn ddienw, neu os nad ydych yn cytuno i ni ddefnyddio eich data personol yn y modd hwn, gallwch eu gadael yn wag."
