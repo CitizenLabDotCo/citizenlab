@@ -12,7 +12,7 @@ interface Props {
   ideaQueryParameters: IIdeasFilterCountsQueryParameters;
   onChange: (arg: string | null) => void;
   className?: string;
-  participationMethod?: IdeaStatusParticipationMethod;
+  participationMethod: IdeaStatusParticipationMethod;
 }
 
 const StatusFilterBox = ({
@@ -23,7 +23,7 @@ const StatusFilterBox = ({
   participationMethod,
 }: Props) => {
   const { data: ideaStatuses } = useIdeaStatuses({
-    participation_method: participationMethod,
+    queryParams: { participation_method: participationMethod },
   });
   const { data: ideasFilterCounts } = useIdeasFilterCounts({
     ...ideaQueryParameters,

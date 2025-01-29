@@ -263,7 +263,6 @@ const IdeasNewSurveyForm = ({ project, phaseId }: Props) => {
       clearDraftIdea(phaseId);
       participationMethodConfig.onFormSubmission({
         project: project.data,
-        ideaId,
         idea,
       });
     }

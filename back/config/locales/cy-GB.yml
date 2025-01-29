@@ -138,8 +138,6 @@ cy:
         title: Blwyddyn geni
       domicile:
         title: Man preswylio
-      education:
-        title: Addysg
     ideas:
       title:
         title: Teitl
@@ -207,14 +205,6 @@ cy:
       unspecified: Amhenodol
     domicile:
       outside: Rhywle arall
-    education:
-      ISCED2: Addysg uwchradd is
-      ISCED3: Addysg uwchradd uwch
-      ISCED4: Addysg ôl-uwchradd nad yw'n drydyddol
-      ISCED5: Addysg drydyddol cylch byr
-      ISCED6: Baglor neu gyfwerth
-      ISCED7: Meistr neu gyfwerth
-      ISCED8: Doethurol neu gyfwerth
   reset_password_mailer:
     send_reset_password:
       preheader: 'Ailosodwch eich cyfrinair ar gyfer %{organizationName}'

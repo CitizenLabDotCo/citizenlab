@@ -5,9 +5,8 @@ import { useFormContext } from 'react-hook-form';
 
 import { IFlatCustomFieldWithIndex } from 'api/custom_fields/types';
 
-import { generateTempId } from 'components/FormBuilder/utils';
-
 import { useIntl } from 'utils/cl-intl';
+import { generateTempId } from 'utils/helperUtils';
 
 import messages from './messages';
 import { getFieldSwitchOptions } from './utils';

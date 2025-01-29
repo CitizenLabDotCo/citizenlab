@@ -5,7 +5,7 @@
     "lib": ["es5", "es2015", "dom"],
     "skipLibCheck": true,
     "strict": true,
-    "types": ["cypress", "cypress-file-upload"]
+    "types": ["cypress", "cypress-file-upload", "cypress-axe"]
   },
   "exclude": ["../node_modules", "../app", "../e2e", "../internals"],
   "include": ["../cypress/**/*.ts"]

@@ -149,4 +149,42 @@ describe SideFxProjectService do
       service.after_votes_by_input_xlsx project, user
     end
   end
+
+  describe 'after_copy' do
+    let(:source_project) { create(:project) }
+    let(:copied_project) { create(:project, default_assignee: nil) }
+
+    it 'logs "local_copy_created" activity' do
+      expect(LogActivityJob).to receive(:perform_later).with(
+        copied_project,
+        'local_copy_created',
+        user,
+        copied_project.created_at.to_i,
+        payload: {
+          time_taken: anything,
+          source_project_id: source_project.id,
+          copied_project_attributes: copied_project.attributes
+        }
+      )
+      service.after_copy(source_project, copied_project, user, Time.now)
+    end
+
+    it 'assigns current user as default_assignee, and moderator of new copied project if needed' do
+      moderator = create(:project_moderator, projects: [source_project])
+
+      service.after_copy(source_project, copied_project, moderator, Time.now)
+
+      expect(copied_project.default_assignee).to eq(moderator)
+      expect(UserRoleService.new.can_moderate?(copied_project, moderator.reload)).to be true
+    end
+
+    it 'does not set current user as moderator of new copied project if not needed' do
+      user = create(:admin)
+
+      service.after_copy(source_project, copied_project, user, Time.now)
+
+      expect(copied_project.default_assignee).to eq(user)
+      expect(UserRoleService.new.can_moderate?(copied_project, user)).to be true
+    end
+  end
 end
