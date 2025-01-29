@@ -20,11 +20,6 @@ export interface Answer {
 
 export type MultilocAnswer = {
   title_multiloc: Multiloc;
-  id: string;
-  logic: {
-    nextPageNumber?: number;
-    numQuestionsSkipped?: number;
-  };
   image?: ImageSizes;
 };
 
@@ -61,6 +56,13 @@ type BaseResult = {
 };
 
 export type ResultLogic = {
+  nextPageNumber?: number;
+  numQuestionsSkipped?: number;
+  answer?: Record<string, OptionLogic>;
+};
+
+export type OptionLogic = ResultLogic & {
+  id?: string;
   nextPageNumber?: number;
   numQuestionsSkipped?: number;
 };

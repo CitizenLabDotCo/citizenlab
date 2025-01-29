@@ -55,15 +55,11 @@ describe('parseQuestionResult', () => {
             title_multiloc: {
               en: 'select: Option 1',
             },
-            id: '1',
-            logic: {},
           },
           select_option_2_sj8: {
             title_multiloc: {
               en: 'select: Option 2',
             },
-            id: '1',
-            logic: {},
           },
         },
         group: {
@@ -71,22 +67,16 @@ describe('parseQuestionResult', () => {
             title_multiloc: {
               en: 'Male',
             },
-            id: '1',
-            logic: {},
           },
           female: {
             title_multiloc: {
               en: 'Female',
             },
-            id: '1',
-            logic: {},
           },
           unspecified: {
             title_multiloc: {
               en: 'Other',
             },
-            id: '1',
-            logic: {},
           },
         },
       },
@@ -209,15 +199,11 @@ describe('parseQuestionResult', () => {
             title_multiloc: {
               en: 'multiselect: Option 1',
             },
-            id: '1',
-            logic: {},
           },
           multiselect_option_2_3c7: {
             title_multiloc: {
               en: 'multiselect: Option 2',
             },
-            id: '1',
-            logic: {},
           },
         },
         group: {
@@ -225,22 +211,16 @@ describe('parseQuestionResult', () => {
             title_multiloc: {
               en: 'Male',
             },
-            id: '1',
-            logic: {},
           },
           female: {
             title_multiloc: {
               en: 'Female',
             },
-            id: '1',
-            logic: {},
           },
           unspecified: {
             title_multiloc: {
               en: 'Other',
             },
-            id: '1',
-            logic: {},
           },
         },
       },

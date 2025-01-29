@@ -498,12 +498,11 @@ RSpec.describe SurveyResultsGeneratorService do
           ],
           multilocs: {
             answer: {
-              'cat' => { title_multiloc: { 'en' => 'Cat', 'fr-FR' => 'Chat', 'nl-NL' => 'Kat' }, id: an_instance_of(String), logic: {} },
-              'cow' => { title_multiloc: { 'en' => 'Cow', 'fr-FR' => 'Vache', 'nl-NL' => 'Koe' }, id: an_instance_of(String), logic: {} },
-              'dog' => { title_multiloc: { 'en' => 'Dog', 'fr-FR' => 'Chien', 'nl-NL' => 'Hond' }, id: an_instance_of(String), logic: {} },
-              'no_response' => { title_multiloc: { 'en' => 'Nothing', 'fr-FR' => 'Rien', 'nl-NL' => 'Niets' }, id: an_instance_of(String), logic: {} },
-              'pig' => { title_multiloc: { 'en' => 'Pig', 'fr-FR' => 'Porc', 'nl-NL' => 'Varken' }, id: an_instance_of(String), logic: {} },
-              'no_answer' => { title_multiloc: {}, id: an_instance_of(String), logic: {} }
+              'cat' => { title_multiloc: { 'en' => 'Cat', 'fr-FR' => 'Chat', 'nl-NL' => 'Kat' } },
+              'cow' => { title_multiloc: { 'en' => 'Cow', 'fr-FR' => 'Vache', 'nl-NL' => 'Koe' } },
+              'dog' => { title_multiloc: { 'en' => 'Dog', 'fr-FR' => 'Chien', 'nl-NL' => 'Hond' } },
+              'no_response' => { title_multiloc: { 'en' => 'Nothing', 'fr-FR' => 'Rien', 'nl-NL' => 'Niets' } },
+              'pig' => { title_multiloc: { 'en' => 'Pig', 'fr-FR' => 'Porc', 'nl-NL' => 'Varken' } }
             }
           }
         }
@@ -570,8 +569,7 @@ RSpec.describe SurveyResultsGeneratorService do
             result[:multilocs][:group] = {
               'female' => { title_multiloc: { 'en' => 'youth council', 'fr-FR' => 'conseil des jeunes', 'nl-NL' => 'jeugdraad' } },
               'male' => { title_multiloc: { 'en' => 'youth council', 'fr-FR' => 'conseil des jeunes', 'nl-NL' => 'jeugdraad' } },
-              'unspecified' => { title_multiloc: { 'en' => 'youth council', 'fr-FR' => 'conseil des jeunes', 'nl-NL' => 'jeugdraad' } },
-              'no_answer' => { title_multiloc: {} }
+              'unspecified' => { title_multiloc: { 'en' => 'youth council', 'fr-FR' => 'conseil des jeunes', 'nl-NL' => 'jeugdraad' } }
             }
           end
         end
@@ -627,8 +625,7 @@ RSpec.describe SurveyResultsGeneratorService do
             result[:multilocs][:group] = {
               'la' => { title_multiloc: { 'en' => 'Los Angeles', 'fr-FR' => 'Los Angeles', 'nl-NL' => 'Los Angeles' } },
               'ny' => { title_multiloc: { 'en' => 'New York', 'fr-FR' => 'New York', 'nl-NL' => 'New York' } },
-              'other' => { title_multiloc: { 'en' => 'Other', 'fr-FR' => 'Autre', 'nl-NL' => 'Ander' } },
-              'no_answer' => { title_multiloc: {} }
+              'other' => { title_multiloc: { 'en' => 'Other', 'fr-FR' => 'Autre', 'nl-NL' => 'Ander' } }
             }
           end
         end
@@ -668,7 +665,12 @@ RSpec.describe SurveyResultsGeneratorService do
           hidden: false,
           pageNumber: nil,
           questionNumber: nil,
-          logic: {},
+          logic: {
+            answer: {
+              2 => { id: "#{linear_scale_field.id}_2", nextPageNumber: 999, numQuestionsSkipped: 0 },
+              'no_answer' => { id: "#{linear_scale_field.id}_no_answer", nextPageNumber: 999, numQuestionsSkipped: 0 }
+            }
+          },
           totalResponseCount: 27,
           questionResponseCount: 22,
           totalPickCount: 27,
@@ -684,14 +686,13 @@ RSpec.describe SurveyResultsGeneratorService do
           ],
           multilocs: {
             answer: {
-              1 => { title_multiloc: { 'en' => '1 - Strongly disagree', 'fr-FR' => "1 - Pas du tout d'accord", 'nl-NL' => '1 - Helemaal niet mee eens' }, id: "#{linear_scale_field.id}_1", logic: {} },
-              2 => { title_multiloc: { 'en' => '2 - Disagree', 'fr-FR' => '2 - Être en désaccord', 'nl-NL' => '2 - Niet mee eens' }, id: "#{linear_scale_field.id}_2", logic: { nextPageNumber: 999, numQuestionsSkipped: 0 } },
-              3 => { title_multiloc: { 'en' => '3 - Slightly disagree', 'fr-FR' => '3 - Plutôt en désaccord', 'nl-NL' => '3 - Enigszins oneens' }, id: "#{linear_scale_field.id}_3", logic: {} },
-              4 => { title_multiloc: { 'en' => '4 - Neutral', 'fr-FR' => '4 - Neutre', 'nl-NL' => '4 - Neutraal' }, id: "#{linear_scale_field.id}_4", logic: {} },
-              5 => { title_multiloc: { 'en' => '5 - Slightly agree', 'fr-FR' => "5 - Plutôt d'accord", 'nl-NL' => '5 - Enigszins eens' }, id: "#{linear_scale_field.id}_5", logic: {} },
-              6 => { title_multiloc: { 'en' => '6 - Agree', 'fr-FR' => "6 - D'accord", 'nl-NL' => '6 - Mee eens' }, id: "#{linear_scale_field.id}_6", logic: {} },
-              7 => { title_multiloc: { 'en' => '7 - Strongly agree', 'fr-FR' => "7 - Tout à fait d'accord", 'nl-NL' => '7 - Strerk mee eens' }, id: "#{linear_scale_field.id}_7", logic: {} },
-              'no_answer' => { title_multiloc: {}, id: "#{linear_scale_field.id}_no_answer", logic: { nextPageNumber: 999, numQuestionsSkipped: 0 } }
+              1 => { title_multiloc: { 'en' => '1 - Strongly disagree', 'fr-FR' => "1 - Pas du tout d'accord", 'nl-NL' => '1 - Helemaal niet mee eens' } },
+              2 => { title_multiloc: { 'en' => '2 - Disagree', 'fr-FR' => '2 - Être en désaccord', 'nl-NL' => '2 - Niet mee eens' } },
+              3 => { title_multiloc: { 'en' => '3 - Slightly disagree', 'fr-FR' => '3 - Plutôt en désaccord', 'nl-NL' => '3 - Enigszins oneens' } },
+              4 => { title_multiloc: { 'en' => '4 - Neutral', 'fr-FR' => '4 - Neutre', 'nl-NL' => '4 - Neutraal' } },
+              5 => { title_multiloc: { 'en' => '5 - Slightly agree', 'fr-FR' => "5 - Plutôt d'accord", 'nl-NL' => '5 - Enigszins eens' } },
+              6 => { title_multiloc: { 'en' => '6 - Agree', 'fr-FR' => "6 - D'accord", 'nl-NL' => '6 - Mee eens' } },
+              7 => { title_multiloc: { 'en' => '7 - Strongly agree', 'fr-FR' => "7 - Tout à fait d'accord", 'nl-NL' => '7 - Strerk mee eens' } }
             }
           }
         }
@@ -703,9 +704,7 @@ RSpec.describe SurveyResultsGeneratorService do
       end
 
       it 'returns a single result for a linear scale field' do
-        # First remove logic from expected result - not returned in single result
-        expected_result_linear_scale[:multilocs][:answer][2][:logic] = {}
-        expected_result_linear_scale[:multilocs][:answer]['no_answer'][:logic] = {}
+        expected_result_linear_scale[:logic] = {} # Logic is not returns when requesting a single result
         expect(generator.generate_results(field_id: linear_scale_field.id)).to match expected_result_linear_scale
       end
 
@@ -722,9 +721,7 @@ RSpec.describe SurveyResultsGeneratorService do
               'fr-FR' => '5',
               'nl-NL' => '5'
             }
-            # And remove logic again
-            result[:multilocs][:answer][2][:logic] = {}
-            result[:multilocs][:answer]['no_answer'][:logic] = {}
+            result[:logic] = {} # Logic is not returns when requesting a single result
           end
         end
 
@@ -797,14 +794,12 @@ RSpec.describe SurveyResultsGeneratorService do
                 4 => hash_including(title_multiloc: { 'en' => '4 - Neutral', 'fr-FR' => '4 - Neutre', 'nl-NL' => '4 - Neutraal' }),
                 5 => hash_including(title_multiloc: { 'en' => '5 - Slightly agree', 'fr-FR' => "5 - Plutôt d'accord", 'nl-NL' => '5 - Enigszins eens' }),
                 6 => hash_including(title_multiloc: { 'en' => '6 - Agree', 'fr-FR' => "6 - D'accord", 'nl-NL' => '6 - Mee eens' }),
-                7 => hash_including(title_multiloc: { 'en' => '7 - Strongly agree', 'fr-FR' => "7 - Tout à fait d'accord", 'nl-NL' => '7 - Strerk mee eens' }),
-                'no_answer' => hash_including(title_multiloc: {})
+                7 => hash_including(title_multiloc: { 'en' => '7 - Strongly agree', 'fr-FR' => "7 - Tout à fait d'accord", 'nl-NL' => '7 - Strerk mee eens' })
               },
               group: {
                 'la' => { title_multiloc: { 'en' => 'Los Angeles', 'fr-FR' => 'Los Angeles', 'nl-NL' => 'Los Angeles' } },
                 'ny' => { title_multiloc: { 'en' => 'New York', 'fr-FR' => 'New York', 'nl-NL' => 'New York' } },
-                'other' => { title_multiloc: { 'en' => 'Other', 'fr-FR' => 'Autre', 'nl-NL' => 'Ander' } },
-                'no_answer' => { title_multiloc: {} }
+                'other' => { title_multiloc: { 'en' => 'Other', 'fr-FR' => 'Autre', 'nl-NL' => 'Ander' } }
               }
             },
             legend: ['la', 'ny', 'other', nil]
@@ -853,8 +848,7 @@ RSpec.describe SurveyResultsGeneratorService do
             answer: {
               'la' => hash_including(title_multiloc: { 'en' => 'Los Angeles', 'fr-FR' => 'Los Angeles', 'nl-NL' => 'Los Angeles' }),
               'ny' => hash_including(title_multiloc: { 'en' => 'New York', 'fr-FR' => 'New York', 'nl-NL' => 'New York' }),
-              'other' => hash_including(title_multiloc: { 'en' => 'Other', 'fr-FR' => 'Autre', 'nl-NL' => 'Ander' }),
-              'no_answer' => hash_including(title_multiloc: {})
+              'other' => hash_including(title_multiloc: { 'en' => 'Other', 'fr-FR' => 'Autre', 'nl-NL' => 'Ander' })
             }
           },
           textResponses: [
@@ -920,8 +914,7 @@ RSpec.describe SurveyResultsGeneratorService do
             result[:multilocs][:group] = {
               'female' => { title_multiloc: { 'en' => 'youth council', 'fr-FR' => 'conseil des jeunes', 'nl-NL' => 'jeugdraad' } },
               'male' => { title_multiloc: { 'en' => 'youth council', 'fr-FR' => 'conseil des jeunes', 'nl-NL' => 'jeugdraad' } },
-              'unspecified' => { title_multiloc: { 'en' => 'youth council', 'fr-FR' => 'conseil des jeunes', 'nl-NL' => 'jeugdraad' } },
-              'no_answer' => { title_multiloc: {} }
+              'unspecified' => { title_multiloc: { 'en' => 'youth council', 'fr-FR' => 'conseil des jeunes', 'nl-NL' => 'jeugdraad' } }
             }
           end
         end
@@ -966,8 +959,7 @@ RSpec.describe SurveyResultsGeneratorService do
             result[:multilocs][:group] = {
               area_1_key => { title_multiloc: domicile_user_custom_field.options[0].title_multiloc },
               area_2_key => { title_multiloc: domicile_user_custom_field.options[1].title_multiloc },
-              somewhere_else_key => { title_multiloc: domicile_user_custom_field.options.last.title_multiloc },
-              'no_answer' => { title_multiloc: {} }
+              somewhere_else_key => { title_multiloc: domicile_user_custom_field.options.last.title_multiloc }
             }
           end
         end
@@ -1032,8 +1024,7 @@ RSpec.describe SurveyResultsGeneratorService do
               answer: {
                 'la' => hash_including(title_multiloc: { 'en' => 'Los Angeles', 'fr-FR' => 'Los Angeles', 'nl-NL' => 'Los Angeles' }),
                 'ny' => hash_including(title_multiloc: { 'en' => 'New York', 'fr-FR' => 'New York', 'nl-NL' => 'New York' }),
-                'other' => hash_including(title_multiloc: { 'en' => 'Other', 'fr-FR' => 'Autre', 'nl-NL' => 'Ander' }),
-                'no_answer' => hash_including(title_multiloc: {})
+                'other' => hash_including(title_multiloc: { 'en' => 'Other', 'fr-FR' => 'Autre', 'nl-NL' => 'Ander' })
               },
               group: {
                 1 => { title_multiloc: { 'en' => '1 - Strongly disagree', 'fr-FR' => "1 - Pas du tout d'accord", 'nl-NL' => '1 - Helemaal niet mee eens' } },
@@ -1042,8 +1033,7 @@ RSpec.describe SurveyResultsGeneratorService do
                 4 => { title_multiloc: { 'en' => '4 - Neutral', 'fr-FR' => '4 - Neutre', 'nl-NL' => '4 - Neutraal' } },
                 5 => { title_multiloc: { 'en' => '5 - Slightly agree', 'fr-FR' => "5 - Plutôt d'accord", 'nl-NL' => '5 - Enigszins eens' } },
                 6 => { title_multiloc: { 'en' => '6 - Agree', 'fr-FR' => "6 - D'accord", 'nl-NL' => '6 - Mee eens' } },
-                7 => { title_multiloc: { 'en' => '7 - Strongly agree', 'fr-FR' => "7 - Tout à fait d'accord", 'nl-NL' => '7 - Strerk mee eens' } },
-                'no_answer' => { title_multiloc: {} }
+                7 => { title_multiloc: { 'en' => '7 - Strongly agree', 'fr-FR' => "7 - Tout à fait d'accord", 'nl-NL' => '7 - Strerk mee eens' } }
               }
             },
             legend: [7, 6, 5, 4, 3, 2, 1, nil],
@@ -1132,8 +1122,7 @@ RSpec.describe SurveyResultsGeneratorService do
                   medium: end_with('.png'),
                   small: end_with('.png')
                 }
-              ),
-              'no_answer' => hash_including(title_multiloc: {})
+              )
             }
           }
         }
@@ -1376,7 +1365,6 @@ RSpec.describe SurveyResultsGeneratorService do
           questionResponseCount: 2,
           pageNumber: nil,
           questionNumber: 1,
-          logic: {},
           totalPickCount: 2,
           answers: [
             { answer: 'option1', count: 1 },
@@ -1386,26 +1374,16 @@ RSpec.describe SurveyResultsGeneratorService do
           ],
           multilocs: {
             answer: {
-              option1: {
-                title_multiloc: { en: 'Option 1' },
-                id: 'SELECT_1_OPTION_1',
-                logic: { nextPageId: 'PAGE_3' }
-              },
-              option2: {
-                title_multiloc: { en: 'Option 2' },
-                id: 'SELECT_1_OPTION_2',
-                logic: { nextPageId: 'PAGE_2' }
-              },
-              option3: {
-                title_multiloc: { en: 'Option 3' },
-                id: 'SELECT_1_OPTION_3',
-                logic: { nextPageId: 'PAGE_4' }
-              },
-              no_answer: {
-                title_multiloc: {},
-                id: 'SELECT_OPTION_no_answer',
-                logic: {}
-              }
+              option1: { title_multiloc: { en: 'Option 1' } },
+              option2: { title_multiloc: { en: 'Option 2' } },
+              option3: { title_multiloc: { en: 'Option 3' } }
+            }
+          },
+          logic: {
+            answer: {
+              option1: { id: 'SELECT_1_OPTION_1', nextPageId: 'PAGE_3' },
+              option2: { id: 'SELECT_1_OPTION_2', nextPageId: 'PAGE_2' },
+              option3: { id: 'SELECT_1_OPTION_3', nextPageId: 'PAGE_4' }
             }
           }
         },
@@ -1450,7 +1428,6 @@ RSpec.describe SurveyResultsGeneratorService do
           questionResponseCount: 1,
           pageNumber: nil,
           questionNumber: 3,
-          logic: {},
           totalPickCount: 2,
           answers: [
             { answer: 5, count: 0 },
@@ -1462,36 +1439,18 @@ RSpec.describe SurveyResultsGeneratorService do
           ],
           multilocs: {
             answer: {
-              '1': {
-                title_multiloc: { en: '1' },
-                id: 'LINEAR_SCALE_OPTION_1',
-                logic: { nextPageId: nil }
-              },
-              '2': {
-                title_multiloc: { en: '2' },
-                id: 'LINEAR_SCALE_OPTION_2',
-                logic: { nextPageId: 'PAGE_3' }
-              },
-              '3': {
-                title_multiloc: { en: '3' },
-                id: 'LINEAR_SCALE_OPTION_3',
-                logic: { nextPageId: 'PAGE_4' }
-              },
-              '4': {
-                title_multiloc: { en: '4' },
-                id: 'LINEAR_SCALE_OPTION_4',
-                logic: { nextPageId: nil }
-              },
-              '5': {
-                title_multiloc: { en: '5' },
-                id: 'LINEAR_SCALE_OPTION_5',
-                logic: { nextPageId: nil }
-              },
-              no_answer: {
-                title_multiloc: {},
-                id: 'LINEAR_SCALE_OPTION_no_answer',
-                logic: { nextPageId: 'survey_end' }
-              }
+              '1': { title_multiloc: { en: '1' } },
+              '2': { title_multiloc: { en: '2' } },
+              '3': { title_multiloc: { en: '3' } },
+              '4': { title_multiloc: { en: '4' } },
+              '5': { title_multiloc: { en: '5' } }
+            }
+          },
+          logic: {
+            answer: {
+              '2': { id: 'LINEAR_SCALE_OPTION_2', nextPageId: 'PAGE_3' },
+              '3': { id: 'LINEAR_SCALE_OPTION_3', nextPageId: 'PAGE_4' },
+              no_answer: { id: 'LINEAR_SCALE_OPTION_no_answer', nextPageId: 'survey_end' }
             }
           }
         },
@@ -1507,7 +1466,6 @@ RSpec.describe SurveyResultsGeneratorService do
           questionResponseCount: 1,
           pageNumber: nil,
           questionNumber: 4,
-          logic: {},
           totalPickCount: 3,
           answers: [
             { answer: 'option1', count: 1 },
@@ -1517,26 +1475,15 @@ RSpec.describe SurveyResultsGeneratorService do
           ],
           multilocs: {
             answer: {
-              option1: {
-                title_multiloc: { en: 'Option 1' },
-                id: 'MULTISELECT_1_OPTION_1',
-                logic: { nextPageId: nil }
-              },
-              option2: {
-                title_multiloc: { en: 'Option 2' },
-                id: 'MULTISELECT_1_OPTION_2',
-                logic: { nextPageId: nil }
-              },
-              option3: {
-                title_multiloc: { en: 'Option 3' },
-                id: 'MULTISELECT_1_OPTION_3',
-                logic: { nextPageId: 'PAGE_4' }
-              },
-              no_answer: {
-                title_multiloc: {},
-                id: 'MULTISELECT_1_OPTION_no_answer',
-                logic: { nextPageId: 'survey_end' }
-              }
+              option1: { title_multiloc: { en: 'Option 1' } },
+              option2: { title_multiloc: { en: 'Option 2' } },
+              option3: { title_multiloc: { en: 'Option 3' } }
+            }
+          },
+          logic: {
+            answer: {
+              option3: { id: 'MULTISELECT_1_OPTION_3', nextPageId: 'PAGE_4' },
+              no_answer: { id: 'MULTISELECT_1_OPTION_no_answer', nextPageId: 'survey_end' }
             }
           }
         },
@@ -1566,7 +1513,6 @@ RSpec.describe SurveyResultsGeneratorService do
           questionResponseCount: 0,
           pageNumber: nil,
           questionNumber: 5,
-          logic: {},
           totalPickCount: 2,
           answers: [
             { answer: nil, count: 2 },
@@ -1575,21 +1521,13 @@ RSpec.describe SurveyResultsGeneratorService do
           ],
           multilocs: {
             answer: {
-              option1: {
-                title_multiloc: { en: 'Option 2' },
-                id: 'SELECT_2_OPTION_1',
-                logic: { nextPageId: 'survey_end' }
-              },
-              option2: {
-                title_multiloc: { en: 'Option 2' },
-                id: 'SELECT_2_OPTION_2',
-                logic: { nextPageId: nil }
-              },
-              no_answer: {
-                title_multiloc: {},
-                id: 'SELECT_2_no_answer',
-                logic: {}
-              }
+              option1: { title_multiloc: { en: 'Option 2' } },
+              option2: { title_multiloc: { en: 'Option 2' } }
+            }
+          },
+          logic: {
+            answer: {
+              option1: { id: 'SELECT_2_OPTION_1', nextPageId: 'survey_end' }
             }
           }
         },
@@ -1646,11 +1584,11 @@ RSpec.describe SurveyResultsGeneratorService do
 
     it 'returns logic information for single select options' do
       select_result = results[1]
-      expect(select_result[:multilocs][:answer][:option1][:logic]).to match(
-        { nextPageNumber: 3, numQuestionsSkipped: 3 }
+      expect(select_result[:logic][:answer][:option1]).to match(
+        { id: 'SELECT_1_OPTION_1', nextPageNumber: 3, numQuestionsSkipped: 3 }
       )
-      expect(select_result[:multilocs][:answer][:option3][:logic]).to match(
-        { nextPageNumber: 4, numQuestionsSkipped: 5 }
+      expect(select_result[:logic][:answer][:option3]).to match(
+        { id: 'SELECT_1_OPTION_3', nextPageNumber: 4, numQuestionsSkipped: 5 }
       )
     end
 
@@ -1663,24 +1601,24 @@ RSpec.describe SurveyResultsGeneratorService do
 
     it 'returns logic information for a linear scale field' do
       linear_scale_result = results[4]
-      expect(linear_scale_result[:multilocs][:answer][:'2'][:logic]).to match(
-        { nextPageNumber: 3, numQuestionsSkipped: 0 }
+      expect(linear_scale_result[:logic][:answer][:'2']).to match(
+        { id: 'LINEAR_SCALE_OPTION_2', nextPageNumber: 3, numQuestionsSkipped: 0 }
       )
-      expect(linear_scale_result[:multilocs][:answer][:'3'][:logic]).to match(
-        { nextPageNumber: 4, numQuestionsSkipped: 2 }
+      expect(linear_scale_result[:logic][:answer][:'3']).to match(
+        { id: 'LINEAR_SCALE_OPTION_3', nextPageNumber: 4, numQuestionsSkipped: 2 }
       )
-      expect(linear_scale_result[:multilocs][:answer][:no_answer][:logic]).to match(
-        { nextPageNumber: 999, numQuestionsSkipped: 3 }
+      expect(linear_scale_result[:logic][:answer][:no_answer]).to match(
+        { id: 'LINEAR_SCALE_OPTION_no_answer', nextPageNumber: 999, numQuestionsSkipped: 3 }
       )
     end
 
     it 'returns logic information for a multiselect field' do
       multiselect_result = results[5]
-      expect(multiselect_result[:multilocs][:answer][:option3][:logic]).to match(
-        { nextPageNumber: 4, numQuestionsSkipped: 2 }
+      expect(multiselect_result[:logic][:answer][:option3]).to match(
+        { id: 'MULTISELECT_1_OPTION_3', nextPageNumber: 4, numQuestionsSkipped: 2 }
       )
-      expect(multiselect_result[:multilocs][:answer][:no_answer][:logic]).to match(
-        { nextPageNumber: 999, numQuestionsSkipped: 3 }
+      expect(multiselect_result[:logic][:answer][:no_answer]).to match(
+        { id: 'MULTISELECT_1_OPTION_no_answer', nextPageNumber: 999, numQuestionsSkipped: 3 }
       )
     end
 

@@ -203,7 +203,8 @@ class SurveyResultsGeneratorService < FieldVisitorService
     attributes = core_field_attributes(field, question_response_count).merge({
       totalPickCount: answers.pluck(:count).sum,
       answers: answers,
-      multilocs: get_multilocs(field, group_field)
+      multilocs: get_multilocs(field, group_field),
+      logic: get_option_logic(field)
     })
 
     attributes[:textResponses] = get_text_responses("#{field.key}_other") if field.other_option_text_field
@@ -223,24 +224,16 @@ class SurveyResultsGeneratorService < FieldVisitorService
       return build_linear_scale_multilocs(field)
     end
 
-    any_other_answer_page_id = field.logic['rules']&.find { |r| r['if'] == 'any_other_answer' }&.dig('goto_page_id')
-    answer_multilocs = field.options.each_with_object({}) do |option, accu|
-      logic_next_page_id = field.logic['rules']&.find { |r| r['if'] == option.id }&.dig('goto_page_id')
-      option_detail = { title_multiloc: option.title_multiloc, id: option.id, logic: { nextPageId: logic_next_page_id || any_other_answer_page_id } }
+    field.options.each_with_object({}) do |option, accu|
+      option_detail = { title_multiloc: option.title_multiloc }
       option_detail[:image] = option.image&.image&.versions&.transform_values(&:url) if field.support_option_images?
       accu[option.key] = option_detail
     end
-
-    answer_multilocs['no_answer'] = no_answer_option_multiloc field
-
-    answer_multilocs
   end
 
   def build_linear_scale_multilocs(field)
     answer_multilocs = (1..field.maximum).index_with do |value|
-      logic_next_page_id = field.logic['rules']&.find { |r| r['if'] == value }&.dig('goto_page_id')
-      option_id = "#{field.id}_#{value}" # Create a unique ID for this option in the full results so we can filter logic
-      { title_multiloc: locales.index_with { |_locale| value.to_s }, id: option_id, logic: { nextPageId: logic_next_page_id } }
+      { title_multiloc: locales.index_with { |_locale| value.to_s } }
     end
 
     answer_multilocs.each_key do |value|
@@ -251,19 +244,32 @@ class SurveyResultsGeneratorService < FieldVisitorService
       answer_multilocs[value][:title_multiloc].merge! labels
     end
 
-    answer_multilocs['no_answer'] = no_answer_option_multiloc field
-
     answer_multilocs
   end
 
-  # Add a multiloc for no_answer - title empty as it is defined on FE
-  def no_answer_option_multiloc(field)
-    no_answer_logic_page = field.logic['rules']&.find { |r| r['if'] == 'no_answer' }&.dig('goto_page_id')
-    {
-      title_multiloc: {},
-      id: "#{field.id}_no_answer",
-      logic: no_answer_logic_page ? { nextPageId: no_answer_logic_page } : {}
-    }
+  def get_option_logic(field)
+    return {} if field.logic.blank?
+
+    is_linear_scale = field.input_type == 'linear_scale'
+    options = if is_linear_scale
+      # Create a unique ID for this linear scale option in the full results so we can filter logic
+      (1..field.maximum).map { |value| { id: "#{field.id}_#{value}", key: value } }
+    else
+      field.options.map { |option| { id: option.id, key: option.key } }
+    end
+
+    # NOTE: Only options with logic will be returned
+    any_other_answer_page_id = field.logic['rules']&.find { |r| r['if'] == 'any_other_answer' }&.dig('goto_page_id')
+    option_logic = options.each_with_object({}) do |option, accu|
+      rule_id = is_linear_scale ? option[:key] : option[:id]
+      logic_next_page_id = field.logic['rules']&.find { |r| r['if'] == rule_id }&.dig('goto_page_id') || any_other_answer_page_id
+      accu[option[:key]] = { id: option[:id], nextPageId: logic_next_page_id } if logic_next_page_id
+    end
+
+    no_answer_logic_page_id = field.logic['rules']&.find { |r| r['if'] == 'no_answer' }&.dig('goto_page_id')
+    option_logic['no_answer'] = { id: "#{field.id}_no_answer", nextPageId: no_answer_logic_page_id } if no_answer_logic_page_id
+
+    option_logic.present? ? { answer: option_logic } : {}
   end
 
   def get_text_responses(field_key)
@@ -403,42 +409,33 @@ class SurveyResultsGeneratorService < FieldVisitorService
     results_to_hide = []
 
     results = results.deep_dup.map do |result|
-      # Transform page logic
-      logic_next_page_id = result[:logic][:nextPageId]
       field_id = result[:customFieldId]
-      if logic_next_page_id
-        logic_skipped_fields = logic_skipped_field_ids(results, field_id, logic_next_page_id)
-        result[:logic] = {
-          nextPageNumber: @page_numbers[logic_next_page_id],
-          numQuestionsSkipped: logic_skipped_fields.count { |f| f[:question] == true }
-        }
-        if logic_ids.include?(field_id)
-          results_to_hide += logic_skipped_fields.pluck(:id)
+      if supports_page_logic? result[:inputType]
+        # Transform page logic
+        logic_next_page_id = result[:logic][:nextPageId]
+        if logic_next_page_id
+          logic_skipped_fields = logic_skipped_field_ids(results, field_id, logic_next_page_id)
+          result[:logic] = {
+            nextPageNumber: @page_numbers[logic_next_page_id],
+            numQuestionsSkipped: logic_skipped_fields.count { |f| f[:question] == true }
+          }
+          if logic_ids.include?(field_id)
+            results_to_hide += logic_skipped_fields.pluck(:id)
+          end
         end
-      end
-      result[:logic].delete(:nextPageId)
-
-      if select_input_type? result[:inputType]
+      elsif supports_question_logic? result[:inputType]
         # Transform select option logic
-        result[:multilocs][:answer]&.each_value do |answer|
-          logic_next_page_id = answer[:logic][:nextPageId]
+        result[:logic][:answer]&.each_value do |answer|
+          logic_next_page_id = answer[:nextPageId]
           if logic_next_page_id
             logic_skipped_fields = logic_skipped_field_ids(results, field_id, logic_next_page_id)
-            answer[:logic] = {
-              nextPageNumber: @page_numbers[logic_next_page_id],
-              numQuestionsSkipped: logic_skipped_fields.count { |f| f[:question] == true }
-            }
+            answer[:nextPageNumber] = @page_numbers[logic_next_page_id]
+            answer[:numQuestionsSkipped] = logic_skipped_fields.count { |f| f[:question] == true }
+            answer.delete(:nextPageId)
             if logic_ids.include?(answer[:id])
               results_to_hide += logic_skipped_fields.pluck(:id)
             end
           end
-          answer[:logic].delete(:nextPageId)
-        end
-
-        # Logic & id elements are not needed for group multilocs
-        result[:multilocs][:group]&.each_value do |group|
-          group.delete(:id)
-          group.delete(:logic)
         end
       end
 
@@ -469,21 +466,16 @@ class SurveyResultsGeneratorService < FieldVisitorService
   end
 
   def cleanup_single_result(result)
-    # Logic not used on single result
+    # Logic is not used on single result
     result[:logic] = {}
-    if select_input_type? result[:inputType]
-      result[:multilocs][:answer]&.each_value do |answer|
-        answer[:logic] = {}
-      end
-      result[:multilocs][:group]&.each_value do |group|
-        group.delete(:id)
-        group.delete(:logic)
-      end
-    end
     result
   end
 
-  def select_input_type?(input_type)
+  def supports_question_logic?(input_type)
     %w[select multiselect linear_scale multiselect_image].include? input_type
+  end
+
+  def supports_page_logic?(input_type)
+    input_type == 'page'
   end
 end

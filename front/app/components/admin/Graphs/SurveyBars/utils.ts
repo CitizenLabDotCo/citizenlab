@@ -58,7 +58,7 @@ export const parseQuestionResult = (
     });
   }
 
-  const { multilocs, answers, totalPickCount } = result;
+  const { multilocs, answers, logic, totalPickCount } = result;
   if (!multilocs) throw new Error('Multilocs are missing');
 
   return answers.map(({ count, answer }) => {
@@ -67,15 +67,15 @@ export const parseQuestionResult = (
 
     const label =
       answer === null ? noAnswerCopy : localize(multilocsAnswer.title_multiloc);
-    const image = multilocsAnswer.image;
+    const image = multilocsAnswer?.image;
     const percentage = roundPercentage(count, totalPickCount, 1);
-    const logic = multilocsAnswer.logic;
-    const logicFilterId = multilocsAnswer.id;
+    const logicForAnswer = logic.answer?.[answerKey];
+    const logicFilterId = logic.answer?.[answerKey]?.id || null;
 
     return {
       label,
       logicFilterId,
-      logic,
+      logic: logicForAnswer,
       image,
       count,
       percentage,

@@ -735,9 +735,8 @@ resource 'Phases' do
             ],
             multilocs: {
               answer: {
-                cat: { title_multiloc: { en: 'Cat' }, id: cat_option.id, logic: {} },
-                dog: { title_multiloc: { en: 'Dog' }, id: dog_option.id, logic: {} },
-                no_answer: { title_multiloc: {}, id: "#{multiselect_field.id}_no_answer", logic: {} }
+                cat: { title_multiloc: { en: 'Cat' } },
+                dog: { title_multiloc: { en: 'Dog' } }
               }
             }
           }

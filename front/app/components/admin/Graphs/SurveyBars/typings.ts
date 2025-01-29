@@ -1,6 +1,6 @@
 import { ImageSizes } from 'typings';
 
-import { ResultLogic } from 'api/survey_results/types';
+import { OptionLogic } from 'api/survey_results/types';
 
 export type Answer = {
   label: string;
@@ -9,7 +9,7 @@ export type Answer = {
   percentage: number;
   bars: Bar[];
   logicFilterId: string | null;
-  logic: ResultLogic;
+  logic?: OptionLogic;
 };
 
 export type Bar = {

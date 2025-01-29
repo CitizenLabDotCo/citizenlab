@@ -74,15 +74,11 @@ const ungroupedData: ResultUngrouped = {
         title_multiloc: {
           en: 'multiselect: Option 1',
         },
-        id: '1',
-        logic: {},
       },
       multiselect_option_2_3c7: {
         title_multiloc: {
           en: 'multiselect: Option 2',
         },
-        id: '1',
-        logic: {},
       },
     },
   },
@@ -152,15 +148,11 @@ const groupedData: ResultGrouped = {
         title_multiloc: {
           en: 'multiselect: Option 1',
         },
-        id: '1',
-        logic: {},
       },
       multiselect_option_2_3c7: {
         title_multiloc: {
           en: 'multiselect: Option 2',
         },
-        id: '1',
-        logic: {},
       },
     },
     group: {
@@ -168,22 +160,16 @@ const groupedData: ResultGrouped = {
         title_multiloc: {
           en: 'Male',
         },
-        id: '1',
-        logic: {},
       },
       female: {
         title_multiloc: {
           en: 'Female',
         },
-        id: '1',
-        logic: {},
       },
       unspecified: {
         title_multiloc: {
           en: 'Other',
         },
-        id: '1',
-        logic: {},
       },
     },
   },

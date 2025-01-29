@@ -37,8 +37,6 @@ export const surveyResultsResponse: SurveyResultsType = {
             answer: {
               option1: {
                 title_multiloc: { en: 'Option 1' },
-                id: '1',
-                logic: {},
               },
             },
           },
@@ -69,8 +67,6 @@ export const surveyResultsResponse: SurveyResultsType = {
             answer: {
               option_a: {
                 title_multiloc: { en: 'Option A' },
-                id: '1',
-                logic: {},
               },
             },
           },
