@@ -162,6 +162,8 @@ class SurveyResultsGeneratorService < FieldVisitorService
     # Sort correctly
     answers = answers.sort_by { |a| -a[:count] } unless %w[linear_scale rating].include?(field.input_type)
     answers = answers.sort_by { |a| a[:answer] == 'other' ? 1 : 0 } # other should always be last
+    puts "\n== Answers galore =="
+    puts answers.inspect
 
     # Build response
     build_select_response(answers, field, group_field)
@@ -305,7 +307,7 @@ class SurveyResultsGeneratorService < FieldVisitorService
   end
 
   def generate_answer_keys(field)
-    (field.input_type.in?(%w[linear_scale rating]) ? (1..field.maximum).reverse_each.to_a : field.options.map(&:key)) + [nil]
+    (field.input_type.in?(%w[linear_scale rating]) ? (1..field.maximum).to_a : field.options.map(&:key)) + [nil]
   end
 
   # Convert stored user keys for domicile field to match the options keys eg "f6319053-d521-4b28-9d71-a3693ec95f45" => "north_london_8rg"
