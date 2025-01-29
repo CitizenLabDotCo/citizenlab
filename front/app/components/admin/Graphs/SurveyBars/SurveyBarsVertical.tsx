@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react';
 
-import { Box, Image, Text } from '@citizenlab/cl2-component-library';
+import { Box, Image, Text, Tooltip } from '@citizenlab/cl2-component-library';
 
 import { ResultUngrouped, ResultGrouped } from 'api/survey_results/types';
 
@@ -18,7 +18,7 @@ interface Props {
 }
 
 const MAX_BARS = 12;
-const TOTAL_WIDTH = 800;
+const TOTAL_WIDTH = 650;
 
 const SurveyBarsVertical = ({ questionResult, colorScheme }: Props) => {
   const localize = useLocalize();
@@ -44,11 +44,11 @@ const SurveyBarsVertical = ({ questionResult, colorScheme }: Props) => {
       display="flex"
       flexDirection="row"
       alignItems="flex-end"
-      justifyContent="center"
+      justifyContent="flex-start"
       height="400px"
-      width={`${TOTAL_WIDTH}px`}
+      width="100%"
       gap="4px"
-      ml="20px"
+      overflow="hidden"
     >
       {answers.map(({ label, count, percentage, image, bars }, index) => (
         <Box
@@ -65,47 +65,50 @@ const SurveyBarsVertical = ({ questionResult, colorScheme }: Props) => {
             </Box>
           )}
           <Box display="flex" flexDirection="column" alignItems="center">
-            <Text
-              variant="bodyS"
-              color="textSecondary"
-              m="0"
-              mb="4px"
-              style={{ whiteSpace: 'nowrap' }}
-            >
-              {percentage}%
-            </Text>
-            {/* <Text variant="bodyS" color="textSecondary" m="0" mb="4px" style={{ whiteSpace: 'nowrap' }}>
-              {count}
-            </Text>
-            <Text variant="bodyS" color="textSecondary" m="0" mb="4px">
-              {formatMessage(messages.response, {
+            <Tooltip
+              theme="dark"
+              placement="bottom"
+              content={formatMessage(messages.responseCount, {
                 choiceCount: count,
                 percentage,
               })}
-            </Text> */}
-            <Text
-              variant="bodyS"
-              color="textSecondary"
-              m="0"
-              mb="4px"
-              textAlign="center"
             >
-              {formatMessage(messages.responseCount, {
-                choiceCount: count,
-                percentage,
-              })}
-            </Text>
+              <div>
+                <Text
+                  variant="bodyS"
+                  color="textSecondary"
+                  m="0"
+                  mb="4px"
+                  textAlign="center"
+                >
+                  {percentage}%
+                </Text>
+              </div>
+            </Tooltip>
             {bars.map((bar, idx) => (
               <VerticalBar key={idx} {...bar} width={barWidth} />
             ))}
-            <Text
-              variant="bodyM"
-              m="0"
-              mt="4px"
-              style={{ whiteSpace: 'nowrap' }}
-            >
-              {label}
-            </Text>
+            {label.length > 6 ? (
+              <Tooltip theme="dark" placement="bottom" content={label}>
+                <Text
+                  variant="bodyM"
+                  m="0"
+                  mt="4px"
+                  style={{ whiteSpace: 'nowrap' }}
+                >
+                  {label.substring(0, 6)}...
+                </Text>
+              </Tooltip>
+            ) : (
+              <Text
+                variant="bodyM"
+                m="0"
+                mt="4px"
+                style={{ whiteSpace: 'nowrap' }}
+              >
+                {label}
+              </Text>
+            )}
           </Box>
         </Box>
       ))}
