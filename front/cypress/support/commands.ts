@@ -1627,7 +1627,7 @@ function apiCreateSurveyQuestions(
         custom_fields: [
           ...inputTypes.map(createBaseCustomField(imageId)),
           {
-            id: '76fdb56f-c232-4417-9465-fa3da8c00eef',
+            id: randomString(),
             input_type: 'page',
             logic: {},
             required: false,
