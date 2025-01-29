@@ -93,6 +93,7 @@ const InputFilters = ({
           selectedStatusId={ideaQueryParameters.idea_status}
           ideaQueryParameters={ideaQueryParameters}
           onChange={onChangeStatus}
+          phase={phase}
         />
       )}
       {showResetButton && (
