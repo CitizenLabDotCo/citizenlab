@@ -255,8 +255,8 @@ nl-BE:
       option1: 'Optie 1'
       option2: 'Optie 2'
     form_end_page:
-      title_text: 'Bijna klaar'
-      description_text_2: "Je staat op het punt om je antwoorden in te sturen. Door op 'Verzenden' te klikken geef je ons toestemming om je antwoorden te analyseren.<br/>Na het verzenden kun je niet meer terug om je antwoorden te wijzigen."
+      title_text_3: 'Bedankt voor het delen van je input!'
+      description_text_3: "Je input is succesvol ingediend."
     pdf_export:
       personal_data: 'Persoonlijke gegevens'
       personal_data_explanation_public: "We zullen je bijdrage versturen naar het online participatieplatform van %{organizationName}. Als je wilt dat je naam wordt weergegeven als auteur van deze bijdrage en als je per e-mail updates wilt ontvangen die relevant zijn voor je bijdrage, vul dan de volgende velden op deze pagina in en we maken een account voor je aan. Je e-mailadres is niet openbaar en wordt alleen gebruikt door %{organizationName}. Als je anoniem wilt blijven of er niet mee akkoord gaat dat we je persoonlijke gegevens op deze manier gebruiken, kun je ze leeg laten."
