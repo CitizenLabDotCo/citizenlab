@@ -330,7 +330,7 @@ class SurveyResultsGeneratorService < FieldVisitorService
 
     answer_titles.each_key do |value|
       labels = {}
-    
+
       if field.input_type == 'linear_scale'
         labels = field.nth_linear_scale_multiloc(value).transform_values do |label|
           if label.present?
@@ -340,7 +340,7 @@ class SurveyResultsGeneratorService < FieldVisitorService
           end
         end
       end
-    
+
       answer_titles[value][:title_multiloc].merge!(labels)
     end
 
