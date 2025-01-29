@@ -39,7 +39,6 @@ const FormattedBudget = ({ value }: Props) => {
       </>
     );
   } else {
-    //
     return <>{formatCurrency(value)}</>;
   }
 };
