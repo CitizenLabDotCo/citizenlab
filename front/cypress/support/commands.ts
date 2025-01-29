@@ -1484,6 +1484,7 @@ function apiUpdateAppConfiguration(
 }
 
 function clickLocaleSwitcherAndType(title: string) {
+  cy.wait(1000);
   cy.get('.e2e-localeswitcher').each((button) => {
     cy.wrap(button).click();
     cy.get('#title_multiloc').clear().type(title);
