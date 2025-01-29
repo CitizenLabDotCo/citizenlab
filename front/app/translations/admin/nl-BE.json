@@ -1843,7 +1843,7 @@
   "app.containers.AdminPage.ProjectEdit.survey.noSurveyResponses2": "Nog geen reacties op de enquête",
   "app.containers.AdminPage.ProjectEdit.survey.openForResponses2": "Open voor reacties",
   "app.containers.AdminPage.ProjectEdit.survey.optional2": "Optioneel",
-  "app.containers.AdminPage.ProjectEdit.survey.pagesLogicHelperText1": "Als er geen logica is toegevoegd, zal de enquête zijn normale verloop volgen. Als zowel de pagina als de vragen logica hebben, krijgt de logica van de vraag voorrang. Zorg ervoor dat dit overeenkomt met het beoogde enquêteverloop. Ga voor meer informatie naar {supportPageLink}",
+  "app.containers.AdminPage.ProjectEdit.survey.pagesLogicHelperText1": "Als er geen logica is toegevoegd, zal de enquête zijn normale verloop volgen. Als zowel de pagina als de vragen logica hebben, krijgt de logica van de vraag voorrang. Zorg ervoor dat dit overeenkomt met het beoogde vragenlijstontwerp. Ga voor meer informatie naar {supportPageLink}",
   "app.containers.AdminPage.ProjectEdit.survey.point": "Locatie",
   "app.containers.AdminPage.ProjectEdit.survey.quitReportConfirmationQuestion": "Weet u zeker dat u wilt vertrekken?",
   "app.containers.AdminPage.ProjectEdit.survey.quitReportInfo2": "Je huidige wijzigingen worden niet opgeslagen.",
