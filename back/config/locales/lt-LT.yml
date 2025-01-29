@@ -255,8 +255,8 @@ lt:
       option1: '1 variantas'
       option2: '2 variantas'
     form_end_page:
-      title_text: 'Beveik baigta'
-      description_text_2: "Netrukus pateiksite savo atsakymus. Spustelėję \"Pateikti\", suteikiate mums leidimą analizuoti jūsų atsakymus.<br/>Pateikę atsakymus, nebegalėsite grįžti atgal ir keisti savo atsakymų."
+      title_text_3: 'Dėkojame, kad dalijatės savo įžvalgomis!'
+      description_text_3: "Jūsų duomenys sėkmingai pateikti."
     pdf_export:
       personal_data: 'Asmens duomenys'
       personal_data_explanation_public: "Jūsų nuomonę pateiksime internetinėje dalyvavimo platformoje %{organizationName}. Jei norite, kad jūsų vardas ir pavardė būtų rodomi kaip šio indėlio autorius ir gautumėte su jūsų indėliu susijusius atnaujinimus el. paštu, užpildykite šiuos laukelius šiame puslapyje ir mes sukursime jums paskyrą. Jūsų el. paštas nebus viešas ir bus naudojamas tik %{organizationName}. Jei norite išlikti anonimiškas arba nesutinkate, kad taip naudotume jūsų asmens duomenis, galite palikti juos tuščius."
