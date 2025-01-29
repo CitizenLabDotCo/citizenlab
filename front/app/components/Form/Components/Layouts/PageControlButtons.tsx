@@ -95,11 +95,7 @@ const PageControlButtons = ({
           data-cy={CY_DATA_VALUES[pageVariant]}
           icon={ICON_VALUES[pageVariant]}
           iconPos="right"
-          bgColor={
-            pageVariant === 'submission'
-              ? theme.colors.tenantSecondary
-              : theme.colors.tenantPrimary
-          }
+          bgColor={theme.colors.tenantPrimary}
           boxShadow={defaultStyles.boxShadow}
           processing={isLoading}
         >
