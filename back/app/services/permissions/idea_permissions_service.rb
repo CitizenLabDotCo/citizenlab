@@ -36,13 +36,15 @@ module Permissions
         return reason if reason
         return if user && UserRoleService.new.can_moderate_project?(idea.project, user)
 
-        return IDEA_DENIED_REASONS[:not_reactable_status_code] if IdeaStatus::REACTING_NOT_ALLOWED_CODES.include?(idea&.idea_status&.code)
-
         # The input does not need to be in the current phase for editing.
         # We preserved the behaviour that was already there, but we're not
         # sure if this is the desired behaviour.
         current_phase = @timeline_service.current_phase_not_archived project
-        IDEA_DENIED_REASONS[:idea_not_in_current_phase] if current_phase && !idea_in_current_phase?(current_phase)
+        return IDEA_DENIED_REASONS[:idea_not_in_current_phase] if current_phase && !idea_in_current_phase?(current_phase)
+
+        if action == 'reacting_idea' && IdeaStatus::REACTING_NOT_ALLOWED_CODES.include?(idea&.idea_status&.code)
+          return IDEA_DENIED_REASONS[:not_reactable_status_code]
+        end
       end
     end
 
