@@ -17,7 +17,7 @@ interface Props {
   colorScheme: string[];
 }
 
-const SurveyBars = ({ questionResult, colorScheme }: Props) => {
+const SurveyBarsHorizontal = ({ questionResult, colorScheme }: Props) => {
   const localize = useLocalize();
   const { formatMessage } = useIntl();
 
@@ -77,4 +77,4 @@ const SurveyBars = ({ questionResult, colorScheme }: Props) => {
   );
 };
 
-export default SurveyBars;
+export default SurveyBarsHorizontal;
