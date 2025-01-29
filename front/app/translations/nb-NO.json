@@ -742,7 +742,6 @@
   "app.components.formBuilder.otherOptionTooltip": "Tillat deltakerne å legge inn et tilpasset svar hvis de oppgitte svarene ikke stemmer overens med deres preferanser",
   "app.components.formBuilder.page": "Side",
   "app.components.formBuilder.pageRuleLabel": "Neste side er:",
-  "app.components.formBuilder.pagesLogicHelperTextDefault": "Hvis ingen logikk legges til, vil skjemaet følge sin normale flyt. For mer informasjon, besøk {supportPageLink}",
   "app.components.formBuilder.proposedBudget": "Foreslått budsjett",
   "app.components.formBuilder.question": "Spørsmål",
   "app.components.formBuilder.questionCannotBeDeleted": "Dette spørsmålet kan ikke slettes.",

@@ -1843,7 +1843,6 @@
   "app.containers.AdminPage.ProjectEdit.survey.noSurveyResponses2": "Brak jeszcze odpowiedzi na ankietę",
   "app.containers.AdminPage.ProjectEdit.survey.openForResponses2": "Otwarte dla odpowiedzi",
   "app.containers.AdminPage.ProjectEdit.survey.optional2": "Opcjonalnie",
-  "app.containers.AdminPage.ProjectEdit.survey.pagesLogicHelperText2": "Jeśli nie zostanie dodana żadna logika, ankieta będzie podążać za swoim normalnym przebiegiem. Aby uzyskać więcej informacji, odwiedź {supportPageLink}",
   "app.containers.AdminPage.ProjectEdit.survey.point": "Lokalizacja",
   "app.containers.AdminPage.ProjectEdit.survey.quitReportConfirmationQuestion": "Jesteś pewien, że chcesz wyjść?",
   "app.containers.AdminPage.ProjectEdit.survey.quitReportInfo2": "Twoje bieżące zmiany nie zostaną zapisane.",

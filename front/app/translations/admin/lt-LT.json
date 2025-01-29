@@ -1843,7 +1843,6 @@
   "app.containers.AdminPage.ProjectEdit.survey.noSurveyResponses2": "Atsakymų į apklausą dar nėra",
   "app.containers.AdminPage.ProjectEdit.survey.openForResponses2": "Atviras atsakymams",
   "app.containers.AdminPage.ProjectEdit.survey.optional2": "Pasirinktinai",
-  "app.containers.AdminPage.ProjectEdit.survey.pagesLogicHelperText2": "Jei logikos nepridėta, apklausa vyks įprasta tvarka. Daugiau informacijos rasite svetainėje {supportPageLink}.",
   "app.containers.AdminPage.ProjectEdit.survey.point": "Vieta",
   "app.containers.AdminPage.ProjectEdit.survey.quitReportConfirmationQuestion": "Ar tikrai norite išvykti?",
   "app.containers.AdminPage.ProjectEdit.survey.quitReportInfo2": "Dabartiniai pakeitimai nebus išsaugoti.",

@@ -1843,7 +1843,6 @@
   "app.containers.AdminPage.ProjectEdit.survey.noSurveyResponses2": "Henüz anket yanıtı yok",
   "app.containers.AdminPage.ProjectEdit.survey.openForResponses2": "Yanıtlara açık",
   "app.containers.AdminPage.ProjectEdit.survey.optional2": "Opsiyonel",
-  "app.containers.AdminPage.ProjectEdit.survey.pagesLogicHelperText2": "Herhangi bir mantık eklenmezse, anket normal akışını izleyecektir. Daha fazla bilgi için {supportPageLink}adresini ziyaret edin.",
   "app.containers.AdminPage.ProjectEdit.survey.point": "Konum",
   "app.containers.AdminPage.ProjectEdit.survey.quitReportConfirmationQuestion": "Gitmek istediğine emin misin?",
   "app.containers.AdminPage.ProjectEdit.survey.quitReportInfo2": "Mevcut değişiklikleriniz kaydedilmeyecektir.",

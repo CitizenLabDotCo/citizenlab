@@ -42,7 +42,6 @@ export type FormBuilderConfig = {
   toolboxTitle?: MessageDescriptor;
   supportArticleLink?: MessageDescriptor;
   formEndPageLogicOption?: MessageDescriptor;
-  questionLogicHelperText?: MessageDescriptor;
   pagesLogicHelperText?: MessageDescriptor;
 
   toolboxFieldsToExclude: ICustomFieldInputType[];

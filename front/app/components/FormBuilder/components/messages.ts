@@ -208,15 +208,15 @@ export default defineMessages({
     id: 'app.components.formBuilder.formEnd',
     defaultMessage: 'Form end',
   },
-  questionLogicHelperText: {
-    id: 'app.components.formBuilder.questionLogicHelperTextDefault2',
+  multipleChoiceHelperText: {
+    id: 'app.components.formBuilder.multipleChoiceHelperText',
     defaultMessage:
-      'If no logic is added to an answer, the form will follow its normal flow. For more information, visit {supportPageLink}',
+      'If multiple options lead to different pages and participants select more than one, the furthest page will be shown. Ensure this behavior aligns with your intended flow.',
   },
   pagesLogicHelperText: {
-    id: 'app.components.formBuilder.pagesLogicHelperTextDefault',
+    id: 'app.components.formBuilder.pagesLogicHelperTextDefault1',
     defaultMessage:
-      'If no logic is added, the form will follow its normal flow. For more information, visit {supportPageLink}',
+      'If no logic is added, the form will follow its normal flow. If both the page and its questions have logic, the question logic will take precedence. Ensure this aligns with your intended flow For more information, visit {supportPageLink}',
   },
   goToPageInputLabel: {
     id: 'app.components.formBuilder.goToPageInputLabel',

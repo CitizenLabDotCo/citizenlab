@@ -742,7 +742,6 @@
   "app.components.formBuilder.otherOptionTooltip": "Allow participants to enter a custom response if the provided answers do not match their preference",
   "app.components.formBuilder.page": "Страна",
   "app.components.formBuilder.pageRuleLabel": "Следећа страница је:",
-  "app.components.formBuilder.pagesLogicHelperTextDefault": "Ако се не дода логика, образац ће пратити свој нормалан ток. За више информација посетите {supportPageLink}",
   "app.components.formBuilder.proposedBudget": "Предложени буџет",
   "app.components.formBuilder.question": "Питање",
   "app.components.formBuilder.questionCannotBeDeleted": "Ово питање се не може избрисати.",

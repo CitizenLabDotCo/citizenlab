@@ -742,7 +742,6 @@
   "app.components.formBuilder.otherOptionTooltip": "Επιτρέψτε στους συμμετέχοντες να εισάγουν μια προσαρμοσμένη απάντηση εάν οι απαντήσεις που παρέχονται δεν ταιριάζουν με την προτίμησή τους.",
   "app.components.formBuilder.page": "Σελίδα",
   "app.components.formBuilder.pageRuleLabel": "Η επόμενη σελίδα είναι:",
-  "app.components.formBuilder.pagesLogicHelperTextDefault": "Εάν δεν προστεθεί καμία λογική, η φόρμα θα ακολουθήσει την κανονική της ροή. Για περισσότερες πληροφορίες, επισκεφθείτε τη διεύθυνση {supportPageLink}",
   "app.components.formBuilder.proposedBudget": "Προτεινόμενος προϋπολογισμός",
   "app.components.formBuilder.question": "Ερώτηση",
   "app.components.formBuilder.questionCannotBeDeleted": "Αυτή η ερώτηση δεν μπορεί να διαγραφεί.",

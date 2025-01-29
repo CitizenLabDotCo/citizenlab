@@ -742,7 +742,6 @@
   "app.components.formBuilder.otherOptionTooltip": "Permetti ai partecipanti di inserire una risposta personalizzata se le risposte fornite non corrispondono alle loro preferenze",
   "app.components.formBuilder.page": "Pagina",
   "app.components.formBuilder.pageRuleLabel": "La pagina successiva è:",
-  "app.components.formBuilder.pagesLogicHelperTextDefault": "Se non viene aggiunta alcuna logica, il modulo seguirà il suo normale flusso. Per ulteriori informazioni, visitare {supportPageLink}",
   "app.components.formBuilder.proposedBudget": "Bilancio proposto",
   "app.components.formBuilder.question": "Domanda",
   "app.components.formBuilder.questionCannotBeDeleted": "Questa domanda non può essere cancellata.",

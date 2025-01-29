@@ -6,6 +6,8 @@ import {
   Text,
   colors,
   Button,
+  Badge,
+  Tooltip,
 } from '@citizenlab/cl2-component-library';
 import { get } from 'lodash-es';
 import { rgba } from 'polished';
@@ -20,6 +22,7 @@ import {
 } from 'api/custom_fields/types';
 import useDuplicateMapConfig from 'api/map_config/useDuplicateMapConfig';
 
+import { Conflict } from 'components/FormBuilder/edit/utils';
 import {
   FormBuilderConfig,
   builtInFieldKeys,
@@ -37,6 +40,7 @@ import FieldTitle from './FieldTitle';
 import IconsAndBadges from './IconsAndBadges';
 import Logic from './Logic';
 import messages from './messages';
+import { getConflictMessageKey } from './utils';
 
 const FormFieldsContainer = styled(Box)`
   &:hover {
@@ -52,6 +56,7 @@ type Props = {
   builderConfig: FormBuilderConfig;
   fieldNumbers: Record<string, number>;
   closeSettings: (triggerAutosave?: boolean) => void;
+  conflicts?: Conflict[];
 };
 
 export const FormField = ({
@@ -61,6 +66,7 @@ export const FormField = ({
   builderConfig,
   fieldNumbers,
   closeSettings,
+  conflicts,
 }: Props) => {
   const {
     watch,
@@ -84,6 +90,7 @@ export const FormField = ({
   const { mutateAsync: duplicateMapConfig } = useDuplicateMapConfig();
 
   const hasErrors = !!errors.customFields?.[index];
+  const message = getConflictMessageKey(conflicts);
 
   // NOTE: We always show the default page logic on a page field
   const showLogicOnRow = field.input_type !== 'page' ? field.logic.rules : true;
@@ -326,6 +333,15 @@ export const FormField = ({
               justifyContent="flex-end"
               alignItems="center"
             >
+              {message && (
+                <Tooltip content={formatMessage(message)} theme="dark">
+                  <Box>
+                    <Badge color={colors.orange500} className="inverse">
+                      {formatMessage(messages.conflictingLogic)}
+                    </Badge>
+                  </Box>
+                </Tooltip>
+              )}
               <IconsAndBadges
                 field={field}
                 displayBuiltInFields={displayBuiltInFields}

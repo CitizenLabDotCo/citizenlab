@@ -742,7 +742,6 @@
   "app.components.formBuilder.otherOptionTooltip": "Pozwól uczestnikom wprowadzić niestandardową odpowiedź, jeśli podane odpowiedzi nie odpowiadają ich preferencjom.",
   "app.components.formBuilder.page": "Strona",
   "app.components.formBuilder.pageRuleLabel": "Następna strona to:",
-  "app.components.formBuilder.pagesLogicHelperTextDefault": "Jeśli nie zostanie dodana żadna logika, formularz będzie podążał za swoim normalnym przepływem. Aby uzyskać więcej informacji, odwiedź {supportPageLink}",
   "app.components.formBuilder.proposedBudget": "Proponowany budżet",
   "app.components.formBuilder.question": "Pytanie",
   "app.components.formBuilder.questionCannotBeDeleted": "To pytanie nie może być usunięte.",

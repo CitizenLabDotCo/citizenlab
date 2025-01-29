@@ -1094,7 +1094,6 @@
   "app.containers.AdminPage.ProjectEdit.survey.noSurveyResponses2": "No survey responses yet",
   "app.containers.AdminPage.ProjectEdit.survey.openForResponses2": "Open for responses",
   "app.containers.AdminPage.ProjectEdit.survey.optional2": "Optional",
-  "app.containers.AdminPage.ProjectEdit.survey.pagesLogicHelperText2": "If no logic is added, the survey will follow its normal flow. For more information, visit {supportPageLink}",
   "app.containers.AdminPage.ProjectEdit.survey.quitReportConfirmationQuestion": "Are you sure you want to leave?",
   "app.containers.AdminPage.ProjectEdit.survey.quitReportInfo2": "Οι τρέχουσες αλλαγές σας δεν θα αποθηκευτούν.",
   "app.containers.AdminPage.ProjectEdit.survey.required2": "Required",

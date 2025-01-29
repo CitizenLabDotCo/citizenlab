@@ -742,7 +742,6 @@
   "app.components.formBuilder.otherOptionTooltip": "Låt deltagarna ange ett eget svar om de angivna svaren inte stämmer överens med deras preferenser",
   "app.components.formBuilder.page": "Sida",
   "app.components.formBuilder.pageRuleLabel": "Nästa sida är:",
-  "app.components.formBuilder.pagesLogicHelperTextDefault": "Om ingen logik läggs till kommer formuläret att följa sitt normala flöde. Om du vill ha mer information kan du besöka {supportPageLink}",
   "app.components.formBuilder.proposedBudget": "Budgetförslag",
   "app.components.formBuilder.question": "Fråga",
   "app.components.formBuilder.questionCannotBeDeleted": "Den här frågan kan inte tas bort.",

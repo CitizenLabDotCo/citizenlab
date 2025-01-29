@@ -1843,7 +1843,6 @@
   "app.containers.AdminPage.ProjectEdit.survey.noSurveyResponses2": "Ei vielä vastauksia kyselyyn",
   "app.containers.AdminPage.ProjectEdit.survey.openForResponses2": "Avoinna vastauksille",
   "app.containers.AdminPage.ProjectEdit.survey.optional2": "Valinnainen",
-  "app.containers.AdminPage.ProjectEdit.survey.pagesLogicHelperText2": "Jos logiikkaa ei lisätä, kysely noudattaa normaalia kulkuaan. Lisätietoja on osoitteessa {supportPageLink}",
   "app.containers.AdminPage.ProjectEdit.survey.point": "Sijainti",
   "app.containers.AdminPage.ProjectEdit.survey.quitReportConfirmationQuestion": "Oletko varma, että haluat lähteä?",
   "app.containers.AdminPage.ProjectEdit.survey.quitReportInfo2": "Nykyisiä muutoksiasi ei tallenneta.",
