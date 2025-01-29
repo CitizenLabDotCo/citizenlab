@@ -33,7 +33,13 @@ namespace :cl2back do
           )
 
           # Replace previous mentions of 'survey_end' with the new last page id
-          # TODO
+          custom_fields.each do |field|
+            if field.input_type == 'page'
+              # TODO
+            else
+              # TODO
+            end
+          end
         end
       end
     end
