@@ -162,8 +162,6 @@ class SurveyResultsGeneratorService < FieldVisitorService
     # Sort correctly
     answers = answers.sort_by { |a| -a[:count] } unless %w[linear_scale rating].include?(field.input_type)
     answers = answers.sort_by { |a| a[:answer] == 'other' ? 1 : 0 } # other should always be last
-    puts "\n== Answers galore =="
-    puts answers.inspect
 
     # Build response
     build_select_response(answers, field, group_field)
