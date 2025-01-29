@@ -93,19 +93,18 @@ describe('New timeline project with active ideation phase', () => {
           projectId,
           title: 'phaseTitle',
           startAt: '2025-01-02',
-          endAt: '2025-01-25',
+          endAt: '2035-01-25',
           participationMethod: 'ideation',
           canComment: true,
           canPost: true,
           canReact: true,
         });
       })
-      .then((phase) => {
+      .then(() => {
         return cy.apiCreateIdea({
           projectId,
           ideaTitle,
           ideaContent,
-          phaseIds: [phase.body.data.id],
         });
       })
       .then((idea) => {
