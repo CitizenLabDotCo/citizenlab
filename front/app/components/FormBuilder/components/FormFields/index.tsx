@@ -71,71 +71,90 @@ const FormFields = ({
   const fieldNumbers = getFieldNumbers(formCustomFields);
 
   return (
-    <Box height="100%" data-cy="e2e-form-fields">
-      <DragAndDrop
-        onDragEnd={(result: DragAndDropResult) => {
-          handleDragEnd(result, nestedGroupData);
-          trigger();
-        }}
-      >
-        <Drop id="droppable" type={pageDNDType}>
-          {nestedGroupData.map((grouping, pageIndex) => {
-            // Only relevant for survey
-            if (lastPage.key === 'survey_end' && grouping.id === lastPage.id) {
-              // Skip rendering FormField for last page, as it's rendered separately
-              // (see below)
-              return null;
-            }
+    <Box
+      minHeight="300px"
+      height="100%"
+      display="flex"
+      flexDirection="column"
+      justifyContent="space-between"
+      id="kanker-tyfus"
+    >
+      <Box data-cy="e2e-form-fields">
+        <DragAndDrop
+          onDragEnd={(result: DragAndDropResult) => {
+            handleDragEnd(result, nestedGroupData);
+            trigger();
+          }}
+        >
+          <Drop id="droppable" type={pageDNDType}>
+            {nestedGroupData.map((grouping, pageIndex) => {
+              // Only relevant for survey
+              if (
+                lastPage.key === 'survey_end' &&
+                grouping.id === lastPage.id
+              ) {
+                // Skip rendering FormField for last page, as it's rendered separately
+                // (see below)
+                return null;
+              }
 
-            return (
-              <Drag key={grouping.id} id={grouping.id} index={pageIndex}>
-                <FormField
-                  field={grouping.groupElement}
-                  selectedFieldId={selectedFieldId}
-                  onEditField={onEditField}
-                  builderConfig={builderConfig}
-                  fieldNumbers={fieldNumbers}
-                  closeSettings={closeSettings}
-                />
-                <Drop key={grouping.id} id={grouping.id} type={questionDNDType}>
-                  <Box height="100%">
-                    {grouping.questions.length === 0 ? (
-                      <Box height="0.5px" />
-                    ) : (
-                      <>
-                        {grouping.questions.map((question, index) => {
-                          return shouldShowField(question) ? (
-                            <Drag
-                              key={question.id}
-                              id={question.id}
-                              index={index}
-                            >
-                              <FormField
+              return (
+                <Drag key={grouping.id} id={grouping.id} index={pageIndex}>
+                  <FormField
+                    field={grouping.groupElement}
+                    selectedFieldId={selectedFieldId}
+                    onEditField={onEditField}
+                    builderConfig={builderConfig}
+                    fieldNumbers={fieldNumbers}
+                    closeSettings={closeSettings}
+                  />
+                  <Drop
+                    key={grouping.id}
+                    id={grouping.id}
+                    type={questionDNDType}
+                  >
+                    <Box height="100%">
+                      {grouping.questions.length === 0 ? (
+                        <Box height="0.5px" />
+                      ) : (
+                        <>
+                          {grouping.questions.map((question, index) => {
+                            return shouldShowField(question) ? (
+                              <Drag
                                 key={question.id}
-                                field={question}
-                                selectedFieldId={selectedFieldId}
-                                onEditField={onEditField}
-                                builderConfig={builderConfig}
-                                fieldNumbers={fieldNumbers}
-                                closeSettings={closeSettings}
-                              />
-                            </Drag>
-                          ) : (
-                            <Box key={question.id} height="1px" />
-                          );
-                        })}
-                      </>
-                    )}
-                  </Box>
-                </Drop>
-              </Drag>
-            );
-          })}
-        </Drop>
-      </DragAndDrop>
+                                id={question.id}
+                                index={index}
+                              >
+                                <FormField
+                                  key={question.id}
+                                  field={question}
+                                  selectedFieldId={selectedFieldId}
+                                  onEditField={onEditField}
+                                  builderConfig={builderConfig}
+                                  fieldNumbers={fieldNumbers}
+                                  closeSettings={closeSettings}
+                                />
+                              </Drag>
+                            ) : (
+                              <Box key={question.id} height="1px" />
+                            );
+                          })}
+                        </>
+                      )}
+                    </Box>
+                  </Drop>
+                </Drag>
+              );
+            })}
+          </Drop>
+        </DragAndDrop>
+        {formCustomFields.length > 0 && (
+          <Box height="1px" borderTop={`1px solid ${colors.divider}`} />
+        )}
+      </Box>
       {/* Only relevant for survey */}
       {lastPage.key === 'survey_end' && (
-        <Box>
+        <Box mt="40px">
           <FormField
             field={lastPage}
             selectedFieldId={selectedFieldId}
@@ -145,9 +164,6 @@ const FormFields = ({
             closeSettings={closeSettings}
           />
         </Box>
-      )}
-      {formCustomFields.length > 0 && (
-        <Box height="1px" borderTop={`1px solid ${colors.divider}`} />
       )}
     </Box>
   );
