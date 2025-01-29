@@ -20,6 +20,9 @@ export const determineAnswerType = (
   if (average_rankings) {
     return 'ranking';
   }
+  if (['rating', 'linear_scale'].includes(result.inputType)) {
+    return 'rating';
+  }
   if (answers) {
     return 'multiselect';
   }
