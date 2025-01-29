@@ -647,13 +647,13 @@ RSpec.describe SurveyResultsGeneratorService do
           questionResponseCount: 22,
           totalPickCount: 27,
           answers: [
-            { answer: 7, count: 3 },
-            { answer: 6, count: 2 },
-            { answer: 5, count: 1 },
-            { answer: 4, count: 1 },
-            { answer: 3, count: 8 },
-            { answer: 2, count: 5 },
             { answer: 1, count: 2 },
+            { answer: 2, count: 5 },
+            { answer: 3, count: 8 },
+            { answer: 4, count: 1 },
+            { answer: 5, count: 1 },
+            { answer: 6, count: 2 },
+            { answer: 7, count: 3 },
             { answer: nil, count: 5 }
           ],
           multilocs: {
@@ -722,27 +722,27 @@ RSpec.describe SurveyResultsGeneratorService do
             questionResponseCount: 22,
             totalPickCount: 27,
             answers: [
-              { answer: 7, count: 3, groups: [
-                { count: 3, group: nil }
-              ] },
-              { answer: 6, count: 2, groups: [
+              { answer: 1, count: 2, groups: [
                 { count: 2, group: nil }
               ] },
-              { answer: 5, count: 1, groups: [
-                { count: 1, group: nil }
-              ] },
-              { answer: 4, count: 1, groups: [
-                { count: 1, group: 'la' }
+              { answer: 2, count: 5, groups: [
+                { count: 5, group: nil }
               ] },
               { answer: 3, count: 8, groups: [
                 { count: 1, group: 'ny' },
                 { count: 7, group: nil }
               ] },
-              { answer: 2, count: 5, groups: [
-                { count: 5, group: nil }
+              { answer: 4, count: 1, groups: [
+                { count: 1, group: 'la' }
               ] },
-              { answer: 1, count: 2, groups: [
+              { answer: 5, count: 1, groups: [
+                { count: 1, group: nil }
+              ] },
+              { answer: 6, count: 2, groups: [
                 { count: 2, group: nil }
+              ] },
+              { answer: 7, count: 3, groups: [
+                { count: 3, group: nil }
               ] },
               { answer: nil, count: 5, groups: [
                 { count: 1, group: 'la' },
