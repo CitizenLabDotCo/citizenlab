@@ -73,15 +73,10 @@ class SurveyResultsGeneratorService < FieldVisitorService
   end
 
   def visit_matrix_linear_scale(field)
-    result = core_field_attributes(field).merge({
+    core_field_attributes(field).merge({
       multilocs: { answer: build_linear_scale_multilocs(field) },
       linear_scales: matrix_linear_scale_statements(field)
     })
-    if group_field
-      result[:multilocs][:group] = get_option_multilocs(group_field)
-      result[:legend] = generate_answer_keys(group_field)
-    end
-    result
   end
 
   def visit_file_upload(field)
