@@ -255,8 +255,8 @@ da:
       option1: 'Mulighed 1'
       option2: 'Mulighed 2'
     form_end_page:
-      title_text: 'Næsten færdig'
-      description_text_2: "Du er ved at indsende dine svar. Ved at klikke på \"Indsend\" giver du os tilladelse til at analysere dine svar.<br/>Når du har indsendt, kan du ikke længere gå tilbage og ændre dine svar."
+      title_text_3: 'Tak, fordi du deler dit input!'
+      description_text_3: "Dit input er blevet sendt med succes."
     pdf_export:
       personal_data: 'Personlige data'
       personal_data_explanation_public: "Vi sender dit input til %{organizationName}'s online borgerinddragelsesplatform. Hvis du ønsker, at dit navn skal vises som forfatter til dette input og modtage opdateringer, der er relevante for dit input via e-mail, bedes du udfylde følgende felter på denne side, så opretter vi en konto til dig. Din e-mail vil ikke være offentlig og vil kun blive brugt af %{organizationName}. Hvis du ønsker at forblive anonym eller ikke accepterer, at vi bruger dine personlige data på denne måde, kan du lade dem være tomme."
