@@ -2136,6 +2136,7 @@
   "app.utils.participationMethodConfig.voting.votingNotSignedIn2": "Dir musst Iech aloggen oder aschreiwen fir ze wielen.",
   "app.utils.participationMethodConfig.voting.votingNotVerified": "Dir musst Äre Kont verifizéieren ier Dir kënnt wielen.",
   "app.utils.votingMethodUtils.budget": "Budget",
+  "app.utils.votingMethodUtils.budgetParticipationEnded1": "<b>D'Budgeten ofzeginn zougemaach op {endDate}.</b> D'Participanten haten insgesamt <b>{maxBudget} jidderee fir tëscht {optionCount} Optiounen ze verdeelen.</b>",
   "app.utils.votingMethodUtils.budgetSubmitted": "Budget presentéiert",
   "app.utils.votingMethodUtils.budgetSubmittedWithIcon": "Budget presentéiert 🎉",
   "app.utils.votingMethodUtils.budgetingNotInGroup": "Dir entsprécht net den Ufuerderunge fir Budgeten ze ginn.",
