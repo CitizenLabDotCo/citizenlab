@@ -989,7 +989,7 @@ RSpec.describe SurveyResultsGeneratorService do
                 7 => { title_multiloc: { 'en' => '7 - Strongly agree', 'fr-FR' => "7 - Tout à fait d'accord", 'nl-NL' => '7 - Strerk mee eens' } }
               }
             },
-            legend: [ 1, 2, 3, 4, 5, 6, 7, nil],
+            legend: [1, 2, 3, 4, 5, 6, 7, nil],
             textResponses: [
               { answer: 'Austin' },
               { answer: 'Miami' },
