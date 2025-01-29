@@ -22,8 +22,6 @@ import { FormattedMessage } from '../../cl-intl';
 import { isNilOrError, NilOrError } from '../../helperUtils';
 import messages from '../../messages';
 
-import NativeSurveyModalContent from './NativeSurveyModalContent';
-
 export const defaultSortingOptions = [
   { text: <FormattedMessage {...messages.trending} />, value: 'trending' },
   {
@@ -76,9 +74,9 @@ export type ParticipationMethodConfig = {
   /** When adding a new property, please add a description in the above comment */
   formEditor: 'simpleFormEditor' | 'surveyEditor' | null;
   onFormSubmission: (props: FormSubmissionMethodProps) => void;
-  getModalContent: (
-    props: ModalContentMethodProps
-  ) => ReactNode | JSX.Element | null;
+  getModalContent:
+    | null
+    | ((props: ModalContentMethodProps) => ReactNode | JSX.Element | null);
   getFormTitle?: (props: FormTitleMethodProps) => React.ReactNode;
   showInputManager: boolean;
   inputManagerName?: string;
@@ -219,9 +217,7 @@ const nativeSurveyConfig: ParticipationMethodConfig = {
   formEditor: 'surveyEditor',
   onFormSubmission: () => {},
   postType: 'nativeSurvey',
-  getModalContent: ({ ideaId, showIdeaId }: ModalContentMethodProps) => {
-    return <NativeSurveyModalContent ideaId={ideaId} showIdeaId={showIdeaId} />;
-  },
+  getModalContent: null,
   showInputManager: false,
   renderCTABar: (props: CTABarProps) => {
     return <NativeSurveyCTABar project={props.project} phases={props.phases} />;

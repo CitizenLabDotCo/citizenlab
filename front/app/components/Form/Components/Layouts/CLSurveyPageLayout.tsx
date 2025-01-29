@@ -65,6 +65,7 @@ import { useErrorToRead } from '../Fields/ErrorToReadContext';
 import { SURVEY_PAGE_CHANGE_EVENT } from './events';
 import messages from './messages';
 import PageControlButtons from './PageControlButtons';
+import SubmissionReference from './SubmissionReference';
 
 // Handling survey pages in here. The more things that we have added to it,
 // the more it has become a survey page layout. It also becomes extremely hard to understand
@@ -461,6 +462,10 @@ const CLSurveyPageLayout = memo(
                   );
                 })}
               </Box>
+
+              {ideaId && pageVariant === 'after-submission' && (
+                <SubmissionReference ideaId={ideaId} />
+              )}
             </Box>
           </Box>
         </Box>
