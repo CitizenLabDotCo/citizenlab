@@ -92,16 +92,25 @@ export const FormField = ({
   const isFieldGrouping = ['page', 'section'].includes(field.input_type);
 
   // Group is only deletable when we have more than one group
-  const isGroupDeletable =
-    formCustomFields.filter((field) => field.input_type === groupingType)
-      .length > 1;
+  const getGroupDeletable = () => {
+    const groupFields = formCustomFields.filter(
+      (field) => field.input_type === groupingType
+    );
+
+    if (builderConfig.type === 'survey') {
+      return groupFields.length > 2;
+    } else {
+      return groupFields.length > 1;
+    }
+  };
+
+  const isGroupDeletable = getGroupDeletable();
 
   const isDeleteShown =
     // TODO: Fix this the next time the file is edited.
     // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     !(field?.input_type !== groupingType || isGroupDeletable) ||
-    get(lockedAttributes, 'enabled', false) ||
-    fieldNumbers[field.id] === 1;
+    get(lockedAttributes, 'enabled', false);
 
   const editFieldAndValidate = () => {
     onEditField({ ...field, index });
