@@ -1843,7 +1843,7 @@
   "app.containers.AdminPage.ProjectEdit.survey.noSurveyResponses2": "Pas encore de réponses à l'enquête",
   "app.containers.AdminPage.ProjectEdit.survey.openForResponses2": "Ouvert aux réponses",
   "app.containers.AdminPage.ProjectEdit.survey.optional2": "Facultatif",
-  "app.containers.AdminPage.ProjectEdit.survey.pagesLogicHelperText1": "Si aucune logique n'est ajoutée, l'enquête suivra son cours normal. Si la page et ses questions sont toutes deux logiques, la logique de la question est prioritaire. Veillez à ce que cela corresponde au déroulement prévu de l'enquête. Pour plus d'informations, visitez le site {supportPageLink}",
+  "app.containers.AdminPage.ProjectEdit.survey.pagesLogicHelperText1": "Si aucune règle logique n'est ajoutée, l'enquête suivra son cours normal. Si une page et ses questions comportent des règles logiques, celles associées aux questions prévaudront. Assurez-vous que cela correspond au comportement souhaité pour votre enquête. Pour plus d'informations, consultez {supportPageLink}",
   "app.containers.AdminPage.ProjectEdit.survey.point": "Lieu",
   "app.containers.AdminPage.ProjectEdit.survey.quitReportConfirmationQuestion": "Voulez-vous vraiment quitter?",
   "app.containers.AdminPage.ProjectEdit.survey.quitReportInfo2": "Tes modifications actuelles ne seront pas sauvegardées.",
