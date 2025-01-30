@@ -1097,6 +1097,8 @@
   "app.containers.Admin.projects.project.survey.page": "Pagina",
   "app.containers.Admin.projects.project.survey.previousInsight": "Vorige inzicht",
   "app.containers.Admin.projects.project.survey.responses": "Reacties",
+  "app.containers.Admin.projects.project.survey.resultsCountPageTooltip": "Het aantal reacties voor deze pagina is lager dan het totale aantal reacties op de vragenlijst, omdat sommige respondenten deze pagina niet hebben gezien vanwege logica in de vragenlijst.",
+  "app.containers.Admin.projects.project.survey.resultsCountQuestionTooltip": "Het aantal reacties op deze vraag is lager dan het totale aantal reacties op de vragenlijst omdat sommige respondenten deze vraag niet gezien zullen hebben vanwege logica in de vragenlijst.",
   "app.containers.Admin.projects.project.survey.upsell.bullet1": "Vat direct al je antwoorden samen.",
   "app.containers.Admin.projects.project.survey.upsell.bullet2": "Praat met je data in natuurlijke taal.",
   "app.containers.Admin.projects.project.survey.upsell.bullet3": "Krijg verwijzingen naar individuele reacties uit AI gegenereerde samenvattingen.",
