@@ -68,17 +68,16 @@ export const parseQuestionResult = (
 
   return (
     filteredAnswers?.map(({ count, answer }) => {
-      const answerKey = answer === null ? 'no_answer' : answer;
-      const multilocsAnswer = multilocs.answer[answerKey];
-
       const label =
         answer === null
           ? noAnswerCopy
-          : localize(multilocsAnswer.title_multiloc);
-      const image = multilocsAnswer?.image;
+          : localize(multilocs.answer[answer].title_multiloc);
+      const image = answer ? multilocs.answer[answer].image : undefined;
       const percentage = roundPercentage(count, totalPickCount, 1);
-      const logicForAnswer = logic.answer?.[answerKey];
-      const logicFilterId = logic.answer?.[answerKey]?.id || null;
+
+      const logicAnswerKey = answer === null ? 'no_answer' : answer;
+      const logicForAnswer = logic.answer?.[logicAnswerKey];
+      const logicFilterId = logic.answer?.[logicAnswerKey]?.id || null;
 
       return {
         label,

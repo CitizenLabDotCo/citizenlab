@@ -20,7 +20,6 @@ export const surveyResultsResponse: SurveyResultsType = {
           required: false,
           grouped: false,
           totalResponseCount: 1,
-
           questionResponseCount: 1,
           totalPickCount: 1,
           description: {},

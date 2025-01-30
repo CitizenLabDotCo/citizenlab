@@ -8,13 +8,14 @@ import { LogicConfig, ResultUngrouped } from 'api/survey_results/types';
 import useLocalize from 'hooks/useLocalize';
 
 import T from 'components/T';
-import messages from '../messages';
+
+import { useIntl } from 'utils/cl-intl';
 
 import Files from '../Files';
+import messages from '../messages';
 
 import FormResultQuestionValue from './components/FormResultsQuestionValue';
 import InputType from './InputType';
-import { useIntl } from 'utils/cl-intl';
 
 type FormResultsQuestionProps = {
   result: ResultUngrouped;
