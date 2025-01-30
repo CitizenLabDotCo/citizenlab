@@ -1097,6 +1097,8 @@
   "app.containers.Admin.projects.project.survey.page": "Sidan",
   "app.containers.Admin.projects.project.survey.previousInsight": "Tidigare insikt",
   "app.containers.Admin.projects.project.survey.responses": "Svar",
+  "app.containers.Admin.projects.project.survey.resultsCountPageTooltip": "Antalet svar för den här sidan är lägre än det totala antalet enkätsvar eftersom vissa respondenter inte har sett den här sidan på grund av logiken i enkäten.",
+  "app.containers.Admin.projects.project.survey.resultsCountQuestionTooltip": "Antalet svar på den här frågan är lägre än det totala antalet svar på undersökningen eftersom vissa respondenter inte har sett den här frågan på grund av logik i undersökningen.",
   "app.containers.Admin.projects.project.survey.upsell.bullet1": "Sammanfatta alla dina svar direkt.",
   "app.containers.Admin.projects.project.survey.upsell.bullet2": "Prata med dina data på naturligt språk.",
   "app.containers.Admin.projects.project.survey.upsell.bullet3": "Hämta referenser till enskilda svar från AI-genererade sammanfattningar.",
