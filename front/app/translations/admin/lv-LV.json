@@ -1097,6 +1097,8 @@
   "app.containers.Admin.projects.project.survey.page": "Lapa",
   "app.containers.Admin.projects.project.survey.previousInsight": "Iepriekšējais ieskats",
   "app.containers.Admin.projects.project.survey.responses": "Atbildes",
+  "app.containers.Admin.projects.project.survey.resultsCountPageTooltip": "Šīs lapas atbilžu skaits ir mazāks nekā kopējais aptaujas atbilžu skaits, jo daži respondenti aptaujas loģikas dēļ nebūs redzējuši šo lapu.",
+  "app.containers.Admin.projects.project.survey.resultsCountQuestionTooltip": "Atbilžu skaits uz šo jautājumu ir mazāks nekā kopējais aptaujas atbilžu skaits, jo daži respondenti aptaujas loģikas dēļ nebūs redzējuši šo jautājumu.",
   "app.containers.Admin.projects.project.survey.upsell.bullet1": "Uzreiz apkopojiet visas savas atbildes.",
   "app.containers.Admin.projects.project.survey.upsell.bullet2": "Runājiet ar saviem datiem dabiskajā valodā.",
   "app.containers.Admin.projects.project.survey.upsell.bullet3": "Saņemt atsauces uz atsevišķām atbildēm no mākslīgā intelekta ģenerētiem kopsavilkumiem.",
