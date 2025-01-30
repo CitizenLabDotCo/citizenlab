@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Box, Title, colors, Text } from '@citizenlab/cl2-component-library';
+import { Box, Title, Text } from '@citizenlab/cl2-component-library';
 import { snakeCase } from 'lodash-es';
 
 import { LogicConfig, ResultUngrouped } from 'api/survey_results/types';
@@ -16,13 +16,11 @@ import InputType from './InputType';
 
 type FormResultsQuestionProps = {
   result: ResultUngrouped;
-  totalSubmissions: number;
   logicConfig: LogicConfig;
 };
 
 const FormResultsQuestion = ({
   result,
-  totalSubmissions,
   logicConfig,
 }: FormResultsQuestionProps) => {
   const localize = useLocalize();
@@ -34,29 +32,12 @@ const FormResultsQuestion = ({
     description,
     questionNumber,
     required,
+    totalResponseCount,
     questionResponseCount,
     files,
   } = result;
 
-  // FROM MINE
-  const isMultipleChoiceAndHasAnswers = !!answers;
-  const hasTextResponses = textResponses && textResponses.length > 0;
-  const hasNumberResponses = numberResponses && numberResponses.length > 0;
-  const isPointAndHasAnswers =
-    // TODO: Fix this the next time the file is edited.
-    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-    inputType === 'point' && pointResponses && pointResponses?.length > 0;
-  const isLineAndHasAnswers =
-    // TODO: Fix this the next time the file is edited.
-    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-    inputType === 'line' && lineResponses && lineResponses?.length > 0;
-  const isPolygonAndHasAnswers =
-    // TODO: Fix this the next time the file is edited.
-    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-    inputType === 'polygon' && polygonResponses && polygonResponses?.length > 0;
-
   if (result.hidden) return null;
-  // END FROM MINE
 
   return (
     <Box
@@ -72,56 +53,15 @@ const FormResultsQuestion = ({
         <InputType
           inputType={inputType}
           required={required}
-          totalSubmissions={totalSubmissions}
+          totalSubmissions={totalResponseCount}
           totalResponses={questionResponseCount}
         />
-        // FROM THEIRS
-        <FormResultQuestionValue result={result} />
-        // FROM THEIRS // FROM MINE
         <Text variant="bodyS" color="textSecondary" mt="12px" mb="12px">
           <T value={description} supportHtml={true} />
         </Text>
-        {/* TODO: Fix this the next time the file is edited. */}
-        {/* eslint-disable-next-line @typescript-eslint/no-unnecessary-condition */}
-        {isMultipleChoiceAndHasAnswers && (
-          <SurveyBars
-            questionResult={result}
-            colorScheme={COLOR_SCHEME}
-            logicConfig={logicConfig}
-          />
-        )}
-        {hasTextResponses && (
-          <TextQuestion
-            textResponses={textResponses}
-            customFieldId={customFieldId}
-            hasOtherResponses={isMultipleChoiceAndHasAnswers}
-          />
-        )}
-        {hasNumberResponses && (
-          <NumberQuestion numberResponses={numberResponses} />
-        )}
-        {isPointAndHasAnswers && (
-          <PointLocationQuestion
-            pointResponses={pointResponses}
-            mapConfigId={mapConfigId}
-            customFieldId={customFieldId}
-          />
-        )}
-        {isLineAndHasAnswers && (
-          <LineLocationQuestion
-            lineResponses={lineResponses}
-            mapConfigId={mapConfigId}
-            customFieldId={customFieldId}
-          />
-        )}
-        {isPolygonAndHasAnswers && (
-          <PolygonLocationQuestion
-            polygonResponses={polygonResponses}
-            mapConfigId={mapConfigId}
-            customFieldId={customFieldId}
-          />
-        )}
-        // END FROM MINE
+
+        <FormResultQuestionValue result={result} logicConfig={logicConfig} />
+
         {files && files.length > 0 && (
           <Box display="flex" gap="24px" mt={answers ? '20px' : '0'} w="50%">
             <Box flex="1">

@@ -16,6 +16,7 @@ import {
 } from 'api/custom_fields/types';
 
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
+import useLocalize from 'hooks/useLocalize';
 
 import {
   formEndOption,
@@ -34,7 +35,6 @@ import { getFieldNumbers } from '../utils';
 
 import { ContentSettings } from './ContentSettings';
 import { LogicSettings } from './LogicSettings';
-import useLocalize from 'hooks/useLocalize';
 
 interface Props {
   field: IFlatCustomFieldWithIndex;
@@ -71,14 +71,17 @@ const FormBuilderSettings = ({
     formCustomFields?.forEach((field) => {
       if (field.input_type === 'page') {
         const pageTitle = localize(field.title_multiloc);
-        const pageLabel =
-          `${formatMessage(messages.page)} ${fieldNumbers[field.id]}` +
-          (pageTitle
-            ? ': ' +
-              (pageTitle?.length > 25
-                ? pageTitle.slice(0, 25) + '...'
-                : pageTitle)
-            : '');
+        const pageLabel = `${formatMessage(messages.page)} ${
+          fieldNumbers[field.id]
+        }${
+          pageTitle
+            ? `: ${
+                pageTitle.length > 25
+                  ? `${pageTitle.slice(0, 25)}...`
+                  : pageTitle
+              }`
+            : ''
+        }`;
         pageArray.push({
           value: field.temp_id || field.id,
           label: pageLabel,

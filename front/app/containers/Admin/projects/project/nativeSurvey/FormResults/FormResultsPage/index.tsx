@@ -1,7 +1,6 @@
 import React from 'react';
 
 import { Box, colors, Text, Title } from '@citizenlab/cl2-component-library';
-
 import { useTheme } from 'styled-components';
 
 import { LogicConfig, ResultUngrouped } from 'api/survey_results/types';
@@ -16,15 +15,10 @@ import messages from '../messages';
 
 type FormResultsPageProps = {
   result: ResultUngrouped;
-  totalSubmissions: number;
   logicConfig: LogicConfig;
 };
 
-const FormResultsPage = ({
-  result,
-  totalSubmissions,
-  logicConfig,
-}: FormResultsPageProps) => {
+const FormResultsPage = ({ result, logicConfig }: FormResultsPageProps) => {
   const localize = useLocalize();
   const { formatMessage } = useIntl();
   const theme = useTheme();
@@ -34,7 +28,7 @@ const FormResultsPage = ({
 
   const questionTitle = localize(question);
   const pageTitle = `${formatMessage(messages.page)} ${pageNumber}${
-    questionTitle ? ': ' + questionTitle : ''
+    questionTitle ? `: ${questionTitle}` : ''
   }`;
 
   if (result.hidden) {
@@ -59,9 +53,9 @@ const FormResultsPage = ({
       </Title>
       <Box display="flex">
         <Text variant="bodyS" color="textSecondary" mt="0" mb="4px">
-          {`${questionResponseCount}/${totalSubmissions} ${formatMessage(
-            messages.responses
-          ).toLowerCase()}`}
+          {`${questionResponseCount}/${
+            result.totalResponseCount
+          } ${formatMessage(messages.responses).toLowerCase()}`}
         </Text>
         <LogicIcon
           logicFilterId={logic.nextPageNumber ? customFieldId : null}

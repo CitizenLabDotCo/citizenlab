@@ -24,6 +24,7 @@ class SurveyResultsGeneratorService < FieldVisitorService
       results = add_question_numbers_to_results results
       results = add_page_response_count_to_results results
       results = add_logic_to_results results, logic_ids
+      results = change_counts_for_logic results, inputs.pluck(:custom_field_values)
 
       {
         results: results,
@@ -110,7 +111,7 @@ class SurveyResultsGeneratorService < FieldVisitorService
   end
 
   def visit_page(field)
-    result = core_field_attributes(field, 0) # Response count gets updated later by looking at all the results
+    result = core_field_attributes(field, response_count: 0) # Response count gets updated later by looking at all the results
     result[:logic][:nextPageId] = field.logic['next_page_id'] if field.logic['next_page_id']
     result
   end
@@ -133,7 +134,9 @@ class SurveyResultsGeneratorService < FieldVisitorService
       questionResponseCount: response_count,
       pageNumber: nil,
       questionNumber: nil,
-      logic: {}
+      logic: {},
+      questionViewedCount: 0, # Temporary field used when calculating the number of times a question is seen through logic
+      key: field.key, # Temporary field used when calculating the number of times a question is seen through logic
     }
   end
 
@@ -476,8 +479,10 @@ class SurveyResultsGeneratorService < FieldVisitorService
   end
 
   def cleanup_single_result(result)
-    # Logic is not used on single result
+    # Logic not used on single result & temp fields need removing
     result[:logic] = {}
+    result.delete(:questionViewedCount)
+    result.delete(:key)
     result
   end
 
@@ -487,5 +492,75 @@ class SurveyResultsGeneratorService < FieldVisitorService
 
   def supports_page_logic?(input_type)
     input_type == 'page'
+  end
+
+  def change_counts_for_logic(results, survey_responses)
+    # Don't need to check the results for logic if there is none
+    all_logic_empty = results.flatten.all? { |r| r[:logic] == {} }
+    return results if all_logic_empty
+
+    results = results.deep_dup
+
+    survey_responses.each do |response|
+      next_page_number = nil
+      skip_question = false
+      results.map do |question|
+        # Similar logic to logic_skipped_field_ids - TODO: Refactor to share?
+        input_type = question[:inputType]
+        page_number = question[:pageNumber]
+
+        # We only skip pages & questions from the next page onwards
+        if supports_page_logic? input_type
+          if page_number == next_page_number
+            next_page_number = nil
+            skip_question = false
+          elsif next_page_number
+            skip_question = true
+          end
+        end
+
+        # reduce the number of not answered if the question is skipped
+        if skip_question && question[:answers].present?
+          nil_answer = question[:answers].find { |a| a[:answer].nil? }
+          nil_answer[:count] -= 1 if nil_answer && nil_answer[:count] > 0
+        end
+
+        unless skip_question
+          # Only increment the number of times seen if we're not skipping the question/page
+          question[:questionViewedCount] += 1
+
+          # Calculate the next page number that will be seen
+          if supports_question_logic? input_type
+            # TODO: Multiple selects - Look at all the options and if more than one page number then take the highest one
+            value = response[question[:key]]
+            logic_match = question.dig(:logic, :answer, value)
+            if logic_match
+              skip_question = false # Needed?
+              next_page_number = logic_match[:nextPageNumber]
+            end
+          elsif supports_page_logic? input_type
+            logic_match = question[:logic][:nextPageNumber]
+            if logic_match
+              skip_question = false # Needed?
+              next_page_number = logic_match
+            end
+          end
+        end
+      end
+    end
+
+    results.map do |question|
+      # Update the total response count with the new figure
+      question[:totalResponseCount] = question[:questionViewedCount]
+
+      # Update the total pick count because we've reduced the 'not_answered' answer count
+      question[:totalPickCount] = question[:answers].pluck(:count).sum if question[:totalPickCount]
+
+      # remove the temporary fields that are now not needed
+      question.delete(:questionViewedCount)
+      question.delete(:key)
+    end
+
+    results
   end
 end
