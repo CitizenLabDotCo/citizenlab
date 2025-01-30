@@ -2136,7 +2136,7 @@
   "app.utils.participationMethodConfig.voting.votingNotSignedIn2": "Debes iniciar sesión o registrarte para votar.",
   "app.utils.participationMethodConfig.voting.votingNotVerified": "Debes verificar tu cuenta antes de poder votar.",
   "app.utils.votingMethodUtils.budget": "presupuesto",
-  "app.utils.votingMethodUtils.budgetParticipationEnded1": "<b>La presentación de presupuestos se cerró en {endDate}.</b> Los participantes disponían de un total de <b>{maxBudget} cada uno para distribuir entre las opciones de {optionCount} .</b>",
+  "app.utils.votingMethodUtils.budgetParticipationEnded1": "<b>El envío de presupuestos cerró en {endDate}.</b> Los participantes disponían de un total de <b>{maxBudget} cada uno para distribuir entre {optionCount} opcion(es).</b>",
   "app.utils.votingMethodUtils.budgetSubmitted": "Presupuesto enviado",
   "app.utils.votingMethodUtils.budgetSubmittedWithIcon": "Presupuesto enviado 🎉",
   "app.utils.votingMethodUtils.budgetingNotInGroup": "No cumples los requisitos para asignar presupuestos.",
