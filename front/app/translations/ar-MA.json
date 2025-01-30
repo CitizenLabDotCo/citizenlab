@@ -2136,7 +2136,7 @@
   "app.utils.participationMethodConfig.voting.votingNotSignedIn2": "يجب عليك تسجيل الدخول أو التسجيل للتصويت.",
   "app.utils.participationMethodConfig.voting.votingNotVerified": "يجب عليك التحقق من حسابك قبل أن تتمكن من التصويت.",
   "app.utils.votingMethodUtils.budget": "ميزانية",
-  "app.utils.votingMethodUtils.budgetParticipationEnded": "<b>أغلق إرسال الميزانيات في {endDate}.</b> كان لدى المشاركين ما مجموعه <b>{maxBudget} {currency} للتوزيع بين {optionCount} خيارات.</b>",
+  "app.utils.votingMethodUtils.budgetParticipationEnded1": "<b>تم إغلاق باب تقديم الميزانيات في {endDate}.</b> كان لدى المشاركين إجمالي يبلغ <b>{maxBudget} لكل منهم لتوزيعه بين {optionCount} خيارات.</b>",
   "app.utils.votingMethodUtils.budgetSubmitted": "تم تقديم الميزانية",
   "app.utils.votingMethodUtils.budgetSubmittedWithIcon": "الميزانية المقدمة 🎉",
   "app.utils.votingMethodUtils.budgetingNotInGroup": "أنت لا تستوفي متطلبات تعيين الميزانيات.",
