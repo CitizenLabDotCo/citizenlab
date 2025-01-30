@@ -2136,7 +2136,6 @@
   "app.utils.participationMethodConfig.voting.votingNotSignedIn2": "Je moet inloggen of je registreren om te kunnen stemmen.",
   "app.utils.participationMethodConfig.voting.votingNotVerified": "Je moet je account verifiëren voordat je kunt stemmen.",
   "app.utils.votingMethodUtils.budget": "budget",
-  "app.utils.votingMethodUtils.budgetParticipationEnded": "<b>Indienen van budgetten gesloten op {endDate}.</b> Deelnemers hadden een totaal van <b>{maxBudget} {currency} om te verdelen tussen {optionCount} opties.</b>",
   "app.utils.votingMethodUtils.budgetSubmitted": "Budget ingediend",
   "app.utils.votingMethodUtils.budgetSubmittedWithIcon": "Budget ingediend 🎉",
   "app.utils.votingMethodUtils.budgetingNotInGroup": "Je voldoet niet aan de voorwaarden om budgetten toe te wijzen.",

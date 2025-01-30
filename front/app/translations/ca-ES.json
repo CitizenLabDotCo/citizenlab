@@ -2136,7 +2136,6 @@
   "app.utils.participationMethodConfig.voting.votingNotSignedIn2": "Cal iniciar sessió o registrar-se per votar.",
   "app.utils.participationMethodConfig.voting.votingNotVerified": "Has de verificar el teu compte abans de poder votar.",
   "app.utils.votingMethodUtils.budget": "pressupost",
-  "app.utils.votingMethodUtils.budgetParticipationEnded": "<b>Presentació de pressupostos tancats el {endDate}.</b> participants tenien un total de <b>{maxBudget} {currency} cadascun per repartir entre {optionCount} opcions.</b>",
   "app.utils.votingMethodUtils.budgetSubmitted": "Pressupost presentat",
   "app.utils.votingMethodUtils.budgetSubmittedWithIcon": "Pressupost presentat 🎉",
   "app.utils.votingMethodUtils.budgetingNotInGroup": "No compleixes els requisits per assignar pressupostos.",

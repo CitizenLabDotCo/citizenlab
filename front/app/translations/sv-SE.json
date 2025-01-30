@@ -2136,7 +2136,6 @@
   "app.utils.participationMethodConfig.voting.votingNotSignedIn2": "Du måste logga in eller registrera dig för att rösta.",
   "app.utils.participationMethodConfig.voting.votingNotVerified": "Du måste verifiera ditt konto innan du kan rösta.",
   "app.utils.votingMethodUtils.budget": "budget",
-  "app.utils.votingMethodUtils.budgetParticipationEnded": "<b>Inlämning av budgetar avslutades den {endDate}.</b> Deltagarna hade totalt <b>{maxBudget} {currency} var att fördela mellan {optionCount} alternativ.</b>",
   "app.utils.votingMethodUtils.budgetSubmitted": "Inlämnad budget",
   "app.utils.votingMethodUtils.budgetSubmittedWithIcon": "Budget inlämnad 🎉",
   "app.utils.votingMethodUtils.budgetingNotInGroup": "Du uppfyller inte kraven för att tilldela budgetar.",
