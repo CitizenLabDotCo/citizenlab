@@ -1097,6 +1097,8 @@
   "app.containers.Admin.projects.project.survey.page": "Pàgina",
   "app.containers.Admin.projects.project.survey.previousInsight": "Previous insight",
   "app.containers.Admin.projects.project.survey.responses": "Respostes",
+  "app.containers.Admin.projects.project.survey.resultsCountPageTooltip": "El nombre de respostes d'aquesta pàgina és inferior al nombre total de respostes de l'enquesta perquè alguns enquestats no hauran vist aquesta pàgina a causa de la lògica de l'enquesta.",
+  "app.containers.Admin.projects.project.survey.resultsCountQuestionTooltip": "El nombre de respostes per a aquesta pregunta és inferior al nombre total de respostes de l'enquesta perquè alguns enquestats no hauran vist aquesta pregunta a causa de la lògica de l'enquesta.",
   "app.containers.Admin.projects.project.survey.upsell.bullet1": "Resumeix a l'instant totes les teves respostes.",
   "app.containers.Admin.projects.project.survey.upsell.bullet2": "Parleu amb les vostres dades en llenguatge natural.",
   "app.containers.Admin.projects.project.survey.upsell.bullet3": "Obteniu referències a respostes individuals a partir de resums generats per IA.",
