@@ -23,7 +23,13 @@ import messages from '../../../messages';
 import Question from './Question';
 import Summary from './Summary';
 
-const AnalysisInsights = ({ analysis }: { analysis: IAnalysisData }) => {
+const AnalysisInsights = ({
+  analysis,
+  hasOtherResponses,
+}: {
+  analysis: IAnalysisData;
+  hasOtherResponses?: boolean;
+}) => {
   const [automaticSummaryCreated, setAutomaticSummaryCreated] = useState(false);
   const [selectedInsightIndex, setSelectedInsightIndex] = useState(0);
 
@@ -68,12 +74,21 @@ const AnalysisInsights = ({ analysis }: { analysis: IAnalysisData }) => {
         {
           onSuccess: (data) => {
             if (!data.data.attributes.impossible_reason) {
+              const filters = {
+                input_custom_field_no_empty_values: true,
+                limit: !largeSummariesAllowed ? 30 : undefined,
+              };
+              if (
+                hasOtherResponses &&
+                analysis.relationships.main_custom_field?.data?.id
+              ) {
+                filters[
+                  `input_custom_${analysis.relationships.main_custom_field.data.id}`
+                ] = ['other'];
+              }
               addAnalysisSummary({
                 analysisId: analysis.id,
-                filters: {
-                  input_custom_field_no_empty_values: true,
-                  limit: !largeSummariesAllowed ? 30 : undefined,
-                },
+                filters,
               });
             }
           },
@@ -88,6 +103,8 @@ const AnalysisInsights = ({ analysis }: { analysis: IAnalysisData }) => {
     inputCount,
     largeSummariesAllowed,
     preCheck,
+    hasOtherResponses,
+    analysis.relationships.main_custom_field?.data?.id,
   ]);
 
   if (addSummaryIsLoading || preCheckIsLoading) {

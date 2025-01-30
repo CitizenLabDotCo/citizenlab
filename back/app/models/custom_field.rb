@@ -111,8 +111,12 @@ class CustomField < ApplicationRecord
     %w[select multiselect select_image multiselect_image ranking].include?(input_type)
   end
 
+  def has_other_option?
+    options.any?(&:other)
+  end
+
   def support_free_text_value?
-    %w[text multiline_text text_multiloc multiline_text_multiloc html_multiloc].include?(input_type)
+    %w[text multiline_text text_multiloc multiline_text_multiloc html_multiloc].include?(input_type) || (support_options? && has_other_option?)
   end
 
   def support_option_images?
@@ -245,7 +249,7 @@ class CustomField < ApplicationRecord
   end
 
   def other_option_text_field
-    return if options.none?(&:other)
+    return if !has_other_option?
 
     other_field_key = "#{key}_other"
     title_multiloc = MultilocService.new.i18n_to_multiloc(
