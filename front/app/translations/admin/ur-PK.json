@@ -1097,6 +1097,8 @@
   "app.containers.Admin.projects.project.survey.page": "صفحہ",
   "app.containers.Admin.projects.project.survey.previousInsight": "پچھلی بصیرت",
   "app.containers.Admin.projects.project.survey.responses": "جوابات",
+  "app.containers.Admin.projects.project.survey.resultsCountPageTooltip": "اس صفحہ کے جوابات کی تعداد سروے کے جوابات کی کل تعداد سے کم ہے کیونکہ کچھ جواب دہندگان نے سروے میں منطق کی وجہ سے یہ صفحہ نہیں دیکھا ہوگا۔",
+  "app.containers.Admin.projects.project.survey.resultsCountQuestionTooltip": "اس سوال کے جوابات کی تعداد سروے کے جوابات کی کل تعداد سے کم ہے کیونکہ کچھ جواب دہندگان نے سروے میں منطق کی وجہ سے یہ سوال نہیں دیکھا ہوگا۔",
   "app.containers.Admin.projects.project.survey.upsell.bullet1": "اپنے تمام جوابات کا فوری خلاصہ کریں۔",
   "app.containers.Admin.projects.project.survey.upsell.bullet2": "اپنے ڈیٹا سے قدرتی زبان میں بات کریں۔",
   "app.containers.Admin.projects.project.survey.upsell.bullet3": "AI سے تیار کردہ خلاصوں سے انفرادی جوابات کے حوالے حاصل کریں۔",
