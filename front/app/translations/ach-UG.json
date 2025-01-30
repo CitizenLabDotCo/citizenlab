@@ -2136,7 +2136,7 @@
   "app.utils.participationMethodConfig.voting.votingNotSignedIn2": "crwdns2411986:0crwdne2411986:0",
   "app.utils.participationMethodConfig.voting.votingNotVerified": "crwdns2411988:0crwdne2411988:0",
   "app.utils.votingMethodUtils.budget": "crwdns777681:0crwdne777681:0",
-  "app.utils.votingMethodUtils.budgetParticipationEnded": "crwdns777683:0{endDate}crwdnd777683:0{maxBudget}crwdnd777683:0{currency}crwdnd777683:0{optionCount}crwdne777683:0",
+  "app.utils.votingMethodUtils.budgetParticipationEnded1": "crwdns4132583:0{endDate}crwdnd4132583:0{maxBudget}crwdnd4132583:0{optionCount}crwdne4132583:0",
   "app.utils.votingMethodUtils.budgetSubmitted": "crwdns777685:0crwdne777685:0",
   "app.utils.votingMethodUtils.budgetSubmittedWithIcon": "crwdns777687:0crwdne777687:0",
   "app.utils.votingMethodUtils.budgetingNotInGroup": "crwdns2411990:0crwdne2411990:0",
