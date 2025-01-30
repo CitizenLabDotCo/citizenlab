@@ -2136,6 +2136,7 @@
   "app.utils.participationMethodConfig.voting.votingNotSignedIn2": "Vous devez vous connecter ou vous inscrire pour voter.",
   "app.utils.participationMethodConfig.voting.votingNotVerified": "Vous devez vérifier votre compte avant de pouvoir voter.",
   "app.utils.votingMethodUtils.budget": "budget",
+  "app.utils.votingMethodUtils.budgetParticipationEnded1": "<b>La soumission des budgets s'est clôturée le {endDate}.</b> Chaque participant disposait d'un budget total de <b>{maxBudget} à répartir entre {optionCount} options.</b>",
   "app.utils.votingMethodUtils.budgetSubmitted": "Votre budget a été soumis",
   "app.utils.votingMethodUtils.budgetSubmittedWithIcon": "Votre budget a été soumis 🎉",
   "app.utils.votingMethodUtils.budgetingNotInGroup": "Vous ne remplissez pas les conditions pour soumettre un budget.",
