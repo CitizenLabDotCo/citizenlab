@@ -34,6 +34,7 @@ ca:
       "project_review_request": Sol·licitud de revisió del projecte
       "project_review_state_change": Projecte aprovat
       "status_change_on_idea_you_follow": Canvi d'estat d'una idea que segueixes
+      "survey_submitted": Enquesta enviada
       "threshold_reached_for_admin": La proposta ha arribat al llindar de votació
       "welcome": Després de la inscripció
       "admin_digest": Visió general setmanal per als administradors
@@ -496,6 +497,14 @@ ca:
       event_description: 'El projecte "%{projectName}" us demana que voteu entre %{numIdeas} opcions:'
       cta_message: 'Feu clic al botó següent per participar'
       cta_vote: 'Aneu a la plataforma per votar'
+    survey_submitted:
+      subject: '%{organizationName}: Gràcies per la teva resposta! 🎉'
+      main_header: 'Gràcies per compartir els teus pensaments sobre "%{projectName}"!'
+      your_input_submitted: 'La vostra entrada per a "%{projectName}" s''ha enviat correctament.'
+      if_you_would_like_to_review: 'Si voleu revisar el vostre enviament, podeu descarregar les vostres respostes a continuació.'
+      your_submission_has_id: 'El vostre enviament té l''identificador únic següent:'
+      you_can_use_this_id: 'Podeu utilitzar aquest identificador per posar-vos en contacte amb els administradors de la plataforma en cas que vulgueu que s''elimini el vostre enviament.'
+      download_responses: 'Descarrega les teves respostes'
     admin_labels:
       recipient_role:
         admins: 'Als administradors'
