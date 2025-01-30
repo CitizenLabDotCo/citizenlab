@@ -479,67 +479,70 @@ class SurveyResultsGeneratorService < FieldVisitorService
   end
 
   def change_counts_for_logic(results, survey_responses)
-    # Don't need to check the results for logic if there is none
-    all_logic_empty = results.flatten.all? { |r| r[:logic] == {} }
-    return results if all_logic_empty
+    survey_has_logic = !results.flatten.all? { |r| r[:logic] == {} }
 
-    results = results.deep_dup
+    # Only need to calculate the logic if there is any
+    if survey_has_logic
+      results = results.deep_dup
+      survey_responses.each do |response|
+        next_page_number = nil
+        skip_question = false
+        results.map do |question|
+          # Similar logic to logic_skipped_field_ids - TODO: Refactor to share?
+          input_type = question[:inputType]
+          page_number = question[:pageNumber]
 
-    survey_responses.each do |response|
-      next_page_number = nil
-      skip_question = false
-      results.map do |question|
-        # Similar logic to logic_skipped_field_ids - TODO: Refactor to share?
-        input_type = question[:inputType]
-        page_number = question[:pageNumber]
-
-        # We only skip pages & questions from the next page onwards
-        if supports_page_logic? input_type
-          if page_number == next_page_number
-            next_page_number = nil
-            skip_question = false
-          elsif next_page_number
-            skip_question = true
-          end
-        end
-
-        # reduce the number of not answered if the question is skipped
-        if skip_question && question[:answers].present?
-          nil_answer = question[:answers].find { |a| a[:answer].nil? }
-          nil_answer[:count] -= 1 if nil_answer && nil_answer[:count] > 0
-        end
-
-        unless skip_question
-          # Only increment the number of times seen if we're not skipping the question/page
-          question[:questionViewedCount] += 1
-
-          # Calculate the next page number that will be seen
-          if supports_question_logic? input_type
-            answer_value = response[question[:key]]
-            values = answer_value.is_a?(Array) ? answer_value : [answer_value] # Convert all values to an array so all fields can be treated the same
-            values.each do |value|
-              logic_match = question.dig(:logic, :answer, value)
-              if logic_match && logic_match[:nextPageNumber] > (next_page_number || 0)
-                # Only take the highest next page number from all options
-                next_page_number = logic_match[:nextPageNumber]
-              end
+          # We only skip pages & questions from the next page onwards
+          if supports_page_logic? input_type
+            if page_number == next_page_number
+              next_page_number = nil
+              skip_question = false
+            elsif next_page_number
+              skip_question = true
             end
-          elsif supports_page_logic? input_type
-            logic_match = question[:logic][:nextPageNumber]
-            if logic_match
-              next_page_number = logic_match
+          end
+
+          # reduce the number of not answered if the question is skipped
+          if skip_question && question[:answers].present?
+            nil_answer = question[:answers].find { |a| a[:answer].nil? }
+            nil_answer[:count] -= 1 if nil_answer && nil_answer[:count] > 0
+          end
+
+          unless skip_question
+            # Only increment the number of times seen if we're not skipping the question/page
+            question[:questionViewedCount] += 1
+
+            # Calculate the next page number that will be seen
+            if supports_question_logic? input_type
+              answer_value = response[question[:key]]
+              values = answer_value.is_a?(Array) ? answer_value : [answer_value] # Convert all values to an array so all fields can be treated the same
+              values.each do |value|
+                logic_match = question.dig(:logic, :answer, value)
+                if logic_match && logic_match[:nextPageNumber] > (next_page_number || 0)
+                  # Only take the highest next page number from all options
+                  next_page_number = logic_match[:nextPageNumber]
+                end
+              end
+            elsif supports_page_logic? input_type
+              logic_match = question[:logic][:nextPageNumber]
+              if logic_match
+                next_page_number = logic_match
+              end
             end
           end
         end
       end
     end
 
+    # Finalise the results
     results.map do |question|
-      # Update the total response count with the new figure
-      question[:totalResponseCount] = question[:questionViewedCount]
+      if survey_has_logic
+        # Update the total response count with the new figure
+        question[:totalResponseCount] = question[:questionViewedCount]
 
-      # Update the total pick count because we've reduced the 'not_answered' answer count
-      question[:totalPickCount] = question[:answers].pluck(:count).sum if question[:totalPickCount]
+        # Update the total pick count because we've reduced the 'not_answered' answer count
+        question[:totalPickCount] = question[:answers].pluck(:count).sum if question[:totalPickCount]
+      end
 
       # remove the temporary fields that are now not needed
       question.delete(:questionViewedCount)
