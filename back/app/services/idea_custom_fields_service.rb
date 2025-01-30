@@ -141,6 +141,13 @@ class IdeaCustomFieldsService
       end
       copied_field.options = copied_options
 
+      # Duplicate statements
+      copied_field.matrix_statements = field.matrix_statements.map do |statement|
+        copied_statement = statement.dup
+        copied_statement.id = SecureRandom.uuid
+        copied_statement
+      end
+
       # Duplicate and persist map config for custom_fields that can have an associated map_config
       if CustomField::MAP_CONFIG_INPUT_TYPES.include?(copied_field.input_type) && field.map_config
         original_map_config = CustomMaps::MapConfig.find(field.map_config.id)
