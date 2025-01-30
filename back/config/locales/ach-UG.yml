@@ -138,8 +138,6 @@ ach:
         title: crwdns4083799:0crwdne4083799:0
       domicile:
         title: crwdns4083801:0crwdne4083801:0
-      education:
-        title: crwdns4083803:0crwdne4083803:0
     ideas:
       title:
         title: crwdns4083805:0crwdne4083805:0
@@ -207,14 +205,6 @@ ach:
       unspecified: crwdns4083875:0crwdne4083875:0
     domicile:
       outside: crwdns4083877:0crwdne4083877:0
-    education:
-      ISCED2: crwdns4083879:0crwdne4083879:0
-      ISCED3: crwdns4083881:0crwdne4083881:0
-      ISCED4: crwdns4083883:0crwdne4083883:0
-      ISCED5: crwdns4083885:0crwdne4083885:0
-      ISCED6: crwdns4083887:0crwdne4083887:0
-      ISCED7: crwdns4083889:0crwdne4083889:0
-      ISCED8: crwdns4083891:0crwdne4083891:0
   reset_password_mailer:
     send_reset_password:
       preheader: 'crwdns4083893:0%{organizationName}crwdne4083893:0'
