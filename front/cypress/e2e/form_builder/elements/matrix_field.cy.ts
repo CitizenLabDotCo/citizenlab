@@ -43,9 +43,6 @@ describe('Form builder matrix component', () => {
   });
 
   it('adds matrix field and is displayed when filling survey', () => {
-    cy.injectAxe();
-    cy.checkA11y();
-
     cy.visit(
       `admin/projects/${projectId}/phases/${phaseId}/native-survey/edit`
     );
@@ -55,10 +52,12 @@ describe('Form builder matrix component', () => {
       force: true,
     });
     cy.get('form').submit();
+
     cy.visit(`/projects/${projectSlug}/surveys/new?phase_id=${phaseId}`);
     cy.contains('Question title 2').should('exist');
     cy.contains('Statement 1 question 2').should('exist');
     cy.get('#e2e-matrix-control').should('exist');
+    cy.injectAxe();
     cy.checkA11y();
   });
 

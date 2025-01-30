@@ -466,6 +466,7 @@ const CLSurveyPageLayout = memo(
           aria-valuemin={0}
           aria-valuemax={100}
           aria-valuenow={percentageAnswered}
+          aria-label={formatMessage(messages.progressBarLabel)}
         >
           <Box background={colors.background}>
             <Box
