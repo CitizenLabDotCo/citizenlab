@@ -14,7 +14,8 @@ const fetchSurveyResults = ({ phaseId, filterLogicIds }: IParameters) =>
   fetcher<SurveyResultsType>({
     path: `/${getSurveyResultsEndpoint(phaseId)}`,
     action: 'get',
-    queryParams: filterLogicIds ? { filter_logic_ids: filterLogicIds } : {},
+    queryParams:
+      filterLogicIds.length > 0 ? { filter_logic_ids: filterLogicIds } : {},
   });
 
 const useSurveyResults = ({ phaseId, filterLogicIds }: IParameters) => {
