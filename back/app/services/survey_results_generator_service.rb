@@ -136,7 +136,7 @@ class SurveyResultsGeneratorService < FieldVisitorService
       questionNumber: nil,
       logic: {},
       questionViewedCount: 0, # Temporary field used when calculating the number of times a question is seen through logic
-      key: field.key, # Temporary field used when calculating the number of times a question is seen through logic
+      key: field.key # Temporary field used when calculating the number of times a question is seen through logic
     }
   end
 

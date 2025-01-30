@@ -1790,11 +1790,19 @@ RSpec.describe SurveyResultsGeneratorService do
           inputType: 'select',
           totalResponseCount: 4,
           questionResponseCount: 4,
-          logic: { answer: { 'option_1' => { id: 'ba98ad2c-668d-4e3f-8760-215c49f34dc1', nextPageNumber: 3, numQuestionsSkipped: 2 } } },
+          logic: {
+            answer: {
+              'option_1' => { id: 'ba98ad2c-668d-4e3f-8760-215c49f34dc1', nextPageNumber: 3, numQuestionsSkipped: 2 }
+            }
+          },
           questionViewedCount: 0,
           key: 'question_one',
           totalPickCount: 4,
-          answers: [{ answer: 'option_2', count: 3 }, { answer: 'option_1', count: 1 }, { answer: nil, count: 0 }]
+          answers: [
+            { answer: 'option_2', count: 3 },
+            { answer: 'option_1', count: 1 },
+            { answer: nil, count: 0 }
+          ]
         },
         {
           inputType: 'page',
@@ -1808,142 +1816,89 @@ RSpec.describe SurveyResultsGeneratorService do
         },
         {
           inputType: 'linear_scale',
-          question: { 'en' => 'Question two', 'fr-BE' => '', 'nl-BE' => '' },
-          description: {},
-          customFieldId: '715c0cda-e64b-40dd-b21e-45a93ee239fb',
-          required: false,
-          grouped: false,
-          hidden: false,
           totalResponseCount: 4,
           questionResponseCount: 2,
           pageNumber: nil,
-          questionNumber: 2,
-          logic: { answer: { 1 => { id: '715c0cda-e64b-40dd-b21e-45a93ee239fb_1', nextPageNumber: 4, numQuestionsSkipped: 1 }, 2 => { id: '715c0cda-e64b-40dd-b21e-45a93ee239fb_2', nextPageNumber: 5, numQuestionsSkipped: 2 } } },
+          logic: {
+            answer: {
+              1 => { id: '715c0cda-e64b-40dd-b21e-45a93ee239fb_1', nextPageNumber: 4, numQuestionsSkipped: 1 },
+              2 => { id: '715c0cda-e64b-40dd-b21e-45a93ee239fb_2', nextPageNumber: 5, numQuestionsSkipped: 2 }
+            }
+          },
           questionViewedCount: 0,
           key: 'question_two',
           totalPickCount: 4,
-          answers: [{ answer: 5, count: 0 }, { answer: 4, count: 0 }, { answer: 3, count: 0 }, { answer: 2, count: 1 }, { answer: 1, count: 1 }, { answer: nil, count: 2 }],
-          multilocs: { answer: { 1 => { title_multiloc: { 'en' => '1', 'nl-BE' => '1', 'fr-BE' => '1' } },
-                                 2 => { title_multiloc: { 'en' => '2', 'nl-BE' => '2', 'fr-BE' => '2' } },
-                                 3 => { title_multiloc: { 'en' => '3', 'nl-BE' => '3', 'fr-BE' => '3' } },
-                                 4 => { title_multiloc: { 'en' => '4', 'nl-BE' => '4', 'fr-BE' => '4' } },
-                                 5 => { title_multiloc: { 'en' => '5', 'nl-BE' => '5', 'fr-BE' => '5' } } } }
+          answers: [
+            { answer: 5, count: 0 },
+            { answer: 4, count: 0 },
+            { answer: 3, count: 0 },
+            { answer: 2, count: 1 },
+            { answer: 1, count: 1 },
+            { answer: nil, count: 2 }
+          ]
         },
         {
           inputType: 'text',
-          question: { 'en' => 'Question three', 'fr-BE' => '', 'nl-BE' => '' },
-          description: {},
-          customFieldId: 'ef9d0688-c495-4cc2-b3b0-abd45813dbf7',
-          required: false,
-          grouped: false,
-          hidden: false,
           totalResponseCount: 4,
           questionResponseCount: 0,
           pageNumber: nil,
-          questionNumber: 3,
           logic: {},
           questionViewedCount: 0,
-          key: 'question_three',
-          textResponses: []
+          key: 'question_three'
         },
         {
           inputType: 'page',
-          question: { 'en' => 'Page three', 'fr-BE' => '', 'nl-BE' => '' },
-          description: {},
-          customFieldId: 'd75e55fc-e07c-4e1f-bd83-c97ef66f1781',
-          required: false,
-          grouped: false,
-          hidden: false,
           totalResponseCount: 4,
           questionResponseCount: 0,
           pageNumber: 3,
-          questionNumber: nil,
           logic: { nextPageNumber: 999, numQuestionsSkipped: 2 },
           questionViewedCount: 0,
           key: nil
         },
         {
           inputType: 'text',
-          question: { 'en' => 'Question four', 'fr-BE' => '', 'nl-BE' => '' },
-          description: {},
-          customFieldId: '8cd2bb65-2e1a-4628-9733-5fd27daf9c13',
-          required: false,
-          grouped: false,
-          hidden: false,
           totalResponseCount: 4,
           questionResponseCount: 0,
           pageNumber: nil,
-          questionNumber: 4,
           logic: {},
           questionViewedCount: 0,
-          key: 'question_three',
-          textResponses: []
+          key: 'question_three'
         },
         {
           inputType: 'page',
-          question: { 'en' => 'Page four', 'fr-BE' => '', 'nl-BE' => '' },
-          description: {},
-          customFieldId: '16bfcbb4-59ed-4142-bad8-8b831ea607c3',
-          required: false,
-          grouped: false,
-          hidden: false,
           totalResponseCount: 4,
           questionResponseCount: 0,
           pageNumber: 4,
-          questionNumber: nil,
           logic: {},
           questionViewedCount: 0,
           key: nil
         },
         {
           inputType: 'text',
-          question: { 'en' => 'Question five', 'fr-BE' => '', 'nl-BE' => '' },
-          description: {},
-          customFieldId: '98194744-2ce0-4c50-8814-f103a94aea0f',
-          required: false,
-          grouped: false,
-          hidden: false,
           totalResponseCount: 4,
           questionResponseCount: 0,
           pageNumber: nil,
-          questionNumber: 5,
           logic: {},
           questionViewedCount: 0,
-          key: 'question_four',
-          textResponses: []
+          key: 'question_four'
         },
         {
           inputType: 'page',
-          question: { 'en' => 'Page five', 'fr-BE' => '', 'nl-BE' => '' },
-          description: {},
-          customFieldId: '68e5e8bb-ea27-4a58-b50b-0bcd6e0e1f4a',
-          required: false,
-          grouped: false,
-          hidden: false,
           totalResponseCount: 4,
           questionResponseCount: 0,
           pageNumber: 5,
-          questionNumber: nil,
           logic: {},
           questionViewedCount: 0,
           key: nil
         },
         {
           inputType: 'text',
-          question: { 'en' => 'Question six', 'fr-BE' => '', 'nl-BE' => '' },
-          description: {},
-          customFieldId: '4a7d9752-848b-4e73-a311-eb90d71ad11e',
-          required: false,
-          grouped: false,
-          hidden: false,
           totalResponseCount: 4,
           questionResponseCount: 0,
           pageNumber: nil,
-          questionNumber: 6,
           logic: {},
           questionViewedCount: 0,
-          key: 'question_five',
-          textResponses: []
+          key: 'question_five'
         }
       ]
     end
@@ -1959,7 +1914,7 @@ RSpec.describe SurveyResultsGeneratorService do
 
     let(:results) { generator.send(:change_counts_for_logic, results_without_num_answered, survey_custom_field_responses) }
 
-    it 'correctly changes the totalResponsesField' do
+    it 'changes the totalResponsesCount when fields are not shown through logic' do
       expect(results_without_num_answered.pluck(:totalResponseCount)).to eq(
         [4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4] # Before
       )
@@ -1968,7 +1923,7 @@ RSpec.describe SurveyResultsGeneratorService do
       )
     end
 
-    it 'correctly changes the number of not_answered responses' do
+    it 'reduces the count of not_answered responses when fields are not shown through logic' do
       expect(results_without_num_answered[3][:answers].find { |a| a[:answer].nil? }).to eq({
         answer: nil, count: 2 # Before
       })
