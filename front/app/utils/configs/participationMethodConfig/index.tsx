@@ -44,7 +44,6 @@ type ModalContentMethodProps = {
   ideaId?: string;
   title?: string;
   subtitle?: string;
-  showIdeaId?: boolean;
 };
 
 type FormTitleMethodProps = {

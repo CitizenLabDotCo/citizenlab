@@ -24,6 +24,7 @@ import { useParams, useSearchParams } from 'react-router-dom';
 import { useTheme } from 'styled-components';
 
 import { IIdea } from 'api/ideas/types';
+import useIdeaById from 'api/ideas/useIdeaById';
 import { IMapConfig } from 'api/map_config/types';
 import useMapConfigById from 'api/map_config/useMapConfigById';
 import useProjectMapConfig from 'api/map_config/useProjectMapConfig';
@@ -100,6 +101,14 @@ const CLSurveyPageLayout = memo(
     const [scrollToError, setScrollToError] = useState(false);
     const [percentageAnswered, setPercentageAnswered] = useState<number>(1);
     const ideaId = searchParams.get('idea_id');
+    const { data: idea } = useIdeaById(ideaId ?? undefined);
+
+    // If the idea (survey submission) has no author relationship,
+    // it was either created through 'anyone' permissions or with
+    // the anonymous toggle on. In these cases, we show the idea id in the modal.
+    const showIdeaIdInModal = idea
+      ? !idea.data.relationships.author?.data
+      : false;
 
     const pageVariant = getPageVariant(currentStep, uiPages.length);
     const hasPreviousPage = currentStep !== 0;
@@ -463,9 +472,9 @@ const CLSurveyPageLayout = memo(
                   );
                 })}
               </Box>
-              {ideaId && pageVariant === 'after-submission' && (
-                <SubmissionReference ideaId={ideaId} />
-              )}
+              {ideaId &&
+                pageVariant === 'after-submission' &&
+                showIdeaIdInModal && <SubmissionReference ideaId={ideaId} />}
             </Box>
           </Box>
         </Box>
