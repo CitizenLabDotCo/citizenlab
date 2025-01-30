@@ -2136,7 +2136,7 @@
   "app.utils.participationMethodConfig.voting.votingNotSignedIn2": "Aby zagłosować, musisz się zalogować lub zarejestrować.",
   "app.utils.participationMethodConfig.voting.votingNotVerified": "Przed oddaniem głosu musisz zweryfikować swoje konto.",
   "app.utils.votingMethodUtils.budget": "budżet",
-  "app.utils.votingMethodUtils.budgetParticipationEnded": "<b>Składanie budżetów zakończyło się na stronie {endDate}.</b> Uczestnicy mieli do dyspozycji łączną kwotę <b>{maxBudget} {currency} do rozdysponowania pomiędzy opcje {optionCount} .</b>",
+  "app.utils.votingMethodUtils.budgetParticipationEnded1": "<b>Składanie budżetów zakończyło się na stronie {endDate}.</b> Uczestnicy mieli do dyspozycji łączną kwotę <b>{maxBudget} do rozdysponowania pomiędzy opcje {optionCount} .</b>",
   "app.utils.votingMethodUtils.budgetSubmitted": "Przedłożony budżet",
   "app.utils.votingMethodUtils.budgetSubmittedWithIcon": "Budżet przedłożony 🎉",
   "app.utils.votingMethodUtils.budgetingNotInGroup": "Nie spełniasz wymagań dotyczących przypisywania budżetów.",
