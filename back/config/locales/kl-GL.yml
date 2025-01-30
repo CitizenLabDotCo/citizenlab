@@ -138,8 +138,6 @@ kl:
         title: Ukioq inunngorfik
       domicile:
         title: Najugaq
-      education:
-        title: Ilinniagaq
     ideas:
       title:
         title: Atorfiup taaguutaa
@@ -207,14 +205,6 @@ kl:
       unspecified: Allassimanngilaq
     domicile:
       outside: Allami
-    education:
-      ISCED2: Tunngaviusumik atuarfik
-      ISCED3: Inuusuttut ilinniarfiat
-      ISCED4: Ingerlaqqittumik ilinniagaqarneq
-      ISCED5: Ingerlaqqittumik sivikitsumik ilinniagaqarneq
-      ISCED6: Bachelorgrad imaluunniit assingusoq
-      ISCED7: Kandidatgrad imaluunniit assingusoq
-      ISCED8: Ph.d. imaluunniit assingusoq
   reset_password_mailer:
     send_reset_password:
       preheader: 'Reset your password for %{organizationName}'
