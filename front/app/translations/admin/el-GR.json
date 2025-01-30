@@ -1097,6 +1097,8 @@
   "app.containers.Admin.projects.project.survey.page": "Σελίδα",
   "app.containers.Admin.projects.project.survey.previousInsight": "Previous insight",
   "app.containers.Admin.projects.project.survey.responses": "Απαντήσεις",
+  "app.containers.Admin.projects.project.survey.resultsCountPageTooltip": "Ο αριθμός των απαντήσεων για αυτή τη σελίδα είναι μικρότερος από τον συνολικό αριθμό των απαντήσεων της έρευνας, επειδή ορισμένοι ερωτηθέντες δεν θα έχουν δει αυτή τη σελίδα λόγω της λογικής της έρευνας.",
+  "app.containers.Admin.projects.project.survey.resultsCountQuestionTooltip": "Ο αριθμός των απαντήσεων για την ερώτηση αυτή είναι μικρότερος από τον συνολικό αριθμό των απαντήσεων στην έρευνα, διότι ορισμένοι ερωτηθέντες δεν θα έχουν δει την ερώτηση αυτή λόγω της λογικής της έρευνας.",
   "app.containers.Admin.projects.project.survey.upsell.bullet1": "Συνοψίστε αμέσως όλες τις απαντήσεις σας.",
   "app.containers.Admin.projects.project.survey.upsell.bullet2": "Μιλήστε στα δεδομένα σας σε φυσική γλώσσα.",
   "app.containers.Admin.projects.project.survey.upsell.bullet3": "Λήψη αναφορών σε μεμονωμένες απαντήσεις από τις περιλήψεις που δημιουργούνται από την ΤΝ.",
