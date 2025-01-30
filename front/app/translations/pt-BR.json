@@ -2136,7 +2136,7 @@
   "app.utils.participationMethodConfig.voting.votingNotSignedIn2": "Você deve fazer login ou se registrar para votar.",
   "app.utils.participationMethodConfig.voting.votingNotVerified": "Você deve verificar sua conta antes de poder votar.",
   "app.utils.votingMethodUtils.budget": "orçamento",
-  "app.utils.votingMethodUtils.budgetParticipationEnded": "<b>O envio de orçamentos terminou em {endDate}.</b> Os participantes dispunham de um total de <b>{maxBudget} {currency} para distribuir entre {optionCount} opções.</b>",
+  "app.utils.votingMethodUtils.budgetParticipationEnded1": "<b>O envio de orçamentos foi encerrado em {endDate}.</b> Os participantes tinham um total de <b>{maxBudget} para distribuir entre as opções de {optionCount} .</b>",
   "app.utils.votingMethodUtils.budgetSubmitted": "Orçamento enviado",
   "app.utils.votingMethodUtils.budgetSubmittedWithIcon": "Orçamento enviado 🎉",
   "app.utils.votingMethodUtils.budgetingNotInGroup": "Você não atende aos requisitos para atribuir orçamentos.",
