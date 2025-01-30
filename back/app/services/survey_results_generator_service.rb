@@ -478,22 +478,6 @@ class SurveyResultsGeneratorService < FieldVisitorService
     skip_fields
   end
 
-  def cleanup_single_result(result)
-    # Logic not used on single result & temp fields need removing
-    result[:logic] = {}
-    result.delete(:questionViewedCount)
-    result.delete(:key)
-    result
-  end
-
-  def supports_question_logic?(input_type)
-    %w[select multiselect linear_scale multiselect_image].include? input_type
-  end
-
-  def supports_page_logic?(input_type)
-    input_type == 'page'
-  end
-
   def change_counts_for_logic(results, survey_responses)
     # Don't need to check the results for logic if there is none
     all_logic_empty = results.flatten.all? { |r| r[:logic] == {} }
@@ -531,17 +515,18 @@ class SurveyResultsGeneratorService < FieldVisitorService
 
           # Calculate the next page number that will be seen
           if supports_question_logic? input_type
-            # TODO: Multiple selects - Look at all the options and if more than one page number then take the highest one
-            value = response[question[:key]]
-            logic_match = question.dig(:logic, :answer, value)
-            if logic_match
-              skip_question = false # Needed?
-              next_page_number = logic_match[:nextPageNumber]
+            answer_value = response[question[:key]]
+            values = answer_value.is_a?(Array) ? answer_value : [answer_value] # Convert all values to an array so all fields can be treated the same
+            values.each do |value|
+              logic_match = question.dig(:logic, :answer, value)
+              if logic_match && logic_match[:nextPageNumber] > (next_page_number || 0)
+                # Only take the highest next page number from all options
+                next_page_number = logic_match[:nextPageNumber]
+              end
             end
           elsif supports_page_logic? input_type
             logic_match = question[:logic][:nextPageNumber]
             if logic_match
-              skip_question = false # Needed?
               next_page_number = logic_match
             end
           end
@@ -562,5 +547,21 @@ class SurveyResultsGeneratorService < FieldVisitorService
     end
 
     results
+  end
+
+  def cleanup_single_result(result)
+    # Logic not used on single result & temp fields need removing
+    result[:logic] = {}
+    result.delete(:questionViewedCount)
+    result.delete(:key)
+    result
+  end
+
+  def supports_question_logic?(input_type)
+    %w[select multiselect linear_scale multiselect_image].include? input_type
+  end
+
+  def supports_page_logic?(input_type)
+    input_type == 'page'
   end
 end

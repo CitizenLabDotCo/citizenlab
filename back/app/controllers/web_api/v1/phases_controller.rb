@@ -67,7 +67,7 @@ class WebApi::V1::PhasesController < ApplicationController
   end
 
   def survey_results
-    logic_ids = params[:filter_logic_ids].present? ? params[:filter_logic_ids] : [] # Array of page and option IDs
+    logic_ids = params[:filter_logic_ids].presence || [] # Array of page and option IDs
 
     results = SurveyResultsGeneratorService.new(@phase).generate_results(logic_ids: logic_ids)
     render json: raw_json(results)
