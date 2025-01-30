@@ -1097,6 +1097,8 @@
   "app.containers.Admin.projects.project.survey.page": "Side",
   "app.containers.Admin.projects.project.survey.previousInsight": "Tidligere indsigt",
   "app.containers.Admin.projects.project.survey.responses": "Besvarelser",
+  "app.containers.Admin.projects.project.survey.resultsCountPageTooltip": "Antallet af svar for denne side er lavere end det samlede antal svar på undersøgelsen, fordi nogle respondenter ikke har set denne side på grund af logikken i undersøgelsen.",
+  "app.containers.Admin.projects.project.survey.resultsCountQuestionTooltip": "Antallet af svar på dette spørgsmål er lavere end det samlede antal svar på undersøgelsen, fordi nogle respondenter ikke vil have set dette spørgsmål på grund af logik i undersøgelsen.",
   "app.containers.Admin.projects.project.survey.upsell.bullet1": "Sammenfat alle dine svar med det samme.",
   "app.containers.Admin.projects.project.survey.upsell.bullet2": "Tal med dine data på et naturligt sprog.",
   "app.containers.Admin.projects.project.survey.upsell.bullet3": "Få referencer til individuelle svar fra AI-genererede resuméer.",
