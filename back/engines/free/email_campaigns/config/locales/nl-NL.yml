@@ -34,6 +34,7 @@ nl:
       "project_review_request": Projectbeoordelingsverzoek
       "project_review_state_change": Project goedgekeurd
       "status_change_on_idea_you_follow": Statuswijziging van een idee dat je volgt
+      "survey_submitted": Vragenlijst ingediend
       "threshold_reached_for_admin": Een voorstel bereikte het benodigd aantal stemmen
       "welcome": Na registratie
       "admin_digest": Weekoverzicht voor platformbeheerders
@@ -496,6 +497,14 @@ nl:
       event_description: 'Het project "%{projectName}" vraagt je om te stemmen tussen %{numIdeas} opties:'
       cta_message: 'Klik op de knop hieronder om deel te nemen'
       cta_vote: 'Ga naar het platform om te stemmen'
+    survey_submitted:
+      subject: '%{organizationName}: Bedankt voor je reactie! 🎉'
+      main_header: 'Bedankt voor het delen van je mening over "%{projectName}"!'
+      your_input_submitted: 'Je invoer voor "%{projectName}" is succesvol ingediend.'
+      if_you_would_like_to_review: 'Als je je inzending nog eens wilt bekijken, kun je je reacties hieronder downloaden.'
+      your_submission_has_id: 'Je inzending heeft de volgende unieke identificatiecode:'
+      you_can_use_this_id: 'Je kunt deze identificatiecode gebruiken om contact op te nemen met de beheerders van het platform als je wilt dat je inzending wordt verwijderd.'
+      download_responses: 'Download je reacties'
     admin_labels:
       recipient_role:
         admins: 'Aan platformbeheerders'
