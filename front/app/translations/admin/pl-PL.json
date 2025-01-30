@@ -1097,6 +1097,8 @@
   "app.containers.Admin.projects.project.survey.page": "Strona",
   "app.containers.Admin.projects.project.survey.previousInsight": "Poprzedni wgląd",
   "app.containers.Admin.projects.project.survey.responses": "Odpowiedzi",
+  "app.containers.Admin.projects.project.survey.resultsCountPageTooltip": "Liczba odpowiedzi dla tej strony jest niższa niż całkowita liczba odpowiedzi w ankiecie, ponieważ niektórzy respondenci nie widzieli tej strony z powodu logiki w ankiecie.",
+  "app.containers.Admin.projects.project.survey.resultsCountQuestionTooltip": "Liczba odpowiedzi na to pytanie jest niższa niż całkowita liczba odpowiedzi w ankiecie, ponieważ niektórzy respondenci nie widzieli tego pytania z powodu logiki w ankiecie.",
   "app.containers.Admin.projects.project.survey.upsell.bullet1": "Błyskawicznie podsumuj wszystkie swoje odpowiedzi.",
   "app.containers.Admin.projects.project.survey.upsell.bullet2": "Rozmawiaj ze swoimi danymi w języku naturalnym.",
   "app.containers.Admin.projects.project.survey.upsell.bullet3": "Uzyskaj odniesienia do poszczególnych odpowiedzi z podsumowań wygenerowanych przez sztuczną inteligencję.",
