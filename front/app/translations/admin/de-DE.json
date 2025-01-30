@@ -1097,6 +1097,8 @@
   "app.containers.Admin.projects.project.survey.page": "Seite",
   "app.containers.Admin.projects.project.survey.previousInsight": "Vorheriger Einblick",
   "app.containers.Admin.projects.project.survey.responses": "Antworten",
+  "app.containers.Admin.projects.project.survey.resultsCountPageTooltip": "Die Anzahl der Beantwortungen für diese Seite ist niedriger als die Gesamtzahl der Umfragebeantwortungen, da einige Befragte diese Seite aufgrund der Logik in der Umfrage nicht gesehen haben werden.",
+  "app.containers.Admin.projects.project.survey.resultsCountQuestionTooltip": "Die Anzahl der Antworten auf diese Frage ist niedriger als die Gesamtzahl der Antworten auf die Umfrage, da einige Befragte diese Frage aufgrund der Logik in der Umfrage nicht gesehen haben werden.",
   "app.containers.Admin.projects.project.survey.upsell.bullet1": "Fassen Sie alle Ihre Antworten sofort zusammen.",
   "app.containers.Admin.projects.project.survey.upsell.bullet2": "Sprechen Sie mit Ihren Daten in natürlicher Sprache.",
   "app.containers.Admin.projects.project.survey.upsell.bullet3": "Erhalten Sie Referenzen zu einzelnen Antworten aus den von der KI generierten Zusammenfassungen.",
