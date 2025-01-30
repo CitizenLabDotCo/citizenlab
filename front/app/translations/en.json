@@ -655,6 +655,7 @@
   "app.components.form.controls.valueOutOfTotalWithMaxExplanation": "{value} out of {total}, where {maxValue} is {maxLabel}",
   "app.components.form.error": "Error",
   "app.components.form.locationGoogleUnavailable": "Couldn't load location field provided by google maps.",
+  "app.components.form.progressBarLabel": "Survey progress",
   "app.components.form.submit": "Submit",
   "app.components.form.submitApiError": "There was an issue submitting the form. Please check for any errors and try again.",
   "app.components.form.verifiedBlocked": "You can't edit this field because it contains verified information",
