@@ -2136,7 +2136,7 @@
   "app.utils.participationMethodConfig.voting.votingNotSignedIn2": "Sie müssen sich anmelden oder sich registrieren um abstimmen zu können.",
   "app.utils.participationMethodConfig.voting.votingNotVerified": "Sie müssen Ihr Konto verifizieren, bevor Sie abstimmen können.",
   "app.utils.votingMethodUtils.budget": "Budget",
-  "app.utils.votingMethodUtils.budgetParticipationEnded": "<b>Das Einreichen von Budgets endete am {endDate}.</b> Die Teilnehmenden hatten insgesamt <b>{maxBudget} {currency} zur Verfügung, die sie auf {optionCount} aufteilen konnten.</b>",
+  "app.utils.votingMethodUtils.budgetParticipationEnded1": "<b>Das Einreichen von Budgets endete am {endDate}.</b> Die Teilnehmenden hatten insgesamt <b>{maxBudget} zur Verfügung, die sie auf {optionCount} aufteilen konnten.</b>",
   "app.utils.votingMethodUtils.budgetSubmitted": "Budget eingereicht",
   "app.utils.votingMethodUtils.budgetSubmittedWithIcon": "Budget eingereicht 🎉",
   "app.utils.votingMethodUtils.budgetingNotInGroup": "Sie erfüllen die Anforderungen zur Abstimmung nicht.",
