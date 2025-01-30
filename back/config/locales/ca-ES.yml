@@ -138,8 +138,6 @@ ca:
         title: Any de naixement
       domicile:
         title: Lloc de residència
-      education:
-        title: Educació
     ideas:
       title:
         title: Títol
@@ -207,14 +205,6 @@ ca:
       unspecified: Altres
     domicile:
       outside: Algun altre lloc
-    education:
-      ISCED2: Educació secundària inferior
-      ISCED3: Educació secundària superior
-      ISCED4: Educació postsecundària no terciària
-      ISCED5: Educació terciària de cicle curt
-      ISCED6: Batxillerat o equivalent
-      ISCED7: Màster o equivalent
-      ISCED8: Doctorat o equivalent
   reset_password_mailer:
     send_reset_password:
       preheader: 'Restableix la teva contrasenya per a %{organizationName}'
