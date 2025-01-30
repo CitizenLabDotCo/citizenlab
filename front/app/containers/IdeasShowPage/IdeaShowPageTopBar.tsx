@@ -98,13 +98,13 @@ const IdeaShowPageTopBar = ({
   });
 
   const ideaStatusId = idea?.data.relationships.idea_status.data?.id;
-  const ideaStatusCode = ideaStatusId
+  const proposalStatusCode = ideaStatusId
     ? proposalsStatuses?.data.find((status) => status.id === ideaStatusId)
         ?.attributes.code ?? null
     : null;
 
-  const VotableIdeaStatus =
-    ideaStatusCode !== 'expired' && ideaStatusCode !== 'ineligible';
+  const ReactableIdeaStatus =
+    proposalStatusCode !== 'expired' && proposalStatusCode !== 'ineligible';
 
   useEffect(() => {
     removeSearchParams(['go_back']);
@@ -157,7 +157,7 @@ const IdeaShowPageTopBar = ({
         <Right>
           {/* Only visible if not voting */}
           {phase?.attributes.participation_method !== 'voting' &&
-            VotableIdeaStatus && ( // To reduce bias we want to hide the reactions during voting methods
+            ReactableIdeaStatus && ( // To reduce bias we want to hide the reactions during voting methods
               <ReactionControl
                 size="1"
                 styleType="border"
