@@ -1097,6 +1097,8 @@
   "app.containers.Admin.projects.project.survey.page": "صفحة",
   "app.containers.Admin.projects.project.survey.previousInsight": "البصيرة السابقة",
   "app.containers.Admin.projects.project.survey.responses": "استجابات",
+  "app.containers.Admin.projects.project.survey.resultsCountPageTooltip": "عدد الاستجابات لهذه الصفحة أقل من العدد الإجمالي لاستجابات الاستطلاع لأن بعض المستجيبين لن يروا هذه الصفحة بسبب المنطق في الاستطلاع.",
+  "app.containers.Admin.projects.project.survey.resultsCountQuestionTooltip": "عدد الاستجابات لهذا السؤال أقل من العدد الإجمالي لاستجابات الاستطلاع لأن بعض المستجيبين لم يروا هذا السؤال بسبب المنطق في الاستطلاع.",
   "app.containers.Admin.projects.project.survey.upsell.bullet1": "قم بتلخيص جميع ردودك على الفور.",
   "app.containers.Admin.projects.project.survey.upsell.bullet2": "تحدث إلى بياناتك باللغة الطبيعية.",
   "app.containers.Admin.projects.project.survey.upsell.bullet3": "احصل على مراجع للإجابات الفردية من الملخصات التي تم إنشاؤها بواسطة الذكاء الاصطناعي.",
