@@ -1097,6 +1097,8 @@
   "app.containers.Admin.projects.project.survey.page": "ਪੰਨਾ",
   "app.containers.Admin.projects.project.survey.previousInsight": "ਪਿਛਲੀ ਸੂਝ",
   "app.containers.Admin.projects.project.survey.responses": "ਜਵਾਬ",
+  "app.containers.Admin.projects.project.survey.resultsCountPageTooltip": "ਇਸ ਪੰਨੇ ਲਈ ਜਵਾਬਾਂ ਦੀ ਗਿਣਤੀ ਸਰਵੇਖਣ ਜਵਾਬਾਂ ਦੀ ਕੁੱਲ ਸੰਖਿਆ ਤੋਂ ਘੱਟ ਹੈ ਕਿਉਂਕਿ ਕੁਝ ਉੱਤਰਦਾਤਾਵਾਂ ਨੇ ਸਰਵੇਖਣ ਵਿੱਚ ਤਰਕ ਦੇ ਕਾਰਨ ਇਹ ਪੰਨਾ ਨਹੀਂ ਦੇਖਿਆ ਹੋਵੇਗਾ।",
+  "app.containers.Admin.projects.project.survey.resultsCountQuestionTooltip": "ਇਸ ਸਵਾਲ ਦੇ ਜਵਾਬਾਂ ਦੀ ਗਿਣਤੀ ਸਰਵੇਖਣ ਜਵਾਬਾਂ ਦੀ ਕੁੱਲ ਸੰਖਿਆ ਤੋਂ ਘੱਟ ਹੈ ਕਿਉਂਕਿ ਕੁਝ ਉੱਤਰਦਾਤਾਵਾਂ ਨੇ ਸਰਵੇਖਣ ਵਿੱਚ ਤਰਕ ਦੇ ਕਾਰਨ ਇਹ ਸਵਾਲ ਨਹੀਂ ਦੇਖਿਆ ਹੋਵੇਗਾ।",
   "app.containers.Admin.projects.project.survey.upsell.bullet1": "ਆਪਣੇ ਸਾਰੇ ਜਵਾਬਾਂ ਨੂੰ ਤੁਰੰਤ ਸੰਖੇਪ ਕਰੋ।",
   "app.containers.Admin.projects.project.survey.upsell.bullet2": "ਆਪਣੇ ਡੇਟਾ ਨਾਲ ਕੁਦਰਤੀ ਭਾਸ਼ਾ ਵਿੱਚ ਗੱਲ ਕਰੋ।",
   "app.containers.Admin.projects.project.survey.upsell.bullet3": "AI ਦੁਆਰਾ ਤਿਆਰ ਕੀਤੇ ਸੰਖੇਪਾਂ ਤੋਂ ਵਿਅਕਤੀਗਤ ਜਵਾਬਾਂ ਦੇ ਹਵਾਲੇ ਪ੍ਰਾਪਤ ਕਰੋ।",
