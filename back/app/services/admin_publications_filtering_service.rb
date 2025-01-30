@@ -101,6 +101,16 @@ class AdminPublicationsFilteringService
     scope.where.not(id: unmoderated_parents)
   end
 
+  # This filter removes AdminPublications that are for projects in folders that are still included in the scope.
+  # This is used by the BO 'your projects' list to avoid duplicates when a moderated project is in a moderated folder.
+  add_filter('remove_projects_in_filtered_folders') do |scope, options|
+    next scope unless (['true', true, '1'].include? options[:remove_projects_in_filtered_folders])
+
+    filtered_folders = scope.where(children_allowed: true)
+
+    scope.where(parent_id: nil).or(scope.where.not(parent_id: filtered_folders))
+  end
+
   add_filter('top_level_only') do |scope, options|
     [0, '0'].include?(options[:depth]) ? scope.where(depth: 0) : scope
   end

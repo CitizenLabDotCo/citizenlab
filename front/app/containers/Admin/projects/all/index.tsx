@@ -93,8 +93,8 @@ const AdminProjectsList = memo(({ className }: Props) => {
 
   const { data: moderatedAdminPublications } = useAdminPublications({
     publicationStatusFilter: ['published', 'draft', 'archived'],
-    onlyProjects: true,
     filter_is_moderator_of: true,
+    remove_projects_in_filtered_folders: true,
     search,
   });
 
