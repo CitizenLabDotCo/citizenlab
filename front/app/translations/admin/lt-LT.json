@@ -1097,6 +1097,8 @@
   "app.containers.Admin.projects.project.survey.page": "Puslapis",
   "app.containers.Admin.projects.project.survey.previousInsight": "Ankstesnė įžvalga",
   "app.containers.Admin.projects.project.survey.responses": "Atsakymai",
+  "app.containers.Admin.projects.project.survey.resultsCountPageTooltip": "Šio puslapio atsakymų skaičius yra mažesnis už bendrą apklausos atsakymų skaičių, nes kai kurie respondentai šio puslapio nematė dėl apklausos logikos.",
+  "app.containers.Admin.projects.project.survey.resultsCountQuestionTooltip": "Atsakymų į šį klausimą skaičius yra mažesnis už bendrą apklausos atsakymų skaičių, nes kai kurie respondentai šio klausimo nematė dėl apklausos logikos.",
   "app.containers.Admin.projects.project.survey.upsell.bullet1": "Akimirksniu apibendrinkite visus savo atsakymus.",
   "app.containers.Admin.projects.project.survey.upsell.bullet2": "Bendraukite su duomenimis natūralia kalba.",
   "app.containers.Admin.projects.project.survey.upsell.bullet3": "Gaukite nuorodas į atskirus atsakymus iš dirbtinio intelekto sukurtų santraukų.",
