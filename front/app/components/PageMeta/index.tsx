@@ -42,6 +42,7 @@ const PageMeta = React.memo<Props>(({ titleMessage, descriptionMessage }) => {
       {getAlternateLinks(tenantLocales)}
       {getCanonicalLink()}
       <meta name="title" content={ideasIndexTitle} />
+      <meta name="referrer" content="origin" />
       <meta property="og:title" content={ideasIndexTitle} />
       <meta name="description" content={ideasIndexDescription} />
       <meta property="og:description" content={ideasIndexDescription} />
