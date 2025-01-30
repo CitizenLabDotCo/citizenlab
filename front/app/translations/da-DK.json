@@ -2136,7 +2136,7 @@
   "app.utils.participationMethodConfig.voting.votingNotSignedIn2": "Du skal logge ind eller registrere dig for at stemme.",
   "app.utils.participationMethodConfig.voting.votingNotVerified": "Du skal bekræfte din konto, før du kan stemme.",
   "app.utils.votingMethodUtils.budget": "budget",
-  "app.utils.votingMethodUtils.budgetParticipationEnded": "<b>Der blev lukket for indsendelse af budgetter på {endDate}.</b> Deltagerne havde i alt <b>{maxBudget} {currency} hver til at fordele mellem {optionCount} muligheder.</b>",
+  "app.utils.votingMethodUtils.budgetParticipationEnded1": "<b>Der blev lukket for indsendelse af budgetter på {endDate}.</b> Deltagerne havde i alt <b>{maxBudget} hver til at fordele mellem {optionCount} muligheder.</b>",
   "app.utils.votingMethodUtils.budgetSubmitted": "Indsendt budget",
   "app.utils.votingMethodUtils.budgetSubmittedWithIcon": "Budget indsendt 🎉",
   "app.utils.votingMethodUtils.budgetingNotInGroup": "Du opfylder ikke kravene til at tildele budgetter.",
