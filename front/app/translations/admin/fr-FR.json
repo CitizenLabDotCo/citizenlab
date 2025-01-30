@@ -1097,6 +1097,8 @@
   "app.containers.Admin.projects.project.survey.page": "Page",
   "app.containers.Admin.projects.project.survey.previousInsight": "Insight précédent",
   "app.containers.Admin.projects.project.survey.responses": "Réponses",
+  "app.containers.Admin.projects.project.survey.resultsCountPageTooltip": "Le nombre de réponses pour cette page est inférieur au nombre total de réponses à l'enquête parce que certains répondants n'ont pas vu cette page en raison de la logique de l'enquête.",
+  "app.containers.Admin.projects.project.survey.resultsCountQuestionTooltip": "Le nombre de réponses à cette question est inférieur au nombre total de réponses à l'enquête parce que certains répondants n'ont pas vu cette question en raison de la logique de l'enquête.",
   "app.containers.Admin.projects.project.survey.upsell.bullet1": "Résumez automatiquement toutes vos réponses.",
   "app.containers.Admin.projects.project.survey.upsell.bullet2": "Questionnez vos données en langage naturel.",
   "app.containers.Admin.projects.project.survey.upsell.bullet3": "Étoffez les résumés générés par l'IA avec des références directes aux réponses individuelles.",
