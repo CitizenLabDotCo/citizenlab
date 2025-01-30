@@ -7,9 +7,8 @@ import {
   Button,
   colors,
 } from '@citizenlab/cl2-component-library';
-import { ControlProps } from '@jsonforms/core';
+import { ControlProps, UISchemaElement } from '@jsonforms/core';
 import { withJsonFormsControlProps } from '@jsonforms/react';
-import { UiSchema } from 'react-jsonschema-form';
 import { useTheme } from 'styled-components';
 
 import { FormLabel } from 'components/UI/FormComponents';
@@ -39,9 +38,7 @@ const LinearScaleControl = ({
   const { formatMessage } = useIntl();
 
   const minimum = 1;
-  // TODO: Fix this the next time the file is edited.
-  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-  const maximum = schema?.maximum ?? 7; // Seven since the maximum number of options is 7
+  const maximum = schema.maximum ?? 7; // Seven since the maximum number of options is 7
   const answerNotPublic = uischema.options?.answer_visible_to === 'admins';
   const sliderRef = useRef<HTMLDivElement>(null);
 
@@ -127,9 +124,7 @@ const LinearScaleControl = ({
 
   // Put all labels from the UI Schema in an array so we can easily access them
   const labelsFromSchema = Array.from({ length: maximum }, (_, index) => {
-    // TODO: Fix this the next time the file is edited.
-    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-    return uischema?.options?.[`linear_scale_label${index + 1}`];
+    return uischema.options?.[`linear_scale_label${index + 1}`];
   });
 
   // Get an array of the middle value labels so we can determine how to show them in the UI
@@ -260,9 +255,7 @@ const LinearScaleControl = ({
             </Box>
           )}
         </Box>
-        {/* TODO: Fix this the next time the file is edited. */}
-        {/* eslint-disable-next-line @typescript-eslint/no-unnecessary-condition */}
-        <VerificationIcon show={uischema?.options?.verificationLocked} />
+        <VerificationIcon show={uischema.options?.verificationLocked} />
       </Box>
       <ErrorDisplay
         inputId={sanitizeForClassname(id)}
@@ -276,10 +269,8 @@ const LinearScaleControl = ({
 
 export default withJsonFormsControlProps(LinearScaleControl);
 
-export const linearScaleControlTester = (schema: UiSchema) => {
-  // TODO: Fix this the next time the file is edited.
-  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-  if (schema?.options?.linear_scale_label1?.length >= 0) {
+export const linearScaleControlTester = (schema: UISchemaElement) => {
+  if (schema.options?.linear_scale_label1?.length >= 0) {
     return 100;
   }
   return -1;
