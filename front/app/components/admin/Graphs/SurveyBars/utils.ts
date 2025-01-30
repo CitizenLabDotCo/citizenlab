@@ -61,8 +61,13 @@ export const parseQuestionResult = (
   const { multilocs, answers, logic, totalPickCount } = result;
   if (!multilocs) throw new Error('Multilocs are missing');
 
+  // Don't return 'No answer' if everyone answered
+  const filteredAnswers = answers?.filter(
+    ({ count, answer }) => !(answer === null && count === 0)
+  );
+
   return (
-    answers?.map(({ count, answer }) => {
+    filteredAnswers?.map(({ count, answer }) => {
       const answerKey = answer === null ? 'no_answer' : answer;
       const multilocsAnswer = multilocs.answer[answerKey];
 
