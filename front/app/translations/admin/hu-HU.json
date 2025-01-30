@@ -1097,6 +1097,8 @@
   "app.containers.Admin.projects.project.survey.page": "oldal",
   "app.containers.Admin.projects.project.survey.previousInsight": "Previous insight",
   "app.containers.Admin.projects.project.survey.responses": "Responses",
+  "app.containers.Admin.projects.project.survey.resultsCountPageTooltip": "Az oldalra adott válaszok száma alacsonyabb, mint a felmérésre adott válaszok száma, mert néhány válaszadó a felmérés logikája miatt nem látta ezt az oldalt.",
+  "app.containers.Admin.projects.project.survey.resultsCountQuestionTooltip": "A kérdésre adott válaszok száma alacsonyabb, mint a felmérésben kapott válaszok száma, mivel néhány válaszadó nem látta ezt a kérdést a felmérés logikája miatt.",
   "app.containers.Admin.projects.project.survey.upsell.bullet1": "Instantly summarise all your responses.",
   "app.containers.Admin.projects.project.survey.upsell.bullet2": "Talk to your data in natural language.",
   "app.containers.Admin.projects.project.survey.upsell.bullet3": "Get references to individual responses from AI generated summaries.",
