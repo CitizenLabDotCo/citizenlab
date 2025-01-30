@@ -138,8 +138,6 @@ hu:
         title: Születési év
       domicile:
         title: Lakóhely
-      education:
-        title: Oktatás
     ideas:
       title:
         title: Cím
@@ -207,14 +205,6 @@ hu:
       unspecified: Más
     domicile:
       outside: Valahol máshol
-    education:
-      ISCED2: Alsó középfokú oktatás
-      ISCED3: Felső középfokú oktatás
-      ISCED4: Középiskola utáni, nem felsőfokú oktatás
-      ISCED5: Rövid ciklusú felsőoktatás
-      ISCED6: Bachelor vagy azzal egyenértékű
-      ISCED7: Mester vagy azzal egyenértékű
-      ISCED8: Doktori vagy azzal egyenértékű
   reset_password_mailer:
     send_reset_password:
       preheader: 'Állítsa vissza jelszavát a %{organizationName}számára'
