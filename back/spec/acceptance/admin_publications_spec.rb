@@ -45,6 +45,7 @@ resource 'AdminPublication' do
       parameter :filter_can_moderate, 'Filter out the projects the current_user is not allowed to moderate. False by default', required: false
       parameter :filter_is_moderator_of, 'Filter out the publications the current_user is not moderator of. False by default', required: false
       parameter :filter_user_is_moderator_of, 'Filter out the publications the given user is moderator of (user id)', required: false
+      parameter :exclude_projects_in_included_folders, 'Exclude projects in included folders', required: false
       parameter :review_state, 'Filter by project review status (pending, approved)', required: false
 
       example_request 'List all admin publications' do
@@ -676,6 +677,7 @@ resource 'AdminPublication' do
       parameter :only_projects, 'Include projects only (no folders)', required: false
       parameter :filter_can_moderate, 'Filter out the projects the user is allowed to moderate. False by default', required: false
       parameter :filter_is_moderator_of, 'Filter out the publications the user is not moderator of. False by default', required: false
+      parameter :exclude_projects_in_included_folders, 'Exclude projects in included folders', required: false
 
       before do
         @moderator = create(:project_moderator, projects: [published_projects[0], published_projects[1]])
@@ -689,6 +691,18 @@ resource 'AdminPublication' do
         expect(json_response[:data].size).to eq 2
         expect(json_response[:data].map { |d| d.dig(:relationships, :publication, :data, :id) })
           .to match_array [published_projects[0].id, published_projects[1].id]
+      end
+
+      # This is how the FE requests the admin_publications to show in the 'Your projects' tab,
+      # to avoid showing projects twice (as a seperate item AND in a moderated folder)
+      example 'List only folders (none unless also folder mod) and root level projects user is moderator of' do
+        root_project = create(:project, admin_publication_attributes: { publication_status: 'published' })
+        moderator_roles = @moderator.roles << { type: 'project_moderator', project_id: root_project.id }
+        @moderator.update!(roles: moderator_roles)
+
+        do_request(filter_is_moderator_of: true, exclude_projects_in_included_folders: true)
+        assert_status 200
+        expect(publication_ids).to match_array [published_projects[0].id, published_projects[1].id, root_project.id]
       end
     end
   end
@@ -726,6 +740,7 @@ resource 'AdminPublication' do
       parameter :only_projects, 'Include projects only (no folders)', required: false
       parameter :filter_can_moderate, 'Filter out the projects the user is allowed to moderate. False by default', required: false
       parameter :filter_is_moderator_of, 'Filter out the publications the user is not moderator of. False by default', required: false
+      parameter :exclude_projects_in_included_folders, 'Exclude projects in included folders', required: false
 
       example 'List publications user is moderator of', document: false do
         do_request filter_is_moderator_of: true
@@ -737,6 +752,18 @@ resource 'AdminPublication' do
         do_request(filter_is_moderator_of: true, only_projects: true)
         assert_status 200
         expect(publication_ids).to match_array @folder.projects.pluck(:id)
+      end
+
+      # This is how the FE requests the admin_publications to show in the 'Your projects' tab,
+      # to avoid showing projects twice (as a seperate item AND in a moderated folder)
+      example 'List only folders and root level projects user is moderator of' do
+        root_project = create(:project, admin_publication_attributes: { publication_status: 'published' })
+        moderator_roles = @moderator.roles << { type: 'project_moderator', project_id: root_project.id }
+        @moderator.update!(roles: moderator_roles)
+
+        do_request(filter_is_moderator_of: true, exclude_projects_in_included_folders: true)
+        assert_status 200
+        expect(publication_ids).to match_array [project_folder.id, @folder.id, root_project.id].flatten
       end
     end
 

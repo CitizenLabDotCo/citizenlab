@@ -22,7 +22,7 @@ export interface IQueryParameters {
   review_state?: 'pending' | 'approved';
   filter_is_moderator_of?: boolean;
   filter_user_is_moderator_of?: string;
-  exclude_projects_in_filtered_folders?: boolean;
+  exclude_projects_in_included_folders?: boolean;
   include_publications?: boolean;
 }
 
