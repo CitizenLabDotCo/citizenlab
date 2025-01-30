@@ -908,7 +908,7 @@
   "app.containers.Admin.projects.all.PDFExportModal.selectIdeationPhase": "Vælg venligst en idéfase.",
   "app.containers.Admin.projects.all.askPersonalData": "Spørg om personlige data",
   "app.containers.Admin.projects.all.clickExportToPDFIdeaForm": "Spørgsmål, der ikke understøttes i øjeblikket: Billeder, tags og filupload.",
-  "app.containers.Admin.projects.all.clickExportToPDFSurvey5": "Spørgsmål, der ikke understøttes i øjeblikket: Kortlægningsspørgsmål (drop pin, draw route og draw area), billedvalgsspørgsmål, rangordningsspørgsmål, matrixspørgsmål og spørgsmål om filupload.",
+  "app.containers.Admin.projects.all.clickExportToPDFSurvey5": "Spørgsmål der ikke understøttes i øjeblikket: Kortlægningsspørgsmål (drop pin, tegn rute og tegn område), billedvalgsspørgsmål, rangordningsspørgsmål, matrixspørgsmål og spørgsmål om filupload.",
   "app.containers.Admin.projects.all.components.archived": "Arkiveret",
   "app.containers.Admin.projects.all.components.draft": "Udkast",
   "app.containers.Admin.projects.all.components.manageButtonLabel": "Rediger",
