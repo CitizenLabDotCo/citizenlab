@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Box, Title, Text } from '@citizenlab/cl2-component-library';
+import { Box, Title, Text, Tooltip } from '@citizenlab/cl2-component-library';
 import { snakeCase } from 'lodash-es';
 
 import { LogicConfig, ResultUngrouped } from 'api/survey_results/types';
@@ -8,21 +8,26 @@ import { LogicConfig, ResultUngrouped } from 'api/survey_results/types';
 import useLocalize from 'hooks/useLocalize';
 
 import T from 'components/T';
+import messages from '../messages';
 
 import Files from '../Files';
 
 import FormResultQuestionValue from './components/FormResultsQuestionValue';
 import InputType from './InputType';
+import { useIntl } from 'utils/cl-intl';
 
 type FormResultsQuestionProps = {
   result: ResultUngrouped;
+  totalSubmissions: number;
   logicConfig: LogicConfig;
 };
 
 const FormResultsQuestion = ({
   result,
+  totalSubmissions,
   logicConfig,
 }: FormResultsQuestionProps) => {
+  const { formatMessage } = useIntl();
   const localize = useLocalize();
 
   const {
@@ -50,12 +55,19 @@ const FormResultsQuestion = ({
         <Title variant="h4" mt="12px" mb="12px">
           {questionNumber}. <T value={question} />
         </Title>
-        <InputType
-          inputType={inputType}
-          required={required}
-          totalSubmissions={totalResponseCount}
-          totalResponses={questionResponseCount}
-        />
+        <Tooltip
+          disabled={totalResponseCount === totalSubmissions}
+          placement="bottom-start"
+          content={formatMessage(messages.resultsCountQuestionTooltip)}
+          theme="dark"
+        >
+          <InputType
+            inputType={inputType}
+            required={required}
+            totalSubmissions={totalResponseCount}
+            totalResponses={questionResponseCount}
+          />
+        </Tooltip>
         <Text variant="bodyS" color="textSecondary" mt="12px" mb="12px">
           <T value={description} supportHtml={true} />
         </Text>

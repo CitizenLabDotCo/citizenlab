@@ -83,6 +83,7 @@ const FormResults = () => {
                 <FormResultsPage
                   key={index}
                   result={result}
+                  totalSubmissions={totalSubmissions}
                   logicConfig={logicConfig}
                 />
               );
@@ -91,6 +92,7 @@ const FormResults = () => {
                 <FormResultsQuestion
                   key={index}
                   result={result}
+                  totalSubmissions={totalSubmissions}
                   logicConfig={logicConfig}
                 />
               );
