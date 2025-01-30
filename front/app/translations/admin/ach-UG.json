@@ -1097,6 +1097,8 @@
   "app.containers.Admin.projects.project.survey.page": "crwdns4079991:0crwdne4079991:0",
   "app.containers.Admin.projects.project.survey.previousInsight": "crwdns4079993:0crwdne4079993:0",
   "app.containers.Admin.projects.project.survey.responses": "crwdns4079995:0crwdne4079995:0",
+  "app.containers.Admin.projects.project.survey.resultsCountPageTooltip": "crwdns4132685:0crwdne4132685:0",
+  "app.containers.Admin.projects.project.survey.resultsCountQuestionTooltip": "crwdns4132687:0crwdne4132687:0",
   "app.containers.Admin.projects.project.survey.upsell.bullet1": "crwdns4079997:0crwdne4079997:0",
   "app.containers.Admin.projects.project.survey.upsell.bullet2": "crwdns4079999:0crwdne4079999:0",
   "app.containers.Admin.projects.project.survey.upsell.bullet3": "crwdns4080001:0crwdne4080001:0",
