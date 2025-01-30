@@ -2136,6 +2136,7 @@
   "app.utils.participationMethodConfig.voting.votingNotSignedIn2": "Πρέπει να συνδεθείτε ή να εγγραφείτε για να ψηφίσετε.",
   "app.utils.participationMethodConfig.voting.votingNotVerified": "Πρέπει να επαληθεύσετε το λογαριασμό σας πριν μπορέσετε να ψηφίσετε.",
   "app.utils.votingMethodUtils.budget": "προϋπολογισμός",
+  "app.utils.votingMethodUtils.budgetParticipationEnded1": "<b>Η υποβολή προϋπολογισμών έκλεισε στη διεύθυνση {endDate}.</b> Οι συμμετέχοντες είχαν στη διάθεσή τους συνολικά <b>{maxBudget} για να τα κατανείμουν μεταξύ {optionCount} επιλογών.</b>",
   "app.utils.votingMethodUtils.budgetSubmitted": "Υποβληθείς προϋπολογισμός",
   "app.utils.votingMethodUtils.budgetSubmittedWithIcon": "Υποβληθείς προϋπολογισμός 🎉",
   "app.utils.votingMethodUtils.budgetingNotInGroup": "Δεν πληροίτε τις προϋποθέσεις για την εκχώρηση προϋπολογισμών.",
