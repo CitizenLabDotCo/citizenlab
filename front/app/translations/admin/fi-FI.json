@@ -1097,6 +1097,8 @@
   "app.containers.Admin.projects.project.survey.page": "Sivu",
   "app.containers.Admin.projects.project.survey.previousInsight": "Edellinen näkemys",
   "app.containers.Admin.projects.project.survey.responses": "Vastaukset",
+  "app.containers.Admin.projects.project.survey.resultsCountPageTooltip": "Tämän sivun vastausten määrä on pienempi kuin kyselyvastausten kokonaismäärä, koska jotkut vastaajat eivät ole nähneet tätä sivua kyselyn logiikan vuoksi.",
+  "app.containers.Admin.projects.project.survey.resultsCountQuestionTooltip": "Tähän kysymykseen annettujen vastausten määrä on pienempi kuin kyselyvastausten kokonaismäärä, koska jotkut vastaajat eivät ole nähneet tätä kysymystä kyselyn logiikan vuoksi.",
   "app.containers.Admin.projects.project.survey.upsell.bullet1": "Tee välittömästi yhteenveto kaikista vastauksistasi.",
   "app.containers.Admin.projects.project.survey.upsell.bullet2": "Puhu tiedoillesi luonnollisella kielellä.",
   "app.containers.Admin.projects.project.survey.upsell.bullet3": "Hanki viittauksia yksittäisiin vastauksiin tekoälyn luomista tiivistelmistä.",
