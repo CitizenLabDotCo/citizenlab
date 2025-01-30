@@ -98,6 +98,13 @@ const AdminProjectsList = memo(({ className }: Props) => {
     search,
   });
 
+  const { data: moderatedProjectAdminPublications } = useAdminPublications({
+    publicationStatusFilter: ['published', 'draft', 'archived'],
+    filter_is_moderator_of: true,
+    onlyProjects: true,
+    search,
+  });
+
   const { data: publishedAdminPublications } = useAdminPublications({
     publicationStatusFilter: ['published'],
     onlyProjects: true,
@@ -155,6 +162,10 @@ const AdminProjectsList = memo(({ className }: Props) => {
 
   const flatModeratedAdminPublications = flattenPagesData(
     moderatedAdminPublications
+  );
+
+  const flatModeratedProjectAdminPublications = flattenPagesData(
+    moderatedProjectAdminPublications
   );
 
   const flatPendingReviewAdminPublications = flattenPagesData(
@@ -232,7 +243,7 @@ const AdminProjectsList = memo(({ className }: Props) => {
             <Tab
               url="/admin/projects"
               label={`${formatMessage(messages.yourProjects)} (${
-                flatModeratedAdminPublications?.length || 0
+                flatModeratedProjectAdminPublications?.length || 0
               })`}
               active={activeTab === 'your-projects'}
             />
