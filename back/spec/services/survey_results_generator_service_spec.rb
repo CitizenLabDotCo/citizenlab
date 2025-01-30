@@ -1779,7 +1779,7 @@ RSpec.describe SurveyResultsGeneratorService do
       [
         {
           inputType: 'page',
-          totalResponseCount: 4,
+          totalResponseCount: 5,
           questionResponseCount: 4,
           pageNumber: 1,
           logic: {},
@@ -1788,7 +1788,7 @@ RSpec.describe SurveyResultsGeneratorService do
         },
         {
           inputType: 'select',
-          totalResponseCount: 4,
+          totalResponseCount: 5,
           questionResponseCount: 4,
           logic: {
             answer: {
@@ -1806,7 +1806,7 @@ RSpec.describe SurveyResultsGeneratorService do
         },
         {
           inputType: 'page',
-          totalResponseCount: 4,
+          totalResponseCount: 5,
           questionResponseCount: 2,
           pageNumber: 2,
           questionNumber: nil,
@@ -1816,7 +1816,7 @@ RSpec.describe SurveyResultsGeneratorService do
         },
         {
           inputType: 'linear_scale',
-          totalResponseCount: 4,
+          totalResponseCount: 5,
           questionResponseCount: 2,
           pageNumber: nil,
           logic: {
@@ -1838,17 +1838,27 @@ RSpec.describe SurveyResultsGeneratorService do
           ]
         },
         {
-          inputType: 'text',
-          totalResponseCount: 4,
-          questionResponseCount: 0,
-          pageNumber: nil,
-          logic: {},
+          inputType: 'select',
+          totalResponseCount: 5,
+          questionResponseCount: 4,
+          logic: {
+            answer: {
+              'option_1' => { id: 'ff98ad2c-668d-4e3f-8760-215c49f34dc1', nextPageNumber: 4, numQuestionsSkipped: 2 },
+              'option_2' => { id: 'cc98ad2c-668d-4e3f-8760-215c49f34dc1', nextPageNumber: 999, numQuestionsSkipped: 2 }
+            }
+          },
           questionViewedCount: 0,
-          key: 'question_three'
+          key: 'question_three',
+          totalPickCount: 4,
+          answers: [
+            { answer: 'option_2', count: 1 },
+            { answer: 'option_1', count: 1 },
+            { answer: nil, count: 4 }
+          ]
         },
         {
           inputType: 'page',
-          totalResponseCount: 4,
+          totalResponseCount: 5,
           questionResponseCount: 0,
           pageNumber: 3,
           logic: { nextPageNumber: 999, numQuestionsSkipped: 2 },
@@ -1857,7 +1867,7 @@ RSpec.describe SurveyResultsGeneratorService do
         },
         {
           inputType: 'text',
-          totalResponseCount: 4,
+          totalResponseCount: 5,
           questionResponseCount: 0,
           pageNumber: nil,
           logic: {},
@@ -1866,7 +1876,7 @@ RSpec.describe SurveyResultsGeneratorService do
         },
         {
           inputType: 'page',
-          totalResponseCount: 4,
+          totalResponseCount: 5,
           questionResponseCount: 0,
           pageNumber: 4,
           logic: {},
@@ -1875,7 +1885,7 @@ RSpec.describe SurveyResultsGeneratorService do
         },
         {
           inputType: 'text',
-          totalResponseCount: 4,
+          totalResponseCount: 5,
           questionResponseCount: 0,
           pageNumber: nil,
           logic: {},
@@ -1884,7 +1894,7 @@ RSpec.describe SurveyResultsGeneratorService do
         },
         {
           inputType: 'page',
-          totalResponseCount: 4,
+          totalResponseCount: 5,
           questionResponseCount: 0,
           pageNumber: 5,
           logic: {},
@@ -1893,7 +1903,7 @@ RSpec.describe SurveyResultsGeneratorService do
         },
         {
           inputType: 'text',
-          totalResponseCount: 4,
+          totalResponseCount: 5,
           questionResponseCount: 0,
           pageNumber: nil,
           logic: {},
@@ -1908,7 +1918,8 @@ RSpec.describe SurveyResultsGeneratorService do
         { 'question_one' => 'option_2', 'question_two' => 1 },
         { 'question_one' => 'option_2' },
         { 'question_one' => 'option_1' },
-        { 'question_one' => 'option_2', 'question_two' => 2 }
+        { 'question_one' => 'option_2', 'question_two' => 2 },
+        { 'question_three' => %w[option_1 option_2] }
       ]
     end
 
@@ -1916,21 +1927,33 @@ RSpec.describe SurveyResultsGeneratorService do
 
     it 'changes the totalResponsesCount when fields are not shown through logic' do
       expect(results_without_num_answered.pluck(:totalResponseCount)).to eq(
-        [4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4] # Before
+        [5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5] # Before
       )
       expect(results.pluck(:totalResponseCount)).to eq(
-        [4, 4, 3, 3, 3, 2, 2, 1, 1, 2, 2] # After
+        [5, 5, 4, 4, 4, 2, 2, 1, 1, 2, 2] # After
       )
     end
 
     it 'reduces the count of not_answered responses when fields are not shown through logic' do
+      # Linear scale (question 2)
       expect(results_without_num_answered[3][:answers].find { |a| a[:answer].nil? }).to eq({
         answer: nil, count: 2 # Before
       })
-
       expect(results[3][:answers].find { |a| a[:answer].nil? }).to eq({
         answer: nil, count: 1 # After
       })
+
+      # Multiselect (question 3)
+      expect(results_without_num_answered[4][:answers].find { |a| a[:answer].nil? }).to eq({
+        answer: nil, count: 4 # Before
+      })
+      expect(results[4][:answers].find { |a| a[:answer].nil? }).to eq({
+        answer: nil, count: 3 # After
+      })
+    end
+
+    it 'removes the temporary attributes used for calculating logic' do
+      expect(results[0].keys).not_to include(:key, :questionViewedCount)
     end
   end
 end
