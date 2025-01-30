@@ -1097,6 +1097,8 @@
   "app.containers.Admin.projects.project.survey.page": "Säit",
   "app.containers.Admin.projects.project.survey.previousInsight": "Previous insight",
   "app.containers.Admin.projects.project.survey.responses": "Äntwerten",
+  "app.containers.Admin.projects.project.survey.resultsCountPageTooltip": "D'Zuel vun den Äntwerte fir dës Säit ass manner wéi d'Gesamtzuel vun den Ëmfro-Äntwerten, well e puer Befroten dës Säit net gesinn hunn wéinst der Logik an der Ëmfro.",
+  "app.containers.Admin.projects.project.survey.resultsCountQuestionTooltip": "D'Zuel vun den Äntwerte fir dës Fro ass manner wéi d'Gesamtzuel vun den Ëmfro-Äntwerten, well e puer Befroten dës Fro net gesinn hunn wéinst der Logik an der Ëmfro.",
   "app.containers.Admin.projects.project.survey.upsell.bullet1": "Resuméiert direkt all Är Äntwerten.",
   "app.containers.Admin.projects.project.survey.upsell.bullet2": "Schwätzt mat Ären Donnéeën an natierlecher Sprooch.",
   "app.containers.Admin.projects.project.survey.upsell.bullet3": "Kritt Referenzen op individuell Äntwerte vun AI generéierte Resuméen.",
