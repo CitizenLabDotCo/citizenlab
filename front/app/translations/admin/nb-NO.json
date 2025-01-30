@@ -1097,6 +1097,8 @@
   "app.containers.Admin.projects.project.survey.page": "Side",
   "app.containers.Admin.projects.project.survey.previousInsight": "Tidligere innsikt",
   "app.containers.Admin.projects.project.survey.responses": "Svar",
+  "app.containers.Admin.projects.project.survey.resultsCountPageTooltip": "Antallet svar for denne siden er lavere enn det totale antallet svar i undersøkelsen, fordi noen respondenter ikke har sett denne siden på grunn av logikken i undersøkelsen.",
+  "app.containers.Admin.projects.project.survey.resultsCountQuestionTooltip": "Antallet svar på dette spørsmålet er lavere enn det totale antallet svar på undersøkelsen, fordi noen respondenter ikke har sett dette spørsmålet på grunn av logikken i undersøkelsen.",
   "app.containers.Admin.projects.project.survey.upsell.bullet1": "Oppsummer alle svarene dine umiddelbart.",
   "app.containers.Admin.projects.project.survey.upsell.bullet2": "Snakk med dataene dine på et naturlig språk.",
   "app.containers.Admin.projects.project.survey.upsell.bullet3": "Få referanser til individuelle svar fra AI-genererte sammendrag.",
