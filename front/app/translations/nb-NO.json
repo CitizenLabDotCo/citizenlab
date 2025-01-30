@@ -2136,6 +2136,7 @@
   "app.utils.participationMethodConfig.voting.votingNotSignedIn2": "Du må logge inn eller registrere deg for å stemme.",
   "app.utils.participationMethodConfig.voting.votingNotVerified": "Du må bekrefte kontoen din før du kan stemme.",
   "app.utils.votingMethodUtils.budget": "budsjett",
+  "app.utils.votingMethodUtils.budgetParticipationEnded1": "<b>Innlevering av budsjetter ble avsluttet på {endDate}.</b> Deltakerne hadde totalt <b>{maxBudget} hver å fordele mellom {optionCount} alternativer.</b>",
   "app.utils.votingMethodUtils.budgetSubmitted": "Fremlagt budsjett",
   "app.utils.votingMethodUtils.budgetSubmittedWithIcon": "Budsjett lagt frem 🎉",
   "app.utils.votingMethodUtils.budgetingNotInGroup": "Du oppfyller ikke kravene for å tildele budsjetter.",
