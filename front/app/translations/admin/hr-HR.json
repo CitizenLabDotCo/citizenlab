@@ -1097,6 +1097,8 @@
   "app.containers.Admin.projects.project.survey.page": "Stranica",
   "app.containers.Admin.projects.project.survey.previousInsight": "Prethodni uvid",
   "app.containers.Admin.projects.project.survey.responses": "Odgovori",
+  "app.containers.Admin.projects.project.survey.resultsCountPageTooltip": "Broj odgovora za ovu stranicu manji je od ukupnog broja odgovora na anketu jer neki ispitanici neće vidjeti ovu stranicu zbog logike u anketi.",
+  "app.containers.Admin.projects.project.survey.resultsCountQuestionTooltip": "Broj odgovora na ovo pitanje manji je od ukupnog broja odgovora u anketi jer neki ispitanici neće vidjeti ovo pitanje zbog logike u anketi.",
   "app.containers.Admin.projects.project.survey.upsell.bullet1": "Odmah sažmite sve svoje odgovore.",
   "app.containers.Admin.projects.project.survey.upsell.bullet2": "Razgovarajte sa svojim podacima prirodnim jezikom.",
   "app.containers.Admin.projects.project.survey.upsell.bullet3": "Dobijte reference na pojedinačne odgovore iz sažetaka koje je generirala umjetna inteligencija.",
