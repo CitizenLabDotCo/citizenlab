@@ -1097,6 +1097,8 @@
   "app.containers.Admin.projects.project.survey.page": "Sayfa",
   "app.containers.Admin.projects.project.survey.previousInsight": "Önceki içgörü",
   "app.containers.Admin.projects.project.survey.responses": "Yanıtlar",
+  "app.containers.Admin.projects.project.survey.resultsCountPageTooltip": "Bu sayfaya verilen yanıt sayısı toplam anket yanıt sayısından daha düşüktür çünkü bazı katılımcılar anketteki mantık nedeniyle bu sayfayı görmemiş olacaktır.",
+  "app.containers.Admin.projects.project.survey.resultsCountQuestionTooltip": "Bu soruya verilen yanıt sayısı toplam anket yanıt sayısından daha düşüktür çünkü bazı katılımcılar anketteki mantık nedeniyle bu soruyu görmemiş olacaktır.",
   "app.containers.Admin.projects.project.survey.upsell.bullet1": "Tüm yanıtlarınızı anında özetleyin.",
   "app.containers.Admin.projects.project.survey.upsell.bullet2": "Verilerinizle doğal dilde konuşun.",
   "app.containers.Admin.projects.project.survey.upsell.bullet3": "Yapay zeka tarafından oluşturulan özetlerden bireysel yanıtlara referanslar alın.",
