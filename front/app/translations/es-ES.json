@@ -716,7 +716,7 @@
   "app.components.formBuilder.invalidLogicBadgeMessage": "Lógica inválida",
   "app.components.formBuilder.labels2": "Etiquetas (opcional)",
   "app.components.formBuilder.labelsTooltipContent2": "Elige etiquetas opcionales para cualquiera de los valores de la escala lineal.",
-  "app.components.formBuilder.lastPage": "Finaliza",
+  "app.components.formBuilder.lastPage": "Final",
   "app.components.formBuilder.layout": "Diseño",
   "app.components.formBuilder.leaveBuilderConfirmationQuestion": "¿Está seguro de que quiere salir?",
   "app.components.formBuilder.leaveBuilderText": "Tienes cambios sin guardar. Por favor, guárdalos antes de irte. Si sales, perderás los cambios.",
