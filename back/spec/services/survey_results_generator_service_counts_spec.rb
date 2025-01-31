@@ -36,7 +36,7 @@ describe 'change_counts_for_logic' do
         answers: [
           { answer: 'option_2', count: 3 },
           { answer: 'option_1', count: 1 },
-          { answer: nil, count: 0 }
+          { answer: nil, count: 1 }
         ]
       },
       {
@@ -62,20 +62,20 @@ describe 'change_counts_for_logic' do
         },
         questionViewedCount: 0,
         key: 'question_two',
-        totalPickCount: 4,
+        totalPickCount: 2,
         answers: [
           { answer: 5, count: 0 },
           { answer: 4, count: 0 },
           { answer: 3, count: 0 },
           { answer: 2, count: 1 },
           { answer: 1, count: 1 },
-          { answer: nil, count: 2 }
+          { answer: nil, count: 3 }
         ]
       },
       {
         inputType: 'select',
         totalResponseCount: 5,
-        questionResponseCount: 4,
+        questionResponseCount: 2,
         logic: {
           answer: {
             'option_1' => { id: 'ff98ad2c-668d-4e3f-8760-215c49f34dc1', nextPageNumber: 4, numQuestionsSkipped: 2 },
@@ -84,11 +84,11 @@ describe 'change_counts_for_logic' do
         },
         questionViewedCount: 0,
         key: 'question_three',
-        totalPickCount: 4,
+        totalPickCount: 2,
         answers: [
           { answer: 'option_2', count: 1 },
           { answer: 'option_1', count: 1 },
-          { answer: nil, count: 4 }
+          { answer: nil, count: 3 }
         ]
       },
       {
@@ -172,18 +172,18 @@ describe 'change_counts_for_logic' do
   it 'reduces the count of not_answered responses when fields are not shown through logic' do
     # Linear scale (question 2)
     expect(results_without_num_answered[3][:answers].find { |a| a[:answer].nil? }).to eq({
-      answer: nil, count: 2 # Before
+      answer: nil, count: 3 # Before
     })
     expect(results[3][:answers].find { |a| a[:answer].nil? }).to eq({
-      answer: nil, count: 1 # After
+      answer: nil, count: 2 # After
     })
 
-    # Multiselect (question 3)
+    # Select (question 3)
     expect(results_without_num_answered[4][:answers].find { |a| a[:answer].nil? }).to eq({
-      answer: nil, count: 4 # Before
+      answer: nil, count: 3 # Before
     })
     expect(results[4][:answers].find { |a| a[:answer].nil? }).to eq({
-      answer: nil, count: 3 # After
+      answer: nil, count: 2 # After
     })
   end
 
@@ -226,7 +226,7 @@ describe 'change_counts_for_logic: question logic taking prescedence over page l
       {
         inputType: 'page',
         totalResponseCount: 5,
-        questionResponseCount: 4,
+        questionResponseCount: 3,
         pageNumber: 2,
         logic: { nextPageNumber: 999, numQuestionsSkipped: 1 },
         questionViewedCount: 0,
@@ -235,7 +235,7 @@ describe 'change_counts_for_logic: question logic taking prescedence over page l
       {
         inputType: 'text',
         totalResponseCount: 5,
-        questionResponseCount: 4,
+        questionResponseCount: 3,
         pageNumber: nil,
         logic: {},
         questionViewedCount: 0,
@@ -244,7 +244,7 @@ describe 'change_counts_for_logic: question logic taking prescedence over page l
       {
         inputType: 'page',
         totalResponseCount: 5,
-        questionResponseCount: 4,
+        questionResponseCount: 1,
         pageNumber: 3,
         logic: {},
         questionViewedCount: 0,
@@ -253,7 +253,7 @@ describe 'change_counts_for_logic: question logic taking prescedence over page l
       {
         inputType: 'text',
         totalResponseCount: 5,
-        questionResponseCount: 4,
+        questionResponseCount: 1,
         pageNumber: nil,
         logic: {},
         questionViewedCount: 0,
@@ -284,7 +284,9 @@ describe 'change_counts_for_logic: question logic taking prescedence over page l
   end
 
   it 'has the correct questionResponseCount' do
-
+    expect(results.pluck(:questionResponseCount)).to eq(
+      [5, 5, 3, 3, 1, 1] # After
+    )
   end
 end
 end

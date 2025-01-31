@@ -387,7 +387,6 @@ RSpec.describe SurveyResultsGeneratorService do
 
     describe 'structure' do
       it 'returns the correct locales' do
-        binding.pry
         # These locales are a prerequisite for the test.
         expect(AppConfiguration.instance.settings('core', 'locales')).to eq(%w[en fr-FR nl-NL])
       end
