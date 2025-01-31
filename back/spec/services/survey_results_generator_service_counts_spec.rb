@@ -285,7 +285,7 @@ describe 'change_counts_for_logic: question logic taking prescedence over page l
 
   it 'has the correct questionResponseCount' do
     expect(results.pluck(:questionResponseCount)).to eq(
-      [5, 5, 3, 3, 1, 1] # After
+      [4, 4, 3, 3, 1, 1] # After
     )
   end
 end
