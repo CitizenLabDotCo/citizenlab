@@ -52,6 +52,7 @@ class CustomField < ApplicationRecord
   acts_as_list column: :ordering, top_of_list: 0, scope: [:resource_id]
 
   has_many :options, -> { order(:ordering) }, dependent: :destroy, class_name: 'CustomFieldOption', inverse_of: :custom_field
+  has_many :matrix_statements, -> { order(:ordering) }, dependent: :destroy, class_name: 'CustomFieldMatrixStatement', inverse_of: :custom_field
   has_many :text_images, as: :imageable, dependent: :destroy
   accepts_nested_attributes_for :text_images
 
@@ -63,7 +64,7 @@ class CustomField < ApplicationRecord
   INPUT_TYPES = %w[
     checkbox date file_upload files html html_multiloc image_files linear_scale multiline_text multiline_text_multiloc
     multiselect multiselect_image number page point line polygon select select_image shapefile_upload text text_multiloc
-    topic_ids section cosponsor_ids ranking
+    topic_ids section cosponsor_ids ranking matrix_linear_scale
   ].freeze
   CODES = %w[
     author_id birthyear body_multiloc budget domicile gender idea_files_attributes idea_images_attributes
@@ -127,6 +128,20 @@ class CustomField < ApplicationRecord
     return false if code == 'idea_images_attributes' # Is this still applicable?
 
     %w[page section].exclude?(input_type)
+  end
+
+  def supports_geojson?
+    return false if code == 'idea_images_attributes' # Is this still applicable?
+
+    %w[page section].exclude?(input_type)
+  end
+
+  def supports_linear_scale?
+    %w[linear_scale matrix_linear_scale].include?(input_type)
+  end
+
+  def supports_matrix_statements?
+    input_type == 'matrix_linear_scale'
   end
 
   def average_rankings(scope)
@@ -342,7 +357,7 @@ class CustomField < ApplicationRecord
     title = title_multiloc.values.first
     return unless title
 
-    self.key = CustomFieldService.new.generate_key(title, false) do |key_proposal|
+    self.key = CustomFieldService.new.generate_key(title) do |key_proposal|
       self.class.find_by(key: key_proposal, resource_type: resource_type)
     end
   end

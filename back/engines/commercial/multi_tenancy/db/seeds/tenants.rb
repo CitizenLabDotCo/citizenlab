@@ -378,6 +378,10 @@ module MultiTenancy
               enabled: false,
               allowed: true
             },
+            posthog_user_tracking: {
+              enabled: false,
+              allowed: true
+            },
             user_blocking: {
               enabled: true,
               allowed: true,
