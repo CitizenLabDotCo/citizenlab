@@ -232,6 +232,7 @@ export interface IAppConfigurationSettings {
   report_builder?: AppConfigurationFeature;
   report_data_grouping?: AppConfigurationFeature;
   posthog_integration?: AppConfigurationFeature;
+  posthog_user_tracking?: AppConfigurationFeature;
   user_blocking?: AppConfigurationFeature & {
     duration: boolean;
   };
