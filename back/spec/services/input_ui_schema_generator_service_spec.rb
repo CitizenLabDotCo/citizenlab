@@ -1006,7 +1006,11 @@ RSpec.describe InputUiSchemaGeneratorService do
                     linear_scale_label4: '',
                     linear_scale_label5: '',
                     linear_scale_label6: '',
-                    linear_scale_label7: ''
+                    linear_scale_label7: '',
+                    linear_scale_label8: '',
+                    linear_scale_label9: '',
+                    linear_scale_label10: '',
+                    linear_scale_label11: ''
                   }
                 }]
               },

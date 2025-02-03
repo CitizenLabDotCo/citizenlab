@@ -40,6 +40,10 @@ describe('clearOptionIds', () => {
       linear_scale_label_5_multiloc: {},
       linear_scale_label_6_multiloc: {},
       linear_scale_label_7_multiloc: {},
+      linear_scale_label_8_multiloc: {},
+      linear_scale_label_9_multiloc: {},
+      linear_scale_label_10_multiloc: {},
+      linear_scale_label_11_multiloc: {},
       matrix_statements: [
         {
           id: '96e275e5b8194c7b85ac615665930d22',
