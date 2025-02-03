@@ -15,7 +15,7 @@ import messages from './messages';
 
 interface Props {
   maximumName: string;
-  inputType: 'linear_scale' | 'rating';
+  inputType: 'linear_scale' | 'rating' | 'matrix_linear_scale';
 }
 
 const RangeInput = ({ maximumName, inputType }: Props) => {

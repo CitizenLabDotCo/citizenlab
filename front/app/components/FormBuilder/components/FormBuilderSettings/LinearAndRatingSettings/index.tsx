@@ -12,7 +12,7 @@ interface Props {
   onSelectedLocaleChange?: (locale: SupportedLocale) => void;
   locales: SupportedLocale[];
   platformLocale: SupportedLocale;
-  inputType: 'linear_scale' | 'rating';
+  inputType: 'linear_scale' | 'rating' | 'matrix_linear_scale';
 }
 
 const LinearAndRatingSettings = ({
