@@ -754,6 +754,7 @@
   "app.components.formBuilder.randomizeToolTip": "Cevapların sırası her kullanıcı için rastgele belirlenecektir",
   "app.components.formBuilder.range": "Menzil",
   "app.components.formBuilder.ranking": "Sıralama",
+  "app.components.formBuilder.rating": "Değerlendirme",
   "app.components.formBuilder.removeAnswer": "Cevabı kaldır",
   "app.components.formBuilder.required": "Gerekli",
   "app.components.formBuilder.requiredToggleLabel": "Bu soruyu yanıtlamayı zorunlu hale getirin",
