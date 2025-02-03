@@ -754,6 +754,7 @@
   "app.components.formBuilder.randomizeToolTip": "Vastausten järjestys satunnaistetaan käyttäjää kohti",
   "app.components.formBuilder.range": "Alue",
   "app.components.formBuilder.ranking": "Sijoitus",
+  "app.components.formBuilder.rating": "Luokitus",
   "app.components.formBuilder.removeAnswer": "Poista vastaus",
   "app.components.formBuilder.required": "Edellytetään",
   "app.components.formBuilder.requiredToggleLabel": "Tee tähän kysymykseen vastaaminen pakolliseksi",
