@@ -74,13 +74,6 @@ export default defineConfig(({ mode }) => {
         },
         overlay: false,
       }),
-      createHtmlPlugin({
-        inject: {
-          data: {
-            GOOGLE_MAPS_API_KEY: process.env.GOOGLE_MAPS_API_KEY,
-          },
-        },
-      }),
       ...[
         sourceMapToSentry &&
           sentryVitePlugin({
@@ -156,7 +149,6 @@ export default defineConfig(({ mode }) => {
         CIRCLE_BRANCH: process.env.CIRCLE_BRANCH,
         MATOMO_HOST: process.env.MATOMO_HOST,
         POSTHOG_API_KEY: process.env.POSTHOG_API_KEY,
-        GOOGLE_MAPS_API_KEY: process.env.GOOGLE_MAPS_API_KEY,
       },
     },
   };
