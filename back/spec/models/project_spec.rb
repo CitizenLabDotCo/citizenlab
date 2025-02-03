@@ -124,4 +124,22 @@ RSpec.describe Project do
       expect(project.preview_token).not_to eq(old_token)
     end
   end
+
+  describe "'not in draft folder' scope" do
+    let(:project1) { create(:project) }
+    let(:draft_folder) do  
+      create(:project_folder, admin_publication_attributes: { publication_status: 'draft' }, projects: [project1])
+    end
+
+    let(:project2) { create(:project) }
+    let(:published_folder) do  
+      create(:project_folder, admin_publication_attributes: { publication_status: 'published' }, projects: [project2])
+    end
+
+    let(:project3) { create(:project) }
+
+    it 'returns projects not in a draft folder' do
+      expect(Project.not_in_draft_folder).to match_array([project2, project3])
+    end
+  end
 end
