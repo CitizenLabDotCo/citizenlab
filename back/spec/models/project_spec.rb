@@ -126,17 +126,17 @@ RSpec.describe Project do
   end
 
   describe "'not in draft folder' scope" do
-    let(:project1) { create(:project) }
-    let(:draft_folder) do
+    let!(:project1) { create(:project) }
+    let!(:draft_folder) do
       create(:project_folder, admin_publication_attributes: { publication_status: 'draft' }, projects: [project1])
     end
 
-    let(:project2) { create(:project) }
-    let(:published_folder) do
+    let!(:project2) { create(:project) }
+    let!(:published_folder) do
       create(:project_folder, admin_publication_attributes: { publication_status: 'published' }, projects: [project2])
     end
 
-    let(:project3) { create(:project) }
+    let!(:project3) { create(:project) }
 
     it 'returns projects not in a draft folder' do
       expect(described_class.not_in_draft_folder).to match_array([project2, project3])
