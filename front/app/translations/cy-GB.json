@@ -754,6 +754,7 @@
   "app.components.formBuilder.randomizeToolTip": "Bydd trefn yr atebion ar hap fesul defnyddiwr",
   "app.components.formBuilder.range": "Amrediad",
   "app.components.formBuilder.ranking": "Safle",
+  "app.components.formBuilder.rating": "Graddio",
   "app.components.formBuilder.removeAnswer": "Dileu ateb",
   "app.components.formBuilder.required": "Angenrheidiol",
   "app.components.formBuilder.requiredToggleLabel": "Gwnewch ateb y cwestiwn hwn yn ofynnol",
