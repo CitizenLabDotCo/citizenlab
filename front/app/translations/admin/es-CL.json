@@ -908,7 +908,6 @@
   "app.containers.Admin.projects.all.PDFExportModal.selectIdeationPhase": "Selecciona una fase de ideación.",
   "app.containers.Admin.projects.all.askPersonalData": "Pide datos personales",
   "app.containers.Admin.projects.all.clickExportToPDFIdeaForm": "Preguntas no admitidas actualmente: Imágenes, Etiquetas y Carga de archivos.",
-  "app.containers.Admin.projects.all.clickExportToPDFSurvey4": "Preguntas no admitidas actualmente: Preguntas de mapeo (soltar un pin, dibujar ruta y dibujar área), preguntas de elección de imagen, preguntas de clasificación y preguntas de carga de archivos.",
   "app.containers.Admin.projects.all.components.archived": "Archivado",
   "app.containers.Admin.projects.all.components.draft": "Borrador",
   "app.containers.Admin.projects.all.components.manageButtonLabel": "Administrar",

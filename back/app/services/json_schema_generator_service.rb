@@ -283,6 +283,21 @@ class JsonSchemaGeneratorService < FieldVisitorService
     visit_file_upload(field)
   end
 
+  def visit_matrix_linear_scale(field)
+    {
+      type: 'object',
+      minProperties: (field.required ? field.matrix_statement_ids.size : 0),
+      maxProperties: field.matrix_statement_ids.size,
+      properties: field.matrix_statements.pluck(:key).map(&:to_sym).index_with do
+        {
+          type: 'number',
+          minimum: 1,
+          maximum: field.maximum
+        }
+      end
+    }
+  end
+
   private
 
   attr_reader :locales, :multiloc_service

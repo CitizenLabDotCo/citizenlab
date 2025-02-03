@@ -116,6 +116,10 @@ export default defineMessages({
     id: 'app.components.form.controls.clearAll',
     defaultMessage: 'Clear all',
   },
+  clearAllScreenreader: {
+    id: 'app.components.form.controls.clearAllScreenreader',
+    defaultMessage: 'Clear all answers from above matrix question',
+  },
   noRankSelected: {
     id: 'app.components.form.controls.noRankSelected',
     defaultMessage: 'No rank selected',
@@ -127,5 +131,9 @@ export default defineMessages({
   rankingInstructions: {
     id: 'app.components.form.controls.rankingInstructions',
     defaultMessage: 'Drag and drop to rank options.',
+  },
+  allStatementsError: {
+    id: 'app.components.form.controls.allStatementsError',
+    defaultMessage: 'An answer must be selected for all statements.',
   },
 });

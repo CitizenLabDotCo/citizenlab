@@ -23,6 +23,7 @@ export type ICustomFieldInputType =
   | 'select'
   | 'linear_scale'
   | 'ranking'
+  | 'matrix_linear_scale'
   | 'section'
   | 'page'
   | 'file_upload'
@@ -44,6 +45,12 @@ export type IOptionsType = {
   other?: boolean;
   temp_id?: string;
   image_id?: string;
+};
+
+export type IMatrixStatementsType = {
+  id?: string;
+  title_multiloc: Multiloc;
+  temp_id?: string;
 };
 
 export type QuestionRuleType = { if: string | number; goto_page_id: string };
@@ -103,6 +110,9 @@ export interface ICustomFieldResponse {
     options: {
       data: IRelationship[];
     };
+    matrix_statements?: {
+      data: IRelationship[];
+    };
     map_config?: {
       data: IRelationship;
     };
@@ -118,6 +128,7 @@ export type IFlatCustomField = Omit<
     isLocalOnly?: boolean;
     mapConfig?: IMapConfig;
     options?: IOptionsType[];
+    matrix_statements?: IMatrixStatementsType[];
     map_config?: { data: IRelationship };
   };
 
@@ -133,6 +144,7 @@ export type IFlatCreateCustomField = Optional<
   | 'type'
   | 'key'
   | 'options'
+  | 'matrix_statements'
   | 'ordering'
   | 'created_at'
   | 'updated_at'
