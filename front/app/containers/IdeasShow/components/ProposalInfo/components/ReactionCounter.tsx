@@ -7,7 +7,7 @@ import { IIdeaData } from 'api/ideas/types';
 
 import { FormattedMessage } from 'utils/cl-intl';
 
-import messages from '../../messages';
+import messages from '../messages';
 
 import ProposalProgressBar from './ProposalProgressBar';
 

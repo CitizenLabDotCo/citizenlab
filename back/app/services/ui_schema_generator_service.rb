@@ -91,6 +91,14 @@ class UiSchemaGeneratorService < FieldVisitorService
     end
   end
 
+  def visit_matrix_linear_scale(field)
+    visit_linear_scale(field).tap do |ui_field|
+      ui_field[:options][:statements] = field.matrix_statements.map do |statement|
+        { key: statement.key, label: multiloc_service.t(statement.title_multiloc) }
+      end
+    end
+  end
+
   def visit_select(field)
     default(field).tap do |ui_field|
       ui_field[:options][:enumNames] = field.ordered_options.map { |option| multiloc_service.t(option.title_multiloc) }

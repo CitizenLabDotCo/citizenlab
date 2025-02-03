@@ -1,1 +1,7 @@
-export const FieldsHideGroupBy = ['point', 'line', 'polygon', 'ranking'];
+export const FieldsHideGroupBy = [
+  'point',
+  'line',
+  'polygon',
+  'ranking',
+  'matrix_linear_scale',
+];

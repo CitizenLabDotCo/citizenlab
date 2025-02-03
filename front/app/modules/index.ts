@@ -36,6 +36,7 @@ import moderationConfiguration, {
   moderationRouteTypes,
 } from './commercial/moderation';
 import posthogConfiguration from './commercial/posthog_integration';
+import posthogUserTrackingConfiguration from './commercial/posthog_user_tracking';
 import representativenessConfiguration, {
   representativenessRouteTypes,
 } from './commercial/representativeness';
@@ -64,6 +65,9 @@ export default loadModules([
   },
   {
     configuration: posthogConfiguration,
+  },
+  {
+    configuration: posthogUserTrackingConfiguration,
   },
   {
     configuration: googleAnalyticsConfiguration,

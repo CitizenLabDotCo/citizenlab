@@ -90,17 +90,25 @@ export const getFormActionsConfig = (
   };
 };
 
-// Remove the IDs from the options - for when the form is not persisted
-export const clearOptionIds = (customFields: IFlatCustomField[]) => {
-  // TODO: Fix this the next time the file is edited.
-  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-  return customFields?.map((field: IFlatCustomField) => {
+// Remove the IDs from the options and matrix statements - for when the form is not persisted
+export const clearOptionAndStatementIds = (
+  customFields: IFlatCustomField[]
+) => {
+  return customFields.map((field: IFlatCustomField) => {
     if (field.options && field.options.length > 0) {
       field.options = field.options.map((option: IOptionsType) => {
         delete option.id;
         return option;
       });
     }
+
+    if (field.matrix_statements && field.matrix_statements.length > 0) {
+      field.matrix_statements = field.matrix_statements.map((statement) => {
+        delete statement.id;
+        return statement;
+      });
+    }
+
     return field;
   });
 };
