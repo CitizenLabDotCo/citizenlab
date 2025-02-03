@@ -42,7 +42,7 @@ module Permissions
         current_phase = @timeline_service.current_phase_not_archived project
         return IDEA_DENIED_REASONS[:idea_not_in_current_phase] if current_phase && !idea_in_current_phase?(current_phase)
 
-        if action == 'reacting_idea' && IdeaStatus::REACTING_NOT_ALLOWED_CODES.include?(idea&.idea_status&.code)
+        if action == 'reacting_idea' && IdeaStatus::REACTING_NOT_ALLOWED_CODES.include?(idea.idea_status.code)
           IDEA_DENIED_REASONS[:not_reactable_status_code]
         end
       end
