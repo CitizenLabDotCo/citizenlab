@@ -655,6 +655,7 @@
   "app.components.form.controls.valueOutOfTotalWithMaxExplanation": "{value} az {total}közül, ahol a {maxValue} értéke {maxLabel}",
   "app.components.form.error": "Hiba",
   "app.components.form.locationGoogleUnavailable": "Nem sikerült betölteni a google maps által biztosított helymezőt.",
+  "app.components.form.progressBarLabel": "A felmérés előrehaladása",
   "app.components.form.submit": "Beküld",
   "app.components.form.submitApiError": "Hiba történt az űrlap elküldésekor. Kérjük, ellenőrizze az esetleges hibákat, és próbálja újra.",
   "app.components.form.verifiedBlocked": "Ezt a mezőt nem szerkesztheti, mert ellenőrzött információkat tartalmaz",
