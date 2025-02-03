@@ -754,6 +754,7 @@
   "app.components.formBuilder.randomizeToolTip": "Kiekvieno naudotojo atsakymų eiliškumas bus nustatomas atsitiktine tvarka.",
   "app.components.formBuilder.range": "Diapazonas",
   "app.components.formBuilder.ranking": "Reitingas",
+  "app.components.formBuilder.rating": "Įvertinimas",
   "app.components.formBuilder.removeAnswer": "Pašalinti atsakymą",
   "app.components.formBuilder.required": "Reikalinga",
   "app.components.formBuilder.requiredToggleLabel": "Nustatykite, kad į šį klausimą reikia atsakyti",
