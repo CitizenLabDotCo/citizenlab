@@ -351,7 +351,7 @@ class SurveyResultsGeneratorService < FieldVisitorService
     answer_titles.each_key do |value|
       labels = {}
 
-      if field.input_type == 'linear_scale'
+      if %w[linear_scale matrix_linear_scale].include?(field.input_type)
         labels = field.nth_linear_scale_multiloc(value).transform_values do |label|
           if label.present?
             "#{value} - #{label}"
