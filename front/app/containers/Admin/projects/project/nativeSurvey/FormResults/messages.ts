@@ -206,13 +206,13 @@ export default defineMessages({
       'When a user selects this answer logic skips to the survey end ({ numQuestionsSkipped } questions skipped). Click to hide or show the skipped pages and questions.',
   },
   resultsCountQuestionTooltip: {
-    id: 'app.containers.Admin.projects.project.survey.resultsCountQuestionTooltip',
+    id: 'app.containers.Admin.projects.project.survey.resultsCountQuestionTooltip2',
     defaultMessage:
-      'The number of responses for this question is lower than the total number of survey responses because some respondents will not have seen this question because of logic in the survey.',
+      'The number of responses for this question is lower than the total number of survey responses because some respondents have not seen this question because of logic in the survey.',
   },
   resultsCountPageTooltip: {
-    id: 'app.containers.Admin.projects.project.survey.resultsCountPageTooltip',
+    id: 'app.containers.Admin.projects.project.survey.resultsCountPageTooltip2',
     defaultMessage:
-      'The number of responses for this page is lower than the total number of survey responses because some respondents will not have seen this page because of logic in the survey.',
+      'The number of responses for this page is lower than the total number of survey responses because some respondents have not seen this page because of logic in the survey.',
   },
 });
