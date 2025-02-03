@@ -655,6 +655,7 @@
   "app.components.form.controls.valueOutOfTotalWithMaxExplanation": "{value} {total}میں سے، جہاں {maxValue} ہے {maxLabel}",
   "app.components.form.error": "خرابی",
   "app.components.form.locationGoogleUnavailable": "گوگل میپس کے ذریعہ فراہم کردہ لوکیشن فیلڈ کو لوڈ نہیں کیا جا سکا۔",
+  "app.components.form.progressBarLabel": "سروے کی پیشرفت",
   "app.components.form.submit": "جمع کروائیں۔",
   "app.components.form.submitApiError": "فارم جمع کرانے میں ایک مسئلہ تھا۔ براہ کرم کسی خامی کی جانچ کریں اور دوبارہ کوشش کریں۔",
   "app.components.form.verifiedBlocked": "آپ اس فیلڈ میں ترمیم نہیں کر سکتے کیونکہ یہ تصدیق شدہ معلومات پر مشتمل ہے۔",
