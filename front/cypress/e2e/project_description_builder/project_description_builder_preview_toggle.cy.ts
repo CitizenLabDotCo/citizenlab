@@ -115,9 +115,6 @@ describe('Project description builder preview', () => {
     cy.visit(
       `/admin/project-description-builder/projects/${projectId}/description`
     );
-    cy.get('#e2e-draggable-text').dragAndDrop('#e2e-content-builder-frame', {
-      position: 'inside',
-    });
     cy.wait(1000);
     cy.get('div.e2e-text-box').click();
     cy.get('.ql-editor').click();
