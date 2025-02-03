@@ -655,6 +655,7 @@
   "app.components.form.controls.valueOutOfTotalWithMaxExplanation": "{value} von {total}, wobei {maxValue} {maxLabel} ist",
   "app.components.form.error": "Fehler",
   "app.components.form.locationGoogleUnavailable": "Das von Google Maps zur Verfügung gestellte Standort-Feld konnte nicht geladen werden.",
+  "app.components.form.progressBarLabel": "Fortschritt der Umfrage",
   "app.components.form.submit": "Einreichen",
   "app.components.form.submitApiError": "Es gab ein Problem beim Absenden des Formulars. Bitte prüfe auf Fehler und versuche es erneut.",
   "app.components.form.verifiedBlocked": "Sie können dieses Feld nicht bearbeiten, da es verifizierte Informationen enthält",
