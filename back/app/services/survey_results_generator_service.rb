@@ -516,11 +516,13 @@ class SurveyResultsGeneratorService < FieldVisitorService
             if supports_question_logic? input_type
               answer_value = response[question[:key]]
               values = answer_value.is_a?(Array) ? answer_value : [answer_value] # Convert all values to an array so all fields can be treated the same
+              highest_next_page_number_for_question = 0
               values.each do |value|
                 logic_match = question.dig(:logic, :answer, value)
-                if logic_match && logic_match[:nextPageNumber] > (next_page_number || 0)
+                if logic_match && logic_match[:nextPageNumber] > highest_next_page_number_for_question
                   # Only take the highest next page number from all options
-                  next_page_number = logic_match[:nextPageNumber]
+                  highest_next_page_number_for_question = logic_match[:nextPageNumber]
+                  next_page_number = highest_next_page_number_for_question
                 end
               end
             elsif supports_page_logic? input_type
