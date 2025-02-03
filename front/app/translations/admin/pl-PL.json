@@ -1078,6 +1078,7 @@
   "app.containers.Admin.projects.project.survey.formResults.exportGeoJSONTooltip2": "Wyeksportuj odpowiedzi na to pytanie jako plik GeoJSON. Dla każdego elementu GeoJSON, wszystkie powiązane odpowiedzi respondenta zostaną wymienione w obiekcie \"właściwości\" tego elementu.",
   "app.containers.Admin.projects.project.survey.formResults.hideDetails": "Ukryj szczegóły",
   "app.containers.Admin.projects.project.survey.formResults.rank": "#{rank}",
+  "app.containers.Admin.projects.project.survey.formResults.respondentsTooltip": "{respondentCount, plural, no {{respondentCount} respondenci} one {{respondentCount} respondenci} other {{respondentCount} respondenci}}",
   "app.containers.Admin.projects.project.survey.formResults.viewDetails": "Zobacz szczegóły",
   "app.containers.Admin.projects.project.survey.formResults.xChoices": "{numberChoices, plural, no {{numberChoices} wybory} one {{numberChoices} wybór} other {{numberChoices} wybory}}",
   "app.containers.Admin.projects.project.survey.heatMap": "Mapa cieplna",
