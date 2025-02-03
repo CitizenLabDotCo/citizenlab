@@ -754,6 +754,7 @@
   "app.components.formBuilder.randomizeToolTip": "L'ordre de les respostes serà aleatoritzat per usuari",
   "app.components.formBuilder.range": "Interval",
   "app.components.formBuilder.ranking": "Classificació",
+  "app.components.formBuilder.rating": "Valoració",
   "app.components.formBuilder.removeAnswer": "Elimina la resposta",
   "app.components.formBuilder.required": "Obligatori",
   "app.components.formBuilder.requiredToggleLabel": "Cal respondre aquesta pregunta",

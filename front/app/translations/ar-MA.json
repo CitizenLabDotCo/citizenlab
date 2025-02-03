@@ -754,6 +754,7 @@
   "app.components.formBuilder.randomizeToolTip": "سيتم ترتيب الإجابات بشكل عشوائي لكل مستخدم",
   "app.components.formBuilder.range": "النطاق",
   "app.components.formBuilder.ranking": "تصنيف",
+  "app.components.formBuilder.rating": "تصنيف",
   "app.components.formBuilder.removeAnswer": "إزالة إجابة",
   "app.components.formBuilder.required": "مطلوب",
   "app.components.formBuilder.requiredToggleLabel": "جعل الإجابة عن هذا السؤال إلزامية",

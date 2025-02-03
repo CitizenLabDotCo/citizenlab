@@ -754,6 +754,7 @@
   "app.components.formBuilder.randomizeToolTip": "The order of the answers will be randomized per user",
   "app.components.formBuilder.range": "Домет",
   "app.components.formBuilder.ranking": "Ranking",
+  "app.components.formBuilder.rating": "Rating",
   "app.components.formBuilder.removeAnswer": "Уклони одговор",
   "app.components.formBuilder.required": "Потребан",
   "app.components.formBuilder.requiredToggleLabel": "Учините одговор на ово питање обавезним",

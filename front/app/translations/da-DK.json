@@ -754,6 +754,7 @@
   "app.components.formBuilder.randomizeToolTip": "Rækkefølgen af svarene vil blive randomiseret pr. bruger.",
   "app.components.formBuilder.range": "Område",
   "app.components.formBuilder.ranking": "Rangering",
+  "app.components.formBuilder.rating": "Bedømmelse",
   "app.components.formBuilder.removeAnswer": "Fjern svar",
   "app.components.formBuilder.required": "Krævet",
   "app.components.formBuilder.requiredToggleLabel": "Gør besvarelse af dette spørgsmål obligatorisk",

@@ -754,6 +754,7 @@
   "app.components.formBuilder.randomizeToolTip": "Atbilžu secība katram lietotājam tiks mainīta pēc nejaušības principa.",
   "app.components.formBuilder.range": "Diapazons",
   "app.components.formBuilder.ranking": "Reitings",
+  "app.components.formBuilder.rating": "Vērtējums",
   "app.components.formBuilder.removeAnswer": "Noņemt atbildi",
   "app.components.formBuilder.required": "Nepieciešams",
   "app.components.formBuilder.requiredToggleLabel": "Atbildi uz šo jautājumu uzdodiet kā obligātu",

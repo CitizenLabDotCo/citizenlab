@@ -754,6 +754,7 @@
   "app.components.formBuilder.randomizeToolTip": "A válaszok sorrendje felhasználónként véletlenszerű lesz",
   "app.components.formBuilder.range": "Hatótávolság",
   "app.components.formBuilder.ranking": "Rangsorolás",
+  "app.components.formBuilder.rating": "Értékelés",
   "app.components.formBuilder.removeAnswer": "Válasz eltávolítása",
   "app.components.formBuilder.required": "Kívánt",
   "app.components.formBuilder.requiredToggleLabel": "Tedd kötelezővé ennek a kérdésnek a megválaszolását",

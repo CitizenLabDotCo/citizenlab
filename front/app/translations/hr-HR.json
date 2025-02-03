@@ -754,6 +754,7 @@
   "app.components.formBuilder.randomizeToolTip": "Redoslijed odgovora bit će nasumičan po korisniku",
   "app.components.formBuilder.range": "Domet",
   "app.components.formBuilder.ranking": "Rangiranje",
+  "app.components.formBuilder.rating": "Ocjena",
   "app.components.formBuilder.removeAnswer": "Ukloni odgovor",
   "app.components.formBuilder.required": "Neophodno",
   "app.components.formBuilder.requiredToggleLabel": "Neka odgovor na ovo pitanje bude obavezan",

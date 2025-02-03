@@ -754,6 +754,7 @@
   "app.components.formBuilder.randomizeToolTip": "Η σειρά των απαντήσεων θα είναι τυχαία ανά χρήστη",
   "app.components.formBuilder.range": "Εύρος",
   "app.components.formBuilder.ranking": "Κατάταξη",
+  "app.components.formBuilder.rating": "Αξιολόγηση",
   "app.components.formBuilder.removeAnswer": "Αφαίρεση απάντησης",
   "app.components.formBuilder.required": "Απαιτούμενο",
   "app.components.formBuilder.requiredToggleLabel": "Να απαιτείται η απάντηση στην ερώτηση αυτή",
