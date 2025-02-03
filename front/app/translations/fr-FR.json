@@ -754,6 +754,7 @@
   "app.components.formBuilder.randomizeToolTip": "L'ordre des réponses sera aléatoire et différent pour chaque utilisateur",
   "app.components.formBuilder.range": "Gamme",
   "app.components.formBuilder.ranking": "Classement",
+  "app.components.formBuilder.rating": "Evaluation",
   "app.components.formBuilder.removeAnswer": "Supprimer la réponse",
   "app.components.formBuilder.required": "Requis",
   "app.components.formBuilder.requiredToggleLabel": "Rendre obligatoire la réponse à cette question",
