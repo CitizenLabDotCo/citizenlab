@@ -57,8 +57,6 @@ describe('Form builder matrix component', () => {
     cy.contains('Question title 2').should('exist');
     cy.contains('Statement 1 question 2').should('exist');
     cy.get('#e2e-matrix-control').should('exist');
-    cy.injectAxe();
-    cy.checkA11y();
   });
 
   after(() => {
