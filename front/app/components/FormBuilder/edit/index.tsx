@@ -130,6 +130,10 @@ const FormEdit = ({
         linear_scale_label_5_multiloc: object(),
         linear_scale_label_6_multiloc: object(),
         linear_scale_label_7_multiloc: object(),
+        linear_scale_label_8_multiloc: object(),
+        linear_scale_label_9_multiloc: object(),
+        linear_scale_label_10_multiloc: object(),
+        linear_scale_label_11_multiloc: object(),
         required: boolean(),
         temp_id: string(),
         logic: validateLogic(formatMessage(messages.logicValidationError)),
@@ -290,6 +294,14 @@ const FormEdit = ({
             field.linear_scale_label_6_multiloc || {},
           linear_scale_label_7_multiloc:
             field.linear_scale_label_7_multiloc || {},
+          linear_scale_label_8_multiloc:
+            field.linear_scale_label_8_multiloc || {},
+          linear_scale_label_9_multiloc:
+            field.linear_scale_label_9_multiloc || {},
+          linear_scale_label_10_multiloc:
+            field.linear_scale_label_10_multiloc || {},
+          linear_scale_label_11_multiloc:
+            field.linear_scale_label_11_multiloc || {},
           maximum: field.maximum?.toString() || '5',
         }),
       }));

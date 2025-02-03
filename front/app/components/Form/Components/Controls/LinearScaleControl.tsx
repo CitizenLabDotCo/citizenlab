@@ -38,7 +38,7 @@ const LinearScaleControl = ({
   const { formatMessage } = useIntl();
 
   const minimum = 1;
-  const maximum = schema.maximum ?? 7; // Seven since the maximum number of options is 7
+  const maximum = schema.maximum ?? 11; // Seven since the maximum number of options is 11
   const answerNotPublic = uischema.options?.answer_visible_to === 'admins';
   const sliderRef = useRef<HTMLDivElement>(null);
 
@@ -82,10 +82,10 @@ const LinearScaleControl = ({
   }
 
   const getButtonWidth = () => {
-    if (maximum > 5) {
-      return maximum > 6 ? '64px' : '80px';
+    if (isSmallerThanPhone) {
+      return `calc(100% / ${maximum > 5 ? 4 : maximum} - 8px)`; // Fit 4 buttons per row on small screens
     }
-    return 'auto';
+    return `calc(100% / ${maximum} - 8px)`; // Fit all buttons on one row for larger screens
   };
 
   const handleKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
@@ -156,7 +156,7 @@ const LinearScaleControl = ({
         onKeyDown={handleKeyDown}
       >
         <Box
-          gap={isSmallerThanPhone ? '8px' : '12px'}
+          gap={isSmallerThanPhone ? '4px' : '8px'}
           display="flex"
           flexWrap="wrap"
           justifyContent="center"
@@ -165,7 +165,7 @@ const LinearScaleControl = ({
             const visualIndex = i + 1;
             return (
               <Box
-                flexGrow={isSmallerThanPhone && maximum && maximum > 5 ? 0 : 1}
+                flexBasis={100 / maximum}
                 key={`${path}-radio-${visualIndex}`}
                 minWidth={getButtonWidth()}
                 padding="16px, 20px, 16px, 20px"
