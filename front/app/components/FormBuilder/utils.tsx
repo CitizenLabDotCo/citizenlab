@@ -16,6 +16,7 @@ import { isNilOrError } from 'utils/helperUtils';
 import ConfigOptionsWithLocaleSwitcher from './components/FormBuilderSettings/ConfigOptionsWithLocaleSwitcher';
 import FieldGroupSettings from './components/FormBuilderSettings/FieldGroupSettings';
 import LinearScaleSettings from './components/FormBuilderSettings/LinearScaleSettings';
+import MatrixSettings from './components/FormBuilderSettings/MatrixSettings';
 import MultiselectSettings from './components/FormBuilderSettings/MultiselectSettings';
 import OptionsSettings from './components/FormBuilderSettings/OptionsSettings';
 import PageLayoutSettings from './components/FormBuilderSettings/PageLayoutSettings';
@@ -95,6 +96,14 @@ export function getAdditionalSettings(
   }
 
   switch (inputType) {
+    case 'matrix_linear_scale':
+      return (
+        <MatrixSettings
+          field={field}
+          locales={locales}
+          platformLocale={platformLocale}
+        />
+      );
     case 'multiselect_image':
     case 'multiselect':
       return (
@@ -276,6 +285,9 @@ const getInputTypeStringKey = (
       break;
     case 'ranking':
       translatedStringKey = messages.ranking;
+      break;
+    case 'matrix_linear_scale':
+      translatedStringKey = messages.matrix;
       break;
   }
 

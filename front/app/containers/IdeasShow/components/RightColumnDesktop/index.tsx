@@ -53,15 +53,12 @@ const RightColumnDesktop = ({
   const phase = getCurrentPhase(phases?.data);
   const votingConfig = getVotingMethodConfig(phase?.attributes.voting_method);
 
-  const ideaIsInParticipationContext =
-    // TODO: Fix this the next time the file is edited.
-    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-    phase && idea ? isIdeaInParticipationContext(idea, phase) : undefined;
+  const ideaIsInParticipationContext = phase
+    ? isIdeaInParticipationContext(idea.data, phase)
+    : undefined;
 
   const commentingEnabled =
-    // TODO: Fix this the next time the file is edited.
-    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-    !!idea?.data.attributes.action_descriptors.commenting_idea.enabled;
+    idea.data.attributes.action_descriptors.commenting_idea.enabled;
 
   const participationMethod = phase?.attributes.participation_method;
 

@@ -81,15 +81,49 @@ const FormBuilderToolbox = ({
         title_multiloc: {
           [locale]: '',
         },
-        linear_scale_label_1_multiloc: {},
-        linear_scale_label_2_multiloc: {},
-        linear_scale_label_3_multiloc: {},
-        linear_scale_label_4_multiloc: {},
-        linear_scale_label_5_multiloc: {},
+        linear_scale_label_1_multiloc: {
+          [locale]:
+            inputType === 'matrix_linear_scale'
+              ? formatMessage(messages.stronglyDisagree)
+              : '',
+        },
+        linear_scale_label_2_multiloc: {
+          [locale]:
+            inputType === 'matrix_linear_scale'
+              ? formatMessage(messages.disagree)
+              : '',
+        },
+        linear_scale_label_3_multiloc: {
+          [locale]:
+            inputType === 'matrix_linear_scale'
+              ? formatMessage(messages.neutral)
+              : '',
+        },
+        linear_scale_label_4_multiloc: {
+          [locale]:
+            inputType === 'matrix_linear_scale'
+              ? formatMessage(messages.agree)
+              : '',
+        },
+        linear_scale_label_5_multiloc: {
+          [locale]:
+            inputType === 'matrix_linear_scale'
+              ? formatMessage(messages.stronglyAgree)
+              : '',
+        },
         linear_scale_label_6_multiloc: {},
         linear_scale_label_7_multiloc: {},
+        linear_scale_label_8_multiloc: {},
+        linear_scale_label_9_multiloc: {},
+        linear_scale_label_10_multiloc: {},
+        linear_scale_label_11_multiloc: {},
         maximum: 5,
         options: [
+          {
+            title_multiloc: {},
+          },
+        ],
+        matrix_statements: [
           {
             title_multiloc: {},
           },
@@ -213,6 +247,15 @@ const FormBuilderToolbox = ({
           data-cy="e2e-ranking"
           fieldsToExclude={builderConfig.toolboxFieldsToExclude}
           inputType="ranking"
+          disabled={isCustomFieldsDisabled}
+        />
+        <ToolboxItem
+          icon="survey-matrix"
+          label={formatMessage(messages.matrix)}
+          onClick={() => addField('matrix_linear_scale')}
+          data-cy="e2e-matrix"
+          fieldsToExclude={builderConfig.toolboxFieldsToExclude}
+          inputType="matrix_linear_scale"
           disabled={isCustomFieldsDisabled}
         />
         <ToolboxItem

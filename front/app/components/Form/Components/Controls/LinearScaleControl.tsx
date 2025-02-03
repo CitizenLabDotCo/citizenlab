@@ -7,9 +7,8 @@ import {
   Button,
   colors,
 } from '@citizenlab/cl2-component-library';
-import { ControlProps } from '@jsonforms/core';
+import { ControlProps, UISchemaElement } from '@jsonforms/core';
 import { withJsonFormsControlProps } from '@jsonforms/react';
-import { UiSchema } from 'react-jsonschema-form';
 import { useTheme } from 'styled-components';
 
 import { FormLabel } from 'components/UI/FormComponents';
@@ -39,29 +38,22 @@ const LinearScaleControl = ({
   const { formatMessage } = useIntl();
 
   const minimum = 1;
-  // TODO: Fix this the next time the file is edited.
-  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-  const maximum = schema?.maximum ?? 7; // Seven since the maximum number of options is 7
+  const maximum = schema.maximum ?? 11; // Seven since the maximum number of options is 11
   const answerNotPublic = uischema.options?.answer_visible_to === 'admins';
   const sliderRef = useRef<HTMLDivElement>(null);
 
   const getAriaValueText = useCallback(
     (value: number, total: number) => {
       // If the value has a label, read it out
-      // TODO: Fix this the next time the file is edited.
-      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-      if (uischema?.options?.[`linear_scale_label${value}`]) {
+      if (uischema.options?.[`linear_scale_label${value}`]) {
         return formatMessage(messages.valueOutOfTotalWithLabel, {
           value,
           total,
           label: uischema.options[`linear_scale_label${value}`],
         });
-        // TODO: Fix this the next time the file is edited.
-        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       }
       // If we don't have a label but we do have a maximum, read out the current value & maximum label
-      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-      else if (uischema?.options?.[`linear_scale_label${maximum}`]) {
+      else if (uischema.options?.[`linear_scale_label${maximum}`]) {
         return formatMessage(messages.valueOutOfTotalWithMaxExplanation, {
           value,
           total,
@@ -90,10 +82,10 @@ const LinearScaleControl = ({
   }
 
   const getButtonWidth = () => {
-    if (maximum > 5) {
-      return maximum > 6 ? '64px' : '80px';
+    if (isSmallerThanPhone) {
+      return `calc(100% / ${maximum > 5 ? 4 : maximum} - 8px)`; // Fit 4 buttons per row on small screens
     }
-    return 'auto';
+    return `calc(100% / ${maximum} - 8px)`; // Fit all buttons on one row for larger screens
   };
 
   const handleKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
@@ -132,9 +124,7 @@ const LinearScaleControl = ({
 
   // Put all labels from the UI Schema in an array so we can easily access them
   const labelsFromSchema = Array.from({ length: maximum }, (_, index) => {
-    // TODO: Fix this the next time the file is edited.
-    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-    return uischema?.options?.[`linear_scale_label${index + 1}`];
+    return uischema.options?.[`linear_scale_label${index + 1}`];
   });
 
   // Get an array of the middle value labels so we can determine how to show them in the UI
@@ -166,7 +156,7 @@ const LinearScaleControl = ({
         onKeyDown={handleKeyDown}
       >
         <Box
-          gap={isSmallerThanPhone ? '8px' : '12px'}
+          gap={isSmallerThanPhone ? '4px' : '8px'}
           display="flex"
           flexWrap="wrap"
           justifyContent="center"
@@ -175,7 +165,7 @@ const LinearScaleControl = ({
             const visualIndex = i + 1;
             return (
               <Box
-                flexGrow={isSmallerThanPhone && maximum && maximum > 5 ? 0 : 1}
+                flexBasis={100 / maximum}
                 key={`${path}-radio-${visualIndex}`}
                 minWidth={getButtonWidth()}
                 padding="16px, 20px, 16px, 20px"
@@ -265,9 +255,7 @@ const LinearScaleControl = ({
             </Box>
           )}
         </Box>
-        {/* TODO: Fix this the next time the file is edited. */}
-        {/* eslint-disable-next-line @typescript-eslint/no-unnecessary-condition */}
-        <VerificationIcon show={uischema?.options?.verificationLocked} />
+        <VerificationIcon show={uischema.options?.verificationLocked} />
       </Box>
       <ErrorDisplay
         inputId={sanitizeForClassname(id)}
@@ -281,10 +269,8 @@ const LinearScaleControl = ({
 
 export default withJsonFormsControlProps(LinearScaleControl);
 
-export const linearScaleControlTester = (schema: UiSchema) => {
-  // TODO: Fix this the next time the file is edited.
-  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-  if (schema?.options?.linear_scale_label1?.length >= 0) {
+export const linearScaleControlTester = (schema: UISchemaElement) => {
+  if (schema.options?.linear_scale_label1?.length >= 0) {
     return 100;
   }
   return -1;

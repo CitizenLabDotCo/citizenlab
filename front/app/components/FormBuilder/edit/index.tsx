@@ -41,6 +41,7 @@ import { isNilOrError } from 'utils/helperUtils';
 import validateElementTitle from 'utils/yup/validateElementTitle';
 import validateLogic from 'utils/yup/validateLogic';
 import validateOneOptionForMultiSelect from 'utils/yup/validateOneOptionForMultiSelect';
+import validateOneStatementForMatrix from 'utils/yup/validateOneStatementForMatrix';
 
 import messages from '../messages';
 import { FormBuilderConfig } from '../utils';
@@ -117,6 +118,10 @@ const FormEdit = ({
           formatMessage(messages.emptyTitleMessage),
           { multiselect_image: formatMessage(messages.emptyImageOptionError) }
         ),
+        matrix_statements: validateOneStatementForMatrix(
+          formatMessage(messages.emptyStatementError),
+          formatMessage(messages.emptyTitleStatementMessage)
+        ),
         maximum: number(),
         linear_scale_label_1_multiloc: object(),
         linear_scale_label_2_multiloc: object(),
@@ -125,6 +130,10 @@ const FormEdit = ({
         linear_scale_label_5_multiloc: object(),
         linear_scale_label_6_multiloc: object(),
         linear_scale_label_7_multiloc: object(),
+        linear_scale_label_8_multiloc: object(),
+        linear_scale_label_9_multiloc: object(),
+        linear_scale_label_10_multiloc: object(),
+        linear_scale_label_11_multiloc: object(),
         required: boolean(),
         temp_id: string(),
         logic: validateLogic(formatMessage(messages.logicValidationError)),
@@ -185,6 +194,7 @@ const FormEdit = ({
 
   // Remove copy_from param on save to avoid overwriting a saved survey when reloading
   const [searchParams, setSearchParams] = useSearchParams();
+
   const resetCopyFrom = () => {
     if (searchParams.has('copy_from')) {
       searchParams.delete('copy_from');
@@ -265,7 +275,11 @@ const FormEdit = ({
           options: field.options || {},
           random_option_ordering: field.random_option_ordering,
         }),
-        ...(field.input_type === 'linear_scale' && {
+        ...(field.input_type === 'matrix_linear_scale' && {
+          matrix_statements: field.matrix_statements || {},
+        }),
+        ...((field.input_type === 'linear_scale' ||
+          field.input_type === 'matrix_linear_scale') && {
           linear_scale_label_1_multiloc:
             field.linear_scale_label_1_multiloc || {},
           linear_scale_label_2_multiloc:
@@ -280,6 +294,14 @@ const FormEdit = ({
             field.linear_scale_label_6_multiloc || {},
           linear_scale_label_7_multiloc:
             field.linear_scale_label_7_multiloc || {},
+          linear_scale_label_8_multiloc:
+            field.linear_scale_label_8_multiloc || {},
+          linear_scale_label_9_multiloc:
+            field.linear_scale_label_9_multiloc || {},
+          linear_scale_label_10_multiloc:
+            field.linear_scale_label_10_multiloc || {},
+          linear_scale_label_11_multiloc:
+            field.linear_scale_label_11_multiloc || {},
           maximum: field.maximum?.toString() || '5',
         }),
       }));

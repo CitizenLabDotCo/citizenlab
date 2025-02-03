@@ -67,6 +67,7 @@ import LinearScaleControl, {
   linearScaleControlTester,
 } from './LinearScaleControl';
 import MapControl, { mapControlTester } from './MapInput/MapControl';
+import MatrixControl, { matrixControlTester } from './MatrixControl';
 import MultiSelectCheckboxControl, {
   multiSelectCheckboxControlTester,
 } from './MultiSelectCheckboxControl';
@@ -120,6 +121,8 @@ export {
   MultiSelectCheckboxControl,
   rankingControlTester,
   RankingControl,
+  matrixControlTester,
+  MatrixControl,
   multiSelectCheckboxControlTester,
   ImageMultichoiceControl,
   imageMultichoiceControlTester,

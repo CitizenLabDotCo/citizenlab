@@ -1,4 +1,5 @@
 import useCustomFieldOptions from 'api/custom_field_options/useCustomFieldOptions';
+import useCustomFieldStatements from 'api/custom_field_statements/useCustomFieldStatements';
 
 import { ICustomFieldsParameters, IFlatCustomField } from './types';
 import useRawCustomFields from './useRawCustomFields';
@@ -12,6 +13,12 @@ const useCustomFields = ({
   const result = useRawCustomFields({ projectId, phaseId, inputTypes, copy });
 
   const options = useCustomFieldOptions({
+    projectId,
+    phaseId,
+    customFields: result.data,
+  });
+
+  const statements = useCustomFieldStatements({
     projectId,
     phaseId,
     customFields: result.data,
@@ -31,6 +38,18 @@ const useCustomFields = ({
         );
       });
 
+      const statementsForCustomField = statements.filter((statement) => {
+        const relationshipStatementIds =
+          customField.relationships.matrix_statements?.data.map(
+            (statement) => statement.id
+          );
+
+        return (
+          statement.data?.data.id &&
+          relationshipStatementIds?.includes(statement.data.data.id)
+        );
+      });
+
       return {
         ...customField,
         ...customField.attributes,
@@ -40,6 +59,15 @@ const useCustomFields = ({
         // TODO: Fix this the next time the file is edited.
         // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
         map_config_id: customField.relationships?.map_config?.data?.id,
+        matrix_statements:
+          statementsForCustomField.length > 0
+            ? statementsForCustomField.map((statement) => ({
+                id: statement.data?.data.id,
+                title_multiloc:
+                  statement.data?.data.attributes.title_multiloc || {},
+                temp_id: statement.data?.data.attributes.temp_id,
+              }))
+            : [],
         options:
           optionsForCustomField.length > 0
             ? optionsForCustomField.map((option) => ({

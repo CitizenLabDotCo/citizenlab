@@ -21,6 +21,10 @@ module MultiTenancy
           linear_scale_label_5_multiloc
           linear_scale_label_6_multiloc
           linear_scale_label_7_multiloc
+          linear_scale_label_8_multiloc
+          linear_scale_label_9_multiloc
+          linear_scale_label_10_multiloc
+          linear_scale_label_11_multiloc
           select_count_enabled
           maximum_select_count
           minimum_select_count

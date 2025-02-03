@@ -259,6 +259,8 @@ RSpec.describe SurveyResultsGeneratorService do
     )
   end
 
+  let_it_be(:matrix_linear_scale_field) { create(:custom_field_matrix_linear_scale, resource: form) }
+
   let_it_be(:gender_user_custom_field) do
     create(:custom_field_gender, :with_options)
   end
@@ -293,7 +295,11 @@ RSpec.describe SurveyResultsGeneratorService do
         line_field.key => { type: 'LineString', coordinates: [[1.1, 2.2], [3.3, 4.4]] },
         polygon_field.key => { type: 'Polygon', coordinates: [[[1.1, 2.2], [3.3, 4.4], [5.5, 6.6], [1.1, 2.2]]] },
         linear_scale_field.key => 3,
-        number_field.key => 42
+        number_field.key => 42,
+        matrix_linear_scale_field.key => {
+          'send_more_animals_to_space' => 1,
+          'ride_bicycles_more_often' => 3
+        }
       },
       idea_files: [idea_file1, idea_file2],
       author: female_user
@@ -310,7 +316,10 @@ RSpec.describe SurveyResultsGeneratorService do
         point_field.key => { type: 'Point', coordinates: [11.22, 33.44] },
         line_field.key => { type: 'LineString', coordinates: [[1.2, 2.3], [3.4, 4.5]] },
         polygon_field.key => { type: 'Polygon', coordinates: [[[1.2, 2.3], [3.4, 4.5], [5.6, 6.7], [1.2, 2.3]]] },
-        linear_scale_field.key => 4
+        linear_scale_field.key => 4,
+        matrix_linear_scale_field.key => {
+          'send_more_animals_to_space' => 1
+        }
       },
       author: male_user
     )
@@ -323,7 +332,10 @@ RSpec.describe SurveyResultsGeneratorService do
         multiselect_field.key => %w[cat dog],
         select_field.key => 'other',
         "#{select_field.key}_other" => 'Austin',
-        multiselect_image_field.key => ['house']
+        multiselect_image_field.key => ['house'],
+        matrix_linear_scale_field.key => {
+          'ride_bicycles_more_often' => 3
+        }
       },
       author: female_user
     )
@@ -337,7 +349,11 @@ RSpec.describe SurveyResultsGeneratorService do
         select_field.key => 'other',
         ranking_field.key => %w[by_bike by_foot by_train],
         "#{select_field.key}_other" => 'Miami',
-        multiselect_image_field.key => ['house']
+        multiselect_image_field.key => ['house'],
+        matrix_linear_scale_field.key => {
+          'send_more_animals_to_space' => 3,
+          'ride_bicycles_more_often' => 4
+        }
       },
       author: male_user
     )
@@ -358,7 +374,11 @@ RSpec.describe SurveyResultsGeneratorService do
       phases: phases_of_inputs,
       custom_field_values: {
         select_field.key => 'other',
-        "#{select_field.key}_other" => 'Seattle'
+        "#{select_field.key}_other" => 'Seattle',
+        matrix_linear_scale_field.key => {
+          'send_more_animals_to_space' => 4,
+          'ride_bicycles_more_often' => 4
+        }
       },
       author: male_user
     )
@@ -836,6 +856,69 @@ RSpec.describe SurveyResultsGeneratorService do
           )
           expect(result).to match grouped_linear_scale_results
         end
+      end
+    end
+
+    describe 'matrix_linear_scale field' do
+      let(:expected_result_matrix_linear_scale) do
+        {
+          customFieldId: matrix_linear_scale_field.id,
+          inputType: 'matrix_linear_scale',
+          question: {
+            'en' => 'Please indicate how strong you agree or disagree with the following statements.'
+          },
+          required: false,
+          grouped: false,
+          totalResponseCount: 27,
+          questionResponseCount: 5,
+          multilocs: {
+            answer: {
+              1 => { title_multiloc: { 'en' => '1 - Strongly disagree', 'fr-FR' => '1', 'nl-NL' => '1' } },
+              2 => { title_multiloc: { 'en' => '2', 'fr-FR' => '2', 'nl-NL' => '2' } },
+              3 => { title_multiloc: { 'en' => '3', 'fr-FR' => '3', 'nl-NL' => '3' } },
+              4 => { title_multiloc: { 'en' => '4', 'fr-FR' => '4', 'nl-NL' => '4' } },
+              5 => { title_multiloc: { 'en' => '5 - Strongly agree', 'fr-FR' => '5', 'nl-NL' => '5' } }
+            }
+          },
+          linear_scales: {
+            'send_more_animals_to_space' => {
+              question: {
+                'en' => 'We should send more animals into space'
+              },
+              questionResponseCount: 4,
+              answers: [
+                { answer: 5, count: 0, percentage: 0.0 },
+                { answer: 4, count: 1, percentage: 0.25 },
+                { answer: 3, count: 1, percentage: 0.25 },
+                { answer: 2, count: 0, percentage: 0.0 },
+                { answer: 1, count: 2, percentage: 0.5 },
+                { answer: nil, count: 23 }
+              ]
+            },
+            'ride_bicycles_more_often' => {
+              question: {
+                'en' => 'We should ride our bicycles more often'
+              },
+              questionResponseCount: 4,
+              answers: [
+                { answer: 5, count: 0, percentage: 0.0 },
+                { answer: 4, count: 2, percentage: 0.5 },
+                { answer: 3, count: 2, percentage: 0.5 },
+                { answer: 2, count: 0, percentage: 0.0 },
+                { answer: 1, count: 0, percentage: 0.0 },
+                { answer: nil, count: 23 }
+              ]
+            }
+          }
+        }
+      end
+
+      it 'returns the results for a matrix linear scale field' do
+        expect(generated_results[:results][14]).to match expected_result_matrix_linear_scale
+      end
+
+      it 'returns a single result for a linear scale field' do
+        expect(generator.generate_results(field_id: matrix_linear_scale_field.id)).to match expected_result_matrix_linear_scale
       end
     end
 

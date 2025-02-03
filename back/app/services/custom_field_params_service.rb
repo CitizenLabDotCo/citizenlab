@@ -57,6 +57,8 @@ class CustomFieldParamsService
       %i[id content name]
     when 'html_multiloc', 'multiline_text_multiloc', 'text_multiloc'
       CL2_SUPPORTED_LOCALES
+    when 'matrix_linear_scale'
+      custom_field.matrix_statements.pluck(:key).map(&:to_sym)
     end
   end
 

@@ -88,6 +88,18 @@ class UiSchemaGeneratorService < FieldVisitorService
       ui_field[:options][:linear_scale_label5] = multiloc_service.t(field.linear_scale_label_5_multiloc)
       ui_field[:options][:linear_scale_label6] = multiloc_service.t(field.linear_scale_label_6_multiloc)
       ui_field[:options][:linear_scale_label7] = multiloc_service.t(field.linear_scale_label_7_multiloc)
+      ui_field[:options][:linear_scale_label8] = multiloc_service.t(field.linear_scale_label_8_multiloc)
+      ui_field[:options][:linear_scale_label9] = multiloc_service.t(field.linear_scale_label_9_multiloc)
+      ui_field[:options][:linear_scale_label10] = multiloc_service.t(field.linear_scale_label_10_multiloc)
+      ui_field[:options][:linear_scale_label11] = multiloc_service.t(field.linear_scale_label_11_multiloc)
+    end
+  end
+
+  def visit_matrix_linear_scale(field)
+    visit_linear_scale(field).tap do |ui_field|
+      ui_field[:options][:statements] = field.matrix_statements.map do |statement|
+        { key: statement.key, label: multiloc_service.t(statement.title_multiloc) }
+      end
     end
   end
 
