@@ -754,6 +754,7 @@
   "app.components.formBuilder.randomizeToolTip": "جوابات کی ترتیب فی صارف بے ترتیب ہو جائے گی۔",
   "app.components.formBuilder.range": "رینج",
   "app.components.formBuilder.ranking": "درجہ بندی",
+  "app.components.formBuilder.rating": "درجہ بندی",
   "app.components.formBuilder.removeAnswer": "جواب ہٹا دیں۔",
   "app.components.formBuilder.required": "درکار ہے۔",
   "app.components.formBuilder.requiredToggleLabel": "اس سوال کا جواب ضروری بنائیں",
