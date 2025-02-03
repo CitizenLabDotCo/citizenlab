@@ -1078,6 +1078,7 @@
   "app.containers.Admin.projects.project.survey.formResults.exportGeoJSONTooltip2": "Export the responses to this question as a GeoJSON file. For each GeoJSON Feature, all of the related respondent's survey responses will be listed in that Feature's 'properties' object.",
   "app.containers.Admin.projects.project.survey.formResults.hideDetails": "Hide details",
   "app.containers.Admin.projects.project.survey.formResults.rank": "#{rank}",
+  "app.containers.Admin.projects.project.survey.formResults.respondentsTooltip": "{respondentCount, plural, no {{respondentCount} respondents} one {{respondentCount} respondent} other {{respondentCount} respondents}}",
   "app.containers.Admin.projects.project.survey.formResults.viewDetails": "View details",
   "app.containers.Admin.projects.project.survey.formResults.xChoices": "{numberChoices, plural, no {{numberChoices} choices} one {{numberChoices} choice} other {{numberChoices} choices}}",
   "app.containers.Admin.projects.project.survey.heatMap": "Heat map",
