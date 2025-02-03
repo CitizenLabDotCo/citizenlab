@@ -1078,6 +1078,7 @@
   "app.containers.Admin.projects.project.survey.formResults.exportGeoJSONTooltip2": "Exporteer de reacties op deze vraag als een GeoJSON-bestand. Voor elke GeoJSON Feature worden alle vragenlijst-reacties van de betreffende respondent weergegeven in het object 'properties' van die Feature.",
   "app.containers.Admin.projects.project.survey.formResults.hideDetails": "Details verbergen",
   "app.containers.Admin.projects.project.survey.formResults.rank": "#{rank}",
+  "app.containers.Admin.projects.project.survey.formResults.respondentsTooltip": "{respondentCount, plural, no {{respondentCount} respondenten} one {{respondentCount} respondent} other {{respondentCount} respondenten}}",
   "app.containers.Admin.projects.project.survey.formResults.viewDetails": "Bekijk details",
   "app.containers.Admin.projects.project.survey.formResults.xChoices": "{numberChoices, plural, no {{numberChoices} keuzes} one {{numberChoices} keuze} other {{numberChoices} keuzes}}",
   "app.containers.Admin.projects.project.survey.heatMap": "Heat map",
