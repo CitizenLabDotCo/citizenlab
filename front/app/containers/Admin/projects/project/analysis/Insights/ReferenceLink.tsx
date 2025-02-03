@@ -31,6 +31,39 @@ const StyledLink = styled(Link)<{ isActive: boolean }>`
     }`}
 `;
 
+const referenceDisplayValue = (input, customField, localize) => {
+  const titleMultiloc = input?.data.attributes.title_multiloc;
+  if (titleMultiloc && Object.keys(titleMultiloc).length > 0) {
+    return localize(titleMultiloc);
+  }
+
+  const customFieldKey = customField?.data.attributes.key;
+  if (!customFieldKey) {
+    return null;
+  }
+  if (customField?.data.attributes.input_type === 'select') {
+    if (
+      input?.data.attributes.custom_field_values?.[customFieldKey] === 'other'
+    ) {
+      return input?.data.attributes.custom_field_values?.[
+        `${customFieldKey}_other`
+      ];
+    }
+  }
+  if (customField?.data.attributes.input_type === 'multiselect') {
+    if (
+      input?.data.attributes.custom_field_values?.[customFieldKey].includes(
+        'other'
+      )
+    ) {
+      return input?.data.attributes.custom_field_values?.[
+        `${customFieldKey}_other`
+      ];
+    }
+  }
+  return input?.data.attributes.custom_field_values?.[customFieldKey];
+};
+
 const ReferenceLink = ({
   match,
   analysisId,
@@ -46,7 +79,6 @@ const ReferenceLink = ({
 }) => {
   const { pathname } = useLocation();
 
-  const localize = useLocalize();
   const { data: analysis } = useAnalysis(analysisId);
   const { data: input } = useAnalysisInput(analysisId, match);
   // TODO: Fix this the next time the file is edited.
@@ -57,28 +89,24 @@ const ReferenceLink = ({
     phaseId,
     customFieldId: mainQuestion,
   });
-
-  const titleMultiloc = input?.data.attributes.title_multiloc;
-  const customFieldKey = customField?.data.attributes.key;
-  const mainQuestionResponse =
-    customFieldKey &&
-    // TODO: Fix this the next time the file is edited.
-    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-    input?.data.attributes.custom_field_values?.[customFieldKey];
-
+  const mainQuestionResponse = referenceDisplayValue(
+    input,
+    customField,
+    useLocalize()
+  );
   const isAnalysisScreen = pathname.includes('/analysis/');
+
   return (
     <Tooltip
       content={
         <Box>
-          <p>{localize(titleMultiloc)}</p>
           <p>{mainQuestionResponse}</p>
         </Box>
       }
       zIndex={9999}
       placement="top"
       theme="light"
-      disabled={!titleMultiloc && !mainQuestionResponse}
+      disabled={!mainQuestionResponse}
     >
       <Box display="inline">
         <StyledLink
