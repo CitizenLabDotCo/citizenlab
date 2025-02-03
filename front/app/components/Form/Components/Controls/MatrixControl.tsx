@@ -28,7 +28,7 @@ import ErrorDisplay from '../ErrorDisplay';
 import { getSubtextElement } from './controlUtils';
 import messages from './messages';
 
-const StickyTd = styled(Td)`
+const StickyTh = styled(Th)`
   background: ${(props) =>
     RGBAtoRGB(props.theme.colors.tenantPrimaryLighten95, 0.05)};
 
@@ -138,7 +138,7 @@ const MatrixControl = ({
   return (
     <>
       <FormLabel
-        htmlFor={sanitizeForClassname(id)}
+        htmlFor={errors ? sanitizeForClassname(id) : undefined}
         labelValue={getLabel(uischema, schema, path)}
         optional={!required}
         subtextValue={getSubtextElement(uischema.options?.description)}
@@ -153,10 +153,10 @@ const MatrixControl = ({
           aria-labelledby={`matrix-question-label-${id}`}
         >
           <Thead>
-            <Th minWidth="84px" />
+            <Td minWidth="84px" />
             {columnsFromSchema.map((column, index) => {
               return (
-                <Th minWidth="84px" key={index}>
+                <Th minWidth="84px" key={index} scope="col">
                   <Box title={column} display="flex" justifyContent="center">
                     <Text
                       textAlign="center"
@@ -176,11 +176,12 @@ const MatrixControl = ({
             {statements.map((statement, index) => {
               return (
                 <Tr key={index}>
-                  <StickyTd>
+                  <StickyTh scope="row">
                     <Text m="4px" color="tenantPrimary">
                       {statement?.label}
                     </Text>
-                  </StickyTd>
+                  </StickyTh>
+
                   {columnsFromSchema.map((_, columnIndex) => {
                     return (
                       <StyledTd key={`radio-${columnIndex}-${index}`}>

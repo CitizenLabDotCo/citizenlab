@@ -127,7 +127,7 @@ const RankingControl = ({
   return (
     <>
       <FormLabel
-        htmlFor={sanitizeForClassname(id)}
+        htmlFor={errors ? sanitizeForClassname(id) : undefined}
         labelValue={getLabel(uischema, schema, path)}
         optional={!required}
         subtextValue={getSubtextElement(uischema.options?.description)}
@@ -147,10 +147,10 @@ const RankingControl = ({
             }}
           >
             <Drop id="droppable" type="rankOptions">
+              <Text m="0px" aria-hidden color="tenantPrimary">
+                {formatMessage(messages.rankingInstructions)}
+              </Text>
               <Ul aria-labelledby={`ranking-question-label-${id}`}>
-                <Text m="4px 0px" aria-hidden color="tenantPrimary">
-                  {formatMessage(messages.rankingInstructions)}
-                </Text>
                 {options.map((option: IOption, index: number) => (
                   <li key={option.value} aria-roledescription="sortable">
                     <Drag

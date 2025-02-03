@@ -12,6 +12,7 @@ import IconTooltip from '../IconTooltip';
 
 export interface Props extends BoxProps {
   colSpan?: number;
+  scope?: 'col' | 'row';
   clickable?: boolean;
   sortDirection?: 'ascending' | 'descending';
   infoTooltip?: React.ReactChild;
