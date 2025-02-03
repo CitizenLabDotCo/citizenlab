@@ -449,6 +449,10 @@ resource 'Idea Custom Fields' do
             linear_scale_label_5_multiloc: {},
             linear_scale_label_6_multiloc: {},
             linear_scale_label_7_multiloc: { en: 'Furthest' },
+            linear_scale_label_8_multiloc: {},
+            linear_scale_label_9_multiloc: {},
+            linear_scale_label_10_multiloc: {},
+            linear_scale_label_11_multiloc: {},
             maximum: nil
           },
           id: an_instance_of(String),
