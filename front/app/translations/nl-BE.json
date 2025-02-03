@@ -754,6 +754,7 @@
   "app.components.formBuilder.randomizeToolTip": "De volgorde van de antwoorden wordt per gebruiker willekeurig gemaakt",
   "app.components.formBuilder.range": "Bereik",
   "app.components.formBuilder.ranking": "Rangschikking",
+  "app.components.formBuilder.rating": "Beoordeling",
   "app.components.formBuilder.removeAnswer": "Antwoord verwijderen",
   "app.components.formBuilder.required": "Vereist",
   "app.components.formBuilder.requiredToggleLabel": "Maak het beantwoorden van deze vraag verplicht",
