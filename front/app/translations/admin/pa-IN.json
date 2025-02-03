@@ -1078,6 +1078,7 @@
   "app.containers.Admin.projects.project.survey.formResults.exportGeoJSONTooltip2": "ਇਸ ਸਵਾਲ ਦੇ ਜਵਾਬਾਂ ਨੂੰ ਇੱਕ GeoJSON ਫ਼ਾਈਲ ਵਜੋਂ ਨਿਰਯਾਤ ਕਰੋ। ਹਰੇਕ GeoJSON ਵਿਸ਼ੇਸ਼ਤਾ ਲਈ, ਸਬੰਧਤ ਉੱਤਰਦਾਤਾ ਦੇ ਸਾਰੇ ਸਰਵੇਖਣ ਜਵਾਬਾਂ ਨੂੰ ਉਸ ਵਿਸ਼ੇਸ਼ਤਾ ਦੇ 'ਵਿਸ਼ੇਸ਼ਤਾ' ਵਸਤੂ ਵਿੱਚ ਸੂਚੀਬੱਧ ਕੀਤਾ ਜਾਵੇਗਾ।",
   "app.containers.Admin.projects.project.survey.formResults.hideDetails": "ਵੇਰਵੇ ਲੁਕਾਓ",
   "app.containers.Admin.projects.project.survey.formResults.rank": "#{rank}",
+  "app.containers.Admin.projects.project.survey.formResults.respondentsTooltip": "{respondentCount, plural, no {{respondentCount} ਉੱਤਰਦਾਤਾ} one {{respondentCount} ਉੱਤਰਦਾਤਾ} other {{respondentCount} ਉੱਤਰਦਾਤਾ}}",
   "app.containers.Admin.projects.project.survey.formResults.viewDetails": "ਵੇਰਵੇ ਵੇਖੋ",
   "app.containers.Admin.projects.project.survey.formResults.xChoices": "{numberChoices, plural, no {{numberChoices} ਚੋਣਾਂ} one {{numberChoices} ਵਿਕਲਪ} other {{numberChoices} ਚੋਣਾਂ}}",
   "app.containers.Admin.projects.project.survey.heatMap": "ਗਰਮੀ ਦਾ ਨਕਸ਼ਾ",
