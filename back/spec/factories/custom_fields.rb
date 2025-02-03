@@ -293,6 +293,7 @@ FactoryBot.define do
           'en' => 'Please indicate how strong you agree or disagree with the following statements.'
         }
       end
+      description_multiloc { {} }
       input_type { 'matrix_linear_scale' }
       maximum { 5 }
       linear_scale_label_1_multiloc do

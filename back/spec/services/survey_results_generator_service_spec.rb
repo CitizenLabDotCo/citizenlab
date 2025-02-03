@@ -416,7 +416,7 @@ RSpec.describe SurveyResultsGeneratorService do
       end
 
       it 'returns the correct fields and structure' do
-        expect(generated_results[:results].count).to eq 15
+        expect(generated_results[:results].count).to eq 16
         expect(generated_results[:results].pluck(:customFieldId)).not_to include disabled_multiselect_field.id
       end
     end
@@ -867,10 +867,15 @@ RSpec.describe SurveyResultsGeneratorService do
           question: {
             'en' => 'Please indicate how strong you agree or disagree with the following statements.'
           },
+          description: {},
           required: false,
           grouped: false,
+          hidden: false,
+          logic: {},
           totalResponseCount: 27,
           questionResponseCount: 5,
+          pageNumber: nil,
+          questionNumber: 15,
           multilocs: {
             answer: {
               1 => { title_multiloc: { 'en' => '1 - Strongly disagree', 'fr-FR' => '1', 'nl-NL' => '1' } },
@@ -914,10 +919,11 @@ RSpec.describe SurveyResultsGeneratorService do
       end
 
       it 'returns the results for a matrix linear scale field' do
-        expect(generated_results[:results][14]).to match expected_result_matrix_linear_scale
+        expect(generated_results[:results][15]).to match expected_result_matrix_linear_scale
       end
 
       it 'returns a single result for a linear scale field' do
+        expected_result_matrix_linear_scale[:questionNumber] = nil # Question number is null when requesting a single result
         expect(generator.generate_results(field_id: matrix_linear_scale_field.id)).to match expected_result_matrix_linear_scale
       end
     end
