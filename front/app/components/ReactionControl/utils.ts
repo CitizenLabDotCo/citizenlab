@@ -1,12 +1,8 @@
 import { IIdeaData } from 'api/ideas/types';
-import { ParticipationMethod } from 'api/phases/types';
 
 import { isFixableByAuthentication } from 'utils/actionDescriptors';
 
-export const showIdeaReactions = (
-  idea: IIdeaData,
-  participationMethod?: ParticipationMethod
-) => {
+export const showIdeationReactions = (idea: IIdeaData) => {
   const reactingActionDescriptor =
     idea.attributes.action_descriptors.reacting_idea;
   const reactingFutureEnabled = !!(
@@ -17,13 +13,11 @@ export const showIdeaReactions = (
   const likesCount = idea.attributes.likes_count;
   const dislikesCount = idea.attributes.dislikes_count;
   return (
-    participationMethod !== 'voting' &&
-    participationMethod !== 'proposals' &&
-    (reactingActionDescriptor.enabled ||
-      isFixableByAuthentication(reactingActionDescriptor.disabled_reason) ||
-      cancellingEnabled ||
-      reactingFutureEnabled ||
-      likesCount > 0 ||
-      dislikesCount > 0)
+    reactingActionDescriptor.enabled ||
+    isFixableByAuthentication(reactingActionDescriptor.disabled_reason) ||
+    cancellingEnabled ||
+    reactingFutureEnabled ||
+    likesCount > 0 ||
+    dislikesCount > 0
   );
 };

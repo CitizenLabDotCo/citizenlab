@@ -14,7 +14,7 @@ import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import FollowUnfollow from 'components/FollowUnfollow';
 import ReactionControl from 'components/ReactionControl';
-import { showIdeaReactions } from 'components/ReactionControl/utils';
+import { showIdeationReactions } from 'components/ReactionControl/utils';
 
 import { getVotingMethodConfig } from 'utils/configs/votingMethodConfig';
 
@@ -62,11 +62,6 @@ const RightColumnDesktop = ({
 
   const participationMethod = phase?.attributes.participation_method;
 
-  const showIdeaReactionControl = showIdeaReactions(
-    idea.data,
-    participationMethod
-  );
-
   const showInteractionsContainer =
     ideaIsInParticipationContext || commentingEnabled || followEnabled;
   return (
@@ -86,7 +81,6 @@ const RightColumnDesktop = ({
             background={colors.background}
             mb="12px"
           >
-            {/* Participation method is 'proposals' */}
             {participationMethod === 'proposals' && (
               <>
                 <Box
@@ -99,13 +93,17 @@ const RightColumnDesktop = ({
                 <Divider />
               </>
             )}
-            {/* Participation method is 'ideation' */}
-            {showIdeaReactionControl && (
-              <>
-                <ReactionControl styleType="shadow" ideaId={ideaId} size="4" />
-                <Divider />
-              </>
-            )}
+            {participationMethod === 'ideation' &&
+              showIdeationReactions(idea.data) && (
+                <>
+                  <ReactionControl
+                    styleType="shadow"
+                    ideaId={ideaId}
+                    size="4"
+                  />
+                  <Divider />
+                </>
+              )}
             {/* Participation method is 'voting' */}
             {/* TODO: Fix this the next time the file is edited. */}
             {/* eslint-disable-next-line @typescript-eslint/no-unnecessary-condition */}
