@@ -39,7 +39,10 @@ describe('Project description builder navigation', () => {
   it('navigates to project description builder when edit project description link clicked', () => {
     cy.visit(`/admin/projects/${projectId}/settings/description`);
     cy.acceptCookies();
-    cy.get('#e2e-project-description-builder-link').click({ force: true });
+
+    cy.get('#e2e-project-description-builder-link')
+      .wait(1000)
+      .click({ force: true });
     cy.url().should(
       'eq',
       `${
@@ -67,6 +70,7 @@ describe('Project description builder navigation', () => {
       }/en/admin/project-description-builder/projects/${projectId}/description`
     );
     cy.get('#e2e-go-back-button').should('exist');
+    cy.get('#e2e-content-builder-frame').should('exist');
     cy.get('#e2e-go-back-button').click({ force: true });
     cy.url().should(
       'eq',

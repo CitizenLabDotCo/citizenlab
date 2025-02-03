@@ -67,7 +67,7 @@ describe('Project description builder Iframe component', () => {
     cy.visit(
       `/admin/project-description-builder/projects/${projectId}/description`
     );
-    cy.get('.e2e-content-builder-iframe-component').click('center', {
+    cy.get('.e2e-content-builder-iframe-component').wait(1000).click('center', {
       force: true,
     });
 
