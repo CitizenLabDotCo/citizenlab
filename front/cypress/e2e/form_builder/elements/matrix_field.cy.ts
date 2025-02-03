@@ -51,12 +51,47 @@ describe('Form builder matrix component', () => {
     cy.get('#e2e-option-input-0').type('Statement 1 question 2', {
       force: true,
     });
+    cy.get('[data-cy="e2e-add-answer"]').click();
+    cy.get('#e2e-option-input-1').type('Statement 2 question 2', {
+      force: true,
+    });
+
+    // Set the field to required & save
+    cy.get('#e2e-required-toggle').find('input').click({ force: true });
     cy.get('form').submit();
 
+    // Visit the survey front office
     cy.visit(`/projects/${projectSlug}/surveys/new?phase_id=${phaseId}`);
+    cy.acceptCookies();
+
+    // Verify that the matrix question is displayed
     cy.contains('Question title 2').should('exist');
     cy.contains('Statement 1 question 2').should('exist');
     cy.get('#e2e-matrix-control').should('exist');
+
+    // Try going to the next page without filling in the survey
+    cy.get('[data-cy="e2e-next-page"]').click();
+
+    // verify that an error is shown and that we stay on the page
+    cy.get('.e2e-error-message').should('exist');
+    cy.url().should(
+      'eq',
+      `${
+        Cypress.config().baseUrl
+      }/en/projects/${projectSlug}/surveys/new?phase_id=${phaseId}`
+    );
+
+    // Fill out one statement, but not the second
+    cy.get('[id$="-0-radio"]').first().click({ force: true });
+
+    // verify that an error is shown and that we stay on the page
+    cy.get('.e2e-error-message').should('exist');
+    cy.url().should(
+      'eq',
+      `${
+        Cypress.config().baseUrl
+      }/en/projects/${projectSlug}/surveys/new?phase_id=${phaseId}`
+    );
   });
 
   after(() => {

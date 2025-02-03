@@ -49,11 +49,27 @@ describe('Form builder ranking component', () => {
     cy.get('[data-cy="e2e-ranking"]').click();
     cy.get('#e2e-title-multiloc').type('Question title 2', { force: true });
     cy.get('#e2e-option-input-0').type('Option 1 question 2', { force: true });
+
+    // Set the field to required
+    cy.get('#e2e-required-toggle').find('input').click({ force: true });
+
     cy.get('form').submit();
     cy.visit(`/projects/${projectSlug}/surveys/new?phase_id=${phaseId}`);
     cy.contains('Question title 2').should('exist');
     cy.contains('Option 1 question 2').should('exist');
     cy.get('#e2e-ranking-control').should('exist');
+
+    // Try going to the next page without filling in the survey
+    cy.get('[data-cy="e2e-next-page"]').click();
+
+    // verify that an error is shown and that we stay on the page
+    cy.get('.e2e-error-message').should('exist');
+    cy.url().should(
+      'eq',
+      `${
+        Cypress.config().baseUrl
+      }/en/projects/${projectSlug}/surveys/new?phase_id=${phaseId}`
+    );
   });
 
   after(() => {
