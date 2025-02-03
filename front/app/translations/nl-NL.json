@@ -655,6 +655,7 @@
   "app.components.form.controls.valueOutOfTotalWithMaxExplanation": "{value} van de {total}, waarbij {maxValue} {maxLabel} is",
   "app.components.form.error": "Fout",
   "app.components.form.locationGoogleUnavailable": "Kan locatieveld geleverd door google maps niet laden.",
+  "app.components.form.progressBarLabel": "Voortgang onderzoek",
   "app.components.form.submit": "Verzenden",
   "app.components.form.submitApiError": "Er was een probleem met het verzenden van het formulier. Controleer op eventuele fouten en probeer het opnieuw.",
   "app.components.form.verifiedBlocked": "Je kan dit veld niet aanpassen omdat het geverifieerde informatie bevat",
