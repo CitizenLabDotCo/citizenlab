@@ -259,49 +259,49 @@ RSpec.describe SurveyResultsGeneratorService do
     it 'returns logic information for single select options' do
       select_result = results[1]
       expect(select_result[:logic][:answer][:option1]).to match(
-                                                            { id: 'SELECT_1_OPTION_1', nextPageNumber: 3, numQuestionsSkipped: 3 }
-                                                          )
+        { id: 'SELECT_1_OPTION_1', nextPageNumber: 3, numQuestionsSkipped: 3 }
+      )
       expect(select_result[:logic][:answer][:option3]).to match(
-                                                            { id: 'SELECT_1_OPTION_3', nextPageNumber: 4, numQuestionsSkipped: 5 }
-                                                          )
+        { id: 'SELECT_1_OPTION_3', nextPageNumber: 4, numQuestionsSkipped: 5 }
+      )
     end
 
     it 'returns logic information for a page linking to survey end' do
       page_result = results[2]
       expect(page_result[:logic]).to match(
-                                       { nextPageNumber: 999, numQuestionsSkipped: 3 }
-                                     )
+        { nextPageNumber: 999, numQuestionsSkipped: 3 }
+      )
     end
 
     it 'returns logic information for a linear scale field' do
       linear_scale_result = results[4]
       expect(linear_scale_result[:logic][:answer][:'2']).to match(
-                                                              { id: 'LINEAR_SCALE_OPTION_2', nextPageNumber: 3, numQuestionsSkipped: 0 }
-                                                            )
+        { id: 'LINEAR_SCALE_OPTION_2', nextPageNumber: 3, numQuestionsSkipped: 0 }
+      )
       expect(linear_scale_result[:logic][:answer][:'3']).to match(
-                                                              { id: 'LINEAR_SCALE_OPTION_3', nextPageNumber: 4, numQuestionsSkipped: 2 }
-                                                            )
+        { id: 'LINEAR_SCALE_OPTION_3', nextPageNumber: 4, numQuestionsSkipped: 2 }
+      )
       expect(linear_scale_result[:logic][:answer][:no_answer]).to match(
-                                                                    { id: 'LINEAR_SCALE_OPTION_no_answer', nextPageNumber: 999, numQuestionsSkipped: 3 }
-                                                                  )
+        { id: 'LINEAR_SCALE_OPTION_no_answer', nextPageNumber: 999, numQuestionsSkipped: 3 }
+      )
     end
 
     it 'returns logic information for a multiselect field' do
       multiselect_result = results[5]
       expect(multiselect_result[:logic][:answer][:option3]).to match(
-                                                                 { id: 'MULTISELECT_1_OPTION_3', nextPageNumber: 4, numQuestionsSkipped: 2 }
-                                                               )
+        { id: 'MULTISELECT_1_OPTION_3', nextPageNumber: 4, numQuestionsSkipped: 2 }
+      )
       expect(multiselect_result[:logic][:answer][:no_answer]).to match(
-                                                                   { id: 'MULTISELECT_1_OPTION_no_answer', nextPageNumber: 999, numQuestionsSkipped: 3 }
-                                                                 )
+        { id: 'MULTISELECT_1_OPTION_no_answer', nextPageNumber: 999, numQuestionsSkipped: 3 }
+      )
     end
 
     context 'when filtering by logic_ids' do
       it 'flags no fields as hidden if no logic IDs are provided' do
         results = generator.send(:add_logic_to_results, results_without_logic, [])
         expect(results.pluck(:hidden)).to eq(
-                                            [false, false, false, false, false, false, false, false, false, false, false]
-                                          )
+          [false, false, false, false, false, false, false, false, false, false, false]
+        )
       end
 
       it 'flags fields as hidden when a page ID is provided' do
@@ -309,8 +309,8 @@ RSpec.describe SurveyResultsGeneratorService do
         results = generator.send(:add_logic_to_results, results_without_logic, logic_ids)
         hidden_field_ids = results.select { |r| r[:hidden] == true }.pluck(:customFieldId)
         expect(hidden_field_ids).to eq(
-                                      %w[PAGE_3 SELECT_2 TEXT_3 PAGE_4 TEXT_4]
-                                    )
+          %w[PAGE_3 SELECT_2 TEXT_3 PAGE_4 TEXT_4]
+        )
       end
 
       it 'flags fields as hidden when select option IDs are passed in' do
@@ -318,8 +318,8 @@ RSpec.describe SurveyResultsGeneratorService do
         results = generator.send(:add_logic_to_results, results_without_logic, logic_ids)
         hidden_field_ids = results.select { |r| r[:hidden] == true }.pluck(:customFieldId)
         expect(hidden_field_ids).to eq(
-                                      %w[PAGE_2 TEXT_FIELD_1 LINEAR_SCALE_1 MULTISELECT_1 PAGE_3 SELECT_2 TEXT_3]
-                                    )
+          %w[PAGE_2 TEXT_FIELD_1 LINEAR_SCALE_1 MULTISELECT_1 PAGE_3 SELECT_2 TEXT_3]
+        )
       end
 
       it 'flags fields as hidden when linear scale IDs are passed in' do
@@ -332,15 +332,15 @@ RSpec.describe SurveyResultsGeneratorService do
         results = generator.send(:add_logic_to_results, results_without_logic, logic_ids)
         hidden_field_ids = results.select { |r| r[:hidden] == true }.pluck(:customFieldId)
         expect(hidden_field_ids).to eq(
-                                      %w[PAGE_3 SELECT_2 TEXT_3]
-                                    )
+          %w[PAGE_3 SELECT_2 TEXT_3]
+        )
 
         logic_ids = %w[LINEAR_SCALE_OPTION_2 LINEAR_SCALE_OPTION_no_answer]
         results = generator.send(:add_logic_to_results, results_without_logic, logic_ids)
         hidden_field_ids = results.select { |r| r[:hidden] == true }.pluck(:customFieldId)
         expect(hidden_field_ids).to eq(
-                                      %w[PAGE_3 SELECT_2 TEXT_3 PAGE_4 TEXT_4]
-                                    )
+          %w[PAGE_3 SELECT_2 TEXT_3 PAGE_4 TEXT_4]
+        )
       end
 
       it 'flags fields as hidden when multiselect IDs are passed in' do
@@ -348,15 +348,15 @@ RSpec.describe SurveyResultsGeneratorService do
         results = generator.send(:add_logic_to_results, results_without_logic, logic_ids)
         hidden_field_ids = results.select { |r| r[:hidden] == true }.pluck(:customFieldId)
         expect(hidden_field_ids).to eq(
-                                      %w[PAGE_3 SELECT_2 TEXT_3]
-                                    )
+          %w[PAGE_3 SELECT_2 TEXT_3]
+        )
 
         logic_ids = %w[MULTISELECT_1_OPTION_no_answer]
         results = generator.send(:add_logic_to_results, results_without_logic, logic_ids)
         hidden_field_ids = results.select { |r| r[:hidden] == true }.pluck(:customFieldId)
         expect(hidden_field_ids).to eq(
-                                      %w[PAGE_3 SELECT_2 TEXT_3 PAGE_4 TEXT_4]
-                                    )
+          %w[PAGE_3 SELECT_2 TEXT_3 PAGE_4 TEXT_4]
+        )
       end
 
       it 'flags fields as hidden when a mix of option IDs and page IDs are passed in' do
@@ -364,8 +364,8 @@ RSpec.describe SurveyResultsGeneratorService do
         results = generator.send(:add_logic_to_results, results_without_logic, logic_ids)
         hidden_field_ids = results.select { |r| r[:hidden] == true }.pluck(:customFieldId)
         expect(hidden_field_ids).to eq(
-                                      %w[PAGE_2 TEXT_FIELD_1 LINEAR_SCALE_1 MULTISELECT_1 PAGE_3 SELECT_2 TEXT_3 PAGE_4 TEXT_4]
-                                    )
+          %w[PAGE_2 TEXT_FIELD_1 LINEAR_SCALE_1 MULTISELECT_1 PAGE_3 SELECT_2 TEXT_3 PAGE_4 TEXT_4]
+        )
       end
     end
   end
@@ -555,17 +555,17 @@ RSpec.describe SurveyResultsGeneratorService do
 
       it 'does not change the totalResponsesCount' do
         expect(results_without_num_answered.pluck(:totalResponseCount)).to eq(
-                                                                             [5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5]
-                                                                           )
+          [5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5]
+        )
       end
 
       it 'does not reduce the count of not_answered responses' do
         expect(linear_scale_result[:answers].find { |a| a[:answer].nil? }).to eq({
-                                                                                   answer: nil, count: 3
-                                                                                 })
+          answer: nil, count: 3
+        })
         expect(multiselect_result[:answers].find { |a| a[:answer].nil? }).to eq({
-                                                                                  answer: nil, count: 3
-                                                                                })
+          answer: nil, count: 3
+        })
       end
     end
 
@@ -603,17 +603,17 @@ RSpec.describe SurveyResultsGeneratorService do
 
       it 'changes the totalResponsesCount when fields are not shown through logic' do
         expect(results.pluck(:totalResponseCount)).to eq(
-                                                        [5, 5, 4, 4, 4, 2, 2, 1, 1, 2, 2]
-                                                      )
+          [5, 5, 4, 4, 4, 2, 2, 1, 1, 2, 2]
+        )
       end
 
       it 'reduces the count of not_answered responses when fields are not shown through logic' do
         expect(linear_scale_result[:answers].find { |a| a[:answer].nil? }).to eq({
-                                                                                   answer: nil, count: 2
-                                                                                 })
+          answer: nil, count: 2
+        })
         expect(multiselect_result[:answers].find { |a| a[:answer].nil? }).to eq({
-                                                                                  answer: nil, count: 2
-                                                                                })
+          answer: nil, count: 2
+        })
       end
 
       it 'removes the temporary attributes used for calculating logic' do
@@ -659,17 +659,17 @@ RSpec.describe SurveyResultsGeneratorService do
 
       it 'changes the totalResponsesCount when fields are not shown through logic' do
         expect(results.pluck(:totalResponseCount)).to eq(
-                                                        [5, 5, 3, 3, 3, 3, 3, 5, 5, 5, 5]
-                                                      )
+          [5, 5, 3, 3, 3, 3, 3, 5, 5, 5, 5]
+        )
       end
 
       it 'reduces the count of not_answered responses when fields are not shown through logic' do
         expect(linear_scale_result[:answers].find { |a| a[:answer].nil? }).to eq({
-                                                                                   answer: nil, count: 1
-                                                                                 })
+          answer: nil, count: 1
+        })
         expect(multiselect_result[:answers].find { |a| a[:answer].nil? }).to eq({
-                                                                                  answer: nil, count: 2
-                                                                                })
+          answer: nil, count: 2
+        })
       end
 
       it 'removes the temporary attributes used for calculating logic' do
@@ -728,17 +728,17 @@ RSpec.describe SurveyResultsGeneratorService do
 
       it 'changes the totalResponsesCount when fields are not shown through logic' do
         expect(results.pluck(:totalResponseCount)).to eq(
-                                                        [5, 5, 4, 4, 4, 1, 1, 2, 2, 4, 4]
-                                                      )
+          [5, 5, 4, 4, 4, 1, 1, 2, 2, 4, 4]
+        )
       end
 
       it 'reduces the count of not_answered responses when fields are not shown through logic' do
         expect(linear_scale_result[:answers].find { |a| a[:answer].nil? }).to eq({
-                                                                                   answer: nil, count: 1
-                                                                                 })
+          answer: nil, count: 1
+        })
         expect(multiselect_result[:answers].find { |a| a[:answer].nil? }).to eq({
-                                                                                  answer: nil, count: 2
-                                                                                })
+          answer: nil, count: 2
+        })
       end
 
       it 'removes the temporary attributes used for calculating logic' do
