@@ -137,7 +137,7 @@ class CustomField < ApplicationRecord
   end
 
   def supports_linear_scale?
-    %w[linear_scale matrix_linear_scale].include?(input_type)
+    %w[linear_scale matrix_linear_scale rating].include?(input_type)
   end
 
   def supports_matrix_statements?
