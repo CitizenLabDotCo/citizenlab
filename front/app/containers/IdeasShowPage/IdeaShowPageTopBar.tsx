@@ -10,7 +10,7 @@ import { lighten } from 'polished';
 import { useSearchParams } from 'react-router-dom';
 import styled from 'styled-components';
 
-import useIdeaById from 'api/ideas/useIdeaById';
+import { IIdeaData } from 'api/ideas/types';
 import useAuthUser from 'api/me/useAuthUser';
 import { IPhaseData } from 'api/phases/types';
 import { isIdeaInParticipationContext } from 'api/phases/utils';
@@ -59,35 +59,35 @@ const Left = styled.div`
 const Right = styled.div``;
 
 interface Props {
-  ideaId?: string;
-  projectId: string;
+  idea: IIdeaData;
   deselectIdeaOnMap?: () => void;
   className?: string;
-  phase?: IPhaseData;
+  phase: IPhaseData;
 }
 
 const IdeaShowPageTopBar = ({
-  ideaId,
-  projectId,
+  idea,
   className,
   deselectIdeaOnMap,
   phase,
 }: Props) => {
+  const ideaId = idea.id;
+  const projectId = idea.relationships.project.data.id;
   const { data: authUser } = useAuthUser();
   const { data: project } = useProjectById(projectId);
-  const { data: idea } = useIdeaById(ideaId);
   const isSmallerThanTablet = useBreakpoint('tablet');
 
   const [searchParams] = useSearchParams();
   const [goBack] = useState(searchParams.get('go_back'));
 
-  const votingConfig = getVotingMethodConfig(phase?.attributes.voting_method);
+  const votingConfig = getVotingMethodConfig(phase.attributes.voting_method);
 
-  const ideaIsInParticipationContext =
-    phase && idea ? isIdeaInParticipationContext(idea, phase) : undefined;
+  const ideaIsInParticipationContext = isIdeaInParticipationContext(
+    idea,
+    phase
+  );
 
-  const isProposalPhase =
-    phase?.attributes.participation_method === 'proposals';
+  const isProposalPhase = phase.attributes.participation_method === 'proposals';
 
   useEffect(() => {
     removeSearchParams(['go_back']);
@@ -139,6 +139,7 @@ const IdeaShowPageTopBar = ({
         </Left>
         <Right>
           {/* Only visible if not voting */}
+          {phase.attributes.participation_method !== 'voting' && ( // To reduce bias we want to hide the reactions during voting methods
           {phase?.attributes.participation_method !== 'voting' && ( // To reduce bias we want to hide the reactions during voting methods
             <ReactionControl
               size="1"
@@ -149,7 +150,7 @@ const IdeaShowPageTopBar = ({
             />
           )}
           {/* Only visible if voting */}
-          {ideaId && phase && ideaIsInParticipationContext && (
+          {ideaIsInParticipationContext && (
             <Box mr="8px">
               {votingConfig?.getIdeaPageVoteInput({
                 ideaId,
