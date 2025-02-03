@@ -1078,6 +1078,7 @@
   "app.containers.Admin.projects.project.survey.formResults.exportGeoJSONTooltip2": "Eksportuokite šio klausimo atsakymus kaip GeoJSON failą. Kiekvienos GeoJSON savybės visi susiję respondento apklausos atsakymai bus išvardyti tos savybės objekte \"savybės\".",
   "app.containers.Admin.projects.project.survey.formResults.hideDetails": "Paslėpti informaciją",
   "app.containers.Admin.projects.project.survey.formResults.rank": "#{rank}",
+  "app.containers.Admin.projects.project.survey.formResults.respondentsTooltip": "{respondentCount, plural, no {{respondentCount} respondentai} one {{respondentCount} respondentas} other {~{respondentCount} respondentai}}.",
   "app.containers.Admin.projects.project.survey.formResults.viewDetails": "Peržiūrėti informaciją",
   "app.containers.Admin.projects.project.survey.formResults.xChoices": "{numberChoices, plural, no {{numberChoices} pasirinkimai} one {{numberChoices} pasirinkimas} other {~{numberChoices} pasirinkimai}}",
   "app.containers.Admin.projects.project.survey.heatMap": "Šilumos žemėlapis",
