@@ -754,6 +754,7 @@
   "app.components.formBuilder.randomizeToolTip": "Kolejność odpowiedzi będzie losowa dla każdego użytkownika",
   "app.components.formBuilder.range": "Zakres",
   "app.components.formBuilder.ranking": "Ranking",
+  "app.components.formBuilder.rating": "Ocena",
   "app.components.formBuilder.removeAnswer": "Usunąć odpowiedź",
   "app.components.formBuilder.required": "Wymagane",
   "app.components.formBuilder.requiredToggleLabel": "Uczyń odpowiedź na to pytanie wymaganą",
