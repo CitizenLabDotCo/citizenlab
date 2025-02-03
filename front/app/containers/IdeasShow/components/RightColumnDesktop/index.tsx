@@ -86,6 +86,7 @@ const RightColumnDesktop = ({
             background={colors.background}
             mb="12px"
           >
+            {/* Participation method is 'proposals' */}
             {participationMethod === 'proposals' && (
               <>
                 <Box
@@ -98,13 +99,14 @@ const RightColumnDesktop = ({
                 <Divider />
               </>
             )}
-            {/* Doesn't show when participation method is proposals */}
+            {/* Participation method is 'ideation' */}
             {showIdeaReactionControl && (
               <>
                 <ReactionControl styleType="shadow" ideaId={ideaId} size="4" />
                 <Divider />
               </>
             )}
+            {/* Participation method is 'voting' */}
             {/* TODO: Fix this the next time the file is edited. */}
             {/* eslint-disable-next-line @typescript-eslint/no-unnecessary-condition */}
             {phase && ideaIsInParticipationContext && votingConfig && (
