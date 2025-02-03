@@ -57,6 +57,8 @@ import {
   CosponsorsControl,
   cosponsorsControlTester,
   rankingControlTester,
+  MatrixControl,
+  matrixControlTester,
   RankingControl,
 } from 'components/Form/Components/Controls';
 
@@ -69,6 +71,7 @@ const commonRenderers = [
   { tester: SingleSelectEnumControlTester, renderer: SingleSelectEnumControl },
   { tester: multiSelectControlTester, renderer: MultiSelectControl },
   { tester: rankingControlTester, renderer: RankingControl },
+  { tester: matrixControlTester, renderer: MatrixControl },
   { tester: WYSIWYGControlTester, renderer: WYSIWYGControl },
   { tester: descriptionControlTester, renderer: DescriptionControl },
   { tester: topicsControlTester, renderer: TopicsControl },

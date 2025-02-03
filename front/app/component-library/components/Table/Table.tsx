@@ -14,11 +14,15 @@ interface InnerBorders {
   bodyCells?: boolean;
 }
 
-const StyledBox = styled(Box)<{ innerBorders?: InnerBorders }>`
+const StyledBox = styled(Box)<{
+  innerBorders?: InnerBorders;
+  borderSpacing?: string;
+}>`
   text-align: left;
   font-size: ${fontSizes.s}px;
   color: ${colors.primary};
   border-collapse: separate;
+  border-spacing: ${({ borderSpacing }) => borderSpacing || '0'};
 
   thead > tr > th {
     border-bottom: 1px solid ${colors.grey200};
@@ -63,9 +67,9 @@ const StyledBox = styled(Box)<{ innerBorders?: InnerBorders }>`
     `
       : ''}
 `;
-
 export interface Props extends BoxProps {
   innerBorders?: InnerBorders;
+  borderSpacing?: string;
 }
 
 const Table = ({ children, innerBorders, ...otherProps }: Props) => (

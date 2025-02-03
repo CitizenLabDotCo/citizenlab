@@ -53,7 +53,6 @@ const LinearScaleControl = ({
         });
       }
       // If we don't have a label but we do have a maximum, read out the current value & maximum label
-      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       else if (uischema.options?.[`linear_scale_label${maximum}`]) {
         return formatMessage(messages.valueOutOfTotalWithMaxExplanation, {
           value,

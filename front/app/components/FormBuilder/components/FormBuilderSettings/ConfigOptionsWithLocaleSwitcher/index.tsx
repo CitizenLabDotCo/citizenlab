@@ -35,7 +35,14 @@ import { generateTempId, isNilOrError } from 'utils/helperUtils';
 
 import messages from './messages';
 import SelectFieldOption, { OptionImageType } from './SelectFieldOption';
-import { allowMultilinePaste, updateFormOnMultlinePaste } from './utils';
+import {
+  getAddButtonText,
+  getFieldLabelText,
+  ListType,
+  allowMultilinePaste,
+  updateFormOnMultlinePaste,
+  inputTypesNoOther,
+} from './utils';
 
 interface Props {
   name: string;
@@ -44,6 +51,7 @@ interface Props {
   allowDeletingAllOptions?: boolean;
   platformLocale: SupportedLocale;
   inputType: ICustomFieldInputType;
+  listType?: ListType;
 }
 
 const ConfigSelectWithLocaleSwitcher = ({
@@ -51,6 +59,7 @@ const ConfigSelectWithLocaleSwitcher = ({
   name,
   locales,
   allowDeletingAllOptions = false,
+  listType = 'default',
   platformLocale,
   inputType,
 }: Props) => {
@@ -70,14 +79,13 @@ const ConfigSelectWithLocaleSwitcher = ({
   );
   const { formatMessage } = useIntl();
   const selectOptions = useWatch({ name });
+
   const imageIds = selectOptions
-    .filter((selectOption) => selectOption.image_id)
-    .map((selectOption) => selectOption.image_id);
+    .filter((selectOption) => selectOption?.image_id)
+    .map((selectOption) => selectOption?.image_id);
   const customFieldOptionImages = useCustomFieldOptionImages(imageIds);
   const prevImageQueries = usePrevious(customFieldOptionImages);
   const [optionImages, setOptionImages] = useState<OptionImageType>();
-
-  const showOtherOptionToggle = inputType !== 'ranking';
 
   useEffect(() => {
     if (
@@ -271,7 +279,7 @@ const ConfigSelectWithLocaleSwitcher = ({
                   marginBottom="12px"
                 >
                   <Box marginTop="4px" marginRight="8px">
-                    <Label>{formatMessage(messages.fieldLabel)}</Label>
+                    <Label>{formatMessage(getFieldLabelText(listType))}</Label>
                   </Box>
                   <Box>
                     <LocaleSwitcher
@@ -357,7 +365,7 @@ const ConfigSelectWithLocaleSwitcher = ({
                   buttonStyle="secondary-outlined"
                   data-cy="e2e-add-answer"
                   onClick={addOption}
-                  text={formatMessage(messages.addAnswer)}
+                  text={formatMessage(getAddButtonText(listType))}
                   type="button"
                 />
 
@@ -379,7 +387,7 @@ const ConfigSelectWithLocaleSwitcher = ({
                   />
                 )}
 
-                {showOtherOptionToggle && (
+                {!inputTypesNoOther.includes(inputType) && (
                   <Box mt="24px" data-cy="e2e-other-option-toggle">
                     <Toggle
                       label={
