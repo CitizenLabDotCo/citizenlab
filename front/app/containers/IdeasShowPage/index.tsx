@@ -69,8 +69,9 @@ const IdeasShowPage = () => {
 
   const [searchParams] = useSearchParams();
   const phaseContext = searchParams.get('phase_context');
+  const phase = getCurrentPhase(phases?.data);
 
-  if (!project) return null;
+  if (!project || !phase) return null;
 
   if (status === 'loading') {
     return (
@@ -88,20 +89,19 @@ const IdeasShowPage = () => {
     return <PageNotFound />;
   }
 
-  const phase = getCurrentPhase(phases?.data);
   const isIdeaInCurrentPhase =
     idea.data.relationships.phases.data.filter(
-      (iteratedPhase) => iteratedPhase.id === phase?.id
+      (iteratedPhase) => iteratedPhase.id === phase.id
     ).length > 0;
   const showCTABar =
-    isIdeaInCurrentPhase && phase?.attributes.participation_method === 'voting';
+    isIdeaInCurrentPhase && phase.attributes.participation_method === 'voting';
 
   return (
     <>
       <IdeaMeta ideaId={idea.data.id} />
       <VotingContext
         projectId={project.data.id}
-        phaseId={phaseContext || phase?.id}
+        phaseId={phaseContext || phase.id}
       >
         <Box background={colors.white}>
           {isSmallerThanTablet ? (
