@@ -754,6 +754,7 @@
   "app.components.formBuilder.randomizeToolTip": "Rekkefølgen på svarene vil bli randomisert per bruker",
   "app.components.formBuilder.range": "Rekkevidde",
   "app.components.formBuilder.ranking": "Rangering",
+  "app.components.formBuilder.rating": "Vurdering",
   "app.components.formBuilder.removeAnswer": "Fjern svar",
   "app.components.formBuilder.required": "Nødvendig",
   "app.components.formBuilder.requiredToggleLabel": "Gjør det obligatorisk å svare på dette spørsmålet",
