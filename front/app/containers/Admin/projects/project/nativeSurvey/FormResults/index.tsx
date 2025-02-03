@@ -21,8 +21,8 @@ const FormResults = () => {
   };
   const { formatMessage } = useIntl();
   const { data: project } = useProjectById(projectId);
-  const [filterLogicIds, setFilterLogicIds] = useState(
-    [] as string[] // Array of page or option ids to pass to the API
+  const [filterLogicIds, setFilterLogicIds] = useState<string[]>(
+    [] // Array of page or option ids to pass to the API
   );
   const { data: formResults, isLoading: isLoadingResults } = useFormResults({
     phaseId,
