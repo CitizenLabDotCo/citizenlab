@@ -179,7 +179,7 @@ export interface IInternalCommentNotificationData
     initiating_user_slug: string | null;
     post_slug: string | null;
     post_title_multiloc: Multiloc;
-    post_id: string;
+    idea_id: string;
     internal_comment_id: string;
     project_id: string | null;
   };

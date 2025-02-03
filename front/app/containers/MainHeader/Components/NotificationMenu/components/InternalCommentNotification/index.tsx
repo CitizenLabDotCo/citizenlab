@@ -34,8 +34,8 @@ const getNotificationMessage = (
 };
 
 const InternalCommentNotification = memo<Props>(({ notification }) => {
-  const { project_id, post_id, internal_comment_id } = notification.attributes;
-  const linkTo: RouteType | null = `/admin/projects/${project_id}/ideas/${post_id}#${internal_comment_id}`;
+  const { project_id, idea_id, internal_comment_id } = notification.attributes;
+  const linkTo: RouteType | null = `/admin/projects/${project_id}/ideas/${idea_id}#${internal_comment_id}`;
 
   // TODO: Fix this the next time the file is edited.
   // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
