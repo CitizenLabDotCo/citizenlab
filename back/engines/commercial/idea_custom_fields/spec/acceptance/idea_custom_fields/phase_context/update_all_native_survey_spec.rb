@@ -509,7 +509,7 @@ resource 'Idea Custom Fields' do
         field_to_update = create(
           :custom_field_matrix_linear_scale,
           resource: custom_form,
-          linear_scale_label_5_multiloc: { 'en' => 'Furthest' }
+          linear_scale_label_11_multiloc: { 'en' => 'Furthest' }
         )
         update_statement_id, delete_statement_id = field_to_update.matrix_statement_ids
 
@@ -522,8 +522,8 @@ resource 'Idea Custom Fields' do
             {
               id: field_to_update.id,
               title_multiloc: { en: 'Updated field' },
-              linear_scale_label_5_multiloc: { 'en' => 'Farthest' },
-              maximum: 5,
+              linear_scale_label_11_multiloc: { 'en' => 'Farthest' },
+              maximum: 11,
               matrix_statements: [
                 {
                   title_multiloc: { en: 'Inserted statement' }
@@ -546,8 +546,8 @@ resource 'Idea Custom Fields' do
           attributes: hash_including(
             input_type: 'matrix_linear_scale',
             title_multiloc: { en: 'Updated field' },
-            linear_scale_label_5_multiloc: { en: 'Farthest' },
-            maximum: 5
+            linear_scale_label_11_multiloc: { en: 'Farthest' },
+            maximum: 11
           ),
           id: an_instance_of(String),
           type: 'custom_field',
