@@ -754,6 +754,7 @@
   "app.components.formBuilder.randomizeToolTip": "D'Uerdnung vun den Äntwerten gëtt pro Benotzer zoufälleg",
   "app.components.formBuilder.range": "Beräich",
   "app.components.formBuilder.ranking": "Ranking",
+  "app.components.formBuilder.rating": "Bewäertung",
   "app.components.formBuilder.removeAnswer": "Äntwert läschen",
   "app.components.formBuilder.required": "Erfuerderlech",
   "app.components.formBuilder.requiredToggleLabel": "D’Beäntwerte vun dëser Fro erfuerderlech maachen",
