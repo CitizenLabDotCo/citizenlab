@@ -136,8 +136,8 @@ class Project < ApplicationRecord
 
   scope :not_in_draft_folder, lambda {
     joins(:admin_publication)
-      .joins('LEFT OUTER JOIN admin_publications parents ON admin_publications.parent_id = parents.id')
-      .where("admin_publications.parent_id IS NULL OR parents.publication_status != 'draft'")
+      .joins('LEFT OUTER JOIN admin_publications AS parent_pubs ON admin_publications.parent_id = parent_pubs.id')
+      .where("admin_publications.parent_id IS NULL OR parent_pubs.publication_status != 'draft'")
   }
 
   alias project_id id
