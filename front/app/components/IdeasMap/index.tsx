@@ -142,9 +142,11 @@ const IdeasMap = memo<Props>(
     const [clickedMapLocation, setClickedMapLocation] =
       useState<GeoJSON.Point | null>(null);
 
-    const selectedIdea = searchParams.get('idea_map_id');
+    const selectedIdeaId = searchParams.get('idea_map_id');
 
-    const ideaData = ideaMarkers?.data.find((idea) => idea.id === selectedIdea);
+    const ideaData = ideaMarkers?.data.find(
+      (idea) => idea.id === selectedIdeaId
+    );
 
     const setSelectedIdea = useCallback((ideaId: string | null) => {
       if (ideaId) {
@@ -295,11 +297,11 @@ const IdeasMap = memo<Props>(
           setEsriMapview(mapView);
 
           // If an idea was selected in the URL params, move map to that idea
-          if (selectedIdea) {
+          if (selectedIdeaId) {
             // TODO: Fix this the next time the file is edited.
             // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
             const point = ideaMarkers?.data?.find(
-              (idea) => idea.id === selectedIdea
+              (idea) => idea.id === selectedIdeaId
             )?.attributes.location_point_geojson;
 
             if (!point) return;
@@ -310,7 +312,7 @@ const IdeasMap = memo<Props>(
           }
         }
       },
-      [esriMapView, selectedIdea, ideaMarkers]
+      [esriMapView, selectedIdeaId, ideaMarkers]
     );
 
     const onMapClick = useCallback(
@@ -560,7 +562,7 @@ const IdeasMap = memo<Props>(
             {isMobileOrSmaller && (
               <CSSTransition
                 classNames="animation"
-                in={!!selectedIdea}
+                in={!!selectedIdeaId}
                 timeout={300}
               >
                 <Box>
@@ -601,7 +603,7 @@ const IdeasMap = memo<Props>(
                   projectId={projectId}
                   phaseId={phaseId}
                   onSelectIdea={onSelectIdeaFromList}
-                  selectedIdea={selectedIdea}
+                  selectedIdeaId={selectedIdeaId}
                   inputFiltersProps={inputFiltersProps}
                 />
               </Box>
@@ -615,7 +617,7 @@ const IdeasMap = memo<Props>(
               projectId={projectId}
               phaseId={phaseId}
               onSelectIdea={onSelectIdeaFromList}
-              selectedIdea={selectedIdea}
+              selectedIdeaId={selectedIdeaId}
             />
           </Box>
         )}
