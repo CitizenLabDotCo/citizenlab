@@ -1,9 +1,14 @@
 import React from 'react';
 
 import { media } from '@citizenlab/cl2-component-library';
+import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 
+import useAuthUser from 'api/me/useAuthUser';
 import useUserSurveySubmissions from 'api/user_survey_submissions/useUserSurveySubmissions';
+import useUserBySlug from 'api/users/useUserBySlug';
+
+import Unauthorized from 'components/Unauthorized';
 
 import SurveySubmissionCard from './SurveySubmissionCard';
 
@@ -18,7 +23,21 @@ const Container = styled.div`
 `;
 
 const Surveys = () => {
+  const { data: authUser } = useAuthUser();
+
+  const { userSlug } = useParams();
+  const { data: user } = useUserBySlug(userSlug);
+
   const { data: surveySubmissions } = useUserSurveySubmissions();
+
+  if (!authUser) {
+    return <Unauthorized />;
+  }
+
+  if (!user || user.data.id !== authUser.data.id) {
+    return null;
+  }
+
   return (
     <Container>
       {surveySubmissions?.data.map((ideaMini) => (

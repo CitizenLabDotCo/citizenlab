@@ -15,6 +15,7 @@ export const determineAnswerType = (
     lineResponses,
     polygonResponses,
     numberResponses,
+    linear_scales,
   } = result;
 
   if (average_rankings) {
@@ -22,6 +23,9 @@ export const determineAnswerType = (
   }
   if (['rating', 'linear_scale'].includes(result.inputType)) {
     return 'rating';
+  }
+  if (linear_scales) {
+    return 'matrix_linear_scale';
   }
   if (answers) {
     return 'multiselect';

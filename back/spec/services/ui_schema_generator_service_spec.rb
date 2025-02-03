@@ -659,6 +659,37 @@ RSpec.describe UiSchemaGeneratorService do
     end
   end
 
+  describe '#visit_matrix_linear_scale' do
+    let(:field) { create(:custom_field_matrix_linear_scale, key: field_key) }
+
+    it 'returns the schema for the given field' do
+      expect(generator.visit_matrix_linear_scale(field)).to eq({
+        type: 'Control',
+        scope: "#/properties/#{field_key}",
+        label: 'Please indicate how strong you agree or disagree with the following statements.',
+        options: {
+          description: 'Which councils are you attending in our city?',
+          input_type: 'matrix_linear_scale',
+          statements: [
+            { key: 'send_more_animals_to_space', label: 'We should send more animals into space' },
+            { key: 'ride_bicycles_more_often', label: 'We should ride our bicycles more often' }
+          ],
+          linear_scale_label1: 'Strongly disagree',
+          linear_scale_label2: '',
+          linear_scale_label3: '',
+          linear_scale_label4: '',
+          linear_scale_label5: 'Strongly agree',
+          linear_scale_label6: '',
+          linear_scale_label7: '',
+          linear_scale_label8: '',
+          linear_scale_label9: '',
+          linear_scale_label10: '',
+          linear_scale_label11: ''
+        }
+      })
+    end
+  end
+
   describe '#visit_page' do
     let(:field) { create(:custom_field_page) }
 

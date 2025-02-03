@@ -79,6 +79,10 @@ class TestVisitor < FieldVisitorService
     'linear_scale from visitor'
   end
 
+  def visit_matrix_linear_scale(_field)
+    'matrix_linear_scale from visitor'
+  end
+
   def visit_rating(_field)
     'rating from visitor'
   end
@@ -114,6 +118,15 @@ end
 
 RSpec.describe CustomField do
   let(:field) { described_class.new input_type: 'not_important_for_this_test' }
+
+  describe 'factories' do
+    it 'create a valid matrix linear scale field' do
+      field = create(:custom_field_matrix_linear_scale)
+
+      expect(field).to be_valid
+      expect(field.matrix_statements).to be_present
+    end
+  end
 
   describe '#logic?' do
     it 'returns true when there is logic' do

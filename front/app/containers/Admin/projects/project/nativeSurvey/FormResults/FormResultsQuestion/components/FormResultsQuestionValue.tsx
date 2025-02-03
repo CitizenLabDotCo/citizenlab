@@ -11,6 +11,7 @@ import SurveyBarsVertical from 'components/admin/Graphs/SurveyBars/SurveyBarsVer
 import LineLocationQuestion from '../MappingQuestions/LineLocationQuestion';
 import PointLocationQuestion from '../MappingQuestions/PointLocationQuestion';
 import PolygonLocationQuestion from '../MappingQuestions/PolygonLocationQuestion';
+import MatrixQuestion from '../MatrixQuestion';
 import NumberQuestion from '../NumberQuestion';
 import RankingQuestion from '../RankingQuestion';
 import TextQuestion from '../TextQuestion';
@@ -45,6 +46,8 @@ const FormResultQuestionValue = ({ result }: FormResultQuestionValueProps) => {
           colorScheme={[colors.primary]}
         />
       );
+    case 'matrix_linear_scale':
+      return <MatrixQuestion result={result} />;
     case 'multiselect':
       return (
         <SurveyBars questionResult={result} colorScheme={[colors.primary]} />

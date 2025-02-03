@@ -13,6 +13,7 @@ export type IIdeaCustomFieldInputType =
   | 'select'
   | 'multiselect'
   | 'ranking'
+  | 'matrix_linear_scale'
   | 'checkbox'
   | 'date'
   | 'linear_scale'
@@ -60,6 +61,9 @@ export interface IIdeaCustomFieldData {
   relationships?: {
     custom_field_options: {
       data: IRelationship;
+    };
+    matrix_statements: {
+      data: IRelationship[];
     };
     current_ref_distribution: {
       data: IRelationship;

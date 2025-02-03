@@ -4,6 +4,11 @@ import { IOptionsType } from 'api/custom_fields/types';
 
 import { generateTempId } from 'utils/helperUtils';
 
+import messages from './messages';
+
+export type ListType = 'statement' | 'default';
+
+export const inputTypesNoOther = ['ranking', 'matrix_linear_scale'];
 interface AllowMultilinePasteParams {
   options: IOptionsType[];
   index: number;
@@ -77,4 +82,22 @@ const sanitizeLine = (line: string) => {
     ? trimmedLine.slice(1)
     : trimmedLine;
   return cleanedLine.trim();
+};
+
+export const getFieldLabelText = (listType: ListType) => {
+  switch (listType) {
+    case 'statement':
+      return messages.fieldLabelStatement;
+    default:
+      return messages.fieldLabel;
+  }
+};
+
+export const getAddButtonText = (listType: ListType) => {
+  switch (listType) {
+    case 'statement':
+      return messages.addStatement;
+    default:
+      return messages.addAnswer;
+  }
 };

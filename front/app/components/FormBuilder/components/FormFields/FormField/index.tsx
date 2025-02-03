@@ -15,6 +15,7 @@ import styled from 'styled-components';
 import {
   IFlatCustomField,
   IFlatCustomFieldWithIndex,
+  IMatrixStatementsType,
   IOptionsType,
 } from 'api/custom_fields/types';
 import useDuplicateMapConfig from 'api/map_config/useDuplicateMapConfig';
@@ -128,6 +129,7 @@ export const FormField = ({
       key: _key,
       code: _code,
       options,
+      matrix_statements,
       ...rest
     } = originalField;
 
@@ -135,6 +137,16 @@ export const FormField = ({
     if (options) {
       duplicatedOptions = options.map(
         ({ id: _optionId, temp_id: _optionalTempId, ...rest }) => ({
+          temp_id: generateTempId(),
+          ...rest,
+        })
+      );
+    }
+
+    let duplicatedStatements: IMatrixStatementsType[] = [];
+    if (matrix_statements) {
+      duplicatedStatements = matrix_statements.map(
+        ({ id: _statementId, temp_id: _optionalTempId, ...rest }) => ({
           temp_id: generateTempId(),
           ...rest,
         })
@@ -149,6 +161,9 @@ export const FormField = ({
       },
       ...(duplicatedOptions.length > 0
         ? { options: duplicatedOptions }
+        : undefined),
+      ...(duplicatedStatements.length > 0
+        ? { matrix_statements: duplicatedStatements }
         : undefined),
       isLocalOnly: true,
       title_multiloc: addCopyIndicatorToTitle(_title_multiloc),

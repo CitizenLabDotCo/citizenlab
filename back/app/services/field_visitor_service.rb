@@ -81,6 +81,10 @@ class FieldVisitorService
     default(field)
   end
 
+  def visit_matrix_linear_scale(field)
+    default(field)
+  end
+
   def visit_rating(field)
     default(field)
   end

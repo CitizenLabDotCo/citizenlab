@@ -8,6 +8,7 @@ import { GroupMode } from 'api/graph_data_units/requestTypes';
 import useLocalize from 'hooks/useLocalize';
 
 import InputType from 'containers/Admin/projects/project/nativeSurvey/FormResults/FormResultsQuestion/InputType';
+import MatrixQuestion from 'containers/Admin/projects/project/nativeSurvey/FormResults/FormResultsQuestion/MatrixQuestion';
 import RankingQuestion from 'containers/Admin/projects/project/nativeSurvey/FormResults/FormResultsQuestion/RankingQuestion';
 
 import Legend from 'components/admin/Graphs/Legend';
@@ -83,6 +84,12 @@ const SurveyQuestionResult = ({
               <RankingQuestion result={attributes} hideDetailsButton={true} />
             </Box>
           )}
+          {attributes.inputType === 'matrix_linear_scale' &&
+            !attributes.grouped && (
+              <Box>
+                <MatrixQuestion result={attributes} />
+              </Box>
+            )}
           <SurveyBarsVertical
             questionResult={attributes}
             colorScheme={DEFAULT_CATEGORICAL_COLORS}
