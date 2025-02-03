@@ -74,7 +74,7 @@ class SurveyResultsGeneratorService < FieldVisitorService
 
   def visit_matrix_linear_scale(field)
     core_field_attributes(field).merge({
-      multilocs: { answer: build_linear_scale_multilocs(field) },
+      multilocs: { answer: build_scaled_input_multilocs(field) },
       linear_scales: matrix_linear_scale_statements(field)
     })
   end
