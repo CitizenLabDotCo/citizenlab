@@ -1852,7 +1852,7 @@
   "app.containers.AdminPage.ProjectEdit.survey.rating": "Bewertung",
   "app.containers.AdminPage.ProjectEdit.survey.required2": "Erforderlich",
   "app.containers.AdminPage.ProjectEdit.survey.response": "{choiceCount, plural, no {Antworten} one {Antwort} other {Antworten}}",
-  "app.containers.AdminPage.ProjectEdit.survey.responseCount": "{choiceCount, plural, no {~ Antworten} one {~ Antwort} other {~ Antworten}}",
+  "app.containers.AdminPage.ProjectEdit.survey.responseCount": "{choiceCount, plural, no {# Antworten} one {# Antwort} other {# Antworten}}",
   "app.containers.AdminPage.ProjectEdit.survey.selectText2": "Multiple Choice - wählen Sie eins aus",
   "app.containers.AdminPage.ProjectEdit.survey.shapefile_upload": "Esri Shapefile hochladen",
   "app.containers.AdminPage.ProjectEdit.survey.successMessage2": "Umfrage erfolgreich gespeichert",
