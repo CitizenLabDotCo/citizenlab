@@ -409,7 +409,7 @@ resource 'Idea Custom Fields' do
               required: false,
               enabled: true,
               linear_scale_label_1_multiloc: { 'en' => 'Closest' },
-              linear_scale_label_7_multiloc: { 'en' => 'Furthest' },
+              linear_scale_label_11_multiloc: { 'en' => 'Furthest' },
               matrix_statements: [
                 {
                   title_multiloc: { en: 'Statement 1' }
@@ -448,11 +448,11 @@ resource 'Idea Custom Fields' do
             linear_scale_label_4_multiloc: {},
             linear_scale_label_5_multiloc: {},
             linear_scale_label_6_multiloc: {},
-            linear_scale_label_7_multiloc: { en: 'Furthest' },
+            linear_scale_label_7_multiloc: {},
             linear_scale_label_8_multiloc: {},
             linear_scale_label_9_multiloc: {},
             linear_scale_label_10_multiloc: {},
-            linear_scale_label_11_multiloc: {},
+            linear_scale_label_11_multiloc: { en: 'Furthest' },
             maximum: nil
           },
           id: an_instance_of(String),
