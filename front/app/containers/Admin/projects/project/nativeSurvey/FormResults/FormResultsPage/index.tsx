@@ -69,26 +69,27 @@ const FormResultsPage = ({
       <Title variant="h3" mt="12px" mb="12px">
         {pageTitle}
       </Title>
-      <Tooltip
-        disabled={totalResponseCount === totalSubmissions}
-        placement="bottom-start"
-        content={formatMessage(messages.resultsCountQuestionTooltip)}
-        theme="dark"
-      >
-        <Box display="flex">
+
+      <Box display="flex" width="40%">
+        <Tooltip
+          disabled={totalResponseCount === totalSubmissions}
+          placement="bottom-start"
+          content={formatMessage(messages.resultsCountQuestionTooltip)}
+          theme="dark"
+        >
           <Text variant="bodyS" color="textSecondary" mt="0" mb="4px">
             {`${questionResponseCount}/${totalResponseCount} ${formatMessage(
               messages.responses
             ).toLowerCase()}`}
           </Text>
-          <LogicIcon
-            logicFilterId={logic.nextPageNumber ? customFieldId : null}
-            logicConfig={logicConfig}
-            fieldLogic={logic}
-            type="page"
-          />
-        </Box>
-      </Tooltip>
+        </Tooltip>
+        <LogicIcon
+          logicFilterId={logic.nextPageNumber ? customFieldId : null}
+          logicConfig={logicConfig}
+          fieldLogic={logic}
+          type="page"
+        />
+      </Box>
     </Box>
   );
 };
