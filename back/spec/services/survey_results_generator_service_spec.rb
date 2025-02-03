@@ -1955,5 +1955,7 @@ RSpec.describe SurveyResultsGeneratorService do
     it 'removes the temporary attributes used for calculating logic' do
       expect(results[0].keys).not_to include(:key, :questionViewedCount)
     end
+
+    # TODO: JS - Check the speed of this method with a larger dataset
   end
 end
