@@ -19,6 +19,7 @@ import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 
 import useLocale from 'hooks/useLocale';
 
+import EsriMapMeta from './components/EsriMapMeta';
 import { configureMapView } from './config';
 import { InitialData } from './types';
 import { getDefaultBasemap, handleWebMapReferenceLayers } from './utils';
@@ -88,6 +89,8 @@ const EsriMap = ({
   const mapRef = useRef<HTMLDivElement | null>(null);
   const [updateMapViewConfig, setUpdateMapViewConfig] = useState(false);
   const [initialized, setInitialized] = useState(false);
+
+  const [esriApiKey, setEsriApiKey] = useState<string | undefined>(undefined);
 
   const mapRefAvailable = !!mapRef.current;
 
@@ -250,16 +253,19 @@ const EsriMap = ({
   }, [locale]);
 
   useEffect(() => {
-    // Set the Esri API key
-    const esriApiKey =
+    const apiKey =
       appConfig?.data.attributes.settings.esri_integration?.api_key;
-    if (esriApiKey) {
-      esriConfig.apiKey = esriApiKey;
+
+    // Set the Esri API key
+    if (apiKey) {
+      esriConfig.apiKey = apiKey;
+      setEsriApiKey(apiKey);
     }
   }, [appConfig?.data.attributes.settings.esri_integration?.api_key]);
 
   return (
     <>
+      {esriApiKey && <EsriMapMeta />}
       <MapContainer
         id={id}
         ref={mapRef}

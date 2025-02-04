@@ -25,6 +25,17 @@ resource 'Idea Custom Fields' do
       parameter :image_id, 'If the option has an image, the ID of the image', required: false
     end
 
+    let(:final_page) do
+      {
+        id: '1234',
+        key: 'survey_end',
+        title_multiloc: { 'en' => 'Final page' },
+        description_multiloc: { 'en' => 'Thank you for participating!' },
+        input_type: 'page',
+        page_layout: 'default'
+      }
+    end
+
     let(:context) { create(:native_survey_phase) }
     let!(:custom_form) { create(:custom_form, participation_context: context) }
     let(:phase_id) { context.id }
@@ -53,14 +64,15 @@ resource 'Idea Custom Fields' do
               title_multiloc: { 'en' => 'Updated field' },
               required: true,
               enabled: true
-            }
+            },
+            final_page
           ]
         }
         do_request request
 
         assert_status 200
         json_response = json_parse(response_body)
-        expect(json_response[:data].size).to eq 3
+        expect(json_response[:data].size).to eq 4
         expect(json_response[:data][1]).to match({
           attributes: {
             code: nil,
@@ -105,12 +117,12 @@ resource 'Idea Custom Fields' do
 
       example 'Destroy all fields' do
         create(:custom_field, resource: custom_form) # field to destroy
-        request = { custom_fields: [] }
+        request = { custom_fields: [final_page] }
         do_request request
 
         assert_status 200
         json_response = json_parse(response_body)
-        expect(json_response[:data].size).to eq 0
+        expect(json_response[:data].size).to eq 1
       end
 
       example 'Add a custom field with options, including an "other" option and delete a field with options' do
@@ -137,7 +149,8 @@ resource 'Idea Custom Fields' do
                   other: true
                 }
               ]
-            }
+            },
+            final_page
           ]
         }
         do_request request
@@ -147,7 +160,7 @@ resource 'Idea Custom Fields' do
 
         expect(CustomField.where(id: delete_field).count).to eq 0
         expect(CustomFieldOption.where(id: delete_options).count).to eq 0
-        expect(json_response[:data].size).to eq 2
+        expect(json_response[:data].size).to eq 3
         expect(json_response[:data][1]).to match({
           attributes: {
             code: nil,
@@ -242,7 +255,8 @@ resource 'Idea Custom Fields' do
                   title_multiloc: { en: 'Option 2' }
                 }
               ]
-            }
+            },
+            final_page
           ]
         }
         do_request request
@@ -250,7 +264,7 @@ resource 'Idea Custom Fields' do
         assert_status 200
         json_response = json_parse response_body
 
-        expect(json_response[:data].size).to eq 2
+        expect(json_response[:data].size).to eq 3
         expect(json_response[:data][1]).to match({
           attributes: {
             code: nil,
@@ -344,14 +358,15 @@ resource 'Idea Custom Fields' do
                   image_id: image2.id
                 }
               ]
-            }
+            },
+            final_page
           ]
         }
         do_request request
 
         assert_status 200
 
-        expect(CustomField.all.count).to eq 2
+        expect(CustomField.all.count).to eq 3
         expect(CustomFieldOption.all.count).to eq 2
         expect(CustomFieldOption.all.map { |c| c.image.id }).to match [image1.id, image2.id]
         expect(response_data[1]).to match({
@@ -418,15 +433,15 @@ resource 'Idea Custom Fields' do
                   title_multiloc: { en: 'Statement 2' }
                 }
               ]
-            }
+            },
+            final_page
           ]
         }
         do_request request
-
         assert_status 200
         json_response = json_parse response_body
 
-        expect(json_response[:data].size).to eq 2
+        expect(json_response[:data].size).to eq 3
         expect(json_response[:data][1]).to match({
           attributes: {
             code: nil,
@@ -533,7 +548,8 @@ resource 'Idea Custom Fields' do
                   title_multiloc: { en: 'Updated statement' }
                 }
               ]
-            }
+            },
+            final_page
           ]
         }
         do_request request
@@ -541,7 +557,7 @@ resource 'Idea Custom Fields' do
         assert_status 200
         json_response = json_parse response_body
 
-        expect(json_response[:data].size).to eq 2
+        expect(json_response[:data].size).to eq 3
         expect(json_response[:data][1]).to match({
           attributes: hash_including(
             input_type: 'matrix_linear_scale',
@@ -612,7 +628,8 @@ resource 'Idea Custom Fields' do
               description_multiloc: { 'en' => 'Topics field description' },
               required: false,
               enabled: true
-            }
+            },
+            final_page
           ]
         }
         do_request request
@@ -630,7 +647,8 @@ resource 'Idea Custom Fields' do
             {
               input_type: 'page',
               page_layout: 'default'
-            }
+            },
+            final_page
           ]
         }
         do_request request
@@ -638,6 +656,23 @@ resource 'Idea Custom Fields' do
         assert_status 422
         json_response = json_parse response_body
         expect(json_response).to eq({ :errors => { :form => [{ :error => 'stale_data' }] } })
+      end
+
+      example '[error] last custom field is not survey_end' do
+        custom_form.save!
+        request = {
+          custom_fields: [
+            {
+              input_type: 'page',
+              page_layout: 'default'
+            }
+          ]
+        }
+        do_request request
+
+        assert_status 422
+        json_response = json_parse response_body
+        expect(json_response).to eq({ :errors => { :form => [{ :error => 'no_end_page' }] } })
       end
 
       example 'Update linear_scale field' do
@@ -667,14 +702,15 @@ resource 'Idea Custom Fields' do
               linear_scale_label_9_multiloc: {},
               linear_scale_label_10_multiloc: {},
               linear_scale_label_11_multiloc: {}
-            }
+            },
+            final_page
           ]
         }
         do_request request
 
         assert_status 200
         json_response = json_parse(response_body)
-        expect(json_response[:data].size).to eq 2
+        expect(json_response[:data].size).to eq 3
         expect(json_response[:data][1]).to match({
           attributes: {
             code: nil,
@@ -711,6 +747,8 @@ resource 'Idea Custom Fields' do
 
       example 'Update select field with logic' do
         field_to_update = create(:custom_field_select, :with_options, resource: custom_form)
+        survey_end_page = create(:custom_field_page, key: 'survey_end', resource: custom_form)
+        final_page[:id] = survey_end_page.id
         request = {
           custom_fields: [
             {
@@ -726,19 +764,19 @@ resource 'Idea Custom Fields' do
                 rules: [
                   {
                     if: 'any_other_answer',
-                    goto_page_id: 'survey_end'
+                    goto_page_id: survey_end_page.id
                   }
                 ]
               },
               enabled: true
-            }
+            },
+            final_page
           ]
         }
         do_request request
-
         assert_status 200
         json_response = json_parse(response_body)
-        expect(json_response[:data].size).to eq 2
+        expect(json_response[:data].size).to eq 3
         expect(json_response[:data][1][:attributes]).to match({
           code: nil,
           created_at: an_instance_of(String),
@@ -753,7 +791,7 @@ resource 'Idea Custom Fields' do
           updated_at: an_instance_of(String),
           logic: { rules: [{
             if: 'any_other_answer',
-            goto_page_id: 'survey_end'
+            goto_page_id: survey_end_page.id
           }] },
           random_option_ordering: false,
           constraints: {}
@@ -793,7 +831,8 @@ resource 'Idea Custom Fields' do
                     title_multiloc: { en: 'Option 2' }
                   }
                 ]
-              }
+              },
+              final_page
             ]
           }
           do_request request
@@ -832,7 +871,8 @@ resource 'Idea Custom Fields' do
                     title_multiloc: { en: 'Option 2' }
                   }
                 ]
-              }
+              },
+              final_page
             ]
           }
 
@@ -881,7 +921,8 @@ resource 'Idea Custom Fields' do
                   title_multiloc: { en: 'Updated option 2' }
                 }
               ]
-            }
+            },
+            final_page
           ]
         }
 
@@ -947,7 +988,8 @@ resource 'Idea Custom Fields' do
                   image_id: option_image.id
                 }
               ]
-            }
+            },
+            final_page
           ]
         }
 
@@ -967,14 +1009,14 @@ resource 'Idea Custom Fields' do
       example 'Remove all custom fields' do
         create_list(:custom_field_select, 2, :with_options, resource: custom_form)
 
-        do_request custom_fields: []
+        do_request custom_fields: [final_page]
 
         assert_status 200
         json_response = json_parse response_body
 
-        expect(CustomField.where(resource: custom_form).count).to eq 0
+        expect(CustomField.where(resource: custom_form).count).to eq 1
         expect(CustomFieldOption.where(custom_field: CustomField.where(resource: custom_form)).count).to eq 0
-        expect(json_response[:data].size).to eq 0
+        expect(json_response[:data].size).to eq 1
       end
 
       example 'Remove all options of a custom field' do
@@ -992,7 +1034,8 @@ resource 'Idea Custom Fields' do
               required: true,
               enabled: true,
               options: []
-            }
+            },
+            final_page
           ]
         }
         do_request request
@@ -1002,7 +1045,7 @@ resource 'Idea Custom Fields' do
 
         expect(CustomField.where(id: field).count).to eq 1
         expect(field.reload.options.count).to eq 0
-        expect(json_response[:data].size).to eq 2
+        expect(json_response[:data].size).to eq 3
         expect(json_response[:data][1]).to match({
           attributes: {
             code: nil,
@@ -1031,13 +1074,10 @@ resource 'Idea Custom Fields' do
         create(:custom_field, resource: custom_form) # field to ensure custom form has been created
         create(:idea, project: context.project, creation_phase: context, phases: [context])
 
-        do_request(custom_fields: [])
+        do_request(custom_fields: [final_page])
 
         assert_status 200
-        expect(json_response_body).to eq({
-          data: [],
-          included: []
-        })
+        expect(json_response_body[:data].size).to eq 1
       end
 
       example 'Updating custom fields in a native survey phase when there are no responses' do
@@ -1045,7 +1085,7 @@ resource 'Idea Custom Fields' do
         create(:idea, project: ideation_phase.project, phases: [ideation_phase])
         create(:idea, project: ideation_phase.project)
 
-        do_request(custom_fields: [])
+        do_request(custom_fields: [final_page])
 
         assert_status 200
       end
@@ -1055,7 +1095,7 @@ resource 'Idea Custom Fields' do
           custom_field = create(:custom_field, resource: custom_form, title_multiloc: { 'en' => 'Some field' })
           user1 = create(:user, custom_field_values: { custom_field.key => 'some value' })
 
-          do_request({ custom_fields: [] })
+          do_request({ custom_fields: [final_page] })
 
           assert_status 200
           expect(user1.reload.custom_field_values).to eq({ custom_field.key => 'some value' })
@@ -1077,7 +1117,8 @@ resource 'Idea Custom Fields' do
               {
                 id: field_to_update.id,
                 options: []
-              }
+              },
+              final_page
             ]
           }
 
@@ -1132,7 +1173,8 @@ resource 'Idea Custom Fields' do
                   }
                 ]
               }
-            }
+            },
+            final_page
           ]
         }
         do_request request
@@ -1185,7 +1227,8 @@ resource 'Idea Custom Fields' do
                   }
                 ]
               }
-            }
+            },
+            final_page
           ]
         }
         do_request request
@@ -1198,7 +1241,8 @@ resource 'Idea Custom Fields' do
             logic: [
               { error: 'invalid_structure' }
             ]
-          }
+          },
+          '2': {}
         })
       end
 
@@ -1262,14 +1306,15 @@ resource 'Idea Custom Fields' do
               description_multiloc: page3.description_multiloc,
               required: false,
               enabled: true
-            }
+            },
+            final_page
           ]
         }
         do_request request
 
         assert_status 200
         json_response = json_parse(response_body)
-        expect(json_response[:data].size).to eq 4
+        expect(json_response[:data].size).to eq 5
         expect(json_response[:data][0]).to match({
           attributes: {
             code: nil,
@@ -1413,14 +1458,15 @@ resource 'Idea Custom Fields' do
               description_multiloc: page4.description_multiloc,
               required: false,
               enabled: true
-            }
+            },
+            final_page
           ]
         }
         do_request request
 
         assert_status 200
         json_response = json_parse(response_body)
-        expect(json_response[:data].size).to eq 4
+        expect(json_response[:data].size).to eq 5
         expect(json_response[:data][0]).to match({
           attributes: {
             code: nil,
@@ -1552,14 +1598,15 @@ resource 'Idea Custom Fields' do
               description_multiloc: { 'en' => 'Page 4 description' },
               required: false,
               enabled: true
-            }
+            },
+            final_page
           ]
         }
         do_request request
 
         assert_status 200
         json_response = json_parse(response_body)
-        expect(json_response[:data].size).to eq 4
+        expect(json_response[:data].size).to eq 5
         expect(json_response[:data][0]).to match({
           attributes: {
             code: nil,
@@ -1677,14 +1724,15 @@ resource 'Idea Custom Fields' do
               description_multiloc: { 'en' => 'Target page description' },
               required: false,
               enabled: true
-            }
+            },
+            final_page
           ]
         }
         do_request request
 
         assert_status 200
         json_response = json_parse(response_body)
-        expect(json_response[:data].size).to eq 3
+        expect(json_response[:data].size).to eq 4
         expect(json_response[:data][0]).to match({
           attributes: {
             code: nil,
@@ -1784,14 +1832,15 @@ resource 'Idea Custom Fields' do
               description_multiloc: page3.description_multiloc,
               required: false,
               enabled: true
-            }
+            },
+            final_page
           ]
         }
         do_request request
 
         assert_status 200
         json_response = json_parse(response_body)
-        expect(json_response[:data].size).to eq 3
+        expect(json_response[:data].size).to eq 4
         expect(json_response[:data][0]).to match({
           attributes: {
             code: nil,
@@ -1882,14 +1931,15 @@ resource 'Idea Custom Fields' do
               description_multiloc: page2.description_multiloc,
               required: false,
               enabled: true
-            }
+            },
+            final_page
           ]
         }
         do_request request
 
         assert_status 200
         json_response = json_parse(response_body)
-        expect(json_response[:data].size).to eq 2
+        expect(json_response[:data].size).to eq 3
         expect(json_response[:data][0]).to match({
           attributes: {
             code: nil,
@@ -1997,14 +2047,15 @@ resource 'Idea Custom Fields' do
               description_multiloc: { 'en' => 'Page 3 description' },
               required: false,
               enabled: true
-            }
+            },
+            final_page
           ]
         }
         do_request request
 
         assert_status 200
         json_response = json_parse(response_body)
-        expect(json_response[:data].size).to eq 4
+        expect(json_response[:data].size).to eq 5
         expect(json_response[:data][0]).to match({
           attributes: {
             code: nil,
@@ -2169,13 +2220,14 @@ resource 'Idea Custom Fields' do
               description_multiloc: page2.description_multiloc,
               required: false,
               enabled: true
-            }
+            },
+            final_page
           ]
         }
         do_request request
         assert_status 200
         json_response = json_parse(response_body)
-        expect(json_response[:data].size).to eq 4
+        expect(json_response[:data].size).to eq 5
         expect(json_response[:data][0]).to match({
           attributes: {
             code: nil,
@@ -2327,14 +2379,15 @@ resource 'Idea Custom Fields' do
               description_multiloc: page2.description_multiloc,
               required: false,
               enabled: true
-            }
+            },
+            final_page
           ]
         }
         do_request request
 
         assert_status 200
         json_response = json_parse(response_body)
-        expect(json_response[:data].size).to eq 3
+        expect(json_response[:data].size).to eq 4
         expect(json_response[:data][0]).to match({
           attributes: {
             code: nil,
@@ -2455,14 +2508,15 @@ resource 'Idea Custom Fields' do
               linear_scale_label_10_multiloc: {},
               linear_scale_label_11_multiloc: {},
               logic: {}
-            }
+            },
+            final_page
           ]
         }
         do_request request
 
         assert_status 200
         json_response = json_parse(response_body)
-        expect(json_response[:data].size).to eq 2
+        expect(json_response[:data].size).to eq 3
         expect(json_response[:data][0]).to match({
           attributes: {
             code: nil,
@@ -2542,14 +2596,15 @@ resource 'Idea Custom Fields' do
               description_multiloc: page1.description_multiloc,
               required: false,
               enabled: true
-            }
+            },
+            final_page
           ]
         }
         do_request request
 
         assert_status 200
         json_response = json_parse(response_body)
-        expect(json_response[:data].size).to eq 1
+        expect(json_response[:data].size).to eq 2
         expect(json_response[:data][0]).to match({
           attributes: {
             code: nil,
@@ -2642,14 +2697,15 @@ resource 'Idea Custom Fields' do
               description_multiloc: page3.description_multiloc,
               required: false,
               enabled: true
-            }
+            },
+            final_page
           ]
         }
         do_request request
 
         assert_status 200
         json_response = json_parse(response_body)
-        expect(json_response[:data].size).to eq 4
+        expect(json_response[:data].size).to eq 5
         expect(json_response[:data][0]).to match({
           attributes: {
             code: nil,
@@ -2799,14 +2855,15 @@ resource 'Idea Custom Fields' do
               description_multiloc: { 'en' => 'Page 2 description' },
               required: false,
               enabled: true
-            }
+            },
+            final_page
           ]
         }
         do_request request
 
         assert_status 200
         json_response = json_parse(response_body)
-        expect(json_response[:data].size).to eq 3
+        expect(json_response[:data].size).to eq 4
         expect(json_response[:data][0]).to match({
           attributes: {
             code: nil,
@@ -2963,7 +3020,8 @@ resource 'Idea Custom Fields' do
               description_multiloc: { 'en' => 'Page 3 description' },
               required: false,
               enabled: true
-            }
+            },
+            final_page
           ]
         }
         do_request request
@@ -2973,7 +3031,7 @@ resource 'Idea Custom Fields' do
         added_option1 = CustomFieldOption.find_by custom_field: field1_to_update
         added_option2 = CustomFieldOption.find_by custom_field: field2_to_update
         json_response = json_parse(response_body)
-        expect(json_response[:data].size).to eq 5
+        expect(json_response[:data].size).to eq 6
         expect(json_response[:data][0]).to match({
           attributes: {
             code: nil,
@@ -3145,7 +3203,8 @@ resource 'Idea Custom Fields' do
               description_multiloc: { 'en' => 'Page 2 description' },
               required: false,
               enabled: true
-            }
+            },
+            final_page
           ]
         }
 
@@ -3153,7 +3212,7 @@ resource 'Idea Custom Fields' do
 
         assert_status 200
         json_response = json_parse(response_body)
-        expect(json_response[:data].size).to eq 3
+        expect(json_response[:data].size).to eq 4
         expect(json_response[:data][0]).to match({
           attributes: {
             code: nil,
@@ -3301,14 +3360,15 @@ resource 'Idea Custom Fields' do
               description_multiloc: page3.description_multiloc,
               required: false,
               enabled: true
-            }
+            },
+            final_page
           ]
         }
         do_request request
 
         assert_status 200
         json_response = json_parse(response_body)
-        expect(json_response[:data].size).to eq 4
+        expect(json_response[:data].size).to eq 5
         expect(json_response[:data][0]).to match({
           attributes: {
             code: nil,
@@ -3438,7 +3498,8 @@ resource 'Idea Custom Fields' do
                   title_multiloc: { en: 'Changed option' }
                 }
               ]
-            }
+            },
+            final_page
           ]
         }
         do_request request
@@ -3446,7 +3507,7 @@ resource 'Idea Custom Fields' do
         assert_status 200
         json_response = json_parse response_body
 
-        expect(json_response[:data].size).to eq 2
+        expect(json_response[:data].size).to eq 3
         expect(json_response[:data][1]).to match({
           attributes: {
             code: nil,
@@ -3526,13 +3587,10 @@ resource 'Idea Custom Fields' do
         create(:idea_status_proposed)
         create(:idea, project: context.project, phases: [context])
 
-        do_request(custom_fields: [])
+        do_request(custom_fields: [final_page])
 
         assert_status 200
-        expect(json_response_body).to eq({
-          data: [],
-          included: []
-        })
+        expect(json_response_body[:data].size).to eq 1
       end
 
       example 'Adding and updating a field with text images' do
@@ -3556,7 +3614,8 @@ resource 'Idea Custom Fields' do
               description_multiloc: { 'en' => '<img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" />' },
               required: true,
               enabled: true
-            }
+            },
+            final_page
           ]
         }
         expect { do_request request }.to change(TextImage, :count).by 2
@@ -3584,7 +3643,8 @@ resource 'Idea Custom Fields' do
             {
               id: field2.id,
               title_multiloc: { 'en' => 'Field 2 changed' }
-            }
+            },
+            final_page
           ]
         }
 
@@ -3599,7 +3659,7 @@ resource 'Idea Custom Fields' do
             'changed',
             User.first,
             kind_of(Integer),
-            payload: { save_type: 'manual', pages: 1, sections: 0, fields: 2, params_size: 969, form_opened_at: kind_of(DateTime), form_updated_at: kind_of(DateTime) },
+            payload: { save_type: 'manual', pages: 2, sections: 0, fields: 2, params_size: 1347, form_opened_at: kind_of(DateTime), form_updated_at: kind_of(DateTime) },
             project_id: custom_form.project_id
           ).exactly(1).times
       end
@@ -3631,7 +3691,8 @@ resource 'Idea Custom Fields' do
                 required: true,
                 enabled: true,
                 map_config_id: map_config2.id
-              }
+              },
+              final_page
             ]
           }
 
@@ -3670,7 +3731,8 @@ resource 'Idea Custom Fields' do
                 required: false,
                 enabled: true,
                 map_config_id: map_config2.id
-              }
+              },
+              final_page
             ]
           }
 
@@ -3729,7 +3791,8 @@ resource 'Idea Custom Fields' do
                 required: false,
                 enabled: false,
                 map_config_id: map_config2.id
-              }
+              },
+              final_page
             ]
           }
 
@@ -3778,7 +3841,8 @@ resource 'Idea Custom Fields' do
                 id: custom_field4.id,
                 input_type: 'point',
                 map_config_id: ''
-              }
+              },
+              final_page
             ]
           }
 

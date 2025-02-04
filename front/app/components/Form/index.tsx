@@ -119,12 +119,14 @@ const Form = memo(
       setData(sanitizedFormData);
       setShowAllErrors(showErrors);
 
+      let response;
+
       if (isValidData(schema, uiSchema, submissionData, customAjv, isSurvey)) {
         if (externalLoading === undefined) {
           internalSetLoading(true);
         }
         try {
-          await onSubmit(submissionData);
+          response = await onSubmit(submissionData);
           if (isSurvey) {
             trackEventByName(tracks.surveyFormSubmitted);
           } else {
@@ -139,6 +141,8 @@ const Form = memo(
         }
       }
       setScrollToError(true);
+
+      return response;
     };
 
     return (

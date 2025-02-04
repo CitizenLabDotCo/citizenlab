@@ -117,50 +117,6 @@ describe('Project with native survey phase but not active', () => {
   });
 });
 
-describe('Modal shown after survey submission', () => {
-  const projectTitle = randomString();
-  const projectDescription = randomString();
-  const projectDescriptionPreview = randomString(30);
-  let projectId: string;
-  let projectSlug: string;
-
-  before(() => {
-    cy.apiCreateProject({
-      title: projectTitle,
-      descriptionPreview: projectDescriptionPreview,
-      description: projectDescription,
-      publicationStatus: 'archived',
-    }).then((project) => {
-      projectId = project.body.data.id;
-      projectSlug = project.body.data.attributes.slug;
-      return cy.apiCreatePhase({
-        projectId,
-        title: 'phaseTitle',
-        startAt: moment().subtract(9, 'month').format('DD/MM/YYYY'),
-        participationMethod: 'native_survey',
-        nativeSurveyButtonMultiloc: { en: 'Take the survey' },
-        nativeSurveyTitleMultiloc: { en: 'Survey' },
-        canPost: true,
-        canComment: true,
-        canReact: true,
-      });
-    });
-  });
-
-  beforeEach(() => {
-    cy.setAdminLoginCookie();
-    cy.visit(`/projects/${projectSlug}/?show_modal=true`);
-  });
-
-  it('shows the modal', () => {
-    cy.contains('Thank you. Your response has been received.').should('exist');
-  });
-
-  after(() => {
-    cy.apiRemoveProject(projectId);
-  });
-});
-
 describe('Native survey CTA bar', () => {
   const projectTitle = randomString();
   const projectDescription = randomString();
@@ -237,10 +193,8 @@ describe('Native survey CTA bar', () => {
       .find('button')
       .should('not.have.attr', 'disabled');
     cy.get('.e2e-idea-button').first().find('button').click({ force: true });
-    cy.get('[data-cy="e2e-next-page"]').click();
 
     // Save survey response
-
     cy.get('[data-cy="e2e-submit-form"]').click();
 
     cy.visit(`/en/projects/${projectSlug}`);

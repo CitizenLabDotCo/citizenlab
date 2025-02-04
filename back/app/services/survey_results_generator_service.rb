@@ -25,6 +25,7 @@ class SurveyResultsGeneratorService < FieldVisitorService
       results = add_page_response_count_to_results results
       results = add_logic_to_results results, logic_ids
       results = change_counts_for_logic results, inputs.pluck(:custom_field_values)
+      results = cleanup_results results
 
       {
         results: results,
@@ -418,7 +419,8 @@ class SurveyResultsGeneratorService < FieldVisitorService
   end
 
   def add_question_numbers_to_results(results)
-    @page_numbers = { 'survey_end' => 999 } # Lookup that we can use later in logic. 999 is a special number used for the survey end page
+    # TODO: JS - @page_numbers not working when 'survey_end' removed from hash
+    @page_numbers = { 'survey_end' => 999 } # Lookup that we can use later in logic.
     question_number = 0
     page_number = 0
     results.map do |result|
@@ -440,7 +442,6 @@ class SurveyResultsGeneratorService < FieldVisitorService
   # Add hidden flag to results based on logic ids supplied for filtering
   def add_logic_to_results(results, logic_ids)
     results_to_hide = []
-
     results = results.deep_dup.map do |result|
       field_id = result[:customFieldId]
       if supports_page_logic? result[:inputType]
@@ -565,13 +566,21 @@ class SurveyResultsGeneratorService < FieldVisitorService
         # Update the total pick count because we've reduced the 'not_answered' answer count
         question[:totalPickCount] = question[:answers].pluck(:count).sum if question[:totalPickCount]
       end
-
-      # remove the temporary fields that are now not needed
-      question.delete(:questionViewedCount)
-      question.delete(:key)
     end
 
     results
+  end
+
+  def cleanup_results(results)
+    # Remove the last page - only needed for logic calculations
+    results.pop if results.last[:inputType] == 'page' && results.last[:key] == 'survey_end'
+
+    # remove the temporary fields that are now not needed
+    results.map do |question|
+      question.delete(:questionViewedCount)
+      question.delete(:key)
+      question
+    end
   end
 
   def cleanup_single_result(result)

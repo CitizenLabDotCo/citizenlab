@@ -8,14 +8,10 @@ import {
   IFlatCustomFieldWithIndex,
 } from 'api/custom_fields/types';
 
-import useLocale from 'hooks/useLocale';
-
 import {
   builtInFieldKeys,
   FormBuilderConfig,
 } from 'components/FormBuilder/utils';
-
-import { isNilOrError } from 'utils/helperUtils';
 
 import {
   detectConflictsByPage,
@@ -47,12 +43,7 @@ const FormFields = ({
   closeSettings,
 }: FormFieldsProps) => {
   const { watch, trigger } = useFormContext();
-  const locale = useLocale();
   const formCustomFields: IFlatCustomField[] = watch('customFields');
-
-  if (isNilOrError(locale)) {
-    return null;
-  }
 
   const shouldShowField = (field: IFlatCustomField) => {
     if (builtInFieldKeys.includes(field.key)) {
@@ -60,6 +51,9 @@ const FormFields = ({
     }
     return true;
   };
+
+  // Only relevant for survey
+  const lastPage = formCustomFields[formCustomFields.length - 1];
 
   const nestedGroupData: NestedGroupingStructure[] = [];
 
@@ -72,9 +66,7 @@ const FormFields = ({
       });
     } else {
       const lastGroupElement = nestedGroupData[nestedGroupData.length - 1];
-      // TODO: Fix this the next time the file is edited.
-      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-      lastGroupElement?.questions.push({
+      lastGroupElement.questions.push({
         ...field,
       });
     }
@@ -90,6 +82,9 @@ const FormFields = ({
         boxShadow="0px 2px 4px rgba(0, 0, 0, 0.2)"
         bgColor="white"
         minHeight="300px"
+        display="flex"
+        flexDirection="column"
+        justifyContent="space-between"
       >
         <Box height="100%" data-cy="e2e-form-fields">
           <DragAndDrop
@@ -100,6 +95,16 @@ const FormFields = ({
           >
             <Drop id="droppable" type={pageDNDType}>
               {nestedGroupData.map((grouping, pageIndex) => {
+                // Only relevant for survey
+                if (
+                  lastPage.key === 'survey_end' &&
+                  grouping.id === lastPage.id
+                ) {
+                  // Skip rendering FormField for last page, as it's rendered separately
+                  // (see below)
+                  return null;
+                }
+
                 return (
                   <Drag key={grouping.id} id={grouping.id} index={pageIndex}>
                     <FormField
@@ -155,6 +160,19 @@ const FormFields = ({
             <Box height="1px" borderTop={`1px solid ${colors.divider}`} />
           )}
         </Box>
+        {/* Only relevant for survey */}
+        {lastPage.key === 'survey_end' && (
+          <Box mt="40px">
+            <FormField
+              field={lastPage}
+              selectedFieldId={selectedFieldId}
+              onEditField={onEditField}
+              builderConfig={builderConfig}
+              fieldNumbers={fieldNumbers}
+              closeSettings={closeSettings}
+            />
+          </Box>
+        )}
       </Box>
     </>
   );

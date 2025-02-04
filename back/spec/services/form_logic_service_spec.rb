@@ -16,7 +16,8 @@ describe FormLogicService do
       create(:custom_field_page, :for_custom_form, resource: form),
       create(:custom_field_page, :for_custom_form, resource: form),
       create(:custom_field_page, :for_custom_form, resource: form),
-      create(:custom_field_section, :for_custom_form, resource: form)
+      create(:custom_field_section, :for_custom_form, resource: form),
+      create(:custom_field_page, :for_custom_form, resource: form)
     ]
   end
 
@@ -32,6 +33,7 @@ describe FormLogicService do
     let(:page5) { fields[6] }
     let(:question1_value) { 1 }
     let(:question2_answer) { option2 }
+    let(:last_page) { fields[8] }
 
     context 'when there is no logic' do
       before do
@@ -80,7 +82,7 @@ describe FormLogicService do
 
     context 'when a page has an explicit next page, which is the end page' do
       before do
-        page2.update!(logic: { 'next_page_id' => 'survey_end' })
+        page2.update!(logic: { 'next_page_id' => last_page.id })
       end
 
       it 'returns a UI schema with rules for the given next page' do
@@ -433,7 +435,7 @@ describe FormLogicService do
       before do
         question1.update!(
           logic: {
-            'rules' => [{ 'if' => question1_value, 'goto_page_id' => 'survey_end' }]
+            'rules' => [{ 'if' => question1_value, 'goto_page_id' => last_page.id }]
           },
           required: true
         )
@@ -667,6 +669,7 @@ describe FormLogicService do
     let(:page4) { fields[5] }
     let(:page5) { fields[6] }
     let(:section1) { fields[7] }
+    let(:last_page) { fields[8] }
 
     context 'for logic on questions' do
       context 'when logic has a good structure' do
@@ -676,7 +679,7 @@ describe FormLogicService do
             { 'rules' => [] },
             { 'rules' => [{ 'if' => 1, 'goto_page_id' => page2.id }] },
             { 'rules' => [{ 'if' => 1, 'goto_page_id' => page2.id }] },
-            { 'rules' => [{ 'if' => 1, 'goto_page_id' => 'survey_end' }] },
+            { 'rules' => [{ 'if' => 1, 'goto_page_id' => last_page.id }] },
             { 'rules' => [
               { 'if' => 1, 'goto_page_id' => page2.id },
               { 'if' => 2, 'goto_page_id' => page4.id },
@@ -699,9 +702,9 @@ describe FormLogicService do
         end
         let(:logic_for_question2) do
           { 'rules' => [
-            { 'if' => 1, 'goto_page_id' => 'survey_end' },
+            { 'if' => 1, 'goto_page_id' => last_page.id },
             { 'if' => 2, 'goto_page_id' => page4.id },
-            { 'if' => 'no_answer', 'goto_page_id' => 'survey_end' },
+            { 'if' => 'no_answer', 'goto_page_id' => last_page.id },
             { 'if' => 'any_other_answer', 'goto_page_id' => page4.id }
           ] }
         end
@@ -744,7 +747,7 @@ describe FormLogicService do
         end
         let(:logic_for_question2) do
           { 'rules' => [
-            { 'if' => 1, 'goto_page_id' => 'survey_end' },
+            { 'if' => 1, 'goto_page_id' => last_page.id },
             { 'if' => 2 }
           ] }
         end
@@ -981,6 +984,7 @@ describe FormLogicService do
     let(:option1) { question1.options[0] }
     let(:option2) { question1.options[1] }
     let(:page2) { fields[4] }
+    let(:last_page) { fields[8] }
 
     before do
       question1.update!(logic: {
