@@ -22,8 +22,7 @@ namespace :single_use do
 
     Rails.logger.info 'single_use:add_last_survey_pages started\n\n'
 
-    Tenant.all.each do |tenant|
-      tenant.switch do
+    Tenant.safe_switch_each do |tenant|
         Rails.logger.info "Adding last survey pages #{tenant.name}\n\n"
 
         # Get all the custom forms that are surveys
@@ -94,7 +93,8 @@ namespace :single_use do
             end
           end
         end
-      end
     end
+
+    reporter.report!('add_last_survey_pages.json', verbose: true)
   end
 end
