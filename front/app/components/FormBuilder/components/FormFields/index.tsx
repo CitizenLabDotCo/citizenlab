@@ -82,7 +82,6 @@ const FormFields = ({
         boxShadow="0px 2px 4px rgba(0, 0, 0, 0.2)"
         bgColor="white"
         minHeight="300px"
-        id="kanker-tyfus"
       >
         <Box height="100%" data-cy="e2e-form-fields">
           <DragAndDrop
