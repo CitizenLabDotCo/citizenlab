@@ -873,7 +873,7 @@ RSpec.describe SurveyResultsGeneratorService do
             question: {
               'en' => 'How satisfied are you with our service?',
               'fr-FR' => 'À quel point êtes-vous satisfait de notre service ?',
-              'nl-NL' => 'Hoe tevreden ben je met onze service?' 
+              'nl-NL' => 'Hoe tevreden ben je met onze service?'
             },
             required: true,
             grouped: true,
