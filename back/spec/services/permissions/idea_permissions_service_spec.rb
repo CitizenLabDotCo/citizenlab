@@ -134,6 +134,15 @@ describe Permissions::IdeaPermissionsService do
       end
     end
 
+    context "when idea has 'prescreening' status" do
+      let(:prescreening_status) { create(:idea_status, code: 'prescreening') }
+      let(:input) { create(:idea, project: project, phases: [project.phases[2]], publication_status: 'submitted', idea_status: prescreening_status) }
+
+      it "returns 'not_reactable_status_code'" do
+        expect(reason).to eq 'not_reactable_status_code'
+      end
+    end
+
     context "when idea has 'ineligible' status" do
       let(:ineligible_status) { create(:idea_status, code: 'ineligible') }
       let(:input) { create(:idea, project: project, phases: [project.phases[2]], idea_status: ineligible_status) }
