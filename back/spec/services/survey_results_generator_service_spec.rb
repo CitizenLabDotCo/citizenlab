@@ -259,7 +259,7 @@ RSpec.describe SurveyResultsGeneratorService do
     )
   end
 
-  let_it_be(:matrix_linear_scale_field) { create(:custom_field_matrix_linear_scale, resource: form) }
+  let_it_be(:matrix_linear_scale_field) { create(:custom_field_matrix_linear_scale, resource: form, description_multiloc: {}) }
 
   let_it_be(:gender_user_custom_field) do
     create(:custom_field_gender, :with_options)
