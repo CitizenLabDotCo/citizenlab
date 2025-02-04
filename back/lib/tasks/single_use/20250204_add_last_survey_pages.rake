@@ -29,41 +29,41 @@ namespace :single_use do
       survey_custom_forms = CustomForm.where(participation_context_type: 'Phase')
       survey_custom_forms.each do |custom_form|
       # We sort the custom field by ordering to make sure we have the correct order
-      custom_fields = custom_form
-        .custom_fields
-        .sort_by(&:ordering)
+        custom_fields = custom_form
+          .custom_fields
+          .sort_by(&:ordering)
 
-      # Get the last field of the survey, check if it's already the correct last page.
-      # If so, skip this form
-      last_field = custom_fields.last
-      next if last_field.input_type == 'page' && last_field.key == 'survey_end'
+        # Get the last field of the survey, check if it's already the correct last page.
+        # If so, skip this form
+        last_field = custom_fields.last
+        next if last_field.input_type == 'page' && last_field.key == 'survey_end'
 
-      # Create the new last page
-      multiloc_service = MultilocService.new
+        # Create the new last page
+        multiloc_service = MultilocService.new
 
-      last_page = CustomField.new(
-        id: SecureRandom.uuid,
-        key: 'survey_end',
-        resource: custom_form,
-        input_type: 'page',
-        page_layout: 'default',
-        title_multiloc: multiloc_service.i18n_to_multiloc('form_builder.form_end_page.title_text_3'),
-        description_multiloc: multiloc_service.i18n_to_multiloc('form_builder.form_end_page.description_text_3')
-      )
-
-      if last_page.save
-        report.add_create(
-          'CustomField',
-          last_page.attributes,
-          context: { tenant: tenant.host }
+        last_page = CustomField.new(
+          id: SecureRandom.uuid,
+          key: 'survey_end',
+          resource: custom_form,
+          input_type: 'page',
+          page_layout: 'default',
+          title_multiloc: multiloc_service.i18n_to_multiloc('form_builder.form_end_page.title_text_3'),
+          description_multiloc: multiloc_service.i18n_to_multiloc('form_builder.form_end_page.description_text_3')
         )
-      else
-        report.add_error(
-          last_page.errors.details,
-          context: { tenant: tenant.host }
-        )
-        next
-      end
+
+        if last_page.save
+          report.add_create(
+            'CustomField',
+            last_page.attributes,
+            context: { tenant: tenant.host }
+          )
+        else
+          report.add_error(
+            last_page.errors.details,
+            context: { tenant: tenant.host }
+          )
+          next
+        end
 
         # Replace previous mentions of 'survey_end' with the new last page id
         custom_fields.each do |field|
