@@ -419,8 +419,7 @@ class SurveyResultsGeneratorService < FieldVisitorService
   end
 
   def add_question_numbers_to_results(results)
-    # TODO: JS - @page_numbers not working when 'survey_end' removed from hash
-    @page_numbers = { 'survey_end' => 999 } # Lookup that we can use later in logic.
+    @page_numbers = {} # Lookup that we can use later in logic.
     question_number = 0
     page_number = 0
     results.map do |result|

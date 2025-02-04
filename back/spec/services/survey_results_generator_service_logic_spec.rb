@@ -73,7 +73,7 @@ RSpec.describe SurveyResultsGeneratorService do
           questionResponseCount: 1,
           pageNumber: 2,
           questionNumber: nil,
-          logic: { nextPageId: 'survey_end' }
+          logic: { nextPageId: 'SURVEY_END_PAGE' }
         },
         {
           inputType: 'text',
@@ -124,7 +124,7 @@ RSpec.describe SurveyResultsGeneratorService do
             answer: {
               '2': { id: 'LINEAR_SCALE_OPTION_2', nextPageId: 'PAGE_3' },
               '3': { id: 'LINEAR_SCALE_OPTION_3', nextPageId: 'PAGE_4' },
-              no_answer: { id: 'LINEAR_SCALE_OPTION_no_answer', nextPageId: 'survey_end' }
+              no_answer: { id: 'LINEAR_SCALE_OPTION_no_answer', nextPageId: 'SURVEY_END_PAGE' }
             }
           }
         },
@@ -157,7 +157,7 @@ RSpec.describe SurveyResultsGeneratorService do
           logic: {
             answer: {
               option3: { id: 'MULTISELECT_1_OPTION_3', nextPageId: 'PAGE_4' },
-              no_answer: { id: 'MULTISELECT_1_OPTION_no_answer', nextPageId: 'survey_end' }
+              no_answer: { id: 'MULTISELECT_1_OPTION_no_answer', nextPageId: 'SURVEY_END_PAGE' }
             }
           }
         },
@@ -201,7 +201,7 @@ RSpec.describe SurveyResultsGeneratorService do
           },
           logic: {
             answer: {
-              option1: { id: 'SELECT_2_OPTION_1', nextPageId: 'survey_end' }
+              option1: { id: 'SELECT_2_OPTION_1', nextPageId: 'PAGE_5' }
             }
           }
         },
@@ -248,7 +248,21 @@ RSpec.describe SurveyResultsGeneratorService do
           questionNumber: 7,
           logic: {},
           textResponses: []
-        }
+        },{
+        inputType: 'page',
+        question: { en: 'Ending' },
+        description: {},
+        customFieldId: 'SURVEY_END_PAGE',
+        required: false,
+        grouped: false,
+        hidden: false,
+        totalResponseCount: 0,
+        questionResponseCount: 0,
+        pageNumber: 5,
+        key: 'survey_end',
+        questionNumber: nil,
+        logic: {}
+      },
       ]
     end
 
@@ -269,7 +283,7 @@ RSpec.describe SurveyResultsGeneratorService do
     it 'returns logic information for a page linking to survey end' do
       page_result = results[2]
       expect(page_result[:logic]).to match(
-        { nextPageNumber: 999, numQuestionsSkipped: 3 }
+        { nextPageNumber: 5, numQuestionsSkipped: 3 }
       )
     end
 
@@ -282,7 +296,7 @@ RSpec.describe SurveyResultsGeneratorService do
         { id: 'LINEAR_SCALE_OPTION_3', nextPageNumber: 4, numQuestionsSkipped: 2 }
       )
       expect(linear_scale_result[:logic][:answer][:no_answer]).to match(
-        { id: 'LINEAR_SCALE_OPTION_no_answer', nextPageNumber: 999, numQuestionsSkipped: 3 }
+        { id: 'LINEAR_SCALE_OPTION_no_answer', nextPageNumber: 5, numQuestionsSkipped: 3 }
       )
     end
 
@@ -292,7 +306,7 @@ RSpec.describe SurveyResultsGeneratorService do
         { id: 'MULTISELECT_1_OPTION_3', nextPageNumber: 4, numQuestionsSkipped: 2 }
       )
       expect(multiselect_result[:logic][:answer][:no_answer]).to match(
-        { id: 'MULTISELECT_1_OPTION_no_answer', nextPageNumber: 999, numQuestionsSkipped: 3 }
+        { id: 'MULTISELECT_1_OPTION_no_answer', nextPageNumber: 5, numQuestionsSkipped: 3 }
       )
     end
 
@@ -300,7 +314,7 @@ RSpec.describe SurveyResultsGeneratorService do
       it 'flags no fields as hidden if no logic IDs are provided' do
         results = generator.send(:add_logic_to_results, results_without_logic, [])
         expect(results.pluck(:hidden)).to eq(
-          [false, false, false, false, false, false, false, false, false, false, false]
+          [false, false, false, false, false, false, false, false, false, false, false, false]
         )
       end
 
@@ -523,6 +537,18 @@ RSpec.describe SurveyResultsGeneratorService do
       }
     end
 
+    let(:survey_end_page) do
+      {
+        inputType: 'page',
+        totalResponseCount: 5,
+        questionResponseCount: 0,
+        questionViewedCount: 0,
+        pageNumber: 6,
+        logic: {},
+        key: 'survey_end' # important as this is the last page
+      }
+    end
+
     let(:results_without_num_answered) do
       [
         page1,
@@ -535,7 +561,8 @@ RSpec.describe SurveyResultsGeneratorService do
         page4,
         text_question2,
         page5,
-        text_question3
+        text_question3,
+        survey_end_page
       ]
     end
 
@@ -555,7 +582,7 @@ RSpec.describe SurveyResultsGeneratorService do
 
       it 'does not change the totalResponsesCount' do
         expect(results_without_num_answered.pluck(:totalResponseCount)).to eq(
-          [5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5]
+          [5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5]
         )
       end
 
@@ -595,15 +622,15 @@ RSpec.describe SurveyResultsGeneratorService do
         multiselect_question[:logic] = {
           answer: {
             'option_1' => { nextPageNumber: 4, numQuestionsSkipped: 2 },
-            'option_2' => { nextPageNumber: 999, numQuestionsSkipped: 2 }
+            'option_2' => { nextPageNumber: 6, numQuestionsSkipped: 2 }
           }
         }
-        page3[:logic] = { nextPageNumber: 999, numQuestionsSkipped: 1 }
+        page3[:logic] = { nextPageNumber: 6, numQuestionsSkipped: 1 }
       end
 
       it 'changes the totalResponsesCount when fields are not shown through logic' do
         expect(results.pluck(:totalResponseCount)).to eq(
-          [5, 5, 4, 4, 4, 2, 2, 1, 1, 2, 2]
+          [5, 5, 4, 4, 4, 2, 2, 1, 1, 2, 2, 5]
         )
       end
 
@@ -655,7 +682,7 @@ RSpec.describe SurveyResultsGeneratorService do
 
       it 'changes the totalResponsesCount when fields are not shown through logic' do
         expect(results.pluck(:totalResponseCount)).to eq(
-          [5, 5, 3, 3, 3, 3, 3, 5, 5, 5, 5]
+          [5, 5, 3, 3, 3, 3, 3, 5, 5, 5, 5, 5]
         )
       end
 
@@ -687,7 +714,7 @@ RSpec.describe SurveyResultsGeneratorService do
             'option_2' => { nextPageNumber: 4, numQuestionsSkipped: 3 }
           }
         }
-        page2[:logic] = { nextPageNumber: 999, numQuestionsSkipped: 3 }
+        page2[:logic] = { nextPageNumber: 5, numQuestionsSkipped: 3 }
         linear_scale_question[:logic] = {
           answer: {
             1 => { nextPageNumber: 3, numQuestionsSkipped: 0 },
@@ -697,7 +724,7 @@ RSpec.describe SurveyResultsGeneratorService do
         multiselect_question[:logic] = {
           answer: {
             'option_1' => { nextPageNumber: 4, numQuestionsSkipped: 1 },
-            'option_2' => { nextPageNumber: 999, numQuestionsSkipped: 2 }
+            'option_2' => { nextPageNumber: 6, numQuestionsSkipped: 2 }
           }
         }
         page3[:logic] = { nextPageNumber: 5, numQuestionsSkipped: 1 }
@@ -720,7 +747,7 @@ RSpec.describe SurveyResultsGeneratorService do
 
       it 'changes the totalResponsesCount when fields are not shown through logic' do
         expect(results.pluck(:totalResponseCount)).to eq(
-          [5, 5, 4, 4, 4, 1, 1, 2, 2, 4, 4]
+          [5, 5, 4, 4, 4, 1, 1, 2, 2, 4, 4, 5]
         )
       end
 
