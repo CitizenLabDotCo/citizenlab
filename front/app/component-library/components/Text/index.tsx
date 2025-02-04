@@ -58,6 +58,7 @@ export type TextProps = {
   whiteSpace?: WhiteSpace;
   textAlign?: TextAlign;
   wordBreak?: WordBreak;
+  textShadow?: string;
 } & BoxMarginProps &
   BoxPaddingProps &
   BoxPositionProps &
@@ -83,6 +84,7 @@ const StyledText = styled(Box)<BoxProps & TextProps>`
     whiteSpace,
     textAlign,
     wordBreak,
+    textShadow,
     theme,
   }: TextProps & { theme: MainThemeProps }) => css`
     color: ${color ? theme.colors[color] : colors.textPrimary};
@@ -91,6 +93,7 @@ const StyledText = styled(Box)<BoxProps & TextProps>`
     text-decoration: ${textDecoration ? textDecoration : 'none'};
     text-overflow: ${textOverflow ? textOverflow : 'clip'};
     white-space: ${whiteSpace ? whiteSpace : 'normal'};
+    text-shadow: ${textShadow ? textShadow : 'none'};
     word-break: ${wordBreak ? wordBreak : 'normal'};
     ${textAlign ? `text-align: ${textAlign};` : ''}
     ${variant === 'bodyL'

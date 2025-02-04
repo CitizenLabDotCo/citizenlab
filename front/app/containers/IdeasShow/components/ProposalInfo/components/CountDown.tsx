@@ -7,7 +7,7 @@ import styled from 'styled-components';
 import { FormattedMessage } from 'utils/cl-intl';
 import { convertSecondsToDDHHMM } from 'utils/dateUtils';
 
-import messages from '../../messages';
+import messages from '../messages';
 
 const TimeComponent = styled.div`
   margin: 0 5px 0 0;

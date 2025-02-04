@@ -20,6 +20,14 @@ describe ProjectsFinderService do
       expect(result[:projects][0].id).to eq active_ideation_project.id
     end
 
+    it 'excludes projects in draft folder' do
+      folder = create(:project_folder, projects: [active_ideation_project])
+      folder.admin_publication.update!(publication_status: 'draft')
+
+      expect(Project.count).to eq 3
+      expect(result[:projects].size).to eq 0
+    end
+
     it 'excludes projects without active participatory (not information) phase' do
       expect(Project.count).to eq 3
       expect(result[:projects].size).to eq 1

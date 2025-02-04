@@ -16,7 +16,7 @@ import { API_PATH } from 'containers/App/constants';
 import FormBuilder from 'components/FormBuilder/edit';
 
 import { saveSurveyAsPDF } from '../saveSurveyAsPDF';
-import { nativeSurveyConfig, clearOptionIds } from '../utils';
+import { nativeSurveyConfig, clearOptionAndStatementIds } from '../utils';
 
 const SurveyFormBuilder = () => {
   const [exportModalOpen, setExportModalOpen] = useState(false);
@@ -38,13 +38,13 @@ const SurveyFormBuilder = () => {
 
   if (!phase || !project || !formCustomFields) return null;
 
-  // Reset option IDs if this is a new or copied form
+  // Reset option and statement IDs if this is a new or copied form
   const isFormPersisted = copyFrom
     ? false
     : phase.data.attributes.custom_form_persisted;
   const newCustomFields = isFormPersisted
     ? formCustomFields
-    : clearOptionIds(formCustomFields);
+    : clearOptionAndStatementIds(formCustomFields);
 
   // PDF downloading
   const downloadPdfLink = `${API_PATH}/phases/${phaseId}/importer/export_form/idea/pdf`;

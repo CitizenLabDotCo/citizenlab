@@ -15,10 +15,14 @@ export const determineAnswerType = (
     lineResponses,
     polygonResponses,
     numberResponses,
+    linear_scales,
   } = result;
 
   if (average_rankings) {
     return 'ranking';
+  }
+  if (linear_scales) {
+    return 'matrix_linear_scale';
   }
   if (answers) {
     return 'multiselect';

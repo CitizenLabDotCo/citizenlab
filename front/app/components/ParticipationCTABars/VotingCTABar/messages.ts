@@ -24,16 +24,16 @@ export default defineMessages({
     defaultMessage:
       'You need to add something to your basket before you can submit it.',
   },
-  minBudgetNotReached: {
-    id: 'app.components.ParticipationCTABars.VotingCTABar.minBudgetNotReached2',
+  minBudgetNotReached1: {
+    id: 'app.components.ParticipationCTABars.VotingCTABar.minBudgetNotReached1',
     defaultMessage:
-      'You need to spend a minimum of {votesMinimum} {currency} before you can submit your basket.',
+      'You need to spend a minimum of {votesMinimum} before you can submit your basket.',
   },
 
   // votes count
-  currencyLeft: {
-    id: 'app.components.ParticipationCTABars.VotingCTABar.currencyLeft',
-    defaultMessage: '{budgetLeft} / {totalBudget} {currency} left',
+  currencyLeft1: {
+    id: 'app.components.ParticipationCTABars.VotingCTABar.currencyLeft1',
+    defaultMessage: '{budgetLeft} / {totalBudget} left',
   },
   votesLeft: {
     id: 'app.components.ParticipationCTABars.VotingCTABar.votesLeft2',

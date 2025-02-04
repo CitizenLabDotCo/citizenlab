@@ -134,6 +134,12 @@ class Project < ApplicationRecord
     where(id: project_ids)
   }
 
+  scope :not_in_draft_folder, lambda {
+    joins(:admin_publication)
+      .joins('LEFT OUTER JOIN admin_publications AS parent_pubs ON admin_publications.parent_id = parent_pubs.id')
+      .where("admin_publications.parent_id IS NULL OR parent_pubs.publication_status != 'draft'")
+  }
+
   alias project_id id
 
   delegate :ever_published?, :never_published?, to: :admin_publication, allow_nil: true

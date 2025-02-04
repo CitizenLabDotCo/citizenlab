@@ -10,6 +10,7 @@ export type SurveyResultsKeys = Keys<typeof surveyResultsKeys>;
 
 export type IParameters = {
   phaseId: string | null;
+  filterLogicIds: string[];
 };
 
 export interface Answer {
@@ -37,11 +38,16 @@ export type AnswerMultilocsGrouped = AnswerMultilocs & {
 type BaseResult = {
   inputType: ICustomFieldInputType;
   question: Multiloc;
+  description: Multiloc;
   customFieldId: string;
   required: boolean;
+  hidden: boolean;
   totalResponseCount: number;
   totalPickCount: number;
   questionResponseCount: number;
+  questionNumber: number;
+  pageNumber: number;
+  logic: ResultLogic;
   numberResponses?: { answer: number }[];
 
   // Defined for text questions,
@@ -51,6 +57,30 @@ type BaseResult = {
 
 export type RankingsCounts = Record<string, Record<string, number>>;
 export type AverageRankings = Record<string, string>;
+
+export type ResultLogic = {
+  nextPageNumber?: number;
+  numQuestionsSkipped?: number;
+  answer?: Record<string, OptionLogic>;
+};
+
+export type OptionLogic = ResultLogic & {
+  id?: string;
+  nextPageNumber?: number;
+  numQuestionsSkipped?: number;
+};
+
+export interface MatrixLinearScaleAnswer {
+  answer: string | number | null;
+  count: number;
+  percentage: number;
+}
+
+export type MatrixLinearScaleResult = {
+  question: Multiloc;
+  questionResponseCount: number;
+  answers: MatrixLinearScaleAnswer[];
+};
 
 export type ResultUngrouped = BaseResult & {
   grouped: false;
@@ -62,6 +92,9 @@ export type ResultUngrouped = BaseResult & {
 
   // Undefined for text and file upload questions
   multilocs?: AnswerMultilocs;
+
+  // Matrix linear scale question
+  linear_scales?: Record<string, MatrixLinearScaleResult>;
 
   // Defined map questions
   mapConfigId?: string;
@@ -90,4 +123,10 @@ export interface SurveyResultsType {
     type: 'survey_results';
     attributes: SurveyResultAttributes;
   };
+}
+
+export interface LogicConfig {
+  toggleLogicIds: (optionId: string) => void;
+  filterLogicIds: string[];
+  isLoading: boolean;
 }
