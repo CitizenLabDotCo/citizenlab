@@ -49,7 +49,7 @@ const IdeationFooter = ({
   showCommentCount,
 }: Props) => {
   const ideaStatusId = idea.relationships.idea_status.data?.id;
-  const showReactionControl = showIdeationReactions(idea);
+  const showReactionControl = showIdeationReactions(idea, 'ideation');
 
   return (
     <Container className={className || ''}>

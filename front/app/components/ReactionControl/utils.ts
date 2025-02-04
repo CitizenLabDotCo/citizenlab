@@ -1,8 +1,16 @@
 import { IIdeaData } from 'api/ideas/types';
+import { ParticipationMethod } from 'api/phases/types';
 
 import { isFixableByAuthentication } from 'utils/actionDescriptors';
 
-export const showIdeationReactions = (idea: IIdeaData) => {
+export const showIdeationReactions = (
+  idea: IIdeaData,
+  participationMethod: ParticipationMethod
+) => {
+  if (participationMethod !== 'ideation') {
+    return false;
+  }
+
   const reactingActionDescriptor =
     idea.attributes.action_descriptors.reacting_idea;
   const reactingFutureEnabled = !!(
@@ -22,7 +30,14 @@ export const showIdeationReactions = (idea: IIdeaData) => {
   );
 };
 
-export const showProposalsReactions = (idea: IIdeaData) => {
+export const showProposalsReactions = (
+  idea: IIdeaData,
+  participationMethod: ParticipationMethod
+) => {
+  if (participationMethod !== 'proposals') {
+    return false;
+  }
+
   const reactingActionDescriptor =
     idea.attributes.action_descriptors.reacting_idea;
 

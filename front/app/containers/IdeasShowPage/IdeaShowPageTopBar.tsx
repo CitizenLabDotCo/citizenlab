@@ -84,17 +84,6 @@ const IdeaShowPageTopBar = ({
   const [searchParams] = useSearchParams();
   const [goBack] = useState(searchParams.get('go_back'));
 
-  const votingConfig = getVotingMethodConfig(phase?.attributes.voting_method);
-
-  const ideaIsInParticipationContext = phase
-    ? isIdeaInParticipationContext(idea, phase)
-    : undefined;
-
-  const isProposalPhase =
-    phase?.attributes.participation_method === 'proposals';
-  const isIdeationPhase = phase?.attributes.participation_method === 'ideation';
-  const isVotingPhase = phase?.attributes.participation_method === 'voting';
-
   useEffect(() => {
     removeSearchParams(['go_back']);
   }, []);
@@ -134,6 +123,15 @@ const IdeaShowPageTopBar = ({
     }
   }, [goBack, deselectIdeaOnMap, project]);
 
+  if (!phase) return null;
+
+  const votingConfig = getVotingMethodConfig(phase.attributes.voting_method);
+  const ideaIsInParticipationContext = isIdeaInParticipationContext(
+    idea,
+    phase
+  );
+  const participationMethod = phase.attributes.participation_method;
+
   return (
     <Container className={className || ''}>
       <TopBarInner>
@@ -144,7 +142,7 @@ const IdeaShowPageTopBar = ({
           />
         </Left>
         <Right>
-          {isIdeationPhase && showIdeationReactions(idea) && (
+          {showIdeationReactions(idea, participationMethod) && (
             <ReactionControl
               size="1"
               styleType="border"
@@ -153,7 +151,7 @@ const IdeaShowPageTopBar = ({
               variant={'icon'}
             />
           )}
-          {isProposalPhase && showProposalsReactions(idea) && (
+          {showProposalsReactions(idea, participationMethod) && (
             <ReactionControl
               size="1"
               styleType="border"
@@ -162,8 +160,7 @@ const IdeaShowPageTopBar = ({
               variant={'text'}
             />
           )}
-          {/* Only visible if voting */}
-          {isVotingPhase && ideaIsInParticipationContext && (
+          {participationMethod === 'voting' && ideaIsInParticipationContext && (
             <Box mr="8px">
               {votingConfig?.getIdeaPageVoteInput({
                 ideaId,
