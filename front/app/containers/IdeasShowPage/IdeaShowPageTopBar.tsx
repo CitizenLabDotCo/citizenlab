@@ -142,24 +142,26 @@ const IdeaShowPageTopBar = ({
           />
         </Left>
         <Right>
-          {showIdeationReactions(idea, participationMethod) && (
-            <ReactionControl
-              size="1"
-              styleType="border"
-              ideaId={ideaId}
-              disabledReactionClick={onDisabledReactClick}
-              variant={'icon'}
-            />
-          )}
-          {showProposalsReactions(idea, participationMethod) && (
-            <ReactionControl
-              size="1"
-              styleType="border"
-              ideaId={ideaId}
-              disabledReactionClick={onDisabledReactClick}
-              variant={'text'}
-            />
-          )}
+          {participationMethod === 'ideation' &&
+            showIdeationReactions(idea) && (
+              <ReactionControl
+                size="1"
+                styleType="border"
+                ideaId={ideaId}
+                disabledReactionClick={onDisabledReactClick}
+                variant={'icon'}
+              />
+            )}
+          {participationMethod === 'proposals' &&
+            showProposalsReactions(idea) && (
+              <ReactionControl
+                size="1"
+                styleType="border"
+                ideaId={ideaId}
+                disabledReactionClick={onDisabledReactClick}
+                variant={'text'}
+              />
+            )}
           {participationMethod === 'voting' && ideaIsInParticipationContext && (
             <Box mr="8px">
               {votingConfig?.getIdeaPageVoteInput({
