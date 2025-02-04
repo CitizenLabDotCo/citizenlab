@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
-namespace :cl2back do
+namespace :single_use do
   desc 'Adds a new post-submission page to all existing surveys with correct logic'
   task add_last_survey_pages: :environment do
-    Rails.logger.info 'cl2back:add_last_survey_pages started'
+    Rails.logger.info 'single_use:add_last_survey_pages started'
 
     Tenant.all.each do |tenant|
       tenant.switch do
