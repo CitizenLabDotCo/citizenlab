@@ -16,6 +16,7 @@ import {
 } from 'api/custom_fields/types';
 
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
+import useLocalize from 'hooks/useLocalize';
 
 import {
   formEndOption,
@@ -49,6 +50,7 @@ const FormBuilderSettings = ({
   formHasSubmissions,
 }: Props) => {
   const locales = useAppConfigurationLocales();
+  const localize = useLocalize();
   const [currentTab, setCurrentTab] = useState<ICustomFieldSettingsTab>(
     field.defaultTab || 'content'
   );
@@ -68,9 +70,21 @@ const FormBuilderSettings = ({
     // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     formCustomFields?.forEach((field) => {
       if (field.input_type === 'page') {
+        const pageTitle = localize(field.title_multiloc);
+        const pageLabel = `${formatMessage(messages.page)} ${
+          fieldNumbers[field.id]
+        }${
+          pageTitle
+            ? `: ${
+                pageTitle.length > 25
+                  ? `${pageTitle.slice(0, 25)}...`
+                  : pageTitle
+              }`
+            : ''
+        }`;
         pageArray.push({
           value: field.temp_id || field.id,
-          label: `${formatMessage(messages.page)} ${fieldNumbers[field.id]}`,
+          label: pageLabel,
         });
       }
     });
