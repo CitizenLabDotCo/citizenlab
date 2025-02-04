@@ -1,6 +1,5 @@
 import { FormatMessage } from 'typings';
 
-import { TCurrency } from 'api/app_configuration/types';
 import { IPhaseData } from 'api/phases/types';
 
 import { Localize } from 'hooks/useLocalize';
@@ -9,6 +8,7 @@ import voteInputMessages from 'components/VoteInputs/_shared/messages';
 
 import { getPermissionsDisabledMessage } from 'utils/actionDescriptors';
 import { DisabledReason } from 'utils/actionDescriptors/types';
+import { UseFormatCurrencyReturn } from 'utils/currency/useFormatCurrency';
 import { isNil } from 'utils/helperUtils';
 
 import messages from './messages';
@@ -19,7 +19,7 @@ export const getVoteSubmissionDisabledExplanation = (
   phase: IPhaseData,
   permissionsDisabledReason: DisabledReason | null,
   numberOfVotesCast: number,
-  currency: TCurrency | undefined
+  formatCurrency: UseFormatCurrencyReturn
 ) => {
   const { voting_method } = phase.attributes;
   const maxVotes = phase.attributes.voting_max_total;
@@ -84,8 +84,8 @@ export const getVoteSubmissionDisabledExplanation = (
       if (isNil(maxVotes)) return;
 
       return formatMessage(messages.budgetExceedsLimit, {
-        votesCast: numberOfVotesCast.toLocaleString(),
-        votesLimit: maxVotes.toLocaleString(),
+        votesCast: formatCurrency(numberOfVotesCast),
+        votesLimit: formatCurrency(maxVotes),
       });
     }
 
@@ -101,9 +101,8 @@ export const getVoteSubmissionDisabledExplanation = (
     const minBudgetRequiredNotReached = minBudgetRequired && !minBudgetReached;
 
     if (minBudgetRequiredNotReached) {
-      return formatMessage(messages.minBudgetNotReached, {
-        votesMinimum: minBudget.toLocaleString(),
-        currency: currency ?? '',
+      return formatMessage(messages.minBudgetNotReached1, {
+        votesMinimum: formatCurrency(minBudget),
       });
     }
   }
@@ -116,7 +115,7 @@ export const getVotesCounter = (
   localize: Localize,
   phase: IPhaseData,
   numberOfVotesCast: number,
-  currency: TCurrency | undefined
+  formatCurrency: UseFormatCurrencyReturn
 ) => {
   const { voting_method, voting_max_total } = phase.attributes;
 
@@ -165,10 +164,9 @@ export const getVotesCounter = (
 
     const budgetLeft = voting_max_total - numberOfVotesCast;
 
-    return formatMessage(messages.currencyLeft, {
-      budgetLeft: budgetLeft.toLocaleString(),
-      totalBudget: voting_max_total.toLocaleString(),
-      currency: currency ?? '',
+    return formatMessage(messages.currencyLeft1, {
+      budgetLeft: formatCurrency(budgetLeft),
+      totalBudget: formatCurrency(voting_max_total),
     });
   }
 

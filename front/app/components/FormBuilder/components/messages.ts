@@ -27,6 +27,10 @@ export default defineMessages({
     id: 'app.components.formBuilder.ranking',
     defaultMessage: 'Ranking',
   },
+  matrix: {
+    id: 'app.components.formBuilder.matrix',
+    defaultMessage: 'Matrix',
+  },
   longAnswer: {
     id: 'app.components.formBuilder.longAnswer',
     defaultMessage: 'Long answer',
@@ -208,15 +212,15 @@ export default defineMessages({
     id: 'app.components.formBuilder.formEnd',
     defaultMessage: 'Form end',
   },
-  questionLogicHelperText: {
-    id: 'app.components.formBuilder.questionLogicHelperTextDefault',
+  multipleChoiceHelperText: {
+    id: 'app.components.formBuilder.multipleChoiceHelperText',
     defaultMessage:
-      'If no logic is added to an answer, the form will follow its normal flow. Adding logic to a question will make it required by default. For more information, visit {supportPageLink}',
+      'If multiple options lead to different pages and participants select more than one, the furthest page will be shown. Ensure this behavior aligns with your intended flow.',
   },
   pagesLogicHelperText: {
-    id: 'app.components.formBuilder.pagesLogicHelperTextDefault',
+    id: 'app.components.formBuilder.pagesLogicHelperTextDefault1',
     defaultMessage:
-      'If no logic is added, the form will follow its normal flow. For more information, visit {supportPageLink}',
+      'If no logic is added, the form will follow its normal flow. If both the page and its questions have logic, the question logic will take precedence. Ensure this aligns with your intended flow For more information, visit {supportPageLink}',
   },
   goToPageInputLabel: {
     id: 'app.components.formBuilder.goToPageInputLabel',
@@ -226,13 +230,17 @@ export default defineMessages({
     id: 'app.components.formBuilder.ruleForAnswerLabel',
     defaultMessage: 'If answer is:',
   },
+  ruleForAnswerLabelMultiselect: {
+    id: 'app.components.formBuilder.ruleForAnswerLabelMultiselect',
+    defaultMessage: 'If answers include:',
+  },
   pageRuleLabel: {
     id: 'app.components.formBuilder.pageRuleLabel',
     defaultMessage: 'Next page is:',
   },
-  nextPageLabel: {
-    id: 'app.components.formBuilder.nextPageLabel',
-    defaultMessage: 'Next:',
+  continuePageLabel: {
+    id: 'app.components.formBuilder.continuePageLabel',
+    defaultMessage: 'Continues to',
   },
   supportArticleLinkText: {
     id: 'app.components.formBuilder.supportArticleLinkText',
@@ -285,5 +293,41 @@ export default defineMessages({
   cancelLeaveBuilderButtonText: {
     id: 'app.components.formBuilder.cancelLeaveBuilderButtonText',
     defaultMessage: 'Cancel',
+  },
+  stronglyDisagree: {
+    id: 'app.components.formBuilder.stronglyDisagree',
+    defaultMessage: 'Strongly disagree',
+  },
+  disagree: {
+    id: 'app.components.formBuilder.disagree',
+    defaultMessage: 'Disagree',
+  },
+  neutral: {
+    id: 'app.components.formBuilder.neutral',
+    defaultMessage: 'Neutral',
+  },
+  agree: {
+    id: 'app.components.formBuilder.agree',
+    defaultMessage: 'Agree',
+  },
+  stronglyAgree: {
+    id: 'app.components.formBuilder.stronglyAgree',
+    defaultMessage: 'Strongly agree',
+  },
+  logicAnyOtherAnswer: {
+    id: 'app.components.formBuilder.logicAnyOtherAnswer',
+    defaultMessage: 'Any other answer',
+  },
+  logicNoAnswer: {
+    id: 'app.components.formBuilder.logicNoAnswer2',
+    defaultMessage: 'Not answered',
+  },
+  logicPanelAnyOtherAnswer: {
+    id: 'app.components.formBuilder.logicPanelAnyOtherAnswer',
+    defaultMessage: 'If any other answer',
+  },
+  logicPanelNoAnswer: {
+    id: 'app.components.formBuilder.logicPanelNoAnswer',
+    defaultMessage: 'If not answered',
   },
 });

@@ -244,8 +244,8 @@
   "app.components.Pagination.back": "الصفحة السابقة",
   "app.components.Pagination.next": "الصفحة التالية",
   "app.components.ParticipationCTABars.VotingCTABar.budgetExceedsLimit": "لقد أنفقت {votesCast}، وهو ما يتجاوز حد {votesLimit}. الرجاء إزالة بعض العناصر من سلتك وحاول مرة أخرى.",
-  "app.components.ParticipationCTABars.VotingCTABar.currencyLeft": "{budgetLeft} {totalBudget} {currency}",
-  "app.components.ParticipationCTABars.VotingCTABar.minBudgetNotReached2": "تحتاج إلى إنفاق ما لا يقل عن {votesMinimum} {currency} قبل أن تتمكن من إرسال سلتك.",
+  "app.components.ParticipationCTABars.VotingCTABar.currencyLeft1": "{budgetLeft} / {totalBudget} اليسار",
+  "app.components.ParticipationCTABars.VotingCTABar.minBudgetNotReached1": "يجب عليك إنفاق ما لا يقل عن {votesMinimum} قبل أن تتمكن من إرسال سلة التسوق الخاصة بك.",
   "app.components.ParticipationCTABars.VotingCTABar.noVotesCast2": "تحتاج إلى التصويت قبل أن تتمكن من إرسال {votesTerm}.",
   "app.components.ParticipationCTABars.VotingCTABar.nothingInBasket": "تحتاج إلى إضافة شيء ما إلى سلتك قبل أن تتمكن من إرسالها.",
   "app.components.ParticipationCTABars.VotingCTABar.seeOtherOptions2": "انظر الخيارات",
@@ -503,7 +503,7 @@
   "app.components.VoteControl.budgetingNotPermitted": "يُمكن تفعيل إعداد الميزانية القائمة على المشاركة لمجموعات مُعينة فقط. ",
   "app.components.VoteControl.budgetingNotPossible": "لا يُمكن إجراء تغييرات في ميزانيتك في الوقت الحالي. ",
   "app.components.VoteControl.budgetingNotVerified": "يُرجى {verifyAccountLink} للاستمرار. ",
-  "app.components.VoteInputs._shared.currencyLeft": "لديك {budgetLeft} {totalBudget} {currency}",
+  "app.components.VoteInputs._shared.currencyLeft1": "لقد تبقى لديك {budgetLeft} / {totalBudget}",
   "app.components.VoteInputs._shared.votesLeft4": "لقد تبقى لديك {votesLeft} / {totalNumberOfVotes} {totalNumberOfVotes, plural, =0 {{votesTerm}} one {{voteTerm}} other {{votesTerm}}} .",
   "app.components.VoteInputs.budgeting.AddToBasketButton.basketAlreadySubmitted": "لقد قدمت بالفعل ميزانيتك. انقر فوق \"تعديل ميزانيتك\" لتغيير ميزانيتك.",
   "app.components.VoteInputs.budgeting.AddToBasketButton.basketAlreadySubmittedIdeaPage": "لقد قدمت بالفعل ميزانيتك. لتغيير ميزانيتك ، ارجع إلى صفحة المشروع وانقر على \"تعديل ميزانيتك\".",
@@ -624,8 +624,10 @@
   "app.components.form.controls.addressInputAriaLabel": "إدخال العنوان",
   "app.components.form.controls.addressInputPlaceholder6": "أدخل عنوانا...",
   "app.components.form.controls.adminFieldTooltip": "لا يظهر الحقل إلا للمسؤولين فقط",
+  "app.components.form.controls.allStatementsError": "يجب تحديد إجابة لجميع العبارات.",
   "app.components.form.controls.back": "خلف",
   "app.components.form.controls.clearAll": "مسح الكل",
+  "app.components.form.controls.clearAllScreenreader": "مسح جميع الإجابات من سؤال المصفوفة أعلاه",
   "app.components.form.controls.clickOnMapMultipleToAdd3": "انقر على الخريطة للرسم. ثم اسحب على النقاط لتحريكها.",
   "app.components.form.controls.clickOnMapToAddOrType": "انقر على الخريطة أو اكتب عنوانًا أدناه لإضافة إجابتك.",
   "app.components.form.controls.confirm": "يتأكد",
@@ -659,6 +661,8 @@
   "app.components.formBuilder.Page": "الصفحة",
   "app.components.formBuilder.accessibilityStatement": "بيان إمكانية الوصول",
   "app.components.formBuilder.addAnswer": "إضافة إجابة",
+  "app.components.formBuilder.addStatement": "إضافة بيان",
+  "app.components.formBuilder.agree": "يوافق",
   "app.components.formBuilder.ai1": "منظمة العفو الدولية",
   "app.components.formBuilder.aiUpsellText1": "إذا كان لديك حق الوصول إلى حزمة الذكاء الاصطناعي الخاصة بنا، فستتمكن من تلخيص وتصنيف الردود النصية باستخدام الذكاء الاصطناعي",
   "app.components.formBuilder.cancelLeaveBuilderButtonText": "يلغي",
@@ -669,6 +673,7 @@
   "app.components.formBuilder.configureMap": "تكوين الخريطة",
   "app.components.formBuilder.confirmLeaveBuilderButtonText": "نعم أريد الرحيل",
   "app.components.formBuilder.content": "محتوى",
+  "app.components.formBuilder.continuePageLabel": "يستمر إلى",
   "app.components.formBuilder.cosponsors": "الرعاة المشاركون",
   "app.components.formBuilder.default": "افتراضي",
   "app.components.formBuilder.defaultContent": "محتوى افتراضي",
@@ -677,6 +682,7 @@
   "app.components.formBuilder.description": "الوصف",
   "app.components.formBuilder.disabledBuiltInFieldTooltip": "تمت إضافة هذا المحتوى في النموذج من قبل. لا يجوز استخدام محتوى افتراضي أكثر من مرة واحدة.",
   "app.components.formBuilder.disabledCustomFieldsTooltip1": "إن إضافة محتوى مخصص ليس جزءًا من ترخيصك الحالي. تواصل مع مدير GovSuccess الخاص بك لمعرفة المزيد حول هذا الأمر.",
+  "app.components.formBuilder.disagree": "لا أوافق",
   "app.components.formBuilder.displayAsDropdown": "عرض كقائمة منسدلة",
   "app.components.formBuilder.displayAsDropdownTooltip": "عرض الخيارات في قائمة منسدلة. إذا كان لديك العديد من الخيارات، فمن المستحسن القيام بذلك.",
   "app.components.formBuilder.done": "تم",
@@ -686,14 +692,17 @@
   "app.components.formBuilder.editButtonLabel": "تعديل",
   "app.components.formBuilder.emptyImageOptionError": "قم بتقديم إجابة واحدة على الأقل. يرجى ملاحظة أن كل إجابة يجب أن يكون لها عنوان.",
   "app.components.formBuilder.emptyOptionError": "أدخل إجابة واحدة على الأقل",
+  "app.components.formBuilder.emptyStatementError": "تقديم بيان واحد على الأقل",
   "app.components.formBuilder.emptyTitleError": "أدخل عنوان سؤال",
   "app.components.formBuilder.emptyTitleMessage": "توفير عنوان لجميع الإجابات",
+  "app.components.formBuilder.emptyTitleStatementMessage": "توفير عنوان لجميع البيانات",
   "app.components.formBuilder.enable": "تمكين",
   "app.components.formBuilder.errorMessage": "توجد مشكلة، يرجى حل المشكلة لتتمكن من حفظ التغييرات التي أجريتها",
   "app.components.formBuilder.fieldGroup.description": "الوصف (اختياري)",
   "app.components.formBuilder.fieldGroup.title": "العنوان (اختياري)",
   "app.components.formBuilder.fieldIsNotVisibleTooltip": "لا تتوفر إجابات هذه الأسئلة حاليًا إلا في ملف excel الذي تم تصديره في مدير المدخلات، ولا يمكن للمستخدمين رؤيتها.",
   "app.components.formBuilder.fieldLabel": "خيارات الإجابة",
+  "app.components.formBuilder.fieldLabelStatement": "تصريحات",
   "app.components.formBuilder.fileUpload": "تحميل ملف",
   "app.components.formBuilder.formBuilderSettings.pageLayoutSettings.mapBasedPage": "صفحة تعتمد على الخريطة",
   "app.components.formBuilder.formBuilderSettings.pageLayoutSettings.mapOptionDescription": "قم بتضمين الخريطة كسياق أو اطرح أسئلة تعتمد على الموقع على المشاركين.",
@@ -724,17 +733,33 @@
   "app.components.formBuilder.linearScale": "مقياس خطي",
   "app.components.formBuilder.locationDescription": "موقع",
   "app.components.formBuilder.logic": "الأساس المنطقي",
+  "app.components.formBuilder.logicAnyOtherAnswer": "أي إجابة أخرى",
+  "app.components.formBuilder.logicConflicts.conflictingLogic": "المنطق المتضارب",
+  "app.components.formBuilder.logicConflicts.interQuestionConflict": "تحتوي هذه الصفحة على أسئلة تؤدي إلى صفحات مختلفة. إذا أجاب المشاركون على أسئلة متعددة، فسيتم عرض الصفحة الأبعد. تأكد من أن هذا السلوك يتماشى مع التدفق المقصود.",
+  "app.components.formBuilder.logicConflicts.multipleConflictTypes": "تطبق على هذه الصفحة قواعد منطقية متعددة: منطق الأسئلة المتعددة الاختيارات، ومنطق مستوى الصفحة، ومنطق الأسئلة المتبادلة. وعندما تتداخل هذه الشروط، فإن منطق الأسئلة سيكون له الأولوية على منطق الصفحة، وسيتم عرض الصفحة الأبعد. راجع المنطق للتأكد من أنه يتماشى مع التدفق المقصود.",
+  "app.components.formBuilder.logicConflicts.multipleGotoInMultiSelect": "تحتوي هذه الصفحة على سؤال متعدد الاختيارات حيث تؤدي الخيارات إلى صفحات مختلفة. إذا اختار المشاركون خيارات متعددة، فسيتم عرض الصفحة الأبعد. تأكد من أن هذا السلوك يتماشى مع التدفق المقصود.",
+  "app.components.formBuilder.logicConflicts.multipleGotoInMultiSelectAndInterQuestionConflict": "تحتوي هذه الصفحة على سؤال متعدد الاختيارات حيث تؤدي الخيارات إلى صفحات مختلفة وتحتوي على أسئلة تؤدي إلى صفحات أخرى. سيتم عرض الصفحة الأبعد إذا تداخلت هذه الشروط. تأكد من أن هذا السلوك يتوافق مع التدفق المقصود.",
+  "app.components.formBuilder.logicConflicts.multipleGotoInMultiSelectAndQuestionVsPageLogic": "تحتوي هذه الصفحة على سؤال متعدد الاختيارات حيث تؤدي الخيارات إلى صفحات مختلفة ولديها منطق محدد على مستوى الصفحة والسؤال. سيكون لمنطق السؤال الأولوية، وسيتم عرض الصفحة الأبعد. تأكد من أن هذا السلوك يتماشى مع التدفق المقصود.",
+  "app.components.formBuilder.logicConflicts.questionVsPageLogic": "تم ضبط منطق هذه الصفحة على مستوى الصفحة ومستوى السؤال. وسوف يكون لمنطق السؤال الأولوية على منطق مستوى الصفحة. تأكد من أن هذا السلوك يتماشى مع التدفق المقصود.",
+  "app.components.formBuilder.logicConflicts.questionVsPageLogicAndInterQuestionConflict": "تحتوي هذه الصفحة على منطق محدد على مستوى الصفحة والسؤال، ويتم توجيه أسئلة متعددة إلى صفحات مختلفة. وسوف تكون الأولوية لمنطق السؤال، وسيتم عرض الصفحة الأبعد. تأكد من أن هذا السلوك يتماشى مع التدفق المقصود.",
+  "app.components.formBuilder.logicNoAnswer2": "لم يتم الرد",
+  "app.components.formBuilder.logicPanelAnyOtherAnswer": "إذا كان هناك أي إجابة أخرى",
+  "app.components.formBuilder.logicPanelNoAnswer": "إذا لم يتم الرد",
   "app.components.formBuilder.logicValidationError": "قد لا يرتبط الأساس المنطقي بالصفحات السابقة",
   "app.components.formBuilder.longAnswer": "إجابة مطولة",
   "app.components.formBuilder.mapConfiguration": "تكوين الخريطة",
   "app.components.formBuilder.mapping": "رسم الخرائط",
   "app.components.formBuilder.mappingNotInCurrentLicense": "لا تتضمن رخصتك الحالية ميزات رسم الخرائط الاستقصائية. تواصل مع مدير GovSuccess الخاص بك لمعرفة المزيد.",
+  "app.components.formBuilder.matrix": "المصفوفة",
+  "app.components.formBuilder.matrixSettings.columns": "الأعمدة",
+  "app.components.formBuilder.matrixSettings.rows": "الصفوف",
   "app.components.formBuilder.multipleChoice": "اختيار متعدد",
+  "app.components.formBuilder.multipleChoiceHelperText": "إذا أدت خيارات متعددة إلى صفحات مختلفة وقام المشاركون باختيار أكثر من خيار، فسيتم عرض الصفحة الأبعد. تأكد من أن هذا السلوك يتوافق مع التدفق المقصود.",
   "app.components.formBuilder.multipleChoiceImage": "اختيار الصورة",
   "app.components.formBuilder.multiselect.maximum": "أقصى",
   "app.components.formBuilder.multiselect.minimum": "الحد الأدنى",
+  "app.components.formBuilder.neutral": "حيادي",
   "app.components.formBuilder.newField": "حقل جديد",
-  "app.components.formBuilder.nextPageLabel": "التالي:",
   "app.components.formBuilder.number": "الرقم",
   "app.components.formBuilder.open": "مفتوح",
   "app.components.formBuilder.optional": "اختياري",
@@ -743,12 +768,11 @@
   "app.components.formBuilder.otherOptionTooltip": "اسمح للمشاركين بإدخال استجابة مخصصة إذا كانت الإجابات المقدمة لا تتطابق مع تفضيلاتهم",
   "app.components.formBuilder.page": "الصفحة",
   "app.components.formBuilder.pageRuleLabel": "الصفحة التالية هي:",
-  "app.components.formBuilder.pagesLogicHelperTextDefault": "إذا لم يُضاف أساس منطقي، فسيتبع النموذج مساره العادي. لمزيد من المعلومات، تفضل بزيارة {supportPageLink}",
+  "app.components.formBuilder.pagesLogicHelperTextDefault1": "إذا لم تتم إضافة أي منطق، فسيتبع النموذج تدفقه الطبيعي. إذا كانت كل من الصفحة والأسئلة تحتوي على منطق، فسيكون لمنطق السؤال الأولوية. تأكد من توافق ذلك مع التدفق المقصود. لمزيد من المعلومات، تفضل بزيارة {supportPageLink}",
   "app.components.formBuilder.proposedBudget": "ميزانية مقترحة",
   "app.components.formBuilder.question": "سؤال",
   "app.components.formBuilder.questionCannotBeDeleted": "لا يمكن حذف هذا السؤال.",
   "app.components.formBuilder.questionDescriptionOptional": "وصف السؤال (اختياري)",
-  "app.components.formBuilder.questionLogicHelperTextDefault": "إذا لم يُضاف أساس منطقي إلى إجابة، فسيتبع النموذج مساره العادي. إذا أضيف أساس منطقي إلى سؤال، فسيصبح مطلوبًا بشكل افتراضي. لمزيد من المعلومات، تفضل بزيارة {supportPageLink}",
   "app.components.formBuilder.questionTitle": "عنوان السؤال",
   "app.components.formBuilder.randomize": "عشوائية",
   "app.components.formBuilder.randomizeToolTip": "سيتم ترتيب الإجابات بشكل عشوائي لكل مستخدم",
@@ -758,6 +782,7 @@
   "app.components.formBuilder.required": "مطلوب",
   "app.components.formBuilder.requiredToggleLabel": "جعل الإجابة عن هذا السؤال إلزامية",
   "app.components.formBuilder.ruleForAnswerLabel": "إذا كانت الإجابة هي:",
+  "app.components.formBuilder.ruleForAnswerLabelMultiselect": "إذا كانت الإجابات تتضمن:",
   "app.components.formBuilder.save": "حفظ",
   "app.components.formBuilder.section": "قسم",
   "app.components.formBuilder.sectionCannotBeDeleted": "لا يمكن حذف هذا القسم.",
@@ -767,6 +792,8 @@
   "app.components.formBuilder.showResponseToUsersToggleLabel": "إظهار الاستجابة للمستخدمين",
   "app.components.formBuilder.singleChoice": "اختيار أحادي",
   "app.components.formBuilder.staleDataErrorMessage2": "حدثت مشكلة. تم حفظ نموذج الإدخال هذا مؤخرًا في مكان آخر. قد يكون السبب في ذلك هو أنك أو مستخدم آخر قام بفتحه للتحرير في نافذة متصفح أخرى. يرجى تحديث الصفحة للحصول على أحدث نموذج ثم إجراء التغييرات مرة أخرى.",
+  "app.components.formBuilder.stronglyAgree": "أوافق بشدة",
+  "app.components.formBuilder.stronglyDisagree": "أختلف بشدة",
   "app.components.formBuilder.supportArticleLinkText": "هذه الصفحة",
   "app.components.formBuilder.tags": "وسوم",
   "app.components.formBuilder.title": "العنوان",
@@ -2061,9 +2088,9 @@
   "app.utils.AdminPage.ProjectEdit.inputAndFeedback": "تجميع المدخلات والملاحظات",
   "app.utils.AdminPage.ProjectEdit.shareInformation": "إتاحة المعلومات للمشاركة",
   "app.utils.FormattedCurrency.credits": "رمز/رموز ائتمان",
-  "app.utils.FormattedCurrency.multipleCredits": "{numberOfTokens} رمز/رموز ائتمان",
-  "app.utils.FormattedCurrency.oneCredit": "رمز ائتمان واحد",
   "app.utils.FormattedCurrency.tokens": "رمز/رموز مميزة",
+  "app.utils.FormattedCurrency.xCredits": "{numberOfCredits, plural, =0 {# رصيد} one {# رصيد} other {# رصيد}}",
+  "app.utils.FormattedCurrency.xTokens": "{numberOfTokens, plural, =0 {# رموز} one {# رمز} other {# رموز}}",
   "app.utils.IdeaCards.mostDiscussed": "الأكثر مناقشة",
   "app.utils.IdeaCards.mostReacted": "معظم ردود الفعل",
   "app.utils.IdeaCards.newest": "الأحدث",
@@ -2136,7 +2163,7 @@
   "app.utils.participationMethodConfig.voting.votingNotSignedIn2": "يجب عليك تسجيل الدخول أو التسجيل للتصويت.",
   "app.utils.participationMethodConfig.voting.votingNotVerified": "يجب عليك التحقق من حسابك قبل أن تتمكن من التصويت.",
   "app.utils.votingMethodUtils.budget": "ميزانية",
-  "app.utils.votingMethodUtils.budgetParticipationEnded": "<b>أغلق إرسال الميزانيات في {endDate}.</b> كان لدى المشاركين ما مجموعه <b>{maxBudget} {currency} للتوزيع بين {optionCount} خيارات.</b>",
+  "app.utils.votingMethodUtils.budgetParticipationEnded1": "<b>تم إغلاق باب تقديم الميزانيات في {endDate}.</b> كان لدى المشاركين إجمالي يبلغ <b>{maxBudget} لكل منهم لتوزيعه بين {optionCount} خيارات.</b>",
   "app.utils.votingMethodUtils.budgetSubmitted": "تم تقديم الميزانية",
   "app.utils.votingMethodUtils.budgetSubmittedWithIcon": "الميزانية المقدمة 🎉",
   "app.utils.votingMethodUtils.budgetingNotInGroup": "أنت لا تستوفي متطلبات تعيين الميزانيات.",
@@ -2144,10 +2171,10 @@
   "app.utils.votingMethodUtils.budgetingNotSignedIn2": "يجب عليك تسجيل الدخول أو التسجيل لتعيين الميزانيات.",
   "app.utils.votingMethodUtils.budgetingNotVerified": "يجب عليك التحقق من حسابك قبل أن تتمكن من تعيين الميزانيات.",
   "app.utils.votingMethodUtils.budgetingPreSubmissionWarning": "<b>لن يتم احتساب ميزانيتك</b> حتى تنقر على \"إرسال\"",
-  "app.utils.votingMethodUtils.budgetingSubmissionInstructionsMinBudget": "الحد الأدنى للميزانية المطلوبة هو {amount} {currency}.",
+  "app.utils.votingMethodUtils.budgetingSubmissionInstructionsMinBudget1": "الحد الأدنى للميزانية المطلوبة هو {amount}.",
   "app.utils.votingMethodUtils.budgetingSubmissionInstructionsOnceYouAreDone": "بمجرد الانتهاء ، انقر فوق \"إرسال\" لإرسال ميزانيتك.",
   "app.utils.votingMethodUtils.budgetingSubmissionInstructionsPreferredOptions": "حدد الخيارات المفضلة لديك من خلال النقر على \"إضافة\".",
-  "app.utils.votingMethodUtils.budgetingSubmissionInstructionsTotalBudget": "لديك إجمالي <b>{maxBudget} {currency} للتوزيع بين {optionCount} خيارات</b>.",
+  "app.utils.votingMethodUtils.budgetingSubmissionInstructionsTotalBudget2": "لديك إجمالي <b>{maxBudget} لتوزيعها بين {optionCount} خيارات</b>.",
   "app.utils.votingMethodUtils.budgetingSubmittedInstructions2": "<b>تهانينا ، لقد تم تقديم ميزانيتك!</b> يمكنك التحقق من الخيارات أدناه في أي وقت أو تعديلها قبل <b>{endDate}</b>.",
   "app.utils.votingMethodUtils.budgetingSubmittedInstructionsContinuous": "<b>تهانينا ، لقد تم تقديم ميزانيتك!</b> يمكنك التحقق من الخيارات أدناه في أي وقت أو تعديلها.",
   "app.utils.votingMethodUtils.budgetingSubmittedInstructionsNoEndDate": "<b>تهانينا، لقد تم تقديم ميزانيتك!</b> يمكنك التحقق من خياراتك أدناه في أي وقت.",

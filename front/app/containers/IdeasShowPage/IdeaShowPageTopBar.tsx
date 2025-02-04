@@ -11,7 +11,7 @@ import { useSearchParams } from 'react-router-dom';
 import styled from 'styled-components';
 
 import useIdeaStatuses from 'api/idea_statuses/useIdeaStatuses';
-import useIdeaById from 'api/ideas/useIdeaById';
+import { IIdeaData } from 'api/ideas/types';
 import useAuthUser from 'api/me/useAuthUser';
 import { IPhaseData } from 'api/phases/types';
 import { isIdeaInParticipationContext } from 'api/phases/utils';
@@ -60,23 +60,22 @@ const Left = styled.div`
 const Right = styled.div``;
 
 interface Props {
-  ideaId?: string;
-  projectId: string;
+  idea: IIdeaData;
   deselectIdeaOnMap?: () => void;
   className?: string;
   phase?: IPhaseData;
 }
 
 const IdeaShowPageTopBar = ({
-  ideaId,
-  projectId,
+  idea,
   className,
   deselectIdeaOnMap,
   phase,
 }: Props) => {
+  const projectId = idea.relationships.project.data.id;
+  const ideaId = idea.id;
   const { data: authUser } = useAuthUser();
   const { data: project } = useProjectById(projectId);
-  const { data: idea } = useIdeaById(ideaId);
   const isSmallerThanTablet = useBreakpoint('tablet');
 
   const [searchParams] = useSearchParams();
@@ -84,8 +83,9 @@ const IdeaShowPageTopBar = ({
 
   const votingConfig = getVotingMethodConfig(phase?.attributes.voting_method);
 
-  const ideaIsInParticipationContext =
-    phase && idea ? isIdeaInParticipationContext(idea, phase) : undefined;
+  const ideaIsInParticipationContext = phase
+    ? isIdeaInParticipationContext(idea, phase)
+    : undefined;
 
   const isProposalPhase =
     phase?.attributes.participation_method === 'proposals';
@@ -97,7 +97,7 @@ const IdeaShowPageTopBar = ({
     enabled: true,
   });
 
-  const ideaStatusId = idea?.data.relationships.idea_status.data?.id;
+  const ideaStatusId = idea.relationships.idea_status.data?.id;
   const proposalStatusCode = ideaStatusId
     ? proposalsStatuses?.data.find((status) => status.id === ideaStatusId)
         ?.attributes.code ?? null
@@ -167,7 +167,7 @@ const IdeaShowPageTopBar = ({
               />
             )}
           {/* Only visible if voting */}
-          {ideaId && phase && ideaIsInParticipationContext && (
+          {phase && ideaIsInParticipationContext && (
             <Box mr="8px">
               {votingConfig?.getIdeaPageVoteInput({
                 ideaId,

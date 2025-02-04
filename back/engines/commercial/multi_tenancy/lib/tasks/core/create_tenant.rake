@@ -258,6 +258,10 @@ namespace :cl2_back do
           enabled: false,
           allowed: false
         },
+        posthog_user_tracking: {
+          enabled: false,
+          allowed: false
+        },
         user_blocking: {
           enabled: false,
           allowed: false,

@@ -159,6 +159,10 @@ FactoryBot.define do
       end
       linear_scale_label_6_multiloc { {} }
       linear_scale_label_7_multiloc { {} }
+      linear_scale_label_8_multiloc { {} }
+      linear_scale_label_9_multiloc { {} }
+      linear_scale_label_10_multiloc { {} }
+      linear_scale_label_11_multiloc { {} }
     end
 
     factory :custom_field_page do
@@ -280,6 +284,33 @@ FactoryBot.define do
           create(:custom_field_option, custom_field: cf, key: 'by_train', title_multiloc: { 'en' => 'By train' })
           create(:custom_field_option, custom_field: cf, key: 'by_bike', title_multiloc: { 'en' => 'By bike' })
         end
+      end
+    end
+
+    factory :custom_field_matrix_linear_scale do
+      title_multiloc do
+        {
+          'en' => 'Please indicate how strong you agree or disagree with the following statements.'
+        }
+      end
+      input_type { 'matrix_linear_scale' }
+      maximum { 5 }
+      linear_scale_label_1_multiloc do
+        {
+          'en' => 'Strongly disagree'
+        }
+      end
+      linear_scale_label_5_multiloc do
+        {
+          'en' => 'Strongly agree'
+        }
+      end
+
+      matrix_statements do
+        [
+          build(:custom_field_matrix_statement, title_multiloc: { 'en' => 'We should send more animals into space' }, key: 'send_more_animals_to_space'),
+          build(:custom_field_matrix_statement, title_multiloc: { 'en' => 'We should ride our bicycles more often' }, key: 'ride_bicycles_more_often')
+        ]
       end
     end
 

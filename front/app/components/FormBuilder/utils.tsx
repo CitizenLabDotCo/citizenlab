@@ -16,6 +16,7 @@ import { isNilOrError } from 'utils/helperUtils';
 import ConfigOptionsWithLocaleSwitcher from './components/FormBuilderSettings/ConfigOptionsWithLocaleSwitcher';
 import FieldGroupSettings from './components/FormBuilderSettings/FieldGroupSettings';
 import LinearScaleSettings from './components/FormBuilderSettings/LinearScaleSettings';
+import MatrixSettings from './components/FormBuilderSettings/MatrixSettings';
 import MultiselectSettings from './components/FormBuilderSettings/MultiselectSettings';
 import OptionsSettings from './components/FormBuilderSettings/OptionsSettings';
 import PageLayoutSettings from './components/FormBuilderSettings/PageLayoutSettings';
@@ -42,7 +43,6 @@ export type FormBuilderConfig = {
   toolboxTitle?: MessageDescriptor;
   supportArticleLink?: MessageDescriptor;
   formEndPageLogicOption?: MessageDescriptor;
-  questionLogicHelperText?: MessageDescriptor;
   pagesLogicHelperText?: MessageDescriptor;
 
   toolboxFieldsToExclude: ICustomFieldInputType[];
@@ -96,6 +96,14 @@ export function getAdditionalSettings(
   }
 
   switch (inputType) {
+    case 'matrix_linear_scale':
+      return (
+        <MatrixSettings
+          field={field}
+          locales={locales}
+          platformLocale={platformLocale}
+        />
+      );
     case 'multiselect_image':
     case 'multiselect':
       return (
@@ -278,6 +286,9 @@ const getInputTypeStringKey = (
     case 'ranking':
       translatedStringKey = messages.ranking;
       break;
+    case 'matrix_linear_scale':
+      translatedStringKey = messages.matrix;
+      break;
   }
 
   return translatedStringKey;
@@ -290,4 +301,18 @@ export const getTranslatedStringKey = (
   return builtInFieldKeys.includes(key)
     ? getBuiltInFieldStringKey(key)
     : getInputTypeStringKey(inputType);
+};
+
+export const findNextPageAfterCurrentPage = (
+  allFields: IFlatCustomField[],
+  fieldId: string
+) => {
+  const index = allFields.findIndex((item) => item.id === fieldId);
+  if (index !== -1) {
+    const nextPage = allFields
+      .slice(index + 1)
+      .find((item) => item.input_type === 'page');
+    if (nextPage?.id) return nextPage.id;
+  }
+  return 'survey_end';
 };

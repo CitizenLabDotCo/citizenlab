@@ -19,9 +19,9 @@ export default defineMessages({
       'Questions not currently supported: Images, Tags and File Upload.',
   },
   clickExportToPDFSurvey: {
-    id: 'app.containers.Admin.projects.all.clickExportToPDFSurvey4',
+    id: 'app.containers.Admin.projects.all.clickExportToPDFSurvey5',
     defaultMessage:
-      'Questions not currently supported: Mapping questions (drop pin, draw route and draw area), image choice questions, ranking questions and file upload questions.',
+      'Questions not currently supported: Mapping questions (drop pin, draw route and draw area), image choice questions, ranking questions, matrix questions and file upload questions.',
   },
   itIsAlsoPossibleIdeation: {
     id: 'app.containers.Admin.projects.all.itIsAlsoPossible1',

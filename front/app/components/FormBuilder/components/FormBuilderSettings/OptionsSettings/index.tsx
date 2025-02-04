@@ -8,6 +8,8 @@ import { useIntl } from 'utils/cl-intl';
 
 import messages from './messages';
 
+const inputTypesNoDropdown = ['multiselect_image', 'ranking'];
+
 type Props = {
   inputType: string;
   randomizeName: string;
@@ -39,7 +41,7 @@ const OptionsSettings = ({
           }
         />
       </Box>
-      {inputType !== 'multiselect_image' && inputType !== 'ranking' && (
+      {!inputTypesNoDropdown.includes(inputType) && (
         <Box mb="24px">
           <Toggle
             name={dropdownLayoutName}
