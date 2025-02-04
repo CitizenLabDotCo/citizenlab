@@ -65,7 +65,8 @@ const StyledBox = styled(Box)<{
       : ''}
 `;
 
-export type Props = Omit<BoxProps, 'border'> & {
+type Props = Omit<BoxProps, 'border'> & {
+  borderSpacing?: string;
   innerBorders?: InnerBorders;
   border?: any; // TODO: Figure out why this prop results in a type error in React 18 and fix it
 };
