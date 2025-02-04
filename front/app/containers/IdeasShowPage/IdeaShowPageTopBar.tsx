@@ -78,6 +78,7 @@ const IdeaShowPageTopBar = ({
 }: Props) => {
   const projectId = idea.relationships.project.data.id;
   const ideaId = idea.id;
+  // TO FIX: Needs to use ideaStatusId (if we keep this)
   const { data: ideaStatus } = useIdeaStatus(ideaId);
   const { data: authUser } = useAuthUser();
   const { data: project } = useProjectById(projectId);
