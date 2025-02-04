@@ -1,3 +1,4 @@
+import { IIdeaStatus } from 'api/idea_statuses/types';
 import { IIdeaData } from 'api/ideas/types';
 
 import { isFixableByAuthentication } from 'utils/actionDescriptors';
@@ -19,5 +20,16 @@ export const showIdeationReactions = (idea: IIdeaData) => {
     reactingFutureEnabled ||
     likesCount > 0 ||
     dislikesCount > 0
+  );
+};
+
+export const showProposalsReactions = (ideaStatus: IIdeaStatus) => {
+  const code = ideaStatus.data.attributes.code;
+
+  return (
+    code === 'proposed' ||
+    code === 'threshold_reached' ||
+    code === 'custom' ||
+    code === 'answered'
   );
 };

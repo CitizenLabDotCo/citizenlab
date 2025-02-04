@@ -13,6 +13,7 @@ import useIdeaStatus from 'api/idea_statuses/useIdeaStatus';
 import { IIdea } from 'api/ideas/types';
 
 import ReactionControl from 'components/ReactionControl';
+import { showProposalsReactions } from 'components/ReactionControl/utils';
 import T from 'components/T';
 
 import { ScreenReaderOnly } from 'utils/a11y';
@@ -54,11 +55,7 @@ const ProposalInfo = ({ idea, compact }: Props) => {
     code === 'custom' ||
     code === 'ineligible' ||
     code === 'answered';
-  const showVoteButtons =
-    code === 'proposed' ||
-    code === 'threshold_reached' ||
-    code === 'custom' ||
-    code === 'answered';
+  const showVoteButtons = showProposalsReactions(ideaStatus);
 
   return (
     <Box
