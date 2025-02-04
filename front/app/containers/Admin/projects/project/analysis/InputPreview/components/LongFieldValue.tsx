@@ -9,6 +9,7 @@ import DateLongField from './CustomFieldLongFieldValues/DateLongField';
 import LinearScaleLongField from './CustomFieldLongFieldValues/LinearScaleLongField';
 import LineLongField from './CustomFieldLongFieldValues/LineLongField';
 import LocationDescriptionLongField from './CustomFieldLongFieldValues/LocationDescriptionLongField';
+import MatrixLongField from './CustomFieldLongFieldValues/MatrixLongField';
 import MultilineTextLongField from './CustomFieldLongFieldValues/MultilineTextLongField';
 import MultiselectLongField from './CustomFieldLongFieldValues/MultiselectLongField';
 import PointfileLongField from './CustomFieldLongFieldValues/PointLongField';
@@ -132,6 +133,11 @@ const FieldValue = ({ projectId, phaseId, customFieldId, input }: Props) => {
         case 'polygon': {
           return (
             <PolygonLongField rawValue={rawValue} customField={customField} />
+          );
+        }
+        case 'matrix_linear_scale': {
+          return (
+            <MatrixLongField rawValue={rawValue} customField={customField} />
           );
         }
         case 'file_upload': {

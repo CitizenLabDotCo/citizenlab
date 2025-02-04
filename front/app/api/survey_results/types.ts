@@ -52,6 +52,18 @@ type BaseResult = {
 export type RankingsCounts = Record<string, Record<string, number>>;
 export type AverageRankings = Record<string, string>;
 
+export interface MatrixLinearScaleAnswer {
+  answer: string | number | null;
+  count: number;
+  percentage: number;
+}
+
+export type MatrixLinearScaleResult = {
+  question: Multiloc;
+  questionResponseCount: number;
+  answers: MatrixLinearScaleAnswer[];
+};
+
 export type ResultUngrouped = BaseResult & {
   grouped: false;
   answers?: Answer[];
@@ -62,6 +74,9 @@ export type ResultUngrouped = BaseResult & {
 
   // Undefined for text and file upload questions
   multilocs?: AnswerMultilocs;
+
+  // Matrix linear scale question
+  linear_scales?: Record<string, MatrixLinearScaleResult>;
 
   // Defined map questions
   mapConfigId?: string;

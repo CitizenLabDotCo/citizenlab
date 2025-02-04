@@ -919,8 +919,6 @@
   "app.modules.project_folder.citizen.components.ProjectFolderSharingModal.twitterMessage": "{projectFolderName}",
   "app.modules.project_folder.citizen.components.ProjectFolderSharingModal.whatsAppMessage": "{projectFolderName} | from the participation platform of {orgName}",
   "app.utils.FormattedCurrency.credits": "credits",
-  "app.utils.FormattedCurrency.multipleCredits": "{numberOfTokens} credits",
-  "app.utils.FormattedCurrency.oneCredit": "1 credit",
   "app.utils.FormattedCurrency.tokens": "tokens",
   "app.utils.errors.api_error_default.in": "Is not right",
   "app.utils.errors.default.ajv_error_birthyear_required": "Please fill in your year of birth",

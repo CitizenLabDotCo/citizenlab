@@ -95,6 +95,7 @@ const ScaleLabelsInput = ({
           const labelMultiloc = getValues(
             `${labelBaseName}.linear_scale_label_${index + 1}_multiloc`
           );
+
           return (
             <Box display="flex" gap="36px" marginBottom="16px" key={index}>
               <Box mt="12px">

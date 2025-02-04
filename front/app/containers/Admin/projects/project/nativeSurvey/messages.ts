@@ -140,6 +140,10 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.survey.ranking2',
     defaultMessage: 'Ranking',
   },
+  matrix_linear_scale: {
+    id: 'app.containers.AdminPage.ProjectEdit.survey.matrix_linear_scale2',
+    defaultMessage: 'Matrix',
+  },
   multiselect: {
     id: 'app.containers.AdminPage.ProjectEdit.survey.multiselectText2',
     defaultMessage: 'Multiple choice - choose many',

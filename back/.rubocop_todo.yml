@@ -179,6 +179,8 @@ Metrics/BlockNesting:
 # Configuration parameters: CountComments, CountAsOne.
 Metrics/ClassLength:
   Max: 479
+  Exclude:
+    - 'engines/commercial/multi_tenancy/db/seeds/tenants.rb'
 
 # Offense count: 1
 # Configuration parameters: LengthThreshold.

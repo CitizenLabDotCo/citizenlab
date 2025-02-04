@@ -244,8 +244,8 @@
   "app.components.Pagination.back": "ਪਿਛਲਾ ਪੰਨਾ",
   "app.components.Pagination.next": "ਅਗਲਾ ਪੰਨਾ",
   "app.components.ParticipationCTABars.VotingCTABar.budgetExceedsLimit": "ਤੁਸੀਂ {votesCast}ਖਰਚ ਕੀਤਾ, ਜੋ {votesLimit}ਦੀ ਸੀਮਾ ਤੋਂ ਵੱਧ ਹੈ। ਕਿਰਪਾ ਕਰਕੇ ਆਪਣੀ ਟੋਕਰੀ ਵਿੱਚੋਂ ਕੁਝ ਆਈਟਮਾਂ ਹਟਾਓ ਅਤੇ ਦੁਬਾਰਾ ਕੋਸ਼ਿਸ਼ ਕਰੋ।",
-  "app.components.ParticipationCTABars.VotingCTABar.currencyLeft": "{budgetLeft} / {totalBudget} {currency} ਖੱਬੇ",
-  "app.components.ParticipationCTABars.VotingCTABar.minBudgetNotReached2": "ਆਪਣੀ ਟੋਕਰੀ ਜਮ੍ਹਾਂ ਕਰਾਉਣ ਤੋਂ ਪਹਿਲਾਂ ਤੁਹਾਨੂੰ ਘੱਟੋ-ਘੱਟ {votesMinimum} {currency} ਖਰਚ ਕਰਨ ਦੀ ਲੋੜ ਹੈ।",
+  "app.components.ParticipationCTABars.VotingCTABar.currencyLeft1": "{budgetLeft} / {totalBudget} ਖੱਬੇ",
+  "app.components.ParticipationCTABars.VotingCTABar.minBudgetNotReached1": "ਆਪਣੀ ਟੋਕਰੀ ਜਮ੍ਹਾਂ ਕਰਾਉਣ ਤੋਂ ਪਹਿਲਾਂ ਤੁਹਾਨੂੰ ਘੱਟੋ-ਘੱਟ {votesMinimum} ਖਰਚ ਕਰਨ ਦੀ ਲੋੜ ਹੈ।",
   "app.components.ParticipationCTABars.VotingCTABar.noVotesCast2": "ਇਸ ਤੋਂ ਪਹਿਲਾਂ ਕਿ ਤੁਸੀਂ ਆਪਣਾ {votesTerm}ਸਪੁਰਦ ਕਰ ਸਕੋ, ਤੁਹਾਨੂੰ ਵੋਟ ਪਾਉਣ ਦੀ ਲੋੜ ਹੈ।",
   "app.components.ParticipationCTABars.VotingCTABar.nothingInBasket": "ਇਸ ਤੋਂ ਪਹਿਲਾਂ ਕਿ ਤੁਸੀਂ ਇਸਨੂੰ ਜਮ੍ਹਾਂ ਕਰ ਸਕੋ, ਤੁਹਾਨੂੰ ਆਪਣੀ ਟੋਕਰੀ ਵਿੱਚ ਕੁਝ ਜੋੜਨ ਦੀ ਲੋੜ ਹੈ।",
   "app.components.ParticipationCTABars.VotingCTABar.seeOtherOptions2": "ਵਿਕਲਪ ਦੇਖੋ",
@@ -503,7 +503,7 @@
   "app.components.VoteControl.budgetingNotPermitted": "ਭਾਗੀਦਾਰੀ ਬਜਟਿੰਗ ਵਰਤਮਾਨ ਵਿੱਚ ਸਮਰੱਥ ਨਹੀਂ ਹੈ।",
   "app.components.VoteControl.budgetingNotPossible": "ਤੁਹਾਡੇ ਬਜਟ ਵਿੱਚ ਬਦਲਾਅ ਕਰਨਾ ਇਸ ਸਮੇਂ ਸੰਭਵ ਨਹੀਂ ਹੈ।",
   "app.components.VoteControl.budgetingNotVerified": "ਜਾਰੀ ਰੱਖਣ ਲਈ ਕਿਰਪਾ ਕਰਕੇ {verifyAccountLink} ।",
-  "app.components.VoteInputs._shared.currencyLeft": "ਤੁਹਾਡੇ ਕੋਲ {budgetLeft} / {totalBudget} {currency} ਬਾਕੀ ਹੈ",
+  "app.components.VoteInputs._shared.currencyLeft1": "ਤੁਹਾਡੇ ਕੋਲ {budgetLeft} / {totalBudget} ਬਾਕੀ ਹੈ",
   "app.components.VoteInputs._shared.votesLeft4": "ਤੁਹਾਡੇ ਕੋਲ {votesLeft} / {totalNumberOfVotes} {totalNumberOfVotes, plural, =0 {{votesTerm}} one {{voteTerm}} other {{votesTerm}}} ਖੱਬੇ।",
   "app.components.VoteInputs.budgeting.AddToBasketButton.basketAlreadySubmitted": "ਤੁਸੀਂ ਪਹਿਲਾਂ ਹੀ ਆਪਣਾ ਬਜਟ ਪੇਸ਼ ਕਰ ਚੁੱਕੇ ਹੋ। ਆਪਣਾ ਬਜਟ ਬਦਲਣ ਲਈ \"ਆਪਣੇ ਬਜਟ ਨੂੰ ਸੋਧੋ\" 'ਤੇ ਕਲਿੱਕ ਕਰੋ।",
   "app.components.VoteInputs.budgeting.AddToBasketButton.basketAlreadySubmittedIdeaPage": "ਤੁਸੀਂ ਪਹਿਲਾਂ ਹੀ ਆਪਣਾ ਬਜਟ ਪੇਸ਼ ਕਰ ਚੁੱਕੇ ਹੋ। ਆਪਣਾ ਬਜਟ ਬਦਲਣ ਲਈ, ਪ੍ਰੋਜੈਕਟ ਪੰਨੇ 'ਤੇ ਵਾਪਸ ਜਾਓ ਅਤੇ \"ਆਪਣੇ ਬਜਟ ਨੂੰ ਸੋਧੋ\" 'ਤੇ ਕਲਿੱਕ ਕਰੋ।",
@@ -624,8 +624,10 @@
   "app.components.form.controls.addressInputAriaLabel": "ਪਤਾ ਇੰਪੁੱਟ",
   "app.components.form.controls.addressInputPlaceholder6": "ਕੋਈ ਪਤਾ ਦਾਖਲ ਕਰੋ...",
   "app.components.form.controls.adminFieldTooltip": "ਖੇਤਰ ਸਿਰਫ਼ ਪ੍ਰਸ਼ਾਸਕਾਂ ਨੂੰ ਦਿਖਾਈ ਦਿੰਦਾ ਹੈ",
+  "app.components.form.controls.allStatementsError": "ਸਾਰੇ ਬਿਆਨਾਂ ਲਈ ਇੱਕ ਜਵਾਬ ਚੁਣਿਆ ਜਾਣਾ ਚਾਹੀਦਾ ਹੈ।",
   "app.components.form.controls.back": "ਵਾਪਸ",
   "app.components.form.controls.clearAll": "ਸਭ ਸਾਫ਼ ਕਰੋ",
+  "app.components.form.controls.clearAllScreenreader": "ਉਪਰੋਕਤ ਮੈਟਰਿਕਸ ਪ੍ਰਸ਼ਨ ਵਿੱਚੋਂ ਸਾਰੇ ਜਵਾਬਾਂ ਨੂੰ ਸਾਫ਼ ਕਰੋ",
   "app.components.form.controls.clickOnMapMultipleToAdd3": "ਖਿੱਚਣ ਲਈ ਨਕਸ਼ੇ 'ਤੇ ਕਲਿੱਕ ਕਰੋ। ਫਿਰ, ਉਹਨਾਂ ਨੂੰ ਮੂਵ ਕਰਨ ਲਈ ਬਿੰਦੂਆਂ 'ਤੇ ਖਿੱਚੋ।",
   "app.components.form.controls.clickOnMapToAddOrType": "ਆਪਣਾ ਜਵਾਬ ਜੋੜਨ ਲਈ ਨਕਸ਼ੇ 'ਤੇ ਕਲਿੱਕ ਕਰੋ ਜਾਂ ਹੇਠਾਂ ਕੋਈ ਪਤਾ ਟਾਈਪ ਕਰੋ।",
   "app.components.form.controls.confirm": "ਪੁਸ਼ਟੀ ਕਰੋ",
@@ -659,6 +661,8 @@
   "app.components.formBuilder.Page": "ਪੰਨਾ",
   "app.components.formBuilder.accessibilityStatement": "ਪਹੁੰਚਯੋਗਤਾ ਬਿਆਨ",
   "app.components.formBuilder.addAnswer": "ਜਵਾਬ ਸ਼ਾਮਲ ਕਰੋ",
+  "app.components.formBuilder.addStatement": "ਸਟੇਟਮੈਂਟ ਸ਼ਾਮਲ ਕਰੋ",
+  "app.components.formBuilder.agree": "ਸਹਿਮਤ ਹੋ",
   "app.components.formBuilder.ai1": "ਏ.ਆਈ",
   "app.components.formBuilder.aiUpsellText1": "ਜੇਕਰ ਤੁਹਾਡੇ ਕੋਲ ਸਾਡੇ AI ਪੈਕੇਜ ਤੱਕ ਪਹੁੰਚ ਹੈ, ਤਾਂ ਤੁਸੀਂ AI ਨਾਲ ਟੈਕਸਟ ਜਵਾਬਾਂ ਨੂੰ ਸੰਖੇਪ ਅਤੇ ਸ਼੍ਰੇਣੀਬੱਧ ਕਰਨ ਦੇ ਯੋਗ ਹੋਵੋਗੇ।",
   "app.components.formBuilder.cancelLeaveBuilderButtonText": "ਰੱਦ ਕਰੋ",
@@ -677,6 +681,7 @@
   "app.components.formBuilder.description": "ਵਰਣਨ",
   "app.components.formBuilder.disabledBuiltInFieldTooltip": "ਇਹ ਪਹਿਲਾਂ ਹੀ ਫਾਰਮ ਵਿੱਚ ਸ਼ਾਮਲ ਕੀਤਾ ਗਿਆ ਹੈ। ਪੂਰਵ-ਨਿਰਧਾਰਤ ਸਮੱਗਰੀ ਸਿਰਫ਼ ਇੱਕ ਵਾਰ ਵਰਤੀ ਜਾ ਸਕਦੀ ਹੈ।",
   "app.components.formBuilder.disabledCustomFieldsTooltip1": "ਕਸਟਮ ਸਮੱਗਰੀ ਸ਼ਾਮਲ ਕਰਨਾ ਤੁਹਾਡੇ ਮੌਜੂਦਾ ਲਾਇਸੰਸ ਦਾ ਹਿੱਸਾ ਨਹੀਂ ਹੈ। ਇਸ ਬਾਰੇ ਹੋਰ ਜਾਣਨ ਲਈ ਆਪਣੇ GovSuccess ਮੈਨੇਜਰ ਨਾਲ ਸੰਪਰਕ ਕਰੋ।",
+  "app.components.formBuilder.disagree": "ਅਸਹਿਮਤ",
   "app.components.formBuilder.displayAsDropdown": "ਡ੍ਰੌਪਡਾਉਨ ਦੇ ਰੂਪ ਵਿੱਚ ਪ੍ਰਦਰਸ਼ਿਤ ਕਰੋ",
   "app.components.formBuilder.displayAsDropdownTooltip": "ਡ੍ਰੌਪਡਾਉਨ ਵਿੱਚ ਵਿਕਲਪਾਂ ਨੂੰ ਪ੍ਰਦਰਸ਼ਿਤ ਕਰੋ। ਜੇ ਤੁਹਾਡੇ ਕੋਲ ਬਹੁਤ ਸਾਰੇ ਵਿਕਲਪ ਹਨ, ਤਾਂ ਇਹ ਸਿਫਾਰਸ਼ ਕੀਤੀ ਜਾਂਦੀ ਹੈ।",
   "app.components.formBuilder.done": "ਹੋ ਗਿਆ",
@@ -686,14 +691,17 @@
   "app.components.formBuilder.editButtonLabel": "ਸੰਪਾਦਿਤ ਕਰੋ",
   "app.components.formBuilder.emptyImageOptionError": "ਘੱਟੋ-ਘੱਟ 1 ਜਵਾਬ ਦਿਓ। ਕਿਰਪਾ ਕਰਕੇ ਧਿਆਨ ਦਿਓ ਕਿ ਹਰੇਕ ਜਵਾਬ ਦਾ ਇੱਕ ਸਿਰਲੇਖ ਹੋਣਾ ਚਾਹੀਦਾ ਹੈ।",
   "app.components.formBuilder.emptyOptionError": "ਘੱਟੋ-ਘੱਟ 1 ਜਵਾਬ ਦਿਓ",
+  "app.components.formBuilder.emptyStatementError": "ਘੱਟੋ-ਘੱਟ 1 ਬਿਆਨ ਪ੍ਰਦਾਨ ਕਰੋ",
   "app.components.formBuilder.emptyTitleError": "ਇੱਕ ਸਵਾਲ ਦਾ ਸਿਰਲੇਖ ਪ੍ਰਦਾਨ ਕਰੋ",
   "app.components.formBuilder.emptyTitleMessage": "ਸਾਰੇ ਜਵਾਬਾਂ ਲਈ ਇੱਕ ਸਿਰਲੇਖ ਪ੍ਰਦਾਨ ਕਰੋ",
+  "app.components.formBuilder.emptyTitleStatementMessage": "ਸਾਰੇ ਬਿਆਨਾਂ ਲਈ ਸਿਰਲੇਖ ਪ੍ਰਦਾਨ ਕਰੋ",
   "app.components.formBuilder.enable": "ਯੋਗ ਕਰੋ",
   "app.components.formBuilder.errorMessage": "ਇੱਕ ਸਮੱਸਿਆ ਹੈ, ਕਿਰਪਾ ਕਰਕੇ ਆਪਣੀਆਂ ਤਬਦੀਲੀਆਂ ਨੂੰ ਸੁਰੱਖਿਅਤ ਕਰਨ ਦੇ ਯੋਗ ਹੋਣ ਲਈ ਸਮੱਸਿਆ ਨੂੰ ਠੀਕ ਕਰੋ",
   "app.components.formBuilder.fieldGroup.description": "ਵਰਣਨ (ਵਿਕਲਪਿਕ)",
   "app.components.formBuilder.fieldGroup.title": "ਸਿਰਲੇਖ (ਵਿਕਲਪਿਕ)",
   "app.components.formBuilder.fieldIsNotVisibleTooltip": "ਵਰਤਮਾਨ ਵਿੱਚ, ਇਹਨਾਂ ਸਵਾਲਾਂ ਦੇ ਜਵਾਬ ਕੇਵਲ ਇਨਪੁਟ ਮੈਨੇਜਰ 'ਤੇ ਨਿਰਯਾਤ ਐਕਸਲ ਫਾਈਲ ਵਿੱਚ ਉਪਲਬਧ ਹਨ, ਅਤੇ ਉਪਭੋਗਤਾਵਾਂ ਨੂੰ ਦਿਖਾਈ ਨਹੀਂ ਦਿੰਦੇ ਹਨ।",
   "app.components.formBuilder.fieldLabel": "ਜਵਾਬ ਵਿਕਲਪ",
+  "app.components.formBuilder.fieldLabelStatement": "ਬਿਆਨ",
   "app.components.formBuilder.fileUpload": "ਫਾਈਲ ਅਪਲੋਡ ਕਰੋ",
   "app.components.formBuilder.formBuilderSettings.pageLayoutSettings.mapBasedPage": "ਨਕਸ਼ਾ-ਆਧਾਰਿਤ ਪੰਨਾ",
   "app.components.formBuilder.formBuilderSettings.pageLayoutSettings.mapOptionDescription": "ਸੰਦਰਭ ਵਜੋਂ ਨਕਸ਼ੇ ਨੂੰ ਏਮਬੇਡ ਕਰੋ ਜਾਂ ਭਾਗੀਦਾਰਾਂ ਨੂੰ ਸਥਾਨ ਅਧਾਰਤ ਪ੍ਰਸ਼ਨ ਪੁੱਛੋ।",
@@ -729,10 +737,14 @@
   "app.components.formBuilder.mapConfiguration": "ਨਕਸ਼ਾ ਸੰਰਚਨਾ",
   "app.components.formBuilder.mapping": "ਮੈਪਿੰਗ",
   "app.components.formBuilder.mappingNotInCurrentLicense": "ਸਰਵੇਖਣ ਮੈਪਿੰਗ ਵਿਸ਼ੇਸ਼ਤਾਵਾਂ ਤੁਹਾਡੇ ਮੌਜੂਦਾ ਲਾਇਸੰਸ ਵਿੱਚ ਸ਼ਾਮਲ ਨਹੀਂ ਹਨ। ਹੋਰ ਜਾਣਨ ਲਈ ਆਪਣੇ GovSuccess ਮੈਨੇਜਰ ਨਾਲ ਸੰਪਰਕ ਕਰੋ।",
+  "app.components.formBuilder.matrix": "ਮੈਟ੍ਰਿਕਸ",
+  "app.components.formBuilder.matrixSettings.columns": "ਕਾਲਮ",
+  "app.components.formBuilder.matrixSettings.rows": "ਕਤਾਰਾਂ",
   "app.components.formBuilder.multipleChoice": "ਬਹੁ-ਚੋਣ",
   "app.components.formBuilder.multipleChoiceImage": "ਚਿੱਤਰ ਦੀ ਚੋਣ",
   "app.components.formBuilder.multiselect.maximum": "ਅਧਿਕਤਮ",
   "app.components.formBuilder.multiselect.minimum": "ਘੱਟੋ-ਘੱਟ",
+  "app.components.formBuilder.neutral": "ਨਿਰਪੱਖ",
   "app.components.formBuilder.newField": "ਨਵਾਂ ਖੇਤਰ",
   "app.components.formBuilder.nextPageLabel": "ਅਗਲਾ:",
   "app.components.formBuilder.number": "ਨੰਬਰ",
@@ -767,6 +779,8 @@
   "app.components.formBuilder.showResponseToUsersToggleLabel": "ਉਪਭੋਗਤਾਵਾਂ ਨੂੰ ਜਵਾਬ ਦਿਖਾਓ",
   "app.components.formBuilder.singleChoice": "ਸਿੰਗਲ ਚੋਣ",
   "app.components.formBuilder.staleDataErrorMessage2": "ਕੋਈ ਸਮੱਸਿਆ ਆਈ ਹੈ। ਇਹ ਇਨਪੁਟ ਫਾਰਮ ਹਾਲ ਹੀ ਵਿੱਚ ਕਿਤੇ ਹੋਰ ਸੁਰੱਖਿਅਤ ਕੀਤਾ ਗਿਆ ਹੈ। ਇਹ ਇਸ ਲਈ ਹੋ ਸਕਦਾ ਹੈ ਕਿਉਂਕਿ ਤੁਸੀਂ ਜਾਂ ਕਿਸੇ ਹੋਰ ਉਪਭੋਗਤਾ ਨੇ ਇਸਨੂੰ ਕਿਸੇ ਹੋਰ ਬ੍ਰਾਊਜ਼ਰ ਵਿੰਡੋ ਵਿੱਚ ਸੰਪਾਦਨ ਲਈ ਖੋਲ੍ਹਿਆ ਹੈ। ਕਿਰਪਾ ਕਰਕੇ ਨਵੀਨਤਮ ਫਾਰਮ ਪ੍ਰਾਪਤ ਕਰਨ ਲਈ ਪੰਨੇ ਨੂੰ ਤਾਜ਼ਾ ਕਰੋ ਅਤੇ ਫਿਰ ਆਪਣੇ ਬਦਲਾਅ ਦੁਬਾਰਾ ਕਰੋ।",
+  "app.components.formBuilder.stronglyAgree": "ਪੂਰੀ ਤਰ੍ਹਾਂ ਸਹਿਮਤ ਹਾਂ",
+  "app.components.formBuilder.stronglyDisagree": "ਜ਼ੋਰਦਾਰ ਅਸਹਿਮਤ",
   "app.components.formBuilder.supportArticleLinkText": "ਇਹ ਪੰਨਾ",
   "app.components.formBuilder.tags": "ਟੈਗਸ",
   "app.components.formBuilder.title": "ਸਿਰਲੇਖ",
@@ -2061,9 +2075,9 @@
   "app.utils.AdminPage.ProjectEdit.inputAndFeedback": "ਇਨਪੁਟ ਅਤੇ ਫੀਡਬੈਕ ਇਕੱਠਾ ਕਰੋ",
   "app.utils.AdminPage.ProjectEdit.shareInformation": "ਜਾਣਕਾਰੀ ਸਾਂਝੀ ਕਰੋ",
   "app.utils.FormattedCurrency.credits": "ਕ੍ਰੈਡਿਟ",
-  "app.utils.FormattedCurrency.multipleCredits": "{numberOfTokens} ਕ੍ਰੈਡਿਟ",
-  "app.utils.FormattedCurrency.oneCredit": "1 ਕ੍ਰੈਡਿਟ",
   "app.utils.FormattedCurrency.tokens": "ਟੋਕਨ",
+  "app.utils.FormattedCurrency.xCredits": "{numberOfCredits, plural, =0 {# ਕ੍ਰੈਡਿਟ} one {# ਕ੍ਰੈਡਿਟ} other {# ਕ੍ਰੈਡਿਟ}}",
+  "app.utils.FormattedCurrency.xTokens": "{numberOfTokens, plural, =0 {# ਟੋਕਨ} one {# ਟੋਕਨ} other {# ਟੋਕਨ}}",
   "app.utils.IdeaCards.mostDiscussed": "ਸਭ ਤੋਂ ਵੱਧ ਚਰਚਾ ਕੀਤੀ",
   "app.utils.IdeaCards.mostReacted": "ਜ਼ਿਆਦਾਤਰ ਪ੍ਰਤੀਕਰਮ",
   "app.utils.IdeaCards.newest": "ਸਭ ਤੋਂ ਨਵਾਂ",
@@ -2136,7 +2150,7 @@
   "app.utils.participationMethodConfig.voting.votingNotSignedIn2": "ਵੋਟ ਪਾਉਣ ਲਈ ਤੁਹਾਨੂੰ ਲੌਗ ਇਨ ਜਾਂ ਰਜਿਸਟਰ ਕਰਨਾ ਪਵੇਗਾ।",
   "app.utils.participationMethodConfig.voting.votingNotVerified": "ਵੋਟ ਪਾਉਣ ਤੋਂ ਪਹਿਲਾਂ ਤੁਹਾਨੂੰ ਆਪਣੇ ਖਾਤੇ ਦੀ ਪੁਸ਼ਟੀ ਕਰਨੀ ਚਾਹੀਦੀ ਹੈ।",
   "app.utils.votingMethodUtils.budget": "ਬਜਟ",
-  "app.utils.votingMethodUtils.budgetParticipationEnded": "<b>ਬਜਟ ਜਮ੍ਹਾ ਕਰਨਾ {endDate}ਨੂੰ ਬੰਦ ਹੋ ਗਿਆ।</b> ਭਾਗੀਦਾਰਾਂ ਕੋਲ ਕੁੱਲ <b>{maxBudget} {currency} ਹਰੇਕ ਨੂੰ {optionCount} ਵਿਕਲਪਾਂ ਵਿਚਕਾਰ ਵੰਡਣ ਲਈ ਸੀ।</b>",
+  "app.utils.votingMethodUtils.budgetParticipationEnded1": "<b>ਬਜਟ ਪੇਸ਼ ਕਰਨਾ {endDate}ਨੂੰ ਬੰਦ ਹੋ ਗਿਆ।</b> ਭਾਗੀਦਾਰਾਂ ਕੋਲ ਕੁੱਲ <b>{maxBudget} ਹਰ ਇੱਕ ਨੂੰ {optionCount} ਵਿਕਲਪਾਂ ਵਿਚਕਾਰ ਵੰਡਣ ਲਈ ਸੀ।</b>",
   "app.utils.votingMethodUtils.budgetSubmitted": "ਬਜਟ ਪੇਸ਼ ਕੀਤਾ",
   "app.utils.votingMethodUtils.budgetSubmittedWithIcon": "ਬਜਟ ਪੇਸ਼ ਕੀਤਾ ਗਿਆ 🎉",
   "app.utils.votingMethodUtils.budgetingNotInGroup": "ਤੁਸੀਂ ਬਜਟ ਨਿਰਧਾਰਤ ਕਰਨ ਦੀਆਂ ਲੋੜਾਂ ਨੂੰ ਪੂਰਾ ਨਹੀਂ ਕਰਦੇ ਹੋ।",
@@ -2144,10 +2158,10 @@
   "app.utils.votingMethodUtils.budgetingNotSignedIn2": "ਤੁਹਾਨੂੰ ਬਜਟ ਨਿਰਧਾਰਤ ਕਰਨ ਲਈ ਲੌਗ ਇਨ ਜਾਂ ਰਜਿਸਟਰ ਕਰਨਾ ਚਾਹੀਦਾ ਹੈ।",
   "app.utils.votingMethodUtils.budgetingNotVerified": "ਬਜਟ ਨਿਰਧਾਰਤ ਕਰਨ ਤੋਂ ਪਹਿਲਾਂ ਤੁਹਾਨੂੰ ਆਪਣੇ ਖਾਤੇ ਦੀ ਪੁਸ਼ਟੀ ਕਰਨੀ ਚਾਹੀਦੀ ਹੈ।",
   "app.utils.votingMethodUtils.budgetingPreSubmissionWarning": "<b>ਤੁਹਾਡੇ ਬਜਟ ਨੂੰ</b> ਨਹੀਂ ਗਿਣਿਆ ਜਾਵੇਗਾ ਜਦੋਂ ਤੱਕ ਤੁਸੀਂ \"ਸਬਮਿਟ\" 'ਤੇ ਕਲਿੱਕ ਨਹੀਂ ਕਰਦੇ",
-  "app.utils.votingMethodUtils.budgetingSubmissionInstructionsMinBudget": "ਘੱਟੋ-ਘੱਟ ਲੋੜੀਂਦਾ ਬਜਟ {amount} {currency}ਹੈ।",
+  "app.utils.votingMethodUtils.budgetingSubmissionInstructionsMinBudget1": "ਘੱਟੋ-ਘੱਟ ਲੋੜੀਂਦਾ ਬਜਟ {amount}ਹੈ।",
   "app.utils.votingMethodUtils.budgetingSubmissionInstructionsOnceYouAreDone": "ਇੱਕ ਵਾਰ ਜਦੋਂ ਤੁਸੀਂ ਪੂਰਾ ਕਰ ਲੈਂਦੇ ਹੋ, ਤਾਂ ਆਪਣਾ ਬਜਟ ਜਮ੍ਹਾ ਕਰਨ ਲਈ \"ਸਬਮਿਟ\" 'ਤੇ ਕਲਿੱਕ ਕਰੋ।",
   "app.utils.votingMethodUtils.budgetingSubmissionInstructionsPreferredOptions": "\"ਜੋੜੋ\" 'ਤੇ ਟੈਪ ਕਰਕੇ ਆਪਣੇ ਪਸੰਦੀਦਾ ਵਿਕਲਪਾਂ ਦੀ ਚੋਣ ਕਰੋ।",
-  "app.utils.votingMethodUtils.budgetingSubmissionInstructionsTotalBudget": "ਤੁਹਾਡੇ ਕੋਲ {optionCount} ਵਿਕਲਪਾਂ</b>ਵਿਚਕਾਰ ਵੰਡਣ ਲਈ ਕੁੱਲ <b>{maxBudget} {currency} ਹਨ।",
+  "app.utils.votingMethodUtils.budgetingSubmissionInstructionsTotalBudget2": "ਤੁਹਾਡੇ ਕੋਲ {optionCount} ਵਿਕਲਪਾਂ</b>ਵਿਚਕਾਰ ਵੰਡਣ ਲਈ ਕੁੱਲ <b>{maxBudget} ਹਨ।",
   "app.utils.votingMethodUtils.budgetingSubmittedInstructions2": "<b>ਵਧਾਈਆਂ, ਤੁਹਾਡਾ ਬਜਟ ਜਮ੍ਹਾਂ ਕਰ ਦਿੱਤਾ ਗਿਆ ਹੈ!</b> ਤੁਸੀਂ ਕਿਸੇ ਵੀ ਸਮੇਂ ਹੇਠਾਂ ਆਪਣੇ ਵਿਕਲਪਾਂ ਦੀ ਜਾਂਚ ਕਰ ਸਕਦੇ ਹੋ ਜਾਂ ਉਹਨਾਂ ਨੂੰ <b>{endDate}</b>ਤੋਂ ਪਹਿਲਾਂ ਸੋਧ ਸਕਦੇ ਹੋ।",
   "app.utils.votingMethodUtils.budgetingSubmittedInstructionsContinuous": "<b>ਵਧਾਈਆਂ, ਤੁਹਾਡਾ ਬਜਟ ਜਮ੍ਹਾਂ ਕਰ ਦਿੱਤਾ ਗਿਆ ਹੈ!</b> ਤੁਸੀਂ ਕਿਸੇ ਵੀ ਸਮੇਂ ਹੇਠਾਂ ਆਪਣੇ ਵਿਕਲਪਾਂ ਦੀ ਜਾਂਚ ਕਰ ਸਕਦੇ ਹੋ ਜਾਂ ਉਹਨਾਂ ਨੂੰ ਸੋਧ ਸਕਦੇ ਹੋ।",
   "app.utils.votingMethodUtils.budgetingSubmittedInstructionsNoEndDate": "<b>ਵਧਾਈਆਂ, ਤੁਹਾਡਾ ਬਜਟ ਜਮ੍ਹਾਂ ਕਰ ਦਿੱਤਾ ਗਿਆ ਹੈ!</b> ਤੁਸੀਂ ਕਿਸੇ ਵੀ ਸਮੇਂ ਹੇਠਾਂ ਆਪਣੇ ਵਿਕਲਪਾਂ ਦੀ ਜਾਂਚ ਕਰ ਸਕਦੇ ਹੋ।",

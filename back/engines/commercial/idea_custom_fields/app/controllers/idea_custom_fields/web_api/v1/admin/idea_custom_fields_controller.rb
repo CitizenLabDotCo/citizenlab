@@ -94,7 +94,7 @@ module IdeaCustomFields
 
     # Extended by CustomMaps::Patches::IdeaCustomFields::WebApi::V1::Admin::IdeaCustomFieldsController
     def include_in_index_response
-      %i[options options.image resource]
+      %i[options options.image matrix_statements resource]
     end
 
     def raise_error_if_not_geographic_field
@@ -128,6 +128,7 @@ module IdeaCustomFields
         delete_fields.each { |field| delete_field! field }
         given_fields.each_with_index do |field_params, index|
           options_params = field_params.delete :options
+          statements_params = field_params.delete :matrix_statements
           if field_params[:id] && fields_by_id.key?(field_params[:id])
             field = fields_by_id[field_params[:id]]
             next unless update_field!(field, field_params, errors, index)
@@ -139,6 +140,7 @@ module IdeaCustomFields
             option_temp_ids_to_ids_mapping_in_field_logic = update_options! field, options_params, errors, index
             option_temp_ids_to_ids_mapping.merge! option_temp_ids_to_ids_mapping_in_field_logic
           end
+          update_statements! field, statements_params, errors, index if statements_params
           relate_map_config_to_field(field, field_params, errors, index)
           field.set_list_position(index)
           count_fields(field)
@@ -290,6 +292,61 @@ module IdeaCustomFields
       option
     end
 
+    def add_options_errors(options_errors, errors, field_index, option_index)
+      errors[field_index.to_s] ||= {}
+      errors[field_index.to_s][:options] ||= {}
+      errors[field_index.to_s][:options][option_index.to_s] = options_errors
+    end
+
+    def update_statements!(field, statements_params, errors, field_index)
+      statements = field.matrix_statements
+      statements_by_id = statements.index_by(&:id)
+      given_ids = statements_params.pluck :id
+
+      deleted_statements = statements.reject { |statement| given_ids.include? statement.id }
+      deleted_statements.each { |statement| delete_statement! statement }
+      statements_params.each_with_index do |statement_params, statement_index|
+        statement_params[:ordering] = statement_index # Do this instead of ordering gem .move_to_bottom method for performance reasons
+        if statement_params[:id] && statements_by_id[statement_params[:id]]
+          statement = statements_by_id[statement_params[:id]]
+          update_statement! statement, statement_params, errors, field_index, statement_index
+        else
+          create_statement! statement_params, field, errors, field_index, statement_index
+        end
+      end
+    end
+
+    def create_statement!(statement_params, field, errors, field_index, statement_index)
+      statement = CustomFieldMatrixStatement.new statement_params.merge(custom_field: field)
+      if statement.save
+        SideFxCustomFieldMatrixStatementService.new.after_create statement, current_user
+      else
+        add_statements_errors statement.errors.details, errors, field_index, statement_index
+      end
+    end
+
+    def update_statement!(statement, statement_params, errors, field_index, statement_index)
+      statement.assign_attributes statement_params
+      return if !statement.changed?
+
+      if statement.save
+        SideFxCustomFieldMatrixStatementService.new.after_update statement, current_user
+      else
+        add_statements_errors statement.errors.details, errors, field_index, statement_index
+      end
+    end
+
+    def delete_statement!(statement)
+      statement.destroy!
+      SideFxCustomFieldMatrixStatementService.new.after_destroy statement, current_user
+    end
+
+    def add_statements_errors(statements_errors, errors, field_index, statement_index)
+      errors[field_index.to_s] ||= {}
+      errors[field_index.to_s][:statements] ||= {}
+      errors[field_index.to_s][:statements][statement_index.to_s] = statements_errors
+    end
+
     def update_logic!(page_temp_ids_to_ids_mapping, option_temp_ids_to_ids_mapping, errors)
       fields = IdeaCustomFieldsService.new(@custom_form).all_fields
       form_logic = FormLogicService.new fields
@@ -333,12 +390,6 @@ module IdeaCustomFields
       end
     end
 
-    def add_options_errors(options_errors, errors, field_index, option_index)
-      errors[field_index.to_s] ||= {}
-      errors[field_index.to_s][:options] ||= {}
-      errors[field_index.to_s][:options][option_index.to_s] = options_errors
-    end
-
     def update_all_params
       params.permit(:form_last_updated_at, :form_opened_at, :form_save_type, custom_fields: [
         :id,
@@ -374,6 +425,12 @@ module IdeaCustomFields
             {
               title_multiloc: CL2_SUPPORTED_LOCALES
             }
+          ],
+          matrix_statements: [
+            :id,
+            :key,
+            :temp_id,
+            { title_multiloc: CL2_SUPPORTED_LOCALES }
           ],
           logic: {} }
       ])

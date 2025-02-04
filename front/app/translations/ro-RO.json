@@ -1127,8 +1127,6 @@
   "app.utils.AdminPage.ProjectEdit.inputAndFeedback": "Colectarea de informații și feedback",
   "app.utils.AdminPage.ProjectEdit.shareInformation": "Informații de partajare",
   "app.utils.FormattedCurrency.credits": "credite",
-  "app.utils.FormattedCurrency.multipleCredits": "{numberOfTokens} credite",
-  "app.utils.FormattedCurrency.oneCredit": "1 credit",
   "app.utils.FormattedCurrency.tokens": "tokenuri",
   "app.utils.IdeaCards.newest": "Cel mai nou",
   "app.utils.IdeaCards.oldest": "Cel mai vechi",
