@@ -433,15 +433,15 @@ resource 'Idea Custom Fields' do
                   title_multiloc: { en: 'Statement 2' }
                 }
               ]
-            }
+            },
+            final_page
           ]
         }
         do_request request
-
         assert_status 200
         json_response = json_parse response_body
 
-        expect(json_response[:data].size).to eq 2
+        expect(json_response[:data].size).to eq 3
         expect(json_response[:data][1]).to match({
           attributes: {
             code: nil,
@@ -548,7 +548,8 @@ resource 'Idea Custom Fields' do
                   title_multiloc: { en: 'Updated statement' }
                 }
               ]
-            }
+            },
+            final_page
           ]
         }
         do_request request
@@ -556,7 +557,7 @@ resource 'Idea Custom Fields' do
         assert_status 200
         json_response = json_parse response_body
 
-        expect(json_response[:data].size).to eq 2
+        expect(json_response[:data].size).to eq 3
         expect(json_response[:data][1]).to match({
           attributes: hash_including(
             input_type: 'matrix_linear_scale',
@@ -746,6 +747,8 @@ resource 'Idea Custom Fields' do
 
       example 'Update select field with logic' do
         field_to_update = create(:custom_field_select, :with_options, resource: custom_form)
+        survey_end_page = create(:custom_field_page, key: 'survey_end', resource: custom_form)
+        final_page[:id] = survey_end_page.id
         request = {
           custom_fields: [
             {
@@ -761,19 +764,19 @@ resource 'Idea Custom Fields' do
                 rules: [
                   {
                     if: 'any_other_answer',
-                    goto_page_id: 'survey_end'
+                    goto_page_id: survey_end_page.id
                   }
                 ]
               },
               enabled: true
-            }
+            },
+            final_page
           ]
         }
         do_request request
-
         assert_status 200
         json_response = json_parse(response_body)
-        expect(json_response[:data].size).to eq 2
+        expect(json_response[:data].size).to eq 3
         expect(json_response[:data][1][:attributes]).to match({
           code: nil,
           created_at: an_instance_of(String),
@@ -788,7 +791,7 @@ resource 'Idea Custom Fields' do
           updated_at: an_instance_of(String),
           logic: { rules: [{
             if: 'any_other_answer',
-            goto_page_id: 'survey_end'
+            goto_page_id: survey_end_page.id
           }] },
           random_option_ordering: false,
           constraints: {}
