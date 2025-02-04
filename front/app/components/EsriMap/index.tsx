@@ -260,6 +260,7 @@ const EsriMap = ({
 
   return (
     <>
+      <meta name="referrer" content="origin" />
       <MapContainer
         id={id}
         ref={mapRef}
