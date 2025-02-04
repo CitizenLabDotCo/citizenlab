@@ -32,7 +32,7 @@ class FormLogicService
       elsif field.section?
         valid_section_logic_structure?(field)
       else
-        valid_field_logic_structure?(field) && valid_rules?(field) && required?(field)
+        valid_field_logic_structure?(field) && valid_rules?(field)
       end
       all_valid && field_valid
     end
@@ -51,13 +51,6 @@ class FormLogicService
   private
 
   attr_reader :fields, :field_index, :option_index
-
-  def required?(field)
-    return true if field.required?
-
-    add_not_required_error(field)
-    false
-  end
 
   def valid_field_logic_structure?(field)
     logic = field.logic
@@ -141,10 +134,6 @@ class FormLogicService
     field.errors.add(:logic, :not_allowed_on_section_fields, message: 'not allowed on section fields')
   end
 
-  def add_not_required_error(field)
-    field.errors.add(:logic, :only_allowed_on_required_fields, message: 'allowed only on required fields')
-  end
-
   def add_invalid_structure_error(field)
     field.errors.add(:logic, :invalid_structure, message: 'has invalid structure')
   end
@@ -186,7 +175,7 @@ class FormLogicService
   end
 
   def ui_schema_hide_rule_for(field, value)
-    if field.input_type == 'select'
+    if field.support_options? && value != 'no_answer'
       value = option_index[value].key
     end
     {
@@ -247,29 +236,11 @@ class FormLogicService
 
     # Question-level logic trumps page-level logic.
     # So start collecting question-level logic.
-    logic = rules.each_with_object({}) do |rule, accu|
-      value = rule['if']
-      target_id = rule['goto_page_id']
-      accu[value] = target_id
-    end
+    logic = question_level_logic_for_field(field, rules, next_page_id)
+
     # Then apply page-level logic if no question-level logic is present.
-    if next_page_id
-      case field.input_type
-      when 'select'
-        field.options.each do |option|
-          value = option.id
-          next if logic.key?(value)
+    logic = page_level_logic_for_field(logic, field, next_page_id) if next_page_id
 
-          logic[value] = next_page_id
-        end
-      when 'linear_scale'
-        (1..field.maximum).each do |value|
-          next if logic.key?(value)
-
-          logic[value] = next_page_id
-        end
-      end
-    end
     # Finally add the rules for the collected logic.
     logic.each do |value, target_page_id|
       pages_to_hide = if target_page_id == 'survey_end'
@@ -282,6 +253,53 @@ class FormLogicService
         rules_accu[page.id] << ui_schema_hide_rule_for(field, value)
       end
     end
+  end
+
+  def question_level_logic_for_field(field, rules, next_page_id)
+    logic = rules.each_with_object({}) do |rule, accu|
+      value = rule['if']
+      target_id = rule['goto_page_id']
+      accu[value] = target_id unless value == 'any_other_answer'
+    end
+
+    # Fill in option IDs for 'any_other_answer' rule
+    any_other_answer_rule = rules.find { |rule| rule['if'] == 'any_other_answer' }
+    if any_other_answer_rule
+      target_id = any_other_answer_rule['goto_page_id']
+      if field.support_options?
+        field.options.each do |option|
+          logic[option.id] = target_id unless logic.key?(option.id)
+        end
+      elsif field.linear_scale?
+        (1..field.maximum).each do |scale_value|
+          logic[scale_value] = target_id unless logic.key?(scale_value)
+        end
+      end
+    end
+
+    # If there is page logic and question logic on a non-required field, but with no 'no_answer' then we need to explicitly create it
+    if !field.required && next_page_id && logic && !logic.key?('no_answer')
+      logic['no_answer'] = next_page_id
+    end
+    logic
+  end
+
+  def page_level_logic_for_field(logic, field, next_page_id)
+    if field.support_options?
+      field.options.each do |option|
+        value = option.id
+        next if logic.key?(value)
+
+        logic[value] = next_page_id
+      end
+    elsif field.linear_scale?
+      (1..field.maximum).each do |value|
+        next if logic.key?(value)
+
+        logic[value] = next_page_id
+      end
+    end
+    logic
   end
 
   def pages_after(index)
@@ -322,8 +340,11 @@ class FormLogicService
         rule['goto_page_id'] = page_temp_ids_to_ids_mapping[target_id]
       end
 
-      # Remove any select options that do not exist
-      if field.input_type == 'select' && field.options.pluck(:id).exclude?(rule['if'])
+      # Remove any select options that do not exist - unless 'any_other_answer' or 'no_answer'
+      allowed_if_values = field.options.pluck(:id)
+      allowed_if_values << 'any_other_answer'
+      allowed_if_values << 'no_answer' unless field.required?
+      if field.support_options? && allowed_if_values.exclude?(rule['if'])
         rules.delete(rule)
       end
     end

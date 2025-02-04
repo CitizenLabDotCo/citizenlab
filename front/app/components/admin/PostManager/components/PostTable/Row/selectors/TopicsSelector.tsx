@@ -39,7 +39,7 @@ const TopicsSelector = memo<Props>(({ selectedTopics, onUpdateTopics }) => {
   if (filteredTopics) {
     return (
       <Box display="flex" gap="8px">
-        {filteredTopics?.map((topic) => {
+        {filteredTopics.map((topic) => {
           return (
             <Box
               key={topic.id}

@@ -10,11 +10,13 @@ import {
 import { useFormContext } from 'react-hook-form';
 
 import {
+  ICustomFieldSettingsTab,
   IFlatCustomField,
   IFlatCustomFieldWithIndex,
 } from 'api/custom_fields/types';
 
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
+import useLocalize from 'hooks/useLocalize';
 
 import {
   formEndOption,
@@ -48,7 +50,10 @@ const FormBuilderSettings = ({
   formHasSubmissions,
 }: Props) => {
   const locales = useAppConfigurationLocales();
-  const [currentTab, setCurrentTab] = useState<'content' | 'logic'>('content');
+  const localize = useLocalize();
+  const [currentTab, setCurrentTab] = useState<ICustomFieldSettingsTab>(
+    field.defaultTab || 'content'
+  );
   const { formatMessage } = useIntl();
   const { watch } = useFormContext();
   const formCustomFields: IFlatCustomField[] = watch('customFields');
@@ -65,9 +70,21 @@ const FormBuilderSettings = ({
     // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     formCustomFields?.forEach((field) => {
       if (field.input_type === 'page') {
+        const pageTitle = localize(field.title_multiloc);
+        const pageLabel = `${formatMessage(messages.page)} ${
+          fieldNumbers[field.id]
+        }${
+          pageTitle
+            ? `: ${
+                pageTitle.length > 25
+                  ? `${pageTitle.slice(0, 25)}...`
+                  : pageTitle
+              }`
+            : ''
+        }`;
         pageArray.push({
           value: field.temp_id || field.id,
-          label: `${formatMessage(messages.page)} ${fieldNumbers[field.id]}`,
+          label: pageLabel,
         });
       }
     });
@@ -87,9 +104,26 @@ const FormBuilderSettings = ({
   const tabNotActiveBorder = `1px solid ${colors.grey400}`;
   const tabActiveBorder = `4px solid ${colors.primary}`;
   const fieldType = watch(`customFields.${field.index}.input_type`);
-  const showTabbedSettings = ['linear_scale', 'select', 'page'].includes(
-    fieldType
-  );
+  const showTabbedSettings = [
+    'multiselect',
+    'multiselect_image',
+    'linear_scale',
+    'select',
+    'page',
+  ].includes(fieldType);
+
+  // Which page is the current question on?
+  // Technically there should always be a current page ID and null should never be returned
+  const getCurrentPageId = (questionId: string): string | null => {
+    if (fieldType === 'page') return field.id;
+
+    let pageId: string | null = null;
+    for (const field of formCustomFields) {
+      if (field.input_type === 'page') pageId = field.id;
+      if (field.id === questionId) return pageId;
+    }
+    return null;
+  };
 
   return (
     <Box
@@ -172,6 +206,7 @@ const FormBuilderSettings = ({
         <LogicSettings
           pageOptions={getPageList()}
           field={field}
+          getCurrentPageId={getCurrentPageId}
           key={field.index}
           builderConfig={builderConfig}
         />

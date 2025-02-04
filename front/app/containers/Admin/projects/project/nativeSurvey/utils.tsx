@@ -25,7 +25,6 @@ export const nativeSurveyConfig: FormBuilderConfig = {
   formSavedSuccessMessage: messages.successMessage,
   supportArticleLink: messages.supportArticleLink,
   formEndPageLogicOption: messages.surveyEnd,
-  questionLogicHelperText: messages.questionLogicHelperText,
   pagesLogicHelperText: messages.pagesLogicHelperText,
 
   toolboxFieldsToExclude: [],
@@ -40,7 +39,7 @@ export const nativeSurveyConfig: FormBuilderConfig = {
   groupingType: 'page',
   getWarningNotice: () => {
     return (
-      <Box id="e2e-warning-notice" mb="20px">
+      <Box id="e2e-warning-notice" mb="16px">
         <Warning>
           <FormattedMessage {...messages.existingSubmissionsWarning} />
         </Warning>
