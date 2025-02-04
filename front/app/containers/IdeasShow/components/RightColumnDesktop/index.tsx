@@ -104,18 +104,17 @@ const RightColumnDesktop = ({
                   <Divider />
                 </>
               )}
-            {/* Participation method is 'voting' */}
-            {/* TODO: Fix this the next time the file is edited. */}
-            {/* eslint-disable-next-line @typescript-eslint/no-unnecessary-condition */}
-            {phase && ideaIsInParticipationContext && votingConfig && (
-              <Box pb="24px" mb="24px" borderBottom="solid 1px #ccc">
-                {votingConfig.getIdeaPageVoteInput({
-                  ideaId,
-                  phase,
-                  compact: false,
-                })}
-              </Box>
-            )}
+            {participationMethod === 'voting' &&
+              ideaIsInParticipationContext &&
+              votingConfig && (
+                <Box pb="24px" mb="24px" borderBottom="solid 1px #ccc">
+                  {votingConfig.getIdeaPageVoteInput({
+                    ideaId,
+                    phase,
+                    compact: false,
+                  })}
+                </Box>
+              )}
             {commentingEnabled && (
               <Box mb="12px">
                 <GoToCommentsButton />

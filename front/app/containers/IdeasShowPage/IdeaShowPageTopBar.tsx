@@ -10,6 +10,7 @@ import { lighten } from 'polished';
 import { useSearchParams } from 'react-router-dom';
 import styled from 'styled-components';
 
+import useIdeaStatus from 'api/idea_statuses/useIdeaStatus';
 import { IIdeaData } from 'api/ideas/types';
 import useAuthUser from 'api/me/useAuthUser';
 import { IPhaseData } from 'api/phases/types';
@@ -19,6 +20,10 @@ import useProjectById from 'api/projects/useProjectById';
 import { triggerAuthenticationFlow } from 'containers/Authentication/events';
 
 import ReactionControl from 'components/ReactionControl';
+import {
+  showIdeationReactions,
+  showProposalsReactions,
+} from 'components/ReactionControl/utils';
 import GoBackButtonSolid from 'components/UI/GoBackButton/GoBackButtonSolid';
 
 import { isFixableByAuthentication } from 'utils/actionDescriptors';
@@ -73,6 +78,7 @@ const IdeaShowPageTopBar = ({
 }: Props) => {
   const projectId = idea.relationships.project.data.id;
   const ideaId = idea.id;
+  const { data: ideaStatus } = useIdeaStatus(ideaId);
   const { data: authUser } = useAuthUser();
   const { data: project } = useProjectById(projectId);
   const isSmallerThanTablet = useBreakpoint('tablet');
@@ -88,6 +94,8 @@ const IdeaShowPageTopBar = ({
 
   const isProposalPhase =
     phase?.attributes.participation_method === 'proposals';
+  const isIdeationPhase = phase?.attributes.participation_method === 'ideation';
+  const isVotingPhase = phase?.attributes.participation_method === 'voting';
 
   useEffect(() => {
     removeSearchParams(['go_back']);
@@ -138,18 +146,28 @@ const IdeaShowPageTopBar = ({
           />
         </Left>
         <Right>
-          {/* Only visible if not voting */}
-          {phase?.attributes.participation_method !== 'voting' && ( // To reduce bias we want to hide the reactions during voting methods
+          {isIdeationPhase && showIdeationReactions(idea) && (
             <ReactionControl
               size="1"
               styleType="border"
               ideaId={ideaId}
               disabledReactionClick={onDisabledReactClick}
-              variant={isProposalPhase ? 'text' : 'icon'}
+              variant={'icon'}
             />
           )}
+          {isProposalPhase &&
+            ideaStatus &&
+            showProposalsReactions(ideaStatus) && (
+              <ReactionControl
+                size="1"
+                styleType="border"
+                ideaId={ideaId}
+                disabledReactionClick={onDisabledReactClick}
+                variant={'text'}
+              />
+            )}
           {/* Only visible if voting */}
-          {phase && ideaIsInParticipationContext && (
+          {isVotingPhase && ideaIsInParticipationContext && (
             <Box mr="8px">
               {votingConfig?.getIdeaPageVoteInput({
                 ideaId,
