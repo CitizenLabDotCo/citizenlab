@@ -177,4 +177,42 @@ export default defineMessages({
     defaultMessage:
       'https://storymaps.arcgis.com/collections/9dd9f03ac2554da4af78b42020fb40c1?item=13',
   },
+  page: {
+    id: 'app.containers.Admin.projects.project.survey.page',
+    defaultMessage: 'Page',
+  },
+  hiddenByLogic: {
+    id: 'app.containers.Admin.projects.project.survey.hiddenByLogic2',
+    defaultMessage: ' - Hidden by logic',
+  },
+  logicSkipTooltipPage: {
+    id: 'app.containers.Admin.projects.project.survey.logicSkipTooltipPage4',
+    defaultMessage:
+      'Logic on this page skips all pages until page { pageNumber } ({ numQuestionsSkipped } questions skipped). Click to hide or show the skipped pages and questions.',
+  },
+  logicSkipTooltipOption: {
+    id: 'app.containers.Admin.projects.project.survey.logicSkipTooltipOption4',
+    defaultMessage:
+      'When a user selects this answer logic skips all pages until page { pageNumber } ({ numQuestionsSkipped } questions skipped). Click to hide or show the skipped pages and questions.',
+  },
+  logicSkipTooltipPageSurveyEnd: {
+    id: 'app.containers.Admin.projects.project.survey.logicSkipTooltipPageSurveyEnd2',
+    defaultMessage:
+      'Logic on this page skips to the survey end ({ numQuestionsSkipped } questions skipped). Click to hide or show the skipped pages and questions.',
+  },
+  logicSkipTooltipOptionSurveyEnd: {
+    id: 'app.containers.Admin.projects.project.survey.logicSkipTooltipOptionSurveyEnd2',
+    defaultMessage:
+      'When a user selects this answer logic skips to the survey end ({ numQuestionsSkipped } questions skipped). Click to hide or show the skipped pages and questions.',
+  },
+  resultsCountQuestionTooltip: {
+    id: 'app.containers.Admin.projects.project.survey.resultsCountQuestionTooltip',
+    defaultMessage:
+      'The number of responses for this question is lower than the total number of survey responses because some respondents will not have seen this question because of logic in the survey.',
+  },
+  resultsCountPageTooltip: {
+    id: 'app.containers.Admin.projects.project.survey.resultsCountPageTooltip',
+    defaultMessage:
+      'The number of responses for this page is lower than the total number of survey responses because some respondents will not have seen this page because of logic in the survey.',
+  },
 });

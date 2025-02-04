@@ -71,7 +71,7 @@ const AccessRightsNotice = ({
   );
 
   return (
-    <Box id="e2e-warning-notice" mb="20px">
+    <Box id="e2e-warning-notice" mb="16px">
       <Warning>
         <Box display="flex">
           <Box>

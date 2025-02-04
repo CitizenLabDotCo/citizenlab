@@ -37,7 +37,7 @@ resource 'Idea Custom Fields' do
     end
 
     let(:context) { create(:native_survey_phase) }
-    let(:custom_form) { create(:custom_form, participation_context: context) }
+    let!(:custom_form) { create(:custom_form, participation_context: context) }
     let(:phase_id) { context.id }
 
     context 'when admin' do
@@ -296,7 +296,7 @@ resource 'Idea Custom Fields' do
                 }
               ]
             },
-            resource: { data: { id: an_instance_of(String), type: 'custom_form' } }
+            resource: { data: { id: custom_form.id, type: 'custom_form' } }
           }
         })
         options = CustomField.find(json_response.dig(:data, 1, :id)).options
@@ -411,6 +411,210 @@ resource 'Idea Custom Fields' do
         )
       end
 
+      example 'Add a matrix linear scale field with statements' do
+        request = {
+          custom_fields: [
+            {
+              input_type: 'page',
+              page_layout: 'default'
+            },
+            {
+              input_type: 'matrix_linear_scale',
+              title_multiloc: { en: 'Inserted field' },
+              required: false,
+              enabled: true,
+              linear_scale_label_1_multiloc: { 'en' => 'Closest' },
+              linear_scale_label_11_multiloc: { 'en' => 'Furthest' },
+              matrix_statements: [
+                {
+                  title_multiloc: { en: 'Statement 1' }
+                },
+                {
+                  title_multiloc: { en: 'Statement 2' }
+                }
+              ]
+            },
+            final_page
+          ]
+        }
+        do_request request
+        assert_status 200
+        json_response = json_parse response_body
+
+        expect(json_response[:data].size).to eq 3
+        expect(json_response[:data][1]).to match({
+          attributes: {
+            code: nil,
+            created_at: an_instance_of(String),
+            description_multiloc: {},
+            enabled: true,
+            input_type: 'matrix_linear_scale',
+            key: Regexp.new('inserted_field'),
+            ordering: 1,
+            required: false,
+            title_multiloc: { en: 'Inserted field' },
+            updated_at: an_instance_of(String),
+            logic: {},
+            constraints: {},
+            random_option_ordering: false,
+            linear_scale_label_1_multiloc: { en: 'Closest' },
+            linear_scale_label_2_multiloc: {},
+            linear_scale_label_3_multiloc: {},
+            linear_scale_label_4_multiloc: {},
+            linear_scale_label_5_multiloc: {},
+            linear_scale_label_6_multiloc: {},
+            linear_scale_label_7_multiloc: {},
+            linear_scale_label_8_multiloc: {},
+            linear_scale_label_9_multiloc: {},
+            linear_scale_label_10_multiloc: {},
+            linear_scale_label_11_multiloc: { en: 'Furthest' },
+            maximum: nil
+          },
+          id: an_instance_of(String),
+          type: 'custom_field',
+          relationships: {
+            matrix_statements: {
+              data: [
+                {
+                  id: an_instance_of(String),
+                  type: 'custom_field_matrix_statement'
+                },
+                {
+                  id: an_instance_of(String),
+                  type: 'custom_field_matrix_statement'
+                }
+              ]
+            },
+            options: { data: [] },
+            resource: { data: { id: custom_form.id, type: 'custom_form' } }
+          }
+        })
+        statements = CustomField.find(json_response.dig(:data, 1, :id)).matrix_statements
+        json_statement1 = json_response[:included].find do |json_statement|
+          json_statement[:id] == statements.first.id
+        end
+        json_statement2 = json_response[:included].find do |json_statement|
+          json_statement[:id] == statements.last.id
+        end
+        expect(json_statement1).to match({
+          id: statements.first.id,
+          type: 'custom_field_matrix_statement',
+          attributes: {
+            key: an_instance_of(String),
+            title_multiloc: { en: 'Statement 1' },
+            ordering: 0,
+            created_at: an_instance_of(String),
+            updated_at: an_instance_of(String)
+          }
+        })
+        expect(json_statement2).to match({
+          id: statements.last.id,
+          type: 'custom_field_matrix_statement',
+          attributes: {
+            key: an_instance_of(String),
+            title_multiloc: { en: 'Statement 2' },
+            ordering: 1,
+            created_at: an_instance_of(String),
+            updated_at: an_instance_of(String)
+          }
+        })
+      end
+
+      example 'Update a matrix linear scale field, add, delete and update statements' do
+        field_to_update = create(
+          :custom_field_matrix_linear_scale,
+          resource: custom_form,
+          linear_scale_label_5_multiloc: { 'en' => 'Furthest' }
+        )
+        update_statement_id, delete_statement_id = field_to_update.matrix_statement_ids
+
+        request = {
+          custom_fields: [
+            {
+              input_type: 'page',
+              page_layout: 'default'
+            },
+            {
+              id: field_to_update.id,
+              title_multiloc: { en: 'Updated field' },
+              linear_scale_label_5_multiloc: { 'en' => 'Farthest' },
+              maximum: 5,
+              matrix_statements: [
+                {
+                  title_multiloc: { en: 'Inserted statement' }
+                },
+                {
+                  id: update_statement_id,
+                  title_multiloc: { en: 'Updated statement' }
+                }
+              ]
+            },
+            final_page
+          ]
+        }
+        do_request request
+
+        assert_status 200
+        json_response = json_parse response_body
+
+        expect(json_response[:data].size).to eq 3
+        expect(json_response[:data][1]).to match({
+          attributes: hash_including(
+            input_type: 'matrix_linear_scale',
+            title_multiloc: { en: 'Updated field' },
+            linear_scale_label_5_multiloc: { en: 'Farthest' },
+            maximum: 5
+          ),
+          id: an_instance_of(String),
+          type: 'custom_field',
+          relationships: {
+            matrix_statements: {
+              data: [
+                {
+                  id: an_instance_of(String),
+                  type: 'custom_field_matrix_statement'
+                },
+                {
+                  id: update_statement_id,
+                  type: 'custom_field_matrix_statement'
+                }
+              ]
+            },
+            options: { data: [] },
+            resource: { data: { id: custom_form.id, type: 'custom_form' } }
+          }
+        })
+        json_insert_statement = json_response[:included].find do |json_statement|
+          json_statement[:id] != update_statement_id && json_statement[:type] == 'custom_field_matrix_statement'
+        end
+        json_update_statement = json_response[:included].find do |json_statement|
+          json_statement[:id] == update_statement_id
+        end
+        expect(json_insert_statement).to match({
+          id: an_instance_of(String),
+          type: 'custom_field_matrix_statement',
+          attributes: {
+            key: an_instance_of(String),
+            title_multiloc: { en: 'Inserted statement' },
+            ordering: 0,
+            created_at: an_instance_of(String),
+            updated_at: an_instance_of(String)
+          }
+        })
+        expect(json_update_statement).to match({
+          id: update_statement_id,
+          type: 'custom_field_matrix_statement',
+          attributes: {
+            key: an_instance_of(String),
+            title_multiloc: { en: 'Updated statement' },
+            ordering: 1,
+            created_at: an_instance_of(String),
+            updated_at: an_instance_of(String)
+          }
+        })
+        expect(field_to_update.reload.matrix_statement_ids).not_to include(delete_statement_id)
+      end
+
       example '[error] Add a field of unsupported input_type' do
         request = {
           custom_fields: [
@@ -493,7 +697,11 @@ resource 'Idea Custom Fields' do
               linear_scale_label_4_multiloc: { 'en' => 'Neutral' },
               linear_scale_label_5_multiloc: { 'en' => 'High-ish' },
               linear_scale_label_6_multiloc: { 'en' => 'High' },
-              linear_scale_label_7_multiloc: { 'en' => 'Highest' }
+              linear_scale_label_7_multiloc: { 'en' => 'Highest' },
+              linear_scale_label_8_multiloc: {},
+              linear_scale_label_9_multiloc: {},
+              linear_scale_label_10_multiloc: {},
+              linear_scale_label_11_multiloc: {}
             },
             final_page
           ]
@@ -523,6 +731,10 @@ resource 'Idea Custom Fields' do
             linear_scale_label_5_multiloc: { en: 'High-ish' },
             linear_scale_label_6_multiloc: { en: 'High' },
             linear_scale_label_7_multiloc: { en: 'Highest' },
+            linear_scale_label_8_multiloc: {},
+            linear_scale_label_9_multiloc: {},
+            linear_scale_label_10_multiloc: {},
+            linear_scale_label_11_multiloc: {},
             logic: {},
             random_option_ordering: false,
             constraints: {}
@@ -530,6 +742,59 @@ resource 'Idea Custom Fields' do
           id: an_instance_of(String),
           type: 'custom_field',
           relationships: { options: { data: [] }, resource: { data: { id: custom_form.id, type: 'custom_form' } } }
+        })
+      end
+
+      example 'Update select field with logic' do
+        field_to_update = create(:custom_field_select, :with_options, resource: custom_form)
+        survey_end_page = create(:custom_field_page, key: 'survey_end', resource: custom_form)
+        final_page[:id] = survey_end_page.id
+        request = {
+          custom_fields: [
+            {
+              input_type: 'page',
+              page_layout: 'default'
+            },
+            {
+              id: field_to_update.id,
+              title_multiloc: { 'en' => 'Select a value' },
+              description_multiloc: { 'en' => 'Description of question' },
+              required: true,
+              logic: {
+                rules: [
+                  {
+                    if: 'any_other_answer',
+                    goto_page_id: survey_end_page.id
+                  }
+                ]
+              },
+              enabled: true
+            },
+            final_page
+          ]
+        }
+        do_request request
+        assert_status 200
+        json_response = json_parse(response_body)
+        expect(json_response[:data].size).to eq 3
+        expect(json_response[:data][1][:attributes]).to match({
+          code: nil,
+          created_at: an_instance_of(String),
+          description_multiloc: { en: 'Description of question' },
+          dropdown_layout: false,
+          enabled: true,
+          input_type: 'select',
+          key: an_instance_of(String),
+          ordering: 1,
+          required: true,
+          title_multiloc: { en: 'Select a value' },
+          updated_at: an_instance_of(String),
+          logic: { rules: [{
+            if: 'any_other_answer',
+            goto_page_id: survey_end_page.id
+          }] },
+          random_option_ordering: false,
+          constraints: {}
         })
       end
 
@@ -981,60 +1246,6 @@ resource 'Idea Custom Fields' do
         })
       end
 
-      example '[error] logic on non-required field' do
-        page1 = create(:custom_field_page, resource: custom_form, title_multiloc: { 'en' => 'Page 1' }, description_multiloc: { 'en' => 'Page 1 description' })
-        field_to_update = create(
-          :custom_field_linear_scale,
-          resource: custom_form,
-          title_multiloc: { 'en' => 'Question 1 on page 1' }
-        )
-        page2 = create(:custom_field_page, resource: custom_form, title_multiloc: { 'en' => 'Page 2' }, description_multiloc: { 'en' => 'Page 2 description' })
-        request = {
-          custom_fields: [
-            {
-              id: page1.id,
-              input_type: 'page',
-              page_layout: 'default',
-              title_multiloc: page1.title_multiloc,
-              description_multiloc: page1.description_multiloc,
-              required: false,
-              enabled: true
-            },
-            {
-              id: field_to_update.id,
-              title_multiloc: { 'en' => 'New title' },
-              required: false,
-              enabled: true,
-              logic: { rules: [{ if: 1, goto_page_id: page2.id }] }
-            },
-            {
-              id: page2.id,
-              input_type: 'page',
-              page_layout: 'default',
-              title_multiloc: page2.title_multiloc,
-              description_multiloc: page2.description_multiloc,
-              required: false,
-              enabled: true
-            },
-            final_page
-          ]
-        }
-        do_request request
-
-        assert_status 422
-        json_response = json_parse(response_body)
-        expect(json_response[:errors]).to eq({
-          '0': {},
-          '1': {
-            logic: [
-              { error: 'only_allowed_on_required_fields' }
-            ]
-          },
-          '2': {},
-          '3': {}
-        })
-      end
-
       example 'Replace logic of a field' do
         page1 = create(:custom_field_page, resource: custom_form, title_multiloc: { 'en' => 'Page 1' }, description_multiloc: { 'en' => 'Page 1 description' })
         field_to_update = create(
@@ -1070,6 +1281,10 @@ resource 'Idea Custom Fields' do
               linear_scale_label_5_multiloc: { 'en' => 'Strongly agree' },
               linear_scale_label_6_multiloc: {},
               linear_scale_label_7_multiloc: {},
+              linear_scale_label_8_multiloc: {},
+              linear_scale_label_9_multiloc: {},
+              linear_scale_label_10_multiloc: {},
+              linear_scale_label_11_multiloc: {},
               logic: {
                 rules: [{ if: 2, goto_page_id: page3.id }]
               }
@@ -1141,6 +1356,10 @@ resource 'Idea Custom Fields' do
             linear_scale_label_5_multiloc: field_to_update.linear_scale_label_5_multiloc.symbolize_keys,
             linear_scale_label_6_multiloc: field_to_update.linear_scale_label_6_multiloc.symbolize_keys,
             linear_scale_label_7_multiloc: field_to_update.linear_scale_label_7_multiloc.symbolize_keys,
+            linear_scale_label_8_multiloc: field_to_update.linear_scale_label_8_multiloc.symbolize_keys,
+            linear_scale_label_9_multiloc: field_to_update.linear_scale_label_9_multiloc.symbolize_keys,
+            linear_scale_label_10_multiloc: field_to_update.linear_scale_label_10_multiloc.symbolize_keys,
+            linear_scale_label_11_multiloc: field_to_update.linear_scale_label_11_multiloc.symbolize_keys,
             logic: {
               rules: [{ if: 2, goto_page_id: page3.id }]
             },
@@ -1803,6 +2022,10 @@ resource 'Idea Custom Fields' do
               linear_scale_label_5_multiloc: { 'en' => 'Strongly agree' },
               linear_scale_label_6_multiloc: {},
               linear_scale_label_7_multiloc: {},
+              linear_scale_label_8_multiloc: {},
+              linear_scale_label_9_multiloc: {},
+              linear_scale_label_10_multiloc: {},
+              linear_scale_label_11_multiloc: {},
               logic: {
                 rules: [{ if: 2, goto_page_id: 'TEMP-ID-1' }]
               }
@@ -1874,6 +2097,10 @@ resource 'Idea Custom Fields' do
             linear_scale_label_5_multiloc: field_to_update.linear_scale_label_5_multiloc.symbolize_keys,
             linear_scale_label_6_multiloc: field_to_update.linear_scale_label_6_multiloc.symbolize_keys,
             linear_scale_label_7_multiloc: field_to_update.linear_scale_label_7_multiloc.symbolize_keys,
+            linear_scale_label_8_multiloc: field_to_update.linear_scale_label_8_multiloc.symbolize_keys,
+            linear_scale_label_9_multiloc: field_to_update.linear_scale_label_9_multiloc.symbolize_keys,
+            linear_scale_label_10_multiloc: field_to_update.linear_scale_label_10_multiloc.symbolize_keys,
+            linear_scale_label_11_multiloc: field_to_update.linear_scale_label_11_multiloc.symbolize_keys,
             logic: {
               rules: [{ if: 2, goto_page_id: json_response[:data][3][:id] }]
             },
@@ -1968,6 +2195,10 @@ resource 'Idea Custom Fields' do
               linear_scale_label_5_multiloc: { 'en' => 'Strongly agree' },
               linear_scale_label_6_multiloc: {},
               linear_scale_label_7_multiloc: {},
+              linear_scale_label_8_multiloc: {},
+              linear_scale_label_9_multiloc: {},
+              linear_scale_label_10_multiloc: {},
+              linear_scale_label_11_multiloc: {},
               logic: {
                 rules: [{ if: 1, goto_page_id: page2.id }]
               }
@@ -2038,6 +2269,10 @@ resource 'Idea Custom Fields' do
             linear_scale_label_5_multiloc: field_to_update.linear_scale_label_5_multiloc.symbolize_keys,
             linear_scale_label_6_multiloc: field_to_update.linear_scale_label_6_multiloc.symbolize_keys,
             linear_scale_label_7_multiloc: field_to_update.linear_scale_label_7_multiloc.symbolize_keys,
+            linear_scale_label_8_multiloc: field_to_update.linear_scale_label_8_multiloc.symbolize_keys,
+            linear_scale_label_9_multiloc: field_to_update.linear_scale_label_9_multiloc.symbolize_keys,
+            linear_scale_label_10_multiloc: field_to_update.linear_scale_label_10_multiloc.symbolize_keys,
+            linear_scale_label_11_multiloc: field_to_update.linear_scale_label_11_multiloc.symbolize_keys,
             logic: {
               rules: [{ if: 1, goto_page_id: page2.id }]
             },
@@ -2130,6 +2365,10 @@ resource 'Idea Custom Fields' do
               linear_scale_label_5_multiloc: { 'en' => 'Strongly agree' },
               linear_scale_label_6_multiloc: {},
               linear_scale_label_7_multiloc: {},
+              linear_scale_label_8_multiloc: {},
+              linear_scale_label_9_multiloc: {},
+              linear_scale_label_10_multiloc: {},
+              linear_scale_label_11_multiloc: {},
               logic: {}
             },
             {
@@ -2190,6 +2429,10 @@ resource 'Idea Custom Fields' do
             linear_scale_label_5_multiloc: field_to_update.linear_scale_label_5_multiloc.symbolize_keys,
             linear_scale_label_6_multiloc: field_to_update.linear_scale_label_6_multiloc.symbolize_keys,
             linear_scale_label_7_multiloc: field_to_update.linear_scale_label_7_multiloc.symbolize_keys,
+            linear_scale_label_8_multiloc: field_to_update.linear_scale_label_8_multiloc.symbolize_keys,
+            linear_scale_label_9_multiloc: field_to_update.linear_scale_label_9_multiloc.symbolize_keys,
+            linear_scale_label_10_multiloc: field_to_update.linear_scale_label_10_multiloc.symbolize_keys,
+            linear_scale_label_11_multiloc: field_to_update.linear_scale_label_11_multiloc.symbolize_keys,
             logic: {},
             constraints: {},
             random_option_ordering: false
@@ -2260,6 +2503,10 @@ resource 'Idea Custom Fields' do
               linear_scale_label_5_multiloc: { 'en' => 'Strongly agree' },
               linear_scale_label_6_multiloc: {},
               linear_scale_label_7_multiloc: {},
+              linear_scale_label_8_multiloc: {},
+              linear_scale_label_9_multiloc: {},
+              linear_scale_label_10_multiloc: {},
+              linear_scale_label_11_multiloc: {},
               logic: {}
             },
             final_page
@@ -2311,6 +2558,10 @@ resource 'Idea Custom Fields' do
             linear_scale_label_5_multiloc: field_to_update.linear_scale_label_5_multiloc.symbolize_keys,
             linear_scale_label_6_multiloc: field_to_update.linear_scale_label_6_multiloc.symbolize_keys,
             linear_scale_label_7_multiloc: field_to_update.linear_scale_label_7_multiloc.symbolize_keys,
+            linear_scale_label_8_multiloc: field_to_update.linear_scale_label_8_multiloc.symbolize_keys,
+            linear_scale_label_9_multiloc: field_to_update.linear_scale_label_9_multiloc.symbolize_keys,
+            linear_scale_label_10_multiloc: field_to_update.linear_scale_label_10_multiloc.symbolize_keys,
+            linear_scale_label_11_multiloc: field_to_update.linear_scale_label_11_multiloc.symbolize_keys,
             logic: {},
             constraints: {},
             random_option_ordering: false
@@ -2421,6 +2672,10 @@ resource 'Idea Custom Fields' do
               linear_scale_label_5_multiloc: { 'en' => 'Strongly agree' },
               linear_scale_label_6_multiloc: {},
               linear_scale_label_7_multiloc: {},
+              linear_scale_label_8_multiloc: {},
+              linear_scale_label_9_multiloc: {},
+              linear_scale_label_10_multiloc: {},
+              linear_scale_label_11_multiloc: {},
               logic: {
                 rules: [{ if: 2, goto_page_id: page3.id }]
               }
@@ -2492,6 +2747,10 @@ resource 'Idea Custom Fields' do
             linear_scale_label_5_multiloc: field_to_update.linear_scale_label_5_multiloc.symbolize_keys,
             linear_scale_label_6_multiloc: field_to_update.linear_scale_label_6_multiloc.symbolize_keys,
             linear_scale_label_7_multiloc: field_to_update.linear_scale_label_7_multiloc.symbolize_keys,
+            linear_scale_label_8_multiloc: field_to_update.linear_scale_label_8_multiloc.symbolize_keys,
+            linear_scale_label_9_multiloc: field_to_update.linear_scale_label_9_multiloc.symbolize_keys,
+            linear_scale_label_10_multiloc: field_to_update.linear_scale_label_10_multiloc.symbolize_keys,
+            linear_scale_label_11_multiloc: field_to_update.linear_scale_label_11_multiloc.symbolize_keys,
             logic: {
               rules: [{ if: 2, goto_page_id: page3.id }]
             },
@@ -2580,6 +2839,10 @@ resource 'Idea Custom Fields' do
               linear_scale_label_5_multiloc: { 'en' => 'Strongly agree' },
               linear_scale_label_6_multiloc: {},
               linear_scale_label_7_multiloc: {},
+              linear_scale_label_8_multiloc: {},
+              linear_scale_label_9_multiloc: {},
+              linear_scale_label_10_multiloc: {},
+              linear_scale_label_11_multiloc: {},
               logic: {
                 rules: [{ if: 2, goto_page_id: 'TEMP-ID-1' }]
               }
@@ -2642,6 +2905,10 @@ resource 'Idea Custom Fields' do
             linear_scale_label_5_multiloc: field_to_update.linear_scale_label_5_multiloc.symbolize_keys,
             linear_scale_label_6_multiloc: field_to_update.linear_scale_label_6_multiloc.symbolize_keys,
             linear_scale_label_7_multiloc: field_to_update.linear_scale_label_7_multiloc.symbolize_keys,
+            linear_scale_label_8_multiloc: field_to_update.linear_scale_label_8_multiloc.symbolize_keys,
+            linear_scale_label_9_multiloc: field_to_update.linear_scale_label_9_multiloc.symbolize_keys,
+            linear_scale_label_10_multiloc: field_to_update.linear_scale_label_10_multiloc.symbolize_keys,
+            linear_scale_label_11_multiloc: field_to_update.linear_scale_label_11_multiloc.symbolize_keys,
             logic: {
               rules: [{ if: 2, goto_page_id: json_response[:data][2][:id] }]
             },
@@ -2920,6 +3187,10 @@ resource 'Idea Custom Fields' do
               linear_scale_label_5_multiloc: { 'en' => 'High-ish' },
               linear_scale_label_6_multiloc: { 'en' => 'High' },
               linear_scale_label_7_multiloc: { 'en' => 'Highest' },
+              linear_scale_label_8_multiloc: {},
+              linear_scale_label_9_multiloc: {},
+              linear_scale_label_10_multiloc: {},
+              linear_scale_label_11_multiloc: {},
               logic: {
                 rules: [{ if: 2, goto_page_id: 'TEMP-ID-1' }]
               }
@@ -2983,6 +3254,10 @@ resource 'Idea Custom Fields' do
             linear_scale_label_5_multiloc: { en: 'High-ish' },
             linear_scale_label_6_multiloc: { en: 'High' },
             linear_scale_label_7_multiloc: { en: 'Highest' },
+            linear_scale_label_8_multiloc: {},
+            linear_scale_label_9_multiloc: {},
+            linear_scale_label_10_multiloc: {},
+            linear_scale_label_11_multiloc: {},
             logic: {
               rules: [{ if: 2, goto_page_id: json_response[:data][2][:id] }]
             },
@@ -3057,6 +3332,10 @@ resource 'Idea Custom Fields' do
               linear_scale_label_5_multiloc: { 'en' => 'Strongly agree' },
               linear_scale_label_6_multiloc: {},
               linear_scale_label_7_multiloc: {},
+              linear_scale_label_8_multiloc: {},
+              linear_scale_label_9_multiloc: {},
+              linear_scale_label_10_multiloc: {},
+              linear_scale_label_11_multiloc: {},
               logic: {
                 rules: [
                   { if: 1, goto_page_id: page2.id },
@@ -3131,6 +3410,10 @@ resource 'Idea Custom Fields' do
             linear_scale_label_5_multiloc: field_to_update.linear_scale_label_5_multiloc.symbolize_keys,
             linear_scale_label_6_multiloc: field_to_update.linear_scale_label_6_multiloc.symbolize_keys,
             linear_scale_label_7_multiloc: field_to_update.linear_scale_label_7_multiloc.symbolize_keys,
+            linear_scale_label_8_multiloc: field_to_update.linear_scale_label_8_multiloc.symbolize_keys,
+            linear_scale_label_9_multiloc: field_to_update.linear_scale_label_9_multiloc.symbolize_keys,
+            linear_scale_label_10_multiloc: field_to_update.linear_scale_label_10_multiloc.symbolize_keys,
+            linear_scale_label_11_multiloc: field_to_update.linear_scale_label_11_multiloc.symbolize_keys,
             logic: {
               rules: [
                 { if: 1, goto_page_id: page2.id },

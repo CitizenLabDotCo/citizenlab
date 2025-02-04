@@ -49,6 +49,11 @@ const ungroupedData: ResultUngrouped = {
   totalResponseCount: 4,
   questionResponseCount: 4,
   totalPickCount: 8,
+  description: {},
+  questionNumber: 1,
+  pageNumber: 1,
+  hidden: false,
+  logic: {},
   answers: [
     {
       answer: 'multiselect_option_1_s2e',
@@ -97,6 +102,11 @@ const groupedData: ResultGrouped = {
   totalResponseCount: 4,
   questionResponseCount: 4,
   totalPickCount: 8,
+  description: {},
+  questionNumber: 1,
+  pageNumber: 1,
+  hidden: false,
+  logic: {},
   answers: [
     {
       answer: 'multiselect_option_1_s2e',

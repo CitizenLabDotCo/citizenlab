@@ -9,6 +9,8 @@ import {
 } from '@citizenlab/cl2-component-library';
 
 // Intl
+import { ICustomFieldSettingsTab } from 'api/custom_fields/types';
+
 import { FormattedMessage } from 'utils/cl-intl';
 
 import messages from '../../../messages';
@@ -16,28 +18,59 @@ import messages from '../../../messages';
 interface Props {
   targetPage: string | undefined;
   isRuleValid: boolean;
+  isDefaultPage: boolean;
+  handleOpenSettings: (defaultTab: ICustomFieldSettingsTab) => void;
 }
 
-export const PageRuleDisplay = ({ targetPage, isRuleValid }: Props) => {
+export const PageRuleDisplay = ({
+  targetPage,
+  isRuleValid,
+  isDefaultPage,
+  handleOpenSettings,
+}: Props) => {
   if (!targetPage) return null;
 
   return (
     <Box
       display="flex"
-      ml="52px"
+      ml="44px"
       height="24px"
       data-cy="e2e-field-rule-display"
     >
       <Icon
-        fill={isRuleValid ? colors.coolGrey500 : colors.error}
+        fill={
+          isRuleValid
+            ? isDefaultPage
+              ? colors.coolGrey300
+              : colors.teal300
+            : colors.error
+        }
         width="18px"
-        name="logic"
+        name="arrow-right"
         my="auto"
       />
-      <Text my="auto" pl="8px" pr="4px" color="blue500" fontSize="s">
-        <FormattedMessage {...messages.nextPageLabel} />
+      <Text
+        my="auto"
+        pl="8px"
+        color={isDefaultPage ? 'coolGrey500' : 'blue500'}
+        fontSize="s"
+        fontStyle={isDefaultPage ? 'italic' : 'normal'}
+      >
+        <FormattedMessage {...messages.continuePageLabel} />
       </Text>
-      <Text my="auto" px="4px" color="blue500" fontSize="s" fontWeight="bold">
+      <Text
+        my="auto"
+        px="4px"
+        color={isDefaultPage ? 'coolGrey500' : 'blue500'}
+        fontSize="s"
+        fontWeight={isDefaultPage ? 'normal' : 'bold'}
+        fontStyle={isDefaultPage ? 'italic' : 'normal'}
+        textDecoration="underline"
+        onClick={(e) => {
+          e.stopPropagation();
+          handleOpenSettings('logic');
+        }}
+      >
         {targetPage}
       </Text>
       {!isRuleValid && (

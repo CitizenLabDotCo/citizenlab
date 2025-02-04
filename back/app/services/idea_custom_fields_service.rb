@@ -40,13 +40,13 @@ class IdeaCustomFieldsService
 
   # Used in the printable PDF export
   def printable_fields
-    ignore_field_types = %w[section page date files image_files point file_upload shapefile_upload topic_ids cosponsor_ids ranking]
+    ignore_field_types = %w[section page date files image_files point file_upload shapefile_upload topic_ids cosponsor_ids ranking matrix_linear_scale]
     fields = enabled_fields.reject { |field| ignore_field_types.include? field.input_type }
     insert_other_option_text_fields(fields)
   end
 
   def importable_fields
-    ignore_field_types = %w[page section date files image_files file_upload shapefile_upload point line polygon cosponsor_ids ranking]
+    ignore_field_types = %w[page section date files image_files file_upload shapefile_upload point line polygon cosponsor_ids ranking matrix_linear_scale]
     enabled_fields_with_other_options.reject { |field| ignore_field_types.include? field.input_type }
   end
 
@@ -140,6 +140,13 @@ class IdeaCustomFieldsService
         copied_option
       end
       copied_field.options = copied_options
+
+      # Duplicate statements
+      copied_field.matrix_statements = field.matrix_statements.map do |statement|
+        copied_statement = statement.dup
+        copied_statement.id = SecureRandom.uuid
+        copied_statement
+      end
 
       # Duplicate and persist map config for custom_fields that can have an associated map_config
       if CustomField::MAP_CONFIG_INPUT_TYPES.include?(copied_field.input_type) && field.map_config

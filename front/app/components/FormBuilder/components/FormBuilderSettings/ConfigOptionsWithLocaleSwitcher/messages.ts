@@ -9,6 +9,14 @@ export default defineMessages({
     id: 'app.components.formBuilder.addAnswer',
     defaultMessage: 'Add answer',
   },
+  addStatement: {
+    id: 'app.components.formBuilder.addStatement',
+    defaultMessage: 'Add statement',
+  },
+  fieldLabelStatement: {
+    id: 'app.components.formBuilder.fieldLabelStatement',
+    defaultMessage: 'Statements',
+  },
   fieldLabel: {
     id: 'app.components.formBuilder.fieldLabel',
     defaultMessage: 'Answer choices',

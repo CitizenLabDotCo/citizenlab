@@ -105,11 +105,7 @@ const IdeasShowPage = () => {
       >
         <Box background={colors.white}>
           {isSmallerThanTablet ? (
-            <StyledIdeaShowPageTopBar
-              projectId={idea.data.relationships.project.data.id}
-              ideaId={idea.data.id}
-              phase={phase}
-            />
+            <StyledIdeaShowPageTopBar idea={idea.data} phase={phase} />
           ) : (
             // 64px is the height of the CTA bar (see ParticipationCTAContent)
             <Box mt={showCTABar ? '64px' : undefined}>

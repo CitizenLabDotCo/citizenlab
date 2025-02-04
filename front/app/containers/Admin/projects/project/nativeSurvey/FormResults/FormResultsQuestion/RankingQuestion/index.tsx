@@ -49,7 +49,13 @@ const RankingQuestion = ({ result, hideDetailsButton = false }: Props) => {
     createOptionsWithDetailedRanks(rankings_counts);
 
   return (
-    <Box pt="16px" width="520px">
+    <Box
+      display="flex"
+      flexDirection="column"
+      pt="16px"
+      w="100%"
+      maxWidth="520px"
+    >
       {optionsWithAverageRanks.map((option) => {
         const currentOptionWithDetailedRanks = optionsWithDetailedRanks.find(
           (optionWithRanks) => optionWithRanks.optionKey === option.optionKey

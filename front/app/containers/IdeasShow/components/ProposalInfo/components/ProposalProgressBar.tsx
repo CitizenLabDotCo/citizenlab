@@ -8,7 +8,7 @@ import ProgressBar from 'components/UI/ProgressBar';
 import { ScreenReaderOnly } from 'utils/a11y';
 import { FormattedMessage } from 'utils/cl-intl';
 
-import messages from '../../messages';
+import messages from '../messages';
 
 const StyledProgressBar = styled(ProgressBar)`
   height: 12px;

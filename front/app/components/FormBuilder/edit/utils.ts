@@ -115,3 +115,96 @@ export const getReorderedFields = (
 
   return getFlatGroupStructure(updatedGroups);
 };
+
+export enum LogicConflictType {
+  MULTIPLE_GOTO_IN_MULTISELECT = 'MULTIPLE_GOTO_IN_MULTISELECT',
+  QUESTION_VS_PAGE_LOGIC = 'QUESTION_VS_PAGE_LOGIC',
+  INTER_QUESTION_CONFLICT = 'INTER_QUESTION_CONFLICT',
+}
+
+export interface Conflict {
+  conflictType: LogicConflictType;
+  pageId: string;
+}
+
+export function detectConflictsByPage(
+  groupedData: NestedGroupingStructure[]
+): Record<string, Conflict[] | undefined> {
+  const conflictsByPage: Record<string, Conflict[] | undefined> = {};
+
+  function addConflict(pageId: string, conflict: Conflict) {
+    if (!conflictsByPage[pageId]) {
+      conflictsByPage[pageId] = [];
+    }
+    conflictsByPage[pageId]!.push(conflict);
+  }
+
+  groupedData.forEach((pageGroup) => {
+    const { groupElement, questions } = pageGroup;
+    const pageId = groupElement.id;
+    const pageNextId = groupElement.logic.next_page_id;
+
+    // Gather goto-page-ids for the page-level logic check
+    const questionGotoIdsForPage = new Set<string>();
+
+    // Keep track of how many questions in this page have at least one goto
+    let questionsWithGotoCount = 0;
+
+    questions.forEach((question) => {
+      // 1) Check MULTIPLE_GOTO_IN_MULTISELECT
+      if (
+        (question.input_type === 'multiselect' ||
+          question.input_type === 'multiselect_image') &&
+        question.logic.rules
+      ) {
+        const distinctGotoIds = new Set(
+          question.logic.rules.map((rule) => rule.goto_page_id)
+        );
+        if (distinctGotoIds.size > 1 && question.logic.rules.length > 1) {
+          addConflict(pageId, {
+            conflictType: LogicConflictType.MULTIPLE_GOTO_IN_MULTISELECT,
+            pageId,
+          });
+        }
+      }
+
+      // Collect all goto-page-ids from this question
+      const questionGotoIds =
+        question.logic.rules?.map((rule) => rule.goto_page_id) || [];
+
+      if (questionGotoIds.length > 0) {
+        questionsWithGotoCount += 1;
+      }
+
+      // For QUESTION_VS_PAGE_LOGIC, accumulate the distinct goto IDs
+      questionGotoIds.forEach((gotoId) => {
+        questionGotoIdsForPage.add(gotoId);
+      });
+    });
+
+    // 2) Check QUESTION_VS_PAGE_LOGIC
+    // If the page has a next_page_id, any mismatch is a conflict
+    if (pageNextId) {
+      for (const gotoId of questionGotoIdsForPage) {
+        if (gotoId !== pageNextId) {
+          addConflict(pageId, {
+            conflictType: LogicConflictType.QUESTION_VS_PAGE_LOGIC,
+            pageId,
+          });
+          break; // Once we find a mismatch, we can stop
+        }
+      }
+    }
+
+    // 3) Check INTER-QUESTION_CONFLICT
+    // If more than 1 question on the page has a goto
+    if (questionsWithGotoCount > 1) {
+      addConflict(pageId, {
+        conflictType: LogicConflictType.INTER_QUESTION_CONFLICT,
+        pageId,
+      });
+    }
+  });
+
+  return conflictsByPage;
+}

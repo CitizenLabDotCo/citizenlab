@@ -8,11 +8,10 @@ import {
   LocaleSwitcher,
 } from '@citizenlab/cl2-component-library';
 import { useFormContext } from 'react-hook-form';
-import { WrappedComponentProps } from 'react-intl';
 import styled from 'styled-components';
 import { SupportedLocale } from 'typings';
 
-import { injectIntl } from 'utils/cl-intl';
+import { useIntl } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
 
 import messages from './messages';
@@ -35,12 +34,12 @@ const ScaleLabelsInput = ({
   onSelectedLocaleChange,
   locales,
   platformLocale,
-  intl: { formatMessage },
-}: Props & WrappedComponentProps) => {
+}: Props) => {
   const { setValue, getValues } = useFormContext();
   const [selectedLocale, setSelectedLocale] = useState<SupportedLocale | null>(
     platformLocale
   );
+  const { formatMessage } = useIntl();
 
   // Handles locale change
   useEffect(() => {
@@ -95,6 +94,7 @@ const ScaleLabelsInput = ({
           const labelMultiloc = getValues(
             `${labelBaseName}.linear_scale_label_${index + 1}_multiloc`
           );
+
           return (
             <Box display="flex" gap="36px" marginBottom="16px" key={index}>
               <Box mt="12px">
@@ -125,4 +125,4 @@ const ScaleLabelsInput = ({
   return null;
 };
 
-export default injectIntl(ScaleLabelsInput);
+export default ScaleLabelsInput;
