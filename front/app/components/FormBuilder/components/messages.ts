@@ -330,4 +330,8 @@ export default defineMessages({
     id: 'app.components.formBuilder.logicPanelNoAnswer',
     defaultMessage: 'If not answered',
   },
+  lastPage: {
+    id: 'app.components.formBuilder.lastPage',
+    defaultMessage: 'Ending',
+  },
 });

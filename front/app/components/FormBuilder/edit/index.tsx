@@ -156,7 +156,7 @@ const FormEdit = ({
     reset,
   } = methods;
 
-  const { append, move, replace } = useFieldArray({
+  const { append, move, replace, insert } = useFieldArray({
     name: 'customFields',
     control,
   });
@@ -203,14 +203,30 @@ const FormEdit = ({
   };
 
   const onAddField = (field: IFlatCreateCustomField, index: number) => {
-    const newField = {
-      ...field,
-      index,
-    };
+    if (!formCustomFields) return;
 
-    if (isNewCustomFieldObject(newField)) {
-      append(newField);
-      setSelectedField(newField);
+    if (builderConfig.type === 'survey') {
+      const newField = {
+        ...field,
+        index,
+      };
+
+      if (isNewCustomFieldObject(newField)) {
+        insert(index, newField);
+        setSelectedField(newField);
+      }
+    }
+
+    if (builderConfig.type === 'input_form') {
+      const newField = {
+        ...field,
+        index: formCustomFields.length,
+      };
+
+      if (isNewCustomFieldObject(newField)) {
+        append(newField);
+        setSelectedField(newField);
+      }
     }
   };
 
@@ -344,7 +360,7 @@ const FormEdit = ({
       replace(reorderedFields);
     }
 
-    if (!isNilOrError(selectedField) && reorderedFields) {
+    if (selectedField && reorderedFields) {
       const newSelectedFieldIndex = reorderedFields.findIndex(
         (field) => field.id === selectedField.id
       );

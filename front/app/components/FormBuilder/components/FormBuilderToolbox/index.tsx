@@ -51,6 +51,7 @@ const FormBuilderToolbox = ({
 
   const { watch } = useFormContext();
   const formCustomFields: IFlatCustomField[] = watch('customFields');
+
   const isCustomFieldsDisabled =
     !isInputFormCustomFieldsFlagEnabled &&
     !builderConfig.alwaysShowCustomFields;
@@ -66,7 +67,12 @@ const FormBuilderToolbox = ({
   if (isNilOrError(locale)) return null;
 
   const addField = (inputType: ICustomFieldInputType) => {
-    const index = !isNilOrError(formCustomFields) ? formCustomFields.length : 0;
+    // We insert the new field at the index of the last
+    // field, which means that it will be inserted before
+    // the last field. This is because the last field is the
+    // 'survey end' page, which should always be the last field.
+    const index = formCustomFields.length - 1;
+
     onAddField(
       {
         id: `${Math.floor(Date.now() * Math.random())}`,

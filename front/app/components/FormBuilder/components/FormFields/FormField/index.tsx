@@ -99,9 +99,20 @@ export const FormField = ({
   const isFieldGrouping = ['page', 'section'].includes(field.input_type);
 
   // Group is only deletable when we have more than one group
-  const isGroupDeletable =
-    formCustomFields.filter((field) => field.input_type === groupingType)
-      .length > 1;
+  const getGroupDeletable = () => {
+    const groupFields = formCustomFields.filter(
+      (field) => field.input_type === groupingType
+    );
+
+    if (builderConfig.type === 'survey') {
+      return groupFields.length > 2;
+    } else {
+      return groupFields.length > 1;
+    }
+  };
+
+  const isGroupDeletable = getGroupDeletable();
+
   const isDeleteShown =
     // TODO: Fix this the next time the file is edited.
     // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
@@ -363,24 +374,25 @@ export const FormField = ({
               />
             </Box>
           </Box>
-
-          <Box
-            mr="32px"
-            ml="12px"
-            display="flex"
-            alignItems="center"
-            justifyContent="center"
-            h="100%"
-          >
-            <MoreActionsMenu
-              showLabel={false}
-              color={colors.textSecondary}
-              actions={actions}
-              onClick={(event) => event.stopPropagation()}
-              data-cy="e2e-more-field-actions"
-              ref={moreActionsButtonRef}
-            />
-          </Box>
+          {field.key !== 'survey_end' && (
+            <Box
+              mr="32px"
+              ml="12px"
+              display="flex"
+              alignItems="center"
+              justifyContent="center"
+              h="100%"
+            >
+              <MoreActionsMenu
+                showLabel={false}
+                color={colors.textSecondary}
+                actions={actions}
+                onClick={(event) => event.stopPropagation()}
+                data-cy="e2e-more-field-actions"
+                ref={moreActionsButtonRef}
+              />
+            </Box>
+          )}
         </FlexibleRow>
         {showLogicOnRow && (
           <Logic
