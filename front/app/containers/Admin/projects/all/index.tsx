@@ -92,7 +92,8 @@ const AdminProjectsList = memo(({ className }: Props) => {
   const userIsAdmin = isAdmin(authUser);
 
   // Fetch the admin publications to show in the 'Your projects' tab,
-  // including the (unexpanded) folders the user is a moderator of.
+  // including the (unexpanded) folders the user is a moderator of,
+  // but excluding the projects in those folders.
   const { data: moderatedAdminPublications } = useAdminPublications({
     publicationStatusFilter: ['published', 'draft', 'archived'],
     filter_is_moderator_of: true,
@@ -101,7 +102,8 @@ const AdminProjectsList = memo(({ className }: Props) => {
   });
 
   // Fetch the admin publications for projects in the 'Your projects' tab,
-  // including the projects in folders the user is a moderator of.
+  // including the projects in folders the user is a moderator of,
+  // but excluding the folders themselves.
   // Used for the (n projects) counter displayed in the tab.
   const { data: moderatedProjectAdminPublications } = useAdminPublications({
     publicationStatusFilter: ['published', 'draft', 'archived'],
