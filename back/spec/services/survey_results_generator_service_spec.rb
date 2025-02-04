@@ -268,7 +268,7 @@ RSpec.describe SurveyResultsGeneratorService do
       title_multiloc: {
         'en' => 'How satisfied are you with our service?',
         'fr-FR' => 'À quel point êtes-vous satisfait de notre service ?',
-        'nl-NL' => 'Hoe tevreden ben je met onze service?'    
+        'nl-NL' => 'Hoe tevreden ben je met onze service?'
       },
       maximum: 7,
       required: true
@@ -826,7 +826,7 @@ RSpec.describe SurveyResultsGeneratorService do
           question: {
             'en' => 'How satisfied are you with our service?',
             'fr-FR' => 'À quel point êtes-vous satisfait de notre service ?',
-            'nl-NL' => 'Hoe tevreden ben je met onze service?'        
+            'nl-NL' => 'Hoe tevreden ben je met onze service?'
           },
           required: true,
           grouped: false,
@@ -845,13 +845,13 @@ RSpec.describe SurveyResultsGeneratorService do
           ],
           multilocs: {
             answer: {
-              1 => { title_multiloc: { 'en' => '1', 'fr-FR' => "1", 'nl-NL' => '1' } },
+              1 => { title_multiloc: { 'en' => '1', 'fr-FR' => '1', 'nl-NL' => '1' } },
               2 => { title_multiloc: { 'en' => '2', 'fr-FR' => '2', 'nl-NL' => '2' } },
               3 => { title_multiloc: { 'en' => '3', 'fr-FR' => '3', 'nl-NL' => '3' } },
               4 => { title_multiloc: { 'en' => '4', 'fr-FR' => '4', 'nl-NL' => '4' } },
-              5 => { title_multiloc: { 'en' => '5', 'fr-FR' => "5", 'nl-NL' => '5' } },
-              6 => { title_multiloc: { 'en' => '6', 'fr-FR' => "6", 'nl-NL' => '6' } },
-              7 => { title_multiloc: { 'en' => '7', 'fr-FR' => "7", 'nl-NL' => '7' } }
+              5 => { title_multiloc: { 'en' => '5', 'fr-FR' => '5', 'nl-NL' => '5' } },
+              6 => { title_multiloc: { 'en' => '6', 'fr-FR' => '6', 'nl-NL' => '6' } },
+              7 => { title_multiloc: { 'en' => '7', 'fr-FR' => '7', 'nl-NL' => '7' } }
             }
           }
         }
@@ -873,7 +873,7 @@ RSpec.describe SurveyResultsGeneratorService do
             question: {
               'en' => 'How satisfied are you with our service?',
               'fr-FR' => 'À quel point êtes-vous satisfait de notre service ?',
-              'nl-NL' => 'Hoe tevreden ben je met onze service?'          
+              'nl-NL' => 'Hoe tevreden ben je met onze service?' 
             },
             required: true,
             grouped: true,
@@ -911,13 +911,13 @@ RSpec.describe SurveyResultsGeneratorService do
             ],
             multilocs: {
               answer: {
-                1 => { title_multiloc: { 'en' => '1', 'fr-FR' => "1", 'nl-NL' => '1' } },
+                1 => { title_multiloc: { 'en' => '1', 'fr-FR' => '1', 'nl-NL' => '1' } },
                 2 => { title_multiloc: { 'en' => '2', 'fr-FR' => '2', 'nl-NL' => '2' } },
                 3 => { title_multiloc: { 'en' => '3', 'fr-FR' => '3', 'nl-NL' => '3' } },
                 4 => { title_multiloc: { 'en' => '4', 'fr-FR' => '4', 'nl-NL' => '4' } },
-                5 => { title_multiloc: { 'en' => '5', 'fr-FR' => "5", 'nl-NL' => '5' } },
-                6 => { title_multiloc: { 'en' => '6', 'fr-FR' => "6", 'nl-NL' => '6' } },
-                7 => { title_multiloc: { 'en' => '7', 'fr-FR' => "7", 'nl-NL' => '7' } }
+                5 => { title_multiloc: { 'en' => '5', 'fr-FR' => '5', 'nl-NL' => '5' } },
+                6 => { title_multiloc: { 'en' => '6', 'fr-FR' => '6', 'nl-NL' => '6' } },
+                7 => { title_multiloc: { 'en' => '7', 'fr-FR' => '7', 'nl-NL' => '7' } }
               },
               group: {
                 'la' => { title_multiloc: { 'en' => 'Los Angeles', 'fr-FR' => 'Los Angeles', 'nl-NL' => 'Los Angeles' } },
@@ -929,7 +929,7 @@ RSpec.describe SurveyResultsGeneratorService do
           }
         end
 
-        it 'returns a grouped result for a linear scale field' do
+        it 'returns a grouped result for a rating field' do
           generator = described_class.new(survey_phase,
             group_mode: 'survey_question',
             group_field_id: select_field.id)
