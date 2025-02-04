@@ -45,7 +45,7 @@ const SurveyBarsVertical = ({ questionResult, colorScheme }: Props) => {
       flexDirection="row"
       alignItems="flex-end"
       justifyContent="flex-start"
-      height="400px"
+      height="200px"
       width="100%"
       gap="4px"
       overflow="hidden"

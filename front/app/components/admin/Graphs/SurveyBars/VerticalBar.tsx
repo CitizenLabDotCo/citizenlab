@@ -10,7 +10,7 @@ const VerticalBar = ({ type, count, percentage, color, width }) => {
   return (
     <Box
       width={width}
-      height="300px"
+      height="150px"
       borderRadius="4px"
       border={BORDER}
       borderRight={['last', 'single'].includes(type) ? BORDER : 'none'}
