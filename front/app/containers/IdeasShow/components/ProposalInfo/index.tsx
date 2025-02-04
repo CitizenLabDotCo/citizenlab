@@ -98,6 +98,10 @@ const ProposalInfo = ({ idea, compact }: Props) => {
           />
         </Box>
       )}
+      {/* 
+        We already show ReactionControl via the top bar on mobile, hence we don't
+        show it when compact is true.
+      */}
       {showVoteButtons && !compact && (
         <ReactionControl
           styleType="shadow"
