@@ -351,7 +351,7 @@ describe('Survey question widget', () => {
 
         // Reload page and check if values are still correct
         cy.reload();
-        // ensureCorrectGrouping();
+        ensureCorrectGrouping();
       });
     });
 
