@@ -52,13 +52,13 @@ namespace :single_use do
         )
 
         if last_page.save
-          report.add_create(
+          reporter.add_create(
             'CustomField',
             last_page.attributes,
             context: { tenant: tenant.host }
           )
         else
-          report.add_error(
+          reporter.add_error(
             last_page.errors.details,
             context: { tenant: tenant.host }
           )
