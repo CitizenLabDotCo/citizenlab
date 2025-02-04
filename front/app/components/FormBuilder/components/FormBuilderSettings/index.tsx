@@ -108,10 +108,9 @@ const FormBuilderSettings = ({
       'page',
     ].includes(fieldType);
 
-    if (!isFieldWithLogicTab) return false;
-    if (fieldType === 'page' && field.key === 'survey_end') return false;
+    const isSurveyEndPage = fieldType === 'page' && field.key === 'survey_end';
 
-    return true;
+    return isFieldWithLogicTab && !isSurveyEndPage;
   };
 
   const showTabbedSettings = getShowTabbedSettings();
