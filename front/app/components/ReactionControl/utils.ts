@@ -1,4 +1,3 @@
-import { IIdeaStatus } from 'api/idea_statuses/types';
 import { IIdeaData } from 'api/ideas/types';
 
 import { isFixableByAuthentication } from 'utils/actionDescriptors';
@@ -23,13 +22,13 @@ export const showIdeationReactions = (idea: IIdeaData) => {
   );
 };
 
-export const showProposalsReactions = (ideaStatus: IIdeaStatus) => {
-  const code = ideaStatus.data.attributes.code;
+export const showProposalsReactions = (idea: IIdeaData) => {
+  const reactingActionDescriptor =
+    idea.attributes.action_descriptors.reacting_idea;
 
   return (
-    code === 'proposed' ||
-    code === 'threshold_reached' ||
-    code === 'custom' ||
-    code === 'answered'
+    // BE disables reactions for ideas in certain statuses
+    reactingActionDescriptor.enabled ||
+    isFixableByAuthentication(reactingActionDescriptor.disabled_reason)
   );
 };

@@ -55,7 +55,7 @@ const ProposalInfo = ({ idea, compact }: Props) => {
     code === 'custom' ||
     code === 'ineligible' ||
     code === 'answered';
-  const showVoteButtons = showProposalsReactions(ideaStatus);
+  const showVoteButtons = showProposalsReactions(idea.data);
 
   return (
     <Box

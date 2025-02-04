@@ -10,7 +10,6 @@ import { lighten } from 'polished';
 import { useSearchParams } from 'react-router-dom';
 import styled from 'styled-components';
 
-import useIdeaStatus from 'api/idea_statuses/useIdeaStatus';
 import { IIdeaData } from 'api/ideas/types';
 import useAuthUser from 'api/me/useAuthUser';
 import { IPhaseData } from 'api/phases/types';
@@ -78,8 +77,6 @@ const IdeaShowPageTopBar = ({
 }: Props) => {
   const projectId = idea.relationships.project.data.id;
   const ideaId = idea.id;
-  // TO FIX: Needs to use ideaStatusId (if we keep this)
-  const { data: ideaStatus } = useIdeaStatus(ideaId);
   const { data: authUser } = useAuthUser();
   const { data: project } = useProjectById(projectId);
   const isSmallerThanTablet = useBreakpoint('tablet');
@@ -156,17 +153,15 @@ const IdeaShowPageTopBar = ({
               variant={'icon'}
             />
           )}
-          {isProposalPhase &&
-            ideaStatus &&
-            showProposalsReactions(ideaStatus) && (
-              <ReactionControl
-                size="1"
-                styleType="border"
-                ideaId={ideaId}
-                disabledReactionClick={onDisabledReactClick}
-                variant={'text'}
-              />
-            )}
+          {isProposalPhase && showProposalsReactions(idea) && (
+            <ReactionControl
+              size="1"
+              styleType="border"
+              ideaId={ideaId}
+              disabledReactionClick={onDisabledReactClick}
+              variant={'text'}
+            />
+          )}
           {/* Only visible if voting */}
           {isVotingPhase && ideaIsInParticipationContext && (
             <Box mr="8px">
