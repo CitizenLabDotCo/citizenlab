@@ -94,7 +94,7 @@ const RightColumnDesktop = ({
               </>
             )}
             {participationMethod === 'ideation' &&
-              showIdeationReactions(idea.data) && (
+              showIdeationReactions(idea.data, participationMethod) && (
                 <>
                   <ReactionControl
                     styleType="shadow"
