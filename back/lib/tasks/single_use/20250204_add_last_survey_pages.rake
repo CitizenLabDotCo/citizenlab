@@ -5,7 +5,7 @@ namespace :single_use do
   task add_last_survey_pages: :environment do
     reporter = ScriptReporter.new
 
-    def save_field_and_report(original_field, new_field, reporter)
+    def save_field_and_report(original_field, new_field, reporter, tenant)
       if new_field.save
         reporter.add_change(
           original_field.attributes,
@@ -72,7 +72,7 @@ namespace :single_use do
           if field.input_type == 'page'
             if field.logic['next_page_id'] == 'survey_end'
               field.logic['next_page_id'] = last_page.id
-              save_field_and_report(original_field, field, reporter)
+              save_field_and_report(original_field, field, reporter, tenant)
             end
           else
             any_field_updated = false
@@ -87,7 +87,7 @@ namespace :single_use do
               end
 
               if any_field_updated
-                save_field_and_report(original_field, field, reporter)
+                save_field_and_report(original_field, field, reporter, tenant)
               end
             end
           end
