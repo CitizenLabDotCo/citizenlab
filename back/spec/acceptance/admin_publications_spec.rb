@@ -45,7 +45,7 @@ resource 'AdminPublication' do
       parameter :filter_can_moderate, 'Filter out the projects the current_user is not allowed to moderate. False by default', required: false
       parameter :filter_is_moderator_of, 'Filter out the publications the current_user is not moderator of. False by default', required: false
       parameter :filter_user_is_moderator_of, 'Filter out the publications the given user is moderator of (user id)', required: false
-      parameter :exclude_projects_in_included_folders, 'Exclude projects in included folders', required: false
+      parameter :exclude_projects_in_included_folders, 'Exclude projects in included folders (boolean)', required: false
       parameter :review_state, 'Filter by project review status (pending, approved)', required: false
 
       example_request 'List all admin publications' do
@@ -677,7 +677,7 @@ resource 'AdminPublication' do
       parameter :only_projects, 'Include projects only (no folders)', required: false
       parameter :filter_can_moderate, 'Filter out the projects the user is allowed to moderate. False by default', required: false
       parameter :filter_is_moderator_of, 'Filter out the publications the user is not moderator of. False by default', required: false
-      parameter :exclude_projects_in_included_folders, 'Exclude projects in included folders', required: false
+      parameter :exclude_projects_in_included_folders, 'Exclude projects in included folders (boolean)', required: false
 
       before do
         @moderator = create(:project_moderator, projects: [published_projects[0], published_projects[1]])
@@ -740,7 +740,7 @@ resource 'AdminPublication' do
       parameter :only_projects, 'Include projects only (no folders)', required: false
       parameter :filter_can_moderate, 'Filter out the projects the user is allowed to moderate. False by default', required: false
       parameter :filter_is_moderator_of, 'Filter out the publications the user is not moderator of. False by default', required: false
-      parameter :exclude_projects_in_included_folders, 'Exclude projects in included folders', required: false
+      parameter :exclude_projects_in_included_folders, 'Exclude projects in included folders (boolean)', required: false
 
       example 'List publications user is moderator of', document: false do
         do_request filter_is_moderator_of: true
