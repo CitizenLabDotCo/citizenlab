@@ -674,7 +674,7 @@ RSpec.describe UiSchemaGeneratorService do
         label: 'How would you rate our service?',
         options: {
           input_type: field.input_type,
-          description: 'Please rate your experience from 1 (poor) to 5 (excellent).',
+          description: 'Please rate your experience from 1 (poor) to 5 (excellent).'
         }
       })
     end
