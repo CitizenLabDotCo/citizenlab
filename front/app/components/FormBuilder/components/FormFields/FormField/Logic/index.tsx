@@ -126,7 +126,7 @@ const Logic = ({
             />
           );
         })}
-      {field.input_type === 'page' && (
+      {field.input_type === 'page' && field.key !== 'survey_end' && (
         <PageRuleDisplay
           isRuleValid={isPageRuleValid(
             formCustomFields,

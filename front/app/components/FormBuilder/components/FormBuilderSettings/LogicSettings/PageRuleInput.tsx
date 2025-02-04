@@ -76,9 +76,10 @@ export const PageRuleInput = ({
   // Get the default next page when no rule is set
   const defaultNextPage = getTitleFromPageId(
     findNextPageAfterCurrentPage(fields, fieldId),
-    formatMessage(messages.formEnd),
     formatMessage(messages.page),
-    getFieldNumbers(fields)
+    getFieldNumbers(fields),
+    fields,
+    formatMessage(messages.lastPage)
   );
 
   return (

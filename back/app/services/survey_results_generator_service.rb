@@ -25,7 +25,7 @@ class SurveyResultsGeneratorService < FieldVisitorService
       results = add_page_response_count_to_results results
       results = add_logic_to_results results, logic_ids
       results = change_counts_for_logic results, inputs.pluck(:custom_field_values)
-      results = remove_last_page results
+      # results = cleanup_results results
 
       {
         results: results,
@@ -419,7 +419,7 @@ class SurveyResultsGeneratorService < FieldVisitorService
   end
 
   def add_question_numbers_to_results(results)
-    @page_numbers = { 'survey_end' => 999 } # Lookup that we can use later in logic. 999 is a special number used for the survey end page
+    @page_numbers = {} # Lookup that we can use later in logic.
     question_number = 0
     page_number = 0
     results.map do |result|
@@ -566,19 +566,20 @@ class SurveyResultsGeneratorService < FieldVisitorService
         # Update the total pick count because we've reduced the 'not_answered' answer count
         question[:totalPickCount] = question[:answers].pluck(:count).sum if question[:totalPickCount]
       end
-
-      # remove the temporary fields that are now not needed
-      question.delete(:questionViewedCount)
-      question.delete(:key)
     end
 
     results
   end
 
-  # We need the last page whilst calculating logic so we remove it at the very end
-  # Maybe separate cleanup_results - as we need the key here
-  def remove_last_page(results)
+  def cleanup_results(results)
+    # Remove the last page - only needed for logic calculations
+    results.pop if results.last[:inputType] == 'page' && results.last[:key] == 'survey_end'
 
+    # remove the temporary fields that are now not needed
+    results.map do |question|
+      question.delete(:questionViewedCount)
+      question.delete(:key)
+    end
   end
 
   def cleanup_single_result(result)
