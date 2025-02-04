@@ -5,10 +5,12 @@ import { useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 
 import useAnalysis from 'api/analyses/useAnalysis';
+import { IInput } from 'api/analysis_inputs/types';
 import useAnalysisInput from 'api/analysis_inputs/useAnalysisInput';
+import { IIdeaCustomField } from 'api/idea_custom_fields/types';
 import useIdeaCustomField from 'api/idea_custom_fields/useIdeaCustomField';
 
-import useLocalize from 'hooks/useLocalize';
+import useLocalize, { Localize } from 'hooks/useLocalize';
 
 import Link from 'utils/cl-router/Link';
 
@@ -31,37 +33,38 @@ const StyledLink = styled(Link)<{ isActive: boolean }>`
     }`}
 `;
 
-const referenceDisplayValue = (input, customField, localize) => {
-  const titleMultiloc = input?.data.attributes.title_multiloc;
+const referenceDisplayValue = (
+  input: IInput,
+  customField: IIdeaCustomField,
+  localize: Localize
+) => {
+  const customFieldValues = input.data.attributes.custom_field_values;
+  const customFieldInputType = customField.data.attributes.input_type;
+  const customFieldKey = customField.data.attributes.key;
+  const titleMultiloc = input.data.attributes.title_multiloc;
+
+  // Check for Ideation
   if (titleMultiloc && Object.keys(titleMultiloc).length > 0) {
+    // Only if titleMultiloc is not empty {} or undefined
     return localize(titleMultiloc);
   }
 
-  const customFieldKey = customField?.data.attributes.key;
+  // Checks for Native Survey
   if (!customFieldKey) {
     return null;
   }
-  if (customField?.data.attributes.input_type === 'select') {
-    if (
-      input?.data.attributes.custom_field_values?.[customFieldKey] === 'other'
-    ) {
-      return input?.data.attributes.custom_field_values?.[
-        `${customFieldKey}_other`
-      ];
+
+  if (customFieldInputType === 'select') {
+    if (customFieldValues[customFieldKey] === 'other') {
+      return customFieldValues[`${customFieldKey}_other`];
     }
   }
-  if (customField?.data.attributes.input_type === 'multiselect') {
-    if (
-      input?.data.attributes.custom_field_values?.[customFieldKey].includes(
-        'other'
-      )
-    ) {
-      return input?.data.attributes.custom_field_values?.[
-        `${customFieldKey}_other`
-      ];
+  if (customFieldInputType === 'multiselect') {
+    if (customFieldValues[customFieldKey].includes('other')) {
+      return customFieldValues[`${customFieldKey}_other`];
     }
   }
-  return input?.data.attributes.custom_field_values?.[customFieldKey];
+  return customFieldValues[customFieldKey];
 };
 
 const ReferenceLink = ({
@@ -77,6 +80,7 @@ const ReferenceLink = ({
   phaseId: string;
   selectedInputId: string;
 }) => {
+  const localize = useLocalize();
   const { pathname } = useLocation();
 
   const { data: analysis } = useAnalysis(analysisId);
@@ -89,11 +93,10 @@ const ReferenceLink = ({
     phaseId,
     customFieldId: mainQuestion,
   });
-  const mainQuestionResponse = referenceDisplayValue(
-    input,
-    customField,
-    useLocalize()
-  );
+
+  const mainQuestionResponse =
+    input && customField && referenceDisplayValue(input, customField, localize);
+
   const isAnalysisScreen = pathname.includes('/analysis/');
 
   return (

@@ -73,18 +73,16 @@ const AnalysisInsights = ({
         },
         {
           onSuccess: (data) => {
+            const customFieldId =
+              analysis.relationships.main_custom_field?.data?.id;
+
             if (!data.data.attributes.impossible_reason) {
               const filters = {
                 input_custom_field_no_empty_values: true,
                 limit: !largeSummariesAllowed ? 30 : undefined,
               };
-              if (
-                hasOtherResponses &&
-                analysis.relationships.main_custom_field?.data?.id
-              ) {
-                filters[
-                  `input_custom_${analysis.relationships.main_custom_field.data.id}`
-                ] = ['other'];
+              if (hasOtherResponses && customFieldId) {
+                filters[`input_custom_${customFieldId}`] = ['other'];
               }
               addAnalysisSummary({
                 analysisId: analysis.id,
