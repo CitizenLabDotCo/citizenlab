@@ -95,6 +95,7 @@ const SurveyQuestionResult = ({
             <SurveyBarsVertical
               questionResult={attributes}
               colorScheme={DEFAULT_CATEGORICAL_COLORS}
+              showLabelsBelow
             />
           ) : (
             <SurveyBarsHorizontal

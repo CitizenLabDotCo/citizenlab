@@ -13,7 +13,6 @@ const VerticalBar = ({ type, count, percentage, color, width }) => {
       height="150px"
       borderRadius="4px"
       border={BORDER}
-      borderRight={['last', 'single'].includes(type) ? BORDER : 'none'}
       overflow="hidden"
       display="flex"
       flexDirection="column-reverse"
