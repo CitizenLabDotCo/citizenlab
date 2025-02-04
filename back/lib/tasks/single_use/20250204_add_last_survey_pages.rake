@@ -3,11 +3,28 @@
 namespace :single_use do
   desc 'Adds a new post-submission page to all existing surveys with correct logic'
   task add_last_survey_pages: :environment do
-    Rails.logger.info 'single_use:add_last_survey_pages started'
+    reporter = ScriptReporter.new
+
+    def save_field_and_report(original_field, new_field)
+      if new_field.save
+        reporter.add_change(
+          original_field.attributes,
+          new_field.attributes,
+          context: { tenant: tenant.host }
+        )
+      else
+        reporter.add_error(
+          new_field.errors.details,
+          context: { tenant: tenant.host }
+        )
+      end
+    end
+
+    Rails.logger.info 'single_use:add_last_survey_pages started\n\n'
 
     Tenant.all.each do |tenant|
       tenant.switch do
-        Rails.logger.info "Adding last survey pages #{tenant.name}"
+        Rails.logger.info "Adding last survey pages #{tenant.name}\n\n"
 
         # Get all the custom forms that are surveys
         survey_custom_forms = CustomForm.where(participation_context_type: 'Phase')
@@ -35,14 +52,28 @@ namespace :single_use do
             description_multiloc: multiloc_service.i18n_to_multiloc('form_builder.form_end_page.description_text_3')
           )
 
-          last_page.save!
+          if last_page.save
+            report.add_create(
+              'CustomField',
+              last_page.attributes,
+              context: { tenant: tenant.host }
+            )
+          else
+            report.add_error(
+              last_page.errors.details,
+              context: { tenant: tenant.host }
+            )
+            next
+          end
 
           # Replace previous mentions of 'survey_end' with the new last page id
           custom_fields.each do |field|
+            original_field = field.deep_dup
+
             if field.input_type == 'page'
               if field.logic['next_page_id'] == 'survey_end'
                 field.logic['next_page_id'] = last_page.id
-                field.save!
+                save_field_and_report(original_field, field)
               end
             else
               any_field_updated = false
@@ -57,7 +88,7 @@ namespace :single_use do
                 end
 
                 if any_field_updated
-                  field.save!
+                  save_field_and_report(original_field, field)
                 end
               end
             end
