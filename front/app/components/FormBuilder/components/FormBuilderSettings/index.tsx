@@ -67,8 +67,7 @@ const FormBuilderSettings = ({
 
     formCustomFields.forEach((field, i) => {
       if (field.input_type === 'page') {
-        const isLastPage =
-          field.input_type === 'page' && i === formCustomFields.length - 1;
+        const isLastPage = i === formCustomFields.length - 1;
 
         const pageTitle = localize(field.title_multiloc);
         const pageLabel = isLastPage
