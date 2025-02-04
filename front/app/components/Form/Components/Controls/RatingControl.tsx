@@ -141,8 +141,8 @@ const RatingControl = ({
                   >
                     <Icon
                       name={data >= visualIndex ? 'ratingFilled' : 'rating'}
-                      height="28px"
-                      width="28px"
+                      height="40px"
+                      width="40px"
                       fill={
                         data >= visualIndex
                           ? theme.colors.tenantPrimary
