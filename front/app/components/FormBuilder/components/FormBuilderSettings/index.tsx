@@ -10,6 +10,7 @@ import {
 import { useFormContext } from 'react-hook-form';
 
 import {
+  ICustomFieldSettingsTab,
   IFlatCustomField,
   IFlatCustomFieldWithIndex,
 } from 'api/custom_fields/types';
@@ -48,7 +49,9 @@ const FormBuilderSettings = ({
   formHasSubmissions,
 }: Props) => {
   const locales = useAppConfigurationLocales();
-  const [currentTab, setCurrentTab] = useState<'content' | 'logic'>('content');
+  const [currentTab, setCurrentTab] = useState<ICustomFieldSettingsTab>(
+    field.defaultTab || 'content'
+  );
   const { formatMessage } = useIntl();
   const { watch } = useFormContext();
   const formCustomFields: IFlatCustomField[] = watch('customFields');
@@ -87,9 +90,26 @@ const FormBuilderSettings = ({
   const tabNotActiveBorder = `1px solid ${colors.grey400}`;
   const tabActiveBorder = `4px solid ${colors.primary}`;
   const fieldType = watch(`customFields.${field.index}.input_type`);
-  const showTabbedSettings = ['linear_scale', 'select', 'page'].includes(
-    fieldType
-  );
+  const showTabbedSettings = [
+    'multiselect',
+    'multiselect_image',
+    'linear_scale',
+    'select',
+    'page',
+  ].includes(fieldType);
+
+  // Which page is the current question on?
+  // Technically there should always be a current page ID and null should never be returned
+  const getCurrentPageId = (questionId: string): string | null => {
+    if (fieldType === 'page') return field.id;
+
+    let pageId: string | null = null;
+    for (const field of formCustomFields) {
+      if (field.input_type === 'page') pageId = field.id;
+      if (field.id === questionId) return pageId;
+    }
+    return null;
+  };
 
   return (
     <Box
@@ -172,6 +192,7 @@ const FormBuilderSettings = ({
         <LogicSettings
           pageOptions={getPageList()}
           field={field}
+          getCurrentPageId={getCurrentPageId}
           key={field.index}
           builderConfig={builderConfig}
         />
