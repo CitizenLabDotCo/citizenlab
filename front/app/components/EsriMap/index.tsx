@@ -90,8 +90,7 @@ const EsriMap = ({
   const [updateMapViewConfig, setUpdateMapViewConfig] = useState(false);
   const [initialized, setInitialized] = useState(false);
 
-  const esriApiKey =
-    appConfig?.data.attributes.settings.esri_integration?.api_key;
+  const [esriApiKey, setEsriApiKey] = useState<string | undefined>(undefined);
 
   const mapRefAvailable = !!mapRef.current;
 
@@ -254,11 +253,15 @@ const EsriMap = ({
   }, [locale]);
 
   useEffect(() => {
+    const apiKey =
+      appConfig?.data.attributes.settings.esri_integration?.api_key;
+
     // Set the Esri API key
-    if (esriApiKey) {
-      esriConfig.apiKey = esriApiKey;
+    if (apiKey) {
+      esriConfig.apiKey = apiKey;
+      setEsriApiKey(apiKey);
     }
-  }, [esriApiKey]);
+  }, [appConfig?.data.attributes.settings.esri_integration?.api_key]);
 
   return (
     <>
