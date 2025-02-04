@@ -28,7 +28,7 @@ namespace :single_use do
       # Get all the custom forms that are surveys
       survey_custom_forms = CustomForm.where(participation_context_type: 'Phase')
       survey_custom_forms.each do |custom_form|
-      # We sort the custom field by ordering to make sure we have the correct order
+        # We sort the custom field by ordering to make sure we have the correct order
         custom_fields = custom_form
           .custom_fields
           .sort_by(&:ordering)
