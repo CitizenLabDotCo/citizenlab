@@ -54,10 +54,12 @@ export const WIDGETS = {
   MethodsUsedWidget,
   ParticipationWidget,
   ProjectsWidget,
-  ParticipantsWidget,
 
   // RENAMED (TODO rename in migration)
   ActiveUsersWidget: ParticipantsWidget,
+
+  // Needs to come after ActiveUsersWidget to be resolved correctly by the resolver
+  ParticipantsWidget,
 
   // DEPRECATED
   ReactionsByTimeWidget,
