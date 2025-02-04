@@ -34,7 +34,7 @@ const VerticalBar = ({ type, count, percentage, color, width }) => {
           m="0"
           fontSize="xs"
           textAlign="center"
-          color={percentage > 80 ? 'white' : undefined}
+          color="white"
           position="absolute"
           bottom="0"
           width="100%"
