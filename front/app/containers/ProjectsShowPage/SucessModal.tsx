@@ -65,13 +65,6 @@ const SuccessModal = ({ projectId }: Props) => {
 
   const handleClose = () => setShowModal(false);
 
-  // If the idea has no author relationship,
-  // it was either created through 'anyone' permissions or with
-  // the anonymous toggle on. In these cases, we show the idea id in the modal.
-  const showIdeaIdInModal = idea
-    ? !idea.data.relationships.author?.data
-    : false;
-
   return (
     <Modal opened={showModal} close={handleClose} hasSkipButton={false}>
       <Box
@@ -85,7 +78,6 @@ const SuccessModal = ({ projectId }: Props) => {
         <Box mt="24px">
           {config.getModalContent?.({
             ideaId: newIdeaIdParam,
-            showIdeaId: showIdeaIdInModal,
           })}
         </Box>
       </Box>
