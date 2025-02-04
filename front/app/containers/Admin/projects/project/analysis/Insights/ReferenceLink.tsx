@@ -43,13 +43,11 @@ const referenceDisplayValue = (
   const customFieldKey = customField.data.attributes.key;
   const titleMultiloc = input.data.attributes.title_multiloc;
 
-  // Check for Ideation
+  // Localize title multiloc if it's not an empty object {} or undefined
   if (titleMultiloc && Object.keys(titleMultiloc).length > 0) {
-    // Only if titleMultiloc is not empty {} or undefined
     return localize(titleMultiloc);
   }
 
-  // Checks for Native Survey
   if (!customFieldKey) {
     return null;
   }
