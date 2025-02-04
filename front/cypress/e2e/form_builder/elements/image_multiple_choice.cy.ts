@@ -57,7 +57,6 @@ describe('Form builder image multiple choice choose multiple component', () => {
   });
 
   it('allows using an other option that is mandatory when other is selected when entering data in the form/survey', () => {
-    const otherText = 'Other';
     const questionTitle = randomString();
     const otherAnswer = 'Walking';
     cy.visit(
@@ -70,14 +69,15 @@ describe('Form builder image multiple choice choose multiple component', () => {
       .click({ force: true });
     cy.get('#e2e-title-multiloc').type(questionTitle, {
       force: true,
-      delay: 0,
     });
-    cy.get('#e2e-option-input-0').type('Car', { force: true, delay: 0 });
+    cy.get('#e2e-option-input-0').type('Car', { force: true });
     cy.contains('Save').click();
-    cy.wait(1000);
     cy.visit(`/projects/${projectSlug}/surveys/new?phase_id=${phaseId}`);
     cy.contains(questionTitle).should('exist');
-    cy.get('[data-cy="e2e-image-multichoice-control-checkbox"]').eq(1).click();
+    cy.wait(2000);
+    cy.get('[data-cy="e2e-image-multichoice-control-checkbox"]').eq(1).click({
+      force: true,
+    });
     cy.contains('Survey').should('exist');
     cy.get('#e2e-single-select-control').should('exist');
 
