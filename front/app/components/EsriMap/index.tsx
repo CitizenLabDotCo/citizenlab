@@ -19,6 +19,7 @@ import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 
 import useLocale from 'hooks/useLocale';
 
+import EsriMapMeta from './components/EsriMapMeta';
 import { configureMapView } from './config';
 import { InitialData } from './types';
 import { getDefaultBasemap, handleWebMapReferenceLayers } from './utils';
@@ -260,7 +261,7 @@ const EsriMap = ({
 
   return (
     <>
-      <meta name="referrer" content="origin" />
+      <EsriMapMeta />
       <MapContainer
         id={id}
         ref={mapRef}
