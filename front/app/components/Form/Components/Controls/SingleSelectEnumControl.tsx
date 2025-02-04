@@ -93,10 +93,18 @@ export const SingleSelectEnumControlTester = (
     // TODO: Fix this the next time the file is edited.
     // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     uiSchema?.options?.input_type === 'select' &&
-    dropdownLayoutTester(uiSchema, jsonSchema)
+    dropdownLayoutTester(uiSchema, jsonSchema, {
+      rootSchema: jsonSchema,
+      config: {},
+    })
   ) {
     return 1000;
-  } else if (isEnumControl(uiSchema, jsonSchema)) {
+  } else if (
+    isEnumControl(uiSchema, jsonSchema, {
+      rootSchema: jsonSchema,
+      config: {},
+    })
+  ) {
     return 4;
   }
   return -1;

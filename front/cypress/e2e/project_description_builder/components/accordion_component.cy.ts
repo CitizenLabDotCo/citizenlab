@@ -67,7 +67,7 @@ describe('Project description builder Accordion component', () => {
       `/admin/project-description-builder/projects/${projectId}/description`
     );
 
-    cy.get('.e2e-accordion').click({ force: true });
+    cy.get('.e2e-accordion').wait(1000).click({ force: true });
     cy.get('#default-open-toggle').click({ force: true });
     cy.get('.ql-editor').click();
     cy.get('.ql-editor').type('Edited text.', { force: true });
@@ -87,7 +87,7 @@ describe('Project description builder Accordion component', () => {
       `/admin/project-description-builder/projects/${projectId}/description`
     );
 
-    cy.get('.e2e-accordion').click({ force: true });
+    cy.get('.e2e-accordion').wait(1000).click({ force: true });
     cy.get('#e2e-delete-button').click();
     cy.get('#e2e-content-builder-topbar-save').click();
     cy.wait('@saveProjectDescriptionBuilder');

@@ -142,21 +142,10 @@ describe('Report builder Participants timeline widget', () => {
     cy.wait(1000);
     cy.get('#e2e-content-builder-topbar-save').click();
     cy.wait('@saveReportLayout');
-    // Wait for reportLayout.attributes.craftjs_json update.
-    //
-    // The delete happens so quickly after save, that at the time
-    // `onNodesChange` is called, reportLayout.attributes.craftjs_json
-    // still has the initial value before save (empty).
-    // After the delete, the actual state is also empty.
-    // And so, the `saved` state is not properly updated.
-    // Also, see reactions_by_time_widget.cy.ts
-    cy.wait('@getReportLayout');
-    cy.wait(500);
+    cy.reload();
 
-    cy.get('#e2e-draggable-participants-widget').should('exist');
-    cy.get('#e2e-draggable-participants-widget')
-      .parent()
-      .click({ force: true });
+    cy.get('.e2e-participants-timeline-widget').should('exist');
+    cy.get('.e2e-participants-timeline-widget').parent().click({ force: true });
 
     cy.get('#e2e-delete-button').click();
 

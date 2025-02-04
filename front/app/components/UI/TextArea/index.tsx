@@ -65,6 +65,7 @@ export type Props = {
   disabled?: boolean;
   focusOnError?: boolean;
   className?: string;
+  children?: React.ReactNode;
 };
 
 interface State {}

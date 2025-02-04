@@ -55,7 +55,7 @@ export const keyPresentInPageRoute = (
   let isFound = false;
   userPageRoute.forEach((page) => {
     const currentPageElementNames = page.elements.map((uiSchemaElement) =>
-      uiSchemaElement.scope.split('/').pop()
+      uiSchemaElement.scope?.split('/').pop()
     );
     isFound ||= currentPageElementNames.includes(key);
   });
@@ -92,7 +92,7 @@ export const getPageSchema = (
   ajv: Ajv
 ) => {
   const currentPageElementNames = pageCategorization.elements.map(
-    (uiSchemaElement) => uiSchemaElement.scope.split('/').pop()
+    (uiSchemaElement) => uiSchemaElement.scope?.split('/').pop()
   );
 
   const pageSchemaProperties = {};
@@ -108,7 +108,7 @@ export const getPageSchema = (
       return !isVisible(pageElementWithRule, data, '', ajv);
     })
     .concat(extractElementsByOtherOptionLogic(pageCategorization, data, true))
-    .map((element) => element['scope'].split('/').pop());
+    .map((element) => element['scope']?.split('/').pop());
 
   const pageSchema = Object.assign({}, schema, {
     required: (schema.required || [])
@@ -154,7 +154,7 @@ export function getFormCompletionPercentage(
     // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     if (page.elements) {
       page.elements.forEach((element) => {
-        const scope = element.scope.split('/').pop();
+        const scope = element.scope?.split('/').pop();
         if (!scope) {
           return;
         }
