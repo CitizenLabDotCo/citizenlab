@@ -130,6 +130,10 @@ const FormEdit = ({
         linear_scale_label_5_multiloc: object(),
         linear_scale_label_6_multiloc: object(),
         linear_scale_label_7_multiloc: object(),
+        linear_scale_label_8_multiloc: object(),
+        linear_scale_label_9_multiloc: object(),
+        linear_scale_label_10_multiloc: object(),
+        linear_scale_label_11_multiloc: object(),
         required: boolean(),
         temp_id: string(),
         logic: validateLogic(formatMessage(messages.logicValidationError)),
@@ -223,7 +227,13 @@ const FormEdit = ({
         ...(field.input_type === 'page' && {
           temp_id: field.temp_id,
         }),
-        ...(['linear_scale', 'select', 'page'].includes(field.input_type)
+        ...([
+          'multiselect',
+          'linear_scale',
+          'select',
+          'page',
+          'multiselect_image',
+        ].includes(field.input_type)
           ? {
               logic: field.logic,
             }
@@ -284,6 +294,14 @@ const FormEdit = ({
             field.linear_scale_label_6_multiloc || {},
           linear_scale_label_7_multiloc:
             field.linear_scale_label_7_multiloc || {},
+          linear_scale_label_8_multiloc:
+            field.linear_scale_label_8_multiloc || {},
+          linear_scale_label_9_multiloc:
+            field.linear_scale_label_9_multiloc || {},
+          linear_scale_label_10_multiloc:
+            field.linear_scale_label_10_multiloc || {},
+          linear_scale_label_11_multiloc:
+            field.linear_scale_label_11_multiloc || {},
           maximum: field.maximum?.toString() || '5',
         }),
       }));
@@ -433,20 +451,13 @@ const FormEdit = ({
                     />
                   )}
                   {showWarnings()}
-                  <Box
-                    borderRadius="3px"
-                    boxShadow="0px 2px 4px rgba(0, 0, 0, 0.2)"
-                    bgColor="white"
-                    minHeight="300px"
-                  >
-                    <FormFields
-                      onEditField={setSelectedField}
-                      selectedFieldId={selectedField?.id}
-                      handleDragEnd={reorderFields}
-                      builderConfig={builderConfig}
-                      closeSettings={closeSettings}
-                    />
-                  </Box>
+                  <FormFields
+                    onEditField={setSelectedField}
+                    selectedFieldId={selectedField?.id}
+                    handleDragEnd={reorderFields}
+                    builderConfig={builderConfig}
+                    closeSettings={closeSettings}
+                  />
                 </Box>
               </Box>
               <Box flex={!isNilOrError(selectedField) ? '1' : '0'}>

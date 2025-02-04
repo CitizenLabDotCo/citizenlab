@@ -78,7 +78,7 @@ const MatrixControl = ({
   const tableDivRef = useRef<HTMLDivElement>(null); // Used to apply border styling on scroll
 
   // Determine maximum number of columns in the table
-  const maxColumns = schema.properties?.[statements[0].key].maximum || 7; // Default 7 which is the maximum number of columns
+  const maxColumns = schema.properties?.[statements[0].key].maximum || 11; // Default 11 which is the maximum number of columns
 
   // Put all linear scale labels from the UI Schema in an array so we can easily use them
   const columnsFromSchema = Array.from({ length: maxColumns }, (_, index) => {

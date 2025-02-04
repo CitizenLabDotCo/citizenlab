@@ -37,10 +37,11 @@ const TextQuestion = ({
       </Box>
       <Box flex="1">
         {!isAnalysisAllowed && <AnalysisUpsell />}
-        {isAnalysisEnabled && !hasOtherResponses && (
+        {isAnalysisEnabled && (
           <Analysis
             customFieldId={customFieldId}
             textResponsesCount={textResponses.length}
+            hasOtherResponses={hasOtherResponses}
           />
         )}
       </Box>
