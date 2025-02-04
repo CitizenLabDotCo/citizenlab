@@ -82,6 +82,9 @@ const FormFields = ({
         boxShadow="0px 2px 4px rgba(0, 0, 0, 0.2)"
         bgColor="white"
         minHeight="300px"
+        display="flex"
+        flexDirection="column"
+        justifyContent="space-between"
       >
         <Box height="100%" data-cy="e2e-form-fields">
           <DragAndDrop
