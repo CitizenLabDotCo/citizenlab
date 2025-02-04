@@ -91,10 +91,24 @@ const AdminProjectsList = memo(({ className }: Props) => {
 
   const userIsAdmin = isAdmin(authUser);
 
+  // Fetch the admin publications to show in the 'Your projects' tab,
+  // including the (unexpanded) folders the user is a moderator of,
+  // but excluding the projects in those folders.
   const { data: moderatedAdminPublications } = useAdminPublications({
     publicationStatusFilter: ['published', 'draft', 'archived'],
-    onlyProjects: true,
     filter_is_moderator_of: true,
+    exclude_projects_in_included_folders: true,
+    search,
+  });
+
+  // Fetch the admin publications for projects in the 'Your projects' tab,
+  // including the projects in folders the user is a moderator of,
+  // but excluding the folders themselves.
+  // Used for the (n projects) counter displayed in the tab.
+  const { data: moderatedProjectAdminPublications } = useAdminPublications({
+    publicationStatusFilter: ['published', 'draft', 'archived'],
+    filter_is_moderator_of: true,
+    onlyProjects: true,
     search,
   });
 
@@ -155,6 +169,10 @@ const AdminProjectsList = memo(({ className }: Props) => {
 
   const flatModeratedAdminPublications = flattenPagesData(
     moderatedAdminPublications
+  );
+
+  const flatModeratedProjectAdminPublications = flattenPagesData(
+    moderatedProjectAdminPublications
   );
 
   const flatPendingReviewAdminPublications = flattenPagesData(
@@ -232,7 +250,7 @@ const AdminProjectsList = memo(({ className }: Props) => {
             <Tab
               url="/admin/projects"
               label={`${formatMessage(messages.yourProjects)} (${
-                flatModeratedAdminPublications?.length || 0
+                flatModeratedProjectAdminPublications?.length || 0
               })`}
               active={activeTab === 'your-projects'}
             />

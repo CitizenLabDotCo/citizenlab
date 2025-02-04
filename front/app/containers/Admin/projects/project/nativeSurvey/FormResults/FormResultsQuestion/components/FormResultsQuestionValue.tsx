@@ -46,11 +46,20 @@ const FormResultQuestionValue = ({
       return <MatrixQuestion result={result} />;
     case 'multiselect':
       return (
-        <SurveyBars
-          questionResult={result}
-          colorScheme={[colors.primary]}
-          logicConfig={logicConfig}
-        />
+        <>
+          <SurveyBars
+            questionResult={result}
+            colorScheme={[colors.primary]}
+            logicConfig={logicConfig}
+          />
+          {textResponses && (
+            <TextQuestion
+              textResponses={textResponses}
+              customFieldId={customFieldId}
+              hasOtherResponses={!!answers}
+            />
+          )}
+        </>
       );
     case 'text':
       return textResponses ? (
