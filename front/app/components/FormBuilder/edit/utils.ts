@@ -20,7 +20,7 @@ export type NestedGroupingStructure = {
   id: string;
 };
 
-type DragOrDroValues = {
+type DragOrDropValues = {
   droppableId: string;
   index: number;
 };
@@ -28,10 +28,10 @@ type DragOrDroValues = {
 export type DragAndDropResult = {
   draggableId: string;
   type: string;
-  source: DragOrDroValues;
+  source: DragOrDropValues;
   reason: string;
   mode: string;
-  destination: DragOrDroValues | null;
+  destination: DragOrDropValues | null;
 };
 
 const getFlatGroupStructure = (

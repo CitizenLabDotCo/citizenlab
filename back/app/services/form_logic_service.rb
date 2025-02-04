@@ -80,7 +80,6 @@ class FormLogicService
 
   def valid_next_page?(field)
     target_id = field.logic['next_page_id'] # Present because we passed the `valid_page_logic_structure?` check.
-    return true if target_id == 'survey_end'
 
     # Order is important here, because `target_after_source?` and `target_is_page?`
     # rely on `valid_next_page_id?` to return true. In those methods,
@@ -91,7 +90,6 @@ class FormLogicService
   def valid_rules?(field)
     field.logic['rules'].all? do |rule|
       target_id = rule['goto_page_id'] # Present because we passed the `valid_field_logic_structure?` check.
-      next true if target_id == 'survey_end'
 
       # Order is important here, because `target_after_source?` and `target_is_page?`
       # rely on `valid_goto_page_id?` to return true. In those methods,
@@ -219,11 +217,7 @@ class FormLogicService
     target_id = field.logic['next_page_id']
     return if target_id.blank?
 
-    pages_to_hide = if target_id == 'survey_end'
-      pages_after(index)
-    else
-      pages_in_between(index, target_id)
-    end
+    pages_to_hide = pages_in_between(index, target_id)
     pages_to_hide.each do |page|
       rules_accu[page.id] ||= []
       rules_accu[page.id] << ui_schema_next_page_rule_for(field)
@@ -243,11 +237,7 @@ class FormLogicService
 
     # Finally add the rules for the collected logic.
     logic.each do |value, target_page_id|
-      pages_to_hide = if target_page_id == 'survey_end'
-        pages_after(index)
-      else
-        pages_in_between(index, target_page_id)
-      end
+      pages_to_hide = pages_in_between(index, target_page_id)
       pages_to_hide.each do |page|
         rules_accu[page.id] ||= []
         rules_accu[page.id] << ui_schema_hide_rule_for(field, value)
@@ -309,8 +299,11 @@ class FormLogicService
   def pages_in_between(index, page_id)
     pages = []
     index += 1
+    last_page_id = fields.last.id
+
     while index < fields.size
       return pages if fields[index].id == page_id
+      return pages if fields[index].id == last_page_id
 
       pages << fields[index] if fields[index].page?
       index += 1

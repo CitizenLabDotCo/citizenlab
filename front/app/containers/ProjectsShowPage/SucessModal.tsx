@@ -83,7 +83,7 @@ const SuccessModal = ({ projectId }: Props) => {
       >
         <Image width="80px" height="80px" src={rocket} alt="" />
         <Box mt="24px">
-          {config.getModalContent({
+          {config.getModalContent?.({
             ideaId: newIdeaIdParam,
             showIdeaId: showIdeaIdInModal,
           })}

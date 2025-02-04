@@ -25,6 +25,7 @@ class SurveyResultsGeneratorService < FieldVisitorService
       results = add_page_response_count_to_results results
       results = add_logic_to_results results, logic_ids
       results = change_counts_for_logic results, inputs.pluck(:custom_field_values)
+      results = remove_last_page results
 
       {
         results: results,
@@ -572,6 +573,12 @@ class SurveyResultsGeneratorService < FieldVisitorService
     end
 
     results
+  end
+
+  # We need the last page whilst calculating logic so we remove it at the very end
+  # Maybe separate cleanup_results - as we need the key here
+  def remove_last_page(results)
+
   end
 
   def cleanup_single_result(result)

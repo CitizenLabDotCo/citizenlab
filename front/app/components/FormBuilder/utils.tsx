@@ -37,6 +37,7 @@ export const builtInFieldKeys = [
 export type BuiltInKeyType = (typeof builtInFieldKeys)[number];
 
 export type FormBuilderConfig = {
+  type: 'survey' | 'input_form';
   formBuilderTitle: MessageDescriptor;
   viewFormLinkCopy: MessageDescriptor;
   formSavedSuccessMessage: MessageDescriptor;
@@ -79,9 +80,6 @@ export const getIsPostingEnabled = (
 
   return false;
 };
-
-// TODO: BE key for survey end options should be replaced with form_end, then we can update this value.
-export const formEndOption = 'survey_end';
 
 // TODO: Clean this up and make it an actual component
 // Function to return additional settings based on input type

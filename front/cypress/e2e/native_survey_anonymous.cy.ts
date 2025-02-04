@@ -57,11 +57,14 @@ describe('Native survey: no authentication requirements', () => {
     );
 
     // Submit survey
-    cy.get('[data-cy="e2e-next-page"]').click();
     cy.get('[data-cy="e2e-submit-form"]').click();
 
-    // Expect success message with idea id
-    cy.get('#idea-id-success-modal').should('exist');
+    // Check that we're on final page and return to project
+    cy.get('[data-cy="e2e-after-submission"]').should('exist');
+    cy.get('[data-cy="e2e-after-submission"]').click();
+
+    // Make sure we're back at the project
+    cy.url().should('include', `projects/${projectSlug}`);
   });
 
   after(() => {
@@ -115,11 +118,14 @@ describe('Native survey: anonymous toggle on', () => {
     );
 
     // Submit survey
-    cy.get('[data-cy="e2e-next-page"]').click();
     cy.get('[data-cy="e2e-submit-form"]').click();
 
-    // Expect success message with idea id
-    cy.get('#idea-id-success-modal').should('exist');
+    // Check that we're on final page and return to project
+    cy.get('[data-cy="e2e-after-submission"]').should('exist');
+    cy.get('[data-cy="e2e-after-submission"]').click();
+
+    // Make sure we're back at the project
+    cy.url().should('include', `projects/${projectSlug}`);
   });
 
   after(() => {
