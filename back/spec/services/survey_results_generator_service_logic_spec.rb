@@ -615,10 +615,6 @@ RSpec.describe SurveyResultsGeneratorService do
           answer: nil, count: 2
         })
       end
-
-      it 'removes the temporary attributes used for calculating logic' do
-        expect(results[0].keys).not_to include(:key, :questionViewedCount)
-      end
     end
 
     context 'Question logic taking precedence over page logic' do
@@ -670,10 +666,6 @@ RSpec.describe SurveyResultsGeneratorService do
         expect(multiselect_result[:answers].find { |a| a[:answer].nil? }).to eq({
           answer: nil, count: 2
         })
-      end
-
-      it 'removes the temporary attributes used for calculating logic' do
-        expect(results[0].keys).not_to include(:key, :questionViewedCount)
       end
     end
 
@@ -740,12 +732,56 @@ RSpec.describe SurveyResultsGeneratorService do
           answer: nil, count: 2
         })
       end
-
-      it 'removes the temporary attributes used for calculating logic' do
-        expect(results[0].keys).not_to include(:key, :questionViewedCount)
-      end
     end
 
     # TODO: Check that a large dataset performs adequately
+  end
+
+  describe 'cleanup_results' do
+    let(:dirty_results) do
+      [
+        {
+          inputType: 'page',
+          totalResponseCount: 5,
+          questionResponseCount: 4,
+          pageNumber: 1,
+          logic: {},
+          questionViewedCount: 0,
+          key: 'page1'
+        }, {
+          inputType: 'select',
+          totalResponseCount: 5,
+          questionResponseCount: 4,
+          logic: {},
+          questionViewedCount: 0,
+          key: 'question_one',
+          totalPickCount: 4,
+          answers: [
+            { answer: 'option_2', count: 3 },
+            { answer: 'option_1', count: 1 },
+            { answer: nil, count: 1 }
+          ]
+        }, {
+          inputType: 'page',
+          totalResponseCount: 5,
+          questionResponseCount: 0,
+          pageNumber: 2,
+          logic: {},
+          questionViewedCount: 0,
+          key: 'survey_end'
+        }
+      ]
+    end
+
+    let(:results) { generator.send(:cleanup_results, dirty_results) }
+
+    it 'removes the temporary attributes used for calculating logic' do
+      expect(results[0].keys).not_to include(:key, :questionViewedCount)
+    end
+
+    it 'removes the last page (survey_end) from the results' do
+      expect(results.size).to eq(2)
+      expect(results.pluck(:inputType)).to eq(%w[page select])
+    end
   end
 end

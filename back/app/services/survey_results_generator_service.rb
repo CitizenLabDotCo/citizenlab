@@ -25,7 +25,7 @@ class SurveyResultsGeneratorService < FieldVisitorService
       results = add_page_response_count_to_results results
       results = add_logic_to_results results, logic_ids
       results = change_counts_for_logic results, inputs.pluck(:custom_field_values)
-      # results = cleanup_results results
+      results = cleanup_results results
 
       {
         results: results,
@@ -419,7 +419,7 @@ class SurveyResultsGeneratorService < FieldVisitorService
   end
 
   def add_question_numbers_to_results(results)
-    @page_numbers = {} # Lookup that we can use later in logic.
+    @page_numbers = { 'survey_end' => 999 } # Lookup that we can use later in logic. TODO: JS - Not working when removed
     question_number = 0
     page_number = 0
     results.map do |result|
@@ -441,7 +441,6 @@ class SurveyResultsGeneratorService < FieldVisitorService
   # Add hidden flag to results based on logic ids supplied for filtering
   def add_logic_to_results(results, logic_ids)
     results_to_hide = []
-
     results = results.deep_dup.map do |result|
       field_id = result[:customFieldId]
       if supports_page_logic? result[:inputType]
@@ -579,6 +578,7 @@ class SurveyResultsGeneratorService < FieldVisitorService
     results.map do |question|
       question.delete(:questionViewedCount)
       question.delete(:key)
+      question
     end
   end
 
