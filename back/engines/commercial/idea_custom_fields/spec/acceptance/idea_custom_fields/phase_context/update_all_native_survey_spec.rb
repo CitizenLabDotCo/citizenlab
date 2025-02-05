@@ -822,7 +822,7 @@ resource 'Idea Custom Fields' do
 
         assert_status 200
         json_response = json_parse(response_body)
-        expect(json_response[:data].size).to eq 2
+        expect(json_response[:data].size).to eq 3
         expect(json_response[:data][1]).to match({
           attributes: {
             code: nil,
