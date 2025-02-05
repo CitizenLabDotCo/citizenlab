@@ -419,7 +419,7 @@ RSpec.describe SurveyResultsGeneratorService do
       {
         inputType: 'page',
         totalResponseCount: 5,
-        questionResponseCount: 4,
+        questionResponseCount: 2,
         pageNumber: 2,
         logic: {},
         questionViewedCount: 0,
@@ -634,6 +634,16 @@ RSpec.describe SurveyResultsGeneratorService do
         )
       end
 
+      it 'changes the totalResponsesCount when the questionResponseCount is lower than questionViewedCount' do
+        text_question1[:questionResponseCount] = 1
+        expect(results[6][:totalResponseCount]).to eq 2
+      end
+
+      it 'does not change the totalResponsesCount when the questionResponseCount is higher than questionViewedCount' do
+        text_question1[:questionResponseCount] = 6
+        expect(results[6][:totalResponseCount]).to eq 5 # does not change if the question response count is higher
+      end
+
       it 'reduces the count of not_answered responses when fields are not shown through logic' do
         expect(linear_scale_result[:answers].find { |a| a[:answer].nil? }).to eq({
           answer: nil, count: 2
@@ -811,8 +821,6 @@ RSpec.describe SurveyResultsGeneratorService do
         })
       end
     end
-
-    # TODO: Check that a large dataset performs adequately
   end
 
   describe 'cleanup_results' do
