@@ -47,7 +47,7 @@ type BaseResult = {
   questionResponseCount: number;
   questionNumber: number;
   pageNumber: number;
-  logic: ResultLogic;
+  logic?: ResultLogic;
   numberResponses?: { answer: number }[];
 
   // Defined for text questions,
