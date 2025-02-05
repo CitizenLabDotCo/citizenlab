@@ -14,7 +14,7 @@ import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import FollowUnfollow from 'components/FollowUnfollow';
 import ReactionControl from 'components/ReactionControl';
-import { showIdeaReactions } from 'components/ReactionControl/utils';
+import { showIdeationReactions } from 'components/ReactionControl/utils';
 
 import { getVotingMethodConfig } from 'utils/configs/votingMethodConfig';
 
@@ -62,11 +62,6 @@ const RightColumnDesktop = ({
 
   const participationMethod = phase?.attributes.participation_method;
 
-  const showIdeaReactionControl = showIdeaReactions(
-    idea.data,
-    participationMethod
-  );
-
   const showInteractionsContainer =
     ideaIsInParticipationContext || commentingEnabled || followEnabled;
   return (
@@ -98,24 +93,28 @@ const RightColumnDesktop = ({
                 <Divider />
               </>
             )}
-            {/* Doesn't show when participation method is proposals */}
-            {showIdeaReactionControl && (
-              <>
-                <ReactionControl styleType="shadow" ideaId={ideaId} size="4" />
-                <Divider />
-              </>
-            )}
-            {/* TODO: Fix this the next time the file is edited. */}
-            {/* eslint-disable-next-line @typescript-eslint/no-unnecessary-condition */}
-            {phase && ideaIsInParticipationContext && votingConfig && (
-              <Box pb="24px" mb="24px" borderBottom="solid 1px #ccc">
-                {votingConfig.getIdeaPageVoteInput({
-                  ideaId,
-                  phase,
-                  compact: false,
-                })}
-              </Box>
-            )}
+            {participationMethod === 'ideation' &&
+              showIdeationReactions(idea.data) && (
+                <>
+                  <ReactionControl
+                    styleType="shadow"
+                    ideaId={ideaId}
+                    size="4"
+                  />
+                  <Divider />
+                </>
+              )}
+            {participationMethod === 'voting' &&
+              ideaIsInParticipationContext &&
+              votingConfig && (
+                <Box pb="24px" mb="24px" borderBottom="solid 1px #ccc">
+                  {votingConfig.getIdeaPageVoteInput({
+                    ideaId,
+                    phase,
+                    compact: false,
+                  })}
+                </Box>
+              )}
             {commentingEnabled && (
               <Box mb="12px">
                 <GoToCommentsButton />

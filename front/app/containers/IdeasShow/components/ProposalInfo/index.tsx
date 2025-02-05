@@ -13,6 +13,7 @@ import useIdeaStatus from 'api/idea_statuses/useIdeaStatus';
 import { IIdea } from 'api/ideas/types';
 
 import ReactionControl from 'components/ReactionControl';
+import { showProposalsReactions } from 'components/ReactionControl/utils';
 import T from 'components/T';
 
 import { ScreenReaderOnly } from 'utils/a11y';
@@ -45,21 +46,16 @@ const ProposalInfo = ({ idea, compact }: Props) => {
 
   const { code } = ideaStatus.data.attributes;
 
+  // All the codes checked for here are ProposalsStatusCode types (see front/app/api/idea_statuses/types.ts)
   const showCountDown =
     code === 'proposed' || code === 'expired' || code === 'custom';
-
   const showProgressBar =
     code === 'proposed' ||
     code === 'threshold_reached' ||
     code === 'custom' ||
     code === 'ineligible' ||
     code === 'answered';
-
-  const showVoteButtons =
-    code === 'proposed' ||
-    code === 'threshold_reached' ||
-    code === 'custom' ||
-    code === 'answered';
+  const showVoteButtons = showProposalsReactions(idea.data);
 
   return (
     <Box
@@ -102,6 +98,10 @@ const ProposalInfo = ({ idea, compact }: Props) => {
           />
         </Box>
       )}
+      {/* 
+        We already show ReactionControl via the top bar on mobile, hence we don't
+        show it when compact is true.
+      */}
       {showVoteButtons && !compact && (
         <ReactionControl
           styleType="shadow"

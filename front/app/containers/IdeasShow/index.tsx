@@ -148,7 +148,7 @@ export const IdeasShow = ({
                 'proposals' && (
                 <>
                   <Divider />
-                  <ProposalInfo idea={idea} compact={compact} />
+                  <ProposalInfo idea={idea} compact />
                   <Divider />
                 </>
               )}
