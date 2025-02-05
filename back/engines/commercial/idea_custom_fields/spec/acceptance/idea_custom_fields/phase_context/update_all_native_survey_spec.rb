@@ -814,7 +814,8 @@ resource 'Idea Custom Fields' do
               required: true,
               enabled: true,
               maximum: 7
-            }
+            },
+            final_page
           ]
         }
         do_request request
