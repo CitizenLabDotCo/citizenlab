@@ -275,12 +275,10 @@ const EsriMap = ({
 const EsriMapWrapper = (props: Omit<EsriMapProps, 'globalMapSettings'>) => {
   const { data: appConfig } = useAppConfiguration();
   const globalMapSettings = appConfig?.data.attributes.settings.maps;
-  const esriApiKey =
-    appConfig?.data.attributes.settings.esri_integration?.api_key;
 
   return (
     <>
-      {esriApiKey && <EsriMapMeta />}
+      <EsriMapMeta />
       {globalMapSettings && (
         <EsriMap globalMapSettings={globalMapSettings} {...props} />
       )}
