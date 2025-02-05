@@ -90,8 +90,6 @@ const EsriMap = ({
   const [updateMapViewConfig, setUpdateMapViewConfig] = useState(false);
   const [initialized, setInitialized] = useState(false);
 
-  const [esriApiKey, setEsriApiKey] = useState<string | undefined>(undefined);
-
   const mapRefAvailable = !!mapRef.current;
 
   useEffect(() => {
@@ -259,13 +257,11 @@ const EsriMap = ({
     // Set the Esri API key
     if (apiKey) {
       esriConfig.apiKey = apiKey;
-      setEsriApiKey(apiKey);
     }
   }, [appConfig?.data.attributes.settings.esri_integration?.api_key]);
 
   return (
     <>
-      {esriApiKey && <EsriMapMeta />}
       <MapContainer
         id={id}
         ref={mapRef}
@@ -279,12 +275,17 @@ const EsriMap = ({
 const EsriMapWrapper = (props: Omit<EsriMapProps, 'globalMapSettings'>) => {
   const { data: appConfig } = useAppConfiguration();
   const globalMapSettings = appConfig?.data.attributes.settings.maps;
+  const esriApiKey =
+    appConfig?.data.attributes.settings.esri_integration?.api_key;
 
-  if (globalMapSettings) {
-    return <EsriMap globalMapSettings={globalMapSettings} {...props} />;
-  }
-
-  return null;
+  return (
+    <>
+      {esriApiKey && <EsriMapMeta />}
+      {globalMapSettings && (
+        <EsriMap globalMapSettings={globalMapSettings} {...props} />
+      )}
+    </>
+  );
 };
 
 export default EsriMapWrapper;
