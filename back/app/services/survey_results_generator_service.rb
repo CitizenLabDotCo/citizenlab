@@ -534,7 +534,7 @@ class SurveyResultsGeneratorService < FieldVisitorService
 
             # Calculate the next page number that will be seen
             if supports_question_logic? input_type
-              answer_value = response[question[:key]]
+              answer_value = response[question[:key]] || 'no_answer'
               values = answer_value.is_a?(Array) ? answer_value : [answer_value] # Convert all values to an array so all fields can be treated the same
               highest_next_page_number_for_question = 0
               values.each do |value|
