@@ -250,11 +250,12 @@ const EsriMap = ({
   }, [locale]);
 
   useEffect(() => {
-    // Set the Esri API key
-    const esriApiKey =
+    const apiKey =
       appConfig?.data.attributes.settings.esri_integration?.api_key;
-    if (esriApiKey) {
-      esriConfig.apiKey = esriApiKey;
+
+    // Set the Esri API key
+    if (apiKey) {
+      esriConfig.apiKey = apiKey;
     }
   }, [appConfig?.data.attributes.settings.esri_integration?.api_key]);
 
@@ -274,11 +275,13 @@ const EsriMapWrapper = (props: Omit<EsriMapProps, 'globalMapSettings'>) => {
   const { data: appConfig } = useAppConfiguration();
   const globalMapSettings = appConfig?.data.attributes.settings.maps;
 
-  if (globalMapSettings) {
-    return <EsriMap globalMapSettings={globalMapSettings} {...props} />;
-  }
-
-  return null;
+  return (
+    <>
+      {globalMapSettings && (
+        <EsriMap globalMapSettings={globalMapSettings} {...props} />
+      )}
+    </>
+  );
 };
 
 export default EsriMapWrapper;

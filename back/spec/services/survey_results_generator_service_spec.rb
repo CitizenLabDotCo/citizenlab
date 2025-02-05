@@ -19,7 +19,7 @@ RSpec.describe SurveyResultsGeneratorService do
 
   # Set-up custom form
   let_it_be(:form) { create(:custom_form, participation_context: survey_phase) }
-  let_it_be(:page_field) { create(:custom_field_page, resource: form) } # Should not appear in results
+  let_it_be(:page_field) { create(:custom_field_page, logic: { next_page_id: 'survey_end' }, resource: form) }
   let_it_be(:text_field) do
     create(
       :custom_field,
@@ -110,6 +110,7 @@ RSpec.describe SurveyResultsGeneratorService do
         'fr-FR' => "Tout à fait d'accord",
         'nl-NL' => 'Strerk mee eens'
       },
+      logic: { rules: [{ if: 2, goto_page_id: 'survey_end' }, { if: 'no_answer', goto_page_id: 'survey_end' }] },
       required: true
     )
   end
@@ -174,6 +175,7 @@ RSpec.describe SurveyResultsGeneratorService do
       title_multiloc: {
         'en' => 'Upload a file'
       },
+      description_multiloc: {},
       required: false
     )
   end
@@ -185,6 +187,7 @@ RSpec.describe SurveyResultsGeneratorService do
       title_multiloc: {
         'en' => 'Upload a file'
       },
+      description_multiloc: {},
       required: false
     )
   end
@@ -246,6 +249,7 @@ RSpec.describe SurveyResultsGeneratorService do
       title_multiloc: {
         'en' => 'Rank your favourite means of public transport'
       },
+      description_multiloc: { 'en' => 'Favourite to least favourite' },
       required: false,
       options: [
         create(:custom_field_option, key: 'by_foot', title_multiloc: { 'en' => 'By foot', 'fr-FR' => 'À pied', 'nl-NL' => 'Te voet' }),
@@ -255,7 +259,7 @@ RSpec.describe SurveyResultsGeneratorService do
     )
   end
 
-  let_it_be(:matrix_linear_scale_field) { create(:custom_field_matrix_linear_scale, resource: form) }
+  let_it_be(:matrix_linear_scale_field) { create(:custom_field_matrix_linear_scale, resource: form, description_multiloc: {}) }
 
   let_it_be(:gender_user_custom_field) do
     create(:custom_field_gender, :with_options)
@@ -429,8 +433,19 @@ RSpec.describe SurveyResultsGeneratorService do
 
       it 'returns the correct fields and structure' do
         expect(generated_results[:results].count).to eq 16
-        expect(generated_results[:results].pluck(:customFieldId)).not_to include page_field.id
         expect(generated_results[:results].pluck(:customFieldId)).not_to include disabled_multiselect_field.id
+      end
+    end
+
+    describe 'page fields' do
+      it 'returns correct values for a page field in full results' do
+        page_result = generated_results[:results][0]
+        expect(page_result[:inputType]).to eq 'page'
+        expect(page_result[:totalResponseCount]).to eq(27)
+        expect(page_result[:questionResponseCount]).to eq(22)
+        expect(page_result[:pageNumber]).to eq(1)
+        expect(page_result[:questionNumber]).to be_nil
+        expect(page_result[:logic]).to eq({ nextPageNumber: 999, numQuestionsSkipped: 0 })
       end
     end
 
@@ -444,6 +459,11 @@ RSpec.describe SurveyResultsGeneratorService do
           grouped: false,
           totalResponseCount: 27,
           questionResponseCount: 4,
+          description: {},
+          hidden: false,
+          pageNumber: nil,
+          questionNumber: 1,
+          logic: {},
           textResponses: [
             { answer: 'Blue' },
             { answer: 'Green' },
@@ -454,18 +474,24 @@ RSpec.describe SurveyResultsGeneratorService do
       end
 
       it 'returns the results for a text field' do
-        expect(generated_results[:results][0]).to match expected_result_text_field
+        expect(generated_results[:results][1]).to match expected_result_text_field
       end
 
       it 'returns a single result for a text field' do
+        expected_result_text_field[:questionNumber] = nil # Question number is null when requesting a single result
         expect(generator.generate_results(field_id: text_field.id)).to match expected_result_text_field
       end
 
       it 'returns the results for an unanswered field' do
-        expect(generated_results[:results][6]).to match(
+        expect(generated_results[:results][7]).to match(
           {
             customFieldId: unanswered_text_field.id,
             inputType: 'text',
+            description: {},
+            hidden: false,
+            pageNumber: nil,
+            questionNumber: 7,
+            logic: {},
             question: { 'en' => 'Nobody wants to answer me' },
             required: false,
             grouped: false,
@@ -479,13 +505,18 @@ RSpec.describe SurveyResultsGeneratorService do
 
     describe 'multiline text fields' do
       it 'returns the results for a multiline text field' do
-        expect(generated_results[:results][1]).to match(
+        expect(generated_results[:results][2]).to match(
           {
             customFieldId: multiline_text_field.id,
             inputType: 'multiline_text',
             question: { 'en' => 'What is your favourite recipe?' },
             required: false,
             grouped: false,
+            description: {},
+            hidden: false,
+            pageNumber: nil,
+            questionNumber: 2,
+            logic: {},
             totalResponseCount: 27,
             questionResponseCount: 0,
             textResponses: []
@@ -506,6 +537,11 @@ RSpec.describe SurveyResultsGeneratorService do
           },
           required: false,
           grouped: false,
+          description: {},
+          hidden: false,
+          pageNumber: nil,
+          questionNumber: 3,
+          logic: {},
           totalResponseCount: 27,
           questionResponseCount: 4,
           totalPickCount: 33,
@@ -531,10 +567,11 @@ RSpec.describe SurveyResultsGeneratorService do
 
       context 'without grouping' do
         it 'returns the results for a multi-select field' do
-          expect(generated_results[:results][2]).to match expected_result_multiselect
+          expect(generated_results[:results][3]).to match expected_result_multiselect
         end
 
         it 'returns a single result for multiselect' do
+          expected_result_multiselect[:questionNumber] = nil
           expect(generator.generate_results(field_id: multiselect_field.id)).to match expected_result_multiselect
         end
       end
@@ -542,6 +579,7 @@ RSpec.describe SurveyResultsGeneratorService do
       context 'with grouping' do
         let(:expected_result_multiselect_with_user_field_grouping) do
           expected_result_multiselect.tap do |result|
+            result[:questionNumber] = nil
             result[:grouped] = true
             result[:legend] = ['male', 'female', 'unspecified', nil]
             result[:answers] = [
@@ -595,6 +633,7 @@ RSpec.describe SurveyResultsGeneratorService do
 
         let(:expected_result_multiselect_with_select_field_grouping) do
           expected_result_multiselect.tap do |result|
+            result[:questionNumber] = nil
             result[:grouped] = true
             result[:legend] = ['la', 'ny', 'other', nil]
             result[:answers] = [
@@ -679,6 +718,16 @@ RSpec.describe SurveyResultsGeneratorService do
           },
           required: true,
           grouped: false,
+          description: { 'en' => 'Please indicate how strong you agree or disagree.' },
+          hidden: false,
+          pageNumber: nil,
+          questionNumber: nil,
+          logic: {
+            answer: {
+              2 => { id: "#{linear_scale_field.id}_2", nextPageNumber: 999, numQuestionsSkipped: 0 },
+              'no_answer' => { id: "#{linear_scale_field.id}_no_answer", nextPageNumber: 999, numQuestionsSkipped: 0 }
+            }
+          },
           totalResponseCount: 27,
           questionResponseCount: 22,
           totalPickCount: 27,
@@ -707,10 +756,12 @@ RSpec.describe SurveyResultsGeneratorService do
       end
 
       it 'returns the results for a linear scale field' do
-        expect(generated_results[:results][3]).to match expected_result_linear_scale
+        expected_result_linear_scale[:questionNumber] = 4
+        expect(generated_results[:results][4]).to match expected_result_linear_scale
       end
 
       it 'returns a single result for a linear scale field' do
+        expected_result_linear_scale[:logic] = {} # Logic is not returns when requesting a single result
         expect(generator.generate_results(field_id: linear_scale_field.id)).to match expected_result_linear_scale
       end
 
@@ -727,6 +778,7 @@ RSpec.describe SurveyResultsGeneratorService do
               'fr-FR' => '5',
               'nl-NL' => '5'
             }
+            result[:logic] = {} # Logic is not returns when requesting a single result
           end
         end
 
@@ -754,6 +806,11 @@ RSpec.describe SurveyResultsGeneratorService do
             },
             required: true,
             grouped: true,
+            description: { 'en' => 'Please indicate how strong you agree or disagree.' },
+            hidden: false,
+            pageNumber: nil,
+            questionNumber: nil,
+            logic: {},
             totalResponseCount: 27,
             questionResponseCount: 22,
             totalPickCount: 27,
@@ -788,13 +845,13 @@ RSpec.describe SurveyResultsGeneratorService do
             ],
             multilocs: {
               answer: {
-                1 => { title_multiloc: { 'en' => '1 - Strongly disagree', 'fr-FR' => "1 - Pas du tout d'accord", 'nl-NL' => '1 - Helemaal niet mee eens' } },
-                2 => { title_multiloc: { 'en' => '2 - Disagree', 'fr-FR' => '2 - Être en désaccord', 'nl-NL' => '2 - Niet mee eens' } },
-                3 => { title_multiloc: { 'en' => '3 - Slightly disagree', 'fr-FR' => '3 - Plutôt en désaccord', 'nl-NL' => '3 - Enigszins oneens' } },
-                4 => { title_multiloc: { 'en' => '4 - Neutral', 'fr-FR' => '4 - Neutre', 'nl-NL' => '4 - Neutraal' } },
-                5 => { title_multiloc: { 'en' => '5 - Slightly agree', 'fr-FR' => "5 - Plutôt d'accord", 'nl-NL' => '5 - Enigszins eens' } },
-                6 => { title_multiloc: { 'en' => '6 - Agree', 'fr-FR' => "6 - D'accord", 'nl-NL' => '6 - Mee eens' } },
-                7 => { title_multiloc: { 'en' => '7 - Strongly agree', 'fr-FR' => "7 - Tout à fait d'accord", 'nl-NL' => '7 - Strerk mee eens' } }
+                1 => hash_including(title_multiloc: { 'en' => '1 - Strongly disagree', 'fr-FR' => "1 - Pas du tout d'accord", 'nl-NL' => '1 - Helemaal niet mee eens' }),
+                2 => hash_including(title_multiloc: { 'en' => '2 - Disagree', 'fr-FR' => '2 - Être en désaccord', 'nl-NL' => '2 - Niet mee eens' }),
+                3 => hash_including(title_multiloc: { 'en' => '3 - Slightly disagree', 'fr-FR' => '3 - Plutôt en désaccord', 'nl-NL' => '3 - Enigszins oneens' }),
+                4 => hash_including(title_multiloc: { 'en' => '4 - Neutral', 'fr-FR' => '4 - Neutre', 'nl-NL' => '4 - Neutraal' }),
+                5 => hash_including(title_multiloc: { 'en' => '5 - Slightly agree', 'fr-FR' => "5 - Plutôt d'accord", 'nl-NL' => '5 - Enigszins eens' }),
+                6 => hash_including(title_multiloc: { 'en' => '6 - Agree', 'fr-FR' => "6 - D'accord", 'nl-NL' => '6 - Mee eens' }),
+                7 => hash_including(title_multiloc: { 'en' => '7 - Strongly agree', 'fr-FR' => "7 - Tout à fait d'accord", 'nl-NL' => '7 - Strerk mee eens' })
               },
               group: {
                 'la' => { title_multiloc: { 'en' => 'Los Angeles', 'fr-FR' => 'Los Angeles', 'nl-NL' => 'Los Angeles' } },
@@ -941,6 +998,129 @@ RSpec.describe SurveyResultsGeneratorService do
       end
     end
 
+    describe 'rating field' do
+      let(:expected_result_rating) do
+        {
+          customFieldId: rating_field.id,
+          inputType: 'rating',
+          question: {
+            'en' => 'How satisfied are you with our service?',
+            'fr-FR' => 'À quel point êtes-vous satisfait de notre service ?',
+            'nl-NL' => 'Hoe tevreden ben je met onze service?'
+          },
+          required: true,
+          grouped: false,
+          totalResponseCount: 27,
+          questionResponseCount: 22,
+          totalPickCount: 27,
+          answers: [
+            { answer: 1, count: 2 },
+            { answer: 2, count: 5 },
+            { answer: 3, count: 8 },
+            { answer: 4, count: 1 },
+            { answer: 5, count: 1 },
+            { answer: 6, count: 2 },
+            { answer: 7, count: 3 },
+            { answer: nil, count: 5 }
+          ],
+          multilocs: {
+            answer: {
+              1 => { title_multiloc: { 'en' => '1', 'fr-FR' => '1', 'nl-NL' => '1' } },
+              2 => { title_multiloc: { 'en' => '2', 'fr-FR' => '2', 'nl-NL' => '2' } },
+              3 => { title_multiloc: { 'en' => '3', 'fr-FR' => '3', 'nl-NL' => '3' } },
+              4 => { title_multiloc: { 'en' => '4', 'fr-FR' => '4', 'nl-NL' => '4' } },
+              5 => { title_multiloc: { 'en' => '5', 'fr-FR' => '5', 'nl-NL' => '5' } },
+              6 => { title_multiloc: { 'en' => '6', 'fr-FR' => '6', 'nl-NL' => '6' } },
+              7 => { title_multiloc: { 'en' => '7', 'fr-FR' => '7', 'nl-NL' => '7' } }
+            }
+          }
+        }
+      end
+
+      it 'returns the results for a rating field' do
+        expect(generated_results[:results][15]).to match expected_result_rating
+      end
+
+      it 'returns a single result for a rating field' do
+        expect(generator.generate_results(field_id: rating_field.id)).to match expected_result_rating
+      end
+
+      context 'with grouping' do
+        let(:grouped_rating_results) do
+          {
+            customFieldId: rating_field.id,
+            inputType: 'rating',
+            question: {
+              'en' => 'How satisfied are you with our service?',
+              'fr-FR' => 'À quel point êtes-vous satisfait de notre service ?',
+              'nl-NL' => 'Hoe tevreden ben je met onze service?'
+            },
+            required: true,
+            grouped: true,
+            totalResponseCount: 27,
+            questionResponseCount: 22,
+            totalPickCount: 27,
+            answers: [
+              { answer: 1, count: 2, groups: [
+                { count: 2, group: nil }
+              ] },
+              { answer: 2, count: 5, groups: [
+                { count: 5, group: nil }
+              ] },
+              { answer: 3, count: 8, groups: [
+                { count: 1, group: 'ny' },
+                { count: 7, group: nil }
+              ] },
+              { answer: 4, count: 1, groups: [
+                { count: 1, group: 'la' }
+              ] },
+              { answer: 5, count: 1, groups: [
+                { count: 1, group: nil }
+              ] },
+              { answer: 6, count: 2, groups: [
+                { count: 2, group: nil }
+              ] },
+              { answer: 7, count: 3, groups: [
+                { count: 3, group: nil }
+              ] },
+              { answer: nil, count: 5, groups: [
+                { count: 1, group: 'la' },
+                { count: 3, group: 'other' },
+                { count: 1, group: nil }
+              ] }
+            ],
+            multilocs: {
+              answer: {
+                1 => { title_multiloc: { 'en' => '1', 'fr-FR' => '1', 'nl-NL' => '1' } },
+                2 => { title_multiloc: { 'en' => '2', 'fr-FR' => '2', 'nl-NL' => '2' } },
+                3 => { title_multiloc: { 'en' => '3', 'fr-FR' => '3', 'nl-NL' => '3' } },
+                4 => { title_multiloc: { 'en' => '4', 'fr-FR' => '4', 'nl-NL' => '4' } },
+                5 => { title_multiloc: { 'en' => '5', 'fr-FR' => '5', 'nl-NL' => '5' } },
+                6 => { title_multiloc: { 'en' => '6', 'fr-FR' => '6', 'nl-NL' => '6' } },
+                7 => { title_multiloc: { 'en' => '7', 'fr-FR' => '7', 'nl-NL' => '7' } }
+              },
+              group: {
+                'la' => { title_multiloc: { 'en' => 'Los Angeles', 'fr-FR' => 'Los Angeles', 'nl-NL' => 'Los Angeles' } },
+                'ny' => { title_multiloc: { 'en' => 'New York', 'fr-FR' => 'New York', 'nl-NL' => 'New York' } },
+                'other' => { title_multiloc: { 'en' => 'Other', 'fr-FR' => 'Autre', 'nl-NL' => 'Ander' } }
+              }
+            },
+            legend: ['la', 'ny', 'other', nil]
+          }
+        end
+
+        it 'returns a grouped result for a rating field' do
+          generator = described_class.new(survey_phase,
+            group_mode: 'survey_question',
+            group_field_id: select_field.id)
+          result = generator.generate_results(
+            field_id: rating_field.id
+          )
+          expect(result).to match grouped_rating_results
+        end
+      end
+    end
+
     describe 'matrix_linear_scale field' do
       let(:expected_result_matrix_linear_scale) do
         {
@@ -949,10 +1129,15 @@ RSpec.describe SurveyResultsGeneratorService do
           question: {
             'en' => 'Please indicate how strong you agree or disagree with the following statements.'
           },
+          description: {},
           required: false,
           grouped: false,
+          hidden: false,
+          logic: {},
           totalResponseCount: 27,
           questionResponseCount: 5,
+          pageNumber: nil,
+          questionNumber: 15,
           multilocs: {
             answer: {
               1 => { title_multiloc: { 'en' => '1 - Strongly disagree', 'fr-FR' => '1', 'nl-NL' => '1' } },
@@ -996,10 +1181,11 @@ RSpec.describe SurveyResultsGeneratorService do
       end
 
       it 'returns the results for a matrix linear scale field' do
-        expect(generated_results[:results][14]).to match expected_result_matrix_linear_scale
+        expect(generated_results[:results][15]).to match expected_result_matrix_linear_scale
       end
 
       it 'returns a single result for a linear scale field' do
+        expected_result_matrix_linear_scale[:questionNumber] = nil # Question number is null when requesting a single result
         expect(generator.generate_results(field_id: matrix_linear_scale_field.id)).to match expected_result_matrix_linear_scale
       end
     end
@@ -1016,6 +1202,11 @@ RSpec.describe SurveyResultsGeneratorService do
           },
           required: true,
           grouped: false,
+          description: {},
+          hidden: false,
+          pageNumber: nil,
+          questionNumber: nil,
+          logic: {},
           totalResponseCount: 27,
           questionResponseCount: 6,
           totalPickCount: 27,
@@ -1027,9 +1218,9 @@ RSpec.describe SurveyResultsGeneratorService do
           ],
           multilocs: {
             answer: {
-              'la' => { title_multiloc: { 'en' => 'Los Angeles', 'fr-FR' => 'Los Angeles', 'nl-NL' => 'Los Angeles' } },
-              'ny' => { title_multiloc: { 'en' => 'New York', 'fr-FR' => 'New York', 'nl-NL' => 'New York' } },
-              'other' => { title_multiloc: { 'en' => 'Other', 'fr-FR' => 'Autre', 'nl-NL' => 'Ander' } }
+              'la' => hash_including(title_multiloc: { 'en' => 'Los Angeles', 'fr-FR' => 'Los Angeles', 'nl-NL' => 'Los Angeles' }),
+              'ny' => hash_including(title_multiloc: { 'en' => 'New York', 'fr-FR' => 'New York', 'nl-NL' => 'New York' }),
+              'other' => hash_including(title_multiloc: { 'en' => 'Other', 'fr-FR' => 'Autre', 'nl-NL' => 'Ander' })
             }
           },
           textResponses: [
@@ -1042,11 +1233,12 @@ RSpec.describe SurveyResultsGeneratorService do
 
       context 'without grouping' do
         it 'returns the correct results for a select field' do
-          expect(generated_results[:results][4]).to match expected_result_select
+          expected_result_select[:questionNumber] = 5
+          expect(generated_results[:results][5]).to match expected_result_select
         end
 
         it 'returns select answers in order of the number of responses, with other always last' do
-          answers = generator.generate_results.dig(:results, 4, :answers)
+          answers = generated_results[:results][5][:answers]
           expect(answers.pluck(:answer)).to eq [nil, 'la', 'ny', 'other']
           expect(answers.pluck(:count)).to eq [21, 2, 1, 3]
         end
@@ -1155,6 +1347,11 @@ RSpec.describe SurveyResultsGeneratorService do
             },
             required: true,
             grouped: true,
+            description: {},
+            hidden: false,
+            pageNumber: nil,
+            questionNumber: nil,
+            logic: {},
             totalResponseCount: 27,
             questionResponseCount: 6,
             totalPickCount: 27,
@@ -1197,9 +1394,9 @@ RSpec.describe SurveyResultsGeneratorService do
             ],
             multilocs: {
               answer: {
-                'la' => { title_multiloc: { 'en' => 'Los Angeles', 'fr-FR' => 'Los Angeles', 'nl-NL' => 'Los Angeles' } },
-                'ny' => { title_multiloc: { 'en' => 'New York', 'fr-FR' => 'New York', 'nl-NL' => 'New York' } },
-                'other' => { title_multiloc: { 'en' => 'Other', 'fr-FR' => 'Autre', 'nl-NL' => 'Ander' } }
+                'la' => hash_including(title_multiloc: { 'en' => 'Los Angeles', 'fr-FR' => 'Los Angeles', 'nl-NL' => 'Los Angeles' }),
+                'ny' => hash_including(title_multiloc: { 'en' => 'New York', 'fr-FR' => 'New York', 'nl-NL' => 'New York' }),
+                'other' => hash_including(title_multiloc: { 'en' => 'Other', 'fr-FR' => 'Autre', 'nl-NL' => 'Ander' })
               },
               group: {
                 1 => { title_multiloc: { 'en' => '1 - Strongly disagree', 'fr-FR' => "1 - Pas du tout d'accord", 'nl-NL' => '1 - Helemaal niet mee eens' } },
@@ -1261,8 +1458,13 @@ RSpec.describe SurveyResultsGeneratorService do
           question: {
             'en' => 'Rank your favourite means of public transport'
           },
+          description: { 'en' => 'Favourite to least favourite' },
           required: false,
           grouped: false,
+          hidden: false,
+          pageNumber: nil,
+          questionNumber: 14,
+          logic: {},
           totalResponseCount: 27,
           questionResponseCount: 4,
           average_rankings: {
@@ -1299,7 +1501,7 @@ RSpec.describe SurveyResultsGeneratorService do
 
       context 'without grouping' do
         it 'returns the correct results for a ranking field' do
-          expect(generated_results[:results][13]).to match expected_result_ranking
+          expect(generated_results[:results][14]).to match expected_result_ranking
         end
       end
     end
@@ -1316,6 +1518,11 @@ RSpec.describe SurveyResultsGeneratorService do
           },
           required: false,
           grouped: false,
+          description: {},
+          hidden: false,
+          pageNumber: nil,
+          questionNumber: 6,
+          logic: {},
           totalResponseCount: 27,
           questionResponseCount: 3,
           totalPickCount: 27,
@@ -1350,7 +1557,7 @@ RSpec.describe SurveyResultsGeneratorService do
       end
 
       it 'returns the results for a multi-select image field' do
-        expect(generated_results[:results][5]).to match expected_result_multiselect_image
+        expect(generated_results[:results][6]).to match expected_result_multiselect_image
       end
 
       context 'with grouping' do
@@ -1400,6 +1607,11 @@ RSpec.describe SurveyResultsGeneratorService do
           question: { 'en' => 'Upload a file' },
           required: false,
           grouped: false,
+          description: {},
+          hidden: false,
+          pageNumber: nil,
+          questionNumber: 8,
+          logic: {},
           totalResponseCount: 27,
           questionResponseCount: 1,
           files: [
@@ -1409,7 +1621,7 @@ RSpec.describe SurveyResultsGeneratorService do
       end
 
       it 'returns the results for file upload field' do
-        expect(generated_results[:results][7]).to match expected_result_file_upload
+        expect(generated_results[:results][8]).to match expected_result_file_upload
       end
     end
 
@@ -1421,6 +1633,11 @@ RSpec.describe SurveyResultsGeneratorService do
           question: { 'en' => 'Upload a file' },
           required: false,
           grouped: false,
+          description: {},
+          hidden: false,
+          pageNumber: nil,
+          questionNumber: 9,
+          logic: {},
           totalResponseCount: 27,
           questionResponseCount: 1,
           files: [
@@ -1430,7 +1647,7 @@ RSpec.describe SurveyResultsGeneratorService do
       end
 
       it 'returns the results for file upload field' do
-        expect(generated_results[:results][8]).to match expected_result_shapefile_upload
+        expect(generated_results[:results][9]).to match expected_result_shapefile_upload
       end
     end
 
@@ -1441,6 +1658,11 @@ RSpec.describe SurveyResultsGeneratorService do
           question: { 'en' => 'Where should the new nursery be located?' },
           required: false,
           grouped: false,
+          description: {},
+          hidden: false,
+          pageNumber: nil,
+          questionNumber: 10,
+          logic: {},
           questionResponseCount: 2,
           totalResponseCount: 27,
           customFieldId: point_field.id,
@@ -1453,7 +1675,7 @@ RSpec.describe SurveyResultsGeneratorService do
       end
 
       it 'returns the results for a point field' do
-        expect(generated_results[:results][9]).to match expected_result_point
+        expect(generated_results[:results][10]).to match expected_result_point
       end
     end
 
@@ -1464,6 +1686,11 @@ RSpec.describe SurveyResultsGeneratorService do
           question: { 'en' => 'Where should we build the new bicycle path?' },
           required: false,
           grouped: false,
+          description: {},
+          hidden: false,
+          pageNumber: nil,
+          questionNumber: 11,
+          logic: {},
           questionResponseCount: 2,
           totalResponseCount: 27,
           customFieldId: line_field.id,
@@ -1476,7 +1703,7 @@ RSpec.describe SurveyResultsGeneratorService do
       end
 
       it 'returns the results for a line field' do
-        expect(generated_results[:results][10]).to match expected_result_line
+        expect(generated_results[:results][11]).to match expected_result_line
       end
     end
 
@@ -1487,6 +1714,11 @@ RSpec.describe SurveyResultsGeneratorService do
           question: { 'en' => 'Where should we build the new housing?' },
           required: false,
           grouped: false,
+          description: {},
+          hidden: false,
+          pageNumber: nil,
+          questionNumber: 12,
+          logic: {},
           questionResponseCount: 2,
           totalResponseCount: 27,
           customFieldId: polygon_field.id,
@@ -1499,7 +1731,7 @@ RSpec.describe SurveyResultsGeneratorService do
       end
 
       it 'returns the results for a polygon field' do
-        expect(generated_results[:results][11]).to match expected_result_polygon
+        expect(generated_results[:results][12]).to match expected_result_polygon
       end
     end
 
@@ -1510,6 +1742,11 @@ RSpec.describe SurveyResultsGeneratorService do
           question: { 'en' => 'How many cats would you like?' },
           required: false,
           grouped: false,
+          description: {},
+          hidden: false,
+          pageNumber: nil,
+          questionNumber: 13,
+          logic: {},
           questionResponseCount: 1,
           totalResponseCount: 27,
           customFieldId: number_field.id,
@@ -1520,7 +1757,7 @@ RSpec.describe SurveyResultsGeneratorService do
       end
 
       it 'returns the results for a number field' do
-        expect(generated_results[:results][12]).to match expected_result_number
+        expect(generated_results[:results][13]).to match expected_result_number
       end
     end
   end

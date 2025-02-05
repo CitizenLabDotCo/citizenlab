@@ -6,33 +6,50 @@ import {
   defaultStyles,
   useBreakpoint,
   colors,
+  IconNames,
 } from '@citizenlab/cl2-component-library';
 import { useTheme } from 'styled-components';
 
 import LanguageSelector from 'containers/MainHeader/Components/LanguageSelector';
 
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage, MessageDescriptor } from 'utils/cl-intl';
 
 import messages from '../../messages';
+
+type PageVariant = 'other' | 'submission' | 'after-submission';
+
+const CY_DATA_VALUES: Record<PageVariant, string> = {
+  other: 'e2e-next-page',
+  submission: 'e2e-submit-form',
+  'after-submission': 'e2e-after-submission',
+};
+
+const ICON_VALUES: Record<PageVariant, IconNames> = {
+  other: 'chevron-right',
+  submission: 'send',
+  'after-submission': 'check',
+};
+
+const BUTTON_MESSAGES: Record<PageVariant, MessageDescriptor> = {
+  other: messages.next,
+  submission: messages.submit,
+  'after-submission': messages.backToProject,
+};
 
 interface Props {
   handleNextAndSubmit: () => void;
   handlePrevious: () => void;
   hasPreviousPage: boolean;
-  currentStep: number;
   isLoading: boolean;
-  showSubmit: boolean;
-  dataCyValue: string;
+  pageVariant: PageVariant;
 }
 
 const PageControlButtons = ({
   handleNextAndSubmit,
   handlePrevious,
   hasPreviousPage,
-  currentStep,
   isLoading,
-  showSubmit,
-  dataCyValue,
+  pageVariant,
 }: Props) => {
   const theme = useTheme();
   const isSmallerThanPhone = useBreakpoint('phone');
@@ -62,7 +79,7 @@ const PageControlButtons = ({
         />
       </Box>
       <Box display="flex" justifyContent="center" alignItems="center">
-        {hasPreviousPage && (
+        {hasPreviousPage && pageVariant !== 'after-submission' && (
           <Button
             onClick={handlePrevious}
             data-cy="e2e-previous-page"
@@ -75,21 +92,14 @@ const PageControlButtons = ({
         )}
         <Button
           onClick={handleNextAndSubmit}
-          data-cy={dataCyValue}
-          icon={showSubmit ? 'send' : 'chevron-right'}
+          data-cy={CY_DATA_VALUES[pageVariant]}
+          icon={ICON_VALUES[pageVariant]}
           iconPos="right"
-          key={currentStep.toString()}
-          bgColor={
-            showSubmit
-              ? theme.colors.tenantSecondary
-              : theme.colors.tenantPrimary
-          }
+          bgColor={theme.colors.tenantPrimary}
           boxShadow={defaultStyles.boxShadow}
           processing={isLoading}
         >
-          <FormattedMessage
-            {...(showSubmit ? messages.submit : messages.next)}
-          />
+          <FormattedMessage {...BUTTON_MESSAGES[pageVariant]} />
         </Button>
       </Box>
     </Box>

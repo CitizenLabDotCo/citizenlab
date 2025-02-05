@@ -8,16 +8,16 @@ import {
   IFlatCustomFieldWithIndex,
 } from 'api/custom_fields/types';
 
-import useLocale from 'hooks/useLocale';
-
 import {
   builtInFieldKeys,
   FormBuilderConfig,
 } from 'components/FormBuilder/utils';
 
-import { isNilOrError } from 'utils/helperUtils';
-
-import { DragAndDropResult, NestedGroupingStructure } from '../../edit/utils';
+import {
+  detectConflictsByPage,
+  DragAndDropResult,
+  NestedGroupingStructure,
+} from '../../edit/utils';
 import { DragAndDrop, Drag, Drop } from '../DragAndDrop';
 import { getFieldNumbers } from '../utils';
 
@@ -43,12 +43,7 @@ const FormFields = ({
   closeSettings,
 }: FormFieldsProps) => {
   const { watch, trigger } = useFormContext();
-  const locale = useLocale();
   const formCustomFields: IFlatCustomField[] = watch('customFields');
-
-  if (isNilOrError(locale)) {
-    return null;
-  }
 
   const shouldShowField = (field: IFlatCustomField) => {
     if (builtInFieldKeys.includes(field.key)) {
@@ -56,6 +51,9 @@ const FormFields = ({
     }
     return true;
   };
+
+  // Only relevant for survey
+  const lastPage = formCustomFields[formCustomFields.length - 1];
 
   const nestedGroupData: NestedGroupingStructure[] = [];
 
@@ -68,76 +66,115 @@ const FormFields = ({
       });
     } else {
       const lastGroupElement = nestedGroupData[nestedGroupData.length - 1];
-      // TODO: Fix this the next time the file is edited.
-      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-      lastGroupElement?.questions.push({
+      lastGroupElement.questions.push({
         ...field,
       });
     }
   });
 
+  const conflictsByPage = detectConflictsByPage(nestedGroupData);
   const fieldNumbers = getFieldNumbers(formCustomFields);
 
   return (
-    <Box height="100%" data-cy="e2e-form-fields">
-      <DragAndDrop
-        onDragEnd={(result: DragAndDropResult) => {
-          handleDragEnd(result, nestedGroupData);
-          trigger();
-        }}
+    <>
+      <Box
+        borderRadius="3px"
+        boxShadow="0px 2px 4px rgba(0, 0, 0, 0.2)"
+        bgColor="white"
+        minHeight="300px"
+        display="flex"
+        flexDirection="column"
+        justifyContent="space-between"
       >
-        <Drop id="droppable" type={pageDNDType}>
-          {nestedGroupData.map((grouping, pageIndex) => {
-            return (
-              <Drag key={grouping.id} id={grouping.id} index={pageIndex}>
-                <FormField
-                  field={grouping.groupElement}
-                  selectedFieldId={selectedFieldId}
-                  onEditField={onEditField}
-                  builderConfig={builderConfig}
-                  fieldNumbers={fieldNumbers}
-                  closeSettings={closeSettings}
-                />
-                <Drop key={grouping.id} id={grouping.id} type={questionDNDType}>
-                  <Box height="100%">
-                    {grouping.questions.length === 0 ? (
-                      <Box height="0.5px" />
-                    ) : (
-                      <>
-                        {grouping.questions.map((question, index) => {
-                          return shouldShowField(question) ? (
-                            <Drag
-                              key={question.id}
-                              id={question.id}
-                              index={index}
-                            >
-                              <FormField
-                                key={question.id}
-                                field={question}
-                                selectedFieldId={selectedFieldId}
-                                onEditField={onEditField}
-                                builderConfig={builderConfig}
-                                fieldNumbers={fieldNumbers}
-                                closeSettings={closeSettings}
-                              />
-                            </Drag>
-                          ) : (
-                            <Box key={question.id} height="1px" />
-                          );
-                        })}
-                      </>
-                    )}
-                  </Box>
-                </Drop>
-              </Drag>
-            );
-          })}
-        </Drop>
-      </DragAndDrop>
-      {formCustomFields.length > 0 && (
-        <Box height="1px" borderTop={`1px solid ${colors.divider}`} />
-      )}
-    </Box>
+        <Box height="100%" data-cy="e2e-form-fields">
+          <DragAndDrop
+            onDragEnd={(result: DragAndDropResult) => {
+              handleDragEnd(result, nestedGroupData);
+              trigger();
+            }}
+          >
+            <Drop id="droppable" type={pageDNDType}>
+              {nestedGroupData.map((grouping, pageIndex) => {
+                // Only relevant for survey
+                if (
+                  lastPage.key === 'survey_end' &&
+                  grouping.id === lastPage.id
+                ) {
+                  // Skip rendering FormField for last page, as it's rendered separately
+                  // (see below)
+                  return null;
+                }
+
+                return (
+                  <Drag key={grouping.id} id={grouping.id} index={pageIndex}>
+                    <FormField
+                      field={grouping.groupElement}
+                      selectedFieldId={selectedFieldId}
+                      onEditField={onEditField}
+                      builderConfig={builderConfig}
+                      fieldNumbers={fieldNumbers}
+                      closeSettings={closeSettings}
+                      conflicts={conflictsByPage[grouping.groupElement.id]}
+                    />
+                    <Drop
+                      key={grouping.id}
+                      id={grouping.id}
+                      type={questionDNDType}
+                    >
+                      <Box height="100%">
+                        {grouping.questions.length === 0 ? (
+                          <Box height="0.5px" />
+                        ) : (
+                          <>
+                            {grouping.questions.map((question, index) => {
+                              return shouldShowField(question) ? (
+                                <Drag
+                                  key={question.id}
+                                  id={question.id}
+                                  index={index}
+                                >
+                                  <FormField
+                                    key={question.id}
+                                    field={question}
+                                    selectedFieldId={selectedFieldId}
+                                    onEditField={onEditField}
+                                    builderConfig={builderConfig}
+                                    fieldNumbers={fieldNumbers}
+                                    closeSettings={closeSettings}
+                                  />
+                                </Drag>
+                              ) : (
+                                <Box key={question.id} height="1px" />
+                              );
+                            })}
+                          </>
+                        )}
+                      </Box>
+                    </Drop>
+                  </Drag>
+                );
+              })}
+            </Drop>
+          </DragAndDrop>
+          {formCustomFields.length > 0 && (
+            <Box height="1px" borderTop={`1px solid ${colors.divider}`} />
+          )}
+        </Box>
+        {/* Only relevant for survey */}
+        {lastPage.key === 'survey_end' && (
+          <Box mt="40px">
+            <FormField
+              field={lastPage}
+              selectedFieldId={selectedFieldId}
+              onEditField={onEditField}
+              builderConfig={builderConfig}
+              fieldNumbers={fieldNumbers}
+              closeSettings={closeSettings}
+            />
+          </Box>
+        )}
+      </Box>
+    </>
   );
 };
 

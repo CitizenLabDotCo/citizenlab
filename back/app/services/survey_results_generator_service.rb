@@ -11,14 +11,22 @@ class SurveyResultsGeneratorService < FieldVisitorService
     @locales = AppConfiguration.instance.settings('core', 'locales')
   end
 
-  def generate_results(field_id: nil)
+  def generate_results(field_id: nil, logic_ids: [])
     if field_id
       field = find_question(field_id)
-      visit field
+      result = visit field
+      cleanup_single_result(result)
     else
       results = fields.filter_map do |f|
         visit f
       end
+
+      results = add_question_numbers_to_results results
+      results = add_page_response_count_to_results results
+      results = add_logic_to_results results, logic_ids
+      results = change_counts_for_logic results, inputs.pluck(:custom_field_values)
+      results = cleanup_results results
+
       {
         results: results,
         totalSubmissions: inputs.size
@@ -114,6 +122,12 @@ class SurveyResultsGeneratorService < FieldVisitorService
     responses_to_geographic_input_type(field)
   end
 
+  def visit_page(field)
+    result = core_field_attributes(field, response_count: 0) # Response count gets updated later by looking at all the results
+    result[:logic][:nextPageId] = field.logic['next_page_id'] if field.logic['next_page_id']
+    result
+  end
+
   private
 
   attr_reader :group_mode, :group_field_id, :fields, :inputs, :locales
@@ -123,11 +137,18 @@ class SurveyResultsGeneratorService < FieldVisitorService
     {
       inputType: field.input_type,
       question: field.title_multiloc,
+      description: field.description_multiloc,
       customFieldId: field.id,
       required: field.required,
       grouped: !!group_field_id,
+      hidden: false,
       totalResponseCount: @inputs.size,
-      questionResponseCount: response_count
+      questionResponseCount: response_count,
+      pageNumber: nil,
+      questionNumber: nil,
+      logic: {},
+      questionViewedCount: 0, # Temporary field used when calculating the number of times a question is seen through logic
+      key: field.key # Temporary field used when calculating the number of times a question is seen through logic
     }
   end
 
@@ -220,7 +241,8 @@ class SurveyResultsGeneratorService < FieldVisitorService
     attributes = core_field_attributes(field, response_count: question_response_count).merge({
       totalPickCount: answers.pluck(:count).sum,
       answers: answers,
-      multilocs: get_multilocs(field)
+      multilocs: get_multilocs(field),
+      logic: get_option_logic(field)
     })
 
     attributes[:textResponses] = get_text_responses("#{field.key}_other") if field.other_option_text_field
@@ -245,6 +267,50 @@ class SurveyResultsGeneratorService < FieldVisitorService
       option_detail[:image] = option.image&.image&.versions&.transform_values(&:url) if field.support_option_images?
       accu[option.key] = option_detail
     end
+  end
+
+  def build_scaled_input_multilocs(field)
+    answer_multilocs = (1..field.maximum).index_with do |value|
+      { title_multiloc: locales.index_with { |_locale| value.to_s } }
+    end
+
+    format_labels = %w[linear_scale matrix_linear_scale].include?(field.input_type)
+
+    answer_multilocs.each_key do |value|
+      labels = field.nth_linear_scale_multiloc(value).transform_values do |label|
+        label.present? && format_labels ? "#{value} - #{label}" : value
+      end
+  
+      answer_multilocs[value][:title_multiloc].merge! labels
+    end
+
+    answer_multilocs
+  end  
+
+
+  def get_option_logic(field)
+    return {} if field.logic.blank?
+
+    is_linear_scale = field.input_type == 'linear_scale'
+    options = if is_linear_scale
+      # Create a unique ID for this linear scale option in the full results so we can filter logic
+      (1..field.maximum).map { |value| { id: "#{field.id}_#{value}", key: value } }
+    else
+      field.options.map { |option| { id: option.id, key: option.key } }
+    end
+
+    # NOTE: Only options with logic will be returned
+    any_other_answer_page_id = field.logic['rules']&.find { |r| r['if'] == 'any_other_answer' }&.dig('goto_page_id')
+    option_logic = options.each_with_object({}) do |option, accu|
+      rule_id = is_linear_scale ? option[:key] : option[:id]
+      logic_next_page_id = field.logic['rules']&.find { |r| r['if'] == rule_id }&.dig('goto_page_id') || any_other_answer_page_id
+      accu[option[:key]] = { id: option[:id], nextPageId: logic_next_page_id } if logic_next_page_id
+    end
+
+    no_answer_logic_page_id = field.logic['rules']&.find { |r| r['if'] == 'no_answer' }&.dig('goto_page_id')
+    option_logic['no_answer'] = { id: "#{field.id}_no_answer", nextPageId: no_answer_logic_page_id } if no_answer_logic_page_id
+
+    option_logic.present? ? { answer: option_logic } : {}
   end
 
   def get_text_responses(field_key)
@@ -343,28 +409,201 @@ class SurveyResultsGeneratorService < FieldVisitorService
     new_groups
   end
 
-  def build_scaled_input_multilocs(field)
-    answer_titles = (1..field.maximum).index_with do |value|
-      { title_multiloc: locales.index_with { |_locale| value.to_s } }
+  def add_page_response_count_to_results(results)
+    current_page_index = nil
+    max_response_count = 0
+    results.each_with_index do |result, index|
+      if result[:inputType] == 'page'
+        results[current_page_index][:questionResponseCount] = max_response_count unless current_page_index.nil?
+        current_page_index = index
+        max_response_count = 0
+      elsif result[:questionResponseCount] > max_response_count
+        max_response_count = result[:questionResponseCount]
+      end
     end
+    results[current_page_index][:questionResponseCount] = max_response_count unless current_page_index.nil?
+    results
+  end
 
-    answer_titles.each_key do |value|
-      labels = {}
+  def add_question_numbers_to_results(results)
+    # TODO: JS - @page_numbers not working when 'survey_end' removed from hash
+    @page_numbers = { 'survey_end' => 999 } # Lookup that we can use later in logic.
+    question_number = 0
+    page_number = 0
+    results.map do |result|
+      if result[:inputType] == 'page'
+        page_number += 1
+        result[:questionNumber] = nil
+        result[:pageNumber] = page_number
+        @page_numbers[result[:customFieldId]] = page_number
+      else
+        question_number += 1
+        result[:questionNumber] = question_number
+        result[:pageNumber] = nil
+      end
+      result
+    end
+  end
 
-      if %w[linear_scale matrix_linear_scale].include?(field.input_type)
-        labels = field.nth_linear_scale_multiloc(value).transform_values do |label|
-          if label.present?
-            "#{value} - #{label}"
-          else
-            value
+  # Replace logicNextPageId with logicNextPageNumber & add number used by FE in logic tooltip
+  # Add hidden flag to results based on logic ids supplied for filtering
+  def add_logic_to_results(results, logic_ids)
+    results_to_hide = []
+    results = results.deep_dup.map do |result|
+      field_id = result[:customFieldId]
+      if supports_page_logic? result[:inputType]
+        # Transform page logic
+        logic_next_page_id = result[:logic][:nextPageId]
+        if logic_next_page_id
+          logic_skipped_fields = logic_skipped_field_ids(results, field_id, logic_next_page_id)
+          result[:logic] = {
+            nextPageNumber: @page_numbers[logic_next_page_id],
+            numQuestionsSkipped: logic_skipped_fields.count { |f| f[:question] == true }
+          }
+          if logic_ids.include?(field_id)
+            results_to_hide += logic_skipped_fields.pluck(:id)
+          end
+        end
+      elsif supports_question_logic? result[:inputType]
+        # Transform select option logic
+        result[:logic][:answer]&.each_value do |answer|
+          logic_next_page_id = answer[:nextPageId]
+          if logic_next_page_id
+            logic_skipped_fields = logic_skipped_field_ids(results, field_id, logic_next_page_id)
+            answer[:nextPageNumber] = @page_numbers[logic_next_page_id]
+            answer[:numQuestionsSkipped] = logic_skipped_fields.count { |f| f[:question] == true }
+            answer.delete(:nextPageId)
+            if logic_ids.include?(answer[:id])
+              results_to_hide += logic_skipped_fields.pluck(:id)
+            end
           end
         end
       end
 
-      answer_titles[value][:title_multiloc].merge!(labels)
+      result
     end
 
-    answer_titles
+    # Now hide any results which should be hidden by the logic ids supplied for filtering
+    results.map do |result|
+      result[:hidden] = results_to_hide.include?(result[:customFieldId])
+      result
+    end
+  end
+
+  def logic_skipped_field_ids(results, field_id, goto_page_id)
+    skip = false
+    skip_from_next_page = false
+    skip_fields = []
+    results.each do |r|
+      if r[:customFieldId] == goto_page_id
+        skip = false
+        skip_from_next_page = false
+      end
+      skip = true if skip_from_next_page && r[:inputType] == 'page'
+      skip_fields << { id: r[:customFieldId], question: r[:inputType] != 'page' } if skip
+      skip_from_next_page = true if r[:customFieldId] == field_id
+    end
+    skip_fields
+  end
+
+  def change_counts_for_logic(results, survey_responses)
+    survey_has_logic = !results.flatten.all? { |r| r[:logic] == {} }
+
+    # Only need to calculate the logic if there is any
+    if survey_has_logic
+      results = results.deep_dup
+      survey_responses.each do |response|
+        next_page_number = nil
+        skip_question = false
+        results.map do |question|
+          # Similar logic to logic_skipped_field_ids - TODO: Refactor to share?
+          input_type = question[:inputType]
+          page_number = question[:pageNumber]
+
+          # We only skip pages & questions from the next page onwards
+          if supports_page_logic? input_type
+            if page_number == next_page_number
+              next_page_number = nil
+              skip_question = false
+            elsif next_page_number
+              skip_question = true
+            end
+          end
+
+          # reduce the number of not answered if the question is skipped
+          if skip_question && question[:answers].present?
+            nil_answer = question[:answers].find { |a| a[:answer].nil? }
+            nil_answer[:count] -= 1 if nil_answer && nil_answer[:count] > 0
+          end
+
+          unless skip_question
+            # Only increment the number of times seen if we're not skipping the question/page
+            question[:questionViewedCount] += 1
+
+            # Calculate the next page number that will be seen
+            if supports_question_logic? input_type
+              answer_value = response[question[:key]]
+              values = answer_value.is_a?(Array) ? answer_value : [answer_value] # Convert all values to an array so all fields can be treated the same
+              highest_next_page_number_for_question = 0
+              values.each do |value|
+                logic_match = question.dig(:logic, :answer, value)
+                if logic_match && logic_match[:nextPageNumber] > highest_next_page_number_for_question
+                  # Only take the highest next page number from all options
+                  highest_next_page_number_for_question = logic_match[:nextPageNumber]
+                  next_page_number = highest_next_page_number_for_question
+                end
+              end
+            elsif supports_page_logic? input_type
+              logic_match = question[:logic][:nextPageNumber]
+              if logic_match
+                next_page_number = logic_match
+              end
+            end
+          end
+        end
+      end
+    end
+
+    # Finalise the results
+    results.map do |question|
+      if survey_has_logic
+        # Update the total response count with the new figure
+        question[:totalResponseCount] = question[:questionViewedCount]
+
+        # Update the total pick count because we've reduced the 'not_answered' answer count
+        question[:totalPickCount] = question[:answers].pluck(:count).sum if question[:totalPickCount]
+      end
+    end
+
+    results
+  end
+
+  def cleanup_results(results)
+    # Remove the last page - only needed for logic calculations
+    results.pop if results.last[:inputType] == 'page' && results.last[:key] == 'survey_end'
+
+    # remove the temporary fields that are now not needed
+    results.map do |question|
+      question.delete(:questionViewedCount)
+      question.delete(:key)
+      question
+    end
+  end
+
+  def cleanup_single_result(result)
+    # Logic not used on single result & temp fields need removing
+    result[:logic] = {}
+    result.delete(:questionViewedCount)
+    result.delete(:key)
+    result
+  end
+
+  def supports_question_logic?(input_type)
+    %w[select multiselect linear_scale multiselect_image].include? input_type
+  end
+
+  def supports_page_logic?(input_type)
+    input_type == 'page'
   end
 
   def group_field

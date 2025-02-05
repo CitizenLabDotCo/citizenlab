@@ -22,6 +22,11 @@ export const surveyResultsResponse: SurveyResultsType = {
           totalResponseCount: 1,
           questionResponseCount: 1,
           totalPickCount: 1,
+          description: {},
+          questionNumber: 1,
+          pageNumber: 1,
+          hidden: false,
+          logic: {},
           answers: [
             {
               answer: 'option1',
@@ -29,7 +34,11 @@ export const surveyResultsResponse: SurveyResultsType = {
             },
           ],
           multilocs: {
-            answer: { option1: { title_multiloc: { en: 'Option 1' } } },
+            answer: {
+              option1: {
+                title_multiloc: { en: 'Option 1' },
+              },
+            },
           },
           customFieldId: '654c3a46-9e64-44a0-96e5-f350b471fc23',
         },
@@ -43,6 +52,11 @@ export const surveyResultsResponse: SurveyResultsType = {
           totalResponseCount: 1,
           questionResponseCount: 1,
           totalPickCount: 1,
+          description: {},
+          questionNumber: 1,
+          pageNumber: 1,
+          hidden: false,
+          logic: {},
           answers: [
             {
               answer: 'option_a',
@@ -50,7 +64,11 @@ export const surveyResultsResponse: SurveyResultsType = {
             },
           ],
           multilocs: {
-            answer: { option_a: { title_multiloc: { en: 'Option A' } } },
+            answer: {
+              option_a: {
+                title_multiloc: { en: 'Option A' },
+              },
+            },
           },
           customFieldId: '548f7849-837f-447e-831a-51050a403a3b',
         },

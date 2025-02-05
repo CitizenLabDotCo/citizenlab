@@ -1053,7 +1053,6 @@ models:
       publication_status: archived
     created_at: '2018-03-28 13:35:08'
     updated_at: '2018-03-28 13:35:08'
-  - &custom_idea_fields_project
     title_multiloc:
       en: Custom idea fields project
       nl-BE: Custom idea fields project
@@ -7284,23 +7283,6 @@ models:
       start_at: '2018-03-28'
       end_at:
       project_ref: *charliesPoll
-    - &custom_idea_fields_project_phase
-      title_multiloc:
-        en: Current phase
-      participation_method: native_survey
-      submission_enabled: true
-      commenting_enabled: true
-      reacting_enabled: true
-      reacting_like_method: unlimited
-      campaigns_settings:
-        project_phase_started: true
-      start_at: '2018-03-28'
-      end_at:
-      native_survey_title_multiloc:
-        en: "Survey"
-      native_survey_button_multiloc:
-        en: "Take the survey"
-      project_ref: *custom_idea_fields_project
     - &project1current
       title_multiloc:
         en: Current phase
@@ -15881,9 +15863,6 @@ models:
           marker-symbol: toilets
     created_at: 2020-03-18 13:32:07 UTC
     updated_at: 2020-03-18 13:32:07 UTC
-  custom_form:
-  - &custom_idea_fields_custom_form
-    participation_context_ref: *custom_idea_fields_project_phase
   custom_field:
   - &5
     resource_type: User
@@ -15910,26 +15889,6 @@ models:
     ordering: 2
     enabled: false
     code: domicile
-  - &custom_idea_number_field
-    resource_ref: *custom_idea_fields_custom_form
-    key: number_of_benches
-    input_type: number
-    title_multiloc:
-      en: Number of benches
-    description_multiloc:
-      en: How many benches do you want?
-    required: true
-    enabled: true
-  - &custom_idea_text_field
-    resource_ref: *custom_idea_fields_custom_form
-    key: park_name
-    input_type: text
-    title_multiloc:
-      en: Name for the new park
-    description_multiloc:
-      en: Propose a name for the new park
-    required: false
-    enabled: true
   custom_field_option:
   - custom_field_ref: *5
     key: male

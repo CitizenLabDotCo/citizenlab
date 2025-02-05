@@ -10,6 +10,7 @@ import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
 export const ideationConfig: FormBuilderConfig = {
+  type: 'input_form',
   formBuilderTitle: messages.inputForm,
   viewFormLinkCopy: messages.viewFormLinkCopy,
   formSavedSuccessMessage: messages.successMessage,
@@ -44,7 +45,7 @@ export const ideationConfig: FormBuilderConfig = {
   groupingType: 'section',
   getWarningNotice: () => {
     return (
-      <Box id="e2e-warning-notice" mb="20px">
+      <Box id="e2e-warning-notice" mb="16px">
         <Warning>
           <FormattedMessage {...messages.existingSubmissionsWarning} />
         </Warning>
@@ -54,6 +55,7 @@ export const ideationConfig: FormBuilderConfig = {
 };
 
 export const proposalsConfig: FormBuilderConfig = {
+  type: 'input_form',
   formBuilderTitle: messages.inputForm,
   viewFormLinkCopy: messages.viewFormLinkCopy,
   formSavedSuccessMessage: messages.successMessage,
@@ -87,7 +89,7 @@ export const proposalsConfig: FormBuilderConfig = {
   groupingType: 'section',
   getWarningNotice: () => {
     return (
-      <Box id="e2e-warning-notice" mb="20px">
+      <Box id="e2e-warning-notice" mb="16px">
         <Warning>
           <FormattedMessage {...messages.existingSubmissionsWarning} />
         </Warning>
