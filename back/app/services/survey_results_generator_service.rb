@@ -598,7 +598,7 @@ class SurveyResultsGeneratorService < FieldVisitorService
   end
 
   def supports_question_logic?(input_type)
-    %w[select multiselect linear_scale multiselect_image].include? input_type
+    %w[select multiselect linear_scale multiselect_image rating].include? input_type
   end
 
   def supports_page_logic?(input_type)
