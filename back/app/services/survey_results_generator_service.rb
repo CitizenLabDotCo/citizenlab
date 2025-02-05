@@ -280,13 +280,12 @@ class SurveyResultsGeneratorService < FieldVisitorService
       labels = field.nth_linear_scale_multiloc(value).transform_values do |label|
         label.present? && format_labels ? "#{value} - #{label}" : value
       end
-  
+
       answer_multilocs[value][:title_multiloc].merge! labels
     end
 
     answer_multilocs
-  end  
-
+  end
 
   def get_option_logic(field)
     return {} if field.logic.blank?
