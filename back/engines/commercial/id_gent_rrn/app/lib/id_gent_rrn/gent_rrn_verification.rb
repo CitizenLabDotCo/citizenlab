@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
 module IdGentRrn
-  class GentRrnVerification
-    include Verification::VerificationMethod
+  class GentRrnVerification < IdMethod::Base
+    include IdMethod::VerificationMethod
 
     def verification_method_type
       :manual_sync
