@@ -19,7 +19,6 @@ import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 
 import useLocale from 'hooks/useLocale';
 
-import EsriMapMeta from './components/EsriMapMeta';
 import { configureMapView } from './config';
 import { InitialData } from './types';
 import { getDefaultBasemap, handleWebMapReferenceLayers } from './utils';
@@ -89,8 +88,6 @@ const EsriMap = ({
   const mapRef = useRef<HTMLDivElement | null>(null);
   const [updateMapViewConfig, setUpdateMapViewConfig] = useState(false);
   const [initialized, setInitialized] = useState(false);
-
-  const [esriApiKey, setEsriApiKey] = useState<string | undefined>(undefined);
 
   const mapRefAvailable = !!mapRef.current;
 
@@ -259,13 +256,11 @@ const EsriMap = ({
     // Set the Esri API key
     if (apiKey) {
       esriConfig.apiKey = apiKey;
-      setEsriApiKey(apiKey);
     }
   }, [appConfig?.data.attributes.settings.esri_integration?.api_key]);
 
   return (
     <>
-      {esriApiKey && <EsriMapMeta />}
       <MapContainer
         id={id}
         ref={mapRef}
@@ -280,11 +275,13 @@ const EsriMapWrapper = (props: Omit<EsriMapProps, 'globalMapSettings'>) => {
   const { data: appConfig } = useAppConfiguration();
   const globalMapSettings = appConfig?.data.attributes.settings.maps;
 
-  if (globalMapSettings) {
-    return <EsriMap globalMapSettings={globalMapSettings} {...props} />;
-  }
-
-  return null;
+  return (
+    <>
+      {globalMapSettings && (
+        <EsriMap globalMapSettings={globalMapSettings} {...props} />
+      )}
+    </>
+  );
 };
 
 export default EsriMapWrapper;
