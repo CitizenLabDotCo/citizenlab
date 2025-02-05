@@ -49,10 +49,12 @@ describe('Survey question logic', () => {
     cy.visit(
       `/admin/projects/${projectId}/phases/${phaseId}/native-survey/edit`
     );
+    cy.get('[data-cy="e2e-field-row"]').should('have.length', 3);
 
     // Add a new page
     cy.wait(1000);
     cy.get('[data-cy="e2e-page"').click();
+    cy.get('[data-cy="e2e-field-row"]').should('have.length', 4);
 
     // Add another page
     cy.wait(1000);
@@ -60,5 +62,33 @@ describe('Survey question logic', () => {
     cy.get('[data-cy="e2e-field-row"]').should('have.length', 5);
   });
 
-  it('');
+  it('allows setting logic for select question', () => {
+    cy.get('[data-cy="e2e-field-row"]').eq(1).click();
+    cy.get('[data-cy="e2e-form-builder-logic-tab"]').click();
+
+    // Set first answer to go straight to ending
+    cy.get('[data-cy="e2e-add-rule-button"]').first().click();
+    cy.get('[data-cy="e2e-rule-input-select"]')
+      .first()
+      .find('select')
+      .select('Ending');
+
+    // Set any other answer to go to page 3
+    cy.get('[data-cy="e2e-add-rule-button"]').eq(1).click();
+    cy.get('[data-cy="e2e-rule-input-select"]')
+      .eq(1)
+      .find('select')
+      .select('Page 3');
+
+    // TODO
+    cy.wait(10000);
+  });
+
+  // it('works when filling out survey for specific option', () => {
+
+  // })
+
+  // it('works when filling out survey for other option', () => {
+
+  // });
 });
