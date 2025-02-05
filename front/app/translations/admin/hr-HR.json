@@ -1078,6 +1078,7 @@
   "app.containers.Admin.projects.project.survey.formResults.exportGeoJSONTooltip2": "Izvezite odgovore na ovo pitanje kao GeoJSON datoteku. Za svaku značajku GeoJSON, svi povezani anketni odgovori ispitanika bit će navedeni u objektu 'svojstva' te značajke.",
   "app.containers.Admin.projects.project.survey.formResults.hideDetails": "Sakrij detalje",
   "app.containers.Admin.projects.project.survey.formResults.rank": "#{rank}",
+  "app.containers.Admin.projects.project.survey.formResults.respondentsTooltip": "{respondentCount, plural, no {{respondentCount} ispitanici} one {{respondentCount} ispitanik} other {{respondentCount} ispitanici}}",
   "app.containers.Admin.projects.project.survey.formResults.viewDetails": "Pogledajte detalje",
   "app.containers.Admin.projects.project.survey.formResults.xChoices": "{numberChoices, plural, no {{numberChoices} izbori} one {{numberChoices} izbor} other {{numberChoices} izbori}}",
   "app.containers.Admin.projects.project.survey.heatMap": "Toplinska karta",

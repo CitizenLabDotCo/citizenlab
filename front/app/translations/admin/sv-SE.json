@@ -1078,6 +1078,7 @@
   "app.containers.Admin.projects.project.survey.formResults.exportGeoJSONTooltip2": "Exportera svaren på den här frågan som en GeoJSON-fil. För varje GeoJSON-funktion kommer alla relaterade respondenters enkätsvar att listas i funktionens \"properties\"-objekt.",
   "app.containers.Admin.projects.project.survey.formResults.hideDetails": "Dölj detaljer",
   "app.containers.Admin.projects.project.survey.formResults.rank": "#{rank}",
+  "app.containers.Admin.projects.project.survey.formResults.respondentsTooltip": "{respondentCount, plural, no {{respondentCount} respondenter} one {{respondentCount} respondent} other {{respondentCount} respondenter}}",
   "app.containers.Admin.projects.project.survey.formResults.viewDetails": "Visa detaljer",
   "app.containers.Admin.projects.project.survey.formResults.xChoices": "{numberChoices, plural, no {{numberChoices} val} one {{numberChoices} ~ val} other {{numberChoices} val}}",
   "app.containers.Admin.projects.project.survey.heatMap": "Värmekarta",

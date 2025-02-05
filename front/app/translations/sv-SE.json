@@ -655,6 +655,7 @@
   "app.components.form.controls.valueOutOfTotalWithMaxExplanation": "{value} ur {total}, där {maxValue} är {maxLabel}",
   "app.components.form.error": "Fel",
   "app.components.form.locationGoogleUnavailable": "Det gick inte att läsa in platsfältet från Google Maps.",
+  "app.components.form.progressBarLabel": "Framsteg i undersökningen",
   "app.components.form.submit": "Skicka",
   "app.components.form.submitApiError": "Ett problem uppstod när formuläret skulle skickas. Kontrollera om det finns några fel och försök igen.",
   "app.components.form.verifiedBlocked": "Du kan inte redigera det här fältet eftersom det innehåller verifierad information",

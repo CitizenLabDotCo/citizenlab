@@ -655,6 +655,7 @@
   "app.components.form.controls.valueOutOfTotalWithMaxExplanation": "{value} od {total}, gdje je {maxValue} {maxLabel}",
   "app.components.form.error": "Pogreška",
   "app.components.form.locationGoogleUnavailable": "Učitavanje polja s lokacijom s Google Mapa nije uspjelo.",
+  "app.components.form.progressBarLabel": "Napredak ankete",
   "app.components.form.submit": "Pošalji",
   "app.components.form.submitApiError": "Došlo je do problema prilikom slanja obrasca. Molimo vas da provjerite pogreške i pokušate ponovo.",
   "app.components.form.verifiedBlocked": "Ne možete uređivati ovo polje jer sadrži provjerene podatke",

@@ -1078,6 +1078,7 @@
   "app.containers.Admin.projects.project.survey.formResults.exportGeoJSONTooltip2": "Eksportējiet atbildes uz šo jautājumu kā GeoJSON failu. Katram GeoJSON objektam visas saistītās respondenta aptaujas atbildes tiks uzskaitītas šī objekta \"īpašību\" objektā.",
   "app.containers.Admin.projects.project.survey.formResults.hideDetails": "Paslēpt informāciju",
   "app.containers.Admin.projects.project.survey.formResults.rank": "#{rank}",
+  "app.containers.Admin.projects.project.survey.formResults.respondentsTooltip": "{respondentCount, plural, no {{respondentCount} respondenti} one {{respondentCount} respondents} other {~{respondentCount} respondenti}}respondents ~ ~",
   "app.containers.Admin.projects.project.survey.formResults.viewDetails": "Skatīt informāciju",
   "app.containers.Admin.projects.project.survey.formResults.xChoices": "{numberChoices, plural, no {{numberChoices} izvēles} one {~{numberChoices} izvēles} other {~{numberChoices} izvēles}}",
   "app.containers.Admin.projects.project.survey.heatMap": "Siltuma karte",

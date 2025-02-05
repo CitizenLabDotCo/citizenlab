@@ -1078,6 +1078,7 @@
   "app.containers.Admin.projects.project.survey.formResults.exportGeoJSONTooltip2": "Bu soruya verilen yanıtları bir GeoJSON dosyası olarak dışa aktarın. Her GeoJSON Özelliği için, ilgili katılımcının tüm anket yanıtları o Özelliğin 'özellikler' nesnesinde listelenecektir.",
   "app.containers.Admin.projects.project.survey.formResults.hideDetails": "Ayrıntıları gizle",
   "app.containers.Admin.projects.project.survey.formResults.rank": "#{rank}",
+  "app.containers.Admin.projects.project.survey.formResults.respondentsTooltip": "{respondentCount, plural, no {{respondentCount} yanıtlayanlar} one {{respondentCount} yanıtlayanlar} other {{respondentCount} yanıtlayanlar}}",
   "app.containers.Admin.projects.project.survey.formResults.viewDetails": "Detayları görüntüle",
   "app.containers.Admin.projects.project.survey.formResults.xChoices": "{numberChoices, plural, no {{numberChoices} seçimler} one {{numberChoices} seçim} other {{numberChoices} seçimler}}",
   "app.containers.Admin.projects.project.survey.heatMap": "Isı haritası",

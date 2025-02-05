@@ -1078,6 +1078,7 @@
   "app.containers.Admin.projects.project.survey.formResults.exportGeoJSONTooltip2": "Allforio'r ymatebion i'r cwestiwn hwn fel ffeil GeoJSON. Ar gyfer pob Nodwedd GeoJSON, bydd holl ymatebion arolwg yr ymatebwyr cysylltiedig yn cael eu rhestru yng ngwrthrych 'eiddo' y Nodwedd honno.",
   "app.containers.Admin.projects.project.survey.formResults.hideDetails": "Cuddio manylion",
   "app.containers.Admin.projects.project.survey.formResults.rank": "#{rank}",
+  "app.containers.Admin.projects.project.survey.formResults.respondentsTooltip": "{respondentCount, plural, no {{respondentCount} ymatebwyr} one {{respondentCount} atebydd} other {{respondentCount} ymatebwyr}}",
   "app.containers.Admin.projects.project.survey.formResults.viewDetails": "Gweld manylion",
   "app.containers.Admin.projects.project.survey.formResults.xChoices": "{numberChoices, plural, no {{numberChoices} dewisiadau} one {{numberChoices} dewis} other {{numberChoices} dewisiadau}}",
   "app.containers.Admin.projects.project.survey.heatMap": "Map gwres",

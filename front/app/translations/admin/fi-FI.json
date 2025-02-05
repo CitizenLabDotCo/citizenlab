@@ -1078,6 +1078,7 @@
   "app.containers.Admin.projects.project.survey.formResults.exportGeoJSONTooltip2": "Vie vastaukset tähän kysymykseen GeoJSON-tiedostona. Jokaisen GeoJSON-ominaisuuden osalta kaikki asiaan liittyvät vastaajien kyselyvastaukset luetellaan kyseisen ominaisuuden \"ominaisuudet\" -objektissa.",
   "app.containers.Admin.projects.project.survey.formResults.hideDetails": "Piilota tiedot",
   "app.containers.Admin.projects.project.survey.formResults.rank": "#{rank}",
+  "app.containers.Admin.projects.project.survey.formResults.respondentsTooltip": "{respondentCount, plural, no {{respondentCount} vastaajia} one {{respondentCount} vastaaja} other {{respondentCount} vastaajia}}",
   "app.containers.Admin.projects.project.survey.formResults.viewDetails": "Näytä tiedot",
   "app.containers.Admin.projects.project.survey.formResults.xChoices": "{numberChoices, plural, no {{numberChoices} valintoja} one {{numberChoices} valinta} other {{numberChoices} valintoja}}",
   "app.containers.Admin.projects.project.survey.heatMap": "Lämpökartta",

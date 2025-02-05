@@ -655,6 +655,7 @@
   "app.components.form.controls.valueOutOfTotalWithMaxExplanation": "{value} de {total}, on {maxValue} és {maxLabel}",
   "app.components.form.error": "Error",
   "app.components.form.locationGoogleUnavailable": "No s'ha pogut carregar el camp d'ubicació proporcionat per Google Maps.",
+  "app.components.form.progressBarLabel": "Progrés de l'enquesta",
   "app.components.form.submit": "Presentar",
   "app.components.form.submitApiError": "Hi ha hagut un problema en enviar el formulari. Comproveu si hi ha errors i torneu-ho a provar.",
   "app.components.form.verifiedBlocked": "No podeu editar aquest camp perquè conté informació verificada",
