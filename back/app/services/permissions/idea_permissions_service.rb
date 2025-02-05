@@ -4,7 +4,8 @@ module Permissions
       idea_not_in_current_phase: 'idea_not_in_current_phase',
       votes_exist: 'votes_exist',
       published_after_screening: 'published_after_screening',
-      not_author: 'not_author'
+      not_author: 'not_author',
+      not_reactable_status_code: 'not_reactable_status_code'
     }.freeze
 
     def initialize(idea, user, user_requirements_service: nil)
@@ -39,7 +40,11 @@ module Permissions
         # We preserved the behaviour that was already there, but we're not
         # sure if this is the desired behaviour.
         current_phase = @timeline_service.current_phase_not_archived project
-        IDEA_DENIED_REASONS[:idea_not_in_current_phase] if current_phase && !idea_in_current_phase?(current_phase)
+        return IDEA_DENIED_REASONS[:idea_not_in_current_phase] if current_phase && !idea_in_current_phase?(current_phase)
+
+        if action == 'reacting_idea' && IdeaStatus::REACTING_NOT_ALLOWED_CODES.include?(idea.idea_status.code)
+          IDEA_DENIED_REASONS[:not_reactable_status_code]
+        end
       end
     end
 
