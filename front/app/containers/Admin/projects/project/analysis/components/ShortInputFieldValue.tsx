@@ -56,6 +56,7 @@ const ShortInputFieldValue = ({ customField, rawValue }: Props) => {
     case 'multiline_text':
     case 'number':
     case 'checkbox':
+    case 'rating':
     case 'linear_scale': {
       if (rawValue === null || rawValue === undefined || rawValue === '') {
         return <>No Answer</>;

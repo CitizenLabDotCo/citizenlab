@@ -83,6 +83,10 @@ class TestVisitor < FieldVisitorService
     'matrix_linear_scale from visitor'
   end
 
+  def visit_rating(_field)
+    'rating from visitor'
+  end
+
   def visit_page(_field)
     'page from visitor'
   end

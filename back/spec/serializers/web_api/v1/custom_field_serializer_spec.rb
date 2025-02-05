@@ -100,6 +100,31 @@ describe WebApi::V1::CustomFieldSerializer do
     end
   end
 
+  context 'rating field' do
+    let(:field) { create(:custom_field_rating, :for_custom_form, key: 'scale') }
+
+    it 'includes maximum value' do
+      serialized_field = described_class.new(field).serializable_hash
+      attributes = serialized_field[:data][:attributes]
+      expect(attributes).to match({
+        code: nil,
+        created_at: an_instance_of(ActiveSupport::TimeWithZone),
+        description_multiloc: { 'en' => 'Please rate your experience from 1 (poor) to 5 (excellent).' },
+        enabled: true,
+        input_type: 'rating',
+        key: 'scale',
+        maximum: 5,
+        ordering: 0,
+        required: false,
+        title_multiloc: { 'en' => 'How would you rate our service?' },
+        updated_at: an_instance_of(ActiveSupport::TimeWithZone),
+        logic: {},
+        constraints: {},
+        random_option_ordering: false
+      })
+    end
+  end
+
   context 'page field' do
     let(:field) do
       create(

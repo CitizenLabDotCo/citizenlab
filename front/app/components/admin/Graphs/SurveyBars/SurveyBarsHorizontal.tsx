@@ -14,7 +14,7 @@ import LogicIcon from 'containers/Admin/projects/project/nativeSurvey/FormResult
 
 import { useIntl } from 'utils/cl-intl';
 
-import Bar from './Bar';
+import HorizontalBar from './HorizontalBar';
 import messages from './messages';
 import { parseQuestionResult } from './utils';
 
@@ -24,7 +24,11 @@ interface Props {
   logicConfig?: LogicConfig;
 }
 
-const SurveyBars = ({ questionResult, colorScheme, logicConfig }: Props) => {
+const SurveyBarsHorizontal = ({
+  questionResult,
+  colorScheme,
+  logicConfig,
+}: Props) => {
   const localize = useLocalize();
   const { formatMessage } = useIntl();
 
@@ -92,7 +96,7 @@ const SurveyBars = ({ questionResult, colorScheme, logicConfig }: Props) => {
                 </Text>
               </Box>
               {bars.map((bar, index) => (
-                <Bar key={index} {...bar} />
+                <HorizontalBar key={index} {...bar} />
               ))}
             </Box>
           </Box>
@@ -102,4 +106,4 @@ const SurveyBars = ({ questionResult, colorScheme, logicConfig }: Props) => {
   );
 };
 
-export default SurveyBars;
+export default SurveyBarsHorizontal;

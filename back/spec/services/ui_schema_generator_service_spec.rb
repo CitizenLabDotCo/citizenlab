@@ -659,6 +659,27 @@ RSpec.describe UiSchemaGeneratorService do
     end
   end
 
+  describe '#visit_rating' do
+    let(:field) do
+      create(
+        :custom_field_rating,
+        key: field_key
+      )
+    end
+
+    it 'returns the schema for the given field' do
+      expect(generator.visit_rating(field)).to eq({
+        type: 'Control',
+        scope: "#/properties/#{field_key}",
+        label: 'How would you rate our service?',
+        options: {
+          input_type: field.input_type,
+          description: 'Please rate your experience from 1 (poor) to 5 (excellent).'
+        }
+      })
+    end
+  end
+
   describe '#visit_matrix_linear_scale' do
     let(:field) { create(:custom_field_matrix_linear_scale, key: field_key) }
 

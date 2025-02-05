@@ -165,6 +165,21 @@ FactoryBot.define do
       linear_scale_label_11_multiloc { {} }
     end
 
+    factory :custom_field_rating do
+      title_multiloc do
+        {
+          'en' => 'How would you rate our service?'
+        }
+      end
+      description_multiloc do
+        {
+          'en' => 'Please rate your experience from 1 (poor) to 5 (excellent).'
+        }
+      end
+      input_type { 'rating' }
+      maximum { 5 }
+    end
+
     factory :custom_field_page do
       title_multiloc do
         {

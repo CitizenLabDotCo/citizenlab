@@ -82,9 +82,13 @@ class SurveyResultsGeneratorService < FieldVisitorService
 
   def visit_matrix_linear_scale(field)
     core_field_attributes(field).merge({
-      multilocs: { answer: build_linear_scale_multilocs(field) },
+      multilocs: { answer: build_scaled_input_multilocs(field) },
       linear_scales: matrix_linear_scale_statements(field)
     })
+  end
+
+  def visit_rating(field)
+    visit_select_base(field)
   end
 
   def visit_file_upload(field)
@@ -161,8 +165,8 @@ class SurveyResultsGeneratorService < FieldVisitorService
     query = inputs
     query = query.joins(:author) if group_mode == 'user_field'
     if group_field
-      raise "Unsupported group field type: #{group_field.input_type}" unless %w[select linear_scale].include?(group_field.input_type)
-      raise "Unsupported question type: #{field.input_type}" unless %w[select multiselect linear_scale multiselect_image].include?(field.input_type)
+      raise "Unsupported group field type: #{group_field.input_type}" unless %w[select linear_scale rating].include?(group_field.input_type)
+      raise "Unsupported question type: #{field.input_type}" unless %w[select multiselect linear_scale rating multiselect_image].include?(field.input_type)
 
       query = query.select(
         select_field_query(field, as: 'answer'),
@@ -177,7 +181,7 @@ class SurveyResultsGeneratorService < FieldVisitorService
     end
 
     # Sort correctly
-    answers = answers.sort_by { |a| -a[:count] } unless field.input_type == 'linear_scale'
+    answers = answers.sort_by { |a| -a[:count] } unless %w[linear_scale rating].include?(field.input_type)
     answers = answers.sort_by { |a| a[:answer] == 'other' ? 1 : 0 } # other should always be last
 
     # Build response
@@ -187,7 +191,7 @@ class SurveyResultsGeneratorService < FieldVisitorService
   def select_field_query(field, as: 'answer')
     table = field.resource_type == 'User' ? 'users' : 'ideas'
 
-    if %w[select linear_scale].include? field.input_type
+    if %w[select linear_scale rating].include? field.input_type
       "COALESCE(#{table}.custom_field_values->'#{field.key}', 'null') as #{as}"
     elsif %w[multiselect multiselect_image].include? field.input_type
       %{
@@ -254,8 +258,8 @@ class SurveyResultsGeneratorService < FieldVisitorService
   end
 
   def get_option_multilocs(field)
-    if field.input_type == 'linear_scale'
-      return build_linear_scale_multilocs(field)
+    if %w[linear_scale rating].include?(field.input_type)
+      return build_scaled_input_multilocs(field)
     end
 
     field.options.each_with_object({}) do |option, accu|
@@ -265,14 +269,16 @@ class SurveyResultsGeneratorService < FieldVisitorService
     end
   end
 
-  def build_linear_scale_multilocs(field)
+  def build_scaled_input_multilocs(field)
     answer_multilocs = (1..field.maximum).index_with do |value|
       { title_multiloc: locales.index_with { |_locale| value.to_s } }
     end
 
+    format_labels = %w[linear_scale matrix_linear_scale].include?(field.input_type)
+
     answer_multilocs.each_key do |value|
       labels = field.nth_linear_scale_multiloc(value).transform_values do |label|
-        label.present? ? "#{value} - #{label}" : value
+        label.present? && format_labels ? "#{value} - #{label}" : value
       end
 
       answer_multilocs[value][:title_multiloc].merge! labels
@@ -384,7 +390,7 @@ class SurveyResultsGeneratorService < FieldVisitorService
   end
 
   def generate_answer_keys(field)
-    (field.input_type == 'linear_scale' ? (1..field.maximum).reverse_each.to_a : field.options.map(&:key)) + [nil]
+    (field.input_type.in?(%w[linear_scale rating]) ? (1..field.maximum).to_a : field.options.map(&:key)) + [nil]
   end
 
   # Convert stored user keys for domicile field to match the options keys eg "f6319053-d521-4b28-9d71-a3693ec95f45" => "north_london_8rg"
@@ -592,7 +598,7 @@ class SurveyResultsGeneratorService < FieldVisitorService
   end
 
   def supports_question_logic?(input_type)
-    %w[select multiselect linear_scale multiselect_image].include? input_type
+    %w[select multiselect linear_scale multiselect_image rating].include? input_type
   end
 
   def supports_page_logic?(input_type)

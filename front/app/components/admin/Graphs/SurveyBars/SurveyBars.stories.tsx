@@ -4,7 +4,7 @@ import { Box } from '@citizenlab/cl2-component-library';
 
 import { ResultGrouped, ResultUngrouped } from 'api/survey_results/types';
 
-import SurveyBars from '.';
+import SurveyBarsHorizontal from './SurveyBarsHorizontal';
 
 import type { Meta, StoryObj } from '@storybook/react';
 
@@ -13,14 +13,14 @@ const meta = {
   render: (props) => (
     <Box w="100%" display="flex" justifyContent="center">
       <Box w="100%" maxWidth="600px" p="8px">
-        <SurveyBars {...props} />
+        <SurveyBarsHorizontal {...props} />
       </Box>
     </Box>
   ),
   parameters: {
     chromatic: { disableSnapshot: false },
   },
-} satisfies Meta<typeof SurveyBars>;
+} satisfies Meta<typeof SurveyBarsHorizontal>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;

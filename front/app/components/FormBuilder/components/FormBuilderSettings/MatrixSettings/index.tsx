@@ -8,7 +8,7 @@ import { IFlatCustomFieldWithIndex } from 'api/custom_fields/types';
 import { useIntl } from 'utils/cl-intl';
 
 import ConfigOptionsWithLocaleSwitcher from '../ConfigOptionsWithLocaleSwitcher';
-import LinearScaleSettings from '../LinearScaleSettings';
+import LinearAndRatingSettings from '../LinearAndRatingSettings';
 
 import messages from './messages';
 
@@ -26,11 +26,12 @@ const MatrixSettings = ({ field, locales, platformLocale }: Props) => {
       <Title mt="40px" color="coolGrey600" variant="h4">
         {formatMessage(messages.columns)}
       </Title>
-      <LinearScaleSettings
+      <LinearAndRatingSettings
         platformLocale={platformLocale}
         maximumName={`customFields.${field.index}.maximum`}
         labelBaseName={`customFields.${field.index}`}
         locales={locales}
+        inputType={'matrix_linear_scale'}
       />
 
       <Title mt="40px" color="coolGrey600" variant="h4">

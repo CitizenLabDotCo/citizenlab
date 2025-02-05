@@ -188,7 +188,7 @@ module Analysis
           else
             scope.where("(ideas.custom_field_values->>'#{cf.key}')::jsonb ?| array[:value]", value: value)
           end
-        when 'number', 'linear_scale'
+        when 'number', 'linear_scale', 'rating'
           scope = if value.include?(nil)
             scope.where("ideas.custom_field_values->>'#{cf.key}' IS NULL")
           else

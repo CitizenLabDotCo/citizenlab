@@ -5,7 +5,8 @@ import { colors } from '@citizenlab/cl2-component-library';
 import { ICustomFieldInputType } from 'api/custom_fields/types';
 import { LogicConfig, ResultUngrouped } from 'api/survey_results/types';
 
-import SurveyBars from 'components/admin/Graphs/SurveyBars';
+import SurveyBars from 'components/admin/Graphs/SurveyBars/SurveyBarsHorizontal';
+import SurveyBarsVertical from 'components/admin/Graphs/SurveyBars/SurveyBarsVertical';
 
 import LineLocationQuestion from '../MappingQuestions/LineLocationQuestion';
 import PointLocationQuestion from '../MappingQuestions/PointLocationQuestion';
@@ -42,6 +43,13 @@ const FormResultQuestionValue = ({
   switch (hasAnswersOfType) {
     case 'ranking':
       return <RankingQuestion result={result} />;
+    case 'rating':
+      return (
+        <SurveyBarsVertical
+          questionResult={result}
+          colorScheme={[colors.primary]}
+        />
+      );
     case 'matrix_linear_scale':
       return <MatrixQuestion result={result} />;
     case 'multiselect':

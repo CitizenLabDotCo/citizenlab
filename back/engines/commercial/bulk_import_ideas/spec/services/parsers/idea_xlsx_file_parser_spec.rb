@@ -18,6 +18,7 @@ describe BulkImportIdeas::Parsers::IdeaXlsxFileParser do
     create(:custom_field_number, resource: custom_form, key: 'number_field', title_multiloc: { 'en' => 'Number field' })
     create(:custom_field_point, resource: custom_form, key: 'point_field', title_multiloc: { 'en' => 'Point field' })
     create(:custom_field_linear_scale, resource: custom_form, key: 'linear_scale_field', title_multiloc: { 'en' => 'Linear scale field' })
+    create(:custom_field_rating, resource: custom_form, key: 'rating_field', title_multiloc: { 'en' => 'Rating field' })
 
     select_field = create(:custom_field_select, resource: custom_form, key: 'select_field', title_multiloc: { 'en' => 'Select field' })
     create(:custom_field_option, custom_field: select_field, key: 'yes', title_multiloc: { 'en' => 'Yes' })
@@ -71,6 +72,7 @@ describe BulkImportIdeas::Parsers::IdeaXlsxFileParser do
             'Multiline text field' => 'More to say here',
             'Number field' => 5,
             'Linear scale field' => 3,
+            'Rating field' => 2,
             'Select field' => 'Yes',
             'Multi select field' => 'This; That',
             'Image select field' => 'Image 1; Image 2',
@@ -123,6 +125,7 @@ describe BulkImportIdeas::Parsers::IdeaXlsxFileParser do
       expect(rows[0][:custom_field_values][:multiline_text_field]).to eq 'More to say here'
       expect(rows[0][:custom_field_values][:number_field]).to eq 5
       expect(rows[0][:custom_field_values][:linear_scale_field]).to eq 3
+      expect(rows[0][:custom_field_values][:rating_field]).to eq 2
       expect(rows[0][:custom_field_values][:select_field]).to eq 'yes'
       expect(rows[0][:custom_field_values][:multiselect_field]).to match_array %w[this that]
       expect(rows[0][:custom_field_values][:image_select_field]).to match_array %w[image1 image2]

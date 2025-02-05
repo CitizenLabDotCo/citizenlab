@@ -265,6 +265,20 @@ RSpec.describe SurveyResultsGeneratorService do
     create(:custom_field_gender, :with_options)
   end
 
+  let_it_be(:rating_field) do
+    create(
+      :custom_field_rating,
+      resource: form,
+      title_multiloc: {
+        'en' => 'How satisfied are you with our service?',
+        'fr-FR' => 'À quel point êtes-vous satisfait de notre service ?',
+        'nl-NL' => 'Hoe tevreden ben je met onze service?'
+      },
+      maximum: 7,
+      required: true
+    )
+  end
+
   let_it_be(:domicile_user_custom_field) do
     field = create(:custom_field_domicile)
     create(:area, title_multiloc: { 'en' => 'Area 1' })
@@ -295,6 +309,7 @@ RSpec.describe SurveyResultsGeneratorService do
         line_field.key => { type: 'LineString', coordinates: [[1.1, 2.2], [3.3, 4.4]] },
         polygon_field.key => { type: 'Polygon', coordinates: [[[1.1, 2.2], [3.3, 4.4], [5.5, 6.6], [1.1, 2.2]]] },
         linear_scale_field.key => 3,
+        rating_field.key => 3,
         number_field.key => 42,
         matrix_linear_scale_field.key => {
           'send_more_animals_to_space' => 1,
@@ -317,6 +332,7 @@ RSpec.describe SurveyResultsGeneratorService do
         line_field.key => { type: 'LineString', coordinates: [[1.2, 2.3], [3.4, 4.5]] },
         polygon_field.key => { type: 'Polygon', coordinates: [[[1.2, 2.3], [3.4, 4.5], [5.6, 6.7], [1.2, 2.3]]] },
         linear_scale_field.key => 4,
+        rating_field.key => 4,
         matrix_linear_scale_field.key => {
           'send_more_animals_to_space' => 1
         }
@@ -395,7 +411,7 @@ RSpec.describe SurveyResultsGeneratorService do
           :native_survey_response,
           project: project,
           phases: phases_of_inputs,
-          custom_field_values: { linear_scale_field.key => value },
+          custom_field_values: { linear_scale_field.key => value, rating_field.key => value },
           author: no_gender_user
         )
       end
@@ -416,7 +432,7 @@ RSpec.describe SurveyResultsGeneratorService do
       end
 
       it 'returns the correct fields and structure' do
-        expect(generated_results[:results].count).to eq 16
+        expect(generated_results[:results].count).to eq 17
         expect(generated_results[:results].pluck(:customFieldId)).not_to include disabled_multiselect_field.id
       end
     end
@@ -716,13 +732,13 @@ RSpec.describe SurveyResultsGeneratorService do
           questionResponseCount: 22,
           totalPickCount: 27,
           answers: [
-            { answer: 7, count: 3 },
-            { answer: 6, count: 2 },
-            { answer: 5, count: 1 },
-            { answer: 4, count: 1 },
-            { answer: 3, count: 8 },
-            { answer: 2, count: 5 },
             { answer: 1, count: 2 },
+            { answer: 2, count: 5 },
+            { answer: 3, count: 8 },
+            { answer: 4, count: 1 },
+            { answer: 5, count: 1 },
+            { answer: 6, count: 2 },
+            { answer: 7, count: 3 },
             { answer: nil, count: 5 }
           ],
           multilocs: {
@@ -799,27 +815,27 @@ RSpec.describe SurveyResultsGeneratorService do
             questionResponseCount: 22,
             totalPickCount: 27,
             answers: [
-              { answer: 7, count: 3, groups: [
-                { count: 3, group: nil }
-              ] },
-              { answer: 6, count: 2, groups: [
+              { answer: 1, count: 2, groups: [
                 { count: 2, group: nil }
               ] },
-              { answer: 5, count: 1, groups: [
-                { count: 1, group: nil }
-              ] },
-              { answer: 4, count: 1, groups: [
-                { count: 1, group: 'la' }
+              { answer: 2, count: 5, groups: [
+                { count: 5, group: nil }
               ] },
               { answer: 3, count: 8, groups: [
                 { count: 1, group: 'ny' },
                 { count: 7, group: nil }
               ] },
-              { answer: 2, count: 5, groups: [
-                { count: 5, group: nil }
+              { answer: 4, count: 1, groups: [
+                { count: 1, group: 'la' }
               ] },
-              { answer: 1, count: 2, groups: [
+              { answer: 5, count: 1, groups: [
+                { count: 1, group: nil }
+              ] },
+              { answer: 6, count: 2, groups: [
                 { count: 2, group: nil }
+              ] },
+              { answer: 7, count: 3, groups: [
+                { count: 3, group: nil }
               ] },
               { answer: nil, count: 5, groups: [
                 { count: 1, group: 'la' },
@@ -855,6 +871,140 @@ RSpec.describe SurveyResultsGeneratorService do
             field_id: linear_scale_field.id
           )
           expect(result).to match grouped_linear_scale_results
+        end
+      end
+    end
+
+    describe 'rating field' do
+      let(:expected_result_rating) do
+        {
+          customFieldId: rating_field.id,
+          inputType: 'rating',
+          question: {
+            'en' => 'How satisfied are you with our service?',
+            'fr-FR' => 'À quel point êtes-vous satisfait de notre service ?',
+            'nl-NL' => 'Hoe tevreden ben je met onze service?'
+          },
+          required: true,
+          grouped: false,
+          description: { 'en' => 'Please rate your experience from 1 (poor) to 5 (excellent).' },
+          hidden: false,
+          logic: {},
+          pageNumber: nil,
+          questionNumber: nil,
+          totalResponseCount: 27,
+          questionResponseCount: 22,
+          totalPickCount: 27,
+          answers: [
+            { answer: 1, count: 2 },
+            { answer: 2, count: 5 },
+            { answer: 3, count: 8 },
+            { answer: 4, count: 1 },
+            { answer: 5, count: 1 },
+            { answer: 6, count: 2 },
+            { answer: 7, count: 3 },
+            { answer: nil, count: 5 }
+          ],
+          multilocs: {
+            answer: {
+              1 => { title_multiloc: { 'en' => '1', 'fr-FR' => '1', 'nl-NL' => '1' } },
+              2 => { title_multiloc: { 'en' => '2', 'fr-FR' => '2', 'nl-NL' => '2' } },
+              3 => { title_multiloc: { 'en' => '3', 'fr-FR' => '3', 'nl-NL' => '3' } },
+              4 => { title_multiloc: { 'en' => '4', 'fr-FR' => '4', 'nl-NL' => '4' } },
+              5 => { title_multiloc: { 'en' => '5', 'fr-FR' => '5', 'nl-NL' => '5' } },
+              6 => { title_multiloc: { 'en' => '6', 'fr-FR' => '6', 'nl-NL' => '6' } },
+              7 => { title_multiloc: { 'en' => '7', 'fr-FR' => '7', 'nl-NL' => '7' } }
+            }
+          }
+        }
+      end
+
+      it 'returns the results for a rating field' do
+        expected_result_rating[:questionNumber] = 16
+        expect(generated_results[:results][16]).to match expected_result_rating
+      end
+
+      it 'returns a single result for a rating field' do
+        expect(generator.generate_results(field_id: rating_field.id)).to match expected_result_rating
+      end
+
+      context 'with grouping' do
+        let(:grouped_rating_results) do
+          {
+            customFieldId: rating_field.id,
+            inputType: 'rating',
+            question: {
+              'en' => 'How satisfied are you with our service?',
+              'fr-FR' => 'À quel point êtes-vous satisfait de notre service ?',
+              'nl-NL' => 'Hoe tevreden ben je met onze service?'
+            },
+            required: true,
+            grouped: true,
+            description: { 'en' => 'Please rate your experience from 1 (poor) to 5 (excellent).' },
+            hidden: false,
+            logic: {},
+            pageNumber: nil,
+            questionNumber: nil,
+            totalResponseCount: 27,
+            questionResponseCount: 22,
+            totalPickCount: 27,
+            answers: [
+              { answer: 1, count: 2, groups: [
+                { count: 2, group: nil }
+              ] },
+              { answer: 2, count: 5, groups: [
+                { count: 5, group: nil }
+              ] },
+              { answer: 3, count: 8, groups: [
+                { count: 1, group: 'ny' },
+                { count: 7, group: nil }
+              ] },
+              { answer: 4, count: 1, groups: [
+                { count: 1, group: 'la' }
+              ] },
+              { answer: 5, count: 1, groups: [
+                { count: 1, group: nil }
+              ] },
+              { answer: 6, count: 2, groups: [
+                { count: 2, group: nil }
+              ] },
+              { answer: 7, count: 3, groups: [
+                { count: 3, group: nil }
+              ] },
+              { answer: nil, count: 5, groups: [
+                { count: 1, group: 'la' },
+                { count: 3, group: 'other' },
+                { count: 1, group: nil }
+              ] }
+            ],
+            multilocs: {
+              answer: {
+                1 => { title_multiloc: { 'en' => '1', 'fr-FR' => '1', 'nl-NL' => '1' } },
+                2 => { title_multiloc: { 'en' => '2', 'fr-FR' => '2', 'nl-NL' => '2' } },
+                3 => { title_multiloc: { 'en' => '3', 'fr-FR' => '3', 'nl-NL' => '3' } },
+                4 => { title_multiloc: { 'en' => '4', 'fr-FR' => '4', 'nl-NL' => '4' } },
+                5 => { title_multiloc: { 'en' => '5', 'fr-FR' => '5', 'nl-NL' => '5' } },
+                6 => { title_multiloc: { 'en' => '6', 'fr-FR' => '6', 'nl-NL' => '6' } },
+                7 => { title_multiloc: { 'en' => '7', 'fr-FR' => '7', 'nl-NL' => '7' } }
+              },
+              group: {
+                'la' => { title_multiloc: { 'en' => 'Los Angeles', 'fr-FR' => 'Los Angeles', 'nl-NL' => 'Los Angeles' } },
+                'ny' => { title_multiloc: { 'en' => 'New York', 'fr-FR' => 'New York', 'nl-NL' => 'New York' } },
+                'other' => { title_multiloc: { 'en' => 'Other', 'fr-FR' => 'Autre', 'nl-NL' => 'Ander' } }
+              }
+            },
+            legend: ['la', 'ny', 'other', nil]
+          }
+        end
+
+        it 'returns a grouped result for a rating field' do
+          generator = described_class.new(survey_phase,
+            group_mode: 'survey_question',
+            group_field_id: select_field.id)
+          result = generator.generate_results(
+            field_id: rating_field.id
+          )
+          expect(result).to match grouped_rating_results
         end
       end
     end
@@ -1098,12 +1248,12 @@ RSpec.describe SurveyResultsGeneratorService do
                 answer: nil,
                 count: 21,
                 groups: [
-                  { count: 3, group: 7 },
-                  { count: 2, group: 6 },
-                  { count: 1, group: 5 },
-                  { count: 7, group: 3 },
-                  { count: 5, group: 2 },
                   { count: 2, group: 1 },
+                  { count: 5, group: 2 },
+                  { count: 7, group: 3 },
+                  { count: 1, group: 5 },
+                  { count: 2, group: 6 },
+                  { count: 3, group: 7 },
                   { count: 1, group: nil }
                 ]
               },
@@ -1146,7 +1296,7 @@ RSpec.describe SurveyResultsGeneratorService do
                 7 => { title_multiloc: { 'en' => '7 - Strongly agree', 'fr-FR' => "7 - Tout à fait d'accord", 'nl-NL' => '7 - Strerk mee eens' } }
               }
             },
-            legend: [7, 6, 5, 4, 3, 2, 1, nil],
+            legend: [1, 2, 3, 4, 5, 6, 7, nil],
             textResponses: [
               { answer: 'Austin' },
               { answer: 'Miami' },

@@ -2,7 +2,7 @@
 
 module BulkImportIdeas::Parsers::Pdf
   class IdeaPlainTextParserService
-    NUMBER_FIELD_TYPES = %w[number linear_scale]
+    NUMBER_FIELD_TYPES = %w[number linear_scale rating]
     SELECT_FIELD_TYPES = %w[select multiselect multiselect_image]
     FILLED_OPTION_CHARS = %w[☑ ☒ >]
     EMPTY_OPTION_CHARS = %w[O ○ ☐]

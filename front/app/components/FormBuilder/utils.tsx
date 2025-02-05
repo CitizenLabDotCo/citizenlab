@@ -15,7 +15,7 @@ import { isNilOrError } from 'utils/helperUtils';
 
 import ConfigOptionsWithLocaleSwitcher from './components/FormBuilderSettings/ConfigOptionsWithLocaleSwitcher';
 import FieldGroupSettings from './components/FormBuilderSettings/FieldGroupSettings';
-import LinearScaleSettings from './components/FormBuilderSettings/LinearScaleSettings';
+import LinearAndRatingSettings from './components/FormBuilderSettings/LinearAndRatingSettings';
 import MatrixSettings from './components/FormBuilderSettings/MatrixSettings';
 import MultiselectSettings from './components/FormBuilderSettings/MultiselectSettings';
 import OptionsSettings from './components/FormBuilderSettings/OptionsSettings';
@@ -175,12 +175,14 @@ export function getAdditionalSettings(
     case 'section':
       return <FieldGroupSettings locale={platformLocale} field={field} />;
     case 'linear_scale':
+    case 'rating':
       return (
-        <LinearScaleSettings
+        <LinearAndRatingSettings
           platformLocale={platformLocale}
           maximumName={`customFields.${field.index}.maximum`}
           labelBaseName={`customFields.${field.index}`}
           locales={locales}
+          inputType={inputType}
         />
       );
     case 'point':
@@ -265,6 +267,9 @@ const getInputTypeStringKey = (
       break;
     case 'linear_scale':
       translatedStringKey = messages.linearScale;
+      break;
+    case 'rating':
+      translatedStringKey = messages.rating;
       break;
     case 'file_upload':
       translatedStringKey = messages.fileUpload;
