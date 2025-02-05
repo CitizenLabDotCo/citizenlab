@@ -559,11 +559,16 @@ class SurveyResultsGeneratorService < FieldVisitorService
     # Finalise the results
     results.map do |question|
       if survey_has_logic
-        # Update the total response count with the new figure
-        question[:totalResponseCount] = question[:questionViewedCount]
+        # Don't update any figures if the response count is higher than the viewed count
+        # Can happen if logic changed after survey responses were collected and looks odd
+        pp "#{question[:questionResponseCount]}  >  #{question[:questionViewedCount]}"
+        if question[:questionViewedCount] >= question[:questionResponseCount]
+          # Update the total response count with the new figure
+          question[:totalResponseCount] = question[:questionViewedCount]
 
-        # Update the total pick count because we've reduced the 'not_answered' answer count
-        question[:totalPickCount] = question[:answers].pluck(:count).sum if question[:totalPickCount]
+          # Update the total pick count because we've reduced the 'not_answered' answer count
+          question[:totalPickCount] = question[:answers].pluck(:count).sum if question[:totalPickCount]
+        end
       end
     end
 
