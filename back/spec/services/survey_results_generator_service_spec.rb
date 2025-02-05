@@ -432,7 +432,7 @@ RSpec.describe SurveyResultsGeneratorService do
       end
 
       it 'returns the correct fields and structure' do
-        expect(generated_results[:results].count).to eq 16
+        expect(generated_results[:results].count).to eq 17
         expect(generated_results[:results].pluck(:customFieldId)).not_to include disabled_multiselect_field.id
       end
     end
@@ -887,6 +887,11 @@ RSpec.describe SurveyResultsGeneratorService do
           },
           required: true,
           grouped: false,
+          description: { 'en' => 'Please rate your experience from 1 (poor) to 5 (excellent).' },
+          hidden: false,
+          logic: {},
+          pageNumber: nil,
+          questionNumber: nil,
           totalResponseCount: 27,
           questionResponseCount: 22,
           totalPickCount: 27,
@@ -915,7 +920,8 @@ RSpec.describe SurveyResultsGeneratorService do
       end
 
       it 'returns the results for a rating field' do
-        expect(generated_results[:results][15]).to match expected_result_rating
+        expected_result_rating[:questionNumber] = 16
+        expect(generated_results[:results][16]).to match expected_result_rating
       end
 
       it 'returns a single result for a rating field' do
@@ -934,6 +940,11 @@ RSpec.describe SurveyResultsGeneratorService do
             },
             required: true,
             grouped: true,
+            description: { 'en' => 'Please rate your experience from 1 (poor) to 5 (excellent).' },
+            hidden: false,
+            logic: {},
+            pageNumber: nil,
+            questionNumber: nil,
             totalResponseCount: 27,
             questionResponseCount: 22,
             totalPickCount: 27,
