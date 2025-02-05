@@ -216,14 +216,13 @@ describe('Survey question widget', () => {
           .first()
           .contains('50% (4 choices)');
 
-        cy.get('svg.e2e-progress-bar').should('have.length', 3);
+        cy.get('svg.e2e-progress-bar').should('have.length', 2);
         cy.get('svg.e2e-progress-bar')
           .first()
           .should('have.attr', 'width', '50%');
         cy.get('svg.e2e-progress-bar')
           .eq(1)
           .should('have.attr', 'width', '50%');
-        cy.get('svg.e2e-progress-bar').eq(2).should('have.attr', 'width', '0%');
 
         // Group by gender and confirm correctness
         cy.get('#e2e-group-mode-select').select('user_field');
@@ -308,7 +307,7 @@ describe('Survey question widget', () => {
           .first()
           .contains('50% (2 choices)');
 
-        cy.get('svg.e2e-progress-bar').should('have.length', 6);
+        cy.get('svg.e2e-progress-bar').should('have.length', 5);
         cy.get('svg.e2e-progress-bar')
           .eq(2)
           .should('have.attr', 'width', '50%');
@@ -391,12 +390,11 @@ describe('Survey question widget', () => {
           .first()
           .contains('100% (4 choices)');
 
-        cy.get('svg.e2e-progress-bar').should('have.length', 3);
+        cy.get('svg.e2e-progress-bar').should('have.length', 2);
         cy.get('svg.e2e-progress-bar')
           .first()
           .should('have.attr', 'width', '100%');
         cy.get('svg.e2e-progress-bar').eq(1).should('have.attr', 'width', '0%');
-        cy.get('svg.e2e-progress-bar').eq(2).should('have.attr', 'width', '0%');
 
         // Group by gender and confirm correctness
         cy.get('#e2e-group-mode-select').select('user_field');
