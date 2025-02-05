@@ -19,7 +19,7 @@ RSpec.describe SurveyResultsGeneratorService do
 
   # Set-up custom form
   let_it_be(:form) { create(:custom_form, participation_context: survey_phase) }
-  let_it_be(:page_field) { create(:custom_field_page, logic: { next_page_id: 'survey_end' }, resource: form) }
+  let_it_be(:page_field) { create(:custom_field_page, resource: form) }
   let_it_be(:text_field) do
     create(
       :custom_field,
@@ -110,7 +110,6 @@ RSpec.describe SurveyResultsGeneratorService do
         'fr-FR' => "Tout à fait d'accord",
         'nl-NL' => 'Strerk mee eens'
       },
-      logic: { rules: [{ if: 2, goto_page_id: 'survey_end' }, { if: 'no_answer', goto_page_id: 'survey_end' }] },
       required: true
     )
   end
@@ -260,6 +259,17 @@ RSpec.describe SurveyResultsGeneratorService do
   end
 
   let_it_be(:matrix_linear_scale_field) { create(:custom_field_matrix_linear_scale, resource: form, description_multiloc: {}) }
+
+  # The following page for form submission should not be returned in the results
+  let_it_be(:last_page_field) do
+    field = create(:custom_field_page, resource: form, key: 'survey_end')
+
+    # Update other fields with some (meaningless but valid) survey_end logic
+    linear_scale_field.update!(logic: { rules: [{ if: 2, goto_page_id: field.id }, { if: 'no_answer', goto_page_id: field.id }] })
+    page_field.update!(logic: { next_page_id: field.id })
+
+    field
+  end
 
   let_it_be(:gender_user_custom_field) do
     create(:custom_field_gender, :with_options)
@@ -429,7 +439,7 @@ RSpec.describe SurveyResultsGeneratorService do
         expect(page_result[:questionResponseCount]).to eq(22)
         expect(page_result[:pageNumber]).to eq(1)
         expect(page_result[:questionNumber]).to be_nil
-        expect(page_result[:logic]).to eq({ nextPageNumber: 999, numQuestionsSkipped: 0 })
+        expect(page_result[:logic]).to eq({ nextPageNumber: 2, numQuestionsSkipped: 0 })
       end
     end
 
@@ -708,8 +718,8 @@ RSpec.describe SurveyResultsGeneratorService do
           questionNumber: nil,
           logic: {
             answer: {
-              2 => { id: "#{linear_scale_field.id}_2", nextPageNumber: 999, numQuestionsSkipped: 0 },
-              'no_answer' => { id: "#{linear_scale_field.id}_no_answer", nextPageNumber: 999, numQuestionsSkipped: 0 }
+              2 => { id: "#{linear_scale_field.id}_2", nextPageNumber: 2, numQuestionsSkipped: 0 },
+              'no_answer' => { id: "#{linear_scale_field.id}_no_answer", nextPageNumber: 2, numQuestionsSkipped: 0 }
             }
           },
           totalResponseCount: 27,
