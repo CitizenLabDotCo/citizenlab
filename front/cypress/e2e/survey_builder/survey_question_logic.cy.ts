@@ -57,7 +57,7 @@ describe('Survey question logic', () => {
     // Add another page
     cy.wait(1000);
     cy.get('[data-cy="e2e-page"').click();
-    cy.get('[data-cy="e2e-field-row"]').should('have.length', 4);
+    cy.get('[data-cy="e2e-field-row"]').should('have.length', 5);
   });
 
   it('');
