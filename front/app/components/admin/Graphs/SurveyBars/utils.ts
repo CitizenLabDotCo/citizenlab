@@ -76,8 +76,8 @@ export const parseQuestionResult = (
       const percentage = roundPercentage(count, totalPickCount, 1);
 
       const logicAnswerKey = answer === null ? 'no_answer' : answer;
-      const logicForAnswer = logic.answer?.[logicAnswerKey];
-      const logicFilterId = logic.answer?.[logicAnswerKey]?.id || null;
+      const logicForAnswer = logic?.answer?.[logicAnswerKey];
+      const logicFilterId = logic?.answer?.[logicAnswerKey]?.id || null;
 
       return {
         label,
