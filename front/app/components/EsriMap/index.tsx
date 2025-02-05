@@ -19,7 +19,6 @@ import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 
 import useLocale from 'hooks/useLocale';
 
-import EsriMapMeta from './components/EsriMapMeta';
 import { configureMapView } from './config';
 import { InitialData } from './types';
 import { getDefaultBasemap, handleWebMapReferenceLayers } from './utils';
@@ -278,7 +277,6 @@ const EsriMapWrapper = (props: Omit<EsriMapProps, 'globalMapSettings'>) => {
 
   return (
     <>
-      <EsriMapMeta />
       {globalMapSettings && (
         <EsriMap globalMapSettings={globalMapSettings} {...props} />
       )}
