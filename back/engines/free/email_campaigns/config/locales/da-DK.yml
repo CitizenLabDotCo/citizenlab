@@ -42,7 +42,7 @@ da:
       "project_phase_started": Ny projektfase
       "project_phase_upcoming": Kommende ny projektfase
       "project_published": Projekt offentliggjort
-      "status_change_on_idea_you_follow": Statusændring af en idé, som du følger
+      "status_change_on_idea_you_follow": Statusændring på en idé, som du følger
       "status_change_on_initiative_you_follow": Statusændring på et forslag, som du følger
       "threshold_reached_for_admin": Forslag har nået stemmegrænsen
       "welcome": Efter registrering
@@ -233,7 +233,7 @@ da:
       cta_reply_to: 'Se kommentar fra %{firstName}'
       event_description: '%{authorNameFull} nævnte dig i en intern kommentar.'
       subject: '%{firstName} nævnte dig i en intern kommentar.'
-      main_header: '%{authorNameFirst} nævnte dig i en intern kommentar.'
+      main_header: '%{firstName} nævnte dig i en intern kommentar.'
       preheader: '%{authorNameFull} nævnte dig i en intern kommentar.'
     moderator_digest:
       subject: 'Din ugentlige projektlederrapport fra %{time}'
@@ -267,7 +267,7 @@ da:
       preheader: '%{authorName} efterlod en kommentar til en idé til %{organizationName}'
     comment_on_initiative_you_follow:
       cta_reply_to: 'Svar til %{commentAuthor}'
-      event_description: '%{authorNameFull} gav en reaktion på dit forslag "%{initiativeTitle}". Klik på nedenstående knap, for at fortsætte med %{authorName}.'
+      event_description: '%{authorNameFull} gav en reaktion på dit forslag "%{initiativeTitle}". Klik på knappen nedenfor for at fortsætte samtalen med %{authorName}.'
       main_header: '%{commentAuthor} kommenterede på et initiativ, du følger'
       subject: 'Der er en ny kommentar til det forslag, du følger'
       preheader: '%{authorName} efterlod en kommentar til et forslag til %{organizationName}'
@@ -281,7 +281,7 @@ da:
       commented: '%{authorFirstName} kommenterede:'
       cta_reply_to: 'Giv feedback til %{authorName}'
       days_ago: '%{numberOfDays} dage siden'
-      event_description: '%{authorName} har offentliggjort en ny idé på din platform. Se den nu, giv feedback på den, eller skift idéens status !'
+      event_description: '%{authorName} har offentliggjort en ny idé på din platform. Se den nu, giv feedback på den, eller skift idéens status!'
       main_header: '%{firstName}, der er blevet offentliggjort en ny idé på din platform'
       subject: 'Nogen offentliggjorde en ny idé på %{organizationName}s platform'
       preheader: '%{authorName} offentliggjorde en ny idé på din platform'
@@ -289,7 +289,7 @@ da:
       yesterday: I går
     comment_on_your_comment:
       cta_reply_to: 'Svar til %{firstName}'
-      event_description: '%{authorNameFull} skrev et svar til din kommentar på "%{post}" på deltagelsesplatformen. Klik på nedenstående knap, for at fortsætte samtalen med %{authorName}.'
+      event_description: '%{authorNameFull} skrev et svar til din kommentar på "%{post}" på borgerinddragelsesplatformen. Klik på nedenstående knap, for at fortsætte samtalen med %{authorName}.'
       subject: 'Du har modtaget et svar på din kommentar på platformen for %{organizationName}'
       main_header: '%{authorName} reagerede på din kommentar'
       preheader: '%{authorName} svarede på din kommentar på %{organizationName}s platform'
@@ -348,7 +348,7 @@ da:
       subject: 'En idé, du følger, har fået en officiel opdatering på platformen %{organizationName}'
       preheader: 'Der er en opdatering på en idé, du følger'
     official_feedback_on_initiative_you_follow:
-      header_message: '%{officialName} har en opdatering til forslaget ''%{initiativeTitle}''. Klik på knappen nedenfor for at gå ind i samtalen med %{organizationName}.'
+      header_message: '%{officialName} har en opdatering til forslaget ''%{initiativeTitle}''. Klik på knappen nedenfor for at læse hele opdateringen med %{organizationName}.'
       header_title: 'Der er en opdatering på et forslag, du følger'
       subject: 'Et forslag, du følger, har modtaget en officiel opdatering på platformen %{organizationName}'
       preheader: 'Der er en opdatering på et forslag, du følger'
@@ -407,7 +407,7 @@ da:
     project_published:
       subject: 'Et nyt projekt blev offentliggjort på platformen %{organizationName}'
       header_title: 'Et nyt projekt blev offentliggjort'
-      header_message: 'Borgerinddragelsesplatformen %{organizationName} har netop offentliggjort følgende projekt:'
+      header_message: 'Borgerinddragelsesplatformen for %{organizationName} har netop offentliggjort følgende projekt:'
       preheader: 'Et nyt projekt blev offentliggjort'
     status_change_on_idea_you_follow:
       status_change: 'Den nye status for denne idé er ''%{ideaStatus}'''
@@ -422,7 +422,7 @@ da:
       subject: 'Status for et forslag du følger er ændret'
       preheader: 'Et forslag du følger har fået en ny status'
     user_digest:
-      subject: "Ugentlig opdatering af deltagelsesplatformen for %{organizationName}"
+      subject: "Ugentlig opdatering af borgerinddragelsesplatformen for %{organizationName}"
       commented: "%{authorFirstName} kommenterede:"
       preheader: "Ugentlig oversigt for %{organizationName}"
       title_your_weekly_report: "Find ud af hvad der skete i sidste uge"
@@ -430,14 +430,14 @@ da:
       cta_go_to_the_platform: "Besøg platformen"
       title_no_activity_past_week: "Ingen aktivitet i den seneste uge"
       title_proposals: "Forslag startet"
-      proposals_started_text: "Forslag er ideer, der skal ha’ opmærksomhed og støtte fra andre (personer som dig!) for at komme videre. Nedenfor er en liste over forslag, der er fremsat i den sidste uge. Klik på et af dem for at og tilbyd eventuelt din support og feedback!"
-      title_successful_proposals: "Opdag forslag"
+      proposals_started_text: "Forslag er ideer, der skal ha’ opmærksomhed og støtte fra andre (personer som dig!) for at komme videre. Nedenfor er en liste over forslag, der er fremsat i den sidste uge. Klik på dem for at tage et kig og give din støtte og feedback!"
+      title_successful_proposals: "Forslag der opnåede nok stemmer"
       successful_proposals_text: "Disse forslag har fået tilstrækkelig støtte til at gå videre til næste fase! Klik på forslaget for at lære mere om, hvad der sker videre i processen."
       today_by_author: "I dag af %{author}"
       yesterday_by_author: "I går af %{author}"
       x_days_ago_by_author: "%{x} dage siden af %{author}"
       trending_ideas: "Populære ideer"
-      trending_ideas_text: "Er du interesseret i, hvad der er sket på platformen? Tjek de tre mest populære idéer, se hvad folk siger om dem, og deltag i dialogen."
+      trending_ideas_text: "Er du interesseret i hvad der er sket på platformen? Tjek de tre mest populære idéer, se hvad folk siger om dem, og deltag i dialogen."
       no_notifications: "Ingen notifikationer"
       one_notification: "1 notifikation"
       multiple_notifications: "%{notifCount} notifikationer"
@@ -445,9 +445,9 @@ da:
       unread_notifications: "Du har nye notifikationer! Besøg platformen for at finde ud af, hvad der sker."
     threshold_reached_for_admin:
       cta_process_initiative: 'Før dette initiativ til de næste trin'
-      event_description: 'Et initiativ har nået stemmetærskelgrænsen på din platform. Klik nedestående knap for at gå til de næste trin!'
-      main_header: 'Et initiativ har nået stemmetærskelgrænsen!'
-      subject: 'Et initiativ har nået stemmetærskelgrænsen på din platform'
+      event_description: 'Et forslag har nået stemmetærsklen på jeres platform. Klik på nedestående knap for at gå til de næste trin!'
+      main_header: 'Et forslag har nået stemmetærsklen!'
+      subject: 'Et forslag har nået stemmetærsklen på jeres platform'
       preheader: 'Sørg for, at du gennemfører de næste trin'
     first_idea_published:
       action_add_image: '%{addImageLink} for at øge synlighed'
@@ -459,7 +459,7 @@ da:
       action_share_twitter: 'Fortæl dine følgere på %{twitterLink}'
       add_image: 'Tilføj et billede'
       cta_view_idea: 'Gå til din idé'
-      event_description: '%{firstName}, tillykke med din første idé på %{organizationName}s deltagelsesplatform. Du bliver underrettet, når personer interagerer med din idé. Find ud af hvad dine næste trin er.'
+      event_description: '%{firstName}, tillykke med din første idé på %{organizationName}s borgerinddragelsesplatform. Du bliver underrettet, når personer interagerer med din idé. Find ud af hvad dine næste trin er.'
       link: link
       main_header: '%{firstName}, du har lige opslået din første idé!'
       message_get_votes: 'Nå flere personer med din idé:'
@@ -482,7 +482,7 @@ da:
       action_share_twitter: 'Fortæl dine følgere på %{twitterLink}'
       add_image: 'Tilføj et billede'
       cta_view_idea: 'Gå til din idé'
-      event_description: '%{firstName}, din idé blev udgivet på %{organizationName}s deltagelsesplatform. Du bliver underrettet når en person interagerer med din idé. Find ud af, hvilke næste skridt du kan tage nedenfor.'
+      event_description: '%{firstName}, din idé blev udgivet på %{organizationName}s borgerinddragelsesplatform. Du bliver underrettet når en person interagerer med din idé. Find ud af, hvilke næste skridt du kan tage nedenfor.'
       link: link
       main_header: 'Du slog en idé op! Lad os sikre, at den bliver læst.'
       message_get_votes: 'Nå flere personer med dine idéer:'
@@ -492,7 +492,7 @@ da:
       subject: 'Din idé på %{organizationName}s platform '
       message_next_steps: ""
     your_proposed_initiatives_digest:
-      subject: 'Ugentlige opdateringer af dit forslag'
+      subject: 'Ugentlige opdateringer på dit forslag'
       preheader: 'Hvad skete der med dit forslag i sidste uge?'
       title_your_weekly_report: 'Hvordan klarer dit forslag sig?'
       text_introduction: 'Du kan find nøgletallene for dit forslag nedenfor. Hvis du vil skabe yderligere opmærksomhed omkring dit forslag, kan du med fordel gå til dit forslags side, hvorfra du kan dele det på dine sociale medier eller via andre digitale kanaler.'

@@ -105,7 +105,7 @@ en-CA:
       title_activity_past_week: 'Activity of the past week'
       title_no_activity_past_week: 'There was no activity in the past week'
       title_initiatives_past_week: 'New initiatives of the past week'
-      title_successful_initiatives_past_week: 'Initiatives that reached the threshold in the past week'
+      title_successful_initiatives_past_week: 'Proposals that reached the threshold in the past week'
       yesterday_by_author: 'Yesterday by %{author}'
       today_by_author: 'Today by %{author}'
       x_days_ago_by_author: '%{x} days ago by %{author}'
@@ -154,9 +154,9 @@ en-CA:
       today_by_author: 'Today by %{author}'
       x_days_ago_by_author: '%{x} days ago by %{author}'
       idea_section: Ideas
-      initiative_section: Initiatives
-      title_initiatives_past_week: 'New initiatives assigned to you'
-      title_successful_initiatives_past_week: 'Initiatives assigned to you that reached the threshold'
+      initiative_section: Proposals
+      title_initiatives_past_week: 'New proposals assigned to you'
+      title_successful_initiatives_past_week: 'Proposals assigned to you that reached the threshold'
     idea_marked_as_spam:
       cta_review_idea: 'Review idea'
       report_inappropriate_offensive_content: 'I find this content inappropriate or offensive.'
@@ -445,9 +445,9 @@ en-CA:
       unread_notifications: "You have unread notifications. Visit the platform to discover what's happening!"
     threshold_reached_for_admin:
       cta_process_initiative: 'Take this initiative to the next steps'
-      event_description: 'An initiative reached the voting threshold on your platform. Click the button below to take it to the next steps!'
-      main_header: 'An initiative reached the voting threshold!'
-      subject: 'An initiative reached the voting threshold on your platform'
+      event_description: 'An proposal reached the voting threshold on your platform. Click the button below to take it to the next steps!'
+      main_header: 'An proposal reached the voting threshold!'
+      subject: 'An proposal reached the voting threshold on your platform'
       preheader: 'Make sure to take the next steps'
     first_idea_published:
       action_add_image: '%{addImageLink} to increase visibility'
@@ -492,11 +492,11 @@ en-CA:
       subject: 'Your idea on the platform of %{organizationName}'
       message_next_steps: ""
     your_proposed_initiatives_digest:
-      subject: 'Weekly update of your initiative'
-      preheader: 'What happened to your initiative in the past week?'
-      title_your_weekly_report: 'How has your initiative been doing?'
-      text_introduction: 'Find the key numbers below and go to your initiative''s page to take action and gather enough support in time.'
-      cta_see_your_initiative: 'Go to your initiative'
+      subject: 'Weekly update of your proposals'
+      preheader: 'What happened with your proposals in the past week?'
+      title_your_weekly_report: 'How have your proposals been doing?'
+      text_introduction: 'Find the key numbers below and go to the platform to take action and gather enough support in time.'
+      cta_see_your_initiative: 'Go to your proposals'
       total_votes: 'Total votes'
       new_votes: 'New votes'
       remaining_votes: 'Votes remaining'
