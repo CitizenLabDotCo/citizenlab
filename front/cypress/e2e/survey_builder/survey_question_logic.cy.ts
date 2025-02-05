@@ -44,7 +44,7 @@ describe('Survey question logic', () => {
     }
   });
 
-  beforeEach(() => {
+  it('allows setting logic for select question', () => {
     cy.setAdminLoginCookie();
     cy.visit(
       `/admin/projects/${projectId}/phases/${phaseId}/native-survey/edit`
@@ -60,9 +60,8 @@ describe('Survey question logic', () => {
     cy.wait(1000);
     cy.get('[data-cy="e2e-page"').click();
     cy.get('[data-cy="e2e-field-row"]').should('have.length', 5);
-  });
 
-  it('allows setting logic for select question', () => {
+    // Open settings
     cy.get('[data-cy="e2e-field-row"]').eq(1).click();
     cy.get('[data-cy="e2e-form-builder-logic-tab"]').click();
 
