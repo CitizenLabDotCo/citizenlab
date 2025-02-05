@@ -201,7 +201,7 @@ RSpec.describe SurveyResultsGeneratorService do
           },
           logic: {
             answer: {
-              option1: { id: 'SELECT_2_OPTION_1', nextPageId: 'PAGE_5' }
+              option1: { id: 'SELECT_2_OPTION_1', nextPageId: 'SURVEY_END_PAGE' }
             }
           }
         },
