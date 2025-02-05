@@ -7,6 +7,7 @@ import {
   Text,
   Th,
   Thead,
+  Tooltip,
   Tr,
 } from '@citizenlab/cl2-component-library';
 import { useTheme } from 'styled-components';
@@ -15,6 +16,9 @@ import { ResultUngrouped } from 'api/survey_results/types';
 
 import useLocale from 'hooks/useLocale';
 
+import { useIntl } from 'utils/cl-intl';
+
+import messages from './messages';
 import {
   getTenantColourByPercentage,
   getLinearScaleLabelsArray,
@@ -32,6 +36,7 @@ type Props = {
 const MatrixQuestion = ({ result }: Props) => {
   const theme = useTheme();
   const locale = useLocale();
+  const { formatMessage } = useIntl();
 
   // Create arrays for the statements & answers and linear scale
   // labels so they are easier to work with.
@@ -75,6 +80,11 @@ const MatrixQuestion = ({ result }: Props) => {
                     linearScaleLabel
                   );
 
+                  // Get # of respondents who chose this value
+                  const respondentCount = statementWithResult.answers.find(
+                    (answer) => answer.answer === linearScaleLabel.value
+                  )?.count;
+
                   return (
                     <StyledTd
                       key={linearScaleLabel.value}
@@ -84,15 +94,21 @@ const MatrixQuestion = ({ result }: Props) => {
                       )}
                     >
                       <Box display="flex" justifyContent="center">
-                        <Text
-                          my="auto"
-                          fontSize="s"
-                          color={percentage >= 75 ? 'white' : 'textPrimary'}
-                          textShadow={getPercentageTextBorder(percentage)}
-                          fontWeight="semi-bold"
+                        <Tooltip
+                          content={formatMessage(messages.respondentsTooltip, {
+                            respondentCount: respondentCount || 0,
+                          })}
                         >
-                          {`${percentage}%`}
-                        </Text>
+                          <Text
+                            my="auto"
+                            fontSize="s"
+                            color={percentage >= 75 ? 'white' : 'textPrimary'}
+                            textShadow={getPercentageTextBorder(percentage)}
+                            fontWeight="semi-bold"
+                          >
+                            {`${percentage}%`}
+                          </Text>
+                        </Tooltip>
                       </Box>
                     </StyledTd>
                   );
