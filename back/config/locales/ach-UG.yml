@@ -255,8 +255,8 @@ ach:
       option1: 'crwdns4143559:0crwdne4143559:0'
       option2: 'crwdns4143561:0crwdne4143561:0'
     form_end_page:
-      title_text: 'crwdns4143563:0crwdne4143563:0'
-      description_text_2: "crwdns4143565:0crwdne4143565:0"
+      title_text_3: 'crwdns4156865:0crwdne4156865:0'
+      description_text_3: "crwdns4156867:0crwdne4156867:0"
     pdf_export:
       personal_data: 'crwdns4143567:0crwdne4143567:0'
       personal_data_explanation_public: "crwdns4143569:0%{organizationName}crwdnd4143569:0%{organizationName}crwdne4143569:0"
