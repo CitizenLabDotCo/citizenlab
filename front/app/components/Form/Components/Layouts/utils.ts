@@ -79,7 +79,12 @@ export const getSanitizedFormData = (data) => {
   const sanitizedFormData = {};
   forOwn(data, (value, key) => {
     sanitizedFormData[key] =
-      value === null || value === '' || value === false ? undefined : value;
+      value === null ||
+      value === '' ||
+      value === false ||
+      value === 'question_skipped'
+        ? undefined
+        : value;
   });
 
   return sanitizedFormData;

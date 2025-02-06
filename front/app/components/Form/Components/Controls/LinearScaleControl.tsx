@@ -88,7 +88,8 @@ const LinearScaleControl = ({
         handleChange(path, 'question_skipped');
       }
     };
-  }, [data, handleChange, path]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   if (!visible) {
     return null;
