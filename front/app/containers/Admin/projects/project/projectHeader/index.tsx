@@ -8,6 +8,7 @@ import {
   colors,
   IconNames,
   Tooltip,
+  fontSizes,
 } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
@@ -18,10 +19,11 @@ import useUserById from 'api/users/useUserById';
 import useLocalize from 'hooks/useLocalize';
 
 import NavigationTabs from 'components/admin/NavigationTabs';
-import Button from 'components/UI/ButtonWithLink';
+import ButtonWithLink from 'components/UI/ButtonWithLink';
 
 import { FormattedMessage, MessageDescriptor, useIntl } from 'utils/cl-intl';
-import { getFullName } from 'utils/textUtils';
+import { isEmptyMultiloc } from 'utils/helperUtils';
+import { getFullName, stripHtml } from 'utils/textUtils';
 
 import messages from './messages';
 import PublicationStatus from './PublicationStatus';
@@ -76,15 +78,36 @@ const ProjectHeader = ({ projectId }: Props) => {
         py="16px"
       >
         <Box display="flex" justifyContent="space-between" alignItems="center">
-          <StyledTitle color="primary" variant="h4" my="0px">
-            {localize(project.data.attributes.title_multiloc)}
-          </StyledTitle>
+          <Box
+            display="flex"
+            flexDirection="column"
+            alignItems="flex-start"
+            mb="8px"
+          >
+            <StyledTitle color="primary" variant="h4" mt="0" mb="4px">
+              {localize(project.data.attributes.title_multiloc)}
+            </StyledTitle>
+            <ButtonWithLink
+              linkTo={`/admin/projects/${project.data.id}/settings/description`}
+              buttonStyle="text"
+              size="s"
+              p="0"
+              fontSize={`${fontSizes}px`}
+            >
+              {isEmptyMultiloc(project.data.attributes.description_multiloc)
+                ? formatMessage(messages.addDescription)
+                : stripHtml(
+                    localize(project.data.attributes.description_multiloc),
+                    20
+                  )}
+            </ButtonWithLink>
+          </Box>
           <Box
             display="flex"
             gap="8px"
             className="intercom-projects-project-header-buttons"
           >
-            <Button
+            <ButtonWithLink
               linkTo={`/projects/${project.data.attributes.slug}`}
               buttonStyle="secondary-outlined"
               icon="eye"
@@ -98,20 +121,20 @@ const ProjectHeader = ({ projectId }: Props) => {
               projectSlug={project.data.attributes.slug}
               token={project.data.attributes.preview_token}
             />
-            <Button
+            <ButtonWithLink
               linkTo={`/admin/projects/${project.data.id}/settings`}
               buttonStyle="secondary-outlined"
               size="s"
               padding="4px 8px"
             >
               {formatMessage(messages.settings)}
-            </Button>
+            </ButtonWithLink>
 
             <ReviewFlow project={project.data} />
           </Box>
         </Box>
         <Box display="flex" gap="8px">
-          <Button
+          <ButtonWithLink
             linkTo={`/admin/projects/${project.data.id}/settings/access-rights`}
             buttonStyle="text"
             size="s"
@@ -127,7 +150,7 @@ const ProjectHeader = ({ projectId }: Props) => {
                 {formatMessage(visibilityMessage)}
               </Text>
             </Box>
-          </Button>
+          </ButtonWithLink>
           <Text color="coolGrey600" fontSize="s" mb="0px" mt="2px">
             ·
           </Text>
