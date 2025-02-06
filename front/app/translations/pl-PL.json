@@ -656,6 +656,7 @@
   "app.components.form.controls.valueOutOfTotalWithMaxExplanation": "{value} z {total}, gdzie {maxValue} to {maxLabel}",
   "app.components.form.error": "Błąd",
   "app.components.form.locationGoogleUnavailable": "Nie można załadować pola lokalizacji dostarczonego przez mapy google.",
+  "app.components.form.progressBarLabel": "Postęp ankiety",
   "app.components.form.submit": "Prześlij",
   "app.components.form.submitApiError": "Wystąpił problem przy przesyłaniu formularza. Sprawdź, czy nie wystąpiły błędy i spróbuj ponownie.",
   "app.components.form.verifiedBlocked": "Nie możesz edytować tego pola, ponieważ zawiera ono zweryfikowane informacje",
