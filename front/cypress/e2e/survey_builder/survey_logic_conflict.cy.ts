@@ -1,41 +1,16 @@
-import { randomString } from '../../support/commands';
-import moment = require('moment');
+import { createSurveyProject } from './utils';
 
 describe('Survey logic conflict', () => {
-  const projectTitle = randomString();
-  const phaseTitle = randomString();
-  const projectDescription = randomString();
-  const projectDescriptionPreview = randomString(30);
   let projectId: string | undefined;
   let projectSlug: string | undefined;
   let phaseId: string | undefined;
 
   before(() => {
-    cy.setAdminLoginCookie();
-    cy.apiCreateProject({
-      title: projectTitle,
-      descriptionPreview: projectDescriptionPreview,
-      description: projectDescription,
-      publicationStatus: 'published',
-    })
-      .then((project) => {
-        projectId = project.body.data.id;
-        projectSlug = project.body.data.attributes.slug;
-        return cy.apiCreatePhase({
-          projectId: projectId as string,
-          title: phaseTitle,
-          startAt: moment().subtract(9, 'month').format('DD/MM/YYYY'),
-          participationMethod: 'native_survey',
-          nativeSurveyButtonMultiloc: { en: 'Take the survey' },
-          nativeSurveyTitleMultiloc: { en: 'Survey' },
-          canPost: true,
-          canComment: true,
-          canReact: true,
-        });
-      })
-      .then((phase) => {
-        phaseId = phase.body.data.id;
-      });
+    createSurveyProject(cy).then((res: any) => {
+      projectId = res.projectId;
+      projectSlug = res.projectSlug;
+      phaseId = res.phaseId;
+    });
   });
 
   after(() => {
