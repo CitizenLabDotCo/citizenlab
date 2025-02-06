@@ -21,10 +21,20 @@ import useLocale from 'hooks/useLocale';
 
 import { configureMapView } from './config';
 import { InitialData } from './types';
-import { getDefaultBasemap, handleWebMapReferenceLayers } from './utils';
+import {
+  DefaultBasemapType,
+  getDefaultBasemapType,
+  getDefaultBasemap,
+  handleWebMapReferenceLayers,
+} from './utils';
 
 // Custom Esri styles
-const MapContainer = styled(Box)`
+const MapContainer = styled(Box)<{
+  basemapType: DefaultBasemapType;
+}>`
+  background: ${(props) =>
+    `${props.basemapType === 'BasemapAt' ? 'white' : 'undefined'}`};
+
   .esri-legend--card__message {
     display: none;
   }
@@ -266,6 +276,7 @@ const EsriMap = ({
         ref={mapRef}
         width={width ? `${width}` : '100%'}
         height={height ? `${height}` : '400px'}
+        basemapType={getDefaultBasemapType(globalMapSettings.tile_provider)}
       />
     </>
   );
