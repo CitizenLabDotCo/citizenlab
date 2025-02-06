@@ -159,21 +159,18 @@ const CLSurveyPageLayout = memo(
     }, [currentStep, isFetchingMapConfig]);
 
     useEffect(() => {
-      // We can cast types because the tester made sure we only get correct values
-      const allPageTypeElements = (uischema as PageCategorization)
-        .elements as PageType[];
-      const visiblePages = allPageTypeElements.filter((element) => {
+      const visiblePages = pageTypeElements.filter((element) => {
         const isPageVisible = isVisible(
           element,
           formState.core?.data,
           '',
           customAjv,
-          allPageTypeElements
+          pageTypeElements
         );
         return isPageVisible;
       });
       setUiPages(visiblePages);
-    }, [formState.core?.data, uischema]);
+    }, [formState.core?.data, pageTypeElements]);
 
     useEffect(() => {
       if (scrollToError) {
@@ -337,6 +334,14 @@ const CLSurveyPageLayout = memo(
       );
     }
 
+    const currentPage = uiPages[currentStep];
+
+    const currentPageIndex = pageTypeElements.findIndex(
+      (page) => page === currentPage
+    );
+
+    const pageElements = extractElementsByOtherOptionLogic(currentPage, data);
+
     return (
       <>
         <Box
@@ -345,7 +350,7 @@ const CLSurveyPageLayout = memo(
           flexDirection={isMobileOrSmaller ? 'column' : 'row'}
           height="100%"
           w="100%"
-          data-cy={`e2e-page-index-${currentStep}`}
+          data-cy={`e2e-page-number-${currentPageIndex + 1}`}
         >
           {isMapPage && (
             <Box
@@ -404,74 +409,64 @@ const CLSurveyPageLayout = memo(
               mt={isMapPage && isMobileOrSmaller ? '20px' : undefined}
             >
               <Box h="100%" display="flex">
-                {uiPages.map((page, index) => {
-                  const pageElements = extractElementsByOtherOptionLogic(
-                    page,
-                    data
-                  );
-                  return (
-                    currentStep === index && (
-                      <Box key={index} p="24px" w="100%">
-                        <Box display="flex" flexDirection="column">
-                          {allowAnonymousPosting && (
-                            <Box w="100%" mb="12px">
-                              <Warning icon="shield-checkered">
-                                {formatMessage(messages.anonymousSurveyMessage)}
-                              </Warning>
-                            </Box>
-                          )}
-                          {page.options.title && (
-                            <Title
-                              as="h1"
-                              variant={isMobileOrSmaller ? 'h2' : 'h1'}
-                              m="0"
-                              mb="8px"
-                              color="tenantPrimary"
-                            >
-                              {page.options.title}
-                            </Title>
-                          )}
-                          {page.options.description && (
-                            <Box mb="48px">
-                              <QuillEditedContent
-                                fontWeight={400}
-                                textColor={theme.colors.tenantText}
-                              >
-                                <div
-                                  dangerouslySetInnerHTML={{
-                                    __html: page.options.description,
-                                  }}
-                                />
-                              </QuillEditedContent>
-                            </Box>
-                          )}
-                          {pageElements.map((elementUiSchema, index) => {
-                            const hasOtherFieldBelow = hasOtherTextFieldBelow(
-                              elementUiSchema,
-                              data
-                            );
-
-                            return (
-                              <Box
-                                mb={hasOtherFieldBelow ? undefined : '28px'}
-                                key={index}
-                              >
-                                <JsonFormsDispatch
-                                  renderers={renderers}
-                                  cells={cells}
-                                  uischema={elementUiSchema}
-                                  schema={schema}
-                                  path={path}
-                                  enabled={enabled}
-                                />
-                              </Box>
-                            );
-                          })}
-                        </Box>
+                <Box p="24px" w="100%">
+                  <Box display="flex" flexDirection="column">
+                    {allowAnonymousPosting && (
+                      <Box w="100%" mb="12px">
+                        <Warning icon="shield-checkered">
+                          {formatMessage(messages.anonymousSurveyMessage)}
+                        </Warning>
                       </Box>
-                    )
-                  );
-                })}
+                    )}
+                    {currentPage.options.title && (
+                      <Title
+                        as="h1"
+                        variant={isMobileOrSmaller ? 'h2' : 'h1'}
+                        m="0"
+                        mb="8px"
+                        color="tenantPrimary"
+                      >
+                        {currentPage.options.title}
+                      </Title>
+                    )}
+                    {currentPage.options.description && (
+                      <Box mb="48px">
+                        <QuillEditedContent
+                          fontWeight={400}
+                          textColor={theme.colors.tenantText}
+                        >
+                          <div
+                            dangerouslySetInnerHTML={{
+                              __html: currentPage.options.description,
+                            }}
+                          />
+                        </QuillEditedContent>
+                      </Box>
+                    )}
+                    {pageElements.map((elementUiSchema, index) => {
+                      const hasOtherFieldBelow = hasOtherTextFieldBelow(
+                        elementUiSchema,
+                        data
+                      );
+
+                      return (
+                        <Box
+                          mb={hasOtherFieldBelow ? undefined : '28px'}
+                          key={index}
+                        >
+                          <JsonFormsDispatch
+                            renderers={renderers}
+                            cells={cells}
+                            uischema={elementUiSchema}
+                            schema={schema}
+                            path={path}
+                            enabled={enabled}
+                          />
+                        </Box>
+                      );
+                    })}
+                  </Box>
+                </Box>
               </Box>
               {ideaId &&
                 pageVariant === 'after-submission' &&

@@ -87,8 +87,6 @@ describe('Survey question logic', () => {
       .find('select')
       .select('Page 3');
 
-    cy.wait(10000);
-
     // Save again
     cy.get('form').submit();
     cy.get('[data-testid="feedbackSuccessMessage"]');
@@ -104,6 +102,7 @@ describe('Survey question logic', () => {
       .click();
 
     // Make sure submit button is shown
+    cy.wait(1000);
     cy.get('[data-cy="e2e-submit-form"]');
 
     // Instead select option 2
@@ -113,14 +112,17 @@ describe('Survey question logic', () => {
       .click();
 
     // Go to next page
+    cy.wait(1000);
     cy.get('[data-cy="e2e-next-page"]').click();
 
     // Make sure we're on page 2
-    cy.get('[data-cy="e2e-page-index-1');
+    cy.get('[data-cy="e2e-page-number-2');
 
     // Go back, deselect option 2
+    cy.wait(1000);
     cy.get('[data-cy="e2e-previous-page"]').click();
-    cy.get('[data-cy="e2e-page-index-0');
+    cy.get('[data-cy="e2e-page-number-1');
+    cy.wait(1000);
     cy.get('#e2e-single-select-control')
       .find('[data-testid="radio-container"]')
       .eq(1)
@@ -129,6 +131,6 @@ describe('Survey question logic', () => {
     // Go to next page, make sure we're on page 3
     cy.wait(1000);
     cy.get('[data-cy="e2e-next-page"]').click();
-    cy.get('[data-cy="e2e-page-index-2');
+    cy.get('[data-cy="e2e-page-number-3');
   });
 });
