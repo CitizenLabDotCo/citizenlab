@@ -27,7 +27,7 @@ export const showProposalsReactions = (idea: IIdeaData) => {
     idea.attributes.action_descriptors.reacting_idea;
 
   return (
-    // BE disables reactions for ideas in certain statuses
+    // BE disables reactions for ideas with certain statuses
     reactingActionDescriptor.enabled ||
     isFixableByAuthentication(reactingActionDescriptor.disabled_reason)
   );
