@@ -374,6 +374,7 @@
   "app.components.app.containers.AdminPage.ProjectEdit.phaseHeader.votingPhase": "Cyfnod pleidleisio",
   "app.components.app.containers.AdminPage.ProjectEdit.phaseHeader.whoCanParticipate": "Pwy all gymryd rhan?",
   "app.components.app.containers.AdminPage.ProjectEdit.prescreeningSubtext": "Ni fydd mewnbynnau yn weladwy nes bydd gweinyddwr yn eu hadolygu a'u cymeradwyo. Ni all awduron olygu mewnbynnau ar ôl iddynt gael eu sgrinio neu ar ôl ymateb iddynt.",
+  "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.addDescription": "Ychwanegu disgrifiad...",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.adminsOnly": "Gweinyddwyr yn unig",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.anyoneWithLink": "Gall unrhyw un sydd â'r ddolen ryngweithio â'r prosiect drafft",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.approve": "Cymeradwyo",
