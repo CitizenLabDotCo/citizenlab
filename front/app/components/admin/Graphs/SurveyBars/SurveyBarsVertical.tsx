@@ -2,9 +2,15 @@ import React, { useMemo } from 'react';
 
 import { Box, Image, Text, Tooltip } from '@citizenlab/cl2-component-library';
 
-import { ResultUngrouped, ResultGrouped } from 'api/survey_results/types';
+import {
+  ResultUngrouped,
+  ResultGrouped,
+  LogicConfig,
+} from 'api/survey_results/types';
 
 import useLocalize from 'hooks/useLocalize';
+
+import LogicIcon from 'containers/Admin/projects/project/nativeSurvey/FormResults/LogicIcon';
 
 import { useIntl } from 'utils/cl-intl';
 
@@ -16,6 +22,7 @@ interface Props {
   questionResult: ResultUngrouped | ResultGrouped;
   colorScheme: string[];
   showLabelsBelow?: boolean;
+  logicConfig?: LogicConfig;
 }
 
 const MAX_BARS = 12;
@@ -25,6 +32,7 @@ const GAP_SIZE = 6;
 const SurveyBarsVertical = ({
   questionResult,
   colorScheme,
+  logicConfig,
   showLabelsBelow = false,
 }: Props) => {
   const localize = useLocalize();
@@ -57,95 +65,108 @@ const SurveyBarsVertical = ({
         gap={`${GAP_SIZE}px`}
         overflow="hidden"
       >
-        {answers.map(({ label, count, percentage, image, bars }, index) => {
-          const hasMultipleBars = bars.length > 1;
-          const barWidth = hasMultipleBars
-            ? `${(columnWidth - GAP_SIZE * (bars.length - 1)) / bars.length}px`
-            : `${columnWidth}px`;
+        {answers.map(
+          (
+            { label, logicFilterId, logic, count, percentage, image, bars },
+            index
+          ) => {
+            const hasMultipleBars = bars.length > 1;
+            const barWidth = hasMultipleBars
+              ? `${
+                  (columnWidth - GAP_SIZE * (bars.length - 1)) / bars.length
+                }px`
+              : `${columnWidth}px`;
 
-          return (
-            <Box
-              key={index}
-              display="flex"
-              flexDirection="column"
-              alignItems="center"
-              justifyContent="flex-end"
-              height="100%"
-              width={`${columnWidth}px`}
-            >
-              {image?.small && (
-                <Box mb="12px">
-                  <Image
-                    width="48px"
-                    height="48px"
-                    src={image.small}
-                    alt={label}
-                  />
-                </Box>
-              )}
+            return (
               <Box
+                key={index}
                 display="flex"
                 flexDirection="column"
                 alignItems="center"
-                ml="8px"
+                justifyContent="flex-end"
+                height="100%"
+                width={`${columnWidth}px`}
               >
-                <Tooltip
-                  theme="dark"
-                  placement="bottom"
-                  content={formatMessage(messages.responseCount, {
-                    choiceCount: count,
-                    percentage,
-                  })}
-                >
-                  <div>
-                    <Text
-                      variant="bodyS"
-                      color="textSecondary"
-                      m="0"
-                      mb="4px"
-                      textAlign="center"
-                    >
-                      {percentage}%
-                    </Text>
-                  </div>
-                </Tooltip>
+                {image?.small && (
+                  <Box mb="12px">
+                    <Image
+                      width="48px"
+                      height="48px"
+                      src={image.small}
+                      alt={label}
+                    />
+                  </Box>
+                )}
                 <Box
                   display="flex"
-                  flexDirection="row"
-                  justifyContent="center"
-                  alignItems="flex-end"
-                  gap={`${GAP_SIZE / 2}px`}
-                  width="100%"
+                  flexDirection="column"
+                  alignItems="center"
+                  ml="8px"
                 >
-                  {bars.map((bar, idx) => (
-                    <VerticalBar key={idx} {...bar} width={barWidth} />
-                  ))}
-                </Box>
-                <Box mt="6px" maxWidth={`${columnWidth}px`} overflow="hidden">
-                  {label.length > 6 ? (
-                    <Tooltip theme="dark" placement="bottom" content={label}>
+                  <Tooltip
+                    theme="dark"
+                    placement="bottom"
+                    content={formatMessage(messages.responseCount, {
+                      choiceCount: count,
+                      percentage,
+                    })}
+                  >
+                    <div>
+                      <LogicIcon
+                        logicFilterId={logicFilterId}
+                        logicConfig={logicConfig}
+                        fieldLogic={logic}
+                        type="option"
+                      />
                       <Text
-                        variant="bodyM"
+                        variant="bodyS"
+                        color="textSecondary"
                         m="0"
-                        as="span"
+                        mb="4px"
                         textAlign="center"
-                        whiteSpace="nowrap"
-                        overflow="hidden"
-                        textOverflow="ellipsis"
                       >
-                        {label.substring(0, 6)}...
+                        {percentage}%
                       </Text>
-                    </Tooltip>
-                  ) : (
-                    <Text variant="bodyM" m="0">
-                      {label}
-                    </Text>
-                  )}
+                    </div>
+                  </Tooltip>
+                  <Box
+                    display="flex"
+                    flexDirection="row"
+                    justifyContent="center"
+                    alignItems="flex-end"
+                    gap={`${GAP_SIZE / 2}px`}
+                    width="100%"
+                  >
+                    {bars.map((bar, idx) => (
+                      <VerticalBar key={idx} {...bar} width={barWidth} />
+                    ))}
+                  </Box>
+                  <Box mt="6px" maxWidth={`${columnWidth}px`} overflow="hidden">
+                    {label.length > 6 ? (
+                      <Tooltip theme="dark" placement="bottom" content={label}>
+                        <Text
+                          variant="bodyM"
+                          m="0"
+                          as="span"
+                          textAlign="center"
+                          whiteSpace="nowrap"
+                          overflow="hidden"
+                          textOverflow="ellipsis"
+                        >
+                          {label.substring(0, 6)}...
+                        </Text>
+                      </Tooltip>
+                    ) : (
+                      <Text variant="bodyM" m="0">
+                        {label}
+                      </Text>
+                    )}
+                  </Box>
                 </Box>
               </Box>
-            </Box>
-          );
-        })}
+            );
+          }
+        )}
       </Box>
 
       {showLabelsBelow && (

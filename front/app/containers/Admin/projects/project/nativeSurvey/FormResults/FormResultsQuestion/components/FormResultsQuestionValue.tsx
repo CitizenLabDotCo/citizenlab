@@ -5,7 +5,7 @@ import { colors } from '@citizenlab/cl2-component-library';
 import { ICustomFieldInputType } from 'api/custom_fields/types';
 import { LogicConfig, ResultUngrouped } from 'api/survey_results/types';
 
-import SurveyBars from 'components/admin/Graphs/SurveyBars/SurveyBarsHorizontal';
+import SurveyBarsHorizontal from 'components/admin/Graphs/SurveyBars/SurveyBarsHorizontal';
 import SurveyBarsVertical from 'components/admin/Graphs/SurveyBars/SurveyBarsVertical';
 
 import LineLocationQuestion from '../MappingQuestions/LineLocationQuestion';
@@ -48,6 +48,7 @@ const FormResultQuestionValue = ({
         <SurveyBarsVertical
           questionResult={result}
           colorScheme={[colors.primary]}
+          logicConfig={logicConfig}
         />
       );
     case 'matrix_linear_scale':
@@ -55,7 +56,7 @@ const FormResultQuestionValue = ({
     case 'multiselect':
       return (
         <>
-          <SurveyBars
+          <SurveyBarsHorizontal
             questionResult={result}
             colorScheme={[colors.primary]}
             logicConfig={logicConfig}
