@@ -10,7 +10,6 @@ import {
   Tooltip,
   Tr,
 } from '@citizenlab/cl2-component-library';
-import { useTheme } from 'styled-components';
 
 import { ResultUngrouped } from 'api/survey_results/types';
 
@@ -20,7 +19,7 @@ import { useIntl } from 'utils/cl-intl';
 
 import messages from './messages';
 import {
-  getTenantColourByPercentage,
+  getPrimaryColourByPercentage,
   getLinearScaleLabelsArray,
   getPercentage,
   getPercentageTextBorder,
@@ -34,7 +33,6 @@ type Props = {
 };
 
 const MatrixQuestion = ({ result }: Props) => {
-  const theme = useTheme();
   const locale = useLocale();
   const { formatMessage } = useIntl();
 
@@ -88,10 +86,7 @@ const MatrixQuestion = ({ result }: Props) => {
                   return (
                     <StyledTd
                       key={linearScaleLabel.value}
-                      background={getTenantColourByPercentage(
-                        percentage,
-                        theme.colors.tenantPrimary
-                      )}
+                      background={getPrimaryColourByPercentage(percentage)}
                     >
                       <Box display="flex" justifyContent="center">
                         <Tooltip
