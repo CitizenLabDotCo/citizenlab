@@ -95,7 +95,7 @@ const ProjectHeader = ({ projectId }: Props) => {
               fontSize={`${fontSizes}px`}
             >
               {isEmptyMultiloc(project.data.attributes.description_multiloc)
-                ? formatMessage(messages.addDescription)
+                ? formatMessage(messages.addDescription1)
                 : stripHtml(
                     localize(project.data.attributes.description_multiloc),
                     20
