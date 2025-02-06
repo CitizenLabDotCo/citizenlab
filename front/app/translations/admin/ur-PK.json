@@ -374,6 +374,7 @@
   "app.components.app.containers.AdminPage.ProjectEdit.phaseHeader.votingPhase": "ووٹنگ کا مرحلہ",
   "app.components.app.containers.AdminPage.ProjectEdit.phaseHeader.whoCanParticipate": "کون حصہ لے سکتا ہے؟",
   "app.components.app.containers.AdminPage.ProjectEdit.prescreeningSubtext": "ان پٹس اس وقت تک نظر نہیں آئیں گے جب تک کہ کوئی منتظم ان کا جائزہ نہیں لے گا اور ان کی منظوری نہیں دے گا۔ مصنفین ان پٹ کو اسکرین کرنے یا ان پر ردعمل ظاہر کرنے کے بعد ان میں ترمیم نہیں کر سکتے۔",
+  "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.addDescription": "تفصیل شامل کریں...",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.adminsOnly": "صرف ایڈمنز",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.anyoneWithLink": "کوئی بھی جس کے پاس لنک ہے مسودہ پروجیکٹ کے ساتھ تعامل کر سکتا ہے۔",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.approve": "منظور کرو",
