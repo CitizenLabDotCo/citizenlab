@@ -33,8 +33,7 @@ import {
   DEFAULT_TILE_PROVIDER,
   MAPTILER_ATTRIBUTION,
 } from './constants';
-
-export type DefaultBasemapType = 'BasemapAt' | 'MapTiler';
+import { DefaultBasemapType } from './types';
 
 // getBasemapType
 // Description: Gets the basemap type given a certain tileProvider URL.

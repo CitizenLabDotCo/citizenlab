@@ -20,9 +20,8 @@ import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useLocale from 'hooks/useLocale';
 
 import { configureMapView } from './config';
-import { InitialData } from './types';
+import { InitialData, DefaultBasemapType } from './types';
 import {
-  DefaultBasemapType,
   getDefaultBasemapType,
   getDefaultBasemap,
   handleWebMapReferenceLayers,
