@@ -524,7 +524,7 @@ resource 'Idea Custom Fields' do
         field_to_update = create(
           :custom_field_matrix_linear_scale,
           resource: custom_form,
-          linear_scale_label_5_multiloc: { 'en' => 'Furthest' }
+          linear_scale_label_11_multiloc: { 'en' => 'Furthest' }
         )
         update_statement_id, delete_statement_id = field_to_update.matrix_statement_ids
 
@@ -537,8 +537,8 @@ resource 'Idea Custom Fields' do
             {
               id: field_to_update.id,
               title_multiloc: { en: 'Updated field' },
-              linear_scale_label_5_multiloc: { 'en' => 'Farthest' },
-              maximum: 5,
+              linear_scale_label_11_multiloc: { 'en' => 'Farthest' },
+              maximum: 11,
               matrix_statements: [
                 {
                   title_multiloc: { en: 'Inserted statement' }
@@ -562,8 +562,8 @@ resource 'Idea Custom Fields' do
           attributes: hash_including(
             input_type: 'matrix_linear_scale',
             title_multiloc: { en: 'Updated field' },
-            linear_scale_label_5_multiloc: { en: 'Farthest' },
-            maximum: 5
+            linear_scale_label_11_multiloc: { en: 'Farthest' },
+            maximum: 11
           ),
           id: an_instance_of(String),
           type: 'custom_field',
@@ -795,6 +795,54 @@ resource 'Idea Custom Fields' do
           }] },
           random_option_ordering: false,
           constraints: {}
+        })
+      end
+
+      example 'Update rating field' do
+        field_to_update = create(:custom_field_rating, resource: custom_form)
+        create(:custom_field, resource: custom_form) # field to destroy
+        request = {
+          custom_fields: [
+            {
+              input_type: 'page',
+              page_layout: 'default'
+            },
+            {
+              id: field_to_update.id,
+              title_multiloc: { 'en' => 'Rate your experince with us' },
+              description_multiloc: { 'en' => 'Description of question' },
+              required: true,
+              enabled: true,
+              maximum: 7
+            },
+            final_page
+          ]
+        }
+        do_request request
+
+        assert_status 200
+        json_response = json_parse(response_body)
+        expect(json_response[:data].size).to eq 3
+        expect(json_response[:data][1]).to match({
+          attributes: {
+            code: nil,
+            created_at: an_instance_of(String),
+            description_multiloc: { en: 'Description of question' },
+            enabled: true,
+            input_type: 'rating',
+            key: an_instance_of(String),
+            ordering: 1,
+            required: true,
+            title_multiloc: { en: 'Rate your experince with us' },
+            updated_at: an_instance_of(String),
+            maximum: 7,
+            logic: {},
+            random_option_ordering: false,
+            constraints: {}
+          },
+          id: an_instance_of(String),
+          type: 'custom_field',
+          relationships: { options: { data: [] }, resource: { data: { id: custom_form.id, type: 'custom_form' } } }
         })
       end
 

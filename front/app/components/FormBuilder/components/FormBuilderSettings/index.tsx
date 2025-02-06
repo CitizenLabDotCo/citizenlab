@@ -105,6 +105,7 @@ const FormBuilderSettings = ({
       'multiselect_image',
       'linear_scale',
       'select',
+      'rating',
       'page',
     ].includes(fieldType);
 

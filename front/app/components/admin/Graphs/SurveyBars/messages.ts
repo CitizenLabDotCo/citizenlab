@@ -6,6 +6,18 @@ export default defineMessages({
     defaultMessage:
       '{percentage}% ({choiceCount, plural, no {# choices} one {# choice} other {# choices}})',
   },
+  responseCount: {
+    id: 'app.containers.AdminPage.ProjectEdit.survey.responseCount',
+    defaultMessage:
+      // '{choiceCount, plural, no {# responses} one {# response} other {# responses}}',
+      '{choiceCount, plural, no {# responses} one {# response} other {# responses}}',
+  },
+  response: {
+    id: 'app.containers.AdminPage.ProjectEdit.survey.response',
+    defaultMessage:
+      '{choiceCount, plural, no {responses} one {response} other {responses}}',
+    // '{percentage}% \n({choiceCount, plural, no {# choices} one {# choice} other {# choices}})',
+  },
   noAnswer: {
     id: 'app.components.admin.ContentBuilder.Widgets.SurveyQuestionResultWidget.noAnswer',
     defaultMessage: 'No answer',

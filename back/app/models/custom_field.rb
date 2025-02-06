@@ -62,7 +62,7 @@ class CustomField < ApplicationRecord
 
   FIELDABLE_TYPES = %w[User CustomForm].freeze
   INPUT_TYPES = %w[
-    checkbox date file_upload files html html_multiloc image_files linear_scale multiline_text multiline_text_multiloc
+    checkbox date file_upload files html html_multiloc image_files linear_scale rating multiline_text multiline_text_multiloc
     multiselect multiselect_image number page point line polygon select select_image shapefile_upload text text_multiloc
     topic_ids section cosponsor_ids ranking matrix_linear_scale
   ].freeze
@@ -141,7 +141,7 @@ class CustomField < ApplicationRecord
   end
 
   def supports_linear_scale?
-    %w[linear_scale matrix_linear_scale].include?(input_type)
+    %w[linear_scale matrix_linear_scale rating].include?(input_type)
   end
 
   def supports_matrix_statements?
@@ -220,6 +220,10 @@ class CustomField < ApplicationRecord
 
   def linear_scale?
     input_type == 'linear_scale'
+  end
+
+  def rating?
+    input_type == 'rating'
   end
 
   def page_or_section?

@@ -565,6 +565,18 @@ RSpec.describe JsonSchemaGeneratorService do
     end
   end
 
+  describe '#visit_rating' do
+    let(:field) { create(:custom_field_linear_scale, key: field_key) }
+
+    it 'returns the schema for the given field' do
+      expect(generator.visit_rating(field)).to eq({
+        type: 'number',
+        minimum: 1,
+        maximum: field.maximum
+      })
+    end
+  end
+
   describe '#visit_page' do
     let(:field) { create(:custom_field_page) }
 
