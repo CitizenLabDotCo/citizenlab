@@ -310,7 +310,7 @@ fr-BE:
         proposal: '%{authorName} a commenté une proposition que vous suivez'
         initiative: '%{authorName} a commenté une initiative que vous suivez'
         petition: '%{authorName} a commenté une pétition que vous suivez'
-      subject: 'There''s a new comment on "%{input_title}"'
+      subject: 'Il y a un nouveau commentaire sur « %{input_title} »'
       preheader: '%{authorName} a publié un commentaire sur une idée pour %{organizationName}'
     comment_on_initiative_you_follow:
       cta_reply_to: 'Répondre à %{commentAuthor}'
@@ -393,9 +393,9 @@ fr-BE:
       preheader: '%{post}" a un nouveau commentaire interne'
     official_feedback_on_idea_you_follow:
       header_message: '%{feedback_author_name} gave an update on ''%{input_title}''.'
-      header_title: 'There''s an update on "%{input_title}"'
-      subject: 'Official feedback was posted on "%{input_title}"'
-      preheader: 'There''s an update on an input you follow'
+      header_title: 'Il y a une mise à jour sur « %{input_title} »'
+      subject: 'Un retour officiel a été publié sur « %{input_title} »'
+      preheader: 'Il y a une mise à jour sur une contribution que vous suivez'
     official_feedback_on_initiative_you_follow:
       header_message: '"%{officialName} a publié un message officiel concernant la proposition « %{initiativeTitle} ». Cliquez sur le bouton ci-dessous pour continuer la conversation avec %{organizationName}.'
       header_title: 'Il y a une mise à jour sur une proposition que vous suivez'
@@ -459,11 +459,11 @@ fr-BE:
       header_message: 'La plateforme de participation de %{organizationName} vient de publier le projet suivant :'
       preheader: 'Un nouveau projet a été publié'
     status_change_on_idea_you_follow:
-      status_change: 'The new status of this input is ''%{status}'''
+      status_change: 'Le nouveau statut de cette contribution est « %{status} »'
       header_message: '%{organizationName} updated the status of the input ''%{input_title}'' on their digital participation platform.'
-      header_title: 'An input you follow has a new status'
-      subject: 'The status of "%{input_title}" has changed'
-      preheader: 'An input you follow has a new status'
+      header_title: 'Une contribution que vous suivez a un nouveau statut'
+      subject: 'Le statut de « %{input_title} » a changé'
+      preheader: 'Une contribution que vous suivez a un nouveau statut'
     status_change_on_initiative_you_follow:
       status_change: 'Le nouveau statut de cette proposition est « %{initiativeStatus} »'
       header_message: 'Le statut de la proposition « %{initiativeTitle} » a été changé sur la plateforme de participation de %{organizationName}.'
