@@ -425,8 +425,7 @@ class SurveyResultsGeneratorService < FieldVisitorService
   end
 
   def add_question_numbers_to_results(results)
-    # TODO: JS - @page_numbers not working when 'survey_end' removed from hash
-    @page_numbers = { 'survey_end' => 999 } # Lookup that we can use later in logic.
+    @page_numbers = {} # Lookup that we can use later in logic.
     question_number = 0
     page_number = 0
     results.map do |result|
@@ -541,7 +540,7 @@ class SurveyResultsGeneratorService < FieldVisitorService
 
             # Calculate the next page number that will be seen
             if supports_question_logic? input_type
-              answer_value = response[question[:key]]
+              answer_value = response[question[:key]] || 'no_answer'
               values = answer_value.is_a?(Array) ? answer_value : [answer_value] # Convert all values to an array so all fields can be treated the same
               highest_next_page_number_for_question = 0
               values.each do |value|
@@ -565,7 +564,9 @@ class SurveyResultsGeneratorService < FieldVisitorService
 
     # Finalise the results
     results.map do |question|
-      if survey_has_logic
+      # Don't update any figures if the response count is higher than the viewed count
+      # Can happen if logic changed after survey responses were collected and looks odd
+      if survey_has_logic && question[:questionViewedCount] >= (question[:questionResponseCount])
         # Update the total response count with the new figure
         question[:totalResponseCount] = question[:questionViewedCount]
 

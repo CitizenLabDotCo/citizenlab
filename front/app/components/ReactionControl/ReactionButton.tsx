@@ -407,14 +407,18 @@ const ReactionButton = ({
     const describedById = disabledReason ? `tooltip-${ideaId}` : undefined;
 
     const disabledMessage = disabledReasonMessage && (
-      <FormattedMessage
-        {...disabledReasonMessage}
-        values={{
-          enabledFromDate,
-          projectName,
-        }}
-        id={describedById}
-      />
+      // We can't put id on FormattedMessage:
+      // - If it's after the message descriptor, it'll overwrite the message descriptor's id.
+      // - It it's before the message descriptor, it'll be overwritten by the message descriptor's id.
+      <span id={describedById}>
+        <FormattedMessage
+          {...disabledReasonMessage}
+          values={{
+            enabledFromDate,
+            projectName,
+          }}
+        />
+      </span>
     );
 
     return (
