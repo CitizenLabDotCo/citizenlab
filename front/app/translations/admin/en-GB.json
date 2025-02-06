@@ -374,6 +374,7 @@
   "app.components.app.containers.AdminPage.ProjectEdit.phaseHeader.votingPhase": "Voting phase",
   "app.components.app.containers.AdminPage.ProjectEdit.phaseHeader.whoCanParticipate": "Who can participate?",
   "app.components.app.containers.AdminPage.ProjectEdit.prescreeningSubtext": "Inputs won’t be visible until an admin reviews and approves them. Authors can’t edit inputs after they are screened or reacted on.",
+  "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.addDescription": "Add description...",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.adminsOnly": "Admins only",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.anyoneWithLink": "Anyone with the link can interact with the draft project",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.approve": "Approve",
