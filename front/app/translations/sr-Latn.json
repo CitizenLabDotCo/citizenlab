@@ -656,6 +656,7 @@
   "app.components.form.controls.valueOutOfTotalWithMaxExplanation": "{value} out of {total}, where {maxValue} is {maxLabel}",
   "app.components.form.error": "Greška",
   "app.components.form.locationGoogleUnavailable": "Učitavanje polja sa lokacijom google mape nije uspelo.",
+  "app.components.form.progressBarLabel": "Survey progress",
   "app.components.form.submit": "Pošalji",
   "app.components.form.submitApiError": "Došlo je do problema prilikom slanja forme. Molimo vas da proverite greške i pokušate ponovo.",
   "app.components.form.verifiedBlocked": "You can't edit this field because it contains verified information",
