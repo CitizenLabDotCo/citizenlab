@@ -32,7 +32,7 @@ const MapContainer = styled(Box)<{
   basemapType: DefaultBasemapType;
 }>`
   background: ${(props) =>
-    `${props.basemapType === 'BasemapAt' ? 'white' : 'undefined'}`};
+    `${props.basemapType === 'BasemapAt' ? 'white' : ''}`};
 
   .esri-legend--card__message {
     display: none;
