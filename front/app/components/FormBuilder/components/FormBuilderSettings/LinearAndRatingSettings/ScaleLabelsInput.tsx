@@ -101,6 +101,7 @@ const ScaleLabelsInput = ({
                 <Label value={(index + 1).toString()} />
               </Box>
               <Input
+                className={`e2e-linear-scale-label`}
                 type="text"
                 value={labelMultiloc?.[selectedLocale]}
                 onChange={(value) => {
