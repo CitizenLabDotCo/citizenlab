@@ -77,6 +77,20 @@ const LinearScaleControl = ({
     }
   }, [data, getAriaValueText, minimum, maximum]);
 
+  useEffect(() => {
+    if (data === 'question_skipped') {
+      handleChange(path, undefined);
+    }
+
+    return () => {
+      // 🌟 On unmount: If no value was set, mark as "question_skipped"
+      if (data === undefined) {
+        handleChange(path, 'question_skipped');
+      }
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   if (!visible) {
     return null;
   }

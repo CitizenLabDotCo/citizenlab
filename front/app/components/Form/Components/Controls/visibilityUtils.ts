@@ -91,7 +91,10 @@ const validateSchemaCondition = (
   if (Array.isArray(value)) {
     // For arrays, check if at least one element passes validation. Important for multi-select and image-select
     return value.some((val) => ajv.validate(schema, val));
-  } else if (schema.enum?.includes('no_answer') && value === undefined) {
+  } else if (
+    schema.enum?.includes('no_answer') &&
+    value === 'question_skipped'
+  ) {
     return true;
   }
 

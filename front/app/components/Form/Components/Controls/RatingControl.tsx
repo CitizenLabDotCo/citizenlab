@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 
 import {
   Box,
@@ -40,6 +40,20 @@ const RatingControl = ({
   const maximum = schema.maximum ?? 10;
   const answerNotPublic = uischema.options?.answer_visible_to === 'admins';
   const sliderRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (data === 'question_skipped') {
+      handleChange(path, undefined);
+    }
+
+    return () => {
+      // 🌟 On unmount: If no value was set, mark as "question_skipped"
+      if (data === undefined) {
+        handleChange(path, 'question_skipped');
+      }
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   if (!visible) {
     return null;

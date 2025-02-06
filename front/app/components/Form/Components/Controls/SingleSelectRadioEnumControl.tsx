@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { Box, Text, Radio } from '@citizenlab/cl2-component-library';
 import {
@@ -43,6 +43,20 @@ const SingleSelectRadioEnumControl = ({
   const [didBlur, setDidBlur] = useState(false);
   const options = getOptions(schema, 'singleEnum', uischema);
   const answerNotPublic = uischema.options?.answer_visible_to === 'admins';
+
+  useEffect(() => {
+    if (data === 'question_skipped') {
+      handleChange(path, undefined);
+    }
+
+    return () => {
+      // 🌟 On unmount: If no value was set, mark as "question_skipped"
+      if (data === undefined) {
+        handleChange(path, 'question_skipped');
+      }
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   if (!visible) {
     return null;
