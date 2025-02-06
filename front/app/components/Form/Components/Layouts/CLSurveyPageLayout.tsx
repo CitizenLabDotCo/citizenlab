@@ -345,6 +345,7 @@ const CLSurveyPageLayout = memo(
           flexDirection={isMobileOrSmaller ? 'column' : 'row'}
           height="100%"
           w="100%"
+          data-cy={`e2e-page-index-${currentStep}`}
         >
           {isMapPage && (
             <Box
