@@ -1078,6 +1078,7 @@
   "app.containers.Admin.projects.project.survey.formResults.exportGeoJSONTooltip2": "crwdns2747331:0crwdne2747331:0",
   "app.containers.Admin.projects.project.survey.formResults.hideDetails": "crwdns4061573:0crwdne4061573:0",
   "app.containers.Admin.projects.project.survey.formResults.rank": "crwdns4061575:0#{rank}crwdne4061575:0",
+  "app.containers.Admin.projects.project.survey.formResults.respondentsTooltip": "crwdns4156945:0{respondentCount}crwdnd4156945:0{respondentCount}crwdnd4156945:0{respondentCount}crwdne4156945:0",
   "app.containers.Admin.projects.project.survey.formResults.viewDetails": "crwdns4061577:0crwdne4061577:0",
   "app.containers.Admin.projects.project.survey.formResults.xChoices": "crwdns4061579:0{numberChoices}crwdnd4061579:0{numberChoices}crwdnd4061579:0{numberChoices}crwdne4061579:0",
   "app.containers.Admin.projects.project.survey.heatMap": "crwdns1962918:0crwdne1962918:0",
