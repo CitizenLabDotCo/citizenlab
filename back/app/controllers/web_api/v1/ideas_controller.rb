@@ -32,6 +32,7 @@ class WebApi::V1::IdeasController < ApplicationController
       :idea_trending_info,
       :topics,
       :phases,
+      :idea_status,
       :creation_phase,
       :manual_votes_last_updated_by,
       {
