@@ -1078,6 +1078,7 @@
   "app.containers.Admin.projects.project.survey.formResults.exportGeoJSONTooltip2": "قم بتصدير الإجابات على هذا السؤال كملف GeoJSON. بالنسبة لكل ميزة GeoJSON، سيتم إدراج كافة استجابات استطلاع المستجيبين ذات الصلة في كائن \"خصائص\" تلك الميزة.",
   "app.containers.Admin.projects.project.survey.formResults.hideDetails": "إخفاء التفاصيل",
   "app.containers.Admin.projects.project.survey.formResults.rank": "#{rank}",
+  "app.containers.Admin.projects.project.survey.formResults.respondentsTooltip": "{respondentCount, plural, no {{respondentCount} المستجيبون} one {{respondentCount} المستجيبون} other {{respondentCount} المستجيبون}}",
   "app.containers.Admin.projects.project.survey.formResults.viewDetails": "عرض التفاصيل",
   "app.containers.Admin.projects.project.survey.formResults.xChoices": "{numberChoices, plural, no {{numberChoices} خيارات} one {{numberChoices} خيار} other {{numberChoices} خيارات}}",
   "app.containers.Admin.projects.project.survey.heatMap": "خريطة الحرارة",

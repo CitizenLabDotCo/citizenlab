@@ -1078,6 +1078,7 @@
   "app.containers.Admin.projects.project.survey.formResults.exportGeoJSONTooltip2": "Eksporter svarene på dette spørgsmål som en GeoJSON-fil. For hver GeoJSON-funktion vil alle de relaterede respondenters undersøgelsesbesvarelser blive opført i funktionens \"egenskaber\"-objekt.",
   "app.containers.Admin.projects.project.survey.formResults.hideDetails": "Skjul detaljer",
   "app.containers.Admin.projects.project.survey.formResults.rank": "#{rank}",
+  "app.containers.Admin.projects.project.survey.formResults.respondentsTooltip": "{respondentCount, plural, no {{respondentCount} respondenter} one {{respondentCount} respondent} other {{respondentCount} respondenter}}",
   "app.containers.Admin.projects.project.survey.formResults.viewDetails": "Se detaljer",
   "app.containers.Admin.projects.project.survey.formResults.xChoices": "{numberChoices, plural, no {{numberChoices} valg} one {{numberChoices} valg} other {{numberChoices} valg}}",
   "app.containers.Admin.projects.project.survey.heatMap": "Varmekort",
