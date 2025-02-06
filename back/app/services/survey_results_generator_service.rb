@@ -390,7 +390,7 @@ class SurveyResultsGeneratorService < FieldVisitorService
   end
 
   def generate_answer_keys(field)
-    (field.input_type.in?(%w[linear_scale rating]) ? (1..field.maximum).to_a : field.options.map(&:key)) + [nil]
+    (%w[linear_scale rating].include?(field.input_type) ? (1..field.maximum).to_a : field.options.map(&:key)) + [nil]
   end
 
   # Convert stored user keys for domicile field to match the options keys eg "f6319053-d521-4b28-9d71-a3693ec95f45" => "north_london_8rg"
