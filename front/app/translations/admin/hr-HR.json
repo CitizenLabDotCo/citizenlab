@@ -374,6 +374,7 @@
   "app.components.app.containers.AdminPage.ProjectEdit.phaseHeader.votingPhase": "Faza glasanja",
   "app.components.app.containers.AdminPage.ProjectEdit.phaseHeader.whoCanParticipate": "Tko može sudjelovati?",
   "app.components.app.containers.AdminPage.ProjectEdit.prescreeningSubtext": "Unosi neće biti vidljivi dok ih administrator ne pregleda i odobri. Autori ne mogu uređivati unose nakon što su pregledani ili na njih reagirali.",
+  "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.addDescription": "Dodaj opis...",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.adminsOnly": "Samo za administratore",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.anyoneWithLink": "Svatko s vezom može komunicirati s nacrtom projekta",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.approve": "Odobriti",
