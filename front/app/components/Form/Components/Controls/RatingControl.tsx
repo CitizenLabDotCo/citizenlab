@@ -37,7 +37,7 @@ const RatingControl = ({
   const theme = useTheme();
 
   const minimum = 1;
-  const maximum = schema.maximum ?? 10; // Seven since the maximum number of options is 10
+  const maximum = schema.maximum ?? 10;
   const answerNotPublic = uischema.options?.answer_visible_to === 'admins';
   const sliderRef = useRef<HTMLDivElement>(null);
 
@@ -45,11 +45,13 @@ const RatingControl = ({
     return null;
   }
 
+  const labelId = `${sanitizeForClassname(id)}-label`;
+  const inputId = `${sanitizeForClassname(id)}-rating-input`;
+
   const getButtonWidth = () => {
-    if (isSmallerThanPhone) {
-      return `calc(100% / ${maximum > 5 ? 4 : maximum} - 8px)`; // Fit 4 buttons per row on small screens
-    }
-    return `calc(100% / ${maximum} - 8px)`; // Fit all buttons on one row for larger screens
+    return isSmallerThanPhone
+      ? `calc(100% / ${maximum > 5 ? 4 : maximum} - 8px)`
+      : `calc(100% / ${maximum} - 8px)`;
   };
 
   const handleKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
@@ -84,25 +86,33 @@ const RatingControl = ({
 
   return (
     <>
+      {/* Label now correctly references a hidden <input> */}
       <FormLabel
-        htmlFor={sanitizeForClassname(id)}
+        id={labelId}
+        htmlFor={inputId}
         labelValue={getLabel(uischema, schema, path)}
         optional={!required}
         subtextValue={getSubtextElement(uischema.options?.description)}
         subtextSupportsHtml
       />
+
       {answerNotPublic && (
         <Text mb="8px" mt="0px" fontSize="s">
           <FormattedMessage {...messages.notPublic} />
         </Text>
       )}
+
+      {/* Hidden input to make the label valid */}
+      <input type="hidden" id={inputId} value={data || minimum} readOnly />
+
       <Box
         data-testid="ratingControl"
         role="slider"
         ref={sliderRef}
         aria-valuemin={minimum}
         aria-valuemax={maximum}
-        aria-labelledby={sanitizeForClassname(id)}
+        aria-valuenow={data || minimum}
+        aria-labelledby={labelId}
         tabIndex={0}
         onKeyDown={handleKeyDown}
       >
@@ -122,9 +132,7 @@ const RatingControl = ({
               >
                 <Button
                   py="12px"
-                  id={`${sanitizeForClassname(
-                    id
-                  )}-rating-option-${visualIndex}`}
+                  id={`${inputId}-option-${visualIndex}`}
                   tabIndex={-1}
                   aria-pressed={data === visualIndex}
                   px="0"
@@ -156,8 +164,9 @@ const RatingControl = ({
           })}
         </Box>
       </Box>
+
       <ErrorDisplay
-        inputId={sanitizeForClassname(id)}
+        inputId={inputId}
         ajvErrors={errors}
         fieldPath={path}
         didBlur={false}
