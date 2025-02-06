@@ -374,6 +374,7 @@
   "app.components.app.containers.AdminPage.ProjectEdit.phaseHeader.votingPhase": "Oylama aşaması",
   "app.components.app.containers.AdminPage.ProjectEdit.phaseHeader.whoCanParticipate": "Kimler katılabilir?",
   "app.components.app.containers.AdminPage.ProjectEdit.prescreeningSubtext": "Girdiler, bir yönetici tarafından incelenip onaylanana kadar görünür olmayacaktır. Yazarlar, girdileri inceledikten veya tepki verdikten sonra düzenleyemezler.",
+  "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.addDescription": "Açıklama ekle...",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.adminsOnly": "Sadece yöneticiler",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.anyoneWithLink": "Bağlantıya sahip olan herkes taslak proje ile etkileşime geçebilir",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.approve": "Onaylamak",
