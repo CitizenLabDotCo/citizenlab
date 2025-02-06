@@ -1078,6 +1078,7 @@
   "app.containers.Admin.projects.project.survey.formResults.exportGeoJSONTooltip2": "اس سوال کے جوابات کو GeoJSON فائل کے طور پر برآمد کریں۔ ہر GeoJSON فیچر کے لیے، تمام متعلقہ جواب دہندگان کے سروے کے جوابات اس فیچر کے 'پراپرٹیز' آبجیکٹ میں درج ہوں گے۔",
   "app.containers.Admin.projects.project.survey.formResults.hideDetails": "تفصیلات چھپائیں۔",
   "app.containers.Admin.projects.project.survey.formResults.rank": "#{rank}",
+  "app.containers.Admin.projects.project.survey.formResults.respondentsTooltip": "{respondentCount, plural, no {{respondentCount} جواب دہندگان} one {{respondentCount} جواب دہندگان} other {{respondentCount} جواب دہندگان}}",
   "app.containers.Admin.projects.project.survey.formResults.viewDetails": "تفصیلات دیکھیں",
   "app.containers.Admin.projects.project.survey.formResults.xChoices": "{numberChoices, plural, no {{numberChoices} انتخاب} one {{numberChoices} انتخاب} other {{numberChoices} انتخاب}}",
   "app.containers.Admin.projects.project.survey.heatMap": "گرمی کا نقشہ",
