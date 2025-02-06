@@ -28,7 +28,7 @@ const LinearAndRatingSettings = ({
       <Box mb="16px">
         <RangeInput maximumName={maximumName} inputType={inputType} />
       </Box>
-      {inputType === 'linear_scale' && (
+      {['matrix_linear_scale', 'linear_scale'].includes(inputType) && (
         <Box mb="32px">
           <ScaleLabelInput
             platformLocale={platformLocale}
