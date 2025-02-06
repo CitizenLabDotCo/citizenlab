@@ -153,10 +153,10 @@ const MatrixControl = ({
           aria-labelledby={`matrix-question-label-${id}`}
         >
           <Thead>
-            <Td minWidth="84px" />
+            <Td minWidth="84px" pt="0px" />
             {columnsFromSchema.map((column, index) => {
               return (
-                <Th minWidth="84px" key={index} scope="col">
+                <Th minWidth="84px" key={index} scope="col" pt="0px">
                   <Box title={column} display="flex" justifyContent="center">
                     <Text
                       textAlign="center"

@@ -50,6 +50,7 @@ const StyledSelect = styled(Select)`
 
 const Ul = styled.ul`
   padding: 0;
+  margin-top: 4px;
   list-style-type: none;
 `;
 
