@@ -290,8 +290,8 @@ class SurveyResultsGeneratorService < FieldVisitorService
   def get_option_logic(field)
     return {} if field.logic.blank?
 
-    is_linear_scale = field.input_type == 'linear_scale'
-    options = if is_linear_scale
+    is_linear_or_rating = %w[linear_scale rating].include?(field.input_type)
+    options = if is_linear_or_rating
       # Create a unique ID for this linear scale option in the full results so we can filter logic
       (1..field.maximum).map { |value| { id: "#{field.id}_#{value}", key: value } }
     else
@@ -301,7 +301,7 @@ class SurveyResultsGeneratorService < FieldVisitorService
     # NOTE: Only options with logic will be returned
     any_other_answer_page_id = field.logic['rules']&.find { |r| r['if'] == 'any_other_answer' }&.dig('goto_page_id')
     option_logic = options.each_with_object({}) do |option, accu|
-      rule_id = is_linear_scale ? option[:key] : option[:id]
+      rule_id = is_linear_or_rating ? option[:key] : option[:id]
       logic_next_page_id = field.logic['rules']&.find { |r| r['if'] == rule_id }&.dig('goto_page_id') || any_other_answer_page_id
       accu[option[:key]] = { id: option[:id], nextPageId: logic_next_page_id } if logic_next_page_id
     end
