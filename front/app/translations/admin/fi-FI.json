@@ -374,6 +374,7 @@
   "app.components.app.containers.AdminPage.ProjectEdit.phaseHeader.votingPhase": "Äänestysvaihe",
   "app.components.app.containers.AdminPage.ProjectEdit.phaseHeader.whoCanParticipate": "Kuka voi osallistua?",
   "app.components.app.containers.AdminPage.ProjectEdit.prescreeningSubtext": "Syötteet eivät näy ennen kuin järjestelmänvalvoja tarkistaa ja hyväksyy ne. Tekijät eivät voi muokata syötteitä sen jälkeen, kun ne on tarkastettu tai reagoitu.",
+  "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.addDescription": "Lisää kuvaus...",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.adminsOnly": "Vain järjestelmänvalvojat",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.anyoneWithLink": "Kaikki linkin saaneet voivat olla vuorovaikutuksessa projektin luonnoksen kanssa",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.approve": "Hyväksy",
