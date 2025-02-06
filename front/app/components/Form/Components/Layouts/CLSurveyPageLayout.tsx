@@ -23,6 +23,8 @@ import {
 import { useParams, useSearchParams } from 'react-router-dom';
 import { useTheme } from 'styled-components';
 
+import { IIdea } from 'api/ideas/types';
+import useIdeaById from 'api/ideas/useIdeaById';
 import { IMapConfig } from 'api/map_config/types';
 import useMapConfigById from 'api/map_config/useMapConfigById';
 import useProjectMapConfig from 'api/map_config/useProjectMapConfig';
@@ -43,6 +45,7 @@ import {
   PageType,
   getFilteredDataForUserPath,
   getFormCompletionPercentage,
+  getPageVariant,
 } from 'components/Form/Components/Layouts/utils';
 import { FormContext } from 'components/Form/contexts';
 import { customAjv } from 'components/Form/utils';
@@ -50,6 +53,8 @@ import QuillEditedContent from 'components/UI/QuillEditedContent';
 import Warning from 'components/UI/Warning';
 
 import { useIntl } from 'utils/cl-intl';
+import clHistory from 'utils/cl-router/history';
+import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 import eventEmitter from 'utils/eventEmitter';
 
 import {
@@ -62,6 +67,7 @@ import { useErrorToRead } from '../Fields/ErrorToReadContext';
 import { SURVEY_PAGE_CHANGE_EVENT } from './events';
 import messages from './messages';
 import PageControlButtons from './PageControlButtons';
+import SubmissionReference from './SubmissionReference';
 
 // Handling survey pages in here. The more things that we have added to it,
 // the more it has become a survey page layout. It also becomes extremely hard to understand
@@ -94,8 +100,17 @@ const CLSurveyPageLayout = memo(
     const [userPagePath] = useState<PageType[]>([]);
     const [scrollToError, setScrollToError] = useState(false);
     const [percentageAnswered, setPercentageAnswered] = useState<number>(1);
-    const showSubmit = currentStep === uiPages.length - 1;
-    const dataCyValue = showSubmit ? 'e2e-submit-form' : 'e2e-next-page';
+    const ideaId = searchParams.get('idea_id');
+    const { data: idea } = useIdeaById(ideaId ?? undefined);
+
+    // If the idea (survey submission) has no author relationship,
+    // it was either created through 'anyone' permissions or with
+    // the anonymous toggle on. In these cases, we show the idea id in the modal.
+    const showIdeaIdInModal = idea
+      ? !idea.data.relationships.author?.data
+      : false;
+
+    const pageVariant = getPageVariant(currentStep, uiPages.length);
     const hasPreviousPage = currentStep !== 0;
 
     const draggableDivRef = useRef<HTMLDivElement>(null);
@@ -215,37 +230,49 @@ const CLSurveyPageLayout = memo(
     };
 
     const handleNextAndSubmit = async () => {
-      if (showSubmit && onSubmit) {
-        setIsLoading(true);
-        data.publication_status = 'published';
-        await onSubmit(getFilteredDataForUserPath(userPagePath, data), true);
-        return;
-      }
+      if (!onSubmit) return;
 
       const currentPageCategorization = uiPages[currentStep];
       userPagePath.push(uiPages[currentStep]);
-      if (
-        customAjv.validate(
-          getPageSchema(
-            schema,
-            currentPageCategorization,
-            formState.core?.data,
-            customAjv
-          ),
-          getSanitizedFormData(data)
-        )
-      ) {
-        scrollToTop();
-        data.publication_status = 'draft';
-        data.latest_complete_page = currentStep;
-        onSubmit?.({ data }, false);
-        setCurrentStep(currentStep + 1);
 
-        setIsLoading(false);
-      } else {
+      const isValid = customAjv.validate(
+        getPageSchema(
+          schema,
+          currentPageCategorization,
+          formState.core?.data,
+          customAjv
+        ),
+        getSanitizedFormData(data)
+      );
+
+      if (!isValid) {
         setShowAllErrors?.(true);
         setScrollToError(true);
+        return;
       }
+
+      if (pageVariant === 'after-submission') {
+        clHistory.push({ pathname: `/projects/${slug}` });
+        return;
+      }
+
+      if (pageVariant === 'submission') {
+        setIsLoading(true);
+        data.publication_status = 'published';
+        const idea: IIdea = await onSubmit(
+          getFilteredDataForUserPath(userPagePath, data),
+          true
+        );
+        updateSearchParams({ idea_id: idea.data.id });
+      } else {
+        data.publication_status = 'draft';
+        data.latest_complete_page = currentStep;
+        await onSubmit({ data }, false);
+      }
+
+      scrollToTop();
+      setCurrentStep(currentStep + 1);
+      setIsLoading(false);
     };
 
     const handlePrevious = () => {
@@ -445,6 +472,9 @@ const CLSurveyPageLayout = memo(
                   );
                 })}
               </Box>
+              {ideaId &&
+                pageVariant === 'after-submission' &&
+                showIdeaIdInModal && <SubmissionReference ideaId={ideaId} />}
             </Box>
           </Box>
         </Box>
@@ -487,10 +517,8 @@ const CLSurveyPageLayout = memo(
             handleNextAndSubmit={handleNextAndSubmit}
             handlePrevious={handlePrevious}
             hasPreviousPage={hasPreviousPage}
-            currentStep={currentStep}
             isLoading={isLoading}
-            showSubmit={showSubmit}
-            dataCyValue={dataCyValue}
+            pageVariant={pageVariant}
           />
         </Box>
       </>

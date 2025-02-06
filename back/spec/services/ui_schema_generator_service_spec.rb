@@ -649,7 +649,32 @@ RSpec.describe UiSchemaGeneratorService do
           linear_scale_label4: 'Agree',
           linear_scale_label5: 'Strongly agree',
           linear_scale_label6: '',
-          linear_scale_label7: ''
+          linear_scale_label7: '',
+          linear_scale_label8: '',
+          linear_scale_label9: '',
+          linear_scale_label10: '',
+          linear_scale_label11: ''
+        }
+      })
+    end
+  end
+
+  describe '#visit_rating' do
+    let(:field) do
+      create(
+        :custom_field_rating,
+        key: field_key
+      )
+    end
+
+    it 'returns the schema for the given field' do
+      expect(generator.visit_rating(field)).to eq({
+        type: 'Control',
+        scope: "#/properties/#{field_key}",
+        label: 'How would you rate our service?',
+        options: {
+          input_type: field.input_type,
+          description: 'Please rate your experience from 1 (poor) to 5 (excellent).'
         }
       })
     end
@@ -676,7 +701,11 @@ RSpec.describe UiSchemaGeneratorService do
           linear_scale_label4: '',
           linear_scale_label5: 'Strongly agree',
           linear_scale_label6: '',
-          linear_scale_label7: ''
+          linear_scale_label7: '',
+          linear_scale_label8: '',
+          linear_scale_label9: '',
+          linear_scale_label10: '',
+          linear_scale_label11: ''
         }
       })
     end

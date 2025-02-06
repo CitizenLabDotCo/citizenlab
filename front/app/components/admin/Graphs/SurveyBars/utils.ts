@@ -16,9 +16,6 @@ export const parseQuestionResult = (
 ): Answer[] => {
   if (result.grouped) {
     const { multilocs, answers, totalPickCount } = result;
-    // TODO: Fix this the next time the file is edited.
-    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-    if (!multilocs) throw new Error('Multilocs are missing');
 
     const colorSchemeMap = constructColorSchemeMap(result.legend, colorScheme);
 
@@ -32,6 +29,8 @@ export const parseQuestionResult = (
 
       return {
         label,
+        logicFilterId: null,
+        logic: {},
         image,
         count,
         percentage: roundPercentage(count, totalPickCount, 1),
@@ -59,22 +58,31 @@ export const parseQuestionResult = (
     });
   }
 
-  const { multilocs, answers, totalPickCount } = result;
+  const { multilocs, answers, logic, totalPickCount } = result;
   if (!multilocs) throw new Error('Multilocs are missing');
 
+  // Don't return 'No answer' if everyone answered
+  const filteredAnswers = answers?.filter(
+    ({ count, answer }) => !(answer === null && count === 0)
+  );
+
   return (
-    answers?.map(({ count, answer }) => {
+    filteredAnswers?.map(({ count, answer }) => {
       const label =
         answer === null
           ? noAnswerCopy
           : localize(multilocs.answer[answer].title_multiloc);
-
       const image = answer ? multilocs.answer[answer].image : undefined;
-
       const percentage = roundPercentage(count, totalPickCount, 1);
+
+      const logicAnswerKey = answer === null ? 'no_answer' : answer;
+      const logicForAnswer = logic?.answer?.[logicAnswerKey];
+      const logicFilterId = logic?.answer?.[logicAnswerKey]?.id || null;
 
       return {
         label,
+        logicFilterId,
+        logic: logicForAnswer,
         image,
         count,
         percentage,

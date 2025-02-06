@@ -130,6 +130,10 @@ const FormEdit = ({
         linear_scale_label_5_multiloc: object(),
         linear_scale_label_6_multiloc: object(),
         linear_scale_label_7_multiloc: object(),
+        linear_scale_label_8_multiloc: object(),
+        linear_scale_label_9_multiloc: object(),
+        linear_scale_label_10_multiloc: object(),
+        linear_scale_label_11_multiloc: object(),
         required: boolean(),
         temp_id: string(),
         logic: validateLogic(formatMessage(messages.logicValidationError)),
@@ -152,7 +156,7 @@ const FormEdit = ({
     reset,
   } = methods;
 
-  const { append, move, replace } = useFieldArray({
+  const { append, move, replace, insert } = useFieldArray({
     name: 'customFields',
     control,
   });
@@ -199,14 +203,30 @@ const FormEdit = ({
   };
 
   const onAddField = (field: IFlatCreateCustomField, index: number) => {
-    const newField = {
-      ...field,
-      index,
-    };
+    if (!formCustomFields) return;
 
-    if (isNewCustomFieldObject(newField)) {
-      append(newField);
-      setSelectedField(newField);
+    if (builderConfig.type === 'survey') {
+      const newField = {
+        ...field,
+        index,
+      };
+
+      if (isNewCustomFieldObject(newField)) {
+        insert(index, newField);
+        setSelectedField(newField);
+      }
+    }
+
+    if (builderConfig.type === 'input_form') {
+      const newField = {
+        ...field,
+        index: formCustomFields.length,
+      };
+
+      if (isNewCustomFieldObject(newField)) {
+        append(newField);
+        setSelectedField(newField);
+      }
     }
   };
 
@@ -223,7 +243,14 @@ const FormEdit = ({
         ...(field.input_type === 'page' && {
           temp_id: field.temp_id,
         }),
-        ...(['linear_scale', 'select', 'page'].includes(field.input_type)
+        ...([
+          'multiselect',
+          'linear_scale',
+          'select',
+          'page',
+          'rating',
+          'multiselect_image',
+        ].includes(field.input_type)
           ? {
               logic: field.logic,
             }
@@ -284,6 +311,17 @@ const FormEdit = ({
             field.linear_scale_label_6_multiloc || {},
           linear_scale_label_7_multiloc:
             field.linear_scale_label_7_multiloc || {},
+          linear_scale_label_8_multiloc:
+            field.linear_scale_label_8_multiloc || {},
+          linear_scale_label_9_multiloc:
+            field.linear_scale_label_9_multiloc || {},
+          linear_scale_label_10_multiloc:
+            field.linear_scale_label_10_multiloc || {},
+          linear_scale_label_11_multiloc:
+            field.linear_scale_label_11_multiloc || {},
+          maximum: field.maximum?.toString() || '5',
+        }),
+        ...(field.input_type === 'rating' && {
           maximum: field.maximum?.toString() || '5',
         }),
       }));
@@ -326,7 +364,7 @@ const FormEdit = ({
       replace(reorderedFields);
     }
 
-    if (!isNilOrError(selectedField) && reorderedFields) {
+    if (selectedField && reorderedFields) {
       const newSelectedFieldIndex = reorderedFields.findIndex(
         (field) => field.id === selectedField.id
       );
@@ -433,20 +471,13 @@ const FormEdit = ({
                     />
                   )}
                   {showWarnings()}
-                  <Box
-                    borderRadius="3px"
-                    boxShadow="0px 2px 4px rgba(0, 0, 0, 0.2)"
-                    bgColor="white"
-                    minHeight="300px"
-                  >
-                    <FormFields
-                      onEditField={setSelectedField}
-                      selectedFieldId={selectedField?.id}
-                      handleDragEnd={reorderFields}
-                      builderConfig={builderConfig}
-                      closeSettings={closeSettings}
-                    />
-                  </Box>
+                  <FormFields
+                    onEditField={setSelectedField}
+                    selectedFieldId={selectedField?.id}
+                    handleDragEnd={reorderFields}
+                    builderConfig={builderConfig}
+                    closeSettings={closeSettings}
+                  />
                 </Box>
               </Box>
               <Box flex={!isNilOrError(selectedField) ? '1' : '0'}>

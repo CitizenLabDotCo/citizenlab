@@ -64,6 +64,7 @@ module IdeaCustomFields
     def update_all
       authorize CustomField.new(resource: @custom_form), :update_all?, policy_class: IdeaCustomFieldPolicy
       raise_error_if_stale_form_data
+      raise_error_if_no_end_page_for_survey
 
       page_temp_ids_to_ids_mapping = {}
       option_temp_ids_to_ids_mapping = {}
@@ -111,6 +112,16 @@ module IdeaCustomFields
                     @custom_form.updated_at.to_i > update_all_params[:form_last_updated_at].to_datetime.to_i
 
       raise UpdateAllFailedError, { form: [{ error: 'stale_data' }] }
+    end
+
+    def raise_error_if_no_end_page_for_survey
+      is_survey = @custom_form.participation_context.pmethod.class.method_str == 'native_survey'
+      return unless is_survey
+
+      last_field = update_all_params.fetch(:custom_fields).last
+      return if last_field['key'] == 'survey_end' && last_field['input_type'] == 'page'
+
+      raise UpdateAllFailedError, { form: [{ error: 'no_end_page' }] }
     end
 
     def update_fields!(page_temp_ids_to_ids_mapping, option_temp_ids_to_ids_mapping, errors)
@@ -416,6 +427,10 @@ module IdeaCustomFields
           linear_scale_label_5_multiloc: CL2_SUPPORTED_LOCALES,
           linear_scale_label_6_multiloc: CL2_SUPPORTED_LOCALES,
           linear_scale_label_7_multiloc: CL2_SUPPORTED_LOCALES,
+          linear_scale_label_8_multiloc: CL2_SUPPORTED_LOCALES,
+          linear_scale_label_9_multiloc: CL2_SUPPORTED_LOCALES,
+          linear_scale_label_10_multiloc: CL2_SUPPORTED_LOCALES,
+          linear_scale_label_11_multiloc: CL2_SUPPORTED_LOCALES,
           options: [
             :id,
             :key,

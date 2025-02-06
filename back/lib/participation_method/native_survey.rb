@@ -7,7 +7,7 @@ module ParticipationMethod
     end
 
     def allowed_extra_field_input_types
-      %w[page number linear_scale text multiline_text select multiselect
+      %w[page number linear_scale rating text multiline_text select multiselect
         multiselect_image file_upload shapefile_upload point line polygon
         ranking matrix_linear_scale]
     end
@@ -68,6 +68,15 @@ module ParticipationMethod
               title_multiloc: multiloc_service.i18n_to_multiloc('form_builder.default_select_field.option2')
             )
           ]
+        ),
+        CustomField.new(
+          id: SecureRandom.uuid,
+          key: 'survey_end',
+          resource: custom_form,
+          input_type: 'page',
+          page_layout: 'default',
+          title_multiloc: multiloc_service.i18n_to_multiloc('form_builder.form_end_page.title_text_3'),
+          description_multiloc: multiloc_service.i18n_to_multiloc('form_builder.form_end_page.description_text_3')
         )
       ]
     end

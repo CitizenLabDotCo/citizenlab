@@ -23,6 +23,7 @@ export type ICustomFieldInputType =
   | 'select'
   | 'linear_scale'
   | 'ranking'
+  | 'rating'
   | 'matrix_linear_scale'
   | 'section'
   | 'page'
@@ -93,6 +94,10 @@ export interface IAttributes {
   linear_scale_label_5_multiloc?: Multiloc;
   linear_scale_label_6_multiloc?: Multiloc;
   linear_scale_label_7_multiloc?: Multiloc;
+  linear_scale_label_8_multiloc?: Multiloc;
+  linear_scale_label_9_multiloc?: Multiloc;
+  linear_scale_label_10_multiloc?: Multiloc;
+  linear_scale_label_11_multiloc?: Multiloc;
   maximum?: number;
   minimum_select_count?: number;
   maximum_select_count?: number;
@@ -132,8 +137,11 @@ export type IFlatCustomField = Omit<
     map_config?: { data: IRelationship };
   };
 
+export type ICustomFieldSettingsTab = 'content' | 'logic';
+
 export type IFlatCustomFieldWithIndex = IFlatCustomField & {
   index: number;
+  defaultTab?: ICustomFieldSettingsTab;
 };
 
 type Optional<T, K extends keyof T> = Pick<Partial<T>, K> & Omit<T, K>;
@@ -155,6 +163,10 @@ export type IFlatCreateCustomField = Optional<
   | 'linear_scale_label_5_multiloc'
   | 'linear_scale_label_6_multiloc'
   | 'linear_scale_label_7_multiloc'
+  | 'linear_scale_label_8_multiloc'
+  | 'linear_scale_label_9_multiloc'
+  | 'linear_scale_label_10_multiloc'
+  | 'linear_scale_label_11_multiloc'
   | 'maximum'
   | 'random_option_ordering'
   | 'dropdown_layout'

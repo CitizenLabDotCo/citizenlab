@@ -181,6 +181,7 @@ Metrics/ClassLength:
   Max: 479
   Exclude:
     - 'engines/commercial/multi_tenancy/db/seeds/tenants.rb'
+    - 'app/services/survey_results_generator_service.rb'
 
 # Offense count: 1
 # Configuration parameters: LengthThreshold.

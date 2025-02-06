@@ -85,9 +85,38 @@ describe WebApi::V1::CustomFieldSerializer do
         linear_scale_label_5_multiloc: { 'en' => 'Strongly agree' },
         linear_scale_label_6_multiloc: {},
         linear_scale_label_7_multiloc: {},
+        linear_scale_label_8_multiloc: {},
+        linear_scale_label_9_multiloc: {},
+        linear_scale_label_10_multiloc: {},
+        linear_scale_label_11_multiloc: {},
         ordering: 0,
         required: false,
         title_multiloc: { 'en' => 'We need a swimming pool.' },
+        updated_at: an_instance_of(ActiveSupport::TimeWithZone),
+        logic: {},
+        constraints: {},
+        random_option_ordering: false
+      })
+    end
+  end
+
+  context 'rating field' do
+    let(:field) { create(:custom_field_rating, :for_custom_form, key: 'scale') }
+
+    it 'includes maximum value' do
+      serialized_field = described_class.new(field).serializable_hash
+      attributes = serialized_field[:data][:attributes]
+      expect(attributes).to match({
+        code: nil,
+        created_at: an_instance_of(ActiveSupport::TimeWithZone),
+        description_multiloc: { 'en' => 'Please rate your experience from 1 (poor) to 5 (excellent).' },
+        enabled: true,
+        input_type: 'rating',
+        key: 'scale',
+        maximum: 5,
+        ordering: 0,
+        required: false,
+        title_multiloc: { 'en' => 'How would you rate our service?' },
         updated_at: an_instance_of(ActiveSupport::TimeWithZone),
         logic: {},
         constraints: {},

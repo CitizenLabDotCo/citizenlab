@@ -51,6 +51,7 @@ const FormBuilderToolbox = ({
 
   const { watch } = useFormContext();
   const formCustomFields: IFlatCustomField[] = watch('customFields');
+
   const isCustomFieldsDisabled =
     !isInputFormCustomFieldsFlagEnabled &&
     !builderConfig.alwaysShowCustomFields;
@@ -66,7 +67,12 @@ const FormBuilderToolbox = ({
   if (isNilOrError(locale)) return null;
 
   const addField = (inputType: ICustomFieldInputType) => {
-    const index = !isNilOrError(formCustomFields) ? formCustomFields.length : 0;
+    // We insert the new field at the index of the last
+    // field, which means that it will be inserted before
+    // the last field. This is because the last field is the
+    // 'survey end' page, which should always be the last field.
+    const index = formCustomFields.length - 1;
+
     onAddField(
       {
         id: `${Math.floor(Date.now() * Math.random())}`,
@@ -113,6 +119,10 @@ const FormBuilderToolbox = ({
         },
         linear_scale_label_6_multiloc: {},
         linear_scale_label_7_multiloc: {},
+        linear_scale_label_8_multiloc: {},
+        linear_scale_label_9_multiloc: {},
+        linear_scale_label_10_multiloc: {},
+        linear_scale_label_11_multiloc: {},
         maximum: 5,
         options: [
           {
@@ -243,6 +253,15 @@ const FormBuilderToolbox = ({
           data-cy="e2e-ranking"
           fieldsToExclude={builderConfig.toolboxFieldsToExclude}
           inputType="ranking"
+          disabled={isCustomFieldsDisabled}
+        />
+        <ToolboxItem
+          icon="rating"
+          label={formatMessage(messages.rating)}
+          onClick={() => addField('rating')}
+          data-cy="e2e-rating"
+          fieldsToExclude={builderConfig.toolboxFieldsToExclude}
+          inputType="rating"
           disabled={isCustomFieldsDisabled}
         />
         <ToolboxItem

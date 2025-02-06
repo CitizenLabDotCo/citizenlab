@@ -19,13 +19,13 @@ import AccessRightsNotice from './AccessRightsNotice';
 import messages from './messages';
 
 export const nativeSurveyConfig: FormBuilderConfig = {
+  type: 'survey',
   formBuilderTitle: messages.survey,
   viewFormLinkCopy: messages.viewSurvey,
   toolboxTitle: messages.addSurveyContent,
   formSavedSuccessMessage: messages.successMessage,
   supportArticleLink: messages.supportArticleLink,
   formEndPageLogicOption: messages.surveyEnd,
-  questionLogicHelperText: messages.questionLogicHelperText,
   pagesLogicHelperText: messages.pagesLogicHelperText,
 
   toolboxFieldsToExclude: [],
@@ -40,7 +40,7 @@ export const nativeSurveyConfig: FormBuilderConfig = {
   groupingType: 'page',
   getWarningNotice: () => {
     return (
-      <Box id="e2e-warning-notice" mb="20px">
+      <Box id="e2e-warning-notice" mb="16px">
         <Warning>
           <FormattedMessage {...messages.existingSubmissionsWarning} />
         </Warning>

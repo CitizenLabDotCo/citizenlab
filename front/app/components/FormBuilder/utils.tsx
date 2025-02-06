@@ -15,7 +15,7 @@ import { isNilOrError } from 'utils/helperUtils';
 
 import ConfigOptionsWithLocaleSwitcher from './components/FormBuilderSettings/ConfigOptionsWithLocaleSwitcher';
 import FieldGroupSettings from './components/FormBuilderSettings/FieldGroupSettings';
-import LinearScaleSettings from './components/FormBuilderSettings/LinearScaleSettings';
+import LinearAndRatingSettings from './components/FormBuilderSettings/LinearAndRatingSettings';
 import MatrixSettings from './components/FormBuilderSettings/MatrixSettings';
 import MultiselectSettings from './components/FormBuilderSettings/MultiselectSettings';
 import OptionsSettings from './components/FormBuilderSettings/OptionsSettings';
@@ -37,13 +37,13 @@ export const builtInFieldKeys = [
 export type BuiltInKeyType = (typeof builtInFieldKeys)[number];
 
 export type FormBuilderConfig = {
+  type: 'survey' | 'input_form';
   formBuilderTitle: MessageDescriptor;
   viewFormLinkCopy: MessageDescriptor;
   formSavedSuccessMessage: MessageDescriptor;
   toolboxTitle?: MessageDescriptor;
   supportArticleLink?: MessageDescriptor;
   formEndPageLogicOption?: MessageDescriptor;
-  questionLogicHelperText?: MessageDescriptor;
   pagesLogicHelperText?: MessageDescriptor;
 
   toolboxFieldsToExclude: ICustomFieldInputType[];
@@ -80,9 +80,6 @@ export const getIsPostingEnabled = (
 
   return false;
 };
-
-// TODO: BE key for survey end options should be replaced with form_end, then we can update this value.
-export const formEndOption = 'survey_end';
 
 // TODO: Clean this up and make it an actual component
 // Function to return additional settings based on input type
@@ -178,12 +175,14 @@ export function getAdditionalSettings(
     case 'section':
       return <FieldGroupSettings locale={platformLocale} field={field} />;
     case 'linear_scale':
+    case 'rating':
       return (
-        <LinearScaleSettings
+        <LinearAndRatingSettings
           platformLocale={platformLocale}
           maximumName={`customFields.${field.index}.maximum`}
           labelBaseName={`customFields.${field.index}`}
           locales={locales}
+          inputType={inputType}
         />
       );
     case 'point':
@@ -269,6 +268,9 @@ const getInputTypeStringKey = (
     case 'linear_scale':
       translatedStringKey = messages.linearScale;
       break;
+    case 'rating':
+      translatedStringKey = messages.rating;
+      break;
     case 'file_upload':
       translatedStringKey = messages.fileUpload;
       break;
@@ -302,4 +304,18 @@ export const getTranslatedStringKey = (
   return builtInFieldKeys.includes(key)
     ? getBuiltInFieldStringKey(key)
     : getInputTypeStringKey(inputType);
+};
+
+export const findNextPageAfterCurrentPage = (
+  allFields: IFlatCustomField[],
+  fieldId: string
+) => {
+  const index = allFields.findIndex((item) => item.id === fieldId);
+  if (index !== -1) {
+    const nextPage = allFields
+      .slice(index + 1)
+      .find((item) => item.input_type === 'page');
+    if (nextPage?.id) return nextPage.id;
+  }
+  return 'survey_end';
 };

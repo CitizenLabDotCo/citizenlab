@@ -6,7 +6,6 @@ import dotenv from 'dotenv';
 import { defineConfig } from 'vite';
 import checker from 'vite-plugin-checker';
 import commonjs from 'vite-plugin-commonjs';
-import { createHtmlPlugin } from 'vite-plugin-html';
 import tsconfigPaths from 'vite-plugin-tsconfig-paths';
 
 // Load environment variables using dotenv
@@ -73,13 +72,6 @@ export default defineConfig(({ mode }) => {
           tsconfigPath: path.resolve(__dirname, 'app/tsconfig.json'),
         },
         overlay: false,
-      }),
-      createHtmlPlugin({
-        inject: {
-          data: {
-            GOOGLE_MAPS_API_KEY: process.env.GOOGLE_MAPS_API_KEY,
-          },
-        },
       }),
       ...[
         sourceMapToSentry &&
@@ -156,7 +148,6 @@ export default defineConfig(({ mode }) => {
         CIRCLE_BRANCH: process.env.CIRCLE_BRANCH,
         MATOMO_HOST: process.env.MATOMO_HOST,
         POSTHOG_API_KEY: process.env.POSTHOG_API_KEY,
-        GOOGLE_MAPS_API_KEY: process.env.GOOGLE_MAPS_API_KEY,
       },
     },
   };

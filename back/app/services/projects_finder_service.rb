@@ -15,7 +15,7 @@ class ProjectsFinderService
   # => { projects: [Project], descriptor_pairs: { <project.id>: { <action_descriptors> }, ... } }
   def participation_possible
     subquery = @projects
-      .joins('INNER JOIN admin_publications AS admin_publications ON admin_publications.publication_id = projects.id')
+      .not_in_draft_folder # This includes a LEFT OUTER JOIN with admin_publications
       .where(admin_publications: { publication_status: 'published' })
 
     # Projects with active participatory (not information) phase & include the phases.end_at column
