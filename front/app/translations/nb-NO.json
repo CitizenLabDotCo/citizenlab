@@ -656,6 +656,7 @@
   "app.components.form.controls.valueOutOfTotalWithMaxExplanation": "{value} ut av {total}, der {maxValue} er {maxLabel}",
   "app.components.form.error": "Feil",
   "app.components.form.locationGoogleUnavailable": "Kunne ikke laste inn stedsfeltet fra Google Maps.",
+  "app.components.form.progressBarLabel": "Fremdrift i undersøkelsen",
   "app.components.form.submit": "Send inn",
   "app.components.form.submitApiError": "Det oppstod et problem med å sende inn skjemaet. Vennligst se etter eventuelle feil og prøv igjen.",
   "app.components.form.verifiedBlocked": "Du kan ikke redigere dette feltet fordi det inneholder verifisert informasjon",
