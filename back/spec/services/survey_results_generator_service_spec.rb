@@ -260,6 +260,20 @@ RSpec.describe SurveyResultsGeneratorService do
 
   let_it_be(:matrix_linear_scale_field) { create(:custom_field_matrix_linear_scale, resource: form, description_multiloc: {}) }
 
+  let_it_be(:rating_field) do
+    create(
+      :custom_field_rating,
+      resource: form,
+      title_multiloc: {
+        'en' => 'How satisfied are you with our service?',
+        'fr-FR' => 'À quel point êtes-vous satisfait de notre service ?',
+        'nl-NL' => 'Hoe tevreden ben je met onze service?'
+      },
+      maximum: 7,
+      required: true
+    )
+  end
+
   # The following page for form submission should not be returned in the results
   let_it_be(:last_page_field) do
     field = create(:custom_field_page, resource: form, key: 'survey_end')
@@ -273,20 +287,6 @@ RSpec.describe SurveyResultsGeneratorService do
 
   let_it_be(:gender_user_custom_field) do
     create(:custom_field_gender, :with_options)
-  end
-
-  let_it_be(:rating_field) do
-    create(
-      :custom_field_rating,
-      resource: form,
-      title_multiloc: {
-        'en' => 'How satisfied are you with our service?',
-        'fr-FR' => 'À quel point êtes-vous satisfait de notre service ?',
-        'nl-NL' => 'Hoe tevreden ben je met onze service?'
-      },
-      maximum: 7,
-      required: true
-    )
   end
 
   let_it_be(:domicile_user_custom_field) do
