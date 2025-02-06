@@ -374,6 +374,7 @@
   "app.components.app.containers.AdminPage.ProjectEdit.phaseHeader.votingPhase": "Faza głosowania",
   "app.components.app.containers.AdminPage.ProjectEdit.phaseHeader.whoCanParticipate": "Kto może wziąć udział?",
   "app.components.app.containers.AdminPage.ProjectEdit.prescreeningSubtext": "Wpisy nie będą widoczne, dopóki administrator ich nie sprawdzi i nie zatwierdzi. Autorzy nie mogą edytować wpisów po ich sprawdzeniu lub zareagowaniu na nie.",
+  "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.addDescription": "Dodaj opis...",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.adminsOnly": "Tylko administratorzy",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.anyoneWithLink": "Każdy, kto posiada łącze, może wejść w interakcję z wersją roboczą projektu",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.approve": "Zatwierdź",
