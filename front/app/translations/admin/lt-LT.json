@@ -374,6 +374,7 @@
   "app.components.app.containers.AdminPage.ProjectEdit.phaseHeader.votingPhase": "Balsavimo etapas",
   "app.components.app.containers.AdminPage.ProjectEdit.phaseHeader.whoCanParticipate": "Kas gali dalyvauti?",
   "app.components.app.containers.AdminPage.ProjectEdit.prescreeningSubtext": "Įvestys nebus matomos, kol jų neperžiūrės ir nepatvirtins administratorius. Autoriai negali redaguoti įvesties duomenų po to, kai jie buvo peržiūrėti arba į juos sureaguota.",
+  "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.addDescription": "Pridėti aprašymą...",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.adminsOnly": "Tik administratoriai",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.anyoneWithLink": "Visi, turintys nuorodą, gali bendrauti su projekto projektu.",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.approve": "Patvirtinti",
