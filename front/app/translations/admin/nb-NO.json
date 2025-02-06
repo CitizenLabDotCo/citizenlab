@@ -374,6 +374,7 @@
   "app.components.app.containers.AdminPage.ProjectEdit.phaseHeader.votingPhase": "Avstemningsfasen",
   "app.components.app.containers.AdminPage.ProjectEdit.phaseHeader.whoCanParticipate": "Hvem kan delta?",
   "app.components.app.containers.AdminPage.ProjectEdit.prescreeningSubtext": "Innspill vil ikke være synlige før en administrator har gjennomgått og godkjent dem. Forfattere kan ikke redigere innspill etter at de er gjennomgått eller har fått en reaksjon.",
+  "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.addDescription": "Legg til beskrivelse...",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.adminsOnly": "Kun for administratorer",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.anyoneWithLink": "Alle som har lenken, kan interagere med prosjektutkastet",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.approve": "Godkjenne",
