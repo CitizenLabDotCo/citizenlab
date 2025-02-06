@@ -61,11 +61,12 @@ const ImageMultichoiceControl = ({
 
     return () => {
       // 🌟 On unmount: If no value was set, mark as "question_skipped"
-      if (data === undefined || data === null) {
+      if (data === undefined) {
         handleChange(path, 'question_skipped');
       }
     };
-  }, [data, handleChange, path]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   if (!visible) {
     return null;

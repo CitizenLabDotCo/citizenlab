@@ -51,7 +51,7 @@ const SingleSelectRadioEnumControl = ({
 
     return () => {
       // 🌟 On unmount: If no value was set, mark as "question_skipped"
-      if (data === undefined || data === null) {
+      if (data === undefined) {
         handleChange(path, 'question_skipped');
       }
     };
