@@ -23,6 +23,7 @@ export type ICustomFieldInputType =
   | 'select'
   | 'linear_scale'
   | 'ranking'
+  | 'rating'
   | 'matrix_linear_scale'
   | 'section'
   | 'page'

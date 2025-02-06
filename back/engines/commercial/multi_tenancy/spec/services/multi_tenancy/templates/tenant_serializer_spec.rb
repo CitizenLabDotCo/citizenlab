@@ -231,7 +231,7 @@ describe MultiTenancy::Templates::TenantSerializer do
     it 'skips custom field values with ID references' do
       project = create(:single_phase_native_survey_project)
       custom_form = create(:custom_form, participation_context: project.phases.first)
-      supported_fields = %i[custom_field_number custom_field_linear_scale custom_field_checkbox].map do |factory|
+      supported_fields = %i[custom_field_number custom_field_linear_scale custom_field_rating custom_field_checkbox].map do |factory|
         create(factory, :for_custom_form, resource: custom_form)
       end
       unsupported_field = create(:custom_field, :for_custom_form, input_type: 'file_upload', resource: custom_form)

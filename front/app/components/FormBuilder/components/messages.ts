@@ -79,6 +79,10 @@ export default defineMessages({
     id: 'app.components.formBuilder.linearScale',
     defaultMessage: 'Linear scale',
   },
+  rating: {
+    id: 'app.components.formBuilder.rating',
+    defaultMessage: 'Rating',
+  },
   fileUpload: {
     id: 'app.components.formBuilder.fileUpload',
     defaultMessage: 'File upload',

@@ -33,6 +33,19 @@ import {
   DEFAULT_TILE_PROVIDER,
   MAPTILER_ATTRIBUTION,
 } from './constants';
+import { DefaultBasemapType } from './types';
+
+// getBasemapType
+// Description: Gets the basemap type given a certain tileProvider URL.
+export const getDefaultBasemapType = (
+  tileProvider: string | undefined
+): DefaultBasemapType => {
+  if (tileProvider?.includes('wien.gv.at/basemap')) {
+    return 'BasemapAt';
+  }
+
+  return 'MapTiler';
+};
 
 // getDefaultBasemap
 // Description: Gets the correct basemap given a certain tileProvider URL.
