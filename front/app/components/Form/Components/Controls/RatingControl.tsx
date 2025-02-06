@@ -18,7 +18,6 @@ import { FormattedMessage } from 'utils/cl-intl';
 import { getLabel, sanitizeForClassname } from 'utils/JSONFormUtils';
 
 import ErrorDisplay from '../ErrorDisplay';
-import VerificationIcon from '../VerificationIcon';
 
 import { getSubtextElement } from './controlUtils';
 import messages from './messages';
@@ -156,7 +155,6 @@ const RatingControl = ({
             );
           })}
         </Box>
-        <VerificationIcon show={uischema.options?.verificationLocked} />
       </Box>
       <ErrorDisplay
         inputId={sanitizeForClassname(id)}
