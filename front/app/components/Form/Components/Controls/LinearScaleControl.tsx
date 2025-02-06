@@ -77,6 +77,19 @@ const LinearScaleControl = ({
     }
   }, [data, getAriaValueText, minimum, maximum]);
 
+  useEffect(() => {
+    if (data === 'question_skipped') {
+      handleChange(path, undefined);
+    }
+
+    return () => {
+      // 🌟 On unmount: If no value was set, mark as "question_skipped"
+      if (data === undefined || data === null) {
+        handleChange(path, 'question_skipped');
+      }
+    };
+  }, [data, handleChange, path]);
+
   if (!visible) {
     return null;
   }

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import {
   Box,
@@ -53,6 +53,19 @@ const ImageMultichoiceControl = ({
 
   const maxItems = schema.maxItems;
   const minItems = schema.minItems;
+
+  useEffect(() => {
+    if (data === 'question_skipped') {
+      handleChange(path, undefined);
+    }
+
+    return () => {
+      // 🌟 On unmount: If no value was set, mark as "question_skipped"
+      if (data === undefined || data === null) {
+        handleChange(path, 'question_skipped');
+      }
+    };
+  }, [data, handleChange, path]);
 
   if (!visible) {
     return null;

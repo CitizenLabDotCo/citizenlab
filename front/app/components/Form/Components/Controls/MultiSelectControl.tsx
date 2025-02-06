@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { Box, Text, useBreakpoint } from '@citizenlab/cl2-component-library';
 import {
@@ -42,6 +42,19 @@ const MultiSelectControl = ({
   const [didBlur, setDidBlur] = useState(false);
   const options = getOptions(schema, 'multi');
   const isSmallerThanPhone = useBreakpoint('phone');
+
+  useEffect(() => {
+    if (data === 'question_skipped') {
+      handleChange(path, undefined);
+    }
+
+    return () => {
+      // 🌟 On unmount: If no value was set, mark as "question_skipped"
+      if (data === undefined || data === null) {
+        handleChange(path, 'question_skipped');
+      }
+    };
+  }, [data, handleChange, path]);
 
   if (!visible) {
     return null;
