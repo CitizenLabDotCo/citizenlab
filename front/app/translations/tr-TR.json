@@ -656,6 +656,7 @@
   "app.components.form.controls.valueOutOfTotalWithMaxExplanation": "{value} {total}dışında, burada {maxValue} {maxLabel}'dir",
   "app.components.form.error": "Hata",
   "app.components.form.locationGoogleUnavailable": "Google Maps tarafından sağlanan konum alanı yüklenemedi.",
+  "app.components.form.progressBarLabel": "Anket ilerlemesi",
   "app.components.form.submit": "Gönder",
   "app.components.form.submitApiError": "Form gönderilirken bir sorun oluştu. Lütfen olası hataları düzeltip tekrar deneyin.",
   "app.components.form.verifiedBlocked": "Doğrulanmış bilgiler içerdiği için bu alanı düzenleyemezsiniz",
