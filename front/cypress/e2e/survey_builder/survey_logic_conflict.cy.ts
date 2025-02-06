@@ -1,7 +1,7 @@
 import { randomString } from '../../support/commands';
 import moment = require('moment');
 
-describe('Survey question logic', () => {
+describe('Survey logic conflict', () => {
   const projectTitle = randomString();
   const phaseTitle = randomString();
   const projectDescription = randomString();
@@ -44,7 +44,7 @@ describe('Survey question logic', () => {
     }
   });
 
-  it('allows setting logic for select question', () => {
+  it('prioritizes question logic over page logic', () => {
     cy.setAdminLoginCookie();
     cy.visit(
       `/admin/projects/${projectId}/phases/${phaseId}/native-survey/edit`
@@ -69,23 +69,29 @@ describe('Survey question logic', () => {
     // Make sure we see "Survey successfully saved" message
     cy.get('[data-testid="feedbackSuccessMessage"]');
 
-    // Open settings
+    // Point first page to third page
+    cy.get('[data-cy="e2e-field-row"]').first().click();
+    cy.get('[data-cy="e2e-form-builder-logic-tab"]').click();
+    cy.get('[data-cy="e2e-add-rule-button"]').click();
+    cy.get('[data-cy="e2e-rule-input-select"]').find('select').select('Page 3');
+
+    // Open settings first question
     cy.get('[data-cy="e2e-field-row"]').eq(1).click();
     cy.get('[data-cy="e2e-form-builder-logic-tab"]').click();
 
-    // Set first answer to go straight to ending
+    // Point first option to page 2
     cy.get('[data-cy="e2e-add-rule-button"]').first().click();
     cy.get('[data-cy="e2e-rule-input-select"]')
       .first()
       .find('select')
-      .select('Ending');
+      .select('Page 2');
 
-    // Set no answer to go to page 3
+    // Set no answer to go to survey end
     cy.get('[data-cy="e2e-add-rule-button"]').eq(2).click();
     cy.get('[data-cy="e2e-rule-input-select"]')
       .eq(1)
       .find('select')
-      .select('Page 3');
+      .select('Ending');
 
     // Save again
     cy.get('form').submit();
@@ -95,19 +101,13 @@ describe('Survey question logic', () => {
     cy.visit(`/projects/${projectSlug}/surveys/new?phase_id=${phaseId}`);
     cy.acceptCookies();
 
+    // Make sure submit button is shown
+    cy.get('[data-cy="e2e-submit-form"]');
+
     // Select first option
     cy.get('#e2e-single-select-control')
       .find('[data-testid="radio-container"]')
       .first()
-      .click();
-
-    // Make sure submit button is shown
-    cy.get('[data-cy="e2e-submit-form"]');
-
-    // Instead select option 2
-    cy.get('#e2e-single-select-control')
-      .find('[data-testid="radio-container"]')
-      .eq(1)
       .click();
 
     // Go to next page
@@ -117,19 +117,17 @@ describe('Survey question logic', () => {
     // Make sure we're on page 2
     cy.get('[data-cy="e2e-page-number-2');
 
-    // Go back, deselect option 2
+    // Go back, deselect option 1
     cy.wait(1000);
     cy.get('[data-cy="e2e-previous-page"]').click();
     cy.get('[data-cy="e2e-page-number-1');
     cy.wait(1000);
     cy.get('#e2e-single-select-control')
       .find('[data-testid="radio-container"]')
-      .eq(1)
+      .first()
       .click();
 
-    // Go to next page, make sure we're on page 3
-    cy.wait(1000);
-    cy.get('[data-cy="e2e-next-page"]').click();
-    cy.get('[data-cy="e2e-page-number-3');
+    // Make sure submit button is shown
+    cy.get('[data-cy="e2e-submit-form"]');
   });
 });
