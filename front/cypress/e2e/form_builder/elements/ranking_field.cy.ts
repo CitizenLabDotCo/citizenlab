@@ -54,7 +54,12 @@ describe('Form builder ranking component', () => {
     cy.get('#e2e-required-toggle').find('input').click({ force: true });
 
     cy.get('form').submit();
+
+    // Visit the survey front office
     cy.visit(`/projects/${projectSlug}/surveys/new?phase_id=${phaseId}`);
+    cy.acceptCookies();
+
+    // Verify that the ranking question is displayed
     cy.contains('Question title 2').should('exist');
     cy.contains('Option 1 question 2').should('exist');
     cy.get('#e2e-ranking-control').should('exist');
