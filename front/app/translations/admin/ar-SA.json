@@ -374,6 +374,7 @@
   "app.components.app.containers.AdminPage.ProjectEdit.phaseHeader.votingPhase": "مرحلة التصويت",
   "app.components.app.containers.AdminPage.ProjectEdit.phaseHeader.whoCanParticipate": "من يمكنه المشاركة؟",
   "app.components.app.containers.AdminPage.ProjectEdit.prescreeningSubtext": "لن تكون المدخلات مرئية إلا بعد مراجعتها والموافقة عليها من قبل أحد المشرفين. لا يمكن للمؤلفين تحرير المدخلات بعد فحصها أو الرد عليها.",
+  "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.addDescription": "أضف وصفًا...",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.adminsOnly": "المشرفين فقط",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.anyoneWithLink": "يمكن لأي شخص لديه الرابط التفاعل مع مسودة المشروع",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.approve": "يعتمد",
