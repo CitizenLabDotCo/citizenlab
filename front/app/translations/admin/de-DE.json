@@ -374,6 +374,7 @@
   "app.components.app.containers.AdminPage.ProjectEdit.phaseHeader.votingPhase": "Abstimmungsphase",
   "app.components.app.containers.AdminPage.ProjectEdit.phaseHeader.whoCanParticipate": "Wer kann teilnehmen?",
   "app.components.app.containers.AdminPage.ProjectEdit.prescreeningSubtext": "Eingaben sind erst sichtbar, wenn ein Administrator sie überprüft und genehmigt hat. Autor*innen können Beiträge nicht mehr bearbeiten, nachdem sie geprüft wurden oder auf sie reagiert wurde.",
+  "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.addDescription": "Beschreibung hinzufügen...",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.adminsOnly": "Nur für Admins",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.anyoneWithLink": "Jeder, der den Link hat, kann mit dem Projektentwurf interagieren",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.approve": "Freigeben",
