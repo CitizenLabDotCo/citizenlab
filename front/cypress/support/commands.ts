@@ -1625,7 +1625,25 @@ function apiCreateSurveyQuestions(
       method: 'PATCH',
       url: `web_api/v1/admin/phases/${phaseId}/custom_fields/update_all`,
       body: {
-        custom_fields: inputTypes.map(createBaseCustomField(imageId)),
+        custom_fields: [
+          ...inputTypes.map(createBaseCustomField(imageId)),
+          {
+            id: randomString(),
+            input_type: 'page',
+            logic: {},
+            required: false,
+            enabled: true,
+            title_multiloc: {
+              en: 'Thank you for sharing your input!',
+            },
+            key: 'survey_end',
+            code: null,
+            page_layout: 'default',
+            description_multiloc: {
+              en: 'Your input has been successfully submitted.',
+            },
+          },
+        ],
       },
     });
   });

@@ -13,7 +13,7 @@ export const isRuleValid = (
   fieldBeingValidatedId: string,
   fields: IFlatCustomField[]
 ) => {
-  if ((rule && rule.goto_page_id === 'survey_end') || rule === undefined) {
+  if (rule === undefined) {
     return true;
   }
 
@@ -36,7 +36,7 @@ export const isPageRuleValid = (
   sourcePageId: string,
   nextPageId?: string
 ) => {
-  if (nextPageId === 'survey_end' || !nextPageId) {
+  if (!nextPageId) {
     return true;
   }
   const indexOfTargetPage = fields.findIndex(
@@ -55,9 +55,13 @@ const validateLogic = (message: string) => {
     })
     .when('input_type', (input_type: string, schema) => {
       if (
-        ['multiselect', 'multiselect_image', 'select', 'linear_scale'].includes(
-          input_type
-        )
+        [
+          'multiselect',
+          'multiselect_image',
+          'select',
+          'linear_scale',
+          'rating',
+        ].includes(input_type)
       ) {
         return schema.test(
           'rules reference prior pages',

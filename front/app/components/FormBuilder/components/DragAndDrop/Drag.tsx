@@ -10,7 +10,7 @@ type DragProps = {
   useBorder?: boolean;
 };
 
-export const Drag = ({ id, index, useBorder = true, ...props }: DragProps) => {
+export const Drag = ({ id, index, useBorder = true, children }: DragProps) => {
   const draggableRef = React.useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -23,7 +23,7 @@ export const Drag = ({ id, index, useBorder = true, ...props }: DragProps) => {
     <Draggable draggableId={id} index={index}>
       {(provided, snapshot) => {
         return (
-          <div ref={provided.innerRef} {...provided.draggableProps} {...props}>
+          <div ref={provided.innerRef} {...provided.draggableProps}>
             <div ref={draggableRef} {...provided.dragHandleProps}>
               <Box
                 border={
@@ -32,7 +32,7 @@ export const Drag = ({ id, index, useBorder = true, ...props }: DragProps) => {
                     : undefined
                 }
               >
-                {props.children}
+                {children}
               </Box>
             </div>
           </div>

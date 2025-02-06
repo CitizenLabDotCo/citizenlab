@@ -12,7 +12,7 @@ import { getBorderRadius, measureText } from './utils';
 
 const BORDER = `1px solid ${colors.divider}`;
 
-const Bar = ({ type, count, percentage, color }: BarProps) => {
+const HorizontalBar = ({ type, count, percentage, color }: BarProps) => {
   const label = `${percentage}% (${count})`;
 
   const labelOffset = useMemo(() => {
@@ -59,4 +59,4 @@ const Bar = ({ type, count, percentage, color }: BarProps) => {
   );
 };
 
-export default Bar;
+export default HorizontalBar;

@@ -19,7 +19,6 @@ import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 import useLocalize from 'hooks/useLocalize';
 
 import {
-  formEndOption,
   getTranslatedStringKey,
   FormBuilderConfig,
 } from 'components/FormBuilder/utils';
@@ -66,33 +65,28 @@ const FormBuilderSettings = ({
     const fieldNumbers = getFieldNumbers(formCustomFields);
     const pageArray: { value: string; label: string }[] = [];
 
-    // TODO: Fix this the next time the file is edited.
-    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-    formCustomFields?.forEach((field) => {
+    formCustomFields.forEach((field, i) => {
       if (field.input_type === 'page') {
+        const isLastPage = i === formCustomFields.length - 1;
+
         const pageTitle = localize(field.title_multiloc);
-        const pageLabel = `${formatMessage(messages.page)} ${
-          fieldNumbers[field.id]
-        }${
-          pageTitle
-            ? `: ${
-                pageTitle.length > 25
-                  ? `${pageTitle.slice(0, 25)}...`
-                  : pageTitle
-              }`
-            : ''
-        }`;
+        const pageLabel = isLastPage
+          ? formatMessage(messages.lastPage)
+          : `${formatMessage(messages.page)} ${fieldNumbers[field.id]}${
+              pageTitle
+                ? `: ${
+                    pageTitle.length > 25
+                      ? `${pageTitle.slice(0, 25)}...`
+                      : pageTitle
+                  }`
+                : ''
+            }`;
+
         pageArray.push({
           value: field.temp_id || field.id,
           label: pageLabel,
         });
       }
-    });
-    pageArray.push({
-      value: formEndOption,
-      label: `${formatMessage(
-        builderConfig.formEndPageLogicOption || messages.formEnd
-      )}`,
     });
     return pageArray;
   };
@@ -104,13 +98,23 @@ const FormBuilderSettings = ({
   const tabNotActiveBorder = `1px solid ${colors.grey400}`;
   const tabActiveBorder = `4px solid ${colors.primary}`;
   const fieldType = watch(`customFields.${field.index}.input_type`);
-  const showTabbedSettings = [
-    'multiselect',
-    'multiselect_image',
-    'linear_scale',
-    'select',
-    'page',
-  ].includes(fieldType);
+
+  const getShowTabbedSettings = () => {
+    const isFieldWithLogicTab = [
+      'multiselect',
+      'multiselect_image',
+      'linear_scale',
+      'select',
+      'rating',
+      'page',
+    ].includes(fieldType);
+
+    const isSurveyEndPage = fieldType === 'page' && field.key === 'survey_end';
+
+    return isFieldWithLogicTab && !isSurveyEndPage;
+  };
+
+  const showTabbedSettings = getShowTabbedSettings();
 
   // Which page is the current question on?
   // Technically there should always be a current page ID and null should never be returned

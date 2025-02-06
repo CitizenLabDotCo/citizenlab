@@ -71,6 +71,7 @@ import MatrixControl, { matrixControlTester } from './MatrixControl';
 import MultiSelectCheckboxControl, {
   multiSelectCheckboxControlTester,
 } from './MultiSelectCheckboxControl';
+import RatingControl, { ratingControlTester } from './RatingControl';
 import ShapefileUploadControl, {
   shapefileUploadControlTester,
 } from './ShapefileUploadControl';
@@ -142,6 +143,8 @@ export {
   multilocInputTester,
   LinearScaleControl,
   linearScaleControlTester,
+  RatingControl,
+  ratingControlTester,
   SingleAttachmentControl,
   singleAttachmentControlTester,
   ShapefileUploadControl,

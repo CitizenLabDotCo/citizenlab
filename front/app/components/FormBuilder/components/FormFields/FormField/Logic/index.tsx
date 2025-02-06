@@ -21,7 +21,7 @@ import { QuestionRuleDisplay } from './QuestionRuleDisplay';
 import {
   getOptionRule,
   getLinearScaleRule,
-  getLinearScaleOptions,
+  getLinearOrRatingOptions,
   getTitleFromAnswerId,
   getTitleFromPageId,
 } from './utils';
@@ -38,17 +38,12 @@ const Logic = ({
   field,
   fieldNumbers,
   formCustomFields,
-  formEndPageLogicOption,
   handleOpenSettings,
 }: Props) => {
   const { formatMessage } = useIntl();
   const locale = useLocale();
-
-  const formEndMessage = formatMessage(
-    formEndPageLogicOption || messages.formEnd
-  );
-
   const pageMessage = formatMessage(messages.page);
+  const lastPageMessage = formatMessage(messages.lastPage);
 
   // Add the additional catch all logic options
   const catchAllTypes = field.required
@@ -91,18 +86,19 @@ const Logic = ({
               answerTitle={getTitleFromAnswerId(field, optionRule?.if, locale)}
               targetPage={getTitleFromPageId(
                 optionRule?.goto_page_id,
-                formEndMessage,
                 pageMessage,
-                fieldNumbers
+                fieldNumbers,
+                formCustomFields,
+                lastPageMessage
               )}
               handleOpenSettings={handleOpenSettings}
             />
           );
         })}
 
-      {field.input_type === 'linear_scale' &&
+      {['linear_scale', 'rating'].includes(field.input_type) &&
         field.maximum &&
-        getLinearScaleOptions(field.maximum).map((option) => {
+        getLinearOrRatingOptions(field.maximum).map((option) => {
           const linearScaleRule = getLinearScaleRule(option, field);
           const key = `${field.temp_id || field.id}_${option.key}`;
 
@@ -121,15 +117,16 @@ const Logic = ({
               )}
               targetPage={getTitleFromPageId(
                 linearScaleRule?.goto_page_id,
-                formEndMessage,
                 pageMessage,
-                fieldNumbers
+                fieldNumbers,
+                formCustomFields,
+                lastPageMessage
               )}
               handleOpenSettings={handleOpenSettings}
             />
           );
         })}
-      {field.input_type === 'page' && (
+      {field.input_type === 'page' && field.key !== 'survey_end' && (
         <PageRuleDisplay
           isRuleValid={isPageRuleValid(
             formCustomFields,
@@ -139,9 +136,10 @@ const Logic = ({
           targetPage={getTitleFromPageId(
             field.logic.next_page_id ||
               findNextPageAfterCurrentPage(formCustomFields, field.id),
-            formEndMessage,
             pageMessage,
-            fieldNumbers
+            fieldNumbers,
+            formCustomFields,
+            lastPageMessage
           )}
           isDefaultPage={!field.logic.next_page_id}
           handleOpenSettings={handleOpenSettings}
@@ -160,9 +158,10 @@ const Logic = ({
             answerTitle={catchAllLogicMessages[rule.if.toString()]}
             targetPage={getTitleFromPageId(
               rule.goto_page_id,
-              formEndMessage,
               pageMessage,
-              fieldNumbers
+              fieldNumbers,
+              formCustomFields,
+              lastPageMessage
             )}
             handleOpenSettings={handleOpenSettings}
           />
