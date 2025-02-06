@@ -1,4 +1,5 @@
 import { createSurveyProject } from './utils';
+import { v4 as uuidv4 } from 'uuid';
 
 describe('Survey question logic', () => {
   let projectId: string | undefined;
@@ -326,9 +327,6 @@ describe('Bug: ambiguity around missing values in survey logic', () => {
                 },
               },
             ],
-            form_save_type: 'manual',
-            form_opened_at: '2025-02-06T17:59:45.002Z',
-            form_last_updated_at: '2025-02-06T18:08:49.950Z',
           };
 
           return cy.request({
