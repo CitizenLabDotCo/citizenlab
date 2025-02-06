@@ -13,7 +13,8 @@ import RankingQuestion from 'containers/Admin/projects/project/nativeSurvey/Form
 
 import Legend from 'components/admin/Graphs/Legend';
 import { DEFAULT_CATEGORICAL_COLORS } from 'components/admin/Graphs/styling';
-import SurveyBars from 'components/admin/Graphs/SurveyBars';
+import SurveyBarsHorizontal from 'components/admin/Graphs/SurveyBars/SurveyBarsHorizontal';
+import SurveyBarsVertical from 'components/admin/Graphs/SurveyBars/SurveyBarsVertical';
 
 import { useIntl } from 'utils/cl-intl';
 
@@ -90,10 +91,18 @@ const SurveyQuestionResult = ({
                 <MatrixQuestion result={attributes} />
               </Box>
             )}
-          <SurveyBars
-            questionResult={attributes}
-            colorScheme={DEFAULT_CATEGORICAL_COLORS}
-          />
+          {['rating', 'linear_scale'].includes(attributes.inputType) ? (
+            <SurveyBarsVertical
+              questionResult={attributes}
+              colorScheme={DEFAULT_CATEGORICAL_COLORS}
+              showLabelsBelow
+            />
+          ) : (
+            <SurveyBarsHorizontal
+              questionResult={attributes}
+              colorScheme={DEFAULT_CATEGORICAL_COLORS}
+            />
+          )}
           {attributes.grouped && (
             <Box mt="20px">
               <Legend

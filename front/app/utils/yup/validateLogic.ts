@@ -55,9 +55,13 @@ const validateLogic = (message: string) => {
     })
     .when('input_type', (input_type: string, schema) => {
       if (
-        ['multiselect', 'multiselect_image', 'select', 'linear_scale'].includes(
-          input_type
-        )
+        [
+          'multiselect',
+          'multiselect_image',
+          'select',
+          'linear_scale',
+          'rating',
+        ].includes(input_type)
       ) {
         return schema.test(
           'rules reference prior pages',

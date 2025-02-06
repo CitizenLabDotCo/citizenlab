@@ -248,6 +248,7 @@ const FormEdit = ({
           'linear_scale',
           'select',
           'page',
+          'rating',
           'multiselect_image',
         ].includes(field.input_type)
           ? {
@@ -318,6 +319,9 @@ const FormEdit = ({
             field.linear_scale_label_10_multiloc || {},
           linear_scale_label_11_multiloc:
             field.linear_scale_label_11_multiloc || {},
+          maximum: field.maximum?.toString() || '5',
+        }),
+        ...(field.input_type === 'rating' && {
           maximum: field.maximum?.toString() || '5',
         }),
       }));

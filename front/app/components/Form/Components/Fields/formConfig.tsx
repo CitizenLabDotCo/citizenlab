@@ -2,6 +2,8 @@
 import {
   linearScaleControlTester,
   LinearScaleControl,
+  ratingControlTester,
+  RatingControl,
   MapControl,
   mapControlTester,
   inputControlTester,
@@ -64,6 +66,7 @@ import {
 
 const commonRenderers = [
   { tester: linearScaleControlTester, renderer: LinearScaleControl },
+  { tester: ratingControlTester, renderer: RatingControl },
   { tester: inputControlTester, renderer: InputControl },
   { tester: textAreaControlTester, renderer: TextAreaControl },
   { tester: checkboxControlTester, renderer: CheckboxControl },
@@ -94,6 +97,7 @@ export const selectRenderers = (formType: 'default' | 'input' | 'survey') => {
 
   return [
     { tester: linearScaleControlTester, renderer: LinearScaleControl },
+    { tester: ratingControlTester, renderer: RatingControl },
     {
       tester: multiSelectCheckboxControlTester,
       renderer: MultiSelectCheckboxControl,
