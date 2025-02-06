@@ -374,6 +374,7 @@
   "app.components.app.containers.AdminPage.ProjectEdit.phaseHeader.votingPhase": "ਵੋਟਿੰਗ ਪੜਾਅ",
   "app.components.app.containers.AdminPage.ProjectEdit.phaseHeader.whoCanParticipate": "ਕੌਣ ਭਾਗ ਲੈ ਸਕਦਾ ਹੈ?",
   "app.components.app.containers.AdminPage.ProjectEdit.prescreeningSubtext": "ਇਨਪੁਟਸ ਉਦੋਂ ਤੱਕ ਦਿਖਾਈ ਨਹੀਂ ਦੇਣਗੇ ਜਦੋਂ ਤੱਕ ਕੋਈ ਪ੍ਰਸ਼ਾਸਕ ਉਹਨਾਂ ਦੀ ਸਮੀਖਿਆ ਅਤੇ ਮਨਜ਼ੂਰੀ ਨਹੀਂ ਦਿੰਦਾ। ਲੇਖਕ ਇਨਪੁਟਸ ਨੂੰ ਸਕ੍ਰੀਨ ਕੀਤੇ ਜਾਣ ਜਾਂ ਇਸ 'ਤੇ ਪ੍ਰਤੀਕਿਰਿਆ ਕਰਨ ਤੋਂ ਬਾਅਦ ਸੰਪਾਦਿਤ ਨਹੀਂ ਕਰ ਸਕਦੇ ਹਨ।",
+  "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.addDescription": "ਵੇਰਵਾ ਸ਼ਾਮਲ ਕਰੋ...",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.adminsOnly": "ਸਿਰਫ਼ ਪ੍ਰਸ਼ਾਸਕ",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.anyoneWithLink": "ਲਿੰਕ ਵਾਲਾ ਕੋਈ ਵੀ ਡਰਾਫਟ ਪ੍ਰੋਜੈਕਟ ਨਾਲ ਇੰਟਰੈਕਟ ਕਰ ਸਕਦਾ ਹੈ",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.approve": "ਮਨਜ਼ੂਰ ਕਰੋ",
