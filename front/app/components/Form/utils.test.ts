@@ -476,7 +476,7 @@ describe('getFormSchemaAndData', () => {
       what_is_your_name_6v5: 'Name',
     };
 
-    const result = isValidData(schema, uiSchema, data, customAjv, true);
+    const result = isValidData(schema, uiSchema, data, true);
 
     expect(result).toEqual(true);
   });

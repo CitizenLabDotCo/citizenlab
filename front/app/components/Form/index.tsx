@@ -23,7 +23,7 @@ import messages from './messages';
 import { parseRequiredMultilocsData } from './parseRequiredMultilocs';
 import tracks from './tracks';
 import { ApiErrorGetter, AjvErrorGetter, FormData } from './typings';
-import { sanitizeFormData, isValidData, customAjv } from './utils';
+import { sanitizeFormData, isValidData } from './utils';
 
 // hopefully we can standardize this someday
 const Title = styled.h1`
@@ -121,7 +121,7 @@ const Form = memo(
 
       let response;
 
-      if (isValidData(schema, uiSchema, submissionData, customAjv, isSurvey)) {
+      if (isValidData(schema, uiSchema, submissionData, isSurvey)) {
         if (externalLoading === undefined) {
           internalSetLoading(true);
         }

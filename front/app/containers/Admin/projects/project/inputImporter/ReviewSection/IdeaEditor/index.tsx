@@ -26,7 +26,7 @@ import useLocalize from 'hooks/useLocalize';
 import { getFormValues as getIdeaFormValues } from 'containers/IdeasEditPage/utils';
 
 import { FormData } from 'components/Form/typings';
-import { customAjv, isValidData } from 'components/Form/utils';
+import { isValidData } from 'components/Form/utils';
 
 import { FormattedMessage } from 'utils/cl-intl';
 import { geocode } from 'utils/locationTools';
@@ -131,13 +131,7 @@ const IdeaEditor = ({ ideaId, setIdeaId }: Props) => {
 
   const userFormDataValid = isUserFormDataValid(userFormData);
 
-  const ideaFormDataValid = isValidData(
-    schema,
-    uiSchema,
-    ideaFormData,
-    customAjv,
-    false
-  );
+  const ideaFormDataValid = isValidData(schema, uiSchema, ideaFormData, false);
 
   const onApproveIdea = async () => {
     if (

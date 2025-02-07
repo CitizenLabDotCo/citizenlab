@@ -104,7 +104,6 @@ export const isValidData = (
   schema: JsonSchema7,
   uiSchema: Layout | PageCategorization,
   data: FormData,
-  ajv: Ajv,
   isSurvey = false
 ) => {
   if (!data) return false;
@@ -113,10 +112,13 @@ export const isValidData = (
     schema,
     uiSchema,
     data,
-    ajv
+    customAjv
   );
 
-  return ajv.validate(schemaToUse, isSurvey ? dataWithoutHiddenFields : data);
+  return customAjv.validate(
+    schemaToUse,
+    isSurvey ? dataWithoutHiddenFields : data
+  );
 };
 
 // The scope of the element that is used as the other field will have _other appended to it. The corresponding field key can also be found by using this function.
