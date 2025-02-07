@@ -1481,7 +1481,6 @@
   "app.containers.AdminPage.Project.confirmation.yes": "Nollaa kaikki osallistumistiedot",
   "app.containers.AdminPage.Project.data.descriptionText": "Selkeät ideat, kommentit, äänet, reaktiot, kyselyvastaukset, kyselyvastaukset, vapaaehtoiset ja tapahtuman osallistujat. Äänestysvaiheissa tämä toiminto tyhjentää äänet, mutta ei vaihtoehtoja.",
   "app.containers.AdminPage.Project.data.title": "Poista kaikki osallistumistiedot tästä projektista",
-  "app.containers.AdminPage.Project.data.warningMessage": "Tätä toimintoa ei voi kumota.",
   "app.containers.AdminPage.Project.resetParticipationData": "Nollaa kaikki osallistumistiedot",
   "app.containers.AdminPage.Project.settings.accessRights": "Käyttöoikeudet",
   "app.containers.AdminPage.Project.settings.back": "Takaisin",
