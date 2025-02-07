@@ -17,10 +17,9 @@ import {
   resolveData,
   JsonSchema,
 } from '@jsonforms/core';
-import Ajv from 'ajv';
 import { has } from 'lodash-es';
 
-import { getOtherControlKey } from 'components/Form/utils';
+import { customAjv, getOtherControlKey } from 'components/Form/utils';
 
 import { PageType } from '../Layouts/utils';
 
@@ -83,34 +82,26 @@ const getConditionScope = (condition: Scopable): string => {
  * @param ajv - The AJV instance for validation.
  * @returns {boolean} - True if the value or any array item matches the schema.
  */
-const validateSchemaCondition = (
-  value: any,
-  schema: JsonSchema,
-  ajv: Ajv
-): boolean => {
+const validateSchemaCondition = (value: any, schema: JsonSchema): boolean => {
   if (Array.isArray(value)) {
     // For arrays, check if at least one element passes validation. Important for multi-select and image-select
-    return value.some((val) => ajv.validate(schema, val));
+    return value.some((val) => customAjv.validate(schema, val));
   } else if (schema.enum?.includes('no_answer') && value === undefined) {
     return true;
   }
 
-  return ajv.validate(schema, value);
+  return customAjv.validate(schema, value);
 };
 
-const evaluateCondition = (
-  data: any,
-  condition: Condition,
-  ajv: Ajv
-): boolean => {
+const evaluateCondition = (data: any, condition: Condition): boolean => {
   if (isAndCondition(condition)) {
     return condition.conditions.reduce(
-      (acc, cur) => acc && evaluateCondition(data, cur, ajv),
+      (acc, cur) => acc && evaluateCondition(data, cur),
       true
     );
   } else if (isOrCondition(condition)) {
     return condition.conditions.reduce(
-      (acc, cur) => acc || evaluateCondition(data, cur, ajv),
+      (acc, cur) => acc || evaluateCondition(data, cur),
       false
     );
   } else if (isLeafCondition(condition)) {
@@ -119,25 +110,20 @@ const evaluateCondition = (
   } else if (isSchemaCondition(condition)) {
     // Schema condition: validates the resolved value(s) against the schema
     const value = resolveData(data, getConditionScope(condition));
-    return validateSchemaCondition(value, condition.schema, ajv);
+    return validateSchemaCondition(value, condition.schema);
   } else {
     // unknown condition
     return true;
   }
 };
 
-const isRuleFulfilled = (
-  condition: Condition,
-  data: any,
-  ajv: Ajv
-): boolean => {
-  return evaluateCondition(data, condition, ajv);
+const isRuleFulfilled = (condition: Condition, data: any): boolean => {
+  return evaluateCondition(data, condition);
 };
 
 const evalVisibility = (
   uischema: ExtendedUISchema | PageType,
   data: any,
-  ajv: Ajv,
   pages?: PageType[]
 ): boolean => {
   if (!uischema.ruleArray || uischema.ruleArray.length === 0) {
@@ -154,14 +140,14 @@ const evalVisibility = (
 
     // Question rule takes precedence over page rule
     if (isHidePageCondition(currentRule.condition) && !hasQuestionRule) {
-      return pageWithId ? !isVisible(pageWithId, data, ajv, pages) : false;
+      return pageWithId ? !isVisible(pageWithId, data, pages) : false;
     }
 
     if (isHidePageCondition(currentRule.condition)) {
       return true;
     }
 
-    const fulfilled = isRuleFulfilled(currentRule.condition, data, ajv);
+    const fulfilled = isRuleFulfilled(currentRule.condition, data);
 
     if (currentRule.effect === RuleEffect.HIDE) {
       return !fulfilled;
@@ -177,11 +163,10 @@ const evalVisibility = (
 export const isVisible = (
   uischema: ExtendedUISchema | PageType,
   data: any,
-  ajv: Ajv,
   pages?: PageType[]
 ): boolean => {
   if (uischema.ruleArray) {
-    return evalVisibility(uischema, data, ajv, pages);
+    return evalVisibility(uischema, data, pages);
   }
 
   const otherControlKey = getOtherControlKey(uischema.scope);
