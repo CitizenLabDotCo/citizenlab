@@ -7,7 +7,6 @@ import {
   PageType,
   getFormCompletionPercentage,
 } from 'components/Form/Components/Layouts/utils';
-import { customAjv } from 'components/Form/utils';
 
 describe('getPageSchema', () => {
   it('should return the page schema from a schema with many pages', () => {
@@ -181,12 +180,7 @@ describe('getPageSchema', () => {
       required: ['short_answer', 'multiple_choice', 'areas', 'number'],
     };
 
-    const pageSchema = getPageSchema(
-      schema,
-      pageCategorization,
-      data,
-      customAjv
-    );
+    const pageSchema = getPageSchema(schema, pageCategorization, data);
     expect(pageSchema).toEqual(expectedPageSchema);
   });
 
@@ -283,12 +277,7 @@ describe('getPageSchema', () => {
       required: ['multiple_choice'],
     };
 
-    const pageSchema = getPageSchema(
-      schema,
-      pageCategorization,
-      data,
-      customAjv
-    );
+    const pageSchema = getPageSchema(schema, pageCategorization, data);
 
     expect(pageSchema).toEqual(expectedPageSchema);
   });

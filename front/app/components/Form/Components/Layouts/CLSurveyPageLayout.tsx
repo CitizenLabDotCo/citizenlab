@@ -231,12 +231,7 @@ const CLSurveyPageLayout = memo(
       userPagePath.push(uiPages[currentStep]);
 
       const isValid = customAjv.validate(
-        getPageSchema(
-          schema,
-          currentPageCategorization,
-          formState.core?.data,
-          customAjv
-        ),
+        getPageSchema(schema, currentPageCategorization, formState.core?.data),
         getSanitizedFormData(data)
       );
 

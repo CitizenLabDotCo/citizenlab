@@ -1,6 +1,6 @@
 import { RuleEffect } from '@jsonforms/core';
 
-import { getFormSchemaAndData, isValidData, customAjv } from './utils';
+import { getFormSchemaAndData, isValidData } from './utils';
 
 describe('getFormSchemaAndData', () => {
   it('should return the same schema and data if no elements are hidden', () => {
@@ -39,8 +39,7 @@ describe('getFormSchemaAndData', () => {
     const [resultSchema, resultData] = getFormSchemaAndData(
       schema,
       uiSchema,
-      data,
-      customAjv
+      data
     );
 
     expect(resultSchema).toEqual(schema);
@@ -581,8 +580,7 @@ describe('getFormSchemaAndData', () => {
     const [resultSchema, resultData] = getFormSchemaAndData(
       schema,
       uiSchema,
-      data,
-      customAjv
+      data
     );
 
     expect(resultSchema).toEqual(expectedSchema);

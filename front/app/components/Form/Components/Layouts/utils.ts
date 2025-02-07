@@ -6,7 +6,6 @@ import {
   Tester,
   uiTypeIs,
 } from '@jsonforms/core';
-import Ajv from 'ajv';
 import { forOwn, isEmpty } from 'lodash-es';
 
 import { FormData } from '../../typings';
@@ -88,8 +87,7 @@ export const getSanitizedFormData = (data) => {
 export const getPageSchema = (
   schema: JsonSchema,
   pageCategorization: PageType,
-  data: any,
-  ajv: Ajv
+  data: any
 ) => {
   const currentPageElementNames = pageCategorization.elements.map(
     (uiSchemaElement) => uiSchemaElement.scope.split('/').pop()

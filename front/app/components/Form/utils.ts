@@ -1,5 +1,4 @@
 import { Layout, JsonSchema7, createAjv, Tester } from '@jsonforms/core';
-import Ajv from 'ajv';
 import { isEmpty, forOwn } from 'lodash-es';
 
 import { FormData } from 'components/Form/typings';
@@ -27,8 +26,7 @@ const iterateSchema = (
 export const getFormSchemaAndData = (
   schema: JsonSchema7,
   uiSchema: Layout | PageCategorization,
-  data: FormData,
-  ajv: Ajv
+  data: FormData
 ) => {
   const dataWithoutHiddenElements = {};
   const visibleElements: string[] = [];
@@ -67,7 +65,7 @@ export const getFormSchemaAndData = (
       uiSchema?.elements as PageType[]
     );
 
-    const isElementVisible = isVisible(element, data, ajv);
+    const isElementVisible = isVisible(element, data);
     const showInData =
       parentSchema.type === 'Page'
         ? isPageVisible && isElementVisible
@@ -110,8 +108,7 @@ export const isValidData = (
   const [schemaToUse, dataWithoutHiddenFields] = getFormSchemaAndData(
     schema,
     uiSchema,
-    data,
-    customAjv
+    data
   );
 
   return customAjv.validate(
