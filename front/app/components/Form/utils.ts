@@ -62,14 +62,13 @@ export const getFormSchemaAndData = (
     const isPageVisible = isVisible(
       parentSchema,
       data,
-      '',
       ajv,
       // TODO: Fix this the next time the file is edited.
       // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       uiSchema?.elements as PageType[]
     );
 
-    const isElementVisible = isVisible(element, data, '', ajv);
+    const isElementVisible = isVisible(element, data, ajv);
     const showInData =
       parentSchema.type === 'Page'
         ? isPageVisible && isElementVisible

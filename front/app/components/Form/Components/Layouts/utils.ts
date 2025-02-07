@@ -105,7 +105,7 @@ export const getPageSchema = (
   const hiddenElements = pageCategorization.elements
     .filter((pageElement) => pageElement.ruleArray)
     .filter((pageElementWithRule) => {
-      return !isVisible(pageElementWithRule, data, '', ajv);
+      return !isVisible(pageElementWithRule, data, ajv);
     })
     .concat(extractElementsByOtherOptionLogic(pageCategorization, data, true))
     .map((element) => element['scope'].split('/').pop());

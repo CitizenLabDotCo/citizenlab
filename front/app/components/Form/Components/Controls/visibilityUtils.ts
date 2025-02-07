@@ -70,8 +70,8 @@ const isSchemaCondition = (
   condition: Condition
 ): condition is SchemaBasedCondition => has(condition, 'schema');
 
-const getConditionScope = (condition: Scopable, path: string): string => {
-  return composeWithUi(condition, path);
+const getConditionScope = (condition: Scopable): string => {
+  return composeWithUi(condition, '');
 };
 
 /**
@@ -101,25 +101,24 @@ const validateSchemaCondition = (
 const evaluateCondition = (
   data: any,
   condition: Condition,
-  path: string,
   ajv: Ajv
 ): boolean => {
   if (isAndCondition(condition)) {
     return condition.conditions.reduce(
-      (acc, cur) => acc && evaluateCondition(data, cur, path, ajv),
+      (acc, cur) => acc && evaluateCondition(data, cur, ajv),
       true
     );
   } else if (isOrCondition(condition)) {
     return condition.conditions.reduce(
-      (acc, cur) => acc || evaluateCondition(data, cur, path, ajv),
+      (acc, cur) => acc || evaluateCondition(data, cur, ajv),
       false
     );
   } else if (isLeafCondition(condition)) {
-    const value = resolveData(data, getConditionScope(condition, path));
+    const value = resolveData(data, getConditionScope(condition));
     return value === condition.expectedValue;
   } else if (isSchemaCondition(condition)) {
     // Schema condition: validates the resolved value(s) against the schema
-    const value = resolveData(data, getConditionScope(condition, path));
+    const value = resolveData(data, getConditionScope(condition));
     return validateSchemaCondition(value, condition.schema, ajv);
   } else {
     // unknown condition
@@ -130,16 +129,14 @@ const evaluateCondition = (
 const isRuleFulfilled = (
   condition: Condition,
   data: any,
-  path: string,
   ajv: Ajv
 ): boolean => {
-  return evaluateCondition(data, condition, path, ajv);
+  return evaluateCondition(data, condition, ajv);
 };
 
 const evalVisibility = (
   uischema: ExtendedUISchema | PageType,
   data: any,
-  path: string,
   ajv: Ajv,
   pages?: PageType[]
 ): boolean => {
@@ -157,16 +154,14 @@ const evalVisibility = (
 
     // Question rule takes precedence over page rule
     if (isHidePageCondition(currentRule.condition) && !hasQuestionRule) {
-      return pageWithId
-        ? !isVisible(pageWithId, data, path, ajv, pages)
-        : false;
+      return pageWithId ? !isVisible(pageWithId, data, ajv, pages) : false;
     }
 
     if (isHidePageCondition(currentRule.condition)) {
       return true;
     }
 
-    const fulfilled = isRuleFulfilled(currentRule.condition, data, path, ajv);
+    const fulfilled = isRuleFulfilled(currentRule.condition, data, ajv);
 
     if (currentRule.effect === RuleEffect.HIDE) {
       return !fulfilled;
@@ -182,12 +177,11 @@ const evalVisibility = (
 export const isVisible = (
   uischema: ExtendedUISchema | PageType,
   data: any,
-  path: string,
   ajv: Ajv,
   pages?: PageType[]
 ): boolean => {
   if (uischema.ruleArray) {
-    return evalVisibility(uischema, data, path, ajv, pages);
+    return evalVisibility(uischema, data, ajv, pages);
   }
 
   const otherControlKey = getOtherControlKey(uischema.scope);

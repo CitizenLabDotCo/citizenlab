@@ -163,7 +163,6 @@ const CLSurveyPageLayout = memo(
         const isPageVisible = isVisible(
           element,
           formState.core?.data,
-          '',
           customAjv,
           pageTypeElements
         );
