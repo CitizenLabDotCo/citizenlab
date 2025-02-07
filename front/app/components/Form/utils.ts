@@ -23,7 +23,7 @@ const iterateSchema = (
   toApply(uischema, parent);
 };
 
-export const getFormSchemaAndData = (
+const getFormSchemaAndData = (
   schema: JsonSchema7,
   uiSchema: Layout | PageCategorization,
   data: FormData
