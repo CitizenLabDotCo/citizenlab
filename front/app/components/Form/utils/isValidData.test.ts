@@ -1,4 +1,4 @@
-import { isValidData } from './utils';
+import isValidData from './isValidData';
 
 describe('isValidData', () => {
   it('should only validate draft survey data against pages up to and including last completed page', () => {

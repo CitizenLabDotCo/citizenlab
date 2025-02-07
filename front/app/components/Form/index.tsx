@@ -23,7 +23,8 @@ import messages from './messages';
 import { parseRequiredMultilocsData } from './parseRequiredMultilocs';
 import tracks from './tracks';
 import { ApiErrorGetter, AjvErrorGetter, FormData } from './typings';
-import { sanitizeFormData, isValidData } from './utils';
+import isValidData from './utils/isValidData';
+import sanitizeFormData from './utils/sanitizeFormData';
 
 // hopefully we can standardize this someday
 const Title = styled.h1`

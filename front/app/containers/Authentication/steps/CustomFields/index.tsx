@@ -14,7 +14,7 @@ import {
 } from 'containers/Authentication/typings';
 
 import FormWrapper from 'components/Form/Components/FormWrapper';
-import { isValidData } from 'components/Form/utils';
+import isValidData from 'components/Form/utils/isValidData';
 import Button from 'components/UI/ButtonWithLink';
 import UserCustomFieldsForm from 'components/UserCustomFields';
 

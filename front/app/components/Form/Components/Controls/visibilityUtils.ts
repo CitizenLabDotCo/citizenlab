@@ -19,7 +19,8 @@ import {
 } from '@jsonforms/core';
 import { has } from 'lodash-es';
 
-import { customAjv, getOtherControlKey } from 'components/Form/utils';
+import customAjv from 'components/Form/utils/customAjv';
+import getOtherControlKey from 'components/Form/utils/getOtherControlKey';
 
 import { PageType } from '../Layouts/utils';
 

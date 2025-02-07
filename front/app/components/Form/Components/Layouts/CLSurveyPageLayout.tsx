@@ -47,7 +47,7 @@ import {
   getPageVariant,
 } from 'components/Form/Components/Layouts/utils';
 import { FormContext } from 'components/Form/contexts';
-import { customAjv } from 'components/Form/utils';
+import customAjv from 'components/Form/utils/customAjv';
 import QuillEditedContent from 'components/UI/QuillEditedContent';
 import Warning from 'components/UI/Warning';
 

@@ -7,7 +7,7 @@ import { ErrorObject } from 'ajv';
 import { CLErrors, SupportedLocale } from 'typings';
 
 import { parseRequiredMultilocsSchema } from 'components/Form/parseRequiredMultilocs';
-import { customAjv } from 'components/Form/utils';
+import customAjv from 'components/Form/utils/customAjv';
 
 import { useIntl } from 'utils/cl-intl';
 import { getDefaultAjvErrorMessage } from 'utils/errorUtils';

@@ -1,10 +1,34 @@
-import { Layout, JsonSchema7, createAjv, Tester } from '@jsonforms/core';
-import { isEmpty, forOwn } from 'lodash-es';
+import { Layout, JsonSchema7 } from '@jsonforms/core';
+import { isEmpty } from 'lodash-es';
 
 import { FormData } from 'components/Form/typings';
 
-import { isVisible } from './Components/Controls/visibilityUtils';
-import { PageCategorization, PageType } from './Components/Layouts/utils';
+import { isVisible } from '../Components/Controls/visibilityUtils';
+import { PageCategorization, PageType } from '../Components/Layouts/utils';
+
+import customAjv from './customAjv';
+
+const isValidData = (
+  schema: JsonSchema7,
+  uiSchema: Layout | PageCategorization,
+  data: FormData,
+  isSurvey = false
+) => {
+  if (!data) return false;
+
+  const [schemaToUse, dataWithoutHiddenFields] = getFormSchemaAndData(
+    schema,
+    uiSchema,
+    data
+  );
+
+  return customAjv.validate(
+    schemaToUse,
+    isSurvey ? dataWithoutHiddenFields : data
+  );
+};
+
+export default isValidData;
 
 const iterateSchema = (
   uischema,
@@ -82,60 +106,4 @@ const getFormSchemaAndData = (
   });
 
   return [schemaResult, dataWithoutHiddenElements];
-};
-
-export const sanitizeFormData = (data: any) => {
-  const sanitizedFormData = {};
-
-  forOwn(data, (value, key) => {
-    sanitizedFormData[key] =
-      value === null || value === '' || value === false ? undefined : value;
-  });
-
-  return sanitizedFormData;
-};
-
-export const isValidData = (
-  schema: JsonSchema7,
-  uiSchema: Layout | PageCategorization,
-  data: FormData,
-  isSurvey = false
-) => {
-  if (!data) return false;
-
-  const [schemaToUse, dataWithoutHiddenFields] = getFormSchemaAndData(
-    schema,
-    uiSchema,
-    data
-  );
-
-  return customAjv.validate(
-    schemaToUse,
-    isSurvey ? dataWithoutHiddenFields : data
-  );
-};
-
-// The scope of the element that is used as the other field will have _other appended to it. The corresponding field key can also be found by using this function.
-export function getOtherControlKey(scope: string = ''): string | undefined {
-  const regex = /^#\/properties\/(\w+)_other$/;
-  const match = scope.match(regex);
-
-  if (match) {
-    return match[1];
-  }
-
-  return undefined;
-}
-
-export const customAjv = createAjv({
-  useDefaults: 'empty',
-  removeAdditional: true,
-});
-// The image key word is used for the image choice option
-customAjv.addKeyword('image');
-
-export const dropdownLayoutTester: Tester = (uischema) => {
-  // TODO: Fix this the next time the file is edited.
-  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-  return uischema?.options?.dropdown_layout || false;
 };

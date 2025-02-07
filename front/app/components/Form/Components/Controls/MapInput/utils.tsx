@@ -6,7 +6,7 @@ import { JsonSchema } from '@jsonforms/core';
 import { IMapConfig } from 'api/map_config/types';
 
 import { FormData } from 'components/Form/typings';
-import { customAjv } from 'components/Form/utils';
+import customAjv from 'components/Form/utils/customAjv';
 import { Option } from 'components/UI/LocationInput';
 
 import { geocode, reverseGeocode } from 'utils/locationTools';
