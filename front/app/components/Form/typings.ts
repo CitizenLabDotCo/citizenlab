@@ -46,7 +46,7 @@ export interface PageCategorization extends ExtendedUISchema {
    * The child elements of this categorization which are either of type
    * {@link PageType}.
    */
-  elements: (PageType | PageCategorization)[];
+  elements: PageType[];
 }
 
 interface ConditionWithPageId
@@ -77,31 +77,3 @@ export type ExtendedUISchema = {
   label?: string;
 } & UISchemaElement &
   Scopable;
-
-export interface PageType extends Layout {
-  type: 'Page';
-  options: {
-    id?: string;
-    title?: string;
-    description?: string;
-    map_config_id?: string;
-    page_layout?: 'map' | 'default' | null;
-  };
-  label?: string;
-  scope?: string;
-  ruleArray?: ExtendedRule[];
-  elements: ExtendedUISchema[];
-}
-
-export interface PageCategorization extends ExtendedUISchema {
-  type: 'Categorization';
-  /**
-   * The label of this categorization.
-   */
-  label: string;
-  /**
-   * The child elements of this categorization which are either of type
-   * {@link PageType}.
-   */
-  elements: (PageType | PageCategorization)[];
-}

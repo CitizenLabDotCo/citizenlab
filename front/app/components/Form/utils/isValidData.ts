@@ -4,6 +4,7 @@ import { isEmpty } from 'lodash-es';
 import { PageCategorization, PageType } from '../typings';
 
 import customAjv from './customAjv';
+import getKey from './getKey';
 import isVisible from './isVisible';
 
 const isValidData = (
@@ -73,7 +74,7 @@ const getFormSchemaAndData = (
       }
     }
 
-    const key: string = element.scope.split('/').pop();
+    const key: string = getKey(element);
 
     const showInData =
       parentSchema.type === 'Page'
