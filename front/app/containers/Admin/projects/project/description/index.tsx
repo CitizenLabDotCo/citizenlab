@@ -128,7 +128,7 @@ const ProjectDescription = () => {
         <SectionField>
           {!showProjectDescriptionBuilder && (
             <QuillMultilocWithLocaleSwitcher
-              id="project-description-module-inactive"
+              id="e2e-project-description-module-inactive"
               valueMultiloc={formValues.description_multiloc}
               onChange={handleDescriptionOnChange}
               label={formatMessage(messages.descriptionLabel)}

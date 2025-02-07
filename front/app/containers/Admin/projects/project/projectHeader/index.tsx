@@ -124,6 +124,7 @@ const ProjectHeader = ({ projectId }: Props) => {
               </Link>
             ) : (
               <Link
+                data-cy="e2e-project-description-preview-link-to-settings"
                 to={`/admin/projects/${project.data.id}/settings/description`}
               >
                 {isEmptyMultiloc(
