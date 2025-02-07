@@ -3,11 +3,13 @@ import { PageCategorization, PageType } from '../typings';
 const getVisiblePages = (
   uiSchema: PageCategorization,
   data: Record<string, any>,
-  currentPage: PageType
+  currentlyVisiblePage: PageType
 ) => {
   const visiblePages: PageType[] = [];
   const pages = uiSchema.elements;
-  const currentPageIndex = pages.findIndex((page) => page === currentPage);
+  const currentlyVisiblePageIndex = pages.findIndex(
+    (page) => page === currentlyVisiblePage
+  );
 
   // TODO???
 
