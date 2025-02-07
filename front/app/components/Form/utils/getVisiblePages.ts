@@ -46,7 +46,7 @@ export default getVisiblePages;
 
 const evalVisibility = (
   page: PageType,
-  data: any,
+  data: Record<string, any>,
   pages: PageType[]
 ): boolean => {
   if (!page.ruleArray || page.ruleArray.length === 0) {
