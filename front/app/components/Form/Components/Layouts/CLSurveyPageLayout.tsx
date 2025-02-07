@@ -39,7 +39,6 @@ import EsriMap from 'components/EsriMap';
 import { parseLayers } from 'components/EsriMap/utils';
 import {
   getSanitizedFormData,
-  getPageSchema,
   PageCategorization,
   isPageCategorization,
   PageType,
@@ -68,6 +67,7 @@ import { SURVEY_PAGE_CHANGE_EVENT } from './events';
 import messages from './messages';
 import PageControlButtons from './PageControlButtons';
 import SubmissionReference from './SubmissionReference';
+import getPageSchema from './utils/getPageSchema';
 
 // Handling survey pages in here. The more things that we have added to it,
 // the more it has become a survey page layout. It also becomes extremely hard to understand
@@ -231,7 +231,7 @@ const CLSurveyPageLayout = memo(
       userPagePath.push(uiPages[currentStep]);
 
       const isValid = customAjv.validate(
-        getPageSchema(schema, currentPageCategorization, formState.core?.data),
+        getPageSchema(schema, currentPageCategorization),
         getSanitizedFormData(data)
       );
 
