@@ -1,6 +1,6 @@
 import { JsonSchema } from '@jsonforms/core';
 
-import { PageType } from '../utils';
+import { PageType } from '../typings';
 
 const getPageSchema = (
   schema: JsonSchema,

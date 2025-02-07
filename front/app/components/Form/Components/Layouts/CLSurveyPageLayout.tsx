@@ -37,13 +37,11 @@ import useLocalize from 'hooks/useLocalize';
 
 import EsriMap from 'components/EsriMap';
 import { parseLayers } from 'components/EsriMap/utils';
-import {
-  getFilteredDataForUserPath,
-  getFormCompletionPercentage,
-} from 'components/Form/Components/Layouts/utils';
 import { FormContext } from 'components/Form/contexts';
 import { PageCategorization, PageType } from 'components/Form/typings';
 import customAjv from 'components/Form/utils/customAjv';
+import getFilteredDataForUserPath from 'components/Form/utils/getFilteredDataForUserPath';
+import getFormCompletionPercentage from 'components/Form/utils/getFormCompletionPercentage';
 import getPageVariant from 'components/Form/utils/getPageVariant';
 import isPageCategorization from 'components/Form/utils/isPageCategorization';
 import sanitizeFormData from 'components/Form/utils/sanitizeFormData';
@@ -55,6 +53,7 @@ import clHistory from 'utils/cl-router/history';
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 import eventEmitter from 'utils/eventEmitter';
 
+import getPageSchema from '../../utils/getPageSchema';
 import {
   extractElementsByOtherOptionLogic,
   hasOtherTextFieldBelow,
@@ -66,7 +65,6 @@ import { SURVEY_PAGE_CHANGE_EVENT } from './events';
 import messages from './messages';
 import PageControlButtons from './PageControlButtons';
 import SubmissionReference from './SubmissionReference';
-import getPageSchema from './utils/getPageSchema';
 
 // Handling survey pages in here. The more things that we have added to it,
 // the more it has become a survey page layout. It also becomes extremely hard to understand
