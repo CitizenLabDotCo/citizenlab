@@ -8,7 +8,6 @@ import {
   colors,
   IconNames,
   Tooltip,
-  fontSizes,
 } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
@@ -22,6 +21,7 @@ import NavigationTabs from 'components/admin/NavigationTabs';
 import ButtonWithLink from 'components/UI/ButtonWithLink';
 
 import { FormattedMessage, MessageDescriptor, useIntl } from 'utils/cl-intl';
+import Link from 'utils/cl-router/Link';
 import { isEmptyMultiloc } from 'utils/helperUtils';
 import { getFullName, stripHtml } from 'utils/textUtils';
 
@@ -87,20 +87,18 @@ const ProjectHeader = ({ projectId }: Props) => {
             <StyledTitle color="primary" variant="h4" mt="0" mb="4px">
               {localize(project.data.attributes.title_multiloc)}
             </StyledTitle>
-            <ButtonWithLink
-              linkTo={`/admin/projects/${project.data.id}/settings/description`}
-              buttonStyle="text"
-              size="s"
-              p="0"
-              fontSize={`${fontSizes}px`}
+            <Link
+              to={`/admin/projects/${project.data.id}/settings/description`}
             >
-              {isEmptyMultiloc(project.data.attributes.description_multiloc)
-                ? formatMessage(messages.addDescription1)
-                : stripHtml(
-                    localize(project.data.attributes.description_multiloc),
-                    20
-                  )}
-            </ButtonWithLink>
+              <Text color="coolGrey600" m="0px" fontSize="s" p="0">
+                {isEmptyMultiloc(project.data.attributes.description_multiloc)
+                  ? formatMessage(messages.addDescription1)
+                  : stripHtml(
+                      localize(project.data.attributes.description_multiloc),
+                      20
+                    )}
+              </Text>
+            </Link>
           </Box>
           <Box
             display="flex"
