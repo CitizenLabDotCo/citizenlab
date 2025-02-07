@@ -126,7 +126,11 @@ const ProjectDescription = memo<
 
   if (!isNilOrError(project)) {
     return (
-      <Box ref={containerRef}>
+      <Box
+        // To improve: have standardize page height calculation for all admin pages
+        height="100vh"
+        ref={containerRef}
+      >
         <SectionTitle>
           <FormattedMessage {...messages.titleDescription} />
         </SectionTitle>
