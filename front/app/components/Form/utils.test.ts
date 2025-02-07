@@ -46,6 +46,115 @@ describe('getFormSchemaAndData', () => {
     expect(resultData).toEqual(data);
   });
 
+  it('should remove the data key from the data returned if field is hidden', () => {
+    const schema = {
+      type: 'object',
+      additionalProperties: false,
+      properties: {
+        multiple_choice: {
+          type: 'string',
+          oneOf: [
+            {
+              const: 'mangoes',
+              title: 'Mangoes',
+            },
+            {
+              const: 'pineapples',
+              title: 'Pineapples',
+            },
+          ],
+        },
+        number: {
+          type: 'number',
+        },
+      },
+      required: ['multiple_choice', 'number'],
+    };
+
+    const uiSchema = {
+      type: 'Page',
+      label: 'Testlabel',
+      options: {
+        id: 'extra',
+      },
+      elements: [
+        {
+          type: 'Control',
+          scope: '#/properties/multiple_choice',
+          label: 'Fruits',
+          options: {
+            description: '',
+            isAdminField: false,
+          },
+        },
+        {
+          type: 'Control',
+          scope: '#/properties/number',
+          label: 'Number',
+          options: {
+            description: '',
+            isAdminField: false,
+          },
+          ruleArray: [
+            {
+              effect: RuleEffect.SHOW,
+              condition: {
+                scope: '#/properties/multiple_choice',
+                schema: {
+                  enum: ['pineapples'],
+                },
+              },
+            },
+          ],
+        },
+      ],
+    };
+
+    const data = {
+      multiple_choice: 'mangoes',
+      number: 45,
+    };
+
+    const expectedSchema = {
+      type: 'object',
+      additionalProperties: false,
+      properties: {
+        multiple_choice: {
+          type: 'string',
+          oneOf: [
+            {
+              const: 'mangoes',
+              title: 'Mangoes',
+            },
+            {
+              const: 'pineapples',
+              title: 'Pineapples',
+            },
+          ],
+        },
+        number: {
+          type: 'number',
+        },
+      },
+      required: ['multiple_choice'],
+    };
+
+    const expectedData = {
+      multiple_choice: 'mangoes',
+    };
+
+    const [resultSchema, resultData] = getFormSchemaAndData(
+      schema,
+      uiSchema,
+      data
+    );
+
+    expect(resultSchema).toEqual(expectedSchema);
+    expect(resultData).toEqual(expectedData);
+  });
+});
+
+describe('isValidData', () => {
   it('should only validate draft survey data against pages up to and including last completed page', () => {
     const schema = {
       type: 'object',
@@ -478,112 +587,5 @@ describe('getFormSchemaAndData', () => {
     const result = isValidData(schema, uiSchema, data, true);
 
     expect(result).toEqual(true);
-  });
-
-  it('should remove the data key from the data returned if field is hidden', () => {
-    const schema = {
-      type: 'object',
-      additionalProperties: false,
-      properties: {
-        multiple_choice: {
-          type: 'string',
-          oneOf: [
-            {
-              const: 'mangoes',
-              title: 'Mangoes',
-            },
-            {
-              const: 'pineapples',
-              title: 'Pineapples',
-            },
-          ],
-        },
-        number: {
-          type: 'number',
-        },
-      },
-      required: ['multiple_choice', 'number'],
-    };
-
-    const uiSchema = {
-      type: 'Page',
-      label: 'Testlabel',
-      options: {
-        id: 'extra',
-      },
-      elements: [
-        {
-          type: 'Control',
-          scope: '#/properties/multiple_choice',
-          label: 'Fruits',
-          options: {
-            description: '',
-            isAdminField: false,
-          },
-        },
-        {
-          type: 'Control',
-          scope: '#/properties/number',
-          label: 'Number',
-          options: {
-            description: '',
-            isAdminField: false,
-          },
-          ruleArray: [
-            {
-              effect: RuleEffect.SHOW,
-              condition: {
-                scope: '#/properties/multiple_choice',
-                schema: {
-                  enum: ['pineapples'],
-                },
-              },
-            },
-          ],
-        },
-      ],
-    };
-
-    const data = {
-      multiple_choice: 'mangoes',
-      number: 45,
-    };
-
-    const expectedSchema = {
-      type: 'object',
-      additionalProperties: false,
-      properties: {
-        multiple_choice: {
-          type: 'string',
-          oneOf: [
-            {
-              const: 'mangoes',
-              title: 'Mangoes',
-            },
-            {
-              const: 'pineapples',
-              title: 'Pineapples',
-            },
-          ],
-        },
-        number: {
-          type: 'number',
-        },
-      },
-      required: ['multiple_choice'],
-    };
-
-    const expectedData = {
-      multiple_choice: 'mangoes',
-    };
-
-    const [resultSchema, resultData] = getFormSchemaAndData(
-      schema,
-      uiSchema,
-      data
-    );
-
-    expect(resultSchema).toEqual(expectedSchema);
-    expect(resultData).toEqual(expectedData);
   });
 });
