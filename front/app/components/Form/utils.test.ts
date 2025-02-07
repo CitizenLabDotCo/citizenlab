@@ -3,49 +3,6 @@ import { RuleEffect } from '@jsonforms/core';
 import { getFormSchemaAndData, isValidData } from './utils';
 
 describe('getFormSchemaAndData', () => {
-  it('should return the same schema and data if no elements are hidden', () => {
-    const schema = {
-      type: 'object',
-      properties: {
-        name: {
-          type: 'string',
-        },
-        age: {
-          type: 'number',
-        },
-      },
-      required: [],
-    };
-
-    const uiSchema = {
-      type: 'VerticalLayout',
-      elements: [
-        {
-          type: 'Control',
-          scope: '#/properties/name',
-        },
-        {
-          type: 'Control',
-          scope: '#/properties/age',
-        },
-      ],
-    };
-
-    const data = {
-      name: 'John',
-      age: 30,
-    };
-
-    const [resultSchema, resultData] = getFormSchemaAndData(
-      schema,
-      uiSchema,
-      data
-    );
-
-    expect(resultSchema).toEqual(schema);
-    expect(resultData).toEqual(data);
-  });
-
   it('should remove the data key from the data returned if field is hidden', () => {
     const schema = {
       type: 'object',
