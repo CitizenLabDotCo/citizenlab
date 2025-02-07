@@ -1481,7 +1481,6 @@
   "app.containers.AdminPage.Project.confirmation.yes": "Iš naujo nustatyti visus dalyvavimo duomenis",
   "app.containers.AdminPage.Project.data.descriptionText": "Aiškios idėjos, komentarai, balsai, reakcijos, atsakymai į apklausas, apklausų atsakymai, savanoriai ir renginių dalyviai. Balsavimo etapų atveju šiuo veiksmu bus išvalyti balsai, bet ne parinktys.",
   "app.containers.AdminPage.Project.data.title": "Išvalyti visus šio projekto dalyvavimo duomenis",
-  "app.containers.AdminPage.Project.data.warningMessage": "Šio veiksmo negalima atšaukti.",
   "app.containers.AdminPage.Project.resetParticipationData": "Iš naujo nustatyti visus dalyvavimo duomenis",
   "app.containers.AdminPage.Project.settings.accessRights": "Prieigos teisės",
   "app.containers.AdminPage.Project.settings.back": "Atgal",

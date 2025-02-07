@@ -1481,7 +1481,6 @@
   "app.containers.AdminPage.Project.confirmation.yes": "Tüm katılım verilerini sıfırlayın",
   "app.containers.AdminPage.Project.data.descriptionText": "Fikirleri, yorumları, oyları, tepkileri, anket yanıtlarını, anket yanıtlarını, gönüllüleri ve etkinlik katılımcılarını temizleyin. Oylama aşamaları söz konusu olduğunda, bu eylem oyları temizleyecek ancak seçenekleri temizlemeyecektir.",
   "app.containers.AdminPage.Project.data.title": "Bu projedeki tüm katılım verilerini temizleyin",
-  "app.containers.AdminPage.Project.data.warningMessage": "Bu işlem geri alınamaz.",
   "app.containers.AdminPage.Project.resetParticipationData": "Tüm katılım verilerini sıfırlayın",
   "app.containers.AdminPage.Project.settings.accessRights": "Erişim hakları",
   "app.containers.AdminPage.Project.settings.back": "Geri",
