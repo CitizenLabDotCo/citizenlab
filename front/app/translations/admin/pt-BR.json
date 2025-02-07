@@ -381,6 +381,7 @@
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.approvedBy": "Aprovado por {name}",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.archived": "Arquivado",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.draft": "Rascunho",
+  "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.editDescription": "Editar descrição",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.everyone": "Todos",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.groups": "Grupos",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.offlineVoters": "Eleitores off-line",
