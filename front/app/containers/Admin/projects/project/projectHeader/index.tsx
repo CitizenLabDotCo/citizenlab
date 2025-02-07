@@ -101,7 +101,7 @@ const ProjectHeader = ({ projectId }: Props) => {
                   ? formatMessage(messages.addDescription1)
                   : stripHtml(
                       localize(project.data.attributes.description_multiloc),
-                      120
+                      100
                     )}
               </Text>
             </Link>
