@@ -1,21 +1,17 @@
 import { Layout, JsonSchema7 } from '@jsonforms/core';
 import { isEmpty } from 'lodash-es';
 
-import { FormData } from 'components/Form/typings';
-
-import { isVisible } from '../Components/Controls/visibilityUtils';
-import { PageCategorization, PageType } from '../Components/Layouts/utils';
+import { PageCategorization, PageType } from '../typings';
 
 import customAjv from './customAjv';
+import isVisible from './isVisible';
 
 const isValidData = (
   schema: JsonSchema7,
   uiSchema: Layout | PageCategorization,
-  data: FormData,
+  data: Record<string, any>,
   isSurvey = false
 ) => {
-  if (!data) return false;
-
   const [schemaToUse, dataWithoutHiddenFields] = getFormSchemaAndData(
     schema,
     uiSchema,
@@ -50,7 +46,7 @@ const iterateSchema = (
 const getFormSchemaAndData = (
   schema: JsonSchema7,
   uiSchema: Layout | PageCategorization,
-  data: FormData
+  data: Record<string, any>
 ) => {
   const dataWithoutHiddenElements = {};
   const visibleElements: string[] = [];
@@ -58,10 +54,7 @@ const getFormSchemaAndData = (
   iterateSchema(uiSchema, uiSchema, (element, parentSchema) => {
     // If saving a draft response, we only want to validate the answers
     // against pages up to and including the latest completed page.
-    if (
-      data?.latest_complete_page >= 0 &&
-      data?.publication_status === 'draft'
-    ) {
+    if (data.latest_complete_page >= 0 && data.publication_status === 'draft') {
       // Get the index of the current page we're iterating in the uiSchema.
       // TODO: Fix this the next time the file is edited.
       // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
@@ -93,7 +86,7 @@ const getFormSchemaAndData = (
           )
         : true;
 
-    if (showInData && data) {
+    if (showInData) {
       dataWithoutHiddenElements[key] = data[key];
       visibleElements.push(key);
     }

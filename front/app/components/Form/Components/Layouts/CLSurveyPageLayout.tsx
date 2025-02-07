@@ -40,10 +40,13 @@ import { parseLayers } from 'components/EsriMap/utils';
 import { FormContext } from 'components/Form/contexts';
 import { PageCategorization, PageType } from 'components/Form/typings';
 import customAjv from 'components/Form/utils/customAjv';
+import extractElementsByOtherOptionLogic from 'components/Form/utils/extractElementsByOtherOptionLogic';
 import getFilteredDataForUserPath from 'components/Form/utils/getFilteredDataForUserPath';
 import getFormCompletionPercentage from 'components/Form/utils/getFormCompletionPercentage';
 import getPageVariant from 'components/Form/utils/getPageVariant';
+import hasOtherTextFieldBelow from 'components/Form/utils/hasOtherTextFieldBelow';
 import isPageCategorization from 'components/Form/utils/isPageCategorization';
+import isVisible from 'components/Form/utils/isVisible';
 import sanitizeFormData from 'components/Form/utils/sanitizeFormData';
 import QuillEditedContent from 'components/UI/QuillEditedContent';
 import Warning from 'components/UI/Warning';
@@ -54,11 +57,6 @@ import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 import eventEmitter from 'utils/eventEmitter';
 
 import getPageSchema from '../../utils/getPageSchema';
-import {
-  extractElementsByOtherOptionLogic,
-  hasOtherTextFieldBelow,
-  isVisible,
-} from '../Controls/visibilityUtils';
 import { useErrorToRead } from '../Fields/ErrorToReadContext';
 
 import { SURVEY_PAGE_CHANGE_EVENT } from './events';
