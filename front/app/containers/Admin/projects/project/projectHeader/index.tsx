@@ -83,6 +83,7 @@ const ProjectHeader = ({ projectId }: Props) => {
             flexDirection="column"
             alignItems="flex-start"
             mb="8px"
+            maxWidth="600px"
           >
             <StyledTitle color="primary" variant="h4" mt="0" mb="4px">
               {localize(project.data.attributes.title_multiloc)}
@@ -95,7 +96,7 @@ const ProjectHeader = ({ projectId }: Props) => {
                   ? formatMessage(messages.addDescription1)
                   : stripHtml(
                       localize(project.data.attributes.description_multiloc),
-                      20
+                      120
                     )}
               </Text>
             </Link>
