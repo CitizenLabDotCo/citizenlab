@@ -161,7 +161,7 @@ const evalVisibility = (
 };
 
 export const isVisible = (
-  uischema: ExtendedUISchema | PageType,
+  uischema: PageType,
   data: any,
   pages?: PageType[]
 ): boolean => {
