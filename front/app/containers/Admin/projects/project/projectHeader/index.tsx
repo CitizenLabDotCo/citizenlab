@@ -77,7 +77,12 @@ const ProjectHeader = ({ projectId }: Props) => {
         pr="24px"
         py="16px"
       >
-        <Box display="flex" justifyContent="space-between" alignItems="center">
+        <Box
+          display="flex"
+          justifyContent="space-between"
+          alignItems="flex-start"
+          gap="16px"
+        >
           <Box
             display="flex"
             flexDirection="column"
