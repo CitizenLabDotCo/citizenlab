@@ -2,10 +2,7 @@
  Reference for some of the code in this file: https://github.com/eclipsesource/jsonforms/blob/master/packages/core/src/testers/testers.ts
  *
 */
-
 import {
-  UISchemaElement,
-  Rule,
   Condition,
   RuleEffect,
   OrCondition,
@@ -19,39 +16,13 @@ import {
 } from '@jsonforms/core';
 import { has } from 'lodash-es';
 
+import {
+  HidePageCondition,
+  ExtendedUISchema,
+  PageType,
+} from 'components/Form/typings';
 import customAjv from 'components/Form/utils/customAjv';
 import getOtherControlKey from 'components/Form/utils/getOtherControlKey';
-
-import { PageType } from '../Layouts/utils';
-
-interface ConditionWithPageId
-  extends Condition,
-    Scopable,
-    SchemaBasedCondition {
-  pageId?: string;
-}
-
-interface HidePageCondition extends ConditionWithPageId {
-  type: 'HIDEPAGE';
-}
-
-export type ExtendedRule = {
-  /**
-   * The effect of the rule
-   */
-  effect: RuleEffect;
-  /**
-   * The condition of the rule that must evaluate to true in order
-   * to trigger the effect.
-   */
-  condition: ConditionWithPageId;
-} & Rule;
-
-export type ExtendedUISchema = {
-  ruleArray?: ExtendedRule[];
-  label?: string;
-} & UISchemaElement &
-  Scopable;
 
 const isHidePageCondition = (
   condition: Condition

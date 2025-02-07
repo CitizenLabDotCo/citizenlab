@@ -38,16 +38,15 @@ import useLocalize from 'hooks/useLocalize';
 import EsriMap from 'components/EsriMap';
 import { parseLayers } from 'components/EsriMap/utils';
 import {
-  getSanitizedFormData,
-  PageCategorization,
-  isPageCategorization,
-  PageType,
   getFilteredDataForUserPath,
   getFormCompletionPercentage,
-  getPageVariant,
 } from 'components/Form/Components/Layouts/utils';
 import { FormContext } from 'components/Form/contexts';
+import { PageCategorization, PageType } from 'components/Form/typings';
 import customAjv from 'components/Form/utils/customAjv';
+import getPageVariant from 'components/Form/utils/getPageVariant';
+import isPageCategorization from 'components/Form/utils/isPageCategorization';
+import sanitizeFormData from 'components/Form/utils/sanitizeFormData';
 import QuillEditedContent from 'components/UI/QuillEditedContent';
 import Warning from 'components/UI/Warning';
 
@@ -232,7 +231,7 @@ const CLSurveyPageLayout = memo(
 
       const isValid = customAjv.validate(
         getPageSchema(schema, currentPageCategorization),
-        getSanitizedFormData(data)
+        sanitizeFormData(data)
       );
 
       if (!isValid) {
