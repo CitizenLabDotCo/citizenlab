@@ -36,7 +36,7 @@ interface IFormValues {
 const ProjectDescription = () => {
   const { formatMessage } = useIntl();
   const { projectId } = useParams();
-
+  const { data: project } = useProjectById(projectId);
   const { mutate: updateProject, isLoading, error } = useUpdateProject();
   const showProjectDescriptionBuilder = useFeatureFlag({
     name: 'project_description_builder',
@@ -49,8 +49,6 @@ const ProjectDescription = () => {
     description_preview_multiloc: null,
     description_multiloc: null,
   });
-
-  const { data: project } = useProjectById(projectId);
 
   useEffect(() => {
     if (project) {

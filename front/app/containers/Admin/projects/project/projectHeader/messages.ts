@@ -161,8 +161,8 @@ export default defineMessages({
     id: 'app.components.app.containers.AdminPage.ProjectEdit.projectHeader.approvedBy',
     defaultMessage: 'Approved by {name}',
   },
-  addDescription1: {
-    id: 'app.components.app.containers.AdminPage.ProjectEdit.projectHeader.addDescription1',
-    defaultMessage: 'Add a description...',
+  editDescription: {
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.projectHeader.editDescription',
+    defaultMessage: 'Edit description',
   },
 });
