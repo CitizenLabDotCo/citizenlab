@@ -57,19 +57,17 @@ export const getFormSchemaAndData = (
     }
 
     const key: string = element.scope.split('/').pop();
-    const isPageVisible = isVisible(
-      parentSchema,
-      data,
-      // TODO: Fix this the next time the file is edited.
-      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-      uiSchema?.elements as PageType[]
-    );
 
-    const isElementVisible = isVisible(element, data);
     const showInData =
       parentSchema.type === 'Page'
-        ? isPageVisible && isElementVisible
-        : isElementVisible;
+        ? isVisible(
+            parentSchema,
+            data,
+            // TODO: Fix this the next time the file is edited.
+            // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+            uiSchema.elements as PageType[]
+          )
+        : true;
 
     if (showInData && data) {
       dataWithoutHiddenElements[key] = data[key];
