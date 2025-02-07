@@ -126,7 +126,11 @@ const ProjectDescription = memo<
 
   if (!isNilOrError(project)) {
     return (
-      <Box ref={containerRef}>
+      <Box
+        // To improve: have standardize page height calculation for all admin pages
+        height="100vh"
+        ref={containerRef}
+      >
         <SectionTitle>
           <FormattedMessage {...messages.titleDescription} />
         </SectionTitle>
@@ -136,48 +140,48 @@ const ProjectDescription = memo<
 
         <Section>
           <SectionField>
-            <TextAreaMultilocWithLocaleSwitcher
-              id="project-description-preview"
-              valueMultiloc={formValues.description_preview_multiloc}
-              onChange={handleDescriptionPreviewOnChange}
-              label={formatMessage(messages.descriptionPreviewLabel)}
-              labelTooltipText={formatMessage(
-                messages.descriptionPreviewTooltip
-              )}
-              rows={5}
-              maxCharCount={280}
+            {!showProjectDescriptionBuilder && (
+              <QuillMultilocWithLocaleSwitcher
+                id="project-description-module-inactive"
+                valueMultiloc={formValues.description_multiloc}
+                onChange={handleDescriptionOnChange}
+                label={formatMessage(messages.descriptionLabel)}
+                labelTooltipText={formatMessage(messages.descriptionTooltip)}
+                withCTAButton
+              />
+            )}
+            <ProjectDescriptionBuilderToggle
+              valueMultiloc={formValues.description_multiloc}
+              onChange={handleDescriptionOnChange}
+              label={formatMessage(messages.descriptionLabel)}
+              labelTooltipText={formatMessage(messages.descriptionTooltip)}
             />
             <Error
-              fieldName="description_preview_multiloc"
+              fieldName="description_multiloc"
               // TODO: Fix this the next time the file is edited.
               // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-              apiErrors={apiError?.description_preview_multiloc}
+              apiErrors={apiError?.description_multiloc}
             />
           </SectionField>
 
           <Box mb="40px">
             <SectionField>
-              {!showProjectDescriptionBuilder && (
-                <QuillMultilocWithLocaleSwitcher
-                  id="project-description-module-inactive"
-                  valueMultiloc={formValues.description_multiloc}
-                  onChange={handleDescriptionOnChange}
-                  label={formatMessage(messages.descriptionLabel)}
-                  labelTooltipText={formatMessage(messages.descriptionTooltip)}
-                  withCTAButton
-                />
-              )}
-              <ProjectDescriptionBuilderToggle
-                valueMultiloc={formValues.description_multiloc}
-                onChange={handleDescriptionOnChange}
-                label={formatMessage(messages.descriptionLabel)}
-                labelTooltipText={formatMessage(messages.descriptionTooltip)}
+              <TextAreaMultilocWithLocaleSwitcher
+                id="project-description-preview"
+                valueMultiloc={formValues.description_preview_multiloc}
+                onChange={handleDescriptionPreviewOnChange}
+                label={formatMessage(messages.descriptionPreviewLabel)}
+                labelTooltipText={formatMessage(
+                  messages.descriptionPreviewTooltip
+                )}
+                rows={5}
+                maxCharCount={280}
               />
               <Error
-                fieldName="description_multiloc"
+                fieldName="description_preview_multiloc"
                 // TODO: Fix this the next time the file is edited.
                 // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-                apiErrors={apiError?.description_multiloc}
+                apiErrors={apiError?.description_preview_multiloc}
               />
             </SectionField>
           </Box>
