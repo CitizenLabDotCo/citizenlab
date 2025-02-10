@@ -77,7 +77,10 @@ const ProjectHeader = ({ projectId }: Props) => {
         py="16px"
       >
         <Box display="flex" justifyContent="space-between" alignItems="center">
-          <Link to={`/admin/projects/${project.data.id}/settings`}>
+          <Link
+            to={`/admin/projects/${project.data.id}/settings`}
+            data-cy="e2e-project-title-preview-link-to-settings"
+          >
             <StyledTitle color="primary" variant="h4" my="0px">
               {localize(project.data.attributes.title_multiloc)}
             </StyledTitle>
