@@ -25,7 +25,6 @@ import useLocalize from 'hooks/useLocalize';
 
 import { getFormValues as getIdeaFormValues } from 'containers/IdeasEditPage/utils';
 
-import { FormData } from 'components/Form/typings';
 import isValidData from 'components/Form/utils/isValidData';
 
 import { FormattedMessage } from 'utils/cl-intl';
@@ -62,7 +61,7 @@ const IdeaEditor = ({ ideaId, setIdeaId }: Props) => {
     Record<string, UserFormData>
   >({});
   const [ideaFormStatePerIdea, setIdeaFormStatePerIdea] = useState<
-    Record<string, FormData>
+    Record<string, Record<string, any>>
   >({});
   const [ideaFormApiErrors, setIdeaFormApiErrors] = useState<
     CLErrors | undefined
@@ -100,7 +99,9 @@ const IdeaEditor = ({ ideaId, setIdeaId }: Props) => {
     ideaMetadata
   );
 
-  const ideaFormData: FormData | null =
+  const ideaFormData: Record<string, any> | null =
+    // TODO: Fix this the next time the file is edited.
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     ideaId && ideaFormStatePerIdea[ideaId]
       ? ideaFormStatePerIdea[ideaId]
       : // TODO: Fix this the next time the file is edited.
@@ -120,7 +121,7 @@ const IdeaEditor = ({ ideaId, setIdeaId }: Props) => {
     }));
   };
 
-  const setIdeaFormData = (ideaFormData: FormData) => {
+  const setIdeaFormData = (ideaFormData: Record<string, any>) => {
     if (!ideaId) return;
 
     setIdeaFormStatePerIdea((ideaFormStatePerIdea) => ({
@@ -131,7 +132,9 @@ const IdeaEditor = ({ ideaId, setIdeaId }: Props) => {
 
   const userFormDataValid = isUserFormDataValid(userFormData);
 
-  const ideaFormDataValid = isValidData(schema, uiSchema, ideaFormData, false);
+  const ideaFormDataValid = ideaFormData
+    ? isValidData(schema, uiSchema, ideaFormData, false)
+    : false;
 
   const onApproveIdea = async () => {
     if (
@@ -261,7 +264,7 @@ const IdeaEditor = ({ ideaId, setIdeaId }: Props) => {
               uiSchema={uiSchema}
               showAllErrors={true}
               apiErrors={ideaFormApiErrors}
-              formData={ideaFormData}
+              formData={ideaFormData ?? {}}
               ideaMetadata={ideaMetadata}
               setFormData={setIdeaFormData}
             />

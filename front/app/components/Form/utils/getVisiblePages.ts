@@ -13,33 +13,14 @@ import {
 import { PageCategorization, PageType, HidePageCondition } from '../typings';
 
 import customAjv from './customAjv';
-import getKey from './getKey';
 
 const getVisiblePages = (
   uiSchema: PageCategorization,
   data: Record<string, any>
 ) => {
+  console.log({ uiSchema, data });
   const pages = uiSchema.elements;
-  const visiblePages: PageType[] = [];
-
-  const reconstructedData = {};
-
-  pages.forEach((page) => {
-    // Check if page was, is, or will be, visible
-    const isVisible = evalVisibility(page, reconstructedData, pages);
-
-    if (isVisible) {
-      visiblePages.push(page);
-
-      const keysOfQuestionsOnPage = page.elements.map(getKey);
-
-      for (const questionKey of keysOfQuestionsOnPage) {
-        reconstructedData[questionKey] = data[questionKey];
-      }
-    }
-  });
-
-  return visiblePages;
+  return pages.map((page) => evalVisibility(page, data, pages));
 };
 
 export default getVisiblePages;

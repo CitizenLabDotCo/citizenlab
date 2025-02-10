@@ -22,7 +22,7 @@ import FormWrapper from './Components/FormWrapper';
 import messages from './messages';
 import { parseRequiredMultilocsData } from './parseRequiredMultilocs';
 import tracks from './tracks';
-import { ApiErrorGetter, AjvErrorGetter, FormData } from './typings';
+import { ApiErrorGetter, AjvErrorGetter } from './typings';
 import isValidData from './utils/isValidData';
 import sanitizeFormData from './utils/sanitizeFormData';
 
@@ -45,8 +45,8 @@ const Title = styled.h1`
 interface Props {
   schema: JsonSchema7;
   uiSchema: Layout;
-  onSubmit: (formData: FormData) => void | Promise<any>;
-  initialFormData: FormData;
+  onSubmit: (formData: Record<string, any>) => void | Promise<any>;
+  initialFormData: Record<string, any>;
   title?: ReactElement;
   /** A function that returns a translation message given the fieldname and the error key returned by the API */
   getApiErrorMessage?: ApiErrorGetter;
@@ -81,7 +81,7 @@ const Form = memo(
     const { formatMessage } = useIntl();
     const locale = useLocale();
 
-    const [data, setData] = useState<FormData>(() => {
+    const [data, setData] = useState<Record<string, any>>(() => {
       return parseRequiredMultilocsData(schema, locale, initialFormData);
     });
     const [apiErrors, setApiErrors] = useState<CLErrors | undefined>();

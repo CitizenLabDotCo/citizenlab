@@ -14,7 +14,6 @@ import {
   getLineSymbol,
   getShapeSymbol,
 } from 'components/EsriMap/utils';
-import { FormData } from 'components/Form/typings';
 
 import { projectPointToWebMercator } from 'utils/mapUtils/map';
 
@@ -178,7 +177,7 @@ type HandlePointDragProps = {
   pointBeingDragged: React.MutableRefObject<Graphic | null>;
   temporaryDragGraphic: React.MutableRefObject<Graphic | null>;
   tenantSecondaryColor: string;
-  data: FormData;
+  data: any;
   inputType: MapInputType;
   pointSymbolSize?: number;
 };

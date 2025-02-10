@@ -4,14 +4,12 @@ import { Box } from '@citizenlab/cl2-component-library';
 import Lottie, { LottieRefCurrentProps } from 'lottie-react';
 import styled, { useTheme } from 'styled-components';
 
-import { FormData } from 'components/Form/typings';
-
 import { MapInputType } from '../../utils';
 
 type InstructionAnimationProps = {
   instructionRef: React.RefObject<HTMLDivElement>;
   inputType: MapInputType;
-  data: FormData;
+  data: Record<string, any>;
 };
 
 const StyledBox = styled(Box)<{ tenantColor: string }>`
@@ -42,7 +40,7 @@ const InstructionAnimation = ({
   const showInstructions = () => {
     switch (inputType) {
       case 'point':
-        return !data?.coordinates;
+        return !data.coordinates;
       case 'line':
         // TODO: Fix this the next time the file is edited.
         // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition

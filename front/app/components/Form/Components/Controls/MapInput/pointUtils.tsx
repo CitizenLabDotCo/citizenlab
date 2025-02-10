@@ -6,7 +6,6 @@ import {
   goToMapLocation,
   esriPointToGeoJson,
 } from 'components/EsriMap/utils';
-import { FormData } from 'components/Form/typings';
 import { Option } from 'components/UI/LocationInput';
 
 import { projectPointToWebMercator } from 'utils/mapUtils/map';
@@ -51,7 +50,7 @@ export const updatePointDataAndDisplay = ({
 };
 
 type UpdatePointDataAndDisplayProps = {
-  data: FormData;
+  data: Record<string, any>;
   locale: string;
   mapView: MapView | null | undefined;
   setAddress?: (address: Option) => void;

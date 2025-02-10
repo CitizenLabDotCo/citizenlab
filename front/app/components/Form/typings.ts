@@ -77,3 +77,5 @@ export type ExtendedUISchema = {
   label?: string;
 } & UISchemaElement &
   Scopable;
+
+export type FormData = Record<string, any>;
