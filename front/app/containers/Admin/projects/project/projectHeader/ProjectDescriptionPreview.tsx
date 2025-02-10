@@ -4,7 +4,7 @@ import { Box, Icon, Text, colors } from '@citizenlab/cl2-component-library';
 import { RouteType } from 'routes';
 
 import useProjectDescriptionBuilderLayout from 'api/project_description_builder/useProjectDescriptionBuilderLayout';
-import useProjectById from 'api/projects/useProjectById';
+import { IProject } from 'api/projects/types';
 
 import useLocalize from 'hooks/useLocalize';
 
@@ -16,7 +16,7 @@ import { stripHtml } from 'utils/textUtils';
 import messages from './messages';
 
 interface Props {
-  projectId: string;
+  project: IProject;
 }
 
 const EditDescriptionLinkContent = () => {
@@ -32,15 +32,13 @@ const EditDescriptionLinkContent = () => {
   );
 };
 
-const ProjectDescriptionPreview = ({ projectId }: Props) => {
+const ProjectDescriptionPreview = ({ project }: Props) => {
+  const projectId = project.data.id;
   const localize = useLocalize();
-  const { data: project } = useProjectById(projectId);
   const { data: projectDescriptionBuilderLayout } =
     useProjectDescriptionBuilderLayout(projectId);
   const projectDescriptionBuilderEnabled =
     projectDescriptionBuilderLayout?.data.attributes.enabled || false;
-
-  if (!project) return null;
 
   return projectDescriptionBuilderEnabled ? (
     <Link
@@ -48,7 +46,7 @@ const ProjectDescriptionPreview = ({ projectId }: Props) => {
       to={
         // The project description content builder route has not been added to the type yet
         // so we need to cast it to RouteType
-        `/admin/project-description-builder/projects/${project.data.id}/description` as RouteType
+        `/admin/project-description-builder/projects/${projectId}/description` as RouteType
       }
     >
       {/* Given the wide range of elements the content builder provides, it's hard to show a reliable preview. 
@@ -58,7 +56,7 @@ const ProjectDescriptionPreview = ({ projectId }: Props) => {
   ) : (
     <Link
       data-cy="e2e-project-description-preview-link-to-multiloc-settings"
-      to={`/admin/projects/${project.data.id}/settings/description`}
+      to={`/admin/projects/${projectId}/settings/description`}
     >
       {isEmptyMultiloc(project.data.attributes.description_multiloc) ? (
         <EditDescriptionLinkContent />

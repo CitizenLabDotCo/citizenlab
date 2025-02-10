@@ -92,7 +92,7 @@ const ProjectHeader = ({ projectId }: Props) => {
             <StyledTitle color="primary" variant="h4" mt="0" mb="4px">
               {localize(project.data.attributes.title_multiloc)}
             </StyledTitle>
-            <ProjectDescriptionPreview projectId={projectId} />
+            <ProjectDescriptionPreview project={project} />
           </Box>
           <Box
             display="flex"
