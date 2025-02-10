@@ -1,25 +1,44 @@
+/*
+ Reference for some of the code in this file: https://github.com/eclipsesource/jsonforms/blob/master/packages/core/src/testers/testers.ts
+ *
+*/
 import {
   Condition,
+  SchemaBasedCondition,
+  Scopable,
+  composeWithUi,
   resolveData,
   JsonSchema,
-  SchemaBasedCondition,
-  composeWithUi,
-  Scopable,
 } from '@jsonforms/core';
+import { has } from 'lodash-es';
 
-import { PageType, HidePageCondition } from '../typings';
-
-import customAjv from './customAjv';
+import { HidePageCondition, PageType } from 'components/Form/typings';
+import customAjv from 'components/Form/utils/customAjv';
+import getOtherControlKey from 'components/Form/utils/getOtherControlKey';
 
 const getVisiblePages = (pages: PageType[], data: Record<string, any>) => {
-  return pages.filter((page) => evalVisibility(page, data, pages));
+  return pages.filter((page) => isVisible(page, data, pages));
 };
 
 export default getVisiblePages;
 
-const evalVisibility = (
+const isVisible = (
   page: PageType,
   data: Record<string, any>,
+  pages: PageType[]
+): boolean => {
+  if (page.ruleArray) {
+    return evalVisibility(page, data, pages);
+  }
+
+  const otherControlKey = getOtherControlKey(page.scope);
+
+  return otherControlKey ? data[otherControlKey] === 'other' : true;
+};
+
+const evalVisibility = (
+  page: PageType,
+  data: any,
   pages: PageType[]
 ): boolean => {
   if (!page.ruleArray || page.ruleArray.length === 0) {
@@ -36,14 +55,14 @@ const evalVisibility = (
 
     // Question rule takes precedence over page rule
     if (isHidePageCondition(currentRule.condition) && !hasQuestionRule) {
-      return pageWithId ? !evalVisibility(pageWithId, data, pages) : false;
+      return pageWithId ? !isVisible(pageWithId, data, pages) : false;
     }
 
     if (isHidePageCondition(currentRule.condition)) {
       return true;
     }
 
-    const fulfilled = evaluateCondition(currentRule.condition, data);
+    const fulfilled = evaluateCondition(data, currentRule.condition);
 
     if (currentRule.effect === 'HIDE') {
       return !fulfilled;
@@ -55,18 +74,16 @@ const evalVisibility = (
   return fulfilledRule;
 };
 
-const evaluateCondition = (
-  data: Record<string, any>,
+const isHidePageCondition = (
   condition: Condition
-): boolean => {
-  if (isSchemaCondition(condition)) {
-    // Schema condition: validates the resolved value(s) against the schema
-    const value = resolveData(data, getConditionScope(condition));
-    return validateSchemaCondition(value, condition.schema);
-  } else {
-    // unknown condition
-    return true;
-  }
+): condition is HidePageCondition => condition.type === 'HIDEPAGE';
+
+const isSchemaCondition = (
+  condition: Condition
+): condition is SchemaBasedCondition => has(condition, 'schema');
+
+const getConditionScope = (condition: Scopable): string => {
+  return composeWithUi(condition, '');
 };
 
 /**
@@ -89,14 +106,16 @@ const validateSchemaCondition = (value: any, schema: JsonSchema): boolean => {
   return customAjv.validate(schema, value);
 };
 
-const isHidePageCondition = (
+const evaluateCondition = (
+  data: Record<string, any>,
   condition: Condition
-): condition is HidePageCondition => condition.type === 'HIDEPAGE';
-
-const isSchemaCondition = (
-  condition: Condition
-): condition is SchemaBasedCondition => 'schema' in condition;
-
-const getConditionScope = (condition: Scopable): string => {
-  return composeWithUi(condition, '');
+): boolean => {
+  if (isSchemaCondition(condition)) {
+    // Schema condition: validates the resolved value(s) against the schema
+    const value = resolveData(data, getConditionScope(condition));
+    return validateSchemaCondition(value, condition.schema);
+  } else {
+    // unknown condition
+    return true;
+  }
 };
