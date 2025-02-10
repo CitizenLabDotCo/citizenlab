@@ -1,8 +1,5 @@
 import {
   Condition,
-  OrCondition,
-  AndCondition,
-  LeafCondition,
   resolveData,
   JsonSchema,
   SchemaBasedCondition,
@@ -10,17 +7,12 @@ import {
   Scopable,
 } from '@jsonforms/core';
 
-import { PageCategorization, PageType, HidePageCondition } from '../typings';
+import { PageType, HidePageCondition } from '../typings';
 
 import customAjv from './customAjv';
 
-const getVisiblePages = (
-  uiSchema: PageCategorization,
-  data: Record<string, any>
-) => {
-  console.log({ uiSchema, data });
-  const pages = uiSchema.elements;
-  return pages.map((page) => evalVisibility(page, data, pages));
+const getVisiblePages = (pages: PageType[], data: Record<string, any>) => {
+  return pages.filter((page) => evalVisibility(page, data, pages));
 };
 
 export default getVisiblePages;
@@ -63,21 +55,11 @@ const evalVisibility = (
   return fulfilledRule;
 };
 
-const evaluateCondition = (data: any, condition: Condition): boolean => {
-  if (isAndCondition(condition)) {
-    return condition.conditions.reduce(
-      (acc, cur) => acc && evaluateCondition(data, cur),
-      true
-    );
-  } else if (isOrCondition(condition)) {
-    return condition.conditions.reduce(
-      (acc, cur) => acc || evaluateCondition(data, cur),
-      false
-    );
-  } else if (isLeafCondition(condition)) {
-    const value = resolveData(data, getConditionScope(condition));
-    return value === condition.expectedValue;
-  } else if (isSchemaCondition(condition)) {
+const evaluateCondition = (
+  data: Record<string, any>,
+  condition: Condition
+): boolean => {
+  if (isSchemaCondition(condition)) {
     // Schema condition: validates the resolved value(s) against the schema
     const value = resolveData(data, getConditionScope(condition));
     return validateSchemaCondition(value, condition.schema);
@@ -110,15 +92,6 @@ const validateSchemaCondition = (value: any, schema: JsonSchema): boolean => {
 const isHidePageCondition = (
   condition: Condition
 ): condition is HidePageCondition => condition.type === 'HIDEPAGE';
-
-const isOrCondition = (condition: Condition): condition is OrCondition =>
-  condition.type === 'OR';
-
-const isAndCondition = (condition: Condition): condition is AndCondition =>
-  condition.type === 'AND';
-
-const isLeafCondition = (condition: Condition): condition is LeafCondition =>
-  condition.type === 'LEAF';
 
 const isSchemaCondition = (
   condition: Condition
