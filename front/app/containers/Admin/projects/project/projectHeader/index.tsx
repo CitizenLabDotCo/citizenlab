@@ -18,7 +18,7 @@ import useUserById from 'api/users/useUserById';
 import useLocalize from 'hooks/useLocalize';
 
 import NavigationTabs from 'components/admin/NavigationTabs';
-import Button from 'components/UI/ButtonWithLink';
+import ButtonWithLink from 'components/UI/ButtonWithLink';
 
 import { FormattedMessage, MessageDescriptor, useIntl } from 'utils/cl-intl';
 import { getFullName } from 'utils/textUtils';
@@ -84,7 +84,7 @@ const ProjectHeader = ({ projectId }: Props) => {
             gap="8px"
             className="intercom-projects-project-header-buttons"
           >
-            <Button
+            <ButtonWithLink
               linkTo={`/projects/${project.data.attributes.slug}`}
               buttonStyle="secondary-outlined"
               icon="eye"
@@ -98,20 +98,22 @@ const ProjectHeader = ({ projectId }: Props) => {
               projectSlug={project.data.attributes.slug}
               token={project.data.attributes.preview_token}
             />
-            <Button
+            <ButtonWithLink
               linkTo={`/admin/projects/${project.data.id}/settings`}
-              buttonStyle="secondary-outlined"
+              buttonStyle="admin-dark"
               size="s"
               padding="4px 8px"
+              icon="settings"
+              iconSize="18px"
             >
               {formatMessage(messages.settings)}
-            </Button>
+            </ButtonWithLink>
 
             <ReviewFlow project={project.data} />
           </Box>
         </Box>
         <Box display="flex" gap="8px">
-          <Button
+          <ButtonWithLink
             linkTo={`/admin/projects/${project.data.id}/settings/access-rights`}
             buttonStyle="text"
             size="s"
@@ -127,7 +129,7 @@ const ProjectHeader = ({ projectId }: Props) => {
                 {formatMessage(visibilityMessage)}
               </Text>
             </Box>
-          </Button>
+          </ButtonWithLink>
           <Text color="coolGrey600" fontSize="s" mb="0px" mt="2px">
             ·
           </Text>
