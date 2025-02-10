@@ -769,14 +769,22 @@ describe('getVisiblePages: extremely complex and convoluted logic', () => {
     });
 
     it('if option 1 selected: shows page 1, 2 and 3 as visible', () => {
-      const visiblePages = getVisiblePages(pages, { your_question_cf8: '' }, 0);
+      const visiblePages = getVisiblePages(
+        pages,
+        { your_question_cf8: 'option_1_f22' },
+        0
+      );
       expect(visiblePages[0]).toEqual(pages[0]);
       expect(visiblePages[1]).toEqual(pages[1]);
       expect(visiblePages[2]).toEqual(pages[2]);
     });
 
     it('if option 2 selected: shows page 1 and 3 as visible, but not page 2', () => {
-      const visiblePages = getVisiblePages(pages, { your_question_cf8: '' }, 0);
+      const visiblePages = getVisiblePages(
+        pages,
+        { your_question_cf8: 'option_2_r7u' },
+        0
+      );
       expect(visiblePages[0]).toEqual(pages[0]);
       expect(visiblePages[1]).toEqual(pages[2]);
     });
