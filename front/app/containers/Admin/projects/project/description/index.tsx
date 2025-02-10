@@ -32,6 +32,7 @@ interface IFormValues {
   description_preview_multiloc: Multiloc | null;
   description_multiloc: Multiloc | null;
 }
+const submitBarHeight = '62px';
 
 const ProjectDescription = () => {
   const { formatMessage } = useIntl();
@@ -115,9 +116,10 @@ const ProjectDescription = () => {
 
   return (
     <Box
-      // To improve: have standardize page height calculation for all admin pages
-      height="100vh"
       ref={containerRef}
+      // Temporary fix to ensure the submit bar does
+      // not overlap the content. Submit bar should be standardized
+      pb={submitBarHeight}
     >
       <SectionTitle>
         <FormattedMessage {...messages.titleDescription} />
