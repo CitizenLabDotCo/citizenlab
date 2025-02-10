@@ -20,6 +20,7 @@ const getVisiblePages = (
   data: Record<string, any>,
   currentPageIndex: number
 ) => {
+  // Generate a lookup table for question keys to page indexes
   const questionPageIndexLookup = generateQuestionPageIndexLookup(pages);
 
   return pages.filter((page) => {
