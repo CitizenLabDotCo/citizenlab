@@ -51,6 +51,8 @@ const ProjectDescriptionPreview = ({ projectId }: Props) => {
         `/admin/project-description-builder/projects/${project.data.id}/description` as RouteType
       }
     >
+      {/* Given the wide range of elements the content builder provides, it's hard to show a reliable preview. 
+      Hence we show the "Edit description" text when we use the content builder. */}
       <EditDescriptionLinkContent />
     </Link>
   ) : (
