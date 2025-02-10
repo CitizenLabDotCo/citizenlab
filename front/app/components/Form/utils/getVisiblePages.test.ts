@@ -610,7 +610,7 @@ describe('getVisiblePages: page and question logic conflict', () => {
   });
 });
 
-describe.skip('getVisiblePages: extremely complex and convoluted logic', () => {
+describe('getVisiblePages: extremely complex and convoluted logic', () => {
   // http://localhost:3000/en/admin/projects/2d95a49d-d825-4ee0-a86e-8e957f0f5580/phases/4e32ece2-f7cf-4d6e-9dff-8f9b05eda951/native-survey/edit
   const pages = [
     {

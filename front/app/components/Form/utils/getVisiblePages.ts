@@ -5,8 +5,6 @@
 import {
   Condition,
   SchemaBasedCondition,
-  Scopable,
-  composeWithUi,
   resolveData,
   JsonSchema,
 } from '@jsonforms/core';
@@ -15,28 +13,57 @@ import { HidePageCondition, PageType } from 'components/Form/typings';
 import customAjv from 'components/Form/utils/customAjv';
 import getOtherControlKey from 'components/Form/utils/getOtherControlKey';
 
+import getKey from './getKey';
+
 const getVisiblePages = (
   pages: PageType[],
   data: Record<string, any>,
   currentPageIndex: number
 ) => {
-  return pages.filter((page, pageIndex) => {
-    const pageSeen = pageIndex <= currentPageIndex;
+  const questionPageIndexLookup = generateQuestionPageIndexLookup(pages);
 
-    return isVisible(page, data, pages, pageSeen);
+  return pages.filter((page) => {
+    return isVisible(
+      page,
+      data,
+      pages,
+      currentPageIndex,
+      questionPageIndexLookup
+    );
   });
 };
 
 export default getVisiblePages;
 
+const generateQuestionPageIndexLookup = (pages: PageType[]) => {
+  const questionPageIndexLookup: Record<string, number> = {};
+
+  for (let pageIndex = 0; pageIndex < pages.length; pageIndex++) {
+    const page = pages[pageIndex];
+
+    for (const element of page.elements) {
+      questionPageIndexLookup[getKey(element.scope)] = pageIndex;
+    }
+  }
+
+  return questionPageIndexLookup;
+};
+
 const isVisible = (
   page: PageType,
   data: Record<string, any>,
   pages: PageType[],
-  pageSeen: boolean
+  currentPageIndex: number,
+  questionPageIndexLookup: Record<string, number>
 ): boolean => {
   if (page.ruleArray) {
-    return evalVisibility(page, data, pages, pageSeen);
+    return evalVisibility(
+      page,
+      data,
+      pages,
+      currentPageIndex,
+      questionPageIndexLookup
+    );
   }
 
   const otherControlKey = getOtherControlKey(page.scope);
@@ -48,7 +75,8 @@ const evalVisibility = (
   page: PageType,
   data: any,
   pages: PageType[],
-  pageSeen: boolean
+  currentPageIndex: number,
+  questionPageIndexLookup: Record<string, number>
 ): boolean => {
   if (!page.ruleArray || page.ruleArray.length === 0) {
     return true;
@@ -86,7 +114,8 @@ const evalVisibility = (
           pageThatCausedCondition,
           data,
           pages,
-          true
+          currentPageIndex,
+          questionPageIndexLookup
         );
 
         // Again a bit counterintuitive, but if we are on page 3,
@@ -98,9 +127,14 @@ const evalVisibility = (
     }
 
     // If the rule is a question condition:
-    const shouldHide = evaluateCondition(data, currentRule.condition, pageSeen);
-    const visible = !shouldHide;
+    const shouldHide = evaluateCondition(
+      data,
+      currentRule.condition,
+      currentPageIndex,
+      questionPageIndexLookup
+    );
 
+    const visible = !shouldHide;
     return visible;
   });
 };
@@ -112,14 +146,21 @@ const isPageCondition = (
 const evaluateCondition = (
   data: Record<string, any>,
   condition: SchemaBasedCondition,
-  pageSeen: boolean
+  currentPageIndex: number,
+  questionPageIndexLookup: Record<string, number>
 ): boolean => {
-  const value = resolveData(data, getConditionScope(condition));
-  return validateSchemaCondition(value, condition.schema, pageSeen);
-};
+  const conditionKey = getKey(condition.scope);
+  const value = resolveData(data, conditionKey);
 
-const getConditionScope = (condition: Scopable): string => {
-  return composeWithUi(condition, '');
+  const pageWhereValueComesFrom = questionPageIndexLookup[conditionKey];
+  const pageWhereValueComesFromSeen =
+    pageWhereValueComesFrom <= currentPageIndex;
+
+  return validateSchemaCondition(
+    value,
+    condition.schema,
+    pageWhereValueComesFromSeen
+  );
 };
 
 /**
@@ -134,14 +175,18 @@ const getConditionScope = (condition: Scopable): string => {
 const validateSchemaCondition = (
   value: any,
   schema: JsonSchema,
-  pageSeen: boolean
+  pageWhereValueComesFromSeen: boolean
 ): boolean => {
   if (Array.isArray(value)) {
     // For arrays, check if at least one element passes validation. Important for multi-select and image-select
     return value.some((val) => customAjv.validate(schema, val));
   }
 
-  if (schema.enum?.includes('no_answer') && value === undefined && pageSeen) {
+  if (
+    schema.enum?.includes('no_answer') &&
+    value === undefined &&
+    pageWhereValueComesFromSeen
+  ) {
     return true;
   }
 

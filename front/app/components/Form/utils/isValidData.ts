@@ -50,7 +50,7 @@ const removeQuestionsFromSchema = (
 ) => {
   const visibleQuestions = visiblePagesUntilLatestCompletePage.reduce(
     (acc, page) => {
-      const questionKeys = page.elements.map(getKey);
+      const questionKeys = page.elements.map((el) => getKey(el.scope));
 
       return [...acc, ...questionKeys];
     },
@@ -75,7 +75,7 @@ const removeQuestionsFromData = (
 
   visiblePagesUntilLatestCompletePage.forEach((page) => {
     page.elements.forEach((element) => {
-      const key = getKey(element);
+      const key = getKey(element.scope);
       newData[key] = data[key];
     });
   });
