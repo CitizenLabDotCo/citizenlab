@@ -9,51 +9,42 @@ describe('Idea with anonymous commenting allowed', () => {
   const email = randomEmail();
   const password = randomString(15);
   let projectId: string;
-  let projectSlug: string;
   let ideaId: string;
   let ideaSlug: string;
-  let userId: string;
 
   before(() => {
-    cy.apiSignup('firstName', 'lastName', email, password).then((response) => {
-      userId = response.body.data.id;
-    });
-    cy.setAdminLoginCookie();
-    cy.getAuthUser().then(() => {
-      cy.apiCreateProject({
-        title: projectTitle,
-        descriptionPreview: '',
-        description: '',
-        publicationStatus: 'published',
-      })
-        .then((project) => {
-          projectId = project.body.data.id;
-          projectSlug = project.body.data.attributes.slug;
-          return cy.apiCreatePhase({
-            projectId,
-            title: phaseTitle,
-            startAt: moment().subtract(9, 'month').format('DD/MM/YYYY'),
-            participationMethod: 'ideation',
-            canPost: true,
-            canComment: true,
-            canReact: true,
-            allow_anonymous_participation: true,
-          });
-        })
-        .then((phase) => {
-          return cy
-            .apiCreateIdea({
-              projectId,
-              ideaTitle,
-              ideaContent,
-              phaseIds: [phase.body.data.id],
-            })
-            .then((idea) => {
-              ideaId = idea.body.data.id;
-              ideaSlug = idea.body.data.attributes.slug;
-            });
+    cy.apiCreateProject({
+      title: projectTitle,
+      descriptionPreview: '',
+      description: '',
+      publicationStatus: 'published',
+    })
+      .then((project) => {
+        projectId = project.body.data.id;
+        return cy.apiCreatePhase({
+          projectId,
+          title: phaseTitle,
+          startAt: moment().subtract(9, 'month').format('DD/MM/YYYY'),
+          participationMethod: 'ideation',
+          canPost: true,
+          canComment: true,
+          canReact: true,
+          allow_anonymous_participation: true,
         });
-    });
+      })
+      .then((phase) => {
+        return cy
+          .apiCreateIdea({
+            projectId,
+            ideaTitle,
+            ideaContent,
+            phaseIds: [phase.body.data.id],
+          })
+          .then((idea) => {
+            ideaId = idea.body.data.id;
+            ideaSlug = idea.body.data.attributes.slug;
+          });
+      });
   });
 
   it('admin can submit anonymous comments', () => {
@@ -93,7 +84,6 @@ describe('Idea with anonymous commenting allowed', () => {
   });
 
   after(() => {
-    cy.apiRemoveUser(userId);
     cy.apiRemoveIdea(ideaId);
     cy.apiRemoveProject(projectId);
   });
