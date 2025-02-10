@@ -100,9 +100,11 @@ const ProjectHeader = ({ projectId }: Props) => {
             />
             <Button
               linkTo={`/admin/projects/${project.data.id}/settings`}
-              buttonStyle="secondary-outlined"
+              buttonStyle="admin-dark"
               size="s"
               padding="4px 8px"
+              icon="settings"
+              iconSize="18px"
             >
               {formatMessage(messages.settings)}
             </Button>
