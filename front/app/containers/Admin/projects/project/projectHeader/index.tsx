@@ -9,10 +9,8 @@ import {
   IconNames,
   Tooltip,
 } from '@citizenlab/cl2-component-library';
-import { RouteType } from 'routes';
 import styled from 'styled-components';
 
-import useProjectDescriptionBuilderLayout from 'api/project_description_builder/useProjectDescriptionBuilderLayout';
 import useProjectReview from 'api/project_reviews/useProjectReview';
 import useProjectById from 'api/projects/useProjectById';
 import useUserById from 'api/users/useUserById';
@@ -23,11 +21,10 @@ import NavigationTabs from 'components/admin/NavigationTabs';
 import ButtonWithLink from 'components/UI/ButtonWithLink';
 
 import { FormattedMessage, MessageDescriptor, useIntl } from 'utils/cl-intl';
-import Link from 'utils/cl-router/Link';
-import { isEmptyMultiloc } from 'utils/helperUtils';
-import { getFullName, stripHtml } from 'utils/textUtils';
+import { getFullName } from 'utils/textUtils';
 
 import messages from './messages';
+import ProjectDescriptionPreview from './ProjectDescriptionPreview';
 import PublicationStatus from './PublicationStatus';
 import ReviewFlow from './ReviewFlow';
 import ShareLink from './ShareLink';
@@ -43,29 +40,12 @@ interface Props {
   projectId: string;
 }
 
-const EditDescriptionLinkContent = () => {
-  const { formatMessage } = useIntl();
-
-  return (
-    <Text color="coolGrey600" m="0px" fontSize="s" p="0">
-      <Box display="flex" alignItems="center" gap="4px">
-        <Icon name="edit" fill={colors.coolGrey600} width="16px" />
-        {formatMessage(messages.editDescription)}
-      </Box>
-    </Text>
-  );
-};
-
 const ProjectHeader = ({ projectId }: Props) => {
   const { data: project } = useProjectById(projectId);
   const { data: projectReview } = useProjectReview(projectId);
   const { data: approver } = useUserById(
     projectReview?.data.relationships.reviewer?.data?.id
   );
-  const { data: projectDescriptionBuilderLayout } =
-    useProjectDescriptionBuilderLayout(projectId);
-  const projectDescriptionBuilderEnabled =
-    projectDescriptionBuilderLayout?.data.attributes.enabled || false;
 
   const { formatMessage } = useIntl();
   const localize = useLocalize();
@@ -112,36 +92,7 @@ const ProjectHeader = ({ projectId }: Props) => {
             <StyledTitle color="primary" variant="h4" mt="0" mb="4px">
               {localize(project.data.attributes.title_multiloc)}
             </StyledTitle>
-            {projectDescriptionBuilderEnabled ? (
-              <Link
-                data-cy="e2e-project-description-preview-link-to-content-builder"
-                to={
-                  // The project description content builder route has not been added to the type yet
-                  // so we need to cast it to RouteType
-                  `/admin/project-description-builder/projects/${project.data.id}/description` as RouteType
-                }
-              >
-                <EditDescriptionLinkContent />
-              </Link>
-            ) : (
-              <Link
-                data-cy="e2e-project-description-preview-link-to-multiloc-settings"
-                to={`/admin/projects/${project.data.id}/settings/description`}
-              >
-                {isEmptyMultiloc(
-                  project.data.attributes.description_multiloc
-                ) ? (
-                  <EditDescriptionLinkContent />
-                ) : (
-                  <Text color="coolGrey600" m="0px" fontSize="s" p="0">
-                    {stripHtml(
-                      localize(project.data.attributes.description_multiloc),
-                      100
-                    )}
-                  </Text>
-                )}
-              </Link>
-            )}
+            <ProjectDescriptionPreview projectId={projectId} />
           </Box>
           <Box
             display="flex"
