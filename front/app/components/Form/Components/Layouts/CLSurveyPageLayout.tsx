@@ -130,7 +130,14 @@ const CLSurveyPageLayout = memo(
 
     // Map-related variables
     const { data: projectMapConfig } = useProjectMapConfig(project?.data.id);
-    const isMapPage = uiPages[currentStep].options.page_layout === 'map';
+
+    const currentPage = uiPages[currentStep];
+
+    const currentPageIndex = pageTypeElements.findIndex(
+      (page) => page === currentPage
+    );
+
+    const isMapPage = currentPage.options.page_layout === 'map';
     const mapConfigId =
       // TODO: Fix this the next time the file is edited.
       // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
@@ -143,12 +150,6 @@ const CLSurveyPageLayout = memo(
     const mapLayers = useMemo(() => {
       return parseLayers(mapConfig, localize);
     }, [localize, mapConfig]);
-
-    const currentPage = uiPages[currentStep];
-
-    const currentPageIndex = pageTypeElements.findIndex(
-      (page) => page === currentPage
-    );
 
     useEffect(() => {
       setMapConfig(mapConfigId ? fetchedMapConfig : null);

@@ -13,6 +13,7 @@ const isPageCategorization: Tester = and(
 
       return element.elements
         .map((elem) =>
+          // eslint-disable-next-line
           isCategorization(elem) ? hasPage(elem) : elem.type === 'Page'
         )
         .reduce((prev, curr) => prev && curr, true);
