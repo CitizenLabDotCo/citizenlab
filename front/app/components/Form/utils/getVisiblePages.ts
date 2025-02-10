@@ -46,7 +46,7 @@ const evalVisibility = (
 
   return page.ruleArray.every((currentRule) => {
     // If the rule is a page condition:
-    if (isHidePageCondition(currentRule.condition)) {
+    if (isPageCondition(currentRule.condition)) {
       // We find the page that causes the current condition
       // E.g. if this page is page 3, and page 2 says "Go to page 4",
       // then page 2 causes the hide condition on page 3
@@ -72,8 +72,17 @@ const evalVisibility = (
         // this page rule at all in this case, so we could skip this check.
         return true;
       } else {
-        // And now here, why is this !isVisible? Shouldn't it be isVisible?
-        return !isVisible(pageThatCausedCondition, data, pages);
+        const pageThatCausedConditionIsVisible = isVisible(
+          pageThatCausedCondition,
+          data,
+          pages
+        );
+
+        // Again a bit counterintuitive, but if we are on page 3,
+        // and page 2 points to page 4, then page 2 is the one that causes
+        // the hide condition on this page (3). So if page 2 is visible,
+        // this page should be hidden.
+        return !pageThatCausedConditionIsVisible;
       }
     }
 
@@ -85,7 +94,7 @@ const evalVisibility = (
   });
 };
 
-const isHidePageCondition = (
+const isPageCondition = (
   condition: Condition
 ): condition is HidePageCondition => condition.type === 'HIDEPAGE';
 
