@@ -10,7 +10,6 @@ import {
   resolveData,
   JsonSchema,
 } from '@jsonforms/core';
-import { has } from 'lodash-es';
 
 import { HidePageCondition, PageType } from 'components/Form/typings';
 import customAjv from 'components/Form/utils/customAjv';
@@ -45,43 +44,51 @@ const evalVisibility = (
     return true;
   }
 
-  const fulfilledRule = page.ruleArray.every((currentRule) => {
-    const pageWithId = pages.find(
-      (page) => page.options.id === currentRule.condition.pageId
-    );
-
-    const hasQuestionRule = pageWithId?.elements.find(
-      (element) => element.options?.hasRule
-    );
-
+  return page.ruleArray.every((currentRule) => {
     // Question rule takes precedence over page rule
-    if (isHidePageCondition(currentRule.condition) && !hasQuestionRule) {
-      return pageWithId ? !isVisible(pageWithId, data, pages) : false;
-    }
+    // if (isHidePageCondition(currentRule.condition) && !hasQuestionRule) {
+    //   return pageWithId ? !isVisible(pageWithId, data, pages) : false;
+    // }
 
+    // if (isHidePageCondition(currentRule.condition)) {
+    //   return true;
+    // }
+
+    // If the rule only has a page condition:
     if (isHidePageCondition(currentRule.condition)) {
-      return true;
+      // We find the page that causes the current condition
+      // E.g. if this page is page 3, and page 2 says "Go to page 4",
+      // then page 2 causes the hide condition on page 3
+      const pageThatCausedCondition = pages.find(
+        (page) => page.options.id === currentRule.condition.pageId
+      );
+
+      if (!pageThatCausedCondition) throw new Error('Page not found'); // should not be possible
+
+      // Then we check if the page that causes the condition has a question rule
+      const pageThatCausedConditionHasQuestionRule =
+        pageThatCausedCondition.elements.find(
+          (element) => element.options?.hasRule
+        );
+
+      if (pageThatCausedConditionHasQuestionRule) {
+        return true;
+      } else {
+        return !isVisible(pageThatCausedCondition, data, pages);
+      }
     }
 
-    const fulfilled = evaluateCondition(data, currentRule.condition);
+    // If the rule only has a question condition:
+    const shouldHide = evaluateCondition(data, currentRule.condition);
+    const visible = !shouldHide;
 
-    if (currentRule.effect === 'HIDE') {
-      return !fulfilled;
-    }
-
-    return false;
+    return visible;
   });
-
-  return fulfilledRule;
 };
 
 const isHidePageCondition = (
   condition: Condition
 ): condition is HidePageCondition => condition.type === 'HIDEPAGE';
-
-const isSchemaCondition = (
-  condition: Condition
-): condition is SchemaBasedCondition => has(condition, 'schema');
 
 const getConditionScope = (condition: Scopable): string => {
   return composeWithUi(condition, '');
@@ -109,14 +116,8 @@ const validateSchemaCondition = (value: any, schema: JsonSchema): boolean => {
 
 const evaluateCondition = (
   data: Record<string, any>,
-  condition: Condition
+  condition: SchemaBasedCondition
 ): boolean => {
-  if (isSchemaCondition(condition)) {
-    // Schema condition: validates the resolved value(s) against the schema
-    const value = resolveData(data, getConditionScope(condition));
-    return validateSchemaCondition(value, condition.schema);
-  } else {
-    // unknown condition
-    return true;
-  }
+  const value = resolveData(data, getConditionScope(condition));
+  return validateSchemaCondition(value, condition.schema);
 };

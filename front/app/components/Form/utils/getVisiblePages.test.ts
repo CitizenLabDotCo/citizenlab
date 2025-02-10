@@ -586,7 +586,7 @@ describe('getVisiblePages: page and question logic conflict', () => {
   });
 });
 
-describe.skip('getVisiblePages: extremely complex and convoluted logic', () => {
+describe('getVisiblePages: extremely complex and convoluted logic', () => {
   // http://localhost:3000/en/admin/projects/2d95a49d-d825-4ee0-a86e-8e957f0f5580/phases/4e32ece2-f7cf-4d6e-9dff-8f9b05eda951/native-survey/edit
   const pages = [
     {
@@ -738,7 +738,7 @@ describe.skip('getVisiblePages: extremely complex and convoluted logic', () => {
   ] as any;
 
   describe('On the first page', () => {
-    it('if no answers given yet: shows page 1 and 3 as visible, but not page 2', () => {
+    it.only('if no answers given yet: shows page 1 and 3 as visible, but not page 2', () => {
       const visiblePages = getVisiblePages(pages, {});
       expect(visiblePages[0]).toEqual(pages[0]);
       expect(visiblePages[1]).toEqual(pages[2]);
