@@ -15,8 +15,16 @@ import { HidePageCondition, PageType } from 'components/Form/typings';
 import customAjv from 'components/Form/utils/customAjv';
 import getOtherControlKey from 'components/Form/utils/getOtherControlKey';
 
-const getVisiblePages = (pages: PageType[], data: Record<string, any>) => {
-  return pages.filter((page) => isVisible(page, data, pages));
+const getVisiblePages = (
+  pages: PageType[],
+  data: Record<string, any>,
+  currentPageIndex: number
+) => {
+  return pages.filter((page, pageIndex) => {
+    const pageSeen = pageIndex <= currentPageIndex;
+
+    return isVisible(page, data, pages, pageSeen);
+  });
 };
 
 export default getVisiblePages;
@@ -24,10 +32,11 @@ export default getVisiblePages;
 const isVisible = (
   page: PageType,
   data: Record<string, any>,
-  pages: PageType[]
+  pages: PageType[],
+  pageSeen: boolean
 ): boolean => {
   if (page.ruleArray) {
-    return evalVisibility(page, data, pages);
+    return evalVisibility(page, data, pages, pageSeen);
   }
 
   const otherControlKey = getOtherControlKey(page.scope);
@@ -38,7 +47,8 @@ const isVisible = (
 const evalVisibility = (
   page: PageType,
   data: any,
-  pages: PageType[]
+  pages: PageType[],
+  pageSeen: boolean
 ): boolean => {
   if (!page.ruleArray || page.ruleArray.length === 0) {
     return true;
@@ -75,7 +85,8 @@ const evalVisibility = (
         const pageThatCausedConditionIsVisible = isVisible(
           pageThatCausedCondition,
           data,
-          pages
+          pages,
+          true
         );
 
         // Again a bit counterintuitive, but if we are on page 3,
@@ -87,7 +98,7 @@ const evalVisibility = (
     }
 
     // If the rule is a question condition:
-    const shouldHide = evaluateCondition(data, currentRule.condition);
+    const shouldHide = evaluateCondition(data, currentRule.condition, pageSeen);
     const visible = !shouldHide;
 
     return visible;
@@ -100,10 +111,11 @@ const isPageCondition = (
 
 const evaluateCondition = (
   data: Record<string, any>,
-  condition: SchemaBasedCondition
+  condition: SchemaBasedCondition,
+  pageSeen: boolean
 ): boolean => {
   const value = resolveData(data, getConditionScope(condition));
-  return validateSchemaCondition(value, condition.schema);
+  return validateSchemaCondition(value, condition.schema, pageSeen);
 };
 
 const getConditionScope = (condition: Scopable): string => {
@@ -116,13 +128,20 @@ const getConditionScope = (condition: Scopable): string => {
  *
  * @param value - The resolved value to validate (single or array).
  * @param schema - The JSON schema to validate against.
+ * @param pageSeen - Whether the current page has already been seen by the user.
  * @returns {boolean} - True if the value or any array item matches the schema.
  */
-const validateSchemaCondition = (value: any, schema: JsonSchema): boolean => {
+const validateSchemaCondition = (
+  value: any,
+  schema: JsonSchema,
+  pageSeen: boolean
+): boolean => {
   if (Array.isArray(value)) {
     // For arrays, check if at least one element passes validation. Important for multi-select and image-select
     return value.some((val) => customAjv.validate(schema, val));
-  } else if (schema.enum?.includes('no_answer') && value === undefined) {
+  }
+
+  if (schema.enum?.includes('no_answer') && value === undefined && pageSeen) {
     return true;
   }
 

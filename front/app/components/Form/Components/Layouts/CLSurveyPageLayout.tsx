@@ -144,6 +144,12 @@ const CLSurveyPageLayout = memo(
       return parseLayers(mapConfig, localize);
     }, [localize, mapConfig]);
 
+    const currentPage = uiPages[currentStep];
+
+    const currentPageIndex = pageTypeElements.findIndex(
+      (page) => page === currentPage
+    );
+
     useEffect(() => {
       setMapConfig(mapConfigId ? fetchedMapConfig : null);
     }, [fetchedMapConfig, mapConfigId]);
@@ -156,10 +162,11 @@ const CLSurveyPageLayout = memo(
     useEffect(() => {
       const visiblePages = getVisiblePages(
         pageTypeElements,
-        formState.core?.data
+        formState.core?.data,
+        currentPageIndex
       );
       setUiPages(visiblePages);
-    }, [formState.core?.data, pageTypeElements]);
+    }, [formState.core?.data, pageTypeElements, currentPageIndex]);
 
     useEffect(() => {
       if (scrollToError) {
@@ -317,12 +324,6 @@ const CLSurveyPageLayout = memo(
         </Box>
       );
     }
-
-    const currentPage = uiPages[currentStep];
-
-    const currentPageIndex = pageTypeElements.findIndex(
-      (page) => page === currentPage
-    );
 
     const pageElements = extractElementsByOtherOptionLogic(currentPage, data);
 

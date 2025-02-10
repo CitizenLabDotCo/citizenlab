@@ -55,7 +55,7 @@ describe('getVisiblePages: no logic', () => {
   ] as any;
 
   it('shows all pages', () => {
-    const visiblePages = getVisiblePages(pages, {});
+    const visiblePages = getVisiblePages(pages, {}, 0);
     expect(visiblePages).toEqual(pages);
   });
 });
@@ -124,7 +124,7 @@ describe('getVisiblePages: only page logic', () => {
   ] as any;
 
   it('hides second page', () => {
-    const visiblePages = getVisiblePages(pages, {});
+    const visiblePages = getVisiblePages(pages, {}, 0);
 
     expect(visiblePages).toEqual([pages[0], pages[2]]);
   });
@@ -319,9 +319,13 @@ describe('getVisiblePages: only question logic', () => {
   ] as any;
 
   it('if option 1 selected: show pages 1, 3, 4, 5 and 6', () => {
-    const visiblePages = getVisiblePages(pages, {
-      your_question_863: 'option_1_a3j',
-    });
+    const visiblePages = getVisiblePages(
+      pages,
+      {
+        your_question_863: 'option_1_a3j',
+      },
+      0
+    );
     expect(visiblePages).toEqual([
       pages[0],
       pages[2],
@@ -332,21 +336,29 @@ describe('getVisiblePages: only question logic', () => {
   });
 
   it('if option 2 selected: show pages 1, 4, 5 and 6', () => {
-    const visiblePages = getVisiblePages(pages, {
-      your_question_863: 'option_2_rc6',
-    });
+    const visiblePages = getVisiblePages(
+      pages,
+      {
+        your_question_863: 'option_2_rc6',
+      },
+      0
+    );
     expect(visiblePages).toEqual([pages[0], pages[3], pages[4], pages[5]]);
   });
 
   it('if option 3 selected: show pages 1, 5 and 6', () => {
-    const visiblePages = getVisiblePages(pages, {
-      your_question_863: 'option_3_8xi',
-    });
+    const visiblePages = getVisiblePages(
+      pages,
+      {
+        your_question_863: 'option_3_8xi',
+      },
+      0
+    );
     expect(visiblePages).toEqual([pages[0], pages[4], pages[5]]);
   });
 
   it('if no answer selected: show only first and end page', () => {
-    const visiblePages = getVisiblePages(pages, {});
+    const visiblePages = getVisiblePages(pages, {}, 0);
     expect(visiblePages).toEqual([pages[0], pages[5]]);
   });
 });
@@ -554,9 +566,13 @@ describe('getVisiblePages: page and question logic conflict', () => {
   ] as any;
 
   it('if option 1 selected: show pages 1, 3, 4, 5 and 6', () => {
-    const visiblePages = getVisiblePages(pages, {
-      your_question_863: 'option_1_a3j',
-    });
+    const visiblePages = getVisiblePages(
+      pages,
+      {
+        your_question_863: 'option_1_a3j',
+      },
+      0
+    );
     expect(visiblePages).toEqual([
       pages[0],
       pages[2],
@@ -567,21 +583,29 @@ describe('getVisiblePages: page and question logic conflict', () => {
   });
 
   it('if option 2 selected: show pages 1, 4, 5 and 6', () => {
-    const visiblePages = getVisiblePages(pages, {
-      your_question_863: 'option_2_rc6',
-    });
+    const visiblePages = getVisiblePages(
+      pages,
+      {
+        your_question_863: 'option_2_rc6',
+      },
+      0
+    );
     expect(visiblePages).toEqual([pages[0], pages[3], pages[4], pages[5]]);
   });
 
   it('if option 3 selected: show pages 1, 5 and 6', () => {
-    const visiblePages = getVisiblePages(pages, {
-      your_question_863: 'option_3_8xi',
-    });
+    const visiblePages = getVisiblePages(
+      pages,
+      {
+        your_question_863: 'option_3_8xi',
+      },
+      0
+    );
     expect(visiblePages).toEqual([pages[0], pages[4], pages[5]]);
   });
 
   it('if no answer selected: show only first and end page', () => {
-    const visiblePages = getVisiblePages(pages, {});
+    const visiblePages = getVisiblePages(pages, {}, 0);
     expect(visiblePages).toEqual([pages[0], pages[5]]);
   });
 });
@@ -739,20 +763,20 @@ describe('getVisiblePages: extremely complex and convoluted logic', () => {
 
   describe('On the first page', () => {
     it.only('if no answers given yet: shows page 1 and 3 as visible, but not page 2', () => {
-      const visiblePages = getVisiblePages(pages, {});
+      const visiblePages = getVisiblePages(pages, {}, 0);
       expect(visiblePages[0]).toEqual(pages[0]);
       expect(visiblePages[1]).toEqual(pages[2]);
     });
 
     it('if option 1 selected: shows page 1, 2 and 3 as visible', () => {
-      const visiblePages = getVisiblePages(pages, { your_question_cf8: '' });
+      const visiblePages = getVisiblePages(pages, { your_question_cf8: '' }, 0);
       expect(visiblePages[0]).toEqual(pages[0]);
       expect(visiblePages[1]).toEqual(pages[1]);
       expect(visiblePages[2]).toEqual(pages[2]);
     });
 
     it('if option 2 selected: shows page 1 and 3 as visible, but not page 2', () => {
-      const visiblePages = getVisiblePages(pages, { your_question_cf8: '' });
+      const visiblePages = getVisiblePages(pages, { your_question_cf8: '' }, 0);
       expect(visiblePages[0]).toEqual(pages[0]);
       expect(visiblePages[1]).toEqual(pages[2]);
     });
