@@ -98,6 +98,14 @@ const isPageCondition = (
   condition: Condition
 ): condition is HidePageCondition => condition.type === 'HIDEPAGE';
 
+const evaluateCondition = (
+  data: Record<string, any>,
+  condition: SchemaBasedCondition
+): boolean => {
+  const value = resolveData(data, getConditionScope(condition));
+  return validateSchemaCondition(value, condition.schema);
+};
+
 const getConditionScope = (condition: Scopable): string => {
   return composeWithUi(condition, '');
 };
@@ -108,7 +116,6 @@ const getConditionScope = (condition: Scopable): string => {
  *
  * @param value - The resolved value to validate (single or array).
  * @param schema - The JSON schema to validate against.
- * @param ajv - The AJV instance for validation.
  * @returns {boolean} - True if the value or any array item matches the schema.
  */
 const validateSchemaCondition = (value: any, schema: JsonSchema): boolean => {
@@ -120,12 +127,4 @@ const validateSchemaCondition = (value: any, schema: JsonSchema): boolean => {
   }
 
   return customAjv.validate(schema, value);
-};
-
-const evaluateCondition = (
-  data: Record<string, any>,
-  condition: SchemaBasedCondition
-): boolean => {
-  const value = resolveData(data, getConditionScope(condition));
-  return validateSchemaCondition(value, condition.schema);
 };
