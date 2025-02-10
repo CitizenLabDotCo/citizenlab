@@ -1,6 +1,6 @@
-import isValidData from './isValidData';
+import validateSurveyData from './validateSurveyData';
 
-describe('isValidData', () => {
+describe('validateSurveyData', () => {
   it('should only validate draft survey data against pages up to and including last completed page', () => {
     const schema = {
       type: 'object',
@@ -418,7 +418,7 @@ describe('isValidData', () => {
           elements: [],
         },
       ],
-    };
+    } as any;
 
     const data = {
       are_you_responding_on_behalf_of_an_organisation_c4q: 'yes_5rv',
@@ -430,7 +430,7 @@ describe('isValidData', () => {
       what_is_your_name_6v5: 'Name',
     };
 
-    const result = isValidData(schema, uiSchema, data, true);
+    const result = validateSurveyData(schema, uiSchema, data);
 
     expect(result).toEqual(true);
   });

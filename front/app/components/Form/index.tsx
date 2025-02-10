@@ -22,9 +22,10 @@ import FormWrapper from './Components/FormWrapper';
 import messages from './messages';
 import { parseRequiredMultilocsData } from './parseRequiredMultilocs';
 import tracks from './tracks';
-import { ApiErrorGetter, AjvErrorGetter } from './typings';
-import isValidData from './utils/isValidData';
+import { ApiErrorGetter, AjvErrorGetter, PageCategorization } from './typings';
+import customAjv from './utils/customAjv';
 import sanitizeFormData from './utils/sanitizeFormData';
+import validateSurveyData from './utils/validateSurveyData';
 
 // hopefully we can standardize this someday
 const Title = styled.h1`
@@ -122,7 +123,15 @@ const Form = memo(
 
       let response;
 
-      if (isValidData(schema, uiSchema, submissionData, isSurvey)) {
+      const dataIsValid = isSurvey
+        ? validateSurveyData(
+            schema,
+            uiSchema as PageCategorization,
+            submissionData
+          )
+        : customAjv.validate(schema, submissionData);
+
+      if (dataIsValid) {
         if (externalLoading === undefined) {
           internalSetLoading(true);
         }
