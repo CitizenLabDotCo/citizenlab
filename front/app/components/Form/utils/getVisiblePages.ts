@@ -45,16 +45,7 @@ const evalVisibility = (
   }
 
   return page.ruleArray.every((currentRule) => {
-    // Question rule takes precedence over page rule
-    // if (isHidePageCondition(currentRule.condition) && !hasQuestionRule) {
-    //   return pageWithId ? !isVisible(pageWithId, data, pages) : false;
-    // }
-
-    // if (isHidePageCondition(currentRule.condition)) {
-    //   return true;
-    // }
-
-    // If the rule only has a page condition:
+    // If the rule is a page condition:
     if (isHidePageCondition(currentRule.condition)) {
       // We find the page that causes the current condition
       // E.g. if this page is page 3, and page 2 says "Go to page 4",
@@ -65,20 +56,28 @@ const evalVisibility = (
 
       if (!pageThatCausedCondition) throw new Error('Page not found'); // should not be possible
 
-      // Then we check if the page that causes the condition has a question rule
+      // Then we check if any quesiton on that page that causes the
+      // condition has a question rule
       const pageThatCausedConditionHasQuestionRule =
         pageThatCausedCondition.elements.find(
           (element) => element.options?.hasRule
         );
 
       if (pageThatCausedConditionHasQuestionRule) {
+        // So, if the page that caused the condition has a question rule,
+        // we will ignore this page-visibility condition.
+        // Why? Because the backend will generate more conditions
+        // covering all the question rules, and we will evaluate those instead.
+        // Kind of confusing, and it would be better if the BE didn't include
+        // this page rule at all in this case, so we could skip this check.
         return true;
       } else {
+        // And now here, why is this !isVisible? Shouldn't it be isVisible?
         return !isVisible(pageThatCausedCondition, data, pages);
       }
     }
 
-    // If the rule only has a question condition:
+    // If the rule is a question condition:
     const shouldHide = evaluateCondition(data, currentRule.condition);
     const visible = !shouldHide;
 
