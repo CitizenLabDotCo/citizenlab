@@ -1,6 +1,6 @@
 import { randomString } from '../../../support/commands';
 
-describe('Project title', () => {
+describe('Project settings', () => {
   let projectId: string | null = null;
 
   beforeEach(() => {
@@ -16,9 +16,11 @@ describe('Project title', () => {
     });
   });
 
-  it('links to project title settings', () => {
-    cy.visit(`admin/projects/${projectId}`);
-    cy.get('[data-cy="e2e-project-title-preview-link-to-settings"]').click();
-    cy.get('#e2e-project-title-setting-field').should('exist');
+  describe('Project title', () => {
+    it('The title preview links to project title settings', () => {
+      cy.visit(`admin/projects/${projectId}`);
+      cy.get('[data-cy="e2e-project-title-preview-link-to-settings"]').click();
+      cy.get('#e2e-project-title-setting-field').should('exist');
+    });
   });
 });
