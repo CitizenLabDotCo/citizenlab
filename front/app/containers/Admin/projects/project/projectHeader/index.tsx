@@ -21,6 +21,7 @@ import NavigationTabs from 'components/admin/NavigationTabs';
 import Button from 'components/UI/ButtonWithLink';
 
 import { FormattedMessage, MessageDescriptor, useIntl } from 'utils/cl-intl';
+import Link from 'utils/cl-router/Link';
 import { getFullName } from 'utils/textUtils';
 
 import messages from './messages';
@@ -76,9 +77,11 @@ const ProjectHeader = ({ projectId }: Props) => {
         py="16px"
       >
         <Box display="flex" justifyContent="space-between" alignItems="center">
-          <StyledTitle color="primary" variant="h4" my="0px">
-            {localize(project.data.attributes.title_multiloc)}
-          </StyledTitle>
+          <Link to={`/admin/projects/${project.data.id}/settings`}>
+            <StyledTitle color="primary" variant="h4" my="0px">
+              {localize(project.data.attributes.title_multiloc)}
+            </StyledTitle>
+          </Link>
           <Box
             display="flex"
             gap="8px"
