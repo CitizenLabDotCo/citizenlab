@@ -15,7 +15,8 @@ const validateSurveyData = (
   // 2. If the survey is a draft, we only want to take into account the pages up to and including the latest completed page
   //
   // First, we will generate the visible pages.
-  // We will assume to be on the last page
+  // We will assume to be on the last page, since this only
+  // get called when submitting the form
   const pages = uiSchema.elements;
   const visiblePages = getVisiblePages(pages, data, pages.length - 1);
 
