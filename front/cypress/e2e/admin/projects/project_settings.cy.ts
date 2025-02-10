@@ -5,9 +5,6 @@ describe('Project settings', () => {
 
   beforeEach(() => {
     cy.setAdminLoginCookie();
-    if (projectId) {
-      cy.apiRemoveProject(projectId);
-    }
     cy.apiCreateProject({
       title: randomString(),
       description: randomString(),
@@ -22,5 +19,11 @@ describe('Project settings', () => {
       cy.get('[data-cy="e2e-project-title-preview-link-to-settings"]').click();
       cy.get('#e2e-project-title-setting-field').should('exist');
     });
+  });
+
+  afterEach(() => {
+    if (projectId) {
+      cy.apiRemoveProject(projectId);
+    }
   });
 });
