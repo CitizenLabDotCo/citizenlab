@@ -23,6 +23,7 @@ describe('Project description', () => {
       cy.get(
         '[data-cy="e2e-project-description-preview-link-to-multiloc-settings"]'
       ).click();
+      // Check if the description multiloc field is displayed
       cy.get('#e2e-project-description-multiloc-module-active').should('exist');
     });
   });
