@@ -1,11 +1,10 @@
 import { Layout, JsonSchema7 } from '@jsonforms/core';
-import { isEmpty } from 'lodash-es';
 
 import { PageCategorization, PageType } from '../typings';
 
 import customAjv from './customAjv';
 import getKey from './getKey';
-import isVisible from './isVisible';
+import getVisiblePages from './getVisiblePages';
 
 const isValidData = (
   schema: JsonSchema7,
@@ -13,91 +12,73 @@ const isValidData = (
   data: Record<string, any>,
   isSurvey = false
 ) => {
-  const [schemaToUse, dataWithoutHiddenFields] = getFormSchemaAndData(
-    schema,
-    uiSchema,
-    data
-  );
+  if (isSurvey) {
+    // If we are dealing with a survey, we need to do some stuff:
+    // 1. We only want to take into account the visible pages
+    // 2. If the survey is a draft, we only want to take into account the pages up to and including the latest completed page
+    //
+    // First, we will generate the visible pages
+    const visiblePages = getVisiblePages(uiSchema.elements as PageType[], data);
 
-  return customAjv.validate(
-    schemaToUse,
-    isSurvey ? dataWithoutHiddenFields : data
-  );
+    // Second, we will remove the visible pages after the latest completed page
+    const visiblePagesUntilLatestCompletePage =
+      data.publication_status === 'draft'
+        ? visiblePages.slice(0, data.latest_complete_page + 1)
+        : visiblePages;
+
+    const newSchema = removeQuestionsFromSchema(
+      schema,
+      visiblePagesUntilLatestCompletePage
+    );
+
+    const newData = removeQuestionsFromData(
+      visiblePagesUntilLatestCompletePage,
+      data
+    );
+
+    return customAjv.validate(newSchema, newData);
+  } else {
+    return customAjv.validate(schema, data);
+  }
 };
 
 export default isValidData;
 
-const iterateSchema = (
-  uischema,
-  parent,
-  toApply: (uischema, parent) => void
-): void => {
-  if (isEmpty(uischema)) {
-    return;
-  }
-  if (uischema?.elements) {
-    uischema.elements.forEach((child) =>
-      iterateSchema(child, uischema, toApply)
-    );
-    return;
-  }
-  toApply(uischema, parent);
+const removeQuestionsFromSchema = (
+  schema: JsonSchema7,
+  visiblePagesUntilLatestCompletePage: PageType[]
+) => {
+  const visibleQuestions = visiblePagesUntilLatestCompletePage.reduce(
+    (acc, page) => {
+      const questionKeys = page.elements.map(getKey);
+
+      return [...acc, ...questionKeys];
+    },
+    []
+  );
+
+  const visibleQuestionsSet = new Set(visibleQuestions);
+
+  const required = schema.required ?? [];
+
+  return {
+    ...schema,
+    required: required.filter((key) => visibleQuestionsSet.has(key)),
+  };
 };
 
-const getFormSchemaAndData = (
-  schema: JsonSchema7,
-  uiSchema: Layout | PageCategorization,
+const removeQuestionsFromData = (
+  visiblePagesUntilLatestCompletePage: PageType[],
   data: Record<string, any>
 ) => {
-  const dataWithoutHiddenElements = {};
-  const visibleElements: string[] = [];
+  const newData = {};
 
-  iterateSchema(uiSchema, uiSchema, (element, parentSchema) => {
-    // If saving a draft response, we only want to validate the answers
-    // against pages up to and including the latest completed page.
-    if (data.latest_complete_page >= 0 && data.publication_status === 'draft') {
-      // Get the index of the current page we're iterating in the uiSchema.
-      // TODO: Fix this the next time the file is edited.
-      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-      const indexCurrentElement = uiSchema?.elements?.findIndex(
-        // TODO: Fix this the next time the file is edited.
-        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-        (page) => page?.options?.id === parentSchema?.options?.id
-      );
-
-      // If the index of the current page is greater than the latest completed page
-      // we don't want to include it in our validation check.
-      // TODO: Fix this the next time the file is edited.
-      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-      if (indexCurrentElement > data?.latest_complete_page) {
-        return;
-      }
-    }
-
-    const key: string = getKey(element);
-
-    const showInData =
-      parentSchema.type === 'Page'
-        ? isVisible(
-            parentSchema,
-            data,
-            // TODO: Fix this the next time the file is edited.
-            // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-            uiSchema.elements as PageType[]
-          )
-        : true;
-
-    if (showInData) {
-      dataWithoutHiddenElements[key] = data[key];
-      visibleElements.push(key);
-    }
+  visiblePagesUntilLatestCompletePage.forEach((page) => {
+    page.elements.forEach((element) => {
+      const key = getKey(element);
+      newData[key] = data[key];
+    });
   });
 
-  const schemaResult = Object.assign({}, schema, {
-    required: (schema.required || []).filter((requiredElement) =>
-      visibleElements.includes(requiredElement)
-    ),
-  });
-
-  return [schemaResult, dataWithoutHiddenElements];
+  return newData;
 };

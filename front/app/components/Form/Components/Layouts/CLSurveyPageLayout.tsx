@@ -47,7 +47,6 @@ import getPageVariant from 'components/Form/utils/getPageVariant';
 import getVisiblePages from 'components/Form/utils/getVisiblePages';
 import hasOtherTextFieldBelow from 'components/Form/utils/hasOtherTextFieldBelow';
 import isPageCategorization from 'components/Form/utils/isPageCategorization';
-import isVisible from 'components/Form/utils/isVisible';
 import sanitizeFormData from 'components/Form/utils/sanitizeFormData';
 import QuillEditedContent from 'components/UI/QuillEditedContent';
 import Warning from 'components/UI/Warning';
@@ -155,25 +154,10 @@ const CLSurveyPageLayout = memo(
     }, [currentStep, isFetchingMapConfig]);
 
     useEffect(() => {
-      console.log({
-        pageTypeElements,
-        formStateCoreData: formState.core?.data,
-      });
-      const _visiblePages = getVisiblePages(
+      const visiblePages = getVisiblePages(
         pageTypeElements,
         formState.core?.data
       );
-      console.log({ _visiblePages });
-
-      const visiblePages = pageTypeElements.filter((element) => {
-        const isPageVisible = isVisible(
-          element,
-          formState.core?.data,
-          pageTypeElements
-        );
-        return isPageVisible;
-      });
-      console.log({ visiblePages });
       setUiPages(visiblePages);
     }, [formState.core?.data, pageTypeElements]);
 
