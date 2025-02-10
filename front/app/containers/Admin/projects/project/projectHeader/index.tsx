@@ -114,6 +114,7 @@ const ProjectHeader = ({ projectId }: Props) => {
             </StyledTitle>
             {projectDescriptionBuilderEnabled ? (
               <Link
+                data-cy="e2e-project-description-preview-link-to-content-builder"
                 to={
                   // The project description content builder route has not been added to the type yet
                   // so we need to cast it to RouteType
@@ -124,7 +125,7 @@ const ProjectHeader = ({ projectId }: Props) => {
               </Link>
             ) : (
               <Link
-                data-cy="e2e-project-description-preview-link-to-settings"
+                data-cy="e2e-project-description-preview-link-to-multiloc-settings"
                 to={`/admin/projects/${project.data.id}/settings/description`}
               >
                 {isEmptyMultiloc(
