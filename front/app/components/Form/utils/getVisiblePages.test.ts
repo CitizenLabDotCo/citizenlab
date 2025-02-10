@@ -137,6 +137,227 @@ describe('getVisiblePages: only question logic', () => {
       options: {
         input_type: 'page',
         id: '850764eb-c21b-4bca-953a-067c5bab865d',
+        title: 'Page 1',
+        description: '',
+        page_layout: 'default',
+        map_config_id: null,
+      },
+      elements: [
+        {
+          type: 'Control',
+          scope: '#/properties/your_question_863',
+          label: 'Your question',
+          options: {
+            description: '',
+            input_type: 'select',
+            isAdminField: false,
+            hasRule: true,
+            dropdown_layout: false,
+            enumNames: ['Option 1', 'Option 2', 'Option 3'],
+          },
+        },
+      ],
+    },
+    {
+      type: 'Page',
+      options: {
+        input_type: 'page',
+        id: 'ce813081-ba17-4b1b-b5ac-e905a60b1dfa',
+        title: 'Page 2',
+        description: '',
+        page_layout: 'default',
+        map_config_id: null,
+      },
+      elements: [],
+      ruleArray: [
+        {
+          effect: 'HIDE',
+          condition: {
+            scope: '#/properties/your_question_863',
+            schema: {
+              enum: ['option_1_a3j'],
+            },
+          },
+        },
+        {
+          effect: 'HIDE',
+          condition: {
+            scope: '#/properties/your_question_863',
+            schema: {
+              enum: ['option_2_rc6'],
+            },
+          },
+        },
+        {
+          effect: 'HIDE',
+          condition: {
+            scope: '#/properties/your_question_863',
+            schema: {
+              enum: ['no_answer'],
+            },
+          },
+        },
+        {
+          effect: 'HIDE',
+          condition: {
+            scope: '#/properties/your_question_863',
+            schema: {
+              enum: ['option_3_8xi'],
+            },
+          },
+        },
+      ],
+    },
+    {
+      type: 'Page',
+      options: {
+        input_type: 'page',
+        id: '92efe486-aa43-47e8-8219-6e9d88f4038d',
+        title: 'Page 3',
+        description: '',
+        page_layout: 'default',
+        map_config_id: null,
+      },
+      elements: [],
+      ruleArray: [
+        {
+          effect: 'HIDE',
+          condition: {
+            scope: '#/properties/your_question_863',
+            schema: {
+              enum: ['option_2_rc6'],
+            },
+          },
+        },
+        {
+          effect: 'HIDE',
+          condition: {
+            scope: '#/properties/your_question_863',
+            schema: {
+              enum: ['no_answer'],
+            },
+          },
+        },
+        {
+          effect: 'HIDE',
+          condition: {
+            scope: '#/properties/your_question_863',
+            schema: {
+              enum: ['option_3_8xi'],
+            },
+          },
+        },
+      ],
+    },
+    {
+      type: 'Page',
+      options: {
+        input_type: 'page',
+        id: 'df90533b-ce0d-4f4c-ba73-e480969925e6',
+        title: 'Page 4',
+        description: '',
+        page_layout: 'default',
+        map_config_id: null,
+      },
+      elements: [],
+      ruleArray: [
+        {
+          effect: 'HIDE',
+          condition: {
+            scope: '#/properties/your_question_863',
+            schema: {
+              enum: ['no_answer'],
+            },
+          },
+        },
+        {
+          effect: 'HIDE',
+          condition: {
+            scope: '#/properties/your_question_863',
+            schema: {
+              enum: ['option_3_8xi'],
+            },
+          },
+        },
+      ],
+    },
+    {
+      type: 'Page',
+      options: {
+        input_type: 'page',
+        id: '1bc44eaf-9e73-45ce-81c5-3185974e1a54',
+        title: 'Page 5',
+        description: '',
+        page_layout: 'default',
+        map_config_id: null,
+      },
+      elements: [],
+      ruleArray: [
+        {
+          effect: 'HIDE',
+          condition: {
+            scope: '#/properties/your_question_863',
+            schema: {
+              enum: ['no_answer'],
+            },
+          },
+        },
+      ],
+    },
+    {
+      type: 'Page',
+      options: {
+        input_type: 'page',
+        id: '74127e79-c37b-4a70-ab2a-84e3dc415174',
+        title: 'Thank you for sharing your input!',
+        description: 'Your input has been successfully submitted.',
+        page_layout: 'default',
+        map_config_id: null,
+      },
+      elements: [],
+    },
+  ] as any;
+
+  it('if option 1 selected: show pages 1, 3, 4, 5 and 6', () => {
+    const visiblePages = getVisiblePages(pages, {
+      your_question_863: 'option_1_a3j',
+    });
+    expect(visiblePages).toEqual([
+      pages[0],
+      pages[2],
+      pages[3],
+      pages[4],
+      pages[5],
+    ]);
+  });
+
+  it('if option 2 selected: show pages 1, 4, 5 and 6', () => {
+    const visiblePages = getVisiblePages(pages, {
+      your_question_863: 'option_2_rc6',
+    });
+    expect(visiblePages).toEqual([pages[0], pages[3], pages[4], pages[5]]);
+  });
+
+  it('if option 3 selected: show pages 1, 5 and 6', () => {
+    const visiblePages = getVisiblePages(pages, {
+      your_question_863: 'option_3_8xi',
+    });
+    expect(visiblePages).toEqual([pages[0], pages[4], pages[5]]);
+  });
+
+  it('if no answer selected: show only first and end page', () => {
+    const visiblePages = getVisiblePages(pages, {});
+    expect(visiblePages).toEqual([pages[0], pages[5]]);
+  });
+});
+
+describe('getVisiblePages: page and question logic conflict', () => {
+  const pages = [
+    {
+      type: 'Page',
+      options: {
+        input_type: 'page',
+        id: '850764eb-c21b-4bca-953a-067c5bab865d',
         title: '',
         description: '',
         page_layout: 'default',
@@ -170,6 +391,13 @@ describe('getVisiblePages: only question logic', () => {
       },
       elements: [],
       ruleArray: [
+        {
+          effect: 'HIDE',
+          condition: {
+            type: 'HIDEPAGE',
+            pageId: '850764eb-c21b-4bca-953a-067c5bab865d',
+          },
+        },
         {
           effect: 'HIDE',
           condition: {
@@ -220,6 +448,13 @@ describe('getVisiblePages: only question logic', () => {
       },
       elements: [],
       ruleArray: [
+        {
+          effect: 'HIDE',
+          condition: {
+            type: 'HIDEPAGE',
+            pageId: '850764eb-c21b-4bca-953a-067c5bab865d',
+          },
+        },
         {
           effect: 'HIDE',
           condition: {
@@ -342,17 +577,13 @@ describe('getVisiblePages: only question logic', () => {
     const visiblePages = getVisiblePages(pages, {
       your_question_863: 'option_3_8xi',
     });
-    expect(visiblePages).toEqual([pages[0], pages[3], pages[4], pages[5]]);
+    expect(visiblePages).toEqual([pages[0], pages[4], pages[5]]);
   });
 
   it('if no answer selected: show only first and end page', () => {
     const visiblePages = getVisiblePages(pages, {});
     expect(visiblePages).toEqual([pages[0], pages[5]]);
   });
-});
-
-describe.skip('getVisiblePages: page and question logic conflict', () => {
-  // TODO
 });
 
 describe.skip('getVisiblePages: extremely complex and convoluted logic', () => {

@@ -49,6 +49,7 @@ const evalVisibility = (
     const pageWithId = pages.find(
       (page) => page.options.id === currentRule.condition.pageId
     );
+
     const hasQuestionRule = pageWithId?.elements.find(
       (element) => element.options?.hasRule
     );
