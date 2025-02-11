@@ -265,9 +265,8 @@ const CLSurveyPageLayout = memo(
     };
 
     const handlePrevious = () => {
-      const currentPageCategorization = uiPages[currentStep];
       // Get scopes of elements with rules on the current page
-      const ruleElementsScopes = currentPageCategorization.elements
+      const ruleElementsScopes = currentPage.elements
         .filter((element) => {
           return element.options?.hasRule;
         })
