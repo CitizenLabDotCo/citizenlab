@@ -760,13 +760,13 @@ describe('getVisiblePages: extremely complex and convoluted logic', () => {
   ] as any;
 
   describe('On the first page', () => {
-    it('if no answers given yet: shows page 1 and 3 as visible, but not page 2', () => {
+    it('if no answers given yet: it shows all pages except page 2 as visible', () => {
       const visiblePages = getVisiblePages(pages, {}, [], pages[0]);
 
       expect(visiblePages).toEqual([pages[0], pages[2], pages[3], pages[4]]);
     });
 
-    it('if option 1 selected: shows page 1, 2 and 3 as visible', () => {
+    it('if option 1 selected: it shows all pages as visible', () => {
       const visiblePages = getVisiblePages(
         pages,
         { your_question_cf8: 'option_1_f22' },
@@ -782,7 +782,7 @@ describe('getVisiblePages: extremely complex and convoluted logic', () => {
       ]);
     });
 
-    it('if option 2 selected: shows page 1 and 3 as visible, but not page 2', () => {
+    it('if option 2 selected: it shows all pages except page 2 as visible', () => {
       const visiblePages = getVisiblePages(
         pages,
         { your_question_cf8: 'option_2_p3n' },
@@ -794,9 +794,82 @@ describe('getVisiblePages: extremely complex and convoluted logic', () => {
     });
   });
 
-  describe('After going to the next page', () => {
-    it('if we reach page 3 after not answering on page 1: it shows page 1 and 3 as visible', () => {
+  describe('Other steps in user journey', () => {
+    it('if we reach page 3 after not answering on page 1: it shows all pages except page 2 as visible', () => {
       const visiblePages = getVisiblePages(pages, {}, [pages[0]], pages[2]);
+      expect(visiblePages).toEqual([pages[0], pages[2], pages[3], pages[4]]);
+    });
+
+    it('if we reach page 3 after selecting option 2 on page 1: it shows all pages except page 2 as visible', () => {
+      const visiblePages = getVisiblePages(
+        pages,
+        { your_question_cf8: 'option_2_p3n' },
+        [pages[0]],
+        pages[2]
+      );
+
+      expect(visiblePages).toEqual([pages[0], pages[2], pages[3], pages[4]]);
+    });
+
+    it('if we reach page 2 after selecting option 1 on page 1, and we do not select anything: it removes page 3', () => {
+      const visiblePages = getVisiblePages(
+        pages,
+        { your_question_cf8: 'option_1_f22' },
+        [pages[0]],
+        pages[1]
+      );
+      expect(visiblePages).toEqual([pages[0], pages[1], pages[3], pages[4]]);
+    });
+
+    it('if we reach page 2 after selecting option 1 on page 1, and we select option 1: it includes all pages', () => {
+      const visiblePages = getVisiblePages(
+        pages,
+        {
+          your_question_cf8: 'option_1_f22',
+          another_single_choice_nfi: 'option_1_xxx',
+        },
+        [pages[0]],
+        pages[1]
+      );
+      expect(visiblePages).toEqual([
+        pages[0],
+        pages[1],
+        pages[2],
+        pages[3],
+        pages[4],
+      ]);
+    });
+
+    it('if we reach page 2 after selecting option 1 on page 1, and we select option 2: it removes page 3 and 4', () => {
+      const visiblePages = getVisiblePages(
+        pages,
+        {
+          your_question_cf8: 'option_1_f22',
+          another_single_choice_nfi: 'option_2_ylz',
+        },
+        [pages[0]],
+        pages[1]
+      );
+      expect(visiblePages).toEqual([pages[0], pages[1], pages[4]]);
+    });
+
+    it('if we reach page 4 after not answering on page 1, and clicking next page on page 3: it shows all pages except page 2 as visible', () => {
+      const visiblePages = getVisiblePages(
+        pages,
+        {},
+        [pages[0], pages[2]],
+        pages[3]
+      );
+      expect(visiblePages).toEqual([pages[0], pages[2], pages[3], pages[4]]);
+    });
+
+    it('if we reach page 4 after selecting option 2 on page 1, and clicking next page on page 3: it shows all pages except page 2 as visible', () => {
+      const visiblePages = getVisiblePages(
+        pages,
+        { your_question_cf8: 'option_2_p3n' },
+        [pages[0], pages[2]],
+        pages[3]
+      );
       expect(visiblePages).toEqual([pages[0], pages[2], pages[3], pages[4]]);
     });
   });
