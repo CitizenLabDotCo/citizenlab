@@ -80,6 +80,10 @@ const evalVisibility = (
   }
 
   return page.ruleArray.every((currentRule) => {
+    if (page.options.title === 'Page 4') {
+      console.log(currentRule);
+    }
+
     // If the rule is a page condition:
     if (isPageCondition(currentRule.condition)) {
       // We find the page that causes the current condition

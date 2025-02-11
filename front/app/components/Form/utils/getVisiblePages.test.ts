@@ -769,8 +769,8 @@ describe('getVisiblePages: extremely complex and convoluted logic', () => {
   describe('On the first page', () => {
     it('if no answers given yet: shows page 1 and 3 as visible, but not page 2', () => {
       const visiblePages = getVisiblePages(pages, {}, [], pages[0]);
-      expect(visiblePages[0]).toEqual(pages[0]);
-      expect(visiblePages[1]).toEqual(pages[2]);
+
+      expect(visiblePages).toEqual([pages[0], pages[2], pages[3], pages[4]]);
     });
 
     it('if option 1 selected: shows page 1, 2 and 3 as visible', () => {
@@ -780,9 +780,13 @@ describe('getVisiblePages: extremely complex and convoluted logic', () => {
         [],
         pages[0]
       );
-      expect(visiblePages[0]).toEqual(pages[0]);
-      expect(visiblePages[1]).toEqual(pages[1]);
-      expect(visiblePages[2]).toEqual(pages[2]);
+      expect(visiblePages).toEqual([
+        pages[0],
+        pages[1],
+        pages[2],
+        pages[3],
+        pages[4],
+      ]);
     });
 
     it('if option 2 selected: shows page 1 and 3 as visible, but not page 2', () => {
@@ -792,16 +796,15 @@ describe('getVisiblePages: extremely complex and convoluted logic', () => {
         [],
         pages[0]
       );
-      expect(visiblePages[0]).toEqual(pages[0]);
-      expect(visiblePages[1]).toEqual(pages[2]);
+
+      expect(visiblePages).toEqual([pages[0], pages[2], pages[3], pages[4]]);
     });
   });
 
   describe('After going to the next page', () => {
     it('if we reach page 3 after not answering on page 1: it shows page 1 and 3 as visible', () => {
       const visiblePages = getVisiblePages(pages, {}, [pages[0]], pages[2]);
-      expect(visiblePages[0]).toEqual(pages[0]);
-      expect(visiblePages[1]).toEqual(pages[2]);
+      expect(visiblePages).toEqual([pages[0], pages[2], pages[3], pages[4]]);
     });
   });
 });
