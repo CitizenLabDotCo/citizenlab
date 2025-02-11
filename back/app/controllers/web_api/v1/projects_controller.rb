@@ -319,11 +319,11 @@ class WebApi::V1::ProjectsController < ApplicationController
 
   def community_monitor
     settings = AppConfiguration.instance.settings
-    settings['community_monitor']&['enabled'] || raise(ActiveRecord::RecordNotFound)
+    settings.dig('community_monitor', 'enabled') || raise(ActiveRecord::RecordNotFound)
 
     # Find the community monitor project
     project = nil
-    project_id = settings['community_monitor']&['project_id']
+    project_id = settings.dig('community_monitor', 'project_id')
     project = Project.unscoped.find(project_id) if project_id
 
     # Create the project if it doesn't exist
