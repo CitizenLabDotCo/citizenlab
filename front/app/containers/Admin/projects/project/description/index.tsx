@@ -37,7 +37,7 @@ const submitBarHeight = '62px';
 const ProjectDescription = () => {
   const { formatMessage } = useIntl();
   const { projectId } = useParams();
-
+  const { data: project } = useProjectById(projectId);
   const { mutate: updateProject, isLoading, error } = useUpdateProject();
   const showProjectDescriptionBuilder = useFeatureFlag({
     name: 'project_description_builder',
@@ -50,8 +50,6 @@ const ProjectDescription = () => {
     description_preview_multiloc: null,
     description_multiloc: null,
   });
-
-  const { data: project } = useProjectById(projectId);
 
   useEffect(() => {
     if (project) {
@@ -132,7 +130,7 @@ const ProjectDescription = () => {
         <SectionField>
           {!showProjectDescriptionBuilder && (
             <QuillMultilocWithLocaleSwitcher
-              id="project-description-module-inactive"
+              id="e2e-project-description-module-inactive"
               valueMultiloc={formValues.description_multiloc}
               onChange={handleDescriptionOnChange}
               label={formatMessage(messages.descriptionLabel)}
