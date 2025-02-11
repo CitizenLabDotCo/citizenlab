@@ -164,11 +164,12 @@ const CLSurveyPageLayout = memo(
       const visiblePages = getVisiblePages(
         pageTypeElements,
         formState.core?.data,
-        userPagePath
+        userPagePath,
+        currentPage
       );
 
       setUiPages(visiblePages);
-    }, [formState.core?.data, pageTypeElements, userPagePath]);
+    }, [formState.core?.data, pageTypeElements, userPagePath, currentPage]);
 
     useEffect(() => {
       if (scrollToError) {
