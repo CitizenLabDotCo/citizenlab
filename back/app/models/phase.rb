@@ -68,6 +68,7 @@ class Phase < ApplicationRecord
 
   PARTICIPATION_METHODS = ParticipationMethod::Base.all_methods.map(&:method_str).freeze
   VOTING_METHODS        = %w[budgeting multiple_voting single_voting].freeze
+  NATIVE_SURVEY_METHODS = %w[standard community_monitor].freeze
   PRESENTATION_MODES    = %w[card map].freeze
   REACTING_METHODS      = %w[unlimited limited].freeze
   INPUT_TERMS           = %w[idea question contribution project issue option proposal initiative petition].freeze
@@ -184,6 +185,7 @@ class Phase < ApplicationRecord
 
   # native_survey?
   with_options if: :native_survey? do
+    validates :native_survey_method, presence: true, inclusion: { in: NATIVE_SURVEY_METHODS }
     validates :native_survey_title_multiloc, presence: true, multiloc: { presence: true }
     validates :native_survey_button_multiloc, presence: true, multiloc: { presence: true }
   end
