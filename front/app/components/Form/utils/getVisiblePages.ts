@@ -18,53 +18,38 @@ import getKey from './getKey';
 const getVisiblePages = (
   pages: PageType[],
   data: Record<string, any>,
-  currentPageIndex: number
+  userPagePath: PageType[]
 ) => {
-  // Generate a lookup table for question keys to page indexes
-  const questionPageIndexLookup = generateQuestionPageIndexLookup(pages);
+  const questionsSeenSet = generateQuestionsSeenSet(userPagePath);
 
   return pages.filter((page) => {
-    return isVisible(
-      page,
-      data,
-      pages,
-      currentPageIndex,
-      questionPageIndexLookup
-    );
+    return isVisible(page, data, pages, questionsSeenSet);
   });
 };
 
 export default getVisiblePages;
 
-const generateQuestionPageIndexLookup = (pages: PageType[]) => {
-  const questionPageIndexLookup: Record<string, number> = {};
+const generateQuestionsSeenSet = (userPagePath: PageType[]) => {
+  const questionsSeenSet = new Set<string>();
 
-  for (let pageIndex = 0; pageIndex < pages.length; pageIndex++) {
-    const page = pages[pageIndex];
+  userPagePath.forEach((page) => {
+    page.elements.forEach((element) => {
+      const key = getKey(element.scope);
+      questionsSeenSet.add(key);
+    });
+  });
 
-    for (const element of page.elements) {
-      questionPageIndexLookup[getKey(element.scope)] = pageIndex;
-    }
-  }
-
-  return questionPageIndexLookup;
+  return questionsSeenSet;
 };
 
 const isVisible = (
   page: PageType,
   data: Record<string, any>,
   pages: PageType[],
-  currentPageIndex: number,
-  questionPageIndexLookup: Record<string, number>
+  questionsSeenSet: Set<string>
 ): boolean => {
   if (page.ruleArray) {
-    return evalVisibility(
-      page,
-      data,
-      pages,
-      currentPageIndex,
-      questionPageIndexLookup
-    );
+    return evalVisibility(page, data, pages, questionsSeenSet);
   }
 
   const otherControlKey = getOtherControlKey(page.scope);
@@ -76,8 +61,7 @@ const evalVisibility = (
   page: PageType,
   data: any,
   pages: PageType[],
-  currentPageIndex: number,
-  questionPageIndexLookup: Record<string, number>
+  questionsSeenSet: Set<string>
 ): boolean => {
   if (!page.ruleArray || page.ruleArray.length === 0) {
     return true;
@@ -115,8 +99,7 @@ const evalVisibility = (
           pageThatCausedCondition,
           data,
           pages,
-          currentPageIndex,
-          questionPageIndexLookup
+          questionsSeenSet
         );
 
         // Again a bit counterintuitive, but if we are on page 3,
@@ -131,8 +114,7 @@ const evalVisibility = (
     const shouldHide = evaluateCondition(
       data,
       currentRule.condition,
-      currentPageIndex,
-      questionPageIndexLookup
+      questionsSeenSet
     );
 
     const visible = !shouldHide;
@@ -147,21 +129,14 @@ const isPageCondition = (
 const evaluateCondition = (
   data: Record<string, any>,
   condition: SchemaBasedCondition,
-  currentPageIndex: number,
-  questionPageIndexLookup: Record<string, number>
+  questionsSeenSet: Set<string>
 ): boolean => {
   const conditionKey = getKey(condition.scope);
   const value = resolveData(data, conditionKey);
 
-  const pageWhereValueComesFrom = questionPageIndexLookup[conditionKey];
-  const pageWhereValueComesFromSeen =
-    pageWhereValueComesFrom <= currentPageIndex;
+  const questionSeen = questionsSeenSet.has(conditionKey);
 
-  return validateSchemaCondition(
-    value,
-    condition.schema,
-    pageWhereValueComesFromSeen
-  );
+  return validateSchemaCondition(value, condition.schema, questionSeen);
 };
 
 /**
@@ -176,7 +151,7 @@ const evaluateCondition = (
 const validateSchemaCondition = (
   value: any,
   schema: JsonSchema,
-  pageWhereValueComesFromSeen: boolean
+  questionSeen: boolean
 ): boolean => {
   if (Array.isArray(value)) {
     // For arrays, check if at least one element passes validation. Important for multi-select and image-select
@@ -186,7 +161,7 @@ const validateSchemaCondition = (
   if (
     schema.enum?.includes('no_answer') &&
     value === undefined &&
-    pageWhereValueComesFromSeen
+    questionSeen
   ) {
     return true;
   }

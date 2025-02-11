@@ -92,7 +92,7 @@ const CLSurveyPageLayout = memo(
     const pageTypeElements = (uischema as PageCategorization)
       .elements as PageType[];
     const [uiPages, setUiPages] = useState<PageType[]>(pageTypeElements);
-    const [userPagePath] = useState<PageType[]>([]);
+    const [userPagePath, setUserPagePath] = useState<PageType[]>([]);
     const [scrollToError, setScrollToError] = useState(false);
     const [percentageAnswered, setPercentageAnswered] = useState<number>(1);
     const ideaId = searchParams.get('idea_id');
@@ -164,10 +164,11 @@ const CLSurveyPageLayout = memo(
       const visiblePages = getVisiblePages(
         pageTypeElements,
         formState.core?.data,
-        currentPageIndex
+        userPagePath
       );
+
       setUiPages(visiblePages);
-    }, [formState.core?.data, pageTypeElements, currentPageIndex]);
+    }, [formState.core?.data, pageTypeElements, userPagePath]);
 
     useEffect(() => {
       if (scrollToError) {
@@ -226,11 +227,8 @@ const CLSurveyPageLayout = memo(
     const handleNextAndSubmit = async () => {
       if (!onSubmit) return;
 
-      const currentPageCategorization = uiPages[currentStep];
-      userPagePath.push(uiPages[currentStep]);
-
       const isValid = customAjv.validate(
-        getPageSchema(schema, currentPageCategorization),
+        getPageSchema(schema, currentPage),
         sanitizeFormData(data)
       );
 
@@ -260,6 +258,7 @@ const CLSurveyPageLayout = memo(
       }
 
       scrollToTop();
+      setUserPagePath((path) => [...path, currentPage]);
       setCurrentStep(currentStep + 1);
       setIsLoading(false);
     };

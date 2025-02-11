@@ -110,7 +110,7 @@ describe('Survey question logic', () => {
   });
 });
 
-describe('Bug: ambiguity around missing values in survey logic', () => {
+describe.only('Bug: ambiguity around missing values in survey logic', () => {
   let projectId: string | undefined;
   let projectSlug: string | undefined;
   let phaseId: string | undefined;
