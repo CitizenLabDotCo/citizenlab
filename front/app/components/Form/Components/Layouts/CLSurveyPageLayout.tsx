@@ -79,7 +79,6 @@ const CLSurveyPageLayout = memo(
     data,
   }: LayoutProps) => {
     const { onSubmit, setShowAllErrors, setFormData } = useContext(FormContext);
-    const [currentStep, setCurrentStep] = useState<number>(0);
     const [isLoading, setIsLoading] = useState(false);
     const isMobileOrSmaller = useBreakpoint('phone');
     const [searchParams] = useSearchParams();
@@ -97,6 +96,8 @@ const CLSurveyPageLayout = memo(
     const [percentageAnswered, setPercentageAnswered] = useState<number>(1);
     const ideaId = searchParams.get('idea_id');
     const { data: idea } = useIdeaById(ideaId ?? undefined);
+
+    const currentStep = userPagePath.length;
 
     // If the idea (survey submission) has no author relationship,
     // it was either created through 'anyone' permissions or with
@@ -260,7 +261,6 @@ const CLSurveyPageLayout = memo(
 
       scrollToTop();
       setUserPagePath((path) => [...path, currentPage]);
-      setCurrentStep(currentStep + 1);
       setIsLoading(false);
     };
 
@@ -292,9 +292,7 @@ const CLSurveyPageLayout = memo(
        * to think about it. See https://www.notion.so/citizenlab/Bug-in-survey-flow-792a72efc35e44e58e1bb10ab631ecdf
        */
       setFormData?.(dataWithoutRuleValues);
-
-      setCurrentStep(currentStep - 1);
-      userPagePath.pop();
+      setUserPagePath((path) => path.slice(0, -1));
       scrollToTop();
     };
 
