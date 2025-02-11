@@ -109,8 +109,9 @@ const MenuItem = ({ navItem }: Props) => {
 
   // Temporary proposal warning implementation, will be removed together with the navbar item
   // after users have had enough time to get used to the feature
-
-  const isItemDisabled = navItem.name === 'initiatives';
+  const isItemDisabled = ['initiatives', 'community_monitor'].includes(
+    navItem.name
+  );
 
   const enabledAndHasPermission = featuresEnabled && hasPermission;
 
@@ -138,7 +139,7 @@ const MenuItem = ({ navItem }: Props) => {
         </Box>
       }
       placement="bottom-end"
-      disabled={!isItemDisabled}
+      disabled={!(navItem.name === 'initiatives')}
       theme="dark"
     >
       <MenuItemLink
