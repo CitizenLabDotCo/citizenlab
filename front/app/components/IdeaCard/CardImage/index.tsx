@@ -45,7 +45,6 @@ const CardImage = ({
   hideImagePlaceholder,
   innerHeight,
 }: Props) => {
-  const participationMethod = phase?.attributes.participation_method;
   const votingMethod = phase?.attributes.voting_method;
 
   return (
@@ -58,10 +57,7 @@ const CardImage = ({
 
       {!image && !hideImagePlaceholder && (
         <IdeaCardImageWrapper $cardInnerHeight={innerHeight}>
-          <ImagePlaceholder
-            participationMethod={participationMethod}
-            votingMethod={votingMethod}
-          />
+          <ImagePlaceholder votingMethod={votingMethod} />
         </IdeaCardImageWrapper>
       )}
     </>
