@@ -41,7 +41,6 @@ import { FormContext } from 'components/Form/contexts';
 import { PageCategorization, PageType } from 'components/Form/typings';
 import customAjv from 'components/Form/utils/customAjv';
 import extractElementsByOtherOptionLogic from 'components/Form/utils/extractElementsByOtherOptionLogic';
-import getFilteredDataForUserPath from 'components/Form/utils/getFilteredDataForUserPath';
 import getFormCompletionPercentage from 'components/Form/utils/getFormCompletionPercentage';
 import getPageVariant from 'components/Form/utils/getPageVariant';
 import getVisiblePages from 'components/Form/utils/getVisiblePages';
@@ -248,10 +247,8 @@ const CLSurveyPageLayout = memo(
       if (pageVariant === 'submission') {
         setIsLoading(true);
         data.publication_status = 'published';
-        const idea: IIdea = await onSubmit(
-          getFilteredDataForUserPath(userPagePath, data),
-          true
-        );
+
+        const idea: IIdea = await onSubmit(data, true);
         updateSearchParams({ idea_id: idea.data.id });
       } else {
         data.publication_status = 'draft';
