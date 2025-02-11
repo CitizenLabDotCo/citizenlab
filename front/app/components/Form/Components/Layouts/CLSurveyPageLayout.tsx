@@ -1,10 +1,10 @@
 import React, {
   memo,
   useState,
+  useMemo,
   useEffect,
   useContext,
   useRef,
-  useMemo,
 } from 'react';
 
 import {
@@ -90,13 +90,14 @@ const CLSurveyPageLayout = memo(
     const pageTypeElements = (uischema as PageCategorization)
       .elements as PageType[];
     const [uiPages, setUiPages] = useState<PageType[]>(pageTypeElements);
-    const [userPagePath, setUserPagePath] = useState<PageType[]>([]);
+    const [userPagePathWithoutCurrentPage, setUserPagePathWithoutCurrentPage] =
+      useState<PageType[]>([]);
     const [scrollToError, setScrollToError] = useState(false);
     const [percentageAnswered, setPercentageAnswered] = useState<number>(1);
     const ideaId = searchParams.get('idea_id');
     const { data: idea } = useIdeaById(ideaId ?? undefined);
 
-    const currentStep = userPagePath.length;
+    const currentStep = userPagePathWithoutCurrentPage.length;
 
     // If the idea (survey submission) has no author relationship,
     // it was either created through 'anyone' permissions or with
@@ -133,6 +134,10 @@ const CLSurveyPageLayout = memo(
 
     const currentPage = uiPages[currentStep];
 
+    const userPagePath = useMemo(() => {
+      return [...userPagePathWithoutCurrentPage, currentPage];
+    }, [userPagePathWithoutCurrentPage, currentPage]);
+
     const currentPageIndex = pageTypeElements.findIndex(
       (page) => page === currentPage
     );
@@ -164,8 +169,7 @@ const CLSurveyPageLayout = memo(
       const visiblePages = getVisiblePages(
         pageTypeElements,
         formState.core?.data,
-        userPagePath,
-        currentPage
+        userPagePath
       );
 
       setUiPages(visiblePages);
@@ -248,16 +252,19 @@ const CLSurveyPageLayout = memo(
         setIsLoading(true);
         data.publication_status = 'published';
 
-        const idea: IIdea = await onSubmit(data, true);
+        const idea: IIdea = await onSubmit(data, true, userPagePath);
         updateSearchParams({ idea_id: idea.data.id });
       } else {
         data.publication_status = 'draft';
-        data.latest_complete_page = currentStep;
-        await onSubmit({ data }, false);
+        await onSubmit({ data }, false, userPagePath);
       }
 
       scrollToTop();
-      setUserPagePath((path) => [...path, currentPage]);
+
+      // After adding the current page,
+      // it becomes not the current page anymore.
+      setUserPagePathWithoutCurrentPage((path) => [...path, currentPage]);
+
       setIsLoading(false);
     };
 
@@ -288,7 +295,7 @@ const CLSurveyPageLayout = memo(
        * to think about it. See https://www.notion.so/citizenlab/Bug-in-survey-flow-792a72efc35e44e58e1bb10ab631ecdf
        */
       setFormData?.(dataWithoutRuleValues);
-      setUserPagePath((path) => path.slice(0, -1));
+      setUserPagePathWithoutCurrentPage((path) => path.slice(0, -1));
       scrollToTop();
     };
 

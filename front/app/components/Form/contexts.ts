@@ -2,7 +2,7 @@ import { createContext } from 'react';
 
 import { CLErrors, SupportedLocale } from 'typings';
 
-import { ApiErrorGetter } from './typings';
+import { ApiErrorGetter, PageType } from './typings';
 
 export const APIErrorsContext = createContext<CLErrors | undefined>(undefined);
 
@@ -12,7 +12,8 @@ export const FormContext = createContext<{
   inputId?: string | undefined;
   onSubmit?: (
     formData?: Record<string, any>,
-    showErrors?: boolean
+    showErrors?: boolean,
+    userPagePath?: PageType[]
   ) => void | Promise<any>;
   setFormData?: (formData?: Record<string, any>) => void;
   setShowAllErrors?: (showAllErrors: boolean) => void;

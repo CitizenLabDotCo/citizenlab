@@ -13,6 +13,8 @@ import { CLErrors } from 'typings';
 
 import useLocale from 'hooks/useLocale';
 
+import { PageType } from 'components/Form/typings';
+
 import { trackEventByName } from 'utils/analytics';
 import { useIntl } from 'utils/cl-intl';
 
@@ -22,7 +24,7 @@ import FormWrapper from './Components/FormWrapper';
 import messages from './messages';
 import { parseRequiredMultilocsData } from './parseRequiredMultilocs';
 import tracks from './tracks';
-import { ApiErrorGetter, AjvErrorGetter, PageCategorization } from './typings';
+import { ApiErrorGetter, AjvErrorGetter } from './typings';
 import customAjv from './utils/customAjv';
 import sanitizeFormData from './utils/sanitizeFormData';
 import validateSurveyData from './utils/validateSurveyData';
@@ -113,7 +115,11 @@ const Form = memo(
     const layoutType =
       layout || (isCategorization(uiSchema) ? 'fullpage' : 'inline');
 
-    const handleSubmit = async (formData?: any, showErrors = true) => {
+    const handleSubmit = async (
+      formData?: any,
+      showErrors = true,
+      userPagePath: PageType[] = []
+    ) => {
       // Any specified formData has priority over data attribute
       const submissionData = formData && formData.data ? formData.data : data;
       const sanitizedFormData = sanitizeFormData(submissionData);
@@ -124,11 +130,7 @@ const Form = memo(
       let response;
 
       const dataIsValid = isSurvey
-        ? validateSurveyData(
-            schema,
-            uiSchema as PageCategorization,
-            submissionData
-          )
+        ? validateSurveyData(schema, userPagePath, submissionData)
         : customAjv.validate(schema, submissionData);
 
       if (dataIsValid) {

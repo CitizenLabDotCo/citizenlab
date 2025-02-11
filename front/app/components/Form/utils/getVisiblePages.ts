@@ -18,23 +18,19 @@ import getKey from './getKey';
 const getVisiblePages = (
   pages: PageType[],
   data: Record<string, any>,
-  userPagePath: PageType[],
-  currentPage: PageType
+  userPagePath: PageType[]
 ) => {
-  const userPagePathIncludingCurrentPage = [...userPagePath, currentPage];
-  const questionsSeenSet = generateQuestionsSeenSet(
-    userPagePathIncludingCurrentPage
-  );
+  const questionsSeenSet = generateQuestionsSeenSet(userPagePath);
 
   // We already know that the current page path + the current page
   // are visible, so we don't need to calculate those.
   const otherVisiblePages = pages
-    .filter((page) => !userPagePathIncludingCurrentPage.includes(page))
+    .filter((page) => !userPagePath.includes(page))
     .filter((page) => {
       return isVisible(page, data, pages, questionsSeenSet);
     });
 
-  return [...userPagePathIncludingCurrentPage, ...otherVisiblePages];
+  return [...userPagePath, ...otherVisiblePages];
 };
 
 export default getVisiblePages;

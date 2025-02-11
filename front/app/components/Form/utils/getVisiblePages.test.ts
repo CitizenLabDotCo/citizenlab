@@ -55,7 +55,7 @@ describe('getVisiblePages: no logic', () => {
   ] as any;
 
   it('shows all pages', () => {
-    const visiblePages = getVisiblePages(pages, {}, [], pages[0]);
+    const visiblePages = getVisiblePages(pages, {}, [pages[0]]);
     expect(visiblePages).toEqual(pages);
   });
 });
@@ -124,7 +124,7 @@ describe('getVisiblePages: only page logic', () => {
   ] as any;
 
   it('hides second page', () => {
-    const visiblePages = getVisiblePages(pages, {}, [], pages[0]);
+    const visiblePages = getVisiblePages(pages, {}, [pages[0]]);
 
     expect(visiblePages).toEqual([pages[0], pages[2]]);
   });
@@ -324,8 +324,7 @@ describe('getVisiblePages: only question logic', () => {
       {
         your_question_863: 'option_1_a3j',
       },
-      [],
-      pages[0]
+      [pages[0]]
     );
     expect(visiblePages).toEqual([
       pages[0],
@@ -342,8 +341,7 @@ describe('getVisiblePages: only question logic', () => {
       {
         your_question_863: 'option_2_rc6',
       },
-      [],
-      pages[0]
+      [pages[0]]
     );
     expect(visiblePages).toEqual([pages[0], pages[3], pages[4], pages[5]]);
   });
@@ -354,14 +352,13 @@ describe('getVisiblePages: only question logic', () => {
       {
         your_question_863: 'option_3_8xi',
       },
-      [],
-      pages[0]
+      [pages[0]]
     );
     expect(visiblePages).toEqual([pages[0], pages[4], pages[5]]);
   });
 
   it('if no answer selected: show only first and end page', () => {
-    const visiblePages = getVisiblePages(pages, {}, [], pages[0]);
+    const visiblePages = getVisiblePages(pages, {}, [pages[0]]);
     expect(visiblePages).toEqual([pages[0], pages[5]]);
   });
 });
@@ -574,8 +571,7 @@ describe('getVisiblePages: page and question logic conflict', () => {
       {
         your_question_863: 'option_1_a3j',
       },
-      [],
-      pages[0]
+      [pages[0]]
     );
     expect(visiblePages).toEqual([
       pages[0],
@@ -592,8 +588,7 @@ describe('getVisiblePages: page and question logic conflict', () => {
       {
         your_question_863: 'option_2_rc6',
       },
-      [],
-      pages[0]
+      [pages[0]]
     );
     expect(visiblePages).toEqual([pages[0], pages[3], pages[4], pages[5]]);
   });
@@ -604,14 +599,13 @@ describe('getVisiblePages: page and question logic conflict', () => {
       {
         your_question_863: 'option_3_8xi',
       },
-      [],
-      pages[0]
+      [pages[0]]
     );
     expect(visiblePages).toEqual([pages[0], pages[4], pages[5]]);
   });
 
   it('if no answer selected: show only first and end page', () => {
-    const visiblePages = getVisiblePages(pages, {}, [], pages[0]);
+    const visiblePages = getVisiblePages(pages, {}, [pages[0]]);
     expect(visiblePages).toEqual([pages[0], pages[5]]);
   });
 });
@@ -761,7 +755,7 @@ describe('getVisiblePages: extremely complex and convoluted logic', () => {
 
   describe('On the first page', () => {
     it('if no answers given yet: it shows all pages except page 2 as visible', () => {
-      const visiblePages = getVisiblePages(pages, {}, [], pages[0]);
+      const visiblePages = getVisiblePages(pages, {}, [pages[0]]);
 
       expect(visiblePages).toEqual([pages[0], pages[2], pages[3], pages[4]]);
     });
@@ -770,8 +764,7 @@ describe('getVisiblePages: extremely complex and convoluted logic', () => {
       const visiblePages = getVisiblePages(
         pages,
         { your_question_cf8: 'option_1_f22' },
-        [],
-        pages[0]
+        [pages[0]]
       );
       expect(visiblePages).toEqual([
         pages[0],
@@ -786,8 +779,7 @@ describe('getVisiblePages: extremely complex and convoluted logic', () => {
       const visiblePages = getVisiblePages(
         pages,
         { your_question_cf8: 'option_2_p3n' },
-        [],
-        pages[0]
+        [pages[0]]
       );
 
       expect(visiblePages).toEqual([pages[0], pages[2], pages[3], pages[4]]);
@@ -796,7 +788,7 @@ describe('getVisiblePages: extremely complex and convoluted logic', () => {
 
   describe('Other steps in user journey', () => {
     it('if we reach page 3 after not answering on page 1: it shows all pages except page 2 as visible', () => {
-      const visiblePages = getVisiblePages(pages, {}, [pages[0]], pages[2]);
+      const visiblePages = getVisiblePages(pages, {}, [pages[0], pages[2]]);
       expect(visiblePages).toEqual([pages[0], pages[2], pages[3], pages[4]]);
     });
 
@@ -804,8 +796,7 @@ describe('getVisiblePages: extremely complex and convoluted logic', () => {
       const visiblePages = getVisiblePages(
         pages,
         { your_question_cf8: 'option_2_p3n' },
-        [pages[0]],
-        pages[2]
+        [pages[0], pages[2]]
       );
 
       expect(visiblePages).toEqual([pages[0], pages[2], pages[3], pages[4]]);
@@ -815,8 +806,7 @@ describe('getVisiblePages: extremely complex and convoluted logic', () => {
       const visiblePages = getVisiblePages(
         pages,
         { your_question_cf8: 'option_1_f22' },
-        [pages[0]],
-        pages[1]
+        [pages[0], pages[1]]
       );
       expect(visiblePages).toEqual([pages[0], pages[1], pages[3], pages[4]]);
     });
@@ -828,8 +818,7 @@ describe('getVisiblePages: extremely complex and convoluted logic', () => {
           your_question_cf8: 'option_1_f22',
           another_single_choice_nfi: 'option_1_xxx',
         },
-        [pages[0]],
-        pages[1]
+        [pages[0], pages[1]]
       );
       expect(visiblePages).toEqual([
         pages[0],
@@ -847,19 +836,17 @@ describe('getVisiblePages: extremely complex and convoluted logic', () => {
           your_question_cf8: 'option_1_f22',
           another_single_choice_nfi: 'option_2_ylz',
         },
-        [pages[0]],
-        pages[1]
+        [pages[0], pages[1]]
       );
       expect(visiblePages).toEqual([pages[0], pages[1], pages[4]]);
     });
 
     it('if we reach page 4 after not answering on page 1, and clicking next page on page 3: it shows all pages except page 2 as visible', () => {
-      const visiblePages = getVisiblePages(
-        pages,
-        {},
-        [pages[0], pages[2]],
-        pages[3]
-      );
+      const visiblePages = getVisiblePages(pages, {}, [
+        pages[0],
+        pages[2],
+        pages[3],
+      ]);
       expect(visiblePages).toEqual([pages[0], pages[2], pages[3], pages[4]]);
     });
 
@@ -867,8 +854,7 @@ describe('getVisiblePages: extremely complex and convoluted logic', () => {
       const visiblePages = getVisiblePages(
         pages,
         { your_question_cf8: 'option_2_p3n' },
-        [pages[0], pages[2]],
-        pages[3]
+        [pages[0], pages[2], pages[3]]
       );
       expect(visiblePages).toEqual([pages[0], pages[2], pages[3], pages[4]]);
     });
