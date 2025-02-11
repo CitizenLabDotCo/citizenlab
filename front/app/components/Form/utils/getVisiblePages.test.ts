@@ -675,7 +675,7 @@ describe('getVisiblePages: extremely complex and convoluted logic', () => {
           condition: {
             scope: '#/properties/your_question_cf8',
             schema: {
-              enum: ['option_2_r7u'],
+              enum: ['option_2_p3n'],
             },
           },
         },
@@ -716,7 +716,7 @@ describe('getVisiblePages: extremely complex and convoluted logic', () => {
           condition: {
             scope: '#/properties/another_single_choice_nfi',
             schema: {
-              enum: ['option_2_cfu'],
+              enum: ['option_2_ylz'],
             },
           },
         },
@@ -739,15 +739,8 @@ describe('getVisiblePages: extremely complex and convoluted logic', () => {
           condition: {
             scope: '#/properties/another_single_choice_nfi',
             schema: {
-              enum: ['option_2_cfu'],
+              enum: ['option_2_ylz'],
             },
-          },
-        },
-        {
-          effect: 'HIDE',
-          condition: {
-            type: 'HIDEPAGE',
-            pageId: '1dac0123-3bd6-454a-b12f-4c4e59945b4c',
           },
         },
       ],

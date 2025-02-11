@@ -79,11 +79,12 @@ const evalVisibility = (
     return true;
   }
 
+  // Every single rule has to evaluate to "visible"
+  // for the page to be visible
+  // The conditions, however, are defined as "hide" conditions
+  // so in the code below you will see the conditions evaluated
+  // and then negated.
   return page.ruleArray.every((currentRule) => {
-    if (page.options.title === 'Page 4') {
-      console.log(currentRule);
-    }
-
     // If the rule is a page condition:
     if (isPageCondition(currentRule.condition)) {
       // We find the page that causes the current condition
@@ -93,7 +94,8 @@ const evalVisibility = (
         (page) => page.options.id === currentRule.condition.pageId
       );
 
-      if (!pageThatCausedCondition) throw new Error('Page not found'); // should not be possible
+      // type guard, should not be possible
+      if (!pageThatCausedCondition) throw new Error('Page not found');
 
       // Then we check if any quesiton on that page that causes the
       // condition has a question rule
@@ -134,6 +136,7 @@ const evalVisibility = (
     );
 
     const visible = !shouldHide;
+
     return visible;
   });
 };
