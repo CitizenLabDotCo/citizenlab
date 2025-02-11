@@ -89,15 +89,13 @@ const CLSurveyPageLayout = memo(
     // We can cast types because the tester made sure we only get correct values
     const pageTypeElements = (uischema as PageCategorization)
       .elements as PageType[];
-    const [uiPages, setUiPages] = useState<PageType[]>(pageTypeElements);
-    const [userPagePathWithoutCurrentPage, setUserPagePathWithoutCurrentPage] =
-      useState<PageType[]>([]);
+    const [userPagePath, setUserPagePath] = useState<PageType[]>([
+      pageTypeElements[0],
+    ]);
     const [scrollToError, setScrollToError] = useState(false);
     const [percentageAnswered, setPercentageAnswered] = useState<number>(1);
     const ideaId = searchParams.get('idea_id');
     const { data: idea } = useIdeaById(ideaId ?? undefined);
-
-    const currentStep = userPagePathWithoutCurrentPage.length;
 
     // If the idea (survey submission) has no author relationship,
     // it was either created through 'anyone' permissions or with
@@ -105,9 +103,6 @@ const CLSurveyPageLayout = memo(
     const showIdeaIdInModal = idea
       ? !idea.data.relationships.author?.data
       : false;
-
-    const pageVariant = getPageVariant(currentStep, uiPages.length);
-    const hasPreviousPage = currentStep !== 0;
 
     const draggableDivRef = useRef<HTMLDivElement>(null);
     const dragDividerRef = useRef<HTMLDivElement>(null);
@@ -132,21 +127,27 @@ const CLSurveyPageLayout = memo(
     // Map-related variables
     const { data: projectMapConfig } = useProjectMapConfig(project?.data.id);
 
-    const currentPage = uiPages[currentStep];
+    const visiblePages = useMemo(() => {
+      return getVisiblePages(
+        pageTypeElements,
+        formState.core?.data,
+        userPagePath
+      );
+    }, [formState.core?.data, pageTypeElements, userPagePath]);
 
-    const userPagePath = useMemo(() => {
-      return [...userPagePathWithoutCurrentPage, currentPage];
-    }, [userPagePathWithoutCurrentPage, currentPage]);
+    // This is the number of the step the user is currently on,
+    // out of the number of visible steps
+    const currentStepNumber = userPagePath.length - 1;
+    const currentPage = userPagePath[currentStepNumber];
 
-    const currentPageIndex = pageTypeElements.findIndex(
-      (page) => page === currentPage
-    );
+    const pageVariant = getPageVariant(currentStepNumber, visiblePages.length);
+    const hasPreviousPage = currentStepNumber !== 0;
 
     const isMapPage = currentPage.options.page_layout === 'map';
     const mapConfigId =
       // TODO: Fix this the next time the file is edited.
       // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-      uiPages[currentStep].options.map_config_id || projectMapConfig?.data?.id;
+      currentPage.options.map_config_id || projectMapConfig?.data?.id;
     const { data: fetchedMapConfig, isFetching: isFetchingMapConfig } =
       useMapConfigById(mapConfigId);
     const [mapConfig, setMapConfig] = useState<IMapConfig | null | undefined>(
@@ -163,17 +164,7 @@ const CLSurveyPageLayout = memo(
     // Emit event when page changes and map is fetched
     useEffect(() => {
       eventEmitter.emit(SURVEY_PAGE_CHANGE_EVENT);
-    }, [currentStep, isFetchingMapConfig]);
-
-    useEffect(() => {
-      const visiblePages = getVisiblePages(
-        pageTypeElements,
-        formState.core?.data,
-        userPagePath
-      );
-
-      setUiPages(visiblePages);
-    }, [formState.core?.data, pageTypeElements, userPagePath, currentPage]);
+    }, [currentStepNumber, isFetchingMapConfig]);
 
     useEffect(() => {
       if (scrollToError) {
@@ -195,16 +186,16 @@ const CLSurveyPageLayout = memo(
     }, [scrollToError, announceError]);
 
     useEffect(() => {
-      if (currentStep === uiPages.length - 1) {
+      if (currentStepNumber === visiblePages.length - 1) {
         setPercentageAnswered(100);
         return;
       }
 
       const percentage = getFormCompletionPercentage(
         schema,
-        uiPages,
+        visiblePages,
         formState.core?.data,
-        currentStep
+        currentStepNumber
       );
 
       setPercentageAnswered(percentage);
@@ -212,8 +203,8 @@ const CLSurveyPageLayout = memo(
       formState.core?.data,
       uischema,
       schema,
-      currentStep,
-      uiPages,
+      currentStepNumber,
+      visiblePages,
       setPercentageAnswered,
     ]);
 
@@ -261,9 +252,8 @@ const CLSurveyPageLayout = memo(
 
       scrollToTop();
 
-      // After adding the current page,
-      // it becomes not the current page anymore.
-      setUserPagePathWithoutCurrentPage((path) => [...path, currentPage]);
+      const nextPage = visiblePages[currentStepNumber + 1];
+      setUserPagePath((userPagePath) => [...userPagePath, nextPage]);
 
       setIsLoading(false);
     };
@@ -295,7 +285,7 @@ const CLSurveyPageLayout = memo(
        * to think about it. See https://www.notion.so/citizenlab/Bug-in-survey-flow-792a72efc35e44e58e1bb10ab631ecdf
        */
       setFormData?.(dataWithoutRuleValues);
-      setUserPagePathWithoutCurrentPage((path) => path.slice(0, -1));
+      setUserPagePath((userPagePath) => userPagePath.slice(0, -1));
       scrollToTop();
     };
 
@@ -329,6 +319,13 @@ const CLSurveyPageLayout = memo(
 
     const pageElements = extractElementsByOtherOptionLogic(currentPage, data);
 
+    // This is the index of the current page in the pageTypeElements array,
+    // which also includes non-visible pages.
+    // We only use it to render to the data-cy attribute for e2e testing.
+    const currentPageIndex = pageTypeElements.findIndex(
+      (page) => page === currentPage
+    );
+
     return (
       <>
         <Box
@@ -346,7 +343,7 @@ const CLSurveyPageLayout = memo(
               minWidth="60%"
               h="100%"
               ref={draggableDivRef}
-              key={`esri_map_${currentStep}`}
+              key={`esri_map_${currentStepNumber}`}
             >
               <EsriMap
                 layers={mapLayers}
