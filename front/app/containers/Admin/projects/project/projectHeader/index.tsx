@@ -21,6 +21,7 @@ import NavigationTabs from 'components/admin/NavigationTabs';
 import ButtonWithLink from 'components/UI/ButtonWithLink';
 
 import { FormattedMessage, MessageDescriptor, useIntl } from 'utils/cl-intl';
+import Link from 'utils/cl-router/Link';
 import { getFullName } from 'utils/textUtils';
 
 import messages from './messages';
@@ -89,9 +90,14 @@ const ProjectHeader = ({ projectId }: Props) => {
             mb="8px"
             maxWidth="600px"
           >
-            <StyledTitle color="primary" variant="h4" mt="0" mb="4px">
-              {localize(project.data.attributes.title_multiloc)}
-            </StyledTitle>
+            <Link
+              to={`/admin/projects/${project.data.id}/settings`}
+              data-cy="e2e-project-title-preview-link-to-settings"
+            >
+              <StyledTitle color="primary" variant="h4" mt="0" mb="4px">
+                {localize(project.data.attributes.title_multiloc)}
+              </StyledTitle>
+            </Link>
             <ProjectDescriptionPreview project={project} />
           </Box>
           <Box
