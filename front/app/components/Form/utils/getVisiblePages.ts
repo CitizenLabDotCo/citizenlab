@@ -177,6 +177,11 @@ const validateSchemaCondition = (
     return value.some((val) => customAjv.validate(schema, val));
   }
 
+  // A value being undefined can mean two things:
+  // 1. The user has not answered/seen the question yet
+  // 2. The user has seen the question, but has not answered it
+  // We only want to interpret undefined as "no_answer" if the user has seen the question.
+  // That's why we add the pageSeen variable.
   if (
     schema.enum?.includes('no_answer') &&
     value === undefined &&
