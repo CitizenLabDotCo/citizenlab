@@ -18,13 +18,14 @@ import useUserById from 'api/users/useUserById';
 import useLocalize from 'hooks/useLocalize';
 
 import NavigationTabs from 'components/admin/NavigationTabs';
-import Button from 'components/UI/ButtonWithLink';
+import ButtonWithLink from 'components/UI/ButtonWithLink';
 
 import { FormattedMessage, MessageDescriptor, useIntl } from 'utils/cl-intl';
 import Link from 'utils/cl-router/Link';
 import { getFullName } from 'utils/textUtils';
 
 import messages from './messages';
+import ProjectDescriptionPreview from './ProjectDescriptionPreview';
 import PublicationStatus from './PublicationStatus';
 import ReviewFlow from './ReviewFlow';
 import ShareLink from './ShareLink';
@@ -76,21 +77,35 @@ const ProjectHeader = ({ projectId }: Props) => {
         pr="24px"
         py="16px"
       >
-        <Box display="flex" justifyContent="space-between" alignItems="center">
-          <Link
-            to={`/admin/projects/${project.data.id}/settings`}
-            data-cy="e2e-project-title-preview-link-to-settings"
+        <Box
+          display="flex"
+          justifyContent="space-between"
+          alignItems="flex-start"
+          gap="16px"
+        >
+          <Box
+            display="flex"
+            flexDirection="column"
+            alignItems="flex-start"
+            mb="8px"
+            maxWidth="600px"
           >
-            <StyledTitle color="primary" variant="h4" my="0px">
-              {localize(project.data.attributes.title_multiloc)}
-            </StyledTitle>
-          </Link>
+            <Link
+              to={`/admin/projects/${project.data.id}/settings`}
+              data-cy="e2e-project-title-preview-link-to-settings"
+            >
+              <StyledTitle color="primary" variant="h4" mt="0" mb="4px">
+                {localize(project.data.attributes.title_multiloc)}
+              </StyledTitle>
+            </Link>
+            <ProjectDescriptionPreview project={project} />
+          </Box>
           <Box
             display="flex"
             gap="8px"
             className="intercom-projects-project-header-buttons"
           >
-            <Button
+            <ButtonWithLink
               linkTo={`/projects/${project.data.attributes.slug}`}
               buttonStyle="secondary-outlined"
               icon="eye"
@@ -104,20 +119,22 @@ const ProjectHeader = ({ projectId }: Props) => {
               projectSlug={project.data.attributes.slug}
               token={project.data.attributes.preview_token}
             />
-            <Button
+            <ButtonWithLink
               linkTo={`/admin/projects/${project.data.id}/settings`}
-              buttonStyle="secondary-outlined"
+              buttonStyle="admin-dark"
               size="s"
               padding="4px 8px"
+              icon="settings"
+              iconSize="18px"
             >
               {formatMessage(messages.settings)}
-            </Button>
+            </ButtonWithLink>
 
             <ReviewFlow project={project.data} />
           </Box>
         </Box>
         <Box display="flex" gap="8px">
-          <Button
+          <ButtonWithLink
             linkTo={`/admin/projects/${project.data.id}/settings/access-rights`}
             buttonStyle="text"
             size="s"
@@ -133,7 +150,7 @@ const ProjectHeader = ({ projectId }: Props) => {
                 {formatMessage(visibilityMessage)}
               </Text>
             </Box>
-          </Button>
+          </ButtonWithLink>
           <Text color="coolGrey600" fontSize="s" mb="0px" mt="2px">
             ·
           </Text>

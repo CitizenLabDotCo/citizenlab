@@ -32,11 +32,12 @@ interface IFormValues {
   description_preview_multiloc: Multiloc | null;
   description_multiloc: Multiloc | null;
 }
+const submitBarHeight = '62px';
 
 const ProjectDescription = () => {
   const { formatMessage } = useIntl();
   const { projectId } = useParams();
-
+  const { data: project } = useProjectById(projectId);
   const { mutate: updateProject, isLoading, error } = useUpdateProject();
   const showProjectDescriptionBuilder = useFeatureFlag({
     name: 'project_description_builder',
@@ -49,8 +50,6 @@ const ProjectDescription = () => {
     description_preview_multiloc: null,
     description_multiloc: null,
   });
-
-  const { data: project } = useProjectById(projectId);
 
   useEffect(() => {
     if (project) {
@@ -115,9 +114,10 @@ const ProjectDescription = () => {
 
   return (
     <Box
-      // To improve: have standardize page height calculation for all admin pages
-      height="100vh"
       ref={containerRef}
+      // Temporary fix to ensure the submit bar does
+      // not overlap the content. Submit bar should be standardized
+      pb={submitBarHeight}
     >
       <SectionTitle>
         <FormattedMessage {...messages.titleDescription} />
@@ -130,7 +130,7 @@ const ProjectDescription = () => {
         <SectionField>
           {!showProjectDescriptionBuilder && (
             <QuillMultilocWithLocaleSwitcher
-              id="project-description-module-inactive"
+              id="e2e-project-description-module-inactive"
               valueMultiloc={formValues.description_multiloc}
               onChange={handleDescriptionOnChange}
               label={formatMessage(messages.descriptionLabel)}

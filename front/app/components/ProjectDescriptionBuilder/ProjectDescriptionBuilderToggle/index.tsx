@@ -121,7 +121,7 @@ const ProjectDescriptionBuilderToggle = ({
       )}
       {!projectDescriptionBuilderLinkVisible && (
         <QuillMultilocWithLocaleSwitcher
-          id="project-description"
+          id="e2e-project-description-multiloc-module-active"
           valueMultiloc={valueMultiloc}
           onChange={onChange}
           label={label}
