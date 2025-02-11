@@ -467,6 +467,43 @@ RSpec.describe Phase do
     end
   end
 
+  describe '#validate_community_monitor_phase' do
+    let(:project) { create(:project) }
+    let(:survey_phase) { create(:native_survey_phase, project: project, start_at: Time.zone.today, end_at: nil) }
+
+    context 'survey is not a community monitor survey' do
+      it 'is valid when the phase is not a community monitor native survey' do
+        expect(survey_phase).to be_valid
+      end
+    end
+
+    context 'survey is a community monitor survey' do
+      before do
+        project.update! visible_to: 'nobody', internal_role: 'community_monitor'
+        survey_phase.update! native_survey_method: 'community_monitor'
+      end
+
+      it 'is valid' do
+        expect(survey_phase).to be_valid
+      end
+
+      it 'is not valid when the project has more than one phase' do
+        project.phases << create(:phase, project: project, start_at: survey_phase.start_at - 10.days, end_at: survey_phase.start_at - 5.days)
+        expect(survey_phase).not_to be_valid
+      end
+
+      it 'is not valid when the phase has an end date' do
+        survey_phase.end_at = Time.zone.today + 1.day
+        expect(survey_phase).not_to be_valid
+      end
+
+      it 'is not valid when the project is not visible to anyone' do
+        project.visible_to = 'public'
+        expect(survey_phase).not_to be_valid
+      end
+    end
+  end
+
   describe '#disliking_enabled' do
     it 'defaults to false when disable_disliking feature flag is enabled (default)' do
       # binding.pry
