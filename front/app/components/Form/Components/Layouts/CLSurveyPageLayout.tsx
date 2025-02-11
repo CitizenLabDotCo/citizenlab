@@ -87,22 +87,20 @@ const CLSurveyPageLayout = memo(
     const theme = useTheme();
 
     // We can cast types because the tester made sure we only get correct values
-    const pageTypeElements = (uischema as PageCategorization)
-      .elements as PageType[];
+    const pageTypeElements = (uischema as PageCategorization).elements;
+
     const [userPagePath, setUserPagePath] = useState<PageType[]>([
       pageTypeElements[0],
     ]);
     const [scrollToError, setScrollToError] = useState(false);
-    const [percentageAnswered, setPercentageAnswered] = useState<number>(1);
     const ideaId = searchParams.get('idea_id');
     const { data: idea } = useIdeaById(ideaId ?? undefined);
 
     // If the idea (survey submission) has no author relationship,
     // it was either created through 'anyone' permissions or with
-    // the anonymous toggle on. In these cases, we show the idea id in the modal.
-    const showIdeaIdInModal = idea
-      ? !idea.data.relationships.author?.data
-      : false;
+    // the anonymous toggle on. In these cases, we show the idea id
+    // on the success page.
+    const showIdeaId = idea ? !idea.data.relationships.author?.data : false;
 
     const draggableDivRef = useRef<HTMLDivElement>(null);
     const dragDividerRef = useRef<HTMLDivElement>(null);
@@ -185,28 +183,18 @@ const CLSurveyPageLayout = memo(
       }
     }, [scrollToError, announceError]);
 
-    useEffect(() => {
+    const percentageAnswered = useMemo(() => {
       if (currentStepNumber === visiblePages.length - 1) {
-        setPercentageAnswered(100);
-        return;
+        return 100;
       }
 
-      const percentage = getFormCompletionPercentage(
+      return getFormCompletionPercentage(
         schema,
         visiblePages,
         formState.core?.data,
         currentStepNumber
       );
-
-      setPercentageAnswered(percentage);
-    }, [
-      formState.core?.data,
-      uischema,
-      schema,
-      currentStepNumber,
-      visiblePages,
-      setPercentageAnswered,
-    ]);
+    }, [formState.core?.data, schema, currentStepNumber, visiblePages]);
 
     const scrollToTop = () => {
       // Scroll inner container to top
@@ -452,9 +440,9 @@ const CLSurveyPageLayout = memo(
                   </Box>
                 </Box>
               </Box>
-              {ideaId &&
-                pageVariant === 'after-submission' &&
-                showIdeaIdInModal && <SubmissionReference ideaId={ideaId} />}
+              {ideaId && pageVariant === 'after-submission' && showIdeaId && (
+                <SubmissionReference ideaId={ideaId} />
+              )}
             </Box>
           </Box>
         </Box>
