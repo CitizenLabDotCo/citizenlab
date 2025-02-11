@@ -1692,7 +1692,7 @@ resource 'Projects' do
       end
     end
 
-    context 'hidden community monitor project does ' do
+    context 'hidden community monitor project does' do
       example 'Create and get community monitor project' do
         do_request
         assert_status 200
