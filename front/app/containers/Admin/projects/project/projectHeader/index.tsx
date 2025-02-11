@@ -24,6 +24,7 @@ import { FormattedMessage, MessageDescriptor, useIntl } from 'utils/cl-intl';
 import { getFullName } from 'utils/textUtils';
 
 import messages from './messages';
+import ProjectDescriptionPreview from './ProjectDescriptionPreview';
 import PublicationStatus from './PublicationStatus';
 import ReviewFlow from './ReviewFlow';
 import ShareLink from './ShareLink';
@@ -75,10 +76,24 @@ const ProjectHeader = ({ projectId }: Props) => {
         pr="24px"
         py="16px"
       >
-        <Box display="flex" justifyContent="space-between" alignItems="center">
-          <StyledTitle color="primary" variant="h4" my="0px">
-            {localize(project.data.attributes.title_multiloc)}
-          </StyledTitle>
+        <Box
+          display="flex"
+          justifyContent="space-between"
+          alignItems="flex-start"
+          gap="16px"
+        >
+          <Box
+            display="flex"
+            flexDirection="column"
+            alignItems="flex-start"
+            mb="8px"
+            maxWidth="600px"
+          >
+            <StyledTitle color="primary" variant="h4" mt="0" mb="4px">
+              {localize(project.data.attributes.title_multiloc)}
+            </StyledTitle>
+            <ProjectDescriptionPreview project={project} />
+          </Box>
           <Box
             display="flex"
             gap="8px"
