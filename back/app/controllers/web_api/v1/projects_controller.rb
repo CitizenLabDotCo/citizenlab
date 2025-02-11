@@ -318,15 +318,17 @@ class WebApi::V1::ProjectsController < ApplicationController
   end
 
   def community_monitor
-    # TODO: Use app config to get the project id
+    settings = AppConfiguration.instance.settings
+    settings['community_monitor']&['enabled'] || raise(ActiveRecord::RecordNotFound)
 
-    AppConfiguration.instance.feature_activated?('community_monitor') || raise(ActiveRecord::RecordNotFound)
-
-    project = Project.unscoped.find_by(visible_to: 'nobody', internal_role: 'community_monitor')
+    # Find the community monitor project
+    project = nil
+    project_id = settings['community_monitor']&['project_id']
+    project = Project.unscoped.find(project_id) if project_id
 
     # Create the project if it doesn't exist
     unless project
-      # TODO: Get multilocs from yml
+      # TODO: JS Get multilocs from yml
       project = Project.create!(
         title_multiloc: { 'en' => 'Community Monitor' },
         visible_to: 'nobody',
@@ -338,9 +340,14 @@ class WebApi::V1::ProjectsController < ApplicationController
         participation_method: 'native_survey',
         start_at: Time.now,
         campaigns_settings: { project_phase_started: true }, # TODO: Is this correct?
+        native_survey_method: 'community_monitor',
         native_survey_title_multiloc: { 'en' => 'Community Monitor' },
         native_survey_button_multiloc: { 'en' => 'Take survey' }
       )
+
+      # Set the ID in the settings
+      settings['community_monitor']['project_id'] = project.id
+      AppConfiguration.instance.update!(settings: settings)
     end
 
     authorize project

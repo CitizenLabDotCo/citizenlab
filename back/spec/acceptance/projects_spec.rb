@@ -1687,7 +1687,10 @@ resource 'Projects' do
       let!(:project) { create(:project, visible_to: 'nobody', internal_role: 'community_monitor') }
 
       example 'Get community monitor project' do
-        SettingsService.new.activate_feature! 'community_monitor'
+        settings = AppConfiguration.instance.settings
+        settings['community_monitor'] = { 'enabled' => true, 'allowed' => true, 'project_id' => project.id }
+        AppConfiguration.instance.update!(settings:)
+
         do_request
         assert_status 200
       end
@@ -1698,9 +1701,22 @@ resource 'Projects' do
         SettingsService.new.activate_feature! 'community_monitor'
         do_request
         assert_status 200
+        expect(Project.unscoped.first.visible_to).to eq 'nobody'
+        expect(Phase.first.native_survey_method).to eq 'community_monitor'
       end
 
       example 'Error: Hidden project does not get created without feature flag' do
+        do_request
+        assert_status 404
+      end
+    end
+
+    context 'stored community monitor project ID is incorrect' do
+      example 'Error: Hidden project does not exist' do
+        settings = AppConfiguration.instance.settings
+        settings['community_monitor'] = { 'enabled' => true, 'allowed' => true, 'project_id' => 'NON_EXISTENT' }
+        AppConfiguration.instance.update!(settings:)
+
         do_request
         assert_status 404
       end
