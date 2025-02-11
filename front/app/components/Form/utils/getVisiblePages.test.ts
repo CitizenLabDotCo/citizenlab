@@ -785,7 +785,7 @@ describe('getVisiblePages: extremely complex and convoluted logic', () => {
     it('if option 2 selected: shows page 1 and 3 as visible, but not page 2', () => {
       const visiblePages = getVisiblePages(
         pages,
-        { your_question_cf8: 'option_2_r7u' },
+        { your_question_cf8: 'option_2_p3n' },
         [],
         pages[0]
       );
