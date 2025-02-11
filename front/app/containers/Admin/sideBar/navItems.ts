@@ -66,7 +66,7 @@ const navItems: NavItem[] = [
     link: '/admin/community-monitor',
     iconName: 'community_monitor',
     message: 'community_monitor',
-    featureNames: ['community_monitor'],
+    // featureNames: ['community_monitor'],  ToDo: Add back in once supported in BE
   },
   {
     name: 'tools',
