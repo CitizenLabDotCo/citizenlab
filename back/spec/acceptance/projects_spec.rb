@@ -1687,15 +1687,22 @@ resource 'Projects' do
       let!(:project) { create(:project, visible_to: 'nobody', internal_role: 'community_monitor') }
 
       example 'Get community monitor project' do
+        SettingsService.new.activate_feature! 'community_monitor'
         do_request
         assert_status 200
       end
     end
 
-    context 'hidden community monitor project does' do
-      example 'Create and get community monitor project' do
+    context 'hidden community monitor project does not exist' do
+      example 'Create and get hidden community monitor project' do
+        SettingsService.new.activate_feature! 'community_monitor'
         do_request
         assert_status 200
+      end
+
+      example 'Error: Hidden project does not get created without feature flag' do
+        do_request
+        assert_status 404
       end
     end
   end

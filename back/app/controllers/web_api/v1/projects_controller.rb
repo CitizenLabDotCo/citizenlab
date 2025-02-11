@@ -319,6 +319,9 @@ class WebApi::V1::ProjectsController < ApplicationController
 
   def community_monitor
     # TODO: Use app config to get the project id
+
+    AppConfiguration.instance.feature_activated?('community_monitor') || raise(ActiveRecord::RecordNotFound)
+
     project = Project.unscoped.find_by(visible_to: 'nobody', internal_role: 'community_monitor')
 
     # Create the project if it doesn't exist
