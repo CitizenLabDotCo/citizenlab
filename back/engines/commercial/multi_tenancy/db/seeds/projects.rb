@@ -48,6 +48,7 @@ module MultiTenancy
           start_at: Time.zone.today + 11.days,
           end_at: nil,
           campaigns_settings: { project_phase_started: true },
+          native_survey_method: 'standard',
           native_survey_title_multiloc: { 'en' => 'Survey' },
           native_survey_button_multiloc: { 'en' => 'Take the survey' }
         )
