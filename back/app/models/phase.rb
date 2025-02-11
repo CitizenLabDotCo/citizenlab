@@ -349,15 +349,15 @@ class Phase < ApplicationRecord
   def validate_community_monitor_phase
     return unless native_survey_method == 'community_monitor'
 
-    if self.project.phases.count > 1
+    if project.phases.count > 1
       errors.add(:native_survey_method, :too_many_phases, message: 'community_monitor project can only have one phase')
     end
 
-    if self.project.visible_to != 'nobody'
+    if project.visible_to != 'nobody'
       errors.add(:native_survey_method, :project_not_hidden, message: 'community_monitor projects must be hidden')
     end
 
-    if self.end_at.present?
+    if end_at.present?
       errors.add(:native_survey_method, :has_end_at, message: 'community_monitor projects cannot have an end date')
     end
   end
