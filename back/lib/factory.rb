@@ -19,5 +19,14 @@ class Factory
     end
   end
 
+  def native_survey_method_for(phase)
+    case phase&.native_survey_method
+    when 'community_monitor'
+      ::NativeSurveyMethod::CommunityMonitor.new(phase)
+    else
+      ::NativeSurveyMethod::Base.new(phase)
+    end
+  end
+
   private_class_method :new
 end
