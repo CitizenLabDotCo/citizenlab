@@ -37,7 +37,7 @@ class Project < ApplicationRecord
 
   attribute :preview_token, :string, default: -> { generate_preview_token }
 
-  VISIBLE_TOS = %w[public groups admins].freeze
+  VISIBLE_TOS = %w[public groups admins nobody].freeze
 
   slug from: proc { |project| project.title_multiloc.values.find(&:present?) }
 
@@ -88,7 +88,7 @@ class Project < ApplicationRecord
   after_save :reassign_moderators, if: :folder_changed?
   after_commit :clear_folder_changes, if: :folder_changed?
 
-  INTERNAL_ROLES = %w[open_idea_box].freeze
+  INTERNAL_ROLES = %w[open_idea_box community_monitor].freeze
 
   validates :title_multiloc, presence: true, multiloc: { presence: true }
   validates :description_multiloc, multiloc: { presence: false, html: true }
@@ -96,6 +96,8 @@ class Project < ApplicationRecord
   validates :visible_to, presence: true, inclusion: { in: VISIBLE_TOS }
   validates :internal_role, inclusion: { in: INTERNAL_ROLES, allow_nil: true }
   validate :admin_publication_must_exist, unless: proc { Current.loading_tenant_template } # TODO: This should always be validated!
+
+  default_scope { where.not(visible_to: 'nobody') }
 
   pg_search_scope :search_by_all,
     against: %i[title_multiloc description_multiloc description_preview_multiloc slug],

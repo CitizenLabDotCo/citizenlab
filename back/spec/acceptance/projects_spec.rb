@@ -1681,4 +1681,22 @@ resource 'Projects' do
       end
     end
   end
+
+  get 'web_api/v1/projects/community_monitor' do
+    context 'hidden community monitor project exists' do
+      let!(:project) { create(:project, visible_to: 'nobody', internal_role: 'community_monitor') }
+
+      example 'Get community monitor project' do
+        do_request
+        assert_status 200
+      end
+    end
+
+    context 'hidden community monitor project does ' do
+      example 'Create and get community monitor project' do
+        do_request
+        assert_status 200
+      end
+    end
+  end
 end
