@@ -779,7 +779,7 @@ function apiCreateProject({
   visibleTo,
 }: {
   title: string;
-  descriptionPreview: string;
+  descriptionPreview?: string;
   description: string;
   publicationStatus?: IProjectAttributes['publication_status'];
   assigneeId?: string;

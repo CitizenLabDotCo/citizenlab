@@ -36,7 +36,7 @@ const ProjectNameInput = ({
         />
       </SubSectionTitle>
       <StyledInputMultiloc
-        id="project-title"
+        id="e2e-project-title-setting-field"
         type="text"
         valueMultiloc={titleMultiloc}
         label={<FormattedMessage {...messages.titleLabel} />}
