@@ -62,6 +62,12 @@ const navItems: NavItem[] = [
     featureNames: ['report_builder'],
   },
   {
+    name: 'community_monitor',
+    link: '/admin/community-monitor',
+    iconName: 'community_monitor',
+    message: 'community_monitor',
+  },
+  {
     name: 'tools',
     link: `/admin/tools`,
     iconName: 'grid',

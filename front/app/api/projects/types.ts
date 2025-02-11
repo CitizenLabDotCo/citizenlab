@@ -82,7 +82,7 @@ export interface IProjectAttributes {
   ideas_count: number;
   baskets_count: number;
   votes_count: number;
-  visible_to: Visibility;
+  visible_to: ProjectVisibility;
   timeline_active?: 'past' | 'present' | 'future' | null;
   participants_count: number;
   internal_role: 'open_idea_box' | null;
@@ -148,7 +148,7 @@ export interface IProjectData {
   };
 }
 
-type Visibility = 'public' | 'groups' | 'admins';
+export type ProjectVisibility = 'public' | 'groups' | 'admins' | 'nobody';
 type PresentationMode = 'map' | 'card';
 
 interface ProjectHeaderBgImageSizes {
@@ -171,7 +171,7 @@ export interface IUpdatedProjectProperties {
   description_multiloc?: Multiloc;
   description_preview_multiloc?: Multiloc;
   area_ids?: string[];
-  visible_to?: Visibility;
+  visible_to?: ProjectVisibility;
   participation_method?: ParticipationMethod | null;
   submission_enabled?: boolean | null;
   commenting_enabled?: boolean | null;

@@ -4,6 +4,7 @@ import { fontSizes, Radio } from '@citizenlab/cl2-component-library';
 import { WrappedComponentProps } from 'react-intl';
 import styled from 'styled-components';
 
+import { ProjectVisibility as ProjectVisibilityType } from 'api/projects/types';
 import useProjectById from 'api/projects/useProjectById';
 import useUpdateProject from 'api/projects/useUpdateProject';
 
@@ -55,9 +56,10 @@ const ProjectVisibility = ({
 }: Props & WrappedComponentProps) => {
   const { data: project } = useProjectById(projectId);
   const { mutate: updateProject } = useUpdateProject();
-  const [projectVisibility, setProjectVisibility] = useState<
-    'public' | 'admins' | 'groups'
-  >(project ? project.data.attributes.visible_to : 'public');
+  const [projectVisibility, setProjectVisibility] =
+    useState<ProjectVisibilityType>(
+      project ? project.data.attributes.visible_to : 'public'
+    );
 
   useEffect(() => {
     if (project) {

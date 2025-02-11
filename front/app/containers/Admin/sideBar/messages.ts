@@ -53,6 +53,10 @@ export default defineMessages({
     id: 'app.containers.AdminPage.SideBar.insights',
     defaultMessage: 'Reporting',
   },
+  community_monitor: {
+    id: 'app.containers.AdminPage.SideBar.community_monitor',
+    defaultMessage: 'Community monitor',
+  },
   menu: {
     id: 'app.containers.AdminPage.SideBar.menu',
     defaultMessage: 'Pages & menu',

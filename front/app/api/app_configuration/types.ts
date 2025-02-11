@@ -223,6 +223,9 @@ export interface IAppConfigurationSettings {
   esri_integration?: AppConfigurationFeature & {
     api_key: string;
   };
+  community_monitor?: AppConfigurationFeature & {
+    project_id: string;
+  };
   disable_user_bios?: AppConfigurationFeature;
   project_description_builder?: AppConfigurationFeature;
   remove_vendor_branding?: AppConfigurationFeature;
