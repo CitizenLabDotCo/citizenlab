@@ -76,7 +76,7 @@ const SingleSelectRadioControl = ({
               marginTop="8px"
               buttonColor={theme.colors.tenantSecondary}
               id={`${path}-radio-${index}`}
-              name="name-temp"
+              name={path}
               label={
                 <Text p="0px" m="0px" fontSize="s">
                   {option.label}
