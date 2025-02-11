@@ -317,6 +317,37 @@ class WebApi::V1::ProjectsController < ApplicationController
     ).serializable_hash, status: :ok
   end
 
+  def community_monitor
+    # TODO: Use app config to get the project id
+    project = Project.unscoped.find_by(visible_to: 'nobody', internal_role: 'community_monitor')
+
+    # Create the project if it doesn't exist
+    unless project
+      # TODO: Get multilocs from yml
+      project = Project.create!(
+        title_multiloc: { 'en' => 'Community Monitor' },
+        visible_to: 'nobody',
+        internal_role: 'community_monitor'
+      )
+      Phase.create!(
+        title_multiloc: { 'en' => 'Community Monitor' },
+        project: project,
+        participation_method: 'native_survey',
+        start_at: Time.now,
+        campaigns_settings: { project_phase_started: true }, # TODO: Is this correct?
+        native_survey_title_multiloc: { 'en' => 'Community Monitor' },
+        native_survey_button_multiloc: { 'en' => 'Take survey' }
+      )
+    end
+
+    authorize project
+    render json: WebApi::V1::ProjectSerializer.new(
+      project,
+      params: jsonapi_serializer_params,
+      include: %i[current_phase]
+    ).serializable_hash
+  end
+
   private
 
   def sidefx

@@ -28,6 +28,7 @@ class ProjectsFinderService
     # second by project created_at, and third by project ID.
     # Secondary & ternary orderings prevent duplicates when paginating, when prior ordering involves equivalent values
     projects = Project
+      .unscoped # to avoid ambiguity clash with the default scope of the Project model
       .from(subquery, :projects)
       .distinct
       .order('phase_end_at ASC NULLS LAST, projects_created_at ASC, projects_id ASC')

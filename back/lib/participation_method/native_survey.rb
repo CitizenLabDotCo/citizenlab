@@ -17,6 +17,10 @@ module ParticipationMethod
       input.idea_status ||= IdeaStatus.find_by!(code: 'proposed', participation_method: 'ideation')
     end
 
+    def assign_defaults_for_phase
+      phase.native_survey_method ||= 'standard'
+    end
+
     # NOTE: This is only ever used by the analyses controller - otherwise the front-end always persists the form
     def create_default_form!
       form = CustomForm.new(participation_context: phase)
