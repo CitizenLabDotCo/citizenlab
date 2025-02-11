@@ -70,4 +70,18 @@ describe WebApi::V1::PhaseSerializer do
       end
     end
   end
+
+  context 'for a native survey phase' do
+    let(:user) { create(:user) }
+    let(:phase) { create(:native_survey_phase) }
+
+    it 'includes native survey attributes' do
+      expect(result.dig(:data, :attributes).keys).to include(
+        :native_survey_method,
+        :native_survey_title_multiloc,
+        :native_survey_button_multiloc
+      )
+      expect(result.dig(:data, :attributes, :native_survey_method)).to eq 'standard'
+    end
+  end
 end

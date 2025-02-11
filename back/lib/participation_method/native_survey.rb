@@ -122,7 +122,7 @@ module ParticipationMethod
     end
 
     def supports_serializing?(attribute)
-      %i[native_survey_title_multiloc native_survey_button_multiloc].include?(attribute)
+      %i[native_survey_method native_survey_title_multiloc native_survey_button_multiloc].include?(attribute)
     end
 
     def supports_submission?
