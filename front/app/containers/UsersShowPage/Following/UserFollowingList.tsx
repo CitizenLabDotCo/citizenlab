@@ -69,7 +69,6 @@ const UserFollowingList = ({ value }: Props) => {
                   <Box width="100%">
                     <IdeaCard
                       ideaId={follower.relationships.followable.data.id}
-                      showFollowButton
                     />
                   </Box>
                 </Box>
