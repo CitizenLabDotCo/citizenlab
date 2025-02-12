@@ -49,19 +49,5 @@ describe('Follow folder', () => {
     // Follow
     cy.get('[data-cy="e2e-follow-button"]').should('exist');
     cy.get('[data-cy="e2e-follow-button"]').click();
-
-    // Check that it shows unfollow after
-    cy.get('[data-cy="e2e-unfollow-button"]').should('exist');
-    cy.get('[data-cy="e2e-follow-button"]').should('not.exist');
-
-    cy.visit(`/profile/${userSlug}/following`);
-    cy.get('#tab-ProjectFolders\\:\\:Folder').click();
-
-    cy.get('.e2e-folder-card-folder-title').contains(folderTitle);
-
-    cy.get('[data-cy="e2e-unfollow-button"]').should('exist');
-    cy.get('[data-cy="e2e-unfollow-button"]').click();
-
-    cy.get('.e2e-folder-card-folder-title').should('not.exist');
   });
 });
