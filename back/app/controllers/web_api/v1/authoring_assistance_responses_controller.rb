@@ -1,4 +1,4 @@
-class WebApi::V1::AuthoringAssistanceResponseController < ApplicationController
+class WebApi::V1::AuthoringAssistanceResponsesController < ApplicationController
   def create
     if AuthoringAssistanceResponse.find_by(idea_id: params[:idea_id]) && !parse_bool(params[:regenerate])
       render_last_authoring_assistance_response
@@ -11,6 +11,7 @@ class WebApi::V1::AuthoringAssistanceResponseController < ApplicationController
 
   def render_last_authoring_assistance_response
     @response = AuthoringAssistanceResponse.order(created_at: :desc).find_by!(idea_id: params[:idea_id])
+    authorize @response
     render json: WebApi::V1::AuthoringAssistanceResponseSerializer.new(
       @response,
       params: jsonapi_serializer_params
@@ -28,7 +29,7 @@ class WebApi::V1::AuthoringAssistanceResponseController < ApplicationController
 
     # TODO: Run prompts
 
-    SideFxAuthoringAssistanceResponse.new.after_create @response, current_user
+    SideFxAuthoringAssistanceResponseService.new.after_create @response, current_user
     render json: WebApi::V1::AuthoringAssistanceResponseSerializer.new(
       @response,
       params: jsonapi_serializer_params
