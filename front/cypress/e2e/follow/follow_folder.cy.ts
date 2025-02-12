@@ -49,5 +49,9 @@ describe('Follow folder', () => {
     // Follow
     cy.get('[data-cy="e2e-follow-button"]').should('exist');
     cy.get('[data-cy="e2e-follow-button"]').click();
+
+    // Check that it shows unfollow after
+    cy.get('[data-cy="e2e-unfollow-button"]').should('exist');
+    cy.get('[data-cy="e2e-follow-button"]').should('not.exist');
   });
 });
