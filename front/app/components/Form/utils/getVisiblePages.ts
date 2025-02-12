@@ -9,7 +9,11 @@ import {
   JsonSchema,
 } from '@jsonforms/core';
 
-import { HidePageCondition, PageType } from 'components/Form/typings';
+import {
+  FormValues,
+  HidePageCondition,
+  PageType,
+} from 'components/Form/typings';
 import customAjv from 'components/Form/utils/customAjv';
 import getOtherControlKey from 'components/Form/utils/getOtherControlKey';
 
@@ -17,7 +21,7 @@ import getKey from './getKey';
 
 const getVisiblePages = (
   pages: PageType[],
-  data: Record<string, any>,
+  data: FormValues,
   userPagePath: PageType[]
 ) => {
   const questionsSeenSet = generateQuestionsSeenSet(userPagePath);
@@ -45,7 +49,7 @@ const generateQuestionsSeenSet = (userPagePath: PageType[]) => {
 
 const isVisible = (
   page: PageType,
-  data: Record<string, any>,
+  data: FormValues,
   pages: PageType[],
   questionsSeenSet: Set<string>
 ): boolean => {
@@ -135,7 +139,7 @@ const isPageCondition = (
 ): condition is HidePageCondition => condition.type === 'HIDEPAGE';
 
 const evaluateCondition = (
-  data: Record<string, any>,
+  data: FormValues,
   condition: SchemaBasedCondition,
   questionsSeenSet: Set<string>
 ): boolean => {

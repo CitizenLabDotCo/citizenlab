@@ -1,11 +1,11 @@
 import { JsonSchema } from '@jsonforms/core';
 
-import { PageType } from '../typings';
+import { FormValues, PageType } from '../typings';
 
 function getFormCompletionPercentage(
   schema: JsonSchema,
   pages: PageType[],
-  data: Record<string, any>,
+  data: FormValues,
   currentPageIndex: number
 ) {
   const filteredData = {};

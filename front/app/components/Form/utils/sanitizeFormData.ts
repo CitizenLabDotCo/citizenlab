@@ -1,4 +1,6 @@
-const sanitizeFormData = (data: Record<string, any>) => {
+import { FormValues } from '../typings';
+
+const sanitizeFormData = (data: FormValues) => {
   const sanitizedFormData = {};
 
   for (const key in data) {

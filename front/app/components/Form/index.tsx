@@ -13,7 +13,7 @@ import { CLErrors } from 'typings';
 
 import useLocale from 'hooks/useLocale';
 
-import { PageType } from 'components/Form/typings';
+import { FormValues, PageType } from 'components/Form/typings';
 
 import { trackEventByName } from 'utils/analytics';
 import { useIntl } from 'utils/cl-intl';
@@ -48,8 +48,8 @@ const Title = styled.h1`
 interface Props {
   schema: JsonSchema7;
   uiSchema: Layout;
-  onSubmit: (formData: Record<string, any>) => void | Promise<any>;
-  initialFormData: Record<string, any>;
+  onSubmit: (formData: FormValues) => void | Promise<any>;
+  initialFormData: FormValues;
   title?: ReactElement;
   /** A function that returns a translation message given the fieldname and the error key returned by the API */
   getApiErrorMessage?: ApiErrorGetter;

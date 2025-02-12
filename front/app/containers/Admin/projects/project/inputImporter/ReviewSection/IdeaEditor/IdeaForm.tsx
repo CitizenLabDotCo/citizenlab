@@ -9,7 +9,11 @@ import { ImportedIdeaMetadataResponse } from 'api/import_ideas/types';
 import ideaFormMessages from 'containers/IdeasNewPage/messages';
 
 import Fields from 'components/Form/Components/Fields';
-import { ApiErrorGetter, AjvErrorGetter } from 'components/Form/typings';
+import {
+  ApiErrorGetter,
+  AjvErrorGetter,
+  FormValues,
+} from 'components/Form/typings';
 
 import { getFieldNameFromPath } from 'utils/JSONFormUtils';
 
@@ -17,10 +21,10 @@ interface Props {
   schema: JsonSchema7;
   uiSchema: Layout;
   showAllErrors: boolean;
-  formData: Record<string, any>;
+  formData: FormValues;
   ideaMetadata: ImportedIdeaMetadataResponse;
   apiErrors?: CLErrors;
-  setFormData: (formData: Record<string, any>) => void;
+  setFormData: (formData: FormValues) => void;
 }
 
 const IdeaForm = ({

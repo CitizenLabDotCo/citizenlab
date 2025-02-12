@@ -17,13 +17,14 @@ import {
   ApiErrorGetter,
   AjvErrorGetter,
   ExtendedUISchema,
+  FormValues,
 } from '../../typings';
 
 import { ErrorToReadProvider } from './ErrorToReadContext';
 import { selectRenderers } from './formConfig';
 
 interface Props {
-  data: Record<string, any>;
+  data: FormValues;
   apiErrors?: CLErrors;
   showAllErrors: boolean;
   setShowAllErrors?: (showAllErrors: boolean) => void;
@@ -34,8 +35,8 @@ interface Props {
   inputId?: string;
   config?: 'default' | 'input' | 'survey';
   locale: SupportedLocale;
-  onChange: (formData: Record<string, any>) => void;
-  onSubmit?: (formData: Record<string, any>) => Promise<any>;
+  onChange: (formData: FormValues) => void;
+  onSubmit?: (formData: FormValues) => Promise<any>;
 }
 
 const Fields = ({

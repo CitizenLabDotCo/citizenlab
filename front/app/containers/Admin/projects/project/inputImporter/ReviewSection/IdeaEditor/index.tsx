@@ -25,6 +25,7 @@ import useLocalize from 'hooks/useLocalize';
 
 import { getFormValues as getIdeaFormValues } from 'containers/IdeasEditPage/utils';
 
+import { FormValues } from 'components/Form/typings';
 import customAjv from 'components/Form/utils/customAjv';
 
 import { FormattedMessage } from 'utils/cl-intl';
@@ -61,7 +62,7 @@ const IdeaEditor = ({ ideaId, setIdeaId }: Props) => {
     Record<string, UserFormData>
   >({});
   const [ideaFormStatePerIdea, setIdeaFormStatePerIdea] = useState<
-    Record<string, Record<string, any>>
+    Record<string, FormValues>
   >({});
   const [ideaFormApiErrors, setIdeaFormApiErrors] = useState<
     CLErrors | undefined
@@ -99,7 +100,7 @@ const IdeaEditor = ({ ideaId, setIdeaId }: Props) => {
     ideaMetadata
   );
 
-  const ideaFormData: Record<string, any> | null =
+  const ideaFormData: FormValues | null =
     // TODO: Fix this the next time the file is edited.
     // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     ideaId && ideaFormStatePerIdea[ideaId]
@@ -121,7 +122,7 @@ const IdeaEditor = ({ ideaId, setIdeaId }: Props) => {
     }));
   };
 
-  const setIdeaFormData = (ideaFormData: Record<string, any>) => {
+  const setIdeaFormData = (ideaFormData: FormValues) => {
     if (!ideaId) return;
 
     setIdeaFormStatePerIdea((ideaFormStatePerIdea) => ({

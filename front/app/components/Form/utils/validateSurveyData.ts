@@ -1,6 +1,6 @@
 import { JsonSchema7 } from '@jsonforms/core';
 
-import { PageType } from '../typings';
+import { FormValues, PageType } from '../typings';
 
 import customAjv from './customAjv';
 import getKey from './getKey';
@@ -8,7 +8,7 @@ import getKey from './getKey';
 const validateSurveyData = (
   schema: JsonSchema7,
   userPagePath: PageType[],
-  data: Record<string, any>
+  data: FormValues
 ) => {
   const newSchema = removeUnseenQuestionsFromSchema(schema, userPagePath);
 
@@ -41,7 +41,7 @@ const removeUnseenQuestionsFromSchema = (
 
 const removeUnseenQuestionsFromData = (
   userPagePath: PageType[],
-  data: Record<string, any>
+  data: FormValues
 ) => {
   const newData = {};
 
