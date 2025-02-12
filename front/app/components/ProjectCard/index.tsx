@@ -28,7 +28,6 @@ import useReport from 'api/reports/useReport';
 import useLocalize from 'hooks/useLocalize';
 
 import AvatarBubbles from 'components/AvatarBubbles';
-import FollowUnfollow from 'components/FollowUnfollow';
 import PhaseTimeLeft from 'components/PhaseTimeLeft';
 import { TLayout } from 'components/ProjectAndFolderCards';
 import T from 'components/T';
@@ -352,18 +351,10 @@ export interface InputProps {
   layout?: TLayout;
   hideDescriptionPreview?: boolean;
   className?: string;
-  showFollowButton?: boolean;
 }
 
 const ProjectCard = memo<InputProps>(
-  ({
-    projectId,
-    size,
-    layout,
-    hideDescriptionPreview,
-    className,
-    showFollowButton,
-  }) => {
+  ({ projectId, size, layout, hideDescriptionPreview, className }) => {
     const { ref: progressBarRef } = useInView({
       onChange: (inView) => {
         if (inView) {
@@ -615,22 +606,6 @@ const ProjectCard = memo<InputProps>(
                   />
                 </Box>
               </ContentFooter>
-            </Box>
-          )}
-          {showFollowButton && (
-            <Box display="flex" justifyContent="flex-end" mt="24px">
-              <FollowUnfollow
-                followableType="projects"
-                followableId={project.data.id}
-                followersCount={project.data.attributes.followers_count}
-                followerId={
-                  // TODO: Fix this the next time the file is edited.
-                  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-                  project.data.relationships.user_follower?.data?.id
-                }
-                w="100%"
-                toolTipType="projectOrFolder"
-              />
             </Box>
           )}
         </ProjectContent>

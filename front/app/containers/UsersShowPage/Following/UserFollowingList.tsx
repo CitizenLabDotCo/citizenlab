@@ -81,7 +81,6 @@ const UserFollowingList = ({ value }: Props) => {
                   key={follower.id}
                   projectId={follower.relationships.followable.data.id}
                   size="small"
-                  showFollowButton
                 />
               );
             } else if (
@@ -93,7 +92,6 @@ const UserFollowingList = ({ value }: Props) => {
                   folderId={follower.relationships.followable.data.id}
                   size="small"
                   layout="threecolumns"
-                  showFollowButton
                 />
               );
             }
