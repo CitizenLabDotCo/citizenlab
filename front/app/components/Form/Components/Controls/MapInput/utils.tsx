@@ -108,7 +108,7 @@ export const checkCoordinateErrors = ({
 
 type CheckCoordinateErrorsProps = {
   data: any;
-  inputype: MapInputType;
+  inputType: MapInputType;
   schema: JsonSchema;
   formatMessage: (message: any, values?: any) => string;
 };
