@@ -26,6 +26,7 @@ import { parseRequiredMultilocsData } from './parseRequiredMultilocs';
 import tracks from './tracks';
 import { ApiErrorGetter, AjvErrorGetter } from './typings';
 import customAjv from './utils/customAjv';
+import removeRequiredOtherFields from './utils/removeRequiredOtherFields';
 import sanitizeFormData from './utils/sanitizeFormData';
 import validateSurveyData from './utils/validateSurveyData';
 
@@ -130,7 +131,15 @@ const Form = memo(
       let response;
 
       const dataIsValid = isSurvey
-        ? validateSurveyData(schema, userPagePath, submissionData)
+        ? validateSurveyData(
+            {
+              ...schema,
+              // TODO fix this properly
+              required: removeRequiredOtherFields(schema.required || []),
+            },
+            userPagePath,
+            submissionData
+          )
         : customAjv.validate(schema, submissionData);
 
       if (dataIsValid) {
