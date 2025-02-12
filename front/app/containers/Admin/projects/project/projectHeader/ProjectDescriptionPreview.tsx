@@ -23,12 +23,12 @@ const EditDescriptionLinkContent = () => {
   const { formatMessage } = useIntl();
 
   return (
-    <Text color="coolGrey600" m="0px" fontSize="s" p="0">
-      <Box display="flex" alignItems="center" gap="4px">
-        <Icon name="edit" fill={colors.coolGrey600} width="16px" />
+    <Box display="flex" alignItems="center" gap="4px">
+      <Icon name="edit" fill={colors.coolGrey600} width="16px" />
+      <Text color="coolGrey600" m="0px" fontSize="s" p="0">
         {formatMessage(messages.editDescription)}
-      </Box>
-    </Text>
+      </Text>
+    </Box>
   );
 };
 

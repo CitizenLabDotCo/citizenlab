@@ -188,6 +188,7 @@ class Phase < ApplicationRecord
     validates :native_survey_method, presence: true, inclusion: { in: NATIVE_SURVEY_METHODS }
     validates :native_survey_title_multiloc, presence: true, multiloc: { presence: true }
     validates :native_survey_button_multiloc, presence: true, multiloc: { presence: true }
+    validate :validate_community_monitor_phase
   end
 
   scope :published, lambda {
@@ -342,6 +343,22 @@ class Phase < ApplicationRecord
 
       errors.add(:base, :has_other_overlapping_phases,
         message: 'has other phases which overlap in start and end date')
+    end
+  end
+
+  def validate_community_monitor_phase
+    return unless native_survey_method == 'community_monitor'
+
+    if project.phases.count > 1
+      errors.add(:native_survey_method, :too_many_phases, message: 'community_monitor project can only have one phase')
+    end
+
+    if project.visible_to != 'nobody'
+      errors.add(:native_survey_method, :project_not_hidden, message: 'community_monitor projects must be hidden')
+    end
+
+    if end_at.present?
+      errors.add(:native_survey_method, :has_end_at, message: 'community_monitor projects cannot have an end date')
     end
   end
 
