@@ -64,7 +64,7 @@ const navItems: NavItem[] = [
   {
     name: 'community_monitor',
     link: '/admin/community-monitor',
-    iconName: 'community_monitor',
+    iconName: 'stars',
     message: 'community_monitor',
   },
   {

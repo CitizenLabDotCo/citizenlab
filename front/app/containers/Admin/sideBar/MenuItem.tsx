@@ -109,6 +109,7 @@ const MenuItem = ({ navItem }: Props) => {
 
   // Temporary proposal warning implementation, will be removed together with the navbar item
   // after users have had enough time to get used to the feature
+  const isInitiatives = navItem.name === 'initiatives';
   const isItemDisabled = ['initiatives', 'community_monitor'].includes(
     navItem.name
   );
@@ -139,7 +140,7 @@ const MenuItem = ({ navItem }: Props) => {
         </Box>
       }
       placement="bottom-end"
-      disabled={!(navItem.name === 'initiatives')}
+      disabled={!isInitiatives}
       theme="dark"
     >
       <MenuItemLink
@@ -147,6 +148,10 @@ const MenuItem = ({ navItem }: Props) => {
         className={`intercom-admin-menu-item-${navItem.name} ${
           isItemDisabled ? 'disabled' : ''
         }`}
+        // TEMPORARY - Will be removed after final tandem release in Q1 2025.
+        style={{
+          opacity: navItem.name === 'community_monitor' ? 1 : undefined,
+        }}
       >
         <>
           <Box
@@ -156,9 +161,18 @@ const MenuItem = ({ navItem }: Props) => {
             justifyContent="center"
             className={navItem.iconName}
           >
-            <Icon name={navItem.iconName} />
+            <Icon
+              // TEMPORARY - Fill will be removed after final tandem release in Q1 2025.
+              fill={navItem.name === 'community_monitor' ? 'yellow' : undefined}
+              name={navItem.iconName}
+            />
           </Box>
-          <Text>
+          <Text
+            // TEMPORARY - Will be removed after final tandem release in Q1 2025.
+            style={{
+              opacity: navItem.name === 'community_monitor' ? 0.5 : undefined,
+            }}
+          >
             <FormattedMessage {...messages[navItem.message]} />
             {!!navItem.count && <CountBadge count={navItem.count} />}
           </Text>
