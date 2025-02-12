@@ -12,7 +12,6 @@ import usePhase from 'api/phases/usePhase';
 import useLocalize from 'hooks/useLocalize';
 
 import { IMAGES_LOADED_EVENT } from 'components/admin/ContentBuilder/constants';
-import FollowUnfollow from 'components/FollowUnfollow';
 
 import clHistory from 'utils/cl-router/history';
 import Link from 'utils/cl-router/Link';
@@ -34,18 +33,7 @@ export interface Props {
   hideImage?: boolean;
   hideImagePlaceholder?: boolean;
   hideIdeaStatus?: boolean;
-  showFollowButton?: boolean;
 }
-
-const IdeaLoading = (props: Props) => {
-  const { data: idea } = useIdeaById(props.ideaId);
-
-  if (idea) {
-    return <IdeaCard idea={idea} {...props} />;
-  }
-
-  return null;
-};
 
 interface IdeaCardProps extends Props {
   idea: IIdea;
@@ -57,7 +45,6 @@ const IdeaCard = ({
   hideImage = false,
   hideImagePlaceholder = false,
   hideIdeaStatus = false,
-  showFollowButton = false,
 }: IdeaCardProps) => {
   const { data: ideaImage } = useIdeaImage(
     idea.data.id,
@@ -118,8 +105,6 @@ const IdeaCard = ({
     });
   };
 
-  const innerHeight = showFollowButton ? '192px' : '162px';
-
   return (
     <Container
       className={`e2e-card e2e-idea-card`}
@@ -130,7 +115,6 @@ const IdeaCard = ({
         phase={phaseData}
         image={image}
         hideImagePlaceholder={hideImagePlaceholder}
-        innerHeight={innerHeight}
       />
 
       <Box
@@ -172,24 +156,18 @@ const IdeaCard = ({
             hideIdeaStatus={hideIdeaStatus}
             participationMethod={participationMethod}
           />
-          {showFollowButton && (
-            <Box mt="16px" display="flex" justifyContent="flex-end">
-              <FollowUnfollow
-                followableType="ideas"
-                followableId={idea.data.id}
-                followersCount={idea.data.attributes.followers_count}
-                // TODO: Fix this the next time the file is edited.
-                // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-                followerId={idea.data.relationships.user_follower?.data?.id}
-                w="auto"
-                toolTipType="input"
-              />
-            </Box>
-          )}
         </Box>
       </Box>
     </Container>
   );
 };
 
-export default IdeaLoading;
+export default (props: Props) => {
+  const { data: idea } = useIdeaById(props.ideaId);
+
+  if (idea) {
+    return <IdeaCard idea={idea} {...props} />;
+  }
+
+  return null;
+};
