@@ -314,6 +314,9 @@ const CLSurveyPageLayout = memo(
       (page) => page === currentPage
     );
 
+    const showSubmissionReference =
+      ideaId && pageVariant === 'after-submission' && showIdeaId;
+
     return (
       <>
         <Box
@@ -380,7 +383,7 @@ const CLSurveyPageLayout = memo(
               height="100%"
               mt={isMapPage && isMobileOrSmaller ? '20px' : undefined}
             >
-              <Box h="100%" display="flex">
+              <Box h="100%" display="flex" flexDirection="column">
                 <Box p="24px" w="100%">
                   <Box display="flex" flexDirection="column">
                     {allowAnonymousPosting && (
@@ -440,8 +443,15 @@ const CLSurveyPageLayout = memo(
                   </Box>
                 </Box>
               </Box>
-              {ideaId && pageVariant === 'after-submission' && showIdeaId && (
-                <SubmissionReference ideaId={ideaId} />
+              {showSubmissionReference && (
+                <Box
+                  display="flex"
+                  flexDirection="column"
+                  alignItems="center"
+                  flex="1"
+                >
+                  <SubmissionReference ideaId={ideaId} />
+                </Box>
               )}
             </Box>
           </Box>
