@@ -56,7 +56,7 @@ describe('getPageSchema', () => {
       required: [],
     };
 
-    expect(getPageSchema(schema, pageCategorization as any)).toEqual(
+    expect(getPageSchema(schema, pageCategorization as any, {})).toEqual(
       outputSchema
     );
   });
@@ -224,7 +224,7 @@ describe('getPageSchema', () => {
       required: ['short_answer', 'multiple_choice', 'areas', 'number'],
     };
 
-    const pageSchema = getPageSchema(schema, pageCategorization as any);
+    const pageSchema = getPageSchema(schema, pageCategorization as any, {});
     expect(pageSchema).toEqual(expectedPageSchema);
   });
 });
