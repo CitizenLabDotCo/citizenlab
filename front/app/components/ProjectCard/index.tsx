@@ -388,7 +388,7 @@ const ProjectCard = memo<InputProps>(
     const { data: report } = useReport(
       phase?.data.relationships.report?.data?.id
     );
-    const hasPublicReport = report?.data.attributes.visible || false;
+    const hasPublicReport = !!report?.data.attributes.visible;
 
     const projectImage = imageId ? _projectImage : undefined;
 
