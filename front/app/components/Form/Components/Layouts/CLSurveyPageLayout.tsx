@@ -480,9 +480,7 @@ const CLSurveyPageLayout = memo(
                     alignItems="center"
                     flex="1"
                   >
-                    <SubmissionReference
-                      ideaId={'akjshajkhsjkahskjahsjkahsjkahska'}
-                    />
+                    <SubmissionReference ideaId={ideaId} />
                   </Box>
                 )}
               </Box>
