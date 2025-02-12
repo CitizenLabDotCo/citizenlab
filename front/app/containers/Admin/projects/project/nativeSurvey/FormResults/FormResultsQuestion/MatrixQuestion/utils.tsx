@@ -39,14 +39,11 @@ export type LinearScaleMultilocs = {
 
 // FUNCTIONS
 
-// getTenantColourByPercentage
-// Description: Return tenantPrimary colour and alpha based on a percentage
-export const getTenantColourByPercentage = (
-  percentage: number,
-  tenantPrimary: string
-) => {
-  // Return tenantPrimary colour and alpha based on a percentage
-  return hexToRGBA(tenantPrimary, percentage === 0 ? 0.05 : percentage / 100);
+// getPrimaryColourByPercentage
+// Description: Return primary colour and alpha based on a percentage
+export const getPrimaryColourByPercentage = (percentage: number) => {
+  // Return primary colour and alpha based on a percentage
+  return hexToRGBA(colors.primary, percentage === 0 ? 0.05 : percentage / 100);
 };
 
 // getPercentageTextBorder

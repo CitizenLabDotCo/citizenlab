@@ -656,6 +656,7 @@
   "app.components.form.controls.valueOutOfTotalWithMaxExplanation": "crwdns2829811:0{value}crwdnd2829811:0{total}crwdnd2829811:0{maxValue}crwdnd2829811:0{maxLabel}crwdne2829811:0",
   "app.components.form.error": "crwdns213920:0crwdne213920:0",
   "app.components.form.locationGoogleUnavailable": "crwdns213922:0crwdne213922:0",
+  "app.components.form.progressBarLabel": "crwdns4156943:0crwdne4156943:0",
   "app.components.form.submit": "crwdns213924:0crwdne213924:0",
   "app.components.form.submitApiError": "crwdns213926:0crwdne213926:0",
   "app.components.form.verifiedBlocked": "crwdns2502688:0crwdne2502688:0",

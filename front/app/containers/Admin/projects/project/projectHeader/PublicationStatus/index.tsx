@@ -144,7 +144,12 @@ const PublicationStatus = ({ project }: { project: IProject }) => {
             fill={publicationStatusIconColor}
             width="20px"
           />
-          <Text color="coolGrey600" m="0px">
+          <Text
+            color="coolGrey600"
+            m="0px"
+            // Without white-space nowrap, the button will increase its height when the text is long
+            whiteSpace="nowrap"
+          >
             {formatMessage(statusMessage)}
           </Text>
         </Box>

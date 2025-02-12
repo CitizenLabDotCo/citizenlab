@@ -15,7 +15,6 @@ import {
   createEsriGeoJsonLayers,
   goToLayerExtent,
 } from 'components/EsriMap/utils';
-import { FormData } from 'components/Form/typings';
 
 import { useIntl } from 'utils/cl-intl';
 
@@ -24,7 +23,7 @@ import { setLayerRenderer } from '../../utils';
 
 type Props = {
   inputId: string;
-  file: FormData;
+  file: Record<string, any>;
 };
 
 const ShapefilePreview = ({ inputId, file }: Props) => {
@@ -38,7 +37,7 @@ const ShapefilePreview = ({ inputId, file }: Props) => {
 
   // Get Shapefile URL
   const fileUrl = inputFiles?.data.find(
-    (inputFile) => inputFile.id === file?.id
+    (inputFile) => inputFile.id === file.id
     // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   )?.attributes?.file?.url;
 
