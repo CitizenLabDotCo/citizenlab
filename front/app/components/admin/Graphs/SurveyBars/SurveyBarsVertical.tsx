@@ -7,7 +7,6 @@ import {
   Text,
   Tooltip,
 } from '@citizenlab/cl2-component-library';
-import { useTheme } from 'styled-components';
 
 import {
   ResultUngrouped,
@@ -44,7 +43,6 @@ const SurveyBarsVertical = ({
 }: Props) => {
   const localize = useLocalize();
   const { formatMessage } = useIntl();
-  const theme = useTheme();
 
   const answers = useMemo(() => {
     return parseQuestionResult(
