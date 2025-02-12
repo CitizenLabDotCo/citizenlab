@@ -23,11 +23,9 @@ module FlagInappropriateContent
       classification = check_toxicity(flaggable, attributes:)
       if classification
         flag_service.introduce_flag! flaggable, classification
-      else
-        if (flag = flaggable.inappropriate_content_flag)
-          flag.update! toxicity_label: nil
-          flag_service.maybe_delete! flag
-        end
+      elsif (flag = flaggable.inappropriate_content_flag)
+        flag.update! toxicity_label: nil
+        flag_service.maybe_delete! flag
       end
     end
 
