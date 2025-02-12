@@ -103,7 +103,7 @@ describe('Follow idea', () => {
     cy.get('[data-cy="e2e-follow-button"]').should('exist');
   });
 
-  it('shows a follow option to a new user and shows the idea in the activity following page after following where it can be unfollowed', () => {
+  it('shows a follow option and an unfollow option after following', () => {
     cy.setLoginCookie(email, password);
 
     cy.visit(`/ideas/${ideaSlug2}`);
