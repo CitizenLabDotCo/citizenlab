@@ -20,7 +20,7 @@ module FlagInappropriateContent
 
       flag_service = InappropriateContentFlagService.new
 
-      classification = check_toxicity(flaggable, attributes: [])
+      classification = check_toxicity(flaggable, attributes:)
       if classification
         flag_service.introduce_flag! flaggable, classification
       else

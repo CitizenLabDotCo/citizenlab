@@ -59,7 +59,11 @@ class AuthoringAssistanceService
   end
 
   def toxicity_response
-    FlagInappropriateContent::ToxicityDetectionService.new.check_toxicity(authoring_assistance_response.idea) || {}
+    result = FlagInappropriateContent::ToxicityDetectionService.new.check_toxicity(
+      authoring_assistance_response.idea,
+      attributes: %i[title_multiloc body_multiloc location_description]
+    )
+    result || {}
   end
 
   def custom_free_prompt_response
