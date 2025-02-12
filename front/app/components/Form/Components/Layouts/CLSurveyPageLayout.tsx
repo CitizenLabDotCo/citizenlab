@@ -112,6 +112,8 @@ const CLSurveyPageLayout = memo(
 
     const pageVariant = getPageVariant(currentStep, uiPages.length);
     const hasPreviousPage = currentStep !== 0;
+    const showSubmissionReference =
+      ideaId && pageVariant === 'after-submission' && showIdeaIdInModal;
 
     const draggableDivRef = useRef<HTMLDivElement>(null);
     const dragDividerRef = useRef<HTMLDivElement>(null);
@@ -402,7 +404,7 @@ const CLSurveyPageLayout = memo(
               height="100%"
               mt={isMapPage && isMobileOrSmaller ? '20px' : undefined}
             >
-              <Box h="100%" display="flex">
+              <Box h="100%" display="flex" flexDirection="column">
                 {uiPages.map((page, index) => {
                   const pageElements = extractElementsByOtherOptionLogic(
                     page,
@@ -471,10 +473,19 @@ const CLSurveyPageLayout = memo(
                     )
                   );
                 })}
+                {showSubmissionReference && (
+                  <Box
+                    display="flex"
+                    flexDirection="column"
+                    alignItems="center"
+                    flex="1"
+                  >
+                    <SubmissionReference
+                      ideaId={'akjshajkhsjkahskjahsjkahsjkahska'}
+                    />
+                  </Box>
+                )}
               </Box>
-              {ideaId &&
-                pageVariant === 'after-submission' &&
-                showIdeaIdInModal && <SubmissionReference ideaId={ideaId} />}
             </Box>
           </Box>
         </Box>
