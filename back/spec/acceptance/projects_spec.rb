@@ -1699,10 +1699,19 @@ resource 'Projects' do
     context 'hidden community monitor project does not exist' do
       example 'Create and get hidden community monitor project' do
         SettingsService.new.activate_feature! 'community_monitor'
+
         do_request
         assert_status 200
-        expect(Project.unscoped.first.visible_to).to eq 'nobody'
-        expect(Phase.first.native_survey_method).to eq 'community_monitor'
+
+        created_project = Project.unscoped.first
+        created_phase = Phase.first
+        expect(created_project.visible_to).to eq 'nobody'
+        expect(created_project.title_multiloc['en']).to eq 'Community monitor'
+        expect(created_phase.native_survey_method).to eq 'community_monitor'
+        expect(created_phase.title_multiloc['en']).to eq 'Community monitor'
+
+        settings = AppConfiguration.instance.settings
+        expect(settings['community_monitor']['project_id']).to eq created_project.id
       end
 
       example 'Error: Hidden project does not get created without feature flag' do

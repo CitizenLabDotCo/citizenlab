@@ -321,28 +321,28 @@ class WebApi::V1::ProjectsController < ApplicationController
     settings = AppConfiguration.instance.settings
     settings.dig('community_monitor', 'enabled') || raise(ActiveRecord::RecordNotFound)
 
-    # Find the community monitor project
+    # Find the community monitor project from config
     project = nil
     project_id = settings.dig('community_monitor', 'project_id')
     project = Project.unscoped.find(project_id) if project_id
 
     # Create the project if it doesn't exist
     unless project
-      # TODO: JS Get multilocs from yml
+      multiloc_service = MultilocService.new
       project = Project.create!(
-        title_multiloc: { 'en' => 'Community Monitor' },
+        title_multiloc: multiloc_service.i18n_to_multiloc('phases.community_monitor_title'),
         visible_to: 'nobody',
         internal_role: 'community_monitor'
       )
       Phase.create!(
-        title_multiloc: { 'en' => 'Community Monitor' },
+        title_multiloc: multiloc_service.i18n_to_multiloc('phases.community_monitor_title'),
         project: project,
         participation_method: 'native_survey',
         start_at: Time.now,
         campaigns_settings: { project_phase_started: true }, # TODO: Is this correct?
         native_survey_method: 'community_monitor',
-        native_survey_title_multiloc: { 'en' => 'Community Monitor' },
-        native_survey_button_multiloc: { 'en' => 'Take survey' }
+        native_survey_title_multiloc: multiloc_service.i18n_to_multiloc('phases.community_monitor_title'),
+        native_survey_button_multiloc: multiloc_service.i18n_to_multiloc('phases.native_survey_button')
       )
 
       # Set the ID in the settings

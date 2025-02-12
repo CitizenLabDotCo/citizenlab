@@ -5,6 +5,7 @@ module NativeSurveyMethod
     def allowed_extra_field_input_types
       %w[page text linear_scale rating select multiselect]
     end
+
     def default_fields(custom_form)
       return [] if custom_form.persisted?
 
@@ -42,7 +43,7 @@ module NativeSurveyMethod
           id: SecureRandom.uuid,
           key: 'test',
           input_type: 'text',
-          title_multiloc: {  en: 'Test' }
+          title_multiloc: { en: 'Test' }
         ),
         CustomField.new(
           id: SecureRandom.uuid,
@@ -55,7 +56,5 @@ module NativeSurveyMethod
         )
       ]
     end
-
-
   end
 end
