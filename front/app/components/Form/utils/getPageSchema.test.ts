@@ -1,7 +1,7 @@
 import getPageSchema from './getPageSchema';
 
 describe('getPageSchema', () => {
-  it('works', () => {
+  it('returns only the schema values (required and properties) that pertain to the pageCategorization passed in', () => {
     const pageCategorization = {
       type: 'Page',
       options: {
@@ -60,9 +60,7 @@ describe('getPageSchema', () => {
       outputSchema
     );
   });
-});
 
-describe('getPageSchema (old tests)', () => {
   it('should return the page schema from a schema with many pages', () => {
     const schema = {
       type: 'object',
