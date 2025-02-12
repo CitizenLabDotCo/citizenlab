@@ -381,6 +381,7 @@
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.approvedBy": "تمت الموافقة عليه من قبل {name}",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.archived": "مؤرشف",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.draft": "مسودة",
+  "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.editDescription": "تعديل الوصف",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.everyone": "الجميع",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.groups": "مجموعات",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.offlineVoters": "الناخبون غير المتصلين بالإنترنت",
