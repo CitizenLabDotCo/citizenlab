@@ -125,6 +125,11 @@ const CLSurveyPageLayout = memo(
     // Map-related variables
     const { data: projectMapConfig } = useProjectMapConfig(project?.data.id);
 
+    console.log({
+      userPagePath,
+      formStateCoreData: formState.core?.data,
+    });
+
     const visiblePages = useMemo(() => {
       return getVisiblePages(
         pageTypeElements,
@@ -216,11 +221,15 @@ const CLSurveyPageLayout = memo(
         sanitizeFormData(data)
       );
 
+      console.log({ isValid, schema, currentPage, data });
+
       if (!isValid) {
         setShowAllErrors?.(true);
         setScrollToError(true);
         return;
       }
+
+      console.log({ pageVariant });
 
       if (pageVariant === 'after-submission') {
         clHistory.push({ pathname: `/projects/${slug}` });
@@ -241,6 +250,8 @@ const CLSurveyPageLayout = memo(
       scrollToTop();
 
       const nextPage = visiblePages[currentStepNumber + 1];
+      console.log({ nextPage, visiblePages });
+
       setUserPagePath((userPagePath) => [...userPagePath, nextPage]);
 
       setIsLoading(false);
