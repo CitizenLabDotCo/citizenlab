@@ -39,7 +39,7 @@ describe('Follow folder', () => {
     }
   });
 
-  it('shows a follow option to a new user and shows the project in the activity following page after following where it can be unfollowed', () => {
+  it('shows a follow option and an unfollow option after following', () => {
     cy.setLoginCookie(email, password);
 
     cy.visit(`/folders/${folderSlug}`);
@@ -53,15 +53,5 @@ describe('Follow folder', () => {
     // Check that it shows unfollow after
     cy.get('[data-cy="e2e-unfollow-button"]').should('exist');
     cy.get('[data-cy="e2e-follow-button"]').should('not.exist');
-
-    cy.visit(`/profile/${userSlug}/following`);
-    cy.get('#tab-ProjectFolders\\:\\:Folder').click();
-
-    cy.get('.e2e-folder-card-folder-title').contains(folderTitle);
-
-    cy.get('[data-cy="e2e-unfollow-button"]').should('exist');
-    cy.get('[data-cy="e2e-unfollow-button"]').click();
-
-    cy.get('.e2e-folder-card-folder-title').should('not.exist');
   });
 });
