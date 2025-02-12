@@ -8,6 +8,11 @@ const removeRequiredOtherFields = (schema: JsonSchema, data: FormValues) => {
     required: (schema.required ?? []).filter((fieldKey) => {
       if (fieldKey.endsWith('_other')) {
         const otherFieldKey = fieldKey.split('_other')[0];
+
+        if (Array.isArray(data[otherFieldKey])) {
+          return data[otherFieldKey].includes('other');
+        }
+
         return data[otherFieldKey] === 'other';
       }
 

@@ -146,6 +146,7 @@ describe('Form builder multiple choice choose multiple component', () => {
 
     // Save survey response
     cy.get('[data-cy="e2e-submit-form"]').should('exist');
+    cy.wait(1000);
     cy.get('[data-cy="e2e-submit-form"]').click();
 
     // Check that we're on final page and return to project
