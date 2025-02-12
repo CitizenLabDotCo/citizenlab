@@ -23,6 +23,7 @@ import useProjectImage from 'api/project_images/useProjectImage';
 import { CARD_IMAGE_ASPECT_RATIO } from 'api/project_images/useProjectImages';
 import useProjectById from 'api/projects/useProjectById';
 import { getProjectUrl } from 'api/projects/utils';
+import useReport from 'api/reports/useReport';
 
 import useLocalize from 'hooks/useLocalize';
 
@@ -379,14 +380,18 @@ const ProjectCard = memo<InputProps>(
       projectId,
       imageId,
     });
-
-    const projectImage = imageId ? _projectImage : undefined;
-
     const currentPhaseId =
       // TODO: Fix this the next time the file is edited.
       // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       project?.data?.relationships?.current_phase?.data?.id ?? null;
     const { data: phase } = usePhase(currentPhaseId);
+    const { data: report } = useReport(
+      phase?.data.relationships.report?.data?.id
+    );
+    const hasPublicReport = !!report?.data.attributes.visible;
+
+    const projectImage = imageId ? _projectImage : undefined;
+
     const localize = useLocalize();
     const { formatMessage } = useIntl();
 
@@ -471,6 +476,7 @@ const ProjectCard = memo<InputProps>(
           phase: phase.data,
           formatMessage,
           localize,
+          hasPublicReport,
         })
       : undefined;
 
