@@ -107,8 +107,8 @@ export const checkCoordinateErrors = ({
 };
 
 type CheckCoordinateErrorsProps = {
-  data: Record<string, any>;
-  inputType: MapInputType;
+  data: any;
+  inputype: MapInputType;
   schema: JsonSchema;
   formatMessage: (message: any, values?: any) => string;
 };
@@ -144,7 +144,7 @@ export const updateDataAndDisplay = ({
 };
 
 type UpdateDataAndDisplayProps = {
-  data: Record<string, any>;
+  data: any;
   mapView: MapView | null | undefined;
   inputType: MapInputType;
   locale: string;
