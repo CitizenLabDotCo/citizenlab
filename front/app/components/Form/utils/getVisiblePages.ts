@@ -35,19 +35,12 @@ const getVisiblePages = (
 
 export default getVisiblePages;
 
-const generateQuestionsSeenSet = (
-  userPagePathIncludingCurrentPage: PageType[]
-) => {
-  const questionsSeenSet = new Set<string>();
-
-  userPagePathIncludingCurrentPage.forEach((page) => {
-    page.elements.forEach((element) => {
-      const key = getKey(element.scope);
-      questionsSeenSet.add(key);
-    });
-  });
-
-  return questionsSeenSet;
+const generateQuestionsSeenSet = (userPagePath: PageType[]) => {
+  return new Set(
+    userPagePath.flatMap((page) =>
+      page.elements.map((element) => getKey(element.scope))
+    )
+  );
 };
 
 const isVisible = (

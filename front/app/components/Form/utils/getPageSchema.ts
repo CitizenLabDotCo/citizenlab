@@ -2,6 +2,9 @@ import { JsonSchema } from '@jsonforms/core';
 
 import { PageType } from '../typings';
 
+// This function is used to extract a subset of a JSON schema based on a
+// specific page. It filters the schema's properties and required fields
+// to include only those relevant to a given page.
 const getPageSchema = (
   schema: JsonSchema,
   pageCategorization: PageType

@@ -25,15 +25,15 @@ const extractElementsByOtherOptionLogic = (
             ? !data[field.parentFieldKey].includes('other')
             : data[field.parentFieldKey] !== 'other'))
       );
-    } else {
-      return (
-        !field ||
-        (field.parentFieldKey &&
-          (Array.isArray(data[field.parentFieldKey])
-            ? data[field.parentFieldKey].includes('other')
-            : data[field.parentFieldKey] === 'other'))
-      );
     }
+
+    return (
+      !field ||
+      (field.parentFieldKey &&
+        (Array.isArray(data[field.parentFieldKey])
+          ? data[field.parentFieldKey].includes('other')
+          : data[field.parentFieldKey] === 'other'))
+    );
   });
 };
 
