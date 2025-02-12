@@ -59,9 +59,8 @@ describe('Form builder multiple choice choose multiple component', () => {
   });
 
   it('allows submitting when there is an other option but it is not filled out', () => {
-    const otherText = 'Other';
     const questionTitle = randomString();
-    const otherAnswer = 'Walking';
+
     cy.visit(
       `admin/projects/${projectId}/phases/${phaseId}/native-survey/edit`
     );
