@@ -27,7 +27,7 @@ class WebApi::V1::AuthoringAssistanceResponsesController < ApplicationController
       return
     end
 
-    # TODO: Run prompts
+    AuthoringAssistanceService.new(@response).analyze!
 
     SideFxAuthoringAssistanceResponseService.new.after_create @response, current_user
     render json: WebApi::V1::AuthoringAssistanceResponseSerializer.new(

@@ -20,21 +20,22 @@ module FlagInappropriateContent
 
       flag_service = InappropriateContentFlagService.new
 
-      texts = extract_texts flaggable, attributes
-      if texts.blank?
+      classification = check_toxicity(flaggable, attributes: [])
+      if classification
+        flag_service.introduce_flag! flaggable, classification
+      else
         if (flag = flaggable.inappropriate_content_flag)
           flag.update! toxicity_label: nil
           flag_service.maybe_delete! flag
         end
-        return
       end
-      toxicity_attrs = texts.filter_map { |text| classify_toxicity(text) }
-      if toxicity_attrs.present?
-        flag_service.introduce_flag! flaggable, toxicity_attrs.first
-      elsif (flag = flaggable.inappropriate_content_flag)
-        flag.update! toxicity_label: nil
-        flag_service.maybe_delete! flag
-      end
+    end
+
+    def check_toxicity(flaggable, attributes: [])
+      texts = extract_texts flaggable, attributes
+      return if texts.blank?
+
+      texts.filter_map { |text| classify_toxicity(text) }.first
     end
 
     private
