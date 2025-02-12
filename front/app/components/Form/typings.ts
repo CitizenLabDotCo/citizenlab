@@ -78,4 +78,4 @@ export type ExtendedUISchema = {
 } & UISchemaElement &
   Scopable;
 
-export type FormData = Record<string, any>;
+export type FormValues = Record<string, any>;

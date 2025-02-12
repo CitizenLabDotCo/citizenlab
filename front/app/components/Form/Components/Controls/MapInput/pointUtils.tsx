@@ -50,7 +50,7 @@ export const updatePointDataAndDisplay = ({
 };
 
 type UpdatePointDataAndDisplayProps = {
-  data: Record<string, any>;
+  data: any;
   locale: string;
   mapView: MapView | null | undefined;
   setAddress?: (address: Option) => void;

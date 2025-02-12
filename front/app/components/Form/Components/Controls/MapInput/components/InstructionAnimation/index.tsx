@@ -9,7 +9,7 @@ import { MapInputType } from '../../utils';
 type InstructionAnimationProps = {
   instructionRef: React.RefObject<HTMLDivElement>;
   inputType: MapInputType;
-  data?: Record<string, any>;
+  data?: any;
 };
 
 const StyledBox = styled(Box)<{ tenantColor: string }>`
