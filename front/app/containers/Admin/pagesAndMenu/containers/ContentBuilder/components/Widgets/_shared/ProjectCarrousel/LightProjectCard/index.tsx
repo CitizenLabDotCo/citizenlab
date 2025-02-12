@@ -44,7 +44,7 @@ const LightProjectCard = ({ project, ml, mr, onKeyDown }: Props) => {
   const { data: report } = useReport(
     phase?.data.relationships.report?.data?.id
   );
-  const hasPublicReport = report?.data.attributes.visible || false;
+  const hasPublicReport = !!report?.data.attributes.visible;
 
   const title = localize(project.attributes.title_multiloc);
   const imageVersions = image?.data.attributes.versions;
