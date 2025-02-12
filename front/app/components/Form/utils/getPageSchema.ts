@@ -9,8 +9,12 @@ import removeRequiredOtherFields from './removeRequiredOtherFields';
 // to include only those relevant to a given page.
 const getPageSchema = (
   schema: JsonSchema,
-  pageCategorization: PageType
+  pageCategorization: PageType | undefined,
+  data: any
 ): JsonSchema => {
+  if (!pageCategorization) {
+    return schema;
+  }
   const currentPageElementNames = pageCategorization.elements.map(
     (uiSchemaElement) => uiSchemaElement.scope.split('/').pop()
   );
@@ -29,7 +33,7 @@ const getPageSchema = (
   return {
     ...schema,
     // TODO: fix this properly
-    required: removeRequiredOtherFields(required),
+    required: removeRequiredOtherFields(required, pageCategorization, data),
     properties,
   };
 };

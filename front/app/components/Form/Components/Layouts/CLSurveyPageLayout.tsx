@@ -212,7 +212,7 @@ const CLSurveyPageLayout = memo(
       if (!onSubmit) return;
 
       const isValid = customAjv.validate(
-        getPageSchema(schema, currentPage),
+        getPageSchema(schema, currentPage, data),
         sanitizeFormData(data)
       );
 
