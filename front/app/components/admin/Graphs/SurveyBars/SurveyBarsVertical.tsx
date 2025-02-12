@@ -1,6 +1,13 @@
 import React, { useMemo } from 'react';
 
-import { Box, Image, Text, Tooltip } from '@citizenlab/cl2-component-library';
+import {
+  Box,
+  Icon,
+  Image,
+  Text,
+  Tooltip,
+} from '@citizenlab/cl2-component-library';
+import { useTheme } from 'styled-components';
 
 import {
   ResultUngrouped,
@@ -37,6 +44,7 @@ const SurveyBarsVertical = ({
 }: Props) => {
   const localize = useLocalize();
   const { formatMessage } = useIntl();
+  const theme = useTheme();
 
   const answers = useMemo(() => {
     return parseQuestionResult(
@@ -141,7 +149,23 @@ const SurveyBarsVertical = ({
                       <VerticalBar key={idx} {...bar} width={barWidth} />
                     ))}
                   </Box>
-                  <Box mt="6px" maxWidth={`${columnWidth}px`} overflow="hidden">
+                  <Box
+                    mt="6px"
+                    maxWidth={`${columnWidth}px`}
+                    overflow="hidden"
+                    display="flex"
+                    flexDirection="column"
+                    justifyContent="center"
+                    alignItems="center"
+                  >
+                    {questionResult.inputType === 'rating' && (
+                      <Icon
+                        name="ratingFilled"
+                        height="40px"
+                        width="40px"
+                        fill={colorScheme[0]}
+                      />
+                    )}
                     {label.length > 6 ? (
                       <Tooltip theme="dark" placement="bottom" content={label}>
                         <Text
