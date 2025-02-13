@@ -30,6 +30,7 @@ import useFeatureFlag from 'hooks/useFeatureFlag';
 import { INewProjectCreatedEvent } from 'containers/Admin/projects/new';
 
 import ImageCropperContainer from 'components/admin/ImageCropper/Container';
+import Highlighter from 'components/admin/InternalComments/InternalComment/Highlighter';
 import HeaderBgUploader from 'components/admin/ProjectableHeaderBgUploader';
 import {
   Section,
@@ -49,6 +50,8 @@ import { convertUrlToUploadFile, isUploadFile } from 'utils/fileUtils';
 import { isNilOrError } from 'utils/helperUtils';
 import { defaultAdminCardPadding } from 'utils/styleConstants';
 import { validateSlug } from 'utils/textUtils';
+
+import { folderHighlighterId } from '../projectHeader/LinkToFolderSettings';
 
 import AttachmentsDropzone from './components/AttachmentsDropzone';
 import GeographicAreaInputs from './components/GeographicAreaInputs';
@@ -569,11 +572,15 @@ const AdminProjectsProjectGeneral = () => {
           />
 
           {isProjectFoldersEnabled && (
-            <ProjectFolderSelect
-              projectAttrs={projectAttrs}
-              onProjectAttributesDiffChange={handleProjectAttributeDiffOnChange}
-              isNewProject={!projectId}
-            />
+            <Highlighter id={folderHighlighterId}>
+              <ProjectFolderSelect
+                projectAttrs={projectAttrs}
+                onProjectAttributesDiffChange={
+                  handleProjectAttributeDiffOnChange
+                }
+                isNewProject={!projectId}
+              />
+            </Highlighter>
           )}
 
           <SectionField>

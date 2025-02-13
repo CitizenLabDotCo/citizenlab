@@ -12,7 +12,7 @@ interface Props {
   folderId: string;
   projectId: string;
 }
-
+export const folderHighlighterId = 'folder';
 const LinkToFolderSettings = ({ folderId, projectId }: Props) => {
   const { data: projectFolder } = useProjectFolderById(folderId);
   const localize = useLocalize();
@@ -20,7 +20,12 @@ const LinkToFolderSettings = ({ folderId, projectId }: Props) => {
   if (!projectFolder) return null;
 
   return (
-    <Link to={`/admin/projects/${projectId}/settings`}>
+    <Link
+      to={
+        // #folder is needed to scroll the folder setting into view
+        `/admin/projects/${projectId}/settings#${folderHighlighterId}`
+      }
+    >
       <Box display="flex" alignItems="center" gap="4px">
         <Icon name="folder-solid" fill={colors.coolGrey600} width="14px" />
         <Text color="coolGrey600" m="0px" fontSize="s" p="0">

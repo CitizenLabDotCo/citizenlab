@@ -150,7 +150,7 @@ const ProjectFolderSelect = ({
     const defaultFolderSelectOptionValue = folderOptions[0].value;
 
     return (
-      <StyledSectionField data-testid="projectFolderSelect">
+      <StyledSectionField data-testid="projectFolderSelect" id="folder">
         <SubSectionTitle>
           <FormattedMessage {...messages.projectFolderSelectTitle} />
           <IconTooltip
