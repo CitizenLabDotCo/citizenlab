@@ -2,7 +2,11 @@ import React from 'react';
 
 import { Accordion, Box, Icon, Title } from '@citizenlab/cl2-component-library';
 
-const Comments = () => {
+interface Props {
+  onChange: (value: boolean) => void;
+}
+
+const Comments = ({ onChange }: Props) => {
   return (
     <Accordion
       title={
@@ -13,6 +17,7 @@ const Comments = () => {
           </Title>
         </Box>
       }
+      onChange={onChange}
     >
       <Box p="32px" h="300px">
         Test!
