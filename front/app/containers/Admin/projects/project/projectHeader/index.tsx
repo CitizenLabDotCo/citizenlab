@@ -93,7 +93,10 @@ const ProjectHeader = ({ projectId }: Props) => {
           >
             {typeof folderId === 'string' && (
               <Box mb="4px">
-                <LinkToFolderSettings folderId={folderId} />
+                <LinkToFolderSettings
+                  folderId={folderId}
+                  projectId={projectId}
+                />
               </Box>
             )}
             <Link
