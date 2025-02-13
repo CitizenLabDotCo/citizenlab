@@ -7,6 +7,7 @@ import usePhaseMini from 'api/phases_mini/usePhaseMini';
 import useProjectImage from 'api/project_images/useProjectImage';
 import { getProjectUrl } from 'api/projects/utils';
 import { MiniProjectData } from 'api/projects_mini/types';
+import useReport from 'api/reports/useReport';
 
 import useLocalize from 'hooks/useLocalize';
 
@@ -40,6 +41,10 @@ const LightProjectCard = ({ project, ml, mr, onKeyDown }: Props) => {
 
   const phaseId = project.relationships.current_phase?.data?.id;
   const { data: phase } = usePhaseMini(phaseId);
+  const { data: report } = useReport(
+    phase?.data.relationships.report?.data?.id
+  );
+  const hasPublicReport = !!report?.data.attributes.visible;
 
   const title = localize(project.attributes.title_multiloc);
   const imageVersions = image?.data.attributes.versions;
@@ -78,6 +83,7 @@ const LightProjectCard = ({ project, ml, mr, onKeyDown }: Props) => {
               actionDescriptors: project.attributes.action_descriptors,
               localize,
               formatMessage,
+              hasPublicReport,
             })}
           </Text>
         )}

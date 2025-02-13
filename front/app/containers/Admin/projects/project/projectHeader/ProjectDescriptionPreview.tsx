@@ -6,12 +6,8 @@ import { RouteType } from 'routes';
 import useProjectDescriptionBuilderLayout from 'api/project_description_builder/useProjectDescriptionBuilderLayout';
 import { IProject } from 'api/projects/types';
 
-import useLocalize from 'hooks/useLocalize';
-
 import { useIntl } from 'utils/cl-intl';
 import Link from 'utils/cl-router/Link';
-import { isEmptyMultiloc } from 'utils/helperUtils';
-import { stripHtml } from 'utils/textUtils';
 
 import messages from './messages';
 
@@ -23,18 +19,17 @@ const EditDescriptionLinkContent = () => {
   const { formatMessage } = useIntl();
 
   return (
-    <Text color="coolGrey600" m="0px" fontSize="s" p="0">
-      <Box display="flex" alignItems="center" gap="4px">
-        <Icon name="edit" fill={colors.coolGrey600} width="16px" />
+    <Box display="flex" alignItems="center" gap="4px">
+      <Icon name="edit" fill={colors.coolGrey600} width="16px" />
+      <Text color="coolGrey600" m="0px" fontSize="s" p="0">
         {formatMessage(messages.editDescription)}
-      </Box>
-    </Text>
+      </Text>
+    </Box>
   );
 };
 
 const ProjectDescriptionPreview = ({ project }: Props) => {
   const projectId = project.data.id;
-  const localize = useLocalize();
   const { data: projectDescriptionBuilderLayout } =
     useProjectDescriptionBuilderLayout(projectId);
   const projectDescriptionBuilderEnabled =
@@ -49,8 +44,6 @@ const ProjectDescriptionPreview = ({ project }: Props) => {
         `/admin/project-description-builder/projects/${projectId}/description` as RouteType
       }
     >
-      {/* Given the wide range of elements the content builder provides, it's hard to show a reliable preview. 
-      Hence we show the "Edit description" text when we use the content builder. */}
       <EditDescriptionLinkContent />
     </Link>
   ) : (
@@ -58,16 +51,7 @@ const ProjectDescriptionPreview = ({ project }: Props) => {
       data-cy="e2e-project-description-preview-link-to-multiloc-settings"
       to={`/admin/projects/${projectId}/settings/description`}
     >
-      {isEmptyMultiloc(project.data.attributes.description_multiloc) ? (
-        <EditDescriptionLinkContent />
-      ) : (
-        <Text color="coolGrey600" m="0px" fontSize="s" p="0">
-          {stripHtml(
-            localize(project.data.attributes.description_multiloc),
-            100
-          )}
-        </Text>
-      )}
+      <EditDescriptionLinkContent />
     </Link>
   );
 };
