@@ -62,7 +62,7 @@ describe('Form builder single choice field', () => {
     cy.get('#e2e-single-select-control').should('exist');
   });
 
-  it('allows submitting when there is an other option but it is not filled out', () => {
+  it('allows submitting when there is an other option that is not selected and is not filled out', () => {
     const questionTitle = randomString();
     cy.visit(
       `admin/projects/${projectId}/phases/${phaseId}/native-survey/edit`
