@@ -1,4 +1,4 @@
-import { JsonSchema7 } from '@jsonforms/core';
+import { JsonSchema } from '@jsonforms/core';
 
 import { FormValues, PageType } from '../typings';
 
@@ -6,7 +6,7 @@ import customAjv from './customAjv';
 import getKey from './getKey';
 
 const validateSurveyData = (
-  schema: JsonSchema7,
+  schema: JsonSchema,
   userPagePath: PageType[],
   data: FormValues
 ) => {
@@ -20,7 +20,7 @@ const validateSurveyData = (
 export default validateSurveyData;
 
 const removeUnseenQuestionsFromSchema = (
-  schema: JsonSchema7,
+  schema: JsonSchema,
   userPagePath: PageType[]
 ) => {
   const seenQuestions = userPagePath.reduce((acc, page) => {

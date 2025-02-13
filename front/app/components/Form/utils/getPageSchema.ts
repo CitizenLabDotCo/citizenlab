@@ -1,6 +1,6 @@
 import { JsonSchema } from '@jsonforms/core';
 
-import { PageType } from '../typings';
+import { FormValues, PageType } from '../typings';
 
 import removeRequiredOtherFields from './removeRequiredOtherFields';
 
@@ -9,7 +9,8 @@ import removeRequiredOtherFields from './removeRequiredOtherFields';
 // to include only those relevant to a given page.
 const getPageSchema = (
   schema: JsonSchema,
-  pageCategorization: PageType
+  pageCategorization: PageType,
+  data: FormValues
 ): JsonSchema => {
   const currentPageElementNames = pageCategorization.elements.map(
     (uiSchemaElement) => uiSchemaElement.scope.split('/').pop()
@@ -26,12 +27,14 @@ const getPageSchema = (
     }
   });
 
-  return {
-    ...schema,
-    // TODO: fix this properly
-    required: removeRequiredOtherFields(required),
-    properties,
-  };
+  return removeRequiredOtherFields(
+    {
+      ...schema,
+      required,
+      properties,
+    },
+    data
+  );
 };
 
 export default getPageSchema;
