@@ -2,16 +2,25 @@ import React from 'react';
 
 import { Accordion, Box, Icon, Title } from '@citizenlab/cl2-component-library';
 
+import useComments from 'api/comments/useComments';
+
 import { useIntl } from 'utils/cl-intl';
 
 import messages from './messages';
 
 interface Props {
+  opened: boolean;
+  ideaId?: string;
   onChange: (value: boolean) => void;
 }
 
-const Comments = ({ onChange }: Props) => {
+const Comments = ({ opened, ideaId, onChange }: Props) => {
   const { formatMessage } = useIntl();
+  const { data: comments } = useComments({
+    ideaId: opened ? ideaId : undefined,
+  });
+
+  console.log({ comments });
 
   return (
     <Accordion

@@ -76,7 +76,11 @@ const Analysis = () => {
                 </Box>
               </AnimatedBox>
               <Box bg={colors.white} mt="6px">
-                <Comments onChange={setCommentsOpened} />
+                <Comments
+                  ideaId={undefined}
+                  opened={commentsOpened}
+                  onChange={setCommentsOpened}
+                />
               </Box>
             </Box>
 
