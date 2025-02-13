@@ -36,7 +36,9 @@ const InputListItem = () => {
   const { mutate: updateAnalysis } = useUpdateAnalysis();
 
   const phaseId = searchParams.get('phase_id');
-  const { data: phase } = usePhase(phaseId);
+  const { data: phase } = usePhase(
+    phaseId === 'undefined' ? undefined : phaseId
+  );
   const { formatMessage } = useIntl();
   const { selectedInputId } = useSelectedInputContext();
   const { analysisId } = useParams() as { analysisId: string };
