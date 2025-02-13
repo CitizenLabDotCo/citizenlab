@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 
 import { Accordion, Box, Icon, Title } from '@citizenlab/cl2-component-library';
 
@@ -25,7 +25,11 @@ const Comments = ({ opened, onChange }: Props) => {
     ideaId: opened ? selectedInputId ?? undefined : undefined,
   });
 
-  const commentsList = comments?.pages.flatMap((page) => page.data);
+  const topLevelComments = useMemo(() => {
+    if (!comments) return;
+    const commentsList = comments.pages.flatMap((page) => page.data);
+    return commentsList.filter((comment) => !comment.relationships.parent.data);
+  }, [comments]);
 
   return (
     <Accordion
@@ -40,7 +44,7 @@ const Comments = ({ opened, onChange }: Props) => {
       onChange={onChange}
     >
       <Box px="12px" overflowY="scroll" h="200px" w="100%">
-        {commentsList?.map((comment) => (
+        {topLevelComments?.map((comment) => (
           <Comment key={comment.id} comment={comment} />
         ))}
       </Box>
