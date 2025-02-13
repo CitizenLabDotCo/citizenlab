@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import { Box, Button, colors } from '@citizenlab/cl2-component-library';
+import styled from 'styled-components';
 
 import { ICommentData } from 'api/comments/types';
 
@@ -17,9 +18,21 @@ interface Props {
   comment: ICommentData;
 }
 
+const StyledBox = styled(Box)<{ showMore: boolean }>`
+  ${({ showMore }) =>
+    showMore
+      ? ''
+      : `
+    height: 52px;
+    mask-image: linear-gradient(white, white 50%, transparent);
+    overflow: hidden;
+  `}
+`;
+
 const Comment = ({ comment }: Props) => {
   const localize = useLocalize();
   const { formatMessage } = useIntl();
+  const [showMore, setShowMore] = useState(false);
 
   const authorId = comment.relationships.author.data?.id;
   const { attributes } = comment;
@@ -40,16 +53,28 @@ const Comment = ({ comment }: Props) => {
           showModeratorStyles={false}
         />
       </Box>
-      <QuillEditedContent textColor={colors.textPrimary}>
-        <div
-          dangerouslySetInnerHTML={{
-            __html: localize(comment.attributes.body_multiloc),
+      <StyledBox showMore={showMore}>
+        <QuillEditedContent textColor={colors.textPrimary}>
+          <div
+            dangerouslySetInnerHTML={{
+              __html: localize(comment.attributes.body_multiloc),
+            }}
+          />
+        </QuillEditedContent>
+      </StyledBox>
+      <Box display="flex" flexDirection="row">
+        <Button
+          buttonStyle="text"
+          onClick={() => {
+            setShowMore((showMore) => !showMore);
           }}
-        />
-      </QuillEditedContent>
-      <Button buttonStyle="text" onClick={() => {}}>
-        {formatMessage(messages.showSubComments)}
-      </Button>
+        >
+          {showMore ? 'Show less' : 'Show more'}
+        </Button>
+        <Button buttonStyle="text" onClick={() => {}}>
+          {formatMessage(messages.showSubComments)}
+        </Button>
+      </Box>
     </Box>
   );
 };
