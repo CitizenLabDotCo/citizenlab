@@ -65,6 +65,7 @@ const navItems: NavItem[] = [
     link: '/admin/project-library',
     iconName: 'projects',
     message: 'projectLibrary',
+    featureNames: ['project_library'],
   },
   {
     name: 'menu',
