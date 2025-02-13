@@ -211,9 +211,11 @@ const CLSurveyPageLayout = memo(
     const handleNextAndSubmit = async () => {
       if (!onSubmit) return;
 
+      const sanitizedData = sanitizeFormData(data);
+
       const isValid = customAjv.validate(
-        getPageSchema(schema, currentPage),
-        sanitizeFormData(data)
+        getPageSchema(schema, currentPage, sanitizedData),
+        sanitizedData
       );
 
       if (!isValid) {
@@ -241,6 +243,7 @@ const CLSurveyPageLayout = memo(
       scrollToTop();
 
       const nextPage = visiblePages[currentStepNumber + 1];
+
       setUserPagePath((userPagePath) => [...userPagePath, nextPage]);
 
       setIsLoading(false);

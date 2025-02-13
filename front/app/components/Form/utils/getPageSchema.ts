@@ -1,13 +1,16 @@
 import { JsonSchema } from '@jsonforms/core';
 
-import { PageType } from '../typings';
+import { FormValues, PageType } from '../typings';
+
+import removeRequiredOtherFields from './removeRequiredOtherFields';
 
 // This function is used to extract a subset of a JSON schema based on a
 // specific page. It filters the schema's properties and required fields
 // to include only those relevant to a given page.
 const getPageSchema = (
   schema: JsonSchema,
-  pageCategorization: PageType
+  pageCategorization: PageType,
+  data: FormValues
 ): JsonSchema => {
   const currentPageElementNames = pageCategorization.elements.map(
     (uiSchemaElement) => uiSchemaElement.scope.split('/').pop()
@@ -24,11 +27,14 @@ const getPageSchema = (
     }
   });
 
-  return {
-    ...schema,
-    required,
-    properties,
-  };
+  return removeRequiredOtherFields(
+    {
+      ...schema,
+      required,
+      properties,
+    },
+    data
+  );
 };
 
 export default getPageSchema;

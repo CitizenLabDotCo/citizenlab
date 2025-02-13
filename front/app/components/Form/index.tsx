@@ -26,6 +26,7 @@ import { parseRequiredMultilocsData } from './parseRequiredMultilocs';
 import tracks from './tracks';
 import { ApiErrorGetter, AjvErrorGetter } from './typings';
 import customAjv from './utils/customAjv';
+import removeRequiredOtherFields from './utils/removeRequiredOtherFields';
 import sanitizeFormData from './utils/sanitizeFormData';
 import validateSurveyData from './utils/validateSurveyData';
 
@@ -129,9 +130,18 @@ const Form = memo(
 
       let response;
 
+      const schemaWithoutRequiredOtherFields = removeRequiredOtherFields(
+        schema,
+        sanitizedFormData
+      );
+
       const dataIsValid = isSurvey
-        ? validateSurveyData(schema, userPagePath, submissionData)
-        : customAjv.validate(schema, submissionData);
+        ? validateSurveyData(
+            schemaWithoutRequiredOtherFields,
+            userPagePath,
+            submissionData
+          )
+        : customAjv.validate(schemaWithoutRequiredOtherFields, submissionData);
 
       if (dataIsValid) {
         if (externalLoading === undefined) {
