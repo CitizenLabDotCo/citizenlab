@@ -57,6 +57,10 @@ module NativeSurveyMethod
       ]
     end
 
+    def allow_logic?
+      true
+    end
+
     private
 
     attr_reader :phase
