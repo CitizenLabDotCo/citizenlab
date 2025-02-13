@@ -2216,7 +2216,6 @@
   "app.containers.AdminPage.SideBar.processing": "Behandling",
   "app.containers.AdminPage.SideBar.projectManager": "Prosjektleder",
   "app.containers.AdminPage.SideBar.projects": "Prosjekter",
-  "app.containers.AdminPage.SideBar.proposalsTooltip": "Forslag er nå en metode for deltakelse. Du kan også feste enkeltprosjekter til navigasjonsfeltet.",
   "app.containers.AdminPage.SideBar.settings": "Innstillinger",
   "app.containers.AdminPage.SideBar.signOut": "Logg av",
   "app.containers.AdminPage.SideBar.support": "Støtte",

@@ -2216,7 +2216,6 @@
   "app.containers.AdminPage.SideBar.processing": "Apdorojimas",
   "app.containers.AdminPage.SideBar.projectManager": "Projektų vadovas",
   "app.containers.AdminPage.SideBar.projects": "Projektai",
-  "app.containers.AdminPage.SideBar.proposalsTooltip": "Pasiūlymai dabar yra dalyvavimo būdas. Taip pat galite prisegti atskirus projektus naršymo juostoje.",
   "app.containers.AdminPage.SideBar.settings": "Nustatymai",
   "app.containers.AdminPage.SideBar.signOut": "Pasirašyti",
   "app.containers.AdminPage.SideBar.support": "Parama",
