@@ -13,6 +13,8 @@ import { CLErrors } from 'typings';
 
 import useLocale from 'hooks/useLocale';
 
+import { FormValues, PageType } from 'components/Form/typings';
+
 import { trackEventByName } from 'utils/analytics';
 import { useIntl } from 'utils/cl-intl';
 
@@ -22,8 +24,11 @@ import FormWrapper from './Components/FormWrapper';
 import messages from './messages';
 import { parseRequiredMultilocsData } from './parseRequiredMultilocs';
 import tracks from './tracks';
-import { ApiErrorGetter, AjvErrorGetter, FormData } from './typings';
-import { sanitizeFormData, isValidData, customAjv } from './utils';
+import { ApiErrorGetter, AjvErrorGetter } from './typings';
+import customAjv from './utils/customAjv';
+import removeRequiredOtherFields from './utils/removeRequiredOtherFields';
+import sanitizeFormData from './utils/sanitizeFormData';
+import validateSurveyData from './utils/validateSurveyData';
 
 // hopefully we can standardize this someday
 const Title = styled.h1`
@@ -44,8 +49,8 @@ const Title = styled.h1`
 interface Props {
   schema: JsonSchema7;
   uiSchema: Layout;
-  onSubmit: (formData: FormData) => void | Promise<any>;
-  initialFormData: FormData;
+  onSubmit: (formData: FormValues) => void | Promise<any>;
+  initialFormData: FormValues;
   title?: ReactElement;
   /** A function that returns a translation message given the fieldname and the error key returned by the API */
   getApiErrorMessage?: ApiErrorGetter;
@@ -80,7 +85,7 @@ const Form = memo(
     const { formatMessage } = useIntl();
     const locale = useLocale();
 
-    const [data, setData] = useState<FormData>(() => {
+    const [data, setData] = useState<Record<string, any>>(() => {
       return parseRequiredMultilocsData(schema, locale, initialFormData);
     });
     const [apiErrors, setApiErrors] = useState<CLErrors | undefined>();
@@ -111,7 +116,11 @@ const Form = memo(
     const layoutType =
       layout || (isCategorization(uiSchema) ? 'fullpage' : 'inline');
 
-    const handleSubmit = async (formData?: any, showErrors = true) => {
+    const handleSubmit = async (
+      formData?: any,
+      showErrors = true,
+      userPagePath: PageType[] = []
+    ) => {
       // Any specified formData has priority over data attribute
       const submissionData = formData && formData.data ? formData.data : data;
       const sanitizedFormData = sanitizeFormData(submissionData);
@@ -121,7 +130,20 @@ const Form = memo(
 
       let response;
 
-      if (isValidData(schema, uiSchema, submissionData, customAjv, isSurvey)) {
+      const schemaWithoutRequiredOtherFields = removeRequiredOtherFields(
+        schema,
+        sanitizedFormData
+      );
+
+      const dataIsValid = isSurvey
+        ? validateSurveyData(
+            schemaWithoutRequiredOtherFields,
+            userPagePath,
+            submissionData
+          )
+        : customAjv.validate(schemaWithoutRequiredOtherFields, submissionData);
+
+      if (dataIsValid) {
         if (externalLoading === undefined) {
           internalSetLoading(true);
         }

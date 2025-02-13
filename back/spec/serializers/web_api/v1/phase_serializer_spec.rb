@@ -72,16 +72,32 @@ describe WebApi::V1::PhaseSerializer do
   end
 
   context 'for a native survey phase' do
-    let(:user) { create(:user) }
     let(:phase) { create(:native_survey_phase) }
 
-    it 'includes native survey attributes' do
-      expect(result.dig(:data, :attributes).keys).to include(
-        :native_survey_method,
-        :native_survey_title_multiloc,
-        :native_survey_button_multiloc
-      )
-      expect(result.dig(:data, :attributes, :native_survey_method)).to eq 'standard'
+    context 'normal user' do
+      let(:user) { create(:user) }
+
+      it 'includes native survey attributes' do
+        expect(result.dig(:data, :attributes).keys).to include(
+          :native_survey_method,
+          :native_survey_title_multiloc,
+          :native_survey_button_multiloc
+        )
+        expect(result.dig(:data, :attributes, :native_survey_method)).to eq 'standard'
+      end
+
+      it 'does not include the form_builder_config attribute' do
+        expect(result.dig(:data, :attributes).keys).not_to include(:form_builder_config)
+      end
+    end
+
+    context 'admin user' do
+      let(:user) { create(:admin) }
+
+      it 'includes a form_builder_config attribute' do
+        expect(result.dig(:data, :attributes).keys).to include(:form_builder_config)
+        expect(result.dig(:data, :attributes, :form_builder_config).keys).to eq(%i[fields_to_include allow_logic])
+      end
     end
   end
 end
