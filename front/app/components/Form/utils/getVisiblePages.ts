@@ -15,7 +15,6 @@ import {
   PageType,
 } from 'components/Form/typings';
 import customAjv from 'components/Form/utils/customAjv';
-import getOtherControlKey from 'components/Form/utils/getOtherControlKey';
 
 import getKey from './getKey';
 
@@ -57,9 +56,7 @@ const isVisible = (
     return evalVisibility(page, data, pages, questionsSeenSet);
   }
 
-  const otherControlKey = getOtherControlKey(page.scope);
-
-  return otherControlKey ? data[otherControlKey] === 'other' : true;
+  return true;
 };
 
 const evalVisibility = (

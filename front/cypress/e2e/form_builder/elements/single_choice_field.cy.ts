@@ -62,6 +62,38 @@ describe('Form builder single choice field', () => {
     cy.get('#e2e-single-select-control').should('exist');
   });
 
+  it('allows submitting when there is an other option that is not selected and is not filled out', () => {
+    const questionTitle = randomString();
+    cy.visit(
+      `admin/projects/${projectId}/phases/${phaseId}/native-survey/edit`
+    );
+    cy.acceptCookies();
+    cy.get('[data-cy="e2e-single-choice"]');
+    cy.wait(2000);
+    cy.get('[data-cy="e2e-single-choice"]').click();
+    cy.get('[data-cy="e2e-other-option-toggle"]')
+      .find('input')
+      .click({ force: true });
+    cy.get('#e2e-title-multiloc').type(questionTitle, { force: true });
+    cy.get('#e2e-option-input-0').type('Car', { force: true });
+    cy.contains('Save').click();
+
+    // Go to survey
+    cy.visit(`/projects/${projectSlug}/surveys/new?phase_id=${phaseId}`);
+    cy.contains(questionTitle).should('exist');
+
+    // Save survey response
+    cy.get('[data-cy="e2e-submit-form"]').should('exist');
+    cy.get('[data-cy="e2e-submit-form"]').click();
+
+    // Check that we're on final page and return to project
+    cy.get('[data-cy="e2e-after-submission"]').should('exist');
+    cy.get('[data-cy="e2e-after-submission"]').click();
+
+    // Make sure we're back at the project
+    cy.url().should('include', `projects/${projectSlug}`);
+  });
+
   it('allows using an other option that is mandatory when other is selected when entering data in the form/survey', () => {
     const otherText = 'Other';
     const questionTitle = randomString();
@@ -79,6 +111,8 @@ describe('Form builder single choice field', () => {
     cy.get('#e2e-title-multiloc').type(questionTitle, { force: true });
     cy.get('#e2e-option-input-0').type('Car', { force: true });
     cy.contains('Save').click();
+
+    // Go to survey
     cy.visit(`/projects/${projectSlug}/surveys/new?phase_id=${phaseId}`);
     cy.contains(questionTitle).should('exist');
     cy.contains(otherText).click({ force: true });

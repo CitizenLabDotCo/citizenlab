@@ -130,17 +130,18 @@ const Form = memo(
 
       let response;
 
+      const schemaWithoutRequiredOtherFields = removeRequiredOtherFields(
+        schema,
+        sanitizedFormData
+      );
+
       const dataIsValid = isSurvey
         ? validateSurveyData(
-            {
-              ...schema,
-              // TODO fix this properly
-              required: removeRequiredOtherFields(schema.required || []),
-            },
+            schemaWithoutRequiredOtherFields,
             userPagePath,
             submissionData
           )
-        : customAjv.validate(schema, submissionData);
+        : customAjv.validate(schemaWithoutRequiredOtherFields, submissionData);
 
       if (dataIsValid) {
         if (externalLoading === undefined) {
