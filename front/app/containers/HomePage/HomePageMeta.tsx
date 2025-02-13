@@ -4,7 +4,6 @@ import { Helmet } from 'react-helmet-async';
 
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useAuthUser from 'api/me/useAuthUser';
-import useProjectLibraryProjects from 'api/project_library_projects/useProjectLibraryProjects';
 
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 import useLocalize from 'hooks/useLocalize';
@@ -21,8 +20,6 @@ const HomePageMeta = () => {
   const { data: authUser } = useAuthUser();
   const localize = useLocalize();
   const { data: tenant } = useAppConfiguration();
-  const { data: libraryProjects } = useProjectLibraryProjects({});
-  console.log('libraryProjects', libraryProjects);
 
   if (tenant) {
     const metaTitleMultiLoc = tenant.data.attributes.settings.core.meta_title;
