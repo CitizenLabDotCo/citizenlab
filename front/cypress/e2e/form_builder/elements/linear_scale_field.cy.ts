@@ -74,6 +74,7 @@ describe('Form builder linear scale', () => {
     cy.visit(`/projects/${projectSlug}/surveys/new?phase_id=${phaseId}`);
     cy.acceptCookies();
     cy.contains(questionTitle).should('exist');
+    cy.wait(1000);
 
     // Try submitting without entering data for required field
     cy.get('[data-cy="e2e-submit-form"]').click();
@@ -86,8 +87,10 @@ describe('Form builder linear scale', () => {
         Cypress.config().baseUrl
       }/en/projects/${projectSlug}/surveys/new?phase_id=${phaseId}`
     );
+    cy.wait(1000);
 
     cy.get(`#linear-scale-option-1`).click({ force: true });
+    cy.wait(1000);
 
     // Save survey response
     cy.get('[data-cy="e2e-submit-form"]').should('exist');
