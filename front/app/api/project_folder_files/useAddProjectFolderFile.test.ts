@@ -1,8 +1,8 @@
-import { renderHook, act } from '@testing-library/react-hooks';
 import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
+import { renderHook, waitFor, act } from 'utils/testUtils/rtl';
 
 import { projectFolderFileData } from './__mocks__/useProjectFolderFiles';
 import useAddProjectFolderFile from './useAddProjectFolderFile';
@@ -20,11 +20,11 @@ describe('useAddProjectFolderFile', () => {
   afterAll(() => server.close());
 
   it('mutates data correctly', async () => {
-    const { result, waitFor } = renderHook(() => useAddProjectFolderFile(), {
+    const { result } = renderHook(() => useAddProjectFolderFile(), {
       wrapper: createQueryClientWrapper(),
     });
 
-    await act(async () => {
+    act(() => {
       result.current.mutate({
         projectFolderId: 'projectFolderId',
         file: 'file base 64',
@@ -43,19 +43,19 @@ describe('useAddProjectFolderFile', () => {
       })
     );
 
-    const { result, waitFor } = renderHook(() => useAddProjectFolderFile(), {
+    const { result } = renderHook(() => useAddProjectFolderFile(), {
       wrapper: createQueryClientWrapper(),
     });
 
-    await act(async () => {
+    act(() => {
       result.current.mutate({
         projectFolderId: 'projectFolderId',
         file: 'file base 64',
         name: 'filename',
       });
-
-      await waitFor(() => expect(result.current.isError).toBe(true));
-      expect(result.current.error).toBeDefined();
     });
+
+    await waitFor(() => expect(result.current.isError).toBe(true));
+    expect(result.current.error).toBeDefined();
   });
 });

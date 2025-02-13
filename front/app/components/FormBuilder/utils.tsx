@@ -58,13 +58,13 @@ export type FormBuilderConfig = {
 
   goBackUrl?: RouteType;
 
-  getDeletionNotice?: (projectId: string) => void;
-  getWarningNotice?: () => void;
+  getDeletionNotice?: (projectId: string) => React.JSX.Element;
+  getWarningNotice?: () => React.JSX.Element;
   getAccessRightsNotice?: (
     projectId: string | undefined,
     phaseId: string | undefined,
     handleClose: () => void
-  ) => void;
+  ) => React.JSX.Element | null;
 
   groupingType: 'page' | 'section';
 

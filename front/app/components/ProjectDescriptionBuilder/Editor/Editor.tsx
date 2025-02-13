@@ -16,6 +16,11 @@ type EditorProps = {
   children?: React.ReactNode;
 };
 
+// Without this, craftjs crashes.
+const PlainDiv = ({ render }) => {
+  return <div>{render}</div>;
+};
+
 const Editor: React.FC<EditorProps> = ({
   isPreview,
   resolver,
@@ -30,7 +35,7 @@ const Editor: React.FC<EditorProps> = ({
         error: 'red',
         transition: 'none',
       }}
-      onRender={isPreview ? undefined : RenderNode}
+      onRender={isPreview ? PlainDiv : RenderNode}
       enabled={isPreview ? false : true}
       onNodesChange={(data) => {
         onNodesChange && onNodesChange(data.getSerializedNodes());
