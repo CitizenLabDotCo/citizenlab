@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Spinner } from '@citizenlab/cl2-component-library';
+import { Highlighter, Spinner } from '@citizenlab/cl2-component-library';
 import { darken } from 'polished';
 import { useLocation } from 'react-router-dom';
 import styled, { useTheme } from 'styled-components';
@@ -93,13 +93,15 @@ const InternalParentComment = ({
     return (
       <Container className={`${className || ''} e2e-parent-and-childcomments`}>
         <ParentCommentContainer className={commentDeleted ? 'deleted' : ''}>
-          <InternalComment
-            ideaId={ideaId}
-            projectId={projectId}
-            commentId={commentId}
-            commentType="parent"
-            hasChildComments={hasChildComments}
-          />
+          <Highlighter id={commentId}>
+            <InternalComment
+              ideaId={ideaId}
+              projectId={projectId}
+              commentId={commentId}
+              commentType="parent"
+              hasChildComments={hasChildComments}
+            />
+          </Highlighter>
         </ParentCommentContainer>
 
         {hasNextPage && (
@@ -125,14 +127,15 @@ const InternalParentComment = ({
 
         {modifiedChildCommentIds.length > 0 &&
           modifiedChildCommentIds.map((childCommentId, index) => (
-            <InternalComment
-              ideaId={ideaId}
-              projectId={projectId}
-              key={childCommentId}
-              commentId={childCommentId}
-              commentType="child"
-              last={index === modifiedChildCommentIds.length - 1}
-            />
+            <Highlighter id={childCommentId} key={childCommentId}>
+              <InternalComment
+                ideaId={ideaId}
+                projectId={projectId}
+                commentId={childCommentId}
+                commentType="child"
+                last={index === modifiedChildCommentIds.length - 1}
+              />
+            </Highlighter>
           ))}
 
         <StyledChildCommentForm
