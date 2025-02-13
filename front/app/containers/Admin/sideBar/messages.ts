@@ -13,10 +13,6 @@ export default defineMessages({
     id: 'app.containers.AdminPage.SideBar.users',
     defaultMessage: 'Users',
   },
-  initiatives: {
-    id: 'app.containers.AdminPage.SideBar.initiatives',
-    defaultMessage: 'Initiatives',
-  },
   groups: {
     id: 'app.containers.AdminPage.SideBar.groups',
     defaultMessage: 'Groups',
