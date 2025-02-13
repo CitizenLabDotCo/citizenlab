@@ -77,7 +77,6 @@ const Analysis = () => {
               </AnimatedBox>
               <Box bg={colors.white} mt="6px">
                 <Comments
-                  ideaId={undefined}
                   opened={commentsOpened}
                   onChange={setCommentsOpened}
                 />

@@ -6,6 +6,8 @@ import useComments from 'api/comments/useComments';
 
 import { useIntl } from 'utils/cl-intl';
 
+import { useSelectedInputContext } from '../SelectedInputContext';
+
 import messages from './messages';
 
 interface Props {
@@ -14,10 +16,12 @@ interface Props {
   onChange: (value: boolean) => void;
 }
 
-const Comments = ({ opened, ideaId, onChange }: Props) => {
+const Comments = ({ opened, onChange }: Props) => {
   const { formatMessage } = useIntl();
+  const { selectedInputId } = useSelectedInputContext();
+
   const { data: comments } = useComments({
-    ideaId: opened ? ideaId : undefined,
+    ideaId: opened ? selectedInputId ?? undefined : undefined,
   });
 
   console.log({ comments });
