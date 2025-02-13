@@ -1,10 +1,14 @@
 import React from 'react';
 
-import { Box, colors } from '@citizenlab/cl2-component-library';
+import { Box, Button, colors } from '@citizenlab/cl2-component-library';
 
 import useLocalize from 'hooks/useLocalize';
 
 import QuillEditedContent from 'components/UI/QuillEditedContent';
+
+import { useIntl } from 'utils/cl-intl';
+
+import messages from '../messages';
 
 interface Props {
   comment: any;
@@ -12,6 +16,7 @@ interface Props {
 
 const Comment = ({ comment }: Props) => {
   const localize = useLocalize();
+  const { formatMessage } = useIntl();
 
   return (
     <Box
@@ -27,6 +32,9 @@ const Comment = ({ comment }: Props) => {
           }}
         />
       </QuillEditedContent>
+      <Button buttonStyle="text" onClick={() => {}}>
+        {formatMessage(messages.showSubComments)}
+      </Button>
     </Box>
   );
 };
