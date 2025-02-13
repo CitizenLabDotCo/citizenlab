@@ -8,6 +8,7 @@ import { useIntl } from 'utils/cl-intl';
 
 import { useSelectedInputContext } from '../SelectedInputContext';
 
+import Comment from './Comment';
 import messages from './messages';
 
 interface Props {
@@ -24,7 +25,7 @@ const Comments = ({ opened, onChange }: Props) => {
     ideaId: opened ? selectedInputId ?? undefined : undefined,
   });
 
-  console.log({ comments });
+  const commentsList = comments?.pages.flatMap((page) => page.data);
 
   return (
     <Accordion
@@ -38,8 +39,10 @@ const Comments = ({ opened, onChange }: Props) => {
       }
       onChange={onChange}
     >
-      <Box p="32px" h="300px">
-        Test!
+      <Box px="12px" overflowY="scroll" h="200px" w="100%">
+        {commentsList?.map((comment) => (
+          <Comment key={comment.id} comment={comment} />
+        ))}
       </Box>
     </Accordion>
   );

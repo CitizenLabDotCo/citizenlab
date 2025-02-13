@@ -71,7 +71,7 @@ const Analysis = () => {
                 flexDirection="column"
                 bg={colors.white}
               >
-                <Box flex="1" bg={colors.white} px="12px" pt="12px">
+                <Box flex="1" bg={colors.white} px="4px" pt="12px">
                   <InputPreview />
                 </Box>
               </AnimatedBox>
