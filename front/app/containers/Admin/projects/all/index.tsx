@@ -184,12 +184,18 @@ const AdminProjectsList = memo(({ className }: Props) => {
       enabled: showPendingReviewTab,
     });
 
-  const { data: allAdminPublications } = useAdminPublications({
-    publicationStatusFilter: ['published', 'draft', 'archived'],
-    // Admin publications in the "All" tab are shown in a flat list when there is a search query
-    rootLevelOnly: !search || search.length === 0,
-    search,
-  });
+  // ALL
+  const { data: allAdminPublications } = useAdminPublications(
+    {
+      publicationStatusFilter: ['published', 'draft', 'archived'],
+      // Admin publications in the "All" tab are shown in a flat list when there is a search query
+      rootLevelOnly: !search || search.length === 0,
+      search,
+    },
+    {
+      enabled: activeTab === 'all',
+    }
+  );
 
   useEffect(() => {
     if (userIsAdmin) {
