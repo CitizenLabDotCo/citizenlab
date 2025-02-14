@@ -52,7 +52,7 @@
 #  index_admin_publications_on_rgt                                  (rgt)
 #
 class AdminPublication < ApplicationRecord
-  PUBLICATION_STATUSES = %w[draft published archived]
+  PUBLICATION_STATUSES = %w[draft published archived hidden]
 
   belongs_to :publication, polymorphic: true, touch: true
 
@@ -79,12 +79,20 @@ class AdminPublication < ApplicationRecord
     where.not(publication_status: 'draft')
   }
 
+  scope :not_hidden, lambda {
+    where.not(publication_status: 'hidden')
+  }
+
   def archived?
     publication_status == 'archived'
   end
 
   def published?
     publication_status == 'published'
+  end
+
+  def hidden?
+    publication_status == 'hidden'
   end
 
   def ever_published?
