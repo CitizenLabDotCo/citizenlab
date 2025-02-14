@@ -17,6 +17,7 @@ import {
   IAdminPublications,
 } from 'api/admin_publications/types';
 import useAdminPublications from 'api/admin_publications/useAdminPublications';
+import useAdminPublicationsStatusCounts from 'api/admin_publications_status_counts/useAdminPublicationsStatusCounts';
 import useAuthUser from 'api/me/useAuthUser';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
@@ -83,11 +84,13 @@ const flattenPagesData = (
 };
 
 const AdminProjectsList = memo(({ className }: Props) => {
+  const { pathname } = useLocation();
   const { formatMessage } = useIntl();
   const [search, setSearch] = useState<string>('');
   const { data: authUser } = useAuthUser();
   const isProjectFoldersEnabled = useFeatureFlag({ name: 'project_folders' });
   const isProjectReviewEnabled = useFeatureFlag({ name: 'project_review' });
+  const activeTab = getActiveTab(pathname);
 
   const userIsAdmin = isAdmin(authUser);
 
@@ -112,12 +115,20 @@ const AdminProjectsList = memo(({ className }: Props) => {
     search,
   });
 
-  const { data: publishedAdminPublications } = useAdminPublications({
-    publicationStatusFilter: ['published'],
+  const publishedParams = {
+    publicationStatusFilter: ['published' as const],
     onlyProjects: true,
     rootLevelOnly: false,
     search,
-  });
+  };
+  const { data: publishedAdminPublications } = useAdminPublications(
+    publishedParams,
+    {
+      enabled: activeTab === 'published',
+    }
+  );
+  const { data: publishedAdminPublicationsStatusCounts } =
+    useAdminPublicationsStatusCounts(publishedParams);
 
   const { data: draftAdminPublications } = useAdminPublications({
     publicationStatusFilter: ['draft'],
@@ -153,10 +164,6 @@ const AdminProjectsList = memo(({ className }: Props) => {
       clHistory.push('/admin/projects/all');
     }
   }, [userIsAdmin]);
-
-  const { pathname } = useLocation();
-
-  const activeTab = getActiveTab(pathname);
 
   const flatPublishedAdminPublications = flattenPagesData(
     publishedAdminPublications
@@ -256,7 +263,8 @@ const AdminProjectsList = memo(({ className }: Props) => {
             />
             <Tab
               label={`${formatMessage(messages.publishedTab)} (${
-                flatPublishedAdminPublications?.length || 0
+                publishedAdminPublicationsStatusCounts?.data.attributes
+                  .status_counts.published || 0
               })`}
               active={activeTab === 'published'}
               url="/admin/projects/published"
