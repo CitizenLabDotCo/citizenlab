@@ -13,7 +13,6 @@ import styled from 'styled-components';
 
 import useAuthUser from 'api/me/useAuthUser';
 
-import useFeatureFlag from 'hooks/useFeatureFlag';
 import useFeatureFlags from 'hooks/useFeatureFlags';
 
 import CountBadge from 'components/UI/CountBadge';
@@ -102,10 +101,6 @@ const MenuItem = ({ navItem }: Props) => {
     onlyCheckAllowed: navItem.onlyCheckAllowed,
   });
 
-  const isCommunityMonitorEnabled = useFeatureFlag({
-    name: 'community_monitor',
-  });
-
   const { data: user } = useAuthUser();
 
   const hasPermission = usePermission({
@@ -113,13 +108,7 @@ const MenuItem = ({ navItem }: Props) => {
     item: { type: 'route', path: navItem.link },
   });
 
-  // Temporary proposal warning implementation, will be removed together with the navbar item
-  // after users have had enough time to get used to the feature
-  const isInitiatives = navItem.name === 'initiatives';
-  const isItemDisabled = [
-    'initiatives',
-    isCommunityMonitorEnabled ? undefined : 'community_monitor', // TEMPORARY - Will be removed after final tandem release in Q1 2025.
-  ].includes(navItem.name);
+  const isItemDisabled = ['initiatives'].includes(navItem.name);
 
   const enabledAndHasPermission = featuresEnabled && hasPermission;
 
@@ -147,7 +136,7 @@ const MenuItem = ({ navItem }: Props) => {
         </Box>
       }
       placement="bottom-end"
-      disabled={!isInitiatives}
+      disabled={!isItemDisabled}
       theme="dark"
     >
       <MenuItemLink
@@ -155,10 +144,6 @@ const MenuItem = ({ navItem }: Props) => {
         className={`intercom-admin-menu-item-${navItem.name} ${
           isItemDisabled ? 'disabled' : ''
         }`}
-        // TEMPORARY - Will be removed after final tandem release in Q1 2025.
-        style={{
-          opacity: navItem.name === 'community_monitor' ? 1 : undefined,
-        }}
       >
         <>
           <Box
@@ -168,18 +153,9 @@ const MenuItem = ({ navItem }: Props) => {
             justifyContent="center"
             className={navItem.iconName}
           >
-            <Icon
-              // TEMPORARY - Fill will be removed after final tandem release in Q1 2025.
-              fill={navItem.name === 'community_monitor' ? 'yellow' : undefined}
-              name={navItem.iconName}
-            />
+            <Icon name={navItem.iconName} />
           </Box>
-          <Text
-            // TEMPORARY - Will be removed after final tandem release in Q1 2025.
-            style={{
-              opacity: navItem.name === 'community_monitor' ? 0.5 : undefined,
-            }}
-          >
+          <Text>
             <FormattedMessage {...messages[navItem.message]} />
             {!!navItem.count && <CountBadge count={navItem.count} />}
           </Text>
