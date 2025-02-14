@@ -82,6 +82,7 @@ RSpec.describe Phase do
     it 'can be changed from ideation to native_survey' do
       phase = create(:phase, participation_method: 'ideation')
       phase.participation_method = 'native_survey'
+      phase.native_survey_method = 'standard'
       phase.native_survey_title_multiloc = { en: 'Survey' }
       phase.native_survey_button_multiloc = { en: 'Take the survey' }
       phase.ideas_order = nil
@@ -463,6 +464,44 @@ RSpec.describe Phase do
       phase = create(:phase, start_at: Time.zone.today, end_at: nil)
       phase.start_at += 1.day
       expect(phase).to be_valid
+    end
+  end
+
+  describe '#validate_community_monitor_phase' do
+    let(:project) { create(:project) }
+    let(:survey_phase) { create(:native_survey_phase, project: project, start_at: Time.zone.today, end_at: nil) }
+
+    context 'survey is not a community monitor survey' do
+      it 'is valid when the phase is not a community monitor native survey' do
+        expect(survey_phase).to be_valid
+      end
+    end
+
+    context 'survey is a community monitor survey' do
+      before do
+        project.admin_publication.update! publication_status: 'hidden'
+        project.update! internal_role: 'community_monitor'
+        survey_phase.update! native_survey_method: 'community_monitor'
+      end
+
+      it 'is valid' do
+        expect(survey_phase).to be_valid
+      end
+
+      it 'is not valid when the project has more than one phase' do
+        project.phases << create(:phase, project: project, start_at: survey_phase.start_at - 10.days, end_at: survey_phase.start_at - 5.days)
+        expect(survey_phase).not_to be_valid
+      end
+
+      it 'is not valid when the phase has an end date' do
+        survey_phase.end_at = Time.zone.today + 1.day
+        expect(survey_phase).not_to be_valid
+      end
+
+      it 'is not valid when the project is not hidden' do
+        survey_phase.project.admin_publication.publication_status = 'published'
+        expect(survey_phase).not_to be_valid
+      end
     end
   end
 

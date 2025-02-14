@@ -475,6 +475,11 @@ module MultiTenancy
             platform_templates: {
               enabled: false,
               allowed: false
+            },
+            community_monitor: {
+              enabled: true,
+              allowed: true,
+              project_id: nil
             }
           })
         )

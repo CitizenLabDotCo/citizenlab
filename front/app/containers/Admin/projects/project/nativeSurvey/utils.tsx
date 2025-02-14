@@ -28,13 +28,73 @@ export const nativeSurveyConfig: FormBuilderConfig = {
   formEndPageLogicOption: messages.surveyEnd,
   pagesLogicHelperText: messages.pagesLogicHelperText,
 
-  toolboxFieldsToExclude: [],
+  toolboxFieldsToInclude: [
+    // When adding new fields, confirm that the BE list matches
+    'text',
+    'multiline_text',
+    'multiselect',
+    'number',
+    'select',
+    'linear_scale',
+    'ranking',
+    'rating',
+    'matrix_linear_scale',
+    'page',
+    'file_upload',
+    'shapefile_upload',
+    'title_multiloc',
+    'html_multiloc',
+    'files',
+    'image_files',
+    'topic_ids',
+    'multiselect_image',
+    'point',
+    'line',
+    'polygon',
+  ],
   formCustomFields: undefined,
 
   displayBuiltInFields: false,
   builtInFields: [],
   showStatusBadge: true,
   isLogicEnabled: true,
+  alwaysShowCustomFields: true,
+  isFormPhaseSpecific: true,
+  groupingType: 'page',
+  getWarningNotice: () => {
+    return (
+      <Box id="e2e-warning-notice" mb="16px">
+        <Warning>
+          <FormattedMessage {...messages.existingSubmissionsWarning} />
+        </Warning>
+      </Box>
+    );
+  },
+  getAccessRightsNotice: (projectId, phaseId, handleClose) => {
+    return projectId && phaseId ? (
+      <AccessRightsNotice
+        projectId={projectId}
+        phaseId={phaseId}
+        handleClose={handleClose}
+      />
+    ) : null;
+  },
+};
+
+export const communityMonitorConfig: FormBuilderConfig = {
+  type: 'survey',
+  formBuilderTitle: messages.survey,
+  viewFormLinkCopy: messages.viewSurvey,
+  toolboxTitle: messages.addSurveyContent,
+  formSavedSuccessMessage: messages.successMessage,
+  supportArticleLink: messages.supportArticleLink,
+  pagesLogicHelperText: messages.pagesLogicHelperText,
+  toolboxFieldsToInclude: ['page', 'linear_scale', 'rating'],
+  formCustomFields: undefined,
+  displayBuiltInFields: false,
+  builtInFields: [],
+  showStatusBadge: true,
+  isLogicEnabled: false,
   alwaysShowCustomFields: true,
   isFormPhaseSpecific: true,
   groupingType: 'page',

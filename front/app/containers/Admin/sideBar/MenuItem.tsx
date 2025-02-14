@@ -97,6 +97,7 @@ const MenuItem = ({ navItem }: Props) => {
     names: navItem.featureNames ?? [],
     onlyCheckAllowed: navItem.onlyCheckAllowed,
   });
+
   const { data: user } = useAuthUser();
 
   const hasPermission = usePermission({

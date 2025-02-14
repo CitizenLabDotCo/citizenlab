@@ -60,6 +60,7 @@ export interface IPhaseAttributes {
   ideas_order?: IdeaSortMethod;
   document_annotation_embed_url?: string | null;
   custom_form_persisted?: boolean;
+  native_survey_method?: 'standard' | 'community_monitor';
   voting_method?: VotingMethod | null;
   voting_term_singular_multiloc?: Multiloc | null;
   voting_term_plural_multiloc?: Multiloc | null;
