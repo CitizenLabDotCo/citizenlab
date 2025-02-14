@@ -394,7 +394,7 @@ export const FormField = ({
             </Box>
           )}
         </FlexibleRow>
-        {showLogicOnRow && (
+        {showLogicOnRow && builderConfig.isLogicEnabled && (
           <Logic
             field={field}
             formCustomFields={formCustomFields}
