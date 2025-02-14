@@ -24,9 +24,12 @@ module CustomFields
 
       def update_custom_field_values(option)
         cf = option.custom_field
-        return unless cf.resource_type == 'User'
 
-        UserCustomFieldService.new.delete_custom_field_option_values(option.key, cf)
+        if cf.resource_type == 'User'
+          UserCustomFieldService.new.delete_custom_field_option_values(option.key, cf)
+        elsif cf.resource_type == 'CustomForm'
+          delete_ranking_option_from_ideas(option) if cf.input_type == 'ranking'
+        end
       end
 
       def update_form_logic(option)
@@ -35,6 +38,24 @@ module CustomFields
         if cf.resource_type == 'CustomForm' && cf.input_type == 'select'
           FormLogicService.new([cf]).remove_select_logic_option_from_custom_fields(option)
         end
+      end
+
+      def delete_ranking_option_from_ideas(option)
+        field_key = option.custom_field.key
+
+        ideas = ::Idea.where(
+          'custom_field_values -> :field_key ? :option_key',
+          field_key: field_key,
+          option_key: option.key
+        )
+
+        ideas.update_all(<<~SQL.squish)
+          custom_field_values = jsonb_set(
+            custom_field_values,
+            '{#{field_key}}',
+            (custom_field_values -> '#{field_key}') - '#{option.key}'
+          )
+        SQL
       end
 
       def log_destroy_activity(option, user)
