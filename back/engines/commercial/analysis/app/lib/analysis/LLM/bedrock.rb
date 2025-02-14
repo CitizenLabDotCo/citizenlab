@@ -2,12 +2,12 @@
 
 module Analysis
   module LLM
-    class AnthropicClaude < Base
+    class Bedrock < Base
       def initialize(**params)
         super()
 
         if !params.key? :region
-          raise 'No AWS region specified for Anthropic Claude model.'
+          raise 'No AWS region specified.'
         end
 
         @client = Aws::BedrockRuntime::Client.new(params)
@@ -20,20 +20,29 @@ module Analysis
       end
 
       def accuracy
-        0.4
+        raise NotImplementedError
       end
 
       def chat(prompt, **params)
-        resp = @client.invoke_model invoke_params(prompt, **params)
-        body_completion resp.body.string
+        response = @client.converse(
+          model_id:,
+          messages: messages(prompt, params[:assistant_prefix] || ''),
+          inference_config:
+        )
+        response.output.message.content.first.text
       end
 
       def chat_async(prompt, **params)
-        chunk_handler = Aws::BedrockRuntime::EventStreams::ResponseStream.new
-        chunk_handler.on_chunk_event do |event|
-          puts body_completion(event.bytes)
+        handler = Aws::BedrockRuntime::EventStreams::ConverseStreamOutput.new
+        handler.on_content_block_delta_event do |event|
+          yield(event.delta.text)
         end
-        @client.invoke_model_with_response_stream(**invoke_params(prompt, **params), event_stream_handler: chunk_handler)
+        @client.converse_stream(
+          model_id:,
+          messages: messages(prompt, params[:assistant_prefix] || ''),
+          inference_config:,
+          event_stream_handler: handler
+        )
       end
 
       protected
@@ -43,6 +52,27 @@ module Analysis
       end
 
       private
+
+      def inference_config
+        {
+          max_tokens: 300,
+          temperature: 0.1,
+          top_p: 0.9
+        }
+      end
+
+      def messages(prompt, assistant_prefix)
+        [
+          {
+            role: 'user',
+            content: [
+              {
+                text: [assistant_prefix, prompt].join
+              }
+            ]
+          }
+        ]
+      end
 
       def invoke_params(prompt, **params)
         assistant_prefix = params[:assistant_prefix] || ''
