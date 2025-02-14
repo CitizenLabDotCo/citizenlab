@@ -36,13 +36,6 @@ const navItems: NavItem[] = [
     message: 'inputManager',
   },
   {
-    name: 'initiatives',
-    link: '/',
-    iconName: 'proposals',
-    message: 'initiatives',
-    onlyCheckAllowed: true,
-  },
-  {
     name: 'userinserts',
     link: '/admin/users',
     iconName: 'users',

@@ -35,7 +35,10 @@ export const fetchStatusCounts = ({
     },
   });
 
-const useAdminPublicationsStatusCounts = (queryParams: IQueryParameters) => {
+const useAdminPublicationsStatusCounts = (
+  queryParams: IQueryParameters,
+  { enabled = true } = {}
+) => {
   return useQuery<
     IStatusCounts,
     CLErrors,
@@ -44,6 +47,7 @@ const useAdminPublicationsStatusCounts = (queryParams: IQueryParameters) => {
   >({
     queryKey: adminPublicationsStatusCountsKeys.item(queryParams),
     queryFn: () => fetchStatusCounts(queryParams),
+    enabled,
   });
 };
 
