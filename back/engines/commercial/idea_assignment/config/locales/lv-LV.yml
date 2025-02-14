@@ -7,7 +7,7 @@ lv:
     idea_assigned_to_you:
       by_author: 'autors: %{authorName}'
       cta_reply_to: 'Sniedziet atsauksmi %{authorName}'
-      event_description_idea: 'Jums ir piešķirta ideja. Sniedziet atsauksmes, rakstot oficiālu atjauninātu informāciju vai mainot tās statusu.'
+      event_description_idea: 'Jums ir piešķirta ideja. Sniedziet atsauksmes, rakstot oficiālu atjauninājumu vai mainot tās statusu.'
       main_header: '%{firstName}, jums ir jauns uzdevums'
-      subject: 'Jums ir uzdevums %{organizationName} platformā'
-      preheader_idea: 'Jums ir piešķirta %{authorName} ideja'
+      subject: 'Jums ir uzdevums platformā %{organizationName}.'
+      preheader_idea: 'Jums ir piešķirta %{authorName} ideja.'

@@ -5,13 +5,13 @@ pt:
     admin_campaign_type_description:
       "inappropriate_content_flagged": Conteúdo inapropriado sinalizado - admins
     inappropriate_content_flagged:
-      subject: 'Uma postagem na sua plataforma foi assinalada para revisão'
-      header_title: 'Uma postagem na sua plataforma foi assinalada para revisão'
+      subject: 'Uma publicação em sua plataforma foi marcada para revisão'
+      header_title: 'Uma publicação em sua plataforma foi marcada para revisão'
       comment_author: '%{authorName} comentou:'
-      idea_author: '%{authorName} submeteu uma postagem:'
+      idea_author: '%{authorName} enviou uma postagem:'
       initiative_author: '%{authorName} apresentou uma proposta:'
       automatically_flagged: >
         Esta postagem foi detectada automaticamente como potencialmente contendo conteúdo inadequado. Estamos enviando esta notificação para que você possa analisar a publicação de acordo com suas próprias diretrizes de moderação.
       how_to_review: >
         Se a postagem não contiver conteúdo impróprio, você poderá remover o aviso por meio de sua plataforma na aba Atividade no painel de administração.
-      cta_review_post: 'Rever post'
+      cta_review_post: 'Post de revisão'
