@@ -11,50 +11,34 @@ module NativeSurveyMethod
 
       multiloc_service = MultilocService.new
       [
+        start_page_field(custom_form),
         CustomField.new(
           id: SecureRandom.uuid,
-          key: 'page1',
+          key: 'cm_living_in_city',
+          code: 'cm_living_in_city',
           resource: custom_form,
-          input_type: 'page',
-          page_layout: 'default'
+          input_type: 'rating',
+          maximum: 5,
+          title_multiloc: { 'en' => 'How do you rate living in our city?' }
         ),
         CustomField.new(
           id: SecureRandom.uuid,
-          key: CustomFieldService.new.generate_key(
-            multiloc_service.i18n_to_multiloc('form_builder.default_select_field.title').values.first
-          ),
+          key: 'cm_council_services',
+          code: 'cm_council_services',
           resource: custom_form,
-          input_type: 'select',
-          title_multiloc: multiloc_service.i18n_to_multiloc('form_builder.default_select_field.title'),
-          options: [
-            CustomFieldOption.new(
-              id: SecureRandom.uuid,
-              key: 'option1',
-              title_multiloc: multiloc_service.i18n_to_multiloc('form_builder.default_select_field.option1')
-            ),
-            CustomFieldOption.new(
-              id: SecureRandom.uuid,
-              key: 'option2',
-              title_multiloc: multiloc_service.i18n_to_multiloc('form_builder.default_select_field.option2')
-            )
-          ]
+          input_type: 'rating',
+          maximum: 5,
+          title_multiloc: { 'en' => 'How do you rate the quality of council services?' }
         ),
-        CustomField.new(
-          id: SecureRandom.uuid,
-          key: 'test',
-          input_type: 'text',
-          title_multiloc: { en: 'Test' }
-        ),
-        CustomField.new(
-          id: SecureRandom.uuid,
-          key: 'survey_end',
-          resource: custom_form,
-          input_type: 'page',
-          page_layout: 'default',
-          title_multiloc: multiloc_service.i18n_to_multiloc('form_builder.form_end_page.title_text_3'),
-          description_multiloc: multiloc_service.i18n_to_multiloc('form_builder.form_end_page.description_text_3')
-        )
+        end_page_field(custom_form, multiloc_service)
       ]
+    end
+
+    def constraints
+      {
+        cm_living_in_city: { locks: { enabled: true, title_multiloc: true, maximum: true } },
+        cm_council_services: { locks: { enabled: true, title_multiloc: true, maximum: true } }
+      }
     end
 
     def allow_logic?
