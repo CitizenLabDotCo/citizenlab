@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 
 import { Box, colors, stylingConsts } from '@citizenlab/cl2-component-library';
+import { RouteType } from 'routes';
 import styled, { keyframes, css } from 'styled-components';
 
 import { scrollToElement } from 'utils/scroll';
@@ -71,5 +72,4 @@ const Highlighter = ({ id, children }: Props) => {
 };
 
 export default Highlighter;
-export const createHighlightLink = (id: string, baseUrl: string) =>
-  `${baseUrl}#${id}`;
+export const createHighlighterLink = (path: RouteType) => path;
