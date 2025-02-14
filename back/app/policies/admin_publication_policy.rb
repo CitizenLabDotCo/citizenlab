@@ -4,6 +4,7 @@ class AdminPublicationPolicy < ApplicationPolicy
   class Scope < ApplicationPolicy::Scope
     def resolve
       AdminPublication
+        .not_hidden
         .publication_types
         .map { |klass| scope.where(publication: scope_for(klass)) } # scope per publication type
         .reduce(&:or) # joining partial scopes
