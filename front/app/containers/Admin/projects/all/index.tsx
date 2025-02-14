@@ -97,12 +97,17 @@ const AdminProjectsList = memo(({ className }: Props) => {
   // Fetch the admin publications to show in the 'Your projects' tab,
   // including the (unexpanded) folders the user is a moderator of,
   // but excluding the projects in those folders.
-  const { data: moderatedAdminPublications } = useAdminPublications({
-    publicationStatusFilter: ['published', 'draft', 'archived'],
-    filter_is_moderator_of: true,
-    exclude_projects_in_included_folders: true,
-    search,
-  });
+  const { data: moderatedAdminPublications } = useAdminPublications(
+    {
+      publicationStatusFilter: ['published', 'draft', 'archived'],
+      filter_is_moderator_of: true,
+      exclude_projects_in_included_folders: true,
+      search,
+    },
+    {
+      enabled: activeTab === 'your-projects',
+    }
+  );
 
   // Fetch the admin publications for projects in the 'Your projects' tab,
   // including the projects in folders the user is a moderator of,
