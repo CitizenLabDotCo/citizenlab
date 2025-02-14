@@ -1,6 +1,11 @@
 import React, { useState, useEffect } from 'react';
 
-import { Box, colors, IconTooltip } from '@citizenlab/cl2-component-library';
+import {
+  Box,
+  colors,
+  Highlighter,
+  IconTooltip,
+} from '@citizenlab/cl2-component-library';
 import { isEmpty, isString } from 'lodash-es';
 import { useParams, useLocation } from 'react-router-dom';
 import { Multiloc, UploadFile, CLErrors } from 'typings';
@@ -30,7 +35,6 @@ import useFeatureFlag from 'hooks/useFeatureFlag';
 import { INewProjectCreatedEvent } from 'containers/Admin/projects/new';
 
 import ImageCropperContainer from 'components/admin/ImageCropper/Container';
-import Highlighter from 'components/admin/InternalComments/InternalComment/Highlighter';
 import HeaderBgUploader from 'components/admin/ProjectableHeaderBgUploader';
 import {
   Section,
