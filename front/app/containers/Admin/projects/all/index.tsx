@@ -130,12 +130,17 @@ const AdminProjectsList = memo(({ className }: Props) => {
   const { data: publishedAdminPublicationsStatusCounts } =
     useAdminPublicationsStatusCounts(publishedParams);
 
-  const { data: draftAdminPublications } = useAdminPublications({
-    publicationStatusFilter: ['draft'],
+  const draftParams = {
+    publicationStatusFilter: ['draft' as const],
     onlyProjects: true,
     rootLevelOnly: false,
     search,
+  };
+  const { data: draftAdminPublications } = useAdminPublications(draftParams, {
+    enabled: activeTab === 'draft',
   });
+  const { data: draftAdminPublicationsStatusCounts } =
+    useAdminPublicationsStatusCounts(draftParams);
 
   const { data: archivedAdminPublications } = useAdminPublications({
     publicationStatusFilter: ['archived'],
@@ -272,7 +277,8 @@ const AdminProjectsList = memo(({ className }: Props) => {
             <Tab
               label={`
                 ${formatMessage(messages.draft)} (${
-                flatDraftAdminPublications?.length || 0
+                draftAdminPublicationsStatusCounts?.data.attributes
+                  .status_counts.draft || 0
               })`}
               active={activeTab === 'draft'}
               url="/admin/projects/draft"
