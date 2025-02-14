@@ -91,8 +91,8 @@ const AdminProjectsList = memo(({ className }: Props) => {
   const isProjectFoldersEnabled = useFeatureFlag({ name: 'project_folders' });
   const isProjectReviewEnabled = useFeatureFlag({ name: 'project_review' });
   const activeTab = getActiveTab(pathname);
-
   const userIsAdmin = isAdmin(authUser);
+  const showPendingReviewTab = isProjectReviewEnabled && userIsAdmin;
 
   // Fetch the admin publications to show in the 'Your projects' tab,
   // including the (unexpanded) folders the user is a moderator of,
@@ -160,13 +160,24 @@ const AdminProjectsList = memo(({ className }: Props) => {
   const { data: archivedAdminPublicationsStatusCounts } =
     useAdminPublicationsStatusCounts(archivedParams);
 
-  const { data: pendingReviewAdminPublications } = useAdminPublications({
-    publicationStatusFilter: ['draft'],
-    review_state: 'pending',
+  // PENDING REVIEW
+  const pendingReviewParams = {
+    publicationStatusFilter: ['draft' as const],
+    review_state: 'pending' as const,
     onlyProjects: true,
     rootLevelOnly: false,
     search,
-  });
+  };
+  const { data: pendingReviewAdminPublications } = useAdminPublications(
+    pendingReviewParams,
+    {
+      enabled: activeTab === 'pending',
+    }
+  );
+  const { data: pendingReviewAdminPublicationsStatusCounts } =
+    useAdminPublicationsStatusCounts(pendingReviewParams, {
+      enabled: showPendingReviewTab,
+    });
 
   const { data: allAdminPublications } = useAdminPublications({
     publicationStatusFilter: ['published', 'draft', 'archived'],
@@ -303,11 +314,12 @@ const AdminProjectsList = memo(({ className }: Props) => {
               active={activeTab === 'archived'}
               url="/admin/projects/archived"
             />
-            {isProjectReviewEnabled && isAdmin(authUser) && (
+            {showPendingReviewTab && (
               <Tab
                 label={`
                   ${formatMessage(messages.pendingReview)} (${
-                  flatPendingReviewAdminPublications?.length || 0
+                  pendingReviewAdminPublicationsStatusCounts?.data.attributes
+                    .status_counts.draft || 0
                 })`}
                 active={activeTab === 'pending'}
                 url="/admin/projects/pending"
