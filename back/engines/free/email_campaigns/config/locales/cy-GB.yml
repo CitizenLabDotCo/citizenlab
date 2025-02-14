@@ -439,8 +439,8 @@ cy:
       x_projects: '%{numberOfProjects} prosiectau'
     project_phase_started:
       cta_view_phase: 'Darganfyddwch y cyfnod newydd hwn'
-      event_description: 'Dechreuodd y prosiect hwn gam newydd ar y llwyfan o %{organizationName}. Cliciwch ar y ddolen isod i ddysgu mwy!'
-      main_header: 'Cam newydd wedi dechrau ar gyfer prosiect ''%{projectName}'''
+      event_description: 'Dechreuodd y prosiect hwn ar gam newydd ar lwyfan %{organizationName}. Cliciwch ar y ddolen isod i ddysgu mwy!'
+      main_header: 'Dechreuodd cam newydd ar gyfer prosiect ''%{projectName}'''
       subtitle: 'Ynglŷn â ''%{projectName}'''
       new_phase: 'Dechreuodd y prosiect hwn y cam ''%{phaseTitle}'''
       subject: 'Aeth %{projectName} i mewn i gyfnod newydd'
