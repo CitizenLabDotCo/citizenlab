@@ -120,50 +120,51 @@ const AdminProjectsList = memo(({ className }: Props) => {
     search,
   });
 
-  // PUBLISHED
-  const publishedParams = {
-    publicationStatusFilter: ['published' as const],
+  const { data: statusCounts } = useAdminPublicationsStatusCounts({
+    publicationStatusFilter: ['published', 'draft', 'archived'],
     onlyProjects: true,
     rootLevelOnly: false,
     search,
-  };
+  });
+
+  // PUBLISHED
   const { data: publishedAdminPublications } = useAdminPublications(
-    publishedParams,
+    {
+      publicationStatusFilter: ['published'],
+      onlyProjects: true,
+      rootLevelOnly: false,
+      search,
+    },
     {
       enabled: activeTab === 'published',
     }
   );
-  const { data: publishedAdminPublicationsStatusCounts } =
-    useAdminPublicationsStatusCounts(publishedParams);
 
   // DRAFT
-  const draftParams = {
-    publicationStatusFilter: ['draft' as const],
-    onlyProjects: true,
-    rootLevelOnly: false,
-    search,
-  };
-  const { data: draftAdminPublications } = useAdminPublications(draftParams, {
-    enabled: activeTab === 'draft',
-  });
-  const { data: draftAdminPublicationsStatusCounts } =
-    useAdminPublicationsStatusCounts(draftParams);
+  const { data: draftAdminPublications } = useAdminPublications(
+    {
+      publicationStatusFilter: ['draft'],
+      onlyProjects: true,
+      rootLevelOnly: false,
+      search,
+    },
+    {
+      enabled: activeTab === 'draft',
+    }
+  );
 
   // ARCHIVED
-  const archivedParams = {
-    publicationStatusFilter: ['archived' as const],
-    onlyProjects: true,
-    rootLevelOnly: false,
-    search,
-  };
   const { data: archivedAdminPublications } = useAdminPublications(
-    archivedParams,
+    {
+      publicationStatusFilter: ['archived'],
+      onlyProjects: true,
+      rootLevelOnly: false,
+      search,
+    },
     {
       enabled: activeTab === 'archived',
     }
   );
-  const { data: archivedAdminPublicationsStatusCounts } =
-    useAdminPublicationsStatusCounts(archivedParams);
 
   // PENDING REVIEW
   const pendingReviewParams = {
@@ -179,6 +180,7 @@ const AdminProjectsList = memo(({ className }: Props) => {
       enabled: activeTab === 'pending',
     }
   );
+  // The pending review count uses different params, so we fetch it separately
   const { data: pendingReviewAdminPublicationsStatusCounts } =
     useAdminPublicationsStatusCounts(pendingReviewParams, {
       enabled: showPendingReviewTab,
@@ -211,15 +213,12 @@ const AdminProjectsList = memo(({ className }: Props) => {
     archivedAdminPublications
   );
   const flatAllAdminPublications = flattenPagesData(allAdminPublications);
-
   const flatModeratedAdminPublications = flattenPagesData(
     moderatedAdminPublications
   );
-
   const flatModeratedProjectAdminPublications = flattenPagesData(
     moderatedProjectAdminPublications
   );
-
   const flatPendingReviewAdminPublications = flattenPagesData(
     pendingReviewAdminPublications
   );
@@ -301,8 +300,7 @@ const AdminProjectsList = memo(({ className }: Props) => {
             />
             <Tab
               label={`${formatMessage(messages.publishedTab)} (${
-                publishedAdminPublicationsStatusCounts?.data.attributes
-                  .status_counts.published || 0
+                statusCounts?.data.attributes.status_counts.published || 0
               })`}
               active={activeTab === 'published'}
               url="/admin/projects/published"
@@ -310,8 +308,7 @@ const AdminProjectsList = memo(({ className }: Props) => {
             <Tab
               label={`
                 ${formatMessage(messages.draft)} (${
-                draftAdminPublicationsStatusCounts?.data.attributes
-                  .status_counts.draft || 0
+                statusCounts?.data.attributes.status_counts.draft || 0
               })`}
               active={activeTab === 'draft'}
               url="/admin/projects/draft"
@@ -319,8 +316,7 @@ const AdminProjectsList = memo(({ className }: Props) => {
             <Tab
               label={`
                 ${formatMessage(messages.archived)} (${
-                archivedAdminPublicationsStatusCounts?.data.attributes
-                  .status_counts.archived || 0
+                statusCounts?.data.attributes.status_counts.archived || 0
               })`}
               active={activeTab === 'archived'}
               url="/admin/projects/archived"
