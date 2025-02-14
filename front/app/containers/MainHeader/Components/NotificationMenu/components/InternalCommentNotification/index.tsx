@@ -1,6 +1,6 @@
 import React, { memo } from 'react';
 
-import { RouteType } from 'routes';
+import { createHighlighterLink } from 'component-library/components/Highlighter';
 
 import { IInternalCommentNotificationData } from 'api/notifications/types';
 
@@ -35,13 +35,9 @@ const getNotificationMessage = (
 
 const InternalCommentNotification = memo<Props>(({ notification }) => {
   const { project_id, idea_id, internal_comment_id } = notification.attributes;
-  const linkTo: RouteType | null = `/admin/projects/${project_id}/ideas/${idea_id}#${internal_comment_id}`;
-
-  // TODO: Fix this the next time the file is edited.
-  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-  if (!linkTo) {
-    return null;
-  }
+  const linkTo = createHighlighterLink(
+    `/admin/projects/${project_id}/ideas/${idea_id}#${internal_comment_id}`
+  );
 
   return (
     <NotificationWrapper
