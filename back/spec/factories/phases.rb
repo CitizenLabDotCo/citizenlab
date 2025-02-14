@@ -104,6 +104,7 @@ FactoryBot.define do
 
     factory :native_survey_phase do
       participation_method { 'native_survey' }
+      native_survey_method { 'standard' }
       native_survey_title_multiloc { { 'en' => 'Survey', 'nl-BE' => 'Vragenlijst' } }
       native_survey_button_multiloc { { 'en' => 'Take the survey', 'nl-BE' => 'De enquete invullen' } }
       factory :active_native_survey_phase do

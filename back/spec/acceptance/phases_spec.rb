@@ -30,6 +30,15 @@ resource 'Phases' do
         expect(json_response[:data].size).to eq 2
         expect(json_response[:included].pluck(:type)).to include 'permission'
       end
+
+      example 'List all phases of a project which is hidden (internal_role: community_monitor)' do
+        @project.update!(internal_role: 'community_monitor')
+        Permissions::PermissionsUpdateService.new.update_all_permissions
+        do_request
+        assert_status 200
+        expect(json_response[:data].size).to eq 2
+      end
+
     end
 
     context 'when admin' do

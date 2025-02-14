@@ -88,7 +88,7 @@ class Project < ApplicationRecord
   after_save :reassign_moderators, if: :folder_changed?
   after_commit :clear_folder_changes, if: :folder_changed?
 
-  INTERNAL_ROLES = %w[open_idea_box].freeze
+  INTERNAL_ROLES = %w[open_idea_box community_monitor].freeze
 
   validates :title_multiloc, presence: true, multiloc: { presence: true }
   validates :description_multiloc, multiloc: { presence: false, html: true }
