@@ -298,9 +298,7 @@ module IdeaCustomFields
     end
 
     def delete_option!(option)
-      option.destroy!
-      SideFxCustomFieldOptionService.new.after_destroy option, current_user
-      option
+      CustomFields::Options::DestroyService.new.destroy!(option, current_user)
     end
 
     def add_options_errors(options_errors, errors, field_index, option_index)
