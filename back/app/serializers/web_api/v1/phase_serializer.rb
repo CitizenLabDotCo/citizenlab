@@ -77,12 +77,6 @@ class WebApi::V1::PhaseSerializer < WebApi::V1::BaseSerializer
     user_basket object, params
   end
 
-  attribute :form_builder_config, if: proc { |_phase, params|
-    current_user(params)&.admin?
-  } do |phase|
-    phase.pmethod.form_builder_config
-  end
-
   has_one :report, serializer: ReportBuilder::WebApi::V1::ReportSerializer
 
   has_many :permissions

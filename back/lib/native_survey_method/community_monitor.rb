@@ -41,7 +41,7 @@ module NativeSurveyMethod
       }
     end
 
-    def allow_logic?
+    def logic_enabled?
       false
     end
   end

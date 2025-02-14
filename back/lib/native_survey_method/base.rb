@@ -43,16 +43,13 @@ module NativeSurveyMethod
       ]
     end
 
-    def allow_logic?
+    def logic_enabled?
       true
     end
 
     private
 
     attr_reader :phase
-
-
-    private
 
     def start_page_field(custom_form)
       CustomField.new(

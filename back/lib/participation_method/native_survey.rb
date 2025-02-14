@@ -2,7 +2,7 @@
 
 module ParticipationMethod
   class NativeSurvey < Base
-    delegate :allowed_extra_field_input_types, :default_fields, :allow_logic?, :constraints,  to: :native_survey_method
+    delegate :allowed_extra_field_input_types, :default_fields, :logic_enabled?, :constraints,  to: :native_survey_method
 
     def self.method_str
       'native_survey'
@@ -34,13 +34,6 @@ module ParticipationMethod
 
     def custom_form
       phase.custom_form || CustomForm.new(participation_context: phase)
-    end
-
-    def form_builder_config
-      {
-        fields_to_include: allowed_extra_field_input_types,
-        allow_logic: allow_logic?
-      }
     end
 
     # Survey responses do not have a fixed field that can be used

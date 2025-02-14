@@ -51,8 +51,8 @@ module ParticipationMethod
       context.custom_form || CustomForm.new(participation_context: context)
     end
 
-    def form_builder_config
-      {}
+    def logic_enabled?
+      false
     end
 
     def default_fields(_custom_form)
