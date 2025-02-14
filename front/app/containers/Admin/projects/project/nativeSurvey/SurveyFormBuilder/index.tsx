@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 
 import { useParams, useSearchParams } from 'react-router-dom';
 
+import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useFormCustomFields from 'api/custom_fields/useCustomFields';
 import usePhase from 'api/phases/usePhase';
 import useProjectById from 'api/projects/useProjectById';
@@ -16,9 +17,14 @@ import { API_PATH } from 'containers/App/constants';
 import FormBuilder from 'components/FormBuilder/edit';
 
 import { saveSurveyAsPDF } from '../saveSurveyAsPDF';
-import { nativeSurveyConfig, clearOptionAndStatementIds } from '../utils';
+import {
+  nativeSurveyConfig,
+  clearOptionAndStatementIds,
+  communityMonitorConfig,
+} from '../utils';
 
 const SurveyFormBuilder = () => {
+  const { data: appConfig } = useAppConfiguration();
   const [exportModalOpen, setExportModalOpen] = useState(false);
   const { projectId, phaseId } = useParams() as {
     projectId: string;
@@ -53,11 +59,20 @@ const SurveyFormBuilder = () => {
     await saveSurveyAsPDF({ downloadPdfLink, locale, personal_data });
   };
 
+  // If this is the Community Monitor survey, use the correct configuration
+  const isCommunityMonitorSurvey =
+    appConfig?.data.attributes.settings.community_monitor?.project_id ===
+    projectId;
+
+  const config = isCommunityMonitorSurvey
+    ? communityMonitorConfig
+    : nativeSurveyConfig;
+
   return (
     <>
       <FormBuilder
         builderConfig={{
-          ...nativeSurveyConfig,
+          ...config,
           formCustomFields: newCustomFields,
           goBackUrl: `/admin/projects/${projectId}/phases/${phaseId}/native-survey`,
           onDownloadPDF: handleDownloadPDF,

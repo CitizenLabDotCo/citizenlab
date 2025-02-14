@@ -58,6 +58,56 @@ export const nativeSurveyConfig: FormBuilderConfig = {
   },
 };
 
+export const communityMonitorConfig: FormBuilderConfig = {
+  type: 'survey',
+  formBuilderTitle: messages.survey,
+  viewFormLinkCopy: messages.viewSurvey,
+  toolboxTitle: messages.addSurveyContent,
+  formSavedSuccessMessage: messages.successMessage,
+  supportArticleLink: messages.supportArticleLink,
+  pagesLogicHelperText: messages.pagesLogicHelperText,
+  toolboxFieldsToExclude: [
+    'point',
+    'polygon',
+    'line',
+    'multiline_text',
+    'multiselect',
+    'multiselect_image',
+    'file_upload',
+    'ranking',
+    'select',
+    'number',
+    'text',
+    'matrix_linear_scale',
+  ],
+  formCustomFields: undefined,
+  displayBuiltInFields: false,
+  builtInFields: [],
+  showStatusBadge: true,
+  isLogicEnabled: false,
+  alwaysShowCustomFields: true,
+  isFormPhaseSpecific: true,
+  groupingType: 'page',
+  getWarningNotice: () => {
+    return (
+      <Box id="e2e-warning-notice" mb="16px">
+        <Warning>
+          <FormattedMessage {...messages.existingSubmissionsWarning} />
+        </Warning>
+      </Box>
+    );
+  },
+  getAccessRightsNotice: (projectId, phaseId, handleClose) => {
+    return projectId && phaseId ? (
+      <AccessRightsNotice
+        projectId={projectId}
+        phaseId={phaseId}
+        handleClose={handleClose}
+      />
+    ) : null;
+  },
+};
+
 type FormActionsConfig = {
   phaseId?: string;
   editFormLink: RouteType;
