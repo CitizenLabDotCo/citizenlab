@@ -331,7 +331,6 @@ class WebApi::V1::ProjectsController < ApplicationController
       multiloc_service = MultilocService.new
       project = Project.create!(
         title_multiloc: multiloc_service.i18n_to_multiloc('phases.community_monitor_title'),
-        visible_to: 'nobody',
         internal_role: 'community_monitor'
       )
       Phase.create!(

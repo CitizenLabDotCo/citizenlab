@@ -1684,7 +1684,7 @@ resource 'Projects' do
 
   get 'web_api/v1/projects/community_monitor' do
     context 'hidden community monitor project exists' do
-      let!(:project) { create(:project, visible_to: 'nobody', internal_role: 'community_monitor') }
+      let!(:project) { create(:project, internal_role: 'community_monitor') }
 
       example 'Get community monitor project' do
         settings = AppConfiguration.instance.settings
@@ -1705,7 +1705,7 @@ resource 'Projects' do
 
         created_project = Project.unscoped.first
         created_phase = Phase.first
-        expect(created_project.visible_to).to eq 'nobody'
+        expect(created_project.internal_role).to eq 'community_monitor'
         expect(created_project.title_multiloc['en']).to eq 'Community monitor'
         expect(created_phase.native_survey_method).to eq 'community_monitor'
         expect(created_phase.title_multiloc['en']).to eq 'Community monitor'
