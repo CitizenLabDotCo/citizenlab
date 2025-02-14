@@ -2,7 +2,7 @@
 
 module ParticipationMethod
   class NativeSurvey < Base
-    delegate :allowed_extra_field_input_types, :default_fields, :allow_logic?, to: :native_survey_method
+    delegate :allowed_extra_field_input_types, :default_fields, :allow_logic?, :constraints,  to: :native_survey_method
 
     def self.method_str
       'native_survey'

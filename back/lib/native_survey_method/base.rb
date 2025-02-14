@@ -17,13 +17,7 @@ module NativeSurveyMethod
 
       multiloc_service = MultilocService.new
       [
-        CustomField.new(
-          id: SecureRandom.uuid,
-          key: 'page1',
-          resource: custom_form,
-          input_type: 'page',
-          page_layout: 'default'
-        ),
+        start_page_field(custom_form),
         CustomField.new(
           id: SecureRandom.uuid,
           key: CustomFieldService.new.generate_key(
@@ -45,15 +39,7 @@ module NativeSurveyMethod
             )
           ]
         ),
-        CustomField.new(
-          id: SecureRandom.uuid,
-          key: 'survey_end',
-          resource: custom_form,
-          input_type: 'page',
-          page_layout: 'default',
-          title_multiloc: multiloc_service.i18n_to_multiloc('form_builder.form_end_page.title_text_3'),
-          description_multiloc: multiloc_service.i18n_to_multiloc('form_builder.form_end_page.description_text_3')
-        )
+        end_page_field(custom_form, multiloc_service)
       ]
     end
 
@@ -64,5 +50,30 @@ module NativeSurveyMethod
     private
 
     attr_reader :phase
+
+
+    private
+
+    def start_page_field(custom_form)
+      CustomField.new(
+        id: SecureRandom.uuid,
+        key: 'page1',
+        resource: custom_form,
+        input_type: 'page',
+        page_layout: 'default'
+      )
+    end
+
+    def end_page_field(custom_form, multiloc_service)
+      CustomField.new(
+        id: SecureRandom.uuid,
+        key: 'survey_end',
+        resource: custom_form,
+        input_type: 'page',
+        page_layout: 'default',
+        title_multiloc: multiloc_service.i18n_to_multiloc('form_builder.form_end_page.title_text_3'),
+        description_multiloc: multiloc_service.i18n_to_multiloc('form_builder.form_end_page.description_text_3')
+      )
+    end
   end
 end
