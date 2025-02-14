@@ -1,6 +1,7 @@
 import React from 'react';
 
 import { Box, Icon, Text, colors } from '@citizenlab/cl2-component-library';
+import { createHighlighterLink } from 'component-library/components/Highlighter';
 
 import useProjectFolderById from 'api/project_folders/useProjectFolderById';
 
@@ -16,16 +17,14 @@ export const folderHighlighterId = 'folder';
 const LinkToFolderSettings = ({ folderId, projectId }: Props) => {
   const { data: projectFolder } = useProjectFolderById(folderId);
   const localize = useLocalize();
+  const linkTo = createHighlighterLink(
+    `/admin/projects/${projectId}/settings#${folderHighlighterId}`
+  );
 
   if (!projectFolder) return null;
 
   return (
-    <Link
-      to={
-        // #folder is needed to scroll the folder setting into view
-        `/admin/projects/${projectId}/settings#${folderHighlighterId}`
-      }
-    >
+    <Link to={linkTo}>
       <Box display="flex" alignItems="center" gap="4px">
         <Icon name="folder-solid" fill={colors.coolGrey600} width="14px" />
         <Text color="coolGrey600" m="0px" fontSize="s" p="0">
