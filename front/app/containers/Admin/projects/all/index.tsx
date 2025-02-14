@@ -181,10 +181,12 @@ const AdminProjectsList = memo(({ className }: Props) => {
     }
   );
   // The pending review count uses different params, so we fetch it separately
-  const { data: pendingReviewAdminPublicationsStatusCounts } =
-    useAdminPublicationsStatusCounts(pendingReviewParams, {
+  const { data: pendingReviewStatusCounts } = useAdminPublicationsStatusCounts(
+    pendingReviewParams,
+    {
       enabled: showPendingReviewTab,
-    });
+    }
+  );
 
   // ALL
   const { data: allAdminPublications } = useAdminPublications(
@@ -325,8 +327,8 @@ const AdminProjectsList = memo(({ className }: Props) => {
               <Tab
                 label={`
                   ${formatMessage(messages.pendingReview)} (${
-                  pendingReviewAdminPublicationsStatusCounts?.data.attributes
-                    .status_counts.draft || 0
+                  pendingReviewStatusCounts?.data.attributes.status_counts
+                    .draft || 0
                 })`}
                 active={activeTab === 'pending'}
                 url="/admin/projects/pending"
