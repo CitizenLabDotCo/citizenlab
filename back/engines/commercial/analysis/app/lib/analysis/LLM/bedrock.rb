@@ -67,11 +67,23 @@ module Analysis
             role: 'user',
             content: [
               {
-                text: [assistant_prefix, prompt].join
+                text: prompt
               }
             ]
-          }
-        ]
+          },
+          if assistant_prefix.empty?
+            nil
+          else
+            {
+              role: 'assistant',
+              content: [
+                {
+                  text: assistant_prefix
+                }
+              ]
+            }
+          end
+        ].compact
       end
 
       def invoke_params(prompt, **params)
