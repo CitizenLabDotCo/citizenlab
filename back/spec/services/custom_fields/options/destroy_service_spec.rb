@@ -42,5 +42,25 @@ describe CustomFields::Options::DestroyService do
         expect(custom_field1.reload.logic['rules'].pluck('if')).to eq [option2.id]
       end
     end
+
+    context 'when deleting a ranking custom-form field option' do
+      let(:ranking_cf) { create(:custom_field_ranking, :with_options, :for_custom_form) }
+      let(:another_cf) { create(:custom_field_select, :with_options, :for_custom_form) }
+      let!(:idea) do
+        create(:idea, custom_field_values: {
+          ranking_cf.key => ranking_cf.options.map(&:key),
+          another_cf.key => another_cf.options.first.key
+        })
+      end
+
+      it 'removes the option from the custom field values of ideas' do
+        option = ranking_cf.options.first
+
+        expect { service.destroy!(option, current_user) }
+          .not_to change { idea.reload.custom_field_values.except(ranking_cf.key) }
+
+        expect(idea.reload.custom_field_values[ranking_cf.key]).not_to include(option.key)
+      end
+    end
   end
 end
