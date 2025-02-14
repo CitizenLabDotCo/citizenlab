@@ -17,6 +17,7 @@ export const ideationConfig: FormBuilderConfig = {
   toolboxTitle: messages.customToolboxTitle,
 
   toolboxFieldsToInclude: [
+    // When adding new fields, confirm that the BE list matches
     'text',
     'multiline_text',
     'multiselect',
@@ -71,6 +72,7 @@ export const proposalsConfig: FormBuilderConfig = {
   toolboxTitle: messages.customToolboxTitle,
 
   toolboxFieldsToInclude: [
+    // When adding new fields, confirm that the BE list matches
     'text',
     'multiline_text',
     'multiselect',

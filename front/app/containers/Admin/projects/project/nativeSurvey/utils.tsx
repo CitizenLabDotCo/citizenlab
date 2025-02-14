@@ -29,6 +29,7 @@ export const nativeSurveyConfig: FormBuilderConfig = {
   pagesLogicHelperText: messages.pagesLogicHelperText,
 
   toolboxFieldsToInclude: [
+    // When adding new fields, confirm that the BE list matches
     'text',
     'multiline_text',
     'multiselect',
