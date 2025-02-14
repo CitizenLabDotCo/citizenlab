@@ -73,7 +73,7 @@ RSpec.describe Analysis::SummarizationMethod do
         shorten_labels: false
       })
 
-      mock_llm = instance_double(Analysis::LLM::GPT4Turbo)
+      mock_llm = instance_double(Analysis::LLM::GPT4o)
       plan.llm = mock_llm
       expect(mock_llm).to receive(:chat_async).with(kind_of(String)) do |prompt, &block|
         expect(prompt).to include(inputs[2].id)

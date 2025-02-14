@@ -12,7 +12,7 @@ module FlagInappropriateContent
 
     def initialize
       region = ENV.fetch('AWS_TOXICITY_DETECTION_REGION', nil) # Some clusters (e.g. Canada) are not allowed to send data to the US or Europe.
-      @llm = Analysis::LLM::ClaudeInstant1.new(region: region) if region
+      @llm = Analysis::LLM::Claude3Haiku.new(region: region) if region
     end
 
     def flag_toxicity!(flaggable, attributes: [])
