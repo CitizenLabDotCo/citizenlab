@@ -348,7 +348,7 @@ cy:
       subject: 'Mae syniad rydych chi''n ei ddilyn wedi derbyn diweddariad swyddogol ar y platfform o %{organizationName}'
       preheader: 'Mae yna ddiweddariad ar syniad rydych chi''n ei ddilyn'
     official_feedback_on_initiative_you_follow:
-      header_message: 'Rhoddodd %{officialName} ddiweddariad ar y cynnig ''%{initiativeTitle}''. Cliciwch y botwm isod i fynd i mewn i''r sgwrs gyda %{organizationName}.'
+      header_message: 'Rhoddodd %{officialName} ddiweddariad ar y cynnig ''%{initiativeTitle}''. Cliciwch y botwm isod i ddechrau sgwrs gyda %{organizationName}.'
       header_title: 'Mae diweddariad ar gynnig rydych chi''n ei ddilyn'
       subject: 'Mae cynnig rydych chi''n ei ddilyn wedi derbyn diweddariad swyddogol ar y platfform o %{organizationName}'
       preheader: 'Mae diweddariad ar gynnig rydych chi''n ei ddilyn'
