@@ -89,12 +89,6 @@ const AIInsights = ({ idea }: { idea: IIdea }) => {
               hideImagePlaceholder
             />
           ))}
-          <IdeaCard
-            ideaId={'ac1f90e0-2c84-40c3-9452-9acd0b4675ea'}
-            hideImage
-            hideIdeaStatus
-            hideImagePlaceholder
-          />
         </Box>
       )}
     </Box>
