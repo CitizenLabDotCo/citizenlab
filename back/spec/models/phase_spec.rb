@@ -479,6 +479,7 @@ RSpec.describe Phase do
 
     context 'survey is a community monitor survey' do
       before do
+        project.admin_publication.update! publication_status: 'hidden'
         project.update! internal_role: 'community_monitor'
         survey_phase.update! native_survey_method: 'community_monitor'
       end
@@ -497,8 +498,8 @@ RSpec.describe Phase do
         expect(survey_phase).not_to be_valid
       end
 
-      it 'is not valid when the project is not visible to anyone' do
-        project.visible_to = 'public'
+      it 'is not valid when the project is not hidden' do
+        survey_phase.project.admin_publication.publication_status = 'published'
         expect(survey_phase).not_to be_valid
       end
     end

@@ -97,10 +97,6 @@ class Project < ApplicationRecord
   validates :internal_role, inclusion: { in: INTERNAL_ROLES, allow_nil: true }
   validate :admin_publication_must_exist, unless: proc { Current.loading_tenant_template } # TODO: This should always be validated!
 
-  # default_scope { where.not(visible_to: 'nobody') } # To hide hidden projects such as community monitor
-
-  scope :not_hidden, -> { where.not(internal_role: 'community_monitor') }
-
   pg_search_scope :search_by_all,
     against: %i[title_multiloc description_multiloc description_preview_multiloc slug],
     using: { tsearch: { prefix: true } }

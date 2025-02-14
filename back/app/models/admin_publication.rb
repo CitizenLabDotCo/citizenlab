@@ -91,6 +91,10 @@ class AdminPublication < ApplicationRecord
     publication_status == 'published'
   end
 
+  def hidden?
+    publication_status == 'hidden'
+  end
+
   def ever_published?
     first_published_at.present?
   end
