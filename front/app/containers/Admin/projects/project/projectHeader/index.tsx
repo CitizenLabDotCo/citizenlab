@@ -53,6 +53,7 @@ const ProjectHeader = ({ projectId }: Props) => {
   const localize = useLocalize();
 
   if (!project) return null;
+
   const folderId = project.data.attributes.folder_id;
   let visibilityMessage: MessageDescriptor = messages.everyone;
   let visibilityIcon: IconNames = 'lock';
