@@ -353,7 +353,7 @@ class Phase < ApplicationRecord
       errors.add(:native_survey_method, :too_many_phases, message: 'community_monitor project can only have one phase')
     end
 
-    if project.visible_to != 'nobody'
+    if project.internal_role != 'community_monitor'
       errors.add(:native_survey_method, :project_not_hidden, message: 'community_monitor projects must be hidden')
     end
 

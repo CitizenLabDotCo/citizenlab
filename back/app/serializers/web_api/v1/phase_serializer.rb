@@ -78,7 +78,7 @@ class WebApi::V1::PhaseSerializer < WebApi::V1::BaseSerializer
   end
 
   attribute :form_builder_config, if: proc { |_phase, params|
-    current_user(params).admin?
+    current_user(params)&.admin?
   } do |phase|
     phase.pmethod.form_builder_config
   end

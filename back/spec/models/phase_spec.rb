@@ -479,7 +479,7 @@ RSpec.describe Phase do
 
     context 'survey is a community monitor survey' do
       before do
-        project.update! visible_to: 'nobody', internal_role: 'community_monitor'
+        project.update! internal_role: 'community_monitor'
         survey_phase.update! native_survey_method: 'community_monitor'
       end
 
