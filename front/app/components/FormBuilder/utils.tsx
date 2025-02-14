@@ -46,7 +46,7 @@ export type FormBuilderConfig = {
   formEndPageLogicOption?: MessageDescriptor;
   pagesLogicHelperText?: MessageDescriptor;
 
-  toolboxFieldsToExclude: ICustomFieldInputType[];
+  toolboxFieldsToInclude: ICustomFieldInputType[];
   formCustomFields: IFlatCustomField[] | undefined | Error;
 
   displayBuiltInFields: boolean;

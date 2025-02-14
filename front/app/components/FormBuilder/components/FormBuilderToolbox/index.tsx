@@ -195,7 +195,7 @@ const FormBuilderToolbox = ({
           label={formatMessage(messages.shortAnswer)}
           onClick={() => addField('text')}
           data-cy="e2e-short-answer"
-          fieldsToExclude={builderConfig.toolboxFieldsToExclude}
+          fieldsToInclude={builderConfig.toolboxFieldsToInclude}
           inputType="text"
           disabled={isCustomFieldsDisabled}
           showAIUpsell
@@ -205,7 +205,7 @@ const FormBuilderToolbox = ({
           label={formatMessage(messages.longAnswer)}
           onClick={() => addField('multiline_text')}
           data-cy="e2e-long-answer"
-          fieldsToExclude={builderConfig.toolboxFieldsToExclude}
+          fieldsToInclude={builderConfig.toolboxFieldsToInclude}
           inputType="multiline_text"
           disabled={isCustomFieldsDisabled}
           showAIUpsell
@@ -215,7 +215,7 @@ const FormBuilderToolbox = ({
           label={formatMessage(messages.singleChoice)}
           onClick={() => addField('select')}
           data-cy="e2e-single-choice"
-          fieldsToExclude={builderConfig.toolboxFieldsToExclude}
+          fieldsToInclude={builderConfig.toolboxFieldsToInclude}
           inputType="select"
           disabled={isCustomFieldsDisabled}
         />
@@ -224,7 +224,7 @@ const FormBuilderToolbox = ({
           label={formatMessage(messages.multipleChoice)}
           onClick={() => addField('multiselect')}
           data-cy="e2e-multiple-choice"
-          fieldsToExclude={builderConfig.toolboxFieldsToExclude}
+          fieldsToInclude={builderConfig.toolboxFieldsToInclude}
           inputType="multiselect"
           disabled={isCustomFieldsDisabled}
         />
@@ -233,7 +233,7 @@ const FormBuilderToolbox = ({
           label={formatMessage(messages.multipleChoiceImage)}
           onClick={() => addField('multiselect_image')}
           data-cy="e2e-image-choice"
-          fieldsToExclude={builderConfig.toolboxFieldsToExclude}
+          fieldsToInclude={builderConfig.toolboxFieldsToInclude}
           inputType="multiselect_image"
           disabled={isCustomFieldsDisabled}
         />
@@ -242,7 +242,7 @@ const FormBuilderToolbox = ({
           label={formatMessage(messages.linearScale)}
           onClick={() => addField('linear_scale')}
           data-cy="e2e-linear-scale"
-          fieldsToExclude={builderConfig.toolboxFieldsToExclude}
+          fieldsToInclude={builderConfig.toolboxFieldsToInclude}
           inputType="linear_scale"
           disabled={isCustomFieldsDisabled}
         />
@@ -251,7 +251,7 @@ const FormBuilderToolbox = ({
           label={formatMessage(messages.ranking)}
           onClick={() => addField('ranking')}
           data-cy="e2e-ranking"
-          fieldsToExclude={builderConfig.toolboxFieldsToExclude}
+          fieldsToInclude={builderConfig.toolboxFieldsToInclude}
           inputType="ranking"
           disabled={isCustomFieldsDisabled}
         />
@@ -260,7 +260,7 @@ const FormBuilderToolbox = ({
           label={formatMessage(messages.rating)}
           onClick={() => addField('rating')}
           data-cy="e2e-rating"
-          fieldsToExclude={builderConfig.toolboxFieldsToExclude}
+          fieldsToInclude={builderConfig.toolboxFieldsToInclude}
           inputType="rating"
           disabled={isCustomFieldsDisabled}
         />
@@ -269,7 +269,7 @@ const FormBuilderToolbox = ({
           label={formatMessage(messages.matrix)}
           onClick={() => addField('matrix_linear_scale')}
           data-cy="e2e-matrix"
-          fieldsToExclude={builderConfig.toolboxFieldsToExclude}
+          fieldsToInclude={builderConfig.toolboxFieldsToInclude}
           inputType="matrix_linear_scale"
           disabled={isCustomFieldsDisabled}
         />
@@ -278,7 +278,7 @@ const FormBuilderToolbox = ({
           label={formatMessage(messages.number)}
           onClick={() => addField('number')}
           data-cy="e2e-number-field"
-          fieldsToExclude={builderConfig.toolboxFieldsToExclude}
+          fieldsToInclude={builderConfig.toolboxFieldsToInclude}
           inputType="number"
           disabled={isCustomFieldsDisabled}
         />
@@ -287,12 +287,12 @@ const FormBuilderToolbox = ({
           label={formatMessage(messages.fileUpload)}
           onClick={() => addField('file_upload')}
           data-cy="e2e-file-upload-field"
-          fieldsToExclude={builderConfig.toolboxFieldsToExclude}
+          fieldsToInclude={builderConfig.toolboxFieldsToInclude}
           inputType="file_upload"
           disabled={isCustomFieldsDisabled}
         />
         <Box>
-          {!builderConfig.toolboxFieldsToExclude.includes('point') && ( // We want to show the mapping section
+          {builderConfig.toolboxFieldsToInclude.includes('point') && ( // We want to show the mapping section
             <>
               <Title
                 ml="16px"
@@ -310,7 +310,7 @@ const FormBuilderToolbox = ({
                 label={formatMessage(messages.dropPin)}
                 onClick={() => addField('point')}
                 data-cy="e2e-point-field"
-                fieldsToExclude={builderConfig.toolboxFieldsToExclude}
+                fieldsToInclude={builderConfig.toolboxFieldsToInclude}
                 inputType="point"
                 disabled={!isFormMappingEnabled}
                 disabledTooltipMessage={messages.mappingNotInCurrentLicense}
@@ -321,7 +321,7 @@ const FormBuilderToolbox = ({
                   label={formatMessage(messages.drawRoute)}
                   onClick={() => addField('line')}
                   data-cy="e2e-line-field"
-                  fieldsToExclude={builderConfig.toolboxFieldsToExclude}
+                  fieldsToInclude={builderConfig.toolboxFieldsToInclude}
                   inputType="line"
                   disabled={!isFormMappingEnabled}
                   disabledTooltipMessage={messages.mappingNotInCurrentLicense}
@@ -331,7 +331,7 @@ const FormBuilderToolbox = ({
                   label={formatMessage(messages.drawArea)}
                   onClick={() => addField('polygon')}
                   data-cy="e2e-polygon-field"
-                  fieldsToExclude={builderConfig.toolboxFieldsToExclude}
+                  fieldsToInclude={builderConfig.toolboxFieldsToInclude}
                   inputType="polygon"
                   disabled={!isFormMappingEnabled}
                   disabledTooltipMessage={messages.mappingNotInCurrentLicense}
@@ -341,7 +341,7 @@ const FormBuilderToolbox = ({
                   label={formatMessage(messages.shapefileUpload)}
                   onClick={() => addField('shapefile_upload')}
                   data-cy="e2e-file-shapefile-field"
-                  fieldsToExclude={builderConfig.toolboxFieldsToExclude}
+                  fieldsToInclude={builderConfig.toolboxFieldsToInclude}
                   inputType="shapefile_upload"
                   disabled={!isFormMappingEnabled}
                   disabledTooltipMessage={messages.mappingNotInCurrentLicense}
