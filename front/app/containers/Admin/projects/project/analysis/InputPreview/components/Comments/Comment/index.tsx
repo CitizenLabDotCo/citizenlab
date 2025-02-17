@@ -62,17 +62,16 @@ const Comment = ({ comment }: Props) => {
           />
         </QuillEditedContent>
       </StyledBox>
-      <Box display="flex" flexDirection="row">
+      <Box display="flex" alignItems="center" justifyContent="center">
         <Button
           buttonStyle="text"
           onClick={() => {
             setShowMore((showMore) => !showMore);
           }}
         >
-          {showMore ? 'Show less' : 'Show more'}
-        </Button>
-        <Button buttonStyle="text" onClick={() => {}}>
-          {formatMessage(messages.showSubComments)}
+          {showMore
+            ? formatMessage(messages.showLess)
+            : formatMessage(messages.showMore)}
         </Button>
       </Box>
     </Box>

@@ -5,8 +5,12 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.analysis.Comments.comments',
     defaultMessage: 'Comments',
   },
-  showSubComments: {
-    id: 'app.containers.Admin.projects.project.analysis.Comments.showSubComments',
-    defaultMessage: 'Show sub-comments',
+  showMore: {
+    id: 'app.containers.Admin.projects.project.analysis.Comments.showMore',
+    defaultMessage: 'Show more',
+  },
+  showLess: {
+    id: 'app.containers.Admin.projects.project.analysis.Comments.showLess',
+    defaultMessage: 'Show less',
   },
 });

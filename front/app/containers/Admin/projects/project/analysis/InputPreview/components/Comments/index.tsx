@@ -27,7 +27,7 @@ const Comments = () => {
 
   return (
     <Box>
-      <Title variant="h3">{formatMessage(messages.comments)}</Title>
+      <Title variant="h4">{formatMessage(messages.comments)}</Title>
       <Box>
         {topLevelComments?.map((comment) => (
           <Comment key={comment.id} comment={comment} />
