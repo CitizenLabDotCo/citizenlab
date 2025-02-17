@@ -1,6 +1,13 @@
 import React, { useMemo, useEffect } from 'react';
 
-import { Box, Spinner, Title } from '@citizenlab/cl2-component-library';
+import {
+  Box,
+  Spinner,
+  Title,
+  Button,
+  colors,
+  Divider,
+} from '@citizenlab/cl2-component-library';
 import { useInView } from 'react-intersection-observer';
 
 import useComments from 'api/comments/useComments';
@@ -10,6 +17,7 @@ import { useIntl } from 'utils/cl-intl';
 import { useSelectedInputContext } from '../../../SelectedInputContext';
 
 import messages from './messages';
+import Summary from './Summary';
 import TopLevelComment from './TopLevelComment';
 
 const Comments = () => {
@@ -46,6 +54,13 @@ const Comments = () => {
   return (
     <Box>
       <Title variant="h4">{formatMessage(messages.comments)}</Title>
+      <Button icon="stars" bgColor={colors.primary} mb="12px">
+        Summarize comments
+      </Button>
+      <Box>
+        <Summary />
+      </Box>
+      <Divider />
       <Box>
         {topLevelComments?.map((comment) => (
           <TopLevelComment key={comment.id} comment={comment} />
