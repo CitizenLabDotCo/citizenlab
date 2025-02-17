@@ -18,6 +18,7 @@ import { getFullName } from 'utils/textUtils';
 import { useSelectedInputContext } from '../SelectedInputContext';
 import Taggings from '../Taggings';
 
+import Comments from './components/Comments';
 import CustomFields from './components/CustomFields';
 import messages from './messages';
 
@@ -110,6 +111,8 @@ const InputListItem = () => {
       <Box id="tags-control" my="12px">
         <Taggings onlyShowTagged={false} inputId={selectedInputId} />
       </Box>
+
+      <Comments />
     </Box>
   );
 };
