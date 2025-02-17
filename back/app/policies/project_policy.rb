@@ -186,7 +186,7 @@ class ProjectPolicy < ApplicationPolicy
   end
 
   def community_monitor?
-    true
+    active_moderator?
   end
 
   private
