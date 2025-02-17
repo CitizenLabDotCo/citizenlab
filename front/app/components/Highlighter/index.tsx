@@ -31,19 +31,21 @@ const Container = styled(Box)<{ animate?: boolean }>`
 
 interface Props {
   children: React.ReactNode;
-  id: string;
+  // The part after the hash sign (#) in a URL is called the fragment identifier (or just fragment).
+  fragmentId: string;
 }
 
-const Highlighter = ({ id, children }: Props) => {
+const Highlighter = ({ fragmentId, children }: Props) => {
   const [animate, setAnimate] = useState(false);
   const location = useLocation();
 
   useEffect(() => {
     const handleHashChange = () => {
-      const targetElementIdFromHash = location.hash.slice(1);
+      const locationFragmentId = location.hash.slice(1);
 
-      if (targetElementIdFromHash === id) {
-        scrollToElement({ id: targetElementIdFromHash });
+      if (locationFragmentId === fragmentId) {
+        // We ensure id is on the element via Container below.
+        scrollToElement({ id: locationFragmentId });
         setAnimate(true);
         setTimeout(() => {
           setAnimate(false);
@@ -56,10 +58,10 @@ const Highlighter = ({ id, children }: Props) => {
     return () => {
       clearTimeout(timeout);
     };
-  }, [id, location.hash]);
+  }, [fragmentId, location.hash]);
 
   return (
-    <Container id={id} animate={animate}>
+    <Container id={fragmentId} animate={animate}>
       {children}
     </Container>
   );

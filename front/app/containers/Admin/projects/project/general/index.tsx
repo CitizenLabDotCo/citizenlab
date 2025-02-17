@@ -535,7 +535,7 @@ const AdminProjectsProjectGeneral = () => {
             </>
           )}
           <Warning>{formatMessage(messages.publicationStatusWarning)}</Warning>
-          <Highlighter id="title-multiloc">
+          <Highlighter fragmentId="title-multiloc">
             <ProjectNameInput
               titleMultiloc={projectAttrs.title_multiloc}
               titleError={titleError}

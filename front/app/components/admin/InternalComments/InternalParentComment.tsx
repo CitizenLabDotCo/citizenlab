@@ -94,7 +94,7 @@ const InternalParentComment = ({
     return (
       <Container className={`${className || ''} e2e-parent-and-childcomments`}>
         <ParentCommentContainer className={commentDeleted ? 'deleted' : ''}>
-          <Highlighter id={commentId}>
+          <Highlighter fragmentId={commentId}>
             <InternalComment
               ideaId={ideaId}
               projectId={projectId}
@@ -128,7 +128,7 @@ const InternalParentComment = ({
 
         {modifiedChildCommentIds.length > 0 &&
           modifiedChildCommentIds.map((childCommentId, index) => (
-            <Highlighter id={childCommentId} key={childCommentId}>
+            <Highlighter fragmentId={childCommentId} key={childCommentId}>
               <InternalComment
                 ideaId={ideaId}
                 projectId={projectId}

@@ -139,7 +139,7 @@ const ProjectDescription = () => {
               withCTAButton
             />
           )}
-          <Highlighter id="description-multiloc">
+          <Highlighter fragmentId="description-multiloc">
             <ProjectDescriptionBuilderToggle
               valueMultiloc={formValues.description_multiloc}
               onChange={handleDescriptionOnChange}
