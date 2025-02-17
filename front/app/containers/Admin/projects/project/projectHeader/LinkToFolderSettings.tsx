@@ -25,7 +25,7 @@ const LinkToFolderSettings = ({ folderId, projectId }: Props) => {
   if (!projectFolder) return null;
 
   return (
-    <Link to={linkTo}>
+    <Link to={linkTo} data-cy="e2e-folder-preview-link-to-settings">
       <Box display="flex" alignItems="center" gap="4px">
         <Icon name="folder-solid" fill={colors.coolGrey600} width="14px" />
         <Text color="coolGrey600" m="0px" fontSize="s" p="0">
