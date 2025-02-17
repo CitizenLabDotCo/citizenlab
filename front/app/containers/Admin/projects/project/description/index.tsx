@@ -27,6 +27,8 @@ import TextAreaMultilocWithLocaleSwitcher from 'components/UI/TextAreaMultilocWi
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import { defaultAdminCardPadding } from 'utils/styleConstants';
 
+import { fragmentId } from '../projectHeader/ProjectDescriptionPreview';
+
 import messages from './messages';
 
 interface IFormValues {
@@ -139,7 +141,7 @@ const ProjectDescription = () => {
               withCTAButton
             />
           )}
-          <Highlighter fragmentId="description-multiloc">
+          <Highlighter fragmentId={fragmentId}>
             <ProjectDescriptionBuilderToggle
               valueMultiloc={formValues.description_multiloc}
               onChange={handleDescriptionOnChange}

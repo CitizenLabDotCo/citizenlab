@@ -51,6 +51,8 @@ import { isNilOrError } from 'utils/helperUtils';
 import { defaultAdminCardPadding } from 'utils/styleConstants';
 import { validateSlug } from 'utils/textUtils';
 
+import { fragmentId } from '../projectHeader';
+
 import AttachmentsDropzone from './components/AttachmentsDropzone';
 import GeographicAreaInputs from './components/GeographicAreaInputs';
 import ProjectCardImageDropzone from './components/ProjectCardImageDropzone';
@@ -535,7 +537,7 @@ const AdminProjectsProjectGeneral = () => {
             </>
           )}
           <Warning>{formatMessage(messages.publicationStatusWarning)}</Warning>
-          <Highlighter fragmentId="title-multiloc">
+          <Highlighter fragmentId={fragmentId}>
             <ProjectNameInput
               titleMultiloc={projectAttrs.title_multiloc}
               titleError={titleError}

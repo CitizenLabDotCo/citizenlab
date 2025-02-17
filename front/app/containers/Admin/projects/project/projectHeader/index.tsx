@@ -42,6 +42,7 @@ interface Props {
   projectId: string;
 }
 
+export const fragmentId = 'title-multiloc';
 const ProjectHeader = ({ projectId }: Props) => {
   const { data: project } = useProjectById(projectId);
   const { data: projectReview } = useProjectReview(projectId);
@@ -93,7 +94,7 @@ const ProjectHeader = ({ projectId }: Props) => {
           >
             <Link
               to={createHighlighterLink(
-                `/admin/projects/${project.data.id}/settings#title-multiloc`
+                `/admin/projects/${project.data.id}/settings#${fragmentId}`
               )}
               data-cy="e2e-project-title-preview-link-to-settings"
             >

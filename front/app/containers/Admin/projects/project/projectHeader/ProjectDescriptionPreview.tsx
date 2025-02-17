@@ -29,7 +29,7 @@ const EditDescriptionLinkContent = () => {
     </Box>
   );
 };
-
+export const fragmentId = 'description-multiloc';
 const ProjectDescriptionPreview = ({ project }: Props) => {
   const projectId = project.data.id;
   const { data: projectDescriptionBuilderLayout } =
@@ -52,7 +52,7 @@ const ProjectDescriptionPreview = ({ project }: Props) => {
     <Link
       data-cy="e2e-project-description-preview-link-to-multiloc-settings"
       to={createHighlighterLink(
-        `/admin/projects/${projectId}/settings/description#description-multiloc`
+        `/admin/projects/${projectId}/settings/description#${fragmentId}`
       )}
     >
       <EditDescriptionLinkContent />
