@@ -565,6 +565,8 @@ RSpec.describe JsonSchemaGeneratorService do
     end
   end
 
+  # TODO: Add test for sentiment_linear_scale
+
   describe '#visit_rating' do
     let(:field) { create(:custom_field_linear_scale, key: field_key) }
 

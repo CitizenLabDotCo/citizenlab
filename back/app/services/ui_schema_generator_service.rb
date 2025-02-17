@@ -95,6 +95,16 @@ class UiSchemaGeneratorService < FieldVisitorService
     end
   end
 
+  def visit_sentiment_linear_scale(field)
+    default(field).tap do |ui_field|
+      ui_field[:options][:linear_scale_label1] = multiloc_service.t(field.linear_scale_label_1_multiloc)
+      ui_field[:options][:linear_scale_label2] = multiloc_service.t(field.linear_scale_label_2_multiloc)
+      ui_field[:options][:linear_scale_label3] = multiloc_service.t(field.linear_scale_label_3_multiloc)
+      ui_field[:options][:linear_scale_label4] = multiloc_service.t(field.linear_scale_label_4_multiloc)
+      ui_field[:options][:linear_scale_label5] = multiloc_service.t(field.linear_scale_label_5_multiloc)
+    end
+  end
+
   def visit_matrix_linear_scale(field)
     visit_linear_scale(field).tap do |ui_field|
       ui_field[:options][:statements] = field.matrix_statements.map do |statement|

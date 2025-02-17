@@ -80,6 +80,10 @@ class SurveyResultsGeneratorService < FieldVisitorService
     visit_select_base(field)
   end
 
+  def visit_sentiment_linear_scale(field)
+    visit_select_base(field)
+  end
+
   def visit_matrix_linear_scale(field)
     core_field_attributes(field).merge({
       multilocs: { answer: build_scaled_input_multilocs(field) },

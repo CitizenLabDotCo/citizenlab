@@ -635,6 +635,8 @@ RSpec.describe UiSchemaGeneratorService do
       )
     end
 
+    # TODO: Add test for sentiment linear scale
+
     it 'returns the schema for the given field' do
       expect(generator.visit_linear_scale(field)).to eq({
         type: 'Control',
