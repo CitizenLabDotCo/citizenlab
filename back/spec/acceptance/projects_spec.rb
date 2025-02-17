@@ -1684,54 +1684,70 @@ resource 'Projects' do
 
   get 'web_api/v1/projects/community_monitor' do
     context 'when project admin' do
-    before { admin_header_token }
+      before { admin_header_token }
 
-    context 'hidden community monitor project exists' do
+      context 'hidden community monitor project exists' do
+        let!(:project) { create(:project, internal_role: 'community_monitor') }
+
+        example 'Get community monitor project' do
+          settings = AppConfiguration.instance.settings
+          settings['community_monitor'] = { 'enabled' => true, 'allowed' => true, 'project_id' => project.id }
+          AppConfiguration.instance.update!(settings:)
+
+          do_request
+          assert_status 200
+        end
+      end
+
+      context 'hidden community monitor project does not exist' do
+        example 'Create and get hidden community monitor project' do
+          SettingsService.new.activate_feature! 'community_monitor'
+
+          do_request
+          assert_status 200
+
+          created_project = Project.first
+          created_phase = Phase.first
+          expect(created_project.admin_publication.publication_status).to eq 'hidden'
+          expect(created_project.internal_role).to eq 'community_monitor'
+          expect(created_project.title_multiloc['en']).to eq 'Community monitor'
+          expect(created_phase.native_survey_method).to eq 'community_monitor'
+          expect(created_phase.title_multiloc['en']).to eq 'Community monitor'
+
+          settings = AppConfiguration.instance.settings
+          expect(settings['community_monitor']['project_id']).to eq created_project.id
+        end
+
+        example 'Error: Hidden project does not get created without feature flag' do
+          do_request
+          assert_status 404
+        end
+      end
+
+      context 'stored community monitor project ID is incorrect' do
+        example 'Error: Hidden project does not exist' do
+          settings = AppConfiguration.instance.settings
+          settings['community_monitor'] = { 'enabled' => true, 'allowed' => true, 'project_id' => 'NON_EXISTENT' }
+          AppConfiguration.instance.update!(settings:)
+
+          do_request
+          assert_status 404
+        end
+      end
+    end
+
+    context 'when resident' do
       let!(:project) { create(:project, internal_role: 'community_monitor') }
 
-      example 'Get community monitor project' do
+      before { resident_header_token }
+
+      example '[Error] Get community monitor project returns unauthorised' do
         settings = AppConfiguration.instance.settings
         settings['community_monitor'] = { 'enabled' => true, 'allowed' => true, 'project_id' => project.id }
         AppConfiguration.instance.update!(settings:)
 
         do_request
-        assert_status 200
-      end
-    end
-
-    context 'hidden community monitor project does not exist' do
-      example 'Create and get hidden community monitor project' do
-        SettingsService.new.activate_feature! 'community_monitor'
-
-        do_request
-        assert_status 200
-
-        created_project = Project.first
-        created_phase = Phase.first
-        expect(created_project.admin_publication.publication_status).to eq 'hidden'
-        expect(created_project.internal_role).to eq 'community_monitor'
-        expect(created_project.title_multiloc['en']).to eq 'Community monitor'
-        expect(created_phase.native_survey_method).to eq 'community_monitor'
-        expect(created_phase.title_multiloc['en']).to eq 'Community monitor'
-
-        settings = AppConfiguration.instance.settings
-        expect(settings['community_monitor']['project_id']).to eq created_project.id
-      end
-
-      example 'Error: Hidden project does not get created without feature flag' do
-        do_request
-        assert_status 404
-      end
-    end
-
-    context 'stored community monitor project ID is incorrect' do
-      example 'Error: Hidden project does not exist' do
-        settings = AppConfiguration.instance.settings
-        settings['community_monitor'] = { 'enabled' => true, 'allowed' => true, 'project_id' => 'NON_EXISTENT' }
-        AppConfiguration.instance.update!(settings:)
-
-        do_request
-        assert_status 404
+        assert_status 401
       end
     end
   end
