@@ -38,8 +38,8 @@ const Comment = ({ comment }: Props) => {
   const { attributes } = comment;
 
   return (
-    <Box mb="8px" key={comment.id} borderBottom={`1px solid ${colors.divider}`}>
-      <Box mb="8px">
+    <Box key={comment.id} borderBottom={`1px solid ${colors.divider}`} pt="8px">
+      <Box>
         <Author
           authorId={authorId ?? null}
           authorHash={
