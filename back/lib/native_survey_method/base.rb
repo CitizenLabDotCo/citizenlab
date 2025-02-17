@@ -47,6 +47,10 @@ module NativeSurveyMethod
       true
     end
 
+    def constraints
+      {}
+    end
+
     private
 
     attr_reader :phase

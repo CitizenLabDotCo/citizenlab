@@ -479,7 +479,7 @@ module MultiTenancy
             community_monitor: {
               enabled: true,
               allowed: true,
-              project_id: nil
+              project_id: ''
             }
           })
         )
