@@ -14,6 +14,7 @@ interface Props {
   folderId: string;
   projectId: string;
 }
+
 export const fragmentId = 'folder';
 const LinkToFolderSettings = ({ folderId, projectId }: Props) => {
   const { data: projectFolder } = useProjectFolderById(folderId);

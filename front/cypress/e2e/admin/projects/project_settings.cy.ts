@@ -22,9 +22,10 @@ describe('Project settings', () => {
           projectIds: [projectId],
         }).then((folder) => {
           const folderId = folder.body.data.id;
-          if (typeof folderId === 'string') globalFolderId = folderId;
-
-          cy.apiAddProjectsToFolder([projectId], folderId);
+          if (typeof folderId === 'string') {
+            globalFolderId = folderId;
+            cy.apiAddProjectsToFolder([projectId], folderId);
+          }
         });
       }
     });
