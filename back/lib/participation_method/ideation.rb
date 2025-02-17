@@ -396,6 +396,10 @@ module ParticipationMethod
       true
     end
 
+    def create_idea_followers?
+      true
+    end
+
     private
 
     def proposed_budget_in_form?

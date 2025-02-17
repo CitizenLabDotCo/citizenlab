@@ -166,6 +166,10 @@ module ParticipationMethod
       false
     end
 
+    def create_idea_followers?
+      false
+    end
+
     private
 
     attr_reader :phase
