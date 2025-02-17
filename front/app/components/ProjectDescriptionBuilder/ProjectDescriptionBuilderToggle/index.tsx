@@ -18,6 +18,7 @@ import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import messages from 'containers/ProjectDescriptionBuilder/messages';
 
+import Highlighter from 'components/Highlighter';
 import QuillMultilocWithLocaleSwitcher from 'components/UI/QuillEditor/QuillMultilocWithLocaleSwitcher';
 import Warning from 'components/UI/Warning';
 
@@ -120,14 +121,16 @@ const ProjectDescriptionBuilderToggle = ({
         </>
       )}
       {!projectDescriptionBuilderLinkVisible && (
-        <QuillMultilocWithLocaleSwitcher
-          id="e2e-project-description-multiloc-module-active"
-          valueMultiloc={valueMultiloc}
-          onChange={onChange}
-          label={label}
-          labelTooltipText={labelTooltipText}
-          withCTAButton
-        />
+        <Highlighter id="description-multiloc">
+          <QuillMultilocWithLocaleSwitcher
+            id="e2e-project-description-multiloc-module-active"
+            valueMultiloc={valueMultiloc}
+            onChange={onChange}
+            label={label}
+            labelTooltipText={labelTooltipText}
+            withCTAButton
+          />
+        </Highlighter>
       )}
     </Box>
   );

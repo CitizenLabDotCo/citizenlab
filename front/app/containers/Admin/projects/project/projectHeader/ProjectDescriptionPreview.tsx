@@ -6,6 +6,8 @@ import { RouteType } from 'routes';
 import useProjectDescriptionBuilderLayout from 'api/project_description_builder/useProjectDescriptionBuilderLayout';
 import { IProject } from 'api/projects/types';
 
+import { createHighlighterLink } from 'components/Highlighter';
+
 import { useIntl } from 'utils/cl-intl';
 import Link from 'utils/cl-router/Link';
 
@@ -49,7 +51,9 @@ const ProjectDescriptionPreview = ({ project }: Props) => {
   ) : (
     <Link
       data-cy="e2e-project-description-preview-link-to-multiloc-settings"
-      to={`/admin/projects/${projectId}/settings/description`}
+      to={createHighlighterLink(
+        `/admin/projects/${projectId}/settings/description#description-multiloc`
+      )}
     >
       <EditDescriptionLinkContent />
     </Link>
