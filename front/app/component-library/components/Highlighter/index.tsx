@@ -52,14 +52,14 @@ const Highlighter = ({ id, children }: Props) => {
       }
     };
 
-    // Call the handler immediately to get the initial hash value
-    handleHashChange();
+    const timeout = setTimeout(handleHashChange, 100); // Small delay for hydration issues
 
     // Add event listener for hash change
     window.addEventListener('hashchange', handleHashChange);
 
     // Clean up the event listener on unmount
     return () => {
+      clearTimeout(timeout);
       window.removeEventListener('hashchange', handleHashChange);
     };
   }, [id]);
