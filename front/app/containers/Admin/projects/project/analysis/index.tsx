@@ -5,6 +5,7 @@ import { createPortal } from 'react-dom';
 import { FocusOn } from 'react-focus-on';
 
 import InputPreview from './InputPreview';
+import InputsList from './InputsList';
 import Insights from './Insights';
 import SelectedInputContext from './SelectedInputContext';
 import Tags from './Tags';
@@ -41,6 +42,10 @@ const Analysis = () => {
               bg={colors.white}
             >
               <Tags />
+            </Box>
+
+            <Box flex="1" mt="12px">
+              <InputsList />
             </Box>
 
             <Box
