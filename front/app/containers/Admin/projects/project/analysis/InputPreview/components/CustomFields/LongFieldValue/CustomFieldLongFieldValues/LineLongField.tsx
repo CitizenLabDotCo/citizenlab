@@ -6,7 +6,7 @@ import { IIdeaCustomField } from 'api/idea_custom_fields/types';
 
 import T from 'components/T';
 
-import LineMapPreview from '../MapPreview/LineMapPreview';
+import LineMapPreview from '../../../MapPreview/LineMapPreview';
 
 type Props = {
   rawValue: any;

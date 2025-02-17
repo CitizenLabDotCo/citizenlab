@@ -7,7 +7,7 @@ import { IIdeaCustomField } from 'api/idea_custom_fields/types';
 
 import T from 'components/T';
 
-import ShapefilePreview from '../../components/MapPreview/ShapefilePreview';
+import ShapefilePreview from '../../../MapPreview/ShapefilePreview';
 
 type Props = {
   input: IInputsData;

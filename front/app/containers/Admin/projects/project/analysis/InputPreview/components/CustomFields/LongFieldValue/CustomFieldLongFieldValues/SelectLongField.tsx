@@ -6,8 +6,8 @@ import { IIdeaCustomField } from 'api/idea_custom_fields/types';
 
 import T from 'components/T';
 
-import { FilterToggleButton } from '../FilterToggleButton';
-import { SelectOptionText } from '../SelectOptionText';
+import { FilterToggleButton } from './FilterToggleButton';
+import { SelectOptionText } from './SelectOptionText';
 
 type Props = {
   customField: IIdeaCustomField;

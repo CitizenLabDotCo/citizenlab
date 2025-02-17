@@ -9,8 +9,9 @@ import T from 'components/T';
 
 import { useIntl } from 'utils/cl-intl';
 
-import messages from '../../../messages';
-import { FilterToggleButton } from '../FilterToggleButton';
+import messages from '../../../../../messages';
+
+import { FilterToggleButton } from './FilterToggleButton';
 
 type Props = {
   input: IInputsData;
