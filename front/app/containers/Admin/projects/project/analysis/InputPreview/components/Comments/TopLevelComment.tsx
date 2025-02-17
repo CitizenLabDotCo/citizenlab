@@ -25,7 +25,7 @@ const TopLevelComment = ({ comment }: Props) => {
   } = useComments(
     {
       commentId: comment.id,
-      pageSize: 2,
+      pageSize: 5,
     },
     !!comment.attributes.children_count
   );
