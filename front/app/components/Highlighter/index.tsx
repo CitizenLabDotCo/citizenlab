@@ -43,13 +43,11 @@ const Highlighter = ({ id, children }: Props) => {
       const targetElementIdFromHash = location.hash.slice(1);
 
       if (targetElementIdFromHash === id) {
-        requestAnimationFrame(() => {
-          scrollToElement({ id: targetElementIdFromHash });
-          setAnimate(true);
-          setTimeout(() => {
-            setAnimate(false);
-          }, 3000);
-        });
+        scrollToElement({ id: targetElementIdFromHash });
+        setAnimate(true);
+        setTimeout(() => {
+          setAnimate(false);
+        }, 3000);
       }
     };
 
