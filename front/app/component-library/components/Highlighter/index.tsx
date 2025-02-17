@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 
 import { Box, colors, stylingConsts } from '@citizenlab/cl2-component-library';
+import { useLocation } from 'react-router-dom';
 import { RouteType } from 'routes';
 import styled, { keyframes, css } from 'styled-components';
 
@@ -35,13 +36,13 @@ interface Props {
 
 const Highlighter = ({ id, children }: Props) => {
   const [animate, setAnimate] = useState(false);
+  const location = useLocation();
 
   useEffect(() => {
     const handleHashChange = () => {
-      const targetElementIdFromHash = window.location.hash.slice(1);
-      const targetElement = document.getElementById(targetElementIdFromHash);
+      const targetElementIdFromHash = location.hash.slice(1);
 
-      if (targetElement && targetElementIdFromHash === id) {
+      if (targetElementIdFromHash === id) {
         requestAnimationFrame(() => {
           scrollToElement({ id: targetElementIdFromHash });
           setAnimate(true);
@@ -52,17 +53,12 @@ const Highlighter = ({ id, children }: Props) => {
       }
     };
 
-    // Call the handler immediately to get the initial hash value
-    handleHashChange();
+    const timeout = setTimeout(handleHashChange, 100); // Small delay for hydration issues
 
-    // Add event listener for hash change
-    window.addEventListener('hashchange', handleHashChange);
-
-    // Clean up the event listener on unmount
     return () => {
-      window.removeEventListener('hashchange', handleHashChange);
+      clearTimeout(timeout);
     };
-  }, [id]);
+  }, [id, location.hash]);
 
   return (
     <Container id={id} animate={animate}>
