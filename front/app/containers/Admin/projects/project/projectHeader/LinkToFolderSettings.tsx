@@ -1,11 +1,12 @@
 import React from 'react';
 
 import { Box, Icon, Text, colors } from '@citizenlab/cl2-component-library';
-import { createHighlighterLink } from 'component-library/components/Highlighter';
 
 import useProjectFolderById from 'api/project_folders/useProjectFolderById';
 
 import useLocalize from 'hooks/useLocalize';
+
+import { createHighlighterLink } from 'components/Highlighter';
 
 import Link from 'utils/cl-router/Link';
 
@@ -13,12 +14,12 @@ interface Props {
   folderId: string;
   projectId: string;
 }
-export const folderHighlighterId = 'folder';
+export const fragmentId = 'folder';
 const LinkToFolderSettings = ({ folderId, projectId }: Props) => {
   const { data: projectFolder } = useProjectFolderById(folderId);
   const localize = useLocalize();
   const linkTo = createHighlighterLink(
-    `/admin/projects/${projectId}/settings#${folderHighlighterId}`
+    `/admin/projects/${projectId}/settings#${fragmentId}`
   );
 
   if (!projectFolder) return null;

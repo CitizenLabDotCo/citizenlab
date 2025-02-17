@@ -1,11 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
-import {
-  Box,
-  colors,
-  Highlighter,
-  IconTooltip,
-} from '@citizenlab/cl2-component-library';
+import { Box, colors, IconTooltip } from '@citizenlab/cl2-component-library';
 import { isEmpty, isString } from 'lodash-es';
 import { useParams, useLocation } from 'react-router-dom';
 import { Multiloc, UploadFile, CLErrors } from 'typings';
@@ -56,7 +51,7 @@ import { isNilOrError } from 'utils/helperUtils';
 import { defaultAdminCardPadding } from 'utils/styleConstants';
 import { validateSlug } from 'utils/textUtils';
 
-import { folderHighlighterId } from '../projectHeader/LinkToFolderSettings';
+import { fragmentId } from '../projectHeader/LinkToFolderSettings';
 
 import AttachmentsDropzone from './components/AttachmentsDropzone';
 import GeographicAreaInputs from './components/GeographicAreaInputs';
@@ -579,7 +574,7 @@ const AdminProjectsProjectGeneral = () => {
           />
 
           {isProjectFoldersEnabled && (
-            <Highlighter id={folderHighlighterId}>
+            <Highlighter fragmentId={fragmentId}>
               <ProjectFolderSelect
                 projectAttrs={projectAttrs}
                 onProjectAttributesDiffChange={
