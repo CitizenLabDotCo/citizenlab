@@ -9,8 +9,8 @@ import { useIntl } from 'utils/cl-intl';
 
 import { useSelectedInputContext } from '../../../SelectedInputContext';
 
-import Comment from './Comment';
 import messages from './messages';
+import TopLevelComment from './TopLevelComment';
 
 const Comments = () => {
   const { formatMessage } = useIntl();
@@ -48,7 +48,7 @@ const Comments = () => {
       <Title variant="h4">{formatMessage(messages.comments)}</Title>
       <Box>
         {topLevelComments?.map((comment) => (
-          <Comment key={comment.id} comment={comment} />
+          <TopLevelComment key={comment.id} comment={comment} />
         ))}
       </Box>
       {hasNextPage && !isFetchingNextPage && (
