@@ -39,7 +39,7 @@ const Comments = () => {
   // Trigger fetching of next page when the user scrolls to the bottom
   useEffect(() => {
     if (inView && hasNextPage) {
-      setTimeout(() => fetchNextPage(), 500);
+      fetchNextPage();
     }
   }, [inView, hasNextPage, fetchNextPage]);
 
