@@ -17,6 +17,7 @@ import {
   SectionTitle,
   SectionDescription,
 } from 'components/admin/Section';
+import Highlighter from 'components/Highlighter';
 import ProjectDescriptionBuilderToggle from 'components/ProjectDescriptionBuilder/ProjectDescriptionBuilderToggle';
 import Button from 'components/UI/ButtonWithLink';
 import Error from 'components/UI/Error';
@@ -138,12 +139,15 @@ const ProjectDescription = () => {
               withCTAButton
             />
           )}
-          <ProjectDescriptionBuilderToggle
-            valueMultiloc={formValues.description_multiloc}
-            onChange={handleDescriptionOnChange}
-            label={formatMessage(messages.descriptionLabel)}
-            labelTooltipText={formatMessage(messages.descriptionTooltip)}
-          />
+          <Highlighter fragmentId="description-multiloc">
+            <ProjectDescriptionBuilderToggle
+              valueMultiloc={formValues.description_multiloc}
+              onChange={handleDescriptionOnChange}
+              label={formatMessage(messages.descriptionLabel)}
+              labelTooltipText={formatMessage(messages.descriptionTooltip)}
+            />
+          </Highlighter>
+
           <Error
             fieldName="description_multiloc"
             // TODO: Fix this the next time the file is edited.

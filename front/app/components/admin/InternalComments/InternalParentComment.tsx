@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Highlighter, Spinner } from '@citizenlab/cl2-component-library';
+import { Spinner } from '@citizenlab/cl2-component-library';
 import { darken } from 'polished';
 import { useLocation } from 'react-router-dom';
 import styled, { useTheme } from 'styled-components';
@@ -9,6 +9,7 @@ import useIdeaById from 'api/ideas/useIdeaById';
 import useInternalComment from 'api/internal_comments/useInternalComment';
 import useInternalComments from 'api/internal_comments/useInternalComments';
 
+import Highlighter from 'components/Highlighter';
 import commentsMessages from 'components/PostShowComponents/Comments/messages';
 import Button from 'components/UI/ButtonWithLink';
 
@@ -93,7 +94,7 @@ const InternalParentComment = ({
     return (
       <Container className={`${className || ''} e2e-parent-and-childcomments`}>
         <ParentCommentContainer className={commentDeleted ? 'deleted' : ''}>
-          <Highlighter id={commentId}>
+          <Highlighter fragmentId={commentId}>
             <InternalComment
               ideaId={ideaId}
               projectId={projectId}
@@ -127,7 +128,7 @@ const InternalParentComment = ({
 
         {modifiedChildCommentIds.length > 0 &&
           modifiedChildCommentIds.map((childCommentId, index) => (
-            <Highlighter id={childCommentId} key={childCommentId}>
+            <Highlighter fragmentId={childCommentId} key={childCommentId}>
               <InternalComment
                 ideaId={ideaId}
                 projectId={projectId}

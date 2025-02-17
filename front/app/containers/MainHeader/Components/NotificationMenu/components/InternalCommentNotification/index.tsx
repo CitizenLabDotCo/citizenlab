@@ -1,8 +1,8 @@
 import React, { memo } from 'react';
 
-import { createHighlighterLink } from 'component-library/components/Highlighter';
-
 import { IInternalCommentNotificationData } from 'api/notifications/types';
+
+import { createHighlighterLink } from 'components/Highlighter';
 
 import { FormattedMessage, MessageDescriptor } from 'utils/cl-intl';
 
