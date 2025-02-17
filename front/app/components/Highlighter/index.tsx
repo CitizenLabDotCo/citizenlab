@@ -35,6 +35,16 @@ interface Props {
   fragmentId: string;
 }
 
+/* 
+Instructions:
+
+1. Add a hash + fragment identifier to the link that leads to the target
+  a. (e.g. change /admin/projects/settings => /admin/projects/settings#folder).
+  b. "Wrap" the link with createHighlighterLink to easily track usage (e.g. /admin/projects/settings#folder => createHighlighterLink(/admin/projects/settings#folder)).
+2. Wrap the target component with Highlighter
+3. Pass the same fragment id from the link as the fragmentId to Highlighter. fragmentId would be "folder" in our example from above.
+*/
+
 const Highlighter = ({ fragmentId, children }: Props) => {
   const [animate, setAnimate] = useState(false);
   const location = useLocation();
