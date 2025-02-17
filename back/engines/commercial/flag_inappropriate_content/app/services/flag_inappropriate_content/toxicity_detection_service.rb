@@ -9,15 +9,20 @@ module FlagInappropriateContent
       'D' => 'spam',
       'E' => nil
     }
+    FLAGGABLE_TO_DEFAULT_ATTRIBUTES = {
+      'Idea' => %i[title_multiloc body_multiloc location_description],
+      'Comment' => %i[body_multiloc]
+    }
 
     def initialize
       region = ENV.fetch('AWS_TOXICITY_DETECTION_REGION', nil) # Some clusters (e.g. Canada) are not allowed to send data to the US or Europe.
       @llm = Analysis::LLM::ClaudeInstant1.new(region: region) if region
     end
 
-    def flag_toxicity!(flaggable, attributes: [])
+    def flag_toxicity!(flaggable, attributes: nil)
       return unless AppConfiguration.instance.feature_activated? 'flag_inappropriate_content'
 
+      attributes ||= default_attributes(flaggable)
       flag_service = InappropriateContentFlagService.new
 
       classification = check_toxicity(flaggable, attributes:)
@@ -29,7 +34,8 @@ module FlagInappropriateContent
       end
     end
 
-    def check_toxicity(flaggable, attributes: [])
+    def check_toxicity(flaggable, attributes: nil)
+      attributes ||= default_attributes(flaggable)
       texts = extract_texts flaggable, attributes
       return if texts.blank?
 
@@ -37,6 +43,10 @@ module FlagInappropriateContent
     end
 
     private
+
+    def default_attributes(flaggable)
+      FLAGGABLE_TO_DEFAULT_ATTRIBUTES[flaggable.class.name]
+    end
 
     def extract_texts(flaggable, attributes)
       texts = []
