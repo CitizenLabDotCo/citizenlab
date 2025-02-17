@@ -1,6 +1,7 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useEffect } from 'react';
 
-import { Box, Title } from '@citizenlab/cl2-component-library';
+import { Box, Spinner, Title } from '@citizenlab/cl2-component-library';
+import { useInView } from 'react-intersection-observer';
 
 import useComments from 'api/comments/useComments';
 
@@ -14,9 +15,19 @@ import messages from './messages';
 const Comments = () => {
   const { formatMessage } = useIntl();
   const { selectedInputId } = useSelectedInputContext();
+  const { ref: loadMoreRef, inView } = useInView({
+    rootMargin: '200px',
+    threshold: 0,
+  });
 
-  const { data: comments } = useComments({
+  const {
+    data: comments,
+    hasNextPage,
+    fetchNextPage,
+    isFetchingNextPage,
+  } = useComments({
     ideaId: selectedInputId ?? undefined,
+    pageSize: 5,
   });
 
   const topLevelComments = useMemo(() => {
@@ -24,6 +35,13 @@ const Comments = () => {
     const commentsList = comments.pages.flatMap((page) => page.data);
     return commentsList.filter((comment) => !comment.relationships.parent.data);
   }, [comments]);
+
+  // Trigger fetching of next page when the user scrolls to the bottom
+  useEffect(() => {
+    if (inView && hasNextPage) {
+      setTimeout(() => fetchNextPage(), 500);
+    }
+  }, [inView, hasNextPage, fetchNextPage]);
 
   return (
     <Box>
@@ -33,6 +51,14 @@ const Comments = () => {
           <Comment key={comment.id} comment={comment} />
         ))}
       </Box>
+      {hasNextPage && !isFetchingNextPage && (
+        <Box ref={loadMoreRef} w="100%" h="50px" />
+      )}
+      {isFetchingNextPage && (
+        <Box my="24px">
+          <Spinner />
+        </Box>
+      )}
     </Box>
   );
 };
