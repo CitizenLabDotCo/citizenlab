@@ -1275,7 +1275,7 @@ resource 'Projects' do
         create(:project, admin_publication_attributes: { publication_status: status })
       end
     end
-    let(:publication_statuses) { AdminPublication::PUBLICATION_STATUSES }
+    let(:publication_statuses) { AdminPublication::PUBLICATION_STATUSES.select{ |s| s != "hidden" } }
 
     get 'web_api/v1/projects' do
       with_options scope: :page do
@@ -1683,6 +1683,9 @@ resource 'Projects' do
   end
 
   get 'web_api/v1/projects/community_monitor' do
+    context 'when project admin' do
+    before { admin_header_token }
+
     context 'hidden community monitor project exists' do
       let!(:project) { create(:project, internal_role: 'community_monitor') }
 
