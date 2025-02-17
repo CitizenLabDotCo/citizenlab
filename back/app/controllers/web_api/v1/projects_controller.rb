@@ -323,7 +323,7 @@ class WebApi::V1::ProjectsController < ApplicationController
 
     # Find the community monitor project from config or create it
     project_id = settings.dig('community_monitor', 'project_id')
-    project = project_id ? Project.find(project_id) : create_community_monitor_project(settings)
+    project = project_id.present? ? Project.find(project_id) : create_community_monitor_project(settings)
 
     authorize project
     render json: WebApi::V1::ProjectSerializer.new(
