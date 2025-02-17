@@ -32,7 +32,6 @@ import ColorPickerInput, {
 import Divider from './components/Divider';
 import Dropdown, { DropdownListItem } from './components/Dropdown';
 import Error from './components/Error';
-import Highlighter from './components/Highlighter';
 import Icon, { IconProps, IconNames } from './components/Icon';
 import IconButton from './components/IconButton';
 import IconTooltip, {
@@ -200,5 +199,4 @@ export {
   Tooltip,
   Shimmer,
   Divider,
-  Highlighter,
 };
