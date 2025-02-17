@@ -41,9 +41,8 @@ const Highlighter = ({ id, children }: Props) => {
   useEffect(() => {
     const handleHashChange = () => {
       const targetElementIdFromHash = location.hash.slice(1);
-      const targetElement = document.getElementById(targetElementIdFromHash);
 
-      if (targetElement && targetElementIdFromHash === id) {
+      if (targetElementIdFromHash === id) {
         requestAnimationFrame(() => {
           scrollToElement({ id: targetElementIdFromHash });
           setAnimate(true);
