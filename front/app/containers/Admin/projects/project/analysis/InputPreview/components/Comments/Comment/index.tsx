@@ -38,7 +38,7 @@ const Comment = ({ comment }: Props) => {
   const { attributes } = comment;
 
   return (
-    <Box key={comment.id} borderBottom={`1px solid ${colors.divider}`} pt="8px">
+    <Box key={comment.id} borderBottom={`1px solid ${colors.divider}`} py="8px">
       <Box>
         <Author
           authorId={authorId ?? null}
@@ -68,6 +68,7 @@ const Comment = ({ comment }: Props) => {
           onClick={() => {
             setShowMore((showMore) => !showMore);
           }}
+          p="0px"
         >
           {showMore
             ? formatMessage(messages.showLess)
