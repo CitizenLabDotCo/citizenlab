@@ -40,6 +40,7 @@ import {
 } from 'components/admin/Section';
 import SlugInput from 'components/admin/SlugInput';
 import SubmitWrapper, { ISubmitState } from 'components/admin/SubmitWrapper';
+import Highlighter from 'components/Highlighter';
 import Warning from 'components/UI/Warning';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
@@ -534,12 +535,14 @@ const AdminProjectsProjectGeneral = () => {
             </>
           )}
           <Warning>{formatMessage(messages.publicationStatusWarning)}</Warning>
-          <ProjectNameInput
-            titleMultiloc={projectAttrs.title_multiloc}
-            titleError={titleError}
-            apiErrors={apiErrors}
-            handleTitleMultilocOnChange={handleTitleMultilocOnChange}
-          />
+          <Highlighter id="title-multiloc">
+            <ProjectNameInput
+              titleMultiloc={projectAttrs.title_multiloc}
+              titleError={titleError}
+              apiErrors={apiErrors}
+              handleTitleMultilocOnChange={handleTitleMultilocOnChange}
+            />
+          </Highlighter>
 
           {/* Only show this field when slug is already saved to project (i.e. not when creating a new project, which uses this form as well) */}
           {!isNilOrError(project) && slug && (
