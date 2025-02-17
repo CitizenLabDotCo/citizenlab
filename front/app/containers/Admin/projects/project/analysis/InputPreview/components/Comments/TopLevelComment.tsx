@@ -1,6 +1,11 @@
 import React from 'react';
 
-import { Box, colors } from '@citizenlab/cl2-component-library';
+import {
+  Box,
+  Button,
+  Spinner,
+  colors,
+} from '@citizenlab/cl2-component-library';
 
 import { ICommentData } from 'api/comments/types';
 import useComments from 'api/comments/useComments';
@@ -12,10 +17,18 @@ interface Props {
 }
 
 const TopLevelComment = ({ comment }: Props) => {
-  const { data: comments } = useComments({
-    commentId: comment.id,
-    pageSize: 5,
-  });
+  const {
+    data: comments,
+    fetchNextPage,
+    isFetchingNextPage,
+    hasNextPage,
+  } = useComments(
+    {
+      commentId: comment.id,
+      pageSize: 2,
+    },
+    !!comment.attributes.children_count
+  );
 
   const commentsList = comments?.pages.flatMap((page) => page.data);
 
@@ -26,6 +39,24 @@ const TopLevelComment = ({ comment }: Props) => {
         {commentsList?.map((comment) => (
           <Comment key={comment.id} comment={comment} />
         ))}
+        {hasNextPage && !isFetchingNextPage && (
+          <Button
+            buttonStyle="secondary"
+            size="s"
+            onClick={fetchNextPage}
+            width="auto"
+            px="8px"
+            py="4px"
+            my="16px"
+          >
+            Load more
+          </Button>
+        )}
+        {isFetchingNextPage && (
+          <Box my="24px">
+            <Spinner />
+          </Box>
+        )}
       </Box>
     </Box>
   );
