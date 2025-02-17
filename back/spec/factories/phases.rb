@@ -113,6 +113,12 @@ FactoryBot.define do
           phase.end_at = Time.now + 7.days
         end
       end
+      factory :community_monitor_native_survey_phase do
+        native_survey_method { 'community_monitor' }
+        native_survey_title_multiloc { { 'en' => 'Community Monitor', 'nl-BE' => 'Gemeenschapsmonitor' } }
+        start_at { Time.zone.today - 7.days }
+        end_at { nil }
+      end
     end
 
     factory :single_voting_phase do
