@@ -15,7 +15,7 @@ import {
 } from '@jsonforms/core';
 import { withJsonFormsControlProps } from '@jsonforms/react';
 
-import { getOtherControlKey } from 'components/Form/utils';
+import getOtherControlKey from 'components/Form/utils/getOtherControlKey';
 import { FormLabel } from 'components/UI/FormComponents';
 
 import { FormattedMessage } from 'utils/cl-intl';

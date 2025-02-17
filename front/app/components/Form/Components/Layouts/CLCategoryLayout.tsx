@@ -10,10 +10,8 @@ import {
 import { JsonFormsDispatch, withJsonFormsLayoutProps } from '@jsonforms/react';
 import styled, { useTheme } from 'styled-components';
 
-import {
-  extractElementsByOtherOptionLogic,
-  hasOtherTextFieldBelow,
-} from 'components/Form/Components/Controls/visibilityUtils';
+import extractElementsByOtherOptionLogic from 'components/Form/utils/extractElementsByOtherOptionLogic';
+import hasOtherTextFieldBelow from 'components/Form/utils/hasOtherTextFieldBelow';
 import { FormSection } from 'components/UI/FormComponents';
 import QuillEditedContent from 'components/UI/QuillEditedContent';
 

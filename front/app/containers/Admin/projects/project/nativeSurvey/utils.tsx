@@ -119,20 +119,22 @@ export const clearOptionAndStatementIds = (
   customFields: IFlatCustomField[]
 ) => {
   return customFields.map((field: IFlatCustomField) => {
+    const newField = { ...field };
+
     if (field.options && field.options.length > 0) {
-      field.options = field.options.map((option: IOptionsType) => {
-        delete option.id;
-        return option;
+      newField.options = field.options.map((option: IOptionsType) => {
+        const { id: _id, ...optionWithoutId } = option;
+        return { ...optionWithoutId };
       });
     }
 
     if (field.matrix_statements && field.matrix_statements.length > 0) {
-      field.matrix_statements = field.matrix_statements.map((statement) => {
-        delete statement.id;
-        return statement;
+      newField.matrix_statements = field.matrix_statements.map((statement) => {
+        const { id: _id, ...statementWithoutId } = statement;
+        return { ...statementWithoutId };
       });
     }
 
-    return field;
+    return newField;
   });
 };
