@@ -66,4 +66,6 @@ const Highlighter = ({ id, children }: Props) => {
 };
 
 export default Highlighter;
+// The purpose of createHighlighterLink is to easily locate
+// links used in conjunction with Highlighter in the codebase.
 export const createHighlighterLink = (path: RouteType) => path;
