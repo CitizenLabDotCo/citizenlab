@@ -485,6 +485,7 @@
   "app.components.Upload.remaining": "többi",
   "app.components.Upload.uploadImageLabel": "Válasszon ki egy képet (max. {maxImageSizeInMb}MB)",
   "app.components.Upload.uploadMultipleImagesLabel": "Válasszon ki egy vagy több képet",
+  "app.components.UpsellTooltip.tooltipContent": "Ez a funkció nem szerepel a jelenlegi csomagban. A zárolás feloldásához forduljon kormányzati sikermenedzseréhez vagy rendszergazdájához.",
   "app.components.UserName.anonymous": "Névtelen",
   "app.components.UserName.anonymousTooltip2": "Ez a felhasználó úgy döntött, hogy anonimizálja hozzájárulását",
   "app.components.UserName.authorWithNoNameTooltip": "A rendszer automatikusan generálta a nevét, mert nem adta meg a nevét. Kérjük, frissítse profilját, ha módosítani szeretné.",
