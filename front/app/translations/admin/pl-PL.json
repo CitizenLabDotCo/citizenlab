@@ -1830,7 +1830,6 @@
   "app.containers.AdminPage.ProjectEdit.survey.deleteResultsLink2": "Usuń wyniki, jeśli potrzebujesz wprowadzić zmiany.",
   "app.containers.AdminPage.ProjectEdit.survey.deleteSurveyResults2": "Usunięcie wyników badania",
   "app.containers.AdminPage.ProjectEdit.survey.deleteSurveyResultsConfirmation2": "Czy na pewno chcesz usunąć wszystkie wyniki ankiety?",
-  "app.containers.AdminPage.ProjectEdit.survey.disabledImportInputsTooltip": "Ta funkcja nie jest uwzględniona w Twoim obecnym planie. Skontaktuj się ze swoim menedżerem GovSuccess, aby dowiedzieć się więcej na ten temat.",
   "app.containers.AdminPage.ProjectEdit.survey.disabledSurveyMessage2": "Treść ankiety nie może być edytowana, ponieważ zaczęły napływać wyniki ankiet.",
   "app.containers.AdminPage.ProjectEdit.survey.downloadAllResults2": "Pobierz wszystkie wyniki badań",
   "app.containers.AdminPage.ProjectEdit.survey.downloadExcelTemplate1": "Pobierz szablon Excel",

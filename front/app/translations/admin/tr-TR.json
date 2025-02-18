@@ -1830,7 +1830,6 @@
   "app.containers.AdminPage.ProjectEdit.survey.deleteResultsLink2": "Değişiklik yapmanız gerekiyorsa sonuçları silin.",
   "app.containers.AdminPage.ProjectEdit.survey.deleteSurveyResults2": "Anket sonuçlarını silin",
   "app.containers.AdminPage.ProjectEdit.survey.deleteSurveyResultsConfirmation2": "Tüm anket sonuçlarını silmek istediğinizden emin misiniz?",
-  "app.containers.AdminPage.ProjectEdit.survey.disabledImportInputsTooltip": "Bu özellik mevcut planınıza dahil değildir. Bu konuda daha fazla bilgi edinmek için GovSuccess Yöneticinize ulaşın.",
   "app.containers.AdminPage.ProjectEdit.survey.disabledSurveyMessage2": "Anket sonuçları gelmeye başladığı için anket içeriği düzenlenemiyor.",
   "app.containers.AdminPage.ProjectEdit.survey.downloadAllResults2": "Tüm anket sonuçlarını indirin",
   "app.containers.AdminPage.ProjectEdit.survey.downloadExcelTemplate1": "Bir excel şablonu indirin",

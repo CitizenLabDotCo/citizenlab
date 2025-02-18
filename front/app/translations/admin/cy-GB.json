@@ -1830,7 +1830,6 @@
   "app.containers.AdminPage.ProjectEdit.survey.deleteResultsLink2": "Dilëwch y canlyniadau os oes angen i chi wneud newidiadau.",
   "app.containers.AdminPage.ProjectEdit.survey.deleteSurveyResults2": "Dileu canlyniadau'r arolwg",
   "app.containers.AdminPage.ProjectEdit.survey.deleteSurveyResultsConfirmation2": "Ydych chi'n siŵr eich bod am ddileu holl ganlyniadau'r arolwg?",
-  "app.containers.AdminPage.ProjectEdit.survey.disabledImportInputsTooltip": "Nid yw'r nodwedd hon wedi'i chynnwys yn eich cynllun cyfredol. Cysylltwch â'ch Rheolwr GovSuccess i ddysgu mwy amdano.",
   "app.containers.AdminPage.ProjectEdit.survey.disabledSurveyMessage2": "Nid oes modd golygu cynnwys yr arolwg gan fod canlyniadau'r arolwg wedi dechrau dod i mewn.",
   "app.containers.AdminPage.ProjectEdit.survey.downloadAllResults2": "Lawrlwythwch holl ganlyniadau'r arolwg",
   "app.containers.AdminPage.ProjectEdit.survey.downloadExcelTemplate1": "Lawrlwythwch templed excel",
