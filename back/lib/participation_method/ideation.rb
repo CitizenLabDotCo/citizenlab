@@ -11,7 +11,7 @@ module ParticipationMethod
     end
 
     def allowed_extra_field_input_types
-      %w[section number linear_scale rating text multiline_text select multiselect multiselect_image ranking matrix_linear_scale]
+      %w[page number linear_scale rating text multiline_text select multiselect multiselect_image ranking matrix_linear_scale]
     end
 
     def allowed_ideas_orders
@@ -48,7 +48,7 @@ module ParticipationMethod
     # Locks mirror the name of the fields whose default values cannot be changed (ie are locked)
     def constraints
       result = {
-        ideation_section1: { locks: { enabled: true, title_multiloc: true } },
+        ideation_page1: { locks: { enabled: true, title_multiloc: true } },
         title_multiloc: { locks: { enabled: true, required: true, title_multiloc: true } },
         body_multiloc: { locks: { enabled: true, required: true, title_multiloc: true } },
         idea_images_attributes: { locks: { enabled: true, title_multiloc: true } },
@@ -79,13 +79,13 @@ module ParticipationMethod
         CustomField.new(
           id: SecureRandom.uuid,
           resource: custom_form,
-          input_type: 'section',
-          code: 'ideation_section1',
+          input_type: 'page',
+          code: 'ideation_page1',
           key: nil,
           title_multiloc: {},
           description_multiloc: begin
             multiloc_service.i18n_to_multiloc(
-              'custom_fields.ideas.section1.description',
+              'custom_fields.ideas.page1.description',
               locales: CL2_SUPPORTED_LOCALES
             )
           rescue StandardError
@@ -145,16 +145,16 @@ module ParticipationMethod
         CustomField.new(
           id: SecureRandom.uuid,
           resource: custom_form,
-          input_type: 'section',
-          code: 'ideation_section2',
+          input_type: 'page',
+          code: 'ideation_page2',
           key: nil,
           title_multiloc: multiloc_service.i18n_to_multiloc(
-            'custom_fields.ideas.section2.title',
+            'custom_fields.ideas.page2.title',
             locales: CL2_SUPPORTED_LOCALES
           ),
           description_multiloc: begin
             multiloc_service.i18n_to_multiloc(
-              'custom_fields.ideas.section2.description',
+              'custom_fields.ideas.page2.description',
               locales: CL2_SUPPORTED_LOCALES
             )
           rescue StandardError
@@ -214,16 +214,16 @@ module ParticipationMethod
         CustomField.new(
           id: SecureRandom.uuid,
           resource: custom_form,
-          input_type: 'section',
-          code: 'ideation_section3',
+          input_type: 'page',
+          code: 'ideation_page3',
           key: nil,
           title_multiloc: multiloc_service.i18n_to_multiloc(
-            'custom_fields.ideas.section3.title',
+            'custom_fields.ideas.page3.title',
             locales: CL2_SUPPORTED_LOCALES
           ),
           description_multiloc: begin
             multiloc_service.i18n_to_multiloc(
-              'custom_fields.ideas.section3.description',
+              'custom_fields.ideas.page3.description',
               locales: CL2_SUPPORTED_LOCALES
             )
           rescue StandardError
