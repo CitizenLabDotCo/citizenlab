@@ -52,11 +52,8 @@ const Highlighter = ({ fragmentId, children }: Props) => {
   useEffect(() => {
     const handleHashChange = () => {
       const locationFragmentId = location.hash.slice(1);
-      const targetElement = document.getElementById(locationFragmentId);
 
-      // Target element check is necessary for the scroll behavior to
-      // work consistenly.
-      if (targetElement && locationFragmentId === fragmentId) {
+      if (locationFragmentId === fragmentId) {
         // We ensure id is on the element via Container below.
         scrollToElement({ id: locationFragmentId });
         setAnimate(true);
