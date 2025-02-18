@@ -3,7 +3,7 @@
 module Analysis
   # Convert an input to a simple string hash of {label => value} entries, based on the
   # passed list of custom fields
-  class InputToText
+  class InputToText < ModelToText
     def initialize(custom_fields, app_configuration = AppConfiguration.instance)
       @custom_fields = custom_fields
       @app_configuration = app_configuration
@@ -12,23 +12,12 @@ module Analysis
     end
 
     def execute(input, include_id: false, truncate_values: nil, override_field_labels: {})
-      initial_object = if include_id
-        { 'ID' => input.id }
-      else
-        {}
-      end
-      @custom_fields.each_with_object(initial_object) do |field, obj|
+      @custom_fields.each_with_object(super) do |field, obj|
         add_field(field, input, obj, truncate_values: truncate_values, override_field_labels: override_field_labels)
         if field.other_option_text_field
           add_field(field.other_option_text_field, input, obj, truncate_values: truncate_values, override_field_labels: override_field_labels)
         end
       end
-    end
-
-    def formatted(input, **options)
-      execute(input, **options).map do |label, value|
-        "### #{label}\n#{value}\n"
-      end.join("\n")
     end
 
     def format_all(inputs, shorten_labels: false, **options)
