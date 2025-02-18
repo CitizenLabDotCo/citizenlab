@@ -258,11 +258,6 @@ class Phase < ApplicationRecord
     participation_method == 'voting'
   end
 
-  # Used for validations (which are hard to delegate through the participation method)
-  def native_survey?
-    participation_method == 'native_survey'
-  end
-
   def pmethod
     reload_participation_method if !@pmethod
     @pmethod

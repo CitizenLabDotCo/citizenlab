@@ -310,18 +310,6 @@ RSpec.describe Phase do
     end
   end
 
-  describe '#native_survey?' do
-    it 'returns true when the participation method is native_survey' do
-      phase = create(:native_survey_phase)
-      expect(phase.native_survey?).to be true
-    end
-
-    it 'returns false otherwise' do
-      phase = create(:poll_phase)
-      expect(phase.native_survey?).to be false
-    end
-  end
-
   describe 'native_survey_title_multiloc' do
     # Do each here
     it 'must contain a survey title if a native survey phase' do
