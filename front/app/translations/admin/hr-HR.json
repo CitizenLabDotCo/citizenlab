@@ -1833,6 +1833,7 @@
   "app.containers.AdminPage.ProjectEdit.survey.disabledImportInputsTooltip": "Ova značajka nije uključena u vaš trenutni plan. Obratite se svom GovSuccess Manageru da saznate više o tome.",
   "app.containers.AdminPage.ProjectEdit.survey.disabledSurveyMessage2": "Sadržaj upitnika nije moguće uređivati jer su rezultati upitnika počeli pristizati.",
   "app.containers.AdminPage.ProjectEdit.survey.downloadAllResults2": "Preuzmi sve rezultate upitnika",
+  "app.containers.AdminPage.ProjectEdit.survey.downloadExcelTemplate1": "Preuzmite excel predložak",
   "app.containers.AdminPage.ProjectEdit.survey.downloadExcelTemplateTooltip": "Predlošci programa Excel neće sadržavati nikakva pitanja o unosu mapiranja jer trenutno nisu podržana za skupni uvoz.",
   "app.containers.AdminPage.ProjectEdit.survey.downloadResults2": "Preuzmi rezultate upitnika",
   "app.containers.AdminPage.ProjectEdit.survey.downloadSurvey": "Preuzmite anketu kao pdf",
