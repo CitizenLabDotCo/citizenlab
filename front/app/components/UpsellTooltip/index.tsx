@@ -11,7 +11,7 @@ import messages from './messages';
 
 interface Props {
   tooltipEnabled: boolean;
-  // ReactNode wouldn't work here as a type since that can be null
+  // ReactNode as a type wouldn't work here as a type since that can be null
   children: JSX.Element;
 }
 

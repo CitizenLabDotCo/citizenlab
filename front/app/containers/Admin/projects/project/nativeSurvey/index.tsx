@@ -10,8 +10,6 @@ import {
   Toggle,
   Spinner,
   colors,
-  TooltipContentWrapper,
-  Tooltip,
   IconTooltip,
 } from '@citizenlab/cl2-component-library';
 import { saveAs } from 'file-saver';
@@ -34,6 +32,7 @@ import PDFExportModal, {
 
 import Button from 'components/UI/ButtonWithLink';
 import Modal from 'components/UI/Modal';
+import UpsellTooltip from 'components/UpsellTooltip';
 
 import { useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
@@ -180,28 +179,20 @@ const Forms = () => {
                 }}
               />
             </Box>
-            <Tooltip
-              disabled={inputImporterEnabled}
-              content={
-                <TooltipContentWrapper tippytheme="light">
-                  {formatMessage(messages.disabledImportInputsTooltip)}
-                </TooltipContentWrapper>
-              }
-            >
-              <Box>
-                <Button
-                  linkTo={inputImporterLink}
-                  icon="page"
-                  iconSize="20px"
-                  buttonStyle="secondary-outlined"
-                  width="auto"
-                  mr="8px"
-                  disabled={!inputImporterEnabled}
-                >
-                  {formatMessage(messages.importInputs)}
-                </Button>
-              </Box>
-            </Tooltip>
+
+            <UpsellTooltip tooltipEnabled={!inputImporterEnabled}>
+              <Button
+                linkTo={inputImporterLink}
+                icon="page"
+                iconSize="20px"
+                buttonStyle="secondary-outlined"
+                width="auto"
+                mr="8px"
+                disabled={!inputImporterEnabled}
+              >
+                {formatMessage(messages.importInputs)}
+              </Button>
+            </UpsellTooltip>
             <Button
               linkTo={`/projects/${project.data.attributes.slug}/surveys/new?phase_id=${phase.data.id}`}
               icon="eye"
