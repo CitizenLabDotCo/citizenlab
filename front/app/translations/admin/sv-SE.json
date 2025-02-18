@@ -1833,7 +1833,6 @@
   "app.containers.AdminPage.ProjectEdit.survey.disabledImportInputsTooltip": "Den här funktionen ingår inte i din nuvarande plan. Kontakta din GovSuccess Manager om du vill veta mer om den.",
   "app.containers.AdminPage.ProjectEdit.survey.disabledSurveyMessage2": "Undersökningsinnehållet kan inte redigeras när undersökningsresultat har börjat komma in.",
   "app.containers.AdminPage.ProjectEdit.survey.downloadAllResults2": "Ladda ner alla undersökningsresultat",
-  "app.containers.AdminPage.ProjectEdit.survey.downloadExcelTemplate1": "Ladda ner en Excel-mall",
   "app.containers.AdminPage.ProjectEdit.survey.downloadExcelTemplateTooltip": "Excel-mallarna kommer inte att innehålla några frågor om mappning eftersom dessa inte stöds för bulkimport för närvarande.",
   "app.containers.AdminPage.ProjectEdit.survey.downloadResults2": "Ladda ner undersökningsresultat",
   "app.containers.AdminPage.ProjectEdit.survey.downloadSurvey": "Ladda ner undersökningen som pdf",

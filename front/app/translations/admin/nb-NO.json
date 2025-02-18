@@ -1833,7 +1833,6 @@
   "app.containers.AdminPage.ProjectEdit.survey.disabledImportInputsTooltip": "Denne funksjonen er ikke inkludert i din nåværende plan. Ta kontakt med din GovSuccess Manager for å finne ut mer om den.",
   "app.containers.AdminPage.ProjectEdit.survey.disabledSurveyMessage2": "Innholdet i undersøkelsen kan ikke redigeres etter hvert som resultatene har begynt å komme inn.",
   "app.containers.AdminPage.ProjectEdit.survey.downloadAllResults2": "Last ned alle resultatene fra undersøkelsen",
-  "app.containers.AdminPage.ProjectEdit.survey.downloadExcelTemplate1": "Last ned en Excel-mal",
   "app.containers.AdminPage.ProjectEdit.survey.downloadExcelTemplateTooltip": "Excel-maler vil ikke inneholde noen spørsmål om kartleggingsinndata, ettersom disse ikke støttes for masseimport på nåværende tidspunkt.",
   "app.containers.AdminPage.ProjectEdit.survey.downloadResults2": "Last ned resultatene fra undersøkelsen",
   "app.containers.AdminPage.ProjectEdit.survey.downloadSurvey": "Last ned undersøkelsen som pdf",
