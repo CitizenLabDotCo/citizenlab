@@ -33,8 +33,6 @@ const FieldTitle = ({ hasErrors, field, fieldNumber }: Props) => {
     } else {
       rowTitle = messages.page;
     }
-  } else if (field.input_type === 'section') {
-    rowTitle = messages.section;
   }
 
   const lockedAttributes = field.constraints?.locks;
