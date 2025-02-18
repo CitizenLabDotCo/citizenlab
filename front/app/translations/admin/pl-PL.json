@@ -1833,6 +1833,7 @@
   "app.containers.AdminPage.ProjectEdit.survey.disabledImportInputsTooltip": "Ta funkcja nie jest uwzględniona w Twoim obecnym planie. Skontaktuj się ze swoim menedżerem GovSuccess, aby dowiedzieć się więcej na ten temat.",
   "app.containers.AdminPage.ProjectEdit.survey.disabledSurveyMessage2": "Treść ankiety nie może być edytowana, ponieważ zaczęły napływać wyniki ankiet.",
   "app.containers.AdminPage.ProjectEdit.survey.downloadAllResults2": "Pobierz wszystkie wyniki badań",
+  "app.containers.AdminPage.ProjectEdit.survey.downloadExcelTemplate": "Pobierz szablon Excel",
   "app.containers.AdminPage.ProjectEdit.survey.downloadExcelTemplateTooltip": "Szablony Excel nie będą zawierać żadnych pytań dotyczących mapowania, ponieważ nie są one obecnie obsługiwane w przypadku importu zbiorczego.",
   "app.containers.AdminPage.ProjectEdit.survey.downloadResults2": "Pobierz wyniki badania",
   "app.containers.AdminPage.ProjectEdit.survey.downloadSurvey": "Pobierz ankietę w formacie pdf",

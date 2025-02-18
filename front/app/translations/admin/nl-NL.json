@@ -1833,6 +1833,7 @@
   "app.containers.AdminPage.ProjectEdit.survey.disabledImportInputsTooltip": "Deze functionaliteit is niet in je huidige abonnement inbegrepen. Neem contact op met je Government Success Manager voor meer informatie.",
   "app.containers.AdminPage.ProjectEdit.survey.disabledSurveyMessage2": "De inhoud van de vragenlijst kan niet worden bewerkt nu de resultaten binnenkomen.",
   "app.containers.AdminPage.ProjectEdit.survey.downloadAllResults2": "Download alle onderzoeksresultaten",
+  "app.containers.AdminPage.ProjectEdit.survey.downloadExcelTemplate": "Download een Excel-sjabloon",
   "app.containers.AdminPage.ProjectEdit.survey.downloadExcelTemplateTooltip": "Excel-sjablonen bevatten geen kaart-gerelateerde vragen, omdat deze op dit moment niet worden ondersteund voor bulkimport.",
   "app.containers.AdminPage.ProjectEdit.survey.downloadResults2": "Download de resultaten van de vragenlijst",
   "app.containers.AdminPage.ProjectEdit.survey.downloadSurvey": "Download vragenlijst als pdf",

@@ -1833,6 +1833,7 @@
   "app.containers.AdminPage.ProjectEdit.survey.disabledImportInputsTooltip": "Esta función no está incluida en tu plan actual. Ponte en contacto con tu Gestor de GovSuccess para obtener más información.",
   "app.containers.AdminPage.ProjectEdit.survey.disabledSurveyMessage2": "El contenido de la encuesta no se puede editar ya que los resultados de la encuesta han empezado a llegar.",
   "app.containers.AdminPage.ProjectEdit.survey.downloadAllResults2": "Descargar todos los resultados de la encuesta",
+  "app.containers.AdminPage.ProjectEdit.survey.downloadExcelTemplate": "Descargar una plantilla Excel",
   "app.containers.AdminPage.ProjectEdit.survey.downloadExcelTemplateTooltip": "Las plantillas de Excel no incluirán ninguna pregunta de introducción de mapas, ya que por el momento no se admiten para la importación masiva.",
   "app.containers.AdminPage.ProjectEdit.survey.downloadResults2": "Descargar los resultados de la encuesta",
   "app.containers.AdminPage.ProjectEdit.survey.downloadSurvey": "Descargar encuesta como pdf",

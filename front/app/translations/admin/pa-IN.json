@@ -1833,6 +1833,7 @@
   "app.containers.AdminPage.ProjectEdit.survey.disabledImportInputsTooltip": "ਇਹ ਵਿਸ਼ੇਸ਼ਤਾ ਤੁਹਾਡੀ ਮੌਜੂਦਾ ਯੋਜਨਾ ਵਿੱਚ ਸ਼ਾਮਲ ਨਹੀਂ ਹੈ। ਇਸ ਬਾਰੇ ਹੋਰ ਜਾਣਨ ਲਈ ਆਪਣੇ GovSuccess ਮੈਨੇਜਰ ਨਾਲ ਸੰਪਰਕ ਕਰੋ।",
   "app.containers.AdminPage.ProjectEdit.survey.disabledSurveyMessage2": "ਸਰਵੇਖਣ ਸਮੱਗਰੀ ਨੂੰ ਸੰਪਾਦਿਤ ਨਹੀਂ ਕੀਤਾ ਜਾ ਸਕਦਾ ਕਿਉਂਕਿ ਸਰਵੇਖਣ ਨਤੀਜੇ ਆਉਣੇ ਸ਼ੁਰੂ ਹੋ ਗਏ ਹਨ।",
   "app.containers.AdminPage.ProjectEdit.survey.downloadAllResults2": "ਸਾਰੇ ਸਰਵੇਖਣ ਨਤੀਜੇ ਡਾਊਨਲੋਡ ਕਰੋ",
+  "app.containers.AdminPage.ProjectEdit.survey.downloadExcelTemplate": "ਇੱਕ ਐਕਸਲ ਟੈਂਪਲੇਟ ਡਾਊਨਲੋਡ ਕਰੋ",
   "app.containers.AdminPage.ProjectEdit.survey.downloadExcelTemplateTooltip": "ਐਕਸਲ ਟੈਂਪਲੇਟਸ ਵਿੱਚ ਕੋਈ ਵੀ ਮੈਪਿੰਗ ਇਨਪੁਟ ਸਵਾਲ ਸ਼ਾਮਲ ਨਹੀਂ ਹੋਣਗੇ ਕਿਉਂਕਿ ਇਹ ਇਸ ਸਮੇਂ ਬਲਕ ਆਯਾਤ ਲਈ ਸਮਰਥਿਤ ਨਹੀਂ ਹਨ।",
   "app.containers.AdminPage.ProjectEdit.survey.downloadResults2": "ਸਰਵੇਖਣ ਨਤੀਜੇ ਡਾਊਨਲੋਡ ਕਰੋ",
   "app.containers.AdminPage.ProjectEdit.survey.downloadSurvey": "ਸਰਵੇਖਣ ਨੂੰ ਪੀਡੀਐਫ ਵਜੋਂ ਡਾਊਨਲੋਡ ਕਰੋ",

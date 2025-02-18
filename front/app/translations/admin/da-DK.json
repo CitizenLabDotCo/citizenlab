@@ -1833,6 +1833,7 @@
   "app.containers.AdminPage.ProjectEdit.survey.disabledImportInputsTooltip": "Denne funktion er ikke inkluderet i din nuværende plan. Kontakt din GovSuccess Manager for at høre mere om den.",
   "app.containers.AdminPage.ProjectEdit.survey.disabledSurveyMessage2": "Undersøgelsesindholdet kan ikke redigeres, da undersøgelsesresultaterne er begyndt at komme ind.",
   "app.containers.AdminPage.ProjectEdit.survey.downloadAllResults2": "Hent alle undersøgelsesresultater",
+  "app.containers.AdminPage.ProjectEdit.survey.downloadExcelTemplate": "Download en Excel-skabelon",
   "app.containers.AdminPage.ProjectEdit.survey.downloadExcelTemplateTooltip": "Excel-skabeloner vil ikke indeholde spørgsmål om kortlægningsinput, da disse ikke understøttes til masseimport på nuværende tidspunkt.",
   "app.containers.AdminPage.ProjectEdit.survey.downloadResults2": "Hent undersøgelsesresultater",
   "app.containers.AdminPage.ProjectEdit.survey.downloadSurvey": "Download undersøgelsen som pdf",
