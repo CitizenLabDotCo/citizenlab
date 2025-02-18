@@ -44,9 +44,5 @@ module NativeSurveyMethod
     def logic_enabled?
       false
     end
-
-    def follow_project_on_idea_submission?
-      false
-    end
   end
 end

@@ -170,10 +170,6 @@ module ParticipationMethod
       false
     end
 
-    def follow_project_on_idea_submission?
-      false
-    end
-
     private
 
     attr_reader :phase
