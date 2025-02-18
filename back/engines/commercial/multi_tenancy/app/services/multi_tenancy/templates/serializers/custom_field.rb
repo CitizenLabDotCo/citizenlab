@@ -33,6 +33,7 @@ module MultiTenancy
           random_option_ordering
           dropdown_layout
           page_layout
+          ask_follow_up
         ]
 
         # Enigmatic comment from the previous implementation:

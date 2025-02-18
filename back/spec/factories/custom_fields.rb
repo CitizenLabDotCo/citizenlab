@@ -166,7 +166,6 @@ FactoryBot.define do
     end
 
     factory :custom_field_sentiment_linear_scale do
-      ask_follow_up { false }
       title_multiloc do
         {
           'en' => 'We need a swimming pool.'
@@ -177,8 +176,9 @@ FactoryBot.define do
           'en' => 'Please indicate how strong you agree or disagree.'
         }
       end
-      input_type { 'linear_scale' }
+      input_type { 'sentiment_linear_scale' }
       maximum { 5 }
+      ask_follow_up { false }
       linear_scale_label_1_multiloc do
         {
           'en' => 'Strongly disagree'
