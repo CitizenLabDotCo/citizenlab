@@ -12,6 +12,30 @@ module ParticipationMethod
         ranking matrix_linear_scale]
     end
 
+    def assign_defaults(input)
+      input.publication_status ||= 'published'
+      input.idea_status ||= IdeaStatus.find_by!(code: 'proposed', participation_method: 'ideation')
+    end
+
+    # NOTE: This is only ever used by the analyses controller - otherwise the front-end always persists the form
+    def create_default_form!
+      form = CustomForm.new(participation_context: phase)
+
+      default_fields(form).reverse_each do |field|
+        field.save!
+        field.move_to_top
+      end
+
+      form.save!
+      phase.reload
+
+      form
+    end
+
+    def custom_form
+      phase.custom_form || CustomForm.new(participation_context: phase)
+    end
+
     def default_fields(custom_form)
       return [] if custom_form.persisted?
 
@@ -45,30 +69,6 @@ module ParticipationMethod
 
     def logic_enabled?
       true
-    end
-
-    def assign_defaults(input)
-      input.publication_status ||= 'published'
-      input.idea_status ||= IdeaStatus.find_by!(code: 'proposed', participation_method: 'ideation')
-    end
-
-    # NOTE: This is only ever used by the analyses controller - otherwise the front-end always persists the form
-    def create_default_form!
-      form = CustomForm.new(participation_context: phase)
-
-      default_fields(form).reverse_each do |field|
-        field.save!
-        field.move_to_top
-      end
-
-      form.save!
-      phase.reload
-
-      form
-    end
-
-    def custom_form
-      phase.custom_form || CustomForm.new(participation_context: phase)
     end
 
     # Survey responses do not have a fixed field that can be used
