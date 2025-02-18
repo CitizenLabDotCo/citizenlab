@@ -17,7 +17,6 @@ export const ideationConfig: FormBuilderConfig = {
   toolboxTitle: messages.customToolboxTitle,
 
   toolboxFieldsToExclude: [
-    'page',
     'file_upload',
     'shapefile_upload',
     'point',
@@ -41,8 +40,6 @@ export const ideationConfig: FormBuilderConfig = {
   isLogicEnabled: false,
   alwaysShowCustomFields: false,
   isFormPhaseSpecific: false,
-
-  groupingType: 'section',
   getWarningNotice: () => {
     return (
       <Box id="e2e-warning-notice" mb="16px">
@@ -62,7 +59,6 @@ export const proposalsConfig: FormBuilderConfig = {
   toolboxTitle: messages.customToolboxTitle,
 
   toolboxFieldsToExclude: [
-    'page',
     'file_upload',
     'shapefile_upload',
     'point',
@@ -86,7 +82,6 @@ export const proposalsConfig: FormBuilderConfig = {
   alwaysShowCustomFields: false,
   isFormPhaseSpecific: true,
 
-  groupingType: 'section',
   getWarningNotice: () => {
     return (
       <Box id="e2e-warning-notice" mb="16px">
