@@ -180,7 +180,7 @@ const Forms = () => {
               />
             </Box>
 
-            <UpsellTooltip tooltipEnabled={!inputImporterEnabled}>
+            <UpsellTooltip disabled={inputImporterEnabled}>
               <Button
                 linkTo={inputImporterLink}
                 icon="page"

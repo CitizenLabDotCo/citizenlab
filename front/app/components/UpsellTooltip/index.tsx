@@ -10,16 +10,16 @@ import { useIntl } from 'utils/cl-intl';
 import messages from './messages';
 
 interface Props {
-  tooltipEnabled: boolean;
+  disabled: boolean;
   // ReactNode as a type wouldn't work here as a type since that can be null
   children: JSX.Element;
 }
 
-const UpsellTooltip = ({ tooltipEnabled, children }: Props) => {
+const UpsellTooltip = ({ disabled, children }: Props) => {
   const { formatMessage } = useIntl();
   return (
     <Tooltip
-      disabled={!tooltipEnabled}
+      disabled={disabled}
       content={
         <TooltipContentWrapper tippytheme="light">
           {formatMessage(messages.tooltipContent)}
