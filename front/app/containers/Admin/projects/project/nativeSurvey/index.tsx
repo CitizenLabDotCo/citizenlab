@@ -37,7 +37,6 @@ import Modal from 'components/UI/Modal';
 
 import { useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
-import { isNilOrError } from 'utils/helperUtils';
 import { requestBlob } from 'utils/requestBlob';
 
 import CopySurveyModal from './CopySurveyModal';
@@ -76,7 +75,7 @@ const Forms = () => {
   });
   const { mutate: deleteFormResults } = useDeleteSurveyResults();
 
-  if (!project || isNilOrError(locale) || !phase || !submissionCount) {
+  if (!project || !phase || !submissionCount) {
     return null;
   }
 
@@ -120,7 +119,6 @@ const Forms = () => {
   const handleDownloadPDF = () => setExportModalOpen(true);
 
   const handleExportPDF = async ({ personal_data }: FormValues) => {
-    if (isNilOrError(locale)) return;
     await saveSurveyAsPDF({
       downloadPdfLink,
       locale,
