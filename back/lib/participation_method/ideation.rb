@@ -396,7 +396,11 @@ module ParticipationMethod
       true
     end
 
-    def create_idea_followers?
+    def follow_idea_on_idea_submission?
+      true
+    end
+
+    def follow_project_on_idea_submission?
       true
     end
 

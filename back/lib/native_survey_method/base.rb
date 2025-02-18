@@ -76,5 +76,9 @@ module NativeSurveyMethod
         description_multiloc: multiloc_service.i18n_to_multiloc('form_builder.form_end_page.description_text_3')
       )
     end
+
+    def follow_project_on_idea_submission?
+      true
+    end
   end
 end
