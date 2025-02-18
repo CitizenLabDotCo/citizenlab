@@ -1,7 +1,10 @@
 # frozen_string_literal: true
 
-module NativeSurveyMethod
-  class CommunityMonitor < Base
+module ParticipationMethod
+  class CommunityMonitorSurvey < NativeSurvey
+    def self.method_str
+      'community_monitor_survey'
+    end
     def allowed_extra_field_input_types
       %w[page text linear_scale rating select multiselect]
     end

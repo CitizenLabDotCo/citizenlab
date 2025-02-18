@@ -1564,8 +1564,7 @@ CREATE TABLE public.phases (
     manual_votes_count integer DEFAULT 0 NOT NULL,
     manual_voters_amount integer,
     manual_voters_last_updated_by_id uuid,
-    manual_voters_last_updated_at timestamp(6) without time zone,
-    native_survey_method character varying
+    manual_voters_last_updated_at timestamp(6) without time zone
 );
 
 
@@ -6827,7 +6826,6 @@ ALTER TABLE ONLY public.ideas_topics
 SET search_path TO public,shared_extensions;
 
 INSERT INTO "schema_migrations" (version) VALUES
-('20250211103910'),
 ('20250204143605'),
 ('20250120125531'),
 ('20250117121004'),

@@ -402,10 +402,9 @@ class WebApi::V1::ProjectsController < ApplicationController
     Phase.create!(
       title_multiloc: multiloc_service.i18n_to_multiloc('phases.community_monitor_title'),
       project: project,
-      participation_method: 'native_survey',
+      participation_method: 'community_monitor_survey',
       start_at: Time.now,
       campaigns_settings: { project_phase_started: true }, # TODO: JS - Is this correct?
-      native_survey_method: 'community_monitor',
       native_survey_title_multiloc: multiloc_service.i18n_to_multiloc('phases.community_monitor_title'),
       native_survey_button_multiloc: multiloc_service.i18n_to_multiloc('phases.native_survey_button')
     )

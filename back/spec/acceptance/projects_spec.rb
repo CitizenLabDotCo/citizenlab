@@ -1711,7 +1711,7 @@ resource 'Projects' do
           expect(created_project.admin_publication.publication_status).to eq 'hidden'
           expect(created_project.internal_role).to eq 'community_monitor'
           expect(created_project.title_multiloc['en']).to eq 'Community monitor'
-          expect(created_phase.native_survey_method).to eq 'community_monitor'
+          expect(created_phase.participation_method).to eq 'community_monitor_survey'
           expect(created_phase.title_multiloc['en']).to eq 'Community monitor'
 
           settings = AppConfiguration.instance.settings

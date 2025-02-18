@@ -82,7 +82,6 @@ RSpec.describe Phase do
     it 'can be changed from ideation to native_survey' do
       phase = create(:phase, participation_method: 'ideation')
       phase.participation_method = 'native_survey'
-      phase.native_survey_method = 'standard'
       phase.native_survey_title_multiloc = { en: 'Survey' }
       phase.native_survey_button_multiloc = { en: 'Take the survey' }
       phase.ideas_order = nil
@@ -481,7 +480,7 @@ RSpec.describe Phase do
       before do
         project.admin_publication.update! publication_status: 'hidden'
         project.update! internal_role: 'community_monitor'
-        survey_phase.update! native_survey_method: 'community_monitor'
+        survey_phase.update! participation_method: 'community_monitor_survey'
       end
 
       it 'is valid' do

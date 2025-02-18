@@ -335,8 +335,8 @@ class ProjectCopyService < TemplateService # rubocop:disable Metrics/ClassLength
         yml_phase['document_annotation_embed_url'] = phase.document_annotation_embed_url
       end
 
+      # TODO: JS - Needed for community monitor?
       if yml_phase['participation_method'] == 'native_survey'
-        yml_phase['native_survey_method'] = phase.native_survey_method
         yml_phase['native_survey_title_multiloc'] = phase.native_survey_title_multiloc
         yml_phase['native_survey_button_multiloc'] = phase.native_survey_button_multiloc
       end

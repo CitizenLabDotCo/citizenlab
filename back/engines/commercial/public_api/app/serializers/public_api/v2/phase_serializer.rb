@@ -25,8 +25,7 @@ class PublicApi::V2::PhaseSerializer < PublicApi::V2::BaseSerializer
     :reacting_dislike_limited_max,
     :voting_method,
     :voting_max_total,
-    :voting_min_total,
-    :native_survey_method
+    :voting_min_total
 
   def title
     multiloc_service.t(object.title_multiloc)

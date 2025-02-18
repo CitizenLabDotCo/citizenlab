@@ -68,7 +68,6 @@ class Phase < ApplicationRecord
 
   PARTICIPATION_METHODS = ParticipationMethod::Base.all_methods.map(&:method_str).freeze
   VOTING_METHODS        = %w[budgeting multiple_voting single_voting].freeze
-  NATIVE_SURVEY_METHODS = %w[standard community_monitor].freeze
   PRESENTATION_MODES    = %w[card map].freeze
   REACTING_METHODS      = %w[unlimited limited].freeze
   INPUT_TERMS           = %w[idea question contribution project issue option proposal initiative petition].freeze
@@ -183,12 +182,13 @@ class Phase < ApplicationRecord
     where(start_at: date)
   }
 
+  validate :validate_community_monitor_phase
+
   # native_survey?
   with_options if: :native_survey? do
-    validates :native_survey_method, presence: true, inclusion: { in: NATIVE_SURVEY_METHODS }
+    # TODO: JS - do we need to validate these for community monitor?
     validates :native_survey_title_multiloc, presence: true, multiloc: { presence: true }
     validates :native_survey_button_multiloc, presence: true, multiloc: { presence: true }
-    validate :validate_community_monitor_phase
   end
 
   scope :published, lambda {
@@ -262,6 +262,11 @@ class Phase < ApplicationRecord
   # Used for validations (which are hard to delegate through the participation method)
   def native_survey?
     participation_method == 'native_survey'
+  end
+
+  # Used for validations (which are hard to delegate through the participation method)
+  def community_monitor_survey?
+    participation_method == 'community_monitor_survey'
   end
 
   def pmethod
@@ -347,18 +352,18 @@ class Phase < ApplicationRecord
   end
 
   def validate_community_monitor_phase
-    return unless native_survey_method == 'community_monitor'
+    return unless participation_method == 'community_monitor_survey'
 
     if project.phases.count > 1
-      errors.add(:native_survey_method, :too_many_phases, message: 'community_monitor project can only have one phase')
+      errors.add(:community_monitor_survey, :too_many_phases, message: 'community_monitor project can only have one phase')
     end
 
-    unless project.admin_publication.hidden?
-      errors.add(:native_survey_method, :project_not_hidden, message: 'community_monitor projects must be hidden')
+    unless project.hidden?
+      errors.add(:community_monitor_survey, :project_not_hidden, message: 'community_monitor projects must be hidden')
     end
 
     if end_at.present?
-      errors.add(:native_survey_method, :has_end_at, message: 'community_monitor projects cannot have an end date')
+      errors.add(:community_monitor_survey, :has_end_at, message: 'community_monitor projects cannot have an end date')
     end
   end
 

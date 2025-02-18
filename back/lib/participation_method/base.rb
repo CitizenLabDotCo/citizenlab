@@ -3,7 +3,7 @@
 module ParticipationMethod
   class Base
     def self.all_methods
-      [DocumentAnnotation, Ideation, Information, NativeSurvey, Poll, Proposals, Survey, Volunteering, Voting]
+      [DocumentAnnotation, Ideation, Information, NativeSurvey, CommunityMonitorSurvey, Poll, Proposals, Survey, Volunteering, Voting]
     end
 
     def initialize(phase)
