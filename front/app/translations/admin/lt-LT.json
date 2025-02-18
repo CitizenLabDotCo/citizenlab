@@ -1833,7 +1833,6 @@
   "app.containers.AdminPage.ProjectEdit.survey.disabledImportInputsTooltip": "Ši funkcija neįtraukta į dabartinį planą. Susisiekite su savo \"GovSuccess\" vadybininku ir sužinokite apie ją daugiau.",
   "app.containers.AdminPage.ProjectEdit.survey.disabledSurveyMessage2": "Apklausos turinio negalima redaguoti, nes apklausos rezultatai jau pradėti gauti.",
   "app.containers.AdminPage.ProjectEdit.survey.downloadAllResults2": "Atsisiųsti visus apklausos rezultatus",
-  "app.containers.AdminPage.ProjectEdit.survey.downloadExcelTemplate1": "Atsisiųsti \"Excel\" šabloną",
   "app.containers.AdminPage.ProjectEdit.survey.downloadExcelTemplateTooltip": "Į \"Excel\" šablonus nebus įtraukti jokie žemėlapių įvesties klausimai, nes šiuo metu jie nepalaikomi masiniam importui.",
   "app.containers.AdminPage.ProjectEdit.survey.downloadResults2": "Atsisiųsti apklausos rezultatus",
   "app.containers.AdminPage.ProjectEdit.survey.downloadSurvey": "Atsisiųsti apklausą kaip pdf",

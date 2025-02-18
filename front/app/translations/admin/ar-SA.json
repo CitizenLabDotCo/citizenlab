@@ -1833,7 +1833,6 @@
   "app.containers.AdminPage.ProjectEdit.survey.disabledImportInputsTooltip": "لم يتم تضمين هذه الميزة في خطتك الحالية. تواصل مع مدير GovSuccess الخاص بك لمعرفة المزيد حول هذا الموضوع.",
   "app.containers.AdminPage.ProjectEdit.survey.disabledSurveyMessage2": "لا يمكن تعديل محتوى الاستبيان؛ إذ بدأت نتائج الاستبيان في القدوم.",
   "app.containers.AdminPage.ProjectEdit.survey.downloadAllResults2": "تنزيل كل نتائج الاستبيان",
-  "app.containers.AdminPage.ProjectEdit.survey.downloadExcelTemplate1": "تحميل قالب اكسل",
   "app.containers.AdminPage.ProjectEdit.survey.downloadExcelTemplateTooltip": "لن تتضمن قوالب Excel أي أسئلة حول إدخال التعيينات، حيث إنها غير مدعومة للاستيراد المجمع في الوقت الحالي.",
   "app.containers.AdminPage.ProjectEdit.survey.downloadResults2": "تنزيل نتائج الاستبيان",
   "app.containers.AdminPage.ProjectEdit.survey.downloadSurvey": "تحميل الاستبيان بصيغة pdf",
