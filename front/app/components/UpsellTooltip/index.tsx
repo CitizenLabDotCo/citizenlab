@@ -3,19 +3,14 @@ import React from 'react';
 import {
   Tooltip,
   TooltipContentWrapper,
+  TooltipProps,
 } from '@citizenlab/cl2-component-library';
 
 import { useIntl } from 'utils/cl-intl';
 
 import messages from './messages';
 
-interface Props {
-  disabled: boolean;
-  // ReactNode as a type wouldn't work here as a type since that can be null
-  children: JSX.Element;
-}
-
-const UpsellTooltip = ({ disabled, children }: Props) => {
+const UpsellTooltip = ({ disabled, children, ...otherProps }: TooltipProps) => {
   const { formatMessage } = useIntl();
   return (
     <Tooltip
@@ -25,6 +20,7 @@ const UpsellTooltip = ({ disabled, children }: Props) => {
           {formatMessage(messages.tooltipContent)}
         </TooltipContentWrapper>
       }
+      {...otherProps}
     >
       {children}
     </Tooltip>
