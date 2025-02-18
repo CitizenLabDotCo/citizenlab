@@ -91,9 +91,9 @@ r rspec:
 	docker compose run --rm web bin/rspec ${file}
 
 # Usage example:
-# make feature-toggle feature=initiative_cosponsors enabled=true
-feature-toggle:
-	docker compose run web "bin/rails runner \"enabled = ${enabled}; feature = '${feature}'; Tenant.find_by(host: 'localhost').switch!; c = AppConfiguration.instance; c.settings['${feature}'] ||= {}; c.settings['${feature}']['allowed'] = ${enabled}; c.settings['${feature}']['enabled'] = ${enabled}; c.save!\""
+# make feature-flag feature=initiative_cosponsors enabled=true allowed=true
+feature-flag:
+	docker compose run web "bin/rails runner \"allowed = ${allowed}; enabled = ${enabled}; feature = '${feature}'; Tenant.find_by(host: 'localhost').switch!; c = AppConfiguration.instance; c.settings['${feature}'] ||= {}; c.settings['${feature}']['allowed'] = ${allowed}; c.settings['${feature}']['enabled'] = ${enabled}; c.save!\""
 
 # =================
 # E2E tests
