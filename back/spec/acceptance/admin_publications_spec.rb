@@ -49,7 +49,7 @@ resource 'AdminPublication' do
       parameter :review_state, 'Filter by project review status (pending, approved)', required: false
 
       example_request 'List all admin publications' do
-        hidden_project = create(:project, internal_role: 'community_monitor', admin_publication_attributes: { publication_status: 'hidden' })
+        hidden_project = create(:community_monitor_project)
         expect(status).to eq(200)
         expect(response_data.size).to eq 10
         expect(response_data.map { |d| d.dig(:relationships, :publication, :data, :type) }.count('project')).to eq 8

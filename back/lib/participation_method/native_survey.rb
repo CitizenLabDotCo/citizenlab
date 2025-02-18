@@ -125,7 +125,6 @@ module ParticipationMethod
 
     private
 
-
     def start_page_field(custom_form)
       CustomField.new(
         id: SecureRandom.uuid,
