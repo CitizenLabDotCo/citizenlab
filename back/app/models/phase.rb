@@ -182,13 +182,12 @@ class Phase < ApplicationRecord
     where(start_at: date)
   }
 
-  validate :validate_community_monitor_phase
-
-  # native_survey?
-  with_options if: :native_survey? do
-    # TODO: JS - do we need to validate these for community monitor?
+  # any type of native_survey phase
+  with_options if: ->(phase) { phase.pmethod.supports_survey_form? } do
+    # TODO: JS - do we need to validate these for community monitor? Assuming so for now
     validates :native_survey_title_multiloc, presence: true, multiloc: { presence: true }
     validates :native_survey_button_multiloc, presence: true, multiloc: { presence: true }
+    validate :validate_community_monitor_phase
   end
 
   scope :published, lambda {
@@ -262,11 +261,6 @@ class Phase < ApplicationRecord
   # Used for validations (which are hard to delegate through the participation method)
   def native_survey?
     participation_method == 'native_survey'
-  end
-
-  # Used for validations (which are hard to delegate through the participation method)
-  def community_monitor_survey?
-    participation_method == 'community_monitor_survey'
   end
 
   def pmethod
@@ -395,6 +389,8 @@ class Phase < ApplicationRecord
       ParticipationMethod::Proposals.new(self)
     when 'native_survey'
       ParticipationMethod::NativeSurvey.new(self)
+    when 'community_monitor_survey'
+      ParticipationMethod::CommunityMonitorSurvey.new(self)
     when 'document_annotation'
       ParticipationMethod::DocumentAnnotation.new(self)
     when 'survey'
