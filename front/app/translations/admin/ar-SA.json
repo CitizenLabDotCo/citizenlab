@@ -1830,7 +1830,6 @@
   "app.containers.AdminPage.ProjectEdit.survey.deleteResultsLink2": "احذف النتائج إذا أردت إجراء تغييرات.",
   "app.containers.AdminPage.ProjectEdit.survey.deleteSurveyResults2": "حذف نتائج الاستبيان",
   "app.containers.AdminPage.ProjectEdit.survey.deleteSurveyResultsConfirmation2": "هل تريد بالتأكيد حذف كل نتائج الاستبيان؟",
-  "app.containers.AdminPage.ProjectEdit.survey.disabledImportInputsTooltip": "لم يتم تضمين هذه الميزة في خطتك الحالية. تواصل مع مدير GovSuccess الخاص بك لمعرفة المزيد حول هذا الموضوع.",
   "app.containers.AdminPage.ProjectEdit.survey.disabledSurveyMessage2": "لا يمكن تعديل محتوى الاستبيان؛ إذ بدأت نتائج الاستبيان في القدوم.",
   "app.containers.AdminPage.ProjectEdit.survey.downloadAllResults2": "تنزيل كل نتائج الاستبيان",
   "app.containers.AdminPage.ProjectEdit.survey.downloadExcelTemplate1": "تحميل قالب اكسل",

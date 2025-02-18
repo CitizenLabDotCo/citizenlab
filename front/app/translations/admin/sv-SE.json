@@ -1830,7 +1830,6 @@
   "app.containers.AdminPage.ProjectEdit.survey.deleteResultsLink2": "Ta bort resultaten om du behöver göra ändringar.",
   "app.containers.AdminPage.ProjectEdit.survey.deleteSurveyResults2": "Ta bort undersökningsresultat",
   "app.containers.AdminPage.ProjectEdit.survey.deleteSurveyResultsConfirmation2": "Är du säker på att du vill ta bort alla undersökningsresultat?",
-  "app.containers.AdminPage.ProjectEdit.survey.disabledImportInputsTooltip": "Den här funktionen ingår inte i din nuvarande plan. Kontakta din GovSuccess Manager om du vill veta mer om den.",
   "app.containers.AdminPage.ProjectEdit.survey.disabledSurveyMessage2": "Undersökningsinnehållet kan inte redigeras när undersökningsresultat har börjat komma in.",
   "app.containers.AdminPage.ProjectEdit.survey.downloadAllResults2": "Ladda ner alla undersökningsresultat",
   "app.containers.AdminPage.ProjectEdit.survey.downloadExcelTemplate1": "Ladda ner en Excel-mall",
