@@ -70,6 +70,10 @@ const Forms = () => {
   const inputImporterEnabled = useFeatureFlag({
     name: 'input_importer',
   });
+  const inputImporterAllowed = useFeatureFlag({
+    name: 'input_importer',
+    onlyCheckAllowed: true,
+  });
   const { mutate: deleteFormResults } = useDeleteSurveyResults();
 
   if (!project || isNilOrError(locale) || !phase || !submissionCount) {
@@ -181,7 +185,7 @@ const Forms = () => {
               />
             </Box>
             <Tooltip
-              disabled={inputImporterEnabled}
+              disabled={inputImporterAllowed}
               content={
                 <TooltipContentWrapper tippytheme="light">
                   {formatMessage(messages.disabledImportInputsTooltip)}
@@ -196,7 +200,7 @@ const Forms = () => {
                   buttonStyle="secondary-outlined"
                   width="auto"
                   mr="8px"
-                  disabled={!inputImporterEnabled}
+                  disabled={!inputImporterAllowed}
                 >
                   {formatMessage(messages.importInputs)}
                 </Button>
