@@ -28,6 +28,36 @@ export function scrollToElement({
   }
 }
 
+export function scrollToElement2(selector: string, offset = 100) {
+  if (!selector) return;
+
+  // Helper to actually perform the scroll
+  const performScroll = () => {
+    const element = document.querySelector(selector);
+    if (element) {
+      const elementPosition =
+        element.getBoundingClientRect().top + window.scrollY;
+      window.scrollTo({
+        top: elementPosition - offset,
+        behavior: 'smooth',
+      });
+    }
+  };
+
+  // Wait for the page to fully load and render
+  const onLoad = () => {
+    requestAnimationFrame(() => {
+      setTimeout(performScroll, 300); // Allow some extra time for layout stability
+    });
+  };
+
+  if (document.readyState === 'complete') {
+    onLoad();
+  } else {
+    window.addEventListener('load', onLoad, { once: true });
+  }
+}
+
 export const scrollToTop = (context?: 'link' | 'clHistory') => {
   const isMobileOrSmaller = window.innerWidth <= viewportWidths.tablet;
 
