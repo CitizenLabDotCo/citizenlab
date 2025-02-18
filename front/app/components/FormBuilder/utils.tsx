@@ -66,8 +66,6 @@ export type FormBuilderConfig = {
     handleClose: () => void
   ) => void;
 
-  groupingType: 'page' | 'section';
-
   onDownloadPDF?: () => void;
 };
 
@@ -256,11 +254,9 @@ const getInputTypeStringKey = (
     case 'multiselect_image':
       translatedStringKey = messages.multipleChoiceImage;
       break;
+    case 'section':
     case 'page':
       translatedStringKey = messages.page;
-      break;
-    case 'section':
-      translatedStringKey = messages.section;
       break;
     case 'number':
       translatedStringKey = messages.number;
