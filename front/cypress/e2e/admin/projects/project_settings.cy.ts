@@ -19,7 +19,6 @@ describe('Project settings', () => {
           title: randomString(),
           description: randomString(),
           publicationStatus: 'published',
-          projectIds: [projectId],
         }).then((folder) => {
           const folderId = folder.body.data.id;
           if (typeof folderId === 'string') {
