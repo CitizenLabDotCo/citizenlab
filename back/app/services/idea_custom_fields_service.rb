@@ -46,7 +46,6 @@ class IdeaCustomFieldsService
   end
 
   def importable_fields
-    # TODO: Decide if sentiment_lienar_scale can be imported?
     ignore_field_types = %w[page section date files image_files file_upload shapefile_upload point line polygon cosponsor_ids ranking matrix_linear_scale sentiment_linear_scale]
     enabled_fields_with_other_options.reject { |field| ignore_field_types.include? field.input_type }
   end

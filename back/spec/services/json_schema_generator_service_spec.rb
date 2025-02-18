@@ -565,8 +565,6 @@ RSpec.describe JsonSchemaGeneratorService do
     end
   end
 
-  # TODO: Add test for sentiment_linear_scale
-
   describe '#visit_rating' do
     let(:field) { create(:custom_field_linear_scale, key: field_key) }
 
@@ -625,6 +623,18 @@ RSpec.describe JsonSchemaGeneratorService do
             type: 'string'
           }
         }
+      })
+    end
+  end
+
+  describe '#visit_sentiment_linear_scale' do
+    let(:field) { create(:custom_field_sentiment_linear_scale, key: field_key) }
+
+    it 'returns the schema for the given field' do
+      expect(generator.visit_sentiment_linear_scale).to eq({
+        type: 'number',
+        minimum: 1,
+        maximum: 5
       })
     end
   end
