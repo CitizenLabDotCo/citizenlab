@@ -17,6 +17,7 @@ import {
   IAdminPublications,
 } from 'api/admin_publications/types';
 import useAdminPublications from 'api/admin_publications/useAdminPublications';
+import useAdminPublicationsStatusCounts from 'api/admin_publications_status_counts/useAdminPublicationsStatusCounts';
 import useAuthUser from 'api/me/useAuthUser';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
@@ -83,23 +84,30 @@ const flattenPagesData = (
 };
 
 const AdminProjectsList = memo(({ className }: Props) => {
+  const { pathname } = useLocation();
   const { formatMessage } = useIntl();
   const [search, setSearch] = useState<string>('');
   const { data: authUser } = useAuthUser();
   const isProjectFoldersEnabled = useFeatureFlag({ name: 'project_folders' });
   const isProjectReviewEnabled = useFeatureFlag({ name: 'project_review' });
-
+  const activeTab = getActiveTab(pathname);
   const userIsAdmin = isAdmin(authUser);
+  const showPendingReviewTab = isProjectReviewEnabled && userIsAdmin;
 
   // Fetch the admin publications to show in the 'Your projects' tab,
   // including the (unexpanded) folders the user is a moderator of,
   // but excluding the projects in those folders.
-  const { data: moderatedAdminPublications } = useAdminPublications({
-    publicationStatusFilter: ['published', 'draft', 'archived'],
-    filter_is_moderator_of: true,
-    exclude_projects_in_included_folders: true,
-    search,
-  });
+  const { data: moderatedAdminPublications } = useAdminPublications(
+    {
+      publicationStatusFilter: ['published', 'draft', 'archived'],
+      filter_is_moderator_of: true,
+      exclude_projects_in_included_folders: true,
+      search,
+    },
+    {
+      enabled: activeTab === 'your-projects',
+    }
+  );
 
   // Fetch the admin publications for projects in the 'Your projects' tab,
   // including the projects in folders the user is a moderator of,
@@ -112,51 +120,92 @@ const AdminProjectsList = memo(({ className }: Props) => {
     search,
   });
 
-  const { data: publishedAdminPublications } = useAdminPublications({
-    publicationStatusFilter: ['published'],
-    onlyProjects: true,
-    rootLevelOnly: false,
-    search,
-  });
-
-  const { data: draftAdminPublications } = useAdminPublications({
-    publicationStatusFilter: ['draft'],
-    onlyProjects: true,
-    rootLevelOnly: false,
-    search,
-  });
-
-  const { data: archivedAdminPublications } = useAdminPublications({
-    publicationStatusFilter: ['archived'],
-    onlyProjects: true,
-    rootLevelOnly: false,
-    search,
-  });
-
-  const { data: pendingReviewAdminPublications } = useAdminPublications({
-    publicationStatusFilter: ['draft'],
-    review_state: 'pending',
-    onlyProjects: true,
-    rootLevelOnly: false,
-    search,
-  });
-
-  const { data: allAdminPublications } = useAdminPublications({
+  const { data: statusCounts } = useAdminPublicationsStatusCounts({
     publicationStatusFilter: ['published', 'draft', 'archived'],
-    // Admin publications in the "All" tab are shown in a flat list when there is a search query
-    rootLevelOnly: !search || search.length === 0,
+    onlyProjects: true,
+    rootLevelOnly: false,
     search,
   });
+
+  // PUBLISHED
+  const { data: publishedAdminPublications } = useAdminPublications(
+    {
+      publicationStatusFilter: ['published'],
+      onlyProjects: true,
+      rootLevelOnly: false,
+      search,
+    },
+    {
+      enabled: activeTab === 'published',
+    }
+  );
+
+  // DRAFT
+  const { data: draftAdminPublications } = useAdminPublications(
+    {
+      publicationStatusFilter: ['draft'],
+      onlyProjects: true,
+      rootLevelOnly: false,
+      search,
+    },
+    {
+      enabled: activeTab === 'draft',
+    }
+  );
+
+  // ARCHIVED
+  const { data: archivedAdminPublications } = useAdminPublications(
+    {
+      publicationStatusFilter: ['archived'],
+      onlyProjects: true,
+      rootLevelOnly: false,
+      search,
+    },
+    {
+      enabled: activeTab === 'archived',
+    }
+  );
+
+  // PENDING REVIEW
+  const pendingReviewParams = {
+    publicationStatusFilter: ['draft' as const],
+    review_state: 'pending' as const,
+    onlyProjects: true,
+    rootLevelOnly: false,
+    search,
+  };
+  const { data: pendingReviewAdminPublications } = useAdminPublications(
+    pendingReviewParams,
+    {
+      enabled: activeTab === 'pending',
+    }
+  );
+  // The pending review count uses different params, so we fetch it separately
+  const { data: pendingReviewStatusCounts } = useAdminPublicationsStatusCounts(
+    pendingReviewParams,
+    {
+      enabled: showPendingReviewTab,
+    }
+  );
+
+  // ALL
+  const { data: allAdminPublications } = useAdminPublications(
+    {
+      publicationStatusFilter: ['published', 'draft', 'archived'],
+      // Admin publications in the "All" tab are shown in a flat list when there is a search query
+      rootLevelOnly: !search || search.length === 0,
+      search,
+    },
+    {
+      enabled: activeTab === 'all',
+    }
+  );
 
   useEffect(() => {
     if (userIsAdmin) {
       clHistory.push('/admin/projects/all');
     }
   }, [userIsAdmin]);
-
-  const { pathname } = useLocation();
-
-  const activeTab = getActiveTab(pathname);
 
   const flatPublishedAdminPublications = flattenPagesData(
     publishedAdminPublications
@@ -166,15 +215,12 @@ const AdminProjectsList = memo(({ className }: Props) => {
     archivedAdminPublications
   );
   const flatAllAdminPublications = flattenPagesData(allAdminPublications);
-
   const flatModeratedAdminPublications = flattenPagesData(
     moderatedAdminPublications
   );
-
   const flatModeratedProjectAdminPublications = flattenPagesData(
     moderatedProjectAdminPublications
   );
-
   const flatPendingReviewAdminPublications = flattenPagesData(
     pendingReviewAdminPublications
   );
@@ -256,7 +302,7 @@ const AdminProjectsList = memo(({ className }: Props) => {
             />
             <Tab
               label={`${formatMessage(messages.publishedTab)} (${
-                flatPublishedAdminPublications?.length || 0
+                statusCounts?.data.attributes.status_counts.published || 0
               })`}
               active={activeTab === 'published'}
               url="/admin/projects/published"
@@ -264,7 +310,7 @@ const AdminProjectsList = memo(({ className }: Props) => {
             <Tab
               label={`
                 ${formatMessage(messages.draft)} (${
-                flatDraftAdminPublications?.length || 0
+                statusCounts?.data.attributes.status_counts.draft || 0
               })`}
               active={activeTab === 'draft'}
               url="/admin/projects/draft"
@@ -272,16 +318,17 @@ const AdminProjectsList = memo(({ className }: Props) => {
             <Tab
               label={`
                 ${formatMessage(messages.archived)} (${
-                flatArchivedAdminPublications?.length || 0
+                statusCounts?.data.attributes.status_counts.archived || 0
               })`}
               active={activeTab === 'archived'}
               url="/admin/projects/archived"
             />
-            {isProjectReviewEnabled && isAdmin(authUser) && (
+            {showPendingReviewTab && (
               <Tab
                 label={`
                   ${formatMessage(messages.pendingReview)} (${
-                  flatPendingReviewAdminPublications?.length || 0
+                  pendingReviewStatusCounts?.data.attributes.status_counts
+                    .draft || 0
                 })`}
                 active={activeTab === 'pending'}
                 url="/admin/projects/pending"
