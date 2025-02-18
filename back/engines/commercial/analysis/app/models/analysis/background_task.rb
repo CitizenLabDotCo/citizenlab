@@ -27,7 +27,7 @@
 #
 module Analysis
   class BackgroundTask < ::ApplicationRecord
-    TYPES = ['Analysis::AutoTaggingTask', 'Analysis::SummarizationTask', 'Analysis::QAndATask']
+    TYPES = ['Analysis::AutoTaggingTask', 'Analysis::SummarizationTask', 'Analysis::QAndATask', 'Analysis::CommentsSummarizationTask']
     STATES = %w[queued in_progress succeeded failed]
 
     belongs_to :analysis
