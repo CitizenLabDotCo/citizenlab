@@ -42,6 +42,10 @@ module Analysis
       end
     end
 
+    def comments_count
+      comments_ids.size
+    end
+
     def missing_comments_count
       (comments.ids - comments_ids).size
     end
