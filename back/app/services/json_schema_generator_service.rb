@@ -262,7 +262,7 @@ class JsonSchemaGeneratorService < FieldVisitorService
     }
   end
 
-  def visit_sentiment_linear_scale
+  def visit_sentiment_linear_scale(_field)
     {
       type: 'number',
       minimum: 1,

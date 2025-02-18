@@ -635,8 +635,6 @@ RSpec.describe UiSchemaGeneratorService do
       )
     end
 
-    # TODO: Add test for sentiment linear scale
-
     it 'returns the schema for the given field' do
       expect(generator.visit_linear_scale(field)).to eq({
         type: 'Control',
@@ -660,6 +658,32 @@ RSpec.describe UiSchemaGeneratorService do
       })
     end
   end
+
+  describe '#visit_sentiment_linear_scale' do
+  let(:field) do
+    create(
+      :custom_field_sentiment_linear_scale,
+      key: field_key
+    )
+  end
+
+  it 'returns the schema for the given field' do
+    expect(generator.visit_sentiment_linear_scale(field)).to eq({
+      type: 'Control',
+      scope: "#/properties/#{field_key}",
+      label: 'We need a swimming pool.',
+      options: {
+        input_type: field.input_type,
+        description: 'Please indicate how strong you agree or disagree.',
+        linear_scale_label1: 'Strongly disagree',
+        linear_scale_label2: 'Disagree',
+        linear_scale_label3: 'Neutral',
+        linear_scale_label4: 'Agree',
+        linear_scale_label5: 'Strongly agree'
+      }
+    })
+  end
+end
 
   describe '#visit_rating' do
     let(:field) do

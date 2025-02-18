@@ -165,6 +165,46 @@ FactoryBot.define do
       linear_scale_label_11_multiloc { {} }
     end
 
+    factory :custom_field_sentiment_linear_scale do
+      title_multiloc do
+        {
+          'en' => 'We need a swimming pool.'
+        }
+      end
+      description_multiloc do
+        {
+          'en' => 'Please indicate how strong you agree or disagree.'
+        }
+      end
+      input_type { 'linear_scale' }
+      maximum { 5 }
+      linear_scale_label_1_multiloc do
+        {
+          'en' => 'Strongly disagree'
+        }
+      end
+      linear_scale_label_2_multiloc do
+        {
+          'en' => 'Disagree'
+        }
+      end
+      linear_scale_label_3_multiloc do
+        {
+          'en' => 'Neutral'
+        }
+      end
+      linear_scale_label_4_multiloc do
+        {
+          'en' => 'Agree'
+        }
+      end
+      linear_scale_label_5_multiloc do
+        {
+          'en' => 'Strongly agree'
+        }
+      end
+    end
+
     factory :custom_field_rating do
       title_multiloc do
         {
