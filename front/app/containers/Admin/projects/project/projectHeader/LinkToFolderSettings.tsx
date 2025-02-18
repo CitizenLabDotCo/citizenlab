@@ -20,14 +20,16 @@ export const fragmentId = 'folder';
 const LinkToFolderSettings = ({ folderId, projectId }: Props) => {
   const { data: projectFolder } = useProjectFolderById(folderId);
   const localize = useLocalize();
-  const linkTo = createHighlighterLink(
-    `/admin/projects/${projectId}/settings#${fragmentId}`
-  );
 
   if (!projectFolder) return null;
 
   return (
-    <Link to={linkTo} data-cy="e2e-folder-preview-link-to-settings">
+    <Link
+      to={createHighlighterLink(
+        `/admin/projects/${projectId}/settings#${fragmentId}`
+      )}
+      data-cy="e2e-folder-preview-link-to-settings"
+    >
       <Box display="flex" alignItems="center" gap="4px">
         <Icon name="folder-solid" fill={colors.coolGrey600} width="14px" />
         <Text color="coolGrey600" m="0px" fontSize="s" p="0">
