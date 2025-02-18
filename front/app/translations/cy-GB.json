@@ -1557,7 +1557,7 @@
   "app.containers.NotificationMenu.userReportedCommentAsSpam1": "{name} adroddodd sylw ar \"{postTitle}\" fel sbam",
   "app.containers.NotificationMenu.votingBasketNotSubmitted": "Ni wnaethoch gyflwyno eich pleidleisiau",
   "app.containers.NotificationMenu.votingBasketSubmitted": "Fe wnaethoch chi bleidleisio'n llwyddiannus",
-  "app.containers.NotificationMenu.votingLastChance": "Cyfle olaf i bleidleisio o blaid {phaseTitle}",
+  "app.containers.NotificationMenu.votingLastChance": "Cyfle olaf i bleidleisio dros {phaseTitle}",
   "app.containers.NotificationMenu.votingResults": "{phaseTitle} canlyniadau pleidlais wedi'u datgelu",
   "app.containers.NotificationMenu.xAssignedPostToYou": "{name} neilltuo {postTitle} i chi",
   "app.containers.PasswordRecovery.emailError": "Nid yw hwn yn edrych fel e-bost dilys",
