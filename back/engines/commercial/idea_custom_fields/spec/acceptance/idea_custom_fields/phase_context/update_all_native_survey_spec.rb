@@ -766,7 +766,7 @@ resource 'Idea Custom Fields' do
               linear_scale_label_2_multiloc: { 'en' => 'Low' },
               linear_scale_label_3_multiloc: { 'en' => 'Neutral' },
               linear_scale_label_4_multiloc: { 'en' => 'High' },
-              linear_scale_label_5_multiloc: { 'en' => 'Highest' },
+              linear_scale_label_5_multiloc: { 'en' => 'Highest' }
             },
             final_page
           ]
