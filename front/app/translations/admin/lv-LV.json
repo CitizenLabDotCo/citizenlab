@@ -1833,7 +1833,7 @@
   "app.containers.AdminPage.ProjectEdit.survey.disabledImportInputsTooltip": "Šī funkcija nav iekļauta jūsu pašreizējā plānā. Sazinieties ar savu GovSuccess menedžeri, lai uzzinātu vairāk par to.",
   "app.containers.AdminPage.ProjectEdit.survey.disabledSurveyMessage2": "Aptaujas saturu nevar rediģēt, jo ir sākusies apsekojumu rezultātu saņemšana.",
   "app.containers.AdminPage.ProjectEdit.survey.downloadAllResults2": "Lejupielādēt visus apsekojuma rezultātus",
-  "app.containers.AdminPage.ProjectEdit.survey.downloadExcelTemplate1": "Lejupielādēt Excel veidni",
+  "app.containers.AdminPage.ProjectEdit.survey.downloadExcelTemplate": "Lejupielādēt Excel veidni",
   "app.containers.AdminPage.ProjectEdit.survey.downloadExcelTemplateTooltip": "Excel veidnēs nebūs iekļauti kartēšanas ievades jautājumi, jo pašlaik tie netiek atbalstīti masveida importēšanai.",
   "app.containers.AdminPage.ProjectEdit.survey.downloadResults2": "Aptaujas rezultātu lejupielāde",
   "app.containers.AdminPage.ProjectEdit.survey.downloadSurvey": "Lejupielādēt apsekojumu pdf formātā",
