@@ -788,7 +788,6 @@
   "app.components.formBuilder.ruleForAnswerLabel": "Se la risposta è:",
   "app.components.formBuilder.ruleForAnswerLabelMultiselect": "Se le risposte includono:",
   "app.components.formBuilder.save": "Risparmiare",
-  "app.components.formBuilder.section": "Sezione",
   "app.components.formBuilder.sectionCannotBeDeleted": "Questa sezione non può essere cancellata.",
   "app.components.formBuilder.selectRangeTooltip": "Scegliere il valore massimo per la scala.",
   "app.components.formBuilder.shapefileUpload": "Caricamento di shapefile Esri",

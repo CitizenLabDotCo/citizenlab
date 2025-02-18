@@ -788,7 +788,6 @@
   "app.components.formBuilder.ruleForAnswerLabel": "Eğer cevap buysa:",
   "app.components.formBuilder.ruleForAnswerLabelMultiselect": "Cevaplar şunları içeriyorsa:",
   "app.components.formBuilder.save": "Kaydet",
-  "app.components.formBuilder.section": "Bölüm",
   "app.components.formBuilder.sectionCannotBeDeleted": "Bu bölüm silinemez.",
   "app.components.formBuilder.selectRangeTooltip": "Ölçeğiniz için maksimum değeri seçin.",
   "app.components.formBuilder.shapefileUpload": "Esri shapefile yükleme",

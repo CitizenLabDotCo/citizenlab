@@ -788,7 +788,6 @@
   "app.components.formBuilder.ruleForAnswerLabel": "Ja atbilde ir:",
   "app.components.formBuilder.ruleForAnswerLabelMultiselect": "Ja atbildes ietver:",
   "app.components.formBuilder.save": "Saglabāt",
-  "app.components.formBuilder.section": "Sadaļa",
   "app.components.formBuilder.sectionCannotBeDeleted": "Šo sadaļu nevar dzēst.",
   "app.components.formBuilder.selectRangeTooltip": "Izvēlieties skalas maksimālo vērtību.",
   "app.components.formBuilder.shapefileUpload": "Esri shapefile augšupielāde",

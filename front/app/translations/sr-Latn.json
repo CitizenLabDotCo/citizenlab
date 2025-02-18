@@ -788,7 +788,6 @@
   "app.components.formBuilder.ruleForAnswerLabel": "Ako je odgovor:",
   "app.components.formBuilder.ruleForAnswerLabelMultiselect": "If answers include:",
   "app.components.formBuilder.save": "Sačuvaj",
-  "app.components.formBuilder.section": "Odeljak",
   "app.components.formBuilder.sectionCannotBeDeleted": "Ovaj odeljak ne može se izbrisati.",
   "app.components.formBuilder.selectRangeTooltip": "Izaberite maksimalnu vrednost vaše skale.",
   "app.components.formBuilder.shapefileUpload": "Esri shapefile upload",
