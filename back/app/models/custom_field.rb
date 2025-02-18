@@ -57,6 +57,8 @@ class CustomField < ApplicationRecord
   accepts_nested_attributes_for :text_images
 
   belongs_to :resource, polymorphic: true, optional: true
+  belongs_to :custom_form, foreign_key: :resource_id, optional: true, inverse_of: :custom_fields
+
   has_many :permissions_custom_fields, dependent: :destroy
   has_many :permissions, through: :permissions_custom_fields
 
