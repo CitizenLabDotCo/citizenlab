@@ -97,6 +97,7 @@ class UiSchemaGeneratorService < FieldVisitorService
 
   def visit_sentiment_linear_scale(field)
     default(field).tap do |ui_field|
+      ui_field[:options][:ask_follow_up] = field.ask_follow_up
       ui_field[:options][:linear_scale_label1] = multiloc_service.t(field.linear_scale_label_1_multiloc)
       ui_field[:options][:linear_scale_label2] = multiloc_service.t(field.linear_scale_label_2_multiloc)
       ui_field[:options][:linear_scale_label3] = multiloc_service.t(field.linear_scale_label_3_multiloc)

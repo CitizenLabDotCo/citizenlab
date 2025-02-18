@@ -675,6 +675,7 @@ RSpec.describe UiSchemaGeneratorService do
       options: {
         input_type: field.input_type,
         description: 'Please indicate how strong you agree or disagree.',
+        ask_follow_up: false,
         linear_scale_label1: 'Strongly disagree',
         linear_scale_label2: 'Disagree',
         linear_scale_label3: 'Neutral',

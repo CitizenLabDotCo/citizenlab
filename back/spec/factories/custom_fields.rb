@@ -166,6 +166,7 @@ FactoryBot.define do
     end
 
     factory :custom_field_sentiment_linear_scale do
+      ask_follow_up { false }
       title_multiloc do
         {
           'en' => 'We need a swimming pool.'
