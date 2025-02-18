@@ -4,7 +4,7 @@ import { Icon, colors } from '@citizenlab/cl2-component-library';
 import { transparentize } from 'polished';
 import styled from 'styled-components';
 
-import { ParticipationMethod, VotingMethod } from 'api/phases/types';
+import { VotingMethod } from 'api/phases/types';
 
 const ImagePlaceholderContainer = styled.div`
   width: 100%;
@@ -23,18 +23,13 @@ const ImagePlaceholderIcon = styled(Icon)`
 `;
 
 interface Props {
-  participationMethod?: ParticipationMethod;
   votingMethod?: VotingMethod | null;
 }
 
-const ImagePlaceholder = ({ participationMethod, votingMethod }: Props) => (
+const ImagePlaceholder = ({ votingMethod }: Props) => (
   <ImagePlaceholderContainer>
     <ImagePlaceholderIcon
-      name={
-        participationMethod === 'voting' && votingMethod === 'budgeting'
-          ? 'money-bag'
-          : 'idea'
-      }
+      name={votingMethod === 'budgeting' ? 'money-bag' : 'idea'}
     />
   </ImagePlaceholderContainer>
 );

@@ -1,6 +1,6 @@
 class WebApi::V1::AuthoringAssistanceResponsesController < ApplicationController
   def create
-    if AuthoringAssistanceResponse.find_by(idea_id: params[:idea_id]) && !parse_bool(params[:regenerate])
+    if AuthoringAssistanceResponse.exists?(idea_id: params[:idea_id]) && !parse_bool(params[:regenerate])
       render_last_authoring_assistance_response
     else
       create_authoring_assistance_response

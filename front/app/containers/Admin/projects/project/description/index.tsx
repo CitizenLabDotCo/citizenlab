@@ -17,6 +17,7 @@ import {
   SectionTitle,
   SectionDescription,
 } from 'components/admin/Section';
+import Highlighter from 'components/Highlighter';
 import ProjectDescriptionBuilderToggle from 'components/ProjectDescriptionBuilder/ProjectDescriptionBuilderToggle';
 import Button from 'components/UI/ButtonWithLink';
 import Error from 'components/UI/Error';
@@ -25,6 +26,8 @@ import TextAreaMultilocWithLocaleSwitcher from 'components/UI/TextAreaMultilocWi
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import { defaultAdminCardPadding } from 'utils/styleConstants';
+
+import { fragmentId } from '../projectHeader/ProjectDescriptionPreview';
 
 import messages from './messages';
 
@@ -37,7 +40,7 @@ const submitBarHeight = '62px';
 const ProjectDescription = () => {
   const { formatMessage } = useIntl();
   const { projectId } = useParams();
-
+  const { data: project } = useProjectById(projectId);
   const { mutate: updateProject, isLoading, error } = useUpdateProject();
   const showProjectDescriptionBuilder = useFeatureFlag({
     name: 'project_description_builder',
@@ -50,8 +53,6 @@ const ProjectDescription = () => {
     description_preview_multiloc: null,
     description_multiloc: null,
   });
-
-  const { data: project } = useProjectById(projectId);
 
   useEffect(() => {
     if (project) {
@@ -132,7 +133,7 @@ const ProjectDescription = () => {
         <SectionField>
           {!showProjectDescriptionBuilder && (
             <QuillMultilocWithLocaleSwitcher
-              id="project-description-module-inactive"
+              id="e2e-project-description-module-inactive"
               valueMultiloc={formValues.description_multiloc}
               onChange={handleDescriptionOnChange}
               label={formatMessage(messages.descriptionLabel)}
@@ -140,12 +141,15 @@ const ProjectDescription = () => {
               withCTAButton
             />
           )}
-          <ProjectDescriptionBuilderToggle
-            valueMultiloc={formValues.description_multiloc}
-            onChange={handleDescriptionOnChange}
-            label={formatMessage(messages.descriptionLabel)}
-            labelTooltipText={formatMessage(messages.descriptionTooltip)}
-          />
+          <Highlighter fragmentId={fragmentId}>
+            <ProjectDescriptionBuilderToggle
+              valueMultiloc={formValues.description_multiloc}
+              onChange={handleDescriptionOnChange}
+              label={formatMessage(messages.descriptionLabel)}
+              labelTooltipText={formatMessage(messages.descriptionTooltip)}
+            />
+          </Highlighter>
+
           <Error
             fieldName="description_multiloc"
             // TODO: Fix this the next time the file is edited.

@@ -28,7 +28,30 @@ export const nativeSurveyConfig: FormBuilderConfig = {
   formEndPageLogicOption: messages.surveyEnd,
   pagesLogicHelperText: messages.pagesLogicHelperText,
 
-  toolboxFieldsToExclude: [],
+  toolboxFieldsToInclude: [
+    // When adding new fields, confirm that the BE list matches
+    'text',
+    'multiline_text',
+    'multiselect',
+    'number',
+    'select',
+    'linear_scale',
+    'ranking',
+    'rating',
+    'matrix_linear_scale',
+    'page',
+    'file_upload',
+    'shapefile_upload',
+    'title_multiloc',
+    'html_multiloc',
+    'files',
+    'image_files',
+    'topic_ids',
+    'multiselect_image',
+    'point',
+    'line',
+    'polygon',
+  ],
   formCustomFields: undefined,
 
   displayBuiltInFields: false,
@@ -96,20 +119,22 @@ export const clearOptionAndStatementIds = (
   customFields: IFlatCustomField[]
 ) => {
   return customFields.map((field: IFlatCustomField) => {
+    const newField = { ...field };
+
     if (field.options && field.options.length > 0) {
-      field.options = field.options.map((option: IOptionsType) => {
-        delete option.id;
-        return option;
+      newField.options = field.options.map((option: IOptionsType) => {
+        const { id: _id, ...optionWithoutId } = option;
+        return { ...optionWithoutId };
       });
     }
 
     if (field.matrix_statements && field.matrix_statements.length > 0) {
-      field.matrix_statements = field.matrix_statements.map((statement) => {
-        delete statement.id;
-        return statement;
+      newField.matrix_statements = field.matrix_statements.map((statement) => {
+        const { id: _id, ...statementWithoutId } = statement;
+        return { ...statementWithoutId };
       });
     }
 
-    return field;
+    return newField;
   });
 };

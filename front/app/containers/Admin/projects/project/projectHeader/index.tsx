@@ -18,12 +18,15 @@ import useUserById from 'api/users/useUserById';
 import useLocalize from 'hooks/useLocalize';
 
 import NavigationTabs from 'components/admin/NavigationTabs';
+import { createHighlighterLink } from 'components/Highlighter';
 import ButtonWithLink from 'components/UI/ButtonWithLink';
 
 import { FormattedMessage, MessageDescriptor, useIntl } from 'utils/cl-intl';
+import Link from 'utils/cl-router/Link';
 import { getFullName } from 'utils/textUtils';
 
 import messages from './messages';
+import ProjectDescriptionPreview from './ProjectDescriptionPreview';
 import PublicationStatus from './PublicationStatus';
 import ReviewFlow from './ReviewFlow';
 import ShareLink from './ShareLink';
@@ -39,6 +42,7 @@ interface Props {
   projectId: string;
 }
 
+export const fragmentId = 'title-multiloc';
 const ProjectHeader = ({ projectId }: Props) => {
   const { data: project } = useProjectById(projectId);
   const { data: projectReview } = useProjectReview(projectId);
@@ -75,10 +79,31 @@ const ProjectHeader = ({ projectId }: Props) => {
         pr="24px"
         py="16px"
       >
-        <Box display="flex" justifyContent="space-between" alignItems="center">
-          <StyledTitle color="primary" variant="h4" my="0px">
-            {localize(project.data.attributes.title_multiloc)}
-          </StyledTitle>
+        <Box
+          display="flex"
+          justifyContent="space-between"
+          alignItems="flex-start"
+          gap="16px"
+        >
+          <Box
+            display="flex"
+            flexDirection="column"
+            alignItems="flex-start"
+            mb="8px"
+            maxWidth="600px"
+          >
+            <Link
+              to={createHighlighterLink(
+                `/admin/projects/${project.data.id}/settings#${fragmentId}`
+              )}
+              data-cy="e2e-project-title-preview-link-to-settings"
+            >
+              <StyledTitle color="primary" variant="h4" mt="0" mb="4px">
+                {localize(project.data.attributes.title_multiloc)}
+              </StyledTitle>
+            </Link>
+            <ProjectDescriptionPreview project={project} />
+          </Box>
           <Box
             display="flex"
             gap="8px"

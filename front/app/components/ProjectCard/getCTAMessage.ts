@@ -15,6 +15,7 @@ interface Params {
   actionDescriptors: ActionDescriptors;
   formatMessage: FormatMessage;
   localize: Localize;
+  hasPublicReport: boolean;
 }
 
 const getCTAMessage = ({
@@ -22,6 +23,7 @@ const getCTAMessage = ({
   actionDescriptors,
   formatMessage,
   localize,
+  hasPublicReport,
 }: Params) => {
   const {
     participation_method,
@@ -41,9 +43,7 @@ const getCTAMessage = ({
       return formatMessage(messages.vote);
     }
   } else if (participation_method === 'information') {
-    const hasReport = !!phase.relationships.report?.data;
-
-    return hasReport
+    return hasPublicReport
       ? formatMessage(messages.readTheReport)
       : formatMessage(messages.learnMore);
   } else if (participation_method === 'survey') {
