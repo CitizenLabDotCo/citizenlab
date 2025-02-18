@@ -485,6 +485,7 @@
   "app.components.Upload.remaining": "overblijvend",
   "app.components.Upload.uploadImageLabel": "Selecteer een afbeelding (max. {maxImageSizeInMb}MB)",
   "app.components.Upload.uploadMultipleImagesLabel": "Selecteer een of meer afbeeldingen",
+  "app.components.UpsellTooltip.tooltipContent": "Deze functionaliteit is niet in je huidige abonnement inbegrepen. Neem contact op met je Government Success Manager of platformbeheerder om deze functionaliteit te ontgrendelen.",
   "app.components.UserName.anonymous": "Anoniem",
   "app.components.UserName.anonymousTooltip2": "Deze gebruiker heeft besloten zijn bijdrage te anonimiseren",
   "app.components.UserName.authorWithNoNameTooltip": "Je naam is automatisch gegenereerd omdat je je naam niet hebt ingevuld. Werk je profiel bij als je dit wilt veranderen.",
