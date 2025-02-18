@@ -485,6 +485,7 @@
   "app.components.Upload.remaining": "jäljelle jäänyt",
   "app.components.Upload.uploadImageLabel": "Valitse kuva (enintään {maxImageSizeInMb}Mt)",
   "app.components.Upload.uploadMultipleImagesLabel": "Valitse yksi tai useampi kuva",
+  "app.components.UpsellTooltip.tooltipContent": "Tämä ominaisuus ei sisälly nykyiseen suunnitelmaasi. Keskustele hallituksen menestyspäällikön tai järjestelmänvalvojan kanssa avataksesi sen.",
   "app.components.UserName.anonymous": "Nimetön",
   "app.components.UserName.anonymousTooltip2": "Tämä käyttäjä on päättänyt muuttaa panoksensa nimettömäksi",
   "app.components.UserName.authorWithNoNameTooltip": "Nimesi on luotu automaattisesti, koska et ole antanut nimeäsi. Päivitä profiilisi, jos haluat muuttaa sitä.",
