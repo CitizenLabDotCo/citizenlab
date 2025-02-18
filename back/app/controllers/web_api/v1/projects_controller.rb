@@ -399,10 +399,14 @@ class WebApi::V1::ProjectsController < ApplicationController
       title_multiloc: multiloc_service.i18n_to_multiloc('phases.community_monitor_title'),
       internal_role: 'community_monitor'
     )
+    sidefx.after_create(project, current_user) if project
+
     Phase.create!(
       title_multiloc: multiloc_service.i18n_to_multiloc('phases.community_monitor_title'),
       project: project,
       participation_method: 'community_monitor_survey',
+      commenting_enabled: false, # TODO: JS - set in the participation method defaults
+      reacting_enabled: false,
       start_at: Time.now,
       campaigns_settings: { project_phase_started: true }, # TODO: JS - Is this correct?
       native_survey_title_multiloc: multiloc_service.i18n_to_multiloc('phases.community_monitor_title'),

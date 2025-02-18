@@ -1687,7 +1687,7 @@ resource 'Projects' do
       before { admin_header_token }
 
       context 'hidden community monitor project exists' do
-        let!(:project) { create(:project, internal_role: 'community_monitor') }
+        let!(:project) { create(:project, internal_role: 'community_monitor', admin_publication_attributes: { publication_status: 'hidden' }) }
 
         example 'Get community monitor project' do
           settings = AppConfiguration.instance.settings
