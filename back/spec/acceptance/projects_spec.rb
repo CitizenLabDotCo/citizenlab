@@ -1275,7 +1275,7 @@ resource 'Projects' do
         create(:project, admin_publication_attributes: { publication_status: status })
       end
     end
-    let(:publication_statuses) { AdminPublication::PUBLICATION_STATUSES.select{ |s| s != "hidden" } }
+    let(:publication_statuses) { AdminPublication::PUBLICATION_STATUSES.select{ |ps| ps != "hidden" } }
 
     get 'web_api/v1/projects' do
       with_options scope: :page do

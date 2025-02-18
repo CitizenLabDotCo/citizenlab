@@ -92,7 +92,6 @@ describe SideFxIdeaService do
 
         expect(user.follows.pluck(:followable_id)).to contain_exactly project.id, folder.id
       end
-
     end
 
     it 'creates a cosponsorship' do
