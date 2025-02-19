@@ -1830,7 +1830,6 @@
   "app.containers.AdminPage.ProjectEdit.survey.deleteResultsLink2": "Eliminar os resultados se for necessário fazer alterações.",
   "app.containers.AdminPage.ProjectEdit.survey.deleteSurveyResults2": "Eliminar os resultados da pesquisa",
   "app.containers.AdminPage.ProjectEdit.survey.deleteSurveyResultsConfirmation2": "Tem a certeza de que quer apagar todos os resultados da pesquisa?",
-  "app.containers.AdminPage.ProjectEdit.survey.disabledImportInputsTooltip": "Esse recurso não está incluído em seu plano atual. Entre em contato com seu gerente do GovSuccess para saber mais sobre ele.",
   "app.containers.AdminPage.ProjectEdit.survey.disabledSurveyMessage2": "O conteúdo da pesquisa não pode ser editado, uma vez que os resultados da pesquisa já começaram a chegar.",
   "app.containers.AdminPage.ProjectEdit.survey.downloadAllResults2": "Descarregar todos os resultados da pesquisa",
   "app.containers.AdminPage.ProjectEdit.survey.downloadExcelTemplate": "Faça o download de um modelo do Excel",
