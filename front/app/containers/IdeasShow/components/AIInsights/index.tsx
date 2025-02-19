@@ -1,3 +1,5 @@
+// This code is a prototype for input authoring. Clean-up will follow after the prototype phase.
+
 import React, { useEffect, useState } from 'react';
 
 import { Box, Button, Text, colors } from '@citizenlab/cl2-component-library';
@@ -5,6 +7,8 @@ import { Box, Button, Text, colors } from '@citizenlab/cl2-component-library';
 import { IAuthoringAssistanceData } from 'api/authoring_assistance/types';
 import useAddAuthoringAssistance from 'api/authoring_assistance/useAuthoringAssistance';
 import { IIdea } from 'api/ideas/types';
+
+import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import IdeaCard from 'components/IdeaCard';
 import TextArea from 'components/UI/TextArea';
@@ -19,6 +23,9 @@ const AIInsights = ({ idea }: { idea: IIdea }) => {
   const [promptData, setPromptData] = useState<IAuthoringAssistanceData | null>(
     null
   );
+  const isAuthoringAssistanceOn = useFeatureFlag({
+    name: 'authoring_assistance',
+  });
 
   // Stores the user input from the TextArea
   const [customPrompt, setCustomPrompt] = useState<string>('');
@@ -50,6 +57,8 @@ const AIInsights = ({ idea }: { idea: IIdea }) => {
   const similarIdeaIds =
     promptData?.attributes.prompt_response.duplicate_inputs;
 
+  if (!isAuthoringAssistanceOn) return null;
+
   return (
     <Box
       display="flex"
@@ -74,7 +83,7 @@ const AIInsights = ({ idea }: { idea: IIdea }) => {
       <Button onClick={() => fetchAssistance(true)}>
         {formatMessage(messages.regenegareteInsights)}
       </Button>
-      <Text>
+      <Text whiteSpace="pre-wrap">
         {promptData?.attributes.prompt_response.custom_free_prompt_response}
       </Text>
       {similarIdeaIds && similarIdeaIds.length > 1 && (

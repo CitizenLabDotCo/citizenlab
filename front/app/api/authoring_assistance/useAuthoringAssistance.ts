@@ -1,3 +1,4 @@
+// This code is a prototype for input authoring. Clean-up will follow after the prototype phase.
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { CLErrors } from 'typings';
 
