@@ -9,8 +9,6 @@ import {
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
-import NewBadge from 'components/UI/NewBadge';
-
 import { FormattedMessage } from 'utils/cl-intl';
 
 import messages from '../messages';
@@ -35,7 +33,6 @@ const ImportButtons = ({ onClickPDFImport, onClickExcelImport }: Props) => {
       >
         <FormattedMessage {...messages.importFile} />
       </Button>
-
       <Dropdown
         width="100%"
         right="25px"
@@ -48,12 +45,7 @@ const ImportButtons = ({ onClickPDFImport, onClickExcelImport }: Props) => {
             </DropdownListItem>
             {printedFormsEnabled && (
               <DropdownListItem onClick={onClickPDFImport}>
-                <Box mr="12px" alignSelf="center">
-                  <FormattedMessage {...messages.importPDFFile} />
-                </Box>
-                <Box alignSelf="center">
-                  <NewBadge />
-                </Box>
+                <FormattedMessage {...messages.importPDFFile} />
               </DropdownListItem>
             )}
           </>
