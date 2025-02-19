@@ -2214,6 +2214,7 @@
   "app.containers.AdminPage.SideBar.moderation": "Aktivitet",
   "app.containers.AdminPage.SideBar.notifications": "Varsler",
   "app.containers.AdminPage.SideBar.processing": "Behandling",
+  "app.containers.AdminPage.SideBar.projectLibrary": "Inspirasjonsknutepunkt",
   "app.containers.AdminPage.SideBar.projectManager": "Prosjektleder",
   "app.containers.AdminPage.SideBar.projects": "Prosjekter",
   "app.containers.AdminPage.SideBar.settings": "Innstillinger",
