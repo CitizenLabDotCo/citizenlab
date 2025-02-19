@@ -25,6 +25,7 @@ import { FormattedMessage, MessageDescriptor, useIntl } from 'utils/cl-intl';
 import Link from 'utils/cl-router/Link';
 import { getFullName } from 'utils/textUtils';
 
+import LinkToFolderSettings from './LinkToFolderSettings';
 import messages from './messages';
 import ProjectDescriptionPreview from './ProjectDescriptionPreview';
 import PublicationStatus from './PublicationStatus';
@@ -55,6 +56,7 @@ const ProjectHeader = ({ projectId }: Props) => {
 
   if (!project) return null;
 
+  const folderId = project.data.attributes.folder_id;
   let visibilityMessage: MessageDescriptor = messages.everyone;
   let visibilityIcon: IconNames = 'lock';
   switch (project.data.attributes.visible_to) {
@@ -92,6 +94,14 @@ const ProjectHeader = ({ projectId }: Props) => {
             mb="8px"
             maxWidth="600px"
           >
+            {typeof folderId === 'string' && (
+              <Box mb="4px">
+                <LinkToFolderSettings
+                  folderId={folderId}
+                  projectId={projectId}
+                />
+              </Box>
+            )}
             <Link
               to={createHighlighterLink(
                 `/admin/projects/${project.data.id}/settings#${fragmentId}`

@@ -1830,7 +1830,6 @@
   "app.containers.AdminPage.ProjectEdit.survey.deleteResultsLink2": "Избришите резултате ако треба да унесете измене.",
   "app.containers.AdminPage.ProjectEdit.survey.deleteSurveyResults2": "Избришите резултате анкете",
   "app.containers.AdminPage.ProjectEdit.survey.deleteSurveyResultsConfirmation2": "Да ли сте сигурни да желите да избришете све резултате анкете?",
-  "app.containers.AdminPage.ProjectEdit.survey.disabledImportInputsTooltip": "This feature is not included in your current plan. Reach out to your GovSuccess Manager to learn more about it.",
   "app.containers.AdminPage.ProjectEdit.survey.disabledSurveyMessage2": "Садржај анкете се не може уређивати јер су почели да пристижу резултати анкете.",
   "app.containers.AdminPage.ProjectEdit.survey.downloadAllResults2": "Преузмите све резултате анкете",
   "app.containers.AdminPage.ProjectEdit.survey.downloadExcelTemplate": "Download an Excel template",

@@ -485,6 +485,7 @@
   "app.components.Upload.remaining": "ਬਾਕੀ",
   "app.components.Upload.uploadImageLabel": "ਇੱਕ ਚਿੱਤਰ ਚੁਣੋ (ਅਧਿਕਤਮ {maxImageSizeInMb}MB)",
   "app.components.Upload.uploadMultipleImagesLabel": "ਇੱਕ ਜਾਂ ਇੱਕ ਤੋਂ ਵੱਧ ਚਿੱਤਰ ਚੁਣੋ",
+  "app.components.UpsellTooltip.tooltipContent": "ਇਹ ਵਿਸ਼ੇਸ਼ਤਾ ਤੁਹਾਡੇ ਮੌਜੂਦਾ ਪਲਾਨ ਵਿੱਚ ਸ਼ਾਮਲ ਨਹੀਂ ਹੈ। ਇਸਨੂੰ ਅਨਲੌਕ ਕਰਨ ਲਈ ਆਪਣੇ ਸਰਕਾਰੀ ਸਫਲਤਾ ਪ੍ਰਬੰਧਕ ਜਾਂ ਪ੍ਰਸ਼ਾਸਕ ਨਾਲ ਗੱਲ ਕਰੋ।",
   "app.components.UserName.anonymous": "ਅਗਿਆਤ",
   "app.components.UserName.anonymousTooltip2": "ਇਸ ਉਪਭੋਗਤਾ ਨੇ ਆਪਣੇ ਯੋਗਦਾਨ ਨੂੰ ਗੁਪਤ ਰੱਖਣ ਦਾ ਫੈਸਲਾ ਕੀਤਾ ਹੈ",
   "app.components.UserName.authorWithNoNameTooltip": "ਤੁਹਾਡਾ ਨਾਮ ਸਵੈਚਲਿਤ ਹੋ ਗਿਆ ਹੈ ਕਿਉਂਕਿ ਤੁਸੀਂ ਆਪਣਾ ਨਾਮ ਦਰਜ ਨਹੀਂ ਕੀਤਾ ਹੈ। ਜੇਕਰ ਤੁਸੀਂ ਇਸ ਨੂੰ ਬਦਲਣਾ ਚਾਹੁੰਦੇ ਹੋ ਤਾਂ ਕਿਰਪਾ ਕਰਕੇ ਆਪਣੀ ਪ੍ਰੋਫਾਈਲ ਨੂੰ ਅੱਪਡੇਟ ਕਰੋ।",

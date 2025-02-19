@@ -1830,7 +1830,6 @@
   "app.containers.AdminPage.ProjectEdit.survey.deleteResultsLink2": "Poista tulokset, jos sinun on tehtävä muutoksia.",
   "app.containers.AdminPage.ProjectEdit.survey.deleteSurveyResults2": "Poista kyselyn tulokset",
   "app.containers.AdminPage.ProjectEdit.survey.deleteSurveyResultsConfirmation2": "Haluatko varmasti poistaa kaikki kyselyn tulokset?",
-  "app.containers.AdminPage.ProjectEdit.survey.disabledImportInputsTooltip": "Tämä ominaisuus ei sisälly nykyiseen suunnitelmaasi. Ota yhteyttä GovSuccess Manageriin saadaksesi lisätietoja siitä.",
   "app.containers.AdminPage.ProjectEdit.survey.disabledSurveyMessage2": "Kyselyn sisältöä ei voi muokata, koska kyselyn tuloksia on alkanut tulla.",
   "app.containers.AdminPage.ProjectEdit.survey.downloadAllResults2": "Lataa kaikki kyselyn tulokset",
   "app.containers.AdminPage.ProjectEdit.survey.downloadExcelTemplate": "Lataa Excel-malli",

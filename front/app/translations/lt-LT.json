@@ -485,6 +485,7 @@
   "app.components.Upload.remaining": "likęs",
   "app.components.Upload.uploadImageLabel": "Pasirinkite vaizdą (ne daugiau kaip {maxImageSizeInMb}MB)",
   "app.components.Upload.uploadMultipleImagesLabel": "Pasirinkite vieną ar daugiau vaizdų",
+  "app.components.UpsellTooltip.tooltipContent": "Ši funkcija neįtraukta į dabartinį planą. Norėdami ją atrakinti, pasitarkite su savo Vyriausybės sėkmės vadybininku arba administratoriumi.",
   "app.components.UserName.anonymous": "Anoniminis",
   "app.components.UserName.anonymousTooltip2": "Šis naudotojas nusprendė anonimizuoti savo indėlį",
   "app.components.UserName.authorWithNoNameTooltip": "Jūsų vardas buvo sugeneruotas automatiškai, nes neįvedėte savo vardo. Jei norite jį pakeisti, atnaujinkite savo profilį.",
