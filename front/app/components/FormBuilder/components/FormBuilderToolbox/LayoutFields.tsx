@@ -39,7 +39,7 @@ const LayoutFields = ({ addField, builderConfig }: BuiltInFieldsProps) => {
           label={formatMessage(messages.page)}
           onClick={() => addField('page')}
           data-cy="e2e-page"
-          fieldsToExclude={builderConfig.toolboxFieldsToExclude}
+          fieldsToInclude={builderConfig.toolboxFieldsToInclude}
           inputType="page"
         />
       </DraggableElement>

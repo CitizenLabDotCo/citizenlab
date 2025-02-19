@@ -110,7 +110,7 @@ const BuiltInFields = ({ move, builderConfig }: BuiltInFieldsProps) => {
             label={formatMessage(messages.cosponsors)}
             onClick={() => enableField('cosponsor_ids')}
             data-cy="e2e-cosponsors-field"
-            fieldsToExclude={builderConfig.toolboxFieldsToExclude}
+            fieldsToInclude={builderConfig.toolboxFieldsToInclude}
             inputType="cosponsor_ids"
             disabled={!enabledBuiltInFieldKeys.includes('cosponsor_ids')}
             disabledTooltipMessage={messages.disabledBuiltInFieldTooltip}

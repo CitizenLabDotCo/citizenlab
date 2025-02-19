@@ -485,6 +485,7 @@
   "app.components.Upload.remaining": "atliek",
   "app.components.Upload.uploadImageLabel": "Izvēlēties attēlu (max. {maxImageSizeInMb}MB)",
   "app.components.Upload.uploadMultipleImagesLabel": "Izvēlieties vienu vai vairākus attēlus",
+  "app.components.UpsellTooltip.tooltipContent": "Šī funkcija nav iekļauta jūsu pašreizējā plānā. Lai to atbloķētu, sazinieties ar savu valdības veiksmes menedžeri vai administratoru.",
   "app.components.UserName.anonymous": "Anonīms",
   "app.components.UserName.anonymousTooltip2": "Šis lietotājs ir nolēmis anonimizēt savu ieguldījumu",
   "app.components.UserName.authorWithNoNameTooltip": "Jūsu vārds ir automātiski ģenerēts, jo neesat ievadījis savu vārdu. Lūdzu, atjauniniet savu profilu, ja vēlaties to mainīt.",

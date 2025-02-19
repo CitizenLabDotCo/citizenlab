@@ -485,6 +485,7 @@
   "app.components.Upload.remaining": "restante",
   "app.components.Upload.uploadImageLabel": "Selecciona una imagen (máx. {maxImageSizeInMb}MB)",
   "app.components.Upload.uploadMultipleImagesLabel": "Sube una o más imágenes",
+  "app.components.UpsellTooltip.tooltipContent": "Esta función no está incluida en tu plan actual. Habla con tu Gestor de Éxito Gubernamental o con el administrador para desbloquearla.",
   "app.components.UserName.anonymous": "Anónimo",
   "app.components.UserName.anonymousTooltip2": "Este usuario ha decidido anonimizar su contribución",
   "app.components.UserName.authorWithNoNameTooltip": "Tu nombre se ha autogenerado porque no has introducido tu nombre. Actualiza tu perfil si deseas cambiarlo.",
