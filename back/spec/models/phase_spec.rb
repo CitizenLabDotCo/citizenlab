@@ -310,42 +310,44 @@ RSpec.describe Phase do
     end
   end
 
-  describe 'native_survey_title_multiloc' do
-    # Do each here
-    it 'must contain a survey title if a native survey phase' do
-      phase = build(:native_survey_phase)
+  describe 'native_survey_title_multiloc and native_survey_button_multiloc' do
+    [
+      { project: :project, phase: :native_survey_phase },
+      { project: :community_monitor_project, phase: :community_monitor_survey_phase}
+    ].each do |factories|
+      context factories[:phase] do
+        let(:phase) { build(factories[:phase], project: create(factories[:project])) }
 
-      phase.native_survey_title_multiloc = { en: 'Survey' }
-      expect(phase).to be_valid
+        it 'must contain a survey title' do
+          phase.native_survey_title_multiloc = { en: 'Survey' }
+          expect(phase).to be_valid
 
-      phase.native_survey_title_multiloc = {}
-      expect(phase).not_to be_valid
+          phase.native_survey_title_multiloc = {}
+          expect(phase).not_to be_valid
 
-      phase.native_survey_title_multiloc = nil
-      expect(phase).not_to be_valid
+          phase.native_survey_title_multiloc = nil
+          expect(phase).not_to be_valid
+        end
+
+        it 'must contain survey button text' do
+          phase.native_survey_button_multiloc = { en: 'Take the survey' }
+          expect(phase).to be_valid
+
+          phase.native_survey_button_multiloc = {}
+          expect(phase).not_to be_valid
+
+          phase.native_survey_button_multiloc = nil
+          expect(phase).not_to be_valid
+        end
+      end
     end
 
-    it 'does not need a survey title if not native survey' do
+    it 'does not need a survey title if not a type of native survey' do
       phase = build(:phase, native_survey_title_multiloc: {})
       expect(phase).to be_valid
     end
-  end
 
-  describe 'native_survey_button_multiloc' do
-    it 'must contain survey button text if a native survey phase' do
-      phase = build(:native_survey_phase)
-
-      phase.native_survey_button_multiloc = { en: 'Take the survey' }
-      expect(phase).to be_valid
-
-      phase.native_survey_button_multiloc = {}
-      expect(phase).not_to be_valid
-
-      phase.native_survey_button_multiloc = nil
-      expect(phase).not_to be_valid
-    end
-
-    it 'does not need a survey title if not native survey' do
+    it 'does not need a survey title if not a type of native survey' do
       phase = build(:phase, native_survey_button_multiloc: {})
       expect(phase).to be_valid
     end

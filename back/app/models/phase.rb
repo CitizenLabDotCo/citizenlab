@@ -340,19 +340,20 @@ class Phase < ApplicationRecord
     end
   end
 
+  # TODO: JS - should probably move this to the participation method
   def validate_community_monitor_phase
     return unless participation_method == 'community_monitor_survey'
 
     if project.phases.count > 1
-      errors.add(:community_monitor_survey, :too_many_phases, message: 'community_monitor project can only have one phase')
+      errors.add(:base, :too_many_phases, message: 'community_monitor project can only have one phase')
     end
 
     unless project.hidden?
-      errors.add(:community_monitor_survey, :project_not_hidden, message: 'community_monitor projects must be hidden')
+      errors.add(:base, :project_not_hidden, message: 'community_monitor projects must be hidden')
     end
 
     if end_at.present?
-      errors.add(:community_monitor_survey, :has_end_at, message: 'community_monitor projects cannot have an end date')
+      errors.add(:base, :has_end_at, message: 'community_monitor projects cannot have an end date')
     end
   end
 

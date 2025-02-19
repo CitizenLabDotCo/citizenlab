@@ -616,12 +616,6 @@ FactoryBot.define do
       factory :community_monitor_project do
         internal_role { 'community_monitor' }
         admin_publication_attributes { { publication_status: 'hidden' } }
-        after(:create) do |project|
-          project.phases << create(
-            :community_monitor_survey_phase,
-            project: project
-          )
-        end
       end
     end
   end
