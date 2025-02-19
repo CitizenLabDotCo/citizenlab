@@ -1,10 +1,5 @@
+// This code is a prototype for input authoring. Clean-up will follow after the prototype phase.
 import { IRelationship } from 'typings';
-
-import { Keys } from 'utils/cl-react-query/types';
-
-import authoringAssistanceKeys from './keys';
-
-export type AuthoringAssistanceKeys = Keys<typeof authoringAssistanceKeys>;
 
 export interface IAuthoringAssistanceData {
   id: string;
