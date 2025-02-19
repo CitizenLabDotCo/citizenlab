@@ -76,7 +76,7 @@ const AIInsights = ({ idea }: { idea: IIdea }) => {
       <Button onClick={() => fetchAssistance(true)}>
         {formatMessage(messages.regenegareteInsights)}
       </Button>
-      <Text>
+      <Text whiteSpace="pre-wrap">
         {promptData?.attributes.prompt_response.custom_free_prompt_response}
       </Text>
       {similarIdeaIds && similarIdeaIds.length > 1 && (
