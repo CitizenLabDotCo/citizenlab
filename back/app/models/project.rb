@@ -88,7 +88,7 @@ class Project < ApplicationRecord
   after_save :reassign_moderators, if: :folder_changed?
   after_commit :clear_folder_changes, if: :folder_changed?
 
-  INTERNAL_ROLES = %w[open_idea_box].freeze
+  INTERNAL_ROLES = %w[open_idea_box community_monitor].freeze
 
   validates :title_multiloc, presence: true, multiloc: { presence: true }
   validates :description_multiloc, multiloc: { presence: false, html: true }
@@ -142,7 +142,7 @@ class Project < ApplicationRecord
 
   alias project_id id
 
-  delegate :ever_published?, :never_published?, to: :admin_publication, allow_nil: true
+  delegate :published?, :ever_published?, :never_published?, :hidden?, to: :admin_publication, allow_nil: true
 
   class << self
     def search_ids_by_all_including_patches(term)

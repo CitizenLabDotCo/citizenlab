@@ -61,6 +61,7 @@ describe SideFxPhaseService do
         phase.update!(
           # Required to avoid errors when switching to native survey below
           ideas_order: nil,
+          native_survey_method: 'standard',
           native_survey_title_multiloc: { en: 'Survey' },
           native_survey_button_multiloc: { en: 'Take the survey' }
         )

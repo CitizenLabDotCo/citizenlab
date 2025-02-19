@@ -51,6 +51,10 @@ module ParticipationMethod
       context.custom_form || CustomForm.new(participation_context: context)
     end
 
+    def logic_enabled?
+      false
+    end
+
     def default_fields(_custom_form)
       []
     end
@@ -159,6 +163,10 @@ module ParticipationMethod
     end
 
     def use_reactions_as_votes?
+      false
+    end
+
+    def follow_idea_on_idea_submission?
       false
     end
 

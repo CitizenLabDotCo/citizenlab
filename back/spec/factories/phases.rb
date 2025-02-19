@@ -104,6 +104,7 @@ FactoryBot.define do
 
     factory :native_survey_phase do
       participation_method { 'native_survey' }
+      native_survey_method { 'standard' }
       native_survey_title_multiloc { { 'en' => 'Survey', 'nl-BE' => 'Vragenlijst' } }
       native_survey_button_multiloc { { 'en' => 'Take the survey', 'nl-BE' => 'De enquete invullen' } }
       factory :active_native_survey_phase do
@@ -111,6 +112,12 @@ FactoryBot.define do
           phase.start_at = Time.now - 7.days
           phase.end_at = Time.now + 7.days
         end
+      end
+      factory :community_monitor_native_survey_phase do
+        native_survey_method { 'community_monitor' }
+        native_survey_title_multiloc { { 'en' => 'Community Monitor', 'nl-BE' => 'Gemeenschapsmonitor' } }
+        start_at { Time.zone.today - 7.days }
+        end_at { nil }
       end
     end
 
