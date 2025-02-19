@@ -521,4 +521,30 @@ describe 'Rack::Attack' do
       expect(status).to eq(200)
     end
   end
+
+  it 'limits authoring assistance response requests from same IP to 10 in 20 seconds' do
+    token = AuthToken::AuthToken.new(payload: create(:user).to_token_payload).token
+    headers = { 
+      'CONTENT_TYPE' => 'application/json',
+      'Authorization' => "Bearer #{token}"
+    }
+
+    freeze_time do
+      10.times do |i|
+        post(
+          "/web_api/v1/ideas/#{SecureRandom.uuid}/authoring_assistance_responses",
+          params: '{ "authoring_assistance_response": { "custom_free_prompt": "Is this a good idea?" } }',
+          headers: headers
+        )
+      end
+      expect(status).to eq(401) # Not found
+
+      post(
+        "/web_api/v1/ideas/#{SecureRandom.uuid}/authoring_assistance_responses",
+        params: '{ "authoring_assistance_response": { "custom_free_prompt": "Is this a good idea?" } }',
+        headers: headers
+      )
+      expect(status).to eq(429) # Too many requests
+    end
+  end
 end
