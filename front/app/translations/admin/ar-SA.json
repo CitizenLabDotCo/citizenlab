@@ -2214,6 +2214,7 @@
   "app.containers.AdminPage.SideBar.moderation": "النشاط",
   "app.containers.AdminPage.SideBar.notifications": "إشعارات",
   "app.containers.AdminPage.SideBar.processing": "معالجة",
+  "app.containers.AdminPage.SideBar.projectLibrary": "مركز الإلهام",
   "app.containers.AdminPage.SideBar.projectManager": "مدير المشروع",
   "app.containers.AdminPage.SideBar.projects": "المشاريع",
   "app.containers.AdminPage.SideBar.settings": "الإعدادات",
