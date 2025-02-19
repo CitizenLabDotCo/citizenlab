@@ -80,7 +80,7 @@ describe WebApi::V1::PhaseSerializer do
         :native_survey_title_multiloc,
         :native_survey_button_multiloc
       )
-      expect(result.dig(:data, :attributes, :supports_survey_form)).to eq true
+      expect(result.dig(:data, :attributes, :supports_survey_form)).to be true
     end
   end
 end
