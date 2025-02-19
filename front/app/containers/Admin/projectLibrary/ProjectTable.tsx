@@ -33,14 +33,14 @@ const ProjectTable = () => {
       <Thead>
         <Tr background={colors.grey50}>
           <Th>Project</Th>
-          <Th>Project</Th>
+          <Th>Participants</Th>
         </Tr>
       </Thead>
       <Tbody>
         {libraryProjects?.data.map((project) => (
           <Tr key={project.id} background={colors.white}>
             <Cell>{project.attributes.title_en}</Cell>
-            <Cell>{project.attributes.title_en}</Cell>
+            <Cell>{project.attributes.participants}</Cell>
           </Tr>
         ))}
       </Tbody>
