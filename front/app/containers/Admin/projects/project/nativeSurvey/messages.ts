@@ -180,8 +180,8 @@ export default defineMessages({
     defaultMessage: 'Esri shapefile upload',
   },
   downloadExcelTemplate: {
-    id: 'app.containers.AdminPage.ProjectEdit.survey.downloadExcelTemplate1',
-    defaultMessage: 'Download an excel template',
+    id: 'app.containers.AdminPage.ProjectEdit.survey.downloadExcelTemplate',
+    defaultMessage: 'Download an Excel template',
   },
   importInputs: {
     id: 'app.containers.AdminPage.ProjectEdit.survey.importInputs',
