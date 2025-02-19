@@ -52,7 +52,6 @@ const RankingQuestion = ({ result, hideDetailsButton = false }: Props) => {
     try {
       return multilocs.answer[option.optionKey].title_multiloc[locale];
     } catch (e) {
-      console.log(option.optionKey);
       return 'undefined';
     }
   });
