@@ -28,6 +28,7 @@ import {
 import Button from 'components/UI/ButtonWithLink';
 import GoBackButton from 'components/UI/GoBackButton';
 import Modal from 'components/UI/Modal';
+import UpsellTooltip from 'components/UpsellTooltip';
 
 import { trackEventByName } from 'utils/analytics';
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
@@ -60,8 +61,9 @@ const FormBuilderTopBar = ({
   setAutosaveEnabled,
   showAutosaveToggle,
 }: FormBuilderTopBarProps) => {
-  const printedFormsEnabled = useFeatureFlag({
+  const printedFormsAllowed = useFeatureFlag({
     name: 'import_printed_forms',
+    onlyCheckAllowed: true,
   });
   const localize = useLocalize();
   const { formatMessage } = useIntl();
@@ -167,15 +169,18 @@ const FormBuilderTopBar = ({
             />
           </Box>
         )}
-        {printedFormsEnabled && builderConfig.onDownloadPDF && (
-          <Button
-            buttonStyle="secondary-outlined"
-            icon="download"
-            mr="20px"
-            onClick={builderConfig.onDownloadPDF}
-          >
-            <FormattedMessage {...ownMessages.downloadPDF} />
-          </Button>
+        {builderConfig.onDownloadPDF && (
+          <UpsellTooltip disabled={printedFormsAllowed}>
+            <Button
+              buttonStyle="secondary-outlined"
+              icon="download"
+              mr="20px"
+              onClick={builderConfig.onDownloadPDF}
+              disabled={!printedFormsAllowed}
+            >
+              <FormattedMessage {...ownMessages.downloadPDF} />
+            </Button>
+          </UpsellTooltip>
         )}
         <Button
           buttonStyle="secondary-outlined"
