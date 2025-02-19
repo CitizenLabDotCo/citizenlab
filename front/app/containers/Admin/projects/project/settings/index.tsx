@@ -50,7 +50,7 @@ const Settings = () => {
   ];
 
   const goBack = () => {
-    clHistory.goBack();
+    clHistory.push(`/admin/projects/${projectId}`);
   };
 
   return (
