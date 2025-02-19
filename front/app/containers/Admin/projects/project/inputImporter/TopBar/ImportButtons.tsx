@@ -9,6 +9,8 @@ import {
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
+import UpsellTooltip from 'components/UpsellTooltip';
+
 import { FormattedMessage } from 'utils/cl-intl';
 
 import messages from '../messages';
@@ -20,8 +22,9 @@ interface Props {
 
 const ImportButtons = ({ onClickPDFImport, onClickExcelImport }: Props) => {
   const [dropdownOpened, setDropdownOpened] = useState(false);
-  const printedFormsEnabled = useFeatureFlag({
+  const printedFormsAllowed = useFeatureFlag({
     name: 'import_printed_forms',
+    onlyCheckAllowed: true,
   });
 
   return (
@@ -43,11 +46,14 @@ const ImportButtons = ({ onClickPDFImport, onClickExcelImport }: Props) => {
             <DropdownListItem onClick={onClickExcelImport}>
               <FormattedMessage {...messages.importExcelFile} />
             </DropdownListItem>
-            {printedFormsEnabled && (
-              <DropdownListItem onClick={onClickPDFImport}>
+            <UpsellTooltip disabled={printedFormsAllowed}>
+              <DropdownListItem
+                onClick={onClickPDFImport}
+                disabled={!printedFormsAllowed}
+              >
                 <FormattedMessage {...messages.importPDFFile} />
               </DropdownListItem>
-            )}
+            </UpsellTooltip>
           </>
         }
       />
