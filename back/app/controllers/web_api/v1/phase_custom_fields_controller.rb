@@ -20,7 +20,7 @@ class WebApi::V1::PhaseCustomFieldsController < ApplicationController
   end
 
   def custom_fields
-    IdeaCustomFieldsService.new(phase.pmethod.custom_form).enabled_fields_with_other_options
+    IdeaCustomFieldsService.new(phase.pmethod.custom_form).survey_fields
   end
 end
 

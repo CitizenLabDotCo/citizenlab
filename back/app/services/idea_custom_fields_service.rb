@@ -62,6 +62,38 @@ class IdeaCustomFieldsService
     enabled_fields.select { |field| field.answer_visible_to == CustomField::VISIBLE_TO_PUBLIC }
   end
 
+  def survey_fields
+    return [] unless @participation_method.supports_survey_form?
+
+    # TODO: JS - need to use _with_other_options for the schmea only - not for results
+    # TODO: JS - only add user fields if the setting is present
+    phase = @custom_form.participation_context
+
+    fields = enabled_fields_with_other_options
+    last_page = fields.last
+    fields.delete(last_page)
+
+    # Get the user fields from the permission (returns platform defaults if they don't exist)
+    permissions_custom_fields_service = Permissions::PermissionsCustomFieldsService.new
+    permission = phase.permissions.find_by(action: 'posting_idea')
+    user_fields = permissions_custom_fields_service.fields_for_permission(permission).map(&:custom_field)
+
+    user_fields.each do |field|
+      field.resource = custom_form # User field pretend to be part of the form
+    end
+
+    user_page = CustomField.new(
+      id: SecureRandom.uuid,
+      key: 'user_page',
+      title_multiloc: { 'en' => 'About you' },
+      resource: custom_form,
+      input_type: 'page',
+      page_layout: 'default'
+    )
+
+    fields + [user_page] + user_fields + [last_page]
+  end
+
   def extra_visible_fields
     visible_fields.reject(&:built_in?)
   end

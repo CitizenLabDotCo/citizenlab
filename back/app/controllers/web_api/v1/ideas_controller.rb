@@ -147,6 +147,10 @@ class WebApi::V1::IdeasController < ApplicationController
     draft_idea =
       (current_user && Idea.find_by(creation_phase_id: params[:phase_id], author: current_user, publication_status: 'draft')) ||
       Idea.new(project: phase.project, author: current_user, publication_status: 'draft')
+
+    # merge custom field values from the user's profile, if they exist
+    draft_idea.custom_field_values = current_user.custom_field_values.merge(draft_idea.custom_field_values)
+
     render_show draft_idea, check_auth: false
   end
 
