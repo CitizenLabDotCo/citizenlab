@@ -14,6 +14,7 @@ import { API_PATH } from 'containers/App/constants';
 
 import { SectionTitle, SectionDescription } from 'components/admin/Section';
 import Button from 'components/UI/ButtonWithLink';
+import UpsellTooltip from 'components/UpsellTooltip';
 
 import { FormattedMessage } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
@@ -23,8 +24,9 @@ import messages from './messages';
 import { saveIdeaFormAsPDF } from './saveIdeaFormAsPDF';
 
 export const IdeaForm = () => {
-  const inputImporterEnabled = useFeatureFlag({
+  const inputImporterAllowed = useFeatureFlag({
     name: 'input_importer',
+    onlyCheckAllowed: true,
   });
 
   const [exportModalOpen, setExportModalOpen] = useState(false);
@@ -81,16 +83,17 @@ export const IdeaForm = () => {
               <FormattedMessage {...messages.downloadInputForm} />
             </Button>
           </Box>
-          {inputImporterEnabled && (
+          <UpsellTooltip disabled={inputImporterAllowed}>
             <Button
               mr="8px"
               buttonStyle="secondary-outlined"
               icon="download"
               onClick={downloadExampleXlsxFile}
+              disabled={!inputImporterAllowed}
             >
               <FormattedMessage {...messages.downloadExcelTemplate} />
             </Button>
-          )}
+          </UpsellTooltip>
         </Box>
       </Box>
       <PDFExportModal

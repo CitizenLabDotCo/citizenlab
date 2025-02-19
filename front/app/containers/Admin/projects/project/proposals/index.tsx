@@ -10,6 +10,7 @@ import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import ProjectProposalsManager from 'components/admin/PostManager/ProjectProposalsManager';
 import Button from 'components/UI/ButtonWithLink';
+import UpsellTooltip from 'components/UpsellTooltip';
 
 import { FormattedMessage } from 'utils/cl-intl';
 
@@ -26,8 +27,9 @@ const timelineProjectVisibleFilterMenus: TFilterMenu[] = [
 ];
 
 const AdminProjectProposals = () => {
-  const inputImporterEnabled = useFeatureFlag({
+  const inputImporterAllowed = useFeatureFlag({
     name: 'input_importer',
+    onlyCheckAllowed: true,
   });
   const { projectId, phaseId } = useParams() as {
     projectId: string;
@@ -52,16 +54,17 @@ const AdminProjectProposals = () => {
             <FormattedMessage {...messages.titleInputManager} />
           </Title>
           <Box display="flex" gap="8px">
-            {inputImporterEnabled && (
+            <UpsellTooltip disabled={inputImporterAllowed}>
               <Button
                 width="auto"
                 linkTo={`/admin/projects/${projectId}/phases/${phaseId}/input-importer`}
                 icon="page"
                 buttonStyle="secondary-outlined"
+                disabled={!inputImporterAllowed}
               >
                 <FormattedMessage {...messages.importInputs} />
               </Button>
-            )}
+            </UpsellTooltip>
             {phase && (
               <NewIdeaButton
                 inputTerm={phase.data.attributes.input_term}
