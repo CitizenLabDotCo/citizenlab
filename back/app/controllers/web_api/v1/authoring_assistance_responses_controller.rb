@@ -1,5 +1,6 @@
 class WebApi::V1::AuthoringAssistanceResponsesController < ApplicationController
   def create
+    # TODO: Add throttling
     if AuthoringAssistanceResponse.exists?(idea_id: params[:idea_id]) && !parse_bool(params[:regenerate])
       render_last_authoring_assistance_response
     else
