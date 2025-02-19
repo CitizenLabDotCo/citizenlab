@@ -280,6 +280,7 @@ const App = ({ children }: Props) => {
   const isEventPage = isPage('event_page', location.pathname);
   const isNativeSurveyPage = isPage('native_survey', location.pathname);
   const isNewIdeaPage = isPage('idea_form', location.pathname);
+  const isEditIdeaPage = isPage('idea_edit', location.pathname);
 
   const theme = getTheme(appConfiguration);
   const showFooter =
@@ -287,6 +288,7 @@ const App = ({ children }: Props) => {
     !isIdeaFormPage &&
     !isIdeaEditPage &&
     !isNativeSurveyPage &&
+    !isEditIdeaPage &&
     !isNewIdeaPage;
   const { pathname } = removeLocale(location.pathname);
   const isAuthenticationPending = authUser === undefined;
@@ -304,7 +306,7 @@ const App = ({ children }: Props) => {
     }
 
     // citizen
-    if (isNativeSurveyPage || isNewIdeaPage) return false;
+    if (isNativeSurveyPage || isNewIdeaPage || isEditIdeaPage) return false;
 
     if (isSmallerThanTablet) {
       if (isEventPage || isIdeaShowPage(urlSegments)) {
