@@ -34,6 +34,9 @@ const ProjectTable = () => {
         <Tr background={colors.grey50}>
           <Th>Project</Th>
           <Th>Participants</Th>
+          <Th>Tenant</Th>
+          <Th>Topic</Th>
+          <Th>End date</Th>
         </Tr>
       </Thead>
       <Tbody>
@@ -41,6 +44,9 @@ const ProjectTable = () => {
           <Tr key={project.id} background={colors.white}>
             <Cell>{project.attributes.title_en}</Cell>
             <Cell>{project.attributes.participants}</Cell>
+            <Cell>{project.attributes.tenant_name}</Cell>
+            <Cell>{project.attributes.topic_id}</Cell>
+            <Cell>{project.attributes.practical_end_at}</Cell>
           </Tr>
         ))}
       </Tbody>
