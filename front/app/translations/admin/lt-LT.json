@@ -2214,6 +2214,7 @@
   "app.containers.AdminPage.SideBar.moderation": "Veikla",
   "app.containers.AdminPage.SideBar.notifications": "Pranešimai",
   "app.containers.AdminPage.SideBar.processing": "Apdorojimas",
+  "app.containers.AdminPage.SideBar.projectLibrary": "Įkvėpimo centras",
   "app.containers.AdminPage.SideBar.projectManager": "Projektų vadovas",
   "app.containers.AdminPage.SideBar.projects": "Projektai",
   "app.containers.AdminPage.SideBar.settings": "Nustatymai",
