@@ -1,6 +1,6 @@
 module Analysis
   class ModelToText
-    def execute(instance, include_id: false, **options)
+    def execute(instance, include_id: false, **_options)
       if include_id
         { 'ID' => instance.id }
       else

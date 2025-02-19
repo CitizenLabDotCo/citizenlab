@@ -126,7 +126,7 @@ describe Analysis::InputToText do
         <<~TEXT
           ### Where did you hear from us?
           Newspaper
-          
+
           ### Would you recommend us to a friend?
           Yes, I would
         TEXT
@@ -159,7 +159,7 @@ describe Analysis::InputToText do
         <<~TEXT
           ### QUESTION_1
           Newspaper
-          
+
           ### Would you recommend us to a friend?
           Yes, I would
 
@@ -204,14 +204,14 @@ describe Analysis::InputToText do
       custom_field = create(:custom_field_matrix_linear_scale)
       create(:custom_field_matrix_statement, custom_field: custom_field, key: 'more_benches_in_park', title_multiloc: { en: 'We need more benches in the park' })
       service = described_class.new([custom_field.reload])
-  
+
       input = build(
         :idea,
         custom_field_values: {
           custom_field.key => { 'send_more_animals_to_space' => 5, 'more_benches_in_park' => 2 }
         }
       )
-  
+
       expect(service.formatted(input)).to eq(
         <<~TEXT
           ### Please indicate how strong you agree or disagree with the following statements.

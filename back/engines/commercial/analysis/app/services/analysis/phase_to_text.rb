@@ -1,6 +1,7 @@
 module Analysis
   class PhaseToText < ModelToText
     def initialize(app_configuration = AppConfiguration.instance)
+      super()
       @app_configuration = app_configuration
       @multiloc_service = MultilocService.new(app_configuration: @app_configuration)
     end

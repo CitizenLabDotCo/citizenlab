@@ -47,6 +47,7 @@ class AuthoringAssistanceService
     phase = TimelineService.new.current_phase(authoring_assistance_response.idea.project)
     phase2text = Analysis::PhaseToText.new
     phase_text = phase2text.formatted(phase)
+    # TODO: Add description of description field
     llm = Analysis::LLM::ClaudeInstant1.new(region: region)
     prompt = Analysis::LLM::Prompt.new.fetch('custom_free_prompt', idea_text:, phase_text:, custom_free_prompt: authoring_assistance_response.custom_free_prompt)
     response = llm.chat(prompt).strip

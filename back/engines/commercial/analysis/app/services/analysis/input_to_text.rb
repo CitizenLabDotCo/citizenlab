@@ -5,6 +5,7 @@ module Analysis
   # passed list of custom fields
   class InputToText < ModelToText
     def initialize(custom_fields, app_configuration = AppConfiguration.instance)
+      super()
       @custom_fields = custom_fields
       @app_configuration = app_configuration
       @multiloc_service = MultilocService.new(app_configuration: @app_configuration)
