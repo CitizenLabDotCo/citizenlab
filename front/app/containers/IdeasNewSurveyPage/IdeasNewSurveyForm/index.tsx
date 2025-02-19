@@ -3,7 +3,6 @@ import React, { useState, useCallback, useEffect } from 'react';
 import {
   Box,
   colors,
-  stylingConsts,
   useBreakpoint,
   useWindowSize,
 } from '@citizenlab/cl2-component-library';
@@ -42,7 +41,7 @@ import { getFormValues } from '../../IdeasEditPage/utils';
 import IdeasNewSurveyMeta from '../IdeasNewSurveyMeta';
 
 import SurveyHeading from './SurveyHeading';
-import { convertGeojsonToWKT } from './utils';
+import { convertGeojsonToWKT, calculateDynamicHeight } from './utils';
 
 const getConfig = (
   phaseFromUrl: IPhaseData | undefined,
@@ -270,20 +269,6 @@ const IdeasNewSurveyForm = ({ project, phaseId }: Props) => {
     return idea;
   };
 
-  function calculateDynamicHeight() {
-    const viewportHeight = window.innerHeight;
-    const menuHeight = stylingConsts.menuHeight;
-    const mobileTopBarHeight = stylingConsts.mobileTopBarHeight;
-    const extraSpace = 80;
-
-    const dynamicHeight =
-      viewportHeight -
-      (isSmallerThanPhone ? mobileTopBarHeight : menuHeight) -
-      extraSpace;
-
-    return `${dynamicHeight}px`;
-  }
-
   if (!phase) {
     return null;
   }
@@ -322,7 +307,7 @@ const IdeasNewSurveyForm = ({ project, phaseId }: Props) => {
               maxWidth={usingMapView ? '1100px' : '700px'}
               w="100%"
               // Height is recalculated on window resize via useWindowSize hook
-              h={calculateDynamicHeight()}
+              h={calculateDynamicHeight(isSmallerThanPhone)}
               pb={isSmallerThanPhone ? '0' : '80px'}
             >
               <Form
@@ -334,6 +319,7 @@ const IdeasNewSurveyForm = ({ project, phaseId }: Props) => {
                 getApiErrorMessage={getApiErrorMessage}
                 inputId={ideaId}
                 config={'survey'}
+                showSubmitButton={false}
               />
             </Box>
           </Box>
