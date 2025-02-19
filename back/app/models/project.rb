@@ -23,6 +23,7 @@
 #  followers_count              :integer          default(0), not null
 #  preview_token                :string           not null
 #  header_bg_alt_text_multiloc  :jsonb
+#  hidden                       :boolean          default(FALSE), not null
 #
 # Indexes
 #
@@ -96,6 +97,9 @@ class Project < ApplicationRecord
   validates :visible_to, presence: true, inclusion: { in: VISIBLE_TOS }
   validates :internal_role, inclusion: { in: INTERNAL_ROLES, allow_nil: true }
   validate :admin_publication_must_exist, unless: proc { Current.loading_tenant_template } # TODO: This should always be validated!
+
+  default_scope { where(hidden: false) }
+  scope :include_hidden, -> { unscoped }
 
   pg_search_scope :search_by_all,
     against: %i[title_multiloc description_multiloc description_preview_multiloc slug],

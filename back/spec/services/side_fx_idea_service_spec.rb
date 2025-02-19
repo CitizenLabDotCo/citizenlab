@@ -78,7 +78,7 @@ describe SideFxIdeaService do
       end
 
       it 'does not create followers if the project is hidden' do
-        project.admin_publication.update!(publication_status: 'hidden')
+        project.update!(hidden: true)
         expect do
           service.after_create idea.reload, user
         end.not_to change(Follower, :count)

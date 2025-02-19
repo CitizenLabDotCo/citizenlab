@@ -615,7 +615,7 @@ FactoryBot.define do
 
       factory :community_monitor_project do
         internal_role { 'community_monitor' }
-        admin_publication_attributes { { publication_status: 'hidden' } }
+        hidden { true }
       end
     end
   end

@@ -469,8 +469,7 @@ RSpec.describe Phase do
 
     context 'survey is a community monitor survey' do
       before do
-        project.admin_publication.update! publication_status: 'hidden'
-        project.update! internal_role: 'community_monitor'
+        project.update! hidden: true, internal_role: 'community_monitor'
         survey_phase.update! participation_method: 'community_monitor_survey'
       end
 

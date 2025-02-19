@@ -323,7 +323,7 @@ class WebApi::V1::ProjectsController < ApplicationController
 
     # Find the community monitor project from config or create it
     project_id = settings.dig('community_monitor', 'project_id')
-    project = project_id.present? ? Project.find(project_id) : create_community_monitor_project(settings)
+    project = project_id.present? ? Project.include_hidden.find(project_id) : create_community_monitor_project(settings)
 
     authorize project
     render json: WebApi::V1::ProjectSerializer.new(
@@ -395,7 +395,7 @@ class WebApi::V1::ProjectsController < ApplicationController
   def create_community_monitor_project(settings)
     multiloc_service = MultilocService.new
     project = Project.create!(
-      admin_publication_attributes: { publication_status: 'hidden' },
+      hidden: true,
       title_multiloc: multiloc_service.i18n_to_multiloc('phases.community_monitor_title'),
       internal_role: 'community_monitor'
     )
