@@ -1,11 +1,12 @@
 import React, { useEffect, useRef, FormEvent } from 'react';
 
+import { ButtonProps } from '@citizenlab/cl2-component-library';
 import { CSSTransition } from 'react-transition-group';
 import styled from 'styled-components';
 
 import clickOutside from '../../utils/containers/clickOutside';
-import { colors, fontSizes, media, isRtl } from '../../utils/styleUtils';
-
+import { media, isRtl } from '../../utils/styleUtils';
+import Button from '../Button';
 const timeout = 200;
 
 const Container = styled(clickOutside)<ContainerProps>`
@@ -68,25 +69,9 @@ const Content = styled.div<ContentProps>`
   `}
 `;
 
-export const DropdownListItem = styled.button`
-  width: 100%;
-  font-size: ${fontSizes.base}px;
-  font-weight: 400;
-  display: flex;
-  align-items: center;
-  margin: 0;
-  margin-bottom: 4px;
-  padding: 10px;
-  border-radius: ${(props) => props.theme.borderRadius};
-  cursor: pointer;
-  transition: all 80ms ease-out;
-
-  &:hover,
-  &:focus,
-  &.selected {
-    background: ${colors.grey300};
-  }
-`;
+export const DropdownListItem = (props: ButtonProps) => {
+  return <Button buttonStyle="text" {...props} />;
+};
 
 const Footer = styled.div`
   display: flex;
