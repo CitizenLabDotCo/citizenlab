@@ -2214,6 +2214,7 @@
   "app.containers.AdminPage.SideBar.moderation": "Pasākums",
   "app.containers.AdminPage.SideBar.notifications": "Paziņojumi",
   "app.containers.AdminPage.SideBar.processing": "Notiek apstrāde",
+  "app.containers.AdminPage.SideBar.projectLibrary": "Iedvesmas centrs",
   "app.containers.AdminPage.SideBar.projectManager": "Projektu vadītājs",
   "app.containers.AdminPage.SideBar.projects": "Projekti",
   "app.containers.AdminPage.SideBar.settings": "Iestatījumi",

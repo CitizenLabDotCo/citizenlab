@@ -2214,6 +2214,7 @@
   "app.containers.AdminPage.SideBar.moderation": "Aktivnosti",
   "app.containers.AdminPage.SideBar.notifications": "Обавештења",
   "app.containers.AdminPage.SideBar.processing": "Obrada",
+  "app.containers.AdminPage.SideBar.projectLibrary": "Inspiration hub",
   "app.containers.AdminPage.SideBar.projectManager": "Вођа пројекта",
   "app.containers.AdminPage.SideBar.projects": "Projekti",
   "app.containers.AdminPage.SideBar.settings": "Podešavanja",
