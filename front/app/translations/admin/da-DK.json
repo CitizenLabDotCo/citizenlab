@@ -2214,6 +2214,7 @@
   "app.containers.AdminPage.SideBar.moderation": "Aktivitet",
   "app.containers.AdminPage.SideBar.notifications": "Notifikationer",
   "app.containers.AdminPage.SideBar.processing": "Behandling",
+  "app.containers.AdminPage.SideBar.projectLibrary": "Inspirationscenter",
   "app.containers.AdminPage.SideBar.projectManager": "Projektleder",
   "app.containers.AdminPage.SideBar.projects": "Projekter",
   "app.containers.AdminPage.SideBar.settings": "Indstillinger",
