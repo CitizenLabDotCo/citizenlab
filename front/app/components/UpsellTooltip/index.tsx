@@ -10,17 +10,23 @@ import { useIntl } from 'utils/cl-intl';
 
 import messages from './messages';
 
-const UpsellTooltip = (props: TooltipProps) => {
+interface Props extends TooltipProps {
+  // Should only show if a feature is not allowed, so required prop.
+  disabled: boolean;
+}
+
+const UpsellTooltip = ({ disabled, ...otherProps }: Props) => {
   const { formatMessage } = useIntl();
   return (
     <Tooltip
+      disabled={disabled}
       content={
         <TooltipContentWrapper tippytheme="light">
           {formatMessage(messages.tooltipContent)}
         </TooltipContentWrapper>
       }
       // "children" is part of the props
-      {...props}
+      {...otherProps}
     />
   );
 };
