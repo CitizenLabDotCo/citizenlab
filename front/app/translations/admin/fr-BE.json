@@ -1830,7 +1830,6 @@
   "app.containers.AdminPage.ProjectEdit.survey.deleteResultsLink2": "Supprimez les résultats si vous devez les modifier.",
   "app.containers.AdminPage.ProjectEdit.survey.deleteSurveyResults2": "Supprimer les résultats de l'enquête",
   "app.containers.AdminPage.ProjectEdit.survey.deleteSurveyResultsConfirmation2": "Êtes-vous sûr de vouloir supprimer tous les résultats de l'enquête ?",
-  "app.containers.AdminPage.ProjectEdit.survey.disabledImportInputsTooltip": "Cette fonctionnalité n'est pas incluse dans votre plan actuel. Contactez votre Spécialiste en participation Go Vocal pour en savoir plus.",
   "app.containers.AdminPage.ProjectEdit.survey.disabledSurveyMessage2": "Le contenu de l'enquête ne peut pas être modifié car les résultats de l'enquête ont commencé à arriver.",
   "app.containers.AdminPage.ProjectEdit.survey.downloadAllResults2": "Télécharger tous les résultats de l'enquête",
   "app.containers.AdminPage.ProjectEdit.survey.downloadExcelTemplate1": "Télécharger un modèle Excel",

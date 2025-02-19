@@ -1830,7 +1830,6 @@
   "app.containers.AdminPage.ProjectEdit.survey.deleteResultsLink2": "Ištrinkite rezultatus, jei norite atlikti pakeitimus.",
   "app.containers.AdminPage.ProjectEdit.survey.deleteSurveyResults2": "Ištrinti apklausos rezultatus",
   "app.containers.AdminPage.ProjectEdit.survey.deleteSurveyResultsConfirmation2": "Ar tikrai norite ištrinti visus apklausos rezultatus?",
-  "app.containers.AdminPage.ProjectEdit.survey.disabledImportInputsTooltip": "Ši funkcija neįtraukta į dabartinį planą. Susisiekite su savo \"GovSuccess\" vadybininku ir sužinokite apie ją daugiau.",
   "app.containers.AdminPage.ProjectEdit.survey.disabledSurveyMessage2": "Apklausos turinio negalima redaguoti, nes apklausos rezultatai jau pradėti gauti.",
   "app.containers.AdminPage.ProjectEdit.survey.downloadAllResults2": "Atsisiųsti visus apklausos rezultatus",
   "app.containers.AdminPage.ProjectEdit.survey.downloadExcelTemplate1": "Atsisiųsti \"Excel\" šabloną",

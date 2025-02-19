@@ -1830,7 +1830,6 @@
   "app.containers.AdminPage.ProjectEdit.survey.deleteResultsLink2": "ਜੇਕਰ ਤੁਹਾਨੂੰ ਬਦਲਾਅ ਕਰਨ ਦੀ ਲੋੜ ਹੈ ਤਾਂ ਨਤੀਜਿਆਂ ਨੂੰ ਮਿਟਾਓ।",
   "app.containers.AdminPage.ProjectEdit.survey.deleteSurveyResults2": "ਸਰਵੇਖਣ ਨਤੀਜੇ ਮਿਟਾਓ",
   "app.containers.AdminPage.ProjectEdit.survey.deleteSurveyResultsConfirmation2": "ਕੀ ਤੁਸੀਂ ਯਕੀਨੀ ਤੌਰ 'ਤੇ ਸਾਰੇ ਸਰਵੇਖਣ ਨਤੀਜੇ ਮਿਟਾਉਣਾ ਚਾਹੁੰਦੇ ਹੋ?",
-  "app.containers.AdminPage.ProjectEdit.survey.disabledImportInputsTooltip": "ਇਹ ਵਿਸ਼ੇਸ਼ਤਾ ਤੁਹਾਡੀ ਮੌਜੂਦਾ ਯੋਜਨਾ ਵਿੱਚ ਸ਼ਾਮਲ ਨਹੀਂ ਹੈ। ਇਸ ਬਾਰੇ ਹੋਰ ਜਾਣਨ ਲਈ ਆਪਣੇ GovSuccess ਮੈਨੇਜਰ ਨਾਲ ਸੰਪਰਕ ਕਰੋ।",
   "app.containers.AdminPage.ProjectEdit.survey.disabledSurveyMessage2": "ਸਰਵੇਖਣ ਸਮੱਗਰੀ ਨੂੰ ਸੰਪਾਦਿਤ ਨਹੀਂ ਕੀਤਾ ਜਾ ਸਕਦਾ ਕਿਉਂਕਿ ਸਰਵੇਖਣ ਨਤੀਜੇ ਆਉਣੇ ਸ਼ੁਰੂ ਹੋ ਗਏ ਹਨ।",
   "app.containers.AdminPage.ProjectEdit.survey.downloadAllResults2": "ਸਾਰੇ ਸਰਵੇਖਣ ਨਤੀਜੇ ਡਾਊਨਲੋਡ ਕਰੋ",
   "app.containers.AdminPage.ProjectEdit.survey.downloadExcelTemplate1": "ਇੱਕ ਐਕਸਲ ਟੈਂਪਲੇਟ ਡਾਊਨਲੋਡ ਕਰੋ",

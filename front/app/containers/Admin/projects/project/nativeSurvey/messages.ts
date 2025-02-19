@@ -187,11 +187,6 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.survey.importInputs',
     defaultMessage: 'Import',
   },
-  disabledImportInputsTooltip: {
-    id: 'app.containers.AdminPage.ProjectEdit.survey.disabledImportInputsTooltip',
-    defaultMessage:
-      'This feature is not included in your current plan. Reach out to your GovSuccess Manager to learn more about it.',
-  },
   duplicateAnotherSurvey: {
     id: 'app.containers.AdminPage.ProjectEdit.survey.duplicateAnotherSurvey',
     defaultMessage: 'Duplicate another survey',
