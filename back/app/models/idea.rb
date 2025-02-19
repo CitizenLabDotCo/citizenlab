@@ -300,6 +300,13 @@ class Idea < ApplicationRecord
     creation_phase || project
   end
 
+  def creation_phase_with_fallback
+    # This method could be used for migrating existing data when
+    # we would want to set the creation_phase for all existing
+    # ideation inputs.
+    creation_phase || phases.first || project.phases.where(participation_method: 'ideation').first || project.phases.first
+  end
+
   def custom_form
     consultation_context.custom_form || CustomForm.new(participation_context: consultation_context)
   end

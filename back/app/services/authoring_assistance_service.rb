@@ -35,24 +35,7 @@ class AuthoringAssistanceService
   end
 
   def custom_free_prompt_response
-    return {} if authoring_assistance_response.custom_free_prompt.blank?
-
-    region = ENV.fetch('AWS_TOXICITY_DETECTION_REGION', nil) # Some clusters (e.g. Canada) are not allowed to send data to the US or Europe.
-    return {} if !region
-
-    form = authoring_assistance_response.idea.custom_form
-    custom_fields = IdeaCustomFieldsService.new(form).all_fields.select { |field| CUSTOM_FREE_PROMPT_FIELD_CODES.include?(field.code) }
-    input2text = Analysis::InputToText.new(custom_fields)
-    idea_text = input2text.formatted(authoring_assistance_response.idea)
-    phase = TimelineService.new.current_phase(authoring_assistance_response.idea.project)
-    phase2text = Analysis::PhaseToText.new
-    phase_text = phase2text.formatted(phase)
-    # TODO: Add description of description field
-    llm = Analysis::LLM::ClaudeInstant1.new(region: region)
-    prompt = Analysis::LLM::Prompt.new.fetch('custom_free_prompt', idea_text:, phase_text:, custom_free_prompt: authoring_assistance_response.custom_free_prompt)
-    response = llm.chat(prompt).strip
-    {
-      custom_free_prompt_response: response
-    }
+    response = CustomFreePromptService.new(authoring_assistance_response).response
+    response ? { custom_free_prompt_response: response } : {}
   end
 end
