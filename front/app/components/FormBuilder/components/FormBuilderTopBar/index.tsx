@@ -60,10 +60,9 @@ const FormBuilderTopBar = ({
   setAutosaveEnabled,
   showAutosaveToggle,
 }: FormBuilderTopBarProps) => {
-  const printedFormsEnabled =
-    useFeatureFlag({
-      name: 'import_printed_forms',
-    }) && builderConfig.onDownloadPDF;
+  const printedFormsEnabled = useFeatureFlag({
+    name: 'import_printed_forms',
+  });
   const localize = useLocalize();
   const { formatMessage } = useIntl();
   const { projectId, phaseId } = useParams() as {
@@ -168,7 +167,7 @@ const FormBuilderTopBar = ({
             />
           </Box>
         )}
-        {printedFormsEnabled && (
+        {printedFormsEnabled && builderConfig.onDownloadPDF && (
           <Button
             buttonStyle="secondary-outlined"
             icon="download"
