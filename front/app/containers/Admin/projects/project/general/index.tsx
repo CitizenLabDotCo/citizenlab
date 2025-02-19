@@ -52,6 +52,7 @@ import { defaultAdminCardPadding } from 'utils/styleConstants';
 import { validateSlug } from 'utils/textUtils';
 
 import { fragmentId } from '../projectHeader';
+import { fragmentId as folderFragmentId } from '../projectHeader/LinkToFolderSettings';
 
 import AttachmentsDropzone from './components/AttachmentsDropzone';
 import GeographicAreaInputs from './components/GeographicAreaInputs';
@@ -574,11 +575,15 @@ const AdminProjectsProjectGeneral = () => {
           />
 
           {isProjectFoldersEnabled && (
-            <ProjectFolderSelect
-              projectAttrs={projectAttrs}
-              onProjectAttributesDiffChange={handleProjectAttributeDiffOnChange}
-              isNewProject={!projectId}
-            />
+            <Highlighter fragmentId={folderFragmentId}>
+              <ProjectFolderSelect
+                projectAttrs={projectAttrs}
+                onProjectAttributesDiffChange={
+                  handleProjectAttributeDiffOnChange
+                }
+                isNewProject={!projectId}
+              />
+            </Highlighter>
           )}
 
           <SectionField>

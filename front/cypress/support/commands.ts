@@ -889,7 +889,7 @@ function apiCreateFolder({
   publicationStatus = 'published',
 }: {
   title: string;
-  descriptionPreview: string;
+  descriptionPreview?: string;
   description: string;
   publicationStatus?: 'draft' | 'published' | 'archived';
   projectIds?: string[];
