@@ -1830,7 +1830,6 @@
   "app.containers.AdminPage.ProjectEdit.survey.deleteResultsLink2": "Löschen Sie die Ergebnisse, wenn Sie Änderungen vornehmen müssen.",
   "app.containers.AdminPage.ProjectEdit.survey.deleteSurveyResults2": "Umfrageergebnisse löschen",
   "app.containers.AdminPage.ProjectEdit.survey.deleteSurveyResultsConfirmation2": "Sind Sie sicher, dass Sie alle Umfrageergebnisse löschen möchten?",
-  "app.containers.AdminPage.ProjectEdit.survey.disabledImportInputsTooltip": "Diese Funktion ist in Ihrer aktuellen Lizenz nicht enthalten. Sprechen Sie mit Ihrer Kundenbetreuerin oder Ihrem Admin, um sie freizuschalten.",
   "app.containers.AdminPage.ProjectEdit.survey.disabledSurveyMessage2": "Der Inhalt der Umfrage kann nicht mehr bearbeitet werden, da die ersten Umfrageergebnisse bereits vorliegen.",
   "app.containers.AdminPage.ProjectEdit.survey.downloadAllResults2": "Alle Umfrageergebnisse herunterladen",
   "app.containers.AdminPage.ProjectEdit.survey.downloadExcelTemplate": "Download einer Excel-Vorlage",

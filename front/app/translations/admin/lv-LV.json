@@ -1830,7 +1830,6 @@
   "app.containers.AdminPage.ProjectEdit.survey.deleteResultsLink2": "Ja nepieciešams veikt izmaiņas, izdzēsiet rezultātus.",
   "app.containers.AdminPage.ProjectEdit.survey.deleteSurveyResults2": "Aptaujas rezultātu dzēšana",
   "app.containers.AdminPage.ProjectEdit.survey.deleteSurveyResultsConfirmation2": "Vai esat pārliecināts, ka vēlaties dzēst visus aptaujas rezultātus?",
-  "app.containers.AdminPage.ProjectEdit.survey.disabledImportInputsTooltip": "Šī funkcija nav iekļauta jūsu pašreizējā plānā. Sazinieties ar savu GovSuccess menedžeri, lai uzzinātu vairāk par to.",
   "app.containers.AdminPage.ProjectEdit.survey.disabledSurveyMessage2": "Aptaujas saturu nevar rediģēt, jo ir sākusies apsekojumu rezultātu saņemšana.",
   "app.containers.AdminPage.ProjectEdit.survey.downloadAllResults2": "Lejupielādēt visus apsekojuma rezultātus",
   "app.containers.AdminPage.ProjectEdit.survey.downloadExcelTemplate": "Lejupielādēt Excel veidni",
