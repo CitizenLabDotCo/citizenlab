@@ -3,6 +3,13 @@ A human user is writing a public message on a forum run by a local government, w
   <%= phase_text %>
 </content>
 
+<% if body_field_text %>
+  Additionally, there could be more criteria for the message as specified by the local government here:
+  <content>
+    <%= body_field_text %>
+  </content>
+<% end %>
+
 Here is the message the user wrote:
 <content>
   <%= input_text %>

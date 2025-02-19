@@ -9,9 +9,9 @@ module Analysis
     def execute(phase, **options)
       super.merge(
         'Project title' => @multiloc_service.t(phase.project.title_multiloc),
-        'Project description' => @multiloc_service.t(phase.project.description_multiloc), # TODO: Deal with content builder layouts
+        'Project description' => Nokogiri::HTML(@multiloc_service.t(phase.project.description_multiloc)).text, # TODO: Deal with content builder layouts
         'Phase title' => @multiloc_service.t(phase.title_multiloc),
-        'Phase description' => @multiloc_service.t(phase.description_multiloc)
+        'Phase description' => Nokogiri::HTML(@multiloc_service.t(phase.description_multiloc)).text
       )
     end
   end

@@ -1,6 +1,4 @@
 class AuthoringAssistanceService
-  CUSTOM_FREE_PROMPT_FIELD_CODES = %w[title_multiloc body_multiloc]
-
   attr_reader :authoring_assistance_response
 
   def initialize(authoring_assistance_response)
