@@ -31,6 +31,10 @@ export default defineMessages({
     id: 'app.components.formBuilder.matrix',
     defaultMessage: 'Matrix',
   },
+  sentiment: {
+    id: 'app.components.formBuilder.sentiment',
+    defaultMessage: 'Sentiment scale',
+  },
   longAnswer: {
     id: 'app.components.formBuilder.longAnswer',
     defaultMessage: 'Long answer',

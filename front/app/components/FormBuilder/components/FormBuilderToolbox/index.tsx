@@ -124,6 +124,7 @@ const FormBuilderToolbox = ({
         linear_scale_label_10_multiloc: {},
         linear_scale_label_11_multiloc: {},
         maximum: 5,
+        ask_follow_up: false,
         options: [
           {
             title_multiloc: {},
@@ -271,6 +272,15 @@ const FormBuilderToolbox = ({
           data-cy="e2e-matrix"
           fieldsToExclude={builderConfig.toolboxFieldsToExclude}
           inputType="matrix_linear_scale"
+          disabled={isCustomFieldsDisabled}
+        />
+        <ToolboxItem
+          icon="survey-sentiment"
+          label={formatMessage(messages.sentiment)}
+          onClick={() => addField('sentiment_linear_scale')}
+          data-cy="e2e-sentiment"
+          fieldsToExclude={builderConfig.toolboxFieldsToExclude}
+          inputType="sentiment_linear_scale"
           disabled={isCustomFieldsDisabled}
         />
         <ToolboxItem
