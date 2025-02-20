@@ -22,7 +22,7 @@ import { requestBlob } from 'utils/requestBlob';
 import messages from './messages';
 import { saveIdeaFormAsPDF } from './saveIdeaFormAsPDF';
 
-export const IdeaForm = () => {
+export const InputForm = () => {
   const inputImporterEnabled = useFeatureFlag({
     name: 'input_importer',
   });
@@ -103,4 +103,4 @@ export const IdeaForm = () => {
   );
 };
 
-export default IdeaForm;
+export default InputForm;
