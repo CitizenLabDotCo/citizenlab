@@ -69,6 +69,10 @@ const Forms = () => {
   const inputImporterEnabled = useFeatureFlag({
     name: 'input_importer',
   });
+  const importPrintedFormsAllowed = useFeatureFlag({
+    name: 'import_printed_forms',
+    onlyCheckAllowed: true,
+  });
   const { mutate: deleteFormResults } = useDeleteSurveyResults();
 
   if (!project || isNilOrError(locale) || !phase || !submissionCount) {
@@ -267,39 +271,38 @@ const Forms = () => {
                             </Text>
                           </Box>
                         </DropdownListItem>
+                        <UpsellTooltip
+                          disabled={importPrintedFormsAllowed}
+                          // Needed to ensure DropdownListItem takes up the full width of the dropdown
+                          width="100%"
+                        >
+                          <DropdownListItem
+                            onClick={handleDownloadPDF}
+                            disabled={!importPrintedFormsAllowed}
+                          >
+                            <Icon
+                              name="download"
+                              fill={colors.coolGrey600}
+                              mr="4px"
+                            />
+                            {formatMessage(messages.downloadSurvey)}
+                          </DropdownListItem>
+                        </UpsellTooltip>
                         {inputImporterEnabled && (
-                          <>
-                            <DropdownListItem onClick={handleDownloadPDF}>
-                              <Box display="flex" gap="4px" alignItems="center">
-                                <Icon
-                                  name="download"
-                                  fill={colors.coolGrey600}
-                                />
-                                <Text my="0px">
-                                  {formatMessage(messages.downloadSurvey)}
-                                </Text>
-                              </Box>
-                            </DropdownListItem>
-                            <DropdownListItem onClick={downloadExampleFile}>
-                              <Box display="flex" gap="4px" alignItems="center">
-                                <Icon
-                                  name="download"
-                                  fill={colors.coolGrey600}
-                                />
-                                <Text my="0px">
-                                  {formatMessage(
-                                    messages.downloadExcelTemplate
-                                  )}
-                                </Text>
-                                <IconTooltip
-                                  ml="4px"
-                                  content={formatMessage(
-                                    messages.downloadExcelTemplateTooltip
-                                  )}
-                                />
-                              </Box>
-                            </DropdownListItem>
-                          </>
+                          <DropdownListItem onClick={downloadExampleFile}>
+                            <Box display="flex" gap="4px" alignItems="center">
+                              <Icon name="download" fill={colors.coolGrey600} />
+                              <Text my="0px">
+                                {formatMessage(messages.downloadExcelTemplate)}
+                              </Text>
+                              <IconTooltip
+                                ml="4px"
+                                content={formatMessage(
+                                  messages.downloadExcelTemplateTooltip
+                                )}
+                              />
+                            </Box>
+                          </DropdownListItem>
                         )}
                       </>
                     )}
