@@ -7,5 +7,5 @@ export const getNumberLabelForIndex = (
   if (inputType === 'sentiment_linear_scale') {
     return index - 2; // We show a scale of -2 to 2 in the UI for sentiment scales.
   }
-  return index + 1; // Show a scale of 1 to 5 in the UI for other field types.
+  return index + 1; // Show a scale of 1 to 11 in the UI for other field types.
 };
