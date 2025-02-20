@@ -29,6 +29,8 @@ export default defineConfig(({ mode }) => {
   const GRAPHQL_PORT = process.env.GRAPHQL_PORT || '5001';
   const DEV_WORKSHOPS_HOST = process.env.DEV_WORKSHOPS_HOST || 'localhost';
   const DEV_WORKSHOPS_PORT = process.env.DEV_WORKSHOPS_PORT || '4005';
+  const DEV_LIBRARY_HOST = process.env.DEV_LIBRARY_HOST || 'localhost';
+  const DEV_LIBRARY_PORT = process.env.DEV_LIBRARY_PORT || '5005';
 
   return {
     root: path.resolve(__dirname, 'app'), // Root directory
@@ -37,7 +39,7 @@ export default defineConfig(({ mode }) => {
       port: 3000,
       host: '0.0.0.0',
       proxy: {
-        '/web_api': {
+        '/web_api/': {
           target: `http://${API_HOST}:${API_PORT}`,
           changeOrigin: true,
         },
@@ -59,6 +61,10 @@ export default defineConfig(({ mode }) => {
         },
         '/workshops': {
           target: `http://${DEV_WORKSHOPS_HOST}:${DEV_WORKSHOPS_PORT}`,
+          changeOrigin: true,
+        },
+        '/project_library_api': {
+          target: `http://${DEV_LIBRARY_HOST}:${DEV_LIBRARY_PORT}`,
           changeOrigin: true,
         },
       },

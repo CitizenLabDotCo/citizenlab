@@ -118,9 +118,7 @@ class Area < ApplicationRecord
     return unless custom_field_option
 
     # TODO: (tech debt) Rework to log the user responsible for the deletion.
-    SideFxCustomFieldOptionService.new.before_destroy(custom_field_option, nil)
-    custom_field_option.destroy
-    SideFxCustomFieldOptionService.new.after_destroy(custom_field_option, nil)
+    CustomFields::Options::DestroyService.new.destroy!(custom_field_option, nil)
   end
 
   class << self

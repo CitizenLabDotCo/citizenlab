@@ -485,6 +485,7 @@
   "app.components.Upload.remaining": "återstående",
   "app.components.Upload.uploadImageLabel": "Välj en bild (max. {maxImageSizeInMb} MB)",
   "app.components.Upload.uploadMultipleImagesLabel": "Välj en eller flera bilder",
+  "app.components.UpsellTooltip.tooltipContent": "Den här funktionen ingår inte i din nuvarande plan. Prata med din Government Success Manager eller administratör för att låsa upp den.",
   "app.components.UserName.anonymous": "Anonymt",
   "app.components.UserName.anonymousTooltip2": "Den här användaren har beslutat att anonymisera sitt bidrag.",
   "app.components.UserName.authorWithNoNameTooltip": "Ditt namn har autogenererats eftersom du inte har angett ditt namn. Uppdatera din profil om du vill ändra det.",

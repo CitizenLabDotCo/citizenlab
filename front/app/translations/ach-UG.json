@@ -485,6 +485,7 @@
   "app.components.Upload.remaining": "crwdns213702:0crwdne213702:0",
   "app.components.Upload.uploadImageLabel": "crwdns213704:0{maxImageSizeInMb}crwdne213704:0",
   "app.components.Upload.uploadMultipleImagesLabel": "crwdns213706:0crwdne213706:0",
+  "app.components.UpsellTooltip.tooltipContent": "crwdns4193313:0crwdne4193313:0",
   "app.components.UserName.anonymous": "crwdns604451:0crwdne604451:0",
   "app.components.UserName.anonymousTooltip2": "crwdns604453:0crwdne604453:0",
   "app.components.UserName.authorWithNoNameTooltip": "crwdns3338249:0crwdne3338249:0",

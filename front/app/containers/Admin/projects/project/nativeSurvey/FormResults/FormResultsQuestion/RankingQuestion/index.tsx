@@ -48,6 +48,14 @@ const RankingQuestion = ({ result, hideDetailsButton = false }: Props) => {
   const optionsWithDetailedRanks =
     createOptionsWithDetailedRanks(rankings_counts);
 
+  optionsWithAverageRanks.map((option) => {
+    try {
+      return multilocs.answer[option.optionKey].title_multiloc[locale];
+    } catch (e) {
+      return 'undefined';
+    }
+  });
+
   return (
     <Box
       display="flex"
@@ -60,6 +68,9 @@ const RankingQuestion = ({ result, hideDetailsButton = false }: Props) => {
         const currentOptionWithDetailedRanks = optionsWithDetailedRanks.find(
           (optionWithRanks) => optionWithRanks.optionKey === option.optionKey
         );
+
+        const optionTitle =
+          multilocs.answer[option.optionKey].title_multiloc[locale];
 
         return (
           <Box key={option.optionKey}>
@@ -84,7 +95,7 @@ const RankingQuestion = ({ result, hideDetailsButton = false }: Props) => {
                     borderRadius: theme.borderRadius,
                   }}
                 >
-                  {multilocs.answer[option.optionKey].title_multiloc[locale]}
+                  {optionTitle}
                 </Text>
               </Box>
               <Box my="auto">
