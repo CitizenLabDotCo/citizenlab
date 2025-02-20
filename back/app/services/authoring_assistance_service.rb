@@ -22,7 +22,7 @@ class AuthoringAssistanceService
     service = SimilarIdeasService.new(authoring_assistance_response.idea)
     service.upsert_embedding!
     threshold = 0.4
-    ideas = service.similar_ideas(limit: 5, distance_threshold: threshold)
+    ideas = service.similar_ideas(scope: authoring_assistance_response.idea.project.ideas, limit: 5, distance_threshold: threshold)
     {
       duplicate_inputs: ideas.ids
     }
