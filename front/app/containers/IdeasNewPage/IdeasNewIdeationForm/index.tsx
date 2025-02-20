@@ -16,6 +16,7 @@ import { IProject } from 'api/projects/types';
 import useInputSchema from 'hooks/useInputSchema';
 import useLocale from 'hooks/useLocale';
 
+import NewIdeaHeading from 'containers/IdeaHeading/NewIdeaHeading';
 import { calculateDynamicHeight } from 'containers/IdeasNewSurveyPage/IdeasNewSurveyForm/utils';
 
 import AnonymousParticipationConfirmationModal from 'components/AnonymousParticipationConfirmationModal';
@@ -33,8 +34,6 @@ import { canModerateProject } from 'utils/permissions/rules/projectPermissions';
 import IdeasNewMeta from '../IdeasNewMeta';
 import messages from '../messages';
 import { getLocationGeojson } from '../utils';
-
-import IdeaHeading from './IdeaHeading';
 
 const ProfileVisiblity = lazy(() => import('./ProfileVisibility'));
 
@@ -263,7 +262,7 @@ const IdeasNewIdeationForm = ({ project, phaseId }: Props) => {
           top={isSmallerThanPhone ? '0' : '40px'}
           maxWidth="700px"
         >
-          <IdeaHeading phaseId={phaseId} titleText={titleText} />
+          <NewIdeaHeading phaseId={phaseId} titleText={titleText} />
         </Box>
         <main id="e2e-idea-new-page">
           <Box
