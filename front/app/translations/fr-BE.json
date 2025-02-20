@@ -485,6 +485,7 @@
   "app.components.Upload.remaining": "restant(s)",
   "app.components.Upload.uploadImageLabel": "Sélectionner une image (max. {maxImageSizeInMb}Mo)",
   "app.components.Upload.uploadMultipleImagesLabel": "Sélectionnez une ou plusieurs images",
+  "app.components.UpsellTooltip.tooltipContent": "Cette fonctionnalité n'est pas incluse dans votre plan actuel. Adressez-vous à votre Spécialiste en participation Go Vocal ou à votre administrateur pour la débloquer.",
   "app.components.UserName.anonymous": "Anonyme",
   "app.components.UserName.anonymousTooltip2": "Cet utilisateur a décidé d'anonymiser sa contribution",
   "app.components.UserName.authorWithNoNameTooltip": "Comme vous n'avez pas renseigné de nom, nous en avons choisi un automatiquement pour vous. Vous pouvez le modifier dans votre profil.",

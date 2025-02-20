@@ -475,6 +475,10 @@ module MultiTenancy
             platform_templates: {
               enabled: false,
               allowed: false
+            },
+            project_library: {
+              enabled: false,
+              allowed: false
             }
           })
         )

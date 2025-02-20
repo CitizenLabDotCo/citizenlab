@@ -1353,6 +1353,18 @@
         }
       },
 
+      "project_library": {
+        "type": "object",
+        "title": "Project library - do not enable!",
+        "description": "Temporary feature flag we are using to be able to hide our work in progress from the live platforms. Do not enable this feature!",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": false },
+          "enabled": { "type": "boolean", "default": false }
+        }
+      },
+
       "verification": {
         "type": "object",
         "title": "Verification",
