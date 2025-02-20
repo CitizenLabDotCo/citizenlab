@@ -279,7 +279,7 @@ const FormBuilderToolbox = ({
           label={formatMessage(messages.sentiment)}
           onClick={() => addField('sentiment_linear_scale')}
           data-cy="e2e-sentiment"
-          fieldsToExclude={builderConfig.toolboxFieldsToExclude}
+          fieldsToInclude={builderConfig.toolboxFieldsToInclude}
           inputType="sentiment_linear_scale"
           disabled={isCustomFieldsDisabled}
         />
