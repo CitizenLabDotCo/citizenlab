@@ -36,8 +36,4 @@ resource 'AuthoringAssistanceResponse' do
       end
     end
   end
-
-  # TODO: Test for non-super admins
-  # TODO: Test when regenerate is true
-  # TODO: Test when creating the first new response
 end
