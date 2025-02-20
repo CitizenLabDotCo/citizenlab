@@ -4,7 +4,7 @@ import { Select } from '@citizenlab/cl2-component-library';
 
 import { RansackParams } from 'api/project_library_projects/types';
 
-import { setRansackParam, useRansackParam, EMPTY_OPTION } from './utils';
+import { setRansackParam, useRansackParam } from './utils';
 
 type Option = {
   value: RansackParams['q[phases_participation_method_eq]'];
@@ -12,7 +12,6 @@ type Option = {
 };
 
 const OPTIONS: Option[] = [
-  EMPTY_OPTION,
   { value: 'ideation', label: 'Ideation' },
   { value: 'information', label: 'Information' },
   { value: 'native_survey', label: 'Native survey' },
@@ -31,6 +30,7 @@ const ParticipationMethod = () => {
     <Select
       value={value}
       options={OPTIONS}
+      canBeEmpty
       onChange={(option: Option) =>
         setRansackParam('q[phases_participation_method_eq]', option.value)
       }

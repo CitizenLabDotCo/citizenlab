@@ -22,5 +22,3 @@ export const useRansackParam = <ParamName extends keyof RansackParams>(
   const [searchParams] = useSearchParams();
   return searchParams.get(paramName) as RansackParams[typeof paramName];
 };
-
-export const EMPTY_OPTION = { value: undefined, label: 'Empty' };

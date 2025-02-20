@@ -125,7 +125,7 @@ class Select extends PureComponent<Props> {
 
     // comparing the string versions since event.target.value returns a string even when the value was defined as a number
     const selectedOption = options?.find(
-      (option) => option.value.toString() === event.target.value.toString()
+      (option) => option.value?.toString() === event.target.value.toString()
     );
     if (selectedOption) onChange(selectedOption);
     else if (event.target.value === 'DEFAULT_SELECT_VALUE') {
