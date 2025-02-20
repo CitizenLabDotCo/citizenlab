@@ -274,7 +274,11 @@ const Forms = () => {
                             </Text>
                           </Box>
                         </DropdownListItem>
-                        <UpsellTooltip disabled={inputImporterAllowed}>
+                        <UpsellTooltip
+                          disabled={inputImporterAllowed}
+                          // Needed to ensure DropdownListItem takes up the full width of the dropdown
+                          width="100%"
+                        >
                           <DropdownListItem
                             onClick={downloadExampleFile}
                             disabled={!inputImporterAllowed}
