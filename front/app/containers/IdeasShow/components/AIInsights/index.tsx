@@ -1,12 +1,8 @@
-// This code is a prototype for input authoring. Clean-up will follow after the prototype phase.
-
 import React, { useEffect, useState } from 'react';
 
 import { Box, Button, Text, colors } from '@citizenlab/cl2-component-library';
 
-import { IAuthoringAssistanceData } from 'api/authoring_assistance/types';
 import useAddAuthoringAssistance from 'api/authoring_assistance/useAuthoringAssistance';
-import { IIdea } from 'api/ideas/types';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
@@ -17,45 +13,44 @@ import { useIntl } from 'utils/cl-intl';
 
 import messages from './messages';
 
-const AIInsights = ({ idea }: { idea: IIdea }) => {
+const AIInsights = ({ ideaId }: { ideaId: string }) => {
   const { formatMessage } = useIntl();
-  const { mutate: addAuthoringAssistance } = useAddAuthoringAssistance();
-  const [promptData, setPromptData] = useState<IAuthoringAssistanceData | null>(
-    null
-  );
   const isAuthoringAssistanceOn = useFeatureFlag({
     name: 'authoring_assistance',
   });
 
-  // Stores the user input from the TextArea
   const [customPrompt, setCustomPrompt] = useState<string>('');
+  const {
+    mutate: addAuthoringAssistance,
+    data: authoringResponse,
+    isLoading,
+  } = useAddAuthoringAssistance();
+  const promptData = authoringResponse?.data;
+  const similarIdeaIds =
+    promptData?.attributes.prompt_response.duplicate_inputs;
+  const customFreePromptResponse =
+    promptData?.attributes.prompt_response.custom_free_prompt_response;
 
   const fetchAssistance = (regenerate: boolean) => {
-    addAuthoringAssistance(
-      {
-        id: idea.data.id,
-        custom_free_prompt: customPrompt,
-        regenerate,
-      },
-      {
-        onSuccess: (data) => {
-          setPromptData(data.data);
-          setCustomPrompt(data.data.attributes.custom_free_prompt);
-        },
-      }
-    );
+    addAuthoringAssistance({
+      id: ideaId,
+      custom_free_prompt:
+        customPrompt || promptData?.attributes.custom_free_prompt || '',
+      regenerate,
+    });
   };
 
   useEffect(() => {
-    fetchAssistance(false);
+    if (isAuthoringAssistanceOn) {
+      fetchAssistance(false);
+    }
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleTextChange = (value: string) => {
     setCustomPrompt(value);
   };
-  const similarIdeaIds =
-    promptData?.attributes.prompt_response.duplicate_inputs;
 
   if (!isAuthoringAssistanceOn) return null;
 
@@ -74,18 +69,20 @@ const AIInsights = ({ idea }: { idea: IIdea }) => {
       <Box w="100%">
         <TextArea
           minRows={5}
-          value={customPrompt}
+          value={customPrompt || promptData?.attributes.custom_free_prompt}
           onChange={handleTextChange}
           placeholder={formatMessage(messages.textAreaPlaceholder)}
         />
       </Box>
 
-      <Button onClick={() => fetchAssistance(true)}>
+      <Button onClick={() => fetchAssistance(true)} processing={isLoading}>
         {formatMessage(messages.regenegareteInsights)}
       </Button>
-      <Text whiteSpace="pre-wrap">
-        {promptData?.attributes.prompt_response.custom_free_prompt_response}
-      </Text>
+
+      {typeof customFreePromptResponse == 'string' && (
+        <Text whiteSpace="pre-wrap">{customFreePromptResponse}</Text>
+      )}
+
       {similarIdeaIds && similarIdeaIds.length > 1 && (
         <Box mt="10px">
           <Text>{formatMessage(messages.similarIdeas)}</Text>
