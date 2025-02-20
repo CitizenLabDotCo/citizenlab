@@ -40,7 +40,7 @@ class IdeaCustomFieldsService
 
   # Used in the printable PDF export
   def printable_fields
-    ignore_field_types = %w[section page date files image_files point file_upload shapefile_upload topic_ids cosponsor_ids ranking matrix_linear_scale sentiment_linear_scale]
+    ignore_field_types = %w[section page date files image_files point file_upload shapefile_upload topic_ids cosponsor_ids ranking matrix_linear_scale]
     fields = enabled_fields.reject { |field| ignore_field_types.include? field.input_type }
     insert_other_option_text_fields(fields)
   end
