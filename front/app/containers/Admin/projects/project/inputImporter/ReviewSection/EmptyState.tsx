@@ -23,6 +23,8 @@ import PDFExportModal, {
 import buttonMessages from 'containers/Admin/projects/project/inputForm/messages';
 import { API_PATH } from 'containers/App/constants';
 
+import UpsellTooltip from 'components/UpsellTooltip';
+
 import { FormattedMessage } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
 import { requestBlob } from 'utils/requestBlob';
@@ -45,6 +47,10 @@ const EmptyState = () => {
   const { data: phase } = usePhase(phaseId);
   const importPrintedFormsEnabled = useFeatureFlag({
     name: 'import_printed_forms',
+  });
+  const inputImporterAllowed = useFeatureFlag({
+    name: 'input_importer',
+    onlyCheckAllowed: true,
   });
 
   if (!project || !phase) {
@@ -127,14 +133,16 @@ const EmptyState = () => {
               <FormattedMessage {...buttonMessages.downloadInputForm} />
             </Button>
           </Box>
-          <Button
-            mr="8px"
-            buttonStyle="secondary-outlined"
-            icon="download"
-            onClick={downloadExampleXlsxFile}
-          >
-            <FormattedMessage {...buttonMessages.downloadExcelTemplate} />
-          </Button>
+          <UpsellTooltip disabled={inputImporterAllowed}>
+            <Button
+              buttonStyle="secondary-outlined"
+              icon="download"
+              onClick={downloadExampleXlsxFile}
+              disabled={!inputImporterAllowed}
+            >
+              <FormattedMessage {...buttonMessages.downloadExcelTemplate} />
+            </Button>
+          </UpsellTooltip>
         </Box>
       </Box>
       <PDFExportModal
