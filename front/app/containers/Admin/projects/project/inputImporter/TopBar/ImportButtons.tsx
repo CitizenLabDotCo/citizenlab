@@ -10,6 +10,7 @@ import {
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import NewBadge from 'components/UI/NewBadge';
+import UpsellTooltip from 'components/UpsellTooltip';
 
 import { FormattedMessage } from 'utils/cl-intl';
 
@@ -24,6 +25,10 @@ const ImportButtons = ({ onClickPDFImport, onClickExcelImport }: Props) => {
   const [dropdownOpened, setDropdownOpened] = useState(false);
   const printedFormsEnabled = useFeatureFlag({
     name: 'import_printed_forms',
+  });
+  const inputImporterAllowed = useFeatureFlag({
+    name: 'input_importer',
+    onlyCheckAllowed: true,
   });
 
   return (
@@ -43,9 +48,14 @@ const ImportButtons = ({ onClickPDFImport, onClickExcelImport }: Props) => {
         onClickOutside={() => setDropdownOpened(false)}
         content={
           <>
-            <DropdownListItem onClick={onClickExcelImport}>
-              <FormattedMessage {...messages.importExcelFile} />
-            </DropdownListItem>
+            <UpsellTooltip disabled={inputImporterAllowed}>
+              <DropdownListItem
+                onClick={onClickExcelImport}
+                disabled={!inputImporterAllowed}
+              >
+                <FormattedMessage {...messages.importExcelFile} />
+              </DropdownListItem>
+            </UpsellTooltip>
             {printedFormsEnabled && (
               <DropdownListItem onClick={onClickPDFImport}>
                 <Box mr="12px" alignSelf="center">
