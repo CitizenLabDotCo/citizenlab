@@ -223,6 +223,10 @@ class CustomField < ApplicationRecord
     input_type == 'linear_scale'
   end
 
+  def sentiment_linear_scale?
+    input_type == 'sentiment_linear_scale'
+  end
+
   def rating?
     input_type == 'rating'
   end
