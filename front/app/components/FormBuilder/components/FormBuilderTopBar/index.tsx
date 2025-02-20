@@ -61,7 +61,7 @@ const FormBuilderTopBar = ({
   setAutosaveEnabled,
   showAutosaveToggle,
 }: FormBuilderTopBarProps) => {
-  const importPrintedFormsEnabled = useFeatureFlag({
+  const importPrintedFormsAllowed = useFeatureFlag({
     name: 'import_printed_forms',
     onlyCheckAllowed: true,
   });
@@ -170,13 +170,13 @@ const FormBuilderTopBar = ({
           </Box>
         )}
         {builderConfig.onDownloadPDF && (
-          <UpsellTooltip disabled={importPrintedFormsEnabled}>
+          <UpsellTooltip disabled={importPrintedFormsAllowed}>
             <Button
               buttonStyle="secondary-outlined"
               icon="download"
               mr="20px"
               onClick={builderConfig.onDownloadPDF}
-              disabled={!importPrintedFormsEnabled}
+              disabled={!importPrintedFormsAllowed}
             >
               <FormattedMessage {...ownMessages.downloadPDF} />
             </Button>
