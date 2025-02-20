@@ -43,15 +43,13 @@ class WebApi::V1::CustomFieldSerializer < WebApi::V1::BaseSerializer
     :linear_scale_label_3_multiloc,
     :linear_scale_label_4_multiloc,
     :linear_scale_label_5_multiloc,
-    if: proc { |object, _params| object.input_type == 'sentiment_linear_scale' || object.linear_scale? || object.supports_matrix_statements? }
-
-  attributes :linear_scale_label_6_multiloc,
+    :linear_scale_label_6_multiloc,
     :linear_scale_label_7_multiloc,
     :linear_scale_label_8_multiloc,
     :linear_scale_label_9_multiloc,
     :linear_scale_label_10_multiloc,
     :linear_scale_label_11_multiloc,
-    if: proc { |object, _params| object.linear_scale? || object.supports_matrix_statements? }
+    if: proc { |object, _params| object.linear_scale? || object.sentiment_linear_scale? || object.supports_matrix_statements? }
 
   attributes :select_count_enabled, :maximum_select_count, :minimum_select_count, if: proc { |object, _params|
     object.multiselect?
