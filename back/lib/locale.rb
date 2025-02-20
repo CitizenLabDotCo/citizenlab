@@ -8,6 +8,7 @@ class Locale
     monolingual(config: config) || new(config.settings('core', 'locales').first)
   end
 
+  # Returns the monolingual locale from the app_configuration if there is only one locale configured, otherwise nil
   def self.monolingual(config: nil)
     config ||= AppConfiguration.instance
     config_locales = config.settings('core', 'locales')
