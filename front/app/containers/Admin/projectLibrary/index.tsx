@@ -10,9 +10,13 @@ import { FormattedMessage } from 'utils/cl-intl';
 
 import Filters from './Filters';
 import ProjectTable from './ProjectTable';
+import { useRansackParams } from './utils';
 
 const ProjectLibrary = () => {
-  const { data: libraryProjects } = useProjectLibraryProjects({});
+  const { data: libraryProjects } = useProjectLibraryProjects(
+    useRansackParams()
+  );
+
   return (
     <Box>
       <Title variant="h1" color="primary" mb="40px">
