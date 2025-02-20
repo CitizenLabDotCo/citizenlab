@@ -971,7 +971,6 @@
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.approve": "Aprobado",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.approveAllInputs": "Aprueba todas las aportaciones",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.author": "Autor:",
-  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.disabledPDFImportTooltip1": "La importación de archivos PDF de formularios escaneados no forma parte de tu licencia actual. Ponte en contacto con tu gestor de GovSuccess o administrador para obtener más información al respecto.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.email": "Correo electrónico:",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.errorImportingLabel": "Se han producido errores durante la importación y algunas entradas no se han importado. Por favor, corrige los errores y vuelve a importar las entradas que falten.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.formDataNotValid": "Datos de formulario no válidos. Comprueba si hay errores en el formulario anterior.",

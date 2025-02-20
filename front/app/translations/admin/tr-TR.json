@@ -971,7 +971,6 @@
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.approve": "Onaylamak",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.approveAllInputs": "Tüm girdileri onaylayın",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.author": "Yazar:",
-  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.disabledPDFImportTooltip1": "Taranan formların PDF dosyalarını içe aktarmak mevcut lisansınızın bir parçası değildir. Bu konuda daha fazla bilgi edinmek için GovSuccess Yöneticinize ulaşın.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.email": "E-posta:",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.errorImportingLabel": "İçe aktarma sırasında hatalar oluştu ve bazı girdiler içe aktarılmadı. Lütfen hataları düzeltin ve eksik girdileri yeniden içe aktarın.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.formDataNotValid": "Geçersiz form verileri. Yukarıdaki formda hata olup olmadığını kontrol edin.",

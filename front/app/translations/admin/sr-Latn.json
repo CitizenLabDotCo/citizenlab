@@ -971,7 +971,6 @@
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.approve": "Approve",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.approveAllInputs": "Approve all inputs",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.author": "Author:",
-  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.disabledPDFImportTooltip1": "Importing PDF files of scanned forms is not part of your current license. Reach out to your GovSuccess Manager to learn more about it.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.email": "Email:",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.errorImportingLabel": "Errors occurred during the import and some inputs have not imported. Please correct the errors and re-import any missing inputs.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.formDataNotValid": "Invalid form data. Check the form above for errors.",
