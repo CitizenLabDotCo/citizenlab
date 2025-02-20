@@ -985,7 +985,6 @@
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.inputsNotApproved2": "{numNotApproved} syötteitä ei voitu hyväksyä. Tarkista jokainen syöte vahvistusongelmien varalta ja vahvista yksitellen.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.locale": "Alue:",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.noIdeasYet3": "Ei vielä mitään arvosteltavaa. Napsauta \"{importFile}\" tuodaksesi skannatut syöttölomakkeita sisältävän PDF-tiedoston tai syötteitä sisältävän Excel-tiedoston.",
-  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.noIdeasYetPrintedFormsDisabled": "Ei vielä mitään arvosteltavaa. Napsauta \"{importFile}\" tuodaksesi syötteitä sisältävän Excel-tiedoston.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.noTitleInputLabel": "Syöte",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.page": "Sivu",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.pdfNotAvailable": "Tuotua tiedostoa ei voi näyttää. Tuotujen tiedostojen katselu on käytettävissä vain PDF-tuonnissa.",

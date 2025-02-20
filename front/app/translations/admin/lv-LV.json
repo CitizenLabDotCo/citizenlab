@@ -985,7 +985,6 @@
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.inputsNotApproved2": "{numNotApproved} ieguldījumus nevarēja apstiprināt. Lūdzu, pārbaudiet, vai katrā ievadītajā informācijā nav apstiprināšanas problēmu, un apstipriniet to atsevišķi.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.locale": "Atrašanās vieta:",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.noIdeasYet3": "Pagaidām nav ko pārskatīt. Noklikšķiniet uz \"{importFile}\", lai importētu PDF failu ar skenētām ievades veidlapām vai Excel failu ar ievades datiem.",
-  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.noIdeasYetPrintedFormsDisabled": "Vēl nav ko pārskatīt. Noklikšķiniet uz \"{importFile}\", lai importētu Excel failu ar ievaddatiem.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.noTitleInputLabel": "Ieeja",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.page": "Lapa",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.pdfNotAvailable": "Nevar parādīt importēto failu. Importētā faila skatīšana ir pieejama tikai PDF importam.",

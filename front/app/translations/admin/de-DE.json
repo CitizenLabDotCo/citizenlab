@@ -985,7 +985,6 @@
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.inputsNotApproved2": "{numNotApproved} Beiträge konnten nicht freigegeben werden. Bitte überprüfen Sie jeden Beitrag auf Validierungsprobleme und geben Sie sie einzeln frei.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.locale": "Sprache:",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.noIdeasYet3": "Es gibt noch nichts zu überprüfen. Klicken Sie auf \"{importFile}\", um eine PDF-Datei mit gescannten Eingabeformularen oder eine Excel-Datei mit Beiträgen zu importieren.",
-  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.noIdeasYetPrintedFormsDisabled": "Noch nichts zu überprüfen. Klicken Sie auf \"{importFile}\", um eine Excel-Datei mit Beiträgen zu importieren.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.noTitleInputLabel": "Beitrag",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.page": "Seite",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.pdfNotAvailable": "Die importierte Datei kann nicht angezeigt werden. Die Anzeige importierter Dateien ist nur für PDF-Importe verfügbar.",

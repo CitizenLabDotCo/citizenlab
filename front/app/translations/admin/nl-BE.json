@@ -985,7 +985,6 @@
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.inputsNotApproved2": "{numNotApproved} bijdragen konden niet worden goedgekeurd. Controleer elke bijdrage op validatieproblemen en bevestig deze afzonderlijk.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.locale": "Taal:",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.noIdeasYet3": "Nog niets om te beoordelen. Klik op \"{importFile}\" om een PDF-bestand met gescande invulformulieren of een Excel-bestand met bijdragen te importeren.",
-  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.noIdeasYetPrintedFormsDisabled": "Nog niets om te beoordelen. Klik op \"{importFile}\" om een Excel-bestand met bijdragen te importeren.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.noTitleInputLabel": "Bijdragen",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.page": "Pagina",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.pdfNotAvailable": "Kan het geïmporteerde bestand niet weergeven. Het bekijken van geïmporteerde bestanden is alleen beschikbaar voor PDF-bestanden.",

@@ -985,7 +985,6 @@
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.inputsNotApproved2": "{numNotApproved} ni ellid cymeradwyo mewnbynnau. Gwiriwch bob mewnbwn am faterion dilysu a chadarnhewch yn unigol.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.locale": "Lleoliad:",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.noIdeasYet3": "Dim byd i'w adolygu eto. Cliciwch \"{importFile}\" i fewnforio ffeil PDF yn cynnwys ffurflenni mewnbwn wedi'u sganio neu ffeil Excel yn cynnwys mewnbynnau.",
-  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.noIdeasYetPrintedFormsDisabled": "Dim byd i'w adolygu eto. Cliciwch \"{importFile}\" i fewnforio ffeil Excel yn cynnwys mewnbynnau.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.noTitleInputLabel": "Mewnbwn",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.page": "Tudalen",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.pdfNotAvailable": "Methu dangos y ffeil a fewnforiwyd. Dim ond ar gyfer mewnforio PDF y mae modd gweld ffeiliau a fewnforiwyd.",

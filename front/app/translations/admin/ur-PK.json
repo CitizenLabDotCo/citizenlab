@@ -985,7 +985,6 @@
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.inputsNotApproved2": "{numNotApproved} ان پٹس کو منظور نہیں کیا جا سکا۔ براہ کرم توثیق کے مسائل کے لیے ہر ان پٹ کو چیک کریں اور انفرادی طور پر تصدیق کریں۔",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.locale": "مقامی:",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.noIdeasYet3": "ابھی تک جائزہ لینے کے لیے کچھ نہیں ہے۔ اسکین شدہ ان پٹ فارمز پر مشتمل پی ڈی ایف فائل یا ان پٹ پر مشتمل ایکسل فائل درآمد کرنے کے لیے \"{importFile}\" پر کلک کریں۔",
-  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.noIdeasYetPrintedFormsDisabled": "ابھی تک جائزہ لینے کے لیے کچھ نہیں ہے۔ ان پٹ پر مشتمل ایکسل فائل درآمد کرنے کے لیے \"{importFile}\" پر کلک کریں۔",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.noTitleInputLabel": "ان پٹ",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.page": "صفحہ",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.pdfNotAvailable": "درآمد شدہ فائل کو ظاہر نہیں کیا جا سکتا۔ درآمد شدہ فائل دیکھنا صرف پی ڈی ایف کی درآمدات کے لیے دستیاب ہے۔",

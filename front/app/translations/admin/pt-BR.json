@@ -985,7 +985,6 @@
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.inputsNotApproved2": "{numNotApproved} não foi possível aprovar as entradas. Verifique se há problemas de validação em cada entrada e confirme individualmente.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.locale": "Localidade:",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.noIdeasYet3": "Nada para revisar ainda. Clique em \"{importFile}\" para importar um arquivo PDF contendo formulários de entrada digitalizados ou um arquivo Excel contendo entradas.",
-  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.noIdeasYetPrintedFormsDisabled": "Você ainda não tem nada para revisar. Clique em \"{importFile}\" para importar um arquivo Excel que contenha entradas.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.noTitleInputLabel": "Entrada",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.page": "Página",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.pdfNotAvailable": "Não é possível exibir o arquivo importado. A visualização de arquivos importados está disponível apenas para importações de PDF.",

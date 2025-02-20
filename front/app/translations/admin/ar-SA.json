@@ -985,7 +985,6 @@
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.inputsNotApproved2": "{numNotApproved} لا يمكن الموافقة على المدخلات. يرجى التحقق من كل إدخال لمعرفة مشكلات التحقق من الصحة والتأكيد بشكل فردي.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.locale": "اللغة:",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.noIdeasYet3": "لا شيء لمراجعته بعد. انقر فوق \"{importFile}\" لاستيراد ملف PDF يحتوي على نماذج الإدخال الممسوحة ضوئيًا أو ملف Excel يحتوي على المدخلات.",
-  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.noIdeasYetPrintedFormsDisabled": "لا شيء لمراجعته بعد. انقر فوق \"{importFile}\" لاستيراد ملف Excel يحتوي على مدخلات.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.noTitleInputLabel": "مدخل",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.page": "صفحة",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.pdfNotAvailable": "لا يمكن عرض الملف المستورد. عرض الملفات المستوردة متاح فقط لاستيراد ملفات PDF.",

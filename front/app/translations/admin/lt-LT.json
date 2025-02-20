@@ -985,7 +985,6 @@
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.inputsNotApproved2": "{numNotApproved} įvestys negalėjo būti patvirtintos. Patikrinkite kiekvieną įvestį, ar nėra patvirtinimo problemų, ir patvirtinkite atskirai.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.locale": "Vietovė:",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.noIdeasYet3": "Kol kas nėra ką peržiūrėti. Spustelėkite \"{importFile}\", jei norite importuoti PDF failą su nuskaitytomis įvesties formomis arba \"Excel\" failą su įvesties duomenimis.",
-  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.noIdeasYetPrintedFormsDisabled": "Kol kas nėra ką peržiūrėti. Spustelėkite \"{importFile}\", kad importuotumėte \"Excel\" failą su įvesties duomenimis.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.noTitleInputLabel": "Įvestis",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.page": "Puslapis",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.pdfNotAvailable": "Nepavyksta parodyti importuoto failo. Importuoto failo peržiūra galima tik importuojant PDF failus.",
