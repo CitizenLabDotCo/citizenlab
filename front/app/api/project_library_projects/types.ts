@@ -7,9 +7,7 @@ import { Keys } from 'utils/cl-react-query/types';
 
 import miniProjectsKeys from './keys';
 
-export type Parameters = {
-  'page[number]'?: number;
-  'page[size]'?: number;
+export type RansackParams = {
   'q[tenant_country_alpha2]'?: string; // TODO figure out what values are allowed here
   'q[tenant_population_group_eq]'?: 'xs' | 's' | 'm' | 'l' | 'xl';
   'q[score_total_gteq]'?: '1' | '2' | '3' | '4';
@@ -20,6 +18,11 @@ export type Parameters = {
   'q[practical_end_at_gteq]'?: string;
   'q[practical_end_at_lt]'?: string;
   'q[title_en_or_description_en_or_tenant_name_cont]'?: string;
+};
+
+export type Parameters = RansackParams & {
+  'page[number]'?: number;
+  'page[size]'?: number;
 };
 
 export type ProjectLibraryProjectsKeys = Keys<typeof miniProjectsKeys>;
