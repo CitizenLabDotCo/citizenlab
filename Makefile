@@ -92,14 +92,20 @@ r rspec:
 
 # Usage examples:
 # make feature-flag feature=initiative_cosponsors enabled=true
-# make ff feature=initiative_cosponsors allowed=false enabled=false
-ff feature-flag:
+# make feature-flag feature=initiative_cosponsors allowed=false enabled=false
+feature-flag:
 	docker compose run web "bin/rails runner \"Tenant.find_by(host: 'localhost').switch!; \
 	c = AppConfiguration.instance; \
 	c.settings['${feature}'] ||= {}; \
 	${if ${enabled},c.settings['${feature}']['enabled'] = ${enabled};,} \
 	${if ${allowed},c.settings['${feature}']['allowed'] = ${allowed};,} \
 	c.save!\""
+
+# Shorthand command (alias for feature-flag)
+# Usage example:
+# make ff f=initiative_cosponsors e=false
+ff:
+	@${MAKE} feature-flag feature=${f} enabled=${e} allowed=${a}
 
 # =================
 # E2E tests
