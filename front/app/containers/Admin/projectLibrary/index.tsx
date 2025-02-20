@@ -13,9 +13,11 @@ import ProjectTable from './ProjectTable';
 import { useRansackParams } from './utils';
 
 const ProjectLibrary = () => {
-  const { data: libraryProjects } = useProjectLibraryProjects(
-    useRansackParams()
-  );
+  const {
+    data: libraryProjects,
+    isInitialLoading,
+    isRefetching,
+  } = useProjectLibraryProjects(useRansackParams());
 
   return (
     <Box>
@@ -26,7 +28,11 @@ const ProjectLibrary = () => {
         <Box mb="24px">
           <Filters />
         </Box>
-        {libraryProjects && <ProjectTable libraryProjects={libraryProjects} />}
+        <ProjectTable
+          libraryProjects={libraryProjects}
+          isInitialLoading={isInitialLoading}
+          isRefetching={isRefetching}
+        />
       </Box>
     </Box>
   );
