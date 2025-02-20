@@ -1,6 +1,7 @@
 import { Multiloc, ILinks } from 'typings';
 
-import { PublicationStatus, Visibility } from 'api/projects/types';
+import { ParticipationMethod } from 'api/phases/types';
+import { PublicationStatus } from 'api/projects/types';
 
 import { Keys } from 'utils/cl-react-query/types';
 
@@ -9,6 +10,16 @@ import miniProjectsKeys from './keys';
 export type Parameters = {
   'page[number]'?: number;
   'page[size]'?: number;
+  'q[tenant_country_alpha2]'?: string; // TODO figure out what values are allowed here
+  'q[tenant_population_group_eq]'?: 'xs' | 's' | 'm' | 'l' | 'xl';
+  'q[score_total_gteq]'?: '1' | '2' | '3' | '4';
+  'q[phases_participation_method_eq]'?: ParticipationMethod;
+  'q[topic_id_eq]'?: string;
+  'q[status_eq]'?: 'draft' | 'active' | 'finished' | 'stale' | 'archived';
+  'q[visibility_eq]'?: 'public' | 'restricted'; // TODO check if this is correct / matches the response?
+  'q[practical_end_at_gteq]'?: string;
+  'q[practical_end_at_lt]'?: string;
+  'q[title_en_or_description_en_or_tenant_name_cont]'?: string;
 };
 
 export type ProjectLibraryProjectsKeys = Keys<typeof miniProjectsKeys>;
@@ -54,6 +65,6 @@ export interface ProjectLibraryProjectData {
     title_multiloc: Multiloc;
     topic_id: string;
     updated_at: string;
-    visibility: Visibility;
+    visibility: 'public' | 'restricted';
   };
 }
