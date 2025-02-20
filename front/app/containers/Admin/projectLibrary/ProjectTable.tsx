@@ -46,7 +46,8 @@ const ProjectTable = ({ libraryProjects }: Props) => {
             <Cell>{project.attributes.title_en}</Cell>
             <Cell>{project.attributes.participants}</Cell>
             <Cell>{project.attributes.tenant_name}</Cell>
-            <Cell>{project.attributes.topic_id}</Cell>
+            {/* <Cell>{project.attributes.topic_id}</Cell> */}
+            <Cell>Some topic</Cell>
             <Cell>{project.attributes.practical_end_at}</Cell>
           </Tr>
         ))}
