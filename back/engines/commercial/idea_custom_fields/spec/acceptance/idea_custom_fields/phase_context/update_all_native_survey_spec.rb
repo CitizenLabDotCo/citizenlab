@@ -801,6 +801,12 @@ resource 'Idea Custom Fields' do
             linear_scale_label_3_multiloc: { en: 'Neutral' },
             linear_scale_label_4_multiloc: { en: 'High' },
             linear_scale_label_5_multiloc: { en: 'Highest' },
+            linear_scale_label_6_multiloc: {},
+            linear_scale_label_7_multiloc: {},
+            linear_scale_label_8_multiloc: {},
+            linear_scale_label_9_multiloc: {},
+            linear_scale_label_10_multiloc: {},
+            linear_scale_label_11_multiloc: {}.
             logic: {},
             random_option_ordering: false,
             constraints: {}
