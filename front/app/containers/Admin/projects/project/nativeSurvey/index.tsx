@@ -252,24 +252,21 @@ const Forms = () => {
                           }}
                           disabled={haveSubmissionsComeIn}
                         >
-                          <Box display="flex" gap="4px" alignItems="center">
-                            <Icon
-                              name="copy"
-                              fill={
-                                haveSubmissionsComeIn
-                                  ? colors.grey400
-                                  : colors.coolGrey600
-                              }
-                            />
-                            <Text
-                              my="0px"
-                              color={
-                                haveSubmissionsComeIn ? 'grey400' : 'black'
-                              }
-                            >
-                              {formatMessage(messages.duplicateAnotherSurvey)}
-                            </Text>
-                          </Box>
+                          <Icon
+                            name="copy"
+                            fill={
+                              haveSubmissionsComeIn
+                                ? colors.grey400
+                                : colors.coolGrey600
+                            }
+                            mr="4px"
+                          />
+                          <Text
+                            my="0px"
+                            color={haveSubmissionsComeIn ? 'grey400' : 'black'}
+                          >
+                            {formatMessage(messages.duplicateAnotherSurvey)}
+                          </Text>
                         </DropdownListItem>
                         <UpsellTooltip
                           disabled={importPrintedFormsAllowed}
@@ -290,48 +287,45 @@ const Forms = () => {
                         </UpsellTooltip>
                         {inputImporterEnabled && (
                           <DropdownListItem onClick={downloadExampleFile}>
-                            <Box display="flex" gap="4px" alignItems="center">
-                              <Icon name="download" fill={colors.coolGrey600} />
-                              <Text my="0px">
-                                {formatMessage(messages.downloadExcelTemplate)}
-                              </Text>
-                              <IconTooltip
-                                ml="4px"
-                                content={formatMessage(
-                                  messages.downloadExcelTemplateTooltip
-                                )}
-                              />
-                            </Box>
+                            <Icon
+                              name="download"
+                              fill={colors.coolGrey600}
+                              mr="4px"
+                            />
+                            <Text my="0px" mr="4px">
+                              {formatMessage(messages.downloadExcelTemplate)}
+                            </Text>
+                            <IconTooltip
+                              content={formatMessage(
+                                messages.downloadExcelTemplateTooltip
+                              )}
+                            />
                           </DropdownListItem>
                         )}
                       </>
                     )}
-                    <DropdownListItem onClick={handleDownloadResults}>
-                      <Box
-                        display="flex"
-                        gap="4px"
-                        alignItems="center"
-                        data-cy="e2e-download-survey-results"
-                      >
-                        <Icon name="download" fill={colors.coolGrey600} />
-                        <Text my="0px">
-                          {formatMessage(messages.downloadResults)}
-                        </Text>
-                      </Box>
+                    <DropdownListItem
+                      onClick={handleDownloadResults}
+                      data-cy="e2e-download-survey-results"
+                    >
+                      <Icon
+                        name="download"
+                        fill={colors.coolGrey600}
+                        mr="4px"
+                      />
+                      <Text my="0px">
+                        {formatMessage(messages.downloadResults)}
+                      </Text>
                     </DropdownListItem>
                     {haveSubmissionsComeIn && (
-                      <DropdownListItem onClick={openDeleteModal}>
-                        <Box
-                          display="flex"
-                          gap="4px"
-                          alignItems="center"
-                          data-cy="e2e-delete-survey-results"
-                        >
-                          <Icon name="delete" fill={colors.red600} />
-                          <Text color="red600" my="0px">
-                            {formatMessage(messages.deleteSurveyResults)}
-                          </Text>
-                        </Box>
+                      <DropdownListItem
+                        onClick={openDeleteModal}
+                        data-cy="e2e-delete-survey-results"
+                      >
+                        <Icon name="delete" fill={colors.red600} mr="4px" />
+                        <Text color="red600" my="0px">
+                          {formatMessage(messages.deleteSurveyResults)}
+                        </Text>
                       </DropdownListItem>
                     )}
                   </>
