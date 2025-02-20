@@ -4,9 +4,9 @@ class AuthoringAssistanceService
   end
 
   def analyze!
-    duplicate_inputs_thread = start_thread { |aaresponse| duplicate_inputs_response(aaresponse) }
-    toxicity_thread = start_thread { |aaresponse| toxicity_response(aaresponse) }
-    custom_free_prompt_thread = start_thread { |aaresponse| custom_free_prompt_response(aaresponse) }
+    duplicate_inputs_thread = start_thread { duplicate_inputs_response(_1) }
+    toxicity_thread = start_thread { toxicity_response(_1) }
+    custom_free_prompt_thread = start_thread { custom_free_prompt_response(_1) }
     [duplicate_inputs_thread, toxicity_thread, custom_free_prompt_thread].each(&:join)
     prompt_response = {
       **duplicate_inputs_thread[:response],
@@ -21,7 +21,7 @@ class AuthoringAssistanceService
   def duplicate_inputs_response(authoring_assistance_response)
     service = SimilarIdeasService.new(authoring_assistance_response.idea)
     service.upsert_embedding!
-    threshold = 0.4 # TODO: Define good threshold
+    threshold = 0.4
     ideas = service.similar_ideas(limit: 5, distance_threshold: threshold)
     {
       duplicate_inputs: ideas.ids
