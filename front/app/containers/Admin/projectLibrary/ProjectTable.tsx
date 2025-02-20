@@ -11,16 +11,17 @@ import {
 } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
-import useProjectLibraryProjects from 'api/project_library_projects/useProjectLibraryProjects';
+import { ProjectLibraryProjects } from 'api/project_library_projects/types';
 
 const Cell = styled(Th)`
   font-weight: normal;
 `;
 
-const ProjectTable = () => {
-  const { data: libraryProjects } = useProjectLibraryProjects({});
-  console.log({ libraryProjects });
+interface Props {
+  libraryProjects: ProjectLibraryProjects;
+}
 
+const ProjectTable = ({ libraryProjects }: Props) => {
   return (
     <Table
       border={`1px solid ${colors.grey300}`}
@@ -40,7 +41,7 @@ const ProjectTable = () => {
         </Tr>
       </Thead>
       <Tbody>
-        {libraryProjects?.data.map((project) => (
+        {libraryProjects.data.map((project) => (
           <Tr key={project.id} background={colors.white}>
             <Cell>{project.attributes.title_en}</Cell>
             <Cell>{project.attributes.participants}</Cell>
