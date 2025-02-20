@@ -133,7 +133,7 @@ export const IdeasShow = ({
             translateButtonClicked={translateButtonIsClicked}
           />
           <ProjectLink project={project.data} />
-          <AIInsights idea={idea} />
+          <AIInsights ideaId={idea.data.id} />
           {ideaImageLarge && (
             <Image src={ideaImageLarge} alt="" id="e2e-idea-image" />
           )}
