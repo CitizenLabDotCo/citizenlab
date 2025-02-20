@@ -1,3 +1,4 @@
+// This code is a prototype for input authoring. Clean-up will follow after the prototype phase.
 import React, { useEffect, useState } from 'react';
 
 import { Box, Button, Text, colors } from '@citizenlab/cl2-component-library';
