@@ -38,6 +38,7 @@
 #  linear_scale_label_9_multiloc  :jsonb            not null
 #  linear_scale_label_10_multiloc :jsonb            not null
 #  linear_scale_label_11_multiloc :jsonb            not null
+#  ask_follow_up                  :boolean          default(FALSE), not null
 #
 # Indexes
 #
@@ -57,6 +58,8 @@ class CustomField < ApplicationRecord
   accepts_nested_attributes_for :text_images
 
   belongs_to :resource, polymorphic: true, optional: true
+  belongs_to :custom_form, foreign_key: :resource_id, optional: true, inverse_of: :custom_fields
+
   has_many :permissions_custom_fields, dependent: :destroy
   has_many :permissions, through: :permissions_custom_fields
 
@@ -64,7 +67,7 @@ class CustomField < ApplicationRecord
   INPUT_TYPES = %w[
     checkbox date file_upload files html html_multiloc image_files linear_scale rating multiline_text multiline_text_multiloc
     multiselect multiselect_image number page point line polygon select select_image shapefile_upload text text_multiloc
-    topic_ids section cosponsor_ids ranking matrix_linear_scale
+    topic_ids section cosponsor_ids ranking matrix_linear_scale sentiment_linear_scale
   ].freeze
   CODES = %w[
     author_id birthyear body_multiloc budget domicile gender idea_files_attributes idea_images_attributes
@@ -141,7 +144,7 @@ class CustomField < ApplicationRecord
   end
 
   def supports_linear_scale?
-    %w[linear_scale matrix_linear_scale rating].include?(input_type)
+    %w[linear_scale matrix_linear_scale sentiment_linear_scale rating].include?(input_type)
   end
 
   def supports_matrix_statements?
@@ -220,6 +223,10 @@ class CustomField < ApplicationRecord
 
   def linear_scale?
     input_type == 'linear_scale'
+  end
+
+  def sentiment_linear_scale?
+    input_type == 'sentiment_linear_scale'
   end
 
   def rating?

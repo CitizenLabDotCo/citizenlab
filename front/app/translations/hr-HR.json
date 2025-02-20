@@ -485,6 +485,7 @@
   "app.components.Upload.remaining": "preostaje",
   "app.components.Upload.uploadImageLabel": "Odaberite sliku (maks. {maxImageSizeInMb}MB)",
   "app.components.Upload.uploadMultipleImagesLabel": "Odaberite jednu ili više slika",
+  "app.components.UpsellTooltip.tooltipContent": "Ova značajka nije uključena u vaš trenutni plan. Razgovarajte sa svojim upraviteljem uspjeha vlade ili administratorom da ga otključate.",
   "app.components.UserName.anonymous": "Anonimno",
   "app.components.UserName.anonymousTooltip2": "Ovaj korisnik je odlučio anonimizirati svoj doprinos",
   "app.components.UserName.authorWithNoNameTooltip": "Vaše ime je automatski generirano jer niste unijeli svoje ime. Ažurirajte svoj profil ako ga želite promijeniti.",

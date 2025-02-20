@@ -68,6 +68,13 @@ const navItems: NavItem[] = [
     message: 'tools',
   },
   {
+    name: 'projectLibrary',
+    link: '/admin/project-library',
+    iconName: 'projects',
+    message: 'projectLibrary',
+    featureNames: ['project_library'],
+  },
+  {
     name: 'menu',
     link: '/admin/pages-menu',
     iconName: 'organigram',

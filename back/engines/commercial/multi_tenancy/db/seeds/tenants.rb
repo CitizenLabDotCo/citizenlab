@@ -480,6 +480,10 @@ module MultiTenancy
               enabled: true,
               allowed: true,
               project_id: nil
+            },
+            project_library: {
+              enabled: false,
+              allowed: false
             }
           })
         )

@@ -8,6 +8,12 @@ module ParticipationMethod
       'native_survey'
     end
 
+    def allowed_extra_field_input_types
+      %w[page number linear_scale rating text multiline_text select multiselect
+        multiselect_image file_upload shapefile_upload point line polygon
+        ranking matrix_linear_scale sentiment_linear_scale]
+    end
+
     def assign_defaults(input)
       input.publication_status ||= 'published'
       input.idea_status ||= IdeaStatus.find_by!(code: 'proposed', participation_method: 'ideation')

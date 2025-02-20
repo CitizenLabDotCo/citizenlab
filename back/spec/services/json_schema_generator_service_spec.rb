@@ -627,6 +627,18 @@ RSpec.describe JsonSchemaGeneratorService do
     end
   end
 
+  describe '#visit_sentiment_linear_scale' do
+    let(:field) { create(:custom_field_sentiment_linear_scale, key: field_key) }
+
+    it 'returns the schema for the given field' do
+      expect(generator.visit_sentiment_linear_scale(field)).to eq({
+        type: 'number',
+        minimum: 1,
+        maximum: 5
+      })
+    end
+  end
+
   describe '#visit_matrix_linear_scale' do
     let(:field) do
       create(:custom_field_matrix_linear_scale, required: true, maximum: 5, key: field_key)

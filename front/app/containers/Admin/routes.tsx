@@ -28,6 +28,9 @@ import pagesAndMenuRoutes, {
 import projectFoldersRoutes, {
   projectFolderRouteTypes,
 } from './projectFolders/routes';
+import projectLibraryRoutes, {
+  projectLibraryRouteTypes,
+} from './projectLibrary/routes';
 import createAdminProjectsRoutes, {
   projectsRouteTypes,
 } from './projects/routes';
@@ -60,7 +63,8 @@ export type AdminRouteTypes =
   | pagesAndMenuRouteTypes
   | projectsRouteTypes
   | settingRouteTypes
-  | communityMonitorRouteTypes;
+  | communityMonitorRouteTypes
+  | projectLibraryRouteTypes;
 
 const isTemplatePreviewPage = (urlSegments: string[]) =>
   urlSegments.length === 4 &&
@@ -154,6 +158,7 @@ const createAdminRoutes = () => {
       ...reportingRoutes(),
       toolsRoutes(),
       communityMonitorsRoutes(),
+      projectLibraryRoutes(),
       // This path is only reachable via URL.
       // It's a pragmatic solution to reduce workload
       // on the team so admins can set their favicon.

@@ -298,9 +298,7 @@ module IdeaCustomFields
     end
 
     def delete_option!(option)
-      option.destroy!
-      SideFxCustomFieldOptionService.new.after_destroy option, current_user
-      option
+      CustomFields::Options::DestroyService.new.destroy!(option, current_user)
     end
 
     def add_options_errors(options_errors, errors, field_index, option_index)
@@ -418,6 +416,7 @@ module IdeaCustomFields
         :dropdown_layout,
         :page_layout,
         :map_config_id,
+        :ask_follow_up,
         { title_multiloc: CL2_SUPPORTED_LOCALES,
           description_multiloc: CL2_SUPPORTED_LOCALES,
           linear_scale_label_1_multiloc: CL2_SUPPORTED_LOCALES,

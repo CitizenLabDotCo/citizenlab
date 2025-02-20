@@ -80,6 +80,10 @@ class SurveyResultsGeneratorService < FieldVisitorService
     visit_select_base(field)
   end
 
+  def visit_sentiment_linear_scale(field)
+    visit_select_base(field)
+  end
+
   def visit_matrix_linear_scale(field)
     core_field_attributes(field).merge({
       multilocs: { answer: build_scaled_input_multilocs(field) },
@@ -165,8 +169,8 @@ class SurveyResultsGeneratorService < FieldVisitorService
     query = inputs
     query = query.joins(:author) if group_mode == 'user_field'
     if group_field
-      raise "Unsupported group field type: #{group_field.input_type}" unless %w[select linear_scale rating].include?(group_field.input_type)
-      raise "Unsupported question type: #{field.input_type}" unless %w[select multiselect linear_scale rating multiselect_image].include?(field.input_type)
+      raise "Unsupported group field type: #{group_field.input_type}" unless %w[select linear_scale sentiment_linear_scale rating].include?(group_field.input_type)
+      raise "Unsupported question type: #{field.input_type}" unless %w[select multiselect linear_scale sentiment_linear_scale rating multiselect_image].include?(field.input_type)
 
       query = query.select(
         select_field_query(field, as: 'answer'),
@@ -181,7 +185,7 @@ class SurveyResultsGeneratorService < FieldVisitorService
     end
 
     # Sort correctly
-    answers = answers.sort_by { |a| -a[:count] } unless %w[linear_scale rating].include?(field.input_type)
+    answers = answers.sort_by { |a| -a[:count] } unless %w[linear_scale sentiment_linear_scale rating].include?(field.input_type)
     answers = answers.sort_by { |a| a[:answer] == 'other' ? 1 : 0 } # other should always be last
 
     # Build response
@@ -191,7 +195,7 @@ class SurveyResultsGeneratorService < FieldVisitorService
   def select_field_query(field, as: 'answer')
     table = field.resource_type == 'User' ? 'users' : 'ideas'
 
-    if %w[select linear_scale rating].include? field.input_type
+    if %w[select linear_scale sentiment_linear_scale rating].include? field.input_type
       "COALESCE(#{table}.custom_field_values->'#{field.key}', 'null') as #{as}"
     elsif %w[multiselect multiselect_image].include? field.input_type
       %{

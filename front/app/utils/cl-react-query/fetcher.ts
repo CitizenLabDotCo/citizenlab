@@ -18,6 +18,7 @@ interface Get {
   queryParams?: Record<string, any>;
   body?: never;
   cacheIndividualItems?: boolean;
+  apiPath?: Path;
 }
 interface Patch {
   path: Path;
@@ -25,6 +26,7 @@ interface Patch {
   body?: Record<string, any>;
   queryParams?: never;
   cacheIndividualItems?: never;
+  apiPath?: Path;
 }
 interface Put {
   path: Path;
@@ -32,6 +34,7 @@ interface Put {
   body: Record<string, any>;
   queryParams?: never;
   cacheIndividualItems?: never;
+  apiPath?: Path;
 }
 interface Post {
   path: Path;
@@ -39,6 +42,7 @@ interface Post {
   body: Record<string, any> | null;
   queryParams?: never;
   cacheIndividualItems?: never;
+  apiPath?: Path;
 }
 interface Delete {
   path: Path;
@@ -46,6 +50,7 @@ interface Delete {
   body?: Record<string, any> | null;
   queryParams?: never;
   cacheIndividualItems?: never;
+  apiPath?: Path;
 }
 
 type FetcherArgs = Get | Patch | Put | Post | Delete;
@@ -68,12 +73,17 @@ function fetcher<TResponseData extends BaseResponseData>(
  * Defaults to true.
  */
 
+/**
+ *
+ * @param apiPath : The path to the API. Defaults to '/web_api/v1'. If the API path is different it should be passed as an argument.
+ */
 async function fetcher({
   path,
   action,
   body,
   queryParams,
   cacheIndividualItems = true,
+  apiPath = API_PATH as Path,
 }) {
   const methodMap = {
     get: 'GET',
@@ -99,7 +109,7 @@ async function fetcher({
       })
     : '';
 
-  const response = await fetch(`${API_PATH}${path}${requestQueryParams}`, {
+  const response = await fetch(`${apiPath}${path}${requestQueryParams}`, {
     method: methodMap[action],
     body: body ? JSON.stringify(body) : undefined,
     headers: {
