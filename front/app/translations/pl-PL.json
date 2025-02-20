@@ -485,6 +485,7 @@
   "app.components.Upload.remaining": "pozostało",
   "app.components.Upload.uploadImageLabel": "Wybierz zdjęcie (maks. {maxImageSizeInMb}MB)",
   "app.components.Upload.uploadMultipleImagesLabel": "Wybierz jedno lub więcej zdjęć",
+  "app.components.UpsellTooltip.tooltipContent": "Ta funkcja nie jest uwzględniona w Twoim bieżącym planie. Porozmawiaj ze swoim Government Success Managerem lub administratorem, aby ją odblokować.",
   "app.components.UserName.anonymous": "Anonimowy",
   "app.components.UserName.anonymousTooltip2": "Ten użytkownik zdecydował się zanonimizować swój wkład",
   "app.components.UserName.authorWithNoNameTooltip": "Twoja nazwa została wygenerowana automatycznie, ponieważ nie wprowadziłeś swojego imienia. Jeśli chcesz je zmienić, zaktualizuj swój profil.",

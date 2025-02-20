@@ -485,6 +485,7 @@
   "app.components.Upload.remaining": "υπόλοιπο",
   "app.components.Upload.uploadImageLabel": "Επιλέξτε μια εικόνα (μέγ. {maxImageSizeInMb}MB)",
   "app.components.Upload.uploadMultipleImagesLabel": "Επιλέξτε μία ή περισσότερες εικόνες",
+  "app.components.UpsellTooltip.tooltipContent": "Αυτή η λειτουργία δεν περιλαμβάνεται στο τρέχον πρόγραμμά σας. Μιλήστε με τον υπεύθυνο επιτυχίας της κυβέρνησής σας ή τον διαχειριστή για να το ξεκλειδώσετε.",
   "app.components.UserName.anonymous": "Ανώνυμος",
   "app.components.UserName.anonymousTooltip2": "Αυτός ο χρήστης αποφάσισε να ανωνυμοποιήσει τη συνεισφορά του",
   "app.components.UserName.authorWithNoNameTooltip": "Το όνομά σας έχει δημιουργηθεί αυτόματα επειδή δεν έχετε εισάγει το όνομά σας. Παρακαλούμε ενημερώστε το προφίλ σας αν θέλετε να το αλλάξετε.",
