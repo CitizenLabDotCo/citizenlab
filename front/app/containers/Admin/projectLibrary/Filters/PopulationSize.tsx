@@ -4,7 +4,7 @@ import { Select } from '@citizenlab/cl2-component-library';
 
 import { RansackParams } from 'api/project_library_projects/types';
 
-import { setRansackParam, useRansackParam } from './utils';
+import { setRansackParam, useRansackParam, EMPTY_OPTION } from './utils';
 
 type Option = {
   value: RansackParams['q[tenant_population_group_eq]'];
@@ -12,6 +12,7 @@ type Option = {
 };
 
 const OPTIONS: Option[] = [
+  EMPTY_OPTION,
   { value: 'xs', label: 'XS' },
   { value: 's', label: 'S' },
   { value: 'm', label: 'M' },

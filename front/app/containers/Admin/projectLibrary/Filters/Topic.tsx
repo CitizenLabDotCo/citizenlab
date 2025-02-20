@@ -2,14 +2,17 @@ import React from 'react';
 
 import { Select } from '@citizenlab/cl2-component-library';
 
-import { setRansackParam, useRansackParam } from './utils';
+import { RansackParams } from 'api/project_library_projects/types';
+
+import { setRansackParam, useRansackParam, EMPTY_OPTION } from './utils';
 
 type Option = {
-  value: string;
+  value: RansackParams['q[topic_id_eq]'];
   label: string;
 };
 
 const OPTIONS: Option[] = [
+  EMPTY_OPTION,
   { value: 'some_topic', label: 'Some topic' },
   { value: 'another_topic', label: 'Another topic' },
 ];
