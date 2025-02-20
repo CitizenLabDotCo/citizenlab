@@ -7,10 +7,6 @@ import {
   DropdownListItem,
 } from '@citizenlab/cl2-component-library';
 
-import useFeatureFlag from 'hooks/useFeatureFlag';
-
-import UpsellTooltip from 'components/UpsellTooltip';
-
 import { FormattedMessage } from 'utils/cl-intl';
 
 import messages from '../messages';
@@ -22,10 +18,6 @@ interface Props {
 
 const ImportButtons = ({ onClickPDFImport, onClickExcelImport }: Props) => {
   const [dropdownOpened, setDropdownOpened] = useState(false);
-  const printedFormsAllowed = useFeatureFlag({
-    name: 'import_printed_forms',
-    onlyCheckAllowed: true,
-  });
 
   return (
     <Box>
@@ -46,14 +38,9 @@ const ImportButtons = ({ onClickPDFImport, onClickExcelImport }: Props) => {
             <DropdownListItem onClick={onClickExcelImport}>
               <FormattedMessage {...messages.importExcelFile} />
             </DropdownListItem>
-            <UpsellTooltip disabled={printedFormsAllowed}>
-              <DropdownListItem
-                onClick={onClickPDFImport}
-                disabled={!printedFormsAllowed}
-              >
-                <FormattedMessage {...messages.importPDFFile} />
-              </DropdownListItem>
-            </UpsellTooltip>
+            <DropdownListItem onClick={onClickPDFImport}>
+              <FormattedMessage {...messages.importPDFFile} />
+            </DropdownListItem>
           </>
         }
       />
