@@ -93,7 +93,7 @@ r rspec:
 # Usage examples:
 # make feature-flag feature=initiative_cosponsors enabled=true
 # make feature-flag feature=initiative_cosponsors allowed=false enabled=false
-feature-flag:
+ff feature-flag:
 	docker compose run web "bin/rails runner \"Tenant.find_by(host: 'localhost').switch!; \
 	c = AppConfiguration.instance; \
 	c.settings['${feature}'] ||= {}; \
