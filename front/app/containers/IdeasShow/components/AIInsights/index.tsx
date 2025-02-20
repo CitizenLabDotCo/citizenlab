@@ -1,7 +1,13 @@
 // This code is a prototype for input authoring. Clean-up will follow after the prototype phase.
 import React, { useEffect, useState } from 'react';
 
-import { Box, Button, Text, colors } from '@citizenlab/cl2-component-library';
+import {
+  Box,
+  Button,
+  Text,
+  Title,
+  colors,
+} from '@citizenlab/cl2-component-library';
 
 import useAddAuthoringAssistance from 'api/authoring_assistance/useAuthoringAssistance';
 
@@ -31,7 +37,8 @@ const AIInsights = ({ ideaId }: { ideaId: string }) => {
     promptData?.attributes.prompt_response.duplicate_inputs;
   const customFreePromptResponse =
     promptData?.attributes.prompt_response.custom_free_prompt_response;
-
+  const toxicityLabel = promptData?.attributes.prompt_response.toxicity_label;
+  const toxicityAIReason = promptData?.attributes.prompt_response.ai_reason;
   const fetchAssistance = (regenerate: boolean) => {
     addAuthoringAssistance({
       id: ideaId,
@@ -81,7 +88,20 @@ const AIInsights = ({ ideaId }: { ideaId: string }) => {
       </Button>
 
       {typeof customFreePromptResponse == 'string' && (
-        <Text whiteSpace="pre-wrap">{customFreePromptResponse}</Text>
+        <>
+          <Title>{formatMessage(messages.insights)}</Title>
+          <Text whiteSpace="pre-wrap">{customFreePromptResponse}</Text>
+        </>
+      )}
+
+      {typeof toxicityLabel === 'string' && (
+        <Title>
+          {formatMessage(messages.toxicity)}: {toxicityLabel}
+        </Title>
+      )}
+
+      {typeof toxicityAIReason === 'string' && (
+        <Text whiteSpace="pre-wrap">{toxicityAIReason}</Text>
       )}
 
       {similarIdeaIds && similarIdeaIds.length > 1 && (

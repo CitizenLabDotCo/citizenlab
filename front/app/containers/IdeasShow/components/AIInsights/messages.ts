@@ -19,4 +19,12 @@ export default defineMessages({
     id: 'app.containers.IdeasShow.similarIdeas',
     defaultMessage: 'Similar ideas',
   },
+  insights: {
+    id: 'app.containers.IdeasShow.insights',
+    defaultMessage: 'Insights',
+  },
+  toxicity: {
+    id: 'app.containers.IdeasShow.toxicity',
+    defaultMessage: 'Toxicity',
+  },
 });
