@@ -12,7 +12,7 @@ export interface IAuthoringAssistanceData {
       duplicate_inputs: string[];
       custom_free_prompt_response: string | null;
       toxicity_label?: string;
-      toxicity_ai_reason?: string;
+      ai_reason?: string;
     };
   };
   relationships: {
