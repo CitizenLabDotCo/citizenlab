@@ -89,13 +89,13 @@ const AIInsights = ({ ideaId }: { ideaId: string }) => {
 
       {typeof customFreePromptResponse == 'string' && (
         <>
-          <Title>{formatMessage(messages.insights)}</Title>
+          <Title variant="h4">{formatMessage(messages.insights)}</Title>
           <Text whiteSpace="pre-wrap">{customFreePromptResponse}</Text>
         </>
       )}
 
       {typeof toxicityLabel === 'string' && (
-        <Title>
+        <Title variant="h4">
           {formatMessage(messages.toxicity)}: {toxicityLabel}
         </Title>
       )}
