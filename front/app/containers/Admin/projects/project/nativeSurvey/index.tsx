@@ -65,9 +65,6 @@ const Forms = () => {
     phaseId,
   });
   const { uiSchema } = useInputSchema({ projectId, phaseId });
-  const inputImporterEnabled = useFeatureFlag({
-    name: 'input_importer',
-  });
   const inputImporterAllowed = useFeatureFlag({
     name: 'input_importer',
     onlyCheckAllowed: true,
@@ -269,40 +266,33 @@ const Forms = () => {
                             </Text>
                           </Box>
                         </DropdownListItem>
-                        {inputImporterEnabled && (
-                          <>
-                            <DropdownListItem onClick={handleDownloadPDF}>
-                              <Box display="flex" gap="4px" alignItems="center">
-                                <Icon
-                                  name="download"
-                                  fill={colors.coolGrey600}
-                                />
-                                <Text my="0px">
-                                  {formatMessage(messages.downloadSurvey)}
-                                </Text>
-                              </Box>
-                            </DropdownListItem>
-                            <DropdownListItem onClick={downloadExampleFile}>
-                              <Box display="flex" gap="4px" alignItems="center">
-                                <Icon
-                                  name="download"
-                                  fill={colors.coolGrey600}
-                                />
-                                <Text my="0px">
-                                  {formatMessage(
-                                    messages.downloadExcelTemplate
-                                  )}
-                                </Text>
-                                <IconTooltip
-                                  ml="4px"
-                                  content={formatMessage(
-                                    messages.downloadExcelTemplateTooltip
-                                  )}
-                                />
-                              </Box>
-                            </DropdownListItem>
-                          </>
-                        )}
+                        <DropdownListItem onClick={handleDownloadPDF}>
+                          <Box display="flex" gap="4px" alignItems="center">
+                            <Icon name="download" fill={colors.coolGrey600} />
+                            <Text my="0px">
+                              {formatMessage(messages.downloadSurvey)}
+                            </Text>
+                          </Box>
+                        </DropdownListItem>
+                        <UpsellTooltip disabled={inputImporterAllowed}>
+                          <DropdownListItem
+                            onClick={downloadExampleFile}
+                            disabled={!inputImporterAllowed}
+                          >
+                            <Icon
+                              name="download"
+                              fill={colors.coolGrey600}
+                              mr="4px"
+                            />
+                            {formatMessage(messages.downloadExcelTemplate)}
+                            <IconTooltip
+                              ml="4px"
+                              content={formatMessage(
+                                messages.downloadExcelTemplateTooltip
+                              )}
+                            />
+                          </DropdownListItem>
+                        </UpsellTooltip>
                       </>
                     )}
                     <DropdownListItem onClick={handleDownloadResults}>
