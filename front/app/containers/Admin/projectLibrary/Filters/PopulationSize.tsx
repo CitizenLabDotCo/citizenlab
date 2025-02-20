@@ -4,7 +4,7 @@ import { Select } from '@citizenlab/cl2-component-library';
 
 import { RansackParams } from 'api/project_library_projects/types';
 
-import { updateOrRemoveSearchParam } from './utils';
+import { setRansackParam, useRansackParam } from './utils';
 
 type Option = {
   value: RansackParams['q[tenant_population_group_eq]'];
@@ -20,11 +20,14 @@ const OPTIONS: Option[] = [
 ];
 
 const PopulationSize = () => {
+  const value = useRansackParam('q[tenant_population_group_eq]');
+
   return (
     <Select
+      value={value}
       options={OPTIONS}
       onChange={(option: Option) =>
-        updateOrRemoveSearchParam('q[tenant_population_group_eq]', option.value)
+        setRansackParam('q[tenant_population_group_eq]', option.value)
       }
       label="Population size"
     />

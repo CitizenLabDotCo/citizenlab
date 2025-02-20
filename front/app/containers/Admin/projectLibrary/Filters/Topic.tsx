@@ -2,7 +2,7 @@ import React from 'react';
 
 import { Select } from '@citizenlab/cl2-component-library';
 
-import { updateOrRemoveSearchParam } from './utils';
+import { setRansackParam, useRansackParam } from './utils';
 
 type Option = {
   value: string;
@@ -15,11 +15,14 @@ const OPTIONS: Option[] = [
 ];
 
 const Topic = () => {
+  const value = useRansackParam('q[topic_id_eq]');
+
   return (
     <Select
+      value={value}
       options={OPTIONS}
       onChange={(option: Option) =>
-        updateOrRemoveSearchParam('q[topic_id_eq]', option.value)
+        setRansackParam('q[topic_id_eq]', option.value)
       }
       label="Topic"
     />

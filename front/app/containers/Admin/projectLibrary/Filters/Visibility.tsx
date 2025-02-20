@@ -4,7 +4,7 @@ import { Select } from '@citizenlab/cl2-component-library';
 
 import { RansackParams } from 'api/project_library_projects/types';
 
-import { updateOrRemoveSearchParam } from './utils';
+import { setRansackParam, useRansackParam } from './utils';
 
 type Option = {
   value: RansackParams['q[visibility_eq]'];
@@ -17,11 +17,14 @@ const OPTIONS: Option[] = [
 ];
 
 const Visibility = () => {
+  const value = useRansackParam('q[visibility_eq]');
+
   return (
     <Select
+      value={value}
       options={OPTIONS}
       onChange={(option: Option) =>
-        updateOrRemoveSearchParam('q[visibility_eq]', option.value)
+        setRansackParam('q[visibility_eq]', option.value)
       }
       label="Visibility"
     />
