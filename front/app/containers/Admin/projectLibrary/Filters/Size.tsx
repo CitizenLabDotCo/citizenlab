@@ -19,7 +19,7 @@ const OPTIONS: Option[] = [
   { value: 'xl', label: 'XL' },
 ];
 
-const PopulationSize = () => {
+const Size = () => {
   const value = useRansackParam('q[tenant_population_group_eq]');
 
   return (
@@ -30,9 +30,9 @@ const PopulationSize = () => {
       onChange={(option: Option) =>
         setRansackParam('q[tenant_population_group_eq]', option.value)
       }
-      label="Population size"
+      label="Size"
     />
   );
 };
 
-export default PopulationSize;
+export default Size;

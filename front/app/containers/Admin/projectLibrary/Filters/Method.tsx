@@ -23,7 +23,7 @@ const OPTIONS: Option[] = [
   { value: 'proposals', label: 'Proposals' },
 ];
 
-const ParticipationMethod = () => {
+const Method = () => {
   const value = useRansackParam('q[phases_participation_method_eq]');
 
   return (
@@ -34,9 +34,9 @@ const ParticipationMethod = () => {
       onChange={(option: Option) =>
         setRansackParam('q[phases_participation_method_eq]', option.value)
       }
-      label="Participation method"
+      label="Method"
     />
   );
 };
 
-export default ParticipationMethod;
+export default Method;
