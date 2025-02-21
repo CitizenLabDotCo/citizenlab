@@ -178,20 +178,16 @@ const Forms = () => {
                 }}
               />
             </Box>
-
-            <UpsellTooltip disabled={inputImporterAllowed}>
-              <Button
-                linkTo={inputImporterLink}
-                icon="page"
-                iconSize="20px"
-                buttonStyle="secondary-outlined"
-                width="auto"
-                mr="8px"
-                disabled={!inputImporterAllowed}
-              >
-                {formatMessage(messages.importInputs)}
-              </Button>
-            </UpsellTooltip>
+            <Button
+              linkTo={inputImporterLink}
+              icon="page"
+              iconSize="20px"
+              buttonStyle="secondary-outlined"
+              width="auto"
+              mr="8px"
+            >
+              {formatMessage(messages.importInputs)}
+            </Button>
             <Button
               linkTo={`/projects/${project.data.attributes.slug}/surveys/new?phase_id=${phase.data.id}`}
               icon="eye"
