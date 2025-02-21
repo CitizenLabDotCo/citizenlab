@@ -1460,7 +1460,7 @@
   "app.containers.IdeasShow.share": "Partager",
   "app.containers.IdeasShow.sharingModalSubtitle": "Donnez à cette idée l'écho qu'elle mérite en informant vos amis.",
   "app.containers.IdeasShow.sharingModalTitle": "Merci d'avoir soumis votre idée !",
-  "app.containers.Navbar.completeOnboarding": "Complete your profile",
+  "app.containers.Navbar.completeOnboarding": "Terminer la configuration du compte",
   "app.containers.Navbar.completeProfile": "Profil complet",
   "app.containers.Navbar.confirmEmail2": "Confirmez l'e-mail",
   "app.containers.Navbar.unverified": "Non vérifié",
