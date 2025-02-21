@@ -133,7 +133,7 @@ const EmptyState = () => {
               {/* TODO: distinguish copies between surveys and inputs */}
               <FormattedMessage {...buttonMessages.downloadInputForm} />
             </Button>
-          </UpsellTooltip>{' '}
+          </UpsellTooltip>
           <UpsellTooltip disabled={inputImporterAllowed}>
             <Button
               buttonStyle="secondary-outlined"
