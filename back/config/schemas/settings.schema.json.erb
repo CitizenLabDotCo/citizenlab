@@ -1341,6 +1341,18 @@
         }
       },
 
+      "user_fields_in_surveys": {
+        "type": "object",
+        "title": "User fields in surveys",
+        "description": "Allow surveys to include user fields in a survey form.",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": false },
+          "enabled": { "type": "boolean", "default": false }
+        }
+      },
+
       "verification": {
         "type": "object",
         "title": "Verification",

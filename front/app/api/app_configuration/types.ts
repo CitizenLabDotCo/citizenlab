@@ -261,6 +261,7 @@ export interface IAppConfigurationSettings {
     admins_only: boolean;
   };
   platform_templates?: AppConfigurationFeature;
+  user_fields_in_survey?: AppConfigurationFeature;
 }
 
 export type TAppConfigurationSettingCore = keyof IAppConfigurationSettingsCore;

@@ -6,7 +6,7 @@ module Permissions
       # Currently we don't support custom fields for 'everyone' though the rest of the code is ready for it
       # So we have added this block until we do support it
       # TODO: JS - make this dependent on whether the phase has inline questions set or not
-      # return [] if permission.permitted_by == 'everyone'
+      return [] if permission.permitted_by == 'everyone' && !permission.permission_scope&.user_fields_in_form
 
       fields = if permission.global_custom_fields
         default_fields(permission)

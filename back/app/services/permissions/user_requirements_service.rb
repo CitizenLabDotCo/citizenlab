@@ -30,6 +30,8 @@ class Permissions::UserRequirementsService
   end
 
   def requirements_custom_fields(permission)
+    return [] if permission.permission_scope.user_fields_in_form
+
     permissions_custom_fields_service.fields_for_permission(permission).map do |permissions_custom_field|
       permissions_custom_field.custom_field.tap do |field|
         field.enabled = true # Need to override this to ensure it gets displayed when not enabled at platform level

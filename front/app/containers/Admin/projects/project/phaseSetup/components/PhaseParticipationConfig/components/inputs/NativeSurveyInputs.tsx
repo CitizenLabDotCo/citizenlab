@@ -1,6 +1,11 @@
 import React from 'react';
 
-import { Box, IconTooltip, Text } from '@citizenlab/cl2-component-library';
+import {
+  Box,
+  IconTooltip,
+  Text,
+  Toggle,
+} from '@citizenlab/cl2-component-library';
 import { CLErrors, Multiloc } from 'typings';
 
 import { IPhase, IUpdatedPhaseProperties } from 'api/phases/types';
@@ -18,15 +23,18 @@ import { FormattedMessage, useIntl } from 'utils/cl-intl';
 
 import parentMessages from '../../../../messages';
 import messages from '../messages';
+import FeatureFlag from 'components/FeatureFlag';
 
 interface Props {
   allow_anonymous_participation: boolean | null | undefined;
+  user_fields_in_form: boolean | null | undefined;
   apiErrors: CLErrors | null;
   phase?: IPhase;
   formData: IUpdatedPhaseProperties;
   handleAllowAnonymousParticipationOnChange: (
     allow_anonymous_participation: boolean
   ) => void;
+  handleUserFieldsInFormOnChange: (user_fields_in_survey: boolean) => void;
   handleSurveyTitleChange: (
     value: Multiloc,
     locale: string | undefined
@@ -36,10 +44,12 @@ interface Props {
 
 const NativeSurveyInputs = ({
   allow_anonymous_participation,
+  user_fields_in_form,
   apiErrors,
   phase,
   formData,
   handleAllowAnonymousParticipationOnChange,
+  handleUserFieldsInFormOnChange,
   handleSurveyTitleChange,
   handleSurveyCTAChange,
 }: Props) => {
@@ -81,6 +91,42 @@ const NativeSurveyInputs = ({
           </Box>
         }
       />
+      <FeatureFlag name="user_fields_in_survey">
+        <SectionField>
+          <SubSectionTitle style={{ marginBottom: '0px' }}>
+            Show user fields in survey? [BETA]
+          </SubSectionTitle>
+          <Toggle
+            checked={user_fields_in_form || false}
+            onChange={() => {
+              handleUserFieldsInFormOnChange(!user_fields_in_form);
+            }}
+            label={
+              <Box ml="8px" id="e2e-anonymous-posting-toggle">
+                <Box display="flex">
+                  <Text
+                    color="primary"
+                    mb="0px"
+                    fontSize="m"
+                    style={{ fontWeight: 600 }}
+                  >
+                    Show user fields in survey?
+                  </Text>
+                </Box>
+
+                <Text color="coolGrey600" mt="0px" fontSize="m">
+                  If you enable this option, user fields will be shown as the
+                  last page in the survey instead of as part of the signup
+                  process. Could have a separate option to return user
+                  demographic data in the survey response? Even if collected
+                  through normal route.
+                </Text>
+              </Box>
+            }
+          />
+        </SectionField>
+      </FeatureFlag>
+
       <SectionField>
         <SubSectionTitle>
           <FormattedMessage {...parentMessages.surveyTitleLabel} />

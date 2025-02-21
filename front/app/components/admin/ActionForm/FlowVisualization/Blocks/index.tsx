@@ -22,6 +22,7 @@ interface Props {
   verificationEnabled: boolean;
   verificationExpiry: number | null;
   onChangeVerificationExpiry: (value: number | null) => void;
+  fieldsInForm: boolean;
 }
 
 const Blocks = ({
@@ -30,6 +31,7 @@ const Blocks = ({
   verificationEnabled,
   verificationExpiry,
   onChangeVerificationExpiry,
+  fieldsInForm,
 }: Props) => {
   const emailConfirmationEnabled = useFeatureFlag({
     name: 'user_confirmation',
@@ -71,7 +73,7 @@ const Blocks = ({
             />
           </>
         )}
-        {showCustomFields && (
+        {showCustomFields && !fieldsInForm && (
           <>
             <Edge />
             <Block
@@ -107,7 +109,7 @@ const Blocks = ({
             />
           </>
         )}
-        {showCustomFields && (
+        {showCustomFields && !fieldsInForm && (
           <>
             <Edge />
             <Block
@@ -131,7 +133,7 @@ const Blocks = ({
           verificationExpiry={verificationExpiry}
           onChangeVerificationExpiry={onChangeVerificationExpiry}
         />
-        {showCustomFields && (
+        {showCustomFields && !fieldsInForm && (
           <>
             <Edge />
             <Block

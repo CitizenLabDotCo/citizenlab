@@ -70,6 +70,8 @@ class IdeaCustomFieldsService
     phase = @custom_form.participation_context
 
     fields = enabled_fields_with_other_options
+    return fields unless phase.user_fields_in_form
+
     last_page = fields.last
     fields.delete(last_page)
 
@@ -79,6 +81,7 @@ class IdeaCustomFieldsService
     user_fields = permissions_custom_fields_service.fields_for_permission(permission).map(&:custom_field)
 
     user_fields.each do |field|
+      field.key = "u_#{field.key}" # Change the key so we can clearly identify user data in the saved data
       field.resource = custom_form # User field pretend to be part of the form
     end
 
