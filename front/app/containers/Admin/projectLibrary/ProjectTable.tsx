@@ -13,23 +13,21 @@ import {
 } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
-import { ProjectLibraryProjects } from 'api/project_library_projects/types';
+import useProjectLibraryProjects from 'api/project_library_projects/useProjectLibraryProjects';
+
+import { useRansackParams } from './utils';
 
 const Cell = styled(Th)`
   font-weight: normal;
 `;
 
-interface Props {
-  libraryProjects?: ProjectLibraryProjects;
-  isInitialLoading: boolean;
-  isRefetching: boolean;
-}
+const ProjectTable = () => {
+  const {
+    data: libraryProjects,
+    isInitialLoading,
+    isRefetching,
+  } = useProjectLibraryProjects(useRansackParams());
 
-const ProjectTable = ({
-  libraryProjects,
-  isInitialLoading,
-  isRefetching,
-}: Props) => {
   return (
     <Box position="relative">
       <Table
