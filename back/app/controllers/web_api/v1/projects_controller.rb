@@ -127,7 +127,7 @@ class WebApi::V1::ProjectsController < ApplicationController
   # Returns all non-draft projects that are visible to user, for the selected topics.
   # Ordered by created_at, newest first.
   def index_for_topics
-    projects = policy_scope(Project)
+    projects = policy_scope(Project).not_hidden
     projects = projects
       .not_draft
       .with_some_topics(params[:topics])
@@ -323,7 +323,7 @@ class WebApi::V1::ProjectsController < ApplicationController
 
     # Find the community monitor project from config or create it
     project_id = settings.dig('community_monitor', 'project_id')
-    project = project_id.present? ? Project.include_hidden.find(project_id) : create_community_monitor_project(settings)
+    project = project_id.present? ? Project.find(project_id) : create_community_monitor_project(settings)
 
     authorize project
     render json: WebApi::V1::ProjectSerializer.new(

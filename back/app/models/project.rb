@@ -98,8 +98,7 @@ class Project < ApplicationRecord
   validates :internal_role, inclusion: { in: INTERNAL_ROLES, allow_nil: true }
   validate :admin_publication_must_exist, unless: proc { Current.loading_tenant_template } # TODO: This should always be validated!
 
-  default_scope { where(hidden: false) }
-  scope :include_hidden, -> { unscoped }
+  scope :not_hidden, -> { where(hidden: false) }
 
   pg_search_scope :search_by_all,
     against: %i[title_multiloc description_multiloc description_preview_multiloc slug],
@@ -225,6 +224,10 @@ class Project < ApplicationRecord
 
   def refresh_preview_token
     self.preview_token = self.class.generate_preview_token
+  end
+
+  def hidden?
+    hidden
   end
 
   private

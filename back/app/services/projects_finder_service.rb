@@ -1,6 +1,6 @@
 class ProjectsFinderService
   def initialize(projects, user = nil, params = {})
-    @projects = projects
+    @projects = projects.not_hidden
     @user = user
     @page_size = (params.dig(:page, :size) || 500).to_i
     @page_number = (params.dig(:page, :number) || 1).to_i

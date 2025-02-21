@@ -1706,7 +1706,7 @@ resource 'Projects' do
           do_request
           assert_status 200
 
-          created_project = Project.include_hidden.first
+          created_project = Project.first
           created_phase = Phase.first
           expect(created_project.hidden).to be true
           expect(created_project.internal_role).to eq 'community_monitor'

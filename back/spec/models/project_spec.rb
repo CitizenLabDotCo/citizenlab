@@ -147,12 +147,14 @@ RSpec.describe Project do
     let!(:project) { create(:project) }
     let!(:hidden_project) { create(:project, hidden: true) }
 
-    it 'returns projects that are not hidden' do
-      expect(described_class.all.count).to eq 1
+    it 'returns all projects that are not hidden' do
+      expect(described_class.all.count).to eq 2
     end
 
-    it 'returns all projects that are not hidden' do
-      expect(described_class.include_hidden.count).to eq 2
+    it 'returns projects that are not hidden' do
+      expect(described_class.not_hidden.count).to eq 1
     end
+
+
   end
 end

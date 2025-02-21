@@ -54,7 +54,7 @@ module ParticipationMethod
         phase.errors.add(:base, :too_many_phases, message: 'community_monitor project can only have one phase')
       end
 
-      unless phase.project.hidden
+      unless phase.project.hidden?
         phase.errors.add(:base, :project_not_hidden, message: 'community_monitor projects must be hidden')
       end
 
