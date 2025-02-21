@@ -10,12 +10,19 @@ import {
   Tbody,
   Spinner,
   Box,
+  Icon,
 } from '@citizenlab/cl2-component-library';
+import { format } from 'date-fns';
 import styled from 'styled-components';
 
 import useProjectLibraryProjects from 'api/project_library_projects/useProjectLibraryProjects';
 
 import { useRansackParams } from './utils';
+
+const formatDuration = (date: string | null) => {
+  if (!date) return '';
+  return format(new Date(date), 'MMM yy');
+};
 
 const Cell = styled(Th)`
   font-weight: normal;
@@ -40,11 +47,17 @@ const ProjectTable = () => {
       >
         <Thead>
           <Tr background={colors.grey50}>
+            <Th>Duration</Th>
             <Th>Project</Th>
-            <Th>Participants</Th>
+            <Th>
+              <Icon
+                name="users"
+                height="18px"
+                fill={colors.primary}
+                transform="translate(-2,0)"
+              />
+            </Th>
             <Th>Tenant</Th>
-            <Th>Topic</Th>
-            <Th>End date</Th>
           </Tr>
         </Thead>
         <Tbody>
@@ -58,14 +71,15 @@ const ProjectTable = () => {
 
           {libraryProjects && (
             <>
-              {libraryProjects.data.map((project) => (
-                <Tr key={project.id} background={colors.white}>
-                  <Cell>{project.attributes.title_en}</Cell>
-                  <Cell>{project.attributes.participants}</Cell>
-                  <Cell>{project.attributes.tenant_name}</Cell>
-                  {/* <Cell>{project.attributes.topic_id}</Cell> */}
-                  <Cell>Some topic</Cell>
-                  <Cell>{project.attributes.practical_end_at}</Cell>
+              {libraryProjects.data.map(({ attributes, id }) => (
+                <Tr key={id} background={colors.white}>
+                  <Cell>
+                    {formatDuration(attributes.start_at)} -
+                    {formatDuration(attributes.practical_end_at)}
+                  </Cell>
+                  <Cell>{attributes.title_en}</Cell>
+                  <Cell>{attributes.participants}</Cell>
+                  <Cell>{attributes.tenant_name}</Cell>
                 </Tr>
               ))}
             </>
