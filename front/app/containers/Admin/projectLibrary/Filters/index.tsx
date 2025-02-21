@@ -6,7 +6,6 @@ import ParticipationMethod from './ParticipationMethod';
 import PopulationSize from './PopulationSize';
 import Status from './Status';
 import Topic from './Topic';
-import Visibility from './Visibility';
 
 const Filters = () => {
   return (
@@ -15,7 +14,6 @@ const Filters = () => {
       <ParticipationMethod />
       <Topic />
       <Status />
-      <Visibility />
     </Box>
   );
 };
