@@ -23,6 +23,7 @@ const MODERATOR_ROUTES = [
   '/admin/reporting/insights',
   '/admin/reporting/report-builder',
   '/admin/project-description-builder',
+  '/admin/project-library',
 ];
 
 export const isModeratorRoute = (item: IRouteItem) => {
