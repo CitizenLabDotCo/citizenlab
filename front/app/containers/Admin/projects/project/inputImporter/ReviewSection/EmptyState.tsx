@@ -49,6 +49,10 @@ const EmptyState = () => {
     name: 'import_printed_forms',
     onlyCheckAllowed: true,
   });
+  const inputImporterAllowed = useFeatureFlag({
+    name: 'input_importer',
+    onlyCheckAllowed: true,
+  });
 
   if (!project || !phase) {
     return null;
@@ -130,14 +134,16 @@ const EmptyState = () => {
               <FormattedMessage {...buttonMessages.downloadInputForm} />
             </Button>
           </UpsellTooltip>
-          <Button
-            mr="8px"
-            buttonStyle="secondary-outlined"
-            icon="download"
-            onClick={downloadExampleXlsxFile}
-          >
-            <FormattedMessage {...buttonMessages.downloadExcelTemplate} />
-          </Button>
+          <UpsellTooltip disabled={inputImporterAllowed}>
+            <Button
+              buttonStyle="secondary-outlined"
+              icon="download"
+              onClick={downloadExampleXlsxFile}
+              disabled={!inputImporterAllowed}
+            >
+              <FormattedMessage {...buttonMessages.downloadExcelTemplate} />
+            </Button>
+          </UpsellTooltip>
         </Box>
       </Box>
       <PDFExportModal
