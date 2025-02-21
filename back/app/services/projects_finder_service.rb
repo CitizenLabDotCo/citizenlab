@@ -22,7 +22,7 @@ class ProjectsFinderService
     subquery = projects_with_active_phase(subquery)
       .joins('INNER JOIN phases AS active_phases ON active_phases.project_id = projects.id')
       .where.not(phases: { participation_method: 'information' })
-      .select('projects.*, projects.created_at AS projects_created_at, projects.id AS projects_id')
+      .select('projects.created_at AS projects_created_at, projects.id AS projects_id')
 
     # Perform the SELECT DISTINCT on the outer query and order first by the end date of the active phase,
     # second by project created_at, and third by project ID.
