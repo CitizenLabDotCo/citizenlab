@@ -1460,7 +1460,7 @@
   "app.containers.IdeasShow.share": "Koplietot",
   "app.containers.IdeasShow.sharingModalSubtitle": "Uzrunājiet vairāk cilvēku un nodrošiniet, ka jūsu viedoklis tiek sadzirdēts.",
   "app.containers.IdeasShow.sharingModalTitle": "Paldies, ka iesniedzāt savu ideju!",
-  "app.containers.Navbar.completeOnboarding": "Pilnīga uzņemšana darbā",
+  "app.containers.Navbar.completeOnboarding": "Complete your profile",
   "app.containers.Navbar.completeProfile": "Pilns profils",
   "app.containers.Navbar.confirmEmail2": "Apstiprināt e-pastu",
   "app.containers.Navbar.unverified": "Nepārbaudīts",
