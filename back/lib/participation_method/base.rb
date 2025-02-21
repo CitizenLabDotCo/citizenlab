@@ -51,7 +51,7 @@ module ParticipationMethod
       context.custom_form || CustomForm.new(participation_context: context)
     end
 
-    def logic_enabled?
+    def form_logic_enabled?
       false
     end
 
@@ -171,7 +171,7 @@ module ParticipationMethod
     end
 
     def validate_phase
-      true
+      # Default is to do nothing.
     end
 
     private

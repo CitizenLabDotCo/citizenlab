@@ -67,7 +67,7 @@ module ParticipationMethod
       ]
     end
 
-    def logic_enabled?
+    def form_logic_enabled?
       true
     end
 

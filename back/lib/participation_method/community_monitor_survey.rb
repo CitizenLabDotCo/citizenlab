@@ -10,6 +10,7 @@ module ParticipationMethod
       %w[page text linear_scale rating select multiselect]
     end
 
+    # TODO: Fields are currently placeholders
     def default_fields(custom_form)
       return [] if custom_form.persisted?
 
@@ -19,7 +20,6 @@ module ParticipationMethod
         CustomField.new(
           id: SecureRandom.uuid,
           key: 'cm_living_in_city',
-          code: 'cm_living_in_city',
           resource: custom_form,
           input_type: 'rating',
           maximum: 5,
@@ -28,7 +28,6 @@ module ParticipationMethod
         CustomField.new(
           id: SecureRandom.uuid,
           key: 'cm_council_services',
-          code: 'cm_council_services',
           resource: custom_form,
           input_type: 'rating',
           maximum: 5,
@@ -39,13 +38,10 @@ module ParticipationMethod
     end
 
     def constraints
-      {
-        cm_living_in_city: { locks: { enabled: true, title_multiloc: true, maximum: true } },
-        cm_council_services: { locks: { enabled: true, title_multiloc: true, maximum: true } }
-      }
+      {} # TODO: Any constraints to be added once we know what the fields are
     end
 
-    def logic_enabled?
+    def form_logic_enabled?
       false
     end
 

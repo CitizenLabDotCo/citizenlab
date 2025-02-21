@@ -312,11 +312,11 @@ RSpec.describe Phase do
 
   describe 'native_survey_title_multiloc and native_survey_button_multiloc' do
     [
-      { project: :project, phase: :native_survey_phase },
-      { project: :community_monitor_project, phase: :community_monitor_survey_phase }
-    ].each do |factories|
-      context factories[:phase] do
-        let(:phase) { build(factories[:phase], project: create(factories[:project])) }
+      :native_survey_phase,
+      :community_monitor_survey_phase
+    ].each do |factory|
+      context factory do
+        let(:phase) { build(factory) }
 
         it 'must contain a survey title' do
           phase.native_survey_title_multiloc = { en: 'Survey' }
