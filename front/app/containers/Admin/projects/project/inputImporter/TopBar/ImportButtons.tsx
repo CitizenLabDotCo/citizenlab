@@ -46,7 +46,11 @@ const ImportButtons = ({ onClickPDFImport, onClickExcelImport }: Props) => {
             <DropdownListItem onClick={onClickExcelImport}>
               <FormattedMessage {...messages.importExcelFile} />
             </DropdownListItem>
-            <UpsellTooltip disabled={printedFormsAllowed}>
+            <UpsellTooltip
+              disabled={printedFormsAllowed}
+              // Needed to ensure DropdownListItem takes up the full width of the dropdown
+              width="100%"
+            >
               <DropdownListItem
                 onClick={onClickPDFImport}
                 disabled={!printedFormsAllowed}
