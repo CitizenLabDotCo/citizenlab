@@ -160,7 +160,7 @@ class Phase < ApplicationRecord
   # voting?
   with_options if: :voting? do
     validates :voting_method, presence: true, inclusion: { in: VOTING_METHODS }
-    validate :validate_voting
+    validate :validate_phase_participation_method
     validates :voting_term_singular_multiloc, multiloc: { presence: false }
     validates :voting_term_plural_multiloc, multiloc: { presence: false }
     validates :autoshare_results_enabled, inclusion: { in: [true, false] }
@@ -187,7 +187,7 @@ class Phase < ApplicationRecord
     # TODO: JS - do we need to validate these for community monitor? Assuming so for now
     validates :native_survey_title_multiloc, presence: true, multiloc: { presence: true }
     validates :native_survey_button_multiloc, presence: true, multiloc: { presence: true }
-    validate :validate_community_monitor_phase
+    validate :validate_phase_participation_method
   end
 
   scope :published, lambda {
@@ -340,21 +340,9 @@ class Phase < ApplicationRecord
     end
   end
 
-  # TODO: JS - should probably move this to the participation method
-  def validate_community_monitor_phase
-    return unless participation_method == 'community_monitor_survey'
-
-    if project.phases.count > 1
-      errors.add(:base, :too_many_phases, message: 'community_monitor project can only have one phase')
-    end
-
-    unless project.hidden?
-      errors.add(:base, :project_not_hidden, message: 'community_monitor projects must be hidden')
-    end
-
-    if end_at.present?
-      errors.add(:base, :has_end_at, message: 'community_monitor projects cannot have an end date')
-    end
+  # Delegate any rules specific to a method to the participation method itself
+  def validate_phase_participation_method
+    pmethod.validate_phase
   end
 
   def strip_title
@@ -404,10 +392,6 @@ class Phase < ApplicationRecord
 
   def set_presentation_mode
     self.presentation_mode ||= 'card'
-  end
-
-  def validate_voting
-    Factory.instance.voting_method_for(self).validate_phase
   end
 end
 
