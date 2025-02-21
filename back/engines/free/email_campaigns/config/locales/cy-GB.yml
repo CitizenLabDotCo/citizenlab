@@ -499,6 +499,7 @@ cy:
       cta_vote: 'Ewch i''r llwyfan i bleidleisio'
     survey_submitted:
       subject: '%{organizationName}: Diolch am eich ymateb! 🎉'
+      preheader: 'Dyma fanylion eich cyflwyniad.'
       main_header: 'Diolch am rannu eich meddyliau ar "%{projectName}"!'
       your_input_submitted: 'Mae eich mewnbwn ar gyfer "%{projectName}" wedi ei gyflwyno''n llwyddiannus.'
       if_you_would_like_to_review: 'Os hoffech adolygu eich cyflwyniad, gallwch lawrlwytho eich ymatebion isod.'
