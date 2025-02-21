@@ -668,6 +668,7 @@
   "app.components.formBuilder.agree": "Agree",
   "app.components.formBuilder.ai1": "AI",
   "app.components.formBuilder.aiUpsellText1": "If you have access to our AI package, you will be able to summarise and categorise text responses with AI",
+  "app.components.formBuilder.askFollowUpToggleLabel": "Ask follow up",
   "app.components.formBuilder.cancelLeaveBuilderButtonText": "Cancel",
   "app.components.formBuilder.chooseMany": "Choose many",
   "app.components.formBuilder.chooseOne": "Choose one",
