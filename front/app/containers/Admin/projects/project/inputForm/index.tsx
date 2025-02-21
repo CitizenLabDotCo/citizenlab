@@ -23,9 +23,13 @@ import { requestBlob } from 'utils/requestBlob';
 import messages from './messages';
 import { saveIdeaFormAsPDF } from './saveIdeaFormAsPDF';
 
-export const IdeaForm = () => {
+export const InputForm = () => {
   const inputImporterAllowed = useFeatureFlag({
     name: 'input_importer',
+    onlyCheckAllowed: true,
+  });
+  const importPrintedFormsAllowed = useFeatureFlag({
+    name: 'import_printed_forms',
     onlyCheckAllowed: true,
   });
 
@@ -73,16 +77,18 @@ export const IdeaForm = () => {
           >
             <FormattedMessage {...messages.editInputForm} />
           </Button>
-          <Box mr="8px">
+          <UpsellTooltip disabled={importPrintedFormsAllowed}>
             <Button
+              mr="8px"
               onClick={handleDownloadPDF}
               width="auto"
               icon="download"
               data-cy="e2e-save-input-form-pdf"
+              disabled={!importPrintedFormsAllowed}
             >
               <FormattedMessage {...messages.downloadInputForm} />
             </Button>
-          </Box>
+          </UpsellTooltip>
           <UpsellTooltip disabled={inputImporterAllowed}>
             <Button
               mr="8px"
@@ -106,4 +112,4 @@ export const IdeaForm = () => {
   );
 };
 
-export default IdeaForm;
+export default InputForm;
