@@ -9,7 +9,7 @@ import {
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
-import NewBadge from 'components/UI/NewBadge';
+import UpsellTooltip from 'components/UpsellTooltip';
 
 import { FormattedMessage } from 'utils/cl-intl';
 
@@ -22,8 +22,9 @@ interface Props {
 
 const ImportButtons = ({ onClickPDFImport, onClickExcelImport }: Props) => {
   const [dropdownOpened, setDropdownOpened] = useState(false);
-  const printedFormsEnabled = useFeatureFlag({
+  const printedFormsAllowed = useFeatureFlag({
     name: 'import_printed_forms',
+    onlyCheckAllowed: true,
   });
 
   return (
@@ -35,7 +36,6 @@ const ImportButtons = ({ onClickPDFImport, onClickExcelImport }: Props) => {
       >
         <FormattedMessage {...messages.importFile} />
       </Button>
-
       <Dropdown
         width="100%"
         right="25px"
@@ -46,16 +46,18 @@ const ImportButtons = ({ onClickPDFImport, onClickExcelImport }: Props) => {
             <DropdownListItem onClick={onClickExcelImport}>
               <FormattedMessage {...messages.importExcelFile} />
             </DropdownListItem>
-            {printedFormsEnabled && (
-              <DropdownListItem onClick={onClickPDFImport}>
-                <Box mr="12px" alignSelf="center">
-                  <FormattedMessage {...messages.importPDFFile} />
-                </Box>
-                <Box alignSelf="center">
-                  <NewBadge />
-                </Box>
+            <UpsellTooltip
+              disabled={printedFormsAllowed}
+              // Needed to ensure DropdownListItem takes up the full width of the dropdown
+              width="100%"
+            >
+              <DropdownListItem
+                onClick={onClickPDFImport}
+                disabled={!printedFormsAllowed}
+              >
+                <FormattedMessage {...messages.importPDFFile} />
               </DropdownListItem>
-            )}
+            </UpsellTooltip>
           </>
         }
       />

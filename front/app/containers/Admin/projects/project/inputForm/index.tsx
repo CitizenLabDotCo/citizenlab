@@ -14,6 +14,7 @@ import { API_PATH } from 'containers/App/constants';
 
 import { SectionTitle, SectionDescription } from 'components/admin/Section';
 import Button from 'components/UI/ButtonWithLink';
+import UpsellTooltip from 'components/UpsellTooltip';
 
 import { FormattedMessage } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
@@ -22,9 +23,13 @@ import { requestBlob } from 'utils/requestBlob';
 import messages from './messages';
 import { saveIdeaFormAsPDF } from './saveIdeaFormAsPDF';
 
-export const IdeaForm = () => {
+export const InputForm = () => {
   const inputImporterEnabled = useFeatureFlag({
     name: 'input_importer',
+  });
+  const importPrintedFormsAllowed = useFeatureFlag({
+    name: 'import_printed_forms',
+    onlyCheckAllowed: true,
   });
 
   const [exportModalOpen, setExportModalOpen] = useState(false);
@@ -71,16 +76,18 @@ export const IdeaForm = () => {
           >
             <FormattedMessage {...messages.editInputForm} />
           </Button>
-          <Box mr="8px">
+          <UpsellTooltip disabled={importPrintedFormsAllowed}>
             <Button
+              mr="8px"
               onClick={handleDownloadPDF}
               width="auto"
               icon="download"
               data-cy="e2e-save-input-form-pdf"
+              disabled={!importPrintedFormsAllowed}
             >
               <FormattedMessage {...messages.downloadInputForm} />
             </Button>
-          </Box>
+          </UpsellTooltip>
           {inputImporterEnabled && (
             <Button
               mr="8px"
@@ -103,4 +110,4 @@ export const IdeaForm = () => {
   );
 };
 
-export default IdeaForm;
+export default InputForm;
