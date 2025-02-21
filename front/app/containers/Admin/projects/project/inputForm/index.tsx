@@ -24,8 +24,9 @@ import messages from './messages';
 import { saveIdeaFormAsPDF } from './saveIdeaFormAsPDF';
 
 export const InputForm = () => {
-  const inputImporterEnabled = useFeatureFlag({
+  const inputImporterAllowed = useFeatureFlag({
     name: 'input_importer',
+    onlyCheckAllowed: true,
   });
   const importPrintedFormsAllowed = useFeatureFlag({
     name: 'import_printed_forms',
@@ -88,16 +89,17 @@ export const InputForm = () => {
               <FormattedMessage {...messages.downloadInputForm} />
             </Button>
           </UpsellTooltip>
-          {inputImporterEnabled && (
+          <UpsellTooltip disabled={inputImporterAllowed}>
             <Button
               mr="8px"
               buttonStyle="secondary-outlined"
               icon="download"
               onClick={downloadExampleXlsxFile}
+              disabled={!inputImporterAllowed}
             >
               <FormattedMessage {...messages.downloadExcelTemplate} />
             </Button>
-          )}
+          </UpsellTooltip>
         </Box>
       </Box>
       <PDFExportModal

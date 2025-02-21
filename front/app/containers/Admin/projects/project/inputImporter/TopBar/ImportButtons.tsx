@@ -26,6 +26,10 @@ const ImportButtons = ({ onClickPDFImport, onClickExcelImport }: Props) => {
     name: 'import_printed_forms',
     onlyCheckAllowed: true,
   });
+  const inputImporterAllowed = useFeatureFlag({
+    name: 'input_importer',
+    onlyCheckAllowed: true,
+  });
 
   return (
     <Box>
@@ -43,9 +47,18 @@ const ImportButtons = ({ onClickPDFImport, onClickExcelImport }: Props) => {
         onClickOutside={() => setDropdownOpened(false)}
         content={
           <>
-            <DropdownListItem onClick={onClickExcelImport}>
-              <FormattedMessage {...messages.importExcelFile} />
-            </DropdownListItem>
+            <UpsellTooltip
+              disabled={inputImporterAllowed}
+              // Needed to ensure DropdownListItem takes up the full width of the dropdown
+              width="100%"
+            >
+              <DropdownListItem
+                onClick={onClickExcelImport}
+                disabled={!inputImporterAllowed}
+              >
+                <FormattedMessage {...messages.importExcelFile} />
+              </DropdownListItem>
+            </UpsellTooltip>
             <UpsellTooltip
               disabled={printedFormsAllowed}
               // Needed to ensure DropdownListItem takes up the full width of the dropdown

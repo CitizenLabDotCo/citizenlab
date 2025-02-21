@@ -36,7 +36,6 @@ import UpsellTooltip from 'components/UpsellTooltip';
 
 import { useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
-import { isNilOrError } from 'utils/helperUtils';
 import { requestBlob } from 'utils/requestBlob';
 
 import CopySurveyModal from './CopySurveyModal';
@@ -66,8 +65,9 @@ const Forms = () => {
     phaseId,
   });
   const { uiSchema } = useInputSchema({ projectId, phaseId });
-  const inputImporterEnabled = useFeatureFlag({
+  const inputImporterAllowed = useFeatureFlag({
     name: 'input_importer',
+    onlyCheckAllowed: true,
   });
   const importPrintedFormsAllowed = useFeatureFlag({
     name: 'import_printed_forms',
@@ -75,7 +75,7 @@ const Forms = () => {
   });
   const { mutate: deleteFormResults } = useDeleteSurveyResults();
 
-  if (!project || isNilOrError(locale) || !phase || !submissionCount) {
+  if (!project || !phase || !submissionCount) {
     return null;
   }
 
@@ -119,7 +119,6 @@ const Forms = () => {
   const handleDownloadPDF = () => setExportModalOpen(true);
 
   const handleExportPDF = async ({ personal_data }: FormValues) => {
-    if (isNilOrError(locale)) return;
     await saveSurveyAsPDF({
       downloadPdfLink,
       locale,
@@ -183,20 +182,16 @@ const Forms = () => {
                 }}
               />
             </Box>
-
-            <UpsellTooltip disabled={inputImporterEnabled}>
-              <Button
-                linkTo={inputImporterLink}
-                icon="page"
-                iconSize="20px"
-                buttonStyle="secondary-outlined"
-                width="auto"
-                mr="8px"
-                disabled={!inputImporterEnabled}
-              >
-                {formatMessage(messages.importInputs)}
-              </Button>
-            </UpsellTooltip>
+            <Button
+              linkTo={inputImporterLink}
+              icon="page"
+              iconSize="20px"
+              buttonStyle="secondary-outlined"
+              width="auto"
+              mr="8px"
+            >
+              {formatMessage(messages.importInputs)}
+            </Button>
             <Button
               linkTo={`/projects/${project.data.attributes.slug}/surveys/new?phase_id=${phase.data.id}`}
               icon="eye"
@@ -288,22 +283,29 @@ const Forms = () => {
                             {formatMessage(messages.downloadSurvey)}
                           </DropdownListItem>
                         </UpsellTooltip>
-                        {inputImporterEnabled && (
-                          <DropdownListItem onClick={downloadExampleFile}>
-                            <Box display="flex" gap="4px" alignItems="center">
-                              <Icon name="download" fill={colors.coolGrey600} />
-                              <Text my="0px">
-                                {formatMessage(messages.downloadExcelTemplate)}
-                              </Text>
-                              <IconTooltip
-                                ml="4px"
-                                content={formatMessage(
-                                  messages.downloadExcelTemplateTooltip
-                                )}
-                              />
-                            </Box>
+                        <UpsellTooltip
+                          disabled={inputImporterAllowed}
+                          // Needed to ensure DropdownListItem takes up the full width of the dropdown
+                          width="100%"
+                        >
+                          <DropdownListItem
+                            onClick={downloadExampleFile}
+                            disabled={!inputImporterAllowed}
+                          >
+                            <Icon
+                              name="download"
+                              fill={colors.coolGrey600}
+                              mr="4px"
+                            />
+                            {formatMessage(messages.downloadExcelTemplate)}
+                            <IconTooltip
+                              ml="4px"
+                              content={formatMessage(
+                                messages.downloadExcelTemplateTooltip
+                              )}
+                            />
                           </DropdownListItem>
-                        )}
+                        </UpsellTooltip>
                       </>
                     )}
                     <DropdownListItem onClick={handleDownloadResults}>
