@@ -325,6 +325,7 @@ class JsonSchemaGeneratorService < FieldVisitorService
 
       accu[field.key] = field_schema
       accu[field.other_option_text_field.key] = visit(field.other_option_text_field) if field.other_option_text_field
+      accu[field.follow_up_text_field.key] = visit(field.follow_up_text_field) if field.follow_up_text_field
     end
     {
       type: 'object',

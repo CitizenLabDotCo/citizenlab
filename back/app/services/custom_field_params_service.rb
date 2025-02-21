@@ -72,6 +72,11 @@ class CustomFieldParamsService
           extra_field_values.delete key
         end
       end
+
+      if key.end_with? '_follow_up'
+        parent_field_key = key.delete_suffix '_follow_up'
+        extra_field_values.delete key # TODO - Figure out how to accept follow-up values
+      end
     end
   end
 end
