@@ -250,6 +250,7 @@ class SurveyResultsGeneratorService < FieldVisitorService
     })
 
     attributes[:textResponses] = get_text_responses("#{field.key}_other") if field.other_option_text_field
+    # TODO: Get text responses for sentiment questions with follow up questions.
     attributes[:legend] = generate_answer_keys(group_field) if group_field
 
     attributes
