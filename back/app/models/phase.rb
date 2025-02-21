@@ -160,7 +160,6 @@ class Phase < ApplicationRecord
   # voting?
   with_options if: :voting? do
     validates :voting_method, presence: true, inclusion: { in: VOTING_METHODS }
-    validate :validate_phase_participation_method
     validates :voting_term_singular_multiloc, multiloc: { presence: false }
     validates :voting_term_plural_multiloc, multiloc: { presence: false }
     validates :autoshare_results_enabled, inclusion: { in: [true, false] }
@@ -184,11 +183,11 @@ class Phase < ApplicationRecord
 
   # any type of native_survey phase
   with_options if: ->(phase) { phase.pmethod.supports_survey_form? } do
-    # TODO: JS - do we need to validate these for community monitor? Assuming so for now
     validates :native_survey_title_multiloc, presence: true, multiloc: { presence: true }
     validates :native_survey_button_multiloc, presence: true, multiloc: { presence: true }
-    validate :validate_phase_participation_method
   end
+
+  validate :validate_phase_participation_method
 
   scope :published, lambda {
     joined = includes(project: { admin_publication: :parent })
@@ -340,11 +339,6 @@ class Phase < ApplicationRecord
     end
   end
 
-  # Delegate any rules specific to a method to the participation method itself
-  def validate_phase_participation_method
-    pmethod.validate_phase
-  end
-
   def strip_title
     title_multiloc.each do |key, value|
       title_multiloc[key] = value.strip
@@ -392,6 +386,11 @@ class Phase < ApplicationRecord
 
   def set_presentation_mode
     self.presentation_mode ||= 'card'
+  end
+
+  # Delegate any rules specific to a method to the participation method itself
+  def validate_phase_participation_method
+    pmethod.validate_phase
   end
 end
 
