@@ -154,7 +154,5 @@ RSpec.describe Project do
     it 'returns projects that are not hidden' do
       expect(described_class.not_hidden.count).to eq 1
     end
-
-
   end
 end
