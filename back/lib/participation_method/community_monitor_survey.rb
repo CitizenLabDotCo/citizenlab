@@ -48,5 +48,19 @@ module ParticipationMethod
     def logic_enabled?
       false
     end
+
+    def validate_phase
+      if phase.project.phases.count > 1
+        phase.errors.add(:base, :too_many_phases, message: 'community_monitor project can only have one phase')
+      end
+
+      unless phase.project.hidden?
+        phase.errors.add(:base, :project_not_hidden, message: 'community_monitor projects must be hidden')
+      end
+
+      if phase.end_at.present?
+        phase.errors.add(:base, :has_end_at, message: 'community_monitor projects cannot have an end date')
+      end
+    end
   end
 end

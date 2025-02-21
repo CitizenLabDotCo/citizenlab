@@ -23,6 +23,7 @@
 #  followers_count              :integer          default(0), not null
 #  preview_token                :string           not null
 #  header_bg_alt_text_multiloc  :jsonb
+#  hidden                       :boolean          default(FALSE), not null
 #
 # Indexes
 #
@@ -97,6 +98,8 @@ class Project < ApplicationRecord
   validates :internal_role, inclusion: { in: INTERNAL_ROLES, allow_nil: true }
   validate :admin_publication_must_exist, unless: proc { Current.loading_tenant_template } # TODO: This should always be validated!
 
+  scope :not_hidden, -> { where(hidden: false) }
+
   pg_search_scope :search_by_all,
     against: %i[title_multiloc description_multiloc description_preview_multiloc slug],
     using: { tsearch: { prefix: true } }
@@ -142,7 +145,7 @@ class Project < ApplicationRecord
 
   alias project_id id
 
-  delegate :published?, :ever_published?, :never_published?, :hidden?, to: :admin_publication, allow_nil: true
+  delegate :published?, :ever_published?, :never_published?, to: :admin_publication, allow_nil: true
 
   class << self
     def search_ids_by_all_including_patches(term)
@@ -221,6 +224,10 @@ class Project < ApplicationRecord
 
   def refresh_preview_token
     self.preview_token = self.class.generate_preview_token
+  end
+
+  def hidden?
+    hidden
   end
 
   private

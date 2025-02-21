@@ -313,7 +313,7 @@ RSpec.describe Phase do
   describe 'native_survey_title_multiloc and native_survey_button_multiloc' do
     [
       { project: :project, phase: :native_survey_phase },
-      { project: :community_monitor_project, phase: :community_monitor_survey_phase}
+      { project: :community_monitor_project, phase: :community_monitor_survey_phase }
     ].each do |factories|
       context factories[:phase] do
         let(:phase) { build(factories[:phase], project: create(factories[:project])) }
@@ -347,7 +347,7 @@ RSpec.describe Phase do
       expect(phase).to be_valid
     end
 
-    it 'does not need a survey title if not a type of native survey' do
+    it 'does not need a survey button if not a type of native survey' do
       phase = build(:phase, native_survey_button_multiloc: {})
       expect(phase).to be_valid
     end
@@ -469,8 +469,7 @@ RSpec.describe Phase do
 
     context 'survey is a community monitor survey' do
       before do
-        project.admin_publication.update! publication_status: 'hidden'
-        project.update! internal_role: 'community_monitor'
+        project.update! hidden: true, internal_role: 'community_monitor'
         survey_phase.update! participation_method: 'community_monitor_survey'
       end
 
@@ -489,7 +488,8 @@ RSpec.describe Phase do
       end
 
       it 'is not valid when the project is not hidden' do
-        survey_phase.project.admin_publication.publication_status = 'published'
+        project.hidden = false
+        # survey_phase.project.admin_publication.publication_status = 'published'
         expect(survey_phase).not_to be_valid
       end
     end

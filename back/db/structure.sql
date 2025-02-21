@@ -1184,7 +1184,8 @@ CREATE TABLE public.projects (
     votes_count integer DEFAULT 0 NOT NULL,
     followers_count integer DEFAULT 0 NOT NULL,
     preview_token character varying NOT NULL,
-    header_bg_alt_text_multiloc jsonb DEFAULT '{}'::jsonb
+    header_bg_alt_text_multiloc jsonb DEFAULT '{}'::jsonb,
+    hidden boolean DEFAULT false NOT NULL
 );
 
 
@@ -1564,7 +1565,8 @@ CREATE TABLE public.phases (
     manual_votes_count integer DEFAULT 0 NOT NULL,
     manual_voters_amount integer,
     manual_voters_last_updated_by_id uuid,
-    manual_voters_last_updated_at timestamp(6) without time zone
+    manual_voters_last_updated_at timestamp(6) without time zone,
+    user_fields_in_form boolean DEFAULT false NOT NULL
 );
 
 
@@ -6826,6 +6828,8 @@ ALTER TABLE ONLY public.ideas_topics
 SET search_path TO public,shared_extensions;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20250220161323'),
+('20250219104523'),
 ('20250204143605'),
 ('20250120125531'),
 ('20250117121004'),

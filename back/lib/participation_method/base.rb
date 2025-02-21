@@ -170,6 +170,10 @@ module ParticipationMethod
       false
     end
 
+    def validate_phase
+      true
+    end
+
     private
 
     attr_reader :phase
