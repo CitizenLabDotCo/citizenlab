@@ -6,21 +6,18 @@ import {
   colors,
   Tbody,
   Spinner,
+  Box,
 } from '@citizenlab/cl2-component-library';
-import { format } from 'date-fns';
 import styled from 'styled-components';
 
 import { ProjectLibraryProjects } from 'api/project_library_projects/types';
+
+import { formatDuration, STATUS_EMOJIS, STATUS_LABELS } from './utils';
 
 interface Props {
   libraryProjects?: ProjectLibraryProjects;
   isInitialLoading: boolean;
 }
-
-const formatDuration = (date: string | null) => {
-  if (!date) return '';
-  return format(new Date(date), 'MMM yy');
-};
 
 const Cell = styled(Th)`
   font-weight: normal;
@@ -45,9 +42,31 @@ const TableBody = ({ libraryProjects, isInitialLoading }: Props) => {
                 {formatDuration(attributes.start_at)} -
                 {formatDuration(attributes.practical_end_at)}
               </Cell>
-              <Cell>{attributes.title_en}</Cell>
+              <Cell>
+                {attributes.title_en}
+                <br />
+                <Box
+                  as="span"
+                  display="block"
+                  color={colors.textSecondary}
+                  mt="4px"
+                >
+                  {STATUS_EMOJIS[attributes.status]}{' '}
+                  {STATUS_LABELS[attributes.status]}
+                </Box>
+              </Cell>
               <Cell>{attributes.participants}</Cell>
-              <Cell>{attributes.tenant_name}</Cell>
+              <Cell>
+                {attributes.tenant_name}
+                <Box
+                  as="span"
+                  display="block"
+                  color={colors.textSecondary}
+                  mt="4px"
+                >
+                  {attributes.tenant_country_alpha2}
+                </Box>
+              </Cell>
             </Tr>
           ))}
         </>

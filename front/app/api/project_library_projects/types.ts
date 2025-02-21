@@ -7,13 +7,15 @@ import { Keys } from 'utils/cl-react-query/types';
 
 import miniProjectsKeys from './keys';
 
+export type Status = 'draft' | 'active' | 'finished' | 'stale' | 'archived';
+
 export type RansackParams = {
   'q[tenant_country_alpha2]'?: string; // TODO figure out what values are allowed here
   'q[tenant_population_group_eq]'?: 'xs' | 's' | 'm' | 'l' | 'xl';
   'q[score_total_gteq]'?: '1' | '2' | '3' | '4';
   'q[phases_participation_method_eq]'?: ParticipationMethod;
   'q[topic_id_eq]'?: string;
-  'q[status_eq]'?: 'draft' | 'active' | 'finished' | 'stale' | 'archived';
+  'q[status_eq]'?: Status;
   'q[visibility_eq]'?: 'public' | 'restricted'; // TODO check if this is correct / matches the response?
   'q[practical_end_at_gteq]'?: string;
   'q[practical_end_at_lt]'?: string;
@@ -56,6 +58,7 @@ export interface ProjectLibraryProjectData {
     slack_references_count: number;
     slug: string;
     start_at: string;
+    status: Status;
     tenant_country_alpha2: null;
     tenant_host: string;
     tenant_id: string;
