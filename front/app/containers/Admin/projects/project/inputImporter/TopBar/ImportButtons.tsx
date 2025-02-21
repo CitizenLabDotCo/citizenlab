@@ -48,7 +48,11 @@ const ImportButtons = ({ onClickPDFImport, onClickExcelImport }: Props) => {
         onClickOutside={() => setDropdownOpened(false)}
         content={
           <>
-            <UpsellTooltip disabled={inputImporterAllowed}>
+            <UpsellTooltip
+              disabled={inputImporterAllowed}
+              // Needed to ensure DropdownListItem takes up the full width of the dropdown
+              width="100%"
+            >
               <DropdownListItem
                 onClick={onClickExcelImport}
                 disabled={!inputImporterAllowed}
