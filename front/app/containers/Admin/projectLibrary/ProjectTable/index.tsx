@@ -7,26 +7,16 @@ import {
   Th,
   colors,
   stylingConsts,
-  Tbody,
   Spinner,
   Box,
   Icon,
 } from '@citizenlab/cl2-component-library';
-import { format } from 'date-fns';
-import styled from 'styled-components';
 
 import useProjectLibraryProjects from 'api/project_library_projects/useProjectLibraryProjects';
 
-import { useRansackParams } from './utils';
+import { useRansackParams } from '../utils';
 
-const formatDuration = (date: string | null) => {
-  if (!date) return '';
-  return format(new Date(date), 'MMM yy');
-};
-
-const Cell = styled(Th)`
-  font-weight: normal;
-`;
+import TableBody from './TableBody';
 
 const ProjectTable = () => {
   const {
@@ -60,31 +50,10 @@ const ProjectTable = () => {
             <Th>Tenant</Th>
           </Tr>
         </Thead>
-        <Tbody>
-          {isInitialLoading && (
-            <Tr background={colors.white}>
-              <Th colSpan={5}>
-                <Spinner />
-              </Th>
-            </Tr>
-          )}
-
-          {libraryProjects && (
-            <>
-              {libraryProjects.data.map(({ attributes, id }) => (
-                <Tr key={id} background={colors.white}>
-                  <Cell>
-                    {formatDuration(attributes.start_at)} -
-                    {formatDuration(attributes.practical_end_at)}
-                  </Cell>
-                  <Cell>{attributes.title_en}</Cell>
-                  <Cell>{attributes.participants}</Cell>
-                  <Cell>{attributes.tenant_name}</Cell>
-                </Tr>
-              ))}
-            </>
-          )}
-        </Tbody>
+        <TableBody
+          libraryProjects={libraryProjects}
+          isInitialLoading={isInitialLoading}
+        />
       </Table>
       {isRefetching && (
         <Box
