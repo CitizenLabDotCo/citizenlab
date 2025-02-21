@@ -8,7 +8,7 @@ import Status from './Status';
 
 const Filters = () => {
   return (
-    <Box display="flex" flexDirection="row" gap="20px">
+    <Box display="flex" flexDirection="row" gap="12px">
       <Method />
       <Size />
       <Status />
