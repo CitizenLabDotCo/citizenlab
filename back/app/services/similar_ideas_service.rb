@@ -9,6 +9,9 @@ class SimilarIdeasService
   end
 
   def similar_ideas(scope: nil, limit: DEFAULT_NUM_SIMILAR_IDEAS, embedded_attributes: DEFAULT_EMBEDDED_ATTRIBUTES, distance_threshold: nil)
+    # Watch out when editing the code of this method! 
+    # https://www.notion.so/govocal/Research-Duplicate-Detection-1a19663b7b268080b211fdbd88ca2cd2?pvs=4#1a19663b7b2680a7a8d4fee6988baf0a
+
     embedding = idea.embeddings_similarities.where(embedded_attributes:).first
     return (scope || Idea).none if !embedding
 
