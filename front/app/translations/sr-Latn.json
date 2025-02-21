@@ -163,7 +163,7 @@
   "app.components.FilterBoxes.inputs": "inputs",
   "app.components.FilterBoxes.noValuesFound": "Trenutno nema filtriranja po temama.",
   "app.components.FilterBoxes.showLess": "Show less",
-  "app.components.FilterBoxes.showTagsWithNumber": "Show all ({numberTags})",
+  "app.components.FilterBoxes.showTagsWithNumber": "Prikaži sve ({numberTags})",
   "app.components.FilterBoxes.statusTitle": "Status",
   "app.components.FilterBoxes.topicsTitle": "Teme",
   "app.components.FiltersModal.filters": "Filteri",
