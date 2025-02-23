@@ -475,6 +475,10 @@ module MultiTenancy
             platform_templates: {
               enabled: false,
               allowed: false
+            },
+            user_fields_in_surveys: {
+              enabled: true,
+              allowed: true
             }
           })
         )

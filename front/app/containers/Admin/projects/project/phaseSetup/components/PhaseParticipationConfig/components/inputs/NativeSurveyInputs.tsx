@@ -91,7 +91,7 @@ const NativeSurveyInputs = ({
           </Box>
         }
       />
-      <FeatureFlag name="user_fields_in_survey">
+      <FeatureFlag name="user_fields_in_surveys">
         <SectionField>
           <SubSectionTitle style={{ marginBottom: '0px' }}>
             Show user fields in survey? [BETA]

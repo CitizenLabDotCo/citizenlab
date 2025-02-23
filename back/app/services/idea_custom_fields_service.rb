@@ -31,7 +31,11 @@ class IdeaCustomFieldsService
 
   def submittable_fields
     unsubmittable_input_types = %w[page section]
-    enabled_fields.reject { |field| unsubmittable_input_types.include? field.input_type }
+
+    # TODO: JS - probably need to refactor this a bit as it's a bit of a mess depending on type of form
+    phase = @custom_form.participation_context
+    fields = phase.user_fields_in_form ? survey_fields : enabled_fields
+    fields.reject { |field| unsubmittable_input_types.include? field.input_type }
   end
 
   def submittable_fields_with_other_options
@@ -81,7 +85,8 @@ class IdeaCustomFieldsService
     user_fields = permissions_custom_fields_service.fields_for_permission(permission).map(&:custom_field)
 
     user_fields.each do |field|
-      field.key = "u_#{field.key}" # Change the key so we can clearly identify user data in the saved data
+      field.code = nil # Remove the code so it doesn't appear as built in
+      field.key = "u_#{field.key}" # Change the key so we cans clearly identify user data in the saved data
       field.resource = custom_form # User field pretend to be part of the form
     end
 
