@@ -18,7 +18,7 @@ module ContentBuilder
 
       def depth_first_search_recursive(node_key)
         node = @craftjs[node_key]
-        return unless node.present?
+        return if node.blank?
 
         @ordered_nodes << node
 

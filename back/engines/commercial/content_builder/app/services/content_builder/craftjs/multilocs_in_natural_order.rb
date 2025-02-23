@@ -20,8 +20,8 @@ module ContentBuilder
 
       def multiloc_search_recursive(node_key)
         node = @craftjs[node_key]
-        return unless node.present?
-      
+        return if node.blank?
+
         # Maybe we don't want the accordian multilocs, as they may be be more likely to be non-sequiturs?
         # Alternatively, we could include the node type in the array, and filter it out later as desired.
         # e.g. we could return [{type: 'TextMultiloc', text: 'Hello'}, {type: 'AccordionMultiloc', title: 'Accordion', text: 'World'}, ...]
@@ -29,24 +29,24 @@ module ContentBuilder
         @ordered_multilocs << node['props']['title'] if node['type']['resolvedName'] == 'AccordionMultiloc'
         @ordered_multilocs << node['props']['text'] if %w[TextMultiloc AccordionMultiloc].include? node['type']['resolvedName']
 
-        resolvedName = node['type']['resolvedName']
+        resolved_name = node['type']['resolvedName']
 
-        children = if resolvedName == 'TwoColumn'
-          [node['linkedNodes']['left'], node['linkedNodes']['right']] 
-        elsif resolvedName == 'ThreeColumn'
+        children = if resolved_name == 'TwoColumn'
+          [node['linkedNodes']['left'], node['linkedNodes']['right']]
+        elsif resolved_name == 'ThreeColumn'
           [node['linkedNodes']['column1'], node['linkedNodes']['column2'], node['linkedNodes']['column3']]
         end
 
         children = children_ordered_by_nodes_order(node_key, node) if children.nil? || children.compact == []
-      
+
         children.each { |child_key| multiloc_search_recursive(child_key) } if children.present?
       end
 
       def children_ordered_by_nodes_order(node_key, node)
         # Sort keys to match stored order, if specified in the node['nodes'] array.
         @craftjs.select { |_key, value| value['parent'] == node_key }
-                 .keys
-                 .sort_by { |key| node['nodes']&.index(key) || Float::INFINITY }
+          .keys
+          .sort_by { |key| node['nodes']&.index(key) || Float::INFINITY }
       end
     end
   end
