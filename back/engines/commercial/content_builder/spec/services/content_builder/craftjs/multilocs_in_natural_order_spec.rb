@@ -3,11 +3,13 @@
 require 'rails_helper'
 
 RSpec.describe ContentBuilder::Craftjs::MultilocsInNaturalOrder do
+  subject(:service) { described_class.new(json) }
+
   let(:json) do
     {
       'ROOT' => {
         'type' => 'div',
-        'nodes' => ['Jq-CCgrq-q', '0f2iV4vLcr', 'cOTUZaRUhq', 'M-lM_fn2Ha', 'zr3oCwVDIz', 'aA5GjRj3I_', 'OqxV6yxJHh', 'JwYVABZlsM'],
+        'nodes' => %w[Jq-CCgrq-q 0f2iV4vLcr cOTUZaRUhq M-lM_fn2Ha zr3oCwVDIz aA5GjRj3I_ OqxV6yxJHh JwYVABZlsM'],
         'props' => { 'id' => 'e2e-content-builder-frame' },
         'custom' => {},
         'hidden' => false,
@@ -116,7 +118,7 @@ RSpec.describe ContentBuilder::Craftjs::MultilocsInNaturalOrder do
       },
       '8Z8cOz8Zcu' => {
         'type' => { 'resolvedName' => 'Container' },
-        'nodes' => ['ZML33UcYWO', 'y_gYPg36HG', 'HkhSdTtxNM'],
+        'nodes' => %w[ZML33UcYWO y_gYPg36HG HkhSdTtxNM],
         'props' => {},
         'custom' => {},
         'hidden' => false,
@@ -160,7 +162,7 @@ RSpec.describe ContentBuilder::Craftjs::MultilocsInNaturalOrder do
       },
       'B9aFpMhAS0' => {
         'type' => { 'resolvedName' => 'Container' },
-        'nodes' => ['Fvyx3EQkKU', 'Z_Mpi5aWlp'],
+        'nodes' => %w[Fvyx3EQkKU Z_Mpi5aWlp],
         'props' => {},
         'custom' => {},
         'hidden' => false,
@@ -182,7 +184,7 @@ RSpec.describe ContentBuilder::Craftjs::MultilocsInNaturalOrder do
       },
       'Bwdu83IsPA' => {
         'type' => { 'resolvedName' => 'TwoColumn' },
-        'nodes' => ['ZTxuYbWgsx', 'EGTUkRENuR'],
+        'nodes' => %w[ZTxuYbWgsx EGTUkRENuR],
         'props' => { 'columnLayout' => '2-1' },
         'custom' => { 'title' => { 'id' => 'app.containers.admin.ContentBuilder.twoColumnLayout', 'defaultMessage' => '2 column' }, 'hasChildren' => true },
         'hidden' => false,
@@ -413,7 +415,7 @@ RSpec.describe ContentBuilder::Craftjs::MultilocsInNaturalOrder do
       },
       'TCGNh7rNT6' => {
         'type' => { 'resolvedName' => 'TwoColumn' },
-        'nodes' => ['haW3VhFvzZ', 'WJzj70JVmn'],
+        'nodes' => %w[haW3VhFvzZ WJzj70JVmn],
         'props' => { 'columnLayout' => '1-2' },
         'custom' => { 'title' => { 'id' => 'app.containers.admin.ContentBuilder.twoColumnLayout', 'defaultMessage' => '2 column' }, 'hasChildren' => true },
         'hidden' => false,
@@ -457,7 +459,7 @@ RSpec.describe ContentBuilder::Craftjs::MultilocsInNaturalOrder do
       },
       'ZTxuYbWgsx' => {
         'type' => { 'resolvedName' => 'Container' },
-        'nodes' => ['D5q8flk-be', 'QaTbTFCSpg', 'FjlHjNGKGW'],
+        'nodes' => %w[D5q8flk-be QaTbTFCSpg FjlHjNGKGW],
         'props' => { 'id' => 'left' },
         'custom' => {},
         'hidden' => false,
@@ -523,7 +525,7 @@ RSpec.describe ContentBuilder::Craftjs::MultilocsInNaturalOrder do
       },
       'eeO27iQPm-' => {
         'type' => { 'resolvedName' => 'TwoColumn' },
-        'nodes' => ['cHD5Vn8wxf', 'C4YOmQhBbQ'],
+        'nodes' => %w[cHD5Vn8wxf C4YOmQhBbQ],
         'props' => { 'columnLayout' => '1-2' },
         'custom' => { 'title' => { 'id' => 'app.containers.admin.ContentBuilder.twoColumnLayout', 'defaultMessage' => '2 column' }, 'hasChildren' => true },
         'hidden' => false,
@@ -556,7 +558,7 @@ RSpec.describe ContentBuilder::Craftjs::MultilocsInNaturalOrder do
       },
       'gX7qsPUb4L' => {
         'type' => { 'resolvedName' => 'Box' },
-        'nodes' => ['Bbml_6eeWj', 'CxY-HtpwOt', 'Bwdu83IsPA'],
+        'nodes' => %w[Bbml_6eeWj CxY-HtpwOt Bwdu83IsPA],
         'props' => {},
         'custom' => {},
         'hidden' => false,
@@ -600,7 +602,7 @@ RSpec.describe ContentBuilder::Craftjs::MultilocsInNaturalOrder do
       },
       'l_V1yAzOSh' => {
         'type' => { 'resolvedName' => 'Container' },
-        'nodes' => ['Ahu2f_ti7Y', 'jLvX2Cd3Zr'],
+        'nodes' => %w[Ahu2f_ti7Y jLvX2Cd3Zr],
         'props' => {},
         'custom' => {},
         'hidden' => false,
@@ -622,7 +624,7 @@ RSpec.describe ContentBuilder::Craftjs::MultilocsInNaturalOrder do
       },
       'nE_FRJUK5n' => {
         'type' => { 'resolvedName' => 'Container' },
-        'nodes' => ['xo9x7NZoEk', 'tkjAV5kHJy'],
+        'nodes' => %w[xo9x7NZoEk tkjAV5kHJy],
         'props' => {},
         'custom' => {},
         'hidden' => false,
@@ -732,8 +734,6 @@ RSpec.describe ContentBuilder::Craftjs::MultilocsInNaturalOrder do
       }
     }
   end
-
-  subject(:service) { described_class.new(json) }
 
   describe '#multilocs_in_natural_order' do
     it 'returns the multilocs in natural order' do
