@@ -85,7 +85,6 @@ module Analysis
           end
         ].compact
       end
-
     end
   end
 end
