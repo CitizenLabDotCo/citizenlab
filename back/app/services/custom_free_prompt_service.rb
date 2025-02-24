@@ -11,10 +11,7 @@ class CustomFreePromptService
   def response
     return {} if authoring_assistance_response.custom_free_prompt.blank?
 
-    region = ENV.fetch('AWS_TOXICITY_DETECTION_REGION', nil) # Some clusters (e.g. Canada) are not allowed to send data to the US or Europe.
-    return {} if !region
-
-    llm = Analysis::LLM::GPT4o.new(region: region)
+    llm = Analysis::LLM::GPT4o.new
     prompt = Analysis::LLM::Prompt.new.fetch('custom_free_prompt', input_text:, phase_text:, body_field_text:, custom_free_prompt: authoring_assistance_response.custom_free_prompt)
     llm.chat(prompt).strip
   end
