@@ -21,8 +21,13 @@ class AuthoringAssistanceService
   def duplicate_inputs_response(authoring_assistance_response)
     service = SimilarIdeasService.new(authoring_assistance_response.idea)
     service.upsert_embedding!
-    threshold = 0.4
-    ideas = service.similar_ideas(scope: authoring_assistance_response.idea.project.ideas, limit: 5, distance_threshold: threshold)
+    distance_threshold = 0.4
+    limit = 5
+    scope = authoring_assistance_response.idea.project.ideas
+    if authoring_assistance_response.idea.author_id
+      scope = scope.where.not(author_id: authoring_assistance_response.idea.author_id)
+    end
+    ideas = service.similar_ideas(scope:, limit:, distance_threshold:)
     {
       duplicate_inputs: ideas.ids
     }
