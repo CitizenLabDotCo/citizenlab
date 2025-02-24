@@ -235,6 +235,15 @@ class SurveyResultsGeneratorService < FieldVisitorService
   end
 
   def build_select_response(answers, field)
+    # Convert domicile field options to match the area keys in data
+    # TODO: There are multiple places and multiple ways that this happens - needs refactoring
+    if field.domicile?
+      field.options.each do |o|
+        o.key = o.area&.id || 'outside'
+        o.title_multiloc = o.area&.title_multiloc || I18n.t('custom_field_options.domicile.outside')
+      end
+    end
+
     # TODO: This is an additional query for selects so performance issue here
     question_response_count = inputs.where("custom_field_values->'#{field.key}' IS NOT NULL").count
 
@@ -390,6 +399,8 @@ class SurveyResultsGeneratorService < FieldVisitorService
   end
 
   def generate_answer_keys(field)
+    return field.options.map { |o| o.area&.id || 'outside' } + [nil] if field.domicile?
+
     (%w[linear_scale rating].include?(field.input_type) ? (1..field.maximum).to_a : field.options.map(&:key)) + [nil]
   end
 

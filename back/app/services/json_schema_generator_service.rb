@@ -72,10 +72,24 @@ class JsonSchemaGeneratorService < FieldVisitorService
     {
       type: 'string'
     }.tap do |json|
-      options = field.ordered_options
+      if field.domicile?
+        areas = Area.order(:ordering).map do |area|
+          {
+            const: area.id,
+            title: multiloc_service.t(area.title_multiloc)
+          }
+        end
+        areas.push({
+                     const: 'outside',
+                     title: I18n.t('custom_field_options.domicile.outside')
+                   })
+        json[:enum] = areas.pluck(:const)
+      else
+        options = field.ordered_options
 
-      unless options.empty?
-        json[:enum] = options.map(&:key)
+        unless options.empty?
+          json[:enum] = options.map(&:key)
+        end
       end
     end
   end
