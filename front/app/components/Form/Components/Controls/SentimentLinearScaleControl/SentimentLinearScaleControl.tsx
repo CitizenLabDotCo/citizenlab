@@ -6,6 +6,7 @@ import {
   Table,
   Td,
   Text,
+  Th,
   Tr,
 } from '@citizenlab/cl2-component-library';
 import { ControlProps } from '@jsonforms/core';
@@ -15,6 +16,7 @@ import styled, { useTheme } from 'styled-components';
 
 import { FormLabel } from 'components/UI/FormComponents';
 
+import { ScreenReaderOnly } from 'utils/a11y';
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import { getLabel, sanitizeForClassname } from 'utils/JSONFormUtils';
 
@@ -79,7 +81,7 @@ const SentimentLinearScaleControl = ({
       sliderRef.current.setAttribute('aria-valuenow', String(data || minimum));
       sliderRef.current.setAttribute(
         'aria-valuetext',
-        getAriaLabel(data || minimum, 5)
+        getAriaLabel(data || minimum, maximum)
       );
     }
   }, [data, getAriaLabel, minimum, maximum]);
@@ -114,7 +116,7 @@ const SentimentLinearScaleControl = ({
   return (
     <>
       <FormLabel
-        htmlFor={sanitizeForClassname(id)}
+        id={sanitizeForClassname(id)}
         labelValue={getLabel(uischema, schema, path)}
         optional={!required}
         subtextValue={getSubtextElement(uischema.options?.description)}
@@ -132,78 +134,102 @@ const SentimentLinearScaleControl = ({
         aria-valuemin={minimum}
         aria-valuemax={maximum}
         aria-labelledby={sanitizeForClassname(id)}
+        onKeyDown={(event) => {
+          if (event.key !== 'Tab') {
+            handleKeyDown(event);
+          }
+        }}
         tabIndex={0}
-        onKeyDown={handleKeyDown}
         pb="0px"
       >
-        <Table style={{ tableLayout: 'fixed' }}>
-          <Tr>
-            {[...Array(maximum).keys()].map((i) => {
-              const visualIndex = i + 1;
-              return (
-                <Td p="0px" maxWidth="20%" key={`${path}-radio-${visualIndex}`}>
-                  <Text
-                    textAlign="center"
-                    m="0px"
-                    px="4px"
-                    color="grey700"
-                    style={{ wordWrap: 'break-word' }}
+        <Box>
+          <Table style={{ tableLayout: 'fixed' }}>
+            <Tr>
+              {[...Array(maximum).keys()].map((i) => {
+                const visualIndex = i + 1;
+                return (
+                  <Th
+                    p="0px"
+                    maxWidth="20%"
+                    key={`${path}-radio-${visualIndex}`}
+                    scope="col"
+                    tabIndex={-1}
                   >
-                    {labelsFromSchema[visualIndex - 1]}
-                  </Text>
-                </Td>
-              );
-            })}
-          </Tr>
-          <Tr>
-            {[...Array(maximum).keys()].map((i) => {
-              const visualIndex = i + 1;
-              return (
-                <Td pt="4px" key={`${path}-radio-${visualIndex}`}>
-                  <Box
-                    display="flex"
-                    flexDirection="column"
-                    alignItems="center"
-                  >
-                    <Button
-                      p="0px"
+                    <Text
+                      textAlign="center"
                       m="0px"
-                      id={`linear-scale-option-${visualIndex}`}
-                      aria-pressed={data === visualIndex}
-                      width="100%"
-                      onClick={() => {
-                        if (data === visualIndex) {
-                          // Clear data from this question and any follow-up question
-                          handleChange(path, undefined);
-                          handleChange(`${path}_follow_up`, undefined);
-                        } else {
-                          handleChange(path, visualIndex);
-                        }
-                      }}
-                      buttonStyle="text"
+                      px="4px"
+                      color="grey700"
+                      style={{ wordWrap: 'break-word' }}
                     >
-                      <StyledImg
-                        src={getSentimentEmoji(visualIndex)}
-                        alt=""
-                        style={{
-                          filter:
-                            data && data !== visualIndex ? 'grayscale(1)' : '',
-                          opacity: data && data !== visualIndex ? 0.8 : 1,
-                          border:
-                            data === visualIndex
-                              ? `3px solid ${theme.colors.coolGrey600}`
-                              : undefined,
-
-                          height: '50px',
+                      {labelsFromSchema[visualIndex - 1]}
+                      <ScreenReaderOnly>
+                        {labelsFromSchema[visualIndex - 1]
+                          ? labelsFromSchema[visualIndex - 1]
+                          : getAriaLabel(visualIndex, maximum)}
+                      </ScreenReaderOnly>
+                    </Text>
+                  </Th>
+                );
+              })}
+            </Tr>
+            <Tr>
+              {[...Array(maximum).keys()].map((i) => {
+                const visualIndex = i + 1;
+                return (
+                  <Td pt="4px" key={`${path}-radio-${visualIndex}`}>
+                    <Box
+                      display="flex"
+                      flexDirection="column"
+                      alignItems="center"
+                    >
+                      <Button
+                        p="0px"
+                        m="0px"
+                        id={`${path}-linear-scale-option-${visualIndex}`}
+                        aria-pressed={data === visualIndex}
+                        width="100%"
+                        tabIndex={-1}
+                        onClick={() => {
+                          if (data === visualIndex) {
+                            // Clear data from this question and any follow-up question
+                            handleChange(path, undefined);
+                            handleChange(`${path}_follow_up`, undefined);
+                          } else {
+                            handleChange(path, visualIndex);
+                          }
                         }}
-                      />
-                    </Button>
-                  </Box>
-                </Td>
-              );
-            })}
-          </Tr>
-        </Table>
+                        buttonStyle="text"
+                      >
+                        <ScreenReaderOnly>
+                          {getAriaLabel(visualIndex, maximum)}
+                        </ScreenReaderOnly>
+                        <StyledImg
+                          src={getSentimentEmoji(visualIndex)}
+                          alt=""
+                          style={{
+                            filter:
+                              data && data !== visualIndex
+                                ? 'grayscale(1)'
+                                : '',
+                            opacity: data && data !== visualIndex ? 0.8 : 1,
+                            border:
+                              data === visualIndex
+                                ? `3px solid ${theme.colors.coolGrey600}`
+                                : undefined,
+
+                            height: '50px',
+                          }}
+                        />
+                      </Button>
+                    </Box>
+                  </Td>
+                );
+              })}
+            </Tr>
+          </Table>
+        </Box>
+
         <VerificationIcon show={uischema.options?.verificationLocked} />
       </Box>
       <ErrorDisplay

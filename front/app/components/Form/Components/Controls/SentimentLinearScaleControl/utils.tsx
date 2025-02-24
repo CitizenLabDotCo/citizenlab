@@ -18,6 +18,8 @@ export const handleKeyboardKeyChange = (event, value) => {
       return 1;
     case 'End':
       return 5;
+    case 'Enter':
+      return value;
     default:
       return;
   }

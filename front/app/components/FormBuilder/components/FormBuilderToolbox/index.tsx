@@ -266,15 +266,6 @@ const FormBuilderToolbox = ({
           disabled={isCustomFieldsDisabled}
         />
         <ToolboxItem
-          icon="survey-matrix"
-          label={formatMessage(messages.matrix)}
-          onClick={() => addField('matrix_linear_scale')}
-          data-cy="e2e-matrix"
-          fieldsToInclude={builderConfig.toolboxFieldsToInclude}
-          inputType="matrix_linear_scale"
-          disabled={isCustomFieldsDisabled}
-        />
-        <ToolboxItem
           icon="survey-sentiment"
           label={formatMessage(messages.sentiment)}
           onClick={() => addField('sentiment_linear_scale')}
@@ -283,6 +274,16 @@ const FormBuilderToolbox = ({
           inputType="sentiment_linear_scale"
           disabled={isCustomFieldsDisabled}
         />
+        <ToolboxItem
+          icon="survey-matrix"
+          label={formatMessage(messages.matrix)}
+          onClick={() => addField('matrix_linear_scale')}
+          data-cy="e2e-matrix"
+          fieldsToInclude={builderConfig.toolboxFieldsToInclude}
+          inputType="matrix_linear_scale"
+          disabled={isCustomFieldsDisabled}
+        />
+
         <ToolboxItem
           icon="survey-number-field"
           label={formatMessage(messages.number)}
