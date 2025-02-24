@@ -28,6 +28,7 @@ class SideFxIdeaService
     after_submission idea, user if idea.submitted_or_published?
     after_publish idea, user if idea.published?
     enqueue_embeddings_job(idea)
+    update_user_profile(idea, user)
 
     log_activities_if_cosponsors_added(idea, user)
   end
@@ -99,6 +100,8 @@ class SideFxIdeaService
         payload: { change: idea.body_multiloc_previous_change }
       )
     end
+
+    update_user_profile(idea, user)
 
     enqueue_embeddings_job(idea) if idea.title_multiloc_previously_changed? || idea.body_multiloc_previously_changed?
 
@@ -214,6 +217,14 @@ class SideFxIdeaService
 
   def enqueue_embeddings_job(idea)
     UpsertEmbeddingJob.perform_later(idea) if AppConfiguration.instance.feature_activated?('similar_inputs')
+  end
+
+  # update the user profile if user fields are changed as part of a survey
+  def update_user_profile(idea, user)
+    return unless idea.creation_phase&.user_fields_in_form
+
+    user_values_from_idea = idea.custom_field_values.select { |key, _value| key.start_with?('u_') }.transform_keys { |key| key[2..-1] }
+    user.update!(custom_field_values: user.custom_field_values.merge(user_values_from_idea))
   end
 end
 
