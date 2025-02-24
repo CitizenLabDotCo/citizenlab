@@ -25,10 +25,15 @@ interface Props {
   phaseId?: string;
   action: Action;
   showAddQuestion: boolean;
-  fieldsInForm: boolean;
+  userFieldsInForm: boolean;
 }
 
-const Fields = ({ phaseId, action, showAddQuestion, fieldsInForm }: Props) => {
+const Fields = ({
+  phaseId,
+  action,
+  showAddQuestion,
+  userFieldsInForm,
+}: Props) => {
   const { formatMessage } = useIntl();
   const [showSelectionModal, setShowSelectionModal] = useState(false);
   const { data: permissionFields } = usePermissionsCustomFields({
@@ -90,7 +95,7 @@ const Fields = ({ phaseId, action, showAddQuestion, fieldsInForm }: Props) => {
           </Tooltip>
         )}
       </Box>
-      {fieldsInForm && (
+      {userFieldsInForm && (
         <Box>
           <p>
             These questions will be added as the last page of the survey form,
