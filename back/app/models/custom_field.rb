@@ -317,15 +317,15 @@ class CustomField < ApplicationRecord
 
     follow_up_field_key = "#{key}_follow_up"
     title_multiloc = MultilocService.new.i18n_to_multiloc(
-      'custom_fields.ideas.other_input_field.title',
+      'custom_fields.ideas.ask_follow_up_field.title',
       locales: CL2_SUPPORTED_LOCALES
     )
 
     CustomField.new(
       key: follow_up_field_key,
-      input_type: 'text',
+      input_type: 'multiline_text',
       title_multiloc: title_multiloc,
-      required: true,
+      required: false,
       enabled: true
     )
   end
