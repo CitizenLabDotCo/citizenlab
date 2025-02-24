@@ -223,7 +223,7 @@ class SideFxIdeaService
 
   # update the user profile if user fields are changed as part of a survey
   def update_user_profile(idea, user)
-    return unless idea.creation_phase&.user_fields_in_form
+    return unless user && idea.creation_phase&.user_fields_in_form
 
     user_values_from_idea = idea.custom_field_values.select { |key, _value| key.start_with?('u_') }.transform_keys { |key| key[2..] }
     user.update!(custom_field_values: user.custom_field_values.merge(user_values_from_idea))
