@@ -5,6 +5,7 @@ import {
   Box,
   Button,
   Tooltip,
+  Text,
   fontSizes,
 } from '@citizenlab/cl2-component-library';
 
@@ -97,10 +98,9 @@ const Fields = ({
       </Box>
       {userFieldsInForm && (
         <Box>
-          <p>
-            These questions will be added as the last page of the survey form,
-            because 'Show fields in survey?' has been selected in phase settings
-          </p>
+          <Text color="primary" mb="0px" fontSize="m" fontStyle={'italic'}>
+            <FormattedMessage {...messages.fieldsShownInSurveyForm} />
+          </Text>
         </Box>
       )}
       <Box mt="20px">

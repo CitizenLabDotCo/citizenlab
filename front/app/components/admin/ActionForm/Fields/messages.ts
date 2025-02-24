@@ -50,4 +50,9 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.Fields.noExtraQuestions',
     defaultMessage: 'No extra questions will be asked.',
   },
+  fieldsShownInSurveyForm: {
+    id: 'app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.Fields.fieldsShownInSurveyForm',
+    defaultMessage:
+      "These questions will be added as the last page of the survey form, because 'Show fields in survey?' has been selected in phase settings.",
+  },
 });

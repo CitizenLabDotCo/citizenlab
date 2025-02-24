@@ -94,7 +94,7 @@ const NativeSurveyInputs = ({
       <FeatureFlag name="user_fields_in_surveys">
         <SectionField>
           <SubSectionTitle style={{ marginBottom: '0px' }}>
-            Show user fields in survey? [BETA]
+            <FormattedMessage {...messages.userFieldsInSurveyTitle} />
           </SubSectionTitle>
           <Toggle
             checked={user_fields_in_form || false}
@@ -110,16 +110,14 @@ const NativeSurveyInputs = ({
                     fontSize="m"
                     style={{ fontWeight: 600 }}
                   >
-                    Show user fields in survey?
+                    <FormattedMessage {...messages.userFieldsInSurveyToggle} />
                   </Text>
                 </Box>
 
                 <Text color="coolGrey600" mt="0px" fontSize="m">
-                  If you enable this option, user fields will be shown as the
-                  last page in the survey instead of as part of the signup
-                  process. Could have a separate option to return user
-                  demographic data in the survey response? Even if collected
-                  through normal route.
+                  <FormattedMessage
+                    {...messages.userFieldsInSurveyDescription}
+                  />
                 </Text>
               </Box>
             }
