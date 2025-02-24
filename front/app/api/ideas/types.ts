@@ -198,7 +198,6 @@ export interface IIdeaAdd {
 export interface IIdeaUpdate {
   // All optional
   project_id?: string | null;
-  publication_status?: IdeaPublicationStatus;
   title_multiloc?: Multiloc;
   author_id?: string | null;
   assignee_id?: string | null;
