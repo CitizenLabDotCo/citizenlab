@@ -499,6 +499,7 @@ es:
       cta_vote: 'Ir a la plataforma para votar'
     survey_submitted:
       subject: '%{organizationName}: Gracias por tu respuesta. 🎉'
+      preheader: 'Aquí tienes los detalles de tu presentación.'
       main_header: '¡Gracias por compartir tu opinión sobre "%{projectName}"!'
       your_input_submitted: 'Tu aporte en "%{projectName}" se ha enviado correctamente.'
       if_you_would_like_to_review: 'Si quieres revisar tu aporte, puedes descargar tus respuestas a continuación.'

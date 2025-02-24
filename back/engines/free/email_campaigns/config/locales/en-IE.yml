@@ -499,6 +499,7 @@ en-IE:
       cta_vote: 'Go to the platform to vote'
     survey_submitted:
       subject: '%{organizationName}: Thank you for your response! 🎉'
+      preheader: 'Here are the details of your submission.'
       main_header: 'Thank you for sharing your thoughts on "%{projectName}"!'
       your_input_submitted: 'Your input for "%{projectName}" has been submitted successfully.'
       if_you_would_like_to_review: 'If you would like to review your submission, you can download your responses below.'
