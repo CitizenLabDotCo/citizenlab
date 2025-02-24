@@ -1,3 +1,5 @@
+import styled from 'styled-components';
+
 import messages from '../messages';
 
 import Sentiment1Svg from './assets/sentiment_1.svg';
@@ -5,6 +7,35 @@ import Sentiment2Svg from './assets/sentiment_2.svg';
 import Sentiment3Svg from './assets/sentiment_3.svg';
 import Sentiment4Svg from './assets/sentiment_4.svg';
 import Sentiment5Svg from './assets/sentiment_5.svg';
+
+export const StyledImg = styled.img`
+  padding: 4px;
+  border: 3px solid white;
+  border-radius: 4px;
+  height: 50px;
+
+  &.anotherValueSelected {
+    filter: grayscale(1);
+    opacity: 0.8;
+  }
+
+  &.isSelected {
+    border: 3px solid ${({ theme }) => theme.colors.coolGrey600};
+  }
+
+  &:hover {
+    border: 3px solid ${({ theme }) => theme.colors.coolGrey600};
+  }
+`;
+
+export const getClassNameSentimentImage = (data, visualIndex) => {
+  if (data === visualIndex) {
+    return 'isSelected';
+  } else if (data) {
+    return 'anotherValueSelected';
+  }
+  return '';
+};
 
 export const handleKeyboardKeyChange = (event, value) => {
   switch (event.key) {

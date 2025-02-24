@@ -12,7 +12,6 @@ import {
 import { ControlProps } from '@jsonforms/core';
 import { withJsonFormsControlProps } from '@jsonforms/react';
 import { UiSchema } from 'react-jsonschema-form';
-import styled, { useTheme } from 'styled-components';
 
 import { FormLabel } from 'components/UI/FormComponents';
 
@@ -27,20 +26,11 @@ import messages from '../messages';
 
 import {
   getAriaValueText,
+  getClassNameSentimentImage,
   getSentimentEmoji,
   handleKeyboardKeyChange,
+  StyledImg,
 } from './utils';
-
-const StyledImg = styled.img`
-  padding: 4px;
-  border: 3px solid white;
-  border-radius: 4px;
-   {
-    &:hover {
-      border: 3px solid ${({ theme }) => theme.colors.coolGrey600};
-    }
-  }
-`;
 
 const SentimentLinearScaleControl = ({
   data,
@@ -53,7 +43,6 @@ const SentimentLinearScaleControl = ({
   id,
   visible,
 }: ControlProps) => {
-  const theme = useTheme();
   const { formatMessage } = useIntl();
 
   const minimum = 1;
@@ -63,6 +52,12 @@ const SentimentLinearScaleControl = ({
 
   const sliderRef = useRef<HTMLDivElement>(null);
 
+  // Put all labels from the UI Schema in an array so we can easily access them
+  const labelsFromSchema = Array.from({ length: maximum }, (_, index) => {
+    return uischema.options?.[`linear_scale_label${index + 1}`];
+  });
+
+  // Get the aria-label for the slider
   const getAriaLabel = useCallback(
     (value: number, total: number) => {
       return getAriaValueText({
@@ -103,11 +98,6 @@ const SentimentLinearScaleControl = ({
     event.preventDefault();
   };
 
-  // Put all labels from the UI Schema in an array so we can easily access them
-  const labelsFromSchema = Array.from({ length: maximum }, (_, index) => {
-    return uischema.options?.[`linear_scale_label${index + 1}`];
-  });
-
   // If the control is not visible, don't render anything
   if (!visible) {
     return null;
@@ -136,11 +126,11 @@ const SentimentLinearScaleControl = ({
         aria-labelledby={sanitizeForClassname(id)}
         onKeyDown={(event) => {
           if (event.key !== 'Tab') {
+            // Don't override the default tab behaviour
             handleKeyDown(event);
           }
         }}
         tabIndex={0}
-        pb="0px"
       >
         <Box>
           <Table style={{ tableLayout: 'fixed' }}>
@@ -207,19 +197,11 @@ const SentimentLinearScaleControl = ({
                         <StyledImg
                           src={getSentimentEmoji(visualIndex)}
                           alt=""
-                          style={{
-                            filter:
-                              data && data !== visualIndex
-                                ? 'grayscale(1)'
-                                : '',
-                            opacity: data && data !== visualIndex ? 0.8 : 1,
-                            border:
-                              data === visualIndex
-                                ? `3px solid ${theme.colors.coolGrey600}`
-                                : undefined,
-
-                            height: '50px',
-                          }}
+                          aria-hidden
+                          className={getClassNameSentimentImage(
+                            data,
+                            visualIndex
+                          )}
                         />
                       </Button>
                     </Box>
