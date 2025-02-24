@@ -740,7 +740,7 @@ GEM
       concurrent-ruby (~> 1.0)
     icalendar (2.10.1)
       ice_cube (~> 0.16)
-    ice_cube (0.16.4)
+    ice_cube (0.17.0)
     image_processing (1.12.2)
       mini_magick (>= 4.9.5, < 5)
       ruby-vips (>= 2.0.17, < 3)
@@ -1326,7 +1326,7 @@ DEPENDENCIES
   google_tag_manager!
   groupdate (~> 6.5)
   icalendar (~> 2.10)
-  ice_cube (~> 0.16)
+  ice_cube (~> 0.17)
   id_auth0!
   id_bogus!
   id_bosa_fas!
