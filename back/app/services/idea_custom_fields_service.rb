@@ -207,10 +207,11 @@ class IdeaCustomFieldsService
     fields.delete(last_page)
 
     # Get the user fields from the permission (returns platform defaults if they don't exist)
-    permissions_custom_fields_service = Permissions::PermissionsCustomFieldsService.new
+    user_requirements_service = Permissions::UserRequirementsService.new
     permission = phase.permissions.find_by(action: 'posting_idea')
-    user_fields = permissions_custom_fields_service.fields_for_permission(permission).map(&:custom_field)
+    user_fields = user_requirements_service.requirements_custom_fields(permission)
 
+    # Transform the user fields to pretend to be idea fields
     user_fields.each do |field|
       field.dropdown_layout = true if field.dropdown_layout_type?
       field.code = nil # Remove the code so it doesn't appear as built in

@@ -30,8 +30,6 @@ class Permissions::UserRequirementsService
   end
 
   def requirements_custom_fields(permission)
-    return [] if permission.permission_scope&.user_fields_in_form
-
     permissions_custom_fields_service.fields_for_permission(permission).map do |permissions_custom_field|
       permissions_custom_field.custom_field.tap do |field|
         field.enabled = true # Need to override this to ensure it gets displayed when not enabled at platform level
@@ -68,10 +66,14 @@ class Permissions::UserRequirementsService
         missing_user_attributes: %i[first_name last_name email confirmation password]
       },
       verification: false,
-      custom_fields: requirements_custom_fields(permission).to_h { |field| [field.key, (field.required ? 'required' : 'optional')] },
+      custom_fields: [],
       onboarding: onboarding_possible?,
       group_membership: @check_groups_and_verification && permission.groups.any?
     }
+
+    unless permission.permission_scope&.user_fields_in_form
+      users_requirements[:custom_fields] = requirements_custom_fields(permission).to_h { |field| [field.key, (field.required ? 'required' : 'optional')] }
+    end
 
     everyone_confirmed_email_requirements = users_requirements.deep_dup.tap do |requirements|
       requirements[:authentication][:missing_user_attributes] = %i[email confirmation]
