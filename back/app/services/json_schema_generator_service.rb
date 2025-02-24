@@ -80,9 +80,9 @@ class JsonSchemaGeneratorService < FieldVisitorService
           }
         end
         areas.push({
-                     const: 'outside',
-                     title: I18n.t('custom_field_options.domicile.outside')
-                   })
+          const: 'outside',
+          title: I18n.t('custom_field_options.domicile.outside')
+        })
         json[:enum] = areas.pluck(:const)
       else
         options = field.ordered_options

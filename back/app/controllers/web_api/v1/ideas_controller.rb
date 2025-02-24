@@ -150,7 +150,7 @@ class WebApi::V1::IdeasController < ApplicationController
 
     # merge custom field values from the user's profile, if they exist
     if phase.user_fields_in_form
-      user_values = current_user&.custom_field_values.transform_keys { |key| "u_#{key}" }
+      user_values = current_user&.custom_field_values&.transform_keys { |key| "u_#{key}" }
       draft_idea.custom_field_values = user_values.merge(draft_idea.custom_field_values) if current_user
     end
     render_show draft_idea, check_auth: false

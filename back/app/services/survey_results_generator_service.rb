@@ -235,14 +235,7 @@ class SurveyResultsGeneratorService < FieldVisitorService
   end
 
   def build_select_response(answers, field)
-    # Convert domicile field options to match the area keys in data
-    # TODO: There are multiple places and multiple ways that this happens - needs refactoring
-    if field.domicile?
-      field.options.each do |o|
-        o.key = o.area&.id || 'outside'
-        o.title_multiloc = o.area&.title_multiloc || I18n.t('custom_field_options.domicile.outside')
-      end
-    end
+
 
     # TODO: This is an additional query for selects so performance issue here
     question_response_count = inputs.where("custom_field_values->'#{field.key}' IS NOT NULL").count
@@ -271,6 +264,10 @@ class SurveyResultsGeneratorService < FieldVisitorService
       return build_scaled_input_multilocs(field)
     end
 
+    if field.domicile?
+      return build_domicile_multilocs(field)
+    end
+
     field.options.each_with_object({}) do |option, accu|
       option_detail = { title_multiloc: option.title_multiloc }
       option_detail[:image] = option.image&.image&.versions&.transform_values(&:url) if field.support_option_images?
@@ -294,6 +291,13 @@ class SurveyResultsGeneratorService < FieldVisitorService
     end
 
     answer_multilocs
+  end
+
+  def build_domicile_multilocs(field)
+    field.options.each_with_object({}) do |option, accu|
+      option_detail = { title_multiloc: option.area&.title_multiloc || MultilocService.new.i18n_to_multiloc('custom_field_options.domicile.outside') }
+      accu[option.area&.id || 'outside'] = option_detail
+    end
   end
 
   def get_option_logic(field)
