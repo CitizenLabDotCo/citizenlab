@@ -211,6 +211,8 @@ class IdeaCustomFieldsService
     permission = phase.permissions.find_by(action: 'posting_idea')
     user_fields = user_requirements_service.requirements_custom_fields(permission)
 
+    # TODO: Hide any user fields that are locked for the user through the verification method
+
     # Transform the user fields to pretend to be idea fields
     user_fields.each do |field|
       field.dropdown_layout = true if field.dropdown_layout_type?
@@ -227,6 +229,18 @@ class IdeaCustomFieldsService
       input_type: 'page',
       page_layout: 'default'
     )
+
+    # Change any logic end pages to reference the user page instead
+    fields.each do |field|
+      if field.logic['rules']
+        field.logic['rules'].map! do |rule|
+          rule['goto_page_id'] = user_page.id if rule['goto_page_id'] == last_page.id
+          rule
+        end
+      elsif field.logic['next_page_id'] == last_page.id
+        field.logic['next_page_id'] = user_page.id
+      end
+    end
 
     fields + [user_page] + user_fields + [last_page]
   end
