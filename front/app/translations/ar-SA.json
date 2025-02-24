@@ -1460,7 +1460,7 @@
   "app.containers.IdeasShow.share": "مشاركة",
   "app.containers.IdeasShow.sharingModalSubtitle": "تواصل مع المزيد من الأشخاص واجعل صوتك مسموعًا.",
   "app.containers.IdeasShow.sharingModalTitle": "شكراً لتقديم فكرتك! ",
-  "app.containers.Navbar.completeOnboarding": "Complete your profile",
+  "app.containers.Navbar.completeOnboarding": "Complete onboarding",
   "app.containers.Navbar.completeProfile": "الملف الشخصي الكامل",
   "app.containers.Navbar.confirmEmail2": "تأكيد عنوان البريد الإلكتروني",
   "app.containers.Navbar.unverified": "لم يتم التحقق منه",
