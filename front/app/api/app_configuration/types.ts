@@ -261,6 +261,7 @@ export interface IAppConfigurationSettings {
     admins_only: boolean;
   };
   platform_templates?: AppConfigurationFeature;
+  project_library?: AppConfigurationFeature;
   user_fields_in_surveys?: AppConfigurationFeature;
 }
 

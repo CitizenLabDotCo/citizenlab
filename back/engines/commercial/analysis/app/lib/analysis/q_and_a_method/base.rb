@@ -9,8 +9,8 @@ module Analysis
     ]
 
     LLMS = [
-      LLM::GPT4Turbo.new,
-      LLM::GPT35Turbo.new
+      LLM::GPT4o.new,
+      LLM::GPT4oMini.new
     ]
 
     class QAndAFailedError < StandardError; end
