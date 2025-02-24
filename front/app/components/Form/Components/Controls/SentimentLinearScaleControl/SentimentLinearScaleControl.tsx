@@ -24,12 +24,12 @@ import VerificationIcon from '../../VerificationIcon';
 import { getSubtextElement } from '../controlUtils';
 import messages from '../messages';
 
+import { StyledImg } from './components';
 import {
   getAriaValueText,
   getClassNameSentimentImage,
   getSentimentEmoji,
   handleKeyboardKeyChange,
-  StyledImg,
 } from './utils';
 
 const SentimentLinearScaleControl = ({
@@ -154,9 +154,8 @@ const SentimentLinearScaleControl = ({
                     >
                       {labelsFromSchema[visualIndex - 1]}
                       <ScreenReaderOnly>
-                        {labelsFromSchema[visualIndex - 1]
-                          ? labelsFromSchema[visualIndex - 1]
-                          : getAriaLabel(visualIndex, maximum)}
+                        {!labelsFromSchema[visualIndex - 1] &&
+                          getAriaLabel(visualIndex, maximum)}
                       </ScreenReaderOnly>
                     </Text>
                   </Th>
