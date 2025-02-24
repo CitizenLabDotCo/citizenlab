@@ -2,7 +2,7 @@
 
 module Analysis
   module LLM
-    class GPT4Turbo < AzureOpenAI
+    class GPT4o < AzureOpenAI
       def context_window
         128_000
       end
@@ -16,7 +16,7 @@ module Analysis
       end
 
       def gpt_model
-        'gpt-4-1106-preview'
+        'gpt-4o'
       end
     end
   end

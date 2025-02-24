@@ -50,7 +50,7 @@ sr-Cyrl:
     implemented_description: Ову идеју је спровео град
     rejected: одбијен
     rejected_description: Ова идеја је одбијена
-    expired: expired
+    expired: истекло
     expired_description: This input is no longer active and has been closed due to time constraints or inactivity.
     threshold_reached: threshold reached
     threshold_reached_description: This input has met the required support threshold and will now be considered for further action.
