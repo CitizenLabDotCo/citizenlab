@@ -123,8 +123,8 @@ class CustomField < ApplicationRecord
     options.any?(&:other)
   end
 
-  def includes_follow_up?
-    ask_follow_up == true
+  def ask_follow_up?
+    ask_follow_up
   end
 
   def support_free_text_value?
@@ -313,19 +313,19 @@ class CustomField < ApplicationRecord
   end
 
   def follow_up_text_field
-    return if !includes_follow_up?
+    return unless ask_follow_up?
 
     follow_up_field_key = "#{key}_follow_up"
     title_multiloc = MultilocService.new.i18n_to_multiloc(
-      'custom_fields.ideas.other_input_field.title',
+      'custom_fields.ideas.ask_follow_up_field.title',
       locales: CL2_SUPPORTED_LOCALES
     )
 
     CustomField.new(
       key: follow_up_field_key,
-      input_type: 'text',
+      input_type: 'multiline_text',
       title_multiloc: title_multiloc,
-      required: true,
+      required: false,
       enabled: true
     )
   end
