@@ -31,10 +31,6 @@ class IdeaCustomFieldsService
 
   def submittable_fields
     unsubmittable_input_types = %w[page section]
-
-    # TODO: JS - probably need to refactor this a bit as it's a bit of a mess depending on type of form
-    phase = @custom_form.participation_context
-    fields = phase.user_fields_in_form ? survey_fields : enabled_fields
     fields.reject { |field| unsubmittable_input_types.include? field.input_type }
   end
 
@@ -55,7 +51,8 @@ class IdeaCustomFieldsService
   end
 
   def enabled_fields
-    all_fields.select(&:enabled?)
+    fields = all_fields.select(&:enabled?)
+    add_user_fields(fields)
   end
 
   def enabled_fields_with_other_options
@@ -64,42 +61,6 @@ class IdeaCustomFieldsService
 
   def enabled_public_fields
     enabled_fields.select { |field| field.answer_visible_to == CustomField::VISIBLE_TO_PUBLIC }
-  end
-
-  def survey_fields
-    return [] unless @participation_method.supports_survey_form?
-
-    # TODO: JS - need to use _with_other_options for the schmea only - not for results
-    # TODO: JS - only add user fields if the setting is present
-    phase = @custom_form.participation_context
-
-    fields = enabled_fields_with_other_options
-    return fields unless phase.user_fields_in_form
-
-    last_page = fields.last
-    fields.delete(last_page)
-
-    # Get the user fields from the permission (returns platform defaults if they don't exist)
-    permissions_custom_fields_service = Permissions::PermissionsCustomFieldsService.new
-    permission = phase.permissions.find_by(action: 'posting_idea')
-    user_fields = permissions_custom_fields_service.fields_for_permission(permission).map(&:custom_field)
-
-    user_fields.each do |field|
-      field.code = nil # Remove the code so it doesn't appear as built in
-      field.key = "u_#{field.key}" # Change the key so we cans clearly identify user data in the saved data
-      field.resource = custom_form # User field pretend to be part of the form
-    end
-
-    user_page = CustomField.new(
-      id: SecureRandom.uuid,
-      key: 'user_page',
-      title_multiloc: { 'en' => 'About you' },
-      resource: custom_form,
-      input_type: 'page',
-      page_layout: 'default'
-    )
-
-    fields + [user_page] + user_fields + [last_page]
   end
 
   def extra_visible_fields
@@ -236,6 +197,36 @@ class IdeaCustomFieldsService
   # Constraints required for the front-end but response will always return input specific method
   def section1_title?(field, attribute)
     field.code == 'ideation_section1' && attribute == :title_multiloc
+  end
+
+  def add_user_fields(fields)
+    phase = @custom_form.participation_context
+    return fields unless @participation_method.supports_survey_form? && phase.user_fields_in_form
+
+    last_page = fields.last
+    fields.delete(last_page)
+
+    # Get the user fields from the permission (returns platform defaults if they don't exist)
+    permissions_custom_fields_service = Permissions::PermissionsCustomFieldsService.new
+    permission = phase.permissions.find_by(action: 'posting_idea')
+    user_fields = permissions_custom_fields_service.fields_for_permission(permission).map(&:custom_field)
+
+    user_fields.each do |field|
+      field.code = nil # Remove the code so it doesn't appear as built in
+      field.key = "u_#{field.key}" # Change the key so we cans clearly identify user data in the saved data
+      field.resource = custom_form # User field pretend to be part of the form
+    end
+
+    user_page = CustomField.new(
+      id: SecureRandom.uuid,
+      key: 'user_page',
+      title_multiloc: { 'en' => 'About you' },
+      resource: custom_form,
+      input_type: 'page',
+      page_layout: 'default'
+    )
+
+    fields + [user_page] + user_fields + [last_page]
   end
 
   attr_reader :custom_form, :participation_method

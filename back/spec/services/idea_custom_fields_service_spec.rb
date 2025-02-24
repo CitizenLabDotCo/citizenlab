@@ -241,8 +241,8 @@ describe IdeaCustomFieldsService do
     end
   end
 
-  context 'with survey form' do
-    describe 'survey_fields' do
+  context 'survey form with user fields' do
+    describe 'enabled_fields' do
       let!(:custom_form) { create(:custom_form, participation_context: form_context) }
 
       # Survey fields
@@ -255,16 +255,16 @@ describe IdeaCustomFieldsService do
       let!(:user_field_birthyear) { create(:custom_field_birthyear) }
 
       context 'when phase is a native survey phase' do
-        let(:form_context) { create(:native_survey_phase, with_permissions: true) }
+        let(:form_context) { create(:native_survey_phase, user_fields_in_form: true, with_permissions: true) }
 
         it 'returns form fields with an additional page of demographics' do
-          output = service.survey_fields
+          output = service.enabled_fields
           expect(output.pluck(:key)).to eq %w[
             page1
             text_field
             user_page
-            gender
-            birthyear
+            u_gender
+            u_birthyear
             end_page
           ]
         end
@@ -273,8 +273,13 @@ describe IdeaCustomFieldsService do
       context 'when phase is an ideation phase' do
         let(:form_context) { create(:project) }
 
-        it 'returns an empty array' do
-          expect(service.survey_fields).to eq []
+        it 'returns only idea fields' do
+          output = service.enabled_fields
+          expect(output.pluck(:key)).to eq %w[
+            page1
+            text_field
+            end_page
+          ]
         end
       end
     end
