@@ -1,4 +1,7 @@
-import { IFlatCustomField } from 'api/custom_fields/types';
+import {
+  ICustomFieldInputType,
+  IFlatCustomField,
+} from 'api/custom_fields/types';
 
 import { questionDNDType } from 'components/FormBuilder/components/FormFields/constants';
 
@@ -12,6 +15,14 @@ const reorder = <ListType>(
   result.splice(endIndex, 0, removed);
 
   return result;
+};
+
+export const supportsLinearScaleLabels = (inputType: ICustomFieldInputType) => {
+  return [
+    'linear_scale',
+    'sentiment_linear_scale',
+    'matrix_linear_scale',
+  ].includes(inputType);
 };
 
 export type NestedGroupingStructure = {
