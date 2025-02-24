@@ -7,8 +7,6 @@ import usePhase from 'api/phases/usePhase';
 import usePhases from 'api/phases/usePhases';
 import useProjectById from 'api/projects/useProjectById';
 
-import useFeatureFlag from 'hooks/useFeatureFlag';
-
 import InputManager, {
   TFilterMenu,
 } from 'components/admin/PostManager/InputManager';
@@ -31,9 +29,6 @@ const timelineProjectVisibleFilterMenus: TFilterMenu[] = [
 ];
 
 const AdminProjectIdeas = () => {
-  const inputImporterEnabled = useFeatureFlag({
-    name: 'input_importer',
-  });
   const { projectId, phaseId } = useParams();
   const { data: project } = useProjectById(projectId);
   const { data: phases } = usePhases(projectId);
@@ -61,16 +56,14 @@ const AdminProjectIdeas = () => {
             <FormattedMessage {...messages.titleInputManager} />
           </Title>
           <Box display="flex" gap="8px">
-            {inputImporterEnabled && (
-              <Button
-                width="auto"
-                linkTo={`/admin/projects/${projectId}/phases/${phaseId}/input-importer`}
-                icon="page"
-                buttonStyle="secondary-outlined"
-              >
-                <FormattedMessage {...ownMessages.importInputs} />
-              </Button>
-            )}
+            <Button
+              width="auto"
+              linkTo={`/admin/projects/${projectId}/phases/${phaseId}/input-importer`}
+              icon="page"
+              buttonStyle="secondary-outlined"
+            >
+              <FormattedMessage {...ownMessages.importInputs} />
+            </Button>
             {phase && (
               <NewIdeaButton
                 inputTerm={phase.data.attributes.input_term}
