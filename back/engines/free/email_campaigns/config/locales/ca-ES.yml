@@ -499,6 +499,7 @@ ca:
       cta_vote: 'Aneu a la plataforma per votar'
     survey_submitted:
       subject: '%{organizationName}: Gràcies per la teva resposta! 🎉'
+      preheader: 'Aquí teniu els detalls de la vostra presentació.'
       main_header: 'Gràcies per compartir els teus pensaments sobre "%{projectName}"!'
       your_input_submitted: 'La vostra entrada per a "%{projectName}" s''ha enviat correctament.'
       if_you_would_like_to_review: 'Si voleu revisar el vostre enviament, podeu descarregar les vostres respostes a continuació.'

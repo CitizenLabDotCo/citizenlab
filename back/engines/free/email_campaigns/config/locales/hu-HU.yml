@@ -499,6 +499,7 @@ hu:
       cta_vote: 'Menjen a platformra szavazni'
     survey_submitted:
       subject: '%{organizationName}: Köszönöm válaszát! 🎉'
+      preheader: 'Íme a beadvány részletei.'
       main_header: 'Köszönjük, hogy megosztotta gondolatait a következővel kapcsolatban: "%{projectName}"!'
       your_input_submitted: 'A "%{projectName}" beírása sikeresen elküldve.'
       if_you_would_like_to_review: 'Ha szeretné felülvizsgálni beadványát, lentebb letöltheti válaszait.'

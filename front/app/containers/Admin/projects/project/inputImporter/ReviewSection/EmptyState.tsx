@@ -23,6 +23,8 @@ import PDFExportModal, {
 import buttonMessages from 'containers/Admin/projects/project/inputForm/messages';
 import { API_PATH } from 'containers/App/constants';
 
+import UpsellTooltip from 'components/UpsellTooltip';
+
 import { FormattedMessage } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
 import { requestBlob } from 'utils/requestBlob';
@@ -43,8 +45,13 @@ const EmptyState = () => {
   };
   const { data: project } = useProjectById(projectId);
   const { data: phase } = usePhase(phaseId);
-  const importPrintedFormsEnabled = useFeatureFlag({
+  const importPrintedFormsAllowed = useFeatureFlag({
     name: 'import_printed_forms',
+    onlyCheckAllowed: true,
+  });
+  const inputImporterAllowed = useFeatureFlag({
+    name: 'input_importer',
+    onlyCheckAllowed: true,
   });
 
   if (!project || !phase) {
@@ -106,35 +113,37 @@ const EmptyState = () => {
         </Title>
         <Text>
           <FormattedMessage
-            {...(importPrintedFormsEnabled
-              ? messages.noIdeasYet
-              : messages.noIdeasYetPrintedFormsDisabled)}
+            {...messages.noIdeasYet}
             values={{
               importFile: <FormattedMessage {...sharedMessages.importFile} />,
             }}
           />
         </Text>
-        <Box display="flex" flexDirection="row">
-          <Box mr="8px">
+        <Box display="flex">
+          <UpsellTooltip disabled={importPrintedFormsAllowed}>
             <Button
               bgColor={colors.primary}
               onClick={handleDownloadPDF}
               width="auto"
               icon="download"
               data-cy="e2e-save-input-form-pdf"
+              mr="8px"
+              disabled={!importPrintedFormsAllowed}
             >
               {/* TODO: distinguish copies between surveys and inputs */}
               <FormattedMessage {...buttonMessages.downloadInputForm} />
             </Button>
-          </Box>
-          <Button
-            mr="8px"
-            buttonStyle="secondary-outlined"
-            icon="download"
-            onClick={downloadExampleXlsxFile}
-          >
-            <FormattedMessage {...buttonMessages.downloadExcelTemplate} />
-          </Button>
+          </UpsellTooltip>
+          <UpsellTooltip disabled={inputImporterAllowed}>
+            <Button
+              buttonStyle="secondary-outlined"
+              icon="download"
+              onClick={downloadExampleXlsxFile}
+              disabled={!inputImporterAllowed}
+            >
+              <FormattedMessage {...buttonMessages.downloadExcelTemplate} />
+            </Button>
+          </UpsellTooltip>
         </Box>
       </Box>
       <PDFExportModal
