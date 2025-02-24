@@ -31,7 +31,7 @@ class IdeaCustomFieldsService
 
   def submittable_fields
     unsubmittable_input_types = %w[page section]
-    fields.reject { |field| unsubmittable_input_types.include? field.input_type }
+    enabled_fields.reject { |field| unsubmittable_input_types.include? field.input_type }
   end
 
   def submittable_fields_with_other_options
@@ -212,6 +212,7 @@ class IdeaCustomFieldsService
     user_fields = permissions_custom_fields_service.fields_for_permission(permission).map(&:custom_field)
 
     user_fields.each do |field|
+      field.dropdown_layout = true if field.dropdown_layout_type?
       field.code = nil # Remove the code so it doesn't appear as built in
       field.key = "u_#{field.key}" # Change the key so we cans clearly identify user data in the saved data
       field.resource = custom_form # User field pretend to be part of the form
