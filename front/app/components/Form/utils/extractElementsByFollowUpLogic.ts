@@ -1,7 +1,6 @@
 import { ExtendedUISchema, FormValues } from '../typings';
 
 // This returns the elements on a page that are visible based on the data and the Sentiment Linear Scale selection.
-// You can pass returnHidden as true to get the hidden elements
 const extractElementsByFollowUpLogic = (
   pageElements: any,
   data: FormValues
