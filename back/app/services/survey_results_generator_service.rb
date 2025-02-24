@@ -263,7 +263,7 @@ class SurveyResultsGeneratorService < FieldVisitorService
   end
 
   def get_option_multilocs(field)
-    if %w[linear_scale rating].include?(field.input_type)
+    if %w[linear_scale sentiment_linear_scale rating].include?(field.input_type)
       return build_scaled_input_multilocs(field)
     end
 
@@ -279,7 +279,7 @@ class SurveyResultsGeneratorService < FieldVisitorService
       { title_multiloc: locales.index_with { |_locale| value.to_s } }
     end
 
-    format_labels = %w[linear_scale matrix_linear_scale].include?(field.input_type)
+    format_labels = %w[linear_scale sentiment_linear_scale matrix_linear_scale].include?(field.input_type)
 
     answer_multilocs.each_key do |value|
       labels = field.nth_linear_scale_multiloc(value).transform_values do |label|
@@ -295,7 +295,7 @@ class SurveyResultsGeneratorService < FieldVisitorService
   def get_option_logic(field)
     return {} if field.logic.blank?
 
-    is_linear_or_rating = %w[linear_scale rating].include?(field.input_type)
+    is_linear_or_rating = %w[linear_scale sentiment_linear_scale rating].include?(field.input_type)
     options = if is_linear_or_rating
       # Create a unique ID for this linear scale option in the full results so we can filter logic
       (1..field.maximum).map { |value| { id: "#{field.id}_#{value}", key: value } }
@@ -395,7 +395,7 @@ class SurveyResultsGeneratorService < FieldVisitorService
   end
 
   def generate_answer_keys(field)
-    (%w[linear_scale rating].include?(field.input_type) ? (1..field.maximum).to_a : field.options.map(&:key)) + [nil]
+    (%w[linear_scale sentiment_linear_scale rating].include?(field.input_type) ? (1..field.maximum).to_a : field.options.map(&:key)) + [nil]
   end
 
   # Convert stored user keys for domicile field to match the options keys eg "f6319053-d521-4b28-9d71-a3693ec95f45" => "north_london_8rg"
