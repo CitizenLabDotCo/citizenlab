@@ -89,6 +89,6 @@ class BulkImportIdeas::Parsers::Pdf::GPTTextCorrector
   end
 
   def llm
-    @llm ||= Analysis::LLM::GPT4Turbo.new
+    @llm ||= Analysis::LLM::GPT4o.new
   end
 end
