@@ -111,26 +111,18 @@ export const InputControl = ({
           type={schema.type === 'number' ? 'number' : 'text'}
           value={data}
           onChange={onChange}
-          // TODO: Fix this the next time the file is edited.
-          // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-          maxCharCount={schema?.maxLength}
+          maxCharCount={schema.maxLength}
           onBlur={() => {
-            // TODO: Fix this the next time the file is edited.
-            // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-            uischema?.options?.transform === 'trim_on_blur' &&
+            uischema.options?.transform === 'trim_on_blur' &&
               isString(data) &&
               onChange(data.trim());
             setDidBlur(true);
           }}
-          // TODO: Fix this the next time the file is edited.
-          // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-          disabled={uischema?.options?.readonly}
+          disabled={uischema.options?.readonly}
           placeholder={isOtherField ? label : undefined}
           onKeyDown={handleKeyDown}
         />
-        {/* TODO: Fix this the next time the file is edited. */}
-        {/* eslint-disable-next-line @typescript-eslint/no-unnecessary-condition */}
-        <VerificationIcon show={uischema?.options?.verificationLocked} />
+        <VerificationIcon show={uischema.options?.verificationLocked} />
       </Box>
       <ErrorDisplay
         inputId={sanitizeForClassname(id)}
