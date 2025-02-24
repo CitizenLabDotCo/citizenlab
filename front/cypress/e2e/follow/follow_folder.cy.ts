@@ -18,7 +18,6 @@ describe('Follow folder', () => {
       descriptionPreview: folderShortDescription,
       description: randomString(),
       publicationStatus: 'published',
-      projectIds: [],
     }).then((folder) => {
       folderId = folder.body.data.id;
       folderSlug = folder.body.data.attributes.slug;
