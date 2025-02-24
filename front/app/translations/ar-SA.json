@@ -485,6 +485,7 @@
   "app.components.Upload.remaining": "تبقى",
   "app.components.Upload.uploadImageLabel": "حدّد صورة (بحجم أقصى {maxImageSizeInMb} ميغابايت)",
   "app.components.Upload.uploadMultipleImagesLabel": "حدّد صورة واحدة أو أكثر",
+  "app.components.UpsellTooltip.tooltipContent": "لا يتم تضمين هذه الميزة في خطتك الحالية. تحدث إلى مدير نجاح الحكومة أو المسؤول لإلغاء قفلها.",
   "app.components.UserName.anonymous": "مجهول",
   "app.components.UserName.anonymousTooltip2": "قرر هذا المستخدم إخفاء مساهمته",
   "app.components.UserName.authorWithNoNameTooltip": "لقد تم إنشاء اسمك تلقائيًا لأنك لم تدخل اسمك. يرجى تحديث ملفك الشخصي إذا كنت ترغب في تغييره.",
