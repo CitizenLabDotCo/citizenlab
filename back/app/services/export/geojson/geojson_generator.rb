@@ -72,7 +72,7 @@ module Export
         registration_fields.each_with_object({}) do |field, accu|
           key = "#{user_data_key}__#{sanitize_key(@multiloc_service.t(field.title_multiloc))}"
 
-          accu[key] = if field.code == 'domicile'
+          accu[key] = if field.domicile?
             Export::DomicileFieldForExport.new(field, @value_visitor, :author).value_from(input)
           else
             Export::CustomFieldForExport.new(field, @value_visitor, :author).value_from(input)
