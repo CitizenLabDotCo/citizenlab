@@ -3,7 +3,7 @@ module ContentBuilder
     # Extracts multilocs from a craftjs in the order they appear in the visual layout.
     class MultilocsInVisualOrder
       def initialize(craftjs, with_metadata: false)
-        @craftjs = craftjs
+        @craftjs = LayoutSanitizationService.new.sanitize(craftjs)
         @with_metadata = with_metadata
         @ordered_multilocs = []
       end
