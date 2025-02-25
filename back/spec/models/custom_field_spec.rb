@@ -114,6 +114,10 @@ class TestVisitor < FieldVisitorService
   def visit_ranking(_field)
     'ranking from visitor'
   end
+
+  def visit_sentiment_linear_scale(_field)
+    'sentiment_linear_scale from visitor'
+  end
 end
 
 RSpec.describe CustomField do
