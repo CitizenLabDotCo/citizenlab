@@ -4,7 +4,9 @@ Analysis::Engine.routes.draw do
   namespace :web_api, defaults: { format: :json } do
     namespace :v1 do
       resources :analyses do
-        resources :inputs, only: %i[index show]
+        resources :inputs, only: %i[index show] do
+          resource :comments_summary, only: %i[show create]
+        end
         resources :tags, except: %i[show]
         resources :taggings, only: %i[index create destroy] do
           post :bulk_create, on: :collection
