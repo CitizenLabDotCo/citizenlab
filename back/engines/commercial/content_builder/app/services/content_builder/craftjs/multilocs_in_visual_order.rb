@@ -2,12 +2,13 @@ module ContentBuilder
   module Craftjs
     # Extracts multilocs from a craftjs in the order they appear in the visual layout.
     class MultilocsInVisualOrder
-      def initialize(craftjs)
+      def initialize(craftjs, with_metadata: false)
         @craftjs = craftjs
+        @with_metadata = with_metadata
         @ordered_multilocs = []
       end
 
-      # Orders multlics found in the craftjs by how they appear in the layout,
+      # Orders multilocs found in the craftjs by how they appear in the layout,
       # so that columns are ordered from left to right, and texts from top to bottom within each column.
       # Top to bottom ordering within containers is also respected.
       def extract
@@ -21,9 +22,8 @@ module ContentBuilder
         node = @craftjs[node_key]
         return if node.blank?
 
-        take_multiloc(node)
-
         resolved_name = node['type']['resolvedName']
+        take_multiloc(node, resolved_name)
 
         children = if resolved_name == 'TwoColumn'
           [node['linkedNodes']['left'], node['linkedNodes']['right']]
@@ -36,19 +36,31 @@ module ContentBuilder
         children.each { |child_key| multiloc_search_recursive(child_key) } if children.present?
       end
 
-      # Maybe we don't want the accordian multilocs, as they may be be more likely to be non-sequiturs?
-      # Alternatively, we could include the node type in the array, and filter it out later as desired.
-      # e.g. we could return [{type: 'TextMultiloc', text: 'Hello'}, {type: 'AccordionMultiloc', title: 'Accordion', text: 'World'}, ...]
-      # instead of just the multilocs themselves.
-      def take_multiloc(node)
-        return unless Layout::TEXT_CRAFTJS_NODE_TYPES.include? node['type']['resolvedName']
+      # `with_metadata: true` may not be super useful, as it only differentiates between accordian titles and texts.
+      # TextMultiloc nodes always store their multiloc in node['props']['text'],
+      # regardless of whether they are actually used as titles or texts.
+      def take_multiloc(node, resolved_name)
+        return unless Layout::TEXT_CRAFTJS_NODE_TYPES.include? resolved_name
         
-        @ordered_multilocs << node['props']['title'] if node['type']['resolvedName'] == 'AccordionMultiloc'
-        @ordered_multilocs << node['props']['text']
+        if @with_metadata
+          @ordered_multilocs << {
+            node_type: 'AccordionMultiloc',
+            multiloc_type: 'title',
+            multliloc: node['props']['title']
+          } if resolved_name == 'AccordionMultiloc'
+          @ordered_multilocs << {
+            node_type: resolved_name,
+            multiloc_type: 'text',
+            multliloc: node['props']['text']
+          }
+        else
+          @ordered_multilocs << node['props']['title'] if resolved_name == 'AccordionMultiloc'
+          @ordered_multilocs << node['props']['text']
+        end
       end
 
       def children_ordered_by_nodes_order(node_key, node)
-        # Sort keys to match stored order, if specified in the node['nodes'] array.
+        # Sort keys of children to match stored order, if specified in the parent's node['nodes'] array.
         @craftjs.select { |_key, value| value['parent'] == node_key }
           .keys
           .sort_by { |key| node['nodes']&.index(key) || Float::INFINITY }
