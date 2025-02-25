@@ -59,7 +59,7 @@ const SurveyFormBuilder = () => {
     await saveSurveyAsPDF({ downloadPdfLink, locale, personal_data });
   };
 
-  // If this is the Community Monitor survey, use the correct configuration
+  // If this is the Community Monitor native survey, use the correct configuration
   const isCommunityMonitorSurvey =
     appConfig?.data.attributes.settings.community_monitor?.project_id ===
     projectId;
