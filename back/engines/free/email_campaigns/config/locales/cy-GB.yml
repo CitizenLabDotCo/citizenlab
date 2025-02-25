@@ -338,25 +338,25 @@ cy:
       title_added_as_folderadmin: 'Rydych chi wedi cael eich ychwanegu fel rheolwr ffolderi'
       x_projects: '%{numberOfProjects} prosiectau'
     project_phase_started:
-      cta_view_phase: 'Darganfyddwch y cyfnod newydd hwn'
-      event_description: 'Dechreuodd y prosiect hwn gam newydd ar y llwyfan o %{organizationName}. Cliciwch ar y ddolen isod i ddysgu mwy!'
-      main_header: 'Cam newydd wedi dechrau ar gyfer prosiect ''%{projectName}'''
+      cta_view_phase: 'Gweler y cam newydd hwn'
+      event_description: 'Dechreuodd y prosiect hwn ar gam newydd ar lwyfan %{organizationName}. Cliciwch ar y ddolen isod i ddysgu mwy!'
+      main_header: 'Dechreuodd cam newydd ar gyfer prosiect ''%{projectName}'''
       subtitle: 'Ynglŷn â ''%{projectName}'''
       new_phase: 'Dechreuodd y prosiect hwn y cam ''%{phaseTitle}'''
       subject: 'Aeth %{projectName} i mewn i gyfnod newydd'
       preheader: 'Mae cyfnod newydd wedi cychwyn ar gyfer %{projectName}'
     project_phase_upcoming:
-      cta_view_phase: 'Gosodwch y cam newydd hwn i fyny'
-      event_description: 'Bydd y prosiect ''%{projectName}'' yn cychwyn ar gyfnod newydd yn fuan. Sicrhewch fod popeth wedi''i drefnu ar gyfer y cam hwn: A oes disgrifiad digonol? A yw syniadau dethol yn cael eu trosglwyddo i''r cyfnod hwn? Ydych chi am roi gwybod i''ch dinasyddion am fanylion y cam hwn trwy ymgyrch e-bost wedi''i deilwra?'
-      main_header: '%{firstName}, bydd prosiect yn cychwyn ar gyfnod newydd yn fuan'
+      cta_view_phase: 'Gosod y cam newydd hwn'
+      event_description: 'Bydd y prosiect ''%{projectName}'' yn dechrau cam newydd yn fuan. Sicrhewch fod popeth wedi''i drefnu ar gyfer y cam hwn: A oes disgrifiad digonol? A yw syniadau dethol yn cael eu trosglwyddo i''r cam hwn? Ydych chi am roi gwybod i''ch dinasyddion am fanylion y cam hwn trwy ymgyrch e-bost wedi''i theilwra?'
+      main_header: '%{firstName}, bydd prosiect yn dechrau cam newydd yn fuan'
       subtitle: 'Ynglŷn â ''%{projectName}'''
-      new_phase: 'Bydd y prosiect yn cychwyn ar y cam ''%{phaseTitle}'''
+      new_phase: 'Bydd y prosiect yn dechrau ar y cam ''%{phaseTitle}'''
       subject: 'Trefnwch bopeth ar gyfer y cyfnod newydd o %{projectName}'
       preheader: 'Bydd cyfnod newydd yn cychwyn yn fuan ar gyfer %{projectName}'
     project_published:
       subject: 'Cyhoeddwyd prosiect newydd ar lwyfan %{organizationName}'
       header_title: 'Cyhoeddwyd prosiect newydd'
-      header_message: 'Mae platfform cyfranogiad %{organizationName} newydd gyhoeddi''r prosiect canlynol:'
+      header_message: 'Mae llwyfan cyfranogi %{organizationName} newydd gyhoeddi''r prosiect canlynol:'
       preheader: 'Cyhoeddwyd prosiect newydd'
     project_review_request:
       subject: 'Cais am adolygiad: Mae prosiect yn aros am gymeradwyaeth.'
@@ -370,7 +370,7 @@ cy:
       cta_go_to_project: "Ewch i osodiadau prosiect"
     status_change_on_idea_you_follow:
       status_change: 'Statws newydd y mewnbwn hwn yw ''%{status}'''
-      header_message: 'Diweddarodd %{organizationName} statws y mewnbwn ''%{input_title}'' ar eu platfform cyfranogiad digidol.'
+      header_message: 'Diweddarodd %{organizationName} statws y mewnbwn ''%{input_title}'' ar ei lwyfan cyfranogi digidol.'
       header_title: 'Mae gan fewnbwn rydych chi''n ei ddilyn statws newydd'
       subject: 'Mae statws "%{input_title}" wedi newid'
       preheader: 'Mae gan fewnbwn rydych chi''n ei ddilyn statws newydd'
@@ -378,32 +378,32 @@ cy:
       subject: "Eich gweithgaredd ar y platfform cyfranogiad o %{organizationName}"
       commented: "%{authorFirstName} sylw:"
       preheader: "Trosolwg wythnosol o %{organizationName}"
-      title_your_weekly_report: "Darganfyddwch beth ddigwyddodd wythnos diwethaf"
+      title_your_weekly_report: "Dysgwch beth ddigwyddodd wythnos diwethaf"
       intro_text: "Dyma grynodeb o'r hyn a ddigwyddodd ar lwyfan cyfranogiad %{organizationName}."
-      cta_go_to_the_platform: "Ewch i'r platfform"
+      cta_go_to_the_platform: "Ewch i'r llwyfan"
       title_no_activity_past_week: "Dim gweithgaredd yn ystod yr wythnos ddiwethaf"
       successful_proposals_title: "Wedi cyrraedd y trothwy"
       successful_proposals_text: "Mae'r cynigion hyn wedi cael digon o gefnogaeth i symud i'r cam nesaf! Cliciwch ar y cynnig i ddysgu mwy am yr hyn sy'n digwydd nesaf."
       today_by_author: "Heddiw erbyn %{author}"
       yesterday_by_author: "Ddoe erbyn %{author}"
       x_days_ago_by_author: "%{x} diwrnod yn ôl erbyn %{author}"
-      trending_title: "Tueddu"
-      trending_text: "Diddordeb yn yr hyn sydd wedi bod yn digwydd ar y platfform? Dyma'r tri chyfraniad mwyaf poblogaidd a'r hyn y mae pobl yn ei ddweud amdanynt."
+      trending_title: "Yn boblogaidd"
+      trending_text: "Â diddordeb yn yr hyn sydd wedi bod yn digwydd ar y llwyfan? Dyma'r tri chyfraniad mwyaf poblogaidd a'r hyn y mae pobl yn ei ddweud amdanynt."
       no_notifications: "Dim hysbysiadau"
       one_notification: "1 hysbysiad"
       multiple_notifications: "%{notifCount} hysbysiadau"
       no_unread_notifications: "Nid oes gennych unrhyw hysbysiadau heb eu darllen. Ymwelwch â'r platfform i gyfrannu eich mewnbwn a chynhyrchu hysbysiadau newydd!"
-      unread_notifications: "Mae gennych hysbysiadau heb eu darllen. Ewch i'r platfform i ddarganfod beth sy'n digwydd!"
+      unread_notifications: "Mae gennych hysbysiadau heb eu darllen. Ewch i'r llwyfan i ddysgu beth sy'n digwydd!"
     threshold_reached_for_admin:
       cta_process_initiative: 'Ewch â''r cynnig hwn i''r camau nesaf'
       main_header: 'Cynnig wedi cyrraedd y trothwy pleidleisio!'
       subject: 'Cyrhaeddodd cynnig y trothwy pleidleisio ar eich platfform'
       preheader: 'Gwnewch yn siŵr eich bod chi''n cymryd y camau nesaf'
     welcome:
-      cta_join_platform: 'Darganfyddwch y platfform'
+      cta_join_platform: 'Chwilio’r llwyfan'
       subject: 'Croeso i''r platfform o %{organizationName}'
       main_header: Croeso!
-      message_welcome: 'Llongyfarchiadau, gwnaethoch gofrestru''n llwyddiannus ar y platfform cyfranogiad o %{organizationName}. Nawr gallwch chi ddarganfod y platfform a sicrhau bod eich llais yn cael ei glywed. Gallwch hefyd ychwanegu llun proffil a disgrifiad byr i ddweud wrth eraill pwy ydych chi.'
+      message_welcome: 'Llongyfarchiadau, gwnaethoch gofrestru''n llwyddiannus i lwyfan cyfranogi %{organizationName}. Gallwch bellach chwilio’r llwyfan a sicrhau bod eich llais yn cael ei glywed. Gallwch hefyd ychwanegu llun proffil a disgrifiad byr i ddweud wrth eraill pwy ydych chi.'
       preheader: 'Dyma beth allwch chi ei wneud ar y platfform o %{organizationName}'
     idea_published:
       subject:
@@ -445,7 +445,7 @@ cy:
       subject: '%{organizationName}: Fe wnaethoch chi bleidleisio''n llwyddiannus'
       preheader: 'Fe wnaethoch chi bleidleisio''n llwyddiannus ar y platfform cyfranogiad o %{organizationName}'
       title_basket_submitted: 'Fe wnaethoch chi bleidleisio''n llwyddiannus'
-      event_description: 'Diolch am gymryd rhan. Mae eich pleidleisiau wedi''u cofnodi. Ewch i''r platfform o %{organizationName} i weld a rheoli''ch pleidleisiau.'
+      event_description: 'Diolch am gymryd rhan. Mae eich pleidleisiau wedi''u cofnodi. Ewch i lwyfan %{organizationName} i weld a rheoli''ch pleidleisiau.'
       cta_see_votes_submitted: 'Gweler y pleidleisiau a gyflwynwyd'
       cta_message: 'Cliciwch ar y botwm isod i gymryd rhan'
     native_survey_not_submitted:
@@ -459,25 +459,25 @@ cy:
       subject: '%{organizationName}: Ni wnaethoch gyflwyno eich pleidleisiau'
       preheader: 'Ni wnaethoch gyflwyno''ch pleidleisiau ar y llwyfan cyfranogiad o %{organizationName}'
       title_basket_not_submitted: 'Ni wnaethoch gyflwyno eich pleidleisiau'
-      event_description: 'Fe wnaethoch chi ddewis ychydig o opsiynau ar gyfer %{contextTitle} ond ni wnaethoch chi gyflwyno''ch dewis.'
+      event_description: 'Fe wnaethoch chi ddewis ychydig o opsiynau ar gyfer %{contextTitle} ond ni wnaethoch gyflwyno''ch dewis.'
       cta_view_options_and_vote: 'Gweld opsiynau a phleidleisio'
-      cta_message: 'Cliciwch ar y botwm isod i gyflwyno''r opsiynau a ddewiswyd gennych'
+      cta_message: 'Cliciwch ar y botwm isod i gyflwyno''ch opsiynau dewis'
     voting_last_chance:
-      subject: '%{organizationName}: Cyfle olaf i bleidleisio o blaid %{phaseTitle}'
-      preheader: 'Cyfle olaf i bleidleisio o blaid %{phaseTitle} ar lwyfan cyfranogiad %{organizationName}'
-      title_last_chance: 'Cyfle olaf i bleidleisio o blaid %{phaseTitle}'
+      subject: '%{organizationName}: Cyfle olaf i bleidleisio dros %{phaseTitle}'
+      preheader: 'Cyfle olaf i bleidleisio dros %{phaseTitle} ar lwyfan cyfranogiad %{organizationName}'
+      title_last_chance: 'Cyfle olaf i bleidleisio dros %{phaseTitle}'
       body_1: 'Mae’r cyfnod pleidleisio ar gyfer y prosiect %{projectTitle} yn dod i ben yfory, am hanner nos.'
       body_2: 'Mae amser yn mynd yn brin, a sylwon ni nad ydych chi wedi bwrw eich pleidlais eto! Gweithredwch nawr trwy glicio ar y botwm isod i gymryd rhan.'
-      body_3: 'Drwy wneud hynny, byddwch yn cael mynediad i ystod o opsiynau a chyfle i roi eich mewnbwn, sy''n hanfodol wrth benderfynu ar ddyfodol y prosiect hwn.'
-      cta_vote: 'Pleidlais'
+      body_3: 'Drwy wneud hynny, byddwch yn cael mynediad i ystod o opsiynau ac yn cael cyfle i roi eich mewnbwn, sy''n hanfodol wrth benderfynu ar ddyfodol y prosiect hwn.'
+      cta_vote: 'Pleidleisio'
     voting_results:
       subject: '%{organizationName}: %{phaseTitle} canlyniadau pleidlais wedi''u datgelu!'
       preheader: '%{phaseTitle} canlyniadau pleidlais a ddatgelwyd ar lwyfan cyfranogiad %{organizationName}'
-      title_results: '%{phaseTitle} canlyniadau pleidlais wedi''u datgelu!'
+      title_results: 'Canlyniadau pleidlais %{phaseTitle} wedi''u datgelu!'
       body_1: 'Mae''r canlyniadau i mewn!'
-      body_2: 'Mae canlyniadau''r bleidlais %{phaseTitle} yn y platfform %{organizationName} ~ wedi''u cyhoeddi!'
-      body_3: 'Rydym yn eich annog i adolygu''r canlyniadau ac aros yn ymwybodol o ddiweddariadau pellach ar y camau nesaf.'
-      cta_see_results: 'Gweld canlyniadau yn y platfform'
+      body_2: 'Mae canlyniadau''r bleidlais %{phaseTitle} ar lwyfan %{organizationName} ~ wedi''u cyhoeddi!'
+      body_3: 'Rydym yn eich annog i adolygu’r canlyniadau ac chadw golwg am ddiweddariadau pellach ar y camau nesaf.'
+      cta_see_results: 'Gweld canlyniadau yn y llwyfan'
     event_registration_confirmation:
       subject: "Rydych chi i mewn! Mae eich cofrestriad ar gyfer \"%{eventTitle}\" wedi ei gadarnhau"
       preheader: "%{firstName}, diolch am gofrestru ar gyfer %{eventTitle}"
@@ -494,11 +494,12 @@ cy:
     voting_phase_started:
       subject: '%{organizationName}: Dechreuodd y cyfnod pleidleisio ar gyfer %{projectName}'
       preheader: 'Dechreuodd y cyfnod pleidleisio ar gyfer %{projectName} ar y llwyfan cyfranogiad o %{organizationName}'
-      event_description: 'Mae''r prosiect "%{projectName}" yn gofyn i chi bleidleisio rhwng %{numIdeas} opsiynau:'
+      event_description: 'Mae''r prosiect "%{projectName}" yn gofyn i chi bleidleisio rhwng %{numIdeas} opsiwn:'
       cta_message: 'Cliciwch ar y botwm isod i gymryd rhan'
-      cta_vote: 'Ewch i''r platfform i bleidleisio'
+      cta_vote: 'Ewch i''r llwyfan i bleidleisio'
     survey_submitted:
       subject: '%{organizationName}: Diolch am eich ymateb! 🎉'
+      preheader: 'Dyma fanylion eich cyflwyniad.'
       main_header: 'Diolch am rannu eich meddyliau ar "%{projectName}"!'
       your_input_submitted: 'Mae eich mewnbwn ar gyfer "%{projectName}" wedi ei gyflwyno''n llwyddiannus.'
       if_you_would_like_to_review: 'Os hoffech adolygu eich cyflwyniad, gallwch lawrlwytho eich ymatebion isod.'

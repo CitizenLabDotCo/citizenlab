@@ -36,13 +36,6 @@ const navItems: NavItem[] = [
     message: 'inputManager',
   },
   {
-    name: 'initiatives',
-    link: '/',
-    iconName: 'proposals',
-    message: 'initiatives',
-    onlyCheckAllowed: true,
-  },
-  {
     name: 'userinserts',
     link: '/admin/users',
     iconName: 'users',
@@ -66,6 +59,13 @@ const navItems: NavItem[] = [
     link: `/admin/tools`,
     iconName: 'grid',
     message: 'tools',
+  },
+  {
+    name: 'projectLibrary',
+    link: '/admin/project-library',
+    iconName: 'projects',
+    message: 'projectLibrary',
+    featureNames: ['project_library'],
   },
   {
     name: 'menu',
