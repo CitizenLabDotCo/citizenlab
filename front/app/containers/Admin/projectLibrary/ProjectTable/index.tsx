@@ -47,7 +47,7 @@ const ProjectTable = () => {
                 transform="translate(-2,0)"
               />
             </Th>
-            <Th>Tenant</Th>
+            <Th>Platform</Th>
           </Tr>
         </Thead>
         <TableBody

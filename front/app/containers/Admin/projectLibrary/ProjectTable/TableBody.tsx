@@ -7,6 +7,7 @@ import {
   Tbody,
   Spinner,
   Box,
+  StatusLabel,
 } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
@@ -58,6 +59,13 @@ const TableBody = ({ libraryProjects, isInitialLoading }: Props) => {
               <Cell>{attributes.participants}</Cell>
               <Cell>
                 {attributes.tenant_name}
+                <StatusLabel
+                  text={attributes.tenant_population_group}
+                  backgroundColor={colors.coolGrey600}
+                  h="16px"
+                  w="24px"
+                  ml="4px"
+                />
                 <Box
                   as="span"
                   display="block"
