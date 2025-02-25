@@ -34,6 +34,7 @@ const LABELS: Record<ParticipationMethod, MessageDescriptor> = {
   ideation: messages.ideation,
   proposals: messages.proposals,
   native_survey: messages.nativeSurvey,
+  community_monitor_survey: messages.nativeSurvey,
   voting: messages.voting,
   volunteering: messages.volunteering,
   poll: messages.poll,

@@ -53,7 +53,7 @@ export const getTabs = (
       feature: 'polls',
       name: 'poll',
     },
-    phase.attributes.participation_method === 'native_survey' && {
+    phase.attributes.supports_survey_form && {
       label: formatMessage(messages.surveyTab),
       url: 'native-survey',
       name: 'survey',
