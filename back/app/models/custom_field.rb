@@ -306,7 +306,7 @@ class CustomField < ApplicationRecord
   def ordered_options
     @ordered_options ||= if domicile?
       domicile_options
-    elsif random_option_ordering
+    elsif random_option_ordering # Domicile options will never need random ordering
       options.shuffle.sort_by { |o| o.other ? 1 : 0 }
     else
       options.order(:ordering)
@@ -388,15 +388,13 @@ class CustomField < ApplicationRecord
   def domicile_options
     return options.order(:ordering) unless domicile?
 
-    @domicile_options ||= begin
-      areas = Area.where(custom_field_option_id: options.pluck(:id))
-      area_id_map = areas.map { |a| { a.custom_field_option_id => { id: a.id, title: a.title_multiloc } } }.reduce({}, :merge)
+    areas = Area.where(custom_field_option_id: options.pluck(:id))
+    area_id_map = areas.map { |a| { a.custom_field_option_id => { id: a.id, title: a.title_multiloc } } }.reduce({}, :merge)
 
-      options.order(:ordering).map do |option|
-        option.key = area_id_map.dig(option.id, :id) || 'outside'
-        option.title_multiloc = area_id_map.dig(option.id, :title) || MultilocService.new.i18n_to_multiloc('custom_field_options.domicile.outside')
-        option
-      end
+    options.order(:ordering).map do |option|
+      option.key = area_id_map.dig(option.id, :id) || 'outside'
+      option.title_multiloc = area_id_map.dig(option.id, :title) || MultilocService.new.i18n_to_multiloc('custom_field_options.domicile.outside')
+      option
     end
   end
 end
