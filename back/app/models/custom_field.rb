@@ -321,7 +321,7 @@ class CustomField < ApplicationRecord
       areas = Area.where(custom_field_option_id: options.pluck(:id))
       area_id_map = areas.map { |a| { a.custom_field_option_id => { id: a.id, title: a.title_multiloc } } }.reduce({}, :merge)
 
-      options.map do |option|
+      options.order(:ordering).map do |option|
         option.key = area_id_map.dig(option.id, :id) || 'outside'
         option.title_multiloc = area_id_map.dig(option.id, :title) || MultilocService.new.i18n_to_multiloc('custom_field_options.domicile.outside')
         option
