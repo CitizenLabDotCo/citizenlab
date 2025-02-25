@@ -235,8 +235,6 @@ class SurveyResultsGeneratorService < FieldVisitorService
   end
 
   def build_select_response(answers, field)
-
-
     # TODO: This is an additional query for selects so performance issue here
     question_response_count = inputs.where("custom_field_values->'#{field.key}' IS NOT NULL").count
 
