@@ -499,6 +499,7 @@ lv:
       cta_vote: 'Dodieties uz platformu, lai balsotu'
     survey_submitted:
       subject: '%{organizationName}: Paldies par atbildi! 🎉'
+      preheader: 'Šeit ir sniegta informācija par jūsu iesniegumu.'
       main_header: 'Paldies, ka dalījāties savās pārdomās par "%{projectName}"!'
       your_input_submitted: 'Jūsu dati par "%{projectName}" ir veiksmīgi iesniegti.'
       if_you_would_like_to_review: 'Ja vēlaties pārskatīt savu iesniegumu, atbildes varat lejupielādēt zemāk.'

@@ -10,8 +10,6 @@ import {
   Toggle,
   Spinner,
   colors,
-  TooltipContentWrapper,
-  Tooltip,
   IconTooltip,
 } from '@citizenlab/cl2-component-library';
 import { saveAs } from 'file-saver';
@@ -34,10 +32,10 @@ import PDFExportModal, {
 
 import Button from 'components/UI/ButtonWithLink';
 import Modal from 'components/UI/Modal';
+import UpsellTooltip from 'components/UpsellTooltip';
 
 import { useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
-import { isNilOrError } from 'utils/helperUtils';
 import { requestBlob } from 'utils/requestBlob';
 
 import CopySurveyModal from './CopySurveyModal';
@@ -67,12 +65,17 @@ const Forms = () => {
     phaseId,
   });
   const { uiSchema } = useInputSchema({ projectId, phaseId });
-  const inputImporterEnabled = useFeatureFlag({
+  const inputImporterAllowed = useFeatureFlag({
     name: 'input_importer',
+    onlyCheckAllowed: true,
+  });
+  const importPrintedFormsAllowed = useFeatureFlag({
+    name: 'import_printed_forms',
+    onlyCheckAllowed: true,
   });
   const { mutate: deleteFormResults } = useDeleteSurveyResults();
 
-  if (!project || isNilOrError(locale) || !phase || !submissionCount) {
+  if (!project || !phase || !submissionCount) {
     return null;
   }
 
@@ -116,7 +119,6 @@ const Forms = () => {
   const handleDownloadPDF = () => setExportModalOpen(true);
 
   const handleExportPDF = async ({ personal_data }: FormValues) => {
-    if (isNilOrError(locale)) return;
     await saveSurveyAsPDF({
       downloadPdfLink,
       locale,
@@ -180,28 +182,16 @@ const Forms = () => {
                 }}
               />
             </Box>
-            <Tooltip
-              disabled={inputImporterEnabled}
-              content={
-                <TooltipContentWrapper tippytheme="light">
-                  {formatMessage(messages.disabledImportInputsTooltip)}
-                </TooltipContentWrapper>
-              }
+            <Button
+              linkTo={inputImporterLink}
+              icon="page"
+              iconSize="20px"
+              buttonStyle="secondary-outlined"
+              width="auto"
+              mr="8px"
             >
-              <Box>
-                <Button
-                  linkTo={inputImporterLink}
-                  icon="page"
-                  iconSize="20px"
-                  buttonStyle="secondary-outlined"
-                  width="auto"
-                  mr="8px"
-                  disabled={!inputImporterEnabled}
-                >
-                  {formatMessage(messages.importInputs)}
-                </Button>
-              </Box>
-            </Tooltip>
+              {formatMessage(messages.importInputs)}
+            </Button>
             <Button
               linkTo={`/projects/${project.data.attributes.slug}/surveys/new?phase_id=${phase.data.id}`}
               icon="eye"
@@ -257,87 +247,86 @@ const Forms = () => {
                           }}
                           disabled={haveSubmissionsComeIn}
                         >
-                          <Box display="flex" gap="4px" alignItems="center">
-                            <Icon
-                              name="copy"
-                              fill={
-                                haveSubmissionsComeIn
-                                  ? colors.grey400
-                                  : colors.coolGrey600
-                              }
-                            />
-                            <Text
-                              my="0px"
-                              color={
-                                haveSubmissionsComeIn ? 'grey400' : 'black'
-                              }
-                            >
-                              {formatMessage(messages.duplicateAnotherSurvey)}
-                            </Text>
-                          </Box>
+                          <Icon
+                            name="copy"
+                            fill={
+                              haveSubmissionsComeIn
+                                ? colors.grey400
+                                : colors.coolGrey600
+                            }
+                            mr="4px"
+                          />
+                          <Text
+                            my="0px"
+                            color={haveSubmissionsComeIn ? 'grey400' : 'black'}
+                          >
+                            {formatMessage(messages.duplicateAnotherSurvey)}
+                          </Text>
                         </DropdownListItem>
-                        {inputImporterEnabled && (
-                          <>
-                            <DropdownListItem onClick={handleDownloadPDF}>
-                              <Box display="flex" gap="4px" alignItems="center">
-                                <Icon
-                                  name="download"
-                                  fill={colors.coolGrey600}
-                                />
-                                <Text my="0px">
-                                  {formatMessage(messages.downloadSurvey)}
-                                </Text>
-                              </Box>
-                            </DropdownListItem>
-                            <DropdownListItem onClick={downloadExampleFile}>
-                              <Box display="flex" gap="4px" alignItems="center">
-                                <Icon
-                                  name="download"
-                                  fill={colors.coolGrey600}
-                                />
-                                <Text my="0px">
-                                  {formatMessage(
-                                    messages.downloadExcelTemplate
-                                  )}
-                                </Text>
-                                <IconTooltip
-                                  ml="4px"
-                                  content={formatMessage(
-                                    messages.downloadExcelTemplateTooltip
-                                  )}
-                                />
-                              </Box>
-                            </DropdownListItem>
-                          </>
-                        )}
+                        <UpsellTooltip
+                          disabled={importPrintedFormsAllowed}
+                          // Needed to ensure DropdownListItem takes up the full width of the dropdown
+                          width="100%"
+                        >
+                          <DropdownListItem
+                            onClick={handleDownloadPDF}
+                            disabled={!importPrintedFormsAllowed}
+                          >
+                            <Icon
+                              name="download"
+                              fill={colors.coolGrey600}
+                              mr="4px"
+                            />
+                            {formatMessage(messages.downloadSurvey)}
+                          </DropdownListItem>
+                        </UpsellTooltip>
+                        <UpsellTooltip
+                          disabled={inputImporterAllowed}
+                          // Needed to ensure DropdownListItem takes up the full width of the dropdown
+                          width="100%"
+                        >
+                          <DropdownListItem
+                            onClick={downloadExampleFile}
+                            disabled={!inputImporterAllowed}
+                          >
+                            <Icon
+                              name="download"
+                              fill={colors.coolGrey600}
+                              mr="4px"
+                            />
+                            {formatMessage(messages.downloadExcelTemplate)}
+                            <IconTooltip
+                              ml="4px"
+                              content={formatMessage(
+                                messages.downloadExcelTemplateTooltip
+                              )}
+                            />
+                          </DropdownListItem>
+                        </UpsellTooltip>
                       </>
                     )}
-                    <DropdownListItem onClick={handleDownloadResults}>
-                      <Box
-                        display="flex"
-                        gap="4px"
-                        alignItems="center"
-                        data-cy="e2e-download-survey-results"
-                      >
-                        <Icon name="download" fill={colors.coolGrey600} />
-                        <Text my="0px">
-                          {formatMessage(messages.downloadResults)}
-                        </Text>
-                      </Box>
+                    <DropdownListItem
+                      onClick={handleDownloadResults}
+                      data-cy="e2e-download-survey-results"
+                    >
+                      <Icon
+                        name="download"
+                        fill={colors.coolGrey600}
+                        mr="4px"
+                      />
+                      <Text my="0px">
+                        {formatMessage(messages.downloadResults)}
+                      </Text>
                     </DropdownListItem>
                     {haveSubmissionsComeIn && (
-                      <DropdownListItem onClick={openDeleteModal}>
-                        <Box
-                          display="flex"
-                          gap="4px"
-                          alignItems="center"
-                          data-cy="e2e-delete-survey-results"
-                        >
-                          <Icon name="delete" fill={colors.red600} />
-                          <Text color="red600" my="0px">
-                            {formatMessage(messages.deleteSurveyResults)}
-                          </Text>
-                        </Box>
+                      <DropdownListItem
+                        onClick={openDeleteModal}
+                        data-cy="e2e-delete-survey-results"
+                      >
+                        <Icon name="delete" fill={colors.red600} mr="4px" />
+                        <Text color="red600" my="0px">
+                          {formatMessage(messages.deleteSurveyResults)}
+                        </Text>
                       </DropdownListItem>
                     )}
                   </>

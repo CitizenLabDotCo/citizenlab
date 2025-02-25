@@ -2,19 +2,26 @@ import React from 'react';
 
 import { Box, Title, Text } from '@citizenlab/cl2-component-library';
 
+import { IInputsData } from 'api/analysis_inputs/types';
 import { IIdeaCustomField } from 'api/idea_custom_fields/types';
 
 import T from 'components/T';
 
-import { FilterToggleButton } from '../FilterToggleButton';
-import { SelectOptionText } from '../SelectOptionText';
+import { useIntl } from 'utils/cl-intl';
+
+import messages from '../../../../../messages';
+
+import { FilterToggleButton } from './FilterToggleButton';
 
 type Props = {
+  input: IInputsData;
   customField: IIdeaCustomField;
   rawValue: any;
 };
 
-const SelectLongField = ({ customField, rawValue }: Props) => {
+const LinearScaleLongField = ({ input, customField, rawValue }: Props) => {
+  const { formatMessage } = useIntl();
+
   return (
     <Box>
       <Title variant="h5" m="0px">
@@ -22,10 +29,9 @@ const SelectLongField = ({ customField, rawValue }: Props) => {
       </Title>
       <Box display="flex" justifyContent="flex-start" alignItems="flex-start">
         <Text m="0">
-          <SelectOptionText
-            customFieldId={customField.data.id}
-            selectedOptionKey={rawValue}
-          />
+          {input.attributes.custom_field_values[
+            customField.data.attributes.key
+          ] || formatMessage(messages.noAnswer)}
         </Text>
         <Box ml="8px">
           <FilterToggleButton
@@ -38,4 +44,4 @@ const SelectLongField = ({ customField, rawValue }: Props) => {
   );
 };
 
-export default SelectLongField;
+export default LinearScaleLongField;

@@ -499,6 +499,7 @@ tr:
       cta_vote: 'Oy vermek için platforma gidin'
     survey_submitted:
       subject: '%{organizationName}: Cevabınız için teşekkür ederim! 🎉'
+      preheader: 'İşte başvurunuzun ayrıntıları.'
       main_header: '"%{projectName}" hakkındaki düşüncelerinizi paylaştığınız için teşekkür ederiz!'
       your_input_submitted: '"%{projectName}" için girdiniz başarıyla gönderildi.'
       if_you_would_like_to_review: 'Gönderinizi gözden geçirmek isterseniz, yanıtlarınızı aşağıdan indirebilirsiniz.'

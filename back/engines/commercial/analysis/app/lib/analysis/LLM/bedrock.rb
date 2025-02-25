@@ -85,22 +85,6 @@ module Analysis
           end
         ].compact
       end
-
-      def invoke_params(prompt, **params)
-        assistant_prefix = params[:assistant_prefix] || ''
-        json = {
-          'prompt' => "\n\nHuman: #{prompt}\n\nAssistant: #{assistant_prefix}",
-          'max_tokens_to_sample' => 300,
-          'temperature' => 0.1,
-          'top_p' => 0.9
-        }
-        { model_id: model_id, body: json.to_json, content_type: 'application/json' }
-      end
-
-      def body_completion(body_string)
-        body = JSON.parse body_string
-        body['completion']
-      end
     end
   end
 end
