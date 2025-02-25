@@ -1190,9 +1190,9 @@ RSpec.describe SurveyResultsGeneratorService do
         end
 
         let(:expected_result_select_with_domicile_user_field_grouping) do
-          area_1_key = domicile_user_custom_field.options[0].key
-          area_2_key = domicile_user_custom_field.options[1].key
-          somewhere_else_key = domicile_user_custom_field.options.last.key
+          area_1_key = domicile_user_custom_field.domicile_options[0].key
+          area_2_key = domicile_user_custom_field.domicile_options[1].key
+          somewhere_else_key = domicile_user_custom_field.domicile_options.last.key
           expected_result_select.tap do |result|
             result[:grouped] = true
             result[:legend] = [area_1_key, area_2_key, somewhere_else_key, nil]

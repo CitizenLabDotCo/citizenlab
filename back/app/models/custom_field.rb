@@ -304,7 +304,9 @@ class CustomField < ApplicationRecord
   end
 
   def ordered_options
-    @ordered_options ||= if random_option_ordering
+    @ordered_options ||= if domicile?
+      domicile_options
+    elsif random_option_ordering
       options.shuffle.sort_by { |o| o.other ? 1 : 0 }
     else
       options.order(:ordering)
@@ -313,7 +315,7 @@ class CustomField < ApplicationRecord
 
   # Return domicile options with IDs and descriptions from areas
   def domicile_options
-    return options unless domicile?
+    return options.order(:ordering) unless domicile?
 
     @domicile_options ||= begin
       areas = Area.where(custom_field_option_id: options.pluck(:id))
