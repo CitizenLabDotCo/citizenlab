@@ -1,8 +1,8 @@
-import { renderHook } from '@testing-library/react-hooks';
 import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
+import { renderHook, waitFor } from 'utils/testUtils/rtl';
 
 import { commentsData } from './__mocks__/useComments';
 import useComment from './useComment';
@@ -20,7 +20,7 @@ describe('useComment', () => {
   afterAll(() => server.close());
 
   it('returns data correctly', async () => {
-    const { result, waitFor } = renderHook(() => useComment('commentId'), {
+    const { result } = renderHook(() => useComment('commentId'), {
       wrapper: createQueryClientWrapper(),
     });
 
@@ -39,7 +39,7 @@ describe('useComment', () => {
       })
     );
 
-    const { result, waitFor } = renderHook(() => useComment('commentId'), {
+    const { result } = renderHook(() => useComment('commentId'), {
       wrapper: createQueryClientWrapper(),
     });
 

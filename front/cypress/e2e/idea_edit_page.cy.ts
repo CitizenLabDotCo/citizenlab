@@ -66,7 +66,7 @@ describe('Idea edit page', () => {
     cy.get('@descriptionInput').contains(ideaContent);
 
     // edit title and description
-    cy.get('@titleInput').clear().type(newIdeaTitle);
+    cy.get('@titleInput').clear().type(newIdeaTitle, { delay: 0 });
     cy.get('@descriptionInput').clear().type(newIdeaContent);
 
     // verify the new values

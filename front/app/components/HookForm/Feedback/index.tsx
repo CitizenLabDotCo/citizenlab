@@ -46,8 +46,10 @@ const Feedback = ({ successMessage, onlyShowErrors }: FeedbackProps) => {
   }, [submitCount]);
 
   const getAllErrorMessages = () => {
-    const errorMessages: Array<{ field: string; message?: string | Element }> =
-      [];
+    const errorMessages: Array<{
+      field: string;
+      message?: string | React.ReactNode;
+    }> = [];
 
     for (const field in formContextErrors) {
       const errors = get(formContextErrors, field) as RHFErrors;
