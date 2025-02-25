@@ -396,6 +396,10 @@ module ParticipationMethod
       true
     end
 
+    def follow_idea_on_idea_submission?
+      true
+    end
+
     private
 
     def proposed_budget_in_form?
