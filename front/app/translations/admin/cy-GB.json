@@ -928,6 +928,7 @@
   "app.containers.Admin.projects.all.notIncludedInYourPlan": "Fodd bynnag, nid yw hyn wedi'i gynnwys yn eich cynllun presennol. Cysylltwch â Rheolwr Llwyddiant eich Llywodraeth neu weinyddwr i'w ddatgloi.",
   "app.containers.Admin.projects.all.notes": "Nodiadau",
   "app.containers.Admin.projects.all.personalDataExplanation2": "Ticiwch y blwch isod, os ydych chi am i'ch PDF wedi'i lawrlwytho gynnwys meysydd enw, enw olaf, ac e-bost. Ar ôl lanlwytho’r ffurflen bapur, byddwn yn defnyddio’r data defnyddiwr hwnnw, i gynhyrchu cyfrif yn awtomatig ar gyfer yr ymatebydd i’r arolwg all-lein.",
+  "app.containers.Admin.projects.project.analysis.Comments.comments": "Sylwadau",
   "app.containers.Admin.projects.project.analysis.aiSummary": "Crynodeb AI",
   "app.containers.Admin.projects.project.analysis.aiSummaryTooltipText": "Mae hwn yn gynnwys a gynhyrchir gan AI. Efallai nad yw'n 100% yn gywir. Adolygwch a chroesgyfeiriwch gyda'r mewnbynnau gwirioneddol i sicrhau cywirdeb. Byddwch yn ymwybodol bod y cywirdeb yn debygol o wella os bydd nifer y mewnbynnau dethol yn cael eu lleihau.",
   "app.containers.Admin.projects.project.ideas.analysisAction": "Ewch i ddadansoddiad AI",
