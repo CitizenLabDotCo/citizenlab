@@ -7,10 +7,10 @@ import useRequestProjectReview from 'api/project_reviews/useRequestProjectReview
 import { trackEventByName } from 'utils/analytics';
 import { useIntl } from 'utils/cl-intl';
 
-import messages from './messages';
-import tracks from './tracks';
+import messages from '../messages';
+import tracks from '../tracks';
 
-const ReviewRequest = ({
+const ReviewRequestDropdown = ({
   isOpen,
   onClose,
   projectId,
@@ -57,4 +57,4 @@ const ReviewRequest = ({
   );
 };
 
-export default ReviewRequest;
+export default ReviewRequestDropdown;
