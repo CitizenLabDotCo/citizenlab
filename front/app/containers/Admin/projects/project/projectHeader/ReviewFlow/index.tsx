@@ -119,6 +119,7 @@ const ReviewFlow = ({ project }: { project: IProjectData }) => {
                   ? 'e2e-request-approval-pending'
                   : 'e2e-request-approval'
               }
+              className="intercom-admin-project-request-approval-button"
             >
               {approvalPending
                 ? formatMessage(messages.pendingApproval)
