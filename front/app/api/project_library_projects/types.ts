@@ -9,9 +9,11 @@ import miniProjectsKeys from './keys';
 
 export type Status = 'draft' | 'active' | 'finished' | 'stale' | 'archived';
 
+type PopulationGroup = 'xs' | 's' | 'm' | 'l' | 'xl';
+
 export type RansackParams = {
   'q[tenant_country_alpha2]'?: string; // TODO figure out what values are allowed here
-  'q[tenant_population_group_eq]'?: 'xs' | 's' | 'm' | 'l' | 'xl';
+  'q[tenant_population_group_eq]'?: PopulationGroup;
   'q[score_total_gteq]'?: '1' | '2' | '3' | '4';
   'q[phases_participation_method_eq]'?: ParticipationMethod;
   'q[topic_id_eq]'?: string;
@@ -53,6 +55,7 @@ export interface ProjectLibraryProjectData {
     publication_status: PublicationStatus;
     score_feedback: number | null;
     score_influence: number | null;
+    score_participation: number | null;
     score_process: number | null;
     score_total: number | null;
     slack_references_count: number;
@@ -66,7 +69,7 @@ export interface ProjectLibraryProjectData {
     tenant_map_center_lat: number | null;
     tenant_map_center_long: number | null;
     tenant_name: string;
-    tenant_population: number;
+    tenant_population_group: PopulationGroup;
     title_en: string;
     title_multiloc: Multiloc;
     topic_id: string;
