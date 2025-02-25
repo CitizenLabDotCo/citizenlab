@@ -1,19 +1,27 @@
 import React from 'react';
 
-import useProjectLibraryProjects from 'api/project_library_projects/useProjectLibraryProjects';
+import { Box, Title } from '@citizenlab/cl2-component-library';
+
+import messages from 'containers/Admin/sideBar/messages';
+
+import { FormattedMessage } from 'utils/cl-intl';
+
+import Filters from './Filters';
+import ProjectTable from './ProjectTable';
 
 const ProjectLibrary = () => {
-  const { data: libraryProjects } = useProjectLibraryProjects({});
-
   return (
-    <div>
-      <h1>Project Library</h1>
-      <ul>
-        {libraryProjects?.data.map((project) => (
-          <li key={project.id}>{project.attributes.title_en}</li>
-        ))}
-      </ul>
-    </div>
+    <Box>
+      <Title variant="h1" color="primary" mb="40px">
+        <FormattedMessage {...messages.projectLibrary} />
+      </Title>
+      <Box>
+        <Box mb="24px">
+          <Filters />
+        </Box>
+        <ProjectTable />
+      </Box>
+    </Box>
   );
 };
 
