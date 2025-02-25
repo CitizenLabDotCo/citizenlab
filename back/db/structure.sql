@@ -1566,7 +1566,7 @@ CREATE TABLE public.phases (
     manual_voters_amount integer,
     manual_voters_last_updated_by_id uuid,
     manual_voters_last_updated_at timestamp(6) without time zone,
-    user_fields_in_form boolean DEFAULT false NOT NULL
+    native_survey_method character varying
 );
 
 
@@ -2099,7 +2099,8 @@ CREATE TABLE public.custom_fields (
     linear_scale_label_8_multiloc jsonb DEFAULT '{}'::jsonb NOT NULL,
     linear_scale_label_9_multiloc jsonb DEFAULT '{}'::jsonb NOT NULL,
     linear_scale_label_10_multiloc jsonb DEFAULT '{}'::jsonb NOT NULL,
-    linear_scale_label_11_multiloc jsonb DEFAULT '{}'::jsonb NOT NULL
+    linear_scale_label_11_multiloc jsonb DEFAULT '{}'::jsonb NOT NULL,
+    ask_follow_up boolean DEFAULT false NOT NULL
 );
 
 
@@ -6828,8 +6829,9 @@ ALTER TABLE ONLY public.ideas_topics
 SET search_path TO public,shared_extensions;
 
 INSERT INTO "schema_migrations" (version) VALUES
-('20250220161323'),
 ('20250219104523'),
+('20250217295025'),
+('20250211103910'),
 ('20250204143605'),
 ('20250120125531'),
 ('20250117121004'),
