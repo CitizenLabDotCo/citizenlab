@@ -41,13 +41,16 @@ module ContentBuilder
       # regardless of whether they are actually used as titles or texts.
       def take_multiloc(node, resolved_name)
         return unless Layout::TEXT_CRAFTJS_NODE_TYPES.include? resolved_name
-        
+
         if @with_metadata
-          @ordered_multilocs << {
-            node_type: 'AccordionMultiloc',
-            multiloc_type: 'title',
-            multliloc: node['props']['title']
-          } if resolved_name == 'AccordionMultiloc'
+          if resolved_name == 'AccordionMultiloc'
+            @ordered_multilocs << {
+              node_type: 'AccordionMultiloc',
+              multiloc_type: 'title',
+              multliloc: node['props']['title']
+            }
+          end
+
           @ordered_multilocs << {
             node_type: resolved_name,
             multiloc_type: 'text',
