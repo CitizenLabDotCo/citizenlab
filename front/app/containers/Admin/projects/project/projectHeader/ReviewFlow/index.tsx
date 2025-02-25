@@ -14,7 +14,7 @@ import { useIntl } from 'utils/cl-intl';
 import { usePermission } from 'utils/permissions';
 
 import messages from './messages';
-import ReviewRequest from './ReviewRequest';
+import ReviewRequestDropdown from './ReviewRequestDropdown';
 import tracks from './tracks';
 
 const ReviewFlow = ({ project }: { project: IProjectData }) => {
@@ -126,7 +126,7 @@ const ReviewFlow = ({ project }: { project: IProjectData }) => {
                 : formatMessage(messages.requestApproval)}
             </Button>
           </Tooltip>
-          <ReviewRequest
+          <ReviewRequestDropdown
             isOpen={isProjectReviewDropdownOpened}
             onClose={() => {
               setIsProjectReviewDropdownOpened(false);
