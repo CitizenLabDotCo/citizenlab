@@ -8,13 +8,13 @@ class InputUiSchemaGeneratorService < UiSchemaGeneratorService
   end
 
   def visit_html_multiloc(field)
-    super.tap do |ui_field|
-      if field.code == 'body_multiloc'
-        ui_field[:elements].each do |element|
-          element[:options].delete :trim_on_blur
-        end
-      end
-    end
+    ui_field = super
+
+    return ui_field unless field.code == 'body_multiloc'
+
+    ui_field[:options]&.delete(:trim_on_blur) if ui_field.is_a?(Hash) && ui_field[:options].is_a?(Hash)
+
+    ui_field
   end
 
   def generate_for(fields)
