@@ -48,6 +48,7 @@ const ProjectTable = () => {
               />
             </Th>
             <Th>Platform</Th>
+            <Th>Methods</Th>
           </Tr>
         </Thead>
         <TableBody

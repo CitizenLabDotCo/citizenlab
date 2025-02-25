@@ -75,6 +75,9 @@ const TableBody = ({ libraryProjects, isInitialLoading }: Props) => {
                   {attributes.tenant_country_alpha2}
                 </Box>
               </Cell>
+              <Cell>
+                <StatusLabel text={''} backgroundColor={colors.green700} />
+              </Cell>
             </Tr>
           ))}
         </>
