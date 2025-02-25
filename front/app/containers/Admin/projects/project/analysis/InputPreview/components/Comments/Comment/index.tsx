@@ -1,7 +1,6 @@
-import React, { useState } from 'react';
+import React from 'react';
 
-import { Box, Button, colors } from '@citizenlab/cl2-component-library';
-import styled from 'styled-components';
+import { Box, colors } from '@citizenlab/cl2-component-library';
 
 import { ICommentData } from 'api/comments/types';
 
@@ -10,35 +9,23 @@ import useLocalize from 'hooks/useLocalize';
 import Author from 'components/Author';
 import QuillEditedContent from 'components/UI/QuillEditedContent';
 
-import { useIntl } from 'utils/cl-intl';
-
-import messages from '../messages';
-
 interface Props {
   comment: ICommentData;
 }
 
-const StyledBox = styled(Box)<{ showMore: boolean }>`
-  ${({ showMore }) =>
-    showMore
-      ? ''
-      : `
-    height: 52px;
-    mask-image: linear-gradient(white, white 50%, transparent);
-    overflow: hidden;
-  `}
-`;
-
 const Comment = ({ comment }: Props) => {
   const localize = useLocalize();
-  const { formatMessage } = useIntl();
-  const [showMore, setShowMore] = useState(false);
 
   const authorId = comment.relationships.author.data?.id;
   const { attributes } = comment;
 
   return (
-    <Box key={comment.id} borderBottom={`1px solid ${colors.divider}`} py="8px">
+    <Box
+      key={comment.id}
+      borderBottom={`1px solid ${colors.divider}`}
+      py="16px"
+      px="4px"
+    >
       <Box>
         <Author
           authorId={authorId ?? null}
@@ -53,7 +40,7 @@ const Comment = ({ comment }: Props) => {
           showModeratorStyles={false}
         />
       </Box>
-      <StyledBox showMore={showMore}>
+      <Box pt="12px">
         <QuillEditedContent textColor={colors.textPrimary}>
           <div
             dangerouslySetInnerHTML={{
@@ -61,19 +48,6 @@ const Comment = ({ comment }: Props) => {
             }}
           />
         </QuillEditedContent>
-      </StyledBox>
-      <Box display="flex" alignItems="center" justifyContent="center">
-        <Button
-          buttonStyle="text"
-          onClick={() => {
-            setShowMore((showMore) => !showMore);
-          }}
-          p="0px"
-        >
-          {showMore
-            ? formatMessage(messages.showLess)
-            : formatMessage(messages.showMore)}
-        </Button>
       </Box>
     </Box>
   );
