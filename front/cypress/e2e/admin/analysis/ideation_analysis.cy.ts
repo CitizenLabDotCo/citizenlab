@@ -24,7 +24,7 @@ describe('Admin: ideation analysis', () => {
           projectId,
           title: 'firstPhaseTitle',
           startAt: moment().subtract(9, 'month').format('DD/MM/YYYY'),
-          endAt: moment().subtract(3, 'month').format('DD/MM/YYYY'),
+          endAt: moment().add(3, 'month').format('DD/MM/YYYY'),
           participationMethod: 'ideation',
           canPost: true,
           canComment: true,
