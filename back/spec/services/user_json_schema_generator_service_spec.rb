@@ -37,8 +37,8 @@ RSpec.describe UserJsonSchemaGeneratorService do
   end
 
   describe '#visit_select' do
-    context 'when the code is domicile' do
-      let(:field) { create(:custom_field, input_type: 'number', code: 'domicile', key: field_key) }
+    context 'when the field is domicile' do
+      let(:field) { create(:custom_field_domicile) }
       let!(:area1) { create(:area) }
       let!(:area2) { create(:area) }
 
