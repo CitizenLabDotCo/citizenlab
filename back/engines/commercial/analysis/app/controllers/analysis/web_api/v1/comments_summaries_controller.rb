@@ -12,7 +12,8 @@ module Analysis
         def show
           render json: CommentsSummarySerializer.new(
             @comments_summary,
-            params: jsonapi_serializer_params
+            params: jsonapi_serializer_params,
+            include: [:background_task]
           ).serializable_hash
         end
 
@@ -61,7 +62,7 @@ module Analysis
           CommentsSummary
             .joins(:background_task)
             .where(background_task: { analysis: @analysis }, idea_id: @input.id)
-            .order(generated_at: :desc)
+            .order(created_at: :desc)
         end
 
         def side_fx_service

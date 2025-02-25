@@ -67,6 +67,7 @@ const Tasks = () => {
   > = {
     auto_tagging_task: formatMessage(messages.autotaggingTask),
     summarization_task: formatMessage(messages.summarizationTask),
+    comments_summarization_task: formatMessage(messages.summarizationTask),
   };
 
   const taggingMethodTranslationMap: Record<AutoTaggingMethod, string> = {
