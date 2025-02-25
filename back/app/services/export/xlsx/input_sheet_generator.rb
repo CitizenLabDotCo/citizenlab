@@ -203,11 +203,7 @@ module Export
 
       def user_report_fields
         registration_fields.map do |field|
-          if field.domicile?
-            Export::DomicileFieldForExport.new(field, @value_visitor, :author)
-          else
-            Export::CustomFieldForExport.new(field, @value_visitor, :author)
-          end
+          Export::CustomFieldForExport.new(field, @value_visitor, :author)
         end
       end
 

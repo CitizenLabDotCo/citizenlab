@@ -274,7 +274,7 @@ class CustomField < ApplicationRecord
   end
 
   def other_option_text_field
-    return if !includes_other_option?
+    return unless includes_other_option?
 
     other_field_key = "#{key}_other"
     title_multiloc = MultilocService.new.i18n_to_multiloc(
