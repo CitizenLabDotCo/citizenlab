@@ -79,7 +79,7 @@ RSpec.describe InputUiSchemaGeneratorService do
                 type: 'Category',
                 label: 'What is your question?',
                 options: {
-                  id: custom_form.custom_fields.find_by(code: 'ideation_section1').id,
+                  id: custom_form.custom_fields.find_by(code: 'ideation_page1').id,
                   description: ''
                 },
                 elements: [
@@ -179,7 +179,7 @@ RSpec.describe InputUiSchemaGeneratorService do
                 type: 'Category',
                 label: 'Images and attachments',
                 options: {
-                  id: custom_form.custom_fields.find_by(code: 'ideation_section2').id,
+                  id: custom_form.custom_fields.find_by(code: 'ideation_page2').id,
                   description: 'Upload your favourite files here'
                 },
                 elements: [
@@ -213,7 +213,7 @@ RSpec.describe InputUiSchemaGeneratorService do
                 type: 'Category',
                 label: 'Details',
                 options: {
-                  id: custom_form.custom_fields.find_by(code: 'ideation_section3').id,
+                  id: custom_form.custom_fields.find_by(code: 'ideation_page3').id,
                   description: ''
                 },
                 elements: [

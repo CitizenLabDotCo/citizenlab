@@ -788,7 +788,6 @@
   "app.components.formBuilder.ruleForAnswerLabel": "ਜੇਕਰ ਜਵਾਬ ਹੈ:",
   "app.components.formBuilder.ruleForAnswerLabelMultiselect": "ਜੇਕਰ ਜਵਾਬਾਂ ਵਿੱਚ ਸ਼ਾਮਲ ਹਨ:",
   "app.components.formBuilder.save": "ਸੇਵ ਕਰੋ",
-  "app.components.formBuilder.section": "ਅਨੁਭਾਗ",
   "app.components.formBuilder.sectionCannotBeDeleted": "ਇਸ ਸੈਕਸ਼ਨ ਨੂੰ ਮਿਟਾਇਆ ਨਹੀਂ ਜਾ ਸਕਦਾ।",
   "app.components.formBuilder.selectRangeTooltip": "ਆਪਣੇ ਪੈਮਾਨੇ ਲਈ ਵੱਧ ਤੋਂ ਵੱਧ ਮੁੱਲ ਚੁਣੋ।",
   "app.components.formBuilder.shapefileUpload": "Esri ਸ਼ੇਪਫਾਈਲ ਅੱਪਲੋਡ",

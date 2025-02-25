@@ -448,7 +448,7 @@ RSpec.describe CustomField do
       section = described_class.new(
         resource: resource,
         input_type: 'section',
-        code: 'ideation_section1',
+        code: 'ideation_page1',
         title_multiloc: ignored_title
       )
       expected_english_title = 'What is your question?'
@@ -464,7 +464,7 @@ RSpec.describe CustomField do
       section = described_class.new(
         resource: resource,
         input_type: 'section',
-        code: 'ideation_section1',
+        code: 'ideation_page1',
         title_multiloc: ignored_title
       )
       expected_english_title = 'What is your contribution?'

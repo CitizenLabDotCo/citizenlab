@@ -78,13 +78,13 @@ RSpec.describe ParticipationMethod::Voting do
       expect(
         participation_method.default_fields(create(:custom_form, participation_context: phase)).map(&:code)
       ).to eq %w[
-        ideation_section1
+        ideation_page1
         title_multiloc
         body_multiloc
-        ideation_section2
+        ideation_page2
         idea_images_attributes
         idea_files_attributes
-        ideation_section3
+        ideation_page3
         topic_ids
         location_description
         proposed_budget
@@ -174,7 +174,6 @@ RSpec.describe ParticipationMethod::Voting do
   its(:supports_input_term?) { is_expected.to be true }
   its(:supports_inputs_without_author?) { is_expected.to be false }
   its(:supports_multiple_posts?) { is_expected.to be true }
-  its(:supports_pages_in_form?) { is_expected.to be false }
   its(:supports_permitted_by_everyone?) { is_expected.to be false }
   its(:supports_public_visibility?) { is_expected.to be true }
   its(:supports_toxicity_detection?) { is_expected.to be true }
