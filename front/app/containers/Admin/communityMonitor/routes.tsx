@@ -1,39 +1,86 @@
 import React, { lazy } from 'react';
 
-import { Outlet as RouterOutlet } from 'react-router-dom';
-
-import HelmetIntl from 'components/HelmetIntl';
 import PageLoading from 'components/UI/PageLoading';
 
-import { AdminRoute } from '../routes';
+const LiveMonitor = lazy(() => import('./components/LiveMonitor'));
+const Reports = lazy(() => import('./components/Reports'));
+const Settings = lazy(() => import('./components/Settings'));
+const Participants = lazy(() => import('./components/Participants'));
 
-import messages from './messages';
+import { AdminRoute } from '../routes';
 
 const CommunityMonitor = lazy(() => import('./index'));
 
 export enum communityMonitorRoutes {
-  communityMonitor = 'community-monitor',
   communityMonitorDefault = '',
+  communityMonitor = 'community-monitor',
+  liveMonitor = 'live-monitor',
+  participants = 'participants',
+  reports = 'reports',
+  settings = 'settings',
 }
 
 export type communityMonitorRouteTypes =
-  AdminRoute<communityMonitorRoutes.communityMonitor>;
+  | AdminRoute<communityMonitorRoutes.communityMonitor>
+  | `${AdminRoute<communityMonitorRoutes.communityMonitor>}/${communityMonitorRoutes.liveMonitor}`
+  | `${AdminRoute<communityMonitorRoutes.communityMonitor>}/${communityMonitorRoutes.participants}`
+  | `${AdminRoute<communityMonitorRoutes.communityMonitor>}/${communityMonitorRoutes.reports}`
+  | `${AdminRoute<communityMonitorRoutes.communityMonitor>}/${communityMonitorRoutes.settings}`;
 
 const communityMonitorsRoutes = () => {
   return {
     path: communityMonitorRoutes.communityMonitor,
     element: (
       <PageLoading>
-        <HelmetIntl title={messages.communityMonitorLabel} />
-        <RouterOutlet />
+        <CommunityMonitor />
       </PageLoading>
     ),
     children: [
       {
-        path: communityMonitorRoutes.communityMonitorDefault,
+        path: communityMonitorRoutes.liveMonitor,
         element: (
           <PageLoading>
-            <CommunityMonitor />
+            <div
+              role="tabpanel"
+              aria-labelledby="tab-live-monitor"
+              tabIndex={0}
+            >
+              <LiveMonitor />
+            </div>
+          </PageLoading>
+        ),
+      },
+      {
+        path: communityMonitorRoutes.reports,
+        element: (
+          <PageLoading>
+            <div role="tabpanel" aria-labelledby="tab-reports" tabIndex={0}>
+              <Reports />
+            </div>
+          </PageLoading>
+        ),
+      },
+      {
+        path: communityMonitorRoutes.settings,
+        element: (
+          <PageLoading>
+            <div role="tabpanel" aria-labelledby="tab-settings" tabIndex={0}>
+              <Settings />
+            </div>
+          </PageLoading>
+        ),
+      },
+      {
+        path: communityMonitorRoutes.participants,
+        element: (
+          <PageLoading>
+            <div
+              role="tabpanel"
+              aria-labelledby="tab-participants"
+              tabIndex={0}
+            >
+              <Participants />
+            </div>
           </PageLoading>
         ),
       },

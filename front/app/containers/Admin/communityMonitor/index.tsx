@@ -1,22 +1,17 @@
 import React from 'react';
 
-import useCommunityMonitorProject from 'api/community_monitor/useCommunityMonitorProject';
+import { Box, colors } from '@citizenlab/cl2-component-library';
+import { Outlet as RouterOutlet } from 'react-router-dom';
 
-import clHistory from 'utils/cl-router/history';
+import NavigationHeader from './components/NavigationHeader';
 
 const CommunityMonitor = () => {
-  // NOTE: This component is only a placeholder until the tab UI is implemented.
-
-  const { data: project } = useCommunityMonitorProject();
-  const currentPhaseId = project?.data.relationships.current_phase?.data?.id;
-
-  if (project) {
-    clHistory.push(
-      `/admin/projects/${project.data.id}/phases/${currentPhaseId}`
-    );
-  }
-
-  return <>Community Monitor Page - WIP - Placeholder</>;
+  return (
+    <Box background={colors.background}>
+      <NavigationHeader />
+      <RouterOutlet />
+    </Box>
+  );
 };
 
 export default CommunityMonitor;
