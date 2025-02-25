@@ -42,6 +42,8 @@ describe('Admin: ideation analysis', () => {
             ideaTitle: ideaTitle1,
             ideaContent: ideaContent,
             phaseIds: [phaseId],
+          }).then((idea) => {
+            cy.apiAddComment(idea.body.data.id, 'The first comment');
           });
           cy.apiCreateIdea({
             projectId,
@@ -91,6 +93,11 @@ describe('Admin: ideation analysis', () => {
     cy.get('[data-cy="e2e-analysis-input-preview"]').should(
       'contain',
       'My first idea'
+    );
+    // Shows comments
+    cy.get('[data-cy="e2e-analysis-input-preview"]').should(
+      'contain',
+      'The first comment'
     );
     cy.get('[data-cy="e2e-analysis-input-item"]').last().click();
     cy.get('[data-cy="e2e-analysis-input-preview"]').should(
