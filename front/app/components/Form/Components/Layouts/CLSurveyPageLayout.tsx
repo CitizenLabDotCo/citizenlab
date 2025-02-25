@@ -312,7 +312,6 @@ const CLSurveyPageLayout = memo(
 
     // This is the index of the current page in the pageTypeElements array,
     // which also includes non-visible pages.
-    // We only use it to render to the data-cy attribute for e2e testing.
     const currentPageIndex = pageTypeElements.findIndex(
       (page) => page === currentPage
     );
@@ -323,6 +322,7 @@ const CLSurveyPageLayout = memo(
     return (
       <>
         <Box
+          key={`survey-page-${currentPageIndex}`}
           id="container"
           display="flex"
           flexDirection={isMobileOrSmaller ? 'column' : 'row'}
