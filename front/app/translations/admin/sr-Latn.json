@@ -928,6 +928,7 @@
   "app.containers.Admin.projects.all.notIncludedInYourPlan": "However, this is not included in your current plan. Reach out to your Government Success Manager or admin to unlock it.",
   "app.containers.Admin.projects.all.notes": "Notes",
   "app.containers.Admin.projects.all.personalDataExplanation2": "Check the box below, if you want your downloaded PDF to contain name, last name, and email fields. Upon upload of the paper form, we will use that user data, to auto-generate an account for the offline survey respondent.",
+  "app.containers.Admin.projects.project.analysis.Comments.comments": "Comments",
   "app.containers.Admin.projects.project.analysis.aiSummary": "AI summary",
   "app.containers.Admin.projects.project.analysis.aiSummaryTooltipText": "This is AI-generated content. It may not be 100% accurate. Please review and cross-reference with the actual inputs for accuracy. Be aware that the accuracy is likely to improve if the number of selected inputs is reduced.",
   "app.containers.Admin.projects.project.ideas.analysisAction": "Go to AI analysis",
