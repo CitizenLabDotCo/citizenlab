@@ -11,6 +11,7 @@ AdminApi::Engine.routes.draw do
   resources :projects, only: [:index] do
     get :template_export, on: :member
     post :template_import, on: :collection
+    get :description_layout_multilocs, on: :member
     resources :phases, only: [:index]
     get :participants_count, controller: 'participants', on: :member
   end
