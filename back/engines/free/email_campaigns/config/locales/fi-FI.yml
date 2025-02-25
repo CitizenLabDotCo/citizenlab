@@ -499,6 +499,7 @@ fi:
       cta_vote: 'Mene foorumille äänestämään'
     survey_submitted:
       subject: '%{organizationName}: Kiitos vastauksestasi! 🎉'
+      preheader: 'Tässä ovat lähetyksesi tiedot.'
       main_header: 'Kiitos, että jaoit ajatuksesi aiheesta "%{projectName}"!'
       your_input_submitted: 'Syötteesi "%{projectName}" on lähetetty onnistuneesti.'
       if_you_would_like_to_review: 'Jos haluat tarkistaa lähetyksesi, voit ladata vastauksesi alta.'
