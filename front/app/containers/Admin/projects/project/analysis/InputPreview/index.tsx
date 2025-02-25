@@ -112,7 +112,7 @@ const InputListItem = () => {
         <Taggings onlyShowTagged={false} inputId={selectedInputId} />
       </Box>
 
-      <Comments />
+      {methodConfig.supportsComments && <Comments />}
     </Box>
   );
 };
