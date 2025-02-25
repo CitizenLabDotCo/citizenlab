@@ -100,7 +100,7 @@ describe Export::CustomFieldForExport do
         context 'when the field value is "outside"' do
           let(:model) { create(:user, custom_field_values: { 'domicile' => 'outside' }) }
 
-          it 'returns empty string' do
+          it 'returns "Somewhere else"' do
             expect(report_field.value_from(model)).to eq 'Somewhere else'
           end
         end
