@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
 module IdOostendeRrn
-  class OostendeRrnVerification
-    include Verification::VerificationMethod
+  class OostendeRrnVerification < IdMethod::Base
+    include IdMethod::VerificationMethod
 
     def verification_method_type
       :manual_sync
