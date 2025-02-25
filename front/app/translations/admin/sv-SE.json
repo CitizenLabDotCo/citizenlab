@@ -928,6 +928,7 @@
   "app.containers.Admin.projects.all.notIncludedInYourPlan": "Detta ingår dock inte i din nuvarande plan. Kontakta din Government Success Manager eller administratör för att låsa upp den.",
   "app.containers.Admin.projects.all.notes": "Anteckningar",
   "app.containers.Admin.projects.all.personalDataExplanation2": "Markera rutan nedan om du vill att den nedladdade PDF-filen ska innehålla fält för namn, efternamn och e-post. När pappersformuläret laddas upp kommer vi att använda dessa användardata för att automatiskt generera ett konto för den som svarar på offlineundersökningen.",
+  "app.containers.Admin.projects.project.analysis.Comments.comments": "Kommentarer",
   "app.containers.Admin.projects.project.analysis.aiSummary": "Sammanfattning av AI",
   "app.containers.Admin.projects.project.analysis.aiSummaryTooltipText": "Detta är AI-genererat innehåll. Det kanske inte är 100% korrekt. Vänligen granska och korsreferera med de faktiska indata för noggrannhet. Observera att noggrannheten sannolikt kommer att förbättras om antalet valda indata minskas.",
   "app.containers.Admin.projects.project.ideas.analysisAction": "Gå till AI-analys",

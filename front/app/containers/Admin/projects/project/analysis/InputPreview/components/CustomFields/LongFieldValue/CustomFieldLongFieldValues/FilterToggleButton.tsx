@@ -7,9 +7,9 @@ import { trackEventByName } from 'utils/analytics';
 import { useIntl } from 'utils/cl-intl';
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 
-import useAnalysisFilterParams from '../../hooks/useAnalysisFilterParams';
-import messages from '../../messages';
-import tracks from '../../tracks';
+import useAnalysisFilterParams from '../../../../../hooks/useAnalysisFilterParams';
+import messages from '../../../../../messages';
+import tracks from '../../../../../tracks';
 
 export const FilterToggleButton = ({ customFieldId, value }) => {
   const { formatMessage } = useIntl();

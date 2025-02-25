@@ -928,6 +928,7 @@
   "app.containers.Admin.projects.all.notIncludedInYourPlan": "Sin embargo, esto no está incluido en tu plan actual. Ponte en contacto con tu Gestor de Éxito Gubernamental o con el administrador para desbloquearlo.",
   "app.containers.Admin.projects.all.notes": "Notas",
   "app.containers.Admin.projects.all.personalDataExplanation2": "Marca la casilla de abajo si quieres que el PDF descargado contenga los campos de nombre, apellidos y correo electrónico. Al cargar el formulario en papel, utilizaremos esos datos de usuario para generar automáticamente una cuenta para el encuestado offline.",
+  "app.containers.Admin.projects.project.analysis.Comments.comments": "Asuntos",
   "app.containers.Admin.projects.project.analysis.aiSummary": "Resumen de la IA",
   "app.containers.Admin.projects.project.analysis.aiSummaryTooltipText": "Se trata de contenido generado por IA. Puede que no sea 100% exacto. Por favor, revísalo y haz referencias cruzadas con las entradas reales para comprobar su exactitud. Ten en cuenta que es probable que la precisión mejore si se reduce el número de entradas seleccionadas.",
   "app.containers.Admin.projects.project.ideas.analysisAction": "Ir al análisis de la IA",

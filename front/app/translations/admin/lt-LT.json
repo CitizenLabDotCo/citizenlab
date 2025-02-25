@@ -928,6 +928,7 @@
   "app.containers.Admin.projects.all.notIncludedInYourPlan": "Tačiau tai nėra įtraukta į jūsų dabartinį planą. Kreipkitės į savo vyriausybės sėkmės vadybininką arba administratorių, kad jį atrakintumėte.",
   "app.containers.Admin.projects.all.notes": "Pastabos",
   "app.containers.Admin.projects.all.personalDataExplanation2": "Pažymėkite toliau esantį langelį, jei norite, kad atsisiųstame PDF dokumente būtų vardo, pavardės ir el. pašto laukai. Įkėlus popierinę formą, naudosime šiuos naudotojo duomenis, kad automatiškai sukurtume neprisijungusio apklausos respondento paskyrą.",
+  "app.containers.Admin.projects.project.analysis.Comments.comments": "Komentarai",
   "app.containers.Admin.projects.project.analysis.aiSummary": "AI santrauka",
   "app.containers.Admin.projects.project.analysis.aiSummaryTooltipText": "Tai dirbtinio intelekto sukurtas turinys. Jis gali būti ne 100 % tikslus. Peržiūrėkite ir palyginkite su faktiniais įvesties duomenimis, kad įsitikintumėte tikslumu. Turėkite omenyje, kad tikslumas greičiausiai padidės, jei sumažės pasirinktų įvesties duomenų skaičius.",
   "app.containers.Admin.projects.project.ideas.analysisAction": "Pereiti prie AI analizės",
