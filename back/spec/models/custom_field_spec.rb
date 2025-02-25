@@ -386,6 +386,14 @@ RSpec.describe CustomField do
       # 'somewhere else' option should be the last.
       expect(domicile_field.options.last.area).to be_nil
     end
+
+    describe 'domicile_options' do
+      it 'returns the options as area ids' do
+        options = domicile_field.domicile_options
+        expect(options.pluck(:key)).to eq(Area.pluck(:id) + ['outside'])
+        expect(options.last.title_multiloc['en']).to eq 'Somewhere else'
+      end
+    end
   end
 
   describe 'description sanitizer' do
