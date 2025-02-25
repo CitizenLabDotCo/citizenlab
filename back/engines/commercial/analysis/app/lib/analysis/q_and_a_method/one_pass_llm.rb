@@ -79,11 +79,12 @@ module Analysis
     end
 
     def response_language
-      locale = Locale.monolingual ||
+      locale = Locale.monolingual&.to_s ||
                question.activities.where(action: 'created').order(created_at: :desc).first&.user&.locale ||
-               AppConfiguration.instance.settings('core', 'locales').first
+               AppConfiguration.instance.settings('core', 'locales').first ||
+               I18n.default_locale
 
-      locale.language_copy
+      Locale.new(locale).language_copy
     end
   end
 end
