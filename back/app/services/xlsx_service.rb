@@ -248,14 +248,11 @@ class XlsxService
   end
 
   def value_getter_for_user_custom_field_columns(field, record_to_user, options)
-    # if field.domicile? # 'domicile' is a special case
-    #   areas = Area.all.index_by(&:id)
-    #   lambda do |record|
-    #     user = record.send(record_to_user)
-    #     multiloc_service.t(areas[user.domicile]&.title_multiloc) if user && user.custom_field_values['domicile']
-    #   end
-    # elsif field.support_options? # field with option
-    if field.support_options? # field with option
+    if field.support_options? # field with options
+      if field.domicile? # 'domicile' options are a special case
+        options = field.ordered_options.index_by { |option| namespace(option.custom_field_id, option.key) }
+      end
+
       lambda do |record|
         user = record.send(record_to_user)
         title_multiloc_for user, field, options
