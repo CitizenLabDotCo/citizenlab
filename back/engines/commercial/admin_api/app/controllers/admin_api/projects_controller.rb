@@ -7,6 +7,14 @@ module AdminApi
       render json: projects, adapter: :attributes
     end
 
+    def description_layout_multilocs
+      project = Project.find(params[:id])
+      layout = project.content_builder_layouts.find_by(code: 'project_description', enabled: true)
+      multilocs = ContentBuilder::Craftjs::MultilocsInVisualOrder.new(layout.craftjs_json).extract if layout
+
+      render json: { multilocs: multilocs }
+    end
+
     def template_export
       project = Project.find(params[:id])
       options = template_export_params.to_h.symbolize_keys
