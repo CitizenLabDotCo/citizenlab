@@ -41,7 +41,7 @@ module ContentBuilder
       # e.g. we could return [{type: 'TextMultiloc', text: 'Hello'}, {type: 'AccordionMultiloc', title: 'Accordion', text: 'World'}, ...]
       # instead of just the multilocs themselves.
       def take_multiloc(node)
-        return unless %w[TextMultiloc AccordionMultiloc].include? node['type']['resolvedName']
+        return unless Layout::TEXT_CRAFTJS_NODE_TYPES.include? node['type']['resolvedName']
         
         @ordered_multilocs << node['props']['title'] if node['type']['resolvedName'] == 'AccordionMultiloc'
         @ordered_multilocs << node['props']['text']
