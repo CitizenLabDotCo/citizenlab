@@ -36,7 +36,7 @@ module ContentBuilder
         children.each { |child_key| multiloc_search_recursive(child_key) } if children.present?
       end
 
-      # `with_metadata: true` may not be super useful, as it only differentiates between accordian titles and texts.
+      # `with_metadata: true` may not be useful (TBD), as it only differentiates between accordian titles and texts.
       # TextMultiloc nodes always store their multiloc in node['props']['text'],
       # regardless of whether they are actually used as titles or texts.
       def take_multiloc(node, resolved_name)
