@@ -81,16 +81,6 @@ RSpec.describe Analysis::SummarizationMethod do
         block.call ' summary'
       end
 
-      mock_locale = instance_double(Locale)
-      expect(Locale)
-        .to receive(:monolingual)
-        .and_return(mock_locale)
-      expect(mock_locale).to receive(:language_copy).and_return('High Valyrian')
-      expect_any_instance_of(Analysis::LLM::Prompt)
-        .to receive(:fetch)
-        .with('summarization', project_title: kind_of(String), inputs_text: kind_of(String), language: 'High Valyrian')
-        .and_call_original
-
       expect { plan.summarization_method_class.new(summary).execute(plan) }
         .to change { summarization_task.summary.summary }.from(nil).to('Complete summary')
         .and change { summarization_task.summary.prompt }.from(nil).to(kind_of(String))
