@@ -7,17 +7,20 @@ import PageLoading from 'components/UI/PageLoading';
 
 import { AdminRoute } from '../routes';
 
+import CommunityMonitorSurveyFormBuilder from './communityMonitorFormBuilder';
 import messages from './messages';
 
 const CommunityMonitor = lazy(() => import('./index'));
 
 export enum communityMonitorRoutes {
   communityMonitor = 'community-monitor',
+  communityMonitorSurveyEdit = 'projects/:projectId/phases/:phaseId/survey/edit',
   communityMonitorDefault = '',
 }
 
 export type communityMonitorRouteTypes =
-  AdminRoute<communityMonitorRoutes.communityMonitor>;
+  | AdminRoute<communityMonitorRoutes.communityMonitor>
+  | `${AdminRoute<communityMonitorRoutes.communityMonitor>}/projects/${string}/phases/${string}/survey/edit`;
 
 const communityMonitorsRoutes = () => {
   return {
@@ -34,6 +37,14 @@ const communityMonitorsRoutes = () => {
         element: (
           <PageLoading>
             <CommunityMonitor />
+          </PageLoading>
+        ),
+      },
+      {
+        path: communityMonitorRoutes.communityMonitorSurveyEdit,
+        element: (
+          <PageLoading>
+            <CommunityMonitorSurveyFormBuilder />
           </PageLoading>
         ),
       },
