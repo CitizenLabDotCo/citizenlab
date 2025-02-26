@@ -181,6 +181,12 @@ class IdeaCustomFieldsService
     all_fields
   end
 
+  # Check required as it doesn't matter what is saved in title for section 1
+  # Constraints required for the front-end but response will always return input specific method
+  def section1_title?(field, attribute)
+    field.code == 'ideation_section1' && attribute == :title_multiloc
+  end
+
   # Check required as it doesn't matter what is saved in title for page 1
   # Constraints required for the front-end but response will always return input specific method
   def page1_title?(field, attribute)
