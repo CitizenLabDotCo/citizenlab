@@ -1,7 +1,7 @@
 module ContentBuilder
   module Craftjs
-    # Extracts multilocs from a craftjs in the order they appear in the visual layout.
-    class TextMultilocsInVisualOrder
+    # Extracts multilocs for visible text from a craftjs in the order they appear in the visual layout.
+    class VisibleTextMultilocs
       def initialize(craftjs, with_metadata: false)
         @craftjs = LayoutSanitizationService.new.sanitize(craftjs)
         @with_metadata = with_metadata

@@ -10,7 +10,7 @@ module AdminApi
         enabled: true
       )
 
-      multilocs = ContentBuilder::Craftjs::TextMultilocsInVisualOrder.new(layout.craftjs_json).extract if layout
+      multilocs = ContentBuilder::Craftjs::VisibleTextMultilocs.new(layout.craftjs_json).extract if layout
 
       render json: { multilocs: multilocs }
     end
