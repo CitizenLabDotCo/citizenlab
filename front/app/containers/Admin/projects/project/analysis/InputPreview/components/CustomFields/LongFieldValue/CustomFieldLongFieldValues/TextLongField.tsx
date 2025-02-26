@@ -9,21 +9,21 @@ import T from 'components/T';
 
 import { useIntl } from 'utils/cl-intl';
 
-import messages from '../../../messages';
+import messages from '../../../../../messages';
 
 type Props = {
   input: IInputsData;
   customField: IIdeaCustomField;
 };
 
-const MultilineTextLongField = ({ input, customField }: Props) => {
+const TextLongField = ({ input, customField }: Props) => {
   const { formatMessage } = useIntl();
   return (
     <Box>
       <Title variant="h5" m="0px">
         <T value={customField.data.attributes.title_multiloc} />
       </Title>
-      <Text whiteSpace="pre-line">
+      <Text m="0">
         {input.attributes.custom_field_values[
           customField.data.attributes.key
         ] || formatMessage(messages.noAnswer)}
@@ -32,4 +32,4 @@ const MultilineTextLongField = ({ input, customField }: Props) => {
   );
 };
 
-export default MultilineTextLongField;
+export default TextLongField;

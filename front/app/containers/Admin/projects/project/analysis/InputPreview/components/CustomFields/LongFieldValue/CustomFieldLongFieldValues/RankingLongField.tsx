@@ -9,8 +9,9 @@ import T from 'components/T';
 
 import { useIntl } from 'utils/cl-intl';
 
-import messages from '../../../messages';
-import { SelectOptionText } from '../SelectOptionText';
+import messages from '../../../../../messages';
+
+import { SelectOptionText } from './SelectOptionText';
 
 type Props = {
   customField: IIdeaCustomField;

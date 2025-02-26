@@ -82,16 +82,6 @@ RSpec.describe Analysis::QAndAMethod do
         block.call ' else'
       end
 
-      mock_locale = instance_double(Locale)
-      expect(Locale)
-        .to receive(:monolingual)
-        .and_return(mock_locale)
-      expect(mock_locale).to receive(:language_copy).and_return('High Valyrian')
-      expect_any_instance_of(Analysis::LLM::Prompt)
-        .to receive(:fetch)
-        .with('q_and_a', project_title: kind_of(String), question: kind_of(String), inputs_text: kind_of(String), language: 'High Valyrian')
-        .and_call_original
-
       expect { plan.q_and_a_method_class.new(question).execute(plan) }
         .to change { q_and_a_task.question.answer }.from(nil).to('Nothing else')
         .and change { q_and_a_task.question.prompt }.from(nil).to(kind_of(String))

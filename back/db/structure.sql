@@ -6867,6 +6867,7 @@ ALTER TABLE ONLY public.ideas_topics
 SET search_path TO public,shared_extensions;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20250224150953'),
 ('20250210181753'),
 ('20250204143605'),
 ('20250120125531'),
