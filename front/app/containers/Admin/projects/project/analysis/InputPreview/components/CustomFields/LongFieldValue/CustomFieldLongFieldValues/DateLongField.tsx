@@ -1,6 +1,7 @@
 import React from 'react';
 
-import { Box, Title, Text, Checkbox } from '@citizenlab/cl2-component-library';
+import { Box, Title, Text } from '@citizenlab/cl2-component-library';
+import { FormattedDate } from 'react-intl';
 
 import { IIdeaCustomField } from 'api/idea_custom_fields/types';
 
@@ -8,14 +9,14 @@ import T from 'components/T';
 
 import { useIntl } from 'utils/cl-intl';
 
-import messages from '../../../messages';
+import messages from '../../../../../messages';
 
 type Props = {
   rawValue: any;
   customField: IIdeaCustomField;
 };
 
-const CheckboxLongField = ({ rawValue, customField }: Props) => {
+const DateLongField = ({ rawValue, customField }: Props) => {
   const { formatMessage } = useIntl();
   return (
     <Box>
@@ -23,8 +24,8 @@ const CheckboxLongField = ({ rawValue, customField }: Props) => {
         <T value={customField.data.attributes.title_multiloc} />
       </Title>
       <Text>
-        {rawValue === true || rawValue === false ? (
-          <Checkbox disabled checked={rawValue} onChange={() => {}} />
+        {rawValue ? (
+          <FormattedDate value={rawValue} />
         ) : (
           formatMessage(messages.noAnswer)
         )}
@@ -33,4 +34,4 @@ const CheckboxLongField = ({ rawValue, customField }: Props) => {
   );
 };
 
-export default CheckboxLongField;
+export default DateLongField;

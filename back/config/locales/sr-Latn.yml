@@ -50,7 +50,7 @@ sr-Latn:
     implemented_description: Ova ideja je realizovana
     rejected: odbijeno
     rejected_description: Ova ideja je odbijena
-    expired: expired
+    expired: isteklo
     expired_description: This input is no longer active and has been closed due to time constraints or inactivity.
     threshold_reached: threshold reached
     threshold_reached_description: This input has met the required support threshold and will now be considered for further action.

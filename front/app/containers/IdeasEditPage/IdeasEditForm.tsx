@@ -191,7 +191,6 @@ const IdeasEditForm = ({ ideaId }: Props) => {
       idea_images_attributes,
       location_point_geojson,
       project_id: projectId,
-      publication_status: 'published',
     };
 
     const idea = await updateIdea({
