@@ -47,16 +47,16 @@ module Survey
       })
     end
 
-    def get_option_logic (field)
+    def get_option_logic(field)
       return {} if field.logic.blank?
 
       is_linear_or_rating = %w[linear_scale rating].include?(field.input_type)
       options = if is_linear_or_rating
-                  # Create a unique ID for this linear scale option in the full results so we can filter logic
-                  (1..field.maximum).map { |value| { id: "#{field.id}_#{value}", key: value } }
-                else
-                  field.ordered_options.map { |option| { id: option.id, key: option.key } }
-                end
+        # Create a unique ID for this linear scale option in the full results so we can filter logic
+        (1..field.maximum).map { |value| { id: "#{field.id}_#{value}", key: value } }
+      else
+        field.ordered_options.map { |option| { id: option.id, key: option.key } }
+      end
 
       # NOTE: Only options with logic will be returned
       any_other_answer_page_id = field.logic['rules']&.find { |r| r['if'] == 'any_other_answer' }&.dig('goto_page_id')

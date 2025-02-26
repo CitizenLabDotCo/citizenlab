@@ -2,17 +2,9 @@
 
 require 'rails_helper'
 
-# This spec describes:
-#   * Unsupported fields are not considered. Unsupported means that we do
-#     not have a visit_xxx method on the described class.
-#   * Results are generated only for reportable fields (i.e. enabled).
-#   * The order of the results is the same as the field order in the form.
-#   * Results for one field are ordered in descending order.
-#   * Result generation is supported for phases only.
+# NOTE: This spec tests only the grouping functionality that is overridden from the parent class.
 
 RSpec.describe Survey::ResultsWithGroupGenerator do
-  subject(:generator) { described_class.new survey_phase }
-
   let_it_be(:project) { create(:single_phase_native_survey_project) }
   let_it_be(:survey_phase) { project.phases.first }
   let_it_be(:phases_of_inputs) { [survey_phase] }
@@ -431,110 +423,6 @@ RSpec.describe Survey::ResultsWithGroupGenerator do
   describe 'generate_results' do
     let(:generated_results) { generator.generate_results }
 
-    describe 'structure' do
-      it 'returns the correct locales' do
-        # These locales are a prerequisite for the test.
-        expect(AppConfiguration.instance.settings('core', 'locales')).to eq(%w[en fr-FR nl-NL])
-      end
-
-      it 'returns the correct totals' do
-        expect(generated_results[:totalSubmissions]).to eq 27
-      end
-
-      it 'returns the correct fields and structure' do
-        expect(generated_results[:results].count).to eq 17
-        expect(generated_results[:results].pluck(:customFieldId)).not_to include disabled_multiselect_field.id
-      end
-    end
-
-    describe 'page fields' do
-      it 'returns correct values for a page field in full results' do
-        page_result = generated_results[:results][0]
-        expect(page_result[:inputType]).to eq 'page'
-        expect(page_result[:totalResponseCount]).to eq(27)
-        expect(page_result[:questionResponseCount]).to eq(22)
-        expect(page_result[:pageNumber]).to eq(1)
-        expect(page_result[:questionNumber]).to be_nil
-        expect(page_result[:logic]).to eq({})
-      end
-    end
-
-    describe 'text fields' do
-      let(:expected_result_text_field) do
-        {
-          customFieldId: text_field.id,
-          inputType: 'text',
-          question: { 'en' => 'What is your favourite colour?' },
-          required: false,
-          grouped: false,
-          totalResponseCount: 27,
-          questionResponseCount: 4,
-          description: {},
-          hidden: false,
-          pageNumber: nil,
-          questionNumber: 1,
-          logic: {},
-          textResponses: [
-            { answer: 'Blue' },
-            { answer: 'Green' },
-            { answer: 'Pink' },
-            { answer: 'Red' }
-          ]
-        }
-      end
-
-      it 'returns the results for a text field' do
-        expect(generated_results[:results][1]).to match expected_result_text_field
-      end
-
-      it 'returns a single result for a text field' do
-        expected_result_text_field[:questionNumber] = nil # Question number is null when requesting a single result
-        expect(generator.generate_results(field_id: text_field.id)).to match expected_result_text_field
-      end
-
-      it 'returns the results for an unanswered field' do
-        expect(generated_results[:results][7]).to match(
-          {
-            customFieldId: unanswered_text_field.id,
-            inputType: 'text',
-            description: {},
-            hidden: false,
-            pageNumber: nil,
-            questionNumber: 7,
-            logic: {},
-            question: { 'en' => 'Nobody wants to answer me' },
-            required: false,
-            grouped: false,
-            totalResponseCount: 27,
-            questionResponseCount: 0,
-            textResponses: []
-          }
-        )
-      end
-    end
-
-    describe 'multiline text fields' do
-      it 'returns the results for a multiline text field' do
-        expect(generated_results[:results][2]).to match(
-          {
-            customFieldId: multiline_text_field.id,
-            inputType: 'multiline_text',
-            question: { 'en' => 'What is your favourite recipe?' },
-            required: false,
-            grouped: false,
-            description: {},
-            hidden: false,
-            pageNumber: nil,
-            questionNumber: 2,
-            logic: {},
-            totalResponseCount: 27,
-            questionResponseCount: 0,
-            textResponses: []
-          }
-        )
-      end
-    end
-
     describe 'multi-select field' do
       let(:expected_result_multiselect) do
         {
@@ -573,17 +461,6 @@ RSpec.describe Survey::ResultsWithGroupGenerator do
             }
           }
         }
-      end
-
-      context 'without grouping' do
-        it 'returns the results for a multi-select field' do
-          expect(generated_results[:results][3]).to match expected_result_multiselect
-        end
-
-        it 'returns a single result for multiselect' do
-          expected_result_multiselect[:questionNumber] = nil
-          expect(generator.generate_results(field_id: multiselect_field.id)).to match expected_result_multiselect
-        end
       end
 
       context 'with grouping' do
@@ -698,20 +575,24 @@ RSpec.describe Survey::ResultsWithGroupGenerator do
         end
 
         it 'groups multiselect by user field' do
-          generator = described_class.new(survey_phase,
+          generator = described_class.new(
+            survey_phase,
             group_mode: 'user_field',
-            group_field_id: gender_user_custom_field.id)
-          expect(generator.generate_results(
-            field_id: multiselect_field.id
-          )).to match expected_result_multiselect_with_user_field_grouping
+            group_field_id: gender_user_custom_field.id
+          )
+          expect(generator.generate_results(field_id: multiselect_field.id)).to match(
+            expected_result_multiselect_with_user_field_grouping
+          )
         end
 
         it 'groups multiselect by select field' do
-          generator = described_class.new(survey_phase,
-            group_field_id: select_field.id)
-          expect(generator.generate_results(
-            field_id: multiselect_field.id
-          )).to match expected_result_multiselect_with_select_field_grouping
+          generator = described_class.new(
+            survey_phase,
+            group_field_id: select_field.id
+          )
+          expect(generator.generate_results(field_id: multiselect_field.id)).to match(
+            expected_result_multiselect_with_select_field_grouping
+          )
         end
       end
     end
@@ -758,45 +639,6 @@ RSpec.describe Survey::ResultsWithGroupGenerator do
             }
           }
         }
-      end
-
-      it 'returns the results for a linear scale field' do
-        expected_result_linear_scale[:questionNumber] = 4
-        expect(generated_results[:results][4]).to match expected_result_linear_scale
-      end
-
-      it 'returns a single result for a linear scale field' do
-        expected_result_linear_scale[:logic] = {} # Logic is not returns when requesting a single result
-        expect(generator.generate_results(field_id: linear_scale_field.id)).to match expected_result_linear_scale
-      end
-
-      context 'when not all minimum and maximum labels are configured for linear scale fields' do
-        let(:expected_result_linear_scale_without_min_and_max_labels) do
-          expected_result_linear_scale.tap do |result|
-            result[:multilocs][:answer][1][:title_multiloc] = {
-              'en' => '1',
-              'fr-FR' => "1 - Pas du tout d'accord",
-              'nl-NL' => '1'
-            }
-            result[:multilocs][:answer][5][:title_multiloc] = {
-              'en' => '5 - Slightly agree',
-              'fr-FR' => '5',
-              'nl-NL' => '5'
-            }
-            result[:logic] = {} # Logic is not returns when requesting a single result
-          end
-        end
-
-        before do
-          linear_scale_field.update!(
-            linear_scale_label_1_multiloc: { 'fr-FR' => "Pas du tout d'accord" },
-            linear_scale_label_5_multiloc: { 'en' => 'Slightly agree' }
-          )
-        end
-
-        it 'returns minimum and maximum labels as numbers' do
-          expect(generator.generate_results(field_id: linear_scale_field.id)).to match expected_result_linear_scale_without_min_and_max_labels
-        end
       end
 
       context 'with grouping' do
@@ -924,15 +766,6 @@ RSpec.describe Survey::ResultsWithGroupGenerator do
         }
       end
 
-      it 'returns the results for a rating field' do
-        expected_result_rating[:questionNumber] = 16
-        expect(generated_results[:results][16]).to match expected_result_rating
-      end
-
-      it 'returns a single result for a rating field' do
-        expect(generator.generate_results(field_id: rating_field.id)).to match expected_result_rating
-      end
-
       context 'with grouping' do
         let(:grouped_rating_results) do
           {
@@ -1014,75 +847,6 @@ RSpec.describe Survey::ResultsWithGroupGenerator do
       end
     end
 
-    describe 'matrix_linear_scale field' do
-      let(:expected_result_matrix_linear_scale) do
-        {
-          customFieldId: matrix_linear_scale_field.id,
-          inputType: 'matrix_linear_scale',
-          question: {
-            'en' => 'Please indicate how strong you agree or disagree with the following statements.'
-          },
-          description: {},
-          required: false,
-          grouped: false,
-          hidden: false,
-          logic: {},
-          totalResponseCount: 27,
-          questionResponseCount: 5,
-          pageNumber: nil,
-          questionNumber: 15,
-          multilocs: {
-            answer: {
-              1 => { title_multiloc: { 'en' => '1 - Strongly disagree', 'fr-FR' => '1', 'nl-NL' => '1' } },
-              2 => { title_multiloc: { 'en' => '2', 'fr-FR' => '2', 'nl-NL' => '2' } },
-              3 => { title_multiloc: { 'en' => '3', 'fr-FR' => '3', 'nl-NL' => '3' } },
-              4 => { title_multiloc: { 'en' => '4', 'fr-FR' => '4', 'nl-NL' => '4' } },
-              5 => { title_multiloc: { 'en' => '5 - Strongly agree', 'fr-FR' => '5', 'nl-NL' => '5' } }
-            }
-          },
-          linear_scales: {
-            'send_more_animals_to_space' => {
-              question: {
-                'en' => 'We should send more animals into space'
-              },
-              questionResponseCount: 4,
-              answers: [
-                { answer: 5, count: 0, percentage: 0.0 },
-                { answer: 4, count: 1, percentage: 0.25 },
-                { answer: 3, count: 1, percentage: 0.25 },
-                { answer: 2, count: 0, percentage: 0.0 },
-                { answer: 1, count: 2, percentage: 0.5 },
-                { answer: nil, count: 23 }
-              ]
-            },
-            'ride_bicycles_more_often' => {
-              question: {
-                'en' => 'We should ride our bicycles more often'
-              },
-              questionResponseCount: 4,
-              answers: [
-                { answer: 5, count: 0, percentage: 0.0 },
-                { answer: 4, count: 2, percentage: 0.5 },
-                { answer: 3, count: 2, percentage: 0.5 },
-                { answer: 2, count: 0, percentage: 0.0 },
-                { answer: 1, count: 0, percentage: 0.0 },
-                { answer: nil, count: 23 }
-              ]
-            }
-          }
-        }
-      end
-
-      it 'returns the results for a matrix linear scale field' do
-        expect(generated_results[:results][15]).to match expected_result_matrix_linear_scale
-      end
-
-      it 'returns a single result for a linear scale field' do
-        expected_result_matrix_linear_scale[:questionNumber] = nil # Question number is null when requesting a single result
-        expect(generator.generate_results(field_id: matrix_linear_scale_field.id)).to match expected_result_matrix_linear_scale
-      end
-    end
-
     describe 'select field' do
       let(:expected_result_select) do
         {
@@ -1122,23 +886,6 @@ RSpec.describe Survey::ResultsWithGroupGenerator do
             { answer: 'Seattle' }
           ]
         }
-      end
-
-      context 'without grouping' do
-        it 'returns the correct results for a select field' do
-          expected_result_select[:questionNumber] = 5
-          expect(generated_results[:results][5]).to match expected_result_select
-        end
-
-        it 'returns select answers in order of the number of responses, with other always last' do
-          answers = generated_results[:results][5][:answers]
-          expect(answers.pluck(:answer)).to eq [nil, 'la', 'ny', 'other']
-          expect(answers.pluck(:count)).to eq [21, 2, 1, 3]
-        end
-
-        it 'returns a single result for a select field' do
-          expect(generator.generate_results(field_id: select_field.id)).to match expected_result_select
-        end
       end
 
       context 'with grouping' do
@@ -1343,62 +1090,6 @@ RSpec.describe Survey::ResultsWithGroupGenerator do
       end
     end
 
-    describe 'ranking field' do
-      let(:expected_result_ranking) do
-        {
-          customFieldId: ranking_field.id,
-          inputType: 'ranking',
-          question: {
-            'en' => 'Rank your favourite means of public transport'
-          },
-          description: { 'en' => 'Favourite to least favourite' },
-          required: false,
-          grouped: false,
-          hidden: false,
-          pageNumber: nil,
-          questionNumber: 14,
-          logic: {},
-          totalResponseCount: 27,
-          questionResponseCount: 4,
-          average_rankings: {
-            'by_bike' => 1.25,
-            'by_foot' => 2.75,
-            'by_train' => 2
-          },
-          rankings_counts: {
-            'by_bike' => {
-              1 => 3,
-              2 => 1,
-              3 => 0
-            },
-            'by_foot' => {
-              1 => 0,
-              2 => 1,
-              3 => 3
-            },
-            'by_train' => {
-              1 => 1,
-              2 => 2,
-              3 => 1
-            }
-          },
-          multilocs: {
-            answer: {
-              'by_foot' => { title_multiloc: { 'en' => 'By foot', 'fr-FR' => 'À pied', 'nl-NL' => 'Te voet' } },
-              'by_bike' => { title_multiloc: { 'en' => 'By bike', 'fr-FR' => 'À vélo', 'nl-NL' => 'Met de fiets' } },
-              'by_train' => { title_multiloc: { 'en' => 'By train', 'fr-FR' => 'En train', 'nl-NL' => 'Met de trein' } }
-            }
-          }
-        }
-      end
-
-      context 'without grouping' do
-        it 'returns the correct results for a ranking field' do
-          expect(generated_results[:results][14]).to match expected_result_ranking
-        end
-      end
-    end
-
     describe 'image select fields' do
       let(:expected_result_multiselect_image) do
         {
@@ -1449,10 +1140,6 @@ RSpec.describe Survey::ResultsWithGroupGenerator do
         }
       end
 
-      it 'returns the results for a multi-select image field' do
-        expect(generated_results[:results][6]).to match expected_result_multiselect_image
-      end
-
       context 'with grouping' do
         it 'groups multiselect image by survey question' do
           generator = described_class.new(survey_phase,
@@ -1489,168 +1176,6 @@ RSpec.describe Survey::ResultsWithGroupGenerator do
             }
           ]
         end
-      end
-    end
-
-    describe 'file upload fields' do
-      let(:expected_result_file_upload) do
-        {
-          customFieldId: file_upload_field.id,
-          inputType: 'file_upload',
-          question: { 'en' => 'Upload a file' },
-          required: false,
-          grouped: false,
-          description: {},
-          hidden: false,
-          pageNumber: nil,
-          questionNumber: 8,
-          logic: {},
-          totalResponseCount: 27,
-          questionResponseCount: 1,
-          files: [
-            { name: end_with('.pdf'), url: end_with('.pdf') }
-          ]
-        }
-      end
-
-      it 'returns the results for file upload field' do
-        expect(generated_results[:results][8]).to match expected_result_file_upload
-      end
-    end
-
-    describe 'shapefile upload fields' do
-      let(:expected_result_shapefile_upload) do
-        {
-          customFieldId: shapefile_upload_field.id,
-          inputType: 'shapefile_upload',
-          question: { 'en' => 'Upload a file' },
-          required: false,
-          grouped: false,
-          description: {},
-          hidden: false,
-          pageNumber: nil,
-          questionNumber: 9,
-          logic: {},
-          totalResponseCount: 27,
-          questionResponseCount: 1,
-          files: [
-            { name: end_with('.pdf'), url: end_with('.pdf') }
-          ]
-        }
-      end
-
-      it 'returns the results for file upload field' do
-        expect(generated_results[:results][9]).to match expected_result_shapefile_upload
-      end
-    end
-
-    describe 'point fields' do
-      let(:expected_result_point) do
-        {
-          inputType: 'point',
-          question: { 'en' => 'Where should the new nursery be located?' },
-          required: false,
-          grouped: false,
-          description: {},
-          hidden: false,
-          pageNumber: nil,
-          questionNumber: 10,
-          logic: {},
-          questionResponseCount: 2,
-          totalResponseCount: 27,
-          customFieldId: point_field.id,
-          mapConfigId: map_config_for_point.id,
-          pointResponses: a_collection_containing_exactly(
-            { answer: { 'coordinates' => [42.42, 24.24], 'type' => 'Point' } },
-            { answer: { 'coordinates' => [11.22, 33.44], 'type' => 'Point' } }
-          )
-        }
-      end
-
-      it 'returns the results for a point field' do
-        expect(generated_results[:results][10]).to match expected_result_point
-      end
-    end
-
-    describe 'line fields' do
-      let(:expected_result_line) do
-        {
-          inputType: 'line',
-          question: { 'en' => 'Where should we build the new bicycle path?' },
-          required: false,
-          grouped: false,
-          description: {},
-          hidden: false,
-          pageNumber: nil,
-          questionNumber: 11,
-          logic: {},
-          questionResponseCount: 2,
-          totalResponseCount: 27,
-          customFieldId: line_field.id,
-          mapConfigId: map_config_for_line.id,
-          lineResponses: a_collection_containing_exactly(
-            { answer: { 'coordinates' => [[1.1, 2.2], [3.3, 4.4]], 'type' => 'LineString' } },
-            { answer: { 'coordinates' => [[1.2, 2.3], [3.4, 4.5]], 'type' => 'LineString' } }
-          )
-        }
-      end
-
-      it 'returns the results for a line field' do
-        expect(generated_results[:results][11]).to match expected_result_line
-      end
-    end
-
-    describe 'polygon fields' do
-      let(:expected_result_polygon) do
-        {
-          inputType: 'polygon',
-          question: { 'en' => 'Where should we build the new housing?' },
-          required: false,
-          grouped: false,
-          description: {},
-          hidden: false,
-          pageNumber: nil,
-          questionNumber: 12,
-          logic: {},
-          questionResponseCount: 2,
-          totalResponseCount: 27,
-          customFieldId: polygon_field.id,
-          mapConfigId: map_config_for_polygon.id,
-          polygonResponses: a_collection_containing_exactly(
-            { answer: { 'coordinates' => [[[1.1, 2.2], [3.3, 4.4], [5.5, 6.6], [1.1, 2.2]]], 'type' => 'Polygon' } },
-            { answer: { 'coordinates' => [[[1.2, 2.3], [3.4, 4.5], [5.6, 6.7], [1.2, 2.3]]], 'type' => 'Polygon' } }
-          )
-        }
-      end
-
-      it 'returns the results for a polygon field' do
-        expect(generated_results[:results][12]).to match expected_result_polygon
-      end
-    end
-
-    describe 'number fields' do
-      let(:expected_result_number) do
-        {
-          inputType: 'number',
-          question: { 'en' => 'How many cats would you like?' },
-          required: false,
-          grouped: false,
-          description: {},
-          hidden: false,
-          pageNumber: nil,
-          questionNumber: 13,
-          logic: {},
-          questionResponseCount: 1,
-          totalResponseCount: 27,
-          customFieldId: number_field.id,
-          numberResponses: a_collection_containing_exactly(
-            { answer: 42 }
-          )
-        }
-      end
-
-      it 'returns the results for a number field' do
-        expect(generated_results[:results][13]).to match expected_result_number
       end
     end
   end

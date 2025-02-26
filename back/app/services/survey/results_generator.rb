@@ -1,10 +1,8 @@
 # frozen_string_literal: true
 
 class Survey::ResultsGenerator < FieldVisitorService
-  def initialize(phase, group_mode: nil, group_field_id: nil)
+  def initialize(phase)
     super()
-    @group_mode = group_mode
-    @group_field_id = group_field_id
     form = phase.custom_form || CustomForm.new(participation_context: phase)
     @fields = IdeaCustomFieldsService.new(form).enabled_fields
     @inputs = phase.ideas.native_survey.published
@@ -126,7 +124,7 @@ class Survey::ResultsGenerator < FieldVisitorService
 
   private
 
-  attr_reader :group_mode, :group_field_id, :fields, :inputs, :locales
+  attr_reader :fields, :inputs, :locales
 
   def core_field_attributes(field, response_count: nil)
     response_count ||= base_responses(field).size
@@ -136,7 +134,7 @@ class Survey::ResultsGenerator < FieldVisitorService
       description: field.description_multiloc,
       customFieldId: field.id,
       required: field.required,
-      grouped: !!group_field_id,
+      grouped: false,
       hidden: false,
       totalResponseCount: @inputs.size,
       questionResponseCount: response_count,
@@ -156,27 +154,10 @@ class Survey::ResultsGenerator < FieldVisitorService
   end
 
   def visit_select_base(field)
-    query = inputs
-    query = query.joins(:author) if group_mode == 'user_field'
-    if group_field
-      raise "Unsupported group field type: #{group_field.input_type}" unless %w[select linear_scale rating].include?(group_field.input_type)
-      raise "Unsupported question type: #{field.input_type}" unless %w[select multiselect linear_scale rating multiselect_image].include?(field.input_type)
-
-      query = query.select(
-        select_field_query(field, as: 'answer'),
-        select_field_query(group_field, as: 'group')
-      )
-      answers = construct_grouped_answers(query, field)
-    else
-      query = query.select(
-        select_field_query(field, as: 'answer')
-      )
-      answers = construct_not_grouped_answers(query, field)
-    end
-
-    # Sort correctly
-    answers = answers.sort_by { |a| -a[:count] } unless %w[linear_scale rating].include?(field.input_type)
-    answers = answers.sort_by { |a| a[:answer] == 'other' ? 1 : 0 } # other should always be last
+    query = inputs.select(
+      select_field_query(field, as: 'answer')
+    )
+    answers = construct_select_answers(query, field)
 
     # Build response
     build_select_response(answers, field)
@@ -232,6 +213,10 @@ class Survey::ResultsGenerator < FieldVisitorService
     # TODO: This is an additional query for selects so performance issue here
     question_response_count = inputs.where("custom_field_values->'#{field.key}' IS NOT NULL").count
 
+    # Sort answers correctly
+    answers = answers.sort_by { |a| -a[:count] } unless %w[linear_scale rating].include?(field.input_type)
+    answers = answers.sort_by { |a| a[:answer] == 'other' ? 1 : 0 } # other should always be last
+
     attributes = core_field_attributes(field, response_count: question_response_count).merge({
       totalPickCount: answers.pluck(:count).sum,
       answers: answers,
@@ -239,15 +224,12 @@ class Survey::ResultsGenerator < FieldVisitorService
     })
 
     attributes[:textResponses] = get_text_responses("#{field.key}_other") if field.other_option_text_field
-    attributes[:legend] = generate_answer_keys(group_field) if group_field
 
     attributes
   end
 
   def get_multilocs(field)
-    multilocs = { answer: get_option_multilocs(field) }
-    multilocs[:group] = get_option_multilocs(group_field) if group_field
-    multilocs
+    { answer: get_option_multilocs(field) }
   end
 
   def get_option_multilocs(field)
@@ -295,7 +277,7 @@ class Survey::ResultsGenerator < FieldVisitorService
     question
   end
 
-  def construct_not_grouped_answers(query, field)
+  def construct_select_answers(query, field)
     answer_keys = generate_answer_keys(field)
 
     grouped_answers_hash = group_query(query)
@@ -311,48 +293,11 @@ class Survey::ResultsGenerator < FieldVisitorService
     end
   end
 
-  def construct_grouped_answers(query, question_field)
-    answer_keys = generate_answer_keys(question_field)
-    group_field_keys = generate_answer_keys(group_field)
-
-    # Create hash of grouped answers
-    answer_groups = group_query(query, group: true)
-    grouped_answers_hash = answer_groups
-      .each_with_object({}) do |((answer, group), count), accu|
-      # We treat 'faulty' values (i.e. that don't exist in options) as nil
-      valid_answer = answer_keys.include?(answer) ? answer : nil
-
-      accu[valid_answer] ||= { answer: valid_answer, count: 0, groups: {} }
-      accu[valid_answer][:count] += count
-
-      # Same for group
-      valid_group = group_field_keys.include?(group) ? group : nil
-
-      accu[valid_answer][:groups][valid_group] ||= { group: valid_group, count: 0 }
-      accu[valid_answer][:groups][valid_group][:count] += count
-    end
-
-    # Construct answers array using order of custom field options
-    answer_keys.map do |answer|
-      grouped_answer = grouped_answers_hash[answer] || { answer: answer, count: 0, groups: {} }
-
-      answers_row = {
-        answer: answer,
-        count: grouped_answer[:count],
-        groups: group_field_keys
-          .filter { |group| grouped_answer[:groups][group] }
-          .map { |group| grouped_answer[:groups][group] }
-      }
-
-      answers_row
-    end
-  end
-
-  def group_query(query, group: false)
+  def group_query(query)
     Idea
       .select(:answer)
       .from(query)
-      .group(:answer, group ? :group : nil)
+      .group(:answer)
       .count
   end
 
@@ -402,10 +347,6 @@ class Survey::ResultsGenerator < FieldVisitorService
   end
 
   def cleanup_single_result(result)
-    # Logic not used on single result & temp fields need removing
-    result[:logic] = {}
-    result.delete(:questionViewedCount)
-    result.delete(:key)
     result
   end
 end
