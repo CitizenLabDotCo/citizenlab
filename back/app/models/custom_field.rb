@@ -155,6 +155,10 @@ class CustomField < ApplicationRecord
     input_type == 'matrix_linear_scale'
   end
 
+  def supports_linear_scale_labels?
+    %w[linear_scale matrix_linear_scale sentiment_linear_scale].include?(input_type)
+  end
+
   def average_rankings(scope)
     # This basically starts from all combinations of scope ID, option key (value)
     # and position (ordinality) and then calculates the average position for each

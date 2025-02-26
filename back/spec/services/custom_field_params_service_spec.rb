@@ -13,7 +13,6 @@ describe CustomFieldParamsService do
       create(:custom_field_shapefile_upload, key: 'shapefile_upload_field'),
       create(:custom_field_html_multiloc, key: 'html_multiloc_field'),
       create(:custom_field_linear_scale, key: 'linear_scale_field')
-
     ]
   end
 
