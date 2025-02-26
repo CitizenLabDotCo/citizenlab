@@ -78,13 +78,13 @@ RSpec.describe ParticipationMethod::Voting do
       expect(
         participation_method.default_fields(create(:custom_form, participation_context: phase)).map(&:code)
       ).to eq %w[
-        ideation_page1
+        ideation_section1
         title_multiloc
         body_multiloc
-        ideation_page2
+        ideation_section2
         idea_images_attributes
         idea_files_attributes
-        ideation_page3
+        ideation_section3
         topic_ids
         location_description
         proposed_budget
