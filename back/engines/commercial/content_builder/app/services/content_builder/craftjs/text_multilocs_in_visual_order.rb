@@ -1,16 +1,17 @@
 module ContentBuilder
   module Craftjs
     # Extracts multilocs from a craftjs in the order they appear in the visual layout.
-    class MultilocsInVisualOrder
+    class TextMultilocsInVisualOrder
       def initialize(craftjs, with_metadata: false)
         @craftjs = LayoutSanitizationService.new.sanitize(craftjs)
         @with_metadata = with_metadata
         @ordered_multilocs = []
       end
 
-      # Orders multilocs found in the craftjs by how they appear in the layout,
+      # Orders textual (text & title) multilocs found in the craftjs by how they appear in the layout,
       # so that columns are ordered from left to right, and texts from top to bottom within each column.
       # Top to bottom ordering within containers is also respected.
+      # Ignores ImageMultiloc nodes, which may include an image alt-text.
       def extract
         multiloc_search_recursive('ROOT')
         @ordered_multilocs

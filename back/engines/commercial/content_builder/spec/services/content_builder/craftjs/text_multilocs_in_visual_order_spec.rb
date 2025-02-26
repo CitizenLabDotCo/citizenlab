@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe ContentBuilder::Craftjs::MultilocsInVisualOrder do
+RSpec.describe ContentBuilder::Craftjs::TextMultilocsInVisualOrder do
   subject(:service) { described_class.new(json, with_metadata: with_metadata) }
 
   def load_fixture(file_name)
