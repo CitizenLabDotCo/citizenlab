@@ -56,7 +56,6 @@ export interface IPhaseAttributes {
   presentation_mode: PresentationMode;
   survey_service?: TSurveyService | null;
   survey_embed_url?: string | null;
-  supports_survey_form?: boolean;
   poll_anonymous?: boolean;
   ideas_order?: IdeaSortMethod;
   document_annotation_embed_url?: string | null;
