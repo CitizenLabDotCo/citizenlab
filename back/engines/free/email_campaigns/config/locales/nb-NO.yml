@@ -499,6 +499,7 @@ nb:
       cta_vote: 'Gå til plattformen for å stemme'
     survey_submitted:
       subject: '%{organizationName}: Takk for svaret ditt! 🎉'
+      preheader: 'Her er detaljene for innleveringen din.'
       main_header: 'Takk for at du deler dine tanker om "%{projectName}"!'
       your_input_submitted: 'Ditt innspill for "%{projectName}" har blitt sendt inn.'
       if_you_would_like_to_review: 'Hvis du ønsker å se gjennom det du har sendt inn, kan du laste ned svarene nedenfor.'

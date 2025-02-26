@@ -137,7 +137,7 @@ const ParticipationMethodPicker = ({
   return (
     <>
       <SectionField>
-        <SubSectionTitle>
+        <SubSectionTitle className="intercom-admin-participation-method-picker-heading">
           <FormattedMessage {...messages.participationMethodTitleText} />
           <IconTooltip
             content={

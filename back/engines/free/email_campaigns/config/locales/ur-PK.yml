@@ -499,6 +499,7 @@ ur:
       cta_vote: 'ووٹ دینے کے لیے پلیٹ فارم پر جائیں۔'
     survey_submitted:
       subject: '%{organizationName}: آپ کے جواب کا شکریہ! 🎉'
+      preheader: 'آپ کی جمع کرانے کی تفصیلات یہ ہیں۔'
       main_header: '"%{projectName}" پر اپنے خیالات بانٹنے کے لیے آپ کا شکریہ!'
       your_input_submitted: '"%{projectName}" کے لیے آپ کا ان پٹ کامیابی کے ساتھ جمع کر دیا گیا ہے۔'
       if_you_would_like_to_review: 'اگر آپ اپنی جمع آوری کا جائزہ لینا چاہتے ہیں، تو آپ نیچے اپنے جوابات ڈاؤن لوڈ کر سکتے ہیں۔'

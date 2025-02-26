@@ -12,7 +12,6 @@ import { useParams } from 'react-router-dom';
 
 import { IBackgroundJobData } from 'api/background_jobs/types';
 
-import useFeatureFlag from 'hooks/useFeatureFlag';
 import useInputSchema from 'hooks/useInputSchema';
 
 import ImportExcelModal from './ImportModal/ImportExcelModal';
@@ -99,11 +98,6 @@ const InputImporter = () => {
 };
 
 const InputImporterWrapper = () => {
-  const inputImporterEnabled = useFeatureFlag({
-    name: 'input_importer',
-  });
-  if (!inputImporterEnabled) return null;
-
   const modalPortalElement = document.getElementById('modal-portal');
   if (!modalPortalElement) return null;
 
