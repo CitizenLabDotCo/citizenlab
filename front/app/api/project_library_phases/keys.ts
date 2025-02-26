@@ -1,6 +1,6 @@
 import { QueryKeys } from 'utils/cl-react-query/types';
 
-const baseKey = { type: 'phase' };
+const baseKey = { type: 'project_library_phase' };
 
 const projectLibraryPhasesKeys = {
   all: () => [baseKey],
