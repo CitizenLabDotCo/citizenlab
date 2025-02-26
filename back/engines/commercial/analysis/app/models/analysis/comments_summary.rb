@@ -28,6 +28,7 @@ module Analysis
     belongs_to :idea
     belongs_to :background_task, class_name: 'Analysis::CommentsSummarizationTask'
     has_many :comments, through: :idea
+    has_many :activities, as: :item
 
     delegate :analysis, :analysis_id, to: :background_task
 

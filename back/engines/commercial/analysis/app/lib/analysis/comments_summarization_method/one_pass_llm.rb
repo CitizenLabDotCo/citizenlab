@@ -24,15 +24,23 @@ module Analysis
 
     def prompt(project, input, input_text, comments_text)
       project_title = MultilocService.new.t(project.title_multiloc)
-      language = Locale.monolingual&.language_copy
       LLM::Prompt.new.fetch(
         'comments_summarization',
         project_title:,
         input:,
         input_text:,
         comments_text:,
-        language:
+        language: response_language
       )
+    end
+
+    def response_language
+      locale = Locale.monolingual&.to_s ||
+               comments_summary.activities.where(action: 'created').order(created_at: :desc).first&.user&.locale ||
+               AppConfiguration.instance.settings('core', 'locales').first ||
+               I18n.default_locale
+
+      Locale.new(locale).language_copy
     end
   end
 end

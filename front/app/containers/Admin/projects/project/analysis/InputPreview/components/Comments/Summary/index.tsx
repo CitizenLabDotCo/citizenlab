@@ -44,6 +44,7 @@ const Summary = ({ analysisId, inputId }: Props) => {
   const isGenerating =
     backgroundTask?.data.attributes.state === 'queued' ||
     backgroundTask?.data.attributes.state === 'in_progress';
+  const taskFailed = backgroundTask?.data.attributes.state === 'failed';
 
   const { mutate: generateAnalysis, isLoading: requestingSummary } =
     useGenerateAnalysisCommentsSummary();
@@ -85,12 +86,12 @@ const Summary = ({ analysisId, inputId }: Props) => {
             justifyContent="space-between"
             alignItems="center"
           >
-            {missingCommentsCount > 0 && (
+            {(missingCommentsCount > 0 || taskFailed) && (
               <Button
                 disabled={
                   isGenerating ||
                   requestingSummary ||
-                  missingCommentsCount === 0
+                  (missingCommentsCount === 0 && !taskFailed)
                 }
                 buttonStyle="secondary-outlined"
                 icon="refresh"
