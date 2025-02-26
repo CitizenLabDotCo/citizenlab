@@ -207,6 +207,24 @@ module Survey
       results
     end
 
+    def cleanup_results(results)
+      # remove the temporary fields that are now not needed
+      super.map do |question|
+        question.delete(:questionViewedCount)
+        question.delete(:key)
+        question
+      end
+    end
+
+    # TODO: Probably not needed here as single results likely unneeded for this class
+    def cleanup_single_result(result)
+      # Logic not used on single result & temp fields need removing
+      result[:logic] = {}
+      result.delete(:questionViewedCount)
+      result.delete(:key)
+      result
+    end
+
     def supports_question_logic?(input_type)
       %w[select multiselect linear_scale multiselect_image rating].include? input_type
     end

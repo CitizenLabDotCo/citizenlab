@@ -396,15 +396,9 @@ class Survey::ResultsGenerator < FieldVisitorService
   end
 
   def cleanup_results(results)
-    # Remove the last page - only needed for logic calculations
-    results.pop if results.last[:inputType] == 'page' && results.last[:key] == 'survey_end'
-
-    # remove the temporary fields that are now not needed
-    results.map do |question|
-      question.delete(:questionViewedCount)
-      question.delete(:key)
-      question
-    end
+    # Remove the last page - needed for calculations, but not for display
+    results.pop if results.last[:inputType] == 'page'
+    results
   end
 
   def cleanup_single_result(result)
@@ -413,17 +407,5 @@ class Survey::ResultsGenerator < FieldVisitorService
     result.delete(:questionViewedCount)
     result.delete(:key)
     result
-  end
-
-  def group_field
-    @group_field ||= if group_field_id
-      if group_mode == 'user_field'
-        CustomField.find(group_field_id)
-      else
-        find_question(group_field_id)
-      end
-    else
-      false
-    end
   end
 end
