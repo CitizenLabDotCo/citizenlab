@@ -48,7 +48,7 @@ module ContentBuilder
             @ordered_multilocs << {
               node_type: 'AccordionMultiloc',
               multiloc_type: 'title',
-              multliloc: node['props']['title']
+              multliloc: make_h3s(node['props']['title']) # Add h3 tags to indicate style the FE would apply.
             }
           end
 
@@ -58,9 +58,13 @@ module ContentBuilder
             multliloc: node['props']['text']
           }
         else
-          @ordered_multilocs << node['props']['title'] if resolved_name == 'AccordionMultiloc'
+          @ordered_multilocs << make_h3s(node['props']['title']) if resolved_name == 'AccordionMultiloc'
           @ordered_multilocs << node['props']['text']
         end
+      end
+
+      def make_h3s(multliloc)
+        multliloc.transform_values! { |text| "<h3>#{text}</h3>" }
       end
 
       def children_ordered_by_nodes_order(node_key, node)
