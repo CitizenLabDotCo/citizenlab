@@ -155,5 +155,4 @@ class UiSchemaGeneratorService < FieldVisitorService
       ui_field[:scope] = "#{ui_field[:scope]}/properties/#{locale}"
     end
   end
-
 end
