@@ -387,10 +387,10 @@ RSpec.describe CustomField do
       expect(domicile_field.options.last.area).to be_nil
     end
 
-    describe 'ordered_options' do
+    describe 'ordered_transformed_options' do
       it 'returns the ordered domicile options with keys and titles from areas' do
-        options = domicile_field.ordered_options
-        expect(options.pluck(:key)).to eq(Area.pluck(:id) + ['outside'])
+        options = domicile_field.ordered_transformed_options
+        expect(options.pluck(:key)).to eq(Area.order(:ordering).pluck(:id) + ['outside'])
         expect(options.last.title_multiloc['en']).to eq 'Somewhere else'
       end
     end

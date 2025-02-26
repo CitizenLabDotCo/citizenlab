@@ -1190,9 +1190,9 @@ RSpec.describe SurveyResultsGeneratorService do
         end
 
         let(:expected_result_select_with_domicile_user_field_grouping) do
-          area_1_key = domicile_user_custom_field.ordered_options[0].key
-          area_2_key = domicile_user_custom_field.ordered_options[1].key
-          somewhere_else_key = domicile_user_custom_field.ordered_options.last.key
+          area_1_key = domicile_user_custom_field.ordered_transformed_options[0].key
+          area_2_key = domicile_user_custom_field.ordered_transformed_options[1].key
+          somewhere_else_key = domicile_user_custom_field.ordered_transformed_options.last.key
           expected_result_select.tap do |result|
             result[:grouped] = true
             result[:legend] = [area_1_key, area_2_key, somewhere_else_key, nil]
@@ -1227,9 +1227,9 @@ RSpec.describe SurveyResultsGeneratorService do
               }
             ]
             result[:multilocs][:group] = {
-              area_1_key => { title_multiloc: domicile_user_custom_field.ordered_options[0].title_multiloc },
-              area_2_key => { title_multiloc: domicile_user_custom_field.ordered_options[1].title_multiloc },
-              somewhere_else_key => { title_multiloc: domicile_user_custom_field.ordered_options.last.title_multiloc }
+              area_1_key => { title_multiloc: domicile_user_custom_field.ordered_transformed_options[0].title_multiloc },
+              area_2_key => { title_multiloc: domicile_user_custom_field.ordered_transformed_options[1].title_multiloc },
+              somewhere_else_key => { title_multiloc: domicile_user_custom_field.ordered_transformed_options.last.title_multiloc }
             }
           end
         end

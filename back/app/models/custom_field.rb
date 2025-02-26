@@ -304,13 +304,15 @@ class CustomField < ApplicationRecord
   end
 
   def ordered_options
-    @ordered_options ||= if domicile?
-      domicile_options
-    elsif random_option_ordering # Domicile options will never need random ordering
+    @ordered_options ||= if random_option_ordering
       options.shuffle.sort_by { |o| o.other ? 1 : 0 }
     else
       options.order(:ordering)
     end
+  end
+
+  def ordered_transformed_options
+    @ordered_transformed_options ||= domicile? ? domicile_options : ordered_options
   end
 
   def linear_scale_print_description(locale)
