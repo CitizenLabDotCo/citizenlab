@@ -110,7 +110,7 @@ const MapControl = ({ ...props }: ControlProps) => {
   };
 
   return (
-    <Box key={`${path}`}>
+    <>
       <Box>
         <FormLabel
           htmlFor={sanitizeForClassname(id)}
@@ -151,7 +151,7 @@ const MapControl = ({ ...props }: ControlProps) => {
           {...props}
         />
       )}
-    </Box>
+    </>
   );
 };
 
