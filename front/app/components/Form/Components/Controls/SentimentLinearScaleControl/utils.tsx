@@ -1,3 +1,8 @@
+import { ControlElement } from '@jsonforms/core';
+import { MessageDescriptor } from 'react-intl';
+
+import { FormatMessageValues } from 'utils/cl-intl/useIntl';
+
 import messages from '../messages';
 
 import Sentiment1Svg from './assets/sentiment_1.svg';
@@ -34,25 +39,23 @@ export const handleKeyboardKeyChange = (event, value) => {
   }
 };
 
-export const getSentimentEmoji = (index: number) => {
-  switch (index) {
-    case 1:
-      return Sentiment1Svg;
-    case 2:
-      return Sentiment2Svg;
-    case 3:
-      return Sentiment3Svg;
-    case 4:
-      return Sentiment4Svg;
-    case 5:
-      return Sentiment5Svg;
-  }
-  return Sentiment1Svg;
+const sentimentEmojis: Record<1 | 2 | 3 | 4 | 5, string> = {
+  1: Sentiment1Svg,
+  2: Sentiment2Svg,
+  3: Sentiment3Svg,
+  4: Sentiment4Svg,
+  5: Sentiment5Svg,
 };
 
+export const getSentimentEmoji = (index: number) =>
+  sentimentEmojis[index as keyof typeof sentimentEmojis];
+
 type GetAriaValueTextProps = {
-  uischema: any;
-  formatMessage: any;
+  uischema: ControlElement;
+  formatMessage: (
+    messageDescriptor: MessageDescriptor,
+    values?: FormatMessageValues
+  ) => string;
   value: number;
   total: number;
 };
