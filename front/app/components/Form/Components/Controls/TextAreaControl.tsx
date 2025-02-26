@@ -14,7 +14,7 @@ import getFollowUpControlKey from 'components/Form/utils/getFollowUpControlKey';
 import { FormLabel } from 'components/UI/FormComponents';
 import TextArea from 'components/UI/TextArea';
 
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import { isString } from 'utils/helperUtils';
 import { getLabel, sanitizeForClassname } from 'utils/JSONFormUtils';
 
@@ -39,6 +39,7 @@ const TextAreaControl = ({
   uischema,
   visible,
 }: ControlProps) => {
+  const { formatMessage } = useIntl();
   const [didBlur, setDidBlur] = useState(false);
   const answerNotPublic = uischema.options?.answer_visible_to === 'admins';
 
@@ -82,7 +83,13 @@ const TextAreaControl = ({
             setDidBlur(true);
           }}
           disabled={uischema.options?.readonly}
-          placeholder={isFollowUpField ? getLabel(uischema, schema, path) : ''}
+          placeholder={
+            isFollowUpField
+              ? `${getLabel(uischema, schema, path)} ${formatMessage(
+                  messages.optionalParentheses
+                )}`
+              : ''
+          }
         />
         <VerificationIcon show={uischema.options?.verificationLocked} />
       </Box>
