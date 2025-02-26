@@ -319,7 +319,6 @@ const CLSurveyPageLayout = memo(
 
     // This is the index of the current page in the pageTypeElements array,
     // which also includes non-visible pages.
-    // We only use it to render to the data-cy attribute for e2e testing.
     const currentPageIndex = pageTypeElements.findIndex(
       (page) => page === currentPage
     );
@@ -330,6 +329,11 @@ const CLSurveyPageLayout = memo(
     return (
       <>
         <Box
+          // Using an explicit key to force React to re-render the whole page component
+          // tree when the page changes. This fixes an issue where the state of some
+          // Control components was shared between consecutive pages with a similar
+          // structure.
+          key={`survey-page-${currentPageIndex}`}
           id="container"
           display="flex"
           flexDirection={isMobileOrSmaller ? 'column' : 'row'}
