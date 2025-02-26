@@ -149,7 +149,8 @@ const Form = memo(
           internalSetLoading(true);
         }
         try {
-          response = await onSubmit(submissionData);
+          // TODO: Test that this does not affect anything else
+          response = await onSubmit(sanitizedFormData);
           if (isSurvey) {
             trackEventByName(tracks.surveyFormSubmitted);
           } else {
