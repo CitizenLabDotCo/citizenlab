@@ -66,7 +66,7 @@ class Permissions::UserRequirementsService
         missing_user_attributes: %i[first_name last_name email confirmation password]
       },
       verification: false,
-      custom_fields: [],
+      custom_fields: {},
       onboarding: onboarding_possible?,
       group_membership: @check_groups_and_verification && permission.groups.any?
     }
