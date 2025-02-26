@@ -11,7 +11,10 @@ import Sentiment3Svg from './assets/sentiment_3.svg';
 import Sentiment4Svg from './assets/sentiment_4.svg';
 import Sentiment5Svg from './assets/sentiment_5.svg';
 
-export const getClassNameSentimentImage = (data, visualIndex) => {
+export const getClassNameSentimentImage = (
+  data: number,
+  visualIndex: number
+) => {
   if (data === visualIndex) {
     return 'isSelected';
   } else if (data) {
