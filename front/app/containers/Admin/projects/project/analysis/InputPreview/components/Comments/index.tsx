@@ -7,6 +7,8 @@ import { useParams } from 'react-router-dom';
 import useAnalysisInput from 'api/analysis_inputs/useAnalysisInput';
 import useComments from 'api/comments/useComments';
 
+import useFeatureFlag from 'hooks/useFeatureFlag';
+
 import { useIntl } from 'utils/cl-intl';
 
 import { useSelectedInputContext } from '../../../SelectedInputContext';
@@ -21,6 +23,10 @@ const Comments = () => {
   const { ref: loadMoreRef, inView } = useInView({
     rootMargin: '200px',
     threshold: 0,
+  });
+
+  const commentsSummariesActive = useFeatureFlag({
+    name: 'comments_summaries',
   });
 
   const {
@@ -64,7 +70,7 @@ const Comments = () => {
       <Title variant="h4">
         {formatMessage(messages.comments)} ({commentsCount})
       </Title>
-      {(commentsCount || 0) >= 5 && (
+      {commentsSummariesActive && (commentsCount || 0) >= 5 && (
         <Box>
           <Summary analysisId={analysisId} inputId={selectedInputId} />
         </Box>
