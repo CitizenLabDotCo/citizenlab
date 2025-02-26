@@ -6,22 +6,22 @@ import { IIdeaCustomField } from 'api/idea_custom_fields/types';
 
 import T from 'components/T';
 
-import PointMapPreview from '../MapPreview/PointMapPreview';
+import PolygonMapPreview from '../../../MapPreview/PolygonMapPreview';
 
 type Props = {
   rawValue: any;
   customField: IIdeaCustomField;
 };
 
-const PointLongField = ({ rawValue, customField }: Props) => {
+const PolygonLongField = ({ rawValue, customField }: Props) => {
   return (
     <Box>
       <Title variant="h5" m="0px" mb="4px">
         <T value={customField.data.attributes.title_multiloc} />
       </Title>
-      <PointMapPreview rawValue={rawValue} />
+      <PolygonMapPreview rawValue={rawValue} />
     </Box>
   );
 };
 
-export default PointLongField;
+export default PolygonLongField;

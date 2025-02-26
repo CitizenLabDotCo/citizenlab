@@ -274,7 +274,7 @@ class CustomField < ApplicationRecord
   end
 
   def other_option_text_field
-    return if !includes_other_option?
+    return unless includes_other_option?
 
     other_field_key = "#{key}_other"
     title_multiloc = MultilocService.new.i18n_to_multiloc(
@@ -309,6 +309,10 @@ class CustomField < ApplicationRecord
     else
       options.order(:ordering)
     end
+  end
+
+  def ordered_transformed_options
+    @ordered_transformed_options ||= domicile? ? domicile_options : ordered_options
   end
 
   def linear_scale_print_description(locale)
@@ -380,6 +384,20 @@ class CustomField < ApplicationRecord
     )
     self.description_multiloc = service.remove_multiloc_empty_trailing_tags description_multiloc
     self.description_multiloc = service.linkify_multiloc description_multiloc
+  end
+
+  # Return domicile options with IDs and descriptions taken from areas
+  def domicile_options
+    return options.order(:ordering) unless domicile?
+
+    areas = Area.where(custom_field_option_id: options.pluck(:id))
+    area_id_map = areas.map { |a| { a.custom_field_option_id => { id: a.id, title: a.title_multiloc } } }.reduce({}, :merge)
+
+    options.order(:ordering).map do |option|
+      option.key = area_id_map.dig(option.id, :id) || 'outside'
+      option.title_multiloc = area_id_map.dig(option.id, :title) || MultilocService.new.i18n_to_multiloc('custom_field_options.domicile.outside')
+      option
+    end
   end
 end
 

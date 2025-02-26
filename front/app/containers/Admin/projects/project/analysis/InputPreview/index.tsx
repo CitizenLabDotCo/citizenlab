@@ -1,16 +1,9 @@
 import React, { useState } from 'react';
 
-import {
-  Box,
-  Divider,
-  Text,
-  colors,
-  fontSizes,
-} from '@citizenlab/cl2-component-library';
+import { Box, Divider, Text } from '@citizenlab/cl2-component-library';
 import { useParams, useSearchParams } from 'react-router-dom';
 
 import useAnalysis from 'api/analyses/useAnalysis';
-import useUpdateAnalysis from 'api/analyses/useUpdateAnalysis';
 import useAnalysisInput from 'api/analysis_inputs/useAnalysisInput';
 import useAnalysisUserById from 'api/analysis_users/useAnalysisUserById';
 import usePhase from 'api/phases/usePhase';
@@ -18,25 +11,25 @@ import usePhase from 'api/phases/usePhase';
 import Avatar from 'components/Avatar';
 import Button from 'components/UI/ButtonWithLink';
 
-import { trackEventByName } from 'utils/analytics';
 import { useIntl } from 'utils/cl-intl';
 import { getMethodConfig } from 'utils/configs/participationMethodConfig';
 import { getFullName } from 'utils/textUtils';
 
 import { useSelectedInputContext } from '../SelectedInputContext';
 import Taggings from '../Taggings';
-import tracks from '../tracks';
 
-import LongFieldValue from './components/LongFieldValue';
+import Comments from './components/Comments';
+import CustomFields from './components/CustomFields';
 import messages from './messages';
 
 const InputListItem = () => {
   const [showAllQuestions, setShowAllQuestions] = useState(false);
   const [searchParams] = useSearchParams();
-  const { mutate: updateAnalysis } = useUpdateAnalysis();
 
   const phaseId = searchParams.get('phase_id');
-  const { data: phase } = usePhase(phaseId);
+  const { data: phase } = usePhase(
+    phaseId === 'undefined' ? undefined : phaseId
+  );
   const { formatMessage } = useIntl();
   const { selectedInputId } = useSelectedInputContext();
   const { analysisId } = useParams() as { analysisId: string };
@@ -65,40 +58,7 @@ const InputListItem = () => {
   const mainCustomFieldId =
     analysis.data.relationships.main_custom_field?.data?.id;
 
-  const additionalCustomFieldIds =
-    analysis.data.relationships.additional_custom_fields?.data.map(
-      (field) => field.id
-    );
-
   const allCustomFields = analysis.data.relationships.all_custom_fields.data;
-  const customFieldsInAnalysisIds = [
-    mainCustomFieldId,
-    ...(additionalCustomFieldIds || []),
-  ];
-
-  const handleAddRemoveAdditionalCustomField = (customFieldId: string) => {
-    const newAdditionalCustomFieldIds = additionalCustomFieldIds?.includes(
-      customFieldId
-    )
-      ? additionalCustomFieldIds.filter((id) => id !== customFieldId)
-      : [...(additionalCustomFieldIds || []), customFieldId];
-
-    updateAnalysis(
-      {
-        id: analysisId,
-        additional_custom_field_ids: newAdditionalCustomFieldIds,
-      },
-      {
-        onSuccess: () => {
-          trackEventByName(
-            additionalCustomFieldIds?.includes(customFieldId)
-              ? tracks.removeQuestionFromAIAnalysis
-              : tracks.addQuestionToAIAnalysis
-          );
-        },
-      }
-    );
-  };
 
   return (
     <Box data-cy="e2e-analysis-input-preview">
@@ -142,86 +102,17 @@ const InputListItem = () => {
         </Box>
       )}
 
-      {allCustomFields
-        .filter((customField) =>
-          showAllQuestions
-            ? true
-            : customFieldsInAnalysisIds.includes(customField.id)
-        )
-        .map((customField) => (
-          <Box key={customField.id}>
-            <Box
-              bg={
-                customFieldsInAnalysisIds.includes(customField.id) &&
-                mainCustomFieldId
-                  ? colors.background
-                  : colors.white
-              }
-              px="8px"
-              py="16px"
-              data-cy="e2e-analysis-custom-field-item"
-            >
-              {mainCustomFieldId && (
-                <Box mb="8px">
-                  {customField.id === mainCustomFieldId ? (
-                    <Box
-                      p="4px 12px"
-                      background={colors.primary}
-                      w="fit-content"
-                      borderRadius="3px"
-                    >
-                      <Text
-                        m="0px"
-                        color="white"
-                        fontSize="xs"
-                        fontWeight="bold"
-                      >
-                        {formatMessage(messages.mainQuestion).toUpperCase()}
-                      </Text>
-                    </Box>
-                  ) : (
-                    <Box display="flex">
-                      <Button
-                        data-cy={
-                          'e2e-analysis-add-remove-additional-custom-field'
-                        }
-                        onClick={() =>
-                          handleAddRemoveAdditionalCustomField(customField.id)
-                        }
-                        buttonStyle="secondary-outlined"
-                        size="s"
-                        p="0px 8px"
-                        fontSize={`${fontSizes.xs}px`}
-                        fontWeight="bold"
-                        icon={
-                          additionalCustomFieldIds?.includes(customField.id)
-                            ? 'close'
-                            : 'plus'
-                        }
-                        iconSize="16px"
-                      >
-                        {additionalCustomFieldIds?.includes(customField.id)
-                          ? formatMessage(messages.remove).toUpperCase()
-                          : formatMessage(messages.addToAnalysis).toUpperCase()}
-                      </Button>
-                    </Box>
-                  )}
-                </Box>
-              )}
-              <LongFieldValue
-                customFieldId={customField.id}
-                input={input.data}
-                projectId={analysis.data.relationships.project?.data?.id}
-                phaseId={analysis.data.relationships.phase?.data?.id}
-              />
-            </Box>
-            {mainCustomFieldId && <Divider m="0px" />}
-          </Box>
-        ))}
+      <CustomFields
+        analysis={analysis}
+        input={input}
+        showAllQuestions={showAllQuestions}
+      />
 
       <Box id="tags-control" my="12px">
         <Taggings onlyShowTagged={false} inputId={selectedInputId} />
       </Box>
+
+      {methodConfig.supportsComments && <Comments />}
     </Box>
   );
 };

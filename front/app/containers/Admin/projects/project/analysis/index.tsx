@@ -13,7 +13,6 @@ import TopBar from './TopBar';
 
 const Analysis = () => {
   const modalPortalElement = document.getElementById('modal-portal');
-
   if (!modalPortalElement) return null;
 
   return createPortal(
@@ -63,6 +62,7 @@ const Analysis = () => {
                 <InputPreview />
               </Box>
             </Box>
+
             <Box
               flex="1"
               p="12px"

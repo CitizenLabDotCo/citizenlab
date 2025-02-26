@@ -262,11 +262,7 @@ class SurveyResultsGeneratorService < FieldVisitorService
       return build_scaled_input_multilocs(field)
     end
 
-    if field.domicile?
-      return build_domicile_multilocs(field)
-    end
-
-    field.options.each_with_object({}) do |option, accu|
+    field.ordered_transformed_options.each_with_object({}) do |option, accu|
       option_detail = { title_multiloc: option.title_multiloc }
       option_detail[:image] = option.image&.image&.versions&.transform_values(&:url) if field.support_option_images?
       accu[option.key] = option_detail
@@ -306,7 +302,7 @@ class SurveyResultsGeneratorService < FieldVisitorService
       # Create a unique ID for this linear scale option in the full results so we can filter logic
       (1..field.maximum).map { |value| { id: "#{field.id}_#{value}", key: value } }
     else
-      field.options.map { |option| { id: option.id, key: option.key } }
+      field.ordered_options.map { |option| { id: option.id, key: option.key } }
     end
 
     # NOTE: Only options with logic will be returned
@@ -360,7 +356,6 @@ class SurveyResultsGeneratorService < FieldVisitorService
 
     # Create hash of grouped answers
     answer_groups = group_query(query, group: true)
-    answer_groups = normalise_domicile_keys(answer_groups, group_field) if group_field.code == 'domicile'
     grouped_answers_hash = answer_groups
       .each_with_object({}) do |((answer, group), count), accu|
       # We treat 'faulty' values (i.e. that don't exist in options) as nil
@@ -401,24 +396,7 @@ class SurveyResultsGeneratorService < FieldVisitorService
   end
 
   def generate_answer_keys(field)
-    return field.options.map { |o| o.area&.id || 'outside' } + [nil] if field.domicile?
-
-    (%w[linear_scale rating].include?(field.input_type) ? (1..field.maximum).to_a : field.options.map(&:key)) + [nil]
-  end
-
-  # Convert stored user keys for domicile field to match the options keys eg "f6319053-d521-4b28-9d71-a3693ec95f45" => "north_london_8rg"
-  def normalise_domicile_keys(answer_groups, domicile_field)
-    # Load all the areas in one query as they are not preloaded elsewhere
-    areas = Area.where(custom_field_option_id: domicile_field.options.pluck(:id))
-    area_id_map = areas.map { |a| { a.custom_field_option_id => a.id } }.reduce({}, :merge)
-    options_map = domicile_field.options.map { |o| { area_id_map[o.id] || 'outside' => o.key } }.reduce({}, :merge)
-
-    new_groups = {}
-    answer_groups.each do |(answer, group), count|
-      new_group = options_map[group]
-      new_groups[[answer, new_group]] = count
-    end
-    new_groups
+    (%w[linear_scale rating].include?(field.input_type) ? (1..field.maximum).to_a : field.ordered_transformed_options.map(&:key)) + [nil]
   end
 
   def add_page_response_count_to_results(results)
