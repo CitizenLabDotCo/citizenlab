@@ -80,6 +80,7 @@ module ParticipationMethod
           id: SecureRandom.uuid,
           resource: custom_form,
           input_type: 'page',
+          page_layout: 'default',
           code: 'ideation_page1',
           key: nil,
           title_multiloc: {},
@@ -146,6 +147,7 @@ module ParticipationMethod
           id: SecureRandom.uuid,
           resource: custom_form,
           input_type: 'page',
+          page_layout: 'default',
           code: 'ideation_page2',
           key: nil,
           title_multiloc: multiloc_service.i18n_to_multiloc(
@@ -215,6 +217,7 @@ module ParticipationMethod
           id: SecureRandom.uuid,
           resource: custom_form,
           input_type: 'page',
+          page_layout: 'default',
           code: 'ideation_page3',
           key: nil,
           title_multiloc: multiloc_service.i18n_to_multiloc(
