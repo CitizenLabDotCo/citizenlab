@@ -139,8 +139,10 @@ const IdeasNewIdeationForm = ({ project, phaseId }: Props) => {
     setFormData(data);
     if (disclaimerNeeded) {
       return setIsDisclaimerOpened(true);
-    } else {
+    } else if (data.publication_status === 'published') {
       return onSubmit(data);
+    } else {
+      // Add handling draft ideas
     }
   };
 
@@ -165,7 +167,7 @@ const IdeasNewIdeationForm = ({ project, phaseId }: Props) => {
     const phase_ids =
       phaseId && canModerateProject(project.data, authUser) ? [phaseId] : null;
 
-    const idea = await addIdea({
+    await addIdea({
       ...data,
       location_point_geojson,
       project_id: project.data.id,
@@ -173,10 +175,6 @@ const IdeasNewIdeationForm = ({ project, phaseId }: Props) => {
       anonymous: postAnonymously ? true : undefined,
     });
 
-    participationMethodConfig?.onFormSubmission({
-      project: project.data,
-      idea,
-    });
     setLoading(false);
   };
 
