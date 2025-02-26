@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class SurveyResultsGeneratorService < FieldVisitorService
+class Survey::ResultsGenerator < FieldVisitorService
   def initialize(phase, group_mode: nil, group_field_id: nil)
     super()
     @group_mode = group_mode
