@@ -13,7 +13,7 @@ RSpec.describe ContentBuilder::Craftjs::VisibleTextMultilocs do
     JSON.parse(load_fixture('example_description_craftjs.json'))
   end
 
-  describe '#multilocs_in_natural_order' do
+  describe '#extract' do
     context 'without metadata' do
       let(:with_metadata) { false }
 
@@ -54,6 +54,12 @@ RSpec.describe ContentBuilder::Craftjs::VisibleTextMultilocs do
             { 'en' => '<p>imageAndTextC text</p>' }
           ]
         )
+      end
+
+      # The FE applies this style to the title of an AccordianMultiloc node.
+      # Since we get the HTML tags of all other text we extract, we add these tags to clearly indicate the style.
+      it 'adds <h3>...</h3> tags to AccordianMultiloc node title text' do
+        expect(service.extract).to include({ 'en' => '<h3>accordianA title</h3>' })
       end
     end
 
@@ -161,6 +167,14 @@ RSpec.describe ContentBuilder::Craftjs::VisibleTextMultilocs do
               node_type: 'TextMultiloc' }
           ]
         )
+      end
+
+      # The FE applies this style to the title of an AccordianMultiloc node.
+      # Since we get the HTML tags of all other text we extract, we add these tags to clearly indicate the style.
+      it 'adds <h3>...</h3> tags to AccordianMultiloc node title text' do
+        expect(service.extract).to include({ multiloc_type: 'title',
+                                             multliloc: { 'en' => '<h3>accordianA title</h3>' },
+                                             node_type: 'AccordionMultiloc' })
       end
     end
   end
