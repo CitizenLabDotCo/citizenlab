@@ -1,8 +1,8 @@
-import { renderHook, act } from '@testing-library/react-hooks';
 import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
+import { renderHook, waitFor, act } from 'utils/testUtils/rtl';
 
 import useDeleteSurveyResults from './useDeleteSurveyResults';
 const apiPath = '*phases/:phaseId/inputs';
@@ -18,7 +18,7 @@ describe('useDeleteSurveyResults', () => {
   afterAll(() => server.close());
 
   it('mutates data correctly', async () => {
-    const { result, waitFor } = renderHook(() => useDeleteSurveyResults(), {
+    const { result } = renderHook(() => useDeleteSurveyResults(), {
       wrapper: createQueryClientWrapper(),
     });
 
@@ -38,7 +38,7 @@ describe('useDeleteSurveyResults', () => {
       })
     );
 
-    const { result, waitFor } = renderHook(() => useDeleteSurveyResults(), {
+    const { result } = renderHook(() => useDeleteSurveyResults(), {
       wrapper: createQueryClientWrapper(),
     });
 

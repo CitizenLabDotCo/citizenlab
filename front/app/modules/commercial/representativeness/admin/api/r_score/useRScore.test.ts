@@ -1,8 +1,8 @@
-import { renderHook } from '@testing-library/react-hooks';
 import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
+import { renderHook, waitFor } from 'utils/testUtils/rtl';
 
 import { IRScore } from './types';
 import useRScore from './useRScore';
@@ -46,7 +46,7 @@ describe('useRScore', () => {
   afterAll(() => server.close());
 
   it('returns data correctly', async () => {
-    const { result, waitFor } = renderHook(
+    const { result } = renderHook(
       () => useRScore({ id: 'id', projectId: 'projectId' }),
       {
         wrapper: createQueryClientWrapper(),
@@ -68,7 +68,7 @@ describe('useRScore', () => {
       })
     );
 
-    const { result, waitFor } = renderHook(
+    const { result } = renderHook(
       () => useRScore({ id: 'id', projectId: 'projectId' }),
       {
         wrapper: createQueryClientWrapper(),
