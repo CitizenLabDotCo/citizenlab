@@ -8,7 +8,7 @@ import { ProjectLibraryPhase, ProjectLibraryPhasesKeys } from './types';
 
 const fetchProjectLibraryPhase = (id?: string) =>
   fetcher<ProjectLibraryPhase>({
-    path: `/projects/${id}`,
+    path: `/phases/${id}`,
     action: 'get',
     apiPath: '/project_library_api',
   });
