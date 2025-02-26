@@ -137,9 +137,11 @@ const IdeasNewIdeationForm = ({ project, phaseId }: Props) => {
       Object.values(data.body_multiloc).some((value) => value.includes('<img'));
 
     setFormData(data);
-    if (disclaimerNeeded) {
-      return setIsDisclaimerOpened(true);
-    } else if (data.publication_status === 'published') {
+
+    if (data.publication_status === 'published') {
+      if (disclaimerNeeded) {
+        return setIsDisclaimerOpened(true);
+      }
       return onSubmit(data);
     } else {
       // Add handling draft ideas

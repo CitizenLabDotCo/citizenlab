@@ -7,7 +7,7 @@ import { Multiloc } from 'typings';
 import useIdeaFiles from 'api/idea_files/useIdeaFiles';
 import useDeleteIdeaImage from 'api/idea_images/useDeleteIdeaImage';
 import useIdeaImages from 'api/idea_images/useIdeaImages';
-import { IIdeaUpdate } from 'api/ideas/types';
+import { IdeaPublicationStatus, IIdeaUpdate } from 'api/ideas/types';
 import useIdeaById from 'api/ideas/useIdeaById';
 import useUpdateIdea from 'api/ideas/useUpdateIdea';
 
@@ -43,6 +43,7 @@ interface FormValues {
   location_point_geojson?: GeoJSON.Point;
   topic_ids?: string[];
   cosponsor_ids?: string[];
+  publication_status?: IdeaPublicationStatus;
 }
 interface Props {
   ideaId: string;
@@ -139,16 +140,19 @@ const IdeasEditForm = ({ ideaId }: Props) => {
   }
 
   const handleDisclaimer = (data: FormValues) => {
-    const disclamerNeeded =
+    const disclaimerNeeded =
       data.idea_files_attributes ||
       data.idea_images_attributes ||
       Object.values(data.body_multiloc).some((value) => value.includes('<img'));
 
     setFormData(data);
-    if (disclamerNeeded) {
-      return setIsDisclaimerOpened(true);
-    } else {
+    if (data.publication_status === 'published') {
+      if (disclaimerNeeded) {
+        return setIsDisclaimerOpened(true);
+      }
       return onSubmit(data);
+    } else {
+      // Add handling draft ideas
     }
   };
 
