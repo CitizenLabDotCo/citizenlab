@@ -38,6 +38,7 @@
 #  linear_scale_label_9_multiloc  :jsonb            not null
 #  linear_scale_label_10_multiloc :jsonb            not null
 #  linear_scale_label_11_multiloc :jsonb            not null
+#  ask_follow_up                  :boolean          default(FALSE), not null
 #
 # Indexes
 #
@@ -66,7 +67,7 @@ class CustomField < ApplicationRecord
   INPUT_TYPES = %w[
     checkbox date file_upload files html html_multiloc image_files linear_scale rating multiline_text multiline_text_multiloc
     multiselect multiselect_image number page point line polygon select select_image shapefile_upload text text_multiloc
-    topic_ids section cosponsor_ids ranking matrix_linear_scale
+    topic_ids section cosponsor_ids ranking matrix_linear_scale sentiment_linear_scale
   ].freeze
   CODES = %w[
     author_id birthyear body_multiloc budget domicile gender idea_files_attributes idea_images_attributes
@@ -122,6 +123,10 @@ class CustomField < ApplicationRecord
     options.any?(&:other)
   end
 
+  def ask_follow_up?
+    ask_follow_up
+  end
+
   def support_free_text_value?
     %w[text multiline_text text_multiloc multiline_text_multiloc html_multiloc].include?(input_type) || (support_options? && includes_other_option?)
   end
@@ -143,11 +148,15 @@ class CustomField < ApplicationRecord
   end
 
   def supports_linear_scale?
-    %w[linear_scale matrix_linear_scale rating].include?(input_type)
+    %w[linear_scale matrix_linear_scale sentiment_linear_scale rating].include?(input_type)
   end
 
   def supports_matrix_statements?
     input_type == 'matrix_linear_scale'
+  end
+
+  def supports_linear_scale_labels?
+    %w[linear_scale matrix_linear_scale sentiment_linear_scale].include?(input_type)
   end
 
   def average_rankings(scope)
@@ -222,6 +231,10 @@ class CustomField < ApplicationRecord
 
   def linear_scale?
     input_type == 'linear_scale'
+  end
+
+  def sentiment_linear_scale?
+    input_type == 'sentiment_linear_scale'
   end
 
   def rating?
@@ -299,6 +312,24 @@ class CustomField < ApplicationRecord
       input_type: 'text',
       title_multiloc: replaced_title_multiloc,
       required: true,
+      enabled: true
+    )
+  end
+
+  def follow_up_text_field
+    return unless ask_follow_up?
+
+    follow_up_field_key = "#{key}_follow_up"
+    title_multiloc = MultilocService.new.i18n_to_multiloc(
+      'custom_fields.ideas.ask_follow_up_field.title',
+      locales: CL2_SUPPORTED_LOCALES
+    )
+
+    CustomField.new(
+      key: follow_up_field_key,
+      input_type: 'multiline_text',
+      title_multiloc: title_multiloc,
+      required: false,
       enabled: true
     )
   end

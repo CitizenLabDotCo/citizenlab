@@ -29,6 +29,7 @@ import messages from '../messages';
 import BuiltInFields from './BuiltInFields';
 import LayoutFields from './LayoutFields';
 import ToolboxItem from './ToolboxItem';
+import { getInitialLinearScaleLabel } from './utils';
 
 interface FormBuilderToolboxProps {
   onAddField: (field: IFlatCreateCustomField, index: number) => void;
@@ -87,36 +88,36 @@ const FormBuilderToolbox = ({
         title_multiloc: {
           [locale]: '',
         },
-        linear_scale_label_1_multiloc: {
-          [locale]:
-            inputType === 'matrix_linear_scale'
-              ? formatMessage(messages.stronglyDisagree)
-              : '',
-        },
-        linear_scale_label_2_multiloc: {
-          [locale]:
-            inputType === 'matrix_linear_scale'
-              ? formatMessage(messages.disagree)
-              : '',
-        },
-        linear_scale_label_3_multiloc: {
-          [locale]:
-            inputType === 'matrix_linear_scale'
-              ? formatMessage(messages.neutral)
-              : '',
-        },
-        linear_scale_label_4_multiloc: {
-          [locale]:
-            inputType === 'matrix_linear_scale'
-              ? formatMessage(messages.agree)
-              : '',
-        },
-        linear_scale_label_5_multiloc: {
-          [locale]:
-            inputType === 'matrix_linear_scale'
-              ? formatMessage(messages.stronglyAgree)
-              : '',
-        },
+        linear_scale_label_1_multiloc: getInitialLinearScaleLabel({
+          value: 1,
+          inputType,
+          formatMessage,
+          locale,
+        }),
+        linear_scale_label_2_multiloc: getInitialLinearScaleLabel({
+          value: 2,
+          inputType,
+          formatMessage,
+          locale,
+        }),
+        linear_scale_label_3_multiloc: getInitialLinearScaleLabel({
+          value: 3,
+          inputType,
+          formatMessage,
+          locale,
+        }),
+        linear_scale_label_4_multiloc: getInitialLinearScaleLabel({
+          value: 4,
+          inputType,
+          formatMessage,
+          locale,
+        }),
+        linear_scale_label_5_multiloc: getInitialLinearScaleLabel({
+          value: 5,
+          inputType,
+          formatMessage,
+          locale,
+        }),
         linear_scale_label_6_multiloc: {},
         linear_scale_label_7_multiloc: {},
         linear_scale_label_8_multiloc: {},
@@ -124,6 +125,7 @@ const FormBuilderToolbox = ({
         linear_scale_label_10_multiloc: {},
         linear_scale_label_11_multiloc: {},
         maximum: 5,
+        ask_follow_up: false,
         options: [
           {
             title_multiloc: {},
@@ -265,6 +267,15 @@ const FormBuilderToolbox = ({
           disabled={isCustomFieldsDisabled}
         />
         <ToolboxItem
+          icon="survey-sentiment"
+          label={formatMessage(messages.sentiment)}
+          onClick={() => addField('sentiment_linear_scale')}
+          data-cy="e2e-sentiment"
+          fieldsToInclude={builderConfig.toolboxFieldsToInclude}
+          inputType="sentiment_linear_scale"
+          disabled={isCustomFieldsDisabled}
+        />
+        <ToolboxItem
           icon="survey-matrix"
           label={formatMessage(messages.matrix)}
           onClick={() => addField('matrix_linear_scale')}
@@ -273,6 +284,7 @@ const FormBuilderToolbox = ({
           inputType="matrix_linear_scale"
           disabled={isCustomFieldsDisabled}
         />
+
         <ToolboxItem
           icon="survey-number-field"
           label={formatMessage(messages.number)}

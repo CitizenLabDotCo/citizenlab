@@ -136,4 +136,8 @@ export default defineMessages({
     id: 'app.components.form.controls.allStatementsError',
     defaultMessage: 'An answer must be selected for all statements.',
   },
+  optionalParentheses: {
+    id: 'app.components.form.controls.optionalParentheses',
+    defaultMessage: '(optional)',
+  },
 });

@@ -40,6 +40,7 @@ import { parseLayers } from 'components/EsriMap/utils';
 import { FormContext } from 'components/Form/contexts';
 import { PageCategorization, PageType } from 'components/Form/typings';
 import customAjv from 'components/Form/utils/customAjv';
+import extractElementsByFollowUpLogic from 'components/Form/utils/extractElementsByFollowUpLogic';
 import extractElementsByOtherOptionLogic from 'components/Form/utils/extractElementsByOtherOptionLogic';
 import getFormCompletionPercentage from 'components/Form/utils/getFormCompletionPercentage';
 import getPageVariant from 'components/Form/utils/getPageVariant';
@@ -308,7 +309,10 @@ const CLSurveyPageLayout = memo(
       );
     }
 
-    const pageElements = extractElementsByOtherOptionLogic(currentPage, data);
+    // Extract elements depending on other option logic and follow-up logic
+    // E.g. If a user selects 'other' in a multiple choice question, we show a text field, if they don't we should not show it.
+    let pageElements = extractElementsByOtherOptionLogic(currentPage, data);
+    pageElements = extractElementsByFollowUpLogic(pageElements, data);
 
     // This is the index of the current page in the pageTypeElements array,
     // which also includes non-visible pages.
