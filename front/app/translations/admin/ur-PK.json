@@ -928,6 +928,7 @@
   "app.containers.Admin.projects.all.notIncludedInYourPlan": "تاہم، یہ آپ کے موجودہ پلان میں شامل نہیں ہے۔ اسے غیر مقفل کرنے کے لیے اپنے سرکاری کامیابی کے مینیجر یا منتظم سے رابطہ کریں۔",
   "app.containers.Admin.projects.all.notes": "نوٹس",
   "app.containers.Admin.projects.all.personalDataExplanation2": "اگر آپ چاہتے ہیں کہ آپ کی ڈاؤن لوڈ کردہ پی ڈی ایف میں نام، آخری نام اور ای میل فیلڈز ہوں تو نیچے والے باکس کو چیک کریں۔ کاغذی فارم اپ لوڈ کرنے پر، ہم اس صارف کے ڈیٹا کا استعمال کریں گے، تاکہ آف لائن سروے کے جواب دہندہ کے لیے ایک اکاؤنٹ خود بخود تیار کیا جا سکے۔",
+  "app.containers.Admin.projects.project.analysis.Comments.comments": "تبصرے",
   "app.containers.Admin.projects.project.analysis.aiSummary": "AI کا خلاصہ",
   "app.containers.Admin.projects.project.analysis.aiSummaryTooltipText": "یہ AI سے تیار کردہ مواد ہے۔ یہ 100% درست نہیں ہو سکتا۔ براہ کرم جائزہ لیں اور درستگی کے لیے اصل آدانوں کے ساتھ کراس حوالہ دیں۔ آگاہ رہیں کہ اگر منتخب کردہ آدانوں کی تعداد کم کردی جاتی ہے تو درستگی بہتر ہونے کا امکان ہے۔",
   "app.containers.Admin.projects.project.ideas.analysisAction": "AI تجزیہ پر جائیں۔",
