@@ -28,53 +28,27 @@ export const getInitialLinearScaleLabel = ({
   locale,
   formatMessage,
 }: InitialLinearScaleLabelProps) => {
-  if (inputType === 'matrix_linear_scale') {
-    switch (value) {
-      case 1:
-        return {
-          [locale]: formatMessage(messages.stronglyDisagree),
-        };
-      case 2:
-        return {
-          [locale]: formatMessage(messages.disagree),
-        };
-      case 3:
-        return {
-          [locale]: formatMessage(messages.neutral),
-        };
-      case 4:
-        return {
-          [locale]: formatMessage(messages.agree),
-        };
-      case 5:
-        return {
-          [locale]: formatMessage(messages.stronglyAgree),
-        };
-    }
-  } else if (inputType === 'sentiment_linear_scale') {
-    switch (value) {
-      case 1:
-        return {
-          [locale]: formatMessage(messages.veryBad),
-        };
-      case 2:
-        return {
-          [locale]: formatMessage(messages.bad),
-        };
-      case 3:
-        return {
-          [locale]: formatMessage(messages.ok),
-        };
-      case 4:
-        return {
-          [locale]: formatMessage(messages.good),
-        };
-      case 5:
-        return {
-          [locale]: formatMessage(messages.veryGood),
-        };
-    }
-  }
+  const SCALE_LABELS: Record<
+    'matrix_linear_scale' | 'sentiment_linear_scale',
+    Record<number, MessageDescriptor>
+  > = {
+    matrix_linear_scale: {
+      1: messages.stronglyDisagree,
+      2: messages.disagree,
+      3: messages.neutral,
+      4: messages.agree,
+      5: messages.stronglyAgree,
+    },
+    sentiment_linear_scale: {
+      1: messages.veryBad,
+      2: messages.bad,
+      3: messages.ok,
+      4: messages.good,
+      5: messages.veryGood,
+    },
+  };
 
-  return {};
+  return SCALE_LABELS[inputType]?.[value]
+    ? { [locale]: formatMessage(SCALE_LABELS[inputType][value]) }
+    : {};
 };

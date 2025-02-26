@@ -31,27 +31,27 @@ const SentimentLinearScaleSettings = ({
   const { setValue, getValues } = useFormContext();
 
   return (
-    <>
-      <Box mb="32px">
-        <ScaleLabelInput
-          inputType="sentiment_linear_scale"
-          platformLocale={platformLocale}
-          labelBaseName={labelBaseName}
-          maximumName={maximumName}
-          onSelectedLocaleChange={onSelectedLocaleChange}
-          locales={locales}
+    <Box mb="32px">
+      <ScaleLabelInput
+        inputType="sentiment_linear_scale"
+        platformLocale={platformLocale}
+        labelBaseName={labelBaseName}
+        maximumName={maximumName}
+        onSelectedLocaleChange={onSelectedLocaleChange}
+        locales={locales}
+      />
+      <Box mt="24px" mb="-20px">
+        <Toggle
+          checked={getValues(askFollowUpName)}
+          onChange={() => {
+            setValue(askFollowUpName, !getValues(askFollowUpName), {
+              shouldDirty: true,
+            });
+          }}
+          label={formatMessage(messages.askFollowUpToggleLabel)}
         />
-        <Box mt="24px" mb="-20px">
-          <Toggle
-            checked={getValues(askFollowUpName)}
-            onChange={() => {
-              setValue(askFollowUpName, !getValues(askFollowUpName));
-            }}
-            label={formatMessage(messages.askFollowUpToggleLabel)}
-          />
-        </Box>
       </Box>
-    </>
+    </Box>
   );
 };
 
