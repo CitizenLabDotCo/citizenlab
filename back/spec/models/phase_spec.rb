@@ -311,9 +311,9 @@ RSpec.describe Phase do
   end
 
   describe 'native_survey_title_multiloc and native_survey_button_multiloc' do
-    [
-      :native_survey_phase,
-      :community_monitor_survey_phase
+    %i[
+      native_survey_phase
+      community_monitor_survey_phase
     ].each do |factory|
       context factory do
         let(:phase) { build(factory) }
