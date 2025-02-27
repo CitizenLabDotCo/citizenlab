@@ -33,8 +33,10 @@ type Props = {
 };
 
 const Summary = ({ analysisId, inputId }: Props) => {
-  const { data: commentsSummary, isLoading: isLoadingSummary } =
-    useAnalysisCommentsSummary({ analysisId, inputId });
+  const { data: commentsSummary } = useAnalysisCommentsSummary({
+    analysisId,
+    inputId,
+  });
   const { data: backgroundTask } = useAnalysisBackgroundTask(
     analysisId,
     commentsSummary?.data.relationships.background_task.data.id,
@@ -52,8 +54,6 @@ const Summary = ({ analysisId, inputId }: Props) => {
   const generatedAt = commentsSummary?.data.attributes.generated_at;
   const missingCommentsCount =
     commentsSummary?.data.attributes.missing_comments_count || 0;
-
-  if (isLoadingSummary) return null;
 
   return (
     <Box mb="24px" position="relative">
