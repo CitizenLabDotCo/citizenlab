@@ -1,6 +1,5 @@
 import React from 'react';
 
-import { Box } from '@citizenlab/cl2-component-library';
 import { Helmet } from 'react-helmet-async';
 
 import useCustomPageBySlug from 'api/custom_pages/useCustomPageBySlug';
@@ -65,31 +64,29 @@ const CookiePolicy = () => {
                 <PageTitle>
                   {formatMessage(messages.cookiePolicyTitle)}
                 </PageTitle>
-                <Box>
-                  <QuillEditedContent>
-                    {pageAttributes?.top_info_section_enabled ? (
-                      <T value={pageAttributes.top_info_section_multiloc} />
-                    ) : (
-                      <DefaultText openConsentManager={openConsentManager} />
-                    )}
-                    <FormattedMessage
-                      tagName="p"
-                      {...messages.manageCookiesPreferences}
-                      values={{
-                        manageCookiesPreferencesButtonText: (
-                          <StyledButton
-                            onClick={openConsentManager}
-                            data-testid="managePreferencesButton"
-                          >
-                            {formatMessage(
-                              messages.manageCookiesPreferencesButtonText
-                            )}
-                          </StyledButton>
-                        ),
-                      }}
-                    />
-                  </QuillEditedContent>
-                </Box>
+                <QuillEditedContent>
+                  {pageAttributes?.top_info_section_enabled ? (
+                    <T value={pageAttributes.top_info_section_multiloc} />
+                  ) : (
+                    <DefaultText openConsentManager={openConsentManager} />
+                  )}
+                  <FormattedMessage
+                    tagName="p"
+                    {...messages.manageCookiesPreferences}
+                    values={{
+                      manageCookiesPreferencesButtonText: (
+                        <StyledButton
+                          onClick={openConsentManager}
+                          data-testid="managePreferencesButton"
+                        >
+                          {formatMessage(
+                            messages.manageCookiesPreferencesButtonText
+                          )}
+                        </StyledButton>
+                      ),
+                    }}
+                  />
+                </QuillEditedContent>
               </Fragment>
             </StyledContentContainer>
           </PageContent>
