@@ -15,18 +15,13 @@ import Fragment from 'components/Fragment';
 import T from 'components/T';
 import QuillEditedContent from 'components/UI/QuillEditedContent';
 
-import { FormattedMessage, useIntl } from 'utils/cl-intl';
-import eventEmitter from 'utils/eventEmitter';
+import { useIntl } from 'utils/cl-intl';
 
 import DefaultText from './DefaultText';
 import messages from './messages';
-import StyledButton from './StyledButton';
 
 const CookiePolicy = () => {
   const { formatMessage } = useIntl();
-  const openConsentManager = () => {
-    eventEmitter.emit('openConsentManager');
-  };
 
   const { data: page } = useCustomPageBySlug('cookie-policy');
   const pageAttributes = page?.data.attributes;
@@ -68,24 +63,8 @@ const CookiePolicy = () => {
                   {pageAttributes?.top_info_section_enabled ? (
                     <T value={pageAttributes.top_info_section_multiloc} />
                   ) : (
-                    <DefaultText openConsentManager={openConsentManager} />
+                    <DefaultText />
                   )}
-                  <FormattedMessage
-                    tagName="p"
-                    {...messages.manageCookiesPreferences}
-                    values={{
-                      manageCookiesPreferencesButtonText: (
-                        <StyledButton
-                          onClick={openConsentManager}
-                          data-testid="managePreferencesButton"
-                        >
-                          {formatMessage(
-                            messages.manageCookiesPreferencesButtonText
-                          )}
-                        </StyledButton>
-                      ),
-                    }}
-                  />
                 </QuillEditedContent>
               </Fragment>
             </StyledContentContainer>
