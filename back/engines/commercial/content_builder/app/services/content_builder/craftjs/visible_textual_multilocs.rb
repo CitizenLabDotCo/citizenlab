@@ -22,10 +22,8 @@ module ContentBuilder
         locales = AppConfiguration.instance.settings['core']['locales']
         extracted = extract
 
-        locales.each_with_object({}) do |locale, joined|
-          joined[locale] = extracted.map { |multiloc| multiloc[locale] }
-                                  .compact
-                                  .join
+        locales.index_with do |locale|
+          extracted.filter_map { |multiloc| multiloc[locale] }.join
         end
       end
 
