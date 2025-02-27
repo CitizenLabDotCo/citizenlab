@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 
 import { Button, Tooltip, Box } from '@citizenlab/cl2-component-library';
 
@@ -9,17 +9,13 @@ import useUpdateProject from 'api/projects/useUpdateProject';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
-import { trackEventByName } from 'utils/analytics';
 import { useIntl } from 'utils/cl-intl';
 import { usePermission } from 'utils/permissions';
 
 import messages from './messages';
-import ReviewRequest from './ReviewRequest';
-import tracks from './tracks';
+import ReviewRequestButton from './ReviewRequestButton';
 
 const ReviewFlow = ({ project }: { project: IProjectData }) => {
-  const [isProjectReviewDropdownOpened, setIsProjectReviewDropdownOpened] =
-    useState(false);
   const isProjectReviewEnabled = useFeatureFlag({ name: 'project_review' });
 
   const { formatMessage } = useIntl();
@@ -60,10 +56,8 @@ const ReviewFlow = ({ project }: { project: IProjectData }) => {
     return null;
   }
 
-  const approvalPending =
-    projectReview && projectReview.data.attributes.state === 'pending';
-  const approvalGranted =
-    projectReview && projectReview.data.attributes.state === 'approved';
+  const approvalPending = projectReview?.data.attributes.state === 'pending';
+  const approvalGranted = projectReview?.data.attributes.state === 'approved';
 
   const showPublishButton =
     (canPublish || !isProjectReviewEnabled) && !approvalPending;
@@ -100,38 +94,10 @@ const ReviewFlow = ({ project }: { project: IProjectData }) => {
 
       {showReviewRequestButton && (
         <Box position="relative">
-          <Tooltip
-            content={formatMessage(messages.pendingApprovalTooltip)}
-            placement="bottom"
-            disabled={!approvalPending}
-          >
-            <Button
-              buttonStyle="admin-dark"
-              icon="send"
-              onClick={() => setIsProjectReviewDropdownOpened(true)}
-              processing={isProjectReviewLoading}
-              size="s"
-              padding="4px 8px"
-              iconSize="20px"
-              disabled={approvalPending}
-              data-cy={
-                approvalPending
-                  ? 'e2e-request-approval-pending'
-                  : 'e2e-request-approval'
-              }
-            >
-              {approvalPending
-                ? formatMessage(messages.pendingApproval)
-                : formatMessage(messages.requestApproval)}
-            </Button>
-          </Tooltip>
-          <ReviewRequest
-            isOpen={isProjectReviewDropdownOpened}
-            onClose={() => {
-              setIsProjectReviewDropdownOpened(false);
-              trackEventByName(tracks.projectReviewDropdownOpened);
-            }}
+          <ReviewRequestButton
             projectId={project.id}
+            approvalPending={approvalPending}
+            processing={isProjectReviewLoading}
           />
         </Box>
       )}
