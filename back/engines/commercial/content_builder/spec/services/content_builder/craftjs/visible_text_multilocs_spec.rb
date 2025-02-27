@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe ContentBuilder::Craftjs::MultilocsInVisualOrder do
+RSpec.describe ContentBuilder::Craftjs::VisibleTextMultilocs do
   subject(:service) { described_class.new(json, with_metadata: with_metadata) }
 
   def load_fixture(file_name)
@@ -13,7 +13,7 @@ RSpec.describe ContentBuilder::Craftjs::MultilocsInVisualOrder do
     JSON.parse(load_fixture('example_description_craftjs.json'))
   end
 
-  describe '#multilocs_in_natural_order' do
+  describe '#extract' do
     context 'without metadata' do
       let(:with_metadata) { false }
 
@@ -30,7 +30,7 @@ RSpec.describe ContentBuilder::Craftjs::MultilocsInVisualOrder do
             { 'en' => '<p>3colsA: Para 2 col 2</p>' },
             { 'en' => '<p>3colsA: Para 1 col 3</p>' },
             { 'en' => '<h2>Title 2</h2>' },
-            { 'en' => 'accordianA title' },
+            { 'en' => '<h3>accordianA title</h3>' },
             { 'en' => '<p>accordianA text</p>' },
             { 'en' => '<p>2colsB: Para 1 col1</p>' },
             { 'en' => '<p>2colsC: Para 1 col1 </p>' },
@@ -38,22 +38,28 @@ RSpec.describe ContentBuilder::Craftjs::MultilocsInVisualOrder do
             { 'en' => '<p>2colsC: Para 1 col2</p>' },
             { 'en' => '<p>2colsC: Para 2 col2</p>' },
             { 'en' => '<p>2colsB: Para 1 col2</p>' },
-            { 'en' => 'accordianB title' },
+            { 'en' => '<h3>accordianB title</h3>' },
             { 'en' => '<p>accordianB text</p>' },
-            { 'en' => 'accordianC title' },
+            { 'en' => '<h3>accordianC title</h3>' },
             { 'en' => '<p>accordianC text</p>' },
             { 'en' => '<p>infoAndAccordians text</p>' },
-            { 'en' => 'accordianD title' },
+            { 'en' => '<h3>accordianD title</h3>' },
             { 'en' => '<p>accordianD text</p>' },
-            { 'en' => 'accordianE title' },
+            { 'en' => '<h3>accordianE title</h3>' },
             { 'en' => '<p>accordianE text</p>' },
-            { 'en' => 'accordianF title' },
+            { 'en' => '<h3>accordianF title</h3>' },
             { 'en' => '<p>accordianF text</p>' },
             { 'en' => '<p>imageAndTextA text</p>' },
             { 'en' => '<p>imageAndTextB text</p>' },
             { 'en' => '<p>imageAndTextC text</p>' }
           ]
         )
+      end
+
+      # The FE applies this style to the title of an AccordianMultiloc node.
+      # Since we get the HTML tags of all other text we extract, we add these tags to clearly indicate the style.
+      it 'adds <h3>...</h3> tags to AccordianMultiloc node title text' do
+        expect(service.extract).to include({ 'en' => '<h3>accordianA title</h3>' })
       end
     end
 
@@ -94,7 +100,7 @@ RSpec.describe ContentBuilder::Craftjs::MultilocsInVisualOrder do
               multliloc: { 'en' => '<h2>Title 2</h2>' },
               node_type: 'TextMultiloc' },
             { multiloc_type: 'title',
-              multliloc: { 'en' => 'accordianA title' },
+              multliloc: { 'en' => '<h3>accordianA title</h3>' },
               node_type: 'AccordionMultiloc' },
             { multiloc_type: 'text',
               multliloc: { 'en' => '<p>accordianA text</p>' },
@@ -118,13 +124,13 @@ RSpec.describe ContentBuilder::Craftjs::MultilocsInVisualOrder do
               multliloc: { 'en' => '<p>2colsB: Para 1 col2</p>' },
               node_type: 'TextMultiloc' },
             { multiloc_type: 'title',
-              multliloc: { 'en' => 'accordianB title' },
+              multliloc: { 'en' => '<h3>accordianB title</h3>' },
               node_type: 'AccordionMultiloc' },
             { multiloc_type: 'text',
               multliloc: { 'en' => '<p>accordianB text</p>' },
               node_type: 'AccordionMultiloc' },
             { multiloc_type: 'title',
-              multliloc: { 'en' => 'accordianC title' },
+              multliloc: { 'en' => '<h3>accordianC title</h3>' },
               node_type: 'AccordionMultiloc' },
             { multiloc_type: 'text',
               multliloc: { 'en' => '<p>accordianC text</p>' },
@@ -133,19 +139,19 @@ RSpec.describe ContentBuilder::Craftjs::MultilocsInVisualOrder do
               multliloc: { 'en' => '<p>infoAndAccordians text</p>' },
               node_type: 'TextMultiloc' },
             { multiloc_type: 'title',
-              multliloc: { 'en' => 'accordianD title' },
+              multliloc: { 'en' => '<h3>accordianD title</h3>' },
               node_type: 'AccordionMultiloc' },
             { multiloc_type: 'text',
               multliloc: { 'en' => '<p>accordianD text</p>' },
               node_type: 'AccordionMultiloc' },
             { multiloc_type: 'title',
-              multliloc: { 'en' => 'accordianE title' },
+              multliloc: { 'en' => '<h3>accordianE title</h3>' },
               node_type: 'AccordionMultiloc' },
             { multiloc_type: 'text',
               multliloc: { 'en' => '<p>accordianE text</p>' },
               node_type: 'AccordionMultiloc' },
             { multiloc_type: 'title',
-              multliloc: { 'en' => 'accordianF title' },
+              multliloc: { 'en' => '<h3>accordianF title</h3>' },
               node_type: 'AccordionMultiloc' },
             { multiloc_type: 'text',
               multliloc: { 'en' => '<p>accordianF text</p>' },
@@ -161,6 +167,14 @@ RSpec.describe ContentBuilder::Craftjs::MultilocsInVisualOrder do
               node_type: 'TextMultiloc' }
           ]
         )
+      end
+
+      # The FE applies this style to the title of an AccordianMultiloc node.
+      # Since we get the HTML tags of all other text we extract, we add these tags to clearly indicate the style.
+      it 'adds <h3>...</h3> tags to AccordianMultiloc node title text' do
+        expect(service.extract).to include({ multiloc_type: 'title',
+                                             multliloc: { 'en' => '<h3>accordianA title</h3>' },
+                                             node_type: 'AccordionMultiloc' })
       end
     end
   end

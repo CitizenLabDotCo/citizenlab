@@ -1,6 +1,5 @@
 import React from 'react';
 
-import { Box } from '@citizenlab/cl2-component-library';
 import { Helmet } from 'react-helmet-async';
 
 import {
@@ -59,27 +58,25 @@ const CookiePolicy = () => {
                 <PageTitle>
                   {formatMessage(messages.cookiePolicyTitle)}
                 </PageTitle>
-                <Box>
-                  <QuillEditedContent>
-                    <DefaultText openConsentManager={openConsentManager} />
-                    <FormattedMessage
-                      tagName="p"
-                      {...messages.manageCookiesPreferences}
-                      values={{
-                        manageCookiesPreferencesButtonText: (
-                          <StyledButton
-                            onClick={openConsentManager}
-                            data-testid="managePreferencesButton"
-                          >
-                            {formatMessage(
-                              messages.manageCookiesPreferencesButtonText
-                            )}
-                          </StyledButton>
-                        ),
-                      }}
-                    />
-                  </QuillEditedContent>
-                </Box>
+                <QuillEditedContent>
+                  <DefaultText openConsentManager={openConsentManager} />
+                  <FormattedMessage
+                    tagName="p"
+                    {...messages.manageCookiesPreferences}
+                    values={{
+                      manageCookiesPreferencesButtonText: (
+                        <StyledButton
+                          onClick={openConsentManager}
+                          data-testid="managePreferencesButton"
+                        >
+                          {formatMessage(
+                            messages.manageCookiesPreferencesButtonText
+                          )}
+                        </StyledButton>
+                      ),
+                    }}
+                  />
+                </QuillEditedContent>
               </Fragment>
             </StyledContentContainer>
           </PageContent>
