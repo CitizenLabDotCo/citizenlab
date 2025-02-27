@@ -204,8 +204,10 @@ class IdeaCustomFieldsService
     phase = @custom_form.participation_context
     return fields unless @participation_method.supports_user_fields_in_form?
 
+    fields = fields.to_a # sometimes array passed in, sometimes active record relations
+
     last_page = fields.last
-    fields.delete(last_page)
+    fields.pop # Remove the last page so we can add it back later
 
     # Get the user fields from the permission (returns platform defaults if they don't exist)
     user_requirements_service = Permissions::UserRequirementsService.new
