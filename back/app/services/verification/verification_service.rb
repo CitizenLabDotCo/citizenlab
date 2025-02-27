@@ -129,8 +129,11 @@ module Verification
           []
         end
       end
-      # Need to check that the locked custom fields exist before returning them
-      custom_fields == [] ? [] : CustomField.find_by(key: custom_fields).map(&:key)
+
+      return [] if custom_fields == []
+
+      # Only return the locked custom fields if they exist
+      CustomField.where(key: custom_fields)&.map { |f| f.key.to_sym } || []
     end
 
     # Return method metadata
