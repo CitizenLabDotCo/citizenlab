@@ -57,7 +57,11 @@ const CookiePolicy = () => {
             <StyledContentContainer>
               <Fragment name="pages/cookie-policy/content">
                 <PageTitle>
-                  {formatMessage(messages.cookiePolicyTitle)}
+                  {pageAttributes?.title_multiloc ? (
+                    <T value={pageAttributes.title_multiloc} />
+                  ) : (
+                    formatMessage(messages.cookiePolicyTitle)
+                  )}
                 </PageTitle>
                 <QuillEditedContent>
                   {pageAttributes?.top_info_section_multiloc ? (
