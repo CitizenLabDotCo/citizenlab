@@ -2,28 +2,25 @@ import React from 'react';
 
 import { Box } from '@citizenlab/cl2-component-library';
 
-import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
+import useCommunityMonitorProject from 'api/community_monitor/useCommunityMonitorProject';
 import usePhases from 'api/phases/usePhases';
 
 import ParticipationDatesRange from 'containers/Admin/projects/project/participation/ParticipationDateRange';
 
 const Participants = () => {
-  const { data: appConfiguration } = useAppConfiguration();
-  const projectId =
-    appConfiguration?.data.attributes.settings.community_monitor?.project_id;
+  const { data: communityMonitorProject } = useCommunityMonitorProject();
+  const { data: phases } = usePhases(communityMonitorProject?.data.id);
 
-  const { data: phases } = usePhases(projectId);
+  if (!phases?.data.length) return null;
 
-  const startOfFirstPhase = phases?.data[0]?.attributes.start_at;
-  const endOfLastPhase =
-    phases?.data[phases.data.length - 1]?.attributes.end_at;
+  const startOfPhase = phases.data[0]?.attributes?.start_at;
+  const endOfPhase = phases.data[0]?.attributes?.end_at;
 
-  if (!phases) return null;
   return (
     <Box mt="40px" ml="-44px">
       <ParticipationDatesRange
-        defaultStartDate={startOfFirstPhase}
-        defaultEndDate={endOfLastPhase ?? undefined}
+        defaultStartDate={startOfPhase}
+        defaultEndDate={endOfPhase || undefined}
       />
     </Box>
   );

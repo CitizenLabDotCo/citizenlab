@@ -14,24 +14,11 @@ import FormResultsPage from './FormResultsPage';
 import FormResultsQuestion from './FormResultsQuestion';
 import ViewSingleSubmissionNotice from './FormResultsQuestion/components/ViewSingleSubmissionNotice';
 
-type FromResultsProps = {
-  projectIdFromProps?: string;
-  phaseIdFromProps?: string;
-};
-
-const FormResults = ({
-  projectIdFromProps,
-  phaseIdFromProps,
-}: FromResultsProps) => {
-  const { projectId: projectIdFromParams, phaseId: phaseIdFromParams } =
-    useParams() as {
-      projectId: string;
-      phaseId: string;
-    };
-
-  const phaseId = phaseIdFromProps || phaseIdFromParams;
-  const projectId = projectIdFromProps || projectIdFromParams;
-
+const FormResults = () => {
+  const { projectId, phaseId } = useParams() as {
+    projectId: string;
+    phaseId: string;
+  };
   const { formatMessage } = useIntl();
   const { data: project } = useProjectById(projectId);
   const [filterLogicIds, setFilterLogicIds] = useState<string[]>(
