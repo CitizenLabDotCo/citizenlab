@@ -27,9 +27,4 @@ export default defineMessages({
     defaultMessage:
       'https://support.govocal.com/en/articles/6673873-creating-an-in-platform-survey',
   },
-  pagesLogicHelperText: {
-    id: 'app.containers.AdminPage.ProjectEdit.survey.pagesLogicHelperText1',
-    defaultMessage:
-      'If no logic is added, the survey will follow its normal flow. If both the page and its questions have logic, the question logic will take precedence. Ensure this aligns with your intended survey flow. For more information, visit {supportPageLink}',
-  },
 });

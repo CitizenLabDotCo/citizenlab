@@ -8,7 +8,7 @@ import useProjectById from 'api/projects/useProjectById';
 import clHistory from 'utils/cl-router/history';
 
 const CommunityMonitor = () => {
-  // NOTE: This component is only a placeholder until the tab UI is implemented.
+  // NOTE: THIS COMPONENT IS ONLY A PLACEHOLDER. TAB UI IMPLEMENTED IN SEPARATE PR.
   const { data: appConfiguration } = useAppConfiguration();
   const communityMonitorProjectId =
     appConfiguration?.data.attributes.settings.community_monitor?.project_id;
