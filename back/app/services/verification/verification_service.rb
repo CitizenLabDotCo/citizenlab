@@ -133,7 +133,7 @@ module Verification
       return [] if custom_fields == []
 
       # Only return the locked custom fields if they exist
-      CustomField.where(key: custom_fields)&.map { |f| f.key.to_sym } || []
+      CustomField.where(key: custom_fields.uniq)&.map { |f| f.key.to_sym } || []
     end
 
     # Return method metadata
