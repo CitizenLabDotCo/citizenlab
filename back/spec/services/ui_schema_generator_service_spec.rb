@@ -220,28 +220,10 @@ RSpec.describe UiSchemaGeneratorService do
 
     it 'returns the schema for the given field' do
       expect(generator.visit_text_multiloc(field)).to eq({
-        type: 'VerticalLayout',
-        options: { input_type: field.input_type, render: 'multiloc' },
-        elements: [
-          {
-            type: 'Control',
-            scope: "#/properties/#{field_key}/properties/en",
-            label: 'Text multiloc field title',
-            options: { description: 'Text multiloc field description', trim_on_blur: true, locale: 'en' }
-          },
-          {
-            type: 'Control',
-            scope: "#/properties/#{field_key}/properties/fr-FR",
-            label: 'Text multiloc field title',
-            options: { description: 'Text multiloc field description', trim_on_blur: true, locale: 'fr-FR' }
-          },
-          {
-            type: 'Control',
-            scope: "#/properties/#{field_key}/properties/nl-NL",
-            label: 'Text multiloc field title',
-            options: { description: 'Text multiloc field description', trim_on_blur: true, locale: 'nl-NL' }
-          }
-        ]
+        type: 'Control',
+        scope: "#/properties/#{field_key}/properties/en",
+        label: 'Text multiloc field title',
+        options: { description: 'Text multiloc field description', trim_on_blur: true }
       })
     end
   end
@@ -259,28 +241,10 @@ RSpec.describe UiSchemaGeneratorService do
 
     it 'returns the schema for the given field' do
       expect(generator.visit_multiline_text_multiloc(field)).to eq({
-        type: 'VerticalLayout',
-        options: { input_type: field.input_type, render: 'multiloc' },
-        elements: [
-          {
-            type: 'Control',
-            scope: "#/properties/#{field_key}/properties/en",
-            label: 'Multiline multiloc field title',
-            options: { description: 'Multiline multiloc field description', trim_on_blur: true, textarea: true, locale: 'en' }
-          },
-          {
-            type: 'Control',
-            scope: "#/properties/#{field_key}/properties/fr-FR",
-            label: 'Multiline multiloc field title',
-            options: { description: 'Multiline multiloc field description', trim_on_blur: true, textarea: true, locale: 'fr-FR' }
-          },
-          {
-            type: 'Control',
-            scope: "#/properties/#{field_key}/properties/nl-NL",
-            label: 'Multiline multiloc field title',
-            options: { description: 'Multiline multiloc field description', trim_on_blur: true, textarea: true, locale: 'nl-NL' }
-          }
-        ]
+        type: 'Control',
+        scope: "#/properties/#{field_key}/properties/en",
+        label: 'Multiline multiloc field title',
+        options: { description: 'Multiline multiloc field description', trim_on_blur: true, textarea: true }
       })
     end
   end
@@ -298,28 +262,10 @@ RSpec.describe UiSchemaGeneratorService do
 
     it 'returns the schema for the given field' do
       expect(generator.visit_html_multiloc(field)).to eq({
-        type: 'VerticalLayout',
-        options: { input_type: field.input_type, render: 'multiloc' },
-        elements: [
-          {
-            type: 'Control',
-            scope: "#/properties/#{field_key}/properties/en",
-            label: 'HTML multiloc field title',
-            options: { description: 'HTML multiloc field description', render: 'WYSIWYG', trim_on_blur: true, locale: 'en' }
-          },
-          {
-            type: 'Control',
-            scope: "#/properties/#{field_key}/properties/fr-FR",
-            label: 'HTML multiloc field title',
-            options: { description: 'HTML multiloc field description', render: 'WYSIWYG', trim_on_blur: true, locale: 'fr-FR' }
-          },
-          {
-            type: 'Control',
-            scope: "#/properties/#{field_key}/properties/nl-NL",
-            label: 'HTML multiloc field title',
-            options: { description: 'HTML multiloc field description', render: 'WYSIWYG', trim_on_blur: true, locale: 'nl-NL' }
-          }
-        ]
+        type: 'Control',
+        scope: "#/properties/#{field_key}/properties/en",
+        label: 'HTML multiloc field title',
+        options: { description: 'HTML multiloc field description', render: 'WYSIWYG', trim_on_blur: true }
       })
     end
   end
