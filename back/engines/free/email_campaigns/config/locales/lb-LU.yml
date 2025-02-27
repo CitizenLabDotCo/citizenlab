@@ -499,6 +499,7 @@ lb:
       cta_vote: 'Gitt op d''Plattform fir ze wielen'
     survey_submitted:
       subject: '%{organizationName}: Merci fir Är Äntwert! 🎉'
+      preheader: 'Hei sinn d''Detailer vun Ärer Soumissioun.'
       main_header: 'Merci fir Är Gedanken iwwer "%{projectName}" ze deelen!'
       your_input_submitted: 'Ären Input fir "%{projectName}" gouf erfollegräich ofginn.'
       if_you_would_like_to_review: 'Wann Dir Är Soumissioun wëllt iwwerpréiwen, kënnt Dir Är Äntwerten hei ënnen eroflueden.'
