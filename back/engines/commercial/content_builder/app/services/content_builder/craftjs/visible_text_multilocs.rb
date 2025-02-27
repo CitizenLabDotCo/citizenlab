@@ -1,16 +1,17 @@
 module ContentBuilder
   module Craftjs
-    # Extracts multilocs from a craftjs in the order they appear in the visual layout.
-    class MultilocsInVisualOrder
+    # Extracts multilocs for visible text from a craftjs in the order they appear in the visual layout.
+    class VisibleTextMultilocs
       def initialize(craftjs, with_metadata: false)
         @craftjs = LayoutSanitizationService.new.sanitize(craftjs)
         @with_metadata = with_metadata
         @ordered_multilocs = []
       end
 
-      # Orders multilocs found in the craftjs by how they appear in the layout,
+      # Orders textual (text & title) multilocs found in the craftjs by how they appear in the layout,
       # so that columns are ordered from left to right, and texts from top to bottom within each column.
       # Top to bottom ordering within containers is also respected.
+      # Ignores ImageMultiloc nodes, which may include an image alt-text.
       def extract
         multiloc_search_recursive('ROOT')
         @ordered_multilocs
@@ -47,7 +48,7 @@ module ContentBuilder
             @ordered_multilocs << {
               node_type: 'AccordionMultiloc',
               multiloc_type: 'title',
-              multliloc: node['props']['title']
+              multliloc: make_h3s(node['props']['title']) # Add h3 tags to indicate style the FE would apply.
             }
           end
 
@@ -57,9 +58,13 @@ module ContentBuilder
             multliloc: node['props']['text']
           }
         else
-          @ordered_multilocs << node['props']['title'] if resolved_name == 'AccordionMultiloc'
+          @ordered_multilocs << make_h3s(node['props']['title']) if resolved_name == 'AccordionMultiloc'
           @ordered_multilocs << node['props']['text']
         end
+      end
+
+      def make_h3s(multliloc)
+        multliloc.transform_values! { |text| "<h3>#{text}</h3>" }
       end
 
       def children_ordered_by_nodes_order(node_key, node)
