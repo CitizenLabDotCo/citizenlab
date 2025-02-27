@@ -26,14 +26,13 @@ module ContentBuilder
         locales.each do |locale|
           extracted.each do |multiloc|
             multiloc.each do |key, value|
-              # puts "key: #{key}, value: #{value}"
               next unless key == locale
 
-              if joined.key?(locale)
-                joined[locale] = joined[locale] + value.to_s
-              else
-                joined[locale] = value.to_s
-              end
+              joined[locale] = if joined.key?(locale)
+                                 joined[locale] + value.to_s
+                               else
+                                 value.to_s
+                               end
             end
           end
         end
