@@ -6,7 +6,7 @@ import PageLoading from 'components/UI/PageLoading';
 
 const LiveMonitor = lazy(() => import('./components/LiveMonitor'));
 const Reports = lazy(() => import('./components/Reports'));
-const Settings = lazy(() => import('./components/Settings/Index'));
+const Settings = lazy(() => import('./components/Settings/index'));
 const Participants = lazy(() => import('./components/Participants'));
 
 import { AdminRoute } from '../routes';
