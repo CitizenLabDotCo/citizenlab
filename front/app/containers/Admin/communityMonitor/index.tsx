@@ -26,7 +26,7 @@ const CommunityMonitor = () => {
           );
         }}
       >
-        Go to form editor
+        Test: Go to community monitor form editor
       </Button>
     </Box>
   );
