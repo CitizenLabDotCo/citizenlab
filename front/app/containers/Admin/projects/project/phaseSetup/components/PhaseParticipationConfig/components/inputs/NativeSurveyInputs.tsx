@@ -1,6 +1,11 @@
 import React from 'react';
 
-import { Box, IconTooltip, Text } from '@citizenlab/cl2-component-library';
+import {
+  Box,
+  IconTooltip,
+  Text,
+  Toggle,
+} from '@citizenlab/cl2-component-library';
 import { CLErrors, Multiloc } from 'typings';
 
 import { IPhase, IUpdatedPhaseProperties } from 'api/phases/types';
@@ -18,15 +23,18 @@ import { FormattedMessage, useIntl } from 'utils/cl-intl';
 
 import parentMessages from '../../../../messages';
 import messages from '../messages';
+import FeatureFlag from 'components/FeatureFlag';
 
 interface Props {
   allow_anonymous_participation: boolean | null | undefined;
+  user_fields_in_form: boolean | null | undefined;
   apiErrors: CLErrors | null;
   phase?: IPhase;
   formData: IUpdatedPhaseProperties;
   handleAllowAnonymousParticipationOnChange: (
     allow_anonymous_participation: boolean
   ) => void;
+  handleUserFieldsInFormOnChange: (user_fields_in_survey: boolean) => void;
   handleSurveyTitleChange: (
     value: Multiloc,
     locale: string | undefined
@@ -36,10 +44,12 @@ interface Props {
 
 const NativeSurveyInputs = ({
   allow_anonymous_participation,
+  user_fields_in_form,
   apiErrors,
   phase,
   formData,
   handleAllowAnonymousParticipationOnChange,
+  handleUserFieldsInFormOnChange,
   handleSurveyTitleChange,
   handleSurveyCTAChange,
 }: Props) => {
@@ -81,6 +91,40 @@ const NativeSurveyInputs = ({
           </Box>
         }
       />
+      <FeatureFlag name="user_fields_in_surveys">
+        <SectionField>
+          <SubSectionTitle style={{ marginBottom: '0px' }}>
+            <FormattedMessage {...messages.userFieldsInSurveyTitle} />
+          </SubSectionTitle>
+          <Toggle
+            checked={user_fields_in_form || false}
+            onChange={() => {
+              handleUserFieldsInFormOnChange(!user_fields_in_form);
+            }}
+            label={
+              <Box ml="8px" id="e2e-anonymous-posting-toggle">
+                <Box display="flex">
+                  <Text
+                    color="primary"
+                    mb="0px"
+                    fontSize="m"
+                    style={{ fontWeight: 600 }}
+                  >
+                    <FormattedMessage {...messages.userFieldsInSurveyToggle} />
+                  </Text>
+                </Box>
+
+                <Text color="coolGrey600" mt="0px" fontSize="m">
+                  <FormattedMessage
+                    {...messages.userFieldsInSurveyDescription}
+                  />
+                </Text>
+              </Box>
+            }
+          />
+        </SectionField>
+      </FeatureFlag>
+
       <SectionField>
         <SubSectionTitle>
           <FormattedMessage {...parentMessages.surveyTitleLabel} />
