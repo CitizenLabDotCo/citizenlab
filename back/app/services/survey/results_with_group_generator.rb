@@ -22,6 +22,7 @@ module Survey
     def visit_select_base(field)
       query = inputs
       query = query.joins(:author) if group_mode == 'user_field'
+      # TODO: Remove this in the morning!!
       if group_field
         raise "Unsupported group field type: #{group_field.input_type}" unless %w[select linear_scale rating].include?(group_field.input_type)
         raise "Unsupported question type: #{field.input_type}" unless %w[select multiselect linear_scale rating multiselect_image].include?(field.input_type)
