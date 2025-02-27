@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 #
 # The AutoInsightsService combines all inputs and user fields to calculate
 # correlation. Its goal is to highlight certain patterns toward the user, where
@@ -7,9 +8,8 @@
 # answer to another question. This is done by calculating the correlation.
 module Analysis
   class AutoInsightsService
-
-    def initialize(phase)
-      @phase = phase
+    def initialize(analysis)
+      @analysis = analysis
     end
 
     def call
@@ -18,31 +18,40 @@ module Analysis
       significant_correlations = []
 
       matrix.flat_map(&:keys).uniq.combination(2)
-      .reject{|col1, col2| col1.custom_field_id == col2.custom_field_id}
-      .map do |col1, col2|
+        .reject { |col1, col2| col1 == col2 }
+        .map do |col1, col2|
         ct = contingency_table(matrix, col1, col2)
+        debugger if col1.try(:key) == 'male' && col2.try(:name) == 'Encroachment by private property'
         chi2, p_value = chi_square(ct)
 
-        significant_correlations << [col1.key, col2.key, chi2, p_value]# if p_value < 0.05
+        significant_correlations << [col1, col2, chi2, p_value] if p_value < 0.15
       end
 
       significant_correlations.sort_by { |_, _, chi2, _| -chi2 }
     end
 
+    # Receives the output from call and pretty prints it
+    def pretty_print(auto_insights)
+      auto_insights.map do |col1, col2, chi2, p_value|
+        "#{col1.try(:key) || col1.try(:name)} - #{col2.try(:key) || col2.try(:name)}: chi2=#{chi2}, p=#{p_value}"
+      end
+    end
+
     # The big fat matrix takes all inputs, user custom fields and taggings and
     # throws them together in a large, one-hot (only booleans) encoded table
     def big_fat_matrix
-      input_custom_fields = detect_input_custom_fields.includes(:options)
+      input_custom_fields = detect_input_custom_fields
       user_custom_fields = detect_user_custom_fields
       tags = detect_tags
 
-      Idea.published.where(creation_phase_id: @phase).includes(:author).map do |input|
+      @analysis.inputs.includes(:author).map do |input|
         row = {}
 
         # Add columns for input custom fields
         input_custom_fields.map do |input_custom_field|
           custom_field_value = input.custom_field_values[input_custom_field.key]
           next unless custom_field_value
+
           input_custom_field.options.map do |option|
             row[option] = custom_field_value == option.key || custom_field_value.include?(option.key)
           end
@@ -53,6 +62,7 @@ module Analysis
           user_custom_fields.each do |user_custom_field|
             custom_field_value = input.author.custom_field_values[user_custom_field.key]
             next unless custom_field_value
+
             user_custom_field.options.each do |option|
               row[option] = custom_field_value == option.key || custom_field_value.include?(option.key)
             end
@@ -70,14 +80,8 @@ module Analysis
 
     private
 
-    def custom_form
-      participation_method = Factory.instance.participation_method_for(@phase)
-      # to do: generalize for ideation
-      @phase.custom_form || participation_method.create_default_form!
-    end
-
     def detect_input_custom_fields
-      custom_form.custom_fields
+      @analysis.associated_custom_fields
     end
 
     def detect_user_custom_fields
@@ -85,17 +89,14 @@ module Analysis
     end
 
     def detect_tags
-      custom_form.participation_context.analyses.flat_map do |analysis|
-        analysis.tags
-      end
+      @analysis.tags
     end
-
 
     # Method to create a contingency table for two columns
     def contingency_table(data, col1, col2)
       table = Hash.new(0)
 
-      [true, false].product([true, false, nil]) do |v1, v2|
+      [true, false].product([true, false]) do |v1, v2|
         table[[v1, v2]] = 0
       end
 
@@ -111,14 +112,14 @@ module Analysis
       row_sums = table.keys.group_by { |k| k[0] }.transform_values { |v| v.sum { |key| table[key] } }
       col_sums = table.keys.group_by { |k| k[1] }.transform_values { |v| v.sum { |key| table[key] } }
       total = table.values.sum
-    
+
       chi2 = 0.0
       table.each do |(row, col), observed|
         expected = (row_sums[row] * col_sums[col]) / total.to_f
 
-        chi2 += expected > 0 ? ((observed - expected) ** 2) / expected : 0
+        chi2 += expected > 0 ? ((observed - expected)**2) / expected : 0
       end
-    
+
       dof = (row_sums.size - 1) * (col_sums.size - 1)
       p_value = 1 - Distribution::ChiSquare.cdf(chi2, dof)
       [chi2, p_value]
