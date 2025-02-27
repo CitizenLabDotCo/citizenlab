@@ -12,18 +12,13 @@ import {
 import Fragment from 'components/Fragment';
 import QuillEditedContent from 'components/UI/QuillEditedContent';
 
-import { FormattedMessage, useIntl } from 'utils/cl-intl';
-import eventEmitter from 'utils/eventEmitter';
+import { useIntl } from 'utils/cl-intl';
 
 import DefaultText from './DefaultText';
 import messages from './messages';
-import StyledButton from './StyledButton';
 
 const CookiePolicy = () => {
   const { formatMessage } = useIntl();
-  const openConsentManager = () => {
-    eventEmitter.emit('openConsentManager');
-  };
 
   return (
     <>
@@ -59,23 +54,7 @@ const CookiePolicy = () => {
                   {formatMessage(messages.cookiePolicyTitle)}
                 </PageTitle>
                 <QuillEditedContent>
-                  <DefaultText openConsentManager={openConsentManager} />
-                  <FormattedMessage
-                    tagName="p"
-                    {...messages.manageCookiesPreferences}
-                    values={{
-                      manageCookiesPreferencesButtonText: (
-                        <StyledButton
-                          onClick={openConsentManager}
-                          data-testid="managePreferencesButton"
-                        >
-                          {formatMessage(
-                            messages.manageCookiesPreferencesButtonText
-                          )}
-                        </StyledButton>
-                      ),
-                    }}
-                  />
+                  <DefaultText />
                 </QuillEditedContent>
               </Fragment>
             </StyledContentContainer>

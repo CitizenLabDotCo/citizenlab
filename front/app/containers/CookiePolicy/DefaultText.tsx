@@ -1,16 +1,16 @@
 import React from 'react';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
+import eventEmitter from 'utils/eventEmitter';
 
 import messages from './messages';
 import StyledButton from './StyledButton';
 
-interface Props {
-  openConsentManager: () => void;
-}
-
-const DefaultText = ({ openConsentManager }: Props) => {
+const DefaultText = () => {
   const { formatMessage } = useIntl();
+  const openConsentManager = () => {
+    eventEmitter.emit('openConsentManager');
+  };
 
   return (
     <>
@@ -49,6 +49,21 @@ const DefaultText = ({ openConsentManager }: Props) => {
 
       <h2>{formatMessage(messages.manageCookiesTitle)}</h2>
       <p>{formatMessage(messages.manageCookiesDescription)}</p>
+
+      <FormattedMessage
+        tagName="p"
+        {...messages.manageCookiesPreferences}
+        values={{
+          manageCookiesPreferencesButtonText: (
+            <StyledButton
+              onClick={openConsentManager}
+              data-testid="managePreferencesButton"
+            >
+              {formatMessage(messages.manageCookiesPreferencesButtonText)}
+            </StyledButton>
+          ),
+        }}
+      />
     </>
   );
 };
