@@ -29,6 +29,8 @@ import Button from 'components/UI/ButtonWithLink';
 import { useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
 
+import communityMonitorMessages from './messages';
+
 const Settings = () => {
   const locale = useLocale();
   const { formatMessage } = useIntl();
@@ -107,7 +109,7 @@ const Settings = () => {
   }
 
   return (
-    <Box mt="40px" padding="40px" background={colors.white}>
+    <Box mt="40px" py="30px" px="40px" background={colors.white}>
       <Box width="100%">
         <Box
           width="100%"
@@ -116,8 +118,8 @@ const Settings = () => {
           justifyContent="space-between"
           alignItems="center"
         >
-          <Title variant="h3" color="primary">
-            {formatMessage(messages.surveyResponses)}
+          <Title variant="h1" color="primary">
+            {formatMessage(communityMonitorMessages.settings)}
           </Title>
           <Box display="flex" justifyContent="center" alignItems="center">
             <Box mr="16px">
