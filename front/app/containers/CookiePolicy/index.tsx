@@ -3,6 +3,8 @@ import React from 'react';
 import { Box } from '@citizenlab/cl2-component-library';
 import { Helmet } from 'react-helmet-async';
 
+import useCustomPageBySlug from 'api/custom_pages/useCustomPageBySlug';
+
 import {
   Container,
   StyledContentContainer,
@@ -11,6 +13,7 @@ import {
 } from 'containers/PagesShowPage';
 
 import Fragment from 'components/Fragment';
+import T from 'components/T';
 import QuillEditedContent from 'components/UI/QuillEditedContent';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
@@ -25,6 +28,9 @@ const CookiePolicy = () => {
   const openConsentManager = () => {
     eventEmitter.emit('openConsentManager');
   };
+
+  const { data: page } = useCustomPageBySlug('cookie-policy');
+  const pageAttributes = page?.data.attributes;
 
   return (
     <>
@@ -61,7 +67,11 @@ const CookiePolicy = () => {
                 </PageTitle>
                 <Box>
                   <QuillEditedContent>
-                    <DefaultText openConsentManager={openConsentManager} />
+                    {pageAttributes?.top_info_section_enabled ? (
+                      <T value={pageAttributes.top_info_section_multiloc} />
+                    ) : (
+                      <DefaultText openConsentManager={openConsentManager} />
+                    )}
                     <FormattedMessage
                       tagName="p"
                       {...messages.manageCookiesPreferences}
