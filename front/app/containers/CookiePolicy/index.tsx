@@ -2,6 +2,8 @@ import React from 'react';
 
 import { Helmet } from 'react-helmet-async';
 
+import useCustomPageBySlug from 'api/custom_pages/useCustomPageBySlug';
+
 import {
   Container,
   StyledContentContainer,
@@ -10,6 +12,7 @@ import {
 } from 'containers/PagesShowPage';
 
 import Fragment from 'components/Fragment';
+import T from 'components/T';
 import QuillEditedContent from 'components/UI/QuillEditedContent';
 
 import { useIntl } from 'utils/cl-intl';
@@ -19,6 +22,9 @@ import messages from './messages';
 
 const CookiePolicy = () => {
   const { formatMessage } = useIntl();
+
+  const { data: page } = useCustomPageBySlug('cookie-policy');
+  const pageAttributes = page?.data.attributes;
 
   return (
     <>
@@ -51,10 +57,18 @@ const CookiePolicy = () => {
             <StyledContentContainer>
               <Fragment name="pages/cookie-policy/content">
                 <PageTitle>
-                  {formatMessage(messages.cookiePolicyTitle)}
+                  {pageAttributes?.title_multiloc ? (
+                    <T value={pageAttributes.title_multiloc} />
+                  ) : (
+                    formatMessage(messages.cookiePolicyTitle)
+                  )}
                 </PageTitle>
                 <QuillEditedContent>
-                  <DefaultText />
+                  {pageAttributes?.top_info_section_multiloc ? (
+                    <T value={pageAttributes.top_info_section_multiloc} />
+                  ) : (
+                    <DefaultText />
+                  )}
                 </QuillEditedContent>
               </Fragment>
             </StyledContentContainer>
