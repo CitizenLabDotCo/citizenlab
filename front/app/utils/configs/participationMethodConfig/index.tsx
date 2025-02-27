@@ -385,6 +385,7 @@ const methodToConfig: {
   ideation: ideationConfig,
   proposals: proposalsConfig,
   native_survey: nativeSurveyConfig,
+  community_monitor_survey: nativeSurveyConfig,
   information: informationConfig,
   survey: surveyConfig,
   voting: votingConfig,
