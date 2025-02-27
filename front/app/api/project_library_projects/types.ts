@@ -12,7 +12,7 @@ export type Status = 'draft' | 'active' | 'finished' | 'stale' | 'archived';
 type PopulationGroup = 'XS' | 'S' | 'M' | 'L' | 'XL';
 
 export type RansackParams = {
-  'q[tenant_country_alpha2]'?: string; // TODO figure out what values are allowed here
+  'q[tenant_country_alpha2]'?: string;
   'q[tenant_population_group_eq]'?: PopulationGroup;
   'q[score_total_gteq]'?: '1' | '2' | '3' | '4';
   'q[phases_participation_method_eq]'?: ParticipationMethod;

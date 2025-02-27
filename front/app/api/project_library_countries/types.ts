@@ -6,9 +6,7 @@ export type ProjectLibraryCountriesKeys = Keys<typeof projectLibraryPhasesKeys>;
 
 export interface ProjectLibraryCountries {
   data: {
-    type: 'project_library_countries';
-    attributes: {
-      // TOOD
-    };
+    type: 'project_library_tenant_countries';
+    attributes: [];
   };
 }

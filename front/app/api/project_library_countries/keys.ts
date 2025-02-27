@@ -1,6 +1,6 @@
 import { QueryKeys } from 'utils/cl-react-query/types';
 
-const baseKey = { type: 'project_library_countries' };
+const baseKey = { type: 'project_library_tenant_countries' };
 
 const projectLibraryCountriesKeys = {
   all: () => [baseKey],
