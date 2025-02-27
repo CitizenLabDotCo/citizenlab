@@ -637,7 +637,7 @@
   "app.components.form.controls.minimumCoordinates2": "Een minimum van {numPoints} punten is vereist.",
   "app.components.form.controls.noRankSelected": "Geen rang geselecteerd",
   "app.components.form.controls.notPublic1": "*Dit antwoord wordt alleen gedeeld met projectbeheerders en niet met het publiek.",
-  "app.components.form.controls.optionalParentheses": "{tenantName, select, gent {-} other {(optioneel)}}",
+  "app.components.form.controls.optionalParentheses": "(optioneel)",
   "app.components.form.controls.rankingInstructions": "Sleep om opties te rangschikken.",
   "app.components.form.controls.selectAsManyAsYouLike": "*Selecteer er zoveel als je wilt",
   "app.components.form.controls.selectBetween": "*Selecteer tussen {minItems} en {maxItems} opties",
