@@ -14,8 +14,8 @@ type Option = {
 const OPTIONS: Option[] = [
   { value: 'ideation', label: 'Ideation' },
   { value: 'information', label: 'Information' },
-  { value: 'native_survey', label: 'Native survey' },
-  { value: 'survey', label: 'Survey' },
+  { value: 'native_survey', label: 'Survey' },
+  { value: 'survey', label: 'External survey' },
   { value: 'voting', label: 'Voting' },
   { value: 'poll', label: 'Poll' },
   { value: 'volunteering', label: 'Volunteering' },
