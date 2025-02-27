@@ -1,8 +1,8 @@
 import React from 'react';
 
-import { Box, colors } from '@citizenlab/cl2-component-library';
-import { darken } from 'polished';
+import { Box } from '@citizenlab/cl2-component-library';
 import { Helmet } from 'react-helmet-async';
+
 import styled from 'styled-components';
 
 import {
@@ -18,21 +18,9 @@ import QuillEditedContent from 'components/UI/QuillEditedContent';
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import eventEmitter from 'utils/eventEmitter';
 
+import DefaultText from './DefaultText';
 import messages from './messages';
-
-const StyledButton = styled.button`
-  color: ${colors.teal};
-  font-weight: inherit;
-  text-decoration: underline;
-  margin: 0;
-  padding: 0;
-  cursor: pointer;
-
-  &:hover {
-    color: ${darken(0.15, colors.teal)};
-    text-decoration: underline;
-  }
-`;
+import StyledButton from './StyledButton';
 
 const CookiePolicy = () => {
   const { formatMessage } = useIntl();
@@ -75,43 +63,7 @@ const CookiePolicy = () => {
                 </PageTitle>
                 <Box>
                   <QuillEditedContent>
-                    <p>{formatMessage(messages.intro)}</p>
-                    <h2>{formatMessage(messages.whatDoWeUseCookiesFor)}</h2>
-                    <p>
-                      <FormattedMessage
-                        {...messages.viewPreferencesText}
-                        values={{
-                          viewPreferencesButton: (
-                            <StyledButton
-                              data-testid="viewPreferencesButton"
-                              onClick={openConsentManager}
-                            >
-                              {formatMessage(
-                                messages.viewPreferencesButtonText
-                              )}
-                            </StyledButton>
-                          ),
-                        }}
-                      />
-                    </p>
-
-                    <h3>{formatMessage(messages.analyticsTitle)}</h3>
-                    <p>{formatMessage(messages.analyticsContent)}</p>
-
-                    <h3>{formatMessage(messages.advertisingTitle)}</h3>
-                    <p>{formatMessage(messages.advertisingContent)}</p>
-
-                    <h3>{formatMessage(messages.functionalTitle)}</h3>
-                    <p>{formatMessage(messages.functionalContent)}</p>
-
-                    <h3>{formatMessage(messages.essentialTitle)}</h3>
-                    <p>{formatMessage(messages.essentialContent)}</p>
-
-                    <h3>{formatMessage(messages.externalTitle)}</h3>
-                    <p>{formatMessage(messages.externalContent)}</p>
-
-                    <h2>{formatMessage(messages.manageCookiesTitle)}</h2>
-                    <p>{formatMessage(messages.manageCookiesDescription)}</p>
+                    <DefaultText openConsentManager={openConsentManager} />
                     <FormattedMessage
                       tagName="p"
                       {...messages.manageCookiesPreferences}
