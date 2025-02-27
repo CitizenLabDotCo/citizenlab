@@ -209,6 +209,7 @@ const AdminIdeaEdit = ({
             getApiErrorMessage={getApiErrorMessage}
             config={'input'}
             layout={'inline'}
+            showSubmitButton={false}
           />
         ) : projectStatus === 'error' || inputSchemaError ? null : (
           <Spinner />

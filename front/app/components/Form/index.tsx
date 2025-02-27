@@ -65,6 +65,7 @@ interface Props {
   footer?: React.ReactNode;
   // Optional loading state from parent. If set, the loading state will be controlled by the parent.
   loading?: boolean;
+  showSubmitButton?: boolean;
 }
 
 const Form = memo(
@@ -81,6 +82,7 @@ const Form = memo(
     footer,
     onSubmit,
     loading: externalLoading,
+    showSubmitButton,
   }: Props) => {
     const { formatMessage } = useIntl();
     const locale = useLocale();
@@ -97,7 +99,6 @@ const Form = memo(
     const [showAllErrors, setShowAllErrors] = useState(false);
 
     const isSurvey = config === 'survey';
-    const showSubmitButton = !isSurvey;
 
     useEffect(() => {
       if (scrollToError) {
@@ -148,7 +149,8 @@ const Form = memo(
           internalSetLoading(true);
         }
         try {
-          response = await onSubmit(submissionData);
+          // TODO: Test that this does not affect anything else
+          response = await onSubmit(sanitizedFormData);
           if (isSurvey) {
             trackEventByName(tracks.surveyFormSubmitted);
           } else {
