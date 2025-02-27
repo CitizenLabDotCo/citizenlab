@@ -287,13 +287,6 @@ class SurveyResultsGeneratorService < FieldVisitorService
     answer_multilocs
   end
 
-  def build_domicile_multilocs(field)
-    field.options.each_with_object({}) do |option, accu|
-      option_detail = { title_multiloc: option.area&.title_multiloc || MultilocService.new.i18n_to_multiloc('custom_field_options.domicile.outside') }
-      accu[option.area&.id || 'outside'] = option_detail
-    end
-  end
-
   def get_option_logic(field)
     return {} if field.logic.blank?
 
