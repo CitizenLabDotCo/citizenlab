@@ -92,5 +92,47 @@ RSpec.describe Analysis::SummarizationMethod do
         progress: nil
       })
     end
+
+    it 'includes the comments in the prompt if the comments_summaries feature flag is active' do
+      configuration = AppConfiguration.instance
+      configuration.settings['comments_summaries'] = {
+        allowed: true,
+        enabled: true
+      }
+      configuration.save!
+      create(:comment, idea: inputs[1], body_multiloc: { en: 'I want to comment on that' })
+
+      plan = Analysis::SummarizationMethod::OnePassLLM.new(summary).generate_plan
+      mock_llm = instance_double(Analysis::LLM::GPT4o)
+      plan.llm = mock_llm
+      expect(mock_llm).to receive(:chat_async).with(kind_of(String)) do |prompt, &block|
+        expect(prompt).to include('I want to comment on that')
+        block.call 'Complete'
+        block.call ' summary'
+      end
+      expect { plan.summarization_method_class.new(summary).execute(plan) }
+        .to change { summarization_task.summary.summary }.from(nil).to('Complete summary')
+    end
+
+    it 'does not include the comments in the prompt if the comments_summaries feature flag not active' do
+      configuration = AppConfiguration.instance
+      configuration.settings['comments_summaries'] = {
+        allowed: false,
+        enabled: true
+      }
+      configuration.save!
+      create(:comment, idea: inputs[1], body_multiloc: { en: 'I want to comment on that' })
+
+      plan = Analysis::SummarizationMethod::OnePassLLM.new(summary).generate_plan
+      mock_llm = instance_double(Analysis::LLM::GPT4o)
+      plan.llm = mock_llm
+      expect(mock_llm).to receive(:chat_async).with(kind_of(String)) do |prompt, &block|
+        expect(prompt).not_to include('I want to comment on that')
+        block.call 'Complete'
+        block.call ' summary'
+      end
+      expect { plan.summarization_method_class.new(summary).execute(plan) }
+        .to change { summarization_task.summary.summary }.from(nil).to('Complete summary')
+    end
   end
 end

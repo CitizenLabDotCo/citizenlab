@@ -4,7 +4,9 @@ require 'rails_helper'
 
 describe Analysis::CommentsToText do
   describe '#execute' do
-    subject(:text) { described_class.new.execute(input) }
+    subject(:text) { described_class.new.execute(input, **kwargs) }
+
+    let(:kwargs) { {} }
 
     let(:input) { create(:idea) }
 
@@ -38,6 +40,36 @@ describe Analysis::CommentsToText do
 
       it 'does include the subcomments' do
         expect(text).to include('This should be in the text')
+      end
+    end
+
+    context 'when truncating values' do
+      let(:kwargs) { { truncate_values: 10 } }
+
+      let!(:comments) { create_list(:comment, 2, idea: input) }
+
+      it 'truncates the values' do
+        expect(text).to include('...')
+      end
+    end
+
+    context 'when the separator is changed' do
+      let(:kwargs) { { separator: '+++' } }
+
+      let!(:comments) { create_list(:comment, 2, idea: input) }
+
+      it 'uses the separator' do
+        expect(text).to include('+++').once
+      end
+    end
+
+    context 'when the author is not included' do
+      let(:kwargs) { { include_author: false } }
+
+      let!(:comments) { create_list(:comment, 2, idea: input) }
+
+      it 'does not include the author' do
+        expect(text).not_to include('USER_')
       end
     end
   end

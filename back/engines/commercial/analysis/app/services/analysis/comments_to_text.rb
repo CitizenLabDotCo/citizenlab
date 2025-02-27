@@ -8,7 +8,7 @@ module Analysis
       @pseudonym_map = {}
     end
 
-    def execute(input)
+    def execute(input, truncate_values: nil, separator: '---', include_author: true)
       return if input.comments.empty?
 
       input.comments.map do |comment|
@@ -17,17 +17,17 @@ module Analysis
         body_plain_mentions = @mention_service.remove_expanded_mentions(body_translated)
         body_plain_text = strip_html(body_plain_mentions)
         body_pseudomized = pseudomize_mentions(body_plain_text)
-        body_formatted = <<~TEXT
-          #{slug_to_pseudonym(comment.author&.slug)} wrote:
-          #{body_pseudomized}
-          ---
-        TEXT
+        body_truncated = truncate_values ? body_pseudomized.truncate(truncate_values) : body_pseudomized
+        body_formatted = [
+          include_author ? "#{slug_to_pseudonym(comment.author&.slug)}:" : nil,
+          body_truncated
+        ].compact.join("\n")
         if is_subcomment
           indent(body_formatted, 4)
         else
           body_formatted
         end
-      end.join("\n")
+      end.join("\n#{separator}\n")
     end
 
     private
@@ -42,9 +42,9 @@ module Analysis
     end
 
     def slug_to_pseudonym(slug)
-      'ANONYMOUS_USER' if slug.nil?
+      return 'ANONYMOUS_USER' if slug.nil?
 
-      @pseudonym_map[slug] ||= "USER_#{SecureRandom.hex(4)}"
+      @pseudonym_map[slug] ||= "USER_#{SecureRandom.hex(3)}"
     end
 
     def strip_html(html)

@@ -221,4 +221,20 @@ describe Analysis::InputToText do
       TEXT
     )
   end
+
+  it 'respects the `include_comments` option' do
+    custom_field = create(:custom_field_text, title_multiloc: { en: 'Where did you hear from us?' })
+    service = described_class.new([custom_field])
+
+    input = build(
+      :idea,
+      custom_field_values: {
+        custom_field.key => 'Newspaper'
+      },
+      comments: [build(:comment, body_multiloc: { en: 'This is a comment' })]
+    )
+
+    expect(service.formatted(input, include_comments: true)).to include('This is a comment')
+    expect(service.formatted(input, include_comments: false)).not_to include('This is a comment')
+  end
 end
