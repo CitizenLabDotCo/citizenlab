@@ -34,7 +34,8 @@ const Method = () => {
       onChange={(option: Option) =>
         setRansackParam('q[phases_participation_method_eq]', option.value)
       }
-      label="Method"
+      placeholder="Method"
+      mr="28px"
     />
   );
 };

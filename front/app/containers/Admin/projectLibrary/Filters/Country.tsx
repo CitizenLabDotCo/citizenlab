@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Select } from '@citizenlab/cl2-component-library';
+import { Box, Select } from '@citizenlab/cl2-component-library';
 
 import useProjectLibraryCountries from 'api/project_library_countries/useProjectLibraryCountries';
 import { RansackParams } from 'api/project_library_projects/types';
@@ -18,15 +18,18 @@ const Country = () => {
   console.log({ countries });
 
   return (
-    <Select
-      value={value}
-      options={[]}
-      canBeEmpty
-      onChange={(option: Option) =>
-        setRansackParam('q[tenant_country_alpha2]', option.value)
-      }
-      label="Country"
-    />
+    <Box>
+      <Select
+        value={value}
+        options={[]}
+        canBeEmpty
+        onChange={(option: Option) =>
+          setRansackParam('q[tenant_country_alpha2]', option.value)
+        }
+        placeholder="Country"
+        mr="28px"
+      />
+    </Box>
   );
 };
 

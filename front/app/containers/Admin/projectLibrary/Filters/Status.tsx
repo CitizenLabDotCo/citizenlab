@@ -30,7 +30,8 @@ const Status = () => {
       onChange={(option: Option) =>
         setRansackParam('q[status_eq]', option.value)
       }
-      label="Status"
+      placeholder="Status"
+      mr="28px"
     />
   );
 };

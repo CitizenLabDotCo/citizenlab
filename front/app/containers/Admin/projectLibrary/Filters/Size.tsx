@@ -30,7 +30,8 @@ const Size = () => {
       onChange={(option: Option) =>
         setRansackParam('q[tenant_population_group_eq]', option.value)
       }
-      label="Size"
+      placeholder="Size"
+      mr="28px"
     />
   );
 };
