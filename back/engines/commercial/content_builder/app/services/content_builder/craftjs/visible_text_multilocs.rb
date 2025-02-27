@@ -29,10 +29,10 @@ module ContentBuilder
               next unless key == locale
 
               joined[locale] = if joined.key?(locale)
-                                 joined[locale] + value.to_s
-                               else
-                                 value.to_s
-                               end
+                joined[locale] + value.to_s
+              else
+                value.to_s
+              end
             end
           end
         end
