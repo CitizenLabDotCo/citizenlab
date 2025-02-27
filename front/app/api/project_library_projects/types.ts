@@ -9,7 +9,7 @@ import miniProjectsKeys from './keys';
 
 export type Status = 'draft' | 'active' | 'finished' | 'stale' | 'archived';
 
-type PopulationGroup = 'xs' | 's' | 'm' | 'l' | 'xl';
+type PopulationGroup = 'XS' | 'S' | 'M' | 'L' | 'XL';
 
 export type RansackParams = {
   'q[tenant_country_alpha2]'?: string; // TODO figure out what values are allowed here
