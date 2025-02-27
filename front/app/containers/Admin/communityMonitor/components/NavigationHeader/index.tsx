@@ -47,6 +47,7 @@ const NavigationHeader = () => {
     >
       {TABS.map((tab) => (
         <Button
+          role="tab"
           key={tab}
           p="0px"
           buttonStyle="text"
