@@ -292,7 +292,10 @@ const AdminProjectsList = memo(({ className }: Props) => {
           zIndex="1"
           mb="-2px"
         >
-          <NavigationTabs position="relative">
+          <NavigationTabs
+            className="intercom-admin-project-navigation-tabs"
+            position="relative"
+          >
             <Tab
               url="/admin/projects"
               label={`${formatMessage(messages.yourProjects)} (${

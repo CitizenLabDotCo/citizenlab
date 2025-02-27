@@ -114,7 +114,7 @@ class IdeaCustomFieldsService
 
     # Check the last field is a page
     if @participation_method.supports_pages_in_form? && fields.last[:input_type] != 'page'
-      errors["#{fields.length - 1}"] = { structure: [{ error: "Last field must be of type 'page'" }] }
+      errors[(fields.length - 1).to_s] = { structure: [{ error: "Last field must be of type 'page'" }] }
     end
 
     fields.each_with_index do |field, index|

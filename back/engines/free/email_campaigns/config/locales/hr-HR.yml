@@ -499,6 +499,7 @@ hr:
       cta_vote: 'Idite na platformu za glasanje'
     survey_submitted:
       subject: '%{organizationName}: Hvala vam na odgovoru! 🎉'
+      preheader: 'Evo pojedinosti vašeg podneska.'
       main_header: 'Hvala što ste podijelili svoje mišljenje o "%{projectName}"!'
       your_input_submitted: 'Vaš unos za "%{projectName}" je uspješno poslan.'
       if_you_would_like_to_review: 'Ako želite pregledati svoj podnesak, svoje odgovore možete preuzeti u nastavku.'

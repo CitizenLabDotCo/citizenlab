@@ -220,7 +220,7 @@ class CustomFieldService
       description: handle_description(field, locale),
       type: 'string'
     }.tap do |items|
-      options = field.ordered_options
+      options = field.ordered_transformed_options
 
       unless options.empty?
         items[:enum] = options.map(&:key)
