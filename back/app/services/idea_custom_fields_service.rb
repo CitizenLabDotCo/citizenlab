@@ -18,7 +18,8 @@ class IdeaCustomFieldsService
   end
 
   def xlsx_exportable_fields
-    all_fields.filter(&:supports_xlsx_export?)
+    # TODO: JS - Why does this not use enabled_fields?
+    add_user_fields(all_fields).filter(&:supports_xlsx_export?)
   end
 
   def geojson_supported_fields
