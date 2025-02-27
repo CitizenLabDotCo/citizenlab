@@ -113,7 +113,7 @@ const SurveySettings = () => {
           alignItems="center"
         >
           <Title variant="h1" color="primary">
-            {formatMessage(communityMonitorMessages.settings)}
+            {formatMessage(communityMonitorMessages.survey)}
           </Title>
           <Box display="flex" justifyContent="center" alignItems="center">
             <Box mr="16px">

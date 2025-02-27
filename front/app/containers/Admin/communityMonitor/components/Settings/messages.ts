@@ -19,4 +19,29 @@ export default defineMessages({
     defaultMessage:
       "All of the survey's inputs from users will be anonymized before being recorded",
   },
+  communityMonitorManagers: {
+    id: 'app.containers.Admin.communityMonitor.settings.communityMonitorManagers',
+    defaultMessage: 'Community Monitor Managers',
+  },
+  communityMonitorManagerTooltip: {
+    id: 'app.containers.Admin.communityMonitor.settings.communityMonitorManagerTooltip',
+    defaultMessage:
+      'Community Monitor Managers can access and manage all Community Monitor settings and data.',
+  },
+  surveySettings: {
+    id: 'app.containers.Admin.communityMonitor.settings.surveySettings',
+    defaultMessage: 'Survey settings',
+  },
+  actions: {
+    id: 'app.containers.Admin.communityMonitor.settings.actions',
+    defaultMessage: 'Actions',
+  },
+  moderators: {
+    id: 'app.containers.Admin.communityMonitor.settings.moderators',
+    defaultMessage: 'Moderators',
+  },
+  survey: {
+    id: 'app.containers.Admin.communityMonitor.settings.survey',
+    defaultMessage: 'Survey',
+  },
 });
