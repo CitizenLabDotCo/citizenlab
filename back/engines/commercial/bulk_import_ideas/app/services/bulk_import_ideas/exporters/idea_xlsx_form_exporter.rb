@@ -14,7 +14,7 @@ module BulkImportIdeas::Exporters
         locale_last_name_label => 'Test',
         locale_email_label => 'bill@govocal.com',
         locale_permission_label => 'X',
-        locale_published_label => Date.today.strftime('%d-%m-%Y')
+        locale_published_label => Time.zone.today.strftime('%d-%m-%Y')
       }
 
       xlsx_utils = Export::Xlsx::Utils.new
