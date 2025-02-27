@@ -41,7 +41,7 @@ RSpec.describe Analysis::CommentsSummarizationMethod do
         .to change { comments_summary.summary }.from(nil).to('Complete summary')
         .and change { comments_summary.prompt }.from(nil).to(kind_of(String))
         .and change { comments_summary.accuracy }.from(nil).to(0.8)
-        .and change { comments_summary.generated_at }.from(nil).to(kind_of(String))
+        .and change { comments_summary.reload.generated_at }.from(nil).to(be_present)
 
       expect(comments_summary.background_task).to have_attributes({
         state: 'succeeded',
