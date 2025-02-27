@@ -129,7 +129,8 @@ module Verification
           []
         end
       end
-      custom_fields.uniq
+      # Need to check that the locked custom fields exist before returning them
+      custom_fields == [] ? [] : CustomField.find_by(key: custom_fields).map(&:key)
     end
 
     # Return method metadata
