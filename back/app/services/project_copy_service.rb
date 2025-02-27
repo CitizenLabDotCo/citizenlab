@@ -243,7 +243,7 @@ class ProjectCopyService < TemplateService # rubocop:disable Metrics/ClassLength
         }
       end,
       'include_all_areas' => @project.include_all_areas,
-      'hidden' => @project.hidden,
+      'hidden' => @project.hidden
     }
     yml_project['slug'] = new_slug if new_slug.present?
     store_ref yml_project, @project.id, :project
@@ -336,7 +336,7 @@ class ProjectCopyService < TemplateService # rubocop:disable Metrics/ClassLength
         yml_phase['document_annotation_embed_url'] = phase.document_annotation_embed_url
       end
 
-      if %w[native_survey community_monitor_survey].include? yml_phase['participation_method']
+      if phase.pmethod.supports_survey_form?
         yml_phase['native_survey_title_multiloc'] = phase.native_survey_title_multiloc
         yml_phase['native_survey_button_multiloc'] = phase.native_survey_button_multiloc
       end

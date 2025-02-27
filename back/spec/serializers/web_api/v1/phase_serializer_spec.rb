@@ -90,9 +90,9 @@ describe WebApi::V1::PhaseSerializer do
 
     it 'includes survey attributes' do
       expect(result.dig(:data, :attributes).keys).to include(
-                                                       :native_survey_title_multiloc,
-                                                       :native_survey_button_multiloc
-                                                     )
+        :native_survey_title_multiloc,
+        :native_survey_button_multiloc
+      )
       expect(result.dig(:data, :attributes, :supports_survey_form)).to be true
     end
   end
