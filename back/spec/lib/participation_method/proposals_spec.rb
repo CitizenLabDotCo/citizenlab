@@ -119,7 +119,7 @@ RSpec.describe ParticipationMethod::Proposals do
   describe 'constraints' do
     it 'has constraints on built in fields to lock certain values from being changed' do
       expect(participation_method.constraints.keys).to match_array %i[
-        ideation_section1
+        ideation_page1
         title_multiloc
         body_multiloc
         idea_images_attributes
@@ -153,17 +153,18 @@ RSpec.describe ParticipationMethod::Proposals do
     it 'returns the default proposals fields' do
       expect(
         participation_method.default_fields(create(:custom_form, participation_context: phase)).map(&:code)
-      ).to eq %w[
-        ideation_section1
-        title_multiloc
-        body_multiloc
-        ideation_section2
-        idea_images_attributes
-        idea_files_attributes
-        ideation_section3
-        topic_ids
-        location_description
-        cosponsor_ids
+      ).to eq [
+        'ideation_page1',
+        'title_multiloc',
+        'body_multiloc',
+        'ideation_page2',
+        'idea_images_attributes',
+        'idea_files_attributes',
+        'ideation_page3',
+        'topic_ids',
+        'location_description',
+        'cosponsor_ids',
+        nil
       ]
     end
   end
