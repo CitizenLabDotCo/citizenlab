@@ -1,5 +1,7 @@
 import React, { lazy } from 'react';
 
+import { Navigate } from 'react-router-dom';
+
 import PageLoading from 'components/UI/PageLoading';
 
 const LiveMonitor = lazy(() => import('./components/LiveMonitor'));
@@ -19,6 +21,7 @@ export enum communityMonitorRoutes {
   communityMonitorDefault = '',
   liveMonitor = 'live-monitor',
   participants = 'participants',
+  participantsProjects = 'participants/projects/:projectId',
   reports = 'reports',
   settings = 'settings',
 }
@@ -26,7 +29,7 @@ export enum communityMonitorRoutes {
 export type communityMonitorRouteTypes =
   | AdminRoute<communityMonitorRoutes.communityMonitor>
   | `${AdminRoute<communityMonitorRoutes.communityMonitor>}/${communityMonitorRoutes.liveMonitor}`
-  | `${AdminRoute<communityMonitorRoutes.communityMonitor>}/${communityMonitorRoutes.participants}`
+  | `${AdminRoute<communityMonitorRoutes.communityMonitor>}/${communityMonitorRoutes.participants}/projects/${string}`
   | `${AdminRoute<communityMonitorRoutes.communityMonitor>}/${communityMonitorRoutes.reports}`
   | `${AdminRoute<communityMonitorRoutes.communityMonitor>}/${communityMonitorRoutes.settings}`
   | `${AdminRoute<communityMonitorRoutes.communityMonitor>}/projects/${string}/phases/${string}/survey/edit`;
@@ -40,6 +43,10 @@ const communityMonitorsRoutes = () => {
       </PageLoading>
     ),
     children: [
+      {
+        path: '',
+        element: <Navigate to="live-monitor" replace />,
+      },
       {
         path: communityMonitorRoutes.liveMonitor,
         element: (
@@ -75,7 +82,7 @@ const communityMonitorsRoutes = () => {
         ),
       },
       {
-        path: communityMonitorRoutes.participants,
+        path: communityMonitorRoutes.participantsProjects,
         element: (
           <PageLoading>
             <div

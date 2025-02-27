@@ -8,13 +8,11 @@ import FormResults from 'containers/Admin/projects/project/nativeSurvey/FormResu
 
 import { FormattedMessage } from 'utils/cl-intl';
 
-import messages from '../messages';
+import messages from './messages';
 
 const LiveMonitor = () => {
   const { data: project } = useCommunityMonitorProject();
   const phaseId = project?.data.relationships.current_phase?.data?.id;
-
-  console.log({ projectId: project?.data.id, phaseId });
 
   return (
     <Box mt="48px">

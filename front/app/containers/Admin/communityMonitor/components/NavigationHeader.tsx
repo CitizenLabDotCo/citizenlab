@@ -8,6 +8,8 @@ import {
 } from '@citizenlab/cl2-component-library';
 import { useLocation } from 'react-router-dom';
 
+import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
+
 import clHistory from 'utils/cl-router/history';
 
 type CommunityMonitorTab =
@@ -18,6 +20,10 @@ type CommunityMonitorTab =
 
 const NavigationHeader = () => {
   const isTabletOrSmaller = useBreakpoint('tablet');
+
+  const { data: appConfiguration } = useAppConfiguration();
+  const communityMonitorProjectId =
+    appConfiguration?.data.attributes.settings.community_monitor?.project_id;
 
   const [activeTab, setActiveTab] =
     React.useState<CommunityMonitorTab>('live-monitor');
@@ -68,7 +74,9 @@ const NavigationHeader = () => {
         p="0px"
         buttonStyle="text"
         onClick={() => {
-          clHistory.push('/admin/community-monitor/participants');
+          clHistory.push(
+            `/admin/community-monitor/participants/projects/${communityMonitorProjectId}`
+          );
         }}
         style={{
           borderBottom:
