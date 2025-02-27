@@ -44,6 +44,7 @@ const NavigationHeader = () => {
       bg={colors.white}
       display="flex"
       pl="30px"
+      zIndex="1"
     >
       {TABS.map((tab) => (
         <Button

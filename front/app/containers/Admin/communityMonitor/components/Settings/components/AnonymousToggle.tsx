@@ -2,7 +2,6 @@ import React from 'react';
 
 import { Box, Text, IconTooltip } from '@citizenlab/cl2-component-library';
 
-import useCommunityMonitorProject from 'api/community_monitor/useCommunityMonitorProject';
 import usePhase from 'api/phases/usePhase';
 import useUpdatePhase from 'api/phases/useUpdatePhase';
 
@@ -12,18 +11,20 @@ import { FormattedMessage, useIntl } from 'utils/cl-intl';
 
 import messages from '../messages';
 
-const AnonymousToggle = () => {
+type Props = {
+  phaseId: string;
+};
+
+const AnonymousToggle = ({ phaseId }: Props) => {
   const { formatMessage } = useIntl();
 
-  const { data: project } = useCommunityMonitorProject();
-  const phaseId = project?.data.relationships.current_phase?.data?.id;
   const { data: phase } = usePhase(phaseId);
   const { mutate: updatePhase } = useUpdatePhase();
 
   const allowAnonymousParticipation =
     phase?.data.attributes.allow_anonymous_participation;
 
-  const handleAllowAnonymousParticipationOnChange = () => {
+  const handleToggleChange = () => {
     phaseId &&
       updatePhase({
         phaseId,
@@ -34,9 +35,7 @@ const AnonymousToggle = () => {
   return (
     <AnonymousPostingToggle
       allow_anonymous_participation={allowAnonymousParticipation}
-      handleAllowAnonymousParticipationOnChange={
-        handleAllowAnonymousParticipationOnChange
-      }
+      handleAllowAnonymousParticipationOnChange={handleToggleChange}
       toggleLabel={
         <Box ml="8px">
           <Box display="flex">
