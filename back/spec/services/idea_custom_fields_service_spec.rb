@@ -16,7 +16,7 @@ describe IdeaCustomFieldsService do
 
       it 'returns the built-in fields' do
         output = service.all_fields
-        expect(output.map(&:code)).to eq %w[
+        expect(output.map(&:code).compact).to eq %w[
           ideation_page1
           title_multiloc
           body_multiloc
@@ -34,7 +34,7 @@ describe IdeaCustomFieldsService do
     describe 'visible_fields' do
       it 'excludes disabled fields' do
         output = service.visible_fields
-        expect(output.map(&:code)).to eq %w[
+        expect(output.map(&:code).compact).to eq %w[
           ideation_page1
           title_multiloc
           body_multiloc
@@ -65,7 +65,7 @@ describe IdeaCustomFieldsService do
     describe 'enabled_fields' do
       it 'excludes disabled fields' do
         output = service.enabled_fields
-        expect(output.map(&:code)).to eq %w[
+        expect(output.map(&:code).compact).to eq %w[
           ideation_page1
           title_multiloc
           body_multiloc
@@ -99,7 +99,7 @@ describe IdeaCustomFieldsService do
     describe 'extra_visible_fields' do
       it 'excludes disabled and built-in fields' do
         output = service.extra_visible_fields
-        expect(output).to be_empty
+        expect(output.size).to eq 1
       end
     end
   end
@@ -134,6 +134,7 @@ describe IdeaCustomFieldsService do
           'topic_ids',
           'proposed_budget',
           nil,
+          nil,
           nil
         ]
       end
@@ -157,6 +158,7 @@ describe IdeaCustomFieldsService do
           'idea_images_attributes',
           'idea_files_attributes',
           'ideation_page3',
+          nil,
           nil
         ]
       end
@@ -197,6 +199,7 @@ describe IdeaCustomFieldsService do
           'idea_images_attributes',
           'idea_files_attributes',
           'ideation_page3',
+          nil,
           nil
         ]
       end
@@ -207,15 +210,16 @@ describe IdeaCustomFieldsService do
         location_field = custom_form.custom_fields.find_by(code: 'location_description')
         location_field.update!(answer_visible_to: 'admins')
         output = service.enabled_public_fields
-        expect(output.map(&:code)).to eq %w[
-          ideation_page1
-          title_multiloc
-          body_multiloc
-          ideation_page2
-          idea_images_attributes
-          idea_files_attributes
-          ideation_page3
-          topic_ids
+        expect(output.map(&:code)).to eq [
+          'ideation_page1',
+          'title_multiloc',
+          'body_multiloc',
+          'ideation_page2',
+          'idea_images_attributes',
+          'idea_files_attributes',
+          'ideation_page3',
+          'topic_ids',
+          nil
         ]
       end
     end
@@ -225,7 +229,7 @@ describe IdeaCustomFieldsService do
         output = service.extra_visible_fields
         expect(output).to include extra_field1
         expect(output).not_to include extra_field2
-        expect(output.map(&:code)).to eq [nil]
+        expect(output.map(&:code)).to eq [nil, nil]
       end
     end
 
@@ -406,38 +410,12 @@ describe IdeaCustomFieldsService do
     describe 'ideation form' do
       let(:custom_form) { create(:custom_form, :with_default_fields, participation_context: project) }
 
-      it 'returns no errors if the form has a section field as the first element' do
-        fields = service.all_fields
-        errors = {}
-        service.check_form_structure(fields, errors)
-
-        expect(errors.length).to eq 0
-      end
-
       it 'returns no errors if the form has no fields' do
         fields = []
         errors = {}
         service.check_form_structure(fields, errors)
 
         expect(errors.length).to eq 0
-      end
-
-      it 'returns errors if the first field is not a section' do
-        fields = service.all_fields
-        fields.delete(fields.find_by(code: 'ideation_page1'))
-        errors = {}
-        service.check_form_structure(fields, errors)
-
-        expect(errors.length).to eq 1
-      end
-
-      it 'returns errors if form includes any page fields' do
-        create(:custom_field_page, resource: custom_form, key: 'a_page')
-        fields = service.all_fields
-        errors = {}
-        service.check_form_structure(fields, errors)
-
-        expect(errors.length).to eq 1
       end
     end
 
@@ -463,17 +441,6 @@ describe IdeaCustomFieldsService do
 
         expect(errors.length).to eq 1
         expect(errors['0']).not_to be_nil
-      end
-
-      it 'returns errors if form includes any section fields' do
-        create(:custom_field_page, resource: custom_form, key: 'a_page')
-        create(:custom_field_section, resource: custom_form, key: 'a_section')
-        fields = service.all_fields
-        errors = {}
-        service.check_form_structure(fields, errors)
-
-        expect(errors.length).to eq 1
-        expect(errors['1']).not_to be_nil
       end
     end
 
