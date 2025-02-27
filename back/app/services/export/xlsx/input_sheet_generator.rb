@@ -202,6 +202,8 @@ module Export
       end
 
       def user_report_fields
+        return [] if participation_method.supports_user_fields_in_form?
+
         registration_fields.map do |field|
           Export::CustomFieldForExport.new(field, @value_visitor, :author)
         end

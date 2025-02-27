@@ -28,6 +28,7 @@ class SideFxIdeaService
     after_submission idea, user if idea.submitted_or_published?
     after_publish idea, user if idea.published?
     enqueue_embeddings_job(idea)
+    update_user_profile(idea, user)
 
     log_activities_if_cosponsors_added(idea, user)
   end
@@ -40,6 +41,7 @@ class SideFxIdeaService
     before_publish_or_submit idea, user if idea.will_be_submitted? || idea.will_be_published?
   end
 
+  # rubocop:disable Metrics/MethodLength
   def after_update(idea, user)
     # We need to check if the idea was just submitted or just published before
     # we do anything else because updates to the idea can change this state.
@@ -100,6 +102,8 @@ class SideFxIdeaService
       )
     end
 
+    update_user_profile(idea, user)
+
     enqueue_embeddings_job(idea) if idea.title_multiloc_previously_changed? || idea.body_multiloc_previously_changed?
 
     if idea.manual_votes_amount_previously_changed?
@@ -114,6 +118,7 @@ class SideFxIdeaService
 
     log_activities_if_cosponsors_added(idea, user)
   end
+  # rubocop:enable Metrics/MethodLength
 
   def after_destroy(frozen_idea, user)
     frozen_idea.phases.each(&:update_manual_votes_count!) if frozen_idea.manual_votes_amount.present?
@@ -214,6 +219,14 @@ class SideFxIdeaService
 
   def enqueue_embeddings_job(idea)
     UpsertEmbeddingJob.perform_later(idea) if AppConfiguration.instance.feature_activated?('similar_inputs')
+  end
+
+  # update the user profile if user fields are changed as part of a survey
+  def update_user_profile(idea, user)
+    return unless user && idea.participation_method_on_creation.supports_user_fields_in_form?
+
+    user_values_from_idea = idea.custom_field_values.select { |key, _value| key.start_with?('u_') }.transform_keys { |key| key[2..] }
+    user.update!(custom_field_values: user.custom_field_values.merge(user_values_from_idea))
   end
 end
 

@@ -241,6 +241,50 @@ describe IdeaCustomFieldsService do
     end
   end
 
+  context 'survey form with user fields' do
+    describe 'enabled_fields' do
+      let!(:custom_form) { create(:custom_form, participation_context: form_context) }
+
+      # Survey fields
+      let!(:page_field) { create(:custom_field_page, resource: custom_form, key: 'page1') }
+      let!(:text_field) { create(:custom_field_text, resource: custom_form, key: 'text_field') }
+      let!(:end_page_field) { create(:custom_field_page, resource: custom_form, key: 'end_page') }
+
+      # Define some user fields
+      let!(:user_field_gender) { create(:custom_field_gender) }
+      let!(:user_field_birthyear) { create(:custom_field_birthyear) }
+
+      context 'when phase is a native survey phase' do
+        let(:form_context) { create(:native_survey_phase, user_fields_in_form: true, with_permissions: true) }
+
+        it 'returns form fields with an additional page of demographics' do
+          output = service.enabled_fields
+          expect(output.pluck(:key)).to eq %w[
+            page1
+            text_field
+            user_page
+            u_gender
+            u_birthyear
+            end_page
+          ]
+        end
+      end
+
+      context 'when phase is an ideation phase' do
+        let(:form_context) { create(:project) }
+
+        it 'returns only idea fields' do
+          output = service.enabled_fields
+          expect(output.pluck(:key)).to eq %w[
+            page1
+            text_field
+            end_page
+          ]
+        end
+      end
+    end
+  end
+
   context 'constraints/locks on changing attributes' do
     let(:custom_form) { create(:custom_form, :with_default_fields, participation_context: project) }
 
