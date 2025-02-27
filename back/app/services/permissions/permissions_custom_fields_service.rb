@@ -4,7 +4,7 @@ module Permissions
   class PermissionsCustomFieldsService
     def fields_for_permission(permission, return_hidden: false)
       # We do not support user fields for 'everyone' unless the participation method supports it and it is turned on
-      return [] if permission.permitted_by == 'everyone' && !permission.permission_scope.participation_method.supports_user_fields_in_form?
+      return [] if permission.permitted_by == 'everyone' && !permission.permission_scope&.pmethod.supports_user_fields_in_form?
 
       fields = if permission.global_custom_fields
         default_fields(permission)
