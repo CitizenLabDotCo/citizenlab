@@ -4,7 +4,7 @@ import { CLErrors } from 'typings';
 
 import fetcher from 'utils/cl-react-query/fetcher';
 
-import areaKeys from './keys';
+import authoringAssistanceKeys from './keys';
 import { IAuthoringAssistanceResponse, IAuthoringAssistance } from './types';
 
 const addAuthoringAssistance = async ({
@@ -27,7 +27,9 @@ const useAddAuthoringAssistance = () => {
   >({
     mutationFn: addAuthoringAssistance,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: areaKeys.lists() });
+      queryClient.invalidateQueries({
+        queryKey: authoringAssistanceKeys.lists(),
+      });
     },
   });
 };

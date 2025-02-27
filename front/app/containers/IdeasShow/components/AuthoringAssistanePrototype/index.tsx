@@ -16,12 +16,7 @@ import useFeatureFlag from 'hooks/useFeatureFlag';
 import IdeaCard from 'components/IdeaCard';
 import TextArea from 'components/UI/TextArea';
 
-import { useIntl } from 'utils/cl-intl';
-
-import messages from './messages';
-
-const AIInsights = ({ ideaId }: { ideaId: string }) => {
-  const { formatMessage } = useIntl();
+const AuthoringAssistanePrototype = ({ ideaId }: { ideaId: string }) => {
   const isAuthoringAssistanceOn = useFeatureFlag({
     name: 'authoring_assistance',
   });
@@ -72,32 +67,30 @@ const AIInsights = ({ ideaId }: { ideaId: string }) => {
       flexDirection="column"
       p="20px"
     >
-      <Text>{formatMessage(messages.promptTitle)}</Text>
+      <Text>Prompt:</Text>
 
       <Box w="100%">
         <TextArea
           minRows={5}
           value={customPrompt || promptData?.attributes.custom_free_prompt}
           onChange={handleTextChange}
-          placeholder={formatMessage(messages.textAreaPlaceholder)}
+          placeholder="Add custom prompts here:"
         />
       </Box>
 
       <Button onClick={() => fetchAssistance(true)} processing={isLoading}>
-        {formatMessage(messages.regenegareteInsights)}
+        Regenerate insights
       </Button>
 
       {typeof customFreePromptResponse == 'string' && (
         <>
-          <Title variant="h4">{formatMessage(messages.insights)}</Title>
+          <Title variant="h4">Insights</Title>
           <Text whiteSpace="pre-wrap">{customFreePromptResponse}</Text>
         </>
       )}
 
       {typeof toxicityLabel === 'string' && (
-        <Title variant="h4">
-          {formatMessage(messages.toxicity)}: {toxicityLabel}
-        </Title>
+        <Title variant="h4">Toxicity: {toxicityLabel}</Title>
       )}
 
       {typeof toxicityAIReason === 'string' && (
@@ -106,7 +99,7 @@ const AIInsights = ({ ideaId }: { ideaId: string }) => {
 
       {similarIdeaIds && similarIdeaIds.length > 1 && (
         <Box mt="10px">
-          <Text>{formatMessage(messages.similarIdeas)}</Text>
+          <Text>Similar ideas</Text>
           {similarIdeaIds.map((ideaId) => (
             <IdeaCard
               key={ideaId}
@@ -122,4 +115,4 @@ const AIInsights = ({ ideaId }: { ideaId: string }) => {
   );
 };
 
-export default AIInsights;
+export default AuthoringAssistanePrototype;
