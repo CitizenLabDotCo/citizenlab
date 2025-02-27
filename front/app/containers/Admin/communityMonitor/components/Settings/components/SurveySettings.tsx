@@ -1,45 +1,37 @@
 import React, { useState } from 'react';
 
 import { Box, Title, Toggle, Spinner } from '@citizenlab/cl2-component-library';
-import { useParams } from 'react-router-dom';
+import { RouteType } from 'routes';
 
+import useCommunityMonitorProject from 'api/community_monitor/useCommunityMonitorProject';
 import usePhase from 'api/phases/usePhase';
 import useUpdatePhase from 'api/phases/useUpdatePhase';
-import useProjectById from 'api/projects/useProjectById';
 import useFormSubmissionCount from 'api/submission_count/useSubmissionCount';
 import useDeleteSurveyResults from 'api/survey_results/useDeleteSurveyResults';
 import { downloadSurveyResults } from 'api/survey_results/utils';
 
 import useLocale from 'hooks/useLocale';
 
-import PDFExportModal, {
-  FormValues,
-} from 'containers/Admin/projects/components/PDFExportModal';
+import EditWarningModal from 'containers/Admin/projects/project/nativeSurvey/EditWarningModal';
+import messages from 'containers/Admin/projects/project/nativeSurvey/messages';
+import DeleteModal from 'containers/Admin/projects/project/nativeSurvey/NativeSurveySettings/DeleteModal';
+import DropdownSettings from 'containers/Admin/projects/project/nativeSurvey/NativeSurveySettings/DropdownSettings';
+import { getFormActionsConfig } from 'containers/Admin/projects/project/nativeSurvey/utils';
 
 import Button from 'components/UI/ButtonWithLink';
 
 import { useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
 
-import CopySurveyModal from './CopySurveyModal';
-import EditWarningModal from './EditWarningModal';
-import FormResults from './FormResults';
-import messages from './messages';
-import DeleteModal from './NativeSurveySettings/DeleteModal';
-import DropdownSettings from './NativeSurveySettings/DropdownSettings';
-import { saveSurveyAsPDF } from './saveSurveyAsPDF';
-import { getFormActionsConfig } from './utils';
+import communityMonitorMessages from '../messages';
 
-const Forms = () => {
+const SurveySettings = () => {
   const locale = useLocale();
   const { formatMessage } = useIntl();
-  const { projectId, phaseId } = useParams() as {
-    projectId: string;
-    phaseId: string;
-  };
 
   // Project and phase hooks
-  const { data: project } = useProjectById(projectId);
+  const { data: project } = useCommunityMonitorProject();
+  const phaseId = project?.data.relationships.current_phase?.data?.id;
   const { data: phase } = usePhase(phaseId);
   const { mutate: updatePhase } = useUpdatePhase();
 
@@ -50,10 +42,8 @@ const Forms = () => {
   });
 
   // Modal states
-  const [exportModalOpen, setExportModalOpen] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [showEditWarningModal, setShowEditWarningModal] = useState(false);
-  const [showCopySurveyModal, setShowCopySurveyModal] = useState(false);
 
   // Other states
   const [isDropdownOpened, setDropdownOpened] = useState(false);
@@ -66,25 +56,22 @@ const Forms = () => {
   // Form-related variables
   const haveSubmissionsComeIn =
     submissionCount.data.attributes.totalSubmissions > 0;
-  const surveyFormPersisted =
-    phase.data.attributes.custom_form_persisted || false;
 
   // Variables from form config
   const {
-    downloadPdfLink,
     downloadExcelLink,
     postingEnabled,
     togglePostingEnabled,
-    editFormLink,
     inputImporterLink,
   } = getFormActionsConfig(project.data, updatePhase, phase.data);
+  const editFormLink: RouteType = `/admin/community-monitor/projects/${project.data.id}/phases/${phase.data.id}/survey/edit`;
 
   // Functions to handle modal states
   const closeDeleteModal = () => {
     setShowDeleteModal(false);
   };
 
-  // Function to handle result deletion
+  // Functions to handle results
   const deleteResults = () => {
     deleteFormResults(
       { phaseId },
@@ -96,7 +83,6 @@ const Forms = () => {
     );
   };
 
-  // Functions to handle downloads
   const handleDownloadResults = async () => {
     try {
       setIsDownloading(true);
@@ -106,13 +92,6 @@ const Forms = () => {
     } finally {
       setIsDownloading(false);
     }
-  };
-  const handleExportPDF = async ({ personal_data }: FormValues) => {
-    await saveSurveyAsPDF({
-      downloadPdfLink,
-      locale,
-      personal_data,
-    });
   };
 
   if (isDownloading) {
@@ -124,7 +103,7 @@ const Forms = () => {
   }
 
   return (
-    <>
+    <Box>
       <Box width="100%">
         <Box
           width="100%"
@@ -133,8 +112,8 @@ const Forms = () => {
           justifyContent="space-between"
           alignItems="center"
         >
-          <Title variant="h3" color="primary">
-            {formatMessage(messages.surveyResponses)}
+          <Title variant="h1" color="primary">
+            {formatMessage(communityMonitorMessages.survey)}
           </Title>
           <Box display="flex" justifyContent="center" alignItems="center">
             <Box mr="16px">
@@ -183,9 +162,7 @@ const Forms = () => {
             </Button>
             <DropdownSettings
               haveSubmissionsComeIn={haveSubmissionsComeIn}
-              setShowCopySurveyModal={setShowCopySurveyModal}
               handleDownloadResults={handleDownloadResults}
-              setExportModalOpen={setExportModalOpen}
               setDropdownOpened={setDropdownOpened}
               isDropdownOpened={isDropdownOpened}
               downloadExcelLink={downloadExcelLink}
@@ -193,33 +170,20 @@ const Forms = () => {
             />
           </Box>
         </Box>
-        <FormResults />
         <EditWarningModal
           editFormLink={editFormLink}
           showEditWarningModal={showEditWarningModal}
           setShowEditWarningModal={setShowEditWarningModal}
           handleDownloadResults={handleDownloadResults}
         />
-        <CopySurveyModal
-          editFormLink={editFormLink}
-          showCopySurveyModal={showCopySurveyModal}
-          setShowCopySurveyModal={setShowCopySurveyModal}
-          surveyFormPersisted={surveyFormPersisted}
-        />
       </Box>
-      <PDFExportModal
-        open={exportModalOpen}
-        formType="survey"
-        onClose={() => setExportModalOpen(false)}
-        onExport={handleExportPDF}
-      />
       <DeleteModal
         showDeleteModal={showDeleteModal}
         closeDeleteModal={closeDeleteModal}
         deleteResults={deleteResults}
       />
-    </>
+    </Box>
   );
 };
 
-export default Forms;
+export default SurveySettings;
