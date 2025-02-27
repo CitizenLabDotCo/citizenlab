@@ -21,11 +21,13 @@ module AuthToken
     end
 
     def entity_for(entity_class)
-      if entity_class.respond_to? :from_token_payload
+      entity = if entity_class.respond_to? :from_token_payload
         entity_class.from_token_payload @payload
       else
         entity_class.find @payload['sub']
       end
+      entity = validate_secure_attribute_changes(entity_class, entity) if entity
+      entity
     end
 
     def to_json(_options = {})
@@ -33,6 +35,16 @@ module AuthToken
     end
 
     private
+
+    # Has the security level of the user changed since the token was issued?
+    # eg user has now confirmed - reject if the level is now higher
+    def validate_secure_attribute_changes(entity_class, entity)
+      if entity_class == User && (@payload['security_level'] && @payload['security_level'] < entity.security_level)
+        return nil
+      end
+
+      entity
+    end
 
     def decode_token_options
       {
