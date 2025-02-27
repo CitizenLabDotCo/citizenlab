@@ -1,7 +1,7 @@
 module ContentBuilder
   module Craftjs
     # Extracts multilocs for visible text from a craftjs in the order they appear in the visual layout.
-    class VisibleTextMultilocs
+    class VisibleTextualMultilocs
       def initialize(craftjs, with_metadata: false)
         @craftjs = LayoutSanitizationService.new.sanitize(craftjs)
         @with_metadata = with_metadata
@@ -21,25 +21,12 @@ module ContentBuilder
         @with_metadata = false
         locales = AppConfiguration.instance.settings['core']['locales']
         extracted = extract
-        joined = {}
 
-        locales.each do |locale|
-          extracted.each do |multiloc|
-            multiloc.each do |key, value|
-              next unless key == locale
-
-              joined[locale] = if joined.key?(locale)
-                joined[locale] + value.to_s
-              else
-                value.to_s
-              end
-            end
-          end
+        locales.each_with_object({}) do |locale, joined|
+          joined[locale] = extracted.map { |multiloc| multiloc[locale] }
+                                  .compact
+                                  .join
         end
-
-        joined
-
-        # extract.map { |multiloc| multiloc.values.join(' ') }
       end
 
       private

@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe ContentBuilder::Craftjs::VisibleTextMultilocs do
+RSpec.describe ContentBuilder::Craftjs::VisibleTextualMultilocs do
   subject(:service) { described_class.new(json, with_metadata: with_metadata) }
 
   def load_fixture(file_name)
@@ -182,7 +182,7 @@ RSpec.describe ContentBuilder::Craftjs::VisibleTextMultilocs do
   describe '#extract_and_join' do
     let(:with_metadata) { nil }
 
-    it 'returns the multilocs in natural order' do
+    it 'returns a multiloc with single values for each tenant locale' do
       expect(service.extract_and_join).to eq(
         {
           'en' => '<h2>Title 1</h2><p>2colsA: Para 1 col 1</p><p>2colsA: Para 1a col 1</p><p>2colsA: Para 2 col 1</p>' \
@@ -194,6 +194,7 @@ RSpec.describe ContentBuilder::Craftjs::VisibleTextMultilocs do
                   '<p>accordianC text</p><p>infoAndAccordians text</p><h3>accordianD title</h3><p>accordianD text</p>' \
                   '<h3>accordianE title</h3><p>accordianE text</p><h3>accordianF title</h3><p>accordianF text</p>' \
                   '<p>imageAndTextA text</p><p>imageAndTextB text</p><p>imageAndTextC text</p>',
+          'fr-FR' => '',
           'nl-NL' => '<p>2colsA: Para 2 col 1</p>'
         }
       )

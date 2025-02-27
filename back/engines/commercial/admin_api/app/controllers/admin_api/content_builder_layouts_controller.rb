@@ -10,7 +10,7 @@ module AdminApi
         enabled: true
       )
 
-      multiloc = ContentBuilder::Craftjs::VisibleTextMultilocs.new(layout.craftjs_json).extract_and_join if layout
+      multiloc = ContentBuilder::Craftjs::VisibleTextualMultilocs.new(layout.craftjs_json).extract_and_join if layout
 
       render json: multiloc || {}
     end
