@@ -177,6 +177,8 @@ fi:
         description:
       other_input_field:
         title: Kirjoita vastauksesi
+      ask_follow_up_field:
+        title: Kerro meille miksi
   custom_forms:
     categories:
       main_content:

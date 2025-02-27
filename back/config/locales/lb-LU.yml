@@ -177,6 +177,8 @@ lb:
         description:
       other_input_field:
         title: Typ Är Äntwert
+      ask_follow_up_field:
+        title: Sot eis firwat
   custom_forms:
     categories:
       main_content:

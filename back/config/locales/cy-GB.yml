@@ -177,6 +177,8 @@ cy:
         description:
       other_input_field:
         title: Teipiwch eich ateb
+      ask_follow_up_field:
+        title: Dywedwch wrthym pam
   custom_forms:
     categories:
       main_content:

@@ -177,6 +177,8 @@ da:
         description:
       other_input_field:
         title: Skriv dit svar
+      ask_follow_up_field:
+        title: Fortæl os hvorfor
   custom_forms:
     categories:
       main_content:
