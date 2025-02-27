@@ -201,7 +201,7 @@ class IdeaCustomFieldsService
 
   def add_user_fields(fields)
     phase = @custom_form.participation_context
-    return fields unless @participation_method.supports_survey_form? && phase.user_fields_in_form
+    return fields unless @participation_method.supports_user_fields_in_form?
 
     last_page = fields.last
     fields.delete(last_page)

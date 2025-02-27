@@ -132,5 +132,9 @@ module ParticipationMethod
     def supports_toxicity_detection?
       false
     end
+
+    def supports_user_fields_in_form?
+      phase.user_fields_in_form
+    end
   end
 end

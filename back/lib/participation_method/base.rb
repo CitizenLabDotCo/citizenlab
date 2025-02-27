@@ -162,6 +162,10 @@ module ParticipationMethod
       false
     end
 
+    def supports_user_fields_in_form?
+      false
+    end
+
     private
 
     attr_reader :phase
