@@ -174,6 +174,10 @@ module ParticipationMethod
       # Default is to do nothing.
     end
 
+    def automatically_assign_idea?
+      false
+    end
+
     private
 
     attr_reader :phase

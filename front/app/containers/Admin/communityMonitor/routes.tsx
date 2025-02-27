@@ -9,11 +9,14 @@ const Participants = lazy(() => import('./components/Participants'));
 
 import { AdminRoute } from '../routes';
 
+import CommunityMonitorSurveyFormBuilder from './communityMonitorFormBuilder';
+
 const CommunityMonitor = lazy(() => import('./index'));
 
 export enum communityMonitorRoutes {
-  communityMonitorDefault = '',
   communityMonitor = 'community-monitor',
+  communityMonitorSurveyEdit = 'projects/:projectId/phases/:phaseId/survey/edit',
+  communityMonitorDefault = '',
   liveMonitor = 'live-monitor',
   participants = 'participants',
   reports = 'reports',
@@ -25,7 +28,8 @@ export type communityMonitorRouteTypes =
   | `${AdminRoute<communityMonitorRoutes.communityMonitor>}/${communityMonitorRoutes.liveMonitor}`
   | `${AdminRoute<communityMonitorRoutes.communityMonitor>}/${communityMonitorRoutes.participants}`
   | `${AdminRoute<communityMonitorRoutes.communityMonitor>}/${communityMonitorRoutes.reports}`
-  | `${AdminRoute<communityMonitorRoutes.communityMonitor>}/${communityMonitorRoutes.settings}`;
+  | `${AdminRoute<communityMonitorRoutes.communityMonitor>}/${communityMonitorRoutes.settings}`
+  | `${AdminRoute<communityMonitorRoutes.communityMonitor>}/projects/${string}/phases/${string}/survey/edit`;
 
 const communityMonitorsRoutes = () => {
   return {
@@ -81,6 +85,14 @@ const communityMonitorsRoutes = () => {
             >
               <Participants />
             </div>
+          </PageLoading>
+        ),
+      },
+      {
+        path: communityMonitorRoutes.communityMonitorSurveyEdit,
+        element: (
+          <PageLoading>
+            <CommunityMonitorSurveyFormBuilder />
           </PageLoading>
         ),
       },
