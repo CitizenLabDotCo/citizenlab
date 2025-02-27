@@ -21,6 +21,8 @@ const MethodLabel = ({ projectLibraryPhaseId }: Props) => {
         PARTICIPATION_METHOD_LABELS[phase.data.attributes.participation_method]
       }
       backgroundColor={colors.green700}
+      ml="4px"
+      my="2px"
     />
   );
 };

@@ -23,6 +23,7 @@ interface Props {
 
 const Cell = styled(Th)`
   font-weight: normal;
+  max-width: 200px;
 `;
 
 const TableBody = ({ libraryProjects, isInitialLoading }: Props) => {
