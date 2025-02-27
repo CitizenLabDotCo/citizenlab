@@ -17,6 +17,32 @@ module ContentBuilder
         @ordered_multilocs
       end
 
+      def extract_and_join
+        @with_metadata = false
+        locales = AppConfiguration.instance.settings['core']['locales']
+        extracted = extract
+        joined = {}
+
+        locales.each do |locale|
+          extracted.each do |multiloc|
+            multiloc.each do |key, value|
+              # puts "key: #{key}, value: #{value}"
+              next unless key == locale
+
+              if joined.key?(locale)
+                joined[locale] = joined[locale] + value.to_s
+              else
+                joined[locale] = value.to_s
+              end
+            end
+          end
+        end
+
+        joined
+
+        # extract.map { |multiloc| multiloc.values.join(' ') }
+      end
+
       private
 
       def multiloc_search_recursive(node_key)
