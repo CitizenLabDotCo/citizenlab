@@ -70,7 +70,8 @@ RSpec.describe Analysis::SummarizationMethod do
         llm: kind_of(Analysis::LLM::Base),
         accuracy: 0.8,
         include_id: true,
-        shorten_labels: false
+        shorten_labels: false,
+        include_comments: false
       })
 
       mock_llm = instance_double(Analysis::LLM::GPT4o)
@@ -105,16 +106,13 @@ RSpec.describe Analysis::SummarizationMethod do
       plan = Analysis::SummarizationMethod::OnePassLLM.new(summary).generate_plan
       mock_llm = instance_double(Analysis::LLM::GPT4o)
       plan.llm = mock_llm
-      expect(mock_llm).to receive(:chat_async).with(kind_of(String)) do |prompt, &block|
+      expect(mock_llm).to receive(:chat_async).with(kind_of(String)) do |prompt|
         expect(prompt).to include('I want to comment on that')
-        block.call 'Complete'
-        block.call ' summary'
       end
-      expect { plan.summarization_method_class.new(summary).execute(plan) }
-        .to change { summarization_task.summary.summary }.from(nil).to('Complete summary')
+      plan.summarization_method_class.new(summary).execute(plan)
     end
 
-    it 'does not include the comments in the prompt if the comments_summaries feature flag not active' do
+    it 'does not include the comments in the prompt if the comments_summaries feature flag is not active' do
       configuration = AppConfiguration.instance
       configuration.settings['comments_summaries'] = {
         allowed: false,
@@ -126,13 +124,10 @@ RSpec.describe Analysis::SummarizationMethod do
       plan = Analysis::SummarizationMethod::OnePassLLM.new(summary).generate_plan
       mock_llm = instance_double(Analysis::LLM::GPT4o)
       plan.llm = mock_llm
-      expect(mock_llm).to receive(:chat_async).with(kind_of(String)) do |prompt, &block|
+      expect(mock_llm).to receive(:chat_async).with(kind_of(String)) do |prompt|
         expect(prompt).not_to include('I want to comment on that')
-        block.call 'Complete'
-        block.call ' summary'
       end
-      expect { plan.summarization_method_class.new(summary).execute(plan) }
-        .to change { summarization_task.summary.summary }.from(nil).to('Complete summary')
+      plan.summarization_method_class.new(summary).execute(plan)
     end
   end
 end

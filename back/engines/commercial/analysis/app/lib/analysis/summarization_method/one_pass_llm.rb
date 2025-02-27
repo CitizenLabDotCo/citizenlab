@@ -67,13 +67,12 @@ module Analysis
         include_comments: plan.include_comments
       )
       prompt = prompt(analysis.source_project, inputs_text, plan.include_comments)
-      summary.update!(prompt: prompt)
+      summary.update!(prompt:)
 
       plan.llm.chat_async(prompt) do |new_text|
         update_summary([summary.summary || '', new_text].join)
       end
     rescue StandardError => e
-      pp e
       raise SummarizationFailedError, e
     end
 
