@@ -188,7 +188,7 @@ describe Verification::VerificationService do
         expect(service.locked_custom_fields(verification.user)).to match_array [:gender]
       end
 
-      it 'does not returns locked custom field keys when the field does not exist' do
+      it 'does not return locked custom field keys when the field does not exist' do
         verification = create(:verification, method_name: 'bogus')
         expect(service.locked_custom_fields(verification.user)).to be_empty
       end
