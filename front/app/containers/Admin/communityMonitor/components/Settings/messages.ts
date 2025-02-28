@@ -32,9 +32,9 @@ export default defineMessages({
     id: 'app.containers.Admin.communityMonitor.settings.surveySettings',
     defaultMessage: 'Survey settings',
   },
-  actions: {
-    id: 'app.containers.Admin.communityMonitor.settings.actions',
-    defaultMessage: 'Actions',
+  accessRights: {
+    id: 'app.containers.Admin.communityMonitor.settings.accessRights',
+    defaultMessage: 'Access rights',
   },
   moderators: {
     id: 'app.containers.Admin.communityMonitor.settings.moderators',

@@ -1,4 +1,4 @@
 export type SettingsTab =
   | 'survey_settings'
-  | 'action_form'
+  | 'access_rights'
   | 'moderator_management';

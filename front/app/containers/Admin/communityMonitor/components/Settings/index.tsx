@@ -23,7 +23,7 @@ const Settings = () => {
   // Define the tabs for the settings page
   const settingsTabs: { key: SettingsTab; label: string }[] = [
     { key: 'survey_settings', label: formatMessage(messages.surveySettings) },
-    { key: 'action_form', label: formatMessage(messages.actions) },
+    { key: 'access_rights', label: formatMessage(messages.accessRights) },
     { key: 'moderator_management', label: formatMessage(messages.moderators) },
   ];
 
@@ -50,7 +50,7 @@ const Settings = () => {
           <AnonymousToggle phaseId={phaseId} />
         </>
       )}
-      {currentTab === 'action_form' && <ActionForms phaseId={phaseId} />}
+      {currentTab === 'access_rights' && <ActionForms phaseId={phaseId} />}
       {currentTab === 'moderator_management' && (
         <CommunityMonitorManagement projectId={project.data.id} />
       )}
