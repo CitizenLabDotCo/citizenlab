@@ -174,7 +174,6 @@ RSpec.describe ParticipationMethod::Voting do
   its(:supports_input_term?) { is_expected.to be true }
   its(:supports_inputs_without_author?) { is_expected.to be false }
   its(:supports_multiple_posts?) { is_expected.to be true }
-  its(:supports_pages_in_form?) { is_expected.to be false }
   its(:supports_permitted_by_everyone?) { is_expected.to be false }
   its(:supports_public_visibility?) { is_expected.to be true }
   its(:supports_toxicity_detection?) { is_expected.to be true }

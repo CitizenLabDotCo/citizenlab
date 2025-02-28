@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useCallback, lazy, Suspense } from 'react';
 
-import { Box, colors } from '@citizenlab/cl2-component-library';
+import { Box, colors, useBreakpoint } from '@citizenlab/cl2-component-library';
 import { parse } from 'qs';
 import { Multiloc } from 'typings';
 
@@ -15,17 +15,16 @@ import { IProject } from 'api/projects/types';
 
 import useInputSchema from 'hooks/useInputSchema';
 import useLocale from 'hooks/useLocale';
-import useLocalize from 'hooks/useLocalize';
+
+import NewIdeaHeading from 'containers/IdeaHeading/NewIdeaHeading';
+import { calculateDynamicHeight } from 'containers/IdeasNewSurveyPage/IdeasNewSurveyForm/utils';
 
 import AnonymousParticipationConfirmationModal from 'components/AnonymousParticipationConfirmationModal';
 import ContentUploadDisclaimer from 'components/ContentUploadDisclaimer';
 import Form from 'components/Form';
 import { AjvErrorGetter, ApiErrorGetter } from 'components/Form/typings';
 import FullPageSpinner from 'components/UI/FullPageSpinner';
-import GoBackButtonSolid from 'components/UI/GoBackButton/GoBackButtonSolid';
-import PageContainer from 'components/UI/PageContainer';
 
-import clHistory from 'utils/cl-router/history';
 import { getMethodConfig } from 'utils/configs/participationMethodConfig';
 import { isNilOrError } from 'utils/helperUtils';
 import { getFieldNameFromPath } from 'utils/JSONFormUtils';
@@ -34,7 +33,6 @@ import { canModerateProject } from 'utils/permissions/rules/projectPermissions';
 
 import IdeasNewMeta from '../IdeasNewMeta';
 import messages from '../messages';
-import NewIdeaHeading from '../NewIdeaHeading';
 import { getLocationGeojson } from '../utils';
 
 const ProfileVisiblity = lazy(() => import('./ProfileVisibility'));
@@ -73,7 +71,6 @@ interface Props {
 }
 
 const IdeasNewIdeationForm = ({ project, phaseId }: Props) => {
-  const localize = useLocalize();
   const locale = useLocale();
   const [isDisclaimerOpened, setIsDisclaimerOpened] = useState(false);
   const [formData, setFormData] = useState<FormValues | null>(null);
@@ -81,6 +78,7 @@ const IdeasNewIdeationForm = ({ project, phaseId }: Props) => {
   const { data: authUser } = useAuthUser();
   const { data: phases } = usePhases(project.data.id);
   const { data: phaseFromUrl } = usePhase(phaseId);
+  const isSmallerThanPhone = useBreakpoint('phone');
   const {
     schema,
     uiSchema,
@@ -139,10 +137,14 @@ const IdeasNewIdeationForm = ({ project, phaseId }: Props) => {
       Object.values(data.body_multiloc).some((value) => value.includes('<img'));
 
     setFormData(data);
-    if (disclaimerNeeded) {
-      return setIsDisclaimerOpened(true);
-    } else {
+
+    if (data.publication_status === 'published') {
+      if (disclaimerNeeded) {
+        return setIsDisclaimerOpened(true);
+      }
       return onSubmit(data);
+    } else {
+      // Add handling draft ideas
     }
   };
 
@@ -167,7 +169,7 @@ const IdeasNewIdeationForm = ({ project, phaseId }: Props) => {
     const phase_ids =
       phaseId && canModerateProject(project.data, authUser) ? [phaseId] : null;
 
-    const idea = await addIdea({
+    await addIdea({
       ...data,
       location_point_geojson,
       project_id: project.data.id,
@@ -175,10 +177,6 @@ const IdeasNewIdeationForm = ({ project, phaseId }: Props) => {
       anonymous: postAnonymously ? true : undefined,
     });
 
-    participationMethodConfig?.onFormSubmission({
-      project: project.data,
-      idea,
-    });
     setLoading(false);
   };
 
@@ -229,15 +227,12 @@ const IdeasNewIdeationForm = ({ project, phaseId }: Props) => {
     setPostAnonymously((postAnonymously) => !postAnonymously);
   };
 
-  const goBackToProject = useCallback(() => {
-    clHistory.push(`/projects/${project.data.attributes.slug}`);
-  }, [project]);
-
   if (isLoadingInputSchema) return <FullPageSpinner />;
   if (
     // inputSchemaError should display an error page instead
     inputSchemaError ||
     !participationMethodConfig ||
+    !phaseId ||
     !schema ||
     !uiSchema ||
     processingLocation
@@ -245,52 +240,67 @@ const IdeasNewIdeationForm = ({ project, phaseId }: Props) => {
     return null;
   }
 
+  const titleText = participationMethodConfig.getFormTitle?.({
+    project: project.data,
+    phases: phases?.data,
+    phaseFromUrl: phaseFromUrl?.data,
+  });
+
   return (
     <>
       <IdeasNewMeta />
-      <Box bg={colors.grey100}>
-        <Box p="32px" display="flex" justifyContent="flex-start">
-          <GoBackButtonSolid
-            text={localize(project.data.attributes.title_multiloc)}
-            onClick={goBackToProject}
-          />
+      <Box
+        w="100%"
+        bgColor={colors.grey100}
+        h="100vh"
+        position="fixed"
+        zIndex="1010"
+      >
+        <Box
+          mx="auto"
+          position="relative"
+          top={isSmallerThanPhone ? '0' : '40px'}
+          maxWidth="700px"
+        >
+          <NewIdeaHeading phaseId={phaseId} titleText={titleText} />
         </Box>
         <main id="e2e-idea-new-page">
-          <PageContainer overflow="hidden">
-            <Form
-              schema={schema}
-              uiSchema={uiSchema}
-              onSubmit={handleDisclaimer}
-              initialFormData={initialFormData}
-              getAjvErrorMessage={getAjvErrorMessage}
-              getApiErrorMessage={getApiErrorMessage}
-              loading={loading}
-              title={
-                participationMethodConfig.getFormTitle ? (
-                  <Box mb="40px">
-                    <NewIdeaHeading
-                      titleText={participationMethodConfig.getFormTitle({
-                        project: project.data,
-                        phases: phases?.data,
-                        phaseFromUrl: phaseFromUrl?.data,
-                      })}
-                    />
-                  </Box>
-                ) : undefined
-              }
-              config={'input'}
-              footer={
-                allowAnonymousPosting ? (
-                  <Suspense fallback={null}>
-                    <ProfileVisiblity
-                      postAnonymously={postAnonymously}
-                      onChange={handleOnChangeAnonymousPosting}
-                    />
-                  </Suspense>
-                ) : undefined
-              }
-            />
-          </PageContainer>
+          <Box
+            display="flex"
+            justifyContent="center"
+            pt={isSmallerThanPhone ? '0' : '40px'}
+          >
+            <Box
+              background={colors.white}
+              maxWidth="700px"
+              w="100%"
+              // Height is recalculated on window resize via useWindowSize hook
+              h={calculateDynamicHeight(isSmallerThanPhone)}
+              pb={isSmallerThanPhone ? '0' : '80px'}
+            >
+              <Form
+                schema={schema}
+                uiSchema={uiSchema}
+                onSubmit={handleDisclaimer}
+                initialFormData={initialFormData}
+                getAjvErrorMessage={getAjvErrorMessage}
+                getApiErrorMessage={getApiErrorMessage}
+                loading={loading}
+                showSubmitButton={false}
+                config={'input'}
+                footer={
+                  allowAnonymousPosting ? (
+                    <Suspense fallback={null}>
+                      <ProfileVisiblity
+                        postAnonymously={postAnonymously}
+                        onChange={handleOnChangeAnonymousPosting}
+                      />
+                    </Suspense>
+                  ) : undefined
+                }
+              />
+            </Box>
+          </Box>
           {showAnonymousConfirmationModal && (
             <AnonymousParticipationConfirmationModal
               onCloseModal={() => {

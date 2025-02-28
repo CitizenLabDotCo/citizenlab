@@ -468,7 +468,7 @@ describe JsonFormsService do
         end
 
         it 'includes the budget field on top of the proposed budget field when there is no details section but there is a proposed budget field' do
-          custom_form.custom_fields.find { |field| field.code == 'ideation_section3' }.destroy!
+          custom_form.custom_fields.find { |field| field.code == 'ideation_page3' }.destroy!
           custom_form.custom_fields.find { |field| field.code == 'proposed_budget' }.update!(enabled: true)
           custom_form.reload
 
@@ -478,7 +478,7 @@ describe JsonFormsService do
         end
 
         it 'includes the budget field under the body multiloc field when there is no details section and no proposed budget field' do
-          custom_form.custom_fields.find { |field| field.code == 'ideation_section3' }.destroy!
+          custom_form.custom_fields.find { |field| field.code == 'ideation_page3' }.destroy!
           custom_form.custom_fields.find { |field| field.code == 'proposed_budget' }.update!(enabled: false)
           custom_form.reload
 

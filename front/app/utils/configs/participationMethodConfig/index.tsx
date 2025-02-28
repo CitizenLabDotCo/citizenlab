@@ -105,16 +105,7 @@ const ideationConfig: ParticipationMethodConfig = {
   supportsVotes: true,
   supportsComments: true,
   supportsTopicsCustomField: true,
-  onFormSubmission: ({ idea, phaseId }: FormSubmissionMethodProps) => {
-    if (idea) {
-      const urlParameters = `?new_idea_id=${idea.data.id}`;
-
-      clHistory.push({
-        pathname: `/ideas/${idea.data.attributes.slug}`,
-        search: urlParameters.concat(phaseId ? `&phase_id=${phaseId}` : ''),
-      });
-    }
-  },
+  onFormSubmission: () => {},
   postType: 'defaultInput',
   getModalContent: (props: ModalContentMethodProps) => {
     if (props.ideaId && props.title && props.subtitle) {
