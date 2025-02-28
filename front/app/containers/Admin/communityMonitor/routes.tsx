@@ -91,6 +91,10 @@ const communityMonitorsRoutes = () => {
         ),
         children: [
           {
+            path: '',
+            element: <Navigate to="survey" replace />,
+          },
+          {
             path: communityMonitorRoutes.settingsSurvey,
             element: (
               <PageLoading>
