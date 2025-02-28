@@ -25,6 +25,8 @@ import clHistory from 'utils/cl-router/history';
 
 import communityMonitorMessages from '../messages';
 
+import AnonymousToggle from './AnonymousToggle';
+
 const SurveySettings = () => {
   const locale = useLocale();
   const { formatMessage } = useIntl();
@@ -182,6 +184,8 @@ const SurveySettings = () => {
         closeDeleteModal={closeDeleteModal}
         deleteResults={deleteResults}
       />
+
+      {phaseId && <AnonymousToggle phaseId={phaseId} />}
     </Box>
   );
 };
