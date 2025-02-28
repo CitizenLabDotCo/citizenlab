@@ -25,7 +25,7 @@ export type RansackParams = {
   'q[title_en_or_description_en_or_tenant_name_cont]'?: string;
 
   // sorting
-  'q[s][start_at]': 'asc' | 'desc';
+  'q[s][start_at]'?: 'asc' | 'desc';
 };
 
 export type Parameters = RansackParams & {
