@@ -7,7 +7,7 @@ import PageLoading from 'components/UI/PageLoading';
 
 import { AdminRoute } from '../routes';
 
-import CommunityMonitorSurveyFormBuilder from './communityMonitorFormBuilder';
+import CommunityMonitorSurveyFormBuilder from './CommunityMonitorFormBuilder';
 import messages from './messages';
 
 const CommunityMonitor = lazy(() => import('./index'));
