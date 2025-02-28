@@ -49,51 +49,47 @@ resource 'AdminPublication' do
       parameter :review_state, 'Filter by project review status (pending, approved)', required: false
 
       example_request 'List all admin publications' do
+        hidden_project = create(:community_monitor_project)
         expect(status).to eq(200)
-        json_response = json_parse(response_body)
-        expect(json_response[:data].size).to eq 10
-        expect(json_response[:data].map { |d| d.dig(:relationships, :publication, :data, :type) }.count('project')).to eq 8
-        expect(json_response[:data].map { |d| d.dig(:relationships, :publication, :data, :type) }.count('folder')).to eq 2
+        expect(response_data.size).to eq 10
+        expect(response_data.map { |d| d.dig(:relationships, :publication, :data, :type) }.count('project')).to eq 8
+        expect(response_data.map { |d| d.dig(:relationships, :publication, :data, :type) }.count('folder')).to eq 2
+        expect(response_data.pluck(:id)).not_to include(hidden_project.admin_publication.id)
       end
 
       example 'List all top-level admin publications' do
         do_request(depth: 0)
-        json_response = json_parse(response_body)
-        expect(json_response[:data].size).to eq 7
-        expect(json_response[:data].map { |d| d.dig(:relationships, :publication, :data, :type) }.count('project')).to eq 5
-        expect(json_response[:data].map { |d| d.dig(:relationships, :publication, :data, :type) }.count('folder')).to eq 2
+        expect(response_data.size).to eq 7
+        expect(response_data.map { |d| d.dig(:relationships, :publication, :data, :type) }.count('project')).to eq 5
+        expect(response_data.map { |d| d.dig(:relationships, :publication, :data, :type) }.count('folder')).to eq 2
       end
 
       example 'List all admin publications in a folder' do
         do_request(folder: custom_folder.id)
-        json_response = json_parse(response_body)
-        expect(json_response[:data].size).to eq 3
-        expect(json_response[:data].map { |d| d.dig(:relationships, :publication, :data, :type) }.count('folder')).to eq 0
-        expect(json_response[:data].map { |d| d.dig(:relationships, :publication, :data, :type) }.count('project')).to eq 3
+        expect(response_data.size).to eq 3
+        expect(response_data.map { |d| d.dig(:relationships, :publication, :data, :type) }.count('folder')).to eq 0
+        expect(response_data.map { |d| d.dig(:relationships, :publication, :data, :type) }.count('project')).to eq 3
       end
 
       example 'List all draft or archived admin publications' do
         do_request(publication_statuses: %w[draft archived])
-        json_response = json_parse(response_body)
-        expect(json_response[:data].size).to eq 5
-        expect(json_response[:data].map { |d| d.dig(:relationships, :publication, :data, :id) }).to match_array [empty_draft_folder.id, projects[2].id, projects[3].id, projects[5].id, projects[6].id]
-        expect(json_response[:data].find { |d| d.dig(:relationships, :publication, :data, :type) == 'folder' }.dig(:attributes, :visible_children_count)).to eq 0
+        expect(response_data.size).to eq 5
+        expect(response_data.map { |d| d.dig(:relationships, :publication, :data, :id) }).to match_array [empty_draft_folder.id, projects[2].id, projects[3].id, projects[5].id, projects[6].id]
+        expect(response_data.find { |d| d.dig(:relationships, :publication, :data, :type) == 'folder' }.dig(:attributes, :visible_children_count)).to eq 0
       end
 
       example_request 'List projects only' do
         do_request(only_projects: 'true')
         expect(status).to eq(200)
-        json_response = json_parse(response_body)
-        expect(json_response[:data].size).to eq 8
-        expect(json_response[:data].map { |d| d.dig(:relationships, :publication, :data, :type) }.count('project')).to eq 8
-        expect(json_response[:data].map { |d| d.dig(:relationships, :publication, :data, :type) }.count('folder')).to eq 0
+        expect(response_data.size).to eq 8
+        expect(response_data.map { |d| d.dig(:relationships, :publication, :data, :type) }.count('project')).to eq 8
+        expect(response_data.map { |d| d.dig(:relationships, :publication, :data, :type) }.count('folder')).to eq 0
       end
 
       example 'List publications admin can moderate', document: false do
         do_request filter_can_moderate: true
-        json_response = json_parse(response_body)
         assert_status 200
-        expect(json_response[:data].size).to eq 10
+        expect(response_data.size).to eq 10
       end
 
       example 'List publications a specific user can moderate', document: false do
@@ -261,16 +257,16 @@ resource 'AdminPublication' do
         example 'List all root-level admin publications is ordered correctly', document: false do
           do_request(depth: 0)
           expect(status).to eq(200)
-          json_response = json_parse(response_body)
-          expect(json_response[:data].map { |d| d.dig(:attributes, :publication_title_multiloc, :en) })
+
+          expect(response_data.map { |d| d.dig(:attributes, :publication_title_multiloc, :en) })
             .to eq(%w[P1 F1 P2 F2 P6 P7 P8])
         end
 
         example 'List only project publications maintains a flattened nested ordering', document: false do
           do_request(only_projects: 'true')
           expect(status).to eq(200)
-          json_response = json_parse(response_body)
-          expect(json_response[:data].map { |d| d.dig(:attributes, :publication_title_multiloc, :en) })
+
+          expect(response_data.map { |d| d.dig(:attributes, :publication_title_multiloc, :en) })
             .to eq(%w[P1 P2 P3-f2 P4-f2 P5-f2 P6 P7 P8])
         end
       end
@@ -296,9 +292,8 @@ resource 'AdminPublication' do
         ])
 
         expect(status).to eq(200)
-        json_response = json_parse(response_body)
 
-        expect(json_response[:data].pluck(:id))
+        expect(response_data.pluck(:id))
           .to eq [non_draft_ids[3], non_draft_ids[0], non_draft_ids[1], non_draft_ids[4]]
       end
 
@@ -316,9 +311,7 @@ resource 'AdminPublication' do
         )
 
         expect(status).to eq(200)
-        json_response = json_parse(response_body)
-
-        expect(json_response[:data].pluck(:id)).to eq [non_draft_ids[4], non_draft_ids[2]]
+        expect(response_data.pluck(:id)).to eq [non_draft_ids[4], non_draft_ids[2]]
       end
 
       example 'Does not include draft admin_publications', document: false do
@@ -332,9 +325,7 @@ resource 'AdminPublication' do
         ])
 
         expect(status).to eq(200)
-        json_response = json_parse(response_body)
-
-        expect(json_response[:data].pluck(:id))
+        expect(response_data.pluck(:id))
           .to eq [non_draft_ids[3], non_draft_ids[0], non_draft_ids[1], non_draft_ids[4]]
       end
 
@@ -342,9 +333,7 @@ resource 'AdminPublication' do
         do_request(ids: ['not_an_admin_publication_id'])
 
         expect(status).to eq(200)
-        json_response = json_parse(response_body)
-
-        expect(json_response[:data]).to be_empty
+        expect(response_data).to be_empty
       end
     end
 
@@ -370,9 +359,8 @@ resource 'AdminPublication' do
         old_second_publication = AdminPublication.find_by(ordering: ordering)
         do_request
         expect(response_status).to eq 200
-        json_response = json_parse(response_body)
-        expect(json_response.dig(:data, :attributes, :ordering)).to eq ordering
-        expect(json_response.dig(:data, :id)).to eq id
+        expect(response_data.dig(:attributes, :ordering)).to eq ordering
+        expect(response_data[:id]).to eq id
 
         expect(AdminPublication.find(id).ordering).to eq(ordering)
         expect(old_second_publication.reload.ordering).to eq 2 # previous second is now third
@@ -384,12 +372,10 @@ resource 'AdminPublication' do
 
       example_request 'Get one admin publication by id' do
         expect(status).to eq 200
-        json_response = json_parse(response_body)
-
-        expect(json_response.dig(:data, :id)).to eq projects.first.admin_publication.id
-        expect(json_response.dig(:data, :relationships, :publication, :data, :type)).to eq 'project'
-        expect(json_response.dig(:data, :relationships, :publication, :data, :id)).to eq projects.first.id
-        expect(json_response.dig(:data, :attributes, :publication_slug)).to eq projects.first.slug
+        expect(response_data[:id]).to eq projects.first.admin_publication.id
+        expect(response_data.dig(:relationships, :publication, :data, :type)).to eq 'project'
+        expect(response_data.dig(:relationships, :publication, :data, :id)).to eq projects.first.id
+        expect(response_data.dig(:attributes, :publication_slug)).to eq projects.first.slug
       end
     end
 
@@ -397,13 +383,9 @@ resource 'AdminPublication' do
       example 'Get publication_status counts for top-level admin publications' do
         do_request(depth: 0)
         expect(status).to eq 200
-
-        json_response = json_parse(response_body)
-
-        expect(json_response[:data][:attributes][:status_counts][:draft]).to eq 2
-        expect(json_response[:data][:attributes][:status_counts][:archived]).to eq 2
-
-        expect(json_response[:data][:attributes][:status_counts][:published]).to eq 3
+        expect(response_data[:attributes][:status_counts][:draft]).to eq 2
+        expect(response_data[:attributes][:status_counts][:archived]).to eq 2
+        expect(response_data[:attributes][:status_counts][:published]).to eq 3
       end
     end
   end
@@ -431,27 +413,25 @@ resource 'AdminPublication' do
       example 'Listed admin publications have correct visible children count', document: false do
         do_request(folder: nil, remove_not_allowed_parents: true)
         expect(status).to eq(200)
-        json_response = json_parse(response_body)
         # Only 3 of initial 6 projects are not in folder
-        expect(json_response[:data].size).to eq 3
+        expect(response_data.size).to eq 3
         # Only 1 folder expected - Draft folder created at top of file is not visible to resident,
         # nor should a folder with only a draft project in it
-        expect(json_response[:data].map { |d| d.dig(:relationships, :publication, :data, :type) }.count('folder')).to eq 1
+        expect(response_data.map { |d| d.dig(:relationships, :publication, :data, :type) }.count('folder')).to eq 1
         # 3 projects are inside folder, 3 top-level projects remain, of which 1 is not visible (draft)
-        expect(json_response[:data].map { |d| d.dig(:relationships, :publication, :data, :type) }.count('project')).to eq 2
+        expect(response_data.map { |d| d.dig(:relationships, :publication, :data, :type) }.count('project')).to eq 2
         # Only the two non-draft projects are visible to resident
-        expect(json_response[:data].find { |d| d.dig(:relationships, :publication, :data, :type) == 'folder' }.dig(:attributes, :visible_children_count)).to eq 2
+        expect(response_data.find { |d| d.dig(:relationships, :publication, :data, :type) == 'folder' }.dig(:attributes, :visible_children_count)).to eq 2
       end
 
       example 'Visible children count should take account of applied filters', document: false do
         projects.first.admin_publication.update! publication_status: 'archived'
         do_request(folder: nil, publication_statuses: ['published'], remove_not_allowed_parents: true)
         expect(status).to eq(200)
-        json_response = json_parse(response_body)
-        expect(json_response[:data].size).to eq 2
-        expect(json_response[:data].map { |d| d.dig(:relationships, :publication, :data, :type) }.count('folder')).to eq 1
-        expect(json_response[:data].map { |d| d.dig(:relationships, :publication, :data, :type) }.count('project')).to eq 1
-        expect(json_response[:data].find { |d| d.dig(:relationships, :publication, :data, :type) == 'folder' }.dig(:attributes, :visible_children_count)).to eq 1
+        expect(response_data.size).to eq 2
+        expect(response_data.map { |d| d.dig(:relationships, :publication, :data, :type) }.count('folder')).to eq 1
+        expect(response_data.map { |d| d.dig(:relationships, :publication, :data, :type) }.count('project')).to eq 1
+        expect(response_data.find { |d| d.dig(:relationships, :publication, :data, :type) == 'folder' }.dig(:attributes, :visible_children_count)).to eq 1
       end
 
       context 'search param' do
@@ -595,7 +575,6 @@ resource 'AdminPublication' do
             build(:layout, craftjs_json: { sometext: { props: { text: { en: 'othertext' } } } })
           ])
           do_request search: 'sometext'
-
           expect(response_data.size).to eq 1
           expect(response_ids).to contain_exactly(project.admin_publication.id)
         end
@@ -605,8 +584,7 @@ resource 'AdminPublication' do
         AdminPublication.publication_types.each { |claz| claz.all.each(&:destroy!) }
         do_request(publication_statuses: ['published'])
         expect(status).to eq(200)
-        json_response = json_parse(response_body)
-        expect(json_response[:data].size).to eq 0
+        expect(response_data.size).to eq 0
       end
     end
 
@@ -625,8 +603,7 @@ resource 'AdminPublication' do
         do_request(ids: [folder_with_children.admin_publication.id])
 
         expect(status).to eq(200)
-        json_response = json_parse(response_body)
-        expect(json_response[:data].first.dig(:attributes, :visible_children_count)).to eq 1
+        expect(response_data.first.dig(:attributes, :visible_children_count)).to eq 1
       end
 
       example 'Does not includes folders containing only non-visible children', document: false do
@@ -637,8 +614,7 @@ resource 'AdminPublication' do
         do_request(ids: [folder_with_non_visible_children.admin_publication.id])
 
         expect(status).to eq(200)
-        json_response = json_parse(response_body)
-        expect(json_response[:data]).to be_empty
+        expect(response_data).to be_empty
       end
     end
   end
@@ -651,12 +627,9 @@ resource 'AdminPublication' do
       example 'Get publication_status counts for top-level admin publications' do
         do_request(depth: 0)
         expect(status).to eq 200
-
-        json_response = json_parse(response_body)
-        expect(json_response[:data][:attributes][:status_counts][:draft]).to be_nil
-        expect(json_response[:data][:attributes][:status_counts][:published]).to eq 2
-
-        expect(json_response[:data][:attributes][:status_counts][:archived]).to eq 1
+        expect(response_data[:attributes][:status_counts][:draft]).to be_nil
+        expect(response_data[:attributes][:status_counts][:published]).to eq 2
+        expect(response_data[:attributes][:status_counts][:archived]).to eq 1
       end
     end
   end
@@ -686,10 +659,10 @@ resource 'AdminPublication' do
 
       example 'List only the projects the current user is moderator of' do
         do_request(filter_is_moderator_of: true, only_projects: true)
-        json_response = json_parse(response_body)
+
         assert_status 200
-        expect(json_response[:data].size).to eq 2
-        expect(json_response[:data].map { |d| d.dig(:relationships, :publication, :data, :id) })
+        expect(response_data.size).to eq 2
+        expect(response_data.map { |d| d.dig(:relationships, :publication, :data, :id) })
           .to match_array [published_projects[0].id, published_projects[1].id]
       end
 
@@ -789,7 +762,7 @@ resource 'AdminPublication' do
           expect(second_publication.ordering).to eq second_publication_ordering
 
           do_request
-          new_ordering = json_parse(response_body).dig(:data, :attributes, :ordering)
+          new_ordering = response_data.dig(:attributes, :ordering)
 
           expect(response_status).to eq 200
           expect(new_ordering).to eq second_publication_ordering
@@ -816,18 +789,17 @@ resource 'AdminPublication' do
 
           do_request include_publications: 'true'
           expect(status).to eq(200)
-          json_response = json_parse(response_body)
 
-          relationships_data = json_response[:data].map { |d| d.dig(:relationships, :publication, :data) }
+          relationships_data = response_data.map { |d| d.dig(:relationships, :publication, :data) }
 
           related_project_ids = relationships_data.select { |d| d[:type] == 'project' }.pluck(:id)
           related_folder_ids = relationships_data.select { |d| d[:type] == 'folder' }.pluck(:id)
 
-          included_projects = json_response[:included].select { |d| d[:type] == 'project' }
-          included_folder_ids = json_response[:included].select { |d| d[:type] == 'folder' }.pluck(:id)
-          included_phase_ids = json_response[:included].select { |d| d[:type] == 'phase' }.pluck(:id)
-          included_avatar_ids = json_response[:included].select { |d| d[:type] == 'avatar' }.pluck(:id)
-          included_image_ids = json_response[:included].select { |d| d[:type] == 'image' }.pluck(:id)
+          included_projects = json_response_body[:included].select { |d| d[:type] == 'project' }
+          included_folder_ids = json_response_body[:included].select { |d| d[:type] == 'folder' }.pluck(:id)
+          included_phase_ids = json_response_body[:included].select { |d| d[:type] == 'phase' }.pluck(:id)
+          included_avatar_ids = json_response_body[:included].select { |d| d[:type] == 'avatar' }.pluck(:id)
+          included_image_ids = json_response_body[:included].select { |d| d[:type] == 'image' }.pluck(:id)
 
           current_phase_ids = included_projects.filter_map { |d| d.dig(:relationships, :current_phase, :data, :id) }
           avatar_ids = included_projects.map { |d| d.dig(:relationships, :avatars, :data) }.flatten.pluck(:id)

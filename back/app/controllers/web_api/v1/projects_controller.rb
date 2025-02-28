@@ -127,7 +127,7 @@ class WebApi::V1::ProjectsController < ApplicationController
   # Returns all non-draft projects that are visible to user, for the selected topics.
   # Ordered by created_at, newest first.
   def index_for_topics
-    projects = policy_scope(Project)
+    projects = policy_scope(Project).not_hidden
     projects = projects
       .not_draft
       .with_some_topics(params[:topics])
@@ -317,6 +317,22 @@ class WebApi::V1::ProjectsController < ApplicationController
     ).serializable_hash, status: :ok
   end
 
+  def community_monitor
+    settings = AppConfiguration.instance.settings
+    settings.dig('community_monitor', 'enabled') || raise(ActiveRecord::RecordNotFound)
+
+    # Find the community monitor project from config or create it
+    project_id = settings.dig('community_monitor', 'project_id')
+    project = project_id.present? ? Project.find(project_id) : create_community_monitor_project(settings)
+
+    authorize project
+    render json: WebApi::V1::ProjectSerializer.new(
+      project,
+      params: jsonapi_serializer_params,
+      include: %i[current_phase]
+    ).serializable_hash
+  end
+
   private
 
   def sidefx
@@ -374,6 +390,34 @@ class WebApi::V1::ProjectsController < ApplicationController
       }),
       include: %i[project_images current_phase]
     )
+  end
+
+  def create_community_monitor_project(settings)
+    multiloc_service = MultilocService.new
+    project = Project.create!(
+      hidden: true,
+      title_multiloc: multiloc_service.i18n_to_multiloc('phases.community_monitor_title'),
+      internal_role: 'community_monitor'
+    )
+    sidefx.after_create(project, current_user) if project
+
+    Phase.create!(
+      title_multiloc: multiloc_service.i18n_to_multiloc('phases.community_monitor_title'),
+      project: project,
+      participation_method: 'community_monitor_survey',
+      commenting_enabled: false, # TODO: JS - set in the participation method defaults
+      reacting_enabled: false,
+      start_at: Time.now,
+      campaigns_settings: { project_phase_started: true }, # TODO: JS - Is this correct?
+      native_survey_title_multiloc: multiloc_service.i18n_to_multiloc('phases.community_monitor_title'),
+      native_survey_button_multiloc: multiloc_service.i18n_to_multiloc('phases.native_survey_button')
+    )
+
+    # Set the ID in the settings
+    settings['community_monitor']['project_id'] = project.id
+    AppConfiguration.instance.update!(settings: settings)
+
+    project
   end
 end
 
