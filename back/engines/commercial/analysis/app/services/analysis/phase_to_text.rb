@@ -18,7 +18,7 @@ module Analysis
     def exectute_project(project)
       description_text = if ContentBuilder::Layout.exists?(content_buildable: project, code: 'project_description', enabled: true)
         layout = ContentBuilder::Layout.find_by!(content_buildable: project, code: 'project_description', enabled: true)
-        multilocs = ContentBuilder::Craftjs::VisibleTextMultilocs.new(layout.craftjs_json).extract
+        multilocs = ContentBuilder::Craftjs::VisibleTextualMultilocs.new(layout.craftjs_json).extract
         multilocs.map { |multiloc| Nokogiri::HTML(@multiloc_service.t(multiloc)).text }.join("\n")
       else
         Nokogiri::HTML(@multiloc_service.t(project.description_multiloc)).text
