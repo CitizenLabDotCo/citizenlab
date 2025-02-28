@@ -1,7 +1,7 @@
 module ContentBuilder
   module Craftjs
     # Extracts multilocs for visible text from a craftjs in the order they appear in the visual layout.
-    class VisibleTextMultilocs
+    class VisibleTextualMultilocs
       def initialize(craftjs, with_metadata: false)
         @craftjs = LayoutSanitizationService.new.sanitize(craftjs)
         @with_metadata = with_metadata
@@ -15,6 +15,16 @@ module ContentBuilder
       def extract
         multiloc_search_recursive('ROOT')
         @ordered_multilocs
+      end
+
+      def extract_and_join
+        @with_metadata = false
+        locales = AppConfiguration.instance.settings['core']['locales']
+        extracted = extract
+
+        locales.index_with do |locale|
+          extracted.filter_map { |multiloc| multiloc[locale] }.join
+        end
       end
 
       private

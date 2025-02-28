@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe ContentBuilder::Craftjs::VisibleTextMultilocs do
+RSpec.describe ContentBuilder::Craftjs::VisibleTextualMultilocs do
   subject(:service) { described_class.new(json, with_metadata: with_metadata) }
 
   def load_fixture(file_name)
@@ -23,7 +23,7 @@ RSpec.describe ContentBuilder::Craftjs::VisibleTextMultilocs do
             { 'en' => '<h2>Title 1</h2>' },
             { 'en' => '<p>2colsA: Para 1 col 1</p>' },
             { 'en' => '<p>2colsA: Para 1a col 1</p>' },
-            { 'en' => '<p>2colsA: Para 2 col 1</p>', 'nl-BE' => '<p>2colsA: Para 2 col 1</p>' },
+            { 'en' => '<p>2colsA: Para 2 col 1</p>', 'nl-NL' => '<p>2colsA: Para 2 col 1</p>' },
             { 'en' => '<p>2colsA: Para 1 col 2</p>' },
             { 'en' => '<p>3colsA: Para 1 col 1</p>' },
             { 'en' => '<p>3colsA: Para 1 col 2</p>' },
@@ -79,7 +79,7 @@ RSpec.describe ContentBuilder::Craftjs::VisibleTextMultilocs do
               multliloc: { 'en' => '<p>2colsA: Para 1a col 1</p>' },
               node_type: 'TextMultiloc' },
             { multiloc_type: 'text',
-              multliloc: { 'en' => '<p>2colsA: Para 2 col 1</p>', 'nl-BE' => '<p>2colsA: Para 2 col 1</p>' },
+              multliloc: { 'en' => '<p>2colsA: Para 2 col 1</p>', 'nl-NL' => '<p>2colsA: Para 2 col 1</p>' },
               node_type: 'TextMultiloc' },
             { multiloc_type: 'text',
               multliloc: { 'en' => '<p>2colsA: Para 1 col 2</p>' },
@@ -176,6 +176,28 @@ RSpec.describe ContentBuilder::Craftjs::VisibleTextMultilocs do
                                              multliloc: { 'en' => '<h3>accordianA title</h3>' },
                                              node_type: 'AccordionMultiloc' })
       end
+    end
+  end
+
+  describe '#extract_and_join' do
+    let(:with_metadata) { nil }
+
+    it 'returns a multiloc with single values for each tenant locale' do
+      expect(service.extract_and_join).to eq(
+        {
+          'en' => '<h2>Title 1</h2><p>2colsA: Para 1 col 1</p><p>2colsA: Para 1a col 1</p><p>2colsA: Para 2 col 1</p>' \
+                  '<p>2colsA: Para 1 col 2</p><p>3colsA: Para 1 col 1</p><p>3colsA: Para 1 col 2</p>' \
+                  '<p>3colsA: Para 2 col 2</p><p>3colsA: Para 1 col 3</p><h2>Title 2</h2><h3>accordianA title</h3>' \
+                  '<p>accordianA text</p><p>2colsB: Para 1 col1</p><p>2colsC: Para 1 col1 </p>' \
+                  '<p>2colsC: Para 2 col1</p><p>2colsC: Para 1 col2</p><p>2colsC: Para 2 col2</p>' \
+                  '<p>2colsB: Para 1 col2</p><h3>accordianB title</h3><p>accordianB text</p><h3>accordianC title</h3>' \
+                  '<p>accordianC text</p><p>infoAndAccordians text</p><h3>accordianD title</h3><p>accordianD text</p>' \
+                  '<h3>accordianE title</h3><p>accordianE text</p><h3>accordianF title</h3><p>accordianF text</p>' \
+                  '<p>imageAndTextA text</p><p>imageAndTextB text</p><p>imageAndTextC text</p>',
+          'fr-FR' => '',
+          'nl-NL' => '<p>2colsA: Para 2 col 1</p>'
+        }
+      )
     end
   end
 end
