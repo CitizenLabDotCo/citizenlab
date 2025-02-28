@@ -12,6 +12,7 @@ export type Status = 'draft' | 'active' | 'finished' | 'stale' | 'archived';
 type PopulationGroup = 'XS' | 'S' | 'M' | 'L' | 'XL';
 
 export type RansackParams = {
+  // filters
   'q[tenant_country_alpha2]'?: string;
   'q[tenant_population_group_eq]'?: PopulationGroup;
   'q[score_total_gteq]'?: '1' | '2' | '3' | '4';
@@ -22,6 +23,9 @@ export type RansackParams = {
   'q[practical_end_at_gteq]'?: string;
   'q[practical_end_at_lt]'?: string;
   'q[title_en_or_description_en_or_tenant_name_cont]'?: string;
+
+  // sorting
+  'q[s][start_at]': 'asc' | 'desc';
 };
 
 export type Parameters = RansackParams & {
