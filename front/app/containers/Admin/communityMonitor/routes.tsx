@@ -11,7 +11,7 @@ const Participants = lazy(() => import('./components/Participants'));
 
 import { AdminRoute } from '../routes';
 
-import CommunityMonitorSurveyFormBuilder from './communityMonitorFormBuilder';
+import CommunityMonitorSurveyFormBuilder from './CommunityMonitorFormBuilder';
 
 const CommunityMonitor = lazy(() => import('./index'));
 
