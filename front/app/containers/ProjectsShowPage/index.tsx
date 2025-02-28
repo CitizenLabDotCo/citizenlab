@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import {
   Box,
@@ -12,7 +12,6 @@ import { isError } from 'lodash-es';
 import { useParams, useSearchParams } from 'react-router-dom';
 import styled from 'styled-components';
 
-import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import { VotingContext } from 'api/baskets_ideas/useVoting';
 import useEvents from 'api/events/useEvents';
 import useAuthUser from 'api/me/useAuthUser';
@@ -20,8 +19,6 @@ import usePhases from 'api/phases/usePhases';
 import { getLatestRelevantPhase } from 'api/phases/utils';
 import { IProjectData } from 'api/projects/types';
 import useProjectBySlug from 'api/projects/useProjectBySlug';
-
-import useLocale from 'hooks/useLocale';
 
 import EventsViewer from 'containers/EventsPage/EventsViewer';
 
@@ -34,7 +31,6 @@ import { useIntl } from 'utils/cl-intl';
 import Navigate from 'utils/cl-router/Navigate';
 import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
 import { isUnauthorizedRQ } from 'utils/errorUtils';
-import { anyIsUndefined } from 'utils/helperUtils';
 import messages from 'utils/messages';
 import { scrollToElement } from 'utils/scroll';
 
@@ -75,9 +71,6 @@ const ProjectsShowPage = ({ project }: Props) => {
   const isSmallerThanTablet = useBreakpoint('tablet');
   const { formatMessage } = useIntl();
   const [mounted, setMounted] = useState(false);
-  const locale = useLocale();
-  const { data: appConfig } = useAppConfiguration();
-  const { data: phases } = usePhases(projectId);
 
   const [search] = useSearchParams();
   const scrollToStatusModule = search.get('scrollToStatusModule');
@@ -88,10 +81,6 @@ const ProjectsShowPage = ({ project }: Props) => {
     sort: '-start_at',
   });
 
-  const loading = useMemo(() => {
-    return anyIsUndefined(locale, appConfig, project, phases?.data, events);
-  }, [locale, appConfig, project, phases, events]);
-
   // Check that all child components are mounted
   useEffect(() => {
     setMounted(true);
@@ -99,7 +88,7 @@ const ProjectsShowPage = ({ project }: Props) => {
 
   // UseEffect to scroll to event when provided
   useEffect(() => {
-    if (scrollToStatusModule && mounted && !loading) {
+    if (scrollToStatusModule && mounted) {
       setTimeout(() => {
         scrollToElement({ id: 'voting-status-module' });
         confetti.addConfetti();
@@ -107,13 +96,13 @@ const ProjectsShowPage = ({ project }: Props) => {
       }, 500);
     }
 
-    if (scrollToIdeas && mounted && !loading) {
+    if (scrollToIdeas && mounted) {
       setTimeout(() => {
         scrollToElement({ id: 'e2e-ideas-container' });
         removeSearchParams(['scrollToIdeas']);
       }, 1000);
     }
-  }, [mounted, loading, scrollToStatusModule, scrollToIdeas]);
+  }, [mounted, scrollToStatusModule, scrollToIdeas]);
 
   return (
     <main>
@@ -124,55 +113,43 @@ const ProjectsShowPage = ({ project }: Props) => {
           events && events?.data.length > 0 ? colors.white : colors.background
         }
       >
-        {loading ? (
-          <FullPageSpinner />
-        ) : (
-          <ContentWrapper id="e2e-project-page">
-            <ProjectHeader projectId={projectId} />
-            <ProjectCTABar projectId={projectId} />
+        <ContentWrapper id="e2e-project-page">
+          <ProjectHeader projectId={projectId} />
+          <ProjectCTABar projectId={projectId} />
 
-            <TimelineContainer projectId={projectId} />
-            {!!events?.data.length && (
-              <Box
-                id="e2e-events-section-project-page"
-                display="flex"
-                flexDirection="column"
-                gap="48px"
-                mx="auto"
-                my="48px"
-                maxWidth={`${maxPageWidth}px`}
-                padding={isSmallerThanTablet ? '20px' : '0px'}
-              >
-                <EventsViewer
-                  showProjectFilter={false}
-                  projectId={projectId}
-                  eventsTime="currentAndFuture"
-                  title={formatMessage(messages.upcomingAndOngoingEvents)}
-                  fallbackMessage={messages.noUpcomingOrOngoingEvents}
-                  projectPublicationStatuses={[
-                    'published',
-                    'draft',
-                    'archived',
-                  ]}
-                />
-                <EventsViewer
-                  showProjectFilter={false}
-                  projectId={projectId}
-                  eventsTime="past"
-                  title={formatMessage(messages.pastEvents)}
-                  fallbackMessage={messages.noPastEvents}
-                  projectPublicationStatuses={[
-                    'published',
-                    'draft',
-                    'archived',
-                  ]}
-                  showDateFilter={false}
-                />
-              </Box>
-            )}
-            <SuccessModal projectId={projectId} />
-          </ContentWrapper>
-        )}
+          <TimelineContainer projectId={projectId} />
+          {!!events?.data.length && (
+            <Box
+              id="e2e-events-section-project-page"
+              display="flex"
+              flexDirection="column"
+              gap="48px"
+              mx="auto"
+              my="48px"
+              maxWidth={`${maxPageWidth}px`}
+              padding={isSmallerThanTablet ? '20px' : '0px'}
+            >
+              <EventsViewer
+                showProjectFilter={false}
+                projectId={projectId}
+                eventsTime="currentAndFuture"
+                title={formatMessage(messages.upcomingAndOngoingEvents)}
+                fallbackMessage={messages.noUpcomingOrOngoingEvents}
+                projectPublicationStatuses={['published', 'draft', 'archived']}
+              />
+              <EventsViewer
+                showProjectFilter={false}
+                projectId={projectId}
+                eventsTime="past"
+                title={formatMessage(messages.pastEvents)}
+                fallbackMessage={messages.noPastEvents}
+                projectPublicationStatuses={['published', 'draft', 'archived']}
+                showDateFilter={false}
+              />
+            </Box>
+          )}
+          <SuccessModal projectId={projectId} />
+        </ContentWrapper>
       </Container>
     </main>
   );
