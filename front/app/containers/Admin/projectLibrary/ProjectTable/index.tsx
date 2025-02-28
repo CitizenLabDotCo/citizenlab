@@ -2,14 +2,10 @@ import React from 'react';
 
 import {
   Table,
-  Thead,
-  Tr,
-  Th,
   colors,
   stylingConsts,
   Spinner,
   Box,
-  Icon,
 } from '@citizenlab/cl2-component-library';
 
 import useProjectLibraryProjects from 'api/project_library_projects/useProjectLibraryProjects';
@@ -17,6 +13,7 @@ import useProjectLibraryProjects from 'api/project_library_projects/useProjectLi
 import { useRansackParams } from '../utils';
 
 import TableBody from './TableBody';
+import TableHead from './TableHead';
 
 const ProjectTable = () => {
   const {
@@ -35,22 +32,7 @@ const ProjectTable = () => {
           bodyRows: false,
         }}
       >
-        <Thead>
-          <Tr background={colors.grey50}>
-            <Th>Duration</Th>
-            <Th>Project</Th>
-            <Th>
-              <Icon
-                name="users"
-                height="18px"
-                fill={colors.primary}
-                transform="translate(-2,0)"
-              />
-            </Th>
-            <Th>Platform</Th>
-            <Th>Methods</Th>
-          </Tr>
-        </Thead>
+        <TableHead />
         <TableBody
           libraryProjects={libraryProjects}
           isInitialLoading={isInitialLoading}
