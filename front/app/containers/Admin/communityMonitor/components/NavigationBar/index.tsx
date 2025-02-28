@@ -1,8 +1,7 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 
 import { Box, useBreakpoint } from '@citizenlab/cl2-component-library';
 import { useLocation } from 'react-router-dom';
-import { ITab } from 'typings';
 
 import useCommunityMonitorProject from 'api/community_monitor/useCommunityMonitorProject';
 
@@ -11,41 +10,17 @@ import NavigationTabs, { Tab } from 'components/admin/NavigationTabs';
 import { useIntl } from 'utils/cl-intl';
 import { isTopBarNavActive } from 'utils/helperUtils';
 
-import messages from '../../messages';
+import { getCommunityMonitorTabs } from './utils';
 
 const NavigationBar = () => {
-  const isTabletOrSmaller = useBreakpoint('tablet');
-  const { formatMessage } = useIntl();
   const location = useLocation();
+  const { formatMessage } = useIntl();
+  const isTabletOrSmaller = useBreakpoint('tablet');
 
   const { data: project } = useCommunityMonitorProject();
   const projectId = project?.data.id;
 
-  const communityMonitorTabs: ITab[] = useMemo(
-    () => [
-      {
-        label: formatMessage(messages.liveMonitor),
-        url: '/admin/community-monitor/live-monitor',
-        name: 'live-monitor',
-      },
-      {
-        label: formatMessage(messages.participants),
-        name: 'participants',
-        url: `/admin/community-monitor/participants/projects/${projectId}`,
-      },
-      {
-        label: formatMessage(messages.reports),
-        url: '/admin/community-monitor/reports',
-        name: 'reports',
-      },
-      {
-        label: formatMessage(messages.settings),
-        name: 'settings',
-        url: '/admin/community-monitor/settings',
-      },
-    ],
-    [projectId, formatMessage]
-  );
+  const tabs = getCommunityMonitorTabs(formatMessage, projectId);
 
   return (
     <Box
@@ -56,8 +31,8 @@ const NavigationBar = () => {
       right="0"
     >
       <NavigationTabs>
-        {communityMonitorTabs.map((tab) => {
-          const active = isTopBarNavActive(
+        {tabs.map((tab) => {
+          const isActive = isTopBarNavActive(
             '/admin/community-monitor',
             location.pathname,
             tab.url
@@ -68,8 +43,7 @@ const NavigationBar = () => {
               key={tab.url}
               label={tab.label}
               url={tab.url}
-              active={active}
-              className={active ? 'active' : ''}
+              active={isActive}
             />
           );
         })}
