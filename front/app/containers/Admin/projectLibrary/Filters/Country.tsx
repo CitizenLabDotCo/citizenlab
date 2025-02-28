@@ -15,13 +15,17 @@ type Option = {
 const Country = () => {
   const value = useRansackParam('q[tenant_country_alpha2]');
   const { data: countries } = useProjectLibraryCountries();
-  console.log({ countries });
+
+  const options = countries?.data.attributes.map(({ code, short_name }) => ({
+    value: code,
+    label: short_name,
+  }));
 
   return (
     <Box>
       <Select
         value={value}
-        options={[]}
+        options={options ?? []}
         canBeEmpty
         onChange={(option: Option) =>
           setRansackParam('q[tenant_country_alpha2]', option.value)
