@@ -65,7 +65,6 @@ export default defineConfig(({ mode }) => {
         },
         '/project_library_api': {
           target: `http://${DEV_LIBRARY_HOST}:${DEV_LIBRARY_PORT}`,
-          // target: `http://${DEV_LIBRARY_HOST}`,
           changeOrigin: true,
         },
       },
