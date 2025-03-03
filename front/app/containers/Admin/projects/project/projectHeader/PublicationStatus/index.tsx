@@ -73,8 +73,11 @@ const getStatusMessageAndIcon = ({
     publicationStatusIconColor,
   };
 };
-
-const PublicationStatus = ({ project }: { project: IProject }) => {
+interface Props {
+  className?: string;
+  project: IProject;
+}
+const PublicationStatus = ({ className, project }: Props) => {
   const { mutate: updateProject, isLoading } = useUpdateProject();
   const [isPickerOpen, setIsPickerOpen] = useState(false);
   const { formatMessage } = useIntl();
@@ -113,6 +116,7 @@ const PublicationStatus = ({ project }: { project: IProject }) => {
         padding="4px 8px"
         border={`1px solid ${colors.borderDark}`}
         borderRadius={stylingConsts.borderRadius}
+        className={className}
       >
         <Icon
           name={publicationStatusIcon}
@@ -137,6 +141,7 @@ const PublicationStatus = ({ project }: { project: IProject }) => {
         onClick={() => setIsPickerOpen(!isPickerOpen)}
         processing={isLoading}
         id="e2e-admin-edit-publication-status"
+        className={className}
       >
         <Box display="flex" alignItems="center" gap="8px" as="span">
           <Icon
