@@ -1471,6 +1471,7 @@
   "app.containers.AdminPage.HeroBannerForm.heroBannerInfoBar": "Customise the hero banner image and text.",
   "app.containers.AdminPage.HeroBannerForm.heroBannerTitle": "Hero banner",
   "app.containers.AdminPage.HeroBannerForm.saveHeroBanner": "Save hero banner",
+  "app.containers.AdminPage.InspirationHubPage.inspirationHubDescription": "Inspiration Hub is a place where you can find inspiration for your projects by browsing through projects on other platforms.",
   "app.containers.AdminPage.PagesEdition.policiesSubtitle": "Edit your platform's terms and conditions and privacy policy. Other pages, including the About and FAQ pages, can be edited in the {navigationLink} tab.",
   "app.containers.AdminPage.PagesEdition.policiesTitle": "Platform policies",
   "app.containers.AdminPage.PagesEdition.privacy-policy": "Privacy Policy",
