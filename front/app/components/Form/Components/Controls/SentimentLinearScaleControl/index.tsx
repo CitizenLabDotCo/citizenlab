@@ -29,7 +29,6 @@ import messages from '../messages';
 import { StyledImg } from './components';
 import {
   getAriaValueText,
-  getClassNameSentimentImage,
   getSentimentEmoji,
   handleKeyboardKeyChange,
 } from './utils';
@@ -169,10 +168,7 @@ const SentimentLinearScaleControl = ({
                           {getAriaLabel(visualIndex, maximum)}
                         </ScreenReaderOnly>
                         <Box>
-                          {getClassNameSentimentImage(
-                            data,
-                            visualIndex
-                          ).includes('isSelected') && (
+                          {visualIndex === data && (
                             <Box
                               borderRadius="45px"
                               background="white"
@@ -192,10 +188,7 @@ const SentimentLinearScaleControl = ({
                             src={getSentimentEmoji(visualIndex)}
                             alt=""
                             aria-hidden
-                            className={getClassNameSentimentImage(
-                              data,
-                              visualIndex
-                            )}
+                            className={visualIndex === data ? 'isSelected' : ''}
                           />
                         </Box>
                       </Button>

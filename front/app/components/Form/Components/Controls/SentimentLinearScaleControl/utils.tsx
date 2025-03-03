@@ -11,18 +11,6 @@ import Sentiment3Png from './assets/sentiment_3.png';
 import Sentiment4Png from './assets/sentiment_4.png';
 import Sentiment5Png from './assets/sentiment_5.png';
 
-export const getClassNameSentimentImage = (
-  data: number,
-  visualIndex: number
-) => {
-  if (data === visualIndex) {
-    return 'isSelected';
-  } else if (data) {
-    return 'anotherValueSelected';
-  }
-  return '';
-};
-
 export const handleKeyboardKeyChange = (event, value) => {
   switch (event.key) {
     case 'ArrowLeft':
