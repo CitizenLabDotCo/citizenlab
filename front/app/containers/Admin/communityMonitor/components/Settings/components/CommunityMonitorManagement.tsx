@@ -4,9 +4,8 @@ import { Box, Text } from '@citizenlab/cl2-component-library';
 
 import useCommunityMonitorProject from 'api/community_monitor/useCommunityMonitorProject';
 
-import ModeratorList from 'containers/Admin/projects/project/permissions/Project/ProjectManagement/ModeratorList';
-import UserSearch from 'containers/Admin/projects/project/permissions/Project/ProjectManagement/UserSearch';
-
+import ModeratorList from 'components/admin/ModeratorList/ModeratorList';
+import UserSearch from 'components/admin/ModeratorUserSearch';
 import SeatInfo from 'components/admin/SeatBasedBilling/SeatInfo';
 
 import { useIntl } from 'utils/cl-intl';
