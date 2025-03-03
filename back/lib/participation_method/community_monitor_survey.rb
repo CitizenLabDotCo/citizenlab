@@ -58,5 +58,9 @@ module ParticipationMethod
         phase.errors.add(:base, :has_end_at, message: 'community_monitor projects cannot have an end date')
       end
     end
+
+    def supports_event_attendance?
+      false
+    end
   end
 end
