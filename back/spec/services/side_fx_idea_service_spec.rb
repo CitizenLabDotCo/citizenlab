@@ -372,7 +372,7 @@ describe SideFxIdeaService do
         phase.update!(user_fields_in_form: true)
         idea.update!(publication_status: 'published')
         service.after_update(idea, user)
-        expect(user.custom_field_values).to eq({'gender' => 'female'})
+        expect(user.custom_field_values).to eq({ 'gender' => 'female' })
       end
 
       it "does not update the user profile when 'user_fields_in_form' is turned off" do

@@ -40,7 +40,6 @@ class SideFxIdeaService
     before_publish_or_submit idea, user if idea.will_be_submitted? || idea.will_be_published?
   end
 
-  # rubocop:disable Metrics/MethodLength
   def after_update(idea, user)
     # We need to check if the idea was just submitted or just published before
     # we do anything else because updates to the idea can change this state.
@@ -115,7 +114,6 @@ class SideFxIdeaService
 
     log_activities_if_cosponsors_added(idea, user)
   end
-  # rubocop:enable Metrics/MethodLength
 
   def after_destroy(frozen_idea, user)
     frozen_idea.phases.each(&:update_manual_votes_count!) if frozen_idea.manual_votes_amount.present?
