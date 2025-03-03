@@ -12,18 +12,16 @@ import { downloadSurveyResults } from 'api/survey_results/utils';
 
 import useLocale from 'hooks/useLocale';
 
-import EditWarningModal from 'containers/Admin/projects/project/nativeSurvey/EditWarningModal';
-import messages from 'containers/Admin/projects/project/nativeSurvey/messages';
-import DeleteModal from 'containers/Admin/projects/project/nativeSurvey/NativeSurveySettings/DeleteModal';
-import DropdownSettings from 'containers/Admin/projects/project/nativeSurvey/NativeSurveySettings/DropdownSettings';
-import { getFormActionsConfig } from 'containers/Admin/projects/project/nativeSurvey/utils';
-
+import DeleteModal from 'components/admin/SurveyDeleteModal/SurveyDeleteModal';
+import DropdownSettings from 'components/admin/SurveyDropdownSettings/DropdownSettings';
+import EditWarningModal from 'components/admin/SurveyEditWarningModal';
 import Button from 'components/UI/ButtonWithLink';
 
 import { useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
+import { getFormActionsConfig } from 'utils/configs/formActionsConfig/utils';
 
-import communityMonitorMessages from '../messages';
+import messages from '../messages';
 
 import AnonymousToggle from './AnonymousToggle';
 
@@ -115,7 +113,7 @@ const SurveySettings = () => {
           alignItems="center"
         >
           <Title variant="h2" color="primary">
-            {formatMessage(communityMonitorMessages.survey)}
+            {formatMessage(messages.survey)}
           </Title>
           <Box display="flex" justifyContent="center" alignItems="center">
             <Box mr="16px">

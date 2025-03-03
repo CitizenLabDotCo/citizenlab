@@ -21,7 +21,7 @@ import UpsellTooltip from 'components/UpsellTooltip';
 import { useIntl } from 'utils/cl-intl';
 import { requestBlob } from 'utils/requestBlob';
 
-import messages from '../messages';
+import messages from './messages';
 
 type Props = {
   haveSubmissionsComeIn: boolean;

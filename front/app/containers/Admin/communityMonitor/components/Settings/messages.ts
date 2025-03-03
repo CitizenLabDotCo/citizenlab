@@ -44,4 +44,20 @@ export default defineMessages({
     id: 'app.containers.Admin.communityMonitor.settings.survey',
     defaultMessage: 'Survey',
   },
+  openForResponses: {
+    id: 'app.containers.AdminPage.ProjectEdit.survey.openForResponses2',
+    defaultMessage: 'Open for responses',
+  },
+  importInputs: {
+    id: 'app.containers.AdminPage.ProjectEdit.survey.importInputs',
+    defaultMessage: 'Import',
+  },
+  viewSurveyText: {
+    id: 'app.containers.AdminPage.ProjectEdit.survey.viewSurveyText',
+    defaultMessage: 'View',
+  },
+  editSurvey: {
+    id: 'app.containers.AdminPage.ProjectEdit.survey.editSurvey1',
+    defaultMessage: 'Edit',
+  },
 });
