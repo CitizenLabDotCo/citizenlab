@@ -174,7 +174,7 @@ const SentimentLinearScaleControl = ({
                               background="white"
                               position="absolute"
                               ml="36px"
-                              mt="-10px"
+                              mt="-10px" // Required for precise positioning
                               aria-hidden
                             >
                               <Icon
@@ -214,7 +214,8 @@ const SentimentLinearScaleControl = ({
                       m="0px"
                       px="4px"
                       color="grey700"
-                      style={{ wordWrap: 'break-word', lineHeight: '1.2' }}
+                      wordBreak="break-word"
+                      lineHeight="1.2"
                     >
                       {labelsFromSchema[visualIndex - 1]}
                       <ScreenReaderOnly>
