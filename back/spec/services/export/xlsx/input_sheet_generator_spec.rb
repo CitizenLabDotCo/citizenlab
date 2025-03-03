@@ -231,9 +231,6 @@ describe Export::Xlsx::InputSheetGenerator do
       let(:phase) { create(:native_survey_phase, with_permissions: true) }
       let(:form) { create(:custom_form, participation_context: phase) }
 
-      let!(:user_gender_field) { create(:custom_field_gender, :with_options, title_multiloc: { 'en' => 'Gender' }) }
-      let!(:user_birthyear_field) { create(:custom_field_birthyear, title_multiloc: { 'en' => 'Birth year' }) }
-
       # Create a page to describe that it is not included in the export.
       let!(:page_field) { create(:custom_field_page, resource: form) }
       let!(:multiselect_field) do
@@ -400,8 +397,13 @@ describe Export::Xlsx::InputSheetGenerator do
           end
         end
 
+        # User custom fields appear in different places depending on whether they come from the user or the inputs
         context 'user fields' do
-          # User custom fields appear in different places depending on whether they come from the user or the inputs
+          before do
+            create(:custom_field_gender, :with_options, title_multiloc: { 'en' => 'Gender' })
+            create(:custom_field_birthyear, title_multiloc: { 'en' => 'Birth year' })
+          end
+
           it 'Generates an sheet with user fields from the user' do
             expect(xlsx.first[:column_headers]).to match([
               'ID',
