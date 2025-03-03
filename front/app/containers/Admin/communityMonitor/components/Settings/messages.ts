@@ -54,7 +54,7 @@ export default defineMessages({
     defaultMessage: 'Survey',
   },
   openForResponses: {
-    id: 'app.containers.AdminPage.ProjectEdit.survey.openForResponses2',
+    id: 'app.containers.AdminPage.ProjectEdit.survey.openForResponses3',
     defaultMessage: 'Open for responses',
   },
   importInputs: {
