@@ -15,7 +15,7 @@ import messages from '../messages';
 import ProjectManagement from './ProjectManagement';
 import ProjectVisibility from './ProjectVisibility';
 
-const Project = () => {
+const ProjectPermissions = () => {
   const { projectId } = useParams();
   const { data: project } = useProjectById(projectId);
 
@@ -45,4 +45,4 @@ const Project = () => {
   );
 };
 
-export default Project;
+export default ProjectPermissions;
