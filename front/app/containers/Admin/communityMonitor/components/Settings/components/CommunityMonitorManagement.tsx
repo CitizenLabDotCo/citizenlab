@@ -44,7 +44,8 @@ const CommunityMonitorManagement = () => {
             color="primary"
             p="0px"
             mb="0px"
-            style={{ fontWeight: '500', fontSize: '18px' }}
+            fontSize="l"
+            fontWeight="semi-bold"
           >
             {formatMessage(messages.whoAreManagers)}
           </Text>
