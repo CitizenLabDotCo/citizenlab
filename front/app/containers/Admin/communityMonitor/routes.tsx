@@ -1,14 +1,17 @@
 import React, { lazy } from 'react';
 
-import { Outlet as RouterOutlet } from 'react-router-dom';
+import { Navigate } from 'react-router-dom';
 
-import HelmetIntl from 'components/HelmetIntl';
 import PageLoading from 'components/UI/PageLoading';
+
+const LiveMonitor = lazy(() => import('./components/LiveMonitor'));
+const Reports = lazy(() => import('./components/Reports'));
+const Settings = lazy(() => import('./components/Settings/Index'));
+const Participants = lazy(() => import('./components/Participants'));
 
 import { AdminRoute } from '../routes';
 
 import CommunityMonitorSurveyFormBuilder from './CommunityMonitorFormBuilder';
-import messages from './messages';
 
 const CommunityMonitor = lazy(() => import('./index'));
 
@@ -16,10 +19,19 @@ export enum communityMonitorRoutes {
   communityMonitor = 'community-monitor',
   communityMonitorSurveyEdit = 'projects/:projectId/phases/:phaseId/survey/edit',
   communityMonitorDefault = '',
+  liveMonitor = 'live-monitor',
+  participants = 'participants',
+  participantsProjects = 'participants/projects/:projectId',
+  reports = 'reports',
+  settings = 'settings',
 }
 
 export type communityMonitorRouteTypes =
   | AdminRoute<communityMonitorRoutes.communityMonitor>
+  | `${AdminRoute<communityMonitorRoutes.communityMonitor>}/${communityMonitorRoutes.liveMonitor}`
+  | `${AdminRoute<communityMonitorRoutes.communityMonitor>}/${communityMonitorRoutes.participants}/projects/${string}`
+  | `${AdminRoute<communityMonitorRoutes.communityMonitor>}/${communityMonitorRoutes.reports}`
+  | `${AdminRoute<communityMonitorRoutes.communityMonitor>}/${communityMonitorRoutes.settings}`
   | `${AdminRoute<communityMonitorRoutes.communityMonitor>}/projects/${string}/phases/${string}/survey/edit`;
 
 const communityMonitorsRoutes = () => {
@@ -27,16 +39,43 @@ const communityMonitorsRoutes = () => {
     path: communityMonitorRoutes.communityMonitor,
     element: (
       <PageLoading>
-        <HelmetIntl title={messages.communityMonitorLabel} />
-        <RouterOutlet />
+        <CommunityMonitor />
       </PageLoading>
     ),
     children: [
       {
-        path: communityMonitorRoutes.communityMonitorDefault,
+        path: '',
+        element: <Navigate to="live-monitor" replace />,
+      },
+      {
+        path: communityMonitorRoutes.liveMonitor,
         element: (
           <PageLoading>
-            <CommunityMonitor />
+            <LiveMonitor />
+          </PageLoading>
+        ),
+      },
+      {
+        path: communityMonitorRoutes.reports,
+        element: (
+          <PageLoading>
+            <Reports />
+          </PageLoading>
+        ),
+      },
+      {
+        path: communityMonitorRoutes.settings,
+        element: (
+          <PageLoading>
+            <Settings />
+          </PageLoading>
+        ),
+      },
+      {
+        path: communityMonitorRoutes.participantsProjects,
+        element: (
+          <PageLoading>
+            <Participants />
           </PageLoading>
         ),
       },
