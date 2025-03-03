@@ -14,6 +14,8 @@ import styled from 'styled-components';
 import useProjectLibraryCountries from 'api/project_library_countries/useProjectLibraryCountries';
 import { ProjectLibraryProjects } from 'api/project_library_projects/types';
 
+import { useIntl } from 'utils/cl-intl';
+
 import { STATUS_EMOJIS, STATUS_LABELS } from '../constants';
 
 import MethodLabel from './MethodLabel';
@@ -30,6 +32,7 @@ const Cell = styled(Th)`
 `;
 
 const TableBody = ({ libraryProjects, isInitialLoading }: Props) => {
+  const { formatMessage } = useIntl();
   const { data: countries } = useProjectLibraryCountries();
 
   const countriesByCode = useMemo(() => {
@@ -72,7 +75,7 @@ const TableBody = ({ libraryProjects, isInitialLoading }: Props) => {
                     mt="4px"
                   >
                     {STATUS_EMOJIS[attributes.status]}{' '}
-                    {STATUS_LABELS[attributes.status]}
+                    {formatMessage(STATUS_LABELS[attributes.status])}
                   </Box>
                 </Cell>
                 <Cell>{attributes.participants}</Cell>
