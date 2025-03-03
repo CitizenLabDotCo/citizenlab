@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 
 import {
   Tr,
@@ -11,6 +11,7 @@ import {
 } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
+import useProjectLibraryCountries from 'api/project_library_countries/useProjectLibraryCountries';
 import { ProjectLibraryProjects } from 'api/project_library_projects/types';
 
 import MethodLabel from './MethodLabel';
@@ -27,6 +28,17 @@ const Cell = styled(Th)`
 `;
 
 const TableBody = ({ libraryProjects, isInitialLoading }: Props) => {
+  const { data: countries } = useProjectLibraryCountries();
+
+  const countriesByCode = useMemo(() => {
+    if (!countries) return;
+
+    return countries.data.attributes.reduce((acc, country) => {
+      acc[country.code] = country.short_name;
+      return acc;
+    }, {} as Record<string, string>);
+  }, [countries]);
+
   return (
     <Tbody>
       {isInitialLoading && (
@@ -40,6 +52,8 @@ const TableBody = ({ libraryProjects, isInitialLoading }: Props) => {
       {libraryProjects && (
         <>
           {libraryProjects.data.map(({ attributes, id, relationships }) => {
+            const countryCode = attributes.tenant_country_alpha2;
+
             return (
               <Tr key={id} background={colors.white}>
                 <Cell>
@@ -75,7 +89,9 @@ const TableBody = ({ libraryProjects, isInitialLoading }: Props) => {
                     color={colors.textSecondary}
                     mt="4px"
                   >
-                    {attributes.tenant_country_alpha2}
+                    {countryCode && countriesByCode
+                      ? countriesByCode[countryCode]
+                      : ''}
                   </Box>
                 </Cell>
                 <Cell>

@@ -68,7 +68,7 @@ export interface ProjectLibraryProjectData {
     slug: string;
     start_at: string;
     status: Status;
-    tenant_country_alpha2: null;
+    tenant_country_alpha2: string | null;
     tenant_host: string;
     tenant_id: string;
     tenant_lifecycle_stage: string;
