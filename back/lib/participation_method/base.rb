@@ -178,6 +178,10 @@ module ParticipationMethod
       false
     end
 
+    def supports_event_attendance?
+      true
+    end
+
     private
 
     attr_reader :phase
