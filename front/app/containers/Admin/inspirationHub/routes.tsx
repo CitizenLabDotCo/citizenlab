@@ -2,9 +2,13 @@ import React, { lazy } from 'react';
 
 import { Outlet as RouterOutlet } from 'react-router-dom';
 
+import HelmetIntl from 'components/HelmetIntl';
 import PageLoading from 'components/UI/PageLoading';
 
 import { AdminRoute } from '../routes';
+import sidebarMessages from '../sideBar/messages';
+
+import messages from './messages';
 
 const InspirationHub = lazy(() => import('.'));
 
@@ -21,6 +25,10 @@ const toolsRoutes = () => {
     path: inspirationHubRoutes.inspirationHub,
     element: (
       <PageLoading>
+        <HelmetIntl
+          title={sidebarMessages.inspirationHub}
+          description={messages.inspirationHubDescription}
+        />
         <RouterOutlet />
       </PageLoading>
     ),
