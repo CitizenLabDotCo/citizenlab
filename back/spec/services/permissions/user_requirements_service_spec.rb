@@ -407,6 +407,14 @@ describe Permissions::UserRequirementsService do
             })
           end
         end
+
+        context 'when user fields are enabled as part of the survey form' do
+          it 'does not return any custom fields as part of the requirements' do
+            permission.permission_scope.update!(user_fields_in_form: true)
+            requirements = service.requirements(permission, nil)
+            expect(requirements[:custom_fields]).to be_empty
+          end
+        end
       end
 
       context 'when permitted_by is set to admins_moderators and user confirmation feature is off' do
