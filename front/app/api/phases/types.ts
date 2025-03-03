@@ -151,6 +151,7 @@ export type ParticipationMethod =
   | 'ideation'
   | 'information'
   | 'native_survey'
+  | 'community_monitor_survey'
   | 'survey'
   | 'voting'
   | 'poll'
