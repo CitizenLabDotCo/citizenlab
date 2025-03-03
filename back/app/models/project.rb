@@ -23,7 +23,6 @@
 #  followers_count              :integer          default(0), not null
 #  preview_token                :string           not null
 #  header_bg_alt_text_multiloc  :jsonb
-#  hidden                       :boolean          default(FALSE), not null
 #
 # Indexes
 #
