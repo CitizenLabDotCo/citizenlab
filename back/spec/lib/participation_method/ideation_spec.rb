@@ -92,7 +92,7 @@ RSpec.describe ParticipationMethod::Ideation do
   describe '#default_fields' do
     it 'returns the default ideation fields' do
       expect(
-        participation_method.default_fields(create(:custom_form, participation_context: phase)).map(&:code).compact
+        participation_method.default_fields(create(:custom_form, participation_context: phase)).filter_map(&:code)
       ).to eq %w[
         ideation_page1
         title_multiloc

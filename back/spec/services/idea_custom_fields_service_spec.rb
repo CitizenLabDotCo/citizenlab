@@ -16,7 +16,7 @@ describe IdeaCustomFieldsService do
 
       it 'returns the built-in fields' do
         output = service.all_fields
-        expect(output.map(&:code).compact).to eq %w[
+        expect(output.filter_map(&:code)).to eq %w[
           ideation_page1
           title_multiloc
           body_multiloc
@@ -34,7 +34,7 @@ describe IdeaCustomFieldsService do
     describe 'visible_fields' do
       it 'excludes disabled fields' do
         output = service.visible_fields
-        expect(output.map(&:code).compact).to eq %w[
+        expect(output.filter_map(&:code)).to eq %w[
           ideation_page1
           title_multiloc
           body_multiloc
@@ -65,7 +65,7 @@ describe IdeaCustomFieldsService do
     describe 'enabled_fields' do
       it 'excludes disabled fields' do
         output = service.enabled_fields
-        expect(output.map(&:code).compact).to eq %w[
+        expect(output.filter_map(&:code)).to eq %w[
           ideation_page1
           title_multiloc
           body_multiloc

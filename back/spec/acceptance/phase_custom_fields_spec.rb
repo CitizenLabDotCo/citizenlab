@@ -103,7 +103,6 @@ resource 'Phase level Custom Fields' do
           ui_schemas = json_response.dig(:data, :attributes, :ui_schema_multiloc)
           %i[en fr-FR nl-NL].each do |locale|
             json_keys = json_schemas.dig(locale, :properties, field_key, :enum)
-            ui_details = ui_schemas.dig(locale, :elements).find { |elt| elt[:label] == 'Details' }
             ui_field = ui_schemas.dig(locale, :elements)
               .flat_map { |page| page[:elements] }
               .find { |elt| elt[:scope] == "#/properties/#{field_key}" }
