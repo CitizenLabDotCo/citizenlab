@@ -2,15 +2,17 @@ import React from 'react';
 
 import { Thead, Tr, Th, colors, Icon } from '@citizenlab/cl2-component-library';
 
+import { SortType } from 'api/project_library_projects/types';
+
 import { useRansackParam, setRansackParam } from '../utils';
 
-const SORT_DIRECTIONS = {
-  asc: 'ascending',
-  desc: 'descending',
+const SORT_DIRECTIONS: Record<SortType, 'ascending' | 'descending'> = {
+  'start_at asc': 'ascending',
+  'start_at desc': 'descending',
 } as const;
 
 const TableHead = () => {
-  const startAtSort = useRansackParam('q[s][start_at]');
+  const startAtSort = useRansackParam('q[s]');
 
   return (
     <Thead>
@@ -25,8 +27,8 @@ const TableHead = () => {
           background={colors.grey200}
           onClick={() => {
             setRansackParam(
-              'q[s][start_at]',
-              startAtSort === 'asc' ? 'desc' : 'asc'
+              'q[s]',
+              startAtSort === 'start_at asc' ? 'start_at desc' : 'start_at asc'
             );
           }}
           style={{ whiteSpace: 'nowrap' }}

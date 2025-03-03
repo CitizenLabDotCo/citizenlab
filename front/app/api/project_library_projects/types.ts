@@ -11,6 +11,8 @@ export type Status = 'draft' | 'active' | 'finished' | 'stale' | 'archived';
 
 type PopulationGroup = 'XS' | 'S' | 'M' | 'L' | 'XL';
 
+export type SortType = 'start_at asc' | 'start_at desc';
+
 export type RansackParams = {
   // filters
   'q[tenant_country_alpha2]'?: string;
@@ -25,7 +27,7 @@ export type RansackParams = {
   'q[title_en_or_description_en_or_tenant_name_cont]'?: string;
 
   // sorting
-  'q[s][start_at]'?: 'asc' | 'desc';
+  'q[s]'?: SortType;
 };
 
 export type Parameters = RansackParams & {

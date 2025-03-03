@@ -36,6 +36,7 @@ const RANSACK_PARAMS: (keyof RansackParams)[] = [
   'q[practical_end_at_gteq]',
   'q[practical_end_at_lt]',
   'q[title_en_or_description_en_or_tenant_name_cont]',
+  'q[s]',
 ];
 
 export const useRansackParams = () => {
