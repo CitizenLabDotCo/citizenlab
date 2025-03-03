@@ -88,15 +88,9 @@ const communityMonitorsRoutes = () => {
             path: communityMonitorRoutes.settingsSurvey,
             element: (
               <PageLoading>
-                <div
-                  role="tabpanel"
-                  aria-labelledby="tab-settings-survey"
-                  tabIndex={0}
-                >
-                  <>
-                    <SurveySettings />
-                  </>
-                </div>
+                <>
+                  <SurveySettings />
+                </>
               </PageLoading>
             ),
           },
@@ -104,13 +98,7 @@ const communityMonitorsRoutes = () => {
             path: communityMonitorRoutes.settingsAccessRights,
             element: (
               <PageLoading>
-                <div
-                  role="tabpanel"
-                  aria-labelledby="tab-settings-access-rights"
-                  tabIndex={0}
-                >
-                  <AccessRights />
-                </div>
+                <AccessRights />
               </PageLoading>
             ),
           },
@@ -118,13 +106,7 @@ const communityMonitorsRoutes = () => {
             path: communityMonitorRoutes.settingsModerators,
             element: (
               <PageLoading>
-                <div
-                  role="tabpanel"
-                  aria-labelledby="tab-settings-moderators"
-                  tabIndex={0}
-                >
-                  <CommunityMonitorManagement />
-                </div>
+                <CommunityMonitorManagement />
               </PageLoading>
             ),
           },
