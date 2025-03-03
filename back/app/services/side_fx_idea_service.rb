@@ -28,7 +28,6 @@ class SideFxIdeaService
     after_submission idea, user if idea.submitted_or_published?
     after_publish idea, user if idea.published?
     enqueue_embeddings_job(idea)
-    update_user_profile(idea, user)
 
     log_activities_if_cosponsors_added(idea, user)
   end
@@ -102,8 +101,6 @@ class SideFxIdeaService
       )
     end
 
-    update_user_profile(idea, user)
-
     enqueue_embeddings_job(idea) if idea.title_multiloc_previously_changed? || idea.body_multiloc_previously_changed?
 
     if idea.manual_votes_amount_previously_changed?
@@ -148,6 +145,7 @@ class SideFxIdeaService
   end
 
   def after_publish(idea, user)
+    update_user_profile(idea, user)
     log_activity_jobs_after_published(idea, user)
   end
 
