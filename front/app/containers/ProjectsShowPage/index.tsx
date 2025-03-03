@@ -9,8 +9,7 @@ import {
 } from '@citizenlab/cl2-component-library';
 import JSConfetti from 'js-confetti';
 import { isError } from 'lodash-es';
-import { useLocation, useParams, useSearchParams } from 'react-router-dom';
-import { RouteType } from 'routes';
+import { useParams, useSearchParams } from 'react-router-dom';
 import styled from 'styled-components';
 
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
@@ -39,7 +38,6 @@ import { anyIsUndefined } from 'utils/helperUtils';
 import messages from 'utils/messages';
 import { scrollToElement } from 'utils/scroll';
 
-import { isValidPhase } from './phaseParam';
 import ProjectCTABar from './ProjectCTABar';
 import ProjectHeader from './shared/header/ProjectHeader';
 import ProjectShowPageMeta from './shared/header/ProjectShowPageMeta';
@@ -181,7 +179,6 @@ const ProjectsShowPage = ({ project }: Props) => {
 };
 
 const ProjectsShowPageWrapper = () => {
-  const { pathname } = useLocation();
   const { slug, phaseNumber } = useParams();
   const {
     data: project,
@@ -195,10 +192,6 @@ const ProjectsShowPageWrapper = () => {
   const phaseIndex = phaseNumber ? parseInt(phaseNumber, 10) - 1 : undefined;
 
   const { data: user, isLoading: isUserLoading } = useAuthUser();
-  const urlSegments = pathname
-    .replace(/^\/|\/$/g, '')
-    .split('/')
-    .filter((segment) => segment !== '');
   const pending =
     isInitialProjectLoading || isUserLoading || isInitialPhasesLoading;
 
@@ -232,21 +225,6 @@ const ProjectsShowPageWrapper = () => {
   // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   if (statusProject === 'error' || project === null) {
     return <PageNotFound />;
-  }
-
-  const isTimelineProjectAndHasValidPhaseParam =
-    phases &&
-    urlSegments.length === 4 &&
-    isValidPhase(phaseNumber, phases.data);
-
-  if (
-    urlSegments[1] === 'projects' &&
-    urlSegments.length > 3 &&
-    !isTimelineProjectAndHasValidPhaseParam
-  ) {
-    // Redirect old childRoutes (e.g. /info, /process, ...) to the project index location
-    const projectRoot = `/${urlSegments.slice(1, 3).join('/')}` as RouteType;
-    return <Navigate to={projectRoot} replace />;
   }
 
   if (!project) return null;
