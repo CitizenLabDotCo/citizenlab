@@ -395,13 +395,27 @@ resource 'Ideas' do
 
       context 'idea authored by user' do
         let!(:idea) do
-          create(:idea, project: phase.project, phases: [phase], creation_phase: phase, author: @user, publication_status: 'draft')
+          create(:native_survey_response, project: phase.project, author: @user, publication_status: 'draft', custom_field_values: { 'field' => 'value' })
         end
 
+        before { @user.update!(custom_field_values: { 'gender' => 'male' }) }
+
         example_request 'Get a single draft idea by phase' do
-          expect(status).to eq 200
-          json_response = json_parse(response_body)
-          expect(json_response.dig(:data, :id)).to eq idea.id
+          assert_status 200
+          expect(response_data[:id]).to eq idea.id
+          expect(response_data[:attributes]).to include(field: 'value')
+          expect(response_data[:attributes]).not_to include(u_gender: 'male')
+        end
+
+        context 'when user data in the survey form is enabled' do
+          example 'Get a single draft idea by phase including user data' do
+            phase.update!(user_fields_in_form: true)
+            @user.update!(custom_field_values: { 'gender' => 'male' })
+            do_request
+            assert_status 200
+            expect(response_data[:id]).to eq idea.id
+            expect(response_data[:attributes]).to include(field: 'value', u_gender: 'male')
+          end
         end
       end
 
