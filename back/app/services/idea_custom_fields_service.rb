@@ -201,7 +201,6 @@ class IdeaCustomFieldsService
   end
 
   def add_user_fields(fields)
-    phase = @custom_form.participation_context
     return fields unless @participation_method.supports_user_fields_in_form?
 
     fields = fields.to_a # sometimes array passed in, sometimes active record relations
@@ -210,9 +209,9 @@ class IdeaCustomFieldsService
     fields.pop # Remove the last page so we can add it back later
 
     # Get the user fields from the permission (returns platform defaults if they don't exist)
-    user_requirements_service = Permissions::UserRequirementsService.new
+    phase = @custom_form.participation_context
     permission = phase.permissions.find_by(action: 'posting_idea')
-    user_fields = user_requirements_service.requirements_custom_fields(permission)
+    user_fields = Permissions::UserRequirementsService.new.requirements_custom_fields(permission)
 
     # TODO: Hide any user fields that are locked for the user through the verification method
 
@@ -227,7 +226,7 @@ class IdeaCustomFieldsService
     user_page = CustomField.new(
       id: SecureRandom.uuid,
       key: 'user_page',
-      title_multiloc: { 'en' => 'About you' },
+      title_multiloc: MultilocService.new.i18n_to_multiloc('form_builder.form_user_page.title_text'),
       resource: custom_form,
       input_type: 'page',
       page_layout: 'default'
