@@ -1,5 +1,7 @@
 import React from 'react';
 
+import { Box } from '@citizenlab/cl2-component-library';
+
 import useCommunityMonitorProject from 'api/community_monitor/useCommunityMonitorProject';
 
 import ActionForms from 'containers/Admin/projects/project/permissions/Phase/ActionForms';
@@ -9,7 +11,11 @@ const AccessRights = () => {
 
   if (!phaseId) return null;
 
-  return <ActionForms phaseId={phaseId} />;
+  return (
+    <Box mt="40px">
+      <ActionForms phaseId={phaseId} />
+    </Box>
+  );
 };
 
 export default AccessRights;

@@ -16,7 +16,7 @@ export const getSettingsTabs = (formatMessage: FormatMessage): ITab[] => {
     },
     {
       name: 'moderator_management',
-      label: formatMessage(messages.moderators),
+      label: formatMessage(messages.management),
       url: `/admin/community-monitor/settings/moderators`,
     },
   ];

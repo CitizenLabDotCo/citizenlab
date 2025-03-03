@@ -19,9 +19,18 @@ export default defineMessages({
     defaultMessage:
       "All of the survey's inputs from users will be anonymized before being recorded",
   },
+  whoAreManagers: {
+    id: 'app.containers.Admin.communityMonitor.settings.whoAreManagers',
+    defaultMessage: 'Who are the managers?',
+  },
   communityMonitorManagers: {
     id: 'app.containers.Admin.communityMonitor.settings.communityMonitorManagers',
     defaultMessage: 'Community Monitor Managers',
+  },
+  communityMonitorManagersTooltip: {
+    id: 'app.containers.Admin.communityMonitor.settings.communityMonitorManagersTooltip',
+    defaultMessage:
+      'Managers can edit the Community Monitor survey & permissions, see response data and create reports.',
   },
   communityMonitorManagerTooltip: {
     id: 'app.containers.Admin.communityMonitor.settings.communityMonitorManagerTooltip',
@@ -36,9 +45,9 @@ export default defineMessages({
     id: 'app.containers.Admin.communityMonitor.settings.accessRights',
     defaultMessage: 'Access rights',
   },
-  moderators: {
-    id: 'app.containers.Admin.communityMonitor.settings.moderators',
-    defaultMessage: 'Moderators',
+  management: {
+    id: 'app.containers.Admin.communityMonitor.settings.management',
+    defaultMessage: 'Management',
   },
   survey: {
     id: 'app.containers.Admin.communityMonitor.settings.survey',
