@@ -75,7 +75,7 @@ resource 'Idea Custom Fields' do
           # Add extra field
           fields_param += [
             {
-              input_type: 'section',
+              input_type: 'page',
               title_multiloc: { 'en' => 'Extra fields' }
             },
             {
@@ -102,7 +102,7 @@ resource 'Idea Custom Fields' do
               attributes: hash_including(
                 code: 'ideation_page1',
                 key: nil,
-                input_type: 'section',
+                input_type: 'page',
                 title_multiloc: { en: 'What is your idea?', 'fr-FR': 'Quelle est votre idée ?', 'nl-NL': 'Wat is je idee?' },
                 description_multiloc: {},
                 ordering: 0,
@@ -148,14 +148,14 @@ resource 'Idea Custom Fields' do
               type: 'custom_field',
               relationships: { options: { data: [] }, resource: { data: { id: custom_form.id, type: 'custom_form' } } }
             ),
-            hash_including(attributes: hash_including(code: 'ideation_page2', key: nil, input_type: 'section', ordering: 3)),
+            hash_including(attributes: hash_including(code: 'ideation_page2', key: nil, input_type: 'page', ordering: 3)),
             hash_including(attributes: hash_including(code: 'idea_images_attributes', key: 'idea_images_attributes', input_type: 'image_files', ordering: 4)),
             hash_including(attributes: hash_including(code: 'idea_files_attributes', key: 'idea_files_attributes', input_type: 'files', ordering: 5)),
-            hash_including(attributes: hash_including(code: 'ideation_page3', key: nil, input_type: 'section', ordering: 6)),
+            hash_including(attributes: hash_including(code: 'ideation_page3', key: nil, input_type: 'page', ordering: 6)),
             hash_including(attributes: hash_including(code: 'topic_ids', key: 'topic_ids', input_type: 'topic_ids', ordering: 7)),
             hash_including(attributes: hash_including(code: 'location_description', key: 'location_description', input_type: 'text', ordering: 8)),
             hash_including(attributes: hash_including(code: 'proposed_budget', key: 'proposed_budget', input_type: 'number', ordering: 9)),
-            hash_including(attributes: hash_including(code: nil, key: nil, input_type: 'section', ordering: 10, title_multiloc: { en: 'Extra fields' })),
+            hash_including(attributes: hash_including(code: nil, key: nil, input_type: 'page', ordering: 10, title_multiloc: { en: 'Extra fields' })),
             hash_including(
               attributes: hash_including(
                 code: nil,
@@ -187,7 +187,7 @@ resource 'Idea Custom Fields' do
           # Add extra field
           fields_param += [
             {
-              input_type: 'section',
+              input_type: 'page',
               title_multiloc: { 'en' => 'Extra fields' }
             },
             {
