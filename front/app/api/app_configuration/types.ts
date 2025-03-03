@@ -261,7 +261,11 @@ export interface IAppConfigurationSettings {
     admins_only: boolean;
   };
   platform_templates?: AppConfigurationFeature;
+  authoring_assistance?: AppConfigurationFeature;
   project_library?: AppConfigurationFeature;
+  community_monitor?: AppConfigurationFeature & {
+    project_id: string;
+  };
 }
 
 export type TAppConfigurationSettingCore = keyof IAppConfigurationSettingsCore;

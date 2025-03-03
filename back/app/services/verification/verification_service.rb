@@ -129,7 +129,9 @@ module Verification
           []
         end
       end
-      custom_fields.uniq
+
+      # Only return the locked custom fields if they exist
+      CustomField.where(key: custom_fields).pluck(:key).map(&:to_sym)
     end
 
     # Return method metadata

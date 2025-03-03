@@ -53,7 +53,9 @@ export const getTabs = (
       feature: 'polls',
       name: 'poll',
     },
-    phase.attributes.participation_method === 'native_survey' && {
+    ['native_survey', 'community_monitor'].includes(
+      phase.attributes.participation_method
+    ) && {
       label: formatMessage(messages.surveyTab),
       url: 'native-survey',
       name: 'survey',
