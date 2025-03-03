@@ -7,10 +7,15 @@ import {
   Spinner,
   Box,
 } from '@citizenlab/cl2-component-library';
+import { useSearchParams } from 'react-router-dom';
 
 import useProjectLibraryProjects from 'api/project_library_projects/useProjectLibraryProjects';
 
 import { PaginationWithoutPositioning } from 'components/Pagination';
+
+import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
+import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
+import { getPageNumberFromUrl } from 'utils/paginationUtils';
 
 import { useRansackParams } from '../utils';
 
@@ -18,11 +23,22 @@ import TableBody from './TableBody';
 import TableHead from './TableHead';
 
 const ProjectTable = () => {
+  const ransackParams = useRansackParams();
+  const [searchParams] = useSearchParams();
+
+  const pageNumber = Number(searchParams.get('page[number]') ?? '1');
+
   const {
     data: libraryProjects,
     isInitialLoading,
     isRefetching,
-  } = useProjectLibraryProjects(useRansackParams());
+  } = useProjectLibraryProjects({
+    ...ransackParams,
+    'page[number]': pageNumber,
+  });
+
+  const lastPageLink = libraryProjects?.links.last;
+  const lastPage = lastPageLink ? getPageNumberFromUrl(lastPageLink) ?? 1 : 1;
 
   return (
     <Box>
@@ -62,13 +78,19 @@ const ProjectTable = () => {
           </Box>
         )}
       </Box>
-      <Box w="100%" mt="20px" display="flex" justifyContent="center">
-        <PaginationWithoutPositioning
-          currentPage={1}
-          totalPages={5}
-          loadPage={() => {}}
-        />
-      </Box>
+      {lastPage > 1 && (
+        <Box w="100%" mt="20px" display="flex" justifyContent="center">
+          <PaginationWithoutPositioning
+            currentPage={pageNumber}
+            totalPages={lastPage}
+            loadPage={(pageNumber) => {
+              pageNumber === 1
+                ? removeSearchParams(['page[number]'])
+                : updateSearchParams({ 'page[number]': pageNumber.toString() });
+            }}
+          />
+        </Box>
+      )}
     </Box>
   );
 };

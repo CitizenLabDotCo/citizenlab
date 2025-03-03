@@ -16,7 +16,7 @@ const fetchLibraryProjects = (queryParams: Parameters) =>
     action: 'get',
     queryParams: {
       ...queryParams,
-      'page[size]': queryParams['page[size]'] ?? 6,
+      'page[size]': queryParams['page[size]'] ?? 10,
       'page[number]': queryParams['page[number]'] ?? 1,
     },
     apiPath: '/project_library_api',
