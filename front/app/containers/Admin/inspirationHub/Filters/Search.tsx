@@ -2,9 +2,14 @@ import React from 'react';
 
 import SearchInput from 'components/UI/SearchInput';
 
+import { useIntl } from 'utils/cl-intl';
+
 import { useRansackParam, setRansackParam } from '../utils';
 
+import messages from './messages';
+
 const Search = () => {
+  const { formatMessage } = useIntl();
   const value = useRansackParam(
     'q[title_en_or_description_en_or_tenant_name_cont]'
   );
@@ -19,7 +24,7 @@ const Search = () => {
         );
       }}
       a11y_numberOfSearchResults={0}
-      placeholder="Search"
+      placeholder={formatMessage(messages.search)}
     />
   );
 };

@@ -5,7 +5,11 @@ import { Box, Select } from '@citizenlab/cl2-component-library';
 import useProjectLibraryCountries from 'api/project_library_countries/useProjectLibraryCountries';
 import { RansackParams } from 'api/project_library_projects/types';
 
+import { useIntl } from 'utils/cl-intl';
+
 import { setRansackParam, useRansackParam } from '../utils';
+
+import messages from './messages';
 
 type Option = {
   value: RansackParams['q[tenant_country_alpha2]'];
@@ -13,6 +17,7 @@ type Option = {
 };
 
 const Country = () => {
+  const { formatMessage } = useIntl();
   const value = useRansackParam('q[tenant_country_alpha2]');
   const { data: countries } = useProjectLibraryCountries();
 
@@ -30,7 +35,7 @@ const Country = () => {
         onChange={(option: Option) =>
           setRansackParam('q[tenant_country_alpha2]', option.value)
         }
-        placeholder="Country"
+        placeholder={formatMessage(messages.country)}
         mr="28px"
       />
     </Box>

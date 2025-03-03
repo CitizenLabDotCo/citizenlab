@@ -4,7 +4,11 @@ import { Select } from '@citizenlab/cl2-component-library';
 
 import { RansackParams } from 'api/project_library_projects/types';
 
+import { useIntl } from 'utils/cl-intl';
+
 import { setRansackParam, useRansackParam } from '../utils';
+
+import messages from './messages';
 
 type Option = {
   value: RansackParams['q[tenant_population_group_eq]'];
@@ -20,6 +24,7 @@ const OPTIONS: Option[] = [
 ];
 
 const Size = () => {
+  const { formatMessage } = useIntl();
   const value = useRansackParam('q[tenant_population_group_eq]');
 
   return (
@@ -30,7 +35,7 @@ const Size = () => {
       onChange={(option: Option) =>
         setRansackParam('q[tenant_population_group_eq]', option.value)
       }
-      placeholder="Size"
+      placeholder={formatMessage(messages.size)}
       mr="28px"
     />
   );
