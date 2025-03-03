@@ -5,7 +5,9 @@ import { Select } from '@citizenlab/cl2-component-library';
 import { RansackParams } from 'api/project_library_projects/types';
 
 import { useIntl } from 'utils/cl-intl';
+import { keys } from 'utils/helperUtils';
 
+import { STATUS_LABELS } from '../constants';
 import { setRansackParam, useRansackParam } from '../utils';
 
 import messages from './messages';
@@ -15,21 +17,13 @@ type Option = {
   label: string;
 };
 
-const OPTIONS_UNTRANSLATED = [
-  { value: 'active', labelMessage: messages.active },
-  { value: 'archived', labelMessage: messages.archived },
-  { value: 'draft', labelMessage: messages.draft },
-  { value: 'finished', labelMessage: messages.finished },
-  { value: 'stale', labelMessage: messages.stale },
-];
-
 const Status = () => {
   const { formatMessage } = useIntl();
   const value = useRansackParam('q[status_eq]');
 
-  const options = OPTIONS_UNTRANSLATED.map(({ value, labelMessage }) => ({
-    value,
-    label: formatMessage(labelMessage),
+  const options = keys(STATUS_LABELS).map((key) => ({
+    value: key,
+    label: formatMessage(STATUS_LABELS[key]),
   }));
 
   return (

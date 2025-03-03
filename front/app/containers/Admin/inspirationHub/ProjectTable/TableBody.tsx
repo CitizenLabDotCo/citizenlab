@@ -14,8 +14,10 @@ import styled from 'styled-components';
 import useProjectLibraryCountries from 'api/project_library_countries/useProjectLibraryCountries';
 import { ProjectLibraryProjects } from 'api/project_library_projects/types';
 
+import { STATUS_EMOJIS, STATUS_LABELS } from '../constants';
+
 import MethodLabel from './MethodLabel';
-import { formatDuration, STATUS_EMOJIS, STATUS_LABELS } from './utils';
+import { formatDuration } from './utils';
 
 interface Props {
   libraryProjects?: ProjectLibraryProjects;

@@ -4,7 +4,11 @@ import { Thead, Tr, Th, colors, Icon } from '@citizenlab/cl2-component-library';
 
 import { SortType } from 'api/project_library_projects/types';
 
+import { useIntl } from 'utils/cl-intl';
+
 import { useRansackParam, setRansackParam } from '../utils';
+
+import messages from './messages';
 
 const SORT_DIRECTIONS: Record<SortType, 'ascending' | 'descending'> = {
   'start_at asc': 'ascending',
@@ -12,6 +16,7 @@ const SORT_DIRECTIONS: Record<SortType, 'ascending' | 'descending'> = {
 } as const;
 
 const TableHead = () => {
+  const { formatMessage } = useIntl();
   const startAtSort = useRansackParam('q[s]');
 
   return (
@@ -33,9 +38,9 @@ const TableHead = () => {
           }}
           style={{ whiteSpace: 'nowrap' }}
         >
-          Duration
+          {formatMessage(messages.duration)}
         </Th>
-        <Th>Project</Th>
+        <Th>{formatMessage(messages.project)}</Th>
         <Th>
           <Icon
             name="users"
@@ -44,8 +49,8 @@ const TableHead = () => {
             transform="translate(-2,0)"
           />
         </Th>
-        <Th>Platform</Th>
-        <Th>Methods</Th>
+        <Th>{formatMessage(messages.platform)}</Th>
+        <Th>{formatMessage(messages.methods)}</Th>
       </Tr>
     </Thead>
   );
