@@ -3,6 +3,7 @@ import React, { useEffect, useRef, useCallback } from 'react';
 import {
   Box,
   Button,
+  Icon,
   Table,
   Td,
   Text,
@@ -12,6 +13,7 @@ import {
 import { ControlProps } from '@jsonforms/core';
 import { withJsonFormsControlProps } from '@jsonforms/react';
 import { UiSchema } from 'react-jsonschema-form';
+import { useTheme } from 'styled-components';
 
 import { FormLabel } from 'components/UI/FormComponents';
 
@@ -44,6 +46,7 @@ const SentimentLinearScaleControl = ({
   visible,
 }: ControlProps) => {
   const { formatMessage } = useIntl();
+  const theme = useTheme();
 
   const minimum = 1;
   const maximum = 5;
@@ -138,35 +141,7 @@ const SentimentLinearScaleControl = ({
               {[...Array(maximum).keys()].map((i) => {
                 const visualIndex = i + 1;
                 return (
-                  <Th
-                    p="0px"
-                    maxWidth="20%"
-                    key={`${path}-radio-${visualIndex}`}
-                    scope="col"
-                    tabIndex={-1}
-                  >
-                    <Text
-                      textAlign="center"
-                      m="0px"
-                      px="4px"
-                      color="grey700"
-                      style={{ wordWrap: 'break-word' }}
-                    >
-                      {labelsFromSchema[visualIndex - 1]}
-                      <ScreenReaderOnly>
-                        {!labelsFromSchema[visualIndex - 1] &&
-                          getAriaLabel(visualIndex, maximum)}
-                      </ScreenReaderOnly>
-                    </Text>
-                  </Th>
-                );
-              })}
-            </Tr>
-            <Tr>
-              {[...Array(maximum).keys()].map((i) => {
-                const visualIndex = i + 1;
-                return (
-                  <Td pt="4px" key={`${path}-radio-${visualIndex}`}>
+                  <Td py="4px" key={`${path}-radio-${visualIndex}`}>
                     <Box
                       display="flex"
                       flexDirection="column"
@@ -193,18 +168,68 @@ const SentimentLinearScaleControl = ({
                         <ScreenReaderOnly>
                           {getAriaLabel(visualIndex, maximum)}
                         </ScreenReaderOnly>
-                        <StyledImg
-                          src={getSentimentEmoji(visualIndex)}
-                          alt=""
-                          aria-hidden
-                          className={getClassNameSentimentImage(
+                        <Box>
+                          {getClassNameSentimentImage(
                             data,
                             visualIndex
+                          ).includes('isSelected') && (
+                            <Box
+                              borderRadius="45px"
+                              background="white"
+                              position="absolute"
+                              ml="36px"
+                              mt="-10px"
+                              aria-hidden
+                            >
+                              <Icon
+                                name="check-circle"
+                                fill={theme.colors.tenantPrimary}
+                              />
+                            </Box>
                           )}
-                        />
+
+                          <StyledImg
+                            src={getSentimentEmoji(visualIndex)}
+                            alt=""
+                            aria-hidden
+                            className={getClassNameSentimentImage(
+                              data,
+                              visualIndex
+                            )}
+                          />
+                        </Box>
                       </Button>
                     </Box>
                   </Td>
+                );
+              })}
+            </Tr>
+            <Tr>
+              {[...Array(maximum).keys()].map((i) => {
+                const visualIndex = i + 1;
+                return (
+                  <Th
+                    p="0px"
+                    maxWidth="20%"
+                    key={`${path}-radio-${visualIndex}`}
+                    scope="col"
+                    tabIndex={-1}
+                    pb="8px"
+                  >
+                    <Text
+                      textAlign="center"
+                      m="0px"
+                      px="4px"
+                      color="grey700"
+                      style={{ wordWrap: 'break-word', lineHeight: '1.2' }}
+                    >
+                      {labelsFromSchema[visualIndex - 1]}
+                      <ScreenReaderOnly>
+                        {!labelsFromSchema[visualIndex - 1] &&
+                          getAriaLabel(visualIndex, maximum)}
+                      </ScreenReaderOnly>
+                    </Text>
+                  </Th>
                 );
               })}
             </Tr>
