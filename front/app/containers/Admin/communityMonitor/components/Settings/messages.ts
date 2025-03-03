@@ -66,7 +66,7 @@ export default defineMessages({
     defaultMessage: 'View',
   },
   editSurvey: {
-    id: 'app.containers.AdminPage.ProjectEdit.survey.editSurvey1',
+    id: 'app.containers.AdminPage.ProjectEdit.survey.editSurvey2',
     defaultMessage: 'Edit',
   },
 });
