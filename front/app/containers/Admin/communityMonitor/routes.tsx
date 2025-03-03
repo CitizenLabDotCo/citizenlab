@@ -60,13 +60,7 @@ const communityMonitorsRoutes = () => {
         path: communityMonitorRoutes.liveMonitor,
         element: (
           <PageLoading>
-            <div
-              role="tabpanel"
-              aria-labelledby="tab-live-monitor"
-              tabIndex={0}
-            >
-              <LiveMonitor />
-            </div>
+            <LiveMonitor />
           </PageLoading>
         ),
       },
@@ -74,9 +68,7 @@ const communityMonitorsRoutes = () => {
         path: communityMonitorRoutes.reports,
         element: (
           <PageLoading>
-            <div role="tabpanel" aria-labelledby="tab-reports" tabIndex={0}>
-              <Reports />
-            </div>
+            <Reports />
           </PageLoading>
         ),
       },
@@ -84,9 +76,7 @@ const communityMonitorsRoutes = () => {
         path: communityMonitorRoutes.settings,
         element: (
           <PageLoading>
-            <div role="tabpanel" aria-labelledby="tab-settings" tabIndex={0}>
-              <Settings />
-            </div>
+            <Settings />
           </PageLoading>
         ),
         children: [
@@ -144,13 +134,7 @@ const communityMonitorsRoutes = () => {
         path: communityMonitorRoutes.participantsProjects,
         element: (
           <PageLoading>
-            <div
-              role="tabpanel"
-              aria-labelledby="tab-participants"
-              tabIndex={0}
-            >
-              <Participants />
-            </div>
+            <Participants />
           </PageLoading>
         ),
       },
