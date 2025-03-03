@@ -9,11 +9,11 @@ import { FormattedMessage } from 'utils/cl-intl';
 import Filters from './Filters';
 import ProjectTable from './ProjectTable';
 
-const ProjectLibrary = () => {
+const InspirationHub = () => {
   return (
     <Box>
       <Title variant="h1" color="primary" mb="40px">
-        <FormattedMessage {...messages.projectLibrary} />
+        <FormattedMessage {...messages.inspirationHub} />
       </Title>
       <Box>
         <Box mb="24px">
@@ -25,4 +25,4 @@ const ProjectLibrary = () => {
   );
 };
 
-export default ProjectLibrary;
+export default InspirationHub;

@@ -6,31 +6,30 @@ import PageLoading from 'components/UI/PageLoading';
 
 import { AdminRoute } from '../routes';
 
-const ProjectLibrary = lazy(() => import('./'));
+const InspirationHub = lazy(() => import('.'));
 
-export enum projectLibraryRoutes {
-  projectLibrary = 'project-library',
-  projectLibraryDefault = '',
+export enum inspirationHubRoutes {
+  inspirationHub = 'inspiration-hub',
+  inspirationHubDefault = '',
 }
 
-export type projectLibraryRouteTypes =
-  AdminRoute<projectLibraryRoutes.projectLibrary>;
+export type inspirationHubRouteTypes =
+  AdminRoute<inspirationHubRoutes.inspirationHub>;
 
 const toolsRoutes = () => {
   return {
-    path: projectLibraryRoutes.projectLibrary,
+    path: inspirationHubRoutes.inspirationHub,
     element: (
       <PageLoading>
-        {/* <HelmetIntl title={messages.projectLibraryLabel} /> */}
         <RouterOutlet />
       </PageLoading>
     ),
     children: [
       {
-        path: projectLibraryRoutes.projectLibraryDefault,
+        path: inspirationHubRoutes.inspirationHubDefault,
         element: (
           <PageLoading>
-            <ProjectLibrary />
+            <InspirationHub />
           </PageLoading>
         ),
       },
