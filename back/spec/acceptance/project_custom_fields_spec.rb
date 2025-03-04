@@ -50,6 +50,7 @@ resource 'Project level Custom Fields' do
         location_description
         idea_images_attributes
         idea_files_attributes
+        survey_end
       ]
     end
     let(:expected_jsonschema_form_field_keys) { enabled_built_in_field_keys + [custom_field.key.to_sym] }
