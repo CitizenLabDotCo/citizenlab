@@ -233,8 +233,12 @@ const CLSurveyPageLayout = memo(
         setIsLoading(true);
         data.publication_status = 'published';
 
-        const idea: IIdea = await onSubmit(data, true, userPagePath);
-        updateSearchParams({ idea_id: idea.data.id });
+        const idea: IIdea | undefined = await onSubmit(
+          data,
+          true,
+          userPagePath
+        );
+        updateSearchParams({ idea_id: idea?.data.id });
       } else {
         data.publication_status = 'draft';
         await onSubmit({ data }, false, userPagePath);
