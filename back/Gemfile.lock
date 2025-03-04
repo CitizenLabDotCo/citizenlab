@@ -27,6 +27,7 @@ PATH
       prime (~> 0.1.3)
       rails (~> 7.0)
       ruby-openai (>= 6.3, < 8.0)
+      terminal-table (~> 4.0.0)
       tiktoken_ruby (~> 0.0.7)
 
 PATH
@@ -1226,6 +1227,8 @@ GEM
       attr_required (>= 0.0.5)
       faraday (~> 2.0)
       faraday-follow_redirects
+    terminal-table (4.0.0)
+      unicode-display_width (>= 1.1.1, < 4)
     test-prof (1.3.3)
     thor (1.3.2)
     thread (0.2.2)

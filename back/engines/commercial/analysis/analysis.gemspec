@@ -23,6 +23,7 @@ Gem::Specification.new do |s|
   s.add_dependency 'distribution', '~> 0.8.0'
   s.add_dependency 'prime', '~> 0.1.3'
   s.add_dependency 'matrix', '~> 0.4.2'
+  s.add_dependency 'terminal-table', '~> 4.0.0'
 
   s.add_development_dependency 'rspec_api_documentation'
   s.add_development_dependency 'rspec-rails'
