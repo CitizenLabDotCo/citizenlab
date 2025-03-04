@@ -195,20 +195,6 @@ FactoryBot.define do
       page_layout { 'default' }
     end
 
-    factory :custom_field_section do
-      title_multiloc do
-        {
-          'en' => 'A section'
-        }
-      end
-      description_multiloc do
-        {
-          'en' => 'This is a section.'
-        }
-      end
-      input_type { 'section' }
-    end
-
     factory :custom_field_multiselect do
       title_multiloc do
         {
