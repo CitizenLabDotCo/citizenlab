@@ -33,28 +33,62 @@ type RelativeTimeFormatUnit =
   | 'second'
   | 'seconds';
 
-// this function returns a string representing "time since" the input date in the appropriate format.
-// Relative Time Format is used for internationalization.
-// Adapted from: Stas Parshin https://jsfiddle.net/tv9701uf
+/**
+ * Calculates and formats a human-readable relative time string (e.g., "2 days ago", "in 3 hours")
+ * based on the difference between the provided date and the current time.
+ *
+ * The function determines the most appropriate time unit (years, months, weeks, days, hours,
+ * minutes, or seconds) based on the elapsed time, and formats the result according to the
+ * specified locale using the Intl.RelativeTimeFormat API for internationalization.
+ *
+ * Special care is taken to handle the transition between months and years appropriately,
+ * converting values like "12 months" to "1 year" for more natural human readability.
+ *
+ * @param dateInput - Timestamp in milliseconds (from Date.getTime()) to calculate time from
+ * @param locale - Language locale code (e.g., 'en', 'fr-BE') for formatting the output string
+ * @returns A localized string representing the relative time, or undefined if calculation fails
+ *
+ * @example
+ * // Returns "2 days ago" (in English)
+ * timeAgo(Date.now() - 2 * 24 * 60 * 60 * 1000, 'en')
+ *
+ * @example
+ * // Returns "il y a 1 an" (in French/Belgium)
+ * timeAgo(Date.now() - 365 * 24 * 60 * 60 * 1000, 'fr-BE')
+ *
+ * Adapted from: Stas Parshin https://jsfiddle.net/tv9701uf
+ */
 export function timeAgo(dateInput: number, locale: SupportedLocale) {
-  const date = new Date(dateInput);
+  const inputDate = new Date(dateInput);
   const formatter = new Intl.RelativeTimeFormat(locale);
 
-  const getDaysInYear = (year: number) => {
-    if ((year % 4 === 0 && year % 100 !== 0) || year % 400 === 0) {
-      return 366; // Leap year
-    } else {
-      return 365; // Non-leap year
-    }
+  /**
+   * Determines the number of days in a given year (accounting for leap years)
+   */
+  const getDaysInYear = (year: number): number => {
+    const isLeapYear = (year % 4 === 0 && year % 100 !== 0) || year % 400 === 0;
+    return isLeapYear ? 366 : 365;
   };
-  const getDaysInMonth = (year: number, month: number) => {
+
+  /**
+   * Determines the number of days in a specific month of a given year
+   */
+  const getDaysInMonth = (year: number, month: number): number => {
+    // The 0 day of the next month is the last day of the current month
     return new Date(year, month + 1, 0).getDate();
   };
 
-  const ranges = {
+  /**
+   * Time units in seconds for calculating relative time differences
+   * Some units (years, months) are dynamic based on the specific date
+   */
+  const timeUnits = {
+    // Dynamic units that depend on the specific date
     years: (year: number) => 3600 * 24 * getDaysInYear(year),
     months: (year: number, month: number) =>
       3600 * 24 * getDaysInMonth(year, month),
+
+    // Static units
     weeks: 3600 * 24 * 7,
     days: 3600 * 24,
     hours: 3600,
@@ -62,25 +96,62 @@ export function timeAgo(dateInput: number, locale: SupportedLocale) {
     seconds: 1,
   };
 
-  const secondsElapsed = (date.getTime() - Date.now()) / 1000;
+  // Calculate seconds elapsed (negative for past, positive for future)
+  const secondsElapsed = (inputDate.getTime() - Date.now()) / 1000;
+  const absoluteSecondsElapsed = Math.abs(secondsElapsed);
 
-  for (const key in ranges) {
-    let value: number;
+  // Iterate through time units from largest (years) to smallest (seconds)
+  for (const unit in timeUnits) {
+    // Calculate the value for the current time unit
+    let unitInSeconds: number;
 
-    if (key === 'years') {
-      value = ranges['years'](date.getFullYear());
-    } else if (key === 'months') {
-      value = ranges['months'](date.getFullYear(), date.getMonth());
+    if (unit === 'years') {
+      unitInSeconds = timeUnits['years'](inputDate.getFullYear());
+    } else if (unit === 'months') {
+      unitInSeconds = timeUnits['months'](
+        inputDate.getFullYear(),
+        inputDate.getMonth()
+      );
     } else {
-      value = ranges[key];
+      unitInSeconds = timeUnits[unit];
     }
 
-    if (value <= Math.abs(secondsElapsed)) {
-      const delta = secondsElapsed / value;
-      return formatter.format(Math.round(delta), key as RelativeTimeFormatUnit);
+    // If the time difference is greater than the current unit threshold
+    if (unitInSeconds <= absoluteSecondsElapsed) {
+      // Calculate how many of this unit has elapsed
+      const unitCount = secondsElapsed / unitInSeconds;
+
+      // Special handling for months-to-years conversion
+      if (unit === 'months') {
+        const absoluteMonthCount = Math.abs(unitCount);
+        const approximateYearCount = Math.round(absoluteMonthCount / 12);
+
+        // Check if we're close to a full year or multiple years (within half a month)
+        // This improves readability by converting values like "12 months ago" to "1 year ago"
+        // The 0.5 threshold ensures values between 11.5-12.5 months are shown as "1 year"
+        const isCloseToFullYear =
+          approximateYearCount >= 1 &&
+          Math.abs(absoluteMonthCount - approximateYearCount * 12) <= 0.5;
+
+        if (isCloseToFullYear) {
+          // Use singular 'year' for 1, plural 'years' for others
+          const yearUnit = approximateYearCount === 1 ? 'year' : 'years';
+
+          // Preserve original sign (negative for past, positive for future)
+          const signPreservingYearCount =
+            Math.sign(unitCount) * approximateYearCount;
+
+          return formatter.format(signPreservingYearCount, yearUnit);
+        }
+      }
+
+      // For all other cases, round to the nearest whole number and format
+      const formattedUnit = unit as RelativeTimeFormatUnit;
+      return formatter.format(Math.round(unitCount), formattedUnit);
     }
   }
 
+  // If no appropriate time unit was found (should be rare)
   return undefined;
 }
 

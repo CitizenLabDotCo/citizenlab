@@ -30,7 +30,7 @@ import IdeasEditMeta from './IdeasEditMeta';
 import messages from './messages';
 import { getLocationGeojson, getFormValues } from './utils';
 
-interface FormValues {
+export interface FormValues {
   title_multiloc: Multiloc;
   body_multiloc: Multiloc;
   author_id?: string;
@@ -44,6 +44,7 @@ interface FormValues {
   topic_ids?: string[];
   cosponsor_ids?: string[];
 }
+
 interface Props {
   ideaId: string;
 }
