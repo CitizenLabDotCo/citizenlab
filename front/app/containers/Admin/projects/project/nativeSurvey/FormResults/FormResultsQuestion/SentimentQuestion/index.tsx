@@ -6,13 +6,18 @@ import {
   Title,
   Text,
   Icon,
+  Tooltip,
 } from '@citizenlab/cl2-component-library';
 
 import { ResultUngrouped } from 'api/survey_results/types';
 
 import useLocalize from 'hooks/useLocalize';
 
+import T from 'components/T';
+
 import { useIntl } from 'utils/cl-intl';
+
+import InputType from '../InputType';
 
 import SentimentScore from './components/SentimentScore';
 import { parseResult, SentimentAnswers } from './utils';
@@ -29,6 +34,17 @@ const SentimentQuestion = ({ result }: Props) => {
     return parseResult(result);
   }, [result]);
 
+  const {
+    inputType,
+    question,
+    questionNumber,
+    required,
+    totalResponseCount,
+    questionResponseCount,
+  } = result;
+
+  const totalSubmissions = totalResponseCount;
+
   return (
     <Accordion
       title={
@@ -37,11 +53,27 @@ const SentimentQuestion = ({ result }: Props) => {
           display="flex"
           justifyContent="space-between"
           alignItems="center"
-          py="20px"
+          py="0px"
         >
-          <Title m="0px" variant="h5">
-            {localize(result.question)}
-          </Title>
+          <Box display="block">
+            <Title variant="h4" mt="12px" mb="12px">
+              {questionNumber}. <T value={question} />
+            </Title>
+            <Tooltip
+              disabled={totalResponseCount === totalSubmissions}
+              placement="bottom-start"
+              content={'Tooltip'}
+              theme="dark"
+            >
+              <InputType
+                inputType={inputType}
+                required={required}
+                totalSubmissions={totalResponseCount}
+                totalResponses={questionResponseCount}
+              />
+            </Tooltip>
+          </Box>
+
           <Box display="flex" gap="24px">
             <Text m="0px">12 Comments</Text>
             <Box my="auto">
@@ -77,7 +109,9 @@ const SentimentQuestion = ({ result }: Props) => {
           </Box>
         </Box>
       }
-      border="none !important"
+      border="1px solid rgb(218, 217, 217) !important"
+      marginBottom="16px"
+      padding="20px"
     >
       COMMENTS GO HERE
     </Accordion>
