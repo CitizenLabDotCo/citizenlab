@@ -1169,7 +1169,7 @@
   "app.containers.EventsShow.eventDateTimeIcon": "Tapahtuman päivämäärä ja aika",
   "app.containers.EventsShow.eventFrom2": "Lähettäjä \"{projectTitle}\"",
   "app.containers.EventsShow.goBack": "Mene takaisin",
-  "app.containers.EventsShow.goToProject": "Mene projektiin",
+  "app.containers.EventsShow.goToProject": "Palaa etusivulle",
   "app.containers.EventsShow.icsError": "Virhe ICS-tiedoston lataamisessa",
   "app.containers.EventsShow.linkToOnlineEvent": "Linkki verkkotapahtumaan",
   "app.containers.EventsShow.locationIconAltText": "Sijainti",
