@@ -6,16 +6,36 @@ class IdeaCustomFieldsService
     @participation_method = custom_form.participation_context.pmethod
   end
 
+  # def all_fields
+  #   if @custom_form.custom_field_ids.empty?
+  #     @participation_method.default_fields @custom_form
+  #   else
+  #     @custom_form.custom_fields.includes(
+  #       :map_config,
+  #       options: [:image]
+  #     )
+  #   end
+  # end
+
   def all_fields
-    if @custom_form.custom_field_ids.empty?
-      @participation_method.default_fields @custom_form
+    fields = if @custom_form.custom_field_ids.empty?
+      @participation_method.default_fields(@custom_form)
     else
-      @custom_form.custom_fields.includes(
-        :map_config,
-        options: [:image]
-      )
+      @custom_form.custom_fields.includes(:map_config, options: [:image])
     end
-  end
+
+    # Convert to an array if it isn't already (ActiveRecord::Relation can be manipulated too, 
+    # but an array is usually simpler for “push last” logic).
+    fields = fields.to_a
+
+    survey_end_field = fields.find { |f| f.key == 'survey_end' }
+    if survey_end_field
+      fields.delete(survey_end_field)
+      fields << survey_end_field
+    end
+
+    fields
+  end  
 
   def xlsx_exportable_fields
     all_fields.filter(&:supports_xlsx_export?)
