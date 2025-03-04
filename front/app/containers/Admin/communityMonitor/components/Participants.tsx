@@ -13,15 +13,12 @@ const Participants = () => {
 
   if (!phases?.data.length) return null;
 
+  // Note: The Community Monitor project only uses a single, continuous phase.
   const startOfPhase = phases.data[0]?.attributes?.start_at;
-  const endOfPhase = phases.data[0]?.attributes?.end_at;
 
   return (
     <Box mt="40px" ml="-44px">
-      <ParticipationDatesRange
-        defaultStartDate={startOfPhase}
-        defaultEndDate={endOfPhase || undefined}
-      />
+      <ParticipationDatesRange defaultStartDate={startOfPhase} />
     </Box>
   );
 };

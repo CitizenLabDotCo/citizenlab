@@ -19,9 +19,18 @@ export default defineMessages({
     defaultMessage:
       "All of the survey's inputs from users will be anonymized before being recorded",
   },
+  whoAreManagers: {
+    id: 'app.containers.Admin.communityMonitor.settings.whoAreManagers',
+    defaultMessage: 'Who are the managers?',
+  },
   communityMonitorManagers: {
     id: 'app.containers.Admin.communityMonitor.settings.communityMonitorManagers',
     defaultMessage: 'Community Monitor Managers',
+  },
+  communityMonitorManagersTooltip: {
+    id: 'app.containers.Admin.communityMonitor.settings.communityMonitorManagersTooltip',
+    defaultMessage:
+      'Managers can edit the Community Monitor survey & permissions, see response data and create reports.',
   },
   communityMonitorManagerTooltip: {
     id: 'app.containers.Admin.communityMonitor.settings.communityMonitorManagerTooltip',
@@ -29,19 +38,35 @@ export default defineMessages({
       'Community Monitor Managers can access and manage all Community Monitor settings and data.',
   },
   surveySettings: {
-    id: 'app.containers.Admin.communityMonitor.settings.surveySettings',
+    id: 'app.containers.Admin.communityMonitor.settings.surveySettings2',
     defaultMessage: 'Survey settings',
   },
   accessRights: {
-    id: 'app.containers.Admin.communityMonitor.settings.accessRights',
+    id: 'app.containers.Admin.communityMonitor.settings.accessRights2',
     defaultMessage: 'Access rights',
   },
-  moderators: {
-    id: 'app.containers.Admin.communityMonitor.settings.moderators',
-    defaultMessage: 'Moderators',
+  management: {
+    id: 'app.containers.Admin.communityMonitor.settings.management2',
+    defaultMessage: 'Management',
   },
   survey: {
-    id: 'app.containers.Admin.communityMonitor.settings.survey',
+    id: 'app.containers.Admin.communityMonitor.settings.survey2',
     defaultMessage: 'Survey',
+  },
+  openForResponses: {
+    id: 'app.containers.AdminPage.ProjectEdit.survey.openForResponses3',
+    defaultMessage: 'Open for responses',
+  },
+  importInputs: {
+    id: 'app.containers.AdminPage.ProjectEdit.survey.importInputs2',
+    defaultMessage: 'Import',
+  },
+  viewSurveyText: {
+    id: 'app.containers.AdminPage.ProjectEdit.survey.viewSurveyText2',
+    defaultMessage: 'View',
+  },
+  editSurvey: {
+    id: 'app.containers.AdminPage.ProjectEdit.survey.editSurvey2',
+    defaultMessage: 'Edit',
   },
 });
