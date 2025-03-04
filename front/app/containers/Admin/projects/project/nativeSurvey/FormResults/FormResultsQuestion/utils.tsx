@@ -24,6 +24,9 @@ export const determineAnswerType = (
   if (['rating', 'linear_scale'].includes(result.inputType)) {
     return 'rating';
   }
+  if (result.inputType === 'sentiment_linear_scale') {
+    return 'sentiment_linear_scale';
+  }
   if (linear_scales) {
     return 'matrix_linear_scale';
   }
