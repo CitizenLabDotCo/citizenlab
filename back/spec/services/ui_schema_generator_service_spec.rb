@@ -223,7 +223,12 @@ RSpec.describe UiSchemaGeneratorService do
         type: 'Control',
         scope: "#/properties/#{field_key}/properties/en",
         label: 'Text multiloc field title',
-        options: { description: 'Text multiloc field description', trim_on_blur: true }
+        options: {
+          description: 'Text multiloc field description',
+          trim_on_blur: true,
+          input_type: 'text_multiloc',
+          render: 'multiloc'
+        }
       })
     end
   end
@@ -244,7 +249,12 @@ RSpec.describe UiSchemaGeneratorService do
         type: 'Control',
         scope: "#/properties/#{field_key}/properties/en",
         label: 'Multiline multiloc field title',
-        options: { description: 'Multiline multiloc field description', trim_on_blur: true, textarea: true }
+        options: {
+          description: 'Multiline multiloc field description',
+          trim_on_blur: true, textarea: true,
+          input_type: 'multiline_text_multiloc',
+          render: 'multiloc'
+        }
       })
     end
   end
@@ -265,7 +275,12 @@ RSpec.describe UiSchemaGeneratorService do
         type: 'Control',
         scope: "#/properties/#{field_key}/properties/en",
         label: 'HTML multiloc field title',
-        options: { description: 'HTML multiloc field description', render: 'WYSIWYG', trim_on_blur: true }
+        options: {
+          description: 'HTML multiloc field description',
+          render: 'multiloc',
+          trim_on_blur: true,
+          input_type: 'html_multiloc',
+        }
       })
     end
   end

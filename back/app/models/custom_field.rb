@@ -213,6 +213,10 @@ class CustomField < ApplicationRecord
     input_type == 'page'
   end
 
+  def section?
+    input_type == 'section'
+  end
+
   def multiselect?
     %w[multiselect multiselect_image].include?(input_type)
   end
