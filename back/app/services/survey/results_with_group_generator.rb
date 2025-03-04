@@ -9,9 +9,7 @@ module Survey
     end
 
     def generate_result_for_field(field_id)
-      raise 'Group question not found' unless group_field
-
-      super(field_id)
+      super(field_id) if group_field
     end
 
     def generate_results
