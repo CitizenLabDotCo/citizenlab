@@ -3,6 +3,7 @@ import React, { useEffect, useRef, useCallback } from 'react';
 import {
   Box,
   Button,
+  Icon,
   Table,
   Td,
   Text,
@@ -12,6 +13,7 @@ import {
 import { ControlProps } from '@jsonforms/core';
 import { withJsonFormsControlProps } from '@jsonforms/react';
 import { UiSchema } from 'react-jsonschema-form';
+import { useTheme } from 'styled-components';
 
 import { FormLabel } from 'components/UI/FormComponents';
 
@@ -27,7 +29,6 @@ import messages from '../messages';
 import { StyledImg } from './components';
 import {
   getAriaValueText,
-  getClassNameSentimentImage,
   getSentimentEmoji,
   handleKeyboardKeyChange,
 } from './utils';
@@ -44,6 +45,9 @@ const SentimentLinearScaleControl = ({
   visible,
 }: ControlProps) => {
   const { formatMessage } = useIntl();
+  const theme = useTheme();
+
+  const currentAnswer = data; // The current answer is a value between 1 to 5
 
   const minimum = 1;
   const maximum = 5;
@@ -73,17 +77,20 @@ const SentimentLinearScaleControl = ({
   // Set the aria-valuenow and aria-valuetext attributes on the slider when the data changes
   useEffect(() => {
     if (sliderRef.current) {
-      sliderRef.current.setAttribute('aria-valuenow', String(data || minimum));
+      sliderRef.current.setAttribute(
+        'aria-valuenow',
+        String(currentAnswer || minimum)
+      );
       sliderRef.current.setAttribute(
         'aria-valuetext',
-        getAriaLabel(data || minimum, maximum)
+        getAriaLabel(currentAnswer || minimum, maximum)
       );
     }
-  }, [data, getAriaLabel, minimum, maximum]);
+  }, [currentAnswer, getAriaLabel, minimum, maximum]);
 
   // Handle keyboard input for the slider
   const handleKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
-    const value = data || minimum;
+    const value = currentAnswer || minimum;
     let newValue = value;
     newValue = handleKeyboardKeyChange(event, value);
 
@@ -136,37 +143,13 @@ const SentimentLinearScaleControl = ({
           <Table style={{ tableLayout: 'fixed' }}>
             <Tr>
               {[...Array(maximum).keys()].map((i) => {
+                // The currentAnswer is 1-indexed, so it's easier here to add 1 to the mapped
+                // index for when we want to compare it to the currently selected value;
                 const visualIndex = i + 1;
+                const isSelected = currentAnswer === visualIndex;
+
                 return (
-                  <Th
-                    p="0px"
-                    maxWidth="20%"
-                    key={`${path}-radio-${visualIndex}`}
-                    scope="col"
-                    tabIndex={-1}
-                  >
-                    <Text
-                      textAlign="center"
-                      m="0px"
-                      px="4px"
-                      color="grey700"
-                      style={{ wordWrap: 'break-word' }}
-                    >
-                      {labelsFromSchema[visualIndex - 1]}
-                      <ScreenReaderOnly>
-                        {!labelsFromSchema[visualIndex - 1] &&
-                          getAriaLabel(visualIndex, maximum)}
-                      </ScreenReaderOnly>
-                    </Text>
-                  </Th>
-                );
-              })}
-            </Tr>
-            <Tr>
-              {[...Array(maximum).keys()].map((i) => {
-                const visualIndex = i + 1;
-                return (
-                  <Td pt="4px" key={`${path}-radio-${visualIndex}`}>
+                  <Td py="4px" key={`${path}-radio-${visualIndex}`}>
                     <Box
                       display="flex"
                       flexDirection="column"
@@ -176,11 +159,11 @@ const SentimentLinearScaleControl = ({
                         p="0px"
                         m="0px"
                         id={`${path}-linear-scale-option-${visualIndex}`}
-                        aria-pressed={data === visualIndex}
+                        aria-pressed={isSelected}
                         width="100%"
                         tabIndex={-1}
                         onClick={() => {
-                          if (data === visualIndex) {
+                          if (isSelected) {
                             // Clear data from this question and any follow-up question
                             handleChange(path, undefined);
                             handleChange(`${path}_follow_up`, undefined);
@@ -193,18 +176,67 @@ const SentimentLinearScaleControl = ({
                         <ScreenReaderOnly>
                           {getAriaLabel(visualIndex, maximum)}
                         </ScreenReaderOnly>
-                        <StyledImg
-                          src={getSentimentEmoji(visualIndex)}
-                          alt=""
-                          aria-hidden
-                          className={getClassNameSentimentImage(
-                            data,
-                            visualIndex
+                        <Box>
+                          {isSelected && (
+                            <Box
+                              borderRadius="45px"
+                              background="white"
+                              position="absolute"
+                              ml="36px"
+                              mt="-10px" // Required for precise positioning
+                              aria-hidden
+                            >
+                              <Icon
+                                name="check-circle"
+                                fill={theme.colors.tenantPrimary}
+                              />
+                            </Box>
                           )}
-                        />
+
+                          <StyledImg
+                            src={getSentimentEmoji(visualIndex)}
+                            alt=""
+                            aria-hidden
+                            className={isSelected ? 'isSelected' : ''}
+                          />
+                        </Box>
                       </Button>
                     </Box>
                   </Td>
+                );
+              })}
+            </Tr>
+            <Tr>
+              {[...Array(maximum).keys()].map((index) => {
+                return (
+                  <Th
+                    p="0px"
+                    maxWidth="20%"
+                    key={`${path}-radio-${index}`}
+                    scope="col"
+                    tabIndex={-1}
+                    pb="8px"
+                  >
+                    <Text
+                      textAlign="center"
+                      m="0px"
+                      px="4px"
+                      color="grey700"
+                      wordBreak="break-word"
+                      lineHeight="1.2"
+                    >
+                      {labelsFromSchema[index]}
+
+                      <ScreenReaderOnly>
+                        {/* If there is not a label for this index, make sure that we still generate
+                      a meaningful aria-label for screen readers.
+                      */}
+                        {!labelsFromSchema[index] &&
+                          getAriaLabel(index + 1, maximum)}
+                        {/* We use index + 1 because the index is 0-indexed, but the values are 1-indexed. */}
+                      </ScreenReaderOnly>
+                    </Text>
+                  </Th>
                 );
               })}
             </Tr>

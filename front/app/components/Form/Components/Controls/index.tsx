@@ -74,7 +74,7 @@ import MultiSelectCheckboxControl, {
 import RatingControl, { ratingControlTester } from './RatingControl';
 import SentimentLinearScaleControl, {
   sentimentLinearScaleControlTester,
-} from './SentimentLinearScaleControl/SentimentLinearScaleControl';
+} from './SentimentLinearScaleControl';
 import ShapefileUploadControl, {
   shapefileUploadControlTester,
 } from './ShapefileUploadControl';
