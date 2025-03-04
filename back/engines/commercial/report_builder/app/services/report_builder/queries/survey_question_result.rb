@@ -20,7 +20,7 @@ module ReportBuilder
         Survey::ResultsGenerator.new(phase)
       end
 
-      service.generate_results(field_id: question_id)
+      service.generate_result_for_field(question_id)
     end
   end
 end

@@ -2,28 +2,23 @@
 
 module Survey
   class ResultsWithLogicGenerator < ResultsGenerator
-    # TODO: Can do more with this as it is broadly the same as parent class
-    def generate_results(field_id: nil, logic_ids: [])
-      if field_id
-        field = find_question(field_id)
-        result = visit field
-        cleanup_single_result(result)
-      else
-        results = fields.filter_map do |f|
-          visit f
-        end
+    def generate_result_for_field(field_id)
+      # Adding logic only makes sense for the full result set
+      raise NotImplementedError, 'This method is not implemented'
+    end
 
-        results = add_question_numbers_to_results results
-        results = add_page_response_count_to_results results
-        results = add_logic_to_results results, logic_ids
-        results = change_counts_for_logic results, inputs.pluck(:custom_field_values)
-        results = cleanup_results results
+    def generate_results(logic_ids: [])
+      results = fields.filter_map { |f| visit f }
+      results = add_question_numbers_to_results results
+      results = add_page_response_count_to_results results
+      results = add_logic_to_results results, logic_ids
+      results = change_counts_for_logic results, inputs.pluck(:custom_field_values)
+      results = cleanup_results results
 
-        {
-          results: results,
-          totalSubmissions: inputs.size
-        }
-      end
+      {
+        results: results,
+        totalSubmissions: inputs.size
+      }
     end
 
     def visit_page(field)
@@ -36,6 +31,7 @@ module Survey
 
     def core_field_attributes(field, response_count: nil)
       super.merge({
+        logic: {},
         questionViewedCount: 0, # Temporary field used when calculating the number of times a question is seen through logic
         key: field.key # Temporary field used when calculating the number of times a question is seen through logic
       })
@@ -214,15 +210,6 @@ module Survey
         question.delete(:key)
         question
       end
-    end
-
-    # TODO: Probably not needed here as single results likely unneeded for this class
-    def cleanup_single_result(result)
-      # Logic not used on single result & temp fields need removing
-      result[:logic] = {}
-      result.delete(:questionViewedCount)
-      result.delete(:key)
-      result
     end
 
     def supports_question_logic?(input_type)

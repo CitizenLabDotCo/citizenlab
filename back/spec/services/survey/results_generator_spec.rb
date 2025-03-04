@@ -276,13 +276,7 @@ RSpec.describe Survey::ResultsGenerator do
 
   # The following page for form submission should not be returned in the results
   let_it_be(:last_page_field) do
-    field = create(:custom_field_page, resource: form, key: 'survey_end')
-
-    # Update other fields with some (meaningless but valid) survey_end logic
-    linear_scale_field.update!(logic: { rules: [{ if: 2, goto_page_id: field.id }, { if: 'no_answer', goto_page_id: field.id }] })
-    page_field.update!(logic: { next_page_id: field.id })
-
-    field
+    create(:custom_field_page, resource: form, key: 'survey_end')
   end
 
   let_it_be(:gender_user_custom_field) do
@@ -428,6 +422,13 @@ RSpec.describe Survey::ResultsGenerator do
     end
   end
 
+  describe 'generate_result_for_field' do
+    it 'raises an error if the specified field is not found' do
+      generator = described_class.new(survey_phase)
+      expect { generator.generate_result_for_field('missing_field') }.to raise_error('Question not found')
+    end
+  end
+
   describe 'generate_results' do
     let(:generated_results) { generator.generate_results }
 
@@ -455,7 +456,6 @@ RSpec.describe Survey::ResultsGenerator do
         expect(page_result[:questionResponseCount]).to eq(22)
         expect(page_result[:pageNumber]).to eq(1)
         expect(page_result[:questionNumber]).to be_nil
-        expect(page_result[:logic]).to eq({ nextPageNumber: 2, numQuestionsSkipped: 0 })
       end
     end
 
@@ -473,7 +473,6 @@ RSpec.describe Survey::ResultsGenerator do
           hidden: false,
           pageNumber: nil,
           questionNumber: 1,
-          logic: {},
           textResponses: [
             { answer: 'Blue' },
             { answer: 'Green' },
@@ -489,7 +488,7 @@ RSpec.describe Survey::ResultsGenerator do
 
       it 'returns a single result for a text field' do
         expected_result_text_field[:questionNumber] = nil # Question number is null when requesting a single result
-        expect(generator.generate_results(field_id: text_field.id)).to match expected_result_text_field
+        expect(generator.generate_result_for_field(text_field.id)).to match expected_result_text_field
       end
 
       it 'returns the results for an unanswered field' do
@@ -501,7 +500,6 @@ RSpec.describe Survey::ResultsGenerator do
             hidden: false,
             pageNumber: nil,
             questionNumber: 7,
-            logic: {},
             question: { 'en' => 'Nobody wants to answer me' },
             required: false,
             grouped: false,
@@ -526,7 +524,6 @@ RSpec.describe Survey::ResultsGenerator do
             hidden: false,
             pageNumber: nil,
             questionNumber: 2,
-            logic: {},
             totalResponseCount: 27,
             questionResponseCount: 0,
             textResponses: []
@@ -551,7 +548,6 @@ RSpec.describe Survey::ResultsGenerator do
           hidden: false,
           pageNumber: nil,
           questionNumber: 3,
-          logic: {},
           totalResponseCount: 27,
           questionResponseCount: 4,
           totalPickCount: 33,
@@ -581,7 +577,7 @@ RSpec.describe Survey::ResultsGenerator do
 
       it 'returns a single result for multiselect' do
         expected_result_multiselect[:questionNumber] = nil
-        expect(generator.generate_results(field_id: multiselect_field.id)).to match expected_result_multiselect
+        expect(generator.generate_result_for_field(multiselect_field.id)).to match expected_result_multiselect
       end
     end
 
@@ -601,12 +597,6 @@ RSpec.describe Survey::ResultsGenerator do
           hidden: false,
           pageNumber: nil,
           questionNumber: nil,
-          logic: {
-            answer: {
-              2 => { id: "#{linear_scale_field.id}_2", nextPageNumber: 2, numQuestionsSkipped: 0 },
-              'no_answer' => { id: "#{linear_scale_field.id}_no_answer", nextPageNumber: 2, numQuestionsSkipped: 0 }
-            }
-          },
           totalResponseCount: 27,
           questionResponseCount: 22,
           totalPickCount: 27,
@@ -640,8 +630,7 @@ RSpec.describe Survey::ResultsGenerator do
       end
 
       it 'returns a single result for a linear scale field' do
-        expected_result_linear_scale[:logic] = {} # Logic is not returns when requesting a single result
-        expect(generator.generate_results(field_id: linear_scale_field.id)).to match expected_result_linear_scale
+        expect(generator.generate_result_for_field(linear_scale_field.id)).to match expected_result_linear_scale
       end
 
       context 'when not all minimum and maximum labels are configured for linear scale fields' do
@@ -657,7 +646,6 @@ RSpec.describe Survey::ResultsGenerator do
               'fr-FR' => '5',
               'nl-NL' => '5'
             }
-            result[:logic] = {} # Logic is not returns when requesting a single result
           end
         end
 
@@ -669,7 +657,7 @@ RSpec.describe Survey::ResultsGenerator do
         end
 
         it 'returns minimum and maximum labels as numbers' do
-          expect(generator.generate_results(field_id: linear_scale_field.id)).to match expected_result_linear_scale_without_min_and_max_labels
+          expect(generator.generate_result_for_field(linear_scale_field.id)).to match expected_result_linear_scale_without_min_and_max_labels
         end
       end
     end
@@ -688,7 +676,6 @@ RSpec.describe Survey::ResultsGenerator do
           grouped: false,
           description: { 'en' => 'Please rate your experience from 1 (poor) to 5 (excellent).' },
           hidden: false,
-          logic: {},
           pageNumber: nil,
           questionNumber: nil,
           totalResponseCount: 27,
@@ -724,7 +711,7 @@ RSpec.describe Survey::ResultsGenerator do
       end
 
       it 'returns a single result for a rating field' do
-        expect(generator.generate_results(field_id: rating_field.id)).to match expected_result_rating
+        expect(generator.generate_result_for_field(rating_field.id)).to match expected_result_rating
       end
     end
 
@@ -740,7 +727,6 @@ RSpec.describe Survey::ResultsGenerator do
           required: false,
           grouped: false,
           hidden: false,
-          logic: {},
           totalResponseCount: 27,
           questionResponseCount: 5,
           pageNumber: nil,
@@ -793,7 +779,7 @@ RSpec.describe Survey::ResultsGenerator do
 
       it 'returns a single result for a linear scale field' do
         expected_result_matrix_linear_scale[:questionNumber] = nil # Question number is null when requesting a single result
-        expect(generator.generate_results(field_id: matrix_linear_scale_field.id)).to match expected_result_matrix_linear_scale
+        expect(generator.generate_result_for_field(matrix_linear_scale_field.id)).to match expected_result_matrix_linear_scale
       end
     end
 
@@ -813,7 +799,6 @@ RSpec.describe Survey::ResultsGenerator do
           hidden: false,
           pageNumber: nil,
           questionNumber: nil,
-          logic: {},
           totalResponseCount: 27,
           questionResponseCount: 6,
           totalPickCount: 27,
@@ -850,7 +835,7 @@ RSpec.describe Survey::ResultsGenerator do
       end
 
       it 'returns a single result for a select field' do
-        expect(generator.generate_results(field_id: select_field.id)).to match expected_result_select
+        expect(generator.generate_result_for_field(select_field.id)).to match expected_result_select
       end
     end
 
@@ -868,7 +853,6 @@ RSpec.describe Survey::ResultsGenerator do
           hidden: false,
           pageNumber: nil,
           questionNumber: 14,
-          logic: {},
           totalResponseCount: 27,
           questionResponseCount: 4,
           average_rankings: {
@@ -924,7 +908,6 @@ RSpec.describe Survey::ResultsGenerator do
           hidden: false,
           pageNumber: nil,
           questionNumber: 6,
-          logic: {},
           totalResponseCount: 27,
           questionResponseCount: 3,
           totalPickCount: 27,
@@ -975,7 +958,6 @@ RSpec.describe Survey::ResultsGenerator do
           hidden: false,
           pageNumber: nil,
           questionNumber: 8,
-          logic: {},
           totalResponseCount: 27,
           questionResponseCount: 1,
           files: [
@@ -1001,7 +983,6 @@ RSpec.describe Survey::ResultsGenerator do
           hidden: false,
           pageNumber: nil,
           questionNumber: 9,
-          logic: {},
           totalResponseCount: 27,
           questionResponseCount: 1,
           files: [
@@ -1026,7 +1007,6 @@ RSpec.describe Survey::ResultsGenerator do
           hidden: false,
           pageNumber: nil,
           questionNumber: 10,
-          logic: {},
           questionResponseCount: 2,
           totalResponseCount: 27,
           customFieldId: point_field.id,
@@ -1054,7 +1034,6 @@ RSpec.describe Survey::ResultsGenerator do
           hidden: false,
           pageNumber: nil,
           questionNumber: 11,
-          logic: {},
           questionResponseCount: 2,
           totalResponseCount: 27,
           customFieldId: line_field.id,
@@ -1082,7 +1061,6 @@ RSpec.describe Survey::ResultsGenerator do
           hidden: false,
           pageNumber: nil,
           questionNumber: 12,
-          logic: {},
           questionResponseCount: 2,
           totalResponseCount: 27,
           customFieldId: polygon_field.id,
@@ -1110,7 +1088,6 @@ RSpec.describe Survey::ResultsGenerator do
           hidden: false,
           pageNumber: nil,
           questionNumber: 13,
-          logic: {},
           questionResponseCount: 1,
           totalResponseCount: 27,
           customFieldId: number_field.id,

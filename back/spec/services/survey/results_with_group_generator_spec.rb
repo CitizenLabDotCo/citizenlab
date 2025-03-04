@@ -268,13 +268,7 @@ RSpec.describe Survey::ResultsWithGroupGenerator do
 
   # The following page for form submission should not be returned in the results
   let_it_be(:last_page_field) do
-    field = create(:custom_field_page, resource: form, key: 'survey_end')
-
-    # Update other fields with some (meaningless but valid) survey_end logic
-    linear_scale_field.update!(logic: { rules: [{ if: 2, goto_page_id: field.id }, { if: 'no_answer', goto_page_id: field.id }] })
-    page_field.update!(logic: { next_page_id: field.id })
-
-    field
+    create(:custom_field_page, resource: form, key: 'survey_end')
   end
 
   let_it_be(:gender_user_custom_field) do
@@ -421,7 +415,24 @@ RSpec.describe Survey::ResultsWithGroupGenerator do
   end
 
   describe 'generate_results' do
-    let(:generated_results) { generator.generate_results }
+    it 'it is not implemented and returns an error' do
+      generator = described_class.new(survey_phase)
+      expect { generator.generate_results }.to raise_error(NotImplementedError)
+    end
+  end
+
+  describe 'generate_result_for_field' do
+    describe 'errors' do
+      it 'raises an error if the group field is not found' do
+        generator = described_class.new(survey_phase, group_field_id: '12345')
+        expect { generator.generate_result_for_field('missing_field') }.to raise_error('Question not found')
+      end
+
+      it 'raises an error if the user group field is not found' do
+        generator = described_class.new(survey_phase, group_mode: 'user_field', group_field_id: '12345')
+        expect { generator.generate_result_for_field('missing_field') }.to raise_error(ActiveRecord::RecordNotFound)
+      end
+    end
 
     describe 'multi-select field' do
       let(:expected_result_multiselect) do
@@ -439,7 +450,6 @@ RSpec.describe Survey::ResultsWithGroupGenerator do
           hidden: false,
           pageNumber: nil,
           questionNumber: 3,
-          logic: {},
           totalResponseCount: 27,
           questionResponseCount: 4,
           totalPickCount: 33,
@@ -580,7 +590,7 @@ RSpec.describe Survey::ResultsWithGroupGenerator do
             group_mode: 'user_field',
             group_field_id: gender_user_custom_field.id
           )
-          expect(generator.generate_results(field_id: multiselect_field.id)).to match(
+          expect(generator.generate_result_for_field(multiselect_field.id)).to match(
             expected_result_multiselect_with_user_field_grouping
           )
         end
@@ -590,7 +600,7 @@ RSpec.describe Survey::ResultsWithGroupGenerator do
             survey_phase,
             group_field_id: select_field.id
           )
-          expect(generator.generate_results(field_id: multiselect_field.id)).to match(
+          expect(generator.generate_result_for_field(multiselect_field.id)).to match(
             expected_result_multiselect_with_select_field_grouping
           )
         end
@@ -613,7 +623,6 @@ RSpec.describe Survey::ResultsWithGroupGenerator do
           hidden: false,
           pageNumber: nil,
           questionNumber: nil,
-          logic: {},
           totalResponseCount: 27,
           questionResponseCount: 22,
           totalPickCount: 27,
@@ -657,7 +666,6 @@ RSpec.describe Survey::ResultsWithGroupGenerator do
             hidden: false,
             pageNumber: nil,
             questionNumber: nil,
-            logic: {},
             totalResponseCount: 27,
             questionResponseCount: 22,
             totalPickCount: 27,
@@ -714,9 +722,7 @@ RSpec.describe Survey::ResultsWithGroupGenerator do
           generator = described_class.new(survey_phase,
             group_mode: 'survey_question',
             group_field_id: select_field.id)
-          result = generator.generate_results(
-            field_id: linear_scale_field.id
-          )
+          result = generator.generate_result_for_field(linear_scale_field.id)
           expect(result).to match grouped_linear_scale_results
         end
       end
@@ -736,7 +742,6 @@ RSpec.describe Survey::ResultsWithGroupGenerator do
           grouped: false,
           description: { 'en' => 'Please rate your experience from 1 (poor) to 5 (excellent).' },
           hidden: false,
-          logic: {},
           pageNumber: nil,
           questionNumber: nil,
           totalResponseCount: 27,
@@ -780,7 +785,6 @@ RSpec.describe Survey::ResultsWithGroupGenerator do
             grouped: true,
             description: { 'en' => 'Please rate your experience from 1 (poor) to 5 (excellent).' },
             hidden: false,
-            logic: {},
             pageNumber: nil,
             questionNumber: nil,
             totalResponseCount: 27,
@@ -839,9 +843,7 @@ RSpec.describe Survey::ResultsWithGroupGenerator do
           generator = described_class.new(survey_phase,
             group_mode: 'survey_question',
             group_field_id: select_field.id)
-          result = generator.generate_results(
-            field_id: rating_field.id
-          )
+          result = generator.generate_result_for_field(rating_field.id)
           expect(result).to match grouped_rating_results
         end
       end
@@ -863,7 +865,6 @@ RSpec.describe Survey::ResultsWithGroupGenerator do
           hidden: false,
           pageNumber: nil,
           questionNumber: nil,
-          logic: {},
           totalResponseCount: 27,
           questionResponseCount: 6,
           totalPickCount: 27,
@@ -991,7 +992,6 @@ RSpec.describe Survey::ResultsWithGroupGenerator do
             hidden: false,
             pageNumber: nil,
             questionNumber: nil,
-            logic: {},
             totalResponseCount: 27,
             questionResponseCount: 6,
             totalPickCount: 27,
@@ -1061,29 +1061,25 @@ RSpec.describe Survey::ResultsWithGroupGenerator do
           generator = described_class.new(survey_phase,
             group_mode: 'user_field',
             group_field_id: gender_user_custom_field.id)
-          expect(generator.generate_results(
-            field_id: select_field.id
-          )).to match expected_result_select_with_gender_user_field_grouping
+          expect(generator.generate_result_for_field(select_field.id)).to match expected_result_select_with_gender_user_field_grouping
         end
 
         it 'groups select by domicile user field' do
           generator = described_class.new(survey_phase,
             group_mode: 'user_field',
             group_field_id: domicile_user_custom_field.id)
-          result = generator.generate_results(field_id: select_field.id)
+          result = generator.generate_result_for_field(select_field.id)
           expect(result).to match expected_result_select_with_domicile_user_field_grouping
 
           # Additional check to ensure we're only making one query to fetch the areas
-          expect { generator.generate_results(field_id: select_field.id) }.not_to exceed_query_limit(1).with(/SELECT.*areas/)
+          expect { generator.generate_result_for_field(select_field.id) }.not_to exceed_query_limit(1).with(/SELECT.*areas/)
         end
 
         it 'groups by linear scale' do
           generator = described_class.new(survey_phase,
             group_mode: 'survey_question',
             group_field_id: linear_scale_field.id)
-          result = generator.generate_results(
-            field_id: select_field.id
-          )
+          result = generator.generate_result_for_field(select_field.id)
 
           expect(result).to match expected_result_select_sliced_by_linear_scale
         end
@@ -1106,7 +1102,6 @@ RSpec.describe Survey::ResultsWithGroupGenerator do
           hidden: false,
           pageNumber: nil,
           questionNumber: 6,
-          logic: {},
           totalResponseCount: 27,
           questionResponseCount: 3,
           totalPickCount: 27,
@@ -1145,9 +1140,7 @@ RSpec.describe Survey::ResultsWithGroupGenerator do
           generator = described_class.new(survey_phase,
             group_mode: 'survey_question',
             group_field_id: select_field.id)
-          result = generator.generate_results(
-            field_id: multiselect_image_field.id
-          )
+          result = generator.generate_result_for_field(multiselect_image_field.id)
 
           expect(result[:answers]).to match [
             {

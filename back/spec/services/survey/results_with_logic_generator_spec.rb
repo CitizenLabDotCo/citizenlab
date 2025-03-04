@@ -8,6 +8,17 @@ RSpec.describe Survey::ResultsWithLogicGenerator do
   let_it_be(:project) { create(:single_phase_native_survey_project) }
   let_it_be(:survey_phase) { project.phases.first }
 
+  describe 'generate_result_for_field' do
+    it 'it is not implemented and returns an error' do
+      generator = described_class.new(survey_phase)
+      expect { generator.generate_result_for_field('12345') }.to raise_error(NotImplementedError)
+    end
+  end
+
+  describe 'generate_results' do
+    # TODO: JS - Add some tests that test the full output
+  end
+
   describe 'add_logic_to_results' do
     # NOTE: Most of the object below is not needed for the tests, but it's included for completeness
     # Field IDs & Page IDs that would be uuids normally are replaced here for readability

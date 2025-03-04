@@ -9,25 +9,23 @@ class Survey::ResultsGenerator < FieldVisitorService
     @locales = AppConfiguration.instance.settings('core', 'locales')
   end
 
-  def generate_results(field_id: nil)
-    if field_id
-      field = find_question(field_id)
-      result = visit field
-      cleanup_single_result(result)
-    else
-      results = fields.filter_map do |f|
-        visit f
-      end
+  # Get the results for a single survey question
+  def generate_result_for_field(field_id)
+    field = find_question(field_id)
+    visit field
+  end
 
-      results = add_question_numbers_to_results results
-      results = add_page_response_count_to_results results
-      results = cleanup_results results
+  # Get the results for a all survey questions
+  def generate_results
+    results = fields.filter_map { |f| visit f }
+    results = add_question_numbers_to_results results
+    results = add_page_response_count_to_results results
+    results = cleanup_results results
 
-      {
-        results: results,
-        totalSubmissions: inputs.size
-      }
-    end
+    {
+      results: results,
+      totalSubmissions: inputs.size
+    }
   end
 
   def visit_number(field)
@@ -139,8 +137,7 @@ class Survey::ResultsGenerator < FieldVisitorService
       totalResponseCount: @inputs.size,
       questionResponseCount: response_count,
       pageNumber: nil,
-      questionNumber: nil,
-      logic: {} # TODO: Should be able to move to other service
+      questionNumber: nil
     }
   end
 
@@ -344,9 +341,5 @@ class Survey::ResultsGenerator < FieldVisitorService
     # Remove the last page - needed for calculations, but not for display
     results.pop if results.last[:inputType] == 'page'
     results
-  end
-
-  def cleanup_single_result(result)
-    result
   end
 end
