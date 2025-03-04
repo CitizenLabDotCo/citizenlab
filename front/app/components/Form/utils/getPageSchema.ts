@@ -1,5 +1,7 @@
 import { JsonSchema } from '@jsonforms/core';
 
+import { getFieldNameFromPath } from 'utils/JSONFormUtils';
+
 import { FormValues, PageType } from '../typings';
 
 import removeRequiredOtherFields from './removeRequiredOtherFields';
@@ -13,7 +15,7 @@ const getPageSchema = (
   data: FormValues
 ): JsonSchema => {
   const currentPageElementNames = pageCategorization.elements.map(
-    (uiSchemaElement) => uiSchemaElement.scope.split('/').pop()
+    (uiSchemaElement) => getFieldNameFromPath(uiSchemaElement.scope)
   );
 
   const required = (schema.required || []).filter((requiredElementName) =>

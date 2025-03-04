@@ -64,7 +64,8 @@ RSpec.describe InputJsonSchemaGeneratorService do
                   name: { type: 'string' }
                 }
               }
-            }
+            },
+            'survey_end' => nil
           },
           required: %w[title_multiloc body_multiloc]
         })
@@ -126,7 +127,8 @@ RSpec.describe InputJsonSchemaGeneratorService do
                 }
               }
             },
-            custom_field.key => { type: 'number' }
+            custom_field.key => { type: 'number' },
+            'survey_end' => nil
           },
           required: match_array(['title_multiloc', 'body_multiloc', custom_field.key])
         })

@@ -34,7 +34,7 @@ resource 'Ideas' do
             location_description
           ]
           %i[en fr-FR nl-NL].each do |locale|
-            expect(json_attributes[:json_schema_multiloc][locale][:properties].keys).to eq(visible_built_in_field_keys + [custom_field.key.to_sym])
+            expect(json_attributes[:json_schema_multiloc][locale][:properties].keys).to eq(visible_built_in_field_keys + [custom_field.key.to_sym] + %i[survey_end])
           end
         end
       end

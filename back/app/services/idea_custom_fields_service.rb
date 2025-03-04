@@ -6,15 +6,33 @@ class IdeaCustomFieldsService
     @participation_method = custom_form.participation_context.pmethod
   end
 
+  # def all_fields
+  #   if @custom_form.custom_field_ids.empty?
+  #     @participation_method.default_fields @custom_form
+  #   else
+  #     @custom_form.custom_fields.includes(
+  #       :map_config,
+  #       options: [:image]
+  #     )
+  #   end
+  # end
+
   def all_fields
-    if @custom_form.custom_field_ids.empty?
-      @participation_method.default_fields @custom_form
+    fields = if @custom_form.custom_field_ids.empty?
+      @participation_method.default_fields(@custom_form)
     else
-      @custom_form.custom_fields.includes(
-        :map_config,
-        options: [:image]
-      )
+      @custom_form.custom_fields.includes(:map_config, options: [:image])
     end
+
+    fields = fields.to_a
+
+    survey_end_field = fields.find { |f| f.key == 'survey_end' }
+    if survey_end_field
+      fields.delete(survey_end_field)
+      fields << survey_end_field
+    end
+
+    fields
   end
 
   def xlsx_exportable_fields
@@ -76,7 +94,7 @@ class IdeaCustomFieldsService
     field_params = field_params.to_h if field_params.is_a?(ActionController::Parameters)
 
     constraints[:locks]&.each do |attribute, value|
-      if value == true && field_params[attribute] != field[attribute] && !section1_title?(field, attribute)
+      if value == true && field_params[attribute] != field[attribute] && !page1_title?(field, attribute)
         field.errors.add :constraints, "Cannot change #{attribute}. It is locked."
       end
     end
@@ -90,7 +108,7 @@ class IdeaCustomFieldsService
     default_field = default_fields.find { |f| f.code == field.code }
 
     constraints[:locks]&.each do |attribute, value|
-      if value == true && field[attribute] != default_field[attribute] && !section1_title?(field, attribute)
+      if value == true && field[attribute] != default_field[attribute] && !page1_title?(field, attribute)
         field.errors.add :constraints, "Cannot change #{attribute} from default value. It is locked."
       end
     end
@@ -104,21 +122,10 @@ class IdeaCustomFieldsService
   def check_form_structure(fields, errors)
     return if fields.empty?
 
-    first_field_type = @participation_method.supports_pages_in_form? ? 'page' : 'section'
-    cannot_have_type = @participation_method.supports_pages_in_form? ? 'section' : 'page'
+    first_field_type = 'page'
     if fields[0][:input_type] != first_field_type
       error = { error: "First field must be of type '#{first_field_type}'" }
       errors['0'] = { structure: [error] }
-    end
-    fields.each_with_index do |field, index|
-      next unless field[:input_type] == cannot_have_type
-
-      error = { error: "Method '#{participation_method}' cannot contain fields with an input_type of '#{cannot_have_type}'" }
-      if errors[index.to_s] && errors[index.to_s][:structure]
-        errors[index.to_s][:structure] << error
-      else
-        errors[index.to_s] = { structure: [error] }
-      end
     end
   end
 
@@ -196,6 +203,12 @@ class IdeaCustomFieldsService
   # Constraints required for the front-end but response will always return input specific method
   def section1_title?(field, attribute)
     field.code == 'ideation_section1' && attribute == :title_multiloc
+  end
+
+  # Check required as it doesn't matter what is saved in title for page 1
+  # Constraints required for the front-end but response will always return input specific method
+  def page1_title?(field, attribute)
+    field.code == 'ideation_page1' && attribute == :title_multiloc
   end
 
   attr_reader :custom_form, :participation_method

@@ -1,26 +1,26 @@
 import React, { useCallback, useState } from 'react';
 
-import { Box, colors } from '@citizenlab/cl2-component-library';
+import { Box, colors, useBreakpoint } from '@citizenlab/cl2-component-library';
 import { omit } from 'lodash-es';
 import { Multiloc } from 'typings';
 
 import useIdeaFiles from 'api/idea_files/useIdeaFiles';
 import useDeleteIdeaImage from 'api/idea_images/useDeleteIdeaImage';
 import useIdeaImages from 'api/idea_images/useIdeaImages';
-import { IIdeaUpdate } from 'api/ideas/types';
+import { IdeaPublicationStatus, IIdeaUpdate } from 'api/ideas/types';
 import useIdeaById from 'api/ideas/useIdeaById';
 import useUpdateIdea from 'api/ideas/useUpdateIdea';
 
 import useInputSchema from 'hooks/useInputSchema';
 
-import GoBackToIdeaPage from 'containers/IdeasEditPage/GoBackToIdeaPage';
+import EditIdeaHeading from 'containers/IdeaHeading/EditIdeaHeading';
 import ideaFormMessages from 'containers/IdeasNewPage/messages';
+import { calculateDynamicHeight } from 'containers/IdeasNewSurveyPage/IdeasNewSurveyForm/utils';
 
 import ContentUploadDisclaimer from 'components/ContentUploadDisclaimer';
 import Form from 'components/Form';
 import { AjvErrorGetter, ApiErrorGetter } from 'components/Form/typings';
 import FullPageSpinner from 'components/UI/FullPageSpinner';
-import PageContainer from 'components/UI/PageContainer';
 
 import { FormattedMessage } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
@@ -43,6 +43,7 @@ export interface FormValues {
   location_point_geojson?: GeoJSON.Point;
   topic_ids?: string[];
   cosponsor_ids?: string[];
+  publication_status?: IdeaPublicationStatus;
 }
 
 interface Props {
@@ -55,6 +56,7 @@ const IdeasEditForm = ({ ideaId }: Props) => {
   const [loading, setLoading] = useState(false);
   const { data: idea } = useIdeaById(ideaId);
   const { mutate: deleteIdeaImage } = useDeleteIdeaImage();
+  const isSmallerThanPhone = useBreakpoint('phone');
 
   const { mutateAsync: updateIdea } = useUpdateIdea();
   const { data: remoteImages } = useIdeaImages(ideaId);
@@ -139,16 +141,19 @@ const IdeasEditForm = ({ ideaId }: Props) => {
   }
 
   const handleDisclaimer = (data: FormValues) => {
-    const disclamerNeeded =
+    const disclaimerNeeded =
       data.idea_files_attributes ||
       data.idea_images_attributes ||
       Object.values(data.body_multiloc).some((value) => value.includes('<img'));
 
     setFormData(data);
-    if (disclamerNeeded) {
-      return setIsDisclaimerOpened(true);
-    } else {
+    if (data.publication_status === 'published') {
+      if (disclaimerNeeded) {
+        return setIsDisclaimerOpened(true);
+      }
       return onSubmit(data);
+    } else {
+      // Add handling draft ideas
     }
   };
 
@@ -209,57 +214,78 @@ const IdeasEditForm = ({ ideaId }: Props) => {
     setLoading(false);
   };
 
+  const titleText = (
+    <FormattedMessage
+      {...{
+        idea: messages.formTitle,
+        option: messages.optionFormTitle,
+        project: messages.projectFormTitle,
+        question: messages.questionFormTitle,
+        issue: messages.issueFormTitle,
+        contribution: messages.contributionFormTitle,
+        initiative: messages.initiativeFormTitle,
+        petition: messages.petitionFormTitle,
+        proposal: messages.proposalFormTitle,
+      }[
+        // TODO: Fix this the next time the file is edited.
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+        uiSchema && uiSchema?.options?.inputTerm
+          ? uiSchema.options.inputTerm
+          : 'idea'
+      ]}
+    />
+  );
+
   return (
     <>
       <IdeasEditMeta ideaId={ideaId} projectId={projectId} />
-      <Box bg={colors.grey100}>
-        <Box p="32px">
-          <GoBackToIdeaPage idea={idea.data} />
+      <Box
+        w="100%"
+        bgColor={colors.grey100}
+        h="100vh"
+        position="fixed"
+        zIndex="1010"
+      >
+        <Box
+          mx="auto"
+          position="relative"
+          top={isSmallerThanPhone ? '0' : '40px'}
+          maxWidth="700px"
+        >
+          <EditIdeaHeading
+            idea={idea.data}
+            titleText={titleText}
+            projectId={projectId}
+          />
         </Box>
         <main id="e2e-idea-edit-page">
-          <PageContainer>
-            <Form
-              schema={schema}
-              uiSchema={uiSchema}
-              onSubmit={handleDisclaimer}
-              initialFormData={initialFormData}
-              inputId={idea.data.id}
-              getAjvErrorMessage={getAjvErrorMessage}
-              getApiErrorMessage={getApiErrorMessage}
-              config={'input'}
-              loading={loading}
-              title={
-                <Box
-                  width="100%"
-                  display="flex"
-                  flexDirection="column"
-                  justifyContent="center"
-                  alignItems="center"
-                  mb="40px"
-                >
-                  <FormattedMessage
-                    {...{
-                      idea: messages.formTitle,
-                      option: messages.optionFormTitle,
-                      project: messages.projectFormTitle,
-                      question: messages.questionFormTitle,
-                      issue: messages.issueFormTitle,
-                      contribution: messages.contributionFormTitle,
-                      initiative: messages.initiativeFormTitle,
-                      petition: messages.petitionFormTitle,
-                      proposal: messages.proposalFormTitle,
-                    }[
-                      // TODO: Fix this the next time the file is edited.
-                      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-                      uiSchema && uiSchema?.options?.inputTerm
-                        ? uiSchema.options.inputTerm
-                        : 'idea'
-                    ]}
-                  />
-                </Box>
-              }
-            />
-          </PageContainer>
+          <Box
+            display="flex"
+            justifyContent="center"
+            pt={isSmallerThanPhone ? '0' : '40px'}
+          >
+            <Box
+              background={colors.white}
+              maxWidth="700px"
+              w="100%"
+              // Height is recalculated on window resize via useWindowSize hook
+              h={calculateDynamicHeight(isSmallerThanPhone)}
+              pb={isSmallerThanPhone ? '0' : '80px'}
+            >
+              <Form
+                schema={schema}
+                uiSchema={uiSchema}
+                onSubmit={handleDisclaimer}
+                initialFormData={initialFormData}
+                inputId={idea.data.id}
+                getAjvErrorMessage={getAjvErrorMessage}
+                getApiErrorMessage={getApiErrorMessage}
+                config={'input'}
+                loading={loading}
+                showSubmitButton={false}
+              />
+            </Box>
+          </Box>
           <ContentUploadDisclaimer
             isDisclaimerOpened={isDisclaimerOpened}
             onAcceptDisclaimer={() => onAcceptDisclaimer(formData)}
