@@ -39,7 +39,6 @@ interface Props {
 }
 
 const CardImage = ({ phase, image, hideImagePlaceholder }: Props) => {
-  const participationMethod = phase?.attributes.participation_method;
   const votingMethod = phase?.attributes.voting_method;
 
   return (
@@ -52,10 +51,7 @@ const CardImage = ({ phase, image, hideImagePlaceholder }: Props) => {
 
       {!image && !hideImagePlaceholder && (
         <IdeaCardImageWrapper>
-          <ImagePlaceholder
-            participationMethod={participationMethod}
-            votingMethod={votingMethod}
-          />
+          <ImagePlaceholder votingMethod={votingMethod} />
         </IdeaCardImageWrapper>
       )}
     </>

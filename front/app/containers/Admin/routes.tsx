@@ -15,6 +15,9 @@ import { usePermission } from 'utils/permissions';
 
 import createDashboardRoutes, { dashboardRouteTypes } from './dashboard/routes';
 import ideasRoutes, { ideaRouteTypes } from './ideas/routes';
+import inspirationHubRoutes, {
+  inspirationHubRouteTypes,
+} from './inspirationHub/routes';
 import invitationsRoutes, { invitationRouteTypes } from './invitations/routes';
 import createAdminMessagingRoutes, {
   messagingRouteTypes,
@@ -56,7 +59,8 @@ export type AdminRouteTypes =
   | messagingRouteTypes
   | pagesAndMenuRouteTypes
   | projectsRouteTypes
-  | settingRouteTypes;
+  | settingRouteTypes
+  | inspirationHubRouteTypes;
 
 const isTemplatePreviewPage = (urlSegments: string[]) =>
   urlSegments.length === 4 &&
@@ -149,6 +153,7 @@ const createAdminRoutes = () => {
       projectFoldersRoutes(),
       ...reportingRoutes(),
       toolsRoutes(),
+      inspirationHubRoutes(),
       // This path is only reachable via URL.
       // It's a pragmatic solution to reduce workload
       // on the team so admins can set their favicon.

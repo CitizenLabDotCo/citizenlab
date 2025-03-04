@@ -117,4 +117,8 @@ export default defineMessages({
     id: 'app.containers.AdminPage.SideBar.projectManager',
     defaultMessage: 'Project manager',
   },
+  inspirationHub: {
+    id: 'app.containers.AdminPage.SideBar.inspirationHub',
+    defaultMessage: 'Inspiration hub',
+  },
 });

@@ -61,6 +61,13 @@ const navItems: NavItem[] = [
     message: 'tools',
   },
   {
+    name: 'inspirationHub',
+    link: '/admin/inspiration-hub',
+    iconName: 'globe',
+    message: 'inspirationHub',
+    featureNames: ['project_library'],
+  },
+  {
     name: 'menu',
     link: '/admin/pages-menu',
     iconName: 'organigram',
