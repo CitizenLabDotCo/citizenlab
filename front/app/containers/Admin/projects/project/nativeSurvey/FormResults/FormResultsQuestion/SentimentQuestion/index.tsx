@@ -62,7 +62,12 @@ const SentimentQuestion = ({ result }: Props) => {
                     </Text>
                   </Box>
                   <Text m="0px" color="green300">
-                    <Icon name="trend-up" fill="green300" />
+                    <Icon
+                      mr="4px"
+                      width="20px"
+                      name="trend-up"
+                      fill="green300"
+                    />
                     +12%
                   </Text>
                 </Box>
