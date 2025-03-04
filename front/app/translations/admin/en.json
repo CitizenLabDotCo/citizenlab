@@ -1861,6 +1861,7 @@
   "app.containers.AdminPage.ProjectEdit.survey.response": "{choiceCount, plural, no {responses} one {response} other {responses}}",
   "app.containers.AdminPage.ProjectEdit.survey.responseCount": "{choiceCount, plural, no {# responses} one {# response} other {# responses}}",
   "app.containers.AdminPage.ProjectEdit.survey.selectText2": "Multiple choice - choose one",
+  "app.containers.AdminPage.ProjectEdit.survey.sentiment_linear_scale": "Sentiment linear scale",
   "app.containers.AdminPage.ProjectEdit.survey.shapefile_upload": "Esri shapefile upload",
   "app.containers.AdminPage.ProjectEdit.survey.successMessage2": "Survey successfully saved",
   "app.containers.AdminPage.ProjectEdit.survey.supportArticleLink2": "https://support.govocal.com/en/articles/6673873-creating-an-in-platform-survey",
