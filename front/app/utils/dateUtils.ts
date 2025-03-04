@@ -127,6 +127,8 @@ export function timeAgo(dateInput: number, locale: SupportedLocale) {
         const approximateYearCount = Math.round(absoluteMonthCount / 12);
 
         // Check if we're close to a full year or multiple years (within half a month)
+        // This improves readability by converting values like "12 months ago" to "1 year ago"
+        // The 0.5 threshold ensures values between 11.5-12.5 months are shown as "1 year"
         const isCloseToFullYear =
           approximateYearCount >= 1 &&
           Math.abs(absoluteMonthCount - approximateYearCount * 12) <= 0.5;
