@@ -1,8 +1,8 @@
-import { renderHook } from '@testing-library/react-hooks';
 import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
+import { renderHook, waitFor } from 'utils/testUtils/rtl';
 
 import endpoints, {
   phaseApiPath,
@@ -20,7 +20,7 @@ describe('useSurveyResults', () => {
   afterAll(() => server.close());
 
   it('returns data correctly for phase', async () => {
-    const { result, waitFor } = renderHook(
+    const { result } = renderHook(
       () => useSurveyResults({ phaseId: 'phaseId', filterLogicIds: [] }),
       {
         wrapper: createQueryClientWrapper(),
@@ -41,7 +41,7 @@ describe('useSurveyResults', () => {
       })
     );
 
-    const { result, waitFor } = renderHook(
+    const { result } = renderHook(
       () => useSurveyResults({ phaseId: 'phaseId', filterLogicIds: [] }),
       {
         wrapper: createQueryClientWrapper(),

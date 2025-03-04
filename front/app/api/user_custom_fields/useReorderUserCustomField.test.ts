@@ -1,8 +1,8 @@
-import { renderHook, act } from '@testing-library/react-hooks';
 import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
+import { renderHook, waitFor, act } from 'utils/testUtils/rtl';
 
 import { userCustomFieldsData } from './__mocks__/useUserCustomFields';
 import useReorderUserCustomField from './useReorderUserCustomField';
@@ -22,7 +22,7 @@ describe('useReorderUserCustomField', () => {
   afterAll(() => server.close());
 
   it('mutates data correctly', async () => {
-    const { result, waitFor } = renderHook(() => useReorderUserCustomField(), {
+    const { result } = renderHook(() => useReorderUserCustomField(), {
       wrapper: createQueryClientWrapper(),
     });
 
@@ -44,7 +44,7 @@ describe('useReorderUserCustomField', () => {
       })
     );
 
-    const { result, waitFor } = renderHook(() => useReorderUserCustomField(), {
+    const { result } = renderHook(() => useReorderUserCustomField(), {
       wrapper: createQueryClientWrapper(),
     });
     act(() => {

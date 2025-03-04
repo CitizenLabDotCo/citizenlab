@@ -3,7 +3,8 @@ describe('Spotlight widget', () => {
     // Go to the homepage builder
     cy.setAdminLoginCookie();
     cy.visit('en/admin/pages-menu/homepage-builder');
-
+    cy.get('#e2e-content-builder-frame').should('exist');
+    cy.wait(1000);
     // Drag in widget
     cy.get('#e2e-draggable-spotlight').dragAndDrop(
       '#e2e-content-builder-frame',
@@ -27,7 +28,10 @@ describe('Spotlight widget', () => {
     // Delete widget again
     cy.setAdminLoginCookie();
     cy.visit('en/admin/pages-menu/homepage-builder');
-    cy.get('.e2e-spotlight-widget').first().parent().click({ force: true });
+    cy.get('#e2e-content-builder-frame').should('exist');
+    cy.wait(1000);
+
+    cy.get('.e2e-spotlight-widget').click('top', { force: true });
 
     cy.get('#e2e-delete-button').click();
 
