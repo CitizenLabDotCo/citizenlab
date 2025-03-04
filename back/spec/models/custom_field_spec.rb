@@ -291,22 +291,6 @@ RSpec.describe CustomField do
       page_field.title_multiloc = nil
       expect(page_field.valid?).to be true
     end
-
-    it 'does not happen when the field is a section' do
-      section_field = described_class.new(
-        resource: form,
-        input_type: 'section',
-        key: 'field_key',
-        title_multiloc: { 'en' => '' }
-      )
-      expect(section_field.valid?).to be true
-
-      section_field.title_multiloc = {}
-      expect(section_field.valid?).to be true
-
-      section_field.title_multiloc = nil
-      expect(section_field.valid?).to be true
-    end
   end
 
   context 'hooks' do
@@ -479,12 +463,6 @@ RSpec.describe CustomField do
         expect(field.answer_visible_to).to eq 'admins'
       end
 
-      it 'sets public by default if field is a section' do
-        field.input_type = 'section'
-        field.validate!
-        expect(field.answer_visible_to).to eq 'public'
-      end
-
       it 'sets public by default if field is a page' do
         field.input_type = 'page'
         field.page_layout = 'default'
@@ -504,7 +482,7 @@ RSpec.describe CustomField do
 
       it 'always sets the value to "admins"' do
         field.input_type = 'page'
-        field.input_type = 'section'
+        field.page_layout = 'default'
         field.code = 'gender'
         field.validate!
         expect(field.answer_visible_to).to eq 'admins'
