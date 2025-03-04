@@ -151,6 +151,10 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.survey.linear_scale2',
     defaultMessage: 'Linear scale',
   },
+  sentiment_linear_scale: {
+    id: 'app.containers.AdminPage.ProjectEdit.survey.sentiment_linear_scale',
+    defaultMessage: 'Sentiment linear scale',
+  },
   rating: {
     id: 'app.containers.AdminPage.ProjectEdit.survey.rating',
     defaultMessage: 'Rating',
