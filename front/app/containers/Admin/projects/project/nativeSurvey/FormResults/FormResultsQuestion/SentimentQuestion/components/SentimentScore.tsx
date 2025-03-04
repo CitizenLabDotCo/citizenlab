@@ -15,7 +15,7 @@ const SentimentScore = ({ answers }: Props) => {
     } else if (answer === 'neutral') {
       return colors.grey400;
     } else if (answer === 'high') {
-      return colors.green300;
+      return colors.green400;
     }
 
     return '';

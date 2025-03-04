@@ -6,16 +6,11 @@ import {
   Title,
   Text,
   Icon,
-  Tooltip,
 } from '@citizenlab/cl2-component-library';
 
 import { ResultUngrouped } from 'api/survey_results/types';
 
-import useLocalize from 'hooks/useLocalize';
-
 import T from 'components/T';
-
-import { useIntl } from 'utils/cl-intl';
 
 import InputType from '../InputType';
 
@@ -27,9 +22,6 @@ type Props = {
 };
 
 const SentimentQuestion = ({ result }: Props) => {
-  const localize = useLocalize();
-  const { formatMessage } = useIntl();
-
   const answers: SentimentAnswers = useMemo(() => {
     return parseResult(result);
   }, [result]);
@@ -42,8 +34,6 @@ const SentimentQuestion = ({ result }: Props) => {
     totalResponseCount,
     questionResponseCount,
   } = result;
-
-  const totalSubmissions = totalResponseCount;
 
   return (
     <Accordion
@@ -59,23 +49,16 @@ const SentimentQuestion = ({ result }: Props) => {
             <Title variant="h4" mt="12px" mb="12px">
               {questionNumber}. <T value={question} />
             </Title>
-            <Tooltip
-              disabled={totalResponseCount === totalSubmissions}
-              placement="bottom-start"
-              content={'Tooltip'}
-              theme="dark"
-            >
-              <InputType
-                inputType={inputType}
-                required={required}
-                totalSubmissions={totalResponseCount}
-                totalResponses={questionResponseCount}
-              />
-            </Tooltip>
+            <InputType
+              inputType={inputType}
+              required={required}
+              totalSubmissions={totalResponseCount}
+              totalResponses={questionResponseCount}
+            />
           </Box>
 
-          <Box display="flex" gap="24px">
-            <Text m="0px">12 Comments</Text>
+          <Box display="flex" gap="160px">
+            <Text my="auto">12 Comments</Text>
             <Box my="auto">
               <Box>
                 <Box display="flex" justifyContent="space-between" mb="8px">
@@ -93,12 +76,12 @@ const SentimentQuestion = ({ result }: Props) => {
                       /5
                     </Text>
                   </Box>
-                  <Text m="0px" color="green300">
+                  <Text m="0px" color="green400">
                     <Icon
                       mr="4px"
                       width="20px"
                       name="trend-up"
-                      fill="green300"
+                      fill="green200"
                     />
                     +12%
                   </Text>
