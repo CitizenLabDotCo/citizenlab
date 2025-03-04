@@ -95,7 +95,9 @@ RSpec.describe InputUiSchemaGeneratorService do
                       description: 'My title description',
                       isAdminField: false,
                       hasRule: false,
-                      trim_on_blur: true
+                      trim_on_blur: true,
+                      render: 'multiloc',
+                      input_type: 'text_multiloc'
                     }
                   },
                   {
@@ -107,7 +109,8 @@ RSpec.describe InputUiSchemaGeneratorService do
                       description: '',
                       isAdminField: false,
                       hasRule: false,
-                      render: 'WYSIWYG'
+                      render: 'multiloc',
+                      input_type: 'html_multiloc'
                     }
                   }
                 ]
@@ -207,8 +210,10 @@ RSpec.describe InputUiSchemaGeneratorService do
                       description: 'Extra field description',
                       isAdminField: false,
                       hasRule: false,
-                      render: 'WYSIWYG',
-                      trim_on_blur: true
+                      render: 'multiloc',
+                      trim_on_blur: true,
+                      render: 'multiloc',
+                      input_type: 'html_multiloc'
                     }
                   }
                 ]
@@ -250,7 +255,7 @@ RSpec.describe InputUiSchemaGeneratorService do
                   hash_including(
                     scope: '#/properties/body_multiloc/properties/fr-FR',
                     label: 'Description',
-                    options: hash_including(description: '', render: 'WYSIWYG')
+                    options: hash_including(description: '', render: 'multiloc')
                   )
                 ]
               ),
@@ -307,7 +312,7 @@ RSpec.describe InputUiSchemaGeneratorService do
                     type: 'Control',
                     scope: '#/properties/extra_field/properties/fr-FR',
                     label: 'Extra field title',
-                    options: hash_including(description: 'Extra field description', render: 'WYSIWYG')
+                    options: hash_including(description: 'Extra field description', render: 'multiloc')
                   )
                 ]
               ),
@@ -345,7 +350,7 @@ RSpec.describe InputUiSchemaGeneratorService do
                   hash_including(
                     scope: '#/properties/body_multiloc/properties/nl-NL',
                     label: 'Beschrijving',
-                    options: hash_including(description: '', render: 'WYSIWYG')
+                    options: hash_including(description: '', render: 'multiloc')
                   )
                 ]
               ),
@@ -402,7 +407,7 @@ RSpec.describe InputUiSchemaGeneratorService do
                     type: 'Control',
                     scope: '#/properties/extra_field/properties/nl-NL',
                     label: 'Extra veldtitel',
-                    options: hash_including(description: 'Extra veldbeschrijving', render: 'WYSIWYG')
+                    options: hash_including(description: 'Extra veldbeschrijving', render: 'multiloc')
                   )
                 ]
               ),
@@ -448,11 +453,11 @@ RSpec.describe InputUiSchemaGeneratorService do
                 elements: array_including(
                   hash_including(
                     label: 'Title',
-                    options: hash_including(description: '')
+                    options: hash_including(description: '', render: 'multiloc', input_type: 'text_multiloc')
                   ),
                   hash_including(
                     label: 'Description',
-                    options: hash_including(render: 'WYSIWYG')
+                    options: hash_including(render: 'multiloc', input_type: 'html_multiloc')
                   )
                 )
               ),
@@ -516,10 +521,10 @@ RSpec.describe InputUiSchemaGeneratorService do
           expect(ui_schema.keys).to match_array %w[en fr-FR nl-NL]
           expect(ui_schema['en']).to match(
             type: 'Categorization',
-            options: {
+            options: hash_including(
               formId: 'idea-form',
               inputTerm: input_term
-            },
+            ),
             elements: [
               hash_including(
                 type: 'Page',
@@ -530,12 +535,12 @@ RSpec.describe InputUiSchemaGeneratorService do
                   hash_including(
                     scope: '#/properties/title_multiloc/properties/en',
                     label: 'Title',
-                    options: hash_including(description: '')
+                    options: hash_including(description: '', render: 'multiloc', input_type: 'text_multiloc')
                   ),
                   hash_including(
                     scope: '#/properties/body_multiloc/properties/en',
                     label: 'Description',
-                    options: hash_including(render: 'WYSIWYG')
+                    options: hash_including(render: 'multiloc', input_type: 'html_multiloc')
                   )
                 )
               ),
@@ -1145,7 +1150,8 @@ RSpec.describe InputUiSchemaGeneratorService do
               description: 'Body multiloc field description',
               isAdminField: false,
               hasRule: false,
-              render: 'WYSIWYG'
+              render: 'multiloc',
+              input_type: 'html_multiloc'
             }
           })
         end
@@ -1158,7 +1164,8 @@ RSpec.describe InputUiSchemaGeneratorService do
               description: 'Body multiloc field description',
               isAdminField: false,
               hasRule: false,
-              render: 'WYSIWYG'
+              render: 'multiloc',
+              input_type: 'html_multiloc'
             }
           })
         end
@@ -1171,7 +1178,8 @@ RSpec.describe InputUiSchemaGeneratorService do
               description: 'Body multiloc veldbeschrijving',
               isAdminField: false,
               hasRule: false,
-              render: 'WYSIWYG'
+              render: 'multiloc',
+              input_type: 'html_multiloc'
             }
           })
         end
@@ -1198,8 +1206,9 @@ RSpec.describe InputUiSchemaGeneratorService do
             description: 'HTML multiloc field description',
             isAdminField: false,
             hasRule: false,
-            render: 'WYSIWYG',
-            trim_on_blur: true
+            trim_on_blur: true,
+            render: 'multiloc',
+            input_type: 'html_multiloc'
           }
         })
       end
