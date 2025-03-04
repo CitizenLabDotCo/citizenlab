@@ -302,6 +302,8 @@
   "app.components.admin.ProjectEdit.survey.downloadResults2": "Download survey results",
   "app.components.admin.ProjectEdit.survey.downloadSurvey": "Download survey as pdf",
   "app.components.admin.ProjectEdit.survey.duplicateAnotherSurvey": "Duplicate another survey",
+  "app.components.admin.ProjectEdit.survey.noSurveyResponses2": "No survey responses yet",
+  "app.components.admin.ProjectEdit.survey.totalSurveyResponses2": "Total {count} responses",
   "app.components.admin.ReportExportMenu.FileName.fromFilter": "from",
   "app.components.admin.ReportExportMenu.FileName.groupFilter": "group",
   "app.components.admin.ReportExportMenu.FileName.projectFilter": "project",
