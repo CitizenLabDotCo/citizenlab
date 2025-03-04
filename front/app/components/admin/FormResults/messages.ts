@@ -2,12 +2,20 @@ import { defineMessages } from 'react-intl';
 
 export default defineMessages({
   totalSurveyResponses: {
-    id: 'app.components.admin.ProjectEdit.survey.totalSurveyResponses2',
+    id: 'app.containers.AdminPage.ProjectEdit.survey.totalSurveyResponses2',
     defaultMessage: 'Total {count} responses',
   },
   noSurveyResponses: {
-    id: 'app.components.admin.ProjectEdit.survey.noSurveyResponses2',
+    id: 'app.containers.AdminPage.ProjectEdit.survey.noSurveyResponses2',
     defaultMessage: 'No survey responses yet',
+  },
+  required: {
+    id: 'app.containers.AdminPage.ProjectEdit.survey.required2',
+    defaultMessage: 'Required',
+  },
+  optional: {
+    id: 'app.containers.AdminPage.ProjectEdit.survey.optional2',
+    defaultMessage: 'Optional',
   },
   openAnalysis: {
     id: 'app.containers.Admin.projects.project.survey.openAnalysis',

@@ -5,7 +5,7 @@ import { get } from 'lodash-es';
 
 import { useIntl } from 'utils/cl-intl';
 
-import messages from '../../../../containers/Admin/projects/project/nativeSurvey/messages';
+import messages from '../messages';
 
 interface Props {
   inputType: string;
