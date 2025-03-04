@@ -16,6 +16,7 @@ import PDFExportModal, {
   FormValues,
 } from 'containers/Admin/projects/components/PDFExportModal';
 
+import FormResults from 'components/admin/FormResults';
 import DeleteModal from 'components/admin/SurveyDeleteModal/SurveyDeleteModal';
 import DropdownSettings from 'components/admin/SurveyDropdownSettings/DropdownSettings';
 import EditWarningModal from 'components/admin/SurveyEditWarningModal';
@@ -26,7 +27,6 @@ import clHistory from 'utils/cl-router/history';
 import { getFormActionsConfig } from 'utils/configs/formActionsConfig/utils';
 
 import CopySurveyModal from './CopySurveyModal';
-import FormResults from './FormResults';
 import messages from './messages';
 import { saveSurveyAsPDF } from './saveSurveyAsPDF';
 

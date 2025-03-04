@@ -13,7 +13,7 @@ import { LogicConfig, ResultUngrouped } from 'api/survey_results/types';
 
 import useLocalize from 'hooks/useLocalize';
 
-import LogicIcon from 'containers/Admin/projects/project/nativeSurvey/FormResults/LogicIcon';
+import LogicIcon from 'components/admin/FormResults/LogicIcon';
 
 import { useIntl } from 'utils/cl-intl';
 

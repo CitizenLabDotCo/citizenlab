@@ -4,12 +4,12 @@ import messages from '../../messages';
 
 export const getCommunityMonitorTabs = (
   formatMessage: FormatMessage,
-  projectId?: string
+  projectId: string
 ): ITab[] => {
   return [
     {
       label: formatMessage(messages.liveMonitor),
-      url: '/admin/community-monitor/live-monitor',
+      url: `/admin/community-monitor/live-monitor`,
       name: 'live-monitor',
     },
     {

@@ -8,17 +8,25 @@ import useFormResults from 'api/survey_results/useSurveyResults';
 
 import { useIntl } from 'utils/cl-intl';
 
-import messages from '../messages';
-
 import FormResultsPage from './FormResultsPage';
 import FormResultsQuestion from './FormResultsQuestion';
 import ViewSingleSubmissionNotice from './FormResultsQuestion/components/ViewSingleSubmissionNotice';
+import messages from './messages';
 
-const FormResults = () => {
-  const { projectId, phaseId } = useParams() as {
+type Props = {
+  projectId?: string;
+  phaseId?: string;
+};
+
+const FormResults = (props: Props) => {
+  const { projectId: projectIdParam, phaseId: phaseIdParam } = useParams() as {
     projectId: string;
     phaseId: string;
   };
+
+  const projectId = props.projectId || projectIdParam;
+  const phaseId = props.phaseId || phaseIdParam;
+
   const { formatMessage } = useIntl();
   const { data: project } = useProjectById(projectId);
   const [filterLogicIds, setFilterLogicIds] = useState<string[]>(
