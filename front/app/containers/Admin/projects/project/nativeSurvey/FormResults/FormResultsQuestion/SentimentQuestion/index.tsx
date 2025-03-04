@@ -6,6 +6,7 @@ import {
   Title,
   Text,
   Icon,
+  colors,
 } from '@citizenlab/cl2-component-library';
 
 import { ResultUngrouped } from 'api/survey_results/types';
@@ -58,7 +59,12 @@ const SentimentQuestion = ({ result }: Props) => {
           </Box>
 
           <Box display="flex" gap="160px">
-            <Text my="auto">12 Comments</Text>
+            <Box display="flex" gap="4px">
+              <Icon my="auto" name="comment" fill={colors.coolGrey700} />
+              <Text my="auto" color="coolGrey700">
+                12 Comments
+              </Text>
+            </Box>
             <Box my="auto">
               <Box>
                 <Box display="flex" justifyContent="space-between" mb="8px">
@@ -96,7 +102,36 @@ const SentimentQuestion = ({ result }: Props) => {
       marginBottom="16px"
       padding="20px"
     >
-      COMMENTS GO HERE
+      <Box display="flex" gap="16px">
+        <Box
+          w="300px"
+          h="260px"
+          background={colors.grey200}
+          display="flex"
+          gap="16px"
+        />
+        <Box
+          w="300px"
+          h="260px"
+          background={colors.grey200}
+          display="flex"
+          gap="16px"
+        />
+        <Box
+          w="300px"
+          h="260px"
+          background={colors.grey200}
+          display="flex"
+          gap="16px"
+        />
+        <Box
+          w="300px"
+          h="260px"
+          background={colors.grey200}
+          display="flex"
+          gap="16px"
+        />
+      </Box>
     </Accordion>
   );
 };
