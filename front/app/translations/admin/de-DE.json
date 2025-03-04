@@ -2173,7 +2173,7 @@
   "app.containers.AdminPage.SettingsPage.saveErrorMessage": "Etwas ging schief, bitte versuchen Sie es später nochmal.",
   "app.containers.AdminPage.SettingsPage.saveSuccess": "Gespeichert!",
   "app.containers.AdminPage.SettingsPage.saveSuccessMessage": "Ihre Änderungen wurden gespeichert.",
-  "app.containers.AdminPage.SettingsPage.selectApprovers": "Genehmigung auswählen",
+  "app.containers.AdminPage.SettingsPage.selectApprovers": "Person(en) auswählen",
   "app.containers.AdminPage.SettingsPage.selectOnboardingAreas": "Gebiete auswählen, die den Nutzer*innen im Registrierungsprozess angezeigt werden sollen",
   "app.containers.AdminPage.SettingsPage.selectOnboardingTopics": "Themen auswählen, die den Nutzer*innen im Registrierungsprozess angezeigt werden sollen",
   "app.containers.AdminPage.SettingsPage.settingsSavingError": "Speichern fehlgeschlagen. Ändern Sie die Einstellung erneut.",
