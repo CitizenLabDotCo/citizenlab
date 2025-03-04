@@ -212,23 +212,6 @@ RSpec.describe CustomField do
     end
   end
 
-  describe '#page_or_section?' do
-    it 'returns true when the input_type is "page"' do
-      page_field = described_class.new input_type: 'page'
-      expect(page_field.page_or_section?).to be true
-    end
-
-    it 'returns true when the input_type is "section"' do
-      section_field = described_class.new input_type: 'section'
-      expect(section_field.page_or_section?).to be true
-    end
-
-    it 'returns false otherwise' do
-      other_field = described_class.new input_type: 'something_else'
-      expect(other_field.page_or_section?).to be false
-    end
-  end
-
   describe 'page_layout validation' do
     context 'for page custom_field' do
       let(:page_custom_field) { build(:custom_field_page) }

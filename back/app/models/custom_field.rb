@@ -66,7 +66,7 @@ class CustomField < ApplicationRecord
   INPUT_TYPES = %w[
     checkbox date file_upload files html html_multiloc image_files linear_scale rating multiline_text multiline_text_multiloc
     multiselect multiselect_image number page point line polygon select select_image shapefile_upload text text_multiloc
-    topic_ids section cosponsor_ids ranking matrix_linear_scale
+    topic_ids cosponsor_ids ranking matrix_linear_scale
   ].freeze
   CODES = %w[
     author_id birthyear body_multiloc budget domicile gender idea_files_attributes idea_images_attributes
@@ -85,7 +85,7 @@ class CustomField < ApplicationRecord
     if: :accepts_input?
   )
   validates :input_type, presence: true, inclusion: INPUT_TYPES
-  validates :title_multiloc, presence: true, multiloc: { presence: true }, unless: :page_or_section?
+  validates :title_multiloc, presence: true, multiloc: { presence: true }, unless: :page?
   validates :description_multiloc, multiloc: { presence: false, html: true }
   validates :required, inclusion: { in: [true, false] }
   validates :enabled, inclusion: { in: [true, false] }
@@ -134,13 +134,13 @@ class CustomField < ApplicationRecord
   def supports_xlsx_export?
     return false if code == 'idea_images_attributes' # Is this still applicable?
 
-    %w[page section].exclude?(input_type)
+    %w[page].exclude?(input_type)
   end
 
   def supports_geojson?
     return false if code == 'idea_images_attributes' # Is this still applicable?
 
-    %w[page section].exclude?(input_type)
+    %w[page].exclude?(input_type)
   end
 
   def supports_linear_scale?
@@ -213,10 +213,6 @@ class CustomField < ApplicationRecord
     input_type == 'page'
   end
 
-  def section?
-    input_type == 'section'
-  end
-
   def multiselect?
     %w[multiselect multiselect_image].include?(input_type)
   end
@@ -229,16 +225,12 @@ class CustomField < ApplicationRecord
     input_type == 'rating'
   end
 
-  def page_or_section?
-    page? || section?
-  end
-
   def dropdown_layout_type?
     %w[multiselect select].include?(input_type)
   end
 
   def accepts_input?
-    !page_or_section?
+    !page?
   end
 
   def custom_form_type?
@@ -358,7 +350,7 @@ class CustomField < ApplicationRecord
   def set_default_answer_visible_to
     return unless answer_visible_to.nil?
 
-    self.answer_visible_to = if custom_form_type? && (built_in? || page_or_section?)
+    self.answer_visible_to = if custom_form_type? && (built_in? || page?)
       VISIBLE_TO_PUBLIC
     else
       VISIBLE_TO_ADMINS
