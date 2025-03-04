@@ -191,18 +191,6 @@ RSpec.describe InputUiSchemaGeneratorService do
                 type: 'Page',
                 options: {
                   input_type: 'page',
-                  id: custom_form.custom_fields.find_by(key: 'survey_end').id,
-                  title: 'Thank you for sharing your input!',
-                  description: 'Your input has been successfully submitted.',
-                  page_layout: 'default',
-                  map_config_id: nil
-                },
-                elements: []
-              },
-              {
-                type: 'Page',
-                options: {
-                  input_type: 'page',
                   id: extra_page.id,
                   title: 'Extra fields',
                   description: 'Custom stuff',
@@ -224,6 +212,18 @@ RSpec.describe InputUiSchemaGeneratorService do
                     }
                   }
                 ]
+              },
+              {
+                type: 'Page',
+                options: {
+                  input_type: 'page',
+                  id: custom_form.custom_fields.find_by(key: 'survey_end').id,
+                  title: 'Thank you for sharing your input!',
+                  description: 'Your input has been successfully submitted.',
+                  page_layout: 'default',
+                  map_config_id: nil
+                },
+                elements: []
               }
             ]
           )
@@ -299,14 +299,6 @@ RSpec.describe InputUiSchemaGeneratorService do
               hash_including(
                 type: 'Page',
                 options: hash_including(
-                  description: 'Votre contribution a été soumise avec succès.',
-                  title: 'Merci pour votre participation !'
-                ),
-                elements: []
-              ),
-              hash_including(
-                type: 'Page',
-                options: hash_including(
                   description: 'Des choses en plus',
                   title: 'Extra choses'
                 ),
@@ -318,6 +310,14 @@ RSpec.describe InputUiSchemaGeneratorService do
                     options: hash_including(description: 'Extra field description', render: 'WYSIWYG')
                   )
                 ]
+              ),
+              hash_including(
+                type: 'Page',
+                options: hash_including(
+                  description: 'Votre contribution a été soumise avec succès.',
+                  title: 'Merci pour votre participation !'
+                ),
+                elements: []
               )
             ]
           )
@@ -394,14 +394,6 @@ RSpec.describe InputUiSchemaGeneratorService do
               hash_including(
                 type: 'Page',
                 options: hash_including(
-                  description: 'Je invoer is succesvol ingediend.',
-                  title: 'Bedankt voor het delen van je invoer!'
-                ),
-                elements: []
-              ),
-              hash_including(
-                type: 'Page',
-                options: hash_including(
                   description: 'Custom stuff',
                   title: 'Extra fields'
                 ),
@@ -413,6 +405,14 @@ RSpec.describe InputUiSchemaGeneratorService do
                     options: hash_including(description: 'Extra veldbeschrijving', render: 'WYSIWYG')
                   )
                 ]
+              ),
+              hash_including(
+                type: 'Page',
+                options: hash_including(
+                  description: 'Je invoer is succesvol ingediend.',
+                  title: 'Bedankt voor het delen van je invoer!'
+                ),
+                elements: []
               )
             ]
           )
@@ -491,14 +491,14 @@ RSpec.describe InputUiSchemaGeneratorService do
               hash_including(
                 type: 'Page',
                 options: hash_including(
-                  title: 'Thank you for sharing your input!'
+                  title: 'Empty custom page'
                 ),
                 elements: []
               ),
               hash_including(
                 type: 'Page',
                 options: hash_including(
-                  title: 'Empty custom page'
+                  title: 'Thank you for sharing your input!'
                 ),
                 elements: []
               )
