@@ -65,7 +65,10 @@ const CookiePolicy = () => {
                 </PageTitle>
                 <QuillEditedContent>
                   {pageAttributes?.top_info_section_multiloc ? (
-                    <T value={pageAttributes.top_info_section_multiloc} />
+                    <T
+                      value={pageAttributes.top_info_section_multiloc}
+                      supportHtml
+                    />
                   ) : (
                     <DefaultText />
                   )}
