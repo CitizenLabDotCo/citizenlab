@@ -177,6 +177,8 @@ lv:
         description:
       other_input_field:
         title: Ierakstiet savu atbildi
+      ask_follow_up_field:
+        title: Pastāstiet mums, kāpēc
   custom_forms:
     categories:
       main_content:

@@ -177,6 +177,8 @@ hr:
         description:
       other_input_field:
         title: Upišite svoj odgovor
+      ask_follow_up_field:
+        title: Reci nam zašto
   custom_forms:
     categories:
       main_content:

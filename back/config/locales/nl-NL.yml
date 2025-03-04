@@ -177,6 +177,8 @@ nl:
         description:
       other_input_field:
         title: Typ je antwoord
+      ask_follow_up_field:
+        title: Vertel ons waarom
   custom_forms:
     categories:
       main_content:

@@ -177,6 +177,8 @@ hu:
         description:
       other_input_field:
         title: Írja be a választ
+      ask_follow_up_field:
+        title: Mondd el, miért
   custom_forms:
     categories:
       main_content:

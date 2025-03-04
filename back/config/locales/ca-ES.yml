@@ -177,6 +177,8 @@ ca:
         description:
       other_input_field:
         title: Escriu la teva resposta
+      ask_follow_up_field:
+        title: Explica'ns per què
   custom_forms:
     categories:
       main_content:

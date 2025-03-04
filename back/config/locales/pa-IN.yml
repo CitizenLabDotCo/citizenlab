@@ -177,6 +177,8 @@ pa:
         description:
       other_input_field:
         title: ਆਪਣਾ ਜਵਾਬ ਟਾਈਪ ਕਰੋ
+      ask_follow_up_field:
+        title: ਸਾਨੂੰ ਦੱਸੋ ਕਿਉਂ
   custom_forms:
     categories:
       main_content:
