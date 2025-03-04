@@ -77,6 +77,21 @@ export function timeAgo(dateInput: number, locale: SupportedLocale) {
 
     if (value <= Math.abs(secondsElapsed)) {
       const delta = secondsElapsed / value;
+
+      // Special handling for months: if it's near 12 months or multiples of 12 months,
+      // convert to years
+      if (key === 'months') {
+        const monthsElapsed = Math.abs(delta);
+        // Check if the months elapsed is near a multiple of 12 (within 0.5 month)
+        const yearCount = Math.round(monthsElapsed / 12);
+        if (yearCount >= 1 && Math.abs(monthsElapsed - yearCount * 12) <= 0.5) {
+          const unit = yearCount === 1 ? 'year' : 'years';
+          // Preserve the original sign of delta for proper formatting
+          const sign = Math.sign(delta);
+          return formatter.format(sign * yearCount, unit);
+        }
+      }
+
       return formatter.format(Math.round(delta), key as RelativeTimeFormatUnit);
     }
   }

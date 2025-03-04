@@ -79,7 +79,7 @@ describe('timeAgo is reported correctly', () => {
     let date = new Date();
     date.setMonth(date.getMonth() - 1);
     let timeAgoResponse = timeAgo(date.valueOf(), 'en') || '';
-    // expect(timeAgoResponse).toEqual('1 month ago'); Comment out for today to get tests passing.
+    expect(timeAgoResponse).toEqual('1 month ago');
 
     date = new Date();
     date.setMonth(date.getMonth() - 2);
@@ -91,7 +91,7 @@ describe('timeAgo is reported correctly', () => {
     let date = new Date();
     date.setMonth(date.getMonth() - 12);
     let timeAgoResponse = timeAgo(date.valueOf(), 'en') || '';
-    // expect(timeAgoResponse).toEqual('1 year ago');
+    expect(timeAgoResponse).toEqual('1 year ago');
 
     date = new Date();
     date.setMonth(date.getMonth() - 24);
@@ -103,7 +103,7 @@ describe('timeAgo is reported correctly', () => {
     let date = new Date();
     date.setMonth(date.getMonth() - 12);
     let timeAgoResponse = timeAgo(date.valueOf(), 'fr-BE') || '';
-    // expect(timeAgoResponse).toEqual('il y a 1 an');
+    expect(timeAgoResponse).toEqual('il y a 1 an');
 
     date = new Date();
     date.setMonth(date.getMonth() - 24);
