@@ -24,8 +24,6 @@ class IdeaCustomFieldsService
       @custom_form.custom_fields.includes(:map_config, options: [:image])
     end
 
-    # Convert to an array if it isn't already (ActiveRecord::Relation can be manipulated too, 
-    # but an array is usually simpler for “push last” logic).
     fields = fields.to_a
 
     survey_end_field = fields.find { |f| f.key == 'survey_end' }
@@ -35,7 +33,7 @@ class IdeaCustomFieldsService
     end
 
     fields
-  end  
+  end
 
   def xlsx_exportable_fields
     all_fields.filter(&:supports_xlsx_export?)

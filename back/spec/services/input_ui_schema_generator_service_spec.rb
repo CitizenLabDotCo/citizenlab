@@ -212,7 +212,6 @@ RSpec.describe InputUiSchemaGeneratorService do
                       hasRule: false,
                       render: 'multiloc',
                       trim_on_blur: true,
-                      render: 'multiloc',
                       input_type: 'html_multiloc'
                     }
                   }

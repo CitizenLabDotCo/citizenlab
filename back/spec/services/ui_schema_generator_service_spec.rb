@@ -279,7 +279,7 @@ RSpec.describe UiSchemaGeneratorService do
           description: 'HTML multiloc field description',
           render: 'multiloc',
           trim_on_blur: true,
-          input_type: 'html_multiloc',
+          input_type: 'html_multiloc'
         }
       })
     end

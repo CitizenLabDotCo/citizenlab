@@ -332,33 +332,33 @@ class JsonSchemaGeneratorService < FieldVisitorService
     # Separate out the survey_end field (if it exists)
     survey_end_field = fields.find { |f| f.key == 'survey_end' }
     other_fields = fields.reject { |f| f.key == 'survey_end' }
-  
+
     # Build properties for the non-survey_end fields
     field_properties = other_fields.each_with_object({}) do |field, accu|
       field_schema = visit field
       next unless field_schema
-  
+
       accu[field.key] = field_schema
       if field.other_option_text_field
         accu[field.other_option_text_field.key] = visit(field.other_option_text_field)
       end
     end
-  
+
     # Now place survey_end last, if present
     if survey_end_field
       field_properties[survey_end_field.key] = visit(survey_end_field)
     end
-  
+
     {
       type: 'object',
       additionalProperties: false,
       properties: field_properties
     }.tap do |output|
       required = (other_fields + [survey_end_field]).compact
-                                              .select(&:enabled?)
-                                              .select(&:required?)
-                                              .map(&:key)
+        .select(&:enabled?)
+        .select(&:required?)
+        .map(&:key)
       output[:required] = required unless required.empty?
     end
-  end  
+  end
 end
