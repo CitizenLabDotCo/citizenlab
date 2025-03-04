@@ -149,10 +149,13 @@ class UiSchemaGeneratorService < FieldVisitorService
 
   attr_reader :locales, :multiloc_service
 
-  def multiloc_field(_field)
+  def multiloc_field(field)
     locale = I18n.locale.to_s
     yield.tap do |ui_field|
       ui_field[:scope] = "#{ui_field[:scope]}/properties/#{locale}"
+      ui_field[:options] ||= {}
+      ui_field[:options][:input_type] = field.input_type
+      ui_field[:options][:render] = 'multiloc'
     end
   end
 end
