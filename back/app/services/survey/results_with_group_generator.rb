@@ -6,7 +6,6 @@ module Survey
       super(phase)
       @group_mode = group_mode
       @group_field_id = group_field_id
-      # TODO: JS - Return an error unless group is present
     end
 
     def generate_result_for_field(field_id)
