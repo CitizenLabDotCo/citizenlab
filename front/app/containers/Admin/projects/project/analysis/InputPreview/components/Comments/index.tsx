@@ -9,6 +9,8 @@ import useComments from 'api/comments/useComments';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
+import Warning from 'components/UI/Warning';
+
 import { useIntl } from 'utils/cl-intl';
 
 import { useSelectedInputContext } from '../../../SelectedInputContext';
@@ -70,9 +72,15 @@ const Comments = () => {
       <Title variant="h4">
         {formatMessage(messages.comments)} ({commentsCount})
       </Title>
-      {commentsSummariesActive && (commentsCount || 0) >= 5 && (
+      {commentsSummariesActive && (
         <Box>
-          <Summary analysisId={analysisId} inputId={selectedInputId} />
+          {(commentsCount || 0) >= 5 ? (
+            <Summary analysisId={analysisId} inputId={selectedInputId} />
+          ) : (
+            <Warning>
+              {formatMessage(messages.commentsSummaryVisibilityExplanation)}
+            </Warning>
+          )}
         </Box>
       )}
       <Box>
