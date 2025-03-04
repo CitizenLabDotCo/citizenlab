@@ -78,11 +78,11 @@ RSpec.describe InputUiSchemaGeneratorService do
               {
                 type: 'Page',
                 options: {
-                  input_type: "page",
+                  input_type: 'page',
                   id: custom_form.custom_fields.find_by(code: 'ideation_page1').id,
-                  title: "What is your question?",
+                  title: 'What is your question?',
                   description: '',
-                  page_layout: "default",
+                  page_layout: 'default',
                   map_config_id: nil
                 },
                 elements: [
@@ -107,7 +107,7 @@ RSpec.describe InputUiSchemaGeneratorService do
                       description: '',
                       isAdminField: false,
                       hasRule: false,
-                      render: 'WYSIWYG',
+                      render: 'WYSIWYG'
                     }
                   }
                 ]
@@ -115,11 +115,11 @@ RSpec.describe InputUiSchemaGeneratorService do
               {
                 type: 'Page',
                 options: {
-                  input_type: "page",
+                  input_type: 'page',
                   id: custom_form.custom_fields.find_by(code: 'ideation_page2').id,
-                  title: "Images and attachments",
+                  title: 'Images and attachments',
                   description: '',
-                  page_layout: "default",
+                  page_layout: 'default',
                   map_config_id: nil
                 },
                 elements: [
@@ -152,11 +152,11 @@ RSpec.describe InputUiSchemaGeneratorService do
               {
                 type: 'Page',
                 options: {
-                  input_type: "page",
+                  input_type: 'page',
                   id: custom_form.custom_fields.find_by(code: 'ideation_page3').id,
-                  title: "Details",
+                  title: 'Details',
                   description: '',
-                  page_layout: "default",
+                  page_layout: 'default',
                   map_config_id: nil
                 },
                 elements: [
@@ -188,13 +188,13 @@ RSpec.describe InputUiSchemaGeneratorService do
                 ]
               },
               {
-                type: "Page",
+                type: 'Page',
                 options: {
-                  input_type: "page",
+                  input_type: 'page',
                   id: custom_form.custom_fields.find_by(key: 'survey_end').id,
-                  title: "Thank you for sharing your input!",
-                  description: "Your input has been successfully submitted.",
-                  page_layout: "default",
+                  title: 'Thank you for sharing your input!',
+                  description: 'Your input has been successfully submitted.',
+                  page_layout: 'default',
                   map_config_id: nil
                 },
                 elements: []
@@ -202,12 +202,11 @@ RSpec.describe InputUiSchemaGeneratorService do
               {
                 type: 'Page',
                 options: {
-                  description: 'Custom stuff',
-                  input_type: "page",
+                  input_type: 'page',
                   id: extra_page.id,
-                  title: "Extra fields",
+                  title: 'Extra fields',
                   description: 'Custom stuff',
-                  page_layout: "default",
+                  page_layout: 'default',
                   map_config_id: nil
                 },
                 elements: [
