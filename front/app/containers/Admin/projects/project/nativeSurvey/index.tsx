@@ -26,7 +26,7 @@ import clHistory from 'utils/cl-router/history';
 import { getFormActionsConfig } from 'utils/configs/formActionsConfig/utils';
 
 import CopySurveyModal from './CopySurveyModal';
-import FormResults from './FormResults';
+import FormResults from '../../../../../components/admin/FormResults';
 import messages from './messages';
 import { saveSurveyAsPDF } from './saveSurveyAsPDF';
 

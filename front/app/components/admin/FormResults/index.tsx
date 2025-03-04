@@ -8,11 +8,10 @@ import useFormResults from 'api/survey_results/useSurveyResults';
 
 import { useIntl } from 'utils/cl-intl';
 
-import messages from '../messages';
-
 import FormResultsPage from './FormResultsPage';
 import FormResultsQuestion from './FormResultsQuestion';
 import ViewSingleSubmissionNotice from './FormResultsQuestion/components/ViewSingleSubmissionNotice';
+import messages from './messages';
 
 type Props = {
   projectId?: string;
