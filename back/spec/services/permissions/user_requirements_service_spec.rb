@@ -410,7 +410,8 @@ describe Permissions::UserRequirementsService do
 
         context 'when user fields are enabled as part of the survey form' do
           it 'does not return any custom fields as part of the requirements' do
-            permission.permission_scope.update!(user_fields_in_form: true)
+            survey_phase = build(:native_survey_phase, user_fields_in_form: true)
+            permission.permission_scope = survey_phase
             requirements = service.requirements(permission, nil)
             expect(requirements[:custom_fields]).to be_empty
           end
