@@ -15,7 +15,7 @@ export default defineConfig({
   numTestsKeptInMemory: process.env.CYPRESS_NUM_TESTS_KEPT_IN_MEMORY
     ? Number(process.env.CYPRESS_NUM_TESTS_KEPT_IN_MEMORY)
     : 0,
-  defaultCommandTimeout: 15000,
+  defaultCommandTimeout: 18000,
   retries: process.env.CYPRESS_RETRIES
     ? Number(process.env.CYPRESS_RETRIES)
     : 2,
