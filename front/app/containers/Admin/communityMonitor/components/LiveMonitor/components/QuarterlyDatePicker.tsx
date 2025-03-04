@@ -14,7 +14,7 @@ const QuarterlyDatePicker = () => {
   const [quarter, setQuarter] = useState(currentQuarter);
 
   // Function to handle quarter navigation
-  const changeQuarter = (direction) => {
+  const changeQuarter = (direction: number) => {
     setQuarter((prevQuarter) => {
       // Calculates the next quarter based on the provided offset
       const newQuarter = prevQuarter + direction;
