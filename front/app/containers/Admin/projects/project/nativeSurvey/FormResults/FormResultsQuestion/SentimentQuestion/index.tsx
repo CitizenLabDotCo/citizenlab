@@ -67,9 +67,9 @@ const SentimentQuestion = ({ result }: Props) => {
             </Box>
             <Box my="auto">
               <Box>
-                <Box display="flex" justifyContent="space-between" mb="8px">
+                <Box display="flex" justifyContent="space-between" mb="4px">
                   <Box display="flex">
-                    <Title color="grey800" m="0px" variant="h3">
+                    <Title color="grey800" m="0px" variant="h4">
                       2.1
                     </Title>
                     <Text
@@ -82,10 +82,10 @@ const SentimentQuestion = ({ result }: Props) => {
                       /5
                     </Text>
                   </Box>
-                  <Text m="0px" color="green400">
+                  <Text m="0px" color="green400" fontSize="s">
                     <Icon
                       mr="4px"
-                      width="20px"
+                      width="13px"
                       name="trend-up"
                       fill="green200"
                     />
