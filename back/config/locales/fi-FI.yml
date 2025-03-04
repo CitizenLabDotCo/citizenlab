@@ -269,7 +269,7 @@ fi:
       by_checking_this_box: "Valitsemalla tämän ruudun hyväksyn sen, että tietojani käytetään tilin luomiseen %{organizationName}:n osallistumisalustalle."
       optional: 'valinnainen'
       permission: 'Lupa'
-      choose_as_many: 'Valitse niin monta kuin haluat'
+      choose_as_many: 'Valitse yksi tai useampi alla olevista vaihtoehdoista'
       choose_exactly:
         one: 'Valitse täsmälleen %{count} -vaihtoehto'
         other: 'Valitse täsmälleen %{count} vaihtoehdot'
