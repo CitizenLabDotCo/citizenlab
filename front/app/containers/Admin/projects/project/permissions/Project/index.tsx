@@ -3,8 +3,6 @@ import React from 'react';
 import { Box } from '@citizenlab/cl2-component-library';
 import { useParams } from 'react-router-dom';
 
-import useProjectById from 'api/projects/useProjectById';
-
 import { SectionDescription, SectionTitle } from 'components/admin/Section';
 import Outlet from 'components/Outlet';
 
@@ -15,11 +13,10 @@ import messages from '../messages';
 import ProjectManagement from './ProjectManagement';
 import ProjectVisibility from './ProjectVisibility';
 
-const Project = () => {
+const ProjectPermissions = () => {
   const { projectId } = useParams();
-  const { data: project } = useProjectById(projectId);
 
-  if (!projectId || !project) return null;
+  if (!projectId) return null;
 
   return (
     <>
@@ -45,4 +42,4 @@ const Project = () => {
   );
 };
 
-export default Project;
+export default ProjectPermissions;

@@ -126,12 +126,17 @@ const ProjectHeader = ({ projectId }: Props) => {
               size="s"
               padding="4px 8px"
               id="e2e-view-project"
+              className="intercom-product-tour-project-view-link"
             />
-            <PublicationStatus project={project} />
+            <PublicationStatus
+              className="intercom-product-tour-project-publication-status-dropdown"
+              project={project}
+            />
             <ShareLink
               projectId={project.data.id}
               projectSlug={project.data.attributes.slug}
               token={project.data.attributes.preview_token}
+              className="intercom-product-tour-project-sharing-dropdown"
             />
             <ButtonWithLink
               linkTo={`/admin/projects/${project.data.id}/settings`}
@@ -140,6 +145,7 @@ const ProjectHeader = ({ projectId }: Props) => {
               padding="4px 8px"
               icon="settings"
               iconSize="18px"
+              className="intercom-product-tour-project-settings-link"
             >
               {formatMessage(messages.settings)}
             </ButtonWithLink>
