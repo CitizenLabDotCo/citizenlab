@@ -131,7 +131,7 @@ const PublicationStatus = ({ className, project }: Props) => {
   }
 
   return (
-    <Box position="relative">
+    <Box position="relative" className={className}>
       <Button
         buttonStyle="secondary-outlined"
         padding="4px 8px"
@@ -141,7 +141,6 @@ const PublicationStatus = ({ className, project }: Props) => {
         onClick={() => setIsPickerOpen(!isPickerOpen)}
         processing={isLoading}
         id="e2e-admin-edit-publication-status"
-        className={className}
       >
         <Box display="flex" alignItems="center" gap="8px" as="span">
           <Icon
