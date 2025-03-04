@@ -288,7 +288,7 @@ describe JsonFormsService do
         it 'generates expected output for different kinds of fields' do
           topic_field = custom_form.custom_fields.find_by(code: 'topic_ids')
           topic_field.update!(required: true)
-        
+
           expect(output).to match(
             {
               json_schema_multiloc: hash_including(
