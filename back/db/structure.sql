@@ -1568,8 +1568,7 @@ CREATE TABLE public.phases (
     manual_votes_count integer DEFAULT 0 NOT NULL,
     manual_voters_amount integer,
     manual_voters_last_updated_by_id uuid,
-    manual_voters_last_updated_at timestamp(6) without time zone,
-    user_fields_in_form boolean DEFAULT false NOT NULL
+    manual_voters_last_updated_at timestamp(6) without time zone
 );
 
 
@@ -6869,7 +6868,6 @@ SET search_path TO public,shared_extensions;
 
 INSERT INTO "schema_migrations" (version) VALUES
 ('20250224150953'),
-('20250220161323'),
 ('20250210181753'),
 ('20250204143605'),
 ('20250120125531'),

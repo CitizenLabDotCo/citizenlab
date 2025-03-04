@@ -25,6 +25,7 @@ const GoBackButton = ({ onClick }: Props) => {
       a11y_buttonActionMessage={formatMessage(messages.goBackButtonMessage)}
       ml="8px"
       onClick={onClick}
+      className="intercom-product-tour-project-description-content-builder-back-link"
     />
   );
 };
