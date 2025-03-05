@@ -179,34 +179,6 @@ module Surveys
       end
     end
 
-    def matrix_linear_scale_statements(field)
-      field.matrix_statements.pluck(:key, :title_multiloc).to_h do |statement_key, statement_title_multiloc|
-        query_result = inputs.group("custom_field_values->'#{field.key}'->'#{statement_key}'").count
-        answers = (1..field.maximum).reverse_each.map do |answer|
-          { answer: answer, count: query_result[answer] || 0 }
-        end
-        question_response_count = answers.sum { |a| a[:count] }
-        answers.each do |answer|
-          answer[:percentage] = question_response_count > 0 ? (answer[:count].to_f / question_response_count) : 0.0
-        end
-        answers += [{ answer: nil, count: query_result[nil] || 0 }]
-        value = {
-          question: statement_title_multiloc,
-          questionResponseCount: question_response_count,
-          answers:
-        }
-        [statement_key, value]
-      end
-    end
-
-    def responses_to_geographic_input_type(field)
-      responses = base_responses(field)
-      response_count = responses.size
-      core_field_attributes(field, response_count:).merge({
-        mapConfigId: field&.map_config&.id, "#{field.input_type}Responses": responses
-      })
-    end
-
     def build_select_response(answers, field)
       # NOTE: This is an additional query for selects so impacts performance slightly
       question_response_count = inputs.where("custom_field_values->'#{field.key}' IS NOT NULL").count
@@ -258,6 +230,62 @@ module Surveys
       answer_multilocs
     end
 
+    def construct_select_answers(query, field)
+      answer_keys = generate_select_answer_keys(field)
+
+      grouped_answers_hash = select_group_query(query)
+        .each_with_object({}) do |(answer, count), accu|
+        valid_answer = answer_keys.include?(answer) ? answer : nil
+
+        accu[valid_answer] ||= { answer: valid_answer, count: 0 }
+        accu[valid_answer][:count] += count
+      end
+
+      answer_keys.map do |key|
+        grouped_answers_hash[key] || { answer: key, count: 0 }
+      end
+    end
+
+    def select_group_query(query)
+      Idea
+        .select(:answer)
+        .from(query)
+        .group(:answer)
+        .count
+    end
+
+    def generate_select_answer_keys(field)
+      (field.supports_linear_scale? ? (1..field.maximum).to_a : field.ordered_transformed_options.map(&:key)) + [nil]
+    end
+
+    def matrix_linear_scale_statements(field)
+      field.matrix_statements.pluck(:key, :title_multiloc).to_h do |statement_key, statement_title_multiloc|
+        query_result = inputs.group("custom_field_values->'#{field.key}'->'#{statement_key}'").count
+        answers = (1..field.maximum).reverse_each.map do |answer|
+          { answer: answer, count: query_result[answer] || 0 }
+        end
+        question_response_count = answers.sum { |a| a[:count] }
+        answers.each do |answer|
+          answer[:percentage] = question_response_count > 0 ? (answer[:count].to_f / question_response_count) : 0.0
+        end
+        answers += [{ answer: nil, count: query_result[nil] || 0 }]
+        value = {
+          question: statement_title_multiloc,
+          questionResponseCount: question_response_count,
+          answers:
+        }
+        [statement_key, value]
+      end
+    end
+
+    def responses_to_geographic_input_type(field)
+      responses = base_responses(field)
+      response_count = responses.size
+      core_field_attributes(field, response_count:).merge({
+        mapConfigId: field&.map_config&.id, "#{field.input_type}Responses": responses
+      })
+    end
+
     def get_text_responses(field_key)
       inputs
         .select("custom_field_values->'#{field_key}' as value")
@@ -271,34 +299,6 @@ module Surveys
       raise 'Question not found' unless question
 
       question
-    end
-
-    def construct_select_answers(query, field)
-      answer_keys = generate_answer_keys(field)
-
-      grouped_answers_hash = group_query(query)
-        .each_with_object({}) do |(answer, count), accu|
-        valid_answer = answer_keys.include?(answer) ? answer : nil
-
-        accu[valid_answer] ||= { answer: valid_answer, count: 0 }
-        accu[valid_answer][:count] += count
-      end
-
-      answer_keys.map do |key|
-        grouped_answers_hash[key] || { answer: key, count: 0 }
-      end
-    end
-
-    def group_query(query)
-      Idea
-        .select(:answer)
-        .from(query)
-        .group(:answer)
-        .count
-    end
-
-    def generate_answer_keys(field)
-      (field.supports_linear_scale? ? (1..field.maximum).to_a : field.ordered_transformed_options.map(&:key)) + [nil]
     end
 
     def add_page_response_count_to_results(results)

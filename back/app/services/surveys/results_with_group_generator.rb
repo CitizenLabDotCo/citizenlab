@@ -46,16 +46,16 @@ module Surveys
 
     def build_select_response(answers, field)
       attributes = super
-      attributes[:legend] = generate_answer_keys(group_field)
+      attributes[:legend] = generate_select_answer_keys(group_field)
       attributes
     end
 
     def construct_select_answers(query, question_field)
-      answer_keys = generate_answer_keys(question_field)
-      group_field_keys = generate_answer_keys(group_field)
+      answer_keys = generate_select_answer_keys(question_field)
+      group_field_keys = generate_select_answer_keys(group_field)
 
       # Create hash of grouped answers
-      answer_groups = group_query(query, group: true)
+      answer_groups = select_group_query(query, group: true)
       grouped_answers_hash = answer_groups
         .each_with_object({}) do |((answer, group), count), accu|
         # We treat 'faulty' values (i.e. that don't exist in options) as nil
@@ -87,7 +87,7 @@ module Surveys
       end
     end
 
-    def group_query(query, group: false)
+    def select_group_query(query, group: false)
       Idea
         .select(:answer)
         .from(query)
