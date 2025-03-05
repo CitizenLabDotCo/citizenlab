@@ -72,6 +72,7 @@ Rails.application.routes.draw do
         get 'comments/as_xlsx', on: :collection, to: 'comments#index_xlsx'
 
         get :similarities, on: :member
+        resources :authoring_assistance_responses, only: %i[create]
         get :as_xlsx, on: :member, action: 'show_xlsx'
       end
 
