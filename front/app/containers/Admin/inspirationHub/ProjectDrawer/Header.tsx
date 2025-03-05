@@ -5,10 +5,14 @@ import {
   StatusLabel,
   Icon,
   Title,
+  Text,
   colors,
 } from '@citizenlab/cl2-component-library';
+import { format } from 'date-fns';
 
 import { ProjectLibraryProjectData } from 'api/project_library_projects/types';
+
+import { parseBackendDateString } from 'utils/dateUtils';
 
 import ExternalLink from './ExternalLink';
 
@@ -16,8 +20,18 @@ interface Props {
   attributes: ProjectLibraryProjectData['attributes'];
 }
 
+const formatDate = (date?: Date) => {
+  if (!date) return;
+  return format(date, 'dd MMMM yyyy');
+};
+
 const Header = ({ attributes }: Props) => {
   const tenantURL = `https://${attributes.tenant_host}`;
+
+  const startAt = parseBackendDateString(attributes.start_at);
+  const endAt = attributes.practical_end_at
+    ? parseBackendDateString(attributes.practical_end_at)
+    : undefined;
 
   return (
     <Box>
@@ -38,7 +52,7 @@ const Header = ({ attributes }: Props) => {
           {attributes.title_en}
         </Title>
       </ExternalLink>
-      <Box>
+      <Box display="flex" flexDirection="row" alignItems="center">
         <Icon
           name="calendar"
           width="16px"
@@ -46,6 +60,32 @@ const Header = ({ attributes }: Props) => {
           ml="4px"
           fill={colors.textSecondary}
         />
+        <Text m="0" ml="4px" color="textSecondary">
+          {formatDate(startAt)} - {formatDate(endAt)}
+        </Text>
+        <Text my="0" mx="12px" color="textSecondary">
+          {' · '}
+        </Text>
+        <Icon name="users" width="16px" m="0" fill={colors.textSecondary} />
+        <Text m="0" ml="4px" color="textSecondary">
+          {attributes.participants}
+        </Text>
+        {attributes.folder_title_en && (
+          <>
+            <Text my="0" mx="12px" color="textSecondary">
+              {' · '}
+            </Text>
+            <Icon
+              name="folder-outline"
+              width="16px"
+              m="0"
+              fill={colors.textSecondary}
+            />
+            <Text m="0" ml="4px" color="textSecondary">
+              {attributes.folder_title_en}
+            </Text>
+          </>
+        )}
       </Box>
     </Box>
   );
