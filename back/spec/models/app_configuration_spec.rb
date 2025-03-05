@@ -44,7 +44,7 @@ RSpec.describe AppConfiguration do
   describe '#detect_country!' do
     before do
       app_config = described_class.instance
-      app_config.settings['maps']['map_center'] = { 'lat': '51.1657', 'long': '10.4515' }
+      app_config.settings['maps']['map_center'] = { lat: '51.1657', long: '10.4515' }
       app_config.save!(validate: false)
     end
 
