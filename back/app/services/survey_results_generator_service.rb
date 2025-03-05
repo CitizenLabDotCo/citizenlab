@@ -394,7 +394,8 @@ class SurveyResultsGeneratorService < FieldVisitorService
   end
 
   def generate_answer_keys(field)
-    (%w[linear_scale sentiment_linear_scale rating].include?(field.input_type) ? (1..field.maximum).to_a : field.options.map(&:key)) + [nil]
+    (%w[linear_scale sentiment_linear_scale rating].include?(field.input_type) ? (1..field.maximum).to_a : field.ordered_transformed_options.map(&:key)) + [nil]
+
   end
 
   def add_page_response_count_to_results(results)
