@@ -14,9 +14,9 @@ describe Analysis::HeatmapGenerator do
   let!(:analysis) { create(:ideation_analysis, project:, additional_custom_fields: custom_form.custom_fields) }
   let!(:tag1) { create(:tag, analysis: analysis) }
   let!(:tag2) { create(:tag, analysis: analysis) }
-  let!(:tagging1_1) { create(:tagging, tag: tag1, input: input1) }
-  let!(:tagging1_2) { create(:tagging, tag: tag2, input: input1) }
-  let!(:tagging3_1) { create(:tagging, tag: tag1, input: input2) }
+  let!(:tagging11) { create(:tagging, tag: tag1, input: input1) }
+  let!(:tagging12) { create(:tagging, tag: tag2, input: input1) }
+  let!(:tagging31) { create(:tagging, tag: tag1, input: input2) }
 
   describe '#generate' do
     it 'returns an empty result for empty categories' do
