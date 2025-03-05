@@ -2263,7 +2263,7 @@
   "app.containers.AdminPage.Topics.topicManagerInfo": "Wenn Sie weitere Projektthemen hinzufügen möchten, können Sie dies unter {topicManagerLink} tun.",
   "app.containers.AdminPage.Users.GroupCreation.createGroupButton": "Neue Gruppe hinzufügen",
   "app.containers.AdminPage.Users.GroupCreation.fieldGroupName": "Gruppenname",
-  "app.containers.AdminPage.Users.GroupCreation.fieldGroupNameEmptyError": "Geben Sie einen Gruppennamen an",
+  "app.containers.AdminPage.Users.GroupCreation.fieldGroupNameEmptyError": "Gruppennamen angeben",
   "app.containers.AdminPage.Users.GroupCreation.modalHeaderManual": "Erstellen einer manuellen Gruppe",
   "app.containers.AdminPage.Users.GroupCreation.modalHeaderStep1": "Welche Art von Gruppe benötigen Sie?",
   "app.containers.AdminPage.Users.GroupCreation.readMoreLink": "https://support.govocal.com/de/articles/7043801-intelligente-und-manuelle-benutzergruppen-verwenden",
