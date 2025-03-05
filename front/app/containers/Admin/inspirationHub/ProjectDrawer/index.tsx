@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Box } from '@citizenlab/cl2-component-library';
+import { Box, Text } from '@citizenlab/cl2-component-library';
 import { useSearchParams } from 'react-router-dom';
 
 import useProjectLibraryProject from 'api/project_library_projects/useProjectLibraryProject';
@@ -28,6 +28,7 @@ const ProjectDrawer = () => {
       {attributes && (
         <Box mt="52px" mx="28px">
           <Header attributes={attributes} />
+          <Text mt="28px">{attributes.description_en}</Text>
         </Box>
       )}
     </SideModal>
