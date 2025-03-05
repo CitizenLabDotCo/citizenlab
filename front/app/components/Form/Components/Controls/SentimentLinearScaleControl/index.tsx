@@ -132,8 +132,8 @@ const SentimentLinearScaleControl = ({
         aria-valuemax={maximum}
         aria-labelledby={sanitizeForClassname(id)}
         onKeyDown={(event) => {
-          if (event.key !== 'Tab') {
-            // Don't override the default tab behaviour
+          if (event.key !== 'Tab' && !event.metaKey) {
+            // Don't override the default tab behaviour or meta key (E.g. Mac command key)
             handleKeyDown(event);
           }
         }}
@@ -170,6 +170,9 @@ const SentimentLinearScaleControl = ({
                           } else {
                             handleChange(path, visualIndex);
                           }
+                        }}
+                        onFocus={() => {
+                          sliderRef.current?.focus();
                         }}
                         buttonStyle="text"
                       >
