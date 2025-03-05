@@ -20,6 +20,8 @@ const NavigationBar = () => {
   const { data: project } = useCommunityMonitorProject();
   const projectId = project?.data.id;
 
+  if (!projectId) return null;
+
   const tabs = getCommunityMonitorTabs(formatMessage, projectId);
 
   return (
