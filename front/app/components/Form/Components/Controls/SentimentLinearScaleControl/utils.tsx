@@ -5,23 +5,11 @@ import { FormatMessageValues } from 'utils/cl-intl/useIntl';
 
 import messages from '../messages';
 
-import Sentiment1Svg from './assets/sentiment_1.svg';
-import Sentiment2Svg from './assets/sentiment_2.svg';
-import Sentiment3Svg from './assets/sentiment_3.svg';
-import Sentiment4Svg from './assets/sentiment_4.svg';
-import Sentiment5Svg from './assets/sentiment_5.svg';
-
-export const getClassNameSentimentImage = (
-  data: number,
-  visualIndex: number
-) => {
-  if (data === visualIndex) {
-    return 'isSelected';
-  } else if (data) {
-    return 'anotherValueSelected';
-  }
-  return '';
-};
+import Sentiment1Png from './assets/sentiment_1.png';
+import Sentiment2Png from './assets/sentiment_2.png';
+import Sentiment3Png from './assets/sentiment_3.png';
+import Sentiment4Png from './assets/sentiment_4.png';
+import Sentiment5Png from './assets/sentiment_5.png';
 
 export const handleKeyboardKeyChange = (event, value) => {
   switch (event.key) {
@@ -43,11 +31,11 @@ export const handleKeyboardKeyChange = (event, value) => {
 };
 
 const sentimentEmojis: Record<1 | 2 | 3 | 4 | 5, string> = {
-  1: Sentiment1Svg,
-  2: Sentiment2Svg,
-  3: Sentiment3Svg,
-  4: Sentiment4Svg,
-  5: Sentiment5Svg,
+  1: Sentiment1Png,
+  2: Sentiment2Png,
+  3: Sentiment3Png,
+  4: Sentiment4Png,
+  5: Sentiment5Png,
 };
 
 export const getSentimentEmoji = (index: number) =>

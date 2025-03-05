@@ -1,21 +1,18 @@
 import styled from 'styled-components';
 
 export const StyledImg = styled.img`
-  padding: 4px;
-  border: 3px solid white;
-  border-radius: 4px;
-  height: 50px;
-
-  &.anotherValueSelected {
-    filter: grayscale(1);
-    opacity: 0.8;
-  }
+  padding: 8px;
+  border: 1px solid white;
+  border-radius: 8px;
+  width: 48px;
 
   &.isSelected {
-    border: 3px solid ${({ theme }) => theme.colors.coolGrey600};
+    border: 1px solid ${({ theme }) => theme.colors.tenantPrimary};
+    background-color: ${({ theme }) => theme.colors.tenantPrimaryLighten90};
   }
 
-  &:hover {
-    border: 3px solid ${({ theme }) => theme.colors.coolGrey600};
+  &:not(.isSelected):hover {
+    background-color: ${({ theme }) => theme.colors.grey100};
+    border: 1px solid ${({ theme }) => theme.colors.grey500};
   }
 `;
