@@ -15,10 +15,6 @@ RSpec.describe Survey::ResultsWithLogicGenerator do
     end
   end
 
-  describe 'generate_results' do
-    # TODO: JS - Add some tests that test the full output
-  end
-
   describe 'add_logic_to_results' do
     # NOTE: Most of the object below is not needed for the tests, but it's included for completeness
     # Field IDs & Page IDs that would be uuids normally are replaced here for readability

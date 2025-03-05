@@ -797,7 +797,7 @@ Style/SafeNavigationChainLength:
     - 'app/controllers/web_api/v1/projects_controller.rb'
     - 'app/controllers/web_api/v1/topics_controller.rb'
     - 'app/services/json_schema_generator_service.rb'
-    - 'app/services/survey_results_generator_service.rb'
+    - 'app/services/survey/results_generator.rb'
     - 'config/initializers/rack_attack.rb'
     - 'engines/commercial/admin_api/spec/graphql/ideas_spec.rb'
     - 'engines/commercial/bulk_import_ideas/app/services/bulk_import_ideas/parsers/pdf/gpt_text_corrector.rb'
