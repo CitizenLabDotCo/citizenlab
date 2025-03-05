@@ -1,6 +1,11 @@
 import React from 'react';
 
-import { Box, StatusLabel, colors } from '@citizenlab/cl2-component-library';
+import {
+  Box,
+  StatusLabel,
+  Title,
+  colors,
+} from '@citizenlab/cl2-component-library';
 import { useSearchParams } from 'react-router-dom';
 
 import useProjectLibraryProject from 'api/project_library_projects/useProjectLibraryProject';
@@ -22,13 +27,14 @@ const ProjectDrawer = () => {
   };
 
   const attributes = project?.data.attributes;
+  const tenantURL = `https://${attributes?.tenant_host}`;
 
   return (
-    <SideModal opened={!!project} close={handleOnClose}>
+    <SideModal opened={!!project && !!projectId} close={handleOnClose}>
       <Box mt="52px" mx="28px">
-        <Box display="flex" flexDirection="row" alignItems="center">
-          {attributes && (
-            <>
+        {attributes && (
+          <Box>
+            <Box display="flex" flexDirection="row" alignItems="center">
               <StatusLabel
                 text={attributes.tenant_population_group}
                 backgroundColor={colors.coolGrey600}
@@ -36,16 +42,17 @@ const ProjectDrawer = () => {
                 w="24px"
                 ml="4px"
               />
-              <ExternalLink
-                href={`https://${attributes.tenant_host}`}
-                ml="8px"
-                mt="1px"
-              >
+              <ExternalLink href={tenantURL} ml="8px" mt="1px">
                 {attributes.tenant_name}
               </ExternalLink>
-            </>
-          )}
-        </Box>
+            </Box>
+            <ExternalLink href={`${tenantURL}/projects/${attributes.slug}`}>
+              <Title variant="h2" color="textPrimary" mt="12px">
+                {attributes.title_en}
+              </Title>
+            </ExternalLink>
+          </Box>
+        )}
       </Box>
     </SideModal>
   );
