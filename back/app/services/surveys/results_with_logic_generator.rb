@@ -46,7 +46,7 @@ module Surveys
     def get_option_logic(field)
       return {} if field.logic.blank?
 
-      is_linear_or_rating = typeof_linear_scale?(field)
+      is_linear_or_rating = field.supports_linear_scale?
       options = if is_linear_or_rating
         # Create a unique ID for this linear scale option in the full results so we can filter logic
         (1..field.maximum).map { |value| { id: "#{field.id}_#{value}", key: value } }

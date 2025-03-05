@@ -164,9 +164,9 @@ module Surveys
     def select_field_query(field, as: 'answer')
       table = field.resource_type == 'User' ? 'users' : 'ideas'
 
-      if typeof_single_select?(field)
+      if field.supports_single_selection?
         "COALESCE(#{table}.custom_field_values->'#{field.key}', 'null') as #{as}"
-      elsif typeof_multiselect?(field)
+      elsif field.supports_multiple_selection?
         %{
           jsonb_array_elements(
             CASE WHEN jsonb_path_exists(#{table}.custom_field_values, '$ ? (exists (@."#{field.key}"))')
@@ -208,12 +208,11 @@ module Surveys
     end
 
     def build_select_response(answers, field)
-      binding.pry
-      # TODO: This is an additional query for selects so performance issue here
+      # NOTE: This is an additional query for selects so impacts performance slightly
       question_response_count = inputs.where("custom_field_values->'#{field.key}' IS NOT NULL").count
 
       # Sort answers correctly
-      answers = answers.sort_by { |a| -a[:count] } unless typeof_linear_scale?(field)
+      answers = answers.sort_by { |a| -a[:count] } unless field.supports_linear_scale?
       answers = answers.sort_by { |a| a[:answer] == 'other' ? 1 : 0 } # other should always be last
 
       attributes = core_field_attributes(field, response_count: question_response_count).merge({
@@ -232,7 +231,7 @@ module Surveys
     end
 
     def get_option_multilocs(field)
-      if typeof_linear_scale?(field)
+      if field.supports_linear_scale?
         return build_scaled_input_multilocs(field)
       end
 
@@ -248,11 +247,9 @@ module Surveys
         { title_multiloc: locales.index_with { |_locale| value.to_s } }
       end
 
-      format_labels = supports_scale_labels?(field)
-
       answer_multilocs.each_key do |value|
         labels = field.nth_linear_scale_multiloc(value).transform_values do |label|
-          label.present? && format_labels ? "#{value} - #{label}" : value
+          label.present? && field.supports_scale_labels? ? "#{value} - #{label}" : value
         end
 
         answer_multilocs[value][:title_multiloc].merge! labels
@@ -301,7 +298,7 @@ module Surveys
     end
 
     def generate_answer_keys(field)
-      (typeof_linear_scale?(field) ? (1..field.maximum).to_a : field.ordered_transformed_options.map(&:key)) + [nil]
+      (field.supports_linear_scale? ? (1..field.maximum).to_a : field.ordered_transformed_options.map(&:key)) + [nil]
     end
 
     def add_page_response_count_to_results(results)
@@ -343,27 +340,6 @@ module Surveys
       # Remove the last page - needed for calculations, but not for display
       results.pop if results.last[:inputType] == 'page'
       results
-    end
-
-    # TODO: JS - move these to the model if they are not there already
-    def typeof_single_select?(field)
-      %w[select linear_scale rating].include?(field.input_type)
-    end
-
-    def typeof_multiselect?(field)
-      %w[multiselect multiselect_image].include?(field.input_type)
-    end
-
-    def typeof_select?(field)
-      typeof_single_select?(field) || typeof_multiselect?(field)
-    end
-
-    def typeof_linear_scale?(field)
-      %w[linear_scale rating].include?(field.input_type)
-    end
-
-    def supports_scale_labels?(field)
-      %w[linear_scale matrix_linear_scale].include?(field.input_type)
     end
   end
 end
