@@ -826,6 +826,7 @@
   "app.containers.Admin.ideas.import": "Import",
   "app.containers.Admin.inspirationHub.Active": "Active",
   "app.containers.Admin.inspirationHub.Archived": "Archived",
+  "app.containers.Admin.inspirationHub.CommunityMonitorSurvey": "Community monitor",
   "app.containers.Admin.inspirationHub.DocumentAnnotation": "Document annotation",
   "app.containers.Admin.inspirationHub.Draft": "Draft",
   "app.containers.Admin.inspirationHub.ExternalSurvey": "External survey",
