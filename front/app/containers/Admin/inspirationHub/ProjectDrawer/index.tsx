@@ -21,24 +21,30 @@ const ProjectDrawer = () => {
     removeSearchParams(['project_id']);
   };
 
-  if (!project) return null;
-
-  const { attributes } = project.data;
+  const attributes = project?.data.attributes;
 
   return (
-    <SideModal opened={!!projectId} close={handleOnClose}>
+    <SideModal opened={!!project} close={handleOnClose}>
       <Box mt="52px" mx="28px">
         <Box display="flex" flexDirection="row" alignItems="center">
-          <StatusLabel
-            text={attributes.tenant_population_group}
-            backgroundColor={colors.coolGrey600}
-            h="16px"
-            w="24px"
-            ml="4px"
-          />
-          <ExternalLink href={`/todo`} ml="8px" mt="1px">
-            {attributes.tenant_name}
-          </ExternalLink>
+          {attributes && (
+            <>
+              <StatusLabel
+                text={attributes.tenant_population_group}
+                backgroundColor={colors.coolGrey600}
+                h="16px"
+                w="24px"
+                ml="4px"
+              />
+              <ExternalLink
+                href={`https://${attributes.tenant_host}`}
+                ml="8px"
+                mt="1px"
+              >
+                {attributes.tenant_name}
+              </ExternalLink>
+            </>
+          )}
         </Box>
       </Box>
     </SideModal>
