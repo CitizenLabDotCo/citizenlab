@@ -2,8 +2,12 @@ namespace :embeddings do
   desc 'Populate embeddings for the ideas and proposals.'
   task :populate_ideas, %i[host project_slug] => [:environment] do |_t, args|
     Apartment::Tenant.switch(args[:host].tr('.', '_')) do
-      project = Project.find_by!(slug: args[:project_slug])
-      project.ideas.order(likes_count: :desc).each do |idea|
+      ideas_scope = if args[:project_slug]
+        Project.find_by!(slug: args[:project_slug]).ideas
+      else
+        Idea.all
+      end
+      ideas_scope.order(likes_count: :desc).each do |idea|
         puts "Processing idea #{idea.slug}"
         SimilarIdeasService.new(idea).upsert_embedding!
       end

@@ -61,10 +61,10 @@ const navItems: NavItem[] = [
     message: 'tools',
   },
   {
-    name: 'projectLibrary',
-    link: '/admin/project-library',
-    iconName: 'projects',
-    message: 'projectLibrary',
+    name: 'inspirationHub',
+    link: '/admin/inspiration-hub',
+    iconName: 'globe',
+    message: 'inspirationHub',
     featureNames: ['project_library'],
   },
   {
