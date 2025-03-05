@@ -31,8 +31,8 @@ module Surveys
       query = inputs
       query = query.joins(:author) if group_mode == 'user_field'
 
-      raise "Unsupported group field type: #{group_field.input_type}" unless %w[select linear_scale rating].include?(group_field.input_type)
-      raise "Unsupported question type: #{field.input_type}" unless %w[select multiselect linear_scale rating multiselect_image].include?(field.input_type)
+      raise "Unsupported group field type: #{group_field.input_type}" unless typeof_single_select?(group_field)
+      raise "Unsupported question type: #{field.input_type}" unless typeof_select?(field)
 
       query = query.select(
         select_field_query(field, as: 'answer'),

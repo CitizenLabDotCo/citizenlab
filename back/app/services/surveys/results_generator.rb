@@ -34,8 +34,8 @@ module Surveys
       response_count = responses.size
 
       core_field_attributes(field, response_count:).merge({
-                                                            numberResponses: responses
-                                                          })
+        numberResponses: responses
+      })
     end
 
     def visit_select(field)
@@ -52,10 +52,10 @@ module Surveys
 
     def visit_ranking(field)
       core_field_attributes(field).merge({
-                                           average_rankings: field.average_rankings(inputs),
-                                           rankings_counts: field.rankings_counts(inputs),
-                                           multilocs: get_multilocs(field)
-                                         })
+        average_rankings: field.average_rankings(inputs),
+        rankings_counts: field.rankings_counts(inputs),
+        multilocs: get_multilocs(field)
+      })
     end
 
     def visit_text(field)
@@ -63,8 +63,8 @@ module Surveys
       response_count = answers.size
 
       core_field_attributes(field, response_count:).merge({
-                                                            textResponses: answers
-                                                          })
+        textResponses: answers
+      })
     end
 
     def visit_multiline_text(field)
@@ -77,9 +77,9 @@ module Surveys
 
     def visit_matrix_linear_scale(field)
       core_field_attributes(field).merge({
-                                           multilocs: { answer: build_scaled_input_multilocs(field) },
-                                           linear_scales: matrix_linear_scale_statements(field)
-                                         })
+        multilocs: { answer: build_scaled_input_multilocs(field) },
+        linear_scales: matrix_linear_scale_statements(field)
+      })
     end
 
     def visit_rating(field)
@@ -88,17 +88,17 @@ module Surveys
 
     def visit_file_upload(field)
       file_ids = inputs
-                   .select("custom_field_values->'#{field.key}'->'id' as value")
-                   .where("custom_field_values->'#{field.key}' IS NOT NULL")
-                   .map(&:value)
+        .select("custom_field_values->'#{field.key}'->'id' as value")
+        .where("custom_field_values->'#{field.key}' IS NOT NULL")
+        .map(&:value)
       files = IdeaFile.where(id: file_ids).map do |file|
         { name: file.name, url: file.file.url }
       end
       response_count = files.size
 
       core_field_attributes(field, response_count:).merge({
-                                                            files: files
-                                                          })
+        files: files
+      })
     end
 
     def visit_shapefile_upload(field)
@@ -164,9 +164,9 @@ module Surveys
     def select_field_query(field, as: 'answer')
       table = field.resource_type == 'User' ? 'users' : 'ideas'
 
-      if %w[select linear_scale rating].include? field.input_type
+      if typeof_single_select?(field)
         "COALESCE(#{table}.custom_field_values->'#{field.key}', 'null') as #{as}"
-      elsif %w[multiselect multiselect_image].include? field.input_type
+      elsif typeof_multiselect?(field)
         %{
           jsonb_array_elements(
             CASE WHEN jsonb_path_exists(#{table}.custom_field_values, '$ ? (exists (@."#{field.key}"))')
@@ -203,23 +203,24 @@ module Surveys
       responses = base_responses(field)
       response_count = responses.size
       core_field_attributes(field, response_count:).merge({
-                                                            mapConfigId: field&.map_config&.id, "#{field.input_type}Responses": responses
-                                                          })
+        mapConfigId: field&.map_config&.id, "#{field.input_type}Responses": responses
+      })
     end
 
     def build_select_response(answers, field)
+      binding.pry
       # TODO: This is an additional query for selects so performance issue here
       question_response_count = inputs.where("custom_field_values->'#{field.key}' IS NOT NULL").count
 
       # Sort answers correctly
-      answers = answers.sort_by { |a| -a[:count] } unless %w[linear_scale rating].include?(field.input_type)
+      answers = answers.sort_by { |a| -a[:count] } unless typeof_linear_scale?(field)
       answers = answers.sort_by { |a| a[:answer] == 'other' ? 1 : 0 } # other should always be last
 
       attributes = core_field_attributes(field, response_count: question_response_count).merge({
-                                                                                                 totalPickCount: answers.pluck(:count).sum,
-                                                                                                 answers: answers,
-                                                                                                 multilocs: get_multilocs(field)
-                                                                                               })
+        totalPickCount: answers.pluck(:count).sum,
+        answers: answers,
+        multilocs: get_multilocs(field)
+      })
 
       attributes[:textResponses] = get_text_responses("#{field.key}_other") if field.other_option_text_field
 
@@ -231,7 +232,7 @@ module Surveys
     end
 
     def get_option_multilocs(field)
-      if %w[linear_scale rating].include?(field.input_type)
+      if typeof_linear_scale?(field)
         return build_scaled_input_multilocs(field)
       end
 
@@ -247,7 +248,7 @@ module Surveys
         { title_multiloc: locales.index_with { |_locale| value.to_s } }
       end
 
-      format_labels = %w[linear_scale matrix_linear_scale].include?(field.input_type)
+      format_labels = supports_scale_labels?(field)
 
       answer_multilocs.each_key do |value|
         labels = field.nth_linear_scale_multiloc(value).transform_values do |label|
@@ -279,7 +280,7 @@ module Surveys
       answer_keys = generate_answer_keys(field)
 
       grouped_answers_hash = group_query(query)
-                               .each_with_object({}) do |(answer, count), accu|
+        .each_with_object({}) do |(answer, count), accu|
         valid_answer = answer_keys.include?(answer) ? answer : nil
 
         accu[valid_answer] ||= { answer: valid_answer, count: 0 }
@@ -300,7 +301,7 @@ module Surveys
     end
 
     def generate_answer_keys(field)
-      (%w[linear_scale rating].include?(field.input_type) ? (1..field.maximum).to_a : field.ordered_transformed_options.map(&:key)) + [nil]
+      (typeof_linear_scale?(field) ? (1..field.maximum).to_a : field.ordered_transformed_options.map(&:key)) + [nil]
     end
 
     def add_page_response_count_to_results(results)
@@ -342,6 +343,27 @@ module Surveys
       # Remove the last page - needed for calculations, but not for display
       results.pop if results.last[:inputType] == 'page'
       results
+    end
+
+    # TODO: JS - move these to the model if they are not there already
+    def typeof_single_select?(field)
+      %w[select linear_scale rating].include?(field.input_type)
+    end
+
+    def typeof_multiselect?(field)
+      %w[multiselect multiselect_image].include?(field.input_type)
+    end
+
+    def typeof_select?(field)
+      typeof_single_select?(field) || typeof_multiselect?(field)
+    end
+
+    def typeof_linear_scale?(field)
+      %w[linear_scale rating].include?(field.input_type)
+    end
+
+    def supports_scale_labels?(field)
+      %w[linear_scale matrix_linear_scale].include?(field.input_type)
     end
   end
 end
