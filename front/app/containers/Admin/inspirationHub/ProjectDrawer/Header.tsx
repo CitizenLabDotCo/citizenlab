@@ -48,7 +48,7 @@ const Header = ({ attributes }: Props) => {
         </ExternalLink>
       </Box>
       <ExternalLink href={`${tenantURL}/projects/${attributes.slug}`}>
-        <Title variant="h2" color="textPrimary" mt="12px">
+        <Title variant="h2" color="textPrimary" mt="4px" mb="4px">
           {attributes.title_en}
         </Title>
       </ExternalLink>
