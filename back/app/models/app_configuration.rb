@@ -36,6 +36,8 @@ class AppConfiguration < ApplicationRecord
   before_validation :validate_missing_feature_dependencies
   before_validation :add_missing_features_and_settings, on: :create
 
+  after_save :detect_country!
+
   module Settings
     extend CitizenLab::Mixins::SettingsSpecification
 
@@ -151,9 +153,15 @@ class AppConfiguration < ApplicationRecord
     @public_settings ||= SettingsService.new.format_for_front_end(settings, Settings.json_schema)
   end
 
+  def latitude
+    settings.dig('maps', 'map_center', 'lat')
+  end
+
+  def longitude
+    settings.dig('maps', 'map_center', 'long')
+  end
+
   def location
-    longitude = settings.dig('maps', 'map_center', 'long')
-    latitude = settings.dig('maps', 'map_center', 'lat')
     RGeo::Geographic.spherical_factory(srid: 4326).point(longitude, latitude)
   end
 
@@ -243,6 +251,23 @@ class AppConfiguration < ApplicationRecord
 
   def validate_singleton
     errors.add(:base, 'there can be only one instance of AppConfiguration') if AppConfiguration.count.positive?
+  end
+
+  def detect_country!
+    if latitude && longitude &&
+       (setting_changed?(['maps', 'map_center', 'lat']) ||
+        setting_changed?(['maps', 'map_center', 'long']))
+      CountryCodeJob.perform_later
+    end
+  end
+
+  def setting_changed?(path)
+    return false unless saved_change_to_attribute?(:settings)
+  
+    old_settings, new_settings = saved_change_to_attribute(:settings)
+    old_value = old_settings.dig(*path)
+    new_value = new_settings.dig(*path)
+    old_value != new_value
   end
 end
 
