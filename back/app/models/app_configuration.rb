@@ -255,15 +255,15 @@ class AppConfiguration < ApplicationRecord
 
   def detect_country!
     if latitude && longitude &&
-       (setting_changed?(['maps', 'map_center', 'lat']) ||
-        setting_changed?(['maps', 'map_center', 'long']))
+       (setting_changed?(%w[maps map_center lat]) ||
+        setting_changed?(%w[maps map_center long]))
       CountryCodeJob.perform_later
     end
   end
 
   def setting_changed?(path)
     return false unless saved_change_to_attribute?(:settings)
-  
+
     old_settings, new_settings = saved_change_to_attribute(:settings)
     old_value = old_settings.dig(*path)
     new_value = new_settings.dig(*path)
