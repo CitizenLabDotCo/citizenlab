@@ -560,7 +560,11 @@
           },
           "map_center": {
             "title": "Map Center",
-            "description": "<%= "The default center point of the platform maps (latitude/longitude). Use a dot as a decimal separator. Current values set a platfrom country_code of #{AppConfiguration.instance.country_code}" %>",
+            "description": "<%= begin
+              "The default center point of the platform maps (latitude/longitude). Use a dot as a decimal separator. Current values set a platform country_code of #{AppConfiguration&.instance&.country_code || 'nil'}"
+            rescue
+              "The default center point of the platform maps (latitude/longitude). Use a dot as a decimal separator. Current values set a platform country_code of 'nil'"
+            end %>",
             "type": "object",
             "additionalProperties": false,
             "properties": {
