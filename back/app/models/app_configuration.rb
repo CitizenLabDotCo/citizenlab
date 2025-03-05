@@ -255,8 +255,9 @@ class AppConfiguration < ApplicationRecord
 
   def detect_country!
     if latitude && longitude &&
-       (setting_changed?(%w[maps map_center lat]) ||
-        setting_changed?(%w[maps map_center long]))
+       ((setting_changed?(%w[maps map_center lat]) ||
+        setting_changed?(%w[maps map_center long])) ||
+        country_code.blank?)
       CountryCodeJob.perform_later
     end
   end
