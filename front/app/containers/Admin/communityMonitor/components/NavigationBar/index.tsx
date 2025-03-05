@@ -22,7 +22,7 @@ const NavigationBar = () => {
 
   if (!projectId) return null;
 
-  const tabs = getCommunityMonitorTabs(formatMessage, projectId);
+  const tabs = getCommunityMonitorTabs(formatMessage);
 
   return (
     <Box

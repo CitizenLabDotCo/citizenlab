@@ -24,7 +24,6 @@ export enum communityMonitorRoutes {
   communityMonitorDefault = '',
   liveMonitor = 'live-monitor',
   participants = 'participants',
-  participantsProjects = 'participants/projects/:projectId',
   reports = 'reports',
   settings = 'settings',
   settingsSurvey = 'survey',
@@ -35,7 +34,7 @@ export enum communityMonitorRoutes {
 export type communityMonitorRouteTypes =
   | AdminRoute<communityMonitorRoutes.communityMonitor>
   | `${AdminRoute<communityMonitorRoutes.communityMonitor>}/${communityMonitorRoutes.liveMonitor}`
-  | `${AdminRoute<communityMonitorRoutes.communityMonitor>}/${communityMonitorRoutes.participants}/projects/${string}`
+  | `${AdminRoute<communityMonitorRoutes.communityMonitor>}/${communityMonitorRoutes.participants}`
   | `${AdminRoute<communityMonitorRoutes.communityMonitor>}/${communityMonitorRoutes.reports}`
   | `${AdminRoute<communityMonitorRoutes.communityMonitor>}/${communityMonitorRoutes.settings}`
   | `${AdminRoute<communityMonitorRoutes.communityMonitor>}/${communityMonitorRoutes.settings}/${communityMonitorRoutes.settingsSurvey}`
@@ -113,7 +112,7 @@ const communityMonitorsRoutes = () => {
         ],
       },
       {
-        path: communityMonitorRoutes.participantsProjects,
+        path: communityMonitorRoutes.participants,
         element: (
           <PageLoading>
             <Participants />

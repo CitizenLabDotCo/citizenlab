@@ -3,8 +3,7 @@ import { FormatMessage, ITab } from 'typings';
 import messages from '../../messages';
 
 export const getCommunityMonitorTabs = (
-  formatMessage: FormatMessage,
-  projectId: string
+  formatMessage: FormatMessage
 ): ITab[] => {
   return [
     {
@@ -15,7 +14,7 @@ export const getCommunityMonitorTabs = (
     {
       label: formatMessage(messages.participants),
       name: 'participants',
-      url: `/admin/community-monitor/participants/projects/${projectId}`,
+      url: `/admin/community-monitor/participants`,
     },
     {
       label: formatMessage(messages.reports),
