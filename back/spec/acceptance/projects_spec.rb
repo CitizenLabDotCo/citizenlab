@@ -1689,13 +1689,26 @@ resource 'Projects' do
       context 'hidden community monitor project exists' do
         let!(:project) { create(:community_monitor_project) }
 
-        example 'Get community monitor project' do
-          settings = AppConfiguration.instance.settings
-          settings['community_monitor'] = { 'enabled' => true, 'allowed' => true, 'project_id' => project.id }
-          AppConfiguration.instance.update!(settings:)
+        context 'community monitor project ID already saved in settings' do
+          example 'Get community monitor project' do
+            settings = AppConfiguration.instance.settings
+            settings['community_monitor'] = { 'enabled' => true, 'allowed' => true, 'project_id' => project.id }
+            AppConfiguration.instance.update!(settings:)
 
-          do_request
-          assert_status 200
+            do_request
+            assert_status 200
+          end
+        end
+
+        context 'community monitor project ID NOT saved in settings' do
+          example 'Get community monitor project and save in settings' do
+            SettingsService.new.activate_feature! 'community_monitor'
+            expect(AppConfiguration.instance.settings['community_monitor']['project_id']).to be_nil
+
+            do_request
+            assert_status 200
+            expect(AppConfiguration.instance.settings['community_monitor']['project_id']).to eq project.id
+          end
         end
       end
 
