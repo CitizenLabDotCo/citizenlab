@@ -1,18 +1,24 @@
 # frozen_string_literal: true
 
 require 'rails_helper'
+require './spec/services/surveys/shared/survey_setup'
+
+# NOTE: These tests only test the addition of logic to the results from the parent class
 
 RSpec.describe Surveys::ResultsWithLogicGenerator do
   subject(:generator) { described_class.new survey_phase }
 
-  let_it_be(:project) { create(:single_phase_native_survey_project) }
-  let_it_be(:survey_phase) { project.phases.first }
+  include_context 'survey_setup'
 
   describe 'generate_result_for_field' do
     it 'it is not implemented and returns an error' do
       generator = described_class.new(survey_phase)
       expect { generator.generate_result_for_field('12345') }.to raise_error(NotImplementedError)
     end
+  end
+
+  describe 'generate_results' do
+    # TODO: Add tests for this method
   end
 
   describe 'add_logic_to_results' do
