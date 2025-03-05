@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module Survey
+module Surveys
   class ResultsGenerator < FieldVisitorService
     def initialize(phase)
       super()
@@ -34,8 +34,8 @@ module Survey
       response_count = responses.size
 
       core_field_attributes(field, response_count:).merge({
-        numberResponses: responses
-      })
+                                                            numberResponses: responses
+                                                          })
     end
 
     def visit_select(field)
@@ -52,10 +52,10 @@ module Survey
 
     def visit_ranking(field)
       core_field_attributes(field).merge({
-        average_rankings: field.average_rankings(inputs),
-        rankings_counts: field.rankings_counts(inputs),
-        multilocs: get_multilocs(field)
-      })
+                                           average_rankings: field.average_rankings(inputs),
+                                           rankings_counts: field.rankings_counts(inputs),
+                                           multilocs: get_multilocs(field)
+                                         })
     end
 
     def visit_text(field)
@@ -63,8 +63,8 @@ module Survey
       response_count = answers.size
 
       core_field_attributes(field, response_count:).merge({
-        textResponses: answers
-      })
+                                                            textResponses: answers
+                                                          })
     end
 
     def visit_multiline_text(field)
@@ -77,9 +77,9 @@ module Survey
 
     def visit_matrix_linear_scale(field)
       core_field_attributes(field).merge({
-        multilocs: { answer: build_scaled_input_multilocs(field) },
-        linear_scales: matrix_linear_scale_statements(field)
-      })
+                                           multilocs: { answer: build_scaled_input_multilocs(field) },
+                                           linear_scales: matrix_linear_scale_statements(field)
+                                         })
     end
 
     def visit_rating(field)
@@ -88,17 +88,17 @@ module Survey
 
     def visit_file_upload(field)
       file_ids = inputs
-        .select("custom_field_values->'#{field.key}'->'id' as value")
-        .where("custom_field_values->'#{field.key}' IS NOT NULL")
-        .map(&:value)
+                   .select("custom_field_values->'#{field.key}'->'id' as value")
+                   .where("custom_field_values->'#{field.key}' IS NOT NULL")
+                   .map(&:value)
       files = IdeaFile.where(id: file_ids).map do |file|
         { name: file.name, url: file.file.url }
       end
       response_count = files.size
 
       core_field_attributes(field, response_count:).merge({
-        files: files
-      })
+                                                            files: files
+                                                          })
     end
 
     def visit_shapefile_upload(field)
@@ -147,8 +147,8 @@ module Survey
         .select("custom_field_values->'#{field.key}' as value")
         .where("custom_field_values->'#{field.key}' IS NOT NULL")
         .map do |response|
-          { answer: response.value }
-        end
+        { answer: response.value }
+      end
     end
 
     def visit_select_base(field)
@@ -203,8 +203,8 @@ module Survey
       responses = base_responses(field)
       response_count = responses.size
       core_field_attributes(field, response_count:).merge({
-        mapConfigId: field&.map_config&.id, "#{field.input_type}Responses": responses
-      })
+                                                            mapConfigId: field&.map_config&.id, "#{field.input_type}Responses": responses
+                                                          })
     end
 
     def build_select_response(answers, field)
@@ -216,10 +216,10 @@ module Survey
       answers = answers.sort_by { |a| a[:answer] == 'other' ? 1 : 0 } # other should always be last
 
       attributes = core_field_attributes(field, response_count: question_response_count).merge({
-        totalPickCount: answers.pluck(:count).sum,
-        answers: answers,
-        multilocs: get_multilocs(field)
-      })
+                                                                                                 totalPickCount: answers.pluck(:count).sum,
+                                                                                                 answers: answers,
+                                                                                                 multilocs: get_multilocs(field)
+                                                                                               })
 
       attributes[:textResponses] = get_text_responses("#{field.key}_other") if field.other_option_text_field
 
@@ -279,7 +279,7 @@ module Survey
       answer_keys = generate_answer_keys(field)
 
       grouped_answers_hash = group_query(query)
-        .each_with_object({}) do |(answer, count), accu|
+                               .each_with_object({}) do |(answer, count), accu|
         valid_answer = answer_keys.include?(answer) ? answer : nil
 
         accu[valid_answer] ||= { answer: valid_answer, count: 0 }

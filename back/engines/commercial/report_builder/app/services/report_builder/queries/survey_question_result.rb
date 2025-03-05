@@ -11,13 +11,13 @@ module ReportBuilder
 
       phase = Phase.find(phase_id)
       service = if group_field_id && group_mode
-        Survey::ResultsWithGroupGenerator.new(
+        Surveys::ResultsWithGroupGenerator.new(
           phase,
           group_mode: group_mode,
           group_field_id: group_field_id
         )
       else
-        Survey::ResultsGenerator.new(phase)
+        Surveys::ResultsGenerator.new(phase)
       end
 
       service.generate_result_for_field(question_id)

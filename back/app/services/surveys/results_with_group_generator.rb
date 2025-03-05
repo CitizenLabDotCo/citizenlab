@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module Survey
+module Surveys
   class ResultsWithGroupGenerator < ResultsGenerator
     def initialize(phase, group_mode: nil, group_field_id: nil)
       super(phase)

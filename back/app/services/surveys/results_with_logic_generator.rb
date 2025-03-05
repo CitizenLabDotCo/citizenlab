@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module Survey
+module Surveys
   class ResultsWithLogicGenerator < ResultsGenerator
     def generate_result_for_field(field_id)
       # Adding logic only makes sense for the full result set

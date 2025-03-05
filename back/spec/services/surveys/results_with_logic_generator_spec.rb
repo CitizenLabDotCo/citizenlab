@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe Survey::ResultsWithLogicGenerator do
+RSpec.describe Surveys::ResultsWithLogicGenerator do
   subject(:generator) { described_class.new survey_phase }
 
   let_it_be(:project) { create(:single_phase_native_survey_project) }

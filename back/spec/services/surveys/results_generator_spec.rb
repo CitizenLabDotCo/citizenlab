@@ -10,7 +10,7 @@ require 'rails_helper'
 #   * Results for one field are ordered in descending order.
 #   * Result generation is supported for phases only.
 
-RSpec.describe Survey::ResultsGenerator do
+RSpec.describe Surveys::ResultsGenerator do
   subject(:generator) { described_class.new survey_phase }
 
   let_it_be(:project) { create(:single_phase_native_survey_project) }

@@ -4,7 +4,7 @@ require 'rails_helper'
 
 # NOTE: This spec tests only the grouping functionality that is overridden from the parent class.
 
-RSpec.describe Survey::ResultsWithGroupGenerator do
+RSpec.describe Surveys::ResultsWithGroupGenerator do
   let_it_be(:project) { create(:single_phase_native_survey_project) }
   let_it_be(:survey_phase) { project.phases.first }
   let_it_be(:phases_of_inputs) { [survey_phase] }
