@@ -34,4 +34,5 @@ export const PARTICIPATION_METHOD_LABELS: Record<
   volunteering: messages.volunteering,
   document_annotation: messages.documentAnnotation,
   proposals: messages.proposals,
+  community_monitor_survey: messages.communityMonitorSurvey,
 };
