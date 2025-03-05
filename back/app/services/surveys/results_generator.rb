@@ -2,12 +2,19 @@
 
 module Surveys
   class ResultsGenerator < FieldVisitorService
-    def initialize(phase)
+    def initialize(phase, start_month: nil, end_month: nil)
       super()
       form = phase.custom_form || CustomForm.new(participation_context: phase)
       @fields = IdeaCustomFieldsService.new(form).enabled_fields
-      @inputs = phase.ideas.native_survey.published
       @locales = AppConfiguration.instance.settings('core', 'locales')
+
+      @inputs = phase.ideas.native_survey.published
+      # TODO: Move out to another function
+      if start_month && end_month
+        start_day = Date.parse("#{start_month}-01")
+        end_day = Date.parse("#{end_month}-01") >> 1 # Add a month
+        @inputs = @inputs.where(created_at: start_day..end_day)
+      end
     end
 
     # Get the results for a single survey question

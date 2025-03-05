@@ -311,7 +311,8 @@ RSpec.shared_context 'survey_setup' do
         }
       },
       idea_files: [idea_file1, idea_file2],
-      author: female_user
+      author: female_user,
+      created_at: '2025-03-20'
     )
     create(
       :native_survey_response,
@@ -331,7 +332,8 @@ RSpec.shared_context 'survey_setup' do
           'send_more_animals_to_space' => 1
         }
       },
-      author: male_user
+      author: male_user,
+      created_at: '2025-03-16'
     )
     create(
       :native_survey_response,
@@ -347,7 +349,8 @@ RSpec.shared_context 'survey_setup' do
           'ride_bicycles_more_often' => 3
         }
       },
-      author: female_user
+      author: female_user,
+      created_at: '2025-03-05'
     )
     create(
       :native_survey_response,
@@ -365,7 +368,8 @@ RSpec.shared_context 'survey_setup' do
           'ride_bicycles_more_often' => 4
         }
       },
-      author: male_user
+      author: male_user,
+      created_at: '2025-02-14'
     )
     create(
       :native_survey_response,
@@ -376,7 +380,8 @@ RSpec.shared_context 'survey_setup' do
         multiselect_image_field.key => ['school'],
         ranking_field.key => %w[by_bike by_train by_foot]
       },
-      author: female_user
+      author: female_user,
+      created_at: '2025-02-11'
     )
     create(
       :native_survey_response,
@@ -390,14 +395,16 @@ RSpec.shared_context 'survey_setup' do
           'ride_bicycles_more_often' => 4
         }
       },
-      author: male_user
+      author: male_user,
+      created_at: '2025-02-06'
     )
     create(
       :native_survey_response,
       project: project,
       phases: phases_of_inputs,
       custom_field_values: {},
-      author: female_user
+      author: female_user,
+      created_at: '2025-02-06'
     )
     { 1 => 2, 2 => 5, 3 => 7, 4 => 0, 5 => 1, 6 => 2, 7 => 3 }.each do |value, count|
       count.times do
@@ -406,7 +413,8 @@ RSpec.shared_context 'survey_setup' do
           project: project,
           phases: phases_of_inputs,
           custom_field_values: { linear_scale_field.key => value, rating_field.key => value },
-          author: no_gender_user
+          author: no_gender_user,
+          created_at: '2025-01-25'
         )
       end
     end

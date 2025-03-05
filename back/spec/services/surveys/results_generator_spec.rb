@@ -698,6 +698,36 @@ RSpec.describe Surveys::ResultsGenerator do
         expect(generated_results[:results][13]).to match expected_result_number
       end
     end
+
+    context 'when the responses are filtered by start and end month' do
+      let(:generated_results) do
+        described_class.new(
+          survey_phase,
+          start_month: start_month,
+          end_month: end_month
+        ).generate_results
+      end
+
+      context 'example 1' do
+        let(:start_month) { '2025-01' }
+        let(:end_month) { '2025-01' }
+
+        it 'returns the correct totals' do
+          expect(generated_results[:results].count).to eq 17
+          expect(generated_results[:totalSubmissions]).to eq 20
+        end
+      end
+
+      context 'example 2' do
+        let(:start_month) { '2025-02' }
+        let(:end_month) { '2025-03' }
+
+        it 'returns the correct totals' do
+          expect(generated_results[:results].count).to eq 17
+          expect(generated_results[:totalSubmissions]).to eq 7
+        end
+      end
+    end
   end
 
   describe 'calculate_linear_scale_averages' do
