@@ -204,48 +204,6 @@ RSpec.describe Surveys::ResultsWithGroupGenerator do
     end
 
     describe 'linear scale field' do
-      let(:expected_result_linear_scale) do
-        {
-          customFieldId: linear_scale_field.id,
-          inputType: 'linear_scale',
-          question: {
-            'en' => 'Do you agree with the vision?',
-            'fr-FR' => "Êtes-vous d'accord avec la vision ?",
-            'nl-NL' => 'Ben je het eens met de visie?'
-          },
-          required: true,
-          grouped: false,
-          description: { 'en' => 'Please indicate how strong you agree or disagree.' },
-          hidden: false,
-          pageNumber: nil,
-          questionNumber: nil,
-          totalResponseCount: 27,
-          questionResponseCount: 22,
-          totalPickCount: 27,
-          answers: [
-            { answer: 1, count: 2 },
-            { answer: 2, count: 5 },
-            { answer: 3, count: 8 },
-            { answer: 4, count: 1 },
-            { answer: 5, count: 1 },
-            { answer: 6, count: 2 },
-            { answer: 7, count: 3 },
-            { answer: nil, count: 5 }
-          ],
-          multilocs: {
-            answer: {
-              1 => { title_multiloc: { 'en' => '1 - Strongly disagree', 'fr-FR' => "1 - Pas du tout d'accord", 'nl-NL' => '1 - Helemaal niet mee eens' } },
-              2 => { title_multiloc: { 'en' => '2 - Disagree', 'fr-FR' => '2 - Être en désaccord', 'nl-NL' => '2 - Niet mee eens' } },
-              3 => { title_multiloc: { 'en' => '3 - Slightly disagree', 'fr-FR' => '3 - Plutôt en désaccord', 'nl-NL' => '3 - Enigszins oneens' } },
-              4 => { title_multiloc: { 'en' => '4 - Neutral', 'fr-FR' => '4 - Neutre', 'nl-NL' => '4 - Neutraal' } },
-              5 => { title_multiloc: { 'en' => '5 - Slightly agree', 'fr-FR' => "5 - Plutôt d'accord", 'nl-NL' => '5 - Enigszins eens' } },
-              6 => { title_multiloc: { 'en' => '6 - Agree', 'fr-FR' => "6 - D'accord", 'nl-NL' => '6 - Mee eens' } },
-              7 => { title_multiloc: { 'en' => '7 - Strongly agree', 'fr-FR' => "7 - Tout à fait d'accord", 'nl-NL' => '7 - Strerk mee eens' } }
-            }
-          }
-        }
-      end
-
       context 'with grouping' do
         let(:grouped_linear_scale_results) do
           {
@@ -294,6 +252,7 @@ RSpec.describe Surveys::ResultsWithGroupGenerator do
                 { count: 1, group: nil }
               ] }
             ],
+            averages: { this_period: 3.5, last_period: nil },
             multilocs: {
               answer: {
                 1 => hash_including(title_multiloc: { 'en' => '1 - Strongly disagree', 'fr-FR' => "1 - Pas du tout d'accord", 'nl-NL' => '1 - Helemaal niet mee eens' }),
@@ -415,6 +374,7 @@ RSpec.describe Surveys::ResultsWithGroupGenerator do
                 { count: 1, group: nil }
               ] }
             ],
+            averages: { this_period: 3.5, last_period: nil },
             multilocs: {
               answer: {
                 1 => { title_multiloc: { 'en' => '1', 'fr-FR' => '1', 'nl-NL' => '1' } },

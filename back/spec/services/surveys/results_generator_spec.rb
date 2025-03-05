@@ -205,6 +205,7 @@ RSpec.describe Surveys::ResultsGenerator do
             { answer: 7, count: 3 },
             { answer: nil, count: 5 }
           ],
+          averages: { this_period: 3.5, last_period: nil },
           multilocs: {
             answer: {
               1 => { title_multiloc: { 'en' => '1 - Strongly disagree', 'fr-FR' => "1 - Pas du tout d'accord", 'nl-NL' => '1 - Helemaal niet mee eens' } },
@@ -286,6 +287,7 @@ RSpec.describe Surveys::ResultsGenerator do
             { answer: 7, count: 3 },
             { answer: nil, count: 5 }
           ],
+          averages: { this_period: 3.5, last_period: nil },
           multilocs: {
             answer: {
               1 => { title_multiloc: { 'en' => '1', 'fr-FR' => '1', 'nl-NL' => '1' } },
@@ -695,6 +697,35 @@ RSpec.describe Surveys::ResultsGenerator do
       it 'returns the results for a number field' do
         expect(generated_results[:results][13]).to match expected_result_number
       end
+    end
+  end
+
+  describe 'calculate_linear_scale_averages' do
+    it 'returns the average value for linear scale answers' do
+      # Example 1
+      answers = [{ answer: 1, count: 1 }, { answer: 2, count: 5 }]
+      expect(generator.send(:calculate_linear_scale_averages, answers)).to eq(
+        { this_period: 1.8, last_period: nil }
+      )
+
+      # Example 2
+      answers = [{ answer: 1, count: 1 }, { answer: 2, count: 10 }, { answer: 3, count: 1 }]
+      expect(generator.send(:calculate_linear_scale_averages, answers)).to eq(
+        { this_period: 2.0, last_period: nil }
+      )
+
+      # Example 3
+      answers = [{ answer: 1, count: 4 }, { answer: 2, count: 19 }, { answer: 3, count: 34 }, { answer: 4, count: 56 }, { answer: 5, count: 9 }]
+      expect(generator.send(:calculate_linear_scale_averages, answers)).to eq(
+        { this_period: 3.4, last_period: nil }
+      )
+    end
+
+    it 'ignores responses with no answer when calculating the average' do
+      answers = [{ answer: 1, count: 1 }, { answer: 2, count: 5 }, { answer: nil, count: 20 }]
+      expect(generator.send(:calculate_linear_scale_averages, answers)).to eq(
+        { this_period: 1.8, last_period: nil }
+      )
     end
   end
 end

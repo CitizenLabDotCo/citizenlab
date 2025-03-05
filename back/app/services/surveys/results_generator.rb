@@ -195,6 +195,8 @@ module Surveys
 
       attributes[:textResponses] = get_text_responses("#{field.key}_other") if field.other_option_text_field
 
+      attributes[:averages] = calculate_linear_scale_averages(answers) if field.supports_linear_scale?
+
       attributes
     end
 
@@ -256,6 +258,17 @@ module Surveys
 
     def generate_select_answer_keys(field)
       (field.supports_linear_scale? ? (1..field.maximum).to_a : field.ordered_transformed_options.map(&:key)) + [nil]
+    end
+
+    def calculate_linear_scale_averages(answers)
+      total = answers.sum { |a| a[:answer] ? a[:answer] * a[:count] : 0 }
+      count = answers.sum { |a| a[:answer] ? a[:count] : 0 }
+      average = count > 0 ? (total.to_f / count).round(1) : 0.0
+
+      {
+        this_period: average,
+        last_period: nil # To be calculated later only if there are date filters applied
+      }
     end
 
     def matrix_linear_scale_statements(field)
