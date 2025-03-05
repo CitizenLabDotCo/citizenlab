@@ -53,14 +53,13 @@ module Analysis
     end
 
     def add_significance!(heatmap)
-      total_inputs = calc_heatmap_sum(heatmap)
       heatmap.each do |(col1, col2), cell|
-        contingency_table = generate_contingency_table(heatmap, col1, col2, total_inputs)
+        contingency_table = generate_contingency_table(col1, col2)
         cell.chi_square, cell.p_value = chi_square(contingency_table)
       end
     end
 
-    def generate_contingency_table(heatmap, col1, col2, total_inputs)
+    def generate_contingency_table(col1, col2)
       table = Hash.new(0)
 
       [true, false].product([true, false]) do |v1, v2|
