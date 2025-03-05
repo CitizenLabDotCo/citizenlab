@@ -72,7 +72,7 @@ class JsonSchemaGeneratorService < FieldVisitorService
     {
       type: 'string'
     }.tap do |json|
-      options = field.ordered_options
+      options = field.ordered_transformed_options
 
       unless options.empty?
         json[:enum] = options.map(&:key)

@@ -116,7 +116,7 @@ class UiSchemaGeneratorService < FieldVisitorService
 
   def visit_select(field)
     default(field).tap do |ui_field|
-      ui_field[:options][:enumNames] = field.ordered_options.map { |option| multiloc_service.t(option.title_multiloc) }
+      ui_field[:options][:enumNames] = field.ordered_transformed_options.map { |option| multiloc_service.t(option.title_multiloc) }
     end
   end
 

@@ -75,11 +75,11 @@ describe('timeAgo is reported correctly', () => {
     expect(timeAgoResponse).toEqual('2 weeks ago');
   });
 
-  it.skip('should accurately return months passed since a date', () => {
+  it('should accurately return months passed since a date', () => {
     let date = new Date();
     date.setMonth(date.getMonth() - 1);
     let timeAgoResponse = timeAgo(date.valueOf(), 'en') || '';
-    // expect(timeAgoResponse).toEqual('1 month ago'); Comment out for today to get tests passing.
+    expect(timeAgoResponse).toEqual('1 month ago');
 
     date = new Date();
     date.setMonth(date.getMonth() - 2);

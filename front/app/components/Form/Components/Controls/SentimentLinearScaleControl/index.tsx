@@ -47,6 +47,8 @@ const SentimentLinearScaleControl = ({
   const { formatMessage } = useIntl();
   const theme = useTheme();
 
+  const currentAnswer = data; // The current answer is a value between 1 to 5
+
   const minimum = 1;
   const maximum = 5;
 
@@ -75,17 +77,20 @@ const SentimentLinearScaleControl = ({
   // Set the aria-valuenow and aria-valuetext attributes on the slider when the data changes
   useEffect(() => {
     if (sliderRef.current) {
-      sliderRef.current.setAttribute('aria-valuenow', String(data || minimum));
+      sliderRef.current.setAttribute(
+        'aria-valuenow',
+        String(currentAnswer || minimum)
+      );
       sliderRef.current.setAttribute(
         'aria-valuetext',
-        getAriaLabel(data || minimum, maximum)
+        getAriaLabel(currentAnswer || minimum, maximum)
       );
     }
-  }, [data, getAriaLabel, minimum, maximum]);
+  }, [currentAnswer, getAriaLabel, minimum, maximum]);
 
   // Handle keyboard input for the slider
   const handleKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
-    const value = data || minimum;
+    const value = currentAnswer || minimum;
     let newValue = value;
     newValue = handleKeyboardKeyChange(event, value);
 
@@ -127,8 +132,8 @@ const SentimentLinearScaleControl = ({
         aria-valuemax={maximum}
         aria-labelledby={sanitizeForClassname(id)}
         onKeyDown={(event) => {
-          if (event.key !== 'Tab') {
-            // Don't override the default tab behaviour
+          if (event.key !== 'Tab' && !event.metaKey) {
+            // Don't override the default tab behaviour or meta key (E.g. Mac command key)
             handleKeyDown(event);
           }
         }}
@@ -138,7 +143,11 @@ const SentimentLinearScaleControl = ({
           <Table style={{ tableLayout: 'fixed' }}>
             <Tr>
               {[...Array(maximum).keys()].map((i) => {
+                // The currentAnswer is 1-indexed, so it's easier here to add 1 to the mapped
+                // index for when we want to compare it to the currently selected value;
                 const visualIndex = i + 1;
+                const isSelected = currentAnswer === visualIndex;
+
                 return (
                   <Td py="4px" key={`${path}-radio-${visualIndex}`}>
                     <Box
@@ -150,11 +159,11 @@ const SentimentLinearScaleControl = ({
                         p="0px"
                         m="0px"
                         id={`${path}-linear-scale-option-${visualIndex}`}
-                        aria-pressed={data === visualIndex}
+                        aria-pressed={isSelected}
                         width="100%"
                         tabIndex={-1}
                         onClick={() => {
-                          if (data === visualIndex) {
+                          if (isSelected) {
                             // Clear data from this question and any follow-up question
                             handleChange(path, undefined);
                             handleChange(`${path}_follow_up`, undefined);
@@ -162,13 +171,16 @@ const SentimentLinearScaleControl = ({
                             handleChange(path, visualIndex);
                           }
                         }}
+                        onFocus={() => {
+                          sliderRef.current?.focus();
+                        }}
                         buttonStyle="text"
                       >
                         <ScreenReaderOnly>
                           {getAriaLabel(visualIndex, maximum)}
                         </ScreenReaderOnly>
                         <Box>
-                          {visualIndex === data && (
+                          {isSelected && (
                             <Box
                               borderRadius="45px"
                               background="white"
@@ -188,7 +200,7 @@ const SentimentLinearScaleControl = ({
                             src={getSentimentEmoji(visualIndex)}
                             alt=""
                             aria-hidden
-                            className={visualIndex === data ? 'isSelected' : ''}
+                            className={isSelected ? 'isSelected' : ''}
                           />
                         </Box>
                       </Button>
@@ -198,13 +210,12 @@ const SentimentLinearScaleControl = ({
               })}
             </Tr>
             <Tr>
-              {[...Array(maximum).keys()].map((i) => {
-                const visualIndex = i + 1;
+              {[...Array(maximum).keys()].map((index) => {
                 return (
                   <Th
                     p="0px"
                     maxWidth="20%"
-                    key={`${path}-radio-${visualIndex}`}
+                    key={`${path}-radio-${index}`}
                     scope="col"
                     tabIndex={-1}
                     pb="8px"
@@ -217,10 +228,15 @@ const SentimentLinearScaleControl = ({
                       wordBreak="break-word"
                       lineHeight="1.2"
                     >
-                      {labelsFromSchema[visualIndex - 1]}
+                      {labelsFromSchema[index]}
+
                       <ScreenReaderOnly>
-                        {!labelsFromSchema[visualIndex - 1] &&
-                          getAriaLabel(visualIndex, maximum)}
+                        {/* If there is not a label for this index, make sure that we still generate
+                      a meaningful aria-label for screen readers.
+                      */}
+                        {!labelsFromSchema[index] &&
+                          getAriaLabel(index + 1, maximum)}
+                        {/* We use index + 1 because the index is 0-indexed, but the values are 1-indexed. */}
                       </ScreenReaderOnly>
                     </Text>
                   </Th>

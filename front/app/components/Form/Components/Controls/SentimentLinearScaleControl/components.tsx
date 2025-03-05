@@ -11,7 +11,7 @@ export const StyledImg = styled.img`
     background-color: ${({ theme }) => theme.colors.tenantPrimaryLighten90};
   }
 
-  &:hover:not(.isSelected) {
+  &:not(.isSelected):hover {
     background-color: ${({ theme }) => theme.colors.grey100};
     border: 1px solid ${({ theme }) => theme.colors.grey500};
   }

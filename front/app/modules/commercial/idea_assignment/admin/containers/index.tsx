@@ -28,7 +28,7 @@ interface Props {
 
 const InputAssignment = ({ projectId }: Props) => {
   return (
-    <InputAssignmentSection>
+    <InputAssignmentSection className="intercom-product-tour-project-input-assignee-section">
       <SubSectionTitle>
         <FormattedMessage {...messages.inputAssignmentSectionTitle} />
         <IconTooltip
