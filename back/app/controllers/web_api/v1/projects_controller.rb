@@ -393,25 +393,31 @@ class WebApi::V1::ProjectsController < ApplicationController
   end
 
   def create_community_monitor_project(settings)
-    multiloc_service = MultilocService.new
-    project = Project.create!(
-      hidden: true,
-      title_multiloc: multiloc_service.i18n_to_multiloc('phases.community_monitor_title'),
-      internal_role: 'community_monitor'
-    )
-    sidefx.after_create(project, current_user) if project
+    # Check first if the project exists but has not been added to settings (eg when creating platform from template)
+    project = Project.find_by(internal_role: 'community_monitor', hidden: true)
 
-    Phase.create!(
-      title_multiloc: multiloc_service.i18n_to_multiloc('phases.community_monitor_title'),
-      project: project,
-      participation_method: 'community_monitor_survey',
-      commenting_enabled: false, # TODO: JS - set in the participation method defaults
-      reacting_enabled: false,
-      start_at: Time.now,
-      campaigns_settings: { project_phase_started: true }, # TODO: JS - Is this correct?
-      native_survey_title_multiloc: multiloc_service.i18n_to_multiloc('phases.community_monitor_title'),
-      native_survey_button_multiloc: multiloc_service.i18n_to_multiloc('phases.native_survey_button')
-    )
+    unless project
+      # Create the hidden project and phase
+      multiloc_service = MultilocService.new
+      project = Project.create!(
+        hidden: true,
+        title_multiloc: multiloc_service.i18n_to_multiloc('phases.community_monitor_title'),
+        internal_role: 'community_monitor'
+      )
+      sidefx.after_create(project, current_user) if project
+
+      Phase.create!(
+        title_multiloc: multiloc_service.i18n_to_multiloc('phases.community_monitor_title'),
+        project: project,
+        participation_method: 'community_monitor_survey',
+        commenting_enabled: false,
+        reacting_enabled: false,
+        start_at: Time.now,
+        campaigns_settings: { project_phase_started: true },
+        native_survey_title_multiloc: multiloc_service.i18n_to_multiloc('phases.community_monitor_title'),
+        native_survey_button_multiloc: multiloc_service.i18n_to_multiloc('phases.native_survey_button')
+      )
+    end
 
     # Set the ID in the settings
     settings['community_monitor']['project_id'] = project.id
