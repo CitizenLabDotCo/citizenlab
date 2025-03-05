@@ -1,345 +1,347 @@
 # frozen_string_literal: true
 
-class Survey::ResultsGenerator < FieldVisitorService
-  def initialize(phase)
-    super()
-    form = phase.custom_form || CustomForm.new(participation_context: phase)
-    @fields = IdeaCustomFieldsService.new(form).enabled_fields
-    @inputs = phase.ideas.native_survey.published
-    @locales = AppConfiguration.instance.settings('core', 'locales')
-  end
-
-  # Get the results for a single survey question
-  def generate_result_for_field(field_id)
-    field = find_question(field_id)
-    visit field
-  end
-
-  # Get the results for a all survey questions
-  def generate_results
-    results = fields.filter_map { |f| visit f }
-    results = add_question_numbers_to_results results
-    results = add_page_response_count_to_results results
-    results = cleanup_results results
-
-    {
-      results: results,
-      totalSubmissions: inputs.size
-    }
-  end
-
-  def visit_number(field)
-    responses = base_responses(field)
-    response_count = responses.size
-
-    core_field_attributes(field, response_count:).merge({
-      numberResponses: responses
-    })
-  end
-
-  def visit_select(field)
-    visit_select_base(field)
-  end
-
-  def visit_multiselect(field)
-    visit_select_base(field)
-  end
-
-  def visit_multiselect_image(field)
-    visit_select_base(field)
-  end
-
-  def visit_ranking(field)
-    core_field_attributes(field).merge({
-      average_rankings: field.average_rankings(inputs),
-      rankings_counts: field.rankings_counts(inputs),
-      multilocs: get_multilocs(field)
-    })
-  end
-
-  def visit_text(field)
-    answers = get_text_responses(field.key)
-    response_count = answers.size
-
-    core_field_attributes(field, response_count:).merge({
-      textResponses: answers
-    })
-  end
-
-  def visit_multiline_text(field)
-    visit_text(field)
-  end
-
-  def visit_linear_scale(field)
-    visit_select_base(field)
-  end
-
-  def visit_matrix_linear_scale(field)
-    core_field_attributes(field).merge({
-      multilocs: { answer: build_scaled_input_multilocs(field) },
-      linear_scales: matrix_linear_scale_statements(field)
-    })
-  end
-
-  def visit_rating(field)
-    visit_select_base(field)
-  end
-
-  def visit_file_upload(field)
-    file_ids = inputs
-      .select("custom_field_values->'#{field.key}'->'id' as value")
-      .where("custom_field_values->'#{field.key}' IS NOT NULL")
-      .map(&:value)
-    files = IdeaFile.where(id: file_ids).map do |file|
-      { name: file.name, url: file.file.url }
+module Survey
+  class ResultsGenerator < FieldVisitorService
+    def initialize(phase)
+      super()
+      form = phase.custom_form || CustomForm.new(participation_context: phase)
+      @fields = IdeaCustomFieldsService.new(form).enabled_fields
+      @inputs = phase.ideas.native_survey.published
+      @locales = AppConfiguration.instance.settings('core', 'locales')
     end
-    response_count = files.size
 
-    core_field_attributes(field, response_count:).merge({
-      files: files
-    })
-  end
+    # Get the results for a single survey question
+    def generate_result_for_field(field_id)
+      field = find_question(field_id)
+      visit field
+    end
 
-  def visit_shapefile_upload(field)
-    visit_file_upload(field)
-  end
+    # Get the results for a all survey questions
+    def generate_results
+      results = fields.filter_map { |f| visit f }
+      results = add_question_numbers_to_results results
+      results = add_page_response_count_to_results results
+      results = cleanup_results results
 
-  def visit_point(field)
-    responses_to_geographic_input_type(field)
-  end
+      {
+        results: results,
+        totalSubmissions: inputs.size
+      }
+    end
 
-  def visit_line(field)
-    responses_to_geographic_input_type(field)
-  end
+    def visit_number(field)
+      responses = base_responses(field)
+      response_count = responses.size
 
-  def visit_polygon(field)
-    responses_to_geographic_input_type(field)
-  end
+      core_field_attributes(field, response_count:).merge({
+        numberResponses: responses
+      })
+    end
 
-  def visit_page(field)
-    core_field_attributes(field, response_count: 0) # Response count gets updated later by looking at all the results
-  end
+    def visit_select(field)
+      visit_select_base(field)
+    end
 
-  private
+    def visit_multiselect(field)
+      visit_select_base(field)
+    end
 
-  attr_reader :fields, :inputs, :locales
+    def visit_multiselect_image(field)
+      visit_select_base(field)
+    end
 
-  def core_field_attributes(field, response_count: nil)
-    response_count ||= base_responses(field).size
-    {
-      inputType: field.input_type,
-      question: field.title_multiloc,
-      description: field.description_multiloc,
-      customFieldId: field.id,
-      required: field.required,
-      grouped: false,
-      hidden: false,
-      totalResponseCount: @inputs.size,
-      questionResponseCount: response_count,
-      pageNumber: nil,
-      questionNumber: nil
-    }
-  end
+    def visit_ranking(field)
+      core_field_attributes(field).merge({
+        average_rankings: field.average_rankings(inputs),
+        rankings_counts: field.rankings_counts(inputs),
+        multilocs: get_multilocs(field)
+      })
+    end
 
-  def base_responses(field)
-    inputs
-      .select("custom_field_values->'#{field.key}' as value")
-      .where("custom_field_values->'#{field.key}' IS NOT NULL")
-      .map do |response|
-        { answer: response.value }
+    def visit_text(field)
+      answers = get_text_responses(field.key)
+      response_count = answers.size
+
+      core_field_attributes(field, response_count:).merge({
+        textResponses: answers
+      })
+    end
+
+    def visit_multiline_text(field)
+      visit_text(field)
+    end
+
+    def visit_linear_scale(field)
+      visit_select_base(field)
+    end
+
+    def visit_matrix_linear_scale(field)
+      core_field_attributes(field).merge({
+        multilocs: { answer: build_scaled_input_multilocs(field) },
+        linear_scales: matrix_linear_scale_statements(field)
+      })
+    end
+
+    def visit_rating(field)
+      visit_select_base(field)
+    end
+
+    def visit_file_upload(field)
+      file_ids = inputs
+        .select("custom_field_values->'#{field.key}'->'id' as value")
+        .where("custom_field_values->'#{field.key}' IS NOT NULL")
+        .map(&:value)
+      files = IdeaFile.where(id: file_ids).map do |file|
+        { name: file.name, url: file.file.url }
       end
-  end
+      response_count = files.size
 
-  def visit_select_base(field)
-    query = inputs.select(
-      select_field_query(field, as: 'answer')
-    )
-    answers = construct_select_answers(query, field)
+      core_field_attributes(field, response_count:).merge({
+        files: files
+      })
+    end
 
-    # Build response
-    build_select_response(answers, field)
-  end
+    def visit_shapefile_upload(field)
+      visit_file_upload(field)
+    end
 
-  def select_field_query(field, as: 'answer')
-    table = field.resource_type == 'User' ? 'users' : 'ideas'
+    def visit_point(field)
+      responses_to_geographic_input_type(field)
+    end
 
-    if %w[select linear_scale rating].include? field.input_type
-      "COALESCE(#{table}.custom_field_values->'#{field.key}', 'null') as #{as}"
-    elsif %w[multiselect multiselect_image].include? field.input_type
-      %{
+    def visit_line(field)
+      responses_to_geographic_input_type(field)
+    end
+
+    def visit_polygon(field)
+      responses_to_geographic_input_type(field)
+    end
+
+    def visit_page(field)
+      core_field_attributes(field, response_count: 0) # Response count gets updated later by looking at all the results
+    end
+
+    private
+
+    attr_reader :fields, :inputs, :locales
+
+    def core_field_attributes(field, response_count: nil)
+      response_count ||= base_responses(field).size
+      {
+        inputType: field.input_type,
+        question: field.title_multiloc,
+        description: field.description_multiloc,
+        customFieldId: field.id,
+        required: field.required,
+        grouped: false,
+        hidden: false,
+        totalResponseCount: @inputs.size,
+        questionResponseCount: response_count,
+        pageNumber: nil,
+        questionNumber: nil
+      }
+    end
+
+    def base_responses(field)
+      inputs
+        .select("custom_field_values->'#{field.key}' as value")
+        .where("custom_field_values->'#{field.key}' IS NOT NULL")
+        .map do |response|
+          { answer: response.value }
+        end
+    end
+
+    def visit_select_base(field)
+      query = inputs.select(
+        select_field_query(field, as: 'answer')
+      )
+      answers = construct_select_answers(query, field)
+
+      # Build response
+      build_select_response(answers, field)
+    end
+
+    def select_field_query(field, as: 'answer')
+      table = field.resource_type == 'User' ? 'users' : 'ideas'
+
+      if %w[select linear_scale rating].include? field.input_type
+        "COALESCE(#{table}.custom_field_values->'#{field.key}', 'null') as #{as}"
+      elsif %w[multiselect multiselect_image].include? field.input_type
+        %{
           jsonb_array_elements(
             CASE WHEN jsonb_path_exists(#{table}.custom_field_values, '$ ? (exists (@."#{field.key}"))')
               THEN #{table}.custom_field_values->'#{field.key}'
               ELSE '[null]'::jsonb END
           ) as #{as}
       }
-    else
-      raise "Unsupported field type: #{field.input_type}"
-    end
-  end
-
-  def matrix_linear_scale_statements(field)
-    field.matrix_statements.pluck(:key, :title_multiloc).to_h do |statement_key, statement_title_multiloc|
-      query_result = inputs.group("custom_field_values->'#{field.key}'->'#{statement_key}'").count
-      answers = (1..field.maximum).reverse_each.map do |answer|
-        { answer: answer, count: query_result[answer] || 0 }
-      end
-      question_response_count = answers.sum { |a| a[:count] }
-      answers.each do |answer|
-        answer[:percentage] = question_response_count > 0 ? (answer[:count].to_f / question_response_count) : 0.0
-      end
-      answers += [{ answer: nil, count: query_result[nil] || 0 }]
-      value = {
-        question: statement_title_multiloc,
-        questionResponseCount: question_response_count,
-        answers:
-      }
-      [statement_key, value]
-    end
-  end
-
-  def responses_to_geographic_input_type(field)
-    responses = base_responses(field)
-    response_count = responses.size
-    core_field_attributes(field, response_count:).merge({
-      mapConfigId: field&.map_config&.id, "#{field.input_type}Responses": responses
-    })
-  end
-
-  def build_select_response(answers, field)
-    # TODO: This is an additional query for selects so performance issue here
-    question_response_count = inputs.where("custom_field_values->'#{field.key}' IS NOT NULL").count
-
-    # Sort answers correctly
-    answers = answers.sort_by { |a| -a[:count] } unless %w[linear_scale rating].include?(field.input_type)
-    answers = answers.sort_by { |a| a[:answer] == 'other' ? 1 : 0 } # other should always be last
-
-    attributes = core_field_attributes(field, response_count: question_response_count).merge({
-      totalPickCount: answers.pluck(:count).sum,
-      answers: answers,
-      multilocs: get_multilocs(field)
-    })
-
-    attributes[:textResponses] = get_text_responses("#{field.key}_other") if field.other_option_text_field
-
-    attributes
-  end
-
-  def get_multilocs(field)
-    { answer: get_option_multilocs(field) }
-  end
-
-  def get_option_multilocs(field)
-    if %w[linear_scale rating].include?(field.input_type)
-      return build_scaled_input_multilocs(field)
-    end
-
-    field.ordered_transformed_options.each_with_object({}) do |option, accu|
-      option_detail = { title_multiloc: option.title_multiloc }
-      option_detail[:image] = option.image&.image&.versions&.transform_values(&:url) if field.support_option_images?
-      accu[option.key] = option_detail
-    end
-  end
-
-  def build_scaled_input_multilocs(field)
-    answer_multilocs = (1..field.maximum).index_with do |value|
-      { title_multiloc: locales.index_with { |_locale| value.to_s } }
-    end
-
-    format_labels = %w[linear_scale matrix_linear_scale].include?(field.input_type)
-
-    answer_multilocs.each_key do |value|
-      labels = field.nth_linear_scale_multiloc(value).transform_values do |label|
-        label.present? && format_labels ? "#{value} - #{label}" : value
-      end
-
-      answer_multilocs[value][:title_multiloc].merge! labels
-    end
-
-    answer_multilocs
-  end
-
-  def get_text_responses(field_key)
-    inputs
-      .select("custom_field_values->'#{field_key}' as value")
-      .where("custom_field_values->'#{field_key}' IS NOT NULL")
-      .map { |answer| { answer: answer.value.to_s } }
-      .sort_by { |a| a[:answer] }
-  end
-
-  def find_question(question_field_id)
-    question = fields.find { |f| f[:id] == question_field_id }
-    raise 'Question not found' unless question
-
-    question
-  end
-
-  def construct_select_answers(query, field)
-    answer_keys = generate_answer_keys(field)
-
-    grouped_answers_hash = group_query(query)
-      .each_with_object({}) do |(answer, count), accu|
-      valid_answer = answer_keys.include?(answer) ? answer : nil
-
-      accu[valid_answer] ||= { answer: valid_answer, count: 0 }
-      accu[valid_answer][:count] += count
-    end
-
-    answer_keys.map do |key|
-      grouped_answers_hash[key] || { answer: key, count: 0 }
-    end
-  end
-
-  def group_query(query)
-    Idea
-      .select(:answer)
-      .from(query)
-      .group(:answer)
-      .count
-  end
-
-  def generate_answer_keys(field)
-    (%w[linear_scale rating].include?(field.input_type) ? (1..field.maximum).to_a : field.ordered_transformed_options.map(&:key)) + [nil]
-  end
-
-  def add_page_response_count_to_results(results)
-    current_page_index = nil
-    max_response_count = 0
-    results.each_with_index do |result, index|
-      if result[:inputType] == 'page'
-        results[current_page_index][:questionResponseCount] = max_response_count unless current_page_index.nil?
-        current_page_index = index
-        max_response_count = 0
-      elsif result[:questionResponseCount] > max_response_count
-        max_response_count = result[:questionResponseCount]
-      end
-    end
-    results[current_page_index][:questionResponseCount] = max_response_count unless current_page_index.nil?
-    results
-  end
-
-  def add_question_numbers_to_results(results)
-    @page_numbers = {} # Lookup that we can use later in logic.
-    question_number = 0
-    page_number = 0
-    results.map do |result|
-      if result[:inputType] == 'page'
-        page_number += 1
-        result[:questionNumber] = nil
-        result[:pageNumber] = page_number
-        @page_numbers[result[:customFieldId]] = page_number
       else
-        question_number += 1
-        result[:questionNumber] = question_number
-        result[:pageNumber] = nil
+        raise "Unsupported field type: #{field.input_type}"
       end
-      result
     end
-  end
 
-  def cleanup_results(results)
-    # Remove the last page - needed for calculations, but not for display
-    results.pop if results.last[:inputType] == 'page'
-    results
+    def matrix_linear_scale_statements(field)
+      field.matrix_statements.pluck(:key, :title_multiloc).to_h do |statement_key, statement_title_multiloc|
+        query_result = inputs.group("custom_field_values->'#{field.key}'->'#{statement_key}'").count
+        answers = (1..field.maximum).reverse_each.map do |answer|
+          { answer: answer, count: query_result[answer] || 0 }
+        end
+        question_response_count = answers.sum { |a| a[:count] }
+        answers.each do |answer|
+          answer[:percentage] = question_response_count > 0 ? (answer[:count].to_f / question_response_count) : 0.0
+        end
+        answers += [{ answer: nil, count: query_result[nil] || 0 }]
+        value = {
+          question: statement_title_multiloc,
+          questionResponseCount: question_response_count,
+          answers:
+        }
+        [statement_key, value]
+      end
+    end
+
+    def responses_to_geographic_input_type(field)
+      responses = base_responses(field)
+      response_count = responses.size
+      core_field_attributes(field, response_count:).merge({
+        mapConfigId: field&.map_config&.id, "#{field.input_type}Responses": responses
+      })
+    end
+
+    def build_select_response(answers, field)
+      # TODO: This is an additional query for selects so performance issue here
+      question_response_count = inputs.where("custom_field_values->'#{field.key}' IS NOT NULL").count
+
+      # Sort answers correctly
+      answers = answers.sort_by { |a| -a[:count] } unless %w[linear_scale rating].include?(field.input_type)
+      answers = answers.sort_by { |a| a[:answer] == 'other' ? 1 : 0 } # other should always be last
+
+      attributes = core_field_attributes(field, response_count: question_response_count).merge({
+        totalPickCount: answers.pluck(:count).sum,
+        answers: answers,
+        multilocs: get_multilocs(field)
+      })
+
+      attributes[:textResponses] = get_text_responses("#{field.key}_other") if field.other_option_text_field
+
+      attributes
+    end
+
+    def get_multilocs(field)
+      { answer: get_option_multilocs(field) }
+    end
+
+    def get_option_multilocs(field)
+      if %w[linear_scale rating].include?(field.input_type)
+        return build_scaled_input_multilocs(field)
+      end
+
+      field.ordered_transformed_options.each_with_object({}) do |option, accu|
+        option_detail = { title_multiloc: option.title_multiloc }
+        option_detail[:image] = option.image&.image&.versions&.transform_values(&:url) if field.support_option_images?
+        accu[option.key] = option_detail
+      end
+    end
+
+    def build_scaled_input_multilocs(field)
+      answer_multilocs = (1..field.maximum).index_with do |value|
+        { title_multiloc: locales.index_with { |_locale| value.to_s } }
+      end
+
+      format_labels = %w[linear_scale matrix_linear_scale].include?(field.input_type)
+
+      answer_multilocs.each_key do |value|
+        labels = field.nth_linear_scale_multiloc(value).transform_values do |label|
+          label.present? && format_labels ? "#{value} - #{label}" : value
+        end
+
+        answer_multilocs[value][:title_multiloc].merge! labels
+      end
+
+      answer_multilocs
+    end
+
+    def get_text_responses(field_key)
+      inputs
+        .select("custom_field_values->'#{field_key}' as value")
+        .where("custom_field_values->'#{field_key}' IS NOT NULL")
+        .map { |answer| { answer: answer.value.to_s } }
+        .sort_by { |a| a[:answer] }
+    end
+
+    def find_question(question_field_id)
+      question = fields.find { |f| f[:id] == question_field_id }
+      raise 'Question not found' unless question
+
+      question
+    end
+
+    def construct_select_answers(query, field)
+      answer_keys = generate_answer_keys(field)
+
+      grouped_answers_hash = group_query(query)
+        .each_with_object({}) do |(answer, count), accu|
+        valid_answer = answer_keys.include?(answer) ? answer : nil
+
+        accu[valid_answer] ||= { answer: valid_answer, count: 0 }
+        accu[valid_answer][:count] += count
+      end
+
+      answer_keys.map do |key|
+        grouped_answers_hash[key] || { answer: key, count: 0 }
+      end
+    end
+
+    def group_query(query)
+      Idea
+        .select(:answer)
+        .from(query)
+        .group(:answer)
+        .count
+    end
+
+    def generate_answer_keys(field)
+      (%w[linear_scale rating].include?(field.input_type) ? (1..field.maximum).to_a : field.ordered_transformed_options.map(&:key)) + [nil]
+    end
+
+    def add_page_response_count_to_results(results)
+      current_page_index = nil
+      max_response_count = 0
+      results.each_with_index do |result, index|
+        if result[:inputType] == 'page'
+          results[current_page_index][:questionResponseCount] = max_response_count unless current_page_index.nil?
+          current_page_index = index
+          max_response_count = 0
+        elsif result[:questionResponseCount] > max_response_count
+          max_response_count = result[:questionResponseCount]
+        end
+      end
+      results[current_page_index][:questionResponseCount] = max_response_count unless current_page_index.nil?
+      results
+    end
+
+    def add_question_numbers_to_results(results)
+      @page_numbers = {} # Lookup that we can use later in logic.
+      question_number = 0
+      page_number = 0
+      results.map do |result|
+        if result[:inputType] == 'page'
+          page_number += 1
+          result[:questionNumber] = nil
+          result[:pageNumber] = page_number
+          @page_numbers[result[:customFieldId]] = page_number
+        else
+          question_number += 1
+          result[:questionNumber] = question_number
+          result[:pageNumber] = nil
+        end
+        result
+      end
+    end
+
+    def cleanup_results(results)
+      # Remove the last page - needed for calculations, but not for display
+      results.pop if results.last[:inputType] == 'page'
+      results
+    end
   end
 end
