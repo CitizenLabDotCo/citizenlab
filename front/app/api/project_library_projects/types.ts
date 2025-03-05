@@ -42,6 +42,10 @@ export interface ProjectLibraryProjects {
   links: ILinks;
 }
 
+export interface ProjectLibraryProject {
+  data: ProjectLibraryProjectData;
+}
+
 export interface ProjectLibraryProjectData {
   id: string;
   type: 'project_library_project';
