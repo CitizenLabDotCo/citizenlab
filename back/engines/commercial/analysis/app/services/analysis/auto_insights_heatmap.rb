@@ -8,7 +8,9 @@ module Analysis
       @big_fat_matrix = AutoInsightsService.new(@analysis).big_fat_matrix
     end
 
-    # Given 2 categories of columns, generate a heatmap. A category is an array of columns that are similar (e.g. all custom field options for the same custom field)
+    # Given 2 categories of columns, generate a heatmap. A category is an array
+    # of columns that are similar (e.g. all custom field options for the same
+    # custom field)
     def generate(category1, category2)
       matrix_to_heatmap(@big_fat_matrix, category1, category2)
     end
@@ -87,7 +89,7 @@ module Analysis
 
     private
 
-    def matrix_to_heatmap(matrix, category1, category2, &)
+    def matrix_to_heatmap(matrix, category1, category2)
       heatmap = {}
       matrix.each do |row|
         category1.each do |col1|

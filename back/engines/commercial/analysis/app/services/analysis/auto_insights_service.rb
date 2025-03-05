@@ -38,12 +38,12 @@ module Analysis
       end
     end
 
-    # The big fat matrix takes all inputs, user custom fields and taggings and
+    # The big fat matrix takes the gives, or all inputs, user custom fields and taggings and
     # throws them together in a large, one-hot (only booleans) encoded table
-    def big_fat_matrix
-      input_custom_fields = detect_input_custom_fields
-      user_custom_fields = detect_user_custom_fields
-      tags = detect_tags
+    def big_fat_matrix(tags: nil, user_custom_fields: nil, input_custom_fields: nil)
+      input_custom_fields ||= detect_input_custom_fields
+      user_custom_fields ||= detect_user_custom_fields
+      tags ||= detect_tags
       tag_map = tag_map(tags)
 
       @analysis.inputs.includes(:author).map do |input|
