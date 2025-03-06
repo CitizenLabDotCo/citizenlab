@@ -62,6 +62,8 @@ en:
         description:
       other_input_field:
         title: Type your answer
+      ask_follow_up_field:
+        title: Tell us why
   custom_forms:
     categories:
       main_content:
