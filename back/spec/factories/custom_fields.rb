@@ -344,9 +344,9 @@ FactoryBot.define do
 
       trait :with_options do
         after(:create) do |cf|
-          create(:custom_field_option, custom_field: cf, key: 'male')
-          create(:custom_field_option, custom_field: cf, key: 'female')
-          create(:custom_field_option, custom_field: cf, key: 'unspecified')
+          create(:custom_field_option, title_multiloc: { 'en' => 'Male' }, custom_field: cf, key: 'male')
+          create(:custom_field_option, title_multiloc: { 'en' => 'Female' }, custom_field: cf, key: 'female')
+          create(:custom_field_option, title_multiloc: { 'en' => 'Unspecified' }, custom_field: cf, key: 'unspecified')
         end
       end
     end

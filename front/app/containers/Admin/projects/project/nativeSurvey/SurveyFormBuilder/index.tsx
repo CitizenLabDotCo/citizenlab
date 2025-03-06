@@ -17,6 +17,7 @@ import FormBuilder from 'components/FormBuilder/edit';
 
 import { saveSurveyAsPDF } from '../saveSurveyAsPDF';
 import { nativeSurveyConfig, clearOptionAndStatementIds } from '../utils';
+import UserFieldsInFormNotice from 'containers/Admin/projects/project/nativeSurvey/UserFieldsInFormNotice';
 
 const SurveyFormBuilder = () => {
   const [exportModalOpen, setExportModalOpen] = useState(false);
@@ -61,6 +62,14 @@ const SurveyFormBuilder = () => {
           formCustomFields: newCustomFields,
           goBackUrl: `/admin/projects/${projectId}/phases/${phaseId}/native-survey`,
           onDownloadPDF: handleDownloadPDF,
+          getUserFieldsNotice: () => {
+            return phase.data.attributes.user_fields_in_form ? (
+              <UserFieldsInFormNotice
+                projectId={projectId}
+                phaseId={phase.data.id}
+              />
+            ) : null;
+          },
         }}
         viewFormLink={`/projects/${project.data.attributes.slug}/surveys/new?phase_id=${phase.data.id}`}
       />
