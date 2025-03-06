@@ -47,5 +47,50 @@ resource 'HeatmapCells' do
         row: { data: { id: heatmap_cells.first.row.id, type: 'tag' } }
       )
     end
+
+    example 'Respects the row_category filters' do
+      row_category_type = 'tags'
+      row_category_id = heatmap_cells[0].row.id
+
+      do_request(row_category_type:, row_category_id:)
+
+      expect(status).to eq 200
+      expect(response_data.size).to eq(1)
+      expect(response_data.first[:id]).to eq(heatmap_cells.first.id)
+    end
+
+    example 'Respects the col_category filters' do
+      col_category_type = 'user_custom_field'
+      col_category_id = heatmap_cells[0].column.id
+
+      do_request(col_category_type:, col_category_id:)
+
+      expect(status).to eq 200
+      expect(response_data.size).to eq(1)
+      expect(response_data.first[:id]).to eq(heatmap_cells.first.id)
+    end
+
+    example 'Respects the max_p_value filter' do
+      max_p_value = 0.05
+      cell = create(:heatmap_cell, analysis:, p_value: max_p_value)
+
+      do_request(max_p_value:)
+
+      expect(status).to eq 200
+      expect(response_data.size).to eq(1)
+      expect(response_data.first[:id]).to eq(cell.id)
+    end
+
+    example 'Respects the min_lift_diff filter' do
+      min_lift_diff = 60
+      cell1 = create(:heatmap_cell, analysis:, lift: 1.6)
+      cell2 = create(:heatmap_cell, analysis:, lift: 0.4)
+
+      do_request(min_lift_diff:)
+
+      expect(status).to eq 200
+      expect(response_data.size).to eq(2)
+      expect(response_data.map { _1[:id] }).to match_array([cell1.id, cell2.id])
+    end
   end
 end
