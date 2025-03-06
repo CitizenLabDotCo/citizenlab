@@ -167,13 +167,13 @@ sr-Cyrl:
       attachments:
         title: Прилози
         description:
-      section1:
+      page1:
         description:
-      section2:
-        title: Слике и прилози
+      page2:
+        title: Images and attachments
         description:
-      section3:
-        title: Детаљи
+      page3:
+        title: Details
         description:
       other_input_field:
         title: Type your answer
