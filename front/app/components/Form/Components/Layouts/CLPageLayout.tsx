@@ -63,11 +63,7 @@ import messages from './messages';
 import PageControlButtons from './PageControlButtons';
 import SubmissionReference from './SubmissionReference';
 
-// Handling survey pages in here. The more things that we have added to it,
-// the more it has become a survey page layout. It also becomes extremely hard to understand
-// if we continue to try and overload it to handle other scenarios. Survey headers are different
-// and handling them here makes it easy style the entire page. That among other things.
-const CLSurveyPageLayout = memo(
+const CLPageLayout = memo(
   ({
     schema,
     uischema,
@@ -518,6 +514,6 @@ const CLSurveyPageLayout = memo(
   }
 );
 
-export default withJsonFormsLayoutProps(CLSurveyPageLayout);
+export default withJsonFormsLayoutProps(CLPageLayout);
 
 export const clPageTester: RankedTester = rankWith(5, isPageCategorization);
