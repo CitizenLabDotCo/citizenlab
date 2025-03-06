@@ -1,12 +1,6 @@
 import React from 'react';
 
-import {
-  media,
-  colors,
-  fontSizes,
-  Icon,
-  Box,
-} from '@citizenlab/cl2-component-library';
+import { media, colors, Icon, Box } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
 import useAuthUser from 'api/me/useAuthUser';
@@ -26,9 +20,8 @@ import { NavItem } from './navItems';
 const Text = styled.div`
   flex: 1;
   color: #fff;
-  font-size: ${fontSizes.base}px;
+  font-size: 15px;
   font-weight: 400;
-  line-height: 19px;
   margin-left: 15px;
   display: flex;
   align-items: center;
@@ -128,7 +121,7 @@ const MenuItem = ({ navItem }: Props) => {
           justifyContent="center"
           className={navItem.iconName}
         >
-          <Icon name={navItem.iconName} />
+          <Icon name={navItem.iconName} height="20px" />
         </Box>
         <Text>
           <FormattedMessage {...messages[navItem.message]} />
