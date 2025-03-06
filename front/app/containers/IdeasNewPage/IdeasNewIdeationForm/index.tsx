@@ -1,4 +1,11 @@
-import React, { useEffect, useState, useCallback, lazy, Suspense } from 'react';
+import React, {
+  useEffect,
+  useState,
+  useCallback,
+  lazy,
+  Suspense,
+  useRef,
+} from 'react';
 
 import { Box, colors, useBreakpoint } from '@citizenlab/cl2-component-library';
 import { parse } from 'qs';
@@ -74,6 +81,7 @@ const IdeasNewIdeationForm = ({ project, phaseId }: Props) => {
   const locale = useLocale();
   const [isDisclaimerOpened, setIsDisclaimerOpened] = useState(false);
   const [formData, setFormData] = useState<FormValues | null>(null);
+  const callbackRef = useRef<(() => void) | null>(null);
   const { mutateAsync: addIdea } = useAddIdea();
   const { data: authUser } = useAuthUser();
   const { data: phases } = usePhases(project.data.id);
@@ -130,7 +138,10 @@ const IdeasNewIdeationForm = ({ project, phaseId }: Props) => {
   }, [search, locale]);
 
   // Handle image disclaimer
-  const handleDisclaimer = (data: FormValues) => {
+  const handleDisclaimer = (
+    data: FormValues,
+    onSubmitCallback?: () => void
+  ) => {
     const disclaimerNeeded =
       data.idea_files_attributes ||
       data.idea_images_attributes ||
@@ -140,9 +151,10 @@ const IdeasNewIdeationForm = ({ project, phaseId }: Props) => {
 
     if (data.publication_status === 'published') {
       if (disclaimerNeeded) {
+        callbackRef.current = onSubmitCallback || null;
         return setIsDisclaimerOpened(true);
       }
-      return onSubmit(data);
+      return onSubmit(data, onSubmitCallback);
     } else {
       // Add handling draft ideas
     }
@@ -152,13 +164,15 @@ const IdeasNewIdeationForm = ({ project, phaseId }: Props) => {
     if (!formData) return;
     onSubmit(formData);
     setIsDisclaimerOpened(false);
+    callbackRef.current?.();
+    callbackRef.current = null;
   };
 
   const onCancelDisclaimer = () => {
     setIsDisclaimerOpened(false);
   };
 
-  const onSubmit = async (data: FormValues) => {
+  const onSubmit = async (data: FormValues, onSubmitCallback?: () => void) => {
     setLoading(true);
     const location_point_geojson = await getLocationGeojson(
       initialFormData,
@@ -177,6 +191,7 @@ const IdeasNewIdeationForm = ({ project, phaseId }: Props) => {
       anonymous: postAnonymously ? true : undefined,
     });
 
+    onSubmitCallback?.();
     setLoading(false);
   };
 

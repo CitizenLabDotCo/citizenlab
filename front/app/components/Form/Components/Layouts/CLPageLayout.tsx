@@ -226,6 +226,15 @@ const CLPageLayout = memo(
         return;
       }
 
+      const goToNextPage = () => {
+        scrollToTop();
+        const nextPage = visiblePages[currentStepNumber + 1];
+
+        setUserPagePath((userPagePath) => [...userPagePath, nextPage]);
+
+        setIsLoading(false);
+      };
+
       if (pageVariant === 'submission') {
         setIsLoading(true);
         data.publication_status = 'published';
@@ -233,7 +242,8 @@ const CLPageLayout = memo(
         const idea: IIdea | undefined = await onSubmit(
           data,
           true,
-          userPagePath
+          userPagePath,
+          goToNextPage
         );
         // Remove this condition after handling draft ideas
         if (idea) {
@@ -241,14 +251,21 @@ const CLPageLayout = memo(
         }
       } else {
         data.publication_status = 'draft';
-        await onSubmit({ data }, false, userPagePath);
+        await onSubmit({ data }, false, userPagePath, goToNextPage);
+        goToNextPage();
       }
 
-      scrollToTop();
+      // scrollToTop();
 
-      const nextPage = visiblePages[currentStepNumber + 1];
+      // const nextPage = visiblePages[currentStepNumber + 1];
 
-      setUserPagePath((userPagePath) => [...userPagePath, nextPage]);
+      // New
+      // if (pageVariant === 'submission' && !shouldSubmit) {
+      //   setIsLoading(false);
+      //   return;
+      // }
+
+      // setUserPagePath((userPagePath) => [...userPagePath, nextPage]);
 
       setIsLoading(false);
     };

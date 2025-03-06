@@ -183,20 +183,27 @@ const IdeasNewSurveyForm = ({ project, phaseId }: Props) => {
     return null;
   }
 
-  const handleDraftIdeas = async (data: FormValues) => {
+  const handleDraftIdeas = async (
+    data: FormValues,
+    onSubmitCallback?: () => void
+  ) => {
     if (data.publication_status === 'published') {
-      return onSubmit(data, true);
+      return onSubmit(data, true, onSubmitCallback);
     } else {
       if (allowAnonymousPosting || !authUser) {
         // Anonymous or not logged in surveys should not save drafts
         return;
       }
 
-      return onSubmit(data, false);
+      return onSubmit(data, false, onSubmitCallback);
     }
   };
 
-  const onSubmit = async (data: FormValues, published?: boolean) => {
+  const onSubmit = async (
+    data: FormValues,
+    published?: boolean,
+    onSubmitCallback?: () => void
+  ) => {
     const requestBodyConvertedData = convertGeojsonToWKT(data);
 
     const requestBody = {
@@ -265,6 +272,7 @@ const IdeasNewSurveyForm = ({ project, phaseId }: Props) => {
         idea,
       });
     }
+    onSubmitCallback?.();
 
     return idea;
   };

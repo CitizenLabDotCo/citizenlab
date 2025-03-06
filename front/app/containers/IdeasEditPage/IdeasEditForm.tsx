@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 
 import { Box, colors, useBreakpoint } from '@citizenlab/cl2-component-library';
 import { omit } from 'lodash-es';
@@ -23,7 +23,6 @@ import { AjvErrorGetter, ApiErrorGetter } from 'components/Form/typings';
 import FullPageSpinner from 'components/UI/FullPageSpinner';
 
 import { FormattedMessage } from 'utils/cl-intl';
-import clHistory from 'utils/cl-router/history';
 import { getFieldNameFromPath } from 'utils/JSONFormUtils';
 
 import IdeasEditMeta from './IdeasEditMeta';
@@ -62,6 +61,7 @@ const IdeasEditForm = ({ ideaId }: Props) => {
   const { data: remoteImages } = useIdeaImages(ideaId);
   const { data: remoteFiles } = useIdeaFiles(ideaId);
   const projectId = idea?.data.relationships.project.data.id;
+  const callbackRef = useRef<(() => void) | null>(null);
 
   const {
     schema,
@@ -143,7 +143,10 @@ const IdeasEditForm = ({ ideaId }: Props) => {
       idea.data.attributes.location_point_geojson;
   }
 
-  const handleDisclaimer = (data: FormValues) => {
+  const handleDisclaimer = (
+    data: FormValues,
+    onSubmitCallback?: () => void
+  ) => {
     const disclaimerNeeded =
       data.idea_files_attributes ||
       data.idea_images_attributes ||
@@ -153,9 +156,10 @@ const IdeasEditForm = ({ ideaId }: Props) => {
     setFormData(data);
     if (data.publication_status === 'published') {
       if (disclaimerNeeded) {
+        callbackRef.current = onSubmitCallback || null;
         return setIsDisclaimerOpened(true);
       }
-      return onSubmit(data);
+      return onSubmit(data, onSubmitCallback);
     } else {
       // Add handling draft ideas
     }
@@ -165,13 +169,15 @@ const IdeasEditForm = ({ ideaId }: Props) => {
     if (!data) return;
     onSubmit(data);
     setIsDisclaimerOpened(false);
+    callbackRef.current?.();
+    callbackRef.current = null;
   };
 
   const onCancelDisclaimer = () => {
     setIsDisclaimerOpened(false);
   };
 
-  const onSubmit = async (data: FormValues) => {
+  const onSubmit = async (data: FormValues, onSubmitCallback?: () => void) => {
     setLoading(true);
     const { idea_images_attributes, ...ideaWithoutImages } = data;
 
@@ -200,19 +206,13 @@ const IdeasEditForm = ({ ideaId }: Props) => {
       project_id: projectId,
     };
 
-    const idea = await updateIdea({
+    await updateIdea({
       id: ideaId,
       requestBody: isImageNew
         ? omit(payload, 'idea_files_attributes')
         : omit(payload, ['idea_images_attributes', 'idea_files_attributes']),
     });
-
-    clHistory.push(
-      {
-        pathname: `/ideas/${idea.data.attributes.slug}`,
-      },
-      { scrollToTop: true }
-    );
+    onSubmitCallback?.();
     setLoading(false);
   };
 

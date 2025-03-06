@@ -49,7 +49,10 @@ const Title = styled.h1`
 interface Props {
   schema: JsonSchema7;
   uiSchema: Layout;
-  onSubmit: (formData: FormValues) => void | Promise<any>;
+  onSubmit: (
+    formData: FormValues,
+    onSubmitCallback?: () => void
+  ) => void | Promise<any>;
   initialFormData: FormValues;
   title?: ReactElement;
   /** A function that returns a translation message given the fieldname and the error key returned by the API */
@@ -120,7 +123,8 @@ const Form = memo(
     const handleSubmit = async (
       formData?: any,
       showErrors = true,
-      userPagePath: PageType[] = []
+      userPagePath: PageType[] = [],
+      onSubmitCallback?: () => void
     ) => {
       // Any specified formData has priority over data attribute
       const submissionData = formData && formData.data ? formData.data : data;
@@ -150,7 +154,7 @@ const Form = memo(
         }
         try {
           // TODO: Test that this does not affect anything else
-          response = await onSubmit(sanitizedFormData);
+          response = await onSubmit(sanitizedFormData, onSubmitCallback);
           if (isSurvey) {
             trackEventByName(tracks.surveyFormSubmitted);
           } else {
