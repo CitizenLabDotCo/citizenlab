@@ -80,6 +80,10 @@ class SurveyResultsGeneratorService < FieldVisitorService
     visit_select_base(field)
   end
 
+  def visit_sentiment_linear_scale(field)
+    visit_select_base(field)
+  end
+
   def visit_matrix_linear_scale(field)
     core_field_attributes(field).merge({
       multilocs: { answer: build_scaled_input_multilocs(field) },
@@ -165,8 +169,8 @@ class SurveyResultsGeneratorService < FieldVisitorService
     query = inputs
     query = query.joins(:author) if group_mode == 'user_field'
     if group_field
-      raise "Unsupported group field type: #{group_field.input_type}" unless %w[select linear_scale rating].include?(group_field.input_type)
-      raise "Unsupported question type: #{field.input_type}" unless %w[select multiselect linear_scale rating multiselect_image].include?(field.input_type)
+      raise "Unsupported group field type: #{group_field.input_type}" unless %w[select linear_scale sentiment_linear_scale rating].include?(group_field.input_type)
+      raise "Unsupported question type: #{field.input_type}" unless %w[select multiselect linear_scale sentiment_linear_scale rating multiselect_image].include?(field.input_type)
 
       query = query.select(
         select_field_query(field, as: 'answer'),
@@ -181,7 +185,7 @@ class SurveyResultsGeneratorService < FieldVisitorService
     end
 
     # Sort correctly
-    answers = answers.sort_by { |a| -a[:count] } unless %w[linear_scale rating].include?(field.input_type)
+    answers = answers.sort_by { |a| -a[:count] } unless %w[linear_scale sentiment_linear_scale rating].include?(field.input_type)
     answers = answers.sort_by { |a| a[:answer] == 'other' ? 1 : 0 } # other should always be last
 
     # Build response
@@ -191,7 +195,7 @@ class SurveyResultsGeneratorService < FieldVisitorService
   def select_field_query(field, as: 'answer')
     table = field.resource_type == 'User' ? 'users' : 'ideas'
 
-    if %w[select linear_scale rating].include? field.input_type
+    if %w[select linear_scale sentiment_linear_scale rating].include? field.input_type
       "COALESCE(#{table}.custom_field_values->'#{field.key}', 'null') as #{as}"
     elsif %w[multiselect multiselect_image].include? field.input_type
       %{
@@ -246,6 +250,7 @@ class SurveyResultsGeneratorService < FieldVisitorService
     })
 
     attributes[:textResponses] = get_text_responses("#{field.key}_other") if field.other_option_text_field
+    # TODO: Get text responses for sentiment questions with follow up questions.
     attributes[:legend] = generate_answer_keys(group_field) if group_field
 
     attributes
@@ -258,7 +263,7 @@ class SurveyResultsGeneratorService < FieldVisitorService
   end
 
   def get_option_multilocs(field)
-    if %w[linear_scale rating].include?(field.input_type)
+    if %w[linear_scale sentiment_linear_scale rating].include?(field.input_type)
       return build_scaled_input_multilocs(field)
     end
 
@@ -274,7 +279,7 @@ class SurveyResultsGeneratorService < FieldVisitorService
       { title_multiloc: locales.index_with { |_locale| value.to_s } }
     end
 
-    format_labels = %w[linear_scale matrix_linear_scale].include?(field.input_type)
+    format_labels = %w[linear_scale sentiment_linear_scale matrix_linear_scale].include?(field.input_type)
 
     answer_multilocs.each_key do |value|
       labels = field.nth_linear_scale_multiloc(value).transform_values do |label|
@@ -290,7 +295,7 @@ class SurveyResultsGeneratorService < FieldVisitorService
   def get_option_logic(field)
     return {} if field.logic.blank?
 
-    is_linear_or_rating = %w[linear_scale rating].include?(field.input_type)
+    is_linear_or_rating = %w[linear_scale sentiment_linear_scale rating].include?(field.input_type)
     options = if is_linear_or_rating
       # Create a unique ID for this linear scale option in the full results so we can filter logic
       (1..field.maximum).map { |value| { id: "#{field.id}_#{value}", key: value } }
@@ -389,7 +394,7 @@ class SurveyResultsGeneratorService < FieldVisitorService
   end
 
   def generate_answer_keys(field)
-    (%w[linear_scale rating].include?(field.input_type) ? (1..field.maximum).to_a : field.ordered_transformed_options.map(&:key)) + [nil]
+    (%w[linear_scale sentiment_linear_scale rating].include?(field.input_type) ? (1..field.maximum).to_a : field.ordered_transformed_options.map(&:key)) + [nil]
   end
 
   def add_page_response_count_to_results(results)

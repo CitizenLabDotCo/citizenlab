@@ -94,6 +94,8 @@ const getCustomFieldBadgeLabel = (
       return messages.ranking;
     case 'matrix_linear_scale':
       return messages.matrix;
+    case 'sentiment_linear_scale':
+      return messages.sentiment;
     default:
       return messages.default;
   }

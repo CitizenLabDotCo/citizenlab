@@ -177,6 +177,8 @@ it:
         description:
       other_input_field:
         title: Scrivi la tua risposta
+      ask_follow_up_field:
+        title: Dicci perché
   custom_forms:
     categories:
       main_content:

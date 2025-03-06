@@ -1,8 +1,7 @@
 import React from 'react';
 
 import { Box, colors } from '@citizenlab/cl2-component-library';
-import { Editor as CraftEditor, QueryMethods } from '@craftjs/core';
-import { QueryCallbacksFor } from '@craftjs/utils';
+import { Editor as CraftEditor } from '@craftjs/core';
 
 import Container from 'components/admin/ContentBuilder/Widgets/Container';
 
@@ -16,7 +15,7 @@ import RenderNode from './RenderNode';
 type EditorProps = {
   children: React.ReactNode;
   isPreview: boolean;
-  onNodesChange?: (query: QueryCallbacksFor<typeof QueryMethods>) => void;
+  onNodesChange?: React.ComponentProps<typeof CraftEditor>['onNodesChange'];
 };
 
 const resolver = {
