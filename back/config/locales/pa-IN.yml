@@ -167,12 +167,12 @@ pa:
       attachments:
         title: ਅਟੈਚਮੈਂਟਸ
         description:
-      section1:
+      page1:
         description:
-      section2:
-        title: ਚਿੱਤਰ ਅਤੇ ਅਟੈਚਮੈਂਟ
+      page2:
+        title: ਚਿੱਤਰ ਅਤੇ ਅਟੈਚਮੈਂਟਾਂ
         description:
-      section3:
+      page3:
         title: ਵੇਰਵੇ
         description:
       other_input_field:
