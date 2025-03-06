@@ -217,7 +217,7 @@ module Surveys
         multilocs: get_multilocs(field)
       })
 
-      attributes[:textResponses] = get_text_responses("#{field.key}_other") if field.other_option_text_field
+      attributes[:textResponses] = get_text_responses(field.additional_text_question_key) if field.additional_text_question_key
 
       attributes[:averages] = { this_period: calculate_linear_scale_average(answers) } if field.supports_linear_scale?
 
@@ -318,6 +318,7 @@ module Surveys
       })
     end
 
+    # Get any associated text responses - where follow up question or other option is used
     def get_text_responses(field_key)
       inputs
         .select("custom_field_values->'#{field_key}' as value")

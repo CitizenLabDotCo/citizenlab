@@ -348,7 +348,11 @@ RSpec.describe Surveys::ResultsGenerator do
               4 => { title_multiloc: { 'en' => '4 - Agree', 'fr-FR' => '4', 'nl-NL' => '4' } },
               5 => { title_multiloc: { 'en' => '5 - Strongly agree', 'fr-FR' => '5', 'nl-NL' => '5' } }
             }
-          }
+          },
+          textResponses: [
+            { answer: 'Great thanks very much' },
+            { answer: 'Just not good' }
+          ]
         }
       end
 

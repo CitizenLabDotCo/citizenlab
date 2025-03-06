@@ -271,7 +271,8 @@ RSpec.shared_context 'survey_setup' do
         'en' => 'How are you feeling?',
         'fr-FR' => 'Comment te sens-tu?',
         'nl-NL' => 'Hoe gaat het met je?'
-      }
+      },
+      ask_follow_up: true
     )
   end
 
@@ -344,7 +345,8 @@ RSpec.shared_context 'survey_setup' do
         matrix_linear_scale_field.key => {
           'send_more_animals_to_space' => 1
         },
-        sentiment_linear_scale_field.key => 2
+        sentiment_linear_scale_field.key => 2,
+        "#{sentiment_linear_scale_field.key}_follow_up" => 'Just not good'
       },
       author: male_user,
       created_at: '2025-03-16'
@@ -362,7 +364,8 @@ RSpec.shared_context 'survey_setup' do
         matrix_linear_scale_field.key => {
           'ride_bicycles_more_often' => 3
         },
-        sentiment_linear_scale_field.key => 5
+        sentiment_linear_scale_field.key => 5,
+        "#{sentiment_linear_scale_field.key}_follow_up" => 'Great thanks very much'
       },
       author: female_user,
       created_at: '2025-03-05'
