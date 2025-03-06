@@ -167,13 +167,13 @@ sr-Latn:
       attachments:
         title: Prilozi
         description:
-      section1:
+      page1:
         description:
-      section2:
-        title: Slike i prilozi
+      page2:
+        title: Images and attachments
         description:
-      section3:
-        title: Detalji
+      page3:
+        title: Details
         description:
       other_input_field:
         title: Type your answer
