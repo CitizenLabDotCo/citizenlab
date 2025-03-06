@@ -167,12 +167,12 @@ lb:
       attachments:
         title: Annexen
         description:
-      section1:
+      page1:
         description:
-      section2:
-        title: Biller an Annexen
+      page2:
+        title: Biller an Uschlëss
         description:
-      section3:
+      page3:
         title: Detailer
         description:
       other_input_field:
