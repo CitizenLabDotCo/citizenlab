@@ -1,15 +1,15 @@
 import React from 'react';
 
-import { Box, colors, Title } from '@citizenlab/cl2-component-library';
+import { Box, Title } from '@citizenlab/cl2-component-library';
 
 import useCommunityMonitorProject from 'api/community_monitor/useCommunityMonitorProject';
-
-import FormResults from 'components/admin/FormResults';
 
 import { FormattedMessage } from 'utils/cl-intl';
 
 import messages from '../../messages';
+import ViewSurveyButton from '../ViewSurveyButton';
 
+import FormResults from './components/FormResults';
 import QuarterlyDatePicker from './components/QuarterlyDatePicker';
 
 const LiveMonitor = () => {
@@ -23,10 +23,13 @@ const LiveMonitor = () => {
         <Title color="primary">
           <FormattedMessage {...messages.communityMonitorLabel} />
         </Title>
-        <QuarterlyDatePicker />
+        <Box display="flex" gap="16px">
+          <QuarterlyDatePicker />
+          <ViewSurveyButton buttonStyle="admin-dark" py="4px" px="8px" />
+        </Box>
       </Box>
 
-      <Box background={colors.white} py="30px" px="40px">
+      <Box>
         <FormResults projectId={projectId} phaseId={phaseId} />
       </Box>
     </Box>

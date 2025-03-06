@@ -266,8 +266,7 @@ const FormBuilderToolbox = ({
           inputType="rating"
           disabled={isCustomFieldsDisabled}
         />
-        {/* TODO: Re-enable once the Sentiment Question is fully released */}
-        {/* <ToolboxItem
+        <ToolboxItem
           icon="survey-sentiment"
           label={formatMessage(messages.sentiment)}
           onClick={() => addField('sentiment_linear_scale')}
@@ -275,7 +274,7 @@ const FormBuilderToolbox = ({
           fieldsToInclude={builderConfig.toolboxFieldsToInclude}
           inputType="sentiment_linear_scale"
           disabled={isCustomFieldsDisabled}
-        /> */}
+        />
         <ToolboxItem
           icon="survey-matrix"
           label={formatMessage(messages.matrix)}
