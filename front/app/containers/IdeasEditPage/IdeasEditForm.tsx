@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 
 import { Box, colors, useBreakpoint } from '@citizenlab/cl2-component-library';
 import { omit } from 'lodash-es';
@@ -72,6 +72,17 @@ const IdeasEditForm = ({ ideaId }: Props) => {
     projectId,
     inputId: ideaId,
   });
+  const [initialFormData, setInitialFormData] = useState(
+    getFormValues(idea, schema, remoteImages, remoteFiles)
+  );
+
+  useEffect(() => {
+    if (idea && schema) {
+      setInitialFormData(
+        getFormValues(idea, schema, remoteImages, remoteFiles)
+      );
+    }
+  }, [schema, idea, remoteImages, remoteFiles]);
 
   const getApiErrorMessage: ApiErrorGetter = useCallback(
     (error) => {
@@ -125,17 +136,9 @@ const IdeasEditForm = ({ ideaId }: Props) => {
     return null;
   }
 
-  const initialFormData = getFormValues(
-    idea,
-    schema,
-    remoteImages,
-    remoteFiles
-  );
-
   // Set initial location point if exists
-  // TODO: Fix this the next time the file is edited.
-  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-  if (initialFormData && idea.data.attributes.location_point_geojson) {
+
+  if (idea.data.attributes.location_point_geojson) {
     initialFormData['location_point_geojson'] =
       idea.data.attributes.location_point_geojson;
   }
@@ -146,6 +149,7 @@ const IdeasEditForm = ({ ideaId }: Props) => {
       data.idea_images_attributes ||
       Object.values(data.body_multiloc).some((value) => value.includes('<img'));
 
+    setInitialFormData(data);
     setFormData(data);
     if (data.publication_status === 'published') {
       if (disclaimerNeeded) {
@@ -177,9 +181,7 @@ const IdeasEditForm = ({ ideaId }: Props) => {
     );
 
     const isImageNew =
-      // TODO: Fix this the next time the file is edited.
-      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-      idea_images_attributes !== initialFormData?.idea_images_attributes;
+      idea_images_attributes !== initialFormData.idea_images_attributes;
 
     // Delete a remote image only on submission
     // TODO: Fix this the next time the file is edited.
