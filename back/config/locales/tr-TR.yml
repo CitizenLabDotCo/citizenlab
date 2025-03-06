@@ -167,12 +167,12 @@ tr:
       attachments:
         title: Ekler
         description:
-      section1:
+      page1:
         description:
-      section2:
+      page2:
         title: Resimler ve ekler
         description:
-      section3:
+      page3:
         title: Detaylar
         description:
       other_input_field:
