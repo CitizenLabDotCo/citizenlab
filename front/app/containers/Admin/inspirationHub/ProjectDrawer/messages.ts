@@ -9,4 +9,8 @@ export default defineMessages({
     id: 'app.containers.Admin.inspirationHub.ProjectDrawer.Phase.readMore',
     defaultMessage: 'Read more...',
   },
+  openEnded: {
+    id: 'app.containers.Admin.inspirationHub.ProjectDrawer.Phase.openEnded',
+    defaultMessage: 'Open ended',
+  },
 });

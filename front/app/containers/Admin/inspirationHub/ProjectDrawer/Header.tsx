@@ -8,23 +8,17 @@ import {
   Text,
   colors,
 } from '@citizenlab/cl2-component-library';
-import { format } from 'date-fns';
 
 import { ProjectLibraryProjectData } from 'api/project_library_projects/types';
 
 import { parseBackendDateString } from 'utils/dateUtils';
 
 import ExternalLink from './ExternalLink';
-import { getTenantURL, getProjectURL } from './utils';
+import { getTenantURL, getProjectURL, formatDate } from './utils';
 
 interface Props {
   attributes: ProjectLibraryProjectData['attributes'];
 }
-
-const formatDate = (date?: Date) => {
-  if (!date) return;
-  return format(date, 'dd MMMM yyyy');
-};
 
 const Header = ({ attributes }: Props) => {
   const tenantURL = getTenantURL(attributes);

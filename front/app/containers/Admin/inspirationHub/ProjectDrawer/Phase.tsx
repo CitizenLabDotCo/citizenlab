@@ -6,21 +6,35 @@ import useProjectLibraryPhase from 'api/project_library_phases/useProjectLibrary
 import { ProjectLibraryProjectData } from 'api/project_library_projects/types';
 
 import { useIntl } from 'utils/cl-intl';
+import { parseBackendDateString } from 'utils/dateUtils';
+
+import MethodLabel from '../ProjectTable/MethodLabel';
 
 import ExternalLink from './ExternalLink';
 import messages from './messages';
-import { getPhaseURL } from './utils';
+import { formatDate, getPhaseURL } from './utils';
 
 interface Props {
-  attributes: ProjectLibraryProjectData['attributes'];
+  projectAttributes: ProjectLibraryProjectData['attributes'];
   projectLibraryPhaseId: string;
   phaseNumber: number;
 }
 
-const Phase = ({ attributes, projectLibraryPhaseId, phaseNumber }: Props) => {
+const Phase = ({
+  projectAttributes,
+  projectLibraryPhaseId,
+  phaseNumber,
+}: Props) => {
   const { formatMessage } = useIntl();
   const { data: phase } = useProjectLibraryPhase(projectLibraryPhaseId);
   if (!phase) return null;
+
+  const phaseAttributes = phase.data.attributes;
+
+  const startAt = parseBackendDateString(phaseAttributes.start_at);
+  const endAt = phaseAttributes.end_at
+    ? parseBackendDateString(phaseAttributes.end_at)
+    : undefined;
 
   return (
     <Box>
@@ -30,7 +44,14 @@ const Phase = ({ attributes, projectLibraryPhaseId, phaseNumber }: Props) => {
           title: phase.data.attributes.title_en,
         })}
       </Title>
-      <ExternalLink href={getPhaseURL(attributes, phaseNumber)}>
+      <Box display="flex" flexDirection="row" alignItems="center">
+        <Box>
+          {formatDate(startAt)} -{' '}
+          {formatDate(endAt) ?? formatMessage(messages.openEnded)}
+        </Box>
+        <MethodLabel projectLibraryPhaseId={projectLibraryPhaseId} />
+      </Box>
+      <ExternalLink href={getPhaseURL(projectAttributes, phaseNumber)}>
         {formatMessage(messages.readMore)}
       </ExternalLink>
     </Box>

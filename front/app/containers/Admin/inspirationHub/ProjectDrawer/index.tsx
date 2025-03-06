@@ -44,7 +44,7 @@ const ProjectDrawer = () => {
                 key={id}
                 projectLibraryPhaseId={id}
                 phaseNumber={index + 1}
-                attributes={attributes}
+                projectAttributes={attributes}
               />
             ))}
           </Box>

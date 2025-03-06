@@ -1,3 +1,5 @@
+import { format } from 'date-fns';
+
 import { ProjectLibraryProjectData } from 'api/project_library_projects/types';
 
 export const getTenantURL = (
@@ -17,4 +19,9 @@ export const getPhaseURL = (
   phaseNumber: number
 ) => {
   return `${getProjectURL(attributes)}/${phaseNumber}`;
+};
+
+export const formatDate = (date?: Date) => {
+  if (!date) return;
+  return format(date, 'dd MMMM yyyy');
 };
