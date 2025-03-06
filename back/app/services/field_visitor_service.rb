@@ -109,6 +109,10 @@ class FieldVisitorService
     default(field)
   end
 
+  def visit_sentiment_linear_scale(field)
+    default(field)
+  end
+
   def visit_page(field)
     default(field)
   end
