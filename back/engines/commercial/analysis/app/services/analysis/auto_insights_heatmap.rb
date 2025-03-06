@@ -39,8 +39,8 @@ module Analysis
         new_heatmap[col1] = {}
         row.each do |col2, count|
           total_col1 = row.values.sum
-          total_col2 = heatmap.values.map { |r| r[col2] }.sum
-          total = heatmap.values.map { |r| r.values.sum }.sum
+          total_col2 = heatmap.values.sum { |r| r[col2] }
+          total = heatmap.values.sum { |r| r.values.sum }
           expected = total_col1 * total_col2 / total.to_f
           lift = count / expected
           new_heatmap[col1][col2] = lift

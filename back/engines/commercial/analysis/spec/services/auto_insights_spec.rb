@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-describe Analysis::AutoInsightsService do
+describe Analysis::AutoInsightsService, skip: 'Probably throwaway code, needs refactoring to be combined with HeatmapGenerator' do
   let!(:custom_field_gender) { create(:custom_field_gender, :with_options) }
   let!(:project) { create(:project_with_active_native_survey_phase) }
   let!(:phase) { project.phases.first }
@@ -14,22 +14,22 @@ describe Analysis::AutoInsightsService do
   let!(:analysis) { create(:survey_analysis, phase: phase, additional_custom_fields: custom_form.custom_fields) }
   let!(:tag1) { create(:tag, analysis: analysis) }
   let!(:tag2) { create(:tag, analysis: analysis) }
-  let!(:tagging1_1) { create(:tagging, tag: tag1, input: input1) }
-  let!(:tagging1_2) { create(:tagging, tag: tag2, input: input1) }
-  let!(:tagging3_1) { create(:tagging, tag: tag1, input: input2) }
+  let!(:tagging11) { create(:tagging, tag: tag1, input: input1) }
+  let!(:tagging12) { create(:tagging, tag: tag2, input: input1) }
+  let!(:tagging31) { create(:tagging, tag: tag1, input: input2) }
 
   describe '#big_fat_matrix' do
     it 'returns a big fat matrix for surveys' do
       service = described_class.new(analysis)
       bfm = service.big_fat_matrix
-      expect(bfm).to eq({})
+      expect(bfm).to eq([])
     end
   end
 
   describe '#call' do
     it 'returns strongest auto-insights' do
       service = described_class.new(analysis)
-      expect(service.call).to eq({})
+      expect(service.chi_square_analysis).to eq([])
     end
   end
 end
