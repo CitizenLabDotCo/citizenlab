@@ -409,7 +409,7 @@ const CLSurveyPageLayout = memo(
                         as="h1"
                         variant={isMobileOrSmaller ? 'h2' : 'h1'}
                         m="0"
-                        mb="8px"
+                        mb="20px"
                         color="tenantPrimary"
                       >
                         {currentPage.options.title}

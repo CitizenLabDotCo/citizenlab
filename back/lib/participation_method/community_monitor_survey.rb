@@ -7,7 +7,7 @@ module ParticipationMethod
     end
 
     def allowed_extra_field_input_types
-      %w[page text linear_scale rating select multiselect]
+      %w[page text sentiment_linear_scale linear_scale rating select multiselect]
     end
 
     # TODO: Fields are currently placeholders
