@@ -28,7 +28,7 @@ const TableHead = () => {
           clickable
           // By default, the response is sorted descendingly by the start date
           // even if no explicit sort param is supplied.
-          sortDirection={sortDirection}
+          sortDirection={sortDirection ?? 'descending'}
           background={sortDirection ? colors.grey200 : undefined}
           onClick={() => {
             setRansackParam(
