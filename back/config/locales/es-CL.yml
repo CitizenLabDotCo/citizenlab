@@ -177,6 +177,8 @@ es-CL:
         description:
       other_input_field:
         title: Escribe tu respuesta
+      ask_follow_up_field:
+        title: Dinos por qué
   custom_forms:
     categories:
       main_content:

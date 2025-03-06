@@ -62,6 +62,8 @@ import {
   MatrixControl,
   matrixControlTester,
   RankingControl,
+  SentimentLinearScaleControl,
+  sentimentLinearScaleControlTester,
 } from 'components/Form/Components/Controls';
 
 const commonRenderers = [
@@ -90,6 +92,10 @@ const commonRenderers = [
   { tester: multilocInputTester, renderer: MultilocInputLayout },
   { tester: orderedLayoutTester, renderer: OrderedLayout },
   { tester: cosponsorsControlTester, renderer: CosponsorsControl },
+  {
+    tester: sentimentLinearScaleControlTester,
+    renderer: SentimentLinearScaleControl,
+  },
 ];
 
 export const selectRenderers = (formType: 'default' | 'input' | 'survey') => {

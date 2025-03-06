@@ -50,6 +50,7 @@ import {
   NestedGroupingStructure,
   getReorderedFields,
   DragAndDropResult,
+  supportsLinearScaleLabels,
 } from './utils';
 
 interface FormValues {
@@ -135,6 +136,7 @@ const FormEdit = ({
         linear_scale_label_10_multiloc: object(),
         linear_scale_label_11_multiloc: object(),
         required: boolean(),
+        ask_follow_up: boolean(),
         temp_id: string(),
         logic: validateLogic(formatMessage(messages.logicValidationError)),
       })
@@ -281,8 +283,10 @@ const FormEdit = ({
         ...(field.input_type === 'matrix_linear_scale' && {
           matrix_statements: field.matrix_statements || {},
         }),
-        ...((field.input_type === 'linear_scale' ||
-          field.input_type === 'matrix_linear_scale') && {
+        ...(field.input_type === 'sentiment_linear_scale' && {
+          ask_follow_up: field.ask_follow_up || false,
+        }),
+        ...(supportsLinearScaleLabels(field.input_type) && {
           linear_scale_label_1_multiloc:
             field.linear_scale_label_1_multiloc || {},
           linear_scale_label_2_multiloc:
