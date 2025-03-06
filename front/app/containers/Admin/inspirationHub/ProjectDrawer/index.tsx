@@ -38,7 +38,7 @@ const ProjectDrawer = () => {
               />
             </QuillEditedContent>
           </Box>
-          <Box>
+          <Box mt="32px">
             {relationships?.phases.data.map(({ id }, index) => (
               <Phase
                 key={id}

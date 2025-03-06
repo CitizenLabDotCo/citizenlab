@@ -38,7 +38,7 @@ const Phase = ({
 
   return (
     <Box>
-      <Title variant="h3">
+      <Title variant="h3" mb="4px">
         {formatMessage(messages.phaseTitle, {
           number: phaseNumber,
           title: phase.data.attributes.title_en,
