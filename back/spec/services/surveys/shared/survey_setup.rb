@@ -263,6 +263,18 @@ RSpec.shared_context 'survey_setup' do
     )
   end
 
+  let_it_be(:sentiment_linear_scale_field) do
+    create(
+      :custom_field_sentiment_linear_scale,
+      resource: form,
+      title_multiloc: {
+        'en' => 'How are you feeling?',
+        'fr-FR' => 'Comment te sens-tu?',
+        'nl-NL' => 'Hoe gaat het met je?'
+      }
+    )
+  end
+
   # The following page for form submission should not be returned in the results
   let_it_be(:last_page_field) do
     create(:custom_field_page, resource: form, key: 'survey_end')
@@ -308,7 +320,8 @@ RSpec.shared_context 'survey_setup' do
         matrix_linear_scale_field.key => {
           'send_more_animals_to_space' => 1,
           'ride_bicycles_more_often' => 3
-        }
+        },
+        sentiment_linear_scale_field.key => 3
       },
       idea_files: [idea_file1, idea_file2],
       author: female_user,
@@ -330,7 +343,8 @@ RSpec.shared_context 'survey_setup' do
         rating_field.key => 4,
         matrix_linear_scale_field.key => {
           'send_more_animals_to_space' => 1
-        }
+        },
+        sentiment_linear_scale_field.key => 2
       },
       author: male_user,
       created_at: '2025-03-16'
@@ -347,7 +361,8 @@ RSpec.shared_context 'survey_setup' do
         multiselect_image_field.key => ['house'],
         matrix_linear_scale_field.key => {
           'ride_bicycles_more_often' => 3
-        }
+        },
+        sentiment_linear_scale_field.key => 5
       },
       author: female_user,
       created_at: '2025-03-05'
@@ -378,7 +393,8 @@ RSpec.shared_context 'survey_setup' do
       custom_field_values: {
         select_field.key => 'la',
         multiselect_image_field.key => ['school'],
-        ranking_field.key => %w[by_bike by_train by_foot]
+        ranking_field.key => %w[by_bike by_train by_foot],
+        sentiment_linear_scale_field.key => 1
       },
       author: female_user,
       created_at: '2025-02-11'
@@ -393,7 +409,8 @@ RSpec.shared_context 'survey_setup' do
         matrix_linear_scale_field.key => {
           'send_more_animals_to_space' => 4,
           'ride_bicycles_more_often' => 4
-        }
+        },
+        sentiment_linear_scale_field.key => 2
       },
       author: male_user,
       created_at: '2025-02-06'
@@ -412,7 +429,11 @@ RSpec.shared_context 'survey_setup' do
           :native_survey_response,
           project: project,
           phases: phases_of_inputs,
-          custom_field_values: { linear_scale_field.key => value, rating_field.key => value },
+          custom_field_values: {
+            linear_scale_field.key => value,
+            rating_field.key => value,
+            sentiment_linear_scale_field.key => (value <= 5 ? value : 1)
+          },
           author: no_gender_user,
           created_at: '2025-01-25'
         )
