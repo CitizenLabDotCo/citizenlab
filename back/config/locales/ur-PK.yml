@@ -177,6 +177,8 @@ ur:
         description:
       other_input_field:
         title: اپنا جواب ٹائپ کریں۔
+      ask_follow_up_field:
+        title: ہمیں بتائیں کیوں؟
   custom_forms:
     categories:
       main_content:
