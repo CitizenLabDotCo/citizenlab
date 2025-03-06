@@ -167,13 +167,13 @@ nl:
       attachments:
         title: Bijlagen
         description:
-      section1:
+      page1:
         description:
-      section2:
+      page2:
         title: Afbeeldingen en bijlagen
         description:
-      section3:
-        title: Details
+      page3:
+        title: Vervolledig je profiel (optioneel)
         description:
       other_input_field:
         title: Typ je antwoord
