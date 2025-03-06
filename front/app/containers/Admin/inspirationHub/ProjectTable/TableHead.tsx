@@ -19,6 +19,8 @@ const TableHead = () => {
   const { formatMessage } = useIntl();
   const startAtSort = useRansackParam('q[s]');
 
+  const sortDirection = startAtSort ? SORT_DIRECTIONS[startAtSort] : undefined;
+
   return (
     <Thead>
       <Tr background={colors.grey50}>
@@ -26,10 +28,8 @@ const TableHead = () => {
           clickable
           // By default, the response is sorted descendingly by the start date
           // even if no explicit sort param is supplied.
-          sortDirection={
-            startAtSort ? SORT_DIRECTIONS[startAtSort] : 'descending'
-          }
-          background={colors.grey200}
+          sortDirection={sortDirection}
+          background={sortDirection ? colors.grey200 : undefined}
           onClick={() => {
             setRansackParam(
               'q[s]',
