@@ -11,7 +11,11 @@ export type Status = 'draft' | 'active' | 'finished' | 'stale' | 'archived';
 
 type PopulationGroup = 'XS' | 'S' | 'M' | 'L' | 'XL';
 
-export type SortType = 'start_at asc' | 'start_at desc';
+export type SortType =
+  | 'start_at asc'
+  | 'start_at desc'
+  | 'participants asc'
+  | 'participants desc';
 
 export type RansackParams = {
   // filters

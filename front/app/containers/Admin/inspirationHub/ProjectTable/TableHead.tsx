@@ -13,27 +13,38 @@ import messages from './messages';
 const SORT_DIRECTIONS: Record<SortType, 'ascending' | 'descending'> = {
   'start_at asc': 'ascending',
   'start_at desc': 'descending',
+  'participants asc': 'ascending',
+  'participants desc': 'descending',
 } as const;
+
+const getSortBehavior = (sort?: SortType) => {
+  const startAtSort = sort?.startsWith('start_at')
+    ? SORT_DIRECTIONS[sort]
+    : undefined;
+  const participantsSort = sort?.startsWith('participants')
+    ? SORT_DIRECTIONS[sort]
+    : undefined;
+
+  return { startAtSort, participantsSort };
+};
 
 const TableHead = () => {
   const { formatMessage } = useIntl();
-  const startAtSort = useRansackParam('q[s]');
+  const sort = useRansackParam('q[s]');
 
-  const sortDirection = startAtSort ? SORT_DIRECTIONS[startAtSort] : undefined;
+  const { startAtSort, participantsSort } = getSortBehavior(sort);
 
   return (
     <Thead>
       <Tr background={colors.grey50}>
         <Th
           clickable
-          // By default, the response is sorted descendingly by the start date
-          // even if no explicit sort param is supplied.
-          sortDirection={sortDirection ?? 'descending'}
-          background={sortDirection ? colors.grey200 : undefined}
+          sortDirection={startAtSort}
+          background={startAtSort ? colors.grey200 : undefined}
           onClick={() => {
             setRansackParam(
               'q[s]',
-              startAtSort === 'start_at asc' ? 'start_at desc' : 'start_at asc'
+              startAtSort === 'descending' ? 'start_at asc' : 'start_at desc'
             );
           }}
           style={{ whiteSpace: 'nowrap' }}
@@ -41,7 +52,19 @@ const TableHead = () => {
           {formatMessage(messages.duration)}
         </Th>
         <Th>{formatMessage(messages.project)}</Th>
-        <Th>
+        <Th
+          clickable
+          sortDirection={participantsSort}
+          background={participantsSort ? colors.grey200 : undefined}
+          onClick={() => {
+            setRansackParam(
+              'q[s]',
+              participantsSort === 'descending'
+                ? 'participants asc'
+                : 'participants desc'
+            );
+          }}
+        >
           <Icon
             name="users"
             height="18px"
