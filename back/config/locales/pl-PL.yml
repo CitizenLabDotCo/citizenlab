@@ -167,12 +167,12 @@ pl:
       attachments:
         title: Załączniki
         description:
-      section1:
+      page1:
         description:
-      section2:
+      page2:
         title: Obrazy i załączniki
         description:
-      section3:
+      page3:
         title: Szczegóły
         description:
       other_input_field:
