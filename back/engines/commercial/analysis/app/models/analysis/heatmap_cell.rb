@@ -47,5 +47,40 @@ module Analysis
     scope :with_min_lift_diff, lambda { |min_lift_diff|
       where('abs(1 - lift) * 100 >= ?', min_lift_diff)
     }
+
+    def statement_multiloc
+      {
+        'en' =>
+        "People who #{col_to_action(row)} #{col_to_action(column)} #{decimal_to_percentage(lift)} than the average."
+      }
+    end
+
+    private
+
+    def col_to_action(item)
+      case item
+      when CustomFieldOption
+        "respond '#{multiloc_service.t(item.title_multiloc)}' to '#{multiloc_service.t(item.custom_field.title_multiloc)}'"
+      when Tag
+        "post in #{item.name}"
+      end
+    end
+
+    # Example output
+    # decimal_to_percentage(1.1) => '10% more'
+    # decimal_to_percentage(0.9) => '10% less'
+    # decimal_to_percentage(2.02) => '102% more'
+    def decimal_to_percentage(decimal)
+      percentage = (decimal - 1) * 100
+      if percentage > 0
+        "#{percentage.round(0)}% more"
+      else
+        "#{percentage.abs.round(0)}% less"
+      end
+    end
+
+    def multiloc_service
+      @multiloc_service ||= MultilocService.new
+    end
   end
 end

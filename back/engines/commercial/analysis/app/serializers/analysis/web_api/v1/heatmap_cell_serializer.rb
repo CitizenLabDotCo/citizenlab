@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class Analysis::WebApi::V1::HeatmapCellSerializer < WebApi::V1::BaseSerializer
-  attributes :created_at, :updated_at, :unit, :count, :lift, :p_value
+  attributes :created_at, :updated_at, :unit, :count, :lift, :p_value, :statement_multiloc
   belongs_to :row, serializer: lambda { |object, _params|
     case object
     when CustomFieldOption
