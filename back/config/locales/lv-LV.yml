@@ -167,12 +167,12 @@ lv:
       attachments:
         title: Pielikumi
         description:
-      section1:
+      page1:
         description:
-      section2:
+      page2:
         title: Attēli un pielikumi
         description:
-      section3:
+      page3:
         title: Sīkāka informācija
         description:
       other_input_field:
