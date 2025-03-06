@@ -1,13 +1,5 @@
 module Analysis
   class HeatmapGenerator
-    class HeatmapCell
-      attr_accessor :count, :lift, :chi_square, :p_value
-
-      def initialize
-        @count = 0
-      end
-    end
-
     def initialize(analysis)
       @analysis = analysis
       @row_totals = {}
@@ -18,6 +10,7 @@ module Analysis
       heatmap = generate_countmap(category1, category2)
       add_lift!(heatmap)
       add_significance!(heatmap)
+      heatmap.values.map(&:save!)
       heatmap
     end
 
@@ -29,7 +22,7 @@ module Analysis
       all_inputs.each do |input|
         category1.map do |col1|
           category2.map do |col2|
-            output[[col1, col2]] ||= HeatmapCell.new
+            output[[col1, col2]] ||= HeatmapCell.new(row: col1, column: col2, analysis: @analysis)
             if column_set_for_input?(input, col1) && column_set_for_input?(input, col2)
               output[[col1, col2]].count += 1
             end
@@ -55,7 +48,7 @@ module Analysis
     def add_significance!(heatmap)
       heatmap.each do |(col1, col2), cell|
         contingency_table = generate_contingency_table(col1, col2)
-        cell.chi_square, cell.p_value = chi_square(contingency_table)
+        _, cell.p_value = chi_square(contingency_table)
       end
     end
 

@@ -35,6 +35,9 @@ module Analysis
     belongs_to :row, polymorphic: true
     belongs_to :column, polymorphic: true
 
+    attribute :unit, default: 'inputs'
+    attribute :count, default: 0
+
     validates :unit, inclusion: { in: UNIT_TYPES }
     validates :row_type, :column_type, inclusion: { in: INDEX_TYPES.map(&:name) }
     validates :count, numericality: { only_integer: true, greater_than_or_equal_to: 0 }

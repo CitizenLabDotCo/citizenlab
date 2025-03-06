@@ -37,12 +37,13 @@ describe Analysis::HeatmapGenerator do
         [tag2, female],
         [tag2, unspecified]
       ])
-      expect(heatmap.values).to all(be_instance_of(described_class::HeatmapCell))
+      expect(heatmap.values).to all(be_instance_of(Analysis::HeatmapCell))
       expect(heatmap[[tag1, male]]).to have_attributes(
         count: 1,
         p_value: 1.0,
         lift: 1.0,
-        chi_square: 0.0
+        row: tag1,
+        column: male
       )
     end
   end

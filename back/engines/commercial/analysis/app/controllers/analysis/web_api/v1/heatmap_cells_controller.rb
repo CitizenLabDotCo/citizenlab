@@ -8,6 +8,11 @@ module Analysis
         before_action :set_analysis
 
         def index
+          # This is a temporary mechanism to generate heatmap cells if they are
+          # missing. Will be replaced by something smarter that triggers
+          # generation soon
+          generate_heatmap_cells if @analysis.heatmap_cells.empty?
+
           heatmap_cells = @analysis.heatmap_cells
           heatmap_cells = heatmap_cells.order(Arel.sql('abs(1 - lift) DESC'))
           heatmap_cells = apply_filters(heatmap_cells)
@@ -70,6 +75,10 @@ module Analysis
         def set_analysis
           @analysis = Analysis.find(params[:analysis_id])
           authorize(@analysis, :show?)
+        end
+
+        def generate_heatmap_cells
+          HeatmapGenerationJob.perform_later(@analysis)
         end
       end
     end
