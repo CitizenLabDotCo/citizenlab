@@ -6,7 +6,7 @@ import fetcher from 'utils/cl-react-query/fetcher';
 import projectLibraryProjectsKeys from './keys';
 import { ProjectLibraryProject, ProjectLibraryProjectsKeys } from './types';
 
-const fetchLibraryProjects = (id?: string) =>
+const fetchLibraryProject = (id?: string) =>
   fetcher<ProjectLibraryProject>({
     path: `/projects/${id}`,
     action: 'get',
@@ -21,7 +21,7 @@ const useProjectLibraryProject = (id?: string) => {
     ProjectLibraryProjectsKeys
   >({
     queryKey: projectLibraryProjectsKeys.item({ id }),
-    queryFn: () => fetchLibraryProjects(id),
+    queryFn: () => fetchLibraryProject(id),
     enabled: !!id,
   });
 };
