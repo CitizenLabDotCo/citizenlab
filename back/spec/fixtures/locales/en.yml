@@ -62,6 +62,8 @@ en:
         description:
       other_input_field:
         title: Type your answer
+      ask_follow_up_field:
+        title: Tell us why
   phases:
     open_idea_phase_title: Current phase
     native_survey_title: Survey
