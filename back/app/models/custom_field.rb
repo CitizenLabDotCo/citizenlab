@@ -155,17 +155,12 @@ class CustomField < ApplicationRecord
     input_type == 'matrix_linear_scale'
   end
 
-  # TODO: JS - duplicate
   def supports_linear_scale_labels?
     %w[linear_scale matrix_linear_scale sentiment_linear_scale].include?(input_type)
   end
 
-  def supports_scale_labels?
-    %w[linear_scale matrix_linear_scale].include?(input_type)
-  end
-
   def supports_single_selection?
-    %w[select linear_scale rating].include?(input_type)
+    %w[select linear_scale sentiment_linear_scale rating].include?(input_type)
   end
 
   def supports_multiple_selection?
