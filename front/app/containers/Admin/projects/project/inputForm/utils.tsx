@@ -34,6 +34,7 @@ export const ideationConfig: FormBuilderConfig = {
     'image_files',
     'topic_ids',
     'multiselect_image',
+    'page',
   ],
   displayBuiltInFields: true,
   builtInFields: [
@@ -88,6 +89,7 @@ export const proposalsConfig: FormBuilderConfig = {
     'topic_ids',
     'multiselect_image',
     'cosponsor_ids',
+    'page',
   ],
   displayBuiltInFields: true,
   builtInFields: [
