@@ -100,12 +100,12 @@ const SentimentQuestion = ({
                         /5
                       </Text>
                     </Box>
-                    <Text m="0px" color="green400" fontSize="s">
+                    <Text m="0px" color="green500" fontSize="s">
                       <Icon
                         mr="4px"
                         width="13px"
                         name="trend-up"
-                        fill="green200"
+                        fill="green500"
                       />
                       +12%
                     </Text>

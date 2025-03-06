@@ -11,13 +11,11 @@ type Props = {
 const SentimentScore = ({ answers }: Props) => {
   const getBackgroundColour = (answer: string) => {
     if (answer === 'low') {
-      return '#EC7267';
-      // return colors.red400;
+      return colors.red400;
     } else if (answer === 'neutral') {
       return colors.grey400;
     } else if (answer === 'high') {
-      return '#5DBFA0';
-      // return colors.green400;
+      return colors.green400;
     }
 
     return '';
