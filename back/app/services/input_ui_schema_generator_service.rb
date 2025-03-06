@@ -117,7 +117,7 @@ class InputUiSchemaGeneratorService < UiSchemaGeneratorService
   end
 
   def generate_pages_for_current_locale(fields)
-    categorization_schema_with(fields.first.input_term, schema_elements_for(fields))
+    categorization_schema_with(input_term, schema_elements_for(fields))
   end
 
   def generate_for_current_locale(fields)

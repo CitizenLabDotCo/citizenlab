@@ -607,19 +607,18 @@ RSpec.describe InputUiSchemaGeneratorService do
         end
       end
 
-      # TODO: Investigate this
-      # context 'for projects with multiple phases' do
-      #   let(:input_term) { 'contribution' }
-      #   let(:fields) do
-      #     project_with_current_phase = create(:project_with_current_phase)
-      #     TimelineService.new.current_phase(project_with_current_phase).update!(input_term: 'option')
-      #     IdeaCustomFieldsService.new(create(:custom_form, participation_context: project_with_current_phase)).all_fields
-      #   end
+      context 'for projects with multiple phases' do
+        let(:input_term) { 'contribution' }
+        let(:fields) do
+          project_with_current_phase = create(:project_with_current_phase)
+          TimelineService.new.current_phase(project_with_current_phase).update!(input_term: 'option')
+          IdeaCustomFieldsService.new(create(:custom_form, participation_context: project_with_current_phase)).all_fields
+        end
 
-      #   it 'uses the right input_term' do
-      #     expect(ui_schema.dig('en', :options, :inputTerm)).to eq 'contribution'
-      #   end
-      # end
+        it 'uses the right input_term' do
+          expect(ui_schema.dig('en', :options, :inputTerm)).to eq 'contribution'
+        end
+      end
     end
 
     context 'native survey forms' do
