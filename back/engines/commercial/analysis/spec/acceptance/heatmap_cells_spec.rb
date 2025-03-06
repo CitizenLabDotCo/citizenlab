@@ -14,11 +14,11 @@ resource 'HeatmapCells' do
   get 'web_api/v1/analyses/:analysis_id/heatmap_cells' do
     parameter :row_category_type, 'What entity should be shown in the rows of the heatmap? One of `tags`, `user_custom_field` or `input_custom_field`'
     parameter :row_category_id, 'The ID of the entity that should be shown in the rows of the heatmap. Not relevant if row_category_type is `tags`.'
-    parameter :col_category_type, 'What entity should be shown in the columns of the heatmap? One of `tags`, `user_custom_field` or `input_custom_field`'
-    parameter :col_category_id, 'The ID of the entity that should be shown in the columns of the heatmap. Not relevant if col_category_type is `tags`.'
+    parameter :column_category_type, 'What entity should be shown in the columns of the heatmap? One of `tags`, `user_custom_field` or `input_custom_field`'
+    parameter :column_category_id, 'The ID of the entity that should be shown in the columns of the heatmap. Not relevant if column_category_type is `tags`.'
     parameter :unit, 'The unit of the heatmap. One of `inputs`, `likes`, `dislikes` or `engagement`', default: 'inputs'
     parameter :max_p_value, 'The p-value threshold for the heatmap. Only cells with a p-value below this threshold will be returned'
-    parameter :min_lift_diff, 'The minimal percentage points of difference with 100% in lift. Only cells with a lift difference above this threshold will be returned. E.g. passing 50 will only return cells with a lift < 0.5 or > 1.5'
+    parameter :min_lift_diff, 'The minimal percentage points of difference with 100% in lift. Only cells with a lift difference above this threshold will be returned. E.g. passing 50 will only return cells with a lift <= 0.5 or >= 1.5'
 
     with_options scope: :page_params do
       parameter :number, 'Page number'
@@ -27,9 +27,14 @@ resource 'HeatmapCells' do
 
     let(:analysis) { create(:analysis) }
     let(:analysis_id) { analysis.id }
-    let!(:heatmap_cells) { create_list(:heatmap_cell, 2, analysis: analysis) }
+    let!(:heatmap_cells) do
+      [
+        create(:heatmap_cell, analysis: analysis, lift: 1.1),
+        create(:heatmap_cell, analysis: analysis, lift: 1.2)
+      ]
+    end
 
-    example 'List all heatmap cells for an analysis' do
+    example 'List all heatmap cells for an analysis, order by descending lift diff' do
       do_request
 
       expect(status).to eq 200
@@ -37,33 +42,36 @@ resource 'HeatmapCells' do
 
       expect(response_data.first[:attributes]).to include(
         count: 10,
-        lift: 1.1,
+        lift: 1.2,
         p_value: 0.1,
         unit: 'inputs'
       )
       expect(response_data.first[:relationships]).to include(
         analysis: { data: { id: analysis.id, type: 'analysis' } },
-        column: { data: { id: heatmap_cells.first.column.id, type: 'custom_field_option' } },
-        row: { data: { id: heatmap_cells.first.row.id, type: 'tag' } }
+        column: { data: { id: heatmap_cells[1].column.id, type: 'custom_field_option' } },
+        row: { data: { id: heatmap_cells[1].row.id, type: 'tag' } }
       )
     end
 
     example 'Respects the row_category filters' do
-      row_category_type = 'tags'
-      row_category_id = heatmap_cells[0].row.id
+      create(:heatmap_cell, analysis:, row: create(:custom_field_option))
+      cell = create(:heatmap_cell, analysis:, row: create(:custom_field_option))
+      custom_field = cell.row.custom_field
+      row_category_type = 'user_custom_field'
+      row_category_id = custom_field.id
 
       do_request(row_category_type:, row_category_id:)
 
       expect(status).to eq 200
       expect(response_data.size).to eq(1)
-      expect(response_data.first[:id]).to eq(heatmap_cells.first.id)
+      expect(response_data.first[:id]).to eq(cell.id)
     end
 
-    example 'Respects the col_category filters' do
-      col_category_type = 'user_custom_field'
-      col_category_id = heatmap_cells[0].column.id
+    example 'Respects the column_category filters' do
+      column_category_type = 'user_custom_field'
+      column_category_id = heatmap_cells[0].column.custom_field.id
 
-      do_request(col_category_type:, col_category_id:)
+      do_request(column_category_type:, column_category_id:)
 
       expect(status).to eq 200
       expect(response_data.size).to eq(1)

@@ -40,5 +40,9 @@ module Analysis
     validates :count, numericality: { only_integer: true, greater_than_or_equal_to: 0 }
     validates :lift, numericality: { greater_than_or_equal_to: 0 }
     validates :p_value, numericality: { greater_than_or_equal_to: 0, less_than_or_equal_to: 1 }
+
+    scope :with_min_lift_diff, lambda { |min_lift_diff|
+      where('abs(1 - lift) * 100 >= ?', min_lift_diff)
+    }
   end
 end
