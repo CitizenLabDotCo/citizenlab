@@ -15,7 +15,7 @@ export type SortType = 'start_at asc' | 'start_at desc';
 
 export type RansackParams = {
   // filters
-  'q[tenant_country_alpha2]'?: string;
+  'q[tenant_country_alpha2_eq]'?: string;
   'q[tenant_population_group_eq]'?: PopulationGroup;
   'q[score_total_gteq]'?: '1' | '2' | '3' | '4';
   'q[phases_participation_method_eq]'?: ParticipationMethod;
