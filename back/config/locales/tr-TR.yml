@@ -177,6 +177,8 @@ tr:
         description:
       other_input_field:
         title: Cevabınızı yazın
+      ask_follow_up_field:
+        title: Bize nedenini söyleyin
   custom_forms:
     categories:
       main_content:

@@ -9,7 +9,9 @@ import {
   colors,
 } from '@citizenlab/cl2-component-library';
 import { isEmpty } from 'lodash-es';
+import { useParams } from 'react-router-dom';
 
+import useAnalysisHeatmapCells from 'api/analysis_heat_map_cells/useAnalysisHetmapCells';
 import { IUserCustomFieldData } from 'api/user_custom_fields/types';
 import useUserCustomFields from 'api/user_custom_fields/useUserCustomFields';
 
@@ -35,9 +37,15 @@ const Demographics = ({
   isDemographicsOpen: boolean;
   setIsDemographicsOpen: (isDemographicsOpen: boolean) => void;
 }) => {
+  const { analysisId } = useParams() as { analysisId: string };
   const [supportedFieldIds, setSupportedFieldIds] = useState<string[]>([]);
   const [selectedFieldId, setSelectedFieldId] = useState<string | null>(null);
   const { data: customFields } = useUserCustomFields();
+  const { data: analysisHeatmapCells } = useAnalysisHeatmapCells({
+    analysisId,
+  });
+
+  console.log(analysisHeatmapCells);
 
   const selectedField = customFields?.data.find(
     (field) => field.id === selectedFieldId

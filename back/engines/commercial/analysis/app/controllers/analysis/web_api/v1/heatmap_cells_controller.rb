@@ -57,7 +57,7 @@ module Analysis
         def category_type_to_item_type(category_type)
           case category_type
           when 'tags'
-            raise "Don't supply a category_id if the category_type is tags"
+            Tag.name
           when 'user_custom_field', 'input_custom_field'
             CustomFieldOption.name
           end
@@ -66,7 +66,7 @@ module Analysis
         def category_to_item_id(category_type, category_id)
           case category_type
           when 'tags'
-            nil
+            raise "Don't supply a category_id if the category_type is tags"
           when 'user_custom_field', 'input_custom_field'
             CustomFieldOption.where(custom_field_id: category_id)
           end

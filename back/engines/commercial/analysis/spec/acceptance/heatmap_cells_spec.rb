@@ -44,7 +44,8 @@ resource 'HeatmapCells' do
         count: 10,
         lift: 1.2,
         p_value: 0.1,
-        unit: 'inputs'
+        unit: 'inputs',
+        statement_multiloc: kind_of(Hash)
       )
       expect(response_data.first[:relationships]).to include(
         analysis: { data: { id: analysis.id, type: 'analysis' } },

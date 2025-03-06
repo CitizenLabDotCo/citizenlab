@@ -18,7 +18,7 @@ module Analysis
       significant_associations = []
 
       matrix.flat_map(&:keys).uniq.combination(2)
-        .reject { |col1, col2| col1.class == col2.class }
+        .reject { |col1, col2| col1.instance_of?(col2.class) }
         # .reject { |col1, col2| col1 == col2 || (col1.try(:custom_field_id) == col2.try(:custom_field_id) && col1.try(:custom_field_id).present?) }
         .map do |col1, col2|
         ct = contingency_table(matrix, col1, col2)
