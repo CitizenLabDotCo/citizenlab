@@ -745,6 +745,72 @@ resource 'Idea Custom Fields' do
         })
       end
 
+      example 'Update sentiment_linear_scale field' do
+        field_to_update = create(:custom_field_sentiment_linear_scale, resource: custom_form)
+        create(:custom_field, resource: custom_form) # field to destroy
+        request = {
+          custom_fields: [
+            {
+              input_type: 'page',
+              page_layout: 'default'
+            },
+            {
+              id: field_to_update.id,
+              title_multiloc: { 'en' => 'Select a value from the scale' },
+              description_multiloc: { 'en' => 'Description of question' },
+              required: true,
+              enabled: true,
+              maximum: 5,
+              ask_follow_up: true,
+              linear_scale_label_1_multiloc: { 'en' => 'Lowest' },
+              linear_scale_label_2_multiloc: { 'en' => 'Low' },
+              linear_scale_label_3_multiloc: { 'en' => 'Neutral' },
+              linear_scale_label_4_multiloc: { 'en' => 'High' },
+              linear_scale_label_5_multiloc: { 'en' => 'Highest' }
+            },
+            final_page
+          ]
+        }
+        do_request request
+
+        assert_status 200
+        json_response = json_parse(response_body)
+        expect(json_response[:data].size).to eq 3
+        expect(json_response[:data][1]).to match({
+          attributes: {
+            code: nil,
+            created_at: an_instance_of(String),
+            description_multiloc: { en: 'Description of question' },
+            enabled: true,
+            input_type: 'sentiment_linear_scale',
+            key: an_instance_of(String),
+            ordering: 1,
+            required: true,
+            title_multiloc: { en: 'Select a value from the scale' },
+            updated_at: an_instance_of(String),
+            maximum: 5,
+            ask_follow_up: true,
+            linear_scale_label_1_multiloc: { en: 'Lowest' },
+            linear_scale_label_2_multiloc: { en: 'Low' },
+            linear_scale_label_3_multiloc: { en: 'Neutral' },
+            linear_scale_label_4_multiloc: { en: 'High' },
+            linear_scale_label_5_multiloc: { en: 'Highest' },
+            linear_scale_label_6_multiloc: {},
+            linear_scale_label_7_multiloc: {},
+            linear_scale_label_8_multiloc: {},
+            linear_scale_label_9_multiloc: {},
+            linear_scale_label_10_multiloc: {},
+            linear_scale_label_11_multiloc: {},
+            logic: {},
+            random_option_ordering: false,
+            constraints: {}
+          },
+          id: an_instance_of(String),
+          type: 'custom_field',
+          relationships: { options: { data: [] }, resource: { data: { id: custom_form.id, type: 'custom_form' } } }
+        })
+      end
+
       example 'Update select field with logic' do
         field_to_update = create(:custom_field_select, :with_options, resource: custom_form)
         survey_end_page = create(:custom_field_page, key: 'survey_end', resource: custom_form)

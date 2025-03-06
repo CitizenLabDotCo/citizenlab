@@ -92,6 +92,10 @@ module Surveys
       visit_select_base(field)
     end
 
+    def visit_sentiment_linear_scale(field)
+      visit_select_base(field)
+    end
+
     def visit_file_upload(field)
       file_ids = inputs
         .select("custom_field_values->'#{field.key}'->'id' as value")
@@ -243,7 +247,7 @@ module Surveys
 
       answer_multilocs.each_key do |value|
         labels = field.nth_linear_scale_multiloc(value).transform_values do |label|
-          label.present? && field.supports_scale_labels? ? "#{value} - #{label}" : value
+          label.present? && field.supports_linear_scale_labels? ? "#{value} - #{label}" : value
         end
 
         answer_multilocs[value][:title_multiloc].merge! labels

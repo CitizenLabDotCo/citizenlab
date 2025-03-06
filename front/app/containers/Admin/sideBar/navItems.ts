@@ -55,17 +55,18 @@ const navItems: NavItem[] = [
     featureNames: ['report_builder'],
   },
   {
-    name: 'tools',
-    link: `/admin/tools`,
-    iconName: 'grid',
-    message: 'tools',
-  },
-  {
     name: 'inspirationHub',
     link: '/admin/inspiration-hub',
     iconName: 'globe',
     message: 'inspirationHub',
     featureNames: ['project_library'],
+  },
+  {
+    name: 'tools',
+    link: `/admin/tools`,
+    iconName: 'grid',
+    message: 'tools',
+    showAtBottom: true,
   },
   {
     name: 'menu',
