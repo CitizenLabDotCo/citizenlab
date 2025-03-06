@@ -15,6 +15,7 @@ import { ProjectLibraryProjectData } from 'api/project_library_projects/types';
 import { parseBackendDateString } from 'utils/dateUtils';
 
 import ExternalLink from './ExternalLink';
+import { getTenantURL, getProjectURL } from './utils';
 
 interface Props {
   attributes: ProjectLibraryProjectData['attributes'];
@@ -26,7 +27,7 @@ const formatDate = (date?: Date) => {
 };
 
 const Header = ({ attributes }: Props) => {
-  const tenantURL = `https://${attributes.tenant_host}`;
+  const tenantURL = getTenantURL(attributes);
 
   const startAt = parseBackendDateString(attributes.start_at);
   const endAt = attributes.practical_end_at
@@ -47,7 +48,7 @@ const Header = ({ attributes }: Props) => {
           {attributes.tenant_name}
         </ExternalLink>
       </Box>
-      <ExternalLink href={`${tenantURL}/projects/${attributes.slug}`}>
+      <ExternalLink href={getProjectURL(attributes)}>
         <Title variant="h2" color="textPrimary" mt="4px" mb="4px">
           {attributes.title_en}
         </Title>

@@ -11,6 +11,7 @@ import SideModal from 'components/UI/SideModal';
 import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
 
 import Header from './Header';
+import Phase from './Phase';
 
 const ProjectDrawer = () => {
   const [searchParams] = useSearchParams();
@@ -23,6 +24,7 @@ const ProjectDrawer = () => {
   };
 
   const attributes = project?.data.attributes;
+  const relationships = project?.data.relationships;
 
   return (
     <SideModal opened={!!project && !!projectId} close={handleOnClose}>
@@ -35,6 +37,16 @@ const ProjectDrawer = () => {
                 dangerouslySetInnerHTML={{ __html: attributes.description_en }}
               />
             </QuillEditedContent>
+          </Box>
+          <Box>
+            {relationships?.phases.data.map(({ id }, index) => (
+              <Phase
+                key={id}
+                projectLibraryPhaseId={id}
+                phaseNumber={index + 1}
+                attributes={attributes}
+              />
+            ))}
           </Box>
         </Box>
       )}
