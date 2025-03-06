@@ -45,6 +45,16 @@ const FormResultsQuestion = ({
 
   if (result.hidden) return null;
 
+  // As sentiment_linear_scale is also used in the Community Monitor results,
+  // we need to handle it slightly differently.
+  if (inputType === 'sentiment_linear_scale') {
+    return (
+      <>
+        <FormResultQuestionValue result={result} logicConfig={logicConfig} />
+      </>
+    );
+  }
+
   return (
     <Box
       border="1px solid #e0e0e0"
