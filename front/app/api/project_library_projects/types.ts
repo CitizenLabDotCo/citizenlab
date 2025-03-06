@@ -42,6 +42,10 @@ export interface ProjectLibraryProjects {
   links: ILinks;
 }
 
+export interface ProjectLibraryProject {
+  data: ProjectLibraryProjectData;
+}
+
 export interface ProjectLibraryProjectData {
   id: string;
   type: 'project_library_project';
@@ -54,7 +58,7 @@ export interface ProjectLibraryProjectData {
     description_multiloc: Multiloc;
     end_at: string | null;
     folder_id: string | null;
-    folder_title_en: string;
+    folder_title_en: string | null;
     folder_title_multiloc: Multiloc;
     participants: number;
     practical_end_at: string | null;
