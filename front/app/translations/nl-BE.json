@@ -1926,7 +1926,7 @@
   "app.containers.footer.terms-and-conditions": "Gebruiksvoorwaarden",
   "app.containers.ideaHeading.cancelLeaveIdeaButtonText": "Annuleer",
   "app.containers.ideaHeading.confirmLeaveFormButtonText": "Ja, ik wil de pagina verlaten",
-  "app.containers.ideaHeading.editIdeaForm": "Ideeënformulier bewerken",
+  "app.containers.ideaHeading.editForm": "Formulier bewerken",
   "app.containers.ideaHeading.leaveFormConfirmationQuestion": "Weet je zeker dat je de pagina wilt verlaten?",
   "app.containers.ideaHeading.leaveIdeaForm": "Ideeënformulier achterlaten",
   "app.containers.ideaHeading.leaveIdeaText": "Je reacties worden niet opgeslagen.",
