@@ -121,8 +121,6 @@ const Form = memo(
       showErrors = true,
       userPagePath: PageType[] = []
     ) => {
-      console.log({ formData, data });
-
       // Any specified formData has priority over data attribute
       const submissionData = formData && formData.data ? formData.data : data;
       const sanitizedFormData = sanitizeFormData(submissionData);

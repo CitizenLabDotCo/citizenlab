@@ -225,8 +225,6 @@ const CLSurveyPageLayout = memo(
         return;
       }
 
-      console.log({ pageVariant });
-
       if (pageVariant === 'after-submission') {
         clHistory.push({ pathname: `/projects/${slug}` });
         return;
@@ -234,9 +232,7 @@ const CLSurveyPageLayout = memo(
 
       if (pageVariant === 'submission') {
         setIsLoading(true);
-        console.log('setting publication status:');
         data.publication_status = 'published';
-        console.log({ data });
 
         const idea: IIdea = await onSubmit(data, true, userPagePath);
         updateSearchParams({ idea_id: idea.data.id });
