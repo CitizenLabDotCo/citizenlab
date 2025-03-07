@@ -1926,7 +1926,7 @@
   "app.containers.footer.terms-and-conditions": "الشروط والأحكام",
   "app.containers.ideaHeading.cancelLeaveIdeaButtonText": "يلغي",
   "app.containers.ideaHeading.confirmLeaveFormButtonText": "نعم أريد الرحيل",
-  "app.containers.ideaHeading.editIdeaForm": "نموذج تعديل الفكرة",
+  "app.containers.ideaHeading.editForm": "تعديل النموذج",
   "app.containers.ideaHeading.leaveFormConfirmationQuestion": "هل أنت متأكد أنك تريد المغادرة؟",
   "app.containers.ideaHeading.leaveIdeaForm": "نموذج ترك الفكرة",
   "app.containers.ideaHeading.leaveIdeaText": "لن يتم حفظ ردودك.",
