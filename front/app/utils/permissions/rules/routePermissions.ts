@@ -26,6 +26,10 @@ const MODERATOR_ROUTES = [
   '/admin/inspiration-hub',
 ];
 
+const isCommunityMonitorRoute = (item: IRouteItem) => {
+  return item.path.includes('/admin/community-monitor');
+};
+
 export const isModeratorRoute = (item: IRouteItem) => {
   return MODERATOR_ROUTES.some((moderatorRoute) => {
     // We need to check with startsWith because we
@@ -46,6 +50,17 @@ export const isModeratorRoute = (item: IRouteItem) => {
 };
 export const isAdminRoute = (path: string) => {
   return /^\/admin/.test(path);
+};
+
+const isCommunityMonitorModerator = (
+  user: IUser | undefined,
+  tenant: IAppConfigurationData
+) => {
+  const communityMonitorProjectId =
+    tenant.attributes.settings.community_monitor?.project_id;
+  return communityMonitorProjectId
+    ? isProjectModerator(user, communityMonitorProjectId)
+    : false;
 };
 
 const isModeratedProjectRoute = (item: IRouteItem, user: IUser | undefined) => {
@@ -75,6 +90,10 @@ export const canAccessRoute = (
 
     if (isAdmin(user)) {
       return true;
+    }
+
+    if (isCommunityMonitorRoute(item)) {
+      return isCommunityMonitorModerator(user, tenant);
     }
 
     if (!isRegularUser(user) && isModeratorRoute(item)) {

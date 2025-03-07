@@ -21,15 +21,15 @@ import UpsellTooltip from 'components/UpsellTooltip';
 import { useIntl } from 'utils/cl-intl';
 import { requestBlob } from 'utils/requestBlob';
 
-import messages from '../messages';
+import messages from './messages';
 
 type Props = {
   haveSubmissionsComeIn: boolean;
-  setShowCopySurveyModal: (show: boolean) => void;
+  setShowCopySurveyModal?: (show: boolean) => void;
   handleDownloadResults: () => void;
   isDropdownOpened: boolean;
   setShowDeleteModal: (show: boolean) => void;
-  setExportModalOpen: (open: boolean) => void;
+  setExportModalOpen?: (open: boolean) => void;
   setDropdownOpened: (opened: boolean) => void;
   downloadExcelLink: string;
 };
@@ -74,7 +74,7 @@ const DropdownSettings = ({
   };
 
   // Functions to handle downloads
-  const handleDownloadPDF = () => setExportModalOpen(true);
+  const handleDownloadPDF = () => setExportModalOpen?.(true);
   const downloadExampleFile = async () => {
     const blob = await requestBlob(
       downloadExcelLink,
@@ -109,7 +109,7 @@ const DropdownSettings = ({
               <>
                 <DropdownListItem
                   onClick={() => {
-                    setShowCopySurveyModal(true);
+                    setShowCopySurveyModal?.(true);
                   }}
                   disabled={haveSubmissionsComeIn}
                 >

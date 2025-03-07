@@ -14,11 +14,16 @@ import ParticipationReportPreview from './ParticipationReportPreview';
 const ParticipationDatesRange = ({
   defaultStartDate,
   defaultEndDate,
+  ...props
 }: {
   defaultStartDate?: string;
   defaultEndDate?: string;
+  projectId?: string;
 }) => {
-  const { projectId } = useParams() as { projectId: string };
+  const { projectId: projectIdFromParams } = useParams() as {
+    projectId: string;
+  };
+  const projectId = props.projectId || projectIdFromParams;
 
   const { formatMessage } = useIntl();
 
