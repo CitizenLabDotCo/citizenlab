@@ -1926,7 +1926,7 @@
   "app.containers.footer.terms-and-conditions": "Nutzungsbedingungen",
   "app.containers.ideaHeading.cancelLeaveIdeaButtonText": "Abbrechen",
   "app.containers.ideaHeading.confirmLeaveFormButtonText": "Ja, zurück ohne zu speichern",
-  "app.containers.ideaHeading.editIdeaForm": "Ideenformular bearbeiten",
+  "app.containers.ideaHeading.editForm": "Formular bearbeiten",
   "app.containers.ideaHeading.leaveFormConfirmationQuestion": "Sind Sie sicher, dass Sie das Fenster schließen möchten ohne zu speichern?",
   "app.containers.ideaHeading.leaveIdeaForm": "Ideenformular hinterlassen",
   "app.containers.ideaHeading.leaveIdeaText": "Ihre Antworten werden nicht gespeichert.",
