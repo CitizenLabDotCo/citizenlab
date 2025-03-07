@@ -50,7 +50,7 @@ const PageButtonSettings = ({
       />
 
       {useCustomButton && (
-        <Box pl="12px" pt="12px" mt="8px">
+        <Box pt="20px">
           <Controller
             name={pageButtonLinkName}
             control={control}
