@@ -16,7 +16,7 @@ describe AvatarsService do
       idea = create(:idea, project: project, author: u1)
       create(:idea, project: project, author: u2)
       create(:reaction, reactable: idea, user: u3)
-      create(:comment, post: idea, author: u4)
+      create(:comment, idea: idea, author: u4)
       create(:idea, author: u5)
 
       result = service.avatars_for_project(project, limit: 2)
@@ -47,7 +47,7 @@ describe AvatarsService do
       idea = create(:idea, project: projects.first, author: u1)
       create(:idea, project: projects.last, author: u2)
       create(:reaction, reactable: idea, user: u3)
-      create(:comment, post: idea, author: u4)
+      create(:comment, idea: idea, author: u4)
       create(:idea, author: u5)
 
       result = service.avatars_for_folder(folder, limit: 2)
@@ -61,8 +61,8 @@ describe AvatarsService do
   describe 'avatars_for_idea' do
     it 'returns the idea and comments authors' do
       idea1, idea2 = create_list(:idea, 2)
-      comment1, comment2 = create_list(:comment, 2, post: idea1)
-      create(:comment, post: idea2)
+      comment1, comment2 = create_list(:comment, 2, idea: idea1)
+      create(:comment, idea: idea2)
 
       result = service.avatars_for_idea(idea1)
 
@@ -72,7 +72,7 @@ describe AvatarsService do
 
     it 'does not include authors from deleted comments' do
       idea = create(:idea)
-      create(:comment, post: idea, publication_status: 'deleted')
+      create(:comment, idea: idea, publication_status: 'deleted')
 
       result = service.avatars_for_idea(idea)
 
@@ -83,7 +83,7 @@ describe AvatarsService do
     it 'does not return the reactors' do
       idea = create(:idea)
       create(:reaction, reactable: idea)
-      comment = create(:comment, post: idea)
+      comment = create(:comment, idea: idea)
       create(:reaction, reactable: comment)
 
       result = service.avatars_for_idea(idea)
@@ -95,7 +95,7 @@ describe AvatarsService do
     it "doesn't return the same user twice" do
       u1 = create(:user)
       idea = create(:idea, author: u1)
-      create_list(:comment, 2, author: u1, post: idea)
+      create_list(:comment, 2, author: u1, idea: idea)
 
       result = service.avatars_for_idea(idea)
 

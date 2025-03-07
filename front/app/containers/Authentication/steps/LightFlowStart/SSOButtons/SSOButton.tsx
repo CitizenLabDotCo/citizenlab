@@ -8,7 +8,7 @@ import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import oldMessages from 'containers/Authentication/steps/AuthProviders/messages';
 import { SSOProviderWithoutVienna } from 'containers/Authentication/typings';
 
-import Button from 'components/UI/Button';
+import Button from 'components/UI/ButtonWithLink';
 
 import { useIntl } from 'utils/cl-intl';
 

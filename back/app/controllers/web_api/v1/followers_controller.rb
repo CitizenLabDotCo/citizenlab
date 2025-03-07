@@ -54,8 +54,6 @@ class WebApi::V1::FollowersController < ApplicationController
       :project_id
     when 'ProjectFolders::Folder'
       :project_folder_id
-    when 'Initiative'
-      :initiative_id
     when 'Idea'
       :idea_id
     when 'Topic'

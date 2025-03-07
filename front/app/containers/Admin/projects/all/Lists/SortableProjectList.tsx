@@ -6,7 +6,8 @@ import styled from 'styled-components';
 import { IAdminPublicationData } from 'api/admin_publications/types';
 import useReorderAdminPublication from 'api/admin_publications/useReorderAdminPublication';
 
-import { SortableList, SortableRow } from 'components/admin/ResourceList';
+import SortableList from 'components/admin/ResourceList/SortableList';
+import SortableRow from 'components/admin/ResourceList/SortableRow';
 import Warning from 'components/UI/Warning';
 
 import { useIntl } from 'utils/cl-intl';

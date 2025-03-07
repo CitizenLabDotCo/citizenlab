@@ -107,39 +107,6 @@ describe SideFxUserService do
     end
   end
 
-  describe 'before_destroy' do
-    before do
-      @status_review_pending = create(:initiative_status_review_pending)
-      @status_changes_requested = create(:initiative_status_changes_requested)
-      @status_proposed = create(:initiative_status_proposed)
-      @status_threshold_reached = create(:initiative_status_threshold_reached)
-      @status_expired = create(:initiative_status_expired)
-      @status_answered = create(:initiative_status_answered)
-      @status_ineligible = create(:initiative_status_ineligible)
-    end
-
-    it "destroys the user's reactions to initiatives in a voteable status" do
-      review_pending_initiative    = create(:initiative, initiative_status: @status_review_pending)
-      changes_requested_initiative = create(:initiative, initiative_status: @status_changes_requested)
-      proposed_initiative          = create(:initiative, initiative_status: @status_proposed)
-      threshold_reached_initiative = create(:initiative, initiative_status: @status_threshold_reached)
-      expired_initiative           = create(:initiative, initiative_status: @status_expired)
-      answered_initiative          = create(:initiative, initiative_status: @status_answered)
-      ineligible_initiative        = create(:initiative, initiative_status: @status_ineligible)
-      _reaction1 = create(:reaction, user: user, reactable: review_pending_initiative)
-      _reaction2 = create(:reaction, user: user, reactable: changes_requested_initiative)
-      _reaction3 = create(:reaction, user: user, reactable: proposed_initiative)
-      reaction4  = create(:reaction, user: user, reactable: threshold_reached_initiative)
-      reaction5  = create(:reaction, user: user, reactable: expired_initiative)
-      reaction6  = create(:reaction, user: user, reactable: answered_initiative)
-      reaction7  = create(:reaction, user: user, reactable: ineligible_initiative)
-
-      service.before_destroy(user, user)
-
-      expect(user.reactions.pluck(:id)).to match_array [reaction4.id, reaction5.id, reaction6.id, reaction7.id]
-    end
-  end
-
   describe 'after_destroy' do
     it "logs a 'deleted' action job when the user is destroyed" do
       freeze_time do

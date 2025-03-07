@@ -4,7 +4,7 @@ module MultiTenancy
   module Templates
     module Serializers
       class InternalComment < Base
-        ref_attributes %i[author post parent]
+        ref_attributes %i[author idea parent]
         attributes %i[body publication_status]
         attribute(:body_updated_at) { |internal_comment| serialize_timestamp(internal_comment.body_updated_at) }
       end

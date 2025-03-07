@@ -3,7 +3,7 @@ import React from 'react';
 // components
 import { Box, Text, Title } from '@citizenlab/cl2-component-library';
 
-import Button from 'components/UI/Button';
+import Button from 'components/UI/ButtonWithLink';
 import Modal from 'components/UI/Modal';
 
 // i18n

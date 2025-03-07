@@ -78,6 +78,8 @@ const getCustomFieldBadgeLabel = (
       return messages.number;
     case 'linear_scale':
       return messages.linearScale;
+    case 'rating':
+      return messages.rating;
     case 'shapefile_upload':
       return messages.shapefileUpload;
     case 'file_upload':
@@ -88,6 +90,12 @@ const getCustomFieldBadgeLabel = (
       return messages.drawRoute;
     case 'polygon':
       return messages.drawArea;
+    case 'ranking':
+      return messages.ranking;
+    case 'matrix_linear_scale':
+      return messages.matrix;
+    case 'sentiment_linear_scale':
+      return messages.sentiment;
     default:
       return messages.default;
   }

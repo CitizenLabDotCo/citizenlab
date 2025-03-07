@@ -11,7 +11,7 @@ import useAuthUser from 'api/me/useAuthUser';
 
 import Avatar from 'components/Avatar';
 import commentsMessages from 'components/PostShowComponents/Comments/messages';
-import Button from 'components/UI/Button';
+import Button from 'components/UI/ButtonWithLink';
 import MentionsTextArea from 'components/UI/MentionsTextArea';
 
 import { trackEventByName } from 'utils/analytics';

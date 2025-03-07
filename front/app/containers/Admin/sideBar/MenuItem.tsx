@@ -1,14 +1,6 @@
 import React from 'react';
 
-import {
-  media,
-  colors,
-  fontSizes,
-  Icon,
-  Box,
-  Tooltip,
-  Image,
-} from '@citizenlab/cl2-component-library';
+import { media, colors, Icon, Box } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
 import useAuthUser from 'api/me/useAuthUser';
@@ -22,16 +14,14 @@ import Link from 'utils/cl-router/Link';
 import { usePermission } from 'utils/permissions';
 import { isSuperAdmin } from 'utils/permissions/roles';
 
-import tooltipImage from './assets/tooltip.png';
 import messages from './messages';
 import { NavItem } from './navItems';
 
 const Text = styled.div`
   flex: 1;
   color: #fff;
-  font-size: ${fontSizes.base}px;
+  font-size: 15px;
   font-weight: 400;
-  line-height: 19px;
   margin-left: 15px;
   display: flex;
   align-items: center;
@@ -107,11 +97,6 @@ const MenuItem = ({ navItem }: Props) => {
     item: { type: 'route', path: navItem.link },
   });
 
-  // Temporary proposal warning implementation, will be removed together with the navbar item
-  // after users have had enough time to get used to the feature
-
-  const isItemDisabled = navItem.name === 'initiatives';
-
   const enabledAndHasPermission = featuresEnabled && hasPermission;
 
   if (navItem.name === 'reporting') {
@@ -124,46 +109,26 @@ const MenuItem = ({ navItem }: Props) => {
   }
 
   return (
-    <Tooltip
-      content={
+    <MenuItemLink
+      to={navItem.link}
+      className={`intercom-admin-menu-item-${navItem.name}`}
+    >
+      <>
         <Box
           display="flex"
-          flexDirection="column"
+          flex="0 0 auto"
           alignItems="center"
-          gap="20px"
-          p="8px"
+          justifyContent="center"
+          className={navItem.iconName}
         >
-          <Image src={tooltipImage} alt="" w="250px" />
-          <FormattedMessage {...messages.proposalsTooltip} />
+          <Icon name={navItem.iconName} height="20px" />
         </Box>
-      }
-      placement="right"
-      disabled={!isItemDisabled}
-      theme="dark"
-    >
-      <MenuItemLink
-        to={navItem.link}
-        className={`intercom-admin-menu-item-${navItem.name} ${
-          isItemDisabled ? 'disabled' : ''
-        }`}
-      >
-        <>
-          <Box
-            display="flex"
-            flex="0 0 auto"
-            alignItems="center"
-            justifyContent="center"
-            className={navItem.iconName}
-          >
-            <Icon name={navItem.iconName} />
-          </Box>
-          <Text>
-            <FormattedMessage {...messages[navItem.message]} />
-            {!!navItem.count && <CountBadge count={navItem.count} />}
-          </Text>
-        </>
-      </MenuItemLink>
-    </Tooltip>
+        <Text>
+          <FormattedMessage {...messages[navItem.message]} />
+          {!!navItem.count && <CountBadge count={navItem.count} />}
+        </Text>
+      </>
+    </MenuItemLink>
   );
 };
 

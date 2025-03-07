@@ -62,6 +62,8 @@ en:
         description:
       other_input_field:
         title: Type your answer
+      ask_follow_up_field:
+        title: Tell us why
   custom_forms:
     categories:
       main_content:
@@ -83,6 +85,13 @@ en:
           title: What is your initiative?
         petition:
           title: What is your petition?
+  custom_field_options:
+    gender:
+      male: Male
+      female: Female
+      unspecified: Other
+    domicile:
+      outside: Somewhere else
   user:
     anon_first_name: "User"
     anon_scheme:

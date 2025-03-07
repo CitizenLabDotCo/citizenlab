@@ -9,15 +9,7 @@ resource 'Comments' do
 
   include_context 'common_auth'
 
-  let_it_be(:idea_comments) do
-    create_list(:comment, 3, created_at: '2020-01-01')
-  end
-
-  let_it_be(:initiative_comments) do
-    create_list(:comment, 2, :on_initiative, created_at: '2020-01-01')
-  end
-
-  let_it_be(:comments) { idea_comments + initiative_comments }
+  let_it_be(:comments) { create_list(:comment, 3, created_at: '2020-01-01') }
 
   get '/api/v2/comments/' do
     route_summary 'List all comments'
@@ -29,23 +21,13 @@ resource 'Comments' do
 
     include_context 'common_list_params'
 
-    parameter(
-      :post_type, <<~DESC.squish,
-        List only the comments that were posted on a specific type of resource.
-      DESC
-      required: false,
-      in: 'query',
-      type: 'string',
-      enum: PublicApi::V2::CommentsController::POST_TYPES
-    )
-
     example_request 'List all comments' do
       assert_status 200
-      expect(json_response_body[:comments].size).to eq 5
+      expect(json_response_body[:comments].size).to eq 3
       expect(json_response_body[:meta]).to eq({ total_pages: 1, current_page: 1 })
       expect(json_response_body[:comments].first.keys).to match_array(
         %i[
-          id body post_type post_id project_id parent_id author_id created_at updated_at
+          id body idea_id project_id parent_id author_id created_at updated_at
           body_updated_at children_count dislikes_count likes_count publication_status
         ]
       )
@@ -62,52 +44,6 @@ resource 'Comments' do
         expect(json_response_body[:meta]).to eq({ total_pages: total_pages, current_page: 1 })
       end
     end
-
-    # TODO: cleanup-after-proposals-migration
-    context "when the value of the 'post_type' parameter is invalid" do
-      let(:post_type) { 'invalid-post-type' }
-
-      example_request 'Returns a bad request error' do
-        assert_status 400
-
-        expect(json_response_body).to match(
-          type: kind_of(String),
-          title: 'Invalid value for an enum parameter',
-          status: 400,
-          detail: "The value '#{post_type}' is not allowed for the parameter 'post_type'. Accepted values are: idea, initiative.",
-          parameter_name: 'post_type',
-          parameter_value: post_type,
-          allowed_values: PublicApi::V2::CommentsController::POST_TYPES
-        )
-      end
-    end
-
-    # TODO: cleanup-after-proposals-migration
-    context "when the value of 'post_type' is 'idea'" do
-      let(:post_type) { 'idea' }
-
-      example_request 'List only the comments posted on ideas' do
-        assert_status 200
-
-        comment_ids = json_response_body[:comments].pluck(:id)
-        expect(comment_ids).to match_array(idea_comments.pluck(:id))
-      end
-    end
-
-    # TODO: cleanup-after-proposals-migration
-    context "when the value of 'post_type' is 'initiative'" do
-      let(:post_type) { 'initiative' }
-
-      example_request 'List only the comments posted on initiatives' do
-        assert_status 200
-
-        comment_ids = json_response_body[:comments].pluck(:id)
-        expect(comment_ids).to match_array(initiative_comments.pluck(:id))
-      end
-    end
-
-    include_examples 'filtering_by_date', :comment, :created_at
-    include_examples 'filtering_by_date', :comment, :updated_at
   end
 
   get '/api/v2/comments/:id' do

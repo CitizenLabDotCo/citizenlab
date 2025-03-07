@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 require 'rspec_api_documentation/dsl'
-require_relative './shared/publication_filtering_model'
+require_relative 'shared/publication_filtering_model'
 
 resource 'Areas' do
   explanation 'Areas are geographical regions. Each tenant has its own custom set of areas.'

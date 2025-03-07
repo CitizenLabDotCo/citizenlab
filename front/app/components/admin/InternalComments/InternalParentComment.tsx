@@ -9,8 +9,9 @@ import useIdeaById from 'api/ideas/useIdeaById';
 import useInternalComment from 'api/internal_comments/useInternalComment';
 import useInternalComments from 'api/internal_comments/useInternalComments';
 
+import Highlighter from 'components/Highlighter';
 import commentsMessages from 'components/PostShowComponents/Comments/messages';
-import Button from 'components/UI/Button';
+import Button from 'components/UI/ButtonWithLink';
 
 import { FormattedMessage } from 'utils/cl-intl';
 
@@ -93,13 +94,15 @@ const InternalParentComment = ({
     return (
       <Container className={`${className || ''} e2e-parent-and-childcomments`}>
         <ParentCommentContainer className={commentDeleted ? 'deleted' : ''}>
-          <InternalComment
-            ideaId={ideaId}
-            projectId={projectId}
-            commentId={commentId}
-            commentType="parent"
-            hasChildComments={hasChildComments}
-          />
+          <Highlighter fragmentId={commentId}>
+            <InternalComment
+              ideaId={ideaId}
+              projectId={projectId}
+              commentId={commentId}
+              commentType="parent"
+              hasChildComments={hasChildComments}
+            />
+          </Highlighter>
         </ParentCommentContainer>
 
         {hasNextPage && (
@@ -125,14 +128,15 @@ const InternalParentComment = ({
 
         {modifiedChildCommentIds.length > 0 &&
           modifiedChildCommentIds.map((childCommentId, index) => (
-            <InternalComment
-              ideaId={ideaId}
-              projectId={projectId}
-              key={childCommentId}
-              commentId={childCommentId}
-              commentType="child"
-              last={index === modifiedChildCommentIds.length - 1}
-            />
+            <Highlighter fragmentId={childCommentId} key={childCommentId}>
+              <InternalComment
+                ideaId={ideaId}
+                projectId={projectId}
+                commentId={childCommentId}
+                commentType="child"
+                last={index === modifiedChildCommentIds.length - 1}
+              />
+            </Highlighter>
           ))}
 
         <StyledChildCommentForm

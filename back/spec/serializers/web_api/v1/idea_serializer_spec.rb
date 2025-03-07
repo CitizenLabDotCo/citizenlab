@@ -41,7 +41,7 @@ describe WebApi::V1::IdeaSerializer do
     let(:idea) { create(:idea, project: project) }
 
     before do
-      create_list(:internal_comment, 2, post: idea)
+      create_list(:internal_comment, 2, idea: idea)
       idea.reload
     end
 

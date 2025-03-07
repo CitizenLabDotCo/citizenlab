@@ -6,7 +6,7 @@ RSpec.describe Notifications::InternalComments::InternalCommentOnIdeaYouModerate
   describe 'make_notifications_on' do
     let(:idea) { create(:idea) }
     let!(:project_moderator) { create(:project_moderator, projects: [idea.project]) }
-    let(:internal_comment) { create(:internal_comment, post: idea) }
+    let(:internal_comment) { create(:internal_comment, idea: idea) }
 
     context "when recipient is moderator of idea's project and should receive this notification" do
       let(:activity) { create(:activity, item: internal_comment, action: 'created') }
@@ -17,9 +17,8 @@ RSpec.describe Notifications::InternalComments::InternalCommentOnIdeaYouModerate
           recipient_id: project_moderator.id,
           initiating_user_id: internal_comment.author_id,
           internal_comment_id: internal_comment.id,
-          post_id: idea.id,
-          post_type: 'Idea',
-          project_id: internal_comment.post.project_id
+          idea_id: idea.id,
+          project_id: internal_comment.idea.project_id
         )
       end
     end
@@ -29,7 +28,7 @@ RSpec.describe Notifications::InternalComments::InternalCommentOnIdeaYouModerate
       let(:idea2) { create(:idea, project_id: project.id) }
       let(:project_folder) { create(:project_folder, projects: [project]) }
       let!(:project_folder_moderator) { create(:project_folder_moderator, project_folders: [project_folder]) }
-      let(:internal_comment) { create(:internal_comment, post: idea2) }
+      let(:internal_comment) { create(:internal_comment, idea: idea2) }
       let(:activity) { create(:activity, item: internal_comment, action: 'created') }
 
       it 'makes a notification on created internal comment activity' do
@@ -38,9 +37,8 @@ RSpec.describe Notifications::InternalComments::InternalCommentOnIdeaYouModerate
           recipient_id: project_folder_moderator.id,
           initiating_user_id: internal_comment.author_id,
           internal_comment_id: internal_comment.id,
-          post_id: idea2.id,
-          post_type: 'Idea',
-          project_id: internal_comment.post.project_id
+          idea_id: idea2.id,
+          project_id: internal_comment.idea.project_id
         )
       end
     end
@@ -56,14 +54,14 @@ RSpec.describe Notifications::InternalComments::InternalCommentOnIdeaYouModerate
     end
 
     context 'when the recipient is the internal comment author' do
-      let(:internal_comment) { create(:internal_comment, author: project_moderator, post: idea) }
+      let(:internal_comment) { create(:internal_comment, author: project_moderator, idea: idea) }
 
       it_behaves_like 'no notification created'
     end
 
     context "when the internal comment is a comment on the recipient's internal comment" do
-      let(:parent_internal_comment) { create(:internal_comment, post: idea, author: project_moderator) }
-      let(:internal_comment) { create(:internal_comment, parent: parent_internal_comment, post: idea) }
+      let(:parent_internal_comment) { create(:internal_comment, idea: idea, author: project_moderator) }
+      let(:internal_comment) { create(:internal_comment, parent: parent_internal_comment, idea: idea) }
 
       # Don't create this notification if the Activity (internal comment created)
       # should lead to a InternalCommentOnYourInternalComment notification to the recipient.
@@ -76,7 +74,7 @@ RSpec.describe Notifications::InternalComments::InternalCommentOnIdeaYouModerate
           :internal_comment,
           :with_mentions,
           mentioned_users: [project_moderator],
-          post: idea
+          idea: idea
         )
       end
 

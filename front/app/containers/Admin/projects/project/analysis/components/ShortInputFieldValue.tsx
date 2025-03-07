@@ -56,6 +56,7 @@ const ShortInputFieldValue = ({ customField, rawValue }: Props) => {
     case 'multiline_text':
     case 'number':
     case 'checkbox':
+    case 'rating':
     case 'linear_scale': {
       if (rawValue === null || rawValue === undefined || rawValue === '') {
         return <>No Answer</>;
@@ -105,6 +106,12 @@ const ShortInputFieldValue = ({ customField, rawValue }: Props) => {
       return null;
     }
     case 'polygon': {
+      return null;
+    }
+    case 'ranking': {
+      return null;
+    }
+    case 'matrix_linear_scale': {
       return null;
     }
     default: {

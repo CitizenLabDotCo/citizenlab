@@ -15,7 +15,7 @@ import { Multiloc } from 'typings';
 
 import useLocalize from 'hooks/useLocalize';
 
-import ButtonComponent from 'components/UI/Button';
+import ButtonComponent from 'components/UI/ButtonWithLink';
 import InputMultilocWithLocaleSwitcherWrapper from 'components/UI/InputMultilocWithLocaleSwitcher';
 
 import { injectIntl } from 'utils/cl-intl';

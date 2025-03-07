@@ -8,35 +8,23 @@ lt:
       "comment_marked_as_spam": Pranešti apie komentarų šlamštą
       "comment_on_your_comment": Atsakymas į mano komentarą
       "comment_on_idea_you_follow": Komentaras apie idėją, kurios laikotės
-      "comment_on_initiative_you_follow": Pastaba dėl pasiūlymo, kurio laikotės.
-      "cosponsor_of_your_initiative": Naudotojas priima mano kvietimą tapti vienu iš mano pasiūlymo rėmėjų
       "cosponsor_of_your_idea": Naudotojas priima mano kvietimą tapti vienu iš mano pasiūlymo rėmėjų
       "event_registration_confirmation": Renginio registracijos patvirtinimas
       "idea_marked_as_spam": Pranešimas apie idėjų šlamštą
       "idea_published": Mano indėlio paskelbimas
-      "initiative_assigned_to_you": Pasiūlymo skyrimas man
-      "initiative_marked_as_spam": Pasiūlymų nepageidaujamų laiškų ataskaita
-      "initiative_published": Mano pasiūlymo paskelbimas
-      "invitation_to_cosponsor_initiative": Kvietimas tapti vienu iš pasiūlymo rėmėjų
       "invitation_to_cosponsor_idea": Kvietimas tapti vienu iš pasiūlymo rėmėjų
-      "initiative_resubmitted_for_review": Pasiūlymas pakartotinai pateiktas peržiūrėti
       "invite_received": Kvietimas
       "invite_reminder": Kvietimo priminimas
       "internal_comment_on_idea_assigned_to_you": Vidaus komentaras apie man priskirtą įvestį
       "internal_comment_on_idea_you_commented_internally_on": Vidinis komentaras apie įvestį, kurią komentavau viduje
       "internal_comment_on_idea_you_moderate": Vidinis komentaras apie įvestį projekte arba aplanke, kurį administruoju
-      "internal_comment_on_initiative_assigned_to_you": Vidaus komentaras dėl man priskirto pasiūlymo
-      "internal_comment_on_initiative_you_commented_internally_on": Vidaus komentaras dėl pasiūlymo Vidaus komentaras dėl
-      "internal_comment_on_unassigned_initiative": Vidaus pastaba dėl nepaskirto pasiūlymo
       "internal_comment_on_unassigned_unmoderated_idea": Vidinis komentaras apie nepriskirtą įvestį nevaldomame projekte
       "internal_comment_on_your_internal_comment": Vidinis komentaras apie mano vidinį komentarą
       "mention_in_official_feedback": Paminėjimas atnaujinime
       "mention_in_internal_comment": Paminėjimas vidaus komentare
       "new_comment_for_admin": Naujas komentaras projekte, kurį moderuoju
       "new_idea_for_admin": Naujas indėlis į projektą, kuriam vadovauju
-      "new_initiative_for_admin": Naujas pasiūlymas
       "official_feedback_on_idea_you_follow": Įvesties, kurią sekate, atnaujinimas
-      "official_feedback_on_initiative_you_follow": Pasiūlymo, kurio laikotės, atnaujinimas
       "password_reset": Slaptažodžio atkūrimas
       "project_moderation_rights_received": Gautos projekto moderavimo teisės
       "project_folder_moderation_rights_received": Gautos aplankų tvarkytojo teisės
@@ -46,7 +34,7 @@ lt:
       "project_review_request": Projekto peržiūros prašymas
       "project_review_state_change": Patvirtintas projektas
       "status_change_on_idea_you_follow": Įvesties, kurią sekate, būsenos pasikeitimas
-      "status_change_on_initiative_you_follow": Pasiūlymo, kurį sekate, būsenos pasikeitimas
+      "survey_submitted": Pateikta apklausa
       "threshold_reached_for_admin": Pasiūlymas pasiekė balsavimo ribą
       "welcome": Po registracijos
       "admin_digest": Savaitės apžvalga administratoriams
@@ -73,7 +61,6 @@ lt:
         issue: 'Eikite į šį numerį'
         option: 'Eikite į šią parinktį'
         proposal: 'Eikite į šį pasiūlymą'
-        initiative: 'Pereikite prie šios iniciatyvos'
         petition: 'Eikite į šią peticiją'
       cta_goto_your:
         idea: 'Pereikite prie savo idėjos'
@@ -83,7 +70,6 @@ lt:
         issue: 'Eikite į savo problemą'
         option: 'Eikite į parinktį'
         proposal: 'Eikite į savo pasiūlymą'
-        initiative: 'Eikite į savo iniciatyvą'
         petition: 'Eikite į peticiją'
       cta_goto_proposal: 'Eikite į šį pasiūlymą'
       cta_goto_project: 'Eikite į šį projektą'
@@ -130,7 +116,6 @@ lt:
       new_comments: 'Nauji komentarai'
       title_activity_past_week: 'Praėjusios savaitės veikla'
       title_no_activity_past_week: 'Per pastarąją savaitę nebuvo jokios veiklos'
-      title_initiatives_past_week: 'Nauji praėjusios savaitės pasiūlymai'
       reached_threshold: 'Pasiekta riba'
       yesterday_by_author: 'Vakar pagal %{author}'
       today_by_author: 'Šiandien pagal %{author}'
@@ -168,12 +153,6 @@ lt:
       main_header: '%{cosponsorName} priėmė jūsų kvietimą prisidėti prie jūsų pasiūlymo rėmimo.'
       subject: '%{cosponsorName} priėmė jūsų kvietimą prisidėti prie jūsų pasiūlymo rėmimo.'
       preheader: '%{cosponsorName} priėmė jūsų kvietimą prisidėti prie jūsų pasiūlymo rėmimo.'
-    cosponsor_of_your_initiative:
-      cta_reply_to: 'Peržiūrėkite savo pasiūlymą'
-      event_description_initiative: 'Sveikiname! %{cosponsorName} priėmė jūsų kvietimą tapti vienu iš jūsų pasiūlymo rėmėjų.'
-      main_header: '%{cosponsorName} priėmė jūsų kvietimą prisidėti prie jūsų pasiūlymo rėmimo.'
-      subject: '%{cosponsorName} priėmė jūsų kvietimą prisidėti prie jūsų pasiūlymo rėmimo.'
-      preheader_initiative: '%{cosponsorName} priėmė jūsų kvietimą prisidėti prie jūsų pasiūlymo rėmimo.'
     assignee_digest:
       subject: 'Įvesties duomenys, apie kuriuos reikia jūsų atsiliepimų: %{numberIdeas}'
       preheader: 'Perleidėjo suvestinė %{organizationName}'
@@ -194,20 +173,6 @@ lt:
       preheader: 'Veiksmai, susiję su šia nepageidaujamų laiškų ataskaita'
       reported_this_because: '%{reporterFirstName} pranešė apie tai, nes:'
       title_spam_report: '%{firstName} %{lastName} pranešta apie šlamštą'
-    initiative_marked_as_spam:
-      cta_review_initiative: 'Pasiūlymo peržiūra'
-      report_inappropriate_offensive_content: 'Manau, kad šis turinys yra netinkamas arba įžeidžiantis.'
-      report_not_an_initiative: 'Šis turinys nėra pasiūlymas ir jam čia nepriklauso.'
-      subject: 'Jūs turite pranešimą apie nepageidaujamus laiškus %{organizationName}platformoje.'
-      preheader: 'Veiksmai, susiję su šia nepageidaujamų laiškų ataskaita'
-      reported_this_because: '%{reporterFirstName} pranešė apie tai, nes:'
-      title_spam_report: '%{firstName} %{lastName} pranešta apie šlamštą'
-    initiative_assigned_to_you:
-      cta_reply_to: 'Pateikite atsiliepimus adresu %{authorName}'
-      event_description_initiative: 'Jums paskirtas pasiūlymas. Pateikite atsiliepimus rašydami oficialų atnaujinimą arba keisdami jo būseną.'
-      main_header: '%{firstName}, turite naują užduotį'
-      subject: 'Turite užduotį %{organizationName}platformoje.'
-      preheader_initiative: 'Jums paskirtas %{authorName} pasiūlymas'
     invitation_to_cosponsor_idea:
       cta_reply_to: 'Vienas iš šio pasiūlymo rėmėjų'
       event_description: '%{authorName} parengė naują pasiūlymą ir norėtų, kad jį paremtumėte.'
@@ -217,22 +182,6 @@ lt:
       main_header: 'Esate pakviesti tapti vienu iš pasiūlymo rėmėjų'
       subject: 'Esate pakviesti tapti vienu iš pasiūlymo rėmėjų'
       preheader: 'Kviečiame prisidėti prie %{authorName}pasiūlymo.'
-    invitation_to_cosponsor_initiative:
-      cta_reply_to: 'Vienas iš šio pasiūlymo rėmėjų'
-      event_description_initiative: '%{authorName} parengė naują pasiūlymą ir norėtų, kad jį paremtumėte.'
-      event_description_cosponsoring: 'Bendras pasiūlymo rėmimas reiškia, kad <strong>jūsų vardas bus rodomas</strong> kartu su kitų pasiūlymo rėmėjų vardais.'
-      event_description_before_action: 'Kad pamatytumėte pasiūlymą ir priimtumėte kvietimą, turite būti prisijungę prie savo paskyros.'
-      event_description_action: 'Spustelėkite toliau ir perskaitykite pasiūlymą.'
-      main_header: 'Esate pakviesti tapti vienu iš pasiūlymo rėmėjų'
-      subject: 'Esate pakviesti tapti vienu iš pasiūlymo rėmėjų'
-      preheader_initiative: 'Kviečiame prisidėti prie %{authorName}pasiūlymo.'
-    initiative_resubmitted_for_review:
-      by_author: 'pagal %{authorName}'
-      cta_reply_to: 'Pateikite atsiliepimus adresu %{authorName}'
-      event_description_initiative: 'Pasiūlymas buvo pakartotinai pateiktas peržiūrėti. Pateikite atsiliepimus rašydami oficialų atnaujinimą arba pakeiskite jo būseną.'
-      main_header: '%{firstName}, turite peržiūrėti pasiūlymą'
-      subject: 'Turite pasiūlymą, kurį reikia peržiūrėti %{organizationName}platformoje.'
-      preheader_initiative: '%{authorName} pasiūlymas pakartotinai pateiktas peržiūrėti.'
     invite_reminder:
       cta_accept_invitation: 'Priimkite kvietimą'
       invitation_header: 'Jūsų kvietimas laukia'
@@ -247,20 +196,6 @@ lt:
       invitation_expiry_message: 'Šis kvietimas galioja iki %{expiryDays} dienų.'
       preheader: '%{organizationName} atsiuntė kvietimą prisijungti prie jų dalyvavimo platformos.'
       subject: 'Kviečiame prisijungti prie %{organizationName}platformos.'
-    initiative_published:
-      action_add_image: '%{addImageLink} didinti matomumą'
-      action_published_initiative: 'Paskelbtas pasiūlymas'
-      action_send_email: 'Siųskite savo kontaktams %{sendEmailLink}'
-      action_share_fb: 'Praneškite draugams apie tai svetainėje %{fbLink}'
-      action_share_link: 'Pasidalykite juo bet kuriuo kanalu nukopijuodami %{link}.'
-      action_share_twitter: 'Informuokite savo sekėjus svetainėje %{twitterLink}'
-      link: nuoroda
-      main_header: 'Paskelbėte pasiūlymą! Surinkime jam palaikymą.'
-      message_next_steps: '%{userFirstName}, jūsų pasiūlymas sėkmingai paskelbtas %{organizationName}dalyvavimo platformoje. Jums bus pranešta, kai žmonės pradės bendrauti su jūsų pasiūlymu. Toliau sužinokite, kokių tolesnių veiksmų galite imtis.'
-      message_get_votes: 'Pasiekite balsavimo ribą:'
-      preheader: 'Dėkojame, kad dalijatės savo pasiūlymu %{initiativeTitle} %{organizationName}. Kitas žingsnis - gauti paramą savo pasiūlymui dalijantis juo savo tinkle.'
-      send_email: el. paštas
-      subject: 'Jūsų pasiūlymas paskelbtas %{organizationName}platformoje.'
     mention_in_comment:
       cta_reply_to: 'Atsakyti į %{commentAuthor}'
       event_description: '%{commentAuthorFull} jus paminėjo savo komentare apie idėją "%{post}". Spustelėkite toliau pateiktą nuorodą ir dalyvaukite pokalbyje su %{commentAuthor}.'
@@ -309,22 +244,9 @@ lt:
         issue: '%{authorName} pakomentavo klausimą, kurį sekate.'
         option: '%{authorName} pakomentavo parinktį, kurią sekate'
         proposal: '%{authorName} pakomentavo pasiūlymą, kurį sekate'
-        initiative: '%{authorName} pakomentavo iniciatyvą, kurią sekate.'
         petition: '%{authorName} pakomentavo peticiją, kurią sekate'
       subject: 'Yra naujas komentaras "%{input_title}"'
       preheader: '%{authorName} paliko komentarą apie idėją %{organizationName}'
-    comment_on_initiative_you_follow:
-      cta_reply_to: 'Atsakyti į %{commentAuthor}'
-      event_description: '%{authorNameFull} reagavo į pasiūlymą "%{initiativeTitle}". Spustelėkite toliau esantį mygtuką, kad tęstumėte pokalbį su %{authorName}.'
-      main_header: '%{commentAuthor} pakomentavo pasiūlymą, kurį sekate'
-      subject: 'Yra naujas komentaras apie pasiūlymą, kurį sekate'
-      preheader: '%{authorName} paliko komentarą apie pasiūlymą %{organizationName}'
-    new_initiative_for_admin:
-      cta_reply_to: 'Pateikite atsiliepimus adresu %{authorName}'
-      event_description: '%{authorName} jūsų platformoje paskelbė naują pasiūlymą. Atraskite jį dabar, pateikite atsiliepimus arba pakeiskite jo statusą!'
-      main_header: '%{firstName}, jūsų platformoje paskelbtas naujas pasiūlymas'
-      subject: 'Kažkas %{organizationName}platformoje paskelbė naują pasiūlymą.'
-      preheader: '%{authorName} paskelbėte naują pasiūlymą savo platformoje.'
     new_idea_for_admin:
       main_header_publication: 'Jūsų platformoje paskelbta nauja įvestis'
       event_description_publication: '%{authorName} pateikė naują įvestį į jūsų platformą. Atraskite jį dabar, pateikite atsiliepimus arba pakeiskite jo statusą!'
@@ -368,24 +290,6 @@ lt:
       subject: 'Naujas vidinis komentaras ''%{post}'''
       main_header: 'Naujas vidinis komentaras ''%{post}'''
       preheader: 'Naujas vidinis komentaras ''%{post}'''
-    internal_comment_on_initiative_assigned_to_you:
-      cta_reply_to: 'Peržiūrėti komentarą %{firstName}'
-      event_description: '%{authorNameFull} teikėte vidaus pastabas dėl jums paskirto pasiūlymo.'
-      subject: 'Naujas vidinis komentaras ''%{post}'''
-      main_header: 'Naujas vidinis komentaras ''%{post}'''
-      preheader: 'Naujas vidinis komentaras ''%{post}'''
-    internal_comment_on_initiative_you_commented_internally_on:
-      cta_reply_to: 'Peržiūrėti komentarą %{firstName}'
-      event_description: '%{authorNameFull} teikėte vidaus pastabas dėl pasiūlymo, dėl kurio teikėte vidaus pastabas.'
-      subject: 'Naujas vidinis komentaras ''%{post}'''
-      main_header: 'Naujas vidinis komentaras ''%{post}'''
-      preheader: 'Naujas vidinis komentaras ''%{post}'''
-    internal_comment_on_unassigned_initiative:
-      cta_reply_to: 'Peržiūrėti komentarą %{firstName}'
-      event_description: '%{authorNameFull} pateikė vidaus pastabas dėl nepaskirto pasiūlymo.'
-      subject: 'Naujas vidinis komentaras ''%{post}'''
-      main_header: 'Naujas vidinis komentaras ''%{post}'''
-      preheader: 'Naujas vidinis komentaras ''%{post}'''
     internal_comment_on_unassigned_unmoderated_idea:
       cta_reply_to: 'Peržiūrėti komentarą %{firstName}'
       event_description: '%{authorNameFull} viduje komentavo nepaskirtą įvestį nevaldomame projekte.'
@@ -397,11 +301,6 @@ lt:
       header_title: 'Yra atnaujinta informacija apie "%{input_title}"'
       subject: 'Oficialūs atsiliepimai buvo paskelbti "%{input_title}"'
       preheader: 'Atnaujinta informacija apie įvestį, kurią sekate'
-    official_feedback_on_initiative_you_follow:
-      header_message: '%{officialName} pateikė naujausią informaciją apie pasiūlymą "%{initiativeTitle}". Paspauskite toliau esantį mygtuką, kad patektumėte į pokalbį su %{organizationName}.'
-      header_title: 'Atnaujinta informacija apie pasiūlymą, kurį sekate'
-      subject: 'Pasiūlymas, kurį sekate, buvo oficialiai atnaujintas %{organizationName}platformoje.'
-      preheader: 'Atnaujinta informacija apie pasiūlymą, kurį sekate'
     mention_in_official_feedback:
       cta_reply_to: 'Atsakyti į %{organizationName}'
       event_description: '%{organizationName} paminėjo jus savo atsiliepimuose apie idėją "%{post}". Spustelėkite toliau pateiktą nuorodą, jei norite prisijungti prie pokalbio su %{organizationName}.'
@@ -475,12 +374,6 @@ lt:
       header_title: 'Įvestis, kurią sekate, turi naują būseną'
       subject: 'Pasikeitė statusas "%{input_title}"'
       preheader: 'Įvestis, kurią sekate, turi naują būseną'
-    status_change_on_initiative_you_follow:
-      status_change: 'Naujoji šio pasiūlymo būsena - "%{initiativeStatus}".'
-      header_message: 'Skaitmeninėje dalyvavimo platformoje %{organizationName}atnaujinta pasiūlymo "%{initiativeTitle}" būsena.'
-      header_title: 'Pasiūlymui, kurį sekate, suteiktas naujas statusas'
-      subject: 'Pasikeitė sekamo pasiūlymo būsena'
-      preheader: 'Pasiūlymui, kurį sekate, suteiktas naujas statusas'
     user_digest:
       subject: "Šią savaitę dalyvavimo platformoje %{organizationName}"
       commented: "%{authorFirstName} komentavo:"
@@ -521,7 +414,6 @@ lt:
         issue: 'Jūsų numeris buvo paskelbtas'
         option: 'Jūsų parinktis buvo paskelbta'
         proposal: 'Jūsų pasiūlymas paskelbtas'
-        initiative: 'Jūsų iniciatyva buvo paskelbta'
         petition: 'Jūsų peticija buvo paskelbta'
       main_header: 'Jūs parašėte "%{input_title}"'
       header_message: 'Pasirūpinkime, kad ji būtų perskaityta.'
@@ -545,7 +437,6 @@ lt:
         issue: 'Jūsų problema yra "%{prescreening_status_title}"'
         option: 'Jūsų galimybė yra "%{prescreening_status_title}"'
         proposal: 'Jūsų pasiūlymas yra "%{prescreening_status_title}"'
-        initiative: 'Jūsų iniciatyva yra "%{prescreening_status_title}"'
         petition: 'Jūsų peticija yra "%{prescreening_status_title}"'
       message: '"%{input_title}" taps matomas kitiems, kai bus peržiūrėtas ir patvirtintas.'
       subject: '"%{input_title}" yra beveik paskelbtas'
@@ -606,6 +497,15 @@ lt:
       event_description: 'Projekte "%{projectName}" prašoma balsuoti už vieną iš %{numIdeas} variantų:'
       cta_message: 'Spustelėkite toliau esantį mygtuką ir dalyvaukite'
       cta_vote: 'Eikite į platformą ir balsuokite'
+    survey_submitted:
+      subject: '%{organizationName}: Dėkojame už atsakymą! 🎉'
+      preheader: 'Pateikiame jūsų pateiktos informacijos detales.'
+      main_header: 'Dėkojame, kad dalijatės mintimis apie "%{projectName}"!'
+      your_input_submitted: 'Jūsų įvestis "%{projectName}" buvo sėkmingai pateikta.'
+      if_you_would_like_to_review: 'Jei norite peržiūrėti savo pateiktą informaciją, toliau galite atsisiųsti savo atsakymus.'
+      your_submission_has_id: 'Jūsų pateiktai paraiškai suteiktas šis unikalus identifikatorius:'
+      you_can_use_this_id: 'Šį identifikatorių galite naudoti norėdami susisiekti su platformos administratoriais, jei norite, kad jūsų pateikta informacija būtų pašalinta.'
+      download_responses: 'Atsisiųskite savo atsakymus'
     admin_labels:
       recipient_role:
         admins: 'Administratoriams'
@@ -674,9 +574,6 @@ lt:
         internal_comment_is_posted_on_idea_in_project_or_folder_user_manages: 'Vidinis komentaras skelbiamas apie įvestį projekte arba aplanke, kurį tvarko naudotojas.'
         internal_comment_is_posted_on_idea_user_has_commented_internally_on: 'Vidinis komentaras skelbiamas apie įvestį, kurią naudotojas komentavo viduje'
         internal_comment_is_posted_on_idea_user_moderates: 'Vidinis komentaras skelbiamas įvesties naudotojas moderuoja'
-        internal_comment_is_posted_on_initiative_assigned_to_user: 'Vidaus komentaras skelbiamas apie naudotojui priskirtą pasiūlymą'
-        internal_comment_is_posted_on_initiative_user_has_commented_internally_on: 'Vidinis komentaras skelbiamas dėl pasiūlymo, kurį vartotojas komentavo viduje'
-        internal_comment_is_posted_on_unassigned_initiative: 'Vidaus komentaras skelbiamas apie nepaskirtą pasiūlymą'
         internal_comment_is_posted_on_unassigned_unmoderated_idea: 'Paskelbtas vidinis komentaras apie nepriskirtą įvestį nevaldomame projekte'
         project_review_request: 'Moderatorius paprašė peržiūrėti projektą'
         project_review_state_change: 'Recenzentas patvirtino projektą'

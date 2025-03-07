@@ -4,7 +4,7 @@
       <%# TODO: replace [''] with method call. Currently, the preview fails (if WhinyOpenStruct is initialized with `raise_exception: true``)
         because it builds not correct hash that doesn't contain `unfollow_url`.
         Use `Campaigns#generate_commands` instead of building the hash.
-        Affected previews: official_feedback_on_idea_you_follow_mailer, official_feedback_on_initiative_you_follow_mailer, project_phase_started_mailer
+        Affected previews: official_feedback_on_idea_you_follow_mailer, project_phase_started_mailer
       %>
       <p><%= format_message('unfollow_here', component: 'follow', values: { unfollow_url: event['unfollow_url'] }, escape_html: false) %></p>
     </mj-text>

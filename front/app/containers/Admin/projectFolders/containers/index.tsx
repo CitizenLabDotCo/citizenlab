@@ -10,7 +10,7 @@ import useProjectFolderById from 'api/project_folders/useProjectFolderById';
 import useLocalize from 'hooks/useLocalize';
 
 import TabbedResource from 'components/admin/TabbedResource';
-import Button from 'components/UI/Button';
+import Button from 'components/UI/ButtonWithLink';
 import GoBackButton from 'components/UI/GoBackButton';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';

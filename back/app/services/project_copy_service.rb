@@ -160,6 +160,7 @@ class ProjectCopyService < TemplateService # rubocop:disable Metrics/ClassLength
         'answer_visible_to' => field.answer_visible_to,
         'hidden' => field.hidden,
         'maximum' => field.maximum,
+        'ask_follow_up' => field.ask_follow_up,
         'linear_scale_label_1_multiloc' => field.linear_scale_label_1_multiloc,
         'linear_scale_label_2_multiloc' => field.linear_scale_label_2_multiloc,
         'linear_scale_label_3_multiloc' => field.linear_scale_label_3_multiloc,
@@ -167,6 +168,10 @@ class ProjectCopyService < TemplateService # rubocop:disable Metrics/ClassLength
         'linear_scale_label_5_multiloc' => field.linear_scale_label_5_multiloc,
         'linear_scale_label_6_multiloc' => field.linear_scale_label_6_multiloc,
         'linear_scale_label_7_multiloc' => field.linear_scale_label_7_multiloc,
+        'linear_scale_label_8_multiloc' => field.linear_scale_label_8_multiloc,
+        'linear_scale_label_9_multiloc' => field.linear_scale_label_9_multiloc,
+        'linear_scale_label_10_multiloc' => field.linear_scale_label_10_multiloc,
+        'linear_scale_label_11_multiloc' => field.linear_scale_label_11_multiloc,
         'select_count_enabled' => field.select_count_enabled,
         'maximum_select_count' => field.maximum_select_count,
         'minimum_select_count' => field.minimum_select_count,
@@ -442,12 +447,12 @@ class ProjectCopyService < TemplateService # rubocop:disable Metrics/ClassLength
     user_ids = []
     idea_ids = exported_ideas.ids
     user_ids += Idea.where(id: idea_ids).pluck(:author_id)
-    comment_ids = Comment.where(post_id: idea_ids, post_type: 'Idea').ids
+    comment_ids = Comment.where(idea_id: idea_ids).ids
     user_ids += Comment.where(id: comment_ids).pluck(:author_id)
     reaction_ids = Reaction.where(reactable_id: [idea_ids + comment_ids]).ids
     user_ids += Reaction.where(id: reaction_ids).pluck(:user_id)
     user_ids += Basket.where(phase: Phase.where(project: @project)).pluck(:user_id)
-    user_ids += OfficialFeedback.where(post_id: idea_ids, post_type: 'Idea').pluck(:user_id)
+    user_ids += OfficialFeedback.where(idea_id: idea_ids).pluck(:user_id)
     user_ids += Follower.where(followable_id: ([@project.id] + idea_ids)).pluck(:user_id)
     user_ids += Volunteering::Volunteer.where(cause: Volunteering::Cause.where(phase: Phase.where(project: @project))).pluck :user_id
     user_ids += Events::Attendance.where(event: @project.events).pluck :attendee_id
@@ -667,12 +672,12 @@ class ProjectCopyService < TemplateService # rubocop:disable Metrics/ClassLength
   end
 
   def yml_comments(exported_ideas, shift_timestamps: 0)
-    Comment.where(post: exported_ideas).map do |c|
+    Comment.where(idea: exported_ideas).order(parent_id: :desc).map do |c|
       yml_comment = {
         'author_ref' => lookup_ref(c.author_id, :user),
         'author_hash' => c.author_hash,
         'anonymous' => c.anonymous,
-        'post_ref' => lookup_ref(c.post_id, :idea),
+        'idea_ref' => lookup_ref(c.idea_id, :idea),
         'body_multiloc' => c.body_multiloc,
         'created_at' => shift_timestamp(c.created_at, shift_timestamps)&.iso8601,
         'updated_at' => shift_timestamp(c.updated_at, shift_timestamps)&.iso8601,
@@ -686,9 +691,9 @@ class ProjectCopyService < TemplateService # rubocop:disable Metrics/ClassLength
   end
 
   def yml_official_feedback(exported_ideas, shift_timestamps: 0)
-    OfficialFeedback.where(post: exported_ideas).map do |o|
+    OfficialFeedback.where(idea: exported_ideas).map do |o|
       yml_official_feedback = {
-        'post_ref' => lookup_ref(o.post_id, :idea),
+        'idea_ref' => lookup_ref(o.idea_id, :idea),
         'user_ref' => lookup_ref(o.user_id, :user),
         'body_multiloc' => o.body_multiloc,
         'author_multiloc' => o.author_multiloc,
@@ -702,7 +707,7 @@ class ProjectCopyService < TemplateService # rubocop:disable Metrics/ClassLength
 
   def yml_reactions(exported_ideas, shift_timestamps: 0)
     idea_ids = exported_ideas.ids
-    comment_ids = Comment.where(post_id: idea_ids, post_type: 'Idea')
+    comment_ids = Comment.where(idea_id: idea_ids)
     Reaction.where.not(user_id: nil).where(reactable_id: idea_ids + comment_ids).map do |v|
       yml_reaction = {
         'reactable_ref' => lookup_ref(v.reactable_id, %i[idea comment]),

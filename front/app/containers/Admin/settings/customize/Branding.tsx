@@ -144,7 +144,7 @@ export default ({ logo, setAttributesDiff, getSetting, setLogo }: Props) => {
         <FormattedMessage {...messages.brandingDescription} />
       </SectionDescription>
 
-      <SubSectionTitle>
+      <SubSectionTitle className="intercom-settings-tab-branding-colors">
         <FormattedMessage {...messages.colorsTitle} />
       </SubSectionTitle>
 

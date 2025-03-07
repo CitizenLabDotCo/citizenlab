@@ -2,27 +2,26 @@
 
 require 'rails_helper'
 
-# TODO: move-old-proposals-test
 RSpec.describe EmailCampaigns::ThresholdReachedForAdminMailer do
   describe 'campaign_mail' do
     let_it_be(:recipient) { create(:user, locale: 'en') }
     let_it_be(:assignee) { create(:admin, locale: 'en') }
     let_it_be(:campaign) { EmailCampaigns::Campaigns::ThresholdReachedForAdmin.create! }
     let_it_be(:proposal) { create(:proposal, assignee: assignee) }
-    let_it_be(:notification) { create(:threshold_reached_for_admin, recipient: recipient, post: proposal) }
+    let_it_be(:notification) { create(:threshold_reached_for_admin, recipient: recipient, idea: proposal) }
     let_it_be(:command) do
       {
         recipient: recipient,
         event_payload: {
-          post_title_multiloc: notification.post.title_multiloc,
-          post_body_multiloc: notification.post.body_multiloc,
-          post_published_at: notification.post.published_at.iso8601,
-          post_author_name: notification.post.author_name,
-          post_url: Frontend::UrlService.new.model_to_url(notification.post, locale: Locale.new(recipient.locale)),
-          post_likes_count: notification.post.likes_count,
-          post_comments_count: notification.post.comments_count,
-          assignee_first_name: notification.post.assignee.first_name,
-          assignee_last_name: notification.post.assignee.last_name
+          idea_title_multiloc: notification.idea.title_multiloc,
+          idea_body_multiloc: notification.idea.body_multiloc,
+          idea_published_at: notification.idea.published_at.iso8601,
+          idea_author_name: notification.idea.author_name,
+          idea_url: Frontend::UrlService.new.model_to_url(notification.idea, locale: Locale.new(recipient.locale)),
+          idea_likes_count: notification.idea.likes_count,
+          idea_comments_count: notification.idea.comments_count,
+          assignee_first_name: notification.idea.assignee.first_name,
+          assignee_last_name: notification.idea.assignee.last_name
         }
       }
     end
@@ -44,7 +43,7 @@ RSpec.describe EmailCampaigns::ThresholdReachedForAdminMailer do
     end
 
     it 'assigns cta url' do
-      expect(mail.body.encoded).to match(command.dig(:event_payload, :post_url))
+      expect(mail.body.encoded).to match(command.dig(:event_payload, :idea_url))
     end
   end
 end

@@ -2,11 +2,11 @@
 
 module PublicApi
   class V2::ReactionsController < PublicApiController
-    REACTABLE_TYPES = %w[idea initiative comment idea-comment initiative-comment]
+    REACTABLE_TYPES = %w[idea comment]
 
     def index
       reactions = PublicApi::ReactionsFinder.new(Reaction.all, **finder_params).execute
-      list_items(reactions, V2::ReactionSerializer, includes: [reactable: :post])
+      list_items(reactions, V2::ReactionSerializer, includes: [reactable: :idea])
     end
 
     private

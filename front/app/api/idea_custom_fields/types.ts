@@ -12,9 +12,12 @@ export type IIdeaCustomFieldInputType =
   | 'multiline_text'
   | 'select'
   | 'multiselect'
+  | 'ranking'
+  | 'matrix_linear_scale'
   | 'checkbox'
   | 'date'
   | 'linear_scale'
+  | 'rating'
   | 'file_upload'
   | 'shapefile_upload'
   | 'point'
@@ -25,7 +28,6 @@ export type TCustomFieldCode =
   | 'gender'
   | 'birthyear'
   | 'domicile'
-  | 'education'
   | 'title_multiloc'
   | 'body_multiloc'
   | 'topic_ids'
@@ -59,6 +61,9 @@ export interface IIdeaCustomFieldData {
   relationships?: {
     custom_field_options: {
       data: IRelationship;
+    };
+    matrix_statements: {
+      data: IRelationship[];
     };
     current_ref_distribution: {
       data: IRelationship;

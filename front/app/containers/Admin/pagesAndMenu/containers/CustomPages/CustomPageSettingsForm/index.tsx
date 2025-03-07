@@ -34,7 +34,7 @@ import MultipleSelect from 'components/HookForm/MultipleSelect';
 import Select from 'components/HookForm/Select';
 import SlugInput from 'components/HookForm/SlugInput';
 import Tabs from 'components/HookForm/Tabs';
-import Button from 'components/UI/Button';
+import Button from 'components/UI/ButtonWithLink';
 
 import { useIntl } from 'utils/cl-intl';
 import { handleHookFormSubmissionError } from 'utils/errorUtils';

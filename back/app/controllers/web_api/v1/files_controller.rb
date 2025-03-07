@@ -13,13 +13,6 @@ class WebApi::V1::FilesController < ApplicationController
       file_relationship: :idea_files,
       container_id: :idea_id
     },
-    'Initiative' => {
-      container_class: Initiative,
-      file_class: InitiativeFile,
-      policy_scope_class: InitiativeFilePolicy::Scope,
-      file_relationship: :initiative_files,
-      container_id: :initiative_id
-    },
     'Project' => {
       container_class: Project,
       file_class: ProjectFile,

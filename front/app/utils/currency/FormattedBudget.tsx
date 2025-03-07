@@ -1,15 +1,13 @@
 import React from 'react';
 
 import { Icon } from '@citizenlab/cl2-component-library';
-import { WrappedComponentProps, FormattedNumber } from 'react-intl';
 import styled from 'styled-components';
 
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 
-import { injectIntl } from 'utils/cl-intl';
-import { isNilOrError } from 'utils/helperUtils';
+import { useIntl } from 'utils/cl-intl';
 
-import messages from './messages';
+import useFormatCurrency from './useFormatCurrency';
 
 const StyledIcon = styled(Icon)`
   margin-top: 3px;
@@ -22,49 +20,27 @@ interface Props {
   value: number;
 }
 
-const FormattedBudget = ({
-  value,
-  intl: { formatMessage, formatNumber },
-}: Props & WrappedComponentProps) => {
+const FormattedBudget = ({ value }: Props) => {
   const { data: appConfiguration } = useAppConfiguration();
+  const { formatNumber } = useIntl();
+  const formatCurrency = useFormatCurrency();
 
-  if (!isNilOrError(appConfiguration)) {
-    const currency = appConfiguration.data.attributes.settings.core.currency;
+  if (!appConfiguration) return null;
 
-    // custom implementations for custom currencies
-    // see appConfiguration.ts for all currencies
-    if (currency === 'TOK') {
-      return (
-        <>
-          <StyledIcon name="token" />
-          {formatNumber(value)}
-        </>
-      );
-    } else if (currency === 'CRE') {
-      return (
-        <>
-          {formatMessage(
-            value === 1 ? messages.oneCredit : messages.multipleCredits,
-            {
-              numberOfTokens: formatNumber(value),
-            }
-          )}
-        </>
-      );
-    } else {
-      return (
-        <FormattedNumber
-          value={value}
-          style="currency"
-          currency={currency}
-          minimumFractionDigits={0}
-          maximumFractionDigits={0}
-        />
-      );
-    }
+  const currency = appConfiguration.data.attributes.settings.core.currency;
+
+  // Custom implementations for 'TOK' currency for this component.
+  // Others are dealt with by the useFormatCurrency hook.
+  if (currency === 'TOK') {
+    return (
+      <>
+        <StyledIcon name="token" />
+        {formatNumber(value)}
+      </>
+    );
+  } else {
+    return <>{formatCurrency(value)}</>;
   }
-
-  return null;
 };
 
-export default injectIntl(FormattedBudget);
+export default FormattedBudget;

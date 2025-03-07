@@ -7,12 +7,14 @@ import { useTheme } from 'styled-components';
 import useIdeaFiles from 'api/idea_files/useIdeaFiles';
 import useDeleteIdeaImage from 'api/idea_images/useDeleteIdeaImage';
 import useIdeaImages from 'api/idea_images/useIdeaImages';
+import { IIdeaUpdate } from 'api/ideas/types';
 import useIdeaById from 'api/ideas/useIdeaById';
 import useUpdateIdea from 'api/ideas/useUpdateIdea';
 import useProjectById from 'api/projects/useProjectById';
 
 import useInputSchema from 'hooks/useInputSchema';
 
+import { FormValues } from 'containers/IdeasEditPage/IdeasEditForm';
 import { getLocationGeojson } from 'containers/IdeasEditPage/utils';
 import ideaFormMessages from 'containers/IdeasNewPage/messages';
 
@@ -115,7 +117,7 @@ const AdminIdeaEdit = ({
       idea.data.attributes.location_point_geojson;
   }
 
-  const onSubmit = async (data) => {
+  const onSubmit = async (data: FormValues) => {
     const { idea_images_attributes, ...ideaWithoutImages } = data;
 
     const location_point_geojson = await getLocationGeojson(
@@ -134,14 +136,11 @@ const AdminIdeaEdit = ({
       });
     }
 
-    const payload = {
+    const payload: IIdeaUpdate = {
       ...ideaWithoutImages,
       idea_images_attributes,
       location_point_geojson,
-      // TODO: Fix this the next time the file is edited.
-      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-      project_id: project?.data.id,
-      publication_status: 'published',
+      project_id: project.data.id,
     };
 
     updateIdea(
@@ -203,7 +202,7 @@ const AdminIdeaEdit = ({
             schema={schema}
             uiSchema={uiSchema}
             onSubmit={onSubmit}
-            initialFormData={initialFormData}
+            initialFormData={initialFormData ?? {}}
             inputId={idea.data.id}
             getAjvErrorMessage={getAjvErrorMessage}
             getApiErrorMessage={getApiErrorMessage}

@@ -113,7 +113,7 @@ resource 'Idea Custom Fields' do
                 logic: {}
               ),
               type: 'custom_field',
-              relationships: { options: { data: [] } }
+              relationships: { options: { data: [] }, resource: { data: { id: custom_form.id, type: 'custom_form' } } }
             ),
             hash_including(
               attributes: hash_including(
@@ -129,7 +129,7 @@ resource 'Idea Custom Fields' do
                 logic: {}
               ),
               type: 'custom_field',
-              relationships: { options: { data: [] } }
+              relationships: { options: { data: [] }, resource: { data: { id: custom_form.id, type: 'custom_form' } } }
             ),
             hash_including(
               attributes: hash_including(
@@ -146,7 +146,7 @@ resource 'Idea Custom Fields' do
                 logic: {}
               ),
               type: 'custom_field',
-              relationships: { options: { data: [] } }
+              relationships: { options: { data: [] }, resource: { data: { id: custom_form.id, type: 'custom_form' } } }
             ),
             hash_including(attributes: hash_including(code: 'ideation_section2', key: nil, input_type: 'section', ordering: 3)),
             hash_including(attributes: hash_including(code: 'idea_images_attributes', key: 'idea_images_attributes', input_type: 'image_files', ordering: 4)),
@@ -176,7 +176,8 @@ resource 'Idea Custom Fields' do
               relationships: { options: { data: [
                 hash_including(id: an_instance_of(String), type: 'custom_field_option'),
                 hash_including(id: an_instance_of(String), type: 'custom_field_option')
-              ] } }
+              ] },
+                               resource: { data: { id: custom_form.id, type: 'custom_form' } } }
             )
           ])
         end

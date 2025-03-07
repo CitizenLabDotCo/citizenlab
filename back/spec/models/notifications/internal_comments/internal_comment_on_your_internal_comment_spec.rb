@@ -5,10 +5,10 @@ require 'rails_helper'
 RSpec.describe Notifications::InternalComments::InternalCommentOnYourInternalComment do
   describe 'make_notifications_on' do
     let(:idea) { create(:idea) }
-    let(:parent_internal_comment) { create(:internal_comment, post: idea) }
+    let(:parent_internal_comment) { create(:internal_comment, idea: idea) }
 
     context 'when the internal comment does not contain a mention of the parent author' do
-      let(:child_internal_comment) { create(:internal_comment, parent: parent_internal_comment, post: idea) }
+      let(:child_internal_comment) { create(:internal_comment, parent: parent_internal_comment, idea: idea) }
       let(:activity) { create(:activity, item: child_internal_comment, action: 'created') }
 
       it 'makes a notification on created internal comment activity' do
@@ -17,9 +17,8 @@ RSpec.describe Notifications::InternalComments::InternalCommentOnYourInternalCom
           recipient_id: parent_internal_comment.author_id,
           initiating_user_id: child_internal_comment.author_id,
           internal_comment_id: child_internal_comment.id,
-          post_id: parent_internal_comment.post_id,
-          post_type: child_internal_comment.post_type,
-          project_id: parent_internal_comment.post.project_id
+          idea_id: parent_internal_comment.idea_id,
+          project_id: parent_internal_comment.idea.project_id
         )
       end
     end
@@ -41,7 +40,7 @@ RSpec.describe Notifications::InternalComments::InternalCommentOnYourInternalCom
           :internal_comment,
           author: parent_internal_comment.author,
           parent: parent_internal_comment,
-          post: idea
+          idea: idea
         )
       end
 
@@ -56,7 +55,7 @@ RSpec.describe Notifications::InternalComments::InternalCommentOnYourInternalCom
           :with_mentions,
           mentioned_users: [parent_author],
           parent: parent_internal_comment,
-          post: idea
+          idea: idea
         )
       end
 

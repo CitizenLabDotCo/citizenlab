@@ -1,4 +1,6 @@
-import moment from 'moment';
+// moment-timezone extends the regular moment library,
+// so there's no need to import both moment and moment-timezone
+import moment from 'moment-timezone';
 
 import {
   pastPresentOrFuture,
@@ -6,10 +8,7 @@ import {
   getIsoDate,
   getIsoDateForToday,
   timeAgo,
-  roundToNearestMultipleOfFive,
-  calculateRoundedEndDate,
 } from './dateUtils';
-import 'moment-timezone';
 
 // test date is 1AM June 15 2020 UTC time (Z)
 const testDateStr = '2020-06-15T01:00:00Z';
@@ -76,11 +75,11 @@ describe('timeAgo is reported correctly', () => {
     expect(timeAgoResponse).toEqual('2 weeks ago');
   });
 
-  it.skip('should accurately return months passed since a date', () => {
+  it('should accurately return months passed since a date', () => {
     let date = new Date();
     date.setMonth(date.getMonth() - 1);
     let timeAgoResponse = timeAgo(date.valueOf(), 'en') || '';
-    // expect(timeAgoResponse).toEqual('1 month ago'); Comment out for today to get tests passing.
+    expect(timeAgoResponse).toEqual('1 month ago');
 
     date = new Date();
     date.setMonth(date.getMonth() - 2);
@@ -294,28 +293,5 @@ describe('in Asia/Tokyo time zone', () => {
         );
       });
     });
-  });
-});
-
-describe('roundToNearestMultipleOfFive', () => {
-  test('rounds minutes to the nearest multiple of 5', () => {
-    const inputDate = new Date(2024, 0, 1, 12, 17); // January 1, 2024, 12:17 PM
-    const result = roundToNearestMultipleOfFive(inputDate);
-    const expected = new Date(2024, 0, 1, 12, 20); // Rounded up to the nearest multiple of 5, 12:20 PM
-    expect(result).toEqual(expected);
-  });
-});
-
-describe('calculateRoundedEndDate', () => {
-  test('calculates the rounded end date with default 30 minutes', () => {
-    const startDate = new Date(2024, 0, 1, 12, 0); // January 1, 2024, 12:00 PM
-    const expectedEndDate = new Date(2024, 0, 1, 12, 30); // Start date + 30 minutes
-    expect(calculateRoundedEndDate(startDate)).toEqual(expectedEndDate);
-  });
-
-  test('calculates the rounded end date taking into account a custom duration', () => {
-    const startDate = new Date(2024, 0, 1, 12, 0); // January 1, 2024, 12:00 PM
-    const expectedEndDate = new Date(2024, 0, 1, 12, 45); // Start date + 45 minutes
-    expect(calculateRoundedEndDate(startDate, 45)).toEqual(expectedEndDate);
   });
 });

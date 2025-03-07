@@ -130,8 +130,14 @@ class Project < ApplicationRecord
 
   scope :user_groups_visible, lambda { |user|
     user_groups = Group.joins(:projects).where(projects: self).with_user(user)
-    project_ids = GroupsProject.where(projects: self).where(groups: user_groups).select(:project_id).distinct
+    project_ids = GroupsProject.where(project: self).where(group: user_groups).select(:project_id)
     where(id: project_ids)
+  }
+
+  scope :not_in_draft_folder, lambda {
+    joins(:admin_publication)
+      .joins('LEFT OUTER JOIN admin_publications AS parent_pubs ON admin_publications.parent_id = parent_pubs.id')
+      .where("admin_publications.parent_id IS NULL OR parent_pubs.publication_status != 'draft'")
   }
 
   alias project_id id

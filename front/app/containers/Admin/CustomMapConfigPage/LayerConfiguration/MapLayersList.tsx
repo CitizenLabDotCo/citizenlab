@@ -19,9 +19,10 @@ import useReorderMapLayer from 'api/map_layers/useReorderMapLayer';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
-import { SortableList, SortableRow } from 'components/admin/ResourceList';
+import SortableList from 'components/admin/ResourceList/SortableList';
+import SortableRow from 'components/admin/ResourceList/SortableRow';
 import { SubSectionTitle } from 'components/admin/Section';
-import Button from 'components/UI/Button';
+import Button from 'components/UI/ButtonWithLink';
 
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 import injectLocalize, { InjectedLocalized } from 'utils/localize';

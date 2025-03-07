@@ -9,7 +9,7 @@ module EmailCampaigns
 
       command = campaign.generate_commands(
         recipient: recipient_user,
-        activity: Activity.new(item: Notification.new(post: Idea.first))
+        activity: Activity.new(item: Notification.new(idea: Idea.first))
       ).first.merge({ recipient: recipient_user })
 
       campaign.mailer_class.with(campaign: campaign, command: command).campaign_mail

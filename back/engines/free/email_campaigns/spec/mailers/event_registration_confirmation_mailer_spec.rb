@@ -127,7 +127,7 @@ RSpec.describe EmailCampaigns::EventRegistrationConfirmationMailer do
 
       context 'when the event has no location' do
         it 'does not contain location details' do
-          expect(page).not_to have_css('div', text: /\s*Location\s*/)
+          expect(page).to have_no_css('div', text: /\s*Location\s*/)
         end
       end
 
@@ -140,7 +140,7 @@ RSpec.describe EmailCampaigns::EventRegistrationConfirmationMailer do
           # Sanity check
           expect(event_attributes['description_multiloc']).to be_blank
 
-          expect(page).not_to have_css('div', text: /\s*Description\s*/)
+          expect(page).to have_no_css('div', text: /\s*Description\s*/)
         end
       end
     end

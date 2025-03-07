@@ -10,13 +10,11 @@ exports.appLocalesMomentPairs =
   exports.GRAPHQL_HOST =
   exports.API_PORT =
   exports.API_HOST =
-  exports.GOOGLE_MAPS_API_KEY =
   exports.API_PATH =
   exports.AUTH_PATH =
     void 0;
 exports.AUTH_PATH = '/auth';
 exports.API_PATH = '/web_api/v1';
-exports.GOOGLE_MAPS_API_KEY = process.env.GOOGLE_MAPS_API_KEY || '';
 exports.API_HOST =
   process.env.API_HOST ||
   (typeof window === 'undefined' ? 'localhost' : window.location.hostname);
@@ -143,7 +141,7 @@ exports.appGraphqlLocalePairs = {
   itIt: 'it-IT',
   klGl: 'kl-GL',
   lbLu: 'lb-LU',
-  ltLT: 'lt',
+  ltLT: 'lt-LT',
   lvLv: 'lv-LV',
   mi: 'mi',
   nb: 'nb',

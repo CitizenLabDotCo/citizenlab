@@ -12,6 +12,7 @@ interface Props {
   required: boolean;
   totalSubmissions: number;
   totalResponses: number;
+  logic?: boolean;
 }
 
 const InputType = ({

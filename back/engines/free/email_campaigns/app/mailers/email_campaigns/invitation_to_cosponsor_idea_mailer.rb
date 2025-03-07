@@ -15,11 +15,11 @@ module EmailCampaigns
     private
 
     def header_message
-      format_message('event_description', values: { authorName: event.post_author_name })
+      format_message('event_description', values: { authorName: event.idea_author_name })
     end
 
     def preheader
-      format_message('preheader', values: { authorName: event.post_author_name })
+      format_message('preheader', values: { authorName: event.idea_author_name })
     end
   end
 end

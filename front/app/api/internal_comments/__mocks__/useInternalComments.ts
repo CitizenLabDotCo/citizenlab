@@ -22,7 +22,7 @@ export const mockCommentData1: IInternalCommentData = {
   type: 'internal_comment',
   attributes: mockCommentDataAttributes1,
   relationships: {
-    post: {
+    idea: {
       data: {
         id: 'postId',
         type: 'post',
@@ -56,7 +56,7 @@ export const commentsData: IInternalCommentData[] = [
       updated_at: 'updated_at',
     },
     relationships: {
-      post: {
+      idea: {
         data: {
           id: 'postId2',
           type: 'post',

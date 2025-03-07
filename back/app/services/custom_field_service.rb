@@ -75,8 +75,8 @@ class CustomFieldService
     end
   end
 
-  def generate_key(title, other)
-    return 'other' if other == true
+  def generate_key(title, other_option: false)
+    return 'other' if other_option == true
 
     keyify(title)
   end
@@ -220,7 +220,7 @@ class CustomFieldService
       description: handle_description(field, locale),
       type: 'string'
     }.tap do |items|
-      options = field.ordered_options
+      options = field.ordered_transformed_options
 
       unless options.empty?
         items[:enum] = options.map(&:key)

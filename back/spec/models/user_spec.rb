@@ -14,8 +14,6 @@ RSpec.describe User do
 
     it { is_expected.to have_many(:ideas).dependent(:nullify) }
     it { is_expected.to have_many(:idea_imports).dependent(:nullify) }
-    it { is_expected.to have_many(:initiatives).dependent(:nullify) }
-    it { is_expected.to have_many(:assigned_initiatives).class_name('Initiative').dependent(:nullify) }
     it { is_expected.to have_many(:comments).dependent(:nullify) }
     it { is_expected.to have_many(:internal_comments).dependent(:nullify) }
     it { is_expected.to have_many(:official_feedbacks).dependent(:nullify) }
@@ -373,7 +371,6 @@ RSpec.describe User do
       create(:custom_field_birthyear)
       create(:custom_field_gender, :with_options)
       create(:custom_field_domicile)
-      create(:custom_field_education, :with_options)
     end
 
     it '(gender) is valid when male, female or unspecified' do
@@ -419,23 +416,6 @@ RSpec.describe User do
       expect { user.valid? }.to(change { user.errors[:domicile] })
       user = build(:user, domicile: 5)
       expect { user.valid? }.to(change { user.errors[:domicile] })
-    end
-
-    it '(education) is valid when an ISCED2011 level' do
-      CustomField.find_by(code: 'education').update(enabled: true)
-      expect(build(:user, education: '2')).to be_valid
-      expect(build(:user, education: '4')).to be_valid
-      expect(build(:user, education: '8')).to be_valid
-    end
-
-    it '(education) is invalid when not an isced 2011 level' do
-      CustomField.find_by(code: 'education').update(enabled: true)
-      user = build(:user, education: 'somethingelse')
-      expect { user.valid? }.to(change { user.errors[:education] })
-      user = build(:user, education: 9)
-      expect { user.valid? }.to(change { user.errors[:education] })
-      user = build(:user, education: 2.4)
-      expect { user.valid? }.to(change { user.errors[:education] })
     end
   end
 

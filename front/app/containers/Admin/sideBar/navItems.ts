@@ -36,13 +36,6 @@ const navItems: NavItem[] = [
     message: 'inputManager',
   },
   {
-    name: 'initiatives',
-    link: '/',
-    iconName: 'proposals',
-    message: 'initiatives',
-    onlyCheckAllowed: true,
-  },
-  {
     name: 'userinserts',
     link: '/admin/users',
     iconName: 'users',
@@ -62,10 +55,18 @@ const navItems: NavItem[] = [
     featureNames: ['report_builder'],
   },
   {
+    name: 'inspirationHub',
+    link: '/admin/inspiration-hub',
+    iconName: 'globe',
+    message: 'inspirationHub',
+    featureNames: ['project_library'],
+  },
+  {
     name: 'tools',
     link: `/admin/tools`,
     iconName: 'grid',
     message: 'tools',
+    showAtBottom: true,
   },
   {
     name: 'menu',

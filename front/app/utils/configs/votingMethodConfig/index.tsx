@@ -3,7 +3,6 @@ import React from 'react';
 import { MessageDescriptor } from 'react-intl';
 import { FormatMessage } from 'typings';
 
-import { IAppConfiguration } from 'api/app_configuration/types';
 import { IPhaseData, VotingMethod } from 'api/phases/types';
 import { IProjectData } from 'api/projects/types';
 
@@ -17,6 +16,7 @@ import AssignSingleVoteBox from 'components/VoteInputs/single/AssignSingleVoteBo
 import AssignSingleVoteButton from 'components/VoteInputs/single/AssignSingleVoteButton';
 
 import { FormattedMessage } from 'utils/cl-intl';
+import { UseFormatCurrencyReturn } from 'utils/currency/useFormatCurrency';
 import { getLocalisedDateString } from 'utils/dateUtils';
 
 import messages from './messages';
@@ -44,9 +44,9 @@ export type GetStatusDescriptionProps = {
   project: IProjectData;
   submissionState: VoteSubmissionState;
   phase?: IPhaseData;
-  appConfig?: IAppConfiguration;
   localize: Localize;
   formatMessage: FormatMessage;
+  formatCurrency: UseFormatCurrencyReturn;
 };
 
 type IdeaCardVoteInputProps = {
@@ -66,7 +66,6 @@ export type VotingMethodConfig = {
     project,
     phase,
     submissionState,
-    appConfig,
   }: GetStatusDescriptionProps) => JSX.Element | null;
   getIdeaCardVoteInput: ({
     ideaId,
@@ -106,29 +105,29 @@ const budgetingConfig: VotingMethodConfig = {
   getStatusDescription: ({
     phase,
     submissionState,
-    appConfig,
+    formatCurrency,
   }: GetStatusDescriptionProps) => {
-    const currency =
-      appConfig?.data.attributes.settings.core.currency.toString();
-
     if (!phase) return null;
 
     if (submissionState === 'hasNotSubmitted') {
       const minBudget = phase.attributes.voting_min_total;
+      const maxBudget = phase.attributes.voting_max_total;
+      const optionCount = phase.attributes.ideas_count;
 
       return (
         <>
-          <FormattedMessage
-            values={{
-              b: (chunks) => (
-                <strong style={{ fontWeight: 'bold' }}>{chunks}</strong>
-              ),
-              currency,
-              optionCount: phase.attributes.ideas_count,
-              maxBudget: phase.attributes.voting_max_total?.toLocaleString(),
-            }}
-            {...messages.budgetingSubmissionInstructionsTotalBudget}
-          />
+          {typeof maxBudget === 'number' && (
+            <FormattedMessage
+              values={{
+                b: (chunks) => (
+                  <strong style={{ fontWeight: 'bold' }}>{chunks}</strong>
+                ),
+                optionCount,
+                maxBudget: formatCurrency(maxBudget),
+              }}
+              {...messages.budgetingSubmissionInstructionsTotalBudget2}
+            />
+          )}
           <ul>
             <li>
               <FormattedMessage
@@ -138,10 +137,9 @@ const budgetingConfig: VotingMethodConfig = {
             {typeof minBudget === 'number' && minBudget > 0 ? (
               <li>
                 <FormattedMessage
-                  {...messages.budgetingSubmissionInstructionsMinBudget}
+                  {...messages.budgetingSubmissionInstructionsMinBudget1}
                   values={{
-                    amount: minBudget,
-                    currency,
+                    amount: formatCurrency(minBudget),
                   }}
                 />
               </li>
@@ -196,9 +194,12 @@ const budgetingConfig: VotingMethodConfig = {
           {...messages.budgetingSubmittedInstructionsContinuous}
         />
       );
+    } else if (
       // TODO: Fix this the next time the file is edited.
       // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-    } else if (submissionState === 'submissionEnded') {
+      submissionState === 'submissionEnded' &&
+      typeof phase.attributes.voting_max_total === 'number'
+    ) {
       return (
         <FormattedMessage
           values={{
@@ -210,13 +211,12 @@ const budgetingConfig: VotingMethodConfig = {
             endDate: getLocalisedDateString(phase?.attributes.end_at),
             // TODO: Fix this the next time the file is edited.
             // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-            maxBudget: phase?.attributes.voting_max_total?.toLocaleString(),
-            currency,
+            maxBudget: formatCurrency(phase.attributes.voting_max_total),
             // TODO: Fix this the next time the file is edited.
             // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
             optionCount: phase?.attributes.ideas_count,
           }}
-          {...messages.budgetParticipationEnded}
+          {...messages.budgetParticipationEnded1}
         />
       );
     }

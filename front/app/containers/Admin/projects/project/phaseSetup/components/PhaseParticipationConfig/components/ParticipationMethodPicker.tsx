@@ -18,7 +18,7 @@ import { IPhase, ParticipationMethod } from 'api/phases/types';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import { SectionField, SubSectionTitle } from 'components/admin/Section';
-import Button from 'components/UI/Button';
+import Button from 'components/UI/ButtonWithLink';
 import Error from 'components/UI/Error';
 import Modal from 'components/UI/Modal';
 
@@ -137,7 +137,7 @@ const ParticipationMethodPicker = ({
   return (
     <>
       <SectionField>
-        <SubSectionTitle>
+        <SubSectionTitle className="intercom-admin-participation-method-picker-heading">
           <FormattedMessage {...messages.participationMethodTitleText} />
           <IconTooltip
             content={

@@ -126,7 +126,7 @@ module ReportBuilder
               'code' => 'report'
             }
           }.deep_merge(params.require(:report).permit(:phase_id))
-            .deep_merge(shared_params)
+            .deep_merge(shared_params.to_h)
         end
 
         def update_params

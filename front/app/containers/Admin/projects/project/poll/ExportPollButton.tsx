@@ -6,7 +6,7 @@ import { WrappedComponentProps } from 'react-intl';
 
 import exportPollResponses from 'api/poll_responses/exportPollResponses';
 
-import Button from 'components/UI/Button';
+import Button from 'components/UI/ButtonWithLink';
 
 import { trackEventByName } from 'utils/analytics';
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';

@@ -18,7 +18,7 @@ import useProjectById from 'api/projects/useProjectById';
 
 import useLocalize from 'hooks/useLocalize';
 
-import Button from 'components/UI/Button';
+import Button from 'components/UI/ButtonWithLink';
 import GoBackButton from 'components/UI/GoBackButton';
 import Modal from 'components/UI/Modal';
 import SearchInput from 'components/UI/SearchInput';

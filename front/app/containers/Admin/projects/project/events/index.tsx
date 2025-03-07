@@ -21,7 +21,7 @@ import useLocalize from 'hooks/useLocalize';
 
 import { List, Row, HeadRow } from 'components/admin/ResourceList';
 import { SectionTitle, SectionDescription } from 'components/admin/Section';
-import Button from 'components/UI/Button';
+import Button from 'components/UI/ButtonWithLink';
 import Warning from 'components/UI/Warning';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';

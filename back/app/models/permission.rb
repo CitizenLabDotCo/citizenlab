@@ -24,7 +24,7 @@ class Permission < ApplicationRecord
   PERMITTED_BIES = %w[everyone everyone_confirmed_email users admins_moderators verified].freeze
   ACTIONS = {
     # NOTE: Order of actions in each array is used when using :order_by_action
-    nil => %w[visiting following posting_initiative commenting_initiative reacting_initiative attending_event],
+    nil => %w[visiting following attending_event],
     'information' => %w[attending_event],
     'ideation' => %w[posting_idea commenting_idea reacting_idea attending_event],
     'proposals' => %w[posting_idea commenting_idea reacting_idea attending_event],
@@ -52,6 +52,8 @@ class Permission < ApplicationRecord
   validates :permitted_by, presence: true, inclusion: { in: PERMITTED_BIES }
   validates :action, uniqueness: { scope: %i[permission_scope_id permission_scope_type] }
   validates :permission_scope_type, inclusion: { in: SCOPE_TYPES }
+  validate :validate_verified_permitted_by
+  validate :validate_verification_expiry
 
   before_validation :set_permitted_by_and_global_custom_fields, on: :create
 
@@ -81,6 +83,10 @@ class Permission < ApplicationRecord
   end
 
   def verification_enabled?
+    # Verification can be enabled by permitted_by OR by a verification group
+    return true if permitted_by == 'verified'
+    return true if groups.any? && Verification::VerificationService.new.find_verification_group(groups)
+
     false
   end
 
@@ -100,6 +106,25 @@ class Permission < ApplicationRecord
     end
     self.global_custom_fields ||= true
   end
-end
 
-Permission.include(Verification::Patches::Permission)
+  def validate_verified_permitted_by
+    return unless permitted_by == 'verified' && Verification::VerificationService.new.first_method_enabled_for_verified_actions.nil?
+
+    errors.add(
+      :permitted_by,
+      :verified_permitted_by_not_allowed,
+      message: 'Verified permitted_by is not allowed because there are no methods enabled for actions.'
+    )
+  end
+
+  def validate_verification_expiry
+    return if verification_expiry.nil?
+    return if permitted_by == 'verified' || !verification_expiry_changed?
+
+    errors.add(
+      :permitted_by,
+      :verification_expiry_cannot_be_set,
+      message: 'Verification expiry can only be set for a verified permitted_by.'
+    )
+  end
+end

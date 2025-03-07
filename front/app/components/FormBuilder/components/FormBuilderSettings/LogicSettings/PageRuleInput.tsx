@@ -12,24 +12,24 @@ import { Controller, useFormContext } from 'react-hook-form';
 
 import { IFlatCustomField, LogicType } from 'api/custom_fields/types';
 
-import Button from 'components/UI/Button';
+import { getTitleFromPageId } from 'components/FormBuilder/components/FormFields/FormField/Logic/utils';
+import { getFieldNumbers } from 'components/FormBuilder/components/utils';
+import { findNextPageAfterCurrentPage } from 'components/FormBuilder/utils';
+import Button from 'components/UI/ButtonWithLink';
 import Error from 'components/UI/Error';
 
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import { isPageRuleValid } from 'utils/yup/validateLogic';
 
 import messages from '../../messages';
+
+import { PageListType } from './index';
 
 type RuleInputProps = {
   name: string;
   fieldId: string;
   validationError?: string;
-  pages:
-    | {
-        value: string | undefined;
-        label: string;
-      }[]
-    | undefined;
+  pages: PageListType;
 };
 
 export const PageRuleInput = ({
@@ -38,22 +38,19 @@ export const PageRuleInput = ({
   fieldId,
   validationError,
 }: RuleInputProps) => {
+  const { formatMessage } = useIntl();
   const { setValue, watch, trigger, control } = useFormContext();
-  const logic = watch(name) as LogicType;
+  const logic = watch(name) as LogicType | undefined;
   const fields: IFlatCustomField[] = watch('customFields');
   const [selectedPage, setSelectedPage] = useState<string | null | undefined>(
-    // TODO: Fix this the next time the file is edited.
-    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-    logic && logic?.next_page_id ? logic.next_page_id : undefined
+    logic?.next_page_id ? logic.next_page_id : undefined
   );
   const [showRuleInput, setShowRuleInput] = useState<boolean>(
     selectedPage ? true : false
   );
   const [isRuleInvalid, setIsRuleInvalid] = useState(
     selectedPage
-      ? // TODO: Fix this the next time the file is edited.
-        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-        !isPageRuleValid(fields, fieldId, logic?.next_page_id)
+      ? !isPageRuleValid(fields, fieldId, logic?.next_page_id)
       : false
   );
   const onSelectionChange = (page: IOption) => {
@@ -75,6 +72,15 @@ export const PageRuleInput = ({
       trigger();
     }
   };
+
+  // Get the default next page when no rule is set
+  const defaultNextPage = getTitleFromPageId(
+    findNextPageAfterCurrentPage(fields, fieldId),
+    formatMessage(messages.page),
+    getFieldNumbers(fields),
+    fields,
+    formatMessage(messages.lastPage)
+  );
 
   return (
     <>
@@ -98,23 +104,21 @@ export const PageRuleInput = ({
                         width="320px"
                         data-cy="e2e-rule-input-select"
                       >
-                        {pages && (
-                          <Select
-                            value={selectedPage}
-                            options={pages}
-                            label={
-                              <Text
-                                mb="0px"
-                                margin="0px"
-                                color="coolGrey600"
-                                fontSize="s"
-                              >
-                                <FormattedMessage {...messages.pageRuleLabel} />
-                              </Text>
-                            }
-                            onChange={onSelectionChange}
-                          />
-                        )}
+                        <Select
+                          value={selectedPage}
+                          options={pages}
+                          label={
+                            <Text
+                              mb="0px"
+                              margin="0px"
+                              color="coolGrey600"
+                              fontSize="s"
+                            >
+                              <FormattedMessage {...messages.pageRuleLabel} />
+                            </Text>
+                          }
+                          onChange={onSelectionChange}
+                        />
                       </Box>
                       <Box ml="auto" flexGrow={0} flexShrink={0}>
                         <Button
@@ -151,8 +155,9 @@ export const PageRuleInput = ({
                       flexShrink={0}
                       flexWrap="wrap"
                     >
-                      <Text color="coolGrey600" fontSize="s">
-                        <FormattedMessage {...messages.pageRuleLabel} />
+                      <Text color="coolGrey600" fontSize="s" fontStyle="italic">
+                        <FormattedMessage {...messages.pageRuleLabel} />{' '}
+                        {defaultNextPage}
                       </Text>
                     </Box>
                     <Box
@@ -174,7 +179,7 @@ export const PageRuleInput = ({
                         <Icon
                           width="24px"
                           fill={`${colors.coolGrey600}`}
-                          name="plus-circle"
+                          name="edit"
                         />
                       </Button>
                     </Box>

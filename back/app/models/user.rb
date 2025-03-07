@@ -52,13 +52,14 @@ class User < ApplicationRecord
   include UserRoles
   include UserGroups
   include UserConfirmation
+  include UserVerification
   include UserPasswordValidations
   include PgSearch::Model
 
   GENDERS = %w[male female unspecified].freeze
   INVITE_STATUSES = %w[pending accepted].freeze
   EMAIL_REGEX = /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\z/i
-  EMAIL_DOMAIN_BLACKLIST = Rails.root.join('config', 'domain_blacklist.txt').readlines.map(&:strip).freeze
+  EMAIL_DOMAIN_BLACKLIST = Rails.root.join('config/domain_blacklist.txt').readlines.map(&:strip).freeze
 
   slug from: proc { |user| UserSlugService.new.generate_slug(user, user.full_name) }, if: proc { |user| !user.invite_pending? }
 
@@ -135,8 +136,6 @@ class User < ApplicationRecord
 
   has_many :ideas, -> { order(:project_id) }, foreign_key: :author_id, dependent: :nullify
   has_many :idea_imports, class_name: 'BulkImportIdeas::IdeaImport', foreign_key: :import_user_id, dependent: :nullify
-  has_many :initiatives, foreign_key: :author_id, dependent: :nullify
-  has_many :assigned_initiatives, class_name: 'Initiative', foreign_key: :assignee_id, dependent: :nullify
   has_many :manual_votes_last_updated_ideas, class_name: 'Idea', foreign_key: :manual_votes_last_updated_by_id, dependent: :nullify
   has_many :manual_voters_last_updated_phases, class_name: 'Phase', foreign_key: :manual_voters_last_updated_by_id, dependent: :nullify
   has_many :comments, foreign_key: :author_id, dependent: :nullify
@@ -146,7 +145,6 @@ class User < ApplicationRecord
   has_many :event_attendances, -> { order(:event_id) }, class_name: 'Events::Attendance', foreign_key: :attendee_id, dependent: :destroy
   has_many :attended_events, through: :event_attendances, source: :event
   has_many :follows, -> { order(:followable_id) }, class_name: 'Follower', dependent: :destroy
-  has_many :cosponsors_initiatives, dependent: :destroy
   has_many :cosponsorships, dependent: :destroy
   has_many :cosponsored_ideas, through: :cosponsorships, source: :idea
 
@@ -161,12 +159,11 @@ class User < ApplicationRecord
   has_many :campaign_email_commands, class_name: 'EmailCampaigns::CampaignEmailCommand', foreign_key: :recipient_id, dependent: :destroy
   has_many :baskets, -> { order(:phase_id) }
   before_destroy :destroy_baskets
-  has_many :initiative_status_changes, dependent: :nullify
 
   has_many :requested_project_reviews, class_name: 'ProjectReview', foreign_key: :requester_id, dependent: :nullify
   has_many :assigned_project_reviews, class_name: 'ProjectReview', foreign_key: :reviewer_id, dependent: :nullify
 
-  store_accessor :custom_field_values, :gender, :birthyear, :domicile, :education
+  store_accessor :custom_field_values, :gender, :birthyear, :domicile
   store_accessor :onboarding, :topics_and_areas
 
   validates :email, presence: true, unless: :allows_empty_email?
@@ -179,9 +176,6 @@ class User < ApplicationRecord
   validates :gender, inclusion: { in: GENDERS }, allow_nil: true
   validates :birthyear, numericality: { only_integer: true, greater_than_or_equal_to: 1900, less_than: Time.zone.now.year }, allow_nil: true
   validates :domicile, inclusion: { in: proc { ['outside'] + Area.select(:id).map(&:id) } }, allow_nil: true
-  # Follows ISCED2011 scale
-  validates :education, numericality: { only_integer: true, greater_than_or_equal_to: 0, less_than_or_equal_to: 8 }, allow_nil: true
-
   validates :invite_status, inclusion: { in: INVITE_STATUSES }, allow_nil: true
 
   # NOTE: All validation except for required
@@ -388,4 +382,3 @@ end
 
 User.include(IdeaAssignment::Extensions::User)
 User.include(ReportBuilder::Patches::User)
-User.include(Verification::Patches::User)

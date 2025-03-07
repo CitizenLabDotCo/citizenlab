@@ -8,6 +8,7 @@ import {
   Button,
   Text,
   Spinner,
+  Divider,
 } from '@citizenlab/cl2-component-library';
 import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
@@ -20,7 +21,6 @@ import useAnalysisBackgroundTasks from 'api/analysis_background_tasks/useAnalysi
 
 import useLocale from 'hooks/useLocale';
 
-import Divider from 'components/admin/Divider';
 import ProgressBar from 'components/UI/ProgressBar';
 
 import { useIntl } from 'utils/cl-intl';

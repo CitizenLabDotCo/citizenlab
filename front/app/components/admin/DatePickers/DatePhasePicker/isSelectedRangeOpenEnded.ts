@@ -1,4 +1,4 @@
-import { DateRange } from './typings';
+import { DateRange } from '../_shared/typings';
 
 export const isSelectedRangeOpenEnded = (
   { from, to }: Partial<DateRange>,

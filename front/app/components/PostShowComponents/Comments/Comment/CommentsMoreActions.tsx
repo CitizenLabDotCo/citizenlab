@@ -8,7 +8,7 @@ import useMarkCommentForDeletion from 'api/comments/useMarkCommentForDeletion';
 
 import SpamReportForm from 'containers/SpamReport';
 
-import Button from 'components/UI/Button';
+import Button from 'components/UI/ButtonWithLink';
 import Modal from 'components/UI/Modal';
 import MoreActionsMenu, { IAction } from 'components/UI/MoreActionsMenu';
 

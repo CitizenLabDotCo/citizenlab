@@ -8,10 +8,10 @@ import useUserCustomFields from 'api/user_custom_fields/useUserCustomFields';
 
 import useLocale from 'hooks/useLocale';
 
-import { generateTempId } from 'components/FormBuilder/utils';
 import Modal from 'components/UI/Modal';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
+import { generateTempId } from 'utils/helperUtils';
 
 import { AddFieldScreen } from './AddFieldScreen';
 import messages from './messages';

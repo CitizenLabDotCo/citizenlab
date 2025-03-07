@@ -79,7 +79,8 @@ resource 'User Custom Fields' do
               { id: option.id, type: 'custom_field_option' }
             end
           },
-          projects: { data: [] }
+          projects: { data: [] },
+          resource: { data: nil }
         }
       }.deep_symbolize_keys
     end

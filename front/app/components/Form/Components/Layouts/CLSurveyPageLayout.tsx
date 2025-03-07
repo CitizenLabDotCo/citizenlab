@@ -1,10 +1,10 @@
 import React, {
   memo,
   useState,
+  useMemo,
   useEffect,
   useContext,
   useRef,
-  useMemo,
 } from 'react';
 
 import {
@@ -23,6 +23,8 @@ import {
 import { useParams, useSearchParams } from 'react-router-dom';
 import { useTheme } from 'styled-components';
 
+import { IIdea } from 'api/ideas/types';
+import useIdeaById from 'api/ideas/useIdeaById';
 import { IMapConfig } from 'api/map_config/types';
 import useMapConfigById from 'api/map_config/useMapConfigById';
 import useProjectMapConfig from 'api/map_config/useProjectMapConfig';
@@ -35,33 +37,32 @@ import useLocalize from 'hooks/useLocalize';
 
 import EsriMap from 'components/EsriMap';
 import { parseLayers } from 'components/EsriMap/utils';
-import {
-  getSanitizedFormData,
-  getPageSchema,
-  PageCategorization,
-  isPageCategorization,
-  PageType,
-  getFilteredDataForUserPath,
-  getFormCompletionPercentage,
-} from 'components/Form/Components/Layouts/utils';
 import { FormContext } from 'components/Form/contexts';
-import { customAjv } from 'components/Form/utils';
+import { PageCategorization, PageType } from 'components/Form/typings';
+import customAjv from 'components/Form/utils/customAjv';
+import extractElementsByFollowUpLogic from 'components/Form/utils/extractElementsByFollowUpLogic';
+import extractElementsByOtherOptionLogic from 'components/Form/utils/extractElementsByOtherOptionLogic';
+import getFormCompletionPercentage from 'components/Form/utils/getFormCompletionPercentage';
+import getPageVariant from 'components/Form/utils/getPageVariant';
+import getVisiblePages from 'components/Form/utils/getVisiblePages';
+import hasOtherTextFieldBelow from 'components/Form/utils/hasOtherTextFieldBelow';
+import isPageCategorization from 'components/Form/utils/isPageCategorization';
+import sanitizeFormData from 'components/Form/utils/sanitizeFormData';
 import QuillEditedContent from 'components/UI/QuillEditedContent';
 import Warning from 'components/UI/Warning';
 
 import { useIntl } from 'utils/cl-intl';
+import clHistory from 'utils/cl-router/history';
+import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 import eventEmitter from 'utils/eventEmitter';
 
-import {
-  extractElementsByOtherOptionLogic,
-  hasOtherTextFieldBelow,
-  isVisible,
-} from '../Controls/visibilityUtils';
+import getPageSchema from '../../utils/getPageSchema';
 import { useErrorToRead } from '../Fields/ErrorToReadContext';
 
 import { SURVEY_PAGE_CHANGE_EVENT } from './events';
 import messages from './messages';
 import PageControlButtons from './PageControlButtons';
+import SubmissionReference from './SubmissionReference';
 
 // Handling survey pages in here. The more things that we have added to it,
 // the more it has become a survey page layout. It also becomes extremely hard to understand
@@ -78,7 +79,6 @@ const CLSurveyPageLayout = memo(
     data,
   }: LayoutProps) => {
     const { onSubmit, setShowAllErrors, setFormData } = useContext(FormContext);
-    const [currentStep, setCurrentStep] = useState<number>(0);
     const [isLoading, setIsLoading] = useState(false);
     const isMobileOrSmaller = useBreakpoint('phone');
     const [searchParams] = useSearchParams();
@@ -88,15 +88,20 @@ const CLSurveyPageLayout = memo(
     const theme = useTheme();
 
     // We can cast types because the tester made sure we only get correct values
-    const pageTypeElements = (uischema as PageCategorization)
-      .elements as PageType[];
-    const [uiPages, setUiPages] = useState<PageType[]>(pageTypeElements);
-    const [userPagePath] = useState<PageType[]>([]);
+    const pageTypeElements = (uischema as PageCategorization).elements;
+
+    const [userPagePath, setUserPagePath] = useState<PageType[]>([
+      pageTypeElements[0],
+    ]);
     const [scrollToError, setScrollToError] = useState(false);
-    const [percentageAnswered, setPercentageAnswered] = useState<number>(1);
-    const showSubmit = currentStep === uiPages.length - 1;
-    const dataCyValue = showSubmit ? 'e2e-submit-form' : 'e2e-next-page';
-    const hasPreviousPage = currentStep !== 0;
+    const ideaId = searchParams.get('idea_id');
+    const { data: idea } = useIdeaById(ideaId ?? undefined);
+
+    // If the idea (survey submission) has no author relationship,
+    // it was either created through 'anyone' permissions or with
+    // the anonymous toggle on. In these cases, we show the idea id
+    // on the success page.
+    const showIdeaId = idea ? !idea.data.relationships.author?.data : false;
 
     const draggableDivRef = useRef<HTMLDivElement>(null);
     const dragDividerRef = useRef<HTMLDivElement>(null);
@@ -120,11 +125,28 @@ const CLSurveyPageLayout = memo(
 
     // Map-related variables
     const { data: projectMapConfig } = useProjectMapConfig(project?.data.id);
-    const isMapPage = uiPages[currentStep].options.page_layout === 'map';
+
+    const visiblePages = useMemo(() => {
+      return getVisiblePages(
+        pageTypeElements,
+        formState.core?.data,
+        userPagePath
+      );
+    }, [formState.core?.data, pageTypeElements, userPagePath]);
+
+    // This is the number of the step the user is currently on,
+    // out of the number of visible steps
+    const currentStepNumber = userPagePath.length - 1;
+    const currentPage = userPagePath[currentStepNumber];
+
+    const pageVariant = getPageVariant(currentStepNumber, visiblePages.length);
+    const hasPreviousPage = currentStepNumber !== 0;
+
+    const isMapPage = currentPage.options.page_layout === 'map';
     const mapConfigId =
       // TODO: Fix this the next time the file is edited.
       // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-      uiPages[currentStep].options.map_config_id || projectMapConfig?.data?.id;
+      currentPage.options.map_config_id || projectMapConfig?.data?.id;
     const { data: fetchedMapConfig, isFetching: isFetchingMapConfig } =
       useMapConfigById(mapConfigId);
     const [mapConfig, setMapConfig] = useState<IMapConfig | null | undefined>(
@@ -141,24 +163,7 @@ const CLSurveyPageLayout = memo(
     // Emit event when page changes and map is fetched
     useEffect(() => {
       eventEmitter.emit(SURVEY_PAGE_CHANGE_EVENT);
-    }, [currentStep, isFetchingMapConfig]);
-
-    useEffect(() => {
-      // We can cast types because the tester made sure we only get correct values
-      const allPageTypeElements = (uischema as PageCategorization)
-        .elements as PageType[];
-      const visiblePages = allPageTypeElements.filter((element) => {
-        const isPageVisible = isVisible(
-          element,
-          formState.core?.data,
-          '',
-          customAjv,
-          allPageTypeElements
-        );
-        return isPageVisible;
-      });
-      setUiPages(visiblePages);
-    }, [formState.core?.data, uischema]);
+    }, [currentStepNumber, isFetchingMapConfig]);
 
     useEffect(() => {
       if (scrollToError) {
@@ -179,28 +184,18 @@ const CLSurveyPageLayout = memo(
       }
     }, [scrollToError, announceError]);
 
-    useEffect(() => {
-      if (currentStep === uiPages.length - 1) {
-        setPercentageAnswered(100);
-        return;
+    const percentageAnswered = useMemo(() => {
+      if (currentStepNumber === visiblePages.length - 1) {
+        return 100;
       }
 
-      const percentage = getFormCompletionPercentage(
+      return getFormCompletionPercentage(
         schema,
-        uiPages,
+        visiblePages,
         formState.core?.data,
-        currentStep
+        currentStepNumber
       );
-
-      setPercentageAnswered(percentage);
-    }, [
-      formState.core?.data,
-      uischema,
-      schema,
-      currentStep,
-      uiPages,
-      setPercentageAnswered,
-    ]);
+    }, [formState.core?.data, schema, currentStepNumber, visiblePages]);
 
     const scrollToTop = () => {
       // Scroll inner container to top
@@ -215,43 +210,49 @@ const CLSurveyPageLayout = memo(
     };
 
     const handleNextAndSubmit = async () => {
-      if (showSubmit && onSubmit) {
-        setIsLoading(true);
-        data.publication_status = 'published';
-        await onSubmit(getFilteredDataForUserPath(userPagePath, data), true);
+      if (!onSubmit) return;
+
+      const sanitizedData = sanitizeFormData(data);
+
+      const isValid = customAjv.validate(
+        getPageSchema(schema, currentPage, sanitizedData),
+        sanitizedData
+      );
+
+      if (!isValid) {
+        setShowAllErrors?.(true);
+        setScrollToError(true);
         return;
       }
 
-      const currentPageCategorization = uiPages[currentStep];
-      userPagePath.push(uiPages[currentStep]);
-      if (
-        customAjv.validate(
-          getPageSchema(
-            schema,
-            currentPageCategorization,
-            formState.core?.data,
-            customAjv
-          ),
-          getSanitizedFormData(data)
-        )
-      ) {
-        scrollToTop();
-        data.publication_status = 'draft';
-        data.latest_complete_page = currentStep;
-        onSubmit?.({ data }, false);
-        setCurrentStep(currentStep + 1);
-
-        setIsLoading(false);
-      } else {
-        setShowAllErrors?.(true);
-        setScrollToError(true);
+      if (pageVariant === 'after-submission') {
+        clHistory.push({ pathname: `/projects/${slug}` });
+        return;
       }
+
+      if (pageVariant === 'submission') {
+        setIsLoading(true);
+        data.publication_status = 'published';
+
+        const idea: IIdea = await onSubmit(data, true, userPagePath);
+        updateSearchParams({ idea_id: idea.data.id });
+      } else {
+        data.publication_status = 'draft';
+        await onSubmit({ data }, false, userPagePath);
+      }
+
+      scrollToTop();
+
+      const nextPage = visiblePages[currentStepNumber + 1];
+
+      setUserPagePath((userPagePath) => [...userPagePath, nextPage]);
+
+      setIsLoading(false);
     };
 
     const handlePrevious = () => {
-      const currentPageCategorization = uiPages[currentStep];
       // Get scopes of elements with rules on the current page
-      const ruleElementsScopes = currentPageCategorization.elements
+      const ruleElementsScopes = currentPage.elements
         .filter((element) => {
           return element.options?.hasRule;
         })
@@ -276,9 +277,7 @@ const CLSurveyPageLayout = memo(
        * to think about it. See https://www.notion.so/citizenlab/Bug-in-survey-flow-792a72efc35e44e58e1bb10ab631ecdf
        */
       setFormData?.(dataWithoutRuleValues);
-
-      setCurrentStep(currentStep - 1);
-      userPagePath.pop();
+      setUserPagePath((userPagePath) => userPagePath.slice(0, -1));
       scrollToTop();
     };
 
@@ -310,14 +309,34 @@ const CLSurveyPageLayout = memo(
       );
     }
 
+    // Extract elements depending on other option logic and follow-up logic
+    // E.g. If a user selects 'other' in a multiple choice question, we show a text field, if they don't we should not show it.
+    let pageElements = extractElementsByOtherOptionLogic(currentPage, data);
+    pageElements = extractElementsByFollowUpLogic(pageElements, data);
+
+    // This is the index of the current page in the pageTypeElements array,
+    // which also includes non-visible pages.
+    const currentPageIndex = pageTypeElements.findIndex(
+      (page) => page === currentPage
+    );
+
+    const showSubmissionReference =
+      ideaId && pageVariant === 'after-submission' && showIdeaId;
+
     return (
       <>
         <Box
+          // Using an explicit key to force React to re-render the whole page component
+          // tree when the page changes. This fixes an issue where the state of some
+          // Control components was shared between consecutive pages with a similar
+          // structure.
+          key={`survey-page-${currentPageIndex}`}
           id="container"
           display="flex"
           flexDirection={isMobileOrSmaller ? 'column' : 'row'}
           height="100%"
           w="100%"
+          data-cy={`e2e-page-number-${currentPageIndex + 1}`}
         >
           {isMapPage && (
             <Box
@@ -326,7 +345,7 @@ const CLSurveyPageLayout = memo(
               minWidth="60%"
               h="100%"
               ref={draggableDivRef}
-              key={`esri_map_${currentStep}`}
+              key={`esri_map_${currentStepNumber}`}
             >
               <EsriMap
                 layers={mapLayers}
@@ -375,76 +394,76 @@ const CLSurveyPageLayout = memo(
               height="100%"
               mt={isMapPage && isMobileOrSmaller ? '20px' : undefined}
             >
-              <Box h="100%" display="flex">
-                {uiPages.map((page, index) => {
-                  const pageElements = extractElementsByOtherOptionLogic(
-                    page,
-                    data
-                  );
-                  return (
-                    currentStep === index && (
-                      <Box key={index} p="24px" w="100%">
-                        <Box display="flex" flexDirection="column">
-                          {allowAnonymousPosting && (
-                            <Box w="100%" mb="12px">
-                              <Warning icon="shield-checkered">
-                                {formatMessage(messages.anonymousSurveyMessage)}
-                              </Warning>
-                            </Box>
-                          )}
-                          {page.options.title && (
-                            <Title
-                              as="h1"
-                              variant={isMobileOrSmaller ? 'h2' : 'h1'}
-                              m="0"
-                              mb="8px"
-                              color="tenantPrimary"
-                            >
-                              {page.options.title}
-                            </Title>
-                          )}
-                          {page.options.description && (
-                            <Box mb="48px">
-                              <QuillEditedContent
-                                fontWeight={400}
-                                textColor={theme.colors.tenantText}
-                              >
-                                <div
-                                  dangerouslySetInnerHTML={{
-                                    __html: page.options.description,
-                                  }}
-                                />
-                              </QuillEditedContent>
-                            </Box>
-                          )}
-                          {pageElements.map((elementUiSchema, index) => {
-                            const hasOtherFieldBelow = hasOtherTextFieldBelow(
-                              elementUiSchema,
-                              data
-                            );
-
-                            return (
-                              <Box
-                                mb={hasOtherFieldBelow ? undefined : '28px'}
-                                key={index}
-                              >
-                                <JsonFormsDispatch
-                                  renderers={renderers}
-                                  cells={cells}
-                                  uischema={elementUiSchema}
-                                  schema={schema}
-                                  path={path}
-                                  enabled={enabled}
-                                />
-                              </Box>
-                            );
-                          })}
-                        </Box>
+              <Box h="100%" display="flex" flexDirection="column">
+                <Box p="24px" w="100%">
+                  <Box display="flex" flexDirection="column">
+                    {allowAnonymousPosting && (
+                      <Box w="100%" mb="12px">
+                        <Warning icon="shield-checkered">
+                          {formatMessage(messages.anonymousSurveyMessage)}
+                        </Warning>
                       </Box>
-                    )
-                  );
-                })}
+                    )}
+                    {currentPage.options.title && (
+                      <Title
+                        as="h1"
+                        variant={isMobileOrSmaller ? 'h2' : 'h1'}
+                        m="0"
+                        mb="8px"
+                        color="tenantPrimary"
+                      >
+                        {currentPage.options.title}
+                      </Title>
+                    )}
+                    {currentPage.options.description && (
+                      <Box mb="48px">
+                        <QuillEditedContent
+                          fontWeight={400}
+                          textColor={theme.colors.tenantText}
+                        >
+                          <div
+                            dangerouslySetInnerHTML={{
+                              __html: currentPage.options.description,
+                            }}
+                          />
+                        </QuillEditedContent>
+                      </Box>
+                    )}
+                    {pageElements.map((elementUiSchema, index) => {
+                      const hasOtherFieldBelow = hasOtherTextFieldBelow(
+                        elementUiSchema,
+                        data
+                      );
+
+                      return (
+                        <Box
+                          mb={hasOtherFieldBelow ? undefined : '28px'}
+                          key={index}
+                        >
+                          <JsonFormsDispatch
+                            renderers={renderers}
+                            cells={cells}
+                            uischema={elementUiSchema}
+                            schema={schema}
+                            path={path}
+                            enabled={enabled}
+                          />
+                        </Box>
+                      );
+                    })}
+                  </Box>
+                </Box>
               </Box>
+              {showSubmissionReference && (
+                <Box
+                  display="flex"
+                  flexDirection="column"
+                  alignItems="center"
+                  flex="1"
+                >
+                  <SubmissionReference ideaId={ideaId} />
+                </Box>
+              )}
             </Box>
           </Box>
         </Box>
@@ -466,6 +485,7 @@ const CLSurveyPageLayout = memo(
           aria-valuemin={0}
           aria-valuemax={100}
           aria-valuenow={percentageAnswered}
+          aria-label={formatMessage(messages.progressBarLabel)}
         >
           <Box background={colors.background}>
             <Box
@@ -486,10 +506,8 @@ const CLSurveyPageLayout = memo(
             handleNextAndSubmit={handleNextAndSubmit}
             handlePrevious={handlePrevious}
             hasPreviousPage={hasPreviousPage}
-            currentStep={currentStep}
             isLoading={isLoading}
-            showSubmit={showSubmit}
-            dataCyValue={dataCyValue}
+            pageVariant={pageVariant}
           />
         </Box>
       </>

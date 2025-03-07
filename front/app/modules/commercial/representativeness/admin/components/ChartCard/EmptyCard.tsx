@@ -13,7 +13,7 @@ import { Multiloc } from 'typings';
 
 import useLocalize from 'hooks/useLocalize';
 
-import Button from 'components/UI/Button';
+import Button from 'components/UI/ButtonWithLink';
 
 import { FormattedMessage } from 'utils/cl-intl';
 

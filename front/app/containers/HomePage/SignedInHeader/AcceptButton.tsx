@@ -4,7 +4,7 @@ import { media } from '@citizenlab/cl2-component-library';
 import { RouteType } from 'routes';
 import styled, { useTheme } from 'styled-components';
 
-import Button from 'components/UI/Button';
+import Button from 'components/UI/ButtonWithLink';
 
 const StyledButton = styled(Button)`
   ${media.tablet`

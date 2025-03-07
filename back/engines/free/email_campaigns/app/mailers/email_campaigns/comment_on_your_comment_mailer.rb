@@ -16,7 +16,7 @@ module EmailCampaigns
       format_message('event_description', values: {
         authorNameFull: event.comment_author_name,
         authorName: event.initiating_user_first_name,
-        post: localize_for_recipient(event.post_title_multiloc)
+        post: localize_for_recipient(event.idea_title_multiloc)
       })
     end
 

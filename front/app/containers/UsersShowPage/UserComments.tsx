@@ -17,7 +17,7 @@ import useAuthUser from 'api/me/useAuthUser';
 import useUserCommentsCount from 'api/user_comments_count/useUserCommentsCount';
 import useUserBySlug from 'api/users/useUserBySlug';
 
-import Button from 'components/UI/Button';
+import Button from 'components/UI/ButtonWithLink';
 
 import { ScreenReaderOnly } from 'utils/a11y';
 import { FormattedMessage } from 'utils/cl-intl';
@@ -110,11 +110,11 @@ export const UserComments = () => {
   if (commentsList.length > 0) {
     const commentGroups = groupBy(
       commentsList,
-      (comment) => comment.relationships.post.data.id
+      (comment) => comment.relationships.idea.data.id
     );
 
     return (
-      <Container className="e2e-profile-comments">
+      <Container className="e2e-profile-comments" id="tab-comments">
         <ScreenReaderOnly>
           <FormattedMessage
             tagName="h2"

@@ -9,7 +9,7 @@ import useProjectAllowedInputTopics from 'api/project_allowed_input_topics/usePr
 import { getTopicIds } from 'api/project_allowed_input_topics/util/getProjectTopicsIds';
 import useTopics from 'api/topics/useTopics';
 
-import Button from 'components/UI/Button';
+import Button from 'components/UI/ButtonWithLink';
 import MultipleSelect from 'components/UI/MultipleSelect';
 
 import { trackEventByName } from 'utils/analytics';

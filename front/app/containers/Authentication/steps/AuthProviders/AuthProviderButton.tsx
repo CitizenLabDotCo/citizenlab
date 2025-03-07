@@ -7,7 +7,7 @@ import styled, { useTheme } from 'styled-components';
 
 import { SignUpInFlow } from 'containers/Authentication/typings';
 
-import Button from 'components/UI/Button';
+import Button from 'components/UI/ButtonWithLink';
 
 import { trackEventByName } from 'utils/analytics';
 import { FormattedMessage } from 'utils/cl-intl';

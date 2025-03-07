@@ -12,7 +12,7 @@ RSpec.describe Notifications::NativeSurveyNotSubmitted do
       notifications = described_class.make_notifications_on activity
       expect(notifications.first).to have_attributes(
         recipient_id: input.author_id,
-        post: input,
+        idea: input,
         project: input.project,
         phase: input.creation_phase
       )

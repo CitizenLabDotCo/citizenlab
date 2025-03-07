@@ -17,7 +17,7 @@ export default defineMessages({
   moreInfoModeratorLink: {
     id: 'app.containers.AdminPage.ProjectEdit.moreInfoModeratorLink',
     defaultMessage:
-      'http://support.citizenlab.co/en-your-citizenlab-platform-step-by-step/set-up/pointing-out-the-right-project-moderators',
+      'http://support.govocal.com/en-your-citizenlab-platform-step-by-step/set-up/pointing-out-the-right-project-moderators',
   },
   moderatorSearchFieldLabel: {
     id: 'app.containers.AdminPage.ProjectEdit.moderatorSearchFieldLabel1',

@@ -461,6 +461,27 @@ RSpec.describe UiSchemaGeneratorService do
     end
   end
 
+  describe '#visit_ranking' do
+    let(:field) do
+      create(
+        :custom_field_ranking,
+        :with_options,
+        key: field_key,
+        title_multiloc: { 'en' => 'Ranking field title' },
+        description_multiloc: { 'en' => 'Ranking field description' }
+      )
+    end
+
+    it 'returns the schema for the given field' do
+      expect(generator.visit_ranking(field)).to eq({
+        type: 'Control',
+        scope: "#/properties/#{field_key}",
+        label: 'Ranking field title',
+        options: { input_type: field.input_type, description: 'Ranking field description' }
+      })
+    end
+  end
+
   describe '#visit_checkbox' do
     let(:field) do
       create(
@@ -628,7 +649,90 @@ RSpec.describe UiSchemaGeneratorService do
           linear_scale_label4: 'Agree',
           linear_scale_label5: 'Strongly agree',
           linear_scale_label6: '',
-          linear_scale_label7: ''
+          linear_scale_label7: '',
+          linear_scale_label8: '',
+          linear_scale_label9: '',
+          linear_scale_label10: '',
+          linear_scale_label11: ''
+        }
+      })
+    end
+  end
+
+  describe '#visit_sentiment_linear_scale' do
+    let(:field) do
+      create(
+        :custom_field_sentiment_linear_scale,
+        key: field_key
+      )
+    end
+
+    it 'returns the schema for the given field' do
+      expect(generator.visit_sentiment_linear_scale(field)).to eq({
+        type: 'Control',
+        scope: "#/properties/#{field_key}",
+        label: 'We need a swimming pool.',
+        options: {
+          input_type: field.input_type,
+          description: 'Please indicate how strong you agree or disagree.',
+          ask_follow_up: false,
+          linear_scale_label1: 'Strongly disagree',
+          linear_scale_label2: 'Disagree',
+          linear_scale_label3: 'Neutral',
+          linear_scale_label4: 'Agree',
+          linear_scale_label5: 'Strongly agree'
+        }
+      })
+    end
+  end
+
+  describe '#visit_rating' do
+    let(:field) do
+      create(
+        :custom_field_rating,
+        key: field_key
+      )
+    end
+
+    it 'returns the schema for the given field' do
+      expect(generator.visit_rating(field)).to eq({
+        type: 'Control',
+        scope: "#/properties/#{field_key}",
+        label: 'How would you rate our service?',
+        options: {
+          input_type: field.input_type,
+          description: 'Please rate your experience from 1 (poor) to 5 (excellent).'
+        }
+      })
+    end
+  end
+
+  describe '#visit_matrix_linear_scale' do
+    let(:field) { create(:custom_field_matrix_linear_scale, key: field_key) }
+
+    it 'returns the schema for the given field' do
+      expect(generator.visit_matrix_linear_scale(field)).to eq({
+        type: 'Control',
+        scope: "#/properties/#{field_key}",
+        label: 'Please indicate how strong you agree or disagree with the following statements.',
+        options: {
+          description: 'Which councils are you attending in our city?',
+          input_type: 'matrix_linear_scale',
+          statements: [
+            { key: 'send_more_animals_to_space', label: 'We should send more animals into space' },
+            { key: 'ride_bicycles_more_often', label: 'We should ride our bicycles more often' }
+          ],
+          linear_scale_label1: 'Strongly disagree',
+          linear_scale_label2: '',
+          linear_scale_label3: '',
+          linear_scale_label4: '',
+          linear_scale_label5: 'Strongly agree',
+          linear_scale_label6: '',
+          linear_scale_label7: '',
+          linear_scale_label8: '',
+          linear_scale_label9: '',
+          linear_scale_label10: '',
+          linear_scale_label11: ''
         }
       })
     end

@@ -8,7 +8,7 @@ import { useTheme } from 'styled-components';
 import EsriMap from 'components/EsriMap';
 import { getMapPinSymbol } from 'components/EsriMap/utils';
 
-import { SubmitState } from '../edit';
+import { SubmitState } from '../types';
 
 export interface Props {
   mapHeight?: string;

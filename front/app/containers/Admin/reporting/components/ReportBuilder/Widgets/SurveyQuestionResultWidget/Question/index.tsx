@@ -8,10 +8,13 @@ import { GroupMode } from 'api/graph_data_units/requestTypes';
 import useLocalize from 'hooks/useLocalize';
 
 import InputType from 'containers/Admin/projects/project/nativeSurvey/FormResults/FormResultsQuestion/InputType';
+import MatrixQuestion from 'containers/Admin/projects/project/nativeSurvey/FormResults/FormResultsQuestion/MatrixQuestion';
+import RankingQuestion from 'containers/Admin/projects/project/nativeSurvey/FormResults/FormResultsQuestion/RankingQuestion';
 
 import Legend from 'components/admin/Graphs/Legend';
 import { DEFAULT_CATEGORICAL_COLORS } from 'components/admin/Graphs/styling';
-import SurveyBars from 'components/admin/Graphs/SurveyBars';
+import SurveyBarsHorizontal from 'components/admin/Graphs/SurveyBars/SurveyBarsHorizontal';
+import SurveyBarsVertical from 'components/admin/Graphs/SurveyBars/SurveyBarsVertical';
 
 import { useIntl } from 'utils/cl-intl';
 
@@ -77,10 +80,29 @@ const SurveyQuestionResult = ({
         />
       ) : (
         <>
-          <SurveyBars
-            questionResult={attributes}
-            colorScheme={DEFAULT_CATEGORICAL_COLORS}
-          />
+          {attributes.inputType === 'ranking' && !attributes.grouped && (
+            <Box>
+              <RankingQuestion result={attributes} hideDetailsButton={true} />
+            </Box>
+          )}
+          {attributes.inputType === 'matrix_linear_scale' &&
+            !attributes.grouped && (
+              <Box>
+                <MatrixQuestion result={attributes} />
+              </Box>
+            )}
+          {['rating', 'linear_scale'].includes(attributes.inputType) ? (
+            <SurveyBarsVertical
+              questionResult={attributes}
+              colorScheme={DEFAULT_CATEGORICAL_COLORS}
+              showLabelsBelow
+            />
+          ) : (
+            <SurveyBarsHorizontal
+              questionResult={attributes}
+              colorScheme={DEFAULT_CATEGORICAL_COLORS}
+            />
+          )}
           {attributes.grouped && (
             <Box mt="20px">
               <Legend

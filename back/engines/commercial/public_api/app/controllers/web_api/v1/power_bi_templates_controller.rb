@@ -12,7 +12,7 @@ module PublicApi
         # Search and replace API base URL
         file_text = open(template).read
         host = AppConfiguration.instance.base_backend_uri
-        replaced = file_text.gsub(/##BASE_URL##/, "#{host}/api/v2/")
+        replaced = file_text.gsub('##BASE_URL##', "#{host}/api/v2/")
         send_data replaced, type: 'application/octet-stream'
       when 'report'
         template = Rails.root.join('engines/commercial/public_api/files/power_bi/report.pbit')

@@ -4,7 +4,7 @@ module Surveys
   module Typeform
     class Api
       include HTTParty
-      debug_output $stdout if Rails.env.development? || Rails.env.test?
+      debug_output $stdout if Rails.env.local?
 
       base_uri 'https://api.typeform.com'
 

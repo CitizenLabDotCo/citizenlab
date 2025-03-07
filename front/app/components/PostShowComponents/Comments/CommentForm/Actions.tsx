@@ -9,7 +9,7 @@ import {
 } from '@citizenlab/cl2-component-library';
 import { useLocation } from 'react-router-dom';
 
-import Button from 'components/UI/Button';
+import Button from 'components/UI/ButtonWithLink';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import { isPage } from 'utils/helperUtils';

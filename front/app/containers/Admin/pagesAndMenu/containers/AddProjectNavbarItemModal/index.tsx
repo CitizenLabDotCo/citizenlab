@@ -15,7 +15,7 @@ import useLocalize from 'hooks/useLocalize';
 
 import InputMultilocWithLocaleSwitcher from 'components/HookForm/InputMultilocWithLocaleSwitcher';
 import Select from 'components/HookForm/Select';
-import Button from 'components/UI/Button';
+import Button from 'components/UI/ButtonWithLink';
 import Modal from 'components/UI/Modal';
 import Warning from 'components/UI/Warning';
 

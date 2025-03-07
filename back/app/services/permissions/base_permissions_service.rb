@@ -3,9 +3,6 @@ module Permissions
     SUPPORTED_ACTIONS = %w[
       following
       visiting
-      posting_initiative
-      commenting_initiative
-      reacting_initiative
       posting_idea
       commenting_idea
       reacting_idea

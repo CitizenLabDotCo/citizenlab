@@ -156,7 +156,6 @@ context 'hoplr authentication' do
             expect(User.last.confirmation_required?).to be(true)
           end
 
-          # rubocop:disable RSpec/NestedGroups
           context 'when password login is disabled (when email can be updated)' do
             before do
               SettingsService.new.deactivate_feature!('password_login')
@@ -168,7 +167,6 @@ context 'hoplr authentication' do
               expect(User.last.confirmation_required?).to be(false)
             end
           end
-          # rubocop:enable RSpec/NestedGroups
         end
       end
     end

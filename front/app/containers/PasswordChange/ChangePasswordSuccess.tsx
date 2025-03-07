@@ -3,7 +3,7 @@ import React from 'react';
 import { Box, Icon, colors } from '@citizenlab/cl2-component-library';
 
 import { Title } from 'components/smallForm';
-import Button from 'components/UI/Button';
+import Button from 'components/UI/ButtonWithLink';
 
 import { FormattedMessage } from 'utils/cl-intl';
 

@@ -2,8 +2,6 @@ import { SupportedLocale } from 'typings';
 
 import { IFlatCustomField, IOptionsType } from 'api/custom_fields/types';
 
-import { formEndOption } from 'components/FormBuilder/utils';
-
 import { isNilOrError } from 'utils/helperUtils';
 
 export const getOptionRule = (
@@ -40,7 +38,7 @@ export const getLinearScaleRule = (
   return undefined;
 };
 
-export const getLinearScaleOptions = (maximum: number) => {
+export const getLinearOrRatingOptions = (maximum: number) => {
   const linearScaleOptionArray = Array.from(
     { length: maximum },
     (_, i) => i + 1
@@ -74,13 +72,18 @@ export const getTitleFromAnswerId = (
 };
 
 export const getTitleFromPageId = (
-  pageId: string | number | undefined,
-  formEndMessage: string,
+  pageId: string | undefined,
   pageMessage: string,
-  fieldNumbers: Record<string, number>
+  fieldNumbers: Record<string, number>,
+  formCustomFields: IFlatCustomField[],
+  lastPageMessage: string
 ) => {
   if (!pageId) return;
-  if (pageId === formEndOption) return formEndMessage;
+
+  const lastCustomField = formCustomFields[formCustomFields.length - 1];
+  if (pageId === lastCustomField.id) {
+    return lastPageMessage;
+  }
 
   return `${pageMessage} ${fieldNumbers[pageId]}`;
 };

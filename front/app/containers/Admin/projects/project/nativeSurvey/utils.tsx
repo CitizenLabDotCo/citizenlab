@@ -19,16 +19,40 @@ import AccessRightsNotice from './AccessRightsNotice';
 import messages from './messages';
 
 export const nativeSurveyConfig: FormBuilderConfig = {
+  type: 'survey',
   formBuilderTitle: messages.survey,
   viewFormLinkCopy: messages.viewSurvey,
   toolboxTitle: messages.addSurveyContent,
   formSavedSuccessMessage: messages.successMessage,
   supportArticleLink: messages.supportArticleLink,
   formEndPageLogicOption: messages.surveyEnd,
-  questionLogicHelperText: messages.questionLogicHelperText,
   pagesLogicHelperText: messages.pagesLogicHelperText,
 
-  toolboxFieldsToExclude: [],
+  toolboxFieldsToInclude: [
+    // When adding new fields, confirm that the BE list matches
+    'text',
+    'multiline_text',
+    'multiselect',
+    'number',
+    'select',
+    'linear_scale',
+    'ranking',
+    'rating',
+    'matrix_linear_scale',
+    'sentiment_linear_scale',
+    'page',
+    'file_upload',
+    'shapefile_upload',
+    'title_multiloc',
+    'html_multiloc',
+    'files',
+    'image_files',
+    'topic_ids',
+    'multiselect_image',
+    'point',
+    'line',
+    'polygon',
+  ],
   formCustomFields: undefined,
 
   displayBuiltInFields: false,
@@ -40,7 +64,7 @@ export const nativeSurveyConfig: FormBuilderConfig = {
   groupingType: 'page',
   getWarningNotice: () => {
     return (
-      <Box id="e2e-warning-notice" mb="20px">
+      <Box id="e2e-warning-notice" mb="16px">
         <Warning>
           <FormattedMessage {...messages.existingSubmissionsWarning} />
         </Warning>
@@ -91,17 +115,27 @@ export const getFormActionsConfig = (
   };
 };
 
-// Remove the IDs from the options - for when the form is not persisted
-export const clearOptionIds = (customFields: IFlatCustomField[]) => {
-  // TODO: Fix this the next time the file is edited.
-  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-  return customFields?.map((field: IFlatCustomField) => {
+// Remove the IDs from the options and matrix statements - for when the form is not persisted
+export const clearOptionAndStatementIds = (
+  customFields: IFlatCustomField[]
+) => {
+  return customFields.map((field: IFlatCustomField) => {
+    const newField = { ...field };
+
     if (field.options && field.options.length > 0) {
-      field.options = field.options.map((option: IOptionsType) => {
-        delete option.id;
-        return option;
+      newField.options = field.options.map((option: IOptionsType) => {
+        const { id: _id, ...optionWithoutId } = option;
+        return { ...optionWithoutId };
       });
     }
-    return field;
+
+    if (field.matrix_statements && field.matrix_statements.length > 0) {
+      newField.matrix_statements = field.matrix_statements.map((statement) => {
+        const { id: _id, ...statementWithoutId } = statement;
+        return { ...statementWithoutId };
+      });
+    }
+
+    return newField;
   });
 };

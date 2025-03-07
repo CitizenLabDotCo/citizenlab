@@ -30,7 +30,7 @@ export const UserEvents = () => {
   const eventsCount = events?.data.length;
 
   return (
-    <Container className="e2e-profile-events">
+    <Container className="e2e-profile-events" id="tab-events">
       {isPhoneOrSmaller && (
         <Title mt="0px" variant="h3" as="h1">
           <FormattedMessage

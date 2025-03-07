@@ -25,8 +25,8 @@ import useLocalize from 'hooks/useLocalize';
 
 import { getFormValues as getIdeaFormValues } from 'containers/IdeasEditPage/utils';
 
-import { FormData } from 'components/Form/typings';
-import { customAjv, isValidData } from 'components/Form/utils';
+import { FormValues } from 'components/Form/typings';
+import customAjv from 'components/Form/utils/customAjv';
 
 import { FormattedMessage } from 'utils/cl-intl';
 import { geocode } from 'utils/locationTools';
@@ -62,7 +62,7 @@ const IdeaEditor = ({ ideaId, setIdeaId }: Props) => {
     Record<string, UserFormData>
   >({});
   const [ideaFormStatePerIdea, setIdeaFormStatePerIdea] = useState<
-    Record<string, FormData>
+    Record<string, FormValues>
   >({});
   const [ideaFormApiErrors, setIdeaFormApiErrors] = useState<
     CLErrors | undefined
@@ -100,7 +100,9 @@ const IdeaEditor = ({ ideaId, setIdeaId }: Props) => {
     ideaMetadata
   );
 
-  const ideaFormData: FormData | null =
+  const ideaFormData: FormValues | null =
+    // TODO: Fix this the next time the file is edited.
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     ideaId && ideaFormStatePerIdea[ideaId]
       ? ideaFormStatePerIdea[ideaId]
       : // TODO: Fix this the next time the file is edited.
@@ -120,7 +122,7 @@ const IdeaEditor = ({ ideaId, setIdeaId }: Props) => {
     }));
   };
 
-  const setIdeaFormData = (ideaFormData: FormData) => {
+  const setIdeaFormData = (ideaFormData: FormValues) => {
     if (!ideaId) return;
 
     setIdeaFormStatePerIdea((ideaFormStatePerIdea) => ({
@@ -131,13 +133,9 @@ const IdeaEditor = ({ ideaId, setIdeaId }: Props) => {
 
   const userFormDataValid = isUserFormDataValid(userFormData);
 
-  const ideaFormDataValid = isValidData(
-    schema,
-    uiSchema,
-    ideaFormData,
-    customAjv,
-    false
-  );
+  const ideaFormDataValid = ideaFormData
+    ? customAjv.validate(schema, ideaFormData)
+    : false;
 
   const onApproveIdea = async () => {
     if (
@@ -196,7 +194,6 @@ const IdeaEditor = ({ ideaId, setIdeaId }: Props) => {
       await updateIdea({
         id: ideaId,
         requestBody: {
-          publication_status: 'published',
           ...supportedFormData,
           ...(location_description ? { location_description } : {}),
           ...(location_point_geojson ? { location_point_geojson } : {}),
@@ -267,7 +264,7 @@ const IdeaEditor = ({ ideaId, setIdeaId }: Props) => {
               uiSchema={uiSchema}
               showAllErrors={true}
               apiErrors={ideaFormApiErrors}
-              formData={ideaFormData}
+              formData={ideaFormData ?? {}}
               ideaMetadata={ideaMetadata}
               setFormData={setIdeaFormData}
             />

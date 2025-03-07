@@ -17,7 +17,7 @@ import {
   Item,
 } from 'containers/IdeasShow/components/MetaInformation/MetaInfoStyles';
 
-import Button from 'components/UI/Button';
+import Button from 'components/UI/ButtonWithLink';
 
 import { useIntl } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';

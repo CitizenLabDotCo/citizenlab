@@ -6,9 +6,6 @@ MachineTranslations::Engine.routes.draw do
       defaults translatable_type: 'Idea' do
         get 'ideas/:idea_id/machine_translation', action: :show, controller: 'machine_translations'
       end
-      defaults translatable_type: 'Initiative' do
-        get 'initiatives/:initiative_id/machine_translation', action: :show, controller: 'machine_translations'
-      end
       defaults translatable_type: 'Comment' do
         get 'comments/:comment_id/machine_translation', action: :show, controller: 'machine_translations'
       end

@@ -26,6 +26,9 @@ import MultilocInputLayout, {
 import MultiSelectControl, {
   multiSelectControlTester,
 } from 'components/Form/Components/Controls/MultiSelectControl';
+import RankingControl, {
+  rankingControlTester,
+} from 'components/Form/Components/Controls/RankingControl';
 import SingleSelectControl, {
   singleSelectControlTester,
 } from 'components/Form/Components/Controls/SingleSelectControl';
@@ -64,9 +67,14 @@ import LinearScaleControl, {
   linearScaleControlTester,
 } from './LinearScaleControl';
 import MapControl, { mapControlTester } from './MapInput/MapControl';
+import MatrixControl, { matrixControlTester } from './MatrixControl';
 import MultiSelectCheckboxControl, {
   multiSelectCheckboxControlTester,
 } from './MultiSelectCheckboxControl';
+import RatingControl, { ratingControlTester } from './RatingControl';
+import SentimentLinearScaleControl, {
+  sentimentLinearScaleControlTester,
+} from './SentimentLinearScaleControl';
 import ShapefileUploadControl, {
   shapefileUploadControlTester,
 } from './ShapefileUploadControl';
@@ -115,6 +123,10 @@ export {
   MultiSelectControl,
   multiSelectControlTester,
   MultiSelectCheckboxControl,
+  rankingControlTester,
+  RankingControl,
+  matrixControlTester,
+  MatrixControl,
   multiSelectCheckboxControlTester,
   ImageMultichoiceControl,
   imageMultichoiceControlTester,
@@ -134,10 +146,14 @@ export {
   multilocInputTester,
   LinearScaleControl,
   linearScaleControlTester,
+  RatingControl,
+  ratingControlTester,
   SingleAttachmentControl,
   singleAttachmentControlTester,
   ShapefileUploadControl,
   shapefileUploadControlTester,
   CosponsorsControl,
   cosponsorsControlTester,
+  SentimentLinearScaleControl,
+  sentimentLinearScaleControlTester,
 };

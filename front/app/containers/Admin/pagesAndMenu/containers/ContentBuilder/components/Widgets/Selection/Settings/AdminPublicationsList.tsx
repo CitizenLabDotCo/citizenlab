@@ -6,14 +6,17 @@ import {
   Icon,
   Text,
   colors,
+  Spinner,
 } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
 import { IAdminPublicationData } from 'api/admin_publications/types';
+import useAdminPublicationsByIds from 'api/admin_publications/useAdminPublicationsByIds';
 
 import useLocalize from 'hooks/useLocalize';
 
-import { SortableRow, SortableList } from 'components/admin/ResourceList';
+import SortableList from 'components/admin/ResourceList/SortableList';
+import SortableRow from 'components/admin/ResourceList/SortableRow';
 
 const StyledSortableRow = styled(SortableRow)`
   .e2e-admin-list-row {
@@ -27,19 +30,33 @@ const StyledSortableRow = styled(SortableRow)`
 `;
 
 interface Props {
-  adminPublications: IAdminPublicationData[];
   onReorder: (draggedItemId: string, targetIndex: number) => void;
   onDelete: (id: string) => void;
+  adminPublicationIds: string[];
 }
 
 const AdminPublicationsList = ({
-  adminPublications,
   onReorder,
   onDelete,
+  adminPublicationIds,
 }: Props) => {
   const localize = useLocalize();
+  const { data: selectedAdminPublications, isFetching } =
+    useAdminPublicationsByIds(
+      {
+        ids: adminPublicationIds,
+      },
+      // We don't make this request if adminPublicationIds is an empty array.
+      { enabled: adminPublicationIds.length > 0 }
+    );
+  const adminPublications =
+    adminPublicationIds.length > 0
+      ? selectedAdminPublications?.pages.flatMap((page) => page.data) ?? []
+      : [];
 
-  return (
+  return isFetching ? (
+    <Spinner />
+  ) : (
     <SortableList
       items={adminPublications}
       onReorder={onReorder}

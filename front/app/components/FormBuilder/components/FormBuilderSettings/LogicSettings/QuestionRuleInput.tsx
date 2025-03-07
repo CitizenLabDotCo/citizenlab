@@ -16,10 +16,10 @@ import {
   QuestionRuleType,
 } from 'api/custom_fields/types';
 
-import Button from 'components/UI/Button';
+import Button from 'components/UI/ButtonWithLink';
 import Error from 'components/UI/Error';
 
-import { FormattedMessage } from 'utils/cl-intl';
+import { useIntl, FormattedMessage } from 'utils/cl-intl';
 import { isRuleValid } from 'utils/yup/validateLogic';
 
 import messages from '../../messages';
@@ -44,6 +44,7 @@ export const QuestionRuleInput = ({
   answer,
   validationError,
 }: QuestionRuleInputProps) => {
+  const { formatMessage } = useIntl();
   const { setValue, watch, trigger, control } = useFormContext();
   const field: IFlatCustomField = watch(name);
   const logic: LogicType = field.logic;
@@ -58,9 +59,7 @@ export const QuestionRuleInput = ({
   const [selectedPage, setSelectedPage] = useState<string | null | undefined>(
     initialValue ? initialValue.goto_page_id : undefined
   );
-  const [showRuleInput, setShowRuleInput] = useState<boolean>(
-    initialValue ? true : false
-  );
+  const [showRuleInput, setShowRuleInput] = useState<boolean>(!!initialValue);
 
   const onSelectionChange = (page: IOption) => {
     setSelectedPage(page.value);
@@ -77,6 +76,7 @@ export const QuestionRuleInput = ({
         goto_page_id: page.value.toString(),
       };
       setRuleIsInvalid(!isRuleValid(newRule, fieldId, fields));
+
       if (logic.rules) {
         const newRulesArray = logic.rules;
         newRulesArray.push(newRule);
@@ -84,12 +84,7 @@ export const QuestionRuleInput = ({
       } else {
         logic.rules = [newRule];
       }
-      // Update rule variable
-      const required =
-        // TODO: Fix this the next time the file is edited.
-        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-        logic.rules && logic.rules.length > 0 ? true : field.required;
-      setValue(name, { ...field, logic, required }, { shouldDirty: true });
+      setValue(name, { ...field, logic }, { shouldDirty: true });
       trigger();
     }
   };
@@ -100,11 +95,19 @@ export const QuestionRuleInput = ({
       logic.rules = logic.rules.filter((rule) => rule.if !== answer.key);
     }
     // Update rule variable
-    const required =
-      logic.rules && logic.rules.length > 0 ? true : field.required;
-    setValue(name, { ...field, logic, required }, { shouldDirty: true });
+    setValue(name, { ...field, logic }, { shouldDirty: true });
     trigger();
   };
+
+  const isCatchAllLogicRule =
+    answer.key &&
+    ['any_other_answer', 'no_answer'].includes(answer.key.toString());
+
+  const ruleForAnswerLabel = ['multiselect', 'multiselect_image'].includes(
+    field.input_type
+  )
+    ? formatMessage(messages.ruleForAnswerLabelMultiselect)
+    : formatMessage(messages.ruleForAnswerLabel);
 
   return (
     <>
@@ -125,16 +128,41 @@ export const QuestionRuleInput = ({
                   trigger();
                 }}
               >
-                <Box width="90px" flexGrow={0} flexShrink={0} flexWrap="wrap">
-                  <Text color={'coolGrey600'} fontSize="s">
-                    <FormattedMessage {...messages.ruleForAnswerLabel} />
-                  </Text>
-                </Box>
-                <Box width="215px" flexGrow={0} flexShrink={0} flexWrap="wrap">
-                  <Text fontSize="s" fontWeight="bold">
-                    {answer.label}
-                  </Text>
-                </Box>
+                {isCatchAllLogicRule ? (
+                  <Box
+                    width="305px"
+                    flexGrow={0}
+                    flexShrink={0}
+                    flexWrap="wrap"
+                  >
+                    <Text color={'coolGrey600'} fontSize="s" fontStyle="italic">
+                      {answer.label}
+                    </Text>
+                  </Box>
+                ) : (
+                  <>
+                    <Box
+                      width="90px"
+                      flexGrow={0}
+                      flexShrink={0}
+                      flexWrap="wrap"
+                    >
+                      <Text color={'coolGrey600'} fontSize="s">
+                        {ruleForAnswerLabel}
+                      </Text>
+                    </Box>
+                    <Box
+                      width="215px"
+                      flexGrow={0}
+                      flexShrink={0}
+                      flexWrap="wrap"
+                    >
+                      <Text fontSize="s" fontWeight="bold">
+                        {answer.label}
+                      </Text>
+                    </Box>
+                  </>
+                )}
                 {!showRuleInput && (
                   <Box
                     ml="auto"

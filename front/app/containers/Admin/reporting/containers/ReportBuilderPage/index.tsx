@@ -15,7 +15,7 @@ import useReports from 'api/reports/useReports';
 
 import NavigationTabs from 'components/admin/NavigationTabs';
 import Tab from 'components/admin/NavigationTabs/Tab';
-import Button from 'components/UI/Button';
+import Button from 'components/UI/ButtonWithLink';
 import SearchInput from 'components/UI/SearchInput';
 import Warning from 'components/UI/Warning';
 

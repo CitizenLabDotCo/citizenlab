@@ -5,10 +5,7 @@ require 'uri'
 
 describe Analytics::QueryRunnerService do
   describe '#run' do
-    before_all do
-      create(:dimension_type)
-      create(:dimension_type, name: 'initiative')
-    end
+    before_all { create(:dimension_type) }
 
     it 'return the ID field for each post' do
       ideas = create_list(:idea, 5)
@@ -23,9 +20,7 @@ describe Analytics::QueryRunnerService do
 
     it 'return groups with aggregations' do
       idea = create(:idea)
-      initiative = create(:initiative)
       create_list(:reaction, 2, reactable: idea)
-      create_list(:reaction, 1, reactable: initiative)
 
       query_param = {
         fact: 'post',
@@ -39,16 +34,12 @@ describe Analytics::QueryRunnerService do
       runner = described_class.new
       results, * = runner.run(query)
 
-      expected_result = [
-        { 'dimension_type.name' => 'initiative', 'sum_reactions_count' => 1 },
-        { 'dimension_type.name' => 'idea', 'sum_reactions_count' => 2 }
-      ]
+      expected_result = [{ 'dimension_type.name' => 'idea', 'sum_reactions_count' => 2 }]
       expect(results).to match_array expected_result
     end
 
     it 'return filtered ideas count' do
       create(:idea)
-      create(:initiative)
 
       query_param = {
         fact: 'post',
@@ -68,7 +59,6 @@ describe Analytics::QueryRunnerService do
 
     it 'return first two sorted posts' do
       ideas = create_list(:idea, 5)
-      initiatives = create_list(:initiative, 5)
 
       query_param = {
         fact: 'post',
@@ -79,7 +69,7 @@ describe Analytics::QueryRunnerService do
 
       runner = described_class.new
       results, * = runner.run(query)
-      posts = (ideas + initiatives)
+      posts = ideas
         .sort_by { |p| p[:id] }
         .map { |p| { 'id' => p.id } }
       expect(results).to eq(posts)

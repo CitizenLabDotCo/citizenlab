@@ -31,20 +31,6 @@ describe IdeaCustomFieldsService do
       end
     end
 
-    describe 'reportable_fields' do
-      it 'excludes disabled fields, pages, sections and idea_images_attributes' do
-        output = service.reportable_fields
-        expect(output.map(&:code)).to eq %w[
-          title_multiloc
-          body_multiloc
-          idea_files_attributes
-          topic_ids
-          location_description
-          proposed_budget
-        ]
-      end
-    end
-
     describe 'visible_fields' do
       it 'excludes disabled fields' do
         output = service.visible_fields
@@ -145,25 +131,6 @@ describe IdeaCustomFieldsService do
           'idea_images_attributes',
           'idea_files_attributes',
           'ideation_section3',
-          'topic_ids',
-          'proposed_budget',
-          nil,
-          nil
-        ]
-      end
-    end
-
-    describe 'reportable_fields' do
-      it 'excludes disabled fields, pages, sections and idea_images_attributes' do
-        topic_field = custom_form.custom_fields.find_by(code: 'topic_ids')
-        topic_field.update!(enabled: false)
-        custom_form.custom_fields.find_by(code: 'location_description').destroy!
-
-        output = service.reportable_fields
-        expect(output.map(&:code)).to eq [
-          'title_multiloc',
-          'body_multiloc',
-          'idea_files_attributes',
           'topic_ids',
           'proposed_budget',
           nil,
@@ -520,6 +487,7 @@ describe IdeaCustomFieldsService do
         select_option = create(:custom_field_option, custom_field: select_field)
         page2 = create(:custom_field_page, resource: custom_form)
         text_field = create(:custom_field_text, resource: custom_form)
+        matrix_field = create(:custom_field_matrix_linear_scale, resource: custom_form)
         page3 = create(:custom_field_page, resource: custom_form)
         multi_select_field = create(:custom_field_multiselect, resource: custom_form)
         _multi_select_option = create(:custom_field_option, custom_field: multi_select_field)
@@ -528,14 +496,14 @@ describe IdeaCustomFieldsService do
         select_field.update!(logic: { rules: [{ if: select_option.id, goto_page_id: page3.id }] })
         page2.update!(logic: { next_page_id: page3.id })
 
-        expect(CustomField.count).to eq 8
+        expect(CustomField.count).to eq 9
         expect(CustomMaps::MapConfig.count).to eq 1
 
         fields = service.duplicate_all_fields
 
-        expect(CustomField.count).to eq 8
+        expect(CustomField.count).to eq 9
         expect(CustomMaps::MapConfig.count).to eq 2
-        expect(fields.count).to eq 8
+        expect(fields.count).to eq 9
 
         # page 1
         expect(fields[0].id).not_to eq page1.id
@@ -544,7 +512,7 @@ describe IdeaCustomFieldsService do
         expect(fields[1].id).not_to eq select_field.id
         expect(fields[1].logic).to match({
           'rules' => [
-            { 'if' => fields[1].options[0].temp_id, 'goto_page_id' => fields[4].id }
+            { 'if' => fields[1].options[0].temp_id, 'goto_page_id' => fields[5].id }
           ]
         })
         expect(fields[1].options[0].temp_id).to match 'TEMP-ID-'
@@ -552,26 +520,31 @@ describe IdeaCustomFieldsService do
         # page 2
         expect(fields[2].id).not_to eq page2.id
         expect(fields[2].logic).to match({
-          'next_page_id' => fields[4].id
+          'next_page_id' => fields[5].id
         })
 
         # text field
         expect(fields[3].id).not_to eq text_field.id
 
+        # matrix field
+        expect(fields[4].id).not_to eq matrix_field.id
+        expect(fields[4].matrix_statements[0].id).not_to eq matrix_field.matrix_statements[0].id
+        expect(fields[4].matrix_statements.map(&:key)).to eq matrix_field.matrix_statements.map(&:key)
+
         # page 3
-        expect(fields[4].id).not_to eq page3.id
+        expect(fields[5].id).not_to eq page3.id
 
         # multi select field
-        expect(fields[5].id).not_to eq multi_select_field.id
-        expect(fields[5].options[0].temp_id).to match 'TEMP-ID-'
+        expect(fields[6].id).not_to eq multi_select_field.id
+        expect(fields[6].options[0].temp_id).to match 'TEMP-ID-'
 
         # map field - duplicates map config
-        expect(fields[6].id).not_to eq map_field.id
-        expect(fields[6].map_config.id).not_to eq map_field.map_config.id
+        expect(fields[7].id).not_to eq map_field.id
+        expect(fields[7].map_config.id).not_to eq map_field.map_config.id
 
         # map field 2 - has no map config
-        expect(fields[7].id).not_to eq map_field_no_config.id
-        expect(fields[7].map_config).to be_nil
+        expect(fields[8].id).not_to eq map_field_no_config.id
+        expect(fields[8].map_config).to be_nil
       end
     end
   end

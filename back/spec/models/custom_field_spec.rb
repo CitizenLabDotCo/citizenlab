@@ -79,6 +79,14 @@ class TestVisitor < FieldVisitorService
     'linear_scale from visitor'
   end
 
+  def visit_matrix_linear_scale(_field)
+    'matrix_linear_scale from visitor'
+  end
+
+  def visit_rating(_field)
+    'rating from visitor'
+  end
+
   def visit_page(_field)
     'page from visitor'
   end
@@ -102,10 +110,27 @@ class TestVisitor < FieldVisitorService
   def visit_shapefile_upload(_field)
     'shapefile_upload from visitor'
   end
+
+  def visit_ranking(_field)
+    'ranking from visitor'
+  end
+
+  def visit_sentiment_linear_scale(_field)
+    'sentiment_linear_scale from visitor'
+  end
 end
 
 RSpec.describe CustomField do
   let(:field) { described_class.new input_type: 'not_important_for_this_test' }
+
+  describe 'factories' do
+    it 'create a valid matrix linear scale field' do
+      field = create(:custom_field_matrix_linear_scale)
+
+      expect(field).to be_valid
+      expect(field.matrix_statements).to be_present
+    end
+  end
 
   describe '#logic?' do
     it 'returns true when there is logic' do
@@ -365,6 +390,14 @@ RSpec.describe CustomField do
       # 'somewhere else' option should be the last.
       expect(domicile_field.options.last.area).to be_nil
     end
+
+    describe 'ordered_transformed_options' do
+      it 'returns the ordered domicile options with keys and titles from areas' do
+        options = domicile_field.ordered_transformed_options
+        expect(options.pluck(:key)).to eq(Area.order(:ordering).pluck(:id) + ['outside'])
+        expect(options.last.title_multiloc['en']).to eq 'Somewhere else'
+      end
+    end
   end
 
   describe 'description sanitizer' do
@@ -586,6 +619,74 @@ RSpec.describe CustomField do
     it 'returns the nth linear scale label multiloc' do
       expect(field.nth_linear_scale_multiloc(3)).to eq({ 'en' => 'I am label 3 multiloc' })
       expect(field.nth_linear_scale_multiloc(7)).to eq({ 'en' => 'I am label 7 multiloc' })
+    end
+  end
+
+  describe '#average_rankings' do
+    let!(:field) { create(:custom_field_ranking) }
+    let!(:option1) { create(:custom_field_option, custom_field: field, key: 'by_foot') }
+    let!(:option2) { create(:custom_field_option, custom_field: field, key: 'by_bike') }
+    let!(:option3) { create(:custom_field_option, custom_field: field, key: 'by_train') }
+    let!(:option4) { create(:custom_field_option, custom_field: field, key: 'by_horse') }
+
+    it 'works' do
+      create(:idea, custom_field_values: { field.key => %w[by_bike by_horse by_train by_foot] })
+      create(:idea, custom_field_values: { field.key => %w[by_train by_bike by_foot by_horse] })
+      create(:idea, custom_field_values: {})
+      create(:idea, custom_field_values: { field.key => %w[by_horse by_foot by_train by_bike] })
+      create(:idea, custom_field_values: { field.key => %w[by_bike by_foot by_train by_horse] })
+      excluded_idea = create(:idea, custom_field_values: { field.key => %w[by_bike by_horse by_foot by_train] })
+
+      expect(field.average_rankings(Idea.where.not(id: [excluded_idea.id]))).to eq({
+        'by_bike' => 2,
+        'by_foot' => 2.75,
+        'by_train' => 2.5,
+        'by_horse' => 2.75
+      })
+    end
+  end
+
+  describe '#rankings_counts' do
+    let!(:field) { create(:custom_field_ranking) }
+    let!(:option1) { create(:custom_field_option, custom_field: field, key: 'by_foot') }
+    let!(:option2) { create(:custom_field_option, custom_field: field, key: 'by_bike') }
+    let!(:option3) { create(:custom_field_option, custom_field: field, key: 'by_train') }
+    let!(:option4) { create(:custom_field_option, custom_field: field, key: 'by_horse') }
+
+    it 'works' do
+      create(:user, custom_field_values: { field.key => %w[by_bike by_horse by_train by_foot] })
+      create(:user, custom_field_values: { field.key => %w[by_train by_bike by_foot by_horse] })
+      create(:user, custom_field_values: {})
+      create(:user, custom_field_values: { field.key => %w[by_horse by_foot by_train by_bike] })
+      create(:user, custom_field_values: { field.key => %w[by_bike by_foot by_train by_horse] })
+      excluded_user = create(:user, custom_field_values: { field.key => %w[by_bike by_horse by_foot by_train] })
+
+      expect(field.rankings_counts(User.where.not(id: [excluded_user.id]))).to eq({
+        'by_foot' => {
+          1 => 0,
+          2 => 2,
+          3 => 1,
+          4 => 1
+        },
+        'by_bike' => {
+          1 => 2,
+          2 => 1,
+          3 => 0,
+          4 => 1
+        },
+        'by_train' => {
+          1 => 1,
+          2 => 0,
+          3 => 3,
+          4 => 0
+        },
+        'by_horse' => {
+          1 => 1,
+          2 => 1,
+          3 => 0,
+          4 => 2
+        }
+      })
     end
   end
 end

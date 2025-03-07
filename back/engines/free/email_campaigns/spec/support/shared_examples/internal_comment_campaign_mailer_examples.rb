@@ -34,6 +34,6 @@ RSpec.shared_examples 'internal_comment_campaign_mailer_examples' do
   end
 
   it 'includes the image url' do
-    expect(mail.body.encoded).to include(post_image.image.versions[:medium].url)
+    expect(mail.body.encoded).to include(idea_image.image.versions[:medium].url)
   end
 end

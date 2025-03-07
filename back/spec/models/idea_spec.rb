@@ -440,7 +440,7 @@ RSpec.describe Idea do
         create(:idea, idea_status: create(:idea_status_proposed)),
         create(:idea, idea_status: create(:idea_status, code: 'threshold_reached'))
       ]
-      create(:official_feedback, post: ideas[0])
+      create(:official_feedback, idea: ideas[0])
 
       expect(described_class.feedback_needed.ids).to match_array [ideas[2].id, ideas[3].id]
     end
@@ -559,7 +559,7 @@ RSpec.describe Idea do
     end
 
     it 'returns ideas with recent comments' do
-      create(:comment, post: old_idea, updated_at: 1.day.ago)
+      create(:comment, idea: old_idea, updated_at: 1.day.ago)
       expect(recent_ideas).to include old_idea
     end
 
@@ -569,8 +569,8 @@ RSpec.describe Idea do
     end
 
     it 'does not return duplicates' do
-      create(:comment, post: recent_idea, updated_at: 1.day.ago)
-      create(:comment, post: recent_idea, updated_at: 1.day.ago)
+      create(:comment, idea: recent_idea, updated_at: 1.day.ago)
+      create(:comment, idea: recent_idea, updated_at: 1.day.ago)
 
       recent_ids = recent_ideas.pluck(:id)
       expect(recent_ids.size).to eq 1

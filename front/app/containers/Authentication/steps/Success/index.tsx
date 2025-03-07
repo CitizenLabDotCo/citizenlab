@@ -2,7 +2,7 @@ import React from 'react';
 
 import { Box, Image, Title, Text } from '@citizenlab/cl2-component-library';
 
-import Button from 'components/UI/Button';
+import Button from 'components/UI/ButtonWithLink';
 
 import { useIntl } from 'utils/cl-intl';
 

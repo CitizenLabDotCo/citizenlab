@@ -17,7 +17,7 @@ import useAnalyses from 'api/analyses/useAnalyses';
 import useUpdateAnalysis from 'api/analyses/useUpdateAnalysis';
 import useAnalysisInsights from 'api/analysis_insights/useAnalysisInsights';
 
-import Button from 'components/UI/Button';
+import Button from 'components/UI/ButtonWithLink';
 
 import { useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
@@ -33,9 +33,11 @@ const StyledDropdownListItem = styled(DropdownListItem)`
 const Analysis = ({
   customFieldId,
   textResponsesCount,
+  hasOtherResponses,
 }: {
   customFieldId: string;
   textResponsesCount: number;
+  hasOtherResponses?: boolean;
 }) => {
   const [dropdownOpened, setDropdownOpened] = useState(false);
   const { formatMessage } = useIntl();
@@ -203,7 +205,10 @@ const Analysis = ({
             />
           </Box>
 
-          <AnalysisInsights analysis={relevantAnalysis} />
+          <AnalysisInsights
+            analysis={relevantAnalysis}
+            hasOtherResponses={hasOtherResponses}
+          />
         </>
       )}
       {hideAnalysisInsights && (

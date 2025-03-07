@@ -7,7 +7,7 @@ import { Multiloc } from 'typings';
 
 import { TextCell } from 'components/admin/ResourceList';
 import T from 'components/T';
-import Button from 'components/UI/Button';
+import Button from 'components/UI/ButtonWithLink';
 
 import { FormattedMessage } from 'utils/cl-intl';
 import Link from 'utils/cl-router/Link';

@@ -6,7 +6,7 @@ import { IEventData } from 'api/events/types';
 
 import useLocale from 'hooks/useLocale';
 
-import Button from 'components/UI/Button';
+import Button from 'components/UI/ButtonWithLink';
 
 import { isNilOrError } from 'utils/helperUtils';
 

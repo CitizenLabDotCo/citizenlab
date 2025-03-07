@@ -8,7 +8,7 @@ import { IPollQuestionData } from 'api/poll_questions/types';
 import useUpdatePollQuestion from 'api/poll_questions/useUpdatePollQuestion';
 
 import { Row } from 'components/admin/ResourceList';
-import Button from 'components/UI/Button';
+import Button from 'components/UI/ButtonWithLink';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 

@@ -17,11 +17,7 @@ const WrapperStandard = () => {
   const [selectedDate, setSelectedDate] = useState<Date>();
 
   return (
-    <DateSinglePicker
-      selectedDate={selectedDate}
-      defaultMonth={new Date(2024, 9, 1)}
-      onChange={setSelectedDate}
-    />
+    <DateSinglePicker selectedDate={selectedDate} onChange={setSelectedDate} />
   );
 };
 

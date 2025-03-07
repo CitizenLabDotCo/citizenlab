@@ -14,7 +14,7 @@ import InsightBody from 'containers/Admin/projects/project/analysis/Insights/Ins
 import InsightFooter from 'containers/Admin/projects/project/analysis/Insights/InsightFooter';
 import QuestionHeader from 'containers/Admin/projects/project/analysis/Insights/QuestionHeader';
 
-import Button from 'components/UI/Button';
+import Button from 'components/UI/ButtonWithLink';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 

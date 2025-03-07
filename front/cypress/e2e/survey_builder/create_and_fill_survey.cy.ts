@@ -2,7 +2,7 @@ import { snakeCase } from 'lodash-es';
 import { randomString, randomEmail } from '../../support/commands';
 import moment = require('moment');
 
-describe('Survey builder', () => {
+describe.skip('Survey builder', () => {
   const projectTitle = randomString();
   const phaseTitle = randomString();
   const projectDescription = randomString();

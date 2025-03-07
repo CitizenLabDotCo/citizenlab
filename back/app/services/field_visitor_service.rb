@@ -81,6 +81,14 @@ class FieldVisitorService
     default(field)
   end
 
+  def visit_matrix_linear_scale(field)
+    default(field)
+  end
+
+  def visit_rating(field)
+    default(field)
+  end
+
   def visit_file_upload(field)
     default(field)
   end
@@ -94,6 +102,14 @@ class FieldVisitorService
   end
 
   def visit_cosponsor_ids(field)
+    default(field)
+  end
+
+  def visit_ranking(field)
+    default(field)
+  end
+
+  def visit_sentiment_linear_scale(field)
     default(field)
   end
 

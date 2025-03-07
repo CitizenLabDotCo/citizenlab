@@ -8,7 +8,7 @@ import styled from 'styled-components';
 import * as XLSX from 'xlsx';
 
 import { IResolution } from 'components/admin/ResolutionControl';
-import Button from 'components/UI/Button';
+import Button from 'components/UI/ButtonWithLink';
 
 import { trackEventByName } from 'utils/analytics';
 import { FormattedMessage, useIntl } from 'utils/cl-intl';

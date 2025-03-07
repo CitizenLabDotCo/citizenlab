@@ -16,7 +16,7 @@ import InsightFooter from 'containers/Admin/projects/project/analysis/Insights/I
 import SummaryHeader from 'containers/Admin/projects/project/analysis/Insights/SummaryHeader';
 import tracks from 'containers/Admin/projects/project/analysis/tracks';
 
-import Button from 'components/UI/Button';
+import Button from 'components/UI/ButtonWithLink';
 import Error from 'components/UI/Error';
 
 import { trackEventByName } from 'utils/analytics';

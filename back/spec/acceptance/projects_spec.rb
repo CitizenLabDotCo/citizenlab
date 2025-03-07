@@ -634,6 +634,72 @@ resource 'Projects' do
         copied_project = Project.find(json_response.dig(:data, :id))
         expect(copied_project.title_multiloc['en']).to include(source_project.title_multiloc['en'])
       end
+
+      example 'Copy non-draft project', document: false do
+        expect(source_project.admin_publication.publication_status).not_to eq 'draft'
+
+        do_request
+        assert_status 201
+
+        copied_project = Project.find(json_response.dig(:data, :id))
+        expect(copied_project.admin_publication.publication_status).to eq 'draft'
+      end
+
+      example 'Copy a project in a folder', document: false do
+        folder = create(:project_folder, projects: [source_project])
+
+        do_request
+        assert_status 201
+
+        copied_project = Project.find(json_response.dig(:data, :id))
+        expect(copied_project.folder_id).to eq folder.id
+      end
+
+      example 'Copy a project with a project moderator as default_assignee', document: false do
+        moderator = create(:project_moderator, projects: [source_project])
+        source_project.update!(default_assignee: moderator)
+
+        do_request
+        assert_status 201
+
+        copied_project = Project.find(json_response.dig(:data, :id))
+        expect(copied_project.default_assignee_id).to eq @user.id
+      end
+
+      context 'as a project moderator' do
+        before do
+          header 'Content-Type', 'application/json'
+          @user = create(:user, roles: [{ type: 'project_moderator', project_id: source_project.id }])
+          header_token_for @user
+        end
+
+        example 'Copying a project in a folder copies to root', document: false do
+          create(:project_folder, projects: [source_project])
+
+          do_request
+          assert_status 201
+
+          copied_project = Project.find(json_response.dig(:data, :id))
+          expect(copied_project.folder_id).to be_nil
+        end
+      end
+
+      context 'as a folder moderator' do
+        let(:folder) { create(:project_folder, projects: [source_project]) }
+
+        before do
+          header 'Content-Type', 'application/json'
+          @user = create(:user, roles: [{ type: 'project_folder_moderator', project_folder_id: folder.id }])
+          header_token_for @user
+        end
+
+        example_request 'Copying a project in a folder copies to the same folder', document: false do
+          assert_status 201
+
+          copied_project = Project.find(json_response.dig(:data, :id))
+          expect(copied_project.folder_id).to eq folder.id
+        end
+      end
     end
 
     get 'web_api/v1/projects/:id/as_xlsx' do

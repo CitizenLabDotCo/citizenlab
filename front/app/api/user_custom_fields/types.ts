@@ -19,7 +19,6 @@ export type TCustomFieldCode =
   | 'gender'
   | 'birthyear'
   | 'domicile'
-  | 'education'
   | 'title'
   | 'body'
   | 'topic_ids'

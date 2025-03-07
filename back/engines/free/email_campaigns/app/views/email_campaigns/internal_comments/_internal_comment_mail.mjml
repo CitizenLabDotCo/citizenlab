@@ -8,5 +8,5 @@
   </mj-column>
 </mj-section>
 
-<%= render 'email_campaigns/posts/post_with_image', post_image_url: event&.post_image_medium_url, post_title_multiloc: event.post_title_multiloc, post_body_multiloc: event.post_body_multiloc %>
+<%= render 'email_campaigns/ideas/idea_with_image', idea_image_url: event&.idea_image_medium_url, idea_title_multiloc: event.idea_title_multiloc, idea_body_multiloc: event.idea_body_multiloc %>
 <%= render 'application/cta_button', href: event.internal_comment_url, message: format_message('cta_reply_to', values: {firstName: event.initiating_user_first_name&.capitalize}) %>

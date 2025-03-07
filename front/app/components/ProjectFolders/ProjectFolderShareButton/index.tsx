@@ -5,7 +5,7 @@ import styled from 'styled-components';
 import { IProjectFolderData } from 'api/project_folders/types';
 
 import ProjectFolderSharingModal from 'components/ProjectFolders/ProjectFolderSharingModal';
-import Button, { Props as ButtonProps } from 'components/UI/Button';
+import Button, { Props as ButtonProps } from 'components/UI/ButtonWithLink';
 
 import { FormattedMessage } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';

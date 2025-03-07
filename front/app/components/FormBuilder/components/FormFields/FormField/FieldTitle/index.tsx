@@ -28,7 +28,11 @@ const FieldTitle = ({ hasErrors, field, fieldNumber }: Props) => {
   let rowTitle = messages.question;
 
   if (field.input_type === 'page') {
-    rowTitle = messages.page;
+    if (field.key === 'survey_end') {
+      rowTitle = messages.lastPage;
+    } else {
+      rowTitle = messages.page;
+    }
   } else if (field.input_type === 'section') {
     rowTitle = messages.section;
   }
@@ -53,7 +57,7 @@ const FieldTitle = ({ hasErrors, field, fieldNumber }: Props) => {
           ml={hasErrors ? '8px' : '12px'}
           width="12px"
           fill={titleColor}
-          name="sort"
+          name={field.key === 'survey_end' ? 'lock' : 'sort'}
           pb="4px"
         />
       </Box>
@@ -69,7 +73,7 @@ const FieldTitle = ({ hasErrors, field, fieldNumber }: Props) => {
         >
           <>
             <FormattedMessage {...rowTitle} />
-            {` ${fieldNumber}`}
+            {field.key === 'survey_end' ? '' : ` ${fieldNumber}`}
           </>
         </Text>
         <Text

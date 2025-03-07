@@ -10,13 +10,13 @@ class WebApi::V1::MentionsController < ApplicationController
   def users
     limit = params[:limit]&.to_i || 5
     query = params[:mention].gsub(/\W/, "\s")
-    post = find_post(params[:post_type], params[:post_id])
+    idea = Idea.find_by(id: params[:idea_id])
 
     @users = []
-    @users = MentionService.new.users_from_post(query, post, limit) if post && params[:roles].nil?
+    @users = MentionService.new.users_from_idea(query, idea, limit) if idea && params[:roles].nil?
 
     nb_missing_users = limit - @users.size
-    @users += find_users_by_query(query, post).limit(nb_missing_users) if nb_missing_users.positive?
+    @users += find_users_by_query(query, idea).limit(nb_missing_users) if nb_missing_users.positive?
     @users = @users.excluding(current_user)
 
     render json: WebApi::V1::UserSerializer.new(
@@ -34,26 +34,8 @@ class WebApi::V1::MentionsController < ApplicationController
     raise 'Invalid roles query parameter(s)' unless params[:roles].uniq - VALID_ROLES == []
   end
 
-  # @param [String] post_type
-  # @param [String] post_id
-  # @return [Idea, Initiative, nil]
-  def find_post(post_type, post_id)
-    post_class = post_type_to_class(post_type) if post_type
-    post_class&.find(post_id)
-  end
-
-  # @param [String] type
-  # @@return [Class]
-  def post_type_to_class(type)
-    case type
-    when 'Idea' then Idea
-    when 'Initiative' then Initiative
-    else raise "#{type} is not a post type"
-    end
-  end
-
   # @param [String] query
-  # @param [Idea, Initiative, nil] post
+  # @param [Idea, nil] post
   # @return [ActiveRecord::Relation]
   def find_users_by_query(query, post)
     case params[:roles]&.uniq

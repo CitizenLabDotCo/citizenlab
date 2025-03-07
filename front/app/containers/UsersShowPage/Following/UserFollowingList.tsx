@@ -9,7 +9,7 @@ import useFollowers from 'api/follow_unfollow/useFollowers';
 import IdeaCard from 'components/IdeaCard';
 import ProjectFolderCard from 'components/ProjectAndFolderCards/components/ProjectFolderCard';
 import ProjectCard from 'components/ProjectCard';
-import Button from 'components/UI/Button';
+import Button from 'components/UI/ButtonWithLink';
 
 import { ScreenReaderOnly } from 'utils/a11y';
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
@@ -69,7 +69,6 @@ const UserFollowingList = ({ value }: Props) => {
                   <Box width="100%">
                     <IdeaCard
                       ideaId={follower.relationships.followable.data.id}
-                      showFollowButton
                     />
                   </Box>
                 </Box>
@@ -82,7 +81,6 @@ const UserFollowingList = ({ value }: Props) => {
                   key={follower.id}
                   projectId={follower.relationships.followable.data.id}
                   size="small"
-                  showFollowButton
                 />
               );
             } else if (
@@ -94,7 +92,6 @@ const UserFollowingList = ({ value }: Props) => {
                   folderId={follower.relationships.followable.data.id}
                   size="small"
                   layout="threecolumns"
-                  showFollowButton
                 />
               );
             }

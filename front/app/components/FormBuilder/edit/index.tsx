@@ -22,6 +22,7 @@ import {
 import useFormCustomFields from 'api/custom_fields/useCustomFields';
 import useUpdateCustomField from 'api/custom_fields/useUpdateCustomFields';
 import { isNewCustomFieldObject } from 'api/custom_fields/util';
+import useCustomForm from 'api/custom_form/useCustomForm';
 import useFormSubmissionCount from 'api/submission_count/useSubmissionCount';
 
 import FormBuilderSettings from 'components/FormBuilder/components/FormBuilderSettings';
@@ -40,6 +41,7 @@ import { isNilOrError } from 'utils/helperUtils';
 import validateElementTitle from 'utils/yup/validateElementTitle';
 import validateLogic from 'utils/yup/validateLogic';
 import validateOneOptionForMultiSelect from 'utils/yup/validateOneOptionForMultiSelect';
+import validateOneStatementForMatrix from 'utils/yup/validateOneStatementForMatrix';
 
 import messages from '../messages';
 import { FormBuilderConfig } from '../utils';
@@ -48,6 +50,7 @@ import {
   NestedGroupingStructure,
   getReorderedFields,
   DragAndDropResult,
+  supportsLinearScaleLabels,
 } from './utils';
 
 interface FormValues {
@@ -89,6 +92,20 @@ const FormEdit = ({
     phaseId: isFormPhaseSpecific ? phaseId : undefined,
   });
 
+  const { data: customForm } = useCustomForm({
+    projectId,
+    phaseId: isFormPhaseSpecific ? phaseId : undefined,
+  });
+  const formLastUpdatedAt = customForm?.data.attributes.updated_at;
+
+  // Set the form opened at date from the API date only when the form is first loaded
+  const [formOpenedAt, setFormOpenedAt] = useState<string | undefined>();
+  useEffect(() => {
+    if (!formOpenedAt && customForm?.data.attributes.opened_at) {
+      setFormOpenedAt(customForm.data.attributes.opened_at);
+    }
+  }, [formOpenedAt, customForm]);
+
   const schema = object().shape({
     customFields: array().of(
       object().shape({
@@ -102,6 +119,10 @@ const FormEdit = ({
           formatMessage(messages.emptyTitleMessage),
           { multiselect_image: formatMessage(messages.emptyImageOptionError) }
         ),
+        matrix_statements: validateOneStatementForMatrix(
+          formatMessage(messages.emptyStatementError),
+          formatMessage(messages.emptyTitleStatementMessage)
+        ),
         maximum: number(),
         linear_scale_label_1_multiloc: object(),
         linear_scale_label_2_multiloc: object(),
@@ -110,7 +131,12 @@ const FormEdit = ({
         linear_scale_label_5_multiloc: object(),
         linear_scale_label_6_multiloc: object(),
         linear_scale_label_7_multiloc: object(),
+        linear_scale_label_8_multiloc: object(),
+        linear_scale_label_9_multiloc: object(),
+        linear_scale_label_10_multiloc: object(),
+        linear_scale_label_11_multiloc: object(),
         required: boolean(),
+        ask_follow_up: boolean(),
         temp_id: string(),
         logic: validateLogic(formatMessage(messages.logicValidationError)),
       })
@@ -132,7 +158,7 @@ const FormEdit = ({
     reset,
   } = methods;
 
-  const { append, move, replace } = useFieldArray({
+  const { append, move, replace, insert } = useFieldArray({
     name: 'customFields',
     control,
   });
@@ -150,17 +176,27 @@ const FormEdit = ({
     }
   }, [formCustomFields, isUpdatingForm, isFetching, reset]);
 
+  let autosave: boolean = false; // Use to log autosave vs manual save
   const closeSettings = (triggerAutosave?: boolean) => {
     setSelectedField(undefined);
 
-    // If autosave is enabled & no submission have come in yet, save
-    if (triggerAutosave && autosaveEnabled && totalSubmissions === 0) {
-      onFormSubmit(getValues());
+    // If autosave is enabled, no submission have come in yet and there are changes, save
+    if (
+      triggerAutosave &&
+      autosaveEnabled &&
+      totalSubmissions === 0 &&
+      isDirty
+    ) {
+      autosave = true;
+      onFormSubmit(getValues()).then(() => {
+        autosave = false;
+      });
     }
   };
 
   // Remove copy_from param on save to avoid overwriting a saved survey when reloading
   const [searchParams, setSearchParams] = useSearchParams();
+
   const resetCopyFrom = () => {
     if (searchParams.has('copy_from')) {
       searchParams.delete('copy_from');
@@ -169,14 +205,30 @@ const FormEdit = ({
   };
 
   const onAddField = (field: IFlatCreateCustomField, index: number) => {
-    const newField = {
-      ...field,
-      index,
-    };
+    if (!formCustomFields) return;
 
-    if (isNewCustomFieldObject(newField)) {
-      append(newField);
-      setSelectedField(newField);
+    if (builderConfig.type === 'survey') {
+      const newField = {
+        ...field,
+        index,
+      };
+
+      if (isNewCustomFieldObject(newField)) {
+        insert(index, newField);
+        setSelectedField(newField);
+      }
+    }
+
+    if (builderConfig.type === 'input_form') {
+      const newField = {
+        ...field,
+        index: formCustomFields.length,
+      };
+
+      if (isNewCustomFieldObject(newField)) {
+        append(newField);
+        setSelectedField(newField);
+      }
     }
   };
 
@@ -193,7 +245,14 @@ const FormEdit = ({
         ...(field.input_type === 'page' && {
           temp_id: field.temp_id,
         }),
-        ...(['linear_scale', 'select', 'page'].includes(field.input_type)
+        ...([
+          'multiselect',
+          'linear_scale',
+          'select',
+          'page',
+          'rating',
+          'multiselect_image',
+        ].includes(field.input_type)
           ? {
               logic: field.logic,
             }
@@ -231,7 +290,17 @@ const FormEdit = ({
           random_option_ordering: field.random_option_ordering,
           dropdown_layout: field.dropdown_layout,
         }),
-        ...(field.input_type === 'linear_scale' && {
+        ...(field.input_type === 'ranking' && {
+          options: field.options || {},
+          random_option_ordering: field.random_option_ordering,
+        }),
+        ...(field.input_type === 'matrix_linear_scale' && {
+          matrix_statements: field.matrix_statements || {},
+        }),
+        ...(field.input_type === 'sentiment_linear_scale' && {
+          ask_follow_up: field.ask_follow_up || false,
+        }),
+        ...(supportsLinearScaleLabels(field.input_type) && {
           linear_scale_label_1_multiloc:
             field.linear_scale_label_1_multiloc || {},
           linear_scale_label_2_multiloc:
@@ -246,6 +315,17 @@ const FormEdit = ({
             field.linear_scale_label_6_multiloc || {},
           linear_scale_label_7_multiloc:
             field.linear_scale_label_7_multiloc || {},
+          linear_scale_label_8_multiloc:
+            field.linear_scale_label_8_multiloc || {},
+          linear_scale_label_9_multiloc:
+            field.linear_scale_label_9_multiloc || {},
+          linear_scale_label_10_multiloc:
+            field.linear_scale_label_10_multiloc || {},
+          linear_scale_label_11_multiloc:
+            field.linear_scale_label_11_multiloc || {},
+          maximum: field.maximum?.toString() || '5',
+        }),
+        ...(field.input_type === 'rating' && {
           maximum: field.maximum?.toString() || '5',
         }),
       }));
@@ -255,6 +335,11 @@ const FormEdit = ({
           projectId,
           customFields: finalResponseArray,
           phaseId: isFormPhaseSpecific ? phaseId : undefined,
+          customForm: {
+            saveType: autosave ? 'auto' : 'manual',
+            openedAt: formOpenedAt,
+            lastUpdatedAt: formLastUpdatedAt,
+          },
         },
         {
           onSuccess: () => {
@@ -265,7 +350,11 @@ const FormEdit = ({
         }
       );
     } catch (error) {
-      handleHookFormSubmissionError(error, setError, 'customFields');
+      const errorType =
+        error?.errors?.form[0].error === 'stale_data'
+          ? 'staleData'
+          : 'customFields';
+      handleHookFormSubmissionError(error, setError, errorType);
       setIsSubmitting(false);
     }
   };
@@ -279,7 +368,7 @@ const FormEdit = ({
       replace(reorderedFields);
     }
 
-    if (!isNilOrError(selectedField) && reorderedFields) {
+    if (selectedField && reorderedFields) {
       const newSelectedFieldIndex = reorderedFields.findIndex(
         (field) => field.id === selectedField.id
       );
@@ -365,7 +454,11 @@ const FormEdit = ({
                       <Error
                         marginTop="8px"
                         marginBottom="8px"
-                        text={formatMessage(messages.errorMessage)}
+                        text={formatMessage(
+                          errors['staleData']
+                            ? messages.staleDataErrorMessage
+                            : messages.errorMessage
+                        )}
                         scrollIntoView={false}
                       />
                     </Box>
@@ -382,20 +475,13 @@ const FormEdit = ({
                     />
                   )}
                   {showWarnings()}
-                  <Box
-                    borderRadius="3px"
-                    boxShadow="0px 2px 4px rgba(0, 0, 0, 0.2)"
-                    bgColor="white"
-                    minHeight="300px"
-                  >
-                    <FormFields
-                      onEditField={setSelectedField}
-                      selectedFieldId={selectedField?.id}
-                      handleDragEnd={reorderFields}
-                      builderConfig={builderConfig}
-                      closeSettings={closeSettings}
-                    />
-                  </Box>
+                  <FormFields
+                    onEditField={setSelectedField}
+                    selectedFieldId={selectedField?.id}
+                    handleDragEnd={reorderFields}
+                    builderConfig={builderConfig}
+                    closeSettings={closeSettings}
+                  />
                 </Box>
               </Box>
               <Box flex={!isNilOrError(selectedField) ? '1' : '0'}>

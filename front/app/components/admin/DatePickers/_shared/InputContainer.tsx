@@ -13,6 +13,7 @@ const Container = styled.button<{ disabled: boolean }>`
   cursor: pointer;
   display: flex;
   flex-direction: row;
+  align-items: center;
   font-size: ${fontSizes.base}px;
 
   color: ${colors.grey800};

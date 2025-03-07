@@ -10,7 +10,7 @@ class SideFxIdeaService
   end
 
   def before_create(idea, user)
-    before_publish idea, user if idea.published?
+    before_publish_or_submit idea, user if idea.submitted_or_published?
   end
 
   def after_create(idea, user)
@@ -37,7 +37,7 @@ class SideFxIdeaService
     @old_phase_ids = idea.phase_ids
     idea.body_multiloc = TextImageService.new.swap_data_images_multiloc(idea.body_multiloc, field: :body_multiloc, imageable: idea)
     idea.publication_status = 'published' if idea.submitted_or_published? && idea.idea_status&.public_post?
-    before_publish idea, user if idea.will_be_published?
+    before_publish_or_submit idea, user if idea.will_be_submitted? || idea.will_be_published?
   end
 
   def after_update(idea, user)
@@ -134,7 +134,7 @@ class SideFxIdeaService
 
   private
 
-  def before_publish(idea, _user); end
+  def before_publish_or_submit(idea, _user); end
 
   def after_submission(idea, user)
     add_autoreaction(idea)

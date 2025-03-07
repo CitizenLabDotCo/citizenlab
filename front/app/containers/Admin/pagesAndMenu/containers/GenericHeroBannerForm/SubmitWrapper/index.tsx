@@ -9,7 +9,7 @@ import { Omit } from 'typings';
 import Button, {
   ButtonStyles,
   Props as OriginalButtonProps,
-} from 'components/UI/Button';
+} from 'components/UI/ButtonWithLink';
 
 import { FormattedMessage, MessageDescriptor } from 'utils/cl-intl';
 
@@ -75,7 +75,7 @@ const Message = styled.p`
 interface Props
   extends Omit<
     OriginalButtonProps,
-    'className' | 'text' | 'disabled' | 'setSubmitButtonRef' | 'processing'
+    'className' | 'text' | 'disabled' | 'processing'
   > {
   status: ISubmitState;
   loading: boolean;
@@ -152,7 +152,7 @@ const SubmitWrapper = (props: Props) => {
         processing={loading}
         disabled={isSubmitButtonDisabled}
         onClick={onClick}
-        setSubmitButtonRef={setSubmitButtonRef}
+        ref={setSubmitButtonRef}
         {...buttonProps}
       >
         {(status === 'enabled' ||
@@ -171,7 +171,7 @@ const SubmitWrapper = (props: Props) => {
           processing={loading}
           disabled={isSubmitButtonDisabled}
           onClick={secondaryButtonOnClick}
-          setSubmitButtonRef={setSecondaryButtonRef}
+          ref={setSecondaryButtonRef}
           ml="25px"
         >
           {secondaryButtonSaveMessage ? (

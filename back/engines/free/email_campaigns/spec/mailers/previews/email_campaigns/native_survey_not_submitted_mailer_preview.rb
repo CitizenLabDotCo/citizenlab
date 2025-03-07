@@ -32,7 +32,7 @@ module EmailCampaigns
           author: recipient_user
         )
       end
-      item = Notifications::NativeSurveyNotSubmitted.new(post: idea)
+      item = Notifications::NativeSurveyNotSubmitted.new(idea: idea)
       user = recipient_user
       activity = Activity.new(item: item, user: user)
       commands = campaign.generate_commands(recipient: user, activity: activity)

@@ -43,13 +43,6 @@ describe WebApi::V1::Notifications::NotificationSerializer do
       )
     end
 
-    it 'serializes CommentOnInitiativeYouFollow correctly' do
-      expect_serializer_to_hide_name(
-        john, jane, admin, :comment_on_initiative_you_follow,
-        WebApi::V1::Notifications::CommentOnInitiativeYouFollowSerializer
-      )
-    end
-
     it 'serializes CommentOnIdeaYouFollow correctly' do
       expect_serializer_to_hide_name(
         john, jane, admin, :comment_on_idea_you_follow,
@@ -57,10 +50,10 @@ describe WebApi::V1::Notifications::NotificationSerializer do
       )
     end
 
-    it 'serializes InitiativeAssignedToYouSerializer correctly' do
+    it 'serializes InternalCommentOnIdeaAssignedToYouSerializer correctly' do
       expect_serializer_to_hide_name(
-        john, jane, admin, :initiative_assigned_to_you,
-        WebApi::V1::Notifications::InitiativeAssignedToYouSerializer
+        john, jane, admin, :internal_comment_on_idea_assigned_to_you,
+        WebApi::V1::Notifications::InternalCommentOnIdeaAssignedToYouSerializer
       )
     end
 

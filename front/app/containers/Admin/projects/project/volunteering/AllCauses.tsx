@@ -12,9 +12,10 @@ import useDeleteCause from 'api/causes/useDeleteCause';
 import useReorderCause from 'api/causes/useReorderCause';
 
 import { ButtonWrapper } from 'components/admin/PageWrapper';
-import { List, SortableRow, TextCell } from 'components/admin/ResourceList';
+import { List, TextCell } from 'components/admin/ResourceList';
+import SortableRow from 'components/admin/ResourceList/SortableRow';
 import T from 'components/T';
-import Button from 'components/UI/Button';
+import Button from 'components/UI/ButtonWithLink';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';

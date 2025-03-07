@@ -10,7 +10,7 @@ import useAddMapLayer from 'api/map_layers/useAddMapLayer';
 
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 
-import Button from 'components/UI/Button';
+import Button from 'components/UI/ButtonWithLink';
 import Error from 'components/UI/Error';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';

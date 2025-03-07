@@ -9,7 +9,7 @@ import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useLocalize from 'hooks/useLocalize';
 
 import FormattedAnchor from 'components/FormattedAnchor';
-import Button from 'components/UI/Button';
+import Button from 'components/UI/ButtonWithLink';
 
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';

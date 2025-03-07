@@ -14,7 +14,7 @@ RSpec.describe Notifications::InvitationToCosponsorIdea do
       expect(notifications.first).to have_attributes(
         recipient_id: cosponsorship.user_id,
         initiating_user: cosponsorship.idea.author,
-        post: idea
+        idea: idea
       )
     end
   end

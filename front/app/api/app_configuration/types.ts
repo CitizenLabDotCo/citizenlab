@@ -232,6 +232,7 @@ export interface IAppConfigurationSettings {
   report_builder?: AppConfigurationFeature;
   report_data_grouping?: AppConfigurationFeature;
   posthog_integration?: AppConfigurationFeature;
+  posthog_user_tracking?: AppConfigurationFeature;
   user_blocking?: AppConfigurationFeature & {
     duration: boolean;
   };
@@ -260,6 +261,8 @@ export interface IAppConfigurationSettings {
     admins_only: boolean;
   };
   platform_templates?: AppConfigurationFeature;
+  authoring_assistance?: AppConfigurationFeature;
+  project_library?: AppConfigurationFeature;
 }
 
 export type TAppConfigurationSettingCore = keyof IAppConfigurationSettingsCore;
@@ -314,7 +317,7 @@ export type TCurrency = TCustomCurrency | TCountryCurrency;
 type TCustomCurrency =
   // token, credit
   'TOK' | 'CRE';
-type TCountryCurrency =
+export type TCountryCurrency =
   // currencies associated with countries, e.g. EUR and USD
   // list is based on the currencies.rb file
   | 'AED'

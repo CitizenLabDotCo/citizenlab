@@ -5,6 +5,7 @@ import {
   Box,
   colors,
   fontSizes,
+  Divider,
 } from '@citizenlab/cl2-component-library';
 import { useQueryClient } from '@tanstack/react-query';
 import { saveAs } from 'file-saver';
@@ -21,9 +22,8 @@ import usersKeys from 'api/users/keys';
 
 import { API_PATH } from 'containers/App/constants';
 
-import Divider from 'components/admin/Divider';
 import T from 'components/T';
-import Button from 'components/UI/Button';
+import Button from 'components/UI/ButtonWithLink';
 import Checkbox from 'components/UI/Checkbox';
 import SearchInput from 'components/UI/SearchInput';
 
@@ -324,7 +324,7 @@ const UserTableActions = ({
             <Button
               ml="auto"
               onClick={exportUsers}
-              className={`export e2e-${exportType} hasLeftMargin`}
+              className={`export e2e-${exportType} hasLeftMargin intercom-users-export-users-button`}
               buttonStyle="admin-dark-text"
               whiteSpace="wrap"
               icon="user-data"

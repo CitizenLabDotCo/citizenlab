@@ -15,7 +15,7 @@ import { List, Row } from 'components/admin/ResourceList';
 import SeatInfo from 'components/admin/SeatBasedBilling/SeatInfo';
 import { SubSectionTitle } from 'components/admin/Section';
 import Avatar from 'components/Avatar';
-import Button from 'components/UI/Button';
+import Button from 'components/UI/ButtonWithLink';
 import UserSelect from 'components/UI/UserSelect';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';

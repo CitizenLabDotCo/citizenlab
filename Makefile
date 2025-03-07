@@ -1,4 +1,4 @@
-.PHONY: build reset-dev-env migrate be-up fe-up up c rails-console rails-console-exec e2e-setup e2e-setup-and-up e2e-run-test e2e-ci-env-setup e2e-ci-env-setup-and-up e2e-ci-env-run-test ci-regenerate-templates ci-trigger-build ci-run-e2e
+.PHONY: build reset-dev-env migrate be-up fe-up up c rails-console rails-console-exec e2e-setup e2e-setup-and-up e2e-run-test e2e-ci-env-setup e2e-ci-env-setup-and-up e2e-ci-env-run-test ci-regenerate-templates ci-trigger-build ci-run-e2e release_pr
 
 # You can run this file with `make` command:
 # make reset-dev-env
@@ -7,6 +7,9 @@
 # All commands from this file should work in bash too after:
 # 1. replacing $$ with $
 # 2. replacing variables in ${} with some values, so `-u ${CIRCLE_CI_TOKEN}:` becomes `-u XXX:`
+
+release_pr:
+	@./scripts/create_release_pr.sh
 
 # =================
 # Dev env
@@ -87,10 +90,22 @@ blint back-lint-autocorrect:
 r rspec:
 	docker compose run --rm web bin/rspec ${file}
 
+# Usage examples:
+# make feature-flag feature=initiative_cosponsors enabled=true
+# make feature-flag feature=initiative_cosponsors allowed=false enabled=false
+feature-flag:
+	docker compose run web "bin/rails runner \"Tenant.find_by(host: 'localhost').switch!; \
+	c = AppConfiguration.instance; \
+	c.settings['${feature}'] ||= {}; \
+	${if ${enabled},c.settings['${feature}']['enabled'] = ${enabled};,} \
+	${if ${allowed},c.settings['${feature}']['allowed'] = ${allowed};,} \
+	c.save!\""
+
+# Shorthand command (alias for feature-flag)
 # Usage example:
-# make feature-toggle feature=initiative_cosponsors enabled=true
-feature-toggle:
-	docker compose run web "bin/rails runner \"enabled = ${enabled}; feature = '${feature}'; Tenant.find_by(host: 'localhost').switch!; c = AppConfiguration.instance; c.settings['${feature}'] ||= {}; c.settings['${feature}']['allowed'] = ${enabled}; c.settings['${feature}']['enabled'] = ${enabled}; c.save!\""
+# make ff f=initiative_cosponsors e=false
+ff:
+	@${MAKE} feature-flag feature=${f} enabled=${e} allowed=${a}
 
 # =================
 # E2E tests

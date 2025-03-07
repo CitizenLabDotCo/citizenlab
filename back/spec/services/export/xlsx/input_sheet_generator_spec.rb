@@ -68,7 +68,7 @@ describe Export::Xlsx::InputSheetGenerator do
           )
         end
         let!(:attachment1) { create(:idea_file, idea: ideation_response1) }
-        let!(:comments) { create_list(:comment, 1, post: ideation_response1) }
+        let!(:comments) { create_list(:comment, 1, idea: ideation_response1) }
         let!(:likes) { create_list(:reaction, 2, reactable: ideation_response1) }
         let!(:dislikes) { create_list(:dislike, 1, reactable: ideation_response1) }
         let(:inputs) { [ideation_response1.reload] }
@@ -158,7 +158,7 @@ describe Export::Xlsx::InputSheetGenerator do
             name: 'david.csv'
           )
         end
-        let!(:comments) { create_list(:comment, 1, post: ideation_response1) }
+        let!(:comments) { create_list(:comment, 1, idea: ideation_response1) }
         let!(:likes) { create_list(:reaction, 2, reactable: ideation_response1) }
         let!(:dislikes) { create_list(:dislike, 1, reactable: ideation_response1) }
         let(:inputs) { [ideation_response1.reload] }
@@ -247,6 +247,8 @@ describe Export::Xlsx::InputSheetGenerator do
       let!(:dog_option) do
         create(:custom_field_option, custom_field: multiselect_field, key: 'dog', title_multiloc: { 'en' => 'Dog' })
       end
+      let!(:ranking_field) { create(:custom_field_ranking, :with_options, resource: form) }
+      let!(:matrix_field) { create(:custom_field_matrix_linear_scale, resource: form) }
 
       let(:survey_response1) do
         create(
@@ -254,7 +256,7 @@ describe Export::Xlsx::InputSheetGenerator do
           project: phase.project,
           creation_phase: phase,
           phases: [phase],
-          custom_field_values: { multiselect_field.key => %w[cat dog] }
+          custom_field_values: { multiselect_field.key => %w[cat dog], ranking_field.key => %w[by_train by_bike] }
         )
       end
       let(:survey_response2) do
@@ -263,7 +265,7 @@ describe Export::Xlsx::InputSheetGenerator do
           project: phase.project,
           creation_phase: phase,
           phases: [phase],
-          custom_field_values: { multiselect_field.key => %w[cat] }
+          custom_field_values: { multiselect_field.key => %w[cat], matrix_field.key => { 'send_more_animals_to_space' => 3, 'ride_bicycles_more_often' => 4 } }
         )
       end
       let(:survey_response3) do
@@ -272,7 +274,7 @@ describe Export::Xlsx::InputSheetGenerator do
           project: phase.project,
           creation_phase: phase,
           phases: [phase],
-          custom_field_values: { multiselect_field.key => %w[dog] },
+          custom_field_values: { multiselect_field.key => %w[dog], ranking_field.key => %w[by_bike by_train] },
           author: nil
         )
       end
@@ -292,6 +294,9 @@ describe Export::Xlsx::InputSheetGenerator do
               column_headers: [
                 'ID',
                 'What are your favourite pets?',
+                'Rank your favourite means of public transport',
+                'We should send more animals into space',
+                'We should ride our bicycles more often',
                 'Author ID',
                 'Submitted at',
                 'Project'
@@ -300,6 +305,9 @@ describe Export::Xlsx::InputSheetGenerator do
                 [
                   survey_response1.id,
                   'Cat, Dog',
+                  'By train, By bike',
+                  nil,
+                  nil,
                   survey_response1.author_id,
                   an_instance_of(DateTime), # created_at
                   phase.project.title_multiloc['en']
@@ -307,6 +315,9 @@ describe Export::Xlsx::InputSheetGenerator do
                 [
                   survey_response2.id,
                   'Cat',
+                  '',
+                  3,
+                  4,
                   survey_response2.author_id,
                   an_instance_of(DateTime), # created_at
                   phase.project.title_multiloc['en']
@@ -314,6 +325,9 @@ describe Export::Xlsx::InputSheetGenerator do
                 [
                   survey_response3.id,
                   'Dog',
+                  'By bike, By train',
+                  nil,
+                  nil,
                   survey_response3.author_id,
                   an_instance_of(DateTime), # created_at
                   phase.project.title_multiloc['en']
@@ -334,6 +348,9 @@ describe Export::Xlsx::InputSheetGenerator do
                   'ID',
                   'What are your favourite pets?',
                   'Type your answer',
+                  'Rank your favourite means of public transport',
+                  'We should send more animals into space',
+                  'We should ride our bicycles more often',
                   'Author ID',
                   'Submitted at',
                   'Project'
@@ -343,6 +360,9 @@ describe Export::Xlsx::InputSheetGenerator do
                     survey_response1.id,
                     'Cat, Dog, Other',
                     'Fish',
+                    '',
+                    nil,
+                    nil,
                     survey_response1.author_id,
                     an_instance_of(DateTime), # created_at
                     phase.project.title_multiloc['en']
@@ -351,6 +371,9 @@ describe Export::Xlsx::InputSheetGenerator do
                     survey_response2.id,
                     'Cat',
                     '',
+                    '',
+                    3,
+                    4,
                     survey_response2.author_id,
                     an_instance_of(DateTime), # created_at
                     phase.project.title_multiloc['en']
@@ -359,6 +382,9 @@ describe Export::Xlsx::InputSheetGenerator do
                     survey_response3.id,
                     'Dog',
                     '',
+                    'By bike, By train',
+                    nil,
+                    nil,
                     survey_response3.author_id,
                     an_instance_of(DateTime), # created_at
                     phase.project.title_multiloc['en']
@@ -387,6 +413,9 @@ describe Export::Xlsx::InputSheetGenerator do
                 column_headers: [
                   'ID',
                   'What are your favourite pets?',
+                  'Rank your favourite means of public transport',
+                  'We should send more animals into space',
+                  'We should ride our bicycles more often',
                   'Author name',
                   'Author email',
                   'Author ID',
@@ -406,6 +435,9 @@ describe Export::Xlsx::InputSheetGenerator do
               column_headers: [
                 'ID',
                 'What are your favourite pets?',
+                'Rank your favourite means of public transport',
+                'We should send more animals into space',
+                'We should ride our bicycles more often',
                 'Author name',
                 'Author email',
                 'Author ID',
@@ -416,6 +448,9 @@ describe Export::Xlsx::InputSheetGenerator do
                 [
                   survey_response1.id,
                   'Cat, Dog',
+                  'By train, By bike',
+                  nil,
+                  nil,
                   survey_response1.author_name,
                   survey_response1.author.email,
                   survey_response1.author_id,
@@ -425,6 +460,9 @@ describe Export::Xlsx::InputSheetGenerator do
                 [
                   survey_response2.id,
                   'Cat',
+                  '',
+                  3,
+                  4,
                   survey_response2.author_name,
                   survey_response2.author.email,
                   survey_response2.author_id,
@@ -434,6 +472,9 @@ describe Export::Xlsx::InputSheetGenerator do
                 [
                   survey_response3.id,
                   'Dog',
+                  'By bike, By train',
+                  nil,
+                  nil,
                   nil,
                   nil,
                   nil,
@@ -578,7 +619,7 @@ describe Export::Xlsx::InputSheetGenerator do
           )
         end
         let!(:attachment1) { create(:idea_file, idea: ideation_response1) }
-        let!(:comments) { create_list(:comment, 1, post: ideation_response1) }
+        let!(:comments) { create_list(:comment, 1, idea: ideation_response1) }
         let!(:likes) { create_list(:reaction, 1, reactable: ideation_response1) }
         let!(:baskets) do
           create_list(:basket, 2, phase: phase, ideas: [ideation_response1]).each(&:update_counts!)
@@ -668,7 +709,7 @@ describe Export::Xlsx::InputSheetGenerator do
             name: 'david.csv'
           )
         end
-        let!(:comments) { create_list(:comment, 1, post: ideation_response1) }
+        let!(:comments) { create_list(:comment, 1, idea: ideation_response1) }
         let!(:likes) { create_list(:reaction, 2, reactable: ideation_response1) }
         let!(:baskets) do
           create_list(:basket, 2, phase: phase, ideas: [ideation_response1]).each do |basket|

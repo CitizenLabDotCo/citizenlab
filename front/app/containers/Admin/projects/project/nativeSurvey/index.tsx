@@ -1,20 +1,6 @@
 import React, { useState } from 'react';
 
-import {
-  Box,
-  Title,
-  Text,
-  Dropdown,
-  DropdownListItem,
-  Icon,
-  Toggle,
-  Spinner,
-  colors,
-  TooltipContentWrapper,
-  Tooltip,
-  IconTooltip,
-} from '@citizenlab/cl2-component-library';
-import { saveAs } from 'file-saver';
+import { Box, Title, Toggle, Spinner } from '@citizenlab/cl2-component-library';
 import { useParams } from 'react-router-dom';
 
 import usePhase from 'api/phases/usePhase';
@@ -24,58 +10,66 @@ import useFormSubmissionCount from 'api/submission_count/useSubmissionCount';
 import useDeleteSurveyResults from 'api/survey_results/useDeleteSurveyResults';
 import { downloadSurveyResults } from 'api/survey_results/utils';
 
-import useFeatureFlag from 'hooks/useFeatureFlag';
-import useInputSchema from 'hooks/useInputSchema';
 import useLocale from 'hooks/useLocale';
 
 import PDFExportModal, {
   FormValues,
 } from 'containers/Admin/projects/components/PDFExportModal';
 
-import Button from 'components/UI/Button';
-import Modal from 'components/UI/Modal';
+import Button from 'components/UI/ButtonWithLink';
 
 import { useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
-import { isNilOrError } from 'utils/helperUtils';
-import { requestBlob } from 'utils/requestBlob';
 
 import CopySurveyModal from './CopySurveyModal';
 import EditWarningModal from './EditWarningModal';
 import FormResults from './FormResults';
 import messages from './messages';
+import DeleteModal from './NativeSurveySettings/DeleteModal';
+import DropdownSettings from './NativeSurveySettings/DropdownSettings';
 import { saveSurveyAsPDF } from './saveSurveyAsPDF';
 import { getFormActionsConfig } from './utils';
 
 const Forms = () => {
+  const locale = useLocale();
+  const { formatMessage } = useIntl();
   const { projectId, phaseId } = useParams() as {
     projectId: string;
     phaseId: string;
   };
-  const { formatMessage } = useIntl();
-  const [exportModalOpen, setExportModalOpen] = useState(false);
-  const [isDropdownOpened, setDropdownOpened] = useState(false);
-  const [isDownloading, setIsDownloading] = useState(false);
-  const [showDeleteModal, setShowDeleteModal] = useState(false);
-  const [showEditWarningModal, setShowEditWarningModal] = useState(false);
-  const [showCopySurveyModal, setShowCopySurveyModal] = useState(false);
+
+  // Project and phase hooks
   const { data: project } = useProjectById(projectId);
   const { data: phase } = usePhase(phaseId);
-  const locale = useLocale();
   const { mutate: updatePhase } = useUpdatePhase();
+
+  // Form hooks
+  const { mutate: deleteFormResults } = useDeleteSurveyResults();
   const { data: submissionCount } = useFormSubmissionCount({
     phaseId,
   });
-  const { uiSchema } = useInputSchema({ projectId, phaseId });
-  const inputImporterEnabled = useFeatureFlag({
-    name: 'input_importer',
-  });
-  const { mutate: deleteFormResults } = useDeleteSurveyResults();
 
-  if (!project || isNilOrError(locale) || !phase || !submissionCount) {
+  // Modal states
+  const [exportModalOpen, setExportModalOpen] = useState(false);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [showEditWarningModal, setShowEditWarningModal] = useState(false);
+  const [showCopySurveyModal, setShowCopySurveyModal] = useState(false);
+
+  // Other states
+  const [isDropdownOpened, setDropdownOpened] = useState(false);
+  const [isDownloading, setIsDownloading] = useState(false);
+
+  if (!project || !phase || !submissionCount) {
     return null;
   }
 
+  // Form-related variables
+  const haveSubmissionsComeIn =
+    submissionCount.data.attributes.totalSubmissions > 0;
+  const surveyFormPersisted =
+    phase.data.attributes.custom_form_persisted || false;
+
+  // Variables from form config
   const {
     downloadPdfLink,
     downloadExcelLink,
@@ -85,53 +79,12 @@ const Forms = () => {
     inputImporterLink,
   } = getFormActionsConfig(project.data, updatePhase, phase.data);
 
+  // Functions to handle modal states
   const closeDeleteModal = () => {
     setShowDeleteModal(false);
   };
-  const openDeleteModal = () => {
-    setShowDeleteModal(true);
-  };
 
-  const handleDownloadResults = async () => {
-    try {
-      setIsDownloading(true);
-      // TODO: Fix this the next time the file is edited.
-      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-      await downloadSurveyResults(locale, phase?.data);
-    } catch (error) {
-      // Not handling errors for now
-    } finally {
-      setIsDownloading(false);
-    }
-  };
-
-  const toggleDropdown = () => {
-    setDropdownOpened(!isDropdownOpened);
-  };
-
-  const closeDropdown = () => {
-    setDropdownOpened(false);
-  };
-
-  const handleDownloadPDF = () => setExportModalOpen(true);
-
-  const handleExportPDF = async ({ personal_data }: FormValues) => {
-    if (isNilOrError(locale)) return;
-    await saveSurveyAsPDF({
-      downloadPdfLink,
-      locale,
-      personal_data,
-    });
-  };
-
-  const downloadExampleFile = async () => {
-    const blob = await requestBlob(
-      downloadExcelLink,
-      'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
-    );
-    saveAs(blob, 'example.xlsx');
-  };
-
+  // Function to handle result deletion
   const deleteResults = () => {
     deleteFormResults(
       { phaseId },
@@ -143,11 +96,24 @@ const Forms = () => {
     );
   };
 
-  const haveSubmissionsComeIn =
-    submissionCount.data.attributes.totalSubmissions > 0;
-
-  const surveyFormPersisted =
-    phase.data.attributes.custom_form_persisted || false;
+  // Functions to handle downloads
+  const handleDownloadResults = async () => {
+    try {
+      setIsDownloading(true);
+      await downloadSurveyResults(locale, phase.data);
+    } catch (error) {
+      // Not handling errors for now
+    } finally {
+      setIsDownloading(false);
+    }
+  };
+  const handleExportPDF = async ({ personal_data }: FormValues) => {
+    await saveSurveyAsPDF({
+      downloadPdfLink,
+      locale,
+      personal_data,
+    });
+  };
 
   if (isDownloading) {
     return (
@@ -180,28 +146,16 @@ const Forms = () => {
                 }}
               />
             </Box>
-            <Tooltip
-              disabled={inputImporterEnabled}
-              content={
-                <TooltipContentWrapper tippytheme="light">
-                  {formatMessage(messages.disabledImportInputsTooltip)}
-                </TooltipContentWrapper>
-              }
+            <Button
+              linkTo={inputImporterLink}
+              icon="page"
+              iconSize="20px"
+              buttonStyle="secondary-outlined"
+              width="auto"
+              mr="8px"
             >
-              <Box>
-                <Button
-                  linkTo={inputImporterLink}
-                  icon="page"
-                  iconSize="20px"
-                  buttonStyle="secondary-outlined"
-                  width="auto"
-                  mr="8px"
-                  disabled={!inputImporterEnabled}
-                >
-                  {formatMessage(messages.importInputs)}
-                </Button>
-              </Box>
-            </Tooltip>
+              {formatMessage(messages.importInputs)}
+            </Button>
             <Button
               linkTo={`/projects/${project.data.attributes.slug}/surveys/new?phase_id=${phase.data.id}`}
               icon="eye"
@@ -227,123 +181,16 @@ const Forms = () => {
             >
               {formatMessage(messages.editSurvey)}
             </Button>
-
-            <Box>
-              <Button
-                icon="dots-horizontal"
-                iconColor={colors.textSecondary}
-                iconHoverColor={colors.textSecondary}
-                boxShadow="none"
-                boxShadowHover="none"
-                bgColor="transparent"
-                bgHoverColor="transparent"
-                pr="0"
-                data-cy="e2e-more-survey-actions-button"
-                onClick={toggleDropdown}
-              />
-              <Dropdown
-                opened={isDropdownOpened}
-                onClickOutside={closeDropdown}
-                className="dropdown"
-                width="100%"
-                right="70px"
-                content={
-                  <>
-                    {uiSchema && (
-                      <>
-                        <DropdownListItem
-                          onClick={() => {
-                            setShowCopySurveyModal(true);
-                          }}
-                          disabled={haveSubmissionsComeIn}
-                        >
-                          <Box display="flex" gap="4px" alignItems="center">
-                            <Icon
-                              name="copy"
-                              fill={
-                                haveSubmissionsComeIn
-                                  ? colors.grey400
-                                  : colors.coolGrey600
-                              }
-                            />
-                            <Text
-                              my="0px"
-                              color={
-                                haveSubmissionsComeIn ? 'grey400' : 'black'
-                              }
-                            >
-                              {formatMessage(messages.duplicateAnotherSurvey)}
-                            </Text>
-                          </Box>
-                        </DropdownListItem>
-                        {inputImporterEnabled && (
-                          <>
-                            <DropdownListItem onClick={handleDownloadPDF}>
-                              <Box display="flex" gap="4px" alignItems="center">
-                                <Icon
-                                  name="download"
-                                  fill={colors.coolGrey600}
-                                />
-                                <Text my="0px">
-                                  {formatMessage(messages.downloadSurvey)}
-                                </Text>
-                              </Box>
-                            </DropdownListItem>
-                            <DropdownListItem onClick={downloadExampleFile}>
-                              <Box display="flex" gap="4px" alignItems="center">
-                                <Icon
-                                  name="download"
-                                  fill={colors.coolGrey600}
-                                />
-                                <Text my="0px">
-                                  {formatMessage(
-                                    messages.downloadExcelTemplate
-                                  )}
-                                </Text>
-                                <IconTooltip
-                                  ml="4px"
-                                  content={formatMessage(
-                                    messages.downloadExcelTemplateTooltip
-                                  )}
-                                />
-                              </Box>
-                            </DropdownListItem>
-                          </>
-                        )}
-                      </>
-                    )}
-                    <DropdownListItem onClick={handleDownloadResults}>
-                      <Box
-                        display="flex"
-                        gap="4px"
-                        alignItems="center"
-                        data-cy="e2e-download-survey-results"
-                      >
-                        <Icon name="download" fill={colors.coolGrey600} />
-                        <Text my="0px">
-                          {formatMessage(messages.downloadResults)}
-                        </Text>
-                      </Box>
-                    </DropdownListItem>
-                    {haveSubmissionsComeIn && (
-                      <DropdownListItem onClick={openDeleteModal}>
-                        <Box
-                          display="flex"
-                          gap="4px"
-                          alignItems="center"
-                          data-cy="e2e-delete-survey-results"
-                        >
-                          <Icon name="delete" fill={colors.red600} />
-                          <Text color="red600" my="0px">
-                            {formatMessage(messages.deleteSurveyResults)}
-                          </Text>
-                        </Box>
-                      </DropdownListItem>
-                    )}
-                  </>
-                }
-              />
-            </Box>
+            <DropdownSettings
+              haveSubmissionsComeIn={haveSubmissionsComeIn}
+              setShowCopySurveyModal={setShowCopySurveyModal}
+              handleDownloadResults={handleDownloadResults}
+              setExportModalOpen={setExportModalOpen}
+              setDropdownOpened={setDropdownOpened}
+              isDropdownOpened={isDropdownOpened}
+              downloadExcelLink={downloadExcelLink}
+              setShowDeleteModal={setShowDeleteModal}
+            />
           </Box>
         </Box>
         <FormResults />
@@ -366,42 +213,11 @@ const Forms = () => {
         onClose={() => setExportModalOpen(false)}
         onExport={handleExportPDF}
       />
-      <Modal opened={showDeleteModal} close={closeDeleteModal}>
-        <Box display="flex" flexDirection="column" width="100%" p="20px">
-          <Box mb="40px">
-            <Title variant="h3" color="primary">
-              {formatMessage(messages.deleteResultsConfirmationQuestion)}
-            </Title>
-            <Text color="primary" fontSize="l">
-              {formatMessage(messages.deleteResultsInfo)}
-            </Text>
-          </Box>
-          <Box
-            display="flex"
-            flexDirection="row"
-            width="100%"
-            alignItems="center"
-          >
-            <Button
-              icon="delete"
-              data-cy="e2e-confirm-delete-survey-results"
-              buttonStyle="delete"
-              width="auto"
-              mr="20px"
-              onClick={deleteResults}
-            >
-              {formatMessage(messages.confirmDeleteButtonText)}
-            </Button>
-            <Button
-              buttonStyle="secondary-outlined"
-              width="auto"
-              onClick={closeDeleteModal}
-            >
-              {formatMessage(messages.cancelDeleteButtonText)}
-            </Button>
-          </Box>
-        </Box>
-      </Modal>
+      <DeleteModal
+        showDeleteModal={showDeleteModal}
+        closeDeleteModal={closeDeleteModal}
+        deleteResults={deleteResults}
+      />
     </>
   );
 };

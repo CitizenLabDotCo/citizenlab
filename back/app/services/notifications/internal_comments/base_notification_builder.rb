@@ -2,8 +2,6 @@
 
 module Notifications
   class InternalComments::BaseNotificationBuilder
-    delegate :post_type, to: :internal_comment
-
     def initialize(activity)
       @activity = activity
     end
@@ -18,9 +16,8 @@ module Notifications
           recipient_id: recipient.id,
           initiating_user_id: initiator_id,
           internal_comment: internal_comment,
-          post_id: internal_comment.post_id,
-          post_type: post_type,
-          project_id: post.respond_to?(:project_id) ? post.project_id : nil
+          idea: internal_comment.idea,
+          project_id: idea.project_id
         )
       end
     end
@@ -40,23 +37,23 @@ module Notifications
     end
 
     def assignee_id
-      internal_comment&.post&.assignee_id
+      idea&.assignee_id
     end
 
     def parent_author_id
       internal_comment&.parent&.author_id
     end
 
-    def post
-      internal_comment.post
+    def idea
+      internal_comment.idea
     end
 
     def project_id
-      post&.project_id
+      idea&.project_id
     end
 
     def folder_id
-      post&.project&.folder_id
+      idea&.project&.folder_id
     end
   end
 end

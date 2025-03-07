@@ -1,10 +1,8 @@
 import React from 'react';
 
-import { Box } from '@citizenlab/cl2-component-library';
+import { Box, Divider } from '@citizenlab/cl2-component-library';
 
 import { IPhaseData } from 'api/phases/types';
-
-import Divider from 'components/admin/Divider';
 
 import { FormattedMessage } from 'utils/cl-intl';
 

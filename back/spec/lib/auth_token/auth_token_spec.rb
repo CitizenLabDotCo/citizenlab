@@ -10,7 +10,7 @@ describe AuthToken::AuthToken do
 
   describe do
     let(:token_signature_algorithm) { 'HS256' }
-    let(:rsa_private) { Rails.application.secrets.secret_key_base }
+    let(:rsa_private) { Rails.application.secret_key_base }
 
     it 'verifies the algorithm' do
       expect { described_class.new(token: token) }.to raise_error(JWT::IncorrectAlgorithm)

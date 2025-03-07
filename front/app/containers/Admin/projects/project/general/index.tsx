@@ -40,6 +40,7 @@ import {
 } from 'components/admin/Section';
 import SlugInput from 'components/admin/SlugInput';
 import SubmitWrapper, { ISubmitState } from 'components/admin/SubmitWrapper';
+import Highlighter from 'components/Highlighter';
 import Warning from 'components/UI/Warning';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
@@ -49,6 +50,9 @@ import { convertUrlToUploadFile, isUploadFile } from 'utils/fileUtils';
 import { isNilOrError } from 'utils/helperUtils';
 import { defaultAdminCardPadding } from 'utils/styleConstants';
 import { validateSlug } from 'utils/textUtils';
+
+import { fragmentId } from '../projectHeader';
+import { fragmentId as folderFragmentId } from '../projectHeader/LinkToFolderSettings';
 
 import AttachmentsDropzone from './components/AttachmentsDropzone';
 import GeographicAreaInputs from './components/GeographicAreaInputs';
@@ -518,7 +522,10 @@ const AdminProjectsProjectGeneral = () => {
 
   return (
     <Box ref={containerRef}>
-      <StyledForm className="e2e-project-general-form" onSubmit={onSubmit}>
+      <StyledForm
+        className="e2e-project-general-form intercom-projects-new-project-form"
+        onSubmit={onSubmit}
+      >
         <Section>
           {projectId && (
             <>
@@ -531,12 +538,14 @@ const AdminProjectsProjectGeneral = () => {
             </>
           )}
           <Warning>{formatMessage(messages.publicationStatusWarning)}</Warning>
-          <ProjectNameInput
-            titleMultiloc={projectAttrs.title_multiloc}
-            titleError={titleError}
-            apiErrors={apiErrors}
-            handleTitleMultilocOnChange={handleTitleMultilocOnChange}
-          />
+          <Highlighter fragmentId={fragmentId}>
+            <ProjectNameInput
+              titleMultiloc={projectAttrs.title_multiloc}
+              titleError={titleError}
+              apiErrors={apiErrors}
+              handleTitleMultilocOnChange={handleTitleMultilocOnChange}
+            />
+          </Highlighter>
 
           {/* Only show this field when slug is already saved to project (i.e. not when creating a new project, which uses this form as well) */}
           {!isNilOrError(project) && slug && (
@@ -545,6 +554,7 @@ const AdminProjectsProjectGeneral = () => {
                 <FormattedMessage {...messages.url} />
               </SubSectionTitle>
               <SlugInput
+                intercomLabelClassname="intercom-product-tour-project-slug-label"
                 slug={slug}
                 pathnameWithoutSlug={'projects'}
                 apiErrors={apiErrors}
@@ -566,14 +576,18 @@ const AdminProjectsProjectGeneral = () => {
           />
 
           {isProjectFoldersEnabled && (
-            <ProjectFolderSelect
-              projectAttrs={projectAttrs}
-              onProjectAttributesDiffChange={handleProjectAttributeDiffOnChange}
-              isNewProject={!projectId}
-            />
+            <Highlighter fragmentId={folderFragmentId}>
+              <ProjectFolderSelect
+                projectAttrs={projectAttrs}
+                onProjectAttributesDiffChange={
+                  handleProjectAttributeDiffOnChange
+                }
+                isNewProject={!projectId}
+              />
+            </Highlighter>
           )}
 
-          <SectionField>
+          <SectionField className="intercom-product-tour-project-header-image-field">
             <SubSectionTitle>
               <FormattedMessage {...messages.headerImageInputLabel} />
               <ProjectHeaderImageTooltip />
@@ -658,6 +672,7 @@ const AdminProjectsProjectGeneral = () => {
             py="8px"
           >
             <SubmitWrapper
+              className="intercom-projects-new-project-save-button"
               loading={processing}
               status={submitState}
               messages={{

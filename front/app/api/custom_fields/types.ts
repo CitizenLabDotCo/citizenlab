@@ -22,6 +22,9 @@ export type ICustomFieldInputType =
   | 'number'
   | 'select'
   | 'linear_scale'
+  | 'ranking'
+  | 'rating'
+  | 'matrix_linear_scale'
   | 'section'
   | 'page'
   | 'file_upload'
@@ -35,7 +38,8 @@ export type ICustomFieldInputType =
   | 'point'
   | 'line'
   | 'polygon'
-  | 'cosponsor_ids';
+  | 'cosponsor_ids'
+  | 'sentiment_linear_scale';
 
 export type IOptionsType = {
   id?: string;
@@ -43,6 +47,12 @@ export type IOptionsType = {
   other?: boolean;
   temp_id?: string;
   image_id?: string;
+};
+
+export type IMatrixStatementsType = {
+  id?: string;
+  title_multiloc: Multiloc;
+  temp_id?: string;
 };
 
 export type QuestionRuleType = { if: string | number; goto_page_id: string };
@@ -67,6 +77,7 @@ export interface IAttributes {
   isEnabledEditable?: boolean;
   isTitleEditable?: boolean;
   isDeleteEnabled?: boolean;
+  ask_follow_up?: boolean;
   constraints?: {
     locks: {
       title_multiloc?: boolean;
@@ -85,6 +96,10 @@ export interface IAttributes {
   linear_scale_label_5_multiloc?: Multiloc;
   linear_scale_label_6_multiloc?: Multiloc;
   linear_scale_label_7_multiloc?: Multiloc;
+  linear_scale_label_8_multiloc?: Multiloc;
+  linear_scale_label_9_multiloc?: Multiloc;
+  linear_scale_label_10_multiloc?: Multiloc;
+  linear_scale_label_11_multiloc?: Multiloc;
   maximum?: number;
   minimum_select_count?: number;
   maximum_select_count?: number;
@@ -102,6 +117,9 @@ export interface ICustomFieldResponse {
     options: {
       data: IRelationship[];
     };
+    matrix_statements?: {
+      data: IRelationship[];
+    };
     map_config?: {
       data: IRelationship;
     };
@@ -117,11 +135,15 @@ export type IFlatCustomField = Omit<
     isLocalOnly?: boolean;
     mapConfig?: IMapConfig;
     options?: IOptionsType[];
+    matrix_statements?: IMatrixStatementsType[];
     map_config?: { data: IRelationship };
   };
 
+export type ICustomFieldSettingsTab = 'content' | 'logic';
+
 export type IFlatCustomFieldWithIndex = IFlatCustomField & {
   index: number;
+  defaultTab?: ICustomFieldSettingsTab;
 };
 
 type Optional<T, K extends keyof T> = Pick<Partial<T>, K> & Omit<T, K>;
@@ -132,6 +154,7 @@ export type IFlatCreateCustomField = Optional<
   | 'type'
   | 'key'
   | 'options'
+  | 'matrix_statements'
   | 'ordering'
   | 'created_at'
   | 'updated_at'
@@ -142,6 +165,10 @@ export type IFlatCreateCustomField = Optional<
   | 'linear_scale_label_5_multiloc'
   | 'linear_scale_label_6_multiloc'
   | 'linear_scale_label_7_multiloc'
+  | 'linear_scale_label_8_multiloc'
+  | 'linear_scale_label_9_multiloc'
+  | 'linear_scale_label_10_multiloc'
+  | 'linear_scale_label_11_multiloc'
   | 'maximum'
   | 'random_option_ordering'
   | 'dropdown_layout'

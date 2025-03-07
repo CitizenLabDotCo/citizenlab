@@ -21,7 +21,7 @@ describe('useSurveyResults', () => {
 
   it('returns data correctly for phase', async () => {
     const { result, waitFor } = renderHook(
-      () => useSurveyResults({ phaseId: 'phaseId' }),
+      () => useSurveyResults({ phaseId: 'phaseId', filterLogicIds: [] }),
       {
         wrapper: createQueryClientWrapper(),
       }
@@ -42,7 +42,7 @@ describe('useSurveyResults', () => {
     );
 
     const { result, waitFor } = renderHook(
-      () => useSurveyResults({ phaseId: 'phaseId' }),
+      () => useSurveyResults({ phaseId: 'phaseId', filterLogicIds: [] }),
       {
         wrapper: createQueryClientWrapper(),
       }

@@ -1,6 +1,11 @@
 import React, { lazy, Suspense, useState } from 'react';
 
-import { Box, Badge, Tooltip } from '@citizenlab/cl2-component-library';
+import {
+  Box,
+  Badge,
+  Tooltip,
+  Divider,
+} from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
 import useIdeaImages from 'api/idea_images/useIdeaImages';
@@ -13,7 +18,6 @@ import useLocalize from 'hooks/useLocalize';
 
 import ProjectLink from 'containers/EventsShowPage/components/ProjectLink';
 
-import Divider from 'components/admin/Divider';
 import ErrorToast from 'components/ErrorToast';
 import FollowUnfollow from 'components/FollowUnfollow';
 import Body from 'components/PostShowComponents/Body';
@@ -25,6 +29,7 @@ import FullPageSpinner from 'components/UI/FullPageSpinner';
 import { FormattedMessage } from 'utils/cl-intl';
 import { usePermission } from 'utils/permissions';
 
+import AuthoringAssistanePrototype from './components/AuthoringAssistanePrototype';
 import Container from './components/Container';
 import Cosponsorship from './components/Cosponsorship';
 import IdeaTitle from './components/IdeaTitle';
@@ -128,6 +133,7 @@ export const IdeasShow = ({
             translateButtonClicked={translateButtonIsClicked}
           />
           <ProjectLink project={project.data} />
+          <AuthoringAssistanePrototype ideaId={idea.data.id} />
           {ideaImageLarge && (
             <Image src={ideaImageLarge} alt="" id="e2e-idea-image" />
           )}
@@ -144,7 +150,7 @@ export const IdeasShow = ({
                 'proposals' && (
                 <>
                   <Divider />
-                  <ProposalInfo idea={idea} compact={compact} />
+                  <ProposalInfo idea={idea} compact />
                   <Divider />
                 </>
               )}

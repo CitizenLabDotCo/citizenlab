@@ -8,7 +8,7 @@ module EmailCampaigns
       campaign = EmailCampaigns::Campaigns::InvitationToCosponsorIdea.first
       proposal = Idea.order(created_at: :asc).first
       user = User.order(created_at: :asc).first
-      item = Notifications::InvitationToCosponsorIdea.new(post: proposal)
+      item = Notifications::InvitationToCosponsorIdea.new(idea: proposal)
       activity = Activity.new(item: item)
       commands = EmailCampaigns::Campaigns::InvitationToCosponsorIdea.new.generate_commands(recipient: user, activity: activity)
       command = commands[0].merge({ recipient: user })

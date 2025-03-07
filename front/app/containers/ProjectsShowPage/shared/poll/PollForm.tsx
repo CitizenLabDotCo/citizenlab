@@ -14,7 +14,7 @@ import useAddPollResponse from 'api/poll_responses/useAddPollResponse';
 
 import { triggerAuthenticationFlow } from 'containers/Authentication/events';
 
-import Button from 'components/UI/Button';
+import Button from 'components/UI/ButtonWithLink';
 import Warning from 'components/UI/Warning';
 
 import { FormattedMessage, MessageDescriptor, useIntl } from 'utils/cl-intl';

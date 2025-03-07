@@ -2,6 +2,8 @@
 import {
   linearScaleControlTester,
   LinearScaleControl,
+  ratingControlTester,
+  RatingControl,
   MapControl,
   mapControlTester,
   inputControlTester,
@@ -56,16 +58,25 @@ import {
   ShapefileUploadControl,
   CosponsorsControl,
   cosponsorsControlTester,
+  rankingControlTester,
+  MatrixControl,
+  matrixControlTester,
+  RankingControl,
+  SentimentLinearScaleControl,
+  sentimentLinearScaleControlTester,
 } from 'components/Form/Components/Controls';
 
 const commonRenderers = [
   { tester: linearScaleControlTester, renderer: LinearScaleControl },
+  { tester: ratingControlTester, renderer: RatingControl },
   { tester: inputControlTester, renderer: InputControl },
   { tester: textAreaControlTester, renderer: TextAreaControl },
   { tester: checkboxControlTester, renderer: CheckboxControl },
   { tester: singleSelectControlTester, renderer: SingleSelectControl },
   { tester: SingleSelectEnumControlTester, renderer: SingleSelectEnumControl },
   { tester: multiSelectControlTester, renderer: MultiSelectControl },
+  { tester: rankingControlTester, renderer: RankingControl },
+  { tester: matrixControlTester, renderer: MatrixControl },
   { tester: WYSIWYGControlTester, renderer: WYSIWYGControl },
   { tester: descriptionControlTester, renderer: DescriptionControl },
   { tester: topicsControlTester, renderer: TopicsControl },
@@ -81,6 +92,10 @@ const commonRenderers = [
   { tester: multilocInputTester, renderer: MultilocInputLayout },
   { tester: orderedLayoutTester, renderer: OrderedLayout },
   { tester: cosponsorsControlTester, renderer: CosponsorsControl },
+  {
+    tester: sentimentLinearScaleControlTester,
+    renderer: SentimentLinearScaleControl,
+  },
 ];
 
 export const selectRenderers = (formType: 'default' | 'input' | 'survey') => {
@@ -88,6 +103,7 @@ export const selectRenderers = (formType: 'default' | 'input' | 'survey') => {
 
   return [
     { tester: linearScaleControlTester, renderer: LinearScaleControl },
+    { tester: ratingControlTester, renderer: RatingControl },
     {
       tester: multiSelectCheckboxControlTester,
       renderer: MultiSelectCheckboxControl,

@@ -9,7 +9,7 @@ import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 
 import CheckboxWithLabel from 'components/HookForm/CheckboxWithLabel';
 import PasswordInput from 'components/HookForm/PasswordInput';
-import Button from 'components/UI/Button';
+import Button from 'components/UI/ButtonWithLink';
 
 import { useIntl, FormattedMessage } from 'utils/cl-intl';
 import {

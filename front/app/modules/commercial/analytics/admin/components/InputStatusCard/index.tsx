@@ -9,7 +9,7 @@ import {
   Dates,
   Resolution,
 } from 'components/admin/GraphCards/typings';
-import Button from 'components/UI/Button';
+import Button from 'components/UI/ButtonWithLink';
 
 import { useIntl } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';

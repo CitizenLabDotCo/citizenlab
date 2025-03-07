@@ -78,12 +78,12 @@ module IdeaAssignment
         name_service = UserDisplayNameService.new(AppConfiguration.instance, recipient)
         [{
           event_payload: {
-            post_title_multiloc: notification.post.title_multiloc,
-            post_body_multiloc: notification.post.body_multiloc,
-            post_author_name: name_service.display_name!(notification.post.author),
-            post_published_at: notification.post.published_at&.iso8601,
-            post_url: Frontend::UrlService.new.model_to_url(notification.post, locale: Locale.new(recipient.locale)),
-            post_assigned_at: notification.post.assigned_at&.iso8601
+            post_title_multiloc: notification.idea.title_multiloc,
+            post_body_multiloc: notification.idea.body_multiloc,
+            post_author_name: name_service.display_name!(notification.idea.author),
+            post_published_at: notification.idea.published_at&.iso8601,
+            post_url: Frontend::UrlService.new.model_to_url(notification.idea, locale: Locale.new(recipient.locale)),
+            post_assigned_at: notification.idea.assigned_at&.iso8601
           }
         }]
       end

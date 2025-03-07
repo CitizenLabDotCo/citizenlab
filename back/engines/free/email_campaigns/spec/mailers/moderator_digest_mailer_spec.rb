@@ -2,7 +2,6 @@
 
 require 'rails_helper'
 
-# TODO: move-old-proposals-test
 RSpec.describe EmailCampaigns::ModeratorDigestMailer do
   describe 'campaign_mail' do
     let_it_be(:recipient) { create(:admin, locale: 'en') }
@@ -63,8 +62,7 @@ RSpec.describe EmailCampaigns::ModeratorDigestMailer do
           successful_proposals: []
         },
         tracked_content: {
-          idea_ids: [],
-          initiative_ids: []
+          idea_ids: []
         }
       }
     end

@@ -73,7 +73,7 @@ Apartment.configure do |config|
     require 'gem_extensions/active_record/connection_adapters/postgre_sql_adapter'
     ActiveRecord::Migrator.prepend(GemExtensions::ActiveRecord::Migrator)
     ActiveRecord::ConnectionAdapters::AbstractAdapter.prepend(GemExtensions::ActiveRecord::ConnectionAdapters::AbstractAdapter)
-    ActiveRecord::ConnectionAdapters::PostgreSQLAdapter.prepend(GemExtensions::ActiveRecord::ConnectionAdapters::PostgreSqlAdapter)
+    ActiveRecord::ConnectionAdapters::PostgreSQLAdapter.prepend(GemExtensions::ActiveRecord::ConnectionAdapters::PostgreSqlAdapter) # rubocop:disable Rails/ActiveSupportOnLoad
 
     config.parallel_migration_threads = parallel_migration_threads
   end

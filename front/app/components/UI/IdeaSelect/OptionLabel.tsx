@@ -4,7 +4,7 @@ import { Box } from '@citizenlab/cl2-component-library';
 
 import useLocalize from 'hooks/useLocalize';
 
-import Button from 'components/UI/Button';
+import Button from 'components/UI/ButtonWithLink';
 
 import { Option } from './typings';
 import { optionIsIdea } from './utils';

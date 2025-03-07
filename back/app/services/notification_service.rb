@@ -6,31 +6,21 @@ class NotificationService
     Notifications::CommentDeletedByAdmin,
     Notifications::CommentMarkedAsSpam,
     Notifications::CommentOnIdeaYouFollow,
-    Notifications::CommentOnInitiativeYouFollow,
     Notifications::CommentOnYourComment,
     Notifications::CosponsorOfYourIdea,
-    Notifications::CosponsorOfYourInitiative,
     Notifications::IdeaMarkedAsSpam,
-    Notifications::InitiativeAssignedToYou,
-    Notifications::InitiativeMarkedAsSpam,
-    Notifications::InitiativeResubmittedForReview,
     Notifications::InternalComments::InternalCommentOnIdeaAssignedToYou,
     Notifications::InternalComments::InternalCommentOnIdeaYouCommentedInternallyOn,
     Notifications::InternalComments::InternalCommentOnIdeaYouModerate,
-    Notifications::InternalComments::InternalCommentOnInitiativeAssignedToYou,
-    Notifications::InternalComments::InternalCommentOnInitiativeYouCommentedInternallyOn,
-    Notifications::InternalComments::InternalCommentOnUnassignedInitiative,
     Notifications::InternalComments::InternalCommentOnUnassignedUnmoderatedIdea,
     Notifications::InternalComments::InternalCommentOnYourInternalComment,
     Notifications::InternalComments::MentionInInternalComment,
     Notifications::InvitationToCosponsorIdea,
-    Notifications::InvitationToCosponsorInitiative,
     Notifications::InviteAccepted,
     Notifications::MentionInComment,
     Notifications::MentionInOfficialFeedback,
     Notifications::NativeSurveyNotSubmitted,
     Notifications::OfficialFeedbackOnIdeaYouFollow,
-    Notifications::OfficialFeedbackOnInitiativeYouFollow,
     Notifications::ProjectFolderModerationRightsReceived,
     Notifications::ProjectModerationRightsReceived,
     Notifications::ProjectPhaseStarted,
@@ -39,7 +29,6 @@ class NotificationService
     Notifications::ProjectReviewRequest,
     Notifications::ProjectReviewStateChange,
     Notifications::StatusChangeOnIdeaYouFollow,
-    Notifications::StatusChangeOnInitiativeYouFollow,
     Notifications::ThresholdReachedForAdmin,
     Notifications::VotingBasketNotSubmitted,
     Notifications::VotingBasketSubmitted,
@@ -59,7 +48,7 @@ class NotificationService
 
   def serializers
     notification_classes.to_h do |klaz|
-      module_prefix = klaz.name.split(/Notifications::/, 2).first # After https://stackoverflow.com/a/7523966/3585671
+      module_prefix = klaz.name.split('Notifications::', 2).first # After https://stackoverflow.com/a/7523966/3585671
       [klaz, "#{module_prefix}WebApi::V1::Notifications::#{klaz.name.demodulize}Serializer".constantize]
     end
   end

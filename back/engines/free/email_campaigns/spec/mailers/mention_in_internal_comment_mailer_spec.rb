@@ -5,7 +5,7 @@ require 'rails_helper'
 RSpec.describe EmailCampaigns::MentionInInternalCommentMailer do
   describe 'MentionInInternalCommentMailer' do
     let_it_be(:recipient) { create(:user, locale: 'en') }
-    let_it_be(:post_image) { create(:idea_image) }
+    let_it_be(:idea_image) { create(:idea_image) }
     let_it_be(:campaign) { EmailCampaigns::Campaigns::MentionInInternalComment.create! }
     let_it_be(:token) { ResetPasswordService.new.generate_reset_password_token recipient }
     let_it_be(:command) do
@@ -17,12 +17,12 @@ RSpec.describe EmailCampaigns::MentionInInternalCommentMailer do
           internal_comment_author_name: 'Matthias Geeke',
           internal_comment_body: '<span class=\"cl-mention-user\" data-user-id=\"386d255e-2ff1-4192-8e50-b3022576be50\" data-user-slug=\"bernhard-coe\">@Bernhard Coe</span>  I mentioned you in this comment. Wowzers!',
           internal_comment_url: 'http://localhost:3000/en/internal_comments/fake-url-comment-does-not-exist',
-          post_title_multiloc: { en: 'Permit paving of front gardens' },
-          post_body_multiloc: {
+          idea_title_multiloc: { en: 'Permit paving of front gardens' },
+          idea_body_multiloc: {
             en: 'There are many advantages to paving your front garden. Less cars on the road and more space for pedestrians.'
           },
-          post_type: 'Idea',
-          post_image_medium_url: post_image.image.versions[:medium].url
+          idea_type: 'Idea',
+          idea_image_medium_url: idea_image.image.versions[:medium].url
         }
       }
     end

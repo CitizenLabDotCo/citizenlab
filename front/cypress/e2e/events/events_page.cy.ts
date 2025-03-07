@@ -8,7 +8,7 @@ describe('All events page', () => {
   const password = randomString();
   const projectTitle = randomString();
   const projectDescriptionPreview = randomString(30);
-  const emailTitle = randomString();
+  const eventTitle = randomString();
 
   let projectId: string;
   let projectSlug: string;
@@ -33,7 +33,7 @@ describe('All events page', () => {
       .then(() => {
         return cy.apiCreateEvent({
           projectId,
-          title: emailTitle,
+          title: eventTitle,
           location: 'Some location with no coordinates',
           includeLocation: false,
           description: 'This is some event',
@@ -54,6 +54,11 @@ describe('All events page', () => {
 
     // Select filters
     cy.get('.e2e-project-filter-selector').should('exist');
+
+    // is accessible
+    cy.injectAxe();
+    cy.checkA11y();
+
     cy.get('.e2e-project-filter-selector').first().click();
     cy.get('.e2e-project-filter-selector')
       .first()
@@ -74,11 +79,12 @@ describe('All events page', () => {
     // Confirm filters work
     cy.get('#e2e-current-and-upcoming-events').within(() => {
       cy.get('.e2e-event-card').should('exist');
-      cy.contains(emailTitle).should('exist');
+      cy.contains(eventTitle).should('exist');
     });
 
     // Go to event page
-    cy.contains(emailTitle).click();
+    cy.contains(eventTitle).click();
+    cy.checkA11y();
 
     // Go back to all events page using the back button
     cy.get('#e2e-go-back-link').should('exist');

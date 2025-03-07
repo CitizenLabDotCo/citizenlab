@@ -223,8 +223,6 @@ describe SmartGroups::Rules::CustomFieldSelect do
       })
     end
 
-    # TODO: test education: return education description instead of number
-
     it 'successfully translates different combinations of rules' do
       expect(custom_field_select_has_value_rule.description_multiloc).to eq({
         'en' => 'Where should we put the immigrants? is In the train station',

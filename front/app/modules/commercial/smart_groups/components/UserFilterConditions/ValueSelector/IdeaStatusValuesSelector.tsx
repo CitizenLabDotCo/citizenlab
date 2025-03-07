@@ -18,28 +18,31 @@ export interface Props {
 }
 
 const IdeaStatusValuesSelector = memo(({ value, onChange }: Props) => {
-  const { data: ideaStatuses } = useIdeaStatuses({});
+  const { data: proposalInputStatuses } = useIdeaStatuses({
+    queryParams: { participation_method: 'proposals' },
+  });
+  const { data: ideationInputStatuses } = useIdeaStatuses({
+    queryParams: { participation_method: 'ideation' },
+  });
   const localize = useLocalize();
   const { formatMessage } = useIntl();
 
-  const methodName = {
-    proposals: formatMessage(messages.ideaStatusMethodProposals),
-    ideation: formatMessage(messages.ideaStatusMethodIdeation),
-  };
-  const generateOptions = (): IOption[] => {
-    if (ideaStatuses) {
-      return ideaStatuses.data.map((ideaStatus) => {
-        return {
-          value: ideaStatus.id,
-          label: `${localize(ideaStatus.attributes.title_multiloc)} (${
-            methodName[ideaStatus.attributes.participation_method]
-          })`,
-        };
-      });
-    } else {
-      return [];
-    }
-  };
+  if (!ideationInputStatuses || !proposalInputStatuses) return null;
+
+  const generateOptions = (): IOption[] => [
+    ...ideationInputStatuses.data.map((status) => ({
+      value: status.id,
+      label: `${localize(status.attributes.title_multiloc)} (${formatMessage(
+        messages.ideaStatusMethodIdeation
+      )})`,
+    })),
+    ...proposalInputStatuses.data.map((status) => ({
+      value: status.id,
+      label: `${localize(status.attributes.title_multiloc)} (${formatMessage(
+        messages.ideaStatusMethodProposals
+      )})`,
+    })),
+  ];
 
   const handleOnChange = (options: IOption[]) => {
     const optionIds = options.map((o) => o.value) as string[];

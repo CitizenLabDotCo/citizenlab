@@ -5,7 +5,10 @@ export const SURVEY_QUESTION_INPUT_TYPES = new Set([
   'select',
   'multiselect',
   'linear_scale',
+  'rating',
   'multiselect_image',
+  'matrix_linear_scale',
+  'ranking',
   'point',
   'line',
   'polygon',
@@ -15,6 +18,7 @@ export const SURVEY_QUESTION_INPUT_TYPES = new Set([
 export const SLICE_SURVEY_QUESTION_INPUT_TYPES = new Set([
   'select',
   'linear_scale',
+  'rating',
 ]);
 
 // Supported input types for registration fields

@@ -9,7 +9,7 @@ import { IUserData } from 'api/users/types';
 
 import { Row } from 'components/admin/ResourceList';
 import Avatar from 'components/Avatar';
-import Button from 'components/UI/Button';
+import Button from 'components/UI/ButtonWithLink';
 
 import { useIntl } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';

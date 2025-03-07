@@ -6,10 +6,10 @@
         border="1px solid #eaeaea">
         <mj-text>
           <h2 style="font-size: 18px; margin-top: 10px; margin-bottom: 10px;">
-            <%= localize_for_recipient(event.post_title_multiloc) %>
+            <%= localize_for_recipient(event.idea_title_multiloc) %>
           </h2>
           <p style="font-size: 14px; margin-top: 10px; color: #84939E;">
-            <%= format_message('by_author', component: 'general', values: { authorName: event.post_author_name }) %>
+            <%= format_message('by_author', component: 'general', values: { authorName: event.idea_author_name }) %>
           </p>
         </mj-text>
       </mj-column>
@@ -39,4 +39,4 @@
     </mj-section>
 
 
-    <%= render partial: 'application/cta_button', locals: { href: event.post_url, message: format_message('cta_review') } %>
+    <%= render partial: 'application/cta_button', locals: { href: event.idea_url, message: format_message('cta_review') } %>

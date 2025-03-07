@@ -8,7 +8,7 @@ import useUserCustomFieldOptions from 'api/user_custom_fields_options/useUserCus
 
 import useLocalize from 'hooks/useLocalize';
 
-import Button from 'components/UI/Button';
+import Button from 'components/UI/ButtonWithLink';
 
 import { injectIntl } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';

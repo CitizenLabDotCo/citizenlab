@@ -32,9 +32,7 @@ resource 'Reactions' do
 
     parameter(
       :reactable_type, <<~DESC.squish,
-        List only the reactions that were cast on a specific type of resource. 'initiative'
-        corresponds to proposals on the platform. 'idea-comment' and 'initiative-comment'
-        filter reactions on comments on ideas and comments on proposals, respectively.
+        List only the reactions that were cast on a specific type of resource.
       DESC
       required: false,
       in: 'query',
@@ -53,18 +51,16 @@ resource 'Reactions' do
       expect(json_response_body[:reactions].first.keys).to match_array(
         %i[
           id mode reactable_id reactable_type created_at updated_at
-          user_id post_id post_type project_id
+          user_id idea_id project_id
         ]
       )
 
       idea = json_response_body[:reactions].find { |r| r[:id] == idea_reactions.first.id }
-      expect(idea[:post_type]).to eq 'Idea'
-      expect(idea[:post_id]).to eq idea_reactions.first.reactable.id
+      expect(idea[:idea_id]).to eq idea_reactions.first.reactable.id
       expect(idea[:project_id]).to eq idea_reactions.first.reactable.project_id
 
       idea_comment = json_response_body[:reactions].find { |r| r[:id] == idea_comment_reaction.id }
-      expect(idea_comment[:post_type]).to eq 'Idea'
-      expect(idea_comment[:post_id]).not_to be_nil
+      expect(idea_comment[:idea_id]).not_to be_nil
       expect(idea_comment[:project_id]).not_to be_nil
     end
 
@@ -93,7 +89,7 @@ resource 'Reactions' do
           type: kind_of(String),
           title: 'Invalid value for an enum parameter',
           status: 400,
-          detail: "The value '#{reactable_type}' is not allowed for the parameter 'reactable_type'. Accepted values are: idea, initiative, comment, idea-comment, initiative-comment.",
+          detail: "The value '#{reactable_type}' is not allowed for the parameter 'reactable_type'. Accepted values are: idea, comment.",
           parameter_name: 'reactable_type',
           parameter_value: reactable_type,
           allowed_values: PublicApi::V2::ReactionsController::REACTABLE_TYPES

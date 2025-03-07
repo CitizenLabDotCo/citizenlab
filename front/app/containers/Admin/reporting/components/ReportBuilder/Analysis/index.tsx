@@ -27,7 +27,7 @@ import Analyses from './Analyses';
 import messages from './messages';
 
 const Analysis = ({ selectedLocale }: { selectedLocale: string }) => {
-  const isAnalysisEnabled = useFeatureFlag({
+  const isAnalysisAllowed = useFeatureFlag({
     name: 'analysis',
     onlyCheckAllowed: true,
   });
@@ -71,7 +71,7 @@ const Analysis = ({ selectedLocale }: { selectedLocale: string }) => {
 
   return (
     <>
-      {!isAnalysisEnabled && (
+      {!isAnalysisAllowed && (
         <Box p="12px">
           <Title variant="h3">{formatMessage(messages.upsellTitle)}</Title>
           <Text>{formatMessage(messages.upsellDescription)}</Text>
@@ -84,7 +84,7 @@ const Analysis = ({ selectedLocale }: { selectedLocale: string }) => {
           </Tooltip>
         </Box>
       )}
-      {isAnalysisEnabled && (
+      {isAnalysisAllowed && (
         <Box>
           <ProjectFilter
             id="e2e-report-builder-analysis-project-filter-box"

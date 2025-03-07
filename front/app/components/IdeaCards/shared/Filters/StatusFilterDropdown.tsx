@@ -1,5 +1,6 @@
 import React, { useMemo } from 'react';
 
+import { IdeaStatusParticipationMethod } from 'api/idea_statuses/types';
 import useIdeaStatuses from 'api/idea_statuses/useIdeaStatuses';
 
 import useLocalize from 'hooks/useLocalize';
@@ -15,7 +16,7 @@ interface Props {
   selectedStatusIds: string[];
   alignment: 'left' | 'right';
   onChange: (value: string[]) => void;
-  participationMethod: 'ideation' | 'proposals';
+  participationMethod: IdeaStatusParticipationMethod;
   isScreeningEnabled?: boolean;
 }
 
@@ -30,7 +31,7 @@ const StatusFilterDropdown = ({
   const { formatMessage } = useIntl();
 
   const { data: ideaStatuses } = useIdeaStatuses({
-    participation_method: participationMethod,
+    queryParams: { participation_method: participationMethod },
   });
 
   const options = useMemo(() => {

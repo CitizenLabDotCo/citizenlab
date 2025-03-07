@@ -25,14 +25,12 @@ resource 'Users' do
 
         example 'Remove user as assignee', document: false do
           assigned_idea = create(:idea, assignee: assignee)
-          assigned_initiative = create(:initiative, assignee: assignee)
 
           do_request
 
           expect(response_status).to eq 200
           expect(assignee.reload).not_to be_admin
           expect(assigned_idea.reload.assignee_id).to be_blank
-          expect(assigned_initiative.reload.assignee_id).to be_blank
         end
 
         example 'Remove user as default assignee', document: false do
@@ -196,13 +194,11 @@ resource 'Users' do
 
       example 'Remove deleted user as assignee', document: false do
         assigned_idea = create(:idea, assignee: @subject_user)
-        assigned_initiative = create(:initiative, assignee: @subject_user)
 
         do_request
 
         expect(response_status).to eq 200
         expect(assigned_idea.reload.assignee_id).to be_blank
-        expect(assigned_initiative.reload.assignee_id).to be_blank
       end
     end
   end

@@ -6,6 +6,8 @@ import {
   Text,
   colors,
   Button,
+  Badge,
+  Tooltip,
 } from '@citizenlab/cl2-component-library';
 import { get } from 'lodash-es';
 import { rgba } from 'polished';
@@ -13,21 +15,24 @@ import { useFormContext, useFieldArray } from 'react-hook-form';
 import styled from 'styled-components';
 
 import {
+  ICustomFieldSettingsTab,
   IFlatCustomField,
   IFlatCustomFieldWithIndex,
+  IMatrixStatementsType,
   IOptionsType,
 } from 'api/custom_fields/types';
 import useDuplicateMapConfig from 'api/map_config/useDuplicateMapConfig';
 
+import { Conflict } from 'components/FormBuilder/edit/utils';
 import {
   FormBuilderConfig,
   builtInFieldKeys,
-  generateTempId,
 } from 'components/FormBuilder/utils';
 import Modal from 'components/UI/Modal';
 import MoreActionsMenu from 'components/UI/MoreActionsMenu';
 
 import { useIntl } from 'utils/cl-intl';
+import { generateTempId } from 'utils/helperUtils';
 
 import { FlexibleRow } from '../../FlexibleRow';
 import { getFieldBackgroundColor } from '../utils';
@@ -36,6 +41,7 @@ import FieldTitle from './FieldTitle';
 import IconsAndBadges from './IconsAndBadges';
 import Logic from './Logic';
 import messages from './messages';
+import { getConflictMessageKey } from './utils';
 
 const FormFieldsContainer = styled(Box)`
   &:hover {
@@ -51,6 +57,7 @@ type Props = {
   builderConfig: FormBuilderConfig;
   fieldNumbers: Record<string, number>;
   closeSettings: (triggerAutosave?: boolean) => void;
+  conflicts?: Conflict[];
 };
 
 export const FormField = ({
@@ -60,6 +67,7 @@ export const FormField = ({
   builderConfig,
   fieldNumbers,
   closeSettings,
+  conflicts,
 }: Props) => {
   const {
     watch,
@@ -83,26 +91,36 @@ export const FormField = ({
   const { mutateAsync: duplicateMapConfig } = useDuplicateMapConfig();
 
   const hasErrors = !!errors.customFields?.[index];
+  const message = getConflictMessageKey(conflicts);
 
-  const showLogicOnRow =
-    // TODO: Fix this the next time the file is edited.
-    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-    field.input_type !== 'page' ? field.logic?.rules : field.logic;
+  // NOTE: We always show the default page logic on a page field
+  const showLogicOnRow = field.input_type !== 'page' ? field.logic.rules : true;
 
   const isFieldGrouping = ['page', 'section'].includes(field.input_type);
 
   // Group is only deletable when we have more than one group
-  const isGroupDeletable =
-    formCustomFields.filter((field) => field.input_type === groupingType)
-      .length > 1;
+  const getGroupDeletable = () => {
+    const groupFields = formCustomFields.filter(
+      (field) => field.input_type === groupingType
+    );
+
+    if (builderConfig.type === 'survey') {
+      return groupFields.length > 2;
+    } else {
+      return groupFields.length > 1;
+    }
+  };
+
+  const isGroupDeletable = getGroupDeletable();
+
   const isDeleteShown =
     // TODO: Fix this the next time the file is edited.
     // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     !(field?.input_type !== groupingType || isGroupDeletable) ||
     get(lockedAttributes, 'enabled', false);
 
-  const editFieldAndValidate = () => {
-    onEditField({ ...field, index });
+  const editFieldAndValidate = (defaultTab: ICustomFieldSettingsTab) => {
+    onEditField({ ...field, index, defaultTab });
     trigger();
   };
 
@@ -128,6 +146,7 @@ export const FormField = ({
       key: _key,
       code: _code,
       options,
+      matrix_statements,
       ...rest
     } = originalField;
 
@@ -135,6 +154,16 @@ export const FormField = ({
     if (options) {
       duplicatedOptions = options.map(
         ({ id: _optionId, temp_id: _optionalTempId, ...rest }) => ({
+          temp_id: generateTempId(),
+          ...rest,
+        })
+      );
+    }
+
+    let duplicatedStatements: IMatrixStatementsType[] = [];
+    if (matrix_statements) {
+      duplicatedStatements = matrix_statements.map(
+        ({ id: _statementId, temp_id: _optionalTempId, ...rest }) => ({
           temp_id: generateTempId(),
           ...rest,
         })
@@ -149,6 +178,9 @@ export const FormField = ({
       },
       ...(duplicatedOptions.length > 0
         ? { options: duplicatedOptions }
+        : undefined),
+      ...(duplicatedStatements.length > 0
+        ? { matrix_statements: duplicatedStatements }
         : undefined),
       isLocalOnly: true,
       title_multiloc: addCopyIndicatorToTitle(_title_multiloc),
@@ -297,7 +329,7 @@ export const FormField = ({
         key={field.id}
         background={getFieldBackgroundColor(selectedFieldId, field, hasErrors)}
         onClick={() => {
-          editFieldAndValidate();
+          editFieldAndValidate('content');
         }}
         data-cy="e2e-field-row"
       >
@@ -319,14 +351,6 @@ export const FormField = ({
                   field={field}
                   fieldNumber={fieldNumbers[field.id]}
                 />
-                {showLogicOnRow && (
-                  <Logic
-                    field={field}
-                    formCustomFields={formCustomFields}
-                    fieldNumbers={fieldNumbers}
-                    formEndPageLogicOption={formEndPageLogicOption}
-                  />
-                )}
               </Box>
             </Box>
             <Box
@@ -335,30 +359,50 @@ export const FormField = ({
               justifyContent="flex-end"
               alignItems="center"
             >
+              {message && (
+                <Tooltip content={formatMessage(message)} theme="dark">
+                  <Box>
+                    <Badge color={colors.orange500} className="inverse">
+                      {formatMessage(messages.conflictingLogic)}
+                    </Badge>
+                  </Box>
+                </Tooltip>
+              )}
               <IconsAndBadges
                 field={field}
                 displayBuiltInFields={displayBuiltInFields}
               />
             </Box>
           </Box>
-          <Box
-            mr="32px"
-            ml="12px"
-            display="flex"
-            alignItems="center"
-            justifyContent="center"
-            h="100%"
-          >
-            <MoreActionsMenu
-              showLabel={false}
-              color={colors.textSecondary}
-              actions={actions}
-              onClick={(event) => event.stopPropagation()}
-              data-cy="e2e-more-field-actions"
-              ref={moreActionsButtonRef}
-            />
-          </Box>
+          {field.key !== 'survey_end' && (
+            <Box
+              mr="32px"
+              ml="12px"
+              display="flex"
+              alignItems="center"
+              justifyContent="center"
+              h="100%"
+            >
+              <MoreActionsMenu
+                showLabel={false}
+                color={colors.textSecondary}
+                actions={actions}
+                onClick={(event) => event.stopPropagation()}
+                data-cy="e2e-more-field-actions"
+                ref={moreActionsButtonRef}
+              />
+            </Box>
+          )}
         </FlexibleRow>
+        {showLogicOnRow && (
+          <Logic
+            field={field}
+            formCustomFields={formCustomFields}
+            fieldNumbers={fieldNumbers}
+            formEndPageLogicOption={formEndPageLogicOption}
+            handleOpenSettings={editFieldAndValidate}
+          />
+        )}
       </FormFieldsContainer>
       <Modal
         opened={showDeleteModal}

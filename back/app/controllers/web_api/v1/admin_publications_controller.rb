@@ -45,8 +45,15 @@ class WebApi::V1::AdminPublicationsController < ApplicationController
   def index_select_and_order_by_ids
     ids = params[:ids]
 
-    admin_publications = policy_scope(AdminPublication.includes(:parent))
-    admin_publications = admin_publications.not_draft.where(id: ids).in_order_of(:id, ids)
+    visible_not_draft_admin_publications = policy_scope(AdminPublication.includes(:parent)).not_draft
+    admin_publications = admin_publication_filterer.filter(visible_not_draft_admin_publications,
+      params.merge(current_user: current_user, remove_not_allowed_parents: true))
+
+    # Performance-wise it is not optimal to break the query-chain like this, but it avoids a conflict
+    # between the in_order_of method and SELECT_DISTINCT that can be included elsewhere in the query chain.
+    # Since we do not expect large collections to be selected for this widget, this is an acceptable trade-off.
+    subquery = admin_publications.where(id: ids).select(:id).distinct
+    admin_publications = AdminPublication.where(id: subquery).in_order_of(:id, ids)
 
     @admin_publications = paginate admin_publications
     @admin_publications = includes_publications(@admin_publications)

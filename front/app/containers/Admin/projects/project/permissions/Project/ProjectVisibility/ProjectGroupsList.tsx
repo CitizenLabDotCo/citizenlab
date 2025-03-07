@@ -14,7 +14,7 @@ import useProjectGroups from 'api/project_groups/useProjectGroups';
 import useLocalize from 'hooks/useLocalize';
 
 import { List, Row } from 'components/admin/ResourceList';
-import Button from 'components/UI/Button';
+import Button from 'components/UI/ButtonWithLink';
 import MultipleSelect from 'components/UI/MultipleSelect';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
@@ -53,10 +53,9 @@ const GroupMembershipCount = styled.p``;
 
 interface Props {
   projectId: string;
-  onAddButtonClicked: () => void;
 }
 
-const ProjectGroupsList = ({ projectId, onAddButtonClicked }: Props) => {
+const ProjectGroupsList = ({ projectId }: Props) => {
   const localize = useLocalize();
   const { mutateAsync: addProjectGroup } = useAddProjectGroup();
   const { mutate: deleteProjectGroup } = useDeleteProjectGroup({ projectId });
@@ -94,8 +93,6 @@ const ProjectGroupsList = ({ projectId, onAddButtonClicked }: Props) => {
       try {
         await Promise.all(promises);
         setSelectedGroups(null);
-
-        onAddButtonClicked();
       } catch (error) {
         // eslint-disable-next-line no-console
         if (process.env.NODE_ENV === 'development') console.log(error);

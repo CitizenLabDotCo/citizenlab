@@ -6,8 +6,7 @@
 #
 #  id                 :uuid             not null, primary key
 #  author_id          :uuid
-#  post_type          :string
-#  post_id            :uuid
+#  idea_id            :uuid
 #  parent_id          :uuid
 #  lft                :integer          not null
 #  rgt                :integer          not null
@@ -22,21 +21,21 @@
 #
 #  index_internal_comments_on_author_id   (author_id)
 #  index_internal_comments_on_created_at  (created_at)
+#  index_internal_comments_on_idea_id     (idea_id)
 #  index_internal_comments_on_lft         (lft)
 #  index_internal_comments_on_parent_id   (parent_id)
-#  index_internal_comments_on_post        (post_type,post_id)
-#  index_internal_comments_on_post_id     (post_id)
 #  index_internal_comments_on_rgt         (rgt)
 #
 # Foreign Keys
 #
 #  fk_rails_...  (author_id => users.id)
+#  fk_rails_...  (idea_id => ideas.id)
 #
 class InternalComment < ApplicationRecord
   acts_as_nested_set dependent: :destroy, counter_cache: :children_count
 
   belongs_to :author, class_name: 'User', optional: true
-  belongs_to :post, polymorphic: true
+  belongs_to :idea
 
   before_validation :set_publication_status, on: :create
   before_validation :sanitize_body
@@ -44,7 +43,7 @@ class InternalComment < ApplicationRecord
   has_many :notifications, dependent: :nullify
 
   counter_culture(
-    :post,
+    :idea,
     column_name: proc { |model| model.published? ? 'internal_comments_count' : nil },
     column_names: {
       ['internal_comments.publication_status = ?', 'published'] => 'internal_comments_count'
@@ -52,38 +51,14 @@ class InternalComment < ApplicationRecord
     touch: true
   )
 
-  # rubocop:disable Rails/InverseOf
-  # This code allows us to do something like comments.include(:idea)
-  # After https://stackoverflow.com/a/16124295/3585671
-  belongs_to :idea, -> { joins(:internal_comments).where(internal_comments: { post_type: 'Idea' }) },
-    foreign_key: 'post_id',
-    optional: true,
-    class_name: 'Idea'
-
-  def idea
-    return unless post_type == 'Idea'
-
-    super
-  end
-
-  belongs_to :initiative, -> { joins(:internal_comments).where(internal_comments: { post_type: 'Initiative' }) },
-    foreign_key: 'post_id',
-    optional: true,
-    class_name: 'Initiative'
-
-  def initiative
-    return unless post_type == 'Initiative'
-
-    super
-  end
-  # rubocop:enable Rails/InverseOf
-
   PUBLICATION_STATUSES = %w[published deleted]
 
-  validates :body, presence: true
+  validates :body, :idea, presence: true
   validates :publication_status, presence: true, inclusion: { in: PUBLICATION_STATUSES }
 
   scope :published, -> { where publication_status: 'published' }
+
+  delegate :project_id, to: :idea
 
   def published?
     publication_status == 'published'
@@ -91,10 +66,6 @@ class InternalComment < ApplicationRecord
 
   def author_name
     @author_name ||= author&.full_name
-  end
-
-  def project_id
-    post.try(:project_id)
   end
 
   private

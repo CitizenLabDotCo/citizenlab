@@ -779,7 +779,7 @@ function apiCreateProject({
   visibleTo,
 }: {
   title: string;
-  descriptionPreview: string;
+  descriptionPreview?: string;
   description: string;
   publicationStatus?: IProjectAttributes['publication_status'];
   assigneeId?: string;
@@ -889,10 +889,9 @@ function apiCreateFolder({
   publicationStatus = 'published',
 }: {
   title: string;
-  descriptionPreview: string;
+  descriptionPreview?: string;
   description: string;
   publicationStatus?: 'draft' | 'published' | 'archived';
-  projectIds?: string[];
 }) {
   return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
     const adminJwt = response.body.jwt;
@@ -1624,7 +1623,25 @@ function apiCreateSurveyQuestions(
       method: 'PATCH',
       url: `web_api/v1/admin/phases/${phaseId}/custom_fields/update_all`,
       body: {
-        custom_fields: inputTypes.map(createBaseCustomField(imageId)),
+        custom_fields: [
+          ...inputTypes.map(createBaseCustomField(imageId)),
+          {
+            id: randomString(),
+            input_type: 'page',
+            logic: {},
+            required: false,
+            enabled: true,
+            title_multiloc: {
+              en: 'Thank you for sharing your input!',
+            },
+            key: 'survey_end',
+            code: null,
+            page_layout: 'default',
+            description_multiloc: {
+              en: 'Your input has been successfully submitted.',
+            },
+          },
+        ],
       },
     });
   });

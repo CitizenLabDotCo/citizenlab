@@ -7,7 +7,7 @@ import { object, boolean } from 'yup';
 
 import authProvidersMessages from 'containers/Authentication/steps/AuthProviders/messages';
 
-import Button from 'components/UI/Button';
+import Button from 'components/UI/ButtonWithLink';
 
 import { useIntl } from 'utils/cl-intl';
 

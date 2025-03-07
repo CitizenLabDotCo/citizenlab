@@ -69,7 +69,7 @@ resource 'ProjectFolder' do
 
     example 'Get a folder includes ideas_count, comments_count and followers_count', document: false do
       idea = create(:idea)
-      create(:comment, post: idea)
+      create(:comment, idea: idea)
       draft_project = create(:project, admin_publication_attributes: { publication_status: 'draft' })
       create(:idea, project: draft_project)
       create(:comment)

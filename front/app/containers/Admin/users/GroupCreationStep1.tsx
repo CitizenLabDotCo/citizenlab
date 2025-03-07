@@ -8,7 +8,7 @@ import styled from 'styled-components';
 import { IGroupData, MembershipType } from 'api/groups/types';
 
 import Outlet from 'components/Outlet';
-import Button from 'components/UI/Button';
+import Button from 'components/UI/ButtonWithLink';
 
 import { injectIntl } from 'utils/cl-intl';
 import FormattedMessage from 'utils/cl-intl/FormattedMessage';

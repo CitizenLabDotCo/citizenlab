@@ -71,7 +71,7 @@ resource 'Moderations' do
     header_token_for @moderator
 
     @idea = create(:idea, project: @project)
-    @comment = create(:comment, post: @idea)
+    @comment = create(:comment, idea: @idea)
     @flag = create(:inappropriate_content_flag, flaggable: @comment, toxicity_label: 'insult')
     @other_idea = create(:idea, project: @project)
   end

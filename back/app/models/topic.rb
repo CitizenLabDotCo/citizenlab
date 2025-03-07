@@ -34,8 +34,6 @@ class Topic < ApplicationRecord
   has_many :projects, through: :projects_allowed_input_topics
   has_many :ideas_topics, dependent: :destroy
   has_many :ideas, through: :ideas_topics
-  has_many :initiatives_topics, dependent: :destroy
-  has_many :initiatives, through: :initiatives_topics
   has_many :followers, as: :followable, dependent: :destroy
 
   has_many :static_pages_topics, dependent: :restrict_with_error

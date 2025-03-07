@@ -1,22 +1,14 @@
 import React, { useState } from 'react';
 
 import { Tooltip, Box } from '@citizenlab/cl2-component-library';
-import styled from 'styled-components';
 
-import ClickOutside from 'utils/containers/clickOutside';
+import ClickOutsideContainer from '../_shared/ClickOutsideContainer';
 
 import Calendar from './Calendar';
 import Input from './Input';
 import { Props } from './typings';
 
 const WIDTH = '310px';
-
-const StyledClickOutside = styled(ClickOutside)`
-  div.tippy-box {
-    max-width: ${WIDTH} !important;
-    padding: 8px;
-  }
-`;
 
 const DateSinglePicker = ({
   id,
@@ -25,12 +17,16 @@ const DateSinglePicker = ({
   startMonth,
   endMonth,
   defaultMonth,
+  placement = 'bottom',
   onChange,
 }: Props) => {
   const [calendarOpen, setCalendarOpen] = useState(false);
 
   return (
-    <StyledClickOutside onClickOutside={() => setCalendarOpen(false)}>
+    <ClickOutsideContainer
+      width={WIDTH}
+      onClickOutside={() => setCalendarOpen(false)}
+    >
       <Tooltip
         content={
           <Box width={WIDTH}>
@@ -49,7 +45,7 @@ const DateSinglePicker = ({
             />
           </Box>
         }
-        placement="bottom"
+        placement={placement}
         visible={calendarOpen}
       >
         <Input
@@ -59,7 +55,7 @@ const DateSinglePicker = ({
           onClick={() => setCalendarOpen(true)}
         />
       </Tooltip>
-    </StyledClickOutside>
+    </ClickOutsideContainer>
   );
 };
 

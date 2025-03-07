@@ -9,14 +9,13 @@ import {
   Icon,
   IconButton,
   Tooltip,
+  Divider,
 } from '@citizenlab/cl2-component-library';
 
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useRefreshProjectPreviewToken from 'api/projects/useRefreshProjectPreviewToken';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
-
-import Divider from 'components/admin/Divider';
 
 import { trackEventByName } from 'utils/analytics';
 import { useIntl } from 'utils/cl-intl';
@@ -26,15 +25,14 @@ import messages from '../messages';
 import RegenerateLinkModal from './RegenerateLinkModal';
 import tracks from './tracks';
 
-const ShareLink = ({
-  projectId,
-  projectSlug,
-  token,
-}: {
+interface Props {
   projectId: string;
   projectSlug: string;
   token: string;
-}) => {
+  className?: string;
+}
+
+const ShareLink = ({ projectId, projectSlug, token, className }: Props) => {
   const [refreshModalIsOpen, setRefreshModalIsOpen] = useState(false);
   const isPreviewLinkEnabled = useFeatureFlag({ name: 'project_preview_link' });
   const { data: appConfiguration } = useAppConfiguration();
@@ -68,7 +66,7 @@ const ShareLink = ({
     );
   };
   return (
-    <Box position="relative">
+    <Box position="relative" className={className}>
       <Button
         id="e2e-share-link"
         buttonStyle="secondary-outlined"

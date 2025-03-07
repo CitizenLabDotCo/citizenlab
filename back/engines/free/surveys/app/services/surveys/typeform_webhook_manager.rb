@@ -24,7 +24,8 @@ module Surveys
     # @param [String] url_to new form url
     def participation_context_changed(phase, pm_from, pm_to, service_from, service_to, url_from, url_to)
       return save_webhook(url_to, phase) if pm_to == 'survey' && service_to == 'typeform' && url_to
-      return delete_webhook(url_from, phase.id) if pm_from == 'survey' && service_from == 'typeform'
+
+      delete_webhook(url_from, phase.id) if pm_from == 'survey' && service_from == 'typeform'
     end
 
     def participation_context_created(phase, pm, service, url)

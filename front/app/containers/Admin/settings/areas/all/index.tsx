@@ -12,18 +12,16 @@ import useCustomPages from 'api/custom_pages/useCustomPages';
 import useLocalize from 'hooks/useLocalize';
 
 import { ButtonWrapper } from 'components/admin/PageWrapper';
-import {
-  SortableList,
-  SortableRow,
-  TextCell,
-} from 'components/admin/ResourceList';
+import { TextCell } from 'components/admin/ResourceList';
+import SortableList from 'components/admin/ResourceList/SortableList';
+import SortableRow from 'components/admin/ResourceList/SortableRow';
 import {
   Section,
   SectionDescription,
   SectionTitle,
 } from 'components/admin/Section';
 import T from 'components/T';
-import Button from 'components/UI/Button';
+import Button from 'components/UI/ButtonWithLink';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import Link from 'utils/cl-router/Link';

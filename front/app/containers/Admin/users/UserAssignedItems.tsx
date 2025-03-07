@@ -8,6 +8,7 @@ import {
   Text,
   Button,
   Tooltip,
+  Divider,
 } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
@@ -19,8 +20,6 @@ import useDeleteProjectModerator from 'api/project_moderators/useDeleteProjectMo
 import { IUserData } from 'api/users/types';
 
 import useLocalize from 'hooks/useLocalize';
-
-import Divider from 'components/admin/Divider';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import Link from 'utils/cl-router/Link';

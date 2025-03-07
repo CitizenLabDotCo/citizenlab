@@ -16,7 +16,7 @@ import styled, { useTheme } from 'styled-components';
 import useLocalize from 'hooks/useLocalize';
 
 import { DEFAULT_PADDING } from 'components/admin/ContentBuilder/constants';
-import Button from 'components/UI/Button';
+import Button from 'components/UI/ButtonWithLink';
 import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
 
 import { useIntl } from 'utils/cl-intl';
@@ -127,7 +127,6 @@ const CallToAction = ({
   const theme = useTheme();
   const isSmallerThanTablet = useBreakpoint('tablet');
   const lоcalize = useLocalize();
-  const isSmallerThanSmallTablet = useBreakpoint('tablet');
 
   return (
     <Box
@@ -161,7 +160,7 @@ const CallToAction = ({
                 buttonStyle="text"
                 textColor={theme.colors.tenantPrimary}
                 textDecorationHover="underline"
-                fullWidth={isSmallerThanSmallTablet}
+                fullWidth={isSmallerThanTablet}
                 linkTo={getLink(secondaryButtonLink)}
                 scrollToTop
                 openLinkInNewTab={openInNewTab(secondaryButtonLink)}

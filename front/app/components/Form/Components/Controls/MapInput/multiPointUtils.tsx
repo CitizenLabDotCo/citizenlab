@@ -14,7 +14,6 @@ import {
   getLineSymbol,
   getShapeSymbol,
 } from 'components/EsriMap/utils';
-import { FormData } from 'components/Form/typings';
 
 import { projectPointToWebMercator } from 'utils/mapUtils/map';
 
@@ -178,7 +177,7 @@ type HandlePointDragProps = {
   pointBeingDragged: React.MutableRefObject<Graphic | null>;
   temporaryDragGraphic: React.MutableRefObject<Graphic | null>;
   tenantSecondaryColor: string;
-  data: FormData;
+  data: any;
   inputType: MapInputType;
   pointSymbolSize?: number;
 };
@@ -370,7 +369,12 @@ export const updateMultiPointsDataAndDisplay = ({
       const graphicsLayer = new GraphicsLayer({ title: 'User Input' });
       graphicsLayer.add(lineGraphic);
       graphicsLayer.addMany(pointGraphics);
-      mapView.map.add(graphicsLayer);
+
+      // mapView.map is not always defined, so we do need to check here.
+      // The type comes from ArcGIS, so we can't change it.
+      // We need to include the eslint comment below.
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+      mapView.map?.add(graphicsLayer);
     }
   }
 };

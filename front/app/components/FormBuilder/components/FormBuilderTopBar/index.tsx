@@ -25,9 +25,10 @@ import {
   FormBuilderConfig,
   getIsPostingEnabled,
 } from 'components/FormBuilder/utils';
-import Button from 'components/UI/Button';
+import Button from 'components/UI/ButtonWithLink';
 import GoBackButton from 'components/UI/GoBackButton';
 import Modal from 'components/UI/Modal';
+import UpsellTooltip from 'components/UpsellTooltip';
 
 import { trackEventByName } from 'utils/analytics';
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
@@ -60,10 +61,10 @@ const FormBuilderTopBar = ({
   setAutosaveEnabled,
   showAutosaveToggle,
 }: FormBuilderTopBarProps) => {
-  const printedFormsEnabled =
-    useFeatureFlag({
-      name: 'import_printed_forms',
-    }) && builderConfig.onDownloadPDF;
+  const importPrintedFormsAllowed = useFeatureFlag({
+    name: 'import_printed_forms',
+    onlyCheckAllowed: true,
+  });
   const localize = useLocalize();
   const { formatMessage } = useIntl();
   const { projectId, phaseId } = useParams() as {
@@ -168,15 +169,18 @@ const FormBuilderTopBar = ({
             />
           </Box>
         )}
-        {printedFormsEnabled && (
-          <Button
-            buttonStyle="secondary-outlined"
-            icon="download"
-            mr="20px"
-            onClick={builderConfig.onDownloadPDF}
-          >
-            <FormattedMessage {...ownMessages.downloadPDF} />
-          </Button>
+        {builderConfig.onDownloadPDF && (
+          <UpsellTooltip disabled={importPrintedFormsAllowed}>
+            <Button
+              buttonStyle="secondary-outlined"
+              icon="download"
+              mr="20px"
+              onClick={builderConfig.onDownloadPDF}
+              disabled={!importPrintedFormsAllowed}
+            >
+              <FormattedMessage {...ownMessages.downloadPDF} />
+            </Button>
+          </UpsellTooltip>
         )}
         <Button
           buttonStyle="secondary-outlined"

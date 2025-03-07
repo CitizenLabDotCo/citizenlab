@@ -10,19 +10,31 @@ import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
 export const ideationConfig: FormBuilderConfig = {
+  type: 'input_form',
   formBuilderTitle: messages.inputForm,
   viewFormLinkCopy: messages.viewFormLinkCopy,
   formSavedSuccessMessage: messages.successMessage,
   toolboxTitle: messages.customToolboxTitle,
 
-  toolboxFieldsToExclude: [
-    'page',
-    'file_upload',
-    'shapefile_upload',
-    'point',
-    'line',
-    'polygon',
-    'cosponsor_ids',
+  toolboxFieldsToInclude: [
+    // When adding new fields, confirm that the BE list matches
+    'text',
+    'multiline_text',
+    'multiselect',
+    'number',
+    'select',
+    'linear_scale',
+    'ranking',
+    'rating',
+    'matrix_linear_scale',
+    'sentiment_linear_scale',
+    'section',
+    'title_multiloc',
+    'html_multiloc',
+    'files',
+    'image_files',
+    'topic_ids',
+    'multiselect_image',
   ],
   displayBuiltInFields: true,
   builtInFields: [
@@ -44,7 +56,7 @@ export const ideationConfig: FormBuilderConfig = {
   groupingType: 'section',
   getWarningNotice: () => {
     return (
-      <Box id="e2e-warning-notice" mb="20px">
+      <Box id="e2e-warning-notice" mb="16px">
         <Warning>
           <FormattedMessage {...messages.existingSubmissionsWarning} />
         </Warning>
@@ -54,18 +66,32 @@ export const ideationConfig: FormBuilderConfig = {
 };
 
 export const proposalsConfig: FormBuilderConfig = {
+  type: 'input_form',
   formBuilderTitle: messages.inputForm,
   viewFormLinkCopy: messages.viewFormLinkCopy,
   formSavedSuccessMessage: messages.successMessage,
   toolboxTitle: messages.customToolboxTitle,
 
-  toolboxFieldsToExclude: [
-    'page',
-    'file_upload',
-    'shapefile_upload',
-    'point',
-    'line',
-    'polygon',
+  toolboxFieldsToInclude: [
+    // When adding new fields, confirm that the BE list matches
+    'text',
+    'multiline_text',
+    'multiselect',
+    'number',
+    'select',
+    'linear_scale',
+    'ranking',
+    'rating',
+    'matrix_linear_scale',
+    'sentiment_linear_scale',
+    'section',
+    'title_multiloc',
+    'html_multiloc',
+    'files',
+    'image_files',
+    'topic_ids',
+    'multiselect_image',
+    'cosponsor_ids',
   ],
   displayBuiltInFields: true,
   builtInFields: [
@@ -87,7 +113,7 @@ export const proposalsConfig: FormBuilderConfig = {
   groupingType: 'section',
   getWarningNotice: () => {
     return (
-      <Box id="e2e-warning-notice" mb="20px">
+      <Box id="e2e-warning-notice" mb="16px">
         <Warning>
           <FormattedMessage {...messages.existingSubmissionsWarning} />
         </Warning>

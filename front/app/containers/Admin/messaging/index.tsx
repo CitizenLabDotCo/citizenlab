@@ -24,11 +24,13 @@ const MessagingDashboard = () => {
       name: 'manual-emails',
       label: formatMessage(messages.customEmails),
       url: '/admin/messaging/emails/custom',
+      className: 'intercom-messaging-custom-emails',
     },
     {
       name: 'automated-emails',
       label: formatMessage(messages.tabAutomatedEmails),
       url: '/admin/messaging/emails/automated',
+      className: 'intercom-messaging-automated-emails',
     },
   ];
 
@@ -39,12 +41,13 @@ const MessagingDashboard = () => {
         description={messages.helmetDescription}
       />
       <NavigationTabs>
-        {tabs.map(({ url, label }) => (
+        {tabs.map(({ url, label, className }) => (
           <Tab
             label={label}
             url={url}
             key={url}
             active={isTopBarNavActive('/admin/messaging', pathname, url)}
+            className={className}
           />
         ))}
       </NavigationTabs>

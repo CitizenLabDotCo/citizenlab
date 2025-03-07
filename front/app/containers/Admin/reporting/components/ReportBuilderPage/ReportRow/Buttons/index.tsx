@@ -6,7 +6,7 @@ import useCopyReport from 'api/reports/useCopyReport';
 import useDeleteReport from 'api/reports/useDeleteReport';
 import useReport from 'api/reports/useReport';
 
-import Button from 'components/UI/Button';
+import Button from 'components/UI/ButtonWithLink';
 
 import { useIntl } from 'utils/cl-intl';
 

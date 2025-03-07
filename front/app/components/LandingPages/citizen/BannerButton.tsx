@@ -2,7 +2,7 @@ import React, { MouseEvent, KeyboardEvent } from 'react';
 
 import { RouteType } from 'routes';
 
-import Button from 'components/UI/Button';
+import Button from 'components/UI/ButtonWithLink';
 
 export type BannerButtonStyle = 'primary-inverse' | 'primary';
 

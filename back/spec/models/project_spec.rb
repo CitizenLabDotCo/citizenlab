@@ -57,7 +57,7 @@ RSpec.describe Project do
       p1 = create(:project)
       p2 = create(:project)
       idea = create(:idea, project: p1)
-      create(:comment, post: idea)
+      create(:comment, idea: idea)
 
       expect(p1.reload.comments_count).to eq 1
       idea.update! project: p2
@@ -122,6 +122,24 @@ RSpec.describe Project do
 
       expect(project.preview_token).to be_present
       expect(project.preview_token).not_to eq(old_token)
+    end
+  end
+
+  describe "'not in draft folder' scope" do
+    let!(:project1) { create(:project) }
+    let!(:draft_folder) do
+      create(:project_folder, admin_publication_attributes: { publication_status: 'draft' }, projects: [project1])
+    end
+
+    let!(:project2) { create(:project) }
+    let!(:published_folder) do
+      create(:project_folder, admin_publication_attributes: { publication_status: 'published' }, projects: [project2])
+    end
+
+    let!(:project3) { create(:project) }
+
+    it 'returns projects not in a draft folder' do
+      expect(described_class.not_in_draft_folder).to match_array([project2, project3])
     end
   end
 end

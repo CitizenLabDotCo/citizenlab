@@ -120,21 +120,24 @@ export default defineMessages({
   supportArticleLink: {
     id: 'app.containers.AdminPage.ProjectEdit.survey.supportArticleLink2',
     defaultMessage:
-      'https://support.citizenlab.co/en/articles/6673873-creating-an-in-platform-survey',
+      'https://support.govocal.com/en/articles/6673873-creating-an-in-platform-survey',
   },
   surveyEnd: {
     id: 'app.containers.AdminPage.ProjectEdit.formBuilder.surveyEnd2',
     defaultMessage: 'Survey end',
   },
-  questionLogicHelperText: {
-    id: 'app.containers.AdminPage.ProjectEdit.survey.questionLogicHelperText2',
-    defaultMessage:
-      'If no logic is added to an answer, the survey will follow its normal flow. Adding logic to a question will make it required by default. For more information, visit {supportPageLink}',
-  },
   pagesLogicHelperText: {
-    id: 'app.containers.AdminPage.ProjectEdit.survey.pagesLogicHelperText2',
+    id: 'app.containers.AdminPage.ProjectEdit.survey.pagesLogicHelperText1',
     defaultMessage:
-      'If no logic is added, the survey will follow its normal flow. For more information, visit {supportPageLink}',
+      'If no logic is added, the survey will follow its normal flow. If both the page and its questions have logic, the question logic will take precedence. Ensure this aligns with your intended survey flow. For more information, visit {supportPageLink}',
+  },
+  ranking: {
+    id: 'app.containers.AdminPage.ProjectEdit.survey.ranking2',
+    defaultMessage: 'Ranking',
+  },
+  matrix_linear_scale: {
+    id: 'app.containers.AdminPage.ProjectEdit.survey.matrix_linear_scale2',
+    defaultMessage: 'Matrix',
   },
   multiselect: {
     id: 'app.containers.AdminPage.ProjectEdit.survey.multiselectText2',
@@ -147,6 +150,10 @@ export default defineMessages({
   linear_scale: {
     id: 'app.containers.AdminPage.ProjectEdit.survey.linear_scale2',
     defaultMessage: 'Linear scale',
+  },
+  rating: {
+    id: 'app.containers.AdminPage.ProjectEdit.survey.rating',
+    defaultMessage: 'Rating',
   },
   multiline_text: {
     id: 'app.containers.AdminPage.ProjectEdit.survey.multiline_text2',
@@ -173,17 +180,12 @@ export default defineMessages({
     defaultMessage: 'Esri shapefile upload',
   },
   downloadExcelTemplate: {
-    id: 'app.containers.AdminPage.ProjectEdit.survey.downloadExcelTemplate1',
-    defaultMessage: 'Download an excel template',
+    id: 'app.containers.AdminPage.ProjectEdit.survey.downloadExcelTemplate',
+    defaultMessage: 'Download an Excel template',
   },
   importInputs: {
     id: 'app.containers.AdminPage.ProjectEdit.survey.importInputs',
     defaultMessage: 'Import',
-  },
-  disabledImportInputsTooltip: {
-    id: 'app.containers.AdminPage.ProjectEdit.survey.disabledImportInputsTooltip',
-    defaultMessage:
-      'This feature is not included in your current plan. Reach out to your GovSuccess Manager to learn more about it.',
   },
   duplicateAnotherSurvey: {
     id: 'app.containers.AdminPage.ProjectEdit.survey.duplicateAnotherSurvey',

@@ -41,9 +41,9 @@ export default defineMessages({
       'Enter a valid web address, for example https://example.com',
   },
   iframeDescription: {
-    id: 'app.containers.admin.ContentBuilder.IframeMultiloc.iframeDescription',
+    id: 'app.containers.admin.ContentBuilder.IframeMultiloc.iframeDescription3',
     defaultMessage:
-      'Display content from an external website on your page in an HTML iFrame.',
+      'Display content from an external website on your page in an HTML iFrame. Note that not every page can be embedded. If you are having trouble embedding a page, check with the owner of the page if it is configured to allow embedding.',
   },
   iframeInvalidWhitelistUrlErrorMessage: {
     id: 'app.containers.admin.ContentBuilder.IframeMultiloc.iframeInvalidWhitelistUrlErrorMessage',
@@ -57,6 +57,6 @@ export default defineMessages({
   iframeSupportLink: {
     id: 'app.containers.admin.ContentBuilder.IframeMultiloc.iframeSupportLink',
     defaultMessage:
-      'https://support.citizenlab.co/en/articles/6354058-embedding-elements-in-the-content-builder-to-enrich-project-descriptions',
+      'https://support.govocal.com/en/articles/6354058-embedding-elements-in-the-content-builder-to-enrich-project-descriptions',
   },
 });

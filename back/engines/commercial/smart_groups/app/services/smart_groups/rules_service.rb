@@ -19,7 +19,8 @@ module SmartGroups
       SmartGroups::Rules::RegistrationCompletedAt,
       SmartGroups::Rules::ParticipatedInProject,
       SmartGroups::Rules::ParticipatedInTopic,
-      SmartGroups::Rules::ParticipatedInIdeaStatus
+      SmartGroups::Rules::ParticipatedInIdeaStatus,
+      SmartGroups::Rules::Verified
 
     JSON_SCHEMA_SKELETON = {
       'description' => 'Schema for validating the rules used in smart groups',

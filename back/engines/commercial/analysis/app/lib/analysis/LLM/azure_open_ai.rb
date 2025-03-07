@@ -11,13 +11,14 @@ module Analysis
       def initialize(**params)
         super
 
-        @client = OpenAI::Client.new(**{
+        @client = OpenAI::Client.new(
           access_token: ENV.fetch('AZURE_OPENAI_API_KEY'),
           uri_base: [ENV.fetch('AZURE_OPENAI_URI'), '/openai/deployments/', azure_deployment_name].join,
           api_type: :azure,
           api_version: '2023-09-01-preview',
-          request_timeout: 900
-        }.merge(params))
+          request_timeout: 900,
+          **params
+        )
       end
 
       def chat(prompt, **params)
