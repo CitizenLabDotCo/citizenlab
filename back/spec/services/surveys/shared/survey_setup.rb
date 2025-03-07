@@ -258,6 +258,9 @@ RSpec.shared_context 'survey_setup' do
         'fr-FR' => 'À quel point êtes-vous satisfait de notre service ?',
         'nl-NL' => 'Hoe tevreden ben je met onze service?'
       },
+      description_multiloc: {
+        'en' => 'Please rate your experience from 1 (poor) to 7 (excellent).'
+      },
       maximum: 7,
       required: true
     )

@@ -290,7 +290,7 @@ RSpec.describe Surveys::ResultsWithGroupGenerator do
           },
           required: true,
           grouped: true,
-          description: { 'en' => 'Please rate your experience from 1 (poor) to 5 (excellent).' },
+          description: { 'en' => 'Please rate your experience from 1 (poor) to 7 (excellent).' },
           hidden: false,
           pageNumber: nil,
           questionNumber: nil,

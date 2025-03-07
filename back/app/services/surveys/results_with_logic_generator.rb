@@ -129,6 +129,9 @@ module Surveys
       skip_fields
     end
 
+    # If questions were skipped for a respondent due to logic:
+    # - reduce the :totalResponseCount per question
+    # - reduce the count of nil option picks and the :totalPickCount per question
     def change_counts_for_logic(results, survey_responses)
       survey_has_logic = !results.flatten.all? { |r| r[:logic] == {} }
 

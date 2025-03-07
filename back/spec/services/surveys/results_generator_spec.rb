@@ -269,7 +269,7 @@ RSpec.describe Surveys::ResultsGenerator do
           },
           required: true,
           grouped: false,
-          description: { 'en' => 'Please rate your experience from 1 (poor) to 5 (excellent).' },
+          description: { 'en' => 'Please rate your experience from 1 (poor) to 7 (excellent).' },
           hidden: false,
           pageNumber: nil,
           questionNumber: nil,
