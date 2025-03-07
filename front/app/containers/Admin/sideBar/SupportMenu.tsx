@@ -17,7 +17,7 @@ import { useIntl } from 'utils/cl-intl';
 import { isAdmin } from 'utils/permissions/roles';
 
 import messages from './messages';
-import { ItemMenu, StyledBox } from './styles';
+import { ItemMenu, StyledBox, StyledText } from './styles';
 
 export const SupportMenu = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -52,10 +52,10 @@ export const SupportMenu = () => {
           alignItems="center"
           justifyContent="center"
         >
-          <Icon name="help" fill={colors.green400} width="24px" />
+          <Icon name="help" fill={colors.green400} height="20px" />
         </Box>
         {!isSmallerThanTablet && (
-          <Text
+          <StyledText
             color="white"
             ml="15px"
             fontSize="base"
@@ -64,7 +64,7 @@ export const SupportMenu = () => {
             w="100%"
           >
             {formatMessage({ ...messages.support })}
-          </Text>
+          </StyledText>
         )}
         <Box>
           {!isSmallerThanTablet && (
