@@ -383,10 +383,10 @@ module Surveys
 
       # Find the dates for the previous period
       start_date = Date.parse("#{start_month}-01")
-      end_date = Date.parse("#{end_month}-01") >> 1 # Start of the next month
-      months_between = ((end_date.year * 12) + end_date.month) - ((start_date.year * 12) + start_date.month)
+      end_date = Date.parse("#{end_month}-01")
+      months_between = ((end_date.year * 12) + end_date.month) - ((start_date.year * 12) + start_date.month) + 1
       previous_start_month = (start_date << months_between).strftime('%Y-%m')
-      previous_end_month = (end_date << (months_between + 1)).strftime('%Y-%m')
+      previous_end_month = (end_date << months_between).strftime('%Y-%m')
 
       # Get the results for the previous period
       previous_results = build_results(linear_scale_fields, previous_start_month, previous_end_month)
