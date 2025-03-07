@@ -1926,7 +1926,7 @@
   "app.containers.footer.terms-and-conditions": "Käyttöehdot",
   "app.containers.ideaHeading.cancelLeaveIdeaButtonText": "Peruuttaa",
   "app.containers.ideaHeading.confirmLeaveFormButtonText": "Kyllä, haluan lähteä",
-  "app.containers.ideaHeading.editIdeaForm": "Muokkaa idealomaketta",
+  "app.containers.ideaHeading.editForm": "Muokkaa lomaketta",
   "app.containers.ideaHeading.leaveFormConfirmationQuestion": "Oletko varma, että haluat lähteä?",
   "app.containers.ideaHeading.leaveIdeaForm": "Jätä idealomake",
   "app.containers.ideaHeading.leaveIdeaText": "Vastauksiasi ei tallenneta.",
