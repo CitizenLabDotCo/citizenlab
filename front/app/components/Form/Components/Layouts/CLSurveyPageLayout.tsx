@@ -232,13 +232,28 @@ const CLSurveyPageLayout = memo(
 
       if (pageVariant === 'submission') {
         setIsLoading(true);
-        data.publication_status = 'published';
+        const dataWithPublicationStatus = {
+          ...data,
+          publication_status: 'published',
+        };
 
-        const idea: IIdea = await onSubmit(data, true, userPagePath);
+        const idea: IIdea = await onSubmit(
+          dataWithPublicationStatus,
+          true,
+          userPagePath
+        );
         updateSearchParams({ idea_id: idea.data.id });
       } else {
-        data.publication_status = 'draft';
-        await onSubmit({ data }, false, userPagePath);
+        const dataWithPublicationStatus = {
+          ...data,
+          publication_status: 'draft',
+        };
+
+        await onSubmit(
+          { data: dataWithPublicationStatus },
+          false,
+          userPagePath
+        );
       }
 
       scrollToTop();
