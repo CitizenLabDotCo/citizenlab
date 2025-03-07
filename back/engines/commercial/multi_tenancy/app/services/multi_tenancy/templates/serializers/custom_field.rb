@@ -33,6 +33,8 @@ module MultiTenancy
           random_option_ordering
           dropdown_layout
           page_layout
+          page_button_label_multiloc
+          page_button_link
           ask_follow_up
         ]
 

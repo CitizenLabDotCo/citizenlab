@@ -19,6 +19,7 @@ import LinearAndRatingSettings from './components/FormBuilderSettings/LinearAndR
 import MatrixSettings from './components/FormBuilderSettings/MatrixSettings';
 import MultiselectSettings from './components/FormBuilderSettings/MultiselectSettings';
 import OptionsSettings from './components/FormBuilderSettings/OptionsSettings';
+import PageButtonSettings from './components/FormBuilderSettings/PageButtonSettings';
 import PageLayoutSettings from './components/FormBuilderSettings/PageLayoutSettings';
 import PointSettings from './components/FormBuilderSettings/PointSettings';
 import SentimentLinearScaleSettings from './components/FormBuilderSettings/SentimentLinearScaleSettings';
@@ -176,6 +177,12 @@ export function getAdditionalSettings(
             pageLayoutName={`customFields.${field.index}.page_layout`}
           />
           <FieldGroupSettings locale={platformLocale} field={field} />
+          {field.key === 'survey_end' && (
+            <PageButtonSettings
+              pageButtonLabelMultilocName={`customFields.${field.index}.page_button_label_multiloc`}
+              pageButtonLinkName={`customFields.${field.index}.page_button_link`}
+            />
+          )}
           <PointSettings
             mapConfigIdName={`customFields.${field.index}.map_config_id`}
             pageLayoutName={`customFields.${field.index}.page_layout`}
