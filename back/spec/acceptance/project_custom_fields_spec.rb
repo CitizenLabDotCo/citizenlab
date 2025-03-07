@@ -50,6 +50,7 @@ resource 'Project level Custom Fields' do
         location_description
         idea_images_attributes
         idea_files_attributes
+        survey_end
       ]
     end
     let(:expected_jsonschema_form_field_keys) { enabled_built_in_field_keys + [custom_field.key.to_sym] }
@@ -90,14 +91,14 @@ resource 'Project level Custom Fields' do
         expect(json_attributes[:json_schema_multiloc].keys).to match_array %i[en fr-FR nl-NL]
         %i[en fr-FR nl-NL].each do |locale|
           expect(json_attributes[:json_schema_multiloc][locale][:properties].keys).to match_array(
-            %i[title_multiloc body_multiloc topic_ids location_description idea_images_attributes idea_files_attributes]
+            %i[title_multiloc body_multiloc topic_ids location_description idea_images_attributes idea_files_attributes survey_end]
           )
         end
         ui_schema = json_attributes[:ui_schema_multiloc][:en]
         expect(ui_schema.keys).to match_array %i[type options elements]
         expect(ui_schema[:type]).to eq 'Categorization'
         expect(ui_schema[:options]).to eq({ formId: 'idea-form', inputTerm: 'question' })
-        expect(ui_schema[:elements].size).to eq 3
+        expect(ui_schema[:elements].size).to eq 4
         expect(json_attributes[:ui_schema_multiloc].keys).to match_array %i[en fr-FR nl-NL]
       end
     end

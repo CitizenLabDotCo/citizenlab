@@ -216,23 +216,6 @@ RSpec.describe CustomField do
     end
   end
 
-  describe '#page_or_section?' do
-    it 'returns true when the input_type is "page"' do
-      page_field = described_class.new input_type: 'page'
-      expect(page_field.page_or_section?).to be true
-    end
-
-    it 'returns true when the input_type is "section"' do
-      section_field = described_class.new input_type: 'section'
-      expect(section_field.page_or_section?).to be true
-    end
-
-    it 'returns false otherwise' do
-      other_field = described_class.new input_type: 'something_else'
-      expect(other_field.page_or_section?).to be false
-    end
-  end
-
   describe 'page_layout validation' do
     context 'for page custom_field' do
       let(:page_custom_field) { build(:custom_field_page) }
@@ -311,22 +294,6 @@ RSpec.describe CustomField do
 
       page_field.title_multiloc = nil
       expect(page_field.valid?).to be true
-    end
-
-    it 'does not happen when the field is a section' do
-      section_field = described_class.new(
-        resource: form,
-        input_type: 'section',
-        key: 'field_key',
-        title_multiloc: { 'en' => '' }
-      )
-      expect(section_field.valid?).to be true
-
-      section_field.title_multiloc = {}
-      expect(section_field.valid?).to be true
-
-      section_field.title_multiloc = nil
-      expect(section_field.valid?).to be true
     end
   end
 
@@ -460,7 +427,7 @@ RSpec.describe CustomField do
       section = described_class.new(
         resource: resource,
         input_type: 'section',
-        code: 'ideation_section1',
+        code: 'ideation_page1',
         title_multiloc: ignored_title
       )
       expected_english_title = 'What is your question?'
@@ -476,7 +443,7 @@ RSpec.describe CustomField do
       section = described_class.new(
         resource: resource,
         input_type: 'section',
-        code: 'ideation_section1',
+        code: 'ideation_page1',
         title_multiloc: ignored_title
       )
       expected_english_title = 'What is your contribution?'
@@ -500,12 +467,6 @@ RSpec.describe CustomField do
         expect(field.answer_visible_to).to eq 'admins'
       end
 
-      it 'sets public by default if field is a section' do
-        field.input_type = 'section'
-        field.validate!
-        expect(field.answer_visible_to).to eq 'public'
-      end
-
       it 'sets public by default if field is a page' do
         field.input_type = 'page'
         field.page_layout = 'default'
@@ -525,7 +486,7 @@ RSpec.describe CustomField do
 
       it 'always sets the value to "admins"' do
         field.input_type = 'page'
-        field.input_type = 'section'
+        field.page_layout = 'default'
         field.code = 'gender'
         field.validate!
         expect(field.answer_visible_to).to eq 'admins'

@@ -31,6 +31,7 @@ import useProjectMapConfig from 'api/map_config/useProjectMapConfig';
 import usePhase from 'api/phases/usePhase';
 import usePhases from 'api/phases/usePhases';
 import { getCurrentPhase } from 'api/phases/utils';
+import useProjectById from 'api/projects/useProjectById';
 import useProjectBySlug from 'api/projects/useProjectBySlug';
 
 import useLocalize from 'hooks/useLocalize';
@@ -64,11 +65,7 @@ import messages from './messages';
 import PageControlButtons from './PageControlButtons';
 import SubmissionReference from './SubmissionReference';
 
-// Handling survey pages in here. The more things that we have added to it,
-// the more it has become a survey page layout. It also becomes extremely hard to understand
-// if we continue to try and overload it to handle other scenarios. Survey headers are different
-// and handling them here makes it easy style the entire page. That among other things.
-const CLSurveyPageLayout = memo(
+const CLPageLayout = memo(
   ({
     schema,
     uischema,
@@ -94,8 +91,16 @@ const CLSurveyPageLayout = memo(
       pageTypeElements[0],
     ]);
     const [scrollToError, setScrollToError] = useState(false);
-    const ideaId = searchParams.get('idea_id');
+    const { slug, ideaId: idea_id } = useParams<{
+      slug?: string;
+      ideaId?: string;
+    }>();
+    const ideaId = searchParams.get('idea_id') || idea_id;
     const { data: idea } = useIdeaById(ideaId ?? undefined);
+    const projectId = idea?.data.relationships.project.data.id;
+    const projectById = useProjectById(projectId);
+    const projectBySlug = useProjectBySlug(slug);
+    const project = projectById.data ?? projectBySlug.data;
 
     // If the idea (survey submission) has no author relationship,
     // it was either created through 'anyone' permissions or with
@@ -108,11 +113,6 @@ const CLSurveyPageLayout = memo(
     const pagesRef = useRef<HTMLDivElement>(null);
     const { announceError } = useErrorToRead();
 
-    // Get project and relevant phase data
-    const { slug } = useParams() as {
-      slug: string;
-    };
-    const { data: project } = useProjectBySlug(slug);
     const { data: phases } = usePhases(project?.data.id);
     const phaseIdFromSearchParams = searchParams.get('phase_id');
     const phaseId =
@@ -226,26 +226,52 @@ const CLSurveyPageLayout = memo(
       }
 
       if (pageVariant === 'after-submission') {
-        clHistory.push({ pathname: `/projects/${slug}` });
+        clHistory.push({
+          pathname: `/projects/${project?.data.attributes.slug}`,
+        });
         return;
       }
+
+      const goToNextPage = () => {
+        scrollToTop();
+        const nextPage = visiblePages[currentStepNumber + 1];
+
+        setUserPagePath((userPagePath) => [...userPagePath, nextPage]);
+
+        setIsLoading(false);
+      };
 
       if (pageVariant === 'submission') {
         setIsLoading(true);
         data.publication_status = 'published';
 
-        const idea: IIdea = await onSubmit(data, true, userPagePath);
-        updateSearchParams({ idea_id: idea.data.id });
+        const idea: IIdea | undefined = await onSubmit(
+          data,
+          true,
+          userPagePath,
+          goToNextPage
+        );
+        // Remove this condition after handling draft ideas
+        if (idea) {
+          updateSearchParams({ idea_id: idea.data.id });
+        }
       } else {
         data.publication_status = 'draft';
-        await onSubmit({ data }, false, userPagePath);
+        await onSubmit({ data }, false, userPagePath, goToNextPage);
+        goToNextPage();
       }
 
-      scrollToTop();
+      // scrollToTop();
 
-      const nextPage = visiblePages[currentStepNumber + 1];
+      // const nextPage = visiblePages[currentStepNumber + 1];
 
-      setUserPagePath((userPagePath) => [...userPagePath, nextPage]);
+      // New
+      // if (pageVariant === 'submission' && !shouldSubmit) {
+      //   setIsLoading(false);
+      //   return;
+      // }
+
+      // setUserPagePath((userPagePath) => [...userPagePath, nextPage]);
 
       setIsLoading(false);
     };
@@ -515,6 +541,6 @@ const CLSurveyPageLayout = memo(
   }
 );
 
-export default withJsonFormsLayoutProps(CLSurveyPageLayout);
+export default withJsonFormsLayoutProps(CLPageLayout);
 
 export const clPageTester: RankedTester = rankWith(5, isPageCategorization);
