@@ -1926,7 +1926,7 @@
   "app.containers.footer.terms-and-conditions": "Terms and conditions",
   "app.containers.ideaHeading.cancelLeaveIdeaButtonText": "Cancel",
   "app.containers.ideaHeading.confirmLeaveFormButtonText": "Yes, I want to leave",
-  "app.containers.ideaHeading.editIdeaForm": "Edit idea form",
+  "app.containers.ideaHeading.editForm": "Edit form",
   "app.containers.ideaHeading.leaveFormConfirmationQuestion": "Are you sure you want to leave?",
   "app.containers.ideaHeading.leaveIdeaForm": "Leave idea form",
   "app.containers.ideaHeading.leaveIdeaText": "Your responses won't be saved.",
