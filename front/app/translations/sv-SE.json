@@ -1926,7 +1926,7 @@
   "app.containers.footer.terms-and-conditions": "Villkor",
   "app.containers.ideaHeading.cancelLeaveIdeaButtonText": "Avbryt",
   "app.containers.ideaHeading.confirmLeaveFormButtonText": "Ja, jag vill lämna",
-  "app.containers.ideaHeading.editIdeaForm": "Redigera idéformulär",
+  "app.containers.ideaHeading.editForm": "Redigera formulär",
   "app.containers.ideaHeading.leaveFormConfirmationQuestion": "Är du säker på att du vill åka?",
   "app.containers.ideaHeading.leaveIdeaForm": "Lämna idéformulär",
   "app.containers.ideaHeading.leaveIdeaText": "Dina svar kommer inte att sparas.",
