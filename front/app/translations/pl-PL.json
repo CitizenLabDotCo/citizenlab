@@ -1926,7 +1926,7 @@
   "app.containers.footer.terms-and-conditions": "Regulamin",
   "app.containers.ideaHeading.cancelLeaveIdeaButtonText": "Anuluj",
   "app.containers.ideaHeading.confirmLeaveFormButtonText": "Tak, chcę odejść",
-  "app.containers.ideaHeading.editIdeaForm": "Edytuj formularz pomysłu",
+  "app.containers.ideaHeading.editForm": "Edytuj formularz",
   "app.containers.ideaHeading.leaveFormConfirmationQuestion": "Jesteś pewien, że chcesz odejść?",
   "app.containers.ideaHeading.leaveIdeaForm": "Zostaw formularz pomysłu",
   "app.containers.ideaHeading.leaveIdeaText": "Twoje odpowiedzi nie zostaną zapisane.",
