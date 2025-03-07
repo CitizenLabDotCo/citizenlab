@@ -1926,7 +1926,7 @@
   "app.containers.footer.terms-and-conditions": "Termes i condicions",
   "app.containers.ideaHeading.cancelLeaveIdeaButtonText": "Cancel·la",
   "app.containers.ideaHeading.confirmLeaveFormButtonText": "Sí, vull marxar",
-  "app.containers.ideaHeading.editIdeaForm": "Edita el formulari d'idees",
+  "app.containers.ideaHeading.editForm": "Edita el formulari",
   "app.containers.ideaHeading.leaveFormConfirmationQuestion": "Estàs segur que vols marxar?",
   "app.containers.ideaHeading.leaveIdeaForm": "Deixeu el formulari d'idees",
   "app.containers.ideaHeading.leaveIdeaText": "Les teves respostes no es desaran.",
