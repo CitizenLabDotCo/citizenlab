@@ -1926,7 +1926,7 @@
   "app.containers.footer.terms-and-conditions": "Hüküm ve koşullar",
   "app.containers.ideaHeading.cancelLeaveIdeaButtonText": "İptal",
   "app.containers.ideaHeading.confirmLeaveFormButtonText": "Evet, gitmek istiyorum.",
-  "app.containers.ideaHeading.editIdeaForm": "Fikir formunu düzenle",
+  "app.containers.ideaHeading.editForm": "Formu düzenle",
   "app.containers.ideaHeading.leaveFormConfirmationQuestion": "Gitmek istediğine emin misin?",
   "app.containers.ideaHeading.leaveIdeaForm": "Fikir formunu bırakın",
   "app.containers.ideaHeading.leaveIdeaText": "Yanıtlarınız kaydedilmeyecektir.",
