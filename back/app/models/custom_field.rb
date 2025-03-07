@@ -346,6 +346,10 @@ class CustomField < ApplicationRecord
     )
   end
 
+  def additional_text_question_key
+    other_option_text_field&.key || follow_up_text_field&.key
+  end
+
   def ordered_options
     @ordered_options ||= if random_option_ordering
       options.shuffle.sort_by { |o| o.other ? 1 : 0 }
