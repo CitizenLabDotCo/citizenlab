@@ -1926,7 +1926,7 @@
   "app.containers.footer.terms-and-conditions": "Feltételek",
   "app.containers.ideaHeading.cancelLeaveIdeaButtonText": "Mégsem",
   "app.containers.ideaHeading.confirmLeaveFormButtonText": "Igen, el akarok menni",
-  "app.containers.ideaHeading.editIdeaForm": "Ötletűrlap szerkesztése",
+  "app.containers.ideaHeading.editForm": "Űrlap szerkesztése",
   "app.containers.ideaHeading.leaveFormConfirmationQuestion": "Biztos, hogy el akarsz menni?",
   "app.containers.ideaHeading.leaveIdeaForm": "Hagyja el az ötlet űrlapot",
   "app.containers.ideaHeading.leaveIdeaText": "Válaszait nem menti a rendszer.",
