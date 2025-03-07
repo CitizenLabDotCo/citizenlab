@@ -1926,7 +1926,7 @@
   "app.containers.footer.terms-and-conditions": "Odredbe i uvjeti",
   "app.containers.ideaHeading.cancelLeaveIdeaButtonText": "Otkazati",
   "app.containers.ideaHeading.confirmLeaveFormButtonText": "Da, želim otići",
-  "app.containers.ideaHeading.editIdeaForm": "Uredite obrazac za ideju",
+  "app.containers.ideaHeading.editForm": "Uredi obrazac",
   "app.containers.ideaHeading.leaveFormConfirmationQuestion": "Jeste li sigurni da želite otići?",
   "app.containers.ideaHeading.leaveIdeaForm": "Ostavite obrazac za ideju",
   "app.containers.ideaHeading.leaveIdeaText": "Vaši odgovori neće biti spremljeni.",
