@@ -57,7 +57,7 @@ const NewIdeaHeading = ({ phaseId, titleText, idea }: Props) => {
 
   if (!project) return null;
 
-  const showEditIdeaFormButton =
+  const showEditFormButton =
     !isSmallerThanPhone && canModerateProject(project.data, authUser);
   const linkToFormBuilder: RouteType = `/admin/projects/${project.data.id}/phases/${phaseId}/form/edit`;
 
@@ -99,7 +99,7 @@ const NewIdeaHeading = ({ phaseId, titleText, idea }: Props) => {
           // Pushes buttons to the right
           ml="auto"
         >
-          {showEditIdeaFormButton && (
+          {showEditFormButton && (
             <Button
               icon="edit"
               linkTo={linkToFormBuilder}
@@ -107,7 +107,7 @@ const NewIdeaHeading = ({ phaseId, titleText, idea }: Props) => {
               textDecorationHover="underline"
               mr="12px"
             >
-              <FormattedMessage {...messages.editIdeaForm} />
+              <FormattedMessage {...messages.editForm} />
             </Button>
           )}
           <IconButton

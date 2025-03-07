@@ -1,9 +1,9 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
-  editIdeaForm: {
-    id: 'app.containers.ideaHeading.editIdeaForm',
-    defaultMessage: 'Edit idea form',
+  editForm: {
+    id: 'app.containers.ideaHeading.editForm',
+    defaultMessage: 'Edit form',
   },
   leaveFormConfirmationQuestion: {
     id: 'app.containers.ideaHeading.leaveFormConfirmationQuestion',
