@@ -508,6 +508,7 @@ const CLSurveyPageLayout = memo(
             hasPreviousPage={hasPreviousPage}
             isLoading={isLoading}
             pageVariant={pageVariant}
+            currentPage={currentPage}
           />
         </Box>
       </>

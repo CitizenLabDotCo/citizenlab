@@ -10,7 +10,11 @@ import {
 } from '@citizenlab/cl2-component-library';
 import { useTheme } from 'styled-components';
 
+import useLocalize from 'hooks/useLocalize';
+
 import LanguageSelector from 'containers/MainHeader/Components/LanguageSelector';
+
+import { PageType } from 'components/Form/typings';
 
 import { FormattedMessage, MessageDescriptor } from 'utils/cl-intl';
 
@@ -24,10 +28,10 @@ const CY_DATA_VALUES: Record<PageVariant, string> = {
   'after-submission': 'e2e-after-submission',
 };
 
-const ICON_VALUES: Record<PageVariant, IconNames> = {
+const ICON_VALUES: Record<PageVariant, IconNames | undefined> = {
   other: 'chevron-right',
   submission: 'send',
-  'after-submission': 'check',
+  'after-submission': undefined,
 };
 
 const BUTTON_MESSAGES: Record<PageVariant, MessageDescriptor> = {
@@ -42,6 +46,7 @@ interface Props {
   hasPreviousPage: boolean;
   isLoading: boolean;
   pageVariant: PageVariant;
+  currentPage: PageType;
 }
 
 const PageControlButtons = ({
@@ -50,9 +55,25 @@ const PageControlButtons = ({
   hasPreviousPage,
   isLoading,
   pageVariant,
+  currentPage,
 }: Props) => {
   const theme = useTheme();
+  const localize = useLocalize();
   const isSmallerThanPhone = useBreakpoint('phone');
+
+  const pageButtonLabel = localize(
+    currentPage.options.page_button_label_multiloc
+  );
+
+  const handleButtonClick = () => {
+    // If this is the after-submission page, and the user has set a custom button link, navigate to that
+    const pageButtonLink = currentPage.options.page_button_link;
+    if (pageVariant === 'after-submission' && pageButtonLink) {
+      window.location.href = pageButtonLink;
+    } else {
+      handleNextAndSubmit();
+    }
+  };
 
   return (
     <Box
@@ -91,7 +112,7 @@ const PageControlButtons = ({
           </Button>
         )}
         <Button
-          onClick={handleNextAndSubmit}
+          onClick={handleButtonClick}
           data-cy={CY_DATA_VALUES[pageVariant]}
           icon={ICON_VALUES[pageVariant]}
           iconPos="right"
@@ -99,7 +120,11 @@ const PageControlButtons = ({
           boxShadow={defaultStyles.boxShadow}
           processing={isLoading}
         >
-          <FormattedMessage {...BUTTON_MESSAGES[pageVariant]} />
+          {pageButtonLabel ? (
+            pageButtonLabel
+          ) : (
+            <FormattedMessage {...BUTTON_MESSAGES[pageVariant]} />
+          )}
         </Button>
       </Box>
     </Box>

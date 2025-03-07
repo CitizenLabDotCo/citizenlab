@@ -41,6 +41,8 @@ class InputUiSchemaGeneratorService < UiSchemaGeneratorService
         title: multiloc_service.t(field.title_multiloc),
         description: description_option(field),
         page_layout: field.page_layout,
+        page_button_label_multiloc: field.page_button_label_multiloc,
+        page_button_link: field.page_button_link,
         map_config_id: field&.map_config&.id
       },
       elements: [
