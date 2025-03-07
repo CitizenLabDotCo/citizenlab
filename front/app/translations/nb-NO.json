@@ -1926,7 +1926,7 @@
   "app.containers.footer.terms-and-conditions": "Vilkår og betingelser",
   "app.containers.ideaHeading.cancelLeaveIdeaButtonText": "Avbryt",
   "app.containers.ideaHeading.confirmLeaveFormButtonText": "Ja, jeg vil dra",
-  "app.containers.ideaHeading.editIdeaForm": "Rediger idéskjema",
+  "app.containers.ideaHeading.editForm": "Rediger skjema",
   "app.containers.ideaHeading.leaveFormConfirmationQuestion": "Er du sikker på at du vil dra?",
   "app.containers.ideaHeading.leaveIdeaForm": "Legg igjen idéskjema",
   "app.containers.ideaHeading.leaveIdeaText": "Svarene dine vil ikke bli lagret.",
