@@ -238,7 +238,7 @@ const CLSurveyPageLayout = memo(
         };
 
         const idea: IIdea = await onSubmit(
-          dataWithPublicationStatus,
+          { data: dataWithPublicationStatus },
           true,
           userPagePath
         );
