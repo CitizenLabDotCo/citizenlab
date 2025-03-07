@@ -130,7 +130,10 @@ class UiSchemaGeneratorService < FieldVisitorService
   end
 
   def visit_page(_field)
-    nil
+    default(field).tap do |ui_field|
+      ui_field[:options][:page_button_link] = field.page_button_link
+      ui_field[:options][:page_button_label_multiloc] = multiloc_service.t(field.page_button_label_multiloc)
+    end
   end
 
   protected

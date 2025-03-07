@@ -415,6 +415,8 @@ module IdeaCustomFields
         :random_option_ordering,
         :dropdown_layout,
         :page_layout,
+        :page_button_label_multiloc,
+        :page_button_link,
         :map_config_id,
         :ask_follow_up,
         { title_multiloc: CL2_SUPPORTED_LOCALES,

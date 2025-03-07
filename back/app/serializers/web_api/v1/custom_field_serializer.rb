@@ -20,6 +20,14 @@ class WebApi::V1::CustomFieldSerializer < WebApi::V1::BaseSerializer
     object.input_type == 'page'
   }
 
+  attribute :page_button_link, if: proc { |object, _params|
+    object.input_type == 'page'
+  }
+
+  attribute :page_button_label_multiloc, if: proc { |object, _params|
+    object.input_type == 'page'
+  }
+
   attribute :dropdown_layout, if: proc { |object, _params|
     object.dropdown_layout_type?
   }

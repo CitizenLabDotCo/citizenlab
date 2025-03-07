@@ -72,6 +72,8 @@ export interface IAttributes {
   input_type: ICustomFieldInputType;
   map_config_id?: string | null;
   page_layout?: 'default' | 'map' | null;
+  page_button_label_multiloc?: Multiloc;
+  page_button_link?: string;
   required: boolean;
   isRequiredEditable?: boolean;
   isEnabledEditable?: boolean;
