@@ -1926,7 +1926,7 @@
   "app.containers.footer.terms-and-conditions": "Betingelser og vilkår",
   "app.containers.ideaHeading.cancelLeaveIdeaButtonText": "Afbryd",
   "app.containers.ideaHeading.confirmLeaveFormButtonText": "Ja, jeg vil gerne logge af",
-  "app.containers.ideaHeading.editIdeaForm": "Rediger idéformular",
+  "app.containers.ideaHeading.editForm": "Rediger formular",
   "app.containers.ideaHeading.leaveFormConfirmationQuestion": "Er du sikker på, at du vil forlade os?",
   "app.containers.ideaHeading.leaveIdeaForm": "Forlad idéformularen",
   "app.containers.ideaHeading.leaveIdeaText": "Dine svar vil ikke blive gemt.",
