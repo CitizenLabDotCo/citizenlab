@@ -31,6 +31,7 @@ import useProjectMapConfig from 'api/map_config/useProjectMapConfig';
 import usePhase from 'api/phases/usePhase';
 import usePhases from 'api/phases/usePhases';
 import { getCurrentPhase } from 'api/phases/utils';
+import useProjectById from 'api/projects/useProjectById';
 import useProjectBySlug from 'api/projects/useProjectBySlug';
 
 import useLocalize from 'hooks/useLocalize';
@@ -90,8 +91,16 @@ const CLPageLayout = memo(
       pageTypeElements[0],
     ]);
     const [scrollToError, setScrollToError] = useState(false);
-    const ideaId = searchParams.get('idea_id');
+    const { slug, ideaId: idea_id } = useParams<{
+      slug?: string;
+      ideaId?: string;
+    }>();
+    const ideaId = searchParams.get('idea_id') || idea_id;
     const { data: idea } = useIdeaById(ideaId ?? undefined);
+    const projectId = idea?.data.relationships.project.data.id;
+    const projectById = useProjectById(projectId);
+    const projectBySlug = useProjectBySlug(slug);
+    const project = projectById.data ?? projectBySlug.data;
 
     // If the idea (survey submission) has no author relationship,
     // it was either created through 'anyone' permissions or with
@@ -104,11 +113,6 @@ const CLPageLayout = memo(
     const pagesRef = useRef<HTMLDivElement>(null);
     const { announceError } = useErrorToRead();
 
-    // Get project and relevant phase data
-    const { slug } = useParams() as {
-      slug: string;
-    };
-    const { data: project } = useProjectBySlug(slug);
     const { data: phases } = usePhases(project?.data.id);
     const phaseIdFromSearchParams = searchParams.get('phase_id');
     const phaseId =
@@ -222,7 +226,9 @@ const CLPageLayout = memo(
       }
 
       if (pageVariant === 'after-submission') {
-        clHistory.push({ pathname: `/projects/${slug}` });
+        clHistory.push({
+          pathname: `/projects/${project?.data.attributes.slug}`,
+        });
         return;
       }
 
