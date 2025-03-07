@@ -130,20 +130,10 @@ const Form = memo(
 
       let response;
 
-      console.log({
-        formData,
-        submissionData,
-        sanitizeFormData,
-        userPagePath,
-        isSurvey,
-      });
-
       const schemaWithoutRequiredOtherFields = removeRequiredOtherFields(
         schema,
         sanitizedFormData
       );
-
-      console.log({ schemaWithoutRequiredOtherFields });
 
       const dataIsValid = isSurvey
         ? validateSurveyData(
@@ -153,14 +143,11 @@ const Form = memo(
           )
         : customAjv.validate(schemaWithoutRequiredOtherFields, submissionData);
 
-      console.log({ dataIsValid });
-
       if (dataIsValid) {
         if (externalLoading === undefined) {
           internalSetLoading(true);
         }
         try {
-          console.log('onSubmit...');
           response = await onSubmit(submissionData);
           if (isSurvey) {
             trackEventByName(tracks.surveyFormSubmitted);
