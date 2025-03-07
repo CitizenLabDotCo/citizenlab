@@ -35,8 +35,6 @@ const AreaSelection = ({ title }: Props) => {
   const { data: appConfiguration } = useAppConfiguration();
   const { data: projectCountsByArea } = useAreasWithProjectCounts();
 
-  console.log({ projectCountsByArea });
-
   const { mutate: addFollower, isLoading } = useAddFollower();
 
   if (!appConfiguration || !projectCountsByArea) return null;
@@ -45,8 +43,6 @@ const AreaSelection = ({ title }: Props) => {
   const fallback = formatMessage(projectAndFolderCardsMessages.areaTitle);
 
   const areaTerm = localize(area_term, { fallback }).toLowerCase();
-
-  const { counts } = projectCountsByArea.data.attributes;
 
   return (
     <CarrouselContainer>
@@ -61,10 +57,10 @@ const AreaSelection = ({ title }: Props) => {
       <Box ml={isSmallerThanPhone ? DEFAULT_PADDING : undefined}>
         <Text>{formatMessage(messages.selectYourX, { areaTerm })}</Text>
         <Box>
-          {counts.map((area, i) => (
+          {projectCountsByArea.data.map((area, i) => (
             <Box
               display="inline-block"
-              mr={i === counts.length - 1 ? '0px' : '8px'}
+              mr={i === projectCountsByArea.data.length - 1 ? '0px' : '8px'}
               mb="8px"
               key={area.id}
             >
@@ -84,7 +80,9 @@ const AreaSelection = ({ title }: Props) => {
                   });
                 }}
               >
-                {`${localize(area.title_multiloc)} (${area.count})`}
+                {`${localize(area.attributes.title_multiloc)} (${
+                  area.attributes.visible_projects_count
+                })`}
               </Button>
             </Box>
           ))}
