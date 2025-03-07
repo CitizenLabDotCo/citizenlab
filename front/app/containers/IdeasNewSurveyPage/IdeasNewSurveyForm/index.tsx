@@ -185,6 +185,7 @@ const IdeasNewSurveyForm = ({ project, phaseId }: Props) => {
   }
 
   const handleDraftIdeas = async (data: FormValues) => {
+    console.log({ data, allowAnonymousPosting, authUser });
     if (data.publication_status === 'published') {
       return onSubmit(data, true);
     } else {
@@ -210,12 +211,16 @@ const IdeasNewSurveyForm = ({ project, phaseId }: Props) => {
     };
 
     const handleOnError = () => {
+      console.log('error');
       // If an error happens, it's likely some permission issues.
       // We refetch the project to use the correct action descriptors.
       queryClient.invalidateQueries({
         queryKey: projectsKeys.all(),
       });
     };
+
+    console.log({ ideaId });
+
     // Update or add the idea depending on if we have an existing draft idea
     const idea = ideaId
       ? await updateIdea(
@@ -266,6 +271,8 @@ const IdeasNewSurveyForm = ({ project, phaseId }: Props) => {
         idea,
       });
     }
+
+    console.log({ idea });
 
     return idea;
   };
