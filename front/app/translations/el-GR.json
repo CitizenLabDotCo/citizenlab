@@ -1926,7 +1926,7 @@
   "app.containers.footer.terms-and-conditions": "Όροι και προϋποθέσεις",
   "app.containers.ideaHeading.cancelLeaveIdeaButtonText": "Ακύρωση",
   "app.containers.ideaHeading.confirmLeaveFormButtonText": "Ναι, θέλω να φύγω",
-  "app.containers.ideaHeading.editIdeaForm": "Επεξεργασία φόρμας ιδέας",
+  "app.containers.ideaHeading.editForm": "Επεξεργασία φόρμας",
   "app.containers.ideaHeading.leaveFormConfirmationQuestion": "Είσαι σίγουρος ότι θέλεις να φύγεις;",
   "app.containers.ideaHeading.leaveIdeaForm": "Αφήστε τη φόρμα ιδεών",
   "app.containers.ideaHeading.leaveIdeaText": "Οι απαντήσεις σας δεν θα αποθηκευτούν.",
