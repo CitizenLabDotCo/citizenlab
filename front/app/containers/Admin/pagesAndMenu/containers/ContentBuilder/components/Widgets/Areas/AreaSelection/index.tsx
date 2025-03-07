@@ -11,7 +11,7 @@ import {
 
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import { coreSettings } from 'api/app_configuration/utils';
-import useProjectCountsByArea from 'api/areas/useProjectCountsByArea';
+import useAreasWithProjectCounts from 'api/areas/useAreasWithProjectsCounts';
 import useAddFollower from 'api/follow_unfollow/useAddFollower';
 
 import useLocalize from 'hooks/useLocalize';
@@ -33,7 +33,9 @@ const AreaSelection = ({ title }: Props) => {
   const { formatMessage } = useIntl();
   const isSmallerThanPhone = useBreakpoint('phone');
   const { data: appConfiguration } = useAppConfiguration();
-  const { data: projectCountsByArea } = useProjectCountsByArea();
+  const { data: projectCountsByArea } = useAreasWithProjectCounts();
+
+  console.log({ projectCountsByArea });
 
   const { mutate: addFollower, isLoading } = useAddFollower();
 
