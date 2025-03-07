@@ -142,8 +142,11 @@ module Surveys
       fields.filter_map { |f| visit f }
     end
 
-    # start = first month to include, end_month = last month to include
+    # start_month = first month to include(YYYY-MM), end_month = last month to include(YYYY-MM)
     def filter_inputs_by_date(start_month, end_month)
+      month_format = /\d{4}-\d{2}/
+      raise 'Incorrect month filter format' unless start_month.match?(month_format) && end_month.match?(month_format)
+
       start_date = Date.parse("#{start_month}-01")
       end_date = Date.parse("#{end_month}-01") >> 1 # Make this the start of the next month
       @inputs = @inputs.where(created_at: start_date..end_date)

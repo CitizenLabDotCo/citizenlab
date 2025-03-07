@@ -755,9 +755,7 @@ RSpec.describe Surveys::ResultsGenerator do
 
     context 'when the responses are filtered by start and end month' do
       let(:generated_results) do
-        described_class.new(
-          survey_phase
-        ).generate_results(
+        generator.generate_results(
           start_month: start_month,
           end_month: end_month
         )
@@ -810,6 +808,20 @@ RSpec.describe Surveys::ResultsGenerator do
           expect(generated_results.dig(:results, 17, :averages)).to eq(
             { this_period: 2.2 }
           )
+        end
+      end
+
+      context 'incorrect date format' do
+        let(:start_month) { 'January' }
+        let(:end_month) { 'March' }
+
+        it 'raises an incorrect month format error' do
+          expect do
+            generator.generate_results(
+              start_month: start_month,
+              end_month: end_month
+            )
+          end.to raise_error('Incorrect month filter format')
         end
       end
     end

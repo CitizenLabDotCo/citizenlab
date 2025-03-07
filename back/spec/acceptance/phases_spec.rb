@@ -467,7 +467,7 @@ resource 'Phases' do
     patch 'web_api/v1/phases/:id' do
       with_options scope: :phase do
         parameter :project_id, 'The id of the project this phase belongs to'
-        parameter :title_multiloc, 'The title of the phase in nultiple locales'
+        parameter :title_multiloc, 'The title of the phase in multiple locales'
         parameter :description_multiloc, 'The description of the phase in multiple languages. Supports basic HTML.'
         parameter :participation_method, "The participation method of the project, either #{Phase::PARTICIPATION_METHODS.join(',')}. Defaults to ideation.", required: false
         parameter :submission_enabled, 'Can citizens post ideas in this phase?', required: false
