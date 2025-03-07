@@ -1926,7 +1926,7 @@
   "app.containers.footer.terms-and-conditions": "Noteikumi un nosacījumi",
   "app.containers.ideaHeading.cancelLeaveIdeaButtonText": "Atcelt",
   "app.containers.ideaHeading.confirmLeaveFormButtonText": "Jā, es gribu aizbraukt",
-  "app.containers.ideaHeading.editIdeaForm": "Rediģēt ideju veidlapu",
+  "app.containers.ideaHeading.editForm": "Rediģēt veidlapu",
   "app.containers.ideaHeading.leaveFormConfirmationQuestion": "Vai esat pārliecināts, ka vēlaties doties prom?",
   "app.containers.ideaHeading.leaveIdeaForm": "Atstāj idejas veidlapu",
   "app.containers.ideaHeading.leaveIdeaText": "Jūsu atbildes netiks saglabātas.",
