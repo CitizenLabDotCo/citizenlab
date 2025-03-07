@@ -45,6 +45,7 @@ const TextButton = styled.button`
 
   cursor: pointer;
   font-weight: bold;
+  text-align: left;
 `;
 
 const TableBody = ({ libraryProjects, isInitialLoading }: Props) => {
