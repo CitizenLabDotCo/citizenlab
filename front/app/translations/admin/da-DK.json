@@ -810,7 +810,7 @@
   "app.containers.Admin.inspirationHub.Ideation": "Idéudvikling",
   "app.containers.Admin.inspirationHub.Information": "information",
   "app.containers.Admin.inspirationHub.Poll": "Afstemning",
-  "app.containers.Admin.inspirationHub.ProjectDrawer.Phase.openEnded": "Åben for alle",
+  "app.containers.Admin.inspirationHub.ProjectDrawer.Phase.openEnded": "Ingen slutdato",
   "app.containers.Admin.inspirationHub.ProjectDrawer.Phase.readMore": "Læs mere...",
   "app.containers.Admin.inspirationHub.ProjectDrawer.Phase.title": "Fase {number}: {title}",
   "app.containers.Admin.inspirationHub.ProjectTable.TableHead.duration": "Varighed",
