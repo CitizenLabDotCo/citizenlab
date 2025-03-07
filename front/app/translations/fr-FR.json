@@ -1926,7 +1926,7 @@
   "app.containers.footer.terms-and-conditions": "Conditions générales",
   "app.containers.ideaHeading.cancelLeaveIdeaButtonText": "Annuler",
   "app.containers.ideaHeading.confirmLeaveFormButtonText": "Oui, je veux quitter",
-  "app.containers.ideaHeading.editIdeaForm": "Modifier le formulaire d'idée",
+  "app.containers.ideaHeading.editForm": "Modifier le formulaire",
   "app.containers.ideaHeading.leaveFormConfirmationQuestion": "Êtes-vous sûr de vouloir quitter ?",
   "app.containers.ideaHeading.leaveIdeaForm": "Laissez le formulaire d'idée",
   "app.containers.ideaHeading.leaveIdeaText": "Vos réponses ne seront pas sauvegardées.",
