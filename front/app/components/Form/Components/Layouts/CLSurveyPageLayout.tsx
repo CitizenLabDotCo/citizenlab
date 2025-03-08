@@ -40,6 +40,7 @@ import { parseLayers } from 'components/EsriMap/utils';
 import { FormContext } from 'components/Form/contexts';
 import { PageCategorization, PageType } from 'components/Form/typings';
 import customAjv from 'components/Form/utils/customAjv';
+import extractElementsByFollowUpLogic from 'components/Form/utils/extractElementsByFollowUpLogic';
 import extractElementsByOtherOptionLogic from 'components/Form/utils/extractElementsByOtherOptionLogic';
 import getFormCompletionPercentage from 'components/Form/utils/getFormCompletionPercentage';
 import getPageVariant from 'components/Form/utils/getPageVariant';
@@ -231,13 +232,38 @@ const CLSurveyPageLayout = memo(
 
       if (pageVariant === 'submission') {
         setIsLoading(true);
-        data.publication_status = 'published';
+        const dataWithPublicationStatus = {
+          ...data,
+          publication_status: 'published',
+        };
 
-        const idea: IIdea = await onSubmit(data, true, userPagePath);
-        updateSearchParams({ idea_id: idea.data.id });
+        const idea: IIdea | undefined = await onSubmit(
+          { data: dataWithPublicationStatus },
+          true,
+          userPagePath
+        );
+
+        if (idea) {
+          // We set this param so that we can fetch the idea
+          // (see useIdeaById call above in this component)
+          // We need the idea for the author relationship, so that
+          // on the last page we can determine whether to show
+          // the message for anonymous users
+          updateSearchParams({ idea_id: idea.data.id });
+        } else {
+          console.error('Failed to submit idea and set idea_id param.');
+        }
       } else {
-        data.publication_status = 'draft';
-        await onSubmit({ data }, false, userPagePath);
+        const dataWithPublicationStatus = {
+          ...data,
+          publication_status: 'draft',
+        };
+
+        await onSubmit(
+          { data: dataWithPublicationStatus },
+          false,
+          userPagePath
+        );
       }
 
       scrollToTop();
@@ -308,7 +334,10 @@ const CLSurveyPageLayout = memo(
       );
     }
 
-    const pageElements = extractElementsByOtherOptionLogic(currentPage, data);
+    // Extract elements depending on other option logic and follow-up logic
+    // E.g. If a user selects 'other' in a multiple choice question, we show a text field, if they don't we should not show it.
+    let pageElements = extractElementsByOtherOptionLogic(currentPage, data);
+    pageElements = extractElementsByFollowUpLogic(pageElements, data);
 
     // This is the index of the current page in the pageTypeElements array,
     // which also includes non-visible pages.

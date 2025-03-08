@@ -100,6 +100,43 @@ describe WebApi::V1::CustomFieldSerializer do
     end
   end
 
+  context 'sentiment_linear_scale field' do
+    let(:field) { create(:custom_field_sentiment_linear_scale, :for_custom_form, key: 'scale') }
+
+    it 'includes maximum and scale value labels' do
+      serialized_field = described_class.new(field).serializable_hash
+      attributes = serialized_field[:data][:attributes]
+      expect(attributes).to match({
+        code: nil,
+        created_at: an_instance_of(ActiveSupport::TimeWithZone),
+        description_multiloc: { 'en' => 'Please indicate how strong you agree or disagree.' },
+        enabled: true,
+        input_type: 'sentiment_linear_scale',
+        key: 'scale',
+        maximum: 5,
+        ask_follow_up: false,
+        linear_scale_label_1_multiloc: { 'en' => 'Strongly disagree' },
+        linear_scale_label_2_multiloc: { 'en' => 'Disagree' },
+        linear_scale_label_3_multiloc: { 'en' => 'Neutral' },
+        linear_scale_label_4_multiloc: { 'en' => 'Agree' },
+        linear_scale_label_5_multiloc: { 'en' => 'Strongly agree' },
+        linear_scale_label_6_multiloc: {},
+        linear_scale_label_7_multiloc: {},
+        linear_scale_label_8_multiloc: {},
+        linear_scale_label_9_multiloc: {},
+        linear_scale_label_10_multiloc: {},
+        linear_scale_label_11_multiloc: {},
+        ordering: 0,
+        required: false,
+        title_multiloc: { 'en' => 'We need a swimming pool.' },
+        updated_at: an_instance_of(ActiveSupport::TimeWithZone),
+        logic: {},
+        constraints: {},
+        random_option_ordering: false
+      })
+    end
+  end
+
   context 'rating field' do
     let(:field) { create(:custom_field_rating, :for_custom_form, key: 'scale') }
 
