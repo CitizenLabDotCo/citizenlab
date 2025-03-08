@@ -40,46 +40,4 @@ RSpec.describe AppConfiguration do
       end
     end
   end
-
-  describe '#detect_country!' do
-    before do
-      app_config = described_class.instance
-      app_config.settings['maps']['map_center'] = { lat: '51.1657', long: '10.4515' }
-      app_config.save!(validate: false)
-    end
-
-    context 'when country_code is not set' do
-      it 'schedules CountryCodeJob when lat and long exist' do
-        described_class.instance.country_code = nil
-        described_class.instance.save!
-        expect { described_class.instance.send(:detect_country!) }
-          .to enqueue_job(CountryCodeJob).exactly(:once)
-      end
-    end
-
-    context 'when country_code is set' do
-      before { described_class.instance.country_code = 'DE' }
-
-      it 'schedules CountryCodeJob when lat changed' do
-        described_class.instance.settings['maps']['map_center']['lat'] = '51.16'
-        described_class.instance.save!
-        expect { described_class.instance.send(:detect_country!) }
-          .to enqueue_job(CountryCodeJob).exactly(:once)
-      end
-
-      it 'schedules CountryCodeJob when long changed' do
-        described_class.instance.settings['maps']['map_center']['long'] = '10.45'
-        described_class.instance.save!
-        expect { described_class.instance.send(:detect_country!) }
-          .to enqueue_job(CountryCodeJob).exactly(:once)
-      end
-
-      it 'does not schedule CountryCodeJob when other setting changed' do
-        described_class.instance.settings['maps']['zoom_level'] = 5
-        described_class.instance.save!
-        expect { described_class.instance.send(:detect_country!) }
-          .not_to enqueue_job(CountryCodeJob)
-      end
-    end
-  end
 end

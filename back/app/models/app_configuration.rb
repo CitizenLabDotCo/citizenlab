@@ -36,8 +36,6 @@ class AppConfiguration < ApplicationRecord
   before_validation :validate_missing_feature_dependencies
   before_validation :add_missing_features_and_settings, on: :create
 
-  after_save :detect_country!
-
   module Settings
     extend CitizenLab::Mixins::SettingsSpecification
 
@@ -251,24 +249,6 @@ class AppConfiguration < ApplicationRecord
 
   def validate_singleton
     errors.add(:base, 'there can be only one instance of AppConfiguration') if AppConfiguration.count.positive?
-  end
-
-  def detect_country!
-    if latitude && longitude &&
-       ((setting_changed?(%w[maps map_center lat]) ||
-        setting_changed?(%w[maps map_center long])) ||
-        country_code.blank?)
-      CountryCodeJob.perform_later
-    end
-  end
-
-  def setting_changed?(path)
-    return false unless saved_change_to_attribute?(:settings)
-
-    old_settings, new_settings = saved_change_to_attribute(:settings)
-    old_value = old_settings.dig(*path)
-    new_value = new_settings.dig(*path)
-    old_value != new_value
   end
 end
 
