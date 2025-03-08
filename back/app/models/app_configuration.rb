@@ -151,15 +151,9 @@ class AppConfiguration < ApplicationRecord
     @public_settings ||= SettingsService.new.format_for_front_end(settings, Settings.json_schema)
   end
 
-  def latitude
-    settings.dig('maps', 'map_center', 'lat')
-  end
-
-  def longitude
-    settings.dig('maps', 'map_center', 'long')
-  end
-
   def location
+    longitude = settings.dig('maps', 'map_center', 'long')
+    latitude = settings.dig('maps', 'map_center', 'lat')
     RGeo::Geographic.spherical_factory(srid: 4326).point(longitude, latitude)
   end
 
