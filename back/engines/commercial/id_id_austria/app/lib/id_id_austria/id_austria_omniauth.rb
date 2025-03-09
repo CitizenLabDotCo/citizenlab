@@ -1,7 +1,8 @@
 # frozen_string_literal: true
 
 module IdIdAustria
-  class IdAustriaOmniauth < OmniauthMethods::Base
+  class IdAustriaOmniauth < IdMethod::Base
+    include IdMethod::OmniAuthMethod
     include IdAustriaVerification
 
     def profile_to_uid(auth)
