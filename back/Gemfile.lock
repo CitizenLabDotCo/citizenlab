@@ -637,9 +637,6 @@ GEM
       googleauth (~> 1.9)
       grpc (~> 1.59)
     gems (1.2.0)
-    geocoder (1.8.5)
-      base64 (>= 0.1.0)
-      csv (>= 3.0.0)
     globalid (1.2.1)
       activesupport (>= 6.1)
     google-api-client (0.53.0)
@@ -1325,7 +1322,6 @@ DEPENDENCIES
   flag_inappropriate_content!
   fog-aws (~> 3.24)
   frontend!
-  geocoder (~> 1.8)
   google-cloud-document_ai (~> 1.4)
   google_tag_manager!
   groupdate (~> 6.5)
