@@ -806,7 +806,7 @@ GEM
     llhttp-ffi (0.5.0)
       ffi-compiler (~> 1.0)
       rake (~> 13.0)
-    logger (1.6.5)
+    logger (1.6.6)
     loofah (2.24.0)
       crass (~> 1.0.2)
       nokogiri (>= 1.12.0)
@@ -964,7 +964,7 @@ GEM
     public_suffix (5.1.1)
     puma (6.4.3)
       nio4r (~> 2.0)
-    pundit (2.3.2)
+    pundit (2.5.0)
       activesupport (>= 3.0.0)
     qonfig (0.29.0)
     que (2.3.0)
@@ -1389,7 +1389,7 @@ DEPENDENCIES
   pry-rescue
   public_api!
   puma (~> 6.4.3)
-  pundit (~> 2.3.2)
+  pundit (~> 2.5.0)
   que (~> 2.3.0)
   rack-attack (~> 6)
   rack-cors (= 2.0.0)
