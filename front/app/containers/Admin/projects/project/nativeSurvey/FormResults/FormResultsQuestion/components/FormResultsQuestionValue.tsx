@@ -14,6 +14,7 @@ import PolygonLocationQuestion from '../MappingQuestions/PolygonLocationQuestion
 import MatrixQuestion from '../MatrixQuestion';
 import NumberQuestion from '../NumberQuestion';
 import RankingQuestion from '../RankingQuestion';
+import SentimentQuestion from '../SentimentQuestion';
 import TextQuestion from '../TextQuestion';
 import { determineAnswerType } from '../utils';
 
@@ -53,6 +54,8 @@ const FormResultQuestionValue = ({
       );
     case 'matrix_linear_scale':
       return <MatrixQuestion result={result} />;
+    case 'sentiment_linear_scale':
+      return <SentimentQuestion result={result} />;
     case 'multiselect':
       return (
         <>
