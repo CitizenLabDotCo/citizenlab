@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+# 09-03-25
+# Requires CountryCodeService, now removed, which also required geocoder gem, now removed.
 namespace :single_use do
   desc 'Set country_code for all tenants with a lat and lng'
   task set_country_code: :environment do
