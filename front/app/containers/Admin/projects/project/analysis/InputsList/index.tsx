@@ -18,6 +18,7 @@ import useKeyPress from 'hooks/useKeyPress';
 import { useIntl } from 'utils/cl-intl';
 
 import Demographics from '../Demographics';
+import Heatmap from '../Heatmap';
 import useAnalysisFilterParams from '../hooks/useAnalysisFilterParams';
 import { useSelectedInputContext } from '../SelectedInputContext';
 
@@ -163,6 +164,9 @@ const InputsList = () => {
         >
           <Box bg={colors.white} mb="8px">
             <Demographics />
+          </Box>
+          <Box bg={colors.white} mb="8px">
+            <Heatmap />
           </Box>
           <Box height={`${getTotalSize()}px`} width="100%" position="relative">
             {getVirtualItems().map((virtualRow) => {

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import {
   Box,
@@ -13,7 +13,7 @@ import { useParams } from 'react-router-dom';
 
 import useAnalysisHeatmapCells from 'api/analysis_heat_map_cells/useAnalysisHetmapCells';
 import useAnalysisTags from 'api/analysis_tags/useAnalysisTags';
-import useUserCustomField from 'api/user_custom_fields/useUserCustomField';
+import { IUserCustomFields } from 'api/user_custom_fields/types';
 import useUserCustomFieldsOptions from 'api/user_custom_fields_options/useUserCustomFieldsOptions';
 
 import useLocalize from 'hooks/useLocalize';
@@ -22,26 +22,45 @@ import CloseIconButton from 'components/UI/CloseIconButton';
 
 interface HeatMapProps {
   onClose: () => void;
+  customFields: IUserCustomFields;
 }
 
-const HeatmapDetails = ({ onClose }: HeatMapProps) => {
+interface CustomFieldOptionsProps {
+  customFieldId: string;
+}
+
+const CustomFieldOptions: React.FC<CustomFieldOptionsProps> = ({
+  customFieldId,
+}) => {
+  const { data: options } = useUserCustomFieldsOptions(customFieldId);
   const localize = useLocalize();
+
+  return (
+    <>
+      {' '}
+      {options?.data.map((option) => (
+        <Td key={option.id}>{localize(option.attributes.title_multiloc)}</Td>
+      ))}
+    </>
+  );
+};
+
+const HeatmapDetails = ({ onClose, customFields }: HeatMapProps) => {
+  const [selectedFieldId, setSelectedFieldId] = useState(
+    customFields.data[0].id
+  );
   const { analysisId } = useParams() as { analysisId: string };
   const { data: analysisHeatmapCells } = useAnalysisHeatmapCells({
     analysisId,
+    columnCategoryType: 'user_custom_field',
+    columnCategoryTypeId: selectedFieldId,
   });
 
   const { data: tags } = useAnalysisTags({
     analysisId,
   });
 
-  const { data: genderCustomField } = useUserCustomField(
-    '6106ebc9-0b9c-43e1-af24-04a2bdbaa26c'
-  );
-
-  const { data: options } = useUserCustomFieldsOptions(
-    '6106ebc9-0b9c-43e1-af24-04a2bdbaa26c'
-  );
+  const { data: options } = useUserCustomFieldsOptions(selectedFieldId);
 
   return (
     <Box
@@ -59,11 +78,7 @@ const HeatmapDetails = ({ onClose }: HeatMapProps) => {
         <Thead>
           <Tr>
             <Td />
-            {options?.data.map((option) => (
-              <Td key={option.id}>
-                {localize(option.attributes.title_multiloc)}
-              </Td>
-            ))}
+            <CustomFieldOptions customFieldId={selectedFieldId} />
           </Tr>
         </Thead>
         <Tbody>
