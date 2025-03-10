@@ -45,6 +45,7 @@ const TextButton = styled.button`
 
   cursor: pointer;
   font-weight: bold;
+  text-align: left;
 `;
 
 const TableBody = ({ libraryProjects, isInitialLoading }: Props) => {
@@ -58,7 +59,7 @@ const TableBody = ({ libraryProjects, isInitialLoading }: Props) => {
     if (!countries) return;
 
     return countries.data.attributes.reduce((acc, country) => {
-      acc[country.code] = country.short_name;
+      acc[country.code] = country.name;
       return acc;
     }, {} as Record<string, string>);
   }, [countries]);
