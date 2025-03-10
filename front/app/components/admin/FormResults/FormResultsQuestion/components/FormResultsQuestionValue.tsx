@@ -5,8 +5,6 @@ import { colors } from '@citizenlab/cl2-component-library';
 import { ICustomFieldInputType } from 'api/custom_fields/types';
 import { LogicConfig, ResultUngrouped } from 'api/survey_results/types';
 
-import SentimentQuestion from 'containers/Admin/projects/project/nativeSurvey/FormResults/FormResultsQuestion/SentimentQuestion';
-
 import SurveyBarsHorizontal from 'components/admin/Graphs/SurveyBars/SurveyBarsHorizontal';
 import SurveyBarsVertical from 'components/admin/Graphs/SurveyBars/SurveyBarsVertical';
 
@@ -16,6 +14,7 @@ import PolygonLocationQuestion from '../MappingQuestions/PolygonLocationQuestion
 import MatrixQuestion from '../MatrixQuestion';
 import NumberQuestion from '../NumberQuestion';
 import RankingQuestion from '../RankingQuestion';
+import SentimentQuestion from '../SentimentQuestion';
 import TextQuestion from '../TextQuestion';
 import { determineAnswerType } from '../utils';
 

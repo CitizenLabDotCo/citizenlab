@@ -20,7 +20,7 @@ import { useIntl } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
 
 import messages from './messages';
-import { StyledBox } from './styles';
+import { StyledBox, StyledText } from './styles';
 
 export const NotificationsPopup = () => {
   const { formatMessage } = useIntl();
@@ -75,21 +75,20 @@ export const NotificationsPopup = () => {
           <Icon
             name="notification-outline"
             fill={colors.blue400}
-            width="24px"
+            height="20px"
           />
         </Box>
         {!isSmallerThanTablet && (
           <>
-            <Text
+            <StyledText
               color="white"
               ml="15px"
-              fontSize="base"
               textAlign="left"
               my="0px"
               w="100%"
             >
               {formatMessage({ ...messages.notifications })}
-            </Text>
+            </StyledText>
           </>
         )}
         <Box w="auto" h={isSmallerThanTablet ? '0' : '18px'} ref={iconDivRef}>
