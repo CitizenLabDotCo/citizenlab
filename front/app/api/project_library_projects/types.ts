@@ -7,7 +7,7 @@ import { Keys } from 'utils/cl-react-query/types';
 
 import miniProjectsKeys from './keys';
 
-export type Status = 'draft' | 'active' | 'finished' | 'stale' | 'archived';
+export type Status = 'active' | 'finished' | 'stale' | 'archived';
 
 type PopulationGroup = 'XS' | 'S' | 'M' | 'L' | 'XL';
 
