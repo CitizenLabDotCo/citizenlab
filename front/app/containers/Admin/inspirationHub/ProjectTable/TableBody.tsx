@@ -81,8 +81,6 @@ const TableBody = ({ libraryProjects, isInitialLoading }: Props) => {
           {libraryProjects.data.map(({ attributes, id, relationships }) => {
             const countryCode = attributes.tenant_country_alpha2;
 
-            console.log(relationships.phases);
-
             return (
               <Tr key={id} background={colors.white}>
                 <Cell>

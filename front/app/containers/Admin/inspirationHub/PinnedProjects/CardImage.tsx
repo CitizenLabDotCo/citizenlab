@@ -15,10 +15,6 @@ const ProjectImageContainer = styled.div`
   overflow: hidden;
   position: relative;
   border-radius: ${stylingConsts.borderRadius};
-
-  & > * {
-    transition: transform 0.3s;
-  }
 `;
 
 interface Props {
