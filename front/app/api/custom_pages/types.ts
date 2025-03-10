@@ -79,7 +79,10 @@ export interface ICustomPageAttributes extends ICustomPageEnabledSettings {
   updated_at: string;
 }
 
-export type TPolicyPage = 'terms-and-conditions' | 'privacy-policy';
+export type TPolicyPage =
+  | 'cookie-policy'
+  | 'privacy-policy'
+  | 'terms-and-conditions';
 
 export type TCustomPageCode =
   // Content of policy pages can only be edited
@@ -96,9 +99,14 @@ export type TCustomPageCode =
 export enum POLICY_PAGE {
   termsAndConditions = 'terms-and-conditions',
   privacyPolicy = 'privacy-policy',
+  cookiePolicy = 'cookie-policy',
 }
 
-export const POLICY_PAGES: TPolicyPage[] = [
+// The cookie policy can't be modified through the application.
+// If a custom cookie policy page needs to be created, deleted, or updated,
+// it should be requested to the support team. These changes are handled as
+// an SLS task since they should be exceptions rather than the norm.
+export const EDITABLE_POLICY_PAGES: TPolicyPage[] = [
   POLICY_PAGE.termsAndConditions,
   POLICY_PAGE.privacyPolicy,
 ];
