@@ -30,8 +30,8 @@ const InspirationHub = () => {
           </Title>
           <PinnedProjects />
         </Box>
-        <Box>
-          <Title variant="h2" color="primary">
+        <Box mt="40px">
+          <Title variant="h2" color="primary" mt="0">
             <FormattedMessage {...messages.allProjects} />
           </Title>
           <Box mb="24px">
