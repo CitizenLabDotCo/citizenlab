@@ -66,11 +66,12 @@ const PageControlButtons = ({
   );
 
   const handleButtonClick = () => {
-    // If this is the after-submission page, and the user has set a custom button link, navigate to that
+    // If this is the after-submission page & the user has set a custom button link, navigate to that
     const pageButtonLink = currentPage.options.page_button_link;
     if (pageVariant === 'after-submission' && pageButtonLink) {
       window.location.href = pageButtonLink;
     } else {
+      // Otherwise, continue with the default behaviour
       handleNextAndSubmit();
     }
   };

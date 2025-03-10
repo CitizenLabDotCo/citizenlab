@@ -29,8 +29,8 @@ const PageButtonSettings = ({
   pageButtonLinkName,
 }: Props) => {
   const locale = useLocale();
-  const { formatMessage } = useIntl();
   const localize = useLocalize();
+  const { formatMessage } = useIntl();
   const { control, watch, setValue } = useFormContext();
 
   const [useCustomButton, setUseCustomButton] = useState(
@@ -58,10 +58,11 @@ const PageButtonSettings = ({
             render={({ field: { ref: _ref, value } }) => {
               return (
                 <Box mb="28px" data-cy="e2e-custom-button-link">
-                  <Label htmlFor={'page_layout'}>
+                  <Label htmlFor={'page_button_link'}>
                     {formatMessage(messages.buttonLink)}
                   </Label>
                   <Input
+                    id="page_button_link"
                     type="text"
                     value={value}
                     onChange={(value) => setValue(pageButtonLinkName, value)}
