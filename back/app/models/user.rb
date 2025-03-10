@@ -215,6 +215,7 @@ class User < ApplicationRecord
       sub: id,
       roles: compress_roles,
       exp: token_lifetime.from_now.to_i,
+      security_level: security_level,
       cluster: CL2_CLUSTER,
       tenant: Tenant.current.id
     }
@@ -278,6 +279,14 @@ class User < ApplicationRecord
   def blank_and_can_be_deleted?
     # atm it can be true only for users registered with ClaveUnica and MitID who haven't entered email
     sso? && email.blank? && new_email.blank? && password_digest.blank? && identity_ids.count == 1
+  end
+
+  # Used to reject auth if the security level in the token is lower than the user's security level
+  # Can add verification in here as a level 2 maybe
+  def security_level
+    return 1 unless confirmation_required?
+
+    0
   end
 
   private
