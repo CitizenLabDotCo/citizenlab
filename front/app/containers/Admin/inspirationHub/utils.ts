@@ -1,7 +1,7 @@
 import { useCallback, useMemo } from 'react';
 
 import { useSearchParams } from 'react-router-dom';
-import { SupportedLocale } from 'typings';
+import { Multiloc, SupportedLocale } from 'typings';
 
 import { ProjectLibraryPhaseData } from 'api/project_library_phases/types';
 import {
@@ -68,63 +68,78 @@ export const useRansackParams = () => {
   );
 };
 
+type TranslateableAttribute = 'title' | 'description' | 'folder_title';
+
 export const useLocalizeProjectLibrary = () => {
   const locale = useLocale();
 
   return useCallback(
-    (resource: ProjectLibraryProjectData | ProjectLibraryPhaseData) => {
-      const title = getTitleWithFallback(locale, resource);
-      const description = getDescriptionWithFallback(locale, resource);
-
-      return { title, description };
+    (
+      resource: ProjectLibraryProjectData | ProjectLibraryPhaseData,
+      attribute: TranslateableAttribute
+    ) => {
+      return getWithFallback(locale, resource, attribute);
     },
     [locale]
   );
 };
 
-const getTitleWithFallback = (
+const getWithFallback = (
   currentLocale: SupportedLocale,
-  resource: ProjectLibraryProjectData | ProjectLibraryPhaseData
+  resource: ProjectLibraryProjectData | ProjectLibraryPhaseData,
+  translateableAttribute: TranslateableAttribute
 ) => {
+  const multiloc = getMultiloc(resource, translateableAttribute);
+
   // Try grabbing the title in the current locale
-  const currentLocaleTitle = resource.attributes.title_multiloc[currentLocale];
+  const currentLocaleTitle = multiloc[currentLocale];
 
   // If not available, try grabbing the title in a similar locale
-  const similarLocale = findSimilarLocale(
-    currentLocale,
-    keys(resource.attributes.title_multiloc)
-  );
+  const similarLocale = findSimilarLocale(currentLocale, keys(multiloc));
   const similarLocaleTitle = similarLocale
-    ? resource.attributes.title_multiloc[similarLocale]
-    : undefined;
-
-  // If neither of those are available, fallback to English
-  return (
-    currentLocaleTitle ?? similarLocaleTitle ?? resource.attributes.title_en
-  );
-};
-
-const getDescriptionWithFallback = (
-  currentLocale: SupportedLocale,
-  resource: ProjectLibraryProjectData | ProjectLibraryPhaseData
-) => {
-  // Try grabbing the description in the current locale
-  const currentLocaleTitle =
-    resource.attributes.description_multiloc[currentLocale];
-
-  // If not available, try grabbing the description in a similar locale
-  const similarLocale = findSimilarLocale(
-    currentLocale,
-    keys(resource.attributes.description_multiloc)
-  );
-  const similarLocaleTitle = similarLocale
-    ? resource.attributes.description_multiloc[similarLocale]
+    ? multiloc[similarLocale]
     : undefined;
 
   // If neither of those are available, fallback to English
   return (
     currentLocaleTitle ??
     similarLocaleTitle ??
-    resource.attributes.description_en
+    resource.attributes[
+      ATTRIBUTE_TO_ENGLISH_ATTRIBUTE[translateableAttribute]
+    ] ??
+    ''
   );
 };
+
+const getMultiloc = (
+  resource: ProjectLibraryProjectData | ProjectLibraryPhaseData,
+  translateableAttribute: TranslateableAttribute
+) => {
+  if (resource.type === 'project_library_phase') {
+    if (translateableAttribute === 'title') {
+      return resource.attributes.title_multiloc;
+    }
+
+    if (translateableAttribute === 'description') {
+      return resource.attributes.description_multiloc;
+    }
+  } else {
+    if (translateableAttribute === 'title') {
+      return resource.attributes.title_multiloc;
+    }
+
+    if (translateableAttribute === 'description') {
+      return resource.attributes.description_multiloc;
+    }
+
+    return resource.attributes.folder_title_multiloc;
+  }
+
+  return {} as Multiloc;
+};
+
+const ATTRIBUTE_TO_ENGLISH_ATTRIBUTE = {
+  title: 'title_en',
+  description: 'description_en',
+  folder_title: 'folder_title_en',
+} as const;
