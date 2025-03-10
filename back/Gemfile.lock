@@ -85,6 +85,20 @@ PATH
       rails (~> 7.0)
 
 PATH
+  remote: engines/commercial/id_azure_active_directory_b2c
+  specs:
+    id_azure_active_directory_b2c (1.0.0)
+      omniauth_openid_connect (~> 0.7.1)
+      rails (~> 7.0)
+
+PATH
+  remote: engines/commercial/id_azure_active_directory
+  specs:
+    id_azure_active_directory (1.0.0)
+      omniauth_openid_connect (~> 0.7.1)
+      rails (~> 7.0)
+
+PATH
   remote: engines/commercial/id_bogus
   specs:
     id_bogus (0.1.0)
@@ -119,6 +133,13 @@ PATH
       rails (~> 7.0)
 
 PATH
+  remote: engines/commercial/id_facebook
+  specs:
+    id_facebook (1.0.0)
+      omniauth_openid_connect (~> 0.7.1)
+      rails (~> 7.0)
+
+PATH
   remote: engines/commercial/id_fake_sso
   specs:
     id_fake_sso (0.1.0)
@@ -136,6 +157,13 @@ PATH
   specs:
     id_gent_rrn (0.1.0)
       httparty
+      rails (~> 7.0)
+
+PATH
+  remote: engines/commercial/id_google
+  specs:
+    id_google (1.0.0)
+      omniauth_openid_connect (~> 0.7.1)
       rails (~> 7.0)
 
 PATH
@@ -1328,14 +1356,18 @@ DEPENDENCIES
   icalendar (~> 2.10)
   ice_cube (~> 0.17)
   id_auth0!
+  id_azure_active_directory!
+  id_azure_active_directory_b2c!
   id_bogus!
   id_bosa_fas!
   id_clave_unica!
   id_cow!
   id_criipto!
+  id_facebook!
   id_fake_sso!
   id_franceconnect!
   id_gent_rrn!
+  id_google!
   id_hoplr!
   id_id_austria!
   id_id_card_lookup!
