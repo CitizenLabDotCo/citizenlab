@@ -9,12 +9,15 @@ import {
   Td,
   Tbody,
   stylingConsts,
+  Title,
+  IconButton,
 } from '@citizenlab/cl2-component-library';
 import { useParams } from 'react-router-dom';
 
 import useAnalysisHeatmapCells from 'api/analysis_heat_map_cells/useAnalysisHetmapCells';
 import useAnalysisTags from 'api/analysis_tags/useAnalysisTags';
 import { IUserCustomFields } from 'api/user_custom_fields/types';
+import useUserCustomField from 'api/user_custom_fields/useUserCustomField';
 import useUserCustomFieldsOptions from 'api/user_custom_fields_options/useUserCustomFieldsOptions';
 
 import useLocalize from 'hooks/useLocalize';
@@ -47,6 +50,7 @@ const CustomFieldOptions: React.FC<CustomFieldOptionsProps> = ({
 };
 
 const HeatmapDetails = ({ onClose, customFields }: HeatMapProps) => {
+  const localize = useLocalize();
   const [selectedFieldId, setSelectedFieldId] = useState(
     customFields.data[0].id
   );
@@ -61,7 +65,22 @@ const HeatmapDetails = ({ onClose, customFields }: HeatMapProps) => {
     analysisId,
   });
 
+  const { data: customField } = useUserCustomField(selectedFieldId);
   const { data: options } = useUserCustomFieldsOptions(selectedFieldId);
+
+  const handleChangeCustomField = (offset: number) => {
+    setSelectedFieldId((currentId) => {
+      const fields = customFields.data;
+      const currentIndex = fields.findIndex((field) => field.id === currentId);
+      const length = fields.length;
+
+      // Calculate new index with wraparound
+      let newIndex = (currentIndex + offset) % length;
+      if (newIndex < 0) newIndex += length;
+
+      return fields[newIndex].id;
+    });
+  };
 
   return (
     <Box
@@ -77,6 +96,18 @@ const HeatmapDetails = ({ onClose, customFields }: HeatMapProps) => {
       bg={colors.white}
     >
       <CloseIconButton onClick={onClose} />
+      <IconButton
+        iconName="arrow-left"
+        onClick={() => handleChangeCustomField(-1)}
+        a11y_buttonActionMessage={''}
+      />
+      <Title>{localize(customField?.data.attributes.title_multiloc)}</Title>
+
+      <IconButton
+        iconName="arrow-right"
+        onClick={() => handleChangeCustomField(1)}
+        a11y_buttonActionMessage={''}
+      />
       <Table>
         <Thead>
           <Tr>
