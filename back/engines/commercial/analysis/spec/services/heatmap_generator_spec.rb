@@ -128,5 +128,52 @@ describe Analysis::HeatmapGenerator do
         column: female
       )
     end
+
+    it 'returns a heatmap for participants' do
+      male, female, unspecified = custom_field_gender.options
+      create(:reaction, user: author1, reactable: input2)
+      create(:reaction, reactable: input1, user: create(:user, custom_field_values: { custom_field_gender.key => female.key }))
+      create(:comment, idea: input2, author: create(:user, custom_field_values: { custom_field_gender.key => male.key }))
+
+      service = described_class.new(analysis)
+      heatmap = service.generate([tag1, tag2], custom_field_gender.options, unit: 'participants')
+      expect(heatmap.keys).to match_array([
+        [tag1, male],
+        [tag1, female],
+        [tag1, unspecified],
+        [tag2, male],
+        [tag2, female],
+        [tag2, unspecified]
+      ])
+      expect(heatmap.values).to all(be_instance_of(Analysis::HeatmapCell))
+      expect(heatmap[[tag1, male]]).to have_attributes(
+        count: 3,
+        p_value: 1.0,
+        lift: 1.05,
+        row: tag1,
+        column: male
+      )
+      expect(heatmap[[tag1, female]]).to have_attributes(
+        count: 1,
+        p_value: 1.0,
+        lift: 0.875,
+        row: tag1,
+        column: female
+      )
+      expect(heatmap[[tag2, male]]).to have_attributes(
+        count: 2,
+        p_value: 1.0,
+        lift: 0.9333333333333333,
+        row: tag2,
+        column: male
+      )
+      expect(heatmap[[tag2, female]]).to have_attributes(
+        count: 1,
+        p_value: 1.0,
+        lift: 1.1666666666666667,
+        row: tag2,
+        column: female
+      )
+    end
   end
 end

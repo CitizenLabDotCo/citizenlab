@@ -29,7 +29,7 @@
 module Analysis
   class HeatmapCell < ::ApplicationRecord
     INDEX_TYPES = [CustomFieldOption, Tag].freeze
-    UNIT_TYPES = %w[inputs likes dislikes engagement]
+    UNIT_TYPES = %w[inputs likes dislikes participants]
 
     belongs_to :analysis, class_name: 'Analysis::Analysis'
     belongs_to :row, polymorphic: true

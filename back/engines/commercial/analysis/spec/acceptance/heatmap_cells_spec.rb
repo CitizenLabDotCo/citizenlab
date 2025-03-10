@@ -16,7 +16,7 @@ resource 'HeatmapCells' do
     parameter :row_category_id, 'The ID of the entity that should be shown in the rows of the heatmap. Not relevant if row_category_type is `tags`.'
     parameter :column_category_type, 'What entity should be shown in the columns of the heatmap? One of `tags`, `user_custom_field` or `input_custom_field`'
     parameter :column_category_id, 'The ID of the entity that should be shown in the columns of the heatmap. Not relevant if column_category_type is `tags`.'
-    parameter :unit, 'The unit of the heatmap. One of `inputs`, `likes`, `dislikes` or `engagement`', default: 'inputs'
+    parameter :unit, 'The unit of the heatmap. One of `inputs`, `likes`, `dislikes` or `participants`', default: 'inputs'
     parameter :max_p_value, 'The p-value threshold for the heatmap. Only cells with a p-value below this threshold will be returned'
     parameter :min_lift_diff, 'The minimal percentage points of difference with 100% in lift. Only cells with a lift difference above this threshold will be returned. E.g. passing 50 will only return cells with a lift <= 0.5 or >= 1.5'
 

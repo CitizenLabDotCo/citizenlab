@@ -24,6 +24,8 @@ module Analysis
         generate_countmap_for_reactions(category1, category2, 'up')
       when 'dislikes'
         generate_countmap_for_reactions(category1, category2, 'down')
+      when 'participants'
+        generate_countmap_for_participants(category1, category2)
       else
         raise 'Invalid unit'
       end
@@ -62,6 +64,23 @@ module Analysis
       output
     end
 
+    def generate_countmap_for_participants(category1, category2)
+      output = {}
+
+      participant_to_inputs_map.each do |participant, inputs|
+        category1.map do |col1|
+          category2.map do |col2|
+            output[[col1, col2]] ||= HeatmapCell.new(row: col1, column: col2, analysis: @analysis)
+            if inputs.any? { |input| column_set_for_participant?(input, participant, col1) && column_set_for_participant?(input, participant, col2) }
+              output[[col1, col2]].count += 1
+            end
+          end
+        end
+      end
+
+      output
+    end
+
     def add_lift!(heatmap)
       heatmap_sum = calc_heatmap_sum(heatmap)
       heatmap.each do |(col1, col2), cell|
@@ -77,8 +96,6 @@ module Analysis
     def add_significance!(heatmap, unit)
       heatmap.each do |(col1, col2), cell|
         contingency_table = generate_contingency_table(col1, col2, unit)
-        puts "#{col1.try(:name) || col1.try(:key)} - #{col2.try(:name) || col2.try(:key)}"
-        pp contingency_table
         _, cell.p_value = chi_square(contingency_table)
       end
     end
@@ -108,6 +125,14 @@ module Analysis
           in_col1 = column_set_for_reaction?(reaction, col1)
           in_col2 = column_set_for_reaction?(reaction, col2)
           table[[in_col1, in_col2]] += 1
+        end
+      when 'participants'
+        participant_to_inputs_map.each do |participant, inputs|
+          inputs.each do |input|
+            in_col1 = column_set_for_participant?(input, participant, col1)
+            in_col2 = column_set_for_participant?(input, participant, col2)
+            table[[in_col1, in_col2]] += 1
+          end
         end
       else
         raise "Invalid unit #{unit}"
@@ -163,6 +188,37 @@ module Analysis
       else
         raise 'Invalid column type'
       end
+    end
+
+    def column_set_for_participant?(input, participant, col)
+      case col
+      when Tag
+        input.taggings.any? { |tagging| tagging.tag_id == col.id }
+      when CustomFieldOption
+        custom_field_value = if col.custom_field.custom_form_type?
+          input.custom_field_values[col.custom_field.key]
+        else
+          participant.custom_field_values[col.custom_field.key]
+        end
+        !!custom_field_value && (custom_field_value == col.key || custom_field_value.include?(col.key))
+      else
+        raise 'Invalid column type'
+      end
+    end
+
+    def participant_to_inputs_map
+      return @participant_to_inputs_map if @participant_to_inputs_map
+
+      output = Hash.new { |hash, key| hash[key] = [] }
+      pc = ParticipantsService.new
+
+      all_inputs.select(:id, :author_id).each do |input|
+        pc.ideas_participants(Idea.where(id: input)).each do |participant|
+          output[participant] << input
+        end
+      end
+
+      @participant_to_inputs_map = output
     end
 
     def chi_square(table)
