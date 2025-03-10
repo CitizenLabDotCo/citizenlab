@@ -97,7 +97,17 @@ RSpec.describe StaticPage do
   describe 'before destroy' do
     subject(:static_page) { build(:static_page, code: 'faq') }
 
-    it 'prevents destruction of static page with :code other than \'custom\'' do
+    it "allows destruction of static page with :code 'custom'" do
+      static_page.update!(code: 'custom')
+      expect { static_page.destroy! }.not_to raise_error
+    end
+
+    it "allows destruction of static page with :code 'cookie-policy'" do
+      static_page.update!(code: 'cookie-policy')
+      expect { static_page.destroy! }.not_to raise_error
+    end
+
+    it 'prevents destruction of static page with any other :code' do
       expect { static_page.destroy! }.to raise_error ActiveRecord::RecordNotDestroyed
     end
   end

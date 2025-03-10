@@ -20,8 +20,11 @@ const customPageSlugAllowedToEdit: { [key in TCustomPageCode]: boolean } = {
   about: true,
   custom: true,
   faq: false,
+  // These pages shouldn't appear on the Pages & menu page at the moment.
+  // Just adding them here to comply with types.
   'privacy-policy': false,
   'terms-and-conditions': false,
+  'cookie-policy': false,
 };
 
 const EditCustomPageSettings = () => {
