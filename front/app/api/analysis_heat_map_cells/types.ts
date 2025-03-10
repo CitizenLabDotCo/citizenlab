@@ -1,4 +1,4 @@
-import { ILinks, IRelationship } from 'typings';
+import { ILinks, IRelationship, Multiloc } from 'typings';
 
 import { Keys } from 'utils/cl-react-query/types';
 
@@ -21,6 +21,7 @@ export interface IAnalysisHeatmapCellData {
     count: number;
     lift: number;
     p_value: number;
+    statement_multiloc: Multiloc;
   };
   relationships: {
     row: { data: IRelationship } | null;
@@ -36,4 +37,6 @@ export interface IAnalysysHeatmapCellsParams {
   rowCategoryType?: 'tags' | 'user_custom_field';
   columnCategoryType?: 'tags' | 'user_custom_field';
   columnCategoryTypeId?: string;
+  maxPValue?: number;
+  minLiftDiff?: number;
 }
