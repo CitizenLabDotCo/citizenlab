@@ -20,7 +20,7 @@ import {
   useJsonForms,
   JsonFormsDispatch,
 } from '@jsonforms/react';
-import { useParams, useSearchParams } from 'react-router-dom';
+import { useLocation, useParams, useSearchParams } from 'react-router-dom';
 import { useTheme } from 'styled-components';
 
 import { IIdea } from 'api/ideas/types';
@@ -56,6 +56,7 @@ import { useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 import eventEmitter from 'utils/eventEmitter';
+import { isPage } from 'utils/helperUtils';
 
 import getPageSchema from '../../utils/getPageSchema';
 import { useErrorToRead } from '../Fields/ErrorToReadContext';
@@ -83,6 +84,8 @@ const CLPageLayout = memo(
     const formState = useJsonForms();
     const localize = useLocalize();
     const theme = useTheme();
+    const { pathname } = useLocation();
+    const isAdminPage = isPage('admin', pathname);
 
     // We can cast types because the tester made sure we only get correct values
     const pageTypeElements = (uischema as PageCategorization).elements;
@@ -544,7 +547,8 @@ const CLPageLayout = memo(
           maxWidth={isMapPage ? '1100px' : '700px'}
           w="100%"
           position="fixed"
-          bottom={isMobileOrSmaller ? '0' : '40px'}
+          // In the admin edit page, we want the buttons to be at the bottom of the page
+          bottom={isMobileOrSmaller || isAdminPage ? '0' : '40px'}
         >
           <PageControlButtons
             handleNextAndSubmit={handleNextAndSubmit}
