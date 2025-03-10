@@ -11,9 +11,8 @@ import {
 
 import { ResultUngrouped } from 'api/survey_results/types';
 
+import InputType from 'components/admin/FormResults/FormResultsQuestion/InputType';
 import T from 'components/T';
-
-import InputType from '../InputType';
 
 import SentimentScore from './components/SentimentScore';
 import { parseResult, SentimentAnswers } from './utils';
