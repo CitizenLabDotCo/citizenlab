@@ -23,19 +23,19 @@ const ProjectDrawer = () => {
     removeSearchParams(['project_id']);
   };
 
-  const projectData = project?.data;
-  const relationships = projectData?.relationships;
+  const attributes = project?.data.attributes;
+  const relationships = project?.data.relationships;
 
   return (
     <SideModal opened={!!project && !!projectId} close={handleOnClose}>
-      {projectData && (
+      {attributes && (
         <Box mt="52px" mx="28px">
-          <Header projectData={projectData} />
+          <Header attributes={attributes} />
           <Box mt="28px">
             <QuillEditedContent textColor={colors.textPrimary}>
               <div
                 dangerouslySetInnerHTML={{
-                  __html: projectData.attributes.description_en,
+                  __html: attributes.description_en,
                 }}
               />
             </QuillEditedContent>
@@ -46,7 +46,7 @@ const ProjectDrawer = () => {
                 key={id}
                 projectLibraryPhaseId={id}
                 phaseNumber={index + 1}
-                projectAttributes={projectData.attributes}
+                projectAttributes={attributes}
               />
             ))}
           </Box>

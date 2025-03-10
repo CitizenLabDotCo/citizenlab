@@ -78,8 +78,7 @@ const TableBody = ({ libraryProjects, isInitialLoading }: Props) => {
 
       {libraryProjects && (
         <>
-          {libraryProjects.data.map((project) => {
-            const { attributes, id, relationships } = project;
+          {libraryProjects.data.map(({ attributes, id, relationships }) => {
             const countryCode = attributes.tenant_country_alpha2;
 
             return (
@@ -96,7 +95,10 @@ const TableBody = ({ libraryProjects, isInitialLoading }: Props) => {
                         : updateSearchParams({ project_id: id });
                     }}
                   >
-                    {localizeProjectLibrary(project, 'title')}
+                    {localizeProjectLibrary(
+                      attributes.title_multiloc,
+                      attributes.title_en
+                    )}
                   </TextButton>
                   <br />
                   <Box

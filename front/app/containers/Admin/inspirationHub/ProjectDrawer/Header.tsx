@@ -19,11 +19,10 @@ import ExternalLink from './ExternalLink';
 import { getTenantURL, getProjectURL, formatDate } from './utils';
 
 interface Props {
-  projectData: ProjectLibraryProjectData;
+  attributes: ProjectLibraryProjectData['attributes'];
 }
 
-const Header = ({ projectData }: Props) => {
-  const { attributes } = projectData;
+const Header = ({ attributes }: Props) => {
   const tenantURL = getTenantURL(attributes);
   const localizeProjectLibrary = useLocalizeProjectLibrary();
 
@@ -48,7 +47,10 @@ const Header = ({ projectData }: Props) => {
       </Box>
       <ExternalLink href={getProjectURL(attributes)}>
         <Title variant="h2" color="textPrimary" mt="4px" mb="4px">
-          {localizeProjectLibrary(projectData, 'title')}
+          {localizeProjectLibrary(
+            attributes.title_multiloc,
+            attributes.title_en
+          )}
         </Title>
       </ExternalLink>
       <Box display="flex" flexDirection="row" alignItems="center">
@@ -81,7 +83,10 @@ const Header = ({ projectData }: Props) => {
               fill={colors.textSecondary}
             />
             <Text m="0" ml="4px" color="textSecondary">
-              {localizeProjectLibrary(projectData, 'folder_title')}
+              {localizeProjectLibrary(
+                attributes.folder_title_multiloc,
+                attributes.folder_title_en
+              )}
             </Text>
           </>
         )}

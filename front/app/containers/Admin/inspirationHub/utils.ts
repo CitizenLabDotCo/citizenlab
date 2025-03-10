@@ -3,11 +3,7 @@ import { useCallback, useMemo } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { Multiloc, SupportedLocale } from 'typings';
 
-import { ProjectLibraryPhaseData } from 'api/project_library_phases/types';
-import {
-  ProjectLibraryProjectData,
-  RansackParams,
-} from 'api/project_library_projects/types';
+import { RansackParams } from 'api/project_library_projects/types';
 
 import useLocale from 'hooks/useLocale';
 
@@ -68,17 +64,12 @@ export const useRansackParams = () => {
   );
 };
 
-type TranslateableAttribute = 'title' | 'description' | 'folder_title';
-
 export const useLocalizeProjectLibrary = () => {
   const locale = useLocale();
 
   return useCallback(
-    (
-      resource: ProjectLibraryProjectData | ProjectLibraryPhaseData,
-      attribute: TranslateableAttribute
-    ) => {
-      return getWithFallback(locale, resource, attribute);
+    (multiloc: Multiloc, fallback: string | null) => {
+      return getWithFallback(locale, multiloc, fallback);
     },
     [locale]
   );
@@ -86,11 +77,9 @@ export const useLocalizeProjectLibrary = () => {
 
 const getWithFallback = (
   currentLocale: SupportedLocale,
-  resource: ProjectLibraryProjectData | ProjectLibraryPhaseData,
-  translateableAttribute: TranslateableAttribute
+  multiloc: Multiloc,
+  fallback: string | null
 ) => {
-  const multiloc = getMultiloc(resource, translateableAttribute);
-
   // Try grabbing the title in the current locale
   const currentLocaleTitle = multiloc[currentLocale];
 
@@ -101,45 +90,5 @@ const getWithFallback = (
     : undefined;
 
   // If neither of those are available, fallback to English
-  return (
-    currentLocaleTitle ??
-    similarLocaleTitle ??
-    resource.attributes[
-      ATTRIBUTE_TO_ENGLISH_ATTRIBUTE[translateableAttribute]
-    ] ??
-    ''
-  );
+  return currentLocaleTitle ?? similarLocaleTitle ?? fallback ?? '';
 };
-
-const getMultiloc = (
-  resource: ProjectLibraryProjectData | ProjectLibraryPhaseData,
-  translateableAttribute: TranslateableAttribute
-) => {
-  if (resource.type === 'project_library_phase') {
-    if (translateableAttribute === 'title') {
-      return resource.attributes.title_multiloc;
-    }
-
-    if (translateableAttribute === 'description') {
-      return resource.attributes.description_multiloc;
-    }
-  } else {
-    if (translateableAttribute === 'title') {
-      return resource.attributes.title_multiloc;
-    }
-
-    if (translateableAttribute === 'description') {
-      return resource.attributes.description_multiloc;
-    }
-
-    return resource.attributes.folder_title_multiloc;
-  }
-
-  return {} as Multiloc;
-};
-
-const ATTRIBUTE_TO_ENGLISH_ATTRIBUTE = {
-  title: 'title_en',
-  description: 'description_en',
-  folder_title: 'folder_title_en',
-} as const;

@@ -43,7 +43,10 @@ const Phase = ({
       <Title variant="h3" mb="4px">
         {formatMessage(messages.phaseTitle, {
           number: phaseNumber,
-          title: localizeProjectLibrary(phase.data, 'title'),
+          title: localizeProjectLibrary(
+            phaseAttributes.title_multiloc,
+            phaseAttributes.title_en
+          ),
         })}
       </Title>
       <Box display="flex" flexDirection="row" alignItems="center">
