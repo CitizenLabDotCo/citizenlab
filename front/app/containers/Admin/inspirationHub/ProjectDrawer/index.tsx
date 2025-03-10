@@ -34,7 +34,9 @@ const ProjectDrawer = () => {
           <Box mt="28px">
             <QuillEditedContent textColor={colors.textPrimary}>
               <div
-                dangerouslySetInnerHTML={{ __html: attributes.description_en }}
+                dangerouslySetInnerHTML={{
+                  __html: attributes.description_en,
+                }}
               />
             </QuillEditedContent>
           </Box>
