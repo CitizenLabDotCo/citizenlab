@@ -8,7 +8,7 @@ import { ProjectLibraryProjectData } from 'api/project_library_projects/types';
 import { useIntl } from 'utils/cl-intl';
 import { parseBackendDateString } from 'utils/dateUtils';
 
-import MethodLabel from '../ProjectTable/MethodLabel';
+import MethodLabel from '../MethodLabel';
 import { useLocalizeProjectLibrary } from '../utils';
 
 import ExternalLink from './ExternalLink';
