@@ -63,7 +63,6 @@ resource 'Phase level Custom Fields' do
           location_description
           idea_images_attributes
           idea_files_attributes
-          survey_end
         ]
         %i[en fr-FR nl-NL].each do |locale|
           expect(json_attributes[:json_schema_multiloc][locale][:properties].keys).to match_array(visible_built_in_field_keys + [custom_field.key.to_sym])
