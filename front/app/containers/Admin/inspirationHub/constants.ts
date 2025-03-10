@@ -6,7 +6,6 @@ import { MessageDescriptor } from 'utils/cl-intl';
 import messages from './messages';
 
 export const STATUS_EMOJIS: Record<Status, string> = {
-  draft: '🟤',
   active: '🟢',
   finished: '🟠',
   stale: '⚪',
@@ -14,7 +13,6 @@ export const STATUS_EMOJIS: Record<Status, string> = {
 };
 
 export const STATUS_LABELS: Record<Status, MessageDescriptor> = {
-  draft: messages.draft,
   active: messages.active,
   finished: messages.finished,
   stale: messages.stale,

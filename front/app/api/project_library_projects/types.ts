@@ -7,7 +7,7 @@ import { Keys } from 'utils/cl-react-query/types';
 
 import miniProjectsKeys from './keys';
 
-export type Status = 'draft' | 'active' | 'finished' | 'stale' | 'archived';
+export type Status = 'active' | 'finished' | 'stale' | 'archived';
 
 type PopulationGroup = 'XS' | 'S' | 'M' | 'L' | 'XL';
 
@@ -83,7 +83,7 @@ export interface ProjectLibraryProjectData {
     tenant_map_center_lat: number | null;
     tenant_map_center_long: number | null;
     tenant_name: string;
-    tenant_population_group: PopulationGroup;
+    tenant_population_group: PopulationGroup | null;
     title_en: string;
     title_multiloc: Multiloc;
     topic_id: string;

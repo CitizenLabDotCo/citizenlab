@@ -34,13 +34,15 @@ const Header = ({ attributes }: Props) => {
   return (
     <Box>
       <Box display="flex" flexDirection="row" alignItems="center">
-        <StatusLabel
-          text={attributes.tenant_population_group}
-          backgroundColor={colors.coolGrey600}
-          h="16px"
-          w="24px"
-          ml="4px"
-        />
+        {attributes.tenant_population_group && (
+          <StatusLabel
+            text={attributes.tenant_population_group}
+            backgroundColor={colors.coolGrey600}
+            h="16px"
+            w="24px"
+            ml="4px"
+          />
+        )}
         <ExternalLink href={tenantURL} ml="8px" mt="1px">
           {attributes.tenant_name}
         </ExternalLink>
