@@ -129,7 +129,7 @@ class UiSchemaGeneratorService < FieldVisitorService
     }
   end
 
-  def visit_page(_field)
+  def visit_page(field)
     if field.key == 'survey_end'
       default(field).tap do |ui_field|
         ui_field[:options][:page_button_link] = field.page_button_link
