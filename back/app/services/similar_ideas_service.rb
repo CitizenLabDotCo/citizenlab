@@ -9,20 +9,15 @@ class SimilarIdeasService
   end
 
   def similar_ideas(scope: nil, limit: DEFAULT_NUM_SIMILAR_IDEAS, title_threshold: 0.0, body_threshold: 0.0)
-    embsims = EmbeddingsSimilarity.none
-
-    # Results for body are returned before results for title by "or-ing" them first?
+    ids = []
     if body_threshold && body_threshold > 0.0
-      embsims = embsims.or(similar_by_text_attribute(locale.resolve_multiloc(idea.body_multiloc), 'body', body_threshold))
+      ids += similar_by_text_attribute(locale.resolve_multiloc(idea.body_multiloc), 'body', body_threshold, scope:).pluck(:embeddable_id)
     end
     if title_threshold && title_threshold > 0.0
-      embsims = embsims.or(similar_by_text_attribute(locale.resolve_multiloc(idea.title_multiloc), 'title', title_threshold))
+      ids += similar_by_text_attribute(locale.resolve_multiloc(idea.title_multiloc), 'title', title_threshold, scope:).pluck(:embeddable_id)
     end
+    ids = ids.take(limit) if limit
 
-    embsims = embsims.where(embeddable: scope) if scope
-    embsims = embsims.limit(limit) if limit
-
-    ids = embsims.pluck(:embeddable_id)
     (scope || Idea).where(id: ids).order_as_specified(id: ids)
   end
 
@@ -46,7 +41,7 @@ class SimilarIdeasService
 
   private
 
-  def similar_by_text_attribute(text, embedded_attributes, distance_threshold)
+  def similar_by_text_attribute(text, embedded_attributes, distance_threshold, scope: nil)
     # Watch out when editing the code of this method! Make sure the HNSW index is used.
     # https://www.notion.so/govocal/Research-Duplicate-Detection-1a19663b7b268080b211fdbd88ca2cd2?pvs=4#1a19663b7b2680a7a8d4fee6988baf0a
 
@@ -57,7 +52,8 @@ class SimilarIdeasService
     embsims = EmbeddingsSimilarity
       .where.not(embedding: nil)
       .order(ActiveRecord::Base.sanitize_sql_for_order(Arel.sql("\"embedding\" <=> '#{embedding}'")))
-    embsims = embsims.where('"embedding" <=> :embedding < :distance_threshold', embedding:, distance_threshold:) if distance_threshold
+    embsims = embsims.where('"embedding" <=> \'[:embedding]\' < :distance_threshold', embedding:, distance_threshold:) if distance_threshold
+    embsims = embsims.where(embeddable: scope) if scope
 
     embsims = embsims
       .where.not(embeddable_id: idea.id)

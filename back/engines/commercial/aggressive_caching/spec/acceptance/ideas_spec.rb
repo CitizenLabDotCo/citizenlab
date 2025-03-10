@@ -85,8 +85,12 @@ resource 'Ideas', :clear_cache, document: false do
   end
 
   get 'web_api/v1/ideas/:id/similarities' do
-    let(:idea) { create(:embeddings_similarity).embeddable }
-    let(:id) { idea.id }
+    before do
+      allow_any_instance_of(CohereMultilingualEmbeddings).to receive(:embedding) do
+        create(:embeddings_similarity).embedding
+      end
+    end
+    let(:id) { create(:idea).id }
 
     example 'caches for a visitor' do
       expect(Rails.cache.read("views/example.org/web_api/v1/ideas/#{id}/similarities.json")).to be_nil
