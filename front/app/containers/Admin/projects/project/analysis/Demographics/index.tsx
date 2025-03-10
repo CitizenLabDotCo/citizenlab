@@ -6,27 +6,11 @@ import {
   IconButton,
   Title,
   colors,
-  Text,
-  Button,
-  Table,
-  Thead,
-  Tr,
-  Td,
-  Tbody,
 } from '@citizenlab/cl2-component-library';
 import { isEmpty } from 'lodash-es';
-import { useParams } from 'react-router-dom';
 
-import useAnalysisHeatmapCells from 'api/analysis_heat_map_cells/useAnalysisHetmapCells';
-import useAnalysisTags from 'api/analysis_tags/useAnalysisTags';
 import { IUserCustomFieldData } from 'api/user_custom_fields/types';
-import useUserCustomField from 'api/user_custom_fields/useUserCustomField';
 import useUserCustomFields from 'api/user_custom_fields/useUserCustomFields';
-import useUserCustomFieldsOptions from 'api/user_custom_fields_options/useUserCustomFieldsOptions';
-
-import useLocalize from 'hooks/useLocalize';
-
-import CloseIconButton from 'components/UI/CloseIconButton';
 
 import { FormattedMessage } from 'utils/cl-intl';
 
@@ -44,22 +28,9 @@ function mod(n: number, m: number): number {
 }
 
 const Demographics = () => {
-  const [isReadMoreOpen, setIsReadMoreOpen] = useState(false);
-  const { analysisId } = useParams() as { analysisId: string };
   const [supportedFieldIds, setSupportedFieldIds] = useState<string[]>([]);
   const [selectedFieldId, setSelectedFieldId] = useState<string | null>(null);
   const { data: customFields } = useUserCustomFields();
-  const { data: analysisHeatmapCells } = useAnalysisHeatmapCells({
-    analysisId,
-    maxPValue: 0.05,
-    pageSize: 1,
-  });
-
-  const { data: analysisHeatmapCellsForMap } = useAnalysisHeatmapCells({
-    analysisId,
-  });
-
-  const localize = useLocalize();
 
   const selectedField = customFields?.data.find(
     (field) => field.id === selectedFieldId
@@ -90,18 +61,6 @@ const Demographics = () => {
       return supportedFieldIds[newIndex];
     });
   };
-
-  const { data: tags } = useAnalysisTags({
-    analysisId,
-  });
-
-  const { data: genderCustomField } = useUserCustomField(
-    '6106ebc9-0b9c-43e1-af24-04a2bdbaa26c'
-  );
-
-  const { data: options } = useUserCustomFieldsOptions(
-    '6106ebc9-0b9c-43e1-af24-04a2bdbaa26c'
-  );
 
   return (
     <Box>
@@ -146,95 +105,6 @@ const Demographics = () => {
           />
         </Box>
       </Box>
-      {analysisHeatmapCells &&
-        analysisHeatmapCells.data.map((cell) => {
-          return (
-            <Box
-              key={cell.id}
-              px="12px"
-              py="12px"
-              my="12px"
-              bg={colors.teal100}
-              borderRadius="3px"
-            >
-              <Text>{localize(cell.attributes.statement_multiloc)}</Text>
-              <Box display="flex">
-                <Button
-                  buttonStyle="text"
-                  icon="eye"
-                  size="s"
-                  p="0px"
-                  onClick={() => setIsReadMoreOpen(true)}
-                >
-                  Read more
-                </Button>
-              </Box>
-            </Box>
-          );
-        })}
-      {isReadMoreOpen && (
-        <Box
-          position="absolute"
-          top="85px"
-          left="0"
-          width="1380px"
-          height="100vh"
-          zIndex="100000000"
-          overflow="scroll"
-          bg="white"
-        >
-          <CloseIconButton onClick={() => setIsReadMoreOpen(false)} />
-          {
-            <Table>
-              <Thead>
-                <Tr>
-                  <Td />
-                  {options?.data.map((option) => (
-                    <Td key={option.id}>
-                      {localize(option.attributes.title_multiloc)}
-                    </Td>
-                  ))}
-                </Tr>
-              </Thead>
-              <Tbody>
-                {tags?.data.map((tag) => (
-                  <Tr key={tag.id}>
-                    <Td>{tag.attributes.name}</Td>
-                    {options?.data.map((option) => {
-                      const cell = analysisHeatmapCellsForMap?.data.find(
-                        (cell) =>
-                          cell.relationships.row?.data.id === tag.id &&
-                          cell.relationships.column?.data.id === option.id
-                      );
-
-                      const lift = cell?.attributes.lift;
-                      const pValue = cell?.attributes.p_value;
-                      const isSignificant =
-                        pValue !== undefined && pValue <= 0.05;
-
-                      return (
-                        <Td
-                          key={option.id}
-                          bgColor={
-                            lift !== undefined
-                              ? lift > 1
-                                ? colors.successLight
-                                : colors.errorLight
-                              : 'white'
-                          }
-                        >
-                          {lift !== undefined ? lift.toFixed(2) : null}
-                          {isSignificant ? ' *' : ''}
-                        </Td>
-                      );
-                    })}
-                  </Tr>
-                ))}
-              </Tbody>
-            </Table>
-          }
-        </Box>
-      )}
     </Box>
   );
 };
