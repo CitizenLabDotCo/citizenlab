@@ -222,6 +222,7 @@ const IdeasNewSurveyForm = ({ project, phaseId }: Props) => {
         queryKey: projectsKeys.all(),
       });
     };
+
     // Update or add the idea depending on if we have an existing draft idea
     const idea = ideaId
       ? await updateIdea(

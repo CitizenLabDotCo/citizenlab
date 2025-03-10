@@ -243,21 +243,39 @@ const CLPageLayout = memo(
 
       if (pageVariant === 'submission') {
         setIsLoading(true);
-        data.publication_status = 'published';
+        const dataWithPublicationStatus = {
+          ...data,
+          publication_status: 'published',
+        };
 
         const idea: IIdea | undefined = await onSubmit(
-          data,
+          { data: dataWithPublicationStatus },
           true,
           userPagePath,
           goToNextPage
         );
-        // Remove this condition after handling draft ideas
+
         if (idea) {
+          // We set this param so that we can fetch the idea
+          // (see useIdeaById call above in this component)
+          // We need the idea for the author relationship, so that
+          // on the last page we can determine whether to show
+          // the message for anonymous users
           updateSearchParams({ idea_id: idea.data.id });
+        } else {
+          console.error('Failed to submit idea and set idea_id param.');
         }
       } else {
-        data.publication_status = 'draft';
-        await onSubmit({ data }, false, userPagePath, goToNextPage);
+        const dataWithPublicationStatus = {
+          ...data,
+          publication_status: 'draft',
+        };
+
+        await onSubmit(
+          { data: dataWithPublicationStatus },
+          false,
+          userPagePath
+        );
         goToNextPage();
       }
 
