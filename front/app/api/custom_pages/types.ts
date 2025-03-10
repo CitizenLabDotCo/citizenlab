@@ -84,6 +84,15 @@ export type TPolicyPage =
   | 'privacy-policy'
   | 'terms-and-conditions';
 
+// The cookie policy can't be modified through the application.
+// If a custom cookie policy page needs to be created, deleted, or updated,
+// it should be requested to the support team. These changes are handled as
+// an SLS task since they should be exceptions rather than the norm.
+export const EDITABLE_POLICY_PAGES: TPolicyPage[] = [
+  'terms-and-conditions',
+  'privacy-policy',
+];
+
 export type TCustomPageCode =
   // Content of policy pages can only be edited
   // in 'policy' tab in settings (both for non-commercial and
@@ -95,12 +104,3 @@ export type TCustomPageCode =
   // 'about' is just a custom page in the end, with a different page code (legacy)
   | 'about'
   | 'faq';
-
-// The cookie policy can't be modified through the application.
-// If a custom cookie policy page needs to be created, deleted, or updated,
-// it should be requested to the support team. These changes are handled as
-// an SLS task since they should be exceptions rather than the norm.
-export const EDITABLE_POLICY_PAGES: TPolicyPage[] = [
-  'terms-and-conditions',
-  'privacy-policy',
-];
