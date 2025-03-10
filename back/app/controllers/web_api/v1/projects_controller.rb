@@ -127,7 +127,7 @@ class WebApi::V1::ProjectsController < ApplicationController
   # Returns all non-draft projects that are visible to user, for the selected topics.
   # Ordered by created_at, newest first.
   def index_for_topics
-    projects = policy_scope(Project).not_hidden
+    projects = policy_scope(Project)
     projects = projects
       .not_draft
       .with_some_topics(params[:topics])

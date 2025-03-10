@@ -168,15 +168,11 @@ class SideFxIdeaService
   def create_followers(idea, user)
     return if idea.project.hidden?
 
-    Follower.find_or_create_by(followable: idea, user: user) if create_idea_follower?(idea)
+    Follower.find_or_create_by(followable: idea, user: user) if idea.participation_method_on_creation.follow_idea_on_idea_submission?
     Follower.find_or_create_by(followable: idea.project, user: user)
     return if !idea.project.in_folder?
 
     Follower.find_or_create_by(followable: idea.project.folder, user: user)
-  end
-
-  def create_idea_follower?(idea)
-    idea.creation_phase ? idea.creation_phase.pmethod.follow_idea_on_idea_submission? : true # Defaults for true for ideas without a creation_phase
   end
 
   def serialize_idea(frozen_idea)
