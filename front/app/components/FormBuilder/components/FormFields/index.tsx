@@ -52,7 +52,6 @@ const FormFields = ({
     return true;
   };
 
-  // Only relevant for survey
   const lastPage = formCustomFields[formCustomFields.length - 1];
 
   const nestedGroupData: NestedGroupingStructure[] = [];
@@ -95,7 +94,6 @@ const FormFields = ({
           >
             <Drop id="droppable" type={pageDNDType}>
               {nestedGroupData.map((grouping, pageIndex) => {
-                // Only relevant for survey
                 if (
                   lastPage.key === 'survey_end' &&
                   grouping.id === lastPage.id
@@ -160,7 +158,6 @@ const FormFields = ({
             <Box height="1px" borderTop={`1px solid ${colors.divider}`} />
           )}
         </Box>
-        {/* Only relevant for survey */}
         {lastPage.key === 'survey_end' && (
           <Box mt="40px">
             <FormField

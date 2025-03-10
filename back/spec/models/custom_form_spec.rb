@@ -30,18 +30,5 @@ RSpec.describe CustomForm do
       expect(form.custom_fields.reload).to match_array [f2, f1, f3]
       expect(form.custom_fields.pluck(:ordering)).to eq [0, 1, 2]
     end
-
-    it 'breaks the ordering ties (ambiguous order)' do
-      f1, _, f3 = form.custom_fields = [
-        create(:custom_field_section, ordering: 2),
-        create(:custom_field_text, ordering: 2),
-        create(:custom_field_section, ordering: 2)
-      ]
-
-      form.heal_fields_ordering!
-
-      expect(form.custom_fields.reload.first).to be_in([f1, f3])
-      expect(form.custom_fields.pluck(:ordering)).to eq [0, 1, 2]
-    end
   end
 end

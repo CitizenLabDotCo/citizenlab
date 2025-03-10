@@ -20,7 +20,7 @@ import {
   useJsonForms,
   JsonFormsDispatch,
 } from '@jsonforms/react';
-import { useParams, useSearchParams } from 'react-router-dom';
+import { useLocation, useParams, useSearchParams } from 'react-router-dom';
 import { useTheme } from 'styled-components';
 
 import { IIdea } from 'api/ideas/types';
@@ -31,6 +31,7 @@ import useProjectMapConfig from 'api/map_config/useProjectMapConfig';
 import usePhase from 'api/phases/usePhase';
 import usePhases from 'api/phases/usePhases';
 import { getCurrentPhase } from 'api/phases/utils';
+import useProjectById from 'api/projects/useProjectById';
 import useProjectBySlug from 'api/projects/useProjectBySlug';
 
 import useLocalize from 'hooks/useLocalize';
@@ -55,6 +56,7 @@ import { useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 import eventEmitter from 'utils/eventEmitter';
+import { isPage } from 'utils/helperUtils';
 
 import getPageSchema from '../../utils/getPageSchema';
 import { useErrorToRead } from '../Fields/ErrorToReadContext';
@@ -64,11 +66,7 @@ import messages from './messages';
 import PageControlButtons from './PageControlButtons';
 import SubmissionReference from './SubmissionReference';
 
-// Handling survey pages in here. The more things that we have added to it,
-// the more it has become a survey page layout. It also becomes extremely hard to understand
-// if we continue to try and overload it to handle other scenarios. Survey headers are different
-// and handling them here makes it easy style the entire page. That among other things.
-const CLSurveyPageLayout = memo(
+const CLPageLayout = memo(
   ({
     schema,
     uischema,
@@ -86,6 +84,8 @@ const CLSurveyPageLayout = memo(
     const formState = useJsonForms();
     const localize = useLocalize();
     const theme = useTheme();
+    const { pathname } = useLocation();
+    const isAdminPage = isPage('admin', pathname);
 
     // We can cast types because the tester made sure we only get correct values
     const pageTypeElements = (uischema as PageCategorization).elements;
@@ -94,8 +94,16 @@ const CLSurveyPageLayout = memo(
       pageTypeElements[0],
     ]);
     const [scrollToError, setScrollToError] = useState(false);
-    const ideaId = searchParams.get('idea_id');
+    const { slug, ideaId: idea_id } = useParams<{
+      slug?: string;
+      ideaId?: string;
+    }>();
+    const ideaId = searchParams.get('idea_id') || idea_id;
     const { data: idea } = useIdeaById(ideaId ?? undefined);
+    const projectId = idea?.data.relationships.project.data.id;
+    const projectById = useProjectById(projectId);
+    const projectBySlug = useProjectBySlug(slug);
+    const project = projectById.data ?? projectBySlug.data;
 
     // If the idea (survey submission) has no author relationship,
     // it was either created through 'anyone' permissions or with
@@ -108,11 +116,6 @@ const CLSurveyPageLayout = memo(
     const pagesRef = useRef<HTMLDivElement>(null);
     const { announceError } = useErrorToRead();
 
-    // Get project and relevant phase data
-    const { slug } = useParams() as {
-      slug: string;
-    };
-    const { data: project } = useProjectBySlug(slug);
     const { data: phases } = usePhases(project?.data.id);
     const phaseIdFromSearchParams = searchParams.get('phase_id');
     const phaseId =
@@ -226,9 +229,20 @@ const CLSurveyPageLayout = memo(
       }
 
       if (pageVariant === 'after-submission') {
-        clHistory.push({ pathname: `/projects/${slug}` });
+        clHistory.push({
+          pathname: `/projects/${project?.data.attributes.slug}`,
+        });
         return;
       }
+
+      const goToNextPage = () => {
+        scrollToTop();
+        const nextPage = visiblePages[currentStepNumber + 1];
+
+        setUserPagePath((userPagePath) => [...userPagePath, nextPage]);
+
+        setIsLoading(false);
+      };
 
       if (pageVariant === 'submission') {
         setIsLoading(true);
@@ -240,7 +254,8 @@ const CLSurveyPageLayout = memo(
         const idea: IIdea | undefined = await onSubmit(
           { data: dataWithPublicationStatus },
           true,
-          userPagePath
+          userPagePath,
+          goToNextPage
         );
 
         if (idea) {
@@ -264,13 +279,20 @@ const CLSurveyPageLayout = memo(
           false,
           userPagePath
         );
+        goToNextPage();
       }
 
-      scrollToTop();
+      // scrollToTop();
 
-      const nextPage = visiblePages[currentStepNumber + 1];
+      // const nextPage = visiblePages[currentStepNumber + 1];
 
-      setUserPagePath((userPagePath) => [...userPagePath, nextPage]);
+      // New
+      // if (pageVariant === 'submission' && !shouldSubmit) {
+      //   setIsLoading(false);
+      //   return;
+      // }
+
+      // setUserPagePath((userPagePath) => [...userPagePath, nextPage]);
 
       setIsLoading(false);
     };
@@ -525,7 +547,8 @@ const CLSurveyPageLayout = memo(
           maxWidth={isMapPage ? '1100px' : '700px'}
           w="100%"
           position="fixed"
-          bottom={isMobileOrSmaller ? '0' : '40px'}
+          // In the admin edit page, we want the buttons to be at the bottom of the page
+          bottom={isMobileOrSmaller || isAdminPage ? '0' : '40px'}
         >
           <PageControlButtons
             handleNextAndSubmit={handleNextAndSubmit}
@@ -540,6 +563,6 @@ const CLSurveyPageLayout = memo(
   }
 );
 
-export default withJsonFormsLayoutProps(CLSurveyPageLayout);
+export default withJsonFormsLayoutProps(CLPageLayout);
 
 export const clPageTester: RankedTester = rankWith(5, isPageCategorization);
