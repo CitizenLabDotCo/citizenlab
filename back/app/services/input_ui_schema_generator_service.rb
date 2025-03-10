@@ -47,13 +47,13 @@ class InputUiSchemaGeneratorService < UiSchemaGeneratorService
         # No elements yet. They will be added after invoking this method.
       ]
     }
-  
+
     # Add these attributes only if the page key is "survey_end"
-    if field.key == "survey_end"
+    if field.key == 'survey_end'
       page_data[:options][:page_button_label_multiloc] = field.page_button_label_multiloc
       page_data[:options][:page_button_link] = field.page_button_link
     end
-  
+
     page_data
   end
 
