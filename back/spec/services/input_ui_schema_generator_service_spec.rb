@@ -715,7 +715,7 @@ RSpec.describe InputUiSchemaGeneratorService do
             type: 'Categorization',
             options: {
               formId: 'idea-form',
-              inputTerm: 'idea'
+              inputTerm: 'question'
             },
             elements: [
               {
@@ -885,7 +885,7 @@ RSpec.describe InputUiSchemaGeneratorService do
             type: 'Categorization',
             options: {
               formId: 'idea-form',
-              inputTerm: 'idea'
+              inputTerm: 'question'
             },
             elements: [
               {
