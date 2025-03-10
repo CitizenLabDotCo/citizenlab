@@ -33,7 +33,7 @@ class InputUiSchemaGeneratorService < UiSchemaGeneratorService
   end
 
   def visit_page(field)
-    {
+    page_data = {
       type: 'Page',
       options: {
         input_type: field.input_type,
@@ -41,14 +41,20 @@ class InputUiSchemaGeneratorService < UiSchemaGeneratorService
         title: multiloc_service.t(field.title_multiloc),
         description: description_option(field),
         page_layout: field.page_layout,
-        page_button_label_multiloc: field.page_button_label_multiloc,
-        page_button_link: field.page_button_link,
         map_config_id: field&.map_config&.id
       },
       elements: [
         # No elements yet. They will be added after invoking this method.
       ]
     }
+  
+    # Add these attributes only if the page key is "survey_end"
+    if field.key == "survey_end"
+      page_data[:options][:page_button_label_multiloc] = field.page_button_label_multiloc
+      page_data[:options][:page_button_link] = field.page_button_link
+    end
+  
+    page_data
   end
 
   protected
