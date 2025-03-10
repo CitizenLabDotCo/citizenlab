@@ -10,6 +10,7 @@ import { FormattedMessage } from 'utils/cl-intl';
 
 import Filters from './Filters';
 import messages from './messages';
+import PinnedProjects from './PinnedProjects';
 import ProjectDrawer from './ProjectDrawer';
 import ProjectTable from './ProjectTable';
 
@@ -27,7 +28,7 @@ const InspirationHub = () => {
           <Title variant="h2" color="primary" mt="0px">
             <FormattedMessage {...messages.highlighted} />
           </Title>
-          TODO
+          <PinnedProjects />
         </Box>
         <Box>
           <Title variant="h2" color="primary">
