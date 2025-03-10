@@ -38,7 +38,8 @@ export type ICustomFieldInputType =
   | 'point'
   | 'line'
   | 'polygon'
-  | 'cosponsor_ids';
+  | 'cosponsor_ids'
+  | 'sentiment_linear_scale';
 
 export type IOptionsType = {
   id?: string;
@@ -76,6 +77,7 @@ export interface IAttributes {
   isEnabledEditable?: boolean;
   isTitleEditable?: boolean;
   isDeleteEnabled?: boolean;
+  ask_follow_up?: boolean;
   constraints?: {
     locks: {
       title_multiloc?: boolean;

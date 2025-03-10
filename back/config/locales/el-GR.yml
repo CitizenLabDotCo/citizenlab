@@ -177,6 +177,8 @@ el:
         description:
       other_input_field:
         title: Πληκτρολογήστε την απάντησή σας
+      ask_follow_up_field:
+        title: Πείτε μας γιατί
   custom_forms:
     categories:
       main_content:

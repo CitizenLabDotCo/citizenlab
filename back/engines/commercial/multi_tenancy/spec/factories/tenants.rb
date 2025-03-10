@@ -72,6 +72,7 @@ FactoryBot.define do
           host: tenant.host,
           settings: evaluator.settings,
           style: evaluator.style,
+          country_code: 'BE',
           updated_at: tenant.updated_at,
           created_at: tenant.created_at)
       end

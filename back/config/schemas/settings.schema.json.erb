@@ -560,7 +560,7 @@
           },
           "map_center": {
             "title": "Map Center",
-            "description": "The default center point of the platform maps (latitude/longitude). Use a dot as a decimal separator.",
+            "description": "The default center point of the platform maps (latitude/longitude). Use a dot as a decimal separator. South and West values should be negative.",
             "type": "object",
             "additionalProperties": false,
             "properties": {
@@ -1326,6 +1326,18 @@
             "type": "boolean",
             "default": true
           }
+        }
+      },
+
+      "authoring_assistance": {
+        "type": "object",
+        "title": "Experimental feature: Authoring assistance",
+        "description":	"Show an informative box to admins on the idea pages with guidance on how the written text could be improved (duplicate detection, toxicity, free custom prompt...). Inputs posted while the feature was disabled will not be included as duplicates.",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": false},
+          "enabled": { "type": "boolean", "default": false}
         }
       },
 
