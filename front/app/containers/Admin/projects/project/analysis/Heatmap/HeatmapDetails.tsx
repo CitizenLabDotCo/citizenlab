@@ -8,6 +8,7 @@ import {
   Tr,
   Td,
   Tbody,
+  stylingConsts,
 } from '@citizenlab/cl2-component-library';
 import { useParams } from 'react-router-dom';
 
@@ -65,13 +66,15 @@ const HeatmapDetails = ({ onClose, customFields }: HeatMapProps) => {
   return (
     <Box
       position="absolute"
-      top="85px"
+      top={`${stylingConsts.mobileMenuHeight + 12}px`}
       left="0"
-      width="1380px"
+      // The width is calculated so that is overlaps 3 out of the 4 columns on the screen.
+      // The last column remains visible so that AI insights remain visible.
+      width="calc(300px + (100% - 300px - 24px) * 2/3)"
       height="100vh"
       zIndex="100000000"
       overflow="scroll"
-      bg="white"
+      bg={colors.white}
     >
       <CloseIconButton onClick={onClose} />
       <Table>
