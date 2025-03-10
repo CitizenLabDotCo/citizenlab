@@ -864,6 +864,8 @@ RSpec.describe InputUiSchemaGeneratorService do
                   id: page3.id,
                   title: 'This is the end of the survey',
                   description: 'Thank you for participating 🚀',
+                  page_button_label_multiloc: {},
+                  page_button_link: nil,
                   page_layout: 'default',
                   map_config_id: nil
                 },
@@ -1090,6 +1092,8 @@ RSpec.describe InputUiSchemaGeneratorService do
                   input_type: 'page',
                   id: page_end.id,
                   map_config_id: nil,
+                  page_button_label_multiloc: {},
+                  page_button_link: nil,
                   page_layout: 'default',
                   title: 'Almost done',
                   description: "You are about to submit your answers. By clicking 'Submit' you give us permission to analyse your answers.<br>After you submit, you will no longer be able to go back and change any of your answers."
