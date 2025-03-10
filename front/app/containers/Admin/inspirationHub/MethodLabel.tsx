@@ -6,7 +6,7 @@ import useProjectLibraryPhase from 'api/project_library_phases/useProjectLibrary
 
 import { useIntl } from 'utils/cl-intl';
 
-import { PARTICIPATION_METHOD_LABELS } from '../constants';
+import { PARTICIPATION_METHOD_LABELS } from './constants';
 
 interface Props {
   projectLibraryPhaseId: string;
@@ -24,7 +24,7 @@ const MethodLabel = ({ projectLibraryPhaseId }: Props) => {
         PARTICIPATION_METHOD_LABELS[phase.data.attributes.participation_method]
       )}
       backgroundColor={colors.green700}
-      ml="4px"
+      mr="4px"
       my="2px"
     />
   );
