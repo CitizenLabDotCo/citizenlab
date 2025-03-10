@@ -38,7 +38,7 @@ const PageButtonSettings = ({
   );
 
   return (
-    <Box mb="16px">
+    <Box mb="16px" id="e2e-custom-button-toggle">
       <Toggle
         checked={useCustomButton}
         label={formatMessage(messages.useCustomButton)}
@@ -57,7 +57,7 @@ const PageButtonSettings = ({
             defaultValue={'default'}
             render={({ field: { ref: _ref, value } }) => {
               return (
-                <Box mb="28px">
+                <Box mb="28px" data-cy="e2e-custom-button-link">
                   <Label htmlFor={'page_layout'}>
                     {formatMessage(messages.buttonLink)}
                   </Label>
@@ -71,7 +71,7 @@ const PageButtonSettings = ({
             }}
           />
 
-          <SectionField>
+          <SectionField data-cy="e2e-custom-button-label">
             <InputMultilocWithLocaleSwitcher
               initiallySelectedLocale={locale}
               maxCharCount={25}
