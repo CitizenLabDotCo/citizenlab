@@ -9,7 +9,7 @@ namespace :embeddings do
       end
       ideas_scope.order(likes_count: :desc).each do |idea|
         puts "Processing idea #{idea.slug}"
-        SimilarIdeasService.new(idea).upsert_embedding!
+        SimilarIdeasService.new(idea).upsert_embeddings!
       end
     end
   end
