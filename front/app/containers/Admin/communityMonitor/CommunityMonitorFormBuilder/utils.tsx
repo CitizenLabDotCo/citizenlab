@@ -18,7 +18,7 @@ export const communityMonitorConfig: FormBuilderConfig = {
   toolboxTitle: messages.addSurveyContent,
   formSavedSuccessMessage: messages.successMessage,
   supportArticleLink: messages.supportArticleLink,
-  toolboxFieldsToInclude: ['page', 'linear_scale', 'rating'],
+  toolboxFieldsToInclude: ['page', 'sentiment_linear_scale'],
   formCustomFields: undefined,
   displayBuiltInFields: false,
   builtInFields: [],

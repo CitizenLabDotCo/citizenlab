@@ -11,11 +11,15 @@ export type Status = 'draft' | 'active' | 'finished' | 'stale' | 'archived';
 
 type PopulationGroup = 'XS' | 'S' | 'M' | 'L' | 'XL';
 
-export type SortType = 'start_at asc' | 'start_at desc';
+export type SortType =
+  | 'start_at asc'
+  | 'start_at desc'
+  | 'participants asc'
+  | 'participants desc';
 
 export type RansackParams = {
   // filters
-  'q[tenant_country_alpha2]'?: string;
+  'q[tenant_country_alpha2_eq]'?: string;
   'q[tenant_population_group_eq]'?: PopulationGroup;
   'q[score_total_gteq]'?: '1' | '2' | '3' | '4';
   'q[phases_participation_method_eq]'?: ParticipationMethod;
@@ -42,6 +46,10 @@ export interface ProjectLibraryProjects {
   links: ILinks;
 }
 
+export interface ProjectLibraryProject {
+  data: ProjectLibraryProjectData;
+}
+
 export interface ProjectLibraryProjectData {
   id: string;
   type: 'project_library_project';
@@ -54,7 +62,7 @@ export interface ProjectLibraryProjectData {
     description_multiloc: Multiloc;
     end_at: string | null;
     folder_id: string | null;
-    folder_title_en: string;
+    folder_title_en: string | null;
     folder_title_multiloc: Multiloc;
     participants: number;
     practical_end_at: string | null;

@@ -23,7 +23,7 @@ import { getFullName } from 'utils/textUtils';
 import LanguageSelectorPopup from './LanguageSelectorPopup';
 import LocaleSelectorPopup from './LocaleSelectorPopup';
 import messages from './messages';
-import { ItemMenu, StyledBox } from './styles';
+import { ItemMenu, StyledBox, StyledText } from './styles';
 
 export const UserMenu = () => {
   const { formatMessage } = useIntl();
@@ -96,7 +96,7 @@ export const UserMenu = () => {
             ml="7px"
             overflow="hidden"
           >
-            <Text
+            <StyledText
               color="white"
               my="0px"
               fontSize="m"
@@ -107,7 +107,7 @@ export const UserMenu = () => {
               textAlign="left"
             >
               {getFullName(authUser.data)}
-            </Text>
+            </StyledText>
             <Box opacity={0.5}>
               <Text
                 color="white"

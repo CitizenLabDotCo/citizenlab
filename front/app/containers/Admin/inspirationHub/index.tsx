@@ -9,6 +9,7 @@ import messages from 'containers/Admin/sideBar/messages';
 import { FormattedMessage } from 'utils/cl-intl';
 
 import Filters from './Filters';
+import ProjectDrawer from './ProjectDrawer';
 import ProjectTable from './ProjectTable';
 
 const InspirationHub = () => {
@@ -16,17 +17,20 @@ const InspirationHub = () => {
   if (!projectLibraryEnabled) return null;
 
   return (
-    <Box>
-      <Title variant="h1" color="primary" mb="40px">
-        <FormattedMessage {...messages.inspirationHub} />
-      </Title>
+    <>
       <Box>
-        <Box mb="24px">
-          <Filters />
+        <Title variant="h1" color="primary" mb="40px">
+          <FormattedMessage {...messages.inspirationHub} />
+        </Title>
+        <Box>
+          <Box mb="24px">
+            <Filters />
+          </Box>
+          <ProjectTable />
         </Box>
-        <ProjectTable />
       </Box>
-    </Box>
+      <ProjectDrawer />
+    </>
   );
 };
 

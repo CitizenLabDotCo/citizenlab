@@ -33,22 +33,23 @@ const QuarterlyDatePicker = () => {
   };
 
   return (
-    <Box display="flex" gap="8px" alignItems="center">
+    <Box display="flex" gap="4px" alignItems="center">
       <Button
         buttonStyle="secondary"
         px="8px"
         py="4px"
+        iconSize="20px"
         icon="arrow-left"
         onClick={() => changeQuarter(-1)}
       />
       <Box
         border={`1px solid ${colors.coolGrey500}`}
         borderRadius="3px"
-        py="4px"
         px="8px"
+        py="4px"
         background={colors.white}
       >
-        <Text m="0px">
+        <Text m="0px" fontSize="s">
           {formatMessage(messages.quarterYearCondensed, {
             quarterNumber: quarter,
             year,
@@ -59,6 +60,7 @@ const QuarterlyDatePicker = () => {
         buttonStyle="secondary"
         px="8px"
         py="4px"
+        iconSize="20px"
         icon="arrow-right"
         onClick={() => changeQuarter(1)}
       />
