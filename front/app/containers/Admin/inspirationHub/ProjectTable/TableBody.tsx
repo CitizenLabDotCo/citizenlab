@@ -59,7 +59,7 @@ const TableBody = ({ libraryProjects, isInitialLoading }: Props) => {
     if (!countries) return;
 
     return countries.data.attributes.reduce((acc, country) => {
-      acc[country.code] = country.short_name;
+      acc[country.code] = country.name;
       return acc;
     }, {} as Record<string, string>);
   }, [countries]);

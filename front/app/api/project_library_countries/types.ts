@@ -9,8 +9,7 @@ export interface ProjectLibraryCountries {
     type: 'project_library_tenant_countries';
     attributes: {
       code: string;
-      short_name: string;
-      long_name: string;
+      name: string;
     }[];
   };
 }
