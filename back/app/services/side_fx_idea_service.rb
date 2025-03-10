@@ -166,7 +166,9 @@ class SideFxIdeaService
   end
 
   def create_followers(idea, user)
-    Follower.find_or_create_by(followable: idea, user: user)
+    return if idea.project.hidden?
+
+    Follower.find_or_create_by(followable: idea, user: user) if idea.participation_method_on_creation.follow_idea_on_idea_submission?
     Follower.find_or_create_by(followable: idea.project, user: user)
     return if !idea.project.in_folder?
 

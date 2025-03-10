@@ -64,6 +64,11 @@ en:
         title: Type your answer
       ask_follow_up_field:
         title: Tell us why
+  phases:
+    open_idea_phase_title: Current phase
+    native_survey_title: Survey
+    native_survey_button: Take the survey
+    community_monitor_title: Community monitor
   custom_forms:
     categories:
       main_content:

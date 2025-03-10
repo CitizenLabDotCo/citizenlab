@@ -18,6 +18,11 @@ describe AdminPublicationPolicy do
       it 'should index the project holder' do
         expect(scope.resolve.size).to eq 1
       end
+
+      it 'should not index the project holder if the project is hidden' do
+        admin_publication.publication.update!(hidden: true)
+        expect(scope.resolve.size).to eq 0
+      end
     end
 
     context 'for a resident' do
@@ -27,6 +32,11 @@ describe AdminPublicationPolicy do
 
       it 'should index the project holder' do
         expect(scope.resolve.size).to eq 1
+      end
+
+      it 'should not index the project holder if hidden' do
+        admin_publication.publication.update!(hidden: true)
+        expect(scope.resolve.size).to eq 0
       end
     end
 
@@ -38,6 +48,11 @@ describe AdminPublicationPolicy do
       it 'should index the project holder' do
         expect(scope.resolve.size).to eq 1
       end
+
+      it 'should not index the project holder if hidden' do
+        admin_publication.publication.update!(hidden: true)
+        expect(scope.resolve.size).to eq 0
+      end
     end
 
     context 'for a moderator of another project' do
@@ -47,6 +62,11 @@ describe AdminPublicationPolicy do
 
       it 'indexes the project holder' do
         expect(scope.resolve.size).to eq 2
+      end
+
+      it 'should not index any projects if the publication_status is hidden' do
+        admin_publication.publication.update!(hidden: true)
+        expect(scope.resolve.size).to eq 1
       end
     end
   end

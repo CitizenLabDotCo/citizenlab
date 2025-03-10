@@ -2,14 +2,14 @@
 
 require 'rails_helper'
 
-RSpec.describe ParticipationMethod::NativeSurvey do
+RSpec.describe ParticipationMethod::CommunityMonitorSurvey do
   subject(:participation_method) { described_class.new phase }
 
-  let(:phase) { create(:native_survey_phase) }
+  let(:phase) { create(:community_monitor_survey_phase) }
 
   describe '#method_str' do
-    it 'returns native_survey' do
-      expect(described_class.method_str).to eq 'native_survey'
+    it 'returns community_monitor_survey' do
+      expect(described_class.method_str).to eq 'community_monitor_survey'
     end
   end
 
@@ -57,33 +57,8 @@ RSpec.describe ParticipationMethod::NativeSurvey do
       # in the database, but not necessarily in memory.
       phase_in_db = Phase.find(phase.id)
 
-      expect(phase_in_db.custom_form.custom_fields.size).to eq 3
-
-      question_page = phase_in_db.custom_form.custom_fields[0]
-      expect(question_page.title_multiloc).to eq({})
-      expect(question_page.description_multiloc).to eq({})
-
-      field = phase_in_db.custom_form.custom_fields[1]
-      expect(field.title_multiloc).to match({
-        'en' => 'Default question',
-        'fr-FR' => 'Question par défaut',
-        'nl-NL' => 'Standaardvraag'
-      })
-      expect(field.description_multiloc).to eq({})
-      options = field.options
-      expect(options.size).to eq 2
-      expect(options[0].key).to eq 'option1'
-      expect(options[1].key).to eq 'option2'
-      expect(options[0].title_multiloc).to match({
-        'en' => 'First option',
-        'fr-FR' => 'Première option',
-        'nl-NL' => 'Eerste optie'
-      })
-      expect(options[1].title_multiloc).to match({
-        'en' => 'Second option',
-        'fr-FR' => 'Deuxième option',
-        'nl-NL' => 'Tweede optie'
-      })
+      expect(phase_in_db.custom_form.custom_fields.size).to eq 4
+      expect(phase_in_db.custom_form.custom_fields.pluck(:input_type)).to match_array %w[page rating rating page]
     end
   end
 
@@ -188,9 +163,8 @@ RSpec.describe ParticipationMethod::NativeSurvey do
   its(:supports_toxicity_detection?) { is_expected.to be false }
   its(:use_reactions_as_votes?) { is_expected.to be false }
   its(:transitive?) { is_expected.to be false }
-  its(:form_logic_enabled?) { is_expected.to be true }
+  its(:form_logic_enabled?) { is_expected.to be false }
   its(:follow_idea_on_idea_submission?) { is_expected.to be false }
-  its(:validate_phase) { is_expected.to be_nil }
 
   describe 'proposed_budget_in_form?' do # private method
     it 'is expected to be false' do

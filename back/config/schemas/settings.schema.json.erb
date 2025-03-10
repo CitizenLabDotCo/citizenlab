@@ -1384,6 +1384,32 @@
             }
           }
         }
+      },
+
+      "community_monitor": {
+        "type": "object",
+        "title": "Community Monitor",
+        "description": "Long running public survey.",
+        "additionalProperties": false,
+        "required": [
+          "allowed",
+          "enabled"
+        ],
+        "properties": {
+          "allowed": {
+            "type": "boolean",
+            "default": false
+          },
+          "enabled": {
+            "type": "boolean",
+            "default": false
+          },
+          "project_id": {
+            "title": "The ID of the required hidden project",
+            "description": "Do not edit unless you know what you're doing. This is usually set by the system",
+            "type": "string"
+          }
+        }
       }
     },
   "dependencies": {
