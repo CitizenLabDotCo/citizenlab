@@ -167,12 +167,12 @@ fi:
       attachments:
         title: Liitteet
         description:
-      section1:
+      page1:
         description:
-      section2:
+      page2:
         title: Kuvat ja liitteet
         description:
-      section3:
+      page3:
         title: Yksityiskohdat
         description:
       other_input_field:

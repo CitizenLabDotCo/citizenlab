@@ -167,13 +167,13 @@ fr-BE:
       attachments:
         title: Pièces jointes
         description:
-      section1:
+      page1:
         description:
-      section2:
+      page2:
         title: Images et pièces jointes
         description:
-      section3:
-        title: Détails
+      page3:
+        title: Détails 
         description:
       other_input_field:
         title: Saisissez votre réponse
