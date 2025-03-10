@@ -1,6 +1,13 @@
 import React from 'react';
 
-import { Box, colors, stylingConsts } from '@citizenlab/cl2-component-library';
+import {
+  Box,
+  Title,
+  colors,
+  stylingConsts,
+} from '@citizenlab/cl2-component-library';
+
+import CardImage from './CardImage';
 
 const ProjectCard = () => {
   return (
@@ -8,8 +15,16 @@ const ProjectCard = () => {
       bgColor={colors.white}
       borderRadius={stylingConsts.borderRadius}
       w="33%"
+      p="16px"
     >
-      TODO
+      <Box>
+        <CardImage />
+      </Box>
+      <Box>
+        <Title variant="h3" color="primary" mt="12px">
+          Test
+        </Title>
+      </Box>
     </Box>
   );
 };
