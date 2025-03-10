@@ -25,7 +25,7 @@ describe Analysis::HeatmapGenerator do
       expect(heatmap).to eq({})
     end
 
-    it 'returns a heatmap' do
+    it 'returns a heatmap for inputs' do
       male, female, unspecified = custom_field_gender.options
       service = described_class.new(analysis)
       heatmap = service.generate([tag1, tag2], custom_field_gender.options)
@@ -44,6 +44,88 @@ describe Analysis::HeatmapGenerator do
         lift: 1.0,
         row: tag1,
         column: male
+      )
+      expect(heatmap[[tag1, female]]).to have_attributes(
+        count: 0,
+        p_value: 1.0,
+        lift: 0.0,
+        row: tag1,
+        column: female
+      )
+      expect(heatmap[[tag1, unspecified]]).to have_attributes(
+        count: 0,
+        p_value: 1.0,
+        lift: 0.0,
+        row: tag1,
+        column: unspecified
+      )
+      expect(heatmap[[tag2, male]]).to have_attributes(
+        count: 1,
+        p_value: 1.0,
+        lift: 1.0,
+        row: tag2,
+        column: male
+      )
+      expect(heatmap[[tag2, female]]).to have_attributes(
+        count: 0,
+        p_value: 1.0,
+        lift: 0.0,
+        row: tag2,
+        column: female
+      )
+      expect(heatmap[[tag2, unspecified]]).to have_attributes(
+        count: 0,
+        p_value: 1.0,
+        lift: 0.0,
+        row: tag2,
+        column: unspecified
+      )
+    end
+
+    it 'returns a heatmap for likes' do
+      male, female, unspecified = custom_field_gender.options
+      create(:reaction, user: author1, reactable: input1)
+      create(:reaction, reactable: input1)
+      create(:reaction, reactable: input1)
+
+      service = described_class.new(analysis)
+      heatmap = service.generate([tag1, tag2], custom_field_gender.options, unit: 'likes')
+      expect(heatmap.keys).to match_array([
+        [tag1, male],
+        [tag1, female],
+        [tag1, unspecified],
+        [tag2, male],
+        [tag2, female],
+        [tag2, unspecified]
+      ])
+      expect(heatmap.values).to all(be_instance_of(Analysis::HeatmapCell))
+      expect(heatmap[[tag1, male]]).to have_attributes(
+        count: 1,
+        p_value: 1.0,
+        lift: 1.0,
+        row: tag1,
+        column: male
+      )
+      expect(heatmap[[tag1, female]]).to have_attributes(
+        count: 0,
+        p_value: 1.0,
+        lift: 0.0,
+        row: tag1,
+        column: female
+      )
+      expect(heatmap[[tag2, male]]).to have_attributes(
+        count: 1,
+        p_value: 1.0,
+        lift: 1.0,
+        row: tag2,
+        column: male
+      )
+      expect(heatmap[[tag2, female]]).to have_attributes(
+        count: 0,
+        p_value: 1.0,
+        lift: 0.0,
+        row: tag2,
+        column: female
       )
     end
   end
