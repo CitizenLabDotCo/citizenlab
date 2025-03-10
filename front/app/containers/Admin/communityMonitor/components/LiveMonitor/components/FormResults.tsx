@@ -14,7 +14,7 @@ import useFormResults from 'api/survey_results/useSurveyResults';
 
 import useLocalize from 'hooks/useLocalize';
 
-import SentimentQuestion from 'containers/Admin/projects/project/nativeSurvey/FormResults/FormResultsQuestion/SentimentQuestion';
+import SentimentQuestion from 'components/admin/FormResults/FormResultsQuestion/SentimentQuestion';
 
 import { useIntl } from 'utils/cl-intl';
 
