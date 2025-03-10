@@ -92,22 +92,26 @@ const HeatmapDetails = ({ onClose, customFields }: HeatMapProps) => {
       width="calc(300px + (100% - 300px - 24px) * 2/3)"
       height="100vh"
       zIndex="100000000"
-      overflow="scroll"
+      overflow="auto"
       bg={colors.white}
     >
-      <CloseIconButton onClick={onClose} />
-      <IconButton
-        iconName="arrow-left"
-        onClick={() => handleChangeCustomField(-1)}
-        a11y_buttonActionMessage={''}
-      />
-      <Title>{localize(customField?.data.attributes.title_multiloc)}</Title>
+      <Box display="flex" justifyContent="flex-end" py="12px">
+        <CloseIconButton onClick={onClose} />
+      </Box>
+      <Box display="flex" justifyContent="space-between" w="80%" m="auto">
+        <IconButton
+          iconName="arrow-left"
+          onClick={() => handleChangeCustomField(-1)}
+          a11y_buttonActionMessage={''}
+        />
+        <Title>{localize(customField?.data.attributes.title_multiloc)}</Title>
 
-      <IconButton
-        iconName="arrow-right"
-        onClick={() => handleChangeCustomField(1)}
-        a11y_buttonActionMessage={''}
-      />
+        <IconButton
+          iconName="arrow-right"
+          onClick={() => handleChangeCustomField(1)}
+          a11y_buttonActionMessage={''}
+        />
+      </Box>
       <Table>
         <Thead>
           <Tr>
@@ -130,19 +134,23 @@ const HeatmapDetails = ({ onClose, customFields }: HeatMapProps) => {
                 const pValue = cell?.attributes.p_value;
                 const isSignificant = pValue !== undefined && pValue <= 0.05;
 
+                const cellBgColor =
+                  lift !== undefined
+                    ? lift > 1
+                      ? colors.successLight
+                      : colors.errorLight
+                    : colors.grey200;
+
                 return (
-                  <Td
-                    key={option.id}
-                    bgColor={
-                      lift !== undefined
-                        ? lift > 1
-                          ? colors.successLight
-                          : colors.errorLight
-                        : 'white'
-                    }
-                  >
-                    {lift !== undefined ? lift.toFixed(2) : null}
-                    {isSignificant ? ' *' : ''}
+                  <Td key={option.id}>
+                    <Box
+                      borderRadius={stylingConsts.borderRadius}
+                      bgColor={cellBgColor}
+                      p="8px"
+                    >
+                      {lift !== undefined ? lift.toFixed(2) : null}
+                      {isSignificant ? ' *' : ''}
+                    </Box>
                   </Td>
                 );
               })}
