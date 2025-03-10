@@ -58,3 +58,5 @@ export const useRansackParams = () => {
     [searchParams]
   );
 };
+
+export const useTranslateProjectLibrary = () => {};
