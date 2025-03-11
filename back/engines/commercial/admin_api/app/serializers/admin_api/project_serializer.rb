@@ -27,11 +27,11 @@ module AdminApi
 
     class AdminPublicationSerializer < ActiveModel::Serializer
       attributes :id, :publication_status
-      
+
       attribute :parent_publication_status # Used by project library
 
       def parent_publication_status
-        object.parent&.publication&.publication_status
+        object.parent&.publication_status
       end
     end
 
