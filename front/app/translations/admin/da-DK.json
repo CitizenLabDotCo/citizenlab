@@ -804,6 +804,7 @@
   "app.containers.Admin.inspirationHub.Filters.Method": "Metode",
   "app.containers.Admin.inspirationHub.Filters.Search": "Søg på",
   "app.containers.Admin.inspirationHub.Filters.Status": "Status",
+  "app.containers.Admin.inspirationHub.Filters.population": "Befolkning",
   "app.containers.Admin.inspirationHub.Finished": "Afsluttet",
   "app.containers.Admin.inspirationHub.Ideation": "Idéudvikling",
   "app.containers.Admin.inspirationHub.Information": "information",
