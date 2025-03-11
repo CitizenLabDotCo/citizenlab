@@ -25,10 +25,10 @@ export type RansackParams = {
   'q[phases_participation_method_eq]'?: ParticipationMethod;
   'q[topic_id_eq]'?: string;
   'q[status_eq]'?: Status;
-  'q[visibility_eq]'?: 'public' | 'restricted'; // TODO check if this is correct / matches the response?
   'q[practical_end_at_gteq]'?: string;
   'q[practical_end_at_lt]'?: string;
   'q[title_en_or_description_en_or_tenant_name_cont]'?: string;
+  'q[pin_country_code_eq]'?: string;
 
   // sorting
   'q[s]'?: SortType;
