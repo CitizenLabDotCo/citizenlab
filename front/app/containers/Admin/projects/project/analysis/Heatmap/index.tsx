@@ -8,7 +8,7 @@ import HeatmapInsights from './HeatmapInsights';
 const Heatmap = () => {
   const [isReadMoreOpen, setIsReadMoreOpen] = useState(false);
   const { data: customFields } = useUserCustomFields({
-    inputTypes: ['select'],
+    inputTypes: ['select', 'multiselect'],
   });
   return (
     <div>

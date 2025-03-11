@@ -12,6 +12,7 @@ import {
   Title,
   IconButton,
   Th,
+  Icon,
 } from '@citizenlab/cl2-component-library';
 import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
@@ -48,11 +49,11 @@ const StyledTable = styled(Table)`
     max-width: 200px;
   }
 
-  /* Make other columns share remaining space evenly */
   & th:not(:first-child),
   & td:not(:first-child) {
-    width: auto;
+    width: 120px;
   }
+
   /* Make the table support sticky positioning */
   border-collapse: separate;
   border-spacing: 0;
@@ -103,6 +104,31 @@ const CustomFieldOptions: React.FC<CustomFieldOptionsProps> = ({
   );
 };
 
+const getCellBgColor = (lift: number | undefined): string => {
+  if (lift === undefined) return colors.grey200;
+  if (lift > 1.5) return colors.success;
+  if (lift > 1) return colors.successLight;
+  if (lift > 0.5) return colors.errorLight;
+  return colors.error;
+};
+
+const getCellTextColor = (lift: number | undefined): string => {
+  if (lift === undefined) return colors.grey800;
+  if (lift > 1.5) return colors.white;
+  if (lift > 1) return colors.grey800;
+  if (lift > 0.5) return colors.grey800;
+  return colors.white;
+};
+
+const convertLiftToPercentage = (lift: number | undefined): string => {
+  if (lift === undefined) return '-';
+
+  // Convert lift to percentage (relative to 1.0 which represents 0% change)
+  const percentage = (lift - 1) * 100;
+
+  // Format with sign and fixed decimal places
+  return `${percentage >= 0 ? '+' : ''}${percentage.toFixed(0)}%`;
+};
 const HeatmapDetails = ({ onClose, customFields }: HeatMapProps) => {
   const localize = useLocalize();
   const [selectedFieldId, setSelectedFieldId] = useState(
@@ -193,23 +219,30 @@ const HeatmapDetails = ({ onClose, customFields }: HeatMapProps) => {
                   const pValue = cell?.attributes.p_value;
                   const isSignificant = pValue !== undefined && pValue <= 0.05;
 
-                  const cellBgColor =
-                    lift !== undefined
-                      ? lift > 1
-                        ? colors.successLight
-                        : colors.errorLight
-                      : colors.grey200;
+                  const cellBgColor = getCellBgColor(lift);
+                  const cellTextColor = getCellTextColor(lift);
 
                   return (
-                    <Td key={option.id}>
+                    <Td key={option.id} minWidth="200px">
                       <Box
                         borderRadius={stylingConsts.borderRadius}
                         bgColor={cellBgColor}
-                        p="8px"
-                        w="fit-content"
+                        color={cellTextColor}
+                        py="20px"
+                        display="flex"
+                        justifyContent="center"
+                        position="relative"
                       >
-                        {lift !== undefined ? lift.toFixed(2) : null}
-                        {isSignificant ? ' *' : ''}
+                        {convertLiftToPercentage(lift)}
+                        <Box position="absolute" right="4px" top="4px">
+                          {isSignificant ? (
+                            <Icon
+                              name="alert-circle"
+                              ml="4px"
+                              fill={cellTextColor}
+                            />
+                          ) : null}
+                        </Box>
                       </Box>
                     </Td>
                   );
