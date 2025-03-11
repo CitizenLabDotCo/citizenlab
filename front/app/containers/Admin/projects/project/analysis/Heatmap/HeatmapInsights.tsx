@@ -7,12 +7,17 @@ import useAnalysisHeatmapCells from 'api/analysis_heat_map_cells/useAnalysisHetm
 
 import useLocalize from 'hooks/useLocalize';
 
+import { useIntl } from 'utils/cl-intl';
+
+import messages from './messages';
+
 interface HeatMapInsightsProps {
   onReadMoreClick: () => void;
 }
 
 const HeatMapInsights = ({ onReadMoreClick }: HeatMapInsightsProps) => {
   const localize = useLocalize();
+  const { formatMessage } = useIntl();
   const { analysisId } = useParams() as { analysisId: string };
 
   const { data: analysisHeatmapCells } = useAnalysisHeatmapCells({
@@ -43,7 +48,7 @@ const HeatMapInsights = ({ onReadMoreClick }: HeatMapInsightsProps) => {
               p="0px"
               onClick={onReadMoreClick}
             >
-              Read more
+              {formatMessage(messages.readMore)}
             </Button>
           </Box>
         </Box>

@@ -32,8 +32,11 @@ import useLocalize from 'hooks/useLocalize';
 
 import CloseIconButton from 'components/UI/CloseIconButton';
 
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
+
 import Tag from '../Tags/Tag';
 
+import messages from './messages';
 import {
   convertLiftToPercentage,
   getCellBgColor,
@@ -116,6 +119,7 @@ const CustomFieldOptions: React.FC<CustomFieldOptionsProps> = ({
 
 const HeatmapDetails = ({ onClose, customFields }: HeatMapProps) => {
   const localize = useLocalize();
+  const { formatMessage } = useIntl();
   const [selectedFieldId, setSelectedFieldId] = useState(
     customFields.data[0].id
   );
@@ -186,20 +190,25 @@ const HeatmapDetails = ({ onClose, customFields }: HeatMapProps) => {
         <CloseIconButton onClick={onClose} />
       </Box>
       <Box display="flex" justifyContent="space-between" w="100%" m="auto">
-        <IconButton
-          iconName="arrow-left"
-          onClick={() => handleChangeCustomField(-1)}
-          a11y_buttonActionMessage={'Previous custom field heatmap'}
-        />
+        {customFields.data.length > 1 && (
+          <IconButton
+            iconName="arrow-left"
+            onClick={() => handleChangeCustomField(-1)}
+            a11y_buttonActionMessage={formatMessage(messages.previousHeatmap)}
+          />
+        )}
+
         <Title fontSize="xl">
           {localize(customField?.data.attributes.title_multiloc)}
         </Title>
 
-        <IconButton
-          iconName="arrow-right"
-          onClick={() => handleChangeCustomField(1)}
-          a11y_buttonActionMessage={'Next custom field heatmap'}
-        />
+        {customFields.data.length > 1 && (
+          <IconButton
+            iconName="arrow-right"
+            onClick={() => handleChangeCustomField(1)}
+            a11y_buttonActionMessage={formatMessage(messages.nextHeatmap)}
+          />
+        )}
       </Box>
       <Box overflowX="auto" w="100%" h="100%" pb="220px">
         <StyledTable>
@@ -241,13 +250,16 @@ const HeatmapDetails = ({ onClose, customFields }: HeatMapProps) => {
                               {localize(cell?.attributes.statement_multiloc)}
                             </Text>
                             <Text color="textSecondary">
-                              There are
-                              {cell?.attributes.count} instances of this
-                              combination
+                              <FormattedMessage
+                                {...messages.instances}
+                                values={{ count: cell?.attributes.count }}
+                              />
                             </Text>
                             {isSignificant ? (
                               <Text fontWeight="bold">
-                                * Significant at 0.05 level
+                                <FormattedMessage
+                                  {...messages.statisticalSignificance}
+                                />
                               </Text>
                             ) : null}
 
@@ -261,7 +273,7 @@ const HeatmapDetails = ({ onClose, customFields }: HeatMapProps) => {
                                 })
                               }
                             >
-                              Summarize
+                              <FormattedMessage {...messages.summarize} />
                             </Button>
                           </Box>
                         }

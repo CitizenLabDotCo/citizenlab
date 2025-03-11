@@ -10,19 +10,22 @@ const Heatmap = () => {
   const { data: customFields } = useUserCustomFields({
     inputTypes: ['select', 'multiselect'],
   });
+
+  if (!customFields) {
+    return null;
+  }
+
   return (
     <div>
-      {customFields && (
-        <>
-          <HeatmapInsights onReadMoreClick={() => setIsReadMoreOpen(true)} />
-          {isReadMoreOpen && (
-            <HeatmapDetails
-              onClose={() => setIsReadMoreOpen(false)}
-              customFields={customFields}
-            />
-          )}
-        </>
-      )}
+      <>
+        <HeatmapInsights onReadMoreClick={() => setIsReadMoreOpen(true)} />
+        {isReadMoreOpen && (
+          <HeatmapDetails
+            onClose={() => setIsReadMoreOpen(false)}
+            customFields={customFields}
+          />
+        )}
+      </>
     </div>
   );
 };
