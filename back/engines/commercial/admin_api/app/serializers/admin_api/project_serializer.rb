@@ -18,12 +18,11 @@ module AdminApi
     def image_path
       first_image = object&.project_images&.first
       return nil unless first_image
-      
-      file = first_image.image&.file
-      return nil unless file && file.respond_to?(:path)
-      
-      path = file.path
-      path.split('public/').last if path
+
+      file = first_image&.image&.file
+      return nil unless file&.respond_to?(:path)
+
+      file.path&.split('public/')&.last
     end
 
     class AdminPublicationSerializer < ActiveModel::Serializer
