@@ -479,6 +479,10 @@ module MultiTenancy
             project_library: {
               enabled: false,
               allowed: false
+            },
+            user_fields_in_surveys: {
+              enabled: true,
+              allowed: true
             }
           })
         )

@@ -77,6 +77,7 @@ export interface IPhaseAttributes {
   native_survey_button_multiloc?: Multiloc;
   prescreening_enabled?: boolean;
   manual_voters_amount?: number;
+  user_fields_in_form?: boolean;
 }
 
 export interface IPhases {
@@ -126,6 +127,7 @@ export interface IUpdatedPhaseProperties {
   allow_anonymous_participation?: boolean;
   expire_days_limit?: number;
   manual_voters_amount?: number;
+  user_fields_in_form?: boolean;
 }
 
 export interface AddPhaseObject extends IUpdatedPhaseProperties {
