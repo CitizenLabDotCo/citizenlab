@@ -179,7 +179,7 @@ const HeatmapDetails = ({ onClose, customFields }: HeatMapProps) => {
       // The last column remains visible so that AI insights remain visible.
       width="calc(300px + (100% - 300px - 24px) * 2/3)"
       height="100vh"
-      zIndex="100000000"
+      zIndex="100000"
       bg={colors.white}
     >
       <Box display="flex" justifyContent="flex-end" py="12px">
@@ -189,7 +189,7 @@ const HeatmapDetails = ({ onClose, customFields }: HeatMapProps) => {
         <IconButton
           iconName="arrow-left"
           onClick={() => handleChangeCustomField(-1)}
-          a11y_buttonActionMessage={''}
+          a11y_buttonActionMessage={'Previous custom field heatmap'}
         />
         <Title fontSize="xl">
           {localize(customField?.data.attributes.title_multiloc)}
@@ -198,7 +198,7 @@ const HeatmapDetails = ({ onClose, customFields }: HeatMapProps) => {
         <IconButton
           iconName="arrow-right"
           onClick={() => handleChangeCustomField(1)}
-          a11y_buttonActionMessage={''}
+          a11y_buttonActionMessage={'Next custom field heatmap'}
         />
       </Box>
       <Box overflowX="auto" w="100%" h="100%" pb="220px">
@@ -270,22 +270,26 @@ const HeatmapDetails = ({ onClose, customFields }: HeatMapProps) => {
                           borderRadius={stylingConsts.borderRadius}
                           bgColor={cellBgColor}
                           color={cellTextColor}
-                          py="28px"
+                          py="20px"
                           position="relative"
-                          // maxWidth="120px"
-                          // mx="auto"
                         >
                           <Text
                             m="0px"
                             textAlign="center"
                             fontWeight="bold"
                             color="inherit"
+                            fontSize="xs"
                           >
                             {convertLiftToPercentage(lift)}
                           </Text>
                           <Box position="absolute" right="4px" top="4px">
                             {isSignificant ? (
-                              <Icon name="alert-circle" fill={cellTextColor} />
+                              <Icon
+                                name="alert-circle"
+                                fill={cellTextColor}
+                                width="20px"
+                                height="20px"
+                              />
                             ) : null}
                           </Box>
                         </Box>
