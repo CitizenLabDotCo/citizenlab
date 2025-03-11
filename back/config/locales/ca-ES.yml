@@ -167,12 +167,12 @@ ca:
       attachments:
         title: Adjunts
         description:
-      section1:
+      page1:
         description:
-      section2:
+      page2:
         title: Imatges i fitxers adjunts
         description:
-      section3:
+      page3:
         title: Detalls
         description:
       other_input_field:
