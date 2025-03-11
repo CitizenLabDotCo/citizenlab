@@ -2,7 +2,7 @@
 
 module IdFakeSso
   module FakeSsoVerification
-    include Verification::VerificationMethod
+    include IdMethod::VerificationMethod
 
     def verification_method_type
       :omniauth

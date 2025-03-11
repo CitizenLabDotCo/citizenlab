@@ -1,7 +1,8 @@
 # frozen_string_literal: true
 
 module IdBosaFas
-  class BosaFasOmniauth < OmniauthMethods::Base
+  class BosaFasOmniauth < IdMethod::Base
+    include IdMethod::OmniAuthMethod
     include BosaFasVerification
 
     ENVIRONMENTS = {
@@ -14,6 +15,10 @@ module IdBosaFas
         jwks_uri: 'https://idp.iamfas.belgium.be/fas/oauth2/connect/jwk_uri'
       }
     }
+
+    def auth?
+      false # Although using omni_auth, this is not yet enabled as an SSO method
+    end
 
     def profile_to_user_attrs(auth)
       {}.tap do |info|
