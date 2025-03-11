@@ -21,6 +21,8 @@ import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 
 import useAnalysisHeatmapCells from 'api/analysis_heat_map_cells/useAnalysisHetmapCells';
+import { AuthorCustomFilterKey } from 'api/analysis_inputs/types';
+import useAddAnalysisSummary from 'api/analysis_summaries/useAddAnalysisSummary';
 import useAnalysisTags from 'api/analysis_tags/useAnalysisTags';
 import { IUserCustomFields } from 'api/user_custom_fields/types';
 import useUserCustomField from 'api/user_custom_fields/useUserCustomField';
@@ -130,6 +132,7 @@ const HeatmapDetails = ({ onClose, customFields }: HeatMapProps) => {
 
   const { data: customField } = useUserCustomField(selectedFieldId);
   const { data: options } = useUserCustomFieldsOptions(selectedFieldId);
+  const { mutate: addSummary } = useAddAnalysisSummary();
 
   const handleChangeCustomField = (offset: number) => {
     setSelectedFieldId((currentId) => {
@@ -142,6 +145,28 @@ const HeatmapDetails = ({ onClose, customFields }: HeatMapProps) => {
       if (newIndex < 0) newIndex += length;
 
       return fields[newIndex].id;
+    });
+  };
+
+  const handleSummarize = ({
+    tagId,
+    option,
+  }: {
+    tagId: string;
+    option: string;
+  }) => {
+    const authorKey: AuthorCustomFilterKey = `author_custom_${selectedFieldId}`;
+    const filters: {
+      tag_ids: string[];
+      [authorKey: AuthorCustomFilterKey]: string[] | undefined;
+    } = {
+      tag_ids: [tagId],
+      [authorKey]: [option],
+    };
+
+    addSummary({
+      analysisId,
+      filters,
     });
   };
 
@@ -160,13 +185,15 @@ const HeatmapDetails = ({ onClose, customFields }: HeatMapProps) => {
       <Box display="flex" justifyContent="flex-end" py="12px">
         <CloseIconButton onClick={onClose} />
       </Box>
-      <Box display="flex" justifyContent="space-between" w="80%" m="auto">
+      <Box display="flex" justifyContent="space-between" w="100%" m="auto">
         <IconButton
           iconName="arrow-left"
           onClick={() => handleChangeCustomField(-1)}
           a11y_buttonActionMessage={''}
         />
-        <Title>{localize(customField?.data.attributes.title_multiloc)}</Title>
+        <Title fontSize="xl">
+          {localize(customField?.data.attributes.title_multiloc)}
+        </Title>
 
         <IconButton
           iconName="arrow-right"
@@ -227,6 +254,12 @@ const HeatmapDetails = ({ onClose, customFields }: HeatMapProps) => {
                             <Button
                               buttonStyle="secondary-outlined"
                               icon="stars"
+                              onClick={() =>
+                                handleSummarize({
+                                  tagId: tag.id,
+                                  option: option.attributes.key,
+                                })
+                              }
                             >
                               Summarize
                             </Button>
