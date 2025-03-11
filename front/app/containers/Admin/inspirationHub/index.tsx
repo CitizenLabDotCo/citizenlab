@@ -25,9 +25,6 @@ const InspirationHub = () => {
           <FormattedMessage {...sidebarMessages.inspirationHub} />
         </Title>
         <Box>
-          <Title variant="h2" color="primary" mt="0px">
-            <FormattedMessage {...messages.highlighted} />
-          </Title>
           <PinnedProjects />
         </Box>
         <Box mt="40px">
