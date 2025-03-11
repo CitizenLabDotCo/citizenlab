@@ -98,6 +98,7 @@ const EditIdeaHeading = ({ titleText, idea, projectId }: Props) => {
             iconColorOnHover={colors.black}
             a11y_buttonActionMessage={formatMessage(messages.leaveIdeaForm)}
             p="0px"
+            data-cy="e2e-leave-edit-idea-button"
           />
         </Box>
       </Box>
@@ -131,6 +132,7 @@ const EditIdeaHeading = ({ titleText, idea, projectId }: Props) => {
               width="100%"
               mb={isSmallerThanPhone ? '16px' : undefined}
               onClick={returnToIdea}
+              data-cy="e2e-confirm-leave-edit-idea-button"
             >
               <FormattedMessage {...messages.confirmLeaveFormButtonText} />
             </Button>
