@@ -7,7 +7,7 @@ module AdminApi
       # even though the model allows for multiple images.
       project_image = ProjectImage.find_by(project_id: params[:id])
 
-      if project_image && project_image.image && project_image.image.file
+      if project_image&.image&.file
         url = nil
 
         if project_image.image.file.respond_to?(:url)
