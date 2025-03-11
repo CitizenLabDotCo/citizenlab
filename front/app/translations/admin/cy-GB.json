@@ -804,6 +804,7 @@
   "app.containers.Admin.inspirationHub.Filters.Method": "Dull",
   "app.containers.Admin.inspirationHub.Filters.Search": "Chwiliwch",
   "app.containers.Admin.inspirationHub.Filters.Status": "Statws",
+  "app.containers.Admin.inspirationHub.Filters.population": "Poblogaeth",
   "app.containers.Admin.inspirationHub.Finished": "Wedi gorffen",
   "app.containers.Admin.inspirationHub.Ideation": "Syniad",
   "app.containers.Admin.inspirationHub.Information": "Gwybodaeth",
