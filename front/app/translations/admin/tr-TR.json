@@ -804,6 +804,7 @@
   "app.containers.Admin.inspirationHub.Filters.Method": "Yöntem",
   "app.containers.Admin.inspirationHub.Filters.Search": "Arama",
   "app.containers.Admin.inspirationHub.Filters.Status": "Durum",
+  "app.containers.Admin.inspirationHub.Filters.population": "Nüfus",
   "app.containers.Admin.inspirationHub.Finished": "Bitti",
   "app.containers.Admin.inspirationHub.Ideation": "Düşünce",
   "app.containers.Admin.inspirationHub.Information": "Bilgi",
