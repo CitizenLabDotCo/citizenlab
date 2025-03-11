@@ -721,6 +721,15 @@ describe Permissions::ProjectPermissionsService do
         expect(service.denied_reason_for_action('attending_event')).to eq 'project_inactive'
       end
     end
+
+    context 'when the phase is a community monitor phase' do
+      let(:phase) { create(:community_monitor_survey_phase) }
+      let(:project) { phase.project }
+
+      it "returns 'attending_event_not_supported'" do
+        expect(service.denied_reason_for_action('attending_event')).to eq 'attending_event_not_supported'
+      end
+    end
   end
 
   describe '"posting_idea" future_enabled_phase' do
