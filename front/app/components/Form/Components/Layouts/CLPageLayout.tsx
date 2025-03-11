@@ -229,9 +229,15 @@ const CLPageLayout = memo(
       }
 
       if (pageVariant === 'after-submission') {
-        clHistory.push({
-          pathname: `/projects/${project?.data.attributes.slug}`,
-        });
+        if (phase?.data.attributes.participation_method === 'native_survey') {
+          clHistory.push({
+            pathname: `/projects/${project?.data.attributes.slug}`,
+          });
+        } else {
+          clHistory.push({
+            pathname: `/ideas/${idea?.data.attributes.slug}`,
+          });
+        }
         return;
       }
 
@@ -556,6 +562,8 @@ const CLPageLayout = memo(
             hasPreviousPage={hasPreviousPage}
             isLoading={isLoading}
             pageVariant={pageVariant}
+            phases={phases?.data}
+            currentPhase={phase?.data}
           />
         </Box>
       </>
