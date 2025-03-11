@@ -206,7 +206,7 @@ const IdeasEditForm = ({ ideaId }: Props) => {
       project_id: projectId,
     };
 
-    await updateIdea({
+    const idea = await updateIdea({
       id: ideaId,
       requestBody: isImageNew
         ? omit(payload, 'idea_files_attributes')
@@ -214,6 +214,7 @@ const IdeasEditForm = ({ ideaId }: Props) => {
     });
     onSubmitCallback?.();
     setLoading(false);
+    return idea;
   };
 
   const titleText = (
