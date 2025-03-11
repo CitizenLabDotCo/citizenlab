@@ -1,5 +1,7 @@
 import React from 'react';
 
+import { colors } from '@citizenlab/cl2-component-library';
+
 import SearchInput from 'components/UI/SearchInput';
 
 import { useIntl } from 'utils/cl-intl';
@@ -25,6 +27,7 @@ const Search = () => {
       }}
       a11y_numberOfSearchResults={0}
       placeholder={formatMessage(messages.search)}
+      labelColor={colors.black}
     />
   );
 };
