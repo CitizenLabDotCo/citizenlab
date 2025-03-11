@@ -7,9 +7,10 @@ module Analysis
     def run(analysis)
       analysis.heatmap_cells.destroy_all
 
-      generator = HeatmapGenerator.new(analysis)
-      CustomField.registration.filter(&:support_options?).each do |cf|
-        generator.generate(analysis.tags, cf.options)
+      # generator = HeatmapGenerator.new(analysis)
+      generator = AutoInsightsService.new(analysis)
+      HeatmapCell::UNIT_TYPES.each do |unit|
+        generator.generate(unit:)
       end
     end
   end

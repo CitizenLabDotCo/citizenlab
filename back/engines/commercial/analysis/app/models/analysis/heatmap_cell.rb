@@ -51,7 +51,7 @@ module Analysis
     def statement_multiloc
       {
         'en' =>
-        "People who #{col_to_action(row)} #{col_to_action(column)} #{decimal_to_percentage(lift)} than the average."
+        "People who #{unit} #{col_to_action(row)} #{col_to_action(column)} #{decimal_to_percentage(lift)} than the average."
       }
     end
 
@@ -62,7 +62,7 @@ module Analysis
       when CustomFieldOption
         "respond '#{multiloc_service.t(item.title_multiloc)}' to '#{multiloc_service.t(item.custom_field.title_multiloc)}'"
       when Tag
-        "post in #{item.name}"
+        "in #{item.name}"
       end
     end
 

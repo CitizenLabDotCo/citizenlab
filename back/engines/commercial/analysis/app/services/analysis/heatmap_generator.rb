@@ -17,6 +17,7 @@ module Analysis
     private
 
     def generate_countmap(category1, category2, unit)
+      puts "Generating countmap for #{unit} with categories #{category1} and #{category2}"
       case unit
       when 'inputs'
         generate_countmap_for_inputs(category1, category2)
@@ -34,10 +35,10 @@ module Analysis
     def generate_countmap_for_inputs(category1, category2)
       output = {}
 
-      all_inputs.select(:id, :custom_field_values, :author_id).each do |input|
+      all_inputs.each do |input|
         category1.map do |col1|
           category2.map do |col2|
-            output[[col1, col2]] ||= HeatmapCell.new(row: col1, column: col2, analysis: @analysis)
+            output[[col1, col2]] ||= HeatmapCell.new(row: col1, column: col2, analysis: @analysis, unit: 'inputs')
             if column_set_for_input?(input, col1) && column_set_for_input?(input, col2)
               output[[col1, col2]].count += 1
             end
@@ -54,7 +55,7 @@ module Analysis
       Reaction.where(reactable_type: 'Idea', reactable_id: all_inputs, mode:).includes(:user, :reactable).each do |reaction|
         category1.map do |col1|
           category2.map do |col2|
-            output[[col1, col2]] ||= HeatmapCell.new(row: col1, column: col2, analysis: @analysis)
+            output[[col1, col2]] ||= HeatmapCell.new(row: col1, column: col2, analysis: @analysis, unit: mode == 'up' ? 'likes' : 'dislikes')
             if column_set_for_reaction?(reaction, col1) && column_set_for_reaction?(reaction, col2)
               output[[col1, col2]].count += 1
             end
@@ -70,7 +71,7 @@ module Analysis
       participant_to_inputs_map.each do |participant, inputs|
         category1.map do |col1|
           category2.map do |col2|
-            output[[col1, col2]] ||= HeatmapCell.new(row: col1, column: col2, analysis: @analysis)
+            output[[col1, col2]] ||= HeatmapCell.new(row: col1, column: col2, analysis: @analysis, unit: 'participants')
             if inputs.any? { |input| column_set_for_participant?(input, participant, col1) && column_set_for_participant?(input, participant, col2) }
               output[[col1, col2]].count += 1
             end
@@ -109,19 +110,14 @@ module Analysis
 
       case unit
       when 'inputs'
-        all_inputs.select(:id, :custom_field_values, :author_id).each do |input|
+        all_inputs.each do |input|
           in_col1 = column_set_for_input?(input, col1)
           in_col2 = column_set_for_input?(input, col2)
           table[[in_col1, in_col2]] += 1
         end
-      when 'likes'
-        Reaction.where(reactable_type: 'Idea', reactable_id: all_inputs, mode: 'up').includes(:user, :reactable).each do |reaction|
-          in_col1 = column_set_for_reaction?(reaction, col1)
-          in_col2 = column_set_for_reaction?(reaction, col2)
-          table[[in_col1, in_col2]] += 1
-        end
-      when 'dislikes'
-        Reaction.where(reactable_type: 'Idea', reactable_id: all_inputs, mode: 'down').includes(:user, :reactable).each do |reaction|
+      when 'likes', 'dislikes'
+        mode = unit == 'likes' ? 'up' : 'down'
+        Reaction.where(reactable_type: 'Idea', reactable_id: all_inputs, mode:).includes(:user, :reactable).each do |reaction|
           in_col1 = column_set_for_reaction?(reaction, col1)
           in_col2 = column_set_for_reaction?(reaction, col2)
           table[[in_col1, in_col2]] += 1
@@ -143,15 +139,19 @@ module Analysis
 
     def all_inputs
       @all_inputs ||= @analysis.inputs
+        .select(:id, :custom_field_values, :author_id)
         .includes(:author, :taggings)
+        .to_a
     end
 
     def row_total(heatmap, row)
-      @row_totals[row] ||= heatmap.select { |(c1, _), _| c1 == row }.values.sum(&:count)
+      @row_totals[heatmap] ||= {}
+      @row_totals[heatmap][row] ||= heatmap.select { |(c1, _), _| c1 == row }.values.sum(&:count)
     end
 
     def col_total(heatmap, col)
-      @col_totals[col] ||= heatmap.select { |(_, c2), _| c2 == col }.values.sum(&:count)
+      @col_totals[heatmap] ||= {}
+      @col_totals[heatmap][col] ||= heatmap.select { |(_, c2), _| c2 == col }.values.sum(&:count)
     end
 
     def calc_heatmap_sum(heatmap)
@@ -161,7 +161,7 @@ module Analysis
     def column_set_for_input?(input, col)
       case col
       when Tag
-        input.taggings.any? { |tagging| tagging.tag_id == col.id }
+        tag_map[input.id]&.include?(col.id)
       when CustomFieldOption
         custom_field_value = if col.custom_field.custom_form_type?
           input.custom_field_values[col.custom_field.key]
@@ -177,7 +177,7 @@ module Analysis
     def column_set_for_reaction?(reaction, col)
       case col
       when Tag
-        reaction.reactable.taggings.any? { |tagging| tagging.tag_id == col.id }
+        tag_map[reaction.reactable_id]&.include?(col.id)
       when CustomFieldOption
         custom_field_value = if col.custom_field.custom_form_type?
           reaction.reactable.custom_field_values[col.custom_field.key]
@@ -193,7 +193,7 @@ module Analysis
     def column_set_for_participant?(input, participant, col)
       case col
       when Tag
-        input.taggings.any? { |tagging| tagging.tag_id == col.id }
+        tag_map[input.id]&.include?(col.id)
       when CustomFieldOption
         custom_field_value = if col.custom_field.custom_form_type?
           input.custom_field_values[col.custom_field.key]
@@ -212,7 +212,7 @@ module Analysis
       output = Hash.new { |hash, key| hash[key] = [] }
       pc = ParticipantsService.new
 
-      all_inputs.select(:id, :author_id).each do |input|
+      all_inputs.each do |input|
         pc.ideas_participants(Idea.where(id: input)).each do |participant|
           output[participant] << input
         end
@@ -243,6 +243,15 @@ module Analysis
       dof = (row_sums.size - 1) * (col_sums.size - 1)
       p_value = 1 - Distribution::ChiSquare.cdf(chi2, dof)
       [chi2, p_value]
+    end
+
+    # maps input_ids to tag_id arrays. Performance optimization
+    def tag_map
+      @tag_map ||=
+        @analysis.taggings.select(:input_id, :tag_id).each_with_object({}) do |tagging, hash|
+          hash[tagging.input_id] ||= []
+          hash[tagging.input_id] << tagging.tag_id
+        end
     end
   end
 end
