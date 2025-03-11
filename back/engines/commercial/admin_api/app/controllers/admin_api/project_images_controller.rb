@@ -10,12 +10,16 @@ module AdminApi
       if project_image
         url = nil
 
-        if project_image&.image&.file&.respond_to?(:url)
+        if project_image.image.file.respond_to?(:url)
           url = project_image.image.file.url
         elsif Rails.env.development? # In development, the file is stored locally
-          path = project_image&.image&.file&.path
-
-          url = "http://localhost:3000/#{path.split('public/').last}" if path
+          if project_image.image && project_image.image.file
+            # Check if file responds to path method
+            if project_image.image.file.respond_to?(:path)
+              path = project_image.image.file.path
+              url = "http://localhost:3000/#{path.split('public/').last}" if path
+            end
+          end
         end
         render json: { url: url }
       else
