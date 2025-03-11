@@ -2,8 +2,8 @@ require 'rails_helper'
 
 describe SimilarIdeasService do
   # pizza <=> burger = 0.5121947242188569
-  # pizza <=> moon   =  0.6393773168837441
-  # pizza <=> bats   =  0.5977864166605551
+  # pizza <=> moon   = 0.6393773168837441
+  # pizza <=> bats   = 0.5977864166605551
   let(:embeddings) { JSON.parse(File.read('spec/fixtures/word_embeddings.json')) }
   let(:idea) { create(:embeddings_similarity, embedding: embeddings['pizza'], embedded_attributes: 'body').embeddable }
   let(:service) { described_class.new(idea) }
