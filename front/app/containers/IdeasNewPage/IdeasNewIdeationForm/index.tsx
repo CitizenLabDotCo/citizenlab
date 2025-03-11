@@ -183,7 +183,7 @@ const IdeasNewIdeationForm = ({ project, phaseId }: Props) => {
     const phase_ids =
       phaseId && canModerateProject(project.data, authUser) ? [phaseId] : null;
 
-    await addIdea({
+    const idea = await addIdea({
       ...data,
       location_point_geojson,
       project_id: project.data.id,
@@ -193,6 +193,7 @@ const IdeasNewIdeationForm = ({ project, phaseId }: Props) => {
 
     onSubmitCallback?.();
     setLoading(false);
+    return idea;
   };
 
   const getApiErrorMessage: ApiErrorGetter = useCallback(
