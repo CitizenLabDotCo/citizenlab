@@ -12,18 +12,18 @@ import { setRansackParam, useRansackParam } from '../utils';
 import messages from './messages';
 
 type Option = {
-  value: RansackParams['q[tenant_country_alpha2]'];
+  value: RansackParams['q[tenant_country_alpha2_eq]'];
   label: string;
 };
 
 const Country = () => {
   const { formatMessage } = useIntl();
-  const value = useRansackParam('q[tenant_country_alpha2]');
+  const value = useRansackParam('q[tenant_country_alpha2_eq]');
   const { data: countries } = useProjectLibraryCountries();
 
-  const options = countries?.data.attributes.map(({ code, short_name }) => ({
+  const options = countries?.data.attributes.map(({ code, name }) => ({
     value: code,
-    label: short_name,
+    label: name,
   }));
 
   return (
@@ -33,7 +33,7 @@ const Country = () => {
         options={options ?? []}
         canBeEmpty
         onChange={(option: Option) =>
-          setRansackParam('q[tenant_country_alpha2]', option.value)
+          setRansackParam('q[tenant_country_alpha2_eq]', option.value)
         }
         placeholder={formatMessage(messages.country)}
         mr="28px"

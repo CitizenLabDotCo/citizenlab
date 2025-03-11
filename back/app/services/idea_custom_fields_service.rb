@@ -190,6 +190,7 @@ class IdeaCustomFieldsService
     fields.each do |field|
       all_fields << field
       all_fields << field.other_option_text_field if field.other_option_text_field
+      all_fields << field.follow_up_text_field if field.follow_up_text_field
     end
     all_fields
   end
