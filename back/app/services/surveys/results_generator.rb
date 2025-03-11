@@ -8,7 +8,7 @@ module Surveys
       form = @phase.custom_form || CustomForm.new(participation_context: phase)
       @fields = IdeaCustomFieldsService.new(form).enabled_fields
       @locales = AppConfiguration.instance.settings('core', 'locales')
-      @inputs = @phase.ideas.native_survey.published
+      @inputs = @phase.ideas.supports_survey.published
     end
 
     # Get the results for a single survey question
