@@ -36,8 +36,9 @@
 #
 class StaticPage < ApplicationRecord
   CODES = %w[about cookie-policy terms-and-conditions privacy-policy faq custom].freeze
+  RESERVED_SLUGS = (CODES - %w[custom]).freeze
 
-  slug from: proc { |page| page.title_multiloc.values.find(&:present?) }
+  slug from: proc { |page| page.title_multiloc.values.find(&:present?) }, except: RESERVED_SLUGS
 
   enum :projects_filter_type, { no_filter: 'no_filter', areas: 'areas', topics: 'topics' }
 
@@ -66,6 +67,7 @@ class StaticPage < ApplicationRecord
   validates :title_multiloc, presence: true, multiloc: { presence: true }
   validates :code, inclusion: { in: CODES }
   validates :code, uniqueness: true, unless: :custom?
+  validate :validate_slug
 
   validates :banner_enabled, inclusion: [true, false]
   validates :banner_layout, inclusion: %w[full_width_banner_layout two_column_layout two_row_layout fixed_ratio_layout]
@@ -150,6 +152,10 @@ class StaticPage < ApplicationRecord
 
     errors.add(:base, 'Only custom pages and the cookie policy page can be deleted')
     throw :abort
+  end
+
+  def validate_slug
+    errors.add(:slug, 'reserved') if custom? && slug.in?(RESERVED_SLUGS)
   end
 
   def set_code
