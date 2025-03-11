@@ -11,8 +11,10 @@ import {
   stylingConsts,
   Title,
   IconButton,
+  Th,
 } from '@citizenlab/cl2-component-library';
 import { useParams } from 'react-router-dom';
+import styled from 'styled-components';
 
 import useAnalysisHeatmapCells from 'api/analysis_heat_map_cells/useAnalysisHetmapCells';
 import useAnalysisTags from 'api/analysis_tags/useAnalysisTags';
@@ -33,6 +35,42 @@ interface CustomFieldOptionsProps {
   customFieldId: string;
 }
 
+const StyledTable = styled(Table)`
+  /* Make the table support sticky positioning */
+  border-collapse: separate;
+  border-spacing: 0;
+
+  /* Make thead sticky */
+  & thead th {
+    position: sticky;
+    top: 0;
+    background-color: ${colors.white};
+    z-index: 10;
+  }
+
+  /* Make first column sticky */
+  & tr th:first-child,
+  & tr td:first-child {
+    position: sticky;
+    left: 0;
+    z-index: 5;
+  }
+
+  /* Increase z-index for the corner cell (thead first cell) */
+  & thead th:first-child {
+    z-index: 15;
+  }
+
+  /* Add striped rows */
+  & tbody tr:nth-child(odd) td {
+    background-color: ${colors.white};
+  }
+
+  & tbody tr:nth-child(even) td {
+    background-color: ${colors.grey100};
+  }
+`;
+
 const CustomFieldOptions: React.FC<CustomFieldOptionsProps> = ({
   customFieldId,
 }) => {
@@ -41,9 +79,8 @@ const CustomFieldOptions: React.FC<CustomFieldOptionsProps> = ({
 
   return (
     <>
-      {' '}
       {options?.data.map((option) => (
-        <Td key={option.id}>{localize(option.attributes.title_multiloc)}</Td>
+        <Th key={option.id}>{localize(option.attributes.title_multiloc)}</Th>
       ))}
     </>
   );
@@ -92,7 +129,6 @@ const HeatmapDetails = ({ onClose, customFields }: HeatMapProps) => {
       width="calc(300px + (100% - 300px - 24px) * 2/3)"
       height="100vh"
       zIndex="100000000"
-      overflow="auto"
       bg={colors.white}
     >
       <Box display="flex" justifyContent="flex-end" py="12px">
@@ -112,52 +148,54 @@ const HeatmapDetails = ({ onClose, customFields }: HeatMapProps) => {
           a11y_buttonActionMessage={''}
         />
       </Box>
-      <Table>
-        <Thead>
-          <Tr>
-            <Td />
-            <CustomFieldOptions customFieldId={selectedFieldId} />
-          </Tr>
-        </Thead>
-        <Tbody>
-          {tags?.data.map((tag) => (
-            <Tr key={tag.id}>
-              <Td>{tag.attributes.name}</Td>
-              {options?.data.map((option) => {
-                const cell = analysisHeatmapCells?.data.find(
-                  (cell) =>
-                    cell.relationships.row?.data.id === tag.id &&
-                    cell.relationships.column?.data.id === option.id
-                );
-
-                const lift = cell?.attributes.lift;
-                const pValue = cell?.attributes.p_value;
-                const isSignificant = pValue !== undefined && pValue <= 0.05;
-
-                const cellBgColor =
-                  lift !== undefined
-                    ? lift > 1
-                      ? colors.successLight
-                      : colors.errorLight
-                    : colors.grey200;
-
-                return (
-                  <Td key={option.id}>
-                    <Box
-                      borderRadius={stylingConsts.borderRadius}
-                      bgColor={cellBgColor}
-                      p="8px"
-                    >
-                      {lift !== undefined ? lift.toFixed(2) : null}
-                      {isSignificant ? ' *' : ''}
-                    </Box>
-                  </Td>
-                );
-              })}
+      <Box overflowX="auto" w="100%" h="100%">
+        <StyledTable>
+          <Thead>
+            <Tr>
+              <Th />
+              <CustomFieldOptions customFieldId={selectedFieldId} />
             </Tr>
-          ))}
-        </Tbody>
-      </Table>
+          </Thead>
+          <Tbody>
+            {tags?.data.map((tag) => (
+              <Tr key={tag.id}>
+                <Td>{tag.attributes.name}</Td>
+                {options?.data.map((option) => {
+                  const cell = analysisHeatmapCells?.data.find(
+                    (cell) =>
+                      cell.relationships.row?.data.id === tag.id &&
+                      cell.relationships.column?.data.id === option.id
+                  );
+
+                  const lift = cell?.attributes.lift;
+                  const pValue = cell?.attributes.p_value;
+                  const isSignificant = pValue !== undefined && pValue <= 0.05;
+
+                  const cellBgColor =
+                    lift !== undefined
+                      ? lift > 1
+                        ? colors.successLight
+                        : colors.errorLight
+                      : colors.grey200;
+
+                  return (
+                    <Td key={option.id}>
+                      <Box
+                        borderRadius={stylingConsts.borderRadius}
+                        bgColor={cellBgColor}
+                        p="8px"
+                      >
+                        {lift !== undefined ? lift.toFixed(2) : null}
+                        {isSignificant ? ' *' : ''}
+                      </Box>
+                    </Td>
+                  );
+                })}
+              </Tr>
+            ))}
+          </Tbody>
+        </StyledTable>
+      </Box>
     </Box>
   );
 };
