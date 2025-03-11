@@ -92,8 +92,8 @@ const FieldTitle = ({ hasErrors, field, fieldNumber }: Props) => {
                 ml="4px"
                 icon="lock"
                 content={
-                  field.input_type === 'section'
-                    ? formatMessage(messages.sectionCannotBeDeleted)
+                  field.input_type === 'page'
+                    ? formatMessage(messages.pageCannotBeDeleted)
                     : formatMessage(messages.questionCannotBeDeleted)
                 }
               />
