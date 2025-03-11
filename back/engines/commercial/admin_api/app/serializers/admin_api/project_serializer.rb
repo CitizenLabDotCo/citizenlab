@@ -20,7 +20,7 @@ module AdminApi
       return nil unless first_image
 
       file = first_image&.image&.file
-      return nil unless file&.respond_to?(:path)
+      return nil unless file.respond_to?(:path)
 
       file.path&.split('public/')&.last
     end
