@@ -3,7 +3,7 @@ import React from 'react';
 import { colors } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
-import { POLICY_PAGES } from 'api/custom_pages/types';
+import { EDITABLE_POLICY_PAGES } from 'api/custom_pages/types';
 
 import pagesAndMenuMessages from 'containers/Admin/pagesAndMenu/messages';
 
@@ -42,7 +42,7 @@ const PoliciesTab = () => {
           }}
         />
       </SectionDescription>
-      {POLICY_PAGES.map((slug) => (
+      {EDITABLE_POLICY_PAGES.map((slug) => (
         <PageEditor key={slug} pageSlug={slug} />
       ))}
     </>
