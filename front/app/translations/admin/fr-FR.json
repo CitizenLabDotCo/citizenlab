@@ -804,6 +804,7 @@
   "app.containers.Admin.inspirationHub.Filters.Method": "Méthode",
   "app.containers.Admin.inspirationHub.Filters.Search": "Chercher",
   "app.containers.Admin.inspirationHub.Filters.Status": "Statuts",
+  "app.containers.Admin.inspirationHub.Filters.population": "Population",
   "app.containers.Admin.inspirationHub.Finished": "Terminé",
   "app.containers.Admin.inspirationHub.Ideation": "Idéation",
   "app.containers.Admin.inspirationHub.Information": "Information",

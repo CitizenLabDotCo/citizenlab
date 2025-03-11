@@ -7,7 +7,7 @@ module AdminApi
       :description_multiloc,
       :slug,
       :map_config_id,
-      :image_path,
+      :image_path, # Used by project library
       :visible_to,
       :created_at,
       :updated_at
@@ -27,6 +27,12 @@ module AdminApi
 
     class AdminPublicationSerializer < ActiveModel::Serializer
       attributes :id, :publication_status
+
+      attribute :parent_publication_status # Used by project library
+
+      def parent_publication_status
+        object.parent&.publication_status
+      end
     end
 
     class FolderSerializer < ActiveModel::Serializer

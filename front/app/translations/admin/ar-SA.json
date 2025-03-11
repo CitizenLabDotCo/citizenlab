@@ -804,6 +804,7 @@
   "app.containers.Admin.inspirationHub.Filters.Method": "طريقة",
   "app.containers.Admin.inspirationHub.Filters.Search": "يبحث",
   "app.containers.Admin.inspirationHub.Filters.Status": "حالة",
+  "app.containers.Admin.inspirationHub.Filters.population": "سكان",
   "app.containers.Admin.inspirationHub.Finished": "انتهى",
   "app.containers.Admin.inspirationHub.Ideation": "الفكرة",
   "app.containers.Admin.inspirationHub.Information": "معلومة",
