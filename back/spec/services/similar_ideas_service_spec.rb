@@ -72,7 +72,7 @@ describe SimilarIdeasService do
 
       it 'uses the author locale to resolve the multiloc attributes' do
         expect_any_instance_of(CohereMultilingualEmbeddings)
-          .to receive(:embedding).with("<b>Pizza</b> est un pain plat levé typiquement recouvert de sauce tomate et de fromage et cuit au four.").at_least(:once).and_return(embeddings['pizza'])
+          .to receive(:embedding).with('<b>Pizza</b> est un pain plat levé typiquement recouvert de sauce tomate et de fromage et cuit au four.').at_least(:once).and_return(embeddings['pizza'])
         service.similar_ideas(body_threshold: 1.0)
       end
     end

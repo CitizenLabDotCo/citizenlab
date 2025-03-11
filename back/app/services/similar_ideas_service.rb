@@ -61,7 +61,7 @@ class SimilarIdeasService
     embsims = embsims.where('"embedding" <=> \'[:embedding]\' < :distance_threshold', embedding:, distance_threshold:) if distance_threshold
     embsims = embsims.where(embeddable: scope) if scope
 
-    embsims = embsims
+    embsims
       .where.not(embeddable_id: idea.id)
       .where(embedded_attributes:)
   end

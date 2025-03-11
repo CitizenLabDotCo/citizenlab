@@ -90,6 +90,7 @@ resource 'Ideas', :clear_cache, document: false do
         create(:embeddings_similarity).embedding
       end
     end
+
     let(:id) { create(:idea).id }
 
     example 'caches for a visitor' do
