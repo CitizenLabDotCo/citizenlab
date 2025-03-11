@@ -120,6 +120,7 @@ const NewIdeaHeading = ({ phaseId, titleText, idea }: Props) => {
             iconColorOnHover={colors.black}
             a11y_buttonActionMessage={formatMessage(messages.leaveIdeaForm)}
             p="0px"
+            data-cy="e2e-leave-new-idea-button"
           />
         </Box>
       </Box>
@@ -153,6 +154,7 @@ const NewIdeaHeading = ({ phaseId, titleText, idea }: Props) => {
               width="100%"
               mb={isSmallerThanPhone ? '16px' : undefined}
               onClick={returnToProject}
+              data-cy="e2e-confirm-leave-new-idea-button"
             >
               <FormattedMessage {...messages.confirmLeaveFormButtonText} />
             </Button>
