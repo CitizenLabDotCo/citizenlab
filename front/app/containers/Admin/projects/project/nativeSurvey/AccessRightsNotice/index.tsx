@@ -5,6 +5,7 @@ import { Box } from '@citizenlab/cl2-component-library';
 
 import usePermissionsCustomFields from 'api/permissions_custom_fields/usePermissionsCustomFields';
 import usePhasePermissions from 'api/phase_permissions/usePhasePermissions';
+import usePhase from 'api/phases/usePhase';
 import useUserCustomFields from 'api/user_custom_fields/useUserCustomFields';
 
 import useLocalize from 'hooks/useLocalize';
@@ -19,7 +20,6 @@ import Link from 'utils/cl-router/Link';
 
 // intl
 import messages from './messages';
-import usePhase from 'api/phases/usePhase';
 
 type AccessRightsNoticeProps = {
   projectId: string;

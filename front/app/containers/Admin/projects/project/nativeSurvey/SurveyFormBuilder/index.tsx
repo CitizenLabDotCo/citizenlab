@@ -11,13 +11,13 @@ import useLocale from 'hooks/useLocale';
 import PDFExportModal, {
   FormValues,
 } from 'containers/Admin/projects/components/PDFExportModal';
+import UserFieldsInFormNotice from 'containers/Admin/projects/project/nativeSurvey/UserFieldsInFormNotice';
 import { API_PATH } from 'containers/App/constants';
 
 import FormBuilder from 'components/FormBuilder/edit';
 
 import { saveSurveyAsPDF } from '../saveSurveyAsPDF';
 import { nativeSurveyConfig, clearOptionAndStatementIds } from '../utils';
-import UserFieldsInFormNotice from 'containers/Admin/projects/project/nativeSurvey/UserFieldsInFormNotice';
 
 const SurveyFormBuilder = () => {
   const [exportModalOpen, setExportModalOpen] = useState(false);

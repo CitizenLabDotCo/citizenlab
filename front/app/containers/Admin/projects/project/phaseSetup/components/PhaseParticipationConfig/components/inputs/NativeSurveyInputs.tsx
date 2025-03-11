@@ -11,6 +11,7 @@ import { CLErrors, Multiloc } from 'typings';
 import { IPhase, IUpdatedPhaseProperties } from 'api/phases/types';
 import useProjectById from 'api/projects/useProjectById';
 
+import useFeatureFlag from 'hooks/useFeatureFlag';
 import useLocalize from 'hooks/useLocalize';
 
 import AnonymousPostingToggle from 'components/admin/AnonymousPostingToggle/AnonymousPostingToggle';
@@ -23,7 +24,6 @@ import { FormattedMessage, useIntl } from 'utils/cl-intl';
 
 import parentMessages from '../../../../messages';
 import messages from '../messages';
-import useFeatureFlag from 'hooks/useFeatureFlag';
 
 interface Props {
   allow_anonymous_participation: boolean | null | undefined;
