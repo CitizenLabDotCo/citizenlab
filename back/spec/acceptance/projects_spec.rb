@@ -1729,6 +1729,10 @@ resource 'Projects' do
 
           settings = AppConfiguration.instance.settings
           expect(settings['community_monitor']['project_id']).to eq created_project.id
+
+          expect(created_project.allowed_input_topics.pluck(:code)).to match_array(
+            %w[quality_of_life service_delivery governance_and_trust]
+          )
         end
 
         example 'Error: Hidden project does not get created without feature flag' do

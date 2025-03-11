@@ -91,6 +91,9 @@ en:
     services_description: Public services
     other: Other
     other_description: Other
+    quality_of_life: Quality of life
+    service_delivery: Service delivery
+    governance_and_trust: Governance and trust
   static_pages:
     terms_and_conditions_title: Terms & conditions
     terms_and_conditions_body: >

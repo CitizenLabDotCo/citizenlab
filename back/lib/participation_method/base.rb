@@ -182,6 +182,10 @@ module ParticipationMethod
       true
     end
 
+    def supports_custom_field_topics?
+      false
+    end
+
     private
 
     attr_reader :phase

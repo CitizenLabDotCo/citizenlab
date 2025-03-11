@@ -39,10 +39,16 @@
 #  linear_scale_label_10_multiloc :jsonb            not null
 #  linear_scale_label_11_multiloc :jsonb            not null
 #  ask_follow_up                  :boolean          default(FALSE), not null
+#  topic_id                       :uuid
 #
 # Indexes
 #
 #  index_custom_fields_on_resource_type_and_resource_id  (resource_type,resource_id)
+#  index_custom_fields_on_topic_id                       (topic_id)
+#
+# Foreign Keys
+#
+#  fk_rails_...  (topic_id => topics.id)
 #
 
 # support table :
@@ -59,6 +65,7 @@ class CustomField < ApplicationRecord
 
   belongs_to :resource, polymorphic: true, optional: true
   belongs_to :custom_form, foreign_key: :resource_id, optional: true, inverse_of: :custom_fields
+  belongs_to :topic, optional: true
 
   has_many :permissions_custom_fields, dependent: :destroy
   has_many :permissions, through: :permissions_custom_fields
@@ -97,6 +104,8 @@ class CustomField < ApplicationRecord
   validates :minimum_select_count, comparison: { greater_than_or_equal_to: 0 }, if: :multiselect?, allow_nil: true
   validates :page_layout, presence: true, inclusion: { in: PAGE_LAYOUTS }, if: :page?
   validates :page_layout, absence: true, unless: :page?
+
+  validate :validate_topic, if: :topic
 
   before_validation :set_default_enabled
   before_validation :set_default_answer_visible_to
@@ -428,6 +437,17 @@ class CustomField < ApplicationRecord
       option.key = area_id_map.dig(option.id, :id) || 'outside'
       option.title_multiloc = area_id_map.dig(option.id, :title) || MultilocService.new.i18n_to_multiloc('custom_field_options.domicile.outside')
       option
+    end
+  end
+
+  def validate_topic
+    unless resource&.participation_context.pmethod.supports_custom_field_topics?
+      errors.add(:topic, :topics_not_allowed)
+    end
+
+    allowed_topics = resource&.participation_context.project.projects_allowed_input_topics.pluck(:topic_id)
+    unless allowed_topics.include?(topic_id)
+      errors.add(:topic, :topic_not_in_allowed_list)
     end
   end
 end

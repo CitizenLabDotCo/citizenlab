@@ -6,6 +6,10 @@ en:
   nav_bar_items:
     home:
       title: Home
+  topics:
+    quality_of_life: Quality of life
+    service_delivery: Service delivery
+    governance_and_trust: Governance and trust
   form_builder:
     default_select_field:
       title: Default question

@@ -22,7 +22,11 @@
 class Topic < ApplicationRecord
   extend OrderAsSpecified
 
-  DEFAULT_CODES = %w[nature waste sustainability mobility technology economy housing public_space safety education culture health inclusion community services other].freeze
+  # TODO: JS - do the community monitor codes need splitting out?
+  DEFAULT_CODES = %w[nature waste sustainability mobility technology
+    economy housing public_space safety education culture
+    health inclusion community services quality_of_life
+    service_delivery governance_and_trust other].freeze
   CUSTOM_CODE = 'custom'
   OTHER_CODE = 'other'
   CODES = DEFAULT_CODES + [CUSTOM_CODE]
@@ -38,6 +42,7 @@ class Topic < ApplicationRecord
 
   has_many :static_pages_topics, dependent: :restrict_with_error
   has_many :static_pages, through: :static_pages_topics
+  has_many :custom_fields
 
   validates :title_multiloc, presence: true, multiloc: { presence: true }
   validates :description_multiloc, multiloc: { presence: false }

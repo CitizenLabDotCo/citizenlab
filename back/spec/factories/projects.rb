@@ -616,6 +616,12 @@ FactoryBot.define do
       factory :community_monitor_project do
         internal_role { 'community_monitor' }
         hidden { true }
+
+        factory :community_monitor_project_with_active_phase do
+          after(:create) do |project, _evaluator|
+            project.phases << create(:community_monitor_survey_phase, project: project)
+          end
+        end
       end
     end
   end

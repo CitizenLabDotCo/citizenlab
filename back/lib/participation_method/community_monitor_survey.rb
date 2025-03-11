@@ -62,5 +62,9 @@ module ParticipationMethod
     def supports_event_attendance?
       false
     end
+
+    def supports_custom_field_topics?
+      true
+    end
   end
 end

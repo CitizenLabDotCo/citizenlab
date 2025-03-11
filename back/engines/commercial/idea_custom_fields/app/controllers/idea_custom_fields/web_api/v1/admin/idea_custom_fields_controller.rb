@@ -417,6 +417,7 @@ module IdeaCustomFields
         :page_layout,
         :map_config_id,
         :ask_follow_up,
+        :topic_id,
         { title_multiloc: CL2_SUPPORTED_LOCALES,
           description_multiloc: CL2_SUPPORTED_LOCALES,
           linear_scale_label_1_multiloc: CL2_SUPPORTED_LOCALES,

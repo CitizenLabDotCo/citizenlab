@@ -397,26 +397,44 @@ class WebApi::V1::ProjectsController < ApplicationController
     project = Project.find_by(internal_role: 'community_monitor', hidden: true)
 
     unless project
-      # Create the hidden project and phase
-      multiloc_service = MultilocService.new
-      project = Project.create!(
-        hidden: true,
-        title_multiloc: multiloc_service.i18n_to_multiloc('phases.community_monitor_title'),
-        internal_role: 'community_monitor'
-      )
-      sidefx.after_create(project, current_user) if project
+      ActiveRecord::Base.transaction do
+        # Create the hidden project and phase
+        multiloc_service = MultilocService.new
+        project = Project.create!(
+          hidden: true,
+          title_multiloc: multiloc_service.i18n_to_multiloc('phases.community_monitor_title'),
+          internal_role: 'community_monitor'
+        )
 
-      Phase.create!(
-        title_multiloc: multiloc_service.i18n_to_multiloc('phases.community_monitor_title'),
-        project: project,
-        participation_method: 'community_monitor_survey',
-        commenting_enabled: false,
-        reacting_enabled: false,
-        start_at: Time.now,
-        campaigns_settings: { project_phase_started: true },
-        native_survey_title_multiloc: multiloc_service.i18n_to_multiloc('phases.community_monitor_title'),
-        native_survey_button_multiloc: multiloc_service.i18n_to_multiloc('phases.native_survey_button')
-      )
+        # Create the allowed topics for the custom fields to be assigned to
+        topics = {
+          'quality_of_life' => multiloc_service.i18n_to_multiloc('topics.quality_of_life'),
+          'service_delivery' => multiloc_service.i18n_to_multiloc('topics.service_delivery'),
+          'governance_and_trust' => multiloc_service.i18n_to_multiloc('topics.governance_and_trust')
+        }
+        topics.each do |code, title_multiloc|
+          topic = Topic.find_or_create_by!(
+            code: code,
+            title_multiloc: title_multiloc,
+            include_in_onboarding: false
+          )
+          project.allowed_input_topics << topic
+        end
+
+        sidefx.after_create(project, current_user) if project
+
+        Phase.create!(
+          title_multiloc: multiloc_service.i18n_to_multiloc('phases.community_monitor_title'),
+          project: project,
+          participation_method: 'community_monitor_survey',
+          commenting_enabled: false,
+          reacting_enabled: false,
+          start_at: Time.now,
+          campaigns_settings: { project_phase_started: true },
+          native_survey_title_multiloc: multiloc_service.i18n_to_multiloc('phases.community_monitor_title'),
+          native_survey_button_multiloc: multiloc_service.i18n_to_multiloc('phases.native_survey_button')
+        )
+      end
     end
 
     # Set the ID in the settings
