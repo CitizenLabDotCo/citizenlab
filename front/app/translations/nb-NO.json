@@ -793,7 +793,6 @@
   "app.components.formBuilder.ruleForAnswerLabel": "Hvis svaret er..:",
   "app.components.formBuilder.ruleForAnswerLabelMultiselect": "Hvis svarene inkluderer:",
   "app.components.formBuilder.save": "Lagre",
-  "app.components.formBuilder.sectionCannotBeDeleted": "Denne delen kan ikke slettes.",
   "app.components.formBuilder.selectRangeTooltip": "Velg den maksimale verdien for skalaen din.",
   "app.components.formBuilder.sentiment": "Sentimentskala",
   "app.components.formBuilder.shapefileUpload": "Esri shapefile-opplasting",

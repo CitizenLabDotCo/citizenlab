@@ -793,7 +793,6 @@
   "app.components.formBuilder.ruleForAnswerLabel": "Os mai'r ateb yw:",
   "app.components.formBuilder.ruleForAnswerLabelMultiselect": "Os yw'r atebion yn cynnwys:",
   "app.components.formBuilder.save": "Arbed",
-  "app.components.formBuilder.sectionCannotBeDeleted": "Nid oes modd dileu'r adran hon.",
   "app.components.formBuilder.selectRangeTooltip": "Dewiswch y gwerth mwyaf ar gyfer eich graddfa.",
   "app.components.formBuilder.sentiment": "Graddfa teimlad",
   "app.components.formBuilder.shapefileUpload": "Esri uwchlwytho ffeil siâp",

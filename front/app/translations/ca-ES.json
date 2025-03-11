@@ -793,7 +793,6 @@
   "app.components.formBuilder.ruleForAnswerLabel": "Si la resposta és:",
   "app.components.formBuilder.ruleForAnswerLabelMultiselect": "Si les respostes inclouen:",
   "app.components.formBuilder.save": "Desar",
-  "app.components.formBuilder.sectionCannotBeDeleted": "Aquesta secció no es pot suprimir.",
   "app.components.formBuilder.selectRangeTooltip": "Trieu el valor màxim per a la vostra escala.",
   "app.components.formBuilder.sentiment": "Escala de sentiments",
   "app.components.formBuilder.shapefileUpload": "Càrrega de fitxers de formes Esri",

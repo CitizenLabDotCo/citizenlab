@@ -793,7 +793,6 @@
   "app.components.formBuilder.ruleForAnswerLabel": "Als het antwoord is:",
   "app.components.formBuilder.ruleForAnswerLabelMultiselect": "Als de antwoorden zijn:",
   "app.components.formBuilder.save": "Opslaan",
-  "app.components.formBuilder.sectionCannotBeDeleted": "Deze sectie kan niet worden verwijderd.",
   "app.components.formBuilder.selectRangeTooltip": "Kies de maximale waarde voor uw schaal.",
   "app.components.formBuilder.sentiment": "Sentimentschaal",
   "app.components.formBuilder.shapefileUpload": "Esri shapefile uploaden",

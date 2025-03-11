@@ -793,7 +793,6 @@
   "app.components.formBuilder.ruleForAnswerLabel": "Wenn die Antwort lautet:",
   "app.components.formBuilder.ruleForAnswerLabelMultiselect": "Wenn die Antworten Folgendes beinhalten:",
   "app.components.formBuilder.save": "Speichern",
-  "app.components.formBuilder.sectionCannotBeDeleted": "Dieser Abschnitt kann nicht gelöscht werden.",
   "app.components.formBuilder.selectRangeTooltip": "Wählen Sie den maximalen Wert für Ihre Skala.",
   "app.components.formBuilder.sentiment": "Stimmungsskala",
   "app.components.formBuilder.shapefileUpload": "Esri Shapefile hochladen",

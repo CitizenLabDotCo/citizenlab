@@ -793,7 +793,6 @@
   "app.components.formBuilder.ruleForAnswerLabel": "Jei atsakymas yra:",
   "app.components.formBuilder.ruleForAnswerLabelMultiselect": "Jei atsakymai apima:",
   "app.components.formBuilder.save": "Išsaugoti",
-  "app.components.formBuilder.sectionCannotBeDeleted": "Šio skyriaus negalima ištrinti.",
   "app.components.formBuilder.selectRangeTooltip": "Pasirinkite didžiausią skalės reikšmę.",
   "app.components.formBuilder.sentiment": "Nuotaikų skalė",
   "app.components.formBuilder.shapefileUpload": "Esri shapefile įkėlimas",

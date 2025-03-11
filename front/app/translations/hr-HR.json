@@ -793,7 +793,6 @@
   "app.components.formBuilder.ruleForAnswerLabel": "Ako je odgovor:",
   "app.components.formBuilder.ruleForAnswerLabelMultiselect": "Ako odgovori uključuju:",
   "app.components.formBuilder.save": "Spremi",
-  "app.components.formBuilder.sectionCannotBeDeleted": "Ovaj se odjeljak ne može izbrisati.",
   "app.components.formBuilder.selectRangeTooltip": "Odaberite maksimalnu vrijednost za vašu ljestvicu.",
   "app.components.formBuilder.sentiment": "Skala osjećaja",
   "app.components.formBuilder.shapefileUpload": "Prijenos Esri shapefile",

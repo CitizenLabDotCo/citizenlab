@@ -793,7 +793,6 @@
   "app.components.formBuilder.ruleForAnswerLabel": "Αν η απάντηση είναι:",
   "app.components.formBuilder.ruleForAnswerLabelMultiselect": "Εάν οι απαντήσεις περιλαμβάνουν:",
   "app.components.formBuilder.save": "Αποθήκευση",
-  "app.components.formBuilder.sectionCannotBeDeleted": "Αυτό το τμήμα δεν μπορεί να διαγραφεί.",
   "app.components.formBuilder.selectRangeTooltip": "Επιλέξτε τη μέγιστη τιμή για την κλίμακά σας.",
   "app.components.formBuilder.sentiment": "Κλίμακα συναισθήματος",
   "app.components.formBuilder.shapefileUpload": "Ανέβασμα shapefile Esri",
