@@ -16,7 +16,10 @@ const UserFieldsInFormNotice = ({
   const { formatMessage } = useIntl();
 
   const accessRightsSettingsLink = (
-    <Link to={`/admin/projects/${projectId}/phases/${phaseId}/access-rights`}>
+    <Link
+      to={`/admin/projects/${projectId}/phases/${phaseId}/access-rights`}
+      target="_blank"
+    >
       {formatMessage(messages.accessRightsSettings)}
     </Link>
   );

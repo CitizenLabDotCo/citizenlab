@@ -23,7 +23,7 @@ import { FormattedMessage, useIntl } from 'utils/cl-intl';
 
 import parentMessages from '../../../../messages';
 import messages from '../messages';
-import FeatureFlag from 'components/FeatureFlag';
+import useFeatureFlag from 'hooks/useFeatureFlag';
 
 interface Props {
   allow_anonymous_participation: boolean | null | undefined;
@@ -58,6 +58,9 @@ const NativeSurveyInputs = ({
   const { data: project } = useProjectById(
     phase?.data.relationships.project.data.id
   );
+  const userFieldsInSurveysEnabled = useFeatureFlag({
+    name: 'user_fields_in_surveys',
+  });
 
   return (
     <>
@@ -91,7 +94,7 @@ const NativeSurveyInputs = ({
           </Box>
         }
       />
-      <FeatureFlag name="user_fields_in_surveys">
+      {userFieldsInSurveysEnabled && (
         <SectionField>
           <SubSectionTitle style={{ marginBottom: '0px' }}>
             <FormattedMessage {...messages.userFieldsInSurveyTitle} />
@@ -102,13 +105,13 @@ const NativeSurveyInputs = ({
               handleUserFieldsInFormOnChange(!user_fields_in_form);
             }}
             label={
-              <Box ml="8px" id="e2e-anonymous-posting-toggle">
+              <Box ml="8px" id="e2e-user-fields-in-form-toggle">
                 <Box display="flex">
                   <Text
                     color="primary"
                     mb="0px"
                     fontSize="m"
-                    style={{ fontWeight: 600 }}
+                    fontWeight="semi-bold"
                   >
                     <FormattedMessage {...messages.userFieldsInSurveyToggle} />
                   </Text>
@@ -123,7 +126,7 @@ const NativeSurveyInputs = ({
             }
           />
         </SectionField>
-      </FeatureFlag>
+      )}
 
       <SectionField>
         <SubSectionTitle>
