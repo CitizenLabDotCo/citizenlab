@@ -26,6 +26,8 @@ import useLocalize from 'hooks/useLocalize';
 
 import CloseIconButton from 'components/UI/CloseIconButton';
 
+import Tag from '../Tags/Tag';
+
 interface HeatMapProps {
   onClose: () => void;
   customFields: IUserCustomFields;
@@ -36,6 +38,21 @@ interface CustomFieldOptionsProps {
 }
 
 const StyledTable = styled(Table)`
+  table-layout: fixed;
+
+  /* Set first column width */
+  & th:first-child,
+  & td:first-child {
+    width: 200px;
+    min-width: 200px;
+    max-width: 200px;
+  }
+
+  /* Make other columns share remaining space evenly */
+  & th:not(:first-child),
+  & td:not(:first-child) {
+    width: auto;
+  }
   /* Make the table support sticky positioning */
   border-collapse: separate;
   border-spacing: 0;
@@ -148,7 +165,7 @@ const HeatmapDetails = ({ onClose, customFields }: HeatMapProps) => {
           a11y_buttonActionMessage={''}
         />
       </Box>
-      <Box overflowX="auto" w="100%" h="100%">
+      <Box overflowX="auto" w="100%" h="100%" pb="220px">
         <StyledTable>
           <Thead>
             <Tr>
@@ -159,7 +176,12 @@ const HeatmapDetails = ({ onClose, customFields }: HeatMapProps) => {
           <Tbody>
             {tags?.data.map((tag) => (
               <Tr key={tag.id}>
-                <Td>{tag.attributes.name}</Td>
+                <Td>
+                  <Tag
+                    name={tag.attributes.name}
+                    tagType={tag.attributes.tag_type}
+                  />
+                </Td>
                 {options?.data.map((option) => {
                   const cell = analysisHeatmapCells?.data.find(
                     (cell) =>
@@ -184,6 +206,7 @@ const HeatmapDetails = ({ onClose, customFields }: HeatMapProps) => {
                         borderRadius={stylingConsts.borderRadius}
                         bgColor={cellBgColor}
                         p="8px"
+                        w="fit-content"
                       >
                         {lift !== undefined ? lift.toFixed(2) : null}
                         {isSignificant ? ' *' : ''}
