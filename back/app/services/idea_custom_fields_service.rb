@@ -116,6 +116,11 @@ class IdeaCustomFieldsService
       error = { error: "First field must be of type '#{first_field_type}'" }
       errors['0'] = { structure: [error] }
     end
+
+    # Check the last field is a page
+    if fields.last[:input_type] != 'page'
+      errors[(fields.length - 1).to_s] = { structure: [{ error: "Last field must be of type 'page'" }] }
+    end
   end
 
   def duplicate_all_fields
