@@ -118,6 +118,15 @@ describe SideFxIdeaService do
         .not_to enqueue_job(UpsertEmbeddingJob)
         .with(idea)
     end
+
+    it "doesn't enqueue an upsert embedding job for survey responses" do
+      SettingsService.new.activate_feature! 'similar_inputs'
+      create(:idea_status_proposed)
+      idea = create(:native_survey_response, author: user)
+      expect { service.after_create(idea, user) }
+        .not_to enqueue_job(UpsertEmbeddingJob)
+        .with(idea)
+    end
   end
 
   describe 'after_update' do
@@ -348,6 +357,15 @@ describe SideFxIdeaService do
     it "doesn't enqueue an upsert embedding job when the similar_inputs feature is turned off" do
       idea = create(:idea, author: user)
       idea.update!(title_multiloc: { en: 'changed' })
+      expect { service.after_update(idea, user) }
+        .not_to enqueue_job(UpsertEmbeddingJob)
+        .with(idea)
+    end
+
+    it "doesn't enqueue an upsert embedding job for survey responses" do
+      SettingsService.new.activate_feature! 'similar_inputs'
+      create(:idea_status_proposed)
+      idea = create(:native_survey_response, author: user)
       expect { service.after_update(idea, user) }
         .not_to enqueue_job(UpsertEmbeddingJob)
         .with(idea)
