@@ -15,6 +15,7 @@ import {
   Icon,
   Text,
   Tooltip,
+  Button,
 } from '@citizenlab/cl2-component-library';
 import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
@@ -208,9 +209,28 @@ const HeatmapDetails = ({ onClose, customFields }: HeatMapProps) => {
                     <Td key={option.id}>
                       <Tooltip
                         content={
-                          <Text>
-                            {localize(cell?.attributes.statement_multiloc)}
-                          </Text>
+                          <Box p="12px">
+                            <Text>
+                              {localize(cell?.attributes.statement_multiloc)}
+                            </Text>
+                            <Text color="textSecondary">
+                              There are
+                              {cell?.attributes.count} instances of this
+                              combination
+                            </Text>
+                            {isSignificant ? (
+                              <Text fontWeight="bold">
+                                * Significant at 0.05 level
+                              </Text>
+                            ) : null}
+
+                            <Button
+                              buttonStyle="secondary-outlined"
+                              icon="stars"
+                            >
+                              Summarize
+                            </Button>
+                          </Box>
                         }
                       >
                         <Box
