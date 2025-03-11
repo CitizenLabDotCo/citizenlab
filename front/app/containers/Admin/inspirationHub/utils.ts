@@ -37,7 +37,6 @@ const RANSACK_PARAMS: (keyof RansackParams)[] = [
   'q[phases_participation_method_eq]',
   'q[topic_id_eq]',
   'q[status_eq]',
-  'q[visibility_eq]',
   'q[practical_end_at_gteq]',
   'q[practical_end_at_lt]',
   'q[title_en_or_description_en_or_tenant_name_cont]',
