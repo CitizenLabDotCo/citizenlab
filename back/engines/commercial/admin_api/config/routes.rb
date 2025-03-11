@@ -14,7 +14,6 @@ AdminApi::Engine.routes.draw do
     resources :phases, only: [:index]
     get :participants_count, controller: 'participants', on: :member
     get :project_description_layout_multiloc, controller: 'content_builder_layouts', on: :member
-    get :project_image_url, controller: 'project_images', on: :member
   end
 
   resources :users, only: %i[index create update show] do

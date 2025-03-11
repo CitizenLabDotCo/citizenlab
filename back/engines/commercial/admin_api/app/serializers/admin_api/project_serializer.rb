@@ -7,12 +7,24 @@ module AdminApi
       :description_multiloc,
       :slug,
       :map_config_id,
+      :image_path,
       :visible_to,
       :created_at,
       :updated_at
 
     has_one :admin_publication
     has_one :folder
+
+    def image_path
+      first_image = object&.project_images&.first
+      return nil unless first_image
+      
+      file = first_image.image&.file
+      return nil unless file && file.respond_to?(:path)
+      
+      path = file.path
+      path.split('public/').last if path
+    end
 
     class AdminPublicationSerializer < ActiveModel::Serializer
       attributes :id, :publication_status
