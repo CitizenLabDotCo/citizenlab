@@ -8,11 +8,22 @@ import {
   stylingConsts,
 } from '@citizenlab/cl2-component-library';
 
+import { ProjectLibraryProjectData } from 'api/project_library_projects/types';
+
 import MethodLabel from '../MethodLabel';
+import { useLocalizeProjectLibrary } from '../utils';
 
 import CardImage from './CardImage';
 
-const ProjectCard = () => {
+interface Props {
+  project: ProjectLibraryProjectData;
+}
+
+const ProjectCard = ({ project }: Props) => {
+  const localize = useLocalizeProjectLibrary();
+
+  const { attributes, relationships } = project;
+
   return (
     <Box
       bgColor={colors.white}
@@ -25,13 +36,13 @@ const ProjectCard = () => {
       </Box>
       <Box>
         <Title variant="h3" color="primary" mt="12px">
-          Project name
+          {localize(attributes.title_multiloc, attributes.title_en)}
         </Title>
       </Box>
       <Text color="primary" fontSize="s">
-        Tenant
+        {attributes.tenant_name}
       </Text>
-      {[].map(({ id }) => (
+      {relationships.phases.data.map(({ id }) => (
         <MethodLabel projectLibraryPhaseId={id} key={id} />
       ))}
     </Box>

@@ -15,7 +15,7 @@ const PinnedProjects = () => {
   const { data: appConfiguration } = useAppConfiguration();
   const countryCode = appConfiguration?.data.attributes.country_code;
 
-  const { data } = useProjectLibraryProjects(
+  const { data: projects } = useProjectLibraryProjects(
     {
       'q[pin_country_code_eq]': countryCode ?? undefined,
     },
@@ -26,8 +26,14 @@ const PinnedProjects = () => {
     return null;
   }
 
-  if (!data) {
+  if (!projects) {
     // Add loading state
+    return null;
+  }
+
+  if (projects.data.length === 0) {
+    // Add message for empty state
+    return null;
   }
 
   return (
@@ -36,7 +42,9 @@ const PinnedProjects = () => {
         <FormattedMessage {...messages.highlighted} />
       </Title>
       <Box>
-        <ProjectCard />
+        {projects.data.map((project) => (
+          <ProjectCard project={project} key={project.id} />
+        ))}
       </Box>
     </>
   );
