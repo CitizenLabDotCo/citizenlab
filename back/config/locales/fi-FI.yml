@@ -126,6 +126,7 @@ fi:
     open_idea_phase_title: Nykyinen vaihe
     native_survey_title: Kysely
     native_survey_button: Vastaa kyselyyn
+    community_monitor_title: yhteisön valvoja
   events:
     council_meeting_title: Neuvoston kokous
     council_meeting_description: >
