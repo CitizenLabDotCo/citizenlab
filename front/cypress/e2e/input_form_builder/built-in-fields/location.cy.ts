@@ -95,7 +95,19 @@ describe('Input form builder', () => {
     cy.get('[data-testid="feedbackSuccessMessage"]').should('exist');
 
     // Fill in the form
-    cy.visit(`/projects/${projectSlug}/ideas/new`);
+    cy.visit(`/projects/${projectSlug}/ideas/new?phase_id=${phaseId}`);
+
+    // Fill in the title and description since these are required
+    cy.get('#e2e-idea-title-input input').type(title);
+    cy.get('#e2e-idea-title-input input').should('contain.value', title);
+    cy.get('#e2e-idea-description-input .ql-editor').type(description);
+    cy.get('#e2e-idea-description-input .ql-editor').contains(description);
+
+    // Go to the next page of the idea form
+    cy.get('[data-cy="e2e-next-page"]').should('be.visible').click();
+
+    // Go to the page that initially had the location field
+    cy.get('[data-cy="e2e-next-page"]').should('be.visible').click();
 
     cy.get('.e2e-idea-form-location-input-field input').should('not.exist');
   });
