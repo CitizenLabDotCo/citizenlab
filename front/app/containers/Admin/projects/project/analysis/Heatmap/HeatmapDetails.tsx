@@ -13,6 +13,8 @@ import {
   IconButton,
   Th,
   Icon,
+  Text,
+  Tooltip,
 } from '@citizenlab/cl2-component-library';
 import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
@@ -29,6 +31,12 @@ import CloseIconButton from 'components/UI/CloseIconButton';
 
 import Tag from '../Tags/Tag';
 
+import {
+  convertLiftToPercentage,
+  getCellBgColor,
+  getCellTextColor,
+} from './utils';
+
 interface HeatMapProps {
   onClose: () => void;
   customFields: IUserCustomFields;
@@ -39,8 +47,6 @@ interface CustomFieldOptionsProps {
 }
 
 const StyledTable = styled(Table)`
-  table-layout: fixed;
-
   /* Set first column width */
   & th:first-child,
   & td:first-child {
@@ -51,7 +57,7 @@ const StyledTable = styled(Table)`
 
   & th:not(:first-child),
   & td:not(:first-child) {
-    width: 120px;
+    width: auto;
   }
 
   /* Make the table support sticky positioning */
@@ -64,6 +70,7 @@ const StyledTable = styled(Table)`
     top: 0;
     background-color: ${colors.white};
     z-index: 10;
+    text-align: center;
   }
 
   /* Make first column sticky */
@@ -104,31 +111,6 @@ const CustomFieldOptions: React.FC<CustomFieldOptionsProps> = ({
   );
 };
 
-const getCellBgColor = (lift: number | undefined): string => {
-  if (lift === undefined) return colors.grey200;
-  if (lift > 1.5) return colors.success;
-  if (lift > 1) return colors.successLight;
-  if (lift > 0.5) return colors.errorLight;
-  return colors.error;
-};
-
-const getCellTextColor = (lift: number | undefined): string => {
-  if (lift === undefined) return colors.grey800;
-  if (lift > 1.5) return colors.white;
-  if (lift > 1) return colors.grey800;
-  if (lift > 0.5) return colors.grey800;
-  return colors.white;
-};
-
-const convertLiftToPercentage = (lift: number | undefined): string => {
-  if (lift === undefined) return '-';
-
-  // Convert lift to percentage (relative to 1.0 which represents 0% change)
-  const percentage = (lift - 1) * 100;
-
-  // Format with sign and fixed decimal places
-  return `${percentage >= 0 ? '+' : ''}${percentage.toFixed(0)}%`;
-};
 const HeatmapDetails = ({ onClose, customFields }: HeatMapProps) => {
   const localize = useLocalize();
   const [selectedFieldId, setSelectedFieldId] = useState(
@@ -223,27 +205,38 @@ const HeatmapDetails = ({ onClose, customFields }: HeatMapProps) => {
                   const cellTextColor = getCellTextColor(lift);
 
                   return (
-                    <Td key={option.id} minWidth="200px">
-                      <Box
-                        borderRadius={stylingConsts.borderRadius}
-                        bgColor={cellBgColor}
-                        color={cellTextColor}
-                        py="20px"
-                        display="flex"
-                        justifyContent="center"
-                        position="relative"
+                    <Td key={option.id}>
+                      <Tooltip
+                        content={
+                          <Text>
+                            {localize(cell?.attributes.statement_multiloc)}
+                          </Text>
+                        }
                       >
-                        {convertLiftToPercentage(lift)}
-                        <Box position="absolute" right="4px" top="4px">
-                          {isSignificant ? (
-                            <Icon
-                              name="alert-circle"
-                              ml="4px"
-                              fill={cellTextColor}
-                            />
-                          ) : null}
+                        <Box
+                          borderRadius={stylingConsts.borderRadius}
+                          bgColor={cellBgColor}
+                          color={cellTextColor}
+                          py="28px"
+                          position="relative"
+                          // maxWidth="120px"
+                          // mx="auto"
+                        >
+                          <Text
+                            m="0px"
+                            textAlign="center"
+                            fontWeight="bold"
+                            color="inherit"
+                          >
+                            {convertLiftToPercentage(lift)}
+                          </Text>
+                          <Box position="absolute" right="4px" top="4px">
+                            {isSignificant ? (
+                              <Icon name="alert-circle" fill={cellTextColor} />
+                            ) : null}
+                          </Box>
                         </Box>
-                      </Box>
+                      </Tooltip>
                     </Td>
                   );
                 })}
