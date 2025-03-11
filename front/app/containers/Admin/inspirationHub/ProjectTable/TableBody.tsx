@@ -12,6 +12,7 @@ import {
 import { useSearchParams } from 'react-router-dom';
 import styled from 'styled-components';
 
+import { Country } from 'api/project_library_countries/types';
 import useProjectLibraryCountries from 'api/project_library_countries/useProjectLibraryCountries';
 import { ProjectLibraryProjects } from 'api/project_library_projects/types';
 
@@ -61,9 +62,9 @@ const TableBody = ({ libraryProjects, isInitialLoading }: Props) => {
     if (!countries) return;
 
     return countries.data.attributes.reduce((acc, country) => {
-      acc[country.code] = country.name;
+      acc[country.code] = country;
       return acc;
-    }, {} as Record<string, string>);
+    }, {} as Record<string, Country>);
   }, [countries]);
 
   return (
@@ -80,6 +81,13 @@ const TableBody = ({ libraryProjects, isInitialLoading }: Props) => {
         <>
           {libraryProjects.data.map(({ attributes, id, relationships }) => {
             const countryCode = attributes.tenant_country_alpha2;
+            const country =
+              countryCode && countriesByCode
+                ? countriesByCode[countryCode]
+                : null;
+            const countryString = country
+              ? `${country.emoji_flag} ${country.name}`
+              : '';
 
             return (
               <Tr key={id} background={colors.white}>
@@ -129,9 +137,7 @@ const TableBody = ({ libraryProjects, isInitialLoading }: Props) => {
                     color={colors.textSecondary}
                     mt="4px"
                   >
-                    {countryCode && countriesByCode
-                      ? countriesByCode[countryCode]
-                      : ''}
+                    {countryString}
                   </Box>
                 </Cell>
                 <Cell>
