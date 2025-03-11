@@ -29,21 +29,26 @@ const UserFieldsInFormNotice = ({
 
   return (
     <Box mt="24px" px="14px" display="flex" alignItems="center">
-      <Icon
-        name="info-outline"
-        fill={colors.grey700}
-        mr="6px"
-        width="16px"
-        height="16px"
-      />
-      <Text color="grey700" fontStyle="italic">
-        <FormattedMessage
-          {...messages.fieldsEnabledMessage}
-          values={{
-            accessRightsSettingsLink,
-          }}
+      <Box display="flex">
+        <Icon
+          name="info-outline"
+          fill={colors.grey700}
+          mr="8px"
+          ml="4px"
+          width="16px"
+          height="16px"
         />
-      </Text>
+      </Box>
+      <Box display="flex">
+        <Text color="grey700" fontStyle="italic">
+          <FormattedMessage
+            {...messages.fieldsEnabledMessage}
+            values={{
+              accessRightsSettingsLink,
+            }}
+          />
+        </Text>
+      </Box>
     </Box>
   );
 };
