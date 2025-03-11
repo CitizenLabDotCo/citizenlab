@@ -237,20 +237,23 @@ const CLSurveyPageLayout = memo(
           publication_status: 'published',
         };
 
-        const idea: IIdea | undefined = await onSubmit(
-          { data: dataWithPublicationStatus },
-          true,
-          userPagePath
-        );
+        try {
+          // These types are coming from handleDraftIdeas in IdeasNewSurveyForm
+          const idea: IIdea | undefined = await onSubmit(
+            { data: dataWithPublicationStatus },
+            true,
+            userPagePath
+          );
 
-        if (idea) {
-          // We set this param so that we can fetch the idea
-          // (see useIdeaById call above in this component)
-          // We need the idea for the author relationship, so that
-          // on the last page we can determine whether to show
-          // the message for anonymous users
-          updateSearchParams({ idea_id: idea.data.id });
-        } else {
+          if (idea) {
+            // We set this param so that we can fetch the idea
+            // (see useIdeaById call above in this component)
+            // We need the idea for the author relationship, so that
+            // on the last page we can determine whether to show
+            // the message for anonymous users
+            updateSearchParams({ idea_id: idea.data.id });
+          }
+        } catch {
           console.error('Failed to submit idea and set idea_id param.');
         }
       } else {
