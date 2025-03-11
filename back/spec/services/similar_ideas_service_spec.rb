@@ -5,7 +5,7 @@ describe SimilarIdeasService do
   # pizza <=> moon   =  0.6393773168837441
   # pizza <=> bats   =  0.5977864166605551
   let(:embeddings) { JSON.parse(File.read('spec/fixtures/word_embeddings.json')) }
-  let(:idea) { create(:embeddings_similarity, embedding: embeddings['pizza']).embeddable }
+  let(:idea) { create(:embeddings_similarity, embedding: embeddings['pizza'], embedded_attributes: 'body').embeddable }
   let(:service) { described_class.new(idea) }
 
   describe 'similar_ideas' do
@@ -78,35 +78,28 @@ describe SimilarIdeasService do
     end
   end
 
-  describe 'upsert_embedding!' do
+  describe 'upsert_embeddings!' do
     it 'creates a new embeddings_similarity if it does not exist' do
       idea.embeddings_similarities.destroy_all
       embedding = embeddings['moon']
-      expect_any_instance_of(CohereMultilingualEmbeddings)
-        .to receive(:embedding).and_return(embedding)
+      allow_any_instance_of(CohereMultilingualEmbeddings).to receive(:embedding) do
+        embedding
+      end
       idea # Load idea to start from correct EmbeddingsSimilarity.count
-      expect { service.upsert_embedding! }.to change(EmbeddingsSimilarity, :count).by(1)
-      expect(idea.embeddings_similarities.pluck(:embedding)).to eq [embedding]
+      expect { service.upsert_embeddings! }.to change(EmbeddingsSimilarity, :count).by(2)
+      expect(idea.embeddings_similarities.pluck(:embedded_attributes)).to match_array %w[title body]
+      expect(idea.embeddings_similarities.pluck(:embedding)).to match_array [embedding, embedding]
     end
 
     it 'updates the embedding if it already exists' do
       embedding = embeddings['bats']
-      expect_any_instance_of(CohereMultilingualEmbeddings)
-        .to receive(:embedding).and_return(embedding)
+      allow_any_instance_of(CohereMultilingualEmbeddings).to receive(:embedding) do
+        embedding
+      end
       idea # Load idea to start from correct EmbeddingsSimilarity.count
-      expect { service.upsert_embedding! }.not_to change(EmbeddingsSimilarity, :count)
-      expect(idea.embeddings_similarities.pluck(:embedding)).to eq [embedding]
-    end
-
-    it 'creates a new embeddings_similarity if there already exists one with different embedded_attributes' do
-      idea.embeddings_similarities.update_all(embedded_attributes: 'last_paragraph')
-      old_embedding = idea.embeddings_similarities.first.embedding
-      new_embedding = embeddings['burger']
-      expect_any_instance_of(CohereMultilingualEmbeddings)
-        .to receive(:embedding).and_return(new_embedding)
-      idea # Load idea to start from correct EmbeddingsSimilarity.count
-      expect { service.upsert_embedding! }.to change(EmbeddingsSimilarity, :count).by(1)
-      expect(idea.embeddings_similarities.pluck(:embedding)).to match_array [old_embedding, new_embedding]
+      expect { service.upsert_embeddings! }.to change(EmbeddingsSimilarity, :count).by(1)
+      expect(idea.embeddings_similarities.pluck(:embedded_attributes)).to match_array %w[title body]
+      expect(idea.embeddings_similarities.pluck(:embedding)).to match_array [embedding, embedding]
     end
   end
 end
