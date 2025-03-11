@@ -117,7 +117,7 @@ const Form = memo(
       layout || (isCategorization(uiSchema) ? 'fullpage' : 'inline');
 
     const handleSubmit = async (
-      formData?: any,
+      formData?: { data?: FormValues },
       showErrors = true,
       userPagePath: PageType[] = []
     ) => {

@@ -20,6 +20,7 @@ import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 
 import { STATUS_EMOJIS, STATUS_LABELS } from '../constants';
+import { useLocalizeProjectLibrary } from '../utils';
 
 import MethodLabel from './MethodLabel';
 import { formatDuration } from './utils';
@@ -52,6 +53,7 @@ const TableBody = ({ libraryProjects, isInitialLoading }: Props) => {
   const { formatMessage } = useIntl();
   const { data: countries } = useProjectLibraryCountries();
   const [searchParams] = useSearchParams();
+  const localizeProjectLibrary = useLocalizeProjectLibrary();
 
   const drawerProjectId = searchParams.get('project_id');
 
@@ -59,7 +61,7 @@ const TableBody = ({ libraryProjects, isInitialLoading }: Props) => {
     if (!countries) return;
 
     return countries.data.attributes.reduce((acc, country) => {
-      acc[country.code] = country.short_name;
+      acc[country.code] = country.name;
       return acc;
     }, {} as Record<string, string>);
   }, [countries]);
@@ -93,7 +95,10 @@ const TableBody = ({ libraryProjects, isInitialLoading }: Props) => {
                         : updateSearchParams({ project_id: id });
                     }}
                   >
-                    {attributes.title_en}
+                    {localizeProjectLibrary(
+                      attributes.title_multiloc,
+                      attributes.title_en
+                    )}
                   </TextButton>
                   <br />
                   <Box

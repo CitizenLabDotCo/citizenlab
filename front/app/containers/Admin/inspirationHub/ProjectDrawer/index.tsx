@@ -10,6 +10,8 @@ import SideModal from 'components/UI/SideModal';
 
 import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
 
+import { useLocalizeProjectLibrary } from '../utils';
+
 import Header from './Header';
 import Phase from './Phase';
 
@@ -18,6 +20,7 @@ const ProjectDrawer = () => {
 
   const projectId = searchParams.get('project_id') ?? undefined;
   const { data: project } = useProjectLibraryProject(projectId);
+  const localizeProjectLibrary = useLocalizeProjectLibrary();
 
   const handleOnClose = () => {
     removeSearchParams(['project_id']);
@@ -34,7 +37,12 @@ const ProjectDrawer = () => {
           <Box mt="28px">
             <QuillEditedContent textColor={colors.textPrimary}>
               <div
-                dangerouslySetInnerHTML={{ __html: attributes.description_en }}
+                dangerouslySetInnerHTML={{
+                  __html: localizeProjectLibrary(
+                    attributes.description_multiloc,
+                    attributes.description_en
+                  ),
+                }}
               />
             </QuillEditedContent>
           </Box>

@@ -9,6 +9,7 @@ import { useIntl } from 'utils/cl-intl';
 import { parseBackendDateString } from 'utils/dateUtils';
 
 import MethodLabel from '../ProjectTable/MethodLabel';
+import { useLocalizeProjectLibrary } from '../utils';
 
 import ExternalLink from './ExternalLink';
 import messages from './messages';
@@ -27,6 +28,7 @@ const Phase = ({
 }: Props) => {
   const { formatMessage } = useIntl();
   const { data: phase } = useProjectLibraryPhase(projectLibraryPhaseId);
+  const localizeProjectLibrary = useLocalizeProjectLibrary();
   if (!phase) return null;
 
   const phaseAttributes = phase.data.attributes;
@@ -41,7 +43,10 @@ const Phase = ({
       <Title variant="h3" mb="4px">
         {formatMessage(messages.phaseTitle, {
           number: phaseNumber,
-          title: phase.data.attributes.title_en,
+          title: localizeProjectLibrary(
+            phaseAttributes.title_multiloc,
+            phaseAttributes.title_en
+          ),
         })}
       </Title>
       <Box display="flex" flexDirection="row" alignItems="center">

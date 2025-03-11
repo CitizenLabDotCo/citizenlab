@@ -13,6 +13,8 @@ import { ProjectLibraryProjectData } from 'api/project_library_projects/types';
 
 import { parseBackendDateString } from 'utils/dateUtils';
 
+import { useLocalizeProjectLibrary } from '../utils';
+
 import ExternalLink from './ExternalLink';
 import { getTenantURL, getProjectURL, formatDate } from './utils';
 
@@ -22,6 +24,7 @@ interface Props {
 
 const Header = ({ attributes }: Props) => {
   const tenantURL = getTenantURL(attributes);
+  const localizeProjectLibrary = useLocalizeProjectLibrary();
 
   const startAt = parseBackendDateString(attributes.start_at);
   const endAt = attributes.practical_end_at
@@ -44,7 +47,10 @@ const Header = ({ attributes }: Props) => {
       </Box>
       <ExternalLink href={getProjectURL(attributes)}>
         <Title variant="h2" color="textPrimary" mt="4px" mb="4px">
-          {attributes.title_en}
+          {localizeProjectLibrary(
+            attributes.title_multiloc,
+            attributes.title_en
+          )}
         </Title>
       </ExternalLink>
       <Box display="flex" flexDirection="row" alignItems="center">
@@ -77,7 +83,10 @@ const Header = ({ attributes }: Props) => {
               fill={colors.textSecondary}
             />
             <Text m="0" ml="4px" color="textSecondary">
-              {attributes.folder_title_en}
+              {localizeProjectLibrary(
+                attributes.folder_title_multiloc,
+                attributes.folder_title_en
+              )}
             </Text>
           </>
         )}
