@@ -58,10 +58,6 @@ export default defineMessages({
     id: 'app.containers.Admin.inspirationHub.Archived',
     defaultMessage: 'Archived',
   },
-  draft: {
-    id: 'app.containers.Admin.inspirationHub.Draft',
-    defaultMessage: 'Draft',
-  },
   finished: {
     id: 'app.containers.Admin.inspirationHub.Finished',
     defaultMessage: 'Finished',
