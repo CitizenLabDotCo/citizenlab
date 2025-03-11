@@ -1,5 +1,5 @@
 class SimilarIdeasService
-  DEFAULT_EMBEDDED_ATTRIBUTES = %w[title body]
+  DEFAULT_EMBEDDED_ATTRIBUTES = %w[body title]
   DEFAULT_NUM_SIMILAR_IDEAS = 10
 
   attr_reader :idea
@@ -8,13 +8,19 @@ class SimilarIdeasService
     @idea = idea
   end
 
-  def similar_ideas(scope: nil, limit: DEFAULT_NUM_SIMILAR_IDEAS, title_threshold: 0.0, body_threshold: 0.0)
+  def similar_ideas(scope: nil, limit: DEFAULT_NUM_SIMILAR_IDEAS, title_threshold: 0.0, body_threshold: 0.0, embedded_attributes: DEFAULT_EMBEDDED_ATTRIBUTES)
     ids = []
-    if body_threshold && body_threshold > 0.0
-      ids += similar_by_text_attribute(locale.resolve_multiloc(idea.body_multiloc), 'body', body_threshold, scope:).pluck(:embeddable_id)
-    end
-    if title_threshold && title_threshold > 0.0
-      ids += similar_by_text_attribute(locale.resolve_multiloc(idea.title_multiloc), 'title', title_threshold, scope:).pluck(:embeddable_id)
+    embedded_attributes.each do |embedded_attribute|
+      case embedded_attribute
+      when 'body'
+        if body_threshold && body_threshold > 0.0
+          ids += similar_by_text_attribute(locale.resolve_multiloc(idea.body_multiloc), 'body', body_threshold, scope:).pluck(:embeddable_id)
+        end
+      when 'title'
+        if title_threshold && title_threshold > 0.0
+          ids += similar_by_text_attribute(locale.resolve_multiloc(idea.title_multiloc), 'title', title_threshold, scope:).pluck(:embeddable_id)
+        end
+      end
     end
     ids = ids.take(limit) if limit
 
@@ -61,7 +67,7 @@ class SimilarIdeasService
   end
 
   def embedding_for_text(text)
-    CohereMultilingualEmbeddings.new.embedding(text[...2048])
+    CohereMultilingualEmbeddings.new.embedding(text)
   end
 
   def locale

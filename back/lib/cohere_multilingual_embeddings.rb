@@ -14,7 +14,7 @@ class CohereMultilingualEmbeddings
   end
 
   def embedding(text)
-    resp = @client.invoke_model invoke_params(text)
+    resp = @client.invoke_model invoke_params(text[...2048])
     body_completion resp.body.string
   end
 

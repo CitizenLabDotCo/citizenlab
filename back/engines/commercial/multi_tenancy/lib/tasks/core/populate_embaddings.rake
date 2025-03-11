@@ -7,7 +7,7 @@ namespace :embeddings do
       else
         Idea.all
       end
-      ideas_scope.order(likes_count: :desc).each do |idea|
+      ideas_scope.publicly_visible.order(likes_count: :desc).each do |idea|
         puts "Processing idea #{idea.slug}"
         SimilarIdeasService.new(idea).upsert_embeddings!
       end
