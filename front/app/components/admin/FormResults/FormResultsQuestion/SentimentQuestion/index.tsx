@@ -45,7 +45,7 @@ const SentimentQuestion = ({
             width="100%"
             display={isTabletOrSmaller ? 'block' : 'flex'}
             justifyContent="space-between"
-            p="8"
+            p="8px"
           >
             <SentimentHeader result={result} />
             <Box
