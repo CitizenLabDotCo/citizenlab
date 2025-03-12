@@ -39,7 +39,10 @@ const trackSessionStarted = async () => {
   }
 
   const data = await response.json();
-  sessionId = data.data.id;
+
+  // In some cases, we don't get data back.
+  // Not sure why, but we can't track the session in this case.
+  sessionId = data?.data?.id;
 
   // Because the first page view depends on the response of the session creation,
   // we handle it here and ignore the first page view event (see below).
@@ -62,6 +65,15 @@ const trackPageView = async (path: string) => {
   // For some reason, sometimes the page view event is triggered twice
   // for the same path. This prevents that.
   if (previousPathTracked === path) return;
+
+  // On first homepage load, if we don't enter the platform on a locale,
+  // we set the locale immediately. Usually, we set the locale before the
+  // page track event fires, but in some cases our app is too slow.
+  // This then triggers the page view event twice.
+  // With this check, we avoid logging this pageview twice.
+  // We check both '/' and '' because the path can be either-
+  // usually it's '/' but some browsers seem to omit the trailing slash.
+  if (path === '/' || path === '') return;
 
   // We also only start tracking page views after the session has been created.
   if (sessionId === undefined) return;

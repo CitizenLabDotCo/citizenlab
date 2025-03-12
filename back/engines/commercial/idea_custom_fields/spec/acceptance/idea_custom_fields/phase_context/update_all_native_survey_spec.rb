@@ -28,7 +28,7 @@ resource 'Idea Custom Fields' do
     let(:final_page) do
       {
         id: '1234',
-        key: 'survey_end',
+        key: 'form_end',
         title_multiloc: { 'en' => 'Final page' },
         description_multiloc: { 'en' => 'Thank you for participating!' },
         input_type: 'page',
@@ -658,7 +658,7 @@ resource 'Idea Custom Fields' do
         expect(json_response).to eq({ :errors => { :form => [{ :error => 'stale_data' }] } })
       end
 
-      example '[error] last custom field is not survey_end' do
+      example '[error] last custom field is not form_end' do
         custom_form.save!
         request = {
           custom_fields: [
@@ -813,8 +813,8 @@ resource 'Idea Custom Fields' do
 
       example 'Update select field with logic' do
         field_to_update = create(:custom_field_select, :with_options, resource: custom_form)
-        survey_end_page = create(:custom_field_page, key: 'survey_end', resource: custom_form)
-        final_page[:id] = survey_end_page.id
+        form_end_page = create(:custom_field_page, key: 'form_end', resource: custom_form)
+        final_page[:id] = form_end_page.id
         request = {
           custom_fields: [
             {
@@ -830,7 +830,7 @@ resource 'Idea Custom Fields' do
                 rules: [
                   {
                     if: 'any_other_answer',
-                    goto_page_id: survey_end_page.id
+                    goto_page_id: form_end_page.id
                   }
                 ]
               },
@@ -857,7 +857,7 @@ resource 'Idea Custom Fields' do
           updated_at: an_instance_of(String),
           logic: { rules: [{
             if: 'any_other_answer',
-            goto_page_id: survey_end_page.id
+            goto_page_id: form_end_page.id
           }] },
           random_option_ordering: false,
           constraints: {}

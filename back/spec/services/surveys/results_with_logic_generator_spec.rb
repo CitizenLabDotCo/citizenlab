@@ -1,12 +1,60 @@
 # frozen_string_literal: true
 
 require 'rails_helper'
+require './spec/services/surveys/shared/survey_setup'
 
-RSpec.describe SurveyResultsGeneratorService do
+# NOTE: These tests only test the addition of logic to the results from the parent class
+
+RSpec.describe Surveys::ResultsWithLogicGenerator do
   subject(:generator) { described_class.new survey_phase }
 
-  let_it_be(:project) { create(:single_phase_native_survey_project) }
-  let_it_be(:survey_phase) { project.phases.first }
+  include_context 'survey_setup'
+
+  describe 'generate_result_for_field' do
+    it 'it is not implemented and returns an error' do
+      generator = described_class.new(survey_phase)
+      expect { generator.generate_result_for_field('12345') }.to raise_error(NotImplementedError)
+    end
+  end
+
+  describe 'generate_results' do
+    let(:generated_results) { generator.generate_results }
+
+    before_all do
+      # Update fields from survey_setup shared context with some (meaningless but valid) form_end logic
+      linear_scale_field.update!(logic: { rules: [{ if: 2, goto_page_id: last_page_field.id }, { if: 'no_answer', goto_page_id: last_page_field.id }] })
+      page_field.update!(logic: { next_page_id: last_page_field.id })
+    end
+
+    describe 'page fields' do
+      it 'returns correct logic values for a page field in full results' do
+        page_result = generated_results[:results][0]
+        expect(page_result[:inputType]).to eq 'page'
+        expect(page_result[:logic]).to eq({ nextPageNumber: 2, numQuestionsSkipped: 0 })
+      end
+    end
+
+    describe 'linear scale fields' do
+      it 'returns the correct logic values in results for a linear scale field' do
+        result = generated_results[:results][4]
+        expect(result[:inputType]).to eq 'linear_scale'
+        expect(result[:logic]).to match({
+          answer: {
+            2 => {
+              id: "#{linear_scale_field.id}_2",
+              nextPageNumber: 2,
+              numQuestionsSkipped: 0
+            },
+            'no_answer' => {
+              id: "#{linear_scale_field.id}_no_answer",
+              nextPageNumber: 2,
+              numQuestionsSkipped: 0
+            }
+          }
+        })
+      end
+    end
+  end
 
   describe 'add_logic_to_results' do
     # NOTE: Most of the object below is not needed for the tests, but it's included for completeness
@@ -73,7 +121,7 @@ RSpec.describe SurveyResultsGeneratorService do
           questionResponseCount: 1,
           pageNumber: 2,
           questionNumber: nil,
-          logic: { nextPageId: 'SURVEY_END_PAGE' }
+          logic: { nextPageId: 'FORM_END_PAGE' }
         },
         {
           inputType: 'text',
@@ -124,7 +172,7 @@ RSpec.describe SurveyResultsGeneratorService do
             answer: {
               '2': { id: 'LINEAR_SCALE_OPTION_2', nextPageId: 'PAGE_3' },
               '3': { id: 'LINEAR_SCALE_OPTION_3', nextPageId: 'PAGE_4' },
-              no_answer: { id: 'LINEAR_SCALE_OPTION_no_answer', nextPageId: 'SURVEY_END_PAGE' }
+              no_answer: { id: 'LINEAR_SCALE_OPTION_no_answer', nextPageId: 'FORM_END_PAGE' }
             }
           }
         },
@@ -157,7 +205,7 @@ RSpec.describe SurveyResultsGeneratorService do
           logic: {
             answer: {
               option3: { id: 'MULTISELECT_1_OPTION_3', nextPageId: 'PAGE_4' },
-              no_answer: { id: 'MULTISELECT_1_OPTION_no_answer', nextPageId: 'SURVEY_END_PAGE' }
+              no_answer: { id: 'MULTISELECT_1_OPTION_no_answer', nextPageId: 'FORM_END_PAGE' }
             }
           }
         },
@@ -201,7 +249,7 @@ RSpec.describe SurveyResultsGeneratorService do
           },
           logic: {
             answer: {
-              option1: { id: 'SELECT_2_OPTION_1', nextPageId: 'SURVEY_END_PAGE' }
+              option1: { id: 'SELECT_2_OPTION_1', nextPageId: 'FORM_END_PAGE' }
             }
           }
         },
@@ -252,14 +300,14 @@ RSpec.describe SurveyResultsGeneratorService do
           inputType: 'page',
           question: { en: 'Ending' },
           description: {},
-          customFieldId: 'SURVEY_END_PAGE',
+          customFieldId: 'FORM_END_PAGE',
           required: false,
           grouped: false,
           hidden: false,
           totalResponseCount: 0,
           questionResponseCount: 0,
           pageNumber: 5,
-          key: 'survey_end',
+          key: 'form_end',
           questionNumber: nil,
           logic: {}
         }
@@ -537,7 +585,7 @@ RSpec.describe SurveyResultsGeneratorService do
       }
     end
 
-    let(:survey_end_page) do
+    let(:form_end_page) do
       {
         inputType: 'page',
         totalResponseCount: 5,
@@ -545,7 +593,7 @@ RSpec.describe SurveyResultsGeneratorService do
         questionViewedCount: 0,
         pageNumber: 6,
         logic: {},
-        key: 'survey_end' # important as this is the last page
+        key: 'form_end' # important as this is the last page
       }
     end
 
@@ -562,7 +610,7 @@ RSpec.describe SurveyResultsGeneratorService do
         text_question2,
         page5,
         text_question3,
-        survey_end_page
+        form_end_page
       ]
     end
 
@@ -854,7 +902,7 @@ RSpec.describe SurveyResultsGeneratorService do
           pageNumber: 2,
           logic: {},
           questionViewedCount: 0,
-          key: 'survey_end'
+          key: 'form_end'
         }
       ]
     end
@@ -865,7 +913,7 @@ RSpec.describe SurveyResultsGeneratorService do
       expect(results[0].keys).not_to include(:key, :questionViewedCount)
     end
 
-    it 'removes the last page (survey_end) from the results' do
+    it 'removes the last page (form_end) from the results' do
       expect(results.size).to eq(2)
       expect(results.pluck(:inputType)).to eq(%w[page select])
     end

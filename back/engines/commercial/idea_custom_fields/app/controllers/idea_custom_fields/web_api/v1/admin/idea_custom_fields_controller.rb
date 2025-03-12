@@ -120,7 +120,7 @@ module IdeaCustomFields
       return unless is_survey_or_ideation
 
       last_field = update_all_params.fetch(:custom_fields).last
-      return if last_field['key'] == 'survey_end' && last_field['input_type'] == 'page'
+      return if last_field['key'] == 'form_end' && last_field['input_type'] == 'page'
 
       raise UpdateAllFailedError, { form: [{ error: 'no_end_page' }] }
     end

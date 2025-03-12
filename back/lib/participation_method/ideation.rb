@@ -339,7 +339,7 @@ module ParticipationMethod
       # Add the final survey end page field
       fields << CustomField.new(
         id: SecureRandom.uuid,
-        key: 'survey_end',
+        key: 'form_end',
         resource: custom_form,
         input_type: 'page',
         page_layout: 'default',

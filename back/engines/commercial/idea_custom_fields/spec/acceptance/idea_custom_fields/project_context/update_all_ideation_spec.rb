@@ -42,7 +42,7 @@ resource 'Idea Custom Fields' do
     let(:final_page) do
       {
         id: '1234',
-        key: 'survey_end',
+        key: 'form_end',
         title_multiloc: { 'en' => 'Final page' },
         description_multiloc: { 'en' => 'Thank you for participating!' },
         input_type: 'page',

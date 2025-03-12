@@ -337,7 +337,9 @@ const FormEdit = ({
       );
     } catch (error) {
       const errorType =
-        error?.errors?.form[0].error === 'stale_data'
+        Array.isArray(error?.errors?.form) &&
+        error.errors.form.length > 0 &&
+        error.errors.form[0].error === 'stale_data'
           ? 'staleData'
           : 'customFields';
       handleHookFormSubmissionError(error, setError, errorType);

@@ -21,10 +21,12 @@ const Country = () => {
   const value = useRansackParam('q[tenant_country_alpha2_eq]');
   const { data: countries } = useProjectLibraryCountries();
 
-  const options = countries?.data.attributes.map(({ code, name }) => ({
-    value: code,
-    label: name,
-  }));
+  const options = countries?.data.attributes.map(
+    ({ code, name, emoji_flag }) => ({
+      value: code,
+      label: `${emoji_flag} ${name}`,
+    })
+  );
 
   return (
     <Box>

@@ -160,6 +160,18 @@ class CustomField < ApplicationRecord
     %w[linear_scale matrix_linear_scale sentiment_linear_scale].include?(input_type)
   end
 
+  def supports_single_selection?
+    %w[select linear_scale sentiment_linear_scale rating].include?(input_type)
+  end
+
+  def supports_multiple_selection?
+    %w[multiselect multiselect_image].include?(input_type)
+  end
+
+  def supports_selection?
+    supports_single_selection? || supports_multiple_selection?
+  end
+
   def average_rankings(scope)
     # This basically starts from all combinations of scope ID, option key (value)
     # and position (ordinality) and then calculates the average position for each
