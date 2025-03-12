@@ -49,7 +49,7 @@ const Phase = ({
         })}
       </Title>
       <Box display="flex" flexDirection="row" alignItems="center">
-        <Box>
+        <Box mr="8px">
           {formatDate(startAt)} -{' '}
           {formatDate(endAt) ?? formatMessage(messages.openEnded)}
         </Box>
