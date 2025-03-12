@@ -49,7 +49,7 @@ describe IdeaCustomFieldsService do
     end
 
     describe 'submittable_fields' do
-      it 'excludes disabled fields, pages and sections' do
+      it 'excludes disabled fields and pages' do
         output = service.submittable_fields
         expect(output.map(&:code)).to eq %w[
           title_multiloc
@@ -165,7 +165,7 @@ describe IdeaCustomFieldsService do
     end
 
     describe 'submittable_fields' do
-      it 'excludes disabled fields, pages and sections' do
+      it 'excludes disabled fields and pages' do
         topic_field = custom_form.custom_fields.find_by(code: 'topic_ids')
         topic_field.update!(enabled: false)
         custom_form.custom_fields.find_by(code: 'location_description').destroy!
@@ -256,13 +256,13 @@ describe IdeaCustomFieldsService do
         expect(title_field.errors.errors).to eq []
       end
 
-      it 'only returns 1 error for section 1 even if locked title is different from default' do
-        section1_field = custom_form.custom_fields.find_by(code: 'ideation_page1')
-        section1_field.enabled = false
-        section1_field.title_multiloc = { en: 'Changed value' }
-        service.validate_constraints_against_defaults(section1_field)
+      it 'only returns 1 error for page 1 even if locked title is different from default' do
+        page1_field = custom_form.custom_fields.find_by(code: 'ideation_page1')
+        page1_field.enabled = false
+        page1_field.title_multiloc = { en: 'Changed value' }
+        service.validate_constraints_against_defaults(page1_field)
 
-        expect(section1_field.errors.errors.length).to eq 1
+        expect(page1_field.errors.errors.length).to eq 1
       end
 
       it 'returns errors if title locked attributes are different from default' do
@@ -340,12 +340,12 @@ describe IdeaCustomFieldsService do
         expect(title_field.errors.errors).to eq []
       end
 
-      it 'only returns 1 error for section 1 even if locked title is changed' do
-        section1_field = custom_form.custom_fields.find_by(code: 'ideation_page1')
+      it 'only returns 1 error for page 1 even if locked title is changed' do
+        page1_field = custom_form.custom_fields.find_by(code: 'ideation_page1')
         valid_params = { enabled: false, title_multiloc: { en: 'Changed value' } }
-        service.validate_constraints_against_updates(section1_field, valid_params)
+        service.validate_constraints_against_updates(page1_field, valid_params)
 
-        expect(section1_field.errors.errors.length).to eq 1
+        expect(page1_field.errors.errors.length).to eq 1
       end
 
       it 'returns errors if title locked attributes are changed from previous values' do

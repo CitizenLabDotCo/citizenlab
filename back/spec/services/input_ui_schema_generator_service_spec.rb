@@ -19,7 +19,7 @@ RSpec.describe InputUiSchemaGeneratorService do
       let(:fields) { IdeaCustomFieldsService.new(custom_form).enabled_fields }
       let(:ui_schema) { generator.generate_for fields }
 
-      context 'for a project with an ideation phase, a changed built-in field and an extra section and field' do
+      context 'for a project with an ideation phase, a changed built-in field and an extra page and field' do
         let(:project) { create(:single_phase_ideation_project, phase_attrs: { input_term: input_term }) }
         let!(:custom_form) do
           create(:custom_form, :with_default_fields, participation_context: project).tap do |form|
@@ -423,7 +423,7 @@ RSpec.describe InputUiSchemaGeneratorService do
         end
       end
 
-      context 'for a project with an ideation phase and with an empty custom section' do
+      context 'for a project with an ideation phase and with an empty custom page' do
         let(:project) { create(:single_phase_ideation_project, phase_attrs: { input_term: input_term }) }
         let!(:custom_form) { create(:custom_form, :with_default_fields, participation_context: project) }
         let!(:extra_page) do

@@ -71,8 +71,7 @@ class CustomField < ApplicationRecord
   ].freeze
   CODES = %w[
     author_id birthyear body_multiloc budget domicile gender idea_files_attributes idea_images_attributes
-    ideation_section1 ideation_section2 ideation_section3 location_description proposed_budget title_multiloc topic_ids cosponsor_ids
-    ideation_page1 ideation_page2 ideation_page3
+    location_description proposed_budget title_multiloc topic_ids cosponsor_ids ideation_page1 ideation_page2 ideation_page3
   ].freeze
   VISIBLE_TO_PUBLIC = 'public'
   VISIBLE_TO_ADMINS = 'admins'
@@ -234,10 +233,6 @@ class CustomField < ApplicationRecord
     input_type == 'page'
   end
 
-  def section?
-    input_type == 'section'
-  end
-
   def multiselect?
     %w[multiselect multiselect_image].include?(input_type)
   end
@@ -281,7 +276,7 @@ class CustomField < ApplicationRecord
     visitor.send visitor_method, self
   end
 
-  # Special behaviour for ideation section 1
+  # Special behaviour for ideation page 1
   def title_multiloc
     if code == 'ideation_page1'
       key = "custom_forms.categories.main_content.#{input_term}.title"
