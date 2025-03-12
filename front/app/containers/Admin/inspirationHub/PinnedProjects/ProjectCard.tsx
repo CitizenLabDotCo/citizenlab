@@ -68,7 +68,7 @@ const ProjectCard = ({ project }: Props) => {
           {localize(attributes.title_multiloc, attributes.title_en)}
         </Title>
       </Box>
-      <Text color="primary" fontSize="s">
+      <Text color="textSecondary" fontSize="s">
         {country ? `${country.emoji_flag} ` : ''}
         {attributes.tenant_name}
       </Text>
