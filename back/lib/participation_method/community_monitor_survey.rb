@@ -7,7 +7,7 @@ module ParticipationMethod
     end
 
     def allowed_extra_field_input_types
-      %w[sentiment_linear_scale]
+      %w[page sentiment_linear_scale]
     end
 
     def default_fields(custom_form)

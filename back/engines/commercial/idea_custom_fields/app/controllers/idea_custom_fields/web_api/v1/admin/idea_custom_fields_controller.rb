@@ -95,7 +95,7 @@ module IdeaCustomFields
 
     # Extended by CustomMaps::Patches::IdeaCustomFields::WebApi::V1::Admin::IdeaCustomFieldsController
     def include_in_index_response
-      %i[options options.image matrix_statements resource]
+      %i[options options.image matrix_statements resource topic]
     end
 
     def raise_error_if_not_geographic_field
