@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 
 import useUserCustomFields from 'api/user_custom_fields/useUserCustomFields';
 
-// import HeatmapDetails from './HeatmapDetails';
-// import HeatmapInsights from './HeatmapInsights';
+import HeatmapDetails from './HeatmapDetails';
+import HeatmapInsights from './HeatmapInsights';
 
 const Heatmap = () => {
   const [isReadMoreOpen, setIsReadMoreOpen] = useState(false);
@@ -18,13 +18,13 @@ const Heatmap = () => {
   return (
     <div>
       <>
-        {/* <HeatmapInsights onReadMoreClick={() => setIsReadMoreOpen(true)} />
+        <HeatmapInsights onReadMoreClick={() => setIsReadMoreOpen(true)} />
         {isReadMoreOpen && (
           <HeatmapDetails
             onClose={() => setIsReadMoreOpen(false)}
             customFields={customFields}
           />
-        )} */}
+        )}
       </>
     </div>
   );

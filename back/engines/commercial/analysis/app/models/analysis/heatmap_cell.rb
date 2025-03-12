@@ -29,7 +29,7 @@
 module Analysis
   class HeatmapCell < ::ApplicationRecord
     INDEX_TYPES = [CustomFieldOption, Tag].freeze
-    UNIT_TYPES = %w[inputs likes dislikes engagement]
+    UNIT_TYPES = %w[inputs likes dislikes participants]
 
     belongs_to :analysis, class_name: 'Analysis::Analysis'
     belongs_to :row, polymorphic: true
@@ -51,7 +51,7 @@ module Analysis
     def statement_multiloc
       {
         'en' =>
-        "People who #{col_to_action(row)} #{col_to_action(column)} #{decimal_to_percentage(lift)} than the average."
+        "People who #{col_to_action(column)} #{unit_to_verb} content #{col_to_action(row)} #{decimal_to_percentage(lift)} than average."
       }
     end
 
@@ -62,8 +62,18 @@ module Analysis
       when CustomFieldOption
         "respond '#{multiloc_service.t(item.title_multiloc)}' to '#{multiloc_service.t(item.custom_field.title_multiloc)}'"
       when Tag
-        "post in #{item.name}"
+        "in #{item.name}"
       end
+    end
+
+    def unit_to_verb
+      verbs = {
+        'inputs' => 'post',
+        'likes' => 'like',
+        'dislikes' => 'dislike',
+        'participants' => 'participate'
+      }
+      verbs[unit]
     end
 
     # Example output

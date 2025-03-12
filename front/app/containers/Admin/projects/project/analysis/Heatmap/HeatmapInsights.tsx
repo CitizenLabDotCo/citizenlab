@@ -23,7 +23,7 @@ const HeatMapInsights = ({ onReadMoreClick }: HeatMapInsightsProps) => {
   const { data: analysisHeatmapCells } = useAnalysisHeatmapCells({
     analysisId,
     maxPValue: 0.05,
-    pageSize: 1,
+    pageSize: 2,
   });
 
   if (!analysisHeatmapCells) return null;

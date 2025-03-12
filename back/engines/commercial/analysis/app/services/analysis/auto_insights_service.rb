@@ -12,57 +12,113 @@ module Analysis
       @analysis = analysis
     end
 
-    def chi_square_analysis
-      matrix = big_fat_matrix
+    def generate(unit: 'inputs', tags: detect_tags, user_custom_fields: detect_user_custom_fields, input_custom_fields: detect_input_custom_fields)
+      matrix = big_fat_matrix(unit, tags:, user_custom_fields:, input_custom_fields:)
 
-      significant_associations = []
+      matrix
+        .flat_map(&:keys)
+        .uniq # => [col1, col2, col3]
+        .group_by { |col| col_to_category(col) } # => { category1 => [col1, col2], category2 => [col3] }
+        .values # => [[col1, col2], [col3]]
+        .combination(2) # => [[[col1, col2], [col3]]]
+        .each do |(category1, category2)|
+        cells =
+          category1.flat_map do |col1|
+            category2.map do |col2|
+              ct = contingency_table(matrix, col1, col2)
+              count = ct[[true, true]]
+              _chi2, p_value = chi_square(ct)
+              HeatmapCell.new(
+                row: col1,
+                column: col2,
+                analysis: @analysis,
+                unit:,
+                p_value:,
+                count:
+              )
+            end
+          end
 
-      matrix.flat_map(&:keys).uniq.combination(2)
-        .reject { |col1, col2| col1.instance_of?(col2.class) }
-        # .reject { |col1, col2| col1 == col2 || (col1.try(:custom_field_id) == col2.try(:custom_field_id) && col1.try(:custom_field_id).present?) }
-        .map do |col1, col2|
-        ct = contingency_table(matrix, col1, col2)
-        # debugger if col1.try(:name) == 'Education' && col2.try(:name) == 'Education and Schools'
-        chi2, p_value = chi_square(ct)
-
-        significant_associations << [col1, col2, chi2, p_value] if p_value < 0.05
+        add_lift!(cells)
+        HeatmapCell.insert_all!(
+          cells.map do |cell|
+            cell.attributes.except('id', 'created_at', 'updated_at')
+              .merge(
+                created_at: Time.current,
+                updated_at: Time.current
+              )
+          end
+        )
       end
-
-      significant_associations.sort_by { |_, _, chi2, _| -chi2 }
     end
 
-    # Receives the output from call and pretty prints it
-    def pretty_print(chi_square_analysis_output)
-      chi_square_analysis_output.map do |col1, col2, chi2, p_value|
-        "#{col1.try(:key) || col1.try(:name)} - #{col2.try(:key) || col2.try(:name)}: chi2=#{chi2}, p=#{p_value}"
-      end
-    end
-
-    # The big fat matrix takes the gives, or all inputs, user custom fields and taggings and
+    # The big fat matrix takes the given, or all inputs, user custom fields and taggings and
     # throws them together in a large, one-hot (only booleans) encoded table
-    def big_fat_matrix(tags: nil, user_custom_fields: nil, input_custom_fields: nil)
-      input_custom_fields ||= detect_input_custom_fields
-      user_custom_fields ||= detect_user_custom_fields
-      tags ||= detect_tags
+    def big_fat_matrix(unit, **)
+      case unit
+      when 'inputs'
+        big_fat_matrix_helper(
+          items: @analysis.inputs.includes(:author),
+          inputs_custom_field_values: ->(item) { [item.custom_field_values] },
+          author: ->(item) { item.author },
+          input_ids: ->(item) { [item.id] },
+          **
+        )
+      when 'likes', 'dislikes'
+        big_fat_matrix_helper(
+          items: Reaction.where(reactable_type: 'Idea', reactable_id: @analysis.inputs, mode: unit == 'likes' ? 'up' : 'down').includes(:user, :reactable),
+          inputs_custom_field_values: ->(reaction) { [reaction.reactable.custom_field_values] },
+          author: ->(reaction) { reaction.user },
+          input_ids: ->(reaction) { [reaction.reactable_id] },
+          **
+        )
+      when 'participants'
+        big_fat_matrix_helper(
+          items: participant_to_inputs_map.keys,
+          inputs_custom_field_values: ->(participant) { participant_to_inputs_map[participant].map(&:custom_field_values) },
+          author: ->(participant) { participant },
+          input_ids: ->(participant) { participant_to_inputs_map[participant].map(&:id) },
+          **
+        )
+      else
+        raise "Invalid unit #{unit}"
+      end
+    end
+
+    def big_fat_matrix_helper(
+      items:,
+      inputs_custom_field_values:,
+      author:,
+      input_ids:,
+      tags:,
+      user_custom_fields:,
+      input_custom_fields:
+    )
       tag_map = tag_map(tags)
 
-      @analysis.inputs.includes(:author).map do |input|
+      items.map do |item|
         row = {}
+
+        # Add columns for tags
+        ids = input_ids.call(item)
+        tags.each do |tag|
+          row[tag] = ids.any? { |id| tag_map[id][tag] }
+        end
 
         # Add columns for input custom fields
         input_custom_fields.map do |input_custom_field|
-          custom_field_value = input.custom_field_values[input_custom_field.key]
-          next unless custom_field_value
+          custom_field_values = inputs_custom_field_values.call(item).map { |cfv| cfv[input_custom_field.key] }
+          next unless custom_field_values.compact.empty?
 
           input_custom_field.options.map do |option|
-            row[option] = custom_field_value == option.key || custom_field_value.include?(option.key)
+            row[option] = custom_field_values.flatten.include?(option.key)
           end
         end
 
         # Add columns for user custom fields
-        if input.author
+        if (item_author = author.call(item))
           user_custom_fields.each do |user_custom_field|
-            custom_field_value = input.author.custom_field_values[user_custom_field.key]
+            custom_field_value = item_author.custom_field_values[user_custom_field.key]
             next unless custom_field_value
 
             user_custom_field.options.each do |option|
@@ -71,25 +127,16 @@ module Analysis
           end
         end
 
-        # Add columns for tags
-        tags.each do |tag|
-          row[tag] = !!tag_map[input.id][tag]
-        end
-
         row
       end
     end
 
-    # Returns all the other columns in the same category as the given column. Category means:
-    # - For tag columns, all the tags in the analysis
-    # - For custom field options, all the options in the custom field
     def col_to_category(col)
-      @all_cols_in_category ||= {}
-      @all_cols_in_category[col] ||= case col
+      case col
       when Tag
-        detect_tags
+        :tags
       when CustomFieldOption
-        col.custom_field.options
+        col.custom_field
       else
         raise 'Invalid column type'
       end
@@ -118,6 +165,23 @@ module Analysis
         end
       end
       tag_map
+    end
+
+    def participant_to_inputs_map
+      return @participant_to_inputs_map if @participant_to_inputs_map
+
+      output = Hash.new { |hash, key| hash[key] = [] }
+      pc = ParticipantsService.new
+
+      @analysis.inputs
+        .select(:id, :custom_field_values, :author_id)
+        .includes(:author, :taggings).each do |input|
+        pc.ideas_participants(Idea.where(id: input)).each do |participant|
+          output[participant] << input
+        end
+      end
+
+      @participant_to_inputs_map = output
     end
 
     # Method to create a contingency table for two columns
@@ -157,6 +221,20 @@ module Analysis
       dof = (row_sums.size - 1) * (col_sums.size - 1)
       p_value = 1 - Distribution::ChiSquare.cdf(chi2, dof)
       [chi2, p_value]
+    end
+
+    def add_lift!(cells)
+      total = cells.sum(&:count)
+      row_total = cells.group_by(&:row).transform_values { |v| v.sum(&:count) }
+      col_total = cells.group_by(&:column).transform_values { |v| v.sum(&:count) }
+      cells.each do |cell|
+        cell.lift = if cell.count == 0
+          0
+        else
+          expected = (row_total[cell.row] * col_total[cell.column]) / total.to_f
+          cell.count / expected
+        end
+      end
     end
   end
 end

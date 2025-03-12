@@ -52,8 +52,15 @@ interface CustomFieldOptionsProps {
   customFieldId: string;
 }
 
-const StyledTable = styled(Table)`
+interface StyledTableProps {
+  columns: number;
+}
+
+const StyledTable = styled(Table)<StyledTableProps>`
   table-layout: fixed;
+  // Set the min-width to the sum of the first column width and the rest of the columns
+  min-width: ${({ columns }) => `${200 + 120 * columns}px`};
+
   /* Set first column width */
   & th:first-child,
   & td:first-child {
@@ -128,7 +135,7 @@ const HeatmapDetails = ({ onClose, customFields }: HeatMapProps) => {
   const { data: analysisHeatmapCells } = useAnalysisHeatmapCells({
     analysisId,
     columnCategoryType: 'user_custom_field',
-    columnCategoryTypeId: selectedFieldId,
+    columnCategoryId: selectedFieldId,
   });
 
   const { data: tags } = useAnalysisTags({
@@ -175,6 +182,8 @@ const HeatmapDetails = ({ onClose, customFields }: HeatMapProps) => {
     });
   };
 
+  if (!options) return null;
+
   return (
     <Box
       position="absolute"
@@ -212,7 +221,8 @@ const HeatmapDetails = ({ onClose, customFields }: HeatMapProps) => {
         )}
       </Box>
       <Box overflowX="auto" w="100%" h="100%" pb="220px">
-        <StyledTable>
+        {/* The number of columns includes the number of options + the tags column  */}
+        <StyledTable columns={options.data.length + 2}>
           <Thead>
             <Tr>
               <Th />
@@ -228,7 +238,7 @@ const HeatmapDetails = ({ onClose, customFields }: HeatMapProps) => {
                     tagType={tag.attributes.tag_type}
                   />
                 </Td>
-                {options?.data.map((option) => {
+                {options.data.map((option) => {
                   const cell = analysisHeatmapCells?.data.find(
                     (cell) =>
                       cell.relationships.row?.data.id === tag.id &&
