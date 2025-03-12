@@ -1215,7 +1215,8 @@ CREATE TABLE public.projects (
     votes_count integer DEFAULT 0 NOT NULL,
     followers_count integer DEFAULT 0 NOT NULL,
     preview_token character varying NOT NULL,
-    header_bg_alt_text_multiloc jsonb DEFAULT '{}'::jsonb
+    header_bg_alt_text_multiloc jsonb DEFAULT '{}'::jsonb,
+    hidden boolean DEFAULT false NOT NULL
 );
 
 
@@ -1902,7 +1903,8 @@ CREATE TABLE public.app_configurations (
     settings jsonb DEFAULT '{}'::jsonb,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
-    style jsonb DEFAULT '{}'::jsonb
+    style jsonb DEFAULT '{}'::jsonb,
+    country_code character varying
 );
 
 
@@ -6940,7 +6942,9 @@ SET search_path TO public,shared_extensions;
 
 INSERT INTO "schema_migrations" (version) VALUES
 ('20250305202848'),
+('20250305111507'),
 ('20250224150953'),
+('20250219104523'),
 ('20250217295025'),
 ('20250210181753'),
 ('20250204143605'),

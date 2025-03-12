@@ -7,24 +7,28 @@ import { Keys } from 'utils/cl-react-query/types';
 
 import miniProjectsKeys from './keys';
 
-export type Status = 'draft' | 'active' | 'finished' | 'stale' | 'archived';
+export type Status = 'active' | 'finished' | 'stale' | 'archived';
 
 type PopulationGroup = 'XS' | 'S' | 'M' | 'L' | 'XL';
 
-export type SortType = 'start_at asc' | 'start_at desc';
+export type SortType =
+  | 'start_at asc'
+  | 'start_at desc'
+  | 'participants asc'
+  | 'participants desc';
 
 export type RansackParams = {
   // filters
-  'q[tenant_country_alpha2]'?: string;
+  'q[tenant_country_alpha2_eq]'?: string;
   'q[tenant_population_group_eq]'?: PopulationGroup;
   'q[score_total_gteq]'?: '1' | '2' | '3' | '4';
   'q[phases_participation_method_eq]'?: ParticipationMethod;
   'q[topic_id_eq]'?: string;
   'q[status_eq]'?: Status;
-  'q[visibility_eq]'?: 'public' | 'restricted'; // TODO check if this is correct / matches the response?
   'q[practical_end_at_gteq]'?: string;
   'q[practical_end_at_lt]'?: string;
   'q[title_en_or_description_en_or_tenant_name_cont]'?: string;
+  'q[pin_country_code_eq]'?: string;
 
   // sorting
   'q[s]'?: SortType;
@@ -60,6 +64,7 @@ export interface ProjectLibraryProjectData {
     folder_id: string | null;
     folder_title_en: string | null;
     folder_title_multiloc: Multiloc;
+    image_url: string | null;
     participants: number;
     practical_end_at: string | null;
     publication_status: PublicationStatus;
@@ -79,7 +84,7 @@ export interface ProjectLibraryProjectData {
     tenant_map_center_lat: number | null;
     tenant_map_center_long: number | null;
     tenant_name: string;
-    tenant_population_group: PopulationGroup;
+    tenant_population_group: PopulationGroup | null;
     title_en: string;
     title_multiloc: Multiloc;
     topic_id: string;
