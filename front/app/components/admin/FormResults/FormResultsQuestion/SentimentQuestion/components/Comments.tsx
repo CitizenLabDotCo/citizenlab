@@ -17,12 +17,17 @@ import AnalysisUpsell from 'components/admin/FormResults/FormResultsQuestion/Tex
 import TextResponses from '../../TextQuestion/TextResponses';
 type TextResponsesProps = {
   customFieldId: string;
+  showAnalysis?: boolean;
   textResponses: {
     answer: string;
   }[];
 };
 
-const Comments = ({ customFieldId, textResponses }: TextResponsesProps) => {
+const Comments = ({
+  customFieldId,
+  showAnalysis = true,
+  textResponses,
+}: TextResponsesProps) => {
   const { projectId: projectIdParam, phaseId: phaseIdParam } = useParams() as {
     projectId: string;
     phaseId: string;
@@ -69,7 +74,7 @@ const Comments = ({ customFieldId, textResponses }: TextResponsesProps) => {
       >
         <Box flex="1">
           {!isAnalysisAllowed && <AnalysisUpsell />}
-          {isAnalysisEnabled && (
+          {isAnalysisEnabled && showAnalysis && (
             <Analysis
               customFieldId={customFieldId}
               textResponsesCount={textResponses.length}

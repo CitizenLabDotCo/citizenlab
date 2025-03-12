@@ -27,11 +27,13 @@ import { parseResult, SentimentAnswers } from './utils';
 type Props = {
   result: ResultUngrouped | ResultGrouped;
   titleVariant?: TitleProps['variant'];
+  showAnalysis?: boolean;
 };
 
 const SentimentQuestion = ({
   result,
   titleVariant,
+  showAnalysis,
   ...props
 }: Props & BoxProps) => {
   const isTabletOrSmaller = useBreakpoint('tablet');
@@ -86,15 +88,11 @@ const SentimentQuestion = ({
             width="100%"
             display={isTabletOrSmaller ? 'block' : 'flex'}
             justifyContent="space-between"
-            alignItems="center"
-            py="0px"
-            gap="20px"
           >
-            <Box display="block" maxWidth="480px" flexShrink={0}>
+            <Box display="block" maxWidth="480px">
               <Title
                 variant={titleVariant || 'h4'}
-                mt="12px"
-                mb="12px"
+                my="12px"
                 fontWeight="semi-bold"
               >
                 {questionNumber && <>{questionNumber}. </>}
@@ -110,12 +108,12 @@ const SentimentQuestion = ({
 
             <Box
               display="flex"
-              gap={isTabletOrSmaller ? '80px' : '200px'}
+              gap={isTabletOrSmaller ? '5%' : '50%'}
               justifyContent={isMobileOrSmaller ? 'flex-start' : 'flex-end'}
             >
               {!isMobileOrSmaller && hasTextResponses && (
                 <Box display="flex" gap="4px">
-                  <Box my="auto" flexShrink={0}>
+                  <Box my="auto">
                     <Icon
                       width="16px"
                       name="comment"
@@ -166,13 +164,15 @@ const SentimentQuestion = ({
             </Box>
           </Box>
         }
-        border="1px solid rgb(218, 217, 217) !important"
-        padding="20px"
+        border={`1px solid ${colors.borderLight}`}
+        px="12px"
+        py="16px"
       >
         {textResponses && (
           <Comments
             customFieldId={result.customFieldId}
             textResponses={textResponses}
+            showAnalysis={showAnalysis}
           />
         )}
       </Accordion>

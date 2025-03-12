@@ -65,7 +65,7 @@ const SurveyQuestionResult = ({
           <MatrixQuestion result={attributes} />
         ) : null;
       case 'sentiment_linear_scale':
-        return <SentimentQuestion result={attributes} />;
+        return <SentimentQuestion result={attributes} showAnalysis={false} />;
       case 'point':
       case 'line':
       case 'polygon':
@@ -111,16 +111,22 @@ const SurveyQuestionResult = ({
 
   const { attributes } = data.data;
 
+  // For some input types, we don't want to show the title
+  const showTitle = !['sentiment_linear_scale'].includes(attributes.inputType);
+
   return (
     <Box mb="8px">
-      <Title
-        variant="h4"
-        mt="0px"
-        mb="8px"
-        className="e2e-survey-question-widget-title"
-      >
-        {localize(attributes.question)}
-      </Title>
+      {showTitle && (
+        <Title
+          variant="h4"
+          mt="0px"
+          mb="8px"
+          className="e2e-survey-question-widget-title"
+        >
+          {localize(attributes.question)}
+        </Title>
+      )}
+
       <InputType
         inputType={attributes.inputType}
         required={attributes.required}
