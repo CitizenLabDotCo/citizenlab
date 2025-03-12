@@ -50,22 +50,6 @@ export default defineMessages({
     id: 'app.containers.Admin.inspirationHub.Proposals',
     defaultMessage: 'Proposals',
   },
-  active: {
-    id: 'app.containers.Admin.inspirationHub.Active',
-    defaultMessage: 'Active',
-  },
-  archived: {
-    id: 'app.containers.Admin.inspirationHub.Archived',
-    defaultMessage: 'Archived',
-  },
-  finished: {
-    id: 'app.containers.Admin.inspirationHub.Finished',
-    defaultMessage: 'Finished',
-  },
-  stale: {
-    id: 'app.containers.Admin.inspirationHub.Stale',
-    defaultMessage: 'Stale',
-  },
   resetFilters: {
     id: 'app.containers.Admin.inspirationHub.resetFilters',
     defaultMessage: 'Reset filters',
