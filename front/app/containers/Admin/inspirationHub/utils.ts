@@ -3,6 +3,8 @@ import { useCallback, useMemo } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { Multiloc, SupportedLocale } from 'typings';
 
+import { Country } from 'api/project_library_countries/types';
+import useProjectLibraryCountries from 'api/project_library_countries/useProjectLibraryCountries';
 import { RansackParams } from 'api/project_library_projects/types';
 
 import useLocale from 'hooks/useLocale';
@@ -90,4 +92,19 @@ const getWithFallback = (
 
   // If neither of those are available, fallback to English
   return currentLocaleTitle ?? similarLocaleTitle ?? fallback ?? '';
+};
+
+export const useCountriesByCode = () => {
+  const { data: countries } = useProjectLibraryCountries();
+
+  const countriesByCode = useMemo(() => {
+    if (!countries) return;
+
+    return countries.data.attributes.reduce((acc, country) => {
+      acc[country.code] = country;
+      return acc;
+    }, {} as Record<string, Country>);
+  }, [countries]);
+
+  return countriesByCode;
 };

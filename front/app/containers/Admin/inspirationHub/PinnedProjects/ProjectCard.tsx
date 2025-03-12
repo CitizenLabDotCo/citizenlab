@@ -14,7 +14,7 @@ import { ProjectLibraryProjectData } from 'api/project_library_projects/types';
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 
 import MethodLabel from '../MethodLabel';
-import { useLocalizeProjectLibrary } from '../utils';
+import { useCountriesByCode, useLocalizeProjectLibrary } from '../utils';
 
 import CardImage from './CardImage';
 
@@ -39,8 +39,14 @@ const CardContainer = styled(Box)`
 
 const ProjectCard = ({ project }: Props) => {
   const localize = useLocalizeProjectLibrary();
+  const countriesByCode = useCountriesByCode();
 
   const { attributes, relationships } = project;
+
+  const country =
+    countriesByCode && attributes.tenant_country_alpha2
+      ? countriesByCode[attributes.tenant_country_alpha2]
+      : null;
 
   return (
     <CardContainer
@@ -63,6 +69,7 @@ const ProjectCard = ({ project }: Props) => {
         </Title>
       </Box>
       <Text color="primary" fontSize="s">
+        {country ? `${country.emoji_flag} ` : ''}
         {attributes.tenant_name}
       </Text>
       {relationships.phases.data.map(({ id }) => (

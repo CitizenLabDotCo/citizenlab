@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 
 import {
   Tr,
@@ -12,8 +12,6 @@ import {
 import { useSearchParams } from 'react-router-dom';
 import styled from 'styled-components';
 
-import { Country } from 'api/project_library_countries/types';
-import useProjectLibraryCountries from 'api/project_library_countries/useProjectLibraryCountries';
 import { ProjectLibraryProjects } from 'api/project_library_projects/types';
 
 import { useIntl } from 'utils/cl-intl';
@@ -22,7 +20,7 @@ import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 
 import { STATUS_EMOJIS, STATUS_LABELS } from '../constants';
 import MethodLabel from '../MethodLabel';
-import { useLocalizeProjectLibrary } from '../utils';
+import { useLocalizeProjectLibrary, useCountriesByCode } from '../utils';
 
 import { formatDuration } from './utils';
 
@@ -52,20 +50,11 @@ const TextButton = styled.button`
 
 const TableBody = ({ libraryProjects, isInitialLoading }: Props) => {
   const { formatMessage } = useIntl();
-  const { data: countries } = useProjectLibraryCountries();
   const [searchParams] = useSearchParams();
   const localizeProjectLibrary = useLocalizeProjectLibrary();
+  const countriesByCode = useCountriesByCode();
 
   const drawerProjectId = searchParams.get('project_id');
-
-  const countriesByCode = useMemo(() => {
-    if (!countries) return;
-
-    return countries.data.attributes.reduce((acc, country) => {
-      acc[country.code] = country;
-      return acc;
-    }, {} as Record<string, Country>);
-  }, [countries]);
 
   return (
     <Tbody>
