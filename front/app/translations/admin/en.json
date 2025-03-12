@@ -2819,6 +2819,7 @@
   "app.containers.admin.project.permissions.permissionsSelectionLabel": "Selection",
   "app.containers.admin.project.permissions.permissionsSelectionLabelDescription": "Users in specific user group(s) can participate. You can manage user groups in “Users” tab.",
   "app.containers.admin.project.permissions.viewingRightsTitle": "Who can see this project?",
+  "app.containers.survey.sentiment.numberComments": "{count, plural, =0 {0 comments} one {1 comment} other {# comments}}",
   "app.modules.commercial.analytics.admin.components.ActiveUsersCard.cardTitleTooltipMessage4": "Participants are users or visitors that have participated in a project, posted or interacted with a proposal or attended events.",
   "app.modules.commercial.analytics.admin.components.ActiveUsersCard.participants": "Participants",
   "app.modules.commercial.analytics.admin.components.ActiveUsersCard.participationRate": "Participation rate",
