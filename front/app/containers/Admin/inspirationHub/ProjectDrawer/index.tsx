@@ -30,7 +30,11 @@ const ProjectDrawer = () => {
   const relationships = project?.data.relationships;
 
   return (
-    <SideModal opened={!!project && !!projectId} close={handleOnClose}>
+    <SideModal
+      opened={!!project && !!projectId}
+      close={handleOnClose}
+      width="50%"
+    >
       {attributes && (
         <Box mt="52px" mx="28px">
           <Header attributes={attributes} />

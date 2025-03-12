@@ -13,9 +13,9 @@ export default defineMessages({
     id: 'app.containers.Admin.inspirationHub.Filters.Search',
     defaultMessage: 'Search',
   },
-  size: {
-    id: 'app.containers.Admin.inspirationHub.Filters.Size',
-    defaultMessage: 'Size',
+  population: {
+    id: 'app.containers.Admin.inspirationHub.Filters.population',
+    defaultMessage: 'Population',
   },
   status: {
     id: 'app.containers.Admin.inspirationHub.Filters.Status',
