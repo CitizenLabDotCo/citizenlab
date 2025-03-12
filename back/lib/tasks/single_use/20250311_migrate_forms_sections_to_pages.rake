@@ -23,8 +23,8 @@ namespace :migrate_custom_forms do
         )
         if section.save
           reporter.add_change(
-            from: attrs_before,
-            to: section.attributes,
+            attrs_before,
+            section.attributes,
             context: { tenant: tenant.host, section: section.id }
           )
         else
@@ -37,10 +37,10 @@ namespace :migrate_custom_forms do
 
       # Add end page
       CustomForm.all.each do |form|
-        next if form.custom_fields.exists?(input_type: 'page', key: 'survey_end')
+        next if form.custom_fields.exists?(input_type: 'page', key: 'form_end')
 
         end_page = CustomField.new(
-          key: 'survey_end',
+          key: 'form_end',
           resource: form,
           input_type: 'page',
           page_layout: 'default',
@@ -60,6 +60,7 @@ namespace :migrate_custom_forms do
           )
         end
       end
+      reporter.add_processed_tenant(tenant)
     end
     reporter.report!('migrate_forms_sections_to_pages_report.json', verbose: true)
   end
