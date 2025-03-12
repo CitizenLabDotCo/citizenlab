@@ -441,11 +441,14 @@ class CustomField < ApplicationRecord
   end
 
   def validate_topic
-    unless resource&.participation_context.pmethod.supports_custom_field_topics?
+    participation_context = resource&.participation_context
+    return unless participation_context
+
+    unless participation_context.pmethod.supports_custom_field_topics?
       errors.add(:topic, :topics_not_allowed)
     end
 
-    allowed_topics = resource&.participation_context.project.projects_allowed_input_topics.pluck(:topic_id)
+    allowed_topics = participation_context.project.projects_allowed_input_topics.pluck(:topic_id)
     unless allowed_topics.include?(topic_id)
       errors.add(:topic, :topic_not_in_allowed_list)
     end

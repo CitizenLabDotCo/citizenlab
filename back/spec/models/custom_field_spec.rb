@@ -695,7 +695,7 @@ RSpec.describe CustomField do
     let(:field) { create(:custom_field, resource: form) }
 
     context 'community_monitor_survey project' do
-      let(:project) { create(:community_monitor_project_with_active_phase)}
+      let(:project) { create(:community_monitor_project_with_active_phase) }
 
       it 'can have a topic associated from the allowed project topics' do
         topic = create(:topic, code: 'quality_of_life')
@@ -713,7 +713,7 @@ RSpec.describe CustomField do
     end
 
     context 'native_survey project' do
-      let(:project) { create(:project_with_active_native_survey_phase)}
+      let(:project) { create(:project_with_active_native_survey_phase) }
 
       it 'cannot have topics associated if the participation method does not allow it' do
         topic = create(:topic, code: 'quality_of_life')
@@ -722,7 +722,5 @@ RSpec.describe CustomField do
         expect(field.errors.first.type).to eq :topics_not_allowed
       end
     end
-
-
   end
 end
