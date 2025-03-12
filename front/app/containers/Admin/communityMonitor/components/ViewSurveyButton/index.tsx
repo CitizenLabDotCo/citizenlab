@@ -10,7 +10,7 @@ import messages from './messages';
 
 const ViewSurveyButton = ({ ...props }: ButtonProps) => {
   const { formatMessage } = useIntl();
-  const { data: project } = useCommunityMonitorProject();
+  const { data: project } = useCommunityMonitorProject({});
   const phaseId = project?.data.relationships.current_phase?.data?.id;
 
   if (!project || !phaseId) {

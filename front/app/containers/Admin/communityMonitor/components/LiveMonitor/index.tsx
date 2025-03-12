@@ -13,7 +13,7 @@ import FormResults from './components/FormResults';
 import QuarterlyDatePicker from './components/QuarterlyDatePicker';
 
 const LiveMonitor = () => {
-  const { data: project } = useCommunityMonitorProject();
+  const { data: project } = useCommunityMonitorProject({});
   const projectId = project?.data.id;
   const phaseId = project?.data.relationships.current_phase?.data?.id;
 

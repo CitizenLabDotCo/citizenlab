@@ -31,7 +31,7 @@ const SurveySettings = () => {
   const { formatMessage } = useIntl();
 
   // Project and phase hooks
-  const { data: project } = useCommunityMonitorProject();
+  const { data: project } = useCommunityMonitorProject({});
   const phaseId = project?.data.relationships.current_phase?.data?.id;
   const { data: phase } = usePhase(phaseId);
   const { mutate: updatePhase } = useUpdatePhase();

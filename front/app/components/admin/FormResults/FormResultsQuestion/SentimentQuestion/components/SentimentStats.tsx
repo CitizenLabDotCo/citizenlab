@@ -11,7 +11,7 @@ import {
 
 import { ResultGrouped, ResultUngrouped } from 'api/survey_results/types';
 
-import { getPercentageDifference } from '../utils';
+import { getPercentageDifference, getTrendColorName } from '../utils';
 
 import SentimentScore from './SentimentScore';
 
@@ -31,31 +31,24 @@ const SentimentStats = ({ result }: Props) => {
     getPercentageDifference(thisPeriodAvg, lastPeriodAvg);
 
   // Set the trend icon, color and text to use, depending on the trend direction
+
+  // By default, the trend is neutral (0%)
   let trendIcon: IconNames | undefined = undefined;
   let trendColor = colors.grey700;
   let trendText = '0%';
 
   if (percentageDifference) {
     if (percentageDifference > 0) {
-      // Trend direction is up
+      // Trend direction: up
       trendColor = colors.green500;
       trendText = `+${Math.round(percentageDifference)}%`;
     } else if (percentageDifference < 0) {
-      // Trend direction is down
+      // Trend direction: down
       trendIcon = 'trend-down';
       trendColor = colors.red400;
       trendText = `${Math.round(percentageDifference)}%`;
     }
   }
-
-  const getTrendColor = (percentageDifference: number) => {
-    if (percentageDifference > 0) {
-      return 'green500';
-    } else if (percentageDifference < 0) {
-      return 'red400';
-    }
-    return 'grey700';
-  };
 
   return (
     <Box my="auto">
@@ -78,7 +71,7 @@ const SentimentStats = ({ result }: Props) => {
         {percentageDifference && (
           <Text
             m="0px"
-            color={getTrendColor(percentageDifference)}
+            color={getTrendColorName(percentageDifference)}
             fontSize="s"
           >
             {trendIcon && (

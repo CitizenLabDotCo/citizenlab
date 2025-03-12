@@ -6,7 +6,7 @@ import useCommunityMonitorProject from 'api/community_monitor/useCommunityMonito
 
 import ActionForms from 'containers/Admin/projects/project/permissions/Phase/ActionForms';
 const AccessRights = () => {
-  const { data: project } = useCommunityMonitorProject();
+  const { data: project } = useCommunityMonitorProject({});
   const phaseId = project?.data.relationships.current_phase?.data?.id;
 
   if (!phaseId) return null;

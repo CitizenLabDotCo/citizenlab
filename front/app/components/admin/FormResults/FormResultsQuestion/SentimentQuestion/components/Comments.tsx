@@ -32,7 +32,9 @@ const Comments = ({
     projectId: string;
     phaseId: string;
   };
-  const { data: project } = useCommunityMonitorProject();
+  const { data: project } = useCommunityMonitorProject({
+    enabled: !phaseIdParam && !projectIdParam,
+  });
 
   const projectId = projectIdParam || project?.data.id;
   const phaseId =

@@ -6,4 +6,8 @@ export default defineMessages({
     defaultMessage:
       '{count, plural, =0 {0 comments} one {1 comment} other {# comments}}',
   },
+  outOf: {
+    id: 'app.containers.survey.sentiment.outOf',
+    defaultMessage: '{/{maxValue}',
+  },
 });

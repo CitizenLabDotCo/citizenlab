@@ -8,6 +8,7 @@ import { parseResult, SentimentAnswers } from '../../utils';
 
 import SentimentBar from './SentimentBar';
 import SentimentTooltip from './SentimentTooltip';
+import { getAnswerGroups } from './utils';
 
 type Props = {
   result: ResultUngrouped | ResultGrouped;
@@ -25,22 +26,8 @@ const SentimentScore = ({ result }: Props) => {
     (answer) => answer.answer !== null
   );
 
-  // Group the answers (values of 1 - 5) into low, neutral, and high sentiment
-  const answerGroups = useMemo(() => {
-    if (!questionAnswers) return null;
-
-    const lowSentiment =
-      questionAnswers[0].percentage + questionAnswers[1].percentage; // Values 1 and 2
-    const neutralSentiment = questionAnswers[2].percentage; // Value 3
-    const highSentiment =
-      questionAnswers[3].percentage + questionAnswers[4].percentage; // Values 4 and 5
-
-    return [
-      { answer: 'high', percentage: highSentiment },
-      { answer: 'neutral', percentage: neutralSentiment },
-      { answer: 'low', percentage: lowSentiment },
-    ];
-  }, [questionAnswers]);
+  // Group the answers into low, neutral, and high sentiment
+  const answerGroups = questionAnswers && getAnswerGroups({ questionAnswers });
 
   if (!answerGroups) return null;
 

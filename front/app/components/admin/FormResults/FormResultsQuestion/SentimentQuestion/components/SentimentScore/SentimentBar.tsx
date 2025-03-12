@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Box } from '@citizenlab/cl2-component-library';
+import { Box, stylingConsts } from '@citizenlab/cl2-component-library';
 
 import { getSentimentGroupColour } from '../../utils';
 
@@ -16,7 +16,7 @@ const SentimentBar = ({
         background={getSentimentGroupColour(answer)}
         width={`${percentage}%`}
         height="8px"
-        borderRadius="2px"
+        borderRadius={stylingConsts.borderRadius}
       />
     ))}
   </Box>
