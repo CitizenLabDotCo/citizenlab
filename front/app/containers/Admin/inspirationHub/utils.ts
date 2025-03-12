@@ -1,13 +1,9 @@
 import { useCallback, useMemo } from 'react';
 
-import { format } from 'date-fns';
 import { useSearchParams } from 'react-router-dom';
 import { Multiloc, SupportedLocale } from 'typings';
 
-import {
-  RansackParams,
-  ProjectLibraryProjectData,
-} from 'api/project_library_projects/types';
+import { RansackParams } from 'api/project_library_projects/types';
 
 import useLocale from 'hooks/useLocale';
 
@@ -94,28 +90,4 @@ const getWithFallback = (
 
   // If neither of those are available, fallback to English
   return currentLocaleTitle ?? similarLocaleTitle ?? fallback ?? '';
-};
-
-export const getTenantURL = (
-  attributes: ProjectLibraryProjectData['attributes']
-) => {
-  return `https://${attributes.tenant_host}`;
-};
-
-export const getProjectURL = (
-  attributes: ProjectLibraryProjectData['attributes']
-) => {
-  return `${getTenantURL(attributes)}/projects/${attributes.slug}`;
-};
-
-export const getPhaseURL = (
-  attributes: ProjectLibraryProjectData['attributes'],
-  phaseNumber: number
-) => {
-  return `${getProjectURL(attributes)}/${phaseNumber}`;
-};
-
-export const formatDate = (date?: Date) => {
-  if (!date) return;
-  return format(date, 'dd MMMM yyyy');
 };

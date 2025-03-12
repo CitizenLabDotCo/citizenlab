@@ -9,10 +9,11 @@ import { useIntl } from 'utils/cl-intl';
 import { parseBackendDateString } from 'utils/dateUtils';
 
 import MethodLabel from '../MethodLabel';
-import { useLocalizeProjectLibrary, formatDate, getPhaseURL } from '../utils';
+import { useLocalizeProjectLibrary } from '../utils';
 
 import ExternalLink from './ExternalLink';
 import messages from './messages';
+import { formatDate, getPhaseURL } from './utils';
 
 interface Props {
   projectAttributes: ProjectLibraryProjectData['attributes'];

@@ -11,8 +11,10 @@ import styled from 'styled-components';
 
 import { ProjectLibraryProjectData } from 'api/project_library_projects/types';
 
+import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
+
 import MethodLabel from '../MethodLabel';
-import { useLocalizeProjectLibrary, getProjectURL } from '../utils';
+import { useLocalizeProjectLibrary } from '../utils';
 
 import CardImage from './CardImage';
 
@@ -31,6 +33,8 @@ const CardContainer = styled(Box)`
       transform: scale(1.2);
     }
   }
+
+  cursor: pointer;
 `;
 
 const ProjectCard = ({ project }: Props) => {
@@ -40,13 +44,15 @@ const ProjectCard = ({ project }: Props) => {
 
   return (
     <CardContainer
-      as="a"
+      as="button"
       bgColor={colors.white}
       borderRadius={stylingConsts.borderRadius}
       w="33%"
       p="16px"
-      href={getProjectURL(attributes) as any}
-      target="_blank"
+      style={{ textAlign: 'left' }}
+      onClick={() => {
+        updateSearchParams({ project_id: project.id });
+      }}
     >
       <Box>
         <CardImage imageUrl={attributes.image_url ?? undefined} />
