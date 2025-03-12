@@ -91,10 +91,6 @@ class TestVisitor < FieldVisitorService
     'page from visitor'
   end
 
-  def visit_section(_field)
-    'section from visitor'
-  end
-
   def visit_topic_ids(_field)
     'topic_ids from visitor'
   end
@@ -201,18 +197,6 @@ RSpec.describe CustomField do
     it 'returns false otherwise' do
       other_field = described_class.new input_type: 'something_else'
       expect(other_field.page?).to be false
-    end
-  end
-
-  describe '#section?' do
-    it 'returns true when the input_type is "section"' do
-      section_field = described_class.new input_type: 'section'
-      expect(section_field.section?).to be true
-    end
-
-    it 'returns false otherwise' do
-      other_field = described_class.new input_type: 'something_else'
-      expect(other_field.section?).to be false
     end
   end
 
@@ -419,19 +403,19 @@ RSpec.describe CustomField do
     end
   end
 
-  describe 'title_multiloc behaviour for ideation section 1' do
+  describe 'title_multiloc behaviour for ideation page 1' do
     it 'returns a title containing the current ideation/budget phase input term if there is a current phase' do
       project = create(:project_with_current_phase, current_phase_attrs: { input_term: 'question' })
       resource = build(:custom_form, participation_context: project)
       ignored_title = { en: 'anything' }
-      section = described_class.new(
+      page = described_class.new(
         resource: resource,
-        input_type: 'section',
+        input_type: 'page',
         code: 'ideation_page1',
         title_multiloc: ignored_title
       )
       expected_english_title = 'What is your question?'
-      expect(section.title_multiloc['en']).to eq expected_english_title
+      expect(page.title_multiloc['en']).to eq expected_english_title
     end
 
     it 'returns a title containing the last phase input term if there is not a current ideation/budget phase' do
@@ -440,14 +424,14 @@ RSpec.describe CustomField do
       resource = build(:custom_form, participation_context: project)
 
       ignored_title = { en: 'anything' }
-      section = described_class.new(
+      page = described_class.new(
         resource: resource,
-        input_type: 'section',
+        input_type: 'page',
         code: 'ideation_page1',
         title_multiloc: ignored_title
       )
       expected_english_title = 'What is your contribution?'
-      expect(section.title_multiloc['en']).to eq expected_english_title
+      expect(page.title_multiloc['en']).to eq expected_english_title
     end
   end
 
