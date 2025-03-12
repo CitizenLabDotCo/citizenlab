@@ -66,4 +66,8 @@ export default defineMessages({
     id: 'app.containers.Admin.inspirationHub.Stale',
     defaultMessage: 'Stale',
   },
+  resetFilters: {
+    id: 'app.containers.Admin.inspirationHub.resetFilters',
+    defaultMessage: 'Reset filters',
+  },
 });
