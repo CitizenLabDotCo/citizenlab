@@ -13,10 +13,14 @@ import { ProjectLibraryProjectData } from 'api/project_library_projects/types';
 
 import { parseBackendDateString } from 'utils/dateUtils';
 
-import { useLocalizeProjectLibrary } from '../utils';
+import {
+  useLocalizeProjectLibrary,
+  getTenantURL,
+  getProjectURL,
+  formatDate,
+} from '../utils';
 
 import ExternalLink from './ExternalLink';
-import { getTenantURL, getProjectURL, formatDate } from './utils';
 
 interface Props {
   attributes: ProjectLibraryProjectData['attributes'];

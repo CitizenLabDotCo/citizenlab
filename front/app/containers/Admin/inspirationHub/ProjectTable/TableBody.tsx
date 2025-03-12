@@ -21,9 +21,9 @@ import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 
 import { STATUS_EMOJIS, STATUS_LABELS } from '../constants';
+import MethodLabel from '../MethodLabel';
 import { useLocalizeProjectLibrary } from '../utils';
 
-import MethodLabel from './MethodLabel';
 import { formatDuration } from './utils';
 
 interface Props {
