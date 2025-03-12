@@ -60,7 +60,9 @@ class WebApi::V1::CustomFieldSerializer < WebApi::V1::BaseSerializer
     field.supports_matrix_statements?
   }
   has_one :resource, record_type: :custom_form, serializer: ::WebApi::V1::CustomFormSerializer
-  has_one :topic, record_type: :topic, serializer: ::WebApi::V1::TopicSerializer
+  has_one :topic, record_type: :topic, serializer: ::WebApi::V1::TopicSerializer, if: proc { |field|
+    field.supports_topic?
+  }
 end
 
 WebApi::V1::CustomFieldSerializer.include(CustomMaps::Extensions::WebApi::V1::CustomFieldSerializer)

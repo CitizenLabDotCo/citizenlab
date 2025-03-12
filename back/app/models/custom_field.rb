@@ -400,6 +400,13 @@ class CustomField < ApplicationRecord
     phase&.input_term || Phase::FALLBACK_INPUT_TERM
   end
 
+  def supports_topic?
+    participation_context = resource&.participation_context
+    return false unless participation_context
+
+    participation_context.pmethod.supports_custom_field_topics?
+  end
+
   private
 
   def set_default_enabled
@@ -453,16 +460,12 @@ class CustomField < ApplicationRecord
   end
 
   def validate_topic
-    participation_context = resource&.participation_context
-    return unless participation_context
-
-    unless participation_context.pmethod.supports_custom_field_topics?
+    if supports_topic?
+      participation_context = resource&.participation_context
+      allowed_topics = participation_context.project.projects_allowed_input_topics.pluck(:topic_id)
+      errors.add(:topic, :topic_not_in_allowed_list) unless allowed_topics.include?(topic_id)
+    else
       errors.add(:topic, :topics_not_allowed)
-    end
-
-    allowed_topics = participation_context.project.projects_allowed_input_topics.pluck(:topic_id)
-    unless allowed_topics.include?(topic_id)
-      errors.add(:topic, :topic_not_in_allowed_list)
     end
   end
 end

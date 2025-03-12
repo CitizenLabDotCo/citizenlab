@@ -69,7 +69,7 @@ resource 'Idea Custom Fields' do
               required: true,
               enabled: true,
               ask_follow_up: true,
-              topic_id: topic.id,
+              topic_id: topic.id
             },
             # Inserted field.
             {
