@@ -35,7 +35,6 @@ const Method = () => {
         setRansackParam('q[phases_participation_method_eq]', option.value)
       }
       placeholder={formatMessage(messages.method)}
-      mr="28px"
     />
   );
 };

@@ -479,6 +479,11 @@ module MultiTenancy
             project_library: {
               enabled: false,
               allowed: false
+            },
+            community_monitor: {
+              enabled: true,
+              allowed: true,
+              project_id: ''
             }
           })
         )

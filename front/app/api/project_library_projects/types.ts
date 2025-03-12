@@ -7,15 +7,19 @@ import { Keys } from 'utils/cl-react-query/types';
 
 import miniProjectsKeys from './keys';
 
-export type Status = 'draft' | 'active' | 'finished' | 'stale' | 'archived';
+export type Status = 'active' | 'finished' | 'stale' | 'archived';
 
 type PopulationGroup = 'XS' | 'S' | 'M' | 'L' | 'XL';
 
-export type SortType = 'start_at asc' | 'start_at desc';
+export type SortType =
+  | 'start_at asc'
+  | 'start_at desc'
+  | 'participants asc'
+  | 'participants desc';
 
 export type RansackParams = {
   // filters
-  'q[tenant_country_alpha2]'?: string;
+  'q[tenant_country_alpha2_eq]'?: string;
   'q[tenant_population_group_eq]'?: PopulationGroup;
   'q[score_total_gteq]'?: '1' | '2' | '3' | '4';
   'q[phases_participation_method_eq]'?: ParticipationMethod;
@@ -79,7 +83,7 @@ export interface ProjectLibraryProjectData {
     tenant_map_center_lat: number | null;
     tenant_map_center_long: number | null;
     tenant_name: string;
-    tenant_population_group: PopulationGroup;
+    tenant_population_group: PopulationGroup | null;
     title_en: string;
     title_multiloc: Multiloc;
     topic_id: string;

@@ -612,6 +612,11 @@ FactoryBot.define do
           )
         end
       end
+
+      factory :community_monitor_project do
+        internal_role { 'community_monitor' }
+        hidden { true }
+      end
     end
   end
 end

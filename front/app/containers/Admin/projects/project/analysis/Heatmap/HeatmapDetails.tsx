@@ -53,6 +53,7 @@ interface CustomFieldOptionsProps {
 }
 
 const StyledTable = styled(Table)`
+  table-layout: fixed;
   /* Set first column width */
   & th:first-child,
   & td:first-child {
@@ -181,7 +182,7 @@ const HeatmapDetails = ({ onClose, customFields }: HeatMapProps) => {
       left="0"
       // The width is calculated so that is overlaps 3 out of the 4 columns on the screen.
       // The last column remains visible so that AI insights remain visible.
-      width="calc(300px + (100% - 300px - 24px) * 2/3)"
+      width="calc(300px + (100% - 300px - 12px) * 2/3)"
       height="100vh"
       zIndex="100000"
       bg={colors.white}
@@ -244,6 +245,7 @@ const HeatmapDetails = ({ onClose, customFields }: HeatMapProps) => {
                   return (
                     <Td key={option.id}>
                       <Tooltip
+                        disabled={!cell}
                         content={
                           <Box p="12px">
                             <Text>
@@ -284,6 +286,7 @@ const HeatmapDetails = ({ onClose, customFields }: HeatMapProps) => {
                           color={cellTextColor}
                           py="20px"
                           position="relative"
+                          minHeight="60px"
                         >
                           <Text
                             m="0px"

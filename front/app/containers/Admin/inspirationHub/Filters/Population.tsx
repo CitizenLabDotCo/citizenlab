@@ -23,7 +23,7 @@ const OPTIONS: Option[] = [
   { value: 'XL', label: 'XL' },
 ];
 
-const Size = () => {
+const Population = () => {
   const { formatMessage } = useIntl();
   const value = useRansackParam('q[tenant_population_group_eq]');
 
@@ -35,10 +35,10 @@ const Size = () => {
       onChange={(option: Option) =>
         setRansackParam('q[tenant_population_group_eq]', option.value)
       }
-      placeholder={formatMessage(messages.size)}
+      placeholder={formatMessage(messages.population)}
       mr="28px"
     />
   );
 };
 
-export default Size;
+export default Population;

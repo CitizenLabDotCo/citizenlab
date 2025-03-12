@@ -560,7 +560,7 @@
           },
           "map_center": {
             "title": "Map Center",
-            "description": "The default center point of the platform maps (latitude/longitude). Use a dot as a decimal separator.",
+            "description": "The default center point of the platform maps (latitude/longitude). Use a dot as a decimal separator. South and West values should be negative.",
             "type": "object",
             "additionalProperties": false,
             "properties": {
@@ -1382,6 +1382,32 @@
             "items": {
               "anyOf": <%= ::Verification::VerificationService.new.all_methods_json_schema %>
             }
+          }
+        }
+      },
+
+      "community_monitor": {
+        "type": "object",
+        "title": "Community Monitor",
+        "description": "Long running public survey.",
+        "additionalProperties": false,
+        "required": [
+          "allowed",
+          "enabled"
+        ],
+        "properties": {
+          "allowed": {
+            "type": "boolean",
+            "default": false
+          },
+          "enabled": {
+            "type": "boolean",
+            "default": false
+          },
+          "project_id": {
+            "title": "The ID of the required hidden project",
+            "description": "Do not edit unless you know what you're doing. This is usually set by the system",
+            "type": "string"
           }
         }
       }

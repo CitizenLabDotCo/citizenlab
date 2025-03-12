@@ -2,17 +2,17 @@ import { colors } from '@citizenlab/cl2-component-library';
 
 export const getCellBgColor = (lift: number | undefined): string => {
   if (lift === undefined) return colors.grey200;
-  if (lift > 1.5) return colors.success;
-  if (lift > 1) return colors.successLight;
-  if (lift > 0.5) return colors.errorLight;
+  if (lift >= 1.5) return colors.success;
+  if (lift >= 1) return colors.successLight;
+  if (lift >= 0.5) return colors.errorLight;
   return colors.error;
 };
 
 export const getCellTextColor = (lift: number | undefined): string => {
   if (lift === undefined) return colors.grey800;
-  if (lift > 1.5) return colors.white;
-  if (lift > 1) return colors.grey800;
-  if (lift > 0.5) return colors.grey800;
+  if (lift >= 1.5) return colors.white;
+  if (lift >= 1) return colors.grey800;
+  if (lift >= 0.5) return colors.grey800;
   return colors.white;
 };
 
