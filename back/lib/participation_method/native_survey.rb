@@ -134,7 +134,7 @@ module ParticipationMethod
     def end_page_field(custom_form, multiloc_service)
       CustomField.new(
         id: SecureRandom.uuid,
-        key: 'survey_end',
+        key: 'form_end',
         resource: custom_form,
         input_type: 'page',
         page_layout: 'default',

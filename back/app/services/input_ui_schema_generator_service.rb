@@ -78,7 +78,7 @@ class InputUiSchemaGeneratorService < UiSchemaGeneratorService
     form_logic = FormLogicService.new(fields)
     current_page_schema = nil
     field_schemas = []
-    survey_end_page = nil
+    form_end_page = nil
 
     fields.each do |field|
       field_schema = visit field
@@ -86,8 +86,8 @@ class InputUiSchemaGeneratorService < UiSchemaGeneratorService
         rules = form_logic.ui_schema_rules_for(field)
         field_schema[:ruleArray] = rules if rules.present?
 
-        if field.key == 'survey_end'
-          survey_end_page = field_schema
+        if field.key == 'form_end'
+          form_end_page = field_schema
         else
           field_schemas << field_schema
           current_page_schema = field_schema
@@ -99,8 +99,8 @@ class InputUiSchemaGeneratorService < UiSchemaGeneratorService
       end
     end
 
-    # Ensure survey_end page is always last
-    field_schemas << survey_end_page if survey_end_page
+    # Ensure form_end page is always last
+    field_schemas << form_end_page if form_end_page
 
     field_schemas
   end

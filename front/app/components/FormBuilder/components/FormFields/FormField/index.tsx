@@ -372,7 +372,7 @@ export const FormField = ({
               />
             </Box>
           </Box>
-          {field.key !== 'survey_end' && (
+          {field.key !== 'form_end' && (
             <Box
               mr="32px"
               ml="12px"
