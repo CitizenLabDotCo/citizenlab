@@ -7,11 +7,12 @@ import {
   colors,
   stylingConsts,
 } from '@citizenlab/cl2-component-library';
+import styled from 'styled-components';
 
 import { ProjectLibraryProjectData } from 'api/project_library_projects/types';
 
 import MethodLabel from '../MethodLabel';
-import { useLocalizeProjectLibrary } from '../utils';
+import { useLocalizeProjectLibrary, getProjectURL } from '../utils';
 
 import CardImage from './CardImage';
 
@@ -19,17 +20,33 @@ interface Props {
   project: ProjectLibraryProjectData;
 }
 
+const CardContainer = styled(Box)`
+  &:hover {
+    h3 {
+      color: ${({ theme }) => theme.colors.tenantPrimary};
+      text-decoration: underline;
+    }
+
+    .project-image-container > * {
+      transform: scale(1.2);
+    }
+  }
+`;
+
 const ProjectCard = ({ project }: Props) => {
   const localize = useLocalizeProjectLibrary();
 
   const { attributes, relationships } = project;
 
   return (
-    <Box
+    <CardContainer
+      as="a"
       bgColor={colors.white}
       borderRadius={stylingConsts.borderRadius}
       w="33%"
       p="16px"
+      href={getProjectURL(attributes) as any}
+      target="_blank"
     >
       <Box>
         <CardImage imageUrl={attributes.image_url ?? undefined} />
@@ -45,7 +62,7 @@ const ProjectCard = ({ project }: Props) => {
       {relationships.phases.data.map(({ id }) => (
         <MethodLabel projectLibraryPhaseId={id} key={id} />
       ))}
-    </Box>
+    </CardContainer>
   );
 };
 
