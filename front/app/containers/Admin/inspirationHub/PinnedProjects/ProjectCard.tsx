@@ -14,7 +14,7 @@ import { ProjectLibraryProjectData } from 'api/project_library_projects/types';
 
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 
-import MethodLabel from '../MethodLabel';
+import MethodLabel from '../components/MethodLabel';
 import { useCountriesByCode, useLocalizeProjectLibrary } from '../utils';
 
 import CardImage from './CardImage';

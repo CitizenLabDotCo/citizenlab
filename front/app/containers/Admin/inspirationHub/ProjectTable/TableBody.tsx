@@ -18,8 +18,8 @@ import { useIntl } from 'utils/cl-intl';
 import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 
+import MethodLabel from '../components/MethodLabel';
 import { STATUS_EMOJIS, STATUS_LABELS } from '../constants';
-import MethodLabel from '../MethodLabel';
 import { useLocalizeProjectLibrary, useCountriesByCode } from '../utils';
 
 import { formatDuration } from './utils';
