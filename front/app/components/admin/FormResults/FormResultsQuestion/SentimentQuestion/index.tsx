@@ -88,7 +88,7 @@ const SentimentQuestion = ({
             width="100%"
             display={isTabletOrSmaller ? 'block' : 'flex'}
             justifyContent="space-between"
-            px="8"
+            p="8"
           >
             <Box display="block" maxWidth="480px">
               <Title variant={titleVariant || 'h4'} my="12px">

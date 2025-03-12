@@ -1,18 +1,10 @@
 import React from 'react';
 
-import {
-  Box,
-  Icon,
-  Title,
-  Text,
-  colors,
-} from '@citizenlab/cl2-component-library';
+import { Box, Text } from '@citizenlab/cl2-component-library';
 import { useParams } from 'react-router-dom';
 
 import useProjectById from 'api/projects/useProjectById';
 import useFormResults from 'api/survey_results/useSurveyResults';
-
-import useLocalize from 'hooks/useLocalize';
 
 import SentimentQuestion from 'components/admin/FormResults/FormResultsQuestion/SentimentQuestion';
 
@@ -26,8 +18,6 @@ type Props = {
 };
 
 const FormResults = (props: Props) => {
-  const localize = useLocalize();
-
   const { projectId: projectIdParam, phaseId: phaseIdParam } = useParams() as {
     projectId: string;
     phaseId: string;
@@ -62,22 +52,7 @@ const FormResults = (props: Props) => {
       <Box>
         {totalSubmissions > 0 &&
           results.map((result, index) => {
-            if (result.inputType === 'page') {
-              return (
-                <Box display="flex" key={index} mb="20px" mt="48px">
-                  <Icon
-                    my="auto"
-                    name="dot"
-                    width="18px"
-                    mr="4px"
-                    fill={colors.teal}
-                  />
-                  <Title variant="h4" m="0px" fontWeight="bold">
-                    {localize(result.question)}
-                  </Title>
-                </Box>
-              );
-            } else {
+            if (result.inputType === 'sentiment_linear_scale') {
               return (
                 <SentimentQuestion
                   key={index}
@@ -87,6 +62,8 @@ const FormResults = (props: Props) => {
                 />
               );
             }
+
+            return null;
           })}
       </Box>
     </Box>
