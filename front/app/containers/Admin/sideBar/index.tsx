@@ -13,6 +13,8 @@ import { useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 import { InsertConfigurationOptions } from 'typings';
 
+import { IAppConfiguration } from 'api/app_configuration/types';
+import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useCommunityMonitorProject from 'api/community_monitor/useCommunityMonitorProject';
 import useIdeasCount from 'api/idea_count/useIdeasCount';
 import useAuthUser from 'api/me/useAuthUser';
@@ -28,7 +30,7 @@ import { isAdmin } from 'utils/permissions/roles';
 
 import MenuItem from './MenuItem';
 import messages from './messages';
-import defaultNavItems, { NavItem } from './navItems';
+import getDefaultNavItems, { NavItem } from './navItems';
 import NotificationsPopup from './NotificationsPopup';
 import { SupportMenu } from './SupportMenu';
 import { UserMenu } from './UserMenu';
@@ -82,9 +84,10 @@ const getTopAndBottomNavItems = (navItems: NavItem[]) => {
 
 interface Props {
   authUser: IUser;
+  appConfiguration: IAppConfiguration;
 }
 
-const Sidebar = ({ authUser }: Props) => {
+const Sidebar = ({ authUser, appConfiguration }: Props) => {
   const { formatMessage } = useIntl();
   const { pathname } = useLocation();
   const { data: communityMonitorProject, isError } =
@@ -101,7 +104,9 @@ const Sidebar = ({ authUser }: Props) => {
     isAdmin(authUser)
   );
 
-  const [navItems, setNavItems] = useState<NavItem[]>(defaultNavItems);
+  const [navItems, setNavItems] = useState<NavItem[]>(() =>
+    getDefaultNavItems(appConfiguration)
+  );
   const isPagesAndMenuPage = isPage('pages_menu', pathname);
   const isSmallerThanPhone = useBreakpoint('tablet');
 
@@ -211,9 +216,11 @@ const Sidebar = ({ authUser }: Props) => {
 
 const SidebarWrapper = () => {
   const { data: authUser } = useAuthUser();
-  if (!authUser) return null;
+  const { data: appConfiguration } = useAppConfiguration();
 
-  return <Sidebar authUser={authUser} />;
+  if (!authUser || !appConfiguration) return null;
+
+  return <Sidebar authUser={authUser} appConfiguration={appConfiguration} />;
 };
 
 export default SidebarWrapper;

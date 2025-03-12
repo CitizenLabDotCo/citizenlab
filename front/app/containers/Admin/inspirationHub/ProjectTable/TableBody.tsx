@@ -3,20 +3,25 @@ import React, { useMemo } from 'react';
 import {
   Tr,
   Th,
-  colors,
   Tbody,
   Spinner,
   Box,
   StatusLabel,
+  colors,
 } from '@citizenlab/cl2-component-library';
+import { useSearchParams } from 'react-router-dom';
 import styled from 'styled-components';
 
+import { Country } from 'api/project_library_countries/types';
 import useProjectLibraryCountries from 'api/project_library_countries/useProjectLibraryCountries';
 import { ProjectLibraryProjects } from 'api/project_library_projects/types';
 
 import { useIntl } from 'utils/cl-intl';
+import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
+import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 
 import { STATUS_EMOJIS, STATUS_LABELS } from '../constants';
+import { useLocalizeProjectLibrary } from '../utils';
 
 import MethodLabel from './MethodLabel';
 import { formatDuration } from './utils';
@@ -31,17 +36,35 @@ const Cell = styled(Th)`
   max-width: 200px;
 `;
 
+const TextButton = styled.button`
+  margin: 0;
+  padding: 0;
+
+  &:hover {
+    color: ${colors.grey800};
+    text-decoration: underline;
+  }
+
+  cursor: pointer;
+  font-weight: bold;
+  text-align: left;
+`;
+
 const TableBody = ({ libraryProjects, isInitialLoading }: Props) => {
   const { formatMessage } = useIntl();
   const { data: countries } = useProjectLibraryCountries();
+  const [searchParams] = useSearchParams();
+  const localizeProjectLibrary = useLocalizeProjectLibrary();
+
+  const drawerProjectId = searchParams.get('project_id');
 
   const countriesByCode = useMemo(() => {
     if (!countries) return;
 
     return countries.data.attributes.reduce((acc, country) => {
-      acc[country.code] = country.short_name;
+      acc[country.code] = country;
       return acc;
-    }, {} as Record<string, string>);
+    }, {} as Record<string, Country>);
   }, [countries]);
 
   return (
@@ -58,6 +81,13 @@ const TableBody = ({ libraryProjects, isInitialLoading }: Props) => {
         <>
           {libraryProjects.data.map(({ attributes, id, relationships }) => {
             const countryCode = attributes.tenant_country_alpha2;
+            const country =
+              countryCode && countriesByCode
+                ? countriesByCode[countryCode]
+                : null;
+            const countryString = country
+              ? `${country.emoji_flag} ${country.name}`
+              : '';
 
             return (
               <Tr key={id} background={colors.white}>
@@ -66,7 +96,18 @@ const TableBody = ({ libraryProjects, isInitialLoading }: Props) => {
                   {formatDuration(attributes.practical_end_at)}
                 </Cell>
                 <Cell>
-                  {attributes.title_en}
+                  <TextButton
+                    onClick={() => {
+                      id === drawerProjectId
+                        ? removeSearchParams(['project_id'])
+                        : updateSearchParams({ project_id: id });
+                    }}
+                  >
+                    {localizeProjectLibrary(
+                      attributes.title_multiloc,
+                      attributes.title_en
+                    )}
+                  </TextButton>
                   <br />
                   <Box
                     as="span"
@@ -81,22 +122,22 @@ const TableBody = ({ libraryProjects, isInitialLoading }: Props) => {
                 <Cell>{attributes.participants}</Cell>
                 <Cell>
                   {attributes.tenant_name}
-                  <StatusLabel
-                    text={attributes.tenant_population_group}
-                    backgroundColor={colors.coolGrey600}
-                    h="16px"
-                    w="24px"
-                    ml="4px"
-                  />
+                  {attributes.tenant_population_group && (
+                    <StatusLabel
+                      text={attributes.tenant_population_group}
+                      backgroundColor={colors.coolGrey600}
+                      h="16px"
+                      w="24px"
+                      ml="4px"
+                    />
+                  )}
                   <Box
                     as="span"
                     display="block"
                     color={colors.textSecondary}
                     mt="4px"
                   >
-                    {countryCode && countriesByCode
-                      ? countriesByCode[countryCode]
-                      : ''}
+                    {countryString}
                   </Box>
                 </Cell>
                 <Cell>

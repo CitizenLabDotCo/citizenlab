@@ -22,8 +22,8 @@ const easing = 'cubic-bezier(0.165, 0.84, 0.44, 1)';
 
 const ModalWrapper = styled(clickOutside)``;
 
-const ModalContainer = styled.div`
-  width: 940px;
+const ModalContainer = styled.div<{ width: string }>`
+  width: ${({ width }) => width};
   height: 100vh;
   background: white;
   display: flex;
@@ -150,6 +150,7 @@ type Props = {
   className?: string;
   label?: string;
   children?: any;
+  width?: string;
 };
 
 type State = {
@@ -214,7 +215,7 @@ export default class SideModal extends PureComponent<Props, State> {
   };
 
   render(): React.ReactNode {
-    const { children, opened, label } = this.props;
+    const { children, opened, label, width = '940px' } = this.props;
     // TODO: Fix this the next time the file is edited.
     // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     const modalPortalElement = document?.getElementById('modal-portal');
@@ -245,7 +246,7 @@ export default class SideModal extends PureComponent<Props, State> {
               closeOnClickOutsideEnabled={!this.state.innerModalOpened}
             >
               <FocusOn>
-                <ModalContainer>
+                <ModalContainer width={width}>
                   <ModalContent id="e2e-side-modal-content">
                     {children}
                   </ModalContent>

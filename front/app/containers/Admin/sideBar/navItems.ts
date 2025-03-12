@@ -1,7 +1,10 @@
 import { IconNames } from '@citizenlab/cl2-component-library';
 import { RouteType } from 'routes';
 
-import { TAppConfigurationSetting } from 'api/app_configuration/types';
+import {
+  IAppConfiguration,
+  TAppConfigurationSetting,
+} from 'api/app_configuration/types';
 
 import messages from './messages';
 
@@ -16,7 +19,11 @@ export type NavItem = {
   showAtBottom?: boolean;
 };
 
-const navItems: NavItem[] = [
+const getDefaultNavItems = ({
+  data: {
+    attributes: { country_code },
+  },
+}: IAppConfiguration): NavItem[] => [
   {
     name: 'dashboard',
     link: '/admin/dashboard/overview',
@@ -62,17 +69,20 @@ const navItems: NavItem[] = [
     featureNames: ['community_monitor'],
   },
   {
+    name: 'inspirationHub',
+    link: (country_code
+      ? `/admin/inspiration-hub?q[tenant_country_alpha2_eq]=${country_code}`
+      : '/admin/inspiration-hub') as any,
+    iconName: 'globe',
+    message: 'inspirationHub',
+    featureNames: ['project_library'],
+  },
+  {
     name: 'tools',
     link: `/admin/tools`,
     iconName: 'grid',
     message: 'tools',
-  },
-  {
-    name: 'inspirationHub',
-    link: '/admin/inspiration-hub',
-    iconName: 'globe',
-    message: 'inspirationHub',
-    featureNames: ['project_library'],
+    showAtBottom: true,
   },
   {
     name: 'menu',
@@ -90,4 +100,4 @@ const navItems: NavItem[] = [
   },
 ];
 
-export default navItems;
+export default getDefaultNavItems;
