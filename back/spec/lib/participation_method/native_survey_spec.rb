@@ -191,6 +191,7 @@ RSpec.describe ParticipationMethod::NativeSurvey do
   its(:form_logic_enabled?) { is_expected.to be true }
   its(:follow_idea_on_idea_submission?) { is_expected.to be false }
   its(:validate_phase) { is_expected.to be_nil }
+  its(:supports_custom_field_topics?) { is_expected.to be false }
 
   describe 'proposed_budget_in_form?' do # private method
     it 'is expected to be false' do

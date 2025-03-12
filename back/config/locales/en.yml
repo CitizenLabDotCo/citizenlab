@@ -183,6 +183,29 @@ en:
         title: Type your answer
       ask_follow_up_field:
         title: Tell us why
+    community_monitor:
+      place_to_live:
+        title: City as a place to live
+      sense_of_safety:
+        title: Overall sense of safety
+      access_to_parks:
+        title: Access to parks, green spaces, and recreational opportunities
+      affordable_housing:
+        title: Availability of affordable housing
+      employment_opportunities:
+        title: Employment and economic advancement opportunities
+      quality_of_services:
+        title: Overall quality of services provided by the city
+      overall_value:
+        title: Overall value you receive for your city taxes and fees
+      cleanliness_and_maintenance:
+        title: Overall cleanliness and maintenance of streets and public spaces
+      trust_in_government:
+        title: Trust in local government
+      responsiveness_of_officials:
+        title: Responsiveness of elected officials to community concerns
+      transparency_of_money_spent:
+        title: Transparency about how municipal tax money is spent
   custom_forms:
     categories:
       main_content:
