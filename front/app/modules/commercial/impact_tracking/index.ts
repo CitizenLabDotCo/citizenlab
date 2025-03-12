@@ -67,10 +67,12 @@ const trackPageView = async (path: string) => {
   if (previousPathTracked === path) return;
 
   // On first homepage load, if we don't enter the platform on a locale,
-  // we set it immediately. Usually, we set it before the page track event
-  // fires, but in some cases our app is too slow.
+  // we set the locale immediately. Usually, we set the locale before the
+  // page track event fires, but in some cases our app is too slow.
   // This then triggers the page view event twice.
   // With this check, we avoid logging this pageview twice.
+  // We check both '/' and '' because the path can be either-
+  // usually it's '/' but some browsers seem to omit the trailing slash.
   if (path === '/' || path === '') return;
 
   // We also only start tracking page views after the session has been created.
