@@ -31,7 +31,7 @@ const ProjectCards = () => {
   return (
     <Box>
       {projectsInRows.map((row, i) => (
-        <Box display="flex" flexDirection="row" gap="12px" key={i}>
+        <Box display="flex" flexDirection="row" gap="12px" key={i} mb="12px">
           {row.map((project) => (
             <ProjectCard project={project} key={project.id} />
           ))}
