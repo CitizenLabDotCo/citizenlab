@@ -120,26 +120,6 @@ class InputUiSchemaGeneratorService < UiSchemaGeneratorService
     categorization_schema_with(input_term, schema_elements_for(fields))
   end
 
-  def generate_for_current_locale(fields)
-    # Case for native surveys
-    return generate_for_current_locale_without_sections fields if fields.none?(&:section?)
-
-    current_section = nil
-    section_fields = []
-    elements = []
-    fields.each do |field|
-      if field.section?
-        elements += [generate_section(current_section, section_fields)] if current_section
-        current_section = field
-        section_fields = []
-      else
-        section_fields += [field]
-      end
-    end
-    elements += [generate_section(current_section, section_fields)] if current_section
-    categorization_schema_with input_term, elements
-  end
-
   def generate_section(current_section, section_fields)
     {
       type: 'Category',
@@ -149,7 +129,7 @@ class InputUiSchemaGeneratorService < UiSchemaGeneratorService
     }
   end
 
-  def generate_for_current_locale_without_sections(fields)
+  def generate_for_current_locale(fields)
     category = {
       type: 'Category',
       label: nil,

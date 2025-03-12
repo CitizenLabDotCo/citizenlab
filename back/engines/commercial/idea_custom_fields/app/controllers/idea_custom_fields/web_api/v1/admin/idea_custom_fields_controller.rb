@@ -377,7 +377,6 @@ module IdeaCustomFields
       update_payload = {
         save_type: update_all_params[:form_save_type],
         pages: @page_count,
-        sections: @section_count,
         fields: @field_count,
         params_size: params.to_s.size,
         form_opened_at: update_all_params[:form_opened_at]&.to_datetime,
@@ -391,8 +390,6 @@ module IdeaCustomFields
       @section_count ||= 0
       @field_count ||= 0
       case field.input_type
-      when 'section'
-        @section_count += 1
       when 'page'
         @page_count += 1
       else

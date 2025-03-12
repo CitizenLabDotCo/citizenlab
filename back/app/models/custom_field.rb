@@ -233,10 +233,6 @@ class CustomField < ApplicationRecord
     input_type == 'page'
   end
 
-  def section?
-    input_type == 'section'
-  end
-
   def multiselect?
     %w[multiselect multiselect_image].include?(input_type)
   end
@@ -280,7 +276,7 @@ class CustomField < ApplicationRecord
     visitor.send visitor_method, self
   end
 
-  # Special behaviour for ideation section 1
+  # Special behaviour for ideation page 1
   def title_multiloc
     if code == 'ideation_page1'
       key = "custom_forms.categories.main_content.#{input_term}.title"
