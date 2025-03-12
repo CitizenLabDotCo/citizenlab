@@ -15,10 +15,10 @@ class IdeaCustomFieldsService
 
     fields = fields.to_a
 
-    survey_end_field = fields.find { |f| f.key == 'survey_end' }
-    if survey_end_field
-      fields.delete(survey_end_field)
-      fields << survey_end_field
+    form_end_field = fields.find { |f| f.key == 'form_end' }
+    if form_end_field
+      fields.delete(form_end_field)
+      fields << form_end_field
     end
 
     fields

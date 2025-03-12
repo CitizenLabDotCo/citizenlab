@@ -327,5 +327,5 @@ export const findNextPageAfterCurrentPage = (
       .find((item) => item.input_type === 'page');
     if (nextPage?.id) return nextPage.id;
   }
-  return 'survey_end';
+  return 'form_end';
 };
