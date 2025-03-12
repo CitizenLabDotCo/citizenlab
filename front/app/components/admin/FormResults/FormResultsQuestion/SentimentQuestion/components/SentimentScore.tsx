@@ -59,7 +59,7 @@ const SentimentScore = ({ answers }: Props) => {
                       borderRadius="50%"
                       background={getSentimentValueColour(answer)}
                     />
-                    <Text maxWidth="140px" m="0px" color="white">
+                    <Text maxWidth="140px" m="0px" color="white" pr="8px">
                       {typeof label !== 'string' && localize(label)}
                     </Text>
                   </Box>
