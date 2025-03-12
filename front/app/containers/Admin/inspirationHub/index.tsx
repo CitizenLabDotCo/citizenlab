@@ -14,8 +14,8 @@ import clHistory from 'utils/cl-router/history';
 import Filters from './Filters';
 import messages from './messages';
 import PinnedProjects from './PinnedProjects';
+import ProjectCards from './ProjectCards';
 import ProjectDrawer from './ProjectDrawer';
-import ProjectTable from './ProjectTable';
 
 const InspirationHub = () => {
   const projectLibraryEnabled = useFeatureFlag({ name: 'project_library' });
@@ -58,7 +58,7 @@ const InspirationHub = () => {
               <FormattedMessage {...messages.resetFilters} />
             </Button>
           </Box>
-          <ProjectTable />
+          <ProjectCards />
         </Box>
       </Box>
       <ProjectDrawer />

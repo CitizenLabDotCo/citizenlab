@@ -6,7 +6,7 @@ import useProjectLibraryPhase from 'api/project_library_phases/useProjectLibrary
 
 import { useIntl } from 'utils/cl-intl';
 
-import { PARTICIPATION_METHOD_LABELS } from './constants';
+import { PARTICIPATION_METHOD_LABELS } from '../constants';
 
 interface Props {
   projectLibraryPhaseId: string;
