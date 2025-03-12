@@ -53,14 +53,7 @@ const FormResults = (props: Props) => {
         {totalSubmissions > 0 &&
           results.map((result, index) => {
             if (result.inputType === 'sentiment_linear_scale') {
-              return (
-                <SentimentQuestion
-                  key={index}
-                  result={result}
-                  mb="8px"
-                  titleVariant="h5"
-                />
-              );
+              return <SentimentQuestion key={index} result={result} mb="8px" />;
             }
 
             return null;
