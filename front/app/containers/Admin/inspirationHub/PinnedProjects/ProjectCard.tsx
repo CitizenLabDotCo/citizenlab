@@ -32,7 +32,7 @@ const ProjectCard = ({ project }: Props) => {
       p="16px"
     >
       <Box>
-        <CardImage />
+        <CardImage imageUrl={attributes.image_url ?? undefined} />
       </Box>
       <Box>
         <Title variant="h3" color="primary" mt="12px">

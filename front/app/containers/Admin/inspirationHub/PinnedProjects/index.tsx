@@ -26,13 +26,7 @@ const PinnedProjects = () => {
     return null;
   }
 
-  if (!projects) {
-    // Add loading state
-    return null;
-  }
-
-  if (projects.data.length === 0) {
-    // Add message for empty state
+  if (!projects || projects.data.length === 0) {
     return null;
   }
 
@@ -41,7 +35,7 @@ const PinnedProjects = () => {
       <Title variant="h2" color="primary" mt="0px">
         <FormattedMessage {...messages.highlighted} />
       </Title>
-      <Box>
+      <Box display="flex" flexDirection="row" gap="12px">
         {projects.data.map((project) => (
           <ProjectCard project={project} key={project.id} />
         ))}
