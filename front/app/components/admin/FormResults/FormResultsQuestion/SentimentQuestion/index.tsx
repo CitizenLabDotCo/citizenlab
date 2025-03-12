@@ -88,13 +88,10 @@ const SentimentQuestion = ({
             width="100%"
             display={isTabletOrSmaller ? 'block' : 'flex'}
             justifyContent="space-between"
+            px="8"
           >
             <Box display="block" maxWidth="480px">
-              <Title
-                variant={titleVariant || 'h4'}
-                my="12px"
-                fontWeight="semi-bold"
-              >
+              <Title variant={titleVariant || 'h4'} my="12px">
                 {questionNumber && <>{questionNumber}. </>}
                 <T value={question} />
               </Title>
@@ -108,7 +105,7 @@ const SentimentQuestion = ({
 
             <Box
               display="flex"
-              gap={isTabletOrSmaller ? '5%' : '50%'}
+              gap={isTabletOrSmaller ? '5%' : '40%'}
               justifyContent={isMobileOrSmaller ? 'flex-start' : 'flex-end'}
             >
               {!isMobileOrSmaller && hasTextResponses && (
