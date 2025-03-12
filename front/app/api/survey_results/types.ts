@@ -11,6 +11,8 @@ export type SurveyResultsKeys = Keys<typeof surveyResultsKeys>;
 export type IParameters = {
   phaseId: string | null;
   filterLogicIds: string[];
+  startMonth?: string;
+  endMonth?: string;
 };
 
 export interface Answer {
@@ -82,6 +84,11 @@ export type MatrixLinearScaleResult = {
   answers: MatrixLinearScaleAnswer[];
 };
 
+type LinearScaleAverage = {
+  this_period: number;
+  last_period: number;
+};
+
 export type ResultUngrouped = BaseResult & {
   grouped: false;
   answers?: Answer[];
@@ -89,6 +96,9 @@ export type ResultUngrouped = BaseResult & {
   // Rankings
   average_rankings?: AverageRankings;
   rankings_counts?: RankingsCounts;
+
+  // Sentiment
+  averages?: LinearScaleAverage;
 
   // Undefined for text and file upload questions
   multilocs?: AnswerMultilocs;
@@ -109,6 +119,8 @@ export type ResultUngrouped = BaseResult & {
 export type ResultGrouped = BaseResult & {
   grouped: true;
   answers: GroupedAnswer[];
+  // Sentiment
+  averages?: LinearScaleAverage;
   multilocs: AnswerMultilocsGrouped;
   legend: (string | null)[];
 };

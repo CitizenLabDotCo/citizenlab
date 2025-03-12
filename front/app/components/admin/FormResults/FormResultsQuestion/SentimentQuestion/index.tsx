@@ -9,18 +9,23 @@ import {
   colors,
   BoxProps,
   TitleProps,
+  useBreakpoint,
 } from '@citizenlab/cl2-component-library';
 
-import { ResultUngrouped } from 'api/survey_results/types';
+import { ResultGrouped, ResultUngrouped } from 'api/survey_results/types';
 
 import InputType from 'components/admin/FormResults/FormResultsQuestion/InputType';
 import T from 'components/T';
 
+import { useIntl } from 'utils/cl-intl';
+
+import Comments from './components/Comments';
 import SentimentScore from './components/SentimentScore';
+import messages from './messages';
 import { parseResult, SentimentAnswers } from './utils';
 
 type Props = {
-  result: ResultUngrouped;
+  result: ResultUngrouped | ResultGrouped;
   titleVariant?: TitleProps['variant'];
 };
 
@@ -29,6 +34,11 @@ const SentimentQuestion = ({
   titleVariant,
   ...props
 }: Props & BoxProps) => {
+  const isTabletOrSmaller = useBreakpoint('tablet');
+  const isMobileOrSmaller = useBreakpoint('phone');
+
+  const { formatMessage } = useIntl();
+
   const answers: SentimentAnswers = useMemo(() => {
     return parseResult(result);
   }, [result]);
@@ -37,10 +47,30 @@ const SentimentQuestion = ({
     inputType,
     question,
     questionNumber,
+    textResponses,
     required,
     totalResponseCount,
     questionResponseCount,
+    averages,
   } = result;
+
+  // Handle text responses
+  const answersCount = textResponses?.length;
+  const hasTextResponses = !!answersCount && answersCount > 0;
+
+  // Handle calculation for this and last period, if applicable
+  const thisPeriodAvg = averages?.this_period;
+  const lastPeriodAvg = averages?.last_period;
+
+  const getPercentDifference = () => {
+    if (thisPeriodAvg && lastPeriodAvg) {
+      return ((thisPeriodAvg - lastPeriodAvg) / lastPeriodAvg) * 100;
+    }
+
+    return null;
+  };
+
+  const percentageDifference = getPercentDifference();
 
   return (
     <Box
@@ -54,14 +84,21 @@ const SentimentQuestion = ({
         title={
           <Box
             width="100%"
-            display="flex"
+            display={isTabletOrSmaller ? 'block' : 'flex'}
             justifyContent="space-between"
             alignItems="center"
             py="0px"
+            gap="20px"
           >
-            <Box display="block">
-              <Title variant={titleVariant || 'h4'} mt="12px" mb="12px">
-                {questionNumber}. <T value={question} />
+            <Box display="block" maxWidth="480px" flexShrink={0}>
+              <Title
+                variant={titleVariant || 'h4'}
+                mt="12px"
+                mb="12px"
+                fontWeight="semi-bold"
+              >
+                {questionNumber && <>{questionNumber}. </>}
+                <T value={question} />
               </Title>
               <InputType
                 inputType={inputType}
@@ -71,24 +108,34 @@ const SentimentQuestion = ({
               />
             </Box>
 
-            <Box display="flex" gap="160px">
-              <Box display="flex" gap="4px">
-                <Icon
-                  my="auto"
-                  width="16px"
-                  name="comment"
-                  fill={colors.coolGrey500}
-                />
-                <Text my="auto" color="coolGrey700">
-                  12 Comments
-                </Text>
-              </Box>
+            <Box
+              display="flex"
+              gap={isTabletOrSmaller ? '80px' : '200px'}
+              justifyContent={isMobileOrSmaller ? 'flex-start' : 'flex-end'}
+            >
+              {!isMobileOrSmaller && hasTextResponses && (
+                <Box display="flex" gap="4px">
+                  <Box my="auto" flexShrink={0}>
+                    <Icon
+                      width="16px"
+                      name="comment"
+                      fill={colors.coolGrey500}
+                    />
+                  </Box>
+                  <Text my="auto" color="coolGrey700" style={{ flexShrink: 0 }}>
+                    {formatMessage(messages.xComments, {
+                      count: answersCount || 0,
+                    })}
+                  </Text>
+                </Box>
+              )}
+
               <Box my="auto">
                 <Box>
                   <Box display="flex" justifyContent="space-between" mb="4px">
                     <Box display="flex">
                       <Title color="grey800" m="0px" variant="h4">
-                        2.1
+                        {averages?.this_period}
                       </Title>
                       <Text
                         color="grey700"
@@ -100,15 +147,18 @@ const SentimentQuestion = ({
                         /5
                       </Text>
                     </Box>
-                    <Text m="0px" color="green500" fontSize="s">
-                      <Icon
-                        mr="4px"
-                        width="13px"
-                        name="trend-up"
-                        fill="green500"
-                      />
-                      +12%
-                    </Text>
+                    {percentageDifference && (
+                      <Text m="0px" color="green500" fontSize="s">
+                        <Icon
+                          mr="4px"
+                          width="13px"
+                          name="trend-up"
+                          fill="green500"
+                        />
+                        {percentageDifference >= 0 ? '+' : '-'}
+                        {percentageDifference}%
+                      </Text>
+                    )}
                   </Box>
                 </Box>
                 <SentimentScore answers={answers} />
@@ -119,44 +169,12 @@ const SentimentQuestion = ({
         border="1px solid rgb(218, 217, 217) !important"
         padding="20px"
       >
-        <Box display="flex" gap="16px">
-          <Box
-            w="300px"
-            h="260px"
-            background={colors.coolGrey300}
-            display="flex"
-            gap="16px"
-          >
-            AI Summary
-          </Box>
-          <Box
-            w="300px"
-            h="260px"
-            background={colors.grey100}
-            display="flex"
-            gap="16px"
-          >
-            Comment
-          </Box>
-          <Box
-            w="300px"
-            h="260px"
-            background={colors.grey100}
-            display="flex"
-            gap="16px"
-          >
-            Comment
-          </Box>
-          <Box
-            w="300px"
-            h="260px"
-            background={colors.grey100}
-            display="flex"
-            gap="16px"
-          >
-            Comment
-          </Box>
-        </Box>
+        {textResponses && (
+          <Comments
+            customFieldId={result.customFieldId}
+            textResponses={textResponses}
+          />
+        )}
       </Accordion>
     </Box>
   );

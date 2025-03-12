@@ -137,6 +137,35 @@ export const icons = {
       <path d="M17,13H13V17H11V13H7V11H11V7H13V11H17M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2Z" />
     </Svg>
   ),
+  'star-circle': (props: IconPropsWithoutName) => (
+    <Svg
+      className={`cl-icon ${props.className ? props.className : ''}`}
+      width="13px"
+      height="13px"
+      viewBox="0 0 13 13"
+      {...props}
+    >
+      <rect y="0.448242" width="12.1035" height="12.1035" rx="6.05176" />
+      <g clipPath="url(#clip0_5762_3624)">
+        <path
+          fillRule="evenodd"
+          clipRule="evenodd"
+          d="M9.37939 7.04265C9.98519 6.89119 9.98519 6.6413 9.37939 6.48984L8.03914 6.15667C7.43333 6.00522 6.81242 5.3843 6.66096 4.77851L6.32781 3.43822C6.17634 2.83244 5.92646 2.83244 5.77501 3.43822L5.44183 4.77851C5.29038 5.3843 4.66946 6.00522 4.06367 6.15667L2.72338 6.48984C2.1176 6.6413 2.1176 6.89119 2.72338 7.04265L4.06367 7.37579C4.66946 7.52726 5.29038 8.14816 5.44183 8.75395L5.77501 10.0942C5.92646 10.7 6.17634 10.7 6.32781 10.0942L6.66096 8.75395C6.81242 8.14816 7.43333 7.52726 8.03914 7.37579L9.37939 7.04265Z"
+          fill="white"
+        />
+      </g>
+      <defs>
+        <clipPath id="clip0_5762_3624">
+          <rect
+            width="8.89752"
+            height="8.89752"
+            fill="white"
+            transform="translate(1.60303 2.05127)"
+          />
+        </clipPath>
+      </defs>
+    </Svg>
+  ),
   delete: (props: IconPropsWithoutName) => (
     <Svg
       className={`cl-icon ${props.className ? props.className : ''}`}

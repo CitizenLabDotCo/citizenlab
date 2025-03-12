@@ -1,6 +1,6 @@
 import { Multiloc } from 'typings';
 
-import { ResultUngrouped } from 'api/survey_results/types';
+import { ResultGrouped, ResultUngrouped } from 'api/survey_results/types';
 
 export type SentimentAnswers =
   | {
@@ -11,7 +11,7 @@ export type SentimentAnswers =
     }[]
   | undefined;
 
-export const parseResult = (result: ResultUngrouped) => {
+export const parseResult = (result: ResultUngrouped | ResultGrouped) => {
   const usersNoAnswer = result.answers?.[5].count;
   const totalUsersWhoAnswered = usersNoAnswer
     ? result.totalPickCount - usersNoAnswer

@@ -39,6 +39,8 @@
 #  linear_scale_label_10_multiloc :jsonb            not null
 #  linear_scale_label_11_multiloc :jsonb            not null
 #  ask_follow_up                  :boolean          default(FALSE), not null
+#  page_button_label_multiloc     :jsonb            not null
+#  page_button_link               :string
 #
 # Indexes
 #
@@ -127,8 +129,12 @@ class CustomField < ApplicationRecord
     ask_follow_up
   end
 
+  def support_follow_up?
+    %w[sentiment_linear_scale].include?(input_type)
+  end
+
   def support_free_text_value?
-    %w[text multiline_text text_multiloc multiline_text_multiloc html_multiloc].include?(input_type) || (support_options? && includes_other_option?)
+    %w[text multiline_text text_multiloc multiline_text_multiloc html_multiloc].include?(input_type) || (support_options? && includes_other_option?) || (support_follow_up?)
   end
 
   def support_option_images?
