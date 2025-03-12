@@ -30,23 +30,22 @@ const SentimentStats = ({ result }: Props) => {
     !!thisPeriodAvg &&
     getPercentageDifference(thisPeriodAvg, lastPeriodAvg);
 
-  // Set the trend icon, color and text to use, depending on the trend direction
-
+  // Set the trend icon, color and percentage to use, depending on the trend direction
   // By default, the trend is neutral (0%)
   let trendIcon: IconNames | undefined = undefined;
   let trendColor = colors.grey700;
-  let trendText = '0%';
+  let trendPercentage = '0%';
 
   if (percentageDifference) {
     if (percentageDifference > 0) {
       // Trend direction: up
       trendColor = colors.green500;
-      trendText = `+${Math.round(percentageDifference)}%`;
+      trendPercentage = `+${Math.round(percentageDifference)}%`;
     } else if (percentageDifference < 0) {
       // Trend direction: down
       trendIcon = 'trend-down';
       trendColor = colors.red400;
-      trendText = `${Math.round(percentageDifference)}%`;
+      trendPercentage = `${Math.round(percentageDifference)}%`;
     }
   }
 
@@ -77,7 +76,7 @@ const SentimentStats = ({ result }: Props) => {
             {trendIcon && (
               <Icon mr="4px" width="13px" name={trendIcon} fill={trendColor} />
             )}
-            {trendText}
+            {trendPercentage}
           </Text>
         )}
       </Box>
