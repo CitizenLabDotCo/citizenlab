@@ -10,7 +10,7 @@ import {
   ProjectLibraryProjectsKeys,
 } from './types';
 
-const fetchLibraryProjects = (queryParams: Parameters) =>
+export const fetchLibraryProjects = (queryParams: Parameters) =>
   fetcher<ProjectLibraryProjects>({
     path: `/projects`,
     action: 'get',

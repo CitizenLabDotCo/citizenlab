@@ -3,21 +3,26 @@ import React, { useMemo } from 'react';
 import { Box } from '@citizenlab/cl2-component-library';
 
 import { ProjectLibraryProjectData } from 'api/project_library_projects/types';
-import useProjectLibraryProjects from 'api/project_library_projects/useProjectLibraryProjects';
+import useInfiniteProjectLibraryProjects from 'api/project_library_projects/useInfiniteProjectLibraryProjects';
 
 import ProjectCard from '../components/ProjectCard';
 import { useRansackParams } from '../utils';
 
 const ProjectCards = () => {
   const ransackParams = useRansackParams();
-  const { data: projects } = useProjectLibraryProjects(ransackParams);
+  const { data: projects } = useInfiniteProjectLibraryProjects(ransackParams);
+
+  const flatProjects = useMemo(() => {
+    if (!projects) return undefined;
+    return projects.pages.map((page) => page.data).flat();
+  }, [projects]);
 
   const projectsInRows = useMemo(() => {
-    if (!projects) return [];
+    if (!flatProjects) return [];
 
     const rows: ProjectLibraryProjectData[][] = [];
 
-    projects.data.forEach((project, index) => {
+    flatProjects.forEach((project, index) => {
       if (index % 3 === 0) {
         rows.push([project]);
       } else {
@@ -26,7 +31,7 @@ const ProjectCards = () => {
     });
 
     return rows;
-  }, [projects]);
+  }, [flatProjects]);
 
   return (
     <Box>
