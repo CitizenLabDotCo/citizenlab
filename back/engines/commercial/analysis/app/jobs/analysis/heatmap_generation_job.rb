@@ -2,7 +2,7 @@
 
 module Analysis
   class HeatmapGenerationJob < ApplicationJob
-    self.priority = 45 # Slighltly more important than emails (50)
+    self.priority = 45 # Slightly more important than emails (50)
 
     def run(analysis)
       analysis.heatmap_cells.destroy_all

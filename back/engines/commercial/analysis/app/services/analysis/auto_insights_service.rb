@@ -14,7 +14,6 @@ module Analysis
 
     def generate(unit: 'inputs', tags: detect_tags, user_custom_fields: detect_user_custom_fields, input_custom_fields: detect_input_custom_fields)
       matrix = big_fat_matrix(unit, tags:, user_custom_fields:, input_custom_fields:)
-
       matrix
         .flat_map(&:keys)
         .uniq # => [col1, col2, col3]
@@ -66,7 +65,9 @@ module Analysis
         )
       when 'likes', 'dislikes'
         big_fat_matrix_helper(
-          items: Reaction.where(reactable_type: 'Idea', reactable_id: @analysis.inputs, mode: unit == 'likes' ? 'up' : 'down').includes(:user, :reactable),
+          items: Reaction
+            .where(reactable_type: 'Idea', reactable_id: @analysis.inputs, mode: unit == 'likes' ? 'up' : 'down')
+            .includes(:user, :reactable),
           inputs_custom_field_values: ->(reaction) { [reaction.reactable.custom_field_values] },
           author: ->(reaction) { reaction.user },
           input_ids: ->(reaction) { [reaction.reactable_id] },
@@ -94,15 +95,13 @@ module Analysis
       user_custom_fields:,
       input_custom_fields:
     )
-      tag_map = tag_map(tags)
-
       items.map do |item|
         row = {}
 
         # Add columns for tags
         ids = input_ids.call(item)
         tags.each do |tag|
-          row[tag] = ids.any? { |id| tag_map[id][tag] }
+          row[tag] = ids.any? { |id| tag_map(tags).dig(id, tag.id) }
         end
 
         # Add columns for input custom fields
@@ -145,7 +144,7 @@ module Analysis
     private
 
     def detect_input_custom_fields
-      @analysis.associated_custom_fields
+      CustomField.where(id: @analysis.associated_custom_fields).includes(:options).select(&:support_options?)
     end
 
     def detect_user_custom_fields
@@ -158,13 +157,12 @@ module Analysis
 
     # Nested hash to quickly check whether a certain input has a certain tag
     def tag_map(tags)
-      tag_map = Hash.new { |h, k| h[k] = {} }
-      tags.each do |tag|
-        tag.input_ids.each do |input_id|
-          tag_map[input_id][tag] = true
-        end
-      end
-      tag_map
+      @tag_map ||= {}
+      @tag_map[tags] ||=
+        Tagging.where(tag: tags)
+          .select(:input_id, :tag_id)
+          .group_by(&:input_id)
+          .transform_values { |taggings| taggings.each_with_object({}) { |tagging, hash| hash[tagging.tag_id] = true } }
     end
 
     def participant_to_inputs_map
