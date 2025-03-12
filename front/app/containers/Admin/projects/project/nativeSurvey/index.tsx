@@ -16,19 +16,19 @@ import PDFExportModal, {
   FormValues,
 } from 'containers/Admin/projects/components/PDFExportModal';
 
+import FormResults from 'components/admin/FormResults';
+import DeleteModal from 'components/admin/SurveyDeleteModal/SurveyDeleteModal';
+import DropdownSettings from 'components/admin/SurveyDropdownSettings/DropdownSettings';
+import EditWarningModal from 'components/admin/SurveyEditWarningModal';
 import Button from 'components/UI/ButtonWithLink';
 
 import { useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
+import { getFormActionsConfig } from 'utils/configs/formActionsConfig/utils';
 
 import CopySurveyModal from './CopySurveyModal';
-import EditWarningModal from './EditWarningModal';
-import FormResults from './FormResults';
 import messages from './messages';
-import DeleteModal from './NativeSurveySettings/DeleteModal';
-import DropdownSettings from './NativeSurveySettings/DropdownSettings';
 import { saveSurveyAsPDF } from './saveSurveyAsPDF';
-import { getFormActionsConfig } from './utils';
 
 const Forms = () => {
   const locale = useLocale();

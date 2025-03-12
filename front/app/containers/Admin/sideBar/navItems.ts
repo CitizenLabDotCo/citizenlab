@@ -62,6 +62,13 @@ const getDefaultNavItems = ({
     featureNames: ['report_builder'],
   },
   {
+    name: 'community_monitor',
+    link: '/admin/community-monitor',
+    iconName: 'community_monitor',
+    message: 'community_monitor',
+    featureNames: ['community_monitor'],
+  },
+  {
     name: 'inspirationHub',
     link: (country_code
       ? `/admin/inspiration-hub?q[tenant_country_alpha2_eq]=${country_code}`
