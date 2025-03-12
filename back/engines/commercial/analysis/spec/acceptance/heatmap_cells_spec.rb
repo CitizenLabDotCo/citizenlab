@@ -20,7 +20,7 @@ resource 'HeatmapCells' do
     parameter :max_p_value, 'The p-value threshold for the heatmap. Only cells with a p-value below this threshold will be returned'
     parameter :min_lift_diff, 'The minimal percentage points of difference with 100% in lift. Only cells with a lift difference above this threshold will be returned. E.g. passing 50 will only return cells with a lift <= 0.5 or >= 1.5'
 
-    with_options scope: :page_params do
+    with_options scope: :page do
       parameter :number, 'Page number'
       parameter :size, 'Number of cells per page'
     end
@@ -52,6 +52,14 @@ resource 'HeatmapCells' do
         column: { data: { id: heatmap_cells[1].column.id, type: 'custom_field_option' } },
         row: { data: { id: heatmap_cells[1].row.id, type: 'tag' } }
       )
+    end
+
+    example 'List heatmap cells with pagination' do
+      do_request(page: { size: 1, number: 2 })
+
+      expect(status).to eq 200
+      expect(response_data.size).to eq(1)
+      expect(response_data.first[:id]).to eq(heatmap_cells[0].id)
     end
 
     example 'Respects the row_category filters' do

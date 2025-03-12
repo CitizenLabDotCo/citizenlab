@@ -16,6 +16,7 @@ module Analysis
           heatmap_cells = @analysis.heatmap_cells
           heatmap_cells = heatmap_cells.order(Arel.sql('abs(1 - lift) DESC'))
           heatmap_cells = apply_filters(heatmap_cells)
+          heatmap_cells = paginate(heatmap_cells)
 
           render json: WebApi::V1::HeatmapCellSerializer.new(
             heatmap_cells,
