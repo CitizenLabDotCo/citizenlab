@@ -4,6 +4,7 @@ import {
   Box,
   Text,
   Title,
+  Icon,
   colors,
   stylingConsts,
 } from '@citizenlab/cl2-component-library';
@@ -64,14 +65,27 @@ const ProjectCard = ({ project }: Props) => {
         <CardImage imageUrl={attributes.image_url ?? undefined} />
       </Box>
       <Box>
-        <Title variant="h3" color="primary" mt="12px">
+        <Title variant="h3" color="primary" mt="12px" mb="8px">
           {localize(attributes.title_multiloc, attributes.title_en)}
         </Title>
       </Box>
-      <Text color="textSecondary" fontSize="s">
-        {country ? `${country.emoji_flag} ` : ''}
-        {attributes.tenant_name}
-      </Text>
+      <Box
+        display="flex"
+        flexDirection="row"
+        justifyContent="space-between"
+        mb="12px"
+      >
+        <Text color="textSecondary" fontSize="s" m="0">
+          {country ? `${country.emoji_flag} ` : ''}
+          {attributes.tenant_name}
+        </Text>
+        <Box display="flex" flexDirection="row" alignItems="center">
+          <Icon name="users" m="0" height="16px" />
+          <Text color="textSecondary" fontSize="s" m="0">
+            {attributes.participants}
+          </Text>
+        </Box>
+      </Box>
       {relationships.phases.data.map(({ id }) => (
         <MethodLabel projectLibraryPhaseId={id} key={id} />
       ))}
