@@ -97,7 +97,7 @@ export type ResultUngrouped = BaseResult & {
   average_rankings?: AverageRankings;
   rankings_counts?: RankingsCounts;
 
-  // Sentiment
+  // Linear scales
   averages?: LinearScaleAverage;
 
   // Undefined for text and file upload questions
@@ -119,7 +119,6 @@ export type ResultUngrouped = BaseResult & {
 export type ResultGrouped = BaseResult & {
   grouped: true;
   answers: GroupedAnswer[];
-  // Sentiment
   averages?: LinearScaleAverage;
   multilocs: AnswerMultilocsGrouped;
   legend: (string | null)[];

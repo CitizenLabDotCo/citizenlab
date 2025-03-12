@@ -50,14 +50,15 @@ const SentimentQuestion = ({
             <SentimentHeader result={result} />
             <Box
               display="flex"
-              gap={isTabletOrSmaller ? '5%' : '40%'}
-              justifyContent="flex-end"
+              justifyContent={isMobileOrSmaller ? 'flex-start' : 'flex-end'}
             >
               {!isMobileOrSmaller && hasTextResponses && (
-                <CommentSummary
-                  count={textResponsesCount}
-                  formatMessage={formatMessage}
-                />
+                <Box mr={isTabletOrSmaller ? '100px' : '160px'} my="auto">
+                  <CommentSummary
+                    count={textResponsesCount}
+                    formatMessage={formatMessage}
+                  />
+                </Box>
               )}
               <SentimentStats result={result} />
             </Box>

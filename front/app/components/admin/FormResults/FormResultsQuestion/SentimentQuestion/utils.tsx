@@ -5,7 +5,7 @@ import { Multiloc } from 'typings';
 import { ResultGrouped, ResultUngrouped } from 'api/survey_results/types';
 
 export type SentimentAnswer = {
-  answer: number | typeof NaN;
+  answer: number | null;
   count: number;
   percentage: number;
   label: Multiloc | undefined;
@@ -50,3 +50,10 @@ export const getSentimentValueColour = (answer: number) =>
     4: lighten(0.2, colors.green400),
     5: colors.green400,
   }[answer] || '');
+
+export const getPercentageDifference = (
+  thisPeriodAvg: number,
+  lastPeriodAvg: number
+) => {
+  return ((thisPeriodAvg - lastPeriodAvg) / lastPeriodAvg) * 100;
+};

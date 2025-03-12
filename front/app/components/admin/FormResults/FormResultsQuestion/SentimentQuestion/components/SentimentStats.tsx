@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 
 import {
   Box,
@@ -11,7 +11,7 @@ import {
 
 import { ResultGrouped, ResultUngrouped } from 'api/survey_results/types';
 
-import { parseResult, SentimentAnswers } from '../utils';
+import { getPercentageDifference } from '../utils';
 
 import SentimentScore from './SentimentScore';
 
@@ -20,32 +20,22 @@ type Props = {
 };
 
 const SentimentStats = ({ result }: Props) => {
-  // Parse the result to get the sentiment answers
-  const answers: SentimentAnswers = useMemo(
-    () => parseResult(result),
-    [result]
-  );
-
   // Calculate the percentage difference between the two periods
   const { averages } = result;
   const thisPeriodAvg = averages?.this_period;
   const lastPeriodAvg = averages?.last_period;
 
-  const getPercentageDifference = () => {
-    if (!!thisPeriodAvg && !!lastPeriodAvg) {
-      return ((thisPeriodAvg - lastPeriodAvg) / lastPeriodAvg) * 100;
-    }
-    return null;
-  };
-
-  const percentageDifference = getPercentageDifference();
+  const percentageDifference =
+    !!lastPeriodAvg &&
+    !!thisPeriodAvg &&
+    getPercentageDifference(thisPeriodAvg, lastPeriodAvg);
 
   // Set the trend icon, color and text to use, depending on the trend direction
   let trendIcon: IconNames | undefined = undefined;
   let trendColor = colors.grey700;
   let trendText = '0%';
 
-  if (percentageDifference !== null) {
+  if (percentageDifference) {
     if (percentageDifference > 0) {
       // Trend direction is up
       trendColor = colors.green500;
@@ -85,7 +75,7 @@ const SentimentStats = ({ result }: Props) => {
           </Text>
         </Box>
 
-        {percentageDifference !== null && (
+        {percentageDifference && (
           <Text
             m="0px"
             color={getTrendColor(percentageDifference)}
@@ -98,7 +88,7 @@ const SentimentStats = ({ result }: Props) => {
           </Text>
         )}
       </Box>
-      <SentimentScore answers={answers} />
+      <SentimentScore result={result} />
     </Box>
   );
 };
