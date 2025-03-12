@@ -6,20 +6,33 @@ module Analysis
       @col_totals = {}
     end
 
-    def generate(category1, category2)
-      heatmap = generate_countmap(category1, category2)
+    def generate(category1, category2, unit: 'inputs')
+      heatmap = generate_countmap(category1, category2, unit)
       add_lift!(heatmap)
-      add_significance!(heatmap)
+      add_significance!(heatmap, unit)
       heatmap.values.map(&:save!)
       heatmap
     end
 
     private
 
-    def generate_countmap(category1, category2)
+    def generate_countmap(category1, category2, unit)
+      case unit
+      when 'inputs'
+        generate_countmap_for_inputs(category1, category2)
+      when 'likes'
+        generate_countmap_for_reactions(category1, category2, 'up')
+      when 'dislikes'
+        generate_countmap_for_reactions(category1, category2, 'down')
+      else
+        raise 'Invalid unit'
+      end
+    end
+
+    def generate_countmap_for_inputs(category1, category2)
       output = {}
 
-      all_inputs.each do |input|
+      all_inputs.select(:id, :custom_field_values, :author_id).each do |input|
         category1.map do |col1|
           category2.map do |col2|
             output[[col1, col2]] ||= HeatmapCell.new(row: col1, column: col2, analysis: @analysis)
@@ -33,36 +46,71 @@ module Analysis
       output
     end
 
+    def generate_countmap_for_reactions(category1, category2, mode)
+      output = {}
+
+      Reaction.where(reactable_type: 'Idea', reactable_id: all_inputs, mode:).includes(:user, :reactable).each do |reaction|
+        category1.map do |col1|
+          category2.map do |col2|
+            output[[col1, col2]] ||= HeatmapCell.new(row: col1, column: col2, analysis: @analysis)
+            if column_set_for_reaction?(reaction, col1) && column_set_for_reaction?(reaction, col2)
+              output[[col1, col2]].count += 1
+            end
+          end
+        end
+      end
+      output
+    end
+
     def add_lift!(heatmap)
-      total_inputs = calc_heatmap_sum(heatmap)
+      heatmap_sum = calc_heatmap_sum(heatmap)
       heatmap.each do |(col1, col2), cell|
         cell.lift = if cell.count == 0
           0
         else
-          expected = row_total(heatmap, col1) * col_total(heatmap, col2) / total_inputs.to_f
+          expected = row_total(heatmap, col1) * col_total(heatmap, col2) / heatmap_sum.to_f
           cell.count / expected
         end
       end
     end
 
-    def add_significance!(heatmap)
+    def add_significance!(heatmap, unit)
       heatmap.each do |(col1, col2), cell|
-        contingency_table = generate_contingency_table(col1, col2)
+        contingency_table = generate_contingency_table(col1, col2, unit)
+        puts "#{col1.try(:name) || col1.try(:key)} - #{col2.try(:name) || col2.try(:key)}"
+        pp contingency_table
         _, cell.p_value = chi_square(contingency_table)
       end
     end
 
-    def generate_contingency_table(col1, col2)
+    def generate_contingency_table(col1, col2, unit)
       table = Hash.new(0)
 
       [true, false].product([true, false]) do |v1, v2|
         table[[v1, v2]] = 0
       end
 
-      all_inputs.each do |input|
-        in_col1 = column_set_for_input?(input, col1)
-        in_col2 = column_set_for_input?(input, col2)
-        table[[in_col1, in_col2]] += 1
+      case unit
+      when 'inputs'
+        all_inputs.select(:id, :custom_field_values, :author_id).each do |input|
+          in_col1 = column_set_for_input?(input, col1)
+          in_col2 = column_set_for_input?(input, col2)
+          table[[in_col1, in_col2]] += 1
+        end
+      when 'likes'
+        Reaction.where(reactable_type: 'Idea', reactable_id: all_inputs, mode: 'up').includes(:user, :reactable).each do |reaction|
+          in_col1 = column_set_for_reaction?(reaction, col1)
+          in_col2 = column_set_for_reaction?(reaction, col2)
+          table[[in_col1, in_col2]] += 1
+        end
+      when 'dislikes'
+        Reaction.where(reactable_type: 'Idea', reactable_id: all_inputs, mode: 'down').includes(:user, :reactable).each do |reaction|
+          in_col1 = column_set_for_reaction?(reaction, col1)
+          in_col2 = column_set_for_reaction?(reaction, col2)
+          table[[in_col1, in_col2]] += 1
+        end
+      else
+        raise "Invalid unit #{unit}"
       end
 
       table
@@ -71,7 +119,6 @@ module Analysis
     def all_inputs
       @all_inputs ||= @analysis.inputs
         .includes(:author, :taggings)
-        .select(:id, :custom_field_values, :author_id)
     end
 
     def row_total(heatmap, row)
@@ -96,7 +143,23 @@ module Analysis
         else
           input.author&.custom_field_values&.[](col.custom_field.key)
         end
-        custom_field_value && (custom_field_value == col.key || custom_field_value.include?(col.key))
+        !!custom_field_value && (custom_field_value == col.key || custom_field_value.include?(col.key))
+      else
+        raise 'Invalid column type'
+      end
+    end
+
+    def column_set_for_reaction?(reaction, col)
+      case col
+      when Tag
+        reaction.reactable.taggings.any? { |tagging| tagging.tag_id == col.id }
+      when CustomFieldOption
+        custom_field_value = if col.custom_field.custom_form_type?
+          reaction.reactable.custom_field_values[col.custom_field.key]
+        else
+          reaction && reaction.user&.custom_field_values&.[](col.custom_field.key)
+        end
+        !!custom_field_value && (custom_field_value == col.key || custom_field_value.include?(col.key))
       else
         raise 'Invalid column type'
       end
