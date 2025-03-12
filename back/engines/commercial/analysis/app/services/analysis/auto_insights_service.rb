@@ -12,39 +12,44 @@ module Analysis
       @analysis = analysis
     end
 
-    def generate(unit: 'inputs')
-      matrix = big_fat_matrix(unit)
+    def generate(unit: 'inputs', tags: detect_tags, user_custom_fields: detect_user_custom_fields, input_custom_fields: detect_input_custom_fields)
+      matrix = big_fat_matrix(unit, tags:, user_custom_fields:, input_custom_fields:)
 
-      matrix.flat_map(&:keys).uniq.combination(2)
-        .reject { |col1, col2| col1.instance_of?(col2.class) }
-        .map do |col1, col2|
-        ct = contingency_table(matrix, col1, col2)
-        count = ct[[true, true]]
-        lift = calculate_lift(matrix, col1, col2)
-        # lift = calculate_lift(ct)
-        _chi2, p_value = chi_square(ct)
+      matrix
+        .flat_map(&:keys)
+        .uniq # => [col1, col2, col3]
+        .group_by { |col| col_to_category(col) } # => { category1 => [col1, col2], category2 => [col3] }
+        .values # => [[col1, col2], [col3]]
+        .combination(2) # => [[[col1, col2], [col3]]]
+        .each do |(category1, category2)|
+        cells =
+          category1.flat_map do |col1|
+            category2.map do |col2|
+              ct = contingency_table(matrix, col1, col2)
+              count = ct[[true, true]]
+              _chi2, p_value = chi_square(ct)
+              HeatmapCell.new(
+                row: col1,
+                column: col2,
+                analysis: @analysis,
+                unit:,
+                p_value:,
+                count:
+              )
+            end
+          end
 
-        HeatmapCell.create!(
-          row: col1,
-          column: col2,
-          analysis: @analysis,
-          unit:,
-          p_value:,
-          count:,
-          lift:
+        add_lift!(cells)
+        HeatmapCell.insert_all!(
+          cells.map do |cell|
+            cell.attributes.except('id', 'created_at', 'updated_at')
+              .merge(
+                created_at: Time.current,
+                updated_at: Time.current
+              )
+          end
         )
       end
-    end
-
-    # Receives the output from call and pretty prints it
-    def pretty_print(chi_square_analysis_output)
-      chi_square_analysis_output.map do |col1, col2, chi2, p_value, count|
-        "#{col_to_name(col1)} - #{col_to_name(col2)}: chi2=#{chi2}, p=#{p_value} count=#{count}"
-      end
-    end
-
-    def col_to_name(col)
-      col.try(:key) || col.try(:name)
     end
 
     # The big fat matrix takes the given, or all inputs, user custom fields and taggings and
@@ -85,9 +90,9 @@ module Analysis
       inputs_custom_field_values:,
       author:,
       input_ids:,
-      tags: detect_tags,
-      user_custom_fields: detect_user_custom_fields,
-      input_custom_fields: detect_user_custom_fields
+      tags:,
+      user_custom_fields:,
+      input_custom_fields:
     )
       tag_map = tag_map(tags)
 
@@ -126,16 +131,12 @@ module Analysis
       end
     end
 
-    # Returns all the other columns in the same category as the given column. Category means:
-    # - For tag columns, all the tags in the analysis
-    # - For custom field options, all the options in the custom field
     def col_to_category(col)
-      @all_cols_in_category ||= {}
-      @all_cols_in_category[col] ||= case col
+      case col
       when Tag
-        detect_tags
+        :tags
       when CustomFieldOption
-        col.custom_field.options
+        col.custom_field
       else
         raise 'Invalid column type'
       end
@@ -198,40 +199,6 @@ module Analysis
       table
     end
 
-    def calculate_lift(matrix, col1, col2)
-      total = 0
-      count = 0
-      col1_total = 0
-      col2_total = 0
-      matrix.each do |row|
-        total += 1
-        col1_total += 1 if row[col1]
-        col2_total += 1 if row[col2]
-        count += 1 if row[col1] && row[col2]
-      end
-      return 0 if count == 0
-
-      expected = col1_total * col2_total / total.to_f
-      count / expected
-    end
-
-    # def calculate_lift(contingency_table)
-    #   total = 0
-    #   count = 0
-    #   col1_total = 0
-    #   col2_total = 0
-    #   contingency_table.each do |(v1, v2), observed|
-    #     total += observed
-    #     col1_total += observed if v1
-    #     col2_total += observed if v2
-    #     count += observed if v1 && v2
-    #   end
-    #   return 0 if count == 0
-
-    #   expected = col1_total * col2_total / total.to_f
-    #   count / expected
-    # end
-
     def chi_square(table)
       # Sum over rows and columns
       row_sums = table.keys.group_by { |k| k[0] }.transform_values { |v| v.sum { |key| table[key] } }
@@ -254,6 +221,20 @@ module Analysis
       dof = (row_sums.size - 1) * (col_sums.size - 1)
       p_value = 1 - Distribution::ChiSquare.cdf(chi2, dof)
       [chi2, p_value]
+    end
+
+    def add_lift!(cells)
+      total = cells.sum(&:count)
+      row_total = cells.group_by(&:row).transform_values { |v| v.sum(&:count) }
+      col_total = cells.group_by(&:column).transform_values { |v| v.sum(&:count) }
+      cells.each do |cell|
+        cell.lift = if cell.count == 0
+          0
+        else
+          expected = (row_total[cell.row] * col_total[cell.column]) / total.to_f
+          cell.count / expected
+        end
+      end
     end
   end
 end
