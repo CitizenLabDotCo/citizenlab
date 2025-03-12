@@ -7,7 +7,7 @@ import useProjectLibraryProjects from 'api/project_library_projects/useProjectLi
 
 import { FormattedMessage } from 'utils/cl-intl';
 
-import ProjectCard from '../components/ProjectCard/ProjectCard';
+import ProjectCard from '../components/ProjectCard';
 import messages from '../messages';
 
 const PinnedProjects = () => {
