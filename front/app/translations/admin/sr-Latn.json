@@ -803,7 +803,6 @@
   "app.containers.Admin.inspirationHub.Filters.Country": "Country",
   "app.containers.Admin.inspirationHub.Filters.Method": "Method",
   "app.containers.Admin.inspirationHub.Filters.Search": "Search",
-  "app.containers.Admin.inspirationHub.Filters.Status": "Status",
   "app.containers.Admin.inspirationHub.Filters.population": "Population",
   "app.containers.Admin.inspirationHub.Finished": "Finished",
   "app.containers.Admin.inspirationHub.Ideation": "Ideation",
