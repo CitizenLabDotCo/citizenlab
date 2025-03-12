@@ -5,6 +5,7 @@ import {
   stylingConsts,
   useBreakpoint,
 } from '@citizenlab/cl2-component-library';
+import { useParams } from 'react-router-dom';
 
 import useCommunityMonitorProject from 'api/community_monitor/useCommunityMonitorProject';
 
@@ -22,9 +23,16 @@ type TextResponsesProps = {
 };
 
 const Comments = ({ customFieldId, textResponses }: TextResponsesProps) => {
+  const { projectId: projectIdParam, phaseId: phaseIdParam } = useParams() as {
+    projectId: string;
+    phaseId: string;
+  };
+
   const { data: project } = useCommunityMonitorProject();
-  const projectId = project?.data.id;
-  const phaseId = project?.data.relationships.current_phase?.data?.id;
+
+  const projectId = projectIdParam || project?.data.id;
+  const phaseId =
+    phaseIdParam || project?.data.relationships.current_phase?.data?.id;
 
   const isTabletOrSmaller = useBreakpoint('tablet');
 
