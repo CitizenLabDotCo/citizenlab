@@ -39,7 +39,10 @@ const trackSessionStarted = async () => {
   }
 
   const data = await response.json();
-  sessionId = data.data.id;
+
+  // In some cases, we don't get data back.
+  // Not sure why, but we can't track the session in this case.
+  sessionId = data?.data?.id;
 
   // Because the first page view depends on the response of the session creation,
   // we handle it here and ignore the first page view event (see below).
