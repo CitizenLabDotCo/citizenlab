@@ -77,6 +77,8 @@
   "app.components.Comments.seeOriginal": "See original",
   "app.components.Comments.seeTranslation": "See translation",
   "app.components.Comments.yourComment": "Your comment",
+  "app.components.CommunityMonitorModal.surveyDescription": "This ongoing survey tracks how you feel about governance & public services.",
+  "app.components.CommunityMonitorModal.xMinutesToComplete": "{minutes, plural, =0 {Takes <1 minute} one {Takes 1 minute} other {Takes # minutes}}",
   "app.components.ConfirmationModal.anExampleCodeHasBeenSent": "An email with a confirmation code has been sent to {userEmail}.",
   "app.components.ConfirmationModal.changeYourEmail": "Change your email.",
   "app.components.ConfirmationModal.codeInput": "Code",
