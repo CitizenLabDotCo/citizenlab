@@ -26,7 +26,7 @@ const InspirationHub = () => {
 
   return (
     <>
-      <Box>
+      <Box id="inspiration-hub" overflowY="scroll" height={`100vh`}>
         <Title variant="h1" color="primary" mb="36px">
           <FormattedMessage {...sidebarMessages.inspirationHub} />
         </Title>
