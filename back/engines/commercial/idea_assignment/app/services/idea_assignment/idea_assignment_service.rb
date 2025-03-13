@@ -25,7 +25,7 @@ module IdeaAssignment
     end
 
     def automatically_assigned_idea_assignee(idea)
-      return if idea.participation_method_on_creation.instance_of?(ParticipationMethod::NativeSurvey)
+      return unless idea.participation_method_on_creation.automatically_assign_idea?
 
       idea&.project&.default_assignee
     end

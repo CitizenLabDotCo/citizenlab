@@ -78,8 +78,8 @@ class WebApi::V1::PhasesController < ApplicationController
   end
 
   def submission_count
-    count = if @phase.native_survey?
-      @phase.ideas.native_survey.published.count
+    count = if @phase.pmethod.supports_survey_form?
+      @phase.ideas.supports_survey.published.count
     else
       @phase.ideas.transitive.published.count
     end

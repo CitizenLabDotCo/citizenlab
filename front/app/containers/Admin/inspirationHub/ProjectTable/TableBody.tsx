@@ -12,6 +12,7 @@ import {
 import { useSearchParams } from 'react-router-dom';
 import styled from 'styled-components';
 
+import { Country } from 'api/project_library_countries/types';
 import useProjectLibraryCountries from 'api/project_library_countries/useProjectLibraryCountries';
 import { ProjectLibraryProjects } from 'api/project_library_projects/types';
 
@@ -20,8 +21,9 @@ import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 
 import { STATUS_EMOJIS, STATUS_LABELS } from '../constants';
+import MethodLabel from '../MethodLabel';
+import { useLocalizeProjectLibrary } from '../utils';
 
-import MethodLabel from './MethodLabel';
 import { formatDuration } from './utils';
 
 interface Props {
@@ -52,6 +54,7 @@ const TableBody = ({ libraryProjects, isInitialLoading }: Props) => {
   const { formatMessage } = useIntl();
   const { data: countries } = useProjectLibraryCountries();
   const [searchParams] = useSearchParams();
+  const localizeProjectLibrary = useLocalizeProjectLibrary();
 
   const drawerProjectId = searchParams.get('project_id');
 
@@ -59,9 +62,9 @@ const TableBody = ({ libraryProjects, isInitialLoading }: Props) => {
     if (!countries) return;
 
     return countries.data.attributes.reduce((acc, country) => {
-      acc[country.code] = country.short_name;
+      acc[country.code] = country;
       return acc;
-    }, {} as Record<string, string>);
+    }, {} as Record<string, Country>);
   }, [countries]);
 
   return (
@@ -78,6 +81,13 @@ const TableBody = ({ libraryProjects, isInitialLoading }: Props) => {
         <>
           {libraryProjects.data.map(({ attributes, id, relationships }) => {
             const countryCode = attributes.tenant_country_alpha2;
+            const country =
+              countryCode && countriesByCode
+                ? countriesByCode[countryCode]
+                : null;
+            const countryString = country
+              ? `${country.emoji_flag} ${country.name}`
+              : '';
 
             return (
               <Tr key={id} background={colors.white}>
@@ -93,7 +103,10 @@ const TableBody = ({ libraryProjects, isInitialLoading }: Props) => {
                         : updateSearchParams({ project_id: id });
                     }}
                   >
-                    {attributes.title_en}
+                    {localizeProjectLibrary(
+                      attributes.title_multiloc,
+                      attributes.title_en
+                    )}
                   </TextButton>
                   <br />
                   <Box
@@ -109,22 +122,22 @@ const TableBody = ({ libraryProjects, isInitialLoading }: Props) => {
                 <Cell>{attributes.participants}</Cell>
                 <Cell>
                   {attributes.tenant_name}
-                  <StatusLabel
-                    text={attributes.tenant_population_group}
-                    backgroundColor={colors.coolGrey600}
-                    h="16px"
-                    w="24px"
-                    ml="4px"
-                  />
+                  {attributes.tenant_population_group && (
+                    <StatusLabel
+                      text={attributes.tenant_population_group}
+                      backgroundColor={colors.coolGrey600}
+                      h="16px"
+                      w="24px"
+                      ml="4px"
+                    />
+                  )}
                   <Box
                     as="span"
                     display="block"
                     color={colors.textSecondary}
                     mt="4px"
                   >
-                    {countryCode && countriesByCode
-                      ? countriesByCode[countryCode]
-                      : ''}
+                    {countryString}
                   </Box>
                 </Cell>
                 <Cell>

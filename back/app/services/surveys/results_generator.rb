@@ -5,10 +5,11 @@ module Surveys
     def initialize(phase)
       super()
       @phase = phase
-      form = @phase.custom_form || CustomForm.new(participation_context: phase)
+      form = phase.custom_form || CustomForm.new(participation_context: phase)
       @fields = IdeaCustomFieldsService.new(form).enabled_fields
+      @inputs = phase.ideas.native_survey.published
       @locales = AppConfiguration.instance.settings('core', 'locales')
-      @inputs = @phase.ideas.native_survey.published
+      @inputs = @phase.ideas.supports_survey.published
     end
 
     # Get the results for a single survey question
