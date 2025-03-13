@@ -21,6 +21,7 @@ import { useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
 import { getFormActionsConfig } from 'utils/configs/formActionsConfig/utils';
 
+import ViewSurveyButton from '../../ViewSurveyButton';
 import messages from '../messages';
 
 import AnonymousToggle from './AnonymousToggle';
@@ -30,7 +31,7 @@ const SurveySettings = () => {
   const { formatMessage } = useIntl();
 
   // Project and phase hooks
-  const { data: project } = useCommunityMonitorProject();
+  const { data: project } = useCommunityMonitorProject({});
   const phaseId = project?.data.relationships.current_phase?.data?.id;
   const { data: phase } = usePhase(phaseId);
   const { mutate: updatePhase } = useUpdatePhase();
@@ -135,17 +136,7 @@ const SurveySettings = () => {
             >
               {formatMessage(messages.importInputs)}
             </Button>
-            <Button
-              linkTo={`/projects/${project.data.attributes.slug}/surveys/new?phase_id=${phase.data.id}`}
-              icon="eye"
-              iconSize="20px"
-              buttonStyle="secondary-outlined"
-              width="auto"
-              openLinkInNewTab
-              mr="8px"
-            >
-              {formatMessage(messages.viewSurveyText)}
-            </Button>
+            <ViewSurveyButton />
             <Button
               icon="edit"
               iconSize="20px"

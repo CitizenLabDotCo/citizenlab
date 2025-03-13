@@ -1,10 +1,11 @@
 import { useQuery } from '@tanstack/react-query';
 import { CLErrors } from 'typings';
 
-import projectsKeys from 'api/projects/keys';
 import { IProject, ProjectsKeys } from 'api/projects/types';
 
 import fetcher from 'utils/cl-react-query/fetcher';
+
+import communityMonitorKeys from './keys';
 
 const fetchCommunityMonitorProject = () => {
   return fetcher<IProject>({
@@ -13,10 +14,15 @@ const fetchCommunityMonitorProject = () => {
   });
 };
 
-const useCommunityMonitorProject = (id?: string) => {
+type Props = {
+  enabled?: boolean;
+};
+
+const useCommunityMonitorProject = ({ enabled }: Props) => {
   return useQuery<IProject, CLErrors, IProject, ProjectsKeys>({
-    queryKey: projectsKeys.item({ id }),
+    queryKey: communityMonitorKeys.all(),
     queryFn: () => fetchCommunityMonitorProject(),
+    enabled,
   });
 };
 

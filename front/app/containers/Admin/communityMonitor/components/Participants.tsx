@@ -8,7 +8,7 @@ import usePhases from 'api/phases/usePhases';
 import ParticipationDatesRange from 'components/admin/participation/ParticipationDateRange';
 
 const Participants = () => {
-  const { data: communityMonitorProject } = useCommunityMonitorProject();
+  const { data: communityMonitorProject } = useCommunityMonitorProject({});
   const { data: phases } = usePhases(communityMonitorProject?.data.id);
 
   if (!communityMonitorProject || !phases?.data.length) return null;

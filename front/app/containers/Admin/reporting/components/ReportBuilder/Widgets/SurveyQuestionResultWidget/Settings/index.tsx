@@ -15,9 +15,9 @@ import { ICustomFields } from 'api/custom_fields/types';
 import useRawCustomFields from 'api/custom_fields/useRawCustomFields';
 import { GroupMode } from 'api/graph_data_units/requestTypes';
 
-import HeatmapTooltipContent from 'components/admin/FormResults/FormResultsQuestion/MappingQuestions/PointLocationQuestion/HeatmapTooltipContent';
 import nativeSurveyMessages from 'containers/Admin/projects/project/nativeSurvey/messages';
 
+import HeatmapTooltipContent from 'components/admin/FormResults/FormResultsQuestion/MappingQuestions/PointLocationQuestion/HeatmapTooltipContent';
 import PhaseFilter from 'components/UI/PhaseFilter';
 
 import { useIntl } from 'utils/cl-intl';

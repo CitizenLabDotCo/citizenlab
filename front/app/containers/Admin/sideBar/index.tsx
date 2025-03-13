@@ -90,8 +90,9 @@ interface Props {
 const Sidebar = ({ authUser, appConfiguration }: Props) => {
   const { formatMessage } = useIntl();
   const { pathname } = useLocation();
-  const { data: communityMonitorProject, isError } =
-    useCommunityMonitorProject();
+  const { data: communityMonitorProject, isError } = useCommunityMonitorProject(
+    {}
+  );
 
   const { data: ideasCount } = useIdeasCount(
     {

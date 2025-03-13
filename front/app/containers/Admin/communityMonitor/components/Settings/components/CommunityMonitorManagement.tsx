@@ -19,7 +19,7 @@ import messages from '../messages';
 
 const CommunityMonitorManagement = () => {
   const { formatMessage } = useIntl();
-  const { data: project } = useCommunityMonitorProject();
+  const { data: project } = useCommunityMonitorProject({});
   const projectId = project?.data.id;
 
   if (!projectId) return null;

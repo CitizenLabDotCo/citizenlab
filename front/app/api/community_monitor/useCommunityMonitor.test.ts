@@ -20,9 +20,12 @@ describe('useCommunityMonitorProject', () => {
   afterAll(() => server.close());
 
   it('returns data correctly', async () => {
-    const { result, waitFor } = renderHook(() => useCommunityMonitorProject(), {
-      wrapper: createQueryClientWrapper(),
-    });
+    const { result, waitFor } = renderHook(
+      () => useCommunityMonitorProject({}),
+      {
+        wrapper: createQueryClientWrapper(),
+      }
+    );
 
     expect(result.current.isLoading).toBe(true);
 
@@ -39,9 +42,12 @@ describe('useCommunityMonitorProject', () => {
       })
     );
 
-    const { result, waitFor } = renderHook(() => useCommunityMonitorProject(), {
-      wrapper: createQueryClientWrapper(),
-    });
+    const { result, waitFor } = renderHook(
+      () => useCommunityMonitorProject({}),
+      {
+        wrapper: createQueryClientWrapper(),
+      }
+    );
 
     expect(result.current.isLoading).toBe(true);
     await waitFor(() => expect(result.current.isError).toBe(true));

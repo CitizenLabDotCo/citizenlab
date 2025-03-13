@@ -17,7 +17,7 @@ const NavigationBar = () => {
   const { formatMessage } = useIntl();
   const isTabletOrSmaller = useBreakpoint('tablet');
 
-  const { data: project } = useCommunityMonitorProject();
+  const { data: project } = useCommunityMonitorProject({});
   const projectId = project?.data.id;
 
   if (!projectId) return null;
