@@ -1,11 +1,20 @@
-import { useMemo } from 'react';
+import { useCallback, useMemo } from 'react';
 
+import { format } from 'date-fns';
 import { useSearchParams } from 'react-router-dom';
+import { Multiloc, SupportedLocale } from 'typings';
 
-import { RansackParams } from 'api/project_library_projects/types';
+import {
+  RansackParams,
+  ProjectLibraryProjectData,
+} from 'api/project_library_projects/types';
+
+import useLocale from 'hooks/useLocale';
 
 import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
+import { keys } from 'utils/helperUtils';
+import { findSimilarLocale } from 'utils/i18n';
 
 export const setRansackParam = <ParamName extends keyof RansackParams>(
   paramName: ParamName,
@@ -32,7 +41,6 @@ const RANSACK_PARAMS: (keyof RansackParams)[] = [
   'q[phases_participation_method_eq]',
   'q[topic_id_eq]',
   'q[status_eq]',
-  'q[visibility_eq]',
   'q[practical_end_at_gteq]',
   'q[practical_end_at_lt]',
   'q[title_en_or_description_en_or_tenant_name_cont]',
@@ -57,4 +65,57 @@ export const useRansackParams = () => {
       }, {} as RansackParams),
     [searchParams]
   );
+};
+
+export const useLocalizeProjectLibrary = () => {
+  const locale = useLocale();
+
+  return useCallback(
+    (multiloc: Multiloc, fallback: string | null) => {
+      return getWithFallback(locale, multiloc, fallback);
+    },
+    [locale]
+  );
+};
+
+const getWithFallback = (
+  currentLocale: SupportedLocale,
+  multiloc: Multiloc,
+  fallback: string | null
+) => {
+  // Try grabbing the title in the current locale
+  const currentLocaleTitle = multiloc[currentLocale];
+
+  // If not available, try grabbing the title in a similar locale
+  const similarLocale = findSimilarLocale(currentLocale, keys(multiloc));
+  const similarLocaleTitle = similarLocale
+    ? multiloc[similarLocale]
+    : undefined;
+
+  // If neither of those are available, fallback to English
+  return currentLocaleTitle ?? similarLocaleTitle ?? fallback ?? '';
+};
+
+export const getTenantURL = (
+  attributes: ProjectLibraryProjectData['attributes']
+) => {
+  return `https://${attributes.tenant_host}`;
+};
+
+export const getProjectURL = (
+  attributes: ProjectLibraryProjectData['attributes']
+) => {
+  return `${getTenantURL(attributes)}/projects/${attributes.slug}`;
+};
+
+export const getPhaseURL = (
+  attributes: ProjectLibraryProjectData['attributes'],
+  phaseNumber: number
+) => {
+  return `${getProjectURL(attributes)}/${phaseNumber}`;
+};
+
+export const formatDate = (date?: Date) => {
+  if (!date) return;
+  return format(date, 'dd MMMM yyyy');
 };

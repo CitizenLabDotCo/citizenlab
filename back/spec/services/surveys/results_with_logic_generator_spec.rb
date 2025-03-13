@@ -1,12 +1,60 @@
 # frozen_string_literal: true
 
 require 'rails_helper'
+require './spec/services/surveys/shared/survey_setup'
 
-RSpec.describe SurveyResultsGeneratorService do
+# NOTE: These tests only test the addition of logic to the results from the parent class
+
+RSpec.describe Surveys::ResultsWithLogicGenerator do
   subject(:generator) { described_class.new survey_phase }
 
-  let_it_be(:project) { create(:single_phase_native_survey_project) }
-  let_it_be(:survey_phase) { project.phases.first }
+  include_context 'survey_setup'
+
+  describe 'generate_result_for_field' do
+    it 'it is not implemented and returns an error' do
+      generator = described_class.new(survey_phase)
+      expect { generator.generate_result_for_field('12345') }.to raise_error(NotImplementedError)
+    end
+  end
+
+  describe 'generate_results' do
+    let(:generated_results) { generator.generate_results }
+
+    before_all do
+      # Update fields from survey_setup shared context with some (meaningless but valid) survey_end logic
+      linear_scale_field.update!(logic: { rules: [{ if: 2, goto_page_id: last_page_field.id }, { if: 'no_answer', goto_page_id: last_page_field.id }] })
+      page_field.update!(logic: { next_page_id: last_page_field.id })
+    end
+
+    describe 'page fields' do
+      it 'returns correct logic values for a page field in full results' do
+        page_result = generated_results[:results][0]
+        expect(page_result[:inputType]).to eq 'page'
+        expect(page_result[:logic]).to eq({ nextPageNumber: 2, numQuestionsSkipped: 0 })
+      end
+    end
+
+    describe 'linear scale fields' do
+      it 'returns the correct logic values in results for a linear scale field' do
+        result = generated_results[:results][4]
+        expect(result[:inputType]).to eq 'linear_scale'
+        expect(result[:logic]).to match({
+          answer: {
+            2 => {
+              id: "#{linear_scale_field.id}_2",
+              nextPageNumber: 2,
+              numQuestionsSkipped: 0
+            },
+            'no_answer' => {
+              id: "#{linear_scale_field.id}_no_answer",
+              nextPageNumber: 2,
+              numQuestionsSkipped: 0
+            }
+          }
+        })
+      end
+    end
+  end
 
   describe 'add_logic_to_results' do
     # NOTE: Most of the object below is not needed for the tests, but it's included for completeness
