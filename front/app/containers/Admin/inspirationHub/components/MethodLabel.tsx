@@ -23,7 +23,8 @@ const MethodLabel = ({ projectLibraryPhaseId }: Props) => {
       text={formatMessage(
         PARTICIPATION_METHOD_LABELS[phase.data.attributes.participation_method]
       )}
-      backgroundColor={colors.green700}
+      variant="outlined"
+      backgroundColor={colors.grey100}
       mr="4px"
       my="2px"
     />
