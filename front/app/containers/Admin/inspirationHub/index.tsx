@@ -46,7 +46,7 @@ const InspirationHub = () => {
           <Box>
             <Filters />
           </Box>
-          <Box mb="24px" display="flex">
+          <Box display="flex">
             <Button
               buttonStyle="text"
               pl="0"
