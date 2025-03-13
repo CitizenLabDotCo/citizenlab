@@ -27,7 +27,7 @@ module Analysis
         private
 
         def apply_filters(heatmap_cells)
-          heatmap_cells.where(unit: params[:unit] || 'inputs')
+          heatmap_cells = heatmap_cells.where(unit: params[:unit] || 'inputs')
 
           if params[:row_category_type].present?
             row_type = category_type_to_item_type(params[:row_category_type])
