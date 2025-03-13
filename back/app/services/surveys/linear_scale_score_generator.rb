@@ -12,19 +12,23 @@ module Surveys
     def field_scores_by_quarter
       grouped_answers = all_answers.group_by { |a| a['quarter'] }
       averages = grouped_answers.transform_values do |answers|
-        averages_for_all_fields(answers)
+        averages_by_field(answers)
       end
       switch_keys(averages)
     end
 
+    # This is an average of averages - or should it take the average of all values
     def overall_score_by_quarter
-      # TODO
+      grouped_answers = all_answers.group_by { |a| a['quarter'] }
+      grouped_answers.transform_values do |answers|
+        field_scores = averages_by_field(answers)
+        calculate_average(field_scores.values)
+      end
     end
 
     private
 
     # Generate a flat object for each response including additional attributes
-    # In Koen's new model, would we create a virtual field for date to add into the values?
     def all_answers
       @inputs.flat_map do |input|
         input.custom_field_values
@@ -33,12 +37,12 @@ module Surveys
       end
     end
 
-    def averages_for_all_fields(answers)
-      @fields.to_h { |f| [f.id, calculate_linear_scale_average(answers, f.key)] }
+    def averages_by_field(answers)
+      @fields.to_h { |f| [f.id, calculate_average(answers.pluck(f.key))] }
     end
 
-    def calculate_linear_scale_average(answers, field_key)
-      values = answers.pluck(field_key).compact
+    def calculate_average(values)
+      values = values.compact # Remove any nils
       total = values.sum { |a| a || 0 }
       count = values.count
       count > 0 ? (total.to_f / values.count).round(1) : 0.0

@@ -20,4 +20,11 @@ RSpec.describe Surveys::LinearScaleScoreGenerator do
       })
     end
   end
+
+  describe 'overall_score_by_quarter' do
+    it 'returns an overall score per quarter' do
+      scores = generator.overall_score_by_quarter
+      expect(scores).to eq({ '2025-2' => 3.4, '2025-1' => 3.1 })
+    end
+  end
 end
