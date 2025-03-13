@@ -43,51 +43,41 @@ const schemaData = {
           options: { formId: 'idea-form', inputTerm: 'idea' },
           elements: [
             {
-              type: 'Category',
-              label: 'What is your idea?',
+              type: 'Page',
               options: {
                 id: '5962086a-853a-4bea-930b-3d0eaf349fdb',
                 description: '',
+                input_type: 'page',
+                map_config_id: null,
+                page_layout: 'default',
+                title: 'What is your idea?',
               },
               elements: [
                 {
-                  type: 'VerticalLayout',
-                  options: { input_type: 'text_multiloc', render: 'multiloc' },
-                  elements: [
-                    {
-                      type: 'Control',
-                      scope: '#/properties/title_multiloc/properties/en',
-                      label: 'Title',
-                      options: {
-                        description: '',
-                        isAdminField: false,
-                        hasRule: false,
-                        answer_visible_to: 'public',
-                        trim_on_blur: true,
-                        locale: 'en',
-                      },
-                    },
-                  ],
+                  type: 'Control',
+                  scope: '#/properties/title_multiloc/properties/en',
+                  label: 'Title',
+                  options: {
+                    description: '',
+                    isAdminField: false,
+                    hasRule: false,
+                    answer_visible_to: 'public',
+                    trim_on_blur: true,
+                    locale: 'en',
+                  },
                 },
-
                 {
-                  type: 'VerticalLayout',
-                  options: { input_type: 'html_multiloc', render: 'multiloc' },
-                  elements: [
-                    {
-                      type: 'Control',
-                      scope: '#/properties/body_multiloc/properties/en',
-                      label: 'Description',
-                      options: {
-                        description: '',
-                        isAdminField: false,
-                        hasRule: false,
-                        answer_visible_to: 'public',
-                        render: 'WYSIWYG',
-                        locale: 'en',
-                      },
-                    },
-                  ],
+                  type: 'Control',
+                  scope: '#/properties/body_multiloc/properties/en',
+                  label: 'Description',
+                  options: {
+                    description: '',
+                    isAdminField: false,
+                    hasRule: false,
+                    answer_visible_to: 'public',
+                    render: 'WYSIWYG',
+                    locale: 'en',
+                  },
                 },
               ],
             },

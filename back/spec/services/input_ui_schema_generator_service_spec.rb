@@ -640,7 +640,7 @@ RSpec.describe InputUiSchemaGeneratorService do
               inputTerm: input_term
             },
             elements: [{
-              type: 'Category',
+              type: 'Page',
               label: nil,
               options: { id: 'extra' },
               elements: [{

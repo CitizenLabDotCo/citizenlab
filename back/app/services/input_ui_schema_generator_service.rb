@@ -120,18 +120,9 @@ class InputUiSchemaGeneratorService < UiSchemaGeneratorService
     categorization_schema_with(input_term, schema_elements_for(fields))
   end
 
-  def generate_section(current_section, section_fields)
-    {
-      type: 'Category',
-      label: (MultilocService.new.t(current_section.title_multiloc) if current_section.title_multiloc),
-      options: { id: current_section.id, description: description_option(current_section) },
-      elements: section_fields.filter_map { |field| visit field }
-    }
-  end
-
   def generate_for_current_locale(fields)
     category = {
-      type: 'Category',
+      type: 'Page',
       label: nil,
       options: { id: 'extra' },
       elements: fields.filter_map { |field| visit field }
