@@ -27,7 +27,7 @@ import useLocalize from 'hooks/useLocalize';
 import ideaFormMessages from 'containers/IdeasNewPage/messages';
 
 import Form from 'components/Form';
-import { SURVEY_PAGE_CHANGE_EVENT } from 'components/Form/Components/Layouts/events';
+import { FORM_PAGE_CHANGE_EVENT } from 'components/Form/Components/Layouts/events';
 import { AjvErrorGetter, ApiErrorGetter } from 'components/Form/typings';
 import FullPageSpinner from 'components/UI/FullPageSpinner';
 
@@ -161,9 +161,9 @@ const IdeasNewSurveyForm = ({ project, phaseId }: Props) => {
   // Listen for survey page change event
   useEffect(() => {
     const subscription = eventEmitter
-      .observeEvent(SURVEY_PAGE_CHANGE_EVENT)
+      .observeEvent(FORM_PAGE_CHANGE_EVENT)
       .subscribe(() => {
-        setUsingMapView(!!document.getElementById('survey_page_map'));
+        setUsingMapView(!!document.getElementById('map_page'));
       });
 
     return () => {

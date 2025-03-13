@@ -29,7 +29,7 @@ import { calculateDynamicHeight } from 'containers/IdeasNewSurveyPage/IdeasNewSu
 import AnonymousParticipationConfirmationModal from 'components/AnonymousParticipationConfirmationModal';
 import ContentUploadDisclaimer from 'components/ContentUploadDisclaimer';
 import Form from 'components/Form';
-import { SURVEY_PAGE_CHANGE_EVENT } from 'components/Form/Components/Layouts/events';
+import { FORM_PAGE_CHANGE_EVENT } from 'components/Form/Components/Layouts/events';
 import { AjvErrorGetter, ApiErrorGetter } from 'components/Form/typings';
 import FullPageSpinner from 'components/UI/FullPageSpinner';
 
@@ -142,9 +142,9 @@ const IdeasNewIdeationForm = ({ project, phaseId }: Props) => {
 
   useEffect(() => {
     const subscription = eventEmitter
-      .observeEvent(SURVEY_PAGE_CHANGE_EVENT)
+      .observeEvent(FORM_PAGE_CHANGE_EVENT)
       .subscribe(() => {
-        setUsingMapView(!!document.getElementById('survey_page_map'));
+        setUsingMapView(!!document.getElementById('map_page'));
       });
 
     return () => {

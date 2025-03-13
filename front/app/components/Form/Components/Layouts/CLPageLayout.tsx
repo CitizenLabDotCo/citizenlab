@@ -61,7 +61,7 @@ import { isPage } from 'utils/helperUtils';
 import getPageSchema from '../../utils/getPageSchema';
 import { useErrorToRead } from '../Fields/ErrorToReadContext';
 
-import { SURVEY_PAGE_CHANGE_EVENT } from './events';
+import { FORM_PAGE_CHANGE_EVENT } from './events';
 import messages from './messages';
 import PageControlButtons from './PageControlButtons';
 import SubmissionReference from './SubmissionReference';
@@ -165,7 +165,7 @@ const CLPageLayout = memo(
 
     // Emit event when page changes and map is fetched
     useEffect(() => {
-      eventEmitter.emit(SURVEY_PAGE_CHANGE_EVENT);
+      eventEmitter.emit(FORM_PAGE_CHANGE_EVENT);
     }, [currentStepNumber, isFetchingMapConfig]);
 
     useEffect(() => {
@@ -393,7 +393,7 @@ const CLPageLayout = memo(
         >
           {isMapPage && (
             <Box
-              id="survey_page_map"
+              id="map_page"
               w={isMobileOrSmaller ? '100%' : '60%'}
               minWidth="60%"
               h="100%"
