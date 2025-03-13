@@ -51,7 +51,7 @@ describe Analysis::AutoInsightsService do
 
       expect(Analysis::HeatmapCell.find_by(row: tag2, column: male)).to have_attributes(
         count: 1,
-        p_value: 0.4723665527410147,
+        p_value: 1.0,
         lift: 1.0,
         row: tag2,
         column: male
@@ -59,7 +59,7 @@ describe Analysis::AutoInsightsService do
 
       expect(Analysis::HeatmapCell.find_by(row: tag2, column: female)).to have_attributes(
         count: 0,
-        p_value: 0.4723665527410147,
+        p_value: 1.0,
         lift: 0.0,
         row: tag2,
         column: female
@@ -67,7 +67,7 @@ describe Analysis::AutoInsightsService do
 
       expect(Analysis::HeatmapCell.find_by(row: tag2, column: unspecified)).to have_attributes(
         count: 0,
-        p_value: 0.4723665527410147,
+        p_value: 1.0,
         lift: 0.0,
         row: tag2,
         column: unspecified
@@ -144,7 +144,7 @@ describe Analysis::AutoInsightsService do
       )
       expect(Analysis::HeatmapCell.find_by(row: tag2, column: male)).to have_attributes(
         count: 2,
-        p_value: 0.6592406302004438,
+        p_value: 1.0,
         lift: 0.9333333333333333,
         row: tag2,
         column: male,
@@ -152,7 +152,7 @@ describe Analysis::AutoInsightsService do
       )
       expect(Analysis::HeatmapCell.find_by(row: tag2, column: female)).to have_attributes(
         count: 1,
-        p_value: 0.4723665527410147,
+        p_value: 1.0,
         lift: 1.1666666666666667,
         row: tag2,
         column: female,

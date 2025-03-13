@@ -13,7 +13,7 @@ module Analysis
           # generation soon
           generate_heatmap_cells if @analysis.heatmap_cells.empty?
 
-          heatmap_cells = @analysis.heatmap_cells
+          heatmap_cells = @analysis.heatmap_cells.includes(:row, :column)
           heatmap_cells = heatmap_cells.order(Arel.sql('abs(1 - lift) DESC'))
           heatmap_cells = apply_filters(heatmap_cells)
           heatmap_cells = paginate(heatmap_cells)

@@ -191,7 +191,7 @@ module Analysis
       end
 
       data.each do |row|
-        table[[row[col1], row[col2]]] += 1
+        table[[!!row[col1], !!row[col2]]] += 1
       end
 
       table
