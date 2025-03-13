@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useEffect } from 'react';
 
 import { Box } from '@citizenlab/cl2-component-library';
 import { useVirtualizer } from '@tanstack/react-virtual';
@@ -20,9 +20,14 @@ const Item = styled.div<{ start: number }>`
 
 const ProjectCards = () => {
   const ransackParams = useRansackParams();
-  const { data: projects, hasNextPage } = useInfiniteProjectLibraryProjects({
+  const {
+    data: projects,
+    hasNextPage,
+    fetchNextPage,
+    isFetchingNextPage,
+  } = useInfiniteProjectLibraryProjects({
     ...ransackParams,
-    'page[size]': 40, // TODO remove
+    'page[size]': 12,
   });
 
   const flatProjects = useMemo(() => {
@@ -48,6 +53,8 @@ const ProjectCards = () => {
 
   const rowsLength = projectsInRows.length;
 
+  console.log({ rowsLength });
+
   const { getVirtualItems, measureElement, getTotalSize } = useVirtualizer({
     count: hasNextPage ? rowsLength + 1 : rowsLength,
     getScrollElement: () => document.getElementById('inspiration-hub'),
@@ -57,6 +64,30 @@ const ProjectCards = () => {
 
   const virtualItems = getVirtualItems();
   const totalSize = getTotalSize();
+
+  useEffect(() => {
+    const lastItem = virtualItems[virtualItems.length - 1];
+
+    // TODO: Fix this the next time the file is edited.
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+    if (!lastItem) {
+      return;
+    }
+
+    if (
+      lastItem.index >= rowsLength - 1 &&
+      hasNextPage &&
+      !isFetchingNextPage
+    ) {
+      fetchNextPage();
+    }
+  }, [
+    hasNextPage,
+    fetchNextPage,
+    isFetchingNextPage,
+    rowsLength,
+    virtualItems,
+  ]);
 
   return (
     <Box position="relative" height={`${totalSize}px`} width="100%">
