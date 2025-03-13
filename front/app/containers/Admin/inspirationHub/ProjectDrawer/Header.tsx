@@ -41,9 +41,10 @@ const Header = ({ attributes }: Props) => {
             h="16px"
             w="24px"
             ml="4px"
+            mr="8px"
           />
         )}
-        <ExternalLink href={tenantURL} ml="8px" mt="1px">
+        <ExternalLink href={tenantURL} mt="1px">
           {attributes.tenant_name}
         </ExternalLink>
       </Box>
