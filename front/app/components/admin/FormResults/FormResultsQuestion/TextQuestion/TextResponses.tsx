@@ -40,7 +40,7 @@ const TextResponses = ({
   });
 
   return (
-    <Box bg={colors.background} height="460px">
+    <Box bg={colors.grey100} height="460px">
       <Box borderBottom={`1px solid ${colors.divider}`} p="24px" height="60px">
         <Text fontWeight="bold" m="0px">
           {hasOtherResponses
