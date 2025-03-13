@@ -53,8 +53,6 @@ const ProjectCards = () => {
 
   const rowsLength = projectsInRows.length;
 
-  console.log({ rowsLength });
-
   const { getVirtualItems, measureElement, getTotalSize } = useVirtualizer({
     count: hasNextPage ? rowsLength + 1 : rowsLength,
     getScrollElement: () => document.getElementById('inspiration-hub'),
