@@ -47,9 +47,6 @@ import UserPickerControl, {
 import WYSIWYGControl, {
   WYSIWYGControlTester,
 } from 'components/Form/Components/Controls/WYSIWYGControl';
-import CLCategoryLayout, {
-  clCategoryTester,
-} from 'components/Form/Components/Layouts/CLCategoryLayout';
 import CLPageLayout, {
   clPageTester,
 } from 'components/Form/Components/Layouts/CLPageLayout';
@@ -92,8 +89,6 @@ import SingleSelectRadioEnumControl, {
 } from './SingleSelectRadioEnumControl';
 
 export {
-  CLCategoryLayout,
-  clCategoryTester,
   CLPageLayout,
   clPageTester,
   OrderedLayout,
