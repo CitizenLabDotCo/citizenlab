@@ -1929,7 +1929,7 @@
   "app.containers.ideaHeading.editForm": "Modifier le formulaire",
   "app.containers.ideaHeading.leaveFormConfirmationQuestion": "Êtes-vous sûr de vouloir quitter ?",
   "app.containers.ideaHeading.leaveIdeaForm": "Laissez le formulaire d'idée",
-  "app.containers.ideaHeading.leaveIdeaText": "Vos réponses ne seront pas sauvegardées.",
+  "app.containers.ideaHeading.leaveIdeaText": "Vos réponses ne seront pas enregistrées.",
   "app.containers.landing.cityProjects": "Les {tenantName, select, frw {communes} other {projets}}",
   "app.containers.landing.completeProfile": "Complétez votre profil",
   "app.containers.landing.completeYourProfile": "Bienvenue, {firstName}. Il est temps de compléter votre profil.",
