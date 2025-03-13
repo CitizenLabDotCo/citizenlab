@@ -87,6 +87,16 @@ resource 'HeatmapCells' do
       expect(response_data.first[:id]).to eq(heatmap_cells.first.id)
     end
 
+    example 'Respects the unit filter' do
+      cell = create(:heatmap_cell, analysis:, unit: 'likes')
+
+      do_request(unit: 'likes')
+
+      expect(status).to eq 200
+      expect(response_data.size).to eq(1)
+      expect(response_data.first[:id]).to eq(cell.id)
+    end
+
     example 'Respects the max_p_value filter' do
       max_p_value = 0.05
       cell = create(:heatmap_cell, analysis:, p_value: max_p_value)
