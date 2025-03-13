@@ -10,7 +10,10 @@ import { useRansackParams } from '../utils';
 
 const ProjectCards = () => {
   const ransackParams = useRansackParams();
-  const { data: projects } = useInfiniteProjectLibraryProjects(ransackParams);
+  const { data: projects } = useInfiniteProjectLibraryProjects({
+    ...ransackParams,
+    'page[size]': 3, // TODO remove
+  });
 
   const flatProjects = useMemo(() => {
     if (!projects) return undefined;
