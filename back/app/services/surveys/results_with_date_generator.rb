@@ -3,34 +3,21 @@
 module Surveys
   class ResultsWithDateGenerator < ResultsGenerator
     def generate_results(year: nil, quarter: nil)
-      results = build_results fields, year, quarter
-      total_submissions = inputs.size
-
-      if results.present?
-        results = add_question_numbers_to_results results
-        results = add_page_response_count_to_results results
-        results = add_linear_scale_scores results, year, quarter
-        results = cleanup_results results
-      end
-
-      {
-        results: results,
-        totalSubmissions: total_submissions
-      }
+      filter_inputs_by_quarter(year, quarter) if year && quarter
+      super()
     end
 
     private
 
-    def build_results(fields, year, quarter)
-      filter_inputs_by_quarter(year, quarter) if year && quarter
-      return [] if inputs.empty?
-
-      fields.filter_map { |f| visit f }
+    def add_additional_fields_to_results(results)
+      add_linear_scale_scores results, @year, @quarter
     end
 
     def filter_inputs_by_quarter(year, quarter)
       raise ArgumentError, 'Invalid date format' unless year.match?(/^\d{4}$/) && quarter.match?(/^[1-4]$/)
 
+      @year = year
+      @quarter = quarter
       @inputs = @inputs.where(created_at: quarter_to_date_range(year, quarter))
     end
 

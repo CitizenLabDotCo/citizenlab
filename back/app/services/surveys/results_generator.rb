@@ -19,18 +19,17 @@ module Surveys
 
     # Get the results for all survey questions
     def generate_results
-      results = build_results fields # TODO: Can we pass in options here? instead of specific fields?
-      total_submissions = inputs.size
-
+      results = fields.filter_map { |f| visit f }
       if results.present?
         results = add_question_numbers_to_results results
         results = add_page_response_count_to_results results
+        results = add_additional_fields_to_results results
         results = cleanup_results results
       end
 
       {
         results: results,
-        totalSubmissions: total_submissions
+        totalSubmissions: inputs.size
       }
     end
 
@@ -134,8 +133,8 @@ module Surveys
 
     attr_reader :phase, :fields, :inputs, :locales
 
-    def build_results(fields)
-      fields.filter_map { |f| visit f }
+    def add_additional_fields_to_results(results)
+      results # This method is a placeholder for overriding in subclasses
     end
 
     def core_field_attributes(field, response_count: nil)

@@ -677,8 +677,8 @@ resource 'Phases' do
 
     get 'web_api/v1/phases/:id/survey_results' do
       parameter :logic_ids, 'Array of page or option ids to filter the results by logic', required: false
-      parameter :start_month, 'First month to include in the survey results', required: false
-      parameter :end_month, 'Last month to include in the survey results', required: false
+      parameter :year, 'First month to include in the survey results', required: false
+      parameter :quarter, 'Last month to include in the survey results', required: false
 
       let(:project) { create(:project_with_active_native_survey_phase) }
       let(:active_phase) { project.phases.first }
