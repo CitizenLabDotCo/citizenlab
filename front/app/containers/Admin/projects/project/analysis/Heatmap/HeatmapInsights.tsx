@@ -3,7 +3,7 @@ import React from 'react';
 import { Box, colors, Text, Button } from '@citizenlab/cl2-component-library';
 import { useParams } from 'react-router-dom';
 
-import { IAnalysysHeatmapCellsParams } from 'api/analysis_heat_map_cells/types';
+import { Unit } from 'api/analysis_heat_map_cells/types';
 import useAnalysisHeatmapCells from 'api/analysis_heat_map_cells/useAnalysisHetmapCells';
 
 import useLocalize from 'hooks/useLocalize';
@@ -17,7 +17,7 @@ interface HeatMapInsightsProps {
     unit,
     customFieldOptionId,
   }: {
-    unit: IAnalysysHeatmapCellsParams['unit'];
+    unit: Unit;
     customFieldOptionId?: string;
   }) => void;
 }
@@ -47,22 +47,24 @@ const HeatMapInsights = ({ onReadMoreClick }: HeatMapInsightsProps) => {
           borderRadius="3px"
         >
           <Text>{localize(cell.attributes.statement_multiloc)}</Text>
-          <Box display="flex">
-            <Button
-              buttonStyle="text"
-              icon="eye"
-              size="s"
-              p="0px"
-              onClick={() =>
-                onReadMoreClick({
-                  unit: cell.attributes.unit,
-                  customFieldOptionId: cell.relationships.column?.data.id,
-                })
-              }
-            >
-              {formatMessage(messages.readMore)}
-            </Button>
-          </Box>
+          {cell.attributes.unit === 'inputs' && (
+            <Box display="flex">
+              <Button
+                buttonStyle="text"
+                icon="eye"
+                size="s"
+                p="0px"
+                onClick={() =>
+                  onReadMoreClick({
+                    unit: cell.attributes.unit,
+                    customFieldOptionId: cell.relationships.column?.data.id,
+                  })
+                }
+              >
+                {formatMessage(messages.readMore)}
+              </Button>
+            </Box>
+          )}
         </Box>
       ))}
     </>

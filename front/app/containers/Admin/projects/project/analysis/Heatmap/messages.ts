@@ -41,4 +41,8 @@ export default defineMessages({
     id: 'app.containers.AdminPage.projects.project.analysis.heatmap.participants',
     defaultMessage: 'Participants',
   },
+  units: {
+    id: 'app.containers.AdminPage.projects.project.analysis.heatmap.units',
+    defaultMessage: 'Units',
+  },
 });

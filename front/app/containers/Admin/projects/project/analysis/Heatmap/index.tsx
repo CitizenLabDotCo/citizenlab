@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-import { IAnalysysHeatmapCellsParams } from 'api/analysis_heat_map_cells/types';
+import { Unit } from 'api/analysis_heat_map_cells/types';
 import useUserCustomFields from 'api/user_custom_fields/useUserCustomFields';
 
 import HeatmapDetails from './HeatmapDetails';
@@ -8,8 +8,7 @@ import HeatmapInsights from './HeatmapInsights';
 
 const Heatmap = () => {
   const [isReadMoreOpen, setIsReadMoreOpen] = useState(false);
-  const [initialUnit, setInitialUnit] =
-    useState<IAnalysysHeatmapCellsParams['unit']>('inputs');
+  const [initialUnit, setInitialUnit] = useState<Unit>('inputs');
   const [initialCustomFieldId, setInitialCustomFieldId] = useState<
     string | undefined
   >();
@@ -35,7 +34,7 @@ const Heatmap = () => {
     unit,
     customFieldOptionId,
   }: {
-    unit: IAnalysysHeatmapCellsParams['unit'];
+    unit: Unit;
     customFieldOptionId?: string;
   }) => {
     setInitialUnit(unit);

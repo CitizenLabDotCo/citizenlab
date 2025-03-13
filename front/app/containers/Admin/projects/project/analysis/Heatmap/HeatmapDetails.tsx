@@ -22,7 +22,7 @@ import {
 import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 
-import { IAnalysysHeatmapCellsParams } from 'api/analysis_heat_map_cells/types';
+import { Unit } from 'api/analysis_heat_map_cells/types';
 import useAnalysisHeatmapCells from 'api/analysis_heat_map_cells/useAnalysisHetmapCells';
 import { AuthorCustomFilterKey } from 'api/analysis_inputs/types';
 import useAddAnalysisSummary from 'api/analysis_summaries/useAddAnalysisSummary';
@@ -50,7 +50,7 @@ interface HeatMapProps {
   onClose: () => void;
   customFields: IUserCustomFields;
   initialCustomFieldId?: string;
-  initialUnit?: IAnalysysHeatmapCellsParams['unit'];
+  initialUnit?: Unit;
 }
 
 interface CustomFieldOptionsProps {
@@ -141,9 +141,7 @@ const HeatmapDetails = ({
   const [selectedFieldId, setSelectedFieldId] = useState(
     initialCustomFieldId || customFields.data[0].id
   );
-  const [unit, setUnit] = useState<IAnalysysHeatmapCellsParams['unit']>(
-    initialUnit || 'inputs'
-  );
+  const [unit, setUnit] = useState<Unit>(initialUnit || 'inputs');
   const { analysisId } = useParams() as { analysisId: string };
   const { data: analysisHeatmapCells, isLoading } = useAnalysisHeatmapCells({
     analysisId,
@@ -213,19 +211,22 @@ const HeatmapDetails = ({
       <Box display="flex" justifyContent="flex-end" py="12px">
         <CloseIconButton onClick={onClose} />
       </Box>
-      <Select
-        value={unit}
-        onChange={(option) => setUnit(option.value)}
-        options={[
-          { value: 'inputs', label: formatMessage(messages.inputs) },
-          { value: 'likes', label: formatMessage(messages.likes) },
-          { value: 'dislikes', label: formatMessage(messages.dislikes) },
-          {
-            value: 'participants',
-            label: formatMessage(messages.participants),
-          },
-        ]}
-      />
+      <Box display="flex" justifyContent="flex-end" mb="12px">
+        <Select
+          value={unit}
+          label={formatMessage(messages.units)}
+          onChange={(option) => setUnit(option.value)}
+          options={[
+            { value: 'inputs', label: formatMessage(messages.inputs) },
+            { value: 'likes', label: formatMessage(messages.likes) },
+            { value: 'dislikes', label: formatMessage(messages.dislikes) },
+            {
+              value: 'participants',
+              label: formatMessage(messages.participants),
+            },
+          ]}
+        />
+      </Box>
       <Box display="flex" justifyContent="space-between" w="100%" m="auto">
         {customFields.data.length > 1 && (
           <IconButton

@@ -11,13 +11,15 @@ export interface IAnalysisHeatmapCells {
   links: ILinks;
 }
 
+export type Unit = 'inputs' | 'likes' | 'dislikes' | 'participants';
+
 export interface IAnalysisHeatmapCellData {
   id: string;
   type: 'heatmap_cell';
   attributes: {
     created_at: string;
     updated_at: string;
-    unit: 'inputs';
+    unit: Unit;
     count: number;
     lift: number;
     p_value: number;
@@ -39,5 +41,5 @@ export interface IAnalysysHeatmapCellsParams {
   columnCategoryId?: string;
   maxPValue?: number;
   minLiftDiff?: number;
-  unit?: 'inputs' | 'likes' | 'dislikes' | 'participants';
+  unit?: Unit;
 }
