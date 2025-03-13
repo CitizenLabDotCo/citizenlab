@@ -268,7 +268,7 @@ class ImagesDropzone extends PureComponent<
     const newUrlObjects = {};
 
     images
-      .filter((image) => !urlObjects[image.base64])
+      .filter((image) => image.base64 && !urlObjects[image.base64])
       .forEach((image) => {
         if (image.base64.startsWith('data:')) {
           // Handle base64 strings
