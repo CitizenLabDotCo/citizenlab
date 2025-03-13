@@ -51,8 +51,8 @@ const ProjectCards = () => {
   const { getVirtualItems, measureElement, getTotalSize } = useVirtualizer({
     count: hasNextPage ? rowsLength + 1 : rowsLength,
     getScrollElement: () => document.getElementById('inspiration-hub'),
-    estimateSize: () => 4,
-    overscan: 1,
+    estimateSize: () => 3,
+    overscan: 3,
   });
 
   const virtualItems = getVirtualItems();
