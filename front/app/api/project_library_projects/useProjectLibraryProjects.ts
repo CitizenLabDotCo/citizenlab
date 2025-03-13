@@ -22,7 +22,10 @@ const fetchLibraryProjects = (queryParams: Parameters) =>
     apiPath: '/project_library_api',
   });
 
-const useProjectLibraryProjects = (queryParams: Parameters) => {
+const useProjectLibraryProjects = (
+  queryParams: Parameters,
+  { enabled = true } = {}
+) => {
   return useQuery<
     ProjectLibraryProjects,
     CLErrors,
@@ -31,6 +34,7 @@ const useProjectLibraryProjects = (queryParams: Parameters) => {
   >({
     queryKey: projectLibraryProjectsKeys.list(queryParams),
     queryFn: () => fetchLibraryProjects(queryParams),
+    enabled,
   });
 };
 
