@@ -57,6 +57,9 @@ const ProjectCard = ({ project }: Props) => {
       w="33%"
       p="16px"
       style={{ textAlign: 'left' }}
+      display="flex"
+      flexDirection="column"
+      justifyContent="flex-start"
       onClick={() => {
         updateSearchParams({ project_id: project.id });
       }}
@@ -86,9 +89,11 @@ const ProjectCard = ({ project }: Props) => {
           </Text>
         </Box>
       </Box>
-      {relationships.phases.data.map(({ id }) => (
-        <MethodLabel projectLibraryPhaseId={id} key={id} />
-      ))}
+      <Box>
+        {relationships.phases.data.map(({ id }) => (
+          <MethodLabel projectLibraryPhaseId={id} key={id} />
+        ))}
+      </Box>
     </CardContainer>
   );
 };
