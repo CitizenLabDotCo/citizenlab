@@ -25,8 +25,14 @@ const InspirationHub = () => {
   const countryCode = appConfiguration.data.attributes.country_code;
 
   return (
-    <>
-      <Box id="inspiration-hub" overflowY="scroll" height={`100vh`}>
+    <Box>
+      <Box
+        id="inspiration-hub"
+        overflowY="scroll"
+        height={`100vh`}
+        py="45px"
+        px="51px"
+      >
         <Title variant="h1" color="primary" mb="36px">
           <FormattedMessage {...sidebarMessages.inspirationHub} />
         </Title>
@@ -62,7 +68,7 @@ const InspirationHub = () => {
         </Box>
       </Box>
       <ProjectDrawer />
-    </>
+    </Box>
   );
 };
 
