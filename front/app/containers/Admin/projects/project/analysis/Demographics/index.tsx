@@ -4,6 +4,7 @@ import {
   Box,
   Icon,
   IconButton,
+  Spinner,
   Title,
   colors,
 } from '@citizenlab/cl2-component-library';
@@ -61,6 +62,10 @@ const Demographics = () => {
       return supportedFieldIds[newIndex];
     });
   };
+
+  if (!customFields) {
+    return <Spinner />;
+  }
 
   return (
     <Box>

@@ -16,10 +16,13 @@ import {
   Text,
   Tooltip,
   Button,
+  Select,
+  Spinner,
 } from '@citizenlab/cl2-component-library';
 import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 
+import { IAnalysysHeatmapCellsParams } from 'api/analysis_heat_map_cells/types';
 import useAnalysisHeatmapCells from 'api/analysis_heat_map_cells/useAnalysisHetmapCells';
 import { AuthorCustomFilterKey } from 'api/analysis_inputs/types';
 import useAddAnalysisSummary from 'api/analysis_summaries/useAddAnalysisSummary';
@@ -46,6 +49,8 @@ import {
 interface HeatMapProps {
   onClose: () => void;
   customFields: IUserCustomFields;
+  initialCustomFieldId?: string;
+  initialUnit?: IAnalysysHeatmapCellsParams['unit'];
 }
 
 interface CustomFieldOptionsProps {
@@ -125,17 +130,26 @@ const CustomFieldOptions: React.FC<CustomFieldOptionsProps> = ({
   );
 };
 
-const HeatmapDetails = ({ onClose, customFields }: HeatMapProps) => {
+const HeatmapDetails = ({
+  onClose,
+  customFields,
+  initialCustomFieldId,
+  initialUnit,
+}: HeatMapProps) => {
   const localize = useLocalize();
   const { formatMessage } = useIntl();
   const [selectedFieldId, setSelectedFieldId] = useState(
-    customFields.data[0].id
+    initialCustomFieldId || customFields.data[0].id
+  );
+  const [unit, setUnit] = useState<IAnalysysHeatmapCellsParams['unit']>(
+    initialUnit || 'inputs'
   );
   const { analysisId } = useParams() as { analysisId: string };
-  const { data: analysisHeatmapCells } = useAnalysisHeatmapCells({
+  const { data: analysisHeatmapCells, isLoading } = useAnalysisHeatmapCells({
     analysisId,
     columnCategoryType: 'user_custom_field',
     columnCategoryId: selectedFieldId,
+    unit,
   });
 
   const { data: tags } = useAnalysisTags({
@@ -199,6 +213,19 @@ const HeatmapDetails = ({ onClose, customFields }: HeatMapProps) => {
       <Box display="flex" justifyContent="flex-end" py="12px">
         <CloseIconButton onClick={onClose} />
       </Box>
+      <Select
+        value={unit}
+        onChange={(option) => setUnit(option.value)}
+        options={[
+          { value: 'inputs', label: formatMessage(messages.inputs) },
+          { value: 'likes', label: formatMessage(messages.likes) },
+          { value: 'dislikes', label: formatMessage(messages.dislikes) },
+          {
+            value: 'participants',
+            label: formatMessage(messages.participants),
+          },
+        ]}
+      />
       <Box display="flex" justifyContent="space-between" w="100%" m="auto">
         {customFields.data.length > 1 && (
           <IconButton
@@ -211,6 +238,8 @@ const HeatmapDetails = ({ onClose, customFields }: HeatMapProps) => {
         <Title fontSize="xl">
           {localize(customField?.data.attributes.title_multiloc)}
         </Title>
+
+        {isLoading ? <Spinner /> : null}
 
         {customFields.data.length > 1 && (
           <IconButton

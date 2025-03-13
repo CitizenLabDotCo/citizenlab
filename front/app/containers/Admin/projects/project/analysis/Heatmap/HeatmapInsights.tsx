@@ -3,6 +3,7 @@ import React from 'react';
 import { Box, colors, Text, Button } from '@citizenlab/cl2-component-library';
 import { useParams } from 'react-router-dom';
 
+import { IAnalysysHeatmapCellsParams } from 'api/analysis_heat_map_cells/types';
 import useAnalysisHeatmapCells from 'api/analysis_heat_map_cells/useAnalysisHetmapCells';
 
 import useLocalize from 'hooks/useLocalize';
@@ -12,7 +13,13 @@ import { useIntl } from 'utils/cl-intl';
 import messages from './messages';
 
 interface HeatMapInsightsProps {
-  onReadMoreClick: () => void;
+  onReadMoreClick: ({
+    unit,
+    customFieldOptionId,
+  }: {
+    unit: IAnalysysHeatmapCellsParams['unit'];
+    customFieldOptionId?: string;
+  }) => void;
 }
 
 const HeatMapInsights = ({ onReadMoreClick }: HeatMapInsightsProps) => {
@@ -46,7 +53,12 @@ const HeatMapInsights = ({ onReadMoreClick }: HeatMapInsightsProps) => {
               icon="eye"
               size="s"
               p="0px"
-              onClick={onReadMoreClick}
+              onClick={() =>
+                onReadMoreClick({
+                  unit: cell.attributes.unit,
+                  customFieldOptionId: cell.relationships.column?.data.id,
+                })
+              }
             >
               {formatMessage(messages.readMore)}
             </Button>

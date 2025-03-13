@@ -25,4 +25,20 @@ export default defineMessages({
     id: 'app.containers.AdminPage.projects.project.analysis.heatmap.summarize',
     defaultMessage: 'Summarize',
   },
+  inputs: {
+    id: 'app.containers.AdminPage.projects.project.analysis.heatmap.inputs',
+    defaultMessage: 'Inputs',
+  },
+  likes: {
+    id: 'app.containers.AdminPage.projects.project.analysis.heatmap.likes',
+    defaultMessage: 'Likes',
+  },
+  dislikes: {
+    id: 'app.containers.AdminPage.projects.project.analysis.heatmap.dislikes',
+    defaultMessage: 'Dislikes',
+  },
+  participants: {
+    id: 'app.containers.AdminPage.projects.project.analysis.heatmap.participants',
+    defaultMessage: 'Participants',
+  },
 });

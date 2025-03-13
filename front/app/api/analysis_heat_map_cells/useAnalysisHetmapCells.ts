@@ -17,6 +17,7 @@ const fetchAnalysisHeatmapCells = ({
   columnCategoryId,
   maxPValue,
   minLiftDiff,
+  unit,
   pageSize = 1000,
   pageNumber = 1,
 }: IAnalysysHeatmapCellsParams) =>
@@ -31,6 +32,7 @@ const fetchAnalysisHeatmapCells = ({
       column_category_id: columnCategoryId,
       max_p_value: maxPValue,
       min_lift_diff: minLiftDiff,
+      unit,
     },
   });
 

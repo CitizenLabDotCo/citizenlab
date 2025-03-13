@@ -39,4 +39,5 @@ export interface IAnalysysHeatmapCellsParams {
   columnCategoryId?: string;
   maxPValue?: number;
   minLiftDiff?: number;
+  unit?: 'inputs' | 'likes' | 'dislikes' | 'participants';
 }
