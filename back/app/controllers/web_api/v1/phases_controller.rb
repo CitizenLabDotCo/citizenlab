@@ -67,13 +67,15 @@ class WebApi::V1::PhasesController < ApplicationController
   end
 
   def survey_results
-    logic_ids = params[:filter_logic_ids].presence || [] # Array of page and option IDs
-    start_month = params[:start_month]
-    end_month = params[:end_month]
+    results = if @phase.pmethod.class.method_str == 'community_monitor_survey'
+      year = params[:year]
+      quarter = params[:quarter]
+      Surveys::ResultsWithDateGenerator.new(@phase).generate_results(year: year, quarter: quarter)
+    else
+      logic_ids = params[:filter_logic_ids].presence || [] # Array of page and option IDs
+      Surveys::ResultsWithLogicGenerator.new(@phase).generate_results(logic_ids:)
+    end
 
-    results = Surveys::ResultsWithLogicGenerator.new(@phase).generate_results(
-      logic_ids:, start_month:, end_month:
-    )
     render json: raw_json(results)
   end
 

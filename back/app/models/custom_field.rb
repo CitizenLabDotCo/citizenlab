@@ -159,6 +159,10 @@ class CustomField < ApplicationRecord
     %w[linear_scale matrix_linear_scale sentiment_linear_scale].include?(input_type)
   end
 
+  def supports_linear_scale_average?
+    %w[linear_scale sentiment_linear_scale rating].include?(input_type)
+  end
+
   def supports_single_selection?
     %w[select linear_scale sentiment_linear_scale rating].include?(input_type)
   end
