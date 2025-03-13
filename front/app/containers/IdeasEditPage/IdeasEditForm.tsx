@@ -19,10 +19,12 @@ import { calculateDynamicHeight } from 'containers/IdeasNewSurveyPage/IdeasNewSu
 
 import ContentUploadDisclaimer from 'components/ContentUploadDisclaimer';
 import Form from 'components/Form';
+import { SURVEY_PAGE_CHANGE_EVENT } from 'components/Form/Components/Layouts/events';
 import { AjvErrorGetter, ApiErrorGetter } from 'components/Form/typings';
 import FullPageSpinner from 'components/UI/FullPageSpinner';
 
 import { FormattedMessage } from 'utils/cl-intl';
+import eventEmitter from 'utils/eventEmitter';
 import { getFieldNameFromPath } from 'utils/JSONFormUtils';
 
 import IdeasEditMeta from './IdeasEditMeta';
@@ -62,6 +64,7 @@ const IdeasEditForm = ({ ideaId }: Props) => {
   const { data: remoteFiles } = useIdeaFiles(ideaId);
   const projectId = idea?.data.relationships.project.data.id;
   const callbackRef = useRef<(() => void) | null>(null);
+  const [usingMapView, setUsingMapView] = useState(false);
 
   const {
     schema,
@@ -83,6 +86,18 @@ const IdeasEditForm = ({ ideaId }: Props) => {
       );
     }
   }, [schema, idea, remoteImages, remoteFiles]);
+
+  useEffect(() => {
+    const subscription = eventEmitter
+      .observeEvent(SURVEY_PAGE_CHANGE_EVENT)
+      .subscribe(() => {
+        setUsingMapView(!!document.getElementById('survey_page_map'));
+      });
+
+    return () => {
+      subscription.unsubscribe();
+    };
+  }, []);
 
   const getApiErrorMessage: ApiErrorGetter = useCallback(
     (error) => {
@@ -253,7 +268,7 @@ const IdeasEditForm = ({ ideaId }: Props) => {
           mx="auto"
           position="relative"
           top={isSmallerThanPhone ? '0' : '40px'}
-          maxWidth="700px"
+          maxWidth={usingMapView ? '1100px' : '700px'}
         >
           <EditIdeaHeading
             idea={idea.data}
@@ -269,7 +284,7 @@ const IdeasEditForm = ({ ideaId }: Props) => {
           >
             <Box
               background={colors.white}
-              maxWidth="700px"
+              maxWidth={usingMapView ? '1100px' : '700px'}
               w="100%"
               // Height is recalculated on window resize via useWindowSize hook
               h={calculateDynamicHeight(isSmallerThanPhone)}
