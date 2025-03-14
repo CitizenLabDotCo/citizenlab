@@ -13,7 +13,8 @@ export const FormContext = createContext<{
   onSubmit?: (
     formData?: { data?: FormValues },
     showErrors?: boolean,
-    userPagePath?: PageType[]
+    userPagePath?: PageType[],
+    afterSubmitCallBack?: () => void
   ) => void | Promise<any>;
   setFormData?: (formData?: FormValues) => void;
   setShowAllErrors?: (showAllErrors: boolean) => void;

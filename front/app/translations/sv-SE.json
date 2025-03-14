@@ -793,8 +793,6 @@
   "app.components.formBuilder.ruleForAnswerLabel": "Om svaret är:",
   "app.components.formBuilder.ruleForAnswerLabelMultiselect": "Om svaren inkluderar:",
   "app.components.formBuilder.save": "Spara",
-  "app.components.formBuilder.section": "Avsnitt",
-  "app.components.formBuilder.sectionCannotBeDeleted": "Det här avsnittet kan inte tas bort.",
   "app.components.formBuilder.selectRangeTooltip": "Välj minimivärdet för din skala.",
   "app.components.formBuilder.sentiment": "Sentimentskala",
   "app.components.formBuilder.shapefileUpload": "Uppladdning av Esri shapefile",

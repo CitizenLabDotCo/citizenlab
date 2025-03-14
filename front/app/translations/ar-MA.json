@@ -793,8 +793,6 @@
   "app.components.formBuilder.ruleForAnswerLabel": "إذا كانت الإجابة هي:",
   "app.components.formBuilder.ruleForAnswerLabelMultiselect": "إذا كانت الإجابات تتضمن:",
   "app.components.formBuilder.save": "حفظ",
-  "app.components.formBuilder.section": "قسم",
-  "app.components.formBuilder.sectionCannotBeDeleted": "لا يمكن حذف هذا القسم.",
   "app.components.formBuilder.selectRangeTooltip": "حدد القيمة القصوى للمقياس.",
   "app.components.formBuilder.sentiment": "مقياس المشاعر",
   "app.components.formBuilder.shapefileUpload": "تحميل ملف شكل Esri",

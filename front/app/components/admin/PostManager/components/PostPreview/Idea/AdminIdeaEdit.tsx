@@ -118,6 +118,10 @@ const AdminIdeaEdit = ({
   }
 
   const onSubmit = async (data: FormValues) => {
+    if (data.publication_status !== 'published') {
+      return;
+    }
+
     const { idea_images_attributes, ...ideaWithoutImages } = data;
 
     const location_point_geojson = await getLocationGeojson(
@@ -208,6 +212,7 @@ const AdminIdeaEdit = ({
             getApiErrorMessage={getApiErrorMessage}
             config={'input'}
             layout={'inline'}
+            showSubmitButton={false}
           />
         ) : projectStatus === 'error' || inputSchemaError ? null : (
           <Spinner />

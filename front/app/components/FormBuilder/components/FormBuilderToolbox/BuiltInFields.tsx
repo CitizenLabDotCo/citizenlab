@@ -46,7 +46,7 @@ const BuiltInFields = ({ move, builderConfig }: BuiltInFieldsProps) => {
     if (field) {
       const updatedField = { ...field, enabled: true };
       setValue(`customFields.${fieldIndex}`, updatedField);
-      move(fieldIndex, formCustomFields.length - 1);
+      move(fieldIndex, formCustomFields.length - 2);
       trigger();
     }
   };

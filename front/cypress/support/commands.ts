@@ -1634,7 +1634,7 @@ function apiCreateSurveyQuestions(
             title_multiloc: {
               en: 'Thank you for sharing your input!',
             },
-            key: 'survey_end',
+            key: 'form_end',
             code: null,
             page_layout: 'default',
             description_multiloc: {

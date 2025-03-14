@@ -118,10 +118,6 @@ module ParticipationMethod
       true
     end
 
-    def supports_pages_in_form?
-      false
-    end
-
     def supports_permitted_by_everyone?
       false
     end

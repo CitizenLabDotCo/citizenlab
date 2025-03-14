@@ -67,8 +67,6 @@ export type FormBuilderConfig = {
     handleClose: () => void
   ) => void;
 
-  groupingType: 'page' | 'section';
-
   onDownloadPDF?: () => void;
 };
 
@@ -267,11 +265,9 @@ const getInputTypeStringKey = (
     case 'multiselect_image':
       translatedStringKey = messages.multipleChoiceImage;
       break;
+    case 'section':
     case 'page':
       translatedStringKey = messages.page;
-      break;
-    case 'section':
-      translatedStringKey = messages.section;
       break;
     case 'number':
       translatedStringKey = messages.number;
@@ -331,5 +327,5 @@ export const findNextPageAfterCurrentPage = (
       .find((item) => item.input_type === 'page');
     if (nextPage?.id) return nextPage.id;
   }
-  return 'survey_end';
+  return 'form_end';
 };

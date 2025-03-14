@@ -29,8 +29,6 @@ class FormLogicService
 
       field_valid = if field.page?
         valid_page_logic_structure?(field) && valid_next_page?(field)
-      elsif field.section?
-        valid_section_logic_structure?(field)
       else
         valid_field_logic_structure?(field) && valid_rules?(field)
       end
@@ -61,13 +59,6 @@ class FormLogicService
       return true if all_rules_are_valid
     end
     add_invalid_structure_error(field)
-    false
-  end
-
-  def valid_section_logic_structure?(field)
-    return true unless field.logic
-
-    add_not_allowed_on_section_error(field)
     false
   end
 
@@ -126,10 +117,6 @@ class FormLogicService
 
     add_only_page_allowed_as_target_error(field, target_id)
     false
-  end
-
-  def add_not_allowed_on_section_error(field)
-    field.errors.add(:logic, :not_allowed_on_section_fields, message: 'not allowed on section fields')
   end
 
   def add_invalid_structure_error(field)

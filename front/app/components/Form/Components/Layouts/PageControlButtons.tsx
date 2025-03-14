@@ -10,6 +10,9 @@ import {
 } from '@citizenlab/cl2-component-library';
 import { useTheme } from 'styled-components';
 
+import { IPhaseData } from 'api/phases/types';
+import { getInputTerm } from 'api/phases/utils';
+
 import LanguageSelector from 'containers/MainHeader/Components/LanguageSelector';
 
 import { FormattedMessage, MessageDescriptor } from 'utils/cl-intl';
@@ -42,6 +45,8 @@ interface Props {
   hasPreviousPage: boolean;
   isLoading: boolean;
   pageVariant: PageVariant;
+  phases: IPhaseData[] | undefined;
+  currentPhase: IPhaseData | undefined;
 }
 
 const PageControlButtons = ({
@@ -50,9 +55,35 @@ const PageControlButtons = ({
   hasPreviousPage,
   isLoading,
   pageVariant,
+  phases,
+  currentPhase,
 }: Props) => {
   const theme = useTheme();
   const isSmallerThanPhone = useBreakpoint('phone');
+
+  const getButtonText = () => {
+    if (pageVariant !== 'after-submission') {
+      return BUTTON_MESSAGES[pageVariant];
+    }
+
+    const inputTerm = getInputTerm(phases, currentPhase);
+
+    const inputTermMessages: Record<string, MessageDescriptor> = {
+      idea: messages.viewYourIdea,
+      option: messages.viewYourOption,
+      project: messages.viewYourProject,
+      question: messages.viewYourQuestion,
+      issue: messages.viewYourIssue,
+      contribution: messages.viewYourContribution,
+      proposal: messages.viewYourProposal,
+      petition: messages.viewYourPetition,
+      initiative: messages.viewYourInitiative,
+    };
+
+    return currentPhase?.attributes.participation_method === 'native_survey'
+      ? messages.backToProject
+      : inputTermMessages[inputTerm];
+  };
 
   return (
     <Box
@@ -99,7 +130,7 @@ const PageControlButtons = ({
           boxShadow={defaultStyles.boxShadow}
           processing={isLoading}
         >
-          <FormattedMessage {...BUTTON_MESSAGES[pageVariant]} />
+          <FormattedMessage {...getButtonText()} />
         </Button>
       </Box>
     </Box>

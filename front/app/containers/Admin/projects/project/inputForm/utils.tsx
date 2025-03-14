@@ -35,6 +35,7 @@ export const ideationConfig: FormBuilderConfig = {
     'image_files',
     'topic_ids',
     'multiselect_image',
+    'page',
   ],
   displayBuiltInFields: true,
   builtInFields: [
@@ -52,8 +53,6 @@ export const ideationConfig: FormBuilderConfig = {
   isLogicEnabled: false,
   alwaysShowCustomFields: false,
   isFormPhaseSpecific: false,
-
-  groupingType: 'section',
   getWarningNotice: () => {
     return (
       <Box id="e2e-warning-notice" mb="16px">
@@ -92,6 +91,7 @@ export const proposalsConfig: FormBuilderConfig = {
     'topic_ids',
     'multiselect_image',
     'cosponsor_ids',
+    'page',
   ],
   displayBuiltInFields: true,
   builtInFields: [
@@ -110,7 +110,6 @@ export const proposalsConfig: FormBuilderConfig = {
   alwaysShowCustomFields: false,
   isFormPhaseSpecific: true,
 
-  groupingType: 'section',
   getWarningNotice: () => {
     return (
       <Box id="e2e-warning-notice" mb="16px">
