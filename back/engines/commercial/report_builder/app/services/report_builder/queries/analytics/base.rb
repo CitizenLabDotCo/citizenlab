@@ -1,10 +1,4 @@
 class ReportBuilder::Queries::Analytics::Base < ReportBuilder::Queries::Base
-  RESOLUTION_TO_INTERVAL = {
-    'month' => 'month',
-    'week' => 'week',
-    'day' => 'date'
-  }.freeze
-
   def run_query(**props)
     json_query = query(**props)
     results, errors, _paginations = Analytics::MultipleQueries.new.run(json_query)
@@ -36,10 +30,6 @@ class ReportBuilder::Queries::Analytics::Base < ReportBuilder::Queries::Base
 
   def project_filter(project_id_column, project_id)
     { project_id_column => project_id.presence }.compact
-  end
-
-  def interval(resolution)
-    RESOLUTION_TO_INTERVAL.fetch(resolution || 'month')
   end
 
   def visitor_filter(apply)

@@ -97,6 +97,7 @@ module Analytics
 
     def query_groups(results)
       @pluck_fields = @query.groups
+      binding.pry
       results.group(@json_query[:groups])
     end
 
