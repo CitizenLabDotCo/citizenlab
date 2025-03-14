@@ -1,6 +1,12 @@
 import React from 'react';
 
-import { Box, Image, stylingConsts } from '@citizenlab/cl2-component-library';
+import {
+  Box,
+  Image,
+  Icon,
+  stylingConsts,
+  colors,
+} from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
 import { CARD_IMAGE_ASPECT_RATIO } from 'api/project_images/useProjectImages';
@@ -24,12 +30,23 @@ const ProjectImageContainer = styled.div`
 interface Props {
   imageUrl?: string;
   alt?: string;
+  showStamp: boolean;
 }
 
-const CardImage = ({ imageUrl, alt }: Props) => {
+const CardImage = ({ imageUrl, alt, showStamp }: Props) => {
   return (
     <Box>
       <ProjectImageContainer className="project-image-container">
+        {showStamp && (
+          <Box top="4px" right="4px" position="absolute" zIndex="1000">
+            <Icon
+              name="checkmarkStamp"
+              fill={colors.teal300}
+              width="30px"
+              height="30px"
+            />
+          </Box>
+        )}
         {imageUrl ? (
           <Image
             src={imageUrl}
