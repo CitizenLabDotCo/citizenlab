@@ -12,33 +12,33 @@ RSpec.describe ReportBuilder::Queries::Visitors do
 
       # Create sessions september
       session1 = create(:session, monthly_user_hash: 'hash1', created_at: september)
-      create(:pageview, session_id: session1.id, path: '/en/')
-      create(:pageview, session_id: session1.id, path: '/en/ideas')
+      create(:pageview, session_id: session1.id, path: '/en/', created_at: DateTime.new(2022, 9, 10, 10, 0, 0))
+      create(:pageview, session_id: session1.id, path: '/en/ideas', created_at: DateTime.new(2022, 9, 10, 10, 1, 0))
 
       session2 = create(:session, monthly_user_hash: 'hash1', created_at: september)
-      create(:pageview, session_id: session2.id, path: '/en/')
+      create(:pageview, session_id: session2.id, path: '/en/', created_at: DateTime.new(2022, 9, 10, 11, 0, 0))
       
       session3 = create(:session, monthly_user_hash: 'hash2', created_at: september)
-      create(:pageview, session_id: session3.id, path: '/en/')
-      create(:pageview, session_id: session3.id, path: '/en/ideas')
-      create(:pageview, session_id: session3.id, path: '/en/pages/privacy-policy')
+      create(:pageview, session_id: session3.id, path: '/en/', created_at: DateTime.new(2022, 9, 10, 12, 0, 0))
+      create(:pageview, session_id: session3.id, path: '/en/ideas', created_at: DateTime.new(2022, 9, 10, 12, 2, 0))
+      create(:pageview, session_id: session3.id, path: '/en/pages/privacy-policy', created_at: DateTime.new(2022, 9, 10, 12, 4, 0))
 
       # Create sessions october
       session4 = create(:session, monthly_user_hash: 'hash3', created_at: Date.new(2022, 10, 2))
-      create(:pageview, session_id: session4.id, path: '/en/')
+      create(:pageview, session_id: session4.id, path: '/en/', created_at: DateTime.new(2022, 10, 2, 10, 0, 0))
 
       session5 = create(:session, monthly_user_hash: 'hash3', created_at: Date.new(2022, 10, 2))
-      create(:pageview, session_id: session5.id, path: '/en/')
+      create(:pageview, session_id: session5.id, path: '/en/', created_at: DateTime.new(2022, 10, 2, 11, 0, 0))
 
       session6 = create(:session, monthly_user_hash: 'hash3', created_at: Date.new(2022, 10, 2))
-      create(:pageview, session_id: session6.id, path: '/en/')
+      create(:pageview, session_id: session6.id, path: '/en/', created_at: DateTime.new(2022, 10, 2, 12, 0, 0))
 
       session7 = create(:session, monthly_user_hash: 'hash4', created_at: Date.new(2022, 10, 10))
-      create(:pageview, session_id: session7.id, path: '/en/')
+      create(:pageview, session_id: session7.id, path: '/en/', created_at: DateTime.new(2022, 10, 10, 10, 0, 0))
 
       session8 = create(:session, monthly_user_hash: 'hash4', created_at: Date.new(2022, 10, 10))
-      create(:pageview, session_id: session8.id, path: '/en/')
-      create(:pageview, session_id: session8.id, path: '/en/ideas')
+      create(:pageview, session_id: session8.id, path: '/en/', created_at: DateTime.new(2022, 10, 10, 11, 0, 0))
+      create(:pageview, session_id: session8.id, path: '/en/ideas', created_at: DateTime.new(2022, 10, 10, 11, 1, 0))
     end
 
     it 'returns correct data for current period' do

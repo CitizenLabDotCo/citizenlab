@@ -31,6 +31,24 @@ module ReportBuilder
 
       # Duration and pages visited
       pageviews = ImpactTracking::Pageview.where(session_id: sessions.select(:id))
+      
+      durations = pageviews
+        .select(
+          <<-SQL.squish
+            id, 
+            session_id, 
+            created_at, 
+            (lead(created_at,1) over (partition by session_id order by created_at)) - created_at as time_on_page
+          SQL
+        )
+        .to_a
+        .pluck(:time_on_page)
+        .filter(&:present?)
+
+      binding.pry
+
+      average_duration_time = durations.sum / durations.count
+
       avg_pages_visited = pageviews.count / visits_total
 
       # If compare_start_at and compare_end_at are present:
