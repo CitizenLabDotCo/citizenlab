@@ -29,8 +29,9 @@ module ReportBuilder
       visits_total = sessions.count
       visitors_total = sessions.distinct.pluck(:monthly_user_hash).count
 
-      # Duration and pages visited (matomo)
-      # TODO
+      # Duration and pages visited
+      pageviews = ImpactTracking::Pageview.where(session_id: sessions.select(:id))
+      avg_pages_visited = pageviews.count / visits_total
 
       # If compare_start_at and compare_end_at are present:
       if compare_start_at.present? && compare_end_at.present?
@@ -40,7 +41,8 @@ module ReportBuilder
       {
         time_series: time_series,
         visits_total: visits_total,
-        visitors_total: visitors_total
+        visitors_total: visitors_total,
+        avg_pages_visited: avg_pages_visited
       }
     end
   end

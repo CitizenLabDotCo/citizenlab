@@ -21,6 +21,7 @@ RSpec.describe ReportBuilder::Queries::Visitors do
       session3 = create(:session, monthly_user_hash: 'hash2', created_at: september)
       create(:pageview, session_id: session3.id, path: '/en/')
       create(:pageview, session_id: session3.id, path: '/en/ideas')
+      create(:pageview, session_id: session3.id, path: '/en/pages/privacy-policy')
 
       # Create sessions october
       session4 = create(:session, monthly_user_hash: 'hash3', created_at: Date.new(2022, 10, 2))
@@ -37,6 +38,7 @@ RSpec.describe ReportBuilder::Queries::Visitors do
 
       session8 = create(:session, monthly_user_hash: 'hash4', created_at: Date.new(2022, 10, 10))
       create(:pageview, session_id: session8.id, path: '/en/')
+      create(:pageview, session_id: session8.id, path: '/en/ideas')
     end
 
     it 'returns correct data for current period' do
@@ -57,11 +59,12 @@ RSpec.describe ReportBuilder::Queries::Visitors do
           }
         ],
         visits_total: 8,
-        visitors_total: 4
+        visitors_total: 4,
+        avg_pages_visited: 12 / 8
       })
     end
 
-    it 'filters dates correct' do
+    it 'filters dates correctly' do
       start_at = Date.new(2022, 8, 1)
       end_at = Date.new(2022, 10, 1)
 
@@ -74,7 +77,8 @@ RSpec.describe ReportBuilder::Queries::Visitors do
           },
         ],
         visits_total: 3,
-        visitors_total: 2
+        visitors_total: 2,
+        avg_pages_visited: 6 / 3
       })
     end
 
