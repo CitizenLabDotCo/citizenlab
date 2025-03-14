@@ -82,14 +82,14 @@ module ParticipationMethod
       )
     end
 
-    def sentiment_field(custom_form, key, topic_code)
+    def sentiment_field(custom_form, key, category)
       CustomField.new(
         id: SecureRandom.uuid,
         key: key,
         resource: custom_form,
         input_type: 'sentiment_linear_scale',
         title_multiloc: multiloc_service.i18n_to_multiloc("custom_fields.community_monitor.#{key}.title"),
-        topic: Topic.find_by(code: topic_code)
+        question_category: category
       )
     end
 
