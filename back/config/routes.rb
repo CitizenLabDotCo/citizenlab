@@ -163,6 +163,7 @@ Rails.application.routes.draw do
       resources :phases, only: %i[show show_mini edit update destroy], concerns: :permissionable, defaults: { parent_param: :phase_id } do
         resources :files, defaults: { container_type: 'Phase' }, shallow: false
         get 'survey_results', on: :member
+        get 'sentiment_by_quarter', on: :member
         get :as_xlsx, on: :member, action: 'index_xlsx'
         get :mini, on: :member, action: 'show_mini'
         get 'submission_count', on: :member

@@ -54,10 +54,6 @@ class IdeaCustomFieldsService
     all_fields.select(&:enabled?)
   end
 
-  def enabled_linear_scale_fields
-    enabled_fields.select(&:supports_linear_scale_average?)
-  end
-
   def enabled_fields_with_other_options
     insert_other_option_text_fields(enabled_fields)
   end

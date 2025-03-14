@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class WebApi::V1::PhasesController < ApplicationController
-  before_action :set_phase, only: %i[show show_mini update destroy survey_results submission_count index_xlsx delete_inputs]
+  before_action :set_phase, only: %i[show show_mini update destroy survey_results sentiment_by_quarter submission_count index_xlsx delete_inputs]
   around_action :detect_invalid_timeline_changes, only: %i[create update destroy]
   skip_before_action :authenticate_user
 
@@ -79,15 +79,16 @@ class WebApi::V1::PhasesController < ApplicationController
     render json: raw_json(results)
   end
 
-  def survey_scores
-    score_generator = Surveys::LinearScaleScoreGenerator.new(@phase)
+  # Used for community_monitor_survey dashboard
+  def sentiment_by_quarter
+    average_generator = Surveys::AverageGenerator.new(@phase, input_type: 'sentiment_linear_scale')
 
-    scores = {
-      overall: score_generator.overall_score_by_quarter,
-      by_category: score_generator.category_scores_by_quarter
+    averages = {
+      overall: average_generator.overall_average_by_quarter,
+      by_category: average_generator.category_averages_by_quarter
     }
 
-    render json: raw_json(scores)
+    render json: raw_json(averages)
   end
 
   def submission_count

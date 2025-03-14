@@ -22,7 +22,7 @@ module Surveys
     end
 
     def add_linear_scale_scores(results, year, quarter)
-      averages = LinearScaleScoreGenerator.new(phase).field_scores_by_quarter
+      averages = AverageGenerator.new(phase).field_scores_by_quarter
 
       # Merge the averages into the main results
       results.each do |result|

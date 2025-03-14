@@ -756,6 +756,46 @@ resource 'Phases' do
       end
     end
 
+    get 'web_api/v1/phases/:id/sentiment_by_quarter' do
+      let(:project) { create(:community_monitor_project_with_active_phase) }
+      let(:active_phase) { project.phases.first }
+      let(:form) { create(:custom_form, participation_context: active_phase) }
+      let(:sentiment_question1) { create(:custom_field_sentiment_linear_scale, resource: form) }
+      let(:sentiment_question2) { create(:custom_field_sentiment_linear_scale, resource: form) }
+
+      let!(:survey_response1) do
+        create(
+          :native_survey_response,
+          project: project,
+          creation_phase: active_phase,
+          custom_field_values: { sentiment_question1.key => 2, sentiment_question2.key => 4 }
+        )
+      end
+      let!(:survey_response2) do
+        create(
+          :native_survey_response,
+          project: project,
+          creation_phase: active_phase,
+          custom_field_values:  { sentiment_question1.key => 3, sentiment_question2.key => 1 }
+        )
+      end
+
+      let(:id) { active_phase.id }
+
+      example 'Get survey sentiment by quarter' do
+        do_request
+        expect(status).to eq 200
+        expect(response_data[:type]).to eq 'sentiment_by_quarter'
+        expect(response_data[:attributes]).to eq({
+          overall: {},
+          by_category: {
+            category: { "2025-2": 3.4, "2025-1": 3.1 },
+            category2: { "2025-2": 3.4, "2025-1": 3.1 }
+          }
+        })
+      end
+    end
+
     get 'web_api/v1/phases/:id/submission_count' do
       let(:project) { create(:project_with_active_native_survey_phase) }
       let(:active_phase) { project.phases.first }

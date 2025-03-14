@@ -1,15 +1,16 @@
 # frozen_string_literal: true
 
 module Surveys
-  class LinearScaleScoreGenerator
-    def initialize(phase)
-      @phase = phase
-      form = @phase.custom_form || CustomForm.new(participation_context: phase)
-      @fields = IdeaCustomFieldsService.new(form).enabled_linear_scale_fields
-      @inputs = @phase.ideas.native_survey.published
+  class AverageGenerator
+    def initialize(phase, input_type: nil)
+      form = phase.custom_form || CustomForm.new(participation_context: phase)
+      @fields = IdeaCustomFieldsService.new(form).enabled_fields.select do |f|
+        f.input_type == input_type || f.supports_average? # Defaults to returning all fields that support averages
+      end
+      @inputs = phase.ideas.native_survey.published
     end
 
-    def field_scores_by_quarter
+    def field_averages_by_quarter
       grouped_answers = all_answers.group_by { |a| a['quarter'] }
       averages = grouped_answers.transform_values do |answers|
         averages_by_field(answers)
@@ -18,16 +19,17 @@ module Surveys
     end
 
     # This is an average of averages - or should it take the average of all values
-    def overall_score_by_quarter
+    def overall_average_by_quarter
+      # binding.pry
       grouped_answers = all_answers.group_by { |a| a['quarter'] }
       grouped_answers.transform_values do |answers|
-        field_scores = averages_by_field(answers)
-        calculate_average(field_scores.values)
+        field_averages = averages_by_field(answers)
+        calculate_average(field_averages.values)
       end
     end
 
     # Placeholder for now
-    def category_scores_by_quarter
+    def category_averages_by_quarter
       {
         'category' => { '2025-2' => 3.4, '2025-1' => 3.1 },
         'category2' => { '2025-2' => 3.4, '2025-1' => 3.1 }
