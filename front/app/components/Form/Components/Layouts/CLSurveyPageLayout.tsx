@@ -229,7 +229,7 @@ const CLSurveyPageLayout = memo(
 
       if (pageVariant === 'after-submission') {
         clHistory.push({ pathname: `/projects/${slug}` });
-        triggerCommunityMonitorModal();
+        setTimeout(triggerCommunityMonitorModal, 2000);
         return;
       }
 
