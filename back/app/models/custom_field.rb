@@ -453,16 +453,6 @@ class CustomField < ApplicationRecord
       option
     end
   end
-
-  def validate_topic
-    if supports_topic?
-      participation_context = resource&.participation_context
-      allowed_topics = participation_context.project.projects_allowed_input_topics.pluck(:topic_id)
-      errors.add(:topic, :topic_not_in_allowed_list) unless allowed_topics.include?(topic_id)
-    else
-      errors.add(:topic, :topics_not_allowed)
-    end
-  end
 end
 
 CustomField.include(SmartGroups::Extensions::CustomField)

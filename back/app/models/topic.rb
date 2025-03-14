@@ -22,11 +22,7 @@
 class Topic < ApplicationRecord
   extend OrderAsSpecified
 
-  # TODO: JS - do the community monitor codes need splitting out?
-  DEFAULT_CODES = %w[nature waste sustainability mobility technology
-    economy housing public_space safety education culture
-    health inclusion community services quality_of_life
-    service_delivery governance_and_trust other].freeze
+  DEFAULT_CODES = %w[nature waste sustainability mobility technology economy housing public_space safety education culture health inclusion community services other].freeze
   CUSTOM_CODE = 'custom'
   OTHER_CODE = 'other'
   CODES = DEFAULT_CODES + [CUSTOM_CODE]
