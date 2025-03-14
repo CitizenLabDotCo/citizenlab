@@ -2,20 +2,16 @@ import React from 'react';
 
 import { Box, Button } from '@citizenlab/cl2-component-library';
 
-import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
-
 import { FormattedMessage } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
 
 import messages from '../messages';
+import { useRansackParam } from '../utils';
 
 import Sort from './Sort';
 
 const SortAndReset = () => {
-  const { data: appConfiguration } = useAppConfiguration();
-  if (!appConfiguration) return null;
-
-  const countryCode = appConfiguration.data.attributes.country_code;
+  const countryCode = useRansackParam('q[tenant_country_alpha2_eq]');
 
   return (
     <Box display="flex" mt="8px">
