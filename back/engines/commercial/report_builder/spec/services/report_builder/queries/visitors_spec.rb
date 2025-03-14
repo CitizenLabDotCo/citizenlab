@@ -60,6 +60,7 @@ RSpec.describe ReportBuilder::Queries::Visitors do
         ],
         visits_total: 8,
         visitors_total: 4,
+        avg_seconds_on_page: 90,
         avg_pages_visited: 12 / 8
       })
     end
@@ -78,7 +79,8 @@ RSpec.describe ReportBuilder::Queries::Visitors do
         ],
         visits_total: 3,
         visitors_total: 2,
-        avg_pages_visited: 6 / 3
+        avg_seconds_on_page: 110,
+        avg_pages_visited: 6 / 3,
       })
     end
 

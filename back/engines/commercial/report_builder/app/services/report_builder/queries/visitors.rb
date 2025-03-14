@@ -29,26 +29,34 @@ module ReportBuilder
       visits_total = sessions.count
       visitors_total = sessions.distinct.pluck(:monthly_user_hash).count
 
-      # Duration and pages visited
+      ### Avg seconds on page, and avg pages visited per session
       pageviews = ImpactTracking::Pageview.where(session_id: sessions.select(:id))
-      
-      durations = pageviews
+
+      # Avg seconds on page
+      seconds_on_page_subqery = pageviews
         .select(
           <<-SQL.squish
-            id, 
-            session_id, 
-            created_at, 
-            (lead(created_at,1) over (partition by session_id order by created_at)) - created_at as time_on_page
+            extract(epoch from
+              (lead(created_at,1) over (partition by session_id order by created_at)) - created_at
+            ) as seconds_on_page
           SQL
         )
-        .to_a
-        .pluck(:time_on_page)
-        .filter(&:present?)
+        .to_sql
 
-      binding.pry
+      seconds_on_page_query = ActiveRecord::Base.connection.execute(
+        <<-SQL.squish
+          select
+            count(subquery.seconds_on_page) as count,
+            sum(subquery.seconds_on_page) as sum
+          from (#{seconds_on_page_subqery}) as subquery
+          where subquery.seconds_on_page is not null
+        SQL
+      )
 
-      average_duration_time = durations.sum / durations.count
+      aggregations = seconds_on_page_query.to_a[0]
+      avg_seconds_on_page = aggregations["sum"] / aggregations["count"]
 
+      # Avg pages visited per sessions
       avg_pages_visited = pageviews.count / visits_total
 
       # If compare_start_at and compare_end_at are present:
@@ -60,6 +68,7 @@ module ReportBuilder
         time_series: time_series,
         visits_total: visits_total,
         visitors_total: visitors_total,
+        avg_seconds_on_page: avg_seconds_on_page,
         avg_pages_visited: avg_pages_visited
       }
     end
