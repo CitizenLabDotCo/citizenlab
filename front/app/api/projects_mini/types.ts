@@ -11,11 +11,11 @@ type PageNumbers = {
   'page[size]'?: number;
 };
 
-type ActiveParticipatoryPhaseParams = {
+type ActiveParticipatoryPhase = {
   endpoint: 'with_active_participatory_phase';
 } & PageNumbers;
 
-type FollowedItemParams = {
+type FollowedItem = {
   endpoint: 'for_followed_item';
 } & PageNumbers;
 
@@ -24,10 +24,16 @@ export type FinishedOrArchived = {
   filter_by: 'finished' | 'archived' | 'finished_and_archived';
 } & PageNumbers;
 
+type Areas = {
+  endpoint: 'for_areas';
+  areas?: string[];
+} & PageNumbers;
+
 export type Parameters =
-  | ActiveParticipatoryPhaseParams
-  | FollowedItemParams
-  | FinishedOrArchived;
+  | ActiveParticipatoryPhase
+  | FollowedItem
+  | FinishedOrArchived
+  | Areas;
 
 export type MiniProjectsKeys = Keys<typeof miniProjectsKeys>;
 
