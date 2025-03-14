@@ -54,7 +54,9 @@ const Phase = ({
           {formatDate(startAt)} -{' '}
           {formatDate(endAt) ?? formatMessage(messages.openEnded)}
         </Box>
-        <MethodLabel projectLibraryPhaseId={projectLibraryPhaseId} />
+        <MethodLabel
+          participationMethod={phase.data.attributes.participation_method}
+        />
       </Box>
       <ExternalLink href={getPhaseURL(projectAttributes, phaseNumber)}>
         {formatMessage(messages.readMore)}

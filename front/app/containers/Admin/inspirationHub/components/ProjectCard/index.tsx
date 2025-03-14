@@ -10,6 +10,7 @@ import {
 } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
+import useProjectLibraryPhases from 'api/project_library_phases/useProjectLibraryPhases';
 import { ProjectLibraryProjectData } from 'api/project_library_projects/types';
 
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
@@ -18,6 +19,7 @@ import { useCountriesByCode, useLocalizeProjectLibrary } from '../../utils';
 import MethodLabel from '../MethodLabel';
 
 import CardImage from './CardImage';
+import { getMethods } from './utils';
 
 interface Props {
   project: ProjectLibraryProjectData;
@@ -49,6 +51,11 @@ const ProjectCard = ({ project, showStamp = false }: Props) => {
     countriesByCode && attributes.tenant_country_alpha2
       ? countriesByCode[attributes.tenant_country_alpha2]
       : null;
+
+  const phaseIds = relationships.phases.data.map(({ id }) => id);
+
+  const phases = useProjectLibraryPhases(phaseIds);
+  const methods = getMethods(phases);
 
   return (
     <CardContainer
@@ -94,8 +101,8 @@ const ProjectCard = ({ project, showStamp = false }: Props) => {
         </Box>
       </Box>
       <Box>
-        {relationships.phases.data.map(({ id }) => (
-          <MethodLabel projectLibraryPhaseId={id} key={id} />
+        {methods.map((method, i) => (
+          <MethodLabel participationMethod={method} key={i} />
         ))}
       </Box>
     </CardContainer>
