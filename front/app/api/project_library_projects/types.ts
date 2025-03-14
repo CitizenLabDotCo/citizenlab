@@ -9,7 +9,7 @@ import miniProjectsKeys from './keys';
 
 type Status = 'active' | 'finished' | 'stale' | 'archived';
 
-type PopulationGroup = 'XS' | 'S' | 'M' | 'L' | 'XL';
+export type PopulationGroup = 'XS' | 'S' | 'M' | 'L' | 'XL';
 
 export type SortType =
   | 'start_at asc'
