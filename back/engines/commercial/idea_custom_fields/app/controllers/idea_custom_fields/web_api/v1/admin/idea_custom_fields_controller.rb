@@ -95,7 +95,7 @@ module IdeaCustomFields
 
     # Extended by CustomMaps::Patches::IdeaCustomFields::WebApi::V1::Admin::IdeaCustomFieldsController
     def include_in_index_response
-      %i[options options.image matrix_statements resource topic]
+      %i[options options.image matrix_statements resource]
     end
 
     def raise_error_if_not_geographic_field
@@ -417,7 +417,7 @@ module IdeaCustomFields
         :page_layout,
         :map_config_id,
         :ask_follow_up,
-        :topic_id,
+        :question_category,
         { title_multiloc: CL2_SUPPORTED_LOCALES,
           description_multiloc: CL2_SUPPORTED_LOCALES,
           linear_scale_label_1_multiloc: CL2_SUPPORTED_LOCALES,

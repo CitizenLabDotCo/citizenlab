@@ -393,6 +393,8 @@ class WebApi::V1::ProjectsController < ApplicationController
   end
 
   def create_community_monitor_project(settings)
+    raise ActiveRecord::RecordNotFound unless current_user&.admin? # Only allow project to be created if an admin hits this endpoint
+
     # Check first if the project exists but has not been added to settings (eg when creating platform from template)
     project = Project.find_by(internal_role: 'community_monitor', hidden: true)
 
@@ -405,21 +407,6 @@ class WebApi::V1::ProjectsController < ApplicationController
           title_multiloc: multiloc_service.i18n_to_multiloc('phases.community_monitor_title'),
           internal_role: 'community_monitor'
         )
-
-        # Create the allowed topics for the custom fields to be assigned to
-        topics = {
-          'quality_of_life' => multiloc_service.i18n_to_multiloc('topics.quality_of_life'),
-          'service_delivery' => multiloc_service.i18n_to_multiloc('topics.service_delivery'),
-          'governance_and_trust' => multiloc_service.i18n_to_multiloc('topics.governance_and_trust')
-        }
-        topics.each do |code, title_multiloc|
-          topic = Topic.find_or_create_by!(
-            code: code,
-            title_multiloc: title_multiloc,
-            include_in_onboarding: false
-          )
-          project.allowed_input_topics << topic
-        end
 
         sidefx.after_create(project, current_user) if project
 

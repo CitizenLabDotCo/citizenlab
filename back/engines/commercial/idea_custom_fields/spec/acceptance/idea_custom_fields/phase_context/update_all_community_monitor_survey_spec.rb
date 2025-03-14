@@ -53,9 +53,6 @@ resource 'Idea Custom Fields' do
       before { admin_header_token }
 
       example 'Insert one field, update one field, and destroy one field' do
-        topic = create(:topic)
-        create(:projects_allowed_input_topic, project: phase.project, topic: topic)
-
         field_to_update = create(:custom_field_sentiment_linear_scale, resource: custom_form, title_multiloc: { 'en' => 'Sentiment field' })
         create(:custom_field_page, resource: custom_form) # field to destroy
         request = {
@@ -69,7 +66,7 @@ resource 'Idea Custom Fields' do
               required: true,
               enabled: true,
               ask_follow_up: true,
-              topic_id: topic.id
+              question_category: 'quality_of_life'
             },
             # Inserted field.
             {
@@ -114,14 +111,14 @@ resource 'Idea Custom Fields' do
             linear_scale_label_8_multiloc: {},
             linear_scale_label_9_multiloc: {},
             linear_scale_label_10_multiloc: {},
-            linear_scale_label_11_multiloc: {}
+            linear_scale_label_11_multiloc: {},
+            question_category: 'quality_of_life'
           },
           id: an_instance_of(String),
           type: 'custom_field',
           relationships: {
             options: { data: [] },
-            resource: { data: { id: custom_form.id, type: 'custom_form' } },
-            topic: { data: { id: topic.id, type: 'topic' } }
+            resource: { data: { id: custom_form.id, type: 'custom_form' } }
           }
         })
         expect(response_data[2]).to match({
@@ -139,15 +136,15 @@ resource 'Idea Custom Fields' do
             logic: {},
             constraints: {},
             random_option_ordering: false,
-            page_layout: 'default'
+            page_layout: 'default',
+            question_category: nil
           },
           id: an_instance_of(String),
           type: 'custom_field',
           relationships: {
             map_config: { data: nil },
             options: { data: [] },
-            resource: { data: { id: custom_form.id, type: 'custom_form' } },
-            topic: { data: nil }
+            resource: { data: { id: custom_form.id, type: 'custom_form' } }
           }
         })
       end

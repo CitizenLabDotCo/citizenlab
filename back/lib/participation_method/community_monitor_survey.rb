@@ -66,7 +66,7 @@ module ParticipationMethod
       false
     end
 
-    def supports_custom_field_topics?
+    def supports_custom_field_categories?
       true
     end
 

@@ -73,7 +73,6 @@ ALTER TABLE IF EXISTS ONLY public.notifications DROP CONSTRAINT IF EXISTS fk_rai
 ALTER TABLE IF EXISTS ONLY public.notifications DROP CONSTRAINT IF EXISTS fk_rails_9268535f02;
 ALTER TABLE IF EXISTS ONLY public.areas DROP CONSTRAINT IF EXISTS fk_rails_901fc7a65b;
 ALTER TABLE IF EXISTS ONLY public.areas_projects DROP CONSTRAINT IF EXISTS fk_rails_8fb43a173d;
-ALTER TABLE IF EXISTS ONLY public.custom_fields DROP CONSTRAINT IF EXISTS fk_rails_8f5173610a;
 ALTER TABLE IF EXISTS ONLY public.static_pages_topics DROP CONSTRAINT IF EXISTS fk_rails_8e3f01dacd;
 ALTER TABLE IF EXISTS ONLY public.user_custom_fields_representativeness_ref_distributions DROP CONSTRAINT IF EXISTS fk_rails_8cabeff294;
 ALTER TABLE IF EXISTS ONLY public.email_campaigns_campaigns DROP CONSTRAINT IF EXISTS fk_rails_87e592c9f5;
@@ -307,7 +306,6 @@ DROP INDEX IF EXISTS public.index_email_campaigns_campaigns_groups_on_campaign_i
 DROP INDEX IF EXISTS public.index_email_campaigns_campaign_email_commands_on_recipient_id;
 DROP INDEX IF EXISTS public.index_dismissals_on_campaign_name_and_user_id;
 DROP INDEX IF EXISTS public.index_custom_forms_on_participation_context;
-DROP INDEX IF EXISTS public.index_custom_fields_on_topic_id;
 DROP INDEX IF EXISTS public.index_custom_fields_on_resource_type_and_resource_id;
 DROP INDEX IF EXISTS public.index_custom_field_options_on_custom_field_id_and_key;
 DROP INDEX IF EXISTS public.index_custom_field_options_on_custom_field_id;
@@ -2122,7 +2120,7 @@ CREATE TABLE public.custom_fields (
     linear_scale_label_10_multiloc jsonb DEFAULT '{}'::jsonb NOT NULL,
     linear_scale_label_11_multiloc jsonb DEFAULT '{}'::jsonb NOT NULL,
     ask_follow_up boolean DEFAULT false NOT NULL,
-    topic_id uuid
+    question_category character varying
 );
 
 
@@ -4663,13 +4661,6 @@ CREATE INDEX index_custom_fields_on_resource_type_and_resource_id ON public.cust
 
 
 --
--- Name: index_custom_fields_on_topic_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_custom_fields_on_topic_id ON public.custom_fields USING btree (topic_id);
-
-
---
 -- Name: index_custom_forms_on_participation_context; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -6360,14 +6351,6 @@ ALTER TABLE ONLY public.user_custom_fields_representativeness_ref_distributions
 
 ALTER TABLE ONLY public.static_pages_topics
     ADD CONSTRAINT fk_rails_8e3f01dacd FOREIGN KEY (static_page_id) REFERENCES public.static_pages(id);
-
-
---
--- Name: custom_fields fk_rails_8f5173610a; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.custom_fields
-    ADD CONSTRAINT fk_rails_8f5173610a FOREIGN KEY (topic_id) REFERENCES public.topics(id);
 
 
 --

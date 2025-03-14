@@ -39,16 +39,11 @@
 #  linear_scale_label_10_multiloc :jsonb            not null
 #  linear_scale_label_11_multiloc :jsonb            not null
 #  ask_follow_up                  :boolean          default(FALSE), not null
-#  topic_id                       :uuid
+#  question_category              :string
 #
 # Indexes
 #
 #  index_custom_fields_on_resource_type_and_resource_id  (resource_type,resource_id)
-#  index_custom_fields_on_topic_id                       (topic_id)
-#
-# Foreign Keys
-#
-#  fk_rails_...  (topic_id => topics.id)
 #
 
 # support table :
@@ -65,7 +60,6 @@ class CustomField < ApplicationRecord
 
   belongs_to :resource, polymorphic: true, optional: true
   belongs_to :custom_form, foreign_key: :resource_id, optional: true, inverse_of: :custom_fields
-  belongs_to :topic, optional: true
 
   has_many :permissions_custom_fields, dependent: :destroy
   has_many :permissions, through: :permissions_custom_fields
@@ -83,6 +77,7 @@ class CustomField < ApplicationRecord
   VISIBLE_TO_PUBLIC = 'public'
   VISIBLE_TO_ADMINS = 'admins'
   PAGE_LAYOUTS = %w[default map].freeze
+  QUESTION_CATEGORIES = %w[quality_of_life service_delivery governance_and_trust].freeze
 
   validates :resource_type, presence: true, inclusion: { in: FIELDABLE_TYPES }
   validates(
@@ -104,8 +99,8 @@ class CustomField < ApplicationRecord
   validates :minimum_select_count, comparison: { greater_than_or_equal_to: 0 }, if: :multiselect?, allow_nil: true
   validates :page_layout, presence: true, inclusion: { in: PAGE_LAYOUTS }, if: :page?
   validates :page_layout, absence: true, unless: :page?
-
-  validate :validate_topic, if: :topic
+  validates :question_category, absence: true, unless: :supports_category?
+  validates :question_category, inclusion: { in: QUESTION_CATEGORIES }, allow_nil: true, if: :supports_category?
 
   before_validation :set_default_enabled
   before_validation :set_default_answer_visible_to
@@ -400,11 +395,11 @@ class CustomField < ApplicationRecord
     phase&.input_term || Phase::FALLBACK_INPUT_TERM
   end
 
-  def supports_topic?
+  def supports_category?
     participation_context = resource&.participation_context
     return false unless participation_context
 
-    participation_context.pmethod.supports_custom_field_topics?
+    participation_context.pmethod.supports_custom_field_categories?
   end
 
   private

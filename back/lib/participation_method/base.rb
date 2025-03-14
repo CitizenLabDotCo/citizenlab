@@ -182,7 +182,7 @@ module ParticipationMethod
       true
     end
 
-    def supports_custom_field_topics?
+    def supports_custom_field_categories?
       false
     end
 
