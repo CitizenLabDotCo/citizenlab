@@ -27,6 +27,10 @@ class PhasePolicy < ApplicationPolicy
     active_moderator?
   end
 
+  def survey_score?
+    active_moderator?
+  end
+
   def submission_count?
     show?
   end

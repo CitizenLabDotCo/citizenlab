@@ -79,6 +79,17 @@ class WebApi::V1::PhasesController < ApplicationController
     render json: raw_json(results)
   end
 
+  def survey_scores
+    score_generator = Surveys::LinearScaleScoreGenerator.new(@phase)
+
+    scores = {
+      overall: score_generator.overall_score_by_quarter,
+      by_category: score_generator.category_scores_by_quarter
+    }
+
+    render json: raw_json(scores)
+  end
+
   def submission_count
     count = if @phase.pmethod.supports_survey_form?
       @phase.ideas.supports_survey.published.count

@@ -26,6 +26,14 @@ module Surveys
       end
     end
 
+    # Placeholder for now
+    def category_scores_by_quarter
+      {
+        'category' => { '2025-2' => 3.4, '2025-1' => 3.1 },
+        'category2' => { '2025-2' => 3.4, '2025-1' => 3.1 }
+      }
+    end
+
     private
 
     # Generate a flat object for each response including additional attributes
