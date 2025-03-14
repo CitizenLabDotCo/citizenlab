@@ -21,6 +21,7 @@ import CardImage from './CardImage';
 
 interface Props {
   project: ProjectLibraryProjectData;
+  showStamp?: boolean;
 }
 
 const CardContainer = styled(Box)`
@@ -38,7 +39,7 @@ const CardContainer = styled(Box)`
   cursor: pointer;
 `;
 
-const ProjectCard = ({ project }: Props) => {
+const ProjectCard = ({ project, showStamp = false }: Props) => {
   const localize = useLocalizeProjectLibrary();
   const countriesByCode = useCountriesByCode();
 
@@ -65,7 +66,10 @@ const ProjectCard = ({ project }: Props) => {
       }}
     >
       <Box>
-        <CardImage imageUrl={attributes.image_url ?? undefined} />
+        <CardImage
+          imageUrl={attributes.image_url ?? undefined}
+          showStamp={showStamp}
+        />
       </Box>
       <Box>
         <Title variant="h3" color="primary" mt="12px" mb="8px">

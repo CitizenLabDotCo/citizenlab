@@ -30,15 +30,23 @@ const ProjectImageContainer = styled.div`
 interface Props {
   imageUrl?: string;
   alt?: string;
+  showStamp: boolean;
 }
 
-const CardImage = ({ imageUrl, alt }: Props) => {
+const CardImage = ({ imageUrl, alt, showStamp }: Props) => {
   return (
     <Box>
       <ProjectImageContainer className="project-image-container">
-        <Box top="0" right="0" position="absolute" zIndex="1000">
-          <Icon name="checkmarkStamp" fill={colors.teal300} />
-        </Box>
+        {showStamp && (
+          <Box top="4px" right="4px" position="absolute" zIndex="1000">
+            <Icon
+              name="checkmarkStamp"
+              fill={colors.teal300}
+              width="30px"
+              height="30px"
+            />
+          </Box>
+        )}
         {imageUrl ? (
           <Image
             src={imageUrl}
