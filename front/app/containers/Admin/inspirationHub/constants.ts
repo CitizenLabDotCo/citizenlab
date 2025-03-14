@@ -1,23 +1,9 @@
 import { ParticipationMethod } from 'api/phases/types';
-import { Status } from 'api/project_library_projects/types';
+import { PopulationGroup } from 'api/project_library_projects/types';
 
 import { MessageDescriptor } from 'utils/cl-intl';
 
 import messages from './messages';
-
-export const STATUS_EMOJIS: Record<Status, string> = {
-  active: '🟢',
-  finished: '🟠',
-  stale: '⚪',
-  archived: '🔵',
-};
-
-export const STATUS_LABELS: Record<Status, MessageDescriptor> = {
-  active: messages.active,
-  finished: messages.finished,
-  stale: messages.stale,
-  archived: messages.archived,
-};
 
 export const PARTICIPATION_METHOD_LABELS: Record<
   ParticipationMethod,
@@ -32,4 +18,14 @@ export const PARTICIPATION_METHOD_LABELS: Record<
   volunteering: messages.volunteering,
   document_annotation: messages.documentAnnotation,
   proposals: messages.proposals,
+};
+
+const f = (n: number) => n.toLocaleString();
+
+export const POPULATION_GROUP_LABELS: Record<PopulationGroup, string> = {
+  XS: `< ${f(10_000)}`,
+  S: `${f(10_000)} - ${f(30_000)}`,
+  M: `${f(30_000)} - ${f(100_000)}`,
+  L: `${f(100_000)} - ${f(250_000)}`,
+  XL: `> ${f(250_000)}`,
 };
