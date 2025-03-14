@@ -40,9 +40,12 @@ const EmptyState = ({ title }: Props) => {
         </Title>
         <Text color="textSecondary">
           {formatMessage(messages.thereAreCurrentlyNoProjectsPlural, {
-            areasTerm: localize(coreSettings(appConfiguration.data).area_term, {
-              fallback: formatMessage(messages.areas),
-            }).toLowerCase(),
+            areasTerm: localize(
+              coreSettings(appConfiguration.data).areas_term,
+              {
+                fallback: formatMessage(messages.areas),
+              }
+            ).toLowerCase(),
           })}
         </Text>
       </Box>
