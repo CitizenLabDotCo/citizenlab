@@ -288,10 +288,17 @@ class WebApi::V1::IdeasController < ApplicationController
   end
 
   def similarities
-    idea = Idea.find params[:id]
-    similar_ideas_options = { scope: policy_scope(Idea), title_threshold: 0.3, body_threshold: 0.4 }
-    similar_ideas_options[:limit] = nil if params.key?(:page)
-    similar_ideas = paginate SimilarIdeasService.new(idea).similar_ideas(**similar_ideas_options)
+    idea = Idea.new idea_params_for_similarities
+    service = SimilarIdeasService.new(idea)
+
+    config = AppConfiguration.instance # TODO: Threshold from phase
+    title_threshold = config.settings('authoring_assistance_prototype', 'title_threshold')
+    body_threshold = config.settings('authoring_assistance_prototype', 'body_threshold')
+    scope = policy_scope(Idea)
+    scope = scope.where(project_id: idea.project_id) if idea.project_id
+    scope = scope.where.not(author: current_user)
+    similar_ideas = paginate service.similar_ideas(scope:, title_threshold:, body_threshold:)
+
     render json: linked_json(similar_ideas, WebApi::V1::IdeaSerializer, serialization_options_for(similar_ideas))
   end
 
@@ -411,6 +418,10 @@ class WebApi::V1::IdeasController < ApplicationController
     end
 
     complex_attributes
+  end
+
+  def idea_params_for_similarities
+    params.require(:idea).permit(%i[title_multiloc body_multiloc project_id])
   end
 
   def submittable_custom_fields(custom_form)
