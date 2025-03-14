@@ -38,13 +38,13 @@ class ReportBuilder::Queries::Analytics::Base < ReportBuilder::Queries::Base
     { project_id_column => project_id.presence }.compact
   end
 
+  def interval(resolution)
+    RESOLUTION_TO_INTERVAL.fetch(resolution || 'month')
+  end
+
   def visitor_filter(apply)
     return {} unless apply
 
     { 'dimension_user.has_visits': 'true' }
-  end
-
-  def interval(resolution)
-    RESOLUTION_TO_INTERVAL.fetch(resolution || 'month')
   end
 end
