@@ -3,7 +3,7 @@ module ReportBuilder
     def run_query(
       start_at, 
       end_at,
-      resolution: nil,
+      resolution: 'month',
       project_id: nil,
       compare_start_at: nil,
       compare_end_at: nil,
@@ -11,12 +11,9 @@ module ReportBuilder
     )
       sessions = ImpactTracking::Session.where(created_at: start_at..end_at)
 
-      # Time series
-      time_interval = interval(resolution)
-
       time_series = sessions
         .select(
-          "count(*) as visits, count(distinct(monthly_user_hash)) as visitors, date_trunc('#{time_interval}', created_at) as date_group"
+          "count(*) as visits, count(distinct(monthly_user_hash)) as visitors, date_trunc('#{resolution}', created_at) as date_group"
         )
         .group("date_group")
         .order("date_group")

@@ -19,24 +19,7 @@ RSpec.describe ReportBuilder::Queries::Visitors do
       create_list(:session, 2, monthly_user_hash: 'hash4', created_at: Date.new(2022, 10, 10))
     end
 
-    it 'filters dates correct' do
-      start_at = Date.new(2022, 8, 1)
-      end_at = Date.new(2022, 10, 1)
-
-      expect(query.run_query(start_at, end_at)).to eq({
-        time_series: [
-          {
-            :visits => 3,
-            :visitors => 2,
-            :date_group => Date.new(2022, 9, 1)
-          },
-        ],
-        visits_total: 3,
-        visitors_total: 2
-      })
-    end
-
-    it 'returns correct data for current period when grouped by month' do
+    it 'returns correct data for current period' do
       start_at = Date.new(2022, 8, 1)
       end_at = Date.new(2022, 11, 1)
 
@@ -58,35 +41,68 @@ RSpec.describe ReportBuilder::Queries::Visitors do
       })
     end
 
-    # it 'returns correct data for current period when grouped by week' do
-    #   start_at = Date.new(2022, 8, 1)
-    #   end_at = Date.new(2022, 10, 1)
+    it 'filters dates correct' do
+      start_at = Date.new(2022, 8, 1)
+      end_at = Date.new(2022, 10, 1)
 
-    #   expect(query.run_query(start_at, end_at, resolution: 'week')).to eq({
-    #     time_series: [{
-    #       :visits => 3,
-    #       :visitors => 2,
-    #       :date_group => Date.new(2022, 9, 1)
-    #     }],
-    #     visits_total: 3,
-    #     visitors_total: 2
-    #   })
-    # end
+      expect(query.run_query(start_at, end_at)).to eq({
+        time_series: [
+          {
+            :visits => 3,
+            :visitors => 2,
+            :date_group => Date.new(2022, 9, 1)
+          },
+        ],
+        visits_total: 3,
+        visitors_total: 2
+      })
+    end
 
-    # it 'returns correct data for current period when grouped by day' do
-    #   start_at = Date.new(2022, 8, 1)
-    #   end_at = Date.new(2022, 10, 1)
+    it 'returns correct data for current period when grouped by week' do
+      start_at = Date.new(2022, 8, 1)
+      end_at = Date.new(2022, 11, 1)
 
-    #   expect(query.run_query(start_at, end_at, resolution: 'day')).to eq({
-    #     time_series: [{
-    #       :visits => 3,
-    #       :visitors => 2,
-    #       :date_group => Date.new(2022, 9, 1)
-    #     }],
-    #     visits_total: 3,
-    #     visitors_total: 2
-    #   })
-    # end
+      expect(query.run_query(start_at, end_at, resolution: 'week')[:time_series]).to eq([
+        {
+          :visits => 3,
+          :visitors => 2,
+          :date_group => Date.new(2022, 9, 5)
+        },
+        {
+          :visits => 3,
+          :visitors => 1,
+          :date_group => Date.new(2022, 9, 26)
+        },
+        {
+          :visits => 2,
+          :visitors => 1,
+          :date_group => Date.new(2022, 10, 10)
+        }
+      ])
+    end
+
+    it 'returns correct data for current period when grouped by day' do
+      start_at = Date.new(2022, 8, 1)
+      end_at = Date.new(2022, 11, 1)
+
+      expect(query.run_query(start_at, end_at, resolution: 'day')[:time_series]).to eq([
+        {
+          :visits => 3,
+          :visitors => 2,
+          :date_group => Date.new(2022, 9, 10)
+        },
+        {
+          :visits => 3,
+          :visitors => 1,
+          :date_group => Date.new(2022, 10, 2)
+        },
+        {
+          :visits => 2,
+          :visitors => 1,
+          :date_group => Date.new(2022, 10, 10)
+        }
+      ])
+    end
 
     # it 'returns correct data with compared period' do
     #   ### OCTOBER
