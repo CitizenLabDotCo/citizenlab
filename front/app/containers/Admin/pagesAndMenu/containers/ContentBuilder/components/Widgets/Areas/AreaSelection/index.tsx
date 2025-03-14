@@ -39,11 +39,6 @@ const AreaSelection = ({ title }: Props) => {
 
   if (!appConfiguration || !projectCountsByArea) return null;
 
-  const { area_term } = coreSettings(appConfiguration.data);
-  const fallback = formatMessage(projectAndFolderCardsMessages.areaTitle);
-
-  const areaTerm = localize(area_term, { fallback }).toLowerCase();
-
   return (
     <CarrouselContainer>
       <Title
@@ -55,7 +50,13 @@ const AreaSelection = ({ title }: Props) => {
         {title}
       </Title>
       <Box ml={isSmallerThanPhone ? DEFAULT_PADDING : undefined}>
-        <Text>{formatMessage(messages.selectYourX, { areaTerm })}</Text>
+        <Text>
+          {formatMessage(messages.selectYourX, {
+            areaTerm: localize(coreSettings(appConfiguration.data).area_term, {
+              fallback: formatMessage(projectAndFolderCardsMessages.areaTitle),
+            }).toLowerCase(),
+          })}
+        </Text>
         <Box>
           {projectCountsByArea.data.map((area, i) => (
             <Box
