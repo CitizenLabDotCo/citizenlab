@@ -33,6 +33,7 @@ import { FORM_PAGE_CHANGE_EVENT } from 'components/Form/Components/Layouts/event
 import { AjvErrorGetter, ApiErrorGetter } from 'components/Form/typings';
 import FullPageSpinner from 'components/UI/FullPageSpinner';
 
+import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 import { getMethodConfig } from 'utils/configs/participationMethodConfig';
 import eventEmitter from 'utils/eventEmitter';
 import { isNilOrError } from 'utils/helperUtils';
@@ -205,7 +206,7 @@ const IdeasNewIdeationForm = ({ project, phaseId }: Props) => {
       phase_ids,
       anonymous: postAnonymously ? true : undefined,
     });
-
+    updateSearchParams({ idea_id: idea.data.id });
     onSubmitCallback?.();
     setLoading(false);
     return idea;
