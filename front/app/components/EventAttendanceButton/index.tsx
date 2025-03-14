@@ -210,7 +210,7 @@ const EventAttendanceButton = ({ event }: EventAttendanceButtonProps) => {
         event={event}
         onClose={() => {
           setConfirmationModalVisible(false);
-          triggerCommunityMonitorModal();
+          setTimeout(triggerCommunityMonitorModal, 2000);
         }}
       />
     </>

@@ -116,9 +116,7 @@ const CTAButton = ({ phase, project }: Props) => {
                 );
               }
 
-              setTimeout(() => {
-                triggerCommunityMonitorModal();
-              }, 3000);
+              setTimeout(triggerCommunityMonitorModal, 3000);
             },
           }
         );
