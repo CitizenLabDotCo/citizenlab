@@ -11,12 +11,32 @@ RSpec.describe ReportBuilder::Queries::Visitors do
       september = Date.new(2022, 9, 10)
 
       # Create sessions september
-      create_list(:session, 2, monthly_user_hash: 'hash1', created_at: september)
-      create(:session, monthly_user_hash: 'hash2', created_at: september)
+      session1 = create(:session, monthly_user_hash: 'hash1', created_at: september)
+      create(:pageview, session_id: session1.id, path: '/en/')
+      create(:pageview, session_id: session1.id, path: '/en/ideas')
+
+      session2 = create(:session, monthly_user_hash: 'hash1', created_at: september)
+      create(:pageview, session_id: session2.id, path: '/en/')
+      
+      session3 = create(:session, monthly_user_hash: 'hash2', created_at: september)
+      create(:pageview, session_id: session3.id, path: '/en/')
+      create(:pageview, session_id: session3.id, path: '/en/ideas')
 
       # Create sessions october
-      create_list(:session, 3, monthly_user_hash: 'hash3', created_at: Date.new(2022, 10, 2))
-      create_list(:session, 2, monthly_user_hash: 'hash4', created_at: Date.new(2022, 10, 10))
+      session4 = create(:session, monthly_user_hash: 'hash3', created_at: Date.new(2022, 10, 2))
+      create(:pageview, session_id: session4.id, path: '/en/')
+
+      session5 = create(:session, monthly_user_hash: 'hash3', created_at: Date.new(2022, 10, 2))
+      create(:pageview, session_id: session5.id, path: '/en/')
+
+      session6 = create(:session, monthly_user_hash: 'hash3', created_at: Date.new(2022, 10, 2))
+      create(:pageview, session_id: session6.id, path: '/en/')
+
+      session7 = create(:session, monthly_user_hash: 'hash4', created_at: Date.new(2022, 10, 10))
+      create(:pageview, session_id: session7.id, path: '/en/')
+
+      session8 = create(:session, monthly_user_hash: 'hash4', created_at: Date.new(2022, 10, 10))
+      create(:pageview, session_id: session8.id, path: '/en/')
     end
 
     it 'returns correct data for current period' do
