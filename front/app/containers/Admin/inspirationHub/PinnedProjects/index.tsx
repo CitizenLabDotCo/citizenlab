@@ -7,9 +7,8 @@ import useProjectLibraryProjects from 'api/project_library_projects/useProjectLi
 
 import { FormattedMessage } from 'utils/cl-intl';
 
+import ProjectCard from '../components/ProjectCard';
 import messages from '../messages';
-
-import ProjectCard from './ProjectCard';
 
 const PinnedProjects = () => {
   const { data: appConfiguration } = useAppConfiguration();
@@ -37,7 +36,7 @@ const PinnedProjects = () => {
       </Title>
       <Box display="flex" flexDirection="row" gap="12px">
         {projects.data.map((project) => (
-          <ProjectCard project={project} key={project.id} />
+          <ProjectCard project={project} key={project.id} showStamp />
         ))}
       </Box>
     </>

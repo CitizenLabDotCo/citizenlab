@@ -1,13 +1,11 @@
 import { useCallback, useMemo } from 'react';
 
-import { format } from 'date-fns';
 import { useSearchParams } from 'react-router-dom';
 import { Multiloc, SupportedLocale } from 'typings';
 
-import {
-  RansackParams,
-  ProjectLibraryProjectData,
-} from 'api/project_library_projects/types';
+import { Country } from 'api/project_library_countries/types';
+import useProjectLibraryCountries from 'api/project_library_countries/useProjectLibraryCountries';
+import { RansackParams } from 'api/project_library_projects/types';
 
 import useLocale from 'hooks/useLocale';
 
@@ -96,26 +94,17 @@ const getWithFallback = (
   return currentLocaleTitle ?? similarLocaleTitle ?? fallback ?? '';
 };
 
-export const getTenantURL = (
-  attributes: ProjectLibraryProjectData['attributes']
-) => {
-  return `https://${attributes.tenant_host}`;
-};
+export const useCountriesByCode = () => {
+  const { data: countries } = useProjectLibraryCountries();
 
-export const getProjectURL = (
-  attributes: ProjectLibraryProjectData['attributes']
-) => {
-  return `${getTenantURL(attributes)}/projects/${attributes.slug}`;
-};
+  const countriesByCode = useMemo(() => {
+    if (!countries) return;
 
-export const getPhaseURL = (
-  attributes: ProjectLibraryProjectData['attributes'],
-  phaseNumber: number
-) => {
-  return `${getProjectURL(attributes)}/${phaseNumber}`;
-};
+    return countries.data.attributes.reduce((acc, country) => {
+      acc[country.code] = country;
+      return acc;
+    }, {} as Record<string, Country>);
+  }, [countries]);
 
-export const formatDate = (date?: Date) => {
-  if (!date) return;
-  return format(date, 'dd MMMM yyyy');
+  return countriesByCode;
 };
