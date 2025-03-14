@@ -1,23 +1,8 @@
 import { ParticipationMethod } from 'api/phases/types';
-import { Status } from 'api/project_library_projects/types';
 
 import { MessageDescriptor } from 'utils/cl-intl';
 
 import messages from './messages';
-
-export const STATUS_EMOJIS: Record<Status, string> = {
-  active: '🟢',
-  finished: '🟠',
-  stale: '⚪',
-  archived: '🔵',
-};
-
-export const STATUS_LABELS: Record<Status, MessageDescriptor> = {
-  active: messages.active,
-  finished: messages.finished,
-  stale: messages.stale,
-  archived: messages.archived,
-};
 
 export const PARTICIPATION_METHOD_LABELS: Record<
   ParticipationMethod,

@@ -1,26 +1,38 @@
 import React from 'react';
 
-import { Box, Title } from '@citizenlab/cl2-component-library';
+import { Box, Button, Title } from '@citizenlab/cl2-component-library';
+
+import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import sidebarMessages from 'containers/Admin/sideBar/messages';
 
 import { FormattedMessage } from 'utils/cl-intl';
+import clHistory from 'utils/cl-router/history';
 
 import Filters from './Filters';
 import messages from './messages';
 import PinnedProjects from './PinnedProjects';
+import ProjectCards from './ProjectCards';
 import ProjectDrawer from './ProjectDrawer';
-import ProjectTable from './ProjectTable';
 
 const InspirationHub = () => {
   const projectLibraryEnabled = useFeatureFlag({ name: 'project_library' });
-  if (!projectLibraryEnabled) return null;
+  const { data: appConfiguration } = useAppConfiguration();
+  if (!projectLibraryEnabled || !appConfiguration) return null;
+
+  const countryCode = appConfiguration.data.attributes.country_code;
 
   return (
-    <>
-      <Box>
+    <Box>
+      <Box
+        id="inspiration-hub"
+        overflowY="scroll"
+        height={`100vh`}
+        py="45px"
+        px="51px"
+      >
         <Title variant="h1" color="primary" mb="36px">
           <FormattedMessage {...sidebarMessages.inspirationHub} />
         </Title>
@@ -31,14 +43,32 @@ const InspirationHub = () => {
           <Title variant="h2" color="primary" mt="0">
             <FormattedMessage {...messages.allProjects} />
           </Title>
-          <Box mb="24px">
+          <Box>
             <Filters />
           </Box>
-          <ProjectTable />
+          <Box display="flex">
+            <Button
+              buttonStyle="text"
+              pl="0"
+              onClick={() => {
+                const search = countryCode
+                  ? `?q[tenant_country_alpha2_eq]=${countryCode}`
+                  : '';
+
+                clHistory.replace({
+                  pathname: window.location.pathname,
+                  search,
+                });
+              }}
+            >
+              <FormattedMessage {...messages.resetFilters} />
+            </Button>
+          </Box>
+          <ProjectCards />
         </Box>
       </Box>
       <ProjectDrawer />
-    </>
+    </Box>
   );
 };
 
