@@ -20,17 +20,19 @@ const Settings = () => {
 
   if (!appConfiguration) return null;
 
-  const { areas_term } = coreSettings(appConfiguration.data);
-  const fallback = formatMessage(messages.areas);
-
-  const areasTerm = localize(areas_term, { fallback }).toLowerCase();
-
   return (
     <Box my="20px">
       <Text mb="32px" color="textSecondary">
         <FormattedMessage
           {...messages.thisWidgetShows}
-          values={{ areasTerm }}
+          values={{
+            areasTerm: localize(
+              coreSettings(appConfiguration.data).areas_term,
+              {
+                fallback: formatMessage(messages.areas),
+              }
+            ).toLowerCase(),
+          }}
         />
       </Text>
       <TitleMultilocInput name="areas_title" />
