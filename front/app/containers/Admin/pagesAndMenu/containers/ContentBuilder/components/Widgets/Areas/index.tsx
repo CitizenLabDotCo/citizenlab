@@ -24,11 +24,15 @@ interface Props {
 const Areas = ({ titleMultiloc }: Props) => {
   const localize = useLocalize();
   const followEnabled = useFeatureFlag({ name: 'follow' });
-  const { data, hasNextPage, fetchNextPage } = useProjectsMini({
+  const {
+    data: miniProjects,
+    hasNextPage,
+    fetchNextPage,
+  } = useProjectsMini({
     endpoint: 'for_areas',
   });
   const { data: authUser } = useAuthUser();
-  const projects = data?.pages.map((page) => page.data).flat();
+  const projects = miniProjects?.pages.map((page) => page.data).flat();
   const { data: areas } = useAreas(
     {
       sort: 'projects_count',
