@@ -15,6 +15,10 @@ import { APIErrorsContext, FormContext } from 'components/Form/contexts';
 import clHistory from 'utils/cl-router/history';
 
 import messages from '../messages';
+import {
+  findFirstSentimentLinearScale,
+  schemaWithRequiredFirstQuestion,
+} from '../utils';
 
 type QuestionPreviewProps = {
   projectSlug?: string;
@@ -31,23 +35,14 @@ const QuestionPreview = ({
 }: QuestionPreviewProps) => {
   const locale = useLocale();
 
-  const makeQuestionRequiredInSchema = (schema) => {
-    return {
-      ...schema,
-      required: [
-        'do_would_you_rate_the_level_of_safety_in_your_neighborhood_q6k',
-      ],
-    };
-  };
-
-  // Extract the first question from the UI Schema
-  const uiSchemaFirstQuestion = uiSchema?.elements[1]['elements'][0];
+  // Extract the first sentiment question from the UI Schema
+  const uiSchemaFirstQuestion = findFirstSentimentLinearScale(uiSchema);
 
   const redirectToFullSurvey = (data) => {
     if (!isEmpty(data?.data)) {
       // Close the modal
       onClose();
-      // Redirect to full survey
+      // Redirect to full survey page
       clHistory.push(`/projects/${projectSlug}/surveys/new`);
     }
   };
@@ -55,8 +50,6 @@ const QuestionPreview = ({
   if (!schema || !uiSchemaFirstQuestion) {
     return null;
   }
-
-  const data = {};
 
   return (
     <APIErrorsContext.Provider value={{}}>
@@ -73,9 +66,9 @@ const QuestionPreview = ({
           <JsonForms
             renderers={selectRenderers('survey')}
             uischema={uiSchemaFirstQuestion}
-            schema={makeQuestionRequiredInSchema(schema)}
+            schema={schemaWithRequiredFirstQuestion(schema)}
             onChange={redirectToFullSurvey}
-            data={data}
+            data={{}}
           />
         </ErrorToReadProvider>
       </FormContext.Provider>

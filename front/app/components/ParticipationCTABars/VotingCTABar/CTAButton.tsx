@@ -18,6 +18,8 @@ import { IProjectData } from 'api/projects/types';
 
 import useLocalize from 'hooks/useLocalize';
 
+import { triggerCommunityMonitorModal } from 'containers/App/CommunityMonitorModal/events';
+
 import { ScreenReaderOnly } from 'utils/a11y';
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
@@ -113,6 +115,10 @@ const CTAButton = ({ phase, project }: Props) => {
                   `/projects/${project.attributes.slug}?scrollToStatusModule=true`
                 );
               }
+
+              setTimeout(() => {
+                triggerCommunityMonitorModal();
+              }, 3000);
             },
           }
         );

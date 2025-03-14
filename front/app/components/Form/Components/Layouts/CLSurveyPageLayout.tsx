@@ -35,6 +35,8 @@ import useProjectBySlug from 'api/projects/useProjectBySlug';
 
 import useLocalize from 'hooks/useLocalize';
 
+import { triggerCommunityMonitorModal } from 'containers/App/CommunityMonitorModal/events';
+
 import EsriMap from 'components/EsriMap';
 import { parseLayers } from 'components/EsriMap/utils';
 import { FormContext } from 'components/Form/contexts';
@@ -227,6 +229,7 @@ const CLSurveyPageLayout = memo(
 
       if (pageVariant === 'after-submission') {
         clHistory.push({ pathname: `/projects/${slug}` });
+        triggerCommunityMonitorModal();
         return;
       }
 
