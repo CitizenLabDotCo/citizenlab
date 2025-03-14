@@ -33,11 +33,11 @@ const AreaSelection = ({ title }: Props) => {
   const { formatMessage } = useIntl();
   const isSmallerThanPhone = useBreakpoint('phone');
   const { data: appConfiguration } = useAppConfiguration();
-  const { data: projectCountsByArea } = useAreasWithProjectCounts();
+  const { data: areasWithProjectCount } = useAreasWithProjectCounts();
 
   const { mutate: addFollower, isLoading } = useAddFollower();
 
-  if (!appConfiguration || !projectCountsByArea) return null;
+  if (!appConfiguration || !areasWithProjectCount) return null;
 
   return (
     <CarrouselContainer>
@@ -58,10 +58,10 @@ const AreaSelection = ({ title }: Props) => {
           })}
         </Text>
         <Box>
-          {projectCountsByArea.data.map((area, i) => (
+          {areasWithProjectCount.data.map((area, i) => (
             <Box
               display="inline-block"
-              mr={i === projectCountsByArea.data.length - 1 ? '0px' : '8px'}
+              mr={i === areasWithProjectCount.data.length - 1 ? '0px' : '8px'}
               mb="8px"
               key={area.id}
             >
