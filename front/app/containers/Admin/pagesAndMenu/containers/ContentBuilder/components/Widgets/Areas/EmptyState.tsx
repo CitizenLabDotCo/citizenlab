@@ -9,7 +9,6 @@ import {
 
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import { coreSettings } from 'api/app_configuration/utils';
-import { IAreaData } from 'api/areas/types';
 
 import useLocalize from 'hooks/useLocalize';
 
@@ -23,10 +22,9 @@ import messages from './messages';
 
 interface Props {
   title: string;
-  followedAreas: IAreaData[];
 }
 
-const EmptyState = ({ title, followedAreas }: Props) => {
+const EmptyState = ({ title }: Props) => {
   const isSmallerThanPhone = useBreakpoint('phone');
   const { formatMessage } = useIntl();
   const localize = useLocalize();
@@ -34,30 +32,19 @@ const EmptyState = ({ title, followedAreas }: Props) => {
 
   if (!appConfiguration) return null;
 
-  const { areas_term } = coreSettings(appConfiguration.data);
-  const fallback = formatMessage(messages.areas);
-
-  const areasTerm = localize(areas_term, { fallback }).toLowerCase();
-
-  const getMessage = () => {
-    if (followedAreas.length === 1) {
-      return formatMessage(messages.thereAreCurrentlyNoProjectsSingular, {
-        areaName: localize(followedAreas[0].attributes.title_multiloc),
-      });
-    }
-
-    return formatMessage(messages.thereAreCurrentlyNoProjectsPlural, {
-      areasTerm,
-    });
-  };
-
   return (
     <CarrouselContainer>
       <Box ml={isSmallerThanPhone ? DEFAULT_PADDING : undefined}>
         <Title variant="h2" mt="0px" color="tenantText">
           {title}
         </Title>
-        <Text color="textSecondary">{getMessage()}</Text>
+        <Text color="textSecondary">
+          {formatMessage(messages.thereAreCurrentlyNoProjectsPlural, {
+            areasTerm: localize(coreSettings(appConfiguration.data).area_term, {
+              fallback: formatMessage(messages.areas),
+            }).toLowerCase(),
+          })}
+        </Text>
       </Box>
     </CarrouselContainer>
   );

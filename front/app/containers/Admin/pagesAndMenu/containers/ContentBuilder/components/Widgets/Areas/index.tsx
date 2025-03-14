@@ -70,7 +70,7 @@ const Areas = ({ titleMultiloc }: Props) => {
 
     // If, even after indicating follow preferences,
     // there are no projects, we show the empty state.
-    return <EmptyState title={title} followedAreas={followedAreas} />;
+    return <EmptyState title={title} />;
   }
 
   return (

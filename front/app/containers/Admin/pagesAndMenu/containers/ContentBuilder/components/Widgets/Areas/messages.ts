@@ -9,11 +9,6 @@ export default defineMessages({
     id: 'front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Areas.selectYourX',
     defaultMessage: 'Select your {areaTerm}',
   },
-  thereAreCurrentlyNoProjectsSingular: {
-    id: 'front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Areas.thereAreCurrentlyNoProjects',
-    defaultMessage:
-      'There are currently no projects in {areaName} that you have permission to view.',
-  },
   thereAreCurrentlyNoProjectsPlural: {
     id: 'front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Areas.thereAreCurrentlyNoProjectsInYourAreas',
     defaultMessage:
