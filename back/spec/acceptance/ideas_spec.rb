@@ -452,6 +452,11 @@ resource 'Ideas' do
     end
 
     get 'web_api/v1/ideas/:id/similarities' do
+      with_options scope: :idea do
+        parameter :title_multiloc, 'Multi-locale field with the idea title', extra: 'Maximum 100 characters'
+        parameter :body_multiloc, 'Multi-locale field with the idea body', extra: 'Required if not draft'
+        parameter :project_id, 'The identifier of the project that hosts the idea'
+      end
       with_options scope: :page do
         parameter :number, 'Page number'
         parameter :size, 'Number of ideas per page'
@@ -462,20 +467,24 @@ resource 'Ideas' do
       let!(:idea_burger) { create(:embeddings_similarity, embedding: embeddings['burger']).embeddable }
       let!(:idea_moon) { create(:embeddings_similarity, embedding: embeddings['moon']).embeddable }
       let!(:idea_bats) { create(:embeddings_similarity, embedding: embeddings['bats']).embeddable }
-      let(:id) { idea_pizza.id }
-
-      example_request 'Get similar ideas' do
-        assert_status 200
-        expect(json_parse(response_body)[:data].pluck(:id)).to eq [] # When no threshold: [idea_burger.id, idea_bats.id, idea_moon.id]
-      end
+      let(:idea) { build(:idea) }
+      let(:title_multiloc) { idea.title_multiloc }
 
       describe do
-        before { create_list(:embeddings_similarity, 10) }
+        before do
+          allow_any_instance_of(CohereMultilingualEmbeddings).to receive(:embedding) do
+            embeddings['pizza']
+          end
 
-        example 'Do not return more than 10 inputs', document: false do
-          do_request
+          config = AppConfiguration.instance
+          config.settings['authoring_assistance_prototype']['title_threshold'] = 0.3
+          config.settings['authoring_assistance_prototype']['body_threshold'] = 0.0
+          config.save!
+        end
+
+        example_request 'Get similar ideas' do
           assert_status 200
-          expect(json_parse(response_body)[:data].size).to be <= 10
+          expect(json_parse(response_body)[:data].pluck(:id)).to eq [idea_pizza.id]
         end
       end
     end
