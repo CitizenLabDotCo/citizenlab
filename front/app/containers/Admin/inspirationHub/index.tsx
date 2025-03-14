@@ -27,22 +27,27 @@ const InspirationHub = () => {
         height={`100vh`}
         py="45px"
         px="51px"
+        display="flex"
+        flexDirection="column"
+        alignItems="center"
       >
-        <Title variant="h1" color="primary" mb="36px">
-          <FormattedMessage {...sidebarMessages.inspirationHub} />
-        </Title>
-        <Box>
-          <PinnedProjects />
-        </Box>
-        <Box mt="40px">
-          <Title variant="h2" color="primary" mt="0">
-            <FormattedMessage {...messages.allProjects} />
+        <Box maxWidth="1400px" w="100%">
+          <Title variant="h1" color="primary" mb="36px">
+            <FormattedMessage {...sidebarMessages.inspirationHub} />
           </Title>
           <Box>
-            <Filters />
+            <PinnedProjects />
           </Box>
-          <SortAndReset />
-          <ProjectCards />
+          <Box mt="40px">
+            <Title variant="h2" color="primary" mt="0">
+              <FormattedMessage {...messages.allProjects} />
+            </Title>
+            <Box>
+              <Filters />
+            </Box>
+            <SortAndReset />
+            <ProjectCards />
+          </Box>
         </Box>
       </Box>
       <ProjectDrawer />
