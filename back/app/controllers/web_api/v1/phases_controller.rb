@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class WebApi::V1::PhasesController < ApplicationController
-  before_action :set_phase, only: %i[show show_mini update destroy survey_results submission_count index_xlsx delete_inputs]
+  before_action :set_phase, only: %i[show show_mini update destroy survey_results sentiment_by_quarter submission_count index_xlsx delete_inputs]
   around_action :detect_invalid_timeline_changes, only: %i[create update destroy]
   skip_before_action :authenticate_user
 
@@ -67,10 +67,28 @@ class WebApi::V1::PhasesController < ApplicationController
   end
 
   def survey_results
-    logic_ids = params[:filter_logic_ids].presence || [] # Array of page and option IDs
+    results = if @phase.pmethod.class.method_str == 'community_monitor_survey'
+      year = params[:year]
+      quarter = params[:quarter]
+      Surveys::ResultsWithDateGenerator.new(@phase).generate_results(year: year, quarter: quarter)
+    else
+      logic_ids = params[:filter_logic_ids].presence || [] # Array of page and option IDs
+      Surveys::ResultsWithLogicGenerator.new(@phase).generate_results(logic_ids:)
+    end
 
-    results = Surveys::ResultsWithLogicGenerator.new(@phase).generate_results(logic_ids: logic_ids)
     render json: raw_json(results)
+  end
+
+  # Used for community_monitor_survey dashboard
+  def sentiment_by_quarter
+    average_generator = Surveys::AverageGenerator.new(@phase, input_type: 'sentiment_linear_scale')
+
+    averages = {
+      overall: average_generator.overall_average_by_quarter,
+      by_category: average_generator.category_averages_by_quarter
+    }
+
+    render json: raw_json(averages)
   end
 
   def submission_count
