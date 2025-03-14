@@ -28,9 +28,7 @@ const Areas = ({ titleMultiloc }: Props) => {
     endpoint: 'for_areas',
   });
   const { data: authUser } = useAuthUser();
-
   const projects = data?.pages.map((page) => page.data).flat();
-
   const { data: areas } = useAreas(
     {
       sort: 'projects_count',
@@ -38,13 +36,13 @@ const Areas = ({ titleMultiloc }: Props) => {
     },
     {
       // Only fetch areas in this particular situation (see below)
-      enabled: projects && projects.length === 0,
+      enabled: projects?.length === 0,
     }
   );
 
-  const title = localize(titleMultiloc);
-
   if (!followEnabled || !authUser) return null;
+
+  const title = localize(titleMultiloc);
 
   // If no projects yet, show loading skeleton
   if (!projects) {
@@ -59,12 +57,9 @@ const Areas = ({ titleMultiloc }: Props) => {
     const followedAreas = areas.data.filter(
       (area) => !!area.relationships.user_follower?.data?.id
     );
-
-    const hasFollowPreferences = followedAreas.length > 0;
-
     // If the user has no follow preferences yet,
     // we render an interface to select areas to follow
-    if (!hasFollowPreferences) {
+    if (followedAreas.length === 0) {
       return <AreaSelection title={title} />;
     }
 
