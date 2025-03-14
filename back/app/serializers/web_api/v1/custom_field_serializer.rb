@@ -36,7 +36,13 @@ class WebApi::V1::CustomFieldSerializer < WebApi::V1::BaseSerializer
     end
   end
 
-  attributes :maximum, if: proc { |object, _params| object.supports_linear_scale? }
+  attribute :maximum, if: proc { |object, _params|
+    object.supports_linear_scale?
+  }
+
+  attribute :question_category, if: proc { |object, _params|
+    object.supports_category?
+  }
 
   attributes :linear_scale_label_1_multiloc,
     :linear_scale_label_2_multiloc,

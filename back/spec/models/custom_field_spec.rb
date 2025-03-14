@@ -689,4 +689,34 @@ RSpec.describe CustomField do
       })
     end
   end
+
+  describe 'question_category' do
+    let(:form) { create(:custom_form, participation_context: TimelineService.new.current_phase(project)) }
+    let(:field) { create(:custom_field, resource: form) }
+
+    context 'community_monitor_survey project' do
+      let(:project) { create(:community_monitor_project_with_active_phase) }
+
+      it 'can have an allowed category associated' do
+        field.question_category = 'quality_of_life'
+        expect(field).to be_valid
+      end
+
+      it 'cannot have a topic if it is not in the list of allowed topics' do
+        field.question_category = 'monkeys'
+        expect(field).not_to be_valid
+        expect(field.errors.first.type).to eq :inclusion
+      end
+    end
+
+    context 'native_survey project' do
+      let(:project) { create(:project_with_active_native_survey_phase) }
+
+      it 'cannot have topics associated if the participation method does not allow it' do
+        field.question_category = 'quality_of_life'
+        expect(field).not_to be_valid
+        expect(field.errors.first.type).to eq :present
+      end
+    end
+  end
 end
