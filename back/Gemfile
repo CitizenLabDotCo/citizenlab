@@ -113,7 +113,7 @@ gem 'scientist', '~> 1.6.4'
 
 gem 'okcomputer'
 gem 'omniauth', '~> 2.1'
-gem 'omniauth-saml', '~> 2.2.0'
+gem 'omniauth-saml', '~> 2.2.3'
 gem 'omniauth-rails_csrf_protection'
 gem 'omniauth-facebook'
 gem 'omniauth-google-oauth2'
