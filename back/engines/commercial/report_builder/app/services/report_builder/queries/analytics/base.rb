@@ -1,4 +1,10 @@
 class ReportBuilder::Queries::Analytics::Base < ReportBuilder::Queries::Base
+  RESOLUTION_TO_INTERVAL = {
+    'month' => 'month',
+    'week' => 'week',
+    'day' => 'date'
+  }.freeze
+
   def run_query(**props)
     json_query = query(**props)
     results, errors, _paginations = Analytics::MultipleQueries.new.run(json_query)
@@ -36,5 +42,9 @@ class ReportBuilder::Queries::Analytics::Base < ReportBuilder::Queries::Base
     return {} unless apply
 
     { 'dimension_user.has_visits': 'true' }
+  end
+
+  def interval(resolution)
+    RESOLUTION_TO_INTERVAL.fetch(resolution || 'month')
   end
 end
