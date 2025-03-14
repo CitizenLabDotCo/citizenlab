@@ -378,6 +378,7 @@ FactoryBot.define do
     end
 
     factory :custom_field_gender do
+      resource_type { 'User' }
       key { 'gender' }
       title_multiloc { { 'en' => 'gender' } }
       code { 'gender' }
