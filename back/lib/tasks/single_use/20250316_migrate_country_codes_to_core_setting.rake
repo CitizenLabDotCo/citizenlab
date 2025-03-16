@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 namespace :single_use do
-  desc 'Set country_code core setting with value from attribute'
+  desc 'Check country_code core setting'
   task set_country_code_core_setting: :environment do
     Tenant.safe_switch_each do |tenant|
       puts "processing tenant #{tenant.host} ..."
