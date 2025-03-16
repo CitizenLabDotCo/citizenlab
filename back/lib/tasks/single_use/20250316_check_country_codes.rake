@@ -10,7 +10,7 @@ namespace :single_use do
       existing_code = config.settings.dig('core', 'country_code')
 
       if existing_code
-        puts "  OK"
+        puts '  OK'
       else
         puts "  FAILED - no country_code found for #{tenant.id}, #{tenant.host}"
       end
