@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Box, Select } from '@citizenlab/cl2-component-library';
+import { Select } from '@citizenlab/cl2-component-library';
 
 import useProjectLibraryCountries from 'api/project_library_countries/useProjectLibraryCountries';
 
@@ -29,16 +29,14 @@ const CountryFilter = ({ value, placeholderMessage, onChange }: Props) => {
   );
 
   return (
-    <Box>
-      <Select
-        value={value}
-        options={options ?? []}
-        canBeEmpty
-        onChange={onChange}
-        placeholder={formatMessage(placeholderMessage)}
-        mr="28px"
-      />
-    </Box>
+    <Select
+      value={value}
+      options={options ?? []}
+      canBeEmpty
+      onChange={onChange}
+      placeholder={formatMessage(placeholderMessage)}
+      mr="28px"
+    />
   );
 };
 

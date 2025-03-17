@@ -6,10 +6,6 @@ export default defineMessages({
     defaultMessage:
       'Inspiration Hub is a place where you can find inspiration for your projects by browsing through projects on other platforms.',
   },
-  highlighted: {
-    id: 'app.containers.Admin.inspirationHub.Highlighted',
-    defaultMessage: 'Highlighted',
-  },
   allProjects: {
     id: 'app.containers.Admin.inspirationHub.AllProjects',
     defaultMessage: 'All projects',

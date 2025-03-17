@@ -7,8 +7,10 @@ import useProjectLibraryProjects from 'api/project_library_projects/useProjectLi
 
 import { FormattedMessage } from 'utils/cl-intl';
 
+import CountryFilter from '../components/CountryFilter';
 import ProjectCard from '../components/ProjectCard';
-import messages from '../messages';
+
+import messages from './messages';
 
 const PinnedProjects = () => {
   const { data: appConfiguration } = useAppConfiguration();
@@ -34,6 +36,15 @@ const PinnedProjects = () => {
       <Title variant="h2" color="primary" mt="0px">
         <FormattedMessage {...messages.highlighted} />
       </Title>
+      <Box display="flex" mb="12px">
+        <CountryFilter
+          value={undefined}
+          placeholderMessage={messages.country}
+          onChange={(option) => {
+            console.log(option);
+          }}
+        />
+      </Box>
       <Box display="flex" flexDirection="row" gap="12px">
         {projects.data.map((project) => (
           <ProjectCard project={project} key={project.id} showStamp showQuote />
