@@ -24,6 +24,7 @@ import { AjvErrorGetter, ApiErrorGetter } from 'components/Form/typings';
 import FullPageSpinner from 'components/UI/FullPageSpinner';
 
 import { FormattedMessage } from 'utils/cl-intl';
+import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 import eventEmitter from 'utils/eventEmitter';
 import { getFieldNameFromPath } from 'utils/JSONFormUtils';
 
@@ -227,6 +228,8 @@ const IdeasEditForm = ({ ideaId }: Props) => {
         ? omit(payload, 'idea_files_attributes')
         : omit(payload, ['idea_images_attributes', 'idea_files_attributes']),
     });
+
+    updateSearchParams({ idea_id: idea.data.id });
     onSubmitCallback?.();
     setLoading(false);
     return idea;
