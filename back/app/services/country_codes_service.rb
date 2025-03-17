@@ -1,3 +1,4 @@
+# rubocop:disable Metrics/CollectionLiteralLength
 class CountryCodesService
   COUNTRIES = {
     nil => '- None -',
@@ -256,7 +257,7 @@ class CountryCodesService
     COUNTRIES.keys
   end
 
-  def names 
+  def names
     COUNTRIES.values
   end
 
@@ -274,3 +275,4 @@ class CountryCodesService
     COUNTRIES
   end
 end
+# rubocop:enable Metrics/CollectionLiteralLength
