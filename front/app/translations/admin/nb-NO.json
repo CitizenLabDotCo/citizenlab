@@ -2516,7 +2516,6 @@
   "app.containers.AdminPage.projects.project.analysis.authorsByDomicile": "Forfattere etter bosted",
   "app.containers.AdminPage.projects.project.analysis.backgroundJobs": "Bakgrunnsjobber",
   "app.containers.AdminPage.projects.project.analysis.comments": "Kommentarer",
-  "app.containers.AdminPage.projects.project.analysis.demographicsTitle": "Demografi",
   "app.containers.AdminPage.projects.project.analysis.domicileChartTooLarge": "Domisiloversikten er for stor til å vises",
   "app.containers.AdminPage.projects.project.analysis.emptyCustomFieldFilter": "Skjul tomme svar",
   "app.containers.AdminPage.projects.project.analysis.emptyCustomFieldsLabel": "Svar",

@@ -2516,7 +2516,6 @@
   "app.containers.AdminPage.projects.project.analysis.authorsByDomicile": "Auteurs op woonplaats",
   "app.containers.AdminPage.projects.project.analysis.backgroundJobs": "Achtergrond Taken",
   "app.containers.AdminPage.projects.project.analysis.comments": "Reacties",
-  "app.containers.AdminPage.projects.project.analysis.demographicsTitle": "Demografie",
   "app.containers.AdminPage.projects.project.analysis.domicileChartTooLarge": "De woonplaatsgrafiek is te groot om weer te geven",
   "app.containers.AdminPage.projects.project.analysis.emptyCustomFieldFilter": "Verberg lege antwoorden",
   "app.containers.AdminPage.projects.project.analysis.emptyCustomFieldsLabel": "Reacties",
