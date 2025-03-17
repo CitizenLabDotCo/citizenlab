@@ -84,30 +84,33 @@ resource 'Ideas', :clear_cache, document: false do
     end
   end
 
-  get 'web_api/v1/ideas/:id/similarities' do
+  get 'web_api/v1/ideas/similarities' do
     before do
       allow_any_instance_of(CohereMultilingualEmbeddings).to receive(:embedding) do
         create(:embeddings_similarity).embedding
       end
     end
 
-    let(:id) { create(:idea).id }
+    parameter :title_multiloc, 'Multi-locale field with the idea title', scope: :idea
+
+    let(:title_multiloc) { { en: 'Title' } }
+    let(:cache_key) { 'views/example.org/web_api/v1/ideas/similarities?idea[title_multiloc][en]=Title.json' }
 
     example 'caches for a visitor' do
-      expect(Rails.cache.read("views/example.org/web_api/v1/ideas/#{id}/similarities.json")).to be_nil
+      expect(Rails.cache.read(cache_key)).to be_nil
       do_request
       expect(status).to eq 200
-      expect(Rails.cache.read("views/example.org/web_api/v1/ideas/#{id}/similarities.json")).to be_present
+      expect(Rails.cache.read(cache_key)).to be_present
     end
 
     context 'when logged in' do
       before { header_token_for create(:user) }
 
       example 'does not cache' do
-        expect(Rails.cache.read("views/example.org/web_api/v1/ideas/#{id}/similarities.json")).to be_nil
+        expect(Rails.cache.read(cache_key)).to be_nil
         do_request
         expect(status).to eq 200
-        expect(Rails.cache.read("views/example.org/web_api/v1/ideas/#{id}/similarities.json")).to be_nil
+        expect(Rails.cache.read(cache_key)).to be_nil
       end
     end
 
@@ -119,10 +122,10 @@ resource 'Ideas', :clear_cache, document: false do
       end
 
       example 'does not cache' do
-        expect(Rails.cache.read("views/example.org/web_api/v1/ideas/#{id}/similarities.json")).to be_nil
+        expect(Rails.cache.read(cache_key)).to be_nil
         do_request
         expect(status).to eq 200
-        expect(Rails.cache.read("views/example.org/web_api/v1/ideas/#{id}/similarities.json")).to be_nil
+        expect(Rails.cache.read(cache_key)).to be_nil
       end
     end
   end
