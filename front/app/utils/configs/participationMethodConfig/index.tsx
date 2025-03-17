@@ -58,7 +58,6 @@ type PostSortingOptionType = { text: JSX.Element; value: string };
 Configuration Description
 ---------------------------------
 formEditor: We currently have 2 UIs for admins to edit the form definition. This defines which UI, if any, the method uses.
-onFormSubmission: Called after input form submission.
 getFormTitle?:  Gets the title of the input form
 getModalContent: Returns modal content to be displayed on project page.
 showInputManager: Returns whether the input manager should be shown in the admin view.
@@ -72,7 +71,6 @@ inputsPageSize?: Returns the page size the ideas endpoint should use.
 export type ParticipationMethodConfig = {
   /** When adding a new property, please add a description in the above comment */
   formEditor: 'simpleFormEditor' | 'surveyEditor' | null;
-  onFormSubmission: (props: FormSubmissionMethodProps) => void;
   getModalContent:
     | null
     | ((props: ModalContentMethodProps) => ReactNode | JSX.Element | null);
@@ -105,7 +103,6 @@ const ideationConfig: ParticipationMethodConfig = {
   supportsVotes: true,
   supportsComments: true,
   supportsTopicsCustomField: true,
-  onFormSubmission: () => {},
   postType: 'defaultInput',
   getModalContent: (props: ModalContentMethodProps) => {
     if (props.ideaId && props.title && props.subtitle) {
@@ -154,15 +151,6 @@ const proposalsConfig: ParticipationMethodConfig = {
   supportsVotes: false,
   supportsComments: true,
   supportsTopicsCustomField: true,
-  onFormSubmission: ({ idea, phaseId }: FormSubmissionMethodProps) => {
-    if (idea) {
-      const urlParameters = `?new_idea_id=${idea.data.id}`;
-      clHistory.push({
-        pathname: `/ideas/${idea.data.attributes.slug}`,
-        search: urlParameters.concat(phaseId ? `&phase_id=${phaseId}` : ''),
-      });
-    }
-  },
   postType: 'defaultInput',
   getModalContent: (props: ModalContentMethodProps) => {
     if (props.ideaId && props.title && props.subtitle) {
@@ -205,7 +193,6 @@ const proposalsConfig: ParticipationMethodConfig = {
 const nativeSurveyConfig: ParticipationMethodConfig = {
   showInputCount: true,
   formEditor: 'surveyEditor',
-  onFormSubmission: () => {},
   postType: 'nativeSurvey',
   getModalContent: null,
   showInputManager: false,
@@ -224,9 +211,7 @@ const informationConfig: ParticipationMethodConfig = {
   getModalContent: () => {
     return null;
   },
-  onFormSubmission: () => {
-    return;
-  },
+
   postType: 'defaultInput',
   showInputManager: false,
   renderCTABar: (props: CTABarProps) => (
@@ -243,9 +228,6 @@ const surveyConfig: ParticipationMethodConfig = {
   formEditor: null,
   getModalContent: () => {
     return null;
-  },
-  onFormSubmission: () => {
-    return;
   },
   postType: 'defaultInput',
   showInputManager: false,
@@ -266,9 +248,7 @@ const documentAnnotationConfig: ParticipationMethodConfig = {
   getModalContent: () => {
     return null;
   },
-  onFormSubmission: () => {
-    return;
-  },
+
   postType: 'defaultInput',
   showInputManager: false,
   renderCTABar: (props: CTABarProps) => {
@@ -294,16 +274,6 @@ const votingConfig: ParticipationMethodConfig = {
     return null;
   },
   postType: 'defaultInput',
-  onFormSubmission: ({ idea, phaseId }: FormSubmissionMethodProps) => {
-    if (idea) {
-      const urlParameters = `?new_idea_id=${idea.data.id}`;
-
-      clHistory.push({
-        pathname: `/ideas/${idea.data.attributes.slug}`,
-        search: urlParameters.concat(phaseId ? `&phase_id=${phaseId}` : ''),
-      });
-    }
-  },
   getFormTitle: (props: FormTitleMethodProps) => {
     return (
       <FormattedMessage
@@ -336,9 +306,7 @@ const pollConfig: ParticipationMethodConfig = {
   getModalContent: () => {
     return null;
   },
-  onFormSubmission: () => {
-    return;
-  },
+
   postType: 'defaultInput',
   showInputManager: false,
   renderCTABar: (props: CTABarProps) => {
@@ -355,9 +323,6 @@ const volunteeringConfig: ParticipationMethodConfig = {
   formEditor: null,
   getModalContent: () => {
     return null;
-  },
-  onFormSubmission: () => {
-    return;
   },
   postType: 'defaultInput',
   showInputManager: false,

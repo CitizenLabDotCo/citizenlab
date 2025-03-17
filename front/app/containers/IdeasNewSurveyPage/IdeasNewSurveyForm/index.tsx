@@ -268,10 +268,6 @@ const IdeasNewSurveyForm = ({ project, phaseId }: Props) => {
 
     if (published) {
       clearDraftIdea(phaseId);
-      participationMethodConfig.onFormSubmission({
-        project: project.data,
-        idea,
-      });
     }
     onSubmitCallback?.();
 
