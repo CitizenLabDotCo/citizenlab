@@ -707,6 +707,16 @@ RSpec.describe CustomField do
         expect(field).not_to be_valid
         expect(field.errors.first.type).to eq :inclusion
       end
+
+      it 'returns "other" if the question category is not set' do
+        field.question_category = nil
+        expect(field.question_category).to eq 'other'
+      end
+
+      it 'returns the multiloc for the question' do
+        field.question_category = 'quality_of_life'
+        expect(field.question_category_multiloc['en']).to eq 'Quality of life'
+      end
     end
 
     context 'native_survey project' do
@@ -716,6 +726,15 @@ RSpec.describe CustomField do
         field.question_category = 'quality_of_life'
         expect(field).not_to be_valid
         expect(field.errors.first.type).to eq :present
+      end
+
+      it 'returns nil if the question category is not set' do
+        field.question_category = nil
+        expect(field.question_category).to be_nil
+      end
+
+      it 'returns nil for question_category_multiloc' do
+        expect(field.question_category_multiloc).to be_nil
       end
     end
   end

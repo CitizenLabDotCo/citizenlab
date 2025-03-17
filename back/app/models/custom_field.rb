@@ -77,7 +77,7 @@ class CustomField < ApplicationRecord
   VISIBLE_TO_PUBLIC = 'public'
   VISIBLE_TO_ADMINS = 'admins'
   PAGE_LAYOUTS = %w[default map].freeze
-  QUESTION_CATEGORIES = %w[quality_of_life service_delivery governance_and_trust].freeze
+  QUESTION_CATEGORIES = %w[quality_of_life service_delivery governance_and_trust other].freeze
 
   validates :resource_type, presence: true, inclusion: { in: FIELDABLE_TYPES }
   validates(
@@ -400,6 +400,18 @@ class CustomField < ApplicationRecord
     return false unless participation_context
 
     participation_context.pmethod.supports_custom_field_categories?
+  end
+
+  def question_category
+    return 'other' if super.nil? && supports_category?
+
+    super
+  end
+
+  def question_category_multiloc
+    return nil unless supports_category?
+
+    MultilocService.new.i18n_to_multiloc("custom_fields.question_categories.#{question_category}")
   end
 
   private
