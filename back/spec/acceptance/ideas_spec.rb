@@ -486,6 +486,9 @@ resource 'Ideas' do
           assert_status 200
           expect(json_parse(response_body)[:data].pluck(:id)).to eq [idea_pizza.id]
         end
+
+        # TODO: Spec scope: not of same author, not outside project, not invisible (e.g. drafts of others)
+        # TODO: Spec: takes thresholds from phase settings
       end
     end
 
