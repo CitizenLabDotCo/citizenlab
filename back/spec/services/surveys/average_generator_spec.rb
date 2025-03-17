@@ -24,14 +24,14 @@ RSpec.describe Surveys::AverageGenerator do
 
   describe 'overall_average_by_quarter' do
     it 'returns an overall average per quarter' do
-      averages = generator.overall_average_by_quarter
+      averages = generator.send(:overall_average_by_quarter)
       expect(averages).to eq({ '2025-2' => 13.1, '2025-1' => 2.3 })
     end
   end
 
   describe 'category_averages_by_quarter' do
-    it 'returns an overall average per quarter' do
-      averages = generator.category_averages_by_quarter
+    it 'returns an averages by category per quarter' do
+      averages = generator.send(:category_averages_by_quarter)
       expect(averages).to eq({ '2025-2' => 13.1, '2025-1' => 2.3 })
     end
   end

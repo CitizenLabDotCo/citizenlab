@@ -18,6 +18,19 @@ module Surveys
       switch_keys(averages)
     end
 
+
+    def summary_averages_by_quarter
+      {
+        overall: overall_average_by_quarter,
+        categories: {
+          averages: category_averages_by_quarter,
+          multilocs: category_multilocs
+        }
+      }
+    end
+
+    private
+
     # This is an average of averages - or should it take the average of all values
     def overall_average_by_quarter
       grouped_answers = all_answers.group_by { |a| a['quarter'] }
@@ -27,12 +40,9 @@ module Surveys
       end
     end
 
-    # Placeholder for now
     def category_averages_by_quarter
       field_averages_by_quarter(custom_field_attribute: :question_category)
     end
-
-    private
 
     # Generate a flat object for each response including additional attributes
     def all_answers

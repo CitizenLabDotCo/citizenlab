@@ -410,6 +410,18 @@ class CustomField < ApplicationRecord
     participation_context.pmethod.supports_custom_field_categories?
   end
 
+  def question_category
+    return 'other' if super.nil? && supports_category?
+
+    super
+  end
+
+  def self.question_category_multilocs
+    QUESTION_CATEGORIES.map do |category|
+      { category => I18n.t("custom_fields.question_categories.#{category}") }
+    end
+  end
+
   private
 
   def set_default_enabled
