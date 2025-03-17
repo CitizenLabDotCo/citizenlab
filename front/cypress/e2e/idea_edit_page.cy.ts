@@ -77,6 +77,7 @@ describe('Idea edit page', () => {
     cy.wait(1000);
 
     // verify the new values
+    cy.get('@titleInput').should('exist');
     cy.get('@titleInput').should('contain.value', newIdeaTitle);
     cy.get('@descriptionInput').contains(newIdeaContent);
 
@@ -111,16 +112,13 @@ describe('Idea edit page', () => {
     cy.get('.e2e-idea-form-location-input-field input').type(
       'Boulevard Anspach Brussels'
     );
-    cy.wait(7000);
+    cy.wait(10000);
     cy.get('.e2e-idea-form-location-input-field input').type('{enter}');
 
     // save the form
     cy.get('[data-cy="e2e-submit-form"]').click();
-    // cy.wait(3000);
 
     cy.get('#e2e-accept-disclaimer').click();
-    // cy.intercept(`**/ideas/${ideaId}`).as('ideaPostRequest');
-    // cy.wait('@ideaPostRequest');
 
     cy.get('[data-cy="e2e-after-submission"]').should('exist');
     cy.get('[data-cy="e2e-after-submission"]').click();
