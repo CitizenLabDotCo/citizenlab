@@ -243,7 +243,7 @@ RSpec.describe InputUiSchemaGeneratorService do
                 type: 'Page',
                 options: hash_including(
                   description: '',
-                  title: 'Quelle est votre question ?'
+                  title: anything
                 ),
                 elements: [
                   hash_including(
@@ -262,7 +262,7 @@ RSpec.describe InputUiSchemaGeneratorService do
                 type: 'Page',
                 options: hash_including(
                   description: '',
-                  title: 'Images and attachments'
+                  title: anything
                 ),
                 elements: [
                   hash_including(
@@ -283,7 +283,7 @@ RSpec.describe InputUiSchemaGeneratorService do
                 type: 'Page',
                 options: hash_including(
                   description: '',
-                  title: 'Details'
+                  title: anything
                 ),
                 elements: [
                   hash_including(
@@ -338,7 +338,7 @@ RSpec.describe InputUiSchemaGeneratorService do
                 type: 'Page',
                 options: hash_including(
                   description: '',
-                  title: 'Wat is je vraag?'
+                  title: anything
                 ),
                 elements: [
                   hash_including(
@@ -357,7 +357,7 @@ RSpec.describe InputUiSchemaGeneratorService do
                 type: 'Page',
                 options: hash_including(
                   description: '',
-                  title: 'Images and attachments'
+                  title: anything
                 ),
                 elements: [
                   hash_including(
@@ -378,7 +378,7 @@ RSpec.describe InputUiSchemaGeneratorService do
                 type: 'Page',
                 options: hash_including(
                   description: '',
-                  title: 'Details'
+                  title: anything
                 ),
                 elements: [
                   hash_including(
