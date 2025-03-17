@@ -126,6 +126,7 @@ el:
     open_idea_phase_title: Τρέχουσα φάση
     native_survey_title: Έρευνα
     native_survey_button: Πάρτε μέρος στην έρευνα
+    community_monitor_title: Κοινοτικός παρατηρητής
   events:
     council_meeting_title: Συνεδρίαση του Συμβουλίου
     council_meeting_description: >
