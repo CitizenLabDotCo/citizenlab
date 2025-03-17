@@ -1,6 +1,5 @@
 import React, { ReactNode } from 'react';
 
-import { IIdea } from 'api/ideas/types';
 import { IPhaseData, ParticipationMethod } from 'api/phases/types';
 import { getCurrentPhase, getInputTerm } from 'api/phases/utils';
 import { IProjectData } from 'api/projects/types';
