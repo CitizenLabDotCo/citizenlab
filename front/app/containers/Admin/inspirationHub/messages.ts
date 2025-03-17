@@ -6,6 +6,14 @@ export default defineMessages({
     defaultMessage:
       'Inspiration Hub is a place where you can find inspiration for your projects by browsing through projects on other platforms.',
   },
+  highlighted: {
+    id: 'app.containers.Admin.inspirationHub.Highlighted',
+    defaultMessage: 'Highlighted',
+  },
+  allProjects: {
+    id: 'app.containers.Admin.inspirationHub.AllProjects',
+    defaultMessage: 'All projects',
+  },
   ideation: {
     id: 'app.containers.Admin.inspirationHub.Ideation',
     defaultMessage: 'Ideation',
@@ -42,24 +50,8 @@ export default defineMessages({
     id: 'app.containers.Admin.inspirationHub.Proposals',
     defaultMessage: 'Proposals',
   },
-  active: {
-    id: 'app.containers.Admin.inspirationHub.Active',
-    defaultMessage: 'Active',
-  },
-  archived: {
-    id: 'app.containers.Admin.inspirationHub.Archived',
-    defaultMessage: 'Archived',
-  },
-  draft: {
-    id: 'app.containers.Admin.inspirationHub.Draft',
-    defaultMessage: 'Draft',
-  },
-  finished: {
-    id: 'app.containers.Admin.inspirationHub.Finished',
-    defaultMessage: 'Finished',
-  },
-  stale: {
-    id: 'app.containers.Admin.inspirationHub.Stale',
-    defaultMessage: 'Stale',
+  resetFilters: {
+    id: 'app.containers.Admin.inspirationHub.resetFilters',
+    defaultMessage: 'Reset filters',
   },
 });

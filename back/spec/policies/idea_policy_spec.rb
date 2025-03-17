@@ -638,7 +638,7 @@ describe IdeaPolicy do
     let!(:idea) do
       create(:idea_status_proposed)
       phase = project.phases.first
-      create(:idea, project: project, author: author, creation_phase: phase.native_survey? ? phase : nil)
+      create(:idea, project: project, author: author, creation_phase: phase.pmethod.supports_survey_form? ? phase : nil)
     end
 
     context "for a visitor with posting permissions granted to 'everyone'" do

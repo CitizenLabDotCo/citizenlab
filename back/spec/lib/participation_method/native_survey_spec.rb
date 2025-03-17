@@ -18,7 +18,7 @@ RSpec.describe ParticipationMethod::NativeSurvey do
       let!(:proposed) { create(:idea_status_proposed) }
       let(:input) { build(:idea, publication_status: nil, idea_status: nil) }
 
-      it 'sets the publication_status to "publised" and the idea_status to "proposed"' do
+      it 'sets the publication_status to "published" and the idea_status to "proposed"' do
         participation_method.assign_defaults input
         expect(input.publication_status).to eq 'published'
         expect(input.idea_status).to eq proposed
@@ -188,6 +188,9 @@ RSpec.describe ParticipationMethod::NativeSurvey do
   its(:supports_toxicity_detection?) { is_expected.to be false }
   its(:use_reactions_as_votes?) { is_expected.to be false }
   its(:transitive?) { is_expected.to be false }
+  its(:form_logic_enabled?) { is_expected.to be true }
+  its(:follow_idea_on_idea_submission?) { is_expected.to be false }
+  its(:validate_phase) { is_expected.to be_nil }
 
   describe 'proposed_budget_in_form?' do # private method
     it 'is expected to be false' do
