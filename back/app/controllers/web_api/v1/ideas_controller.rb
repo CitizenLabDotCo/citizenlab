@@ -154,41 +154,24 @@ class WebApi::V1::IdeasController < ApplicationController
   #   Users who can moderate projects post in an active phase if no phase id is given.
   #   Users who can moderate projects post in the given phase if a phase id is given.
   def create
-    project = Project.find(params.dig(:idea, :project_id))
-    phase_ids = params.dig(:idea, :phase_ids) || []
-    is_moderator = current_user && UserRoleService.new.can_moderate_project?(project, current_user)
-
-    if phase_ids.any?
-      send_error and return unless is_moderator
-
-      send_error and return if phase_ids.size != 1
-    end
-
-    phase = if is_moderator && phase_ids.any?
-      Phase.find(phase_ids.first)
-    else
-      TimelineService.new.current_phase_not_archived(project)
-    end
-    send_error and return unless phase
-
-    form = phase.pmethod.custom_form
+    form = phase_for_input.pmethod.custom_form
     extract_custom_field_values_from_params!(form)
     params_for_create = idea_params form, is_moderator
     input = Idea.new params_for_create
-    input.creation_phase = (phase if !phase.pmethod.transitive?)
-    input.phase_ids = [phase.id] if phase_ids.empty?
+    input.creation_phase = (phase_for_input if phase_for_input.pmethod.transitive?)
+    input.phase_ids = [phase_for_input.id] if params.dig(:idea, :phase_ids).blank?
 
     # NOTE: Needs refactor allow_anonymous_participation? so anonymous_participation can be allow or force
-    if phase.pmethod.supports_survey_form? && phase.allow_anonymous_participation?
+    if phase_for_input.pmethod.supports_survey_form? && phase_for_input.allow_anonymous_participation?
       input.anonymous = true
     end
     input.author ||= current_user
-    phase.pmethod.assign_defaults(input)
+    phase_for_input.pmethod.assign_defaults(input)
 
     sidefx.before_create(input, current_user)
 
     authorize input
-    if anonymous_not_allowed?(phase)
+    if anonymous_not_allowed?(phase_for_input)
       render json: { errors: { base: [{ error: :anonymous_participation_not_allowed }] } }, status: :unprocessable_entity
       return
     end
@@ -305,6 +288,29 @@ class WebApi::V1::IdeasController < ApplicationController
   end
 
   private
+
+  def phase_for_input
+    return @phase_for_input if defined? @phase_for_input
+
+    project = Project.find(params.dig(:idea, :project_id))
+    phase_ids = params.dig(:idea, :phase_ids) || []
+    is_moderator = current_user && UserRoleService.new.can_moderate_project?(project, current_user)
+
+    if phase_ids.any?
+      send_error and return if !is_moderator
+
+      send_error and return if phase_ids.size != 1
+    end
+
+    @phase_for_input = if is_moderator && phase_ids.any?
+      Phase.find(phase_ids.first)
+    else
+      TimelineService.new.current_phase_not_archived(project)
+    end
+    send_error and return if !@phase_for_input
+
+    @phase_for_input
+  end
 
   def render_show(input, check_auth: true)
     authorize input if check_auth # we should usually check auth, except when we're returning an empty draft idea
