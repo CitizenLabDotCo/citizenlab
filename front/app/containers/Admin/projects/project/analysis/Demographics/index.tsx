@@ -2,18 +2,17 @@ import React, { useEffect, useState } from 'react';
 
 import {
   Box,
-  Icon,
   IconButton,
   Spinner,
-  Title,
   colors,
+  Text,
 } from '@citizenlab/cl2-component-library';
 import { isEmpty } from 'lodash-es';
 
 import { IUserCustomFieldData } from 'api/user_custom_fields/types';
 import useUserCustomFields from 'api/user_custom_fields/useUserCustomFields';
 
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
 
 import AuthorsByAge from './AuthorsByAge';
 import AuthorsByDomicile from './AuthorsByDomicile';
@@ -29,6 +28,7 @@ function mod(n: number, m: number): number {
 }
 
 const Demographics = () => {
+  const { formatMessage } = useIntl();
   const [supportedFieldIds, setSupportedFieldIds] = useState<string[]>([]);
   const [selectedFieldId, setSelectedFieldId] = useState<string | null>(null);
   const { data: customFields } = useUserCustomFields();
@@ -69,47 +69,44 @@ const Demographics = () => {
 
   return (
     <Box>
-      <Box display="flex" alignItems="center" px="24px" py="12px">
-        <Icon height="16px" width="16px" name="users" mr="8px" />
-        <Title variant="h5" m="0">
-          <FormattedMessage {...messages.demographicsTitle} />
-        </Title>
-      </Box>
-
-      <Box
-        display="flex"
-        alignItems="center"
-        justifyContent="space-between"
-        width="100%"
-        minHeight="118px"
-      >
-        <Box>
+      <Box display="flex" justifyContent="space-between" alignItems="center">
+        {selectedField?.attributes.code === 'birthyear' && (
+          <Text fontWeight="bold">
+            <FormattedMessage {...messages.authorsByAge} />
+          </Text>
+        )}
+        {selectedField?.attributes.code === 'domicile' && (
+          <Text fontWeight="bold">
+            <FormattedMessage {...messages.authorsByDomicile} />
+          </Text>
+        )}
+        <Box display="flex" alignItems="center" justifyContent="flex-end">
           <IconButton
-            iconName="arrow-left"
+            iconName="chevron-left"
             onClick={() => handleCycle(-1)}
-            a11y_buttonActionMessage={'Previous graph'}
+            a11y_buttonActionMessage={formatMessage(messages.previousGraph)}
             iconColor={colors.grey600}
             iconColorOnHover={colors.grey700}
+            iconWidth="20px"
           />
-        </Box>
-        <Box flex="1">
-          {selectedField?.attributes.code === 'birthyear' && (
-            <AuthorsByAge customFieldId={selectedField.id} />
-          )}
-          {selectedField?.attributes.code === 'domicile' && (
-            <AuthorsByDomicile customFieldId={selectedField.id} />
-          )}
-        </Box>
-        <Box>
+          {selectedField?.attributes.code === 'birthyear' && '1/2'}
+          {selectedField?.attributes.code === 'domicile' && '2/2'}
           <IconButton
-            iconName="arrow-right"
+            iconName="chevron-right"
             onClick={() => handleCycle(1)}
-            a11y_buttonActionMessage={'Next graph'}
+            a11y_buttonActionMessage={formatMessage(messages.nextGraph)}
             iconColor={colors.grey600}
             iconColorOnHover={colors.grey700}
+            iconWidth="20px"
           />
         </Box>
       </Box>
+      {selectedField?.attributes.code === 'birthyear' && (
+        <AuthorsByAge customFieldId={selectedField.id} />
+      )}
+      {selectedField?.attributes.code === 'domicile' && (
+        <AuthorsByDomicile customFieldId={selectedField.id} />
+      )}
     </Box>
   );
 };

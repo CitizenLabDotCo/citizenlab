@@ -13,7 +13,7 @@ import { useIntl } from 'utils/cl-intl';
 import messages from './messages';
 
 interface HeatMapInsightsProps {
-  onReadMoreClick: ({
+  onExploreClick: ({
     unit,
     customFieldOptionId,
   }: {
@@ -22,7 +22,7 @@ interface HeatMapInsightsProps {
   }) => void;
 }
 
-const HeatMapInsights = ({ onReadMoreClick }: HeatMapInsightsProps) => {
+const HeatMapInsights = ({ onExploreClick }: HeatMapInsightsProps) => {
   const localize = useLocalize();
   const { formatMessage } = useIntl();
   const { analysisId } = useParams() as { analysisId: string };
@@ -30,20 +30,43 @@ const HeatMapInsights = ({ onReadMoreClick }: HeatMapInsightsProps) => {
   const { data: analysisHeatmapCells } = useAnalysisHeatmapCells({
     analysisId,
     maxPValue: 0.05,
-    pageSize: 2,
+    pageSize: 12,
   });
 
   if (!analysisHeatmapCells) return null;
 
+  if (analysisHeatmapCells.data.length === 0) {
+    return (
+      <Box display="flex" justifyContent="center">
+        <Button
+          buttonStyle="text"
+          icon="eye"
+          size="s"
+          p="0px"
+          onClick={() =>
+            onExploreClick({
+              unit: 'inputs',
+            })
+          }
+        >
+          {formatMessage(messages.viewAllInsights)}
+        </Button>
+      </Box>
+    );
+  }
+
   return (
     <>
+      <Text fontWeight="bold">
+        {formatMessage(messages.demographicInsights)}
+      </Text>
       {analysisHeatmapCells.data.map((cell) => (
         <Box
           key={cell.id}
           px="12px"
           py="12px"
           my="12px"
-          bg={colors.teal100}
+          bg={colors.teal50}
           borderRadius="3px"
         >
           <Text>{localize(cell.attributes.statement_multiloc)}</Text>
@@ -55,13 +78,13 @@ const HeatMapInsights = ({ onReadMoreClick }: HeatMapInsightsProps) => {
                 size="s"
                 p="0px"
                 onClick={() =>
-                  onReadMoreClick({
+                  onExploreClick({
                     unit: cell.attributes.unit,
                     customFieldOptionId: cell.relationships.column?.data.id,
                   })
                 }
               >
-                {formatMessage(messages.readMore)}
+                {formatMessage(messages.explore)}
               </Button>
             </Box>
           )}

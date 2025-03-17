@@ -30,7 +30,7 @@ const Heatmap = () => {
     )?.id;
   };
 
-  const onReadMoreClick = ({
+  const onExploreClick = ({
     unit,
     customFieldOptionId,
   }: {
@@ -45,7 +45,7 @@ const Heatmap = () => {
   return (
     <div>
       <>
-        <HeatmapInsights onReadMoreClick={onReadMoreClick} />
+        <HeatmapInsights onExploreClick={onExploreClick} />
         {isReadMoreOpen && (
           <HeatmapDetails
             onClose={() => {

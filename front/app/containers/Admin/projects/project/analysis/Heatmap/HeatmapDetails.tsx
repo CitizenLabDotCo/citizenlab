@@ -235,13 +235,13 @@ const HeatmapDetails = ({
             a11y_buttonActionMessage={formatMessage(messages.previousHeatmap)}
           />
         )}
+        <Box>
+          <Title fontSize="xl">
+            {localize(customField?.data.attributes.title_multiloc)}
+          </Title>
 
-        <Title fontSize="xl">
-          {localize(customField?.data.attributes.title_multiloc)}
-        </Title>
-
-        {isLoading ? <Spinner /> : null}
-
+          {isLoading ? <Spinner size="20px" /> : null}
+        </Box>
         {customFields.data.length > 1 && (
           <IconButton
             iconName="arrow-right"

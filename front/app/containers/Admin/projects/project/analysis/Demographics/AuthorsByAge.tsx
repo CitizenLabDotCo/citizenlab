@@ -20,7 +20,7 @@ import {
 
 import useAuthorsByAge from 'api/analysis_stats/useAuthorsByAge';
 
-import { FormattedMessage, useIntl } from 'utils/cl-intl';
+import { useIntl } from 'utils/cl-intl';
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 
 import useAnalysisFilterParams from '../hooks/useAnalysisFilterParams';
@@ -169,10 +169,7 @@ const AuthorsByAge = ({ customFieldId }: Props) => {
   if (!chartData) return null;
 
   return (
-    <Box display="flex" flexDirection="column" alignItems="center">
-      <Title my="0" variant="h6">
-        <FormattedMessage {...messages.authorsByAge} />
-      </Title>
+    <Box display="flex" flexDirection="column">
       <ResponsiveContainer width="100%" height={100}>
         <RechartsBarChart
           data={chartData}

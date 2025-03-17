@@ -1,9 +1,13 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
-  demographicsTitle: {
-    id: 'app.containers.AdminPage.projects.project.analysis.demographicsTitle',
-    defaultMessage: 'Demographics',
+  previousGraph: {
+    id: 'app.containers.AdminPage.projects.project.analysis.previousGraph',
+    defaultMessage: 'Previous graph',
+  },
+  nextGraph: {
+    id: 'app.containers.AdminPage.projects.project.analysis.nextGraph',
+    defaultMessage: 'Next graph',
   },
   unknown: {
     id: 'app.containers.AdminPage.projects.project.analysis.unknown',

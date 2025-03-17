@@ -1,9 +1,17 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
-  readMore: {
-    id: 'app.containers.AdminPage.projects.project.analysis.heatmap.readMore',
-    defaultMessage: 'Read more',
+  demographicInsights: {
+    id: 'app.containers.AdminPage.projects.project.analysis.heatmap.demographicInsights',
+    defaultMessage: 'Demographic insights',
+  },
+  explore: {
+    id: 'app.containers.AdminPage.projects.project.analysis.heatmap.explore',
+    defaultMessage: 'Explore',
+  },
+  viewAllInsights: {
+    id: 'app.containers.AdminPage.projects.project.analysis.heatmap.viewAllInsights',
+    defaultMessage: 'View all insights',
   },
   previousHeatmap: {
     id: 'app.containers.AdminPage.projects.project.analysis.heatmap.previousHeatmap',
