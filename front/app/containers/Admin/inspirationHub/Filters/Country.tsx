@@ -12,8 +12,8 @@ const Country = () => {
     <CountryFilter
       value={value}
       placeholderMessage={messages.country}
-      onChange={() => {
-        setRansackParam('q[tenant_country_alpha2_eq]', value);
+      onChange={(option) => {
+        setRansackParam('q[tenant_country_alpha2_eq]', option.value);
       }}
     />
   );
