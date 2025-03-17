@@ -16,7 +16,7 @@ describe FormLogicService do
       create(:custom_field_page, :for_custom_form, resource: form),
       create(:custom_field_page, :for_custom_form, resource: form),
       create(:custom_field_page, :for_custom_form, resource: form),
-      create(:custom_field_section, :for_custom_form, resource: form),
+      create(:custom_field_page, :for_custom_form, resource: form),
       create(:custom_field_page, :for_custom_form, resource: form)
     ]
   end
@@ -956,22 +956,6 @@ describe FormLogicService do
           })
           expect(page1.errors.details).to eq({
             logic: [{ error: :only_page_allowed_as_target, value: invalid_next_page_id }]
-          })
-        end
-      end
-    end
-
-    context 'for logic on sections' do
-      context 'when logic is added to sections' do
-        it 'returns false' do
-          logic = { 'next_page_id' => 1 }
-          section1.update! logic: logic, required: true
-          expect(form_logic.valid?).to be false
-          expect(section1.errors.messages.to_h).to eq({
-            logic: ['not allowed on section fields']
-          })
-          expect(section1.errors.details).to eq({
-            logic: [{ error: :not_allowed_on_section_fields }]
           })
         end
       end
