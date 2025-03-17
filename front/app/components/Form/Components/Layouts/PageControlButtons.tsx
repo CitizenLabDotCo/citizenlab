@@ -61,7 +61,7 @@ const PageControlButtons = ({
   const theme = useTheme();
   const isSmallerThanPhone = useBreakpoint('phone');
 
-  const getButtonText = () => {
+  const getButtonMessage = () => {
     if (pageVariant !== 'after-submission') {
       return BUTTON_MESSAGES[pageVariant];
     }
@@ -130,7 +130,7 @@ const PageControlButtons = ({
           boxShadow={defaultStyles.boxShadow}
           processing={isLoading}
         >
-          <FormattedMessage {...getButtonText()} />
+          <FormattedMessage {...getButtonMessage()} />
         </Button>
       </Box>
     </Box>

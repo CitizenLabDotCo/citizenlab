@@ -144,7 +144,7 @@ class CustomField < ApplicationRecord
   def supports_geojson?
     return false if code == 'idea_images_attributes' # Is this still applicable?
 
-    %w[page].exclude?(input_type)
+    !page?
   end
 
   def supports_linear_scale?
