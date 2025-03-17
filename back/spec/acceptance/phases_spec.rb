@@ -760,15 +760,16 @@ resource 'Phases' do
       let(:project) { create(:community_monitor_project_with_active_phase) }
       let(:active_phase) { project.phases.first }
       let(:form) { create(:custom_form, participation_context: active_phase) }
-      let(:sentiment_question1) { create(:custom_field_sentiment_linear_scale, resource: form) }
-      let(:sentiment_question2) { create(:custom_field_sentiment_linear_scale, resource: form) }
+      let(:sentiment_question1) { create(:custom_field_sentiment_linear_scale, resource: form, question_category: 'quality_of_life') }
+      let(:sentiment_question2) { create(:custom_field_sentiment_linear_scale, resource: form, question_category: 'service_delivery') }
 
       let!(:survey_response1) do
         create(
           :native_survey_response,
           project: project,
           creation_phase: active_phase,
-          custom_field_values: { sentiment_question1.key => 2, sentiment_question2.key => 4 }
+          custom_field_values: { sentiment_question1.key => 2, sentiment_question2.key => 4 },
+          created_at: Time.new(2025, 1, 1)
         )
       end
       let!(:survey_response2) do
@@ -776,7 +777,8 @@ resource 'Phases' do
           :native_survey_response,
           project: project,
           creation_phase: active_phase,
-          custom_field_values:  { sentiment_question1.key => 3, sentiment_question2.key => 1 }
+          custom_field_values: { sentiment_question1.key => 3, sentiment_question2.key => 1 },
+          created_at: Time.new(2025, 4, 1)
         )
       end
 
@@ -787,12 +789,13 @@ resource 'Phases' do
         expect(status).to eq 200
         expect(response_data[:type]).to eq 'sentiment_by_quarter'
         expect(response_data[:attributes]).to eq({
-          overall: {},
+          overall: { '2025-2': 2.0, '2025-1': 3.0 },
           by_category: {
-            category: { "2025-2": 3.4, "2025-1": 3.1 },
-            category2: { "2025-2": 3.4, "2025-1": 3.1 }
+            quality_of_life: { '2025-2': 3.0, '2025-1': 2.0 },
+            service_delivery: { '2025-2': 1.0, '2025-1': 4.0 }
           }
         })
+        # TODO: JS - need to add in multilocs for the question categories
       end
     end
 

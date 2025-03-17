@@ -7,20 +7,19 @@ module Surveys
       @fields = IdeaCustomFieldsService.new(form).enabled_fields.select do |f|
         f.input_type == input_type || f.supports_average? # Defaults to returning all fields that support averages
       end
-      @inputs = phase.ideas.native_survey.published
+      @inputs = phase.ideas.supports_survey.published
     end
 
-    def field_averages_by_quarter
+    def field_averages_by_quarter(custom_field_attribute: :id)
       grouped_answers = all_answers.group_by { |a| a['quarter'] }
       averages = grouped_answers.transform_values do |answers|
-        averages_by_field(answers)
+        averages_by_field(answers, custom_field_attribute:)
       end
       switch_keys(averages)
     end
 
     # This is an average of averages - or should it take the average of all values
     def overall_average_by_quarter
-      # binding.pry
       grouped_answers = all_answers.group_by { |a| a['quarter'] }
       grouped_answers.transform_values do |answers|
         field_averages = averages_by_field(answers)
@@ -30,10 +29,7 @@ module Surveys
 
     # Placeholder for now
     def category_averages_by_quarter
-      {
-        'category' => { '2025-2' => 3.4, '2025-1' => 3.1 },
-        'category2' => { '2025-2' => 3.4, '2025-1' => 3.1 }
-      }
+      field_averages_by_quarter(custom_field_attribute: :question_category)
     end
 
     private
@@ -47,8 +43,9 @@ module Surveys
       end
     end
 
-    def averages_by_field(answers)
-      @fields.to_h { |f| [f.id, calculate_average(answers.pluck(f.key))] }
+    # Default is to get the averages by custom field ID but can calculate on any attribute
+    def averages_by_field(answers, custom_field_attribute: :id)
+      @fields.to_h { |f| [f[custom_field_attribute], calculate_average(answers.pluck(f.key))] }
     end
 
     def calculate_average(values)
