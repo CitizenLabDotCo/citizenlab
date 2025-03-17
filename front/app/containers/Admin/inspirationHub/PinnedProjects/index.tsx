@@ -2,32 +2,28 @@ import React from 'react';
 
 import { Box, Title } from '@citizenlab/cl2-component-library';
 
-import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useProjectLibraryProjects from 'api/project_library_projects/useProjectLibraryProjects';
 
 import { FormattedMessage } from 'utils/cl-intl';
 
 import CountryFilter from '../components/CountryFilter';
 import ProjectCard from '../components/ProjectCard';
+import { setRansackParam, useRansackParam } from '../utils';
 
 import messages from './messages';
 
 const PinnedProjects = () => {
-  const { data: appConfiguration } = useAppConfiguration();
-  const countryCode = appConfiguration?.data.attributes.country_code;
+  const countryCode = useRansackParam('q[pin_country_code_eq]');
 
   const { data: projects } = useProjectLibraryProjects(
     {
-      'q[pin_country_code_eq]': countryCode ?? undefined,
+      'q[pin_country_code_eq]': countryCode,
     },
     { enabled: !!countryCode }
   );
 
-  if (!countryCode) {
-    return null;
-  }
-
-  if (!projects || projects.data.length === 0) {
+  if (!countryCode || !projects || projects.data.length === 0) {
+    // TODO empty state
     return null;
   }
 
@@ -38,10 +34,10 @@ const PinnedProjects = () => {
       </Title>
       <Box display="flex" mb="12px">
         <CountryFilter
-          value={undefined}
+          value={countryCode}
           placeholderMessage={messages.country}
           onChange={(option) => {
-            console.log(option);
+            setRansackParam('q[pin_country_code_eq]', option.value);
           }}
         />
       </Box>

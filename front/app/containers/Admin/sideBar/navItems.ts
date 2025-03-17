@@ -19,6 +19,17 @@ export type NavItem = {
   showAtBottom?: boolean;
 };
 
+const getInspirationHubLink = (country_code: string | null) => {
+  if (!country_code) {
+    return '/admin/inspiration-hub';
+  }
+
+  const pinnedProjectsCountryFilter = `q[pin_country_code_eq]=${country_code}`;
+  const allProjectsCountryFilter = `q[tenant_country_alpha2_eq]=${country_code}`;
+
+  return `/admin/inspiration-hub?${pinnedProjectsCountryFilter}&${allProjectsCountryFilter}` as RouteType;
+};
+
 const getDefaultNavItems = ({
   data: {
     attributes: { country_code },
@@ -63,9 +74,7 @@ const getDefaultNavItems = ({
   },
   {
     name: 'inspirationHub',
-    link: (country_code
-      ? `/admin/inspiration-hub?q[tenant_country_alpha2_eq]=${country_code}`
-      : '/admin/inspiration-hub') as any,
+    link: getInspirationHubLink(country_code),
     iconName: 'globe',
     message: 'inspirationHub',
     featureNames: ['project_library'],
