@@ -72,6 +72,7 @@ module Notifications
 
     def self.make_notifications_on(activity)
       phase = activity.item
+      return [] unless phase.project.published?
 
       ProjectPolicy::InverseScope.new(phase.project, User.from_follows(phase.project.followers)).resolve.map do |recipient|
         new(recipient: recipient, phase: phase, project: phase.project)
