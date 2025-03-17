@@ -451,7 +451,7 @@ resource 'Ideas' do
       end
     end
 
-    get 'web_api/v1/ideas/:id/similarities' do
+    get 'web_api/v1/ideas/similarities' do
       with_options scope: :idea do
         parameter :title_multiloc, 'Multi-locale field with the idea title', extra: 'Maximum 100 characters'
         parameter :body_multiloc, 'Multi-locale field with the idea body', extra: 'Required if not draft'
