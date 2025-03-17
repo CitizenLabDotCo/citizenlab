@@ -21,9 +21,8 @@ const Quote = ({ children, ...props }: BoxProps) => {
         right="12px"
         height="16px"
         fill={colors.teal100}
-        zIndex="2"
       />
-      <Box zIndex="3">{children}</Box>
+      <Box>{children}</Box>
     </Box>
   );
 };
