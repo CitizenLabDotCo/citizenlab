@@ -32,12 +32,6 @@ export const defaultSortingOptions = [
   { text: <FormattedMessage {...messages.oldest} />, value: '-new' },
 ];
 
-type FormSubmissionMethodProps = {
-  project?: IProjectData;
-  idea?: IIdea;
-  phaseId?: string;
-};
-
 type ModalContentMethodProps = {
   ideaId?: string;
   title?: string;
