@@ -42,23 +42,21 @@ const FormResults = (props: Props) => {
 
   return (
     <Box width="100%">
-      {totalSubmissions === 0 && (
+      {totalSubmissions === 0 ? (
         <Box width="100%">
           <Text variant="bodyM" color="textSecondary">
             {formatMessage(messages.noSurveyResponses)}
           </Text>
         </Box>
+      ) : (
+        <Box>
+          {results
+            .filter((result) => result.inputType === 'sentiment_linear_scale')
+            .map((result, index) => {
+              <SentimentQuestion key={index} result={result} mb="8px" />;
+            })}
+        </Box>
       )}
-      <Box>
-        {totalSubmissions > 0 &&
-          results.map((result, index) => {
-            if (result.inputType === 'sentiment_linear_scale') {
-              return <SentimentQuestion key={index} result={result} mb="8px" />;
-            }
-
-            return null;
-          })}
-      </Box>
     </Box>
   );
 };

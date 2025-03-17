@@ -14,14 +14,16 @@ const fetchCommunityMonitorProject = () => {
   });
 };
 
-type Props = {
+type UseCommunityMonitorProjectOptions = {
   enabled?: boolean;
 };
 
-const useCommunityMonitorProject = ({ enabled }: Props) => {
+const useCommunityMonitorProject = ({
+  enabled,
+}: UseCommunityMonitorProjectOptions) => {
   return useQuery<IProject, CLErrors, IProject, ProjectsKeys>({
     queryKey: communityMonitorKeys.all(),
-    queryFn: () => fetchCommunityMonitorProject(),
+    queryFn: fetchCommunityMonitorProject,
     enabled,
   });
 };
