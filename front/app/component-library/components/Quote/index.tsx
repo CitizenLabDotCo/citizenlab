@@ -1,13 +1,29 @@
 import React from 'react';
 
-import { colors } from 'component-library/utils/styleUtils';
-
+import { colors, stylingConsts } from '../../utils/styleUtils';
 import Box, { BoxProps } from '../Box';
+import Icon from '../Icon';
 
 const Quote = ({ children, ...props }: BoxProps) => {
   return (
-    <Box as="blockquote" bgColor={colors.teal50} p="12px" {...props}>
-      {children}
+    <Box
+      as="blockquote"
+      bgColor={colors.teal50}
+      p="12px"
+      borderRadius={stylingConsts.borderRadius}
+      position="relative"
+      {...props}
+    >
+      <Icon
+        name="quote"
+        position="absolute"
+        top="8px"
+        right="12px"
+        height="16px"
+        fill={colors.teal100}
+        zIndex="2"
+      />
+      <Box zIndex="3">{children}</Box>
     </Box>
   );
 };
