@@ -67,7 +67,7 @@ const SentimentStats = ({ result }: Props) => {
           </Text>
         </Box>
 
-        {percentageDifference && (
+        {typeof percentageDifference === 'number' && (
           <Text
             m="0px"
             color={getTrendColorName(percentageDifference)}

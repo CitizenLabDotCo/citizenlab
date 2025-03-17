@@ -5,10 +5,10 @@ module Surveys
     def initialize(phase)
       super()
       @phase = phase
-      form = @phase.custom_form || CustomForm.new(participation_context: phase)
+      form = phase.custom_form || CustomForm.new(participation_context: phase)
       @fields = IdeaCustomFieldsService.new(form).enabled_fields
       @locales = AppConfiguration.instance.settings('core', 'locales')
-      @inputs = @phase.ideas.supports_survey.published
+      @inputs = phase.ideas.supports_survey.published
     end
 
     # Get the results for a single survey question
@@ -18,20 +18,18 @@ module Surveys
     end
 
     # Get the results for all survey questions
-    def generate_results(start_month: nil, end_month: nil)
-      results = build_results fields, start_month, end_month
-      total_submissions = inputs.size
-
+    def generate_results
+      results = fields.filter_map { |f| visit f }
       if results.present?
         results = add_question_numbers_to_results results
         results = add_page_response_count_to_results results
-        results = add_averages_for_previous_period results, start_month, end_month
+        results = add_additional_fields_to_results results
         results = cleanup_results results
       end
 
       {
         results: results,
-        totalSubmissions: total_submissions
+        totalSubmissions: inputs.size
       }
     end
 
@@ -135,21 +133,8 @@ module Surveys
 
     attr_reader :phase, :fields, :inputs, :locales
 
-    def build_results(fields, start_month, end_month)
-      filter_inputs_by_date(start_month, end_month) if start_month && end_month
-      return [] if inputs.empty?
-
-      fields.filter_map { |f| visit f }
-    end
-
-    # start_month = first month to include(YYYY-MM), end_month = last month to include(YYYY-MM)
-    def filter_inputs_by_date(start_month, end_month)
-      month_format = /\d{4}-\d{2}/
-      raise 'Incorrect month filter format' unless start_month.match?(month_format) && end_month.match?(month_format)
-
-      start_date = Date.parse("#{start_month}-01")
-      end_date = Date.parse("#{end_month}-01") >> 1 # Make this the start of the next month
-      @inputs = @inputs.where(created_at: start_date..end_date)
+    def add_additional_fields_to_results(results)
+      results # This method is a placeholder for overriding in subclasses
     end
 
     def core_field_attributes(field, response_count: nil)
@@ -222,8 +207,6 @@ module Surveys
 
       attributes[:textResponses] = get_text_responses(field.additional_text_question_key) if field.additional_text_question_key
 
-      attributes[:averages] = { this_period: calculate_linear_scale_average(answers) } if field.supports_linear_scale?
-
       attributes
     end
 
@@ -285,12 +268,6 @@ module Surveys
 
     def generate_select_answer_keys(field)
       (field.supports_linear_scale? ? (1..field.maximum).to_a : field.ordered_transformed_options.map(&:key)) + [nil]
-    end
-
-    def calculate_linear_scale_average(answers)
-      total = answers.sum { |a| a[:answer] ? a[:answer] * a[:count] : 0 }
-      count = answers.sum { |a| a[:answer] ? a[:count] : 0 }
-      count > 0 ? (total.to_f / count).round(1) : 0.0
     end
 
     def matrix_linear_scale_statements(field)
@@ -369,35 +346,6 @@ module Surveys
           result[:pageNumber] = nil
         end
         result
-      end
-    end
-
-    def add_averages_for_previous_period(results, start_month, end_month)
-      return results unless start_month && end_month
-
-      # Reduce the fields only to the ones that are linear scales
-      linear_scale_fields = fields.select(&:supports_linear_scale?)
-
-      # Reset inputs to all inputs
-      @inputs = phase.ideas.native_survey.published
-
-      # Find the dates for the previous period
-      start_date = Date.parse("#{start_month}-01")
-      end_date = Date.parse("#{end_month}-01")
-      months_between = ((end_date.year * 12) + end_date.month) - ((start_date.year * 12) + start_date.month) + 1
-      previous_start_month = (start_date << months_between).strftime('%Y-%m')
-      previous_end_month = (end_date << months_between).strftime('%Y-%m')
-
-      # Get the results for the previous period
-      previous_results = build_results(linear_scale_fields, previous_start_month, previous_end_month)
-      return results if previous_results.empty?
-
-      # Merge the averages into the main results
-      results.each do |result|
-        if result[:averages]
-          previous_result = previous_results.find { |f| f[:customFieldId] == result[:customFieldId] }
-          result[:averages][:last_period] = previous_result[:averages][:this_period] if previous_result.any?
-        end
       end
     end
 

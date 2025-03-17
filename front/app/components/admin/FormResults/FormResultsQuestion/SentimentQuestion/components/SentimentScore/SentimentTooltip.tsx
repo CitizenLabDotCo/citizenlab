@@ -17,11 +17,10 @@ const SentimentTooltip = ({ answers }: { answers: SentimentAnswers }) => {
       gap="8px"
       minWidth="200px"
     >
-      {answers?.map(({ answer, label, percentage }) => (
-        <>
+      {answers?.map(({ answer, label, percentage }, index) => (
+        <Box key={`${answer}-${index}`}>
           {answer && (
             <Box
-              key={answer}
               display="flex"
               alignItems="center"
               justifyContent="space-between"
@@ -42,7 +41,7 @@ const SentimentTooltip = ({ answers }: { answers: SentimentAnswers }) => {
               </Text>
             </Box>
           )}
-        </>
+        </Box>
       ))}
     </Box>
   );

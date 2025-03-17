@@ -329,7 +329,7 @@ RSpec.shared_context 'survey_setup' do
       },
       idea_files: [idea_file1, idea_file2],
       author: female_user,
-      created_at: '2025-03-20'
+      created_at: '2025-04-20'
     )
     create(
       :native_survey_response,
@@ -352,7 +352,7 @@ RSpec.shared_context 'survey_setup' do
         "#{sentiment_linear_scale_field.key}_follow_up" => 'Just not good'
       },
       author: male_user,
-      created_at: '2025-03-16'
+      created_at: '2025-04-16'
     )
     create(
       :native_survey_response,
@@ -371,7 +371,7 @@ RSpec.shared_context 'survey_setup' do
         "#{sentiment_linear_scale_field.key}_follow_up" => 'Great thanks very much'
       },
       author: female_user,
-      created_at: '2025-03-05'
+      created_at: '2025-04-05'
     )
     create(
       :native_survey_response,
@@ -390,7 +390,7 @@ RSpec.shared_context 'survey_setup' do
         }
       },
       author: male_user,
-      created_at: '2025-02-14'
+      created_at: '2025-04-14'
     )
     create(
       :native_survey_response,
@@ -403,7 +403,7 @@ RSpec.shared_context 'survey_setup' do
         sentiment_linear_scale_field.key => 1
       },
       author: female_user,
-      created_at: '2025-02-11'
+      created_at: '2025-03-11'
     )
     create(
       :native_survey_response,
@@ -419,7 +419,7 @@ RSpec.shared_context 'survey_setup' do
         sentiment_linear_scale_field.key => 2
       },
       author: male_user,
-      created_at: '2025-02-06'
+      created_at: '2025-03-06'
     )
     create(
       :native_survey_response,
@@ -427,7 +427,7 @@ RSpec.shared_context 'survey_setup' do
       phases: phases_of_inputs,
       custom_field_values: {},
       author: female_user,
-      created_at: '2025-02-06'
+      created_at: '2025-03-06'
     )
     { 1 => 2, 2 => 5, 3 => 7, 4 => 0, 5 => 1, 6 => 2, 7 => 3 }.each do |value, count|
       count.times do
@@ -441,7 +441,7 @@ RSpec.shared_context 'survey_setup' do
             sentiment_linear_scale_field.key => (value <= 5 ? value : 1)
           },
           author: no_gender_user,
-          created_at: '2025-01-25'
+          created_at: '2025-02-25'
         )
       end
     end

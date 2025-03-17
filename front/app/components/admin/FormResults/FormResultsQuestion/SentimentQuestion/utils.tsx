@@ -65,7 +65,9 @@ export const getPercentageDifference = (
   thisPeriodAvg: number,
   lastPeriodAvg: number
 ): number => {
-  return ((thisPeriodAvg - lastPeriodAvg) / lastPeriodAvg) * 100;
+  return lastPeriodAvg === 0
+    ? 0
+    : ((thisPeriodAvg - lastPeriodAvg) / lastPeriodAvg) * 100;
 };
 
 // getTrendColorName:

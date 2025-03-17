@@ -40,25 +40,25 @@ const FormResults = (props: Props) => {
 
   const { totalSubmissions, results } = formResults.data.attributes;
 
+  const sentimentQuestionResults = results.filter(
+    (question) => question.inputType === 'sentiment_linear_scale'
+  );
+
   return (
     <Box width="100%">
-      {totalSubmissions === 0 && (
+      {totalSubmissions === 0 ? (
         <Box width="100%">
           <Text variant="bodyM" color="textSecondary">
             {formatMessage(messages.noSurveyResponses)}
           </Text>
         </Box>
-      )}
-      <Box>
-        {totalSubmissions > 0 &&
-          results.map((result, index) => {
-            if (result.inputType === 'sentiment_linear_scale') {
-              return <SentimentQuestion key={index} result={result} mb="8px" />;
-            }
-
-            return null;
+      ) : (
+        <Box>
+          {sentimentQuestionResults.map((result, index) => {
+            return <SentimentQuestion key={index} result={result} mb="8px" />;
           })}
-      </Box>
+        </Box>
+      )}
     </Box>
   );
 };

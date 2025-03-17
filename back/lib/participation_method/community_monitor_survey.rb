@@ -7,32 +7,35 @@ module ParticipationMethod
     end
 
     def allowed_extra_field_input_types
-      %w[page text sentiment_linear_scale linear_scale rating select multiselect]
+      %w[page sentiment_linear_scale]
     end
 
-    # TODO: Fields are currently placeholders
     def default_fields(custom_form)
       return [] if custom_form.persisted?
 
-      multiloc_service = MultilocService.new
       [
-        start_page_field(custom_form),
-        CustomField.new(
-          id: SecureRandom.uuid,
-          key: 'cm_living_in_city',
-          resource: custom_form,
-          input_type: 'rating',
-          maximum: 5,
-          title_multiloc: { 'en' => 'How do you rate living in our city?' }
-        ),
-        CustomField.new(
-          id: SecureRandom.uuid,
-          key: 'cm_council_services',
-          resource: custom_form,
-          input_type: 'rating',
-          maximum: 5,
-          title_multiloc: { 'en' => 'How do you rate the quality of council services?' }
-        ),
+        page_field(custom_form, 'page1'),
+        sentiment_field(custom_form, 'place_to_live', 'quality_of_life'),
+        page_field(custom_form, 'page2'),
+        sentiment_field(custom_form, 'sense_of_safety', 'quality_of_life'),
+        page_field(custom_form, 'page3'),
+        sentiment_field(custom_form, 'access_to_parks', 'quality_of_life'),
+        page_field(custom_form, 'page4'),
+        sentiment_field(custom_form, 'affordable_housing', 'quality_of_life'),
+        page_field(custom_form, 'page5'),
+        sentiment_field(custom_form, 'employment_opportunities', 'quality_of_life'),
+        page_field(custom_form, 'page6'),
+        sentiment_field(custom_form, 'quality_of_services', 'service_delivery'),
+        page_field(custom_form, 'page7'),
+        sentiment_field(custom_form, 'overall_value', 'service_delivery'),
+        page_field(custom_form, 'page8'),
+        sentiment_field(custom_form, 'cleanliness_and_maintenance', 'service_delivery'),
+        page_field(custom_form, 'page9'),
+        sentiment_field(custom_form, 'trust_in_government', 'governance_and_trust'),
+        page_field(custom_form, 'page10'),
+        sentiment_field(custom_form, 'responsiveness_of_officials', 'governance_and_trust'),
+        page_field(custom_form, 'page11'),
+        sentiment_field(custom_form, 'transparency_of_money_spent', 'governance_and_trust'),
         end_page_field(custom_form, multiloc_service)
       ]
     end
@@ -61,6 +64,37 @@ module ParticipationMethod
 
     def supports_event_attendance?
       false
+    end
+
+    def supports_custom_field_categories?
+      true
+    end
+
+    private
+
+    def page_field(custom_form, key)
+      CustomField.new(
+        id: SecureRandom.uuid,
+        key: key,
+        resource: custom_form,
+        input_type: 'page',
+        page_layout: 'default'
+      )
+    end
+
+    def sentiment_field(custom_form, key, category)
+      CustomField.new(
+        id: SecureRandom.uuid,
+        key: key,
+        resource: custom_form,
+        input_type: 'sentiment_linear_scale',
+        title_multiloc: multiloc_service.i18n_to_multiloc("custom_fields.community_monitor.#{key}.title"),
+        question_category: category
+      )
+    end
+
+    def multiloc_service
+      @multiloc_service ||= MultilocService.new
     end
   end
 end

@@ -1,12 +1,13 @@
 import React from 'react';
 
 import { Box, Icon, Text, colors } from '@citizenlab/cl2-component-library';
+import { FormatMessage } from 'typings';
 
 import messages from '../messages';
 
 type Props = {
   count: number;
-  formatMessage: any;
+  formatMessage: FormatMessage;
 };
 
 const CommentSummary = ({ count, formatMessage }: Props) => (
