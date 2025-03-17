@@ -4,10 +4,11 @@ module Surveys
   class ResultsGenerator < FieldVisitorService
     def initialize(phase)
       super()
+      @phase = phase
       form = phase.custom_form || CustomForm.new(participation_context: phase)
       @fields = IdeaCustomFieldsService.new(form).enabled_fields
-      @inputs = phase.ideas.supports_survey.published
       @locales = AppConfiguration.instance.settings('core', 'locales')
+      @inputs = phase.ideas.supports_survey.published
     end
 
     # Get the results for a single survey question
@@ -16,12 +17,15 @@ module Surveys
       visit field
     end
 
-    # Get the results for a all survey questions
+    # Get the results for all survey questions
     def generate_results
       results = fields.filter_map { |f| visit f }
-      results = add_question_numbers_to_results results
-      results = add_page_response_count_to_results results
-      results = cleanup_results results
+      if results.present?
+        results = add_question_numbers_to_results results
+        results = add_page_response_count_to_results results
+        results = add_additional_fields_to_results results
+        results = cleanup_results results
+      end
 
       {
         results: results,
@@ -127,7 +131,11 @@ module Surveys
 
     private
 
-    attr_reader :fields, :inputs, :locales
+    attr_reader :phase, :fields, :inputs, :locales
+
+    def add_additional_fields_to_results(results)
+      results # This method is a placeholder for overriding in subclasses
+    end
 
     def core_field_attributes(field, response_count: nil)
       response_count ||= base_responses(field).size
@@ -197,7 +205,7 @@ module Surveys
         multilocs: get_multilocs(field)
       })
 
-      attributes[:textResponses] = get_text_responses("#{field.key}_other") if field.other_option_text_field
+      attributes[:textResponses] = get_text_responses(field.additional_text_question_key) if field.additional_text_question_key
 
       attributes
     end
@@ -290,6 +298,7 @@ module Surveys
       })
     end
 
+    # Get any associated text responses - where follow up question or other option is used
     def get_text_responses(field_key)
       inputs
         .select("custom_field_values->'#{field_key}' as value")

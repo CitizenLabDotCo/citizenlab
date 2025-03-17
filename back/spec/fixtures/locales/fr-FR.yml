@@ -64,6 +64,11 @@ fr:
         description:
       other_input_field:
         title: Tapez votre réponse
+    question_categories:
+      quality_of_life: Qualité de vie
+      service_delivery: Prestation de services
+      governance_and_trust: Gouvernance et confiance
+      other: Autre
   custom_forms:
     categories:
       main_content:

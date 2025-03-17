@@ -46,6 +46,11 @@ nl:
       section3:
         title: Details
         description:
+    question_categories:
+      quality_of_life: Kwaliteit van leven
+      service_delivery: Dienstverlening
+      governance_and_trust: Bestuur en vertrouwen
+      other: Ander
   custom_forms:
     categories:
       main_content:

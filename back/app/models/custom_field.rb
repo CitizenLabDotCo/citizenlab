@@ -163,6 +163,10 @@ class CustomField < ApplicationRecord
     %w[linear_scale matrix_linear_scale sentiment_linear_scale].include?(input_type)
   end
 
+  def supports_average?
+    %w[linear_scale sentiment_linear_scale rating number].include?(input_type)
+  end
+
   def supports_single_selection?
     %w[select linear_scale sentiment_linear_scale rating].include?(input_type)
   end
@@ -350,6 +354,10 @@ class CustomField < ApplicationRecord
     )
   end
 
+  def additional_text_question_key
+    other_option_text_field&.key || follow_up_text_field&.key
+  end
+
   def ordered_options
     @ordered_options ||= if random_option_ordering
       options.shuffle.sort_by { |o| o.other ? 1 : 0 }
@@ -408,7 +416,7 @@ class CustomField < ApplicationRecord
     super
   end
 
-  def question_category_multiloc
+  def self.question_category_multiloc
     return nil unless supports_category?
 
     MultilocService.new.i18n_to_multiloc("custom_fields.question_categories.#{question_category}")
