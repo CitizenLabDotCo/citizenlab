@@ -288,18 +288,6 @@ const CLPageLayout = memo(
         goToNextPage();
       }
 
-      // scrollToTop();
-
-      // const nextPage = visiblePages[currentStepNumber + 1];
-
-      // New
-      // if (pageVariant === 'submission' && !shouldSubmit) {
-      //   setIsLoading(false);
-      //   return;
-      // }
-
-      // setUserPagePath((userPagePath) => [...userPagePath, nextPage]);
-
       setIsLoading(false);
     };
 
@@ -341,7 +329,7 @@ const CLPageLayout = memo(
       // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       if (draggableDivRef?.current) {
         const clientY = event?.changedTouches?.[0]?.clientY;
-        // Don't allow the div to be dragged outside bounds of survey page
+        // Don't allow the div to be dragged outside bounds of page
         if (clientY > 0 && clientY < document.body.clientHeight - 180) {
           draggableDivRef.current.style.height = `${clientY}px`;
         }
@@ -383,7 +371,7 @@ const CLPageLayout = memo(
           // tree when the page changes. This fixes an issue where the state of some
           // Control components was shared between consecutive pages with a similar
           // structure.
-          key={`survey-page-${currentPageIndex}`}
+          key={`form-page-${currentPageIndex}`}
           id="container"
           display="flex"
           flexDirection={isMobileOrSmaller ? 'column' : 'row'}
@@ -531,40 +519,45 @@ const CLPageLayout = memo(
         progress update before entering a new page, rather than after leaving it.
       */}
         <Box
-          maxWidth={isMapPage ? '1100px' : '700px'}
+          maxWidth={!isAdminPage ? (isMapPage ? '1100px' : '700px') : undefined}
           w="100%"
           position="fixed"
-          role="progressbar"
-          aria-valuemin={0}
-          aria-valuemax={100}
-          aria-valuenow={percentageAnswered}
-          aria-label={formatMessage(messages.progressBarLabel)}
+          bottom={isMobileOrSmaller || isAdminPage ? '0' : '40px'}
+          display="flex"
+          flexDirection="column"
+          alignItems="center"
+          zIndex="1000"
         >
-          <Box background={colors.background}>
-            <Box
-              w={`${percentageAnswered}%`}
-              h="4px"
-              background={theme.colors.tenantSecondary}
-              style={{ transition: 'width 0.3s ease-in-out' }}
+          <Box
+            w="100%"
+            role="progressbar"
+            aria-valuemin={0}
+            aria-valuemax={100}
+            aria-valuenow={percentageAnswered}
+            aria-label={formatMessage(messages.progressBarLabel)}
+            zIndex="1000"
+          >
+            <Box background={colors.background}>
+              <Box
+                w={`${percentageAnswered}%`}
+                h="4px"
+                background={theme.colors.tenantSecondary}
+                style={{ transition: 'width 0.3s ease-in-out' }}
+              />
+            </Box>
+          </Box>
+
+          <Box w="100%" zIndex="1000">
+            <PageControlButtons
+              handleNextAndSubmit={handleNextAndSubmit}
+              handlePrevious={handlePrevious}
+              hasPreviousPage={hasPreviousPage}
+              isLoading={isLoading}
+              pageVariant={pageVariant}
+              phases={phases?.data}
+              currentPhase={phase?.data}
             />
           </Box>
-        </Box>
-        <Box
-          maxWidth={isMapPage ? '1100px' : '700px'}
-          w="100%"
-          position="fixed"
-          // In the admin edit page, we want the buttons to be at the bottom of the page
-          bottom={isMobileOrSmaller || isAdminPage ? '0' : '40px'}
-        >
-          <PageControlButtons
-            handleNextAndSubmit={handleNextAndSubmit}
-            handlePrevious={handlePrevious}
-            hasPreviousPage={hasPreviousPage}
-            isLoading={isLoading}
-            pageVariant={pageVariant}
-            phases={phases?.data}
-            currentPhase={phase?.data}
-          />
         </Box>
       </>
     );
