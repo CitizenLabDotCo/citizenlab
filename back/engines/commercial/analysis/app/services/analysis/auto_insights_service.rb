@@ -18,12 +18,15 @@ module Analysis
         .flat_map(&:keys)
         .uniq # => [col1, col2, col3]
         .group_by { |col| col_to_category(col) } # => { category1 => [col1, col2], category2 => [col3] }
-        .values # => [[col1, col2], [col3]]
-        .combination(2) # => [[[col1, col2], [col3]]]
+        .to_a # => [[category1, [col1, col2]], [category2, [col3]]]
+        .combination(2) # => [[[category1, [col1, col2]], [category2, [col3]]]]
+        .select { |(category1, category2)| heatmap_between_categories?(category1[0], category2[0]) }
         .each do |(category1, category2)|
+        cols1 = category1[1]
+        cols2 = category2[1]
         cells =
-          category1.flat_map do |col1|
-            category2.map do |col2|
+          cols1.flat_map do |col1|
+            cols2.map do |col2|
               ct = contingency_table(matrix, col1, col2)
               count = ct[[true, true]]
               _chi2, p_value = chi_square(ct)
@@ -105,12 +108,12 @@ module Analysis
         end
 
         # Add columns for input custom fields
-        input_custom_fields.map do |input_custom_field|
+        input_custom_fields.each do |input_custom_field|
           custom_field_values = inputs_custom_field_values.call(item).map { |cfv| cfv[input_custom_field.key] }
           next unless custom_field_values.compact.empty?
 
-          input_custom_field.options.map do |option|
-            row[option] = custom_field_values.flatten.include?(option.key)
+          input_custom_field.options.each do |option|
+            row[option] = custom_field_values.any? { |cfv| custom_field_option_set?(option, cfv) }
           end
         end
 
@@ -121,13 +124,17 @@ module Analysis
             next unless custom_field_value
 
             user_custom_field.options.each do |option|
-              row[option] = custom_field_value == option.key || custom_field_value.include?(option.key)
+              row[option] = custom_field_option_set?(option, custom_field_value)
             end
           end
         end
 
         row
       end
+    end
+
+    def custom_field_option_set?(custom_field_option, custom_field_value)
+      custom_field_value == custom_field_option.key || custom_field_value.include?(custom_field_option.key)
     end
 
     def col_to_category(col)
@@ -142,6 +149,33 @@ module Analysis
     end
 
     private
+
+    # We don't genereate heatmap cells between all types of columns, as some
+    # combinations between tags, user custom fields and input custom fields make
+    # little sense or are not as valuable
+    def heatmap_between_categories?(category1, category2)
+      cat1_type, cat2_type = [category1, category2].map do |category|
+        case category
+        when :tags
+          :tags
+        when CustomField
+          if category.custom_form_type?
+            :input_custom_field
+          else
+            :user_custom_field
+          end
+        else
+          raise 'Invalid category type'
+        end
+      end
+
+      types = [cat1_type, cat2_type].to_set
+
+      types == %i[tags user_custom_field].to_set ||
+        types == %i[tags input_custom_field].to_set ||
+        types == %i[user_custom_field input_custom_field].to_set ||
+        types == [:input_custom_field].to_set
+    end
 
     def detect_input_custom_fields
       CustomField.where(id: @analysis.associated_custom_fields).includes(:options).select(&:support_options?)

@@ -159,5 +159,15 @@ describe Analysis::AutoInsightsService do
         unit: 'participants'
       )
     end
+
+    it 'works well with the domicile custom field' do
+      custom_field_domicile = create(:custom_field_domicile)
+      areas = create_list(:area, 2)
+      author1.custom_field_values[custom_field_domicile.key] = areas[0].id
+      author1.save!
+
+      service = described_class.new(analysis)
+      expect { service.generate }.to change { analysis.heatmap_cells.count }.from(0).to(12)
+    end
   end
 end
