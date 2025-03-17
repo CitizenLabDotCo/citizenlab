@@ -33,7 +33,9 @@ const PopupSettings = () => {
 
   // Local state
   const [popupFrequency, setPopupFrequency] = useState(
-    phase?.data.attributes.survey_popup_frequency || 100
+    typeof phase?.data.attributes.survey_popup_frequency === 'number'
+      ? phase.data.attributes.survey_popup_frequency
+      : 100
   );
 
   const [errors, setErrors] = useState<CLErrors | null>(null);

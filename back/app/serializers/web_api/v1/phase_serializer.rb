@@ -69,6 +69,10 @@ class WebApi::V1::PhaseSerializer < WebApi::V1::BaseSerializer
     object.custom_form_persisted?
   end
 
+  attribute :survey_popup_frequency do |phase|
+    phase.survey_popup_frequency
+  end
+
   attribute :supports_survey_form do |phase|
     phase.pmethod.supports_survey_form?
   end
