@@ -34,7 +34,7 @@ export const ContentSettings = ({
   const { watch } = useFormContext();
   const lockedAttributes = field.constraints?.locks;
   const platformLocale = useLocale();
-  const isFieldGrouping = ['page', 'section'].includes(field.input_type);
+  const isFieldGrouping = field.input_type === 'page';
 
   const handleKeyDown = (event: React.KeyboardEvent<Element>) => {
     // We want to prevent the form builder from being closed when enter is pressed

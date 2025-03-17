@@ -94,8 +94,7 @@ export const FormField = ({
 
   // NOTE: We always show the default page logic on a page field
   const showLogicOnRow = field.input_type !== 'page' ? field.logic.rules : true;
-
-  const isFieldGrouping = ['page', 'section'].includes(field.input_type);
+  const isFieldGrouping = field.input_type === 'page';
 
   // Group is only deletable when we have more than one group
   const getGroupDeletable = () => {

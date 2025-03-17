@@ -57,7 +57,7 @@ const FormFields = ({
   const nestedGroupData: NestedGroupingStructure[] = [];
 
   formCustomFields.forEach((field) => {
-    if (['page', 'section'].includes(field.input_type)) {
+    if (field.input_type === 'page') {
       nestedGroupData.push({
         groupElement: field,
         questions: [],

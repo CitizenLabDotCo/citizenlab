@@ -181,8 +181,6 @@ export function getAdditionalSettings(
           />
         </>
       );
-    case 'section':
-      return <FieldGroupSettings locale={platformLocale} field={field} />;
     case 'linear_scale':
     case 'rating':
       return (
@@ -265,7 +263,6 @@ const getInputTypeStringKey = (
     case 'multiselect_image':
       translatedStringKey = messages.multipleChoiceImage;
       break;
-    case 'section':
     case 'page':
       translatedStringKey = messages.page;
       break;

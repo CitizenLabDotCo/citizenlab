@@ -36,9 +36,7 @@ const FieldTitle = ({ hasErrors, field, fieldNumber }: Props) => {
   }
 
   const lockedAttributes = field.constraints?.locks;
-  const titleColor = ['page', 'section'].includes(field.input_type)
-    ? 'blue500'
-    : 'teal400';
+  const titleColor = field.input_type === 'page' ? 'blue500' : 'teal400';
 
   return (
     <Box
