@@ -2516,7 +2516,6 @@
   "app.containers.AdminPage.projects.project.analysis.authorsByDomicile": "Autor*innen nach Wohnsitz",
   "app.containers.AdminPage.projects.project.analysis.backgroundJobs": "Hintergrund Jobs",
   "app.containers.AdminPage.projects.project.analysis.comments": "Kommentare",
-  "app.containers.AdminPage.projects.project.analysis.demographicsTitle": "Demografische Daten",
   "app.containers.AdminPage.projects.project.analysis.domicileChartTooLarge": "Die Übersicht an Wohnsitzen ist zu groß für die Anzeige",
   "app.containers.AdminPage.projects.project.analysis.emptyCustomFieldFilter": "Leere Antworten ausblenden",
   "app.containers.AdminPage.projects.project.analysis.emptyCustomFieldsLabel": "Antworten",

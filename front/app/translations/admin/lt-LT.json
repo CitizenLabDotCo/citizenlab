@@ -2516,7 +2516,6 @@
   "app.containers.AdminPage.projects.project.analysis.authorsByDomicile": "Autoriai pagal gyvenamąją vietą",
   "app.containers.AdminPage.projects.project.analysis.backgroundJobs": "Pagrindiniai darbai",
   "app.containers.AdminPage.projects.project.analysis.comments": "Komentarai",
-  "app.containers.AdminPage.projects.project.analysis.demographicsTitle": "Demografiniai duomenys",
   "app.containers.AdminPage.projects.project.analysis.domicileChartTooLarge": "Gyvenamosios vietos schema yra per didelė, kad ją būtų galima rodyti",
   "app.containers.AdminPage.projects.project.analysis.emptyCustomFieldFilter": "Paslėpti tuščius atsakymus",
   "app.containers.AdminPage.projects.project.analysis.emptyCustomFieldsLabel": "Atsakymai",

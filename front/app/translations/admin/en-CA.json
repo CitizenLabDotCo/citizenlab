@@ -2516,7 +2516,6 @@
   "app.containers.AdminPage.projects.project.analysis.authorsByDomicile": "Authors by domicile",
   "app.containers.AdminPage.projects.project.analysis.backgroundJobs": "Background Jobs",
   "app.containers.AdminPage.projects.project.analysis.comments": "Comments",
-  "app.containers.AdminPage.projects.project.analysis.demographicsTitle": "Demographics",
   "app.containers.AdminPage.projects.project.analysis.domicileChartTooLarge": "The domicile chart is too large to display",
   "app.containers.AdminPage.projects.project.analysis.emptyCustomFieldFilter": "Hide empty answers",
   "app.containers.AdminPage.projects.project.analysis.emptyCustomFieldsLabel": "Responses",

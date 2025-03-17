@@ -2516,7 +2516,6 @@
   "app.containers.AdminPage.projects.project.analysis.authorsByDomicile": "Tekijät kotipaikan mukaan",
   "app.containers.AdminPage.projects.project.analysis.backgroundJobs": "Taustatyöt",
   "app.containers.AdminPage.projects.project.analysis.comments": "Kommentit",
-  "app.containers.AdminPage.projects.project.analysis.demographicsTitle": "Väestötiedot",
   "app.containers.AdminPage.projects.project.analysis.domicileChartTooLarge": "Kotipaikkataulukko on liian suuri näytettäväksi",
   "app.containers.AdminPage.projects.project.analysis.emptyCustomFieldFilter": "Piilota tyhjät vastaukset",
   "app.containers.AdminPage.projects.project.analysis.emptyCustomFieldsLabel": "Vastaukset",

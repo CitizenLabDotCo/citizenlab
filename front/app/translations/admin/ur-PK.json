@@ -2516,7 +2516,6 @@
   "app.containers.AdminPage.projects.project.analysis.authorsByDomicile": "ڈومیسائل کے لحاظ سے مصنفین",
   "app.containers.AdminPage.projects.project.analysis.backgroundJobs": "پس منظر کی نوکریاں",
   "app.containers.AdminPage.projects.project.analysis.comments": "تبصرے",
-  "app.containers.AdminPage.projects.project.analysis.demographicsTitle": "ڈیموگرافکس",
   "app.containers.AdminPage.projects.project.analysis.domicileChartTooLarge": "ڈومیسائل چارٹ ڈسپلے کے لیے بہت بڑا ہے۔",
   "app.containers.AdminPage.projects.project.analysis.emptyCustomFieldFilter": "خالی جوابات چھپائیں۔",
   "app.containers.AdminPage.projects.project.analysis.emptyCustomFieldsLabel": "جوابات",

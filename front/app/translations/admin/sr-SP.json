@@ -2516,7 +2516,6 @@
   "app.containers.AdminPage.projects.project.analysis.authorsByDomicile": "Аутори по пребивалишту",
   "app.containers.AdminPage.projects.project.analysis.backgroundJobs": "Позадински послови",
   "app.containers.AdminPage.projects.project.analysis.comments": "Коментари",
-  "app.containers.AdminPage.projects.project.analysis.demographicsTitle": "Демографија",
   "app.containers.AdminPage.projects.project.analysis.domicileChartTooLarge": "Табела пребивалишта је превелика за приказ",
   "app.containers.AdminPage.projects.project.analysis.emptyCustomFieldFilter": "Hide empty answers",
   "app.containers.AdminPage.projects.project.analysis.emptyCustomFieldsLabel": "Responses",

@@ -2516,7 +2516,6 @@
   "app.containers.AdminPage.projects.project.analysis.authorsByDomicile": "Autori po prebivalištu",
   "app.containers.AdminPage.projects.project.analysis.backgroundJobs": "Pozadinski poslovi",
   "app.containers.AdminPage.projects.project.analysis.comments": "Komentari",
-  "app.containers.AdminPage.projects.project.analysis.demographicsTitle": "Demografija",
   "app.containers.AdminPage.projects.project.analysis.domicileChartTooLarge": "Grafikon prebivališta je prevelik za prikaz",
   "app.containers.AdminPage.projects.project.analysis.emptyCustomFieldFilter": "Sakrij prazne odgovore",
   "app.containers.AdminPage.projects.project.analysis.emptyCustomFieldsLabel": "Odgovori",

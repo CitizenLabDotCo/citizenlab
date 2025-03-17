@@ -2516,7 +2516,6 @@
   "app.containers.AdminPage.projects.project.analysis.authorsByDomicile": "Författare efter hemvist",
   "app.containers.AdminPage.projects.project.analysis.backgroundJobs": "Bakgrundsjobb",
   "app.containers.AdminPage.projects.project.analysis.comments": "Kommentarer",
-  "app.containers.AdminPage.projects.project.analysis.demographicsTitle": "Demografiska uppgifter",
   "app.containers.AdminPage.projects.project.analysis.domicileChartTooLarge": "Hemortsdiagrammet är för stort för att visas",
   "app.containers.AdminPage.projects.project.analysis.emptyCustomFieldFilter": "Dölj tomma svar",
   "app.containers.AdminPage.projects.project.analysis.emptyCustomFieldsLabel": "Svar",

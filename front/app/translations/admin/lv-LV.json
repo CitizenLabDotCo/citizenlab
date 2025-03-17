@@ -2516,7 +2516,6 @@
   "app.containers.AdminPage.projects.project.analysis.authorsByDomicile": "Autori pēc dzīvesvietas",
   "app.containers.AdminPage.projects.project.analysis.backgroundJobs": "Fona darbavietas",
   "app.containers.AdminPage.projects.project.analysis.comments": "Komentāri",
-  "app.containers.AdminPage.projects.project.analysis.demographicsTitle": "Demogrāfiskie dati",
   "app.containers.AdminPage.projects.project.analysis.domicileChartTooLarge": "Domicila diagramma ir pārāk liela, lai to parādītu",
   "app.containers.AdminPage.projects.project.analysis.emptyCustomFieldFilter": "Slēpt tukšas atbildes",
   "app.containers.AdminPage.projects.project.analysis.emptyCustomFieldsLabel": "Atbildes",
