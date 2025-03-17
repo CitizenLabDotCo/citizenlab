@@ -6,7 +6,10 @@ import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import sidebarMessages from 'containers/Admin/sideBar/messages';
 
+import Warning from 'components/UI/Warning';
+
 import { FormattedMessage } from 'utils/cl-intl';
+import { scrollToElement } from 'utils/scroll';
 
 import Filters from './Filters';
 import messages from './messages';
@@ -42,11 +45,29 @@ const InspirationHub = () => {
             <Title variant="h2" color="primary" mt="0">
               <FormattedMessage {...messages.allProjects} />
             </Title>
-            <Box>
+            <Box id="inspiration-hub-filters">
               <Filters />
             </Box>
             <SortAndReset />
             <ProjectCards />
+            <Box mt="32px">
+              <Warning>
+                <FormattedMessage
+                  {...messages.seemsLike}
+                  values={{
+                    filters: (
+                      <button
+                        onClick={() => {
+                          scrollToElement({ id: 'inspiration-hub-filters' });
+                        }}
+                      >
+                        <FormattedMessage {...messages.filters} />
+                      </button>
+                    ),
+                  }}
+                />
+              </Warning>
+            </Box>
           </Box>
         </Box>
       </Box>

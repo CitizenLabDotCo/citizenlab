@@ -50,4 +50,13 @@ export default defineMessages({
     id: 'app.containers.Admin.inspirationHub.resetFilters',
     defaultMessage: 'Reset filters',
   },
+  seemsLike: {
+    id: 'app.containers.Admin.inspirationHub.seemsLike',
+    defaultMessage:
+      'Seems like there are no more projects. Try changing the {filters}.',
+  },
+  filters: {
+    id: 'app.containers.Admin.inspirationHub.filters',
+    defaultMessage: 'filters',
+  },
 });
