@@ -33,7 +33,7 @@ class CustomForm < ApplicationRecord
     CustomForm.transaction do
       fields = custom_fields.to_a
 
-      first_container_idx = fields.index { |f| f.page? }
+      first_container_idx = fields.index(&:page?)
       fields.insert(0, fields.delete_at(first_container_idx)) if first_container_idx&.positive?
 
       fields.each.with_index do |field, index|
