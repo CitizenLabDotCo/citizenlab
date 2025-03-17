@@ -9,4 +9,8 @@ export default defineMessages({
     id: 'app.containers.Admin.inspirationHub.PinnedProjects.country',
     defaultMessage: 'Country',
   },
+  chooseCountry: {
+    id: 'app.containers.Admin.inspirationHub.PinnedProjects.chooseCountry',
+    defaultMessage: 'Please choose a country to see pinned projects',
+  },
 });
