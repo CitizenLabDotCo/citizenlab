@@ -138,7 +138,7 @@ class CustomField < ApplicationRecord
   def supports_xlsx_export?
     return false if code == 'idea_images_attributes' # Is this still applicable?
 
-    %w[page].exclude?(input_type)
+    !page?
   end
 
   def supports_geojson?
