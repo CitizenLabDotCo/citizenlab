@@ -774,6 +774,7 @@
   "app.containers.Admin.communityMonitor.settings.residentHasFilledOutSurvey": "Resident has not already filled out the survey in the previous 3 months.",
   "app.containers.Admin.communityMonitor.settings.residentNotSeenPopup": "Resident has not already seen the popup in the previous 3 months.",
   "app.containers.Admin.communityMonitor.settings.save": "Save",
+  "app.containers.Admin.communityMonitor.settings.saved": "Saved",
   "app.containers.Admin.communityMonitor.settings.settings": "Settings",
   "app.containers.Admin.communityMonitor.settings.survey2": "Survey",
   "app.containers.Admin.communityMonitor.settings.surveySettings3": "General settings",
