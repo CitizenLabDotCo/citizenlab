@@ -5,6 +5,7 @@ import { Box } from '@citizenlab/cl2-component-library';
 
 import usePermissionsCustomFields from 'api/permissions_custom_fields/usePermissionsCustomFields';
 import usePhasePermissions from 'api/phase_permissions/usePhasePermissions';
+import usePhase from 'api/phases/usePhase';
 import useUserCustomFields from 'api/user_custom_fields/useUserCustomFields';
 
 import useLocalize from 'hooks/useLocalize';
@@ -39,6 +40,7 @@ const AccessRightsNotice = ({
     phaseId,
     action: 'posting_idea',
   });
+  const { data: phase } = usePhase(phaseId);
 
   // NOTE: There should only ever one permission for a survey phase
   const permittedBySetting = permissions?.data[0].attributes.permitted_by;
@@ -70,6 +72,10 @@ const AccessRightsNotice = ({
     </Link>
   );
 
+  const userFieldsInForm = phase?.data.attributes.user_fields_in_form;
+
+  if (userFieldsInForm && permittedBySetting !== 'everyone') return null;
+
   return (
     <Box id="e2e-warning-notice" mb="16px">
       <Warning>
@@ -80,7 +86,9 @@ const AccessRightsNotice = ({
                 <p>{formatMessage(messages.anyoneIntro)}</p>
                 <ul>
                   <li>{formatMessage(messages.anyoneBullet1)}</li>
-                  <li>{formatMessage(messages.anyoneBullet2)}</li>
+                  {!userFieldsInForm && (
+                    <li>{formatMessage(messages.anyoneBullet2)}</li>
+                  )}
                 </ul>
                 <p>
                   <FormattedMessage
@@ -93,11 +101,9 @@ const AccessRightsNotice = ({
               </>
             ) : (
               <>
-                {surveyUserFields && (
+                {surveyUserFields && !userFieldsInForm && (
                   <>
-                    {/* TODO: Fix this the next time the file is edited. */}
-                    {/* eslint-disable-next-line @typescript-eslint/no-unnecessary-condition */}
-                    {surveyUserFields?.length > 0 && (
+                    {surveyUserFields.length > 0 && (
                       <>
                         <p>{formatMessage(messages.userFieldsIntro)}</p>
                         <ul>

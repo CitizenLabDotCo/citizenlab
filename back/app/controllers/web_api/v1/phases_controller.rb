@@ -138,6 +138,7 @@ class WebApi::V1::PhasesController < ApplicationController
       :reacting_threshold,
       :expire_days_limit,
       :manual_voters_amount,
+      :user_fields_in_form,
       {
         title_multiloc: CL2_SUPPORTED_LOCALES,
         description_multiloc: CL2_SUPPORTED_LOCALES,

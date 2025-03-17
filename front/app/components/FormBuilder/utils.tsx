@@ -66,6 +66,7 @@ export type FormBuilderConfig = {
     phaseId: string | undefined,
     handleClose: () => void
   ) => void;
+  getUserFieldsNotice?: () => void;
 
   groupingType: 'page' | 'section';
 
