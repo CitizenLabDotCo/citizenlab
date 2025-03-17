@@ -62,6 +62,8 @@ describe('Idea edit page', () => {
     cy.get('#e2e-idea-description-input .ql-editor').as('descriptionInput');
 
     // check initial form values
+    cy.get('@titleInput').should('exist');
+    cy.get('@descriptionInput').should('exist');
     cy.get('@titleInput').should('contain.value', ideaTitle);
     cy.get('@descriptionInput').contains(ideaContent);
 
