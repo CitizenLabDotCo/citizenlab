@@ -12,6 +12,7 @@ const Quote = ({ children, ...props }: BoxProps) => {
       p="12px"
       borderRadius={stylingConsts.borderRadius}
       position="relative"
+      margin="0"
       {...props}
     >
       <Icon

@@ -107,14 +107,12 @@ const ProjectCard = ({
         </Box>
       </Box>
       {showQuote && (
-        <Box>
-          <Quote>
-            <Text>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur
-              tempus dolor eget nisi volutpat luctus
-            </Text>
-          </Quote>
-        </Box>
+        <Quote w="100%" mb="12px">
+          <Text m="0px" fontStyle="italic">
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur
+            tempus dolor eget nisi volutpat luctus
+          </Text>
+        </Quote>
       )}
       <Box>
         {methods.map((method, i) => (
