@@ -1,10 +1,9 @@
 import React, { useState, useCallback, useEffect } from 'react';
 
-import { Title, useBreakpoint } from '@citizenlab/cl2-component-library';
+import { useBreakpoint } from '@citizenlab/cl2-component-library';
 import { debounce } from 'lodash-es';
 
-import { DEFAULT_PADDING } from 'components/admin/ContentBuilder/constants';
-
+import CarrouselTitle from '../../CarrouselTitle';
 import { CARD_GAP } from '../constants';
 import { CarrouselContainer } from '../Containers';
 
@@ -101,14 +100,7 @@ const ScrollableCarrousel = ({
   return (
     <>
       <CarrouselContainer className={className}>
-        <Title
-          variant="h2"
-          mt="0px"
-          ml={isSmallerThanPhone ? DEFAULT_PADDING : undefined}
-          color="tenantText"
-        >
-          {title}
-        </Title>
+        <CarrouselTitle>{title}</CarrouselTitle>
         <SkipButton onSkip={() => skipCarrousel(endId)} />
         <HorizontalScroll
           setRef={(ref) => {
