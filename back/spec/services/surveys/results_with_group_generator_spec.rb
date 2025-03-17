@@ -249,7 +249,6 @@ RSpec.describe Surveys::ResultsWithGroupGenerator do
               { count: 1, group: nil }
             ] }
           ],
-          averages: { this_period: 3.5 },
           multilocs: {
             answer: {
               1 => hash_including(title_multiloc: { 'en' => '1 - Strongly disagree', 'fr-FR' => "1 - Pas du tout d'accord", 'nl-NL' => '1 - Helemaal niet mee eens' }),
@@ -327,7 +326,6 @@ RSpec.describe Surveys::ResultsWithGroupGenerator do
               { count: 1, group: nil }
             ] }
           ],
-          averages: { this_period: 3.5 },
           multilocs: {
             answer: {
               1 => { title_multiloc: { 'en' => '1', 'fr-FR' => '1', 'nl-NL' => '1' } },

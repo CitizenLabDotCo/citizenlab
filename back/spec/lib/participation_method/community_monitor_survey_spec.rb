@@ -44,29 +44,39 @@ RSpec.describe ParticipationMethod::CommunityMonitorSurvey do
     end
   end
 
-  describe '#create_default_form!' do
-    it 'persists a default form with a page for the participation context' do
-      expect(phase.custom_form).to be_nil
+  describe '#default_fields' do
+    it 'returns an empty list if form is persisted' do
+      form = create(:custom_form, participation_context: phase)
+      expect(participation_method.default_fields(form)).to eq []
+    end
 
-      participation_method.create_default_form!
-      # create_default_form! does not reload associations for form/fields/options,
-      # so fetch the project from the database. The associations will be fetched
-      # when they are needed.
-      # Not doing this makes this test flaky, as create_default_form! creates fields
-      # and CustomField uses acts_as_list for ordering fields. The ordering is ok
-      # in the database, but not necessarily in memory.
-      phase_in_db = Phase.find(phase.id)
+    it 'returns the default fields if the form is not persisted' do
+      form = build(:custom_form, participation_context: phase)
+      expect(participation_method.default_fields(form).count).to eq 23
+      expect(participation_method.default_fields(form).pluck(:key)).to eq(%w[
+        page1 place_to_live
+        page2 sense_of_safety
+        page3 access_to_parks
+        page4 affordable_housing
+        page5 employment_opportunities
+        page6 quality_of_services
+        page7 overall_value
+        page8 cleanliness_and_maintenance
+        page9 trust_in_government
+        page10 responsiveness_of_officials
+        page11 transparency_of_money_spent
+        survey_end
 
-      expect(phase_in_db.custom_form.custom_fields.size).to eq 4
-      expect(phase_in_db.custom_form.custom_fields.pluck(:input_type)).to match_array %w[page rating rating page]
+      ])
     end
   end
 
-  describe '#default_fields' do
-    it 'returns an empty list' do
-      expect(
-        participation_method.default_fields(create(:custom_form, participation_context: phase)).map(&:code)
-      ).to eq []
+  describe '#create_default_form!' do
+    it 'persists a default form for the phase' do
+      expect(phase.custom_form).to be_nil
+      participation_method.create_default_form!
+      phase_in_db = Phase.find(phase.id)
+      expect(phase_in_db.custom_form.custom_fields.size).to eq 23
     end
   end
 
@@ -165,6 +175,7 @@ RSpec.describe ParticipationMethod::CommunityMonitorSurvey do
   its(:transitive?) { is_expected.to be false }
   its(:form_logic_enabled?) { is_expected.to be false }
   its(:follow_idea_on_idea_submission?) { is_expected.to be false }
+  its(:supports_custom_field_categories?) { is_expected.to be true }
 
   describe 'proposed_budget_in_form?' do # private method
     it 'is expected to be false' do

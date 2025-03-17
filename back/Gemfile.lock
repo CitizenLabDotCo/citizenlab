@@ -696,9 +696,10 @@ GEM
       multi_json (~> 1.11)
       os (>= 0.9, < 2.0)
       signet (>= 0.16, < 2.a)
-    graphql (2.4.4)
+    graphql (2.4.13)
       base64
       fiber-storage
+      logger
     groupdate (6.5.1)
       activesupport (>= 7)
     grpc (1.63.0-aarch64-linux)
@@ -969,7 +970,7 @@ GEM
     qonfig (0.29.0)
     que (2.3.0)
     racc (1.8.1)
-    rack (2.2.12)
+    rack (2.2.13)
     rack-attack (6.7.0)
       rack (>= 1.0, < 4)
     rack-cors (2.0.0)

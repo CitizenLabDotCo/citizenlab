@@ -7,23 +7,9 @@ module Surveys
       raise NotImplementedError, 'This method is not implemented'
     end
 
-    def generate_results(start_month: nil, end_month: nil, logic_ids: [])
-      results = build_results fields, start_month, end_month
-      total_submissions = inputs.size
-
-      if results.present?
-        results = add_question_numbers_to_results results
-        results = add_page_response_count_to_results results
-        results = add_averages_for_previous_period results, start_month, end_month
-        results = add_logic_to_results results, logic_ids
-        results = change_counts_for_logic results, inputs.pluck(:custom_field_values)
-        results = cleanup_results results
-      end
-
-      {
-        results: results,
-        totalSubmissions: total_submissions
-      }
+    def generate_results(logic_ids: [])
+      @logic_ids = logic_ids
+      super()
     end
 
     def visit_page(field)
@@ -33,6 +19,11 @@ module Surveys
     end
 
     private
+
+    def add_additional_fields_to_results(results)
+      results = add_logic_to_results results, @logic_ids
+      change_counts_for_logic results, inputs.pluck(:custom_field_values)
+    end
 
     def core_field_attributes(field, response_count: nil)
       super.merge({

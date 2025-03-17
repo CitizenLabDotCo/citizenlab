@@ -41,6 +41,7 @@
 #  ask_follow_up                  :boolean          default(FALSE), not null
 #  page_button_label_multiloc     :jsonb            not null
 #  page_button_link               :string
+#  question_category              :string
 #
 # Indexes
 #
@@ -78,6 +79,7 @@ class CustomField < ApplicationRecord
   VISIBLE_TO_PUBLIC = 'public'
   VISIBLE_TO_ADMINS = 'admins'
   PAGE_LAYOUTS = %w[default map].freeze
+  QUESTION_CATEGORIES = %w[quality_of_life service_delivery governance_and_trust].freeze
 
   validates :resource_type, presence: true, inclusion: { in: FIELDABLE_TYPES }
   validates(
@@ -99,6 +101,8 @@ class CustomField < ApplicationRecord
   validates :minimum_select_count, comparison: { greater_than_or_equal_to: 0 }, if: :multiselect?, allow_nil: true
   validates :page_layout, presence: true, inclusion: { in: PAGE_LAYOUTS }, if: :page?
   validates :page_layout, absence: true, unless: :page?
+  validates :question_category, absence: true, unless: :supports_category?
+  validates :question_category, inclusion: { in: QUESTION_CATEGORIES }, allow_nil: true, if: :supports_category?
 
   before_validation :set_default_enabled
   before_validation :set_default_answer_visible_to
@@ -163,6 +167,10 @@ class CustomField < ApplicationRecord
 
   def supports_linear_scale_labels?
     %w[linear_scale matrix_linear_scale sentiment_linear_scale].include?(input_type)
+  end
+
+  def supports_average?
+    %w[linear_scale sentiment_linear_scale rating number].include?(input_type)
   end
 
   def supports_single_selection?
@@ -399,6 +407,13 @@ class CustomField < ApplicationRecord
       resource.participation_context
     end
     phase&.input_term || Phase::FALLBACK_INPUT_TERM
+  end
+
+  def supports_category?
+    participation_context = resource&.participation_context
+    return false unless participation_context
+
+    participation_context.pmethod.supports_custom_field_categories?
   end
 
   private
