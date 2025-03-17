@@ -16,8 +16,6 @@ import VolunteeringCTABar from 'components/ParticipationCTABars/VolunteeringCTAB
 import VotingCTABar from 'components/ParticipationCTABars/VotingCTABar';
 import SharingModalContent from 'components/PostShowComponents/SharingModalContent';
 
-import clHistory from 'utils/cl-router/history';
-
 import { FormattedMessage } from '../../cl-intl';
 import { isNilOrError, NilOrError } from '../../helperUtils';
 import messages from '../../messages';
