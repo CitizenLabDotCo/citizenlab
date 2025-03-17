@@ -205,6 +205,7 @@ const IdeasNewIdeationForm = ({ project, phaseId }: Props) => {
       project_id: project.data.id,
       phase_ids,
       anonymous: postAnonymously ? true : undefined,
+      publication_status: undefined, // TODO: Change this logic when handling draft ideas
     });
     updateSearchParams({ idea_id: idea.data.id });
     onSubmitCallback?.();
