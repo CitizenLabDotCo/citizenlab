@@ -31,9 +31,19 @@ const Cards = () => {
     );
   }
 
-  if (!projects || projects.data.length === 0) {
-    // TODO empty state
+  if (!projects) {
+    // loading
     return null;
+  }
+
+  if (projects.data.length < 3) {
+    return (
+      <Box>
+        <Text color="primary">
+          <FormattedMessage {...messages.changeTheCountry} />
+        </Text>
+      </Box>
+    );
   }
 
   return (
