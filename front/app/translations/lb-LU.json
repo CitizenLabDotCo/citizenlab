@@ -793,8 +793,6 @@
   "app.components.formBuilder.ruleForAnswerLabel": "Wann d’Äntwert ass:",
   "app.components.formBuilder.ruleForAnswerLabelMultiselect": "Wann d'Äntwerten enthalen:",
   "app.components.formBuilder.save": "Späicheren",
-  "app.components.formBuilder.section": "Sektioun",
-  "app.components.formBuilder.sectionCannotBeDeleted": "Dës Sektioun kann net geläscht ginn.",
   "app.components.formBuilder.selectRangeTooltip": "Wielt de Maximalwäert fir Är Skala.",
   "app.components.formBuilder.sentiment": "Sentiment Skala",
   "app.components.formBuilder.shapefileUpload": "Esri shapefile eropluede",

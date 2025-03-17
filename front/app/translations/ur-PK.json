@@ -793,8 +793,6 @@
   "app.components.formBuilder.ruleForAnswerLabel": "اگر جواب ہے:",
   "app.components.formBuilder.ruleForAnswerLabelMultiselect": "اگر جوابات میں شامل ہیں:",
   "app.components.formBuilder.save": "محفوظ کریں۔",
-  "app.components.formBuilder.section": "سیکشن",
-  "app.components.formBuilder.sectionCannotBeDeleted": "اس حصے کو حذف نہیں کیا جا سکتا۔",
   "app.components.formBuilder.selectRangeTooltip": "اپنے پیمانے کے لیے زیادہ سے زیادہ قیمت کا انتخاب کریں۔",
   "app.components.formBuilder.sentiment": "جذبات کا پیمانہ",
   "app.components.formBuilder.shapefileUpload": "ایسری شکل فائل اپ لوڈ کریں۔",

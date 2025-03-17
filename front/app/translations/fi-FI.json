@@ -793,8 +793,6 @@
   "app.components.formBuilder.ruleForAnswerLabel": "Jos vastaus on:",
   "app.components.formBuilder.ruleForAnswerLabelMultiselect": "Jos vastaukset sisältävät:",
   "app.components.formBuilder.save": "Tallenna",
-  "app.components.formBuilder.section": "osio",
-  "app.components.formBuilder.sectionCannotBeDeleted": "Tätä osiota ei voi poistaa.",
   "app.components.formBuilder.selectRangeTooltip": "Valitse mittakaavallesi maksimiarvo.",
   "app.components.formBuilder.sentiment": "Sentimenttiasteikko",
   "app.components.formBuilder.shapefileUpload": "Esri-muototiedoston lataus",

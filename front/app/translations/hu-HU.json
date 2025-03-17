@@ -793,8 +793,6 @@
   "app.components.formBuilder.ruleForAnswerLabel": "Ha a válasz:",
   "app.components.formBuilder.ruleForAnswerLabelMultiselect": "Ha a válaszok a következőket tartalmazzák:",
   "app.components.formBuilder.save": "Megtakarítás",
-  "app.components.formBuilder.section": "Szakasz",
-  "app.components.formBuilder.sectionCannotBeDeleted": "Ez a szakasz nem törölhető.",
   "app.components.formBuilder.selectRangeTooltip": "Válassza ki a skála maximális értékét.",
   "app.components.formBuilder.sentiment": "Érzelmi skála",
   "app.components.formBuilder.shapefileUpload": "Esri shapefile feltöltése",

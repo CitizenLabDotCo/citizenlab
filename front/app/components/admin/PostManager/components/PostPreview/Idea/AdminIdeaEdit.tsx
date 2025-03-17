@@ -18,10 +18,7 @@ import { FormValues } from 'containers/IdeasEditPage/IdeasEditForm';
 import { getLocationGeojson } from 'containers/IdeasEditPage/utils';
 import ideaFormMessages from 'containers/IdeasNewPage/messages';
 
-import {
-  Content,
-  Top,
-} from 'components/admin/PostManager/components/PostPreview';
+import { Top } from 'components/admin/PostManager/components/PostPreview';
 import Form from 'components/Form';
 import { AjvErrorGetter, ApiErrorGetter } from 'components/Form/typings';
 
@@ -118,6 +115,10 @@ const AdminIdeaEdit = ({
   }
 
   const onSubmit = async (data: FormValues) => {
+    if (data.publication_status !== 'published') {
+      return;
+    }
+
     const { idea_images_attributes, ...ideaWithoutImages } = data;
 
     const location_point_geojson = await getLocationGeojson(
@@ -143,7 +144,7 @@ const AdminIdeaEdit = ({
       project_id: project.data.id,
     };
 
-    updateIdea(
+    const idea = updateIdea(
       {
         id: ideaId,
         requestBody: isImageNew
@@ -156,6 +157,7 @@ const AdminIdeaEdit = ({
         },
       }
     );
+    return idea;
   };
 
   const getApiErrorMessage: ApiErrorGetter = (error) => {
@@ -189,14 +191,19 @@ const AdminIdeaEdit = ({
   };
 
   return (
-    <Box border="1px solid white" borderRadius={theme.borderRadius}>
+    <Box
+      border="1px solid white"
+      borderRadius={theme.borderRadius}
+      height="100%"
+      background={theme.colors.background}
+    >
       <Top>
         <Button onClick={goBack}>
           <FormattedMessage {...messages.cancelEdit} />
         </Button>
       </Top>
 
-      <Content className="idea-form">
+      <Box className="idea-form">
         {schema && uiSchema ? (
           <Form
             schema={schema}
@@ -208,11 +215,12 @@ const AdminIdeaEdit = ({
             getApiErrorMessage={getApiErrorMessage}
             config={'input'}
             layout={'inline'}
+            showSubmitButton={false}
           />
         ) : projectStatus === 'error' || inputSchemaError ? null : (
           <Spinner />
         )}
-      </Content>
+      </Box>
     </Box>
   );
 };

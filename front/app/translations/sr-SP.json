@@ -793,8 +793,6 @@
   "app.components.formBuilder.ruleForAnswerLabel": "Ако је одговор:",
   "app.components.formBuilder.ruleForAnswerLabelMultiselect": "If answers include:",
   "app.components.formBuilder.save": "сачувати",
-  "app.components.formBuilder.section": "Секција",
-  "app.components.formBuilder.sectionCannotBeDeleted": "Овај одељак се не може избрисати.",
   "app.components.formBuilder.selectRangeTooltip": "Изаберите максималну вредност за своју скалу.",
   "app.components.formBuilder.sentiment": "Sentiment scale",
   "app.components.formBuilder.shapefileUpload": "Esri shapefile upload",

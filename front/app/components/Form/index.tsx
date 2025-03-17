@@ -49,7 +49,10 @@ const Title = styled.h1`
 interface Props {
   schema: JsonSchema7;
   uiSchema: Layout;
-  onSubmit: (formData: FormValues) => void | Promise<any>;
+  onSubmit: (
+    formData: FormValues,
+    onSubmitCallback?: () => void
+  ) => void | Promise<any>;
   initialFormData: FormValues;
   title?: ReactElement;
   /** A function that returns a translation message given the fieldname and the error key returned by the API */
@@ -65,6 +68,7 @@ interface Props {
   footer?: React.ReactNode;
   // Optional loading state from parent. If set, the loading state will be controlled by the parent.
   loading?: boolean;
+  showSubmitButton?: boolean;
 }
 
 const Form = memo(
@@ -81,6 +85,7 @@ const Form = memo(
     footer,
     onSubmit,
     loading: externalLoading,
+    showSubmitButton,
   }: Props) => {
     const { formatMessage } = useIntl();
     const locale = useLocale();
@@ -97,7 +102,6 @@ const Form = memo(
     const [showAllErrors, setShowAllErrors] = useState(false);
 
     const isSurvey = config === 'survey';
-    const showSubmitButton = !isSurvey;
 
     useEffect(() => {
       if (scrollToError) {
@@ -119,7 +123,8 @@ const Form = memo(
     const handleSubmit = async (
       formData?: { data?: FormValues },
       showErrors = true,
-      userPagePath: PageType[] = []
+      userPagePath: PageType[] = [],
+      onSubmitCallback?: () => void
     ) => {
       // Any specified formData has priority over data attribute
       const submissionData = formData && formData.data ? formData.data : data;
@@ -148,7 +153,7 @@ const Form = memo(
           internalSetLoading(true);
         }
         try {
-          response = await onSubmit(submissionData);
+          response = await onSubmit(sanitizedFormData, onSubmitCallback);
           if (isSurvey) {
             trackEventByName(tracks.surveyFormSubmitted);
           } else {

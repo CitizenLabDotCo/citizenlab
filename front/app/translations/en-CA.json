@@ -793,8 +793,6 @@
   "app.components.formBuilder.ruleForAnswerLabel": "If answer is:",
   "app.components.formBuilder.ruleForAnswerLabelMultiselect": "If answers include:",
   "app.components.formBuilder.save": "Save",
-  "app.components.formBuilder.section": "Section",
-  "app.components.formBuilder.sectionCannotBeDeleted": "This section can't be deleted.",
   "app.components.formBuilder.selectRangeTooltip": "Choose the maximum value for your scale.",
   "app.components.formBuilder.sentiment": "Sentiment scale",
   "app.components.formBuilder.shapefileUpload": "Esri shapefile upload",

@@ -25,7 +25,6 @@ export type ICustomFieldInputType =
   | 'ranking'
   | 'rating'
   | 'matrix_linear_scale'
-  | 'section'
   | 'page'
   | 'file_upload'
   | 'shapefile_upload'
