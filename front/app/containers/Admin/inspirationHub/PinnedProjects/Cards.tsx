@@ -14,7 +14,7 @@ import messages from './messages';
 const Cards = () => {
   const countryCode = useRansackParam('q[pin_country_code_eq]');
 
-  const { data: projects } = useProjectLibraryProjects(
+  const { data: projects, isLoading } = useProjectLibraryProjects(
     {
       'q[pin_country_code_eq]': countryCode,
     },
@@ -31,26 +31,31 @@ const Cards = () => {
     );
   }
 
-  if (!projects) {
-    // loading
-    return null;
-  }
+  if (isLoading) return null;
+  if (!projects) return null;
 
-  if (projects.data.length < 3) {
+  if (projects.data.length === 0) {
     return (
       <Box>
         <Text color="primary">
-          <FormattedMessage {...messages.changeTheCountry} />
+          <FormattedMessage {...messages.noPinnedProjectsFound} />
         </Text>
       </Box>
     );
   }
 
   return (
-    <Box display="flex" flexDirection="row" gap="12px">
-      {projects.data.map((project) => (
-        <ProjectCard project={project} key={project.id} showStamp showQuote />
-      ))}
+    <Box>
+      {projects.data.length < 3 && (
+        <Text color="primary">
+          <FormattedMessage {...messages.changeTheCountry} />
+        </Text>
+      )}
+      <Box display="flex" flexDirection="row" gap="12px">
+        {projects.data.map((project) => (
+          <ProjectCard project={project} key={project.id} showStamp showQuote />
+        ))}
+      </Box>
     </Box>
   );
 };
