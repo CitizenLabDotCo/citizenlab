@@ -10,6 +10,11 @@ export const getSettingsTabs = (formatMessage: FormatMessage): ITab[] => {
       url: `/admin/community-monitor/settings/survey`,
     },
     {
+      name: 'popup',
+      label: formatMessage(messages.popupSettings),
+      url: `/admin/community-monitor/settings/popup`,
+    },
+    {
       name: 'access_rights',
       label: formatMessage(messages.accessRights),
       url: `/admin/community-monitor/settings/access-rights`,

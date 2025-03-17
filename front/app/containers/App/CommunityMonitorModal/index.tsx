@@ -124,8 +124,10 @@ const CommunityMonitorModal = ({
 
   // Listen for any action that triggers the community monitor modal
   useEffect(() => {
-    const subscription = triggerCommunityMonitorModal$.subscribe(() => {
-      shouldShowModal(true) && setModalOpened(true);
+    const subscription = triggerCommunityMonitorModal$.subscribe((event) => {
+      event.eventValue['preview']
+        ? setModalOpened(true) // If the admin is triggering a preview, we open the modal directly
+        : shouldShowModal(true) && setModalOpened(true);
     });
 
     return () => subscription.unsubscribe();

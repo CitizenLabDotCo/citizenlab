@@ -19,6 +19,10 @@ export default defineMessages({
     defaultMessage:
       "All of the survey's inputs from users will be anonymized before being recorded",
   },
+  anonymity: {
+    id: 'app.containers.Admin.communityMonitor.settings.anonymity',
+    defaultMessage: 'Anonymity',
+  },
   whoAreManagers: {
     id: 'app.containers.Admin.communityMonitor.settings.whoAreManagers',
     defaultMessage: 'Who are the managers?',
@@ -38,8 +42,12 @@ export default defineMessages({
       'Community Monitor Managers can access and manage all Community Monitor settings and data.',
   },
   surveySettings: {
-    id: 'app.containers.Admin.communityMonitor.settings.surveySettings2',
-    defaultMessage: 'Survey settings',
+    id: 'app.containers.Admin.communityMonitor.settings.surveySettings3',
+    defaultMessage: 'General settings',
+  },
+  popupSettings: {
+    id: 'app.containers.Admin.communityMonitor.settings.popupSettings',
+    defaultMessage: 'Popup settings',
   },
   accessRights: {
     id: 'app.containers.Admin.communityMonitor.settings.accessRights2',
