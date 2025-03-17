@@ -80,6 +80,23 @@ RSpec.describe ReportBuilder::Queries::Demographics do
         })
       end
 
+      it 'adds demographics from user fields stored in user fields when the project filter is used' do
+        create(:idea_status_proposed)
+        phase = create(:native_survey_phase, project: @project, user_fields_in_form: true)
+        create(:native_survey_response, project: @project, creation_phase: phase, author: nil, custom_field_values: { "u_#{@custom_field.key}" => @option1.key })
+        create(:native_survey_response, project: @project, creation_phase: phase, author: nil, custom_field_values: { "u_#{@custom_field.key}" => @option2.key })
+        create(:native_survey_response, project: @project, creation_phase: phase, author: nil, custom_field_values: {})
+
+        result = query.run_query(custom_field_id: @custom_field.id, project_id: @project.id)
+
+        expect(result[:series]).to match({
+          @option1.key => 2,
+          @option2.key => 1,
+          @option3.key => 1,
+          '_blank' => 1
+        })
+      end
+
       it 'works with group filter' do
         result = query.run_query(custom_field_id: @custom_field.id, group_id: @group.id)
 
