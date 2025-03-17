@@ -36,7 +36,7 @@ const PinnedProjects = () => {
       </Title>
       <Box display="flex" flexDirection="row" gap="12px">
         {projects.data.map((project) => (
-          <ProjectCard project={project} key={project.id} showStamp />
+          <ProjectCard project={project} key={project.id} showStamp showQuote />
         ))}
       </Box>
     </>
