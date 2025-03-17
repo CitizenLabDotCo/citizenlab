@@ -50,6 +50,14 @@
             "type": "string",
             "enum": ["trial", "expired_trial", "demo", "active", "churned", "not_applicable"]
           },
+          <% country_codes_service = CountryCodesService.new %>
+          "country_code": {
+            "title": "Country",
+            "description": "The country where the platform's citizens are located. Type first letters of the country name, in English, to search.",
+            "type": ["string", "null"],
+            "enum": <%= country_codes_service.codes_in_name_order.to_json %>,
+            "enumNames": <%= country_codes_service.names_in_name_order.to_json %>
+          },
           "timezone": {
             "title": "Time Zone",
             "type": "string",
@@ -1394,6 +1402,32 @@
             "items": {
               "anyOf": <%= ::Verification::VerificationService.new.all_methods_json_schema %>
             }
+          }
+        }
+      },
+
+      "community_monitor": {
+        "type": "object",
+        "title": "Community Monitor",
+        "description": "Long running public survey.",
+        "additionalProperties": false,
+        "required": [
+          "allowed",
+          "enabled"
+        ],
+        "properties": {
+          "allowed": {
+            "type": "boolean",
+            "default": false
+          },
+          "enabled": {
+            "type": "boolean",
+            "default": false
+          },
+          "project_id": {
+            "title": "The ID of the required hidden project",
+            "description": "Do not edit unless you know what you're doing. This is usually set by the system",
+            "type": "string"
           }
         }
       }

@@ -306,6 +306,7 @@ interface IAppConfigurationAttributes {
   favicon?: ImageSizes | null;
   style?: IAppConfigurationStyle;
   created_at: string;
+  country_code: string | null;
 }
 
 export interface IAppConfigurationData {

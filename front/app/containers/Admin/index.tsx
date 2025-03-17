@@ -129,6 +129,7 @@ const AdminPage = memo<Props>(({ className }) => {
     pathname.includes('admin/messaging') ||
     pathname.includes('admin/settings') ||
     pathname.includes('admin/ideas') ||
+    pathname.includes('admin/inspiration-hub') ||
     isProjectPage;
 
   const fullWidth =
@@ -142,7 +143,10 @@ const AdminPage = memo<Props>(({ className }) => {
     <Container className={className}>
       <Sidebar />
       <RightColumn
-        className={`${fullWidth && 'fullWidth'} ${noPadding && 'noPadding'}`}
+        className={`
+          ${fullWidth ? 'fullWidth' : ''} 
+          ${noPadding ? 'noPadding' : ''}
+        `}
       >
         <RouterOutlet />
       </RightColumn>

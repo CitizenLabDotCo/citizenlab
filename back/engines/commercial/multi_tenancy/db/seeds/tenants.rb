@@ -480,6 +480,11 @@ module MultiTenancy
               enabled: false,
               allowed: false
             },
+            community_monitor: {
+              enabled: true,
+              allowed: true,
+              project_id: ''
+            },
             user_fields_in_surveys: {
               enabled: true,
               allowed: true

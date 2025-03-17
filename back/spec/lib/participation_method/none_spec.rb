@@ -90,6 +90,9 @@ RSpec.describe ParticipationMethod::None do
   its(:use_reactions_as_votes?) { is_expected.to be false }
   its(:transitive?) { is_expected.to be false }
   its(:supports_private_attributes_in_export?) { is_expected.to be false }
+  its(:form_logic_enabled?) { is_expected.to be false }
+  its(:follow_idea_on_idea_submission?) { is_expected.to be false }
+  its(:validate_phase) { is_expected.to be_nil }
   its(:supports_user_fields_in_form?) { is_expected.to be false }
 
   describe 'proposed_budget_in_form?' do # private method
