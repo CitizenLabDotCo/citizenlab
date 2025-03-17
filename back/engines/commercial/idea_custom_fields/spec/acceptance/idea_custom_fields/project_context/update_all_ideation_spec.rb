@@ -31,7 +31,8 @@ resource 'Idea Custom Fields' do
     let(:participation_method) { context.pmethod }
     let(:default_fields_param) do
       attributes = %i[id code input_type title_multiloc description_multiloc required enabled page_layout]
-      IdeaCustomFieldsService.new(custom_form).all_fields.map do |field|
+      # Remove the form_end. We will add that manually in the tests
+      IdeaCustomFieldsService.new(custom_form).all_fields.reject { |field| field.key == 'form_end' }.map do |field|
         {}.tap do |field_param|
           attributes.each do |attribute|
             field_param[attribute] = field.send attribute
@@ -69,7 +70,7 @@ resource 'Idea Custom Fields' do
 
           assert_status 200
           json_response = json_parse response_body
-          expect(json_response[:data].size).to eq 12
+          expect(json_response[:data].size).to eq 11
           expect(context.reload.custom_form.custom_fields[1].description_multiloc).to eq custom_description
         end
       end
@@ -108,8 +109,8 @@ resource 'Idea Custom Fields' do
 
           assert_status 200
           json_response = json_parse response_body
-          puts "json_response: #{json_response}"
-          expect(json_response[:data].size).to eq 14
+
+          expect(json_response[:data].size).to eq 13
           expect(json_response[:data].pluck(:id)).not_to include(deleted_field.id)
           expect(json_response[:data]).to match([
             hash_including(
@@ -124,24 +125,45 @@ resource 'Idea Custom Fields' do
                 enabled: true,
                 created_at: an_instance_of(String),
                 updated_at: an_instance_of(String),
-                logic: {}
+                logic: {},
+                constraints: {
+                  locks: {
+                    enabled: true,
+                    title_multiloc: true
+                  }
+                },
+                answer_visible_to: 'public',
+                page_layout: 'default',
+                random_option_ordering: false
               ),
+              id: an_instance_of(String),
               type: 'custom_field',
-              relationships: { options: { data: [] }, resource: { data: { id: custom_form.id, type: 'custom_form' } } }
+              relationships: { options: { data: [] }, resource: { data: { id: custom_form.id, type: 'custom_form' } }, map_config: { data: nil } }
             ),
             hash_including(
               attributes: hash_including(
                 code: 'title_multiloc',
                 key: 'title_multiloc',
                 input_type: 'text_multiloc',
+                title_multiloc: hash_including(en: 'Title'),
                 description_multiloc: { en: 'New title description' },
                 ordering: 1,
                 required: true,
                 enabled: true,
                 created_at: an_instance_of(String),
                 updated_at: an_instance_of(String),
-                logic: {}
+                logic: {},
+                constraints: {
+                  locks: {
+                    enabled: true,
+                    title_multiloc: true,
+                    required: true
+                  }
+                },
+                answer_visible_to: 'public',
+                random_option_ordering: false
               ),
+              id: an_instance_of(String),
               type: 'custom_field',
               relationships: { options: { data: [] }, resource: { data: { id: custom_form.id, type: 'custom_form' } } }
             ),
@@ -150,19 +172,36 @@ resource 'Idea Custom Fields' do
                 code: 'body_multiloc',
                 key: 'body_multiloc',
                 input_type: 'html_multiloc',
-                ordering: 2,
                 title_multiloc: hash_including(en: 'Description'),
+                ordering: 2,
                 description_multiloc: {},
                 required: true,
                 enabled: true,
                 created_at: an_instance_of(String),
                 updated_at: an_instance_of(String),
-                logic: {}
+                logic: {},
+                constraints: {
+                  locks: {
+                    enabled: true,
+                    required: true,
+                    title_multiloc: true
+                  }
+                },
+                answer_visible_to: 'public',
+                random_option_ordering: false
               ),
+              id: an_instance_of(String),
               type: 'custom_field',
               relationships: { options: { data: [] }, resource: { data: { id: custom_form.id, type: 'custom_form' } } }
             ),
-            hash_including(attributes: hash_including(code: 'ideation_page2', key: nil, input_type: 'page', ordering: 3)),
+            hash_including(
+              attributes: hash_including(
+                code: 'ideation_page2',
+                key: nil,
+                input_type: 'page',
+                ordering: 3
+              )
+            ),
             hash_including(attributes: hash_including(code: 'idea_images_attributes', key: 'idea_images_attributes', input_type: 'image_files', ordering: 4)),
             hash_including(attributes: hash_including(code: 'idea_files_attributes', key: 'idea_files_attributes', input_type: 'files', ordering: 5)),
             hash_including(attributes: hash_including(code: 'ideation_page3', key: nil, input_type: 'page', ordering: 6)),
@@ -190,8 +229,29 @@ resource 'Idea Custom Fields' do
               relationships: { options: { data: [
                 hash_including(id: an_instance_of(String), type: 'custom_field_option'),
                 hash_including(id: an_instance_of(String), type: 'custom_field_option')
-              ] },
-                               resource: { data: { id: custom_form.id, type: 'custom_form' } } }
+              ] }, resource: { data: { id: custom_form.id, type: 'custom_form' } } }
+            ),
+            hash_including(
+              attributes: hash_including(
+                code: nil,
+                key: 'form_end',
+                input_type: 'page',
+                title_multiloc: { en: 'Final page' },
+                description_multiloc: { en: 'Thank you for participating!' },
+                ordering: 12,
+                required: false,
+                enabled: true,
+                created_at: an_instance_of(String),
+                updated_at: an_instance_of(String),
+                logic: {},
+                constraints: {},
+                answer_visible_to: 'public',
+                page_layout: 'default',
+                random_option_ordering: false
+              ),
+              id: an_instance_of(String),
+              type: 'custom_field',
+              relationships: { options: { data: [] }, resource: { data: { id: custom_form.id, type: 'custom_form' } }, map_config: { data: nil } }
             )
           ])
         end
@@ -219,7 +279,7 @@ resource 'Idea Custom Fields' do
 
           assert_status 422
           json_response = json_parse response_body
-          expect(json_response).to eq({ errors: { '12': { input_type: [{ error: 'inclusion', value: 'html_multiloc' }] } } })
+          expect(json_response).to eq({ errors: { '11': { input_type: [{ error: 'inclusion', value: 'html_multiloc' }] } } })
         end
 
         example 'Updating custom fields when there are responses', document: false do
