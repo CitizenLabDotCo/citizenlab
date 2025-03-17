@@ -6,11 +6,13 @@ import useAdminPublicationsByIds from 'api/admin_publications/useAdminPublicatio
 
 import AdminPublicationsCarrousel from '../_shared/AdminPublicationsCarrousel';
 import Skeleton from '../_shared/AdminPublicationsCarrousel/Skeleton';
+import { CarrouselContainer } from '../_shared/BaseCarrousel/Containers';
 import EmptyState from '../_shared/EmptyState';
 import useLocalizeWithFallback from '../_shared/useLocalizeWithFallback';
 
 import messages from './messages';
 import Settings from './Settings';
+import { Title } from '@citizenlab/cl2-component-library';
 
 interface Props {
   titleMultiloc: Multiloc;
@@ -48,12 +50,21 @@ const Selection = ({ titleMultiloc, adminPublicationIds }: Props) => {
   if (!adminPublications) return null;
 
   return (
-    <AdminPublicationsCarrousel
-      title={title}
-      adminPublications={adminPublications}
-      hasMore={!!hasNextPage}
-      onLoadMore={fetchNextPage}
-    />
+    <CarrouselContainer>
+      <Title
+        variant="h2"
+        mt="0px"
+        // ml={isSmallerThanPhone ? DEFAULT_PADDING : undefined}
+        color="tenantText"
+      >
+        {title}
+      </Title>
+      <AdminPublicationsCarrousel
+        adminPublications={adminPublications}
+        hasMore={!!hasNextPage}
+        onLoadMore={fetchNextPage}
+      />
+    </CarrouselContainer>
   );
 };
 

@@ -1,10 +1,14 @@
 import React from 'react';
 
+import { Title, useBreakpoint } from '@citizenlab/cl2-component-library';
 import { Multiloc } from 'typings';
 
 import { FinishedOrArchived as FinishedOrArchivedType } from 'api/projects_mini/types';
 import useProjectsMini from 'api/projects_mini/useProjectsMini';
 
+import { DEFAULT_PADDING } from 'components/admin/ContentBuilder/constants';
+
+import { CarrouselContainer } from '../_shared/BaseCarrousel/Containers';
 import EmptyState from '../_shared/EmptyState';
 import ProjectCarrousel from '../_shared/ProjectCarrousel';
 import Skeleton from '../_shared/ProjectCarrousel/Skeleton';
@@ -20,6 +24,7 @@ interface Props {
 
 const FinishedOrArchived = ({ titleMultiloc, filterBy }: Props) => {
   const localizeWithFallback = useLocalizeWithFallback();
+  const isSmallerThanPhone = useBreakpoint('phone');
 
   const { data, hasNextPage, fetchNextPage, isInitialLoading } =
     useProjectsMini({
@@ -39,13 +44,21 @@ const FinishedOrArchived = ({ titleMultiloc, filterBy }: Props) => {
   }
 
   return (
-    <ProjectCarrousel
-      title={title}
-      projects={projects}
-      hasMore={!!hasNextPage}
-      className="e2e-finished-or-archived"
-      onLoadMore={fetchNextPage}
-    />
+    <CarrouselContainer className="e2e-finished-or-archived">
+      <Title
+        variant="h2"
+        mt="0px"
+        ml={isSmallerThanPhone ? DEFAULT_PADDING : undefined}
+        color="tenantText"
+      >
+        {title}
+      </Title>
+      <ProjectCarrousel
+        projects={projects}
+        hasMore={!!hasNextPage}
+        onLoadMore={fetchNextPage}
+      />
+    </CarrouselContainer>
   );
 };
 
