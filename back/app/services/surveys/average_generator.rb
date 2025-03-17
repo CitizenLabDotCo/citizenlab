@@ -8,6 +8,7 @@ module Surveys
         f.input_type == input_type || f.supports_average? # Defaults to returning all fields that support averages
       end
       @inputs = phase.ideas.supports_survey.published
+      @phase = phase
     end
 
     def field_averages_by_quarter(custom_field_attribute: :id)
@@ -18,15 +19,19 @@ module Surveys
       switch_keys(averages)
     end
 
-
     def summary_averages_by_quarter
-      {
-        overall: overall_average_by_quarter,
-        categories: {
-          averages: category_averages_by_quarter,
-          multilocs: category_multilocs
-        }
+      averages = {
+        overall: overall_average_by_quarter
       }
+      if @phase.pmethod.supports_custom_field_categories?
+        averages[:categories] = {
+          averages: category_averages_by_quarter,
+          multilocs: CustomField::QUESTION_CATEGORIES.index_with do |category|
+            MultilocService.new.i18n_to_multiloc("custom_fields.question_categories.#{category}")
+          end
+        }
+      end
+      averages
     end
 
     private
