@@ -244,13 +244,7 @@ const IdeasEditForm = ({ ideaId }: Props) => {
         initiative: messages.initiativeFormTitle,
         petition: messages.petitionFormTitle,
         proposal: messages.proposalFormTitle,
-      }[
-        // TODO: Fix this the next time the file is edited.
-        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-        uiSchema && uiSchema?.options?.inputTerm
-          ? uiSchema.options.inputTerm
-          : 'idea'
-      ]}
+      }[uiSchema.options?.inputTerm ? uiSchema.options.inputTerm : 'idea']}
     />
   );
 
