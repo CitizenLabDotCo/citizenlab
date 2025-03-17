@@ -33,14 +33,14 @@ const PopupSettings = () => {
 
   // Local state
   const [popupFrequency, setPopupFrequency] = useState(
-    phase?.data.attributes.survey_popup_frequency || 1
+    phase?.data.attributes.survey_popup_frequency || 100
   );
 
   const [errors, setErrors] = useState<CLErrors | null>(null);
 
   const updateFrequency = () => {
     // Check that the frequency is a valid number
-    if (popupFrequency > 1 || popupFrequency < 0) {
+    if (popupFrequency > 100 || popupFrequency < 0) {
       setErrors({
         base: [
           {
@@ -111,10 +111,10 @@ const PopupSettings = () => {
           type="number"
           label={formatMessage(messages.frequencyInputLabel)}
           min="0"
-          max="1"
+          max="100"
           value={popupFrequency.toString()}
           onChange={(value) => setPopupFrequency(parseFloat(value))}
-          placeholder="1.0"
+          placeholder="100"
         />
       </Box>
 

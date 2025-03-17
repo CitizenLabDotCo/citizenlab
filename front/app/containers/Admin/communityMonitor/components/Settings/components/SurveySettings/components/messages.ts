@@ -10,13 +10,13 @@ export default defineMessages({
     defaultMessage: 'Preview',
   },
   popupDescription: {
-    id: 'app.containers.Admin.communityMonitor.settings.popupDescription',
+    id: 'app.containers.Admin.communityMonitor.settings.popupDescription2',
     defaultMessage:
-      'A popup is periodically shown to residents to encourage them to fill out the Community Monitor Survey. You can set the frequency of how often the popup is randomly shown to residents.',
+      'A popup is periodically displayed to residents encouraging them to complete the Community Monitor Survey. You can adjust the frequency which determines the percentage of residents who will randomly see the popup when the conditions outlined below are met.',
   },
   defaultFrequency: {
-    id: 'app.containers.Admin.communityMonitor.settings.defaultFrequency',
-    defaultMessage: 'The default frequency value is 100% (1.0).',
+    id: 'app.containers.Admin.communityMonitor.settings.defaultFrequency2',
+    defaultMessage: 'The default frequency value is 100%.',
   },
   whatConditionsPopup: {
     id: 'app.containers.Admin.communityMonitor.settings.whatConditionsPopup',
@@ -46,8 +46,8 @@ export default defineMessages({
       ' After a resident registers an event attendance, submits a vote, or returns to a project page after submitting a survey.',
   },
   frequencyInputLabel: {
-    id: 'app.containers.Admin.communityMonitor.settings.frequencyInputLabel',
-    defaultMessage: 'Popup frequency (0 to 1)',
+    id: 'app.containers.Admin.communityMonitor.settings.frequencyInputLabel2',
+    defaultMessage: 'Popup frequency (0 to 100)',
   },
   save: {
     id: 'app.containers.Admin.communityMonitor.settings.save',

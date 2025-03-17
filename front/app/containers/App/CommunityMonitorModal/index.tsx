@@ -32,11 +32,11 @@ const CommunityMonitorModal = ({
   const { formatMessage } = useIntl();
   const location = useLocation();
 
-  // const { data: authUser } = useAuthUser();
-  // const isAdminOrModerator = isAdmin(authUser) || isModerator(authUser);
+  // const { data: authUser } = useAuthUser(); ToDo: Re-enable before release
+  // const isAdminOrModerator = isAdmin(authUser) || isModerator(authUser); ToDo: Re-enable before release
 
-  const isDevelopmentOrCI =
-    process.env.CI === 'true' || process.env.NODE_ENV === 'development';
+  // const isDevelopmentOrCI = ToDo: Re-enable before release
+  //   process.env.CI === 'true' || process.env.NODE_ENV === 'development';
 
   // If the user is on a custom page or the homepage, we can show the modal
   const customPageRegex = '/pages/';
@@ -100,12 +100,11 @@ const CommunityMonitorModal = ({
         isSurveyLive &&
         userPermittedToTakeSurvey &&
         !hasSeenModal;
-      !isDevelopmentOrCI;
+      // !isDevelopmentOrCI;
       // Math.random() < 0.01; // ToDo: Set % chance of showing the modal
       return show;
     },
     [
-      isDevelopmentOrCI,
       hasSeenModal,
       allowedOnUrl,
       isCommunityMonitorEnabled,

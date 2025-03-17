@@ -1,4 +1,4 @@
-import { Layout } from '@jsonforms/core';
+import { Layout, UISchemaElement } from '@jsonforms/core';
 
 import { IFlatCustomField } from 'api/custom_fields/types';
 import { JsonFormsSchema } from 'api/idea_json_form_schema/types';
@@ -28,12 +28,14 @@ export function findFirstSentimentLinearScale(
 ): any | null {
   if (!uiSchema?.elements) return null; // Ensure schema and elements exist
 
-  let firstQuestionUiSchema = null;
+  let firstQuestionUiSchema: UISchemaElement | null = null;
 
   // Loop through the pages, and find the first Sentiment Scale question
   uiSchema.elements.forEach((page) => {
+    if (firstQuestionUiSchema) return; // We already found the first question
+
     const questionMatch = page['elements'].find(
-      (element: any) =>
+      (element: UISchemaElement) =>
         element.type === 'Control' &&
         element.options?.input_type === 'sentiment_linear_scale'
     );
