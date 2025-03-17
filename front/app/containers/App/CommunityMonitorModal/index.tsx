@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 
 import { Box, colors, Icon, Text } from '@citizenlab/cl2-component-library';
 import { get, set } from 'js-cookie';
@@ -8,7 +8,6 @@ import { AuthenticationContext } from 'api/authentication/authentication_require
 import useAuthenticationRequirements from 'api/authentication/authentication_requirements/useAuthenticationRequirements';
 import useCommunityMonitorProject from 'api/community_monitor/useCommunityMonitorProject';
 import useCustomFields from 'api/custom_fields/useCustomFields';
-import useAuthUser from 'api/me/useAuthUser';
 import usePhase from 'api/phases/usePhase';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
@@ -17,7 +16,6 @@ import useInputSchema from 'hooks/useInputSchema';
 import Modal from 'components/UI/Modal';
 
 import { useIntl } from 'utils/cl-intl';
-import { isAdmin, isModerator } from 'utils/permissions/roles';
 
 import QuestionPreview from './components/QuestionPreview';
 import { triggerCommunityMonitorModal$ } from './events';
@@ -34,9 +32,11 @@ const CommunityMonitorModal = ({
   const { formatMessage } = useIntl();
   const location = useLocation();
 
-  const { data: authUser } = useAuthUser();
+  // const { data: authUser } = useAuthUser();
+  // const isAdminOrModerator = isAdmin(authUser) || isModerator(authUser);
 
-  const isAdminOrModerator = isAdmin(authUser) || isModerator(authUser);
+  const isDevelopmentOrCI =
+    process.env.CI === 'true' || process.env.NODE_ENV === 'development';
 
   // If the user is on a custom page or the homepage, we can show the modal
   const customPageRegex = '/pages/';
@@ -91,53 +91,48 @@ const CommunityMonitorModal = ({
   // Calculate estimated time to complete survey:
   const estimatedMinutesToComplete = calculateEstimatedSurveyTime(customFields);
 
-  // Display the modal if it should be shown
-  useEffect(() => {
-    const shouldShowModal = () => {
-      const hasSeenModal = get('community_monitor_modal_seen');
+  const shouldShowModal = useCallback(
+    (overrideAllowdOnUrl?: boolean) => {
       const show =
         // !isAdminOrModerator &&  ToDo: Re-enable this check when the feature is ready to release
-        allowedOnUrl &&
+        (allowedOnUrl || overrideAllowdOnUrl) &&
         isCommunityMonitorEnabled &&
         isSurveyLive &&
         userPermittedToTakeSurvey &&
         !hasSeenModal;
+      !isDevelopmentOrCI;
       // Math.random() < 0.01; // ToDo: Set % chance of showing the modal
       return show;
-    };
+    },
+    [
+      isDevelopmentOrCI,
+      hasSeenModal,
+      allowedOnUrl,
+      isCommunityMonitorEnabled,
+      isSurveyLive,
+      userPermittedToTakeSurvey,
+    ]
+  );
 
+  // Display the modal if it should be shown
+  useEffect(() => {
     if (shouldShowModal()) {
+      set('community_monitor_modal_seen', 'true');
       setModalOpened(true);
     }
-  }, [
-    isAdminOrModerator,
-    isCommunityMonitorEnabled,
-    userPermittedToTakeSurvey,
-    isSurveyLive,
-    allowedOnUrl,
-  ]);
+  }, [shouldShowModal]);
 
   // Listen for any action that triggers the community monitor modal
   useEffect(() => {
     const subscription = triggerCommunityMonitorModal$.subscribe(() => {
-      // ToDo: Check though if the user is allowed to take the survey
-      const hasSeenModal = get('community_monitor_modal_seen');
-      const show =
-        // !isAdminOrModerator &&  ToDo: Re-enable this check when the feature is ready to release
-        isCommunityMonitorEnabled &&
-        isSurveyLive &&
-        userPermittedToTakeSurvey &&
-        !hasSeenModal;
-
-      show && setModalOpened(true);
+      shouldShowModal(true) && setModalOpened(true);
     });
 
     return () => subscription.unsubscribe();
-  }, [isCommunityMonitorEnabled, isSurveyLive, userPermittedToTakeSurvey]);
+  }, [shouldShowModal]);
 
   const onClose = () => {
     setModalOpened(false);
-    set('community_monitor_modal_seen', 'true');
   };
 
   if (isLoading) {
