@@ -1,15 +1,13 @@
 import React from 'react';
 
-import { Title, useBreakpoint } from '@citizenlab/cl2-component-library';
 import { Multiloc } from 'typings';
 
 import useAdminPublications from 'api/admin_publications/useAdminPublications';
 
-import { DEFAULT_PADDING } from 'components/admin/ContentBuilder/constants';
-
 import AdminPublicationsCarrousel from '../_shared/AdminPublicationsCarrousel';
 import Skeleton from '../_shared/AdminPublicationsCarrousel/Skeleton';
 import { CarrouselContainer } from '../_shared/BaseCarrousel/Containers';
+import CarrouselTitle from '../_shared/CarrouselTitle';
 import EmptyState from '../_shared/EmptyState';
 import useLocalizeWithFallback from '../_shared/useLocalizeWithFallback';
 
@@ -21,7 +19,6 @@ interface Props {
 }
 
 const Published = ({ titleMultiloc }: Props) => {
-  const isSmallerThanPhone = useBreakpoint('phone');
   const localizeWithFallback = useLocalizeWithFallback();
 
   const { data, hasNextPage, fetchNextPage, isInitialLoading } =
@@ -47,14 +44,7 @@ const Published = ({ titleMultiloc }: Props) => {
 
   return (
     <CarrouselContainer className="e2e-published-projects-and-folders">
-      <Title
-        variant="h2"
-        mt="0px"
-        ml={isSmallerThanPhone ? DEFAULT_PADDING : undefined}
-        color="tenantText"
-      >
-        {title}
-      </Title>
+      <CarrouselTitle>{title}</CarrouselTitle>
       <AdminPublicationsCarrousel
         adminPublications={adminPublications}
         hasMore={!!hasNextPage}

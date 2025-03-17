@@ -1,13 +1,11 @@
 import React from 'react';
 
-import { Title, useBreakpoint } from '@citizenlab/cl2-component-library';
 import { Multiloc } from 'typings';
 
 import useProjectsMini from 'api/projects_mini/useProjectsMini';
 
-import { DEFAULT_PADDING } from 'components/admin/ContentBuilder/constants';
-
 import { CarrouselContainer } from '../_shared/BaseCarrousel/Containers';
+import CarrouselTitle from '../_shared/CarrouselTitle';
 import EmptyState from '../_shared/EmptyState';
 import ProjectCarrousel from '../_shared/ProjectCarrousel';
 import useLocalizeWithFallback from '../_shared/useLocalizeWithFallback';
@@ -20,8 +18,6 @@ interface Props {
 }
 
 const FollowedItems = ({ titleMultiloc }: Props) => {
-  const isSmallerThanPhone = useBreakpoint('phone');
-
   const localizeWithFallback = useLocalizeWithFallback();
 
   const { data, hasNextPage, fetchNextPage } = useProjectsMini({
@@ -37,14 +33,7 @@ const FollowedItems = ({ titleMultiloc }: Props) => {
 
   return (
     <CarrouselContainer className="e2e-followed-items">
-      <Title
-        variant="h2"
-        mt="0px"
-        ml={isSmallerThanPhone ? DEFAULT_PADDING : undefined}
-        color="tenantText"
-      >
-        {title}
-      </Title>
+      <CarrouselTitle>{title}</CarrouselTitle>
       <ProjectCarrousel
         projects={projects}
         hasMore={!!hasNextPage}
