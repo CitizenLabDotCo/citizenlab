@@ -91,6 +91,11 @@ const CommunityMonitorModal = ({
   // Calculate estimated time to complete survey:
   const estimatedMinutesToComplete = calculateEstimatedSurveyTime(customFields);
 
+  const surveyPopupFrequency =
+    typeof phase?.data.attributes.survey_popup_frequency === 'number'
+      ? phase.data.attributes.survey_popup_frequency
+      : 100;
+
   const shouldShowModal = useCallback(
     (overrideAllowdOnUrl?: boolean) => {
       const show =
@@ -99,17 +104,18 @@ const CommunityMonitorModal = ({
         isCommunityMonitorEnabled &&
         isSurveyLive &&
         userPermittedToTakeSurvey &&
-        !hasSeenModal;
+        !hasSeenModal &&
+        Math.random() < surveyPopupFrequency / 100;
       // !isDevelopmentOrCI;
-      // Math.random() < 0.01; // ToDo: Set % chance of showing the modal
       return show;
     },
     [
-      hasSeenModal,
       allowedOnUrl,
       isCommunityMonitorEnabled,
       isSurveyLive,
       userPermittedToTakeSurvey,
+      hasSeenModal,
+      surveyPopupFrequency,
     ]
   );
 

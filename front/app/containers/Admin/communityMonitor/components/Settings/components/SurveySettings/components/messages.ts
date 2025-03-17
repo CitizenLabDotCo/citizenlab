@@ -53,4 +53,8 @@ export default defineMessages({
     id: 'app.containers.Admin.communityMonitor.settings.save',
     defaultMessage: 'Save',
   },
+  saved: {
+    id: 'app.containers.Admin.communityMonitor.settings.saved',
+    defaultMessage: 'Saved',
+  },
 });

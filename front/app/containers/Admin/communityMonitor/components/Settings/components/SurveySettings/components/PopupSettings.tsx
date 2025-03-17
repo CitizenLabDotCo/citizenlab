@@ -7,6 +7,7 @@ import {
   Button,
   Input,
   colors,
+  Icon,
 } from '@citizenlab/cl2-component-library';
 import { CLErrors } from 'typings';
 
@@ -38,7 +39,11 @@ const PopupSettings = () => {
       : 100
   );
 
+  const [success, setSuccess] = useState(false);
   const [errors, setErrors] = useState<CLErrors | null>(null);
+  const [savePossible, setSavePossible] = useState(
+    phase?.data.attributes.survey_popup_frequency !== popupFrequency
+  );
 
   const updateFrequency = () => {
     // Check that the frequency is a valid number
@@ -61,6 +66,9 @@ const PopupSettings = () => {
         survey_popup_frequency: popupFrequency,
       },
       {
+        onSuccess: () => {
+          setSuccess(true);
+        },
         onError: (error) => {
           setErrors(error.errors);
         },
@@ -108,20 +116,34 @@ const PopupSettings = () => {
         </ul>
       </Text>
 
-      <Box maxWidth="300px" mt="32px">
-        <Input
-          type="number"
-          label={formatMessage(messages.frequencyInputLabel)}
-          min="0"
-          max="100"
-          value={popupFrequency.toString()}
-          onChange={(value) => setPopupFrequency(parseFloat(value))}
-          placeholder="100"
-        />
+      <Box mt="32px" display="flex">
+        <Box width="280px">
+          <Input
+            type="number"
+            label={formatMessage(messages.frequencyInputLabel)}
+            min="0"
+            max="100"
+            value={popupFrequency.toString()}
+            onChange={(value) => {
+              // Clear any state related to the value
+              setSuccess(false);
+              setErrors(null);
+              setSavePossible(true);
+
+              // Update the frequency value
+              setPopupFrequency(parseFloat(value));
+            }}
+            placeholder="100"
+          />
+        </Box>
       </Box>
 
       <Box display="flex" mt="20px">
-        <Button buttonStyle="admin-dark" onClick={updateFrequency}>
+        <Button
+          disabled={!savePossible}
+          buttonStyle="admin-dark"
+          onClick={updateFrequency}
+        >
           {formatMessage(messages.save)}
         </Button>
       </Box>
@@ -129,6 +151,21 @@ const PopupSettings = () => {
       {errors && (
         <Box mt="12px" display="flex">
           <Error apiErrors={errors.base} />
+        </Box>
+      )}
+
+      {success && (
+        <Box mt="12px" display="flex">
+          <Text m="0px" color="success">
+            {formatMessage(messages.saved)}
+          </Text>
+          <Icon
+            name="check-circle"
+            fill={colors.success}
+            height="16px"
+            ml="4px"
+            my="auto"
+          />
         </Box>
       )}
     </>
