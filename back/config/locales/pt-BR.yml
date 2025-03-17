@@ -168,12 +168,12 @@ pt:
       attachments:
         title: Anexos
         description:
-      section1:
+      page1:
         description:
-      section2:
+      page2:
         title: Imagens e anexos
         description:
-      section3:
+      page3:
         title: Detalhes
         description:
       other_input_field:
