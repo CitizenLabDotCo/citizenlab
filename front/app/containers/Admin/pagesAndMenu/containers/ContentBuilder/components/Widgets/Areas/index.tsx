@@ -9,6 +9,8 @@ import useProjectsMini from 'api/projects_mini/useProjectsMini';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 import useLocalize from 'hooks/useLocalize';
 
+import { CarrouselContainer } from '../_shared/BaseCarrousel/Containers';
+import CarrouselTitle from '../_shared/CarrouselTitle';
 import ProjectCarrousel from '../_shared/ProjectCarrousel';
 import Skeleton from '../_shared/ProjectCarrousel/Skeleton';
 
@@ -73,13 +75,14 @@ const Areas = ({ titleMultiloc }: Props) => {
   }
 
   return (
-    <ProjectCarrousel
-      title={title}
-      projects={projects}
-      hasMore={!!hasNextPage}
-      className="e2e-areas-widget"
-      onLoadMore={fetchNextPage}
-    />
+    <CarrouselContainer className="e2e-areas-widget">
+      <CarrouselTitle>{title}</CarrouselTitle>
+      <ProjectCarrousel
+        projects={projects}
+        hasMore={!!hasNextPage}
+        onLoadMore={fetchNextPage}
+      />
+    </CarrouselContainer>
   );
 };
 
