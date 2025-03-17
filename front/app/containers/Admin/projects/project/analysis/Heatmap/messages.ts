@@ -53,4 +53,12 @@ export default defineMessages({
     id: 'app.containers.AdminPage.projects.project.analysis.heatmap.units',
     defaultMessage: 'Units',
   },
+  previousInsight: {
+    id: 'app.containers.AdminPage.projects.project.analysis.heatmap.previousInsight',
+    defaultMessage: 'Previous insight',
+  },
+  nextInsight: {
+    id: 'app.containers.AdminPage.projects.project.analysis.heatmap.nextInsight',
+    defaultMessage: 'Next insight',
+  },
 });

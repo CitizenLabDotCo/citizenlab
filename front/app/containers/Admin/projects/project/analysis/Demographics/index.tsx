@@ -89,8 +89,12 @@ const Demographics = () => {
             iconColorOnHover={colors.grey700}
             iconWidth="20px"
           />
-          {selectedField?.attributes.code === 'birthyear' && '1/2'}
-          {selectedField?.attributes.code === 'domicile' && '2/2'}
+          {selectedFieldId && (
+            <Text mx="8px">
+              {supportedFieldIds.findIndex((id) => id === selectedFieldId) + 1}/
+              {supportedFieldIds.length}
+            </Text>
+          )}
           <IconButton
             iconName="chevron-right"
             onClick={() => handleCycle(1)}
