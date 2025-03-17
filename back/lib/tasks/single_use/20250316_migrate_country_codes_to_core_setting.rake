@@ -7,7 +7,7 @@ namespace :single_use do
       puts "processing tenant #{tenant.host} ..."
 
       config = AppConfiguration.instance
-      existing_code = config&.country_code
+      existing_code = config.country_code
 
       if existing_code
         config.settings['core']['country_code'] = existing_code
