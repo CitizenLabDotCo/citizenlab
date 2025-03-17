@@ -61,10 +61,6 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.survey.importInputs2',
     defaultMessage: 'Import',
   },
-  viewSurveyText: {
-    id: 'app.containers.AdminPage.ProjectEdit.survey.viewSurveyText2',
-    defaultMessage: 'View',
-  },
   editSurvey: {
     id: 'app.containers.AdminPage.ProjectEdit.survey.editSurvey2',
     defaultMessage: 'Edit',

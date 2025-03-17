@@ -36,7 +36,6 @@ const LinearAndRatingSettings = ({
             maximumName={maximumName}
             onSelectedLocaleChange={onSelectedLocaleChange}
             locales={locales}
-            inputType={inputType}
           />
         </Box>
       )}

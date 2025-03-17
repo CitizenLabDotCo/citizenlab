@@ -13,10 +13,9 @@ import { LogicConfig, ResultUngrouped } from 'api/survey_results/types';
 
 import useLocalize from 'hooks/useLocalize';
 
-import LogicIcon from 'components/admin/FormResults/LogicIcon';
-
 import { useIntl } from 'utils/cl-intl';
 
+import LogicIcon from '../LogicIcon';
 import messages from '../messages';
 
 type FormResultsPageProps = {

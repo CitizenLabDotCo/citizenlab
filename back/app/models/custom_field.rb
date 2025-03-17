@@ -39,6 +39,9 @@
 #  linear_scale_label_10_multiloc :jsonb            not null
 #  linear_scale_label_11_multiloc :jsonb            not null
 #  ask_follow_up                  :boolean          default(FALSE), not null
+#  page_button_label_multiloc     :jsonb            not null
+#  page_button_link               :string
+#  question_category              :string
 #
 # Indexes
 #
@@ -76,6 +79,7 @@ class CustomField < ApplicationRecord
   VISIBLE_TO_PUBLIC = 'public'
   VISIBLE_TO_ADMINS = 'admins'
   PAGE_LAYOUTS = %w[default map].freeze
+  QUESTION_CATEGORIES = %w[quality_of_life service_delivery governance_and_trust].freeze
 
   validates :resource_type, presence: true, inclusion: { in: FIELDABLE_TYPES }
   validates(
@@ -97,6 +101,8 @@ class CustomField < ApplicationRecord
   validates :minimum_select_count, comparison: { greater_than_or_equal_to: 0 }, if: :multiselect?, allow_nil: true
   validates :page_layout, presence: true, inclusion: { in: PAGE_LAYOUTS }, if: :page?
   validates :page_layout, absence: true, unless: :page?
+  validates :question_category, absence: true, unless: :supports_category?
+  validates :question_category, inclusion: { in: QUESTION_CATEGORIES }, allow_nil: true, if: :supports_category?
 
   before_validation :set_default_enabled
   before_validation :set_default_answer_visible_to
@@ -127,8 +133,12 @@ class CustomField < ApplicationRecord
     ask_follow_up
   end
 
+  def support_follow_up?
+    %w[sentiment_linear_scale].include?(input_type)
+  end
+
   def support_free_text_value?
-    %w[text multiline_text text_multiloc multiline_text_multiloc html_multiloc].include?(input_type) || (support_options? && includes_other_option?)
+    %w[text multiline_text text_multiloc multiline_text_multiloc html_multiloc].include?(input_type) || (support_options? && includes_other_option?) || (support_follow_up?)
   end
 
   def support_option_images?
@@ -157,6 +167,10 @@ class CustomField < ApplicationRecord
 
   def supports_linear_scale_labels?
     %w[linear_scale matrix_linear_scale sentiment_linear_scale].include?(input_type)
+  end
+
+  def supports_average?
+    %w[linear_scale sentiment_linear_scale rating number].include?(input_type)
   end
 
   def supports_single_selection?
@@ -346,6 +360,10 @@ class CustomField < ApplicationRecord
     )
   end
 
+  def additional_text_question_key
+    other_option_text_field&.key || follow_up_text_field&.key
+  end
+
   def ordered_options
     @ordered_options ||= if random_option_ordering
       options.shuffle.sort_by { |o| o.other ? 1 : 0 }
@@ -389,6 +407,13 @@ class CustomField < ApplicationRecord
       resource.participation_context
     end
     phase&.input_term || Phase::FALLBACK_INPUT_TERM
+  end
+
+  def supports_category?
+    participation_context = resource&.participation_context
+    return false unless participation_context
+
+    participation_context.pmethod.supports_custom_field_categories?
   end
 
   private

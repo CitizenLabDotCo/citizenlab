@@ -17,8 +17,4 @@ export default defineMessages({
     id: 'app.containers.Admin.inspirationHub.Filters.population',
     defaultMessage: 'Population',
   },
-  status: {
-    id: 'app.containers.Admin.inspirationHub.Filters.Status',
-    defaultMessage: 'Status',
-  },
 });

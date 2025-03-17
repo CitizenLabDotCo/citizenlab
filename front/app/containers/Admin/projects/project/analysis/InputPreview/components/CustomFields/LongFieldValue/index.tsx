@@ -70,6 +70,7 @@ const FieldValue = ({ projectId, phaseId, customFieldId, input }: Props) => {
           return <TextLongField input={input} customField={customField} />;
         case 'number':
         case 'rating':
+        case 'sentiment_linear_scale':
         case 'linear_scale': {
           return (
             <LinearScaleLongField

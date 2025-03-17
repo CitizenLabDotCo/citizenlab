@@ -14,6 +14,7 @@ export type IIdeaCustomFieldInputType =
   | 'multiselect'
   | 'ranking'
   | 'matrix_linear_scale'
+  | 'sentiment_linear_scale'
   | 'checkbox'
   | 'date'
   | 'linear_scale'

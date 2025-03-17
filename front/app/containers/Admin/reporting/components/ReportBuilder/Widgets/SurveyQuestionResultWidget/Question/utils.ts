@@ -19,7 +19,3 @@ export const getLegendLabels = (
     return localize(attributes.multilocs.group[key].title_multiloc);
   });
 };
-
-export const isMapBasedQuestion = (inputType: string) => {
-  return ['point', 'line', 'polygon'].includes(inputType);
-};

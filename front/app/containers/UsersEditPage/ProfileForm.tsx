@@ -167,7 +167,7 @@ const ProfileForm = () => {
       });
       setProfanityApiError(false);
     } catch (error) {
-      const profanityApiError = Array.isArray(error.errors.base)
+      const profanityApiError = Array.isArray(error?.errors?.base)
         ? error.errors.base.find(
             (apiError) => apiError.error === 'includes_banned_words'
           )

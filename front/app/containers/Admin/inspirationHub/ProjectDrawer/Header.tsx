@@ -13,6 +13,7 @@ import { ProjectLibraryProjectData } from 'api/project_library_projects/types';
 
 import { parseBackendDateString } from 'utils/dateUtils';
 
+import { POPULATION_GROUP_LABELS } from '../constants';
 import { useLocalizeProjectLibrary } from '../utils';
 
 import ExternalLink from './ExternalLink';
@@ -36,14 +37,14 @@ const Header = ({ attributes }: Props) => {
       <Box display="flex" flexDirection="row" alignItems="center">
         {attributes.tenant_population_group && (
           <StatusLabel
-            text={attributes.tenant_population_group}
+            text={POPULATION_GROUP_LABELS[attributes.tenant_population_group]}
             backgroundColor={colors.coolGrey600}
             h="16px"
-            w="24px"
             ml="4px"
+            mr="8px"
           />
         )}
-        <ExternalLink href={tenantURL} ml="8px" mt="1px">
+        <ExternalLink href={tenantURL} mt="1px">
           {attributes.tenant_name}
         </ExternalLink>
       </Box>

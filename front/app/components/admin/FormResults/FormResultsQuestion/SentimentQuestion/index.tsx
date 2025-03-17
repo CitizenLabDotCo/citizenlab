@@ -1,137 +1,82 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 
 import {
   Accordion,
   Box,
-  Title,
-  Text,
-  Icon,
   colors,
+  BoxProps,
+  useBreakpoint,
 } from '@citizenlab/cl2-component-library';
 
-import { ResultUngrouped } from 'api/survey_results/types';
+import { ResultGrouped, ResultUngrouped } from 'api/survey_results/types';
 
-import InputType from 'components/admin/FormResults/FormResultsQuestion/InputType';
-import T from 'components/T';
+import { useIntl } from 'utils/cl-intl';
 
-import SentimentScore from './components/SentimentScore';
-import { parseResult, SentimentAnswers } from './utils';
+import Comments from './components/Comments';
+import CommentSummary from './components/CommentSummary';
+import SentimentHeader from './components/SentimentHeader';
+import SentimentStats from './components/SentimentStats';
 
 type Props = {
-  result: ResultUngrouped;
+  result: ResultUngrouped | ResultGrouped;
+  showAnalysis?: boolean;
 };
 
-const SentimentQuestion = ({ result }: Props) => {
-  const answers: SentimentAnswers = useMemo(() => {
-    return parseResult(result);
-  }, [result]);
+const SentimentQuestion = ({
+  result,
+  showAnalysis,
+  ...props
+}: Props & BoxProps) => {
+  const isTabletOrSmaller = useBreakpoint('tablet');
+  const isMobileOrSmaller = useBreakpoint('phone');
+  const { formatMessage } = useIntl();
 
-  const {
-    inputType,
-    question,
-    questionNumber,
-    required,
-    totalResponseCount,
-    questionResponseCount,
-  } = result;
+  const { textResponses } = result;
+
+  const textResponsesCount = textResponses?.length || 0;
+  const hasTextResponses = textResponsesCount > 0;
 
   return (
-    <Accordion
-      title={
-        <Box
-          width="100%"
-          display="flex"
-          justifyContent="space-between"
-          alignItems="center"
-          py="0px"
-        >
-          <Box display="block">
-            <Title variant="h4" mt="12px" mb="12px">
-              {questionNumber}. <T value={question} />
-            </Title>
-            <InputType
-              inputType={inputType}
-              required={required}
-              totalSubmissions={totalResponseCount}
-              totalResponses={questionResponseCount}
-            />
-          </Box>
-
-          <Box display="flex" gap="160px">
-            <Box display="flex" gap="4px">
-              <Icon my="auto" name="comment" fill={colors.coolGrey700} />
-              <Text my="auto" color="coolGrey700">
-                12 Comments
-              </Text>
-            </Box>
-            <Box my="auto">
-              <Box>
-                <Box display="flex" justifyContent="space-between" mb="4px">
-                  <Box display="flex">
-                    <Title color="grey800" m="0px" variant="h4">
-                      2.1
-                    </Title>
-                    <Text
-                      color="grey700"
-                      fontSize="s"
-                      fontWeight="semi-bold"
-                      m="0px"
-                      mt="auto"
-                    >
-                      /5
-                    </Text>
-                  </Box>
-                  <Text m="0px" color="green400" fontSize="s">
-                    <Icon
-                      mr="4px"
-                      width="13px"
-                      name="trend-up"
-                      fill="green200"
-                    />
-                    +12%
-                  </Text>
+    <Box mb="20px" background={colors.white} borderRadius="4px" {...props}>
+      <Accordion
+        borderRadius="4px"
+        title={
+          <Box
+            width="100%"
+            display={isTabletOrSmaller ? 'block' : 'flex'}
+            justifyContent="space-between"
+            p="8px"
+          >
+            <SentimentHeader result={result} />
+            <Box
+              display="flex"
+              justifyContent={isMobileOrSmaller ? 'flex-start' : 'flex-end'}
+            >
+              {!isMobileOrSmaller && hasTextResponses && (
+                <Box mr={isTabletOrSmaller ? '100px' : '160px'} my="auto">
+                  <CommentSummary
+                    count={textResponsesCount}
+                    formatMessage={formatMessage}
+                  />
                 </Box>
-              </Box>
-              <SentimentScore answers={answers} />
+              )}
+              <SentimentStats result={result} />
             </Box>
           </Box>
-        </Box>
-      }
-      border="1px solid rgb(218, 217, 217) !important"
-      marginBottom="16px"
-      padding="20px"
-    >
-      <Box display="flex" gap="16px">
-        <Box
-          w="300px"
-          h="260px"
-          background={colors.grey200}
-          display="flex"
-          gap="16px"
-        />
-        <Box
-          w="300px"
-          h="260px"
-          background={colors.grey200}
-          display="flex"
-          gap="16px"
-        />
-        <Box
-          w="300px"
-          h="260px"
-          background={colors.grey200}
-          display="flex"
-          gap="16px"
-        />
-        <Box
-          w="300px"
-          h="260px"
-          background={colors.grey200}
-          display="flex"
-          gap="16px"
-        />
-      </Box>
-    </Accordion>
+        }
+        border={`1px solid ${colors.borderLight}`}
+        px="12px"
+        py="16px"
+      >
+        {textResponses && (
+          <Comments
+            customFieldId={result.customFieldId}
+            textResponses={textResponses}
+            showAnalysis={showAnalysis}
+          />
+        )}
+      </Accordion>
+    </Box>
   );
 };
 

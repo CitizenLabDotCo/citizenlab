@@ -30,25 +30,33 @@ const StyledDropdownListItem = styled(DropdownListItem)`
   text-align: left;
 `;
 
+type Props = {
+  customFieldId: string;
+  textResponsesCount: number;
+  hasOtherResponses?: boolean;
+  projectId?: string;
+  phaseId?: string;
+};
+
 const Analysis = ({
   customFieldId,
   textResponsesCount,
   hasOtherResponses,
-}: {
-  customFieldId: string;
-  textResponsesCount: number;
-  hasOtherResponses?: boolean;
-}) => {
+  ...props
+}: Props) => {
   const [dropdownOpened, setDropdownOpened] = useState(false);
   const { formatMessage } = useIntl();
   const { mutate: addAnalysis, isLoading: isAddAnalysisLoading } =
     useAddAnalysis();
   const { mutate: updateAnalysis, isLoading } = useUpdateAnalysis();
 
-  const { projectId, phaseId } = useParams() as {
+  const { projectId: projectIdParam, phaseId: phaseIdParam } = useParams() as {
     projectId: string;
     phaseId: string;
   };
+
+  const projectId = props.projectId || projectIdParam;
+  const phaseId = props.phaseId || phaseIdParam;
 
   const { data: analyses, isLoading: isAnalysesLoading } = useAnalyses({
     projectId: phaseId ? undefined : projectId,

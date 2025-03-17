@@ -197,6 +197,10 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.survey.page',
     defaultMessage: 'Page',
   },
+  sentiment_linear_scale: {
+    id: 'app.containers.Admin.projects.project.survey.sentiment_linear_scale',
+    defaultMessage: 'Sentiment scale',
+  },
   hiddenByLogic: {
     id: 'app.containers.Admin.projects.project.survey.hiddenByLogic2',
     defaultMessage: ' - Hidden by logic',
