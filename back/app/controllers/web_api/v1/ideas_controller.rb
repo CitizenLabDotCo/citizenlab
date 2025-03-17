@@ -288,6 +288,8 @@ class WebApi::V1::IdeasController < ApplicationController
   end
 
   def similarities
+    require_feature! 'authoring_assistance'
+
     idea = Idea.new idea_params_for_similarities
     service = SimilarIdeasService.new(idea)
 

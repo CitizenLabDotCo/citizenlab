@@ -257,9 +257,7 @@ export interface IAppConfigurationSettings {
   prescreening_ideation?: AppConfigurationFeature;
   input_cosponsorship?: AppConfigurationFeature;
   project_review?: AppConfigurationFeature;
-  similar_inputs?: AppConfigurationFeature & {
-    admins_only: boolean;
-  };
+  authoring_assistance?: AppConfigurationFeature;
   platform_templates?: AppConfigurationFeature;
   authoring_assistance_prototype?: AppConfigurationFeature;
   project_library?: AppConfigurationFeature;

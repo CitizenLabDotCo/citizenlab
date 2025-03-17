@@ -1311,24 +1311,6 @@
         }
       },
 
-      "similar_inputs": {
-        "type": "object",
-        "title": "Experimental feature: Similar inputs",
-        "description":	"Show similar inputs (ideas) when viewing the page of an input, using AI (Cohere multilingual word embeddings). Inputs posted while the feature was disabled will not be included.",
-        "additionalProperties": false,
-        "required": ["allowed", "enabled"],
-        "required-settings": ["admins_only"],
-        "properties": {
-          "allowed": { "type": "boolean", "default": false},
-          "enabled": { "type": "boolean", "default": false},
-          "admins_only": {
-            "title": "Only admins can see similar inputs",
-            "type": "boolean",
-            "default": true
-          }
-        }
-      },
-
       "authoring_assistance_prototype": {
         "type": "object",
         "title": "Experimental feature: Authoring assistance prototype",
@@ -1348,6 +1330,18 @@
             "type": "number",
             "default": 0.4
           }
+        }
+      },
+
+      "authoring_assistance": {
+        "type": "object",
+        "title": "Authoring assistance",
+        "description":	"Help the user with writing better ideas and proposals through AI assistance while typing in the input form. Inputs posted while the feature was disabled will not be listed as similar inputs.",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": false},
+          "enabled": { "type": "boolean", "default": false}
         }
       },
 

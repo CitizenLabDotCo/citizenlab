@@ -121,8 +121,8 @@ describe SideFxIdeaService do
       expect(phase2.reload.manual_votes_count).to eq 3
     end
 
-    it 'enqueues an upsert embedding job when the similar_inputs feature is turned on' do
-      SettingsService.new.activate_feature! 'similar_inputs'
+    it 'enqueues an upsert embedding job when the authoring_assistance feature is turned on' do
+      SettingsService.new.activate_feature! 'authoring_assistance'
       idea = create(:idea, author: user)
       expect { service.after_create(idea, user) }
         .to enqueue_job(UpsertEmbeddingJob)
@@ -130,7 +130,7 @@ describe SideFxIdeaService do
         .exactly(1).times
     end
 
-    it "doesn't enqueue an upsert embedding job when the similar_inputs feature is turned off" do
+    it "doesn't enqueue an upsert embedding job when the authoring_assistance feature is turned off" do
       idea = create(:idea, author: user)
       expect { service.after_create(idea, user) }
         .not_to enqueue_job(UpsertEmbeddingJob)
@@ -138,7 +138,7 @@ describe SideFxIdeaService do
     end
 
     it "doesn't enqueue an upsert embedding job for survey responses" do
-      SettingsService.new.activate_feature! 'similar_inputs'
+      SettingsService.new.activate_feature! 'authoring_assistance'
       create(:idea_status_proposed)
       idea = create(:native_survey_response, author: user)
       expect { service.after_create(idea, user) }
@@ -344,8 +344,8 @@ describe SideFxIdeaService do
       expect(phase.reload.manual_votes_count).to eq 2
     end
 
-    it 'enqueues an upsert embedding job when the similar_inputs feature is turned on and the title changed' do
-      SettingsService.new.activate_feature! 'similar_inputs'
+    it 'enqueues an upsert embedding job when the authoring_assistance feature is turned on and the title changed' do
+      SettingsService.new.activate_feature! 'authoring_assistance'
       idea = create(:idea, author: user)
       idea.update!(title_multiloc: { en: 'changed' })
       expect { service.after_update(idea, user) }
@@ -354,8 +354,8 @@ describe SideFxIdeaService do
         .exactly(1).times
     end
 
-    it 'enqueues an upsert embedding job when the similar_inputs feature is turned on and the body changed' do
-      SettingsService.new.activate_feature! 'similar_inputs'
+    it 'enqueues an upsert embedding job when the authoring_assistance feature is turned on and the body changed' do
+      SettingsService.new.activate_feature! 'authoring_assistance'
       idea = create(:idea, author: user)
       idea.update!(body_multiloc: { en: 'changed' })
       expect { service.after_update(idea, user) }
@@ -364,15 +364,15 @@ describe SideFxIdeaService do
         .exactly(1).times
     end
 
-    it "doesn't enqueue an upsert embedding job when the similar_inputs feature is turned on but title and body didn't change" do
-      SettingsService.new.activate_feature! 'similar_inputs'
+    it "doesn't enqueue an upsert embedding job when the authoring_assistance feature is turned on but title and body didn't change" do
+      SettingsService.new.activate_feature! 'authoring_assistance'
       idea = create(:idea, author: user)
       expect { service.after_update(idea, user) }
         .not_to enqueue_job(UpsertEmbeddingJob)
         .with(idea)
     end
 
-    it "doesn't enqueue an upsert embedding job when the similar_inputs feature is turned off" do
+    it "doesn't enqueue an upsert embedding job when the authoring_assistance feature is turned off" do
       idea = create(:idea, author: user)
       idea.update!(title_multiloc: { en: 'changed' })
       expect { service.after_update(idea, user) }
@@ -381,7 +381,7 @@ describe SideFxIdeaService do
     end
 
     it "doesn't enqueue an upsert embedding job for survey responses" do
-      SettingsService.new.activate_feature! 'similar_inputs'
+      SettingsService.new.activate_feature! 'authoring_assistance'
       create(:idea_status_proposed)
       idea = create(:native_survey_response, author: user)
       expect { service.after_update(idea, user) }
