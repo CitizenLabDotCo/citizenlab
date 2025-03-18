@@ -811,7 +811,7 @@
   "app.components.formBuilder.title": "Tittel",
   "app.components.formBuilder.toLabel": "til",
   "app.components.formBuilder.unsavedChanges": "Du har endringer som ikke er lagret",
-  "app.components.formBuilder.useCustomButton": "Bruk egendefinert knapp",
+  "app.components.formBuilder.useCustomButton2": "Bruk egendefinert sideknapp",
   "app.components.formBuilder.veryBad": "Veldig dårlig",
   "app.components.formBuilder.veryGood": "Veldig bra",
   "app.components.phaseTimeLeft.xDayLeft": "{timeLeft, plural, =0 {Mindre enn en dag} one {En dag} other {# dager}} igjen",
