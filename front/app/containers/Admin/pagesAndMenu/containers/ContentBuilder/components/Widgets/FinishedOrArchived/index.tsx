@@ -5,6 +5,8 @@ import { Multiloc } from 'typings';
 import { FinishedOrArchived as FinishedOrArchivedType } from 'api/projects_mini/types';
 import useProjectsMini from 'api/projects_mini/useProjectsMini';
 
+import { CarrouselContainer } from '../_shared/BaseCarrousel/Containers';
+import CarrouselTitle from '../_shared/CarrouselTitle';
 import EmptyState from '../_shared/EmptyState';
 import ProjectCarrousel from '../_shared/ProjectCarrousel';
 import Skeleton from '../_shared/ProjectCarrousel/Skeleton';
@@ -39,13 +41,14 @@ const FinishedOrArchived = ({ titleMultiloc, filterBy }: Props) => {
   }
 
   return (
-    <ProjectCarrousel
-      title={title}
-      projects={projects}
-      hasMore={!!hasNextPage}
-      className="e2e-finished-or-archived"
-      onLoadMore={fetchNextPage}
-    />
+    <CarrouselContainer className="e2e-finished-or-archived">
+      <CarrouselTitle>{title}</CarrouselTitle>
+      <ProjectCarrousel
+        projects={projects}
+        hasMore={!!hasNextPage}
+        onLoadMore={fetchNextPage}
+      />
+    </CarrouselContainer>
   );
 };
 
