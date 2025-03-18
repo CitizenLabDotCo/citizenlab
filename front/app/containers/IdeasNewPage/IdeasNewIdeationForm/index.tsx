@@ -1,11 +1,4 @@
-import React, {
-  useEffect,
-  useState,
-  useCallback,
-  lazy,
-  Suspense,
-  useRef,
-} from 'react';
+import React, { useEffect, useState, useCallback, useRef } from 'react';
 
 import { Box, colors, useBreakpoint } from '@citizenlab/cl2-component-library';
 import { parse } from 'qs';
@@ -26,7 +19,6 @@ import useLocale from 'hooks/useLocale';
 import NewIdeaHeading from 'containers/IdeaHeading/NewIdeaHeading';
 import { calculateDynamicHeight } from 'containers/IdeasNewSurveyPage/IdeasNewSurveyForm/utils';
 
-import AnonymousParticipationConfirmationModal from 'components/AnonymousParticipationConfirmationModal';
 import ContentUploadDisclaimer from 'components/ContentUploadDisclaimer';
 import Form from 'components/Form';
 import { FORM_PAGE_CHANGE_EVENT } from 'components/Form/Components/Layouts/events';
@@ -44,8 +36,6 @@ import { canModerateProject } from 'utils/permissions/rules/projectPermissions';
 import IdeasNewMeta from '../IdeasNewMeta';
 import messages from '../messages';
 import { getLocationGeojson } from '../utils';
-
-const ProfileVisiblity = lazy(() => import('./ProfileVisibility'));
 
 const getConfig = (
   phaseFromUrl: IPhaseData | undefined,
@@ -102,15 +92,9 @@ const IdeasNewIdeationForm = ({ project, phaseId }: Props) => {
   });
   const search = location.search;
   const [loading, setLoading] = useState(false);
-  const [showAnonymousConfirmationModal, setShowAnonymousConfirmationModal] =
-    useState(false);
   const [processingLocation, setProcessingLocation] = useState(false);
   const [initialFormData, setInitialFormData] = useState({});
-  const [postAnonymously, setPostAnonymously] = useState(false);
-  const participationContext = getCurrentPhase(phases?.data);
   const participationMethodConfig = getConfig(phaseFromUrl?.data, phases);
-  const allowAnonymousPosting =
-    participationContext?.attributes.allow_anonymous_participation;
 
   // Click on map flow : Reverse geocode the location if it's in the url params
   useEffect(() => {
@@ -204,7 +188,6 @@ const IdeasNewIdeationForm = ({ project, phaseId }: Props) => {
       location_point_geojson,
       project_id: project.data.id,
       phase_ids,
-      anonymous: postAnonymously ? true : undefined,
       publication_status: undefined, // TODO: Change this logic when handling draft ideas
     });
     updateSearchParams({ idea_id: idea.data.id });
@@ -251,14 +234,6 @@ const IdeasNewIdeationForm = ({ project, phaseId }: Props) => {
     },
     [uiSchema]
   );
-
-  const handleOnChangeAnonymousPosting = () => {
-    if (!postAnonymously) {
-      setShowAnonymousConfirmationModal(true);
-    }
-
-    setPostAnonymously((postAnonymously) => !postAnonymously);
-  };
 
   if (isLoadingInputSchema) return <FullPageSpinner />;
   if (
@@ -321,26 +296,9 @@ const IdeasNewIdeationForm = ({ project, phaseId }: Props) => {
                 loading={loading}
                 showSubmitButton={false}
                 config={'input'}
-                footer={
-                  allowAnonymousPosting ? (
-                    <Suspense fallback={null}>
-                      <ProfileVisiblity
-                        postAnonymously={postAnonymously}
-                        onChange={handleOnChangeAnonymousPosting}
-                      />
-                    </Suspense>
-                  ) : undefined
-                }
               />
             </Box>
           </Box>
-          {showAnonymousConfirmationModal && (
-            <AnonymousParticipationConfirmationModal
-              onCloseModal={() => {
-                setShowAnonymousConfirmationModal(false);
-              }}
-            />
-          )}
           <ContentUploadDisclaimer
             isDisclaimerOpened={isDisclaimerOpened}
             onAcceptDisclaimer={onAcceptDisclaimer}

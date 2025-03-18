@@ -36,6 +36,9 @@ import useProjectBySlug from 'api/projects/useProjectBySlug';
 
 import useLocalize from 'hooks/useLocalize';
 
+import ProfileVisiblity from 'containers/IdeasNewPage/IdeasNewIdeationForm/ProfileVisibility';
+
+import AnonymousParticipationConfirmationModal from 'components/AnonymousParticipationConfirmationModal';
 import EsriMap from 'components/EsriMap';
 import { parseLayers } from 'components/EsriMap/utils';
 import { FormContext } from 'components/Form/contexts';
@@ -66,6 +69,8 @@ import messages from './messages';
 import PageControlButtons from './PageControlButtons';
 import SubmissionReference from './SubmissionReference';
 
+// TODO: Edwin: This component is a bit of a mess. It should be refactored to be more readable and maintainable.
+// This is on my TODO list for this tandem..
 const CLPageLayout = memo(
   ({
     schema,
@@ -86,6 +91,9 @@ const CLPageLayout = memo(
     const theme = useTheme();
     const { pathname } = useLocation();
     const isAdminPage = isPage('admin', pathname);
+    const [postAnonymously, setPostAnonymously] = useState(false);
+    const [showAnonymousConfirmationModal, setShowAnonymousConfirmationModal] =
+      useState(false);
 
     // We can cast types because the tester made sure we only get correct values
     const pageTypeElements = (uischema as PageCategorization).elements;
@@ -121,10 +129,20 @@ const CLPageLayout = memo(
     const phaseId =
       phaseIdFromSearchParams || getCurrentPhase(phases?.data)?.id;
     const { data: phase } = usePhase(phaseId);
+    const isNativeSurvey =
+      phase?.data.attributes.participation_method === 'native_survey';
     const allowAnonymousPosting =
-      // TODO: Fix this the next time the file is edited.
-      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-      phase?.data?.attributes.allow_anonymous_participation;
+      phase?.data.attributes.allow_anonymous_participation;
+
+    /*
+     * For native surveys, the admin enables anonymous posting for all responses,
+     * so we display a message to the user. For other methods (e.g., ideation and proposals),
+     * the admin can allow anonymous posting, but we provide a toggle for the user
+     * to choose whether to post anonymously or not.
+     */
+    const allowsAnonymousPostingInNativeSurvey =
+      isNativeSurvey && allowAnonymousPosting;
+    const showTogglePostAnonymously = allowAnonymousPosting && !isNativeSurvey;
 
     // Map-related variables
     const { data: projectMapConfig } = useProjectMapConfig(project?.data.id);
@@ -212,6 +230,14 @@ const CLPageLayout = memo(
       }
     };
 
+    const handleOnChangeAnonymousPosting = () => {
+      if (!postAnonymously) {
+        setShowAnonymousConfirmationModal(true);
+      }
+
+      setPostAnonymously((postAnonymously) => !postAnonymously);
+    };
+
     const handleNextAndSubmit = async () => {
       if (!onSubmit) return;
 
@@ -229,7 +255,7 @@ const CLPageLayout = memo(
       }
 
       if (pageVariant === 'after-submission') {
-        if (phase?.data.attributes.participation_method === 'native_survey') {
+        if (isNativeSurvey) {
           clHistory.push({
             pathname: `/projects/${project?.data.attributes.slug}`,
           });
@@ -255,6 +281,7 @@ const CLPageLayout = memo(
         const dataWithPublicationStatus = {
           ...data,
           publication_status: 'published',
+          ...(showTogglePostAnonymously && { anonymous: postAnonymously }),
         };
 
         const idea: IIdea | undefined = await onSubmit(
@@ -278,6 +305,7 @@ const CLPageLayout = memo(
         const dataWithPublicationStatus = {
           ...data,
           publication_status: 'draft',
+          ...(showTogglePostAnonymously && { anonymous: postAnonymously }),
         };
 
         await onSubmit(
@@ -438,7 +466,7 @@ const CLPageLayout = memo(
               <Box h="100%" display="flex" flexDirection="column">
                 <Box p="24px" w="100%">
                   <Box display="flex" flexDirection="column">
-                    {allowAnonymousPosting && (
+                    {allowsAnonymousPostingInNativeSurvey && (
                       <Box w="100%" mb="12px">
                         <Warning icon="shield-checkered">
                           {formatMessage(messages.anonymousSurveyMessage)}
@@ -492,6 +520,13 @@ const CLPageLayout = memo(
                         </Box>
                       );
                     })}
+                    {pageVariant === 'submission' &&
+                      showTogglePostAnonymously && (
+                        <ProfileVisiblity
+                          postAnonymously={postAnonymously}
+                          onChange={handleOnChangeAnonymousPosting}
+                        />
+                      )}
                   </Box>
                 </Box>
               </Box>
@@ -559,6 +594,13 @@ const CLPageLayout = memo(
             />
           </Box>
         </Box>
+        {showAnonymousConfirmationModal && (
+          <AnonymousParticipationConfirmationModal
+            onCloseModal={() => {
+              setShowAnonymousConfirmationModal(false);
+            }}
+          />
+        )}
       </>
     );
   }
