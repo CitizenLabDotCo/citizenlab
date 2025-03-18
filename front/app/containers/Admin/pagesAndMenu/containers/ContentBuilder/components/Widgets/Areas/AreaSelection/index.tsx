@@ -2,21 +2,19 @@ import React from 'react';
 
 import {
   Box,
-  Button,
   Title,
   useBreakpoint,
-  colors,
   Text,
 } from '@citizenlab/cl2-component-library';
 
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import { coreSettings } from 'api/app_configuration/utils';
 import useAreasWithProjectCounts from 'api/areas/useAreasWithProjectsCounts';
-import useAddFollower from 'api/follow_unfollow/useAddFollower';
 
 import useLocalize from 'hooks/useLocalize';
 
 import { DEFAULT_PADDING } from 'components/admin/ContentBuilder/constants';
+import UpdateFollowAreaWithProjects from 'components/Areas/FollowArea/UpdateFollowAreaWithProjects';
 import projectAndFolderCardsMessages from 'components/ProjectAndFolderCards/components/Topbar/messages';
 
 import { useIntl } from 'utils/cl-intl';
@@ -34,8 +32,6 @@ const AreaSelection = ({ title }: Props) => {
   const isSmallerThanPhone = useBreakpoint('phone');
   const { data: appConfiguration } = useAppConfiguration();
   const { data: areasWithProjectCount } = useAreasWithProjectCounts();
-
-  const { mutate: addFollower, isLoading } = useAddFollower();
 
   if (!appConfiguration || !areasWithProjectCount) return null;
 
@@ -65,26 +61,7 @@ const AreaSelection = ({ title }: Props) => {
               mb="8px"
               key={area.id}
             >
-              <Button
-                buttonStyle="text"
-                borderColor={colors.textPrimary}
-                textColor={colors.textPrimary}
-                p="4px 12px"
-                processing={isLoading}
-                disabled={isLoading}
-                bgHoverColor={colors.grey200}
-                textHoverColor={colors.black}
-                onClick={() => {
-                  addFollower({
-                    followableType: 'areas',
-                    followableId: area.id,
-                  });
-                }}
-              >
-                {`${localize(area.attributes.title_multiloc)} (${
-                  area.attributes.visible_projects_count
-                })`}
-              </Button>
+              <UpdateFollowAreaWithProjects area={area} />
             </Box>
           ))}
         </Box>
