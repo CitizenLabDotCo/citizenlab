@@ -51,8 +51,9 @@ module Permissions
     # Actions not to block if the project is inactive - ie no current phase
     IGNORED_PHASE_ACTIONS = %w[attending_event].freeze
 
-    def initialize(phase, user, user_requirements_service: nil)
+    def initialize(phase, user, user_requirements_service: nil, author_hash: nil)
       super(user, user_requirements_service: user_requirements_service)
+      @author_hash = author_hash
       @phase ||= phase
     end
 
@@ -90,7 +91,7 @@ module Permissions
 
     private
 
-    attr_reader :phase
+    attr_reader :phase, :author_hash
 
     # Phase methods
     def posting_idea_denied_reason_for_action
@@ -98,7 +99,7 @@ module Permissions
         POSTING_DENIED_REASONS[:posting_not_supported] # TODO: Rename to sumbission_not_supported
       elsif !phase.submission_enabled
         POSTING_DENIED_REASONS[:posting_disabled] # TODO: Rename to sumbission_disabled
-      elsif user && posting_limit_reached?
+      elsif posting_limit_reached?
         POSTING_DENIED_REASONS[:posting_limited_max_reached]
       end
     end
@@ -173,13 +174,18 @@ module Permissions
     # Helper methods
 
     def posting_limit_reached?
-      return false if phase.pmethod.supports_multiple_posts?
-      return true if phase.ideas.published.exists?(author: user)
+      allow_posting_again_after = phase.pmethod.allow_posting_again_after || 10.years
+      return false if allow_posting_again_after == 0.seconds
 
-      if phase.allow_anonymous_participation?
-        author_hash = Idea.create_author_hash user.id, phase.project.id, true
-        return true if phase.ideas.published.exists?(author_hash: author_hash)
+      return true if phase.ideas.published_after(allow_posting_again_after.ago).exists?(author: user)
+
+      # Maybe do the author_hash creation in one method elsewhere? so we're just checking if the hash exists here
+      author_hash_to_check = if phase.allow_anonymous_participation? && user
+        Idea.create_author_hash(user.id, phase.project.id, true)
+      else
+        author_hash
       end
+      return true if author_hash_to_check && phase.ideas.published_after(allow_posting_again_after.ago).exists?(author_hash: author_hash_to_check)
 
       false
     end

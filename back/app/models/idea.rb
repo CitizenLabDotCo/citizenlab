@@ -273,6 +273,10 @@ class Idea < ApplicationRecord
   scope :published, -> { where publication_status: 'published' }
   scope :submitted_or_published, -> { where publication_status: SUBMISSION_STATUSES }
 
+  scope :published_after, lambda { |date_time| # eg 2.days.ago
+    where(publication_status: 'published', published_at: date_time..)
+  }
+
   def just_submitted?
     # It would be better to foresee separate endpoints for submission,
     # rather than relying on Rails dirty to detect publication.

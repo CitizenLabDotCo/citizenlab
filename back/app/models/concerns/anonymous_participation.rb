@@ -25,6 +25,12 @@ module AnonymousParticipation
       anonymous
     end
 
+    def set_author_hash_from_agent(ip, user_agent)
+      return unless ip && user_agent
+
+      self.author_hash = self.class.create_author_hash(ip + user_agent, project_string, anonymous?)
+    end
+
     private
 
     # Ensure author is always nil if anonymous is set and anonymous is false if author is present

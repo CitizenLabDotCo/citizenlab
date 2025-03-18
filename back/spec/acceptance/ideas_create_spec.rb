@@ -565,6 +565,34 @@ resource 'Ideas' do
             extra_field_name => 'test value'
           })
         end
+
+        context 'response has already been submitted' do
+          context 'no cookie present - using headers' do
+            let!(:response) do
+              user_agent = 'User-Agent: Mozilla/5.0'
+              ip = '1.2.3.4'
+              author_hash = Idea.create_author_hash(ip + user_agent, phase.project.id, false)
+              pp author_hash
+              create(:native_survey_response, project: project, creation_phase: phase, author: nil, author_hash: author_hash)
+            end
+
+            example 'does not allow posting if submitted within 3 months' do
+              response.update!(published_at: 2.months.ago)
+              header 'User-Agent', 'User-Agent: Mozilla/5.0'
+              header 'X-Forwarded-For', '1.2.3.4'
+              do_request
+              assert_status 401
+              expect(json_response_body.dig(:errors, :base, 0, :error)).to eq 'posting_limited_max_reached'
+            end
+
+            example 'allows posting again if submitted after 3 months' do
+              response.update!(published_at: 4.months.ago)
+              do_request
+              assert_status 201
+            end
+          end
+        end
+
       end
 
       context 'when resident' do
@@ -589,6 +617,21 @@ resource 'Ideas' do
           end
         end
 
+        context 'response has already been submitted' do
+          example 'does not allow posting if submitted within 3 months' do
+            create(:native_survey_response, project: project, creation_phase: phase, author: resident, published_at: 2.months.ago)
+            do_request
+            assert_status 401
+            expect(json_response_body.dig(:errors, :base, 0, :error)).to eq 'posting_limited_max_reached'
+          end
+
+          example 'allows posting again if submitted after 3 months' do
+            create(:native_survey_response, project: project, creation_phase: phase, author: resident, published_at: 4.months.ago)
+            do_request
+            assert_status 201
+          end
+        end
+
         context 'Creating a community monitor survey response when posting anonymously is enabled' do
           before { phase.update! allow_anonymous_participation: true }
 
@@ -597,6 +640,26 @@ resource 'Ideas' do
             expect(response_data.dig(:attributes, :anonymous)).to be true
             expect(response_data.dig(:attributes, :author_name)).to be_nil
             expect(response_data.dig(:relationships, :author, :data)).to be_nil
+          end
+
+          context 'response has already been submitted' do
+            let!(:response) do
+              author_hash = Idea.create_author_hash(resident.id, phase.project.id, true)
+              create(:native_survey_response, project: project, creation_phase: phase, author: nil, author_hash: author_hash)
+            end
+
+            example 'does not allow posting if submitted within 3 months' do
+              response.update!(published_at: 2.months.ago)
+              do_request
+              assert_status 401
+              expect(json_response_body.dig(:errors, :base, 0, :error)).to eq 'posting_limited_max_reached'
+            end
+
+            example 'allows posting if submitted after 3 months' do
+              response.update!(published_at: 4.months.ago)
+              do_request
+              assert_status 201
+            end
           end
         end
 

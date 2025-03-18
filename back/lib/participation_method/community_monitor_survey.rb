@@ -59,6 +59,10 @@ module ParticipationMethod
       end
     end
 
+    def allow_posting_again_after
+      3.months
+    end
+
     def supports_event_attendance?
       false
     end

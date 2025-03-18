@@ -153,6 +153,7 @@ class WebApi::V1::IdeasController < ApplicationController
   #   Normal users always post in an active phase. They should never provide a phase id.
   #   Users who can moderate projects post in an active phase if no phase id is given.
   #   Users who can moderate projects post in the given phase if a phase id is given.
+  #  TODO: Reject bots from this endpoint so that anonymous participation is not gamed
   def create
     project = Project.find(params.dig(:idea, :project_id))
     phase_ids = params.dig(:idea, :phase_ids) || []
@@ -177,6 +178,10 @@ class WebApi::V1::IdeasController < ApplicationController
     input = Idea.new params_for_create
     input.creation_phase = (phase if !phase.pmethod.transitive?)
     input.phase_ids = [phase.id] if phase_ids.empty?
+
+    # Setting an author hash based on IP and user agent for not logged in users to try and avoid resubmission
+    # TODO: Set the author hash from the cookie if available
+    input.set_author_hash_from_agent(request.remote_ip, request.user_agent) if !current_user
 
     # NOTE: Needs refactor allow_anonymous_participation? so anonymous_participation can be allow or force
     if phase.pmethod.supports_survey_form? && phase.allow_anonymous_participation?
