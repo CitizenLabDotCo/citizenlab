@@ -8,6 +8,8 @@
 # answer to another question. This is done by calculating the correlation.
 module Analysis
   class AutoInsightsService
+    Column = Struct.new(:category, :resource, :bin_value)
+
     def initialize(analysis)
       @analysis = analysis
     end
@@ -17,13 +19,11 @@ module Analysis
       matrix
         .flat_map(&:keys)
         .uniq # => [col1, col2, col3]
-        .group_by { |col| col_to_category(col) } # => { category1 => [col1, col2], category2 => [col3] }
-        .to_a # => [[category1, [col1, col2]], [category2, [col3]]]
-        .combination(2) # => [[[category1, [col1, col2]], [category2, [col3]]]]
-        .select { |(category1, category2)| heatmap_between_categories?(category1[0], category2[0]) }
-        .each do |(category1, category2)|
-        cols1 = category1[1]
-        cols2 = category2[1]
+        .group_by(&:category) # => { category1 => [col1, col2], category2 => [col3] }
+        .values # => [[col1, col2], [col3]]
+        .combination(2) # => [[[col1, col2], [col3]]]
+        .select { |(cols1, cols2)| heatmap_between_categories?(cols1.first.category, cols2.first.category) }
+        .each do |(cols1, cols2)|
         cells =
           cols1.flat_map do |col1|
             cols2.map do |col2|
@@ -31,9 +31,11 @@ module Analysis
               count = ct[[true, true]]
               _chi2, p_value = chi_square(ct)
               HeatmapCell.new(
-                row: col1,
-                column: col2,
                 analysis: @analysis,
+                row: col1.resource,
+                column: col2.resource,
+                row_bin_value: col1.bin_value,
+                column_bin_value: col2.bin_value,
                 unit:,
                 p_value:,
                 count:
@@ -98,34 +100,30 @@ module Analysis
       user_custom_fields:,
       input_custom_fields:
     )
+      tag_columns = tags.map { |tag| Column.new(:tags, tag) }
+      user_custom_field_columns = user_custom_fields.flat_map { |custom_field| custom_field_to_columns(custom_field) }
+      input_custom_field_columns = input_custom_fields.flat_map { |custom_field| custom_field_to_columns(custom_field) }
+
       items.map do |item|
         row = {}
 
         # Add columns for tags
         ids = input_ids.call(item)
-        tags.each do |tag|
-          row[tag] = ids.any? { |id| tag_map(tags).dig(id, tag.id) }
+        tag_columns.each do |tag_column|
+          row[tag_column] = ids.any? { |id| tag_map(tags).dig(id, tag_column.resource.id) }
         end
 
         # Add columns for input custom fields
-        input_custom_fields.each do |input_custom_field|
-          custom_field_values = inputs_custom_field_values.call(item).map { |cfv| cfv[input_custom_field.key] }
-          next unless custom_field_values.compact.empty?
-
-          input_custom_field.options.each do |option|
-            row[option] = custom_field_values.any? { |cfv| custom_field_option_set?(option, cfv) }
-          end
+        input_custom_field_columns.each do |column|
+          multiple_cfvs = inputs_custom_field_values.call(item)
+          row[column] = multiple_cfvs.any? { |cfv| custom_field_column_set?(column, cfv) }
         end
 
         # Add columns for user custom fields
         if (item_author = author.call(item))
-          user_custom_fields.each do |user_custom_field|
-            custom_field_value = item_author.custom_field_values[user_custom_field.key]
-            next unless custom_field_value
-
-            user_custom_field.options.each do |option|
-              row[option] = custom_field_option_set?(option, custom_field_value)
-            end
+          user_custom_field_columns.each do |column|
+            cfv = item_author.custom_field_values
+            row[column] = !!custom_field_column_set?(column, cfv)
           end
         end
 
@@ -133,18 +131,18 @@ module Analysis
       end
     end
 
-    def custom_field_option_set?(custom_field_option, custom_field_value)
-      custom_field_value == custom_field_option.key || custom_field_value.include?(custom_field_option.key)
-    end
-
-    def col_to_category(col)
-      case col
-      when Tag
-        :tags
+    def custom_field_column_set?(column, cfv)
+      case column.resource
+      when CustomField
+        cfv[column.resource.key] == column.bin_value
       when CustomFieldOption
-        col.custom_field
+        custom_field_value = cfv[column.resource.custom_field.key]
+        return false unless custom_field_value
+
+        custom_field_value == column.resource.key ||
+          custom_field_value.include?(column.resource.key)
       else
-        raise 'Invalid column type'
+        raise 'Invalid custom field type'
       end
     end
 
@@ -169,27 +167,42 @@ module Analysis
         end
       end
 
-      types = [cat1_type, cat2_type].to_set
-
-      types == %i[tags user_custom_field].to_set ||
-        types == %i[tags input_custom_field].to_set ||
-        types == %i[user_custom_field input_custom_field].to_set ||
-        types == [:input_custom_field].to_set
+      allowed_combinations = [
+        Set.new(%i[tags user_custom_field]),
+        Set.new(%i[tags input_custom_field]),
+        Set.new(%i[user_custom_field input_custom_field]),
+        Set.new([:input_custom_field])
+      ]
+      allowed_combinations.include?([cat1_type, cat2_type].to_set)
     end
 
     def detect_input_custom_fields
-      CustomField.where(id: @analysis.associated_custom_fields).includes(:options).select(&:support_options?)
+      CustomField.where(id: @analysis.associated_custom_fields).includes(:options)
     end
 
     def detect_user_custom_fields
-      CustomField.registration.enabled.includes(:options).select(&:support_options?)
+      CustomField.registration.enabled.includes(:options)
     end
 
     def detect_tags
       @analysis.tags
     end
 
-    # Nested hash to quickly check whether a certain input has a certain tag
+    def custom_field_to_columns(custom_field)
+      if custom_field.support_options?
+        custom_field.options.map { |option| Column.new(custom_field, option) }
+      elsif custom_field.linear_scale? || custom_field.sentiment_linear_scale? || custom_field.rating?
+        (1..custom_field.maximum).map { |i| Column.new(custom_field, custom_field, i) }
+      elsif custom_field.checkbox?
+        [true, false].map { |v| Column.new(custom_field, custom_field, v) }
+      else
+        # Other input_types are currently not supported
+        []
+      end
+    end
+
+    # Nested hash to quickly check whether a certain input has a certain tag.
+    # Purely a performance optimization.
     def tag_map(tags)
       @tag_map ||= {}
       @tag_map[tags] ||=

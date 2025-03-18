@@ -8,8 +8,9 @@ describe Analysis::AutoInsightsService do
   let!(:phase) { project.phases.first }
   let!(:custom_form) { create(:custom_form, participation_context: project) }
   let!(:custom_field1) { create(:custom_field_select, :with_options, resource: custom_form) }
+  let!(:custom_field2) { create(:custom_field_linear_scale, resource: custom_form, maximum: 3) }
   let!(:author1) { create(:user, custom_field_values: { custom_field_gender.key => custom_field_gender.options[0].key }) }
-  let!(:input1) { create(:idea, author: author1, project: project, custom_field_values: { custom_field1.key => custom_field1.options[0].key }) }
+  let!(:input1) { create(:idea, author: author1, project: project, custom_field_values: { custom_field2.key => 2 }) }
   let!(:input2) { create(:idea, project: project, custom_field_values: { custom_field1.key => custom_field1.options[1].key }) }
   let!(:analysis) { create(:ideation_analysis, project:, additional_custom_fields: custom_form.custom_fields) }
   let!(:tag1) { create(:tag, analysis: analysis) }
@@ -23,7 +24,13 @@ describe Analysis::AutoInsightsService do
       male, female, unspecified = custom_field_gender.options
 
       service = described_class.new(analysis)
-      expect { service.generate }.to change { analysis.heatmap_cells.count }.from(0).to(6)
+      # We have:
+      # - 2 tags
+      # - 3 genders
+      # - 2 options in custom_field1
+      # - 3 linear scale bins in custom_field2
+      # So we should get (2*3+2*2+2*3)+(3*2+3*3)+(2*3)=16+15+6=37 cells
+      expect { service.generate }.to change { analysis.heatmap_cells.count }.from(0).to(37)
 
       expect(Analysis::HeatmapCell.find_by(row: tag1, column: male)).to have_attributes(
         count: 1,
@@ -72,6 +79,15 @@ describe Analysis::AutoInsightsService do
         row: tag2,
         column: unspecified
       )
+
+      expect(Analysis::HeatmapCell.find_by(row: tag1, column: custom_field2, column_bin_value: 2)).to have_attributes(
+        count: 1,
+        p_value: 1.0,
+        lift: 1.0,
+        row: tag1,
+        column: custom_field2,
+        column_bin_value: 2
+      )
     end
 
     it 'creates a heatmap for likes' do
@@ -81,7 +97,7 @@ describe Analysis::AutoInsightsService do
       create(:reaction, reactable: input1)
 
       service = described_class.new(analysis)
-      expect { service.generate(unit: 'likes') }.to change { analysis.heatmap_cells.count }.from(0).to(6)
+      expect { service.generate(unit: 'likes') }.to change { analysis.heatmap_cells.count }.from(0).to(37)
 
       expect(Analysis::HeatmapCell.find_by(row: tag1, column: male)).to have_attributes(
         count: 1,
@@ -124,7 +140,7 @@ describe Analysis::AutoInsightsService do
       create(:comment, idea: input2, author: create(:user, custom_field_values: { custom_field_gender.key => male.key }))
 
       service = described_class.new(analysis)
-      expect { service.generate(unit: 'participants') }.to change { analysis.heatmap_cells.count }.from(0).to(6)
+      expect { service.generate(unit: 'participants') }.to change { analysis.heatmap_cells.count }.from(0).to(37)
 
       expect(Analysis::HeatmapCell.find_by(row: tag1, column: male)).to have_attributes(
         count: 3,
@@ -167,7 +183,7 @@ describe Analysis::AutoInsightsService do
       author1.save!
 
       service = described_class.new(analysis)
-      expect { service.generate }.to change { analysis.heatmap_cells.count }.from(0).to(12)
+      expect { service.generate }.to change { analysis.heatmap_cells.count }.from(0).to(58)
     end
   end
 end
