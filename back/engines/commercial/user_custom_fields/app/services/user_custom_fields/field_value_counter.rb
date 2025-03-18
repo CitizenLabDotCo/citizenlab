@@ -52,14 +52,15 @@ module UserCustomFields
       counts.with_indifferent_access
     end
 
-    # Returns an ActiveRecord::Relation of all the custom field values for the given users or ideas.
+    # Returns an ActiveRecord::Relation of all the user custom field values for the given records (users or ideas).
+    # Ideas are supported so that surveys that allow user fields in the survey form can be analyzed.
     # It returns a view (result set) with a single column named 'field_value'. Essentially,
     # something that looks like:
     #   SELECT ... AS field_value FROM ...
     #
     # Each user results in one or multiple rows, depending on the type of custom field.
     # Custom fields with multiple values (e.g. multiselect) are returned as multiple rows.
-    # If the custom field has no value for a given user, the resulting row contains NULL.
+    # If the custom field has no value for a given user or idea, the resulting row contains NULL.
     private_class_method def self.select_field_values(records, custom_field, record_type)
       field_key = record_type == 'ideas' ? "u_#{custom_field.key}" : custom_field.key
       case custom_field.input_type

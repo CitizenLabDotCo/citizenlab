@@ -14,7 +14,7 @@ module ReportBuilder
       custom_field = CustomField.find(custom_field_id)
 
       series = UserCustomFields::FieldValueCounter.counts_by_field_option(users, custom_field)
-      series = add_demographics_from_ideas(series, custom_field, project_id)
+      series = add_demographics_from_ideas(series, custom_field, start_at, end_at, project_id)
 
       json_response = {
         series: series
@@ -50,15 +50,17 @@ module ReportBuilder
 
     # Add in the demographics data for User fields stored in ideas (for anonymously posted ideas)
     # if there are any phases where user_fields_in_form is enabled
-    def add_demographics_from_ideas(series, custom_field, project_id)
+    def add_demographics_from_ideas(series, custom_field, start_at, end_at, project_id)
       return series unless project_id # Only do this if filtered by project
 
+      start_date, end_date = TimeBoundariesParser.new(start_at, end_at).parse
+
+      # TODO: Resolve for user
       phases = Phase.where(project_id: project_id, user_fields_in_form: true)
       return series if phases.blank?
 
-      # Probably enough to just include where author is nil
-      # or maybe need to remove any users from the users list if they also appear here
-      ideas = Idea.where(creation_phase: phases, author: nil)
+      # Only include ideas with null users, as any user demographics will already be included
+      ideas = Idea.where(author: nil, creation_phase: phases, created_at: start_date..end_date)
       series_from_ideas = UserCustomFields::FieldValueCounter.counts_by_field_option(ideas, custom_field, record_type: 'ideas')
       series.merge(series_from_ideas) { |_key, user_val, idea_val| user_val + idea_val }
     end
