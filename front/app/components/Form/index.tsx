@@ -65,7 +65,6 @@ interface Props {
   inputId?: string | undefined;
   config?: 'default' | 'input' | 'survey';
   layout?: 'inline' | 'fullpage';
-  footer?: React.ReactNode;
   // Optional loading state from parent. If set, the loading state will be controlled by the parent.
   loading?: boolean;
   showSubmitButton?: boolean;
@@ -82,7 +81,6 @@ const Form = memo(
     getApiErrorMessage,
     config,
     layout,
-    footer,
     onSubmit,
     loading: externalLoading,
     showSubmitButton,
@@ -205,13 +203,6 @@ const Form = memo(
             onChange={setData}
             onSubmit={handleSubmit}
           />
-          {footer && (
-            <Box display="flex" flexDirection="row" justifyContent="center">
-              <Box w="100%" maxWidth="700px" px="20px" mt="0px" mb="40px">
-                {footer}
-              </Box>
-            </Box>
-          )}
         </Box>
         {showSubmitButton && (
           <>
