@@ -156,9 +156,9 @@ class WebApi::V1::IdeasController < ApplicationController
   def create
     form = phase_for_input.pmethod.custom_form
     extract_custom_field_values_from_params!(form)
-    params_for_create = idea_params form, is_moderator
+    params_for_create = idea_params form
     input = Idea.new params_for_create
-    input.creation_phase = (phase_for_input if phase_for_input.pmethod.transitive?)
+    input.creation_phase = (phase_for_input if !phase_for_input.pmethod.transitive?)
     input.phase_ids = [phase_for_input.id] if params.dig(:idea, :phase_ids).blank?
 
     # NOTE: Needs refactor allow_anonymous_participation? so anonymous_participation can be allow or force
@@ -371,15 +371,16 @@ class WebApi::V1::IdeasController < ApplicationController
     @params_service ||= CustomFieldParamsService.new
   end
 
-  def idea_params(custom_form, user_can_moderate_project)
-    params.require(:idea).permit(idea_attributes(custom_form, user_can_moderate_project))
+  def idea_params(custom_form)
+    params.require(:idea).permit(idea_attributes(custom_form))
   end
 
-  def idea_attributes(custom_form, user_can_moderate_project)
+  def idea_attributes(custom_form)
     submittable_field_keys = submittable_custom_fields(custom_form).map { |x| x.key.to_sym }
     attributes = idea_simple_attributes(submittable_field_keys)
     complex_attributes = idea_complex_attributes(custom_form, submittable_field_keys)
     attributes << complex_attributes if complex_attributes.any?
+    user_can_moderate_project = current_user && UserRoleService.new.can_moderate_project?(custom_form.participation_context&.project, current_user)
     if user_can_moderate_project
       attributes.concat %i[author_id idea_status_id budget manual_votes_amount] + [phase_ids: []]
     end
