@@ -1,6 +1,6 @@
 import React, { useState, useCallback, useEffect } from 'react';
 
-import { useBreakpoint } from '@citizenlab/cl2-component-library';
+import { Box, useBreakpoint } from '@citizenlab/cl2-component-library';
 import { debounce } from 'lodash-es';
 
 import { CARD_GAP } from '../constants';
