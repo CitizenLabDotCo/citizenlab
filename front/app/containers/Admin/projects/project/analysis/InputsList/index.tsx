@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useMemo } from 'react';
 
 import {
   Box,
@@ -18,6 +18,7 @@ import useKeyPress from 'hooks/useKeyPress';
 import { useIntl } from 'utils/cl-intl';
 
 import Demographics from '../Demographics';
+import Heatmap from '../Heatmap';
 import useAnalysisFilterParams from '../hooks/useAnalysisFilterParams';
 import { useSelectedInputContext } from '../SelectedInputContext';
 
@@ -33,7 +34,6 @@ const Item = styled.div<{ start: number }>`
 `;
 
 const InputsList = () => {
-  const [isDemographicsOpen, setIsDemographicsOpen] = useState(false);
   const { formatMessage } = useIntl();
   const { selectedInputId, setSelectedInputId } = useSelectedInputContext();
   const { analysisId } = useParams() as { analysisId: string };
@@ -146,15 +146,8 @@ const InputsList = () => {
   const emptyList = data?.pages[0].meta.filtered_count === 0;
   if (!inputs) return null;
 
-  const democraphicsOffset = isDemographicsOpen ? 210 : 60;
   return (
     <>
-      <Box bg={colors.white} mb="8px">
-        <Demographics
-          isDemographicsOpen={isDemographicsOpen}
-          setIsDemographicsOpen={setIsDemographicsOpen}
-        />
-      </Box>
       {emptyList ? (
         <Box display="flex" justifyContent="center">
           <Text px="24px" color="grey600">
@@ -166,11 +159,15 @@ const InputsList = () => {
           bg={colors.white}
           ref={parentRef}
           overflow="auto"
-          h={`calc(100vh - ${
-            stylingConsts.mobileMenuHeight + democraphicsOffset
-          }px)`}
+          h={`calc(100vh - ${stylingConsts.mobileMenuHeight}px)`}
           p="12px"
         >
+          <Box bg={colors.white} mb="8px">
+            <Demographics />
+          </Box>
+          <Box bg={colors.white} mb="8px">
+            <Heatmap />
+          </Box>
           <Box height={`${getTotalSize()}px`} width="100%" position="relative">
             {getVirtualItems().map((virtualRow) => {
               const isLoaderRow = virtualRow.index > inputs.length - 1;

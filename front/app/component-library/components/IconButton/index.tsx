@@ -1,5 +1,6 @@
 import React, { MouseEvent, KeyboardEvent } from 'react';
 
+import { colors } from 'component-library/utils/styleUtils';
 import styled, { css } from 'styled-components';
 
 import Box, {
@@ -58,8 +59,8 @@ export type IconButtonProps = {
   onClick: (event?: MouseEvent | KeyboardEvent) => void;
   iconWidth?: string;
   iconHeight?: string;
-  iconColor: string;
-  iconColorOnHover: string;
+  iconColor?: string;
+  iconColorOnHover?: string;
   ariaHidden?: boolean;
   ariaExpanded?: boolean;
   ariaControls?: string;
@@ -83,8 +84,8 @@ const IconButton = ({
   a11y_buttonActionMessage,
   iconWidth = '24px',
   iconHeight = '24px',
-  iconColor,
-  iconColorOnHover,
+  iconColor = colors.grey600,
+  iconColorOnHover = colors.grey700,
   ariaHidden,
   ariaExpanded,
   ariaControls,
