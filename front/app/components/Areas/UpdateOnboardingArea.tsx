@@ -11,7 +11,7 @@ import Error from 'components/UI/Error';
 
 import { useIntl } from 'utils/cl-intl';
 
-import messages from './FollowArea/messages';
+import messages from './messages';
 
 interface Props {
   area: IAreaData;
