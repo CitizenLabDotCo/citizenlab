@@ -456,19 +456,22 @@ resource 'Ideas' do
         parameter :title_multiloc, 'Multi-locale field with the idea title', extra: 'Maximum 100 characters'
         parameter :body_multiloc, 'Multi-locale field with the idea body', extra: 'Required if not draft'
         parameter :project_id, 'The identifier of the project that hosts the idea'
+        parameter :phase_ids, 'The phases the idea is part of, defaults to the current only, only allowed by admins'
       end
       with_options scope: :page do
         parameter :number, 'Page number'
         parameter :size, 'Number of ideas per page'
       end
 
-      let(:embeddings) { JSON.parse(File.read('spec/fixtures/word_embeddings.json')) }
-      let!(:idea_pizza) { create(:embeddings_similarity, embedding: embeddings['pizza']).embeddable }
-      let!(:idea_burger) { create(:embeddings_similarity, embedding: embeddings['burger']).embeddable }
-      let!(:idea_moon) { create(:embeddings_similarity, embedding: embeddings['moon']).embeddable }
-      let!(:idea_bats) { create(:embeddings_similarity, embedding: embeddings['bats']).embeddable }
-      let(:idea) { build(:idea) }
+      let(:project) { create(:project_with_active_ideation_phase) }
+      let(:project_id) { project.id }
+      let(:idea) { create(:idea, project:) }
       let(:title_multiloc) { idea.title_multiloc }
+      let(:embeddings) { JSON.parse(File.read('spec/fixtures/word_embeddings.json')) }
+      let!(:idea_pizza) { create(:embeddings_similarity, embedding: embeddings['pizza'], embeddable: create(:idea, project:)).embeddable }
+      let!(:idea_burger) { create(:embeddings_similarity, embedding: embeddings['burger'], embeddable: create(:idea, project:)).embeddable }
+      let!(:idea_moon) { create(:embeddings_similarity, embedding: embeddings['moon'], embeddable: create(:idea, project:)).embeddable }
+      let!(:idea_bats) { create(:embeddings_similarity, embedding: embeddings['bats'], embeddable: create(:idea, project:)).embeddable }
 
       describe do
         before do
@@ -476,10 +479,8 @@ resource 'Ideas' do
             embeddings['pizza']
           end
 
-          config = AppConfiguration.instance
-          config.settings['authoring_assistance_prototype']['title_threshold'] = 0.3
-          config.settings['authoring_assistance_prototype']['body_threshold'] = 0.0
-          config.save!
+          SettingsService.new.activate_feature! 'authoring_assistance'
+          project.phases.first.update!(similarity_threshold_title: 0.3, similarity_threshold_body: 0.0)
         end
 
         example_request 'Get similar ideas' do

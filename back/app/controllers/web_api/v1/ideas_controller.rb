@@ -277,9 +277,8 @@ class WebApi::V1::IdeasController < ApplicationController
     idea = Idea.new idea_params_for_similarities
     service = SimilarIdeasService.new(idea)
 
-    config = AppConfiguration.instance # TODO: Threshold from phase
-    title_threshold = config.settings('authoring_assistance_prototype', 'title_threshold')
-    body_threshold = config.settings('authoring_assistance_prototype', 'body_threshold')
+    title_threshold = phase_for_input.similarity_threshold_title
+    body_threshold = phase_for_input.similarity_threshold_body
     scope = policy_scope(Idea)
     scope = scope.where(project_id: idea.project_id) if idea.project_id
     scope = scope.where.not(author: current_user)
