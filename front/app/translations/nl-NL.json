@@ -811,7 +811,7 @@
   "app.components.formBuilder.title": "Titel",
   "app.components.formBuilder.toLabel": "tot",
   "app.components.formBuilder.unsavedChanges": "Je hebt niet-opgeslagen wijzigingen",
-  "app.components.formBuilder.useCustomButton2": "Use custom page button",
+  "app.components.formBuilder.useCustomButton2": "Gebruik aangepaste paginaknop",
   "app.components.formBuilder.veryBad": "Zeer slecht",
   "app.components.formBuilder.veryGood": "Zeer goed",
   "app.components.phaseTimeLeft.xDayLeft": "{timeLeft, plural, =0 {Minder dan een dag} one {# dag} other {# dagen}} over",
