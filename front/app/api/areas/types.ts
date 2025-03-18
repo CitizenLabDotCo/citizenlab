@@ -35,7 +35,7 @@ type AreaRelationships = {
 
 export interface IAreaData {
   id: string;
-  type: string;
+  type: 'area';
   attributes: AreaAttributes;
   relationships: AreaRelationships;
 }
@@ -61,15 +61,12 @@ export interface IAreaUpdate {
   include_in_onboarding?: boolean;
 }
 
-type AreaWithProjectCounts = {
-  id: string;
-  type: 'area';
+interface IAreaWithProjectCounts extends Omit<IAreaData, 'attributes'> {
   attributes: AreaAttributes & {
     visible_projects_count: number;
   };
-  relationships: AreaRelationships;
-};
+}
 
-export interface AreasWithProjectsCounts {
-  data: AreaWithProjectCounts[];
+export interface IAreasWithProjectsCounts {
+  data: IAreaWithProjectCounts[];
 }
