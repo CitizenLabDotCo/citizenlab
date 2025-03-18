@@ -1,21 +1,12 @@
 import React from 'react';
 
-import {
-  Box,
-  Title,
-  useBreakpoint,
-  Text,
-} from '@citizenlab/cl2-component-library';
+import { Box, Title, useBreakpoint } from '@citizenlab/cl2-component-library';
 
-import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
-import { coreSettings } from 'api/app_configuration/utils';
 import useAreasWithProjectCounts from 'api/areas/useAreasWithProjectsCounts';
-
-import useLocalize from 'hooks/useLocalize';
 
 import { DEFAULT_PADDING } from 'components/admin/ContentBuilder/constants';
 import UpdateFollowAreaWithProjects from 'components/Areas/FollowArea/UpdateFollowAreaWithProjects';
-import projectAndFolderCardsMessages from 'components/ProjectAndFolderCards/components/Topbar/messages';
+import Warning from 'components/UI/Warning';
 
 import { useIntl } from 'utils/cl-intl';
 
@@ -27,13 +18,11 @@ interface Props {
 }
 
 const AreaSelection = ({ title }: Props) => {
-  const localize = useLocalize();
   const { formatMessage } = useIntl();
   const isSmallerThanPhone = useBreakpoint('phone');
-  const { data: appConfiguration } = useAppConfiguration();
   const { data: areasWithProjectCount } = useAreasWithProjectCounts();
 
-  if (!appConfiguration || !areasWithProjectCount) return null;
+  if (!areasWithProjectCount) return null;
 
   return (
     <CarrouselContainer>
@@ -46,13 +35,9 @@ const AreaSelection = ({ title }: Props) => {
         {title}
       </Title>
       <Box ml={isSmallerThanPhone ? DEFAULT_PADDING : undefined}>
-        <Text>
-          {formatMessage(messages.selectYourX, {
-            areaTerm: localize(coreSettings(appConfiguration.data).area_term, {
-              fallback: formatMessage(projectAndFolderCardsMessages.areaTitle),
-            }).toLowerCase(),
-          })}
-        </Text>
+        <Box mb="24px">
+          <Warning>{formatMessage(messages.areaButtonsInfo)}</Warning>
+        </Box>
         <Box>
           {areasWithProjectCount.data.map((area, i) => (
             <Box
