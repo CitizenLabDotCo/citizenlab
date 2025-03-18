@@ -811,7 +811,7 @@
   "app.components.formBuilder.title": "Titel",
   "app.components.formBuilder.toLabel": "til",
   "app.components.formBuilder.unsavedChanges": "Du har ændringer, der ikke er gemt",
-  "app.components.formBuilder.useCustomButton2": "Use custom page button",
+  "app.components.formBuilder.useCustomButton2": "Brug brugerdefineret sideknap",
   "app.components.formBuilder.veryBad": "Meget dårlig",
   "app.components.formBuilder.veryGood": "Meget god",
   "app.components.phaseTimeLeft.xDayLeft": "{timeLeft, plural, =0 {Mindre end en dag} one {# dag} other {# dage}} tilbage",
