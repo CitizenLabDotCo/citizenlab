@@ -811,7 +811,7 @@
   "app.components.formBuilder.title": "Naslov",
   "app.components.formBuilder.toLabel": "sa",
   "app.components.formBuilder.unsavedChanges": "Imate nespremljene promjene",
-  "app.components.formBuilder.useCustomButton": "Koristite prilagođeni gumb",
+  "app.components.formBuilder.useCustomButton2": "Koristi prilagođeni gumb stranice",
   "app.components.formBuilder.veryBad": "Jako loše",
   "app.components.formBuilder.veryGood": "Vrlo dobro",
   "app.components.phaseTimeLeft.xDayLeft": "{timeLeft, plural, =0 {Manje od jednog dana} one {# dan} other {Još # dana}}",
