@@ -301,13 +301,13 @@ module Analysis
 
     def add_lift!(cells)
       total = cells.sum(&:count)
-      row_total = cells.group_by(&:row).transform_values { |v| v.sum(&:count) }
-      col_total = cells.group_by(&:column).transform_values { |v| v.sum(&:count) }
+      row_total = cells.group_by { |c| [c.row, c.row_bin_value] }.transform_values { |v| v.sum(&:count) }
+      col_total = cells.group_by { |c| [c.column, c.column_bin_value] }.transform_values { |v| v.sum(&:count) }
       cells.each do |cell|
         cell.lift = if cell.count == 0
           0
         else
-          expected = (row_total[cell.row] * col_total[cell.column]) / total.to_f
+          expected = (row_total[[cell.row, cell.row_bin_value]] * col_total[[cell.column, cell.column_bin_value]]) / total.to_f
           cell.count / expected
         end
       end

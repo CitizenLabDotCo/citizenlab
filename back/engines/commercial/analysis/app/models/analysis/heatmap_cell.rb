@@ -2,25 +2,27 @@
 #
 # Table name: analysis_heatmap_cells
 #
-#  id          :uuid             not null, primary key
-#  analysis_id :uuid             not null
-#  row_type    :string           not null
-#  row_id      :uuid             not null
-#  column_type :string           not null
-#  column_id   :uuid             not null
-#  unit        :string           not null
-#  count       :integer          not null
-#  lift        :float            not null
-#  p_value     :float            not null
-#  created_at  :datetime         not null
-#  updated_at  :datetime         not null
+#  id               :uuid             not null, primary key
+#  analysis_id      :uuid             not null
+#  row_type         :string           not null
+#  row_id           :uuid             not null
+#  column_type      :string           not null
+#  column_id        :uuid             not null
+#  unit             :string           not null
+#  count            :integer          not null
+#  lift             :float            not null
+#  p_value          :float            not null
+#  created_at       :datetime         not null
+#  updated_at       :datetime         not null
+#  row_bin_value    :integer
+#  column_bin_value :integer
 #
 # Indexes
 #
 #  index_analysis_heatmap_cells_on_analysis_id  (analysis_id)
 #  index_analysis_heatmap_cells_on_column       (column_type,column_id)
 #  index_analysis_heatmap_cells_on_row          (row_type,row_id)
-#  index_analysis_heatmap_cells_uniqueness      (analysis_id,row_id,column_id,unit) UNIQUE
+#  index_analysis_heatmap_cells_uniqueness      (analysis_id,row_id,column_id,unit,row_bin_value,column_bin_value) UNIQUE
 #
 # Foreign Keys
 #

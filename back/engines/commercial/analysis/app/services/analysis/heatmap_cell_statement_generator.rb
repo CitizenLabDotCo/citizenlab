@@ -9,6 +9,8 @@ module Analysis
       column_type = cell.column.class
 
       if [row_type, column_type].to_set == [CustomFieldOption, Tag].to_set
+        generate_tag_custom_field_option(cell)
+      elsif [row_type, column_type].to_set == [Tag, CustomField].to_set
         generate_tag_custom_field(cell)
       elsif [row_type, column_type].to_set == [CustomFieldOption].to_set
         generate_custom_field_custom_field(cell)
@@ -19,7 +21,7 @@ module Analysis
 
     private
 
-    def generate_tag_custom_field(cell)
+    def generate_tag_custom_field_option(cell)
       custom_field_option = cell.column if cell.column.is_a?(CustomFieldOption)
       custom_field_option = cell.row if cell.row.is_a?(CustomFieldOption)
       tag = cell.column if cell.column.is_a?(Tag)
@@ -27,6 +29,28 @@ module Analysis
 
       answer = @multiloc_service.t(custom_field_option.title_multiloc)
       question = @multiloc_service.t(custom_field_option.custom_field.title_multiloc)
+      percent_copy = cell.lift >= 1 ? 'percent_more' : 'percent_less'
+
+      @multiloc_service.i18n_to_multiloc("analysis.cell_statement.tag_custom_field.#{cell.unit}",
+        answer:, question:, tag: tag.name,
+        percent_more_less: I18n.t("analysis.cell_statement.tag_custom_field.#{percent_copy}", percent: decimal_to_percentage(cell.lift)))
+    end
+
+    def generate_tag_custom_field(cell)
+      custom_field, bin_value = nil
+      if cell.column.is_a?(CustomField)
+        custom_field = cell.column
+        bin_value = cell.column_bin_value
+      end
+      if cell.row.is_a?(CustomField)
+        custom_field = cell.row
+        bin_value = cell.row_bin_value
+      end
+      tag = cell.column if cell.column.is_a?(Tag)
+      tag = cell.row if cell.row.is_a?(Tag)
+
+      answer = "#{bin_value}+"
+      question = @multiloc_service.t(custom_field.title_multiloc)
       percent_copy = cell.lift >= 1 ? 'percent_more' : 'percent_less'
 
       @multiloc_service.i18n_to_multiloc("analysis.cell_statement.tag_custom_field.#{cell.unit}",
