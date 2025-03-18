@@ -82,13 +82,7 @@ class WebApi::V1::PhasesController < ApplicationController
   # Used for community_monitor_survey dashboard
   def sentiment_by_quarter
     average_generator = Surveys::AverageGenerator.new(@phase, input_type: 'sentiment_linear_scale')
-
-    averages = {
-      overall: average_generator.overall_average_by_quarter,
-      by_category: average_generator.category_averages_by_quarter
-    }
-
-    render json: raw_json(averages)
+    render json: raw_json(average_generator.summary_averages_by_quarter)
   end
 
   def submission_count
