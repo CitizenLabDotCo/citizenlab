@@ -811,7 +811,7 @@
   "app.components.formBuilder.title": "Título",
   "app.components.formBuilder.toLabel": "para",
   "app.components.formBuilder.unsavedChanges": "Você tem alterações não salvas",
-  "app.components.formBuilder.useCustomButton": "Usar botão personalizado",
+  "app.components.formBuilder.useCustomButton2": "Usar botão de página personalizado",
   "app.components.formBuilder.veryBad": "Muito ruim",
   "app.components.formBuilder.veryGood": "Muito bom",
   "app.components.phaseTimeLeft.xDayLeft": "{timeLeft, plural, =0 {Menos de um dia} one {# dia} other {# dias}} esquerda",
