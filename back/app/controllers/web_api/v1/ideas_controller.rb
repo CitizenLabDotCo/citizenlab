@@ -214,8 +214,7 @@ class WebApi::V1::IdeasController < ApplicationController
     params[:idea][:phase_ids] ||= [] if params[:idea].key?(:phase_ids)
     params_service.mark_custom_field_values_to_clear!(input.custom_field_values, params[:idea][:custom_field_values])
 
-    user_can_moderate_project = UserRoleService.new.can_moderate_project?(input.project, current_user)
-    update_params = idea_params(input.custom_form, user_can_moderate_project).to_h
+    update_params = idea_params(input.custom_form).to_h
     phase_ids = update_params.delete(:phase_ids) if update_params[:phase_ids]
     update_params[:custom_field_values] = params_service.updated_custom_field_values(input.custom_field_values, update_params[:custom_field_values])
     CustomFieldService.new.compact_custom_field_values! update_params[:custom_field_values]
