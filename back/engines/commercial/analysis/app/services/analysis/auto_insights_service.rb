@@ -16,6 +16,7 @@ module Analysis
 
     def generate(unit: 'inputs', tags: detect_tags, user_custom_fields: detect_user_custom_fields, input_custom_fields: detect_input_custom_fields)
       matrix = big_fat_matrix(unit, tags:, user_custom_fields:, input_custom_fields:)
+
       matrix
         .flat_map(&:keys)
         .uniq # => [col1, col2, col3]
@@ -34,8 +35,8 @@ module Analysis
                 analysis: @analysis,
                 row: col1.resource,
                 column: col2.resource,
-                row_bin_value: col1.bin_value,
-                column_bin_value: col2.bin_value,
+                row_bin_value: column_bin_value_to_heatmap_cell_bin_value(col1.bin_value),
+                column_bin_value: column_bin_value_to_heatmap_cell_bin_value(col2.bin_value),
                 unit:,
                 p_value:,
                 count:
@@ -132,11 +133,17 @@ module Analysis
     end
 
     def custom_field_column_set?(column, cfv)
-      case column.resource
-      when CustomField
+      case column
+      in Column(resource: CustomField, bin_value: Numeric)
         cfv[column.resource.key] == column.bin_value
-      when CustomFieldOption
-        custom_field_value = cfv[column.resource.custom_field.key]
+      in Column(resource: CustomField, bin_value: Range)
+        column.bin_value.include?(cfv[column.resource.key])
+      in Column(resource: CustomFieldOption) if column.category.domicile?
+        # domicile is a special case, in the custom_field_values refering to the
+        # area ID instead of the `key`
+        cfv[column.category.key] == column.resource.area_id
+      in Column(resource: CustomFieldOption)
+        custom_field_value = cfv[column.category.key]
         return false unless custom_field_value
 
         custom_field_value == column.resource.key ||
@@ -195,6 +202,19 @@ module Analysis
         (1..custom_field.maximum).map { |i| Column.new(custom_field, custom_field, i) }
       elsif custom_field.checkbox?
         [true, false].map { |v| Column.new(custom_field, custom_field, v) }
+      elsif custom_field.code == 'birthyear'
+        # Birthyear is a special case, as it is a number but we want to treat it
+        # as a category, and transform year to age.
+        age_counter = UserCustomFields::AgeCounter.new
+
+        # We're not using UserCustomFields::AgeCounter::DEFAULT_BINS because
+        # 10-year bins are too granular to get statistically significant results
+        # in most of our cases
+        [0, 20, 40, 60, 80, nil].each_cons(2).map do |(lower_age, upper_age)|
+          upper_year = lower_age && age_counter.convert_to_birthyear(lower_age)
+          lower_year = upper_age && age_counter.convert_to_birthyear(upper_age)
+          Column.new(custom_field, custom_field, lower_year...upper_year)
+        end
       else
         # Other input_types are currently not supported
         []
@@ -210,6 +230,17 @@ module Analysis
           .select(:input_id, :tag_id)
           .group_by(&:input_id)
           .transform_values { |taggings| taggings.each_with_object({}) { |tagging, hash| hash[tagging.tag_id] = true } }
+    end
+
+    # In our Column struct, we store the bin value as a range, but in
+    # HeatmapCell we are storing the lower-bound bin_value. This does the
+    # conversion.
+    def column_bin_value_to_heatmap_cell_bin_value(bin_value)
+      if bin_value.is_a?(Range)
+        bin_value.begin
+      elsif bin_value.is_a?(Numeric)
+        bin_value
+      end
     end
 
     def participant_to_inputs_map
