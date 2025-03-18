@@ -24,7 +24,7 @@ class CustomForm < ApplicationRecord
   delegate :project_id, to: :participation_context
 
   # Fixes custom fields ordering by:
-  # - Moving the first container field (page or section) to the first position if any
+  # - Moving the first container field (page) to the first position if any
   # - Ensuring consecutive integers without gaps or duplicates
   #
   # This method can be removed once we are confident that inconsistencies in the ordering
@@ -33,7 +33,7 @@ class CustomForm < ApplicationRecord
     CustomForm.transaction do
       fields = custom_fields.to_a
 
-      first_container_idx = fields.index { |f| f.input_type.in?(%w[page section]) }
+      first_container_idx = fields.index(&:page?)
       fields.insert(0, fields.delete_at(first_container_idx)) if first_container_idx&.positive?
 
       fields.each.with_index do |field, index|

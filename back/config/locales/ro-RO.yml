@@ -191,7 +191,7 @@ ro:
       title: 'Întrebarea dumneavoastră'
       option1: 'Opțiunea 1'
       option2: 'Opțiunea 2'
-    survey_end_page:
+    form_end_page:
       title: 'Sfârșitul sondajului'
       description: "Vă rugăm să vă trimiteți răspunsurile prin selectarea \"Trimiteți sondajul\" de mai jos."
   project_copy:

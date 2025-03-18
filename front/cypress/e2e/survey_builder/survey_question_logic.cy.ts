@@ -316,7 +316,7 @@ describe('Bug: ambiguity around missing values in survey logic', () => {
                   'nl-BE': 'Bedankt voor het delen van je invoer!',
                   'nl-NL': 'Bedankt voor het delen van je invoer!',
                 },
-                key: 'survey_end',
+                key: 'form_end',
                 code: null,
                 page_layout: 'default',
                 description_multiloc: {

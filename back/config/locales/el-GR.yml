@@ -168,12 +168,12 @@ el:
       attachments:
         title: Συνημμένα αρχεία
         description:
-      section1:
+      page1:
         description:
-      section2:
+      page2:
         title: Εικόνες και συνημμένα
         description:
-      section3:
+      page3:
         title: Λεπτομέρειες
         description:
       other_input_field:
