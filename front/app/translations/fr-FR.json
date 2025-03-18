@@ -811,7 +811,7 @@
   "app.components.formBuilder.title": "Titre",
   "app.components.formBuilder.toLabel": "à",
   "app.components.formBuilder.unsavedChanges": "Vos dernières modifications ne sont pas enregistrées",
-  "app.components.formBuilder.useCustomButton": "Utiliser un bouton personnalisé",
+  "app.components.formBuilder.useCustomButton2": "Use custom page button",
   "app.components.formBuilder.veryBad": "Très mauvais",
   "app.components.formBuilder.veryGood": "Très bon",
   "app.components.phaseTimeLeft.xDayLeft": "{timeLeft, plural, =0 {Moins d'un jour restant} one {Un jour restant} other {# jours restants}}",
