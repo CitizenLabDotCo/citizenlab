@@ -811,7 +811,7 @@
   "app.components.formBuilder.title": "Teitl",
   "app.components.formBuilder.toLabel": "i",
   "app.components.formBuilder.unsavedChanges": "Mae gennych newidiadau heb eu cadw",
-  "app.components.formBuilder.useCustomButton": "Defnyddiwch y botwm arferiad",
+  "app.components.formBuilder.useCustomButton2": "Defnyddiwch y botwm tudalen arferol",
   "app.components.formBuilder.veryBad": "Drwg iawn",
   "app.components.formBuilder.veryGood": "Da iawn",
   "app.components.phaseTimeLeft.xDayLeft": "{timeLeft, plural, =0 {Llai na diwrnod} one {# diwrnod} other {# diwrnod}} ar ôl",
