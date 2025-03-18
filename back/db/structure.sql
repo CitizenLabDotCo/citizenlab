@@ -1035,7 +1035,9 @@ CREATE TABLE public.analysis_heatmap_cells (
     lift double precision NOT NULL,
     p_value double precision NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL
+    updated_at timestamp(6) without time zone NOT NULL,
+    row_bin_value integer,
+    column_bin_value integer
 );
 
 
@@ -4431,7 +4433,7 @@ CREATE INDEX index_analysis_heatmap_cells_on_row ON public.analysis_heatmap_cell
 -- Name: index_analysis_heatmap_cells_uniqueness; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE UNIQUE INDEX index_analysis_heatmap_cells_uniqueness ON public.analysis_heatmap_cells USING btree (analysis_id, row_id, column_id, unit);
+CREATE UNIQUE INDEX index_analysis_heatmap_cells_uniqueness ON public.analysis_heatmap_cells USING btree (analysis_id, row_id, column_id, unit, row_bin_value, column_bin_value);
 
 
 --
@@ -6941,6 +6943,7 @@ ALTER TABLE ONLY public.ideas_topics
 SET search_path TO public,shared_extensions;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20250317211906'),
 ('20250305202848'),
 ('20250305111507'),
 ('20250224150953'),
