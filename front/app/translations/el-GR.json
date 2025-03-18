@@ -811,7 +811,7 @@
   "app.components.formBuilder.title": "Τίτλος",
   "app.components.formBuilder.toLabel": "στο",
   "app.components.formBuilder.unsavedChanges": "Έχετε μη αποθηκευμένες αλλαγές",
-  "app.components.formBuilder.useCustomButton": "Χρήση προσαρμοσμένου κουμπιού",
+  "app.components.formBuilder.useCustomButton2": "Χρήση προσαρμοσμένου κουμπιού σελίδας",
   "app.components.formBuilder.veryBad": "Πολύ κακό",
   "app.components.formBuilder.veryGood": "Πολύ καλά",
   "app.components.phaseTimeLeft.xDayLeft": "{timeLeft, plural, =0 {Λιγότερο από μία ημέρα} one {# ημέρα} other {# ημέρες}} για να ολοκληρωθεί",
