@@ -25,7 +25,7 @@ module ParticipationMethod
     end
 
     def assign_defaults_for_phase
-      phase.ideas_order ||= 'trending'
+      phase.ideas_order ||= 'trending' if allowed_ideas_orders.include?('trending')
       phase.input_term ||= default_input_term if supports_input_term?
       phase.similarity_threshold_title ||= 0.3
       phase.similarity_threshold_body ||= 0.4
