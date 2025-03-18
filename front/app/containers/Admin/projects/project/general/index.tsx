@@ -45,6 +45,7 @@ import Warning from 'components/UI/Warning';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import { queryClient } from 'utils/cl-react-query/queryClient';
+import Link from 'utils/cl-router/Link';
 import eventEmitter from 'utils/eventEmitter';
 import { convertUrlToUploadFile, isUploadFile } from 'utils/fileUtils';
 import { isNilOrError } from 'utils/helperUtils';
@@ -546,6 +547,20 @@ const AdminProjectsProjectGeneral = () => {
               handleTitleMultilocOnChange={handleTitleMultilocOnChange}
             />
           </Highlighter>
+          <Box mb="20px">
+            <Warning>
+              <FormattedMessage
+                {...messages.needInspiration}
+                values={{
+                  inspirationHubLink: (
+                    <Link to="/admin/inspiration-hub" target="_blank">
+                      <FormattedMessage {...messages.inspirationHub} />
+                    </Link>
+                  ),
+                }}
+              />
+            </Warning>
+          </Box>
 
           {/* Only show this field when slug is already saved to project (i.e. not when creating a new project, which uses this form as well) */}
           {!isNilOrError(project) && slug && (
