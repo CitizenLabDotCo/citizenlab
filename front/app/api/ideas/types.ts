@@ -212,6 +212,7 @@ export interface IIdeaUpdate {
   anonymous?: boolean;
   idea_images_attributes?: { image: string }[];
   manual_votes_amount?: number | null;
+  publication_status?: IdeaPublicationStatus;
 }
 
 export interface IIdeas {

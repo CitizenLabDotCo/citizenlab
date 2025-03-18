@@ -16,7 +16,7 @@ import {
 } from 'components/Form/typings';
 import customAjv from 'components/Form/utils/customAjv';
 
-import getKey from './getKey';
+import { getFieldNameFromPath } from 'utils/JSONFormUtils';
 
 const getVisiblePages = (
   pages: PageType[],
@@ -41,7 +41,7 @@ export default getVisiblePages;
 const generateQuestionsSeenSet = (userPagePath: PageType[]) => {
   return new Set(
     userPagePath.flatMap((page) =>
-      page.elements.map((element) => getKey(element.scope))
+      page.elements.map((element) => getFieldNameFromPath(element.scope))
     )
   );
 };
@@ -140,7 +140,7 @@ const evaluateCondition = (
   condition: SchemaBasedCondition,
   questionsSeenSet: Set<string>
 ): boolean => {
-  const conditionKey = getKey(condition.scope);
+  const conditionKey = getFieldNameFromPath(condition.scope);
   const value = resolveData(data, conditionKey);
 
   const questionSeen = questionsSeenSet.has(conditionKey);

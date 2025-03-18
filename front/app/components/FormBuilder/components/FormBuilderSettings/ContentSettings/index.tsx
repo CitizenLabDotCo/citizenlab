@@ -32,11 +32,9 @@ export const ContentSettings = ({
   formHasSubmissions,
 }: ContentSettingsProps) => {
   const { watch } = useFormContext();
-  // TODO: Fix this the next time the file is edited.
-  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-  const lockedAttributes = field?.constraints?.locks;
+  const lockedAttributes = field.constraints?.locks;
   const platformLocale = useLocale();
-  const isFieldGrouping = ['page', 'section'].includes(field.input_type);
+  const isFieldGrouping = field.input_type === 'page';
 
   const handleKeyDown = (event: React.KeyboardEvent<Element>) => {
     // We want to prevent the form builder from being closed when enter is pressed
@@ -44,6 +42,9 @@ export const ContentSettings = ({
       event.preventDefault();
     }
   };
+  const disableTogglingRequired = ['body_multiloc', 'title_multiloc'].includes(
+    field.code || ''
+  );
 
   if (!isNilOrError(platformLocale)) {
     return (
@@ -88,6 +89,7 @@ export const ContentSettings = ({
             <SectionField id="e2e-required-toggle">
               <Toggle
                 name={`customFields.${field.index}.required`}
+                disabled={disableTogglingRequired}
                 label={
                   <Text as="span" variant="bodyM" my="0px">
                     <FormattedMessage {...messages.requiredToggleLabel} />

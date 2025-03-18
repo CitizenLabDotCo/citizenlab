@@ -17,7 +17,7 @@ interface Props {
   onChange: (questionId?: string) => void;
 }
 
-const NOT_QUESTIONS = new Set(['page', 'section']);
+const NOT_QUESTIONS = new Set(['page']);
 
 const generateOptions = (
   questions: ICustomFields,
