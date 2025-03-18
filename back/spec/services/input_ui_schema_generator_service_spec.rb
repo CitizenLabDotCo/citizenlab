@@ -225,7 +225,10 @@ RSpec.describe InputUiSchemaGeneratorService do
                   title: 'Thank you for sharing your input!',
                   description: 'Your input has been successfully submitted.',
                   page_layout: 'default',
-                  map_config_id: nil
+                  map_config_id: nil,
+                  page_button_label_multiloc: {},
+                  page_button_link: nil
+
                 },
                 elements: []
               }
