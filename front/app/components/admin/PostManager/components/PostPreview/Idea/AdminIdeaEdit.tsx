@@ -148,8 +148,12 @@ const AdminIdeaEdit = ({
       {
         id: ideaId,
         requestBody: isImageNew
-          ? omit(payload, 'idea_files_attributes')
-          : omit(payload, ['idea_images_attributes', 'idea_files_attributes']),
+          ? omit(payload, ['idea_files_attributes', 'publication_status'])
+          : omit(payload, [
+              'idea_images_attributes',
+              'idea_files_attributes',
+              'publication_status',
+            ]),
       },
       {
         onSuccess: () => {
