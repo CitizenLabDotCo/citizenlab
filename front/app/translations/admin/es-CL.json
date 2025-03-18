@@ -2516,7 +2516,6 @@
   "app.containers.AdminPage.projects.project.analysis.authorsByDomicile": "Autores por domicilio",
   "app.containers.AdminPage.projects.project.analysis.backgroundJobs": "Trabajos de fondo",
   "app.containers.AdminPage.projects.project.analysis.comments": "Asuntos",
-  "app.containers.AdminPage.projects.project.analysis.demographicsTitle": "Demografía",
   "app.containers.AdminPage.projects.project.analysis.domicileChartTooLarge": "La tabla de domicilios es demasiado grande para mostrarla",
   "app.containers.AdminPage.projects.project.analysis.emptyCustomFieldFilter": "Ocultar respuestas vacías",
   "app.containers.AdminPage.projects.project.analysis.emptyCustomFieldsLabel": "Respuestas",

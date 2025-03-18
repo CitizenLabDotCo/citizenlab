@@ -2516,7 +2516,6 @@
   "app.containers.AdminPage.projects.project.analysis.authorsByDomicile": "Autorzy według miejsca zamieszkania",
   "app.containers.AdminPage.projects.project.analysis.backgroundJobs": "Praca w tle",
   "app.containers.AdminPage.projects.project.analysis.comments": "Komentarze",
-  "app.containers.AdminPage.projects.project.analysis.demographicsTitle": "Dane demograficzne",
   "app.containers.AdminPage.projects.project.analysis.domicileChartTooLarge": "Wykres miejsca zamieszkania jest zbyt duży, aby go wyświetlić",
   "app.containers.AdminPage.projects.project.analysis.emptyCustomFieldFilter": "Ukryj puste odpowiedzi",
   "app.containers.AdminPage.projects.project.analysis.emptyCustomFieldsLabel": "Odpowiedzi",

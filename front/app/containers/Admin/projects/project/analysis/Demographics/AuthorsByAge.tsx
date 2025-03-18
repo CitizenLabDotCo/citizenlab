@@ -6,6 +6,7 @@ import {
   defaultStyles,
   Title,
   Text,
+  stylingConsts,
 } from '@citizenlab/cl2-component-library';
 import { useParams } from 'react-router-dom';
 import {
@@ -20,7 +21,7 @@ import {
 
 import useAuthorsByAge from 'api/analysis_stats/useAuthorsByAge';
 
-import { FormattedMessage, useIntl } from 'utils/cl-intl';
+import { useIntl } from 'utils/cl-intl';
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 
 import useAnalysisFilterParams from '../hooks/useAnalysisFilterParams';
@@ -169,10 +170,15 @@ const AuthorsByAge = ({ customFieldId }: Props) => {
   if (!chartData) return null;
 
   return (
-    <Box display="flex" flexDirection="column" alignItems="center">
-      <Title my="0" variant="h6">
-        <FormattedMessage {...messages.authorsByAge} />
-      </Title>
+    <Box
+      display="flex"
+      flexDirection="column"
+      border="1px solid"
+      borderColor={colors.borderLight}
+      borderRadius={stylingConsts.borderRadius}
+      px="8px"
+      py="16px"
+    >
       <ResponsiveContainer width="100%" height={100}>
         <RechartsBarChart
           data={chartData}

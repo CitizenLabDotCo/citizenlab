@@ -1214,8 +1214,8 @@ CREATE TABLE public.projects (
     baskets_count integer DEFAULT 0 NOT NULL,
     votes_count integer DEFAULT 0 NOT NULL,
     followers_count integer DEFAULT 0 NOT NULL,
-    preview_token character varying NOT NULL,
     header_bg_alt_text_multiloc jsonb DEFAULT '{}'::jsonb,
+    preview_token character varying NOT NULL,
     hidden boolean DEFAULT false NOT NULL
 );
 
@@ -1412,7 +1412,7 @@ CREATE VIEW public.analytics_fact_email_deliveries AS
     (ecd.sent_at)::date AS dimension_date_sent_id,
     ecd.campaign_id,
     p.id AS dimension_project_id,
-    ((ecc.type)::text <> ALL (ARRAY[('EmailCampaigns::Campaigns::Manual'::character varying)::text, ('EmailCampaigns::Campaigns::ManualProjectParticipants'::character varying)::text])) AS automated
+    ((ecc.type)::text <> ALL ((ARRAY['EmailCampaigns::Campaigns::Manual'::character varying, 'EmailCampaigns::Campaigns::ManualProjectParticipants'::character varying])::text[])) AS automated
    FROM ((public.email_campaigns_deliveries ecd
      JOIN public.email_campaigns_campaigns ecc ON ((ecc.id = ecd.campaign_id)))
      LEFT JOIN public.projects p ON ((p.id = ecc.context_id)));
@@ -1580,13 +1580,13 @@ CREATE TABLE public.phases (
     reacting_dislike_limited_max integer DEFAULT 10,
     allow_anonymous_participation boolean DEFAULT false NOT NULL,
     document_annotation_embed_url character varying,
+    campaigns_settings jsonb DEFAULT '{}'::jsonb,
     voting_method character varying,
     voting_max_votes_per_idea integer,
     voting_term_singular_multiloc jsonb DEFAULT '{}'::jsonb,
     voting_term_plural_multiloc jsonb DEFAULT '{}'::jsonb,
     baskets_count integer DEFAULT 0 NOT NULL,
     votes_count integer DEFAULT 0 NOT NULL,
-    campaigns_settings jsonb DEFAULT '{}'::jsonb,
     native_survey_title_multiloc jsonb DEFAULT '{}'::jsonb,
     native_survey_button_multiloc jsonb DEFAULT '{}'::jsonb,
     expire_days_limit integer,
@@ -1901,9 +1901,9 @@ CREATE TABLE public.app_configurations (
     logo character varying,
     favicon character varying,
     settings jsonb DEFAULT '{}'::jsonb,
+    style jsonb DEFAULT '{}'::jsonb,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
-    style jsonb DEFAULT '{}'::jsonb,
     country_code character varying
 );
 
@@ -2052,7 +2052,7 @@ CREATE TABLE public.content_builder_layouts (
 --
 
 CREATE TABLE public.cosponsorships (
-    id uuid DEFAULT shared_extensions.gen_random_uuid() NOT NULL,
+    id uuid DEFAULT gen_random_uuid() NOT NULL,
     status character varying DEFAULT 'pending'::character varying NOT NULL,
     user_id uuid NOT NULL,
     idea_id uuid NOT NULL,
@@ -7397,6 +7397,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20171010114644'),
 ('20171010114629'),
 ('20171010091219'),
+('20171004133932'),
 ('20170918101800'),
 ('20170719172958'),
 ('20170719160834'),

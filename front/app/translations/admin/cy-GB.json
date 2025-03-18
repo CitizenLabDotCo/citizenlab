@@ -2516,7 +2516,6 @@
   "app.containers.AdminPage.projects.project.analysis.authorsByDomicile": "Awduron yn ôl domisil",
   "app.containers.AdminPage.projects.project.analysis.backgroundJobs": "Swyddi Cefndir",
   "app.containers.AdminPage.projects.project.analysis.comments": "Sylwadau",
-  "app.containers.AdminPage.projects.project.analysis.demographicsTitle": "Demograffeg",
   "app.containers.AdminPage.projects.project.analysis.domicileChartTooLarge": "Mae'r siart domisil yn rhy fawr i'w ddangos",
   "app.containers.AdminPage.projects.project.analysis.emptyCustomFieldFilter": "Cuddio atebion gwag",
   "app.containers.AdminPage.projects.project.analysis.emptyCustomFieldsLabel": "Ymatebion",
