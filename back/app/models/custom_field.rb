@@ -257,6 +257,10 @@ class CustomField < ApplicationRecord
     page? || section?
   end
 
+  def checkbox?
+    input_type == 'checkbox'
+  end
+
   def dropdown_layout_type?
     %w[multiselect select].include?(input_type)
   end
