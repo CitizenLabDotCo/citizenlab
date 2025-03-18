@@ -46,26 +46,21 @@ const Areas = ({ titleMultiloc }: Props) => {
     return <Skeleton title={title} />;
   }
 
-  // If projects loaded, but no projects:
-  if (!projects || projects.length === 0) {
-    //   // If, even after indicating follow preferences,
-    //   // there are no projects, we show the empty state.
-    return <EmptyState title={title} />;
-  }
-
   return (
     <CarrouselContainer className="e2e-areas-widget">
       <Box display="flex" alignItems="center">
         <CarrouselTitle>{title}</CarrouselTitle>
-        <Box mb="12px">
-          <ButtonWithFollowAreasModal />
-        </Box>
+        <ButtonWithFollowAreasModal />
       </Box>
-      <ProjectCarrousel
-        projects={projects}
-        hasMore={!!hasNextPage}
-        onLoadMore={fetchNextPage}
-      />
+      {!projects || projects.length === 0 ? (
+        <EmptyState />
+      ) : (
+        <ProjectCarrousel
+          projects={projects}
+          hasMore={!!hasNextPage}
+          onLoadMore={fetchNextPage}
+        />
+      )}
     </CarrouselContainer>
   );
 };
