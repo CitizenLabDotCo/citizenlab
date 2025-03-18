@@ -90,7 +90,13 @@ const ScrollableCarrousel = ({
   }, [scrollContainerRef, hasMore, handleButtonVisiblity]);
 
   return (
-    <Box position="relative">
+    <Box
+      /* We set position relative to be able to position the skip (& scroll?) buttons.
+        I'd actually prefer to move the SkipButton's absolute positioning styles onto a Box that wraps the button here, so the relative/absolute relationship is clearer.
+        Similarly, I think the ScrollButtons could go inside HorizontalScroll so the positioning relationship could be made clearer.
+      */
+      position="relative"
+    >
       <SkipButton onSkip={() => skipCarrousel(endId)} />
       <HorizontalScroll
         setRef={(ref) => {
