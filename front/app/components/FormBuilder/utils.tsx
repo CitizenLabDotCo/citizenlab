@@ -68,8 +68,6 @@ export type FormBuilderConfig = {
     handleClose: () => void
   ) => void;
 
-  groupingType: 'page' | 'section';
-
   onDownloadPDF?: () => void;
 };
 
@@ -177,7 +175,7 @@ export function getAdditionalSettings(
             pageLayoutName={`customFields.${field.index}.page_layout`}
           />
           <FieldGroupSettings locale={platformLocale} field={field} />
-          {field.key === 'survey_end' && (
+          {field.key === 'form_end' && (
             <PageButtonSettings
               pageButtonLabelMultilocName={`customFields.${field.index}.page_button_label_multiloc`}
               pageButtonLinkName={`customFields.${field.index}.page_button_link`}
@@ -190,8 +188,6 @@ export function getAdditionalSettings(
           />
         </>
       );
-    case 'section':
-      return <FieldGroupSettings locale={platformLocale} field={field} />;
     case 'linear_scale':
     case 'rating':
       return (
@@ -277,9 +273,6 @@ const getInputTypeStringKey = (
     case 'page':
       translatedStringKey = messages.page;
       break;
-    case 'section':
-      translatedStringKey = messages.section;
-      break;
     case 'number':
       translatedStringKey = messages.number;
       break;
@@ -338,5 +331,5 @@ export const findNextPageAfterCurrentPage = (
       .find((item) => item.input_type === 'page');
     if (nextPage?.id) return nextPage.id;
   }
-  return 'survey_end';
+  return 'form_end';
 };

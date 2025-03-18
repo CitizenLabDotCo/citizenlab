@@ -10,13 +10,16 @@ import {
 } from '@citizenlab/cl2-component-library';
 import { useTheme } from 'styled-components';
 
+import { IPhaseData } from 'api/phases/types';
+import { getInputTerm } from 'api/phases/utils';
+
 import useLocalize from 'hooks/useLocalize';
 
 import LanguageSelector from 'containers/MainHeader/Components/LanguageSelector';
 
 import { PageType } from 'components/Form/typings';
 
-import { FormattedMessage, MessageDescriptor } from 'utils/cl-intl';
+import { FormattedMessage, MessageDescriptor, useIntl } from 'utils/cl-intl';
 
 import messages from '../../messages';
 
@@ -46,6 +49,8 @@ interface Props {
   hasPreviousPage: boolean;
   isLoading: boolean;
   pageVariant: PageVariant;
+  phases: IPhaseData[] | undefined;
+  currentPhase: IPhaseData | undefined;
   currentPage: PageType;
 }
 
@@ -55,25 +60,42 @@ const PageControlButtons = ({
   hasPreviousPage,
   isLoading,
   pageVariant,
+  phases,
   currentPage,
+  currentPhase,
 }: Props) => {
   const theme = useTheme();
   const localize = useLocalize();
+  const { formatMessage } = useIntl();
   const isSmallerThanPhone = useBreakpoint('phone');
 
-  const pageButtonLabel = localize(
-    currentPage.options.page_button_label_multiloc
-  );
-
-  const handleButtonClick = () => {
-    // If this is the after-submission page & the user has set a custom button link, navigate to that
-    const pageButtonLink = currentPage.options.page_button_link;
-    if (pageVariant === 'after-submission' && pageButtonLink) {
-      window.location.href = pageButtonLink;
+  const getButtonMessage = () => {
+    if (pageVariant !== 'after-submission') {
+      return formatMessage(BUTTON_MESSAGES[pageVariant]);
     } else {
-      // Otherwise, continue with the default behaviour
-      handleNextAndSubmit();
+      if (localize(currentPage.options.page_button_label_multiloc)) {
+        // Page is using a custom button label
+        return localize(currentPage.options.page_button_label_multiloc);
+      }
     }
+
+    const inputTerm = getInputTerm(phases, currentPhase);
+
+    const inputTermMessages: Record<string, MessageDescriptor> = {
+      idea: messages.viewYourIdea,
+      option: messages.viewYourOption,
+      project: messages.viewYourProject,
+      question: messages.viewYourQuestion,
+      issue: messages.viewYourIssue,
+      contribution: messages.viewYourContribution,
+      proposal: messages.viewYourProposal,
+      petition: messages.viewYourPetition,
+      initiative: messages.viewYourInitiative,
+    };
+
+    return currentPhase?.attributes.participation_method === 'native_survey'
+      ? formatMessage(messages.backToProject)
+      : formatMessage(inputTermMessages[inputTerm]);
   };
 
   return (
@@ -113,7 +135,7 @@ const PageControlButtons = ({
           </Button>
         )}
         <Button
-          onClick={handleButtonClick}
+          onClick={handleNextAndSubmit}
           data-cy={CY_DATA_VALUES[pageVariant]}
           icon={ICON_VALUES[pageVariant]}
           iconPos="right"
@@ -121,11 +143,7 @@ const PageControlButtons = ({
           boxShadow={defaultStyles.boxShadow}
           processing={isLoading}
         >
-          {pageButtonLabel ? (
-            pageButtonLabel
-          ) : (
-            <FormattedMessage {...BUTTON_MESSAGES[pageVariant]} />
-          )}
+          {getButtonMessage()}
         </Button>
       </Box>
     </Box>

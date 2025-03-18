@@ -21,11 +21,11 @@ class WebApi::V1::CustomFieldSerializer < WebApi::V1::BaseSerializer
   }
 
   attribute :page_button_link, if: proc { |object, _params|
-    object.input_type == 'page' && object.key == 'survey_end'
+    object.input_type == 'page' && object.key == 'form_end'
   }
 
   attribute :page_button_label_multiloc, if: proc { |object, _params|
-    object.input_type == 'page' && object.key == 'survey_end'
+    object.input_type == 'page' && object.key == 'form_end'
   }
 
   attribute :dropdown_layout, if: proc { |object, _params|

@@ -20,7 +20,7 @@ import {
   useJsonForms,
   JsonFormsDispatch,
 } from '@jsonforms/react';
-import { useParams, useSearchParams } from 'react-router-dom';
+import { useLocation, useParams, useSearchParams } from 'react-router-dom';
 import { useTheme } from 'styled-components';
 
 import { IIdea } from 'api/ideas/types';
@@ -31,10 +31,14 @@ import useProjectMapConfig from 'api/map_config/useProjectMapConfig';
 import usePhase from 'api/phases/usePhase';
 import usePhases from 'api/phases/usePhases';
 import { getCurrentPhase } from 'api/phases/utils';
+import useProjectById from 'api/projects/useProjectById';
 import useProjectBySlug from 'api/projects/useProjectBySlug';
 
 import useLocalize from 'hooks/useLocalize';
 
+import ProfileVisiblity from 'containers/IdeasNewPage/IdeasNewIdeationForm/ProfileVisibility';
+
+import AnonymousParticipationConfirmationModal from 'components/AnonymousParticipationConfirmationModal';
 import EsriMap from 'components/EsriMap';
 import { parseLayers } from 'components/EsriMap/utils';
 import { FormContext } from 'components/Form/contexts';
@@ -55,20 +59,19 @@ import { useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 import eventEmitter from 'utils/eventEmitter';
+import { isPage } from 'utils/helperUtils';
 
 import getPageSchema from '../../utils/getPageSchema';
 import { useErrorToRead } from '../Fields/ErrorToReadContext';
 
-import { SURVEY_PAGE_CHANGE_EVENT } from './events';
+import { FORM_PAGE_CHANGE_EVENT } from './events';
 import messages from './messages';
 import PageControlButtons from './PageControlButtons';
 import SubmissionReference from './SubmissionReference';
 
-// Handling survey pages in here. The more things that we have added to it,
-// the more it has become a survey page layout. It also becomes extremely hard to understand
-// if we continue to try and overload it to handle other scenarios. Survey headers are different
-// and handling them here makes it easy style the entire page. That among other things.
-const CLSurveyPageLayout = memo(
+// TODO: Edwin: This component is a bit of a mess. It should be refactored to be more readable and maintainable.
+// This is on my TODO list for this tandem..
+const CLPageLayout = memo(
   ({
     schema,
     uischema,
@@ -86,6 +89,11 @@ const CLSurveyPageLayout = memo(
     const formState = useJsonForms();
     const localize = useLocalize();
     const theme = useTheme();
+    const { pathname } = useLocation();
+    const isAdminPage = isPage('admin', pathname);
+    const [postAnonymously, setPostAnonymously] = useState(false);
+    const [showAnonymousConfirmationModal, setShowAnonymousConfirmationModal] =
+      useState(false);
 
     // We can cast types because the tester made sure we only get correct values
     const pageTypeElements = (uischema as PageCategorization).elements;
@@ -94,8 +102,16 @@ const CLSurveyPageLayout = memo(
       pageTypeElements[0],
     ]);
     const [scrollToError, setScrollToError] = useState(false);
-    const ideaId = searchParams.get('idea_id');
+    const { slug, ideaId: idea_id } = useParams<{
+      slug?: string;
+      ideaId?: string;
+    }>();
+    const ideaId = searchParams.get('idea_id') || idea_id;
     const { data: idea } = useIdeaById(ideaId ?? undefined);
+    const projectId = idea?.data.relationships.project.data.id;
+    const projectById = useProjectById(projectId);
+    const projectBySlug = useProjectBySlug(slug);
+    const project = projectById.data ?? projectBySlug.data;
 
     // If the idea (survey submission) has no author relationship,
     // it was either created through 'anyone' permissions or with
@@ -108,20 +124,25 @@ const CLSurveyPageLayout = memo(
     const pagesRef = useRef<HTMLDivElement>(null);
     const { announceError } = useErrorToRead();
 
-    // Get project and relevant phase data
-    const { slug } = useParams() as {
-      slug: string;
-    };
-    const { data: project } = useProjectBySlug(slug);
     const { data: phases } = usePhases(project?.data.id);
     const phaseIdFromSearchParams = searchParams.get('phase_id');
     const phaseId =
       phaseIdFromSearchParams || getCurrentPhase(phases?.data)?.id;
     const { data: phase } = usePhase(phaseId);
+    const isNativeSurvey =
+      phase?.data.attributes.participation_method === 'native_survey';
     const allowAnonymousPosting =
-      // TODO: Fix this the next time the file is edited.
-      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-      phase?.data?.attributes.allow_anonymous_participation;
+      phase?.data.attributes.allow_anonymous_participation;
+
+    /*
+     * For native surveys, the admin enables anonymous posting for all responses,
+     * so we display a message to the user. For other methods (e.g., ideation and proposals),
+     * the admin can allow anonymous posting, but we provide a toggle for the user
+     * to choose whether to post anonymously or not.
+     */
+    const allowsAnonymousPostingInNativeSurvey =
+      isNativeSurvey && allowAnonymousPosting;
+    const showTogglePostAnonymously = allowAnonymousPosting && !isNativeSurvey;
 
     // Map-related variables
     const { data: projectMapConfig } = useProjectMapConfig(project?.data.id);
@@ -162,7 +183,7 @@ const CLSurveyPageLayout = memo(
 
     // Emit event when page changes and map is fetched
     useEffect(() => {
-      eventEmitter.emit(SURVEY_PAGE_CHANGE_EVENT);
+      eventEmitter.emit(FORM_PAGE_CHANGE_EVENT);
     }, [currentStepNumber, isFetchingMapConfig]);
 
     useEffect(() => {
@@ -209,6 +230,14 @@ const CLSurveyPageLayout = memo(
       }
     };
 
+    const handleOnChangeAnonymousPosting = () => {
+      if (!postAnonymously) {
+        setShowAnonymousConfirmationModal(true);
+      }
+
+      setPostAnonymously((postAnonymously) => !postAnonymously);
+    };
+
     const handleNextAndSubmit = async () => {
       if (!onSubmit) return;
 
@@ -226,21 +255,45 @@ const CLSurveyPageLayout = memo(
       }
 
       if (pageVariant === 'after-submission') {
-        clHistory.push({ pathname: `/projects/${slug}` });
+        if (isNativeSurvey) {
+          if (currentPage.options.page_button_link) {
+            // Page is using a custom button link
+            window.location.href = currentPage.options.page_button_link;
+          } else {
+            clHistory.push({
+              pathname: `/projects/${project?.data.attributes.slug}`,
+            });
+          }
+        } else {
+          clHistory.push({
+            pathname: `/ideas/${idea?.data.attributes.slug}`,
+          });
+        }
         return;
       }
+
+      const goToNextPage = () => {
+        scrollToTop();
+        const nextPage = visiblePages[currentStepNumber + 1];
+
+        setUserPagePath((userPagePath) => [...userPagePath, nextPage]);
+
+        setIsLoading(false);
+      };
 
       if (pageVariant === 'submission') {
         setIsLoading(true);
         const dataWithPublicationStatus = {
           ...data,
           publication_status: 'published',
+          ...(showTogglePostAnonymously && { anonymous: postAnonymously }),
         };
 
         const idea: IIdea | undefined = await onSubmit(
           { data: dataWithPublicationStatus },
           true,
-          userPagePath
+          userPagePath,
+          goToNextPage
         );
 
         if (idea) {
@@ -257,6 +310,7 @@ const CLSurveyPageLayout = memo(
         const dataWithPublicationStatus = {
           ...data,
           publication_status: 'draft',
+          ...(showTogglePostAnonymously && { anonymous: postAnonymously }),
         };
 
         await onSubmit(
@@ -264,13 +318,8 @@ const CLSurveyPageLayout = memo(
           false,
           userPagePath
         );
+        goToNextPage();
       }
-
-      scrollToTop();
-
-      const nextPage = visiblePages[currentStepNumber + 1];
-
-      setUserPagePath((userPagePath) => [...userPagePath, nextPage]);
 
       setIsLoading(false);
     };
@@ -313,7 +362,7 @@ const CLSurveyPageLayout = memo(
       // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       if (draggableDivRef?.current) {
         const clientY = event?.changedTouches?.[0]?.clientY;
-        // Don't allow the div to be dragged outside bounds of survey page
+        // Don't allow the div to be dragged outside bounds of page
         if (clientY > 0 && clientY < document.body.clientHeight - 180) {
           draggableDivRef.current.style.height = `${clientY}px`;
         }
@@ -355,7 +404,7 @@ const CLSurveyPageLayout = memo(
           // tree when the page changes. This fixes an issue where the state of some
           // Control components was shared between consecutive pages with a similar
           // structure.
-          key={`survey-page-${currentPageIndex}`}
+          key={`form-page-${currentPageIndex}`}
           id="container"
           display="flex"
           flexDirection={isMobileOrSmaller ? 'column' : 'row'}
@@ -365,7 +414,7 @@ const CLSurveyPageLayout = memo(
         >
           {isMapPage && (
             <Box
-              id="survey_page_map"
+              id="map_page"
               w={isMobileOrSmaller ? '100%' : '60%'}
               minWidth="60%"
               h="100%"
@@ -422,7 +471,7 @@ const CLSurveyPageLayout = memo(
               <Box h="100%" display="flex" flexDirection="column">
                 <Box p="24px" w="100%">
                   <Box display="flex" flexDirection="column">
-                    {allowAnonymousPosting && (
+                    {allowsAnonymousPostingInNativeSurvey && (
                       <Box w="100%" mb="12px">
                         <Warning icon="shield-checkered">
                           {formatMessage(messages.anonymousSurveyMessage)}
@@ -476,6 +525,13 @@ const CLSurveyPageLayout = memo(
                         </Box>
                       );
                     })}
+                    {pageVariant === 'submission' &&
+                      showTogglePostAnonymously && (
+                        <ProfileVisiblity
+                          postAnonymously={postAnonymously}
+                          onChange={handleOnChangeAnonymousPosting}
+                        />
+                      )}
                   </Box>
                 </Box>
               </Box>
@@ -503,44 +559,59 @@ const CLSurveyPageLayout = memo(
         progress update before entering a new page, rather than after leaving it.
       */}
         <Box
-          maxWidth={isMapPage ? '1100px' : '700px'}
+          maxWidth={!isAdminPage ? (isMapPage ? '1100px' : '700px') : undefined}
           w="100%"
           position="fixed"
-          role="progressbar"
-          aria-valuemin={0}
-          aria-valuemax={100}
-          aria-valuenow={percentageAnswered}
-          aria-label={formatMessage(messages.progressBarLabel)}
+          bottom={isMobileOrSmaller || isAdminPage ? '0' : '40px'}
+          display="flex"
+          flexDirection="column"
+          alignItems="center"
+          zIndex="1000"
         >
-          <Box background={colors.background}>
-            <Box
-              w={`${percentageAnswered}%`}
-              h="4px"
-              background={theme.colors.tenantSecondary}
-              style={{ transition: 'width 0.3s ease-in-out' }}
+          <Box
+            w="100%"
+            role="progressbar"
+            aria-valuemin={0}
+            aria-valuemax={100}
+            aria-valuenow={percentageAnswered}
+            aria-label={formatMessage(messages.progressBarLabel)}
+            zIndex="1000"
+          >
+            <Box background={colors.background}>
+              <Box
+                w={`${percentageAnswered}%`}
+                h="4px"
+                background={theme.colors.tenantSecondary}
+                style={{ transition: 'width 0.3s ease-in-out' }}
+              />
+            </Box>
+          </Box>
+
+          <Box w="100%" zIndex="1000">
+            <PageControlButtons
+              handleNextAndSubmit={handleNextAndSubmit}
+              handlePrevious={handlePrevious}
+              hasPreviousPage={hasPreviousPage}
+              isLoading={isLoading}
+              pageVariant={pageVariant}
+              phases={phases?.data}
+              currentPhase={phase?.data}
+              currentPage={currentPage}
             />
           </Box>
         </Box>
-        <Box
-          maxWidth={isMapPage ? '1100px' : '700px'}
-          w="100%"
-          position="fixed"
-          bottom={isMobileOrSmaller ? '0' : '40px'}
-        >
-          <PageControlButtons
-            handleNextAndSubmit={handleNextAndSubmit}
-            handlePrevious={handlePrevious}
-            hasPreviousPage={hasPreviousPage}
-            isLoading={isLoading}
-            pageVariant={pageVariant}
-            currentPage={currentPage}
+        {showAnonymousConfirmationModal && (
+          <AnonymousParticipationConfirmationModal
+            onCloseModal={() => {
+              setShowAnonymousConfirmationModal(false);
+            }}
           />
-        </Box>
+        )}
       </>
     );
   }
 );
 
-export default withJsonFormsLayoutProps(CLSurveyPageLayout);
+export default withJsonFormsLayoutProps(CLPageLayout);
 
 export const clPageTester: RankedTester = rankWith(5, isPageCategorization);

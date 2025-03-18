@@ -16,18 +16,14 @@ import AdminPublicationCard from './AdminPublicationCard';
 import { BIG_CARD_WIDTH, SMALL_CARD_WIDTH } from './constants';
 
 interface Props {
-  title: string;
   adminPublications: IAdminPublicationData[];
   hasMore: boolean;
-  className?: string;
   onLoadMore: () => Promise<any>;
 }
 
 const AdminPublicationsCarrousel = ({
-  title,
   adminPublications,
   hasMore,
-  className,
   onLoadMore,
 }: Props) => {
   const [scrollContainerRef, setScrollContainerRef] = useState<
@@ -71,8 +67,6 @@ const AdminPublicationsCarrousel = ({
 
   return (
     <ScrollableCarrousel
-      className={className}
-      title={title}
       scrollContainerRef={scrollContainerRef}
       setScrollContainerRef={setScrollContainerRef}
       cardWidth={cardWidth}

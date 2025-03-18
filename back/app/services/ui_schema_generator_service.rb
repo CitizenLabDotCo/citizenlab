@@ -130,7 +130,7 @@ class UiSchemaGeneratorService < FieldVisitorService
   end
 
   def visit_page(field)
-    if field.key == 'survey_end'
+    if field.key == 'form_end'
       default(field).tap do |ui_field|
         ui_field[:options][:page_button_link] = field.page_button_link
         ui_field[:options][:page_button_label_multiloc] = multiloc_service.t(field.page_button_label_multiloc)
@@ -166,16 +166,12 @@ class UiSchemaGeneratorService < FieldVisitorService
   attr_reader :locales, :multiloc_service
 
   def multiloc_field(field)
-    elements = locales.map do |locale|
-      yield.tap do |ui_field|
-        ui_field[:scope] = "#{ui_field[:scope]}/properties/#{locale}"
-        ui_field[:options][:locale] = locale
-      end
+    locale = I18n.locale.to_s
+    yield.tap do |ui_field|
+      ui_field[:scope] = "#{ui_field[:scope]}/properties/#{locale}"
+      ui_field[:options] ||= {}
+      ui_field[:options][:input_type] = field.input_type
+      ui_field[:options][:render] = 'multiloc'
     end
-    {
-      type: 'VerticalLayout',
-      options: { input_type: field.input_type, render: 'multiloc' },
-      elements: elements
-    }
   end
 end
