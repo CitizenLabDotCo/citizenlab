@@ -3,9 +3,9 @@
 require 'rails_helper'
 
 RSpec.describe UserCustomFields::FieldValueCounter do
-  subject(:counts) { described_class.counts_by_field_option(users, custom_field, **options) }
+  subject(:counts) { described_class.counts_by_field_option(records, custom_field, **options) }
 
-  let(:users) { User.active }
+  let(:records) { User.active }
   let(:options) { {} }
 
   describe '.counts_by_field_option' do
@@ -68,6 +68,22 @@ RSpec.describe UserCustomFields::FieldValueCounter do
         expected_keys = custom_field.options.pluck(:key) << described_class::UNKNOWN_VALUE_LABEL
         expect(counts.keys).to match_array(expected_keys)
         expect(counts.values).to all eq(0)
+      end
+    end
+
+    context 'when user fields are stored in ideas' do
+      let(:custom_field) { create(:custom_field_gender, :with_options) }
+      let(:options) { { record_type: 'ideas' } }
+      let(:records) do
+        create(:idea_status_proposed)
+        create(:idea, author: nil, custom_field_values: { "u_#{custom_field.key}" => 'male' })
+        create(:idea, author: nil, custom_field_values: { "u_#{custom_field.key}" => 'female' })
+        create(:idea, author: nil, custom_field_values: {})
+        Idea.all
+      end
+
+      it 'adds counts from user fields stored in ideas' do
+        expect(counts).to match('male' => 1, 'female' => 1, 'unspecified' => 0, described_class::UNKNOWN_VALUE_LABEL => 1)
       end
     end
   end
