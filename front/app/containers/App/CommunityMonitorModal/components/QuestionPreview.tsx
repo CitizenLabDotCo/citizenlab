@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Layout } from '@jsonforms/core';
+import { JsonFormsCore, Layout } from '@jsonforms/core';
 import { JsonForms } from '@jsonforms/react';
 import { isEmpty } from 'lodash-es';
 
@@ -38,8 +38,10 @@ const QuestionPreview = ({
   // Extract the first sentiment question from the UI Schema
   const uiSchemaFirstQuestion = findFirstSentimentLinearScale(uiSchema);
 
-  const redirectToFullSurvey = (data) => {
-    if (!isEmpty(data?.data)) {
+  const redirectToFullSurvey = (
+    data: Pick<JsonFormsCore, 'data' | 'errors'>
+  ) => {
+    if (!isEmpty(data.data)) {
       // Close the modal
       onClose();
       // Redirect to full survey page
@@ -56,7 +58,7 @@ const QuestionPreview = ({
       <FormContext.Provider
         value={{
           getApiErrorMessage: () => {
-            return messages.surveyDescription;
+            return messages.formError;
           },
           setFormData: redirectToFullSurvey,
           locale,

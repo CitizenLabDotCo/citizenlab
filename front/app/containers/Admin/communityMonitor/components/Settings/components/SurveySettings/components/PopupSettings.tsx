@@ -26,7 +26,7 @@ import messages from './messages';
 const PopupSettings = () => {
   const { formatMessage } = useIntl();
 
-  // Project and phase hooks
+  // Get Community Monitor project and phase
   const { data: project } = useCommunityMonitorProject({});
   const phaseId = project?.data.relationships.current_phase?.data?.id;
   const { data: phase } = usePhase(phaseId);
@@ -38,7 +38,6 @@ const PopupSettings = () => {
       ? phase.data.attributes.survey_popup_frequency
       : 100
   );
-
   const [success, setSuccess] = useState(false);
   const [errors, setErrors] = useState<CLErrors | null>(null);
   const [savePossible, setSavePossible] = useState(
@@ -49,6 +48,7 @@ const PopupSettings = () => {
     // Check that the frequency is a valid number
     if (popupFrequency > 100 || popupFrequency < 0) {
       setErrors({
+        // If it's not, show an error
         base: [
           {
             error: 'number_invalid',
@@ -58,22 +58,25 @@ const PopupSettings = () => {
       return;
     }
 
+    // Clear any current errors
     setErrors(null);
 
-    updatePhase(
-      {
-        phaseId: phase?.data.id || '',
-        survey_popup_frequency: popupFrequency,
-      },
-      {
-        onSuccess: () => {
-          setSuccess(true);
+    // Update the phase with the new frequency value
+    phase?.data.id &&
+      updatePhase(
+        {
+          phaseId: phase.data.id,
+          survey_popup_frequency: popupFrequency,
         },
-        onError: (error) => {
-          setErrors(error.errors);
-        },
-      }
-    );
+        {
+          onSuccess: () => {
+            setSuccess(true);
+          },
+          onError: (error) => {
+            setErrors(error.errors);
+          },
+        }
+      );
   };
 
   return (
@@ -125,7 +128,7 @@ const PopupSettings = () => {
             max="100"
             value={popupFrequency.toString()}
             onChange={(value) => {
-              // Clear any state related to the value
+              // Clear any states related to the value
               setSuccess(false);
               setErrors(null);
               setSavePossible(true);

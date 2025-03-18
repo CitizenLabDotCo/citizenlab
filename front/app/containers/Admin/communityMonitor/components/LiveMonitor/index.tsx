@@ -29,7 +29,7 @@ const LiveMonitor = () => {
         </Box>
       </Box>
 
-      <Box mt="20px">
+      <Box mt="28px">
         <FormResults projectId={projectId} phaseId={phaseId} />
       </Box>
     </Box>

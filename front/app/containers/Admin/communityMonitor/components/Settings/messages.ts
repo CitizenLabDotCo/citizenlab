@@ -19,10 +19,6 @@ export default defineMessages({
     defaultMessage:
       "All of the survey's inputs from users will be anonymized before being recorded",
   },
-  anonymity: {
-    id: 'app.containers.Admin.communityMonitor.settings.anonymity',
-    defaultMessage: 'Anonymity',
-  },
   whoAreManagers: {
     id: 'app.containers.Admin.communityMonitor.settings.whoAreManagers',
     defaultMessage: 'Who are the managers?',

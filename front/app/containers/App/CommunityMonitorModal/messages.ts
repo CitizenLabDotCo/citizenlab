@@ -11,4 +11,8 @@ export default defineMessages({
     defaultMessage:
       'This ongoing survey tracks how you feel about governance & public services.',
   },
+  formError: {
+    id: 'app.components.CommunityMonitorModal.formError',
+    defaultMessage: 'Encountered an error.',
+  },
 });

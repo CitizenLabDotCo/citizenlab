@@ -20,7 +20,7 @@ import { useIntl } from 'utils/cl-intl';
 import QuestionPreview from './components/QuestionPreview';
 import { triggerCommunityMonitorModal$ } from './events';
 import messages from './messages';
-import { calculateEstimatedSurveyTime } from './utils';
+import { calculateEstimatedSurveyTime, isAllowedOnUrl } from './utils';
 
 type CommunityMonitorModalProps = {
   showModal?: boolean;
@@ -32,19 +32,16 @@ const CommunityMonitorModal = ({
   const { formatMessage } = useIntl();
   const location = useLocation();
 
-  // const { data: authUser } = useAuthUser(); ToDo: Re-enable before release
-  // const isAdminOrModerator = isAdmin(authUser) || isModerator(authUser); ToDo: Re-enable before release
+  // ----- TODO: RE-ENABLE BEFORE RELEASE: -----
+  // const { data: authUser } = useAuthUser();
+  // const isAdminOrModerator = isAdmin(authUser) || isModerator(authUser);
 
-  // const isDevelopmentOrCI = ToDo: Re-enable before release
+  // ----- TODO: RE-ENABLE BEFORE RELEASE: -----
+  // const isDevelopmentOrCI =
   //   process.env.CI === 'true' || process.env.NODE_ENV === 'development';
 
   // If the user is on a custom page or the homepage, we can show the modal
-  const customPageRegex = '/pages/';
-  const homepageRegex = /^\/[a-zA-Z]{2}\/(?!\w)/;
-
-  const allowedOnUrl =
-    location.pathname.match(customPageRegex) ||
-    location.pathname.match(homepageRegex);
+  const allowedOnUrl = isAllowedOnUrl(location.pathname);
 
   // Check if the community monitor is enabled
   const isCommunityMonitorEnabled = useFeatureFlag({
@@ -76,7 +73,9 @@ const CommunityMonitorModal = ({
   const { data: authenticationRequirementsResponse } =
     useAuthenticationRequirements(context);
   const userPermittedToTakeSurvey =
-    authenticationRequirementsResponse?.data.attributes.permitted;
+    !hasSeenModal &&
+    authenticationRequirementsResponse?.data.attributes.disabled_reason !==
+      'already_responded';
 
   // Get the custom fields for the survey & JSON schemas
   const { data: customFields } = useCustomFields({
@@ -88,24 +87,26 @@ const CommunityMonitorModal = ({
     phaseId,
   });
 
-  // Calculate estimated time to complete survey:
+  // Calculate estimated time to complete survey
   const estimatedMinutesToComplete = calculateEstimatedSurveyTime(customFields);
 
+  // Get the survey popup frequency, so we can show the modal at a certain rate
   const surveyPopupFrequency =
     typeof phase?.data.attributes.survey_popup_frequency === 'number'
       ? phase.data.attributes.survey_popup_frequency
-      : 100;
+      : 100; // Default to 100% if not set
 
   const shouldShowModal = useCallback(
     (overrideAllowdOnUrl?: boolean) => {
       const show =
-        // !isAdminOrModerator &&  ToDo: Re-enable this check when the feature is ready to release
-        (allowedOnUrl || overrideAllowdOnUrl) &&
+        // ----- TODO: RE-ENABLE BEFORE RELEASE: -----
+        // !isAdminOrModerator &&
+        (allowedOnUrl || overrideAllowdOnUrl) && // After certain actions or for admin preview, we can ovverride this check
         isCommunityMonitorEnabled &&
         isSurveyLive &&
         userPermittedToTakeSurvey &&
-        !hasSeenModal &&
         Math.random() < surveyPopupFrequency / 100;
+      // ----- TODO: RE-ENABLE BEFORE RELEASE: -----
       // !isDevelopmentOrCI;
       return show;
     },
@@ -114,7 +115,6 @@ const CommunityMonitorModal = ({
       isCommunityMonitorEnabled,
       isSurveyLive,
       userPermittedToTakeSurvey,
-      hasSeenModal,
       surveyPopupFrequency,
     ]
   );
@@ -132,7 +132,7 @@ const CommunityMonitorModal = ({
     const subscription = triggerCommunityMonitorModal$.subscribe((event) => {
       event.eventValue['preview']
         ? setModalOpened(true) // If the admin is triggering a preview, we open the modal directly
-        : shouldShowModal(true) && setModalOpened(true);
+        : shouldShowModal(true) && setModalOpened(true); // Otherwise, we check first if we should show it
     });
 
     return () => subscription.unsubscribe();
