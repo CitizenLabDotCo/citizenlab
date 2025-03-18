@@ -11,8 +11,8 @@ export type SurveyResultsKeys = Keys<typeof surveyResultsKeys>;
 export type IParameters = {
   phaseId: string | null;
   filterLogicIds: string[];
-  startMonth?: string;
-  endMonth?: string;
+  quarter?: number;
+  year?: number;
 };
 
 export interface Answer {

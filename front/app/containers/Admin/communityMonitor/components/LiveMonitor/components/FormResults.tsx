@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { Box, Text } from '@citizenlab/cl2-component-library';
-import { useParams } from 'react-router-dom';
+import { useParams, useSearchParams } from 'react-router-dom';
 
 import useProjectById from 'api/projects/useProjectById';
 import useFormResults from 'api/survey_results/useSurveyResults';
@@ -18,20 +18,31 @@ type Props = {
 };
 
 const FormResults = (props: Props) => {
+  const { formatMessage } = useIntl();
+
+  // Get the projectId and phaseId from the URL
   const { projectId: projectIdParam, phaseId: phaseIdParam } = useParams() as {
     projectId: string;
     phaseId: string;
   };
-
   const projectId = props.projectId || projectIdParam;
   const phaseId = props.phaseId || phaseIdParam;
 
-  const { formatMessage } = useIntl();
   const { data: project } = useProjectById(projectId);
 
+  // Get the current year and quarter for the results
+  const [search] = useSearchParams();
+
+  // Get the year and quarter from the URL
+  const year = search.get('year');
+  const quarter = search.get('quarter');
+
+  // Fetch the form results
   const { data: formResults } = useFormResults({
     phaseId,
     filterLogicIds: [],
+    quarter: quarter ? parseInt(quarter, 10) : undefined,
+    year: year ? parseInt(year, 10) : undefined,
   });
 
   if (!formResults || !project) {
