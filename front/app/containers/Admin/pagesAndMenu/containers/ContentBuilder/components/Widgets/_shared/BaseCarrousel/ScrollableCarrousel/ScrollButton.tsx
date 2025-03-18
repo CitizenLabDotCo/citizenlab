@@ -22,8 +22,8 @@ const ScrollButton = ({
       position="absolute"
       left={variant === 'left' ? '8px' : undefined}
       right={variant === 'right' ? '8px' : undefined}
-      // Center the button vertically
       top="50%"
+      transform="translateY(-50%)"
       borderRadius="30px"
       bgColor="white"
       w="52px"
