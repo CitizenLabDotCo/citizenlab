@@ -811,7 +811,7 @@
   "app.components.formBuilder.title": "Titel",
   "app.components.formBuilder.toLabel": "bis",
   "app.components.formBuilder.unsavedChanges": "Sie haben ungespeicherte Änderungen",
-  "app.components.formBuilder.useCustomButton2": "Use custom page button",
+  "app.components.formBuilder.useCustomButton2": "Button \"Benutzerdefinierte Seite\" verwenden",
   "app.components.formBuilder.veryBad": "Sehr schlecht",
   "app.components.formBuilder.veryGood": "Sehr gut",
   "app.components.phaseTimeLeft.xDayLeft": "{timeLeft, plural, =0 {Weniger als ein Tag} one {Ein Tag} other {# Tage}} verbleibend",
