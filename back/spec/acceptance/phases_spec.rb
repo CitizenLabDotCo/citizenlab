@@ -790,12 +790,19 @@ resource 'Phases' do
         expect(response_data[:type]).to eq 'sentiment_by_quarter'
         expect(response_data[:attributes]).to eq({
           overall: { '2025-2': 2.0, '2025-1': 3.0 },
-          by_category: {
-            quality_of_life: { '2025-2': 3.0, '2025-1': 2.0 },
-            service_delivery: { '2025-2': 1.0, '2025-1': 4.0 }
+          categories: {
+            averages: {
+              quality_of_life: { '2025-2': 3.0, '2025-1': 2.0 },
+              service_delivery: { '2025-2': 1.0, '2025-1': 4.0 }
+            },
+            multilocs: {
+              quality_of_life: { en: 'Quality of life', 'fr-FR': 'Qualité de vie', 'nl-NL': 'Kwaliteit van leven' },
+              service_delivery: { en: 'Service delivery', 'fr-FR': 'Prestation de services', 'nl-NL': 'Dienstverlening' },
+              governance_and_trust: { en: 'Governance and trust', 'fr-FR': 'Gouvernance et confiance', 'nl-NL': 'Bestuur en vertrouwen' },
+              other: { en: 'Other', 'fr-FR': 'Autre', 'nl-NL': 'Ander' }
+            }
           }
         })
-        # TODO: JS - need to add in multilocs for the question categories
       end
     end
 

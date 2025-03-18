@@ -39,9 +39,9 @@ export type TCustomFieldCode =
   | 'idea_files_attributes'
   | 'author_id'
   | 'budget'
-  | 'ideation_section1'
-  | 'ideation_section2'
-  | 'ideation_section3';
+  | 'ideation_page1'
+  | 'ideation_page2'
+  | 'ideation_page3';
 
 export interface IIdeaCustomFieldData {
   id: string;

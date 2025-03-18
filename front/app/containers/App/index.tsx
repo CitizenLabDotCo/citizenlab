@@ -280,10 +280,17 @@ const App = ({ children }: Props) => {
   const isIdeaEditPage = isPage('idea_edit', location.pathname);
   const isEventPage = isPage('event_page', location.pathname);
   const isNativeSurveyPage = isPage('native_survey', location.pathname);
+  const isNewIdeaPage = isPage('idea_form', location.pathname);
+  const isEditIdeaPage = isPage('idea_edit', location.pathname);
 
   const theme = getTheme(appConfiguration);
   const showFooter =
-    !isAdminPage && !isIdeaFormPage && !isIdeaEditPage && !isNativeSurveyPage;
+    !isAdminPage &&
+    !isIdeaFormPage &&
+    !isIdeaEditPage &&
+    !isNativeSurveyPage &&
+    !isEditIdeaPage &&
+    !isNewIdeaPage;
   const { pathname } = removeLocale(location.pathname);
   const isAuthenticationPending = authUser === undefined;
   const canAccessRoute = usePermission({
@@ -300,7 +307,7 @@ const App = ({ children }: Props) => {
     }
 
     // citizen
-    if (isNativeSurveyPage) return false;
+    if (isNativeSurveyPage || isNewIdeaPage || isEditIdeaPage) return false;
 
     if (isSmallerThanTablet) {
       if (isEventPage || isIdeaShowPage(urlSegments)) {

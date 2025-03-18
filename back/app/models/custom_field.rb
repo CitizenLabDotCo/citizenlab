@@ -70,16 +70,16 @@ class CustomField < ApplicationRecord
   INPUT_TYPES = %w[
     checkbox date file_upload files html html_multiloc image_files linear_scale rating multiline_text multiline_text_multiloc
     multiselect multiselect_image number page point line polygon select select_image shapefile_upload text text_multiloc
-    topic_ids section cosponsor_ids ranking matrix_linear_scale sentiment_linear_scale
+    topic_ids cosponsor_ids ranking matrix_linear_scale sentiment_linear_scale
   ].freeze
   CODES = %w[
     author_id birthyear body_multiloc budget domicile gender idea_files_attributes idea_images_attributes
-    ideation_section1 ideation_section2 ideation_section3 location_description proposed_budget title_multiloc topic_ids cosponsor_ids
+    location_description proposed_budget title_multiloc topic_ids cosponsor_ids ideation_page1 ideation_page2 ideation_page3
   ].freeze
   VISIBLE_TO_PUBLIC = 'public'
   VISIBLE_TO_ADMINS = 'admins'
   PAGE_LAYOUTS = %w[default map].freeze
-  QUESTION_CATEGORIES = %w[quality_of_life service_delivery governance_and_trust].freeze
+  QUESTION_CATEGORIES = %w[quality_of_life service_delivery governance_and_trust other].freeze
 
   validates :resource_type, presence: true, inclusion: { in: FIELDABLE_TYPES }
   validates(
@@ -89,7 +89,7 @@ class CustomField < ApplicationRecord
     if: :accepts_input?
   )
   validates :input_type, presence: true, inclusion: INPUT_TYPES
-  validates :title_multiloc, presence: true, multiloc: { presence: true }, unless: :page_or_section?
+  validates :title_multiloc, presence: true, multiloc: { presence: true }, unless: :page?
   validates :description_multiloc, multiloc: { presence: false, html: true }
   validates :required, inclusion: { in: [true, false] }
   validates :enabled, inclusion: { in: [true, false] }
@@ -148,13 +148,13 @@ class CustomField < ApplicationRecord
   def supports_xlsx_export?
     return false if code == 'idea_images_attributes' # Is this still applicable?
 
-    %w[page section].exclude?(input_type)
+    !page?
   end
 
   def supports_geojson?
     return false if code == 'idea_images_attributes' # Is this still applicable?
 
-    %w[page section].exclude?(input_type)
+    !page?
   end
 
   def supports_linear_scale?
@@ -247,10 +247,6 @@ class CustomField < ApplicationRecord
     input_type == 'page'
   end
 
-  def section?
-    input_type == 'section'
-  end
-
   def multiselect?
     %w[multiselect multiselect_image].include?(input_type)
   end
@@ -267,16 +263,12 @@ class CustomField < ApplicationRecord
     input_type == 'rating'
   end
 
-  def page_or_section?
-    page? || section?
-  end
-
   def dropdown_layout_type?
     %w[multiselect select].include?(input_type)
   end
 
   def accepts_input?
-    !page_or_section?
+    !page?
   end
 
   def custom_form_type?
@@ -298,9 +290,9 @@ class CustomField < ApplicationRecord
     visitor.send visitor_method, self
   end
 
-  # Special behaviour for ideation section 1
+  # Special behaviour for ideation page 1
   def title_multiloc
-    if code == 'ideation_section1'
+    if code == 'ideation_page1'
       key = "custom_forms.categories.main_content.#{input_term}.title"
       MultilocService.new.i18n_to_multiloc key
     else
@@ -416,6 +408,18 @@ class CustomField < ApplicationRecord
     participation_context.pmethod.supports_custom_field_categories?
   end
 
+  def question_category
+    return 'other' if super.nil? && supports_category?
+
+    super
+  end
+
+  def self.question_category_multiloc
+    return nil unless supports_category?
+
+    MultilocService.new.i18n_to_multiloc("custom_fields.question_categories.#{question_category}")
+  end
+
   private
 
   def set_default_enabled
@@ -425,7 +429,7 @@ class CustomField < ApplicationRecord
   def set_default_answer_visible_to
     return unless answer_visible_to.nil?
 
-    self.answer_visible_to = if custom_form_type? && (built_in? || page_or_section?)
+    self.answer_visible_to = if custom_form_type? && (built_in? || page?)
       VISIBLE_TO_PUBLIC
     else
       VISIBLE_TO_ADMINS

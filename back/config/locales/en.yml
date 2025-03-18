@@ -171,12 +171,12 @@ en:
       attachments:
         title: Attachments
         description:
-      section1:
+      page1:
         description:
-      section2:
+      page2:
         title: Images and attachments
         description:
-      section3:
+      page3:
         title: Details
         description:
       other_input_field:
@@ -206,6 +206,11 @@ en:
         title: Responsiveness of elected officials to community concerns
       transparency_of_money_spent:
         title: Transparency about how municipal tax money is spent
+    question_categories:
+      quality_of_life: Quality of life
+      service_delivery: Service delivery
+      governance_and_trust: Governance and trust
+      other: Other
   custom_forms:
     categories:
       main_content:

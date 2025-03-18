@@ -91,10 +91,6 @@ class TestVisitor < FieldVisitorService
     'page from visitor'
   end
 
-  def visit_section(_field)
-    'section from visitor'
-  end
-
   def visit_topic_ids(_field)
     'topic_ids from visitor'
   end
@@ -204,35 +200,6 @@ RSpec.describe CustomField do
     end
   end
 
-  describe '#section?' do
-    it 'returns true when the input_type is "section"' do
-      section_field = described_class.new input_type: 'section'
-      expect(section_field.section?).to be true
-    end
-
-    it 'returns false otherwise' do
-      other_field = described_class.new input_type: 'something_else'
-      expect(other_field.section?).to be false
-    end
-  end
-
-  describe '#page_or_section?' do
-    it 'returns true when the input_type is "page"' do
-      page_field = described_class.new input_type: 'page'
-      expect(page_field.page_or_section?).to be true
-    end
-
-    it 'returns true when the input_type is "section"' do
-      section_field = described_class.new input_type: 'section'
-      expect(section_field.page_or_section?).to be true
-    end
-
-    it 'returns false otherwise' do
-      other_field = described_class.new input_type: 'something_else'
-      expect(other_field.page_or_section?).to be false
-    end
-  end
-
   describe 'page_layout validation' do
     context 'for page custom_field' do
       let(:page_custom_field) { build(:custom_field_page) }
@@ -311,22 +278,6 @@ RSpec.describe CustomField do
 
       page_field.title_multiloc = nil
       expect(page_field.valid?).to be true
-    end
-
-    it 'does not happen when the field is a section' do
-      section_field = described_class.new(
-        resource: form,
-        input_type: 'section',
-        key: 'field_key',
-        title_multiloc: { 'en' => '' }
-      )
-      expect(section_field.valid?).to be true
-
-      section_field.title_multiloc = {}
-      expect(section_field.valid?).to be true
-
-      section_field.title_multiloc = nil
-      expect(section_field.valid?).to be true
     end
   end
 
@@ -452,19 +403,19 @@ RSpec.describe CustomField do
     end
   end
 
-  describe 'title_multiloc behaviour for ideation section 1' do
+  describe 'title_multiloc behaviour for ideation page 1' do
     it 'returns a title containing the current ideation/budget phase input term if there is a current phase' do
       project = create(:project_with_current_phase, current_phase_attrs: { input_term: 'question' })
       resource = build(:custom_form, participation_context: project)
       ignored_title = { en: 'anything' }
-      section = described_class.new(
+      page = described_class.new(
         resource: resource,
-        input_type: 'section',
-        code: 'ideation_section1',
+        input_type: 'page',
+        code: 'ideation_page1',
         title_multiloc: ignored_title
       )
       expected_english_title = 'What is your question?'
-      expect(section.title_multiloc['en']).to eq expected_english_title
+      expect(page.title_multiloc['en']).to eq expected_english_title
     end
 
     it 'returns a title containing the last phase input term if there is not a current ideation/budget phase' do
@@ -473,14 +424,14 @@ RSpec.describe CustomField do
       resource = build(:custom_form, participation_context: project)
 
       ignored_title = { en: 'anything' }
-      section = described_class.new(
+      page = described_class.new(
         resource: resource,
-        input_type: 'section',
-        code: 'ideation_section1',
+        input_type: 'page',
+        code: 'ideation_page1',
         title_multiloc: ignored_title
       )
       expected_english_title = 'What is your contribution?'
-      expect(section.title_multiloc['en']).to eq expected_english_title
+      expect(page.title_multiloc['en']).to eq expected_english_title
     end
   end
 
@@ -498,12 +449,6 @@ RSpec.describe CustomField do
       it 'sets admins by default before validation' do
         field.validate!
         expect(field.answer_visible_to).to eq 'admins'
-      end
-
-      it 'sets public by default if field is a section' do
-        field.input_type = 'section'
-        field.validate!
-        expect(field.answer_visible_to).to eq 'public'
       end
 
       it 'sets public by default if field is a page' do
@@ -525,7 +470,7 @@ RSpec.describe CustomField do
 
       it 'always sets the value to "admins"' do
         field.input_type = 'page'
-        field.input_type = 'section'
+        field.page_layout = 'default'
         field.code = 'gender'
         field.validate!
         expect(field.answer_visible_to).to eq 'admins'
@@ -707,6 +652,16 @@ RSpec.describe CustomField do
         expect(field).not_to be_valid
         expect(field.errors.first.type).to eq :inclusion
       end
+
+      it 'returns "other" if the question category is not set' do
+        field.question_category = nil
+        expect(field.question_category).to eq 'other'
+      end
+
+      it 'returns the multiloc for the question' do
+        field.question_category = 'quality_of_life'
+        expect(field.question_category_multiloc['en']).to eq 'Quality of life'
+      end
     end
 
     context 'native_survey project' do
@@ -716,6 +671,15 @@ RSpec.describe CustomField do
         field.question_category = 'quality_of_life'
         expect(field).not_to be_valid
         expect(field.errors.first.type).to eq :present
+      end
+
+      it 'returns nil if the question category is not set' do
+        field.question_category = nil
+        expect(field.question_category).to be_nil
+      end
+
+      it 'returns nil for question_category_multiloc' do
+        expect(field.question_category_multiloc).to be_nil
       end
     end
   end

@@ -55,7 +55,6 @@ export const nativeSurveyConfig: FormBuilderConfig = {
   isLogicEnabled: true,
   alwaysShowCustomFields: true,
   isFormPhaseSpecific: true,
-  groupingType: 'page',
   getWarningNotice: () => {
     return (
       <Box id="e2e-warning-notice" mb="16px">

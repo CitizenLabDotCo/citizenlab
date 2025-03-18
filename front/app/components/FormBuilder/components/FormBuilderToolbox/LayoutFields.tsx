@@ -34,25 +34,14 @@ const LayoutFields = ({ addField, builderConfig }: BuiltInFieldsProps) => {
         <FormattedMessage {...messages.layout} />
       </Title>
       <DraggableElement>
-        {builderConfig.groupingType === 'section' && (
-          <ToolboxItem
-            icon="section"
-            label={formatMessage(messages.section)}
-            onClick={() => addField('section')}
-            fieldsToInclude={builderConfig.toolboxFieldsToInclude}
-            inputType="section"
-          />
-        )}
-        {builderConfig.groupingType === 'page' && (
-          <ToolboxItem
-            icon="page"
-            label={formatMessage(messages.page)}
-            onClick={() => addField('page')}
-            data-cy="e2e-page"
-            fieldsToInclude={builderConfig.toolboxFieldsToInclude}
-            inputType="page"
-          />
-        )}
+        <ToolboxItem
+          icon="page"
+          label={formatMessage(messages.page)}
+          onClick={() => addField('page')}
+          data-cy="e2e-page"
+          fieldsToInclude={builderConfig.toolboxFieldsToInclude}
+          inputType="page"
+        />
       </DraggableElement>
     </Box>
   );
