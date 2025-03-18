@@ -154,6 +154,8 @@ class WebApi::V1::IdeasController < ApplicationController
   #   Users who can moderate projects post in an active phase if no phase id is given.
   #   Users who can moderate projects post in the given phase if a phase id is given.
   def create
+    send_error and return if !phase_for_input
+
     form = phase_for_input.pmethod.custom_form
     extract_custom_field_values_from_params!(form)
     params_for_create = idea_params form
@@ -294,19 +296,14 @@ class WebApi::V1::IdeasController < ApplicationController
     project = Project.find(params.dig(:idea, :project_id))
     phase_ids = params.dig(:idea, :phase_ids) || []
     is_moderator = current_user && UserRoleService.new.can_moderate_project?(project, current_user)
-
-    if phase_ids.any?
-      send_error and return if !is_moderator
-
-      send_error and return if phase_ids.size != 1
-    end
+    return false if phase_ids.any? && !(is_moderator && phase_ids.size == 1)
 
     @phase_for_input = if is_moderator && phase_ids.any?
       Phase.find(phase_ids.first)
     else
       TimelineService.new.current_phase_not_archived(project)
     end
-    send_error and return if !@phase_for_input
+    return false if !@phase_for_input
 
     @phase_for_input
   end
