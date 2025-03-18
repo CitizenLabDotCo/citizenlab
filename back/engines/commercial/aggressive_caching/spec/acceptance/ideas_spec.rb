@@ -89,12 +89,15 @@ resource 'Ideas', :clear_cache, document: false do
       allow_any_instance_of(CohereMultilingualEmbeddings).to receive(:embedding) do
         create(:embeddings_similarity).embedding
       end
+      SettingsService.new.activate_feature! 'authoring_assistance'
     end
 
     parameter :title_multiloc, 'Multi-locale field with the idea title', scope: :idea
+    parameter :project_id, 'The identifier of the project that hosts the idea', scope: :idea
 
     let(:title_multiloc) { { en: 'Title' } }
-    let(:cache_key) { 'views/example.org/web_api/v1/ideas/similarities?idea[title_multiloc][en]=Title.json' }
+    let(:project_id) { create(:project_with_active_ideation_phase).id }
+    let(:cache_key) { "views/example.org/web_api/v1/ideas/similarities?idea[project_id]=#{project_id}&idea[title_multiloc][en]=Title.json" }
 
     example 'caches for a visitor' do
       expect(Rails.cache.read(cache_key)).to be_nil
