@@ -65,8 +65,8 @@ sv:
     waste_description: Renlighet och avfall
     sustainability: Hållbar utveckling
     sustainability_description: Hållbar utveckling
-    mobility: Rörlighet
-    mobility_description: Rörlighet
+    mobility: Mobilitet
+    mobility_description: Mobilitet
     technology: Energi och teknik
     technology_description: Energi och teknik
     economy: Arbete, ekonomi och turism
@@ -126,6 +126,7 @@ sv:
     open_idea_phase_title: Nuvarande fas
     native_survey_title: Undersökning
     native_survey_button: Svara på enkäten
+    community_monitor_title: Gemenskapens övervakare
   events:
     council_meeting_title: Rådsmöte
     council_meeting_description: >
@@ -167,16 +168,18 @@ sv:
       attachments:
         title: Bilagor
         description:
-      section1:
+      page1:
         description:
-      section2:
+      page2:
         title: Bilder och bilagor
         description:
-      section3:
+      page3:
         title: Detaljer
         description:
       other_input_field:
         title: Skriv in ditt svar
+      ask_follow_up_field:
+        title: Berätta för oss varför
   custom_forms:
     categories:
       main_content:

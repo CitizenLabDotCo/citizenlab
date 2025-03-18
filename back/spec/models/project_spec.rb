@@ -142,4 +142,17 @@ RSpec.describe Project do
       expect(described_class.not_in_draft_folder).to match_array([project2, project3])
     end
   end
+
+  describe "'hidden' scopes" do
+    let!(:project) { create(:project) }
+    let!(:hidden_project) { create(:project, hidden: true) }
+
+    it 'returns all projects that are not hidden' do
+      expect(described_class.all.count).to eq 2
+    end
+
+    it 'returns projects that are not hidden' do
+      expect(described_class.not_hidden.count).to eq 1
+    end
+  end
 end

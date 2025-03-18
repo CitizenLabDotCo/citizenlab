@@ -69,13 +69,13 @@ class WebApi::V1::PhasesController < ApplicationController
   def survey_results
     logic_ids = params[:filter_logic_ids].presence || [] # Array of page and option IDs
 
-    results = SurveyResultsGeneratorService.new(@phase).generate_results(logic_ids: logic_ids)
+    results = Surveys::ResultsWithLogicGenerator.new(@phase).generate_results(logic_ids: logic_ids)
     render json: raw_json(results)
   end
 
   def submission_count
-    count = if @phase.native_survey?
-      @phase.ideas.native_survey.published.count
+    count = if @phase.pmethod.supports_survey_form?
+      @phase.ideas.supports_survey.published.count
     else
       @phase.ideas.transitive.published.count
     end

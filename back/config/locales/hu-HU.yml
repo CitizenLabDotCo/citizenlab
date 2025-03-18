@@ -126,6 +126,7 @@ hu:
     open_idea_phase_title: Aktuális fázis
     native_survey_title: Felmérés
     native_survey_button: Vegye ki a felmérést
+    community_monitor_title: Közösségi monitor
   events:
     council_meeting_title: Tanácsülés
     council_meeting_description: >
@@ -167,16 +168,18 @@ hu:
       attachments:
         title: Mellékletek
         description:
-      section1:
+      page1:
         description:
-      section2:
+      page2:
         title: Képek és mellékletek
         description:
-      section3:
+      page3:
         title: Részletek
         description:
       other_input_field:
         title: Írja be a választ
+      ask_follow_up_field:
+        title: Mondd el, miért
   custom_forms:
     categories:
       main_content:

@@ -148,7 +148,7 @@ export interface IProjectData {
   };
 }
 
-type Visibility = 'public' | 'groups' | 'admins';
+export type Visibility = 'public' | 'groups' | 'admins';
 type PresentationMode = 'map' | 'card';
 
 interface ProjectHeaderBgImageSizes {

@@ -126,6 +126,7 @@ pl:
     open_idea_phase_title: Faza bieżąca
     native_survey_title: Ankieta
     native_survey_button: Weź udział w ankiecie
+    community_monitor_title: Monitor społeczności
   events:
     council_meeting_title: Posiedzenie Rady
     council_meeting_description: >
@@ -167,16 +168,18 @@ pl:
       attachments:
         title: Załączniki
         description:
-      section1:
+      page1:
         description:
-      section2:
+      page2:
         title: Obrazy i załączniki
         description:
-      section3:
+      page3:
         title: Szczegóły
         description:
       other_input_field:
         title: Wpisz swoją odpowiedź
+      ask_follow_up_field:
+        title: Powiedz nam dlaczego
   custom_forms:
     categories:
       main_content:

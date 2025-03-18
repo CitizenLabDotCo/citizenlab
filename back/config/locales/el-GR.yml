@@ -126,6 +126,7 @@ el:
     open_idea_phase_title: Τρέχουσα φάση
     native_survey_title: Έρευνα
     native_survey_button: Πάρτε μέρος στην έρευνα
+    community_monitor_title: Κοινοτικός παρατηρητής
   events:
     council_meeting_title: Συνεδρίαση του Συμβουλίου
     council_meeting_description: >
@@ -167,16 +168,18 @@ el:
       attachments:
         title: Συνημμένα αρχεία
         description:
-      section1:
+      page1:
         description:
-      section2:
+      page2:
         title: Εικόνες και συνημμένα
         description:
-      section3:
+      page3:
         title: Λεπτομέρειες
         description:
       other_input_field:
         title: Πληκτρολογήστε την απάντησή σας
+      ask_follow_up_field:
+        title: Πείτε μας γιατί
   custom_forms:
     categories:
       main_content:

@@ -69,6 +69,7 @@ ALTER TABLE IF EXISTS ONLY public.areas_projects DROP CONSTRAINT IF EXISTS fk_ra
 ALTER TABLE IF EXISTS ONLY public.event_images DROP CONSTRAINT IF EXISTS fk_rails_9dd6f2f888;
 ALTER TABLE IF EXISTS ONLY public.analytics_fact_visits DROP CONSTRAINT IF EXISTS fk_rails_9b5a82cb55;
 ALTER TABLE IF EXISTS ONLY public.memberships DROP CONSTRAINT IF EXISTS fk_rails_99326fb65d;
+ALTER TABLE IF EXISTS ONLY public.authoring_assistance_responses DROP CONSTRAINT IF EXISTS fk_rails_98155ccbce;
 ALTER TABLE IF EXISTS ONLY public.notifications DROP CONSTRAINT IF EXISTS fk_rails_97eb4c3a35;
 ALTER TABLE IF EXISTS ONLY public.notifications DROP CONSTRAINT IF EXISTS fk_rails_9268535f02;
 ALTER TABLE IF EXISTS ONLY public.areas DROP CONSTRAINT IF EXISTS fk_rails_901fc7a65b;
@@ -329,6 +330,7 @@ DROP INDEX IF EXISTS public.index_baskets_on_submitted_at;
 DROP INDEX IF EXISTS public.index_baskets_on_phase_id;
 DROP INDEX IF EXISTS public.index_baskets_ideas_on_idea_id;
 DROP INDEX IF EXISTS public.index_baskets_ideas_on_basket_id_and_idea_id;
+DROP INDEX IF EXISTS public.index_authoring_assistance_responses_on_idea_id;
 DROP INDEX IF EXISTS public.index_areas_static_pages_on_static_page_id;
 DROP INDEX IF EXISTS public.index_areas_static_pages_on_area_id;
 DROP INDEX IF EXISTS public.index_areas_projects_on_project_id_and_area_id;
@@ -475,6 +477,7 @@ ALTER TABLE IF EXISTS ONLY public.common_passwords DROP CONSTRAINT IF EXISTS com
 ALTER TABLE IF EXISTS ONLY public.comments DROP CONSTRAINT IF EXISTS comments_pkey;
 ALTER TABLE IF EXISTS ONLY public.baskets DROP CONSTRAINT IF EXISTS baskets_pkey;
 ALTER TABLE IF EXISTS ONLY public.baskets_ideas DROP CONSTRAINT IF EXISTS baskets_ideas_pkey;
+ALTER TABLE IF EXISTS ONLY public.authoring_assistance_responses DROP CONSTRAINT IF EXISTS authoring_assistance_responses_pkey;
 ALTER TABLE IF EXISTS ONLY public.areas_static_pages DROP CONSTRAINT IF EXISTS areas_static_pages_pkey;
 ALTER TABLE IF EXISTS ONLY public.areas_projects DROP CONSTRAINT IF EXISTS areas_projects_pkey;
 ALTER TABLE IF EXISTS ONLY public.areas DROP CONSTRAINT IF EXISTS areas_pkey;
@@ -575,6 +578,7 @@ DROP TABLE IF EXISTS public.content_builder_layouts;
 DROP TABLE IF EXISTS public.content_builder_layout_images;
 DROP TABLE IF EXISTS public.common_passwords;
 DROP TABLE IF EXISTS public.baskets_ideas;
+DROP TABLE IF EXISTS public.authoring_assistance_responses;
 DROP SEQUENCE IF EXISTS public.areas_static_pages_id_seq;
 DROP TABLE IF EXISTS public.areas_static_pages;
 DROP TABLE IF EXISTS public.areas_projects;
@@ -1208,7 +1212,8 @@ CREATE TABLE public.projects (
     votes_count integer DEFAULT 0 NOT NULL,
     followers_count integer DEFAULT 0 NOT NULL,
     preview_token character varying NOT NULL,
-    header_bg_alt_text_multiloc jsonb DEFAULT '{}'::jsonb
+    header_bg_alt_text_multiloc jsonb DEFAULT '{}'::jsonb,
+    hidden boolean DEFAULT false NOT NULL
 );
 
 
@@ -1895,7 +1900,8 @@ CREATE TABLE public.app_configurations (
     settings jsonb DEFAULT '{}'::jsonb,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
-    style jsonb DEFAULT '{}'::jsonb
+    style jsonb DEFAULT '{}'::jsonb,
+    country_code character varying
 );
 
 
@@ -1969,6 +1975,20 @@ CREATE SEQUENCE public.areas_static_pages_id_seq
 --
 
 ALTER SEQUENCE public.areas_static_pages_id_seq OWNED BY public.areas_static_pages.id;
+
+
+--
+-- Name: authoring_assistance_responses; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.authoring_assistance_responses (
+    id uuid DEFAULT gen_random_uuid() NOT NULL,
+    idea_id uuid NOT NULL,
+    prompt_response jsonb DEFAULT '{}'::jsonb NOT NULL,
+    custom_free_prompt character varying,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
 
 
 --
@@ -2121,7 +2141,8 @@ CREATE TABLE public.custom_fields (
     linear_scale_label_8_multiloc jsonb DEFAULT '{}'::jsonb NOT NULL,
     linear_scale_label_9_multiloc jsonb DEFAULT '{}'::jsonb NOT NULL,
     linear_scale_label_10_multiloc jsonb DEFAULT '{}'::jsonb NOT NULL,
-    linear_scale_label_11_multiloc jsonb DEFAULT '{}'::jsonb NOT NULL
+    linear_scale_label_11_multiloc jsonb DEFAULT '{}'::jsonb NOT NULL,
+    ask_follow_up boolean DEFAULT false NOT NULL
 );
 
 
@@ -3400,6 +3421,14 @@ ALTER TABLE ONLY public.areas_static_pages
 
 
 --
+-- Name: authoring_assistance_responses authoring_assistance_responses_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.authoring_assistance_responses
+    ADD CONSTRAINT authoring_assistance_responses_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: baskets_ideas baskets_ideas_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -4512,6 +4541,13 @@ CREATE INDEX index_areas_static_pages_on_area_id ON public.areas_static_pages US
 --
 
 CREATE INDEX index_areas_static_pages_on_static_page_id ON public.areas_static_pages USING btree (static_page_id);
+
+
+--
+-- Name: index_authoring_assistance_responses_on_idea_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_authoring_assistance_responses_on_idea_id ON public.authoring_assistance_responses USING btree (idea_id);
 
 
 --
@@ -6402,6 +6438,14 @@ ALTER TABLE ONLY public.notifications
 
 
 --
+-- Name: authoring_assistance_responses fk_rails_98155ccbce; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.authoring_assistance_responses
+    ADD CONSTRAINT fk_rails_98155ccbce FOREIGN KEY (idea_id) REFERENCES public.ideas(id);
+
+
+--
 -- Name: memberships fk_rails_99326fb65d; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -6888,7 +6932,12 @@ ALTER TABLE ONLY public.ideas_topics
 SET search_path TO public,shared_extensions;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20250305111507'),
+('20250224150953'),
+('20250219104523'),
 ('20250218094339'),
+('20250217295025'),
+('20250210181753'),
 ('20250204143605'),
 ('20250120125531'),
 ('20250117121004'),

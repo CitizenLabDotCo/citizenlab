@@ -1,9 +1,8 @@
 import React from 'react';
 
-import { Box, colors } from '@citizenlab/cl2-component-library';
-import { darken } from 'polished';
 import { Helmet } from 'react-helmet-async';
-import styled from 'styled-components';
+
+import useCustomPageBySlug from 'api/custom_pages/useCustomPageBySlug';
 
 import {
   Container,
@@ -13,32 +12,20 @@ import {
 } from 'containers/PagesShowPage';
 
 import Fragment from 'components/Fragment';
+import T from 'components/T';
+import FullPageSpinner from 'components/UI/FullPageSpinner';
 import QuillEditedContent from 'components/UI/QuillEditedContent';
 
-import { FormattedMessage, useIntl } from 'utils/cl-intl';
-import eventEmitter from 'utils/eventEmitter';
+import { useIntl } from 'utils/cl-intl';
 
+import DefaultText from './DefaultText';
 import messages from './messages';
-
-const StyledButton = styled.button`
-  color: ${colors.teal};
-  font-weight: inherit;
-  text-decoration: underline;
-  margin: 0;
-  padding: 0;
-  cursor: pointer;
-
-  &:hover {
-    color: ${darken(0.15, colors.teal)};
-    text-decoration: underline;
-  }
-`;
 
 const CookiePolicy = () => {
   const { formatMessage } = useIntl();
-  const openConsentManager = () => {
-    eventEmitter.emit('openConsentManager');
-  };
+
+  const { data: page, isLoading } = useCustomPageBySlug('cookie-policy');
+  const pageAttributes = page?.data.attributes;
 
   return (
     <>
@@ -66,74 +53,35 @@ const CookiePolicy = () => {
         />
       </Helmet>
       <main className="e2e-page-cookie-policy" data-testid="cookiePolicy">
-        <Container>
-          <PageContent>
-            <StyledContentContainer>
-              <Fragment name="pages/cookie-policy/content">
-                <PageTitle>
-                  {formatMessage(messages.cookiePolicyTitle)}
-                </PageTitle>
-                <Box>
+        {isLoading ? (
+          <FullPageSpinner />
+        ) : (
+          <Container>
+            <PageContent>
+              <StyledContentContainer>
+                <Fragment name="pages/cookie-policy/content">
+                  <PageTitle>
+                    {pageAttributes?.title_multiloc ? (
+                      <T value={pageAttributes.title_multiloc} />
+                    ) : (
+                      formatMessage(messages.cookiePolicyTitle)
+                    )}
+                  </PageTitle>
                   <QuillEditedContent>
-                    <p>{formatMessage(messages.intro)}</p>
-                    <h2>{formatMessage(messages.whatDoWeUseCookiesFor)}</h2>
-                    <p>
-                      <FormattedMessage
-                        {...messages.viewPreferencesText}
-                        values={{
-                          viewPreferencesButton: (
-                            <StyledButton
-                              data-testid="viewPreferencesButton"
-                              onClick={openConsentManager}
-                            >
-                              {formatMessage(
-                                messages.viewPreferencesButtonText
-                              )}
-                            </StyledButton>
-                          ),
-                        }}
+                    {pageAttributes?.top_info_section_multiloc ? (
+                      <T
+                        value={pageAttributes.top_info_section_multiloc}
+                        supportHtml
                       />
-                    </p>
-
-                    <h3>{formatMessage(messages.analyticsTitle)}</h3>
-                    <p>{formatMessage(messages.analyticsContent)}</p>
-
-                    <h3>{formatMessage(messages.advertisingTitle)}</h3>
-                    <p>{formatMessage(messages.advertisingContent)}</p>
-
-                    <h3>{formatMessage(messages.functionalTitle)}</h3>
-                    <p>{formatMessage(messages.functionalContent)}</p>
-
-                    <h3>{formatMessage(messages.essentialTitle)}</h3>
-                    <p>{formatMessage(messages.essentialContent)}</p>
-
-                    <h3>{formatMessage(messages.externalTitle)}</h3>
-                    <p>{formatMessage(messages.externalContent)}</p>
-
-                    <h2>{formatMessage(messages.manageCookiesTitle)}</h2>
-                    <p>{formatMessage(messages.manageCookiesDescription)}</p>
-                    <FormattedMessage
-                      tagName="p"
-                      {...messages.manageCookiesPreferences}
-                      values={{
-                        manageCookiesPreferencesButtonText: (
-                          <StyledButton
-                            onClick={openConsentManager}
-                            data-testid="managePreferencesButton"
-                          >
-                            {formatMessage(
-                              messages.manageCookiesPreferencesButtonText
-                            )}
-                          </StyledButton>
-                        ),
-                      }}
-                    />
+                    ) : (
+                      <DefaultText />
+                    )}
                   </QuillEditedContent>
-                </Box>
-              </Fragment>
-            </StyledContentContainer>
-          </PageContent>
-        </Container>
+                </Fragment>
+              </StyledContentContainer>
+            </PageContent>
+          </Container>
+        )}
       </main>
     </>
   );

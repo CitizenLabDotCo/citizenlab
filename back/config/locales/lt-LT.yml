@@ -126,6 +126,7 @@ lt:
     open_idea_phase_title: Dabartinis etapas
     native_survey_title: Apklausa
     native_survey_button: Atlikite apklausą
+    community_monitor_title: Bendrijos stebėtojas
   events:
     council_meeting_title: Tarybos posėdis
     council_meeting_description: >
@@ -167,16 +168,18 @@ lt:
       attachments:
         title: Priedai
         description:
-      section1:
+      page1:
         description:
-      section2:
+      page2:
         title: Vaizdai ir priedai
         description:
-      section3:
+      page3:
         title: Išsami informacija
         description:
       other_input_field:
         title: Įveskite atsakymą
+      ask_follow_up_field:
+        title: Papasakokite mums, kodėl
   custom_forms:
     categories:
       main_content:

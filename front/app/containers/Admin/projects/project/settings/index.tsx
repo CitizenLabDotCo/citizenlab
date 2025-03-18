@@ -26,26 +26,31 @@ const Settings = () => {
       label: formatMessage(messages.general),
       name: 'general',
       url: `/admin/projects/${projectId}/settings`,
+      className: 'intercom-product-tour-project-settings-tab-general',
     },
     {
       label: formatMessage(messages.description),
       name: 'description',
       url: `/admin/projects/${projectId}/settings/description`,
+      className: 'intercom-product-tour-project-settings-tab-description',
     },
     {
       label: formatMessage(messages.projectTags),
       name: 'tags',
       url: `/admin/projects/${projectId}/settings/tags`,
+      className: 'intercom-product-tour-project-settings-tab-project-tags',
     },
     {
       label: formatMessage(messages.accessRights),
       name: 'permissions',
       url: `/admin/projects/${projectId}/settings/access-rights`,
+      className: 'intercom-product-tour-project-settings-tab-access-rights',
     },
     {
       label: formatMessage(messages.data),
       name: 'data',
       url: `/admin/projects/${projectId}/settings/data`,
+      className: 'intercom-product-tour-project-settings-tab-data',
     },
   ];
 
@@ -65,12 +70,16 @@ const Settings = () => {
             width="100%"
             pr="24px"
           >
-            <GoBackButton onClick={goBack} customMessage={messages.back} />
+            <GoBackButton
+              className="intercom-product-tour-project-back-to-project-page-link"
+              onClick={goBack}
+              customMessage={messages.back}
+            />
           </Box>
         </NavigationTabs>
         <Box mt="58px">
           <NavigationTabs>
-            {tabs.map(({ url, label }) => (
+            {tabs.map(({ url, label, className }) => (
               <Tab
                 label={label}
                 url={url}
@@ -80,6 +89,7 @@ const Settings = () => {
                   pathname,
                   url
                 )}
+                className={className}
               />
             ))}
           </NavigationTabs>

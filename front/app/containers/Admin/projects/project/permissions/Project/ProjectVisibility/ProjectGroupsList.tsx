@@ -53,10 +53,9 @@ const GroupMembershipCount = styled.p``;
 
 interface Props {
   projectId: string;
-  onAddButtonClicked: () => void;
 }
 
-const ProjectGroupsList = ({ projectId, onAddButtonClicked }: Props) => {
+const ProjectGroupsList = ({ projectId }: Props) => {
   const localize = useLocalize();
   const { mutateAsync: addProjectGroup } = useAddProjectGroup();
   const { mutate: deleteProjectGroup } = useDeleteProjectGroup({ projectId });
@@ -94,8 +93,6 @@ const ProjectGroupsList = ({ projectId, onAddButtonClicked }: Props) => {
       try {
         await Promise.all(promises);
         setSelectedGroups(null);
-
-        onAddButtonClicked();
       } catch (error) {
         // eslint-disable-next-line no-console
         if (process.env.NODE_ENV === 'development') console.log(error);

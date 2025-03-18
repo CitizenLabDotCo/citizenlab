@@ -126,6 +126,7 @@ ca:
     open_idea_phase_title: Fase actual
     native_survey_title: Enquesta
     native_survey_button: Fes l'enquesta
+    community_monitor_title: Monitor de la comunitat
   events:
     council_meeting_title: Reunió del Consell
     council_meeting_description: >
@@ -167,16 +168,18 @@ ca:
       attachments:
         title: Adjunts
         description:
-      section1:
+      page1:
         description:
-      section2:
+      page2:
         title: Imatges i fitxers adjunts
         description:
-      section3:
+      page3:
         title: Detalls
         description:
       other_input_field:
         title: Escriu la teva resposta
+      ask_follow_up_field:
+        title: Explica'ns per què
   custom_forms:
     categories:
       main_content:

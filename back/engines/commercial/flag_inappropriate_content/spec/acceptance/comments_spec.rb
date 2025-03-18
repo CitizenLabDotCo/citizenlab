@@ -50,7 +50,7 @@ resource 'Comments' do
     example 'Toxicity detection job is enqueued when updating an comment\'s body', document: false do
       expect do
         do_request
-      end.to have_enqueued_job(ToxicityDetectionJob).with(@comment, attributes: [:body_multiloc])
+      end.to have_enqueued_job(ToxicityDetectionJob).with(@comment)
     end
   end
 end

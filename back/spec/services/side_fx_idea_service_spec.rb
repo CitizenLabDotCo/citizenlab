@@ -64,16 +64,34 @@ describe SideFxIdeaService do
         .with(idea, 'published', any_args)
     end
 
-    it 'creates a follower' do
-      project = create(:project)
-      folder = create(:project_folder, projects: [project])
-      idea = create(:idea, project: project)
+    context 'followers' do
+      let!(:project) { create(:project) }
+      let!(:folder) { create(:project_folder, projects: [project]) }
+      let!(:idea) { create(:idea, project: project) }
 
-      expect do
-        service.after_create idea.reload, user
-      end.to change(Follower, :count).from(0).to(3)
+      it 'creates idea, project and folder followers' do
+        expect do
+          service.after_create idea.reload, user
+        end.to change(Follower, :count).from(0).to(3)
 
-      expect(user.follows.pluck(:followable_id)).to contain_exactly idea.id, project.id, folder.id
+        expect(user.follows.pluck(:followable_id)).to contain_exactly idea.id, project.id, folder.id
+      end
+
+      it 'does not create followers if the project is hidden' do
+        project.update!(hidden: true)
+        expect do
+          service.after_create idea.reload, user
+        end.not_to change(Follower, :count)
+      end
+
+      it 'creates only creates project and folder followers for native_survey responses' do
+        idea.update!(creation_phase: create(:native_survey_phase, project: project))
+        expect do
+          service.after_create idea.reload, user
+        end.to change(Follower, :count).from(0).to(2)
+
+        expect(user.follows.pluck(:followable_id)).to contain_exactly project.id, folder.id
+      end
     end
 
     it 'creates a cosponsorship' do

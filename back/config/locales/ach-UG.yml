@@ -126,6 +126,7 @@ ach:
     open_idea_phase_title: crwdns1443018:0crwdne1443018:0
     native_survey_title: crwdns1930452:0crwdne1930452:0
     native_survey_button: crwdns1930454:0crwdne1930454:0
+    community_monitor_title: crwdns4243451:0crwdne4243451:0
   events:
     council_meeting_title: crwdns207852:0crwdne207852:0
     council_meeting_description: >
@@ -167,16 +168,18 @@ ach:
       attachments:
         title: crwdns207892:0crwdne207892:0
         description: crwdns207894:0crwdne207894:0
-      section1:
-        description: crwdns207896:0crwdne207896:0
-      section2:
-        title: crwdns207898:0crwdne207898:0
-        description: crwdns207900:0crwdne207900:0
-      section3:
-        title: crwdns207902:0crwdne207902:0
-        description: crwdns207904:0crwdne207904:0
+      page1:
+        description: crwdns4243953:0crwdne4243953:0
+      page2:
+        title: crwdns4243955:0crwdne4243955:0
+        description: crwdns4243957:0crwdne4243957:0
+      page3:
+        title: crwdns4243959:0crwdne4243959:0
+        description: crwdns4243961:0crwdne4243961:0
       other_input_field:
         title: crwdns3058777:0crwdne3058777:0
+      ask_follow_up_field:
+        title: crwdns4218549:0crwdne4218549:0
   custom_forms:
     categories:
       main_content:

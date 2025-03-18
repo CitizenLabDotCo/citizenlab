@@ -126,6 +126,7 @@ it:
     open_idea_phase_title: Fase attuale
     native_survey_title: Sondaggio
     native_survey_button: Partecipa al sondaggio
+    community_monitor_title: Monitoraggio della comunità
   events:
     council_meeting_title: Riunione del Consiglio
     council_meeting_description: >
@@ -167,16 +168,18 @@ it:
       attachments:
         title: Allegati
         description:
-      section1:
+      page1:
         description:
-      section2:
+      page2:
         title: Immagini e allegati
         description:
-      section3:
+      page3:
         title: Dettagli
         description:
       other_input_field:
         title: Scrivi la tua risposta
+      ask_follow_up_field:
+        title: Dicci perché
   custom_forms:
     categories:
       main_content:

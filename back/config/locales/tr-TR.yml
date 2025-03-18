@@ -126,6 +126,7 @@ tr:
     open_idea_phase_title: Mevcut aşama
     native_survey_title: Anket
     native_survey_button: Ankete katılın
+    community_monitor_title: Topluluk gözlemcisi
   events:
     council_meeting_title: Kurul Toplantısı
     council_meeting_description: >
@@ -167,16 +168,18 @@ tr:
       attachments:
         title: Ekler
         description:
-      section1:
+      page1:
         description:
-      section2:
+      page2:
         title: Resimler ve ekler
         description:
-      section3:
+      page3:
         title: Detaylar
         description:
       other_input_field:
         title: Cevabınızı yazın
+      ask_follow_up_field:
+        title: Bize nedenini söyleyin
   custom_forms:
     categories:
       main_content:

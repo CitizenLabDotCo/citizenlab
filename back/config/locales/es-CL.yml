@@ -126,6 +126,7 @@ es-CL:
     open_idea_phase_title: Fase actual
     native_survey_title: Encuesta
     native_survey_button: Responde la consulta
+    community_monitor_title: Monitor comunitario
   events:
     council_meeting_title: Reunión del Consejo
     council_meeting_description: >
@@ -167,16 +168,18 @@ es-CL:
       attachments:
         title: Archivos adjuntos
         description:
-      section1:
+      page1:
         description:
-      section2:
-        title: Imágenes y adjuntos
+      page2:
+        title: Imágenes y archivos adjuntos
         description:
-      section3:
+      page3:
         title: Detalles
         description:
       other_input_field:
         title: Escribe tu respuesta
+      ask_follow_up_field:
+        title: Dinos por qué
   custom_forms:
     categories:
       main_content:

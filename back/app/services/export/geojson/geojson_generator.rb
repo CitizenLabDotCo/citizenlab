@@ -71,12 +71,7 @@ module Export
       def user_custom_field_values_data(input, user_data_key)
         registration_fields.each_with_object({}) do |field, accu|
           key = "#{user_data_key}__#{sanitize_key(@multiloc_service.t(field.title_multiloc))}"
-
-          accu[key] = if field.code == 'domicile'
-            Export::DomicileFieldForExport.new(field, @value_visitor, :author).value_from(input)
-          else
-            Export::CustomFieldForExport.new(field, @value_visitor, :author).value_from(input)
-          end
+          accu[key] = Export::CustomFieldForExport.new(field, @value_visitor, :author).value_from(input)
         end
       end
 

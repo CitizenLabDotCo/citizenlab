@@ -126,6 +126,7 @@ cy:
     open_idea_phase_title: Cyfnod presennol
     native_survey_title: Arolwg
     native_survey_button: Cymerwch yr arolwg
+    community_monitor_title: Monitor cymunedol
   events:
     council_meeting_title: Cyfarfod y Cyngor
     council_meeting_description: >
@@ -167,16 +168,18 @@ cy:
       attachments:
         title: Ymlyniadau
         description:
-      section1:
+      page1:
         description:
-      section2:
+      page2:
         title: Delweddau ac atodiadau
         description:
-      section3:
+      page3:
         title: Manylion
         description:
       other_input_field:
         title: Teipiwch eich ateb
+      ask_follow_up_field:
+        title: Dywedwch wrthym pam
   custom_forms:
     categories:
       main_content:

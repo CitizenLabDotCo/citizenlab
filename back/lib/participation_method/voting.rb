@@ -2,7 +2,7 @@
 
 module ParticipationMethod
   class Voting < Ideation
-    delegate :additional_export_columns, :supports_serializing?, to: :voting_method
+    delegate :additional_export_columns, :supports_serializing?, :validate_phase, to: :voting_method
 
     def self.method_str
       'voting'

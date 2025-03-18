@@ -72,6 +72,7 @@ Rails.application.routes.draw do
         get 'comments/as_xlsx', on: :collection, to: 'comments#index_xlsx'
 
         get :similarities, on: :member
+        resources :authoring_assistance_responses, only: %i[create]
         get :as_xlsx, on: :member, action: 'show_xlsx'
       end
 
@@ -192,6 +193,7 @@ Rails.application.routes.draw do
           get 'finished_or_archived', action: 'index_finished_or_archived'
           get 'for_followed_item', action: 'index_for_followed_item'
           get 'with_active_participatory_phase', action: 'index_with_active_participatory_phase'
+          get 'community_monitor', action: 'community_monitor'
         end
 
         resource :review, controller: 'project_reviews'

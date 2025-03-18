@@ -126,6 +126,7 @@ ur:
     open_idea_phase_title: موجودہ مرحلہ
     native_survey_title: سروے
     native_survey_button: سروے میں حصہ لیں۔
+    community_monitor_title: کمیونٹی مانیٹر
   events:
     council_meeting_title: کونسل کا اجلاس
     council_meeting_description: >
@@ -167,16 +168,18 @@ ur:
       attachments:
         title: منسلکات
         description:
-      section1:
+      page1:
         description:
-      section2:
+      page2:
         title: تصاویر اور منسلکات
         description:
-      section3:
+      page3:
         title: تفصیلات
         description:
       other_input_field:
         title: اپنا جواب ٹائپ کریں۔
+      ask_follow_up_field:
+        title: ہمیں بتائیں کیوں؟
   custom_forms:
     categories:
       main_content:

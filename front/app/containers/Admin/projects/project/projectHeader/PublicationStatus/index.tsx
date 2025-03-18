@@ -73,8 +73,11 @@ const getStatusMessageAndIcon = ({
     publicationStatusIconColor,
   };
 };
-
-const PublicationStatus = ({ project }: { project: IProject }) => {
+interface Props {
+  className?: string;
+  project: IProject;
+}
+const PublicationStatus = ({ className, project }: Props) => {
   const { mutate: updateProject, isLoading } = useUpdateProject();
   const [isPickerOpen, setIsPickerOpen] = useState(false);
   const { formatMessage } = useIntl();
@@ -113,6 +116,7 @@ const PublicationStatus = ({ project }: { project: IProject }) => {
         padding="4px 8px"
         border={`1px solid ${colors.borderDark}`}
         borderRadius={stylingConsts.borderRadius}
+        className={className}
       >
         <Icon
           name={publicationStatusIcon}
@@ -127,7 +131,7 @@ const PublicationStatus = ({ project }: { project: IProject }) => {
   }
 
   return (
-    <Box position="relative">
+    <Box position="relative" className={className}>
       <Button
         buttonStyle="secondary-outlined"
         padding="4px 8px"

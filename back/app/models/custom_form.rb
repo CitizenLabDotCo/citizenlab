@@ -22,4 +22,26 @@ class CustomForm < ApplicationRecord
   validates :participation_context_id, uniqueness: { scope: %i[participation_context_type] } # https://github.com/rails/rails/issues/34312#issuecomment-586870322
 
   delegate :project_id, to: :participation_context
+
+  # Fixes custom fields ordering by:
+  # - Moving the first container field (page) to the first position if any
+  # - Ensuring consecutive integers without gaps or duplicates
+  #
+  # This method can be removed once we are confident that inconsistencies in the ordering
+  # are no longer introduced.
+  def heal_fields_ordering!
+    CustomForm.transaction do
+      fields = custom_fields.to_a
+
+      first_container_idx = fields.index(&:page?)
+      fields.insert(0, fields.delete_at(first_container_idx)) if first_container_idx&.positive?
+
+      fields.each.with_index do |field, index|
+        next if field.ordering == index
+
+        logger.debug('Healing field ordering', field_id: field.id, from: field.ordering, to: index)
+        field.update_column(:ordering, index)
+      end
+    end
+  end
 end

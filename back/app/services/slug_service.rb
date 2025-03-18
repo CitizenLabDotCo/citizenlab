@@ -1,18 +1,20 @@
 # frozen_string_literal: true
 
 class SlugService
-  def generate_slug(record, string)
-    return nil unless string
+  # @param [ApplicationRecord,nil] record if a record is specified, the generator can
+  #   check for slug collisions with existing records of the same class.
+  def generate_slug(record, string, excluded: [])
+    return nil if string.blank?
 
-    slug = slugify(string)
-    indexed_slug = nil
-    i = 0
-    while record&.class&.find_by(slug: indexed_slug || slug)
-      i += 1
-      indexed_slug = [slug, '-', i].join
+    slug = base_slug = slugify(string)
+    index = 1
+
+    while slug.in?(excluded) || record&.class&.find_by(slug: slug)
+      slug = "#{base_slug}-#{index}"
+      index += 1
     end
 
-    indexed_slug || slug
+    slug
   end
 
   # Returns an array of slugs corresponding to the given unpersisted records.

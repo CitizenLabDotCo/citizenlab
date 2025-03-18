@@ -167,12 +167,15 @@ const ProfileForm = () => {
       });
       setProfanityApiError(false);
     } catch (error) {
-      const profanityApiError = error.errors.base.find(
-        (apiError) => apiError.error === 'includes_banned_words'
-      );
+      const profanityApiError = Array.isArray(error?.errors?.base)
+        ? error.errors.base.find(
+            (apiError) => apiError.error === 'includes_banned_words'
+          )
+        : null;
       if (profanityApiError) {
         setProfanityApiError(true);
       }
+
       handleHookFormSubmissionError(error, methods.setError);
     }
   };

@@ -262,6 +262,7 @@ export interface IAppConfigurationSettings {
     admins_only: boolean;
   };
   platform_templates?: AppConfigurationFeature;
+  authoring_assistance?: AppConfigurationFeature;
   project_library?: AppConfigurationFeature;
 }
 
@@ -305,6 +306,7 @@ interface IAppConfigurationAttributes {
   favicon?: ImageSizes | null;
   style?: IAppConfigurationStyle;
   created_at: string;
+  country_code: string | null;
 }
 
 export interface IAppConfigurationData {

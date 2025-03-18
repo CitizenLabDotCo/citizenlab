@@ -53,8 +53,18 @@ describe('Timeline ideation with anonymous participation allowed', () => {
     cy.get('[data-testid="e2e-post-idea-anonymously-checkbox"]').click();
     cy.get('#e2e-continue-anonymous-participation-btn').click();
 
+    // Go to the next page of the idea form
+    cy.get('[data-cy="e2e-next-page"]').should('be.visible').click();
+
+    // Go to the next page of the idea form
+    cy.get('[data-cy="e2e-next-page"]').should('be.visible').click();
+
     // save the form
-    cy.get('.e2e-submit-idea-form').click();
+    cy.get('[data-cy="e2e-submit-form"]').click();
+    cy.wait(3000);
+
+    cy.get('[data-cy="e2e-after-submission"]').should('exist');
+    cy.get('[data-cy="e2e-after-submission"]').click();
 
     // verify the content of the newly created idea page
     cy.location('pathname').should('eq', `/en/ideas/${ideaTitle}`);
@@ -80,8 +90,18 @@ describe('Timeline ideation with anonymous participation allowed', () => {
     cy.get('[data-testid="e2e-post-idea-anonymously-checkbox"]').click();
     cy.get('#e2e-continue-anonymous-participation-btn').click();
 
+    // Go to the next page of the idea form
+    cy.get('[data-cy="e2e-next-page"]').should('be.visible').click();
+
+    // Go to the next page of the idea form
+    cy.get('[data-cy="e2e-next-page"]').should('be.visible').click();
+
     // save the form
-    cy.get('.e2e-submit-idea-form').click();
+    cy.get('[data-cy="e2e-submit-form"]').click();
+    cy.wait(3000);
+
+    cy.get('[data-cy="e2e-after-submission"]').should('exist');
+    cy.get('[data-cy="e2e-after-submission"]').click();
 
     // verify the content of the newly created idea page
     cy.location('pathname').should('eq', `/en/ideas/${ideaTitle}`);

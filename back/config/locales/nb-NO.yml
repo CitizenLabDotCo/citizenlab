@@ -126,6 +126,7 @@ nb:
     open_idea_phase_title: Nåværende fase
     native_survey_title: Spørreundersøkelse
     native_survey_button: Ta del i undersøkelsen
+    community_monitor_title: Fellesskapets overvåker
   events:
     council_meeting_title: Rådsmøte
     council_meeting_description: >
@@ -167,16 +168,18 @@ nb:
       attachments:
         title: Vedlegg
         description:
-      section1:
+      page1:
         description:
-      section2:
+      page2:
         title: Bilder og vedlegg
         description:
-      section3:
+      page3:
         title: Detaljer
         description:
       other_input_field:
         title: Skriv inn svaret ditt
+      ask_follow_up_field:
+        title: Fortell oss hvorfor
   custom_forms:
     categories:
       main_content:

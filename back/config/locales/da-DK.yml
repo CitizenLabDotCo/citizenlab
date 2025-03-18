@@ -126,6 +126,7 @@ da:
     open_idea_phase_title: Igangværende fase
     native_survey_title: Undersøgelse
     native_survey_button: Besvar spørgeskemaet
+    community_monitor_title: Fællesskabsovervågning
   events:
     council_meeting_title: Rådsmøde
     council_meeting_description: >
@@ -167,16 +168,18 @@ da:
       attachments:
         title: Vedhæftede filer
         description:
-      section1:
+      page1:
         description:
-      section2:
+      page2:
         title: Billeder og vedhæftede filer
         description:
-      section3:
+      page3:
         title: Detaljer
         description:
       other_input_field:
         title: Skriv dit svar
+      ask_follow_up_field:
+        title: Fortæl os hvorfor
   custom_forms:
     categories:
       main_content:

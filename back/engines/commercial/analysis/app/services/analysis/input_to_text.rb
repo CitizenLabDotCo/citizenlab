@@ -3,8 +3,9 @@
 module Analysis
   # Convert an input to a simple string hash of {label => value} entries, based on the
   # passed list of custom fields
-  class InputToText
+  class InputToText < ModelToText
     def initialize(custom_fields, app_configuration = AppConfiguration.instance)
+      super()
       @custom_fields = custom_fields
       @app_configuration = app_configuration
       @multiloc_service = MultilocService.new(app_configuration: @app_configuration)
@@ -13,12 +14,7 @@ module Analysis
     end
 
     def execute(input, include_id: false, truncate_values: nil, override_field_labels: {})
-      initial_object = if include_id
-        { 'ID' => input.id }
-      else
-        {}
-      end
-      @custom_fields.each_with_object(initial_object) do |field, obj|
+      @custom_fields.each_with_object(super) do |field, obj|
         add_field(field, input, obj, truncate_values: truncate_values, override_field_labels: override_field_labels)
         if field.other_option_text_field
           add_field(field.other_option_text_field, input, obj, truncate_values: truncate_values, override_field_labels: override_field_labels)
@@ -27,9 +23,7 @@ module Analysis
     end
 
     def formatted(input, **options)
-      output = execute(input, **options.except(:include_comments)).map do |label, value|
-        "### #{label}\n#{value}\n"
-      end.join("\n")
+      output = super(input, **options.except(:include_comments))
       if options[:include_comments]
         comments = @comments_to_text.execute(input, truncate_values: options[:truncate_values], separator: '+++', include_author: false)
         output += "### Comments by other users\n#{comments}" if comments.present?

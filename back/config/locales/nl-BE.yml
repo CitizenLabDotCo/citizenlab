@@ -126,6 +126,7 @@ nl-BE:
     open_idea_phase_title: Huidige fase
     native_survey_title: Vragenlijst
     native_survey_button: Vul de vragenlijst in
+    community_monitor_title: Gemeenschapsmonitor
   events:
     council_meeting_title: Gemeenteraad
     council_meeting_description: >
@@ -167,16 +168,18 @@ nl-BE:
       attachments:
         title: Bijlagen
         description:
-      section1:
+      page1:
         description:
-      section2:
+      page2:
         title: Afbeeldingen en bijlagen
         description:
-      section3:
+      page3:
         title: Details
         description:
       other_input_field:
         title: Typ je antwoord
+      ask_follow_up_field:
+        title: Vertel ons waarom
   custom_forms:
     categories:
       main_content:

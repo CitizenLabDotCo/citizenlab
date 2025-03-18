@@ -142,4 +142,11 @@ class Rack::Attack
       req.remote_ip
     end
   end
+
+  # Authoring assistance responses by IP.
+  throttle('authoring/ip', limit: 10, period: 20.seconds) do |req|
+    if %r{/web_api/v1/ideas/.+/authoring_assistance_responses}.match?(req.path) && req.post?
+      req.remote_ip
+    end
+  end
 end

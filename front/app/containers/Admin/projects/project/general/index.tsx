@@ -554,6 +554,7 @@ const AdminProjectsProjectGeneral = () => {
                 <FormattedMessage {...messages.url} />
               </SubSectionTitle>
               <SlugInput
+                intercomLabelClassname="intercom-product-tour-project-slug-label"
                 slug={slug}
                 pathnameWithoutSlug={'projects'}
                 apiErrors={apiErrors}
@@ -586,7 +587,7 @@ const AdminProjectsProjectGeneral = () => {
             </Highlighter>
           )}
 
-          <SectionField>
+          <SectionField className="intercom-product-tour-project-header-image-field">
             <SubSectionTitle>
               <FormattedMessage {...messages.headerImageInputLabel} />
               <ProjectHeaderImageTooltip />

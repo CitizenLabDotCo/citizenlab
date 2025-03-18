@@ -21,6 +21,7 @@ import MultiselectSettings from './components/FormBuilderSettings/MultiselectSet
 import OptionsSettings from './components/FormBuilderSettings/OptionsSettings';
 import PageLayoutSettings from './components/FormBuilderSettings/PageLayoutSettings';
 import PointSettings from './components/FormBuilderSettings/PointSettings';
+import SentimentLinearScaleSettings from './components/FormBuilderSettings/SentimentLinearScaleSettings';
 import messages from './components/messages';
 
 export const builtInFieldKeys = [
@@ -66,8 +67,6 @@ export type FormBuilderConfig = {
     handleClose: () => void
   ) => void;
 
-  groupingType: 'page' | 'section';
-
   onDownloadPDF?: () => void;
 };
 
@@ -94,6 +93,16 @@ export function getAdditionalSettings(
   }
 
   switch (inputType) {
+    case 'sentiment_linear_scale':
+      return (
+        <SentimentLinearScaleSettings
+          platformLocale={platformLocale}
+          maximumName={`customFields.${field.index}.maximum`}
+          askFollowUpName={`customFields.${field.index}.ask_follow_up`}
+          labelBaseName={`customFields.${field.index}`}
+          locales={locales}
+        />
+      );
     case 'matrix_linear_scale':
       return (
         <MatrixSettings
@@ -172,8 +181,6 @@ export function getAdditionalSettings(
           />
         </>
       );
-    case 'section':
-      return <FieldGroupSettings locale={platformLocale} field={field} />;
     case 'linear_scale':
     case 'rating':
       return (
@@ -259,9 +266,6 @@ const getInputTypeStringKey = (
     case 'page':
       translatedStringKey = messages.page;
       break;
-    case 'section':
-      translatedStringKey = messages.section;
-      break;
     case 'number':
       translatedStringKey = messages.number;
       break;
@@ -292,6 +296,9 @@ const getInputTypeStringKey = (
     case 'matrix_linear_scale':
       translatedStringKey = messages.matrix;
       break;
+    case 'sentiment_linear_scale':
+      translatedStringKey = messages.sentiment;
+      break;
   }
 
   return translatedStringKey;
@@ -317,5 +324,5 @@ export const findNextPageAfterCurrentPage = (
       .find((item) => item.input_type === 'page');
     if (nextPage?.id) return nextPage.id;
   }
-  return 'survey_end';
+  return 'form_end';
 };

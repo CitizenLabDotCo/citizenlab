@@ -36,7 +36,7 @@ interface Props {
   config?: 'default' | 'input' | 'survey';
   locale: SupportedLocale;
   onChange: (formData: FormValues) => void;
-  onSubmit?: (formData: FormValues) => Promise<any>;
+  onSubmit?: (formData: { data?: FormValues }) => Promise<any>;
 }
 
 const Fields = ({

@@ -160,7 +160,6 @@ class Phase < ApplicationRecord
   # voting?
   with_options if: :voting? do
     validates :voting_method, presence: true, inclusion: { in: VOTING_METHODS }
-    validate :validate_voting
     validates :voting_term_singular_multiloc, multiloc: { presence: false }
     validates :voting_term_plural_multiloc, multiloc: { presence: false }
     validates :autoshare_results_enabled, inclusion: { in: [true, false] }
@@ -182,11 +181,13 @@ class Phase < ApplicationRecord
     where(start_at: date)
   }
 
-  # native_survey?
-  with_options if: :native_survey? do
+  # any type of native_survey phase
+  with_options if: ->(phase) { phase.pmethod.supports_survey_form? } do
     validates :native_survey_title_multiloc, presence: true, multiloc: { presence: true }
     validates :native_survey_button_multiloc, presence: true, multiloc: { presence: true }
   end
+
+  validate :validate_phase_participation_method
 
   scope :published, lambda {
     joined = includes(project: { admin_publication: :parent })
@@ -254,11 +255,6 @@ class Phase < ApplicationRecord
   # Used for validations (which are hard to delegate through the participation method)
   def voting?
     participation_method == 'voting'
-  end
-
-  # Used for validations (which are hard to delegate through the participation method)
-  def native_survey?
-    participation_method == 'native_survey'
   end
 
   def pmethod
@@ -371,6 +367,8 @@ class Phase < ApplicationRecord
       ParticipationMethod::Proposals.new(self)
     when 'native_survey'
       ParticipationMethod::NativeSurvey.new(self)
+    when 'community_monitor_survey'
+      ParticipationMethod::CommunityMonitorSurvey.new(self)
     when 'document_annotation'
       ParticipationMethod::DocumentAnnotation.new(self)
     when 'survey'
@@ -390,8 +388,9 @@ class Phase < ApplicationRecord
     self.presentation_mode ||= 'card'
   end
 
-  def validate_voting
-    Factory.instance.voting_method_for(self).validate_phase
+  # Delegate any rules specific to a method to the participation method itself
+  def validate_phase_participation_method
+    pmethod.validate_phase
   end
 end
 

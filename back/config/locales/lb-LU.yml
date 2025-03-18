@@ -126,6 +126,7 @@ lb:
     open_idea_phase_title: Aktuell Phase
     native_survey_title: Ëmfro
     native_survey_button: Huelt d'Ëmfro
+    community_monitor_title: Communautéit Monitor
   events:
     council_meeting_title: Conseilssëtzung
     council_meeting_description: >
@@ -167,16 +168,18 @@ lb:
       attachments:
         title: Annexen
         description:
-      section1:
+      page1:
         description:
-      section2:
-        title: Biller an Annexen
+      page2:
+        title: Biller an Uschlëss
         description:
-      section3:
+      page3:
         title: Detailer
         description:
       other_input_field:
         title: Typ Är Äntwert
+      ask_follow_up_field:
+        title: Sot eis firwat
   custom_forms:
     categories:
       main_content:

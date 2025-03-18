@@ -32,7 +32,11 @@ const ProjectDescriptionBuilderToolbox = ({
   const { formatMessage } = useIntl();
 
   return (
-    <Container>
+    <Container
+      className="
+    intercom-product-tour-project-description-content-builder-building-blocks-sidebar
+    "
+    >
       <Section>
         <DraggableElement
           id="e2e-draggable-image-text-cards"

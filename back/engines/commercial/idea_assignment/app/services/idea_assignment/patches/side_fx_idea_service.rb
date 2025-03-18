@@ -33,7 +33,7 @@ module IdeaAssignment
       # If a survey is opened in multiple tabs then different draft responses can be created for the same user.
       # We need to remove any duplicates when the survey is submitted.
       def remove_duplicate_survey_responses_on_publish(idea)
-        return unless idea.creation_phase&.native_survey? && idea.publication_status_previously_changed?(from: 'draft', to: 'published')
+        return unless idea.participation_method_on_creation&.supports_survey_form? && idea.publication_status_previously_changed?(from: 'draft', to: 'published')
 
         Idea.where(
           creation_phase_id: idea.creation_phase_id,

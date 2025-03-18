@@ -31,7 +31,7 @@ module IdOostendeRrn
     end
 
     def locked_custom_fields
-      [config[:custom_field_key]]
+      []
     end
 
     def verification_parameters

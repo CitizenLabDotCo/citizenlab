@@ -126,6 +126,7 @@ ar:
     open_idea_phase_title: المرحلة الحالية
     native_survey_title: استطلاع
     native_survey_button: خذ الاستطلاع
+    community_monitor_title: مراقب المجتمع
   events:
     council_meeting_title: اجتماع المجلس
     council_meeting_description: >
@@ -167,16 +168,18 @@ ar:
       attachments:
         title: المُرفقات
         description:
-      section1:
+      page1:
         description:
-      section2:
+      page2:
         title: الصور والمرفقات
         description:
-      section3:
+      page3:
         title: تفاصيل
         description:
       other_input_field:
         title: اكتب إجابتك
+      ask_follow_up_field:
+        title: أخبرنا لماذا
   custom_forms:
     categories:
       main_content:

@@ -126,6 +126,7 @@ hr:
     open_idea_phase_title: Trenutna faza
     native_survey_title: Pregled
     native_survey_button: Popuni anketu
+    community_monitor_title: Monitor zajednice
   events:
     council_meeting_title: Sastanak vijeća
     council_meeting_description: >
@@ -167,16 +168,18 @@ hr:
       attachments:
         title: Privici
         description:
-      section1:
+      page1:
         description:
-      section2:
+      page2:
         title: Slike i prilozi
         description:
-      section3:
-        title: Pojedinosti
+      page3:
+        title: pojedinosti
         description:
       other_input_field:
         title: Upišite svoj odgovor
+      ask_follow_up_field:
+        title: Reci nam zašto
   custom_forms:
     categories:
       main_content:

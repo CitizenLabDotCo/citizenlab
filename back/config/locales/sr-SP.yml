@@ -126,6 +126,7 @@ sr-Cyrl:
     open_idea_phase_title: Тренутна фаза
     native_survey_title: Survey
     native_survey_button: Take the survey
+    community_monitor_title: Community monitor
   events:
     council_meeting_title: Састанак Савета
     council_meeting_description: >
@@ -167,16 +168,18 @@ sr-Cyrl:
       attachments:
         title: Прилози
         description:
-      section1:
+      page1:
         description:
-      section2:
-        title: Слике и прилози
+      page2:
+        title: Images and attachments
         description:
-      section3:
-        title: Детаљи
+      page3:
+        title: Details
         description:
       other_input_field:
         title: Type your answer
+      ask_follow_up_field:
+        title: Tell us why
   custom_forms:
     categories:
       main_content:

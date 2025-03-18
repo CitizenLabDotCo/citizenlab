@@ -30,10 +30,8 @@ import {
   ImageControl,
   attachmentsControlTester,
   AttachmentsControl,
-  clCategoryTester,
   clPageTester,
-  CLCategoryLayout,
-  CLSurveyPageLayout,
+  CLPageLayout,
   locationControlTester,
   LocationControl,
   dateControlTester,
@@ -62,6 +60,8 @@ import {
   MatrixControl,
   matrixControlTester,
   RankingControl,
+  SentimentLinearScaleControl,
+  sentimentLinearScaleControlTester,
 } from 'components/Form/Components/Controls';
 
 const commonRenderers = [
@@ -81,8 +81,7 @@ const commonRenderers = [
   { tester: titleControlTester, renderer: TitleControl },
   { tester: imageControlTester, renderer: ImageControl },
   { tester: attachmentsControlTester, renderer: AttachmentsControl },
-  { tester: clCategoryTester, renderer: CLCategoryLayout },
-  { tester: clPageTester, renderer: CLSurveyPageLayout },
+  { tester: clPageTester, renderer: CLPageLayout },
   { tester: orderedLayoutTester, renderer: OrderedLayout },
   { tester: locationControlTester, renderer: LocationControl },
   { tester: dateControlTester, renderer: DateControl },
@@ -90,6 +89,10 @@ const commonRenderers = [
   { tester: multilocInputTester, renderer: MultilocInputLayout },
   { tester: orderedLayoutTester, renderer: OrderedLayout },
   { tester: cosponsorsControlTester, renderer: CosponsorsControl },
+  {
+    tester: sentimentLinearScaleControlTester,
+    renderer: SentimentLinearScaleControl,
+  },
 ];
 
 export const selectRenderers = (formType: 'default' | 'input' | 'survey') => {

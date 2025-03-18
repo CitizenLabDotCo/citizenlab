@@ -7,6 +7,7 @@ export const appConfigurationData: IAppConfigurationData = {
     name: 'wonderville',
     host: 'wonderville.com',
     created_at: '',
+    country_code: 'BE',
     settings: {
       core: {
         allowed: true,

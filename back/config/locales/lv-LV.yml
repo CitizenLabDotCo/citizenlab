@@ -126,6 +126,7 @@ lv:
     open_idea_phase_title: Pašreizējā fāze
     native_survey_title: Aptauja
     native_survey_button: Veiciet aptauju
+    community_monitor_title: Kopienas uzraudzītājs
   events:
     council_meeting_title: Padomes sēde
     council_meeting_description: >
@@ -167,16 +168,18 @@ lv:
       attachments:
         title: Pielikumi
         description:
-      section1:
+      page1:
         description:
-      section2:
+      page2:
         title: Attēli un pielikumi
         description:
-      section3:
+      page3:
         title: Sīkāka informācija
         description:
       other_input_field:
         title: Ierakstiet savu atbildi
+      ask_follow_up_field:
+        title: Pastāstiet mums, kāpēc
   custom_forms:
     categories:
       main_content:

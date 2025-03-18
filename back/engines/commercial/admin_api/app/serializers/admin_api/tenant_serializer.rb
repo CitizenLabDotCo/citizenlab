@@ -9,8 +9,8 @@ module AdminApi
   # one DB query using:
   #   AdminApi::TenantSerializer.new(tenant, app_configuration: config)
   class TenantSerializer < ActiveModel::Serializer
-    attributes :id, :name, :host, :settings, :style, :logo, :favicon
-    delegate :host, :settings, :style, to: :configuration
+    attributes :id, :name, :host, :settings, :style, :country_code, :logo, :favicon
+    delegate :host, :settings, :style, :country_code, to: :configuration
 
     def logo
       configuration.logo && configuration.logo.versions.to_h { |k, v| [k.to_s, v.url] }

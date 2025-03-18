@@ -33,6 +33,14 @@ resource 'Tenants', admin_api: true do
       assert_status 200
       expect(json_response_body[:host]).to eq(tenant.host)
     end
+
+    example 'Get a tenant by ID includes the country_code in response' do
+      tenant = Tenant.find_by(host: 'example.org')
+      do_request tenant_id: tenant.id
+
+      assert_status 200
+      expect(json_response_body[:country_code]).to eq 'BE'
+    end
   end
 
   patch 'admin_api/tenants/:tenant_id' do
