@@ -811,7 +811,7 @@
   "app.components.formBuilder.title": "Başlık",
   "app.components.formBuilder.toLabel": "için",
   "app.components.formBuilder.unsavedChanges": "Kaydedilmemiş değişiklikleriniz var",
-  "app.components.formBuilder.useCustomButton": "Özel düğme kullan",
+  "app.components.formBuilder.useCustomButton2": "Özel sayfa düğmesini kullanma",
   "app.components.formBuilder.veryBad": "Çok kötü",
   "app.components.formBuilder.veryGood": "Çok iyi",
   "app.components.phaseTimeLeft.xDayLeft": "{timeLeft, plural, =0 {Bir günden az} one {# gün} other {# gün}} sol",
