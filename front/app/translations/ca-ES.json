@@ -811,7 +811,7 @@
   "app.components.formBuilder.title": "Títol",
   "app.components.formBuilder.toLabel": "a",
   "app.components.formBuilder.unsavedChanges": "Tens canvis no desats",
-  "app.components.formBuilder.useCustomButton": "Utilitzeu el botó personalitzat",
+  "app.components.formBuilder.useCustomButton2": "Use custom page button",
   "app.components.formBuilder.veryBad": "Molt malament",
   "app.components.formBuilder.veryGood": "Molt bé",
   "app.components.phaseTimeLeft.xDayLeft": "{timeLeft, plural, =0 {Menys d'un dia} one {# dia} other {Queden # dies}}",
