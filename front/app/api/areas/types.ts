@@ -61,7 +61,7 @@ export interface IAreaUpdate {
   include_in_onboarding?: boolean;
 }
 
-interface IAreaWithProjectCounts extends Omit<IAreaData, 'attributes'> {
+export interface IAreaWithProjectCounts extends Omit<IAreaData, 'attributes'> {
   attributes: AreaAttributes & {
     visible_projects_count: number;
   };
