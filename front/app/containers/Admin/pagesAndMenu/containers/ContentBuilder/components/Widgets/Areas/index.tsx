@@ -28,6 +28,7 @@ const Areas = ({ titleMultiloc }: Props) => {
   const followEnabled = useFeatureFlag({ name: 'follow' });
   const {
     data: miniProjects,
+    isLoading: isLoadingMiniProjects,
     hasNextPage,
     fetchNextPage,
   } = useProjectsMini({
@@ -41,12 +42,12 @@ const Areas = ({ titleMultiloc }: Props) => {
   const title = localize(titleMultiloc);
 
   // If no projects yet, show loading skeleton
-  if (!projects) {
+  if (isLoadingMiniProjects) {
     return <Skeleton title={title} />;
   }
 
   // If projects loaded, but no projects:
-  if (projects.length === 0) {
+  if (!projects || projects.length === 0) {
     //   // If, even after indicating follow preferences,
     //   // there are no projects, we show the empty state.
     return <EmptyState title={title} />;
