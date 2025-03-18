@@ -811,7 +811,7 @@
   "app.components.formBuilder.title": "العنوان",
   "app.components.formBuilder.toLabel": "إلى",
   "app.components.formBuilder.unsavedChanges": "لم تحفظ التغييرات",
-  "app.components.formBuilder.useCustomButton": "استخدم الزر المخصص",
+  "app.components.formBuilder.useCustomButton2": "Use custom page button",
   "app.components.formBuilder.veryBad": "سيء للغاية",
   "app.components.formBuilder.veryGood": "جيد جدًا",
   "app.components.phaseTimeLeft.xDayLeft": "{timeLeft, plural, =0 {أقل من يوم} one {# يوم} other {# أيام}} متبقي",
