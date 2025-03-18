@@ -5,7 +5,9 @@ import { Select } from '@citizenlab/cl2-component-library';
 import { RansackParams } from 'api/project_library_projects/types';
 
 import { useIntl } from 'utils/cl-intl';
+import { keys } from 'utils/helperUtils';
 
+import { POPULATION_GROUP_LABELS } from '../constants';
 import { setRansackParam, useRansackParam } from '../utils';
 
 import messages from './messages';
@@ -15,13 +17,10 @@ type Option = {
   label: string;
 };
 
-const OPTIONS: Option[] = [
-  { value: 'XL', label: 'XS' },
-  { value: 'S', label: 'S' },
-  { value: 'M', label: 'M' },
-  { value: 'L', label: 'L' },
-  { value: 'XL', label: 'XL' },
-];
+const OPTIONS: Option[] = keys(POPULATION_GROUP_LABELS).map((key) => ({
+  value: key,
+  label: POPULATION_GROUP_LABELS[key],
+}));
 
 const Population = () => {
   const { formatMessage } = useIntl();

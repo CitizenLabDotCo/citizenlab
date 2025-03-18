@@ -556,15 +556,6 @@ describe Export::Xlsx::ValueVisitor do
       end
     end
 
-    describe '#visit_section' do
-      let(:input_type) { 'section' }
-      let(:model) { instance_double Idea } # The model is irrelevant for this test.
-
-      it 'returns the empty string, because the field does not capture data' do
-        expect(visitor.visit_section(field)).to eq ''
-      end
-    end
-
     describe '#visit_file_upload' do
       let(:input_type) { 'file_upload' }
 

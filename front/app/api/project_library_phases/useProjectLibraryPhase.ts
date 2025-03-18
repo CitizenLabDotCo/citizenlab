@@ -6,7 +6,7 @@ import fetcher from 'utils/cl-react-query/fetcher';
 import projectLibraryPhasesKeys from './keys';
 import { ProjectLibraryPhase, ProjectLibraryPhasesKeys } from './types';
 
-const fetchProjectLibraryPhase = (id?: string) =>
+export const fetchProjectLibraryPhase = (id?: string) =>
   fetcher<ProjectLibraryPhase>({
     path: `/phases/${id}`,
     action: 'get',

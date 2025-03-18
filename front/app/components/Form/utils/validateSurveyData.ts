@@ -1,9 +1,10 @@
 import { JsonSchema } from '@jsonforms/core';
 
+import { getFieldNameFromPath } from 'utils/JSONFormUtils';
+
 import { FormValues, PageType } from '../typings';
 
 import customAjv from './customAjv';
-import getKey from './getKey';
 
 const validateSurveyData = (
   schema: JsonSchema,
@@ -24,7 +25,9 @@ const removeUnseenQuestionsFromSchema = (
   userPagePath: PageType[]
 ) => {
   const seenQuestions = userPagePath.reduce((acc, page) => {
-    const questionKeys = page.elements.map((el) => getKey(el.scope));
+    const questionKeys = page.elements.map((el) =>
+      getFieldNameFromPath(el.scope)
+    );
 
     return [...acc, ...questionKeys];
   }, []);
@@ -47,7 +50,7 @@ const removeUnseenQuestionsFromData = (
 
   userPagePath.forEach((page) => {
     page.elements.forEach((element) => {
-      const key = getKey(element.scope);
+      const key = getFieldNameFromPath(element.scope);
       newData[key] = data[key];
     });
   });

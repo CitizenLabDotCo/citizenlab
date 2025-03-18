@@ -50,6 +50,14 @@
             "type": "string",
             "enum": ["trial", "expired_trial", "demo", "active", "churned", "not_applicable"]
           },
+          <% country_codes_service = CountryCodesService.new %>
+          "country_code": {
+            "title": "Country",
+            "description": "The country where the platform's citizens are located. Type first letters of the country name, in English, to search.",
+            "type": ["string", "null"],
+            "enum": <%= country_codes_service.codes_in_name_order.to_json %>,
+            "enumNames": <%= country_codes_service.names_in_name_order.to_json %>
+          },
           "timezone": {
             "title": "Time Zone",
             "type": "string",
