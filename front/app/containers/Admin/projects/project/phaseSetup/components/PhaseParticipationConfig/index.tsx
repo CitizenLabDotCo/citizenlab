@@ -20,10 +20,14 @@ import {
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
+import projectMessages from 'containers/Admin/projects/project/general/messages';
+
 import { SectionField, SubSectionTitle } from 'components/admin/Section';
 import Error from 'components/UI/Error';
+import Warning from 'components/UI/Warning';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
+import Link from 'utils/cl-router/Link';
 import { anyIsDefined } from 'utils/helperUtils';
 
 import { ValidationErrors } from '../../typings';
@@ -427,6 +431,20 @@ const PhaseParticipationConfig = ({
           apiErrors={apiErrors}
           handleParticipationMethodOnChange={handleParticipationMethodOnChange}
         />
+        <Box mb="20px">
+          <Warning>
+            <FormattedMessage
+              {...projectMessages.needInspiration}
+              values={{
+                inspirationHubLink: (
+                  <Link to="/admin/inspiration-hub" target="_blank">
+                    <FormattedMessage {...projectMessages.inspirationHub} />
+                  </Link>
+                ),
+              }}
+            />
+          </Warning>
+        </Box>
 
         {participation_method === 'voting' && (
           <VotingInputs
