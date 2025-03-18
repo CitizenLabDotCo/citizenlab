@@ -33,16 +33,18 @@ const FormResults = (props: Props) => {
   // Get the current year and quarter for the results
   const [search] = useSearchParams();
 
-  // Get the year and quarter from the URL
-  const year = search.get('year');
-  const quarter = search.get('quarter');
+  // Get the year and quarter
+  const year = search.get('year') || new Date().getFullYear().toString();
+  const quarter =
+    search.get('quarter') ||
+    (Math.floor(new Date().getMonth() / 3) + 1).toString();
 
   // Fetch the form results
   const { data: formResults } = useFormResults({
     phaseId,
     filterLogicIds: [],
-    quarter: quarter ? parseInt(quarter, 10) : undefined,
-    year: year ? parseInt(year, 10) : undefined,
+    quarter: parseInt(quarter, 10),
+    year: parseInt(year, 10),
   });
 
   if (!formResults || !project) {
