@@ -51,9 +51,9 @@ module Permissions
     # Actions not to block if the project is inactive - ie no current phase
     IGNORED_PHASE_ACTIONS = %w[attending_event].freeze
 
-    def initialize(phase, user, user_requirements_service: nil, author_hash: nil)
+    def initialize(phase, user, user_requirements_service: nil, browser_hashes: nil)
       super(user, user_requirements_service: user_requirements_service)
-      @author_hash = author_hash
+      @browser_hashes = browser_hashes
       @phase ||= phase
     end
 
@@ -91,14 +91,14 @@ module Permissions
 
     private
 
-    attr_reader :phase, :author_hash
+    attr_reader :phase, :browser_hashes
 
     # Phase methods
     def posting_idea_denied_reason_for_action
       if !participation_method.supports_submission?
-        POSTING_DENIED_REASONS[:posting_not_supported] # TODO: Rename to sumbission_not_supported
+        POSTING_DENIED_REASONS[:posting_not_supported]
       elsif !phase.submission_enabled
-        POSTING_DENIED_REASONS[:posting_disabled] # TODO: Rename to sumbission_disabled
+        POSTING_DENIED_REASONS[:posting_disabled]
       elsif posting_limit_reached?
         POSTING_DENIED_REASONS[:posting_limited_max_reached]
       end
@@ -106,7 +106,7 @@ module Permissions
 
     def editing_idea_denied_reason_for_action
       unless participation_method.supports_submission?
-        POSTING_DENIED_REASONS[:posting_not_supported] # TODO: Rename to sumbission_not_supported
+        POSTING_DENIED_REASONS[:posting_not_supported]
       end
     end
 
@@ -177,15 +177,17 @@ module Permissions
       allow_posting_again_after = phase.pmethod.allow_posting_again_after || 10.years
       return false if allow_posting_again_after == 0.seconds
 
-      return true if phase.ideas.published_after(allow_posting_again_after.ago).exists?(author: user)
+      if user
+        return true if phase.ideas.published_after(allow_posting_again_after.ago).exists?(author: user)
 
-      # Maybe do the author_hash creation in one method elsewhere? so we're just checking if the hash exists here
-      author_hash_to_check = if phase.allow_anonymous_participation? && user
-        Idea.create_author_hash(user.id, phase.project.id, true)
-      else
-        author_hash
+        if phase.allow_anonymous_participation?
+          author_hash = Idea.create_author_hash(user.id, phase.project.id, true)
+          return true if phase.ideas.published_after(allow_posting_again_after.ago).exists?(author_hash: author_hash)
+        end
+      elsif browser_hashes # TODO: check phase allows everyone to post
+        # browser_hashes may be just one hash (user agent) or two (user agent + author)
+        return true if phase.ideas.published_after(allow_posting_again_after.ago).exists?(author_hash: browser_hashes)
       end
-      return true if author_hash_to_check && phase.ideas.published_after(allow_posting_again_after.ago).exists?(author_hash: author_hash_to_check)
 
       false
     end

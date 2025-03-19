@@ -557,25 +557,26 @@ resource 'Ideas' do
       context "when visitor (permission is 'everyone')" do
         before { phase.permissions.find_by(action: 'posting_idea').update! permitted_by: 'everyone' }
 
-        example_request 'Create a community monitor survey response without author' do
-          assert_status 201
-          idea_from_db = Idea.find(response_data[:id])
-          expect(idea_from_db.author_id).to be_nil
-          expect(idea_from_db.custom_field_values.to_h).to eq({
-            extra_field_name => 'test value'
-          })
+        context 'No existing response' do
+          example_request 'Create a community monitor survey response without author' do
+            assert_status 201
+            idea_from_db = Idea.find(response_data[:id])
+            expect(idea_from_db.author_id).to be_nil
+            expect(idea_from_db.custom_field_values.to_h).to eq({
+              extra_field_name => 'test value'
+            })
+          end
         end
 
         context 'response has already been submitted' do
-          context 'no cookie present - using headers' do
-            let!(:response) do
-              user_agent = 'User-Agent: Mozilla/5.0'
-              ip = '1.2.3.4'
-              author_hash = Idea.create_author_hash(ip + user_agent, phase.project.id, false)
-              pp author_hash
-              create(:native_survey_response, project: project, creation_phase: phase, author: nil, author_hash: author_hash)
-            end
+          let!(:author_hash) do
+            user_agent = 'User-Agent: Mozilla/5.0'
+            ip = '1.2.3.4'
+            Idea.create_author_hash(ip + user_agent, phase.project.id, false)
+          end
+          let!(:response) { create(:native_survey_response, project: project, creation_phase: phase, author: nil, author_hash: author_hash) }
 
+          context 'no cookie present - using headers' do
             example 'does not allow posting if submitted within 3 months' do
               response.update!(published_at: 2.months.ago)
               header 'User-Agent', 'User-Agent: Mozilla/5.0'
@@ -587,9 +588,44 @@ resource 'Ideas' do
 
             example 'allows posting again if submitted after 3 months' do
               response.update!(published_at: 4.months.ago)
+              header 'User-Agent', 'User-Agent: Mozilla/5.0'
+              header 'X-Forwarded-For', '1.2.3.4'
               do_request
               assert_status 201
             end
+          end
+
+          context 'cookie is present' do
+            let!(:author_hash) { "HASH_IN_COOKIE" }
+
+            example 'does not allow posting if submitted within 3 months' do
+              response.update!(published_at: 2.months.ago)
+              header('Cookie', "#{phase.id}=HASH_IN_COOKIE")
+              do_request
+              assert_status 401
+              expect(json_response_body.dig(:errors, :base, 0, :error)).to eq 'posting_limited_max_reached'
+            end
+
+            example 'allows posting again if submitted after 3 months' do
+              response.update!(published_at: 4.months.ago)
+              header('Cookie', "#{phase.id}=HASH_IN_COOKIE")
+              do_request
+              assert_status 201
+              # Saves a new idea with the same author hash from the cookie
+              expect(Idea.all.pluck(:author_hash)).to eq %w[HASH_IN_COOKIE HASH_IN_COOKIE]
+            end
+
+            example 'Uses the last hash found in the cookie (user hash) to create the new idea' do
+              response.update!(published_at: 4.months.ago)
+              header('Cookie', "#{phase.id}=HASH_IN_COOKIE,HASH_IN_COOKIE2")
+              do_request
+              assert_status 201
+              # Saves a new idea with the last author hash from the cookie
+              expect(Idea.all.pluck(:author_hash)).to eq %w[HASH_IN_COOKIE HASH_IN_COOKIE2]
+            end
+
+            # TODO: JS - tests for if the user is not logged in but they have previously submitted whilst logged in
+
           end
         end
 

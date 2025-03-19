@@ -181,7 +181,12 @@ class WebApi::V1::IdeasController < ApplicationController
 
     # Setting an author hash based on IP and user agent for not logged in users to try and avoid resubmission
     # TODO: Set the author hash from the cookie if available
-    input.set_author_hash_from_agent(request.remote_ip, request.user_agent) if !current_user
+    # For 'everyone' participation only
+    if !current_user
+      # If cookie then set author hash from cookie
+      # What if the author is hashed in the cookie? SET the cookie as the author hash
+      input.create_author_hash_from_headers(request)
+    end
 
     # NOTE: Needs refactor allow_anonymous_participation? so anonymous_participation can be allow or force
     if phase.pmethod.supports_survey_form? && phase.allow_anonymous_participation?
@@ -209,6 +214,8 @@ class WebApi::V1::IdeasController < ApplicationController
       if input.save(**save_options)
         update_file_upload_fields input, form, params_for_create
         sidefx.after_create(input, current_user)
+        # This will not work if NOT logged in
+        cookies[input.creation_phase_id] = input.author_hash_cookie_value if !current_user && input.creation_phase_id
         render json: WebApi::V1::IdeaSerializer.new(
           input.reload,
           params: jsonapi_serializer_params,

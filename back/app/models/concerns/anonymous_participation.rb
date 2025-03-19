@@ -6,6 +6,7 @@ module AnonymousParticipation
   extend ActiveSupport::Concern
   included do
     class << self
+      # TODO: Move to another service?
       def create_author_hash(author_id, project_id, anonymous)
         salt_normal = ENV.fetch('AUTHOR_HASH_SALT', '84c168c4-a240-4f0a-8468-9e2cf714d4e1')
         salt_anon = ENV.fetch('AUTHOR_HASH_SALT_ANON', '335b6eb2-9e7c-405c-9221-9b8919b64b8b')
@@ -25,10 +26,20 @@ module AnonymousParticipation
       anonymous
     end
 
-    def set_author_hash_from_agent(ip, user_agent)
-      return unless ip && user_agent
+    def create_author_hash_from_headers(request)
+      cookie_hashes = request&.cookies[creation_phase_id]
+      if cookie_hashes.present?
+        self.browser_hashes = cookie_hashes.split(',')
+        self.author_hash = self.browser_hashes.last # If more than one value we take the author hash over the user_agent hash
+      elsif request.ip && request.user_agent
+        hash = self.class.create_author_hash(request.ip + request.user_agent, project_string, anonymous?)
+        self.browser_hashes = [hash]
+        self.author_hash = hash
+      end
+    end
 
-      self.author_hash = self.class.create_author_hash(ip + user_agent, project_string, anonymous?)
+    def author_hash_cookie_value
+      browser_hashes&.join(',')
     end
 
     private
