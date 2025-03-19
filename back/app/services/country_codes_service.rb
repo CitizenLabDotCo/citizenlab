@@ -1,7 +1,7 @@
 # rubocop:disable Metrics/CollectionLiteralLength
 class CountryCodesService
+  # ISO 3166-1 alpha-2 country codes and names
   COUNTRIES = {
-    nil => '- None -',
     'AD' => 'Andorra',
     'AE' => 'United Arab Emirates',
     'AF' => 'Afghanistan',
@@ -12,7 +12,7 @@ class CountryCodesService
     'AO' => 'Angola',
     'AQ' => 'Antarctica',
     'AR' => 'Argentina',
-    'AS' => 'American',
+    'AS' => 'American Samoa',
     'AT' => 'Austria',
     'AU' => 'Australia',
     'AW' => 'Aruba',
@@ -30,8 +30,8 @@ class CountryCodesService
     'BL' => 'Saint Barthélemy',
     'BM' => 'Bermuda',
     'BN' => 'Brunei Darussalam',
-    'BO' => 'Bolivia',
-    'BQ' => 'Sint Eustatius and Saba',
+    'BO' => 'Bolivia, Plurinational State of',
+    'BQ' => 'Bonaire, Sint Eustatius and Saba',
     'BR' => 'Brazil',
     'BS' => 'Bahamas',
     'BT' => 'Bhutan',
@@ -229,7 +229,7 @@ class CountryCodesService
     'TR' => 'Türkiye',
     'TT' => 'Trinidad and Tobago',
     'TV' => 'Tuvalu',
-    'TW' => 'Province of China',
+    'TW' => 'Taiwan, Province of China',
     'TZ' => 'Tanzania, United Republic of',
     'UA' => 'Ukraine',
     'UG' => 'Uganda',

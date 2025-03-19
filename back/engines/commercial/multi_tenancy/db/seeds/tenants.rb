@@ -22,7 +22,8 @@ module MultiTenancy
           logo: Rails.root.join('spec/fixtures/logo.png').open,
           settings: SettingsService.new.minimal_required_settings(
             locales: runner.seed_locales,
-            lifecycle_stage: 'active'
+            lifecycle_stage: 'active',
+            country_code: 'BE'
           ).deep_merge({
             core: {
               organization_type: "#{runner.seed_size}_city",
@@ -505,7 +506,7 @@ module MultiTenancy
 
         config_attrs = tenant_attrs.merge(
           logo: Rails.root.join('spec/fixtures/logo.png').open,
-          settings: SettingsService.new.minimal_required_settings(locales: %w[en nl-BE], lifecycle_stage: 'active')
+          settings: SettingsService.new.minimal_required_settings(locales: %w[en nl-BE], lifecycle_stage: 'active', country_code: 'BE')
         )
 
         TenantService.new.initialize_tenant(tenant_attrs, config_attrs)

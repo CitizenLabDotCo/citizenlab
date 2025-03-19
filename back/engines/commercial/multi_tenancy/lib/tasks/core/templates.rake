@@ -122,7 +122,8 @@ namespace :templates do
     tenant_attrs = { name: name, host: host }
     config_attrs = { settings: SettingsService.new.minimal_required_settings(
       locales: locales,
-      lifecycle_stage: 'demo'
+      lifecycle_stage: 'demo',
+      country_code: 'BE'
     ) }.with_indifferent_access
 
     _success, tenant, _app_config = MultiTenancy::TenantService.new.initialize_tenant(
