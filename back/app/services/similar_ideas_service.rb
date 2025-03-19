@@ -13,11 +13,11 @@ class SimilarIdeasService
     embedded_attributes.each do |embedded_attribute|
       case embedded_attribute
       when 'body'
-        if body_threshold && body_threshold > 0.0
+        if body_threshold && body_threshold > 0.0 && idea.body_multiloc.present?
           ids += similar_by_text_attribute(locale.resolve_multiloc(idea.body_multiloc), 'body', body_threshold, scope:).pluck(:embeddable_id)
         end
       when 'title'
-        if title_threshold && title_threshold > 0.0
+        if title_threshold && title_threshold > 0.0 && idea.title_multiloc.present?
           ids += similar_by_text_attribute(locale.resolve_multiloc(idea.title_multiloc), 'title', title_threshold, scope:).pluck(:embeddable_id)
         end
       end
