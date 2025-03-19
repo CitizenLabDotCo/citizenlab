@@ -1,0 +1,105 @@
+import React from 'react';
+
+import {
+  Box,
+  colors,
+  Icon,
+  stylingConsts,
+  Text,
+  Title,
+} from '@citizenlab/cl2-component-library';
+
+import useCommunityMonitorSentimentScores from 'api/community_monitor_scores/useCommunityMonitorSentimentScores';
+
+import { useSearchParams } from 'react-router-dom';
+import {
+  getQuarterFilter,
+  getYearFilter,
+  transformSentimentScoreData,
+} from './utils';
+import useLocale from 'hooks/useLocale';
+import { useIntl } from 'utils/cl-intl';
+import messages from './messages';
+import CategoryScores from './components/CategoryScores';
+import HealthScoreChart from './components/HealthScoreChart';
+
+type Props = {
+  phaseId?: string;
+};
+const HealthScoreWidget = ({ phaseId }: Props) => {
+  const locale = useLocale();
+  const [search] = useSearchParams();
+  const { formatMessage } = useIntl();
+  const { data: communityMonitorSentimentScores } =
+    useCommunityMonitorSentimentScores(phaseId);
+
+  // Get current year/quarter filter
+  const year = getYearFilter(search);
+  const quarter = getQuarterFilter(search);
+
+  // Transform the sentiment score data into a more usable format
+  const sentimentScores = transformSentimentScoreData(
+    communityMonitorSentimentScores?.data.attributes,
+    locale
+  );
+
+  // Get the current overall health score
+  const currentOverallHealthScore = sentimentScores?.overallHealthScores?.find(
+    (score) => score.period === `${year}-${quarter}`
+  );
+
+  if (!currentOverallHealthScore) {
+    return null;
+  }
+
+  return (
+    <Box
+      background={colors.white}
+      borderRadius={stylingConsts.borderRadius}
+      border={`1px solid ${colors.borderLight}`}
+      p="24px"
+      mb="16px"
+    >
+      <Box display="flex" gap="20px">
+        <Box>
+          <Box display="flex">
+            <Icon my="auto" height="18px" name="dot" fill={colors.green400} />
+            <Title m="0px" variant="h5" color="textPrimary">
+              {formatMessage(messages.healthScore)}
+            </Title>
+          </Box>
+
+          <Box display="flex" mt="12px">
+            <Text
+              m="0px"
+              fontSize="xxxxl"
+              mt="auto"
+              fontWeight="bold"
+              lineHeight="1"
+              mr="4px"
+            >
+              {currentOverallHealthScore.score}
+            </Text>
+            <Text
+              fontWeight="semi-bold"
+              m="0px"
+              mt="auto"
+              fontSize="xxl"
+              lineHeight="1"
+            >
+              /5
+            </Text>
+          </Box>
+        </Box>
+        <Box minWidth="200px">
+          <HealthScoreChart sentimentScores={sentimentScores} />
+        </Box>
+      </Box>
+      <Box>
+        <CategoryScores sentimentScores={sentimentScores} />
+      </Box>
+    </Box>
+  );
+};
+
+export default HealthScoreWidget;

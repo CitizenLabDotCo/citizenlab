@@ -89,6 +89,8 @@ module ParticipationMethod
         resource: custom_form,
         input_type: 'sentiment_linear_scale',
         title_multiloc: multiloc_service.i18n_to_multiloc("custom_fields.community_monitor.#{key}.title"),
+        maximum: 5,
+        ask_follow_up: true,
         question_category: category
       )
     end

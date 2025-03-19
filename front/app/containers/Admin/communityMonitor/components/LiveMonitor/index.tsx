@@ -10,6 +10,7 @@ import messages from '../../messages';
 import ViewSurveyButton from '../ViewSurveyButton';
 
 import FormResults from './components/FormResults';
+import HealthScoreWidget from './components/HealthScoreWidget';
 import QuarterlyDatePicker from './components/QuarterlyDatePicker';
 
 const LiveMonitor = () => {
@@ -29,9 +30,10 @@ const LiveMonitor = () => {
         </Box>
       </Box>
 
-      <Box mt="28px">
-        <FormResults projectId={projectId} phaseId={phaseId} />
+      <Box display="flex">
+        <HealthScoreWidget phaseId={phaseId} />
       </Box>
+      <FormResults projectId={projectId} phaseId={phaseId} />
     </Box>
   );
 };
