@@ -14,8 +14,8 @@ import CarrouselTitle from '../_shared/CarrouselTitle';
 import ProjectCarrousel from '../_shared/ProjectCarrousel';
 import Skeleton from '../_shared/ProjectCarrousel/Skeleton';
 
-import FollowAreasButtonWithModal from './FollowAreasButtonWithModal';
 import EmptyState from './EmptyState';
+import FollowAreasButtonWithModal from './FollowAreasButtonWithModal';
 import messages from './messages';
 import Settings from './Settings';
 

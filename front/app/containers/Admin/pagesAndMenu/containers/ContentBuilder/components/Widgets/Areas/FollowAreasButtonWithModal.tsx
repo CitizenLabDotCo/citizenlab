@@ -24,6 +24,7 @@ const FollowAreasButtonWithModal = () => {
       <Button
         onClick={() => setIsModalOpened(!isModalOpened)}
         buttonStyle="text"
+        textDecoration="underline"
       >
         <FormattedMessage {...messages.followAreas} />
       </Button>
