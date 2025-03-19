@@ -952,7 +952,7 @@
   "app.containers.Admin.projects.all.notIncludedInYourPlan": "Diese Funktion ist in Ihrer aktuellen Lizenz nicht enthalten. Sprechen Sie mit Ihrer Kundenbetreuerin oder Ihrem Admin, um sie freizuschalten.",
   "app.containers.Admin.projects.all.notes": "Anmerkungen",
   "app.containers.Admin.projects.all.personalDataExplanation2": "Markieren Sie das Kästchen unten, wenn Sie möchten, dass die heruntergeladene PDF-Datei Felder für Vorname, Nachname und E-Mail-Adresse enthält. Beim Hochladen des Papierformulars werden wir diese Benutzerdaten verwenden, um automatisch ein Konto für Offline-Umfrageteilnehmende zu erstellen.",
-  "app.containers.Admin.projects.project.analysis.Comments.aiSummary": "AI Zusammenfassung",
+  "app.containers.Admin.projects.project.analysis.Comments.aiSummary": "KI-Zusammenfassung",
   "app.containers.Admin.projects.project.analysis.Comments.comments": "Vorhaben",
   "app.containers.Admin.projects.project.analysis.Comments.commentsSummaryVisibilityExplanation": "Die Zusammenfassung der Kommentare ist verfügbar, wenn es 5 oder mehr Kommentare gibt.",
   "app.containers.Admin.projects.project.analysis.Comments.generateSummary": "Kommentare zusammenfassen",
