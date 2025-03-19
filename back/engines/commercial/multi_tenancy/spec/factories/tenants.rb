@@ -7,6 +7,7 @@ FactoryBot.define do
     transient do
       lifecycle { 'active' }
       locales { %w[en nl-BE fr-FR] }
+      country_code { 'BE' }
     end
 
     name { Faker::Address.city }
@@ -25,7 +26,6 @@ FactoryBot.define do
           updated_at: tenant.updated_at,
           created_at: tenant.created_at,
           lifecycle: evaluator.lifecycle,
-          country_code: evaluator.country_code,
           locales: evaluator.locales)
       end
     end
@@ -74,7 +74,6 @@ FactoryBot.define do
           host: tenant.host,
           settings: evaluator.settings,
           style: evaluator.style,
-          country_code: 'BE',
           updated_at: tenant.updated_at,
           created_at: tenant.created_at)
       end
