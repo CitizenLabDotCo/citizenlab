@@ -50,7 +50,12 @@ const Areas = ({ titleMultiloc }: Props) => {
     <CarrouselContainer className="e2e-areas-widget">
       <Box display="flex" alignItems="center">
         <CarrouselTitle>{title}</CarrouselTitle>
-        <ButtonWithFollowAreasModal />
+        <Box
+          // mb needed to vertically align with the carrousel title
+          mb="10px"
+        >
+          <ButtonWithFollowAreasModal />
+        </Box>
       </Box>
       {!projects || projects.length === 0 ? (
         <EmptyState />
