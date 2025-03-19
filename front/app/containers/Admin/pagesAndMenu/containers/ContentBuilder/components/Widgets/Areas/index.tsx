@@ -14,7 +14,7 @@ import CarrouselTitle from '../_shared/CarrouselTitle';
 import ProjectCarrousel from '../_shared/ProjectCarrousel';
 import Skeleton from '../_shared/ProjectCarrousel/Skeleton';
 
-import ButtonWithFollowAreasModal from './ButtonWithFollowAreasModal';
+import FollowAreasButtonWithModal from './FollowAreasButtonWithModal';
 import EmptyState from './EmptyState';
 import messages from './messages';
 import Settings from './Settings';
@@ -54,7 +54,7 @@ const Areas = ({ titleMultiloc }: Props) => {
           // mb needed to vertically align with the carrousel title
           mb="10px"
         >
-          <ButtonWithFollowAreasModal />
+          <FollowAreasButtonWithModal />
         </Box>
       </Box>
       {!projects || projects.length === 0 ? (

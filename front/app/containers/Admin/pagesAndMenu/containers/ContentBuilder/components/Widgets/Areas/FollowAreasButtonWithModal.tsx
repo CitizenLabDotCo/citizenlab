@@ -12,7 +12,7 @@ import { FormattedMessage, useIntl } from 'utils/cl-intl';
 
 import messages from './messages';
 
-const ButtonWithFollowAreasModal = () => {
+const FollowAreasButtonWithModal = () => {
   const { formatMessage } = useIntl();
   const [isModalOpened, setIsModalOpened] = useState(false);
   const { data: areasWithProjectCount } = useAreasWithProjectsCounts();
@@ -63,4 +63,4 @@ const ButtonWithFollowAreasModal = () => {
   );
 };
 
-export default ButtonWithFollowAreasModal;
+export default FollowAreasButtonWithModal;
