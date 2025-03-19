@@ -84,14 +84,11 @@ const HomepageBuilderToolbox = ({
   const theme = useTheme();
   const { formatMessage } = useIntl();
   const formatMessageWithLocale = useFormatMessageWithLocale();
-  const _appConfigurationLocales = useAppConfigurationLocales();
+  const appConfigurationLocales = useAppConfigurationLocales();
   const followEnabled = useFeatureFlag({ name: 'follow' });
   const { data: appConfiguration } = useAppConfiguration();
 
-  if (!_appConfigurationLocales || !appConfiguration) return null;
-
-  // TODO REMOVE
-  const appConfigurationLocales = ['en'] as any;
+  if (!appConfigurationLocales || !appConfiguration) return null;
 
   const toMultiloc = (message: MessageDescriptor) => {
     return createMultiloc(appConfigurationLocales, (locale) => {
