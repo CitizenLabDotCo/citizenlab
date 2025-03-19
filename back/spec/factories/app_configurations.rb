@@ -7,7 +7,6 @@ FactoryBot.define do
     transient do
       lifecycle { 'active' }
       locales { %w[en nl-BE fr-FR] }
-      country_code { 'BE' }
     end
 
     host { 'localhost' }
