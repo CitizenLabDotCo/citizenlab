@@ -32,20 +32,31 @@ const ButtonWithFollowAreasModal = () => {
         close={() => setIsModalOpened(false)}
         header={formatMessage(messages.areasYouFollow)}
       >
-        <Box mb="24px">
-          <Warning>{formatMessage(messages.areaButtonsInfo)}</Warning>
-        </Box>
-        <Box>
-          {areasWithProjectCount.data.map((area, i) => (
-            <Box
-              display="inline-block"
-              mr={i === areasWithProjectCount.data.length - 1 ? '0px' : '8px'}
-              mb="8px"
-              key={area.id}
-            >
-              <UpdateFollowAreaWithProjects area={area} />
-            </Box>
-          ))}
+        <Box p="32px">
+          <Box mb="24px">
+            <Warning>{formatMessage(messages.areaButtonsInfo)}</Warning>
+          </Box>
+          <Box
+          // mb="24px"
+          >
+            {areasWithProjectCount.data.map((area, i) => (
+              <Box
+                display="inline-block"
+                mr={i === areasWithProjectCount.data.length - 1 ? '0px' : '8px'}
+                mb="8px"
+                key={area.id}
+              >
+                <UpdateFollowAreaWithProjects area={area} />
+              </Box>
+            ))}
+          </Box>
+          {/* <Button
+            bgColor={colors.green500}
+            icon="check"
+            onClick={() => setIsModalOpened(false)}
+          >
+            <FormattedMessage {...messages.done} />
+          </Button> */}
         </Box>
       </Modal>
     </>

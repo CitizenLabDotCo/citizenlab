@@ -32,4 +32,8 @@ export default defineMessages({
     defaultMessage:
       'Click on the buttons below to follow or unfollow the areas you would like to see projects for. The number of projects in each area is shown in brackets.',
   },
+  done: {
+    id: 'front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Areas.done',
+    defaultMessage: 'Done',
+  },
 });
