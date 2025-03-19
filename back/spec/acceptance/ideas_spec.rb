@@ -496,8 +496,25 @@ resource 'Ideas' do
           expect(Rails.cache.read(cache_key)).to be_present
         end
 
-        # TODO: Spec scope: not of same author, not outside project, not invisible (e.g. drafts of others)
-        # TODO: Spec: takes thresholds from phase settings
+        example 'Fetches the similarity thresholds from the corresponding phase' do
+          expect_any_instance_of(SimilarIdeasService).to receive(:similar_ideas).with(
+            title_threshold: 0.3,
+            body_threshold: 0.0,
+            scope: anything
+          ).and_call_original
+          do_request
+          assert_status 200
+        end
+
+        example 'Excludes ideas outside the project or not visible to the current user' do
+          idea_outside_project = create(:embeddings_similarity, embedding: embeddings['pizza'], embeddable: create(:idea, project: create(:project))).embeddable
+          idea_outside_scope = create(:embeddings_similarity, embedding: embeddings['pizza'], embeddable: create(:idea, project:, publication_status: 'draft')).embeddable
+          do_request
+          assert_status 200
+          expect(json_parse(response_body)[:data].pluck(:id)).to eq [idea_pizza.id]
+          expect(json_parse(response_body)[:data].pluck(:id)).not_to include(idea_outside_project.id)
+          expect(json_parse(response_body)[:data].pluck(:id)).not_to include(idea_outside_scope.id)
+        end
       end
     end
 
