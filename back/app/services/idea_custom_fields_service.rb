@@ -7,14 +7,21 @@ class IdeaCustomFieldsService
   end
 
   def all_fields
-    if @custom_form.custom_field_ids.empty?
-      @participation_method.default_fields @custom_form
+    fields = if @custom_form.custom_field_ids.empty?
+      @participation_method.default_fields(@custom_form)
     else
-      @custom_form.custom_fields.includes(
-        :map_config,
-        options: [:image]
-      )
+      @custom_form.custom_fields.includes(:map_config, options: [:image])
     end
+
+    fields = fields.to_a
+
+    form_end_field = fields.find { |f| f.key == 'form_end' }
+    if form_end_field
+      fields.delete(form_end_field)
+      fields << form_end_field
+    end
+
+    fields
   end
 
   def xlsx_exportable_fields
@@ -30,7 +37,7 @@ class IdeaCustomFieldsService
   end
 
   def submittable_fields
-    unsubmittable_input_types = %w[page section]
+    unsubmittable_input_types = %w[page]
     enabled_fields.reject { |field| unsubmittable_input_types.include? field.input_type }
   end
 
@@ -40,13 +47,13 @@ class IdeaCustomFieldsService
 
   # Used in the printable PDF export
   def printable_fields
-    ignore_field_types = %w[section page date files image_files point file_upload shapefile_upload topic_ids cosponsor_ids ranking matrix_linear_scale]
+    ignore_field_types = %w[page date files image_files point file_upload shapefile_upload topic_ids cosponsor_ids ranking matrix_linear_scale]
     fields = enabled_fields.reject { |field| ignore_field_types.include? field.input_type }
     insert_other_option_text_fields(fields)
   end
 
   def importable_fields
-    ignore_field_types = %w[page section date files image_files file_upload shapefile_upload point line polygon cosponsor_ids ranking matrix_linear_scale]
+    ignore_field_types = %w[page date files image_files file_upload shapefile_upload point line polygon cosponsor_ids ranking matrix_linear_scale]
     enabled_fields_with_other_options.reject { |field| ignore_field_types.include? field.input_type }
   end
 
@@ -76,7 +83,7 @@ class IdeaCustomFieldsService
     field_params = field_params.to_h if field_params.is_a?(ActionController::Parameters)
 
     constraints[:locks]&.each do |attribute, value|
-      if value == true && field_params[attribute] != field[attribute] && !section1_title?(field, attribute)
+      if value == true && field_params[attribute] != field[attribute] && !page1_title?(field, attribute)
         field.errors.add :constraints, "Cannot change #{attribute}. It is locked."
       end
     end
@@ -90,7 +97,7 @@ class IdeaCustomFieldsService
     default_field = default_fields.find { |f| f.code == field.code }
 
     constraints[:locks]&.each do |attribute, value|
-      if value == true && field[attribute] != default_field[attribute] && !section1_title?(field, attribute)
+      if value == true && field[attribute] != default_field[attribute] && !page1_title?(field, attribute)
         field.errors.add :constraints, "Cannot change #{attribute} from default value. It is locked."
       end
     end
@@ -104,28 +111,15 @@ class IdeaCustomFieldsService
   def check_form_structure(fields, errors)
     return if fields.empty?
 
-    # Check the first field is of the correct type
-    first_field_type = @participation_method.supports_pages_in_form? ? 'page' : 'section'
-    cannot_have_type = @participation_method.supports_pages_in_form? ? 'section' : 'page'
+    first_field_type = 'page'
     if fields[0][:input_type] != first_field_type
       error = { error: "First field must be of type '#{first_field_type}'" }
       errors['0'] = { structure: [error] }
     end
 
     # Check the last field is a page
-    if @participation_method.supports_pages_in_form? && fields.last[:input_type] != 'page'
+    if fields.last[:input_type] != 'page'
       errors[(fields.length - 1).to_s] = { structure: [{ error: "Last field must be of type 'page'" }] }
-    end
-
-    fields.each_with_index do |field, index|
-      next unless field[:input_type] == cannot_have_type
-
-      error = { error: "Method '#{participation_method}' cannot contain fields with an input_type of '#{cannot_have_type}'" }
-      if errors[index.to_s] && errors[index.to_s][:structure]
-        errors[index.to_s][:structure] << error
-      else
-        errors[index.to_s] = { structure: [error] }
-      end
     end
   end
 
@@ -200,10 +194,10 @@ class IdeaCustomFieldsService
     all_fields
   end
 
-  # Check required as it doesn't matter what is saved in title for section 1
+  # Check required as it doesn't matter what is saved in title for page 1
   # Constraints required for the front-end but response will always return input specific method
-  def section1_title?(field, attribute)
-    field.code == 'ideation_section1' && attribute == :title_multiloc
+  def page1_title?(field, attribute)
+    field.code == 'ideation_page1' && attribute == :title_multiloc
   end
 
   attr_reader :custom_form, :participation_method

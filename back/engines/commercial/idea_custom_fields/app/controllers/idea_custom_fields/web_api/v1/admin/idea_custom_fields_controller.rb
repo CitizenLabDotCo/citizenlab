@@ -64,7 +64,7 @@ module IdeaCustomFields
     def update_all
       authorize CustomField.new(resource: @custom_form), :update_all?, policy_class: IdeaCustomFieldPolicy
       raise_error_if_stale_form_data
-      raise_error_if_no_end_page_for_survey
+      raise_error_if_no_end_page
 
       page_temp_ids_to_ids_mapping = {}
       option_temp_ids_to_ids_mapping = {}
@@ -114,12 +114,13 @@ module IdeaCustomFields
       raise UpdateAllFailedError, { form: [{ error: 'stale_data' }] }
     end
 
-    def raise_error_if_no_end_page_for_survey
-      is_survey = @custom_form.participation_context.pmethod.class.method_str == 'native_survey'
-      return unless is_survey
+    def raise_error_if_no_end_page
+      pmethod = @custom_form.participation_context.pmethod.class.method_str
+      is_survey_or_ideation = pmethod.in?(%w[native_survey ideation])
+      return unless is_survey_or_ideation
 
       last_field = update_all_params.fetch(:custom_fields).last
-      return if last_field['key'] == 'survey_end' && last_field['input_type'] == 'page'
+      return if last_field['key'] == 'form_end' && last_field['input_type'] == 'page'
 
       raise UpdateAllFailedError, { form: [{ error: 'no_end_page' }] }
     end
@@ -376,7 +377,6 @@ module IdeaCustomFields
       update_payload = {
         save_type: update_all_params[:form_save_type],
         pages: @page_count,
-        sections: @section_count,
         fields: @field_count,
         params_size: params.to_s.size,
         form_opened_at: update_all_params[:form_opened_at]&.to_datetime,
@@ -390,8 +390,6 @@ module IdeaCustomFields
       @section_count ||= 0
       @field_count ||= 0
       case field.input_type
-      when 'section'
-        @section_count += 1
       when 'page'
         @page_count += 1
       else
