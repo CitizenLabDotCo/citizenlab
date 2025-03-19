@@ -70,7 +70,6 @@ const AdminPublicationsCarrousel = ({
       scrollContainerRef={scrollContainerRef}
       setScrollContainerRef={setScrollContainerRef}
       cardWidth={cardWidth}
-      scrollButtonTop={200}
       hasMore={hasMore}
       endId={endId}
     >

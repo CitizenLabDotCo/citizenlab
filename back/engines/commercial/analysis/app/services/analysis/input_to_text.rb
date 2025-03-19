@@ -10,6 +10,7 @@ module Analysis
       @app_configuration = app_configuration
       @multiloc_service = MultilocService.new(app_configuration: @app_configuration)
       @memoized_field_values = Hash.new { |h, k| h[k] = {} } # Hash with empty hash as default values
+      @comments_to_text = CommentsToText.new
     end
 
     def execute(input, include_id: false, truncate_values: nil, override_field_labels: {})
@@ -22,6 +23,15 @@ module Analysis
           add_field(field.follow_up_text_field, input, obj, truncate_values: truncate_values, override_field_labels: override_field_labels)
         end
       end
+    end
+
+    def formatted(input, **options)
+      output = super(input, **options.except(:include_comments))
+      if options[:include_comments]
+        comments = @comments_to_text.execute(input, truncate_values: options[:truncate_values], separator: '+++', include_author: false)
+        output += "### Comments by other users\n#{comments}" if comments.present?
+      end
+      output
     end
 
     def format_all(inputs, shorten_labels: false, **options)
