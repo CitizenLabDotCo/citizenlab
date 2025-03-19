@@ -408,7 +408,7 @@
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.requestApproval": "Begär godkännande",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.requestApprovalDescription1": "Endast administratörer och mapphanterare kan godkänna projekt. Klicka på knappen för att be om godkännande.",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.settings": "Inställningar",
-  "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.share": "Aktie",
+  "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.share": "Dela",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.shareLink": "Kopiera länk",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.shareLinkCopied": "Länk kopierad",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.shareLinkUpsellTooltip": "Delning av privata länkar ingår inte i din nuvarande plan. Prata med din Government Success Manager eller administratör för att låsa upp det.",
