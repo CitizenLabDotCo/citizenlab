@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-import { Button, Box } from '@citizenlab/cl2-component-library';
+import { Button, Box, colors } from '@citizenlab/cl2-component-library';
 
 import useAreasWithProjectsCounts from 'api/areas/useAreasWithProjectsCounts';
 
@@ -36,9 +36,7 @@ const FollowAreasButtonWithModal = () => {
           <Box mb="24px">
             <Warning>{formatMessage(messages.areaButtonsInfo)}</Warning>
           </Box>
-          <Box
-          // mb="24px"
-          >
+          <Box mb="24px">
             {areasWithProjectCount.data.map((area, i) => (
               <Box
                 display="inline-block"
@@ -50,13 +48,13 @@ const FollowAreasButtonWithModal = () => {
               </Box>
             ))}
           </Box>
-          {/* <Button
+          <Button
             bgColor={colors.green500}
             icon="check"
             onClick={() => setIsModalOpened(false)}
           >
             <FormattedMessage {...messages.done} />
-          </Button> */}
+          </Button>
         </Box>
       </Modal>
     </>
