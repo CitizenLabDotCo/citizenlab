@@ -6,9 +6,9 @@ type YearAndQuarter = `${number}-${1 | 2 | 3 | 4}`; // E.g. "2025-1", "2025-2", 
 
 type Multilocs = Record<string, Record<string, string>>;
 
-export type QuarterScores = Record<YearAndQuarter, number>;
+type TimePeriodAndScore = Record<YearAndQuarter, number>;
 
-export type CategoryAverages = Record<string, Record<YearAndQuarter, number>>;
+export type CategoryAverages = Record<string, TimePeriodAndScore>;
 
 export type Categories = {
   averages: CategoryAverages;
@@ -19,8 +19,8 @@ export type ICommunityMonitorSentimentScores = {
   data: {
     type: 'sentiment_by_quarter';
     attributes: {
-      overall?: QuarterScores;
       categories?: Categories;
+      overall?: TimePeriodAndScore;
     };
   };
 };
