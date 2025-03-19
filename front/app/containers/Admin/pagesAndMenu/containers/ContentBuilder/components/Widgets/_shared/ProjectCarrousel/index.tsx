@@ -63,7 +63,6 @@ const ProjectCarrousel = ({ projects, hasMore, onLoadMore }: Props) => {
       scrollContainerRef={scrollContainerRef}
       setScrollContainerRef={setScrollContainerRef}
       cardWidth={CARD_WIDTH}
-      scrollButtonTop={120}
       hasMore={hasMore}
       endId={endId}
     >

@@ -15,7 +15,6 @@ interface Props {
   scrollContainerRef?: HTMLDivElement;
   setScrollContainerRef: (instance: HTMLDivElement) => void;
   cardWidth: number;
-  scrollButtonTop: number;
   hasMore: boolean;
   endId: string;
   children: React.ReactNode;
@@ -25,7 +24,6 @@ const ScrollableCarrousel = ({
   scrollContainerRef,
   setScrollContainerRef,
   cardWidth,
-  scrollButtonTop,
   hasMore,
   endId,
   children,
@@ -92,7 +90,10 @@ const ScrollableCarrousel = ({
   }, [scrollContainerRef, hasMore, handleButtonVisiblity]);
 
   return (
-    <>
+    <Box
+      // We set position relative to be able to position the skip (& scroll?) buttons.
+      position="relative"
+    >
       <SkipButton onSkip={() => skipCarrousel(endId)} />
       <HorizontalScroll
         setRef={(ref) => {
@@ -109,7 +110,6 @@ const ScrollableCarrousel = ({
           {showPreviousButton && (
             <ScrollButton
               variant="left"
-              top={`${scrollButtonTop}px`}
               onClick={() => {
                 if (!scrollContainerRef) return;
                 scrollContainerRef.scrollLeft -= cardWidth + CARD_GAP;
@@ -132,7 +132,6 @@ const ScrollableCarrousel = ({
           {showNextButton && (
             <ScrollButton
               variant="right"
-              top={`${scrollButtonTop}px`}
               onClick={() => {
                 if (!scrollContainerRef) return;
                 scrollContainerRef.scrollLeft += cardWidth + CARD_GAP;
@@ -151,7 +150,7 @@ const ScrollableCarrousel = ({
         </>
       )}
       <i id={endId} />
-    </>
+    </Box>
   );
 };
 
