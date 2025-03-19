@@ -954,7 +954,7 @@
   "app.containers.Admin.projects.all.personalDataExplanation2": "Marker feltet nedenfor, hvis du ønsker, at din downloadede PDF skal indeholde felter med navn, efternavn og e-mail. Når vi uploader papirformularen, bruger vi disse brugerdata til automatisk at generere en konto til offline-undersøgelsens respondent.",
   "app.containers.Admin.projects.project.analysis.Comments.aiSummary": "Sammenfatning af AI",
   "app.containers.Admin.projects.project.analysis.Comments.comments": "Kommentarer",
-  "app.containers.Admin.projects.project.analysis.Comments.commentsSummaryVisibilityExplanation": "Kommentaroversigt er tilgængelig, når der er 5 eller flere kommentarer.",
+  "app.containers.Admin.projects.project.analysis.Comments.commentsSummaryVisibilityExplanation": "Sammenfatning af kommentarer er tilgængelig, når der er 5 eller flere kommentarer.",
   "app.containers.Admin.projects.project.analysis.Comments.generateSummary": "Sammenfat kommentarer",
   "app.containers.Admin.projects.project.analysis.Comments.refreshSummary": "{count, plural, =0 {Opdater} =1 {1 ny kommentar} other {# nye kommentarer}}",
   "app.containers.Admin.projects.project.analysis.aiSummary": "AI-opsummering",
