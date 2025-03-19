@@ -1,4 +1,3 @@
-# rubocop:disable Metrics/CollectionLiteralLength
 class CountryCodesService
   # ISO 3166-1 alpha-2 country codes and names
   COUNTRIES = {
@@ -275,4 +274,3 @@ class CountryCodesService
     COUNTRIES
   end
 end
-# rubocop:enable Metrics/CollectionLiteralLength
