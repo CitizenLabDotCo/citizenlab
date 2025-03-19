@@ -26,16 +26,24 @@ module AnonymousParticipation
       anonymous
     end
 
-    def create_author_hash_from_headers(request)
+    def create_author_hash_from_headers(request, user)
+      return unless participation_method_on_creation.supports_everyone_tracking?
+
       cookie_hashes = request&.cookies[creation_phase_id]
+      self.browser_hashes = []
       if cookie_hashes.present?
         self.browser_hashes = cookie_hashes.split(',')
-        self.author_hash = self.browser_hashes.last # If more than one value we take the author hash over the user_agent hash
       elsif request.ip && request.user_agent
         hash = self.class.create_author_hash(request.ip + request.user_agent, project_string, anonymous?)
         self.browser_hashes = [hash]
-        self.author_hash = hash
       end
+
+      # If more than one value we take the author hash over the user_agent hash
+      self.author_hash = self.browser_hashes.last unless user
+
+
+      # TODO: JS - If user logged in then check the last browser_hash is them, if not then replace it - someone else has obviously used the same machine
+
     end
 
     def author_hash_cookie_value

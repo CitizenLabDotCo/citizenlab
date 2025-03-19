@@ -179,14 +179,8 @@ class WebApi::V1::IdeasController < ApplicationController
     input.creation_phase = (phase if !phase.pmethod.transitive?)
     input.phase_ids = [phase.id] if phase_ids.empty?
 
-    # Setting an author hash based on IP and user agent for not logged in users to try and avoid resubmission
-    # TODO: Set the author hash from the cookie if available
-    # For 'everyone' participation only
-    if !current_user
-      # If cookie then set author hash from cookie
-      # What if the author is hashed in the cookie? SET the cookie as the author hash
-      input.create_author_hash_from_headers(request)
-    end
+    # For 'everyone' participation only, to stop multiple submissions from the same browser/user
+    input.create_author_hash_from_headers(request, current_user)
 
     # NOTE: Needs refactor allow_anonymous_participation? so anonymous_participation can be allow or force
     if phase.pmethod.supports_survey_form? && phase.allow_anonymous_participation?
@@ -214,8 +208,7 @@ class WebApi::V1::IdeasController < ApplicationController
       if input.save(**save_options)
         update_file_upload_fields input, form, params_for_create
         sidefx.after_create(input, current_user)
-        # This will not work if NOT logged in
-        cookies[input.creation_phase_id] = input.author_hash_cookie_value if !current_user && input.creation_phase_id
+        set_tracking_cookie(input)
         render json: WebApi::V1::IdeaSerializer.new(
           input.reload,
           params: jsonapi_serializer_params,
@@ -504,6 +497,13 @@ class WebApi::V1::IdeasController < ApplicationController
     if !input.participation_method_on_creation.transitive? && input.ideas_phases.find_index(&:changed?)
       { errors: { phase_ids: [{ error: 'Cannot change the phases of non-transitive inputs', value: input.phase_ids }] } }
     end
+  end
+
+  def set_tracking_cookie(input)
+    return unless input.creation_phase_id && input.author_hash_cookie_value
+
+    # TODO: JS - set expiry for a year in future
+    cookies[input.creation_phase_id] = input.author_hash_cookie_value
   end
 end
 

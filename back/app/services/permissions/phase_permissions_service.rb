@@ -184,7 +184,8 @@ module Permissions
           author_hash = Idea.create_author_hash(user.id, phase.project.id, true)
           return true if phase.ideas.published_after(allow_posting_again_after.ago).exists?(author_hash: author_hash)
         end
-      elsif browser_hashes # TODO: check phase allows everyone to post
+      elsif browser_hashes
+        # NOTE: browser_hashes will only ever be present if pmethod.supports_everyone_tracking? is true
         # browser_hashes may be just one hash (user agent) or two (user agent + author)
         return true if phase.ideas.published_after(allow_posting_again_after.ago).exists?(author_hash: browser_hashes)
       end

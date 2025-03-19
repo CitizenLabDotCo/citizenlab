@@ -96,11 +96,17 @@ module ParticipationMethod
     end
 
     def allow_posting_again_after
-      nil # Never allow posting again
+      30.seconds
+      # nil # Never allow posting again
     end
 
     def supports_permitted_by_everyone?
       true
+    end
+
+    # TODO: JS - Move only to community_monitor_survey once working
+    def supports_everyone_tracking?
+      phase.permissions&.find_by(action: 'posting_idea')&.permitted_by_everyone?
     end
 
     def supports_serializing?(attribute)

@@ -122,6 +122,10 @@ module ParticipationMethod
       false
     end
 
+    def supports_everyone_tracking?
+      false
+    end
+
     def supports_public_visibility?
       false
     end
