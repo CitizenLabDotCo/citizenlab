@@ -466,7 +466,7 @@ resource 'Ideas' do
       let(:project) { create(:project_with_active_ideation_phase) }
       let(:project_id) { project.id }
       let(:idea) { create(:idea, project:) }
-      let(:title_multiloc) { idea.title_multiloc }
+      let(:title_multiloc) { { 'en' => 'My similar idea' } }
       let(:embeddings) { JSON.parse(File.read('spec/fixtures/word_embeddings.json')) }
       let!(:idea_pizza) { create(:embeddings_similarity, embedding: embeddings['pizza'], embeddable: create(:idea, project:)).embeddable }
       let!(:idea_burger) { create(:embeddings_similarity, embedding: embeddings['burger'], embeddable: create(:idea, project:)).embeddable }
@@ -486,6 +486,14 @@ resource 'Ideas' do
         example_request 'Get similar ideas' do
           assert_status 200
           expect(json_parse(response_body)[:data].pluck(:id)).to eq [idea_pizza.id]
+        end
+
+        example 'Caches the request' do
+          cache_key = "views/example.org/web_api/v1/ideas/similarities?idea[project_id]=#{project_id}&idea[title_multiloc][en]=My+similar+idea.json"
+          expect(Rails.cache.read(cache_key)).to be_nil
+          do_request
+          assert_status 200
+          expect(Rails.cache.read(cache_key)).to be_present
         end
 
         # TODO: Spec scope: not of same author, not outside project, not invisible (e.g. drafts of others)

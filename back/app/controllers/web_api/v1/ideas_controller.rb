@@ -9,6 +9,7 @@ class WebApi::V1::IdeasController < ApplicationController
   skip_after_action :verify_authorized, only: %i[create], unless: -> { response.status == 400 }
   after_action :verify_policy_scoped, only: %i[index index_mini]
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
+  caches_action :similarities, expires_in: 10.minutes, cache_path: -> { request.query_parameters }
 
   def json_forms_schema
     input = Idea.find params[:id]
@@ -281,7 +282,7 @@ class WebApi::V1::IdeasController < ApplicationController
     body_threshold = phase_for_input.similarity_threshold_body
     scope = policy_scope(Idea)
     scope = scope.where(project_id: idea.project_id) if idea.project_id
-    scope = scope.where.not(author: current_user)
+    # scope = scope.where.not(author: current_user)
     similar_ideas = paginate service.similar_ideas(scope:, title_threshold:, body_threshold:)
 
     render json: linked_json(similar_ideas, WebApi::V1::IdeaSerializer, serialization_options_for(similar_ideas))
@@ -425,7 +426,7 @@ class WebApi::V1::IdeasController < ApplicationController
   end
 
   def idea_params_for_similarities
-    params.require(:idea).permit(%i[title_multiloc body_multiloc project_id])
+    params.require(:idea).permit([:project_id, { title_multiloc: CL2_SUPPORTED_LOCALES, body_multiloc: CL2_SUPPORTED_LOCALES }])
   end
 
   def submittable_custom_fields(custom_form)
