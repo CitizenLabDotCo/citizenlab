@@ -397,7 +397,6 @@
   "app.components.ProjectFolderCards.components.Topbar.a11y_projectFilterTabInfo": "{count, plural, one {# proje} other {# proje}}",
   "app.components.ProjectFolderCards.components.Topbar.all": "Tümü",
   "app.components.ProjectFolderCards.components.Topbar.archived": "Arşivlenmiş",
-  "app.components.ProjectFolderCards.components.Topbar.areaTitle": "Alan",
   "app.components.ProjectFolderCards.components.Topbar.draft": "Taslak",
   "app.components.ProjectFolderCards.components.Topbar.filterBy": "Filtre ölçütü",
   "app.components.ProjectFolderCards.components.Topbar.published2": "Yayınlandı",
