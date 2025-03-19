@@ -106,6 +106,7 @@ export interface IAttributes {
   other?: boolean;
   random_option_ordering?: boolean;
   dropdown_layout?: boolean;
+  question_category?: string;
 }
 
 export interface ICustomFieldResponse {

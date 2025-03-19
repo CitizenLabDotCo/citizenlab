@@ -16,6 +16,8 @@ resource 'Idea Custom Fields' do
       parameter :enabled, 'Whether the field is active or not', required: false
       parameter :title_multiloc, 'A title of the field, as shown to users, in multiple locales', required: false
       parameter :description_multiloc, 'An optional description of the field, as shown to users, in multiple locales', required: false
+      parameter :ask_follow_up, 'Whether to ask a follow-up question after this field', required: false
+      parameter :question_category, 'The category of the question', required: false
       parameter :options, type: :array
     end
     with_options scope: 'options[]' do
@@ -137,7 +139,7 @@ resource 'Idea Custom Fields' do
             constraints: {},
             random_option_ordering: false,
             page_layout: 'default',
-            question_category: nil
+            question_category: 'other'
           },
           id: an_instance_of(String),
           type: 'custom_field',
