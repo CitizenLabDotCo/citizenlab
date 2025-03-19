@@ -6,7 +6,7 @@ type YearAndQuarter = `${number}-${1 | 2 | 3 | 4}`; // E.g. "2025-1", "2025-2", 
 
 type Multilocs = Record<string, Record<string, string>>;
 
-type TimePeriodAndScore = Record<YearAndQuarter, number>;
+export type TimePeriodAndScore = Record<YearAndQuarter, number>;
 
 export type CategoryAverages = Record<string, TimePeriodAndScore>;
 

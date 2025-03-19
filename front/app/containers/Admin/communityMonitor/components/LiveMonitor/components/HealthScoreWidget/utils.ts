@@ -1,6 +1,9 @@
 import { Locale } from '@citizenlab/cl2-component-library';
 
-import { Categories, QuarterScores } from 'api/community_monitor_scores/types';
+import {
+  Categories,
+  TimePeriodAndScore,
+} from 'api/community_monitor_scores/types';
 
 import { QuarterlyScores } from './types';
 
@@ -9,7 +12,7 @@ import { QuarterlyScores } from './types';
 export function transformSentimentScoreData(
   scoreResults:
     | {
-        overall?: QuarterScores;
+        overall?: TimePeriodAndScore;
         categories?: Categories;
       }
     | undefined,
@@ -27,7 +30,8 @@ export function transformSentimentScoreData(
     scoreResults.categories.averages
   ).map(([category, scores]) => {
     const localizedLabel =
-      scoreResults.categories?.multilocs[category][locale] || category;
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+      scoreResults.categories?.multilocs?.[category]?.[locale] || category;
 
     const scoreEntries = Object.entries(scores).map(([period, score]) => ({
       period,

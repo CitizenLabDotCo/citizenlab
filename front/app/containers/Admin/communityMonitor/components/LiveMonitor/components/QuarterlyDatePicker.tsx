@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import { Box, Text, Button, colors } from '@citizenlab/cl2-component-library';
 import { useSearchParams } from 'react-router-dom';
@@ -25,30 +25,24 @@ const QuarterlyDatePicker = () => {
     initialQuarter ? parseInt(initialQuarter, 10) : currentQuarter
   );
 
+  useEffect(() => {
+    setSearchParams({ year: year.toString(), quarter: quarter.toString() });
+  }, [year, quarter, setSearchParams]);
+
   // Function to handle quarter navigation
   const changeQuarter = (direction: number) => {
     setQuarter((prevQuarter) => {
-      // Calculates the next quarter based on the provided direction (+1 or -1)
       const newQuarter = prevQuarter + direction;
 
-      // Crossing Q4 increments the year & resets to Q1
       if (newQuarter > 4) {
         setYear((prevYear) => prevYear + 1);
-        setSearchParams({ year: (year + 1).toString(), quarter: '1' });
-        return 1;
-      }
-      // Moving before Q1 decrements the year & sets quarter to Q4
-      else if (newQuarter < 1) {
-        setYear((prevYear) => prevYear - 1);
-        setSearchParams({ year: (year - 1).toString(), quarter: '4' });
-        return 4;
+        return 1; // Reset to Q1
       }
 
-      // Otherwise, just update the quarter
-      setSearchParams({
-        year: year.toString(),
-        quarter: newQuarter.toString(),
-      });
+      if (newQuarter < 1) {
+        setYear((prevYear) => prevYear - 1);
+        return 4; // Set to Q4
+      }
 
       return newQuarter;
     });

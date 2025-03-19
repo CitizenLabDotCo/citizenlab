@@ -23,7 +23,7 @@ const CategoryScores = ({ sentimentScores }: Props) => {
   return (
     <Box display="flex">
       {sentimentScores?.categoryHealthScores.map((categoryScore) => (
-        <>
+        <Box key={categoryScore.category}>
           <Box mr="32px">
             <Box display="flex">
               <Icon my="auto" height="18px" name="dot" fill={colors.green400} />
@@ -58,7 +58,7 @@ const CategoryScores = ({ sentimentScores }: Props) => {
               </Text>
             </Box>
           </Box>
-        </>
+        </Box>
       ))}
     </Box>
   );
