@@ -172,6 +172,7 @@ export type IFlatCreateCustomField = Optional<
   | 'maximum'
   | 'random_option_ordering'
   | 'dropdown_layout'
+  | 'question_category'
 > & {
   isLocalOnly: boolean;
 };
