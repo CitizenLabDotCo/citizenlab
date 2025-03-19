@@ -2,11 +2,13 @@ import { Keys } from 'utils/cl-react-query/types';
 
 import communityMonitorSentimentScoreKeys from './keys';
 
-type Quarter = `${number}-${1 | 2 | 3 | 4}`; // E.g. "2025-1", "2025-2", etc.
-export type QuarterScores = Record<Quarter, number>;
+type YearAndQuarter = `${number}-${1 | 2 | 3 | 4}`; // E.g. "2025-1", "2025-2", etc.
 
-export type CategoryAverages = Record<string, Record<Quarter, number>>;
 type Multilocs = Record<string, Record<string, string>>;
+
+export type QuarterScores = Record<YearAndQuarter, number>;
+
+export type CategoryAverages = Record<string, Record<YearAndQuarter, number>>;
 
 export type Categories = {
   averages: CategoryAverages;
@@ -15,7 +17,7 @@ export type Categories = {
 
 export type ICommunityMonitorSentimentScores = {
   data: {
-    type: 'community_monitor_sentiment_score';
+    type: 'sentiment_by_quarter';
     attributes: {
       overall?: QuarterScores;
       categories?: Categories;
