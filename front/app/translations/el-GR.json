@@ -397,6 +397,7 @@
   "app.components.ProjectFolderCards.components.Topbar.a11y_projectFilterTabInfo": "{count, plural, no {# έργα} one {# έργο} other {# έργα}}",
   "app.components.ProjectFolderCards.components.Topbar.all": "Όλα",
   "app.components.ProjectFolderCards.components.Topbar.archived": "Αρχειοθετημένος",
+  "app.components.ProjectFolderCards.components.Topbar.areaTitle": "Περιοχή",
   "app.components.ProjectFolderCards.components.Topbar.draft": "Προσχέδιο",
   "app.components.ProjectFolderCards.components.Topbar.filterBy": "Φίλτρο ανά",
   "app.components.ProjectFolderCards.components.Topbar.published2": "Δημοσιευμένο",

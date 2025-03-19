@@ -246,6 +246,7 @@
   "app.components.ProjectFolderCards.components.Topbar.a11y_projectFilterTabInfo": "{count, plural, no {# proiecte} one {# proiect} other {# proiecte}}",
   "app.components.ProjectFolderCards.components.Topbar.all": "Toate",
   "app.components.ProjectFolderCards.components.Topbar.archived": "Arhivat",
+  "app.components.ProjectFolderCards.components.Topbar.areaTitle": "Zonă",
   "app.components.ProjectFolderCards.components.Topbar.draft": "Proiect",
   "app.components.ProjectFolderCards.components.Topbar.filterBy": "Filtrează după",
   "app.components.ProjectFolderCards.components.Topbar.topicTitle": "Etichetă",

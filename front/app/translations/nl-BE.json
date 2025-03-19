@@ -397,6 +397,7 @@
   "app.components.ProjectFolderCards.components.Topbar.a11y_projectFilterTabInfo": "{count, plural, no {# projecten} one {# project} other {# projecten}}",
   "app.components.ProjectFolderCards.components.Topbar.all": "Alle",
   "app.components.ProjectFolderCards.components.Topbar.archived": "Afgerond",
+  "app.components.ProjectFolderCards.components.Topbar.areaTitle": "Gebied",
   "app.components.ProjectFolderCards.components.Topbar.draft": "Concept",
   "app.components.ProjectFolderCards.components.Topbar.filterBy": "Filter op",
   "app.components.ProjectFolderCards.components.Topbar.published2": "Gepubliceerd",

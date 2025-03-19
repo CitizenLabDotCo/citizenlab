@@ -397,6 +397,7 @@
   "app.components.ProjectFolderCards.components.Topbar.a11y_projectFilterTabInfo": "{count, plural, no {# пројекта} one {# пројекат} other {# пројекта}}",
   "app.components.ProjectFolderCards.components.Topbar.all": "Све",
   "app.components.ProjectFolderCards.components.Topbar.archived": "Архивирано",
+  "app.components.ProjectFolderCards.components.Topbar.areaTitle": "Подручје",
   "app.components.ProjectFolderCards.components.Topbar.draft": "Нацрт",
   "app.components.ProjectFolderCards.components.Topbar.filterBy": "Филтер од",
   "app.components.ProjectFolderCards.components.Topbar.published2": "Објављено",

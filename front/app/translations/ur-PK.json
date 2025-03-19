@@ -397,6 +397,7 @@
   "app.components.ProjectFolderCards.components.Topbar.a11y_projectFilterTabInfo": "{count, plural, no {# پروجیکٹس} one {# پروجیکٹ} other {# پروجیکٹس}}",
   "app.components.ProjectFolderCards.components.Topbar.all": "تمام",
   "app.components.ProjectFolderCards.components.Topbar.archived": "محفوظ شدہ",
+  "app.components.ProjectFolderCards.components.Topbar.areaTitle": "علاقہ",
   "app.components.ProjectFolderCards.components.Topbar.draft": "مسودہ",
   "app.components.ProjectFolderCards.components.Topbar.filterBy": "کے لحاظ سے فلٹر کریں۔",
   "app.components.ProjectFolderCards.components.Topbar.published2": "شائع شدہ",

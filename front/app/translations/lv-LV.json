@@ -397,6 +397,7 @@
   "app.components.ProjectFolderCards.components.Topbar.a11y_projectFilterTabInfo": "{count, plural, no {# projekti} one {# projekts} other {# projekti}}",
   "app.components.ProjectFolderCards.components.Topbar.all": "Viss",
   "app.components.ProjectFolderCards.components.Topbar.archived": "Arhivēts",
+  "app.components.ProjectFolderCards.components.Topbar.areaTitle": "Joma",
   "app.components.ProjectFolderCards.components.Topbar.draft": "Melnraksts",
   "app.components.ProjectFolderCards.components.Topbar.filterBy": "Filtrēt pēc",
   "app.components.ProjectFolderCards.components.Topbar.published2": "Publicēts",

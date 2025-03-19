@@ -397,6 +397,7 @@
   "app.components.ProjectFolderCards.components.Topbar.a11y_projectFilterTabInfo": "{count, plural, one {# projekt} few {# projekty} many {# projektów} other {# projektów}}",
   "app.components.ProjectFolderCards.components.Topbar.all": "Wszystkie",
   "app.components.ProjectFolderCards.components.Topbar.archived": "Zarchiwizowany",
+  "app.components.ProjectFolderCards.components.Topbar.areaTitle": "Obszar",
   "app.components.ProjectFolderCards.components.Topbar.draft": "Szkic",
   "app.components.ProjectFolderCards.components.Topbar.filterBy": "Filtruj według",
   "app.components.ProjectFolderCards.components.Topbar.published2": "Opublikowano",

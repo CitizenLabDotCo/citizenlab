@@ -397,6 +397,7 @@
   "app.components.ProjectFolderCards.components.Topbar.a11y_projectFilterTabInfo": "{count, plural, no {# projektia} one {# projekti} other {# projektia}}",
   "app.components.ProjectFolderCards.components.Topbar.all": "Kaikki",
   "app.components.ProjectFolderCards.components.Topbar.archived": "Arkistoitu",
+  "app.components.ProjectFolderCards.components.Topbar.areaTitle": "Alue",
   "app.components.ProjectFolderCards.components.Topbar.draft": "Luonnos",
   "app.components.ProjectFolderCards.components.Topbar.filterBy": "Suodatusperuste",
   "app.components.ProjectFolderCards.components.Topbar.published2": "Julkaistu",

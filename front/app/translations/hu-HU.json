@@ -397,6 +397,7 @@
   "app.components.ProjectFolderCards.components.Topbar.a11y_projectFilterTabInfo": "{count, plural, no {# projekt} one {# projekt} other {# projekt}}",
   "app.components.ProjectFolderCards.components.Topbar.all": "Minden",
   "app.components.ProjectFolderCards.components.Topbar.archived": "Archivált",
+  "app.components.ProjectFolderCards.components.Topbar.areaTitle": "Terület",
   "app.components.ProjectFolderCards.components.Topbar.draft": "Piszkozat",
   "app.components.ProjectFolderCards.components.Topbar.filterBy": "Szűrés szerint",
   "app.components.ProjectFolderCards.components.Topbar.published2": "Közzétett",
