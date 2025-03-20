@@ -814,6 +814,7 @@
   "app.containers.Admin.inspirationHub.ProjectDrawer.Phase.openEnded": "Atviro tipo",
   "app.containers.Admin.inspirationHub.ProjectDrawer.Phase.readMore": "Skaityti daugiau...",
   "app.containers.Admin.inspirationHub.ProjectDrawer.Phase.title": "Fazė {number}: {title}",
+  "app.containers.Admin.inspirationHub.ProjectDrawer.optOutCopy": "Jei nenorite, kad jūsų projektas būtų įtrauktas į įkvėpimo centrą, kreipkitės į \"GovSuccess\" vadybininką.",
   "app.containers.Admin.inspirationHub.Proposals": "Pasiūlymai",
   "app.containers.Admin.inspirationHub.SortAndReset.Sort.sortBy": "Rūšiuoti pagal",
   "app.containers.Admin.inspirationHub.SortAndReset.participants_asc": "Dalyviai (pirmiausia mažiausia suma)",
