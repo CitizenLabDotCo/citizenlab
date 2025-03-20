@@ -4,11 +4,10 @@ import { Box, Icon, Text } from '@citizenlab/cl2-component-library';
 import { useSearchParams } from 'react-router-dom';
 
 import { getPercentageDifference } from 'components/admin/FormResults/FormResultsQuestion/SentimentQuestion/utils';
+import TrendIndicator from 'components/TrendIndicator';
 
 import { QuarterlyScores } from '../types';
 import { categoryColors } from '../utils';
-
-import TrendIndicator from './TrendIndicator';
 
 type Props = {
   sentimentScores: QuarterlyScores | null;

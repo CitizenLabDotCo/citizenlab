@@ -11,7 +11,7 @@ import { getTrendColorName } from 'components/admin/FormResults/FormResultsQuest
 
 import { useIntl } from 'utils/cl-intl';
 
-import messages from '../messages';
+import messages from './messages';
 
 type Props = {
   percentageDifference: number | null;
@@ -54,7 +54,7 @@ const TrendIndicator = ({ percentageDifference, showQuarterLabel }: Props) => {
           {trendPercentage}
           {showQuarterLabel && (
             <span style={{ color: colors.textSecondary }}>
-              {formatMessage(messages.lastQuarter)}
+              {formatMessage(messages.previous_quarter)}
             </span>
           )}
         </Text>

@@ -3,11 +3,10 @@ import React from 'react';
 import { useSearchParams } from 'react-router-dom';
 
 import { getPercentageDifference } from 'components/admin/FormResults/FormResultsQuestion/SentimentQuestion/utils';
+import TrendIndicator from 'components/TrendIndicator';
 
 import { QuarterlyScores } from '../types';
 import { getQuarterFilter, getYearFilter } from '../utils';
-
-import TrendIndicator from './TrendIndicator';
 
 type Props = {
   sentimentScores: QuarterlyScores | null;

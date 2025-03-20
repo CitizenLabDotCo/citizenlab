@@ -47,6 +47,7 @@ const HealthScoreWidget = ({ phaseId }: Props) => {
     locale
   );
 
+  // ToDo: Remove mock data before releasing. Useful for testing while in development.
   // const sentimentScores = {
   //   overallHealthScores: [
   //     {
