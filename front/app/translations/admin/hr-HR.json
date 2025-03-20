@@ -814,6 +814,7 @@
   "app.containers.Admin.inspirationHub.ProjectDrawer.Phase.openEnded": "Otvoreni kraj",
   "app.containers.Admin.inspirationHub.ProjectDrawer.Phase.readMore": "Pročitaj više...",
   "app.containers.Admin.inspirationHub.ProjectDrawer.Phase.title": "Faza {number}: {title}",
+  "app.containers.Admin.inspirationHub.ProjectDrawer.optOutCopy": "Ako ne želite da vaš projekt bude uključen u središte inspiracije, obratite se svom GovSuccess upravitelju.",
   "app.containers.Admin.inspirationHub.Proposals": "Prijedlozi",
   "app.containers.Admin.inspirationHub.SortAndReset.Sort.sortBy": "Poredaj po",
   "app.containers.Admin.inspirationHub.SortAndReset.participants_asc": "Sudionici (prvo najniži)",
