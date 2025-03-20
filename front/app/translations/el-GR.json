@@ -1049,8 +1049,6 @@
   "app.containers.App.loading": "Φόρτωση...",
   "app.containers.App.metaTitle1": "Πλατφόρμα εμπλοκής των πολιτών | {orgName}",
   "app.containers.App.skipLinkText": "Μετάβαση στο κύριο περιεχόμενο",
-  "app.containers.AreaTerms.areaTerm": "περιοχή",
-  "app.containers.AreaTerms.areasTerm": "περιοχές",
   "app.containers.AuthProviders.emailTakenAndUserCanBeVerified": "Ένας λογαριασμός με αυτό το email υπάρχει ήδη. Μπορείτε να αποσυνδεθείτε, να συνδεθείτε με αυτή τη διεύθυνση ηλεκτρονικού ταχυδρομείου και να επαληθεύσετε το λογαριασμό σας στη σελίδα ρυθμίσεων.",
   "app.containers.Authentication.steps.AccessDenied.close": "Κλείστε το",
   "app.containers.Authentication.steps.AccessDenied.youDoNotMeetTheRequirements": "Δεν πληροίτε τις προϋποθέσεις για να συμμετάσχετε σε αυτή τη διαδικασία.",
