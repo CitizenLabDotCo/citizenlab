@@ -814,6 +814,7 @@
   "app.containers.Admin.inspirationHub.ProjectDrawer.Phase.openEnded": "Avoin päättynyt",
   "app.containers.Admin.inspirationHub.ProjectDrawer.Phase.readMore": "Lue lisää...",
   "app.containers.Admin.inspirationHub.ProjectDrawer.Phase.title": "Vaihe {number}: {title}",
+  "app.containers.Admin.inspirationHub.ProjectDrawer.optOutCopy": "Jos et halua, että projektisi sisällytetään inspiraatiokeskukseen, ota yhteyttä GovSuccess-päällikköösi.",
   "app.containers.Admin.inspirationHub.Proposals": "ehdotuksia",
   "app.containers.Admin.inspirationHub.SortAndReset.Sort.sortBy": "Lajitteluperuste",
   "app.containers.Admin.inspirationHub.SortAndReset.participants_asc": "Osallistujat (pienin ensin)",
