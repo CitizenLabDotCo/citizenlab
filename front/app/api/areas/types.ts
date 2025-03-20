@@ -24,20 +24,18 @@ type AreaAttributes = {
   include_in_onboarding: boolean;
 };
 
-type AreaRelationships = {
-  static_pages?: {
-    data: IRelationship[];
-  };
-  user_follower?: {
-    data: IRelationship | null;
-  };
-};
-
 export interface IAreaData {
   id: string;
   type: 'area';
   attributes: AreaAttributes;
-  relationships: AreaRelationships;
+  relationships: {
+    static_pages?: {
+      data: IRelationship[];
+    };
+    user_follower?: {
+      data: IRelationship | null;
+    };
+  };
 }
 
 export interface IAreas {
