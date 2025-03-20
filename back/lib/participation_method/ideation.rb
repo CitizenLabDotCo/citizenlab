@@ -125,6 +125,19 @@ module ParticipationMethod
         CustomField.new(
           id: SecureRandom.uuid,
           resource: custom_form,
+          input_type: 'page',
+          page_layout: 'default',
+          key: nil,
+          title_multiloc: { 'en' => 'Description page title' },
+          description_multiloc: {},
+          required: false,
+          enabled: true,
+          ordering: 2,
+          answer_visible_to: CustomField::VISIBLE_TO_PUBLIC
+        ),
+        CustomField.new(
+          id: SecureRandom.uuid,
+          resource: custom_form,
           key: 'body_multiloc',
           code: 'body_multiloc',
           input_type: 'html_multiloc',
