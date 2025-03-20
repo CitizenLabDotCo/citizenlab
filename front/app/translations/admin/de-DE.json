@@ -814,6 +814,7 @@
   "app.containers.Admin.inspirationHub.ProjectDrawer.Phase.openEnded": "Noch nicht abgeschlossen",
   "app.containers.Admin.inspirationHub.ProjectDrawer.Phase.readMore": "Mehr lesen...",
   "app.containers.Admin.inspirationHub.ProjectDrawer.Phase.title": "Phase {number}: {title}",
+  "app.containers.Admin.inspirationHub.ProjectDrawer.optOutCopy": "Wenn Sie nicht möchten, dass Ihr Projekt in den Inspiration Hub aufgenommen wird, wenden Sie sich an Ihren GovSuccess-Manager.",
   "app.containers.Admin.inspirationHub.Proposals": "Vorschläge",
   "app.containers.Admin.inspirationHub.SortAndReset.Sort.sortBy": "Sortieren nach",
   "app.containers.Admin.inspirationHub.SortAndReset.participants_asc": "Teilnehmenden (niedrigste zuerst)",
