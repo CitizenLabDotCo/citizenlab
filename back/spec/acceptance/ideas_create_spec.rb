@@ -572,7 +572,7 @@ resource 'Ideas' do
           let!(:author_hash) do
             user_agent = 'User-Agent: Mozilla/5.0'
             ip = '1.2.3.4'
-            Idea.create_author_hash(ip + user_agent, phase.project.id, false)
+            Idea.create_author_hash(ip + user_agent, phase.project.id, true)
           end
           let!(:response) { create(:native_survey_response, project: project, creation_phase: phase, author: nil, author_hash: author_hash) }
 
@@ -596,7 +596,7 @@ resource 'Ideas' do
           end
 
           context 'cookie is present' do
-            let!(:author_hash) { "HASH_IN_COOKIE" }
+            let!(:author_hash) { 'HASH_IN_COOKIE' }
 
             example 'does not allow posting if submitted within 3 months' do
               response.update!(published_at: 2.months.ago)
@@ -625,10 +625,8 @@ resource 'Ideas' do
             end
 
             # TODO: JS - tests for if the user is not logged in but they have previously submitted whilst logged in
-
           end
         end
-
       end
 
       context 'when resident' do

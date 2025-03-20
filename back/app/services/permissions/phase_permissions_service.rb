@@ -51,9 +51,9 @@ module Permissions
     # Actions not to block if the project is inactive - ie no current phase
     IGNORED_PHASE_ACTIONS = %w[attending_event].freeze
 
-    def initialize(phase, user, user_requirements_service: nil, browser_hashes: nil)
+    def initialize(phase, user, user_requirements_service: nil, request_headers: nil)
       super(user, user_requirements_service: user_requirements_service)
-      @browser_hashes = browser_hashes
+      @request_headers = request_headers
       @phase ||= phase
     end
 
@@ -91,7 +91,7 @@ module Permissions
 
     private
 
-    attr_reader :phase, :browser_hashes
+    attr_reader :phase, :request_headers
 
     # Phase methods
     def posting_idea_denied_reason_for_action
@@ -184,10 +184,11 @@ module Permissions
           author_hash = Idea.create_author_hash(user.id, phase.project.id, true)
           return true if phase.ideas.published_after(allow_posting_again_after.ago).exists?(author_hash: author_hash)
         end
-      elsif browser_hashes
-        # NOTE: browser_hashes will only ever be present if pmethod.supports_everyone_tracking? is true
-        # browser_hashes may be just one hash (user agent) or two (user agent + author)
-        return true if phase.ideas.published_after(allow_posting_again_after.ago).exists?(author_hash: browser_hashes)
+      elsif request_headers
+        # Check cookies for author_hashes for the 'everyone' permission
+        # NOTE: tracking_hashes will only ever be present if pmethod.supports_everyone_tracking? is true
+        tracking_hashes = Permissions::EveryoneTrackingService.new(request_headers, user, phase).tracking_hashes_from_headers
+        return true if tracking_hashes && phase.ideas.published_after(allow_posting_again_after.ago).exists?(author_hash: tracking_hashes)
       end
 
       false

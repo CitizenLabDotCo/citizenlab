@@ -179,8 +179,8 @@ class WebApi::V1::IdeasController < ApplicationController
     input.creation_phase = (phase if !phase.pmethod.transitive?)
     input.phase_ids = [phase.id] if phase_ids.empty?
 
-    # For 'everyone' participation only, to stop multiple submissions from the same browser/user
-    input.create_author_hash_from_headers(request, current_user)
+    # Needed for 'everyone' participation only, to stop multiple submissions from the same browser/user
+    input.request_headers = request
 
     # NOTE: Needs refactor allow_anonymous_participation? so anonymous_participation can be allow or force
     if phase.pmethod.supports_survey_form? && phase.allow_anonymous_participation?
@@ -502,8 +502,7 @@ class WebApi::V1::IdeasController < ApplicationController
   def set_tracking_cookie(input)
     return unless input.creation_phase_id && input.author_hash_cookie_value
 
-    # TODO: JS - set expiry for a year in future
-    cookies[input.creation_phase_id] = input.author_hash_cookie_value
+    cookies[input.creation_phase_id] = { :value => input.author_hash_cookie_value, :expires => 1.year.from_now }
   end
 end
 

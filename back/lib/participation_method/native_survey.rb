@@ -106,6 +106,7 @@ module ParticipationMethod
 
     # TODO: JS - Move only to community_monitor_survey once working
     def supports_everyone_tracking?
+      # TODO: Add in a setting for this to the phase also
       phase.permissions&.find_by(action: 'posting_idea')&.permitted_by_everyone?
     end
 

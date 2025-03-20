@@ -26,28 +26,8 @@ module AnonymousParticipation
       anonymous
     end
 
-    def create_author_hash_from_headers(request, user)
-      return unless participation_method_on_creation.supports_everyone_tracking?
-
-      cookie_hashes = request&.cookies[creation_phase_id]
-      self.browser_hashes = []
-      if cookie_hashes.present?
-        self.browser_hashes = cookie_hashes.split(',')
-      elsif request.ip && request.user_agent
-        hash = self.class.create_author_hash(request.ip + request.user_agent, project_string, anonymous?)
-        self.browser_hashes = [hash]
-      end
-
-      # If more than one value we take the author hash over the user_agent hash
-      self.author_hash = self.browser_hashes.last unless user
-
-
-      # TODO: JS - If user logged in then check the last browser_hash is them, if not then replace it - someone else has obviously used the same machine
-
-    end
-
     def author_hash_cookie_value
-      browser_hashes&.join(',')
+      everyone_tracking_hashes&.join(',')
     end
 
     private
@@ -63,13 +43,19 @@ module AnonymousParticipation
     end
 
     def set_author_hash
-      return if author_id.blank?
-
-      self.author_hash = self.class.create_author_hash author_id, project_string, anonymous?
+      self.author_hash = if author_id.blank? && everyone_tracking_hashes
+        everyone_tracking_hashes.last
+      else
+        self.class.create_author_hash author_id, project_string, anonymous?
+      end
     end
 
     def project_string
       try(:project_id)
+    end
+
+    def everyone_tracking_hashes
+      @everyone_tracking_hashes ||= Permissions::EveryoneTrackingService.new(request_headers, author, creation_phase).tracking_hashes_from_headers
     end
   end
 end

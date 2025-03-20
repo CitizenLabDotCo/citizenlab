@@ -61,7 +61,7 @@ class IdeaPolicy < ApplicationPolicy
     reason = Permissions::ProjectPermissionsService.new(
       record.project,
       user,
-      browser_hashes: record.browser_hashes
+      request_headers: record.request_headers
     ).denied_reason_for_action 'posting_idea'
     raise_not_authorized(reason) if reason
 

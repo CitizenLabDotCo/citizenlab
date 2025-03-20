@@ -67,7 +67,7 @@ class Idea < ApplicationRecord
   PUBLICATION_STATUSES = %w[draft submitted published].freeze
   SUBMISSION_STATUSES = %w[submitted published].freeze
 
-  attr_accessor :browser_hashes # Non persisted attribute to store details from user agent / cookies to check in permissions
+  attr_accessor :request_headers # Non persisted attribute to store headers to be checked in permissions
 
   slug from: proc { |idea| idea.participation_method_on_creation.generate_slug(idea) }
 
