@@ -1049,8 +1049,6 @@
   "app.containers.App.loading": "Terhelés...",
   "app.containers.App.metaTitle1": "Állampolgári elkötelezettség platform | {orgName}",
   "app.containers.App.skipLinkText": "Ugrás a fő tartalomhoz",
-  "app.containers.AreaTerms.areaTerm": "terület",
-  "app.containers.AreaTerms.areasTerm": "területeken",
   "app.containers.AuthProviders.emailTakenAndUserCanBeVerified": "Már létezik fiók ezzel az e-mail címmel. Kijelentkezhet, bejelentkezhet ezzel az e-mail címmel, és igazolhatja fiókját a beállítások oldalon.",
   "app.containers.Authentication.steps.AccessDenied.close": "Közeli",
   "app.containers.Authentication.steps.AccessDenied.youDoNotMeetTheRequirements": "Nem felel meg a folyamatban való részvétel feltételeinek.",
