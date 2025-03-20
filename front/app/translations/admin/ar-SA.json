@@ -814,6 +814,7 @@
   "app.containers.Admin.inspirationHub.ProjectDrawer.Phase.openEnded": "نهاية مفتوحة",
   "app.containers.Admin.inspirationHub.ProjectDrawer.Phase.readMore": "اقرأ المزيد...",
   "app.containers.Admin.inspirationHub.ProjectDrawer.Phase.title": "المرحلة {number}: {title}",
+  "app.containers.Admin.inspirationHub.ProjectDrawer.optOutCopy": "إذا كنت لا ترغب في تضمين مشروعك في مركز الإلهام، فتواصل مع مدير GovSuccess الخاص بك.",
   "app.containers.Admin.inspirationHub.Proposals": "المقترحات",
   "app.containers.Admin.inspirationHub.SortAndReset.Sort.sortBy": "فرز حسب",
   "app.containers.Admin.inspirationHub.SortAndReset.participants_asc": "المشاركون (الأدنى أولاً)",
