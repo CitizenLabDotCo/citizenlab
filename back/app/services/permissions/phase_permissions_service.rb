@@ -174,6 +174,7 @@ module Permissions
     # Helper methods
 
     def posting_limit_reached?
+      # TODO: Make the default start of the phase?
       allow_posting_again_after = phase.pmethod.allow_posting_again_after || 10.years
       return false if allow_posting_again_after == 0.seconds
 

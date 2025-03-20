@@ -9,7 +9,7 @@ class Permissions::EveryoneTrackingService
 
   # returns [user_agent_hash, author_hash] - author_hash will only be present if user was logged in when the cookie was set
   def tracking_hashes_from_headers
-    return unless @request && @phase.pmethod.supports_everyone_tracking?
+    return unless @request && @phase&.pmethod&.supports_everyone_tracking?
 
     cookie_hashes = @request.cookies[@phase.id]
     tracking_hashes = []

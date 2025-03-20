@@ -26,6 +26,15 @@ module AnonymousParticipation
       anonymous
     end
 
+    def write_everyone_tracking_cookie(cookies)
+      return unless creation_phase_id && everyone_tracking_hashes
+
+      # TODO: Need to add in the new value of author hash if we have one
+      cookie_value = everyone_tracking_hashes&.join(',')
+
+      cookies[creation_phase_id] = { value: cookie_value, expires: 1.year.from_now }
+    end
+
     def author_hash_cookie_value
       everyone_tracking_hashes&.join(',')
     end
@@ -34,7 +43,7 @@ module AnonymousParticipation
 
     # Ensure author is always nil if anonymous is set and anonymous is false if author is present
     def set_anonymous_values
-      set_author_hash if author_id_changed? || anonymous_changed?
+      set_author_hash
       if anonymous_changed?(to: true)
         self.author = nil
       elsif author_id.present?
@@ -43,10 +52,12 @@ module AnonymousParticipation
     end
 
     def set_author_hash
-      self.author_hash = if author_id.blank? && everyone_tracking_hashes
-        everyone_tracking_hashes.last
-      else
+      if author_id_changed? || anonymous_changed?
+        # Set for records with an author
         self.class.create_author_hash author_id, project_string, anonymous?
+      elsif author_id.blank? && everyone_tracking_hashes && !persisted?
+        # Set for logged out users when 'everyone' permission enabled
+        self.author_hash = everyone_tracking_hashes.last
       end
     end
 
