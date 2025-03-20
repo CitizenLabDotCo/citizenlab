@@ -8,20 +8,22 @@ import {
   Text,
   Title,
 } from '@citizenlab/cl2-component-library';
+import { useSearchParams } from 'react-router-dom';
 
 import useCommunityMonitorSentimentScores from 'api/community_monitor_scores/useCommunityMonitorSentimentScores';
 
-import { useSearchParams } from 'react-router-dom';
+import useLocale from 'hooks/useLocale';
+
+import { useIntl } from 'utils/cl-intl';
+
+import CategoryScores from './components/CategoryScores';
+import HealthScoreChart from './components/HealthScoreChart';
+import messages from './messages';
 import {
   getQuarterFilter,
   getYearFilter,
   transformSentimentScoreData,
 } from './utils';
-import useLocale from 'hooks/useLocale';
-import { useIntl } from 'utils/cl-intl';
-import messages from './messages';
-import CategoryScores from './components/CategoryScores';
-import HealthScoreChart from './components/HealthScoreChart';
 
 type Props = {
   phaseId?: string;
@@ -44,13 +46,9 @@ const HealthScoreWidget = ({ phaseId }: Props) => {
   );
 
   // Get the current overall health score
-  const currentOverallHealthScore = sentimentScores?.overallHealthScores?.find(
+  const currentOverallHealthScore = sentimentScores?.overallHealthScores.find(
     (score) => score.period === `${year}-${quarter}`
   );
-
-  if (!currentOverallHealthScore) {
-    return null;
-  }
 
   return (
     <Box
@@ -69,7 +67,7 @@ const HealthScoreWidget = ({ phaseId }: Props) => {
             </Title>
           </Box>
 
-          <Box display="flex" mt="12px">
+          <Box display="flex" mt="12px" ml="8px">
             <Text
               m="0px"
               fontSize="xxxxl"
@@ -77,8 +75,11 @@ const HealthScoreWidget = ({ phaseId }: Props) => {
               fontWeight="bold"
               lineHeight="1"
               mr="4px"
+              color={
+                currentOverallHealthScore?.score ? 'textPrimary' : 'coolGrey300'
+              }
             >
-              {currentOverallHealthScore.score}
+              {currentOverallHealthScore?.score || '?'}
             </Text>
             <Text
               fontWeight="semi-bold"

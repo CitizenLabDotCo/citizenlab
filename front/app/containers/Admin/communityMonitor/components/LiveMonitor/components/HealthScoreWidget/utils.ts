@@ -1,4 +1,4 @@
-import { Locale } from '@citizenlab/cl2-component-library';
+import { colors, Locale } from '@citizenlab/cl2-component-library';
 
 import {
   Categories,
@@ -6,6 +6,13 @@ import {
 } from 'api/community_monitor_scores/types';
 
 import { QuarterlyScores } from './types';
+
+export const categoryColors = {
+  overall: colors.green400,
+  quality_of_life: colors.teal400,
+  service_delivery: colors.blue400,
+  governance_and_trust: colors.brown,
+};
 
 // transformSentimentScoreData:
 // Transform the sentiment score data object into a more usable format with arrays.

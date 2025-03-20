@@ -92,6 +92,8 @@ type LinearScaleAverage = {
 export type ResultUngrouped = BaseResult & {
   grouped: false;
   answers?: Answer[];
+  questionCategory?: string;
+  questionCategoryMultiloc?: Multiloc;
 
   // Rankings
   average_rankings?: AverageRankings;

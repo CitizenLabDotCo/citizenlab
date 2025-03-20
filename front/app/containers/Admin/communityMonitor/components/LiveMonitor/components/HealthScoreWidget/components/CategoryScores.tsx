@@ -1,9 +1,10 @@
 import React from 'react';
 
-import { Box, colors, Icon, Text } from '@citizenlab/cl2-component-library';
+import { Box, Icon, Text } from '@citizenlab/cl2-component-library';
 import { useSearchParams } from 'react-router-dom';
 
 import { QuarterlyScores } from '../types';
+import { categoryColors } from '../utils';
 
 type Props = {
   sentimentScores: QuarterlyScores | null;
@@ -21,45 +22,53 @@ const CategoryScores = ({ sentimentScores }: Props) => {
   const periodKey = `${year}-${quarter}`;
 
   return (
-    <Box display="flex">
-      {sentimentScores?.categoryHealthScores.map((categoryScore) => (
-        <Box key={categoryScore.category}>
-          <Box mr="32px">
-            <Box display="flex">
-              <Icon my="auto" height="18px" name="dot" fill={colors.green400} />
-              <Text m="0px" fontWeight="bold" fontSize="s">
-                {categoryScore.localizedLabel}
-              </Text>
-            </Box>
+    <Box display="flex" mt="12px">
+      {sentimentScores?.categoryHealthScores.map((categoryScore) => {
+        const categoryScoreValue = categoryScore.scores.find(
+          (score) => score.period === periodKey
+        )?.score;
 
-            <Box display="flex" mt="8px">
-              <Text
-                m="0px"
-                fontSize="xl"
-                mt="auto"
-                mr="4px"
-                fontWeight="bold"
-                lineHeight="1"
-              >
-                {
-                  categoryScore.scores.find(
-                    (score) => score.period === periodKey
-                  )?.score
-                }
-              </Text>
-              <Text
-                fontWeight="semi-bold"
-                m="0px"
-                mt="auto"
-                fontSize="m"
-                lineHeight="1"
-              >
-                /5
-              </Text>
+        return (
+          <Box key={categoryScore.category}>
+            <Box mr="32px">
+              <Box display="flex">
+                <Icon
+                  my="auto"
+                  height="18px"
+                  name="dot"
+                  fill={categoryColors[categoryScore.category]}
+                />
+                <Text m="0px" fontWeight="bold" fontSize="s">
+                  {categoryScore.localizedLabel}
+                </Text>
+              </Box>
+
+              <Box display="flex" mt="8px" ml="8px">
+                <Text
+                  m="0px"
+                  fontSize="xl"
+                  mt="auto"
+                  mr="4px"
+                  fontWeight="bold"
+                  lineHeight="1"
+                  color={categoryScoreValue ? 'textPrimary' : 'coolGrey300'}
+                >
+                  {categoryScoreValue || '?'}
+                </Text>
+                <Text
+                  fontWeight="semi-bold"
+                  m="0px"
+                  mt="auto"
+                  fontSize="m"
+                  lineHeight="1"
+                >
+                  /5
+                </Text>
+              </Box>
             </Box>
           </Box>
-        </Box>
-      ))}
+        );
+      })}
     </Box>
   );
 };

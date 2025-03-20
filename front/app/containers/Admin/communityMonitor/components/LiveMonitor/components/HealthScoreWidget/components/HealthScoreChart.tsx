@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Box, colors } from '@citizenlab/cl2-component-library';
+import { Box } from '@citizenlab/cl2-component-library';
 
 import LineChart from 'components/admin/Graphs/LineChart';
 
@@ -8,6 +8,7 @@ import { useIntl } from 'utils/cl-intl';
 
 import messages from '../messages';
 import { QuarterlyScores } from '../types';
+import { categoryColors } from '../utils';
 
 type Props = {
   sentimentScores: QuarterlyScores | null;
@@ -15,6 +16,64 @@ type Props = {
 
 const HealthScoreChart = ({ sentimentScores }: Props) => {
   const { formatMessage } = useIntl();
+
+  // ToDo: Remove hard-coded data before releasing. Useful for testing now though.
+  // const sentimentScores = {
+  //   overallHealthScores: [
+  //     { period: '2023-2', score: 2.8 },
+  //     { period: '2023-3', score: 3.1 },
+  //     { period: '2023-4', score: 3.5 },
+  //     { period: '2024-1', score: 3.8 },
+  //     { period: '2024-2', score: 4.5 },
+  //     { period: '2024-3', score: 4.1 },
+  //     { period: '2024-4', score: 5 },
+  //     { period: '2025-1', score: 4 },
+  //   ],
+  //   categoryHealthScores: [
+  //     {
+  //       category: 'quality_of_life',
+  //       localizedLabel: 'Quality of life',
+  //       scores: [
+  //         { period: '2023-2', score: 3.5 },
+  //         { period: '2023-3', score: 3.8 },
+  //         { period: '2023-4', score: 4.0 },
+  //         { period: '2024-1', score: 4.2 },
+  //         { period: '2024-2', score: 3.7 },
+  //         { period: '2024-3', score: 3 },
+  //         { period: '2024-4', score: 1 },
+  //         { period: '2025-1', score: 5 },
+  //       ],
+  //     },
+  //     {
+  //       category: 'service_delivery',
+  //       localizedLabel: 'Service delivery',
+  //       scores: [
+  //         { period: '2023-2', score: 2.5 },
+  //         { period: '2023-3', score: 1.4 },
+  //         { period: '2023-4', score: 3.0 },
+  //         { period: '2024-1', score: 3.5 },
+  //         { period: '2024-2', score: 2.8 },
+  //         { period: '2024-3', score: 2 },
+  //         { period: '2024-4', score: 2 },
+  //         { period: '2025-1', score: 5 },
+  //       ],
+  //     },
+  //     {
+  //       category: 'governance_and_trust',
+  //       localizedLabel: 'Governance and trust',
+  //       scores: [
+  //         { period: '2023-2', score: 5 },
+  //         { period: '2023-3', score: 4.5 },
+  //         { period: '2023-4', score: 4.3 },
+  //         { period: '2024-1', score: 4.1 },
+  //         { period: '2024-2', score: 3 },
+  //         { period: '2024-3', score: 3.4 },
+  //         { period: '2024-4', score: 2 },
+  //         { period: '2025-1', score: 1 },
+  //       ],
+  //     },
+  //   ],
+  // };
 
   const timeSeries = sentimentScores?.overallHealthScores.map((score) => {
     const scoresForQuarter = {
@@ -26,9 +85,9 @@ const HealthScoreChart = ({ sentimentScores }: Props) => {
     };
 
     // Add in the scores for each category to the time series data
-    sentimentScores?.categoryHealthScores.forEach((category) => {
+    sentimentScores.categoryHealthScores.forEach((category) => {
       const categoryScore = category.scores.find(
-        (score) => score.period === score.period
+        (categoryScore) => categoryScore.period === score.period
       );
 
       if (categoryScore) {
@@ -40,7 +99,12 @@ const HealthScoreChart = ({ sentimentScores }: Props) => {
   });
 
   const lineConfig = {
-    strokes: [colors.green400, 'pink', 'green', 'orange'],
+    strokes: [
+      categoryColors.overall,
+      categoryColors.quality_of_life,
+      categoryColors.service_delivery,
+      categoryColors.governance_and_trust,
+    ],
     r: 1,
   };
 
@@ -71,7 +135,7 @@ const HealthScoreChart = ({ sentimentScores }: Props) => {
             ],
           }}
           lines={lineConfig}
-          grid={{ vertical: true }}
+          grid={{ horizontal: true }}
           xaxis={{ tickFormatter: formatTick }}
           yaxis={{
             domain: [1, 5],

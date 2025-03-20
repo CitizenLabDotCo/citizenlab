@@ -1,6 +1,12 @@
 import React from 'react';
 
-import { Box, Text } from '@citizenlab/cl2-component-library';
+import {
+  Box,
+  colors,
+  Icon,
+  stylingConsts,
+  Text,
+} from '@citizenlab/cl2-component-library';
 import { useParams, useSearchParams } from 'react-router-dom';
 
 import useProjectById from 'api/projects/useProjectById';
@@ -8,9 +14,7 @@ import useFormResults from 'api/survey_results/useSurveyResults';
 
 import SentimentQuestion from 'components/admin/FormResults/FormResultsQuestion/SentimentQuestion';
 
-import { useIntl } from 'utils/cl-intl';
-
-import messages from '../messages';
+import { categoryColors } from './HealthScoreWidget/utils';
 
 type Props = {
   projectId?: string;
@@ -18,8 +22,6 @@ type Props = {
 };
 
 const FormResults = (props: Props) => {
-  const { formatMessage } = useIntl();
-
   // Get the projectId and phaseId from the URL
   const { projectId: projectIdParam, phaseId: phaseIdParam } = useParams() as {
     projectId: string;
@@ -51,7 +53,7 @@ const FormResults = (props: Props) => {
     return null;
   }
 
-  const { totalSubmissions, results } = formResults.data.attributes;
+  const { results } = formResults.data.attributes;
 
   const sentimentQuestionResults = results.filter(
     (question) => question.inputType === 'sentiment_linear_scale'
@@ -59,19 +61,57 @@ const FormResults = (props: Props) => {
 
   return (
     <Box width="100%">
-      {totalSubmissions === 0 ? (
-        <Box width="100%">
-          <Text variant="bodyM" color="textSecondary">
-            {formatMessage(messages.noSurveyResponses)}
-          </Text>
-        </Box>
-      ) : (
-        <Box>
-          {sentimentQuestionResults.map((result, index) => {
+      <Box>
+        {sentimentQuestionResults.map((result, index) => {
+          const category = result.questionCategory;
+          if (
+            category &&
+            sentimentQuestionResults.at(index - 1)?.questionCategory !==
+              category
+          ) {
+            return (
+              <Box key={index} mt="30px">
+                <Box
+                  display="flex"
+                  justifyContent="space-between"
+                  alignItems="center"
+                  mb="8px"
+                >
+                  <Box display="flex" alignItems="center">
+                    <Text m="0px" fontSize="l" fontWeight="bold">
+                      <Icon
+                        width="16px"
+                        name="dot"
+                        fill={categoryColors[category]}
+                        mr="4px"
+                        my="auto"
+                      />
+                      {category}
+                    </Text>
+                  </Box>
+                </Box>
+                {result.totalResponseCount > 0 ? (
+                  <SentimentQuestion key={index} result={result} mb="8px" />
+                ) : (
+                  <Box
+                    border={`1px solid ${colors.borderLight}`}
+                    borderRadius={stylingConsts.borderRadius}
+                    mt="12px"
+                    background={colors.white}
+                    p="16px"
+                  >
+                    <Text color="textSecondary" textAlign="center">
+                      Results will appear here as they come in.
+                    </Text>
+                  </Box>
+                )}
+              </Box>
+            );
+          } else {
             return <SentimentQuestion key={index} result={result} mb="8px" />;
-          })}
-        </Box>
-      )}
+          }
+        })}
+      </Box>
     </Box>
   );
 };

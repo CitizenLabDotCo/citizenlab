@@ -10,8 +10,6 @@ import {
 
 import { ResultGrouped, ResultUngrouped } from 'api/survey_results/types';
 
-import { useIntl } from 'utils/cl-intl';
-
 import Comments from './components/Comments';
 import CommentSummary from './components/CommentSummary';
 import SentimentHeader from './components/SentimentHeader';
@@ -29,12 +27,15 @@ const SentimentQuestion = ({
 }: Props & BoxProps) => {
   const isTabletOrSmaller = useBreakpoint('tablet');
   const isMobileOrSmaller = useBreakpoint('phone');
-  const { formatMessage } = useIntl();
 
-  const { textResponses } = result;
+  const { textResponses, averages } = result;
 
   const textResponsesCount = textResponses?.length || 0;
   const hasTextResponses = textResponsesCount > 0;
+
+  if (!averages?.this_period) {
+    return null;
+  }
 
   return (
     <Box mb="20px" background={colors.white} borderRadius="4px" {...props}>
@@ -54,10 +55,7 @@ const SentimentQuestion = ({
             >
               {!isMobileOrSmaller && hasTextResponses && (
                 <Box mr={isTabletOrSmaller ? '100px' : '160px'} my="auto">
-                  <CommentSummary
-                    count={textResponsesCount}
-                    formatMessage={formatMessage}
-                  />
+                  <CommentSummary count={textResponsesCount} />
                 </Box>
               )}
               <SentimentStats result={result} />

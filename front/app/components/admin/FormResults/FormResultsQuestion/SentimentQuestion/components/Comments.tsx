@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Box, useBreakpoint } from '@citizenlab/cl2-component-library';
+import { Box, Text, useBreakpoint } from '@citizenlab/cl2-component-library';
 import { useParams } from 'react-router-dom';
 
 import useCommunityMonitorProject from 'api/community_monitor/useCommunityMonitorProject';
@@ -10,7 +10,10 @@ import useFeatureFlag from 'hooks/useFeatureFlag';
 import Analysis from 'components/admin/FormResults/FormResultsQuestion/TextQuestion/Analysis/';
 import AnalysisUpsell from 'components/admin/FormResults/FormResultsQuestion/TextQuestion/AnalysisUpsell';
 
+import { useIntl } from 'utils/cl-intl';
+
 import TextResponses from '../../TextQuestion/TextResponses';
+import messages from '../messages';
 
 type CommentsProps = {
   customFieldId: string;
@@ -25,6 +28,7 @@ const Comments = ({
   showAnalysis = true,
   textResponses,
 }: CommentsProps) => {
+  const { formatMessage } = useIntl();
   const isTabletOrSmaller = useBreakpoint('tablet');
 
   // Get the project and phase id from either the URL params or props (when community monitor)
@@ -57,26 +61,34 @@ const Comments = ({
       gap="12px"
       width="100%"
     >
-      {/* Follow Up Text Responses */}
-      <Box flexGrow={1}>
-        <TextResponses textResponses={textResponses} />
-      </Box>
+      {textResponses.length > 0 ? (
+        <>
+          {/* Follow Up Text Responses */}
+          <Box flexGrow={1}>
+            <TextResponses textResponses={textResponses} />
+          </Box>
 
-      {/* AI Summary */}
-      <Box maxWidth={isTabletOrSmaller ? '100%' : '38%'} p="8px" pt="0px">
-        <Box flex="1">
-          {!isAnalysisAllowed && <AnalysisUpsell />}
-          {isAnalysisEnabled && showAnalysis && (
-            <Analysis
-              customFieldId={customFieldId}
-              textResponsesCount={textResponses.length}
-              hasOtherResponses={true}
-              projectId={projectId}
-              phaseId={phaseId}
-            />
-          )}
-        </Box>
-      </Box>
+          {/* AI Summary */}
+          <Box maxWidth={isTabletOrSmaller ? '100%' : '38%'} p="8px" pt="0px">
+            <Box flex="1">
+              {!isAnalysisAllowed && <AnalysisUpsell />}
+              {isAnalysisEnabled && showAnalysis && (
+                <Analysis
+                  customFieldId={customFieldId}
+                  textResponsesCount={textResponses.length}
+                  hasOtherResponses={true}
+                  projectId={projectId}
+                  phaseId={phaseId}
+                />
+              )}
+            </Box>
+          </Box>
+        </>
+      ) : (
+        <Text m="0px" ml="12px" color="textSecondary">
+          {formatMessage(messages.noFollowUpResponses)}
+        </Text>
+      )}
     </Box>
   );
 };
