@@ -1049,8 +1049,6 @@
   "app.containers.App.loading": "Bezig met laden...",
   "app.containers.App.metaTitle1": "Burgerparticipatieplatform | {orgName}",
   "app.containers.App.skipLinkText": "Ga naar de hoofdinhoud",
-  "app.containers.AreaTerms.areaTerm": "gebied",
-  "app.containers.AreaTerms.areasTerm": "gebieden",
   "app.containers.AuthProviders.emailTakenAndUserCanBeVerified": "Er bestaat al een account met dit e-mailadres. Je kunt je afmelden, inloggen met dit e-mailadres en je account verifiëren op de instellingenpagina.",
   "app.containers.Authentication.steps.AccessDenied.close": "Sluiten",
   "app.containers.Authentication.steps.AccessDenied.youDoNotMeetTheRequirements": "Je voldoet niet aan de voorwaarden om deel te nemen aan dit proces.",
