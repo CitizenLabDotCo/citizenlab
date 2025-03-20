@@ -53,6 +53,7 @@ const Areas = ({ titleMultiloc }: Props) => {
         <Box
           // mb needed to vertically align with the carrousel title
           mb="10px"
+          ml="auto"
         >
           <FollowAreasButtonWithModal />
         </Box>
