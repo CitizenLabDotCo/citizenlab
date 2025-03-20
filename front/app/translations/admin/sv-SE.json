@@ -814,6 +814,7 @@
   "app.containers.Admin.inspirationHub.ProjectDrawer.Phase.openEnded": "Öppet för alla",
   "app.containers.Admin.inspirationHub.ProjectDrawer.Phase.readMore": "Läs mer...",
   "app.containers.Admin.inspirationHub.ProjectDrawer.Phase.title": "Fas {number}: {title}",
+  "app.containers.Admin.inspirationHub.ProjectDrawer.optOutCopy": "Om du inte vill att ditt projekt ska ingå i inspirationshubben kan du kontakta din GovSuccess-chef.",
   "app.containers.Admin.inspirationHub.Proposals": "Förslag till beslut",
   "app.containers.Admin.inspirationHub.SortAndReset.Sort.sortBy": "Sortera efter",
   "app.containers.Admin.inspirationHub.SortAndReset.participants_asc": "Deltagare (lägst först)",
