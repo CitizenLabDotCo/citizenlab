@@ -4,11 +4,13 @@ import { Button, Box, colors } from '@citizenlab/cl2-component-library';
 
 import useAreasWithProjectsCounts from 'api/areas/useAreasWithProjectsCounts';
 
+import useAreaTerms from 'hooks/areaTerms/useAreaTerms';
+
 import UpdateFollowAreaWithProjects from 'components/Areas/FollowArea/UpdateFollowAreaWithProjects';
 import Modal from 'components/UI/Modal';
 import Warning from 'components/UI/Warning';
 
-import { FormattedMessage, useIntl } from 'utils/cl-intl';
+import { useIntl } from 'utils/cl-intl';
 
 import messages from './messages';
 
@@ -16,6 +18,10 @@ const FollowAreasButtonWithModal = () => {
   const { formatMessage } = useIntl();
   const [isModalOpened, setIsModalOpened] = useState(false);
   const { data: areasWithProjectCount } = useAreasWithProjectsCounts();
+  const { areaTerm, areasTerm } = useAreaTerms();
+  const { areasTerm: capitalizedAreasTerm } = useAreaTerms({
+    capitalized: true,
+  });
 
   if (!areasWithProjectCount) return null;
 
@@ -26,16 +32,25 @@ const FollowAreasButtonWithModal = () => {
         buttonStyle="text"
         textDecoration="underline"
       >
-        <FormattedMessage {...messages.followAreas} />
+        {formatMessage(messages.followAreas1, {
+          areasTerm,
+        })}
       </Button>
       <Modal
         opened={isModalOpened}
         close={() => setIsModalOpened(false)}
-        header={formatMessage(messages.areasYouFollow)}
+        header={formatMessage(messages.areasYouFollow1, {
+          capitalizedAreasTerm,
+        })}
       >
         <Box p="32px">
           <Box mb="24px">
-            <Warning>{formatMessage(messages.areaButtonsInfo)}</Warning>
+            <Warning>
+              {formatMessage(messages.areaButtonsInfo1, {
+                areasTerm,
+                areaTerm,
+              })}
+            </Warning>
           </Box>
           <Box mb="24px">
             {areasWithProjectCount.data.map((area, i) => (
@@ -54,7 +69,7 @@ const FollowAreasButtonWithModal = () => {
             icon="check"
             onClick={() => setIsModalOpened(false)}
           >
-            <FormattedMessage {...messages.done} />
+            {formatMessage(messages.done)}
           </Button>
         </Box>
       </Modal>
