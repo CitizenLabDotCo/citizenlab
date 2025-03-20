@@ -16,6 +16,7 @@ module Surveys
       averages = grouped_answers.transform_values do |answers|
         averages_by_field(answers, custom_field_attribute:)
       end
+      averages = order_by_quarter(averages)
       switch_keys(averages)
     end
 
@@ -39,10 +40,11 @@ module Surveys
     # This is an average of averages - or should it take the average of all values
     def overall_average_by_quarter
       grouped_answers = all_answers.group_by { |a| a['quarter'] }
-      grouped_answers.transform_values do |answers|
+      averages = grouped_answers.transform_values do |answers|
         field_averages = averages_by_field(answers)
         calculate_average(field_averages.values)
       end
+      order_by_quarter(averages)
     end
 
     def category_averages_by_quarter
@@ -79,6 +81,10 @@ module Surveys
         end
       end
       converted_hash
+    end
+
+    def order_by_quarter(averages)
+      averages.sort_by {|k, _| -k }.to_h # Sort by earliest quarter first
     end
 
     def date_to_quarter(date)
