@@ -63,6 +63,13 @@ const ProjectCard = ({
   const phases = useProjectLibraryPhases(phaseIds);
   const methods = getMethods(phases);
 
+  const annotation = attributes.annotation_multiloc
+    ? localize(
+        attributes.annotation_multiloc,
+        attributes.annotation_multiloc['en'] ?? ''
+      )
+    : '';
+
   return (
     <CardContainer
       as="button"
@@ -106,11 +113,10 @@ const ProjectCard = ({
           </Text>
         </Box>
       </Box>
-      {showQuote && (
+      {showQuote && annotation !== '' && (
         <Quote w="100%" mb="12px">
           <Text m="0px" fontStyle="italic">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur
-            tempus dolor eget nisi volutpat luctus
+            {annotation}
           </Text>
         </Quote>
       )}
