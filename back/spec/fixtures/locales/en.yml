@@ -52,12 +52,12 @@ en:
       attachments:
         title: Attachments
         description:
-      section1:
+      page1:
         description:
-      section2:
+      page2:
         title: Images and attachments
-        description: Upload your favourite files here
-      section3:
+        description:
+      page3:
         title: Details
         description:
       other_input_field:

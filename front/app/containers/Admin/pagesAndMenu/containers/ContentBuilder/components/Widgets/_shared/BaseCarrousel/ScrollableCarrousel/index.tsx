@@ -1,11 +1,9 @@
 import React, { useState, useCallback, useEffect } from 'react';
 
-import { useBreakpoint } from '@citizenlab/cl2-component-library';
+import { Box, useBreakpoint } from '@citizenlab/cl2-component-library';
 import { debounce } from 'lodash-es';
 
-import CarrouselTitle from '../../CarrouselTitle';
 import { CARD_GAP } from '../constants';
-import { CarrouselContainer } from '../Containers';
 
 import Gradient from './Gradient';
 import HorizontalScroll from './HorizontalScroll';
@@ -14,24 +12,18 @@ import SkipButton from './SkipButton';
 import { getUpdatedButtonVisibility, skipCarrousel } from './utils';
 
 interface Props {
-  className?: string;
-  title: string;
   scrollContainerRef?: HTMLDivElement;
   setScrollContainerRef: (instance: HTMLDivElement) => void;
   cardWidth: number;
-  scrollButtonTop: number;
   hasMore: boolean;
   endId: string;
   children: React.ReactNode;
 }
 
 const ScrollableCarrousel = ({
-  className,
-  title,
   scrollContainerRef,
   setScrollContainerRef,
   cardWidth,
-  scrollButtonTop,
   hasMore,
   endId,
   children,
@@ -98,69 +90,67 @@ const ScrollableCarrousel = ({
   }, [scrollContainerRef, hasMore, handleButtonVisiblity]);
 
   return (
-    <>
-      <CarrouselContainer className={className}>
-        <CarrouselTitle>{title}</CarrouselTitle>
-        <SkipButton onSkip={() => skipCarrousel(endId)} />
-        <HorizontalScroll
-          setRef={(ref) => {
-            if (ref) {
-              setScrollContainerRef(ref);
-              handleButtonVisiblity(ref, hasMore);
-            }
-          }}
-        >
-          {children}
-        </HorizontalScroll>
-        {!isSmallerThanPhone && (
-          <>
-            {showPreviousButton && (
-              <ScrollButton
-                variant="left"
-                top={`${scrollButtonTop}px`}
-                onClick={() => {
-                  if (!scrollContainerRef) return;
-                  scrollContainerRef.scrollLeft -= cardWidth + CARD_GAP;
-                }}
-                onMouseEnter={() => setMouseOverPreviousButton(true)}
-                onMouseLeave={() => {
-                  setMouseOverPreviousButton(false);
-                  if (previousButtonShouldDisappearAfterMouseMove) {
-                    setShowPreviousButton(false);
-                    setPreviousButtonShouldDisappearAfterMouseMove(false);
-                  }
-                }}
-              />
-            )}
-            {showPreviousGradient && <Gradient variant="left" />}
-          </>
-        )}
-        {!isSmallerThanPhone && (
-          <>
-            {showNextButton && (
-              <ScrollButton
-                variant="right"
-                top={`${scrollButtonTop}px`}
-                onClick={() => {
-                  if (!scrollContainerRef) return;
-                  scrollContainerRef.scrollLeft += cardWidth + CARD_GAP;
-                }}
-                onMouseEnter={() => setMouseOverNextButton(true)}
-                onMouseLeave={() => {
-                  setMouseOverNextButton(false);
-                  if (nextButtonShouldDisappearAfterMouseMove) {
-                    setShowNextButton(false);
-                    setNextButtonShouldDisappearAfterMouseMove(false);
-                  }
-                }}
-              />
-            )}
-            {showNextGradient && <Gradient variant="right" />}
-          </>
-        )}
-      </CarrouselContainer>
+    <Box
+      // We set position relative to be able to position the skip (& scroll?) buttons.
+      position="relative"
+    >
+      <SkipButton onSkip={() => skipCarrousel(endId)} />
+      <HorizontalScroll
+        setRef={(ref) => {
+          if (ref) {
+            setScrollContainerRef(ref);
+            handleButtonVisiblity(ref, hasMore);
+          }
+        }}
+      >
+        {children}
+      </HorizontalScroll>
+      {!isSmallerThanPhone && (
+        <>
+          {showPreviousButton && (
+            <ScrollButton
+              variant="left"
+              onClick={() => {
+                if (!scrollContainerRef) return;
+                scrollContainerRef.scrollLeft -= cardWidth + CARD_GAP;
+              }}
+              onMouseEnter={() => setMouseOverPreviousButton(true)}
+              onMouseLeave={() => {
+                setMouseOverPreviousButton(false);
+                if (previousButtonShouldDisappearAfterMouseMove) {
+                  setShowPreviousButton(false);
+                  setPreviousButtonShouldDisappearAfterMouseMove(false);
+                }
+              }}
+            />
+          )}
+          {showPreviousGradient && <Gradient variant="left" />}
+        </>
+      )}
+      {!isSmallerThanPhone && (
+        <>
+          {showNextButton && (
+            <ScrollButton
+              variant="right"
+              onClick={() => {
+                if (!scrollContainerRef) return;
+                scrollContainerRef.scrollLeft += cardWidth + CARD_GAP;
+              }}
+              onMouseEnter={() => setMouseOverNextButton(true)}
+              onMouseLeave={() => {
+                setMouseOverNextButton(false);
+                if (nextButtonShouldDisappearAfterMouseMove) {
+                  setShowNextButton(false);
+                  setNextButtonShouldDisappearAfterMouseMove(false);
+                }
+              }}
+            />
+          )}
+          {showNextGradient && <Gradient variant="right" />}
+        </>
+      )}
       <i id={endId} />
-    </>
+    </Box>
   );
 };
 
