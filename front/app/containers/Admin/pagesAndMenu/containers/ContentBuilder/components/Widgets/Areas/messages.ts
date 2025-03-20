@@ -1,7 +1,7 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
-  areasTitle: {
+  areasTitle2: {
     id: 'front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Areas.areasTitle2',
     defaultMessage: 'In your area',
   },
@@ -10,27 +10,23 @@ export default defineMessages({
     defaultMessage:
       'There are currently no projects in the {areasTerm} that you follow that you have permission to view.',
   },
-  areas: {
-    id: 'front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Areas.areas',
-    defaultMessage: 'Areas',
-  },
   thisWidgetShows: {
     id: 'front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Areas.thisWidgetShows',
     defaultMessage:
       'This widget shows projects associated with the {areasTerm} the user follows. If the user does not follow any {areasTerm} yet, the widget will show the available {areasTerm} to follow. In this case the widget will show a maximum of 100 {areasTerm}.',
   },
-  followAreas: {
-    id: 'front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Areas.followAreas',
-    defaultMessage: 'Follow areas',
+  followAreas1: {
+    id: 'front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Areas.followAreas1',
+    defaultMessage: 'Follow {areasTerm}',
   },
-  areasYouFollow: {
-    id: 'front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Areas.areasYouFollow',
-    defaultMessage: 'Areas you follow',
+  areasYouFollow1: {
+    id: 'front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Areas.areasYouFollow1',
+    defaultMessage: '{capitalizedAreasTerm} you follow',
   },
-  areaButtonsInfo: {
-    id: 'front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Areas.areaButtonsInfo',
+  areaButtonsInfo1: {
+    id: 'front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Areas.areaButtonsInfo1',
     defaultMessage:
-      'Click on the buttons below to follow or unfollow the areas you would like to see projects for. The number of projects in each area is shown in brackets.',
+      'Click on the buttons below to follow or unfollow the {areasTerm} you would like to see projects for. The number of projects in each {areaTerm} is shown in brackets.',
   },
   done: {
     id: 'front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Areas.done',

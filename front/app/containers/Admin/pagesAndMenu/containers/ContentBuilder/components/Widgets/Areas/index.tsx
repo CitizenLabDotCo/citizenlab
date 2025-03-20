@@ -76,6 +76,6 @@ Areas.craft = {
   },
 };
 
-export const areasTitle = messages.areasTitle;
+export const areasTitle = messages.areasTitle2;
 
 export default Areas;
