@@ -814,6 +814,7 @@
   "app.containers.Admin.inspirationHub.ProjectDrawer.Phase.openEnded": "Open einde",
   "app.containers.Admin.inspirationHub.ProjectDrawer.Phase.readMore": "Lees meer...",
   "app.containers.Admin.inspirationHub.ProjectDrawer.Phase.title": "Fase {number}: {title}",
+  "app.containers.Admin.inspirationHub.ProjectDrawer.optOutCopy": "Als je niet wilt dat jouw project wordt opgenomen in de inspiratiehub, neem dan contact op met je GovSuccess manager.",
   "app.containers.Admin.inspirationHub.Proposals": "Voorstellen",
   "app.containers.Admin.inspirationHub.SortAndReset.Sort.sortBy": "Sorteren op",
   "app.containers.Admin.inspirationHub.SortAndReset.participants_asc": "Deelnemers (laagste eerst)",
