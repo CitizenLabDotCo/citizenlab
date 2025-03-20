@@ -814,6 +814,7 @@
   "app.containers.Admin.inspirationHub.ProjectDrawer.Phase.openEnded": "Atklāts",
   "app.containers.Admin.inspirationHub.ProjectDrawer.Phase.readMore": "Lasīt vairāk...",
   "app.containers.Admin.inspirationHub.ProjectDrawer.Phase.title": "Fāze {number}: {title}",
+  "app.containers.Admin.inspirationHub.ProjectDrawer.optOutCopy": "Ja nevēlaties, lai jūsu projekts tiktu iekļauts iedvesmas centrā, sazinieties ar savu GovSuccess vadītāju.",
   "app.containers.Admin.inspirationHub.Proposals": "Priekšlikumi",
   "app.containers.Admin.inspirationHub.SortAndReset.Sort.sortBy": "Atlasīt pēc",
   "app.containers.Admin.inspirationHub.SortAndReset.participants_asc": "Dalībnieki (vispirms zemākā vērtība)",
