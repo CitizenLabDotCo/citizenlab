@@ -17,7 +17,6 @@ const StyledButton = styled.button`
   background: ${colors.white};
 
   &:focus {
-    top: 40px;
     opacity: 1;
   }
 `;

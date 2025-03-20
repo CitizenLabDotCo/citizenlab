@@ -8,6 +8,7 @@ import {
   colors,
   stylingConsts,
 } from '@citizenlab/cl2-component-library';
+import Quote from 'component-library/components/Quote';
 import styled from 'styled-components';
 
 import useProjectLibraryPhases from 'api/project_library_phases/useProjectLibraryPhases';
@@ -24,6 +25,7 @@ import { getMethods } from './utils';
 interface Props {
   project: ProjectLibraryProjectData;
   showStamp?: boolean;
+  showQuote?: boolean;
 }
 
 const CardContainer = styled(Box)`
@@ -41,7 +43,11 @@ const CardContainer = styled(Box)`
   cursor: pointer;
 `;
 
-const ProjectCard = ({ project, showStamp = false }: Props) => {
+const ProjectCard = ({
+  project,
+  showStamp = false,
+  showQuote = false,
+}: Props) => {
   const localize = useLocalizeProjectLibrary();
   const countriesByCode = useCountriesByCode();
 
@@ -56,6 +62,13 @@ const ProjectCard = ({ project, showStamp = false }: Props) => {
 
   const phases = useProjectLibraryPhases(phaseIds);
   const methods = getMethods(phases);
+
+  const annotation = attributes.annotation_multiloc
+    ? localize(
+        attributes.annotation_multiloc,
+        attributes.annotation_multiloc['en'] ?? ''
+      )
+    : '';
 
   return (
     <CardContainer
@@ -100,6 +113,13 @@ const ProjectCard = ({ project, showStamp = false }: Props) => {
           </Text>
         </Box>
       </Box>
+      {showQuote && annotation !== '' && (
+        <Quote w="100%" mb="12px">
+          <Text m="0px" fontStyle="italic">
+            {annotation}
+          </Text>
+        </Quote>
+      )}
       <Box>
         {methods.map((method, i) => (
           <MethodLabel participationMethod={method} key={i} />

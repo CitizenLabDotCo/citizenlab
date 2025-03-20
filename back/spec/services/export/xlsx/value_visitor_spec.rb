@@ -330,7 +330,7 @@ describe Export::Xlsx::ValueVisitor do
 
         it 'returns the value for the report' do
           I18n.with_locale('nl-NL') do
-            expect(visitor.visit_multiselect(field)).to eq 'Kat, Hond'
+            expect(visitor.visit_multiselect(field)).to eq 'Kat;Hond'
           end
         end
       end
@@ -388,7 +388,7 @@ describe Export::Xlsx::ValueVisitor do
 
         it 'returns the value for the report' do
           I18n.with_locale('en') do
-            expect(visitor.visit_multiselect(field)).to eq 'Cat, Dog'
+            expect(visitor.visit_multiselect(field)).to eq 'Cat;Dog'
           end
         end
       end
@@ -649,7 +649,7 @@ describe Export::Xlsx::ValueVisitor do
 
         it 'returns the value for the report' do
           I18n.with_locale('nl-NL') do
-            expect(visitor.visit_topic_ids(field)).to eq 'Onderwerp 1, Onderwerp 2'
+            expect(visitor.visit_topic_ids(field)).to eq 'Onderwerp 1;Onderwerp 2'
           end
         end
       end
