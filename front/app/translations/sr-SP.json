@@ -1049,8 +1049,6 @@
   "app.containers.App.loading": "Учитавање...",
   "app.containers.App.metaTitle1": "Citizen engagement platform | {orgName}",
   "app.containers.App.skipLinkText": "Skip to main content",
-  "app.containers.AreaTerms.areaTerm": "area",
-  "app.containers.AreaTerms.areasTerm": "areas",
   "app.containers.AuthProviders.emailTakenAndUserCanBeVerified": "Налог са овом е-поштом већ постоји. Можете се одјавити, пријавити са овом адресом е-поште и верификовати свој налог на страници са подешавањима.",
   "app.containers.Authentication.steps.AccessDenied.close": "Close",
   "app.containers.Authentication.steps.AccessDenied.youDoNotMeetTheRequirements": "You do not meet the requirements to participate in this process.",
