@@ -2,7 +2,7 @@ import { Keys } from 'utils/cl-react-query/types';
 
 import communityMonitorSentimentScoreKeys from './keys';
 
-type YearAndQuarter = `${number}-${1 | 2 | 3 | 4}`; // E.g. "2025-1", "2025-2", etc.
+export type YearAndQuarter = `${number}-${1 | 2 | 3 | 4}`; // E.g. "2025-1", "2025-2", etc.
 
 type Multilocs = Record<string, Record<string, string>>;
 
@@ -15,13 +15,18 @@ export type Categories = {
   multilocs: Multilocs;
 };
 
+export type CommunityMonitorSentimentScoreAttributes = {
+  categories?: Categories;
+  overall?: {
+    averages: TimePeriodAndScore;
+    totals: Record<YearAndQuarter, Record<string, number>>; // E.g. {"2025-1": {"1": 3, "2": 4}}
+  };
+};
+
 export type ICommunityMonitorSentimentScores = {
   data: {
     type: 'sentiment_by_quarter';
-    attributes: {
-      categories?: Categories;
-      overall?: TimePeriodAndScore;
-    };
+    attributes: CommunityMonitorSentimentScoreAttributes;
   };
 };
 

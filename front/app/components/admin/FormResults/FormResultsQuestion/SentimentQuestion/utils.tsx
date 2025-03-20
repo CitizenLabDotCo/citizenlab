@@ -6,9 +6,9 @@ import { ResultGrouped, ResultUngrouped } from 'api/survey_results/types';
 
 export type SentimentAnswer = {
   answer: number | null;
-  count: number;
+  count?: number;
   percentage: number;
-  label: Multiloc | undefined;
+  label?: Multiloc;
 };
 
 export type SentimentAnswers = SentimentAnswer[] | undefined;
@@ -62,9 +62,13 @@ export const getSentimentValueColour = (answer: number): string | undefined =>
 // getPercentageDifference:
 // Calculates the percentage difference between two periods.
 export const getPercentageDifference = (
-  thisPeriodAvg: number,
-  lastPeriodAvg: number
-): number => {
+  thisPeriodAvg?: number,
+  lastPeriodAvg?: number
+): number | null => {
+  if (!thisPeriodAvg || !lastPeriodAvg) {
+    return null;
+  }
+
   return lastPeriodAvg === 0
     ? 0
     : ((thisPeriodAvg - lastPeriodAvg) / lastPeriodAvg) * 100;

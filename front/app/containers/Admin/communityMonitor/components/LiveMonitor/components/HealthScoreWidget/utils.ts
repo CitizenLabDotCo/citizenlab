@@ -1,9 +1,6 @@
 import { colors, Locale } from '@citizenlab/cl2-component-library';
 
-import {
-  Categories,
-  TimePeriodAndScore,
-} from 'api/community_monitor_scores/types';
+import { CommunityMonitorSentimentScoreAttributes } from 'api/community_monitor_scores/types';
 
 import { QuarterlyScores } from './types';
 
@@ -17,28 +14,34 @@ export const categoryColors = {
 // transformSentimentScoreData:
 // Transform the sentiment score data object into a more usable format with arrays.
 export function transformSentimentScoreData(
-  scoreResults:
-    | {
-        overall?: TimePeriodAndScore;
-        categories?: Categories;
-      }
-    | undefined,
+  scoreResults: CommunityMonitorSentimentScoreAttributes | undefined,
   locale: Locale
 ): QuarterlyScores | null {
   if (!scoreResults || !scoreResults.overall || !scoreResults.categories) {
     return null;
   }
 
-  const overallHealthScores = Object.entries(scoreResults.overall).map(
+  // Generate array for overall health scores
+  const overallHealthScores = Object.entries(scoreResults.overall.averages).map(
     ([period, score]) => ({ period, score: Number(score) })
   );
 
+  // Generate array for total health score counts
+  const totalHealthScoreCounts = Object.entries(
+    scoreResults.overall.totals
+  ).map(([period, totalsPerSentimentValue]) => ({
+    period,
+    totals: Object.entries(totalsPerSentimentValue).map(
+      ([sentimentValue, count]) => ({ sentimentValue, count: Number(count) })
+    ),
+  }));
+
+  // Generate array for category health scores
   const categoryHealthScores = Object.entries(
     scoreResults.categories.averages
   ).map(([category, scores]) => {
     const localizedLabel =
-      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-      scoreResults.categories?.multilocs?.[category]?.[locale] || category;
+      scoreResults.categories?.multilocs[category]?.[locale] || category;
 
     const scoreEntries = Object.entries(scores).map(([period, score]) => ({
       period,
@@ -52,7 +55,7 @@ export function transformSentimentScoreData(
     };
   });
 
-  return { overallHealthScores, categoryHealthScores };
+  return { overallHealthScores, categoryHealthScores, totalHealthScoreCounts };
 }
 
 // getYearFilter:

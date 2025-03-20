@@ -11,4 +11,11 @@ export type QuarterlyScores = {
       score: number;
     }[];
   }[];
+  totalHealthScoreCounts: {
+    period: string;
+    totals: {
+      sentimentValue: string;
+      count: number;
+    }[];
+  }[];
 };

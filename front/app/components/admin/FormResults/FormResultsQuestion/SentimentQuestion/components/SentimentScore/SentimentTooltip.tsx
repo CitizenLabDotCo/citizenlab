@@ -33,7 +33,7 @@ const SentimentTooltip = ({ answers }: { answers: SentimentAnswers }) => {
                   background={getSentimentValueColour(answer)}
                 />
                 <Text maxWidth="140px" m="0px" color="white" pr="8px">
-                  {localize(label)}
+                  {label ? localize(label) : answer}
                 </Text>
               </Box>
               <Text m="0px" fontWeight="bold" color="white">

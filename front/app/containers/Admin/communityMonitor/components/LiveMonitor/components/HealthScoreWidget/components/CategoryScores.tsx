@@ -3,8 +3,12 @@ import React from 'react';
 import { Box, Icon, Text } from '@citizenlab/cl2-component-library';
 import { useSearchParams } from 'react-router-dom';
 
+import { getPercentageDifference } from 'components/admin/FormResults/FormResultsQuestion/SentimentQuestion/utils';
+
 import { QuarterlyScores } from '../types';
 import { categoryColors } from '../utils';
+
+import TrendIndicator from './TrendIndicator';
 
 type Props = {
   sentimentScores: QuarterlyScores | null;
@@ -28,9 +32,23 @@ const CategoryScores = ({ sentimentScores }: Props) => {
           (score) => score.period === periodKey
         )?.score;
 
+        const currentCategoryScoreIndex = categoryScore.scores.findIndex(
+          (score) => score.period === periodKey
+        );
+
+        const previousCategoryScoreValue =
+          categoryScore.scores[currentCategoryScoreIndex - 1]?.score;
+        const currentCategoryScoreValue =
+          categoryScore.scores[currentCategoryScoreIndex]?.score;
+
+        const percentageDifferenceValue = getPercentageDifference(
+          currentCategoryScoreValue,
+          previousCategoryScoreValue
+        );
+
         return (
-          <Box key={categoryScore.category}>
-            <Box mr="32px">
+          <Box key={categoryScore.category} mr="30px">
+            <Box>
               <Box display="flex">
                 <Icon
                   my="auto"
@@ -43,7 +61,7 @@ const CategoryScores = ({ sentimentScores }: Props) => {
                 </Text>
               </Box>
 
-              <Box display="flex" mt="8px" ml="8px">
+              <Box display="flex" justifyContent="flex-start" mt="8px" ml="8px">
                 <Text
                   m="0px"
                   fontSize="xl"
@@ -65,6 +83,11 @@ const CategoryScores = ({ sentimentScores }: Props) => {
                   /5
                 </Text>
               </Box>
+            </Box>
+            <Box mt="4px" ml="12px" display="flex" justifyContent="flex-start">
+              <TrendIndicator
+                percentageDifference={percentageDifferenceValue}
+              />
             </Box>
           </Box>
         );

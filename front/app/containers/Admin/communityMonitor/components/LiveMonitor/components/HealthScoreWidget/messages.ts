@@ -13,4 +13,12 @@ export default defineMessages({
     id: 'app.containers.Admin.communityMonitor.healthScore',
     defaultMessage: 'Health Score',
   },
+  value: {
+    id: 'app.containers.Admin.communityMonitor.value',
+    defaultMessage: '{value}',
+  },
+  lastQuarter: {
+    id: 'app.containers.Admin.communityMonitor.lastQuarter',
+    defaultMessage: ' last quarter',
+  },
 });

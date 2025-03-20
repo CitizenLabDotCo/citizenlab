@@ -17,64 +17,6 @@ type Props = {
 const HealthScoreChart = ({ sentimentScores }: Props) => {
   const { formatMessage } = useIntl();
 
-  // ToDo: Remove hard-coded data before releasing. Useful for testing now though.
-  // const sentimentScores = {
-  //   overallHealthScores: [
-  //     { period: '2023-2', score: 2.8 },
-  //     { period: '2023-3', score: 3.1 },
-  //     { period: '2023-4', score: 3.5 },
-  //     { period: '2024-1', score: 3.8 },
-  //     { period: '2024-2', score: 4.5 },
-  //     { period: '2024-3', score: 4.1 },
-  //     { period: '2024-4', score: 5 },
-  //     { period: '2025-1', score: 4 },
-  //   ],
-  //   categoryHealthScores: [
-  //     {
-  //       category: 'quality_of_life',
-  //       localizedLabel: 'Quality of life',
-  //       scores: [
-  //         { period: '2023-2', score: 3.5 },
-  //         { period: '2023-3', score: 3.8 },
-  //         { period: '2023-4', score: 4.0 },
-  //         { period: '2024-1', score: 4.2 },
-  //         { period: '2024-2', score: 3.7 },
-  //         { period: '2024-3', score: 3 },
-  //         { period: '2024-4', score: 1 },
-  //         { period: '2025-1', score: 5 },
-  //       ],
-  //     },
-  //     {
-  //       category: 'service_delivery',
-  //       localizedLabel: 'Service delivery',
-  //       scores: [
-  //         { period: '2023-2', score: 2.5 },
-  //         { period: '2023-3', score: 1.4 },
-  //         { period: '2023-4', score: 3.0 },
-  //         { period: '2024-1', score: 3.5 },
-  //         { period: '2024-2', score: 2.8 },
-  //         { period: '2024-3', score: 2 },
-  //         { period: '2024-4', score: 2 },
-  //         { period: '2025-1', score: 5 },
-  //       ],
-  //     },
-  //     {
-  //       category: 'governance_and_trust',
-  //       localizedLabel: 'Governance and trust',
-  //       scores: [
-  //         { period: '2023-2', score: 5 },
-  //         { period: '2023-3', score: 4.5 },
-  //         { period: '2023-4', score: 4.3 },
-  //         { period: '2024-1', score: 4.1 },
-  //         { period: '2024-2', score: 3 },
-  //         { period: '2024-3', score: 3.4 },
-  //         { period: '2024-4', score: 2 },
-  //         { period: '2025-1', score: 1 },
-  //       ],
-  //     },
-  //   ],
-  // };
-
   const timeSeries = sentimentScores?.overallHealthScores.map((score) => {
     const scoresForQuarter = {
       overall: score.score,
