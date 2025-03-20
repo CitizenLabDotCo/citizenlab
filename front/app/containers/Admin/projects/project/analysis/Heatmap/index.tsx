@@ -3,6 +3,8 @@ import React, { useState } from 'react';
 import { Unit } from 'api/analysis_heat_map_cells/types';
 import useUserCustomFields from 'api/user_custom_fields/useUserCustomFields';
 
+import useFeatureFlag from 'hooks/useFeatureFlag';
+
 import HeatmapDetails from './HeatmapDetails';
 import HeatmapInsights from './HeatmapInsights';
 
@@ -12,11 +14,17 @@ const Heatmap = () => {
   const [initialCustomFieldId, setInitialCustomFieldId] = useState<
     string | undefined
   >();
+
+  const statisticalInsightsEnabled = useFeatureFlag({
+    name: 'statistical_insights',
+    onlyCheckAllowed: true,
+  });
+
   const { data: customFields } = useUserCustomFields({
     inputTypes: ['select', 'multiselect'],
   });
 
-  if (!customFields) {
+  if (!customFields || !statisticalInsightsEnabled) {
     return null;
   }
 

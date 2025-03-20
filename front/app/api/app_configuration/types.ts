@@ -245,6 +245,7 @@ export interface IAppConfigurationSettings {
   large_summaries?: AppConfigurationFeature;
   ask_a_question?: AppConfigurationFeature;
   advanced_autotagging?: AppConfigurationFeature;
+  statistical_insights?: AppConfigurationFeature;
   import_printed_forms?: AppConfigurationFeature;
   input_importer?: AppConfigurationFeature;
   user_session_recording?: AppConfigurationFeature;

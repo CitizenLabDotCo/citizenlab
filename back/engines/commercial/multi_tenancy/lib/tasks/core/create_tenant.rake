@@ -299,6 +299,10 @@ namespace :cl2_back do
           enabled: true,
           allowed: true
         },
+        statistical_insights: {
+          enabled: true,
+          allowed: true
+        },
         report_data_grouping: {
           enabled: true,
           allowed: true

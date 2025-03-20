@@ -439,6 +439,10 @@ module MultiTenancy
               enabled: true,
               allowed: true
             },
+            statistical_insights: {
+              enabled: true,
+              allowed: true
+            },
             multi_language_platform: {
               enabled: true,
               allowed: true

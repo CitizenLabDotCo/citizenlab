@@ -1239,6 +1239,18 @@
         }
       },
 
+      "statistical_insights": {
+        "type": "object",
+        "title": "Statistical insights for surveys and ideation",
+        "description": "Enables the use of statistical insights in an analysis for surveys and ideation",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": false },
+          "enabled": { "type": "boolean", "default": false }
+        }
+      },
+
       "multi_language_platform": {
         "type": "object",
         "title": "Multi-language platform",
@@ -1440,6 +1452,7 @@
     "large_summaries": ["analysis"],
     "ask_a_question": ["analysis"],
     "advanced_autotagging": ["analysis"],
+    "statistical_insights": ["analysis"],
     "import_printed_forms": ["input_importer"]
   },
   "definitions": {
