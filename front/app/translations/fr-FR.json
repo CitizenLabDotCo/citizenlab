@@ -1049,8 +1049,6 @@
   "app.containers.App.loading": "Chargement...",
   "app.containers.App.metaTitle1": "Plateforme de participation citoyenne | {orgName}",
   "app.containers.App.skipLinkText": "Aller directement au contenu principal",
-  "app.containers.AreaTerms.areaTerm": "lieu",
-  "app.containers.AreaTerms.areasTerm": "lieux",
   "app.containers.AuthProviders.emailTakenAndUserCanBeVerified": "Un compte avec cette adresse e-mail existe déjà. Vous pouvez vous déconnecter, vous connecter avec cette adresse e-mail et vérifier votre compte sur la page \"Mes réglages\".",
   "app.containers.Authentication.steps.AccessDenied.close": "Fermer",
   "app.containers.Authentication.steps.AccessDenied.youDoNotMeetTheRequirements": "Vous ne remplissez pas les conditions requises pour participer à ce processus.",
