@@ -814,6 +814,7 @@
   "app.containers.Admin.inspirationHub.ProjectDrawer.Phase.openEnded": "ਓਪਨ ਐਂਡਡ",
   "app.containers.Admin.inspirationHub.ProjectDrawer.Phase.readMore": "ਹੋਰ ਪੜ੍ਹੋ...",
   "app.containers.Admin.inspirationHub.ProjectDrawer.Phase.title": "ਪੜਾਅ {number}: {title}",
+  "app.containers.Admin.inspirationHub.ProjectDrawer.optOutCopy": "ਜੇਕਰ ਤੁਸੀਂ ਨਹੀਂ ਚਾਹੁੰਦੇ ਕਿ ਤੁਹਾਡਾ ਪ੍ਰੋਜੈਕਟ ਪ੍ਰੇਰਨਾ ਕੇਂਦਰ ਵਿੱਚ ਸ਼ਾਮਲ ਹੋਵੇ, ਤਾਂ ਆਪਣੇ GovSuccess ਮੈਨੇਜਰ ਨਾਲ ਸੰਪਰਕ ਕਰੋ।",
   "app.containers.Admin.inspirationHub.Proposals": "ਪ੍ਰਸਤਾਵ",
   "app.containers.Admin.inspirationHub.SortAndReset.Sort.sortBy": "ਦੇ ਨਾਲ ਕ੍ਰਮਬੱਧ",
   "app.containers.Admin.inspirationHub.SortAndReset.participants_asc": "ਭਾਗੀਦਾਰ (ਸਭ ਤੋਂ ਘੱਟ ਪਹਿਲਾਂ)",
