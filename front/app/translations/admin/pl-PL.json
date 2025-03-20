@@ -814,6 +814,7 @@
   "app.containers.Admin.inspirationHub.ProjectDrawer.Phase.openEnded": "Otwarty",
   "app.containers.Admin.inspirationHub.ProjectDrawer.Phase.readMore": "Czytaj więcej...",
   "app.containers.Admin.inspirationHub.ProjectDrawer.Phase.title": "Faza {number}: {title}",
+  "app.containers.Admin.inspirationHub.ProjectDrawer.optOutCopy": "Jeśli nie chcesz, aby Twój projekt znalazł się w centrum inspiracji, skontaktuj się ze swoim menedżerem GovSuccess.",
   "app.containers.Admin.inspirationHub.Proposals": "Propozycje",
   "app.containers.Admin.inspirationHub.SortAndReset.Sort.sortBy": "Sortuj według",
   "app.containers.Admin.inspirationHub.SortAndReset.participants_asc": "Uczestnicy (najpierw najniższa liczba)",
