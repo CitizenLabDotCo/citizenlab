@@ -10,6 +10,7 @@ module Analysis
 
     def after_create(analysis, user)
       LogActivityJob.perform_later(analysis, 'created', user, analysis.created_at.to_i)
+      HeatmapGenerationJob.perform_later(analysis)
       create_example_tags(analysis)
     end
 

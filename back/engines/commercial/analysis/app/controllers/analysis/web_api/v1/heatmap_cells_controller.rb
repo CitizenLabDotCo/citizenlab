@@ -11,7 +11,7 @@ module Analysis
           # This is a temporary mechanism to generate heatmap cells if they are
           # missing. Will be replaced by something smarter that triggers
           # generation soon
-          generate_heatmap_cells if @analysis.heatmap_cells.empty?
+          # generate_heatmap_cells if @analysis.heatmap_cells.empty?
 
           heatmap_cells = @analysis.heatmap_cells.includes(:row, :column)
           heatmap_cells = heatmap_cells.order(Arel.sql('abs(1 - lift) DESC'))
