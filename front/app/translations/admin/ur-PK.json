@@ -814,6 +814,7 @@
   "app.containers.Admin.inspirationHub.ProjectDrawer.Phase.openEnded": "کھلا ختم ہوا۔",
   "app.containers.Admin.inspirationHub.ProjectDrawer.Phase.readMore": "مزید پڑھیں...",
   "app.containers.Admin.inspirationHub.ProjectDrawer.Phase.title": "مرحلہ {number}: {title}",
+  "app.containers.Admin.inspirationHub.ProjectDrawer.optOutCopy": "اگر آپ نہیں چاہتے ہیں کہ آپ کا پروجیکٹ انسپیریشن ہب میں شامل ہو تو اپنے GovSuccess مینیجر سے رابطہ کریں۔",
   "app.containers.Admin.inspirationHub.Proposals": "تجاویز",
   "app.containers.Admin.inspirationHub.SortAndReset.Sort.sortBy": "ترتیب دیں",
   "app.containers.Admin.inspirationHub.SortAndReset.participants_asc": "شرکاء (سب سے کم پہلے)",
