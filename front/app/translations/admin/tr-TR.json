@@ -814,6 +814,7 @@
   "app.containers.Admin.inspirationHub.ProjectDrawer.Phase.openEnded": "Açık uçlu",
   "app.containers.Admin.inspirationHub.ProjectDrawer.Phase.readMore": "Daha fazlasını okuyun...",
   "app.containers.Admin.inspirationHub.ProjectDrawer.Phase.title": "Faz {number}: {title}",
+  "app.containers.Admin.inspirationHub.ProjectDrawer.optOutCopy": "Projenizin ilham merkezine dahil edilmesini istemiyorsanız, GovSuccess yöneticinize ulaşın.",
   "app.containers.Admin.inspirationHub.Proposals": "Teklifler",
   "app.containers.Admin.inspirationHub.SortAndReset.Sort.sortBy": "Göre sırala",
   "app.containers.Admin.inspirationHub.SortAndReset.participants_asc": "Katılımcılar (en düşük ilk)",
