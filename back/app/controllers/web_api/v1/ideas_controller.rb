@@ -3,13 +3,14 @@
 class WebApi::V1::IdeasController < ApplicationController
   include BlockingProfanity
 
+  SIMILARITIES_LIMIT = 5
+
   before_action :authorize_project_or_ideas, only: %i[index_xlsx]
   skip_before_action :authenticate_user # TODO: temp fix to pass tests
   skip_after_action :verify_authorized, only: %i[index_xlsx index_mini index_idea_markers filter_counts]
   skip_after_action :verify_authorized, only: %i[create], unless: -> { response.status == 400 }
   after_action :verify_policy_scoped, only: %i[index index_mini]
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
-  caches_action :similarities, expires_in: 10.minutes, cache_path: -> { request.query_parameters }
 
   def json_forms_schema
     input = Idea.find params[:id]
@@ -282,10 +283,9 @@ class WebApi::V1::IdeasController < ApplicationController
     body_threshold = phase_for_input.similarity_threshold_body
     scope = policy_scope(Idea)
     scope = scope.where(project_id: idea.project_id) if idea.project_id
-    # scope = scope.where.not(author: current_user)
-    similar_ideas = paginate service.similar_ideas(scope:, title_threshold:, body_threshold:)
+    similar_ideas = service.similar_ideas(scope:, title_threshold:, body_threshold:, limit: SIMILARITIES_LIMIT)
 
-    render json: linked_json(similar_ideas, WebApi::V1::IdeaSerializer, serialization_options_for(similar_ideas))
+    render json: WebApi::V1::IdeaSerializer.new(similar_ideas, serialization_options_for(similar_ideas)).serializable_hash
   end
 
   private
