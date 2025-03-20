@@ -86,6 +86,7 @@ const AdminProjectsProjectGeneral = () => {
   const { data: project } = useProjectById(projectId);
 
   const isProjectFoldersEnabled = useFeatureFlag({ name: 'project_folders' });
+  const isProjectLibraryEnabled = useFeatureFlag({ name: 'project_library' });
   const appConfigLocales = useAppConfigurationLocales();
   const { width, containerRef } = useContainerWidthAndHeight();
   const { pathname } = useLocation();
@@ -547,20 +548,22 @@ const AdminProjectsProjectGeneral = () => {
               handleTitleMultilocOnChange={handleTitleMultilocOnChange}
             />
           </Highlighter>
-          <Box mb="20px">
-            <Warning>
-              <FormattedMessage
-                {...messages.needInspiration}
-                values={{
-                  inspirationHubLink: (
-                    <Link to="/admin/inspiration-hub" target="_blank">
-                      <FormattedMessage {...messages.inspirationHub} />
-                    </Link>
-                  ),
-                }}
-              />
-            </Warning>
-          </Box>
+          {isProjectLibraryEnabled && (
+            <Box mb="20px">
+              <Warning>
+                <FormattedMessage
+                  {...messages.needInspiration}
+                  values={{
+                    inspirationHubLink: (
+                      <Link to="/admin/inspiration-hub" target="_blank">
+                        <FormattedMessage {...messages.inspirationHub} />
+                      </Link>
+                    ),
+                  }}
+                />
+              </Warning>
+            </Box>
+          )}
 
           {/* Only show this field when slug is already saved to project (i.e. not when creating a new project, which uses this form as well) */}
           {!isNilOrError(project) && slug && (

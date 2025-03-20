@@ -90,6 +90,8 @@ const PhaseParticipationConfig = ({
     name: 'microsoft_forms_surveys',
   });
 
+  const project_library_enabled = useFeatureFlag({ name: 'project_library' });
+
   const { formatMessage } = useIntl();
 
   const updateFormData = (fn: SetFn) => {
@@ -431,20 +433,22 @@ const PhaseParticipationConfig = ({
           apiErrors={apiErrors}
           handleParticipationMethodOnChange={handleParticipationMethodOnChange}
         />
-        <Box mb="20px">
-          <Warning>
-            <FormattedMessage
-              {...projectMessages.needInspiration}
-              values={{
-                inspirationHubLink: (
-                  <Link to="/admin/inspiration-hub" target="_blank">
-                    <FormattedMessage {...projectMessages.inspirationHub} />
-                  </Link>
-                ),
-              }}
-            />
-          </Warning>
-        </Box>
+        {project_library_enabled && (
+          <Box mb="20px">
+            <Warning>
+              <FormattedMessage
+                {...projectMessages.needInspiration}
+                values={{
+                  inspirationHubLink: (
+                    <Link to="/admin/inspiration-hub" target="_blank">
+                      <FormattedMessage {...projectMessages.inspirationHub} />
+                    </Link>
+                  ),
+                }}
+              />
+            </Warning>
+          </Box>
+        )}
 
         {participation_method === 'voting' && (
           <VotingInputs
