@@ -1,8 +1,11 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useState, useMemo } from 'react';
 
 import { Box, Input } from '@citizenlab/cl2-component-library';
 import { ControlProps, RankedTester, rankWith } from '@jsonforms/core';
 import { withJsonFormsControlProps } from '@jsonforms/react';
+import debounce from 'lodash/debounce';
+
+import SimilarIdeasList from 'containers/IdeasNewPage/SimilarIdeasList';
 
 import { FormLabel } from 'components/UI/FormComponents';
 
@@ -30,6 +33,15 @@ export const TitleControl = ({
   visible,
 }: ControlProps) => {
   const [didBlur, setDidBlur] = useState(false);
+  const [query, setQuery] = useState<string>('');
+
+  const debouncedSetQuery = useMemo(
+    () =>
+      debounce((val: string) => {
+        setQuery(val);
+      }, 400),
+    []
+  );
 
   const onChange = useCallback(
     (value: string) => {
@@ -37,8 +49,9 @@ export const TitleControl = ({
         path,
         schema.type === 'number' && value ? parseInt(value, 10) : value
       );
+      debouncedSetQuery(value);
     },
-    [schema.type, handleChange, path]
+    [handleChange, path, schema.type, debouncedSetQuery]
   );
 
   if (!visible) {
@@ -86,6 +99,7 @@ export const TitleControl = ({
         fieldPath={path}
         didBlur={didBlur}
       />
+      <SimilarIdeasList query={query} />
     </Box>
   );
 };
