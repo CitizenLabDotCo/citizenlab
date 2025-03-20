@@ -814,6 +814,7 @@
   "app.containers.Admin.inspirationHub.ProjectDrawer.Phase.openEnded": "penagored",
   "app.containers.Admin.inspirationHub.ProjectDrawer.Phase.readMore": "Darllen mwy...",
   "app.containers.Admin.inspirationHub.ProjectDrawer.Phase.title": "Cyfnod {number}: {title}",
+  "app.containers.Admin.inspirationHub.ProjectDrawer.optOutCopy": "Os nad ydych am i'ch prosiect gael ei gynnwys yn y ganolfan ysbrydoliaeth, cysylltwch â'ch rheolwr GovSuccess.",
   "app.containers.Admin.inspirationHub.Proposals": "Cynigion",
   "app.containers.Admin.inspirationHub.SortAndReset.Sort.sortBy": "Trefnu yn ôl",
   "app.containers.Admin.inspirationHub.SortAndReset.participants_asc": "Cyfranogwyr (yr isaf yn gyntaf)",
