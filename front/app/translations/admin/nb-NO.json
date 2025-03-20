@@ -814,6 +814,7 @@
   "app.containers.Admin.inspirationHub.ProjectDrawer.Phase.openEnded": "Åpen",
   "app.containers.Admin.inspirationHub.ProjectDrawer.Phase.readMore": "Les mer...",
   "app.containers.Admin.inspirationHub.ProjectDrawer.Phase.title": "Fase {number}: {title}",
+  "app.containers.Admin.inspirationHub.ProjectDrawer.optOutCopy": "Hvis du ikke ønsker at prosjektet ditt skal inkluderes i inspirasjonshuben, kan du ta kontakt med GovSuccess-administratoren din.",
   "app.containers.Admin.inspirationHub.Proposals": "Forslag",
   "app.containers.Admin.inspirationHub.SortAndReset.Sort.sortBy": "Sorter etter",
   "app.containers.Admin.inspirationHub.SortAndReset.participants_asc": "Deltakere (lavest først)",
