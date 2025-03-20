@@ -14,12 +14,17 @@ function useAreaTerms({ capitalized = false }: { capitalized?: boolean } = {}) {
   const localize = useLocalize();
 
   const settings = appConfig ? coreSettings(appConfig.data) : null;
-  const areaTerm = settings?.area_term
+  const localizedAreaTerm = settings?.area_term
     ? localize(settings.area_term)
-    : formatMessage(messages.areaTerm);
-  const areasTerm = settings?.areas_term
+    : '';
+  // if localizedAreaTerm is an empty string, we want to use the default area term
+  const areaTerm = localizedAreaTerm || formatMessage(messages.areaTerm);
+
+  const localizedAreasTerm = settings?.areas_term
     ? localize(settings.areas_term)
-    : formatMessage(messages.areasTerm);
+    : '';
+  // if localizedAreasTerm is an empty string, we want to use the default area term
+  const areasTerm = localizedAreasTerm || formatMessage(messages.areasTerm);
 
   return capitalized
     ? {
