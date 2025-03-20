@@ -1049,8 +1049,6 @@
   "app.containers.App.loading": "Yükleniyor...",
   "app.containers.App.metaTitle1": "Vatandaş katılım platformu | {orgName}",
   "app.containers.App.skipLinkText": "Ana içeriğe geç",
-  "app.containers.AreaTerms.areaTerm": "alan",
-  "app.containers.AreaTerms.areasTerm": "alanlar",
   "app.containers.AuthProviders.emailTakenAndUserCanBeVerified": "Bu e-posta adresine sahip bir hesap zaten mevcut. Oturumu kapatabilir, bu e-posta adresiyle giriş yapabilir ve ayarlar sayfasında hesabınızı doğrulayabilirsiniz.",
   "app.containers.Authentication.steps.AccessDenied.close": "Kapat",
   "app.containers.Authentication.steps.AccessDenied.youDoNotMeetTheRequirements": "Bu sürece katılmak için gereken şartları karşılamıyorsunuz.",
