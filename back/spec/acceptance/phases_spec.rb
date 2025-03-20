@@ -789,7 +789,13 @@ resource 'Phases' do
         expect(status).to eq 200
         expect(response_data[:type]).to eq 'sentiment_by_quarter'
         expect(response_data[:attributes]).to eq({
-          overall: { '2025-2': 2.0, '2025-1': 3.0 },
+          overall: {
+            averages: { '2025-1': 3.0, '2025-2': 2.0 },
+            totals: {
+              '2025-1': { '2': 1, '4': 1 },
+              '2025-2': { '1': 1, '3': 1 }
+            }
+          },
           categories: {
             averages: {
               quality_of_life: { '2025-2': 3.0, '2025-1': 2.0 },
