@@ -7,7 +7,7 @@ module Surveys
       @fields = IdeaCustomFieldsService.new(form).enabled_fields.select do |f|
         f.input_type == input_type || f.supports_average? # Defaults to returning all fields that support averages
       end
-      @inputs = phase.ideas.supports_survey.published
+      @inputs = phase.ideas.supports_survey.published.includes(:author)
       @phase = phase
     end
 
@@ -22,7 +22,10 @@ module Surveys
 
     def summary_averages_by_quarter
       averages = {
-        overall: overall_average_by_quarter
+        overall: {
+          averages: overall_average_by_quarter,
+          totals: totals_by_quarter
+        }
       }
       if @phase.pmethod.supports_custom_field_categories?
         averages[:categories] = {
@@ -51,9 +54,25 @@ module Surveys
       field_averages_by_quarter(custom_field_attribute: :question_category)
     end
 
+    def totals_by_quarter
+      field_keys = @fields.pluck(:key)
+      grouped_answers = all_answers.group_by { |a| a['quarter'] }
+      totals = grouped_answers.transform_values do |answers|
+        answers.each_with_object({}) do |answer, accu|
+          answer.each do |key, value|
+            next unless field_keys.include?(key)
+
+            accu[value] ||= 0
+            accu[value] += 1
+          end
+        end
+      end
+      order_by_quarter(totals)
+    end
+
     # Generate a flat object for each response including additional attributes
     def all_answers
-      @inputs.flat_map do |input|
+      @all_answers ||= @inputs.flat_map do |input|
         input.custom_field_values
           .merge({ 'quarter' => date_to_quarter(input.created_at) })
           .merge(input.author.custom_field_values)
@@ -84,7 +103,7 @@ module Surveys
     end
 
     def order_by_quarter(averages)
-      averages.sort_by {|k, _| -k }.to_h # Sort by earliest quarter first
+      averages.sort_by { |k, _| -k }.to_h # Sort by earliest quarter first
     end
 
     def date_to_quarter(date)
