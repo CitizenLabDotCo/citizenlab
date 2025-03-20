@@ -36,6 +36,7 @@ import useProjectBySlug from 'api/projects/useProjectBySlug';
 
 import useLocalize from 'hooks/useLocalize';
 
+import { triggerCommunityMonitorModal } from 'containers/App/CommunityMonitorModal/events';
 import ProfileVisiblity from 'containers/IdeasNewPage/IdeasNewIdeationForm/ProfileVisibility';
 
 import AnonymousParticipationConfirmationModal from 'components/AnonymousParticipationConfirmationModal';
@@ -259,6 +260,7 @@ const CLPageLayout = memo(
           clHistory.push({
             pathname: `/projects/${project?.data.attributes.slug}`,
           });
+          setTimeout(triggerCommunityMonitorModal, 2000);
         } else {
           clHistory.push({
             pathname: `/ideas/${idea?.data.attributes.slug}`,

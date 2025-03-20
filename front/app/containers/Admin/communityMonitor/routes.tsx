@@ -15,6 +15,7 @@ import CommunityMonitorSurveyFormBuilder from './CommunityMonitorFormBuilder';
 import AccessRights from './components/Settings/components/AccessRights';
 import CommunityMonitorManagement from './components/Settings/components/CommunityMonitorManagement';
 import SurveySettings from './components/Settings/components/SurveySettings';
+import PopupSettings from './components/Settings/components/SurveySettings/components/PopupSettings';
 
 const CommunityMonitor = lazy(() => import('./index'));
 
@@ -27,6 +28,7 @@ export enum communityMonitorRoutes {
   reports = 'reports',
   settings = 'settings',
   settingsSurvey = 'survey',
+  settingsPopup = 'popup',
   settingsAccessRights = 'access-rights',
   settingsModerators = 'moderators',
 }
@@ -39,6 +41,7 @@ export type communityMonitorRouteTypes =
   | `${AdminRoute<communityMonitorRoutes.communityMonitor>}/${communityMonitorRoutes.settings}`
   | `${AdminRoute<communityMonitorRoutes.communityMonitor>}/${communityMonitorRoutes.settings}/${communityMonitorRoutes.settingsSurvey}`
   | `${AdminRoute<communityMonitorRoutes.communityMonitor>}/${communityMonitorRoutes.settings}/${communityMonitorRoutes.settingsAccessRights}`
+  | `${AdminRoute<communityMonitorRoutes.communityMonitor>}/${communityMonitorRoutes.settings}/${communityMonitorRoutes.settingsPopup}`
   | `${AdminRoute<communityMonitorRoutes.communityMonitor>}/${communityMonitorRoutes.settings}/${communityMonitorRoutes.settingsModerators}`
   | `${AdminRoute<communityMonitorRoutes.communityMonitor>}/projects/${string}/phases/${string}/survey/edit`;
 
@@ -90,6 +93,14 @@ const communityMonitorsRoutes = () => {
                 <>
                   <SurveySettings />
                 </>
+              </PageLoading>
+            ),
+          },
+          {
+            path: communityMonitorRoutes.settingsPopup,
+            element: (
+              <PageLoading>
+                <PopupSettings />
               </PageLoading>
             ),
           },
