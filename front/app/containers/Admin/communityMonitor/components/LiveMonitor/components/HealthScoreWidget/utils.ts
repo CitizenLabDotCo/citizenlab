@@ -9,6 +9,7 @@ export const categoryColors = {
   quality_of_life: colors.teal400,
   service_delivery: colors.blue400,
   governance_and_trust: colors.brown,
+  other: colors.grey700,
 };
 
 // transformSentimentScoreData:

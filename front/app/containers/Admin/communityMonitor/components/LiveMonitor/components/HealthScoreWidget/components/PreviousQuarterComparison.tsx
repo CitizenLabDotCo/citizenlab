@@ -37,7 +37,7 @@ const PreviousQuarterComparison = ({ sentimentScores }: Props) => {
     <>
       <TrendIndicator
         percentageDifference={percentageDifference}
-        showQuarterLabel={true}
+        showQuarterComparisonLabel={true}
       />
     </>
   );

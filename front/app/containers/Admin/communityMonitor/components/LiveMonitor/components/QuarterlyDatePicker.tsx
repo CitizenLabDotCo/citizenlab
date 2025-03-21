@@ -25,6 +25,7 @@ const QuarterlyDatePicker = () => {
     initialQuarter ? parseInt(initialQuarter, 10) : currentQuarter
   );
 
+  // When the user selects a new time period, update the URL
   useEffect(() => {
     setSearchParams({ year: year.toString(), quarter: quarter.toString() });
   }, [year, quarter, setSearchParams]);

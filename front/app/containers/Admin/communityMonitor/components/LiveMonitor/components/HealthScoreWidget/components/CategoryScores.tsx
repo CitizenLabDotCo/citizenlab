@@ -7,7 +7,7 @@ import { getPercentageDifference } from 'components/admin/FormResults/FormResult
 import TrendIndicator from 'components/TrendIndicator';
 
 import { QuarterlyScores } from '../types';
-import { categoryColors } from '../utils';
+import { categoryColors, getYearFilter, getQuarterFilter } from '../utils';
 
 type Props = {
   sentimentScores: QuarterlyScores | null;
@@ -16,81 +16,73 @@ type Props = {
 const CategoryScores = ({ sentimentScores }: Props) => {
   const [search] = useSearchParams();
 
-  // Get the year and quarter
-  const year = search.get('year') || new Date().getFullYear().toString();
-  const quarter =
-    search.get('quarter') ||
-    (Math.floor(new Date().getMonth() / 3) + 1).toString();
-
+  // Extract year and quarter from search params or defaults
+  const year = getYearFilter(search);
+  const quarter = getQuarterFilter(search);
   const periodKey = `${year}-${quarter}`;
+
+  // Helper function to get score data for a category
+  const getCategoryScoreData = (
+    scores: { period: string; score: number }[]
+  ) => {
+    const currentIndex = scores.findIndex(({ period }) => period === periodKey);
+    const currentScore = scores[currentIndex]?.score ?? null;
+    const previousScore = scores[currentIndex - 1]?.score ?? null;
+    return {
+      currentScore,
+      percentageDifference: getPercentageDifference(
+        currentScore,
+        previousScore
+      ),
+    };
+  };
 
   return (
     <Box display="flex" mt="12px">
-      {sentimentScores?.categoryHealthScores.map((categoryScore) => {
-        const categoryScoreValue = categoryScore.scores.find(
-          (score) => score.period === periodKey
-        )?.score;
+      {sentimentScores?.categoryHealthScores.map(
+        ({ category, localizedLabel, scores }) => {
+          const { currentScore, percentageDifference } =
+            getCategoryScoreData(scores);
 
-        const currentCategoryScoreIndex = categoryScore.scores.findIndex(
-          (score) => score.period === periodKey
-        );
-
-        const previousCategoryScoreValue =
-          categoryScore.scores[currentCategoryScoreIndex - 1]?.score;
-        const currentCategoryScoreValue =
-          categoryScore.scores[currentCategoryScoreIndex]?.score;
-
-        const percentageDifferenceValue = getPercentageDifference(
-          currentCategoryScoreValue,
-          previousCategoryScoreValue
-        );
-
-        return (
-          <Box key={categoryScore.category} mr="30px">
-            <Box>
-              <Box display="flex">
+          return (
+            <Box key={category} mr="28px">
+              {/* Category Label */}
+              <Box display="flex" alignItems="center">
                 <Icon
-                  my="auto"
                   height="18px"
                   name="dot"
-                  fill={categoryColors[categoryScore.category]}
+                  fill={categoryColors[category]}
                 />
                 <Text m="0px" fontWeight="bold" fontSize="s">
-                  {categoryScore.localizedLabel}
+                  {localizedLabel}
                 </Text>
               </Box>
 
-              <Box display="flex" justifyContent="flex-start" mt="8px" ml="8px">
+              {/* Score Display */}
+              <Box display="flex" alignItems="center" ml="8px">
                 <Text
                   m="0px"
                   fontSize="xl"
-                  mt="auto"
-                  mr="4px"
                   fontWeight="bold"
                   lineHeight="1"
-                  color={categoryScoreValue ? 'textPrimary' : 'coolGrey300'}
+                  mr="4px"
+                  color={currentScore ? 'textPrimary' : 'coolGrey300'}
                 >
-                  {categoryScoreValue || '?'}
+                  {currentScore || '?'}
                 </Text>
-                <Text
-                  fontWeight="semi-bold"
-                  m="0px"
-                  mt="auto"
-                  fontSize="m"
-                  lineHeight="1"
-                >
+                <Text fontWeight="semi-bold" fontSize="m" lineHeight="1">
                   /5
                 </Text>
               </Box>
+
+              {/* Trend Indicator */}
+              <Box mt="4px" ml="12px">
+                <TrendIndicator percentageDifference={percentageDifference} />
+              </Box>
             </Box>
-            <Box mt="4px" ml="12px" display="flex" justifyContent="flex-start">
-              <TrendIndicator
-                percentageDifference={percentageDifferenceValue}
-              />
-            </Box>
-          </Box>
-        );
-      })}
+          );
+        }
+      )}
     </Box>
   );
 };

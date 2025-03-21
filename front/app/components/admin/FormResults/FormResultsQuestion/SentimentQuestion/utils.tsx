@@ -18,23 +18,15 @@ export type SentimentAnswers = SentimentAnswer[] | undefined;
 export const parseResult = (
   result: ResultUngrouped | ResultGrouped
 ): SentimentAnswers => {
-  const usersNoAnswer = result.answers?.[5].count; // Assumes index 5 corresponds to "no answer"
-  const totalUsersWhoAnswered = usersNoAnswer
-    ? result.totalPickCount - usersNoAnswer
-    : result.totalPickCount;
+  const usersNoAnswer = result.answers?.[5]?.count ?? 0; // Index 5 assumed to be "no answer"
+  const totalUsersWhoAnswered = result.totalPickCount - usersNoAnswer;
 
-  const { multilocs } = result;
-
-  return result.answers?.map((answer) => {
-    const resultValue = answer.answer;
-
-    return {
-      answer: resultValue && parseInt(resultValue.toString(), 10),
-      count: answer.count,
-      percentage: Math.round((answer.count / totalUsersWhoAnswered) * 100),
-      label: resultValue && multilocs?.answer[resultValue].title_multiloc,
-    };
-  });
+  return result.answers?.map(({ answer, count }) => ({
+    answer: answer ? parseInt(answer.toString(), 10) : null,
+    count,
+    percentage: Math.round((count / totalUsersWhoAnswered) * 100),
+    label: answer ? result.multilocs?.answer[answer].title_multiloc : undefined,
+  }));
 };
 
 // getSentimentGroupColour:

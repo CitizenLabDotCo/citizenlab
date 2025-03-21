@@ -31,11 +31,13 @@ const Comments = ({
   const { formatMessage } = useIntl();
   const isTabletOrSmaller = useBreakpoint('tablet');
 
-  // Get the project and phase id from either the URL params or props (when community monitor)
+  // Get the relevant project and phase id from the URL
   const { projectId: projectIdParam, phaseId: phaseIdParam } = useParams() as {
     projectId: string;
     phaseId: string;
   };
+
+  // If no URL params are provided, fetch the community monitor project
   const { data: project } = useCommunityMonitorProject({
     enabled: !phaseIdParam && !projectIdParam,
   });
