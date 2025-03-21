@@ -268,6 +268,16 @@ export default defineMessages({
     defaultMessage:
       'Adding custom content is not part of your current license. Reach out to your GovSuccess Manager to learn more about it.',
   },
+  pageCannotBeDeletedNorNewFieldsAdded: {
+    id: 'app.components.formBuilder.pageCannotBeDeletedNorNewFieldsAdded',
+    defaultMessage:
+      'This page cannot be deleted and does not allow any additional fields to be added.',
+  },
+  pageDoesNotAllowNewFieldsToBeAdded: {
+    id: 'app.components.formBuilder.pageDoesNotAllowNewFieldsToBeAdded',
+    defaultMessage:
+      'This page does not allow any additional fields to be added.',
+  },
   pageCannotBeDeleted: {
     id: 'app.components.formBuilder.pageCannotBeDeleted',
     defaultMessage: "This page can't be deleted.",

@@ -58,6 +58,7 @@ type Props = {
   fieldNumbers: Record<string, number>;
   closeSettings: (triggerAutosave?: boolean) => void;
   conflicts?: Conflict[];
+  hasFullPageRestriction: boolean;
 };
 
 export const FormField = ({
@@ -68,6 +69,7 @@ export const FormField = ({
   fieldNumbers,
   closeSettings,
   conflicts,
+  hasFullPageRestriction,
 }: Props) => {
   const {
     watch,
@@ -347,6 +349,7 @@ export const FormField = ({
                   hasErrors={hasErrors}
                   field={field}
                   fieldNumber={fieldNumbers[field.id]}
+                  hasFullPageRestriction={hasFullPageRestriction}
                 />
               </Box>
             </Box>
