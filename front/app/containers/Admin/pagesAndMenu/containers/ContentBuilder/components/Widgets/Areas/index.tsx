@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Box } from '@citizenlab/cl2-component-library';
+import { Box, useBreakpoint } from '@citizenlab/cl2-component-library';
 import { Multiloc } from 'typings';
 
 import useAuthUser from 'api/me/useAuthUser';
@@ -36,6 +36,7 @@ const Areas = ({ titleMultiloc }: Props) => {
   });
   const { data: authUser } = useAuthUser();
   const projects = miniProjects?.pages.map((page) => page.data).flat();
+  const isSmallerThanPhone = useBreakpoint('phone');
 
   if (!followEnabled || !authUser) return null;
 
@@ -48,16 +49,25 @@ const Areas = ({ titleMultiloc }: Props) => {
 
   return (
     <CarrouselContainer className="e2e-areas-widget">
-      <Box display="flex" alignItems="center">
-        <CarrouselTitle>{title}</CarrouselTitle>
-        <Box
-          // mb needed to vertically align with the carrousel title
-          mb="10px"
-          ml="auto"
-        >
-          <FollowAreasButtonWithModal />
+      {isSmallerThanPhone ? (
+        <Box display="flex" flexDirection="column" alignItems="flex-start">
+          <CarrouselTitle mb="4px">{title}</CarrouselTitle>
+          <Box mb="12px">
+            <FollowAreasButtonWithModal />
+          </Box>
         </Box>
-      </Box>
+      ) : (
+        <Box display="flex" alignItems="center">
+          <CarrouselTitle>{title}</CarrouselTitle>
+          <Box
+            // mb needed to vertically align with the carrousel title
+            mb="10px"
+            ml="auto"
+          >
+            <FollowAreasButtonWithModal />
+          </Box>
+        </Box>
+      )}
       {!projects || projects.length === 0 ? (
         <EmptyState />
       ) : (

@@ -1,6 +1,11 @@
 import React, { useState } from 'react';
 
-import { Button, Box, colors } from '@citizenlab/cl2-component-library';
+import {
+  Button,
+  Box,
+  colors,
+  useBreakpoint,
+} from '@citizenlab/cl2-component-library';
 
 import useAreasWithProjectsCounts from 'api/areas/useAreasWithProjectsCounts';
 
@@ -22,6 +27,7 @@ const FollowAreasButtonWithModal = () => {
   const { areasTerm: capitalizedAreasTerm } = useAreaTerms({
     capitalized: true,
   });
+  const isSmallerThanPhone = useBreakpoint('phone');
 
   if (!areasWithProjectCount) return null;
 
@@ -43,7 +49,7 @@ const FollowAreasButtonWithModal = () => {
           capitalizedAreasTerm,
         })}
       >
-        <Box p="32px">
+        <Box p={isSmallerThanPhone ? '16px' : '32px'}>
           <Box mb="24px">
             <Warning>
               {formatMessage(messages.areaButtonsInfo1, {
