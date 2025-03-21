@@ -8,13 +8,13 @@ import {
 } from '@citizenlab/cl2-component-library';
 import { isNil } from 'lodash-es';
 
-import { ResultGrouped, ResultUngrouped } from 'api/survey_results/types';
+import { ResultUngrouped } from 'api/survey_results/types';
 
 import Comments from './components/Comments';
 import SentimentResultTitle from './components/SentimentResultTitle';
 
 type Props = {
-  result: ResultUngrouped | ResultGrouped;
+  result: ResultUngrouped;
   showAnalysis?: boolean;
 };
 

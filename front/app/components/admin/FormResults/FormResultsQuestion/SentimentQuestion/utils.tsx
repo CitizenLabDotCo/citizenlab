@@ -2,7 +2,7 @@ import { colors } from '@citizenlab/cl2-component-library';
 import { lighten } from 'polished';
 import { Multiloc } from 'typings';
 
-import { ResultGrouped, ResultUngrouped } from 'api/survey_results/types';
+import { ResultUngrouped } from 'api/survey_results/types';
 
 export type SentimentAnswer = {
   answer: number | null;
@@ -15,9 +15,7 @@ export type SentimentAnswers = SentimentAnswer[] | undefined;
 
 // parseResult:
 // Parses survey results and extracts sentiment-related data.
-export const parseResult = (
-  result: ResultUngrouped | ResultGrouped
-): SentimentAnswers => {
+export const parseResult = (result: ResultUngrouped): SentimentAnswers => {
   return result.answers?.map(({ answer, count }) => ({
     answer: answer ? parseInt(answer.toString(), 10) : null,
     count,
@@ -51,8 +49,8 @@ export const getSentimentValueColour = (answer: number): string | undefined =>
 // getPercentageDifference:
 // Calculates the percentage difference between two periods.
 export const getPercentageDifference = (
-  thisPeriodAvg?: number,
-  lastPeriodAvg?: number
+  thisPeriodAvg?: number | null,
+  lastPeriodAvg?: number | null
 ): number | null => {
   if (!thisPeriodAvg || !lastPeriodAvg) {
     return null;
