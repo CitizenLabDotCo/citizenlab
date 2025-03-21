@@ -60,8 +60,8 @@ RSpec.describe CustomFieldBins::RangeBin do
 
     context 'when bins do not exist' do
       let!(:custom_field) { create(:custom_field_number) }
-      let!(:low_user) { create(:user, custom_field_values: {custom_field.key => 5})}
-      let!(:high_user) { create(:user, custom_field_values: {custom_field.key => 20})}
+      let!(:low_user) { create(:user, custom_field_values: { custom_field.key => 5 }) }
+      let!(:high_user) { create(:user, custom_field_values: { custom_field.key => 20 }) }
 
       it 'creates bins for the specified range and bin count' do
         expect do
@@ -70,7 +70,7 @@ RSpec.describe CustomFieldBins::RangeBin do
 
         bins = described_class.all
         expect(bins.size).to eq(4)
-        
+
         ranges = bins.map(&:range)
         expect(ranges).to include(5...9)
         expect(ranges).to include(9...13)
@@ -85,7 +85,7 @@ RSpec.describe CustomFieldBins::RangeBin do
 
         bins = described_class.all
         expect(bins.size).to eq(2)
-        
+
         ranges = bins.map(&:range)
         expect(ranges).to include(10...30)
         expect(ranges).to include(30...50)
@@ -98,5 +98,4 @@ RSpec.describe CustomFieldBins::RangeBin do
       end
     end
   end
-
 end
