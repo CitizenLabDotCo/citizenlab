@@ -10,11 +10,7 @@ module ReportBuilder
       **_other_props
     )
       sessions = ImpactTracking::Session.where(created_at: start_at..end_at)
-
-      if project_id.present?
-        sessions_with_project = ImpactTracking::Pageview.where(project_id: project_id).select(:session_id)
-        sessions = sessions.where(id: sessions_with_project)
-      end
+      sessions = apply_project_filter_if_needed(sessions, project_id)
 
       time_series = sessions
         .select(
@@ -30,6 +26,42 @@ module ReportBuilder
           }
         end
 
+      stats = calculate_stats(sessions)
+
+      response = {
+        time_series: time_series,
+        **stats
+      }
+
+      # If compare_start_at and compare_end_at are present:
+      if compare_start_at.present? && compare_end_at.present?
+        compare_sessions = ImpactTracking::Session.where(created_at: compare_start_at..compare_end_at)
+        compare_sessions = apply_project_filter_if_needed(compare_sessions, project_id)
+
+        compare_stats = calculate_stats(compare_sessions)
+
+        response = {
+          **response,
+          compare_visits_total: compare_stats[:visits_total],
+          compare_visitors_total: compare_stats[:visitors_total],
+          compare_avg_seconds_on_page: compare_stats[:avg_seconds_on_page],
+          compare_avg_pages_visited: compare_stats[:avg_pages_visited]
+        }
+      end
+
+      response
+    end
+
+    def apply_project_filter_if_needed(sessions, project_id)
+      if project_id.present?
+        sessions_with_project = ImpactTracking::Pageview.where(project_id: project_id).select(:session_id)
+        sessions = sessions.where(id: sessions_with_project)
+      end
+
+      sessions
+    end
+
+    def calculate_stats(sessions)
       # Total number of visits and visitors
       visits_total = sessions.count
       visitors_total = sessions.distinct.pluck(:monthly_user_hash).count
@@ -64,13 +96,7 @@ module ReportBuilder
       # Avg pages visited per sessions
       avg_pages_visited = pageviews.count / visits_total
 
-      # If compare_start_at and compare_end_at are present:
-      if compare_start_at.present? && compare_end_at.present?
-        # TODO
-      end
-
       {
-        time_series: time_series,
         visits_total: visits_total,
         visitors_total: visitors_total,
         avg_seconds_on_page: avg_seconds_on_page,
