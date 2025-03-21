@@ -174,7 +174,6 @@ module Permissions
     # Helper methods
 
     def posting_limit_reached?
-      # TODO: Make the default start of the phase?
       allow_posting_again_after = phase.pmethod.allow_posting_again_after || 10.years
       return false if allow_posting_again_after == 0.seconds
 
@@ -189,6 +188,7 @@ module Permissions
         # Check cookies for author_hashes for the 'everyone' permission
         # NOTE: tracking_hashes will only ever be present if pmethod.supports_everyone_tracking? is true
         tracking_hashes = Permissions::EveryoneTrackingService.new(request_headers, user, phase).tracking_hashes_from_headers
+
         return true if tracking_hashes && phase.ideas.published_after(allow_posting_again_after.ago).exists?(author_hash: tracking_hashes)
       end
 

@@ -1749,18 +1749,50 @@ resource 'Projects' do
       end
     end
 
-    context 'when resident' do
-      let!(:project) { create(:project, internal_role: 'community_monitor') }
+    context 'when logged out resident' do
+      # TODO: JS Changed this in another branch to allow residents to see the project - which branch?
+      context 'project does not exist' do
+        example '[Error] Get community monitor project returns unauthorised' do
+          do_request
+          assert_status 401
+        end
+      end
 
-      before { resident_header_token }
+      context 'hidden community monitor project exists' do
+        let!(:phase) do
+          phase = create(:community_monitor_survey_phase, with_permissions: true)
+          project = phase.project
+          phase.permissions.first.update!(permitted_by: 'everyone')
+          settings = AppConfiguration.instance.settings
+          settings['community_monitor'] = { 'enabled' => true, 'allowed' => true, 'project_id' => project.id }
+          AppConfiguration.instance.update!(settings:)
+          phase
+        end
 
-      example '[Error] Get community monitor project returns unauthorised' do
-        settings = AppConfiguration.instance.settings
-        settings['community_monitor'] = { 'enabled' => true, 'allowed' => true, 'project_id' => project.id }
-        AppConfiguration.instance.update!(settings:)
+        example 'Get community monitor project' do
+          do_request
+          assert_status 200
+        end
 
-        do_request
-        assert_status 401
+        context 'Survey has already been submitted' do
+          # See also ideas_create_spec for the same use of author_hash
+          let!(:author_hash) do
+            user_agent = 'User-Agent: Mozilla/5.0'
+            ip = '1.2.3.4'
+            Idea.create_author_hash(ip + user_agent, phase.project.id, true)
+          end
+          let!(:response) { create(:native_survey_response, project: phase.project, creation_phase: phase, author: nil, author_hash: author_hash) }
+
+          example 'Get community monitor project when survey already submitted' do
+            header 'User-Agent', 'User-Agent: Mozilla/5.0'
+            header 'X-Forwarded-For', '1.2.3.4'
+            do_request
+            assert_status 200
+
+            disabled_reason = response_data.dig(:attributes, :action_descriptors, :posting_idea, :disabled_reason)
+            expect(disabled_reason).to eq 'posting_limited_max_reached'
+          end
+        end
       end
     end
   end

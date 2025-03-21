@@ -14,6 +14,11 @@ class Permissions::EveryoneTrackingService
     cookie_hashes = @request.cookies[@phase.id]
     tracking_hashes = []
 
+    # TODO: If cookies are allowed then we can set the author hash to anything
+
+    # If true then reject - if contains hashes then check ideas
+    # If no cookie then just create an author hash from the user agent and ip - but do we still check it?
+
     if cookie_hashes.present?
       tracking_hashes = cookie_hashes.split(',')
     elsif @request.ip && @request.user_agent
