@@ -52,13 +52,18 @@ export const getPercentageDifference = (
   thisPeriodAvg?: number | null,
   lastPeriodAvg?: number | null
 ): number | null => {
-  if (!thisPeriodAvg || !lastPeriodAvg) {
+  // Return null if either value is null or undefined
+  if (thisPeriodAvg == null || lastPeriodAvg == null) {
     return null;
   }
 
-  return lastPeriodAvg === 0
-    ? 0
-    : ((thisPeriodAvg - lastPeriodAvg) / lastPeriodAvg) * 100;
+  // Return 0 if lastPeriodAvg is 0 to avoid division by zero
+  if (lastPeriodAvg === 0) {
+    return 0;
+  }
+
+  // Calculate the percentage difference
+  return ((thisPeriodAvg - lastPeriodAvg) / lastPeriodAvg) * 100;
 };
 
 // getTrendColorName:

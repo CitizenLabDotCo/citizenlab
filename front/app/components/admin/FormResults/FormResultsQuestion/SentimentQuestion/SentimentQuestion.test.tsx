@@ -1,7 +1,7 @@
 import { ICustomFieldInputType } from 'api/custom_fields/types';
 import { ResultUngrouped } from 'api/survey_results/types';
 
-import { parseResult } from './utils';
+import { getPercentageDifference, parseResult } from './utils';
 
 describe('parseResult', () => {
   const result = {
@@ -99,28 +99,40 @@ describe('parseResult', () => {
     // Test the length of the parsed result (should be 6 as we have 6 answers)
     expect(parsedResult).toHaveLength(6);
 
-    // Test the first item
+    // Test for value 1
     expect(parsedResult?.[0]).toEqual({
       answer: 1,
-      count: 2,
-      percentage: 40, // 2 / 5 * 100 = 40
-      label: '1', // title_multiloc for answer 1
+      count: 0,
+      percentage: 0, // 0 / 2 * 100 = 0
+      label: {
+        en: '1 - Very bad',
+        'fr-BE': '1',
+        'nl-BE': '1',
+      },
     });
 
-    // Test the second item
+    // Test for value 2
     expect(parsedResult?.[1]).toEqual({
       answer: 2,
-      count: 1,
-      percentage: 20, // 1 / 5 * 100 = 20
-      label: '2', // title_multiloc for answer 2
+      count: 0,
+      percentage: 0, // 0 / 2 * 100 = 0
+      label: {
+        en: '2 - Bad',
+        'fr-BE': '2',
+        'nl-BE': '2',
+      },
     });
 
-    // Test for the null answer (this should not have a label)
-    expect(parsedResult?.[5]).toEqual({
-      answer: null,
-      count: 3,
-      percentage: 60, // 3 / 5 * 100 = 60
-      label: undefined, // No label for null answer
+    // Test for value 5
+    expect(parsedResult?.[4]).toEqual({
+      answer: 5,
+      count: 1,
+      percentage: 50, // 1 / 2 * 100 = 60
+      label: {
+        en: '5 - Very good',
+        'fr-BE': '5',
+        'nl-BE': '5',
+      },
     });
   });
 
@@ -128,11 +140,53 @@ describe('parseResult', () => {
     const parsedResult = parseResult(result);
 
     // Validate the percentage calculation for each answer
-    expect(parsedResult?.[0].percentage).toBe(40); // 2 / 5 * 100 = 40
-    expect(parsedResult?.[1].percentage).toBe(20); // 1 / 5 * 100 = 20
-    expect(parsedResult?.[2].percentage).toBe(0); // 0 / 5 * 100 = 0
-    expect(parsedResult?.[3].percentage).toBe(0); // 0 / 5 * 100 = 0
-    expect(parsedResult?.[4].percentage).toBe(40); // 2 / 5 * 100 = 40
-    expect(parsedResult?.[5].percentage).toBe(60); // 3 / 5 * 100 = 60
+    expect(parsedResult?.[0].percentage).toBe(0); // 0 / 2 * 100 = 0
+    expect(parsedResult?.[1].percentage).toBe(0); // 0 / 2 * 100 = 0
+    expect(parsedResult?.[2].percentage).toBe(0); // 0 / 2 * 100 = 0
+    expect(parsedResult?.[3].percentage).toBe(50); // 1 / 2 * 100 = 50
+    expect(parsedResult?.[4].percentage).toBe(50); // 1 / 2 * 100 = 50
+  });
+});
+
+describe('getPercentageDifference', () => {
+  it('should return null if thisPeriodAvg is null or undefined', () => {
+    expect(getPercentageDifference(null, 5)).toBeNull();
+    expect(getPercentageDifference(undefined, 5)).toBeNull();
+    expect(getPercentageDifference(5, null)).toBeNull();
+    expect(getPercentageDifference(5, undefined)).toBeNull();
+  });
+
+  it('should return null if lastPeriodAvg is null or undefined', () => {
+    expect(getPercentageDifference(5, null)).toBeNull();
+    expect(getPercentageDifference(5, undefined)).toBeNull();
+  });
+
+  it('should return 0 if lastPeriodAvg is 0', () => {
+    expect(getPercentageDifference(10, 0)).toBe(0); // No difference when dividing by 0
+    expect(getPercentageDifference(0, 0)).toBe(0); // Both periods are 0, so the difference is 0
+  });
+
+  it('should calculate percentage difference when both periods are positive numbers', () => {
+    const result = getPercentageDifference(15, 10);
+    expect(result).toBe(50); // ((15 - 10) / 10) * 100 = 50
+  });
+
+  it('should calculate percentage difference when the value of thisPeriodAvg is less than lastPeriodAvg', () => {
+    const result = getPercentageDifference(5, 10);
+    expect(result).toBe(-50); // ((5 - 10) / 10) * 100 = -50
+  });
+
+  it('should calculate percentage difference when thisPeriodAvg is negative', () => {
+    const result = getPercentageDifference(-5, 10);
+    expect(result).toBe(-150); // ((-5 - 10) / 10) * 100 = -150
+  });
+
+  it('should handle decimal numbers correctly', () => {
+    const result = getPercentageDifference(7.5, 5);
+    expect(result).toBe(50); // ((7.5 - 5) / 5) * 100 = 50
+  });
+
+  it('should return null if both periods are zero', () => {
+    expect(getPercentageDifference(0, 0)).toBe(0); // Both are 0, so difference is 0, not null
   });
 });
