@@ -36,14 +36,14 @@ namespace :single_use do
         # Get the last field of the survey, check if it's already the correct last page.
         # If so, skip this form
         last_field = custom_fields.last
-        next if last_field.input_type == 'page' && last_field.key == 'survey_end'
+        next if last_field.input_type == 'page' && last_field.key == 'form_end'
 
         # Create the new last page
         multiloc_service = MultilocService.new
 
         last_page = CustomField.new(
           id: SecureRandom.uuid,
-          key: 'survey_end',
+          key: 'form_end',
           resource: custom_form,
           input_type: 'page',
           page_layout: 'default',
@@ -65,12 +65,12 @@ namespace :single_use do
           next
         end
 
-        # Replace previous mentions of 'survey_end' with the new last page id
+        # Replace previous mentions of 'form_end' with the new last page id
         custom_fields.each do |field|
           original_field = field.deep_dup
 
           if field.input_type == 'page'
-            if field.logic['next_page_id'] == 'survey_end'
+            if field.logic['next_page_id'] == 'form_end'
               field.logic['next_page_id'] = last_page.id
               save_field_and_report(original_field, field, reporter, tenant)
             end
@@ -80,7 +80,7 @@ namespace :single_use do
             rules = field.logic['rules']
             if rules.present?
               rules.each do |rule|
-                if rule['goto_page_id'] == 'survey_end'
+                if rule['goto_page_id'] == 'form_end'
                   rule['goto_page_id'] = last_page.id
                   any_field_updated = true
                 end

@@ -168,12 +168,12 @@ cy:
       attachments:
         title: Ymlyniadau
         description:
-      section1:
+      page1:
         description:
-      section2:
+      page2:
         title: Delweddau ac atodiadau
         description:
-      section3:
+      page3:
         title: Manylion
         description:
       other_input_field:

@@ -67,8 +67,6 @@ export type FormBuilderConfig = {
     handleClose: () => void
   ) => void;
 
-  groupingType: 'page' | 'section';
-
   onDownloadPDF?: () => void;
 };
 
@@ -183,8 +181,6 @@ export function getAdditionalSettings(
           />
         </>
       );
-    case 'section':
-      return <FieldGroupSettings locale={platformLocale} field={field} />;
     case 'linear_scale':
     case 'rating':
       return (
@@ -270,9 +266,6 @@ const getInputTypeStringKey = (
     case 'page':
       translatedStringKey = messages.page;
       break;
-    case 'section':
-      translatedStringKey = messages.section;
-      break;
     case 'number':
       translatedStringKey = messages.number;
       break;
@@ -331,5 +324,5 @@ export const findNextPageAfterCurrentPage = (
       .find((item) => item.input_type === 'page');
     if (nextPage?.id) return nextPage.id;
   }
-  return 'survey_end';
+  return 'form_end';
 };

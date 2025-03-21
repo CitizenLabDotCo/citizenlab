@@ -135,6 +135,9 @@ describe('Project topics', () => {
   });
 
   describe('Project topic settings', () => {
+    const title = randomString(12);
+    const description = randomString(42);
+
     it('Adding a topic to a project makes it available in the idea form', () => {
       const topicTitle = randomString();
 
@@ -158,6 +161,19 @@ describe('Project topics', () => {
 
       // Go to idea form for our project
       cy.visit(`projects/${projectSlug}/ideas/new?phase_id=${phaseId}`);
+      cy.acceptCookies();
+
+      // Fill in the title and description since these are required
+      cy.get('#e2e-idea-title-input input').type(title);
+      cy.get('#e2e-idea-title-input input').should('contain.value', title);
+      cy.get('#e2e-idea-description-input .ql-editor').type(description);
+      cy.get('#e2e-idea-description-input .ql-editor').contains(description);
+
+      // Go to the next page of the idea form
+      cy.get('[data-cy="e2e-next-page"]').should('be.visible').click();
+
+      // Go to the page with topics
+      cy.get('[data-cy="e2e-next-page"]').should('be.visible').click();
 
       // Verify the topic is selectable in the topic selector
       cy.get('.e2e-topics-picker');
@@ -187,6 +203,19 @@ describe('Project topics', () => {
 
       // Go to idea form for our project
       cy.visit(`projects/${projectSlug}/ideas/new?phase_id=${phaseId}`);
+      cy.acceptCookies();
+
+      // Fill in the title and description since these are required
+      cy.get('#e2e-idea-title-input input').type(title);
+      cy.get('#e2e-idea-title-input input').should('contain.value', title);
+      cy.get('#e2e-idea-description-input .ql-editor').type(description);
+      cy.get('#e2e-idea-description-input .ql-editor').contains(description);
+
+      // Go to the next page of the idea form
+      cy.get('[data-cy="e2e-next-page"]').should('be.visible').click();
+
+      // Go to the page with topics (Page 3 for now)
+      cy.get('[data-cy="e2e-next-page"]').should('be.visible').click();
 
       // Verify the topic is selectable in the topic selector
       cy.get('.e2e-topics-picker');
@@ -208,6 +237,18 @@ describe('Project topics', () => {
 
       // Go to idea form for our project
       cy.visit(`projects/${projectSlug}/ideas/new?phase_id=${phaseId}`);
+
+      cy.get('#e2e-idea-title-input input').type(title);
+      cy.get('#e2e-idea-title-input input').should('contain.value', title);
+
+      cy.get('#e2e-idea-description-input .ql-editor').type(description);
+      cy.get('#e2e-idea-description-input .ql-editor').contains(description);
+
+      // Go to the next page of the idea form
+      cy.get('[data-cy="e2e-next-page"]').should('be.visible').click();
+
+      // Go to the page with topics
+      cy.get('[data-cy="e2e-next-page"]').should('be.visible').click();
 
       // Verify the topic is not available in the topic selector
       cy.get('.e2e-topics-picker');

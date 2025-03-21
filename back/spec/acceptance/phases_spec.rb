@@ -879,7 +879,7 @@ resource 'Phases' do
                 rows: [
                   [
                     survey_response1.id,
-                    'Cat, Dog',
+                    'Cat;Dog',
                     survey_response1.author_name,
                     survey_response1.author.email,
                     survey_response1.author_id,
@@ -1002,7 +1002,7 @@ resource 'Phases' do
             rows: [
               [
                 survey_response.id,
-                'Cat, Dog',
+                'Cat;Dog',
                 survey_response.author_name,
                 survey_response.author.email,
                 survey_response.author_id,
