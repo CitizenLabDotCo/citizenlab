@@ -14,12 +14,14 @@ import styled from 'styled-components';
 import useProjectLibraryPhases from 'api/project_library_phases/useProjectLibraryPhases';
 import { ProjectLibraryProjectData } from 'api/project_library_projects/types';
 
+import { trackEventByName } from 'utils/analytics';
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 
 import { useCountriesByCode, useLocalizeProjectLibrary } from '../../utils';
 import MethodLabel from '../MethodLabel';
 
 import CardImage from './CardImage';
+import tracks from './tracks';
 import { getMethods } from './utils';
 
 interface Props {
@@ -83,6 +85,7 @@ const ProjectCard = ({
       justifyContent="flex-start"
       onClick={() => {
         updateSearchParams({ project_id: project.id });
+        trackEventByName(tracks.previewProject, { project_id: project.id });
       }}
     >
       <Box>
