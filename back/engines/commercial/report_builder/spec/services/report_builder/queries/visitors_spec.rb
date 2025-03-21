@@ -10,18 +10,26 @@ RSpec.describe ReportBuilder::Queries::Visitors do
       ### SEPTEMBER
       september = Date.new(2022, 9, 10)
 
+      # Create project
+      project = create(:project_with_active_ideation_phase)
+
+      # Get project path
+      project_path = "/en/projects/#{project.slug}"
+      @project_id = project.id
+
+
       # Create sessions september
       session1 = create(:session, monthly_user_hash: 'hash1', created_at: september)
       create(:pageview, session_id: session1.id, path: '/en/', created_at: DateTime.new(2022, 9, 10, 10, 0, 0))
       create(:pageview, session_id: session1.id, path: '/en/ideas', created_at: DateTime.new(2022, 9, 10, 10, 1, 0))
 
       session2 = create(:session, monthly_user_hash: 'hash1', created_at: september)
-      create(:pageview, session_id: session2.id, path: '/en/', created_at: DateTime.new(2022, 9, 10, 11, 0, 0))
+      create(:pageview, session_id: session2.id, path: project_path, project_id: @project_id, created_at: DateTime.new(2022, 9, 10, 11, 0, 0))
       
       session3 = create(:session, monthly_user_hash: 'hash2', created_at: september)
       create(:pageview, session_id: session3.id, path: '/en/', created_at: DateTime.new(2022, 9, 10, 12, 0, 0))
       create(:pageview, session_id: session3.id, path: '/en/ideas', created_at: DateTime.new(2022, 9, 10, 12, 2, 0))
-      create(:pageview, session_id: session3.id, path: '/en/pages/privacy-policy', created_at: DateTime.new(2022, 9, 10, 12, 4, 0))
+      create(:pageview, session_id: session3.id, path: project_path, project_id: @project_id, created_at: DateTime.new(2022, 9, 10, 12, 4, 0))
 
       # Create sessions october
       session4 = create(:session, monthly_user_hash: 'hash3', created_at: Date.new(2022, 10, 2))
@@ -128,6 +136,25 @@ RSpec.describe ReportBuilder::Queries::Visitors do
           :date_group => Date.new(2022, 10, 10)
         }
       ])
+    end
+
+    it 'filters by project' do
+      start_at = Date.new(2022, 8, 1)
+      end_at = Date.new(2022, 11, 1)
+
+      expect(query.run_query(start_at, end_at, project_id: @project_id)).to eq({
+        time_series: [
+          {
+            :visits => 2,
+            :visitors => 2,
+            :date_group => Date.new(2022, 9, 1)
+          },
+        ],
+        visits_total: 2,
+        visitors_total: 2,
+        avg_seconds_on_page: 120,
+        avg_pages_visited: 2,
+      })
     end
 
     # it 'returns correct data with compared period' do
