@@ -243,6 +243,7 @@ export interface IAppConfigurationSettings {
   power_bi?: AppConfigurationFeature;
   analysis?: AppConfigurationFeature;
   large_summaries?: AppConfigurationFeature;
+  comments_summaries?: AppConfigurationFeature;
   ask_a_question?: AppConfigurationFeature;
   advanced_autotagging?: AppConfigurationFeature;
   import_printed_forms?: AppConfigurationFeature;
