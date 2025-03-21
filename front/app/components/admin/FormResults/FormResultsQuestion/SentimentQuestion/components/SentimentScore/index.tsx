@@ -2,7 +2,7 @@ import React, { useMemo } from 'react';
 
 import { Tooltip } from '@citizenlab/cl2-component-library';
 
-import { ResultGrouped, ResultUngrouped } from 'api/survey_results/types';
+import { ResultUngrouped } from 'api/survey_results/types';
 
 import { parseResult, SentimentAnswers } from '../../utils';
 
@@ -11,7 +11,7 @@ import SentimentTooltip from './SentimentTooltip';
 import { getAnswerGroups } from './utils';
 
 type Props = {
-  result: ResultUngrouped | ResultGrouped;
+  result: ResultUngrouped;
 };
 
 const SentimentScore = ({ result }: Props) => {

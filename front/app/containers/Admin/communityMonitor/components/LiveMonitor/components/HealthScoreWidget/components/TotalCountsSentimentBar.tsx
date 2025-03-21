@@ -24,27 +24,27 @@ const TotalCountsSentimentBar = ({ sentimentScores }: Props) => {
 
   // Get the total counts data for the current quarter
   const quarterData = sentimentScores?.totalHealthScoreCounts.find(
-    (_value, index) =>
-      sentimentScores.totalHealthScoreCounts[index].period ===
-      `${year}-${quarter}`
+    (healthScore) => healthScore.period === `${year}-${quarter}`
   );
 
-  // Calculate the total responses for the quarter, so we can calculate a % next
+  // Calculate the total # of responses for the quarter, so we can calculate a % next
   const quarterTotalResponses = quarterData?.totals.reduce(
-    (acc, item) => acc + item.count,
+    (acc, sentimentValueTotal) => acc + sentimentValueTotal.count,
     0
   );
 
-  // For each sentiment  value between 1 and 5, calculate the % of the total responses
+  // For each sentiment value between 1 and 5, calculate the % of the total responses
   const quarterPercentages = !isNil(quarterTotalResponses)
-    ? quarterData?.totals.map((item) => {
+    ? quarterData?.totals.map((sentimentValueTotal) => {
         return {
-          percentage: Math.round((item.count / quarterTotalResponses) * 100),
+          percentage: Math.round(
+            (sentimentValueTotal.count / quarterTotalResponses) * 100
+          ),
         };
       })
     : [];
 
-  // Generate the answers groups (low/neutral/high) to use in the sentiment bar
+  // Generate the answer groups (low/neutral/high) to use in the sentiment bar
   const answerGroups =
     quarterPercentages &&
     getAnswerGroups({ questionAnswers: quarterPercentages });

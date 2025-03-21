@@ -1,22 +1,32 @@
+import { Locale } from '@citizenlab/cl2-component-library';
+
 import { Keys } from 'utils/cl-react-query/types';
 
 import communityMonitorSentimentScoreKeys from './keys';
 
-export type YearAndQuarter = `${number}-${1 | 2 | 3 | 4}`; // E.g. "2025-1", "2025-2", etc.
+// YearAndQuarter:
+// E.g. "2025-1", "2025-2", etc.
+export type YearAndQuarter = `${number}-${1 | 2 | 3 | 4}`;
 
-type Multilocs = Record<string, Record<string, string>>;
+type CategoryLabelMultilocs = Record<Category, Record<Locale, string>>;
 
 export type TimePeriodAndScore = Record<YearAndQuarter, number>;
 
-export type CategoryAverages = Record<string, TimePeriodAndScore>;
+export type Category =
+  | 'quality_of_life'
+  | 'service_delivery'
+  | 'governance_and_trust'
+  | 'other';
 
-export type Categories = {
+export type CategoryAverages = Record<Category, TimePeriodAndScore>;
+
+export type CategoryScores = {
   averages: CategoryAverages;
-  multilocs: Multilocs;
+  multilocs: CategoryLabelMultilocs;
 };
 
 export type CommunityMonitorSentimentScoreAttributes = {
-  categories?: Categories;
+  categories?: CategoryScores;
   overall?: {
     averages: TimePeriodAndScore;
     totals: Record<YearAndQuarter, Record<string, number>>; // E.g. {"2025-1": {"1": 3, "2": 4}}

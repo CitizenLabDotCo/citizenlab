@@ -8,7 +8,11 @@ import useFormResults from 'api/survey_results/useSurveyResults';
 
 import SentimentQuestion from 'components/admin/FormResults/FormResultsQuestion/SentimentQuestion';
 
-import { categoryColors } from './HealthScoreWidget/utils';
+import {
+  categoryColors,
+  getQuarterFilter,
+  getYearFilter,
+} from './HealthScoreWidget/utils';
 
 type Props = {
   projectId?: string;
@@ -30,10 +34,8 @@ const FormResults = (props: Props) => {
   const [search] = useSearchParams();
 
   // Get the year and quarter
-  const year = search.get('year') || new Date().getFullYear().toString();
-  const quarter =
-    search.get('quarter') ||
-    (Math.floor(new Date().getMonth() / 3) + 1).toString();
+  const year = getYearFilter(search);
+  const quarter = getQuarterFilter(search);
 
   // Fetch the form results
   const { data: formResults } = useFormResults({
@@ -49,47 +51,51 @@ const FormResults = (props: Props) => {
 
   const { results } = formResults.data.attributes;
 
+  // Filter the results to only include sentiment questions
   const sentimentQuestionResults = results.filter(
     (question) => question.inputType === 'sentiment_linear_scale'
   );
+
+  const isFirstQuestionInCategory = (category: string, index: number) => {
+    return (
+      sentimentQuestionResults.at(index - 1)?.questionCategory !== category
+    );
+  };
 
   return (
     <Box width="100%">
       <Box>
         {sentimentQuestionResults.map((result, index) => {
           const category = result.questionCategory;
-          if (
-            category &&
-            sentimentQuestionResults.at(index - 1)?.questionCategory !==
-              category
-          ) {
-            return (
-              <Box key={index} mt="30px">
-                <Box
-                  display="flex"
-                  justifyContent="space-between"
-                  alignItems="center"
-                  mb="8px"
-                >
-                  <Box display="flex" alignItems="center">
-                    <Text m="0px" fontSize="l" fontWeight="bold">
-                      <Icon
-                        width="16px"
-                        name="dot"
-                        fill={categoryColors[category]}
-                        mr="4px"
-                        my="auto"
-                      />
-                      {category}
-                    </Text>
+          return (
+            <Box key={index}>
+              {category &&
+                // TODO: Will change after BE returns pages with category titles
+                isFirstQuestionInCategory(category, index) && (
+                  <Box
+                    display="flex"
+                    justifyContent="space-between"
+                    alignItems="center"
+                    mb="8px"
+                    mt="30px"
+                  >
+                    <Box display="flex" alignItems="center">
+                      <Text m="0px" fontSize="l" fontWeight="bold">
+                        <Icon
+                          width="16px"
+                          name="dot"
+                          fill={categoryColors[category]}
+                          mr="4px"
+                          my="auto"
+                        />
+                        {category}
+                      </Text>
+                    </Box>
                   </Box>
-                </Box>
-                <SentimentQuestion key={index} result={result} mb="8px" />
-              </Box>
-            );
-          } else {
-            return <SentimentQuestion key={index} result={result} mb="8px" />;
-          }
+                )}
+              <SentimentQuestion key={index} result={result} mb="8px" />
+            </Box>
+          );
         })}
       </Box>
     </Box>

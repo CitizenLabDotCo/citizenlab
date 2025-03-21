@@ -2,7 +2,7 @@ import { colors } from '@citizenlab/cl2-component-library';
 import { lighten } from 'polished';
 import { Multiloc } from 'typings';
 
-import { ResultGrouped, ResultUngrouped } from 'api/survey_results/types';
+import { ResultUngrouped } from 'api/survey_results/types';
 
 export type SentimentAnswer = {
   answer: number | null;
@@ -15,26 +15,13 @@ export type SentimentAnswers = SentimentAnswer[] | undefined;
 
 // parseResult:
 // Parses survey results and extracts sentiment-related data.
-export const parseResult = (
-  result: ResultUngrouped | ResultGrouped
-): SentimentAnswers => {
-  const usersNoAnswer = result.answers?.[5].count; // Assumes index 5 corresponds to "no answer"
-  const totalUsersWhoAnswered = usersNoAnswer
-    ? result.totalPickCount - usersNoAnswer
-    : result.totalPickCount;
-
-  const { multilocs } = result;
-
-  return result.answers?.map((answer) => {
-    const resultValue = answer.answer;
-
-    return {
-      answer: resultValue && parseInt(resultValue.toString(), 10),
-      count: answer.count,
-      percentage: Math.round((answer.count / totalUsersWhoAnswered) * 100),
-      label: resultValue && multilocs?.answer[resultValue].title_multiloc,
-    };
-  });
+export const parseResult = (result: ResultUngrouped): SentimentAnswers => {
+  return result.answers?.map(({ answer, count }) => ({
+    answer: answer ? parseInt(answer.toString(), 10) : null,
+    count,
+    percentage: Math.round((count / result.questionResponseCount) * 100),
+    label: answer ? result.multilocs?.answer[answer].title_multiloc : undefined,
+  }));
 };
 
 // getSentimentGroupColour:
@@ -62,16 +49,21 @@ export const getSentimentValueColour = (answer: number): string | undefined =>
 // getPercentageDifference:
 // Calculates the percentage difference between two periods.
 export const getPercentageDifference = (
-  thisPeriodAvg?: number,
-  lastPeriodAvg?: number
+  thisPeriodAvg?: number | null,
+  lastPeriodAvg?: number | null
 ): number | null => {
-  if (!thisPeriodAvg || !lastPeriodAvg) {
+  // Return null if either value is null or undefined
+  if (thisPeriodAvg == null || lastPeriodAvg == null) {
     return null;
   }
 
-  return lastPeriodAvg === 0
-    ? 0
-    : ((thisPeriodAvg - lastPeriodAvg) / lastPeriodAvg) * 100;
+  // Return 0 if lastPeriodAvg is 0 to avoid division by zero
+  if (lastPeriodAvg === 0) {
+    return 0;
+  }
+
+  // Calculate the percentage difference
+  return ((thisPeriodAvg - lastPeriodAvg) / lastPeriodAvg) * 100;
 };
 
 // getTrendColorName:

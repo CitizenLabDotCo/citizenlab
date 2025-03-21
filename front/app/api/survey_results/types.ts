@@ -48,7 +48,7 @@ type BaseResult = {
   totalPickCount: number;
   questionResponseCount: number;
   questionNumber: number;
-  pageNumber: number;
+  pageNumber: number | null;
   logic?: ResultLogic;
   numberResponses?: { answer: number }[];
 
@@ -85,8 +85,8 @@ export type MatrixLinearScaleResult = {
 };
 
 type LinearScaleAverage = {
-  this_period: number;
-  last_period: number;
+  this_period: number | null;
+  last_period: number | null;
 };
 
 export type ResultUngrouped = BaseResult & {
