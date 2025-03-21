@@ -157,55 +157,35 @@ RSpec.describe ReportBuilder::Queries::Visitors do
       })
     end
 
-    # it 'returns correct data with compared period' do
-    #   ### OCTOBER
-    #   october = Date.new(2022, 10, 10)
+    it 'returns correct data with compared period' do
+      start_at = Date.new(2022, 10, 1)
+      end_at = Date.new(2022, 11, 1)
+      compare_start_at = Date.new(2022, 9, 1)
+      compare_end_at = Date.new(2022, 10, 1)
 
-    #   ## Create sessions
-    #   create_list(:session, 3, monthly_user_hash: 'hash3', created_at: october)
-    #   create(:session, monthly_user_hash: 'hash4', created_at: october)
-
-    #   # Create visit
-    #   dim_oct = create(:dimension_date, date: october)
-
-    #   create(:fact_visit, visitor_id: 'visitor-3', duration: 100, pages_visited: 1,
-    #     dimension_date_first_action: dim_oct, dimension_date_last_action: dim_oct, dimension_referrer_type: @referrer_type)
-
-    #   params = {
-    #     start_at: Date.new(2022, 10, 2).to_s,
-    #     end_at: Date.new(2022, 11, 1).to_s,
-    #     compare_start_at: Date.new(2022, 8, 30).to_s,
-    #     compare_end_at: Date.new(2022, 10, 1).to_s
-    #   }
-
-    #   expect(query.run_query(**params)).to eq(
-    #     [
-    #       [
-    #         {
-    #           'count' => 4,
-    #           'count_monthly_user_hash' => 2,
-    #           'dimension_date_created.month' => '2022-10',
-    #           'first_dimension_date_created_date' => october
-    #         }
-    #       ],
-    #       [{
-    #         'count' => 4,
-    #         'count_monthly_user_hash' => 2
-    #       }],
-    #       [{
-    #         'avg_duration' => 100,
-    #         'avg_pages_visited' => 1
-    #       }],
-    #       [{
-    #         'count' => 3,
-    #         'count_monthly_user_hash' => 2
-    #       }],
-    #       [{
-    #         'avg_duration' => 150,
-    #         'avg_pages_visited' => 1.5
-    #       }]
-    #     ]
-    #   )
-    # end
+      expect(query.run_query(
+        start_at, 
+        end_at, 
+        compare_start_at: compare_start_at,
+        compare_end_at: compare_end_at
+      )).to eq({
+        time_series: [
+          {
+            :visits => 5,
+            :visitors => 2,
+            :date_group => Date.new(2022, 10, 1),
+          }
+        ],
+        visits_total: 5,
+        visitors_total: 2,
+        avg_seconds_on_page: 60,
+        avg_pages_visited: 6 / 5,
+        
+        compare_visits_total: 3,
+        compare_visitors_total: 2,
+        compare_avg_seconds_on_page: 100,
+        compare_avg_pages_visited: 6 / 3,
+      })
+    end
   end
 end
