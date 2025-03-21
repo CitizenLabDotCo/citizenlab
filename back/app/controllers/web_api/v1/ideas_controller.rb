@@ -281,11 +281,16 @@ class WebApi::V1::IdeasController < ApplicationController
 
     title_threshold = phase_for_input.similarity_threshold_title
     body_threshold = phase_for_input.similarity_threshold_body
-    scope = policy_scope(Idea)
-    scope = scope.where(project_id: idea.project_id) if idea.project_id
-    similar_ideas = service.similar_ideas(scope:, title_threshold:, body_threshold:, limit: SIMILARITIES_LIMIT)
+    cache_key = "similarities/#{{ title_multiloc: idea.title_multiloc, body_multiloc: idea.body_multiloc, project_id: idea.project_id, title_threshold:, body_threshold: }}"
 
-    render json: WebApi::V1::IdeaSerializer.new(similar_ideas, serialization_options_for(similar_ideas)).serializable_hash
+    json_result = Rails.cache.fetch(cache_key, expires_in: 10.minutes) do
+      scope = policy_scope(Idea)
+      scope = scope.where(project_id: idea.project_id) if idea.project_id
+      similar_ideas = service.similar_ideas(scope:, title_threshold:, body_threshold:, limit: SIMILARITIES_LIMIT)
+      WebApi::V1::IdeaSerializer.new(similar_ideas, serialization_options_for(similar_ideas)).serializable_hash
+    end
+
+    render json: json_result
   end
 
   private
