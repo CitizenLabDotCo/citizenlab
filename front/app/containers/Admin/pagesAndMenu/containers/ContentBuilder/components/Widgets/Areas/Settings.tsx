@@ -14,7 +14,7 @@ const Settings = () => {
   const { areasTerm } = useAreaTerms();
 
   return (
-    <Box my="20px">
+    <Box my="20px" data-cy="e2e-areas-widget-settings">
       <Text mb="32px" color="textSecondary">
         <FormattedMessage
           {...messages.thisWidgetShows}

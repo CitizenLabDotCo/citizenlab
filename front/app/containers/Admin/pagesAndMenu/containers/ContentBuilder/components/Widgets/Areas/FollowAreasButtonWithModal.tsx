@@ -37,6 +37,7 @@ const FollowAreasButtonWithModal = () => {
         onClick={() => setIsModalOpened(!isModalOpened)}
         buttonStyle="text"
         textDecoration="underline"
+        data-cy="e2e-follow-areas-button"
       >
         {formatMessage(messages.followAreas1, {
           areasTerm,
@@ -74,6 +75,7 @@ const FollowAreasButtonWithModal = () => {
             bgColor={colors.green500}
             icon="check"
             onClick={() => setIsModalOpened(false)}
+            data-cy="e2e-follow-areas-modal-done-button"
           >
             {formatMessage(messages.done)}
           </Button>
