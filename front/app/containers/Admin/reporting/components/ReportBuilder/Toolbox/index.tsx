@@ -44,6 +44,7 @@ import ParticipationWidget from '../Widgets/ChartWidgets/ParticipationWidget';
 import RegistrationsWidget from '../Widgets/ChartWidgets/RegistrationsWidget';
 import VisitorsTrafficSourcesWidget from '../Widgets/ChartWidgets/VisitorsTrafficSourcesWidget';
 import VisitorsWidget from '../Widgets/ChartWidgets/VisitorsWidget';
+import CommunityMonitorHealthScoreWidget from '../Widgets/CommunityMonitorHealthScoreWidget';
 import IframeMultiloc from '../Widgets/IframeMultiloc';
 import ImageMultiloc from '../Widgets/ImageMultiloc';
 import MostReactedIdeasWidget from '../Widgets/MostReactedIdeasWidget';
@@ -209,6 +210,20 @@ const ReportBuilderToolbox = ({
               }
               icon="survey"
               label={formatMessage(WIDGET_TITLES.SurveyQuestionResultWidget)}
+            />
+            <DraggableElement
+              id="e2e-draggable-community-monitor-health-score-widget"
+              component={
+                <CommunityMonitorHealthScoreWidget
+                  title={toMultiloc(
+                    WIDGET_TITLES.CommunityMonitorHealthScoreWidget
+                  )}
+                />
+              }
+              icon="survey"
+              label={formatMessage(
+                WIDGET_TITLES.CommunityMonitorHealthScoreWidget
+              )}
             />
             <DraggableElement
               id="e2e-draggable-most-reacted-ideas-widget"
