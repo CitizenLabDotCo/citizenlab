@@ -4,7 +4,7 @@ import { Box, Spinner } from '@citizenlab/cl2-component-library';
 
 import useAreas from 'api/areas/useAreas';
 
-import UpdateFollowArea from './UpdateFollowArea';
+import UpdateFollowArea from './FollowArea/UpdateFollowArea';
 import UpdateOnboardingArea from './UpdateOnboardingArea';
 
 interface Props {
