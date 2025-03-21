@@ -1,5 +1,4 @@
-import { Multiloc } from 'typings';
-
 export interface Props {
-  title?: Multiloc;
+  quarter?: string;
+  year?: string;
 }

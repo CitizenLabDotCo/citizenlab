@@ -54,7 +54,7 @@ const TrendIndicator = ({ percentageDifference, showQuarterLabel }: Props) => {
           {trendPercentage}
           {showQuarterLabel && (
             <span style={{ color: colors.textSecondary }}>
-              {formatMessage(messages.previous_quarter)}
+              {formatMessage(messages.lastQuarter)}
             </span>
           )}
         </Text>

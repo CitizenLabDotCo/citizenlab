@@ -212,20 +212,6 @@ const ReportBuilderToolbox = ({
               label={formatMessage(WIDGET_TITLES.SurveyQuestionResultWidget)}
             />
             <DraggableElement
-              id="e2e-draggable-community-monitor-health-score-widget"
-              component={
-                <CommunityMonitorHealthScoreWidget
-                  title={toMultiloc(
-                    WIDGET_TITLES.CommunityMonitorHealthScoreWidget
-                  )}
-                />
-              }
-              icon="survey"
-              label={formatMessage(
-                WIDGET_TITLES.CommunityMonitorHealthScoreWidget
-              )}
-            />
-            <DraggableElement
               id="e2e-draggable-most-reacted-ideas-widget"
               component={
                 <MostReactedIdeasWidget
@@ -258,6 +244,14 @@ const ReportBuilderToolbox = ({
           </Section>
 
           <Section>
+            <DraggableElement
+              id="e2e-draggable-community-monitor-health-score-widget"
+              component={<CommunityMonitorHealthScoreWidget />}
+              icon="chart-bar"
+              label={formatMessage(
+                WIDGET_TITLES.CommunityMonitorHealthScoreWidget
+              )}
+            />
             <DraggableElement
               id="e2e-draggable-visitors-timeline-widget"
               component={

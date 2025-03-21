@@ -1,45 +1,76 @@
 import React, { useCallback } from 'react';
 
-import { Box } from '@citizenlab/cl2-component-library';
+import { Box, Select } from '@citizenlab/cl2-component-library';
 import { useNode } from '@craftjs/core';
-import { Multiloc } from 'typings';
+import { IOption } from 'typings';
 
-import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
+import { useIntl } from 'utils/cl-intl';
 
+import messages from '../messages';
 import { Props } from '../typings';
 
 const Settings = () => {
   const {
     actions: { setProp },
-    title,
+    quarter,
+    year,
   } = useNode<Props>((node) => ({
-    title: node.data.props.title,
-    projectId: node.data.props.projectId,
-    phaseId: node.data.props.phaseId,
-    numberOfIdeas: node.data.props.numberOfIdeas,
-    collapseLongText: node.data.props.collapseLongText,
+    quarter: node.data.props.quarter,
+    year: node.data.props.year,
   }));
 
-  const setTitle = useCallback(
-    (value: Multiloc) => {
+  const { formatMessage } = useIntl();
+
+  const setQuarter = useCallback(
+    (quarter: IOption) => {
       setProp((props: Props) => {
-        props.title = value;
+        props.quarter = quarter.value;
       });
     },
     [setProp]
   );
 
+  const setYear = useCallback(
+    (year: IOption) => {
+      setProp((props: Props) => {
+        props.year = year.value;
+      });
+    },
+    [setProp]
+  );
+
+  const generateYearOptions = () => {
+    // Start at 2025, and go up to present
+    const currentYear = new Date().getFullYear();
+
+    const years: IOption[] = [];
+
+    for (let i = 2025; i <= currentYear; i++) {
+      years.push({ value: i.toString(), label: i.toString() });
+    }
+    return years;
+  };
+
   return (
-    <Box>
-      {title}
-      <Box mb="20px">
-        <InputMultilocWithLocaleSwitcher
-          label={'TITLE!'}
-          type="text"
-          valueMultiloc={title}
-          onChange={setTitle}
-        />
-      </Box>
+    <Box display="flex" flexDirection="column" gap="20px" mb="20px">
+      <Select
+        label={formatMessage(messages.year)}
+        options={generateYearOptions()}
+        value={year}
+        onChange={setYear}
+      />
+
+      <Select
+        label={formatMessage(messages.quarter)}
+        options={[
+          { value: '1', label: formatMessage(messages.quarterOne) },
+          { value: '2', label: formatMessage(messages.quarterTwo) },
+          { value: '3', label: formatMessage(messages.quarterThree) },
+          { value: '4', label: formatMessage(messages.quarterFour) },
+        ]}
+        value={quarter}
+        onChange={setQuarter}
+      />
     </Box>
   );
 };

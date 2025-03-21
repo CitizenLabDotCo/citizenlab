@@ -1,6 +1,11 @@
 import React from 'react';
 
-import { Box, Icon, Text } from '@citizenlab/cl2-component-library';
+import {
+  Box,
+  Icon,
+  Text,
+  useBreakpoint,
+} from '@citizenlab/cl2-component-library';
 import { useSearchParams } from 'react-router-dom';
 
 import { getPercentageDifference } from 'components/admin/FormResults/FormResultsQuestion/SentimentQuestion/utils';
@@ -15,6 +20,7 @@ type Props = {
 
 const CategoryScores = ({ sentimentScores }: Props) => {
   const [search] = useSearchParams();
+  const isMobileOrSmaller = useBreakpoint('phone');
 
   // Get the year and quarter
   const year = search.get('year') || new Date().getFullYear().toString();
@@ -25,7 +31,12 @@ const CategoryScores = ({ sentimentScores }: Props) => {
   const periodKey = `${year}-${quarter}`;
 
   return (
-    <Box display="flex" mt="12px">
+    <Box
+      display="flex"
+      mt="12px"
+      flexDirection={isMobileOrSmaller ? 'column' : 'row'}
+      gap="12px"
+    >
       {sentimentScores?.categoryHealthScores.map((categoryScore) => {
         const categoryScoreValue = categoryScore.scores.find(
           (score) => score.period === periodKey
