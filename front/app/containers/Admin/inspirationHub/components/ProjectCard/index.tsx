@@ -14,18 +14,19 @@ import styled from 'styled-components';
 import useProjectLibraryPhases from 'api/project_library_phases/useProjectLibraryPhases';
 import { ProjectLibraryProjectData } from 'api/project_library_projects/types';
 
+import { trackEventByName } from 'utils/analytics';
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 
 import { useCountriesByCode, useLocalizeProjectLibrary } from '../../utils';
 import MethodLabel from '../MethodLabel';
 
 import CardImage from './CardImage';
+import tracks from './tracks';
 import { getMethods } from './utils';
 
 interface Props {
   project: ProjectLibraryProjectData;
-  showStamp?: boolean;
-  showQuote?: boolean;
+  isHighlighted?: boolean;
 }
 
 const CardContainer = styled(Box)`
@@ -43,11 +44,7 @@ const CardContainer = styled(Box)`
   cursor: pointer;
 `;
 
-const ProjectCard = ({
-  project,
-  showStamp = false,
-  showQuote = false,
-}: Props) => {
+const ProjectCard = ({ project, isHighlighted = false }: Props) => {
   const localize = useLocalizeProjectLibrary();
   const countriesByCode = useCountriesByCode();
 
@@ -83,12 +80,16 @@ const ProjectCard = ({
       justifyContent="flex-start"
       onClick={() => {
         updateSearchParams({ project_id: project.id });
+        trackEventByName(tracks.previewProject, {
+          project_id: project.id,
+          isHighlighted,
+        });
       }}
     >
       <Box>
         <CardImage
           imageUrl={attributes.image_url ?? undefined}
-          showStamp={showStamp}
+          showStamp={isHighlighted}
         />
       </Box>
       <Box>
@@ -113,7 +114,7 @@ const ProjectCard = ({
           </Text>
         </Box>
       </Box>
-      {showQuote && annotation !== '' && (
+      {isHighlighted && annotation !== '' && (
         <Quote w="100%" mb="12px">
           <Text m="0px" fontStyle="italic">
             {annotation}
