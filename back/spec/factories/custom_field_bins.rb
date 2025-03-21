@@ -18,4 +18,9 @@ FactoryBot.define do
     association :custom_field, factory: :custom_field_number
     range { 1...10 }
   end
+
+  factory :age_bin, class: 'CustomFieldBins::AgeBin' do
+    association :custom_field, factory: :custom_field_birthyear
+    range { 20...40 }
+  end
 end
