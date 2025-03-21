@@ -99,8 +99,8 @@ const Header = ({ attributes }: Props) => {
           </Box>
         )}
       </Box>
-      {annotation === '' && (
-        <Quote w="100%" mb="12px">
+      {annotation !== '' && (
+        <Quote w="100%" mt="12px">
           <Text m="0px" fontStyle="italic">
             {annotation}
           </Text>
