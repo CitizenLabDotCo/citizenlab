@@ -91,7 +91,6 @@ ALTER TABLE IF EXISTS ONLY public.polls_response_options DROP CONSTRAINT IF EXIS
 ALTER TABLE IF EXISTS ONLY public.comments DROP CONSTRAINT IF EXISTS fk_rails_7fbb3b1416;
 ALTER TABLE IF EXISTS ONLY public.email_campaigns_campaign_email_commands DROP CONSTRAINT IF EXISTS fk_rails_7f284a4f09;
 ALTER TABLE IF EXISTS ONLY public.activities DROP CONSTRAINT IF EXISTS fk_rails_7e11bb717f;
-ALTER TABLE IF EXISTS ONLY public.analysis_heatmap_cells DROP CONSTRAINT IF EXISTS fk_rails_7a39fbbdee;
 ALTER TABLE IF EXISTS ONLY public.analysis_questions DROP CONSTRAINT IF EXISTS fk_rails_74e779db86;
 ALTER TABLE IF EXISTS ONLY public.analysis_additional_custom_fields DROP CONSTRAINT IF EXISTS fk_rails_74744744a6;
 ALTER TABLE IF EXISTS ONLY public.groups_projects DROP CONSTRAINT IF EXISTS fk_rails_73e1dee5fd;
@@ -354,10 +353,6 @@ DROP INDEX IF EXISTS public.index_analysis_summaries_on_background_task_id;
 DROP INDEX IF EXISTS public.index_analysis_questions_on_background_task_id;
 DROP INDEX IF EXISTS public.index_analysis_insights_on_insightable;
 DROP INDEX IF EXISTS public.index_analysis_insights_on_analysis_id;
-DROP INDEX IF EXISTS public.index_analysis_heatmap_cells_uniqueness;
-DROP INDEX IF EXISTS public.index_analysis_heatmap_cells_on_row;
-DROP INDEX IF EXISTS public.index_analysis_heatmap_cells_on_column;
-DROP INDEX IF EXISTS public.index_analysis_heatmap_cells_on_analysis_id;
 DROP INDEX IF EXISTS public.index_analysis_comments_summaries_on_idea_id;
 DROP INDEX IF EXISTS public.index_analysis_comments_summaries_on_background_task_id;
 DROP INDEX IF EXISTS public.index_analysis_background_tasks_on_analysis_id;
@@ -503,7 +498,6 @@ ALTER TABLE IF EXISTS ONLY public.analysis_taggings DROP CONSTRAINT IF EXISTS an
 ALTER TABLE IF EXISTS ONLY public.analysis_summaries DROP CONSTRAINT IF EXISTS analysis_summaries_pkey;
 ALTER TABLE IF EXISTS ONLY public.analysis_questions DROP CONSTRAINT IF EXISTS analysis_questions_pkey;
 ALTER TABLE IF EXISTS ONLY public.analysis_insights DROP CONSTRAINT IF EXISTS analysis_insights_pkey;
-ALTER TABLE IF EXISTS ONLY public.analysis_heatmap_cells DROP CONSTRAINT IF EXISTS analysis_heatmap_cells_pkey;
 ALTER TABLE IF EXISTS ONLY public.analysis_comments_summaries DROP CONSTRAINT IF EXISTS analysis_comments_summaries_pkey;
 ALTER TABLE IF EXISTS ONLY public.analysis_background_tasks DROP CONSTRAINT IF EXISTS analysis_background_tasks_pkey;
 ALTER TABLE IF EXISTS ONLY public.analysis_analyses DROP CONSTRAINT IF EXISTS analysis_analyses_pkey;
@@ -638,7 +632,6 @@ DROP TABLE IF EXISTS public.analysis_taggings;
 DROP TABLE IF EXISTS public.analysis_summaries;
 DROP TABLE IF EXISTS public.analysis_questions;
 DROP TABLE IF EXISTS public.analysis_insights;
-DROP TABLE IF EXISTS public.analysis_heatmap_cells;
 DROP TABLE IF EXISTS public.analysis_comments_summaries;
 DROP TABLE IF EXISTS public.analysis_background_tasks;
 DROP TABLE IF EXISTS public.analysis_analyses;
@@ -1046,28 +1039,6 @@ CREATE TABLE public.analysis_comments_summaries (
     comments_ids jsonb NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL
-);
-
-
---
--- Name: analysis_heatmap_cells; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.analysis_heatmap_cells (
-    id uuid DEFAULT gen_random_uuid() NOT NULL,
-    analysis_id uuid NOT NULL,
-    row_type character varying NOT NULL,
-    row_id uuid NOT NULL,
-    column_type character varying NOT NULL,
-    column_id uuid NOT NULL,
-    unit character varying NOT NULL,
-    count integer NOT NULL,
-    lift double precision NOT NULL,
-    p_value double precision NOT NULL,
-    created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL,
-    row_bin_value integer,
-    column_bin_value integer
 );
 
 
@@ -3352,14 +3323,6 @@ ALTER TABLE ONLY public.analysis_comments_summaries
 
 
 --
--- Name: analysis_heatmap_cells analysis_heatmap_cells_pkey; Type: CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.analysis_heatmap_cells
-    ADD CONSTRAINT analysis_heatmap_cells_pkey PRIMARY KEY (id);
-
-
---
 -- Name: analysis_insights analysis_insights_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -4482,34 +4445,6 @@ CREATE INDEX index_analysis_comments_summaries_on_background_task_id ON public.a
 --
 
 CREATE INDEX index_analysis_comments_summaries_on_idea_id ON public.analysis_comments_summaries USING btree (idea_id);
-
-
---
--- Name: index_analysis_heatmap_cells_on_analysis_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_analysis_heatmap_cells_on_analysis_id ON public.analysis_heatmap_cells USING btree (analysis_id);
-
-
---
--- Name: index_analysis_heatmap_cells_on_column; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_analysis_heatmap_cells_on_column ON public.analysis_heatmap_cells USING btree (column_type, column_id);
-
-
---
--- Name: index_analysis_heatmap_cells_on_row; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_analysis_heatmap_cells_on_row ON public.analysis_heatmap_cells USING btree (row_type, row_id);
-
-
---
--- Name: index_analysis_heatmap_cells_uniqueness; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE UNIQUE INDEX index_analysis_heatmap_cells_uniqueness ON public.analysis_heatmap_cells USING btree (analysis_id, row_id, column_id, unit, row_bin_value, column_bin_value);
 
 
 --
@@ -6395,14 +6330,6 @@ ALTER TABLE ONLY public.analysis_questions
 
 
 --
--- Name: analysis_heatmap_cells fk_rails_7a39fbbdee; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.analysis_heatmap_cells
-    ADD CONSTRAINT fk_rails_7a39fbbdee FOREIGN KEY (analysis_id) REFERENCES public.analysis_analyses(id);
-
-
---
 -- Name: activities fk_rails_7e11bb717f; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -7066,8 +6993,6 @@ SET search_path TO public,shared_extensions;
 
 INSERT INTO "schema_migrations" (version) VALUES
 ('20250320010716'),
-('20250317211906'),
-('20250305202848'),
 ('20250305111507'),
 ('20250224150953'),
 ('20250219104523'),
