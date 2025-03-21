@@ -67,7 +67,7 @@ class Idea < ApplicationRecord
   PUBLICATION_STATUSES = %w[draft submitted published].freeze
   SUBMISSION_STATUSES = %w[submitted published].freeze
 
-  attr_accessor :request_headers # Non persisted attribute to store headers to be checked in permissions
+  attr_accessor :request # Non persisted attribute to store request to be used by EveryoneTrackingService
 
   slug from: proc { |idea| idea.participation_method_on_creation.generate_slug(idea) }
 

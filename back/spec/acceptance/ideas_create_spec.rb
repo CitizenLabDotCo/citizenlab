@@ -570,9 +570,10 @@ resource 'Ideas' do
 
         context 'response has already been submitted' do
           let!(:author_hash) do
+            # No consent hash based on ip and user agent
             user_agent = 'User-Agent: Mozilla/5.0'
             ip = '1.2.3.4'
-            Idea.create_author_hash(ip + user_agent, phase.project.id, true)
+            "n_#{Idea.create_author_hash(ip + user_agent, phase.project.id, true)}"
           end
           let!(:response) { create(:native_survey_response, project: project, creation_phase: phase, author: nil, author_hash: author_hash) }
 
@@ -596,11 +597,18 @@ resource 'Ideas' do
           end
 
           context 'cookie is present' do
-            let!(:author_hash) { 'HASH_IN_COOKIE' }
+            let!(:author_hash) { 'LOGGED_OUT_HASH' }
+
+            example 'does not allow posting if user submitted survey without cookie consent (empty cookie present)' do
+              header('Cookie', "#{phase.id}={}")
+              do_request
+              assert_status 401
+              expect(json_response_body.dig(:errors, :base, 0, :error)).to eq 'posting_limited_max_reached'
+            end
 
             example 'does not allow posting if submitted within 3 months' do
               response.update!(published_at: 2.months.ago)
-              header('Cookie', "#{phase.id}=HASH_IN_COOKIE")
+              header('Cookie', "#{phase.id}={\"lo\": \"LOGGED_OUT_HASH\"};cl2_consent={\"analytics\": true}")
               do_request
               assert_status 401
               expect(json_response_body.dig(:errors, :base, 0, :error)).to eq 'posting_limited_max_reached'
@@ -608,20 +616,23 @@ resource 'Ideas' do
 
             example 'allows posting again if submitted after 3 months' do
               response.update!(published_at: 4.months.ago)
-              header('Cookie', "#{phase.id}=HASH_IN_COOKIE")
+              header('Cookie', "#{phase.id}={\"lo\": \"LOGGED_OUT_HASH\"};cl2_consent={\"analytics\": true}")
               do_request
               assert_status 201
               # Saves a new idea with the same author hash from the cookie
-              expect(Idea.all.pluck(:author_hash)).to eq %w[HASH_IN_COOKIE HASH_IN_COOKIE]
+              expect(Idea.all.pluck(:author_hash)).to eq %w[LOGGED_OUT_HASH LOGGED_OUT_HASH]
+
+              # Check that the cookie is written in the response
+              expect(response_headers['Set-Cookie']).to include("#{phase.id}=%7B%22lo%22%3D%3E%22LOGGED_OUT_HASH%22%7D")
             end
 
-            example 'Uses the last hash found in the cookie (user hash) to create the new idea' do
+            example 'Uses the logged in author hash over the logged out hash to create the new idea' do
               response.update!(published_at: 4.months.ago)
-              header('Cookie', "#{phase.id}=HASH_IN_COOKIE,HASH_IN_COOKIE2")
+              header('Cookie', "#{phase.id}={\"lo\": \"LOGGED_OUT_HASH\", \"li\": \"LOGGED_IN_HASH\"};cl2_consent={\"analytics\": true}")
               do_request
               assert_status 201
               # Saves a new idea with the last author hash from the cookie
-              expect(Idea.all.pluck(:author_hash)).to eq %w[HASH_IN_COOKIE HASH_IN_COOKIE2]
+              expect(Idea.all.pluck(:author_hash)).to eq %w[LOGGED_OUT_HASH LOGGED_IN_HASH]
             end
 
             # TODO: JS - tests for if the user is not logged in but they have previously submitted whilst logged in

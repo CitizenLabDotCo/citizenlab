@@ -180,8 +180,8 @@ class WebApi::V1::IdeasController < ApplicationController
     input.creation_phase = (phase if !phase.pmethod.transitive?)
     input.phase_ids = [phase.id] if phase_ids.empty?
 
-    # Needed for 'everyone' participation only, to stop multiple submissions from the same browser/user
-    input.request_headers = request if phase.pmethod.supports_everyone_tracking?
+    # Non persisted attribute needed by policy & input for 'everyone' participation only
+    input.request = request if phase.pmethod.supports_everyone_tracking?
 
     # NOTE: Needs refactor allow_anonymous_participation? so anonymous_participation can be allow or force
     if phase.pmethod.supports_survey_form? && phase.allow_anonymous_participation?
@@ -209,7 +209,7 @@ class WebApi::V1::IdeasController < ApplicationController
       if input.save(**save_options)
         update_file_upload_fields input, form, params_for_create
         sidefx.after_create(input, current_user)
-        input.write_everyone_tracking_cookie(cookies)
+        write_everyone_tracking_cookie input
         render json: WebApi::V1::IdeaSerializer.new(
           input.reload,
           params: jsonapi_serializer_params,
@@ -500,11 +500,13 @@ class WebApi::V1::IdeasController < ApplicationController
     end
   end
 
-  # def write_everyone_tracking_cookie(input)
-  #   return unless input.creation_phase_id && input.everyone_tracking_cookie_value
-  #
-  #   cookies[input.creation_phase_id] = { value: input.author_hash_cookie_value, expires: 1.year.from_now }
-  # end
+  def write_everyone_tracking_cookie(input)
+    Permissions::EveryoneTrackingService.new(
+      input.author,
+      input.creation_phase,
+      input.request
+    ).write_everyone_tracking_cookie(cookies, input.author_hash)
+  end
 end
 
 WebApi::V1::IdeasController.prepend(IdeaAssignment::Patches::WebApi::V1::IdeasController)

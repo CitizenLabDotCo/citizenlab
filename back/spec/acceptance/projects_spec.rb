@@ -1763,14 +1763,6 @@ resource 'Projects' do
     end
 
     context 'when logged out resident' do
-      # TODO: JS Changed this in another branch to allow residents to see the project - which branch?
-      context 'project does not exist' do
-        example '[Error] Get community monitor project returns unauthorised' do
-          do_request
-          assert_status 401
-        end
-      end
-
       context 'hidden community monitor project exists' do
         let!(:phase) do
           phase = create(:community_monitor_survey_phase, with_permissions: true)
@@ -1790,9 +1782,10 @@ resource 'Projects' do
         context 'Survey has already been submitted' do
           # See also ideas_create_spec for the same use of author_hash
           let!(:author_hash) do
+            # No consent hash based on ip and user agent
             user_agent = 'User-Agent: Mozilla/5.0'
             ip = '1.2.3.4'
-            Idea.create_author_hash(ip + user_agent, phase.project.id, true)
+            "n_#{Idea.create_author_hash(ip + user_agent, phase.project.id, true)}"
           end
           let!(:response) { create(:native_survey_response, project: phase.project, creation_phase: phase, author: nil, author_hash: author_hash) }
 
@@ -1805,6 +1798,8 @@ resource 'Projects' do
             disabled_reason = response_data.dig(:attributes, :action_descriptors, :posting_idea, :disabled_reason)
             expect(disabled_reason).to eq 'posting_limited_max_reached'
           end
+
+          # TODO: JS - Another test based on cookie
         end
       end
     end

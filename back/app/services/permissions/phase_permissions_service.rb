@@ -51,9 +51,9 @@ module Permissions
     # Actions not to block if the project is inactive - ie no current phase
     IGNORED_PHASE_ACTIONS = %w[attending_event].freeze
 
-    def initialize(phase, user, user_requirements_service: nil, request_headers: nil)
+    def initialize(phase, user, user_requirements_service: nil, request: nil)
       super(user, user_requirements_service: user_requirements_service)
-      @request_headers = request_headers
+      @request = request
       @phase ||= phase
     end
 
@@ -91,7 +91,7 @@ module Permissions
 
     private
 
-    attr_reader :phase, :request_headers
+    attr_reader :phase, :request
 
     # Phase methods
     def posting_idea_denied_reason_for_action
@@ -184,12 +184,17 @@ module Permissions
           author_hash = Idea.create_author_hash(user.id, phase.project.id, true)
           return true if phase.ideas.published_after(allow_posting_again_after.ago).exists?(author_hash: author_hash)
         end
-      elsif request_headers
-        # Check cookies for author_hashes for the 'everyone' permission
-        # NOTE: tracking_hashes will only ever be present if pmethod.supports_everyone_tracking? is true
-        tracking_hashes = Permissions::EveryoneTrackingService.new(request_headers, user, phase).tracking_hashes_from_headers
+      elsif request
+        tracking_service = Permissions::EveryoneTrackingService.new(user, phase, request)
+        # binding.pry
 
-        return true if tracking_hashes && phase.ideas.published_after(allow_posting_again_after.ago).exists?(author_hash: tracking_hashes)
+        return true if tracking_service.submitted_without_tracking_consent?
+
+        # Check cookies for author_hashes for the 'everyone' permission
+        # NOTE: author_hashes will only ever be present if pmethod.supports_everyone_tracking? is true
+        author_hashes = tracking_service.author_hashes_from_request
+
+        return true if author_hashes && phase.ideas.published_after(allow_posting_again_after.ago).exists?(author_hash: author_hashes)
       end
 
       false
