@@ -18,7 +18,7 @@ const SelectAreas = ({ selectedAreas, onChangeAreas }: SelectAreasProps) => {
   const localize = useLocalize();
   const { data: areas } = useAreas({ forHomepageFilter: true });
   const isSmallerThanTablet = useBreakpoint('tablet');
-  const { areaTerm } = useAreaTerms({ capitalized: true });
+  const { areaTerm: capitalizedAreaTerm } = useAreaTerms({ capitalized: true });
 
   const areasOptions = (): { text: string; value: string }[] => {
     if (areas) {
@@ -37,7 +37,7 @@ const SelectAreas = ({ selectedAreas, onChangeAreas }: SelectAreasProps) => {
 
   return (
     <FilterSelector
-      title={areaTerm}
+      title={capitalizedAreaTerm}
       name="areas"
       selected={selectedAreas}
       values={options}
