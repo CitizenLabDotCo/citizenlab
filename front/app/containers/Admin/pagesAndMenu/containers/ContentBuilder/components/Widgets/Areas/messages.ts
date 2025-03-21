@@ -5,10 +5,10 @@ export default defineMessages({
     id: 'front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Areas.areasTitle2',
     defaultMessage: 'In your area',
   },
-  thereAreCurrentlyNoProjectsPlural: {
-    id: 'front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Areas.thereAreCurrentlyNoProjectsInYourAreas',
+  thereAreCurrentlyNoProjects: {
+    id: 'front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Areas.thereAreCurrentlyNoProjects',
     defaultMessage:
-      'There are currently no projects in the {areasTerm} that you follow that you have permission to view.',
+      'There are currently no active projects for you in the {areasTerm} that you follow.',
   },
   thisWidgetShows: {
     id: 'front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Areas.thisWidgetShows',

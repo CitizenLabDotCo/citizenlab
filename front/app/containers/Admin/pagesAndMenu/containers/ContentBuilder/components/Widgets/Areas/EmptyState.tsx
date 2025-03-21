@@ -19,7 +19,7 @@ const EmptyState = () => {
   return (
     <Box px={isSmallerThanPhone ? DEFAULT_PADDING : undefined}>
       <Text color="textSecondary">
-        {formatMessage(messages.thereAreCurrentlyNoProjectsPlural, {
+        {formatMessage(messages.thereAreCurrentlyNoProjects, {
           areasTerm,
         })}
       </Text>
