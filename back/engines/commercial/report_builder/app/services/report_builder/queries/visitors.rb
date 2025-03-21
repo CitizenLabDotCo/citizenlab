@@ -11,6 +11,11 @@ module ReportBuilder
     )
       sessions = ImpactTracking::Session.where(created_at: start_at..end_at)
 
+      if project_id.present?
+        sessions_with_project = ImpactTracking::Pageview.where(project_id: project_id).select(:session_id)
+        sessions = sessions.where(id: sessions_with_project)
+      end
+
       time_series = sessions
         .select(
           "count(*) as visits, count(distinct(monthly_user_hash)) as visitors, date_trunc('#{resolution}', created_at) as date_group"
