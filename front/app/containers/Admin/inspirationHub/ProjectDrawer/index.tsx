@@ -34,6 +34,7 @@ const ProjectDrawer = () => {
 
   const attributes = project?.data.attributes;
   const relationships = project?.data.relationships;
+
   const showOptOutCopy =
     appConfiguration &&
     attributes &&

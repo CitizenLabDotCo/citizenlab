@@ -6,9 +6,9 @@ import {
   Title,
   Icon,
   colors,
+  Quote,
   stylingConsts,
 } from '@citizenlab/cl2-component-library';
-import Quote from 'component-library/components/Quote';
 import styled from 'styled-components';
 
 import useProjectLibraryPhases from 'api/project_library_phases/useProjectLibraryPhases';
