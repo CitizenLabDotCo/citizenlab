@@ -106,6 +106,7 @@ export interface IAttributes {
   other?: boolean;
   random_option_ordering?: boolean;
   dropdown_layout?: boolean;
+  question_category?: string;
 }
 
 export interface ICustomFieldResponse {
@@ -171,6 +172,7 @@ export type IFlatCreateCustomField = Optional<
   | 'maximum'
   | 'random_option_ordering'
   | 'dropdown_layout'
+  | 'question_category'
 > & {
   isLocalOnly: boolean;
 };
