@@ -10,23 +10,42 @@ const getSurveyResultsEndpoint = (phaseId: string | null) => {
   return `phases/${phaseId}/survey_results`;
 };
 
-const fetchSurveyResults = ({ phaseId, filterLogicIds }: IParameters) =>
+const fetchSurveyResults = ({
+  phaseId,
+  filterLogicIds,
+  quarter,
+  year,
+}: IParameters) =>
   fetcher<SurveyResultsType>({
     path: `/${getSurveyResultsEndpoint(phaseId)}`,
     action: 'get',
-    queryParams:
-      filterLogicIds.length > 0 ? { filter_logic_ids: filterLogicIds } : {},
+    queryParams: {
+      filter_logic_ids: filterLogicIds.length > 0 ? filterLogicIds : [],
+      quarter,
+      year,
+    },
   });
 
-const useSurveyResults = ({ phaseId, filterLogicIds }: IParameters) => {
+const useSurveyResults = ({
+  phaseId,
+  filterLogicIds,
+  quarter,
+  year,
+}: IParameters) => {
   return useQuery<
     SurveyResultsType,
     CLErrors,
     SurveyResultsType,
     SurveyResultsKeys
   >({
-    queryKey: surveyResultsKeys.item({ phaseId, filterLogicIds }),
-    queryFn: () => fetchSurveyResults({ phaseId, filterLogicIds }),
+    queryKey: surveyResultsKeys.item({
+      phaseId,
+      filterLogicIds,
+      quarter,
+      year,
+    }),
+    queryFn: () =>
+      fetchSurveyResults({ phaseId, filterLogicIds, quarter, year }),
   });
 };
 

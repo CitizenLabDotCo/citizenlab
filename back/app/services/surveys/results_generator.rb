@@ -202,7 +202,8 @@ module Surveys
       attributes = core_field_attributes(field, response_count: question_response_count).merge({
         totalPickCount: answers.pluck(:count).sum,
         answers: answers,
-        multilocs: get_multilocs(field)
+        multilocs: get_multilocs(field),
+        questionCategory: field.question_category
       })
 
       attributes[:textResponses] = get_text_responses(field.additional_text_question_key) if field.additional_text_question_key
