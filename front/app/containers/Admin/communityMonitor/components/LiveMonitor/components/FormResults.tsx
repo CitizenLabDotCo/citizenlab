@@ -1,12 +1,6 @@
 import React from 'react';
 
-import {
-  Box,
-  colors,
-  Icon,
-  stylingConsts,
-  Text,
-} from '@citizenlab/cl2-component-library';
+import { Box, Icon, Text } from '@citizenlab/cl2-component-library';
 import { useParams, useSearchParams } from 'react-router-dom';
 
 import useProjectById from 'api/projects/useProjectById';
@@ -90,21 +84,7 @@ const FormResults = (props: Props) => {
                     </Text>
                   </Box>
                 </Box>
-                {result.totalResponseCount > 0 ? (
-                  <SentimentQuestion key={index} result={result} mb="8px" />
-                ) : (
-                  <Box
-                    border={`1px solid ${colors.borderLight}`}
-                    borderRadius={stylingConsts.borderRadius}
-                    mt="12px"
-                    background={colors.white}
-                    p="16px"
-                  >
-                    <Text color="textSecondary" textAlign="center">
-                      Results will appear here as they come in.
-                    </Text>
-                  </Box>
-                )}
+                <SentimentQuestion key={index} result={result} mb="8px" />
               </Box>
             );
           } else {
