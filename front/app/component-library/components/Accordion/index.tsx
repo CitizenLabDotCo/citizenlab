@@ -5,7 +5,12 @@ import styled from 'styled-components';
 
 import useInstanceId from '../../hooks/useInstanceId';
 import { colors, isRtl } from '../../utils/styleUtils';
-import Box, { BoxMarginProps, BoxPaddingProps, BoxWidthProps } from '../Box';
+import Box, {
+  BoxBorderProps,
+  BoxMarginProps,
+  BoxPaddingProps,
+  BoxWidthProps,
+} from '../Box';
 import Icon from '../Icon';
 import ListItem from '../ListItem';
 
@@ -20,7 +25,8 @@ type AccordionProps = {
   transitionHeightPx?: number;
 } & BoxMarginProps &
   BoxWidthProps &
-  BoxPaddingProps;
+  BoxPaddingProps &
+  BoxBorderProps;
 
 const ChevronIcon = styled(Icon)`
   fill: ${colors.textSecondary};

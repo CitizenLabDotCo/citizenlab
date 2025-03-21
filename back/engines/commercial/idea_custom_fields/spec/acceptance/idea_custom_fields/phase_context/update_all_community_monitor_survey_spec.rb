@@ -45,32 +45,35 @@ resource 'Idea Custom Fields' do
       }
     end
 
-    let(:context) { create(:community_monitor_survey_phase) }
-    let!(:custom_form) { create(:custom_form, participation_context: context) }
-    let(:phase_id) { context.id }
+    let(:phase) { create(:community_monitor_survey_phase) }
+    let!(:custom_form) { create(:custom_form, participation_context: phase) }
+    let(:phase_id) { phase.id }
 
     context 'when admin' do
       before { admin_header_token }
 
       example 'Insert one field, update one field, and destroy one field' do
-        field_to_update = create(:custom_field_rating, resource: custom_form, title_multiloc: { 'en' => 'Rating field' })
-        create(:custom_field, resource: custom_form) # field to destroy
+        field_to_update = create(:custom_field_sentiment_linear_scale, resource: custom_form, title_multiloc: { 'en' => 'Sentiment field' })
+        create(:custom_field_page, resource: custom_form) # field to destroy
         request = {
           custom_fields: [
             first_page,
             # Updated field
             {
               id: field_to_update.id,
-              title_multiloc: { 'en' => 'Updated rating field' },
+              title_multiloc: { 'en' => 'Updated sentiment field' },
               description_multiloc: { 'en' => 'Updated description' },
               required: true,
               enabled: true,
-              maximum: 7
+              ask_follow_up: true,
+              question_category: 'quality_of_life'
             },
-            # Inserted field first to test reordering of fields.
+            # Inserted field.
             {
-              input_type: 'text',
-              title_multiloc: { 'en' => 'Inserted field' },
+              input_type: 'page',
+              title_multiloc: { 'en' => 'Inserted page field' },
+              page_layout: 'default',
+              key: 'inserted_page_field',
               required: false,
               enabled: false
             },
@@ -87,20 +90,36 @@ resource 'Idea Custom Fields' do
             created_at: an_instance_of(String),
             description_multiloc: { en: 'Updated description' },
             enabled: true,
-            input_type: 'rating',
+            input_type: 'sentiment_linear_scale',
             key: field_to_update.key,
             ordering: 1,
             required: true,
-            title_multiloc: { en: 'Updated rating field' },
+            title_multiloc: { en: 'Updated sentiment field' },
             updated_at: an_instance_of(String),
             logic: {},
             constraints: {},
             random_option_ordering: false,
-            maximum: 7
+            maximum: 5,
+            ask_follow_up: true,
+            linear_scale_label_1_multiloc: { en: 'Strongly disagree' },
+            linear_scale_label_2_multiloc: { en: 'Disagree' },
+            linear_scale_label_3_multiloc: { en: 'Neutral' },
+            linear_scale_label_4_multiloc: { en: 'Agree' },
+            linear_scale_label_5_multiloc: { en: 'Strongly agree' },
+            linear_scale_label_6_multiloc: {},
+            linear_scale_label_7_multiloc: {},
+            linear_scale_label_8_multiloc: {},
+            linear_scale_label_9_multiloc: {},
+            linear_scale_label_10_multiloc: {},
+            linear_scale_label_11_multiloc: {},
+            question_category: 'quality_of_life'
           },
           id: an_instance_of(String),
           type: 'custom_field',
-          relationships: { options: { data: [] }, resource: { data: { id: custom_form.id, type: 'custom_form' } } }
+          relationships: {
+            options: { data: [] },
+            resource: { data: { id: custom_form.id, type: 'custom_form' } }
+          }
         })
         expect(response_data[2]).to match({
           attributes: {
@@ -108,19 +127,25 @@ resource 'Idea Custom Fields' do
             created_at: an_instance_of(String),
             description_multiloc: {},
             enabled: false,
-            input_type: 'text',
-            key: Regexp.new('inserted_field'),
+            input_type: 'page',
+            key: 'inserted_page_field',
             ordering: 2,
             required: false,
-            title_multiloc: { en: 'Inserted field' },
+            title_multiloc: { en: 'Inserted page field' },
             updated_at: an_instance_of(String),
             logic: {},
             constraints: {},
-            random_option_ordering: false
+            random_option_ordering: false,
+            page_layout: 'default',
+            question_category: nil
           },
           id: an_instance_of(String),
           type: 'custom_field',
-          relationships: { options: { data: [] }, resource: { data: { id: custom_form.id, type: 'custom_form' } } }
+          relationships: {
+            map_config: { data: nil },
+            options: { data: [] },
+            resource: { data: { id: custom_form.id, type: 'custom_form' } }
+          }
         })
       end
 
@@ -147,8 +172,8 @@ resource 'Idea Custom Fields' do
         example 'First page & last page must be present' do
           request = {
             custom_fields: [
-              { input_type: 'text', title_multiloc: { en: 'Text field' } },
-              { input_type: 'text', title_multiloc: { en: 'Text field' } }
+              { input_type: 'sentiment_linear_scale', title_multiloc: { en: 'First field' } },
+              { input_type: 'sentiment_linear_scale', title_multiloc: { en: 'Second field' } }
             ]
           }
           do_request request

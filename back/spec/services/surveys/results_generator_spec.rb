@@ -38,7 +38,7 @@ RSpec.describe Surveys::ResultsGenerator do
       end
 
       it 'returns the correct fields and structure' do
-        expect(generated_results[:results].count).to eq 17
+        expect(generated_results[:results].count).to eq 18
         expect(generated_results[:results].pluck(:customFieldId)).not_to include disabled_multiselect_field.id
       end
     end
@@ -48,7 +48,7 @@ RSpec.describe Surveys::ResultsGenerator do
         page_result = generated_results[:results][0]
         expect(page_result[:inputType]).to eq 'page'
         expect(page_result[:totalResponseCount]).to eq(27)
-        expect(page_result[:questionResponseCount]).to eq(22)
+        expect(page_result[:questionResponseCount]).to eq(25)
         expect(page_result[:pageNumber]).to eq(1)
         expect(page_result[:questionNumber]).to be_nil
       end
@@ -272,7 +272,7 @@ RSpec.describe Surveys::ResultsGenerator do
           description: { 'en' => 'Please rate your experience from 1 (poor) to 7 (excellent).' },
           hidden: false,
           pageNumber: nil,
-          questionNumber: nil,
+          questionNumber: 16,
           totalResponseCount: 27,
           questionResponseCount: 22,
           totalPickCount: 27,
@@ -301,12 +301,65 @@ RSpec.describe Surveys::ResultsGenerator do
       end
 
       it 'returns the results for a rating field' do
-        expected_result_rating[:questionNumber] = 16
         expect(generated_results[:results][16]).to match expected_result_rating
       end
 
       it 'returns a single result for a rating field' do
+        expected_result_rating[:questionNumber] = nil # Question number is null when requesting a single result
         expect(generator.generate_result_for_field(rating_field.id)).to match expected_result_rating
+      end
+    end
+
+    describe 'sentiment linear scale field' do
+      let(:expected_result_sentiment_linear_scale) do
+        {
+          customFieldId: sentiment_linear_scale_field.id,
+          inputType: 'sentiment_linear_scale',
+          question: {
+            'en' => 'How are you feeling?',
+            'fr-FR' => 'Comment te sens-tu?',
+            'nl-NL' => 'Hoe gaat het met je?'
+          },
+          required: false,
+          grouped: false,
+          description: { 'en' => 'Please indicate how strong you agree or disagree.' },
+          hidden: false,
+          pageNumber: nil,
+          questionNumber: 17,
+          totalResponseCount: 27,
+          questionResponseCount: 25,
+          totalPickCount: 27,
+          answers: [
+            { answer: 1, count: 8 },
+            { answer: 2, count: 7 },
+            { answer: 3, count: 8 },
+            { answer: 4, count: 0 },
+            { answer: 5, count: 2 },
+            { answer: nil, count: 2 }
+          ],
+          multilocs: {
+            answer: {
+              1 => { title_multiloc: { 'en' => '1 - Strongly disagree', 'fr-FR' => '1', 'nl-NL' => '1' } },
+              2 => { title_multiloc: { 'en' => '2 - Disagree', 'fr-FR' => '2', 'nl-NL' => '2' } },
+              3 => { title_multiloc: { 'en' => '3 - Neutral', 'fr-FR' => '3', 'nl-NL' => '3' } },
+              4 => { title_multiloc: { 'en' => '4 - Agree', 'fr-FR' => '4', 'nl-NL' => '4' } },
+              5 => { title_multiloc: { 'en' => '5 - Strongly agree', 'fr-FR' => '5', 'nl-NL' => '5' } }
+            }
+          },
+          textResponses: [
+            { answer: 'Great thanks very much' },
+            { answer: 'Just not good' }
+          ]
+        }
+      end
+
+      it 'returns the results for a sentiment linear scale field' do
+        expect(generated_results[:results][17]).to match expected_result_sentiment_linear_scale
+      end
+
+      it 'returns a single result for a sentiment linear scale field' do
+        expected_result_sentiment_linear_scale[:questionNumber] = nil # Question number is null when requesting a single result
+        expect(generator.generate_result_for_field(sentiment_linear_scale_field.id)).to match expected_result_sentiment_linear_scale
       end
     end
 

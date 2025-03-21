@@ -26,12 +26,12 @@ import { API_PATH } from 'containers/App/constants';
 import UpsellTooltip from 'components/UpsellTooltip';
 
 import { FormattedMessage } from 'utils/cl-intl';
+import { getFormActionsConfig } from 'utils/configs/formActionsConfig/utils';
 import { isNilOrError } from 'utils/helperUtils';
 import { requestBlob } from 'utils/requestBlob';
 
 import { saveIdeaFormAsPDF } from '../../inputForm/saveIdeaFormAsPDF';
 import { saveSurveyAsPDF } from '../../nativeSurvey/saveSurveyAsPDF';
-import { getFormActionsConfig } from '../../nativeSurvey/utils';
 import sharedMessages from '../messages';
 
 import messages from './messages';
