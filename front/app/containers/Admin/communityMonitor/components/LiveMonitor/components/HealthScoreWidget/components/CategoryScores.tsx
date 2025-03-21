@@ -59,7 +59,7 @@ const CategoryScores = ({ sentimentScores }: Props) => {
               </Box>
 
               {/* Score Display */}
-              <Box display="flex" alignItems="center" ml="8px">
+              <Box my="8px" display="flex" alignItems="center" ml="8px">
                 <Text
                   m="0px"
                   fontSize="xl"
@@ -70,13 +70,18 @@ const CategoryScores = ({ sentimentScores }: Props) => {
                 >
                   {currentScore || '?'}
                 </Text>
-                <Text fontWeight="semi-bold" fontSize="m" lineHeight="1">
+                <Text
+                  m="0px"
+                  fontWeight="semi-bold"
+                  fontSize="m"
+                  lineHeight="1"
+                >
                   /5
                 </Text>
               </Box>
 
               {/* Trend Indicator */}
-              <Box mt="4px" ml="12px">
+              <Box ml="12px">
                 <TrendIndicator percentageDifference={percentageDifference} />
               </Box>
             </Box>

@@ -69,28 +69,30 @@ const FormResults = (props: Props) => {
           const category = result.questionCategory;
           return (
             <Box key={index}>
-              {category && isFirstQuestionInCategory(category, index) && (
-                <Box
-                  display="flex"
-                  justifyContent="space-between"
-                  alignItems="center"
-                  mb="8px"
-                  mt="30px"
-                >
-                  <Box display="flex" alignItems="center">
-                    <Text m="0px" fontSize="l" fontWeight="bold">
-                      <Icon
-                        width="16px"
-                        name="dot"
-                        fill={categoryColors[category]}
-                        mr="4px"
-                        my="auto"
-                      />
-                      {category}
-                    </Text>
+              {category &&
+                // TODO: Will change after BE returns pages with category titles
+                isFirstQuestionInCategory(category, index) && (
+                  <Box
+                    display="flex"
+                    justifyContent="space-between"
+                    alignItems="center"
+                    mb="8px"
+                    mt="30px"
+                  >
+                    <Box display="flex" alignItems="center">
+                      <Text m="0px" fontSize="l" fontWeight="bold">
+                        <Icon
+                          width="16px"
+                          name="dot"
+                          fill={categoryColors[category]}
+                          mr="4px"
+                          my="auto"
+                        />
+                        {category}
+                      </Text>
+                    </Box>
                   </Box>
-                </Box>
-              )}
+                )}
               <SentimentQuestion key={index} result={result} mb="8px" />
             </Box>
           );

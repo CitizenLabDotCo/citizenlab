@@ -18,13 +18,10 @@ export type SentimentAnswers = SentimentAnswer[] | undefined;
 export const parseResult = (
   result: ResultUngrouped | ResultGrouped
 ): SentimentAnswers => {
-  const usersNoAnswer = result.answers?.[5]?.count ?? 0; // Index 5 assumed to be "no answer"
-  const totalUsersWhoAnswered = result.totalPickCount - usersNoAnswer;
-
   return result.answers?.map(({ answer, count }) => ({
     answer: answer ? parseInt(answer.toString(), 10) : null,
     count,
-    percentage: Math.round((count / totalUsersWhoAnswered) * 100),
+    percentage: Math.round((count / result.questionResponseCount) * 100),
     label: answer ? result.multilocs?.answer[answer].title_multiloc : undefined,
   }));
 };

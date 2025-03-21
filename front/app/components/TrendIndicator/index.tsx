@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Text, Icon, colors } from '@citizenlab/cl2-component-library';
+import { Text, Icon, Box } from '@citizenlab/cl2-component-library';
 
 import { getTrendColorName } from 'components/admin/FormResults/FormResultsQuestion/SentimentQuestion/utils';
 
@@ -36,22 +36,26 @@ const TrendIndicator = ({
   }${Math.round(percentageDifference)}%`;
 
   return (
-    <Text m="0px" color={getTrendColorName(percentageDifference)} fontSize="s">
-      {currentTrendConfig.icon && (
-        <Icon
-          mr="4px"
-          width="13px"
-          name={currentTrendConfig.icon}
-          fill={currentTrendConfig.color}
-        />
-      )}
-      {trendPercentageLabel}
-      {showQuarterComparisonLabel && (
-        <span style={{ color: colors.textSecondary }}>
-          {formatMessage(messages.previous_quarter)}
-        </span>
-      )}
-    </Text>
+    <Box display="flex" gap="8px">
+      <Text
+        m="0px"
+        color={getTrendColorName(percentageDifference)}
+        fontSize="s"
+      >
+        {currentTrendConfig.icon && (
+          <Icon
+            mr="4px"
+            width="13px"
+            name={currentTrendConfig.icon}
+            fill={currentTrendConfig.color}
+          />
+        )}
+        {trendPercentageLabel}
+      </Text>
+      <Text m="0px" color="textSecondary">
+        {showQuarterComparisonLabel && formatMessage(messages.previous_quarter)}
+      </Text>
+    </Box>
   );
 };
 
