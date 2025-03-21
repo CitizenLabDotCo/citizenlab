@@ -13,4 +13,9 @@ FactoryBot.define do
       option_bin.custom_field_option ||= create(:custom_field_option, custom_field: option_bin.custom_field)
     end
   end
+
+  factory :range_bin, class: 'CustomFieldBins::RangeBin' do
+    association :custom_field, factory: :custom_field_number
+    range { 1...10 }
+  end
 end

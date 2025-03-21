@@ -263,6 +263,20 @@ class CustomField < ApplicationRecord
     resource_type == 'CustomForm'
   end
 
+  def user_type?
+    resource_type == 'User'
+  end
+
+  def items_claz
+    if custom_form_type?
+      Idea
+    elsif user_type?
+      User
+    else
+      raise 'Unsupported resource type'
+    end
+  end
+
   def multiloc?
     %w[
       text_multiloc
