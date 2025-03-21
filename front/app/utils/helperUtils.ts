@@ -176,7 +176,6 @@ export const isTopBarNavActive = (
   return !tabUrl.endsWith(basePath) && pathname.includes(tabUrl);
 };
 
-export const anyIsUndefined = (...args) => args.some(isUndefined);
 export const anyIsDefined = (...args) => args.some((arg) => !isUndefined(arg));
 
 export function removeFocusAfterMouseClick(event: React.MouseEvent) {
