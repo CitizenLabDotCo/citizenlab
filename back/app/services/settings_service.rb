@@ -87,7 +87,7 @@ class SettingsService
     config.save!
   end
 
-  def minimal_required_settings(locales: ['en'], lifecycle_stage: 'demo')
+  def minimal_required_settings(locales: ['en'], lifecycle_stage: 'demo', country_code: 'BE')
     {
       core: {
         enabled: true,
@@ -100,6 +100,7 @@ class SettingsService
         color_secondary: '#008292',
         color_text: '#333',
         lifecycle_stage: lifecycle_stage,
+        country_code: country_code,
         authentication_token_lifetime_in_days: 30
       }
     }

@@ -4,16 +4,15 @@
 #
 # Table name: app_configurations
 #
-#  id           :uuid             not null, primary key
-#  name         :string
-#  host         :string
-#  logo         :string
-#  favicon      :string
-#  settings     :jsonb
-#  created_at   :datetime         not null
-#  updated_at   :datetime         not null
-#  style        :jsonb
-#  country_code :string
+#  id         :uuid             not null, primary key
+#  name       :string
+#  host       :string
+#  logo       :string
+#  favicon    :string
+#  settings   :jsonb
+#  created_at :datetime         not null
+#  updated_at :datetime         not null
+#  style      :jsonb
 #
 class AppConfiguration < ApplicationRecord
   include StyleSettings

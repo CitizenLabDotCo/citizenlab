@@ -7,6 +7,7 @@ FactoryBot.define do
     transient do
       lifecycle { 'active' }
       locales { %w[en nl-BE fr-FR] }
+      country_code { 'BE' }
     end
 
     host { 'localhost' }
@@ -24,6 +25,7 @@ FactoryBot.define do
             'fr-FR' => Faker::Address.city
           },
           'lifecycle_stage' => lifecycle,
+          'country_code' => country_code,
           'timezone' => 'Europe/Brussels',
           'currency' => 'EUR',
           'locales' => locales,
@@ -53,6 +55,7 @@ FactoryBot.define do
           },
           'lifecycle_stage' => 'active',
           'locales' => %w[en fr-FR nl-NL],
+          'country_code' => 'BE',
           'timezone' => 'Europe/Brussels',
           'currency' => 'EUR',
           'color_main' => '#335533',

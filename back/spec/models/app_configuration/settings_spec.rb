@@ -85,6 +85,12 @@ RSpec.describe AppConfiguration::Settings do
       expect(config.update(settings: config.settings)).to be false
     end
 
+    it 'requires country_code' do
+      config = AppConfiguration.instance
+      config.settings['core'].except! 'country_code'
+      expect(config).not_to be_valid
+    end
+
     it 'requires timezone as it is in `required-settings`' do
       config = AppConfiguration.instance
       config.settings['core'].except! 'timezone'
