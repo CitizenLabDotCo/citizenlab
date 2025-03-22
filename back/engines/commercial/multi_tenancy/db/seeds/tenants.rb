@@ -506,7 +506,7 @@ module MultiTenancy
 
         config_attrs = tenant_attrs.merge(
           logo: Rails.root.join('spec/fixtures/logo.png').open,
-          settings: SettingsService.new.minimal_required_settings(locales: %w[en nl-BE], lifecycle_stage: 'active', country_code: 'BE')
+          settings: SettingsService.new.minimal_required_settings(locales: %w[en nl-BE], lifecycle_stage: 'active')
         )
 
         TenantService.new.initialize_tenant(tenant_attrs, config_attrs)

@@ -9,8 +9,7 @@ namespace :cl2_back do
 
     settings = SettingsService.new.minimal_required_settings(
       locales: args[:locales]&.split(';')&.map(&:strip) || %w[en nl-BE nl-NL fr-BE],
-      lifecycle_stage: 'not_applicable',
-      country_code: 'BE'
+      lifecycle_stage: 'not_applicable'
     ).deep_merge(
       {
         core: {
