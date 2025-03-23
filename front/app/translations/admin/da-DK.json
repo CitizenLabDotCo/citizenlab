@@ -2901,7 +2901,7 @@
   "containers.Admin.reporting.components.ReportBuilder.Widgets.SurveyQuestionResultWidget.Settings.surveyQuestion": "Spørgsmål til undersøgelsen",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Areas.areaButtonsInfo1": "Klik på knapperne nedenfor for at følge eller afmelde den {areasTerm} , du gerne vil se projekter for. Antallet af projekter i hver {areaTerm} er vist i parentes.",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Areas.areasTitle2": "I dit område",
-  "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Areas.areasYouFollow1": "{capitalizedAreasTerm} du følger med",
+  "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Areas.areasYouFollow1": "{capitalizedAreasTerm} du følger",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Areas.done": "Færdig",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Areas.followAreas1": "Følg {areasTerm}",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Areas.thereAreCurrentlyNoProjects": "Der er i øjeblikket ingen aktive projekter for dig på {areasTerm} , som du følger.",
