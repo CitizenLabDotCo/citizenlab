@@ -1053,6 +1053,8 @@
   "app.containers.App.loading": "التحميل جارٍ...",
   "app.containers.App.metaTitle1": "منصة مشاركة المواطنين | {orgName}",
   "app.containers.App.skipLinkText": "انتقل إلى المحتوى الرئيسي",
+  "app.containers.AreaTerms.areaTerm": "منطقة",
+  "app.containers.AreaTerms.areasTerm": "المناطق",
   "app.containers.AuthProviders.emailTakenAndUserCanBeVerified": "حساب بهذا البريد الإلكتروني موجود بالفعل. يمكنك تسجيل الخروج وتسجيل الدخول باستخدام عنوان البريد الإلكتروني هذا والتحقق من حسابك في صفحة الإعدادات.",
   "app.containers.Authentication.steps.AccessDenied.close": "يغلق",
   "app.containers.Authentication.steps.AccessDenied.youDoNotMeetTheRequirements": "لا تتوفر لديك المتطلبات للمشاركة في هذه العملية.",
