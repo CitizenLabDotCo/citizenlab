@@ -113,6 +113,17 @@ class CustomField < ApplicationRecord
   scope :not_hidden, -> { where(hidden: false) }
   scope :hidden, -> { where(hidden: true) }
 
+  def policy_class
+    case resource_type
+    when 'User'
+      UserCustomFields::UserCustomFieldPolicy
+    when 'CustomForm'
+      CustomFormPolicy
+    else
+      raise "Polcy not implemented for resource type: #{resource_type}"
+    end
+  end
+
   def logic?
     logic.present? && logic != { 'rules' => [] }
   end
