@@ -66,9 +66,9 @@ const CategoryScores = ({ sentimentScores }: Props) => {
                   fontWeight="bold"
                   lineHeight="1"
                   mr="4px"
-                  color={currentScore ? 'textPrimary' : 'coolGrey300'}
+                  color={'textPrimary'}
                 >
-                  {currentScore || '?'}
+                  {currentScore || '-'}
                 </Text>
                 <Text
                   m="0px"

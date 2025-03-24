@@ -50,7 +50,7 @@ const TotalCountsSentimentBar = ({ sentimentScores }: Props) => {
     getAnswerGroups({ questionAnswers: quarterPercentages });
 
   // Generate content for tooltip on hover
-  const tooltipContet = quarterPercentages?.map((item, index) => {
+  const tooltipContent = quarterPercentages?.map((item, index) => {
     return {
       answer: index + 1,
       percentage: item.percentage,
@@ -59,10 +59,10 @@ const TotalCountsSentimentBar = ({ sentimentScores }: Props) => {
 
   return (
     <>
-      {answerGroups && tooltipContet && (
+      {tooltipContent && (
         <Tooltip
           theme="dark"
-          content={<SentimentTooltip answers={tooltipContet} />}
+          content={<SentimentTooltip answers={tooltipContent} />}
         >
           <SentimentBar answerGroups={answerGroups} />
         </Tooltip>

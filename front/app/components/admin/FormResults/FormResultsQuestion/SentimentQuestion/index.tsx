@@ -6,7 +6,6 @@ import {
   colors,
   BoxProps,
 } from '@citizenlab/cl2-component-library';
-import { isNil } from 'lodash-es';
 
 import { ResultUngrouped } from 'api/survey_results/types';
 
@@ -23,14 +22,10 @@ const SentimentQuestion = ({
   showAnalysis,
   ...props
 }: Props & BoxProps) => {
-  const { textResponses, averages } = result;
+  const { textResponses } = result;
 
   const textResponsesCount = textResponses?.length || 0;
   const hasTextResponses = textResponsesCount > 0;
-
-  if (isNil(averages?.this_period)) {
-    return null;
-  }
 
   // Don't show an accordion if there are no text responses
   if (!hasTextResponses && !showAnalysis) {

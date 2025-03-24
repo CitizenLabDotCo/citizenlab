@@ -12,6 +12,22 @@ export const categoryColors = {
   other: colors.grey700,
 };
 
+export const generateEmptyChartData = (search: URLSearchParams) => {
+  const year = getYearFilter(search);
+  const quarter = getQuarterFilter(search);
+
+  return [
+    {
+      overall: NaN,
+      quality_of_life: NaN,
+      service_delivery: NaN,
+      governance_and_trust: NaN,
+      other: NaN,
+      quarter: `${year}-${quarter}`,
+    },
+  ];
+};
+
 // transformSentimentScoreData:
 // Transform the sentiment score data object into a more usable format with arrays.
 export function transformSentimentScoreData(
@@ -61,8 +77,8 @@ export function transformSentimentScoreData(
 
 // getYearFilter:
 // Get the current year based on the date. If a year is provided in the URL, use that instead.
-export const getYearFilter = (search: URLSearchParams) => {
-  const year = search.get('year');
+export const getYearFilter = (search?: URLSearchParams) => {
+  const year = search?.get('year');
   if (year) {
     return year;
   }
@@ -73,8 +89,8 @@ export const getYearFilter = (search: URLSearchParams) => {
 
 // getQuarterFilter:
 // Get the current quarter based on the date. If a quarter is provided in the URL, use that instead.
-export const getQuarterFilter = (search: URLSearchParams) => {
-  const quarter = search.get('quarter');
+export const getQuarterFilter = (search?: URLSearchParams) => {
+  const quarter = search?.get('quarter');
   if (quarter) {
     return quarter;
   }

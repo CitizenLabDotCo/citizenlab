@@ -90,11 +90,9 @@ const HealthScoreWidget = ({ phaseId, ...props }: Props) => {
               fontWeight="bold"
               lineHeight="1"
               mr="4px"
-              color={
-                currentOverallHealthScore?.score ? 'textPrimary' : 'coolGrey300'
-              }
+              color={'textPrimary'}
             >
-              {currentOverallHealthScore?.score || '?'}
+              {currentOverallHealthScore?.score || '-'}
             </Text>
             <Text
               fontWeight="semi-bold"
