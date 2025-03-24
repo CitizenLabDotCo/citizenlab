@@ -11,12 +11,12 @@ import styled from 'styled-components';
 import useLocale from 'hooks/useLocale';
 
 import MoreActionsMenu from 'components/UI/MoreActionsMenu';
-import UserName from 'components/UI/UserName';
+import { Name } from 'components/UI/UserName';
 
 import { timeAgo } from 'utils/dateUtils';
 
 interface Props {
-  userId: string;
+  name: string;
   createdAt: string;
 }
 
@@ -28,20 +28,21 @@ const TimeAgo = styled.div`
   margin-left: 8px;
 `;
 
-const Comment = ({ userId, createdAt }: Props) => {
+const Comment = ({ name, createdAt }: Props) => {
   const locale = useLocale();
 
   return (
     <Box width="100%" maxWidth="600px">
       <Box display="flex" alignItems="center" justifyContent="space-between">
         <Box display="flex" alignItems="center">
-          <UserName
-            userId={userId}
+          <Name
             underline
             fontSize={fontSizes.base}
             fontWeight={400}
             color={colors.textSecondary}
-          />
+          >
+            {name}
+          </Name>
           <TimeAgo>{timeAgo(Date.parse(createdAt), locale)}</TimeAgo>
         </Box>
         <MoreActionsMenu

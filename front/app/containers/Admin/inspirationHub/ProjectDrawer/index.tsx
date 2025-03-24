@@ -41,11 +41,11 @@ const StyledBox = styled(Box)`
 
 const DUMMY_DATA = [
   {
-    userId: '386d255e-2ff1-4192-8e50-b3022576be50',
+    name: 'Michael Bluth',
     createdAt: '2021-08-10T12:00:00Z',
   },
   {
-    userId: '386d255e-2ff1-4192-8e50-b3022576be50',
+    name: 'Tobias Funke',
     createdAt: '2021-08-10T12:00:00Z',
   },
 ];
