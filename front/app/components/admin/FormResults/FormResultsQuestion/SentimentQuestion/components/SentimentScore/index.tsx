@@ -27,7 +27,7 @@ const SentimentScore = ({ result }: Props) => {
   );
 
   // Check if there are any responses to the question
-  const hasResponses = !!result.totalResponseCount;
+  const hasResponses = !!result.questionResponseCount;
 
   // Group the answers into low, neutral, and high sentiment
   const answerGroups = questionAnswers && getAnswerGroups({ questionAnswers });
