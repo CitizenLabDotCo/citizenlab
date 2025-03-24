@@ -281,9 +281,9 @@ class CustomField < ApplicationRecord
     visitor.send visitor_method, self
   end
 
-  # Special behaviour for ideation page 1
+  # Special behaviour for the title page
   def title_multiloc
-    if code == 'ideation_page1'
+    if code == 'title_page'
       key = "custom_forms.categories.main_content.#{input_term}.title"
       MultilocService.new.i18n_to_multiloc key
     else

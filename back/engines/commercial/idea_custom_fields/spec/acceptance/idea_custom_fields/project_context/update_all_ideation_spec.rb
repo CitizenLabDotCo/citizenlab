@@ -115,7 +115,7 @@ resource 'Idea Custom Fields' do
           expect(json_response[:data]).to match([
             hash_including(
               attributes: hash_including(
-                code: 'ideation_page1',
+                code: 'title_page',
                 key: nil,
                 input_type: 'page',
                 title_multiloc: { en: 'What is your idea?', 'fr-FR': 'Quelle est votre idée ?', 'nl-NL': 'Wat is je idee?' },
@@ -196,7 +196,7 @@ resource 'Idea Custom Fields' do
             ),
             hash_including(
               attributes: hash_including(
-                code: 'ideation_page2',
+                code: 'uploads_page',
                 key: nil,
                 input_type: 'page',
                 ordering: 3
@@ -204,7 +204,7 @@ resource 'Idea Custom Fields' do
             ),
             hash_including(attributes: hash_including(code: 'idea_images_attributes', key: 'idea_images_attributes', input_type: 'image_files', ordering: 4)),
             hash_including(attributes: hash_including(code: 'idea_files_attributes', key: 'idea_files_attributes', input_type: 'files', ordering: 5)),
-            hash_including(attributes: hash_including(code: 'ideation_page3', key: nil, input_type: 'page', ordering: 6)),
+            hash_including(attributes: hash_including(code: 'details_page', key: nil, input_type: 'page', ordering: 6)),
             hash_including(attributes: hash_including(code: 'topic_ids', key: 'topic_ids', input_type: 'topic_ids', ordering: 7)),
             hash_including(attributes: hash_including(code: 'location_description', key: 'location_description', input_type: 'text', ordering: 8)),
             hash_including(attributes: hash_including(code: 'proposed_budget', key: 'proposed_budget', input_type: 'number', ordering: 9)),

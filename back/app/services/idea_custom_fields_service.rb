@@ -197,7 +197,7 @@ class IdeaCustomFieldsService
   # Check required as it doesn't matter what is saved in title for page 1
   # Constraints required for the front-end but response will always return input specific method
   def page1_title?(field, attribute)
-    field.code == 'ideation_page1' && attribute == :title_multiloc
+    field.code == 'title_page' && attribute == :title_multiloc
   end
 
   attr_reader :custom_form, :participation_method

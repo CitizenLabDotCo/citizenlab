@@ -17,13 +17,14 @@ describe IdeaCustomFieldsService do
       it 'returns the built-in fields' do
         output = service.all_fields
         expect(output.filter_map(&:code)).to eq %w[
-          ideation_page1
+          title_page
           title_multiloc
+          body_page
           body_multiloc
-          ideation_page2
+          uploads_page
           idea_images_attributes
           idea_files_attributes
-          ideation_page3
+          details_page
           topic_ids
           location_description
           proposed_budget
@@ -35,13 +36,14 @@ describe IdeaCustomFieldsService do
       it 'excludes disabled fields' do
         output = service.visible_fields
         expect(output.filter_map(&:code)).to eq %w[
-          ideation_page1
+          title_page
           title_multiloc
+          body_page
           body_multiloc
-          ideation_page2
+          uploads_page
           idea_images_attributes
           idea_files_attributes
-          ideation_page3
+          details_page
           topic_ids
           location_description
         ]
@@ -66,13 +68,14 @@ describe IdeaCustomFieldsService do
       it 'excludes disabled fields' do
         output = service.enabled_fields
         expect(output.filter_map(&:code)).to eq %w[
-          ideation_page1
+          title_page
           title_multiloc
+          body_page
           body_multiloc
-          ideation_page2
+          uploads_page
           idea_images_attributes
           idea_files_attributes
-          ideation_page3
+          details_page
           topic_ids
           location_description
         ]
@@ -83,13 +86,14 @@ describe IdeaCustomFieldsService do
       it 'excludes disabled & answer_visible_to: admins fields' do
         output = service.enabled_public_fields
         expect(output.map(&:code)).to eq %w[
-          ideation_page1
+          title_page
           title_multiloc
+          body_page
           body_multiloc
-          ideation_page2
+          uploads_page
           idea_images_attributes
           idea_files_attributes
-          ideation_page3
+          details_page
           topic_ids
           location_description
         ]
@@ -124,13 +128,14 @@ describe IdeaCustomFieldsService do
         expect(output).to include extra_field2
         expect(output).to include topic_field
         expect(output.map(&:code)).to eq [
-          'ideation_page1',
+          'title_page',
           'title_multiloc',
+          'body_page',
           'body_multiloc',
-          'ideation_page2',
+          'uploads_page',
           'idea_images_attributes',
           'idea_files_attributes',
-          'ideation_page3',
+          'details_page',
           'topic_ids',
           'proposed_budget',
           nil,
@@ -151,13 +156,14 @@ describe IdeaCustomFieldsService do
         expect(output).not_to include extra_field2
         expect(output).not_to include topic_field
         expect(output.map(&:code)).to eq [
-          'ideation_page1',
+          'title_page',
           'title_multiloc',
+          'body_page',
           'body_multiloc',
-          'ideation_page2',
+          'uploads_page',
           'idea_images_attributes',
           'idea_files_attributes',
-          'ideation_page3',
+          'details_page',
           nil,
           nil
         ]
@@ -192,13 +198,14 @@ describe IdeaCustomFieldsService do
         expect(output).not_to include extra_field2
         expect(output).not_to include topic_field
         expect(output.map(&:code)).to eq [
-          'ideation_page1',
+          'title_page',
           'title_multiloc',
+          'body_page',
           'body_multiloc',
-          'ideation_page2',
+          'uploads_page',
           'idea_images_attributes',
           'idea_files_attributes',
-          'ideation_page3',
+          'details_page',
           nil,
           nil
         ]
@@ -211,13 +218,14 @@ describe IdeaCustomFieldsService do
         location_field.update!(answer_visible_to: 'admins')
         output = service.enabled_public_fields
         expect(output.map(&:code)).to eq [
-          'ideation_page1',
+          'title_page',
           'title_multiloc',
+          'body_page',
           'body_multiloc',
-          'ideation_page2',
+          'uploads_page',
           'idea_images_attributes',
           'idea_files_attributes',
-          'ideation_page3',
+          'details_page',
           'topic_ids',
           nil
         ]
@@ -257,7 +265,7 @@ describe IdeaCustomFieldsService do
       end
 
       it 'only returns 1 error for page 1 even if locked title is different from default' do
-        page1_field = custom_form.custom_fields.find_by(code: 'ideation_page1')
+        page1_field = custom_form.custom_fields.find_by(code: 'title_page')
         page1_field.enabled = false
         page1_field.title_multiloc = { en: 'Changed value' }
         service.validate_constraints_against_defaults(page1_field)
@@ -341,7 +349,7 @@ describe IdeaCustomFieldsService do
       end
 
       it 'only returns 1 error for page 1 even if locked title is changed' do
-        page1_field = custom_form.custom_fields.find_by(code: 'ideation_page1')
+        page1_field = custom_form.custom_fields.find_by(code: 'title_page')
         valid_params = { enabled: false, title_multiloc: { en: 'Changed value' } }
         service.validate_constraints_against_updates(page1_field, valid_params)
 

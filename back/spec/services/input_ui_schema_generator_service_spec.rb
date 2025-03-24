@@ -79,7 +79,7 @@ RSpec.describe InputUiSchemaGeneratorService do
                 type: 'Page',
                 options: {
                   input_type: 'page',
-                  id: custom_form.custom_fields.find_by(code: 'ideation_page1').id,
+                  id: custom_form.custom_fields.find_by(code: 'title_page').id,
                   title: 'What is your question?',
                   description: '',
                   page_layout: 'default',
@@ -119,7 +119,7 @@ RSpec.describe InputUiSchemaGeneratorService do
                 type: 'Page',
                 options: {
                   input_type: 'page',
-                  id: custom_form.custom_fields.find_by(code: 'ideation_page2').id,
+                  id: custom_form.custom_fields.find_by(code: 'uploads_page').id,
                   title: 'Images and attachments',
                   description: '',
                   page_layout: 'default',
@@ -156,7 +156,7 @@ RSpec.describe InputUiSchemaGeneratorService do
                 type: 'Page',
                 options: {
                   input_type: 'page',
-                  id: custom_form.custom_fields.find_by(code: 'ideation_page3').id,
+                  id: custom_form.custom_fields.find_by(code: 'details_page').id,
                   title: 'Details',
                   description: '',
                   page_layout: 'default',
