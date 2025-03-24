@@ -16,26 +16,6 @@ describe('"In your area" (areas) widget', () => {
     cy.get('#e2e-content-builder-topbar-save').click();
   });
 
-  after(() => {
-    cy.visit('en/admin/pages-menu/homepage-builder');
-    cy.get('[data-cy="e2e-areas-widget"]')
-      .first()
-      .parent()
-      .click({ force: true });
-
-    cy.get('#e2e-delete-button').click();
-
-    // Save
-    cy.get('#e2e-content-builder-topbar-save').click();
-    cy.wait(1000);
-
-    // Make sure it's not on homepage
-    cy.goToLandingPage();
-    cy.reload();
-    cy.wait(4000);
-    cy.get('[data-cy="e2e-areas-widget"]').should('not.exist');
-  });
-
   it('shows projects of the areas I follow', () => {
     // Create project with area
     cy.visit('/admin/projects/all');
@@ -84,4 +64,24 @@ describe('"In your area" (areas) widget', () => {
       .find('[data-cy="e2e-light-project-card"]')
       .should('contain', projectTitleEN);
   });
+});
+
+after(() => {
+  cy.visit('en/admin/pages-menu/homepage-builder');
+  cy.get('[data-cy="e2e-areas-widget"]')
+    .first()
+    .parent()
+    .click({ force: true });
+
+  cy.get('#e2e-delete-button').click();
+
+  // Save
+  cy.get('#e2e-content-builder-topbar-save').click();
+  cy.wait(1000);
+
+  // Make sure it's not on homepage
+  cy.goToLandingPage();
+  cy.reload();
+  cy.wait(4000);
+  cy.get('[data-cy="e2e-areas-widget"]').should('not.exist');
 });
