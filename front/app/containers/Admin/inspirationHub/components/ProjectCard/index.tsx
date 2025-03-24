@@ -6,6 +6,7 @@ import {
   Title,
   Icon,
   colors,
+  Quote,
   stylingConsts,
 } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
@@ -13,17 +14,19 @@ import styled from 'styled-components';
 import useProjectLibraryPhases from 'api/project_library_phases/useProjectLibraryPhases';
 import { ProjectLibraryProjectData } from 'api/project_library_projects/types';
 
+import { trackEventByName } from 'utils/analytics';
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 
 import { useCountriesByCode, useLocalizeProjectLibrary } from '../../utils';
 import MethodLabel from '../MethodLabel';
 
 import CardImage from './CardImage';
+import tracks from './tracks';
 import { getMethods } from './utils';
 
 interface Props {
   project: ProjectLibraryProjectData;
-  showStamp?: boolean;
+  isHighlighted?: boolean;
 }
 
 const CardContainer = styled(Box)`
@@ -41,7 +44,7 @@ const CardContainer = styled(Box)`
   cursor: pointer;
 `;
 
-const ProjectCard = ({ project, showStamp = false }: Props) => {
+const ProjectCard = ({ project, isHighlighted = false }: Props) => {
   const localize = useLocalizeProjectLibrary();
   const countriesByCode = useCountriesByCode();
 
@@ -57,6 +60,13 @@ const ProjectCard = ({ project, showStamp = false }: Props) => {
   const phases = useProjectLibraryPhases(phaseIds);
   const methods = getMethods(phases);
 
+  const annotation = attributes.annotation_multiloc
+    ? localize(
+        attributes.annotation_multiloc,
+        attributes.annotation_multiloc['en'] ?? ''
+      )
+    : '';
+
   return (
     <CardContainer
       as="button"
@@ -70,12 +80,16 @@ const ProjectCard = ({ project, showStamp = false }: Props) => {
       justifyContent="flex-start"
       onClick={() => {
         updateSearchParams({ project_id: project.id });
+        trackEventByName(tracks.previewProject, {
+          project_id: project.id,
+          isHighlighted,
+        });
       }}
     >
       <Box>
         <CardImage
           imageUrl={attributes.image_url ?? undefined}
-          showStamp={showStamp}
+          showStamp={isHighlighted}
         />
       </Box>
       <Box>
@@ -100,6 +114,13 @@ const ProjectCard = ({ project, showStamp = false }: Props) => {
           </Text>
         </Box>
       </Box>
+      {isHighlighted && annotation !== '' && (
+        <Quote w="100%" mb="12px">
+          <Text m="0px" fontStyle="italic">
+            {annotation}
+          </Text>
+        </Quote>
+      )}
       <Box>
         {methods.map((method, i) => (
           <MethodLabel participationMethod={method} key={i} />

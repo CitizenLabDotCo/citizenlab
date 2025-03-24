@@ -21,9 +21,14 @@ import messages from './messages';
 interface Props {
   area: IAreaData;
   children: React.ReactNode;
+  hideButtonIcon?: boolean;
 }
 
-const BaseUpdateFollowArea = ({ area, children }: Props) => {
+const BaseUpdateFollowArea = ({
+  area,
+  children,
+  hideButtonIcon = false,
+}: Props) => {
   const { mutate: addFollower, isLoading: isAddingFollower } = useAddFollower();
   const { mutate: deleteFollower, isLoading: isDeletingFollower } =
     useDeleteFollower();
@@ -89,7 +94,7 @@ const BaseUpdateFollowArea = ({ area, children }: Props) => {
     >
       <Button
         buttonStyle="text"
-        icon={iconName}
+        icon={hideButtonIcon ? undefined : iconName}
         iconColor={areaButtonContentColor}
         iconPos="right"
         padding="0px"

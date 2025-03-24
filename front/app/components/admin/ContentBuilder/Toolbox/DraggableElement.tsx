@@ -40,7 +40,7 @@ const ToolboxItem = forwardRef(
           name={icon}
         />
 
-        <Text color={'textPrimary'} style={{ lineHeight: '1' }}>
+        <Text color="textPrimary" lineHeight="1">
           {label}
         </Text>
       </StyledBox>

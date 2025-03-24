@@ -27,7 +27,7 @@
 #
 module Analysis
   class BackgroundTask < ::ApplicationRecord
-    TYPES = ['Analysis::AutoTaggingTask', 'Analysis::SummarizationTask', 'Analysis::QAndATask']
+    TYPES = ['Analysis::AutoTaggingTask', 'Analysis::SummarizationTask', 'Analysis::QAndATask', 'Analysis::CommentsSummarizationTask']
     STATES = %w[queued in_progress succeeded failed]
 
     belongs_to :analysis
@@ -43,7 +43,7 @@ module Analysis
     before_validation :set_default_state
 
     def insightable
-      [Summary, Question].find do |insightable_class|
+      [Summary, Question, CommentsSummary].find do |insightable_class|
         insightable_class.find_by(background_task_id: id)
       end
     end

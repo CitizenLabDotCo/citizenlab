@@ -59,6 +59,11 @@ export interface IAreaUpdate {
   include_in_onboarding?: boolean;
 }
 
+export interface IAreasWithProjectsCountsQueryParams {
+  pageNumber?: number;
+  pageSize?: number;
+}
+
 export interface IAreaWithProjectCounts extends Omit<IAreaData, 'attributes'> {
   attributes: AreaAttributes & {
     visible_projects_count: number;
