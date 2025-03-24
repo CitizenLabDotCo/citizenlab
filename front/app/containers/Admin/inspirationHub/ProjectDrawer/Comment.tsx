@@ -10,6 +10,7 @@ import styled from 'styled-components';
 
 import useLocale from 'hooks/useLocale';
 
+import MoreActionsMenu from 'components/UI/MoreActionsMenu';
 import UserName from 'components/UI/UserName';
 
 import { timeAgo } from 'utils/dateUtils';
@@ -31,16 +32,31 @@ const Comment = ({ userId, createdAt }: Props) => {
   const locale = useLocale();
 
   return (
-    <Box>
-      <Box display="flex" alignItems="center">
-        <UserName
-          userId={userId}
-          underline
-          fontSize={fontSizes.base}
-          fontWeight={400}
-          color={colors.textSecondary}
+    <Box width="100%" maxWidth="600px">
+      <Box display="flex" alignItems="center" justifyContent="space-between">
+        <Box display="flex" alignItems="center">
+          <UserName
+            userId={userId}
+            underline
+            fontSize={fontSizes.base}
+            fontWeight={400}
+            color={colors.textSecondary}
+          />
+          <TimeAgo>{timeAgo(Date.parse(createdAt), locale)}</TimeAgo>
+        </Box>
+        <MoreActionsMenu
+          showLabel={false}
+          actions={[
+            {
+              label: 'Edit',
+              handler: () => console.log('Edit'),
+            },
+            {
+              label: 'Delete',
+              handler: () => console.log('Delete'),
+            },
+          ]}
         />
-        <TimeAgo>{timeAgo(Date.parse(createdAt), locale)}</TimeAgo>
       </Box>
       <Text mt="12px" mb="20px">
         Content
