@@ -281,7 +281,7 @@ RSpec.shared_context 'survey_setup' do
 
   # The following page for form submission should not be returned in the results
   let_it_be(:last_page_field) do
-    create(:custom_field_page, resource: form, key: 'survey_end')
+    create(:custom_field_page, resource: form, key: 'form_end')
   end
 
   # Set-up user custom fields for the platform
