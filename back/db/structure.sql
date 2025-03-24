@@ -1593,8 +1593,7 @@ CREATE TABLE public.phases (
     manual_votes_count integer DEFAULT 0 NOT NULL,
     manual_voters_amount integer,
     manual_voters_last_updated_by_id uuid,
-    manual_voters_last_updated_at timestamp(6) without time zone,
-    user_fields_in_form boolean DEFAULT false NOT NULL
+    manual_voters_last_updated_at timestamp(6) without time zone
 );
 
 
@@ -1901,8 +1900,7 @@ CREATE TABLE public.app_configurations (
     settings jsonb DEFAULT '{}'::jsonb,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
-    style jsonb DEFAULT '{}'::jsonb,
-    country_code character varying
+    style jsonb DEFAULT '{}'::jsonb
 );
 
 
@@ -2145,7 +2143,7 @@ CREATE TABLE public.custom_fields (
     linear_scale_label_11_multiloc jsonb DEFAULT '{}'::jsonb NOT NULL,
     ask_follow_up boolean DEFAULT false NOT NULL,
     page_button_label_multiloc jsonb DEFAULT '{}'::jsonb NOT NULL,
-    page_button_link character varying
+    page_button_link character varying,
     question_category character varying
 );
 
@@ -6937,10 +6935,10 @@ SET search_path TO public,shared_extensions;
 
 INSERT INTO "schema_migrations" (version) VALUES
 ('20250307924725'),
+('20250319145637'),
 ('20250311141109'),
 ('20250305111507'),
 ('20250224150953'),
-('20250220161323'),
 ('20250219104523'),
 ('20250218094339'),
 ('20250217295025'),

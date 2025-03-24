@@ -1734,11 +1734,18 @@ resource 'Projects' do
 
           created_project = Project.first
           created_phase = Phase.first
+          created_permission = Permission.first
+          created_form = CustomForm.first
           expect(created_project.hidden).to be true
           expect(created_project.internal_role).to eq 'community_monitor'
           expect(created_project.title_multiloc['en']).to eq 'Community monitor'
+          expect(created_phase.project).to eq created_project
           expect(created_phase.participation_method).to eq 'community_monitor_survey'
           expect(created_phase.title_multiloc['en']).to eq 'Community monitor'
+          expect(created_permission.permission_scope).to eq created_phase
+          expect(created_permission.permitted_by).to eq 'everyone'
+          expect(created_form.participation_context).to eq created_phase
+          expect(created_form.custom_fields.count).to eq 15
 
           settings = AppConfiguration.instance.settings
           expect(settings['community_monitor']['project_id']).to eq created_project.id

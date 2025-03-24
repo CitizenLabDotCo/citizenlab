@@ -845,6 +845,7 @@
   "app.containers.Admin.inspirationHub.ProjectDrawer.Phase.openEnded": "Open ended",
   "app.containers.Admin.inspirationHub.ProjectDrawer.Phase.readMore": "Read more...",
   "app.containers.Admin.inspirationHub.ProjectDrawer.Phase.title": "Phase {number}: {title}",
+  "app.containers.Admin.inspirationHub.ProjectDrawer.optOutCopy": "If you don't want your project to be included in the inspiration hub, reach out to your GovSuccess manager.",
   "app.containers.Admin.inspirationHub.Proposals": "Proposals",
   "app.containers.Admin.inspirationHub.SortAndReset.Sort.sortBy": "Sort by",
   "app.containers.Admin.inspirationHub.SortAndReset.participants_asc": "Participants (lowest first)",
