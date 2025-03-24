@@ -1049,6 +1049,8 @@
   "app.containers.App.loading": "Indlæser...",
   "app.containers.App.metaTitle1": "Platform for borgerinddragelse | {orgName}",
   "app.containers.App.skipLinkText": "Spring til hovedindhold",
+  "app.containers.AreaTerms.areaTerm": "område",
+  "app.containers.AreaTerms.areasTerm": "områder",
   "app.containers.AuthProviders.emailTakenAndUserCanBeVerified": "Der findes allerede en konto med denne e-mailadresse. Du kan logge ud, logge ind med denne e-mailadresse og bekræfte din konto på indstillingssiden.",
   "app.containers.Authentication.steps.AccessDenied.close": "Luk",
   "app.containers.Authentication.steps.AccessDenied.youDoNotMeetTheRequirements": "Du opfylder ikke kravene til at deltage i denne proces.",
