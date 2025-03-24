@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Text } from '@citizenlab/cl2-component-library';
+import { BoxMarginProps, Text } from '@citizenlab/cl2-component-library';
 import { get } from 'lodash-es';
 
 import { useIntl } from 'utils/cl-intl';
@@ -20,7 +20,8 @@ const InputType = ({
   required,
   totalResponses,
   totalSubmissions,
-}: Props) => {
+  ...props
+}: Props & BoxMarginProps) => {
   const { formatMessage } = useIntl();
   const inputTypeText = get(messages, inputType, '');
 
@@ -37,7 +38,7 @@ const InputType = ({
     : '';
 
   return (
-    <Text variant="bodyS" color="textSecondary" mt="12px" mb="12px">
+    <Text variant="bodyS" color="textSecondary" mt="12px" mb="12px" {...props}>
       {inputTypeLabel}
     </Text>
   );
