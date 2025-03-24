@@ -24,9 +24,9 @@ RSpec.describe InputJsonSchemaGeneratorService do
               type: 'object',
               minProperties: 1,
               properties: {
-                'en' => { type: 'string', minLength: 10, maxLength: 80 },
-                'fr-FR' => { type: 'string', minLength: 10, maxLength: 80 },
-                'nl-NL' => { type: 'string', minLength: 10, maxLength: 80 }
+                'en' => { type: 'string', minLength: 10, maxLength: 120 },
+                'fr-FR' => { type: 'string', minLength: 10, maxLength: 120 },
+                'nl-NL' => { type: 'string', minLength: 10, maxLength: 120 }
               }
             },
             'body_multiloc' => {
@@ -85,9 +85,9 @@ RSpec.describe InputJsonSchemaGeneratorService do
               type: 'object',
               minProperties: 1,
               properties: {
-                'en' => { type: 'string', minLength: 10, maxLength: 80 },
-                'fr-FR' => { type: 'string', minLength: 10, maxLength: 80 },
-                'nl-NL' => { type: 'string', minLength: 10, maxLength: 80 }
+                'en' => { type: 'string', minLength: 10, maxLength: 120 },
+                'fr-FR' => { type: 'string', minLength: 10, maxLength: 120 },
+                'nl-NL' => { type: 'string', minLength: 10, maxLength: 120 }
               }
             },
             'body_multiloc' => {
@@ -146,17 +146,17 @@ RSpec.describe InputJsonSchemaGeneratorService do
             'en' => {
               type: 'string',
               minLength: 10,
-              maxLength: 80
+              maxLength: 120
             },
             'fr-FR' => {
               type: 'string',
               minLength: 10,
-              maxLength: 80
+              maxLength: 120
             },
             'nl-NL' => {
               type: 'string',
               minLength: 10,
-              maxLength: 80
+              maxLength: 120
             }
           }
         })
