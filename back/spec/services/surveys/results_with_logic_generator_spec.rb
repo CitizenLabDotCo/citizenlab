@@ -307,7 +307,7 @@ RSpec.describe Surveys::ResultsWithLogicGenerator do
           totalResponseCount: 0,
           questionResponseCount: 0,
           pageNumber: 5,
-          key: 'end_page',
+          key: 'form_end',
           questionNumber: nil,
           logic: {}
         }
@@ -593,7 +593,7 @@ RSpec.describe Surveys::ResultsWithLogicGenerator do
         questionViewedCount: 0,
         pageNumber: 6,
         logic: {},
-        key: 'end_page'
+        key: 'form_end'
       }
     end
 
@@ -902,7 +902,7 @@ RSpec.describe Surveys::ResultsWithLogicGenerator do
           pageNumber: 2,
           logic: {},
           questionViewedCount: 0,
-          key: 'end_page'
+          key: 'form_end'
         }
       ]
     end

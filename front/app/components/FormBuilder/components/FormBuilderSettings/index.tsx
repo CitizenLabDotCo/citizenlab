@@ -109,7 +109,7 @@ const FormBuilderSettings = ({
       'page',
     ].includes(fieldType);
 
-    const isFormEndPage = fieldType === 'page' && field.key === 'end_page';
+    const isFormEndPage = fieldType === 'page' && field.key === 'form_end';
 
     return isFieldWithLogicTab && !isFormEndPage;
   };

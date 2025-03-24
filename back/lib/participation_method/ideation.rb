@@ -365,12 +365,12 @@ module ParticipationMethod
       # Add the final form end page field
       fields << CustomField.new(
         id: SecureRandom.uuid,
-        key: 'end_page',
+        key: 'form_end',
         resource: custom_form,
         input_type: 'page',
         page_layout: 'default',
-        title_multiloc: multiloc_service.i18n_to_multiloc('custom_fields.ideas.end_page.title'),
-        description_multiloc: multiloc_service.i18n_to_multiloc('custom_fields.ideas.end_page.description')
+        title_multiloc: multiloc_service.i18n_to_multiloc('form_builder.form_end_page.title_text_3'),
+        description_multiloc: multiloc_service.i18n_to_multiloc('form_builder.form_end_page.description_text_3')
       )
 
       fields

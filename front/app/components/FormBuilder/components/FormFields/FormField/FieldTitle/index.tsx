@@ -28,7 +28,7 @@ const FieldTitle = ({ hasErrors, field, fieldNumber }: Props) => {
   let rowTitle = messages.question;
 
   if (field.input_type === 'page') {
-    if (field.key === 'end_page') {
+    if (field.key === 'form_end') {
       rowTitle = messages.lastPage;
     } else {
       rowTitle = messages.page;
@@ -53,7 +53,7 @@ const FieldTitle = ({ hasErrors, field, fieldNumber }: Props) => {
           ml={hasErrors ? '8px' : '12px'}
           width="12px"
           fill={titleColor}
-          name={field.key === 'end_page' ? 'lock' : 'sort'}
+          name={field.key === 'form_end' ? 'lock' : 'sort'}
           pb="4px"
         />
       </Box>
@@ -69,7 +69,7 @@ const FieldTitle = ({ hasErrors, field, fieldNumber }: Props) => {
         >
           <>
             <FormattedMessage {...rowTitle} />
-            {field.key === 'end_page' ? '' : ` ${fieldNumber}`}
+            {field.key === 'form_end' ? '' : ` ${fieldNumber}`}
           </>
         </Text>
         <Text

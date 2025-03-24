@@ -236,7 +236,7 @@ FactoryBot.define do
       page_layout { 'default' }
 
       factory :custom_field_end_page do
-        key { 'end_page' }
+        key { 'form_end' }
       end
     end
 

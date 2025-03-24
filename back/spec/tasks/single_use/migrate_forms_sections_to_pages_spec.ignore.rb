@@ -37,7 +37,7 @@ describe 'migrate_custom_forms:sections_to_pages rake task' do
     expect(form.custom_fields.pluck(:id)).to match [section1.id, title.id, section2.id, section3.id, an_instance_of(String)]
     expect(form.custom_fields.pluck(:input_type)).to eq %w[page text_multiloc page page page]
     expect(form.custom_fields.pluck(:code)).to eq ['ideation_page1', 'title_multiloc', 'ideation_page2', 'ideation_page3', nil]
-    expect(form.custom_fields.pluck(:key)).to match [an_instance_of(String), 'title_multiloc', an_instance_of(String), an_instance_of(String), 'end_page']
+    expect(form.custom_fields.pluck(:key)).to match [an_instance_of(String), 'title_multiloc', an_instance_of(String), an_instance_of(String), 'form_end']
     expect(form.custom_fields.pluck(:description_multiloc)).to match [{ 'en' => 'Section 1 description' }, anything, anything, anything, anything]
     expect(form.custom_fields.pluck(:page_layout)).to eq ['default', nil, 'default', 'default', 'default']
   end
@@ -56,7 +56,7 @@ describe 'migrate_custom_forms:sections_to_pages rake task' do
     expect(form.custom_fields.pluck(:id)).to match [title.id, an_instance_of(String), number.id, an_instance_of(String)]
     expect(form.custom_fields.pluck(:input_type)).to eq %w[text_multiloc page number page]
     expect(form.custom_fields.pluck(:code)).to eq ['title_multiloc', 'ideation_page1', nil, nil]
-    expect(form.custom_fields.pluck(:key)).to match ['title_multiloc', an_instance_of(String), an_instance_of(String), 'end_page']
+    expect(form.custom_fields.pluck(:key)).to match ['title_multiloc', an_instance_of(String), an_instance_of(String), 'form_end']
     expect(form.custom_fields.pluck(:page_layout)).to eq [nil, 'default', nil, 'default']
   end
 end

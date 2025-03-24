@@ -235,7 +235,7 @@ class CustomField < ApplicationRecord
   end
 
   def end_page?
-    page? && key == 'end_page'
+    page? && key == 'form_end'
   end
 
   def multiselect?

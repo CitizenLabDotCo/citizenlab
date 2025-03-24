@@ -26,7 +26,7 @@ resource 'Idea Custom Fields' do
           nil, 'title_multiloc', 'body_multiloc',
           nil, 'idea_images_attributes', 'idea_files_attributes',
           nil, 'topic_ids', 'location_description', 'proposed_budget',
-          custom_field.key, 'end_page'
+          custom_field.key, 'form_end'
         ]
       end
 
@@ -39,7 +39,7 @@ resource 'Idea Custom Fields' do
           nil, 'title_multiloc', 'body_multiloc',
           nil, 'idea_images_attributes', 'idea_files_attributes',
           nil, 'topic_ids', 'location_description', 'proposed_budget',
-          'extra_field1', 'extra_field2', 'end_page'
+          'extra_field1', 'extra_field2', 'form_end'
         ]
       end
 
