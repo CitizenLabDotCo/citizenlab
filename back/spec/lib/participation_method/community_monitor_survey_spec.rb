@@ -60,7 +60,18 @@ RSpec.describe ParticipationMethod::CommunityMonitorSurvey do
         form_end
       ])
 
-      # test labels
+      # Labels
+      expect(participation_method.default_fields(form)[1].linear_scale_label_1_multiloc['en']).to eq 'Very poor'
+      expect(participation_method.default_fields(form)[2].linear_scale_label_2_multiloc['en']).to eq 'Poor'
+      expect(participation_method.default_fields(form)[3].linear_scale_label_3_multiloc['en']).to eq 'Fair'
+      expect(participation_method.default_fields(form)[4].linear_scale_label_4_multiloc['en']).to eq 'Good'
+      expect(participation_method.default_fields(form)[5].linear_scale_label_5_multiloc['en']).to eq 'Excellent'
+
+      # Last page
+      expect(participation_method.default_fields(form).last.page_button_link).to eq '/'
+      expect(participation_method.default_fields(form).last.page_button_label_multiloc).to match(
+        { 'en' => 'Back to home', 'fr-FR' => 'Back to home', 'nl-NL' => 'Back to home' }
+      )
     end
   end
 

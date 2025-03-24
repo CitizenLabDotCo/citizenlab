@@ -91,10 +91,10 @@ module ParticipationMethod
     end
 
     def end_page_field(custom_form, multiloc_service)
-      field = super(custom_form, multiloc_service)
-      field.button_url = '/'
-      field.button_text_multiloc = multiloc_service.i18n_to_multiloc('custom_fields.community_monitor.form_end.button_text')
-      field
+      end_page = super(custom_form, multiloc_service)
+      end_page.page_button_link = '/'
+      end_page.page_button_label_multiloc = multiloc_service.i18n_to_multiloc('custom_fields.community_monitor.form_end.button_text')
+      end_page
     end
 
     def multiloc_service
