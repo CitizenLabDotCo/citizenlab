@@ -65,6 +65,7 @@ const HealthScoreChart = ({ sentimentScores }: Props) => {
   };
 
   return (
+    // Required to use negative margin here to correctly align the chart on mobile.
     <Box flexGrow={1} ml={isMobileOrSmaller ? '-44px' : undefined}>
       <Box height="160px" width="100%" minWidth="300px" maxWidth="420px">
         <LineChart

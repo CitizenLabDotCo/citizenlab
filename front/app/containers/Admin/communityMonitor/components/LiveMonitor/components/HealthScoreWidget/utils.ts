@@ -83,6 +83,8 @@ export const getQuarterFilter = (search: URLSearchParams) => {
   return Math.floor(date.getMonth() / 3 + 1).toString();
 };
 
+// filterDataBySelectedQuarter:
+// Filter the sentiment score data to only include the last 4 quarters from the selected quarter.
 export const filterDataBySelectedQuarter = (
   quarterlyScores: QuarterlyScores | null,
   selectedYear: string,
@@ -98,7 +100,7 @@ export const filterDataBySelectedQuarter = (
   );
   const minIndexToKeep = indexSelectedQuarter - 4;
 
-  // Filter each group of scores to only include the last 5 quarters from the selected quarter
+  // Filter each group of scores to only include the last 4 quarters from the selected quarter
   const filteredOverallHealthScores =
     quarterlyScores.overallHealthScores.filter(
       (_score, index) =>
@@ -131,7 +133,7 @@ export const filterDataBySelectedQuarter = (
 };
 
 // For testing while in development.
-// For testing while in development.
+// TODO: Remove this mock data before final release of Community Monitor.
 export const sentimentScoresMockData = {
   overallHealthScores: [
     { period: '2022-1', score: 2.4 },
