@@ -1,6 +1,5 @@
 class SimilarIdeasService
   DEFAULT_EMBEDDED_ATTRIBUTES = %w[body title]
-  DEFAULT_NUM_SIMILAR_IDEAS = 10
 
   attr_reader :idea
 
@@ -8,7 +7,7 @@ class SimilarIdeasService
     @idea = idea
   end
 
-  def similar_ideas(scope: nil, limit: DEFAULT_NUM_SIMILAR_IDEAS, title_threshold: 0.0, body_threshold: 0.0, embedded_attributes: DEFAULT_EMBEDDED_ATTRIBUTES)
+  def similar_ideas(scope: nil, limit: nil, title_threshold: 0.0, body_threshold: 0.0, embedded_attributes: DEFAULT_EMBEDDED_ATTRIBUTES)
     ids = []
     embedded_attributes.each do |embedded_attribute|
       case embedded_attribute

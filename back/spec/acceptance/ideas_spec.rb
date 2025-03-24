@@ -451,7 +451,7 @@ resource 'Ideas' do
       end
     end
 
-    get 'web_api/v1/ideas/similarities' do
+    post 'web_api/v1/ideas/similarities' do
       with_options scope: :idea do
         parameter :title_multiloc, 'Multi-locale field with the idea title', extra: 'Maximum 100 characters'
         parameter :body_multiloc, 'Multi-locale field with the idea body', extra: 'Required if not draft'
@@ -489,18 +489,19 @@ resource 'Ideas' do
         end
 
         example 'Caches the request' do
-          cache_key = "views/example.org/web_api/v1/ideas/similarities?idea[project_id]=#{project_id}&idea[title_multiloc][en]=My+similar+idea.json"
-          expect(Rails.cache.read(cache_key)).to be_nil
+          expect_any_instance_of(SimilarIdeasService).to receive(:similar_ideas).once.and_call_original
           do_request
           assert_status 200
-          expect(Rails.cache.read(cache_key)).to be_present
+          do_request
+          assert_status 200
         end
 
         example 'Fetches the similarity thresholds from the corresponding phase' do
           expect_any_instance_of(SimilarIdeasService).to receive(:similar_ideas).with(
             title_threshold: 0.3,
             body_threshold: 0.0,
-            scope: anything
+            scope: anything,
+            limit: 5
           ).and_call_original
           do_request
           assert_status 200
