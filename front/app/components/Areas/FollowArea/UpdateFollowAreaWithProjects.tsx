@@ -8,13 +8,14 @@ import BaseUpdateFollowArea from './BaseUpdateFollowArea';
 
 interface Props {
   area: IAreaWithProjectCounts;
+  hideButtonIcon?: boolean;
 }
 
-const UpdateFollowAreaWithProjects = ({ area }: Props) => {
+const UpdateFollowAreaWithProjects = ({ area, hideButtonIcon }: Props) => {
   const localize = useLocalize();
 
   return (
-    <BaseUpdateFollowArea area={area}>
+    <BaseUpdateFollowArea area={area} hideButtonIcon={hideButtonIcon}>
       {`${localize(area.attributes.title_multiloc)} (${
         area.attributes.visible_projects_count
       })`}

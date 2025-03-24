@@ -66,7 +66,10 @@ const FollowAreasButtonWithModal = () => {
                 mb="8px"
                 key={area.id}
               >
-                <UpdateFollowAreaWithProjects area={area} />
+                <UpdateFollowAreaWithProjects
+                  area={area}
+                  hideButtonIcon={isSmallerThanPhone}
+                />
               </Box>
             ))}
           </Box>
