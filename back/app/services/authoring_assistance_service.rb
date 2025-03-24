@@ -8,7 +8,7 @@ class AuthoringAssistanceService
     custom_free_prompt_thread = start_thread { custom_free_prompt_response(_1) }
     [toxicity_thread, custom_free_prompt_thread].each(&:join)
     prompt_response = {
-      **duplicate_inputs_response(authoring_assistance_response),
+      **duplicate_inputs_response(@authoring_assistance_response),
       **toxicity_thread[:response],
       **custom_free_prompt_thread[:response]
     }
@@ -20,8 +20,8 @@ class AuthoringAssistanceService
   def duplicate_inputs_response(authoring_assistance_response)
     service = SimilarIdeasService.new(authoring_assistance_response.idea)
     limit = 5
-    title_threshold = phase_for_input(authoring_assistance_response.idea).title_threshold
-    body_threshold = phase_for_input(authoring_assistance_response.idea).body_threshold
+    title_threshold = phase_for_input(authoring_assistance_response.idea).similarity_threshold_title
+    body_threshold = phase_for_input(authoring_assistance_response.idea).similarity_threshold_body
     scope = authoring_assistance_response.idea.project.ideas
     if authoring_assistance_response.idea.author_id
       scope = scope.where.not(author_id: authoring_assistance_response.idea.author_id)
