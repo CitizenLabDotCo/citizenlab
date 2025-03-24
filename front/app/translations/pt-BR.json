@@ -1053,6 +1053,8 @@
   "app.containers.App.loading": "Carregando…",
   "app.containers.App.metaTitle1": "Plataforma de envolvimento do cidadão | {orgName}",
   "app.containers.App.skipLinkText": "Pular para o conteúdo principal",
+  "app.containers.AreaTerms.areaTerm": "área",
+  "app.containers.AreaTerms.areasTerm": "áreas",
   "app.containers.AuthProviders.emailTakenAndUserCanBeVerified": "Já existe uma conta com este e-mail. Você pode sair, fazer login com este endereço de e-mail e verificar sua conta na página de configurações.",
   "app.containers.Authentication.steps.AccessDenied.close": "Fechar",
   "app.containers.Authentication.steps.AccessDenied.youDoNotMeetTheRequirements": "Você não atende aos requisitos para participar desse processo.",
