@@ -4,6 +4,8 @@ import { Multiloc } from 'typings';
 
 import useProjectsMini from 'api/projects_mini/useProjectsMini';
 
+import { CarrouselContainer } from '../_shared/BaseCarrousel/Containers';
+import CarrouselTitle from '../_shared/CarrouselTitle';
 import EmptyState from '../_shared/EmptyState';
 import ProjectCarrousel from '../_shared/ProjectCarrousel';
 import Skeleton from '../_shared/ProjectCarrousel/Skeleton';
@@ -35,13 +37,14 @@ const OpenToParticipation = ({ titleMultiloc }: Props) => {
   }
 
   return (
-    <ProjectCarrousel
-      title={title}
-      projects={projects}
-      hasMore={!!hasNextPage}
-      className="e2e-open-to-participation"
-      onLoadMore={fetchNextPage}
-    />
+    <CarrouselContainer className="e2e-open-to-participation">
+      <CarrouselTitle>{title}</CarrouselTitle>
+      <ProjectCarrousel
+        projects={projects}
+        hasMore={!!hasNextPage}
+        onLoadMore={fetchNextPage}
+      />
+    </CarrouselContainer>
   );
 };
 

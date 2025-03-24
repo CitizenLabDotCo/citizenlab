@@ -40,6 +40,7 @@ type Props = {
   className?: string;
   text: JSX.Element | string;
   backgroundColor: string;
+  color?: string;
   icon?: IconProps['name'];
   variant?: Variant;
 } & BoxWidthProps &
@@ -49,6 +50,7 @@ type Props = {
 const StatusLabel: FC<Props> = memo<Props>(
   ({
     backgroundColor,
+    color,
     className,
     icon,
     text,
@@ -63,6 +65,7 @@ const StatusLabel: FC<Props> = memo<Props>(
         variant={variant}
         {...rest}
         height={height}
+        color={color}
       >
         {icon && (
           <Icon

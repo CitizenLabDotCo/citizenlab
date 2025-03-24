@@ -15,7 +15,7 @@ import { UploadFile } from 'typings';
 import Error from 'components/UI/Error';
 
 import { injectIntl } from 'utils/cl-intl';
-import { getBase64FromFile } from 'utils/fileUtils';
+import { base64ToBlob, getBase64FromFile } from 'utils/fileUtils';
 import { reportError } from 'utils/loggingUtils';
 
 import RemoveImageButton from '../RemoveImageButton';
@@ -268,9 +268,18 @@ class ImagesDropzone extends PureComponent<
     const newUrlObjects = {};
 
     images
-      .filter((image) => !urlObjects[image.base64])
+      .filter((image) => image.base64 && !urlObjects[image.base64])
       .forEach((image) => {
-        newUrlObjects[image.base64] = window.URL.createObjectURL(image);
+        if (image.base64.startsWith('data:')) {
+          // Handle base64 strings
+          const blob = base64ToBlob(image.base64);
+          if (blob) {
+            newUrlObjects[image.base64] = window.URL.createObjectURL(blob);
+          }
+        } else {
+          // Handle File or Blob objects
+          newUrlObjects[image.base64] = window.URL.createObjectURL(image);
+        }
       });
 
     forEach(urlObjects, (urlObject, key) => {

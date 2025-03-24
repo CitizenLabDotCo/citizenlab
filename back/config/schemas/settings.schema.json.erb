@@ -19,10 +19,11 @@
           "color_secondary",
           "color_text",
           "lifecycle_stage",
+          "country_code",
           "authentication_token_lifetime_in_days"
         ],
         "additionalProperties": false,
-        "required": ["allowed", "enabled", "lifecycle_stage"],
+        "required": ["allowed", "enabled", "lifecycle_stage", "country_code"],
         "properties": {
           "allowed": { "type": "boolean", "default": true},
           "enabled": { "type": "boolean", "default": true},
@@ -49,6 +50,14 @@
             "description": "The lifecycle stage of the customer.",
             "type": "string",
             "enum": ["trial", "expired_trial", "demo", "active", "churned", "not_applicable"]
+          },
+          <% country_codes_service = CountryCodesService.new %>
+          "country_code": {
+            "title": "Country",
+            "description": "The country where the platform's citizens are located. Type first letters of the country name, in English, to search.",
+            "type": ["string", "null"],
+            "enum": <%= country_codes_service.codes_in_name_order.to_json %>,
+            "enumNames": <%= country_codes_service.names_in_name_order.to_json %>
           },
           "timezone": {
             "title": "Time Zone",
@@ -1215,6 +1224,18 @@
         }
       },
 
+      "comments_summaries": {
+        "type": "object",
+        "title": "AI-powered analysis of comments in ideation",
+        "description": "Enables the use of AI-powered analysis for comments in ideation. When active, the comments under an input can be summarized, and the comments are included in the main summarization feature.",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": false },
+          "enabled": { "type": "boolean", "default": false }
+        }
+      },
+
       "ask_a_question": {
         "type": "object",
         "title": "AI-powered questions and answers feature for surveys and ideation",
@@ -1452,6 +1473,7 @@
     "large_summaries": ["analysis"],
     "ask_a_question": ["analysis"],
     "advanced_autotagging": ["analysis"],
+    "comments_summaries": ["analysis"],
     "statistical_insights": ["analysis"],
     "import_printed_forms": ["input_importer"]
   },

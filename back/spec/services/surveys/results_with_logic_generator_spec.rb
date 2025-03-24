@@ -21,7 +21,7 @@ RSpec.describe Surveys::ResultsWithLogicGenerator do
     let(:generated_results) { generator.generate_results }
 
     before_all do
-      # Update fields from survey_setup shared context with some (meaningless but valid) survey_end logic
+      # Update fields from survey_setup shared context with some (meaningless but valid) form_end logic
       linear_scale_field.update!(logic: { rules: [{ if: 2, goto_page_id: last_page_field.id }, { if: 'no_answer', goto_page_id: last_page_field.id }] })
       page_field.update!(logic: { next_page_id: last_page_field.id })
     end
@@ -121,7 +121,7 @@ RSpec.describe Surveys::ResultsWithLogicGenerator do
           questionResponseCount: 1,
           pageNumber: 2,
           questionNumber: nil,
-          logic: { nextPageId: 'SURVEY_END_PAGE' }
+          logic: { nextPageId: 'FORM_END_PAGE' }
         },
         {
           inputType: 'text',
@@ -172,7 +172,7 @@ RSpec.describe Surveys::ResultsWithLogicGenerator do
             answer: {
               '2': { id: 'LINEAR_SCALE_OPTION_2', nextPageId: 'PAGE_3' },
               '3': { id: 'LINEAR_SCALE_OPTION_3', nextPageId: 'PAGE_4' },
-              no_answer: { id: 'LINEAR_SCALE_OPTION_no_answer', nextPageId: 'SURVEY_END_PAGE' }
+              no_answer: { id: 'LINEAR_SCALE_OPTION_no_answer', nextPageId: 'FORM_END_PAGE' }
             }
           }
         },
@@ -205,7 +205,7 @@ RSpec.describe Surveys::ResultsWithLogicGenerator do
           logic: {
             answer: {
               option3: { id: 'MULTISELECT_1_OPTION_3', nextPageId: 'PAGE_4' },
-              no_answer: { id: 'MULTISELECT_1_OPTION_no_answer', nextPageId: 'SURVEY_END_PAGE' }
+              no_answer: { id: 'MULTISELECT_1_OPTION_no_answer', nextPageId: 'FORM_END_PAGE' }
             }
           }
         },
@@ -249,7 +249,7 @@ RSpec.describe Surveys::ResultsWithLogicGenerator do
           },
           logic: {
             answer: {
-              option1: { id: 'SELECT_2_OPTION_1', nextPageId: 'SURVEY_END_PAGE' }
+              option1: { id: 'SELECT_2_OPTION_1', nextPageId: 'FORM_END_PAGE' }
             }
           }
         },
@@ -300,14 +300,14 @@ RSpec.describe Surveys::ResultsWithLogicGenerator do
           inputType: 'page',
           question: { en: 'Ending' },
           description: {},
-          customFieldId: 'SURVEY_END_PAGE',
+          customFieldId: 'FORM_END_PAGE',
           required: false,
           grouped: false,
           hidden: false,
           totalResponseCount: 0,
           questionResponseCount: 0,
           pageNumber: 5,
-          key: 'survey_end',
+          key: 'form_end',
           questionNumber: nil,
           logic: {}
         }
@@ -585,7 +585,7 @@ RSpec.describe Surveys::ResultsWithLogicGenerator do
       }
     end
 
-    let(:survey_end_page) do
+    let(:form_end_page) do
       {
         inputType: 'page',
         totalResponseCount: 5,
@@ -593,7 +593,7 @@ RSpec.describe Surveys::ResultsWithLogicGenerator do
         questionViewedCount: 0,
         pageNumber: 6,
         logic: {},
-        key: 'survey_end' # important as this is the last page
+        key: 'form_end' # important as this is the last page
       }
     end
 
@@ -610,7 +610,7 @@ RSpec.describe Surveys::ResultsWithLogicGenerator do
         text_question2,
         page5,
         text_question3,
-        survey_end_page
+        form_end_page
       ]
     end
 
@@ -902,7 +902,7 @@ RSpec.describe Surveys::ResultsWithLogicGenerator do
           pageNumber: 2,
           logic: {},
           questionViewedCount: 0,
-          key: 'survey_end'
+          key: 'form_end'
         }
       ]
     end
@@ -913,7 +913,7 @@ RSpec.describe Surveys::ResultsWithLogicGenerator do
       expect(results[0].keys).not_to include(:key, :questionViewedCount)
     end
 
-    it 'removes the last page (survey_end) from the results' do
+    it 'removes the last page (form_end) from the results' do
       expect(results.size).to eq(2)
       expect(results.pluck(:inputType)).to eq(%w[page select])
     end

@@ -168,12 +168,12 @@ es:
       attachments:
         title: Archivos adjuntos
         description:
-      section1:
+      page1:
         description:
-      section2:
-        title: Imágenes y adjuntos
+      page2:
+        title: Imágenes y archivos adjuntos
         description:
-      section3:
+      page3:
         title: Detalles
         description:
       other_input_field:

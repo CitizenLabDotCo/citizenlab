@@ -6,6 +6,7 @@ import {
   Icon,
   Title,
   Text,
+  Quote,
   colors,
 } from '@citizenlab/cl2-component-library';
 
@@ -13,14 +14,11 @@ import { ProjectLibraryProjectData } from 'api/project_library_projects/types';
 
 import { parseBackendDateString } from 'utils/dateUtils';
 
-import {
-  useLocalizeProjectLibrary,
-  getTenantURL,
-  getProjectURL,
-  formatDate,
-} from '../utils';
+import { POPULATION_GROUP_LABELS } from '../constants';
+import { useLocalizeProjectLibrary } from '../utils';
 
 import ExternalLink from './ExternalLink';
+import { getTenantURL, getProjectURL, formatDate } from './utils';
 
 interface Props {
   attributes: ProjectLibraryProjectData['attributes'];
@@ -35,19 +33,26 @@ const Header = ({ attributes }: Props) => {
     ? parseBackendDateString(attributes.practical_end_at)
     : undefined;
 
+  const annotation = attributes.annotation_multiloc
+    ? localizeProjectLibrary(
+        attributes.annotation_multiloc,
+        attributes.annotation_multiloc['en'] ?? ''
+      )
+    : '';
+
   return (
     <Box>
       <Box display="flex" flexDirection="row" alignItems="center">
         {attributes.tenant_population_group && (
           <StatusLabel
-            text={attributes.tenant_population_group}
+            text={POPULATION_GROUP_LABELS[attributes.tenant_population_group]}
             backgroundColor={colors.coolGrey600}
             h="16px"
-            w="24px"
             ml="4px"
+            mr="8px"
           />
         )}
-        <ExternalLink href={tenantURL} ml="8px" mt="1px">
+        <ExternalLink href={tenantURL} mt="1px">
           {attributes.tenant_name}
         </ExternalLink>
       </Box>
@@ -94,6 +99,13 @@ const Header = ({ attributes }: Props) => {
           </Box>
         )}
       </Box>
+      {annotation !== '' && (
+        <Quote w="100%" mt="12px">
+          <Text m="0px" fontStyle="italic">
+            {annotation}
+          </Text>
+        </Quote>
+      )}
     </Box>
   );
 };
