@@ -43,12 +43,20 @@ const DUMMY_DATA = [
   {
     name: 'Michael Bluth',
     createdAt: '2021-08-10T12:00:00Z',
+    badgeText: 'Go Vocal',
+    badgeType: 'go-vocal',
   },
   {
     name: 'Tobias Funke',
     createdAt: '2021-08-10T12:00:00Z',
+    badgeText: 'Vienna',
+    badgeType: 'platform-moderator',
   },
-];
+  {
+    name: 'George Michael Bluth',
+    createdAt: '2021-08-10T12:00:00Z',
+  },
+] as const;
 
 const ProjectDrawer = () => {
   const [searchParams] = useSearchParams();
@@ -122,7 +130,9 @@ const ProjectDrawer = () => {
               placeholder="Write your comment here"
             />
             <Box w="100%" mt="8px" display="flex">
-              <Button w="auto">Post your comment</Button>
+              <Button w="auto" bgColor={colors.primary}>
+                Post your comment
+              </Button>
             </Box>
             <Box mt="20px">
               {DUMMY_DATA.map((comment, i) => (

@@ -5,6 +5,7 @@ import {
   Text,
   colors,
   fontSizes,
+  stylingConsts,
 } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
@@ -15,11 +16,6 @@ import { Name } from 'components/UI/UserName';
 
 import { timeAgo } from 'utils/dateUtils';
 
-interface Props {
-  name: string;
-  createdAt: string;
-}
-
 const TimeAgo = styled.div`
   color: ${colors.textSecondary};
   font-size: ${fontSizes.s}px;
@@ -28,7 +24,25 @@ const TimeAgo = styled.div`
   margin-left: 8px;
 `;
 
-const Comment = ({ name, createdAt }: Props) => {
+const BADGE_STYLES = {
+  'go-vocal': {
+    bgColor: colors.red100,
+    color: 'red800',
+  },
+  'platform-moderator': {
+    bgColor: colors.teal100,
+    color: 'teal700',
+  },
+} as const;
+
+interface Props {
+  name: string;
+  createdAt: string;
+  badgeText?: string;
+  badgeType?: 'go-vocal' | 'platform-moderator';
+}
+
+const Comment = ({ name, createdAt, badgeText, badgeType }: Props) => {
   const locale = useLocale();
 
   return (
@@ -44,6 +58,25 @@ const Comment = ({ name, createdAt }: Props) => {
             {name}
           </Name>
           <TimeAgo>{timeAgo(Date.parse(createdAt), locale)}</TimeAgo>
+          {badgeText && badgeType && (
+            <Box
+              display="inline-block"
+              bgColor={BADGE_STYLES[badgeType].bgColor}
+              borderRadius={stylingConsts.borderRadius}
+              p="2px 4px"
+              ml="8px"
+            >
+              <Text
+                as="span"
+                m="0"
+                fontWeight="semi-bold"
+                fontSize="xs"
+                color={BADGE_STYLES[badgeType].color}
+              >
+                {badgeText}
+              </Text>
+            </Box>
+          )}
         </Box>
         <MoreActionsMenu
           showLabel={false}
