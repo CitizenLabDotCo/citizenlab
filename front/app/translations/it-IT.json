@@ -1053,6 +1053,8 @@
   "app.containers.App.loading": "Caricamento...",
   "app.containers.App.metaTitle1": "Piattaforma di coinvolgimento dei cittadini | {orgName}",
   "app.containers.App.skipLinkText": "Vai al contenuto principale",
+  "app.containers.AreaTerms.areaTerm": "area",
+  "app.containers.AreaTerms.areasTerm": "aree",
   "app.containers.AuthProviders.emailTakenAndUserCanBeVerified": "Un account con questo indirizzo e-mail esiste già. Puoi uscire, accedere con questo indirizzo e-mail e verificare il tuo account nella pagina delle impostazioni.",
   "app.containers.Authentication.steps.AccessDenied.close": "Chiudi",
   "app.containers.Authentication.steps.AccessDenied.youDoNotMeetTheRequirements": "Non hai i requisiti per partecipare a questo processo.",
