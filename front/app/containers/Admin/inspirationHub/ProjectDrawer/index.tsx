@@ -98,7 +98,7 @@ const ProjectDrawer = () => {
             ))}
           </Box>
           <Box mt="32px">
-            <Title variant="h3">External comments</Title>
+            <Title variant="h3">Comments</Title>
             <StyledBox
               as="textarea"
               rows={5}
