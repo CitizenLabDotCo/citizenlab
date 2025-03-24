@@ -257,9 +257,14 @@ const CLPageLayout = memo(
 
       if (pageVariant === 'after-submission') {
         if (isNativeSurvey) {
-          clHistory.push({
-            pathname: `/projects/${project?.data.attributes.slug}`,
-          });
+          if (currentPage.options.page_button_link) {
+            // Page is using a custom button link
+            window.location.href = currentPage.options.page_button_link;
+          } else {
+            clHistory.push({
+              pathname: `/projects/${project?.data.attributes.slug}`,
+            });
+          }
           setTimeout(triggerCommunityMonitorModal, 2000);
         } else {
           clHistory.push({
@@ -593,6 +598,7 @@ const CLPageLayout = memo(
               pageVariant={pageVariant}
               phases={phases?.data}
               currentPhase={phase?.data}
+              currentPage={currentPage}
             />
           </Box>
         </Box>

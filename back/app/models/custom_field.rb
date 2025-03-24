@@ -42,6 +42,8 @@
 #  page_button_label_multiloc     :jsonb            not null
 #  page_button_link               :string
 #  question_category              :string
+#  page_button_label_multiloc     :jsonb            not null
+#  page_button_link               :string
 #
 # Indexes
 #
@@ -417,7 +419,7 @@ class CustomField < ApplicationRecord
   def self.question_category_multiloc
     return nil unless supports_category?
 
-    MultilocService.new.i18n_to_multiloc("custom_fields.question_categories.#{question_category}")
+    MultilocService.new.i18n_to_multiloc("custom_fields.community_monitor.question_categories.#{question_category}")
   end
 
   private
