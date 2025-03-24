@@ -26,7 +26,6 @@ export const communityMonitorConfig: FormBuilderConfig = {
   isLogicEnabled: false,
   alwaysShowCustomFields: true,
   isFormPhaseSpecific: true,
-  groupingType: 'page',
   getWarningNotice: () => {
     return (
       <Box id="e2e-warning-notice" mb="16px">
