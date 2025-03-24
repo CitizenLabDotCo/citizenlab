@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class WebApi::V1::CustomFieldBinSerializer < WebApi::V1::BaseSerializer
-  attributes :type, :values, :range, :created_at, :updated_at
+  attributes :type, :values, :created_at, :updated_at
 
   belongs_to :custom_field
   belongs_to :custom_field_option, optional: true

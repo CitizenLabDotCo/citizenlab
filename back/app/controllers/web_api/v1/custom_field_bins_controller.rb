@@ -6,10 +6,10 @@ class WebApi::V1::CustomFieldBinsController < ApplicationController
   skip_after_action :verify_policy_scoped
 
   def index
-    @bins = @custom_field.custom_field_bins
-    @bins = @bins.order(:created_at)
-    @bins = paginate(@bins)
-    render json: linked_json(@bins, WebApi::V1::CustomFieldBinSerializer, params: jsonapi_serializer_params)
+    bins = @custom_field.custom_field_bins
+    bins = bins.order(:created_at)
+    bins = paginate(bins)
+    render json: linked_json(bins, WebApi::V1::CustomFieldBinSerializer, params: jsonapi_serializer_params)
   end
 
   def show
