@@ -1,7 +1,16 @@
 import React from 'react';
 
-import { Box, Text, Title, colors } from '@citizenlab/cl2-component-library';
+import {
+  Box,
+  Text,
+  Title,
+  Button,
+  colors,
+  fontSizes,
+  stylingConsts,
+} from '@citizenlab/cl2-component-library';
 import { useSearchParams } from 'react-router-dom';
+import styled from 'styled-components';
 
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useProjectLibraryProject from 'api/project_library_projects/useProjectLibraryProject';
@@ -18,6 +27,16 @@ import { useLocalizeProjectLibrary } from '../utils';
 import Header from './Header';
 import messages from './messages';
 import Phase from './Phase';
+
+const StyledBox = styled(Box)`
+  font-size: ${fontSizes.base}px;
+  height: 40px;
+
+  &:focus {
+    outline: 1px solid ${colors.primary};
+    height: auto;
+  }
+`;
 
 const ProjectDrawer = () => {
   const [searchParams] = useSearchParams();
@@ -80,6 +99,19 @@ const ProjectDrawer = () => {
           </Box>
           <Box mt="32px">
             <Title variant="h3">External comments</Title>
+            <StyledBox
+              as="textarea"
+              rows={5}
+              width="100%"
+              maxWidth="500px"
+              border={`1px solid ${colors.borderDark}`}
+              borderRadius={stylingConsts.borderRadius}
+              p="10px"
+              placeholder="Write your comment here"
+            />
+            <Box w="100%" mt="4px" display="flex">
+              <Button w="auto">Post your comment</Button>
+            </Box>
           </Box>
         </Box>
       )}
