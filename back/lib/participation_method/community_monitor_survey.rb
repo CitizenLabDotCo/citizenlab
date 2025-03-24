@@ -82,16 +82,16 @@ module ParticipationMethod
         input_type: 'sentiment_linear_scale',
         title_multiloc: multiloc_service.i18n_to_multiloc("custom_fields.community_monitor.questions.#{key}.title"),
         question_category: category,
-        linear_scale_label_1_multiloc: multiloc_service.i18n_to_multiloc("custom_fields.community_monitor.labels.label_1"),
-        linear_scale_label_2_multiloc: multiloc_service.i18n_to_multiloc("custom_fields.community_monitor.labels.label_2"),
-        linear_scale_label_3_multiloc: multiloc_service.i18n_to_multiloc("custom_fields.community_monitor.labels.label_3"),
-        linear_scale_label_4_multiloc: multiloc_service.i18n_to_multiloc("custom_fields.community_monitor.labels.label_4"),
-        linear_scale_label_5_multiloc: multiloc_service.i18n_to_multiloc("custom_fields.community_monitor.labels.label_5"),
+        linear_scale_label_1_multiloc: multiloc_service.i18n_to_multiloc('custom_fields.community_monitor.labels.label_1'),
+        linear_scale_label_2_multiloc: multiloc_service.i18n_to_multiloc('custom_fields.community_monitor.labels.label_2'),
+        linear_scale_label_3_multiloc: multiloc_service.i18n_to_multiloc('custom_fields.community_monitor.labels.label_3'),
+        linear_scale_label_4_multiloc: multiloc_service.i18n_to_multiloc('custom_fields.community_monitor.labels.label_4'),
+        linear_scale_label_5_multiloc: multiloc_service.i18n_to_multiloc('custom_fields.community_monitor.labels.label_5')
       )
     end
 
     def end_page_field(custom_form, multiloc_service)
-      end_page = super(custom_form, multiloc_service)
+      end_page = super
       end_page.page_button_link = '/'
       end_page.page_button_label_multiloc = multiloc_service.i18n_to_multiloc('custom_fields.community_monitor.form_end.button_text')
       end_page
