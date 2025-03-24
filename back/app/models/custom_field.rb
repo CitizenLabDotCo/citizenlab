@@ -403,7 +403,7 @@ class CustomField < ApplicationRecord
   def question_category_multiloc
     return nil unless supports_category?
 
-    MultilocService.new.i18n_to_multiloc("custom_fields.question_categories.#{question_category}")
+    MultilocService.new.i18n_to_multiloc("custom_fields.community_monitor.question_categories.#{question_category}")
   end
 
   private
