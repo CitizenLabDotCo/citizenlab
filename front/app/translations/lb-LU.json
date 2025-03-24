@@ -1053,6 +1053,8 @@
   "app.containers.App.loading": "Um Lueden ... ",
   "app.containers.App.metaTitle1": "Bierger Engagement Plattform | {orgName}",
   "app.containers.App.skipLinkText": "Wiesselt op den Haaptinhalt",
+  "app.containers.AreaTerms.areaTerm": "Beräich",
+  "app.containers.AreaTerms.areasTerm": "Beräicher",
   "app.containers.AuthProviders.emailTakenAndUserCanBeVerified": "E Kont mat dëser E-Mail gëtt et schonn. Dir kënnt Iech ausloggen, Iech mat dëser E-Mailadress aloggen an Äre Kont op der Astellungssäit verifizéieren.",
   "app.containers.Authentication.steps.AccessDenied.close": "Zoumaachen",
   "app.containers.Authentication.steps.AccessDenied.youDoNotMeetTheRequirements": "Dir erfëllt net den Ufuerderunge fir un dësem Prozess deelzehuelen.",
