@@ -65,8 +65,7 @@ RSpec.describe ParticipationMethod::CommunityMonitorSurvey do
         page9 trust_in_government
         page10 responsiveness_of_officials
         page11 transparency_of_money_spent
-        survey_end
-
+        form_end
       ])
     end
   end
