@@ -83,7 +83,7 @@ module ParticipationMethod
           resource: custom_form,
           input_type: 'page',
           page_layout: 'default',
-          code: 'ideation_page1',
+          code: 'title_page',
           key: nil,
           title_multiloc: {},
           description_multiloc: begin
@@ -127,6 +127,7 @@ module ParticipationMethod
           resource: custom_form,
           input_type: 'page',
           page_layout: 'default',
+          code: 'body_page',
           key: nil,
           title_multiloc: { 'en' => 'Description page title' },
           description_multiloc: {},
@@ -155,7 +156,7 @@ module ParticipationMethod
           end,
           required: true,
           enabled: true,
-          ordering: 2,
+          ordering: 3,
           answer_visible_to: CustomField::VISIBLE_TO_PUBLIC
         ),
         CustomField.new(
@@ -163,7 +164,7 @@ module ParticipationMethod
           resource: custom_form,
           input_type: 'page',
           page_layout: 'default',
-          code: 'ideation_page2',
+          code: 'uploads_page',
           key: nil,
           title_multiloc: multiloc_service.i18n_to_multiloc(
             'custom_fields.ideas.page2.title',
@@ -179,7 +180,7 @@ module ParticipationMethod
           end,
           required: false,
           enabled: true,
-          ordering: 3,
+          ordering: 4,
           answer_visible_to: CustomField::VISIBLE_TO_PUBLIC
         ),
         CustomField.new(
@@ -202,7 +203,7 @@ module ParticipationMethod
           end,
           required: false,
           enabled: true,
-          ordering: 4,
+          ordering: 5,
           answer_visible_to: CustomField::VISIBLE_TO_PUBLIC
         ),
         CustomField.new(
@@ -225,7 +226,7 @@ module ParticipationMethod
           end,
           required: false,
           enabled: true,
-          ordering: 5,
+          ordering: 6,
           answer_visible_to: CustomField::VISIBLE_TO_PUBLIC
         ),
         CustomField.new(
@@ -233,7 +234,7 @@ module ParticipationMethod
           resource: custom_form,
           input_type: 'page',
           page_layout: 'default',
-          code: 'ideation_page3',
+          code: 'details_page',
           key: nil,
           title_multiloc: multiloc_service.i18n_to_multiloc(
             'custom_fields.ideas.page3.title',
@@ -249,7 +250,7 @@ module ParticipationMethod
           end,
           required: false,
           enabled: true,
-          ordering: 6,
+          ordering: 7,
           answer_visible_to: CustomField::VISIBLE_TO_PUBLIC
         ),
         CustomField.new(
@@ -272,7 +273,7 @@ module ParticipationMethod
           end,
           required: false,
           enabled: true,
-          ordering: 7,
+          ordering: 8,
           answer_visible_to: CustomField::VISIBLE_TO_PUBLIC
         ),
         CustomField.new(
@@ -295,7 +296,7 @@ module ParticipationMethod
           end,
           required: false,
           enabled: true,
-          ordering: 8,
+          ordering: 9,
           answer_visible_to: CustomField::VISIBLE_TO_PUBLIC
         )
       ]
@@ -320,7 +321,7 @@ module ParticipationMethod
           end,
           required: false,
           enabled: false,
-          ordering: 9,
+          ordering: 10,
           answer_visible_to: CustomField::VISIBLE_TO_PUBLIC
         )
       end
@@ -346,7 +347,7 @@ module ParticipationMethod
           end,
           required: false,
           enabled: false,
-          ordering: proposed_budget_in_form? ? 10 : 9,
+          ordering: proposed_budget_in_form? ? 11 : 10,
           answer_visible_to: CustomField::VISIBLE_TO_PUBLIC
         )
       end
@@ -354,7 +355,7 @@ module ParticipationMethod
       # Add the final form end page field
       fields << CustomField.new(
         id: SecureRandom.uuid,
-        key: 'form_end',
+        key: 'end_page',
         resource: custom_form,
         input_type: 'page',
         page_layout: 'default',

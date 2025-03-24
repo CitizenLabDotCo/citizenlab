@@ -31,8 +31,8 @@ resource 'Idea Custom Fields' do
     let(:participation_method) { context.pmethod }
     let(:default_fields_param) do
       attributes = %i[id code input_type title_multiloc description_multiloc required enabled page_layout]
-      # Remove the form_end. We will add that manually in the tests
-      IdeaCustomFieldsService.new(custom_form).all_fields.reject { |field| field.key == 'form_end' }.map do |field|
+      # Remove the end_page. We will add that manually in the tests
+      IdeaCustomFieldsService.new(custom_form).all_fields.reject(&:end_page?).map do |field|
         {}.tap do |field_param|
           attributes.each do |attribute|
             field_param[attribute] = field.send attribute
@@ -43,7 +43,7 @@ resource 'Idea Custom Fields' do
     let(:final_page) do
       {
         id: '1234',
-        key: 'form_end',
+        key: 'end_page',
         title_multiloc: { 'en' => 'Final page' },
         description_multiloc: { 'en' => 'Thank you for participating!' },
         input_type: 'page',

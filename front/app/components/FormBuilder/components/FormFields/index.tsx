@@ -95,7 +95,7 @@ const FormFields = ({
             <Drop id="droppable" type={pageDNDType}>
               {nestedGroupData.map((grouping, pageIndex) => {
                 if (
-                  lastPage.key === 'form_end' &&
+                  lastPage.key === 'end_page' &&
                   grouping.id === lastPage.id
                 ) {
                   // Skip rendering FormField for last page, as it's rendered separately
@@ -158,7 +158,7 @@ const FormFields = ({
             <Box height="1px" borderTop={`1px solid ${colors.divider}`} />
           )}
         </Box>
-        {lastPage.key === 'form_end' && (
+        {lastPage.key === 'end_page' && (
           <Box mt="40px">
             <FormField
               field={lastPage}

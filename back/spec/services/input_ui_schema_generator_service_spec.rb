@@ -221,7 +221,7 @@ RSpec.describe InputUiSchemaGeneratorService do
                 type: 'Page',
                 options: {
                   input_type: 'page',
-                  id: custom_form.custom_fields.find_by(key: 'form_end').id,
+                  id: custom_form.custom_fields.find(&:end_page?).id,
                   title: 'Thank you for sharing your input!',
                   description: 'Your input has been successfully submitted.',
                   page_layout: 'default',

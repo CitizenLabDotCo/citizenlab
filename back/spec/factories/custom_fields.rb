@@ -234,6 +234,10 @@ FactoryBot.define do
       end
       input_type { 'page' }
       page_layout { 'default' }
+
+      factory :custom_field_end_page do
+        key { 'end_page' }
+      end
     end
 
     factory :custom_field_multiselect do

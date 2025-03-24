@@ -86,7 +86,7 @@ class InputUiSchemaGeneratorService < UiSchemaGeneratorService
         rules = form_logic.ui_schema_rules_for(field)
         field_schema[:ruleArray] = rules if rules.present?
 
-        if field.key == 'form_end'
+        if field.end_page?
           form_end_page = field_schema
         else
           field_schemas << field_schema

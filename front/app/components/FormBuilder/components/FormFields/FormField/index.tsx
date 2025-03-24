@@ -371,7 +371,7 @@ export const FormField = ({
               />
             </Box>
           </Box>
-          {field.key !== 'form_end' && (
+          {field.key !== 'end_page' && (
             <Box
               mr="32px"
               ml="12px"
