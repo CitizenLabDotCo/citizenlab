@@ -6,6 +6,7 @@ import {
   Icon,
   Title,
   Text,
+  Quote,
   colors,
 } from '@citizenlab/cl2-component-library';
 
@@ -31,6 +32,13 @@ const Header = ({ attributes }: Props) => {
   const endAt = attributes.practical_end_at
     ? parseBackendDateString(attributes.practical_end_at)
     : undefined;
+
+  const annotation = attributes.annotation_multiloc
+    ? localizeProjectLibrary(
+        attributes.annotation_multiloc,
+        attributes.annotation_multiloc['en'] ?? ''
+      )
+    : '';
 
   return (
     <Box>
@@ -91,6 +99,13 @@ const Header = ({ attributes }: Props) => {
           </Box>
         )}
       </Box>
+      {annotation !== '' && (
+        <Quote w="100%" mt="12px">
+          <Text m="0px" fontStyle="italic">
+            {annotation}
+          </Text>
+        </Quote>
+      )}
     </Box>
   );
 };

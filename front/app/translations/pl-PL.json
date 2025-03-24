@@ -1049,6 +1049,8 @@
   "app.containers.App.loading": "Ładowanie...",
   "app.containers.App.metaTitle1": "Platforma zaangażowania obywateli | {orgName}",
   "app.containers.App.skipLinkText": "Przejdź do głównej treści",
+  "app.containers.AreaTerms.areaTerm": "obszar",
+  "app.containers.AreaTerms.areasTerm": "obszary",
   "app.containers.AuthProviders.emailTakenAndUserCanBeVerified": "Konto z tym adresem e-mail już istnieje. Możesz się wylogować, zalogować przy użyciu tego adresu e-mail i zweryfikować swoje konto na stronie ustawień.",
   "app.containers.Authentication.steps.AccessDenied.close": "Zamknij",
   "app.containers.Authentication.steps.AccessDenied.youDoNotMeetTheRequirements": "Nie spełniasz wymagań, aby wziąć udział w tym procesie.",
