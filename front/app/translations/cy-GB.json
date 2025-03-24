@@ -1053,6 +1053,8 @@
   "app.containers.App.loading": "Wrthi'n llwytho...",
   "app.containers.App.metaTitle1": "Llwyfan ymgysylltu â dinasyddion | {orgName}",
   "app.containers.App.skipLinkText": "Neidio i'r prif gynnwys",
+  "app.containers.AreaTerms.areaTerm": "ardal",
+  "app.containers.AreaTerms.areasTerm": "ardaloedd",
   "app.containers.AuthProviders.emailTakenAndUserCanBeVerified": "Mae cyfrif gyda'r e-bost hwn eisoes yn bodoli. Gallwch allgofnodi, mewngofnodi gyda'r cyfeiriad e-bost hwn a gwirio'ch cyfrif ar y dudalen gosodiadau.",
   "app.containers.Authentication.steps.AccessDenied.close": "Cau",
   "app.containers.Authentication.steps.AccessDenied.youDoNotMeetTheRequirements": "Nid ydych yn bodloni'r gofynion i gymryd rhan yn y broses hon.",
