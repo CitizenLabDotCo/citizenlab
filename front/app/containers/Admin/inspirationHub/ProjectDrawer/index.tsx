@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Box, Text, colors } from '@citizenlab/cl2-component-library';
+import { Box, Text, Title, colors } from '@citizenlab/cl2-component-library';
 import { useSearchParams } from 'react-router-dom';
 
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
@@ -77,6 +77,9 @@ const ProjectDrawer = () => {
                 projectAttributes={attributes}
               />
             ))}
+          </Box>
+          <Box mt="32px">
+            <Title variant="h3">External comments</Title>
           </Box>
         </Box>
       )}
