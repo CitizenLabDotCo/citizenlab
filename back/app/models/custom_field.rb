@@ -65,6 +65,8 @@ class CustomField < ApplicationRecord
   has_many :permissions_custom_fields, dependent: :destroy
   has_many :permissions, through: :permissions_custom_fields
 
+  has_many :custom_field_bins, dependent: :destroy
+
   FIELDABLE_TYPES = %w[User CustomForm].freeze
   INPUT_TYPES = %w[
     checkbox date file_upload files html html_multiloc image_files linear_scale rating multiline_text multiline_text_multiloc
@@ -261,6 +263,20 @@ class CustomField < ApplicationRecord
 
   def custom_form_type?
     resource_type == 'CustomForm'
+  end
+
+  def user_type?
+    resource_type == 'User'
+  end
+
+  def items_claz
+    if custom_form_type?
+      Idea
+    elsif user_type?
+      User
+    else
+      raise 'Unsupported resource type'
+    end
   end
 
   def multiloc?

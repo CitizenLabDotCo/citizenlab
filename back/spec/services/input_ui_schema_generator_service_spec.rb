@@ -246,7 +246,7 @@ RSpec.describe InputUiSchemaGeneratorService do
                 type: 'Page',
                 options: hash_including(
                   description: '',
-                  title: anything
+                  title: 'Quelle est votre question ?'
                 ),
                 elements: [
                   hash_including(
@@ -265,7 +265,7 @@ RSpec.describe InputUiSchemaGeneratorService do
                 type: 'Page',
                 options: hash_including(
                   description: '',
-                  title: anything
+                  title: 'Images et pièces jointes'
                 ),
                 elements: [
                   hash_including(
@@ -286,7 +286,7 @@ RSpec.describe InputUiSchemaGeneratorService do
                 type: 'Page',
                 options: hash_including(
                   description: '',
-                  title: anything
+                  title: 'Détails'
                 ),
                 elements: [
                   hash_including(
@@ -341,7 +341,7 @@ RSpec.describe InputUiSchemaGeneratorService do
                 type: 'Page',
                 options: hash_including(
                   description: '',
-                  title: anything
+                  title: 'Wat is je vraag?'
                 ),
                 elements: [
                   hash_including(
@@ -360,7 +360,7 @@ RSpec.describe InputUiSchemaGeneratorService do
                 type: 'Page',
                 options: hash_including(
                   description: '',
-                  title: anything
+                  title: 'Afbeeldingen en bijlagen'
                 ),
                 elements: [
                   hash_including(
@@ -381,7 +381,7 @@ RSpec.describe InputUiSchemaGeneratorService do
                 type: 'Page',
                 options: hash_including(
                   description: '',
-                  title: anything
+                  title: 'Details'
                 ),
                 elements: [
                   hash_including(
