@@ -1049,6 +1049,8 @@
   "app.containers.App.loading": "crwdns214190:0crwdne214190:0",
   "app.containers.App.metaTitle1": "crwdns2278724:0{orgName}crwdne2278724:0",
   "app.containers.App.skipLinkText": "crwdns2677521:0crwdne2677521:0",
+  "app.containers.AreaTerms.areaTerm": "crwdns4268320:0crwdne4268320:0",
+  "app.containers.AreaTerms.areasTerm": "crwdns4268322:0crwdne4268322:0",
   "app.containers.AuthProviders.emailTakenAndUserCanBeVerified": "crwdns748861:0crwdne748861:0",
   "app.containers.Authentication.steps.AccessDenied.close": "crwdns2999237:0crwdne2999237:0",
   "app.containers.Authentication.steps.AccessDenied.youDoNotMeetTheRequirements": "crwdns2999239:0crwdne2999239:0",
