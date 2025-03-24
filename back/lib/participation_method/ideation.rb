@@ -88,7 +88,7 @@ module ParticipationMethod
           title_multiloc: {},
           description_multiloc: begin
             multiloc_service.i18n_to_multiloc(
-              'custom_fields.ideas.page1.description',
+              'custom_fields.ideas.title_page.description',
               locales: CL2_SUPPORTED_LOCALES
             )
           rescue StandardError
@@ -129,8 +129,18 @@ module ParticipationMethod
           page_layout: 'default',
           code: 'body_page',
           key: nil,
-          title_multiloc: { 'en' => 'Description page title' },
-          description_multiloc: {},
+          title_multiloc: multiloc_service.i18n_to_multiloc(
+            'custom_fields.ideas.body_page.title',
+            locales: CL2_SUPPORTED_LOCALES
+          ),
+          description_multiloc: begin
+            multiloc_service.i18n_to_multiloc(
+              'custom_fields.ideas.body_page.description',
+              locales: CL2_SUPPORTED_LOCALES
+            )
+          rescue StandardError
+            {}
+          end,
           required: false,
           enabled: true,
           ordering: 2,
@@ -167,12 +177,12 @@ module ParticipationMethod
           code: 'uploads_page',
           key: nil,
           title_multiloc: multiloc_service.i18n_to_multiloc(
-            'custom_fields.ideas.page2.title',
+            'custom_fields.ideas.uploads_page.title',
             locales: CL2_SUPPORTED_LOCALES
           ),
           description_multiloc: begin
             multiloc_service.i18n_to_multiloc(
-              'custom_fields.ideas.page2.description',
+              'custom_fields.ideas.uploads_page.description',
               locales: CL2_SUPPORTED_LOCALES
             )
           rescue StandardError
@@ -237,12 +247,12 @@ module ParticipationMethod
           code: 'details_page',
           key: nil,
           title_multiloc: multiloc_service.i18n_to_multiloc(
-            'custom_fields.ideas.page3.title',
+            'custom_fields.ideas.details_page.title',
             locales: CL2_SUPPORTED_LOCALES
           ),
           description_multiloc: begin
             multiloc_service.i18n_to_multiloc(
-              'custom_fields.ideas.page3.description',
+              'custom_fields.ideas.details_page.description',
               locales: CL2_SUPPORTED_LOCALES
             )
           rescue StandardError
@@ -359,8 +369,8 @@ module ParticipationMethod
         resource: custom_form,
         input_type: 'page',
         page_layout: 'default',
-        title_multiloc: multiloc_service.i18n_to_multiloc('form_builder.form_end_page.title_text_3'),
-        description_multiloc: multiloc_service.i18n_to_multiloc('form_builder.form_end_page.description_text_3')
+        title_multiloc: multiloc_service.i18n_to_multiloc('custom_fields.ideas.end_page.title'),
+        description_multiloc: multiloc_service.i18n_to_multiloc('custom_fields.ideas.end_page.description')
       )
 
       fields
