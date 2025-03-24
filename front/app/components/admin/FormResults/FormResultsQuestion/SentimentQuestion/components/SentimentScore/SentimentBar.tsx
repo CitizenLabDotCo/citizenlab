@@ -24,7 +24,6 @@ const SentimentBar = ({
       ) : (
         // If no answers, show a solid grey bar.
         <Box
-          key={undefined}
           background={colors.grey300}
           width={`100%`}
           height="8px"
