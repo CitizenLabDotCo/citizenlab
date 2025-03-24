@@ -7,9 +7,9 @@ import { QuarterlyScores } from './types';
 export const categoryColors = {
   overall: colors.blue400,
   quality_of_life: colors.teal700,
-  service_delivery: colors.teal400,
+  service_delivery: colors.teal300,
   governance_and_trust: colors.brown,
-  other: colors.grey700,
+  other: colors.coolGrey500,
 };
 
 export const generateEmptyChartData = (search: URLSearchParams) => {
