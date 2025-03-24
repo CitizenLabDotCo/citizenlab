@@ -1049,6 +1049,8 @@
   "app.containers.App.loading": "Ladataan...",
   "app.containers.App.metaTitle1": "Osallistu ja vaikuta | {orgName}",
   "app.containers.App.skipLinkText": "Siirry pääsisältöön",
+  "app.containers.AreaTerms.areaTerm": "alueella",
+  "app.containers.AreaTerms.areasTerm": "alueilla",
   "app.containers.AuthProviders.emailTakenAndUserCanBeVerified": "Tällä sähköpostiosoitteella on jo tili. Voit kirjautua ulos, kirjautua sisään tällä sähköpostiosoitteella ja vahvistaa tilisi asetussivulla.",
   "app.containers.Authentication.steps.AccessDenied.close": "Lähellä",
   "app.containers.Authentication.steps.AccessDenied.youDoNotMeetTheRequirements": "Et täytä tähän prosessiin osallistumisen edellytyksiä.",
