@@ -40,6 +40,8 @@
 #  linear_scale_label_11_multiloc :jsonb            not null
 #  ask_follow_up                  :boolean          default(FALSE), not null
 #  question_category              :string
+#  page_button_label_multiloc     :jsonb            not null
+#  page_button_link               :string
 #
 # Indexes
 #
