@@ -24,6 +24,7 @@ import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
 
 import { useLocalizeProjectLibrary } from '../utils';
 
+import Comment from './Comment';
 import Header from './Header';
 import messages from './messages';
 import Phase from './Phase';
@@ -37,6 +38,17 @@ const StyledBox = styled(Box)`
     height: auto;
   }
 `;
+
+const DUMMY_DATA = [
+  {
+    userId: '386d255e-2ff1-4192-8e50-b3022576be50',
+    createdAt: '2021-08-10T12:00:00Z',
+  },
+  {
+    userId: '386d255e-2ff1-4192-8e50-b3022576be50',
+    createdAt: '2021-08-10T12:00:00Z',
+  },
+];
 
 const ProjectDrawer = () => {
   const [searchParams] = useSearchParams();
@@ -109,8 +121,13 @@ const ProjectDrawer = () => {
               p="10px"
               placeholder="Write your comment here"
             />
-            <Box w="100%" mt="4px" display="flex">
+            <Box w="100%" mt="8px" display="flex">
               <Button w="auto">Post your comment</Button>
+            </Box>
+            <Box mt="20px">
+              {DUMMY_DATA.map((comment, i) => (
+                <Comment {...comment} key={i} />
+              ))}
             </Box>
           </Box>
         </Box>
