@@ -37,7 +37,6 @@ module Analysis
     has_many :background_tasks, class_name: 'Analysis::BackgroundTask', dependent: :destroy
     has_many :insights, class_name: 'Analysis::Insight', dependent: :destroy
     has_many :heatmap_cells, class_name: 'Analysis::HeatmapCell', dependent: :destroy
-    has_many :heatmaps, class_name: 'Analysis::Heatmap', dependent: :destroy
 
     validate :project_xor_phase_present
     validate :project_or_phase_form_context, on: :create
