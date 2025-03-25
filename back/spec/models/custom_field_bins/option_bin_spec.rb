@@ -102,11 +102,13 @@ RSpec.describe CustomFieldBins::OptionBin do
       it 'filters the scope by the area ID' do
         idea1 = create(:idea, custom_field_values: { field.key => area.id })
         idea2 = create(:idea, custom_field_values: { field.key => create(:area).id })
+        idea3 = create(:idea)
 
         filtered_scope = bin.filter_by_bin(scope)
 
         expect(filtered_scope).to include(idea1)
         expect(filtered_scope).not_to include(idea2)
+        expect(filtered_scope).not_to include(idea3)
       end
     end
   end

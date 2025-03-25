@@ -28,7 +28,7 @@ module CustomFieldBins
     validates :values, :range, absence: true
 
     def in_bin?(value)
-      return false if value.nil?
+      return false if value.nil? || custom_field_option_value.nil?
 
       value == custom_field_option_value || value.include?(custom_field_option_value)
     end
