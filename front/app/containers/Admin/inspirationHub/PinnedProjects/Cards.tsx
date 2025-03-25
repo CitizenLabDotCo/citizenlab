@@ -53,7 +53,7 @@ const Cards = () => {
       )}
       <Box display="flex" flexDirection="row" gap="12px">
         {projects.data.map((project) => (
-          <ProjectCard project={project} key={project.id} showStamp showQuote />
+          <ProjectCard project={project} key={project.id} isHighlighted />
         ))}
       </Box>
     </Box>
