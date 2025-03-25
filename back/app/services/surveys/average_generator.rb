@@ -56,7 +56,9 @@ module Surveys
     end
 
     def category_averages_by_quarter
-      field_averages_by_quarter(custom_field_attribute: :question_category)
+      averages = field_averages_by_quarter(custom_field_attribute: :question_category)
+      CustomField::QUESTION_CATEGORIES.each { |c| averages[c] ||= {} } # Add in any missing categories
+      averages
     end
 
     def totals_by_quarter
