@@ -12,18 +12,22 @@ interface ExternalCommentReqBody {
   body: string;
 }
 
-export type GetParams = {
-  projectId: string;
+export type ProjectId = { projectId: string };
+
+export type GetParams = ProjectId & {
   'page[number]'?: number;
   'page[size]'?: number;
 };
 
-export type AddParams = {
-  projectId: string;
+export type AddParams = ProjectId & {
   externalCommentReqBody: ExternalCommentReqBody;
 };
 
 export type UpdateParams = AddParams & {
+  externalCommentId: string;
+};
+
+export type DeleteParams = ProjectId & {
   externalCommentId: string;
 };
 
