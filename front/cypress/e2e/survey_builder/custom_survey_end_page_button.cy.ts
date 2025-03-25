@@ -49,8 +49,8 @@ describe('Survey page logic', () => {
     cy.get('[data-cy="e2e-custom-button-link"]').should('exist');
     cy.get('[data-cy="e2e-custom-button-link"]').click().type('/events');
 
-    cy.get('[data-cy="e2e-custom-button-label"]').should('exist');
-    cy.get('[data-cy="e2e-custom-button-label"]').click().type('See events');
+    cy.get('#e2e-custom-button-label').should('exist');
+    cy.get('#e2e-custom-button-label').click().type('See events');
 
     // Save the survey
     cy.get('form').submit();

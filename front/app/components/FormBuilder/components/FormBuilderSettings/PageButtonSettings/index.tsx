@@ -78,7 +78,7 @@ const PageButtonSettings = ({
               maxCharCount={25}
               name={pageButtonLabelMultilocName}
               label={formatMessage(messages.buttonLabel)}
-              data-cy="e2e-custom-button-label"
+              id="e2e-custom-button-label"
             />
           </SectionField>
 
