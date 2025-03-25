@@ -15,6 +15,8 @@ import useInputSchema from 'hooks/useInputSchema';
 
 import EditIdeaHeading from 'containers/IdeaHeading/EditIdeaHeading';
 import ideaFormMessages from 'containers/IdeasNewPage/messages';
+import IdeaDetailView from 'containers/IdeasNewPage/SimilarIdeas/IdeaDetailView';
+import { IdeaSelectContext } from 'containers/IdeasNewPage/SimilarIdeas/IdeaSelectContext';
 import { calculateDynamicHeight } from 'containers/IdeasNewSurveyPage/IdeasNewSurveyForm/utils';
 
 import ContentUploadDisclaimer from 'components/ContentUploadDisclaimer';
@@ -66,6 +68,10 @@ const IdeasEditForm = ({ ideaId }: Props) => {
   const projectId = idea?.data.relationships.project.data.id;
   const callbackRef = useRef<(() => void) | null>(null);
   const [usingMapView, setUsingMapView] = useState(false);
+  const [selectedIdeaId, setSelectedIdeaId] = useState<string | null>(null);
+  const handleCloseDetail = () => {
+    setSelectedIdeaId(null);
+  };
 
   const {
     schema,
@@ -255,6 +261,7 @@ const IdeasEditForm = ({ ideaId }: Props) => {
       }[uiSchema.options?.inputTerm ? uiSchema.options.inputTerm : 'idea']}
     />
   );
+  const maxWidth = usingMapView ? '1100px' : '700px';
 
   return (
     <>
@@ -265,53 +272,86 @@ const IdeasEditForm = ({ ideaId }: Props) => {
         h="100vh"
         position="fixed"
         zIndex="1010"
+        overflow="hidden"
       >
-        <Box
-          mx="auto"
-          position="relative"
-          top={isSmallerThanPhone ? '0' : '40px'}
-          maxWidth={usingMapView ? '1100px' : '700px'}
-        >
-          <EditIdeaHeading
-            idea={idea.data}
-            titleText={titleText}
-            projectId={projectId}
-          />
-        </Box>
-        <main id="e2e-idea-edit-page">
+        <Box display="flex" flexDirection="row" h="100%" w="100%">
           <Box
+            flex="1"
             display="flex"
+            mx="auto"
             justifyContent="center"
-            pt={isSmallerThanPhone ? '0' : '40px'}
+            w="100%"
           >
-            <Box
-              background={colors.white}
-              maxWidth={usingMapView ? '1100px' : '700px'}
-              w="100%"
-              // Height is recalculated on window resize via useWindowSize hook
-              h={calculateDynamicHeight(isSmallerThanPhone)}
-              pb={isSmallerThanPhone ? '0' : '80px'}
-            >
-              <Form
-                schema={schema}
-                uiSchema={uiSchema}
-                onSubmit={handleDisclaimer}
-                initialFormData={initialFormData}
-                inputId={idea.data.id}
-                getAjvErrorMessage={getAjvErrorMessage}
-                getApiErrorMessage={getApiErrorMessage}
-                config={'input'}
-                loading={loading}
-                showSubmitButton={false}
-              />
+            <Box w="100%" maxWidth={maxWidth}>
+              <Box
+                w="100%"
+                position="relative"
+                top={isSmallerThanPhone ? '0' : '40px'}
+              >
+                <EditIdeaHeading
+                  idea={idea.data}
+                  titleText={titleText}
+                  projectId={projectId}
+                />
+              </Box>
+              <main id="e2e-idea-edit-page">
+                <Box
+                  display="flex"
+                  justifyContent="center"
+                  pt={isSmallerThanPhone ? '0' : '40px'}
+                >
+                  <Box
+                    background={colors.white}
+                    maxWidth={usingMapView ? '1100px' : '700px'}
+                    w="100%"
+                    // Height is recalculated on window resize via useWindowSize hook
+                    h={calculateDynamicHeight(isSmallerThanPhone)}
+                    pb={isSmallerThanPhone ? '0' : '80px'}
+                  >
+                    <IdeaSelectContext.Provider
+                      value={{ onIdeaSelect: setSelectedIdeaId }}
+                    >
+                      <Form
+                        schema={schema}
+                        uiSchema={uiSchema}
+                        onSubmit={handleDisclaimer}
+                        initialFormData={initialFormData}
+                        inputId={idea.data.id}
+                        getAjvErrorMessage={getAjvErrorMessage}
+                        getApiErrorMessage={getApiErrorMessage}
+                        config={'input'}
+                        loading={loading}
+                        showSubmitButton={false}
+                      />
+                    </IdeaSelectContext.Provider>
+                  </Box>
+                </Box>
+                <ContentUploadDisclaimer
+                  isDisclaimerOpened={isDisclaimerOpened}
+                  onAcceptDisclaimer={() => onAcceptDisclaimer(formData)}
+                  onCancelDisclaimer={onCancelDisclaimer}
+                />
+              </main>
             </Box>
+            {selectedIdeaId && (
+              <Box
+                top={isSmallerThanPhone ? '0' : '40px'}
+                width="375px"
+                minWidth="375px"
+                borderLeft={`1px solid ${colors.grey300}`}
+                overflowY="auto"
+                bgColor={colors.white}
+                position="relative"
+                mb="80px"
+              >
+                <IdeaDetailView
+                  ideaId={selectedIdeaId}
+                  onClose={handleCloseDetail}
+                />
+              </Box>
+            )}
           </Box>
-          <ContentUploadDisclaimer
-            isDisclaimerOpened={isDisclaimerOpened}
-            onAcceptDisclaimer={() => onAcceptDisclaimer(formData)}
-            onCancelDisclaimer={onCancelDisclaimer}
-          />
-        </main>
+        </Box>
       </Box>
     </>
   );
