@@ -99,7 +99,20 @@ RSpec.describe InputUiSchemaGeneratorService do
                       render: 'multiloc',
                       input_type: 'text_multiloc'
                     }
-                  },
+                  }
+                ]
+              },
+              {
+                type: 'Page',
+                options: {
+                  input_type: 'page',
+                  id: custom_form.custom_fields.find_by(code: 'body_page').id,
+                  title: 'Tell us more',
+                  description: '',
+                  page_layout: 'default',
+                  map_config_id: nil
+                },
+                elements: [
                   {
                     type: 'Control',
                     scope: '#/properties/body_multiloc/properties/en',
@@ -250,7 +263,16 @@ RSpec.describe InputUiSchemaGeneratorService do
                     scope: '#/properties/title_multiloc/properties/fr-FR',
                     label: 'Titre',
                     options: hash_including(description: 'My title description')
-                  ),
+                  )
+                ]
+              ),
+              hash_including(
+                type: 'Page',
+                options: hash_including(
+                  description: '',
+                  title: 'Dites-nous plus'
+                ),
+                elements: [
                   hash_including(
                     scope: '#/properties/body_multiloc/properties/fr-FR',
                     label: 'Description',
@@ -345,7 +367,16 @@ RSpec.describe InputUiSchemaGeneratorService do
                     scope: '#/properties/title_multiloc/properties/nl-NL',
                     label: 'Titel',
                     options: hash_including(description: 'Mijn titel beschrijving')
-                  ),
+                  )
+                ]
+              ),
+              hash_including(
+                type: 'Page',
+                options: hash_including(
+                  description: '',
+                  title: 'Vertel ons meer'
+                ),
+                elements: [
                   hash_including(
                     scope: '#/properties/body_multiloc/properties/nl-NL',
                     label: 'Beschrijving',
@@ -453,7 +484,15 @@ RSpec.describe InputUiSchemaGeneratorService do
                   hash_including(
                     label: 'Title',
                     options: hash_including(description: '', render: 'multiloc', input_type: 'text_multiloc')
-                  ),
+                  )
+                )
+              ),
+              hash_including(
+                type: 'Page',
+                options: hash_including(
+                  title: 'Tell us more'
+                ),
+                elements: array_including(
                   hash_including(
                     label: 'Description',
                     options: hash_including(render: 'multiloc', input_type: 'html_multiloc')
@@ -535,7 +574,15 @@ RSpec.describe InputUiSchemaGeneratorService do
                     scope: '#/properties/title_multiloc/properties/en',
                     label: 'Title',
                     options: hash_including(description: '', render: 'multiloc', input_type: 'text_multiloc')
-                  ),
+                  )
+                )
+              ),
+              hash_including(
+                type: 'Page',
+                options: hash_including(
+                  title: 'Tell us more'
+                ),
+                elements: array_including(
                   hash_including(
                     scope: '#/properties/body_multiloc/properties/en',
                     label: 'Description',

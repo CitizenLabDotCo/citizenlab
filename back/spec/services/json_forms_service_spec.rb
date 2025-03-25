@@ -401,8 +401,8 @@ describe JsonFormsService do
           expect(output[:json_schema_multiloc]['en'][:properties]).not_to have_key 'author_id'
           expect(output[:json_schema_multiloc]['en'][:properties]).not_to have_key 'budget'
 
-          expect(output[:ui_schema_multiloc]['en'][:elements][0][:elements][1][:scope]).not_to eq '#/properties/author_id'
-          expect(output[:ui_schema_multiloc]['en'][:elements][2][:elements][0][:scope]).not_to eq '#/properties/budget'
+          expect(output.dig(:ui_schema_multiloc, 'en', :elements, 0, :elements, 1, :scope)).not_to eq '#/properties/author_id'
+          expect(output.dig(:ui_schema_multiloc, 'en', :elements, 2, :elements, 0, :scope)).not_to eq '#/properties/budget'
         end
 
         it 'renders text images for fields' do
@@ -454,7 +454,7 @@ describe JsonFormsService do
               description: ''
             }
           })
-          expect(output[:ui_schema_multiloc]['en'][:elements][2][:elements][0]).to eq({
+          expect(output[:ui_schema_multiloc]['en'][:elements][3][:elements][0]).to eq({
             type: 'Control',
             scope: '#/properties/budget',
             label: 'Budget',
@@ -474,8 +474,8 @@ describe JsonFormsService do
           custom_form.reload
 
           expect(output[:json_schema_multiloc]['en'][:properties]['budget']).to eq({ type: 'number' })
-          expect(output[:ui_schema_multiloc]['en'][:elements][1][:elements][4][:scope]).to eq '#/properties/budget'
-          expect(output[:ui_schema_multiloc]['en'][:elements][1][:elements][5][:scope]).to eq '#/properties/proposed_budget'
+          expect(output[:ui_schema_multiloc]['en'][:elements][2][:elements][4][:scope]).to eq '#/properties/budget'
+          expect(output[:ui_schema_multiloc]['en'][:elements][2][:elements][5][:scope]).to eq '#/properties/proposed_budget'
         end
 
         it 'includes the budget field under the body multiloc field when there is no details page and no proposed budget field' do
@@ -484,8 +484,8 @@ describe JsonFormsService do
           custom_form.reload
 
           expect(output[:json_schema_multiloc]['en'][:properties]['budget']).to eq({ type: 'number' })
-          expect(output[:ui_schema_multiloc]['en'][:elements][0][:elements][2][:options]).to include({ input_type: 'html_multiloc', render: 'multiloc' }) # body_multiloc
-          expect(output[:ui_schema_multiloc]['en'][:elements][0][:elements][3][:scope]).to eq '#/properties/budget'
+          expect(output[:ui_schema_multiloc]['en'][:elements][1][:elements][0][:options]).to include({ input_type: 'html_multiloc', render: 'multiloc' }) # body_multiloc
+          expect(output[:ui_schema_multiloc]['en'][:elements][1][:elements][1][:scope]).to eq '#/properties/budget'
         end
       end
     end
