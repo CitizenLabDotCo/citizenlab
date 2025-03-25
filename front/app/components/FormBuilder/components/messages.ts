@@ -273,11 +273,6 @@ export default defineMessages({
     defaultMessage:
       'This page cannot be deleted and does not allow any additional fields to be added.',
   },
-  pageDoesNotAllowNewFieldsToBeAdded: {
-    id: 'app.components.formBuilder.pageDoesNotAllowNewFieldsToBeAdded',
-    defaultMessage:
-      'This page does not allow any additional fields to be added.',
-  },
   pageCannotBeDeleted: {
     id: 'app.components.formBuilder.pageCannotBeDeleted',
     defaultMessage: "This page can't be deleted.",
