@@ -3,19 +3,23 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import fetcher from 'utils/cl-react-query/fetcher';
 
 import projectLibraryExternalCommentsKeys from './keys';
-import { DeleteParams } from './types';
+import { UpdateParams } from './types';
 
 export const deleteLibraryExternalComment = ({
   externalCommentId,
-}: DeleteParams) => {
+  externalCommentReqBody,
+}: UpdateParams) => {
   return fetcher({
     path: `/external_comments/${externalCommentId}`,
     action: 'delete',
     apiPath: '/project_library_api',
+    body: {
+      external_comment: externalCommentReqBody,
+    },
   });
 };
 
-const useUpdateProjectLibraryExternalComment = () => {
+const useDeleteProjectLibraryExternalComment = () => {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: deleteLibraryExternalComment,
@@ -29,4 +33,4 @@ const useUpdateProjectLibraryExternalComment = () => {
   });
 };
 
-export default useUpdateProjectLibraryExternalComment;
+export default useDeleteProjectLibraryExternalComment;

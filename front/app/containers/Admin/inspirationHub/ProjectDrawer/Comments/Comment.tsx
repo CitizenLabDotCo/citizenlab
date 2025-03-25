@@ -9,6 +9,8 @@ import {
 } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
+import useDeleteProjectLibraryExternalComment from 'api/project_library_external_comments/useDeleteProjectLibraryExternalComment';
+
 import useLocale from 'hooks/useLocale';
 
 import MoreActionsMenu from 'components/UI/MoreActionsMenu';
@@ -36,6 +38,8 @@ const BADGE_STYLES = {
 } as const;
 
 interface Props {
+  id: string;
+  projectId: string;
   name: string;
   createdAt: string;
   badgeText?: string;
@@ -43,8 +47,17 @@ interface Props {
   body: string;
 }
 
-const Comment = ({ name, createdAt, badgeText, badgeType, body }: Props) => {
+const Comment = ({
+  id,
+  projectId,
+  name,
+  createdAt,
+  badgeText,
+  badgeType,
+  body,
+}: Props) => {
   const locale = useLocale();
+  const { mutate: deleteComment } = useDeleteProjectLibraryExternalComment();
 
   return (
     <Box width="100%" maxWidth="600px">
@@ -88,7 +101,14 @@ const Comment = ({ name, createdAt, badgeText, badgeType, body }: Props) => {
             },
             {
               label: 'Delete',
-              handler: () => console.log('Delete'),
+              handler: () => {
+                if (window.confirm('Are you sure you want to delete this?')) {
+                  deleteComment({
+                    externalCommentId: id,
+                    projectId,
+                  });
+                }
+              },
             },
           ]}
         />

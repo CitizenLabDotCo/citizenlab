@@ -103,6 +103,8 @@ const Comments = ({ projectId }: Props) => {
           }) => (
             <Comment
               key={id}
+              id={id}
+              projectId={projectId}
               name={`${author_first_name} ${author_last_name}`}
               createdAt={created_at}
               badgeText={author_type === 'User' ? 'Go Vocal' : tenant_name}

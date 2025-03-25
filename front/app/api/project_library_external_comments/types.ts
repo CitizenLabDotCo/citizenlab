@@ -27,10 +27,6 @@ export type UpdateParams = AddParams & {
   externalCommentId: string;
 };
 
-export type DeleteParams = ProjectId & {
-  externalCommentId: string;
-};
-
 interface ExternalCommentData {
   id: string;
   type: 'project_library_external_comment';
