@@ -21,7 +21,6 @@ interface IdeaDetailViewProps {
 
 const IdeaDetailView = ({ ideaId, onClose }: IdeaDetailViewProps) => {
   const { data: idea, isLoading } = useIdeaById(ideaId);
-  console.log('idea', idea);
 
   if (isLoading) return <Spinner />;
 
