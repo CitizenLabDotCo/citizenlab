@@ -10,6 +10,7 @@ function cleanUpWidget() {
     .click({ force: true });
   cy.get('#e2e-delete-button').click();
   cy.get('#e2e-content-builder-topbar-save').click();
+  cy.wait(1000);
   cy.log('Cleaned up Areas Widget');
 }
 
@@ -18,10 +19,10 @@ function addWidget() {
   cy.get('#e2e-draggable-areas').dragAndDrop('#e2e-content-builder-frame', {
     position: 'inside',
   });
-  cy.wait(1000);
 
   // Save
   cy.get('#e2e-content-builder-topbar-save').click();
+  cy.wait(1000);
   cy.log('Added Areas Widget');
 }
 
@@ -38,6 +39,7 @@ describe('"In your area" (areas) widget', () => {
     // Make sure it's not on homepage
     cy.goToLandingPage();
     cy.reload();
+    cy.wait(1000);
     cy.get('[data-cy="e2e-areas-widget"]').should('not.exist');
   });
 
