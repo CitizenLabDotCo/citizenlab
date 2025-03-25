@@ -23,6 +23,10 @@ export type AddParams = {
   externalCommentReqBody: ExternalCommentReqBody;
 };
 
+export type UpdateParams = AddParams & {
+  externalCommentId: string;
+};
+
 interface ExternalCommentData {
   id: string;
   type: 'project_library_external_comment';
