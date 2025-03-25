@@ -78,7 +78,7 @@ RSpec.describe Analysis::HeatmapGenerationJob do
 
     it 'does not generate the heatmap' do
       expect { described_class.perform_now(analysis.reload) }
-        .not_to change { Analysis::HeatmapCell.count }
+        .not_to change { analysis.heatmap_cells.count }
     end
   end
 
@@ -115,7 +115,7 @@ RSpec.describe Analysis::HeatmapGenerationJob do
 
     it 'does not generate the heatmap' do
       expect { described_class.perform_now(analysis.reload) }
-        .not_to change { Analysis::HeatmapCell.count }
+        .not_to change { analysis.heatmap_cells.count }
     end
   end
 
@@ -154,7 +154,7 @@ RSpec.describe Analysis::HeatmapGenerationJob do
 
   #   it 'does not generate the heatmap' do
   #     expect { described_class.perform_now(analysis.reload) }
-  #       .not_to change { Analysis::HeatmapCell.count }
+  #       .not_to change { analysis.heatmap_cells.count }
   #   end
   # end
 end
