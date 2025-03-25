@@ -19,10 +19,11 @@
           "color_secondary",
           "color_text",
           "lifecycle_stage",
+          "country_code",
           "authentication_token_lifetime_in_days"
         ],
         "additionalProperties": false,
-        "required": ["allowed", "enabled", "lifecycle_stage"],
+        "required": ["allowed", "enabled", "lifecycle_stage", "country_code"],
         "properties": {
           "allowed": { "type": "boolean", "default": true},
           "enabled": { "type": "boolean", "default": true},
@@ -1223,6 +1224,18 @@
         }
       },
 
+      "comments_summaries": {
+        "type": "object",
+        "title": "AI-powered analysis of comments in ideation",
+        "description": "Enables the use of AI-powered analysis for comments in ideation. When active, the comments under an input can be summarized, and the comments are included in the main summarization feature.",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": false },
+          "enabled": { "type": "boolean", "default": false }
+        }
+      },
+
       "ask_a_question": {
         "type": "object",
         "title": "AI-powered questions and answers feature for surveys and ideation",
@@ -1327,17 +1340,7 @@
         "required": ["allowed", "enabled"],
         "properties": {
           "allowed": { "type": "boolean", "default": false},
-          "enabled": { "type": "boolean", "default": false},
-          "title_threshold": {
-            "title": "Cosine distance threshold for title",
-            "type": "number",
-            "default": 0.3
-          },
-          "body_threshold": {
-            "title": "Cosine distance threshold for body",
-            "type": "number",
-            "default": 0.4
-          }
+          "enabled": { "type": "boolean", "default": false}
         }
       },
 
@@ -1452,6 +1455,7 @@
     "large_summaries": ["analysis"],
     "ask_a_question": ["analysis"],
     "advanced_autotagging": ["analysis"],
+    "comments_summaries": ["analysis"],
     "import_printed_forms": ["input_importer"]
   },
   "definitions": {

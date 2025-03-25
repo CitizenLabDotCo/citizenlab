@@ -1049,6 +1049,8 @@
   "app.containers.App.loading": "Pakraunama...",
   "app.containers.App.metaTitle1": "Piliečių dalyvavimo platforma | {orgName}",
   "app.containers.App.skipLinkText": "Pereiti prie pagrindinio turinio",
+  "app.containers.AreaTerms.areaTerm": "sritis",
+  "app.containers.AreaTerms.areasTerm": "sritys",
   "app.containers.AuthProviders.emailTakenAndUserCanBeVerified": "Paskyra su šiuo el. pašto adresu jau egzistuoja. Galite išsiregistruoti, prisijungti šiuo el. pašto adresu ir patvirtinti paskyrą nustatymų puslapyje.",
   "app.containers.Authentication.steps.AccessDenied.close": "Uždaryti",
   "app.containers.Authentication.steps.AccessDenied.youDoNotMeetTheRequirements": "Neatitinkate reikalavimų, kad galėtumėte dalyvauti šiame procese.",
