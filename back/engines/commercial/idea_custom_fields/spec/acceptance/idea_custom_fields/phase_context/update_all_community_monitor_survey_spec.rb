@@ -144,21 +144,19 @@ resource 'Idea Custom Fields' do
           )
         end
 
-        example 'First page & last page must be present' do
+        example '[error] first custom field is not a page' do
           request = {
             custom_fields: [
               { input_type: 'text', title_multiloc: { en: 'Text field' } },
-              { input_type: 'text', title_multiloc: { en: 'Text field' } }
+              { input_type: 'text', title_multiloc: { en: 'Text field' } },
+              last_page
             ]
           }
           do_request request
+
           assert_status 422
-          expect(json_response_body.dig(:errors, :'0')).to eq(
-            { structure: [{ error: "First field must be of type 'page'" }] }
-          )
-          expect(json_response_body.dig(:errors, :'1')).to eq(
-            { structure: [{ error: "Last field must be of type 'page'" }] }
-          )
+          json_response = json_parse response_body
+          expect(json_response).to eq({ errors: { form: [{ error: 'no_first_page' }] } })
         end
       end
     end

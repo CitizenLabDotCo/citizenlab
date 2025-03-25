@@ -304,6 +304,14 @@ resource 'Idea Custom Fields' do
           expect(json_response).to eq({ errors: { '12': { input_type: [{ error: 'inclusion', value: 'html_multiloc' }] } } })
         end
 
+        example '[error] Submitting an empty form' do
+          do_request custom_fields: []
+
+          assert_status 422
+          json_response = json_parse response_body
+          expect(json_response).to eq({ errors: { form: [{ error: 'empty' }] } })
+        end
+
         example '[error] Put the title and body fields on the same page' do
           title_field, body_field = default_fields_param.select { |field| field[:code].in? %w[title_multiloc body_multiloc] }
           fields_param = [

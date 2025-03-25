@@ -107,9 +107,17 @@ module IdeaCustomFields
       fields = update_all_params.fetch(:custom_fields).map do |field|
         CustomField.new(field.slice(:code, :key, :input_type, :title_multiloc, :description_multiloc, :required, :enabled, :ordering))
       end
+      validate_non_empty_form!(fields)
       validate_stale_form_data!(fields)
       validate_end_page!(fields)
+      validate_first_page!(fields)
       validate_separate_title_body_pages!(fields)
+    end
+
+    def validate_non_empty_form!(fields)
+      return if !fields.empty?
+
+      raise UpdateAllFailedError, { form: [{ error: 'empty' }] }
     end
 
     # To try and avoid forms being overwritten with stale data, we check if the form has been updated since the form editor last loaded it
@@ -126,6 +134,12 @@ module IdeaCustomFields
       return if fields.last.end_page?
 
       raise UpdateAllFailedError, { form: [{ error: 'no_end_page' }] }
+    end
+
+    def validate_first_page!(fields)
+      return if fields.first.page?
+
+      raise UpdateAllFailedError, { form: [{ error: 'no_first_page' }] }
     end
 
     def validate_separate_title_body_pages!(fields)
@@ -169,9 +183,6 @@ module IdeaCustomFields
       fields_by_id = fields.index_by(&:id)
       given_fields = update_all_params.fetch :custom_fields, []
       given_field_ids = given_fields.pluck(:id)
-
-      idea_custom_fields_service.check_form_structure given_fields, errors
-      raise UpdateAllFailedError, errors if errors.present?
 
       ActiveRecord::Base.transaction do
         delete_fields = fields.reject { |field| given_field_ids.include? field.id }
