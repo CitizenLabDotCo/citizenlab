@@ -12,17 +12,19 @@ import { useForm, FormProvider } from 'react-hook-form';
 import styled from 'styled-components';
 import { string, object } from 'yup';
 
+import useAuthUser from 'api/me/useAuthUser';
+import useAddProjectLibraryExternalComment from 'api/project_library_external_comments/useAddProjectLibraryExternalComment';
+
 import TextArea from 'components/HookForm/TextArea';
 
 import Comment from './Comment';
+import getAuthorNames from './getAuthorNames';
 
 const StyledTextArea = styled(TextArea)`
   font-size: ${fontSizes.base}px;
-  height: 40px;
 
   &:focus {
     outline: 1px solid ${colors.primary};
-    height: auto;
   }
 `;
 
@@ -53,7 +55,14 @@ type FormValues = {
   comment_body: string;
 };
 
-const Comments = () => {
+interface Props {
+  projectId: string;
+}
+
+const Comments = ({ projectId }: Props) => {
+  const { data: authUser } = useAuthUser();
+  const { mutate: addExternalComment } = useAddProjectLibraryExternalComment();
+
   const methods = useForm<FormValues>({
     mode: 'onBlur',
     defaultValues: {
@@ -62,8 +71,16 @@ const Comments = () => {
     resolver: yupResolver(schema),
   });
 
-  const onFormSubmit = (values: FormValues) => {
-    console.log({ values });
+  if (!authUser) return null;
+
+  const onFormSubmit = ({ comment_body }: FormValues) => {
+    addExternalComment({
+      projectId,
+      externalCommentReqBody: {
+        body: comment_body,
+        ...getAuthorNames(authUser),
+      },
+    });
   };
 
   return (

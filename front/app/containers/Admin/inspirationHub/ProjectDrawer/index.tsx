@@ -79,9 +79,7 @@ const ProjectDrawer = () => {
               />
             ))}
           </Box>
-          <Box mt="32px">
-            <Comments />
-          </Box>
+          <Box mt="32px">{projectId && <Comments projectId={projectId} />}</Box>
         </Box>
       )}
     </SideModal>
