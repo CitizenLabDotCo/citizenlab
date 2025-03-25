@@ -36,7 +36,7 @@ module Surveys
         averages[:categories] = {
           averages: category_averages_by_quarter,
           multilocs: CustomField::QUESTION_CATEGORIES.index_with do |category|
-            MultilocService.new.i18n_to_multiloc("custom_fields.question_categories.#{category}")
+            MultilocService.new.i18n_to_multiloc("custom_fields.community_monitor.question_categories.#{category}")
           end
         }
       end

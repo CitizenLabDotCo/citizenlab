@@ -29,8 +29,8 @@ module Surveys
         quarter_values = averages[result[:customFieldId]]
         if quarter_values
           result[:averages] = {
-            this_period: quarter_values[format_quarter(year, quarter)],
-            last_period: quarter_values[previous_quarter(year, quarter)]
+            this_period: quarter_values[format_quarter(@year, @quarter)],
+            last_period: quarter_values[previous_quarter(@year, @quarter)]
           }
         end
       end
