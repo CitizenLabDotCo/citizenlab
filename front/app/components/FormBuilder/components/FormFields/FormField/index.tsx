@@ -104,20 +104,17 @@ export const FormField = ({
       (field) => field.input_type === 'page'
     );
 
-    if (builderConfig.type === 'survey') {
-      return groupFields.length > 2;
-    } else {
-      return groupFields.length > 1;
-    }
+    return builderConfig.type === 'survey'
+      ? groupFields.length > 2
+      : groupFields.length > 1;
   };
 
   const isGroupDeletable = getGroupDeletable();
-
-  const isDeleteShown =
-    // TODO: Fix this the next time the file is edited.
-    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-    !(field?.input_type !== 'page' || isGroupDeletable) ||
-    get(lockedAttributes, 'enabled', false);
+  const shouldShowDelete = !(
+    (field.input_type === 'page' && !isGroupDeletable) ||
+    get(lockedAttributes, 'enabled', false) ||
+    hasFullPageRestriction
+  );
 
   const editFieldAndValidate = (defaultTab: ICustomFieldSettingsTab) => {
     onEditField({ ...field, index, defaultTab });
@@ -307,7 +304,7 @@ export const FormField = ({
           },
         ]
       : []),
-    ...(!isDeleteShown
+    ...(shouldShowDelete
       ? [
           {
             handler: (event: React.MouseEvent) => {
