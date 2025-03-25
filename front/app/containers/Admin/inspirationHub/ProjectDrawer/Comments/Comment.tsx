@@ -9,6 +9,8 @@ import {
 } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
+import useAuthUser from 'api/me/useAuthUser';
+import { ExternalCommentData } from 'api/project_library_external_comments/types';
 import useDeleteProjectLibraryExternalComment from 'api/project_library_external_comments/useDeleteProjectLibraryExternalComment';
 
 import useLocale from 'hooks/useLocale';
@@ -17,6 +19,8 @@ import MoreActionsMenu from 'components/UI/MoreActionsMenu';
 import { Name } from 'components/UI/UserName';
 
 import { timeAgo } from 'utils/dateUtils';
+
+import getAuthorNames from './getAuthorNames';
 
 const TimeAgo = styled.div`
   color: ${colors.textSecondary};
@@ -27,37 +31,31 @@ const TimeAgo = styled.div`
 `;
 
 const BADGE_STYLES = {
-  'go-vocal': {
+  User: {
     bgColor: colors.red100,
     color: 'red800',
   },
-  'platform-moderator': {
+  ExternalUser: {
     bgColor: colors.teal100,
     color: 'teal700',
   },
 } as const;
 
 interface Props {
-  id: string;
   projectId: string;
-  name: string;
-  createdAt: string;
-  badgeText?: string;
-  badgeType?: 'go-vocal' | 'platform-moderator';
-  body: string;
+  comment: ExternalCommentData;
 }
 
-const Comment = ({
-  id,
-  projectId,
-  name,
-  createdAt,
-  badgeText,
-  badgeType,
-  body,
-}: Props) => {
+const Comment = ({ projectId, comment }: Props) => {
   const locale = useLocale();
   const { mutate: deleteComment } = useDeleteProjectLibraryExternalComment();
+  const { data: authUser } = useAuthUser();
+
+  if (!authUser) return null;
+
+  const { id } = comment;
+  const { author_type, tenant_name, created_at, body } = comment.attributes;
+  const badgeText = author_type === 'User' ? 'Go Vocal' : tenant_name;
 
   return (
     <Box width="100%" maxWidth="600px">
@@ -71,26 +69,24 @@ const Comment = ({
           >
             {name}
           </Name>
-          <TimeAgo>{timeAgo(Date.parse(createdAt), locale)}</TimeAgo>
-          {badgeText && badgeType && (
-            <Box
-              display="inline-block"
-              bgColor={BADGE_STYLES[badgeType].bgColor}
-              borderRadius={stylingConsts.borderRadius}
-              p="2px 4px"
-              ml="8px"
+          <TimeAgo>{timeAgo(Date.parse(created_at), locale)}</TimeAgo>
+          <Box
+            display="inline-block"
+            bgColor={BADGE_STYLES[author_type].bgColor}
+            borderRadius={stylingConsts.borderRadius}
+            p="2px 4px"
+            ml="8px"
+          >
+            <Text
+              as="span"
+              m="0"
+              fontWeight="semi-bold"
+              fontSize="xs"
+              color={BADGE_STYLES[author_type].color}
             >
-              <Text
-                as="span"
-                m="0"
-                fontWeight="semi-bold"
-                fontSize="xs"
-                color={BADGE_STYLES[badgeType].color}
-              >
-                {badgeText}
-              </Text>
-            </Box>
-          )}
+              {badgeText}
+            </Text>
+          </Box>
         </Box>
         <MoreActionsMenu
           showLabel={false}
@@ -106,6 +102,7 @@ const Comment = ({
                   deleteComment({
                     externalCommentId: id,
                     projectId,
+                    externalCommentReqBody: getAuthorNames(authUser),
                   });
                 }
               },

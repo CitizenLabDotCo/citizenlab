@@ -6,11 +6,14 @@ export type ProjectLibraryExternalCommentsKeys = Keys<
   typeof projectLibraryExternalCommentsKeys
 >;
 
-interface ExternalCommentReqBody {
+type Names = {
   author_first_name: string;
   author_last_name: string;
+};
+
+type ExternalCommentReqBody = Names & {
   body: string;
-}
+};
 
 export type ProjectId = { projectId: string };
 
@@ -27,7 +30,12 @@ export type UpdateParams = AddParams & {
   externalCommentId: string;
 };
 
-interface ExternalCommentData {
+export type DeleteParams = ProjectId & {
+  externalCommentId: string;
+  externalCommentReqBody: Names;
+};
+
+export interface ExternalCommentData {
   id: string;
   type: 'project_library_external_comment';
   attributes: {

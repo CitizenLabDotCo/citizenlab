@@ -3,12 +3,12 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import fetcher from 'utils/cl-react-query/fetcher';
 
 import projectLibraryExternalCommentsKeys from './keys';
-import { UpdateParams } from './types';
+import { DeleteParams } from './types';
 
 export const deleteLibraryExternalComment = ({
   externalCommentId,
   externalCommentReqBody,
-}: UpdateParams) => {
+}: DeleteParams) => {
   return fetcher({
     path: `/external_comments/${externalCommentId}`,
     action: 'delete',

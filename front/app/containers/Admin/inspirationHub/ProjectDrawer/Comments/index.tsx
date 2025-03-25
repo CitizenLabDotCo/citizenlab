@@ -89,32 +89,20 @@ const Comments = ({ projectId }: Props) => {
         </form>
       </FormProvider>
       <Box mt="20px">
-        {comments?.data.map(
-          ({
-            id,
-            attributes: {
-              author_first_name,
-              author_last_name,
-              created_at,
-              author_type,
-              tenant_name,
-              body,
-            },
-          }) => (
-            <Comment
-              key={id}
-              id={id}
-              projectId={projectId}
-              name={`${author_first_name} ${author_last_name}`}
-              createdAt={created_at}
-              badgeText={author_type === 'User' ? 'Go Vocal' : tenant_name}
-              badgeType={
-                author_type === 'User' ? 'go-vocal' : 'platform-moderator'
-              }
-              body={body}
-            />
-          )
-        )}
+        {comments?.data.map((comment) => (
+          <Comment
+            key={comment.id}
+            projectId={projectId}
+            // name={`${author_first_name} ${author_last_name}`}
+            // createdAt={created_at}
+            // badgeText={author_type === 'User' ? 'Go Vocal' : tenant_name}
+            // badgeType={
+            //   author_type === 'User' ? 'go-vocal' : 'platform-moderator'
+            // }
+            // body={body}
+            comment={comment}
+          />
+        ))}
       </Box>
     </>
   );
