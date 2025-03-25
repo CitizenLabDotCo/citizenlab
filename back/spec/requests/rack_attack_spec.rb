@@ -574,7 +574,7 @@ describe 'Rack::Attack' do
     freeze_time do
       5.times do |i|
         post(
-          '/web_api/v1/ideas/similarities',
+          '/web_api/v1/ideas/similar_ideas',
           params: params_proc.call("Title #{i}"),
           headers: headers
         )
@@ -582,7 +582,7 @@ describe 'Rack::Attack' do
       expect(status).to eq 200 # OK
 
       post(
-        '/web_api/v1/ideas/similarities',
+        '/web_api/v1/ideas/similar_ideas',
         params: params_proc.call('Final idea'),
         headers: headers
       )
