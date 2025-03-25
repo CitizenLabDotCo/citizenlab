@@ -122,7 +122,12 @@ const Comment = ({ projectId, comment }: Props) => {
       </Box>
       <Box mt="12px" mb="20px">
         {isEditing ? (
-          <CommentEdit body={body} onCancel={() => setIsEditing(false)} />
+          <CommentEdit
+            projectId={projectId}
+            commentId={id}
+            body={body}
+            onCancel={() => setIsEditing(false)}
+          />
         ) : (
           <Text m="0">{body}</Text>
         )}

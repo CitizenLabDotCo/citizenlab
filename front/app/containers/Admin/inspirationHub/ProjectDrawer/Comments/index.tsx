@@ -79,6 +79,7 @@ const Comments = ({ projectId }: Props) => {
           <Box w="100%" mt="8px" display="flex">
             <Button
               w="auto"
+              p="4px 8px"
               bgColor={colors.primary}
               onClick={methods.handleSubmit(onFormSubmit)}
               processing={methods.formState.isSubmitting}
