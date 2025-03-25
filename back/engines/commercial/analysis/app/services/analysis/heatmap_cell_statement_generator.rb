@@ -5,69 +5,89 @@ module Analysis
     end
 
     def generate(cell)
-      row_type = cell.row.class
-      column_type = cell.column.class
-
-      if [row_type, column_type].to_set == [CustomFieldOption, Tag].to_set
-        generate_tag_custom_field_option(cell)
-      elsif [row_type, column_type].to_set == [Tag, CustomField].to_set
-        generate_tag_custom_field(cell)
-      elsif [row_type, column_type].to_set == [CustomFieldOption].to_set
-        generate_custom_field_custom_field(cell)
+      if cell.row.is_a?(Tag) && cell.column.is_a?(CustomFieldBin)
+        generate_tag_vs_bin(
+          cell,
+          tag: cell.row,
+          bin: cell.column
+        )
+      elsif cell.row.is_a?(CustomFieldBin) && cell.column.is_a?(Tag)
+        generate_tag_vs_bin(
+          cell,
+          tag: cell.column,
+          bin: cell.row
+        )
+      elsif cell.row.is_a?(CustomFieldBin) && cell.column.is_a?(CustomFieldBin)
+        generate_bin_vs_bin(cell)
       else
-        raise "Unsupported cell type combination: #{row_type}, #{column_type}"
+        raise "Unsupported cell type for statement generation: #{cell.row_type} - #{cell.column_type}"
       end
     end
 
     private
 
-    def generate_tag_custom_field_option(cell)
-      custom_field_option = cell.column if cell.column.is_a?(CustomFieldOption)
-      custom_field_option = cell.row if cell.row.is_a?(CustomFieldOption)
-      tag = cell.column if cell.column.is_a?(Tag)
-      tag = cell.row if cell.row.is_a?(Tag)
+    def generate_tag_vs_bin(cell, tag:, bin:)
+      tag_name = tag.name
 
-      answer = @multiloc_service.t(custom_field_option.title_multiloc)
-      question = @multiloc_service.t(custom_field_option.custom_field.title_multiloc)
-      percent_copy = cell.lift >= 1 ? 'percent_more' : 'percent_less'
-
-      @multiloc_service.i18n_to_multiloc("analysis.cell_statement.tag_custom_field.#{cell.unit}",
-        answer:, question:, tag: tag.name,
-        percent_more_less: I18n.t("analysis.cell_statement.tag_custom_field.#{percent_copy}", percent: decimal_to_percentage(cell.lift)))
+      @multiloc_service.block_to_multiloc do
+        question = bin_to_question_str(bin)
+        answer = bin_to_answer_str(bin)
+        percent_more_less = lift_to_percentage_more_less_str(cell.lift)
+        I18n.t(
+          "analysis.cell_statement.tag_vs_bin.#{cell.unit}",
+          answer:,
+          question:,
+          tag: tag_name,
+          percent_more_less:
+        )
+      end
     end
 
-    def generate_tag_custom_field(cell)
-      custom_field, bin_value = nil
-      if cell.column.is_a?(CustomField)
-        custom_field = cell.column
-        bin_value = cell.column_bin_value
+    def generate_bin_vs_bin(cell)
+      @multiloc_service.block_to_multiloc do
+        question1 = bin_to_question_str(cell.row)
+        answer1 = bin_to_answer_str(cell.row)
+        question2 = bin_to_question_str(cell.column)
+        answer2 = bin_to_answer_str(cell.column)
+        percent_more_less = lift_to_percentage_more_less_str(cell.lift)
+        I18n.t(
+          "analysis.cell_statement.bin_vs_bin.#{cell.unit}",
+          answer1:,
+          question1:,
+          answer2:,
+          question2:,
+          percent_more_less:
+        )
       end
-      if cell.row.is_a?(CustomField)
-        custom_field = cell.row
-        bin_value = cell.row_bin_value
-      end
-      tag = cell.column if cell.column.is_a?(Tag)
-      tag = cell.row if cell.row.is_a?(Tag)
-
-      answer = "#{bin_value}+"
-      question = @multiloc_service.t(custom_field.title_multiloc)
-      percent_copy = cell.lift >= 1 ? 'percent_more' : 'percent_less'
-
-      @multiloc_service.i18n_to_multiloc("analysis.cell_statement.tag_custom_field.#{cell.unit}",
-        answer:, question:, tag: tag.name,
-        percent_more_less: I18n.t("analysis.cell_statement.tag_custom_field.#{percent_copy}", percent: decimal_to_percentage(cell.lift)))
     end
 
-    def generate_custom_field_custom_field(cell)
-      question1 = @multiloc_service.t(cell.row.custom_field.title_multiloc)
-      question2 = @multiloc_service.t(cell.column.custom_field.title_multiloc)
-      answer1 = @multiloc_service.t(cell.row.title_multiloc)
-      answer2 = @multiloc_service.t(cell.column.title_multiloc)
-      percent_copy = cell.lift >= 1 ? 'percent_more' : 'percent_less'
+    def bin_to_question_str(bin)
+      @multiloc_service.t(bin.custom_field.title_multiloc)
+    end
 
-      @multiloc_service.i18n_to_multiloc("analysis.cell_statement.custom_field_custom_field.#{cell.unit}",
-        answer1:, answer2:, question1:, question2:,
-        percent_more_less: I18n.t("analysis.cell_statement.custom_field_custom_field.#{percent_copy}", percent: decimal_to_percentage(cell.lift)))
+    def bin_to_answer_str(bin)
+      case bin
+      when CustomFieldBins::OptionBin
+        @multiloc_service.t(bin.custom_field_option.title_multiloc)
+      when CustomFieldBins::ValueBin
+        bin.values.join(', ')
+      when CustomFieldBins::RangeBin, CustomFieldBins::AgeBin
+        if bin.range.begin.nil?
+          I18n.t('analysis.cell_statement.range_max', max: bin.range.end)
+        elsif bin.range.end.nil?
+          I18n.t('analysis.cell_statement.range_min', min: bin.range.start)
+        else
+          I18n.t('analysis.cell_statement.range_min_max', min: bin.range.start, max: bin.range.end)
+        end
+      else
+        raise "Unsupported bin type for statement generation: #{bin.class}"
+      end
+    end
+
+    def lift_to_percentage_more_less_str(lift)
+      more_or_less = lift >= 1 ? 'more' : 'less'
+      percent = decimal_to_percentage(lift)
+      I18n.t("analysis.cell_statement.percent_#{more_or_less}", percent:)
     end
 
     def decimal_to_percentage(decimal)
