@@ -39,6 +39,8 @@
 #  linear_scale_label_10_multiloc :jsonb            not null
 #  linear_scale_label_11_multiloc :jsonb            not null
 #  ask_follow_up                  :boolean          default(FALSE), not null
+#  page_button_label_multiloc     :jsonb            not null
+#  page_button_link               :string
 #
 # Indexes
 #
@@ -62,6 +64,8 @@ class CustomField < ApplicationRecord
 
   has_many :permissions_custom_fields, dependent: :destroy
   has_many :permissions, through: :permissions_custom_fields
+
+  has_many :custom_field_bins, dependent: :destroy
 
   FIELDABLE_TYPES = %w[User CustomForm].freeze
   INPUT_TYPES = %w[
@@ -110,6 +114,17 @@ class CustomField < ApplicationRecord
   scope :required, -> { where(required: true) }
   scope :not_hidden, -> { where(hidden: false) }
   scope :hidden, -> { where(hidden: true) }
+
+  def policy_class
+    case resource_type
+    when 'User'
+      UserCustomFields::UserCustomFieldPolicy
+    when 'CustomForm'
+      CustomFormPolicy
+    else
+      raise "Polcy not implemented for resource type: #{resource_type}"
+    end
+  end
 
   def logic?
     logic.present? && logic != { 'rules' => [] }
@@ -259,6 +274,20 @@ class CustomField < ApplicationRecord
 
   def custom_form_type?
     resource_type == 'CustomForm'
+  end
+
+  def user_type?
+    resource_type == 'User'
+  end
+
+  def items_claz
+    if custom_form_type?
+      Idea
+    elsif user_type?
+      User
+    else
+      raise 'Unsupported resource type'
+    end
   end
 
   def multiloc?

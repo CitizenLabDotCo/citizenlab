@@ -13,9 +13,13 @@ import { useTheme } from 'styled-components';
 import { IPhaseData } from 'api/phases/types';
 import { getInputTerm } from 'api/phases/utils';
 
+import useLocalize from 'hooks/useLocalize';
+
 import LanguageSelector from 'containers/MainHeader/Components/LanguageSelector';
 
-import { FormattedMessage, MessageDescriptor } from 'utils/cl-intl';
+import { PageType } from 'components/Form/typings';
+
+import { FormattedMessage, MessageDescriptor, useIntl } from 'utils/cl-intl';
 
 import messages from '../../messages';
 
@@ -27,10 +31,10 @@ const CY_DATA_VALUES: Record<PageVariant, string> = {
   'after-submission': 'e2e-after-submission',
 };
 
-const ICON_VALUES: Record<PageVariant, IconNames> = {
+const ICON_VALUES: Record<PageVariant, IconNames | undefined> = {
   other: 'chevron-right',
   submission: 'send',
-  'after-submission': 'check',
+  'after-submission': undefined,
 };
 
 const BUTTON_MESSAGES: Record<PageVariant, MessageDescriptor> = {
@@ -47,6 +51,7 @@ interface Props {
   pageVariant: PageVariant;
   phases: IPhaseData[] | undefined;
   currentPhase: IPhaseData | undefined;
+  currentPage: PageType;
 }
 
 const PageControlButtons = ({
@@ -56,14 +61,22 @@ const PageControlButtons = ({
   isLoading,
   pageVariant,
   phases,
+  currentPage,
   currentPhase,
 }: Props) => {
   const theme = useTheme();
+  const localize = useLocalize();
+  const { formatMessage } = useIntl();
   const isSmallerThanPhone = useBreakpoint('phone');
 
   const getButtonMessage = () => {
     if (pageVariant !== 'after-submission') {
-      return BUTTON_MESSAGES[pageVariant];
+      return formatMessage(BUTTON_MESSAGES[pageVariant]);
+    } else {
+      if (localize(currentPage.options.page_button_label_multiloc)) {
+        // Page is using a custom button label
+        return localize(currentPage.options.page_button_label_multiloc);
+      }
     }
 
     const inputTerm = getInputTerm(phases, currentPhase);
@@ -81,8 +94,8 @@ const PageControlButtons = ({
     };
 
     return currentPhase?.attributes.participation_method === 'native_survey'
-      ? messages.backToProject
-      : inputTermMessages[inputTerm];
+      ? formatMessage(messages.backToProject)
+      : formatMessage(inputTermMessages[inputTerm]);
   };
 
   return (
@@ -130,7 +143,7 @@ const PageControlButtons = ({
           boxShadow={defaultStyles.boxShadow}
           processing={isLoading}
         >
-          <FormattedMessage {...getButtonMessage()} />
+          {getButtonMessage()}
         </Button>
       </Box>
     </Box>
