@@ -40,6 +40,8 @@ const Header = ({ attributes }: Props) => {
       )
     : '';
 
+  const { folder_title_en, folder_title_multiloc } = attributes;
+
   return (
     <Box>
       <Box display="flex" flexDirection="row" alignItems="center">
@@ -82,22 +84,23 @@ const Header = ({ attributes }: Props) => {
             {attributes.participants}
           </Text>
         </Box>
-        {attributes.folder_title_en && (
-          <Box display="flex">
-            <Icon
-              name="folder-outline"
-              width="16px"
-              m="0"
-              fill={colors.textSecondary}
-            />
-            <Text m="0" ml="8px" color="textSecondary">
-              {localizeProjectLibrary(
-                attributes.folder_title_multiloc,
-                attributes.folder_title_en
-              )}
-            </Text>
-          </Box>
-        )}
+        {folder_title_en ||
+          (folder_title_multiloc && (
+            <Box display="flex">
+              <Icon
+                name="folder-outline"
+                width="16px"
+                m="0"
+                fill={colors.textSecondary}
+              />
+              <Text m="0" ml="8px" color="textSecondary">
+                {localizeProjectLibrary(
+                  attributes.folder_title_multiloc ?? {},
+                  attributes.folder_title_en
+                )}
+              </Text>
+            </Box>
+          ))}
       </Box>
       {annotation !== '' && (
         <Quote w="100%" mt="12px">
