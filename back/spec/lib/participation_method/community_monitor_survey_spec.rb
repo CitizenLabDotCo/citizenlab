@@ -54,9 +54,9 @@ RSpec.describe ParticipationMethod::CommunityMonitorSurvey do
       form = build(:custom_form, participation_context: phase)
       expect(participation_method.default_fields(form).count).to eq 15
       expect(participation_method.default_fields(form).pluck(:key)).to eq(%w[
-        page1 place_to_live sense_of_safety access_to_parks affordable_housing employment_opportunities
-        page2 quality_of_services overall_value cleanliness_and_maintenance
-        page3 trust_in_government responsiveness_of_officials transparency_of_money_spent
+        page_quality_of_life place_to_live sense_of_safety access_to_parks affordable_housing employment_opportunities
+        page_service_delivery quality_of_services overall_value cleanliness_and_maintenance
+        page_governance_and_trust trust_in_government responsiveness_of_officials transparency_of_money_spent
         form_end
       ])
 

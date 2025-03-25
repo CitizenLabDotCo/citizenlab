@@ -66,6 +66,8 @@ class CustomField < ApplicationRecord
   has_many :permissions_custom_fields, dependent: :destroy
   has_many :permissions, through: :permissions_custom_fields
 
+  has_many :custom_field_bins, dependent: :destroy
+
   FIELDABLE_TYPES = %w[User CustomForm].freeze
   INPUT_TYPES = %w[
     checkbox date file_upload files html html_multiloc image_files linear_scale rating multiline_text multiline_text_multiloc
@@ -103,6 +105,7 @@ class CustomField < ApplicationRecord
   validates :page_layout, absence: true, unless: :page?
   validates :question_category, absence: true, unless: :supports_category?
   validates :question_category, inclusion: { in: QUESTION_CATEGORIES }, allow_nil: true, if: :supports_category?
+  validates :maximum, presence: true, inclusion: 2..11, if: :supports_linear_scale?
 
   before_validation :set_default_enabled
   before_validation :set_default_answer_visible_to
@@ -116,6 +119,17 @@ class CustomField < ApplicationRecord
   scope :required, -> { where(required: true) }
   scope :not_hidden, -> { where(hidden: false) }
   scope :hidden, -> { where(hidden: true) }
+
+  def policy_class
+    case resource_type
+    when 'User'
+      UserCustomFields::UserCustomFieldPolicy
+    when 'CustomForm'
+      CustomFormPolicy
+    else
+      raise "Polcy not implemented for resource type: #{resource_type}"
+    end
+  end
 
   def logic?
     logic.present? && logic != { 'rules' => [] }
@@ -269,6 +283,20 @@ class CustomField < ApplicationRecord
 
   def custom_form_type?
     resource_type == 'CustomForm'
+  end
+
+  def user_type?
+    resource_type == 'User'
+  end
+
+  def items_claz
+    if custom_form_type?
+      Idea
+    elsif user_type?
+      User
+    else
+      raise 'Unsupported resource type'
+    end
   end
 
   def multiloc?
