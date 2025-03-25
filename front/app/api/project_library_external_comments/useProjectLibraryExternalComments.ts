@@ -10,7 +10,10 @@ import {
   ProjectLibraryExternalCommentsKeys,
 } from './types';
 
-export const fetchLibraryProjects = ({ projectId, ...params }: GetParams) =>
+export const fetchLibraryExternalComments = ({
+  projectId,
+  ...params
+}: GetParams) =>
   fetcher<ExternalComments>({
     path: `/projects/${projectId}/external_comments`,
     action: 'get',
@@ -21,7 +24,7 @@ export const fetchLibraryProjects = ({ projectId, ...params }: GetParams) =>
     apiPath: '/project_library_api',
   });
 
-const useProjectLibraryProjects = (
+const useProjectLibraryExternalComments = (
   params: GetParams,
   { enabled = true } = {}
 ) => {
@@ -32,9 +35,9 @@ const useProjectLibraryProjects = (
     ProjectLibraryExternalCommentsKeys
   >({
     queryKey: projectLibraryProjectsKeys.list(params),
-    queryFn: () => fetchLibraryProjects(params),
+    queryFn: () => fetchLibraryExternalComments(params),
     enabled,
   });
 };
 
-export default useProjectLibraryProjects;
+export default useProjectLibraryExternalComments;

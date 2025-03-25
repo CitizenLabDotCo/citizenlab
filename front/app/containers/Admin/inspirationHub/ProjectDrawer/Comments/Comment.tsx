@@ -40,9 +40,10 @@ interface Props {
   createdAt: string;
   badgeText?: string;
   badgeType?: 'go-vocal' | 'platform-moderator';
+  body: string;
 }
 
-const Comment = ({ name, createdAt, badgeText, badgeType }: Props) => {
+const Comment = ({ name, createdAt, badgeText, badgeType, body }: Props) => {
   const locale = useLocale();
 
   return (
@@ -93,7 +94,7 @@ const Comment = ({ name, createdAt, badgeText, badgeType }: Props) => {
         />
       </Box>
       <Text mt="12px" mb="20px">
-        Content
+        {body}
       </Text>
     </Box>
   );

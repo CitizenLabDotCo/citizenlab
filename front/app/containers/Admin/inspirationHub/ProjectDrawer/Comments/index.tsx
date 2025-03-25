@@ -14,6 +14,7 @@ import { string, object } from 'yup';
 
 import useAuthUser from 'api/me/useAuthUser';
 import useAddProjectLibraryExternalComment from 'api/project_library_external_comments/useAddProjectLibraryExternalComment';
+import useProjectLibraryExternalComments from 'api/project_library_external_comments/useProjectLibraryExternalComments';
 
 import TextArea from 'components/HookForm/TextArea';
 
@@ -62,6 +63,7 @@ interface Props {
 const Comments = ({ projectId }: Props) => {
   const { data: authUser } = useAuthUser();
   const { mutate: addExternalComment } = useAddProjectLibraryExternalComment();
+  const { data: comments } = useProjectLibraryExternalComments({ projectId });
 
   const methods = useForm<FormValues>({
     mode: 'onBlur',
@@ -106,9 +108,30 @@ const Comments = ({ projectId }: Props) => {
         </form>
       </FormProvider>
       <Box mt="20px">
-        {DUMMY_DATA.map((comment, i) => (
-          <Comment {...comment} key={i} />
-        ))}
+        {comments?.data.map(
+          ({
+            id,
+            attributes: {
+              author_first_name,
+              author_last_name,
+              created_at,
+              author_type,
+              tenant_name,
+              body,
+            },
+          }) => (
+            <Comment
+              key={id}
+              name={`${author_first_name} ${author_last_name}`}
+              createdAt={created_at}
+              badgeText={author_type === 'User' ? 'Go Vocal' : tenant_name}
+              badgeType={
+                author_type === 'User' ? 'go-vocal' : 'platform-moderator'
+              }
+              body={body}
+            />
+          )
+        )}
       </Box>
     </>
   );
