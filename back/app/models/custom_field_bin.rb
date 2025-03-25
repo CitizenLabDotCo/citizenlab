@@ -22,20 +22,22 @@
 #
 #  fk_rails_...  (custom_field_id => custom_fields.id)
 #  fk_rails_...  (custom_field_option_id => custom_field_options.id)
-#
+
 # A CustomFieldBin defines a subdivision, often relevant for
 # statistical/graphing purposes, over the answer-values of a CustomField. This
 # is used, for example in the case of a custom field that contains a numerical
 # value, and we want to define ranges over which to group the values.
-#
 # The CustomFieldBin is an abstract class, its subclasses implement the specific
 # bin definitions for the various CustomFields. We're using
 # Single-Table-Inheritance to store them in the database
-
 class CustomFieldBin < ApplicationRecord
   belongs_to :custom_field
 
   validate :custom_field_input_type_supported
+
+  def self.policy_class
+    CustomFieldBinPolicy
+  end
 
   # Does the given value fall into this bin.
   # - `value` is the custom_field_value for the custom_field, as extracted from the custom_field_values
