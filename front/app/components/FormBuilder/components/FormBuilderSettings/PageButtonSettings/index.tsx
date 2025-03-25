@@ -72,12 +72,13 @@ const PageButtonSettings = ({
             }}
           />
 
-          <SectionField data-cy="e2e-custom-button-label">
+          <SectionField>
             <InputMultilocWithLocaleSwitcher
               initiallySelectedLocale={locale}
               maxCharCount={25}
               name={pageButtonLabelMultilocName}
               label={formatMessage(messages.buttonLabel)}
+              data-cy="e2e-custom-button-label"
             />
           </SectionField>
 
