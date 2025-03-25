@@ -45,11 +45,8 @@ const FieldTitle = ({
   const titleColor = field.input_type === 'page' ? 'blue500' : 'teal400';
   const getLockMessage = () => {
     if (field.input_type === 'page') {
-      if (hasFullPageRestriction && lockedAttributes?.enabled) {
-        return formatMessage(messages.pageCannotBeDeletedNorNewFieldsAdded);
-      }
       if (hasFullPageRestriction) {
-        return formatMessage(messages.pageDoesNotAllowNewFieldsToBeAdded);
+        return formatMessage(messages.pageCannotBeDeletedNorNewFieldsAdded);
       }
       if (lockedAttributes?.enabled) {
         return formatMessage(messages.pageCannotBeDeleted);
