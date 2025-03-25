@@ -11,10 +11,15 @@ module Surveys
       @phase = phase
     end
 
+    # Default is to get the averages by custom field ID but can calculate on any attribute
+    def field_averages(answers: all_answers, custom_field_attribute: :id)
+      @fields.to_h { |f| [f[custom_field_attribute], calculate_average(answers.pluck(f.key))] }
+    end
+
     def field_averages_by_quarter(custom_field_attribute: :id)
       grouped_answers = all_answers.group_by { |a| a['quarter'] }
       averages = grouped_answers.transform_values do |answers|
-        averages_by_field(answers, custom_field_attribute:)
+        field_averages(answers:, custom_field_attribute:)
       end
       averages = order_by_quarter(averages)
       switch_keys(averages)
@@ -44,7 +49,7 @@ module Surveys
     def overall_average_by_quarter
       grouped_answers = all_answers.group_by { |a| a['quarter'] }
       averages = grouped_answers.transform_values do |answers|
-        field_averages = averages_by_field(answers)
+        field_averages = field_averages(answers:)
         calculate_average(field_averages.values)
       end
       order_by_quarter(averages)
@@ -77,11 +82,6 @@ module Surveys
           .merge({ 'quarter' => date_to_quarter(input.created_at) })
           .merge(input.author.custom_field_values)
       end
-    end
-
-    # Default is to get the averages by custom field ID but can calculate on any attribute
-    def averages_by_field(answers, custom_field_attribute: :id)
-      @fields.to_h { |f| [f[custom_field_attribute], calculate_average(answers.pluck(f.key))] }
     end
 
     def calculate_average(values)

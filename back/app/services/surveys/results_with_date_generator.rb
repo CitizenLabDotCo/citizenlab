@@ -9,10 +9,6 @@ module Surveys
 
     private
 
-    def add_additional_fields_to_results(results)
-      add_linear_scale_scores results, @year, @quarter
-    end
-
     def filter_inputs_by_quarter(year, quarter)
       raise ArgumentError, 'Invalid date format' unless year.match?(/^\d{4}$/) && quarter.match?(/^[1-4]$/)
 
@@ -21,7 +17,11 @@ module Surveys
       @inputs = @inputs.where(created_at: quarter_to_date_range(year, quarter))
     end
 
-    def add_linear_scale_scores(results, year, quarter)
+
+    def add_averages(results)
+      super unless @year && @quarter
+
+      # Get the averages by quarter
       averages = AverageGenerator.new(phase).field_averages_by_quarter
 
       # Merge the averages into the main results
