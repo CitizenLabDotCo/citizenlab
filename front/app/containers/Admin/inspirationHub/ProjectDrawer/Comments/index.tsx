@@ -91,18 +91,7 @@ const Comments = ({ projectId }: Props) => {
       </FormProvider>
       <Box mt="20px">
         {comments?.data.map((comment) => (
-          <Comment
-            key={comment.id}
-            projectId={projectId}
-            // name={`${author_first_name} ${author_last_name}`}
-            // createdAt={created_at}
-            // badgeText={author_type === 'User' ? 'Go Vocal' : tenant_name}
-            // badgeType={
-            //   author_type === 'User' ? 'go-vocal' : 'platform-moderator'
-            // }
-            // body={body}
-            comment={comment}
-          />
+          <Comment key={comment.id} projectId={projectId} comment={comment} />
         ))}
       </Box>
     </>
