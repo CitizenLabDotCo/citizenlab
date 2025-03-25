@@ -4,6 +4,7 @@ function goToHomepageBuilder() {
 }
 
 function cleanUpWidget() {
+  goToHomepageBuilder();
   cy.get('[data-cy="e2e-areas-widget"]')
     .first()
     .parent()
@@ -21,6 +22,7 @@ function cleanUpWidget() {
 }
 
 function addWidget() {
+  goToHomepageBuilder();
   // Drag in widget
   cy.get('#e2e-draggable-areas').dragAndDrop('#e2e-content-builder-frame', {
     position: 'inside',
@@ -54,7 +56,6 @@ describe('"In your area" (areas) widget', () => {
   const projectTitleEN = 'Project linked to Carrotgem area';
 
   beforeEach(() => {
-    goToHomepageBuilder();
     addWidget();
   });
 
@@ -66,7 +67,6 @@ describe('"In your area" (areas) widget', () => {
       .find('[data-cy="e2e-areas-widget-empty-state"]')
       .should('be.visible');
 
-    goToHomepageBuilder();
     cleanUpWidget();
   });
 
