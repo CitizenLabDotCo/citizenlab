@@ -87,7 +87,7 @@ describe('"In your area" (areas) widget', () => {
     // Select 'Selection' as Areas option
     cy.get('.e2e-areas-selection').click();
 
-    // Pick (only) area
+    // Pick area
     cy.get('#e2e-area-selector')
       .click()
       .find('input')
