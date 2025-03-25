@@ -788,7 +788,6 @@
   "app.containers.Admin.communityMonitor.settings.whatConditionsPopup": "Under what conditions can the popup appear for residents?",
   "app.containers.Admin.communityMonitor.settings.whoAreManagers": "Who are the managers?",
   "app.containers.Admin.communityMonitor.totalSurveyResponses": "Total survey responses",
-  "app.containers.Admin.communityMonitor.value": "{value}",
   "app.containers.Admin.emails.addCampaign": "Create email",
   "app.containers.Admin.emails.addCampaignTitle": "Create a new email",
   "app.containers.Admin.emails.allParticipantsInProject": "All participants in project",
