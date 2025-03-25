@@ -1,6 +1,7 @@
 import React from 'react';
 
 import { Box, useBreakpoint } from '@citizenlab/cl2-component-library';
+import { useSearchParams } from 'react-router-dom';
 
 import LineChart from 'components/admin/Graphs/LineChart';
 
@@ -8,24 +9,25 @@ import { useIntl } from 'utils/cl-intl';
 
 import messages from '../messages';
 import { QuarterlyScores } from '../types';
-import { categoryColors } from '../utils';
+import { categoryColors, generateEmptyChartData } from '../utils';
 
 type Props = {
   sentimentScores: QuarterlyScores | null;
 };
 
 const HealthScoreChart = ({ sentimentScores }: Props) => {
+  const [search] = useSearchParams();
   const { formatMessage } = useIntl();
   const isMobileOrSmaller = useBreakpoint('phone');
 
-  const timeSeries = sentimentScores?.overallHealthScores.map((score) => {
+  let timeSeries = sentimentScores?.overallHealthScores.map((score) => {
     // Create an object to hold the scores for the quarter
     const scoresForQuarter = {
       overall: score.score,
-      quality_of_life: -1,
-      service_delivery: -1,
-      governance_and_trust: -1,
-      other: -1,
+      quality_of_life: NaN,
+      service_delivery: NaN,
+      governance_and_trust: NaN,
+      other: NaN,
       quarter: score.period,
     };
 
@@ -42,6 +44,11 @@ const HealthScoreChart = ({ sentimentScores }: Props) => {
 
     return scoresForQuarter;
   });
+
+  // Generate an empty chart object if there are no scores for the selected time period.
+  if (timeSeries?.length === 0) {
+    timeSeries = generateEmptyChartData(search);
+  }
 
   const lineConfig = {
     strokes: [

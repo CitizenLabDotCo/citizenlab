@@ -11,6 +11,7 @@ import { isNil } from 'utils/helperUtils';
 
 import { QuarterlyScores } from '../types';
 import { getQuarterFilter, getYearFilter } from '../utils';
+import { SentimentAnswers } from 'components/admin/FormResults/FormResultsQuestion/SentimentQuestion/utils';
 
 type Props = {
   sentimentScores: QuarterlyScores | null;
@@ -50,16 +51,18 @@ const TotalCountsSentimentBar = ({ sentimentScores }: Props) => {
     getAnswerGroups({ questionAnswers: quarterPercentages });
 
   // Generate content for tooltip on hover
-  const tooltipContent = quarterPercentages?.map((item, index) => {
-    return {
-      answer: index + 1,
-      percentage: item.percentage,
-    };
-  });
+  const tooltipContent: SentimentAnswers = quarterPercentages?.map(
+    (item, index) => {
+      return {
+        answer: index + 1,
+        percentage: item.percentage,
+      };
+    }
+  );
 
   return (
     <>
-      {answerGroups && tooltipContent && (
+      {tooltipContent && (
         <Tooltip
           theme="dark"
           content={<SentimentTooltip answers={tooltipContent} />}

@@ -220,6 +220,7 @@ RSpec.describe Surveys::ResultsWithGroupGenerator do
           totalResponseCount: 27,
           questionResponseCount: 22,
           totalPickCount: 27,
+          averages: { this_period: 3.5 },
           answers: [
             { answer: 1, count: 2, groups: [
               { count: 2, group: nil }
@@ -297,6 +298,7 @@ RSpec.describe Surveys::ResultsWithGroupGenerator do
           totalResponseCount: 27,
           questionResponseCount: 22,
           totalPickCount: 27,
+          averages: { this_period: 3.5 },
           answers: [
             { answer: 1, count: 2, groups: [
               { count: 2, group: nil }

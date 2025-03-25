@@ -29,7 +29,7 @@ const SentimentStats = ({ result }: Props) => {
       <Box display="flex" justifyContent="space-between" mb="4px">
         <Box display="flex" alignItems="baseline">
           <Title color="grey800" m="0" variant="h4">
-            {thisPeriodAvg}
+            {thisPeriodAvg ?? '-'}
           </Title>
           <Text
             color="grey700"

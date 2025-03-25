@@ -26,17 +26,20 @@ const SentimentScore = ({ result }: Props) => {
     (answer) => answer.answer !== null
   );
 
+  // Check if there are any responses to the question
+  const hasResponses = !!result.questionResponseCount;
+
   // Group the answers into low, neutral, and high sentiment
   const answerGroups = questionAnswers && getAnswerGroups({ questionAnswers });
-
-  if (!answerGroups) return null;
 
   return (
     <Tooltip
       theme="dark"
-      content={<SentimentTooltip answers={questionAnswers} />}
+      content={
+        <SentimentTooltip answers={hasResponses ? questionAnswers : []} />
+      }
     >
-      <SentimentBar answerGroups={answerGroups} />
+      <SentimentBar answerGroups={hasResponses ? answerGroups : undefined} />
     </Tooltip>
   );
 };

@@ -29,7 +29,7 @@ const SentimentResultTitle = ({ result, textResponsesCount }: Props) => {
         display="flex"
         justifyContent={isMobileOrSmaller ? 'flex-start' : 'flex-end'}
       >
-        {!isMobileOrSmaller && (
+        {!isMobileOrSmaller && textResponsesCount > 0 && (
           <Box mr={isTabletOrSmaller ? '100px' : '160px'} my="auto">
             <CommentSummary count={textResponsesCount} />
           </Box>

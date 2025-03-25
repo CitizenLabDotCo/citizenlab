@@ -23,6 +23,7 @@ import PreviousQuarterComparison from './components/PreviousQuarterComparison';
 import TotalCountsSentimentBar from './components/TotalCountsSentimentBar';
 import messages from './messages';
 import {
+  categoryColors,
   filterDataBySelectedQuarter,
   getQuarterFilter,
   getYearFilter,
@@ -77,7 +78,12 @@ const HealthScoreWidget = ({ phaseId, ...props }: Props) => {
       >
         <Box>
           <Box display="flex">
-            <Icon my="auto" height="18px" name="dot" fill={colors.green400} />
+            <Icon
+              my="auto"
+              height="18px"
+              name="dot"
+              fill={categoryColors['overall']}
+            />
             <Title m="0px" variant="h5" color="textPrimary">
               {formatMessage(messages.healthScore)}
             </Title>
@@ -90,11 +96,9 @@ const HealthScoreWidget = ({ phaseId, ...props }: Props) => {
               fontWeight="bold"
               lineHeight="1"
               mr="4px"
-              color={
-                currentOverallHealthScore?.score ? 'textPrimary' : 'coolGrey300'
-              }
+              color={'textPrimary'}
             >
-              {currentOverallHealthScore?.score || '?'}
+              {currentOverallHealthScore?.score || '-'}
             </Text>
             <Text
               fontWeight="semi-bold"
