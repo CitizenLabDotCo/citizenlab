@@ -54,7 +54,15 @@ const Comment = ({ projectId, comment }: Props) => {
   if (!authUser) return null;
 
   const { id } = comment;
-  const { author_type, tenant_name, created_at, body } = comment.attributes;
+  const {
+    author_first_name,
+    author_last_name,
+    author_type,
+    body,
+    created_at,
+    tenant_name,
+  } = comment.attributes;
+
   const badgeText = author_type === 'User' ? 'Go Vocal' : tenant_name;
 
   return (
@@ -67,7 +75,7 @@ const Comment = ({ projectId, comment }: Props) => {
             fontWeight={400}
             color={colors.textSecondary}
           >
-            {name}
+            {`${author_first_name} ${author_last_name}`}
           </Name>
           <TimeAgo>{timeAgo(Date.parse(created_at), locale)}</TimeAgo>
           <Box
