@@ -63,8 +63,7 @@ module IdeaCustomFields
 
     def update_all
       authorize CustomField.new(resource: @custom_form), :update_all?, policy_class: IdeaCustomFieldPolicy
-      raise_error_if_stale_form_data
-      raise_error_if_no_end_page
+      validate!
 
       page_temp_ids_to_ids_mapping = {}
       option_temp_ids_to_ids_mapping = {}
@@ -104,9 +103,18 @@ module IdeaCustomFields
       raise "Custom field with input_type: '#{@custom_field.input_type}' is not a geographic type"
     end
 
+    def validate!
+      fields = update_all_params.fetch(:custom_fields).map do |field|
+        CustomField.new(field.slice(:code, :key, :input_type, :title_multiloc, :description_multiloc, :required, :enabled, :ordering))
+      end
+      validate_stale_form_data!(fields)
+      validate_end_page!(fields)
+      validate_separate_title_body_pages!(fields)
+    end
+
     # To try and avoid forms being overwritten with stale data, we check if the form has been updated since the form editor last loaded it
     # But ONLY if the FE sends the form_last_updated_at param
-    def raise_error_if_stale_form_data
+    def validate_stale_form_data!(_)
       return unless update_all_params[:form_last_updated_at].present? &&
                     @custom_form.persisted? &&
                     @custom_form.updated_at.to_i > update_all_params[:form_last_updated_at].to_datetime.to_i
@@ -114,15 +122,45 @@ module IdeaCustomFields
       raise UpdateAllFailedError, { form: [{ error: 'stale_data' }] }
     end
 
-    def raise_error_if_no_end_page
-      pmethod = @custom_form.participation_context.pmethod.class.method_str
-      is_survey_or_ideation = pmethod.in?(%w[native_survey ideation])
-      return unless is_survey_or_ideation
-
-      last_field = update_all_params.fetch(:custom_fields).last
-      return if CustomField.new(last_field).end_page?
+    def validate_end_page!(fields)
+      return if fields.last.end_page?
 
       raise UpdateAllFailedError, { form: [{ error: 'no_end_page' }] }
+    end
+
+    def validate_separate_title_body_pages!(fields)
+      title_page = nil
+      body_page = nil
+      fields_per_page = {}
+      prev_page = nil
+      fields.each do |field|
+        if field.page?
+          break if title_page && body_page
+
+          prev_page = field
+        else
+          fields_per_page[prev_page] ||= []
+          fields_per_page[prev_page] << field
+
+          if field.code == 'title_multiloc'
+            title_page = prev_page
+          elsif field.code == 'body_multiloc'
+            body_page = prev_page
+          end
+        end
+      end
+
+      if title_page && body_page && title_page == body_page
+        raise UpdateAllFailedError, { form: [{ error: 'title_and_body_on_same_page' }] }
+      end
+
+      if title_page && fields_per_page[title_page].count > 1
+        raise UpdateAllFailedError, { form: [{ error: 'title_page_with_other_fields' }] }
+      end
+
+      if body_page && fields_per_page[body_page].count > 1
+        raise UpdateAllFailedError, { form: [{ error: 'body_page_with_other_fields' }] }
+      end
     end
 
     def update_fields!(page_temp_ids_to_ids_mapping, option_temp_ids_to_ids_mapping, errors)

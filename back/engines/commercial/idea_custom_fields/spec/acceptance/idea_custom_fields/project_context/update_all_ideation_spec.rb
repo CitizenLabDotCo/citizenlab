@@ -304,6 +304,76 @@ resource 'Idea Custom Fields' do
           expect(json_response).to eq({ errors: { '12': { input_type: [{ error: 'inclusion', value: 'html_multiloc' }] } } })
         end
 
+        example '[error] Put the title and body fields on the same page' do
+          title_field, body_field = default_fields_param.select { |field| field[:code].in? %w[title_multiloc body_multiloc] }
+          fields_param = [
+            {
+              input_type: 'page',
+              page_layout: 'default'
+            },
+            title_field,
+            body_field,
+            final_page
+          ]
+
+          do_request custom_fields: fields_param
+
+          assert_status 422
+          json_response = json_parse response_body
+          expect(json_response).to eq({ errors: { form: [{ error: 'title_and_body_on_same_page' }] } })
+        end
+
+        example '[error] Put other fields on the title page' do
+          title_field, body_field = default_fields_param.select { |field| field[:code].in? %w[title_multiloc body_multiloc] }
+          fields_param = [
+            {
+              input_type: 'page',
+              page_layout: 'default'
+            },
+            title_field,
+            {
+              input_type: 'number',
+              title_multiloc: { 'en' => 'How many?' }
+            },
+            {
+              input_type: 'page',
+              page_layout: 'default'
+            },
+            body_field,
+            final_page
+          ]
+
+          do_request custom_fields: fields_param
+
+          assert_status 422
+          json_response = json_parse response_body
+          expect(json_response).to eq({ errors: { form: [{ error: 'title_page_with_other_fields' }] } })
+        end
+
+        example '[error] Put other fields on the body page' do
+          title_field, body_field, topics_field = default_fields_param.select { |field| field[:code].in? %w[title_multiloc body_multiloc topic_ids] }
+          fields_param = [
+            {
+              input_type: 'page',
+              page_layout: 'default'
+            },
+            title_field,
+            {
+              input_type: 'page',
+              page_layout: 'default'
+            },
+            topics_field,
+            body_field,
+            final_page
+          ]
+
+          do_request custom_fields: fields_param
+
+          assert_status 422
+          json_response = json_parse response_body
+          expect(json_response).to eq({ errors: { form: [{ error: 'body_page_with_other_fields' }] } })
+        end
+
         example 'Updating custom fields when there are responses', document: false do
           create(:idea, project: context)
           custom_description = { 'en' => 'Custom description' }
