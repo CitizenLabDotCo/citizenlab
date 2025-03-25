@@ -1,8 +1,22 @@
+import { Keys } from 'utils/cl-react-query/types';
+
+import projectLibraryExternalCommentsKeys from './keys';
+
+export type ProjectLibraryExternalCommentsKeys = Keys<
+  typeof projectLibraryExternalCommentsKeys
+>;
+
 interface ExternalCommentReqBody {
   author_first_name: string;
   author_last_name: string;
   body: string;
 }
+
+export type GetParams = {
+  projectId: string;
+  'page[number]'?: number;
+  'page[size]'?: number;
+};
 
 export type AddParams = {
   projectId: string;
@@ -28,4 +42,8 @@ interface ExternalCommentData {
 
 export interface ExternalComment {
   data: ExternalCommentData;
+}
+
+export interface ExternalComments {
+  data: ExternalCommentData[];
 }
