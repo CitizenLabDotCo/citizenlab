@@ -3,18 +3,158 @@
 require 'rails_helper'
 
 RSpec.describe Analysis::HeatmapGenerationJob do
+  before do
+    SettingsService.new.activate_feature!('statistical_insights')
+    Analytics::PopulateDimensionsService.populate_types
+  end
+
   describe '.perform_now' do
+    let(:project) { create(:single_phase_ideation_project) }
+    let(:analysis) { create(:analysis, project: project) }
+    let(:tags) { create_list(:tag, 2, analysis: analysis) }
+    let(:users) { create_list(:user, 30) }
+    let!(:inputs) do
+      users[0...10].map do |user|
+        create(:idea, project: project, author: user)
+      end
+    end
+
+    let!(:custom_field) { create(:custom_field_select, :with_options) }
+
+    # Create likes
+    let!(:likes) do
+      users[10...20].map do |user|
+        create(:reaction, reactable: inputs.sample, user: user)
+      end
+    end
+
+    # Create dislikes
+    let!(:dislikes) do
+      users[20...30].map do |user|
+        create(:reaction, reactable: inputs.sample, user: user, mode: 'down')
+      end
+    end
+
+    # Add tagging to first input
+    let!(:tagging) { create(:tagging, tag: tags[0], input: inputs[0]) }
+
     it 'generates the heatmap for all units' do
-      analysis = create(:analysis)
-      tags = create_list(:tag, 2, analysis:)
-      custom_field = create(:custom_field_select, :with_options)
-      user = create(:user, custom_field_values: { custom_field.key => custom_field.options.first.id })
-      inputs = create_list(:idea, 2, project: analysis.project, author: user)
-      create(:reaction, reactable: inputs[0], user:)
-      create(:reaction, reactable: inputs[1], mode: 'down', user:)
-      create(:tagging, tag: tags[0], input: inputs[0])
-      expect { described_class.perform_now(analysis) }.to change { analysis.heatmap_cells.count }.by(16)
-      expect(Analysis::HeatmapCell.all.pluck(:unit).uniq).to match_array(%w[inputs likes dislikes participants])
+      expect { described_class.perform_now(analysis.reload) }
+        .to change { analysis.heatmap_cells.count }.by(16)
+
+      expect(Analysis::HeatmapCell.all.pluck(:unit).uniq)
+        .to match_array(%w[inputs likes dislikes participants])
+
+      expect do
+        described_class.perform_now(analysis.reload)
+      end.to have_enqueued_job(LogActivityJob).with(
+        analysis,
+        'heatmap_generated',
+        nil,
+        Time.now.to_i,
+        {
+          inputs_count: 10,
+          participants_count: 30,
+          newest_input_at: inputs.last.created_at.to_i,
+          project_id: project.id
+        }
+      )
     end
   end
+
+  describe 'do not perform if there are not enough participants' do
+    let(:project) { create(:single_phase_ideation_project) }
+    let(:analysis) { create(:analysis, project: project) }
+    let(:tags) { create_list(:tag, 2, analysis: analysis) }
+    let(:users) { create_list(:user, 10) }
+    let!(:inputs) do
+      users[0...10].map do |user|
+        create(:idea, project: project, author: user)
+      end
+    end
+
+    let!(:custom_field) { create(:custom_field_select, :with_options) }
+    let!(:tagging) { create(:tagging, tag: tags[0], input: inputs[0]) }
+
+    it 'does not generate the heatmap' do
+      expect { described_class.perform_now(analysis.reload) }
+        .not_to change { Analysis::HeatmapCell.count }
+    end
+  end
+
+  describe 'do not perform if the feature is not activated' do
+    let(:project) { create(:single_phase_ideation_project) }
+    let(:analysis) { create(:analysis, project: project) }
+    let(:tags) { create_list(:tag, 2, analysis: analysis) }
+    let(:users) { create_list(:user, 30) }
+    let!(:inputs) do
+      users[0...10].map do |user|
+        create(:idea, project: project, author: user)
+      end
+    end
+
+    let!(:statistical_insights_deactivated) { SettingsService.new.deactivate_feature!('statistical_insights') }
+    let!(:custom_field) { create(:custom_field_select, :with_options) }
+
+    # Create likes
+    let!(:likes) do
+      users[10...20].map do |user|
+        create(:reaction, reactable: inputs.sample, user: user)
+      end
+    end
+
+    # Create dislikes
+    let!(:dislikes) do
+      users[20...30].map do |user|
+        create(:reaction, reactable: inputs.sample, user: user, mode: 'down')
+      end
+    end
+
+    # Add tagging to first input
+    let!(:tagging) { create(:tagging, tag: tags[0], input: inputs[0]) }
+
+    it 'does not generate the heatmap' do
+      expect { described_class.perform_now(analysis.reload) }
+        .not_to change { Analysis::HeatmapCell.count }
+    end
+  end
+
+  # describe 'do not perform if there is already a logged activity and there has been no change in the input count, participants count or the date of the latest input'    do
+  #   let(:project) { create(:single_phase_ideation_project) }
+  #   let(:analysis) { create(:analysis, project: project) }
+  #   let(:tags) { create_list(:tag, 2, analysis: analysis) }
+  #   let(:users) { create_list(:user, 30) }
+  #   let!(:inputs) do
+  #     users[0...10].map do |user|
+  #       create(:idea, project: project, author: user)
+  #     end
+  #   end
+
+  #   let!(:custom_field) { create(:custom_field_select, :with_options) }
+
+  #   # Create likes
+  #   let!(:likes) do
+  #     users[10...20].map do |user|
+  #       create(:reaction, reactable: inputs.sample, user: user)
+  #     end
+  #   end
+
+  #   # Create dislikes
+  #   let!(:dislikes) do
+  #     users[20...30].map do |user|
+  #       create(:reaction, reactable: inputs.sample, user: user, mode: 'down')
+  #     end
+  #   end
+
+  #   # Add tagging to first input
+  #   let!(:tagging) { create(:tagging, tag: tags[0], input: inputs[0]) }
+
+  #   # Create activity for the analysis
+  #   let!(:activity) { create(:activity, item: analysis, action: 'heatmap_generated', payload: { inputs_count: 10, participants_count: 30, newest_input_at: inputs.last.created_at.to_i }) }
+
+  #   it 'does not generate the heatmap' do
+  #     expect { described_class.perform_now(analysis.reload) }
+  #       .not_to change { Analysis::HeatmapCell.count }
+  #   end
+  # end
 end

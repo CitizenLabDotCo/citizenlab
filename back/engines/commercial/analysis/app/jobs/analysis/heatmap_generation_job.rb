@@ -8,19 +8,20 @@ module Analysis
       inputs_count = analysis.inputs.count
       participants_service = ParticipantsService.new
       participants_count = participants_service.project_participants_count(analysis.project)
-      newest_activity = Activity.where(item: analysis, action: 'heatmap_generated').maximum(:created_at)
+      newest_activity = Activity.where(item: analysis, action: 'heatmap_generated')
+        .order(created_at: :desc)
+        .first
       newest_input_at = analysis.inputs.maximum(:created_at)
 
-      Rails.logger.info("HeatmapGenerationJob: Processing analysis #{analysis.id} with #{inputs_count} inputs and #{participants_count} participants")
-      Rails.logger.info("HeatmapGenerationJob: Newest activity at #{newest_activity}, newest input at #{newest_input_at}")
-
       return unless AppConfiguration.instance.feature_activated?('statistical_insights')
-      
+
+      return unless participants_count >= 30
+
       return unless !newest_activity ||
-        newest_activity.payload['participants_count'] != participants_count ||
-        newest_activity.payload['inputs_count'] != inputs_count ||
-        newest_activity.payload['newest_input_at'].to_s != newest_input_at.to_s
-   
+                    newest_activity.payload['participants_count'] != participants_count ||
+                    newest_activity.payload['inputs_count'] != inputs_count ||
+                    newest_activity.payload['newest_input_at'].to_s != newest_input_at.to_s
+
       analysis.heatmap_cells.destroy_all
       # generator = HeatmapGenerator.new(analysis)
       generator = AutoInsightsService.new(analysis)
@@ -36,10 +37,10 @@ module Analysis
         {
           inputs_count:,
           participants_count:,
-          newest_input_at: analysis.inputs.maximum(:created_at)
+          newest_input_at: analysis.inputs.maximum(:created_at).to_i,
+          project_id: analysis.project.id
         }
       )
-
     end
   end
 end
