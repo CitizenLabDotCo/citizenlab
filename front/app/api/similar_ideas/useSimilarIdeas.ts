@@ -10,7 +10,7 @@ import { ISimilarityRequestPayload } from './types';
 
 const fetchSimilarIdeas = (ideaPayload: ISimilarityRequestPayload) =>
   fetcher<IIdeas>({
-    path: `/ideas/similarities`,
+    path: `/ideas/similar_ideas`,
     action: 'post',
     body: ideaPayload,
   });
