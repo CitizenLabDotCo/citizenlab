@@ -35,10 +35,36 @@ const SimilarIdeasList = ({ query }: Props) => {
     { enabled: !!project?.data.id }
   );
 
-  if (!query || query.length < 3) return null;
-  if (isLoading) return <Spinner />;
+  if (isLoading) {
+    return (
+      <Box display="flex" mt="16px" alignItems="center">
+        <Box w="20px" mr="4px">
+          <Spinner size="18px" />
+        </Box>
+        <Text my="0px" color="grey700" variant="bodyM">
+          {formatMessage(messages.similarSubmissionsSearch)}
+        </Text>
+      </Box>
+    );
+  }
 
-  if (!ideas) return null;
+  if (!ideas || !query || query.length < 3) return null;
+
+  if (ideas.data.length === 0) {
+    return (
+      <Box display="flex" mt="16px" alignItems="center" gap="4px">
+        <Icon
+          name="check-circle"
+          width="18px"
+          height="18px"
+          fill={colors.green400}
+        />
+        <Text my="0px" color="grey700" variant="bodyM">
+          {formatMessage(messages.noSimilarSubmissions)}
+        </Text>
+      </Box>
+    );
+  }
 
   return (
     <Box>
