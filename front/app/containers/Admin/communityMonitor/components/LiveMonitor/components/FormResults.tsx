@@ -4,7 +4,7 @@ import { Box, Icon, Text } from '@citizenlab/cl2-component-library';
 import { useParams, useSearchParams } from 'react-router-dom';
 
 import useProjectById from 'api/projects/useProjectById';
-import useFormResults from 'api/survey_results/useSurveyResults';
+import useSurveyResults from 'api/survey_results/useSurveyResults';
 
 import SentimentQuestion from 'components/admin/FormResults/FormResultsQuestion/SentimentQuestion';
 
@@ -38,7 +38,7 @@ const FormResults = (props: Props) => {
   const quarter = getQuarterFilter(search);
 
   // Fetch the form results
-  const { data: formResults } = useFormResults({
+  const { data: formResults } = useSurveyResults({
     phaseId,
     filterLogicIds: [],
     quarter: parseInt(quarter, 10),
