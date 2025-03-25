@@ -8,8 +8,6 @@
 # answer to another question. This is done by calculating the correlation.
 module Analysis
   class AutoInsightsService
-    Column = Struct.new(:category, :resource, :bin_value)
-
     def initialize(analysis)
       @analysis = analysis
     end
@@ -20,11 +18,13 @@ module Analysis
       matrix
         .flat_map(&:keys)
         .uniq # => [col1, col2, col3]
-        .group_by(&:category) # => { category1 => [col1, col2], category2 => [col3] }
-        .values # => [[col1, col2], [col3]]
-        .combination(2) # => [[[col1, col2], [col3]]]
-        .select { |(cols1, cols2)| heatmap_between_categories?(cols1.first.category, cols2.first.category) }
-        .each do |(cols1, cols2)|
+        .group_by { |col| col_to_category(col) } # => { category1 => [col1, col2], category2 => [col3] }
+        .to_a # => [[category1, [col1, col2]], [category2, [col3]]]
+        .combination(2) # => [[[category1, [col1, col2]], [category2, [col3]]]]
+        .select { |(category1, category2)| heatmap_between_categories?(category1[0], category2[0]) }
+        .each do |(category1, category2)|
+        cols1 = category1[1]
+        cols2 = category2[1]
         cells =
           cols1.flat_map do |col1|
             cols2.map do |col2|
@@ -33,10 +33,8 @@ module Analysis
               _chi2, p_value = chi_square(ct)
               HeatmapCell.new(
                 analysis: @analysis,
-                row: col1.resource,
-                column: col2.resource,
-                row_bin_value: column_bin_value_to_heatmap_cell_bin_value(col1.bin_value),
-                column_bin_value: column_bin_value_to_heatmap_cell_bin_value(col2.bin_value),
+                row: col1,
+                column: col2,
                 unit:,
                 p_value:,
                 count:
@@ -101,30 +99,29 @@ module Analysis
       user_custom_fields:,
       input_custom_fields:
     )
-      tag_columns = tags.map { |tag| Column.new(:tags, tag) }
-      user_custom_field_columns = user_custom_fields.flat_map { |custom_field| custom_field_to_columns(custom_field) }
-      input_custom_field_columns = input_custom_fields.flat_map { |custom_field| custom_field_to_columns(custom_field) }
+      input_custom_field_bins = input_custom_fields.flat_map { |custom_field| custom_field_bins(custom_field) }
+      user_custom_field_bins = user_custom_fields.flat_map { |custom_field| custom_field_bins(custom_field) }
 
       items.map do |item|
         row = {}
 
         # Add columns for tags
         ids = input_ids.call(item)
-        tag_columns.each do |tag_column|
-          row[tag_column] = ids.any? { |id| tag_map(tags).dig(id, tag_column.resource.id) }
+        tags.each do |tag|
+          row[tag] = ids.any? { |id| tag_map(tags).dig(id, tag.id) }
         end
 
         # Add columns for input custom fields
-        input_custom_field_columns.each do |column|
+        input_custom_field_bins.each do |bin|
           multiple_cfvs = inputs_custom_field_values.call(item)
-          row[column] = multiple_cfvs.any? { |cfv| custom_field_column_set?(column, cfv) }
+          row[bin] = multiple_cfvs.any? { |cfv| bin.in_bin?(cfv[bin.custom_field.key]) }
         end
 
         # Add columns for user custom fields
         if (item_author = author.call(item))
-          user_custom_field_columns.each do |column|
-            cfv = item_author.custom_field_values
-            row[column] = !!custom_field_column_set?(column, cfv)
+          cfv = item_author.custom_field_values
+          user_custom_field_bins.each do |bin|
+            row[bin] = !!bin.in_bin?(cfv[bin.custom_field.key])
           end
         end
 
@@ -132,28 +129,18 @@ module Analysis
       end
     end
 
-    def custom_field_column_set?(column, cfv)
-      case column
-      in Column(resource: CustomField, bin_value: Numeric)
-        cfv[column.resource.key] == column.bin_value
-      in Column(resource: CustomField, bin_value: Range)
-        column.bin_value.include?(cfv[column.resource.key])
-      in Column(resource: CustomFieldOption) if column.category.domicile?
-        # domicile is a special case, in the custom_field_values refering to the
-        # area ID instead of the `key`
-        cfv[column.category.key] == column.resource.area_id
-      in Column(resource: CustomFieldOption)
-        custom_field_value = cfv[column.category.key]
-        return false unless custom_field_value
+    private
 
-        custom_field_value == column.resource.key ||
-          custom_field_value.include?(column.resource.key)
+    def col_to_category(col)
+      case col
+      when CustomFieldBin
+        col.custom_field
+      when Tag
+        :tags
       else
-        raise 'Invalid custom field type'
+        raise 'Invalid column type'
       end
     end
-
-    private
 
     # We don't genereate heatmap cells between all types of columns, as some
     # combinations between tags, user custom fields and input custom fields make
@@ -195,30 +182,9 @@ module Analysis
       @analysis.tags
     end
 
-    def custom_field_to_columns(custom_field)
-      if custom_field.support_options?
-        custom_field.options.map { |option| Column.new(custom_field, option) }
-      elsif custom_field.linear_scale? || custom_field.sentiment_linear_scale? || custom_field.rating?
-        (1..custom_field.maximum).map { |i| Column.new(custom_field, custom_field, i) }
-      elsif custom_field.checkbox?
-        [true, false].map { |v| Column.new(custom_field, custom_field, v) }
-      elsif custom_field.code == 'birthyear'
-        # Birthyear is a special case, as it is a number but we want to treat it
-        # as a category, and transform year to age.
-        age_counter = UserCustomFields::AgeCounter.new
-
-        # We're not using UserCustomFields::AgeCounter::DEFAULT_BINS because
-        # 10-year bins are too granular to get statistically significant results
-        # in most of our cases
-        [0, 20, 40, 60, 80, nil].each_cons(2).map do |(lower_age, upper_age)|
-          upper_year = lower_age && age_counter.convert_to_birthyear(lower_age)
-          lower_year = upper_age && age_counter.convert_to_birthyear(upper_age)
-          Column.new(custom_field, custom_field, lower_year...upper_year)
-        end
-      else
-        # Other input_types are currently not supported
-        []
-      end
+    def custom_field_bins(custom_field)
+      CustomFieldBin.find_bin_claz_for(custom_field)&.generate_bins(custom_field)
+      custom_field.custom_field_bins.includes(:custom_field)
     end
 
     # Nested hash to quickly check whether a certain input has a certain tag.
@@ -230,17 +196,6 @@ module Analysis
           .select(:input_id, :tag_id)
           .group_by(&:input_id)
           .transform_values { |taggings| taggings.each_with_object({}) { |tagging, hash| hash[tagging.tag_id] = true } }
-    end
-
-    # In our Column struct, we store the bin value as a range, but in
-    # HeatmapCell we are storing the lower-bound bin_value. This does the
-    # conversion.
-    def column_bin_value_to_heatmap_cell_bin_value(bin_value)
-      if bin_value.is_a?(Range)
-        bin_value.begin
-      elsif bin_value.is_a?(Numeric)
-        bin_value
-      end
     end
 
     def participant_to_inputs_map

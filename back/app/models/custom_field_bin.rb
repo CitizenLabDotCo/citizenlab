@@ -71,6 +71,22 @@ class CustomFieldBin < ApplicationRecord
     generate_bins(custom_field)
   end
 
+  def self.find_bin_claz_for(custom_field)
+    [
+      CustomFieldBins::AgeBin,
+      CustomFieldBins::ValueBin,
+      CustomFieldBins::RangeBin,
+      CustomFieldBins::OptionBin
+    ].find do |klaz|
+      klaz.supported_custom_field_input_types.include?(custom_field.input_type)
+    end
+  end
+
+  private
+
+  # Validates that the custom_field input_type is supported by this bin class
+  # and adds an error if not
+
   def custom_field_input_type_supported
     unless self.class.supported_custom_field_input_types.include?(custom_field.input_type)
       errors.add(:custom_field, :unsupported_custom_field_input_type)
