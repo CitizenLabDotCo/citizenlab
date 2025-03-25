@@ -1,8 +1,13 @@
-export interface ExternalCommentReqBody {
+interface ExternalCommentReqBody {
   author_first_name: string;
   author_last_name: string;
   body: string;
 }
+
+export type AddParams = {
+  projectId: string;
+  externalCommentReqBody: ExternalCommentReqBody;
+};
 
 interface ExternalCommentData {
   id: string;
