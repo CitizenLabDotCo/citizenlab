@@ -103,6 +103,7 @@ class CustomField < ApplicationRecord
   validates :page_layout, absence: true, unless: :page?
   validates :question_category, absence: true, unless: :supports_category?
   validates :question_category, inclusion: { in: QUESTION_CATEGORIES }, allow_nil: true, if: :supports_category?
+  validates :maximum, presence: true, inclusion: 2..11, if: :supports_linear_scale?
 
   before_validation :set_default_enabled
   before_validation :set_default_answer_visible_to

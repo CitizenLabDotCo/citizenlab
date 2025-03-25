@@ -82,6 +82,7 @@ module ParticipationMethod
         input_type: 'sentiment_linear_scale',
         title_multiloc: multiloc_service.i18n_to_multiloc("custom_fields.community_monitor.questions.#{key}.title"),
         question_category: category,
+        maximum: 5,
         linear_scale_label_1_multiloc: multiloc_service.i18n_to_multiloc('custom_fields.community_monitor.labels.label_1'),
         linear_scale_label_2_multiloc: multiloc_service.i18n_to_multiloc('custom_fields.community_monitor.labels.label_2'),
         linear_scale_label_3_multiloc: multiloc_service.i18n_to_multiloc('custom_fields.community_monitor.labels.label_3'),
