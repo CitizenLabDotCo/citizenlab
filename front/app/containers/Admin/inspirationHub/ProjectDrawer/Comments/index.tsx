@@ -29,25 +29,6 @@ const StyledTextArea = styled(TextArea)`
   }
 `;
 
-const DUMMY_DATA = [
-  {
-    name: 'Michael Bluth',
-    createdAt: '2021-08-10T12:00:00Z',
-    badgeText: 'Go Vocal',
-    badgeType: 'go-vocal',
-  },
-  {
-    name: 'Tobias Funke',
-    createdAt: '2021-08-10T12:00:00Z',
-    badgeText: 'Vienna',
-    badgeType: 'platform-moderator',
-  },
-  {
-    name: 'George Michael Bluth',
-    createdAt: '2021-08-10T12:00:00Z',
-  },
-] as const;
-
 const schema = object({
   comment_body: string(),
 });
