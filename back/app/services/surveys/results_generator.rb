@@ -2,11 +2,11 @@
 
 module Surveys
   class ResultsGenerator < FieldVisitorService
-    def initialize(phase)
+    def initialize(phase, structure_by_category: false)
       super()
       @phase = phase
       form = phase.custom_form || CustomForm.new(participation_context: phase)
-      @fields = IdeaCustomFieldsService.new(form).enabled_fields
+      @fields = IdeaCustomFieldsService.new(form).survey_results_fields(structure_by_category:)
       @locales = AppConfiguration.instance.settings('core', 'locales')
       @inputs = phase.ideas.supports_survey.published
     end
