@@ -21,10 +21,9 @@ import { useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
 import { getFormActionsConfig } from 'utils/configs/formActionsConfig/utils';
 
-import ViewSurveyButton from '../../ViewSurveyButton';
-import messages from '../messages';
-
-import AnonymousToggle from './AnonymousToggle';
+import ViewSurveyButton from '../../../ViewSurveyButton';
+import messages from '../../messages';
+import AnonymousToggle from '../AnonymousToggle';
 
 const SurveySettings = () => {
   const locale = useLocale();
@@ -174,7 +173,11 @@ const SurveySettings = () => {
         deleteResults={deleteResults}
       />
 
-      {phaseId && <AnonymousToggle phaseId={phaseId} />}
+      {phaseId && (
+        <Box mt="20px">
+          <AnonymousToggle phaseId={phaseId} />
+        </Box>
+      )}
     </Box>
   );
 };

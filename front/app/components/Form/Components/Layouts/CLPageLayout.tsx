@@ -36,6 +36,7 @@ import useProjectBySlug from 'api/projects/useProjectBySlug';
 
 import useLocalize from 'hooks/useLocalize';
 
+import { triggerPostActionEvents } from 'containers/App/events';
 import ProfileVisiblity from 'containers/IdeasNewPage/IdeasNewIdeationForm/ProfileVisibility';
 
 import AnonymousParticipationConfirmationModal from 'components/AnonymousParticipationConfirmationModal';
@@ -264,6 +265,7 @@ const CLPageLayout = memo(
               pathname: `/projects/${project?.data.attributes.slug}`,
             });
           }
+          triggerPostActionEvents({});
         } else {
           clHistory.push({
             pathname: `/ideas/${idea?.data.attributes.slug}`,
