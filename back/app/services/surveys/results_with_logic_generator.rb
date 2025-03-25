@@ -21,7 +21,6 @@ module Surveys
     private
 
     def add_additional_fields_to_results(results)
-      results = super
       results = add_logic_to_results results, @logic_ids
       change_counts_for_logic results, inputs.pluck(:custom_field_values)
     end

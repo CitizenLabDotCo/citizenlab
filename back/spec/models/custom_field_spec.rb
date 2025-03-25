@@ -683,4 +683,30 @@ RSpec.describe CustomField do
       end
     end
   end
+
+  describe 'maximum' do
+    context 'linear scale fields' do
+      it 'is valid when maximum is between 2 & 11' do
+        field = build(:custom_field_linear_scale, maximum: 5)
+        expect(field).to be_valid
+      end
+
+      it 'is not valid when maximum is nil' do
+        field = build(:custom_field_linear_scale, maximum: nil)
+        expect(field).not_to be_valid
+      end
+
+      it 'is not valid when maximum is greater than 11' do
+        field = build(:custom_field_linear_scale, maximum: 16)
+        expect(field).not_to be_valid
+      end
+    end
+
+    context 'other fields' do
+      it 'is valid when maximum is nil' do
+        field = build(:custom_field_multiselect, maximum: nil)
+        expect(field).to be_valid
+      end
+    end
+  end
 end

@@ -14,17 +14,17 @@ module ParticipationMethod
       return [] if custom_form.persisted?
 
       [
-        page_field(custom_form, 'page1'),
+        page_field(custom_form, 'quality_of_life'),
         sentiment_field(custom_form, 'place_to_live', 'quality_of_life'),
         sentiment_field(custom_form, 'sense_of_safety', 'quality_of_life'),
         sentiment_field(custom_form, 'access_to_parks', 'quality_of_life'),
         sentiment_field(custom_form, 'affordable_housing', 'quality_of_life'),
         sentiment_field(custom_form, 'employment_opportunities', 'quality_of_life'),
-        page_field(custom_form, 'page2'),
+        page_field(custom_form, 'service_delivery'),
         sentiment_field(custom_form, 'quality_of_services', 'service_delivery'),
         sentiment_field(custom_form, 'overall_value', 'service_delivery'),
         sentiment_field(custom_form, 'cleanliness_and_maintenance', 'service_delivery'),
-        page_field(custom_form, 'page3'),
+        page_field(custom_form, 'governance_and_trust'),
         sentiment_field(custom_form, 'trust_in_government', 'governance_and_trust'),
         sentiment_field(custom_form, 'responsiveness_of_officials', 'governance_and_trust'),
         sentiment_field(custom_form, 'transparency_of_money_spent', 'governance_and_trust'),
@@ -67,7 +67,8 @@ module ParticipationMethod
     def page_field(custom_form, key)
       CustomField.new(
         id: SecureRandom.uuid,
-        key: key,
+        key: "page_#{key}",
+        title_multiloc: multiloc_service.i18n_to_multiloc("custom_fields.community_monitor.question_categories.#{key}"),
         resource: custom_form,
         input_type: 'page',
         page_layout: 'default'
@@ -84,6 +85,8 @@ module ParticipationMethod
         ask_follow_up: true,
         title_multiloc: multiloc_service.i18n_to_multiloc("custom_fields.community_monitor.questions.#{key}.title"),
         question_category: category,
+        maximum: 5,
+        ask_follow_up: true,
         linear_scale_label_1_multiloc: multiloc_service.i18n_to_multiloc('custom_fields.community_monitor.labels.label_1'),
         linear_scale_label_2_multiloc: multiloc_service.i18n_to_multiloc('custom_fields.community_monitor.labels.label_2'),
         linear_scale_label_3_multiloc: multiloc_service.i18n_to_multiloc('custom_fields.community_monitor.labels.label_3'),
