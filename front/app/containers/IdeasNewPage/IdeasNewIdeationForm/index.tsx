@@ -327,23 +327,59 @@ const IdeasNewIdeationForm = ({ project, phaseId }: Props) => {
                 />
               </main>
             </Box>
-            {selectedIdeaId && (
-              <Box
-                top={isSmallerThanPhone ? '0' : '40px'}
-                width="375px"
-                minWidth="375px"
-                borderLeft={`1px solid ${colors.grey300}`}
-                overflowY="auto"
-                bgColor={colors.white}
-                position="relative"
-                mb="80px"
-              >
-                <IdeaDetailView
-                  ideaId={selectedIdeaId}
-                  onClose={handleCloseDetail}
-                />
-              </Box>
-            )}
+
+            {selectedIdeaId &&
+              (isSmallerThanPhone ? (
+                <Box
+                  position="fixed"
+                  top="0"
+                  left="0"
+                  width="100%"
+                  height="100%"
+                  bg="rgba(0,0,0,0.4)"
+                  zIndex="2000"
+                  onClick={handleCloseDetail}
+                >
+                  <Box
+                    position="absolute"
+                    bottom="0"
+                    width="100%"
+                    height="75%"
+                    bgColor={colors.white}
+                    borderRadius="16px 16px 0 0"
+                    overflowY="auto"
+                    onClick={(e) => e.stopPropagation()}
+                  >
+                    <Box
+                      width="40px"
+                      height="4px"
+                      bgColor={colors.grey300}
+                      borderRadius="2px"
+                      m="8px auto"
+                    />
+                    <IdeaDetailView
+                      ideaId={selectedIdeaId}
+                      onClose={handleCloseDetail}
+                    />
+                  </Box>
+                </Box>
+              ) : (
+                <Box
+                  top="40px"
+                  width="375px"
+                  minWidth="375px"
+                  borderLeft={`1px solid ${colors.grey300}`}
+                  overflowY="auto"
+                  bgColor={colors.white}
+                  position="relative"
+                  mb="80px"
+                >
+                  <IdeaDetailView
+                    ideaId={selectedIdeaId}
+                    onClose={handleCloseDetail}
+                  />
+                </Box>
+              ))}
           </Box>
         </Box>
       </Box>
