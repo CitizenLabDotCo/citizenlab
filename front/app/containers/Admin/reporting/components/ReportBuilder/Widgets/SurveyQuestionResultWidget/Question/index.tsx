@@ -65,7 +65,9 @@ const SurveyQuestionResult = ({
           <MatrixQuestion result={attributes} />
         ) : null;
       case 'sentiment_linear_scale':
-        return <SentimentQuestion result={attributes} showAnalysis={false} />;
+        return !attributes.grouped ? (
+          <SentimentQuestion result={attributes} showAnalysis={false} />
+        ) : null;
       case 'point':
       case 'line':
       case 'polygon':

@@ -30,6 +30,7 @@ const properties = [
   'linear_scale_label_9_multiloc',
   'linear_scale_label_10_multiloc',
   'linear_scale_label_11_multiloc',
+  'question_category',
   'maximum',
   'options',
   'enabled',

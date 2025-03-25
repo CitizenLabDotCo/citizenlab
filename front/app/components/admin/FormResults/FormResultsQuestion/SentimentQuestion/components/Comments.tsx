@@ -27,11 +27,13 @@ const Comments = ({
 }: CommentsProps) => {
   const isTabletOrSmaller = useBreakpoint('tablet');
 
-  // Get the project and phase id from either the URL params or props (when community monitor)
+  // Get the relevant project and phase id from the URL
   const { projectId: projectIdParam, phaseId: phaseIdParam } = useParams() as {
     projectId: string;
     phaseId: string;
   };
+
+  // If no URL params are provided, fetch the community monitor project
   const { data: project } = useCommunityMonitorProject({
     enabled: !phaseIdParam && !projectIdParam,
   });
@@ -57,26 +59,30 @@ const Comments = ({
       gap="12px"
       width="100%"
     >
-      {/* Follow Up Text Responses */}
-      <Box flexGrow={1}>
-        <TextResponses textResponses={textResponses} />
-      </Box>
+      {textResponses.length > 0 && (
+        <>
+          {/* Follow Up Text Responses */}
+          <Box flexGrow={1}>
+            <TextResponses textResponses={textResponses} />
+          </Box>
 
-      {/* AI Summary */}
-      <Box maxWidth={isTabletOrSmaller ? '100%' : '38%'} p="8px" pt="0px">
-        <Box flex="1">
-          {!isAnalysisAllowed && <AnalysisUpsell />}
-          {isAnalysisEnabled && showAnalysis && (
-            <Analysis
-              customFieldId={customFieldId}
-              textResponsesCount={textResponses.length}
-              hasOtherResponses={true}
-              projectId={projectId}
-              phaseId={phaseId}
-            />
-          )}
-        </Box>
-      </Box>
+          {/* AI Summary */}
+          <Box maxWidth={isTabletOrSmaller ? '100%' : '38%'} p="8px" pt="0px">
+            <Box flex="1">
+              {!isAnalysisAllowed && <AnalysisUpsell />}
+              {isAnalysisEnabled && showAnalysis && (
+                <Analysis
+                  customFieldId={customFieldId}
+                  textResponsesCount={textResponses.length}
+                  hasOtherResponses={true}
+                  projectId={projectId}
+                  phaseId={phaseId}
+                />
+              )}
+            </Box>
+          </Box>
+        </>
+      )}
     </Box>
   );
 };
