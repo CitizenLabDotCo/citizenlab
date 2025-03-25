@@ -2,8 +2,6 @@ import React from 'react';
 
 import { Text, Icon, Box } from '@citizenlab/cl2-component-library';
 
-import { getTrendColorName } from 'components/admin/FormResults/FormResultsQuestion/SentimentQuestion/utils';
-
 import { useIntl } from 'utils/cl-intl';
 
 import messages from './messages';
@@ -39,7 +37,7 @@ const TrendIndicator = ({
     <Box display="flex" gap="8px">
       <Text
         m="0px"
-        color={getTrendColorName(percentageDifference)}
+        color={trendConfiguration[trendType].colorName}
         fontSize="s"
       >
         {currentTrendConfig.icon && (

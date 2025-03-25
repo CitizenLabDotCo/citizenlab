@@ -9,7 +9,7 @@ import { useIntl } from 'utils/cl-intl';
 import messages from '../../messages';
 import { getSentimentValueColour, SentimentAnswers } from '../../utils';
 
-const SentimentTooltip = ({ answers }: { answers: SentimentAnswers }) => {
+const SentimentTooltip = ({ answers }: { answers?: SentimentAnswers }) => {
   const { formatMessage } = useIntl();
   const localize = useLocalize();
 

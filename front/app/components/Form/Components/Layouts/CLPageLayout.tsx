@@ -36,7 +36,7 @@ import useProjectBySlug from 'api/projects/useProjectBySlug';
 
 import useLocalize from 'hooks/useLocalize';
 
-import { triggerCommunityMonitorModal } from 'containers/App/CommunityMonitorModal/events';
+import { triggerPostActionEvents } from 'containers/App/events';
 import ProfileVisiblity from 'containers/IdeasNewPage/IdeasNewIdeationForm/ProfileVisibility';
 
 import AnonymousParticipationConfirmationModal from 'components/AnonymousParticipationConfirmationModal';
@@ -257,10 +257,15 @@ const CLPageLayout = memo(
 
       if (pageVariant === 'after-submission') {
         if (isNativeSurvey) {
-          clHistory.push({
-            pathname: `/projects/${project?.data.attributes.slug}`,
-          });
-          setTimeout(triggerCommunityMonitorModal, 2000);
+          if (currentPage.options.page_button_link) {
+            // Page is using a custom button link
+            window.location.href = currentPage.options.page_button_link;
+          } else {
+            clHistory.push({
+              pathname: `/projects/${project?.data.attributes.slug}`,
+            });
+          }
+          triggerPostActionEvents({});
         } else {
           clHistory.push({
             pathname: `/ideas/${idea?.data.attributes.slug}`,
@@ -593,6 +598,7 @@ const CLPageLayout = memo(
               pageVariant={pageVariant}
               phases={phases?.data}
               currentPhase={phase?.data}
+              currentPage={currentPage}
             />
           </Box>
         </Box>

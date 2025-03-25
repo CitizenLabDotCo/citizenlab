@@ -18,7 +18,7 @@ import { IProjectData } from 'api/projects/types';
 
 import useLocalize from 'hooks/useLocalize';
 
-import { triggerCommunityMonitorModal } from 'containers/App/CommunityMonitorModal/events';
+import { triggerPostActionEvents } from 'containers/App/events';
 
 import { ScreenReaderOnly } from 'utils/a11y';
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
@@ -116,7 +116,7 @@ const CTAButton = ({ phase, project }: Props) => {
                 );
               }
 
-              setTimeout(triggerCommunityMonitorModal, 3000);
+              triggerPostActionEvents({});
             },
           }
         );

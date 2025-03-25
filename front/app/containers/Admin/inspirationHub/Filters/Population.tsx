@@ -4,6 +4,7 @@ import { Select } from '@citizenlab/cl2-component-library';
 
 import { RansackParams } from 'api/project_library_projects/types';
 
+import { trackEventByName } from 'utils/analytics';
 import { useIntl } from 'utils/cl-intl';
 import { keys } from 'utils/helperUtils';
 
@@ -11,6 +12,7 @@ import { POPULATION_GROUP_LABELS } from '../constants';
 import { setRansackParam, useRansackParam } from '../utils';
 
 import messages from './messages';
+import tracks from './tracks';
 
 type Option = {
   value: RansackParams['q[tenant_population_group_eq]'];
@@ -31,9 +33,12 @@ const Population = () => {
       value={value}
       options={OPTIONS}
       canBeEmpty
-      onChange={(option: Option) =>
-        setRansackParam('q[tenant_population_group_eq]', option.value)
-      }
+      onChange={(option: Option) => {
+        setRansackParam('q[tenant_population_group_eq]', option.value);
+        trackEventByName(tracks.setPopulationGroup, {
+          population_group: option.value,
+        });
+      }}
       placeholder={formatMessage(messages.population)}
       mr="28px"
     />

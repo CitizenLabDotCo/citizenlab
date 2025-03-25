@@ -7,7 +7,7 @@ import { getSentimentGroupColour } from '../../utils';
 const SentimentBar = ({
   answerGroups,
 }: {
-  answerGroups?: { answer: string; percentage: number }[] | null;
+  answerGroups?: { answer: string; percentage: number }[] | null | undefined;
 }) => {
   return (
     <Box display="flex" alignItems="center" width="160px" gap="2px">

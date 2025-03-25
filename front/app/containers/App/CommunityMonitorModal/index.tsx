@@ -4,8 +4,6 @@ import { Box, colors, Icon, Text } from '@citizenlab/cl2-component-library';
 import { get, set } from 'js-cookie';
 import { useLocation } from 'react-router-dom';
 
-import { AuthenticationContext } from 'api/authentication/authentication_requirements/types';
-import useAuthenticationRequirements from 'api/authentication/authentication_requirements/useAuthenticationRequirements';
 import useCommunityMonitorProject from 'api/community_monitor/useCommunityMonitorProject';
 import useCustomFields from 'api/custom_fields/useCustomFields';
 import usePhase from 'api/phases/usePhase';
@@ -64,18 +62,11 @@ const CommunityMonitorModal = ({
 
   const isSurveyLive = phase?.data.attributes.submission_enabled;
 
-  // Check if the user is allowed to take the survey (based on requirements endpoint)
-  const context: AuthenticationContext = {
-    type: 'phase',
-    action: 'posting_idea',
-    id: phaseId || '',
-  };
-  const { data: authenticationRequirementsResponse } =
-    useAuthenticationRequirements(context);
+  // Check if the user is allowed to take the survey (based on action_descriptors)
   const userPermittedToTakeSurvey =
     !hasSeenModal &&
-    authenticationRequirementsResponse?.data.attributes.disabled_reason !==
-      'already_responded';
+    project?.data.attributes.action_descriptors.posting_idea.disabled_reason !==
+      'posting_limited_max_reached';
 
   // Get the custom fields for the survey & JSON schemas
   const { data: customFields } = useCustomFields({
@@ -122,7 +113,6 @@ const CommunityMonitorModal = ({
   // Display the modal if it should be shown
   useEffect(() => {
     if (shouldShowModal()) {
-      set('community_monitor_modal_seen', 'true');
       setModalOpened(true);
     }
   }, [shouldShowModal]);
@@ -139,6 +129,7 @@ const CommunityMonitorModal = ({
   }, [shouldShowModal]);
 
   const onClose = () => {
+    set('community_monitor_modal_seen', 'true');
     setModalOpened(false);
   };
 
@@ -147,7 +138,7 @@ const CommunityMonitorModal = ({
   }
 
   return (
-    <Modal opened={modalOpened} close={onClose} width="420px">
+    <Modal opened={modalOpened} close={onClose} width="460px">
       <Box mt="40px">
         <QuestionPreview
           projectSlug={project?.data.attributes.slug}

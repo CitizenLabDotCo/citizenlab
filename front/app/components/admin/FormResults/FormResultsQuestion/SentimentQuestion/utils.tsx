@@ -65,16 +65,3 @@ export const getPercentageDifference = (
   // Calculate the percentage difference
   return ((thisPeriodAvg - lastPeriodAvg) / lastPeriodAvg) * 100;
 };
-
-// getTrendColorName:
-// Determines the trend color based on percentage difference.
-export const getTrendColorName = (
-  percentageDifference: number
-): 'green500' | 'red400' | 'grey700' => {
-  if (percentageDifference > 0) {
-    return 'green500'; // Positive trend
-  } else if (percentageDifference < 0) {
-    return 'red400'; // Negative trend
-  }
-  return 'grey700'; // No change
-};

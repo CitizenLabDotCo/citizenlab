@@ -2,11 +2,11 @@
 
 module Surveys
   class ResultsGenerator < FieldVisitorService
-    def initialize(phase)
+    def initialize(phase, structure_by_category: false)
       super()
       @phase = phase
       form = phase.custom_form || CustomForm.new(participation_context: phase)
-      @fields = IdeaCustomFieldsService.new(form).enabled_fields
+      @fields = IdeaCustomFieldsService.new(form).survey_results_fields(structure_by_category:)
       @locales = AppConfiguration.instance.settings('core', 'locales')
       @inputs = phase.ideas.supports_survey.published
     end
@@ -14,7 +14,8 @@ module Surveys
     # Get the results for a single survey question
     def generate_result_for_field(field_id)
       field = find_question(field_id)
-      visit field
+      result = visit field
+      add_averages([result]).first
     end
 
     # Get the results for all survey questions
@@ -23,6 +24,7 @@ module Surveys
       if results.present?
         results = add_question_numbers_to_results results
         results = add_page_response_count_to_results results
+        results = add_averages results
         results = add_additional_fields_to_results results
         results = cleanup_results results
       end
@@ -347,6 +349,21 @@ module Surveys
           result[:pageNumber] = nil
         end
         result
+      end
+    end
+
+    def add_averages(results)
+      # By default 'this_period' is all time
+      averages = AverageGenerator.new(phase).field_averages
+
+      # Merge the averages into the main results
+      results.each do |result|
+        field_average = averages[result[:customFieldId]]
+        if field_average
+          result[:averages] = {
+            this_period: field_average,
+          }
+        end
       end
     end
 

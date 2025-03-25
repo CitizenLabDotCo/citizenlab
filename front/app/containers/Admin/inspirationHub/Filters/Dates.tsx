@@ -4,7 +4,11 @@ import { format } from 'date-fns';
 
 import DateRangePicker from 'components/admin/DatePickers/DateRangePicker';
 
+import { trackEventByName } from 'utils/analytics';
+
 import { useRansackParam, setRansackParam } from '../utils';
+
+import tracks from './tracks';
 
 const toDate = (str?: string) => {
   if (!str) return;
@@ -23,9 +27,13 @@ const Dates = () => {
   return (
     <DateRangePicker
       selectedRange={{ from: toDate(fromStr), to: toDate(toStr) }}
-      onUpdateRange={({ from, to }) => {
-        setRansackParam('q[practical_end_at_gteq]', toString(from));
-        setRansackParam('q[practical_end_at_lt]', toString(to));
+      onUpdateRange={({ from: fromDate, to: toDate }) => {
+        const from = toString(fromDate);
+        const to = toString(toDate);
+
+        setRansackParam('q[practical_end_at_gteq]', from);
+        setRansackParam('q[practical_end_at_lt]', to);
+        trackEventByName(tracks.setDates, { from, to });
       }}
     />
   );
