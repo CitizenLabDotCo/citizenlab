@@ -71,7 +71,7 @@ const SimilarIdeasList = ({ query }: Props) => {
               justifyContent="space-between"
               alignItems="center"
             >
-              <Box display="flex" flexDirection="column" width="100%" mr="8px">
+              <Box display="flex" flexDirection="column" width="100%" mr="24px">
                 <Text
                   variant="bodyM"
                   fontWeight="bold"
@@ -101,7 +101,7 @@ const SimilarIdeasList = ({ query }: Props) => {
                   <Box display="flex" alignItems="center" gap="16px">
                     <Box display="flex" alignItems="center" gap="4px">
                       <Icon
-                        name="vote-up"
+                        name="thumb-up"
                         width="14px"
                         height="14px"
                         fill={colors.grey700}
@@ -112,7 +112,7 @@ const SimilarIdeasList = ({ query }: Props) => {
                     </Box>
                     <Box display="flex" alignItems="center" gap="4px">
                       <Icon
-                        name="vote-down"
+                        name="thumb-down"
                         width="14px"
                         height="14px"
                         fill={colors.grey700}
@@ -123,7 +123,7 @@ const SimilarIdeasList = ({ query }: Props) => {
                     </Box>
                     <Box display="flex" alignItems="center" gap="4px">
                       <Icon
-                        name="comments"
+                        name="chat-bubble"
                         width="14px"
                         height="14px"
                         fill={colors.grey700}
