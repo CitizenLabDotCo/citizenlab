@@ -49,7 +49,7 @@ resource 'HeatmapCells' do
       )
       expect(response_data.first[:relationships]).to include(
         analysis: { data: { id: analysis.id, type: 'analysis' } },
-        column: { data: { id: heatmap_cells[1].column.id, type: 'custom_field_option' } },
+        column: { data: { id: heatmap_cells[1].column.id, type: 'custom_field_bin' } },
         row: { data: { id: heatmap_cells[1].row.id, type: 'tag' } }
       )
     end
@@ -63,8 +63,8 @@ resource 'HeatmapCells' do
     end
 
     example 'Respects the row_category filters' do
-      create(:heatmap_cell, analysis:, row: create(:custom_field_option))
-      cell = create(:heatmap_cell, analysis:, row: create(:custom_field_option))
+      create(:heatmap_cell, analysis:, row: create(:option_bin))
+      cell = create(:heatmap_cell, analysis:, row: create(:option_bin))
       custom_field = cell.row.custom_field
       row_category_type = 'user_custom_field'
       row_category_id = custom_field.id
