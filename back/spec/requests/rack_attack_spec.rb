@@ -569,20 +569,20 @@ describe 'Rack::Attack' do
             'en' => title
           }
         }
-      }
+      }.to_json
     end
     freeze_time do
       5.times do |i|
-        get(
-          '/web_api/v1/ideas/similarities',
+        post(
+          '/web_api/v1/ideas/similar_ideas',
           params: params_proc.call("Title #{i}"),
           headers: headers
         )
       end
       expect(status).to eq 200 # OK
 
-      get(
-        '/web_api/v1/ideas/similarities',
+      post(
+        '/web_api/v1/ideas/similar_ideas',
         params: params_proc.call('Final idea'),
         headers: headers
       )
