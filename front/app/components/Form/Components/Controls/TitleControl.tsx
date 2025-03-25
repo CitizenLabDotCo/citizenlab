@@ -3,7 +3,7 @@ import React, { useCallback, useState, useMemo } from 'react';
 import { Box, Input } from '@citizenlab/cl2-component-library';
 import { ControlProps, RankedTester, rankWith } from '@jsonforms/core';
 import { withJsonFormsControlProps } from '@jsonforms/react';
-import debounce from 'lodash/debounce';
+import { debounce } from 'lodash-es';
 
 import SimilarIdeasList from 'containers/IdeasNewPage/SimilarIdeasList';
 
