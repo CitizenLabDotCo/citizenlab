@@ -195,7 +195,7 @@ RSpec.describe Surveys::ResultsGenerator do
           totalResponseCount: 27,
           questionResponseCount: 22,
           totalPickCount: 27,
-          averages: { this_period:  3.5 },
+          averages: { this_period: 3.5 },
           answers: [
             { answer: 1, count: 2 },
             { answer: 2, count: 5 },
@@ -277,7 +277,7 @@ RSpec.describe Surveys::ResultsGenerator do
           totalResponseCount: 27,
           questionResponseCount: 22,
           totalPickCount: 27,
-          averages: { this_period:  3.5 },
+          averages: { this_period: 3.5 },
           answers: [
             { answer: 1, count: 2 },
             { answer: 2, count: 5 },
@@ -331,7 +331,7 @@ RSpec.describe Surveys::ResultsGenerator do
           totalResponseCount: 27,
           questionResponseCount: 25,
           totalPickCount: 27,
-          averages: { this_period:  2.2 },
+          averages: { this_period: 2.2 },
           answers: [
             { answer: 1, count: 8 },
             { answer: 2, count: 7 },
@@ -742,7 +742,7 @@ RSpec.describe Surveys::ResultsGenerator do
           questionResponseCount: 1,
           totalResponseCount: 27,
           customFieldId: number_field.id,
-          averages: { this_period:  42.0 },
+          averages: { this_period: 42.0 },
           numberResponses: a_collection_containing_exactly(
             { answer: 42 }
           )

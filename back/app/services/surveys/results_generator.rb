@@ -360,7 +360,7 @@ module Surveys
         field_average = averages[result[:customFieldId]]
         if field_average
           result[:averages] = {
-            this_period: field_average,
+            this_period: field_average
           }
         end
       end

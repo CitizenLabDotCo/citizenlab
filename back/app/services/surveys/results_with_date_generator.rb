@@ -17,7 +17,6 @@ module Surveys
       @inputs = @inputs.where(created_at: quarter_to_date_range(year, quarter))
     end
 
-
     def add_averages(results)
       super unless @year && @quarter
 
