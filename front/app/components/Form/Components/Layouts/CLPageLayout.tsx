@@ -130,8 +130,10 @@ const CLPageLayout = memo(
     const phaseId =
       phaseIdFromSearchParams || getCurrentPhase(phases?.data)?.id;
     const { data: phase } = usePhase(phaseId);
-    const isNativeSurvey =
-      phase?.data.attributes.participation_method === 'native_survey';
+    const isNativeOrCommunitySurvey =
+      phase?.data.attributes.participation_method === 'native_survey' ||
+      phase?.data.attributes.participation_method ===
+        'community_monitor_survey';
     const allowAnonymousPosting =
       phase?.data.attributes.allow_anonymous_participation;
 
@@ -142,8 +144,9 @@ const CLPageLayout = memo(
      * to choose whether to post anonymously or not.
      */
     const allowsAnonymousPostingInNativeSurvey =
-      isNativeSurvey && allowAnonymousPosting;
-    const showTogglePostAnonymously = allowAnonymousPosting && !isNativeSurvey;
+      isNativeOrCommunitySurvey && allowAnonymousPosting;
+    const showTogglePostAnonymously =
+      allowAnonymousPosting && !isNativeOrCommunitySurvey;
 
     // Map-related variables
     const { data: projectMapConfig } = useProjectMapConfig(project?.data.id);
@@ -256,7 +259,7 @@ const CLPageLayout = memo(
       }
 
       if (pageVariant === 'after-submission') {
-        if (isNativeSurvey) {
+        if (isNativeOrCommunitySurvey) {
           if (currentPage.options.page_button_link) {
             // Page is using a custom button link
             window.location.href = currentPage.options.page_button_link;
