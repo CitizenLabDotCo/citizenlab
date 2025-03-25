@@ -138,7 +138,7 @@ const CommunityMonitorModal = ({
   }
 
   return (
-    <Modal opened={modalOpened} close={onClose} width="420px">
+    <Modal opened={modalOpened} close={onClose} width="460px">
       <Box mt="40px">
         <QuestionPreview
           projectSlug={project?.data.attributes.slug}
