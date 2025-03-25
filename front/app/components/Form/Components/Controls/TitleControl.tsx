@@ -5,7 +5,8 @@ import { ControlProps, RankedTester, rankWith } from '@jsonforms/core';
 import { withJsonFormsControlProps } from '@jsonforms/react';
 import { debounce } from 'lodash-es';
 
-import SimilarIdeasList from 'containers/IdeasNewPage/SimilarIdeasList';
+import { useIdeaSelect } from 'containers/IdeasNewPage/SimilarIdeas/IdeaSelectContext';
+import SimilarIdeasList from 'containers/IdeasNewPage/SimilarIdeas/SimilarIdeasList';
 
 import { FormLabel } from 'components/UI/FormComponents';
 
@@ -34,6 +35,7 @@ export const TitleControl = ({
 }: ControlProps) => {
   const [didBlur, setDidBlur] = useState(false);
   const [query, setQuery] = useState<string>('');
+  const { onIdeaSelect } = useIdeaSelect();
 
   const debouncedSetQuery = useMemo(
     () =>
@@ -99,7 +101,7 @@ export const TitleControl = ({
         fieldPath={path}
         didBlur={didBlur}
       />
-      <SimilarIdeasList query={query} />
+      <SimilarIdeasList query={query} onIdeaSelect={onIdeaSelect} />
     </Box>
   );
 };
