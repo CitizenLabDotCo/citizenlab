@@ -5,15 +5,15 @@ type GetAnswerGroupsProps = {
 // getAnswerGroups:
 // Group the answers (values of 1 - 5) into low, neutral, and high sentiment
 export const getAnswerGroups = ({ questionAnswers }: GetAnswerGroupsProps) => {
-  const lowSentiment =
-    questionAnswers[0].percentage + questionAnswers[1].percentage; // Values 1 and 2
-  const neutralSentiment = questionAnswers[2].percentage; // Value 3
-  const highSentiment =
-    questionAnswers[3].percentage + questionAnswers[4].percentage; // Values 4 and 5
+  if (!questionAnswers.length) return null;
+
+  const [low1, low2, neutral, high1, high2] = questionAnswers.map(
+    (answer) => answer.percentage
+  );
 
   return [
-    { answer: 'high', percentage: highSentiment },
-    { answer: 'neutral', percentage: neutralSentiment },
-    { answer: 'low', percentage: lowSentiment },
+    { answer: 'high', percentage: high1 + high2 },
+    { answer: 'neutral', percentage: neutral },
+    { answer: 'low', percentage: low1 + low2 },
   ];
 };
