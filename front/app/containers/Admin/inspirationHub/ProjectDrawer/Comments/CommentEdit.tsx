@@ -28,7 +28,8 @@ interface Props {
 }
 
 const CommentEdit = ({ projectId, commentId, body, onCancel }: Props) => {
-  const { mutate: updateComment } = useUpdateProjectLibraryExternalComment();
+  const { mutate: updateComment, isLoading } =
+    useUpdateProjectLibraryExternalComment();
   const { data: authUser } = useAuthUser();
 
   const methods = useForm<FormValues>({
@@ -42,14 +43,19 @@ const CommentEdit = ({ projectId, commentId, body, onCancel }: Props) => {
   if (!authUser) return null;
 
   const onFormSubmit = ({ comment_body }: FormValues) => {
-    updateComment({
-      projectId,
-      externalCommentId: commentId,
-      externalCommentReqBody: {
-        ...getAuthorNames(authUser),
-        body: comment_body,
+    updateComment(
+      {
+        projectId,
+        externalCommentId: commentId,
+        externalCommentReqBody: {
+          ...getAuthorNames(authUser),
+          body: comment_body,
+        },
       },
-    });
+      {
+        onSuccess: onCancel,
+      }
+    );
   };
 
   return (
@@ -62,6 +68,7 @@ const CommentEdit = ({ projectId, commentId, body, onCancel }: Props) => {
           bgColor={colors.primary}
           p="4px 8px"
           mr="8px"
+          processing={isLoading}
           onClick={methods.handleSubmit(onFormSubmit)}
         >
           Save

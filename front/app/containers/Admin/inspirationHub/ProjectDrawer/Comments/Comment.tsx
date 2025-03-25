@@ -58,6 +58,7 @@ const Comment = ({ projectId, comment }: Props) => {
   const { id } = comment;
   const {
     author_first_name,
+    author_id,
     author_last_name,
     author_type,
     body,
@@ -66,6 +67,10 @@ const Comment = ({ projectId, comment }: Props) => {
   } = comment.attributes;
 
   const badgeText = author_type === 'User' ? 'Go Vocal' : tenant_name;
+
+  const allowEditOrDelete =
+    authUser.data.id === author_id ||
+    authUser.data.attributes.highest_role === 'super_admin';
 
   return (
     <Box width="100%" maxWidth="600px">
@@ -98,27 +103,29 @@ const Comment = ({ projectId, comment }: Props) => {
             </Text>
           </Box>
         </Box>
-        <MoreActionsMenu
-          showLabel={false}
-          actions={[
-            {
-              label: 'Edit',
-              handler: () => setIsEditing(true),
-            },
-            {
-              label: 'Delete',
-              handler: () => {
-                if (window.confirm('Are you sure you want to delete this?')) {
-                  deleteComment({
-                    externalCommentId: id,
-                    projectId,
-                    externalCommentReqBody: getAuthorNames(authUser),
-                  });
-                }
+        {allowEditOrDelete && (
+          <MoreActionsMenu
+            showLabel={false}
+            actions={[
+              {
+                label: 'Edit',
+                handler: () => setIsEditing(true),
               },
-            },
-          ]}
-        />
+              {
+                label: 'Delete',
+                handler: () => {
+                  if (window.confirm('Are you sure you want to delete this?')) {
+                    deleteComment({
+                      externalCommentId: id,
+                      projectId,
+                      externalCommentReqBody: getAuthorNames(authUser),
+                    });
+                  }
+                },
+              },
+            ]}
+          />
+        )}
       </Box>
       <Box mt="12px" mb="20px">
         {isEditing ? (
