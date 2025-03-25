@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import {
   Box,
@@ -20,6 +20,7 @@ import { Name } from 'components/UI/UserName';
 
 import { timeAgo } from 'utils/dateUtils';
 
+import CommentEdit from './CommentEdit';
 import getAuthorNames from './getAuthorNames';
 
 const TimeAgo = styled.div`
@@ -47,6 +48,7 @@ interface Props {
 }
 
 const Comment = ({ projectId, comment }: Props) => {
+  const [isEditing, setIsEditing] = useState(false);
   const locale = useLocale();
   const { mutate: deleteComment } = useDeleteProjectLibraryExternalComment();
   const { data: authUser } = useAuthUser();
@@ -101,7 +103,7 @@ const Comment = ({ projectId, comment }: Props) => {
           actions={[
             {
               label: 'Edit',
-              handler: () => console.log('Edit'),
+              handler: () => setIsEditing(true),
             },
             {
               label: 'Delete',
@@ -118,9 +120,13 @@ const Comment = ({ projectId, comment }: Props) => {
           ]}
         />
       </Box>
-      <Text mt="12px" mb="20px">
-        {body}
-      </Text>
+      <Box mt="12px" mb="20px">
+        {isEditing ? (
+          <CommentEdit body={body} onCancel={() => setIsEditing(false)} />
+        ) : (
+          <Text m="0">{body}</Text>
+        )}
+      </Box>
     </Box>
   );
 };
