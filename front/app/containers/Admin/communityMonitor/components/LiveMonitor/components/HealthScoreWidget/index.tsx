@@ -7,6 +7,7 @@ import {
   stylingConsts,
   Text,
   Title,
+  useBreakpoint,
 } from '@citizenlab/cl2-component-library';
 import { useSearchParams } from 'react-router-dom';
 
@@ -22,6 +23,7 @@ import PreviousQuarterComparison from './components/PreviousQuarterComparison';
 import TotalCountsSentimentBar from './components/TotalCountsSentimentBar';
 import messages from './messages';
 import {
+  filterDataBySelectedQuarter,
   getQuarterFilter,
   getYearFilter,
   transformSentimentScoreData,
@@ -29,22 +31,30 @@ import {
 
 type Props = {
   phaseId?: string;
+  quarter?: string;
+  year?: string;
 };
-const HealthScoreWidget = ({ phaseId }: Props) => {
+const HealthScoreWidget = ({ phaseId, ...props }: Props) => {
   const locale = useLocale();
   const [search] = useSearchParams();
   const { formatMessage } = useIntl();
+  const isMobileOrSmaller = useBreakpoint('phone');
+
   const { data: communityMonitorSentimentScores } =
     useCommunityMonitorSentimentScores(phaseId);
 
   // Get current year/quarter filter
-  const year = getYearFilter(search);
-  const quarter = getQuarterFilter(search);
+  const year = props.year || getYearFilter(search);
+  const quarter = props.quarter || getQuarterFilter(search);
 
   // Transform the sentiment score data into a more usable format
-  const sentimentScores = transformSentimentScoreData(
-    communityMonitorSentimentScores?.data.attributes,
-    locale
+  const sentimentScores = filterDataBySelectedQuarter(
+    transformSentimentScoreData(
+      communityMonitorSentimentScores?.data.attributes,
+      locale
+    ),
+    year,
+    quarter
   );
 
   // Get the current overall health score
@@ -60,7 +70,11 @@ const HealthScoreWidget = ({ phaseId }: Props) => {
       p="24px"
       mb="16px"
     >
-      <Box display="flex" gap="20px">
+      <Box
+        display="flex"
+        flexDirection={isMobileOrSmaller ? 'column' : 'row'}
+        gap="20px"
+      >
         <Box>
           <Box display="flex">
             <Icon my="auto" height="18px" name="dot" fill={colors.green400} />
@@ -97,9 +111,7 @@ const HealthScoreWidget = ({ phaseId }: Props) => {
             <TotalCountsSentimentBar sentimentScores={sentimentScores} />
           </Box>
         </Box>
-        <Box minWidth="200px">
-          <HealthScoreChart sentimentScores={sentimentScores} />
-        </Box>
+        <HealthScoreChart sentimentScores={sentimentScores} />
       </Box>
       <Box mt="20px">
         <CategoryScores sentimentScores={sentimentScores} />

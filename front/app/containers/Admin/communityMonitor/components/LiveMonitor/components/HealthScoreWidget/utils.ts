@@ -82,3 +82,52 @@ export const getQuarterFilter = (search: URLSearchParams) => {
   const date = new Date();
   return Math.floor(date.getMonth() / 3 + 1).toString();
 };
+
+// filterDataBySelectedQuarter:
+// Filter the sentiment score data to only include the last 4 quarters from the selected quarter.
+export const filterDataBySelectedQuarter = (
+  quarterlyScores: QuarterlyScores | null,
+  selectedYear: string,
+  selectedQuarter: string
+) => {
+  if (!quarterlyScores) return null;
+
+  // Get the index of the currently selected quarter, so we can filter the data
+  const indexSelectedQuarter = quarterlyScores.overallHealthScores.findIndex(
+    (score) => {
+      return score.period === `${selectedYear}-${selectedQuarter}`;
+    }
+  );
+  const minIndexToKeep = indexSelectedQuarter - 4;
+
+  // Filter each group of scores to only include the last 4 quarters from the selected quarter
+  const filteredOverallHealthScores =
+    quarterlyScores.overallHealthScores.filter(
+      (_score, index) =>
+        index >= minIndexToKeep && index <= indexSelectedQuarter
+    );
+
+  const filteredCategoryHealthScores = quarterlyScores.categoryHealthScores.map(
+    (category) => {
+      const filteredScores = category.scores.filter(
+        (_score, index) =>
+          index >= minIndexToKeep && index <= indexSelectedQuarter
+      );
+      return {
+        ...category,
+        scores: filteredScores,
+      };
+    }
+  );
+  const filteredTotalHealthScoreCounts =
+    quarterlyScores.totalHealthScoreCounts.filter(
+      (_score, index) =>
+        index >= minIndexToKeep && index <= indexSelectedQuarter
+    );
+
+  return {
+    overallHealthScores: filteredOverallHealthScores,
+    categoryHealthScores: filteredCategoryHealthScores,
+    totalHealthScoreCounts: filteredTotalHealthScoreCounts,
+  };
+};

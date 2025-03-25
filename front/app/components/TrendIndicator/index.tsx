@@ -51,7 +51,7 @@ const TrendIndicator = ({
         {trendPercentageLabel}
       </Text>
       <Text m="0px" color="textSecondary">
-        {showQuarterComparisonLabel && formatMessage(messages.previous_quarter)}
+        {showQuarterComparisonLabel && formatMessage(messages.lastQuarter)}
       </Text>
     </Box>
   );

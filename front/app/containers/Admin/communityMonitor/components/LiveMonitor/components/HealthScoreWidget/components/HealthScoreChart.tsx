@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Box } from '@citizenlab/cl2-component-library';
+import { Box, useBreakpoint } from '@citizenlab/cl2-component-library';
 
 import LineChart from 'components/admin/Graphs/LineChart';
 
@@ -16,6 +16,7 @@ type Props = {
 
 const HealthScoreChart = ({ sentimentScores }: Props) => {
   const { formatMessage } = useIntl();
+  const isMobileOrSmaller = useBreakpoint('phone');
 
   const timeSeries = sentimentScores?.overallHealthScores.map((score) => {
     // Create an object to hold the scores for the quarter
@@ -64,11 +65,13 @@ const HealthScoreChart = ({ sentimentScores }: Props) => {
   };
 
   return (
-    <Box>
-      <Box height="160px" width="100%" minWidth="400px" maxWidth="800px">
+    // Required to use negative margin here to correctly align the chart on mobile.
+    <Box flexGrow={1} ml={isMobileOrSmaller ? '-44px' : undefined}>
+      <Box height="160px" width="100%" minWidth="300px" maxWidth="420px">
         <LineChart
           width="100%"
           height="100%"
+          showEmptyGraph={true}
           data={timeSeries}
           mapping={{
             x: 'quarter',
