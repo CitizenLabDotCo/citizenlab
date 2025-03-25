@@ -121,6 +121,12 @@ describe IdeaCustomFieldsService do
             page sentiment_linear_scale sentiment_linear_scale sentiment_linear_scale
             page
           ]
+          expect(output.pluck(:key)).to eq %w[
+            page_quality_of_life place_to_live sense_of_safety access_to_parks affordable_housing employment_opportunities
+            page_service_delivery quality_of_services overall_value cleanliness_and_maintenance
+            page_governance_and_trust trust_in_government responsiveness_of_officials transparency_of_money_spent
+            form_end
+          ]
         end
 
         it 'returns fields with categories as pages' do
