@@ -26,11 +26,15 @@ RSpec.describe Surveys::AverageGenerator do
         averages = generator.summary_averages_by_quarter
         expect(averages).to eq({
           overall: {
-            averages: { '2025-1' => 2.3, '2025-2' => 13.1 },
+            averages: { '2025-1' => 3.0, '2025-2' => 8.3 },
             totals: {
               '2025-1' => { 1 => 12, 2 => 16, 3 => 21, 5 => 3, 6 => 4, 7 => 6 },
               '2025-2' => { 3 => 3, 42 => 1, 4 => 2, 2 => 1, 5 => 1 }
             }
+          },
+          categories: {
+            averages: {},
+            multilocs: {}
           }
         })
       end
@@ -42,6 +46,10 @@ RSpec.describe Surveys::AverageGenerator do
           overall: {
             averages: {},
             totals: {}
+          },
+          categories: {
+            averages: {},
+            multilocs: {}
           }
         })
       end
@@ -54,14 +62,14 @@ RSpec.describe Surveys::AverageGenerator do
     describe 'overall_average_by_quarter' do
       it 'returns an overall average per quarter' do
         averages = generator.send(:overall_average_by_quarter)
-        expect(averages).to eq({ '2025-1' => 2.3, '2025-2' => 13.1 })
+        expect(averages).to eq({ '2025-1' => 3.0, '2025-2' => 8.3 })
       end
     end
 
     describe 'category_averages_by_quarter' do
       it 'returns an averages by category per quarter' do
         averages = generator.send(:category_averages_by_quarter)
-        expect(averages).to eq({ nil => { '2025-1' => 2.3, '2025-2' => 13.1 } })
+        expect(averages).to eq({})
       end
     end
 
@@ -113,7 +121,7 @@ RSpec.describe Surveys::AverageGenerator do
         averages = generator.summary_averages_by_quarter
         expect(averages).to eq({
           overall: {
-            averages: { '2025-1' => 1.3, '2025-2' => 1.5 },
+            averages: { '2025-1' => 2.3, '2025-2' => 2.7 },
             totals: {
               '2025-1' => { 1 => 1, 2 => 2, 3 => 3 },
               '2025-2' => { 1 => 2, 2 => 1, 3 => 1, 4 => 1, 5 => 1 }
@@ -121,9 +129,9 @@ RSpec.describe Surveys::AverageGenerator do
           },
           categories: {
             averages: {
-              'quality_of_life' => { '2025-1' => 0.0, '2025-2' => 0.0 },
-              'service_delivery' => { '2025-1' => 0.0, '2025-2' => 3.0 },
-              'governance_and_trust' => { '2025-1' => 0.0, '2025-2' => 1.0 },
+              'quality_of_life' => { '2025-1' => 2.5, '2025-2' => 2.5 },
+              'service_delivery' => { '2025-1' => 2.5, '2025-2' => 4.0 },
+              'governance_and_trust' => { '2025-1' => 2.0, '2025-2' => 1.5 },
               'other' => {}
             },
             multilocs: {
@@ -171,8 +179,8 @@ RSpec.describe Surveys::AverageGenerator do
         averages = generator.send(:category_averages_by_quarter)
         expect(averages).to eq({
           'quality_of_life' => { '2025-1' => 2.5, '2025-2' => 2.5 },
-          'service_delivery' => { '2025-1' => 0.0, '2025-2' => 3.0 },
-          'governance_and_trust' => { '2025-1' => 0.0, '2025-2' => 1.0 },
+          'service_delivery' => { '2025-1' => 2.5, '2025-2' => 4.0 },
+          'governance_and_trust' => { '2025-1' => 2.0, '2025-2' => 1.5 },
           'other' => {}
         })
       end

@@ -7,40 +7,35 @@ module Surveys
       @fields = IdeaCustomFieldsService.new(form).enabled_fields.select do |f|
         f.input_type == input_type || f.supports_average? # Defaults to returning all fields that support averages
       end
-      @inputs = phase.ideas.supports_survey.published.includes(:author)
+      @inputs = phase.ideas.supports_survey.published
       @phase = phase
     end
 
-    # Default is to get the averages by custom field ID but can calculate on any attribute
-    def field_averages(answers: all_answers, custom_field_attribute: :id)
-      @fields.to_h { |f| [f[custom_field_attribute], calculate_average(answers.pluck(f.key))] }
+    # Averages for all fields by id
+    def field_averages(answers: all_answers)
+      @fields.to_h { |f| [f[:id], calculate_average(answers.pluck(f.key))] }
     end
 
-    def field_averages_by_quarter(custom_field_attribute: :id)
+    def field_averages_by_quarter
       grouped_answers = all_answers.group_by { |a| a['quarter'] }
       averages = grouped_answers.transform_values do |answers|
-        field_averages(answers:, custom_field_attribute:)
+        field_averages(answers: answers)
       end
       averages = order_by_quarter(averages)
       switch_keys(averages)
     end
 
     def summary_averages_by_quarter
-      averages = {
+      {
         overall: {
           averages: overall_average_by_quarter,
           totals: totals_by_quarter
+        },
+        categories: {
+          averages: category_averages_by_quarter,
+          multilocs: category_multilocs
         }
       }
-      if @phase.pmethod.supports_custom_field_categories?
-        averages[:categories] = {
-          averages: category_averages_by_quarter,
-          multilocs: CustomField::QUESTION_CATEGORIES.index_with do |category|
-            MultilocService.new.i18n_to_multiloc("custom_fields.community_monitor.question_categories.#{category}")
-          end
-        }
-      end
-      averages
     end
 
     private
@@ -49,16 +44,49 @@ module Surveys
     def overall_average_by_quarter
       grouped_answers = all_answers.group_by { |a| a['quarter'] }
       averages = grouped_answers.transform_values do |answers|
-        field_averages = field_averages(answers:)
-        calculate_average(field_averages.values)
+        key_group = @fields.pluck(:key)
+        average_for_field_keys(key_group, answers)
       end
       order_by_quarter(averages)
     end
 
     def category_averages_by_quarter
-      averages = field_averages_by_quarter(custom_field_attribute: :question_category)
+      return {} unless @phase.pmethod.supports_custom_field_categories?
+
+      grouped_answers = all_answers.group_by { |a| a['quarter'] }
+      averages = grouped_answers.transform_values do |answers|
+        field_group_averages(answers, 'question_category')
+      end
+      averages = order_by_quarter(averages)
+      averages = switch_keys(averages)
+
       CustomField::QUESTION_CATEGORIES.each { |c| averages[c] ||= {} } # Add in any missing categories
       averages
+    end
+
+    def category_multilocs
+      return {} unless @phase.pmethod.supports_custom_field_categories?
+
+      CustomField::QUESTION_CATEGORIES.index_with do |category|
+        MultilocService.new.i18n_to_multiloc("custom_fields.community_monitor.question_categories.#{category}")
+      end
+    end
+
+    # Calculate the averages for groups of custom fields - grouped by custom field attribute
+    def field_group_averages(answers, custom_field_attribute)
+      # Get an array of keys grouped by attribute
+      key_group = @fields.group_by { |item| item[custom_field_attribute] }.map do |attribute, items|
+        { attribute: attribute, keys: items.map { |item| item[:key] } } # TODO: item?
+      end
+
+      key_group.to_h do |group|
+        [group[:attribute], average_for_field_keys(group[:keys], answers)]
+      end
+    end
+
+    def average_for_field_keys(keys, answers)
+      values = answers.flat_map { |answer| answer.select { |key, _| keys.include?(key) }.values }
+      calculate_average(values)
     end
 
     def totals_by_quarter
@@ -78,11 +106,11 @@ module Surveys
     end
 
     # Generate a flat object for each response including additional attributes
+    # Can add user fields and demographics in here when needed
     def all_answers
       @all_answers ||= @inputs.flat_map do |input|
         input.custom_field_values
           .merge({ 'quarter' => date_to_quarter(input.created_at) })
-          .merge(input.author.custom_field_values)
       end
     end
 
@@ -94,14 +122,12 @@ module Surveys
     end
 
     def switch_keys(hash)
-      converted_hash = {}
-      hash.each do |key, fields|
+      hash.each_with_object({}) do |(key, fields), converted_hash|
         fields.each do |field_id, value|
           converted_hash[field_id] ||= {}
           converted_hash[field_id][key] = value
         end
       end
-      converted_hash
     end
 
     def order_by_quarter(averages)
