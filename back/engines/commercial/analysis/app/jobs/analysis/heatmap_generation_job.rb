@@ -15,7 +15,7 @@ module Analysis
 
       return unless AppConfiguration.instance.feature_activated?('statistical_insights')
 
-      # return unless participants_count >= 30
+      return unless participants_count >= 30
 
       return unless !newest_activity ||
                     newest_activity.payload['participants_count'] != participants_count ||
