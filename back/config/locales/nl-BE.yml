@@ -91,6 +91,9 @@ nl-BE:
     services_description: Openbare diensten
     other: Overige
     other_description: Overige
+    quality_of_life: Kwaliteit van leven
+    service_delivery: Dienstverlening
+    governance_and_trust: Bestuur en vertrouwen
   static_pages:
     terms_and_conditions_title: Gebruiksvoorwaarden
     terms_and_conditions_body: >
@@ -180,6 +183,43 @@ nl-BE:
         title: Typ je antwoord
       ask_follow_up_field:
         title: Vertel ons waarom
+    community_monitor:
+      questions:
+        place_to_live:
+          title: Stad als plek om te wonen
+        sense_of_safety:
+          title: Algemeen gevoel van veiligheid
+        access_to_parks:
+          title: Toegang tot parken, groene ruimten en recreatiemogelijkheden
+        affordable_housing:
+          title: Beschikbaarheid van betaalbare huisvesting
+        employment_opportunities:
+          title: Kansen op werk en economische vooruitgang
+        quality_of_services:
+          title: Algehele kwaliteit van de diensten van de stad
+        overall_value:
+          title: Totale waarde die je krijgt voor je stadsbelastingen en leges
+        cleanliness_and_maintenance:
+          title: Algehele netheid en onderhoud van straten en openbare ruimten
+        trust_in_government:
+          title: Vertrouwen in lokale overheid
+        responsiveness_of_officials:
+          title: Reactievermogen van gekozen ambtenaren op zorgen van de gemeenschap
+        transparency_of_money_spent:
+          title: Transparantie over hoe gemeentelijk belastinggeld wordt besteed
+      question_categories:
+        quality_of_life: Kwaliteit van leven
+        service_delivery: Dienstverlening
+        governance_and_trust: Bestuur en vertrouwen
+        other: Overig
+      labels:
+        label_1: Zeer slecht
+        label_2: Zeer zwak
+        label_3: Eerlijk
+        label_4: Goed
+        label_5: Uitstekend
+      form_end:
+        button_text: Terug naar home
   custom_forms:
     categories:
       main_content:

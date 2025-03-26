@@ -91,6 +91,9 @@ it:
     services_description: Servizi pubblici
     other: Altro
     other_description: Altro
+    quality_of_life: Qualità della vita
+    service_delivery: Consegna del servizio
+    governance_and_trust: Governance e fiducia
   static_pages:
     terms_and_conditions_title: Termini e condizioni
     terms_and_conditions_body: >
@@ -180,6 +183,43 @@ it:
         title: Scrivi la tua risposta
       ask_follow_up_field:
         title: Dicci perché
+    community_monitor:
+      questions:
+        place_to_live:
+          title: La città come luogo in cui vivere
+        sense_of_safety:
+          title: Senso di sicurezza generale
+        access_to_parks:
+          title: Accesso ai parchi, agli spazi verdi e alle opportunità ricreative
+        affordable_housing:
+          title: Disponibilità di alloggi a prezzi accessibili
+        employment_opportunities:
+          title: Opportunità di impiego e di avanzamento economico
+        quality_of_services:
+          title: Qualità complessiva dei servizi offerti dalla città
+        overall_value:
+          title: Il valore complessivo che ricevi per le tue tasse e imposte cittadine
+        cleanliness_and_maintenance:
+          title: Pulizia e manutenzione generale delle strade e degli spazi pubblici
+        trust_in_government:
+          title: Fiducia nell'amministrazione locale
+        responsiveness_of_officials:
+          title: Reazione dei funzionari eletti alle preoccupazioni della comunità
+        transparency_of_money_spent:
+          title: Trasparenza su come vengono spesi i soldi delle tasse comunali
+      question_categories:
+        quality_of_life: Qualità della vita
+        service_delivery: Consegna del servizio
+        governance_and_trust: Governance e fiducia
+        other: Altro
+      labels:
+        label_1: Molto scarso
+        label_2: Povero
+        label_3: Fiera
+        label_4: Buono
+        label_5: Eccellente
+      form_end:
+        button_text: Torna a casa
   custom_forms:
     categories:
       main_content:
