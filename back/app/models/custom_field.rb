@@ -39,6 +39,7 @@
 #  linear_scale_label_10_multiloc :jsonb            not null
 #  linear_scale_label_11_multiloc :jsonb            not null
 #  ask_follow_up                  :boolean          default(FALSE), not null
+#  question_category              :string
 #  page_button_label_multiloc     :jsonb            not null
 #  page_button_link               :string
 #
@@ -80,6 +81,7 @@ class CustomField < ApplicationRecord
   VISIBLE_TO_PUBLIC = 'public'
   VISIBLE_TO_ADMINS = 'admins'
   PAGE_LAYOUTS = %w[default map].freeze
+  QUESTION_CATEGORIES = %w[quality_of_life service_delivery governance_and_trust other].freeze
 
   validates :resource_type, presence: true, inclusion: { in: FIELDABLE_TYPES }
   validates(
@@ -101,6 +103,9 @@ class CustomField < ApplicationRecord
   validates :minimum_select_count, comparison: { greater_than_or_equal_to: 0 }, if: :multiselect?, allow_nil: true
   validates :page_layout, presence: true, inclusion: { in: PAGE_LAYOUTS }, if: :page?
   validates :page_layout, absence: true, unless: :page?
+  validates :question_category, absence: true, unless: :supports_category?
+  validates :question_category, inclusion: { in: QUESTION_CATEGORIES }, allow_nil: true, if: :supports_category?
+  validates :maximum, presence: true, inclusion: 2..11, if: :supports_linear_scale?
 
   before_validation :set_default_enabled
   before_validation :set_default_answer_visible_to
@@ -410,6 +415,25 @@ class CustomField < ApplicationRecord
       resource.participation_context
     end
     phase&.input_term || Phase::FALLBACK_INPUT_TERM
+  end
+
+  def supports_category?
+    participation_context = resource&.participation_context
+    return false unless participation_context
+
+    participation_context.pmethod.supports_custom_field_categories?
+  end
+
+  def question_category
+    return 'other' if super.nil? && supports_category?
+
+    super
+  end
+
+  def question_category_multiloc
+    return nil unless supports_category?
+
+    MultilocService.new.i18n_to_multiloc("custom_fields.community_monitor.question_categories.#{question_category}")
   end
 
   private

@@ -2165,7 +2165,8 @@ CREATE TABLE public.custom_fields (
     linear_scale_label_11_multiloc jsonb DEFAULT '{}'::jsonb NOT NULL,
     ask_follow_up boolean DEFAULT false NOT NULL,
     page_button_label_multiloc jsonb DEFAULT '{}'::jsonb NOT NULL,
-    page_button_link character varying
+    page_button_link character varying,
+    question_category character varying
 );
 
 
@@ -6993,9 +6994,10 @@ ALTER TABLE ONLY public.ideas_topics
 SET search_path TO public,shared_extensions;
 
 INSERT INTO "schema_migrations" (version) VALUES
-('20250307924725'),
 ('20250320010716'),
 ('20250319145637'),
+('20250311141109'),
+('20250307924725'),
 ('20250305111507'),
 ('20250224150953'),
 ('20250219104523'),

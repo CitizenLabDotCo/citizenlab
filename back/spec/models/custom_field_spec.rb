@@ -634,4 +634,79 @@ RSpec.describe CustomField do
       })
     end
   end
+
+  describe 'question_category' do
+    let(:form) { create(:custom_form, participation_context: TimelineService.new.current_phase(project)) }
+    let(:field) { create(:custom_field, resource: form) }
+
+    context 'community_monitor_survey project' do
+      let(:project) { create(:community_monitor_project_with_active_phase) }
+
+      it 'can have an allowed category associated' do
+        field.question_category = 'quality_of_life'
+        expect(field).to be_valid
+      end
+
+      it 'cannot have a topic if it is not in the list of allowed topics' do
+        field.question_category = 'monkeys'
+        expect(field).not_to be_valid
+        expect(field.errors.first.type).to eq :inclusion
+      end
+
+      it 'returns "other" if the question category is not set' do
+        field.question_category = nil
+        expect(field.question_category).to eq 'other'
+      end
+
+      it 'returns the multiloc for the question' do
+        field.question_category = 'quality_of_life'
+        expect(field.question_category_multiloc['en']).to eq 'Quality of life'
+      end
+    end
+
+    context 'native_survey project' do
+      let(:project) { create(:project_with_active_native_survey_phase) }
+
+      it 'cannot have topics associated if the participation method does not allow it' do
+        field.question_category = 'quality_of_life'
+        expect(field).not_to be_valid
+        expect(field.errors.first.type).to eq :present
+      end
+
+      it 'returns nil if the question category is not set' do
+        field.question_category = nil
+        expect(field.question_category).to be_nil
+      end
+
+      it 'returns nil for question_category_multiloc' do
+        expect(field.question_category_multiloc).to be_nil
+      end
+    end
+  end
+
+  describe 'maximum' do
+    context 'linear scale fields' do
+      it 'is valid when maximum is between 2 & 11' do
+        field = build(:custom_field_linear_scale, maximum: 5)
+        expect(field).to be_valid
+      end
+
+      it 'is not valid when maximum is nil' do
+        field = build(:custom_field_linear_scale, maximum: nil)
+        expect(field).not_to be_valid
+      end
+
+      it 'is not valid when maximum is greater than 11' do
+        field = build(:custom_field_linear_scale, maximum: 16)
+        expect(field).not_to be_valid
+      end
+    end
+
+    context 'other fields' do
+      it 'is valid when maximum is nil' do
+        field = build(:custom_field_multiselect, maximum: nil)
+        expect(field).to be_valid
+      end
+    end
+  end
 end
