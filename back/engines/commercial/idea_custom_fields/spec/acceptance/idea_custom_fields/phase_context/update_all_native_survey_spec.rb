@@ -425,6 +425,7 @@ resource 'Idea Custom Fields' do
               enabled: true,
               linear_scale_label_1_multiloc: { 'en' => 'Closest' },
               linear_scale_label_11_multiloc: { 'en' => 'Furthest' },
+              maximum: 11,
               matrix_statements: [
                 {
                   title_multiloc: { en: 'Statement 1' }
@@ -468,7 +469,7 @@ resource 'Idea Custom Fields' do
             linear_scale_label_9_multiloc: {},
             linear_scale_label_10_multiloc: {},
             linear_scale_label_11_multiloc: { en: 'Furthest' },
-            maximum: nil
+            maximum: 11
           },
           id: an_instance_of(String),
           type: 'custom_field',
@@ -658,7 +659,7 @@ resource 'Idea Custom Fields' do
         expect(json_response).to eq({ :errors => { :form => [{ :error => 'stale_data' }] } })
       end
 
-      example '[error] last custom field is not form_end' do
+      example '[error] last custom field is not the end page' do
         custom_form.save!
         request = {
           custom_fields: [
@@ -813,7 +814,7 @@ resource 'Idea Custom Fields' do
 
       example 'Update select field with logic' do
         field_to_update = create(:custom_field_select, :with_options, resource: custom_form)
-        form_end_page = create(:custom_field_page, key: 'form_end', resource: custom_form)
+        form_end_page = create(:custom_field_end_page, resource: custom_form)
         final_page[:id] = form_end_page.id
         request = {
           custom_fields: [

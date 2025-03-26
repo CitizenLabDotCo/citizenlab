@@ -91,6 +91,9 @@ da:
     services_description: Offentlige tjenester
     other: Andet
     other_description: Andet
+    quality_of_life: Livskvalitet
+    service_delivery: Levering af tjenester
+    governance_and_trust: Ledelse og tillid
   static_pages:
     terms_and_conditions_title: Vilkår og Betingelser
     terms_and_conditions_body: >
@@ -180,6 +183,43 @@ da:
         title: Skriv dit svar
       ask_follow_up_field:
         title: Fortæl os hvorfor
+    community_monitor:
+      questions:
+        place_to_live:
+          title: Byen som et sted at bo
+        sense_of_safety:
+          title: Overordnet følelse af sikkerhed
+        access_to_parks:
+          title: Adgang til parker, grønne områder og rekreative muligheder
+        affordable_housing:
+          title: Tilgængelighed af billige boliger
+        employment_opportunities:
+          title: Muligheder for beskæftigelse og økonomisk fremgang
+        quality_of_services:
+          title: Overordnet kvalitet af de tjenester, byen leverer
+        overall_value:
+          title: Den samlede værdi, du får for dine kommunale skatter og afgifter
+        cleanliness_and_maintenance:
+          title: Overordnet renlighed og vedligeholdelse af gader og offentlige rum
+        trust_in_government:
+          title: Tillid til lokale myndigheder
+        responsiveness_of_officials:
+          title: De folkevalgtes lydhørhed over for lokalsamfundets bekymringer
+        transparency_of_money_spent:
+          title: Gennemsigtighed om, hvordan kommunale skattepenge bruges
+      question_categories:
+        quality_of_life: Livskvalitet
+        service_delivery: Levering af tjenester
+        governance_and_trust: Ledelse og tillid
+        other: Uspesifisert
+      labels:
+        label_1: Meget dårlig
+        label_2: Ringe
+        label_3: Fair
+        label_4: God
+        label_5: Fremragende
+      form_end:
+        button_text: Tilbage til start
   custom_forms:
     categories:
       main_content:

@@ -15,7 +15,7 @@ class IdeaCustomFieldsService
 
     fields = fields.to_a
 
-    form_end_field = fields.find { |f| f.key == 'form_end' }
+    form_end_field = fields.find(&:end_page?)
     if form_end_field
       fields.delete(form_end_field)
       fields << form_end_field
@@ -108,21 +108,6 @@ class IdeaCustomFieldsService
     field_params.except(:code, :input_type)
   end
 
-  def check_form_structure(fields, errors)
-    return if fields.empty?
-
-    first_field_type = 'page'
-    if fields[0][:input_type] != first_field_type
-      error = { error: "First field must be of type '#{first_field_type}'" }
-      errors['0'] = { structure: [error] }
-    end
-
-    # Check the last field is a page
-    if fields.last[:input_type] != 'page'
-      errors[(fields.length - 1).to_s] = { structure: [{ error: "Last field must be of type 'page'" }] }
-    end
-  end
-
   def duplicate_all_fields
     fields = all_fields
     logic_id_map = {}
@@ -197,7 +182,7 @@ class IdeaCustomFieldsService
   # Check required as it doesn't matter what is saved in title for page 1
   # Constraints required for the front-end but response will always return input specific method
   def page1_title?(field, attribute)
-    field.code == 'ideation_page1' && attribute == :title_multiloc
+    field.code == 'title_page' && attribute == :title_multiloc
   end
 
   attr_reader :custom_form, :participation_method

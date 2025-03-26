@@ -65,7 +65,7 @@ class JsonFormsService
 
     if participation_method.budget_in_form? current_user
       {
-        'ideation_page3' => 1, # Insert at the top of the details page if the page exists.
+        'details_page' => 1, # Insert at the top of the details page if the page exists.
         'proposed_budget' => 0, # Insert before the proposed budget field if there is no details page.
         'body_multiloc' => 1 # Insert below the body field if there is no details page or proposed budget field.
       }.each do |field_code, idx_diff|
