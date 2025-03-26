@@ -34,15 +34,11 @@ export const TitleControl = ({
   visible,
 }: ControlProps) => {
   const [didBlur, setDidBlur] = useState(false);
-  const [query, setQuery] = useState<string>('');
-  const { onIdeaSelect } = useIdeaSelect();
+  const { setTitle } = useIdeaSelect();
 
-  const debouncedSetQuery = useMemo(
-    () =>
-      debounce((val: string) => {
-        setQuery(val);
-      }, 400),
-    []
+  const debouncedSetTitle = useMemo(
+    () => debounce((val: string) => setTitle(val), 400),
+    [setTitle]
   );
 
   const onChange = useCallback(
@@ -51,9 +47,9 @@ export const TitleControl = ({
         path,
         schema.type === 'number' && value ? parseInt(value, 10) : value
       );
-      debouncedSetQuery(value);
+      debouncedSetTitle(value);
     },
-    [handleChange, path, schema.type, debouncedSetQuery]
+    [handleChange, path, schema.type, debouncedSetTitle]
   );
 
   if (!visible) {
@@ -101,7 +97,7 @@ export const TitleControl = ({
         fieldPath={path}
         didBlur={didBlur}
       />
-      <SimilarIdeasList query={query} onIdeaSelect={onIdeaSelect} />
+      <SimilarIdeasList />
     </Box>
   );
 };
