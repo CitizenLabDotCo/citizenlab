@@ -3,6 +3,17 @@ function goToHomepageBuilder() {
   cy.visit('en/admin/pages-menu/homepage-builder');
 }
 
+function interceptHomepageUpdate() {
+  cy.intercept(
+    'POST',
+    '**/home_pages/content_builder_layouts/homepage/upsert'
+  ).as('updateHomepage');
+}
+
+function verifyHomepageUpdateSuccess() {
+  cy.wait('@updateHomepage').its('response.statusCode').should('eq', 200);
+}
+
 function cleanUpWidget() {
   goToHomepageBuilder();
   cy.get('[data-cy="e2e-areas-widget"]')
@@ -10,8 +21,9 @@ function cleanUpWidget() {
     .parent()
     .click({ force: true });
   cy.get('#e2e-delete-button').click();
+  interceptHomepageUpdate();
   cy.get('#e2e-content-builder-topbar-save').click();
-  cy.wait(1000);
+  verifyHomepageUpdateSuccess();
   cy.log('Cleaned up Areas Widget');
 
   // Make sure it's not on homepage
@@ -29,8 +41,9 @@ function addWidget() {
   });
 
   // Save
+  interceptHomepageUpdate();
   cy.get('#e2e-content-builder-topbar-save').click();
-  cy.wait(1000);
+  verifyHomepageUpdateSuccess();
   cy.log('Added Areas Widget');
 }
 
