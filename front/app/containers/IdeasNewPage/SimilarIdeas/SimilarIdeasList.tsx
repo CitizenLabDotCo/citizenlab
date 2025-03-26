@@ -15,17 +15,17 @@ import useProjectById from 'api/projects/useProjectById';
 import useProjectBySlug from 'api/projects/useProjectBySlug';
 import useSimilarIdeas from 'api/similar_ideas/useSimilarIdeas';
 
+import useLocale from 'hooks/useLocale';
+
 import { useIntl } from 'utils/cl-intl';
 
+import { useIdeaSelect } from './IdeaSelectContext';
 import messages from './messages';
 
-interface Props {
-  query: string;
-  onIdeaSelect?: (ideaId: string) => void;
-}
-
-const SimilarIdeasList = ({ query, onIdeaSelect }: Props) => {
+const SimilarIdeasList = () => {
+  const { onIdeaSelect, title, body } = useIdeaSelect();
   const { formatMessage } = useIntl();
+  const currentLocale = useLocale();
   const { slug: projectSlug } = useParams() as { slug: string };
   const [searchParams] = useSearchParams();
   const { ideaId: idea_id } = useParams<{
@@ -42,8 +42,13 @@ const SimilarIdeasList = ({ query, onIdeaSelect }: Props) => {
   const { data: ideas, isLoading } = useSimilarIdeas(
     {
       idea: {
-        title_multiloc: { en: query },
         project_id: project?.data.id,
+        ...(title.trim() && {
+          title_multiloc: { [currentLocale]: title },
+        }),
+        ...(body.trim() && {
+          body_multiloc: { [currentLocale]: body },
+        }),
       },
     },
     { enabled: !!project?.data.id }
@@ -61,8 +66,10 @@ const SimilarIdeasList = ({ query, onIdeaSelect }: Props) => {
       </Box>
     );
   }
+  const isTitleShort = !title || title.length < 3;
+  const isDescriptionShort = !body || body.length < 3;
 
-  if (!ideas || !query || query.length < 3) return null;
+  if (!ideas || (isTitleShort && isDescriptionShort)) return null;
 
   if (ideas.data.length === 0) {
     return (
@@ -101,7 +108,7 @@ const SimilarIdeasList = ({ query, onIdeaSelect }: Props) => {
           py="12px"
         >
           <Box
-            onClick={() => onIdeaSelect?.(idea.id)}
+            onClick={() => onIdeaSelect(idea.id)}
             style={{ cursor: 'pointer' }}
             display="flex"
             justifyContent="space-between"
