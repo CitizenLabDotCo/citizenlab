@@ -91,6 +91,9 @@ de:
     services_description: Öffentliche Dienstleistungen
     other: Sonstiges
     other_description: Sonstiges
+    quality_of_life: Qualität des Lebens
+    service_delivery: Bereitstellung von Dienstleistungen
+    governance_and_trust: Governance und Vertrauen
   static_pages:
     terms_and_conditions_title: Nutzungsbedingungen
     terms_and_conditions_body: >
@@ -180,6 +183,43 @@ de:
         title: Antwort eingeben
       ask_follow_up_field:
         title: Erzähl uns mehr
+    community_monitor:
+      questions:
+        place_to_live:
+          title: Die Stadt als Lebensraum
+        sense_of_safety:
+          title: Allgemeines Gefühl der Sicherheit
+        access_to_parks:
+          title: Zugang zu Parks, Grünflächen und Erholungsmöglichkeiten
+        affordable_housing:
+          title: Verfügbarkeit von erschwinglichem Wohnraum
+        employment_opportunities:
+          title: Beschäftigung und wirtschaftliche Aufstiegschancen
+        quality_of_services:
+          title: Gesamtqualität der von der Stadt angebotenen Dienstleistungen
+        overall_value:
+          title: Gesamtwert, den Sie für Ihre städtischen Steuern und Gebühren erhalten
+        cleanliness_and_maintenance:
+          title: Allgemeine Sauberkeit und Pflege von Straßen und öffentlichen Plätzen
+        trust_in_government:
+          title: Vertrauen in die lokale Regierung
+        responsiveness_of_officials:
+          title: Reaktionsfähigkeit gewählter Beamter auf die Anliegen der Gemeinschaft
+        transparency_of_money_spent:
+          title: Transparenz darüber, wie kommunale Steuergelder ausgegeben werden
+      question_categories:
+        quality_of_life: Qualität des Lebens
+        service_delivery: Bereitstellung von Dienstleistungen
+        governance_and_trust: Governance und Vertrauen
+        other: Sonstiges
+      labels:
+        label_1: Sehr schlecht
+        label_2: Schlecht
+        label_3: Messe
+        label_4: Gut
+        label_5: Ausgezeichnet
+      form_end:
+        button_text: Zurück nach Hause
   custom_forms:
     categories:
       main_content:
