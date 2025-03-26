@@ -60,7 +60,8 @@ const FormResults = (props: Props) => {
       <Box>
         {results.map((result, index) => {
           if (result.inputType === 'page') {
-            const categoryKey = results[index + 1].questionCategory;
+            // Get the question category key from the first question in the page
+            const categoryKey = results[index + 1]?.questionCategory;
             return (
               <Box
                 display="flex"

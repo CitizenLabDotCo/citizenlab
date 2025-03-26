@@ -41,7 +41,7 @@ const TextResponses = ({
     estimateSize: () => 100,
   });
 
-  const getResponsesTitle = () => {
+  const getTextResponseTitle = () => {
     if (hasOtherResponses) {
       return formatMessage(messages.otherResponses);
     }
@@ -55,7 +55,7 @@ const TextResponses = ({
     <Box bg={colors.grey100} height="460px">
       <Box borderBottom={`1px solid ${colors.divider}`} p="24px" height="60px">
         <Text fontWeight="bold" m="0px">
-          {getResponsesTitle()} ({textResponses.length})
+          {getTextResponseTitle()} ({textResponses.length})
         </Text>
       </Box>
 

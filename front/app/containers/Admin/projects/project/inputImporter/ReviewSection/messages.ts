@@ -14,8 +14,8 @@ export default defineMessages({
     defaultMessage:
       'Nothing to review yet. Click "{importFile}" to import a PDF file containing scanned input forms or an Excel file containing inputs.',
   },
-  noIdeasYetCommunityMonitor: {
-    id: 'app.containers.Admin.projects.project.offlineInputs.ReviewSection.noIdeasYetCommunityMonitor',
+  noIdeasYetNoPdf: {
+    id: 'app.containers.Admin.projects.project.offlineInputs.ReviewSection.noIdeasYetNoPdf',
     defaultMessage:
       'Nothing to review yet. Click "{importFile}" to import an Excel file containing inputs.',
   },

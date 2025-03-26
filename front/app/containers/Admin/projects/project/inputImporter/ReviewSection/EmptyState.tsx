@@ -35,6 +35,7 @@ import { saveSurveyAsPDF } from '../../nativeSurvey/saveSurveyAsPDF';
 import sharedMessages from '../messages';
 
 import messages from './messages';
+import { isPDFUploadSupported, supportsNativeSurvey } from './utils';
 
 const EmptyState = () => {
   const [exportModalOpen, setExportModalOpen] = useState(false);
@@ -46,8 +47,7 @@ const EmptyState = () => {
   const { data: project } = useProjectById(projectId);
   const { data: phase } = usePhase(phaseId);
 
-  const isCommunityMonitor =
-    phase?.data.attributes.participation_method === 'community_monitor_survey';
+  const participationMethod = phase?.data.attributes.participation_method;
 
   const importPrintedFormsAllowed = useFeatureFlag({
     name: 'import_printed_forms',
@@ -58,6 +58,8 @@ const EmptyState = () => {
     name: 'input_importer',
     onlyCheckAllowed: true,
   });
+
+  const pdfImportSupported = isPDFUploadSupported(participationMethod);
 
   if (!project || !phase) {
     return null;
@@ -82,8 +84,7 @@ const EmptyState = () => {
   const handleExportPDF = async ({ personal_data }: FormValues) => {
     if (isNilOrError(locale)) return;
 
-    // TODO: Fix this the next time the file is edited.
-    if (phase.data.attributes.participation_method === 'native_survey') {
+    if (supportsNativeSurvey(participationMethod)) {
       await saveSurveyAsPDF({
         downloadPdfLink: surveyDownloadPdfLink,
         locale,
@@ -116,24 +117,17 @@ const EmptyState = () => {
           <FormattedMessage {...sharedMessages.inputImporter} />
         </Title>
         <Text>
-          {isCommunityMonitor ? (
-            <FormattedMessage
-              {...messages.noIdeasYetCommunityMonitor}
-              values={{
-                importFile: <FormattedMessage {...sharedMessages.importFile} />,
-              }}
-            />
-          ) : (
-            <FormattedMessage
-              {...messages.noIdeasYet}
-              values={{
-                importFile: <FormattedMessage {...sharedMessages.importFile} />,
-              }}
-            />
-          )}
+          <FormattedMessage
+            {...(pdfImportSupported
+              ? messages.noIdeasYet
+              : messages.noIdeasYetNoPdf)}
+            values={{
+              importFile: <FormattedMessage {...sharedMessages.importFile} />,
+            }}
+          />
         </Text>
         <Box display="flex">
-          {!isCommunityMonitor && (
+          {pdfImportSupported && (
             <UpsellTooltip disabled={importPrintedFormsAllowed}>
               <Button
                 bgColor={colors.primary}
@@ -165,11 +159,7 @@ const EmptyState = () => {
       <PDFExportModal
         open={exportModalOpen}
         formType={
-          // TODO: Fix this the next time the file is edited.
-          // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-          phase?.data.attributes.participation_method === 'native_survey'
-            ? 'survey'
-            : 'idea_form'
+          supportsNativeSurvey(participationMethod) ? 'survey' : 'idea_form'
         }
         onClose={() => setExportModalOpen(false)}
         onExport={handleExportPDF}
