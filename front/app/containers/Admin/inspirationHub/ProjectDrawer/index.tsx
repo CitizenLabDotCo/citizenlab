@@ -15,6 +15,7 @@ import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
 
 import { useLocalizeProjectLibrary } from '../utils';
 
+import Comments from './Comments';
 import Header from './Header';
 import messages from './messages';
 import Phase from './Phase';
@@ -78,6 +79,7 @@ const ProjectDrawer = () => {
               />
             ))}
           </Box>
+          <Box mt="32px">{projectId && <Comments projectId={projectId} />}</Box>
         </Box>
       )}
     </SideModal>

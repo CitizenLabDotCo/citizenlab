@@ -1344,28 +1344,22 @@
         }
       },
 
-      "similar_inputs": {
+      "authoring_assistance_prototype": {
         "type": "object",
-        "title": "Experimental feature: Similar inputs",
-        "description":	"Show similar inputs (ideas) when viewing the page of an input, using AI (Cohere multilingual word embeddings). Inputs posted while the feature was disabled will not be included.",
+        "title": "Experimental feature: Authoring assistance prototype",
+        "description":	"Show an informative box to admins on the idea pages with guidance on how the written text could be improved (duplicate detection, toxicity, free custom prompt...). Inputs posted while the feature was disabled will not be included as duplicates.",
         "additionalProperties": false,
         "required": ["allowed", "enabled"],
-        "required-settings": ["admins_only"],
         "properties": {
           "allowed": { "type": "boolean", "default": false},
-          "enabled": { "type": "boolean", "default": false},
-          "admins_only": {
-            "title": "Only admins can see similar inputs",
-            "type": "boolean",
-            "default": true
-          }
+          "enabled": { "type": "boolean", "default": false}
         }
       },
 
       "authoring_assistance": {
         "type": "object",
-        "title": "Experimental feature: Authoring assistance",
-        "description":	"Show an informative box to admins on the idea pages with guidance on how the written text could be improved (duplicate detection, toxicity, free custom prompt...). Inputs posted while the feature was disabled will not be included as duplicates.",
+        "title": "Authoring assistance",
+        "description":	"Help the user with writing better ideas and proposals through AI assistance while typing in the input form. Inputs posted while the feature was disabled will not be listed as similar inputs.",
         "additionalProperties": false,
         "required": ["allowed", "enabled"],
         "properties": {
