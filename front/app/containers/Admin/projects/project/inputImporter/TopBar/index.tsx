@@ -46,9 +46,16 @@ const TopBar = ({ onClickPDFImport, onClickExcelImport }: Props) => {
   const isSurvey =
     phase?.data.attributes.participation_method === 'native_survey';
 
-  const backPath: RouteType = isSurvey
+  const isCommunityMonitor =
+    phase?.data.attributes.participation_method === 'community_monitor_survey';
+
+  let backPath: RouteType = isSurvey
     ? `/admin/projects/${projectId}/phases/${phaseId}/native-survey`
     : `/admin/projects/${projectId}/phases/${phaseId}/ideas`;
+
+  if (isCommunityMonitor) {
+    backPath = `/admin/community-monitor/settings`;
+  }
 
   return (
     <Box

@@ -45,10 +45,15 @@ const EmptyState = () => {
   };
   const { data: project } = useProjectById(projectId);
   const { data: phase } = usePhase(phaseId);
+
+  const isCommunityMonitor =
+    phase?.data.attributes.participation_method === 'community_monitor_survey';
+
   const importPrintedFormsAllowed = useFeatureFlag({
     name: 'import_printed_forms',
     onlyCheckAllowed: true,
   });
+
   const inputImporterAllowed = useFeatureFlag({
     name: 'input_importer',
     onlyCheckAllowed: true,
@@ -78,8 +83,7 @@ const EmptyState = () => {
     if (isNilOrError(locale)) return;
 
     // TODO: Fix this the next time the file is edited.
-    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-    if (phase?.data.attributes.participation_method === 'native_survey') {
+    if (phase.data.attributes.participation_method === 'native_survey') {
       await saveSurveyAsPDF({
         downloadPdfLink: surveyDownloadPdfLink,
         locale,
@@ -112,28 +116,40 @@ const EmptyState = () => {
           <FormattedMessage {...sharedMessages.inputImporter} />
         </Title>
         <Text>
-          <FormattedMessage
-            {...messages.noIdeasYet}
-            values={{
-              importFile: <FormattedMessage {...sharedMessages.importFile} />,
-            }}
-          />
+          {isCommunityMonitor ? (
+            <FormattedMessage
+              {...messages.noIdeasYetCommunityMonitor}
+              values={{
+                importFile: <FormattedMessage {...sharedMessages.importFile} />,
+              }}
+            />
+          ) : (
+            <FormattedMessage
+              {...messages.noIdeasYet}
+              values={{
+                importFile: <FormattedMessage {...sharedMessages.importFile} />,
+              }}
+            />
+          )}
         </Text>
         <Box display="flex">
-          <UpsellTooltip disabled={importPrintedFormsAllowed}>
-            <Button
-              bgColor={colors.primary}
-              onClick={handleDownloadPDF}
-              width="auto"
-              icon="download"
-              data-cy="e2e-save-input-form-pdf"
-              mr="8px"
-              disabled={!importPrintedFormsAllowed}
-            >
-              {/* TODO: distinguish copies between surveys and inputs */}
-              <FormattedMessage {...buttonMessages.downloadInputForm} />
-            </Button>
-          </UpsellTooltip>
+          {!isCommunityMonitor && (
+            <UpsellTooltip disabled={importPrintedFormsAllowed}>
+              <Button
+                bgColor={colors.primary}
+                onClick={handleDownloadPDF}
+                width="auto"
+                icon="download"
+                data-cy="e2e-save-input-form-pdf"
+                mr="8px"
+                disabled={!importPrintedFormsAllowed}
+              >
+                {/* TODO: distinguish copies between surveys and inputs */}
+                <FormattedMessage {...buttonMessages.downloadInputForm} />
+              </Button>
+            </UpsellTooltip>
+          )}
+
           <UpsellTooltip disabled={inputImporterAllowed}>
             <Button
               buttonStyle="secondary-outlined"
