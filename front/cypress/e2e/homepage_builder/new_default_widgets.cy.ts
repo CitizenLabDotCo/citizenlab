@@ -57,7 +57,7 @@ describe('New default widgets', () => {
     const widget = cy.get('.e2e-followed-items');
     widget.should('exist');
     widget
-      .get('.e2e-light-project-card')
+      .get('[data-cy="e2e-light-project-card"]')
       .first()
       .should('contain', projectTitle);
 

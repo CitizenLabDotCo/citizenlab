@@ -33,7 +33,7 @@ export const useRansackParam = <ParamName extends keyof RansackParams>(
 };
 
 const RANSACK_PARAMS: (keyof RansackParams)[] = [
-  'q[tenant_country_alpha2_eq]',
+  'q[tenant_country_code_eq]',
   'q[tenant_population_group_eq]',
   'q[score_total_gteq]',
   'q[phases_participation_method_eq]',

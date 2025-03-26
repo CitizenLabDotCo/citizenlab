@@ -91,6 +91,9 @@ hr:
     services_description: Javne usluge
     other: Ostalo
     other_description: Ostalo
+    quality_of_life: Kvaliteta života
+    service_delivery: Isporuka usluga
+    governance_and_trust: Upravljanje i povjerenje
   static_pages:
     terms_and_conditions_title: Uvjeti i odredbe
     terms_and_conditions_body: >
@@ -180,6 +183,43 @@ hr:
         title: Upišite svoj odgovor
       ask_follow_up_field:
         title: Reci nam zašto
+    community_monitor:
+      questions:
+        place_to_live:
+          title: Grad kao mjesto za život
+        sense_of_safety:
+          title: Opći osjećaj sigurnosti
+        access_to_parks:
+          title: Pristup parkovima, zelenim površinama i mogućnostima za rekreaciju
+        affordable_housing:
+          title: Dostupnost pristupačnog stanovanja
+        employment_opportunities:
+          title: Mogućnosti zapošljavanja i ekonomskog napredovanja
+        quality_of_services:
+          title: Ukupna kvaliteta usluga koje pruža grad
+        overall_value:
+          title: Ukupna vrijednost koju dobivate za gradske poreze i naknade
+        cleanliness_and_maintenance:
+          title: Cjelokupna čistoća i održavanje ulica i javnih površina
+        trust_in_government:
+          title: Povjerenje u lokalnu vlast
+        responsiveness_of_officials:
+          title: Odaziv izabranih dužnosnika na probleme zajednice
+        transparency_of_money_spent:
+          title: Transparentnost o tome kako se troši novac od općinskih poreza
+      question_categories:
+        quality_of_life: Kvaliteta života
+        service_delivery: Isporuka usluga
+        governance_and_trust: Upravljanje i povjerenje
+        other: ostalo
+      labels:
+        label_1: Vrlo siromašan
+        label_2: Jadno
+        label_3: Fer
+        label_4: Dobro
+        label_5: Izvrsno
+      form_end:
+        button_text: Povratak kući
   custom_forms:
     categories:
       main_content:

@@ -91,6 +91,9 @@ hu:
     services_description: Közszolgáltatások
     other: Más
     other_description: Más
+    quality_of_life: Életminőség
+    service_delivery: Szolgáltatásnyújtás
+    governance_and_trust: Kormányzás és bizalom
   static_pages:
     terms_and_conditions_title: Feltételek
     terms_and_conditions_body: >
@@ -180,6 +183,43 @@ hu:
         title: Írja be a választ
       ask_follow_up_field:
         title: Mondd el, miért
+    community_monitor:
+      questions:
+        place_to_live:
+          title: A város, mint lakóhely
+        sense_of_safety:
+          title: Általános biztonságérzet
+        access_to_parks:
+          title: Hozzáférés a parkokhoz, zöldterületekhez és kikapcsolódási lehetőségekhez
+        affordable_housing:
+          title: Megfizethető lakhatási lehetőség
+        employment_opportunities:
+          title: Munkavállalási és gazdasági előrelépési lehetőség
+        quality_of_services:
+          title: A város által nyújtott szolgáltatások általános minősége
+        overall_value:
+          title: A városi adók és díjak teljes összege
+        cleanliness_and_maintenance:
+          title: Az utcák és közterek általános tisztasága és karbantartása
+        trust_in_government:
+          title: Bízzon az önkormányzatban
+        responsiveness_of_officials:
+          title: A választott tisztségviselők reagálása a közösségi aggodalmakra
+        transparency_of_money_spent:
+          title: Az önkormányzati adópénzek elköltésének átláthatósága
+      question_categories:
+        quality_of_life: Életminőség
+        service_delivery: Szolgáltatásnyújtás
+        governance_and_trust: Kormányzás és bizalom
+        other: Más
+      labels:
+        label_1: Nagyon szegény
+        label_2: Szegény
+        label_3: Igazságos
+        label_4: Jó
+        label_5: Kiváló
+      form_end:
+        button_text: Vissza haza
   custom_forms:
     categories:
       main_content:

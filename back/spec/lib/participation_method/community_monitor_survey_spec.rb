@@ -70,7 +70,7 @@ RSpec.describe ParticipationMethod::CommunityMonitorSurvey do
       # Last page
       expect(participation_method.default_fields(form).last.page_button_link).to eq '/'
       expect(participation_method.default_fields(form).last.page_button_label_multiloc).to match(
-        { 'en' => 'Back to home', 'fr-FR' => 'Back to home', 'nl-NL' => 'Back to home' }
+        { 'en' => 'Back to home', 'fr-FR' => "Retour à l'accueil", 'nl-NL' => 'Terug naar home' }
       )
     end
   end
