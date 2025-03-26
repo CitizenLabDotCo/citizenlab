@@ -15,22 +15,24 @@ export interface IAreasQueryParams {
   includeStaticPages?: boolean;
 }
 
+type AreaAttributes = {
+  title_multiloc: Multiloc;
+  description_multiloc: Multiloc;
+  ordering: number;
+  static_page_ids: string[];
+  followers_count: number;
+  include_in_onboarding: boolean;
+};
+
 export interface IAreaData {
   id: string;
-  type: string;
-  attributes: {
-    title_multiloc: Multiloc;
-    description_multiloc: Multiloc;
-    ordering: number;
-    static_page_ids: string[];
-    followers_count: number;
-    include_in_onboarding: boolean;
-  };
+  type: 'area';
+  attributes: AreaAttributes;
   relationships: {
-    static_pages: {
+    static_pages?: {
       data: IRelationship[];
     };
-    user_follower: {
+    user_follower?: {
       data: IRelationship | null;
     };
   };
@@ -55,4 +57,19 @@ export interface IAreaUpdate {
   description_multiloc?: Multiloc;
   ordering?: number;
   include_in_onboarding?: boolean;
+}
+
+export interface IAreasWithProjectsCountsQueryParams {
+  pageNumber?: number;
+  pageSize?: number;
+}
+
+export interface IAreaWithProjectCounts extends Omit<IAreaData, 'attributes'> {
+  attributes: AreaAttributes & {
+    visible_projects_count: number;
+  };
+}
+
+export interface IAreasWithProjectsCounts {
+  data: IAreaWithProjectCounts[];
 }
