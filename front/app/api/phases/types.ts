@@ -56,6 +56,7 @@ export interface IPhaseAttributes {
   presentation_mode: PresentationMode;
   survey_service?: TSurveyService | null;
   survey_embed_url?: string | null;
+  survey_popup_frequency?: number | null;
   poll_anonymous?: boolean;
   ideas_order?: IdeaSortMethod;
   document_annotation_embed_url?: string | null;
@@ -114,6 +115,7 @@ export interface IUpdatedPhaseProperties {
   voting_term_plural_multiloc?: Multiloc | null;
   survey_service?: TSurveyService | null;
   survey_embed_url?: string | null;
+  survey_popup_frequency?: number | null;
   poll_anonymous?: boolean;
   ideas_order?: IdeaSortMethod;
   document_annotation_embed_url?: string | null;
@@ -151,6 +153,7 @@ export type ParticipationMethod =
   | 'ideation'
   | 'information'
   | 'native_survey'
+  | 'community_monitor_survey'
   | 'survey'
   | 'voting'
   | 'poll'

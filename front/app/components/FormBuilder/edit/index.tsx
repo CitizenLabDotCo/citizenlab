@@ -252,6 +252,7 @@ const FormEdit = ({
         title_multiloc: field.title_multiloc || {},
         key: field.key,
         code: field.code,
+        question_category: field.question_category,
         ...(field.page_layout || field.input_type === 'page'
           ? {
               page_layout: field.page_layout || 'default',
