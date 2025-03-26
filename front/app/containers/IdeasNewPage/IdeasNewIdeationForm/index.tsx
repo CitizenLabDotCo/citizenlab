@@ -101,6 +101,8 @@ const IdeasNewIdeationForm = ({ project, phaseId }: Props) => {
   const handleCloseDetail = () => {
     setSelectedIdeaId(null);
   };
+  const [title, setTitle] = useState('');
+  const [body, setBody] = useState('');
 
   // Click on map flow : Reverse geocode the location if it's in the url params
   useEffect(() => {
@@ -304,7 +306,13 @@ const IdeasNewIdeationForm = ({ project, phaseId }: Props) => {
                     display="flex"
                   >
                     <IdeaSelectContext.Provider
-                      value={{ onIdeaSelect: setSelectedIdeaId }}
+                      value={{
+                        onIdeaSelect: setSelectedIdeaId,
+                        title,
+                        body,
+                        setTitle,
+                        setBody,
+                      }}
                     >
                       <Form
                         schema={schema}
