@@ -12,6 +12,7 @@ class ActivitiesService
     create_basket_not_submitted_activities now
     create_survey_not_submitted_activities now
     create_phase_ended_activities now
+    create_generate_heatmap_activities now
   end
 
   private
@@ -98,6 +99,31 @@ class ActivitiesService
     Phase.published.where(end_at: ..now - 1.day).each do |phase|
       if Activity.find_by(item: phase, action: 'ended').nil?
         LogActivityJob.perform_later(phase, 'ended', nil, now)
+      end
+    end
+  end
+
+  def create_generate_heatmap_activities(now)
+    start_hour_utc = ENV.fetch('HEATMAP_CALCULATION_START_HOUR_UTC').to_i
+    current_hour = now.utc.hour
+
+    analyses = Analysis.all.order(created_at: :asc)
+    groups = Array.new(10) { [] }
+    
+    # Distribute analyses across groups
+    analyses.each_with_index do |analysis, index|
+      groups[index % 10] << analysis
+    end
+
+    # Process the appropriate group based on the current hour
+    groups.each_with_index do |group, index|
+      offset_hour = (start_hour_utc + index) % 24
+      
+      if current_hour == offset_hour
+        group.each do |analysis|
+          HeatmapGenerationJob.perform_later(analysis)
+        end
+        break # Only one group should be processed per hour
       end
     end
   end
