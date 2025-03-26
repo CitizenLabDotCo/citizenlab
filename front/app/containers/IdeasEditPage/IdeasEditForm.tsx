@@ -61,7 +61,8 @@ const IdeasEditForm = ({ ideaId }: Props) => {
   const { data: idea } = useIdeaById(ideaId);
   const { mutate: deleteIdeaImage } = useDeleteIdeaImage();
   const isSmallerThanPhone = useBreakpoint('phone');
-
+  const [title, setTitle] = useState('');
+  const [body, setBody] = useState('');
   const { mutateAsync: updateIdea } = useUpdateIdea();
   const { data: remoteImages } = useIdeaImages(ideaId);
   const { data: remoteFiles } = useIdeaFiles(ideaId);
@@ -309,7 +310,13 @@ const IdeasEditForm = ({ ideaId }: Props) => {
                     pb={isSmallerThanPhone ? '0' : '80px'}
                   >
                     <IdeaSelectContext.Provider
-                      value={{ onIdeaSelect: setSelectedIdeaId }}
+                      value={{
+                        onIdeaSelect: setSelectedIdeaId,
+                        title,
+                        body,
+                        setTitle,
+                        setBody,
+                      }}
                     >
                       <Form
                         schema={schema}
