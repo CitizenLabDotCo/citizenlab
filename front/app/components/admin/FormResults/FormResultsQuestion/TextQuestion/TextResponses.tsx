@@ -21,11 +21,13 @@ type TextResponsesProps = {
     answer: string;
   }[];
   hasOtherResponses?: boolean;
+  hasFollowUpResponses?: boolean;
 };
 
 const TextResponses = ({
   textResponses,
   hasOtherResponses,
+  hasFollowUpResponses,
 }: TextResponsesProps) => {
   const parentRef = React.useRef(null);
   const { formatMessage } = useIntl();
@@ -39,14 +41,21 @@ const TextResponses = ({
     estimateSize: () => 100,
   });
 
+  const getResponsesTitle = () => {
+    if (hasOtherResponses) {
+      return formatMessage(messages.otherResponses);
+    }
+    if (hasFollowUpResponses) {
+      return formatMessage(messages.followUpResponses);
+    }
+    return formatMessage(messages.allResponses);
+  };
+
   return (
     <Box bg={colors.grey100} height="460px">
       <Box borderBottom={`1px solid ${colors.divider}`} p="24px" height="60px">
         <Text fontWeight="bold" m="0px">
-          {hasOtherResponses
-            ? formatMessage(messages.otherResponses)
-            : formatMessage(messages.allResponses)}{' '}
-          ({textResponses.length})
+          {getResponsesTitle()} ({textResponses.length})
         </Text>
       </Box>
 
