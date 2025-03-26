@@ -3,13 +3,7 @@
 require 'rails_helper'
 require './spec/services/surveys/shared/survey_setup'
 
-# This spec describes:
-#   * Unsupported fields are not considered. Unsupported means that we do
-#     not have a visit_xxx method on the described class.
-#   * Results are generated only for reportable fields (i.e. enabled).
-#   * The order of the results is the same as the field order in the form.
-#   * Results for one field are ordered in descending order.
-#   * Result generation is supported for phases only.
+# NOTE: These tests only test the addition of filtering by year & quarter to results
 
 RSpec.describe Surveys::ResultsWithDateGenerator do
   subject(:generator) { described_class.new survey_phase, year: year, quarter: quarter }
