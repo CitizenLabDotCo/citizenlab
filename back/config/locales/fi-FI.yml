@@ -91,6 +91,9 @@ fi:
     services_description: Julkiset palvelut
     other: Muu
     other_description: Muu
+    quality_of_life: Elämänlaatu
+    service_delivery: Palvelun toimitus
+    governance_and_trust: Hallinto ja luottamus
   static_pages:
     terms_and_conditions_title: Käyttöehdot
     terms_and_conditions_body: >
@@ -180,6 +183,43 @@ fi:
         title: Kirjoita vastauksesi
       ask_follow_up_field:
         title: Kerro meille miksi
+    community_monitor:
+      questions:
+        place_to_live:
+          title: Kaupunki asuinpaikkana
+        sense_of_safety:
+          title: Yleinen turvallisuuden tunne
+        access_to_parks:
+          title: Pääsy puistoihin, viheralueisiin ja virkistysmahdollisuuksiin
+        affordable_housing:
+          title: Edullisen asunnon saatavuus
+        employment_opportunities:
+          title: Työllistymis- ja etenemismahdollisuudet
+        quality_of_services:
+          title: Kaupungin tarjoamien palvelujen yleinen laatu
+        overall_value:
+          title: Kokonaisarvo, jonka saat kaupunkiveroistasi ja -maksuistasi
+        cleanliness_and_maintenance:
+          title: Katujen ja julkisten tilojen yleinen siisteys ja kunnossapito
+        trust_in_government:
+          title: Luota paikallishallintoon
+        responsiveness_of_officials:
+          title: Valittujen virkamiesten reagointi yhteisön huolenaiheisiin
+        transparency_of_money_spent:
+          title: Avoimuus kunnallisverovarojen käytön suhteen
+      question_categories:
+        quality_of_life: Elämänlaatu
+        service_delivery: Palvelun toimitus
+        governance_and_trust: Hallinto ja luottamus
+        other: Muut
+      labels:
+        label_1: Erittäin köyhä
+        label_2: Huono
+        label_3: Reilu
+        label_4: Hyvä
+        label_5: Erinomainen
+      form_end:
+        button_text: Takaisin kotiin
   custom_forms:
     categories:
       main_content:

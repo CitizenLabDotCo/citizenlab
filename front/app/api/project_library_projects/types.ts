@@ -64,7 +64,7 @@ export interface ProjectLibraryProjectData {
     end_at: string | null;
     folder_id: string | null;
     folder_title_en: string | null;
-    folder_title_multiloc: Multiloc;
+    folder_title_multiloc: Multiloc | null;
     image_url: string | null;
     participants: number;
     practical_end_at: string | null;

@@ -313,6 +313,15 @@ Rails.application.routes.draw do
           post "#{vm.name}/verification", to: 'verifications#create', on: :collection, :defaults => { method_name: vm.name }
         end
       end
+
+      # Somewhat confusingly, custom_fields are accessed separately as a
+      # resource as either user custom_fields (in separate engine) or input
+      # custom_fields (nested under projects/phases). custom_field_bins behave
+      # exactly the same for both types of custom fields, so we define them here
+      # and mount them under the otherwise empty custom_fields route.
+      resources :custom_fields, only: [] do
+        resources :custom_field_bins, only: %i[index show], shallow: true
+      end
     end
   end
 
