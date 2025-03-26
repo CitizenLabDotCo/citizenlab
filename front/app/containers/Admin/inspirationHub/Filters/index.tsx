@@ -7,7 +7,6 @@ import Dates from './Dates';
 import Method from './Method';
 import Population from './Population';
 import Search from './Search';
-import Status from './Status';
 
 const Filters = () => {
   return (
@@ -21,7 +20,6 @@ const Filters = () => {
         <Country />
         <Method />
         <Population />
-        <Status />
         <Dates />
       </Box>
       <Search />

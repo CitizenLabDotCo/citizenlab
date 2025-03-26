@@ -28,7 +28,7 @@ export const getFieldBackgroundColor = (
     return rgba(colors.tealLight, 0.7);
   } else if (hasErrors) {
     return colors.errorLight;
-  } else if (['page', 'section'].includes(field.input_type)) {
+  } else if (field.input_type === 'page') {
     return rgba(colors.coolGrey300, 0.15);
   }
   return undefined;

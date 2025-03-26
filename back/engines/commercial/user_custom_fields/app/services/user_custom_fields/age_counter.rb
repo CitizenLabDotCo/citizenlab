@@ -26,8 +26,11 @@ module UserCustomFields
     end
 
     def convert_to_birthyear(age, time: Time.zone.now)
-      birth_time = time - (age * 1.year)
-      birth_time.year
+      if age == Float::INFINITY
+        - Float::INFINITY
+      else
+        (time - (age.year + 6.months)).year
+      end
     end
 
     private

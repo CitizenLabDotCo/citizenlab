@@ -65,8 +65,8 @@ sv:
     waste_description: Renlighet och avfall
     sustainability: Hållbar utveckling
     sustainability_description: Hållbar utveckling
-    mobility: Rörlighet
-    mobility_description: Rörlighet
+    mobility: Mobilitet
+    mobility_description: Mobilitet
     technology: Energi och teknik
     technology_description: Energi och teknik
     economy: Arbete, ekonomi och turism
@@ -91,6 +91,9 @@ sv:
     services_description: Offentliga tjänster
     other: Annat
     other_description: Annat
+    quality_of_life: Livskvalitet
+    service_delivery: Leverans av tjänster
+    governance_and_trust: Styrning och förtroende
   static_pages:
     terms_and_conditions_title: Villkor
     terms_and_conditions_body: >
@@ -168,18 +171,55 @@ sv:
       attachments:
         title: Bilagor
         description:
-      section1:
+      page1:
         description:
-      section2:
+      page2:
         title: Bilder och bilagor
         description:
-      section3:
+      page3:
         title: Detaljer
         description:
       other_input_field:
         title: Skriv in ditt svar
       ask_follow_up_field:
         title: Berätta för oss varför
+    community_monitor:
+      questions:
+        place_to_live:
+          title: Staden som en plats att bo på
+        sense_of_safety:
+          title: Övergripande känsla av säkerhet
+        access_to_parks:
+          title: Tillgång till parker, grönområden och rekreationsmöjligheter
+        affordable_housing:
+          title: Tillgång till prisvärda bostäder
+        employment_opportunities:
+          title: Möjligheter till sysselsättning och ekonomisk utveckling
+        quality_of_services:
+          title: Övergripande kvalitet på de tjänster som staden tillhandahåller
+        overall_value:
+          title: Det totala värdet du får för dina kommunala skatter och avgifter
+        cleanliness_and_maintenance:
+          title: Övergripande renlighet och underhåll av gator och offentliga utrymmen
+        trust_in_government:
+          title: Förtroende för lokala myndigheter
+        responsiveness_of_officials:
+          title: De förtroendevaldas lyhördhet för samhällets angelägenheter
+        transparency_of_money_spent:
+          title: Öppenhet om hur kommunala skattepengar används
+      question_categories:
+        quality_of_life: Livskvalitet
+        service_delivery: Leverans av tjänster
+        governance_and_trust: Styrning och förtroende
+        other: Övriga
+      labels:
+        label_1: Mycket dålig
+        label_2: Dålig
+        label_3: Rättvist
+        label_4: Bra
+        label_5: Utmärkt
+      form_end:
+        button_text: Tillbaka till hemsidan
   custom_forms:
     categories:
       main_content:

@@ -91,6 +91,9 @@ de:
     services_description: Öffentliche Dienstleistungen
     other: Sonstiges
     other_description: Sonstiges
+    quality_of_life: Lebensqualität
+    service_delivery: Bereitstellung von Dienstleistungen
+    governance_and_trust: Verwaltung und Vertrauen
   static_pages:
     terms_and_conditions_title: Nutzungsbedingungen
     terms_and_conditions_body: >
@@ -168,18 +171,55 @@ de:
       attachments:
         title: Anhänge
         description:
-      section1:
+      page1:
         description:
-      section2:
+      page2:
         title: Bilder und Anhänge
         description:
-      section3:
+      page3:
         title: Details
         description:
       other_input_field:
         title: Antwort eingeben
       ask_follow_up_field:
         title: Erzähl uns mehr
+    community_monitor:
+      questions:
+        place_to_live:
+          title: Die Stadt als Lebensraum
+        sense_of_safety:
+          title: Allgemeines Gefühl der Sicherheit
+        access_to_parks:
+          title: Zugang zu Parks, Grünflächen und Erholungsmöglichkeiten
+        affordable_housing:
+          title: Verfügbarkeit von bezahlbarem Wohnraum
+        employment_opportunities:
+          title: Beschäftigungs- und wirtschaftliche Aufstiegsmöglichkeiten
+        quality_of_services:
+          title: Gesamtqualität der von der Stadt angebotenen Dienstleistungen
+        overall_value:
+          title: Gesamtwert, den Sie für Ihre städtischen Steuern und Gebühren erhalten
+        cleanliness_and_maintenance:
+          title: Allgemeine Sauberkeit und Instandhaltung von Straßen und öffentlichen Plätzen
+        trust_in_government:
+          title: Vertrauen in die Kommunalverwaltung
+        responsiveness_of_officials:
+          title: Reaktionsfähigkeit gewählter Entscheidungsträger*innen auf die Anliegen der Bevölkerung
+        transparency_of_money_spent:
+          title: Transparenz darüber, wie kommunale Steuergelder ausgegeben werden
+      question_categories:
+        quality_of_life: Lebensqualität
+        service_delivery: Bereitstellung von Dienstleistungen
+        governance_and_trust: Verwaltung und Vertrauen
+        other: Sonstiges
+      labels:
+        label_1: Sehr schlecht
+        label_2: Schlecht
+        label_3: Neutral
+        label_4: Gut
+        label_5: Sehr gut
+      form_end:
+        button_text: Zurück zur Startseite
   custom_forms:
     categories:
       main_content:

@@ -58,7 +58,7 @@ module Analysis
           when 'tags'
             Tag.name
           when 'user_custom_field', 'input_custom_field'
-            CustomFieldOption.name
+            CustomFieldBin.name
           end
         end
 
@@ -67,7 +67,7 @@ module Analysis
           when 'tags'
             raise "Don't supply a category_id if the category_type is tags"
           when 'user_custom_field', 'input_custom_field'
-            CustomFieldOption.where(custom_field_id: category_id)
+            CustomFieldBin.where(custom_field_id: category_id)
           end
         end
 

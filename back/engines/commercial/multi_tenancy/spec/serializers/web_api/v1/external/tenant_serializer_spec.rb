@@ -20,6 +20,7 @@ describe 'WebApi::V1::External::TenantSerializer' do
             'color_text' => anything,
             'color_secondary' => anything,
             'lifecycle_stage' => 'active',
+            'country_code' => 'BE',
             'organization_name' => { 'en' => 'Liege', 'fr-FR' => 'Liege', 'nl-NL' => 'Luik' },
             'organization_type' => 'medium_city',
             'onboarding' => true,

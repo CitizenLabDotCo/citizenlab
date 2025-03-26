@@ -91,6 +91,9 @@ es-CL:
     services_description: Servicio público
     other: Otros
     other_description: Otros
+    quality_of_life: Calidad de vida
+    service_delivery: Prestación de servicios
+    governance_and_trust: Gobernanza y confianza
   static_pages:
     terms_and_conditions_title: Términos y Condiciones
     terms_and_conditions_body: >
@@ -168,18 +171,55 @@ es-CL:
       attachments:
         title: Archivos adjuntos
         description:
-      section1:
+      page1:
         description:
-      section2:
-        title: Imágenes y adjuntos
+      page2:
+        title: Imágenes y archivos adjuntos
         description:
-      section3:
+      page3:
         title: Detalles
         description:
       other_input_field:
         title: Escribe tu respuesta
       ask_follow_up_field:
         title: Dinos por qué
+    community_monitor:
+      questions:
+        place_to_live:
+          title: La ciudad como lugar para vivir
+        sense_of_safety:
+          title: Sensación general de seguridad
+        access_to_parks:
+          title: Acceso a parques, espacios verdes y oportunidades recreativas
+        affordable_housing:
+          title: Disponibilidad de viviendas asequibles
+        employment_opportunities:
+          title: Oportunidades de empleo y promoción económica
+        quality_of_services:
+          title: Calidad general de los servicios prestados por la ciudad
+        overall_value:
+          title: Valor global que recibes por tus impuestos y tasas municipales
+        cleanliness_and_maintenance:
+          title: Limpieza general y mantenimiento de calles y espacios públicos
+        trust_in_government:
+          title: Confianza en el gobierno local
+        responsiveness_of_officials:
+          title: Capacidad de respuesta de los cargos electos a las preocupaciones de la comunidad
+        transparency_of_money_spent:
+          title: Transparencia sobre cómo se gasta el dinero de los impuestos municipales
+      question_categories:
+        quality_of_life: Calidad de vida
+        service_delivery: Prestación de servicios
+        governance_and_trust: Gobernanza y confianza
+        other: Otro
+      labels:
+        label_1: Muy deficiente
+        label_2: Pobre
+        label_3: Feria
+        label_4: Bien
+        label_5: Excelente
+      form_end:
+        button_text: Volver al inicio
   custom_forms:
     categories:
       main_content:

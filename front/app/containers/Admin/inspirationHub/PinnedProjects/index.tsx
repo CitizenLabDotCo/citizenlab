@@ -2,44 +2,32 @@ import React from 'react';
 
 import { Box, Title } from '@citizenlab/cl2-component-library';
 
-import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
-import useProjectLibraryProjects from 'api/project_library_projects/useProjectLibraryProjects';
-
 import { FormattedMessage } from 'utils/cl-intl';
 
-import messages from '../messages';
+import CountryFilter from '../components/CountryFilter';
+import { setRansackParam, useRansackParam } from '../utils';
 
-import ProjectCard from './ProjectCard';
+import Cards from './Cards';
+import messages from './messages';
 
 const PinnedProjects = () => {
-  const { data: appConfiguration } = useAppConfiguration();
-  const countryCode = appConfiguration?.data.attributes.country_code;
-
-  const { data: projects } = useProjectLibraryProjects(
-    {
-      'q[pin_country_code_eq]': countryCode ?? undefined,
-    },
-    { enabled: !!countryCode }
-  );
-
-  if (!countryCode) {
-    return null;
-  }
-
-  if (!projects || projects.data.length === 0) {
-    return null;
-  }
+  const countryCode = useRansackParam('q[pin_country_code_eq]');
 
   return (
     <>
       <Title variant="h2" color="primary" mt="0px">
         <FormattedMessage {...messages.highlighted} />
       </Title>
-      <Box display="flex" flexDirection="row" gap="12px">
-        {projects.data.map((project) => (
-          <ProjectCard project={project} key={project.id} />
-        ))}
+      <Box display="flex" mb="12px">
+        <CountryFilter
+          value={countryCode}
+          placeholderMessage={messages.country}
+          onChange={(option) => {
+            setRansackParam('q[pin_country_code_eq]', option.value);
+          }}
+        />
       </Box>
+      <Cards />
     </>
   );
 };

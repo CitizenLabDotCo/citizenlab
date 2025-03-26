@@ -4,7 +4,7 @@ FactoryBot.define do
   factory :heatmap_cell, class: 'Analysis::HeatmapCell' do
     analysis
     association :row, factory: :tag
-    association :column, factory: :custom_field_option
+    association :column, factory: :option_bin
     unit { 'inputs' }
     count { 10 }
     lift { 1.1 }

@@ -99,10 +99,6 @@ module ParticipationMethod
       false
     end
 
-    def supports_pages_in_form?
-      true
-    end
-
     def supports_permitted_by_everyone?
       true
     end
@@ -138,7 +134,7 @@ module ParticipationMethod
     def end_page_field(custom_form, multiloc_service)
       CustomField.new(
         id: SecureRandom.uuid,
-        key: 'survey_end',
+        key: 'form_end',
         resource: custom_form,
         input_type: 'page',
         page_layout: 'default',

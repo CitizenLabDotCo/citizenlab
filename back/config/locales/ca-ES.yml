@@ -91,6 +91,9 @@ ca:
     services_description: Serveis públics
     other: Altres
     other_description: Altres
+    quality_of_life: Qualitat de vida
+    service_delivery: Prestació de serveis
+    governance_and_trust: Governança i confiança
   static_pages:
     terms_and_conditions_title: Termes i Condicions
     terms_and_conditions_body: >
@@ -168,18 +171,55 @@ ca:
       attachments:
         title: Adjunts
         description:
-      section1:
+      page1:
         description:
-      section2:
+      page2:
         title: Imatges i fitxers adjunts
         description:
-      section3:
+      page3:
         title: Detalls
         description:
       other_input_field:
         title: Escriu la teva resposta
       ask_follow_up_field:
         title: Explica'ns per què
+    community_monitor:
+      questions:
+        place_to_live:
+          title: La ciutat com a lloc per viure
+        sense_of_safety:
+          title: Sensació general de seguretat
+        access_to_parks:
+          title: Accés a parcs, espais verds i oportunitats d'oci
+        affordable_housing:
+          title: Disponibilitat d'habitatge assequible
+        employment_opportunities:
+          title: Oportunitats d'ocupació i promoció econòmica
+        quality_of_services:
+          title: Qualitat global dels serveis prestats per la ciutat
+        overall_value:
+          title: Valor global que rebeu pels impostos i les taxes municipals
+        cleanliness_and_maintenance:
+          title: Neteja i manteniment general de carrers i espais públics
+        trust_in_government:
+          title: Confiar en el govern local
+        responsiveness_of_officials:
+          title: Resposta dels càrrecs electes a les preocupacions de la comunitat
+        transparency_of_money_spent:
+          title: Transparència sobre com es gasten els diners dels impostos municipals
+      question_categories:
+        quality_of_life: Qualitat de vida
+        service_delivery: Prestació de serveis
+        governance_and_trust: Governança i confiança
+        other: Altres
+      labels:
+        label_1: Molt pobre
+        label_2: Pobre
+        label_3: Fira
+        label_4: Bé
+        label_5: Excel·lent
+      form_end:
+        button_text: Tornada a casa
   custom_forms:
     categories:
       main_content:

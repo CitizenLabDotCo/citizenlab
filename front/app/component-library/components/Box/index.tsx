@@ -198,6 +198,10 @@ type BoxAspectRatioProps = {
   aspectRatio?: string;
 };
 
+type BoxTransformProps = {
+  transform?: string;
+};
+
 export type BoxProps = BoxColorProps &
   BoxShadowProps &
   BoxBackgroundProps &
@@ -214,6 +218,7 @@ export type BoxProps = BoxColorProps &
   BoxZIndexProps &
   BoxCursorProps &
   BoxAspectRatioProps &
+  BoxTransformProps &
   React.HTMLAttributes<HTMLDivElement>;
 
 const Box = styled.div<BoxProps>`
@@ -375,6 +380,11 @@ const Box = styled.div<BoxProps>`
   // aspect ratio
   ${(props) => css`
     ${props.aspectRatio ? `aspect-ratio: ${props.aspectRatio}` : ''};
+  `}
+
+  // transformation
+  ${(props) => css`
+    ${props.transform ? `transform: ${props.transform}` : ''};
   `}
 `;
 

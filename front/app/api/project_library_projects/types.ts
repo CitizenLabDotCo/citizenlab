@@ -7,9 +7,9 @@ import { Keys } from 'utils/cl-react-query/types';
 
 import miniProjectsKeys from './keys';
 
-export type Status = 'active' | 'finished' | 'stale' | 'archived';
+type Status = 'active' | 'finished' | 'stale' | 'archived';
 
-type PopulationGroup = 'XS' | 'S' | 'M' | 'L' | 'XL';
+export type PopulationGroup = 'XS' | 'S' | 'M' | 'L' | 'XL';
 
 export type SortType =
   | 'start_at asc'
@@ -54,6 +54,7 @@ export interface ProjectLibraryProjectData {
   id: string;
   type: 'project_library_project';
   attributes: {
+    annotation_multiloc: Multiloc | null;
     cl_created_at: string;
     cl_updated_at: string;
     comments_count: number;
@@ -63,7 +64,7 @@ export interface ProjectLibraryProjectData {
     end_at: string | null;
     folder_id: string | null;
     folder_title_en: string | null;
-    folder_title_multiloc: Multiloc;
+    folder_title_multiloc: Multiloc | null;
     image_url: string | null;
     participants: number;
     practical_end_at: string | null;
