@@ -12,18 +12,14 @@ require './spec/services/surveys/shared/survey_setup'
 #   * Result generation is supported for phases only.
 
 RSpec.describe Surveys::ResultsWithDateGenerator do
-  subject(:generator) { described_class.new survey_phase }
+  subject(:generator) { described_class.new survey_phase, year: year, quarter: quarter }
 
   include_context 'survey_setup'
 
   describe 'generate_results' do
     context 'when the responses are filtered by quarter' do
-      let(:generated_results) do
-        generator.generate_results(
-          year: year,
-          quarter: quarter
-        )
-      end
+      let(:generated_results) { generator.generate_results }
+      let(:single_result) { generator.generate_result_for_field(sentiment_linear_scale_field.id) }
 
       context 'example 1' do
         let(:year) { '2025' }
@@ -47,6 +43,10 @@ RSpec.describe Surveys::ResultsWithDateGenerator do
           expect(generated_results.dig(:results, 17, :averages)).to eq(
             { this_period: 3.3, last_period: 2.1 }
           )
+        end
+
+        it 'returns a single result for a Sentiment linear scale field' do
+          expect(single_result[:averages]).to eq({ this_period: 3.3, last_period: 2.1 })
         end
       end
 
@@ -73,19 +73,22 @@ RSpec.describe Surveys::ResultsWithDateGenerator do
             { this_period: 2.1, last_period: nil }
           )
         end
+
+        it 'returns a single result with last_period: nil for a Sentiment linear scale field' do
+          expect(single_result[:averages]).to eq({ this_period: 2.1, last_period: nil })
+        end
       end
 
       context 'incorrect date format' do
         let(:year) { 'YEAR' }
         let(:quarter) { '4' }
 
-        it 'raises an incorrect month format error' do
-          expect do
-            generator.generate_results(
-              year: year,
-              quarter: quarter
-            )
-          end.to raise_error(ArgumentError, 'Invalid date format')
+        it 'raises an incorrect date format error' do
+          expect{ generated_results }.to raise_error(ArgumentError, 'Invalid date format')
+        end
+
+        it 'raises an incorrect date format error for a single result' do
+          expect{ single_result}.to raise_error(ArgumentError, 'Invalid date format')
         end
       end
     end
