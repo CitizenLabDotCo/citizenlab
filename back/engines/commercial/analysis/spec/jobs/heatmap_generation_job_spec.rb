@@ -12,7 +12,11 @@ RSpec.describe Analysis::HeatmapGenerationJob do
     let(:project) { create(:single_phase_ideation_project) }
     let(:analysis) { create(:analysis, project: project) }
     let(:tags) { create_list(:tag, 2, analysis: analysis) }
-    let(:users) { create_list(:user, 30) }
+    let(:users) do
+      create_list(:user, 10) +
+        create_list(:user, 10) +
+        create_list(:user, 10)
+    end
     let!(:inputs) do
       users[0...10].map do |user|
         create(:idea, project: project, author: user)
@@ -86,7 +90,11 @@ RSpec.describe Analysis::HeatmapGenerationJob do
     let(:project) { create(:single_phase_ideation_project) }
     let(:analysis) { create(:analysis, project: project) }
     let(:tags) { create_list(:tag, 2, analysis: analysis) }
-    let(:users) { create_list(:user, 30) }
+    let(:users) do
+      create_list(:user, 10) +
+        create_list(:user, 10) +
+        create_list(:user, 10)
+    end
     let!(:inputs) do
       users[0...10].map do |user|
         create(:idea, project: project, author: user)
@@ -123,7 +131,11 @@ RSpec.describe Analysis::HeatmapGenerationJob do
     let(:project) { create(:single_phase_ideation_project) }
     let(:analysis) { create(:analysis, project: project) }
     let(:tags) { create_list(:tag, 2, analysis: analysis) }
-    let(:users) { create_list(:user, 30) }
+    let(:users) do
+      create_list(:user, 10) +
+        create_list(:user, 10) +
+        create_list(:user, 10)
+    end
     let!(:inputs) do
       users[0...10].map do |user|
         create(:idea, project: project, author: user)

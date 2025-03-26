@@ -8,7 +8,6 @@ module Analysis
         before_action :set_analysis
 
         def index
-
           heatmap_cells = @analysis.heatmap_cells.includes(:row, :column)
           heatmap_cells = heatmap_cells.order(Arel.sql('abs(1 - lift) DESC'))
           heatmap_cells = apply_filters(heatmap_cells)
