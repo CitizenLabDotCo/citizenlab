@@ -23,7 +23,7 @@ import { useIdeaSelect } from './IdeaSelectContext';
 import messages from './messages';
 
 const SimilarIdeasList = () => {
-  const { onIdeaSelect, title, body } = useIdeaSelect();
+  const { onIdeaSelect, title, body, selectedIdeaId } = useIdeaSelect();
   const { formatMessage } = useIntl();
   const currentLocale = useLocale();
   const { slug: projectSlug } = useParams() as { slug: string };
@@ -106,6 +106,9 @@ const SimilarIdeasList = () => {
               : undefined
           }
           py="12px"
+          background={
+            selectedIdeaId === idea.id ? colors.background : undefined
+          }
         >
           <Box
             onClick={() => onIdeaSelect(idea.id)}

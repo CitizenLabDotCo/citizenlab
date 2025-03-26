@@ -2,6 +2,7 @@ import { createContext, useContext } from 'react';
 
 interface IIdeaSelectContext {
   onIdeaSelect: (ideaId: string | null) => void;
+  selectedIdeaId: string | null;
   title: string;
   body: string;
   setTitle: (val: string) => void;
@@ -10,6 +11,7 @@ interface IIdeaSelectContext {
 
 const defaultContext: IIdeaSelectContext = {
   onIdeaSelect: () => {},
+  selectedIdeaId: null,
   title: '',
   body: '',
   setTitle: () => {},

@@ -316,6 +316,7 @@ const IdeasEditForm = ({ ideaId }: Props) => {
                         body,
                         setTitle,
                         setBody,
+                        selectedIdeaId,
                       }}
                     >
                       <Form

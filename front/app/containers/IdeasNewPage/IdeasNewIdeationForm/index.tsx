@@ -312,6 +312,7 @@ const IdeasNewIdeationForm = ({ project, phaseId }: Props) => {
                         body,
                         setTitle,
                         setBody,
+                        selectedIdeaId,
                       }}
                     >
                       <Form
