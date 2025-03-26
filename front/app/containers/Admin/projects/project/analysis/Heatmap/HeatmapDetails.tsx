@@ -23,7 +23,7 @@ import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 
 import { Unit } from 'api/analysis_heat_map_cells/types';
-import useAnalysisHeatmapCells from 'api/analysis_heat_map_cells/useAnalysisHetmapCells';
+import useAnalysisHeatmapCells from 'api/analysis_heat_map_cells/useAnalysisHeatmapCells';
 import { AuthorCustomFilterKey } from 'api/analysis_inputs/types';
 import useAddAnalysisSummary from 'api/analysis_summaries/useAddAnalysisSummary';
 import useAnalysisTags from 'api/analysis_tags/useAnalysisTags';

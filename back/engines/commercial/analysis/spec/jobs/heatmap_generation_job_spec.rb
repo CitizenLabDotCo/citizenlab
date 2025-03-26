@@ -119,42 +119,42 @@ RSpec.describe Analysis::HeatmapGenerationJob do
     end
   end
 
-  # describe 'do not perform if there is already a logged activity and there has been no change in the input count, participants count or the date of the latest input'    do
-  #   let(:project) { create(:single_phase_ideation_project) }
-  #   let(:analysis) { create(:analysis, project: project) }
-  #   let(:tags) { create_list(:tag, 2, analysis: analysis) }
-  #   let(:users) { create_list(:user, 30) }
-  #   let!(:inputs) do
-  #     users[0...10].map do |user|
-  #       create(:idea, project: project, author: user)
-  #     end
-  #   end
+  describe 'do not perform if there is already a logged activity and there has been no change in the input count, participants count or the date of the latest input' do
+    let(:project) { create(:single_phase_ideation_project) }
+    let(:analysis) { create(:analysis, project: project) }
+    let(:tags) { create_list(:tag, 2, analysis: analysis) }
+    let(:users) { create_list(:user, 30) }
+    let!(:inputs) do
+      users[0...10].map do |user|
+        create(:idea, project: project, author: user)
+      end
+    end
 
-  #   let!(:custom_field) { create(:custom_field_select, :with_options) }
+    let!(:custom_field) { create(:custom_field_select, :with_options) }
 
-  #   # Create likes
-  #   let!(:likes) do
-  #     users[10...20].map do |user|
-  #       create(:reaction, reactable: inputs.sample, user: user)
-  #     end
-  #   end
+    # Create likes
+    let!(:likes) do
+      users[10...20].map do |user|
+        create(:reaction, reactable: inputs.sample, user: user)
+      end
+    end
 
-  #   # Create dislikes
-  #   let!(:dislikes) do
-  #     users[20...30].map do |user|
-  #       create(:reaction, reactable: inputs.sample, user: user, mode: 'down')
-  #     end
-  #   end
+    # Create dislikes
+    let!(:dislikes) do
+      users[20...30].map do |user|
+        create(:reaction, reactable: inputs.sample, user: user, mode: 'down')
+      end
+    end
 
-  #   # Add tagging to first input
-  #   let!(:tagging) { create(:tagging, tag: tags[0], input: inputs[0]) }
+    # Add tagging to first input
+    let!(:tagging) { create(:tagging, tag: tags[0], input: inputs[0]) }
 
-  #   # Create activity for the analysis
-  #   let!(:activity) { create(:activity, item: analysis, action: 'heatmap_generated', payload: { inputs_count: 10, participants_count: 30, newest_input_at: inputs.last.created_at.to_i }) }
+    # Create activity for the analysis
+    let!(:activity) { create(:activity, item: analysis, action: 'heatmap_generated', payload: { inputs_count: 10, participants_count: 30, newest_input_at: inputs.last.created_at.to_i }) }
 
-  #   it 'does not generate the heatmap' do
-  #     expect { described_class.perform_now(analysis.reload) }
-  #       .not_to change { analysis.heatmap_cells.count }
-  #   end
-  # end
+    it 'does not generate the heatmap' do
+      expect { described_class.perform_now(analysis.reload) }
+        .not_to change { analysis.heatmap_cells.count }
+    end
+  end
 end

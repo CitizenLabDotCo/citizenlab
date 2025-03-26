@@ -8,15 +8,14 @@ module Analysis
         before_action :set_analysis
 
         def index
-          # This is a temporary mechanism to generate heatmap cells if they are
-          # missing. Will be replaced by something smarter that triggers
-          # generation soon
-          # generate_heatmap_cells if @analysis.heatmap_cells.empty?
 
           heatmap_cells = @analysis.heatmap_cells.includes(:row, :column)
           heatmap_cells = heatmap_cells.order(Arel.sql('abs(1 - lift) DESC'))
           heatmap_cells = apply_filters(heatmap_cells)
           heatmap_cells = paginate(heatmap_cells)
+
+          # Return no content if the analysis has no heatmap cells
+          return head :no_content if @analysis.heatmap_cells.empty?
 
           render json: WebApi::V1::HeatmapCellSerializer.new(
             heatmap_cells,
