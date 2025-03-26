@@ -40,7 +40,6 @@ module Surveys
 
     private
 
-    # This is an average of averages - or should it take the average of all values
     def overall_average_by_quarter
       grouped_answers = all_answers.group_by { |a| a['quarter'] }
       averages = grouped_answers.transform_values do |answers|
