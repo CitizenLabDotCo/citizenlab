@@ -352,10 +352,7 @@ const IdeasEditForm = ({ ideaId }: Props) => {
                 position="relative"
                 mb="80px"
               >
-                <IdeaDetailView
-                  ideaId={selectedIdeaId}
-                  onClose={handleCloseDetail}
-                />
+                <IdeaDetailView ideaId={selectedIdeaId} />
               </Box>
             )}
           </Box>

@@ -366,10 +366,7 @@ const IdeasNewIdeationForm = ({ project, phaseId }: Props) => {
                       borderRadius="2px"
                       m="8px auto"
                     />
-                    <IdeaDetailView
-                      ideaId={selectedIdeaId}
-                      onClose={handleCloseDetail}
-                    />
+                    <IdeaDetailView ideaId={selectedIdeaId} />
                   </Box>
                 </Box>
               ) : (
@@ -383,10 +380,7 @@ const IdeasNewIdeationForm = ({ project, phaseId }: Props) => {
                   position="relative"
                   mb="80px"
                 >
-                  <IdeaDetailView
-                    ideaId={selectedIdeaId}
-                    onClose={handleCloseDetail}
-                  />
+                  <IdeaDetailView ideaId={selectedIdeaId} />
                 </Box>
               ))}
           </Box>
