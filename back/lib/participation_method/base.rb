@@ -178,6 +178,10 @@ module ParticipationMethod
       true
     end
 
+    def supports_custom_field_categories?
+      false
+    end
+
     private
 
     attr_reader :phase

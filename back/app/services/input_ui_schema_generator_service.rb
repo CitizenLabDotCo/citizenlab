@@ -33,7 +33,7 @@ class InputUiSchemaGeneratorService < UiSchemaGeneratorService
   end
 
   def visit_page(field)
-    {
+    page_data = {
       type: 'Page',
       options: {
         input_type: field.input_type,
@@ -47,6 +47,14 @@ class InputUiSchemaGeneratorService < UiSchemaGeneratorService
         # No elements yet. They will be added after invoking this method.
       ]
     }
+
+    # Add these attributes only if the page key is "form_end"
+    if field.key == 'form_end'
+      page_data[:options][:page_button_label_multiloc] = field.page_button_label_multiloc
+      page_data[:options][:page_button_link] = field.page_button_link
+    end
+
+    page_data
   end
 
   protected
@@ -86,7 +94,7 @@ class InputUiSchemaGeneratorService < UiSchemaGeneratorService
         rules = form_logic.ui_schema_rules_for(field)
         field_schema[:ruleArray] = rules if rules.present?
 
-        if field.key == 'form_end'
+        if field.end_page?
           form_end_page = field_schema
         else
           field_schemas << field_schema
