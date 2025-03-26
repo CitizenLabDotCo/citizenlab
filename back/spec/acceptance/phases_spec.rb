@@ -220,6 +220,8 @@ resource 'Phases' do
         parameter :native_survey_title_multiloc, 'A title for the native survey.'
         parameter :native_survey_button_multiloc, 'Text for native survey call to action button.'
         parameter :prescreening_enabled, 'Do inputs need to go through pre-screening before being published? Defaults to false', required: false
+        parameter :similarity_threshold_title, 'The similarity threshold for the title of the input. Defaults to 0.3', required: false
+        parameter :similarity_threshold_body, 'The similarity threshold for the body of the input. Defaults to 0.4', required: false
       end
 
       ValidationErrorHelper.new.error_fields(self, Phase)
@@ -502,6 +504,8 @@ resource 'Phases' do
         parameter :poll_anonymous, "Are users associated with their answer? Only applies if participation_method is 'poll'. Can't be changed after first answer.", required: false
         parameter :ideas_order, 'The default order of ideas.'
         parameter :prescreening_enabled, 'Do inputs need to go through pre-screening before being published?', required: false
+        parameter :similarity_threshold_title, 'The similarity threshold for the title of the input. Defaults to 0.3', required: false
+        parameter :similarity_threshold_body, 'The similarity threshold for the body of the input. Defaults to 0.4', required: false
       end
       ValidationErrorHelper.new.error_fields(self, Phase)
       response_field :project, "Array containing objects with signature {error: 'is_not_timeline_project'}", scope: :errors
@@ -519,6 +523,7 @@ resource 'Phases' do
       let(:presentation_mode) { 'map' }
       let(:allow_anonymous_participation) { true }
       let(:prescreening_enabled) { true }
+      let(:similarity_threshold_body) { 0.2 }
 
       example_request 'Update a phase' do
         expect(response_status).to eq 200
@@ -532,6 +537,7 @@ resource 'Phases' do
         expect(json_response.dig(:data, :attributes, :presentation_mode)).to eq presentation_mode
         expect(json_response.dig(:data, :attributes, :allow_anonymous_participation)).to eq allow_anonymous_participation
         expect(json_response.dig(:data, :attributes, :prescreening_enabled)).to eq prescreening_enabled
+        expect(json_response.dig(:data, :attributes, :similarity_threshold_body)).to eq similarity_threshold_body
       end
 
       describe do

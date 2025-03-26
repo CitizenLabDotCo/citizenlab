@@ -120,6 +120,7 @@ class Phase < ApplicationRecord
   with_options if: ->(phase) { phase.pmethod.supports_public_visibility? } do
     validates :presentation_mode, inclusion: { in: PRESENTATION_MODES }
     validates :presentation_mode, presence: true
+    validates :similarity_threshold_title, :similarity_threshold_body, presence: true, numericality: { greater_than_or_equal_to: 0, less_than_or_equal_to: 1 }
   end
 
   validates :submission_enabled, inclusion: { in: [true, false] }, if: lambda { |phase|
