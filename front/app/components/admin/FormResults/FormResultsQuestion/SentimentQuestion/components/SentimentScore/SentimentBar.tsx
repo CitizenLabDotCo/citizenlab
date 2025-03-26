@@ -5,6 +5,7 @@ import styled from 'styled-components';
 
 import { getSentimentGroupColour } from '../../utils';
 
+// Required so the report print will show background colours correctly.
 const StyledBox = styled(Box)`
   @media print {
     * {
