@@ -13,16 +13,16 @@ import useIdeaById from 'api/ideas/useIdeaById';
 import QuillEditedContent from 'components/UI/QuillEditedContent';
 
 interface IdeaDetailViewProps {
-  ideaId: string;
+  ideaId: string | null;
 }
 
 const IdeaDetailView = ({ ideaId }: IdeaDetailViewProps) => {
-  const { data: idea, isLoading } = useIdeaById(ideaId);
+  const { data: idea, isLoading } = useIdeaById(ideaId ? ideaId : undefined);
 
   if (isLoading) return <Spinner />;
 
   if (!idea) {
-    return <Text variant="bodyM">Idea not found.</Text>;
+    return null;
   }
 
   const {

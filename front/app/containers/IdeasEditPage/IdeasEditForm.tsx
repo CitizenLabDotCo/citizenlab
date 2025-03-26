@@ -70,9 +70,6 @@ const IdeasEditForm = ({ ideaId }: Props) => {
   const callbackRef = useRef<(() => void) | null>(null);
   const [usingMapView, setUsingMapView] = useState(false);
   const [selectedIdeaId, setSelectedIdeaId] = useState<string | null>(null);
-  const handleCloseDetail = () => {
-    setSelectedIdeaId(null);
-  };
 
   const {
     schema,
