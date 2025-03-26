@@ -111,7 +111,10 @@ const SimilarIdeasList = () => {
           }
         >
           <Box
-            onClick={() => onIdeaSelect(idea.id)}
+            onClick={() => {
+              // If the selected idea is already selected, we deselect it
+              onIdeaSelect(selectedIdeaId === idea.id ? null : idea.id);
+            }}
             style={{ cursor: 'pointer' }}
             display="flex"
             justifyContent="space-between"
