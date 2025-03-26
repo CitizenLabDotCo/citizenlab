@@ -84,11 +84,11 @@ RSpec.describe Surveys::ResultsWithDateGenerator do
         let(:quarter) { '4' }
 
         it 'raises an incorrect date format error' do
-          expect{ generated_results }.to raise_error(ArgumentError, 'Invalid date format')
+          expect { generated_results }.to raise_error(ArgumentError, 'Invalid date format')
         end
 
         it 'raises an incorrect date format error for a single result' do
-          expect{ single_result}.to raise_error(ArgumentError, 'Invalid date format')
+          expect { single_result }.to raise_error(ArgumentError, 'Invalid date format')
         end
       end
     end
