@@ -547,4 +547,46 @@ describe 'Rack::Attack' do
       expect(status).to eq(429) # Too many requests
     end
   end
+
+  it 'limits similar inputs requests from same IP to 5 in 1 second' do
+    token = AuthToken::AuthToken.new(payload: create(:user).to_token_payload).token
+    headers = {
+      'CONTENT_TYPE' => 'application/json',
+      'Authorization' => "Bearer #{token}"
+    }
+
+    allow_any_instance_of(CohereMultilingualEmbeddings).to receive(:embedding) do
+      create(:embeddings_similarity).embedding
+    end
+    SettingsService.new.activate_feature! 'authoring_assistance'
+
+    project_id = create(:project_with_active_ideation_phase).id
+    params_proc = proc do |title|
+      {
+        idea: {
+          project_id: project_id,
+          title_multiloc: {
+            'en' => title
+          }
+        }
+      }.to_json
+    end
+    freeze_time do
+      5.times do |i|
+        post(
+          '/web_api/v1/ideas/similar_ideas',
+          params: params_proc.call("Title #{i}"),
+          headers: headers
+        )
+      end
+      expect(status).to eq 200 # OK
+
+      post(
+        '/web_api/v1/ideas/similar_ideas',
+        params: params_proc.call('Final idea'),
+        headers: headers
+      )
+      expect(status).to eq 429 # Too many requests
+    end
+  end
 end
