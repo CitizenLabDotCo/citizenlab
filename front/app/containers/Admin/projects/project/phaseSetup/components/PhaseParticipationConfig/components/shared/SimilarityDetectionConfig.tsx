@@ -54,17 +54,17 @@ const SimilarityDetectionConfig = ({
   return (
     <SectionField display="flex">
       <SubSectionTitle>
-        <FormattedMessage {...messages.similarIdeaDetectionTitle} />
+        <FormattedMessage {...messages.similarInputDetectionTitle} />
         <IconTooltip
           content={
-            <FormattedMessage {...messages.similarIdeaDetectionTooltip} />
+            <FormattedMessage {...messages.similarInputDetectionTooltip} />
           }
         />
       </SubSectionTitle>
 
       <Box display="flex" flexDirection="column" gap="16px" width="100%">
         <Toggle
-          label={<FormattedMessage {...messages.enableSimilarIdeaDetection} />}
+          label={<FormattedMessage {...messages.enableSimilarInputDetection} />}
           checked={!!similarity_enabled}
           onChange={() => handleSimilarityEnabledChange(!similarity_enabled)}
           id="similarity_enabled"
