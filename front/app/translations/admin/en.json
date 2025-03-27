@@ -909,6 +909,8 @@
   "app.containers.Admin.pagesAndMenu.containers.AddProjectModal.savePage": "Save",
   "app.containers.Admin.pagesAndMenu.containers.AddProjectModal.title": "Add project",
   "app.containers.Admin.pagesAndMenu.containers.AddProjectModal.warning": "The navigation bar will only show projects to which users have access.",
+  "app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.CraftComponents.CommunityMonitor.communityMonitorCTADescription": "This widget will only be visible on the Homepage when the Community Monitor is accepting responses.",
+  "app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.CraftComponents.CommunityMonitor.communityMonitorCTATitle": "Community Monitor Link",
   "app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.CraftComponents.OpenToParticipation.ProjectCarrousel.noEndDate": "No end date",
   "app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.CraftComponents.OpenToParticipation.ProjectCarrousel.skipCarrousel": "Press escape to skip carrousel",
   "app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.CraftComponents.Projects.projectsTitle1": "Projects and folders (legacy)",
