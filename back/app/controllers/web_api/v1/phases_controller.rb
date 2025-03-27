@@ -70,7 +70,7 @@ class WebApi::V1::PhasesController < ApplicationController
     results = if @phase.pmethod.class.method_str == 'community_monitor_survey'
       year = params[:year]
       quarter = params[:quarter]
-      Surveys::ResultsWithDateGenerator.new(@phase, structure_by_category: true).generate_results(year: year, quarter: quarter)
+      Surveys::ResultsWithDateGenerator.new(@phase, structure_by_category: true, year: year, quarter: quarter).generate_results
     else
       logic_ids = params[:filter_logic_ids].presence || [] # Array of page and option IDs
       Surveys::ResultsWithLogicGenerator.new(@phase).generate_results(logic_ids:)

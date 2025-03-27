@@ -2,9 +2,9 @@
 
 module Surveys
   class ResultsWithDateGenerator < ResultsGenerator
-    def generate_results(year: nil, quarter: nil)
+    def initialize(phase, structure_by_category: false, year: nil, quarter: nil)
+      super(phase, structure_by_category: structure_by_category)
       filter_inputs_by_quarter(year, quarter) if year && quarter
-      super()
     end
 
     private
