@@ -5,8 +5,6 @@ import { ControlProps, RankedTester, rankWith } from '@jsonforms/core';
 import { withJsonFormsControlProps } from '@jsonforms/react';
 import { debounce } from 'lodash-es';
 
-import useFeatureFlag from 'hooks/useFeatureFlag';
-
 import { useIdeaSelect } from 'containers/IdeasNewPage/SimilarIdeas/IdeaSelectContext';
 import SimilarIdeasList from 'containers/IdeasNewPage/SimilarIdeas/SimilarIdeasList';
 
@@ -36,10 +34,7 @@ export const TitleControl = ({
   visible,
 }: ControlProps) => {
   const [didBlur, setDidBlur] = useState(false);
-  const { setTitle } = useIdeaSelect();
-  const isAuthoringAssistanceEnabled = useFeatureFlag({
-    name: 'authoring_assistance',
-  });
+  const { setTitle, showSimilarInputs } = useIdeaSelect();
 
   const debouncedSetTitle = useMemo(
     () => debounce((val: string) => setTitle(val), 400),
@@ -52,9 +47,11 @@ export const TitleControl = ({
         path,
         schema.type === 'number' && value ? parseInt(value, 10) : value
       );
-      debouncedSetTitle(value);
+      if (showSimilarInputs) {
+        debouncedSetTitle(value);
+      }
     },
-    [handleChange, path, schema.type, debouncedSetTitle]
+    [handleChange, path, schema.type, showSimilarInputs, debouncedSetTitle]
   );
 
   if (!visible) {
@@ -102,7 +99,7 @@ export const TitleControl = ({
         fieldPath={path}
         didBlur={didBlur}
       />
-      {isAuthoringAssistanceEnabled && <SimilarIdeasList />}
+      {showSimilarInputs && <SimilarIdeasList />}
     </Box>
   );
 };
