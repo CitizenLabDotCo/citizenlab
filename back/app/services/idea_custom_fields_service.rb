@@ -15,7 +15,7 @@ class IdeaCustomFieldsService
 
     fields = fields.to_a
 
-    form_end_field = fields.find { |f| f.key == 'form_end' }
+    form_end_field = fields.find { |f| f.form_end_page? }
     if form_end_field
       fields.delete(form_end_field)
       fields << form_end_field

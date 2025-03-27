@@ -253,6 +253,10 @@ class CustomField < ApplicationRecord
     input_type == 'page'
   end
 
+  def form_end_page?
+    page? && key == 'form_end'
+  end
+
   def multiselect?
     %w[multiselect multiselect_image].include?(input_type)
   end

@@ -814,7 +814,7 @@ resource 'Idea Custom Fields' do
 
       example 'Update select field with logic' do
         field_to_update = create(:custom_field_select, :with_options, resource: custom_form)
-        form_end_page = create(:custom_field_page, key: 'form_end', resource: custom_form)
+        form_end_page = create(:custom_field_form_end_page, resource: custom_form)
         final_page[:id] = form_end_page.id
         request = {
           custom_fields: [
