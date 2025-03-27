@@ -18,8 +18,11 @@ import useProjectLibraryExternalComments from 'api/project_library_external_comm
 
 import TextArea from 'components/HookForm/TextArea';
 
+import { useIntl } from 'utils/cl-intl';
+
 import Comment from './Comment';
 import getAuthorNames from './getAuthorNames';
+import messages from './messages';
 
 const StyledTextArea = styled(TextArea)`
   font-size: ${fontSizes.base}px;
@@ -53,6 +56,8 @@ const Comments = ({ projectId }: Props) => {
     },
     resolver: yupResolver(schema),
   });
+
+  const { formatMessage } = useIntl();
 
   if (!authUser) return null;
 
@@ -91,7 +96,7 @@ const Comments = ({ projectId }: Props) => {
               onClick={methods.handleSubmit(onFormSubmit)}
               processing={methods.formState.isSubmitting}
             >
-              Post your comment
+              {formatMessage(messages.postYourComment)}
             </Button>
           </Box>
         </form>

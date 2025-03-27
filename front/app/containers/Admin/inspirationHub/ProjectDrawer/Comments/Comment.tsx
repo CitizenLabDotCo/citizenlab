@@ -18,10 +18,12 @@ import useLocale from 'hooks/useLocale';
 import MoreActionsMenu from 'components/UI/MoreActionsMenu';
 import { Name } from 'components/UI/UserName';
 
+import { useIntl } from 'utils/cl-intl';
 import { timeAgo } from 'utils/dateUtils';
 
 import CommentEdit from './CommentEdit';
 import getAuthorNames from './getAuthorNames';
+import messages from './messages';
 
 const TimeAgo = styled.div`
   color: ${colors.textSecondary};
@@ -52,6 +54,8 @@ const Comment = ({ projectId, comment }: Props) => {
   const locale = useLocale();
   const { mutate: deleteComment } = useDeleteProjectLibraryExternalComment();
   const { data: authUser } = useAuthUser();
+
+  const { formatMessage } = useIntl();
 
   if (!authUser) return null;
 
@@ -106,13 +110,17 @@ const Comment = ({ projectId, comment }: Props) => {
             showLabel={false}
             actions={[
               {
-                label: 'Edit',
+                label: formatMessage(messages.edit),
                 handler: () => setIsEditing(true),
               },
               {
-                label: 'Delete',
+                label: formatMessage(messages.delete),
                 handler: () => {
-                  if (window.confirm('Are you sure you want to delete this?')) {
+                  if (
+                    window.confirm(
+                      formatMessage(messages.areYouSureYouWantToDeleteThis)
+                    )
+                  ) {
                     deleteComment({
                       externalCommentId: id,
                       projectId,

@@ -9,4 +9,20 @@ export default defineMessages({
     id: 'front.app.containers.Admin.inspirationHub.ProjectDrawer.Comments.cancel',
     defaultMessage: 'Cancel',
   },
+  edit: {
+    id: 'front.app.containers.Admin.inspirationHub.ProjectDrawer.Comments.edit',
+    defaultMessage: 'Edit',
+  },
+  delete: {
+    id: 'front.app.containers.Admin.inspirationHub.ProjectDrawer.Comments.delete',
+    defaultMessage: 'Delete',
+  },
+  postYourComment: {
+    id: 'front.app.containers.Admin.inspirationHub.ProjectDrawer.Comments.postYourComment',
+    defaultMessage: 'Post your comment',
+  },
+  areYouSureYouWantToDeleteThis: {
+    id: 'front.app.containers.Admin.inspirationHub.ProjectDrawer.Comments.areYouSureYouWantToDeleteThis',
+    defaultMessage: 'Are you sure you want to delete this?',
+  },
 });
