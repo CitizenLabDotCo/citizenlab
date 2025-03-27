@@ -33,7 +33,7 @@
 class CustomFieldBin < ApplicationRecord
   belongs_to :custom_field
 
-  validate :custom_field_input_type_supported
+  validate :custom_field_type_supported
 
   def self.policy_class
     CustomFieldBinPolicy
@@ -87,9 +87,9 @@ class CustomFieldBin < ApplicationRecord
   # Validates that the custom_field input_type is supported by this bin class
   # and adds an error if not
 
-  def custom_field_input_type_supported
-    unless self.class.supported_custom_field_input_types.include?(custom_field.input_type)
-      errors.add(:custom_field, :unsupported_custom_field_input_type)
+  def custom_field_type_supported
+    unless self.class.supports_custom_field?(custom_field)
+      errors.add(:custom_field, :unsupported_custom_field_type)
     end
   end
 end
