@@ -5,6 +5,7 @@ import {
   IAppConfiguration,
   TAppConfigurationSetting,
 } from 'api/app_configuration/types';
+import { coreSettings } from 'api/app_configuration/utils';
 
 import messages from './messages';
 
@@ -30,76 +31,76 @@ const getInspirationHubLink = (country_code: string | null) => {
   return `/admin/inspiration-hub?${pinnedProjectsCountryFilter}&${allProjectsCountryFilter}` as RouteType;
 };
 
-const getDefaultNavItems = ({
-  data: {
-    attributes: { country_code },
-  },
-}: IAppConfiguration): NavItem[] => [
-  {
-    name: 'dashboard',
-    link: '/admin/dashboard/overview',
-    iconName: 'dashboard',
-    message: 'dashboard',
-  },
-  {
-    name: 'projects',
-    link: '/admin/projects',
-    iconName: 'projects',
-    message: 'projects',
-  },
-  {
-    name: 'ideas',
-    link: '/admin/ideas',
-    iconName: 'messages-inbox',
-    message: 'inputManager',
-  },
-  {
-    name: 'userinserts',
-    link: '/admin/users',
-    iconName: 'users',
-    message: 'users',
-  },
-  {
-    name: 'messaging',
-    link: '/admin/messaging',
-    iconName: 'messages',
-    message: 'messaging',
-  },
-  {
-    name: 'reporting',
-    link: `/admin/reporting/report-builder`,
-    iconName: 'reports',
-    message: 'reporting',
-    featureNames: ['report_builder'],
-  },
-  {
-    name: 'inspirationHub',
-    link: getInspirationHubLink(country_code),
-    iconName: 'globe',
-    message: 'inspirationHub',
-    featureNames: ['project_library'],
-  },
-  {
-    name: 'tools',
-    link: `/admin/tools`,
-    iconName: 'grid',
-    message: 'tools',
-    showAtBottom: true,
-  },
-  {
-    name: 'menu',
-    link: '/admin/pages-menu',
-    iconName: 'organigram',
-    message: 'menu',
-    showAtBottom: true,
-  },
-  {
-    name: 'settings',
-    link: '/admin/settings/general',
-    iconName: 'cog',
-    message: 'settings',
-    showAtBottom: true,
-  },
-];
+const getDefaultNavItems = ({ data }: IAppConfiguration): NavItem[] => {
+  const country_code = coreSettings(data).country_code;
+
+  return [
+    {
+      name: 'dashboard',
+      link: '/admin/dashboard/overview',
+      iconName: 'dashboard',
+      message: 'dashboard',
+    },
+    {
+      name: 'projects',
+      link: '/admin/projects',
+      iconName: 'projects',
+      message: 'projects',
+    },
+    {
+      name: 'ideas',
+      link: '/admin/ideas',
+      iconName: 'messages-inbox',
+      message: 'inputManager',
+    },
+    {
+      name: 'userinserts',
+      link: '/admin/users',
+      iconName: 'users',
+      message: 'users',
+    },
+    {
+      name: 'messaging',
+      link: '/admin/messaging',
+      iconName: 'messages',
+      message: 'messaging',
+    },
+    {
+      name: 'reporting',
+      link: `/admin/reporting/report-builder`,
+      iconName: 'reports',
+      message: 'reporting',
+      featureNames: ['report_builder'],
+    },
+    {
+      name: 'inspirationHub',
+      link: getInspirationHubLink(country_code),
+      iconName: 'globe',
+      message: 'inspirationHub',
+      featureNames: ['project_library'],
+    },
+    {
+      name: 'tools',
+      link: `/admin/tools`,
+      iconName: 'grid',
+      message: 'tools',
+      showAtBottom: true,
+    },
+    {
+      name: 'menu',
+      link: '/admin/pages-menu',
+      iconName: 'organigram',
+      message: 'menu',
+      showAtBottom: true,
+    },
+    {
+      name: 'settings',
+      link: '/admin/settings/general',
+      iconName: 'cog',
+      message: 'settings',
+      showAtBottom: true,
+    },
+  ];
+};
 
 export default getDefaultNavItems;

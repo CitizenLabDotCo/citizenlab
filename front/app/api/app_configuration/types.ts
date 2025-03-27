@@ -59,6 +59,7 @@ export type IAppConfigurationSettingsCore = {
   customer_portal_url?: string | null;
   anonymous_name_scheme?: string | null;
   private_attributes_in_export: boolean;
+  country_code: string | null;
 };
 
 export type TSeatNumber = number | null | undefined;
@@ -304,7 +305,6 @@ interface IAppConfigurationAttributes {
   favicon?: ImageSizes | null;
   style?: IAppConfigurationStyle;
   created_at: string;
-  country_code: string | null;
 }
 
 export interface IAppConfigurationData {
