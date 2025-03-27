@@ -7,11 +7,13 @@ import {
   Input,
   Label,
   colors,
+  Select,
 } from '@citizenlab/cl2-component-library';
 import { IOption } from 'typings';
 
 import useAddReport from 'api/reports/useAddReport';
 
+import { generateYearOptions } from 'containers/Admin/reporting/utils/generateYearOptions';
 import reportTitleIsTaken from 'containers/Admin/reporting/utils/reportTitleIsTaken';
 
 import { DateRange } from 'components/admin/DatePickers/_shared/typings';
@@ -44,6 +46,8 @@ const CreateReportModal = ({ open, onClose }: Props) => {
     string | undefined
   >();
   const [dates, setDates] = useState<Partial<DateRange>>({});
+  const [year, setYear] = useState<number | null>(null);
+  const [quarter, setQuarter] = useState<number | null>(null);
 
   const [errorMessage, setErrorMessage] = useState<string | undefined>();
   const { formatMessage } = useIntl();
@@ -52,7 +56,8 @@ const CreateReportModal = ({ open, onClose }: Props) => {
   const blockSubmit =
     reportTitleTooShort ||
     (template === 'project' ? selectedProjectId === undefined : false) ||
-    (template === 'platform' ? !dates.from || !dates.to : false);
+    (template === 'platform' ? !dates.from || !dates.to : false) ||
+    (template === 'community-monitor' ? !year || !quarter : false);
 
   const handleProjectFilter = (option: IOption) => {
     setSelectedProjectId(option.value === '' ? undefined : option.value);
@@ -113,6 +118,30 @@ const CreateReportModal = ({ open, onClose }: Props) => {
           <Label>{formatMessage(messages.reportTemplate)}</Label>
           <RadioButtons value={template} onChange={setTemplate} />
         </Box>
+        {template === 'community-monitor' && (
+          <Box width="100%" mt="12px">
+            <Box mb="16px">
+              <Select
+                placeholder={formatMessage(messages.selectYear)}
+                value={year}
+                options={generateYearOptions(2025)} // 2025 until current year
+                onChange={(option) => setYear(option.value)}
+              />
+            </Box>
+
+            <Select
+              placeholder={formatMessage(messages.selectQuarter)}
+              value={quarter}
+              options={Array.from({ length: 4 }, (_, i) => ({
+                label: `${formatMessage(messages.quarter, {
+                  quarterValue: i + 1,
+                })}`, // Quarter 1, Quarter 2, etc.
+                value: i + 1, // 1, 2, 3, 4
+              }))}
+              onChange={(option) => setQuarter(option.value)}
+            />
+          </Box>
+        )}
         {template === 'project' && (
           <Box width="100%" mt="12px">
             <ProjectFilter

@@ -13,12 +13,18 @@ import messages from '../messages';
 
 import { Template } from './typings';
 
-const TEMPLATE_TYPES: Template[] = ['blank', 'project', 'platform'];
+const TEMPLATE_TYPES: Template[] = [
+  'blank',
+  'project',
+  'platform',
+  'community-monitor',
+];
 
 const MESSAGES: Record<Template, MessageDescriptor> = {
   blank: messages.blankTemplate,
   project: messages.projectTemplate,
   platform: messages.platformTemplate,
+  'community-monitor': messages.communityMonitorTemplate,
 };
 
 interface Props {
@@ -31,11 +37,21 @@ const RadioButtons = ({ value, onChange }: Props) => {
   const platformTemplatesEnabled = useFeatureFlag({
     name: 'platform_templates',
   });
+  const communityMonitorEnabled = useFeatureFlag({
+    name: 'community_monitor',
+  });
 
-  const templateTypes =
+  let templateTypes =
     isSuperAdmin(user) || (platformTemplatesEnabled && isAdmin(user))
       ? TEMPLATE_TYPES
       : TEMPLATE_TYPES.filter((type) => type !== 'platform');
+
+  templateTypes = templateTypes.filter((type) => {
+    if (type === 'community-monitor') {
+      return communityMonitorEnabled;
+    }
+    return true;
+  });
 
   return (
     <>
