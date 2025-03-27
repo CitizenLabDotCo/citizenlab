@@ -4,8 +4,9 @@ module Analysis
   class AutoTaggingJob < ApplicationJob
     self.priority = 45 # Slighltly more important than emails (50)
 
-    def run(auto_tagging_task)
+    def run(auto_tagging_task, analysis)
       auto_tagging_task.execute
+      HeatmapGenerationJob.perform_later(analysis)
     end
   end
 end
