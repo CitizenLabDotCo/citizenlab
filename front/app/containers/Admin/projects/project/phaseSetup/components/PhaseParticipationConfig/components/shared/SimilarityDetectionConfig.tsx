@@ -14,6 +14,7 @@ import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import { SectionField, SubSectionTitle } from 'components/admin/Section';
 import Error from 'components/UI/Error';
+import UpsellTooltip from 'components/UpsellTooltip';
 
 import { FormattedMessage } from 'utils/cl-intl';
 import { isSuperAdmin } from 'utils/permissions/roles';
@@ -40,14 +41,11 @@ const SimilarityDetectionConfig = ({
   handleSimilarityEnabledChange,
   handleThresholdChange,
 }: Props) => {
-  const isAuthoringAssistanceEnabled = useFeatureFlag({
+  const isAuthoringAssistanceAllowed = useFeatureFlag({
     name: 'authoring_assistance',
+    onlyCheckAllowed: true,
   });
   const { data: user } = useAuthUser();
-
-  if (!isAuthoringAssistanceEnabled) {
-    return null;
-  }
 
   const allowConfiguringThreshold = isSuperAdmin(user);
 
@@ -63,12 +61,17 @@ const SimilarityDetectionConfig = ({
       </SubSectionTitle>
 
       <Box display="flex" flexDirection="column" gap="16px" width="100%">
-        <Toggle
-          label={<FormattedMessage {...messages.enableSimilarInputDetection} />}
-          checked={!!similarity_enabled}
-          onChange={() => handleSimilarityEnabledChange(!similarity_enabled)}
-          id="similarity_enabled"
-        />
+        <UpsellTooltip disabled={isAuthoringAssistanceAllowed}>
+          <Toggle
+            label={
+              <FormattedMessage {...messages.enableSimilarInputDetection} />
+            }
+            checked={!!similarity_enabled}
+            onChange={() => handleSimilarityEnabledChange(!similarity_enabled)}
+            id="similarity_enabled"
+            disabled={!isAuthoringAssistanceAllowed}
+          />
+        </UpsellTooltip>
         <Error apiErrors={apiErrors?.similarity_enabled} />
 
         {allowConfiguringThreshold && similarity_enabled && (
