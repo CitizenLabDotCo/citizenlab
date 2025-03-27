@@ -171,12 +171,15 @@ sr-Latn:
       attachments:
         title: Prilozi
         description:
-      page1:
+      title_page:
         description:
-      page2:
+      body_page:
+        title: Tell us more
+        description:
+      uploads_page:
         title: Images and attachments
         description:
-      page3:
+      details_page:
         title: Details
         description:
       other_input_field:
