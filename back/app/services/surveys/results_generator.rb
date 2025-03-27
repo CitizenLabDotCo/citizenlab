@@ -1,5 +1,10 @@
 # frozen_string_literal: true
 
+# Base class for generating survey results - others inherit as follows:
+# - ResultsWithGroupGenerator - allow grouping of single results
+# - ResultsWithDateGenerator - allow filtering by year and quarter
+# - ResultsWithLogicGenerator - apply survey logic to the results
+
 module Surveys
   class ResultsGenerator < FieldVisitorService
     def initialize(phase, structure_by_category: false)

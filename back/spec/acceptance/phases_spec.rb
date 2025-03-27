@@ -805,7 +805,9 @@ resource 'Phases' do
           categories: {
             averages: {
               quality_of_life: { '2025-2': 3.0, '2025-1': 2.0 },
-              service_delivery: { '2025-2': 1.0, '2025-1': 4.0 }
+              service_delivery: { '2025-2': 1.0, '2025-1': 4.0 },
+              governance_and_trust: {},
+              other: {}
             },
             multilocs: {
               quality_of_life: { en: 'Quality of life', 'fr-FR': 'Qualité de vie', 'nl-NL': 'Kwaliteit van leven' },
