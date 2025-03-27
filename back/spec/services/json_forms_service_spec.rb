@@ -401,7 +401,7 @@ describe JsonFormsService do
           expect(output[:json_schema_multiloc]['en'][:properties]).not_to have_key 'author_id'
           expect(output[:json_schema_multiloc]['en'][:properties]).not_to have_key 'budget'
 
-          expect(output.dig(:ui_schema_multiloc, 'en', :elements, 0, :elements, 1, :scope)).not_to eq '#/properties/author_id'
+          expect(output.dig(:ui_schema_multiloc, 'en', :elements, 0, :elements, 0, :scope)).not_to eq '#/properties/author_id'
           expect(output.dig(:ui_schema_multiloc, 'en', :elements, 2, :elements, 0, :scope)).not_to eq '#/properties/budget'
         end
 
@@ -441,7 +441,7 @@ describe JsonFormsService do
           expect(output[:json_schema_multiloc]['en'][:properties]['author_id']).to eq({ type: 'string' })
           expect(output[:json_schema_multiloc]['en'][:properties]['budget']).to eq({ type: 'number' })
 
-          expect(output[:ui_schema_multiloc]['en'][:elements][0][:elements][1]).to eq({
+          expect(output[:ui_schema_multiloc]['en'][:elements][0][:elements][0]).to eq({
             type: 'Control',
             scope: '#/properties/author_id',
             label: 'Author',

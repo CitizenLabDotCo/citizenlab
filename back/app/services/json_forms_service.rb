@@ -58,8 +58,7 @@ class JsonFormsService
 
   def add_author_budget_fields!(fields, current_user, participation_method)
     if participation_method.author_in_form? current_user
-      title_idx = fields.index { |field| field.code == 'title_multiloc' }
-      author_idx = title_idx + 1 # Insert below the title field
+      author_idx = fields.index { |field| field.code == 'title_multiloc' } # Insert above the title field
       fields.insert(author_idx, AUTHOR_FIELD)
     end
 
