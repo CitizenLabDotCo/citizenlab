@@ -10,7 +10,12 @@ import {
 
 import useIdeaById from 'api/ideas/useIdeaById';
 
+import ButtonWithLink from 'components/UI/ButtonWithLink';
 import QuillEditedContent from 'components/UI/QuillEditedContent';
+
+import { useIntl } from 'utils/cl-intl';
+
+import messages from './messages';
 
 interface IdeaDetailViewProps {
   ideaId: string | null;
@@ -18,6 +23,7 @@ interface IdeaDetailViewProps {
 
 const IdeaDetailView = ({ ideaId }: IdeaDetailViewProps) => {
   const { data: idea, isLoading } = useIdeaById(ideaId ? ideaId : undefined);
+  const { formatMessage } = useIntl();
 
   if (isLoading) return <Spinner />;
 
@@ -95,6 +101,17 @@ const IdeaDetailView = ({ ideaId }: IdeaDetailViewProps) => {
           }}
         />
       </QuillEditedContent>
+      <Box mt="24px" w="100%" display="flex">
+        <ButtonWithLink
+          width="100%"
+          buttonStyle="primary"
+          linkTo={`/ideas/${idea.data.attributes.slug}`}
+          bgColor={colors.primary}
+          openLinkInNewTab
+        >
+          {formatMessage(messages.engageHere)}
+        </ButtonWithLink>
+      </Box>
     </Box>
   );
 };

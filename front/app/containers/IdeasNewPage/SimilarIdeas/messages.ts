@@ -18,4 +18,8 @@ export default defineMessages({
     id: 'app.components.ideas.similarIdeas.noSimilarSubmissions',
     defaultMessage: 'No similar submissions found.',
   },
+  engageHere: {
+    id: 'app.components.ideas.similarIdeas.engageHere',
+    defaultMessage: 'Engage here',
+  },
 });
