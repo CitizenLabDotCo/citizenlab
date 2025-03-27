@@ -12,6 +12,7 @@ import { useParams } from 'react-router-dom';
 
 import { Unit } from 'api/analysis_heat_map_cells/types';
 import useAnalysisHeatmapCells from 'api/analysis_heat_map_cells/useAnalysisHetmapCells';
+import useCustomFieldBin from 'api/custom_field_bins/useCustomFieldBin';
 
 import useLocalize from 'hooks/useLocalize';
 
@@ -22,10 +23,10 @@ import messages from './messages';
 interface HeatMapInsightsProps {
   onExploreClick: ({
     unit,
-    customFieldOptionId,
+    customFieldId,
   }: {
     unit: Unit;
-    customFieldOptionId?: string;
+    customFieldId?: string;
   }) => void;
 }
 
@@ -43,6 +44,14 @@ const HeatMapInsights = ({ onExploreClick }: HeatMapInsightsProps) => {
     analysisId,
     maxPValue: 0.05,
     pageSize: 12,
+  });
+
+  const selectedCell = analysisHeatmapCells?.data.find(
+    (cell) => cell.id === selectedInsightId
+  );
+
+  const { data: bin } = useCustomFieldBin({
+    binId: selectedCell?.relationships.column?.data.id,
   });
 
   useEffect(() => {
@@ -68,10 +77,6 @@ const HeatMapInsights = ({ onExploreClick }: HeatMapInsightsProps) => {
       return insights[newIndex].id;
     });
   };
-
-  const selectedCell = analysisHeatmapCells.data.find(
-    (cell) => cell.id === selectedInsightId
-  );
 
   if (analysisHeatmapCells.data.length === 0) {
     return (
@@ -127,7 +132,6 @@ const HeatMapInsights = ({ onExploreClick }: HeatMapInsightsProps) => {
           />
         </Box>
       </Box>
-
       {selectedCell && (
         <Box
           key={selectedCell.id}
@@ -147,8 +151,7 @@ const HeatMapInsights = ({ onExploreClick }: HeatMapInsightsProps) => {
                 onClick={() =>
                   onExploreClick({
                     unit: selectedCell.attributes.unit,
-                    customFieldOptionId:
-                      selectedCell.relationships.column?.data.id,
+                    customFieldId: bin?.data.relationships.custom_field.data.id,
                   })
                 }
               >

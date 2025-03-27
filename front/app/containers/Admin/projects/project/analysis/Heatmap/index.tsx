@@ -28,25 +28,16 @@ const Heatmap = () => {
     return null;
   }
 
-  const getCustomFieldIdFromOptionId = (optionId?: string) => {
-    if (!optionId) return;
-
-    return customFields.data.find((customField) =>
-      customField.relationships?.options.data.find(
-        (option) => option.id === optionId
-      )
-    )?.id;
-  };
-
   const onExploreClick = ({
     unit,
-    customFieldOptionId,
+    customFieldId,
   }: {
     unit: Unit;
-    customFieldOptionId?: string;
+    customFieldId?: string;
   }) => {
+    console.log('onExploreClick', unit, customFieldId);
     setInitialUnit(unit);
-    setInitialCustomFieldId(getCustomFieldIdFromOptionId(customFieldOptionId));
+    setInitialCustomFieldId(customFieldId);
     setIsReadMoreOpen(true);
   };
 
