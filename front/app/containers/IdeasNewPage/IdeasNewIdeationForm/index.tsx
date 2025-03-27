@@ -18,8 +18,8 @@ import useInputSchema from 'hooks/useInputSchema';
 import useLocale from 'hooks/useLocale';
 
 import NewIdeaHeading from 'containers/IdeaHeading/NewIdeaHeading';
-import IdeaDetailView from 'containers/IdeasNewPage/SimilarIdeas/IdeaDetailView';
-import { IdeaSelectContext } from 'containers/IdeasNewPage/SimilarIdeas/IdeaSelectContext';
+import InputDetailView from 'containers/IdeasNewPage/SimilarInputs/InputDetailView';
+import { InputSelectContext } from 'containers/IdeasNewPage/SimilarInputs/InputSelectContext';
 import { calculateDynamicHeight } from 'containers/IdeasNewSurveyPage/IdeasNewSurveyForm/utils';
 
 import ContentUploadDisclaimer from 'components/ContentUploadDisclaimer';
@@ -313,7 +313,7 @@ const IdeasNewIdeationForm = ({ project, phaseId }: Props) => {
                     pb={isSmallerThanPhone ? '0' : '80px'}
                     display="flex"
                   >
-                    <IdeaSelectContext.Provider
+                    <InputSelectContext.Provider
                       value={{
                         onIdeaSelect: setSelectedIdeaId,
                         title,
@@ -335,7 +335,7 @@ const IdeasNewIdeationForm = ({ project, phaseId }: Props) => {
                         showSubmitButton={false}
                         config={'input'}
                       />
-                    </IdeaSelectContext.Provider>
+                    </InputSelectContext.Provider>
                   </Box>
                 </Box>
                 <ContentUploadDisclaimer
@@ -375,7 +375,7 @@ const IdeasNewIdeationForm = ({ project, phaseId }: Props) => {
                       borderRadius="2px"
                       m="8px auto"
                     />
-                    <IdeaDetailView ideaId={selectedIdeaId} />
+                    <InputDetailView ideaId={selectedIdeaId} />
                   </Box>
                 </Box>
               ) : (
@@ -389,7 +389,7 @@ const IdeasNewIdeationForm = ({ project, phaseId }: Props) => {
                   position="relative"
                   mb="80px"
                 >
-                  <IdeaDetailView ideaId={selectedIdeaId} />
+                  <InputDetailView ideaId={selectedIdeaId} />
                 </Box>
               ))}
           </Box>

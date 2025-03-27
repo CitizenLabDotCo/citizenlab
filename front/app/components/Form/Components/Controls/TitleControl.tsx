@@ -5,8 +5,8 @@ import { ControlProps, RankedTester, rankWith } from '@jsonforms/core';
 import { withJsonFormsControlProps } from '@jsonforms/react';
 import { debounce } from 'lodash-es';
 
-import { useIdeaSelect } from 'containers/IdeasNewPage/SimilarIdeas/IdeaSelectContext';
-import SimilarIdeasList from 'containers/IdeasNewPage/SimilarIdeas/SimilarIdeasList';
+import { useIdeaSelect } from 'containers/IdeasNewPage/SimilarInputs/InputSelectContext';
+import SimilarIdeasList from 'containers/IdeasNewPage/SimilarInputs/SimilarInputsList';
 
 import { FormLabel } from 'components/UI/FormComponents';
 

@@ -1,6 +1,6 @@
 import { createContext, useContext } from 'react';
 
-interface IIdeaSelectContext {
+interface IInputSelectContext {
   onIdeaSelect: (ideaId: string | null) => void;
   selectedIdeaId: string | null;
   title: string;
@@ -10,7 +10,7 @@ interface IIdeaSelectContext {
   showSimilarInputs: boolean;
 }
 
-const defaultContext: IIdeaSelectContext = {
+const defaultContext: IInputSelectContext = {
   onIdeaSelect: () => {},
   selectedIdeaId: null,
   showSimilarInputs: false,
@@ -20,7 +20,7 @@ const defaultContext: IIdeaSelectContext = {
   setBody: () => {},
 };
 
-export const IdeaSelectContext =
-  createContext<IIdeaSelectContext>(defaultContext);
+export const InputSelectContext =
+  createContext<IInputSelectContext>(defaultContext);
 
-export const useIdeaSelect = () => useContext(IdeaSelectContext);
+export const useIdeaSelect = () => useContext(InputSelectContext);

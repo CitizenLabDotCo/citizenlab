@@ -17,8 +17,8 @@ import useInputSchema from 'hooks/useInputSchema';
 
 import EditIdeaHeading from 'containers/IdeaHeading/EditIdeaHeading';
 import ideaFormMessages from 'containers/IdeasNewPage/messages';
-import IdeaDetailView from 'containers/IdeasNewPage/SimilarIdeas/IdeaDetailView';
-import { IdeaSelectContext } from 'containers/IdeasNewPage/SimilarIdeas/IdeaSelectContext';
+import InputDetailView from 'containers/IdeasNewPage/SimilarInputs/InputDetailView';
+import { InputSelectContext } from 'containers/IdeasNewPage/SimilarInputs/InputSelectContext';
 import { calculateDynamicHeight } from 'containers/IdeasNewSurveyPage/IdeasNewSurveyForm/utils';
 
 import ContentUploadDisclaimer from 'components/ContentUploadDisclaimer';
@@ -316,7 +316,7 @@ const IdeasEditForm = ({ ideaId }: Props) => {
                     h={calculateDynamicHeight(isSmallerThanPhone)}
                     pb={isSmallerThanPhone ? '0' : '80px'}
                   >
-                    <IdeaSelectContext.Provider
+                    <InputSelectContext.Provider
                       value={{
                         onIdeaSelect: setSelectedIdeaId,
                         title,
@@ -339,7 +339,7 @@ const IdeasEditForm = ({ ideaId }: Props) => {
                         loading={loading}
                         showSubmitButton={false}
                       />
-                    </IdeaSelectContext.Provider>
+                    </InputSelectContext.Provider>
                   </Box>
                 </Box>
                 <ContentUploadDisclaimer
@@ -360,7 +360,7 @@ const IdeasEditForm = ({ ideaId }: Props) => {
                 position="relative"
                 mb="80px"
               >
-                <IdeaDetailView ideaId={selectedIdeaId} />
+                <InputDetailView ideaId={selectedIdeaId} />
               </Box>
             )}
           </Box>

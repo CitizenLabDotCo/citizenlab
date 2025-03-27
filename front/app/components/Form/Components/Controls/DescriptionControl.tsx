@@ -6,8 +6,8 @@ import { withJsonFormsControlProps } from '@jsonforms/react';
 import { debounce } from 'lodash-es';
 import { WrappedComponentProps } from 'react-intl';
 
-import { useIdeaSelect } from 'containers/IdeasNewPage/SimilarIdeas/IdeaSelectContext';
-import SimilarIdeasList from 'containers/IdeasNewPage/SimilarIdeas/SimilarIdeasList';
+import { useIdeaSelect } from 'containers/IdeasNewPage/SimilarInputs/InputSelectContext';
+import SimilarIdeasList from 'containers/IdeasNewPage/SimilarInputs/SimilarInputsList';
 
 import { FormLabel } from 'components/UI/FormComponents';
 import QuillEditor from 'components/UI/QuillEditor';
