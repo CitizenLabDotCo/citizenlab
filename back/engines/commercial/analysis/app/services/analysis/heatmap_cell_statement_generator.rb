@@ -75,9 +75,9 @@ module Analysis
         if bin.range.begin.nil?
           I18n.t('analysis.cell_statement.range_max', max: bin.range.end)
         elsif bin.range.end.nil?
-          I18n.t('analysis.cell_statement.range_min', min: bin.range.start)
+          I18n.t('analysis.cell_statement.range_min', min: bin.range.begin)
         else
-          I18n.t('analysis.cell_statement.range_min_max', min: bin.range.start, max: bin.range.end)
+          I18n.t('analysis.cell_statement.range_min_max', min: bin.range.begin, max: bin.range.end)
         end
       else
         raise "Unsupported bin type for statement generation: #{bin.class}"
