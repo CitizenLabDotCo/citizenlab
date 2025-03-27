@@ -12,12 +12,14 @@ module ReportBuilder
             # Avoid to create params with nil values if they are not present
             f_params[:text_search] = params[:search] if params.key?(:search)
             f_params[:owners] = params[:owner_id] if params.key?(:owner_id)
+
             if params.key?(:service)
               f_params[:service_reports] = case params[:service]&.downcase
               when 'true' then true
               when 'false' then false
               end
             end
+
             if params.key?(:community_monitor)
               default_scope = ReportBuilder::Report.all # We need to include reports with a phase id to find community_monitor
               f_params[:community_monitor] = true # Just the presence of the param is enough - false does not mean anything
