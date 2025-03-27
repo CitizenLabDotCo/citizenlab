@@ -21,7 +21,7 @@ const Heatmap = () => {
   });
 
   const { data: customFields } = useUserCustomFields({
-    inputTypes: ['select', 'multiselect'],
+    inputTypes: ['select', 'multiselect', 'number', 'checkbox'],
   });
 
   if (!customFields || !statisticalInsightsEnabled) {

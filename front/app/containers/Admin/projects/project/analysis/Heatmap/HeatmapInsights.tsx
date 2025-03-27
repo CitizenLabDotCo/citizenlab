@@ -6,6 +6,7 @@ import {
   Text,
   Button,
   IconButton,
+  Spinner,
 } from '@citizenlab/cl2-component-library';
 import { useParams } from 'react-router-dom';
 
@@ -32,8 +33,10 @@ const HeatMapInsights = ({ onExploreClick }: HeatMapInsightsProps) => {
   const [selectedInsightId, setSelectedInsightId] = useState<
     string | undefined
   >();
+
   const localize = useLocalize();
   const { formatMessage } = useIntl();
+
   const { analysisId } = useParams() as { analysisId: string };
 
   const { data: analysisHeatmapCells } = useAnalysisHeatmapCells({
@@ -48,7 +51,7 @@ const HeatMapInsights = ({ onExploreClick }: HeatMapInsightsProps) => {
     }
   }, [analysisHeatmapCells]);
 
-  if (!analysisHeatmapCells) return null;
+  if (!analysisHeatmapCells) return <Spinner />;
 
   const handleChangeInsight = (offset: number) => {
     setSelectedInsightId((currentId) => {
@@ -69,6 +72,27 @@ const HeatMapInsights = ({ onExploreClick }: HeatMapInsightsProps) => {
   const selectedCell = analysisHeatmapCells.data.find(
     (cell) => cell.id === selectedInsightId
   );
+
+  if (analysisHeatmapCells.data.length === 0) {
+    return (
+      <Box display="flex" justifyContent="center">
+        <Button
+          my="12px"
+          buttonStyle="text"
+          icon="eye"
+          size="s"
+          p="0px"
+          onClick={() =>
+            onExploreClick({
+              unit: 'inputs',
+            })
+          }
+        >
+          {formatMessage(messages.viewAllInsights)}
+        </Button>
+      </Box>
+    );
+  }
 
   return (
     <>
@@ -134,22 +158,6 @@ const HeatMapInsights = ({ onExploreClick }: HeatMapInsightsProps) => {
           )}
         </Box>
       )}
-      <Box display="flex" justifyContent="center">
-        <Button
-          mt="12px"
-          buttonStyle="text"
-          icon="eye"
-          size="s"
-          p="0px"
-          onClick={() =>
-            onExploreClick({
-              unit: 'inputs',
-            })
-          }
-        >
-          {formatMessage(messages.viewAllInsights)}
-        </Button>
-      </Box>
     </>
   );
 };

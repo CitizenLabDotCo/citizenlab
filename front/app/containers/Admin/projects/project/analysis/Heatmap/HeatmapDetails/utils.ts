@@ -1,5 +1,7 @@
 import { colors } from '@citizenlab/cl2-component-library';
 
+import { ICustomFieldBinData } from 'api/custom_field_bins/types';
+
 export const getCellBgColor = (lift: number | undefined): string => {
   if (lift === undefined) return colors.grey200;
   if (lift >= 1.5) return colors.success;
@@ -24,4 +26,19 @@ export const convertLiftToPercentage = (lift: number | undefined): string => {
 
   // Format with sign and fixed decimal places
   return `${percentage >= 0 ? '+' : ''}${percentage.toFixed(0)}%`;
+};
+
+export const formatRangeText = (
+  range?: ICustomFieldBinData['attributes']['range']
+) => {
+  if (!range) return '';
+
+  if (range.begin && range.end) {
+    return `${range.begin} - ${range.end}`;
+  } else if (range.begin) {
+    return `> ${range.begin}`;
+  } else if (range.end) {
+    return `< ${range.end}`;
+  }
+  return '';
 };
