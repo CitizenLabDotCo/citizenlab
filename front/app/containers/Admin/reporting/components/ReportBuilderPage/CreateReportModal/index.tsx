@@ -75,6 +75,8 @@ const CreateReportModal = ({ open, onClose }: Props) => {
             getRedirectUrl({
               reportId: report.data.id,
               selectedProjectId,
+              year,
+              quarter,
               template,
               dates,
             })
@@ -124,7 +126,7 @@ const CreateReportModal = ({ open, onClose }: Props) => {
               <Select
                 placeholder={formatMessage(messages.selectYear)}
                 value={year}
-                options={generateYearOptions(2025)} // 2025 until current year
+                options={generateYearOptions(2025)} // Genereates list: 2025 until current year
                 onChange={(option) => setYear(option.value)}
               />
             </Box>
@@ -135,8 +137,8 @@ const CreateReportModal = ({ open, onClose }: Props) => {
               options={Array.from({ length: 4 }, (_, i) => ({
                 label: `${formatMessage(messages.quarter, {
                   quarterValue: i + 1,
-                })}`, // Quarter 1, Quarter 2, etc.
-                value: i + 1, // 1, 2, 3, 4
+                })}`, // E.g. "Quarter 1"
+                value: i + 1, // E.g. "1"
               }))}
               onChange={(option) => setQuarter(option.value)}
             />

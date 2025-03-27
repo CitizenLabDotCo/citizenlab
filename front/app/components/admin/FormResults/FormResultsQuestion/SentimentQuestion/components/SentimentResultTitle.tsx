@@ -24,7 +24,9 @@ const SentimentResultTitle = ({ result, textResponsesCount }: Props) => {
       justifyContent="space-between"
       p="8px"
     >
-      <SentimentHeader result={result} />
+      <Box mr="20px">
+        <SentimentHeader result={result} />
+      </Box>
       <Box
         display="flex"
         justifyContent={isMobileOrSmaller ? 'flex-start' : 'flex-end'}

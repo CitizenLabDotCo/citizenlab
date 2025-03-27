@@ -31,9 +31,9 @@ export default defineMessages({
       'Excel templates will not include any mapping input questions as these are not supported for bulk importing at this time.',
   },
   informationText: {
-    id: 'app.containers.AdminPage.ProjectEdit.survey.informationText3',
+    id: 'app.containers.AdminPage.ProjectEdit.survey.informationText4',
     defaultMessage:
-      'AI summaries of short and long answer questions can be accessed from the AI tab in the left sidebar.',
+      'AI summaries for short answer, long answer, and sentiment scale follow up questions can be accessed from the AI tab in the left sidebar.',
   },
   openForResponses: {
     id: 'app.containers.AdminPage.ProjectEdit.survey.openForResponses2',
