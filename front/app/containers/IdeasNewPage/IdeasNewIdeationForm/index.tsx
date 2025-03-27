@@ -13,6 +13,7 @@ import usePhases from 'api/phases/usePhases';
 import { getCurrentPhase } from 'api/phases/utils';
 import { IProject } from 'api/projects/types';
 
+import useFeatureFlag from 'hooks/useFeatureFlag';
 import useInputSchema from 'hooks/useInputSchema';
 import useLocale from 'hooks/useLocale';
 
@@ -83,6 +84,9 @@ const IdeasNewIdeationForm = ({ project, phaseId }: Props) => {
   const { data: phaseFromUrl } = usePhase(phaseId);
   const isSmallerThanPhone = useBreakpoint('phone');
   const [usingMapView, setUsingMapView] = useState(false);
+  const isAuthoringAssistanceEnabled = useFeatureFlag({
+    name: 'authoring_assistance',
+  });
   const {
     schema,
     uiSchema,
@@ -103,6 +107,10 @@ const IdeasNewIdeationForm = ({ project, phaseId }: Props) => {
   };
   const [title, setTitle] = useState('');
   const [body, setBody] = useState('');
+  const showSimilarInputs = !!(
+    phaseFromUrl?.data.attributes.similarity_enabled &&
+    isAuthoringAssistanceEnabled
+  );
 
   // Click on map flow : Reverse geocode the location if it's in the url params
   useEffect(() => {
@@ -313,6 +321,7 @@ const IdeasNewIdeationForm = ({ project, phaseId }: Props) => {
                         setTitle,
                         setBody,
                         selectedIdeaId,
+                        showSimilarInputs,
                       }}
                     >
                       <Form
