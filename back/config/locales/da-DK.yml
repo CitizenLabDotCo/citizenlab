@@ -92,7 +92,7 @@ da:
     other: Andet
     other_description: Andet
     quality_of_life: Livskvalitet
-    service_delivery: Levering af tjenester
+    service_delivery: Levering af services
     governance_and_trust: Ledelse og tillid
   static_pages:
     terms_and_conditions_title: Vilkår og Betingelser
@@ -186,7 +186,7 @@ da:
     community_monitor:
       questions:
         place_to_live:
-          title: Byen som et sted at bo
+          title: Kommunen som et sted at bo
         sense_of_safety:
           title: Overordnet følelse af sikkerhed
         access_to_parks:
@@ -196,7 +196,7 @@ da:
         employment_opportunities:
           title: Muligheder for beskæftigelse og økonomisk fremgang
         quality_of_services:
-          title: Overordnet kvalitet af de tjenester, byen leverer
+          title: Overordnet kvalitet af de services, byen leverer
         overall_value:
           title: Den samlede værdi, du får for dine kommunale skatter og afgifter
         cleanliness_and_maintenance:
@@ -209,9 +209,9 @@ da:
           title: Gennemsigtighed om, hvordan kommunale skattepenge bruges
       question_categories:
         quality_of_life: Livskvalitet
-        service_delivery: Levering af tjenester
+        service_delivery: Levering af services
         governance_and_trust: Ledelse og tillid
-        other: Uspesifisert
+        other: Andet
       labels:
         label_1: Meget dårlig
         label_2: Ringe
