@@ -29,7 +29,7 @@ const CommunityMonitorCTA = () => {
       </Title>
       <Box display="flex" justifyContent="center">
         <Button onClick={goToCommunityMonitorSurvey}>
-          Take the community survey!
+          Take the sentiment survey
         </Button>
       </Box>
     </Box>
