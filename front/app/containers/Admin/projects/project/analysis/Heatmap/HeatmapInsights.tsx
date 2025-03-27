@@ -141,24 +141,22 @@ const HeatMapInsights = ({ onExploreClick }: HeatMapInsightsProps) => {
           borderRadius="3px"
         >
           <Text>{localize(selectedCell.attributes.statement_multiloc)}</Text>
-          {selectedCell.attributes.unit === 'inputs' && (
-            <Box display="flex">
-              <Button
-                buttonStyle="text"
-                icon="eye"
-                size="s"
-                p="0px"
-                onClick={() =>
-                  onExploreClick({
-                    unit: selectedCell.attributes.unit,
-                    customFieldId: bin?.data.relationships.custom_field.data.id,
-                  })
-                }
-              >
-                {formatMessage(messages.explore)}
-              </Button>
-            </Box>
-          )}
+          <Box display="flex">
+            <Button
+              buttonStyle="text"
+              icon="eye"
+              size="s"
+              p="0px"
+              onClick={() =>
+                onExploreClick({
+                  unit: selectedCell.attributes.unit,
+                  customFieldId: bin?.data.relationships.custom_field.data.id,
+                })
+              }
+            >
+              {formatMessage(messages.explore)}
+            </Button>
+          </Box>
         </Box>
       )}
     </>
