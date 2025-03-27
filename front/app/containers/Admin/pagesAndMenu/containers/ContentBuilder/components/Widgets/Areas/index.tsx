@@ -48,7 +48,7 @@ const Areas = ({ titleMultiloc }: Props) => {
   }
 
   return (
-    <CarrouselContainer className="e2e-areas-widget">
+    <CarrouselContainer dataCy="e2e-areas-widget">
       {isSmallerThanPhone ? (
         <Box display="flex" flexDirection="column" alignItems="flex-start">
           <CarrouselTitle mb="4px">{title}</CarrouselTitle>

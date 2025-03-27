@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Surveys
-  class ResultsWithLogicGenerator < ResultsWithDateGenerator
+  class ResultsWithLogicGenerator < ResultsGenerator
     def generate_result_for_field(field_id)
       # Adding logic only makes sense for the full result set
       raise NotImplementedError, 'This method is not implemented'
