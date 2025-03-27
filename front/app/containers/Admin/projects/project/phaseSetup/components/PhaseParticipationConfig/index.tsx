@@ -373,6 +373,23 @@ const PhaseParticipationConfig = ({
     }));
   };
 
+  const handleSimilarityEnabledChange = (value: boolean) => {
+    updateFormData((state) => ({
+      ...state,
+      similarity_enabled: value,
+    }));
+  };
+
+  const handleThresholdChange = (
+    field: 'similarity_threshold_title' | 'similarity_threshold_body',
+    value: number
+  ) => {
+    updateFormData((state) => ({
+      ...state,
+      [field]: value,
+    }));
+  };
+
   const surveyProviders = {
     typeform: typeform_enabled,
     enalyzer: enalyzer_enabled,
@@ -413,6 +430,9 @@ const PhaseParticipationConfig = ({
     expire_days_limit,
     reacting_threshold,
     prescreening_enabled,
+    similarity_enabled,
+    similarity_threshold_title,
+    similarity_threshold_body,
   } = formData;
 
   const showSurveys =
@@ -514,6 +534,11 @@ const PhaseParticipationConfig = ({
             }
             prescreening_enabled={prescreening_enabled}
             togglePrescreeningEnabled={togglePrescreeningEnabled}
+            similarity_enabled={similarity_enabled}
+            similarity_threshold_title={similarity_threshold_title}
+            similarity_threshold_body={similarity_threshold_body}
+            handleSimilarityEnabledChange={handleSimilarityEnabledChange}
+            handleThresholdChange={handleThresholdChange}
           />
         )}
 
