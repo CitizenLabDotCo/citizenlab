@@ -10,7 +10,9 @@ import useIdeaImages from 'api/idea_images/useIdeaImages';
 import { IdeaPublicationStatus, IIdeaUpdate } from 'api/ideas/types';
 import useIdeaById from 'api/ideas/useIdeaById';
 import useUpdateIdea from 'api/ideas/useUpdateIdea';
+import usePhase from 'api/phases/usePhase';
 
+import useFeatureFlag from 'hooks/useFeatureFlag';
 import useInputSchema from 'hooks/useInputSchema';
 
 import EditIdeaHeading from 'containers/IdeaHeading/EditIdeaHeading';
@@ -70,6 +72,14 @@ const IdeasEditForm = ({ ideaId }: Props) => {
   const callbackRef = useRef<(() => void) | null>(null);
   const [usingMapView, setUsingMapView] = useState(false);
   const [selectedIdeaId, setSelectedIdeaId] = useState<string | null>(null);
+  const isAuthoringAssistanceEnabled = useFeatureFlag({
+    name: 'authoring_assistance',
+  });
+  const phaseId = idea?.data.relationships.phases.data[0].id;
+  const { data: phase } = usePhase(phaseId);
+  const showSimilarInputs = !!(
+    phase?.data.attributes.similarity_enabled && isAuthoringAssistanceEnabled
+  );
 
   const {
     schema,
@@ -314,6 +324,7 @@ const IdeasEditForm = ({ ideaId }: Props) => {
                         setTitle,
                         setBody,
                         selectedIdeaId,
+                        showSimilarInputs,
                       }}
                     >
                       <Form
