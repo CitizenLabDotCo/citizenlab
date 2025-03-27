@@ -57,13 +57,20 @@ const Comments = ({ projectId }: Props) => {
   if (!authUser) return null;
 
   const onFormSubmit = ({ comment_body }: FormValues) => {
-    addExternalComment({
-      projectId,
-      externalCommentReqBody: {
-        body: comment_body,
-        ...getAuthorNames(authUser),
+    addExternalComment(
+      {
+        projectId,
+        externalCommentReqBody: {
+          body: comment_body,
+          ...getAuthorNames(authUser),
+        },
       },
-    });
+      {
+        onSuccess: () => {
+          methods.reset();
+        },
+      }
+    );
   };
 
   return (
