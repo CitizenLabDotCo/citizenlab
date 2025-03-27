@@ -61,6 +61,7 @@ import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 import eventEmitter from 'utils/eventEmitter';
 import { isPage } from 'utils/helperUtils';
 
+import { useIdeaSelect } from '../../../../containers/IdeasNewPage/SimilarIdeas/IdeaSelectContext';
 import getPageSchema from '../../utils/getPageSchema';
 import { useErrorToRead } from '../Fields/ErrorToReadContext';
 
@@ -94,6 +95,7 @@ const CLPageLayout = memo(
     const [postAnonymously, setPostAnonymously] = useState(false);
     const [showAnonymousConfirmationModal, setShowAnonymousConfirmationModal] =
       useState(false);
+    const { onIdeaSelect } = useIdeaSelect();
 
     // We can cast types because the tester made sure we only get correct values
     const pageTypeElements = (uischema as PageCategorization).elements;
@@ -241,6 +243,8 @@ const CLPageLayout = memo(
     const handleNextAndSubmit = async () => {
       if (!onSubmit) return;
 
+      // Hide idea details when going to the next page
+      onIdeaSelect(null);
       const sanitizedData = sanitizeFormData(data);
 
       const isValid = customAjv.validate(
@@ -325,6 +329,8 @@ const CLPageLayout = memo(
     };
 
     const handlePrevious = () => {
+      // Hide idea details when going back to a previous page
+      onIdeaSelect(null);
       // Get scopes of elements with rules on the current page
       const ruleElementsScopes = currentPage.elements
         .filter((element) => {
