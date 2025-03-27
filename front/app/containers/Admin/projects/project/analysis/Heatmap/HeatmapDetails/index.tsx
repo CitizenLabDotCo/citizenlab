@@ -4,14 +4,12 @@ import {
   Box,
   colors,
   Table,
-  Thead,
   Tr,
   Td,
   Tbody,
   stylingConsts,
   Title,
   IconButton,
-  Th,
   Select,
   Spinner,
 } from '@citizenlab/cl2-component-library';
@@ -32,20 +30,17 @@ import CloseIconButton from 'components/UI/CloseIconButton';
 
 import { useIntl } from 'utils/cl-intl';
 
-import Tag from '../Tags/Tag';
+import Tag from '../../Tags/Tag';
+import messages from '../messages';
 
 import HeatmapCellTagVsBin from './HeatmapCellTagVsBin';
-import messages from './messages';
+import HeatmapTableHead from './HeatmapTableHead';
 
 interface HeatMapProps {
   onClose: () => void;
   customFields: IUserCustomFields;
   initialCustomFieldId?: string;
   initialUnit?: Unit;
-}
-
-interface CustomFieldOptionsProps {
-  customFieldId: string;
 }
 
 interface StyledTableProps {
@@ -105,21 +100,6 @@ const StyledTable = styled(Table)<StyledTableProps>`
     background-color: ${colors.grey100};
   }
 `;
-
-const CustomFieldOptions: React.FC<CustomFieldOptionsProps> = ({
-  customFieldId,
-}) => {
-  const { data: options } = useUserCustomFieldsOptions(customFieldId);
-  const localize = useLocalize();
-
-  return (
-    <>
-      {options?.data.map((option) => (
-        <Th key={option.id}>{localize(option.attributes.title_multiloc)}</Th>
-      ))}
-    </>
-  );
-};
 
 const HeatmapDetails = ({
   onClose,
@@ -222,12 +202,8 @@ const HeatmapDetails = ({
       <Box overflowX="auto" w="100%" h="100%" pb="220px">
         {/* The number of columns includes the number of options + the tags column  */}
         <StyledTable columns={options.data.length + 2}>
-          <Thead>
-            <Tr>
-              <Th />
-              <CustomFieldOptions customFieldId={selectedFieldId} />
-            </Tr>
-          </Thead>
+          <HeatmapTableHead customFieldId={selectedFieldId} />
+
           <Tbody>
             {tags?.data.map((tag) => (
               <Tr key={tag.id}>

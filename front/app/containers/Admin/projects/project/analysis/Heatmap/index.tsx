@@ -35,7 +35,7 @@ const Heatmap = () => {
   });
 
   const { data: customFields } = useUserCustomFields({
-    inputTypes: ['select', 'multiselect'],
+    inputTypes: ['select', 'multiselect', 'number', 'checkbox'],
   });
 
   if (!customFields || !statisticalInsightsEnabled || !project) {
@@ -52,25 +52,15 @@ const Heatmap = () => {
     );
   }
 
-  const getCustomFieldIdFromOptionId = (optionId?: string) => {
-    if (!optionId) return;
-
-    return customFields.data.find((customField) =>
-      customField.relationships?.options.data.find(
-        (option) => option.id === optionId
-      )
-    )?.id;
-  };
-
   const onExploreClick = ({
     unit,
-    customFieldOptionId,
+    customFieldId,
   }: {
     unit: Unit;
-    customFieldOptionId?: string;
+    customFieldId?: string;
   }) => {
     setInitialUnit(unit);
-    setInitialCustomFieldId(getCustomFieldIdFromOptionId(customFieldOptionId));
+    setInitialCustomFieldId(customFieldId);
     setIsReadMoreOpen(true);
   };
 

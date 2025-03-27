@@ -12,6 +12,7 @@ import { useParams } from 'react-router-dom';
 
 import { Unit } from 'api/analysis_heat_map_cells/types';
 import useAnalysisHeatmapCells from 'api/analysis_heat_map_cells/useAnalysisHeatmapCells';
+import useCustomFieldBin from 'api/custom_field_bins/useCustomFieldBin';
 
 import useLocalize from 'hooks/useLocalize';
 
@@ -22,10 +23,10 @@ import messages from './messages';
 interface HeatMapInsightsProps {
   onExploreClick: ({
     unit,
-    customFieldOptionId,
+    customFieldId,
   }: {
     unit: Unit;
-    customFieldOptionId?: string;
+    customFieldId?: string;
   }) => void;
 }
 
@@ -43,6 +44,14 @@ const HeatMapInsights = ({ onExploreClick }: HeatMapInsightsProps) => {
     analysisId,
     maxPValue: 0.05,
     pageSize: 12,
+  });
+
+  const selectedCell = analysisHeatmapCells?.data.find(
+    (cell) => cell.id === selectedInsightId
+  );
+
+  const { data: bin } = useCustomFieldBin({
+    binId: selectedCell?.relationships.column?.data.id,
   });
 
   useEffect(() => {
@@ -69,9 +78,26 @@ const HeatMapInsights = ({ onExploreClick }: HeatMapInsightsProps) => {
     });
   };
 
-  const selectedCell = analysisHeatmapCells.data.find(
-    (cell) => cell.id === selectedInsightId
-  );
+  if (analysisHeatmapCells.data.length === 0) {
+    return (
+      <Box display="flex" justifyContent="center">
+        <Button
+          my="12px"
+          buttonStyle="text"
+          icon="eye"
+          size="s"
+          p="0px"
+          onClick={() =>
+            onExploreClick({
+              unit: 'inputs',
+            })
+          }
+        >
+          {formatMessage(messages.viewAllInsights)}
+        </Button>
+      </Box>
+    );
+  }
 
   if (analysisHeatmapCells.data.length === 0) {
     return (
@@ -127,7 +153,6 @@ const HeatMapInsights = ({ onExploreClick }: HeatMapInsightsProps) => {
           />
         </Box>
       </Box>
-
       {selectedCell && (
         <Box
           key={selectedCell.id}
@@ -137,25 +162,22 @@ const HeatMapInsights = ({ onExploreClick }: HeatMapInsightsProps) => {
           borderRadius="3px"
         >
           <Text>{localize(selectedCell.attributes.statement_multiloc)}</Text>
-          {selectedCell.attributes.unit === 'inputs' && (
-            <Box display="flex">
-              <Button
-                buttonStyle="text"
-                icon="eye"
-                size="s"
-                p="0px"
-                onClick={() =>
-                  onExploreClick({
-                    unit: selectedCell.attributes.unit,
-                    customFieldOptionId:
-                      selectedCell.relationships.column?.data.id,
-                  })
-                }
-              >
-                {formatMessage(messages.explore)}
-              </Button>
-            </Box>
-          )}
+          <Box display="flex">
+            <Button
+              buttonStyle="text"
+              icon="eye"
+              size="s"
+              p="0px"
+              onClick={() =>
+                onExploreClick({
+                  unit: selectedCell.attributes.unit,
+                  customFieldId: bin?.data.relationships.custom_field.data.id,
+                })
+              }
+            >
+              {formatMessage(messages.explore)}
+            </Button>
+          </Box>
         </Box>
       )}
     </>

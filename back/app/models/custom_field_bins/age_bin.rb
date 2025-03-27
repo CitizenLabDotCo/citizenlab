@@ -52,8 +52,9 @@ module CustomFieldBins
       end
     end
 
-    def self.supported_custom_field_input_types
-      %w[number]
+    def self.supports_custom_field?(custom_field)
+      # We only support the birthyear field
+      custom_field.code == 'birthyear'
     end
 
     private

@@ -9,7 +9,7 @@ const customFieldBinsKeys = {
     { ...baseKey, operation: 'list', parameters: { customFieldId } },
   ],
   items: () => [{ ...baseKey, operation: 'item' }],
-  item: ({ binId }: { customFieldId?: string; binId: string }) => [
+  item: ({ binId }: { customFieldId?: string; binId?: string }) => [
     { ...baseKey, operation: 'item', parameters: { id: binId } },
   ],
 } satisfies QueryKeys;

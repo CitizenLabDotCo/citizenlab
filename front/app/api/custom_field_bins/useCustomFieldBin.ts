@@ -6,13 +6,13 @@ import fetcher from 'utils/cl-react-query/fetcher';
 import customFieldBinsKeys from './keys';
 import { ICustomFieldBin, CustomFieldBinsKeys } from './types';
 
-const fetchBin = ({ binId }: { binId: string }) =>
+const fetchBin = ({ binId }: { binId?: string }) =>
   fetcher<ICustomFieldBin>({
     path: `/custom_field_bins/${binId}`,
     action: 'get',
   });
 
-const useCustomFieldBin = ({ binId }: { binId: string }) => {
+const useCustomFieldBin = ({ binId }: { binId?: string }) => {
   return useQuery<
     ICustomFieldBin,
     CLErrors,
@@ -21,6 +21,7 @@ const useCustomFieldBin = ({ binId }: { binId: string }) => {
   >({
     queryKey: customFieldBinsKeys.item({ binId }),
     queryFn: () => fetchBin({ binId }),
+    enabled: !!binId,
   });
 };
 
