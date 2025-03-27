@@ -52,22 +52,26 @@ RSpec.describe ParticipationMethod::CommunityMonitorSurvey do
 
     it 'returns the default fields if the form is not persisted' do
       form = build(:custom_form, participation_context: phase)
-      expect(participation_method.default_fields(form).count).to eq 23
+      expect(participation_method.default_fields(form).count).to eq 15
       expect(participation_method.default_fields(form).pluck(:key)).to eq(%w[
-        page1 place_to_live
-        page2 sense_of_safety
-        page3 access_to_parks
-        page4 affordable_housing
-        page5 employment_opportunities
-        page6 quality_of_services
-        page7 overall_value
-        page8 cleanliness_and_maintenance
-        page9 trust_in_government
-        page10 responsiveness_of_officials
-        page11 transparency_of_money_spent
-        survey_end
-
+        page_quality_of_life place_to_live sense_of_safety access_to_parks affordable_housing employment_opportunities
+        page_service_delivery quality_of_services overall_value cleanliness_and_maintenance
+        page_governance_and_trust trust_in_government responsiveness_of_officials transparency_of_money_spent
+        form_end
       ])
+
+      # Labels
+      expect(participation_method.default_fields(form)[1].linear_scale_label_1_multiloc['en']).to eq 'Very poor'
+      expect(participation_method.default_fields(form)[2].linear_scale_label_2_multiloc['en']).to eq 'Poor'
+      expect(participation_method.default_fields(form)[3].linear_scale_label_3_multiloc['en']).to eq 'Fair'
+      expect(participation_method.default_fields(form)[4].linear_scale_label_4_multiloc['en']).to eq 'Good'
+      expect(participation_method.default_fields(form)[5].linear_scale_label_5_multiloc['en']).to eq 'Excellent'
+
+      # Last page
+      expect(participation_method.default_fields(form).last.page_button_link).to eq '/'
+      expect(participation_method.default_fields(form).last.page_button_label_multiloc).to match(
+        { 'en' => 'Back to home', 'fr-FR' => "Retour à l'accueil", 'nl-NL' => 'Terug naar home' }
+      )
     end
   end
 
@@ -76,7 +80,7 @@ RSpec.describe ParticipationMethod::CommunityMonitorSurvey do
       expect(phase.custom_form).to be_nil
       participation_method.create_default_form!
       phase_in_db = Phase.find(phase.id)
-      expect(phase_in_db.custom_form.custom_fields.size).to eq 23
+      expect(phase_in_db.custom_form.custom_fields.size).to eq 15
     end
   end
 

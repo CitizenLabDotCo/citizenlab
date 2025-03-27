@@ -59,6 +59,7 @@ export type IAppConfigurationSettingsCore = {
   customer_portal_url?: string | null;
   anonymous_name_scheme?: string | null;
   private_attributes_in_export: boolean;
+  country_code: string | null;
 };
 
 export type TSeatNumber = number | null | undefined;
@@ -258,11 +259,9 @@ export interface IAppConfigurationSettings {
   prescreening_ideation?: AppConfigurationFeature;
   input_cosponsorship?: AppConfigurationFeature;
   project_review?: AppConfigurationFeature;
-  similar_inputs?: AppConfigurationFeature & {
-    admins_only: boolean;
-  };
-  platform_templates?: AppConfigurationFeature;
   authoring_assistance?: AppConfigurationFeature;
+  platform_templates?: AppConfigurationFeature;
+  authoring_assistance_prototype?: AppConfigurationFeature;
   project_library?: AppConfigurationFeature;
 }
 
@@ -306,7 +305,6 @@ interface IAppConfigurationAttributes {
   favicon?: ImageSizes | null;
   style?: IAppConfigurationStyle;
   created_at: string;
-  country_code: string | null;
 }
 
 export interface IAppConfigurationData {

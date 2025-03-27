@@ -11,7 +11,6 @@ import useDeleteFollower from 'api/follow_unfollow/useDeleteFollower';
 import useLocalize from 'hooks/useLocalize';
 
 import tracks from 'components/FollowUnfollow/tracks';
-import T from 'components/T';
 
 import { ScreenReaderOnly } from 'utils/a11y';
 import { trackEventByName } from 'utils/analytics';
@@ -21,9 +20,15 @@ import messages from './messages';
 
 interface Props {
   area: IAreaData;
+  children: React.ReactNode;
+  hideButtonIcon?: boolean;
 }
 
-const UpdateFollowArea = ({ area }: Props) => {
+const BaseUpdateFollowArea = ({
+  area,
+  children,
+  hideButtonIcon = false,
+}: Props) => {
   const { mutate: addFollower, isLoading: isAddingFollower } = useAddFollower();
   const { mutate: deleteFollower, isLoading: isDeletingFollower } =
     useDeleteFollower();
@@ -89,7 +94,7 @@ const UpdateFollowArea = ({ area }: Props) => {
     >
       <Button
         buttonStyle="text"
-        icon={iconName}
+        icon={hideButtonIcon ? undefined : iconName}
         iconColor={areaButtonContentColor}
         iconPos="right"
         padding="0px"
@@ -101,7 +106,7 @@ const UpdateFollowArea = ({ area }: Props) => {
           isFollowing ? 'e2e-unfollow-area-button' : 'e2e-follow-area-button'
         }
       >
-        <T value={area.attributes.title_multiloc} />
+        {children}
       </Button>
       <ScreenReaderOnly aria-live="polite">
         {screenReaderAnnouncement}
@@ -110,4 +115,4 @@ const UpdateFollowArea = ({ area }: Props) => {
   );
 };
 
-export default UpdateFollowArea;
+export default BaseUpdateFollowArea;

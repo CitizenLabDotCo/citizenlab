@@ -413,10 +413,11 @@ class WebApi::V1::ProjectsController < ApplicationController
 
         sidefx.after_create(project, current_user) if project
 
-        Phase.create!(
+        phase = Phase.create!(
           title_multiloc: multiloc_service.i18n_to_multiloc('phases.community_monitor_title'),
           project: project,
           participation_method: 'community_monitor_survey',
+          submission_enabled: false,
           commenting_enabled: false,
           reacting_enabled: false,
           start_at: Time.now,
@@ -424,6 +425,12 @@ class WebApi::V1::ProjectsController < ApplicationController
           native_survey_title_multiloc: multiloc_service.i18n_to_multiloc('phases.community_monitor_title'),
           native_survey_button_multiloc: multiloc_service.i18n_to_multiloc('phases.native_survey_button')
         )
+
+        # Create an everyone permission by default
+        Permission.create!(action: 'posting_idea', permission_scope: phase, permitted_by: 'everyone')
+
+        # Persist the form
+        phase.pmethod.create_default_form!
       end
     end
 

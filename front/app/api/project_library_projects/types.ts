@@ -19,7 +19,7 @@ export type SortType =
 
 export type RansackParams = {
   // filters
-  'q[tenant_country_alpha2_eq]'?: string;
+  'q[tenant_country_code_eq]'?: string;
   'q[tenant_population_group_eq]'?: PopulationGroup;
   'q[score_total_gteq]'?: '1' | '2' | '3' | '4';
   'q[phases_participation_method_eq]'?: ParticipationMethod;
@@ -54,6 +54,7 @@ export interface ProjectLibraryProjectData {
   id: string;
   type: 'project_library_project';
   attributes: {
+    annotation_multiloc: Multiloc | null;
     cl_created_at: string;
     cl_updated_at: string;
     comments_count: number;
@@ -63,7 +64,7 @@ export interface ProjectLibraryProjectData {
     end_at: string | null;
     folder_id: string | null;
     folder_title_en: string | null;
-    folder_title_multiloc: Multiloc;
+    folder_title_multiloc: Multiloc | null;
     image_url: string | null;
     participants: number;
     practical_end_at: string | null;
@@ -77,7 +78,7 @@ export interface ProjectLibraryProjectData {
     slug: string;
     start_at: string;
     status: Status;
-    tenant_country_alpha2: string | null;
+    tenant_country_code: string | null;
     tenant_host: string;
     tenant_id: string;
     tenant_lifecycle_stage: string;

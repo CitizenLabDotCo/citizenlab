@@ -14,27 +14,19 @@ module ParticipationMethod
       return [] if custom_form.persisted?
 
       [
-        page_field(custom_form, 'page1'),
+        page_field(custom_form, 'quality_of_life'),
         sentiment_field(custom_form, 'place_to_live', 'quality_of_life'),
-        page_field(custom_form, 'page2'),
         sentiment_field(custom_form, 'sense_of_safety', 'quality_of_life'),
-        page_field(custom_form, 'page3'),
         sentiment_field(custom_form, 'access_to_parks', 'quality_of_life'),
-        page_field(custom_form, 'page4'),
         sentiment_field(custom_form, 'affordable_housing', 'quality_of_life'),
-        page_field(custom_form, 'page5'),
         sentiment_field(custom_form, 'employment_opportunities', 'quality_of_life'),
-        page_field(custom_form, 'page6'),
+        page_field(custom_form, 'service_delivery'),
         sentiment_field(custom_form, 'quality_of_services', 'service_delivery'),
-        page_field(custom_form, 'page7'),
         sentiment_field(custom_form, 'overall_value', 'service_delivery'),
-        page_field(custom_form, 'page8'),
         sentiment_field(custom_form, 'cleanliness_and_maintenance', 'service_delivery'),
-        page_field(custom_form, 'page9'),
+        page_field(custom_form, 'governance_and_trust'),
         sentiment_field(custom_form, 'trust_in_government', 'governance_and_trust'),
-        page_field(custom_form, 'page10'),
         sentiment_field(custom_form, 'responsiveness_of_officials', 'governance_and_trust'),
-        page_field(custom_form, 'page11'),
         sentiment_field(custom_form, 'transparency_of_money_spent', 'governance_and_trust'),
         end_page_field(custom_form, multiloc_service)
       ]
@@ -79,7 +71,8 @@ module ParticipationMethod
     def page_field(custom_form, key)
       CustomField.new(
         id: SecureRandom.uuid,
-        key: key,
+        key: "page_#{key}",
+        title_multiloc: multiloc_service.i18n_to_multiloc("custom_fields.community_monitor.question_categories.#{key}"),
         resource: custom_form,
         input_type: 'page',
         page_layout: 'default'
@@ -92,9 +85,23 @@ module ParticipationMethod
         key: key,
         resource: custom_form,
         input_type: 'sentiment_linear_scale',
-        title_multiloc: multiloc_service.i18n_to_multiloc("custom_fields.community_monitor.#{key}.title"),
-        question_category: category
+        title_multiloc: multiloc_service.i18n_to_multiloc("custom_fields.community_monitor.questions.#{key}.title"),
+        question_category: category,
+        maximum: 5,
+        ask_follow_up: true,
+        linear_scale_label_1_multiloc: multiloc_service.i18n_to_multiloc('custom_fields.community_monitor.labels.label_1'),
+        linear_scale_label_2_multiloc: multiloc_service.i18n_to_multiloc('custom_fields.community_monitor.labels.label_2'),
+        linear_scale_label_3_multiloc: multiloc_service.i18n_to_multiloc('custom_fields.community_monitor.labels.label_3'),
+        linear_scale_label_4_multiloc: multiloc_service.i18n_to_multiloc('custom_fields.community_monitor.labels.label_4'),
+        linear_scale_label_5_multiloc: multiloc_service.i18n_to_multiloc('custom_fields.community_monitor.labels.label_5')
       )
+    end
+
+    def end_page_field(custom_form, multiloc_service)
+      end_page = super
+      end_page.page_button_link = '/'
+      end_page.page_button_label_multiloc = multiloc_service.i18n_to_multiloc('custom_fields.community_monitor.form_end.button_text')
+      end_page
     end
 
     def multiloc_service
