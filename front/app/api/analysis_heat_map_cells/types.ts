@@ -26,9 +26,9 @@ export interface IAnalysisHeatmapCellData {
     statement_multiloc: Multiloc;
   };
   relationships: {
-    row: { data: IRelationship } | null;
-    column: { data: IRelationship } | null;
-    analysis: { data: IRelationship } | null;
+    row: { data: IRelationship };
+    column: { data: IRelationship };
+    analysis: { data: IRelationship };
   };
 }
 

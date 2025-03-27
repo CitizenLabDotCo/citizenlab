@@ -12,10 +12,6 @@ import {
   Title,
   IconButton,
   Th,
-  Icon,
-  Text,
-  Tooltip,
-  Button,
   Select,
   Spinner,
 } from '@citizenlab/cl2-component-library';
@@ -24,9 +20,8 @@ import styled from 'styled-components';
 
 import { Unit } from 'api/analysis_heat_map_cells/types';
 import useAnalysisHeatmapCells from 'api/analysis_heat_map_cells/useAnalysisHeatmapCells';
-import { AuthorCustomFilterKey } from 'api/analysis_inputs/types';
-import useAddAnalysisSummary from 'api/analysis_summaries/useAddAnalysisSummary';
 import useAnalysisTags from 'api/analysis_tags/useAnalysisTags';
+import useCustomFieldBins from 'api/custom_field_bins/useCustomFieldBins';
 import { IUserCustomFields } from 'api/user_custom_fields/types';
 import useUserCustomField from 'api/user_custom_fields/useUserCustomField';
 import useUserCustomFieldsOptions from 'api/user_custom_fields_options/useUserCustomFieldsOptions';
@@ -35,16 +30,12 @@ import useLocalize from 'hooks/useLocalize';
 
 import CloseIconButton from 'components/UI/CloseIconButton';
 
-import { FormattedMessage, useIntl } from 'utils/cl-intl';
+import { useIntl } from 'utils/cl-intl';
 
 import Tag from '../Tags/Tag';
 
+import HeatmapCellTagVsBin from './HeatmapCellTagVsBin';
 import messages from './messages';
-import {
-  convertLiftToPercentage,
-  getCellBgColor,
-  getCellTextColor,
-} from './utils';
 
 interface HeatMapProps {
   onClose: () => void;
@@ -156,7 +147,7 @@ const HeatmapDetails = ({
 
   const { data: customField } = useUserCustomField(selectedFieldId);
   const { data: options } = useUserCustomFieldsOptions(selectedFieldId);
-  const { mutate: addSummary } = useAddAnalysisSummary();
+  const { data: bins } = useCustomFieldBins(selectedFieldId);
 
   const handleChangeCustomField = (offset: number) => {
     setSelectedFieldId((currentId) => {
@@ -172,29 +163,7 @@ const HeatmapDetails = ({
     });
   };
 
-  const handleSummarize = ({
-    tagId,
-    option,
-  }: {
-    tagId: string;
-    option: string;
-  }) => {
-    const authorKey: AuthorCustomFilterKey = `author_custom_${selectedFieldId}`;
-    const filters: {
-      tag_ids: string[];
-      [authorKey: AuthorCustomFilterKey]: string[] | undefined;
-    } = {
-      tag_ids: [tagId],
-      [authorKey]: [option],
-    };
-
-    addSummary({
-      analysisId,
-      filters,
-    });
-  };
-
-  if (!options) return null;
+  if (!options || !bins) return null;
 
   return (
     <Box
@@ -268,87 +237,17 @@ const HeatmapDetails = ({
                     tagType={tag.attributes.tag_type}
                   />
                 </Td>
-                {options.data.map((option) => {
+                {bins.data.map((bin) => {
                   const cell = analysisHeatmapCells?.data.find(
                     (cell) =>
-                      cell.relationships.row?.data.id === tag.id &&
-                      cell.relationships.column?.data.id === option.id
+                      cell.relationships.row.data.id === tag.id &&
+                      cell.relationships.column.data.id === bin.id
                   );
-
-                  const lift = cell?.attributes.lift;
-                  const pValue = cell?.attributes.p_value;
-                  const isSignificant = pValue !== undefined && pValue <= 0.05;
-
-                  const cellBgColor = getCellBgColor(lift);
-                  const cellTextColor = getCellTextColor(lift);
+                  if (!cell) return null;
 
                   return (
-                    <Td key={option.id}>
-                      <Tooltip
-                        disabled={!cell}
-                        content={
-                          <Box p="12px">
-                            <Text>
-                              {localize(cell?.attributes.statement_multiloc)}
-                            </Text>
-                            <Text color="textSecondary">
-                              <FormattedMessage
-                                {...messages.instances}
-                                values={{ count: cell?.attributes.count }}
-                              />
-                            </Text>
-                            {isSignificant ? (
-                              <Text fontWeight="bold">
-                                <FormattedMessage
-                                  {...messages.statisticalSignificance}
-                                />
-                              </Text>
-                            ) : null}
-
-                            <Button
-                              buttonStyle="secondary-outlined"
-                              icon="stars"
-                              onClick={() =>
-                                handleSummarize({
-                                  tagId: tag.id,
-                                  option: option.attributes.key,
-                                })
-                              }
-                            >
-                              <FormattedMessage {...messages.summarize} />
-                            </Button>
-                          </Box>
-                        }
-                      >
-                        <Box
-                          borderRadius={stylingConsts.borderRadius}
-                          bgColor={cellBgColor}
-                          color={cellTextColor}
-                          py="20px"
-                          position="relative"
-                          minHeight="60px"
-                        >
-                          <Text
-                            m="0px"
-                            textAlign="center"
-                            fontWeight="bold"
-                            color="inherit"
-                            fontSize="xs"
-                          >
-                            {convertLiftToPercentage(lift)}
-                          </Text>
-                          <Box position="absolute" right="4px" top="4px">
-                            {isSignificant ? (
-                              <Icon
-                                name="alert-circle"
-                                fill={cellTextColor}
-                                width="20px"
-                                height="20px"
-                              />
-                            ) : null}
-                          </Box>
-                        </Box>
-                      </Tooltip>
+                    <Td key={bin.id}>
+                      <HeatmapCellTagVsBin cell={cell} tag={tag} bin={bin} />
                     </Td>
                   );
                 })}
