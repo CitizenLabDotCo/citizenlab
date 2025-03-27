@@ -52,7 +52,7 @@ class CustomFieldBin < ApplicationRecord
   end
 
   # Returns an array of input_types that this bin subclass can be used for
-  def self.supported_custom_field_input_types
+  def self.supports_custom_field?(_custom_field)
     raise NotImplementedError
   end
 
@@ -78,7 +78,7 @@ class CustomFieldBin < ApplicationRecord
       CustomFieldBins::RangeBin,
       CustomFieldBins::OptionBin
     ].find do |klaz|
-      klaz.supported_custom_field_input_types.include?(custom_field.input_type)
+      klaz.supports_custom_field?(custom_field)
     end
   end
 

@@ -53,8 +53,9 @@ module CustomFieldBins
       end
     end
 
-    def self.supported_custom_field_input_types
-      %w[number] # NTH: add date support
+    def self.supports_custom_field?(custom_field)
+      # NTH: add date support
+      %w[number].include?(custom_field.input_type)
     end
 
     def self.find_lowest_value(custom_field)

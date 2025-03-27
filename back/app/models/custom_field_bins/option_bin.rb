@@ -50,8 +50,8 @@ module CustomFieldBins
       end
     end
 
-    def self.supported_custom_field_input_types
-      %w[select select_image multiselect multiselect_image]
+    def self.supports_custom_field?(custom_field)
+      %w[select select_image multiselect multiselect_image].include?(custom_field.input_type)
     end
 
     private
