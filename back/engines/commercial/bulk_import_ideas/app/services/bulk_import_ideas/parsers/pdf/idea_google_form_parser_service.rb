@@ -13,10 +13,10 @@ module BulkImportIdeas::Parsers::Pdf
     # Read the idea PDF into array of raw text per page
     def raw_text_page_array(pdf_file_content)
       @documents ||= process_upload pdf_file_content
-      all_text = @documents.map(&:text).join # Get all text from all pages
 
       text_pages = []
       @documents.each_with_index do |document, index|
+        all_text = document.text
         document.pages.each do |page|
           page_number = page.page_number + (index * MAX_PAGES_PER_DOC)
           new_text = page.paragraphs.map do |paragraph|
