@@ -68,9 +68,7 @@ const Comment = ({ projectId, comment }: Props) => {
 
   const badgeText = author_type === 'User' ? 'Go Vocal' : tenant_name;
 
-  const allowEditOrDelete =
-    authUser.data.id === author_id ||
-    authUser.data.attributes.highest_role === 'super_admin';
+  const allowEditOrDelete = authUser.data.id === author_id;
 
   return (
     <Box width="100%" maxWidth="600px">
