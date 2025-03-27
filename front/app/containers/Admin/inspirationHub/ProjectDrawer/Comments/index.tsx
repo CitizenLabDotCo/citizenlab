@@ -47,7 +47,10 @@ interface Props {
 const Comments = ({ projectId }: Props) => {
   const { data: authUser } = useAuthUser();
   const { mutate: addExternalComment } = useAddProjectLibraryExternalComment();
-  const { data: comments } = useProjectLibraryExternalComments({ projectId });
+  const { data: comments } = useProjectLibraryExternalComments({
+    projectId,
+    'page[size]': 100, // just a high number since we don't have pagination
+  });
 
   const methods = useForm<FormValues>({
     mode: 'onBlur',
