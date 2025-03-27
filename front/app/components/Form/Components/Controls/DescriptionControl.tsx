@@ -6,8 +6,6 @@ import { withJsonFormsControlProps } from '@jsonforms/react';
 import { debounce } from 'lodash-es';
 import { WrappedComponentProps } from 'react-intl';
 
-import useFeatureFlag from 'hooks/useFeatureFlag';
-
 import { useIdeaSelect } from 'containers/IdeasNewPage/SimilarIdeas/IdeaSelectContext';
 import SimilarIdeasList from 'containers/IdeasNewPage/SimilarIdeas/SimilarIdeasList';
 
@@ -37,10 +35,7 @@ const DescriptionControl = ({
   visible,
 }: ControlProps & WrappedComponentProps) => {
   const [didBlur, setDidBlur] = useState(false);
-  const { setBody } = useIdeaSelect();
-  const isAuthoringAssistanceEnabled = useFeatureFlag({
-    name: 'authoring_assistance',
-  });
+  const { setBody, showSimilarInputs } = useIdeaSelect();
 
   const debouncedSetBody = useMemo(
     () => debounce((val: string) => setBody(val), 400),
@@ -50,9 +45,11 @@ const DescriptionControl = ({
   const onChange = useCallback(
     (value: string) => {
       handleChange(path, value);
-      debouncedSetBody(value);
+      if (showSimilarInputs) {
+        debouncedSetBody(value);
+      }
     },
-    [handleChange, path, debouncedSetBody]
+    [handleChange, path, showSimilarInputs, debouncedSetBody]
   );
 
   if (!visible) {
@@ -81,7 +78,7 @@ const DescriptionControl = ({
         fieldPath={path}
         didBlur={didBlur}
       />
-      {isAuthoringAssistanceEnabled && <SimilarIdeasList />}
+      {showSimilarInputs && <SimilarIdeasList />}
     </Box>
   );
 };
