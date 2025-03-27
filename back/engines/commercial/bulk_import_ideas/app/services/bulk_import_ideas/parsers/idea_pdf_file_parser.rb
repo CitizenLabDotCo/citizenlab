@@ -39,6 +39,7 @@ module BulkImportIdeas::Parsers
       # NOTE: We return both parsed values so we can merge the best values from both
       google_forms_service = Pdf::IdeaGoogleFormParserService.new
       form_parsed_idea = google_forms_service.parse_pdf(pdf_file)
+
       text_parsed_idea = begin
         Pdf::IdeaPlainTextParserService.new(
           @form_fields,
