@@ -6,6 +6,8 @@ import useAdminPublications from 'api/admin_publications/useAdminPublications';
 
 import AdminPublicationsCarrousel from '../_shared/AdminPublicationsCarrousel';
 import Skeleton from '../_shared/AdminPublicationsCarrousel/Skeleton';
+import { CarrouselContainer } from '../_shared/BaseCarrousel/Containers';
+import CarrouselTitle from '../_shared/CarrouselTitle';
 import EmptyState from '../_shared/EmptyState';
 import useLocalizeWithFallback from '../_shared/useLocalizeWithFallback';
 
@@ -41,13 +43,14 @@ const Published = ({ titleMultiloc }: Props) => {
   }
 
   return (
-    <AdminPublicationsCarrousel
-      title={title}
-      adminPublications={adminPublications}
-      hasMore={!!hasNextPage}
-      className="e2e-published-projects-and-folders"
-      onLoadMore={fetchNextPage}
-    />
+    <CarrouselContainer className="e2e-published-projects-and-folders">
+      <CarrouselTitle>{title}</CarrouselTitle>
+      <AdminPublicationsCarrousel
+        adminPublications={adminPublications}
+        hasMore={!!hasNextPage}
+        onLoadMore={fetchNextPage}
+      />
+    </CarrouselContainer>
   );
 };
 

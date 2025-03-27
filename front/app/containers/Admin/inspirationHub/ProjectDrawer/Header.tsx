@@ -6,6 +6,7 @@ import {
   Icon,
   Title,
   Text,
+  Quote,
   colors,
 } from '@citizenlab/cl2-component-library';
 
@@ -31,6 +32,15 @@ const Header = ({ attributes }: Props) => {
   const endAt = attributes.practical_end_at
     ? parseBackendDateString(attributes.practical_end_at)
     : undefined;
+
+  const annotation = attributes.annotation_multiloc
+    ? localizeProjectLibrary(
+        attributes.annotation_multiloc,
+        attributes.annotation_multiloc['en'] ?? ''
+      )
+    : '';
+
+  const { folder_title_en, folder_title_multiloc } = attributes;
 
   return (
     <Box>
@@ -74,23 +84,31 @@ const Header = ({ attributes }: Props) => {
             {attributes.participants}
           </Text>
         </Box>
-        {attributes.folder_title_en && (
-          <Box display="flex">
-            <Icon
-              name="folder-outline"
-              width="16px"
-              m="0"
-              fill={colors.textSecondary}
-            />
-            <Text m="0" ml="8px" color="textSecondary">
-              {localizeProjectLibrary(
-                attributes.folder_title_multiloc,
-                attributes.folder_title_en
-              )}
-            </Text>
-          </Box>
-        )}
+        {folder_title_en ||
+          (folder_title_multiloc && (
+            <Box display="flex">
+              <Icon
+                name="folder-outline"
+                width="16px"
+                m="0"
+                fill={colors.textSecondary}
+              />
+              <Text m="0" ml="8px" color="textSecondary">
+                {localizeProjectLibrary(
+                  attributes.folder_title_multiloc ?? {},
+                  attributes.folder_title_en
+                )}
+              </Text>
+            </Box>
+          ))}
       </Box>
+      {annotation !== '' && (
+        <Quote w="100%" mt="12px">
+          <Text m="0px" fontStyle="italic">
+            {annotation}
+          </Text>
+        </Quote>
+      )}
     </Box>
   );
 };

@@ -79,8 +79,6 @@ class MentionService
     extract_expanded_mention_users(text).include?(user)
   end
 
-  private
-
   # @param [String] text
   # @return [String] text without mention tags
   def remove_expanded_mentions(text)
@@ -105,6 +103,8 @@ class MentionService
       mention_to_slug(fm)
     end
   end
+
+  private
 
   # @param [String] mention
   # @return [String] slug

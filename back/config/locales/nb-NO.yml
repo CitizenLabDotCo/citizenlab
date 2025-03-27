@@ -91,6 +91,9 @@ nb:
     services_description: Offentlige tjenester
     other: Annet
     other_description: Annet
+    quality_of_life: Livskvalitet
+    service_delivery: Levering av tjenester
+    governance_and_trust: Styring og tillit
   static_pages:
     terms_and_conditions_title: Vilkår og betingelser
     terms_and_conditions_body: >
@@ -168,18 +171,55 @@ nb:
       attachments:
         title: Vedlegg
         description:
-      section1:
+      page1:
         description:
-      section2:
+      page2:
         title: Bilder og vedlegg
         description:
-      section3:
+      page3:
         title: Detaljer
         description:
       other_input_field:
         title: Skriv inn svaret ditt
       ask_follow_up_field:
         title: Fortell oss hvorfor
+    community_monitor:
+      questions:
+        place_to_live:
+          title: Byen som et sted å bo
+        sense_of_safety:
+          title: Overordnet følelse av trygghet
+        access_to_parks:
+          title: Tilgang til parker, grøntområder og rekreasjonsmuligheter
+        affordable_housing:
+          title: Tilgang på rimelige boliger
+        employment_opportunities:
+          title: Muligheter for sysselsetting og økonomisk fremgang
+        quality_of_services:
+          title: Den generelle kvaliteten på tjenestene som tilbys av byen
+        overall_value:
+          title: Den samlede verdien du får for byens skatter og avgifter
+        cleanliness_and_maintenance:
+          title: Generelt renhold og vedlikehold av gater og offentlige rom
+        trust_in_government:
+          title: Tillit til lokale myndigheter
+        responsiveness_of_officials:
+          title: De folkevalgtes lydhørhet overfor lokalsamfunnets bekymringer
+        transparency_of_money_spent:
+          title: Åpenhet om hvordan kommunale skattepenger brukes
+      question_categories:
+        quality_of_life: Livskvalitet
+        service_delivery: Levering av tjenester
+        governance_and_trust: Styring og tillit
+        other: Annet
+      labels:
+        label_1: Svært dårlig
+        label_2: Dårlig
+        label_3: Rimelig
+        label_4: Bra
+        label_5: Utmerket
+      form_end:
+        button_text: Tilbake til startsiden
   custom_forms:
     categories:
       main_content:

@@ -91,6 +91,9 @@ lb:
     services_description: Ëffentlech Déngschter
     other: Aner
     other_description: Aner
+    quality_of_life: Liewensqualitéit
+    service_delivery: Service Liwwerung
+    governance_and_trust: Gouvernance a Vertrauen
   static_pages:
     terms_and_conditions_title: Allgemeng Geschäftsbedéngungen
     terms_and_conditions_body: >
@@ -168,18 +171,55 @@ lb:
       attachments:
         title: Annexen
         description:
-      section1:
+      page1:
         description:
-      section2:
-        title: Biller an Annexen
+      page2:
+        title: Biller an Uschlëss
         description:
-      section3:
+      page3:
         title: Detailer
         description:
       other_input_field:
         title: Typ Är Äntwert
       ask_follow_up_field:
         title: Sot eis firwat
+    community_monitor:
+      questions:
+        place_to_live:
+          title: Stad als Plaz fir ze liewen
+        sense_of_safety:
+          title: Allgemeng Gefill vu Sécherheet
+        access_to_parks:
+          title: Zougang zu Parken, Gréngflächen, a Fräizäitméiglechkeeten
+        affordable_housing:
+          title: Disponibilitéit vun bezuelbare Wunnengen
+        employment_opportunities:
+          title: Beschäftegung a wirtschaftlech Fortschrëtter Méiglechkeeten
+        quality_of_services:
+          title: Allgemeng Qualitéit vun de Servicer vun der Stad
+        overall_value:
+          title: Gesamtwäert kritt Dir fir Är Stadsteier a Fraisen
+        cleanliness_and_maintenance:
+          title: Allgemeng Propretéit an Ënnerhalt vu Stroossen an ëffentleche Plazen
+        trust_in_government:
+          title: Vertrauen an lokal Regierung
+        responsiveness_of_officials:
+          title: Reaktiounsfäegkeet vu gewielte Beamten op Gemeinschaftsbedéngungen
+        transparency_of_money_spent:
+          title: Transparenz iwwer wéi d’Gemengesteiergelder ausginn
+      question_categories:
+        quality_of_life: Liewensqualitéit
+        service_delivery: Service Liwwerung
+        governance_and_trust: Gouvernance a Vertrauen
+        other: Aner
+      labels:
+        label_1: Ganz aarm
+        label_2: Aarmséileg
+        label_3: Fair
+        label_4: Gutt
+        label_5: exzellent
+      form_end:
+        button_text: Zréck doheem
   custom_forms:
     categories:
       main_content:

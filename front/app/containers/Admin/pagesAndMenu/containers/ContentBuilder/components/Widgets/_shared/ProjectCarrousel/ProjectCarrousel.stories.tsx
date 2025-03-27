@@ -44,7 +44,7 @@ const createData = (offset: number): MiniProjectData[] => {
   }));
 };
 
-const ManyProjectsWrapper = ({ title }) => {
+const ManyProjectsWrapper = () => {
   const [data, setData] = useState(createData(1));
   const [hasMore, setHasMore] = useState(true);
 
@@ -55,7 +55,6 @@ const ManyProjectsWrapper = ({ title }) => {
       </button>
       <div style={{ width: '100%', maxWidth: '600px', padding: '8px' }}>
         <ProjectCarrousel
-          title={title}
           projects={data}
           hasMore={hasMore}
           onLoadMore={() => {
@@ -78,20 +77,18 @@ const ManyProjectsWrapper = ({ title }) => {
 
 export const ManyProjects: Story = {
   args: {
-    title: 'Open to participation',
     // The next three props are not used in the component, but are required for the story to work
     projects: [],
     hasMore: true,
     onLoadMore: () => new Promise(() => {}),
   },
-  render: ({ title }) => {
-    return <ManyProjectsWrapper title={title} />;
+  render: () => {
+    return <ManyProjectsWrapper />;
   },
 };
 
 export const OneProject: Story = {
   args: {
-    title: 'Open to participation',
     projects: [createData(0)[0]],
     hasMore: false,
     onLoadMore: () => new Promise(() => {}),

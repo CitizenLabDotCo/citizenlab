@@ -91,6 +91,9 @@ tr:
     services_description: Kamu hizmetleri
     other: Diğer
     other_description: Diğer
+    quality_of_life: Yaşam kalitesi
+    service_delivery: Hizmet sunumu
+    governance_and_trust: Yönetişim ve güven
   static_pages:
     terms_and_conditions_title: Hüküm ve koşullar
     terms_and_conditions_body: >
@@ -168,18 +171,55 @@ tr:
       attachments:
         title: Ekler
         description:
-      section1:
+      page1:
         description:
-      section2:
+      page2:
         title: Resimler ve ekler
         description:
-      section3:
+      page3:
         title: Detaylar
         description:
       other_input_field:
         title: Cevabınızı yazın
       ask_follow_up_field:
         title: Bize nedenini söyleyin
+    community_monitor:
+      questions:
+        place_to_live:
+          title: Yaşanacak bir yer olarak şehir
+        sense_of_safety:
+          title: Genel güvenlik hissi
+        access_to_parks:
+          title: Parklara, yeşil alanlara ve rekreasyon olanaklarına erişim
+        affordable_housing:
+          title: Uygun fiyatlı konutların mevcudiyeti
+        employment_opportunities:
+          title: İstihdam ve ekonomik ilerleme fırsatları
+        quality_of_services:
+          title: Şehir tarafından sağlanan hizmetlerin genel kalitesi
+        overall_value:
+          title: Şehir vergileriniz ve harçlarınız için aldığınız toplam değer
+        cleanliness_and_maintenance:
+          title: Sokakların ve kamusal alanların genel temizliği ve bakımı
+        trust_in_government:
+          title: Yerel yönetime güven
+        responsiveness_of_officials:
+          title: Seçilmiş yetkililerin toplumun endişelerine karşı duyarlılığı
+        transparency_of_money_spent:
+          title: Belediye vergilerinin nasıl harcandığı konusunda şeffaflık
+      question_categories:
+        quality_of_life: Yaşam kalitesi
+        service_delivery: Hizmet sunumu
+        governance_and_trust: Yönetişim ve güven
+        other: Diğer
+      labels:
+        label_1: Çok zayıf
+        label_2: Zayıf
+        label_3: Adil
+        label_4: İyi
+        label_5: Mükemmel
+      form_end:
+        button_text: Eve dönüş
   custom_forms:
     categories:
       main_content:
