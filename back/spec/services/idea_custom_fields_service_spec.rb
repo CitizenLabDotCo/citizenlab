@@ -252,7 +252,7 @@ describe IdeaCustomFieldsService do
       # Survey fields
       let!(:page_field) { create(:custom_field_page, resource: custom_form, key: 'page1') }
       let!(:text_field) { create(:custom_field_text, resource: custom_form, key: 'text_field') }
-      let!(:end_page_field) { create(:custom_field_page, resource: custom_form, key: 'end_page') }
+      let!(:end_page_field) { create(:custom_field_page, resource: custom_form, key: 'form_end') }
 
       # Define some user fields
       let!(:user_field_gender) { create(:custom_field_gender) }

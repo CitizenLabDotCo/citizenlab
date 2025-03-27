@@ -249,7 +249,7 @@ describe Export::Xlsx::InputSheetGenerator do
       end
       let!(:ranking_field) { create(:custom_field_ranking, :with_options, resource: form) }
       let!(:matrix_field) { create(:custom_field_matrix_linear_scale, resource: form) }
-      let!(:end_page_field) { create(:custom_field_page, key: 'end_page', resource: form) }
+      let!(:end_page_field) { create(:custom_field_page, key: 'form_end', resource: form) }
 
       let(:survey_response1) do
         create(
@@ -419,8 +419,8 @@ describe Export::Xlsx::InputSheetGenerator do
             ])
             expect(xlsx.first[:rows].first).to match([
               survey_response1.id,
-              'Cat, Dog',
-              'By train, By bike',
+              'Cat;Dog',
+              'By train;By bike',
               nil,
               nil,
               survey_response1.author_id,
@@ -448,7 +448,7 @@ describe Export::Xlsx::InputSheetGenerator do
             ])
             expect(xlsx.first[:rows].first).to match([
               survey_response1.id,
-              'Cat, Dog',
+              'Cat;Dog',
               '',
               nil,
               nil,
