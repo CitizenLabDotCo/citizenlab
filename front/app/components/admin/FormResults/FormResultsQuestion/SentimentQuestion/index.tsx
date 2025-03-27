@@ -15,11 +15,13 @@ import SentimentResultTitle from './components/SentimentResultTitle';
 type Props = {
   result: ResultUngrouped;
   showAnalysis?: boolean;
+  accordionMarginRight?: string; // Required for correction in report builder layout
 };
 
 const SentimentQuestion = ({
   result,
   showAnalysis,
+  accordionMarginRight,
   ...props
 }: Props & BoxProps) => {
   const { textResponses } = result;
@@ -49,7 +51,13 @@ const SentimentQuestion = ({
 
   // Otherwise, show an accordion with the text responses in the body
   return (
-    <Box mb="20px" background={colors.white} borderRadius="4px" {...props}>
+    <Box
+      mr={accordionMarginRight}
+      mb="20px"
+      background={colors.white}
+      borderRadius="4px"
+      {...props}
+    >
       <Accordion
         borderRadius="4px"
         title={

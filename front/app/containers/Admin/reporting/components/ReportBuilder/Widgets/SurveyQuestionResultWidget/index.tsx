@@ -17,6 +17,8 @@ const SurveyQuestionResultWidget = ({
   groupMode,
   groupFieldId,
   heatmap,
+  year,
+  quarter,
 }: Props) => {
   const hasEverything = projectId && phaseId && questionId;
   const projectOrPhaseEmptyMessage = getEmptyMessage({ projectId, phaseId });
@@ -31,6 +33,8 @@ const SurveyQuestionResultWidget = ({
           groupMode={groupFieldId ? groupMode : undefined}
           groupFieldId={groupFieldId}
           heatmap={heatmap}
+          year={year}
+          quarter={quarter}
         />
       ) : (
         <NoData message={projectOrPhaseEmptyMessage ?? messages.emptyField} />
