@@ -5,6 +5,8 @@ import { ControlProps, RankedTester, rankWith } from '@jsonforms/core';
 import { withJsonFormsControlProps } from '@jsonforms/react';
 import { debounce } from 'lodash-es';
 
+import useFeatureFlag from 'hooks/useFeatureFlag';
+
 import { useIdeaSelect } from 'containers/IdeasNewPage/SimilarIdeas/IdeaSelectContext';
 import SimilarIdeasList from 'containers/IdeasNewPage/SimilarIdeas/SimilarIdeasList';
 
@@ -35,6 +37,9 @@ export const TitleControl = ({
 }: ControlProps) => {
   const [didBlur, setDidBlur] = useState(false);
   const { setTitle } = useIdeaSelect();
+  const isAuthoringAssistanceEnabled = useFeatureFlag({
+    name: 'authoring_assistance',
+  });
 
   const debouncedSetTitle = useMemo(
     () => debounce((val: string) => setTitle(val), 400),
@@ -97,7 +102,7 @@ export const TitleControl = ({
         fieldPath={path}
         didBlur={didBlur}
       />
-      <SimilarIdeasList />
+      {isAuthoringAssistanceEnabled && <SimilarIdeasList />}
     </Box>
   );
 };
