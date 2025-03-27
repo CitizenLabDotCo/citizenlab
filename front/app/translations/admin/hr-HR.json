@@ -1880,7 +1880,6 @@
   "app.containers.AdminPage.ProjectEdit.survey.file_upload": "Prijenos datoteke",
   "app.containers.AdminPage.ProjectEdit.survey.goBackButtonMessage": "Idi natrag",
   "app.containers.AdminPage.ProjectEdit.survey.importInputs": "Uvoz",
-  "app.containers.AdminPage.ProjectEdit.survey.informationText3": "AI sažecima pitanja s kratkim i dugim odgovorima može se pristupiti s kartice AI na lijevoj bočnoj traci.",
   "app.containers.AdminPage.ProjectEdit.survey.linear_scale2": "Linearna ljestvica",
   "app.containers.AdminPage.ProjectEdit.survey.matrix_linear_scale2": "Matrica",
   "app.containers.AdminPage.ProjectEdit.survey.multiline_text2": "Dug odgovor",
