@@ -104,10 +104,11 @@ module BulkImportIdeas::Parsers::Pdf
         processor: ENV.fetch('GOOGLE_DOCUMENT_AI_PROCESSOR')
       )
 
-      # Split into multiple documents if the PDF is too large
+      # We need to split into multiple documents if it is over the Document AI limit of 15
+      # Usually only 1 PDF will be returned in the array, but if it's over 15 pages, it will return multiple PDFs
       pdfs = split_pdf(pdf_file_content)
 
-      # documents = []
+      # Return an array of DocumentAI documents
       pdfs.map do |pdf|
         # Create request
         request = Google::Cloud::DocumentAI::V1::ProcessRequest.new(
@@ -123,7 +124,6 @@ module BulkImportIdeas::Parsers::Pdf
         response = client.process_document request
         response.document
       end
-      # documents
     end
 
     def split_pdf(pdf_file_content)
