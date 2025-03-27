@@ -186,7 +186,7 @@ RSpec.describe ParticipationMethod::Voting do
   its(:supports_private_attributes_in_export?) { is_expected.to be true }
   its(:form_logic_enabled?) { is_expected.to be false }
   its(:follow_idea_on_idea_submission?) { is_expected.to be true }
-  its(:supports_user_fields_in_form?) { is_expected.to be false }
+  its(:user_fields_in_form?) { is_expected.to be false }
 
   describe 'proposed_budget_in_form?' do # private method
     it 'is expected to be true' do

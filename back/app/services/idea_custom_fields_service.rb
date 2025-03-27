@@ -18,7 +18,6 @@ class IdeaCustomFieldsService
   end
 
   def xlsx_exportable_fields
-    # TODO: JS - Why does this not use enabled_fields?
     add_user_fields(all_fields).filter(&:supports_xlsx_export?)
   end
 
@@ -209,12 +208,12 @@ class IdeaCustomFieldsService
   end
 
   def add_user_fields(fields)
-    return fields unless @participation_method.supports_user_fields_in_form?
+    return fields unless @participation_method.user_fields_in_form?
 
     fields = fields.to_a # sometimes array passed in, sometimes active record relations
 
-    last_page = fields.last
-    fields.pop # Remove the last page so we can add it back later
+    # Remove the last page so we can add it back later
+    last_page = fields.pop if fields.last.form_end_page?
 
     # Get the user fields from the permission (returns platform defaults if they don't exist)
     phase = @custom_form.participation_context

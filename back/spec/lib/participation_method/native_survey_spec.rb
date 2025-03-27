@@ -170,12 +170,12 @@ RSpec.describe ParticipationMethod::NativeSurvey do
 
   describe '#supports_user_fields_in_form?' do
     it 'returns false when not enabled' do
-      expect(participation_method.supports_user_fields_in_form?).to be false
+      expect(participation_method.user_fields_in_form?).to be false
     end
 
     it 'returns true when enabled' do
       phase.user_fields_in_form = true
-      expect(participation_method.supports_user_fields_in_form?).to be true
+      expect(participation_method.user_fields_in_form?).to be true
     end
   end
 

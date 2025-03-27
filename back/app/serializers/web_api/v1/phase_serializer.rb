@@ -24,7 +24,7 @@ class WebApi::V1::PhaseSerializer < WebApi::V1::BaseSerializer
   end
 
   attribute :user_fields_in_form, if: proc { |phase|
-    phase.pmethod.supports_user_fields_in_form?
+    phase.pmethod.user_fields_in_form?
   }
 
   attribute :votes_count, if: proc { |phase, params|

@@ -110,7 +110,7 @@ RSpec.describe ParticipationMethod::Information do
   its(:form_logic_enabled?) { is_expected.to be false }
   its(:follow_idea_on_idea_submission?) { is_expected.to be false }
   its(:validate_phase) { is_expected.to be_nil }
-  its(:supports_user_fields_in_form?) { is_expected.to be false }
+  its(:user_fields_in_form?) { is_expected.to be false }
 
   describe 'proposed_budget_in_form?' do # private method
     it 'is expected to be false' do

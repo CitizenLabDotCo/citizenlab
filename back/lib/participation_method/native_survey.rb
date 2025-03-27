@@ -123,7 +123,7 @@ module ParticipationMethod
       false
     end
 
-    def supports_user_fields_in_form?
+    def user_fields_in_form?
       phase.user_fields_in_form
     end
 

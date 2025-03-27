@@ -182,7 +182,7 @@ module ParticipationMethod
       true
     end
 
-    def supports_user_fields_in_form?
+    def user_fields_in_form?
       false
     end
 

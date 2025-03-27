@@ -233,6 +233,10 @@ class CustomField < ApplicationRecord
     input_type == 'page'
   end
 
+  def form_end_page?
+    page? && key == 'form_end'
+  end
+
   def section?
     input_type == 'section'
   end
