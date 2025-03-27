@@ -13,12 +13,13 @@ import usePhases from 'api/phases/usePhases';
 import { getCurrentPhase } from 'api/phases/utils';
 import { IProject } from 'api/projects/types';
 
+import useFeatureFlag from 'hooks/useFeatureFlag';
 import useInputSchema from 'hooks/useInputSchema';
 import useLocale from 'hooks/useLocale';
 
 import NewIdeaHeading from 'containers/IdeaHeading/NewIdeaHeading';
-import IdeaDetailView from 'containers/IdeasNewPage/SimilarIdeas/IdeaDetailView';
-import { IdeaSelectContext } from 'containers/IdeasNewPage/SimilarIdeas/IdeaSelectContext';
+import InputDetailView from 'containers/IdeasNewPage/SimilarInputs/InputDetailView';
+import { InputSelectContext } from 'containers/IdeasNewPage/SimilarInputs/InputSelectContext';
 import { calculateDynamicHeight } from 'containers/IdeasNewSurveyPage/IdeasNewSurveyForm/utils';
 
 import ContentUploadDisclaimer from 'components/ContentUploadDisclaimer';
@@ -83,6 +84,9 @@ const IdeasNewIdeationForm = ({ project, phaseId }: Props) => {
   const { data: phaseFromUrl } = usePhase(phaseId);
   const isSmallerThanPhone = useBreakpoint('phone');
   const [usingMapView, setUsingMapView] = useState(false);
+  const isAuthoringAssistanceEnabled = useFeatureFlag({
+    name: 'authoring_assistance',
+  });
   const {
     schema,
     uiSchema,
@@ -103,6 +107,10 @@ const IdeasNewIdeationForm = ({ project, phaseId }: Props) => {
   };
   const [title, setTitle] = useState('');
   const [body, setBody] = useState('');
+  const showSimilarInputs = !!(
+    phaseFromUrl?.data.attributes.similarity_enabled &&
+    isAuthoringAssistanceEnabled
+  );
 
   // Click on map flow : Reverse geocode the location if it's in the url params
   useEffect(() => {
@@ -305,7 +313,7 @@ const IdeasNewIdeationForm = ({ project, phaseId }: Props) => {
                     pb={isSmallerThanPhone ? '0' : '80px'}
                     display="flex"
                   >
-                    <IdeaSelectContext.Provider
+                    <InputSelectContext.Provider
                       value={{
                         onIdeaSelect: setSelectedIdeaId,
                         title,
@@ -313,6 +321,7 @@ const IdeasNewIdeationForm = ({ project, phaseId }: Props) => {
                         setTitle,
                         setBody,
                         selectedIdeaId,
+                        showSimilarInputs,
                       }}
                     >
                       <Form
@@ -326,7 +335,7 @@ const IdeasNewIdeationForm = ({ project, phaseId }: Props) => {
                         showSubmitButton={false}
                         config={'input'}
                       />
-                    </IdeaSelectContext.Provider>
+                    </InputSelectContext.Provider>
                   </Box>
                 </Box>
                 <ContentUploadDisclaimer
@@ -366,7 +375,7 @@ const IdeasNewIdeationForm = ({ project, phaseId }: Props) => {
                       borderRadius="2px"
                       m="8px auto"
                     />
-                    <IdeaDetailView ideaId={selectedIdeaId} />
+                    <InputDetailView ideaId={selectedIdeaId} />
                   </Box>
                 </Box>
               ) : (
@@ -380,7 +389,7 @@ const IdeasNewIdeationForm = ({ project, phaseId }: Props) => {
                   position="relative"
                   mb="80px"
                 >
-                  <IdeaDetailView ideaId={selectedIdeaId} />
+                  <InputDetailView ideaId={selectedIdeaId} />
                 </Box>
               ))}
           </Box>

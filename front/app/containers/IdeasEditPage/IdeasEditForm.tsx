@@ -10,13 +10,15 @@ import useIdeaImages from 'api/idea_images/useIdeaImages';
 import { IdeaPublicationStatus, IIdeaUpdate } from 'api/ideas/types';
 import useIdeaById from 'api/ideas/useIdeaById';
 import useUpdateIdea from 'api/ideas/useUpdateIdea';
+import usePhase from 'api/phases/usePhase';
 
+import useFeatureFlag from 'hooks/useFeatureFlag';
 import useInputSchema from 'hooks/useInputSchema';
 
 import EditIdeaHeading from 'containers/IdeaHeading/EditIdeaHeading';
 import ideaFormMessages from 'containers/IdeasNewPage/messages';
-import IdeaDetailView from 'containers/IdeasNewPage/SimilarIdeas/IdeaDetailView';
-import { IdeaSelectContext } from 'containers/IdeasNewPage/SimilarIdeas/IdeaSelectContext';
+import InputDetailView from 'containers/IdeasNewPage/SimilarInputs/InputDetailView';
+import { InputSelectContext } from 'containers/IdeasNewPage/SimilarInputs/InputSelectContext';
 import { calculateDynamicHeight } from 'containers/IdeasNewSurveyPage/IdeasNewSurveyForm/utils';
 
 import ContentUploadDisclaimer from 'components/ContentUploadDisclaimer';
@@ -70,6 +72,14 @@ const IdeasEditForm = ({ ideaId }: Props) => {
   const callbackRef = useRef<(() => void) | null>(null);
   const [usingMapView, setUsingMapView] = useState(false);
   const [selectedIdeaId, setSelectedIdeaId] = useState<string | null>(null);
+  const isAuthoringAssistanceEnabled = useFeatureFlag({
+    name: 'authoring_assistance',
+  });
+  const phaseId = idea?.data.relationships.phases.data[0].id;
+  const { data: phase } = usePhase(phaseId);
+  const showSimilarInputs = !!(
+    phase?.data.attributes.similarity_enabled && isAuthoringAssistanceEnabled
+  );
 
   const {
     schema,
@@ -306,7 +316,7 @@ const IdeasEditForm = ({ ideaId }: Props) => {
                     h={calculateDynamicHeight(isSmallerThanPhone)}
                     pb={isSmallerThanPhone ? '0' : '80px'}
                   >
-                    <IdeaSelectContext.Provider
+                    <InputSelectContext.Provider
                       value={{
                         onIdeaSelect: setSelectedIdeaId,
                         title,
@@ -314,6 +324,7 @@ const IdeasEditForm = ({ ideaId }: Props) => {
                         setTitle,
                         setBody,
                         selectedIdeaId,
+                        showSimilarInputs,
                       }}
                     >
                       <Form
@@ -328,7 +339,7 @@ const IdeasEditForm = ({ ideaId }: Props) => {
                         loading={loading}
                         showSubmitButton={false}
                       />
-                    </IdeaSelectContext.Provider>
+                    </InputSelectContext.Provider>
                   </Box>
                 </Box>
                 <ContentUploadDisclaimer
@@ -349,7 +360,7 @@ const IdeasEditForm = ({ ideaId }: Props) => {
                 position="relative"
                 mb="80px"
               >
-                <IdeaDetailView ideaId={selectedIdeaId} />
+                <InputDetailView ideaId={selectedIdeaId} />
               </Box>
             )}
           </Box>
