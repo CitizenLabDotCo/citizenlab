@@ -61,7 +61,7 @@ import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 import eventEmitter from 'utils/eventEmitter';
 import { isPage } from 'utils/helperUtils';
 
-import { useIdeaSelect } from '../../../../containers/IdeasNewPage/SimilarIdeas/IdeaSelectContext';
+import { useIdeaSelect } from '../../../../containers/IdeasNewPage/SimilarInputs/InputSelectContext';
 import getPageSchema from '../../utils/getPageSchema';
 import { useErrorToRead } from '../Fields/ErrorToReadContext';
 

@@ -19,7 +19,7 @@ import useLocale from 'hooks/useLocale';
 
 import { useIntl } from 'utils/cl-intl';
 
-import { useIdeaSelect } from './IdeaSelectContext';
+import { useIdeaSelect } from './InputSelectContext';
 import messages from './messages';
 
 const SimilarIdeasList = () => {

@@ -1,24 +1,26 @@
 import { createContext, useContext } from 'react';
 
-interface IIdeaSelectContext {
+interface IInputSelectContext {
   onIdeaSelect: (ideaId: string | null) => void;
   selectedIdeaId: string | null;
   title: string;
   body: string;
   setTitle: (val: string) => void;
   setBody: (val: string) => void;
+  showSimilarInputs: boolean;
 }
 
-const defaultContext: IIdeaSelectContext = {
+const defaultContext: IInputSelectContext = {
   onIdeaSelect: () => {},
   selectedIdeaId: null,
+  showSimilarInputs: false,
   title: '',
   body: '',
   setTitle: () => {},
   setBody: () => {},
 };
 
-export const IdeaSelectContext =
-  createContext<IIdeaSelectContext>(defaultContext);
+export const InputSelectContext =
+  createContext<IInputSelectContext>(defaultContext);
 
-export const useIdeaSelect = () => useContext(IdeaSelectContext);
+export const useIdeaSelect = () => useContext(InputSelectContext);
