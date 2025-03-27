@@ -142,6 +142,7 @@ const CommunityMonitorModal = ({
       <Box mt="40px">
         <QuestionPreview
           projectSlug={project?.data.attributes.slug}
+          phaseId={phaseId}
           schema={schema}
           uiSchema={uiSchema}
           onClose={onClose}

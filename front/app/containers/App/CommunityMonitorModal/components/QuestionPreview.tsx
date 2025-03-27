@@ -22,6 +22,7 @@ import {
 
 type QuestionPreviewProps = {
   projectSlug?: string;
+  phaseId?: string;
   schema: JsonFormsSchema | null;
   uiSchema: Layout | null;
   onClose: () => void;
@@ -29,6 +30,7 @@ type QuestionPreviewProps = {
 
 const QuestionPreview = ({
   projectSlug,
+  phaseId,
   schema,
   uiSchema,
   onClose,
@@ -45,7 +47,9 @@ const QuestionPreview = ({
       // Close the modal
       onClose();
       // Redirect to full survey page
-      clHistory.push(`/projects/${projectSlug}/surveys/new`);
+      clHistory.push(
+        `/projects/${projectSlug}/surveys/new?phase_id=${phaseId}`
+      );
     }
   };
 

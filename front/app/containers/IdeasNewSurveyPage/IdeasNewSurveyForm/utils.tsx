@@ -1,5 +1,20 @@
 import { stylingConsts } from '@citizenlab/cl2-component-library';
 
+import { ParticipationMethod } from 'api/phases/types';
+
+export function getLeaveFormDestination(
+  participationMethod?: ParticipationMethod
+) {
+  switch (participationMethod) {
+    case 'community_monitor_survey':
+      return 'go-back';
+    case 'native_survey':
+      return 'project-page';
+    default:
+      return 'project-page';
+  }
+}
+
 // GeoJSON values in the data may contain nested arrays, which Rails strong parameters cannot handle.
 // This function converts GeoJSON values to 'well known text' (WKT) format before submitting the form(s).
 // The BE will then convert the WKT back to GeoJSON, if valid, before saving the data.

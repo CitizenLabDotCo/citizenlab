@@ -5,7 +5,7 @@ import { CommunityMonitorSentimentScoreAttributes } from 'api/community_monitor_
 import { QuarterlyScores } from './types';
 
 export const categoryColors = {
-  overall: colors.blue400,
+  overall: colors.orange500,
   quality_of_life: colors.teal700,
   service_delivery: colors.teal300,
   governance_and_trust: colors.brown,

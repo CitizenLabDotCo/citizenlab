@@ -6,6 +6,8 @@ import { useParams, useSearchParams } from 'react-router-dom';
 import useProjectById from 'api/projects/useProjectById';
 import useSurveyResults from 'api/survey_results/useSurveyResults';
 
+import useLocalize from 'hooks/useLocalize';
+
 import SentimentQuestion from 'components/admin/FormResults/FormResultsQuestion/SentimentQuestion';
 
 import {
@@ -20,6 +22,8 @@ type Props = {
 };
 
 const FormResults = (props: Props) => {
+  const localize = useLocalize();
+
   // Get the projectId and phaseId from the URL
   const { projectId: projectIdParam, phaseId: phaseIdParam } = useParams() as {
     projectId: string;
@@ -51,51 +55,45 @@ const FormResults = (props: Props) => {
 
   const { results } = formResults.data.attributes;
 
-  // Filter the results to only include sentiment questions
-  const sentimentQuestionResults = results.filter(
-    (question) => question.inputType === 'sentiment_linear_scale'
-  );
-
-  const isFirstQuestionInCategory = (category: string, index: number) => {
-    return (
-      sentimentQuestionResults.at(index - 1)?.questionCategory !== category
-    );
-  };
-
   return (
     <Box width="100%">
       <Box>
-        {sentimentQuestionResults.map((result, index) => {
-          const category = result.questionCategory;
-          return (
-            <Box key={index}>
-              {category &&
-                // TODO: Will change after BE returns pages with category titles
-                isFirstQuestionInCategory(category, index) && (
-                  <Box
-                    display="flex"
-                    justifyContent="space-between"
-                    alignItems="center"
-                    mb="8px"
-                    mt="30px"
-                  >
-                    <Box display="flex" alignItems="center">
-                      <Text m="0px" fontSize="l" fontWeight="bold">
-                        <Icon
-                          width="16px"
-                          name="dot"
-                          fill={categoryColors[category]}
-                          mr="4px"
-                          my="auto"
-                        />
-                        {category}
-                      </Text>
-                    </Box>
-                  </Box>
-                )}
-              <SentimentQuestion key={index} result={result} mb="8px" />
-            </Box>
-          );
+        {results.map((result, index) => {
+          if (result.inputType === 'page') {
+            // Get the question category key from the first question in the page
+            const categoryKey = results[index + 1]?.questionCategory;
+            return (
+              <Box
+                display="flex"
+                justifyContent="space-between"
+                alignItems="center"
+                mb="8px"
+                mt="30px"
+                key={index}
+              >
+                <Box display="flex" alignItems="center">
+                  <Text m="0px" fontSize="l" fontWeight="bold">
+                    <Icon
+                      width="16px"
+                      name="dot"
+                      fill={categoryKey && categoryColors[categoryKey]}
+                      mr="4px"
+                      my="auto"
+                    />
+                    {localize(result.question)}
+                  </Text>
+                </Box>
+              </Box>
+            );
+          } else if (result.inputType === 'sentiment_linear_scale') {
+            return (
+              <Box key={index}>
+                <SentimentQuestion key={index} result={result} mb="8px" />
+              </Box>
+            );
+          }
+
+          return null;
         })}
       </Box>
     </Box>
