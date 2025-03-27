@@ -492,6 +492,11 @@ const PhaseParticipationConfig = ({
             voting_term_plural_multiloc={voting_term_plural_multiloc}
             voting_term_singular_multiloc={voting_term_singular_multiloc}
             handleMaxVotesPerOptionAmountChange={handleVotingMaxPerIdeaChange}
+            similarity_enabled={similarity_enabled}
+            similarity_threshold_title={similarity_threshold_title}
+            similarity_threshold_body={similarity_threshold_body}
+            handleSimilarityEnabledChange={handleSimilarityEnabledChange}
+            handleThresholdChange={handleThresholdChange}
           />
         )}
 
@@ -576,6 +581,11 @@ const PhaseParticipationConfig = ({
             reactingThresholdError={validationErrors.reactingThresholdError}
             prescreening_enabled={prescreening_enabled}
             togglePrescreeningEnabled={togglePrescreeningEnabled}
+            similarity_enabled={similarity_enabled}
+            similarity_threshold_title={similarity_threshold_title}
+            similarity_threshold_body={similarity_threshold_body}
+            handleSimilarityEnabledChange={handleSimilarityEnabledChange}
+            handleThresholdChange={handleThresholdChange}
           />
         )}
 
