@@ -7,8 +7,8 @@ module BulkImportIdeas
       activity_object = phase
 
       project = Phase.find(phase).project
-      project_analyses = Analysis::Analysis.where(project: project) 
-      phase_analyses = Analysis::Analysis.where(phase: phase)  
+      project_analyses = Analysis::Analysis.where(project: project)
+      phase_analyses = Analysis::Analysis.where(phase: phase)
       analyses = (project_analyses + phase_analyses).uniq
 
       if items.count == 0
