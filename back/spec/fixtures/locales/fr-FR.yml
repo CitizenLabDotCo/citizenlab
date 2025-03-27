@@ -70,6 +70,8 @@ fr:
         service_delivery: Prestation de services
         governance_and_trust: Gouvernance et confiance
         other: Autre
+      form_end:
+        button_text: Retour à l'accueil
   custom_forms:
     categories:
       main_content:
