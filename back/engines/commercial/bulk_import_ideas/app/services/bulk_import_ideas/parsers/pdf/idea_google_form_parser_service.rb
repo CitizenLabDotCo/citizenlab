@@ -93,7 +93,7 @@ module BulkImportIdeas::Parsers::Pdf
       client = Google::Cloud::DocumentAI.document_processor_service do |config|
         config.endpoint = "#{location}-documentai.googleapis.com"
         config.channel_args = {
-          'grpc.max_receive_message_length' => 8 * 1024 * 1024,
+          'grpc.max_receive_message_length' => 16 * 1024 * 1024,
           'grpc.max_send_message_length' => 8 * 1024 * 1024
         }
       end
