@@ -7,11 +7,13 @@ interface IIdeaSelectContext {
   body: string;
   setTitle: (val: string) => void;
   setBody: (val: string) => void;
+  showSimilarInputs: boolean;
 }
 
 const defaultContext: IIdeaSelectContext = {
   onIdeaSelect: () => {},
   selectedIdeaId: null,
+  showSimilarInputs: false,
   title: '',
   body: '',
   setTitle: () => {},
