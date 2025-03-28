@@ -115,10 +115,6 @@ module IdeaCustomFields
     end
 
     def raise_error_if_no_end_page
-      pmethod = @custom_form.participation_context.pmethod.class.method_str
-      is_survey_or_ideation = pmethod.in?(%w[native_survey ideation])
-      return unless is_survey_or_ideation
-
       last_field = update_all_params.fetch(:custom_fields).last
       return if last_field['key'] == 'form_end' && last_field['input_type'] == 'page'
 
