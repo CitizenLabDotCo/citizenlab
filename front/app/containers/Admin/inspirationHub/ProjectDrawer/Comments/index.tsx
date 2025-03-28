@@ -89,7 +89,7 @@ const Comments = ({ projectId }: Props) => {
           <StyledTextArea
             rows={5}
             name="comment_body"
-            placeholder="Write your comment here"
+            placeholder={formatMessage(messages.writeYourCommentHere)}
           />
           <Box w="100%" mt="8px" display="flex">
             <Button

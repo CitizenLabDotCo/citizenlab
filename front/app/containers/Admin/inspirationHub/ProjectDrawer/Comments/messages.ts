@@ -25,4 +25,8 @@ export default defineMessages({
     id: 'front.app.containers.Admin.inspirationHub.ProjectDrawer.Comments.areYouSureYouWantToDeleteThis',
     defaultMessage: 'Are you sure you want to delete this?',
   },
+  writeYourCommentHere: {
+    id: 'front.app.containers.Admin.inspirationHub.ProjectDrawer.Comments.writeYourCommentHere',
+    defaultMessage: 'Write your comment here',
+  },
 });
