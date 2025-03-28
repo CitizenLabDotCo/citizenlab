@@ -77,6 +77,9 @@ export interface IPhaseAttributes {
   native_survey_button_multiloc?: Multiloc;
   prescreening_enabled?: boolean;
   manual_voters_amount?: number;
+  similarity_enabled?: boolean;
+  similarity_threshold_title?: number | null;
+  similarity_threshold_body?: number | null;
 }
 
 export interface IPhases {
@@ -126,6 +129,9 @@ export interface IUpdatedPhaseProperties {
   allow_anonymous_participation?: boolean;
   expire_days_limit?: number;
   manual_voters_amount?: number;
+  similarity_enabled?: boolean | null;
+  similarity_threshold_title?: number | null;
+  similarity_threshold_body?: number | null;
 }
 
 export interface AddPhaseObject extends IUpdatedPhaseProperties {

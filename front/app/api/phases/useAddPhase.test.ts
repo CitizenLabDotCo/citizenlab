@@ -24,6 +24,9 @@ const phasesMutationData: IUpdatedPhaseProperties = {
   reacting_like_limited_max: 0,
   reacting_like_method: 'limited',
   reacting_enabled: false,
+  similarity_threshold_body: 0.5,
+  similarity_threshold_title: 0.5,
+  similarity_enabled: true,
 };
 
 const apiPath = '*projects/:projectId/phases';

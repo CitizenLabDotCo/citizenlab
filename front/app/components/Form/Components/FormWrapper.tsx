@@ -16,6 +16,7 @@ const FormWrapper = ({ formId, children }: Props) => {
       flexDirection="column"
       // This is necessary for the form to grow with the content and still be scrollable
       height="100%"
+      w="100%"
     >
       {children}
     </Box>

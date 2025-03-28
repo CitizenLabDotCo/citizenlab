@@ -138,6 +138,7 @@ class WebApi::V1::PhasesController < ApplicationController
       :reacting_threshold,
       :expire_days_limit,
       :manual_voters_amount,
+      :similarity_enabled,
       :similarity_threshold_title,
       :similarity_threshold_body,
       {

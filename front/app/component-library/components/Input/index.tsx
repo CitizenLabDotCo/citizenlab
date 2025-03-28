@@ -84,6 +84,7 @@ export interface InputProps {
   autoFocus?: boolean;
   min?: string;
   max?: string;
+  step?: string;
   name?: string;
   maxCharCount?: number;
   disabled?: boolean;
@@ -146,6 +147,7 @@ class Input extends PureComponent<InputProps> {
       maxCharCount,
       min,
       max,
+      step,
       autoFocus,
       onFocus,
       disabled,
@@ -200,6 +202,7 @@ class Input extends PureComponent<InputProps> {
           ref={this.handleRef}
           min={min}
           max={max}
+          step={step}
           // eslint-disable-next-line jsx-a11y/no-autofocus
           autoFocus={autoFocus}
           disabled={disabled}

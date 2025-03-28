@@ -411,7 +411,7 @@ RSpec.describe CustomField do
       page = described_class.new(
         resource: resource,
         input_type: 'page',
-        code: 'ideation_page1',
+        code: 'title_page',
         title_multiloc: ignored_title
       )
       expected_english_title = 'What is your question?'
@@ -427,7 +427,7 @@ RSpec.describe CustomField do
       page = described_class.new(
         resource: resource,
         input_type: 'page',
-        code: 'ideation_page1',
+        code: 'title_page',
         title_multiloc: ignored_title
       )
       expected_english_title = 'What is your contribution?'

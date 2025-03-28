@@ -10,11 +10,15 @@ import useIdeaImages from 'api/idea_images/useIdeaImages';
 import { IdeaPublicationStatus, IIdeaUpdate } from 'api/ideas/types';
 import useIdeaById from 'api/ideas/useIdeaById';
 import useUpdateIdea from 'api/ideas/useUpdateIdea';
+import usePhase from 'api/phases/usePhase';
 
+import useFeatureFlag from 'hooks/useFeatureFlag';
 import useInputSchema from 'hooks/useInputSchema';
 
 import EditIdeaHeading from 'containers/IdeaHeading/EditIdeaHeading';
 import ideaFormMessages from 'containers/IdeasNewPage/messages';
+import InputDetailView from 'containers/IdeasNewPage/SimilarInputs/InputDetailView';
+import { InputSelectContext } from 'containers/IdeasNewPage/SimilarInputs/InputSelectContext';
 import { calculateDynamicHeight } from 'containers/IdeasNewSurveyPage/IdeasNewSurveyForm/utils';
 
 import ContentUploadDisclaimer from 'components/ContentUploadDisclaimer';
@@ -59,13 +63,23 @@ const IdeasEditForm = ({ ideaId }: Props) => {
   const { data: idea } = useIdeaById(ideaId);
   const { mutate: deleteIdeaImage } = useDeleteIdeaImage();
   const isSmallerThanPhone = useBreakpoint('phone');
-
+  const [title, setTitle] = useState('');
+  const [body, setBody] = useState('');
   const { mutateAsync: updateIdea } = useUpdateIdea();
   const { data: remoteImages } = useIdeaImages(ideaId);
   const { data: remoteFiles } = useIdeaFiles(ideaId);
   const projectId = idea?.data.relationships.project.data.id;
   const callbackRef = useRef<(() => void) | null>(null);
   const [usingMapView, setUsingMapView] = useState(false);
+  const [selectedIdeaId, setSelectedIdeaId] = useState<string | null>(null);
+  const isAuthoringAssistanceEnabled = useFeatureFlag({
+    name: 'authoring_assistance',
+  });
+  const phaseId = idea?.data.relationships.phases.data[0].id;
+  const { data: phase } = usePhase(phaseId);
+  const showSimilarInputs = !!(
+    phase?.data.attributes.similarity_enabled && isAuthoringAssistanceEnabled
+  );
 
   const {
     schema,
@@ -255,6 +269,7 @@ const IdeasEditForm = ({ ideaId }: Props) => {
       }[uiSchema.options?.inputTerm ? uiSchema.options.inputTerm : 'idea']}
     />
   );
+  const maxWidth = usingMapView ? '1100px' : '700px';
 
   return (
     <>
@@ -265,53 +280,91 @@ const IdeasEditForm = ({ ideaId }: Props) => {
         h="100vh"
         position="fixed"
         zIndex="1010"
+        overflow="hidden"
       >
-        <Box
-          mx="auto"
-          position="relative"
-          top={isSmallerThanPhone ? '0' : '40px'}
-          maxWidth={usingMapView ? '1100px' : '700px'}
-        >
-          <EditIdeaHeading
-            idea={idea.data}
-            titleText={titleText}
-            projectId={projectId}
-          />
-        </Box>
-        <main id="e2e-idea-edit-page">
+        <Box display="flex" flexDirection="row" h="100%" w="100%">
           <Box
+            flex="1"
             display="flex"
+            mx="auto"
             justifyContent="center"
-            pt={isSmallerThanPhone ? '0' : '40px'}
+            w="100%"
           >
-            <Box
-              background={colors.white}
-              maxWidth={usingMapView ? '1100px' : '700px'}
-              w="100%"
-              // Height is recalculated on window resize via useWindowSize hook
-              h={calculateDynamicHeight(isSmallerThanPhone)}
-              pb={isSmallerThanPhone ? '0' : '80px'}
-            >
-              <Form
-                schema={schema}
-                uiSchema={uiSchema}
-                onSubmit={handleDisclaimer}
-                initialFormData={initialFormData}
-                inputId={idea.data.id}
-                getAjvErrorMessage={getAjvErrorMessage}
-                getApiErrorMessage={getApiErrorMessage}
-                config={'input'}
-                loading={loading}
-                showSubmitButton={false}
-              />
+            <Box w="100%" maxWidth={maxWidth}>
+              <Box
+                w="100%"
+                position="relative"
+                top={isSmallerThanPhone ? '0' : '40px'}
+              >
+                <EditIdeaHeading
+                  idea={idea.data}
+                  titleText={titleText}
+                  projectId={projectId}
+                />
+              </Box>
+              <main id="e2e-idea-edit-page">
+                <Box
+                  display="flex"
+                  justifyContent="center"
+                  pt={isSmallerThanPhone ? '0' : '40px'}
+                >
+                  <Box
+                    background={colors.white}
+                    maxWidth={usingMapView ? '1100px' : '700px'}
+                    w="100%"
+                    // Height is recalculated on window resize via useWindowSize hook
+                    h={calculateDynamicHeight(isSmallerThanPhone)}
+                    pb={isSmallerThanPhone ? '0' : '80px'}
+                  >
+                    <InputSelectContext.Provider
+                      value={{
+                        onIdeaSelect: setSelectedIdeaId,
+                        title,
+                        body,
+                        setTitle,
+                        setBody,
+                        selectedIdeaId,
+                        showSimilarInputs,
+                      }}
+                    >
+                      <Form
+                        schema={schema}
+                        uiSchema={uiSchema}
+                        onSubmit={handleDisclaimer}
+                        initialFormData={initialFormData}
+                        inputId={idea.data.id}
+                        getAjvErrorMessage={getAjvErrorMessage}
+                        getApiErrorMessage={getApiErrorMessage}
+                        config={'input'}
+                        loading={loading}
+                        showSubmitButton={false}
+                      />
+                    </InputSelectContext.Provider>
+                  </Box>
+                </Box>
+                <ContentUploadDisclaimer
+                  isDisclaimerOpened={isDisclaimerOpened}
+                  onAcceptDisclaimer={() => onAcceptDisclaimer(formData)}
+                  onCancelDisclaimer={onCancelDisclaimer}
+                />
+              </main>
             </Box>
+            {selectedIdeaId && (
+              <Box
+                top={isSmallerThanPhone ? '0' : '40px'}
+                width="375px"
+                minWidth="375px"
+                borderLeft={`1px solid ${colors.grey300}`}
+                overflowY="auto"
+                bgColor={colors.white}
+                position="relative"
+                mb="80px"
+              >
+                <InputDetailView ideaId={selectedIdeaId} />
+              </Box>
+            )}
           </Box>
-          <ContentUploadDisclaimer
-            isDisclaimerOpened={isDisclaimerOpened}
-            onAcceptDisclaimer={() => onAcceptDisclaimer(formData)}
-            onCancelDisclaimer={onCancelDisclaimer}
-          />
-        </main>
+        </Box>
       </Box>
     </>
   );
