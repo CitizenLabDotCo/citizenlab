@@ -104,18 +104,18 @@ class IdeaCustomFieldsService
     field_params.except(:code, :input_type)
   end
 
-  def check_form_structure(fields, errors)
-    return if fields.empty?
+  def check_form_structure(fields_from_params, errors)
+    return if fields_from_params.empty?
 
-    first_field_type = 'page'
-    if fields[0][:input_type] != first_field_type
-      error = { error: "First field must be of type '#{first_field_type}'" }
+    unless fields_from_params.first[:input_type] == 'page'
+      error = { error: "First field must be of type 'page'" }
       errors['0'] = { structure: [error] }
     end
 
     # Check the last field is a page
-    if fields.last[:input_type] != 'page'
-      errors[(fields.length - 1).to_s] = { structure: [{ error: "Last field must be of type 'page'" }] }
+    last_field = fields_from_params.last
+    unless last_field[:input_type] == 'page' && last_field[:key] == 'form_end'
+      errors[(fields_from_params.length - 1).to_s] = { structure: [{ error: "Last field must be of type 'page' with a key of 'form_end'" }] }
     end
   end
 

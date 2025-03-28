@@ -673,7 +673,7 @@ resource 'Idea Custom Fields' do
 
         assert_status 422
         json_response = json_parse response_body
-        expect(json_response).to eq({ :errors => { :form => [{ :error => 'no_end_page' }] } })
+        expect(json_response).to eq({errors: {"0": {structure: [{error: "Last field must be of type 'page' with a key of 'form_end'"}]}}})
       end
 
       example 'Update linear_scale field' do
