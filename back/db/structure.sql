@@ -1602,7 +1602,7 @@ CREATE TABLE public.phases (
     manual_voters_last_updated_at timestamp(6) without time zone,
     similarity_threshold_title double precision DEFAULT 0.3,
     similarity_threshold_body double precision DEFAULT 0.4,
-    similarity_enabled boolean DEFAULT false NOT NULL
+    similarity_enabled boolean DEFAULT true NOT NULL
 );
 
 
