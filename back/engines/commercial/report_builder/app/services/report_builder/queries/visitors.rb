@@ -1,5 +1,37 @@
 module ReportBuilder
   class Queries::Visitors < ReportBuilder::Queries::Base
+    def run_query(
+      start_at, 
+      end_at,
+      resolution: 'month',
+      project_id: nil,
+      compare_start_at: nil,
+      compare_end_at: nil,
+      **_other_props
+    )
+      # Why do we need to call run_query_untransformed and then transform_response?
+      # Because this was first implemented in a completely different way, using
+      # the analytics API.
+      # This API created a very wonky response structure.
+      # Now, we don't use the analytics api anymore, and we want to return a more
+      # easy to read response structure.
+      # Unfortunately, we can't just change the response structure, because
+      # of the published data that still uses the old structure.
+      # So that's why we take our nice new response structure and transform it
+      # back into the old wonky one for now.
+      # Hopefully in the future we can switch over to the new, nice response structure
+      untransformed_response = run_query_untransformed(
+        start_at,
+        end_at,
+        resolution: resolution,
+        project_id: project_id,
+        compare_start_at: compare_start_at,
+        compare_end_at: compare_end_at
+      )
+
+      transform_response(untransformed_response)
+    end
+
     def transform_response(untransformed_response)
       time_series = untransformed_response[:time_series].map do |row|
         {
@@ -49,8 +81,7 @@ module ReportBuilder
       resolution: 'month',
       project_id: nil,
       compare_start_at: nil,
-      compare_end_at: nil,
-      **_other_props
+      compare_end_at: nil
     )
       sessions = ImpactTracking::Session.where(created_at: start_at..end_at)
       sessions = apply_project_filter_if_needed(sessions, project_id)
