@@ -269,6 +269,10 @@ class CustomField < ApplicationRecord
     input_type == 'rating'
   end
 
+  def checkbox?
+    input_type == 'checkbox'
+  end
+
   def dropdown_layout_type?
     %w[multiselect select].include?(input_type)
   end
