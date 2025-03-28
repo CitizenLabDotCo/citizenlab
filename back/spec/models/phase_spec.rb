@@ -497,7 +497,6 @@ RSpec.describe Phase do
 
   describe '#disliking_enabled' do
     it 'defaults to false when disable_disliking feature flag is enabled (default)' do
-      # binding.pry
       phase = build(:phase)
       expect(phase.reacting_dislike_enabled).to be false
     end

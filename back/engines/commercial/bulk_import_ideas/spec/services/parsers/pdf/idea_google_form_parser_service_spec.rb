@@ -30,4 +30,29 @@ describe BulkImportIdeas::Parsers::Pdf::IdeaGoogleFormParserService do
     #   expect(pages).not_to be_nil
     # end
   end
+
+  describe 'split_pdf' do
+    it 'returns 1 PDF if there are less than 15 pages' do
+      service = described_class.new
+      file = Rails.root.join('engines/commercial/bulk_import_ideas/spec/fixtures/scan_12.pdf').read
+      pdfs = service.send(:split_pdf, file)
+      expect(pdfs.size).to eq 1
+    end
+
+    it 'splits a 16 page PDF file into max 15 pages per PDF' do
+      service = described_class.new
+      file = Rails.root.join('engines/commercial/bulk_import_ideas/spec/fixtures/scan_16.pdf').read
+      pdfs = service.send(:split_pdf, file)
+      expect(pdfs.size).to eq 2
+      expect(CombinePDF.parse(pdfs[0]).pages.count).to eq 15
+      expect(CombinePDF.parse(pdfs[1]).pages.count).to eq 1
+    end
+
+    it 'splits returns 1 PDF if the file is 15 pages exactly' do
+      service = described_class.new
+      file = Rails.root.join('engines/commercial/bulk_import_ideas/spec/fixtures/scan_15.pdf').read
+      pdfs = service.send(:split_pdf, file)
+      expect(pdfs.size).to eq 1
+    end
+  end
 end
