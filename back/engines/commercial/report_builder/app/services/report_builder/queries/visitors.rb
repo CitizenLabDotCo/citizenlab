@@ -72,12 +72,12 @@ module ReportBuilder
       # Avg seconds on page
 
       # Here we need to apply the project filter too on the subquery.
-      # We already sort of applied this filter above.
+      # We already sort of applied this filter above, when we did apply_project_filter_if_needed.
       # However, with just that step, we're saying 
       # "give me the average time spent per page during sessions where someone visited the project"
       # while what we probably want is
       # "give me the average time spent on project page"
-      # So we need to apply the filter again here. Which is kind of a pain with all the subqueries.
+      # So we need to apply the filter again here.
       additional_select_statement = ""
 
       if project_id.present?
@@ -114,6 +114,8 @@ module ReportBuilder
       avg_seconds_on_page = aggregations["sum"] / aggregations["count"]
 
       # Avg pages visited per sessions
+      # Or, if project filter is applied:
+      # Avg pages visited per session where someone visited the project during the session
       avg_pages_visited = pageviews.count / visits_total
 
       {
