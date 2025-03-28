@@ -53,7 +53,62 @@ RSpec.describe ReportBuilder::Queries::Visitors do
     end
 
     it 'transforms response correctly with compared period' do
-      # TODO
+      untransformed_response = {
+        time_series: [
+          {
+            :visits => 3,
+            :visitors => 2,
+            :date_group => Date.new(2022, 9, 1)
+          },
+          {
+            :visits => 5,
+            :visitors => 2,
+            :date_group => Date.new(2022, 10, 1)
+          }
+        ],
+        visits_total: 8,
+        visitors_total: 4,
+        avg_seconds_on_page: 90,
+        avg_pages_visited: 12 / 8,
+
+        compare_visits_total: 3,
+        compare_visitors_total: 2,
+        compare_avg_seconds_on_page: 100,
+        compare_avg_pages_visited: 6 / 3,        
+      }
+
+      expect(query.transform_response(untransformed_response)).to eq([
+        [
+          {
+            'count' => 3,
+            'count_monthly_user_hash' => 2,
+            'dimension_date_created.month' => '2022-09',
+            'first_dimension_date_created_date' => Date.new(2022, 9, 1)
+          },
+          {
+            'count' => 5,
+            'count_monthly_user_hash' => 2,
+            'dimension_date_created.month' => '2022-10',
+            'first_dimension_date_created_date' => Date.new(2022, 10, 1)
+          }
+        ],
+        [{
+          'count' => 8,
+          'count_monthly_user_hash' => 4
+        }],
+        [{
+          'avg_duration' => 90,
+          'avg_pages_visited' => 12 / 8
+        }],
+        [{
+          'count' => 3,
+          'count_monthly_user_hash' => 2
+        }],
+        [{
+          'avg_duration' => 100,
+          'avg_pages_visited' => 6 / 3
+        }]
+      ])   
     end
   end
 

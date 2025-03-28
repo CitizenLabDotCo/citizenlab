@@ -20,7 +20,27 @@ module ReportBuilder
         'avg_pages_visited' => untransformed_response[:avg_pages_visited]
       }]
 
-      [time_series, totals, averages]
+      response = [time_series, totals, averages]
+
+      if untransformed_response[:compare_visits_total].present?
+        compared_totals = [{
+          'count' => untransformed_response[:compare_visits_total],
+          'count_monthly_user_hash' => untransformed_response[:compare_visitors_total]
+        }]
+
+        compared_averages = [{
+          'avg_duration' => untransformed_response[:compare_avg_seconds_on_page],
+          'avg_pages_visited' => untransformed_response[:compare_avg_pages_visited]
+        }]
+
+        response = [
+          *response,
+          compared_totals,
+          compared_averages
+        ]
+      end
+
+      response
     end
 
     def run_query_untransformed(
