@@ -1,14 +1,16 @@
 module ReportBuilder
   class Queries::Visitors < ReportBuilder::Queries::Base
     def run_query(
-      start_at, 
-      end_at,
+      start_at: nil, 
+      end_at: nil,
       resolution: 'month',
       project_id: nil,
       compare_start_at: nil,
       compare_end_at: nil,
       **_other_props
     )
+      start_date, end_date = TimeBoundariesParser.new(start_at, end_at).parse
+
       # Why do we need to call run_query_untransformed and then transform_response?
       # Because this was first implemented in a completely different way, using
       # the analytics API.
@@ -21,8 +23,8 @@ module ReportBuilder
       # back into the old wonky one for now.
       # Hopefully in the future we can switch over to the new, nice response structure
       untransformed_response = run_query_untransformed(
-        start_at,
-        end_at,
+        start_date,
+        end_date,
         resolution: resolution,
         project_id: project_id,
         compare_start_at: compare_start_at,
