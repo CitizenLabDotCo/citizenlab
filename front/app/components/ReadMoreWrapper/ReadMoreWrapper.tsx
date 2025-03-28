@@ -9,14 +9,11 @@ import {
   viewportWidths,
   isRtl,
 } from '@citizenlab/cl2-component-library';
-import { isEmpty } from 'lodash-es';
 import ReactResizeDetector from 'react-resize-detector';
 import styled, { useTheme } from 'styled-components';
-import { Multiloc } from 'typings';
 
 import messages from 'containers/ProjectsShowPage/messages';
 
-import T from 'components/T';
 import Button from 'components/UI/ButtonWithLink';
 import QuillEditedContent from 'components/UI/QuillEditedContent';
 
@@ -62,11 +59,11 @@ interface Props {
   className?: string;
   contentId?: string;
   fontSize: 'base' | 's' | 'm' | 'l';
-  value: Multiloc;
+  content: JSX.Element | string;
 }
 
 const ReadMoreWrapper = memo<Props>(
-  ({ className, value, fontSize, contentId }) => {
+  ({ className, content, fontSize, contentId }) => {
     const theme = useTheme();
     const { windowWidth } = useWindowSize();
 
@@ -81,7 +78,7 @@ const ReadMoreWrapper = memo<Props>(
 
     useEffect(() => {
       setExpanded(false);
-    }, [value]);
+    }, [content]);
 
     useEffect(() => {
       // We use the button container ref because we currently don't support refs
@@ -124,63 +121,32 @@ const ReadMoreWrapper = memo<Props>(
           className={expanded ? 'expanded' : ''}
           maxHeight={collapsedContentMaxHeight}
         >
-          {!isEmpty(value) && (
-            <>
-              <ReactResizeDetector handleWidth handleHeight onResize={onResize}>
-                <div id={`e2e-project-${contentId}`}>
-                  <QuillEditedContent
-                    fontSize={fontSize}
-                    textColor={theme.colors.tenantText}
-                  >
-                    <T value={value} supportHtml={true} />
-                  </QuillEditedContent>
-                </div>
-              </ReactResizeDetector>
-              {contentHeight &&
-                contentHeight > collapsedContentMaxHeight &&
-                !expanded && (
-                  <Box
-                    display="flex"
-                    height="132px"
-                    position="absolute"
-                    bottom="0"
-                    left="0"
-                    right="0"
-                    background="linear-gradient(0deg, rgba(255, 255, 255, 1) 30%, rgba(255, 255, 255, 0) 100%)"
-                  >
-                    <Box position="relative" flex="1" ref={buttonContainerRef}>
-                      <ReadMoreButton
-                        id={`e2e-project-${contentId}-read-more-button`}
-                        buttonStyle="text"
-                        onClick={toggleExpandCollapse}
-                        textDecoration="underline"
-                        textDecorationHover="underline"
-                        textColor={colors.textSecondary}
-                        textHoverColor={theme.colors.tenantText}
-                        fontWeight="500"
-                        fontSize={`${fontSizes.m}px`}
-                        padding="0"
-                        ariaExpanded={expanded}
-                        icon="arrow-right"
-                        iconPos="right"
-                        iconSize="16px"
-                      >
-                        <FormattedMessage {...messages.readMore} />
-                      </ReadMoreButton>
-                    </Box>
-                  </Box>
-                )}
-              {contentHeight &&
-                contentHeight > collapsedContentMaxHeight &&
-                expanded && (
-                  <Box
-                    display="flex"
-                    justifyContent="flex-start"
-                    mt="20px"
-                    ref={buttonContainerRef}
-                  >
-                    <Button
-                      id={`e2e-project-${contentId}-see-less-button`}
+          <>
+            <ReactResizeDetector handleWidth handleHeight onResize={onResize}>
+              <div id={`e2e-project-${contentId}`}>
+                <QuillEditedContent
+                  fontSize={fontSize}
+                  textColor={theme.colors.tenantText}
+                >
+                  {content}
+                </QuillEditedContent>
+              </div>
+            </ReactResizeDetector>
+            {contentHeight &&
+              contentHeight > collapsedContentMaxHeight &&
+              !expanded && (
+                <Box
+                  display="flex"
+                  height="132px"
+                  position="absolute"
+                  bottom="0"
+                  left="0"
+                  right="0"
+                  background="linear-gradient(0deg, rgba(255, 255, 255, 1) 30%, rgba(255, 255, 255, 0) 100%)"
+                >
+                  <Box position="relative" flex="1" ref={buttonContainerRef}>
+                    <ReadMoreButton
+                      id={`e2e-project-${contentId}-read-more-button`}
                       buttonStyle="text"
                       onClick={toggleExpandCollapse}
                       textDecoration="underline"
@@ -191,16 +157,45 @@ const ReadMoreWrapper = memo<Props>(
                       fontSize={`${fontSizes.m}px`}
                       padding="0"
                       ariaExpanded={expanded}
-                      icon="arrow-down"
+                      icon="arrow-right"
                       iconPos="right"
                       iconSize="16px"
                     >
-                      <FormattedMessage {...messages.readLess} />
-                    </Button>
+                      <FormattedMessage {...messages.readMore} />
+                    </ReadMoreButton>
                   </Box>
-                )}
-            </>
-          )}
+                </Box>
+              )}
+            {contentHeight &&
+              contentHeight > collapsedContentMaxHeight &&
+              expanded && (
+                <Box
+                  display="flex"
+                  justifyContent="flex-start"
+                  mt="20px"
+                  ref={buttonContainerRef}
+                >
+                  <Button
+                    id={`e2e-project-${contentId}-see-less-button`}
+                    buttonStyle="text"
+                    onClick={toggleExpandCollapse}
+                    textDecoration="underline"
+                    textDecorationHover="underline"
+                    textColor={colors.textSecondary}
+                    textHoverColor={theme.colors.tenantText}
+                    fontWeight="500"
+                    fontSize={`${fontSizes.m}px`}
+                    padding="0"
+                    ariaExpanded={expanded}
+                    icon="arrow-down"
+                    iconPos="right"
+                    iconSize="16px"
+                  >
+                    <FormattedMessage {...messages.readLess} />
+                  </Button>
+                </Box>
+              )}
+          </>
         </Content>
       </Container>
     );

@@ -149,4 +149,11 @@ class Rack::Attack
       req.remote_ip
     end
   end
+
+  # Similar inputs responses by IP.
+  throttle('similar_ideas/ip', limit: 5, period: 1.second) do |req|
+    if req.path == '/web_api/v1/ideas/similar_ideas'
+      req.remote_ip
+    end
+  end
 end

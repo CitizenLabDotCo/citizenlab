@@ -51,8 +51,8 @@ const ProjectCard = ({ project, isHighlighted = false }: Props) => {
   const { attributes, relationships } = project;
 
   const country =
-    countriesByCode && attributes.tenant_country_alpha2
-      ? countriesByCode[attributes.tenant_country_alpha2]
+    countriesByCode && attributes.tenant_country_code
+      ? countriesByCode[attributes.tenant_country_code]
       : null;
 
   const phaseIds = relationships.phases.data.map(({ id }) => id);

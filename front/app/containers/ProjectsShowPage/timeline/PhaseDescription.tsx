@@ -17,6 +17,7 @@ import useLocalize from 'hooks/useLocalize';
 
 import EventPreviews from 'components/EventPreviews';
 import ReadMoreWrapper from 'components/ReadMoreWrapper/ReadMoreWrapper';
+import T from 'components/T';
 import FileAttachments from 'components/UI/FileAttachments';
 
 import { pastPresentOrFuture } from 'utils/dateUtils';
@@ -108,7 +109,12 @@ const PhaseDescription = ({ projectId, selectedPhaseId }: Props) => {
             contentId="phase-description"
             // TODO: Fix this the next time the file is edited.
             // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-            value={phase.data.attributes?.description_multiloc}
+            content={
+              <T
+                value={phase.data.attributes?.description_multiloc}
+                supportHtml
+              />
+            }
           />
 
           {!isNilOrError(phaseFiles) && !isEmpty(phaseFiles) && (

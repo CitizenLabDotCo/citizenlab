@@ -425,6 +425,7 @@ resource 'Idea Custom Fields' do
               enabled: true,
               linear_scale_label_1_multiloc: { 'en' => 'Closest' },
               linear_scale_label_11_multiloc: { 'en' => 'Furthest' },
+              maximum: 11,
               matrix_statements: [
                 {
                   title_multiloc: { en: 'Statement 1' }
@@ -468,7 +469,7 @@ resource 'Idea Custom Fields' do
             linear_scale_label_9_multiloc: {},
             linear_scale_label_10_multiloc: {},
             linear_scale_label_11_multiloc: { en: 'Furthest' },
-            maximum: nil
+            maximum: 11
           },
           id: an_instance_of(String),
           type: 'custom_field',
