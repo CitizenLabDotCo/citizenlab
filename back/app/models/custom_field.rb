@@ -242,7 +242,7 @@ class CustomField < ApplicationRecord
   end
 
   def domicile?
-    key == 'domicile' && code == 'domicile'
+    (key == 'domicile' && code == 'domicile') || key == 'u_domicile'
   end
 
   def file_upload?
@@ -251,6 +251,10 @@ class CustomField < ApplicationRecord
 
   def page?
     input_type == 'page'
+  end
+
+  def form_end_page?
+    page? && key == 'form_end'
   end
 
   def multiselect?
