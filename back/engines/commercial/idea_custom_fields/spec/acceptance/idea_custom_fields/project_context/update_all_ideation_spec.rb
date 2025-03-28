@@ -32,7 +32,7 @@ resource 'Idea Custom Fields' do
     let(:default_fields_param) do
       attributes = %i[id code input_type title_multiloc description_multiloc required enabled page_layout]
       # Remove the form_end. We will add that manually in the tests
-      IdeaCustomFieldsService.new(custom_form).all_fields.reject { |field| field.form_end_page? }.map do |field|
+      IdeaCustomFieldsService.new(custom_form).all_fields.reject(&:form_end_page?).map do |field|
         {}.tap do |field_param|
           attributes.each do |attribute|
             field_param[attribute] = field.send attribute
