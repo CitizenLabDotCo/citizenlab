@@ -294,5 +294,18 @@ RSpec.describe ReportBuilder::Queries::Visitors do
         compare_avg_pages_visited: 6 / 3,
       })
     end
+
+    it 'works if everything is nil' do
+      start_at = Date.new(2023, 10, 1)
+      end_at = Date.new(2023, 11, 1)
+
+      expect(query.run_query_untransformed(start_at, end_at)).to eq({
+        time_series: [],
+        visits_total: 0,
+        visitors_total: 0,
+        avg_seconds_on_page: 0,
+        avg_pages_visited: 0
+      })
+    end
   end
 end

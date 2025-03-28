@@ -187,12 +187,16 @@ module ReportBuilder
       )
 
       aggregations = seconds_on_page_query.to_a[0]
-      avg_seconds_on_page = aggregations["sum"] / aggregations["count"]
+
+      secs_sum = aggregations["sum"] || 0
+      secs_count = aggregations["count"] || 0
+      avg_seconds_on_page = secs_count == 0 ? 0 : secs_sum / secs_count
 
       # Avg pages visited per sessions
       # Or, if project filter is applied:
       # Avg pages visited per session where someone visited the project during the session
-      avg_pages_visited = pageviews.count / visits_total
+      page_count = pageviews.count || 0
+      avg_pages_visited = visits_total == 0 ? 0 : pageviews.count / visits_total
 
       {
         visits_total: visits_total,
