@@ -1,5 +1,28 @@
 module ReportBuilder
   class Queries::Visitors < ReportBuilder::Queries::Base
+    def transform_response(untransformed_response)
+      time_series = untransformed_response[:time_series].map do |row|
+        {
+          'count' => row[:visits],
+          'count_monthly_user_hash' => row[:visitors],
+          'dimension_date_created.month' => row[:date_group].strftime('%Y-%m'),
+          'first_dimension_date_created_date' => row[:date_group]
+        }
+      end
+
+      totals = [{
+        'count' => untransformed_response[:visits_total],
+        'count_monthly_user_hash' => untransformed_response[:visitors_total]
+      }]
+
+      averages = [{
+        'avg_duration' => untransformed_response[:avg_seconds_on_page],
+        'avg_pages_visited' => untransformed_response[:avg_pages_visited]
+      }]
+
+      [time_series, totals, averages]
+    end
+
     def run_query_untransformed(
       start_at, 
       end_at,
