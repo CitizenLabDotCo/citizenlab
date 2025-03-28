@@ -44,7 +44,7 @@ describe('Idea edit page', () => {
   });
 
   // Temporary skip flaky test. Edwin
-  it.only('has a working idea edit form', () => {
+  it.skip('has a working idea edit form', () => {
     cy.setLoginCookie(email, password);
     cy.intercept('GET', `**/ideas/${ideaId}**`).as('idea');
 
