@@ -5,11 +5,41 @@ namespace :migrate_custom_forms do
     Tenant.safe_switch_each do |tenant|
       CustomForm.all.each do |form|
 
+        # Tests:
+        # page-title-body-page -> page-title-page-body-page
+        # page-title-body-page-extra-page -> page-title-page-body-page-extra-page
+        # page-title-page-body-page -> page-title-page-body-page
+        # page-body-title-page -> page-body-page-title-page
+        # page-body-page-title-page -> page-body-page-title-page
+        # page-extra-title-extra-body-extra-page -> page-extra-page-title-page-extra-page-body-page-extra-page
+        # page-title-extra-body-extra-page -> page-title-page-extra-page-body-page-extra-page
+        # page-extra-title-body-page -> page-extra-page-title-page-body-page
+
+
+
+
+        # If we have a real title page with first the body field then the title field,
+        # we need to move the title page after the body field (in this case, before the
+        # title field), to avoid creating an extra page in front of the body page.
+        fields_per_page, title_page, body_page = rake_20250326_group_field_by_page(form.custom_fields)
+        if title_page == body_page && title_page.code == 'title_page'
+          title_field = fields_per_page[title_page].find { |field| field.code == 'title_multiloc' }
+          body_field = fields_per_page[title_page].find { |field| field.code == 'body_multiloc' }
+          if title_field.ordering > body_field.ordering
+            # We can just move the title page if it's right before the body field,
+            # because we will add a body page in front of the body field later.
+            prev_ordering = rake_20250326_reorder_and_report_page(title_page, title_field.ordering, reporter)
+            if title_page.ordering != (body_field.ordering - 1)
+              rake_20250326_create_and_report_page(rake_20250326_new_normal_page, prev_ordering, reporter, 'add_body_page')
+            end
+          end
+        end
+
         # Add the body page
           # Before the body field, if there previous field is not a page.
           # If the previous field is a page:
             # Turn the page into the body page if its a normal page.
-            # Otherwise, insert the body page after the page.
+            # Otherwise, insert the body page before the body field.
 
         # Add a page after the body field, if the next field is not a page
 
@@ -24,7 +54,7 @@ namespace :migrate_custom_forms do
           if real_title_page
             # Move the existing title page to right before the title field and replace it by a normal page.
             prev_ordering = rake_20250326_reorder_and_report_page(real_title_page, title_field.ordering, reporter)
-            rake_20250326_create_and_report_page(rake_20250326_new_normal_page, prev_ordering, reporter, migration)
+            rake_20250326_create_and_report_page(rake_20250326_new_normal_page, prev_ordering, reporter, 'add_title_page')
           else
             # Create a new title page right before the title field, if it doesn't exist yet.
             rake_20250326_create_and_report_page(rake_20250326_new_title_page, title_field.ordering, reporter, 'add_title_page')
@@ -38,36 +68,8 @@ namespace :migrate_custom_forms do
           title_field = fields_per_page[title_page].find { |field| field.code == 'title_multiloc' }
           next if !title_field
 
-          rake_20250326_create_and_report_page(rake_20250326_new_normal_page, (title_field.ordering + 1), reporter, migration)
+          rake_20250326_create_and_report_page(rake_20250326_new_normal_page, (title_field.ordering + 1), reporter, 'add_title_page')
         end
-
-        fields_per_page, _, body_page = rake_20250326_group_field_by_page(form.custom_fields)
-
-        # # If the body page is not right before the body field, we need to either move or create it.
-        # if body_page && fields_per_page[body_page].first&.code != 'body_multiloc'
-        #   body_field = fields_per_page[body_page].find { |field| field.code == 'body_multiloc' }
-        #   next if !body_field
-
-        #   real_body_page = form.custom_fields.find_by(code: 'body_page')
-        #   if real_body_page
-        #     # Move the existing body page to right before the body field and replace it by a normal page.
-        #     prev_ordering = rake_20250326_reorder_and_report_page(real_body_page, body_field.ordering, reporter)
-        #     rake_20250326_create_and_report_page(rake_20250326_new_normal_page, prev_ordering, reporter, migration)
-        #   else
-        #     # Create a new body page right before the body field, if it doesn't exist yet.
-        #     rake_20250326_create_and_report_page(rake_20250326_new_body_page, body_field.ordering, reporter, 'add_body_page')
-        #   end
-        # end
-
-        # fields_per_page, _, body_page = rake_20250326_group_field_by_page(form.custom_fields)
-
-        # # If the body field is not the last field of the body page, start a new page after it.
-        # if body_page && fields_per_page[body_page].last&.code != 'body_multiloc'
-        #   body_field = fields_per_page[body_page].find { |field| field.code == 'body_multiloc' }
-        #   next if !body_field
-
-        #   rake_20250326_create_and_report_page(rake_20250326_new_normal_page, (body_field.ordering + 1), reporter, migration)
-        # end
       end
       reporter.add_processed_tenant(tenant)
     end
