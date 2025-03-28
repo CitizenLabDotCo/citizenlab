@@ -5,7 +5,7 @@ require 'rails_helper'
 RSpec.describe ReportBuilder::Queries::Visitors do
   subject(:query) { described_class.new(build(:user)) }
 
-  describe '#run_query' do
+  describe '#run_query_untransformed' do
     before_all do
       ### SEPTEMBER
       september = Date.new(2022, 9, 10)
@@ -53,7 +53,7 @@ RSpec.describe ReportBuilder::Queries::Visitors do
       start_at = Date.new(2022, 8, 1)
       end_at = Date.new(2022, 11, 1)
 
-      expect(query.run_query(start_at, end_at)).to eq({
+      expect(query.run_query_untransformed(start_at, end_at)).to eq({
         time_series: [
           {
             :visits => 3,
@@ -77,7 +77,7 @@ RSpec.describe ReportBuilder::Queries::Visitors do
       start_at = Date.new(2022, 8, 1)
       end_at = Date.new(2022, 10, 1)
 
-      expect(query.run_query(start_at, end_at)).to eq({
+      expect(query.run_query_untransformed(start_at, end_at)).to eq({
         time_series: [
           {
             :visits => 3,
@@ -96,7 +96,7 @@ RSpec.describe ReportBuilder::Queries::Visitors do
       start_at = Date.new(2022, 8, 1)
       end_at = Date.new(2022, 11, 1)
 
-      expect(query.run_query(start_at, end_at, resolution: 'week')[:time_series]).to eq([
+      expect(query.run_query_untransformed(start_at, end_at, resolution: 'week')[:time_series]).to eq([
         {
           :visits => 3,
           :visitors => 2,
@@ -119,7 +119,7 @@ RSpec.describe ReportBuilder::Queries::Visitors do
       start_at = Date.new(2022, 8, 1)
       end_at = Date.new(2022, 11, 1)
 
-      expect(query.run_query(start_at, end_at, resolution: 'day')[:time_series]).to eq([
+      expect(query.run_query_untransformed(start_at, end_at, resolution: 'day')[:time_series]).to eq([
         {
           :visits => 3,
           :visitors => 2,
@@ -142,7 +142,7 @@ RSpec.describe ReportBuilder::Queries::Visitors do
       start_at = Date.new(2022, 8, 1)
       end_at = Date.new(2022, 11, 1)
 
-      expect(query.run_query(start_at, end_at, project_id: @project_id)).to eq({
+      expect(query.run_query_untransformed(start_at, end_at, project_id: @project_id)).to eq({
         time_series: [
           {
             :visits => 2,
@@ -163,7 +163,7 @@ RSpec.describe ReportBuilder::Queries::Visitors do
       compare_start_at = Date.new(2022, 9, 1)
       compare_end_at = Date.new(2022, 10, 1)
 
-      expect(query.run_query(
+      expect(query.run_query_untransformed(
         start_at, 
         end_at, 
         compare_start_at: compare_start_at,

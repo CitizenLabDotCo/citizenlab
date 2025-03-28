@@ -1,6 +1,6 @@
 module ReportBuilder
   class Queries::Visitors < ReportBuilder::Queries::Base
-    def run_query(
+    def run_query_untransformed(
       start_at, 
       end_at,
       resolution: 'month',
