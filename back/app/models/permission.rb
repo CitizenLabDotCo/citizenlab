@@ -97,6 +97,10 @@ class Permission < ApplicationRecord
     false
   end
 
+  def permitted_by_everyone?
+    permitted_by == 'everyone'
+  end
+
   private
 
   def set_permitted_by_and_global_custom_fields

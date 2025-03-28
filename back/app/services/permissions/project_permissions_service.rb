@@ -10,11 +10,11 @@ module Permissions
     # is complex, could be slow, and in some cases impossible.
     FIXABLE_DENIED_REASONS = %w[user_not_signed_in user_not_active user_not_verified user_missing_requirements].freeze
 
-    def initialize(project, user, user_requirements_service: nil)
+    def initialize(project, user, user_requirements_service: nil, request: nil)
       @timeline_service = TimelineService.new
       phase = @timeline_service.current_phase_not_archived project
       phase.project = project if phase # Performance optimization (keep preloaded relationships)
-      super(phase, user, user_requirements_service: user_requirements_service)
+      super(phase, user, user_requirements_service: user_requirements_service, request: request)
       @project ||= project
     end
 

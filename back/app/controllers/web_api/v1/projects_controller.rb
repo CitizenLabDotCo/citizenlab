@@ -326,9 +326,12 @@ class WebApi::V1::ProjectsController < ApplicationController
     project = project_id.present? ? Project.find(project_id) : create_community_monitor_project(settings)
 
     authorize project
+
+    # TODO: JS: do we need request on all endpoints or only this one?
+
     render json: WebApi::V1::ProjectSerializer.new(
       project,
-      params: jsonapi_serializer_params,
+      params: jsonapi_serializer_params.merge(request: request),
       include: %i[current_phase]
     ).serializable_hash
   end
