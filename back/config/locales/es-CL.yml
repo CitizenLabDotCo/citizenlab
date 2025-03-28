@@ -215,8 +215,8 @@ es-CL:
       labels:
         label_1: Muy deficiente
         label_2: Pobre
-        label_3: Feria
-        label_4: Bien
+        label_3: Justo/a
+        label_4: Bueno/a
         label_5: Excelente
       form_end:
         button_text: Volver al inicio
