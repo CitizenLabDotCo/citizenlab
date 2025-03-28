@@ -241,6 +241,24 @@ class CustomField < ApplicationRecord
     required
   end
 
+  def visible_to_public?
+    answer_visible_to == VISIBLE_TO_PUBLIC
+  end
+
+  def submittable?
+    !page?
+  end
+
+  def printable?
+    ignore_field_types = %w[page date files image_files point file_upload shapefile_upload topic_ids cosponsor_ids ranking matrix_linear_scale]
+    ignore_field_types.exclude? input_type
+  end
+
+  def importable?
+    ignore_field_types = %w[page date files image_files file_upload shapefile_upload point line polygon cosponsor_ids ranking matrix_linear_scale]
+    ignore_field_types.exclude? input_type
+  end
+
   def domicile?
     key == 'domicile' && code == 'domicile'
   end
@@ -251,6 +269,10 @@ class CustomField < ApplicationRecord
 
   def page?
     input_type == 'page'
+  end
+
+  def form_end_page?
+    page? && key == 'form_end'
   end
 
   def multiselect?
