@@ -28,8 +28,8 @@ RSpec.describe ReportBuilder::Queries::Visitors do
       
       session3 = create(:session, monthly_user_hash: 'hash2', created_at: september)
       create(:pageview, session_id: session3.id, path: '/en/', created_at: DateTime.new(2022, 9, 10, 12, 0, 0))
-      create(:pageview, session_id: session3.id, path: '/en/ideas', created_at: DateTime.new(2022, 9, 10, 12, 2, 0))
-      create(:pageview, session_id: session3.id, path: project_path, project_id: @project_id, created_at: DateTime.new(2022, 9, 10, 12, 4, 0))
+      create(:pageview, session_id: session3.id, path: project_path, project_id: @project_id, created_at: DateTime.new(2022, 9, 10, 12, 2, 0))
+      create(:pageview, session_id: session3.id, path: '/en/ideas', created_at: DateTime.new(2022, 9, 10, 12, 4, 0))
 
       # Create sessions october
       session4 = create(:session, monthly_user_hash: 'hash3', created_at: Date.new(2022, 10, 2))

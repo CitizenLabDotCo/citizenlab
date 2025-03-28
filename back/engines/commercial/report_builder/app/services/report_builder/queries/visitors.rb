@@ -26,7 +26,7 @@ module ReportBuilder
           }
         end
 
-      stats = calculate_stats(sessions)
+      stats = calculate_stats(sessions, project_id)
 
       response = {
         time_series: time_series,
@@ -38,7 +38,7 @@ module ReportBuilder
         compare_sessions = ImpactTracking::Session.where(created_at: compare_start_at..compare_end_at)
         compare_sessions = apply_project_filter_if_needed(compare_sessions, project_id)
 
-        compare_stats = calculate_stats(compare_sessions)
+        compare_stats = calculate_stats(compare_sessions, project_id)
 
         response = {
           **response,
@@ -61,7 +61,7 @@ module ReportBuilder
       sessions
     end
 
-    def calculate_stats(sessions)
+    def calculate_stats(sessions, project_id)
       # Total number of visits and visitors
       visits_total = sessions.count
       visitors_total = sessions.distinct.pluck(:monthly_user_hash).count
@@ -70,15 +70,35 @@ module ReportBuilder
       pageviews = ImpactTracking::Pageview.where(session_id: sessions.select(:id))
 
       # Avg seconds on page
+
+      # Here we need to apply the project filter too on the subquery.
+      # We already sort of applied this filter above.
+      # However, with just that step, we're saying 
+      # "give me the average time spent per page during sessions where someone visited the project"
+      # while what we probably want is
+      # "give me the average time spent on project page"
+      # So we need to apply the filter again here. Which is kind of a pain with all the subqueries.
+      additional_select_statement = ""
+
+      if project_id.present?
+        additional_select_statement = ", project_id"
+      end
+
       seconds_on_page_subqery = pageviews
         .select(
           <<-SQL.squish
             extract(epoch from
               (lead(created_at,1) over (partition by session_id order by created_at)) - created_at
-            ) as seconds_on_page
+            ) as seconds_on_page #{additional_select_statement}
           SQL
         )
         .to_sql
+
+      additional_where_clause = ""
+
+      if project_id.present?
+        additional_where_clause = "and project_id = '#{project_id}'"
+      end
 
       seconds_on_page_query = ActiveRecord::Base.connection.execute(
         <<-SQL.squish
@@ -86,7 +106,7 @@ module ReportBuilder
             count(subquery.seconds_on_page) as count,
             sum(subquery.seconds_on_page) as sum
           from (#{seconds_on_page_subqery}) as subquery
-          where subquery.seconds_on_page is not null
+          where subquery.seconds_on_page is not null #{additional_where_clause}
         SQL
       )
 
