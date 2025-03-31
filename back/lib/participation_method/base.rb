@@ -114,11 +114,15 @@ module ParticipationMethod
       true
     end
 
-    def supports_multiple_posts?
-      true
+    def allow_posting_again_after
+      0.seconds
     end
 
     def supports_permitted_by_everyone?
+      false
+    end
+
+    def supports_everyone_tracking?
       false
     end
 

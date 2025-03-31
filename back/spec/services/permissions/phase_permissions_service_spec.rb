@@ -49,4 +49,15 @@ describe Permissions::PhasePermissionsService do
       end
     end
   end
+
+  # context '"posting_idea" denied_reason_for_action' do
+  #   context 'community monitor project with anyone permissions' do
+  #     let(:phase) { create(:community_monitor_survey_phase) }
+  #     let(:project) { phase.project }
+  #
+  #     it 'returns nil when no ideas yet posted' do
+  #       expect(service.denied_reason_for_action('posting_idea')).to eq nil
+  #     end
+  #   end
+  # end
 end
