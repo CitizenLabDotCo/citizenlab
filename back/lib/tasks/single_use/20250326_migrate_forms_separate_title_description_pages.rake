@@ -12,20 +12,6 @@ namespace :migrate_custom_forms do
       end
 
       CustomForm.all.each do |form|
-
-        # Tests:
-        # page-title-body-page -> page-title-page-body-page
-        # page-title-body-page-extra-page -> page-title-page-body-page-extra-page
-        # page-title-page-body-page -> page-title-page-body-page
-        # page-body-title-page -> page-body-page-title-page
-        # page-body-page-title-page -> page-body-page-title-page
-        # page-extra-title-extra-body-extra-page -> page-extra-page-title-page-extra-page-body-page-extra-page
-        # page-title-extra-body-extra-page -> page-title-page-extra-page-body-page-extra-page
-        # page-extra-title-body-page -> page-extra-page-title-page-body-page
-
-
-
-
         # If we have a real title page with first the body field then the title field,
         # we need to move the title page after the body field (in this case, before the
         # title field), to avoid creating an extra page in front of the body page.
@@ -56,7 +42,7 @@ namespace :migrate_custom_forms do
           end
 
           if !form.custom_fields.exists?(input_type: 'page', code: 'body_page') # If the previous field wasn't a normal page turned into the body page, and for idempotency.
-            rake_20250326_create_and_report_page(rake_20250326_new_body_page(form), body_page.ordering, reporter, 'add_body_page')
+            rake_20250326_create_and_report_page(rake_20250326_new_body_page(form), body_field.ordering, reporter, 'add_body_page')
           end
 
           # If the body field is not the last field of the body page, start a new page after it.
@@ -66,7 +52,7 @@ namespace :migrate_custom_forms do
         end
 
         # If the title page is not right before the title field, we need to either move or create it.
-        fields_per_page, title_page, = rake_20250326_group_field_by_page(form.custom_fields)
+        fields_per_page, title_page, = rake_20250326_group_field_by_page(form.reload.custom_fields)
         if title_page && fields_per_page[title_page].first&.code != 'title_multiloc'
           title_field = fields_per_page[title_page].find { |field| field.code == 'title_multiloc' }
           next if !title_field # This should not be possible, but just in case.
@@ -83,7 +69,7 @@ namespace :migrate_custom_forms do
         end
 
         # If the title field is not the last field of the title page, start a new page after it.
-        fields_per_page, title_page, = rake_20250326_group_field_by_page(form.custom_fields)
+        fields_per_page, title_page, = rake_20250326_group_field_by_page(form.reload.custom_fields)
         if title_page && fields_per_page[title_page].last&.code != 'title_multiloc'
           title_field = fields_per_page[title_page].find { |field| field.code == 'title_multiloc' }
           next if !title_field # This should not be possible, but just in case.
@@ -100,7 +86,7 @@ end
 def rake_20250326_group_field_by_page(custom_fields)
   title_page = nil
   body_page = nil
-  fields_per_page = Hash.new([])
+  fields_per_page = {}
   prev_page = nil
   custom_fields.each do |field|
     if field.page?
@@ -108,6 +94,7 @@ def rake_20250326_group_field_by_page(custom_fields)
 
       prev_page = field
     else
+      fields_per_page[prev_page] ||= []
       fields_per_page[prev_page] << field
 
       if field.code == 'title_multiloc'
@@ -138,7 +125,7 @@ def rake_20250326_new_title_page(form)
     key: nil,
     title_multiloc: {},
     description_multiloc: begin
-    MultilocService.new.i18n_to_multiloc(
+      MultilocService.new.i18n_to_multiloc(
         'custom_fields.ideas.title_page.description',
         locales: CL2_SUPPORTED_LOCALES
       )
@@ -155,12 +142,12 @@ def rake_20250326_new_body_page(form)
     page_layout: 'default',
     code: 'body_page',
     key: nil,
-    title_multiloc: multiloc_service.i18n_to_multiloc(
+    title_multiloc: MultilocService.new.i18n_to_multiloc(
       'custom_fields.ideas.body_page.title',
       locales: CL2_SUPPORTED_LOCALES
     ),
     description_multiloc: begin
-      multiloc_service.i18n_to_multiloc(
+      MultilocService.new.i18n_to_multiloc(
         'custom_fields.ideas.body_page.description',
         locales: CL2_SUPPORTED_LOCALES
       )
@@ -200,14 +187,14 @@ def rake_20250326_turn_into_body_and_report_page(page, reporter, migration)
     description_multiloc: page.description_multiloc
   }
   if page.title_multiloc.blank?
-    attrs_after[:title_multiloc] = multiloc_service.i18n_to_multiloc(
+    attrs_after[:title_multiloc] = MultilocService.new.i18n_to_multiloc(
       'custom_fields.ideas.body_page.title',
       locales: CL2_SUPPORTED_LOCALES
     )
   end
   if page.body_multiloc.blank?
     attrs_after[:description_multiloc] = begin
-      multiloc_service.i18n_to_multiloc(
+      MultilocService.new.i18n_to_multiloc(
         'custom_fields.ideas.body_page.description',
         locales: CL2_SUPPORTED_LOCALES
       )
