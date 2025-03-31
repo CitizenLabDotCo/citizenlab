@@ -46,29 +46,32 @@ namespace :migrate_custom_forms do
           end
 
           # If the body field is not the last field of the body page, start a new page after it.
-          if fields_per_page[body_page].last&.code != 'body_multiloc'
-            rake_20250326_create_and_report_page(rake_20250326_new_normal_page(form), (body_field.ordering + 1), reporter, 'add_body_page')
+          if fields_per_page[body_page].last&.code != 'body_multiloc' && fields_per_page[body_page].second&.code != 'title_multiloc'
+            rake_20250326_create_and_report_page(rake_20250326_new_normal_page(form), (body_field.reload.ordering + 1), reporter, 'add_body_page')
           end
         end
 
         # If the title page is not right before the title field, we need to either move or create it.
         fields_per_page, title_page, = rake_20250326_group_field_by_page(form.reload.custom_fields)
+        real_title_page = form.custom_fields.find_by(code: 'title_page')
         if title_page
-          if title_page.code != 'title_page' && fields_per_page[title_page].first&.code == 'title_multiloc'
-            rake_20250326_turn_into_title_and_report_page(title_page, reporter, 'add_title_page')
-          elsif fields_per_page[title_page].first&.code != 'title_multiloc'
-            title_field = fields_per_page[title_page].find { |field| field.code == 'title_multiloc' }
-            next if !title_field # This should not be possible, but just in case.
+          title_field = fields_per_page[title_page].find { |field| field.code == 'title_multiloc' }
+          next if !title_field # This should not be possible, but just in case.
 
-            real_title_page = form.custom_fields.find_by(code: 'title_page')
-            if real_title_page
-              # Move the existing title page to right before the title field and replace it by a normal page.
+          if real_title_page
+            if fields_per_page[title_page].first&.code != 'title_multiloc'
+              # Move the existing title page to right before the title field and replace it by a normal page, if the next field is not a page.
+              next_real_title_page_field = form.custom_fields.find_by(ordering: (real_title_page.ordering + 1))
               prev_ordering = rake_20250326_reorder_and_report_page(real_title_page, title_field.ordering, reporter)
-              rake_20250326_create_and_report_page(rake_20250326_new_normal_page(form), prev_ordering, reporter, 'add_title_page')
-            else
-              # Create a new title page right before the title field, if it doesn't exist yet.
-              rake_20250326_create_and_report_page(rake_20250326_new_title_page(form), title_field.ordering, reporter, 'add_title_page')
+              if !next_real_title_page_field.page?
+                rake_20250326_create_and_report_page(rake_20250326_new_normal_page(form), prev_ordering, reporter, 'add_title_page')
+              end
             end
+          elsif fields_per_page[title_page].first&.code == 'title_multiloc'
+            rake_20250326_turn_into_title_and_report_page(title_page, reporter, 'add_title_page')
+          else
+            # Create a new title page right before the title field, if it doesn't exist yet.
+            rake_20250326_create_and_report_page(rake_20250326_new_title_page(form), title_field.ordering, reporter, 'add_title_page')
           end
         end
 
@@ -172,7 +175,7 @@ def rake_20250326_create_and_report_page(page, ordering, reporter, migration)
   else
     reporter.add_error(
       page.errors.details,
-      context: { tenant: Tenant.current.host, form: form.id, migration: migration }
+      context: { tenant: Tenant.current.host, form: page.custom_form.id, migration: migration }
     )
   end
 end
@@ -216,7 +219,7 @@ def rake_20250326_turn_into_title_and_report_page(page, reporter, migration)
   else
     reporter.add_error(
       page.errors.details,
-      context: { tenant: Tenant.current.host, form: form.id, migration: migration }
+      context: { tenant: Tenant.current.host, form: page.custom_form.id, migration: migration }
     )
   end
 end
@@ -260,13 +263,14 @@ def rake_20250326_turn_into_body_and_report_page(page, reporter, migration)
   else
     reporter.add_error(
       page.errors.details,
-      context: { tenant: Tenant.current.host, form: form.id, migration: migration }
+      context: { tenant: Tenant.current.host, form: page.custom_form.id, migration: migration }
     )
   end
 end
 
 def rake_20250326_reorder_and_report_page(page, new_ordering, reporter)
   prev_ordering = page.ordering
+  new_ordering -= 1 if prev_ordering < new_ordering
   page.insert_at(new_ordering)
   reporter.add_change(
     { ordering: prev_ordering },
