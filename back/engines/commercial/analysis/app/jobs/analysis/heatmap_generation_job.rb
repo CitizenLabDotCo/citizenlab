@@ -24,8 +24,15 @@ module Analysis
         analysis.heatmap_cells.destroy_all
         # generator = HeatmapGenerator.new(analysis)
         generator = AutoInsightsService.new(analysis)
-        HeatmapCell::UNIT_TYPES.each do |unit|
-          generator.generate(unit:)
+        pmethod = analysis.participation_context.pmethod
+
+        generator.generate(unit: 'inputs')
+        if pmethod.supports_reacting?
+          generator.generate(unit: 'likes')
+          generator.generate(unit: 'dislikes')
+        end
+        if pmethod.supports_public_visibility?
+          generator.generate(unit: 'participants')
         end
 
         LogActivityJob.perform_later(

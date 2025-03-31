@@ -184,7 +184,12 @@ module Analysis
 
     def custom_field_bins(custom_field)
       CustomFieldBin.find_bin_claz_for(custom_field)&.generate_bins(custom_field)
-      custom_field.custom_field_bins.includes(:custom_field)
+      bins = custom_field.custom_field_bins.includes(:custom_field)
+      ActiveRecord::Associations::Preloader.new(
+        records: bins.filter { |bin| bin.is_a?(CustomFieldBins::OptionBin) },
+        associations: { custom_field_option: [:area] }
+      ).call
+      bins
     end
 
     # Nested hash to quickly check whether a certain input has a certain tag.
