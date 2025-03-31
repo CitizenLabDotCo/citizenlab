@@ -27,6 +27,10 @@ class PhasePolicy < ApplicationPolicy
     active_moderator?
   end
 
+  def sentiment_by_quarter?
+    active_moderator?
+  end
+
   def submission_count?
     show?
   end
