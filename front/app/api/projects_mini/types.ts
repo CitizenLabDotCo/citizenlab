@@ -29,16 +29,11 @@ type Areas = {
   areas?: string[];
 } & PageNumbers;
 
-type Filters = {
-  endpoint: 'for_filters';
-} & PageNumbers;
-
 export type Parameters =
   | ActiveParticipatoryPhase
   | FollowedItem
   | FinishedOrArchived
-  | Areas
-  | Filters;
+  | Areas;
 
 export type MiniProjectsKeys = Keys<typeof miniProjectsKeys>;
 
