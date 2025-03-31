@@ -12,6 +12,13 @@ RSpec.describe ReportBuilder::Report do
     expect(report.errors[:phase_id]).to include('has already been taken')
   end
 
+  it 'can be associated to the same phase as another report for a community monitor phase' do
+    phase = create(:community_monitor_survey_phase)
+    other_report = create(:report, phase: phase)
+    report.phase = other_report.phase
+    expect(report).to be_valid
+  end
+
   it 'can be visible only if associated to a phase' do
     report.phase_id = nil
     report.visible = true

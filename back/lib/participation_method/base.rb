@@ -182,6 +182,10 @@ module ParticipationMethod
       false
     end
 
+    def supports_multiple_phase_reports?
+      false
+    end
+
     private
 
     attr_reader :phase
