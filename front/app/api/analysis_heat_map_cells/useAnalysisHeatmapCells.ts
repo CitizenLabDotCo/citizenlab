@@ -45,6 +45,8 @@ const useAnalysisHeatmapCells = (params: IAnalysysHeatmapCellsParams) => {
   >({
     queryKey: analysesKeys.list(params),
     queryFn: () => fetchAnalysisHeatmapCells(params),
+    refetchInterval: 1000 * 60, // 1 minute
+    keepPreviousData: true,
   });
 };
 

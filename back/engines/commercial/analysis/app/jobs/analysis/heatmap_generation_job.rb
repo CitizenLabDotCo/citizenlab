@@ -5,19 +5,48 @@ module Analysis
     self.priority = 45 # Slightly more important than emails (50)
 
     def run(analysis)
-      analysis.heatmap_cells.destroy_all
+      return unless AppConfiguration.instance.feature_activated?('statistical_insights')
 
-      # generator = HeatmapGenerator.new(analysis)
-      generator = AutoInsightsService.new(analysis)
-      pmethod = analysis.participation_context.pmethod
+      inputs_count = analysis.inputs.count
+      participants_service = ParticipantsService.new
+      participants_count = participants_service.project_participants_count(analysis.project)
+      newest_activity = Activity.where(item: analysis, action: 'heatmap_generated')
+        .order(created_at: :desc)
+        .first
+      newest_input_at = analysis.inputs.maximum(:created_at)
 
-      generator.generate(unit: 'inputs')
-      if pmethod.supports_reacting?
-        generator.generate(unit: 'likes')
-        generator.generate(unit: 'dislikes')
-      end
-      if pmethod.supports_public_visibility?
-        generator.generate(unit: 'participants')
+      if participants_count >= 30 &&
+         (newest_activity.nil? ||
+          newest_activity.payload['participants_count'] != participants_count ||
+          newest_activity.payload['inputs_count'] != inputs_count ||
+          newest_activity.payload['newest_input_at'].to_i != newest_input_at.to_i)
+
+        analysis.heatmap_cells.destroy_all
+        # generator = HeatmapGenerator.new(analysis)
+        generator = AutoInsightsService.new(analysis)
+        pmethod = analysis.participation_context.pmethod
+
+        generator.generate(unit: 'inputs')
+        if pmethod.supports_reacting?
+          generator.generate(unit: 'likes')
+          generator.generate(unit: 'dislikes')
+        end
+        if pmethod.supports_public_visibility?
+          generator.generate(unit: 'participants')
+        end
+
+        LogActivityJob.perform_later(
+          analysis,
+          'heatmap_generated',
+          nil,
+          Time.now.to_i,
+          {
+            payload: { inputs_count:,
+                       participants_count:,
+                       newest_input_at: analysis.inputs.maximum(:created_at).to_i },
+            project_id: analysis.source_project.id
+          }
+        )
       end
     end
   end

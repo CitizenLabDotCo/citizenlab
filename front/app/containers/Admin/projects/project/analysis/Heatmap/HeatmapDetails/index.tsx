@@ -17,7 +17,7 @@ import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 
 import { Unit } from 'api/analysis_heat_map_cells/types';
-import useAnalysisHeatmapCells from 'api/analysis_heat_map_cells/useAnalysisHetmapCells';
+import useAnalysisHeatmapCells from 'api/analysis_heat_map_cells/useAnalysisHeatmapCells';
 import useAnalysisTags from 'api/analysis_tags/useAnalysisTags';
 import useCustomFieldBins from 'api/custom_field_bins/useCustomFieldBins';
 import { IUserCustomFields } from 'api/user_custom_fields/types';

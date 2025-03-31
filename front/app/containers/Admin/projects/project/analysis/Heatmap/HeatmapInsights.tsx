@@ -11,7 +11,7 @@ import {
 import { useParams } from 'react-router-dom';
 
 import { Unit } from 'api/analysis_heat_map_cells/types';
-import useAnalysisHeatmapCells from 'api/analysis_heat_map_cells/useAnalysisHetmapCells';
+import useAnalysisHeatmapCells from 'api/analysis_heat_map_cells/useAnalysisHeatmapCells';
 import useCustomFieldBin from 'api/custom_field_bins/useCustomFieldBin';
 
 import useLocalize from 'hooks/useLocalize';
@@ -77,6 +77,27 @@ const HeatMapInsights = ({ onExploreClick }: HeatMapInsightsProps) => {
       return insights[newIndex].id;
     });
   };
+
+  if (analysisHeatmapCells.data.length === 0) {
+    return (
+      <Box display="flex" justifyContent="center">
+        <Button
+          my="12px"
+          buttonStyle="text"
+          icon="eye"
+          size="s"
+          p="0px"
+          onClick={() =>
+            onExploreClick({
+              unit: 'inputs',
+            })
+          }
+        >
+          {formatMessage(messages.viewAllInsights)}
+        </Button>
+      </Box>
+    );
+  }
 
   if (analysisHeatmapCells.data.length === 0) {
     return (
