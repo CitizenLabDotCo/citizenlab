@@ -44,46 +44,56 @@ const CategoryScores = ({ sentimentScores }: Props) => {
           const { currentScore, percentageDifference } =
             getCategoryScoreData(scores);
 
+          const otherCategoryHasScores =
+            category === 'other' && scores.length > 0;
+
+          const showCategory = category !== 'other' || otherCategoryHasScores;
+
           return (
             <Box key={category} mr="28px">
-              {/* Category Label */}
-              <Box display="flex" alignItems="center">
-                <Icon
-                  height="18px"
-                  name="dot"
-                  fill={categoryColors[category]}
-                />
-                <Text m="0px" fontWeight="bold" fontSize="s">
-                  {localizedLabel}
-                </Text>
-              </Box>
+              {showCategory && (
+                <>
+                  <Box display="flex" alignItems="center">
+                    {/* Category Label */}
+                    <Icon
+                      height="18px"
+                      name="dot"
+                      fill={categoryColors[category]}
+                    />
+                    <Text m="0px" fontWeight="bold" fontSize="s">
+                      {localizedLabel}
+                    </Text>
+                  </Box>
+                  <Box my="8px" display="flex" alignItems="center" ml="8px">
+                    {/* Score */}
+                    <Text
+                      m="0px"
+                      fontSize="xl"
+                      fontWeight="bold"
+                      lineHeight="1"
+                      mr="4px"
+                      color={'textPrimary'}
+                    >
+                      {currentScore || '-'}
+                    </Text>
+                    <Text
+                      m="0px"
+                      fontWeight="semi-bold"
+                      fontSize="m"
+                      lineHeight="1"
+                    >
+                      /5
+                    </Text>
+                  </Box>
 
-              {/* Score Display */}
-              <Box my="8px" display="flex" alignItems="center" ml="8px">
-                <Text
-                  m="0px"
-                  fontSize="xl"
-                  fontWeight="bold"
-                  lineHeight="1"
-                  mr="4px"
-                  color={'textPrimary'}
-                >
-                  {currentScore || '-'}
-                </Text>
-                <Text
-                  m="0px"
-                  fontWeight="semi-bold"
-                  fontSize="m"
-                  lineHeight="1"
-                >
-                  /5
-                </Text>
-              </Box>
-
-              {/* Trend Indicator */}
-              <Box ml="12px">
-                <TrendIndicator percentageDifference={percentageDifference} />
-              </Box>
+                  {/* Trend Indicator */}
+                  <Box ml="12px">
+                    <TrendIndicator
+                      percentageDifference={percentageDifference}
+                    />
+                  </Box>
+                </>
+              )}
             </Box>
           );
         }

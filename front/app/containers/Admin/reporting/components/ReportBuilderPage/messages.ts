@@ -38,6 +38,10 @@ export default defineMessages({
     id: 'app.containers.Admin.reporting.components.ReportBuilderPage.platformTemplate',
     defaultMessage: 'Start with a platform template',
   },
+  communityMonitorTemplate: {
+    id: 'app.containers.Admin.reporting.components.ReportBuilderPage.communityMonitorTemplate',
+    defaultMessage: 'Start with a Community Monitor template',
+  },
   shareReportTitle: {
     id: 'app.containers.Admin.reporting.components.ReportBuilderPage.shareReportTitle',
     defaultMessage: 'Share',
@@ -75,5 +79,17 @@ export default defineMessages({
   noProjectSelected: {
     id: 'app.containers.Admin.reporting.components.ReportBuilderPage.noProjectSelected',
     defaultMessage: 'No project selected',
+  },
+  selectYear: {
+    id: 'app.containers.Admin.reporting.components.ReportBuilderPage.selectYear',
+    defaultMessage: 'Select year',
+  },
+  selectQuarter: {
+    id: 'app.containers.Admin.reporting.components.ReportBuilderPage.selectQuarter',
+    defaultMessage: 'Select quarter',
+  },
+  quarter: {
+    id: 'app.containers.Admin.reporting.components.ReportBuilderPage.quarter',
+    defaultMessage: 'Quarter {quarterValue}',
   },
 });

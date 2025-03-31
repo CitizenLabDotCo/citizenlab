@@ -1,6 +1,7 @@
 import React from 'react';
 
 import { Radio, Text } from '@citizenlab/cl2-component-library';
+import { useLocation } from 'react-router-dom';
 
 import useAuthUser from 'api/me/useAuthUser';
 
@@ -13,12 +14,18 @@ import messages from '../messages';
 
 import { Template } from './typings';
 
-const TEMPLATE_TYPES: Template[] = ['blank', 'project', 'platform'];
+const TEMPLATE_TYPES: Template[] = [
+  'blank',
+  'project',
+  'platform',
+  'community-monitor',
+];
 
 const MESSAGES: Record<Template, MessageDescriptor> = {
   blank: messages.blankTemplate,
   project: messages.projectTemplate,
   platform: messages.platformTemplate,
+  'community-monitor': messages.communityMonitorTemplate,
 };
 
 interface Props {
@@ -27,15 +34,33 @@ interface Props {
 }
 
 const RadioButtons = ({ value, onChange }: Props) => {
+  const location = useLocation();
   const { data: user } = useAuthUser();
   const platformTemplatesEnabled = useFeatureFlag({
     name: 'platform_templates',
   });
+  const communityMonitorEnabled = useFeatureFlag({
+    name: 'community_monitor',
+  });
 
-  const templateTypes =
+  let templateTypes =
     isSuperAdmin(user) || (platformTemplatesEnabled && isAdmin(user))
       ? TEMPLATE_TYPES
       : TEMPLATE_TYPES.filter((type) => type !== 'platform');
+
+  templateTypes = templateTypes.filter((type) => {
+    if (type === 'community-monitor') {
+      return communityMonitorEnabled;
+    }
+    return true;
+  });
+
+  if (location.pathname.includes('community-monitor/reports')) {
+    // Only include community monitor template
+    templateTypes = templateTypes.filter(
+      (type) => type === 'community-monitor'
+    );
+  }
 
   return (
     <>

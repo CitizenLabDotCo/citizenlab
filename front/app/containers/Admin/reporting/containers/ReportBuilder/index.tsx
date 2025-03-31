@@ -24,6 +24,7 @@ import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
 
 import Editor from '../../components/ReportBuilder/Editor';
 import Settings from '../../components/ReportBuilder/Settings';
+import CommunityMonitorTemplate from '../../components/ReportBuilder/Templates/CommunityMonitorTemplate';
 import { TemplateContext } from '../../components/ReportBuilder/Templates/context';
 import PhaseTemplate from '../../components/ReportBuilder/Templates/PhaseTemplate';
 import PlatformTemplate from '../../components/ReportBuilder/Templates/PlatformTemplate';
@@ -133,6 +134,12 @@ const ReportBuilder = ({ report, reportLayout, templateConfig }: Props) => {
                 )}
                 <ViewContainer view={view}>
                   <Frame editorData={initialData}>
+                    {templateConfig?.template === 'community-monitor' ? (
+                      <CommunityMonitorTemplate
+                        quarter={templateConfig.quarter}
+                        year={templateConfig.year}
+                      />
+                    ) : null}
                     {emptyReportOnInit &&
                     templateConfig?.template === 'project' ? (
                       <ProjectTemplate
@@ -175,6 +182,8 @@ const ReportBuilderWrapper = () => {
     search.get('startDatePlatformReport')
   );
   const [endDatePlatformReport] = useState(search.get('endDatePlatformReport'));
+  const [templateYear] = useState(search.get('year'));
+  const [templateQuarter] = useState(search.get('quarter'));
 
   useEffect(() => {
     removeSearchParams([
@@ -182,6 +191,8 @@ const ReportBuilderWrapper = () => {
       'templatePhaseId',
       'startDatePlatformReport',
       'endDatePlatformReport',
+      'year',
+      'quarter',
     ]);
   }, []);
 
@@ -197,6 +208,8 @@ const ReportBuilderWrapper = () => {
   const templateConfig = getTemplateConfig({
     templateProjectId,
     templatePhaseId,
+    templateYear,
+    templateQuarter,
     startDatePlatformReport,
     endDatePlatformReport,
   });

@@ -1880,7 +1880,6 @@
   "app.containers.AdminPage.ProjectEdit.survey.file_upload": "ਫਾਈਲ ਅਪਲੋਡ ਕਰੋ",
   "app.containers.AdminPage.ProjectEdit.survey.goBackButtonMessage": "ਵਾਪਸ ਜਾਓ",
   "app.containers.AdminPage.ProjectEdit.survey.importInputs": "ਆਯਾਤ ਕਰੋ",
-  "app.containers.AdminPage.ProjectEdit.survey.informationText3": "ਖੱਬੇ ਸਾਈਡਬਾਰ ਵਿੱਚ AI ਟੈਬ ਤੋਂ ਛੋਟੇ ਅਤੇ ਲੰਬੇ ਜਵਾਬ ਸਵਾਲਾਂ ਦੇ AI ਸੰਖੇਪਾਂ ਤੱਕ ਪਹੁੰਚ ਕੀਤੀ ਜਾ ਸਕਦੀ ਹੈ।",
   "app.containers.AdminPage.ProjectEdit.survey.linear_scale2": "ਰੇਖਿਕ ਪੈਮਾਨਾ",
   "app.containers.AdminPage.ProjectEdit.survey.matrix_linear_scale2": "ਮੈਟ੍ਰਿਕਸ",
   "app.containers.AdminPage.ProjectEdit.survey.multiline_text2": "ਲੰਮਾ ਜਵਾਬ",
