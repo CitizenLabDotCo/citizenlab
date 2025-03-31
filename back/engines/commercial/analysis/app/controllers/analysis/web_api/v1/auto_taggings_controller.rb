@@ -20,7 +20,7 @@ module Analysis
             **auto_tagging_params
           )
           if @auto_tagging_task.save
-            AutoTaggingJob.perform_later(@auto_tagging_task, @analysis)
+            AutoTaggingJob.perform_later(@auto_tagging_task)
             head :accepted
           else
             render json: { errors: @auto_tagging_task.errors.details }, status: :unprocessable_entity

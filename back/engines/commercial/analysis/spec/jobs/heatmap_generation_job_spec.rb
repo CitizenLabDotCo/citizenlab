@@ -57,9 +57,9 @@ RSpec.describe Analysis::HeatmapGenerationJob do
         nil,
         Time.now.to_i,
         {
-          inputs_count: 10,
-          participants_count: 30,
-          newest_input_at: inputs.last.created_at.to_i,
+          payload: { inputs_count: 10,
+                     participants_count: 30,
+                     newest_input_at: inputs.last.created_at.to_i },
           project_id: project.id
         }
       )
