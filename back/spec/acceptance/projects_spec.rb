@@ -1155,6 +1155,24 @@ resource 'Projects' do
         assert_status 200
         expect(json_response[:data].size).to eq @projects.size
       end
+
+      context 'When community monitor project exists' do
+        before { @projects << create(:community_monitor_project) }
+
+        example 'Does not include hidden community monitor project by default', document: false do
+          do_request filter_can_moderate: true, publication_statuses: AdminPublication::PUBLICATION_STATUSES
+          assert_status 200
+          expect(json_response[:data].size).to eq(@projects.size - 1)
+          expect(response_data.map {|d| d.dig(:attributes, :slug)}).not_to include 'community-monitor'
+        end
+
+        example 'Return all projects including hidden community monitor project', document: false do
+          do_request include_hidden: true, filter_can_moderate: true, publication_statuses: AdminPublication::PUBLICATION_STATUSES
+          assert_status 200
+          expect(json_response[:data].size).to eq @projects.size
+          expect(response_data.map {|d| d.dig(:attributes, :slug)}).to include 'community-monitor'
+        end
+      end
     end
 
     context 'when non-moderator/non-admin user' do

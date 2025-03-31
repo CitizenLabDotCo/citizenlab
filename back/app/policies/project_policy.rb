@@ -80,6 +80,10 @@ class ProjectPolicy < ApplicationPolicy
     true
   end
 
+  def index_for_filters?
+    active_moderator?
+  end
+
   def votes_by_user_xlsx?
     index_xlsx?
   end

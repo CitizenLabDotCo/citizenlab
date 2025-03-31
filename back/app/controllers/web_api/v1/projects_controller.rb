@@ -20,6 +20,10 @@ class WebApi::V1::ProjectsController < ApplicationController
     # Using `pluck(:publication_id)` instead of `select(:publication_id)` also helps if used with `includes`,
     # but it doesn't make any difference with `preload`. Still using it in case the query changes.
     @projects = Project.where(id: publications.pluck(:publication_id)).ordered
+
+    # Hidden community monitor project not included by default via AdminPublication policy scope
+    @projects = @projects.or(policy_scope(Project.hidden)) if params[:include_hidden] == 'true'
+
     @projects = paginate @projects
     @projects = @projects.preload(
       :project_images,
@@ -137,6 +141,25 @@ class WebApi::V1::ProjectsController < ApplicationController
     @projects = @projects.includes(:project_images, phases: [:report, { permissions: [:groups] }])
 
     authorize @projects, :index_for_topics?
+
+    base_render_mini_index
+  end
+
+  # For used with project filters used in admin screens. Uses ProjectMiniSerializer.
+  # NOTE: This methods does not using ProjectsFinder as projects must include hidden community_monitor project here
+  def index_for_filters
+    projects = policy_scope(Project)
+
+    # Limit publication statuses
+    projects = projects
+                 .includes(:admin_publication, :phases)
+                 .where(admin_publications: { publication_status: %w[draft published archived] })
+
+    # Only return projects a user can moderate
+    projects = UserRoleService.new.moderatable_projects(current_user, projects)
+
+    projects = paginate projects
+    authorize projects, :index_for_filters?
 
     base_render_mini_index
   end
@@ -318,12 +341,7 @@ class WebApi::V1::ProjectsController < ApplicationController
   end
 
   def community_monitor
-    settings = AppConfiguration.instance.settings
-    settings.dig('community_monitor', 'enabled') || raise(ActiveRecord::RecordNotFound)
-
-    # Find the community monitor project from config or create it
-    project_id = settings.dig('community_monitor', 'project_id')
-    project = project_id.present? ? Project.find(project_id) : create_community_monitor_project(settings)
+    project = CommunityMonitorService.new.find_or_create_project(current_user)
 
     authorize project
     render json: WebApi::V1::ProjectSerializer.new(
@@ -390,52 +408,6 @@ class WebApi::V1::ProjectsController < ApplicationController
       }),
       include: %i[project_images current_phase]
     )
-  end
-
-  def create_community_monitor_project(settings)
-    raise ActiveRecord::RecordNotFound unless current_user&.admin? # Only allow project to be created if an admin hits this endpoint
-
-    # Check first if the project exists but has not been added to settings (eg when creating platform from template)
-    project = Project.find_by(internal_role: 'community_monitor', hidden: true)
-
-    unless project
-      ActiveRecord::Base.transaction do
-        # Create the hidden project and phase
-        multiloc_service = MultilocService.new
-        project = Project.create!(
-          hidden: true,
-          title_multiloc: multiloc_service.i18n_to_multiloc('phases.community_monitor_title'),
-          internal_role: 'community_monitor'
-        )
-
-        sidefx.after_create(project, current_user) if project
-
-        phase = Phase.create!(
-          title_multiloc: multiloc_service.i18n_to_multiloc('phases.community_monitor_title'),
-          project: project,
-          participation_method: 'community_monitor_survey',
-          submission_enabled: false,
-          commenting_enabled: false,
-          reacting_enabled: false,
-          start_at: Time.now,
-          campaigns_settings: { project_phase_started: true },
-          native_survey_title_multiloc: multiloc_service.i18n_to_multiloc('phases.community_monitor_title'),
-          native_survey_button_multiloc: multiloc_service.i18n_to_multiloc('phases.native_survey_button')
-        )
-
-        # Create an everyone permission by default
-        Permission.create!(action: 'posting_idea', permission_scope: phase, permitted_by: 'everyone')
-
-        # Persist the form
-        phase.pmethod.create_default_form!
-      end
-    end
-
-    # Set the ID in the settings
-    settings['community_monitor']['project_id'] = project.id
-    AppConfiguration.instance.update!(settings: settings)
-
-    project
   end
 end
 
