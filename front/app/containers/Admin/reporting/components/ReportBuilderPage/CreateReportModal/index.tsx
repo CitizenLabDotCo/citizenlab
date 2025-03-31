@@ -11,6 +11,7 @@ import {
 } from '@citizenlab/cl2-component-library';
 import { IOption } from 'typings';
 
+import useCommunityMonitorProject from 'api/community_monitor/useCommunityMonitorProject';
 import useAddReport from 'api/reports/useAddReport';
 
 import { generateYearOptions } from 'containers/Admin/reporting/utils/generateYearOptions';
@@ -39,6 +40,9 @@ interface Props {
 
 const CreateReportModal = ({ open, onClose }: Props) => {
   const { mutate: createReport, isLoading } = useAddReport();
+  const { data: project } = useCommunityMonitorProject({});
+  const communityMonitorPhaseId =
+    project?.data.relationships.current_phase?.data?.id;
 
   const [reportTitle, setReportTitle] = useState('');
   const [template, setTemplate] = useState<Template>('blank');
@@ -67,30 +71,37 @@ const CreateReportModal = ({ open, onClose }: Props) => {
     if (blockSubmit) return;
     setErrorMessage(undefined);
 
-    createReport(
-      { name: reportTitle },
-      {
-        onSuccess: (report) => {
-          clHistory.push(
-            getRedirectUrl({
-              reportId: report.data.id,
-              selectedProjectId,
-              year,
-              quarter,
-              template,
-              dates,
-            })
-          );
-        },
-        onError: (e) => {
-          if (reportTitleIsTaken(e)) {
-            setErrorMessage(formatMessage(messages.reportTitleAlreadyExists));
-          } else {
-            setErrorMessage(formatMessage(messages.anErrorOccurred));
+    const createReportParams =
+      template === 'community-monitor' && communityMonitorPhaseId
+        ? {
+            name: reportTitle,
+            phase_id: communityMonitorPhaseId,
           }
-        },
-      }
-    );
+        : {
+            name: reportTitle,
+          };
+
+    createReport(createReportParams, {
+      onSuccess: (report) => {
+        clHistory.push(
+          getRedirectUrl({
+            reportId: report.data.id,
+            selectedProjectId,
+            year,
+            quarter,
+            template,
+            dates,
+          })
+        );
+      },
+      onError: (e) => {
+        if (reportTitleIsTaken(e)) {
+          setErrorMessage(formatMessage(messages.reportTitleAlreadyExists));
+        } else {
+          setErrorMessage(formatMessage(messages.anErrorOccurred));
+        }
+      },
+    });
   };
 
   return (

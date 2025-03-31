@@ -24,14 +24,20 @@ const CommunityMonitorCTA = () => {
   // TEMPORARY: While waiting for final designs.
   return (
     <Box my="20px">
+      <Title textAlign="center" color="grey500" variant="h2">
+        {'----- [PLACEHOLDER] -----'}
+      </Title>
       <Title textAlign="center" variant="h3">
-        How do you feel about living in your city?
+        How do you feel about living in Gothenburg?
       </Title>
       <Box display="flex" justifyContent="center">
         <Button onClick={goToCommunityMonitorSurvey}>
           Take the sentiment survey
         </Button>
       </Box>
+      <Title textAlign="center" color="grey500" variant="h2">
+        {'----- [PLACEHOLDER] -----'}
+      </Title>
     </Box>
   );
 };

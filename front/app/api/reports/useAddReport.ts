@@ -14,8 +14,8 @@ type AddReport =
       phase_id?: never;
     }
   | {
-      name?: never;
-      phase_id: string;
+      name?: string;
+      phase_id?: string;
     };
 
 const addReport = async (requestBody: AddReport) =>

@@ -31,11 +31,11 @@ const CommunityMonitorTemplateContent = ({ year, quarter }: Props) => {
   const appConfigurationLocales = useAppConfigurationLocales();
   const formatMessageWithLocale = useFormatMessageWithLocale();
 
-  const { data: surveyQuestions } = useRawCustomFields({
+  const { data: surveyQuestions, isLoading } = useRawCustomFields({
     phaseId,
   });
 
-  if (!project?.data.id || !phaseId || !appConfigurationLocales) {
+  if (!project?.data.id || !phaseId || !appConfigurationLocales || isLoading) {
     return null;
   }
 
