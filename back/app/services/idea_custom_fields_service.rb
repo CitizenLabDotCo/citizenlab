@@ -46,11 +46,11 @@ class IdeaCustomFieldsService
 
   # Used in the printable PDF export
   def printable_fields
-    enabled_fields.select(&:printable?)
+    enabled_fields_with_other_options.select(&:printable?)
   end
 
   def importable_fields
-    enabled_fields.select(&:importable?)
+    enabled_fields_with_other_options.select(&:importable?)
   end
 
   def enabled_fields
