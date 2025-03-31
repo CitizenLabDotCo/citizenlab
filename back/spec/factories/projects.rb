@@ -614,6 +614,7 @@ FactoryBot.define do
       end
 
       factory :community_monitor_project do
+        slug { 'community-monitor' }
         internal_role { 'community_monitor' }
         hidden { true }
 
