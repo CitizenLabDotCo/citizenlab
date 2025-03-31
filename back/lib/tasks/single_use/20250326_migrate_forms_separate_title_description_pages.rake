@@ -53,18 +53,22 @@ namespace :migrate_custom_forms do
 
         # If the title page is not right before the title field, we need to either move or create it.
         fields_per_page, title_page, = rake_20250326_group_field_by_page(form.reload.custom_fields)
-        if title_page && fields_per_page[title_page].first&.code != 'title_multiloc'
-          title_field = fields_per_page[title_page].find { |field| field.code == 'title_multiloc' }
-          next if !title_field # This should not be possible, but just in case.
+        if title_page
+          if title_page.code != 'title_page' && fields_per_page[title_page].first&.code == 'title_multiloc'
+            rake_20250326_turn_into_title_and_report_page(title_page, reporter, 'add_title_page')
+          elsif fields_per_page[title_page].first&.code != 'title_multiloc'
+            title_field = fields_per_page[title_page].find { |field| field.code == 'title_multiloc' }
+            next if !title_field # This should not be possible, but just in case.
 
-          real_title_page = form.custom_fields.find_by(code: 'title_page')
-          if real_title_page
-            # Move the existing title page to right before the title field and replace it by a normal page.
-            prev_ordering = rake_20250326_reorder_and_report_page(real_title_page, title_field.ordering, reporter)
-            rake_20250326_create_and_report_page(rake_20250326_new_normal_page(form), prev_ordering, reporter, 'add_title_page')
-          else
-            # Create a new title page right before the title field, if it doesn't exist yet.
-            rake_20250326_create_and_report_page(rake_20250326_new_title_page(form), title_field.ordering, reporter, 'add_title_page')
+            real_title_page = form.custom_fields.find_by(code: 'title_page')
+            if real_title_page
+              # Move the existing title page to right before the title field and replace it by a normal page.
+              prev_ordering = rake_20250326_reorder_and_report_page(real_title_page, title_field.ordering, reporter)
+              rake_20250326_create_and_report_page(rake_20250326_new_normal_page(form), prev_ordering, reporter, 'add_title_page')
+            else
+              # Create a new title page right before the title field, if it doesn't exist yet.
+              rake_20250326_create_and_report_page(rake_20250326_new_title_page(form), title_field.ordering, reporter, 'add_title_page')
+            end
           end
         end
 
@@ -173,6 +177,50 @@ def rake_20250326_create_and_report_page(page, ordering, reporter, migration)
   end
 end
 
+def rake_20250326_turn_into_title_and_report_page(page, reporter, migration)
+  attrs_before = {
+    code: page.code,
+    key: page.key,
+    title_multiloc: page.title_multiloc,
+    description_multiloc: page.description_multiloc
+  }
+  attrs_after = {
+    code: 'title_page',
+    key: nil,
+    title_multiloc: page.title_multiloc,
+    description_multiloc: page.description_multiloc
+  }
+  if page.title_multiloc.blank?
+    attrs_after[:title_multiloc] = MultilocService.new.i18n_to_multiloc(
+      'custom_fields.ideas.title.title',
+      locales: CL2_SUPPORTED_LOCALES
+    )
+  end
+  if page.description_multiloc.blank?
+    attrs_after[:description_multiloc] = begin
+      MultilocService.new.i18n_to_multiloc(
+        'custom_fields.ideas.title.description',
+        locales: CL2_SUPPORTED_LOCALES
+      )
+    rescue StandardError
+      {}
+    end
+  end
+  page.assign_attributes(attrs_after)
+  if page.save
+    reporter.add_change(
+      attrs_before,
+      attrs_after,
+      context: { tenant: Tenant.current.host, page: page.id }
+    )
+  else
+    reporter.add_error(
+      page.errors.details,
+      context: { tenant: Tenant.current.host, form: form.id, migration: migration }
+    )
+  end
+end
+
 def rake_20250326_turn_into_body_and_report_page(page, reporter, migration)
   attrs_before = {
     code: page.code,
@@ -192,7 +240,7 @@ def rake_20250326_turn_into_body_and_report_page(page, reporter, migration)
       locales: CL2_SUPPORTED_LOCALES
     )
   end
-  if page.body_multiloc.blank?
+  if page.description_multiloc.blank?
     attrs_after[:description_multiloc] = begin
       MultilocService.new.i18n_to_multiloc(
         'custom_fields.ideas.body_page.description',
