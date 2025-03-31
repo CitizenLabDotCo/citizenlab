@@ -44,11 +44,12 @@ namespace :migrate_custom_forms do
           if !form.custom_fields.exists?(input_type: 'page', code: 'body_page') # If the previous field wasn't a normal page turned into the body page, and for idempotency.
             rake_20250326_create_and_report_page(rake_20250326_new_body_page(form), body_field.ordering, reporter, 'add_body_page')
           end
+        end
 
-          # If the body field is not the last field of the body page, start a new page after it.
-          if fields_per_page[body_page].last&.code != 'body_multiloc' && fields_per_page[body_page].second&.code != 'title_multiloc'
-            rake_20250326_create_and_report_page(rake_20250326_new_normal_page(form), (body_field.reload.ordering + 1), reporter, 'add_body_page')
-          end
+        # If the body field is not the last field of the body page, start a new page after it.
+        fields_per_page, _, body_page = rake_20250326_group_field_by_page(form.reload.custom_fields)
+        if body_page && fields_per_page[body_page].last&.code != 'body_multiloc' && fields_per_page[body_page].second&.code != 'title_multiloc'
+          rake_20250326_create_and_report_page(rake_20250326_new_normal_page(form), (body_field.reload.ordering + 1), reporter, 'add_body_page')
         end
 
         # If the title page is not right before the title field, we need to either move or create it.

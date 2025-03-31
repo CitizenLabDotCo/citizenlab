@@ -5,15 +5,6 @@ describe 'migrate_custom_forms:separate_title_body_pages rake task' do
 
   after { Rake::Task['migrate_custom_forms:separate_title_body_pages'].reenable }
 
-  # Tests:
-    # page-title-body-page -> page-title-page-body-page
-    # page-title-body-page-extra-page -> page-title-page-body-page-extra-page
-    # page-title-page-body-page -> page-title-page-body-page
-    # page-body-title-page -> page-body-page-title-page
-    # page-body-page-title-page -> page-body-page-title-page
-    # page-extra-title-extra-body-extra-page -> page-extra-page-title-page-extra-page-body-page-extra-page
-    # page-title-extra-body-extra-page -> page-title-page-extra-page-body-page-extra-page
-  # page-extra-title-body-page -> page-extra-page-title-page-body-page
   {
     %i[title_page title body page] => %i[title_page title body_page body page],
     %i[page title body page] => %i[title_page title body_page body page],
@@ -28,8 +19,8 @@ describe 'migrate_custom_forms:separate_title_body_pages rake task' do
     %i[title_page extra title extra body extra page] => %i[page extra title_page title page extra body_page body page extra page],
     %i[page extra extra title body extra extra page] => %i[page extra extra title_page title body_page body page extra extra page],
     %i[title_page title extra extra body page] => %i[title_page title page extra extra body_page body page],
-    %i[title_page title extra body extra page] => %i[title_page title page extra body_page body page extra page],
-    
+    %i[title_page body extra title extra page] => %i[body_page body page extra title_page title page extra page],
+    %i[title_page extra title body page] => %i[page extra title_page title body_page body page],
   }.each do |form_from, form_to|
     it "Migrates #{form_from} to #{form_to}" do
       form = create(:custom_form)
