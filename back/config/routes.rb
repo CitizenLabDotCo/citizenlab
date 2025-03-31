@@ -194,7 +194,6 @@ Rails.application.routes.draw do
           get 'for_followed_item', action: 'index_for_followed_item'
           get 'with_active_participatory_phase', action: 'index_with_active_participatory_phase'
           get 'community_monitor', action: 'community_monitor'
-          get 'for_filters', action: 'index_for_filters'
         end
 
         resource :review, controller: 'project_reviews'

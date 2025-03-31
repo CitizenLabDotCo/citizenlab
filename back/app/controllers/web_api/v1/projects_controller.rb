@@ -145,25 +145,6 @@ class WebApi::V1::ProjectsController < ApplicationController
     base_render_mini_index
   end
 
-  # For used with project filters used in admin screens. Uses ProjectMiniSerializer.
-  # NOTE: This methods does not using ProjectsFinder as projects must include hidden community_monitor project here
-  def index_for_filters
-    projects = policy_scope(Project)
-
-    # Limit publication statuses
-    projects = projects
-                 .includes(:admin_publication, :phases)
-                 .where(admin_publications: { publication_status: %w[draft published archived] })
-
-    # Only return projects a user can moderate
-    projects = UserRoleService.new.moderatable_projects(current_user, projects)
-
-    projects = paginate projects
-    authorize projects, :index_for_filters?
-
-    base_render_mini_index
-  end
-
   def show
     render json: WebApi::V1::ProjectSerializer.new(
       @project,

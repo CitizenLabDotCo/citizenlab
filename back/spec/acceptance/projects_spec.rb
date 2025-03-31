@@ -1163,14 +1163,14 @@ resource 'Projects' do
           do_request filter_can_moderate: true, publication_statuses: AdminPublication::PUBLICATION_STATUSES
           assert_status 200
           expect(json_response[:data].size).to eq(@projects.size - 1)
-          expect(response_data.map {|d| d.dig(:attributes, :slug)}).not_to include 'community-monitor'
+          expect(response_data.map { |d| d.dig(:attributes, :slug) }).not_to include 'community-monitor'
         end
 
         example 'Return all projects including hidden community monitor project', document: false do
           do_request include_hidden: true, filter_can_moderate: true, publication_statuses: AdminPublication::PUBLICATION_STATUSES
           assert_status 200
           expect(json_response[:data].size).to eq @projects.size
-          expect(response_data.map {|d| d.dig(:attributes, :slug)}).to include 'community-monitor'
+          expect(response_data.map { |d| d.dig(:attributes, :slug) }).to include 'community-monitor'
         end
       end
     end
