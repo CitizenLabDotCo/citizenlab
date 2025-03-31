@@ -1880,7 +1880,6 @@
   "app.containers.AdminPage.ProjectEdit.survey.file_upload": "Bestand uploaden",
   "app.containers.AdminPage.ProjectEdit.survey.goBackButtonMessage": "Ga terug",
   "app.containers.AdminPage.ProjectEdit.survey.importInputs": "Importeren",
-  "app.containers.AdminPage.ProjectEdit.survey.informationText3": "AI-samenvattingen van korte en lange antwoordvragen kun je openen via het AI-tabblad in de linker zijbalk.",
   "app.containers.AdminPage.ProjectEdit.survey.linear_scale2": "Lineaire schaal",
   "app.containers.AdminPage.ProjectEdit.survey.matrix_linear_scale2": "Matrix",
   "app.containers.AdminPage.ProjectEdit.survey.multiline_text2": "Lang antwoord",
