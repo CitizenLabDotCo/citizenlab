@@ -73,6 +73,7 @@ const FormFields = ({
 
   const conflictsByPage = detectConflictsByPage(nestedGroupData);
   const fieldNumbers = getFieldNumbers(formCustomFields);
+  const userFieldsInFormNotice = builderConfig.getUserFieldsNotice;
 
   return (
     <>
@@ -158,17 +159,20 @@ const FormFields = ({
             <Box height="1px" borderTop={`1px solid ${colors.divider}`} />
           )}
         </Box>
-        {lastPage.key === 'form_end' && (
-          <Box mt="40px">
-            <FormField
-              field={lastPage}
-              selectedFieldId={selectedFieldId}
-              onEditField={onEditField}
-              builderConfig={builderConfig}
-              fieldNumbers={fieldNumbers}
-              closeSettings={closeSettings}
-            />
-          </Box>
+        {lastPage.key === 'survey_end' && (
+          <>
+            {userFieldsInFormNotice && userFieldsInFormNotice()}
+            <Box mt={userFieldsInFormNotice ? '0' : '40px'}>
+              <FormField
+                field={lastPage}
+                selectedFieldId={selectedFieldId}
+                onEditField={onEditField}
+                builderConfig={builderConfig}
+                fieldNumbers={fieldNumbers}
+                closeSettings={closeSettings}
+              />
+            </Box>
+          </>
         )}
       </Box>
     </>

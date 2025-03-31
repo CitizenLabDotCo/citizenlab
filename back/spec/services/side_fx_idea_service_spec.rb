@@ -389,6 +389,35 @@ describe SideFxIdeaService do
         .with(idea)
     end
 
+    context 'user fields in survey form' do
+      let(:phase) { create(:native_survey_phase) }
+      let(:idea) do
+        create(
+          :native_survey_response,
+          creation_phase: phase,
+          project: phase.project,
+          publication_status: 'draft',
+          author: user,
+          custom_field_values: { 'field' => 'test', 'u_gender' => 'female' }
+        )
+      end
+
+      before { create(:idea_status_proposed) }
+
+      it "updates the user profile from the survey input fields when 'user_fields_in_form' is turned on" do
+        phase.update!(user_fields_in_form: true)
+        idea.update!(publication_status: 'published')
+        service.after_update(idea, user)
+        expect(user.custom_field_values).to eq({ 'gender' => 'female' })
+      end
+
+      it "does not update the user profile when 'user_fields_in_form' is turned off" do
+        idea.update!(publication_status: 'published')
+        service.after_update(idea, user)
+        expect(user.custom_field_values).to be_empty
+      end
+    end
+
     # context 'native survey responses' do
     #   before { create(:idea_status_proposed) }
     #

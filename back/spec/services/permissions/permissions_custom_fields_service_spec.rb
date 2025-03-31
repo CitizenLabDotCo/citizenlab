@@ -30,8 +30,14 @@ describe Permissions::PermissionsCustomFieldsService do
         expect(fields.pluck(:required)).to match_array([false, true])
       end
 
-      it 'returns no permissions fields when permitted_by "everyone"' do
+      it 'returns no permissions fields by default when permitted_by "everyone"' do
         permission = create(:permission, permitted_by: 'everyone', global_custom_fields: true)
+        expect(service.fields_for_permission(permission)).to be_empty
+      end
+
+      it 'returns no permissions fields when permitted_by "everyone" and user fields are allowed in survey form' do
+        phase = create(:native_survey_phase, user_fields_in_form: true)
+        permission = create(:permission, permission_scope: phase, permitted_by: 'everyone', global_custom_fields: true)
         expect(service.fields_for_permission(permission)).to be_empty
       end
 
@@ -132,10 +138,20 @@ describe Permissions::PermissionsCustomFieldsService do
           expect(fields.first).to eq domicile_field
         end
 
-        # 'everyone' currently does not support fields
+        # 'everyone' does not support fields by default
         permission.update!(permitted_by: 'everyone', global_custom_fields: false)
         fields = service.fields_for_permission(permission)
         expect(fields.count).to eq 0
+      end
+
+      it 'returns persisted fields when permitted_by "everyone" and user fields are allowed in survey form' do
+        domicile_field = create(:permissions_custom_field, permission: permission, custom_field: create(:custom_field_birthyear))
+        phase = create(:native_survey_phase, user_fields_in_form: true)
+        permission.update!(permitted_by: 'everyone', permission_scope: phase, global_custom_fields: false)
+        fields = service.fields_for_permission(permission)
+        expect(fields.count).to eq 1
+        expect(fields.first.persisted?).to be true
+        expect(fields.first).to eq domicile_field
       end
 
       context 'fields related to groups' do

@@ -5,6 +5,7 @@ import {
   Box,
   Button,
   Tooltip,
+  Text,
   fontSizes,
 } from '@citizenlab/cl2-component-library';
 
@@ -25,9 +26,15 @@ interface Props {
   phaseId?: string;
   action: Action;
   showAddQuestion: boolean;
+  userFieldsInForm: boolean;
 }
 
-const Fields = ({ phaseId, action, showAddQuestion }: Props) => {
+const Fields = ({
+  phaseId,
+  action,
+  showAddQuestion,
+  userFieldsInForm,
+}: Props) => {
   const { formatMessage } = useIntl();
   const [showSelectionModal, setShowSelectionModal] = useState(false);
   const { data: permissionFields } = usePermissionsCustomFields({
@@ -89,6 +96,13 @@ const Fields = ({ phaseId, action, showAddQuestion }: Props) => {
           </Tooltip>
         )}
       </Box>
+      {userFieldsInForm && (
+        <Box>
+          <Text color="primary" mb="0px" fontSize="m" fontStyle={'italic'}>
+            <FormattedMessage {...messages.fieldsShownInSurveyForm} />
+          </Text>
+        </Box>
+      )}
       <Box mt="20px">
         <FieldsList phaseId={phaseId} action={action} />
       </Box>

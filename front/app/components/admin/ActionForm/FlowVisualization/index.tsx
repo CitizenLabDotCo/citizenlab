@@ -14,6 +14,7 @@ interface Props {
   verificationExpiry: number | null;
   permissionsCustomFields: IPermissionsCustomFieldData[];
   onChangeVerificationExpiry: (value: number | null) => void;
+  userFieldsInForm: boolean;
 }
 
 const FlowVisualization = ({
@@ -22,6 +23,7 @@ const FlowVisualization = ({
   verificationExpiry,
   permissionsCustomFields,
   onChangeVerificationExpiry,
+  userFieldsInForm,
 }: Props) => {
   return (
     <Box display="flex" flexDirection="row">
@@ -31,6 +33,7 @@ const FlowVisualization = ({
         verificationEnabled={verificationEnabled}
         verificationExpiry={verificationExpiry}
         onChangeVerificationExpiry={onChangeVerificationExpiry}
+        userFieldsInForm={userFieldsInForm}
       />
       <Edge />
       <Box display="flex" alignItems="center">
