@@ -1284,6 +1284,8 @@
   "app.containers.Admin.reporting.components.ReportBuilderPage.shareReportTitle": "Share",
   "app.containers.Admin.reporting.contactToAccess": "Creating a custom report is part of the premium license. Reach out to your GovSuccess Manager to learn more about it.",
   "app.containers.Admin.reporting.containers.ReportBuilderPage.allReports": "All reports",
+  "app.containers.Admin.reporting.containers.ReportBuilderPage.communityMonitorReports": "Community monitor reports",
+  "app.containers.Admin.reporting.containers.ReportBuilderPage.communityMonitorReportsTooltip": "These are reports are related to the Community Monitor. Reports are automatically generated every quarter.",
   "app.containers.Admin.reporting.containers.ReportBuilderPage.createAReport": "Create a report",
   "app.containers.Admin.reporting.containers.ReportBuilderPage.createReportDescription": "Customise your report and share it with internal stakeholders or community with a web link.",
   "app.containers.Admin.reporting.containers.ReportBuilderPage.personalReportsPlaceholder": "Your reports will appear here.",
