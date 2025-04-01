@@ -9,7 +9,7 @@ module IdTwoday
     end
 
     def id
-      'd6938fe6-4bee-4490-b80c-b14dafb5da1b'
+      'd6938fe6-4bee-4490-b80c-b14dafb5da1b' # TODO: new ID
     end
 
     def name
@@ -32,7 +32,7 @@ module IdTwoday
         ui_method_name: {
           type: 'string',
           description: 'The name this verification method will have in the UI',
-          default: 'ID-Porten'
+          default: 'Bank ID'
         },
         enabled_for_verified_actions: {
           private: true,

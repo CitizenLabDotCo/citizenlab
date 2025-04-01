@@ -49,7 +49,7 @@ module IdTwoday
 
     def issuer
       "https://idp-test.ciceron.cloud/oidc-login"
-      # "https://#{config[:domain]}/auth/realms/twoday" # TODO
+      # "https://#{config[:domain]}/auth/realms/twoday"
     end
 
     def updateable_user_attrs
