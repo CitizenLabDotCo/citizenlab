@@ -45,6 +45,9 @@ const SSOButtons = (props: Props) => {
   const keycloakLoginEnabled = useFeatureFlag({
     name: 'keycloak_login',
   });
+  const twodayLoginEnabled = useFeatureFlag({
+    name: 'twoday_login',
+  });
 
   if (
     !googleLoginEnabled &&
@@ -56,6 +59,7 @@ const SSOButtons = (props: Props) => {
     !hoplrLoginEnabled &&
     !criiptoLoginEnabled &&
     !keycloakLoginEnabled &&
+    !twodayLoginEnabled &&
     !idAustriaLoginEnabled
   ) {
     if (passwordLoginEnabled) {
