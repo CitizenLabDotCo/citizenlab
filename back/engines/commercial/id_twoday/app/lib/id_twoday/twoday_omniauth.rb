@@ -8,7 +8,7 @@ module IdTwoday
       {
         first_name: auth.info.first_name,
         last_name: auth.info.last_name,
-        locale: AppConfiguration.instance.closest_locale_to('nb-NO') # TODO
+        locale: AppConfiguration.instance.closest_locale_to('sv-SE')
       }
     end
 
@@ -17,7 +17,6 @@ module IdTwoday
       return unless Verification::VerificationService.new.active?(configuration, name)
 
       options = env['omniauth.strategy'].options
-
       options[:scope] = %i[openid]
       options[:response_type] = :code
       options[:issuer] = issuer
@@ -26,13 +25,8 @@ module IdTwoday
         secret: config[:client_secret],
         redirect_uri: "#{configuration.base_backend_uri}/auth/twoday/callback",
 
-        # TODO: Can we use auto discovery?
-        client_signing_alg: :RS256,
-        authorization_endpoint: "#{issuer}/protocol/openid-connect/auth",
-        token_endpoint: "#{issuer}/protocol/openid-connect/token",
-        introspection_endpoint: "#{issuer}/protocol/openid-connect/token/introspect",
-        userinfo_endpoint: "#{issuer}/protocol/openid-connect/userinfo",
-        jwks_uri: "#{issuer}/protocol/openid-connect/certs"
+        # https://idp-test.ciceron.cloud/.well-known/openid-configuration
+        discovery: true
       }
     end
 
@@ -54,7 +48,8 @@ module IdTwoday
     end
 
     def issuer
-      "https://#{config[:domain]}/auth/realms/twoday" # TODO
+      "https://idp-test.ciceron.cloud/oidc-login"
+      # "https://#{config[:domain]}/auth/realms/twoday" # TODO
     end
 
     def updateable_user_attrs
