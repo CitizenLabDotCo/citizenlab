@@ -9,7 +9,7 @@ module Analysis
 
       inputs_count = analysis.inputs.count
       participants_service = ParticipantsService.new
-      participants_count = participants_service.project_participants_count(analysis.project)
+      participants_count = participants_service.project_participants_count(analysis.source_project)
       newest_activity = Activity.where(item: analysis, action: 'heatmap_generated')
         .order(created_at: :desc)
         .first
