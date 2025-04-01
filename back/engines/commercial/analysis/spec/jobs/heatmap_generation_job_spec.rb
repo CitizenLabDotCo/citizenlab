@@ -60,6 +60,7 @@ RSpec.describe Analysis::HeatmapGenerationJob do
           payload: { inputs_count: 10,
                      participants_count: 30,
                      newest_input_at: inputs.last.created_at.to_i },
+                     tags_count: 2,
           project_id: project.id
         }
       )

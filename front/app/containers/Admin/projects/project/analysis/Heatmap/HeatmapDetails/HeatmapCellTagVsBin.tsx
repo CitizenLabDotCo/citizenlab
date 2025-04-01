@@ -64,6 +64,10 @@ const HeatmapCellTagVsBin = ({ cell, tag, bin }: Props) => {
     });
   };
 
+  if (cell.attributes.count === 0) {
+    return null;
+  }
+
   return (
     <Tooltip
       disabled={!cell}

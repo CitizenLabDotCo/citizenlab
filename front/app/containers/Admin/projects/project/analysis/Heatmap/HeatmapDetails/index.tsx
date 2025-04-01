@@ -208,10 +208,12 @@ const HeatmapDetails = ({
             {tags?.data.map((tag) => (
               <Tr key={tag.id}>
                 <Td>
-                  <Tag
-                    name={tag.attributes.name}
-                    tagType={tag.attributes.tag_type}
-                  />
+                  <Box maxWidth="200px">
+                    <Tag
+                      name={tag.attributes.name}
+                      tagType={tag.attributes.tag_type}
+                    />
+                  </Box>
                 </Td>
                 {bins.data.map((bin) => {
                   const cell = analysisHeatmapCells?.data.find(
