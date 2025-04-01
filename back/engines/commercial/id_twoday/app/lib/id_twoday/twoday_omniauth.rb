@@ -21,6 +21,8 @@ module IdTwoday
       options[:response_type] = :code
       options[:issuer] = issuer
       options[:client_options] = {
+        scheme: 'https',
+        host: host,
         identifier: config[:client_id],
         secret: config[:client_secret],
         redirect_uri: "#{configuration.base_backend_uri}/auth/twoday/callback",
@@ -47,9 +49,12 @@ module IdTwoday
       auth_to_persist.tap { |h| h.delete(:credentials) }
     end
 
+    def host
+      config[:domain]
+    end
+
     def issuer
-      "https://idp-test.ciceron.cloud/oidc-login"
-      # "https://#{config[:domain]}/auth/realms/twoday"
+      "https://#{host}/oidc-login"
     end
 
     def updateable_user_attrs
