@@ -92,7 +92,7 @@ fr:
     other: Autres
     other_description: Autres
     quality_of_life: Qualité de vie
-    service_delivery: Prestation de services
+    service_delivery: Services
     governance_and_trust: Gouvernance et confiance
   static_pages:
     terms_and_conditions_title: Conditions Générales d'Utilisation
@@ -190,13 +190,13 @@ fr:
         sense_of_safety:
           title: Sentiment général de sécurité
         access_to_parks:
-          title: Accès aux parcs, aux espaces verts et aux possibilités de loisirs
+          title: Accès aux parcs, espaces verts et loisirs
         affordable_housing:
           title: Disponibilité de logements abordables
         employment_opportunities:
           title: Possibilités d'emploi et de promotion économique
         quality_of_services:
-          title: Qualité globale des services fournis par la ville
+          title: Qualité générale des services fournis par la ville
         overall_value:
           title: Valeur globale de vos taxes et redevances municipales
         cleanliness_and_maintenance:
@@ -209,7 +209,7 @@ fr:
           title: Transparence sur la manière dont l'argent des impôts municipaux est dépensé
       question_categories:
         quality_of_life: Qualité de vie
-        service_delivery: Prestation de services
+        service_delivery: Services
         governance_and_trust: Gouvernance et confiance
         other: Autre
       labels:
