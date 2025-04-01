@@ -203,13 +203,13 @@ fr:
         overall_value:
           title: Valeur globale de vos taxes et redevances municipales
         cleanliness_and_maintenance:
-          title: Propreté générale et entretien des rues et des espaces publics
+          title: Propreté et entretien des rues et des espaces publics
         trust_in_government:
-          title: Confiance dans les autorités locales
+          title: Confiance dans le gouvernement local
         responsiveness_of_officials:
-          title: Réceptivité des élus aux préoccupations de la communauté
+          title: Réactivité des élus aux préoccupations de la communauté
         transparency_of_money_spent:
-          title: Transparence sur la manière dont l'argent des impôts municipaux est dépensé
+          title: Transparence sur les dépenses des impôts municipaux
       question_categories:
         quality_of_life: Qualité de vie
         service_delivery: Services
