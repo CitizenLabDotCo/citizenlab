@@ -20,7 +20,6 @@ import { Unit } from 'api/analysis_heat_map_cells/types';
 import useAnalysisHeatmapCells from 'api/analysis_heat_map_cells/useAnalysisHeatmapCells';
 import useAnalysisTags from 'api/analysis_tags/useAnalysisTags';
 import useCustomFieldBins from 'api/custom_field_bins/useCustomFieldBins';
-import { IUserCustomFields } from 'api/user_custom_fields/types';
 import useUserCustomField from 'api/user_custom_fields/useUserCustomField';
 import useUserCustomFieldsOptions from 'api/user_custom_fields_options/useUserCustomFieldsOptions';
 
@@ -38,7 +37,7 @@ import HeatmapTableHead from './HeatmapTableHead';
 
 interface HeatMapProps {
   onClose: () => void;
-  customFields: IUserCustomFields;
+  customFieldsIds: string[];
   initialCustomFieldId?: string;
   initialUnit?: Unit;
 }
@@ -103,21 +102,22 @@ const StyledTable = styled(Table)<StyledTableProps>`
 
 const HeatmapDetails = ({
   onClose,
-  customFields,
+  customFieldsIds,
   initialCustomFieldId,
   initialUnit,
 }: HeatMapProps) => {
   const localize = useLocalize();
   const { formatMessage } = useIntl();
   const [selectedFieldId, setSelectedFieldId] = useState(
-    initialCustomFieldId || customFields.data[0].id
+    initialCustomFieldId || customFieldsIds[0]
   );
   const [unit, setUnit] = useState<Unit>(initialUnit || 'inputs');
   const { analysisId } = useParams() as { analysisId: string };
   const { data: analysisHeatmapCells, isLoading } = useAnalysisHeatmapCells({
     analysisId,
-    columnCategoryType: 'user_custom_field',
+    columnCategoryType: 'input_custom_field',
     columnCategoryId: selectedFieldId,
+    rowCategoryType: 'tags',
     unit,
   });
 
@@ -131,15 +131,16 @@ const HeatmapDetails = ({
 
   const handleChangeCustomField = (offset: number) => {
     setSelectedFieldId((currentId) => {
-      const fields = customFields.data;
-      const currentIndex = fields.findIndex((field) => field.id === currentId);
-      const length = fields.length;
+      const currentIndex = customFieldsIds.findIndex(
+        (fieldId) => fieldId === currentId
+      );
+      const length = customFieldsIds.length;
 
       // Calculate new index with wraparound
       let newIndex = (currentIndex + offset) % length;
       if (newIndex < 0) newIndex += length;
 
-      return fields[newIndex].id;
+      return customFieldsIds[newIndex];
     });
   };
 
@@ -177,7 +178,7 @@ const HeatmapDetails = ({
         />
       </Box>
       <Box display="flex" justifyContent="space-between" w="100%" m="auto">
-        {customFields.data.length > 1 && (
+        {customFieldsIds.length > 1 && (
           <IconButton
             iconName="arrow-left"
             onClick={() => handleChangeCustomField(-1)}
@@ -191,7 +192,7 @@ const HeatmapDetails = ({
 
           {isLoading ? <Spinner size="20px" /> : null}
         </Box>
-        {customFields.data.length > 1 && (
+        {customFieldsIds.length > 1 && (
           <IconButton
             iconName="arrow-right"
             onClick={() => handleChangeCustomField(1)}

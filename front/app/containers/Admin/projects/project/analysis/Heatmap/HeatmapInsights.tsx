@@ -51,7 +51,7 @@ const HeatMapInsights = ({ onExploreClick }: HeatMapInsightsProps) => {
   );
 
   const { data: bin } = useCustomFieldBin({
-    binId: selectedCell?.relationships.column?.data.id,
+    binId: selectedCell?.relationships.column.data.id,
   });
 
   useEffect(() => {

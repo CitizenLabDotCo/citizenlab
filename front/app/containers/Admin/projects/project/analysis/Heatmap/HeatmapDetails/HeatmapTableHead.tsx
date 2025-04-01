@@ -4,7 +4,7 @@ import { Thead, Tr, Th } from '@citizenlab/cl2-component-library';
 
 import { ICustomFieldBinData } from 'api/custom_field_bins/types';
 import useCustomFieldBins from 'api/custom_field_bins/useCustomFieldBins';
-import useUserCustomFieldsOptions from 'api/user_custom_fields_options/useUserCustomFieldsOptions';
+import useCustomFieldsOptions from 'api/user_custom_fields_options/useUserCustomFieldsOptions';
 
 import useLocalize from 'hooks/useLocalize';
 
@@ -17,7 +17,7 @@ interface CustomFieldOptionsProps {
 const HeatmapTableHead: React.FC<CustomFieldOptionsProps> = ({
   customFieldId,
 }) => {
-  const { data: options } = useUserCustomFieldsOptions(customFieldId);
+  const { data: options } = useCustomFieldsOptions(customFieldId);
   const { data: bins } = useCustomFieldBins(customFieldId);
   const localize = useLocalize();
 

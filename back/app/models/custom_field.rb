@@ -125,7 +125,7 @@ class CustomField < ApplicationRecord
     when 'User'
       UserCustomFields::UserCustomFieldPolicy
     when 'CustomForm'
-      CustomFormPolicy
+      IdeaCustomFields::IdeaCustomFieldPolicy
     else
       raise "Polcy not implemented for resource type: #{resource_type}"
     end

@@ -36,8 +36,8 @@ export interface IAnalysysHeatmapCellsParams {
   analysisId: string;
   pageSize?: number;
   pageNumber?: number;
-  rowCategoryType?: 'tags' | 'user_custom_field';
-  columnCategoryType?: 'tags' | 'user_custom_field';
+  rowCategoryType?: 'tags' | 'input_custom_field';
+  columnCategoryType?: 'input_custom_field' | 'user_custom_field';
   columnCategoryId?: string;
   maxPValue?: number;
   minLiftDiff?: number;

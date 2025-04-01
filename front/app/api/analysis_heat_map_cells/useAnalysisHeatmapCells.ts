@@ -27,8 +27,8 @@ const fetchAnalysisHeatmapCells = ({
     queryParams: {
       'page[size]': pageSize,
       'page[number]': pageNumber,
-      row_category_type: rowCategoryType || 'tags',
-      column_category_type: columnCategoryType || 'user_custom_field',
+      row_category_type: rowCategoryType,
+      column_category_type: columnCategoryType,
       column_category_id: columnCategoryId,
       max_p_value: maxPValue,
       min_lift_diff: minLiftDiff,
