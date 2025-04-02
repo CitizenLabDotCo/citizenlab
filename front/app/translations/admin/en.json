@@ -2551,6 +2551,7 @@
   "app.containers.AdminPage.projects.project.analysis.heatmap.rowValues": "Row values",
   "app.containers.AdminPage.projects.project.analysis.heatmap.significant": "Statistically significant insight.",
   "app.containers.AdminPage.projects.project.analysis.heatmap.summarize": "Summarize",
+  "app.containers.AdminPage.projects.project.analysis.heatmap.tags": "Analysis tags",
   "app.containers.AdminPage.projects.project.analysis.heatmap.true": "True",
   "app.containers.AdminPage.projects.project.analysis.heatmap.units": "Units",
   "app.containers.AdminPage.projects.project.analysis.heatmap.viewAllInsights": "View all insights",
