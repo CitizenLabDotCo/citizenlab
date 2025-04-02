@@ -82,4 +82,8 @@ export default defineMessages({
     id: 'app.containers.AdminPage.projects.project.analysis.heatmap.columnValues',
     defaultMessage: 'Column values',
   },
+  tags: {
+    id: 'app.containers.AdminPage.projects.project.analysis.heatmap.tags',
+    defaultMessage: 'Analysis tags',
+  },
 });

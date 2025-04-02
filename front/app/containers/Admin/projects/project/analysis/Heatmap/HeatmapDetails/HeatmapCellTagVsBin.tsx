@@ -32,11 +32,11 @@ import {
 
 interface Props {
   cell?: IAnalysisHeatmapCellData;
-  tag: ITagData;
-  bin: ICustomFieldBinData;
+  row: ITagData | ICustomFieldBinData;
+  column: ICustomFieldBinData;
 }
 
-const HeatmapCellTagVsBin = ({ cell, tag, bin }: Props) => {
+const HeatmapCellTagVsBin = ({ cell, row, column }: Props) => {
   const lift = cell?.attributes.lift;
   const pValue = cell?.attributes.p_value;
   const isSignificant = pValue && pValue <= 0.05;
@@ -46,18 +46,17 @@ const HeatmapCellTagVsBin = ({ cell, tag, bin }: Props) => {
 
   const localize = useLocalize();
   const { mutate: addSummary } = useAddAnalysisSummary();
-  // const { data: option } = useUserCustomFieldsOption(bin.relationships.custom_field.data.id, bin.relationships.custom_field_option.data.id);
 
   const handleSummarize = () => {
-    if (bin.relationships.custom_field_option === null || !cell) return;
+    if (column.relationships.custom_field_option === null || !cell) return;
 
-    const authorKey: AuthorCustomFilterKey = `author_custom_${bin.relationships.custom_field.data.id}`;
+    const authorKey: AuthorCustomFilterKey = `author_custom_${column.relationships.custom_field.data.id}`;
     const filters: {
       tag_ids: string[];
       [authorKey: AuthorCustomFilterKey]: string[] | undefined;
     } = {
-      tag_ids: [tag.id],
-      [authorKey]: [bin.relationships.custom_field_option.data.id],
+      tag_ids: [row.id],
+      [authorKey]: [column.relationships.custom_field_option.data.id],
     };
 
     addSummary({
