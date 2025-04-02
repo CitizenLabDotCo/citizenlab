@@ -4,6 +4,7 @@ import { useParams } from 'react-router-dom';
 
 import useAnalysis from 'api/analyses/useAnalysis';
 import { Unit } from 'api/analysis_heat_map_cells/types';
+import { ICustomFieldInputType } from 'api/custom_fields/types';
 import useCustomFields from 'api/custom_fields/useCustomFields';
 import useProjectById from 'api/projects/useProjectById';
 import useUserCustomFields from 'api/user_custom_fields/useUserCustomFields';
@@ -43,15 +44,32 @@ const Heatmap = () => {
     inputTypes: ['select', 'multiselect', 'number', 'checkbox'],
   });
 
+  const inputCustomFieldInputTypes: ICustomFieldInputType[] = [
+    'select',
+    'multiselect',
+    'number',
+    'linear_scale',
+    'ranking',
+    'rating',
+    'multiselect_image',
+    'sentiment_linear_scale',
+  ];
+
   const { data: inputCustomFields } = useCustomFields({
     projectId,
     phaseId: analysis?.data.relationships.phase?.data?.id,
-    inputTypes: ['select'],
+    inputTypes: inputCustomFieldInputTypes,
   });
+
+  // Temporary front-end filter for input custom fields
+  // The back-end currently does not support filtering by input type
+  const filteredInputCustomFields = inputCustomFields?.filter((customField) =>
+    inputCustomFieldInputTypes.includes(customField.input_type)
+  );
 
   if (
     !userCustomFields ||
-    !inputCustomFields ||
+    !filteredInputCustomFields ||
     !statisticalInsightsEnabled ||
     !project
   ) {
@@ -93,7 +111,7 @@ const Heatmap = () => {
               setIsReadMoreOpen(false);
             }}
             userCustomFields={userCustomFields.data}
-            inputCustomFields={inputCustomFields}
+            inputCustomFields={filteredInputCustomFields}
             initialColumnFieldId={initialColumnFieldId}
             initialRowType={initialRowType}
             initialUnit={initialUnit}
