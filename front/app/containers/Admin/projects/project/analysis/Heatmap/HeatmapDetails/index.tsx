@@ -54,7 +54,8 @@ interface HeatMapProps {
   onClose: () => void;
   userCustomFields: IUserCustomFieldData[];
   inputCustomFields: IFlatCustomField[];
-  initialCustomFieldId?: string;
+  initialRowType?: string;
+  initialColumnFieldId?: string;
   initialUnit?: Unit;
 }
 
@@ -62,7 +63,8 @@ const HeatmapDetails = ({
   onClose,
   userCustomFields,
   inputCustomFields,
-  initialCustomFieldId,
+  initialRowType,
+  initialColumnFieldId,
   initialUnit,
 }: HeatMapProps) => {
   const localize = useLocalize();
@@ -74,21 +76,25 @@ const HeatmapDetails = ({
   const inputCustomFieldsIds = inputCustomFields.map(
     (customField) => customField.id
   );
-  const [selectedColumnFieldId, setSelectedColumnFieldId] = useState(
-    initialCustomFieldId || userCustomFieldsIds[0]
-  );
-  const [selectedRowFieldId, setSelectedRowFieldId] = useState('tags');
 
   const [unit, setUnit] = useState<Unit>(initialUnit || 'inputs');
+  // The row type can be either 'tags' or a custom field id
+  const [selectedRowType, setSelectedRowType] = useState(
+    initialRowType || 'tags'
+  );
+  // The column type is always a custom field id
+  const [selectedColumnFieldId, setSelectedColumnFieldId] = useState(
+    initialColumnFieldId || userCustomFieldsIds[0]
+  );
+  const isSelectedRowTypeTags = selectedRowType === 'tags';
+
   const { analysisId } = useParams() as { analysisId: string };
   const { data: analysisHeatmapCells } = useAnalysisHeatmapCells({
     analysisId,
     columnCategoryType: 'input_custom_field',
     columnCategoryId: selectedColumnFieldId,
-    rowCategoryType:
-      selectedRowFieldId === 'tags' ? 'tags' : 'input_custom_field',
-    rowCategoryId:
-      selectedRowFieldId === 'tags' ? undefined : selectedRowFieldId,
+    rowCategoryType: isSelectedRowTypeTags ? 'tags' : 'input_custom_field',
+    rowCategoryId: isSelectedRowTypeTags ? undefined : selectedRowType,
     unit,
   });
 
@@ -99,9 +105,13 @@ const HeatmapDetails = ({
   const { data: columnOptions } = useUserCustomFieldsOptions(
     selectedColumnFieldId
   );
-  const { data: rowOptions } = useUserCustomFieldsOptions(selectedRowFieldId);
+  const { data: rowOptions } = useUserCustomFieldsOptions(
+    !isSelectedRowTypeTags ? selectedRowType : undefined
+  );
   const { data: columnBins } = useCustomFieldBins(selectedColumnFieldId);
-  const { data: rowBins } = useCustomFieldBins(selectedRowFieldId);
+  const { data: rowBins } = useCustomFieldBins(
+    !isSelectedRowTypeTags ? selectedRowType : undefined
+  );
 
   if (!columnOptions || !columnBins) return null;
 
@@ -139,8 +149,8 @@ const HeatmapDetails = ({
           <Select
             size="small"
             label={formatMessage(messages.rowValues)}
-            value={selectedRowFieldId}
-            onChange={(option) => setSelectedRowFieldId(option.value)}
+            value={selectedRowType}
+            onChange={(option) => setSelectedRowType(option.value)}
             options={[
               {
                 value: 'tags',
@@ -194,7 +204,7 @@ const HeatmapDetails = ({
         {/* The number of columns includes the number of options + the tags column  */}
         <StyledTable columns={columnOptions.data.length + 2}>
           <HeatmapTableHead customFieldId={selectedColumnFieldId} />
-          {selectedRowFieldId === 'tags' ? (
+          {isSelectedRowTypeTags ? (
             <Tbody>
               {tags?.data.map((tag) => (
                 <Tr key={tag.id}>

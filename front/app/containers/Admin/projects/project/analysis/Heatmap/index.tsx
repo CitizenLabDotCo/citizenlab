@@ -21,9 +21,10 @@ import messages from './messages';
 const Heatmap = () => {
   const [isReadMoreOpen, setIsReadMoreOpen] = useState(false);
   const [initialUnit, setInitialUnit] = useState<Unit>('inputs');
-  const [initialCustomFieldId, setInitialCustomFieldId] = useState<
+  const [initialColumnFieldId, setInitialColumnFieldId] = useState<
     string | undefined
   >();
+  const [initialRowType, setInitialRowType] = useState<string | undefined>();
 
   const { formatMessage } = useIntl();
 
@@ -69,13 +70,16 @@ const Heatmap = () => {
 
   const onExploreClick = ({
     unit,
-    customFieldId,
+    columnCustomFieldId,
+    rowType,
   }: {
     unit: Unit;
-    customFieldId?: string;
+    columnCustomFieldId?: string;
+    rowType?: string;
   }) => {
     setInitialUnit(unit);
-    setInitialCustomFieldId(customFieldId);
+    setInitialColumnFieldId(columnCustomFieldId);
+    setInitialRowType(rowType);
     setIsReadMoreOpen(true);
   };
 
@@ -90,7 +94,8 @@ const Heatmap = () => {
             }}
             userCustomFields={userCustomFields.data}
             inputCustomFields={inputCustomFields}
-            initialCustomFieldId={initialCustomFieldId}
+            initialColumnFieldId={initialColumnFieldId}
+            initialRowType={initialRowType}
             initialUnit={initialUnit}
           />
         )}

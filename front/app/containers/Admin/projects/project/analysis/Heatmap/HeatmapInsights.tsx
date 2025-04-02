@@ -23,10 +23,12 @@ import messages from './messages';
 interface HeatMapInsightsProps {
   onExploreClick: ({
     unit,
-    customFieldId,
+    columnCustomFieldId,
+    rowType,
   }: {
     unit: Unit;
-    customFieldId?: string;
+    columnCustomFieldId?: string;
+    rowType?: string;
   }) => void;
 }
 
@@ -50,8 +52,12 @@ const HeatMapInsights = ({ onExploreClick }: HeatMapInsightsProps) => {
     (cell) => cell.id === selectedInsightId
   );
 
-  const { data: bin } = useCustomFieldBin({
+  const { data: columnBin } = useCustomFieldBin({
     binId: selectedCell?.relationships.column.data.id,
+  });
+
+  const { data: rowBin } = useCustomFieldBin({
+    binId: selectedCell?.relationships.row.data.id,
   });
 
   useEffect(() => {
@@ -77,27 +83,6 @@ const HeatMapInsights = ({ onExploreClick }: HeatMapInsightsProps) => {
       return insights[newIndex].id;
     });
   };
-
-  if (analysisHeatmapCells.data.length === 0) {
-    return (
-      <Box display="flex" justifyContent="center">
-        <Button
-          my="12px"
-          buttonStyle="text"
-          icon="eye"
-          size="s"
-          p="0px"
-          onClick={() =>
-            onExploreClick({
-              unit: 'inputs',
-            })
-          }
-        >
-          {formatMessage(messages.viewAllInsights)}
-        </Button>
-      </Box>
-    );
-  }
 
   if (analysisHeatmapCells.data.length === 0) {
     return (
@@ -171,7 +156,12 @@ const HeatMapInsights = ({ onExploreClick }: HeatMapInsightsProps) => {
               onClick={() =>
                 onExploreClick({
                   unit: selectedCell.attributes.unit,
-                  customFieldId: bin?.data.relationships.custom_field.data.id,
+                  columnCustomFieldId:
+                    columnBin?.data.relationships.custom_field.data.id,
+                  rowType:
+                    selectedCell.relationships.row.data.type === 'tags'
+                      ? 'tags'
+                      : rowBin?.data.relationships.custom_field.data.id,
                 })
               }
             >
