@@ -38,19 +38,19 @@ const Heatmap = () => {
     onlyCheckAllowed: true,
   });
 
-  const { data: customFields } = useUserCustomFields({
+  const { data: userCustomFields } = useUserCustomFields({
     inputTypes: ['select', 'multiselect', 'number', 'checkbox'],
   });
 
-  const { data: customFieldsFromSurvey } = useCustomFields({
+  const { data: inputCustomFields } = useCustomFields({
     projectId,
     phaseId: analysis?.data.relationships.phase?.data?.id,
     inputTypes: ['select'],
   });
 
   if (
-    !customFields ||
-    !customFieldsFromSurvey ||
+    !userCustomFields ||
+    !inputCustomFields ||
     !statisticalInsightsEnabled ||
     !project
   ) {
@@ -88,10 +88,8 @@ const Heatmap = () => {
             onClose={() => {
               setIsReadMoreOpen(false);
             }}
-            customFieldsIds={[
-              ...customFields.data.map((field) => field.id),
-              ...customFieldsFromSurvey.map((field) => field.id),
-            ]}
+            userCustomFields={userCustomFields.data}
+            inputCustomFields={inputCustomFields}
             initialCustomFieldId={initialCustomFieldId}
             initialUnit={initialUnit}
           />

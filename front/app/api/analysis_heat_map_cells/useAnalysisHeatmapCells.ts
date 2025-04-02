@@ -13,6 +13,7 @@ import {
 const fetchAnalysisHeatmapCells = ({
   analysisId,
   rowCategoryType,
+  rowCategoryId,
   columnCategoryType,
   columnCategoryId,
   maxPValue,
@@ -28,6 +29,7 @@ const fetchAnalysisHeatmapCells = ({
       'page[size]': pageSize,
       'page[number]': pageNumber,
       row_category_type: rowCategoryType,
+      row_category_id: rowCategoryId,
       column_category_type: columnCategoryType,
       column_category_id: columnCategoryId,
       max_p_value: maxPValue,
@@ -46,7 +48,7 @@ const useAnalysisHeatmapCells = (params: IAnalysysHeatmapCellsParams) => {
     queryKey: analysesKeys.list(params),
     queryFn: () => fetchAnalysisHeatmapCells(params),
     refetchInterval: 1000 * 60, // 1 minute
-    keepPreviousData: true,
+    keepPreviousData: false,
   });
 };
 

@@ -66,4 +66,20 @@ export default defineMessages({
     defaultMessage:
       'Statistical insights are not available for projects with less than 30 participants.',
   },
+  true: {
+    id: 'app.containers.AdminPage.projects.project.analysis.heatmap.true',
+    defaultMessage: 'True',
+  },
+  false: {
+    id: 'app.containers.AdminPage.projects.project.analysis.heatmap.false',
+    defaultMessage: 'False',
+  },
+  rowValues: {
+    id: 'app.containers.AdminPage.projects.project.analysis.heatmap.rowValues',
+    defaultMessage: 'Row values',
+  },
+  columnValues: {
+    id: 'app.containers.AdminPage.projects.project.analysis.heatmap.columnValues',
+    defaultMessage: 'Column values',
+  },
 });

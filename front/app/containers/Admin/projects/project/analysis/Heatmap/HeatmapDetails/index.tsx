@@ -9,9 +9,7 @@ import {
   Tbody,
   stylingConsts,
   Title,
-  IconButton,
   Select,
-  Spinner,
 } from '@citizenlab/cl2-component-library';
 import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
@@ -20,6 +18,8 @@ import { Unit } from 'api/analysis_heat_map_cells/types';
 import useAnalysisHeatmapCells from 'api/analysis_heat_map_cells/useAnalysisHeatmapCells';
 import useAnalysisTags from 'api/analysis_tags/useAnalysisTags';
 import useCustomFieldBins from 'api/custom_field_bins/useCustomFieldBins';
+import { IFlatCustomField } from 'api/custom_fields/types';
+import { IUserCustomFieldData } from 'api/user_custom_fields/types';
 import useUserCustomField from 'api/user_custom_fields/useUserCustomField';
 import useUserCustomFieldsOptions from 'api/user_custom_fields_options/useUserCustomFieldsOptions';
 
@@ -34,13 +34,6 @@ import messages from '../messages';
 
 import HeatmapCellTagVsBin from './HeatmapCellTagVsBin';
 import HeatmapTableHead from './HeatmapTableHead';
-
-interface HeatMapProps {
-  onClose: () => void;
-  customFieldsIds: string[];
-  initialCustomFieldId?: string;
-  initialUnit?: Unit;
-}
 
 interface StyledTableProps {
   columns: number;
@@ -100,24 +93,45 @@ const StyledTable = styled(Table)<StyledTableProps>`
   }
 `;
 
+interface HeatMapProps {
+  onClose: () => void;
+  userCustomFields: IUserCustomFieldData[];
+  inputCustomFields: IFlatCustomField[];
+  initialCustomFieldId?: string;
+  initialUnit?: Unit;
+}
+
 const HeatmapDetails = ({
   onClose,
-  customFieldsIds,
+  userCustomFields,
+  inputCustomFields,
   initialCustomFieldId,
   initialUnit,
 }: HeatMapProps) => {
   const localize = useLocalize();
   const { formatMessage } = useIntl();
-  const [selectedFieldId, setSelectedFieldId] = useState(
-    initialCustomFieldId || customFieldsIds[0]
+
+  const userCustomFieldsIds = userCustomFields.map(
+    (customField) => customField.id
   );
+  const inputCustomFieldsIds = inputCustomFields.map(
+    (customField) => customField.id
+  );
+  const [selectedColumnFieldId, setSelectedColumnFieldId] = useState(
+    initialCustomFieldId || userCustomFieldsIds[0]
+  );
+  const [selectedRowFieldId, setSelectedRowFieldId] = useState(
+    initialCustomFieldId || userCustomFieldsIds[0]
+  );
+
   const [unit, setUnit] = useState<Unit>(initialUnit || 'inputs');
   const { analysisId } = useParams() as { analysisId: string };
-  const { data: analysisHeatmapCells, isLoading } = useAnalysisHeatmapCells({
+  const { data: analysisHeatmapCells } = useAnalysisHeatmapCells({
     analysisId,
     columnCategoryType: 'input_custom_field',
-    columnCategoryId: selectedFieldId,
-    rowCategoryType: 'tags',
+    columnCategoryId: selectedColumnFieldId,
+    rowCategoryType: 'input_custom_field',
+    rowCategoryId: selectedRowFieldId,
     unit,
   });
 
@@ -125,24 +139,9 @@ const HeatmapDetails = ({
     analysisId,
   });
 
-  const { data: customField } = useUserCustomField(selectedFieldId);
-  const { data: options } = useUserCustomFieldsOptions(selectedFieldId);
-  const { data: bins } = useCustomFieldBins(selectedFieldId);
-
-  const handleChangeCustomField = (offset: number) => {
-    setSelectedFieldId((currentId) => {
-      const currentIndex = customFieldsIds.findIndex(
-        (fieldId) => fieldId === currentId
-      );
-      const length = customFieldsIds.length;
-
-      // Calculate new index with wraparound
-      let newIndex = (currentIndex + offset) % length;
-      if (newIndex < 0) newIndex += length;
-
-      return customFieldsIds[newIndex];
-    });
-  };
+  const { data: customField } = useUserCustomField(selectedColumnFieldId);
+  const { data: options } = useUserCustomFieldsOptions(selectedColumnFieldId);
+  const { data: bins } = useCustomFieldBins(selectedColumnFieldId);
 
   if (!options || !bins) return null;
 
@@ -158,11 +157,59 @@ const HeatmapDetails = ({
       zIndex="100000"
       bg={colors.white}
     >
-      <Box display="flex" justifyContent="flex-end" py="12px">
+      <Box
+        display="flex"
+        justifyContent="flex-end"
+        py="12px"
+        position="absolute"
+        top="0"
+        right="12px"
+      >
         <CloseIconButton onClick={onClose} />
       </Box>
-      <Box display="flex" justifyContent="flex-end" mb="12px">
+      <Box
+        display="flex"
+        justifyContent="center"
+        gap="12px"
+        flexWrap="wrap"
+        mt="40px"
+        mb="12px"
+      >
         <Select
+          size="small"
+          label={formatMessage(messages.columnValues)}
+          value={selectedColumnFieldId}
+          onChange={(option) => setSelectedColumnFieldId(option.value)}
+          options={[
+            ...userCustomFields.map((field) => ({
+              value: field.id,
+              label: localize(field.attributes.title_multiloc),
+            })),
+            ...inputCustomFields.map((field) => ({
+              value: field.id,
+              label: localize(field.title_multiloc),
+            })),
+          ]}
+        />
+
+        <Select
+          size="small"
+          label={formatMessage(messages.rowValues)}
+          value={
+            inputCustomFieldsIds.includes(selectedRowFieldId)
+              ? selectedRowFieldId
+              : inputCustomFieldsIds[0]
+          }
+          onChange={(option) => setSelectedRowFieldId(option.value)}
+          options={inputCustomFields.map((field) => ({
+            value: field.id,
+            label: localize(field.title_multiloc),
+          }))}
+          disabled={inputCustomFieldsIds.length === 0}
+        />
+
+        <Select
+          size="small"
           value={unit}
           label={formatMessage(messages.units)}
           onChange={(option) => setUnit(option.value)}
@@ -177,33 +224,15 @@ const HeatmapDetails = ({
           ]}
         />
       </Box>
-      <Box display="flex" justifyContent="space-between" w="100%" m="auto">
-        {customFieldsIds.length > 1 && (
-          <IconButton
-            iconName="arrow-left"
-            onClick={() => handleChangeCustomField(-1)}
-            a11y_buttonActionMessage={formatMessage(messages.previousHeatmap)}
-          />
-        )}
-        <Box>
-          <Title fontSize="xl">
-            {localize(customField?.data.attributes.title_multiloc)}
-          </Title>
-
-          {isLoading ? <Spinner size="20px" /> : null}
-        </Box>
-        {customFieldsIds.length > 1 && (
-          <IconButton
-            iconName="arrow-right"
-            onClick={() => handleChangeCustomField(1)}
-            a11y_buttonActionMessage={formatMessage(messages.nextHeatmap)}
-          />
-        )}
+      <Box display="flex" justifyContent="center" alignItems="center">
+        <Title fontSize="xl">
+          {localize(customField?.data.attributes.title_multiloc)}
+        </Title>
       </Box>
       <Box overflowX="auto" w="100%" h="100%" pb="220px">
         {/* The number of columns includes the number of options + the tags column  */}
         <StyledTable columns={options.data.length + 2}>
-          <HeatmapTableHead customFieldId={selectedFieldId} />
+          <HeatmapTableHead customFieldId={selectedColumnFieldId} />
 
           <Tbody>
             {tags?.data.map((tag) => (
@@ -222,7 +251,6 @@ const HeatmapDetails = ({
                       cell.relationships.row.data.id === tag.id &&
                       cell.relationships.column.data.id === bin.id
                   );
-                  if (!cell) return null;
 
                   return (
                     <Td key={bin.id}>

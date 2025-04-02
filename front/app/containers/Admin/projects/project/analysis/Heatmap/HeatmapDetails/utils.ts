@@ -1,6 +1,13 @@
 import { colors } from '@citizenlab/cl2-component-library';
 
 import { ICustomFieldBinData } from 'api/custom_field_bins/types';
+import { IUserCustomFieldOptions } from 'api/user_custom_fields_options/types';
+
+import useLocalize from 'hooks/useLocalize';
+
+import { useIntl } from 'utils/cl-intl';
+
+import messages from '../messages';
 
 export const getCellBgColor = (lift: number | undefined): string => {
   if (lift === undefined) return colors.grey200;
@@ -41,4 +48,42 @@ export const formatRangeText = (
     return `< ${range.end}`;
   }
   return '';
+};
+
+export const useGetOptionText = ({
+  bin,
+  options,
+}: {
+  bin: ICustomFieldBinData;
+  options?: IUserCustomFieldOptions;
+}) => {
+  const localize = useLocalize();
+  const { formatMessage } = useIntl();
+  switch (bin.attributes.type) {
+    case 'CustomFieldBins::OptionBin':
+      return localize(
+        options?.data.find(
+          (option) =>
+            option.id === bin.relationships.custom_field_option?.data.id
+        )?.attributes.title_multiloc
+      );
+    case 'CustomFieldBins::RangeBin':
+      return formatRangeText(bin.attributes.range);
+
+    case 'CustomFieldBins::AgeBin':
+      return formatRangeText(bin.attributes.range);
+
+    case 'CustomFieldBins::ValueBin': {
+      const result = bin.attributes.values?.join(', ');
+      if (result === 'true') {
+        return formatMessage(messages.true);
+      }
+      if (result === 'false') {
+        return formatMessage(messages.false);
+      }
+      return result;
+    }
+    default:
+      return '';
+  }
 };

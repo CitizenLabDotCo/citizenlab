@@ -7,6 +7,8 @@ import {
   Button,
   stylingConsts,
   Icon,
+  colors,
+  Shimmer,
 } from '@citizenlab/cl2-component-library';
 
 import { IAnalysisHeatmapCellData } from 'api/analysis_heat_map_cells/types';
@@ -29,15 +31,15 @@ import {
 } from './utils';
 
 interface Props {
-  cell: IAnalysisHeatmapCellData;
+  cell?: IAnalysisHeatmapCellData;
   tag: ITagData;
   bin: ICustomFieldBinData;
 }
 
 const HeatmapCellTagVsBin = ({ cell, tag, bin }: Props) => {
-  const lift = cell.attributes.lift;
-  const pValue = cell.attributes.p_value;
-  const isSignificant = pValue <= 0.05;
+  const lift = cell?.attributes.lift;
+  const pValue = cell?.attributes.p_value;
+  const isSignificant = pValue && pValue <= 0.05;
 
   const cellBgColor = getCellBgColor(lift);
   const cellTextColor = getCellTextColor(lift);
@@ -47,7 +49,7 @@ const HeatmapCellTagVsBin = ({ cell, tag, bin }: Props) => {
   // const { data: option } = useUserCustomFieldsOption(bin.relationships.custom_field.data.id, bin.relationships.custom_field_option.data.id);
 
   const handleSummarize = () => {
-    if (bin.relationships.custom_field_option === null) return;
+    if (bin.relationships.custom_field_option === null || !cell) return;
 
     const authorKey: AuthorCustomFilterKey = `author_custom_${bin.relationships.custom_field.data.id}`;
     const filters: {
@@ -64,10 +66,21 @@ const HeatmapCellTagVsBin = ({ cell, tag, bin }: Props) => {
     });
   };
 
+  if (!cell) {
+    return (
+      <Shimmer
+        borderRadius={stylingConsts.borderRadius}
+        bgColor={colors.grey200}
+        py="20px"
+        position="relative"
+        minHeight="60px"
+      />
+    );
+  }
+
   if (cell.attributes.count === 0) {
     return null;
   }
-
   return (
     <Tooltip
       disabled={!cell}
