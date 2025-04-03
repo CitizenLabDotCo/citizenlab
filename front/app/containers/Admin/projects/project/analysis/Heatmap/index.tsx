@@ -4,8 +4,6 @@ import { useParams } from 'react-router-dom';
 
 import useAnalysis from 'api/analyses/useAnalysis';
 import { Unit } from 'api/analysis_heat_map_cells/types';
-import { ICustomFieldInputType } from 'api/custom_fields/types';
-import useCustomFields from 'api/custom_fields/useCustomFields';
 import useProjectById from 'api/projects/useProjectById';
 import useUserCustomFields from 'api/user_custom_fields/useUserCustomFields';
 
@@ -14,6 +12,8 @@ import useFeatureFlag from 'hooks/useFeatureFlag';
 import Warning from 'components/UI/Warning';
 
 import { useIntl } from 'utils/cl-intl';
+
+import useRelevantToHeatmapInputCustomFields from '../hooks/useRelevantToHeatmapInputCustomFields';
 
 import HeatmapDetails from './HeatmapDetails';
 import HeatmapInsights from './HeatmapInsights';
@@ -44,31 +44,14 @@ const Heatmap = () => {
     inputTypes: ['select', 'multiselect', 'number', 'checkbox'],
   });
 
-  const inputCustomFieldInputTypes: ICustomFieldInputType[] = [
-    'select',
-    'multiselect',
-    'number',
-    'linear_scale',
-    'ranking',
-    'rating',
-    'multiselect_image',
-    'sentiment_linear_scale',
-  ];
-
-  const { data: inputCustomFields } = useCustomFields({
+  const relevantInputFields = useRelevantToHeatmapInputCustomFields({
     projectId,
-    phaseId: analysis?.data.relationships.phase?.data?.id,
-    inputTypes: inputCustomFieldInputTypes,
+    phaseId: analysis?.data.relationships.phase?.data?.id || undefined,
   });
 
-  const filteredInputCustomFields = inputCustomFields
-    // Temporary front-end filter for input custom fields
-    // The back-end currently does not support filtering by input type
-    ?.filter((customField) =>
-      inputCustomFieldInputTypes.includes(customField.input_type)
-    )
+  const filteredInputCustomFields = relevantInputFields
     // Only show custom fields that are used in the analysis
-    .filter((customField) => {
+    ?.filter((customField) => {
       const analysisCustomFieldIds = [
         analysis?.data.relationships.main_custom_field?.data?.id,
         ...(
