@@ -61,11 +61,22 @@ const Heatmap = () => {
     inputTypes: inputCustomFieldInputTypes,
   });
 
-  // Temporary front-end filter for input custom fields
-  // The back-end currently does not support filtering by input type
-  const filteredInputCustomFields = inputCustomFields?.filter((customField) =>
-    inputCustomFieldInputTypes.includes(customField.input_type)
-  );
+  const filteredInputCustomFields = inputCustomFields
+    // Temporary front-end filter for input custom fields
+    // The back-end currently does not support filtering by input type
+    ?.filter((customField) =>
+      inputCustomFieldInputTypes.includes(customField.input_type)
+    )
+    // Only show custom fields that are used in the analysis
+    .filter((customField) => {
+      const analysisCustomFieldIds = [
+        analysis?.data.relationships.main_custom_field?.data?.id,
+        ...(
+          analysis?.data.relationships.additional_custom_fields?.data || []
+        ).map((customField) => customField.id),
+      ];
+      return analysisCustomFieldIds.includes(customField.id);
+    });
 
   if (
     !userCustomFields ||
