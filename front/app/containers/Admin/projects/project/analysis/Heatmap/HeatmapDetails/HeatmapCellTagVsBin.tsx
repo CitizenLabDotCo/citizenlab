@@ -128,7 +128,7 @@ const HeatmapCellTagVsBin = ({ cell, row, column }: Props) => {
         <Box position="absolute" right="4px" top="4px">
           {isSignificant ? (
             <Icon
-              name="alert-circle"
+              name="check-circle"
               fill={cellTextColor}
               width="20px"
               height="20px"
