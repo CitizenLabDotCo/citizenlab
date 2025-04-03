@@ -37,13 +37,6 @@ interface Props {
 }
 
 const HeatmapCellTagVsBin = ({ cell, row, column }: Props) => {
-  const lift = cell?.attributes.lift;
-  const pValue = cell?.attributes.p_value;
-  const isSignificant = pValue && pValue <= 0.05;
-
-  const cellBgColor = getCellBgColor(lift);
-  const cellTextColor = getCellTextColor(lift);
-
   const localize = useLocalize();
   const { mutate: addSummary } = useAddAnalysisSummary();
 
@@ -76,6 +69,13 @@ const HeatmapCellTagVsBin = ({ cell, row, column }: Props) => {
       />
     );
   }
+
+  const lift = cell.attributes.lift;
+  const pValue = cell.attributes.p_value;
+  const isSignificant = pValue <= 0.05;
+
+  const cellBgColor = getCellBgColor(lift, isSignificant);
+  const cellTextColor = getCellTextColor(lift, isSignificant);
 
   if (cell.attributes.count === 0) {
     return null;

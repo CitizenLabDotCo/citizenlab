@@ -9,20 +9,26 @@ import { useIntl } from 'utils/cl-intl';
 
 import messages from '../messages';
 
-export const getCellBgColor = (lift: number | undefined): string => {
+export const getCellBgColor = (
+  lift: number | undefined,
+  isSignificant?: boolean
+): string => {
   if (lift === undefined) return colors.grey200;
-  if (lift >= 1.5) return colors.success;
+  if (lift >= 1.5 && isSignificant) return colors.success;
   if (lift >= 1) return colors.successLight;
-  if (lift >= 0.5) return colors.errorLight;
-  return colors.error;
+  if (lift >= 0.5 && isSignificant) return colors.error;
+  return colors.errorLight;
 };
 
-export const getCellTextColor = (lift: number | undefined): string => {
+export const getCellTextColor = (
+  lift: number | undefined,
+  isSignificant?: boolean
+): string => {
   if (lift === undefined) return colors.grey800;
-  if (lift >= 1.5) return colors.white;
+  if (lift >= 1.5 && isSignificant) return colors.white;
   if (lift >= 1) return colors.grey800;
-  if (lift >= 0.5) return colors.grey800;
-  return colors.white;
+  if (lift >= 0.5 && isSignificant) return colors.white;
+  return colors.grey800;
 };
 
 export const convertLiftToPercentage = (lift: number | undefined): string => {

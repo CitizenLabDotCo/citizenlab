@@ -82,6 +82,7 @@ const HeatmapDetails = ({
   const [selectedRowType, setSelectedRowType] = useState(
     initialRowType || 'tags'
   );
+
   // The column type is always a custom field id
   const [selectedColumnFieldId, setSelectedColumnFieldId] = useState(
     initialColumnFieldId || userCustomFieldsIds[0]
