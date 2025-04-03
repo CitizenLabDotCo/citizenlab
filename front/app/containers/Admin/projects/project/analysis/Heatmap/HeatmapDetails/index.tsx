@@ -11,6 +11,7 @@ import {
 } from '@citizenlab/cl2-component-library';
 import { useParams } from 'react-router-dom';
 
+import useAnalysis from 'api/analyses/useAnalysis';
 import { Unit } from 'api/analysis_heat_map_cells/types';
 import useAnalysisHeatmapCells from 'api/analysis_heat_map_cells/useAnalysisHeatmapCells';
 import useAnalysisTags from 'api/analysis_tags/useAnalysisTags';
@@ -90,6 +91,8 @@ const HeatmapDetails = ({
   const isSelectedRowTypeTags = selectedRowType === 'tags';
 
   const { analysisId } = useParams() as { analysisId: string };
+  const { data: analysis } = useAnalysis(analysisId);
+
   const { data: analysisHeatmapCells } = useAnalysisHeatmapCells({
     analysisId,
     columnCategoryType: 'input_custom_field',
@@ -189,6 +192,9 @@ const HeatmapDetails = ({
             value={unit}
             label={formatMessage(messages.units)}
             onChange={(option) => setUnit(option.value)}
+            disabled={
+              analysis?.data.attributes.participation_method === 'native_survey'
+            }
             options={[
               { value: 'inputs', label: formatMessage(messages.inputs) },
               { value: 'likes', label: formatMessage(messages.likes) },
