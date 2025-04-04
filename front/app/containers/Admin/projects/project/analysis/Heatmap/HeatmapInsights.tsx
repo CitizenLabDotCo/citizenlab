@@ -19,6 +19,7 @@ import useLocalize from 'hooks/useLocalize';
 import { useIntl } from 'utils/cl-intl';
 
 import messages from './messages';
+import SummarizeButton from './SummarizeButton';
 
 interface HeatMapInsightsProps {
   onExploreClick: ({
@@ -167,6 +168,13 @@ const HeatMapInsights = ({ onExploreClick }: HeatMapInsightsProps) => {
             >
               {formatMessage(messages.explore)}
             </Button>
+            {rowBin && columnBin && (
+              <SummarizeButton
+                row={rowBin.data}
+                column={columnBin.data}
+                cell={selectedCell}
+              />
+            )}
           </Box>
         </Box>
       )}
