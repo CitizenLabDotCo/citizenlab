@@ -23,7 +23,7 @@ export type IInputsFilterParams = {
   input_custom_field_no_empty_values?: boolean;
   limit?: number;
 } & { [K in AuthorCustomFilterKey]?: string[] | string } & {
-  [K in InputCustomFilterKey]?: string | string[];
+  [K in InputCustomFilterKey]?: string | string[] | boolean;
 };
 
 export type IInputsQueryParams = {

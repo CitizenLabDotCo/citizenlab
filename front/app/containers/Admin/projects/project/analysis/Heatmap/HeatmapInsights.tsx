@@ -157,11 +157,11 @@ const HeatMapInsights = ({ onExploreClick }: HeatMapInsightsProps) => {
                 onExploreClick({
                   unit: selectedCell.attributes.unit,
                   columnCustomFieldId:
-                    columnBin?.data.relationships.custom_field.data.id,
+                    columnBin?.data.relationships.custom_field.data?.id,
                   rowType:
                     selectedCell.relationships.row.data.type === 'tags'
                       ? 'tags'
-                      : rowBin?.data.relationships.custom_field.data.id,
+                      : rowBin?.data.relationships.custom_field.data?.id,
                 })
               }
             >

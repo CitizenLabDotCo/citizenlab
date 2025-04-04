@@ -70,7 +70,7 @@ export const useGetOptionText = ({
       return localize(
         options?.data.find(
           (option) =>
-            option.id === bin.relationships.custom_field_option?.data.id
+            option.id === bin.relationships.custom_field_option?.data?.id
         )?.attributes.title_multiloc
       );
     case 'CustomFieldBins::RangeBin':
