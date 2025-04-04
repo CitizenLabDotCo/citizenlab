@@ -12,11 +12,14 @@ import {
 } from '@citizenlab/cl2-component-library';
 
 import { IAnalysisHeatmapCellData } from 'api/analysis_heat_map_cells/types';
-import { AuthorCustomFilterKey } from 'api/analysis_inputs/types';
+import {
+  AuthorCustomFilterKey,
+  InputCustomFilterKey,
+} from 'api/analysis_inputs/types';
 import useAddAnalysisSummary from 'api/analysis_summaries/useAddAnalysisSummary';
 import { ITagData } from 'api/analysis_tags/types';
 import { ICustomFieldBinData } from 'api/custom_field_bins/types';
-// import useUserCustomFieldsOption from 'api/user_custom_fields_options/useUserCustomFieldsOption';
+import useUserCustomFields from 'api/user_custom_fields/useUserCustomFields';
 
 import useLocalize from 'hooks/useLocalize';
 
@@ -36,20 +39,66 @@ interface Props {
   column: ICustomFieldBinData;
 }
 
-const HeatmapCellTagVsBin = ({ cell, row, column }: Props) => {
-  const localize = useLocalize();
+const SummarizeButton = ({
+  row,
+  column,
+  cell,
+}: {
+  row: ITagData | ICustomFieldBinData;
+  column: ICustomFieldBinData;
+  cell?: IAnalysisHeatmapCellData;
+}) => {
   const { mutate: addSummary } = useAddAnalysisSummary();
+  const { data: userCustomFields } = useUserCustomFields();
+
+  const userCustomFieldsIds = userCustomFields?.data.map(
+    (customField) => customField.id
+  );
 
   const handleSummarize = () => {
     if (column.relationships.custom_field_option === null || !cell) return;
 
-    const authorKey: AuthorCustomFilterKey = `author_custom_${column.relationships.custom_field.data.id}`;
+    const formFilters = (bin: ITagData | ICustomFieldBinData) => {
+      // Handle Tag type
+      if (bin.type === 'tag') {
+        return { tag_ids: [bin.id] };
+      }
+
+      // For custom field bins
+      const fieldId = bin.relationships.custom_field.data.id;
+      const isUserField = userCustomFieldsIds?.includes(fieldId);
+      const keyPrefix = isUserField ? 'author_custom_' : 'input_custom_';
+      const isRangeType = [
+        'CustomFieldBins::AgeBin',
+        'CustomFieldBins::RangeBin',
+      ].includes(bin.attributes.type);
+
+      if (isRangeType) {
+        // For range type bins
+        const fromKey = `${keyPrefix}${fieldId}_from`;
+        const toKey = `${keyPrefix}${fieldId}_to`;
+
+        return {
+          [fromKey]: bin.attributes.range?.begin.toString(),
+          [toKey]: bin.attributes.range?.end?.toString(),
+        };
+      }
+
+      // For other bin types
+      const key = `${keyPrefix}${fieldId}`;
+      return {
+        [key]:
+          bin.attributes.values?.map((value) => value.toString()) || undefined,
+      };
+    };
+
     const filters: {
-      tag_ids: string[];
-      [authorKey: AuthorCustomFilterKey]: string[] | undefined;
+      tag_ids?: string[];
+      [authorKey: AuthorCustomFilterKey]: string | string[] | undefined;
+      [inputKey: InputCustomFilterKey]: string | string[] | undefined;
     } = {
-      tag_ids: [row.id],
-      [authorKey]: [column.relationships.custom_field_option.data.id],
+      ...formFilters(row),
+      ...formFilters(column),
     };
 
     addSummary({
@@ -57,6 +106,20 @@ const HeatmapCellTagVsBin = ({ cell, row, column }: Props) => {
       filters,
     });
   };
+
+  return (
+    <Button
+      buttonStyle="secondary-outlined"
+      icon="stars"
+      onClick={() => handleSummarize()}
+    >
+      <FormattedMessage {...messages.summarize} />
+    </Button>
+  );
+};
+
+const HeatmapCellTagVsBin = ({ cell, row, column }: Props) => {
+  const localize = useLocalize();
 
   if (!cell) {
     return (
@@ -98,13 +161,7 @@ const HeatmapCellTagVsBin = ({ cell, row, column }: Props) => {
             </Text>
           ) : null}
 
-          <Button
-            buttonStyle="secondary-outlined"
-            icon="stars"
-            onClick={() => handleSummarize()}
-          >
-            <FormattedMessage {...messages.summarize} />
-          </Button>
+          <SummarizeButton row={row} column={column} cell={cell} />
         </Box>
       }
     >

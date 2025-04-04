@@ -7,10 +7,7 @@ import inputsKeys from './keys';
 export type InputsKeys = Keys<typeof inputsKeys>;
 
 export type AuthorCustomFilterKey = `author_custom_${string}`;
-
-export type InputCustomFromFilterKey = `input_custom_${string}_from`;
-export type InputCustomToFilterKey = `input_custom_${string}_to`;
-export type InputCustomInFilterKey = `input_custom_${string}_in`;
+export type InputCustomFilterKey = `input_custom_${string}`;
 
 export type IInputsFilterParams = {
   search?: string;
@@ -26,10 +23,8 @@ export type IInputsFilterParams = {
   input_custom_field_no_empty_values?: boolean;
   limit?: number;
 } & { [K in AuthorCustomFilterKey]?: string[] | string } & {
-  [K in InputCustomFromFilterKey]?: string;
-} & {
-  [K in InputCustomToFilterKey]?: string;
-} & { [K in InputCustomInFilterKey]?: string[] };
+  [K in InputCustomFilterKey]?: string | string[];
+};
 
 export type IInputsQueryParams = {
   pageNumber?: number;
