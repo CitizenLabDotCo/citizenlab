@@ -21,9 +21,11 @@ const fetchOption = ({
 const useUserCustomFieldsOption = ({
   customFieldId,
   optionId,
+  enabled = true,
 }: {
   customFieldId: string;
   optionId: string;
+  enabled?: boolean;
 }) => {
   return useQuery<
     IUserCustomFieldOption,
@@ -33,6 +35,7 @@ const useUserCustomFieldsOption = ({
   >({
     queryKey: userCustomFieldsOptionsKeys.item({ customFieldId, optionId }),
     queryFn: () => fetchOption({ customFieldId, optionId }),
+    enabled,
   });
 };
 

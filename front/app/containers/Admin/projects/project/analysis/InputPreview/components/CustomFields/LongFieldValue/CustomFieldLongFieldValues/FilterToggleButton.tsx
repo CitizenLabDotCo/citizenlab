@@ -15,10 +15,11 @@ export const FilterToggleButton = ({ customFieldId, value }) => {
   const { formatMessage } = useIntl();
   const filters = useAnalysisFilterParams();
   const filterValue = filters[`input_custom_${customFieldId}`];
-  const isFilterSet = filterValue?.includes(value);
+  const isFilterSet = Array.isArray(filterValue) && filterValue.includes(value);
 
   const handleToggleFilterOption = (customFieldId, customOptionKey) => () => {
-    const newFilterValue = xor(filterValue, [customOptionKey]);
+    const currentFilterValue = Array.isArray(filterValue) ? filterValue : [];
+    const newFilterValue = xor(currentFilterValue, [customOptionKey]);
     updateSearchParams({
       [`input_custom_${customFieldId}`]: newFilterValue.length
         ? newFilterValue

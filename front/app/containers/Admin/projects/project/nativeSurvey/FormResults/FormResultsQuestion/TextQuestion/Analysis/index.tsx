@@ -16,6 +16,9 @@ import useAddAnalysis from 'api/analyses/useAddAnalysis';
 import useAnalyses from 'api/analyses/useAnalyses';
 import useUpdateAnalysis from 'api/analyses/useUpdateAnalysis';
 import useAnalysisInsights from 'api/analysis_insights/useAnalysisInsights';
+import useCustomFields from 'api/custom_fields/useCustomFields';
+
+import useRelevantToHeatmapInputCustomFields from 'containers/Admin/projects/project/analysis/hooks/useRelevantToHeatmapInputCustomFields';
 
 import Button from 'components/UI/ButtonWithLink';
 
@@ -55,16 +58,33 @@ const Analysis = ({
     phaseId,
   });
 
+  const additionalCustomFieldsIds = useRelevantToHeatmapInputCustomFields({
+    projectId,
+    phaseId,
+  })?.map((customField) => customField.id);
+
+  // Needed in order to create stable references for the additional custom fields
+  const stringifiedAdditionalCustomFieldsIds = JSON.stringify(
+    additionalCustomFieldsIds
+  );
+
   const relevantAnalysis =
     analyses?.data &&
-    // TODO: Fix this the next time the file is edited.
-    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-    analyses?.data?.find(
+    analyses.data.find(
       (analysis) =>
-        // TODO: Fix this the next time the file is edited.
-        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
         analysis.relationships.main_custom_field?.data?.id === customFieldId
     );
+
+  const { data: inputCustomFields } = useCustomFields({
+    projectId,
+    phaseId,
+  });
+
+  const firstTextQuestionId = inputCustomFields?.find(
+    (result) =>
+      result.input_type === 'text' || result.input_type === 'multiline_text'
+  )?.id;
+
   const { data: insights, isLoading: isInsightsLoading } = useAnalysisInsights({
     analysisId: relevantAnalysis?.id,
   });
@@ -77,10 +97,16 @@ const Analysis = ({
       !relevantAnalysis &&
       textResponsesCount > 10
     ) {
+      // We are including the additional custom fields in the analysis in order to be able to display heatmaps for them correctly
+
       addAnalysis({
         projectId: phaseId ? undefined : projectId,
         phaseId,
         mainCustomField: customFieldId,
+        additionalCustomFields:
+          firstTextQuestionId === customFieldId
+            ? JSON.parse(stringifiedAdditionalCustomFieldsIds)
+            : undefined,
       });
     }
   }, [
@@ -91,6 +117,8 @@ const Analysis = ({
     phaseId,
     addAnalysis,
     textResponsesCount,
+    firstTextQuestionId,
+    stringifiedAdditionalCustomFieldsIds,
   ]);
 
   const toggleDropdown = () => {

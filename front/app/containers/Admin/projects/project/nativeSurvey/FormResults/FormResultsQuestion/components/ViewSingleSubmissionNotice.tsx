@@ -7,6 +7,8 @@ import { useParams } from 'react-router-dom';
 import useAddAnalysis from 'api/analyses/useAddAnalysis';
 import useAnalyses from 'api/analyses/useAnalyses';
 
+import useRelevantToHeatmapInputCustomFields from 'containers/Admin/projects/project/analysis/hooks/useRelevantToHeatmapInputCustomFields';
+
 import Button from 'components/UI/ButtonWithLink';
 
 import { useIntl } from 'utils/cl-intl';
@@ -33,16 +35,15 @@ const ViewSingleSubmissionNotice = ({ customFieldId }: Props) => {
     phaseId,
   });
 
-  const relevantAnalysis =
-    analyses?.data &&
-    // TODO: Fix this the next time the file is edited.
-    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-    analyses?.data?.find(
-      (analysis) =>
-        // TODO: Fix this the next time the file is edited.
-        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-        analysis.relationships.main_custom_field?.data?.id === customFieldId
-    );
+  const additionalCustomFieldsIds = useRelevantToHeatmapInputCustomFields({
+    projectId,
+    phaseId,
+  })?.map((customField) => customField.id);
+
+  const relevantAnalysis = analyses?.data.find(
+    (analysis) =>
+      analysis.relationships.main_custom_field?.data?.id === customFieldId
+  );
 
   const goToAnalysis = () => {
     if (relevantAnalysis?.id) {
@@ -59,6 +60,7 @@ const ViewSingleSubmissionNotice = ({ customFieldId }: Props) => {
           projectId: phaseId ? undefined : projectId,
           phaseId,
           mainCustomField: customFieldId,
+          additionalCustomFields: additionalCustomFieldsIds,
         },
         {
           onSuccess: (response) => {

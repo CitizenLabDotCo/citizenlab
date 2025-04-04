@@ -6,6 +6,7 @@ module Analysis
 
     def run(auto_tagging_task)
       auto_tagging_task.execute
+      HeatmapGenerationJob.perform_later(auto_tagging_task.analysis)
     end
   end
 end

@@ -25,6 +25,11 @@ module Frontend
         return model_to_path(model_instance.idea)
       when InternalComment # Internal comments are only implemented in the Back Office / Admin UI
         return "admin/projects/#{model_instance.idea.project_id}/ideas/#{model_instance.idea.id}##{model_instance.id}"
+      when Analysis::Analysis
+        project_id = model_instance.source_project.id
+        phase_id = model_instance.phase_id
+        analysis_id = model_instance.id
+        return "admin/projects/#{project_id}/analysis/#{analysis_id}#{phase_id ? "?phase_id=#{phase_id}" : ''}"
       when ProjectFolders::Folder
         subroute = 'folders'
         slug = model_instance.slug

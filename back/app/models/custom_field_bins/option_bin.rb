@@ -28,17 +28,17 @@ module CustomFieldBins
     validates :values, :range, absence: true
 
     def in_bin?(value)
-      return false if value.nil?
+      return false if value.nil? || custom_field_option_value.nil?
 
-      value == custom_field_option.key || value.include?(custom_field_option.key)
+      value == custom_field_option_value || value.include?(custom_field_option_value)
     end
 
     def filter_by_bin(scope)
       case custom_field.input_type
       when 'select'
-        scope.where("custom_field_values->>'#{custom_field.key}' = ?", custom_field_option.key)
+        scope.where("custom_field_values->>'#{custom_field.key}' = ?", custom_field_option_value)
       when 'multiselect'
-        scope.where("custom_field_values->'#{custom_field.key}' @> ?", custom_field_option.key.to_json)
+        scope.where("custom_field_values->'#{custom_field.key}' @> ?", custom_field_option_value.to_json)
       end
     end
 
@@ -50,8 +50,22 @@ module CustomFieldBins
       end
     end
 
-    def self.supported_custom_field_input_types
-      %w[select select_image multiselect multiselect_image]
+    def self.supports_custom_field?(custom_field)
+      %w[select select_image multiselect multiselect_image].include?(custom_field.input_type)
+    end
+
+    private
+
+    def custom_field_option_value
+      if custom_field.domicile?
+        # For the domicile the value stores in custom_field_values is the area
+        # id, whereas the custom_field_option this bin is associated to is an
+        # instance that is kept in sync between the area and the custom field
+        # options through code in the `area` model
+        custom_field_option.area&.id
+      else
+        custom_field_option.key
+      end
     end
   end
 end
