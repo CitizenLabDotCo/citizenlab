@@ -8,20 +8,23 @@ describe BulkImportIdeas::SideFxBulkImportService do
   let(:ideas) { create_list(:idea, 3) }
   let(:users) { create_list(:user, 2) }
   let(:phase) { create(:phase) }
-  let(:analysis) { create(:analysis, project: phase.project) }
 
   describe 'after_success' do
     it "logs a 'successful' action job with stats against a phase" do
-      expect { service.after_success(current_user, phase.id, 'idea', 'xlsx', ideas, users) }
+      expect { service.after_success(current_user, phase, 'idea', 'xlsx', ideas, users) }
         .to have_enqueued_job(LogActivityJob).with(
-          phase.id,
+          phase,
           'bulk_import_succeeded',
           current_user,
           ideas.last.created_at,
-          { payload: { model: 'idea', format: 'xlsx', items_created: 3, users_created: 2 } }
+          { payload: { model: 'idea', format: 'xlsx', items_created: 3, users_created: 2 },
+            project_id: phase.project_id }
         )
+    end
 
-      expect { service.after_success(current_user, phase.id, 'idea', 'xlsx', ideas, users) }
+    it 'enqueues a heatmap generation job for each analysis' do
+      analysis = create(:analysis, project: phase.project)
+      expect { service.after_success(current_user, phase, 'idea', 'xlsx', ideas, users) }
         .to have_enqueued_job(Analysis::HeatmapGenerationJob).with(
           analysis
         )
