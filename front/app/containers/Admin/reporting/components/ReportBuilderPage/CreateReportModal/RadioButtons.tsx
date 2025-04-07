@@ -43,20 +43,22 @@ const RadioButtons = ({ value, onChange }: Props) => {
     name: 'community_monitor',
   });
 
-  let templateTypes =
-    isSuperAdmin(user) || (platformTemplatesEnabled && isAdmin(user))
-      ? TEMPLATE_TYPES
-      : TEMPLATE_TYPES.filter((type) => type !== 'platform');
+  let templateTypes = TEMPLATE_TYPES;
 
-  templateTypes = templateTypes.filter((type) => {
-    if (type === 'community-monitor') {
-      return communityMonitorEnabled;
-    }
-    return true;
-  });
+  // Filter out 'platform' templates unless the user is a super admin or platform templates are enabled for admins
+  if (!(isSuperAdmin(user) || (platformTemplatesEnabled && isAdmin(user)))) {
+    templateTypes = templateTypes.filter((type) => type !== 'platform');
+  }
 
+  // Filter out 'community-monitor' templates if the feature is disabled
+  if (!communityMonitorEnabled) {
+    templateTypes = templateTypes.filter(
+      (type) => type !== 'community-monitor'
+    );
+  }
+
+  // If on a specific community monitor reports page, only include that template type
   if (location.pathname.includes('community-monitor/reports')) {
-    // Only include community monitor template
     templateTypes = templateTypes.filter(
       (type) => type === 'community-monitor'
     );

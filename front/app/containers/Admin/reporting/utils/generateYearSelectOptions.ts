@@ -1,6 +1,9 @@
 import { IOption } from 'typings';
 
-export const generateYearOptions = (startYear: number, endYear?: number) => {
+export const generateYearSelectOptions = (
+  startYear: number,
+  endYear?: number
+) => {
   // Start at startYear, and go up to present
   const years: IOption[] = [];
 

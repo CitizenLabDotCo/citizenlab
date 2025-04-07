@@ -14,7 +14,7 @@ import { IOption } from 'typings';
 import useCommunityMonitorProject from 'api/community_monitor/useCommunityMonitorProject';
 import useAddReport, { AddReport } from 'api/reports/useAddReport';
 
-import { generateYearOptions } from 'containers/Admin/reporting/utils/generateYearOptions';
+import { generateYearSelectOptions } from 'containers/Admin/reporting/utils/generateYearSelectOptions';
 import reportTitleIsTaken from 'containers/Admin/reporting/utils/reportTitleIsTaken';
 
 import { DateRange } from 'components/admin/DatePickers/_shared/typings';
@@ -71,16 +71,11 @@ const CreateReportModal = ({ open, onClose }: Props) => {
     if (blockSubmit) return;
     setErrorMessage(undefined);
 
-    const createReportParams: AddReport =
-      template === 'community-monitor' && communityMonitorPhaseId
-        ? {
-            phase_id: communityMonitorPhaseId,
-            name: reportTitle,
-          }
-        : {
-            phase_id: undefined,
-            name: reportTitle,
-          };
+    const createReportParams: AddReport = {
+      phase_id:
+        template === 'community-monitor' ? communityMonitorPhaseId : undefined,
+      name: reportTitle,
+    };
 
     createReport(createReportParams, {
       onSuccess: (report) => {
@@ -138,7 +133,7 @@ const CreateReportModal = ({ open, onClose }: Props) => {
               <Select
                 placeholder={formatMessage(messages.selectYear)}
                 value={year}
-                options={generateYearOptions(2025)} // Genereates list: 2025 until current year
+                options={generateYearSelectOptions(2025)} // Genereates list: 2025 until current year
                 onChange={(option) => setYear(option.value)}
               />
             </Box>
@@ -146,11 +141,11 @@ const CreateReportModal = ({ open, onClose }: Props) => {
             <Select
               placeholder={formatMessage(messages.selectQuarter)}
               value={quarter}
-              options={Array.from({ length: 4 }, (_, i) => ({
-                label: `${formatMessage(messages.quarter, {
-                  quarterValue: i + 1,
-                })}`, // E.g. "Quarter 1"
-                value: i + 1, // E.g. "1"
+              options={[1, 2, 3, 4].map((quarter) => ({
+                label: formatMessage(messages.quarter, {
+                  quarterValue: quarter,
+                }), // e.g., "Quarter 1"
+                value: quarter,
               }))}
               onChange={(option) => setQuarter(option.value)}
             />

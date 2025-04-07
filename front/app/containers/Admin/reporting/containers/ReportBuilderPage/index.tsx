@@ -148,6 +148,7 @@ const ReportBuilderPage = ({ tabsToHide }: ReportBuilderPageProps) => {
     isAdmin(me) &&
     serviceReportsCount > 0 &&
     !tabsToHide?.includes('service-reports');
+
   const showCommunityMonitorReportsTab =
     isAdmin(me) &&
     communityMonitorReportsCount > 0 &&

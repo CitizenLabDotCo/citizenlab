@@ -31,14 +31,16 @@ export const getPeriod = ({
   return `<b>${formatMessage(messages.start)}</b>: ${startDate}`;
 };
 
+type FormatMessageWithLocale = (
+  locale: SupportedLocale,
+  messageDescriptor: MessageDescriptor,
+  values?: FormatMessageValues
+) => string;
+
 export const toMultiloc = (
   message: MessageDescriptor,
   appConfigurationLocales: SupportedLocale[],
-  formatMessageWithLocale: (
-    locale: SupportedLocale,
-    messageDescriptor: MessageDescriptor,
-    values?: FormatMessageValues
-  ) => string,
+  formatMessageWithLocale: FormatMessageWithLocale,
   messageValues?: FormatMessageValues
 ) => {
   return createMultiloc(appConfigurationLocales, (locale) => {

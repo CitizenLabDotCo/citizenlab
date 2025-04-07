@@ -2,16 +2,10 @@ import { IUser } from 'api/users/types';
 
 import { isAdmin } from 'utils/permissions/roles';
 
-export const getDefaultTab = (user: IUser | undefined) => {
-  let defaultTab = isAdmin(user) ? 'all-reports' : 'your-reports';
-
-  const isCommunityMonitorReportTab = location.pathname.includes(
-    'community-monitor/reports'
-  );
-
-  if (isCommunityMonitorReportTab) {
-    defaultTab = 'community-monitor';
+export const getDefaultTab = (user?: IUser): string => {
+  if (location.pathname.includes('community-monitor/reports')) {
+    return 'community-monitor';
   }
 
-  return defaultTab;
+  return isAdmin(user) ? 'all-reports' : 'your-reports';
 };

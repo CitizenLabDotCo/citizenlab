@@ -44,10 +44,13 @@ const CategoryScores = ({ sentimentScores }: Props) => {
           const { currentScore, percentageDifference } =
             getCategoryScoreData(scores);
 
-          const otherCategoryHasScores =
+          const isOtherCategoryAndHasScores =
             category === 'other' && scores.length > 0;
 
-          const showCategory = category !== 'other' || otherCategoryHasScores;
+          // Even if they are empty, for the 3 main categories we always
+          // want to show them anyways in the UI. "Other" we only show if relevant.
+          const showCategory =
+            category !== 'other' || isOtherCategoryAndHasScores;
 
           return (
             <Box key={category} mr="28px">
