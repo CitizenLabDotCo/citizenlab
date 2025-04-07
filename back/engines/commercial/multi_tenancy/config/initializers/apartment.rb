@@ -132,7 +132,7 @@ class RescuedApartmentMiddleware < Apartment::Elevators::Generic
       host = if Rails.env.development? || Rails.env.staging?
         if request.host.end_with?('.localhost')
           # This lets you do my.city.localhost in local development to switch tenants without having to set OVERRIDE_HOST
-          request.host[0..-11]
+          request.host.sub(/\.localhost$/, '')
         else
           ENV.fetch('OVERRIDE_HOST', request.host)
         end
