@@ -39,7 +39,7 @@ const Heatmap = () => {
   const { data: project } = useProjectById(projectId);
 
   const statisticalInsightsEnabled = useFeatureFlag({
-    name: 'statistical_insights',
+    name: 'auto_insights',
     onlyCheckAllowed: true,
   });
 

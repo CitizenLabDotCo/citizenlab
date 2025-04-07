@@ -444,7 +444,7 @@ module MultiTenancy
               enabled: true,
               allowed: true
             },
-            statistical_insights: {
+            auto_insights: {
               enabled: true,
               allowed: true
             },

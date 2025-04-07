@@ -11,7 +11,7 @@ namespace :auto_insights do
     begin
       Tenant.with_lifecycle('active').all.each do |tenant|
         tenant.switch do
-          next unless AppConfiguration.instance.feature_activated?('statistical_insights')
+          next unless AppConfiguration.instance.feature_activated?('auto_insights')
 
           Analysis::Analysis.all.each do |analysis|
             next unless analysis.inputs.count > 100
@@ -52,7 +52,7 @@ namespace :auto_insights do
       next unless configuration.feature_activated?('large_summaries')
 
       settings = configuration.settings
-      settings['statistical_insights'] = {
+      settings['auto_insights'] = {
         allowed: true,
         enabled: true
       }

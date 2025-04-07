@@ -303,7 +303,7 @@ namespace :cl2_back do
           enabled: true,
           allowed: true
         },
-        statistical_insights: {
+        auto_insights: {
           enabled: true,
           allowed: true
         },

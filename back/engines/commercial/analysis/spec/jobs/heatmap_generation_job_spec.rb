@@ -4,7 +4,7 @@ require 'rails_helper'
 
 RSpec.describe Analysis::HeatmapGenerationJob do
   before do
-    SettingsService.new.activate_feature!('statistical_insights')
+    SettingsService.new.activate_feature!('auto_insights')
     Analytics::PopulateDimensionsService.populate_types
   end
 
@@ -102,7 +102,7 @@ RSpec.describe Analysis::HeatmapGenerationJob do
       end
     end
 
-    let!(:statistical_insights_deactivated) { SettingsService.new.deactivate_feature!('statistical_insights') }
+    let!(:auto_insights_deactivated) { SettingsService.new.deactivate_feature!('auto_insights') }
     let!(:custom_field) { create(:custom_field_select, :with_options) }
 
     # Create likes
