@@ -29,12 +29,12 @@ const UpsellNudge = () => {
         display="flex"
         justifyContent="center"
         alignItems="center"
-        background={rgba('white', 0.6)}
+        background={rgba(colors.white, 0.6)}
         zIndex="1"
       >
         <Box
           maxWidth="600px"
-          background="white"
+          background={colors.white}
           p="16px"
           borderRadius="8px"
           boxShadow="0 0 4px rgba(0, 0, 0, 0.2)"
