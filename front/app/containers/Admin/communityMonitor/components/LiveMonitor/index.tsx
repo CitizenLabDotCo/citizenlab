@@ -45,7 +45,7 @@ const LiveMonitor = () => {
       </Box>
       <FormResults projectId={projectId} phaseId={phaseId} />
 
-      {isError && (
+      {isError && ( // User has no access to Community Monitor
         <Box mt="24px">
           <UpsellNudge />
         </Box>
