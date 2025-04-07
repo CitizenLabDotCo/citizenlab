@@ -47,6 +47,9 @@ nl:
         title: Details
         description:
         description:
+    community_monitor:
+      form_end:
+        button_text: Terug naar home
   custom_forms:
     categories:
       main_content:
