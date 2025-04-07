@@ -7,7 +7,6 @@ namespace :auto_insights do
   task generate: :environment do
     url_service = Frontend::UrlService.new
     analyses = []
-    # We're going to find 10 random analyses
     begin
       Tenant.with_lifecycle('active').all.each do |tenant|
         tenant.switch do
@@ -42,6 +41,21 @@ namespace :auto_insights do
     ensure
       pp analyses
       puts analyses.count
+    end
+  end
+
+  task :rerun, %i[tenant_host analysis_id] => [:environment] do |_t, args|
+    Tenant.find_by!(host: args[:tenant_host]).switch do
+      analysis = Analysis::Analysis.find(args[:analysis_id])
+      url_service = Frontend::UrlService.new
+      path = url_service.model_to_path(analysis)
+      url = "http://#{Tenant.current.host}.localhost:3000/#{path}"
+
+      time = Benchmark.measure do
+        Analysis::HeatmapGenerationJob.perform_now(analysis)
+      end
+
+      puts "#{url} #{analysis.heatmap_cells.count} #{time.real}"
     end
   end
 
