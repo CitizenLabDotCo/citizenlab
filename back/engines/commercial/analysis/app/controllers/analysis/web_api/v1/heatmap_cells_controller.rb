@@ -76,9 +76,6 @@ module Analysis
           authorize(@analysis, :show?)
         end
 
-        def generate_heatmap_cells
-          HeatmapGenerationJob.perform_later(@analysis)
-        end
       end
     end
   end
