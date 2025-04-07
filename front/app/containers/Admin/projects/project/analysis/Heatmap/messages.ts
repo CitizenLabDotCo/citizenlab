@@ -61,8 +61,8 @@ export default defineMessages({
     id: 'app.containers.AdminPage.projects.project.analysis.heatmap.nextInsight',
     defaultMessage: 'Next insight',
   },
-  notAvailableForProjectsWithLessThan30Participants1: {
-    id: 'app.containers.AdminPage.projects.project.analysis.heatmap.notAvailableForProjectsWithLessThan30Participants',
+  notAvailableForProjectsWithLessThan30Participants: {
+    id: 'app.containers.AdminPage.projects.project.analysis.heatmap.notAvailableForProjectsWithLessThan30Participants1',
     defaultMessage:
       'Auto insights are not available for projects with less than 30 participants.',
   },
