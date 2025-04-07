@@ -75,7 +75,7 @@ const SurveyQuestionResult = ({
           <SentimentQuestion
             result={attributes}
             showAnalysis={false}
-            accordionMarginRight="24px"
+            mr="20px"
           />
         ) : null;
       case 'point':
