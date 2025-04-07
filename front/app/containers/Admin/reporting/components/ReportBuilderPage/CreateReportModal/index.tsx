@@ -12,7 +12,7 @@ import {
 import { IOption } from 'typings';
 
 import useCommunityMonitorProject from 'api/community_monitor/useCommunityMonitorProject';
-import useAddReport from 'api/reports/useAddReport';
+import useAddReport, { AddReport } from 'api/reports/useAddReport';
 
 import { generateYearOptions } from 'containers/Admin/reporting/utils/generateYearOptions';
 import reportTitleIsTaken from 'containers/Admin/reporting/utils/reportTitleIsTaken';
@@ -71,13 +71,14 @@ const CreateReportModal = ({ open, onClose }: Props) => {
     if (blockSubmit) return;
     setErrorMessage(undefined);
 
-    const createReportParams =
+    const createReportParams: AddReport =
       template === 'community-monitor' && communityMonitorPhaseId
         ? {
-            name: reportTitle,
             phase_id: communityMonitorPhaseId,
+            name: undefined,
           }
         : {
+            phase_id: undefined,
             name: reportTitle,
           };
 

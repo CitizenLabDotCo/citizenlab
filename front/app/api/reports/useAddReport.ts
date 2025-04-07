@@ -8,14 +8,14 @@ import fetcher from 'utils/cl-react-query/fetcher';
 import reportsKeys from './keys';
 import { ReportResponse } from './types';
 
-type AddReport =
+export type AddReport =
   | {
       name: string;
-      phase_id?: never;
+      phase_id?: null;
     }
   | {
-      name?: string;
-      phase_id?: string;
+      name?: null;
+      phase_id: string;
     };
 
 const addReport = async (requestBody: AddReport) =>
