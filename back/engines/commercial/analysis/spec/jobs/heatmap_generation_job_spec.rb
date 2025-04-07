@@ -59,8 +59,8 @@ RSpec.describe Analysis::HeatmapGenerationJob do
         {
           payload: { inputs_count: 10,
                      participants_count: 30,
-                     newest_input_at: inputs.last.created_at.to_i },
-          tags_count: 2,
+                     newest_input_at: inputs.last.created_at.to_i,
+                     tags_count: 2 },
           project_id: project.id
         }
       )
@@ -163,7 +163,7 @@ RSpec.describe Analysis::HeatmapGenerationJob do
     let!(:tagging) { create(:tagging, tag: tags[0], input: inputs[0]) }
 
     # Create activity for the analysis
-    let!(:activity) { create(:activity, item: analysis, action: 'heatmap_generated', payload: { inputs_count: 10, participants_count: 30, newest_input_at: inputs.last.created_at.to_i }) }
+    let!(:activity) { create(:activity, item: analysis, action: 'heatmap_generated', payload: { inputs_count: 10, participants_count: 30, newest_input_at: inputs.last.created_at.to_i, tags_count: 2 }) }
 
     it 'does not generate the heatmap' do
       expect { described_class.perform_now(analysis.reload) }
