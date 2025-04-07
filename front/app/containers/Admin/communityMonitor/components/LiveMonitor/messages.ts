@@ -18,9 +18,4 @@ export default defineMessages({
     defaultMessage:
       'Community Monitor is not currently enabled for your platform. Please contact your Government Success Manager for more information.',
   },
-  noModeratorAccessCommunityMonitor: {
-    id: 'app.containers.Admin.communityMonitor.noModeratorAccessCommunityMonitor',
-    defaultMessage:
-      ' You do not have access to the Community Monitor. Please contact your platform administrator if you wish to request access.',
-  },
 });
