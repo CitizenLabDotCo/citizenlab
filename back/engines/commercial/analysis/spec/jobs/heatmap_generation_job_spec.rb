@@ -60,8 +60,114 @@ RSpec.describe Analysis::HeatmapGenerationJob do
           payload: { inputs_count: 10,
                      participants_count: 30,
                      newest_input_at: inputs.last.created_at.to_i,
+                     additional_custom_field_ids: [],
                      tags_count: 2 },
           project_id: project.id
+        }
+      )
+    end
+  end
+
+  describe 'perform when there is a change in the additional custom fields' do
+    let(:project) { create(:single_phase_ideation_project) }
+    let(:main_field) { create(:custom_field_text) }
+    let(:additional_field) { create(:custom_field_checkbox) }
+    let(:analysis) { create(:analysis, project: project, main_custom_field: main_field, additional_custom_fields: [additional_field]) }
+    let(:users) do
+      create_list(:user, 10) +
+        create_list(:user, 10) +
+        create_list(:user, 10)
+    end
+    let!(:inputs) do
+      users[0...30].map do |user|
+        create(:idea, project: project, author: user)
+      end
+    end
+
+    it 'enqueues a log activity job with the additional custom field ids' do
+      expect do
+        described_class.perform_now(analysis)
+      end
+        .to have_enqueued_job(LogActivityJob).with(
+          analysis,
+          'heatmap_generated',
+          nil,
+          Time.now.to_i,
+          {
+            payload: { inputs_count: 30,
+                       participants_count: 30,
+                       newest_input_at: inputs.last.created_at.to_i,
+                       additional_custom_field_ids: [additional_field.id],
+                       tags_count: 0 },
+            project_id: analysis.source_project.id
+
+          }
+        )
+    end
+
+    it 'enqueues a log activity job when additional custom fields are removed' do
+      # Create initial activity
+      create(:activity, item: analysis, action: 'heatmap_generated', payload: {
+        inputs_count: 30,
+        participants_count: 30,
+        newest_input_at: inputs.last.created_at.to_i,
+        additional_custom_field_ids: [additional_field.id],
+        tags_count: 0
+      })
+
+      # Update analysis to have empty additional custom fields
+      analysis.update!(additional_custom_fields: [])
+
+      expect do
+        described_class.perform_now(analysis)
+      end.to have_enqueued_job(LogActivityJob).with(
+        analysis,
+        'heatmap_generated',
+        nil,
+        Time.now.to_i,
+        {
+          payload: {
+            inputs_count: 30,
+            participants_count: 30,
+            newest_input_at: inputs.last.created_at.to_i,
+            additional_custom_field_ids: [],
+            tags_count: 0
+          },
+          project_id: analysis.source_project.id
+        }
+      )
+    end
+
+    it 'enqueues a log activity job when additional custom fields are added' do
+      # Create initial activity
+      create(:activity, item: analysis, action: 'heatmap_generated', payload: {
+        inputs_count: 30,
+        participants_count: 30,
+        newest_input_at: inputs.last.created_at.to_i,
+        additional_custom_field_ids: [],
+        tags_count: 0
+      })
+
+      # Update analysis to have new additional custom fields
+      new_additional_field = create(:custom_field_checkbox)
+      analysis.update!(additional_custom_fields: [new_additional_field])
+
+      expect do
+        described_class.perform_now(analysis)
+      end.to have_enqueued_job(LogActivityJob).with(
+        analysis,
+        'heatmap_generated',
+        nil,
+        Time.now.to_i,
+        {
+          payload: {
+            inputs_count: 30,
+            participants_count: 30,
+            newest_input_at: inputs.last.created_at.to_i,
+            additional_custom_field_ids: [new_additional_field.id],
+            tags_count: 0
+          },
+          project_id: analysis.source_project.id
         }
       )
     end
@@ -163,7 +269,7 @@ RSpec.describe Analysis::HeatmapGenerationJob do
     let!(:tagging) { create(:tagging, tag: tags[0], input: inputs[0]) }
 
     # Create activity for the analysis
-    let!(:activity) { create(:activity, item: analysis, action: 'heatmap_generated', payload: { inputs_count: 10, participants_count: 30, newest_input_at: inputs.last.created_at.to_i, tags_count: 2 }) }
+    let!(:activity) { create(:activity, item: analysis, action: 'heatmap_generated', payload: { inputs_count: 10, participants_count: 30, newest_input_at: inputs.last.created_at.to_i, additional_custom_field_ids: [], tags_count: 2 }) }
 
     it 'does not generate the heatmap' do
       expect { described_class.perform_now(analysis.reload) }

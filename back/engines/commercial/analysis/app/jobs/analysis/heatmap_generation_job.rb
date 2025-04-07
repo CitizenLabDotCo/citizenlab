@@ -15,13 +15,15 @@ module Analysis
         .order(created_at: :desc)
         .first
       newest_input_at = analysis.inputs.maximum(:created_at)
+      additional_custom_field_ids = analysis.additional_custom_fields.pluck(:id)
 
       if participants_count >= 30 &&
          (newest_activity.nil? ||
           newest_activity.payload['participants_count'] != participants_count ||
           newest_activity.payload['inputs_count'] != inputs_count ||
           newest_activity.payload['newest_input_at'].to_i != newest_input_at.to_i ||
-          newest_activity.payload['tags_count'] != tags_count
+          newest_activity.payload['tags_count'] != tags_count ||
+            newest_activity.payload['additional_custom_field_ids']&.sort != additional_custom_field_ids&.sort
          )
 
         analysis.heatmap_cells.destroy_all
@@ -46,7 +48,8 @@ module Analysis
             payload: { inputs_count:,
                        participants_count:,
                        tags_count:,
-                       newest_input_at: analysis.inputs.maximum(:created_at).to_i },
+                       newest_input_at: analysis.inputs.maximum(:created_at).to_i,
+                       additional_custom_field_ids: additional_custom_field_ids },
             project_id: analysis.source_project.id
           }
         )
