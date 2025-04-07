@@ -17,7 +17,10 @@ const EmptyState = () => {
   const { formatMessage } = useIntl();
 
   return (
-    <Box px={isSmallerThanPhone ? DEFAULT_PADDING : undefined}>
+    <Box
+      px={isSmallerThanPhone ? DEFAULT_PADDING : undefined}
+      data-cy="e2e-areas-widget-empty-state"
+    >
       <Text color="textSecondary">
         {formatMessage(messages.thereAreCurrentlyNoProjects, {
           areasTerm,

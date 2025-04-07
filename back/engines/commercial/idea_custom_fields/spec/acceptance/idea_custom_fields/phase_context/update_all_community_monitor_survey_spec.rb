@@ -184,7 +184,7 @@ resource 'Idea Custom Fields' do
             { structure: [{ error: "First field must be of type 'page'" }] }
           )
           expect(json_response_body.dig(:errors, :'1')).to eq(
-            { structure: [{ error: "Last field must be of type 'page'" }] }
+            { structure: [{ error: "Last field must be of type 'page' with a key of 'form_end'" }] }
           )
         end
       end

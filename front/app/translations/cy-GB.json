@@ -397,7 +397,6 @@
   "app.components.ProjectFolderCards.components.Topbar.a11y_projectFilterTabInfo": "{count, plural, no {# prosiect} one {# prosiect} other {# prosiect}}",
   "app.components.ProjectFolderCards.components.Topbar.all": "I gyd",
   "app.components.ProjectFolderCards.components.Topbar.archived": "Wedi'i archifo",
-  "app.components.ProjectFolderCards.components.Topbar.areaTitle": "Ardal",
   "app.components.ProjectFolderCards.components.Topbar.draft": "Drafft",
   "app.components.ProjectFolderCards.components.Topbar.filterBy": "Hidlo erbyn",
   "app.components.ProjectFolderCards.components.Topbar.published2": "Cyhoeddwyd",
