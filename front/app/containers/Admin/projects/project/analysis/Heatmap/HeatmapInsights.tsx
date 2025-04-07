@@ -12,6 +12,7 @@ import { useParams } from 'react-router-dom';
 
 import { Unit } from 'api/analysis_heat_map_cells/types';
 import useAnalysisHeatmapCells from 'api/analysis_heat_map_cells/useAnalysisHeatmapCells';
+import useAnalysisTags from 'api/analysis_tags/useAnalysisTags';
 import useCustomFieldBin from 'api/custom_field_bins/useCustomFieldBin';
 
 import useLocalize from 'hooks/useLocalize';
@@ -19,6 +20,7 @@ import useLocalize from 'hooks/useLocalize';
 import { useIntl } from 'utils/cl-intl';
 
 import messages from './messages';
+import SummarizeButton from './SummarizeButton';
 
 interface HeatMapInsightsProps {
   onExploreClick: ({
@@ -60,6 +62,15 @@ const HeatMapInsights = ({ onExploreClick }: HeatMapInsightsProps) => {
     binId: selectedCell?.relationships.row.data.id,
   });
 
+  const { data: tags } = useAnalysisTags({
+    analysisId,
+  });
+
+  const row = rowBin?.data
+    ? rowBin.data
+    : tags?.data.find(
+        (tag) => tag.id === selectedCell?.relationships.row.data.id
+      );
   useEffect(() => {
     if (analysisHeatmapCells && analysisHeatmapCells.data.length > 0) {
       setSelectedInsightId(analysisHeatmapCells.data[0].id);
@@ -157,16 +168,23 @@ const HeatMapInsights = ({ onExploreClick }: HeatMapInsightsProps) => {
                 onExploreClick({
                   unit: selectedCell.attributes.unit,
                   columnCustomFieldId:
-                    columnBin?.data.relationships.custom_field.data.id,
+                    columnBin?.data.relationships.custom_field.data?.id,
                   rowType:
                     selectedCell.relationships.row.data.type === 'tags'
                       ? 'tags'
-                      : rowBin?.data.relationships.custom_field.data.id,
+                      : rowBin?.data.relationships.custom_field.data?.id,
                 })
               }
             >
               {formatMessage(messages.explore)}
             </Button>
+            {row && columnBin && (
+              <SummarizeButton
+                row={row}
+                column={columnBin.data}
+                cell={selectedCell}
+              />
+            )}
           </Box>
         </Box>
       )}

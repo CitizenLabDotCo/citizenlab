@@ -4,7 +4,6 @@ import {
   Box,
   Tooltip,
   Text,
-  Button,
   stylingConsts,
   Icon,
   colors,
@@ -12,24 +11,21 @@ import {
 } from '@citizenlab/cl2-component-library';
 
 import { IAnalysisHeatmapCellData } from 'api/analysis_heat_map_cells/types';
-import { AuthorCustomFilterKey } from 'api/analysis_inputs/types';
-import useAddAnalysisSummary from 'api/analysis_summaries/useAddAnalysisSummary';
 import { ITagData } from 'api/analysis_tags/types';
 import { ICustomFieldBinData } from 'api/custom_field_bins/types';
-// import useUserCustomFieldsOption from 'api/user_custom_fields_options/useUserCustomFieldsOption';
 
 import useLocalize from 'hooks/useLocalize';
 
 import { FormattedMessage } from 'utils/cl-intl';
 
 import messages from '../messages';
+import SummarizeButton from '../SummarizeButton';
 
 import {
   convertLiftToPercentage,
   getCellBgColor,
   getCellTextColor,
 } from './utils';
-
 interface Props {
   cell?: IAnalysisHeatmapCellData;
   row: ITagData | ICustomFieldBinData;
@@ -38,25 +34,6 @@ interface Props {
 
 const HeatmapCellTagVsBin = ({ cell, row, column }: Props) => {
   const localize = useLocalize();
-  const { mutate: addSummary } = useAddAnalysisSummary();
-
-  const handleSummarize = () => {
-    if (column.relationships.custom_field_option === null || !cell) return;
-
-    const authorKey: AuthorCustomFilterKey = `author_custom_${column.relationships.custom_field.data.id}`;
-    const filters: {
-      tag_ids: string[];
-      [authorKey: AuthorCustomFilterKey]: string[] | undefined;
-    } = {
-      tag_ids: [row.id],
-      [authorKey]: [column.relationships.custom_field_option.data.id],
-    };
-
-    addSummary({
-      analysisId: cell.relationships.analysis.data.id,
-      filters,
-    });
-  };
 
   if (!cell) {
     return (
@@ -98,13 +75,12 @@ const HeatmapCellTagVsBin = ({ cell, row, column }: Props) => {
             </Text>
           ) : null}
 
-          <Button
+          <SummarizeButton
+            row={row}
+            column={column}
+            cell={cell}
             buttonStyle="secondary-outlined"
-            icon="stars"
-            onClick={() => handleSummarize()}
-          >
-            <FormattedMessage {...messages.summarize} />
-          </Button>
+          />
         </Box>
       }
     >
