@@ -12,6 +12,7 @@ import { useParams } from 'react-router-dom';
 
 import { Unit } from 'api/analysis_heat_map_cells/types';
 import useAnalysisHeatmapCells from 'api/analysis_heat_map_cells/useAnalysisHeatmapCells';
+import useAnalysisTags from 'api/analysis_tags/useAnalysisTags';
 import useCustomFieldBin from 'api/custom_field_bins/useCustomFieldBin';
 
 import useLocalize from 'hooks/useLocalize';
@@ -61,6 +62,15 @@ const HeatMapInsights = ({ onExploreClick }: HeatMapInsightsProps) => {
     binId: selectedCell?.relationships.row.data.id,
   });
 
+  const { data: tags } = useAnalysisTags({
+    analysisId,
+  });
+
+  const row = rowBin?.data
+    ? rowBin.data
+    : tags?.data.find(
+        (tag) => tag.id === selectedCell?.relationships.row.data.id
+      );
   useEffect(() => {
     if (analysisHeatmapCells && analysisHeatmapCells.data.length > 0) {
       setSelectedInsightId(analysisHeatmapCells.data[0].id);
@@ -168,9 +178,9 @@ const HeatMapInsights = ({ onExploreClick }: HeatMapInsightsProps) => {
             >
               {formatMessage(messages.explore)}
             </Button>
-            {rowBin && columnBin && (
+            {row && columnBin && (
               <SummarizeButton
-                row={rowBin.data}
+                row={row}
                 column={columnBin.data}
                 cell={selectedCell}
               />
