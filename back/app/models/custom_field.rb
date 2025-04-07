@@ -125,7 +125,7 @@ class CustomField < ApplicationRecord
     when 'User'
       UserCustomFields::UserCustomFieldPolicy
     when 'CustomForm'
-      CustomFormPolicy
+      IdeaCustomFields::IdeaCustomFieldPolicy
     else
       raise "Polcy not implemented for resource type: #{resource_type}"
     end
@@ -289,6 +289,10 @@ class CustomField < ApplicationRecord
 
   def rating?
     input_type == 'rating'
+  end
+
+  def checkbox?
+    input_type == 'checkbox'
   end
 
   def dropdown_layout_type?

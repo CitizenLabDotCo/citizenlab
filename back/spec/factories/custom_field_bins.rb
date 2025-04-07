@@ -9,8 +9,15 @@ FactoryBot.define do
   factory :option_bin, class: 'CustomFieldBins::OptionBin' do
     association :custom_field, factory: :custom_field_select
 
-    after(:build) do |option_bin, _evaluator|
-      option_bin.custom_field_option ||= create(:custom_field_option, custom_field: option_bin.custom_field)
+    transient do
+      option_attrs { {} }
+    end
+
+    after(:build) do |option_bin, evaluator|
+      option_bin.custom_field_option ||= create(
+        :custom_field_option,
+        { custom_field: option_bin.custom_field }.merge(evaluator.option_attrs)
+      )
     end
   end
 

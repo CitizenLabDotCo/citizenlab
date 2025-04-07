@@ -11,6 +11,7 @@ Analysis::Engine.routes.draw do
         resources :taggings, only: %i[index create destroy] do
           post :bulk_create, on: :collection
         end
+        resources :heatmap_cells, only: %i[index]
         resources :auto_taggings, only: [:create]
         resources :background_tasks, only: %i[index show]
         resources :insights, only: %i[index destroy] do

@@ -303,6 +303,10 @@ namespace :cl2_back do
           enabled: true,
           allowed: true
         },
+        auto_insights: {
+          enabled: true,
+          allowed: true
+        },
         report_data_grouping: {
           enabled: true,
           allowed: true
