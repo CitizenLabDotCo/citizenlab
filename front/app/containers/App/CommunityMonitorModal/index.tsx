@@ -96,6 +96,7 @@ const CommunityMonitorModal = ({
         isCommunityMonitorEnabled &&
         isSurveyLive &&
         userPermittedToTakeSurvey &&
+        !hasSeenModal &&
         Math.random() < surveyPopupFrequency / 100;
       // ----- TODO: RE-ENABLE BEFORE RELEASE: -----
       // !isDevelopmentOrCI;
@@ -107,6 +108,7 @@ const CommunityMonitorModal = ({
       isSurveyLive,
       userPermittedToTakeSurvey,
       surveyPopupFrequency,
+      hasSeenModal,
     ]
   );
 

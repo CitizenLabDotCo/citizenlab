@@ -18,10 +18,6 @@ const NavigationBar = () => {
   const isTabletOrSmaller = useBreakpoint('tablet');
 
   const { data: project } = useCommunityMonitorProject({});
-  const projectId = project?.data.id;
-
-  if (!projectId) return null;
-
   const tabs = getCommunityMonitorTabs(formatMessage);
 
   return (
@@ -32,6 +28,7 @@ const NavigationBar = () => {
       left="0"
       right="0"
       zIndex="1"
+      style={{ pointerEvents: project?.data.id ? 'auto' : 'none' }} // Shows the bar to all users, but only works for moderators
     >
       <NavigationTabs>
         {tabs.map((tab) => {

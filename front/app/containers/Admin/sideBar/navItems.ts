@@ -77,7 +77,6 @@ const getDefaultNavItems = ({
     link: '/admin/community-monitor',
     iconName: 'community_monitor',
     message: 'community_monitor',
-    featureNames: ['community_monitor'],
   },
   {
     name: 'inspirationHub',

@@ -12,13 +12,18 @@ import ViewSurveyButton from '../ViewSurveyButton';
 import FormResults from './components/FormResults';
 import HealthScoreWidget from './components/HealthScoreWidget';
 import QuarterlyDatePicker from './components/QuarterlyDatePicker';
+import UpsellNudge from './components/UpsellNudge';
 
 const LiveMonitor = () => {
   const { formatMessage } = useIntl();
 
-  const { data: project } = useCommunityMonitorProject({});
+  const { data: project, isError, isLoading } = useCommunityMonitorProject({});
   const projectId = project?.data.id;
   const phaseId = project?.data.relationships.current_phase?.data?.id;
+
+  if (isLoading) {
+    return null;
+  }
 
   return (
     <Box mt="48px">
@@ -29,7 +34,9 @@ const LiveMonitor = () => {
 
         <Box display="flex" gap="16px">
           <QuarterlyDatePicker />
-          <ViewSurveyButton buttonStyle="admin-dark" py="4px" px="8px" />
+          {project && (
+            <ViewSurveyButton buttonStyle="admin-dark" py="4px" px="8px" />
+          )}
         </Box>
       </Box>
 
@@ -37,6 +44,12 @@ const LiveMonitor = () => {
         <HealthScoreWidget phaseId={phaseId} />
       </Box>
       <FormResults projectId={projectId} phaseId={phaseId} />
+
+      {isError && (
+        <Box mt="24px">
+          <UpsellNudge />
+        </Box>
+      )}
     </Box>
   );
 };
