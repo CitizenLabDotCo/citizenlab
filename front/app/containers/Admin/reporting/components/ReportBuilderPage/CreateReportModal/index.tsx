@@ -75,7 +75,7 @@ const CreateReportModal = ({ open, onClose }: Props) => {
       template === 'community-monitor' && communityMonitorPhaseId
         ? {
             phase_id: communityMonitorPhaseId,
-            name: undefined,
+            name: reportTitle,
           }
         : {
             phase_id: undefined,

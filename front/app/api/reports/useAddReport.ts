@@ -16,6 +16,11 @@ export type AddReport =
   | {
       name?: null;
       phase_id: string;
+    }
+  | {
+      // For the Community Monitor, we want to send both.
+      name: string;
+      phase_id: string;
     };
 
 const addReport = async (requestBody: AddReport) =>
