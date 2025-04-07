@@ -75,7 +75,6 @@ module Analysis
           @analysis = Analysis.find(params[:analysis_id])
           authorize(@analysis, :show?)
         end
-
       end
     end
   end
