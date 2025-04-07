@@ -60,9 +60,9 @@ RSpec.describe Analysis::HeatmapGenerationJob do
           payload: { inputs_count: 10,
                      participants_count: 30,
                      newest_input_at: inputs.last.created_at.to_i,
-                     additional_custom_field_ids: [],         
-                     tags_count: 2,},
-  
+                     additional_custom_field_ids: [],
+                     tags_count: 2 },
+
           project_id: project.id
         }
       )
@@ -96,53 +96,52 @@ RSpec.describe Analysis::HeatmapGenerationJob do
           Time.now.to_i,
           {
             payload: { inputs_count: 30,
-                      participants_count: 30,
-                      newest_input_at:  inputs.last.created_at.to_i,
-                      additional_custom_field_ids: [additional_field.id] ,  
-                      tags_count: 0,  
-                    },
-            project_id: analysis.source_project.id,
+                       participants_count: 30,
+                       newest_input_at: inputs.last.created_at.to_i,
+                       additional_custom_field_ids: [additional_field.id],
+                       tags_count: 0 },
+            project_id: analysis.source_project.id
 
           }
         )
     end
 
     it 'enqueues a log activity job when additional custom fields are removed' do
-          # Create initial activity
-          create(:activity, item: analysis, action: 'heatmap_generated', payload: { 
+      # Create initial activity
+      create(:activity, item: analysis, action: 'heatmap_generated', payload: {
+        inputs_count: 30,
+        participants_count: 30,
+        newest_input_at: inputs.last.created_at.to_i,
+        additional_custom_field_ids: [additional_field.id],
+        tags_count: 0
+      })
+
+      # Update analysis to have empty additional custom fields
+      analysis.update!(additional_custom_fields: [])
+
+      expect do
+        described_class.perform_now(analysis)
+      end.to have_enqueued_job(LogActivityJob).with(
+        analysis,
+        'heatmap_generated',
+        nil,
+        Time.now.to_i,
+        {
+          payload: {
             inputs_count: 30,
             participants_count: 30,
             newest_input_at: inputs.last.created_at.to_i,
-            additional_custom_field_ids: [additional_field.id],
+            additional_custom_field_ids: [],
             tags_count: 0
-          })
-
-          # Update analysis to have empty additional custom fields
-          analysis.update!(additional_custom_fields: [])
-
-          expect do
-            described_class.perform_now(analysis)
-          end.to have_enqueued_job(LogActivityJob).with(
-            analysis,
-            'heatmap_generated',
-            nil,
-            Time.now.to_i,
-            {
-              payload: { 
-                inputs_count: 30,
-                participants_count: 30,
-                newest_input_at: inputs.last.created_at.to_i,
-                additional_custom_field_ids: [],
-                tags_count: 0
-              },
-              project_id: analysis.source_project.id
-            }
-          )
+          },
+          project_id: analysis.source_project.id
+        }
+      )
     end
 
     it 'enqueues a log activity job when additional custom fields are added' do
       # Create initial activity
-      create(:activity, item: analysis, action: 'heatmap_generated', payload: { 
+      create(:activity, item: analysis, action: 'heatmap_generated', payload: {
         inputs_count: 30,
         participants_count: 30,
         newest_input_at: inputs.last.created_at.to_i,
@@ -162,7 +161,7 @@ RSpec.describe Analysis::HeatmapGenerationJob do
         nil,
         Time.now.to_i,
         {
-          payload: { 
+          payload: {
             inputs_count: 30,
             participants_count: 30,
             newest_input_at: inputs.last.created_at.to_i,

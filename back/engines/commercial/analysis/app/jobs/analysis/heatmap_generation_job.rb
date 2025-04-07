@@ -24,7 +24,7 @@ module Analysis
           newest_activity.payload['newest_input_at'].to_i != newest_input_at.to_i ||
           newest_activity.payload['tags_count'] != tags_count ||
             newest_activity.payload['additional_custom_field_ids']&.sort != additional_custom_field_ids&.sort
-            )
+         )
 
         analysis.heatmap_cells.destroy_all
         generator = AutoInsightsService.new(analysis)
