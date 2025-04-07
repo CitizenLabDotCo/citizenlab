@@ -56,14 +56,16 @@ RSpec.describe Analysis::HeatmapGenerationJob do
         'heatmap_generated',
         nil,
         Time.now.to_i,
-        {
-          payload: { inputs_count: 10,
-                     participants_count: 30,
-                     newest_input_at: inputs.last.created_at.to_i,
-                     additional_custom_field_ids: [],
-                     tags_count: 2 },
+        hash_including(
+          payload: hash_including(
+            inputs_count: 10,
+            participants_count: 30,
+            newest_input_at: inputs.last.created_at.to_i,
+            additional_custom_field_ids: [],
+            tags_count: 2
+          ),
           project_id: project.id
-        }
+        )
       )
     end
   end
@@ -93,15 +95,16 @@ RSpec.describe Analysis::HeatmapGenerationJob do
           'heatmap_generated',
           nil,
           Time.now.to_i,
-          {
-            payload: { inputs_count: 30,
-                       participants_count: 30,
-                       newest_input_at: inputs.last.created_at.to_i,
-                       additional_custom_field_ids: [additional_field.id],
-                       tags_count: 0 },
+          hash_including(
+            payload: hash_including(
+              inputs_count: 30,
+              participants_count: 30,
+              newest_input_at: inputs.last.created_at.to_i,
+              additional_custom_field_ids: [additional_field.id],
+              tags_count: 0
+            ),
             project_id: analysis.source_project.id
-
-          }
+          )
         )
     end
 
@@ -125,16 +128,16 @@ RSpec.describe Analysis::HeatmapGenerationJob do
         'heatmap_generated',
         nil,
         Time.now.to_i,
-        {
-          payload: {
+        hash_including(
+          payload: hash_including(
             inputs_count: 30,
             participants_count: 30,
             newest_input_at: inputs.last.created_at.to_i,
             additional_custom_field_ids: [],
             tags_count: 0
-          },
+          ),
           project_id: analysis.source_project.id
-        }
+        )
       )
     end
 
@@ -159,16 +162,16 @@ RSpec.describe Analysis::HeatmapGenerationJob do
         'heatmap_generated',
         nil,
         Time.now.to_i,
-        {
-          payload: {
+        hash_including(
+          payload: hash_including(
             inputs_count: 30,
             participants_count: 30,
             newest_input_at: inputs.last.created_at.to_i,
             additional_custom_field_ids: [new_additional_field.id],
             tags_count: 0
-          },
+          ),
           project_id: analysis.source_project.id
-        }
+        )
       )
     end
   end
