@@ -1,11 +1,11 @@
 # frozen_string_literal: true
 
-#
-# The AutoInsightsService combines all inputs and user fields to calculate
-# correlation. Its goal is to highlight certain patterns toward the user, where
-# certain user groups are more likely to answer in a certain way, or users who
-# give a certain answer to a certain question are more likely to give a certain
-# answer to another question. This is done by calculating the correlation.
+# The AutoInsightsService combines all input custom_fields, user custom_fields
+# and tags relevant to an analysis, and generates heatmaps between all fields
+# and tags. The heatmaps express whether (a) there is a significant (chi-square
+# test) relationship between a specific input field bin and/or tag, and what the
+# lift (the difference compared to the expected value extrapolated from the
+# other data) is.
 module Analysis
   class AutoInsightsService
     def initialize(analysis)
@@ -57,6 +57,11 @@ module Analysis
 
     # The big fat matrix takes the given, or all inputs, user custom fields and taggings and
     # throws them together in a large, one-hot (only booleans) encoded table
+    # example output:
+    # [
+    #   { tag1: true,  tag2: false, bin(male): true, bin(female): false },
+    #   { tag1: false, tag2: true,  bin(male): true, bin(female): false },
+    # ]
     def big_fat_matrix(unit, **)
       case unit
       when 'inputs'

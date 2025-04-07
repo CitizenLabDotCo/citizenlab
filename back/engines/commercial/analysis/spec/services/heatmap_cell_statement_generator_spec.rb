@@ -2,6 +2,14 @@
 
 require 'rails_helper'
 
+RSpec.configure do |config|
+  config.before(:suite) do
+    # Load fixed translations from the fixtures so we don't depend on the actual
+    # translations
+    I18n.load_path += Rails.root.glob('engines/commercial/analysis/spec/fixtures/locales/*.yml')
+  end
+end
+
 describe Analysis::HeatmapCellStatementGenerator do
   subject(:service) { described_class.new }
 

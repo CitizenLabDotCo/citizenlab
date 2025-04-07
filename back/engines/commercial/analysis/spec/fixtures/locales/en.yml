@@ -1,3 +1,5 @@
+# WARNING: This is a fixture file that is used in tests only. Not to be confused
+# with the real translations files!
 en:
   analysis:
     example_tag_n: Example tag %{n}
