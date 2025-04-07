@@ -755,7 +755,6 @@
   "app.containers.Admin.communityMonitor.healthScore": "Health Score",
   "app.containers.Admin.communityMonitor.lastQuarter": "last quarter",
   "app.containers.Admin.communityMonitor.liveMonitor": "Live monitor",
-  "app.containers.Admin.communityMonitor.noModeratorAccessCommunityMonitor": "You do not have access to the Community Monitor. Please contact your platform administrator if you wish to request access.",
   "app.containers.Admin.communityMonitor.noResults": "No results for this period.",
   "app.containers.Admin.communityMonitor.noSurveyResponses": "No survey responses",
   "app.containers.Admin.communityMonitor.participants": "Participants",
