@@ -6,8 +6,7 @@ module BulkImportIdeas
       options = { payload: { model: model, format: format, items_created: items.count, users_created: users.count } }
       activity_object = phase
 
-      project = Phase.find(phase).project.id
-      project_analyses = Analysis::Analysis.where(project: project)
+      project_analyses = Analysis::Analysis.where(project: phase.project)
       phase_analyses = Analysis::Analysis.where(phase: phase)
       analyses = (project_analyses + phase_analyses).uniq
 
