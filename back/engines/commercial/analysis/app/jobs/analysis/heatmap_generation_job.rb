@@ -5,7 +5,7 @@ module Analysis
     self.priority = 45 # Slightly more important than emails (50)
 
     def run(analysis)
-      return unless AppConfiguration.instance.feature_activated?('statistical_insights')
+      return unless AppConfiguration.instance.feature_activated?('auto_insights')
 
       inputs_count = analysis.inputs.count
       tags_count = analysis.tags.count
