@@ -4,6 +4,7 @@ import { useParams } from 'react-router-dom';
 
 import useAnalysis from 'api/analyses/useAnalysis';
 import { Unit } from 'api/analysis_heat_map_cells/types';
+import useAuthUser from 'api/me/useAuthUser';
 import useProjectById from 'api/projects/useProjectById';
 import useUserCustomFields from 'api/user_custom_fields/useUserCustomFields';
 
@@ -31,6 +32,8 @@ const Heatmap = () => {
 
   const { projectId } = useParams() as { projectId: string };
   const { analysisId } = useParams() as { analysisId: string };
+
+  const { data: authUser } = useAuthUser();
   const { data: analysis } = useAnalysis(analysisId);
 
   const { data: project } = useProjectById(projectId);
@@ -65,7 +68,8 @@ const Heatmap = () => {
     !userCustomFields ||
     !filteredInputCustomFields ||
     !statisticalInsightsEnabled ||
-    !project
+    !project ||
+    authUser?.data.attributes.highest_role !== 'super_admin'
   ) {
     return null;
   }
