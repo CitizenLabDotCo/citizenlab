@@ -16,6 +16,7 @@ module Analysis
 
     def after_update(analysis, user)
       LogActivityJob.perform_later(analysis, 'changed', user, analysis.updated_at.to_i)
+      HeatmapGenerationJob.perform_later(analysis)
     end
 
     def after_destroy(frozen_analysis, user)
