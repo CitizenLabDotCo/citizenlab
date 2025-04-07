@@ -62,7 +62,6 @@ RSpec.describe Analysis::HeatmapGenerationJob do
                      newest_input_at: inputs.last.created_at.to_i,
                      additional_custom_field_ids: [],
                      tags_count: 2 },
-
           project_id: project.id
         }
       )
