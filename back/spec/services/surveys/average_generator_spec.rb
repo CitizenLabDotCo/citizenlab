@@ -28,8 +28,8 @@ RSpec.describe Surveys::AverageGenerator do
           overall: {
             averages: { '2025-1' => 3.0, '2025-2' => 8.3 },
             totals: {
-              '2025-1' => { 1 => 12, 2 => 16, 3 => 21, 5 => 3, 6 => 4, 7 => 6 },
-              '2025-2' => { 3 => 3, 42 => 1, 4 => 2, 2 => 1, 5 => 1 }
+              '2025-1' => { 1 => 12, 2 => 16, 3 => 21, 4 => 0, 5 => 3, 6 => 4, 7 => 6 },
+              '2025-2' => { 1 => 0, 2 => 1, 3 => 3, 4 => 2, 5 => 1, 6 => 0, 7 => 0, 42 => 1 }
             }
           },
           categories: {
@@ -70,16 +70,6 @@ RSpec.describe Surveys::AverageGenerator do
       it 'returns an averages by category per quarter' do
         averages = generator.send(:category_averages_by_quarter)
         expect(averages).to eq({})
-      end
-    end
-
-    describe 'totals_by_quarter' do
-      it 'returns totals for each question grouped by quarter' do
-        totals = generator.send(:totals_by_quarter)
-        expect(totals).to eq({
-          '2025-1' => { 1 => 12, 2 => 16, 3 => 21, 5 => 3, 6 => 4, 7 => 6 },
-          '2025-2' => { 3 => 3, 42 => 1, 4 => 2, 2 => 1, 5 => 1 }
-        })
       end
     end
   end
@@ -123,7 +113,7 @@ RSpec.describe Surveys::AverageGenerator do
           overall: {
             averages: { '2025-1' => 2.3, '2025-2' => 2.7 },
             totals: {
-              '2025-1' => { 1 => 1, 2 => 2, 3 => 3 },
+              '2025-1' => { 1 => 1, 2 => 2, 3 => 3, 4 => 0, 5 => 0 },
               '2025-2' => { 1 => 2, 2 => 1, 3 => 1, 4 => 1, 5 => 1 }
             }
           },
@@ -182,6 +172,16 @@ RSpec.describe Surveys::AverageGenerator do
           'service_delivery' => { '2025-1' => 2.5, '2025-2' => 4.0 },
           'governance_and_trust' => { '2025-1' => 2.0, '2025-2' => 1.5 },
           'other' => {}
+        })
+      end
+    end
+
+    describe 'totals_by_quarter' do
+      it 'returns totals for each question grouped by quarter (including zeroes)' do
+        totals = generator.send(:totals_by_quarter)
+        expect(totals).to eq({
+          '2025-1' => { 1 => 1, 2 => 2, 3 => 3, 4 => 0, 5 => 0 },
+          '2025-2' => { 1 => 2, 2 => 1, 3 => 1, 4 => 1, 5 => 1 }
         })
       end
     end
