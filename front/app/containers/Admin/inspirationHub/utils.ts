@@ -60,10 +60,14 @@ export const useRansackParams = () => {
   return useMemo(
     () =>
       RANSACK_PARAMS.reduce((acc, paramName) => {
-        const value = searchParams.get(paramName);
+        let value = searchParams.get(paramName);
 
         if (value === null) {
           return acc;
+        }
+
+        if (paramName === 'q[tenant_country_code_in]') {
+          value = JSON.parse(value);
         }
 
         return {
