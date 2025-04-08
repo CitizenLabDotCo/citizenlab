@@ -42,8 +42,6 @@
 #  page_button_label_multiloc     :jsonb            not null
 #  page_button_link               :string
 #  question_category              :string
-#  page_button_label_multiloc     :jsonb            not null
-#  page_button_link               :string
 #
 # Indexes
 #

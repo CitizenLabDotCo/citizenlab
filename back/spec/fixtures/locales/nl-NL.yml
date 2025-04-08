@@ -52,7 +52,6 @@ nl:
         service_delivery: Dienstverlening
         governance_and_trust: Bestuur en vertrouwen
         other: Ander
-        description:
       form_end:
         button_text: Terug naar home
   custom_forms:
