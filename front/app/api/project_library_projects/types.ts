@@ -19,7 +19,7 @@ export type SortType =
 
 export type RansackParams = {
   // filters
-  'q[tenant_country_code_eq]'?: string;
+  'q[tenant_country_code_in]'?: string[];
   'q[tenant_population_group_eq]'?: PopulationGroup;
   'q[score_total_gteq]'?: '1' | '2' | '3' | '4';
   'q[phases_participation_method_eq]'?: ParticipationMethod;
