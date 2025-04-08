@@ -118,7 +118,8 @@ resource 'Reports' do
             name: report.name,
             created_at: report.created_at.iso8601(3),
             updated_at: report.updated_at.iso8601(3),
-            visible: false
+            visible: false,
+            allow_delete: true
           },
           relationships: {
             layout: { data: { id: layout.id, type: 'content_builder_layout' } },
@@ -279,9 +280,11 @@ resource 'Reports' do
 
   post 'web_api/v1/reports' do
     parameter :name, name_param_desc, scope: :report, required: false
+    parameter :allow_delete, 'Can this report be deleted?', scope: :report, required: false
     parameter :craftjs_json, craftjs_json_param_desc, scope: %i[report layout]
 
     let(:name) { 'my-report' }
+    let(:allow_delete) { 'true' }
     let(:craftjs_json) do
       {
         'nl-BE': {
@@ -312,7 +315,8 @@ resource 'Reports' do
             name: name,
             created_at: be_a(String),
             updated_at: be_a(String),
-            visible: false
+            visible: false,
+            allow_delete: true
           },
           relationships: {
             layout: { data: { id: be_a(String), type: 'content_builder_layout' } },

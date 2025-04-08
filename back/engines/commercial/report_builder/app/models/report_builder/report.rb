@@ -12,6 +12,7 @@
 #  phase_id      :uuid
 #  visible       :boolean          default(FALSE), not null
 #  name_tsvector :tsvector
+#  allow_delete  :boolean          default(TRUE)
 #
 # Indexes
 #
@@ -50,6 +51,8 @@ module ReportBuilder
     validates :phase_id, uniqueness: true, unless: :supports_multiple_phase_reports?, allow_nil: true
     validates :visible, inclusion: { in: [false], unless: :phase? }
 
+    before_destroy :can_destroy?
+
     def phase?
       !phase_id.nil?
     end
@@ -59,6 +62,14 @@ module ReportBuilder
     end
 
     private
+
+    # Only allow destroy() if allow_delete is true
+    def can_destroy?
+      return true if allow_delete
+
+      errors.add(:base, 'Report cannot be deleted')
+      throw :abort
+    end
 
     def supports_multiple_phase_reports?
       phase&.pmethod&.supports_multiple_phase_reports?

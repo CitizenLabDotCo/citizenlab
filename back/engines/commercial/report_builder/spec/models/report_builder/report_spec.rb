@@ -30,6 +30,18 @@ RSpec.describe ReportBuilder::Report do
   it { is_expected.to belong_to(:owner).class_name('User').optional }
   it { is_expected.to have_one(:layout).class_name('ContentBuilder::Layout').dependent(:destroy) }
 
+  describe 'allow_delete' do
+    it 'can be deleted when allow_delete is true' do
+      report = create(:report, allow_delete: true)
+      expect(report.destroy).to be_truthy
+    end
+
+    it 'cannot be deleted when allow_delete is false' do
+      report = create(:report, allow_delete: false)
+      expect(report.destroy).to be_falsey
+    end
+  end
+
   describe 'user deletion' do
     it 'keeps reports that the user owned' do
       report = create(:report)
