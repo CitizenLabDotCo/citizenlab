@@ -103,6 +103,50 @@ describe IdeaCustomFieldsService do
         expect(output.size).to eq 1
       end
     end
+
+    describe 'survey_results_fields' do
+      context 'commmunity monitor survey' do
+        let(:custom_form) do
+          phase = create(:community_monitor_survey_phase)
+          phase.pmethod.create_default_form!
+          phase.custom_form.custom_fields[2].update!(question_category: 'governance_and_trust')
+          phase.custom_form.custom_fields[3].update!(question_category: nil)
+          phase.custom_form
+        end
+
+        it 'returns fields structured as per the survey form' do
+          output = service.survey_results_fields
+          expect(output.pluck(:input_type)).to eq %w[
+            page sentiment_linear_scale sentiment_linear_scale sentiment_linear_scale sentiment_linear_scale sentiment_linear_scale
+            page sentiment_linear_scale sentiment_linear_scale sentiment_linear_scale
+            page sentiment_linear_scale sentiment_linear_scale sentiment_linear_scale
+            page
+          ]
+          expect(output.pluck(:key)).to eq %w[
+            page_quality_of_life place_to_live sense_of_safety access_to_parks affordable_housing employment_opportunities
+            page_service_delivery quality_of_services overall_value cleanliness_and_maintenance
+            page_governance_and_trust trust_in_government responsiveness_of_officials transparency_of_money_spent
+            form_end
+          ]
+        end
+
+        it 'returns fields with categories as pages' do
+          output = service.survey_results_fields(structure_by_category: true)
+          expect(output.pluck(:input_type)).to eq %w[
+            page sentiment_linear_scale sentiment_linear_scale sentiment_linear_scale
+            page sentiment_linear_scale sentiment_linear_scale sentiment_linear_scale
+            page sentiment_linear_scale sentiment_linear_scale sentiment_linear_scale sentiment_linear_scale
+            page sentiment_linear_scale
+          ]
+          expect(output.pluck(:key)).to eq %w[
+            category_quality_of_life place_to_live affordable_housing employment_opportunities
+            category_service_delivery quality_of_services overall_value cleanliness_and_maintenance
+            category_governance_and_trust sense_of_safety trust_in_government responsiveness_of_officials transparency_of_money_spent
+            category_other access_to_parks
+          ]
+        end
+      end
+    end
   end
 
   context 'with persisted fields' do

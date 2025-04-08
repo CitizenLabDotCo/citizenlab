@@ -70,6 +70,38 @@ class IdeaCustomFieldsService
     visible_fields.reject(&:built_in?)
   end
 
+  def survey_results_fields(structure_by_category: false)
+    return enabled_fields unless structure_by_category && @participation_method.supports_custom_field_categories?
+
+    # Restructure the results to order by category with each category as a page
+
+    # Remove the original pages
+    fields = enabled_fields.reject { |field| field.input_type == 'page' }
+
+    # Order fields by the order of categories in custom field
+    categories = CustomField::QUESTION_CATEGORIES
+    sorted_fields = fields.sort_by do |field|
+      [categories.index(field.question_category) || categories.size, field.ordering]
+    end
+
+    # Add a page per category
+    categorised_fields = []
+    current_category = nil
+    sorted_fields.each do |field|
+      if field.question_category != current_category
+        categorised_fields << CustomField.new(
+          id: SecureRandom.uuid,
+          input_type: 'page',
+          key: "category_#{field.question_category}",
+          title_multiloc: field.question_category_multiloc
+        )
+      end
+      current_category = field.question_category
+      categorised_fields << field
+    end
+    categorised_fields
+  end
+
   def validate_constraints_against_updates(field, field_params)
     constraints = @participation_method.constraints[field.code&.to_sym]
     return unless constraints
