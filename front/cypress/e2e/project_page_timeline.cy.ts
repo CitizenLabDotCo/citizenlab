@@ -148,16 +148,19 @@ describe('New timeline project', () => {
       .contains(phaseCurrentTitle);
     cy.get('.e2e-project-process-page').contains(phaseLongDescription);
 
+    // Verify that the description is collapsed by default
     cy.get('#e2e-project-phase-description-see-less-button').should(
       'not.exist'
     );
+
+    // Read more/less button functionality
     cy.get('#e2e-project-phase-description-read-more-button')
       .should('be.visible')
       .click();
-
     cy.get('#e2e-project-phase-description-read-more-button').should(
       'not.exist'
     );
+
     cy.get('#e2e-project-phase-description-see-less-button')
       .should('be.visible')
       .click();
