@@ -6,8 +6,7 @@ import { useParams } from 'react-router-dom';
 
 import useAddAnalysis from 'api/analyses/useAddAnalysis';
 import useAnalyses from 'api/analyses/useAnalyses';
-
-import useRelevantToHeatmapInputCustomFields from 'containers/Admin/projects/project/analysis/hooks/useRelevantToHeatmapInputCustomFields';
+import useCustomFields from 'api/custom_fields/useCustomFields';
 
 import Button from 'components/UI/ButtonWithLink';
 
@@ -16,11 +15,7 @@ import clHistory from 'utils/cl-router/history';
 
 import messages from './messages';
 
-type Props = {
-  customFieldId: string;
-};
-
-const ViewSingleSubmissionNotice = ({ customFieldId }: Props) => {
+const ViewSingleSubmissionNotice = () => {
   const { formatMessage } = useIntl();
 
   const { mutate: addAnalysis } = useAddAnalysis();
@@ -34,15 +29,17 @@ const ViewSingleSubmissionNotice = ({ customFieldId }: Props) => {
     projectId: phaseId ? undefined : projectId,
     phaseId,
   });
-
-  const additionalCustomFieldsIds = useRelevantToHeatmapInputCustomFields({
+  const { data: inputCustomFields } = useCustomFields({
     projectId,
     phaseId,
-  })?.map((customField) => customField.id);
+  });
+
+  const inputCustomFieldsIds = inputCustomFields?.map(
+    (customField) => customField.id
+  );
 
   const relevantAnalysis = analyses?.data.find(
-    (analysis) =>
-      analysis.relationships.main_custom_field?.data?.id === customFieldId
+    (analysis) => analysis.relationships.main_custom_field?.data === null
   );
 
   const goToAnalysis = () => {
@@ -59,8 +56,7 @@ const ViewSingleSubmissionNotice = ({ customFieldId }: Props) => {
         {
           projectId: phaseId ? undefined : projectId,
           phaseId,
-          mainCustomField: customFieldId,
-          additionalCustomFields: additionalCustomFieldsIds,
+          additionalCustomFields: inputCustomFieldsIds,
         },
         {
           onSuccess: (response) => {
