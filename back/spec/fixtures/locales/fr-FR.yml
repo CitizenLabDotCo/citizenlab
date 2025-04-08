@@ -64,6 +64,9 @@ fr:
         description:
       other_input_field:
         title: Tapez votre réponse
+    community_monitor:
+      form_end:
+        button_text: Retour à l'accueil
   custom_forms:
     categories:
       main_content:

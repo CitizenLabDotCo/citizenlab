@@ -1,3 +1,20 @@
 hr:
   analysis:
     example_tag_n: Primjer oznake %{n}
+    cell_statement:
+      percent_more: "%{percent}% više"
+      percent_less: "%{percent}% manje"
+      range_min_max: "%{min} do %{max}"
+      range_min: "%{min} ili više"
+      range_max: "%{max} ili manje"
+      tag_vs_bin:
+        inputs: "Ljudi koji odgovore '%{answer}' na '%{question}' objavljuju %{percent_more_less} u '%{tag}' od prosjeka."
+        likes: "Ljudi koji odgovaraju '%{answer}' na '%{question}' vole %{percent_more_less} unose u '%{tag}' od prosjeka."
+        dislikes: "Ljudima koji odgovore '%{answer}' na '%{question}' ne sviđaju se %{percent_more_less} unosi u '%{tag}' od prosjeka."
+        participants: "Ljudi koji odgovore '%{answer}' na '%{question}' sudjeluju %{percent_more_less} u '%{tag}' od prosjeka."
+      bin_vs_bin:
+        inputs: "Ljudi koji odgovaraju '%{answer1}' na '%{question1}' odgovaraju '%{answer2}' na '%{question2}' %{percent_more_less} od prosjeka."
+        likes: "Ljudi koji odgovaraju '%{answer1}' na '%{question1}' vole %{percent_more_less} unose kada odgovore '%{answer2}' na '%{question2}' od prosjeka."
+        dislikes: "Ljudi koji odgovaraju '%{answer1}' na '%{question1}' ne vole %{percent_more_less} unose kada odgovore '%{answer2}' na '%{question2}' od prosjeka."
+        participants: "Ljudi koji odgovore '%{answer1}' na '%{question1}' sudjeluju %{percent_more_less} kada odgovore '%{answer2}' na '%{question2}' od prosjeka."
+

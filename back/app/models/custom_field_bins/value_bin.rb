@@ -46,8 +46,8 @@ module CustomFieldBins
       end
     end
 
-    def self.supported_custom_field_input_types
-      %w[checkbox linear_scale rating number sentiment_linear_scale]
+    def self.supports_custom_field?(custom_field)
+      %w[checkbox linear_scale rating number sentiment_linear_scale].include?(custom_field.input_type)
     end
 
     def self.generate_bins(custom_field)
