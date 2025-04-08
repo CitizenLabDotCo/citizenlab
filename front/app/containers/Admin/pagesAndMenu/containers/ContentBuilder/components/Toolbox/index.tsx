@@ -203,7 +203,17 @@ const HomepageBuilderToolbox = ({
         {communityMonitorEnabled && (
           <DraggableElement
             id="e2e-draggable-community-monitor-cta"
-            component={<CommunityMonitorCTA />}
+            component={
+              <CommunityMonitorCTA
+                title={toMultiloc(messages.communityMontitorCtaDefaultTitle)}
+                description={toMultiloc(
+                  messages.communityMontitorCtaDefaultDescription
+                )}
+                surveyButtonText={toMultiloc(
+                  messages.communityMontitorCtaDefaultSurveyButtonText
+                )}
+              />
+            }
             icon="survey"
             label={formatMessage(CommunityMonitorCTATitle)}
           />

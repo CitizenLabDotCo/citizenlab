@@ -14,11 +14,12 @@ import useInputSchema from 'hooks/useInputSchema';
 import Modal from 'components/UI/Modal';
 
 import { useIntl } from 'utils/cl-intl';
+import { calculateEstimatedSurveyTime } from 'utils/surveyUtils';
 
 import QuestionPreview from './components/QuestionPreview';
 import { triggerCommunityMonitorModal$ } from './events';
 import messages from './messages';
-import { calculateEstimatedSurveyTime, isAllowedOnUrl } from './utils';
+import { isAllowedOnUrl } from './utils';
 
 type CommunityMonitorModalProps = {
   showModal?: boolean;
