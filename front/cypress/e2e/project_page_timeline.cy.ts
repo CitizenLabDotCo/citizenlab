@@ -163,10 +163,8 @@ describe('New timeline project', () => {
 
     cy.get('#e2e-project-phase-description-see-less-button')
       .should('be.visible')
-      // The button can already pass the be.visible check, yet not be clickable
-      // because the animation of the content expansion may still be going on.
-      // Therefore, we use the original/stable button reference, which is not getting animated,
-      // to click it.
+      // The button can already pass the be.visible check, yet not be interactable.
+      // then() provides a stable button reference to click on.
       .then(($btn) => {
         cy.wrap($btn).click();
       });
