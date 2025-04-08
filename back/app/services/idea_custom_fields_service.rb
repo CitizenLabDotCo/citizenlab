@@ -15,7 +15,7 @@ class IdeaCustomFieldsService
 
     fields = fields.to_a
 
-    form_end_field = fields.find { |f| f.key == 'form_end' }
+    form_end_field = fields.find(&:form_end_page?)
     if form_end_field
       fields.delete(form_end_field)
       fields << form_end_field
@@ -37,8 +37,7 @@ class IdeaCustomFieldsService
   end
 
   def submittable_fields
-    unsubmittable_input_types = %w[page]
-    enabled_fields.reject { |field| unsubmittable_input_types.include? field.input_type }
+    enabled_fields.select(&:submittable?)
   end
 
   def submittable_fields_with_other_options
@@ -47,14 +46,11 @@ class IdeaCustomFieldsService
 
   # Used in the printable PDF export
   def printable_fields
-    ignore_field_types = %w[page date files image_files point file_upload shapefile_upload topic_ids cosponsor_ids ranking matrix_linear_scale]
-    fields = enabled_fields.reject { |field| ignore_field_types.include? field.input_type }
-    insert_other_option_text_fields(fields)
+    enabled_fields_with_other_options.select(&:printable?)
   end
 
   def importable_fields
-    ignore_field_types = %w[page date files image_files file_upload shapefile_upload point line polygon cosponsor_ids ranking matrix_linear_scale]
-    enabled_fields_with_other_options.reject { |field| ignore_field_types.include? field.input_type }
+    enabled_fields_with_other_options.select(&:importable?)
   end
 
   def enabled_fields
@@ -66,7 +62,7 @@ class IdeaCustomFieldsService
   end
 
   def enabled_public_fields
-    enabled_fields.select { |field| field.answer_visible_to == CustomField::VISIBLE_TO_PUBLIC }
+    enabled_fields.select(&:visible_to_public?)
   end
 
   def extra_visible_fields
@@ -140,18 +136,18 @@ class IdeaCustomFieldsService
     field_params.except(:code, :input_type)
   end
 
-  def check_form_structure(fields, errors)
-    return if fields.empty?
+  def check_form_structure(fields_from_params, errors)
+    return if fields_from_params.empty?
 
-    first_field_type = 'page'
-    if fields[0][:input_type] != first_field_type
-      error = { error: "First field must be of type '#{first_field_type}'" }
+    unless fields_from_params.first[:input_type] == 'page'
+      error = { error: "First field must be of type 'page'" }
       errors['0'] = { structure: [error] }
     end
 
     # Check the last field is a page
-    if fields.last[:input_type] != 'page'
-      errors[(fields.length - 1).to_s] = { structure: [{ error: "Last field must be of type 'page'" }] }
+    last_field = fields_from_params.last
+    unless last_field[:input_type] == 'page' && last_field[:key] == 'form_end'
+      errors[(fields_from_params.length - 1).to_s] = { structure: [{ error: "Last field must be of type 'page' with a key of 'form_end'" }] }
     end
   end
 

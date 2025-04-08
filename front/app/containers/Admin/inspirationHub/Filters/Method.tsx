@@ -19,14 +19,26 @@ type Option = {
   label: string;
 };
 
+const sortAlphabetically = (a: Option, b: Option) => {
+  if (a.label < b.label) {
+    return -1;
+  }
+  if (a.label > b.label) {
+    return 1;
+  }
+  return 0;
+};
+
 const Method = () => {
   const value = useRansackParam('q[phases_participation_method_eq]');
   const { formatMessage } = useIntl();
 
-  const options = keys(PARTICIPATION_METHOD_LABELS).map((key) => ({
-    value: key,
-    label: formatMessage(PARTICIPATION_METHOD_LABELS[key]),
-  }));
+  const options = keys(PARTICIPATION_METHOD_LABELS)
+    .map((key) => ({
+      value: key,
+      label: formatMessage(PARTICIPATION_METHOD_LABELS[key]),
+    }))
+    .sort(sortAlphabetically);
 
   return (
     <Select

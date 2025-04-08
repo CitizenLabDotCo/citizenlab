@@ -15,10 +15,10 @@ export const getAppConfigurationData = (
     name: 'wonderville',
     host: 'wonderville.com',
     created_at: '2020-10-13T09:00:00.000Z',
-    country_code: 'BE',
     settings: {
       core: {
         allowed: true,
+        country_code: 'BE',
         enabled: true,
         locales: ['en'],
         population: 12500,
