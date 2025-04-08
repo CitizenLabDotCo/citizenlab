@@ -34,17 +34,17 @@ export default defineMessages({
     defaultMessage:
       'Enable proposals in the “Proposals” section in the admin panel to unlock them in the homepage',
   },
-  communityMontitorCtaDefaultTitle: {
-    id: 'app.containers.admin.ContentBuilder.homepage.communityMontitorCtaDefaultTitle',
+  communityMonitorCtaDefaultTitle: {
+    id: 'app.containers.admin.ContentBuilder.homepage.communityMonitorCtaDefaultTitle',
     defaultMessage: 'Help us serve you better',
   },
-  communityMontitorCtaDefaultDescription: {
-    id: 'app.containers.admin.ContentBuilder.homepage.communityMontitorCtaDefaultDescription',
+  communityMonitorCtaDefaultDescription: {
+    id: 'app.containers.admin.ContentBuilder.homepage.communityMonitorCtaDefaultDescription',
     defaultMessage:
       'This is a quarterly, ongoing survey that tracks how you feel about governance & public services.',
   },
-  communityMontitorCtaDefaultSurveyButtonText: {
-    id: 'app.containers.admin.ContentBuilder.homepage.communityMontitorCtaDefaultSurveyButtonText',
+  communityMonitorCtaDefaultSurveyButtonText: {
+    id: 'app.containers.admin.ContentBuilder.homepage.communityMonitorCtaDefaultSurveyButtonText',
     defaultMessage: 'Take the survey',
   },
 });
