@@ -6,6 +6,7 @@ import { useParams } from 'react-router-dom';
 
 import useAddAnalysis from 'api/analyses/useAddAnalysis';
 import useAnalyses from 'api/analyses/useAnalyses';
+import useUpdateAnalysis from 'api/analyses/useUpdateAnalysis';
 import useCustomFields from 'api/custom_fields/useCustomFields';
 
 import Button from 'components/UI/ButtonWithLink';
@@ -18,7 +19,9 @@ import messages from './messages';
 const ViewSingleSubmissionNotice = () => {
   const { formatMessage } = useIntl();
 
-  const { mutate: addAnalysis } = useAddAnalysis();
+  const { mutate: addAnalysis, isLoading: isAddLoading } = useAddAnalysis();
+  const { mutate: updateAnalysis, isLoading: isUpdateLoading } =
+    useUpdateAnalysis();
 
   const { projectId, phaseId } = useParams() as {
     projectId: string;
@@ -42,15 +45,41 @@ const ViewSingleSubmissionNotice = () => {
     (analysis) => analysis.relationships.main_custom_field?.data === null
   );
 
+  const analysisCustomFieldIds =
+    relevantAnalysis?.relationships.additional_custom_fields?.data.map(
+      (field) => field.id
+    ) || [];
+
+  const customFieldsMatchAnalysisAdditionalFields =
+    inputCustomFieldsIds &&
+    analysisCustomFieldIds.length === inputCustomFieldsIds.length &&
+    analysisCustomFieldIds.every((id) => inputCustomFieldsIds.includes(id));
+
+  const openAnalysis = (analysisId: string) => {
+    clHistory.push(
+      `/admin/projects/${projectId}/analysis/${analysisId}?${stringify({
+        phase_id: phaseId,
+      })}`
+    );
+  };
+
   const goToAnalysis = () => {
     if (relevantAnalysis?.id) {
-      clHistory.push(
-        `/admin/projects/${projectId}/analysis/${
-          relevantAnalysis.id
-        }?${stringify({
-          phase_id: phaseId,
-        })}`
-      );
+      if (!customFieldsMatchAnalysisAdditionalFields) {
+        updateAnalysis(
+          {
+            additional_custom_field_ids: inputCustomFieldsIds,
+            id: relevantAnalysis.id,
+          },
+          {
+            onSuccess: () => {
+              openAnalysis(relevantAnalysis.id);
+            },
+          }
+        );
+      } else {
+        openAnalysis(relevantAnalysis.id);
+      }
     } else {
       addAnalysis(
         {
@@ -59,13 +88,7 @@ const ViewSingleSubmissionNotice = () => {
           additionalCustomFields: inputCustomFieldsIds,
         },
         {
-          onSuccess: (response) => {
-            clHistory.push(
-              `/admin/projects/${projectId}/analysis/${
-                response.data.id
-              }?${stringify({ phase_id: phaseId })}`
-            );
-          },
+          onSuccess: (response) => openAnalysis(response.data.id),
         }
       );
     }
@@ -95,6 +118,7 @@ const ViewSingleSubmissionNotice = () => {
           onClick={goToAnalysis}
           fontSize="14px"
           buttonStyle="admin-dark-outlined"
+          processing={isAddLoading || isUpdateLoading}
         >
           {formatMessage(messages.aiAnalysis)}
         </Button>
