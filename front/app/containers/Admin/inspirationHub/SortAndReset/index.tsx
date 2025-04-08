@@ -22,7 +22,7 @@ const SortAndReset = () => {
         ml="8px"
         onClick={() => {
           const search = countryCode
-            ? `?q[tenant_country_code_in]=${countryCode}`
+            ? `?q[tenant_country_code_in]=${JSON.stringify([countryCode])}`
             : '';
 
           clHistory.replace({

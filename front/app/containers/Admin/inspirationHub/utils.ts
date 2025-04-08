@@ -18,10 +18,13 @@ export const setRansackParam = <ParamName extends keyof RansackParams>(
   paramName: ParamName,
   paramValue: RansackParams[ParamName]
 ) => {
-  if (paramValue) {
-    updateSearchParams({ [paramName]: paramValue });
-  } else {
+  const isNullishParam =
+    !paramValue || (Array.isArray(paramValue) && paramValue.length === 0);
+
+  if (isNullishParam) {
     removeSearchParams([paramName]);
+  } else {
+    updateSearchParams({ [paramName]: paramValue });
   }
 };
 
@@ -29,7 +32,14 @@ export const useRansackParam = <ParamName extends keyof RansackParams>(
   paramName: ParamName
 ): RansackParams[ParamName] => {
   const [searchParams] = useSearchParams();
-  return searchParams.get(paramName) as RansackParams[typeof paramName];
+
+  const paramValue = searchParams.get(paramName);
+
+  if (paramName === 'q[tenant_country_code_in]') {
+    return paramValue === null ? [] : JSON.parse(paramValue);
+  }
+
+  return paramValue as RansackParams[typeof paramName];
 };
 
 const RANSACK_PARAMS: (keyof RansackParams)[] = [
