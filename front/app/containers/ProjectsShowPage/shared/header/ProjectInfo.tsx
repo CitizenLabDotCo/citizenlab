@@ -92,7 +92,12 @@ const ProjectInfo = ({ projectId, className }: Props) => {
                 <ReadMoreWrapper
                   fontSize="m"
                   contentId="description"
-                  value={project.data.attributes.description_multiloc}
+                  content={
+                    <T
+                      value={project.data.attributes.description_multiloc}
+                      supportHtml
+                    />
+                  }
                 />
               </Box>
 
