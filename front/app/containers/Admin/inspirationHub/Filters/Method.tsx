@@ -47,6 +47,7 @@ const Method = () => {
       multipleSelectionAllowed
       selected={participationMethods ?? []}
       values={options}
+      mr="0px"
       onChange={(participationMethods: ParticipationMethod[]) => {
         setRansackParam(
           'q[phases_participation_method_in]',
