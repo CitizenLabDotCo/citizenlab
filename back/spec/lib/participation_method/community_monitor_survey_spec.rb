@@ -157,7 +157,7 @@ RSpec.describe ParticipationMethod::CommunityMonitorSurvey do
     end
   end
 
-  describe '#supports_user_fields_in_form?' do
+  describe '#user_fields_in_form?' do
     it 'returns false when not enabled' do
       expect(participation_method.user_fields_in_form?).to be false
     end
