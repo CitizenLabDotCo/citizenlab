@@ -16,7 +16,7 @@ const Filters = () => {
       justifyContent="space-between"
       alignItems="center"
     >
-      <Box display="flex" flexDirection="row" gap="12px" alignItems="center">
+      <Box display="flex" flexDirection="row" alignItems="center">
         <Country />
         <Method />
         <Population />

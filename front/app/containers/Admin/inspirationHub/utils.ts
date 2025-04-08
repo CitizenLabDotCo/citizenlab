@@ -18,10 +18,13 @@ export const setRansackParam = <ParamName extends keyof RansackParams>(
   paramName: ParamName,
   paramValue: RansackParams[ParamName]
 ) => {
-  if (paramValue) {
-    updateSearchParams({ [paramName]: paramValue });
-  } else {
+  const isNullishParam =
+    !paramValue || (Array.isArray(paramValue) && paramValue.length === 0);
+
+  if (isNullishParam) {
     removeSearchParams([paramName]);
+  } else {
+    updateSearchParams({ [paramName]: paramValue });
   }
 };
 
@@ -29,16 +32,20 @@ export const useRansackParam = <ParamName extends keyof RansackParams>(
   paramName: ParamName
 ): RansackParams[ParamName] => {
   const [searchParams] = useSearchParams();
-  return searchParams.get(paramName) as RansackParams[typeof paramName];
+
+  const paramValue = searchParams.get(paramName);
+
+  if (paramName.endsWith('in]')) {
+    return paramValue === null ? [] : JSON.parse(paramValue);
+  }
+
+  return paramValue as RansackParams[typeof paramName];
 };
 
 const RANSACK_PARAMS: (keyof RansackParams)[] = [
-  'q[tenant_country_code_eq]',
-  'q[tenant_population_group_eq]',
-  'q[score_total_gteq]',
-  'q[phases_participation_method_eq]',
-  'q[topic_id_eq]',
-  'q[status_eq]',
+  'q[tenant_country_code_in]',
+  'q[phases_participation_method_in]',
+  'q[tenant_population_group_in]',
   'q[practical_end_at_gteq]',
   'q[practical_end_at_lt]',
   'q[title_en_or_description_en_or_tenant_name_cont]',
@@ -50,10 +57,14 @@ export const useRansackParams = () => {
   return useMemo(
     () =>
       RANSACK_PARAMS.reduce((acc, paramName) => {
-        const value = searchParams.get(paramName);
+        let value = searchParams.get(paramName);
 
         if (value === null) {
           return acc;
+        }
+
+        if (paramName.endsWith('in]')) {
+          value = JSON.parse(value);
         }
 
         return {
