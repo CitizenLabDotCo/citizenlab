@@ -331,7 +331,7 @@ describe IdeaCustomFieldsService do
             user_page
             u_gender
             u_birthyear
-            end_page
+            form_end
           ]
         end
       end
@@ -344,7 +344,7 @@ describe IdeaCustomFieldsService do
           expect(output.pluck(:key)).to eq %w[
             page1
             text_field
-            end_page
+            form_end
           ]
         end
       end
