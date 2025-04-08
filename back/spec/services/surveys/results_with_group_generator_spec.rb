@@ -116,9 +116,9 @@ RSpec.describe Surveys::ResultsWithGroupGenerator do
             }
           ]
           result[:multilocs][:group] = {
-            'female' => { title_multiloc: { 'en' => 'youth council', 'fr-FR' => 'conseil des jeunes', 'nl-NL' => 'jeugdraad' } },
-            'male' => { title_multiloc: { 'en' => 'youth council', 'fr-FR' => 'conseil des jeunes', 'nl-NL' => 'jeugdraad' } },
-            'unspecified' => { title_multiloc: { 'en' => 'youth council', 'fr-FR' => 'conseil des jeunes', 'nl-NL' => 'jeugdraad' } }
+            'female' => { title_multiloc: { 'en' => 'Female' } },
+            'male' => { title_multiloc: { 'en' => 'Male' } },
+            'unspecified' => { title_multiloc: { 'en' => 'Unspecified' } }
           }
         end
       end
@@ -220,6 +220,7 @@ RSpec.describe Surveys::ResultsWithGroupGenerator do
           totalResponseCount: 27,
           questionResponseCount: 22,
           totalPickCount: 27,
+          averages: { this_period: 3.5 },
           answers: [
             { answer: 1, count: 2, groups: [
               { count: 2, group: nil }
@@ -297,6 +298,7 @@ RSpec.describe Surveys::ResultsWithGroupGenerator do
           totalResponseCount: 27,
           questionResponseCount: 22,
           totalPickCount: 27,
+          averages: { this_period: 3.5 },
           answers: [
             { answer: 1, count: 2, groups: [
               { count: 2, group: nil }
@@ -430,9 +432,9 @@ RSpec.describe Surveys::ResultsWithGroupGenerator do
             }
           ]
           result[:multilocs][:group] = {
-            'female' => { title_multiloc: { 'en' => 'youth council', 'fr-FR' => 'conseil des jeunes', 'nl-NL' => 'jeugdraad' } },
-            'male' => { title_multiloc: { 'en' => 'youth council', 'fr-FR' => 'conseil des jeunes', 'nl-NL' => 'jeugdraad' } },
-            'unspecified' => { title_multiloc: { 'en' => 'youth council', 'fr-FR' => 'conseil des jeunes', 'nl-NL' => 'jeugdraad' } }
+            'female' => { title_multiloc: { 'en' => 'Female' } },
+            'male' => { title_multiloc: { 'en' => 'Male' } },
+            'unspecified' => { title_multiloc: { 'en' => 'Unspecified' } }
           }
         end
       end

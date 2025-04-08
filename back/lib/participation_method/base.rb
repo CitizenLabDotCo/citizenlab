@@ -182,6 +182,10 @@ module ParticipationMethod
       false
     end
 
+    def user_fields_in_form?
+      false
+    end
+
     def supports_multiple_phase_reports?
       false
     end

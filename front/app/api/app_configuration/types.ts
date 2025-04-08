@@ -264,6 +264,7 @@ export interface IAppConfigurationSettings {
   platform_templates?: AppConfigurationFeature;
   authoring_assistance_prototype?: AppConfigurationFeature;
   project_library?: AppConfigurationFeature;
+  user_fields_in_surveys?: AppConfigurationFeature;
 }
 
 export type TAppConfigurationSettingCore = keyof IAppConfigurationSettingsCore;
