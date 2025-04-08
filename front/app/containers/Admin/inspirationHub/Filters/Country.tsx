@@ -2,7 +2,7 @@ import React from 'react';
 
 import useProjectLibraryCountries from 'api/project_library_countries/useProjectLibraryCountries';
 
-import MultipleSelect from 'components/UI/MultipleSelect';
+import FilterSelector from 'components/FilterSelector';
 
 import { trackEventByName } from 'utils/analytics';
 import { useIntl } from 'utils/cl-intl';
@@ -13,7 +13,7 @@ import messages from './messages';
 import tracks from './tracks';
 
 const Country = () => {
-  const value = useRansackParam('q[tenant_country_code_in]');
+  const values = useRansackParam('q[tenant_country_code_in]');
   const { formatMessage } = useIntl();
 
   const { data: countries } = useProjectLibraryCountries();
@@ -21,17 +21,18 @@ const Country = () => {
   const options = countries?.data.attributes.map(
     ({ code, name, emoji_flag }) => ({
       value: code,
-      label: `${emoji_flag} ${name}`,
+      text: `${emoji_flag} ${name}`,
     })
   );
 
   return (
-    <MultipleSelect
-      value={value}
-      options={options ?? []}
-      placeholder={formatMessage(messages.country)}
-      onChange={(options) => {
-        const countryCodes = options.map((o) => o.value);
+    <FilterSelector
+      multipleSelectionAllowed
+      selected={values ?? []}
+      values={options ?? []}
+      title={formatMessage(messages.country)}
+      name="country-select"
+      onChange={(countryCodes) => {
         setRansackParam('q[tenant_country_code_in]', countryCodes);
         trackEventByName(tracks.setCountry, {
           country_codes: JSON.stringify(countryCodes),
