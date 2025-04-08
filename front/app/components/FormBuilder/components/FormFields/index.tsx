@@ -159,7 +159,7 @@ const FormFields = ({
             <Box height="1px" borderTop={`1px solid ${colors.divider}`} />
           )}
         </Box>
-        {lastPage.key === 'survey_end' && (
+        {lastPage.key === 'form_end' && (
           <>
             {userFieldsInFormNotice && userFieldsInFormNotice()}
             <Box mt={userFieldsInFormNotice ? '0' : '40px'}>
