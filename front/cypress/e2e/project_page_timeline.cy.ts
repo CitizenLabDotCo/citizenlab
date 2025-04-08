@@ -163,7 +163,9 @@ describe('New timeline project', () => {
 
     cy.get('#e2e-project-phase-description-see-less-button')
       .should('be.visible')
-      .click();
+      .then(($btn) => {
+        cy.wrap($btn).click();
+      });
 
     // Verify that the description is collapsed again
     cy.get('#e2e-project-phase-description-read-more-button').should(
