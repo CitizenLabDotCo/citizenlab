@@ -89,10 +89,14 @@ module Surveys
     end
 
     def totals_by_quarter
+      maximum_value = @fields.pluck(:maximum).compact.max
+      return {} unless maximum_value # No maximum value means no totals
+
       field_keys = @fields.pluck(:key)
       grouped_answers = all_answers.group_by { |a| a['quarter'] }
       totals = grouped_answers.transform_values do |answers|
-        answers.each_with_object({}) do |answer, accu|
+        empty_values = (1..maximum_value).index_with { |_i| 0 } # Create empty values
+        answers.each_with_object(empty_values) do |answer, accu|
           answer.each do |key, value|
             next unless field_keys.include?(key)
 
