@@ -29,6 +29,13 @@ RSpec.describe CustomFieldBins::AgeBin do
     it 'returns false for nil' do
       expect(bin.in_bin?(nil)).to be false
     end
+
+    it 'it deals well with an open-ended range' do
+      bin = build(:age_bin, range: 20...nil)
+      expect(bin.in_bin?(1990)).to be true
+      expect(bin.in_bin?(2010)).to be false
+      expect(bin.in_bin?(nil)).to be false
+    end
   end
 
   describe '#filter_by_bin' do
