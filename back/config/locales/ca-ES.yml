@@ -301,7 +301,7 @@ ca:
       title_text_3: 'Gràcies per compartir la teva aportació!'
       description_text_3: "La teva aportació s'ha enviat correctament."
     form_user_page:
-      title_text: 'About you'
+      title_text: 'Sobre tu'
     pdf_export:
       personal_data: 'Dades personals'
       personal_data_explanation_public: "Enviarem les vostres aportacions a la plataforma de participació en línia de %{organizationName}. Si voleu que el vostre nom es mostri com a autor d'aquesta entrada i rebre actualitzacions rellevants per a la vostra entrada per correu electrònic, ompliu els camps següents d'aquesta pàgina i us crearem un compte. El vostre correu electrònic no serà públic i només el farà servir %{organizationName}. Si vols mantenir l'anonimat, o no acceptes que utilitzem les teves dades personals d'aquesta manera, pots deixar-les buides."
