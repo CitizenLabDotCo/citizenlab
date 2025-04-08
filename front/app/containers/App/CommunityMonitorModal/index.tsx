@@ -5,7 +5,6 @@ import { get, set } from 'js-cookie';
 import { useLocation } from 'react-router-dom';
 
 import useCommunityMonitorProject from 'api/community_monitor/useCommunityMonitorProject';
-import useCustomFields from 'api/custom_fields/useCustomFields';
 import usePhase from 'api/phases/usePhase';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
@@ -69,18 +68,14 @@ const CommunityMonitorModal = ({
     project?.data.attributes.action_descriptors.posting_idea.disabled_reason !==
       'posting_limited_max_reached';
 
-  // Get the custom fields for the survey & JSON schemas
-  const { data: customFields } = useCustomFields({
-    projectId: project?.data.id || '',
-    phaseId,
-  });
+  // Get the survey schemas
   const { schema, uiSchema, isLoading } = useInputSchema({
     projectId: project?.data.id,
     phaseId,
   });
 
   // Calculate estimated time to complete survey
-  const estimatedMinutesToComplete = calculateEstimatedSurveyTime(customFields);
+  const estimatedMinutesToComplete = calculateEstimatedSurveyTime(uiSchema);
 
   // Get the survey popup frequency, so we can show the modal at a certain rate
   const surveyPopupFrequency =

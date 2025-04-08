@@ -13,9 +13,9 @@ import { useTheme } from 'styled-components';
 import { Multiloc } from 'typings';
 
 import useCommunityMonitorProject from 'api/community_monitor/useCommunityMonitorProject';
-import useCustomFields from 'api/custom_fields/useCustomFields';
 import usePhase from 'api/phases/usePhase';
 
+import useInputSchema from 'hooks/useInputSchema';
 import useLocalize from 'hooks/useLocalize';
 
 import { useIntl } from 'utils/cl-intl';
@@ -51,14 +51,14 @@ const CommunityMonitorCTA = ({
 
   const isSurveyLive = phase?.data.attributes.submission_enabled;
 
-  // Get the custom fields for the survey & JSON schemas
-  const { data: customFields } = useCustomFields({
+  // Get the survey UI schema
+  const { uiSchema } = useInputSchema({
     projectId: project?.data.id || '',
     phaseId,
   });
 
   // Calculate estimated time to complete survey
-  const estimatedMinutesToComplete = calculateEstimatedSurveyTime(customFields);
+  const estimatedMinutesToComplete = calculateEstimatedSurveyTime(uiSchema);
 
   const goToCommunityMonitorSurvey = () => {
     if (phaseId) {
