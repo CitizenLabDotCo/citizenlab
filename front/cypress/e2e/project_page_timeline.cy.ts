@@ -152,25 +152,25 @@ describe('New timeline project', () => {
       'not.exist'
     );
     cy.get('#e2e-project-phase-description-read-more-button')
-      .should('exist')
+      .should('be.visible')
       .click();
 
     cy.get('#e2e-project-phase-description-read-more-button').should(
       'not.exist'
     );
     cy.get('#e2e-project-phase-description-see-less-button')
-      .should('exist')
+      .should('be.visible')
       .click();
   });
 
   it('shows the event CTA button', () => {
     // Shows the event CTA when there is an upcoming event
-    cy.get('#e2e-project-see-events-button').should('exist');
+    cy.get('#e2e-project-see-events-button').should('be.visible');
   });
 
   it('shows the previous phase', () => {
     cy.intercept(`**/phases/**`).as('phaseRequests');
-    cy.get('.e2e-previous-phase').should('exist');
+    cy.get('.e2e-previous-phase').should('be.visible');
     cy.get('.e2e-previous-phase').click({ force: true });
     cy.wait('@phaseRequests');
     cy.get('.e2e-previous-phase')
@@ -190,7 +190,7 @@ describe('New timeline project', () => {
   it('shows the next phase', () => {
     cy.intercept(`**/phases/**`).as('phaseRequests');
     // go to the next (and last) phase
-    cy.get('.e2e-next-phase').should('exist');
+    cy.get('.e2e-next-phase').should('be.visible');
     cy.get('.e2e-next-phase').click({ force: true });
     cy.wait('@phaseRequests');
     // verify it's not possible to go to a next phase
@@ -209,7 +209,7 @@ describe('New timeline project', () => {
   });
 
   it('shows the events viewer even in draft projects', () => {
-    cy.get('[data-testid="EventInformation"]').should('exist');
+    cy.get('[data-testid="EventInformation"]').should('be.visible');
   });
 
   it('correctly handles phaseNumber URL parameter', () => {
