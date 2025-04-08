@@ -119,6 +119,10 @@ module ParticipationMethod
       false
     end
 
+    def user_fields_in_form?
+      phase.user_fields_in_form
+    end
+
     private
 
     def start_page_field(custom_form)

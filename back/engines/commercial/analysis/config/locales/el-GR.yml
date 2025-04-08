@@ -1,3 +1,20 @@
 el:
   analysis:
     example_tag_n: Παράδειγμα ετικέτας %{n}
+    cell_statement:
+      percent_more: "%{percent}% περισσότερα"
+      percent_less: "%{percent}% λιγότερο"
+      range_min_max: "%{min} στο %{max}"
+      range_min: "%{min} ή περισσότερο"
+      range_max: "%{max} ή λιγότερο"
+      tag_vs_bin:
+        inputs: "Τα άτομα που απαντούν '%{answer}' στο '%{question}' δημοσιεύουν %{percent_more_less} στο '%{tag}' σε σχέση με το μέσο όρο."
+        likes: "Οι άνθρωποι που ανταποκρίνονται '%{answer}' στο '%{question}' αρέσκονται στο ' %{percent_more_less} σε εισροές στο '%{tag}' περισσότερο από το μέσο όρο."
+        dislikes: "Οι άνθρωποι που ανταποκρίνονται '%{answer}' στο '%{question}' αντιπαθούν τις εισροές %{percent_more_less} στο '%{tag}' σε σχέση με το μέσο όρο."
+        participants: "Τα άτομα που απαντούν '%{answer}' στο '%{question}' συμμετέχουν %{percent_more_less} στο '%{tag}' σε σχέση με το μέσο όρο."
+      bin_vs_bin:
+        inputs: "Τα άτομα που απαντούν '%{answer1}' στο '%{question1}' απαντούν '%{answer2}' στο '%{question2}' %{percent_more_less} από το μέσο όρο."
+        likes: "Οι άνθρωποι που απαντούν \"%{answer1}\" σε \"%{question1}\" αρέσκονται στις εισροές %{percent_more_less} όταν απαντούν \"%{answer2}\" σε \"%{question2}\" από το μέσο όρο."
+        dislikes: "Οι άνθρωποι που απαντούν \"%{answer1}\" σε \"%{question1}\" αντιπαθούν τις εισροές %{percent_more_less} όταν απαντούν \"%{answer2}\" σε \"%{question2}\" από το μέσο όρο."
+        participants: "Τα άτομα που απαντούν '%{answer1}' στο '%{question1}' συμμετέχουν %{percent_more_less} όταν απαντούν '%{answer2}' στο '%{question2}' από το μέσο όρο."
+
