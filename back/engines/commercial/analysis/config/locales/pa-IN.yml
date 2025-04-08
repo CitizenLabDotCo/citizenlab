@@ -1,3 +1,20 @@
 pa:
   analysis:
     example_tag_n: ਉਦਾਹਰਨ ਟੈਗ %{n}
+    cell_statement:
+      percent_more: "%{percent}% ਹੋਰ"
+      percent_less: "%{percent}% ਘੱਟ"
+      range_min_max: "%{min} ਤੋਂ %{max}ਤੱਕ"
+      range_min: "%{min} ਜਾਂ ਵੱਧ"
+      range_max: "%{max} ਜਾਂ ਘੱਟ"
+      tag_vs_bin:
+        inputs: "ਜੋ ਲੋਕ '%{answer}' ਤੋਂ '%{question}' ਤੱਕ ਜਵਾਬ ਦਿੰਦੇ ਹਨ, ਉਹ ਔਸਤ ਨਾਲੋਂ '%{tag}' ਵਿੱਚ %{percent_more_less} ਪੋਸਟ ਕਰਦੇ ਹਨ।"
+        likes: "ਜੋ ਲੋਕ '%{answer}' ਨੂੰ '%{question}' ਦਾ ਜਵਾਬ ਦਿੰਦੇ ਹਨ, ਉਹਨਾਂ ਨੂੰ ਔਸਤ ਨਾਲੋਂ '%{tag}' ਵਿੱਚ %{percent_more_less} ਇਨਪੁਟ ਪਸੰਦ ਆਉਂਦੇ ਹਨ।"
+        dislikes: "ਜੋ ਲੋਕ '%{answer}' ਨੂੰ '%{question}' ਦਾ ਜਵਾਬ ਦਿੰਦੇ ਹਨ, ਉਹਨਾਂ ਨੂੰ '%{tag}' ਵਿੱਚ %{percent_more_less} ਇਨਪੁਟ ਔਸਤ ਨਾਲੋਂ ਪਸੰਦ ਨਹੀਂ ਆਉਂਦੇ।"
+        participants: "ਜੋ ਲੋਕ '%{answer}' ਤੋਂ '%{question}' ਤੱਕ ਜਵਾਬ ਦਿੰਦੇ ਹਨ, ਉਹ ਔਸਤਨ '%{tag}' ਵਿੱਚ %{percent_more_less} ਹਿੱਸਾ ਲੈਂਦੇ ਹਨ।"
+      bin_vs_bin:
+        inputs: "ਜੋ ਲੋਕ '%{answer1}' ਤੋਂ '%{question1}' ਤੱਕ ਜਵਾਬ ਦਿੰਦੇ ਹਨ, ਉਹ ਔਸਤ ਨਾਲੋਂ '%{answer2}' ਤੋਂ '%{question2}' %{percent_more_less} ਤੱਕ ਜਵਾਬ ਦਿੰਦੇ ਹਨ।"
+        likes: "ਜੋ ਲੋਕ '%{answer1}' ਤੋਂ '%{question1}' ਤੱਕ ਜਵਾਬ ਦਿੰਦੇ ਹਨ, ਉਹਨਾਂ ਨੂੰ ਔਸਤ ਨਾਲੋਂ '%{answer2}' ਤੋਂ '%{question2}' ਤੱਕ ਜਵਾਬ ਦੇਣ 'ਤੇ %{percent_more_less} ਇਨਪੁਟ ਪਸੰਦ ਆਉਂਦੇ ਹਨ।"
+        dislikes: "ਜੋ ਲੋਕ '%{answer1}' ਨੂੰ '%{question1}' ਦਾ ਜਵਾਬ ਦਿੰਦੇ ਹਨ, ਉਹ ਔਸਤ ਨਾਲੋਂ '%{answer2}' ਨੂੰ '%{question2}' ਦਾ ਜਵਾਬ ਦਿੰਦੇ ਸਮੇਂ %{percent_more_less} ਇਨਪੁਟ ਨੂੰ ਪਸੰਦ ਨਹੀਂ ਕਰਦੇ।"
+        participants: "ਜੋ ਲੋਕ '%{answer1}' ਤੋਂ '%{question1}' ਤੱਕ ਜਵਾਬ ਦਿੰਦੇ ਹਨ, ਉਹ ਔਸਤ ਨਾਲੋਂ '%{answer2}' ਤੋਂ '%{question2}' ਤੱਕ ਜਵਾਬ ਦੇਣ 'ਤੇ %{percent_more_less} ਵਿੱਚ ਹਿੱਸਾ ਲੈਂਦੇ ਹਨ।"
+

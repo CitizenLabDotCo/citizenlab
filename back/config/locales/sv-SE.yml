@@ -300,6 +300,8 @@ sv:
     form_end_page:
       title_text_3: 'Tack för att du delar med dig av dina synpunkter!'
       description_text_3: "Din input har skickats in på ett framgångsrikt sätt."
+    form_user_page:
+      title_text: 'About you'
     pdf_export:
       personal_data: 'Personuppgifter'
       personal_data_explanation_public: "Vi kommer att skicka dina synpunkter till %{organizationName}:s onlineplattform för deltagande. Om du vill att ditt namn ska visas som författare till detta inlägg och få uppdateringar som är relevanta för ditt inlägg via e-post, vänligen fyll i följande fält på denna sida så skapar vi ett konto åt dig. Ditt e-postmeddelande kommer inte att vara offentligt och kommer endast att användas av %{organizationName}. Om du vill vara anonym eller inte samtycker till att vi använder dina personuppgifter på detta sätt kan du lämna dem tomma."

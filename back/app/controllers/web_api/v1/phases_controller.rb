@@ -153,6 +153,7 @@ class WebApi::V1::PhasesController < ApplicationController
       :survey_popup_frequency,
       :similarity_threshold_title,
       :similarity_threshold_body,
+      :user_fields_in_form,
       {
         title_multiloc: CL2_SUPPORTED_LOCALES,
         description_multiloc: CL2_SUPPORTED_LOCALES,
