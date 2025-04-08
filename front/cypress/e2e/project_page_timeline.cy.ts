@@ -161,6 +161,14 @@ describe('New timeline project', () => {
     cy.get('#e2e-project-phase-description-see-less-button')
       .should('be.visible')
       .click();
+
+    // Verify that the description is collapsed again
+    cy.get('#e2e-project-phase-description-read-more-button').should(
+      'be.visible'
+    );
+    cy.get('#e2e-project-phase-description-see-less-button').should(
+      'not.exist'
+    );
   });
 
   it('shows the event CTA button', () => {
