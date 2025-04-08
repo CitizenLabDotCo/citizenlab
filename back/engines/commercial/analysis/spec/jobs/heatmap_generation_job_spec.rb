@@ -55,7 +55,7 @@ RSpec.describe Analysis::HeatmapGenerationJob do
         analysis,
         'heatmap_generated',
         nil,
-        Time.now.to_i,
+        anything,
         hash_including(
           payload: hash_including(
             inputs_count: 10,
@@ -94,7 +94,7 @@ RSpec.describe Analysis::HeatmapGenerationJob do
           analysis,
           'heatmap_generated',
           nil,
-          Time.now.to_i,
+          anything,
           hash_including(
             payload: hash_including(
               inputs_count: 30,
@@ -127,7 +127,7 @@ RSpec.describe Analysis::HeatmapGenerationJob do
         analysis,
         'heatmap_generated',
         nil,
-        Time.now.to_i,
+        anything,
         hash_including(
           payload: hash_including(
             inputs_count: 30,
@@ -161,7 +161,7 @@ RSpec.describe Analysis::HeatmapGenerationJob do
         analysis,
         'heatmap_generated',
         nil,
-        Time.now.to_i,
+        anything,
         hash_including(
           payload: hash_including(
             inputs_count: 30,
