@@ -10,6 +10,7 @@ module EmailCampaigns
       Campaigns::CommentMarkedAsSpam,
       Campaigns::CommentOnIdeaYouFollow,
       Campaigns::CommentOnYourComment,
+      Campaigns::CommunityMonitorReport,
       Campaigns::CosponsorOfYourIdea,
       Campaigns::EventRegistrationConfirmation,
       Campaigns::IdeaMarkedAsSpam,

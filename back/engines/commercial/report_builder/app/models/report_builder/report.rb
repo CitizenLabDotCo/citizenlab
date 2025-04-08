@@ -63,7 +63,7 @@ module ReportBuilder
 
     private
 
-    # Only allow destroy() if allow_delete is true
+    # Only allow destroy! if allow_delete is true
     def can_destroy?
       return true if allow_delete
 
