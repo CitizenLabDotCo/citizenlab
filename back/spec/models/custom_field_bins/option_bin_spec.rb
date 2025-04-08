@@ -39,6 +39,20 @@ RSpec.describe CustomFieldBins::OptionBin do
         expect(bin.in_bin?(%w[option2 option3])).to be false
       end
     end
+
+    context 'with the domicile field' do
+      let(:field) { create(:custom_field_domicile) }
+      let(:area) { create(:area) }
+      let(:bin) { build(:option_bin, custom_field: field, custom_field_option: area.custom_field_option) }
+
+      it 'returns true when the area ID is in the array' do
+        expect(bin.in_bin?([area.id])).to be true
+      end
+
+      it 'returns false when the area ID is not in the array' do
+        expect(bin.in_bin?([create(:area).id])).to be false
+      end
+    end
   end
 
   describe '#filter_by_bin' do
@@ -77,6 +91,24 @@ RSpec.describe CustomFieldBins::OptionBin do
         expect(filtered_scope).not_to include(idea2)
         expect(filtered_scope).not_to include(idea3)
         expect(filtered_scope).not_to include(idea4)
+      end
+    end
+
+    context 'with the domicile field' do
+      let(:field) { create(:custom_field_domicile) }
+      let(:area) { create(:area) }
+      let(:bin) { create(:option_bin, custom_field: field, custom_field_option: area.custom_field_option) }
+
+      it 'filters the scope by the area ID' do
+        idea1 = create(:idea, custom_field_values: { field.key => area.id })
+        idea2 = create(:idea, custom_field_values: { field.key => create(:area).id })
+        idea3 = create(:idea)
+
+        filtered_scope = bin.filter_by_bin(scope)
+
+        expect(filtered_scope).to include(idea1)
+        expect(filtered_scope).not_to include(idea2)
+        expect(filtered_scope).not_to include(idea3)
       end
     end
   end

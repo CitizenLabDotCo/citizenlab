@@ -73,6 +73,7 @@ const AuthorFieldFilterItem = ({
         {(!Array.isArray(filterValue) ||
           customField.data.attributes.input_type === 'multiselect') && (
           <ShortUserFieldValue
+            key={filterValue?.toString()}
             customField={customField}
             rawValue={filterValue}
           />
