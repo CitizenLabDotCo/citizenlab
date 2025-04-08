@@ -470,6 +470,26 @@ class CustomField < ApplicationRecord
     MultilocService.new.i18n_to_multiloc("custom_fields.community_monitor.question_categories.#{question_category}")
   end
 
+  # Counts how many items in the given scope (users/ideas) are in each of the
+  # custom_field_bins. Returns a hash where the keys are the IDs of the bins
+  # and the values are the counts
+  def count_by_bins(scope, bins: custom_field_bins)
+    # Fire a single query where there is a column per bin, with a boolean
+    # indicating whether the record is contained in the bin
+    rows_with_bins = bins.inject(scope) do |s, bin|
+      bin.sql_select_in_bin(s)
+    end
+
+    # Iterate over the query results and count the number of true values for each
+    # bin.
+    counts = {}
+    bins.each do |bin|
+      counts[bin.id] = rows_with_bins.count { |row| row[bin.to_column_name] }
+    end
+
+    counts
+  end
+
   private
 
   def set_default_enabled

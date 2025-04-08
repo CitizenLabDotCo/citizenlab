@@ -113,6 +113,26 @@ RSpec.describe CustomFieldBins::OptionBin do
     end
   end
 
+  describe 'sql_select_in_bin' do
+    let(:scope) { Idea.all }
+
+    context 'with a custom field of type select' do
+      let(:custom_field) { create(:custom_field_select) }
+      let(:option) { create(:custom_field_option, custom_field:, key: 'option1') }
+      let(:bin) { create(:option_bin, custom_field:, custom_field_option: option) }
+
+      it 'adds a boolean column named after the bin ID' do
+        idea1 = create(:idea, custom_field_values: { custom_field.key => 'option1' })
+        idea2 = create(:idea, custom_field_values: { custom_field.key => 'option2' })
+
+        augmented_scope = bin.sql_select_in_bin(scope)
+
+        expect(augmented_scope.find(idea1.id).send(bin.to_column_name)).to be true
+        expect(augmented_scope.find(idea2.id).send(bin.to_column_name)).to be false
+      end
+    end
+  end
+
   describe '#generate_bins' do
     context 'when bins already exist' do
       let!(:custom_field) { create(:custom_field_select) }

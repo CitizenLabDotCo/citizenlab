@@ -709,4 +709,27 @@ RSpec.describe CustomField do
       end
     end
   end
+
+  describe '#count_by_bins' do
+    let!(:field) { create(:custom_field_multiselect, :with_options, :for_registration) }
+    let!(:bin1) { create(:option_bin, custom_field: field, custom_field_option: field.options.first) }
+    let!(:bin2) { create(:option_bin, custom_field: field, custom_field_option: field.options.second) }
+
+    it 'counts 0 is there are no users' do
+      expect(field.count_by_bins(User.all)).to eq({
+        bin1.id => 0,
+        bin2.id => 0
+      })
+    end
+
+    it 'counts the number of users in each bin' do
+      create(:user, custom_field_values: { field.key => [field.options.first.key] })
+      create(:user)
+
+      expect(field.count_by_bins(User.all)).to eq({
+        bin1.id => 1,
+        bin2.id => 0
+      })
+    end
+  end
 end

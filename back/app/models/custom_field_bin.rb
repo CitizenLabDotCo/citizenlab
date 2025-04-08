@@ -39,6 +39,11 @@ class CustomFieldBin < ApplicationRecord
     CustomFieldBinPolicy
   end
 
+  def to_column_name
+    # Convert the uuid to a string that is a valid SQL column name (used in AS x statement)
+    "bin_#{id.delete('-')}"
+  end
+
   # Does the given value fall into this bin.
   # - `value` is the custom_field_value for the custom_field, as extracted from the custom_field_values
   def in_bin?(value)
@@ -48,6 +53,12 @@ class CustomFieldBin < ApplicationRecord
   # Returns the given ActiveRecord scope, filtered for items that are in this bin
   # The resource covered by the scope needs to have a `custom_field_values` column (users or ideas)
   def filter_by_bin(scope)
+    raise NotImplementedError
+  end
+
+  # Returns the given ActiveRecord scope, with a column added that indicates
+  # whether the item is in this bin or not.
+  def sql_select_in_bin(scope)
     raise NotImplementedError
   end
 
