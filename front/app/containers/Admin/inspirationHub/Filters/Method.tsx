@@ -1,8 +1,8 @@
 import React from 'react';
 
-import { Select } from '@citizenlab/cl2-component-library';
+import { ParticipationMethod } from 'api/phases/types';
 
-import { RansackParams } from 'api/project_library_projects/types';
+import FilterSelector from 'components/FilterSelector';
 
 import { trackEventByName } from 'utils/analytics';
 import { useIntl } from 'utils/cl-intl';
@@ -15,41 +15,50 @@ import messages from './messages';
 import tracks from './tracks';
 
 type Option = {
-  value: RansackParams['q[phases_participation_method_eq]'];
-  label: string;
+  value: ParticipationMethod;
+  text: string;
 };
 
 const sortAlphabetically = (a: Option, b: Option) => {
-  if (a.label < b.label) {
+  if (a.text < b.text) {
     return -1;
   }
-  if (a.label > b.label) {
+  if (a.text > b.text) {
     return 1;
   }
   return 0;
 };
 
 const Method = () => {
-  const value = useRansackParam('q[phases_participation_method_eq]');
+  const participationMethods = useRansackParam(
+    'q[phases_participation_method_in]'
+  );
   const { formatMessage } = useIntl();
 
   const options = keys(PARTICIPATION_METHOD_LABELS)
     .map((key) => ({
       value: key,
-      label: formatMessage(PARTICIPATION_METHOD_LABELS[key]),
+      text: formatMessage(PARTICIPATION_METHOD_LABELS[key]),
     }))
     .sort(sortAlphabetically);
 
   return (
-    <Select
-      value={value}
-      options={options}
-      canBeEmpty
-      onChange={(option: Option) => {
-        setRansackParam('q[phases_participation_method_eq]', option.value);
-        trackEventByName(tracks.setMethod, { method: option.value });
+    <FilterSelector
+      multipleSelectionAllowed
+      selected={participationMethods ?? []}
+      values={options}
+      mr="0px"
+      onChange={(participationMethods: ParticipationMethod[]) => {
+        setRansackParam(
+          'q[phases_participation_method_in]',
+          participationMethods
+        );
+        trackEventByName(tracks.setMethod, {
+          methods: JSON.stringify(participationMethods),
+        });
       }}
-      placeholder={formatMessage(messages.method)}
+      title={formatMessage(messages.method)}
+      name="method-select"
     />
   );
 };
