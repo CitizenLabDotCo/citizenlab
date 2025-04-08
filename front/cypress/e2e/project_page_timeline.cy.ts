@@ -148,21 +148,23 @@ describe('New timeline project', () => {
       .contains(phaseCurrentTitle);
     cy.get('.e2e-project-process-page').contains(phaseLongDescription);
 
+    // Verify that the description is collapsed by default
     cy.get('#e2e-project-phase-description-see-less-button').should(
       'not.exist'
     );
+
+    // Read more/less button functionality
     cy.get('#e2e-project-phase-description-read-more-button')
       .should('be.visible')
       .click();
-
     cy.get('#e2e-project-phase-description-read-more-button').should(
       'not.exist'
     );
+
     cy.get('#e2e-project-phase-description-see-less-button')
       .should('be.visible')
-      // The button can already pass the be.visible check, yet not be clickable
-      // because the animation of the content expansion may still be going on.
-      // Therefore, we use then to wait for the button to be clickable.
+      // The button can already pass the be.visible check, yet not be interactable.
+      // then() provides a stable button reference to click on.
       .then(($btn) => {
         cy.wrap($btn).click();
       });
