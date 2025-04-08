@@ -160,7 +160,12 @@ describe('New timeline project', () => {
     );
     cy.get('#e2e-project-phase-description-see-less-button')
       .should('be.visible')
-      .click();
+      // The button can already pass the be.visible check, yet not be clickable
+      // because the animation of the content expansion may still be going on.
+      // Therefore, we use then to wait for the button to be clickable.
+      .then(($btn) => {
+        cy.wrap($btn).click();
+      });
   });
 
   it('shows the event CTA button', () => {
