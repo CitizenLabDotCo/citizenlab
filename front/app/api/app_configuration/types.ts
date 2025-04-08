@@ -267,6 +267,7 @@ export interface IAppConfigurationSettings {
   community_monitor?: AppConfigurationFeature & {
     project_id: string;
   };
+  user_fields_in_surveys?: AppConfigurationFeature;
 }
 
 export type TAppConfigurationSettingCore = keyof IAppConfigurationSettingsCore;

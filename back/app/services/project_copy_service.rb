@@ -343,6 +343,7 @@ class ProjectCopyService < TemplateService # rubocop:disable Metrics/ClassLength
       if phase.pmethod.supports_survey_form?
         yml_phase['native_survey_title_multiloc'] = phase.native_survey_title_multiloc
         yml_phase['native_survey_button_multiloc'] = phase.native_survey_button_multiloc
+        yml_phase['user_fields_in_form'] = phase.user_fields_in_form
       end
 
       store_ref yml_phase, phase.id, :phase

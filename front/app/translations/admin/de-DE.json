@@ -2544,7 +2544,7 @@
   "app.containers.AdminPage.projects.project.analysis.heatmap.likes": "Gefällt mir",
   "app.containers.AdminPage.projects.project.analysis.heatmap.nextHeatmap": "Nächste Heatmap",
   "app.containers.AdminPage.projects.project.analysis.heatmap.nextInsight": "Nächster Einblick",
-  "app.containers.AdminPage.projects.project.analysis.heatmap.notAvailableForProjectsWithLessThan30Participants1": "Automatische Einblicke sind für Projekte mit weniger als 30 Teilnehmern nicht verfügbar.",
+  "app.containers.AdminPage.projects.project.analysis.heatmap.notAvailableForProjectsWithLessThan30Participants1": "Automatische Einblicke sind für Projekte mit weniger als 30 Teilnehmenden nicht verfügbar.",
   "app.containers.AdminPage.projects.project.analysis.heatmap.participants": "Teilnehmende",
   "app.containers.AdminPage.projects.project.analysis.heatmap.previousHeatmap": "Vorherige Heatmap",
   "app.containers.AdminPage.projects.project.analysis.heatmap.previousInsight": "Vorheriger Einblick",

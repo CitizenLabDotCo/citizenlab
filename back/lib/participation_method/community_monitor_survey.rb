@@ -62,6 +62,10 @@ module ParticipationMethod
       true
     end
 
+    def supports_multiple_phase_reports?
+      true
+    end
+
     private
 
     def page_field(custom_form, key)

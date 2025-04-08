@@ -4,17 +4,17 @@ de:
     cell_statement:
       percent_more: "%{percent}% mehr"
       percent_less: "%{percent}% weniger"
-      range_min_max: "%{min} zu %{max}"
+      range_min_max: "%{min} bis %{max}"
       range_min: "%{min} oder mehr"
       range_max: "%{max} oder weniger"
       tag_vs_bin:
-        inputs: "Personen, die '%{answer}' auf '%{question}' antworten, posten %{percent_more_less} in '%{tag}' als der Durchschnitt."
-        likes: "Menschen, die '%{answer}' auf '%{question}' reagieren, mögen %{percent_more_less} Eingaben in '%{tag}' überdurchschnittlich."
-        dislikes: "Personen, die '%{answer}' auf '%{question}' reagieren, mögen %{percent_more_less} Eingaben in '%{tag}' überdurchschnittlich wenig."
-        participants: "Personen, die '%{answer}' auf '%{question}' antworten, beteiligen sich %{percent_more_less} an '%{tag}' überdurchschnittlich."
+        inputs: "Personen, die auf „%{question}“ mit „%{answer}“ antworten, posten %{percent_more_less} häufiger in „%{tag}“."
+        likes: "Personen, die mit „%{answer}“ auf „%{question}“ antworten, mögen %{percent_more_less} -Beiträge in „%{tag}“ überdurchschnittlich."
+        dislikes: "Personen, die mit „%{answer}“ auf „%{question}“ antworten, mögen %{percent_more_less} -Beiträge in „%{tag}“ weniger als der Durchschnitt."
+        participants: "Personen, die mit „%{answer}“ auf „%{question}“ antworten, nehmen %{percent_more_less} häufiger an „%{tag}“ teil als der Durchschnitt."
       bin_vs_bin:
         inputs: "Personen, die '%{answer1}' auf '%{question1}' antworten, antworten '%{answer2}' auf '%{question2}' %{percent_more_less} als der Durchschnitt."
-        likes: "Personen, die '%{answer1}' auf '%{question1}' antworten, mögen %{percent_more_less} Eingaben, wenn sie '%{answer2}' auf '%{question2}' antworten, als der Durchschnitt."
-        dislikes: "Personen, die '%{answer1}' auf '%{question1}' antworten, mögen %{percent_more_less} Eingaben nicht, wenn sie '%{answer2}' auf '%{question2}' antworten, als der Durchschnitt."
-        participants: "Personen, die '%{answer1}' auf '%{question1}' antworten, nehmen an %{percent_more_less} teil, wenn sie '%{answer2}' auf '%{question2}' antworten, als der Durchschnitt."
+        likes: "Personen, die '%{answer1}' auf '%{question1}' antworten, mögen %{percent_more_less} Beiträge, wenn sie '%{answer2}' auf '%{question2}' antworten, als der Durchschnitt."
+        dislikes: "Personen, die mit „%{answer1}“ bis „%{question1}“ antworten, mögen %{percent_more_less} -Beiträge weniger, wenn sie mit „%{answer2}“ bis „%{question2}“ antworten, als der Durchschnitt."
+        participants: "Personen, die mit „%{answer1}“ bis „%{question1}“ antworten, nehmen %{percent_more_less} teil, wenn sie mit „%{answer2}“ bis „%{question2}“ antworten, als der Durchschnitt."
 
