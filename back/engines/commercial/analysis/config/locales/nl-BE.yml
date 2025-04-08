@@ -1,3 +1,20 @@
 nl-BE:
   analysis:
     example_tag_n: Voorbeeld tag %{n}
+    cell_statement:
+      percent_more: "%{percent}% meer"
+      percent_less: "%{percent}% minder"
+      range_min_max: "%{min} naar %{max}"
+      range_min: "%{min} of meer"
+      range_max: "%{max} of minder"
+      tag_vs_bin:
+        inputs: "Mensen die '%{answer}' reageren op '%{question}' plaatsen %{percent_more_less} in '%{tag}' dan gemiddeld."
+        likes: "Mensen die '%{answer}' reageren op '%{question}' vinden %{percent_more_less} ingangen in '%{tag}' leuker dan gemiddeld."
+        dislikes: "Mensen die '%{answer}' reageren op '%{question}' vinden %{percent_more_less} ingangen in '%{tag}' minder leuk dan gemiddeld."
+        participants: "Mensen die '%{answer}' reageren op '%{question}' doen %{percent_more_less} mee in '%{tag}' dan gemiddeld."
+      bin_vs_bin:
+        inputs: "Mensen die '%{answer1}' antwoorden op '%{question1}' antwoorden '%{answer2}' op '%{question2}' %{percent_more_less} dan gemiddeld."
+        likes: "Mensen die '%{answer1}' antwoorden op '%{question1}' vinden %{percent_more_less} ingangen leuker als ze '%{answer2}' antwoorden op '%{question2}' dan gemiddeld."
+        dislikes: "Mensen die '%{answer1}' antwoorden op '%{question1}' hebben een hekel aan %{percent_more_less} ingangen als ze '%{answer2}' antwoorden op '%{question2}' dan gemiddeld."
+        participants: "Mensen die '%{answer1}' antwoorden op '%{question1}' doen %{percent_more_less} mee als ze '%{answer2}' antwoorden op '%{question2}' dan gemiddeld."
+

@@ -66,10 +66,14 @@ class Permissions::UserRequirementsService
         missing_user_attributes: %i[first_name last_name email confirmation password]
       },
       verification: false,
-      custom_fields: requirements_custom_fields(permission).to_h { |field| [field.key, (field.required ? 'required' : 'optional')] },
+      custom_fields: {},
       onboarding: onboarding_possible?,
       group_membership: @check_groups_and_verification && permission.groups.any?
     }
+
+    unless permission.permission_scope&.pmethod&.user_fields_in_form?
+      users_requirements[:custom_fields] = requirements_custom_fields(permission).to_h { |field| [field.key, (field.required ? 'required' : 'optional')] }
+    end
 
     everyone_confirmed_email_requirements = users_requirements.deep_dup.tap do |requirements|
       requirements[:authentication][:missing_user_attributes] = %i[email confirmation]
