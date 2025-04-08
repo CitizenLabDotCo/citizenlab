@@ -103,6 +103,50 @@ describe IdeaCustomFieldsService do
         expect(output.size).to eq 1
       end
     end
+
+    describe 'survey_results_fields' do
+      context 'commmunity monitor survey' do
+        let(:custom_form) do
+          phase = create(:community_monitor_survey_phase)
+          phase.pmethod.create_default_form!
+          phase.custom_form.custom_fields[2].update!(question_category: 'governance_and_trust')
+          phase.custom_form.custom_fields[3].update!(question_category: nil)
+          phase.custom_form
+        end
+
+        it 'returns fields structured as per the survey form' do
+          output = service.survey_results_fields
+          expect(output.pluck(:input_type)).to eq %w[
+            page sentiment_linear_scale sentiment_linear_scale sentiment_linear_scale sentiment_linear_scale sentiment_linear_scale
+            page sentiment_linear_scale sentiment_linear_scale sentiment_linear_scale
+            page sentiment_linear_scale sentiment_linear_scale sentiment_linear_scale
+            page
+          ]
+          expect(output.pluck(:key)).to eq %w[
+            page_quality_of_life place_to_live sense_of_safety access_to_parks affordable_housing employment_opportunities
+            page_service_delivery quality_of_services overall_value cleanliness_and_maintenance
+            page_governance_and_trust trust_in_government responsiveness_of_officials transparency_of_money_spent
+            form_end
+          ]
+        end
+
+        it 'returns fields with categories as pages' do
+          output = service.survey_results_fields(structure_by_category: true)
+          expect(output.pluck(:input_type)).to eq %w[
+            page sentiment_linear_scale sentiment_linear_scale sentiment_linear_scale
+            page sentiment_linear_scale sentiment_linear_scale sentiment_linear_scale
+            page sentiment_linear_scale sentiment_linear_scale sentiment_linear_scale sentiment_linear_scale
+            page sentiment_linear_scale
+          ]
+          expect(output.pluck(:key)).to eq %w[
+            category_quality_of_life place_to_live affordable_housing employment_opportunities
+            category_service_delivery quality_of_services overall_value cleanliness_and_maintenance
+            category_governance_and_trust sense_of_safety trust_in_government responsiveness_of_officials transparency_of_money_spent
+            category_other access_to_parks
+          ]
+        end
+      end
+    end
   end
 
   context 'with persisted fields' do
@@ -303,6 +347,50 @@ describe IdeaCustomFieldsService do
         # map field 2 - has no map config
         expect(fields[8].id).not_to eq map_field_no_config.id
         expect(fields[8].map_config).to be_nil
+      end
+    end
+  end
+
+  context 'survey form with user fields' do
+    describe 'enabled_fields' do
+      let!(:custom_form) { create(:custom_form, participation_context: form_context) }
+
+      # Survey fields
+      let!(:page_field) { create(:custom_field_page, resource: custom_form, key: 'page1') }
+      let!(:text_field) { create(:custom_field_text, resource: custom_form, key: 'text_field') }
+      let!(:end_page_field) { create(:custom_field_page, resource: custom_form, key: 'form_end') }
+
+      # Define some user fields
+      let!(:user_field_gender) { create(:custom_field_gender) }
+      let!(:user_field_birthyear) { create(:custom_field_birthyear) }
+
+      context 'when phase is a native survey phase' do
+        let(:form_context) { create(:native_survey_phase, user_fields_in_form: true, with_permissions: true) }
+
+        it 'returns form fields with an additional page of demographics' do
+          output = service.enabled_fields
+          expect(output.pluck(:key)).to eq %w[
+            page1
+            text_field
+            user_page
+            u_gender
+            u_birthyear
+            form_end
+          ]
+        end
+      end
+
+      context 'when phase is an ideation phase' do
+        let(:form_context) { create(:project) }
+
+        it 'returns only idea fields' do
+          output = service.enabled_fields
+          expect(output.pluck(:key)).to eq %w[
+            page1
+            text_field
+            form_end
+          ]
+        end
       end
     end
   end
