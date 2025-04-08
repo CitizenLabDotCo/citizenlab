@@ -260,7 +260,7 @@ class CustomField < ApplicationRecord
   end
 
   def domicile?
-    key == 'domicile' && code == 'domicile'
+    (key == 'domicile' && code == 'domicile') || key == 'u_domicile'
   end
 
   def file_upload?
