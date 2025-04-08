@@ -157,7 +157,7 @@ RSpec.describe ParticipationMethod::CommunityMonitorSurvey do
     end
   end
 
-  describe '#supports_user_fields_in_form?' do
+  describe '#user_fields_in_form?' do
     it 'returns false when not enabled' do
       expect(participation_method.user_fields_in_form?).to be false
     end
@@ -190,6 +190,7 @@ RSpec.describe ParticipationMethod::CommunityMonitorSurvey do
   its(:form_logic_enabled?) { is_expected.to be false }
   its(:follow_idea_on_idea_submission?) { is_expected.to be false }
   its(:supports_custom_field_categories?) { is_expected.to be true }
+  its(:supports_multiple_phase_reports?) { is_expected.to be true }
 
   describe 'proposed_budget_in_form?' do # private method
     it 'is expected to be false' do
