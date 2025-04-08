@@ -300,6 +300,8 @@ cy:
     form_end_page:
       title_text_3: 'Diolch am rannu eich mewnbwn!'
       description_text_3: "Mae eich mewnbwn wedi'i gyflwyno'n llwyddiannus."
+    form_user_page:
+      title_text: 'About you'
     pdf_export:
       personal_data: 'Data personol'
       personal_data_explanation_public: "Byddwn yn cyflwyno eich mewnbwn i %{organizationName}'s llwyfan cyfranogiad ar-lein. Os hoffech i'ch enw gael ei arddangos fel awdur y mewnbwn hwn a derbyn diweddariadau sy'n berthnasol i'ch mewnbwn trwy e-bost, llenwch y meysydd canlynol ar y dudalen hon a byddwn yn creu cyfrif i chi. Ni fydd eich e-bost yn gyhoeddus a bydd yn cael ei ddefnyddio gan %{organizationName}yn unig. Os ydych am aros yn ddienw, neu os nad ydych yn cytuno i ni ddefnyddio eich data personol yn y modd hwn, gallwch eu gadael yn wag."

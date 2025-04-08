@@ -179,6 +179,10 @@ class CustomField < ApplicationRecord
     %w[linear_scale matrix_linear_scale sentiment_linear_scale].include?(input_type)
   end
 
+  def supports_average?
+    %w[linear_scale sentiment_linear_scale rating number].include?(input_type)
+  end
+
   def supports_single_selection?
     %w[select linear_scale sentiment_linear_scale rating].include?(input_type)
   end
@@ -260,7 +264,7 @@ class CustomField < ApplicationRecord
   end
 
   def domicile?
-    key == 'domicile' && code == 'domicile'
+    (key == 'domicile' && code == 'domicile') || key == 'u_domicile'
   end
 
   def file_upload?
@@ -396,6 +400,10 @@ class CustomField < ApplicationRecord
       required: false,
       enabled: true
     )
+  end
+
+  def additional_text_question_key
+    other_option_text_field&.key || follow_up_text_field&.key
   end
 
   def ordered_options
