@@ -83,19 +83,17 @@ const ReadMoreWrapper = memo<Props>(
     }, [content]);
 
     useEffect(() => {
-      // Add a small timeout to ensure DOM is stable before focusing.
-      // This was likely causing some E2E tests to fail because the button could be briefly non interactable
-      // due to the focus operation.
-      setTimeout(() => {
-        const buttonToFocus = expanded
-          ? seeLessButtonRef.current
-          : readMoreButtonRef.current;
+      const buttonToFocus = expanded
+        ? seeLessButtonRef.current
+        : readMoreButtonRef.current;
 
-        if (buttonToFocus) {
+      if (buttonToFocus) {
+        // Add a small timeout to ensure DOM is stable before focusing.
+        setTimeout(() => {
           // We move focus to the other button after clicking to make sure the screen reader reads it
           buttonToFocus.focus({ preventScroll: true });
-        }
-      }, 0);
+        }, 0);
+      }
     }, [contentId, expanded]);
 
     const toggleExpandCollapse = useCallback((event: React.MouseEvent) => {
