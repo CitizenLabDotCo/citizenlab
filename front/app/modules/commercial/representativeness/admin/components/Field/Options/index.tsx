@@ -4,7 +4,7 @@ import { Box, Text, Toggle } from '@citizenlab/cl2-component-library';
 import { WrappedComponentProps } from 'react-intl';
 
 import useUserCustomField from 'api/user_custom_fields/useUserCustomField';
-import useUserCustomFieldOptions from 'api/user_custom_fields_options/useUserCustomFieldsOptions';
+import useUserCustomFieldOptions from 'api/custom_field_options/useCustomFieldOptions';
 
 import useLocalize from 'hooks/useLocalize';
 

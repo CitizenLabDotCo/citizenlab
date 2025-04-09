@@ -2,10 +2,10 @@ import React, { memo } from 'react';
 
 import { WrappedComponentProps } from 'react-intl';
 
-import { IUserCustomFieldOptionData } from 'api/user_custom_fields_options/types';
-import useDeleteUserCustomFieldsOption from 'api/user_custom_fields_options/useDeleteUserCustomFieldsOption';
-import useReorderUserCustomFieldOption from 'api/user_custom_fields_options/useReorderUserCustomFieldsOption';
-import useUserCustomFieldOptions from 'api/user_custom_fields_options/useUserCustomFieldsOptions';
+import { IUserCustomFieldOptionData } from 'api/custom_field_options/types';
+import useDeleteUserCustomFieldsOption from 'api/custom_field_options/useDeleteCustomFieldOption';
+import useReorderUserCustomFieldOption from 'api/custom_field_options/useReorderCustomFieldOption';
+import useUserCustomFieldOptions from 'api/custom_field_options/useCustomFieldOptions';
 
 import useLocalize from 'hooks/useLocalize';
 

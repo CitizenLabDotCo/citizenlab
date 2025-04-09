@@ -1,7 +1,7 @@
 import { colors } from '@citizenlab/cl2-component-library';
 
 import { ICustomFieldBinData } from 'api/custom_field_bins/types';
-import { IUserCustomFieldOptions } from 'api/user_custom_fields_options/types';
+import { IUserCustomFieldOptions } from 'api/custom_field_options/types';
 
 import useLocalize from 'hooks/useLocalize';
 

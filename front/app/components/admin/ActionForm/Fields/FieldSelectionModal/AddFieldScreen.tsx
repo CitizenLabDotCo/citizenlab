@@ -8,7 +8,7 @@ import { object, string } from 'yup';
 
 import { IOptionsType } from 'api/custom_fields/types';
 import useAddUserCustomField from 'api/user_custom_fields/useAddUserCustomField';
-import useAddUserCustomFieldOption from 'api/user_custom_fields_options/useAddUserCustomFieldOption';
+import useAddUserCustomFieldOption from 'api/custom_field_options/useAddCustomFieldOption';
 
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 import useLocale from 'hooks/useLocale';

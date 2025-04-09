@@ -2,7 +2,7 @@ import React from 'react';
 
 import { useParams } from 'react-router-dom';
 
-import useAddUserCustomFieldOption from 'api/user_custom_fields_options/useAddUserCustomFieldOption';
+import useAddUserCustomFieldOption from 'api/custom_field_options/useAddCustomFieldOption';
 
 import { Section, SectionTitle } from 'components/admin/Section';
 

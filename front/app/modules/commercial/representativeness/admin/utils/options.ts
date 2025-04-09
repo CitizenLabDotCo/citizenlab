@@ -1,4 +1,4 @@
-import { IUserCustomFieldOptionData } from 'api/user_custom_fields_options/types';
+import { IUserCustomFieldOptionData } from 'api/custom_field_options/types';
 
 import { Localize } from 'hooks/useLocalize';
 

@@ -1,6 +1,6 @@
-import { IUserCustomFieldOptionData } from '../types';
+import { ICustomFieldOptionData } from '../types';
 
-export const userCustomFieldsOptionsData: IUserCustomFieldOptionData[] = [
+export const customFieldOptionsData: ICustomFieldOptionData[] = [
   {
     id: 'id',
     type: 'custom_field_option',
@@ -26,5 +26,5 @@ export const userCustomFieldsOptionsData: IUserCustomFieldOptionData[] = [
 ];
 
 export default jest.fn(() => {
-  return { data: { data: userCustomFieldsOptionsData } };
+  return { data: { data: customFieldOptionsData } };
 });

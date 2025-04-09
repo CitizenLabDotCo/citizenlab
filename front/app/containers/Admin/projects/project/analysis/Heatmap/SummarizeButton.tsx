@@ -7,7 +7,7 @@ import useAddAnalysisSummary from 'api/analysis_summaries/useAddAnalysisSummary'
 import { ITagData } from 'api/analysis_tags/types';
 import { ICustomFieldBinData } from 'api/custom_field_bins/types';
 import useUserCustomFields from 'api/user_custom_fields/useUserCustomFields';
-import useUserCustomFieldsOption from 'api/user_custom_fields_options/useUserCustomFieldsOption';
+import useUserCustomFieldsOption from 'api/custom_field_options/useCustomFieldOption';
 
 import { FormattedMessage } from 'utils/cl-intl';
 

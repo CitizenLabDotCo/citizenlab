@@ -2,8 +2,8 @@ import React from 'react';
 
 import { useParams } from 'react-router-dom';
 
-import useUpdateUserCustomFieldsOption from 'api/user_custom_fields_options/useUpdateUserCustomFieldsOption';
-import useUserCustomFieldsOption from 'api/user_custom_fields_options/useUserCustomFieldsOption';
+import useUpdateUserCustomFieldsOption from 'api/custom_field_options/useUpdateCustomFieldOption';
+import useUserCustomFieldsOption from 'api/custom_field_options/useCustomFieldOption';
 
 import { Section, SectionTitle } from 'components/admin/Section';
 

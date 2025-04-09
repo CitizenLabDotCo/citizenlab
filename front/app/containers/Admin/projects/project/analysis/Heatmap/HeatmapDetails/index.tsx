@@ -19,8 +19,8 @@ import { ICustomFieldBinData } from 'api/custom_field_bins/types';
 import useCustomFieldBins from 'api/custom_field_bins/useCustomFieldBins';
 import { IFlatCustomField } from 'api/custom_fields/types';
 import { IUserCustomFieldData } from 'api/user_custom_fields/types';
-import { IUserCustomFieldOptions } from 'api/user_custom_fields_options/types';
-import useUserCustomFieldsOptions from 'api/user_custom_fields_options/useUserCustomFieldsOptions';
+import { IUserCustomFieldOptions } from 'api/custom_field_options/types';
+import useUserCustomFieldsOptions from 'api/custom_field_options/useCustomFieldOptions';
 
 import useLocalize from 'hooks/useLocalize';
 

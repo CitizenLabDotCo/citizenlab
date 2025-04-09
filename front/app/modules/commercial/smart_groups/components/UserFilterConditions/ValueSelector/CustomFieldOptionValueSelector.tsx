@@ -4,8 +4,8 @@ import { Select } from '@citizenlab/cl2-component-library';
 import { TRule } from 'modules/commercial/smart_groups/components/UserFilterConditions/rules';
 import { IOption } from 'typings';
 
-import { IUserCustomFieldOptionData } from 'api/user_custom_fields_options/types';
-import useUserCustomFieldOptions from 'api/user_custom_fields_options/useUserCustomFieldsOptions';
+import { IUserCustomFieldOptionData } from 'api/custom_field_options/types';
+import useUserCustomFieldOptions from 'api/custom_field_options/useCustomFieldOptions';
 
 import { isNilOrError, NilOrError } from 'utils/helperUtils';
 import localize, { InjectedLocalized } from 'utils/localize';

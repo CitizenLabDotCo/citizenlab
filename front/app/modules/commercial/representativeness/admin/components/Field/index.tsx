@@ -4,7 +4,7 @@ import { Accordion, ListItem } from '@citizenlab/cl2-component-library';
 import { omit } from 'lodash-es';
 
 import useUserCustomField from 'api/user_custom_fields/useUserCustomField';
-import useUserCustomFieldOptions from 'api/user_custom_fields_options/useUserCustomFieldsOptions';
+import useUserCustomFieldOptions from 'api/custom_field_options/useCustomFieldOptions';
 
 import { isNilOrError, NilOrError } from 'utils/helperUtils';
 
