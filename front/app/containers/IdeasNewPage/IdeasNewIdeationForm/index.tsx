@@ -173,15 +173,6 @@ const IdeasNewIdeationForm = ({ project, phaseId }: Props) => {
   };
 
   const onSubmit = async (data: FormValues, onSubmitCallback?: () => void) => {
-    // Somehow, when this data enters this method, it still has 'anonymous' attribute,
-    // but after the `getLocationGeojson` call, it doesn't anymore.
-    // I am not sure why this happens- probably because someone has written
-    // an impure function somewhere that happens to fire while we are awaiting the
-    // `getLocationGeojson` function. But God knows which function.
-    // As a temporary fix, we will clone the data object so that it is not
-    // affected by the mutation.
-    const clonedData = { ...data };
-
     setLoading(true);
     const location_point_geojson = await getLocationGeojson(
       initialFormData,
@@ -193,7 +184,7 @@ const IdeasNewIdeationForm = ({ project, phaseId }: Props) => {
       phaseId && canModerateProject(project.data, authUser) ? [phaseId] : null;
 
     const idea = await addIdea({
-      ...clonedData,
+      ...data,
       location_point_geojson,
       project_id: project.data.id,
       phase_ids,
