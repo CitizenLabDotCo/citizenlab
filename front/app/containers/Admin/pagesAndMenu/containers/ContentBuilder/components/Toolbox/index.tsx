@@ -45,7 +45,7 @@ import messages from '../../messages';
 import Areas, { areasTitle } from '../Widgets/Areas';
 import CallToAction, { callToActionTitle } from '../Widgets/CallToAction';
 import CommunityMonitorCTA, {
-  CommunityMonitorCTATitle,
+  communityMonitorCTATitle,
 } from '../Widgets/CommunityMonitorCTA';
 import Events from '../Widgets/Events';
 import FinishedOrArchived, {
@@ -203,9 +203,19 @@ const HomepageBuilderToolbox = ({
         {communityMonitorEnabled && (
           <DraggableElement
             id="e2e-draggable-community-monitor-cta"
-            component={<CommunityMonitorCTA />}
+            component={
+              <CommunityMonitorCTA
+                title={toMultiloc(messages.communityMonitorCtaDefaultTitle)}
+                description={toMultiloc(
+                  messages.communityMonitorCtaDefaultDescription
+                )}
+                surveyButtonText={toMultiloc(
+                  messages.communityMonitorCtaDefaultSurveyButtonText
+                )}
+              />
+            }
             icon="survey"
-            label={formatMessage(CommunityMonitorCTATitle)}
+            label={formatMessage(communityMonitorCTATitle)}
           />
         )}
         {platformCreatedBeforeReleaseNewWidgets(
