@@ -150,6 +150,8 @@ module ReportBuilder
               :name,
               :phase_id,
               :visible,
+              :year,
+              :quarter,
               layout: [craftjs_json: {}]
             )
 
