@@ -49,10 +49,12 @@ module EmailCampaigns
       Campaigns::VotingResults,
       Campaigns::Welcome,
       Campaigns::YourInputInScreening
-    ].freeze
+    ]
 
     def campaign_classes
-      CAMPAIGN_CLASSES
+      classes = CAMPAIGN_CLASSES
+      classes << Campaigns::CommunityMonitorReport if AppConfiguration.instance.feature_activated?('community_monitor')
+      classes
     end
 
     def campaign_types
