@@ -10,6 +10,7 @@ import usePhase from 'api/phases/usePhase';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 import useInputSchema from 'hooks/useInputSchema';
 
+import { PageCategorization } from 'components/Form/typings';
 import Modal from 'components/UI/Modal';
 
 import { useIntl } from 'utils/cl-intl';
@@ -75,7 +76,9 @@ const CommunityMonitorModal = ({
   });
 
   // Calculate estimated time to complete survey
-  const estimatedMinutesToComplete = calculateEstimatedSurveyTime(uiSchema);
+  const estimatedMinutesToComplete = calculateEstimatedSurveyTime(
+    uiSchema as PageCategorization
+  );
 
   // Get the survey popup frequency, so we can show the modal at a certain rate
   const surveyPopupFrequency =

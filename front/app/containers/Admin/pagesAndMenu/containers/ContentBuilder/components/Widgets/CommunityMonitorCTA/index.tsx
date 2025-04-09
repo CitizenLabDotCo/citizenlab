@@ -18,6 +18,8 @@ import usePhase from 'api/phases/usePhase';
 import useInputSchema from 'hooks/useInputSchema';
 import useLocalize from 'hooks/useLocalize';
 
+import { PageCategorization } from 'components/Form/typings';
+
 import { useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
 import { calculateEstimatedSurveyTime } from 'utils/surveyUtils';
@@ -53,12 +55,13 @@ const CommunityMonitorCTA = ({
 
   // Get the survey UI schema
   const { uiSchema } = useInputSchema({
-    projectId: project?.data.id || '',
     phaseId,
   });
 
   // Calculate estimated time to complete survey
-  const estimatedMinutesToComplete = calculateEstimatedSurveyTime(uiSchema);
+  const estimatedMinutesToComplete = calculateEstimatedSurveyTime(
+    uiSchema as PageCategorization
+  );
 
   const goToCommunityMonitorSurvey = () => {
     if (phaseId) {
@@ -77,7 +80,7 @@ const CommunityMonitorCTA = ({
       mx="auto"
       w="100%"
       maxWidth="1200px"
-      px={isTabletOrSmaller ? '16px' : '0'}
+      px={isTabletOrSmaller ? '16px' : undefined}
     >
       <Box
         background={theme.colors.tenantPrimaryLighten90}
@@ -89,7 +92,7 @@ const CommunityMonitorCTA = ({
         gap="16px"
       >
         <Box maxWidth={isTabletOrSmaller ? '100%' : '40%'}>
-          <Title mt="0px" color="grey800" variant="h2" fontWeight="semi-bold">
+          <Title mt="0px" color="grey800" variant="h2">
             {localize(title)}
           </Title>
           <Text mb="0px">{localize(description)}</Text>
@@ -153,6 +156,6 @@ CommunityMonitorCTA.craft = {
   },
 };
 
-export const CommunityMonitorCTATitle = messages.communityMonitorCTATitle;
+export const communityMonitorCTATitle = messages.communityMonitorCTATitle;
 
 export default CommunityMonitorCTA;

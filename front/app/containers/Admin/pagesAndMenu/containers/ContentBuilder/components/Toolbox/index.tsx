@@ -45,7 +45,7 @@ import messages from '../../messages';
 import Areas, { areasTitle } from '../Widgets/Areas';
 import CallToAction, { callToActionTitle } from '../Widgets/CallToAction';
 import CommunityMonitorCTA, {
-  CommunityMonitorCTATitle,
+  communityMonitorCTATitle,
 } from '../Widgets/CommunityMonitorCTA';
 import Events from '../Widgets/Events';
 import FinishedOrArchived, {
@@ -215,7 +215,7 @@ const HomepageBuilderToolbox = ({
               />
             }
             icon="survey"
-            label={formatMessage(CommunityMonitorCTATitle)}
+            label={formatMessage(communityMonitorCTATitle)}
           />
         )}
         {platformCreatedBeforeReleaseNewWidgets(
