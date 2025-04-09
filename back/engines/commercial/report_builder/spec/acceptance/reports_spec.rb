@@ -137,7 +137,9 @@ resource 'Reports' do
             name: report.name,
             created_at: report.created_at.iso8601(3),
             updated_at: report.updated_at.iso8601(3),
-            visible: false
+            visible: false,
+            year: nil,
+            quarter: nil
           },
           relationships: {
             layout: { data: { id: layout.id, type: 'content_builder_layout' } },
@@ -298,9 +300,13 @@ resource 'Reports' do
 
   post 'web_api/v1/reports' do
     parameter :name, name_param_desc, scope: :report, required: false
+    parameter :year, 'Year of report (Community monitor)', scope: :report, required: false
+    parameter :quarter, 'Quarter of report (Community monitor)', scope: :report, required: false
     parameter :craftjs_json, craftjs_json_param_desc, scope: %i[report layout]
 
     let(:name) { 'my-report' }
+    let(:quarter) { '1' }
+    let(:year) { '2025' }
     let(:craftjs_json) do
       {
         'nl-BE': {
@@ -331,7 +337,9 @@ resource 'Reports' do
             name: name,
             created_at: be_a(String),
             updated_at: be_a(String),
-            visible: false
+            visible: false,
+            year: 2025,
+            quarter: 1
           },
           relationships: {
             layout: { data: { id: be_a(String), type: 'content_builder_layout' } },
