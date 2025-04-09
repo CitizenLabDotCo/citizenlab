@@ -8,6 +8,7 @@ import {
   Image,
   Text,
   useBreakpoint,
+  Tooltip,
 } from '@citizenlab/cl2-component-library';
 import { useTheme } from 'styled-components';
 import { Multiloc } from 'typings';
@@ -75,6 +76,11 @@ const CommunityMonitorCTA = ({
     return null;
   }
 
+  // Check if the user has already submitted the survey
+  const hasSubmittedSurvey =
+    project?.data.attributes.action_descriptors.posting_idea.disabled_reason ===
+    'posting_limited_max_reached';
+
   return (
     <Box
       mx="auto"
@@ -121,9 +127,17 @@ const CommunityMonitorCTA = ({
               isMobileOrSmaller || !isTabletOrSmaller ? 'center' : undefined
             }
           >
-            <Button onClick={goToCommunityMonitorSurvey}>
-              {localize(surveyButtonText)}
-            </Button>
+            <Tooltip
+              disabled={!hasSubmittedSurvey}
+              content={formatMessage(messages.surveyCompletedUntilNextQuarter)}
+            >
+              <Button
+                disabled={hasSubmittedSurvey}
+                onClick={goToCommunityMonitorSurvey}
+              >
+                {localize(surveyButtonText)}
+              </Button>
+            </Tooltip>
           </Box>
           <Box
             display="flex"
