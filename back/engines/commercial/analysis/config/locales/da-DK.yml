@@ -14,7 +14,7 @@ da:
         participants: "Folk, der svarer '%{answer}' på '%{question}', deltager %{percent_more_less} i '%{tag}' end gennemsnittet."
       bin_vs_bin:
         inputs: "Folk, der svarer '%{answer1}' til '%{question1}', svarer '%{answer2}' til '%{question2}' %{percent_more_less} end gennemsnittet."
-        likes: "Folk, der svarer '%{answer1}' til '%{question1}', kan bedre lide %{percent_more_less} inputs, når de svarer '%{answer2}' til '%{question2}' end gennemsnittet."
+        likes: "Folk der svarer '%{answer1}' til '%{question1}', kan bedre lide %{percent_more_less} inputs, når de svarer '%{answer2}' til '%{question2}' end gennemsnittet."
         dislikes: "Folk, der svarer '%{answer1}' til '%{question1}', kan ikke lide %{percent_more_less} inputs, når de svarer '%{answer2}' til '%{question2}' end gennemsnittet."
         participants: "Folk, der svarer '%{answer1}' til '%{question1}', deltager %{percent_more_less} , når de svarer '%{answer2}' til '%{question2}', end gennemsnittet."
 
