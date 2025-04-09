@@ -1249,7 +1249,7 @@
   "app.containers.IdeaCards.trending": "Trendaavat",
   "app.containers.IdeaCards.tryDifferentFilters": "Ei tuloksia. Kokeile toista suodatinta tai hakutermiä.",
   "app.containers.IdeaCards.xComments3": "{ideasCount, plural, no {{ideasCount} kommentit} one {{ideasCount} kommentti} other {{ideasCount} kommenttia}}",
-  "app.containers.IdeaCards.xContributions2": "{ideasCount, plural, no {{ideasCount} lahjoituksia} one {{ideasCount} osuus} other {{ideasCount} lahjoituksia}}",
+  "app.containers.IdeaCards.xContributions2": "{ideasCount, plural, no {{ideasCount} ideoita} one {{ideasCount} idea} other {{ideasCount} ideaa}}",
   "app.containers.IdeaCards.xIdeas2": "{ideasCount, plural, no {{ideasCount} ideoita} one {{ideasCount} idea} other {{ideasCount} ideoita}}",
   "app.containers.IdeaCards.xInitiatives2": "{ideasCount, plural, no {{ideasCount} aloitteita} one {{ideasCount} aloite} other {{ideasCount} aloitetta}}",
   "app.containers.IdeaCards.xOptions2": "{ideasCount, plural, no {{ideasCount} valinnat} one {{ideasCount} vaihtoehto} other {{ideasCount} valinnat}}",
