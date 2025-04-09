@@ -9,6 +9,7 @@ import { useIntl } from 'utils/cl-intl';
 import messages from '../../messages';
 import ViewSurveyButton from '../ViewSurveyButton';
 
+import CommunityMonitorUpsell from './components/CommunityMonitorUpsell';
 import FormResults from './components/FormResults';
 import HealthScoreWidget from './components/HealthScoreWidget';
 import QuarterlyDatePicker from './components/QuarterlyDatePicker';
@@ -16,9 +17,17 @@ import QuarterlyDatePicker from './components/QuarterlyDatePicker';
 const LiveMonitor = () => {
   const { formatMessage } = useIntl();
 
-  const { data: project } = useCommunityMonitorProject({});
+  const { data: project, isError, isLoading } = useCommunityMonitorProject({});
   const projectId = project?.data.id;
   const phaseId = project?.data.relationships.current_phase?.data?.id;
+
+  if (isLoading) {
+    return null;
+  }
+
+  if (isError) {
+    return <CommunityMonitorUpsell />;
+  }
 
   return (
     <Box mt="48px">
