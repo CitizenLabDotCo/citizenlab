@@ -61,7 +61,7 @@ module EmailCampaigns
     end
 
     def self.consentable_roles
-      ['admin']
+      %w[admin project_moderator]
     end
 
     def self.recipient_role_multiloc_key

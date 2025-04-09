@@ -10,7 +10,6 @@ module EmailCampaigns
       Campaigns::CommentMarkedAsSpam,
       Campaigns::CommentOnIdeaYouFollow,
       Campaigns::CommentOnYourComment,
-      Campaigns::CommunityMonitorReport,
       Campaigns::CosponsorOfYourIdea,
       Campaigns::EventRegistrationConfirmation,
       Campaigns::IdeaMarkedAsSpam,
@@ -53,7 +52,9 @@ module EmailCampaigns
     ].freeze
 
     def campaign_classes
-      CAMPAIGN_CLASSES
+      classes = CAMPAIGN_CLASSES
+      classes << Campaigns::CommunityMonitorReport if AppConfiguration.instance.feature_activated?('community_monitor')
+      classes
     end
 
     def campaign_types
