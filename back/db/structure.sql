@@ -1628,7 +1628,6 @@ CREATE TABLE public.phases (
     manual_voters_last_updated_by_id uuid,
     manual_voters_last_updated_at timestamp(6) without time zone,
     survey_popup_frequency integer,
-    user_fields_in_form boolean DEFAULT false NOT NULL,
     similarity_threshold_title double precision DEFAULT 0.3,
     similarity_threshold_body double precision DEFAULT 0.4,
     user_fields_in_form boolean DEFAULT false NOT NULL
