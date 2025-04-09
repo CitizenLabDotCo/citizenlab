@@ -7,13 +7,12 @@ RSpec.describe EmailCampaigns::CommunityMonitorReportMailer do
     let_it_be(:recipient) { create(:admin, locale: 'en') }
     let_it_be(:campaign) { EmailCampaigns::Campaigns::CommunityMonitorReport.create! }
     let_it_be(:command) do
-
       {
         recipient: recipient,
         event_payload: {
           quarter: 1,
           year: 2025,
-          report_url: 'https://example.com/report',
+          report_url: 'https://example.com/report'
         }
       }
     end

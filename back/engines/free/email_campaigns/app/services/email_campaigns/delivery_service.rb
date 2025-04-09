@@ -49,7 +49,7 @@ module EmailCampaigns
       Campaigns::VotingResults,
       Campaigns::Welcome,
       Campaigns::YourInputInScreening
-    ].freeze
+    ]
 
     def campaign_classes
       classes = CAMPAIGN_CLASSES

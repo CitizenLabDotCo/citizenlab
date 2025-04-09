@@ -12,7 +12,7 @@ module EmailCampaigns
           event_payload: {
             quarter: 1,
             year: 2025,
-            report_url: 'https://example.com/report',
+            report_url: 'https://example.com/report'
           }
         }
       }
