@@ -27,18 +27,18 @@ jest.mock(
   }
 );
 
-let mockUserCustomFieldOptions;
+let mockCustomFieldOptions;
 
-const selectUserCustomFieldOptions = [
+const selectCustomFieldOptions = [
   { id: 'option1', attributes: { title_multiloc: { en: 'Option 1' } } },
   { id: 'option2', attributes: { title_multiloc: { en: 'Option 2' } } },
   { id: 'option3', attributes: { title_multiloc: { en: 'Option 3' } } },
 ];
-const birthyearUserCustomFieldOptions = [];
+const birthyearCustomFieldOptions = [];
 
 jest.mock(
   'api/user_custom_fields_options/useUserCustomFieldsOptions',
-  () => () => ({ data: { data: mockUserCustomFieldOptions } })
+  () => () => ({ data: { data: mockCustomFieldOptions } })
 );
 
 let mockReferenceDistribution: any = {
@@ -82,7 +82,7 @@ describe('<Field />', () => {
   describe('select field', () => {
     beforeEach(() => {
       mockUserCustomField = selectField;
-      mockUserCustomFieldOptions = selectUserCustomFieldOptions;
+      mockCustomFieldOptions = selectCustomFieldOptions;
     });
 
     it('renders', () => {
@@ -239,7 +239,7 @@ describe('<Field />', () => {
   describe('birthyear field', () => {
     beforeEach(() => {
       mockUserCustomField = birthyearField;
-      mockUserCustomFieldOptions = birthyearUserCustomFieldOptions;
+      mockCustomFieldOptions = birthyearCustomFieldOptions;
     });
 
     it('renders', () => {

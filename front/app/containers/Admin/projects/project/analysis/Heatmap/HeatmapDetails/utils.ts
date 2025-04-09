@@ -1,7 +1,7 @@
 import { colors } from '@citizenlab/cl2-component-library';
 
 import { ICustomFieldBinData } from 'api/custom_field_bins/types';
-import { IUserCustomFieldOptions } from 'api/custom_field_options/types';
+import { ICustomFieldOptions } from 'api/custom_field_options/types';
 
 import useLocalize from 'hooks/useLocalize';
 
@@ -61,7 +61,7 @@ export const useGetOptionText = ({
   options,
 }: {
   bin: ICustomFieldBinData;
-  options?: IUserCustomFieldOptions;
+  options?: ICustomFieldOptions;
 }) => {
   const localize = useLocalize();
   const { formatMessage } = useIntl();

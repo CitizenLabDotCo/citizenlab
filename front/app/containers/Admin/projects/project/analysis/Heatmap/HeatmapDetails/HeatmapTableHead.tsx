@@ -4,7 +4,7 @@ import { Thead, Tr, Th } from '@citizenlab/cl2-component-library';
 
 import { ICustomFieldBinData } from 'api/custom_field_bins/types';
 import useCustomFieldBins from 'api/custom_field_bins/useCustomFieldBins';
-import { IUserCustomFieldOptions } from 'api/custom_field_options/types';
+import { ICustomFieldOptions } from 'api/custom_field_options/types';
 import useCustomFieldsOptions from 'api/custom_field_options/useCustomFieldOptions';
 
 import { useGetOptionText } from './utils';
@@ -18,7 +18,7 @@ const OptionTextTh = ({
   options,
 }: {
   bin: ICustomFieldBinData;
-  options?: IUserCustomFieldOptions;
+  options?: ICustomFieldOptions;
 }) => {
   const optionText = useGetOptionText({
     bin,

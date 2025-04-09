@@ -1,4 +1,4 @@
-import useCustomFieldOptions from 'api/custom_field_options/useCustomFieldOptions';
+import useCustomFieldOptions from 'api/custom_field_options_weird/useCustomFieldOptions';
 import useCustomFieldStatements from 'api/custom_field_statements/useCustomFieldStatements';
 
 import { ICustomFieldsParameters, IFlatCustomField } from './types';
