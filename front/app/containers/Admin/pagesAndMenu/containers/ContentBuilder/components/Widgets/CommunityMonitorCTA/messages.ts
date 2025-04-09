@@ -31,4 +31,9 @@ export default defineMessages({
     defaultMessage:
       '{minutes, plural, =0 {Takes <1 minute} one {Takes 1 minute} other {Takes # minutes}}',
   },
+  surveyCompletedUntilNextQuarter: {
+    id: 'app.components.CommunityMonitorModal.surveyCompletedUntilNextQuarter',
+    defaultMessage:
+      "Thank you for completing the survey! You're welcome to take it again next quarter.",
+  },
 });
