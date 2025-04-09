@@ -195,14 +195,18 @@ const ReportBuilderWrapper = () => {
     communityMonitorProject,
   });
 
+  console.log({ isEmptyCommunityMonitorReport });
+
   const [endDatePlatformReport] = useState(search.get('endDatePlatformReport'));
   const [templateYear] = useState(
     // TODO: Use correct value when BE implemented.
-    isEmptyCommunityMonitorReport ? '2025' : search.get('year')
+    // isEmptyCommunityMonitorReport ? '2025' : search.get('year')
+    search.get('year')
   );
   const [templateQuarter] = useState(
     // TODO: Use correct value when BE implemented.
-    isEmptyCommunityMonitorReport ? '1' : search.get('quarter')
+    //     isEmptyCommunityMonitorReport ? '1' : search.get('quarter')
+    search.get('quarter')
   );
 
   useEffect(() => {

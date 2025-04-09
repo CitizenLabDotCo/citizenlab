@@ -10,16 +10,22 @@ import { getQuarterFilter, getYearFilter } from '../utils';
 
 type Props = {
   sentimentScores: QuarterlyScores | null;
+  year?: string;
+  quarter?: string;
 };
 
-const PreviousQuarterComparison = ({ sentimentScores }: Props) => {
+const PreviousQuarterComparison = ({
+  sentimentScores,
+  year,
+  quarter,
+}: Props) => {
   const [search] = useSearchParams();
 
-  const year = getYearFilter(search);
-  const quarter = getQuarterFilter(search);
+  const yearSelected = year || getYearFilter(search);
+  const quarterSelected = quarter || getQuarterFilter(search);
 
   const thisPeriodIndex = sentimentScores?.overallHealthScores.findIndex(
-    (value) => value.period === `${year}-${quarter}`
+    (value) => value.period === `${yearSelected}-${quarterSelected}`
   );
 
   const thisPeriodAvg =
