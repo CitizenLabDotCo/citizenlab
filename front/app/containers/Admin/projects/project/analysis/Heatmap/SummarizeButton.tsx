@@ -69,14 +69,30 @@ const SummarizeButton = ({ row, column, cell, buttonStyle }: Props) => {
     const isUserField = userCustomFieldsIds.includes(fieldId);
     const keyPrefix = isUserField ? 'author_custom_' : 'input_custom_';
     const binType = bin.attributes.type;
+    const isAgeBin = binType === 'CustomFieldBins::AgeBin';
+    const isRangeBin = binType === 'CustomFieldBins::RangeBin';
 
-    const isRangeType = [
-      'CustomFieldBins::AgeBin',
-      'CustomFieldBins::RangeBin',
-    ].includes(binType);
     const isOptionBin = binType === 'CustomFieldBins::OptionBin';
+    if (isAgeBin) {
+      const fromKey = `${keyPrefix}${fieldId}_from`;
+      const toKey = `${keyPrefix}${fieldId}_to`;
+      // Get current year
+      const currentYear = new Date().getFullYear();
 
-    if (isRangeType) {
+      // Calculate ages from birth years
+      const ageFrom = bin.attributes.range?.end
+        ? (currentYear - bin.attributes.range.end).toString()
+        : undefined;
+      const ageTo = bin.attributes.range?.begin
+        ? (currentYear - bin.attributes.range.begin).toString()
+        : undefined;
+
+      return {
+        [fromKey]: ageFrom,
+        [toKey]: ageTo,
+      };
+    }
+    if (isRangeBin) {
       // For range type bins
       const fromKey = `${keyPrefix}${fieldId}_from`;
       const toKey = `${keyPrefix}${fieldId}_to`;
