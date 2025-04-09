@@ -36,10 +36,9 @@ const selectCustomFieldOptions = [
 ];
 const birthyearCustomFieldOptions = [];
 
-jest.mock(
-  'api/user_custom_fields_options/useUserCustomFieldsOptions',
-  () => () => ({ data: { data: mockCustomFieldOptions } })
-);
+jest.mock('api/custom_field_options/useCustomFieldOptions', () => () => ({
+  data: { data: mockCustomFieldOptions },
+}));
 
 let mockReferenceDistribution: any = {
   isFetchedReferenceDistributionData: true,
