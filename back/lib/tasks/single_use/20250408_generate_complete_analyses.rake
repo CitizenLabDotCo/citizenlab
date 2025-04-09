@@ -22,7 +22,7 @@ namespace :single_use do
           if (analysis = Analysis::Analysis.create(
             phase:,
             main_custom_field: nil,
-            additional_custom_fields: phase.custom_form.custom_fields.filter(&:accepts_input?)
+            additional_custom_fields: phase.custom_form.custom_fields
           ))
             report.add_create(
               'Analysis::Analysis',
