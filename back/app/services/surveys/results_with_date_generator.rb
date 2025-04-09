@@ -73,7 +73,7 @@ module Surveys
     end
 
     def valid_quarter?
-      (2024..2050).include?(@year) && (1..4).include?(@quarter)
+      (2024..2050).cover?(@year) && (1..4).cover?(@quarter)
     end
   end
 end
