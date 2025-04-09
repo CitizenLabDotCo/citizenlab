@@ -1,6 +1,12 @@
 import React from 'react';
 
-import { Box, colors, Image, Title } from '@citizenlab/cl2-component-library';
+import {
+  Box,
+  colors,
+  Image,
+  stylingConsts,
+  Title,
+} from '@citizenlab/cl2-component-library';
 
 import { useIntl } from 'utils/cl-intl';
 
@@ -12,11 +18,10 @@ const HealthScore = () => {
 
   return (
     <Box
-      mt="38px"
+      mt="40px"
       ml="40px"
-      px="24px"
-      py="24px"
-      borderRadius={'4px'}
+      p="24px"
+      borderRadius={stylingConsts.borderRadius}
       border={`1px solid ${colors.borderLight}`}
       display="flex"
       flexDirection="column"

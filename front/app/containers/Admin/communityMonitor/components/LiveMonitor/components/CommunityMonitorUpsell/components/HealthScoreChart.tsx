@@ -12,7 +12,7 @@ const HealthScoreChart = () => {
 
   return (
     <Box
-      mt="38px"
+      mt="40px"
       ml="40px"
       p="16px"
       borderRadius={'4px'}
