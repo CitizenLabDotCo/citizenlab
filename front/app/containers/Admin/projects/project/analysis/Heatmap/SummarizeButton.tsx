@@ -9,9 +9,11 @@ import { ICustomFieldBinData } from 'api/custom_field_bins/types';
 import useUserCustomFields from 'api/user_custom_fields/useUserCustomFields';
 import useUserCustomFieldsOption from 'api/user_custom_fields_options/useUserCustomFieldsOption';
 
+import { trackEventByName } from 'utils/analytics';
 import { FormattedMessage } from 'utils/cl-intl';
 
 import messages from './messages';
+import tracks from './tracks';
 
 interface Props {
   cell?: IAnalysisHeatmapCellData;
@@ -115,6 +117,8 @@ const SummarizeButton = ({ row, column, cell, buttonStyle }: Props) => {
 
   const handleSummarize = () => {
     if (!cell || column.relationships.custom_field_option === null) return;
+
+    trackEventByName(tracks.autoInsightSummarize);
 
     const filters = {
       ...formFilters(row, 'row'),

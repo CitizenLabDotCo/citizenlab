@@ -17,10 +17,12 @@ import useCustomFieldBin from 'api/custom_field_bins/useCustomFieldBin';
 
 import useLocalize from 'hooks/useLocalize';
 
+import { trackEventByName } from 'utils/analytics';
 import { useIntl } from 'utils/cl-intl';
 
 import messages from './messages';
 import SummarizeButton from './SummarizeButton';
+import tracks from './tracks';
 
 interface HeatMapInsightsProps {
   onExploreClick: ({
@@ -164,7 +166,8 @@ const HeatMapInsights = ({ onExploreClick }: HeatMapInsightsProps) => {
               icon="eye"
               size="s"
               p="0px"
-              onClick={() =>
+              onClick={() => {
+                trackEventByName(tracks.autoInsightExplore);
                 onExploreClick({
                   unit: selectedCell.attributes.unit,
                   columnCustomFieldId:
@@ -173,8 +176,8 @@ const HeatMapInsights = ({ onExploreClick }: HeatMapInsightsProps) => {
                     selectedCell.relationships.row.data.type === 'tags'
                       ? 'tags'
                       : rowBin?.data.relationships.custom_field.data?.id,
-                })
-              }
+                });
+              }}
             >
               {formatMessage(messages.explore)}
             </Button>
