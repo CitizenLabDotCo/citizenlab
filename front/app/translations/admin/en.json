@@ -61,6 +61,7 @@
   "app.components.AnonymousPostingToggle.userAnonymitySupportTooltipLinkText": "support article",
   "app.components.AnonymousPostingToggle.userAnonymitySupportTooltipLinkUrl": "https://support.govocal.com/en/articles/7946486-enabling-anonymous-participation",
   "app.components.BillingWarning.billingWarning": "Once additional seats are added, your billing will be increased. Reach out to your GovSuccess Manager to learn more about it.",
+  "app.components.CommunityMonitorModal.surveyCompletedUntilNextQuarter": "Thank you for completing the survey! You're welcome to take it again next quarter.",
   "app.components.CommunityMonitorModal.xMinutesToComplete": "{minutes, plural, =0 {Takes <1 minute} one {Takes 1 minute} other {Takes # minutes}}",
   "app.components.ProjectTemplatePreview.close": "Close",
   "app.components.ProjectTemplatePreview.createProject": "Create project",
