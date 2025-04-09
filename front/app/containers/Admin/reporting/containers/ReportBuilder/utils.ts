@@ -1,3 +1,9 @@
+import { isEmpty } from 'lodash-es';
+
+import { IProject } from 'api/projects/types';
+import { ReportLayoutResponse } from 'api/report_layout/types';
+import { ReportResponse } from 'api/reports/types';
+
 interface Params {
   templateProjectId: string | null;
   templatePhaseId: string | null;
@@ -74,4 +80,29 @@ type PlatformTemplateConfig = {
   template: 'platform';
   startDate: string;
   endDate: string;
+};
+
+interface IsGeneratedParams {
+  report: ReportResponse | undefined;
+  reportLayout: ReportLayoutResponse | undefined;
+  communityMonitorProject: IProject | undefined;
+}
+
+// isGeneratedCommunityMonitorReport
+// Description: Check if the report is one auto-generated for the Community Monitor.
+export const isGeneratedCommunityMonitorReport = ({
+  report,
+  reportLayout,
+  communityMonitorProject,
+}: IsGeneratedParams) => {
+  // Check if the report is one auto-generated for the Community Monitor
+  const isCommunityMonitorReport =
+    report?.data.relationships.phase?.data?.id ===
+    communityMonitorProject?.data.relationships.current_phase?.data?.id;
+
+  const isEmptyCommunityMonitorReport =
+    isCommunityMonitorReport &&
+    isEmpty(reportLayout?.data.attributes.craftjs_json);
+
+  return isEmptyCommunityMonitorReport;
 };
