@@ -144,7 +144,8 @@ module ReportBuilder
               :name,
               :phase_id,
               :visible,
-              :allow_delete,
+              :year,
+              :quarter,
               layout: [craftjs_json: {}]
             )
 
