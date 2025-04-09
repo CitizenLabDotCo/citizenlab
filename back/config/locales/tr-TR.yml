@@ -301,7 +301,7 @@ tr:
       title_text_3: 'Görüşlerinizi paylaştığınız için teşekkür ederiz!'
       description_text_3: "Girdiniz başarıyla gönderildi."
     form_user_page:
-      title_text: 'About you'
+      title_text: 'Senin hakkında'
     pdf_export:
       personal_data: 'Kişisel veriler'
       personal_data_explanation_public: "Girdinizi %{organizationName}'un çevrimiçi katılım platformuna göndereceğiz. Adınızın bu girdinin yazarı olarak görüntülenmesini ve girdinizle ilgili güncellemeleri e-posta ile almak istiyorsanız, lütfen bu sayfadaki aşağıdaki alanları doldurun ve sizin için bir hesap oluşturalım. E-postanız herkese açık olmayacak ve sadece %{organizationName}tarafından kullanılacaktır. Anonim kalmak istiyorsanız veya kişisel verilerinizi bu şekilde kullanmamızı kabul etmiyorsanız, bu alanları boş bırakabilirsiniz."

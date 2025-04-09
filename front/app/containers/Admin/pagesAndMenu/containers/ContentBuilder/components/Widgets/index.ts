@@ -28,7 +28,7 @@ import Proposals from './_deprecated/Proposals';
 import Areas, { areasTitle } from './Areas';
 import CallToAction, { callToActionTitle } from './CallToAction';
 import CommunityMonitorCTA, {
-  CommunityMonitorCTATitle,
+  communityMonitorCTATitle,
 } from './CommunityMonitorCTA';
 import Events, { eventsTitle } from './Events';
 import FinishedOrArchived, {
@@ -95,7 +95,7 @@ export const WIDGET_TITLES: Record<WidgetName, MessageDescriptor> = {
   // Homepage builder widgets
   Areas: areasTitle,
   CallToAction: callToActionTitle,
-  CommunityMonitorCTA: CommunityMonitorCTATitle,
+  CommunityMonitorCTA: communityMonitorCTATitle,
   Events: eventsTitle,
   FollowedItems: followedItemsTitle,
   FinishedOrArchived: finishedOrArchivedTitle,

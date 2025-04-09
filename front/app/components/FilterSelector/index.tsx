@@ -15,29 +15,36 @@ import styled from 'styled-components';
 import Combobox from './Combobox';
 import MultiSelectDropdown from './MultiSelectDropdown';
 
-const Container = styled(Box)`
+const Container = styled(Box)<{ mr?: string }>`
   display: inline-block;
   position: relative;
 
-  &:not(:last-child) {
-    margin-right: 40px;
+  ${({ mr }) =>
+    mr === undefined
+      ? `
+    &:not(:last-child) {
+      margin-right: 40px;
 
-    ${media.tablet`
-      margin-right: 30px;
-    `}
+      ${media.tablet`
+        margin-right: 30px;
+      `}
 
-    ${media.phone`
-      margin-right: 25px;
-    `}
+      ${media.phone`
+        margin-right: 25px;
+      `}
 
-    ${media.phone`
-      margin-right: 20px;
-    `}
-  }
+      ${media.phone`
+        margin-right: 20px;
+      `}
+    }
 
-  &.last {
-    margin-right: 0px;
-  }
+    &.last {
+      margin-right: 0px;
+    }
+  `
+      : `
+    margin-right: ${mr};
+  `}
 
   ${isRtl`
     &:not(:last-child) {
@@ -88,6 +95,7 @@ interface Props extends DefaultProps {
   className?: string;
   filterSelectorStyle?: 'button' | 'text';
   minWidth?: string;
+  mr?: string;
 }
 
 const FilterSelector = ({
@@ -112,6 +120,7 @@ const FilterSelector = ({
   textColor,
   last,
   filterSelectorStyle = 'text',
+  mr,
 }: Props) => {
   const baseID = `filter-${Math.floor(Math.random() * 10000000)}`;
   const [opened, setOpened] = useState(false);
@@ -222,6 +231,7 @@ const FilterSelector = ({
       className={`e2e-filter-selector-${name} ${className} ${
         last ? 'last' : ''
       }`}
+      mr={mr}
     >
       {multipleSelectionAllowed ? (
         <MultiSelectDropdown
