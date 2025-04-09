@@ -6,11 +6,7 @@ import fetcher from 'utils/cl-react-query/fetcher';
 import customFieldOptionsKeys from './keys';
 import { ICustomFieldOption, CustomFieldOptionsKeys } from './types';
 
-const fetchOption = ({
-  optionId,
-}: {
-  optionId: string;
-}) =>
+export const fetchOption = ({ optionId }: { optionId: string }) =>
   fetcher<ICustomFieldOption>({
     path: `/custom_field_options/${optionId}`,
     action: 'get',
