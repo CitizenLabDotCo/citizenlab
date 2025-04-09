@@ -39,25 +39,23 @@ module EmailCampaigns
 
     allow_lifecycle_stages only: ['active']
 
-    recipient_filter :user_filter_admin_only
+    recipient_filter :user_filter_admins_moderators_only
     recipient_filter :user_filter_no_invitees
 
     before_send :content_worth_sending?
 
+    def mailer_class
+      CommunityMonitorReportMailer
+    end
+
     def self.default_schedule
       start_time = AppConfiguration.timezone.local(2025)
-
       IceCube::Schedule.new(start_time) do |schedule|
         first_day_of_quarter_at10_am = IceCube::Rule
           .monthly(3)
           .hour_of_day(10)
-
         schedule.add_recurrence_rule(first_day_of_quarter_at10_am)
       end
-    end
-
-    def mailer_class
-      CommunityMonitorReportMailer
     end
 
     def self.consentable_roles
@@ -76,16 +74,16 @@ module EmailCampaigns
       'email_campaigns.admin_labels.content_type.general'
     end
 
-    def generate_commands(recipient:, time: Time.now)
+    def generate_commands(recipient:)
       [{
-        event_payload: {},
+        event_payload: {}
       }]
     end
 
     private
 
-    def user_filter_admin_only(users_scope, _options = {})
-      users_scope.admin
+    def user_filter_admins_moderators_only(users_scope, _options = {})
+      users_scope.admin.or(users_scope.project_moderator(community_monitor_phase.project_id))
     end
 
     def user_filter_no_invitees(users_scope, _options = {})
@@ -93,12 +91,21 @@ module EmailCampaigns
     end
 
     def content_worth_sending?(_)
+      return false unless community_monitor_phase
+
       # Check if any responses for the previous quarter exist
-      [
-        statistics[:new_inputs_increase],
-        statistics[:new_comments_increase],
-        statistics[:new_users_increase]
-      ].any?(&:positive?)
+      responses = community_monitor_phase.ideas.where(created_at: 3.months.ago..Time.now)
+      responses.present?
+    end
+
+    # Return the community monitor phase if enabled
+    def community_monitor_phase
+      @community_monitor_phase ||= begin
+        settings = AppConfiguration.instance.settings
+        enabled = settings.dig('community_monitor', 'enabled')
+        project_id = settings.dig('community_monitor', 'project_id')
+        Phase.find_by(project_id: project_id) if enabled && project_id
+      end
     end
   end
 end
