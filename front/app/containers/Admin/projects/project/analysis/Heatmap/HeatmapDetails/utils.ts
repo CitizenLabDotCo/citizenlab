@@ -14,9 +14,9 @@ export const getCellBgColor = (
   isSignificant?: boolean
 ): string => {
   if (lift === undefined) return colors.grey200;
-  if (lift >= 1.5 && isSignificant) return colors.success;
+  if (lift >= 1.3 && isSignificant) return colors.success;
   if (lift >= 1) return colors.successLight;
-  if (lift >= 0.5 && isSignificant) return colors.error;
+  if (lift <= 0.7 && isSignificant) return colors.error;
   return colors.errorLight;
 };
 
@@ -25,9 +25,9 @@ export const getCellTextColor = (
   isSignificant?: boolean
 ): string => {
   if (lift === undefined) return colors.grey800;
-  if (lift >= 1.5 && isSignificant) return colors.white;
+  if (lift >= 1.3 && isSignificant) return colors.white;
   if (lift >= 1) return colors.grey800;
-  if (lift >= 0.5 && isSignificant) return colors.white;
+  if (lift <= 0.7 && isSignificant) return colors.white;
   return colors.grey800;
 };
 

@@ -27,10 +27,12 @@ import useLocalize from 'hooks/useLocalize';
 
 import CloseIconButton from 'components/UI/CloseIconButton';
 
+import { trackEventByName } from 'utils/analytics';
 import { useIntl } from 'utils/cl-intl';
 
 import Tag from '../../Tags/Tag';
 import messages from '../messages';
+import tracks from '../tracks';
 
 import HeatmapCellTagVsBin from './HeatmapCellTagVsBin';
 import HeatmapTableHead from './HeatmapTableHead';
@@ -157,7 +159,10 @@ const HeatmapDetails = ({
             size="small"
             label={formatMessage(messages.rowValues)}
             value={selectedRowType}
-            onChange={(option) => setSelectedRowType(option.value)}
+            onChange={(option) => {
+              setSelectedRowType(option.value);
+              trackEventByName(tracks.heatmapChangeRowValues);
+            }}
             options={[
               {
                 value: 'tags',
@@ -176,7 +181,10 @@ const HeatmapDetails = ({
             size="small"
             label={formatMessage(messages.columnValues)}
             value={selectedColumnFieldId}
-            onChange={(option) => setSelectedColumnFieldId(option.value)}
+            onChange={(option) => {
+              setSelectedColumnFieldId(option.value);
+              trackEventByName(tracks.heatmapChangeColumnValues);
+            }}
             options={[
               ...userCustomFields.map((field) => ({
                 value: field.id,
@@ -194,7 +202,10 @@ const HeatmapDetails = ({
             size="small"
             value={unit}
             label={formatMessage(messages.units)}
-            onChange={(option) => setUnit(option.value)}
+            onChange={(option) => {
+              trackEventByName(tracks.heatmapChangeUnit);
+              setUnit(option.value);
+            }}
             disabled={
               analysis?.data.attributes.participation_method === 'native_survey'
             }
