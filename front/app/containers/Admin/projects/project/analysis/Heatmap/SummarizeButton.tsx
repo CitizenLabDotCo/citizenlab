@@ -76,8 +76,10 @@ const SummarizeButton = ({ row, column, cell, buttonStyle }: Props) => {
     if (isAgeBin) {
       const fromKey = `${keyPrefix}${fieldId}_from`;
       const toKey = `${keyPrefix}${fieldId}_to`;
-      // Get current year
-      const currentYear = new Date().getFullYear();
+      // Get current date and offset by 6 months (into the past)
+      const currentDate = new Date();
+      currentDate.setMonth(currentDate.getMonth() - 6);
+      const currentYear = currentDate.getFullYear();
 
       // Calculate ages from birth years
       const ageFrom = bin.attributes.range?.end
