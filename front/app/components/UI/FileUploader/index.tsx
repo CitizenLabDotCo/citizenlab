@@ -65,16 +65,24 @@ const FileUploader = ({
     };
 
   const handleDragRow = (fromIndex: number, toIndex: number) => {
-    const updatedFiles = [...files];
-    const [movedFile] = updatedFiles.splice(fromIndex, 1);
-    updatedFiles.splice(toIndex, 0, movedFile);
+    // Create a working copy of the files array
+    const filesCopy = [...files];
 
-    updatedFiles.forEach((file, index) => {
-      file.ordering = index;
-    });
+    // Remove the file from its original position and store it
+    const [movedFile] = filesCopy.splice(fromIndex, 1);
 
-    setFiles(updatedFiles);
-    onFileReorder?.(updatedFiles);
+    // Insert the file at its new position
+    filesCopy.splice(toIndex, 0, movedFile);
+
+    // Create a new array with updated ordering properties
+    const reorderedFiles = filesCopy.map((file, index) => ({
+      ...file,
+      ordering: index,
+    }));
+
+    // Update state and notify parent component about the change
+    setFiles(reorderedFiles);
+    onFileReorder?.(reorderedFiles);
   };
 
   const fileNames = files.map((file) => file.name).join(', ');
