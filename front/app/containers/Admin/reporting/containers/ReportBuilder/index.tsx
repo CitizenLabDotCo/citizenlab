@@ -5,7 +5,6 @@ import { isEmpty } from 'lodash-es';
 import { useLocation, useParams, useSearchParams } from 'react-router-dom';
 import { SupportedLocale } from 'typings';
 
-import useCommunityMonitorProject from 'api/community_monitor/useCommunityMonitorProject';
 import { ReportLayout } from 'api/report_layout/types';
 import useReportLayout from 'api/report_layout/useReportLayout';
 import { ReportResponse } from 'api/reports/types';
@@ -39,11 +38,7 @@ import { ReportContextProvider } from '../../context/ReportContext';
 import messages from '../../messages';
 import areCraftjsObjectsEqual from '../../utils/areCraftjsObjectsEqual';
 
-import {
-  getTemplateConfig,
-  isGeneratedCommunityMonitorReport,
-  TemplateConfig,
-} from './utils';
+import { getTemplateConfig, TemplateConfig } from './utils';
 
 interface Props {
   report: ReportResponse;
@@ -179,7 +174,6 @@ const ReportBuilderWrapper = () => {
   const { reportId } = useParams();
   const { data: report } = useReport(reportId);
   const { data: reportLayout } = useReportLayout(reportId);
-  const { data: communityMonitorProject } = useCommunityMonitorProject({});
 
   const [search] = useSearchParams();
   const [templateProjectId] = useState(search.get('templateProjectId'));
@@ -188,25 +182,13 @@ const ReportBuilderWrapper = () => {
     search.get('startDatePlatformReport')
   );
 
-  // Check if the report is one auto-generated for the Community Monitor
-  const isEmptyCommunityMonitorReport = isGeneratedCommunityMonitorReport({
-    report,
-    reportLayout,
-    communityMonitorProject,
-  });
-
   const [endDatePlatformReport] = useState(search.get('endDatePlatformReport'));
+
   const [templateYear] = useState(
-    isEmptyCommunityMonitorReport
-      ? report?.data.attributes.year?.toString() || search.get('year') || null
-      : search.get('year')
+    report?.data.attributes.year?.toString() || search.get('year')
   );
   const [templateQuarter] = useState(
-    isEmptyCommunityMonitorReport
-      ? report?.data.attributes.quarter?.toString() ||
-          search.get('quarter') ||
-          null
-      : search.get('quarter')
+    report?.data.attributes.quarter?.toString() || search.get('quarter')
   );
 
   useEffect(() => {
