@@ -3,43 +3,38 @@ import { CLErrors, Multiloc } from 'typings';
 
 import fetcher from 'utils/cl-react-query/fetcher';
 
-import userCustomFieldsOptionsKeys from './keys';
-import { IUserCustomFieldOption } from './types';
+import customFieldOptionsKeys from './keys';
+import { ICustomFieldOption } from './types';
 
 type UpdateOption = {
   optionId: string;
-  customFieldId: string;
   title_multiloc: Multiloc;
 };
 
 const updateOption = async ({
   optionId,
-  customFieldId,
   title_multiloc,
 }: UpdateOption) =>
-  fetcher<IUserCustomFieldOption>({
-    path: `/users/custom_fields/${customFieldId}/custom_field_options/${optionId}`,
+  fetcher<ICustomFieldOption>({
+    path: `/custom_field_options/${optionId}`,
     action: 'patch',
     body: { title_multiloc },
   });
 
-const useUpdateUserCustomFieldsOption = () => {
+const useUpdateCustomFieldOption = () => {
   const queryClient = useQueryClient();
   return useMutation<
-    IUserCustomFieldOption,
+    ICustomFieldOption,
     { errors: CLErrors },
     UpdateOption
   >({
     mutationFn: updateOption,
     onSuccess: (_data, variables) => {
       queryClient.invalidateQueries({
-        queryKey: userCustomFieldsOptionsKeys.list({
-          customFieldId: variables.customFieldId,
-        }),
+        queryKey: customFieldOptionsKeys.lists(),
       });
       queryClient.invalidateQueries({
-        queryKey: userCustomFieldsOptionsKeys.item({
-          customFieldId: variables.customFieldId,
+        queryKey: customFieldOptionsKeys.item({
           optionId: variables.optionId,
         }),
       });
@@ -47,4 +42,4 @@ const useUpdateUserCustomFieldsOption = () => {
   });
 };
 
-export default useUpdateUserCustomFieldsOption;
+export default useUpdateCustomFieldOption;

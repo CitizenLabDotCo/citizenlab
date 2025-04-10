@@ -1,7 +1,7 @@
 import { colors } from '@citizenlab/cl2-component-library';
 
 import { ICustomFieldBinData } from 'api/custom_field_bins/types';
-import { IUserCustomFieldOptions } from 'api/user_custom_fields_options/types';
+import { ICustomFieldOption } from 'api/custom_field_options/types';
 
 import useLocalize from 'hooks/useLocalize';
 
@@ -58,21 +58,16 @@ export const formatRangeText = (
 
 export const useGetOptionText = ({
   bin,
-  options,
+  option,
 }: {
   bin: ICustomFieldBinData;
-  options?: IUserCustomFieldOptions;
+  option?: ICustomFieldOption;
 }) => {
   const localize = useLocalize();
   const { formatMessage } = useIntl();
   switch (bin.attributes.type) {
     case 'CustomFieldBins::OptionBin':
-      return localize(
-        options?.data.find(
-          (option) =>
-            option.id === bin.relationships.custom_field_option?.data?.id
-        )?.attributes.title_multiloc
-      );
+      return localize(option?.data.attributes.title_multiloc);
     case 'CustomFieldBins::RangeBin':
       return formatRangeText(bin.attributes.range);
 

@@ -8,6 +8,7 @@ import {
   Tbody,
   stylingConsts,
   Select,
+  Text,
 } from '@citizenlab/cl2-component-library';
 import { useParams } from 'react-router-dom';
 
@@ -17,10 +18,10 @@ import useAnalysisHeatmapCells from 'api/analysis_heat_map_cells/useAnalysisHeat
 import useAnalysisTags from 'api/analysis_tags/useAnalysisTags';
 import { ICustomFieldBinData } from 'api/custom_field_bins/types';
 import useCustomFieldBins from 'api/custom_field_bins/useCustomFieldBins';
+import useCustomFieldOption from 'api/custom_field_options/useCustomFieldOption';
+import useCustomFieldOptions from 'api/custom_field_options/useCustomFieldOptions';
 import { IFlatCustomField } from 'api/custom_fields/types';
 import { IUserCustomFieldData } from 'api/user_custom_fields/types';
-import { IUserCustomFieldOptions } from 'api/user_custom_fields_options/types';
-import useUserCustomFieldsOptions from 'api/user_custom_fields_options/useUserCustomFieldsOptions';
 
 import useLocalize from 'hooks/useLocalize';
 
@@ -38,19 +39,23 @@ import HeatmapTableHead from './HeatmapTableHead';
 import StyledTable from './StyledTable';
 import { useGetOptionText } from './utils';
 
-const OptionTextTd = ({
-  bin,
-  options,
-}: {
-  bin: ICustomFieldBinData;
-  options?: IUserCustomFieldOptions;
-}) => {
+const OptionTextTd = ({ bin }: { bin: ICustomFieldBinData }) => {
+  const { data: option } = useCustomFieldOption({
+    optionId: bin.relationships.custom_field_option?.data?.id,
+    enabled: !!bin.relationships.custom_field_option?.data?.id,
+  });
   const optionText = useGetOptionText({
     bin,
-    options,
+    option,
   });
 
-  return <Td>{optionText}</Td>;
+  return (
+    <Td>
+      <Text fontWeight="bold" m="0px" color="inherit" fontSize="s">
+        {optionText}
+      </Text>
+    </Td>
+  );
 };
 
 interface HeatMapProps {
@@ -108,12 +113,8 @@ const HeatmapDetails = ({
     analysisId,
   });
 
-  const { data: columnOptions } = useUserCustomFieldsOptions(
-    selectedColumnFieldId
-  );
-  const { data: rowOptions } = useUserCustomFieldsOptions(
-    !isSelectedRowTypeTags ? selectedRowType : undefined
-  );
+  const { data: columnOptions } = useCustomFieldOptions(selectedColumnFieldId);
+
   const { data: columnBins } = useCustomFieldBins(selectedColumnFieldId);
   const { data: rowBins } = useCustomFieldBins(
     !isSelectedRowTypeTags ? selectedRowType : undefined
@@ -259,7 +260,7 @@ const HeatmapDetails = ({
               {rowBins?.data.map((rowBin) => (
                 <Tr key={rowBin.id}>
                   <Td>
-                    <OptionTextTd bin={rowBin} options={rowOptions} />
+                    <OptionTextTd bin={rowBin} />
                   </Td>
                   {columnBins.data.map((columnBin) => {
                     const cell = analysisHeatmapCells?.data.find(

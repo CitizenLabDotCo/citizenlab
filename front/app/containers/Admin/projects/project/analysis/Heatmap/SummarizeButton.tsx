@@ -6,8 +6,8 @@ import { IAnalysisHeatmapCellData } from 'api/analysis_heat_map_cells/types';
 import useAddAnalysisSummary from 'api/analysis_summaries/useAddAnalysisSummary';
 import { ITagData } from 'api/analysis_tags/types';
 import { ICustomFieldBinData } from 'api/custom_field_bins/types';
+import useCustomFieldOption from 'api/custom_field_options/useCustomFieldOption';
 import useUserCustomFields from 'api/user_custom_fields/useUserCustomFields';
-import useUserCustomFieldsOption from 'api/user_custom_fields_options/useUserCustomFieldsOption';
 
 import { trackEventByName } from 'utils/analytics';
 import { FormattedMessage } from 'utils/cl-intl';
@@ -34,25 +34,18 @@ const SummarizeButton = ({ row, column, cell, buttonStyle }: Props) => {
     'type' in row.attributes &&
     row.attributes.type === 'CustomFieldBins::OptionBin';
 
-  const rowCustomFieldId =
-    'custom_field' in row.relationships
-      ? row.relationships.custom_field.data?.id || ''
-      : '';
-
   const rowOptionId =
     'custom_field_option' in row.relationships &&
     row.relationships.custom_field_option?.data
       ? row.relationships.custom_field_option.data.id
       : '';
 
-  const { data: rowCustomFieldOption } = useUserCustomFieldsOption({
-    customFieldId: rowCustomFieldId,
+  const { data: rowCustomFieldOption } = useCustomFieldOption({
     optionId: rowOptionId,
     enabled: isRowOptionBin,
   });
 
-  const { data: columnCustomFieldOption } = useUserCustomFieldsOption({
-    customFieldId: column.relationships.custom_field.data?.id || '',
+  const { data: columnCustomFieldOption } = useCustomFieldOption({
     optionId: column.relationships.custom_field_option?.data?.id || '',
     enabled: column.attributes.type === 'CustomFieldBins::OptionBin',
   });
