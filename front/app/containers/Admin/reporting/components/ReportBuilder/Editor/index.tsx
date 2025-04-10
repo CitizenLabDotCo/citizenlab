@@ -27,8 +27,7 @@ const resolver = {
   PlatformTemplate,
 };
 
-// Without this, craftjs sometimes crashes.
-// Not sure why. (Luuc)
+// Without this, craftjs crashes.
 const PlainDiv = ({ render }) => {
   return <div>{render}</div>;
 };

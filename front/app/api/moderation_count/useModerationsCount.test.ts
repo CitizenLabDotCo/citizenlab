@@ -1,4 +1,4 @@
-import { renderHook } from '@testing-library/react-hooks';
+import { renderHook, waitFor } from 'utils/testUtils/rtl';
 import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
 
@@ -28,7 +28,7 @@ describe('useModerationsCount', () => {
   afterAll(() => server.close());
 
   it('returns data correctly', async () => {
-    const { result, waitFor } = renderHook(() => useModerationsCount({}), {
+    const { result } = renderHook(() => useModerationsCount({}), {
       wrapper: createQueryClientWrapper(),
     });
 
@@ -47,7 +47,7 @@ describe('useModerationsCount', () => {
       })
     );
 
-    const { result, waitFor } = renderHook(() => useModerationsCount({}), {
+    const { result } = renderHook(() => useModerationsCount({}), {
       wrapper: createQueryClientWrapper(),
     });
 

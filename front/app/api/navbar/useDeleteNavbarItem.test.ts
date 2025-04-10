@@ -1,8 +1,8 @@
-import { renderHook, act } from '@testing-library/react-hooks';
 import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
+import { renderHook, waitFor, act } from 'utils/testUtils/rtl';
 
 import useDeleteNavbarItem from './useDeleteNavbarItem';
 const apiPath = '*nav_bar_items/:id';
@@ -18,7 +18,7 @@ describe('useDeleteNavbarItem', () => {
   afterAll(() => server.close());
 
   it('mutates data correctly', async () => {
-    const { result, waitFor } = renderHook(() => useDeleteNavbarItem(), {
+    const { result } = renderHook(() => useDeleteNavbarItem(), {
       wrapper: createQueryClientWrapper(),
     });
 
@@ -36,7 +36,7 @@ describe('useDeleteNavbarItem', () => {
       })
     );
 
-    const { result, waitFor } = renderHook(() => useDeleteNavbarItem(), {
+    const { result } = renderHook(() => useDeleteNavbarItem(), {
       wrapper: createQueryClientWrapper(),
     });
 

@@ -82,7 +82,7 @@ describe('Idea edit page', () => {
       .clear()
       .should('exist')
       .should('not.be.disabled')
-      .type(newIdeaTitle);
+      .type(newIdeaTitle, { delay: 0 });
     cy.get('@descriptionInput')
       .clear()
       .should('exist')

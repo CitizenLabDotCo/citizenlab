@@ -1,7 +1,6 @@
-import { renderHook } from '@testing-library/react-hooks';
 import { replaceRaf } from 'raf-stub';
 
-import { waitFor, act } from '../utils/testUtils/rtl';
+import { renderHook, waitFor, act } from '../utils/testUtils/rtl';
 
 import useWindowSize from './useWindowSize';
 

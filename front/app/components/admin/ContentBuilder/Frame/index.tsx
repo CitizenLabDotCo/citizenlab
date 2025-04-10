@@ -1,4 +1,4 @@
-import React, { useEffect, memo } from 'react';
+import React, { useEffect } from 'react';
 
 import { Frame, Element, useEditor, SerializedNode } from '@craftjs/core';
 
@@ -10,33 +10,35 @@ type ContentBuilderFrame = {
   onLoadImages?: () => void;
 };
 
-const ContentBuilderFrame = memo(
-  ({ editorData, children, onLoadImages }: ContentBuilderFrame) => {
-    const { actions } = useEditor();
+const ContentBuilderFrame = ({
+  editorData,
+  children,
+  onLoadImages,
+}: ContentBuilderFrame) => {
+  const { actions } = useEditor();
 
-    useEffect(() => {
-      if (editorData) {
-        actions.deserialize(editorData);
+  useEffect(() => {
+    if (editorData) {
+      actions.deserialize(editorData);
 
-        if (onLoadImages) {
-          const imagesToBeLoaded = getImagesToBeLoaded(editorData);
+      if (onLoadImages) {
+        const imagesToBeLoaded = getImagesToBeLoaded(editorData);
 
-          allImagesLoaded(imagesToBeLoaded).then(() => {
-            onLoadImages();
-          });
-        }
+        allImagesLoaded(imagesToBeLoaded).then(() => {
+          onLoadImages();
+        });
       }
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [editorData]);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [editorData]);
 
-    return (
-      <Frame>
-        <Element id="e2e-content-builder-frame" is="div" canvas>
-          {children}
-        </Element>
-      </Frame>
-    );
-  }
-);
+  return (
+    <Frame>
+      <Element id="e2e-content-builder-frame" is="div" canvas>
+        {children}
+      </Element>
+    </Frame>
+  );
+};
 
 export default ContentBuilderFrame;

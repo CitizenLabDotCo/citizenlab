@@ -1,4 +1,4 @@
-import { renderHook } from '@testing-library/react-hooks';
+import { renderHook, waitFor } from 'utils/testUtils/rtl';
 import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
 
@@ -21,7 +21,7 @@ describe('useABTest', () => {
   afterAll(() => server.close());
 
   it('works when there is a user', async () => {
-    const { result, waitFor } = renderHook(
+    const { result } = renderHook(
       () =>
         useABTest({
           experiment: 'Button location',

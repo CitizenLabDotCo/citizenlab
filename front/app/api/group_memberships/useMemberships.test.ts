@@ -1,4 +1,4 @@
-import { renderHook } from '@testing-library/react-hooks';
+import { renderHook, waitFor } from 'utils/testUtils/rtl';
 import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
 
@@ -55,7 +55,7 @@ describe('useMemberships', () => {
   afterAll(() => server.close());
 
   it('returns data correctly', async () => {
-    const { result, waitFor } = renderHook(() => useMemberships(params), {
+    const { result } = renderHook(() => useMemberships(params), {
       wrapper: createQueryClientWrapper(),
     });
 
@@ -74,7 +74,7 @@ describe('useMemberships', () => {
       })
     );
 
-    const { result, waitFor } = renderHook(() => useMemberships(params), {
+    const { result } = renderHook(() => useMemberships(params), {
       wrapper: createQueryClientWrapper(),
     });
 

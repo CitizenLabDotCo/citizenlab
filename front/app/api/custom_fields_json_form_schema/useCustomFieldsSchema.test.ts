@@ -1,4 +1,4 @@
-import { renderHook } from '@testing-library/react-hooks';
+import { renderHook, waitFor } from 'utils/testUtils/rtl';
 import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
 
@@ -30,12 +30,9 @@ describe('useCustomFieldsSchema', () => {
       id: '456',
     } as const;
 
-    const { result, waitFor } = renderHook(
-      () => useCustomFieldsSchema(context),
-      {
-        wrapper: createQueryClientWrapper(),
-      }
-    );
+    const { result } = renderHook(() => useCustomFieldsSchema(context), {
+      wrapper: createQueryClientWrapper(),
+    });
 
     expect(result.current.isLoading).toBe(true);
 
@@ -53,12 +50,9 @@ describe('useCustomFieldsSchema', () => {
     } as const;
 
     // expect(result).toEqual(ideaResponse);
-    const { result, waitFor } = renderHook(
-      () => useCustomFieldsSchema(context),
-      {
-        wrapper: createQueryClientWrapper(),
-      }
-    );
+    const { result } = renderHook(() => useCustomFieldsSchema(context), {
+      wrapper: createQueryClientWrapper(),
+    });
 
     expect(result.current.isLoading).toBe(true);
 

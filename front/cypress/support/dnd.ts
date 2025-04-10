@@ -155,6 +155,7 @@ Cypress.Commands.add(
     prevSubject: true,
   },
   (subject, target, opts: Partial<DropOptions> = { position: 'right' }) => {
+    cy.wait(1000);
     cy.get(target).each((item) => {
       cy.get(subject).dragOver(Cypress.$(item), opts);
       cy.get(subject).drop();

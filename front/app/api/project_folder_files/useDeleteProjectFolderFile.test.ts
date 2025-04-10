@@ -1,8 +1,8 @@
-import { renderHook, act } from '@testing-library/react-hooks';
 import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
+import { renderHook, waitFor, act } from 'utils/testUtils/rtl';
 
 import useDeleteProjectFolderFile from './useDeleteProjectFolderFile';
 
@@ -19,11 +19,11 @@ describe('useDeleteProjectFolderFile', () => {
   afterAll(() => server.close());
 
   it('mutates data correctly', async () => {
-    const { result, waitFor } = renderHook(() => useDeleteProjectFolderFile(), {
+    const { result } = renderHook(() => useDeleteProjectFolderFile(), {
       wrapper: createQueryClientWrapper(),
     });
 
-    await act(async () => {
+    act(() => {
       result.current.mutate({
         projectFolderId: 'folderId',
         fileId: 'fileId',
@@ -40,18 +40,18 @@ describe('useDeleteProjectFolderFile', () => {
       })
     );
 
-    const { result, waitFor } = renderHook(() => useDeleteProjectFolderFile(), {
+    const { result } = renderHook(() => useDeleteProjectFolderFile(), {
       wrapper: createQueryClientWrapper(),
     });
 
-    await act(async () => {
+    act(() => {
       result.current.mutate({
         projectFolderId: 'projectFolderId',
         fileId: 'fileId',
       });
-
-      await waitFor(() => expect(result.current.isError).toBe(true));
-      expect(result.current.error).toBeDefined();
     });
+
+    await waitFor(() => expect(result.current.isError).toBe(true));
+    expect(result.current.error).toBeDefined();
   });
 });

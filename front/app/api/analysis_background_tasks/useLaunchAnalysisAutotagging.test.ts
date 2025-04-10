@@ -1,4 +1,4 @@
-import { renderHook, act } from '@testing-library/react-hooks';
+import { renderHook, waitFor, act } from 'utils/testUtils/rtl';
 import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
 
@@ -19,12 +19,9 @@ describe('useLaunchAnalysisAutotagging', () => {
   afterAll(() => server.close());
 
   it('mutates data correctly', async () => {
-    const { result, waitFor } = renderHook(
-      () => useLaunchAnalysisAutotagging(),
-      {
-        wrapper: createQueryClientWrapper(),
-      }
-    );
+    const { result } = renderHook(() => useLaunchAnalysisAutotagging(), {
+      wrapper: createQueryClientWrapper(),
+    });
 
     act(() => {
       result.current.mutate({
@@ -43,12 +40,9 @@ describe('useLaunchAnalysisAutotagging', () => {
       })
     );
 
-    const { result, waitFor } = renderHook(
-      () => useLaunchAnalysisAutotagging(),
-      {
-        wrapper: createQueryClientWrapper(),
-      }
-    );
+    const { result } = renderHook(() => useLaunchAnalysisAutotagging(), {
+      wrapper: createQueryClientWrapper(),
+    });
 
     act(() => {
       result.current.mutate({

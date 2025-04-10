@@ -22,6 +22,7 @@ describe('nav bar', () => {
   it('navigates to project from All projects dropdown and back', () => {
     // Navigate to project page
     cy.get('.e2e-projects-dropdown-link').click();
+    cy.wait(2000);
     cy.get('#e2e-projects-dropdown-content > a')
       .first()
       .invoke('attr', 'href')

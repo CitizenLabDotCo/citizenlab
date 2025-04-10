@@ -44,7 +44,7 @@ describe('Idea new page for continuous project', () => {
   it.skip('shows an error when no description is provided', () => {
     const value = randomString(9);
     cy.get('#idea-form');
-    cy.get('#e2e-idea-title-input input').type(value);
+    cy.get('#e2e-idea-title-input input').click().type(value, { delay: 0 });
     cy.get('#e2e-idea-title-input input').should('contain.value', value);
     cy.wait(1000);
     // Try to go to the next page
@@ -54,7 +54,7 @@ describe('Idea new page for continuous project', () => {
 
   it('shows an error when the title is less than 10 characters long', () => {
     cy.get('#idea-form');
-    cy.get('#e2e-idea-title-input input').type(randomString(9));
+    cy.get('#e2e-idea-title-input input').type(randomString(9), { delay: 0 });
     // Try to go to the next page
     cy.get('[data-cy="e2e-next-page"]').should('be.visible').click();
     cy.get('#e2e-idea-title-input .e2e-error-message');
@@ -87,7 +87,7 @@ describe('Idea new page for continuous project', () => {
     cy.contains('Add new idea').should('exist');
 
     // add a title and description
-    cy.get('#e2e-idea-title-input input').type(ideaTitle);
+    cy.get('#e2e-idea-title-input input').click().type(ideaTitle, { delay: 0 });
     cy.get('#e2e-idea-description-input .ql-editor').type(ideaContent);
 
     // verify the title and description
@@ -124,7 +124,7 @@ describe('Idea new page for continuous project', () => {
     cy.get('#idea-form');
     cy.contains('Add new idea').should('exist');
     // add a title and description
-    cy.get('#e2e-idea-title-input input').type(ideaTitle);
+    cy.get('#e2e-idea-title-input input').click().type(ideaTitle, { delay: 0 });
     cy.get('#e2e-idea-description-input .ql-editor').type(ideaContent);
 
     // verify the title and description
@@ -241,7 +241,7 @@ describe('Idea new page for timeline project', () => {
     cy.get('#idea-form');
     cy.contains('Add new idea').should('exist');
     // add a title and description
-    cy.get('#e2e-idea-title-input input').type(ideaTitle);
+    cy.get('#e2e-idea-title-input input').click().type(ideaTitle, { delay: 0 });
     cy.get('#e2e-idea-description-input .ql-editor').type(ideaContent);
 
     // verify the title and description

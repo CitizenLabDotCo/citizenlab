@@ -1,8 +1,8 @@
-import { renderHook, act } from '@testing-library/react-hooks';
 import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
+import { renderHook, waitFor, act } from 'utils/testUtils/rtl';
 
 import useDeleteReferenceDistribution from './useDeleteReferenceDistribution';
 const apiPath = '*/users/custom_fields/:id/reference_distribution';
@@ -18,12 +18,9 @@ describe('useDeleteReferenceDistribution', () => {
   afterAll(() => server.close());
 
   it('mutates data correctly', async () => {
-    const { result, waitFor } = renderHook(
-      () => useDeleteReferenceDistribution(),
-      {
-        wrapper: createQueryClientWrapper(),
-      }
-    );
+    const { result } = renderHook(() => useDeleteReferenceDistribution(), {
+      wrapper: createQueryClientWrapper(),
+    });
 
     act(() => {
       result.current.mutate('id');
@@ -39,12 +36,9 @@ describe('useDeleteReferenceDistribution', () => {
       })
     );
 
-    const { result, waitFor } = renderHook(
-      () => useDeleteReferenceDistribution(),
-      {
-        wrapper: createQueryClientWrapper(),
-      }
-    );
+    const { result } = renderHook(() => useDeleteReferenceDistribution(), {
+      wrapper: createQueryClientWrapper(),
+    });
 
     act(() => {
       result.current.mutate('id');

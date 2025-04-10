@@ -1,4 +1,4 @@
-import { renderHook } from '@testing-library/react-hooks';
+import { renderHook, waitFor } from 'utils/testUtils/rtl';
 import { setupServer } from 'msw/node';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
@@ -25,7 +25,7 @@ describe('useAuthenticationRequirements', () => {
       id: '456',
     } as const;
 
-    const { result, waitFor } = renderHook(
+    const { result } = renderHook(
       () => useAuthenticationRequirements(context),
       {
         wrapper: createQueryClientWrapper(),
@@ -47,7 +47,7 @@ describe('useAuthenticationRequirements', () => {
       id: '789',
     } as const;
 
-    const { result, waitFor } = renderHook(
+    const { result } = renderHook(
       () => useAuthenticationRequirements(context),
       {
         wrapper: createQueryClientWrapper(),
