@@ -48,9 +48,7 @@ const FileUploader = ({
   }, [initialFiles]);
 
   const handleFileOnAdd = (fileToAdd: UploadFile) => {
-    // TODO: Fix this the next time the file is edited.
-    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-    if (!files?.find((file) => file.base64 === fileToAdd.base64)) {
+    if (!files.find((file) => file.base64 === fileToAdd.base64)) {
       const updatedFiles = [...files, fileToAdd as FileType];
       setFiles(updatedFiles);
       onFileAdd(fileToAdd);
@@ -67,20 +65,16 @@ const FileUploader = ({
     };
 
   const handleDragRow = (fromIndex: number, toIndex: number) => {
-    // TODO: Fix this the next time the file is edited.
-    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-    if (files) {
-      const updatedFiles = [...files];
-      const [movedFile] = updatedFiles.splice(fromIndex, 1);
-      updatedFiles.splice(toIndex, 0, movedFile);
+    const updatedFiles = [...files];
+    const [movedFile] = updatedFiles.splice(fromIndex, 1);
+    updatedFiles.splice(toIndex, 0, movedFile);
 
-      updatedFiles.forEach((file, index) => {
-        file.ordering = index;
-      });
+    updatedFiles.forEach((file, index) => {
+      file.ordering = index;
+    });
 
-      setFiles(updatedFiles);
-      onFileReorder?.(updatedFiles);
-    }
+    setFiles(updatedFiles);
+    onFileReorder?.(updatedFiles);
   };
 
   const fileNames = files.map((file) => file.name).join(', ');
