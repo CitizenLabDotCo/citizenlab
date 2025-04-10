@@ -5,6 +5,8 @@ import styled from 'styled-components';
 
 import { getSentimentGroupColour } from '../../utils';
 
+import { AnswerGroups } from './types';
+
 // Required so the report print will show background colours correctly.
 const StyledBox = styled(Box)`
   @media print {
@@ -14,15 +16,15 @@ const StyledBox = styled(Box)`
   }
 `;
 
-const SentimentBar = ({
-  answerGroups,
-}: {
-  answerGroups?: { answer: string; percentage: number }[] | null | undefined;
-}) => {
+const SentimentBar = ({ answerGroups }: { answerGroups?: AnswerGroups }) => {
+  const answerGroupsWithPercentages = answerGroups?.filter(
+    ({ percentage }) => percentage > 0
+  );
+
   return (
     <StyledBox display="flex" alignItems="center" width="160px" gap="2px">
-      {answerGroups ? (
-        answerGroups.map(({ answer, percentage }) => (
+      {answerGroupsWithPercentages ? (
+        answerGroupsWithPercentages.map(({ answer, percentage }) => (
           <StyledBox
             key={answer}
             background={getSentimentGroupColour(answer)}

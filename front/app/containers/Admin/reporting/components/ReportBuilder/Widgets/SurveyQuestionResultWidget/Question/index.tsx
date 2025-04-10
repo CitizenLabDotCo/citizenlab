@@ -71,13 +71,20 @@ const SurveyQuestionResult = ({
           <MatrixQuestion result={attributes} />
         ) : null;
       case 'sentiment_linear_scale':
-        return !attributes.grouped ? (
-          <SentimentQuestion
-            result={attributes}
-            showAnalysis={false}
-            mr="20px"
-          />
-        ) : null;
+        return (
+          <>
+            <SentimentQuestion
+              result={attributes}
+              showAnalysis={false}
+              legendLabels={
+                attributes.grouped
+                  ? getLegendLabels(attributes, localize, formatMessage)
+                  : undefined
+              }
+              mr="20px"
+            />
+          </>
+        );
       case 'point':
       case 'line':
       case 'polygon':
@@ -110,10 +117,20 @@ const SurveyQuestionResult = ({
         );
       default:
         return (
-          <SurveyBarsHorizontal
-            questionResult={attributes}
-            colorScheme={DEFAULT_CATEGORICAL_COLORS}
-          />
+          <>
+            <SurveyBarsHorizontal
+              questionResult={attributes}
+              colorScheme={DEFAULT_CATEGORICAL_COLORS}
+            />
+            {attributes.grouped && (
+              <Box mt="20px">
+                <Legend
+                  labels={getLegendLabels(attributes, localize, formatMessage)}
+                  colors={DEFAULT_CATEGORICAL_COLORS}
+                />
+              </Box>
+            )}
+          </>
         );
     }
   }, [data, formatMessage, heatmap, localize, projectId, questionId]);

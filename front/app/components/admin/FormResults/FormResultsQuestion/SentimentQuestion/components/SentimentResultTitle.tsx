@@ -2,14 +2,14 @@ import React from 'react';
 
 import { Box, useBreakpoint } from '@citizenlab/cl2-component-library';
 
-import { ResultUngrouped } from 'api/survey_results/types';
+import { ResultGrouped, ResultUngrouped } from 'api/survey_results/types';
 
 import CommentSummary from './CommentSummary';
 import SentimentHeader from './SentimentHeader';
 import SentimentStats from './SentimentStats';
 
 type Props = {
-  result: ResultUngrouped;
+  result: ResultUngrouped | ResultGrouped;
   textResponsesCount: number;
 };
 
