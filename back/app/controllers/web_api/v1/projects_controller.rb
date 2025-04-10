@@ -7,6 +7,9 @@ class WebApi::V1::ProjectsController < ApplicationController
   skip_after_action :verify_policy_scoped, only: :index
 
   def index
+    # Hidden community monitor project not included by default via AdminPublication policy scope
+    policy_context[:include_hidden] = true if params[:include_hidden] == 'true'
+
     publications = policy_scope(AdminPublication)
     publications = AdminPublicationsFilteringService.new.filter(publications, params.merge(current_user: current_user))
       .where(publication_type: Project.name)
@@ -20,10 +23,6 @@ class WebApi::V1::ProjectsController < ApplicationController
     # Using `pluck(:publication_id)` instead of `select(:publication_id)` also helps if used with `includes`,
     # but it doesn't make any difference with `preload`. Still using it in case the query changes.
     @projects = Project.where(id: publications.pluck(:publication_id)).ordered
-
-    # Hidden community monitor project not included by default via AdminPublication policy scope
-    @projects = @projects.or(policy_scope(Project.hidden)) if params[:include_hidden] == 'true'
-
     @projects = paginate @projects
     @projects = @projects.preload(
       :project_images,
