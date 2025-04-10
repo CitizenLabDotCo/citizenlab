@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module EmailCampaigns
-  class CommunityMonitorReportPreview < ActionMailer::Preview
+  class CommunityMonitorReportMailerPreview < ActionMailer::Preview
     include EmailCampaigns::MailerPreviewRecipient
 
     def campaign_mail
@@ -9,7 +9,7 @@ module EmailCampaigns
       command = {
         recipient: recipient_user,
         event_payload: {
-          report_url: 'https://example.com/report',
+          report_url: "#{Frontend::UrlService.new.home_url(locale: Locale.new(recipient_user.locale))}/admin/community-monitor/reports"
         }
       }
       campaign.mailer_class.with(campaign:, command:).campaign_mail

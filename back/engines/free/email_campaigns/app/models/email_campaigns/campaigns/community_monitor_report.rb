@@ -78,7 +78,7 @@ module EmailCampaigns
     def generate_commands(recipient:)
       [{
         event_payload: {
-          report_url: 'https://example.com/report',
+          report_url: "#{Frontend::UrlService.new.home_url(locale: Locale.new(recipient.locale))}/admin/community-monitor/reports"
         }
       }]
     end

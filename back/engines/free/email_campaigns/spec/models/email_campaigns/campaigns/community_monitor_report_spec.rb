@@ -11,9 +11,11 @@ RSpec.describe EmailCampaigns::Campaigns::CommunityMonitorReport do
     let(:campaign) { create(:community_monitor_report_campaign) }
     let!(:admin) { create(:admin) }
 
-    it 'generates a command with an empty payload' do
+    it 'generates a command with a URL to community monitor reports' do
       command = campaign.generate_commands(recipient: admin).first
-      expect(command[:event_payload]).to eq({})
+      expect(command[:event_payload]).to eq({
+        report_url: 'http://example.org/en/admin/community-monitor/reports'
+      })
     end
   end
 
