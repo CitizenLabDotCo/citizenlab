@@ -9,9 +9,11 @@ import { ICustomFieldBinData } from 'api/custom_field_bins/types';
 import useUserCustomFields from 'api/user_custom_fields/useUserCustomFields';
 import useUserCustomFieldsOption from 'api/user_custom_fields_options/useUserCustomFieldsOption';
 
+import { trackEventByName } from 'utils/analytics';
 import { FormattedMessage } from 'utils/cl-intl';
 
 import messages from './messages';
+import tracks from './tracks';
 
 interface Props {
   cell?: IAnalysisHeatmapCellData;
@@ -69,14 +71,32 @@ const SummarizeButton = ({ row, column, cell, buttonStyle }: Props) => {
     const isUserField = userCustomFieldsIds.includes(fieldId);
     const keyPrefix = isUserField ? 'author_custom_' : 'input_custom_';
     const binType = bin.attributes.type;
+    const isAgeBin = binType === 'CustomFieldBins::AgeBin';
+    const isRangeBin = binType === 'CustomFieldBins::RangeBin';
 
-    const isRangeType = [
-      'CustomFieldBins::AgeBin',
-      'CustomFieldBins::RangeBin',
-    ].includes(binType);
     const isOptionBin = binType === 'CustomFieldBins::OptionBin';
+    if (isAgeBin) {
+      const fromKey = `${keyPrefix}${fieldId}_from`;
+      const toKey = `${keyPrefix}${fieldId}_to`;
+      // Get current date and offset by 6 months (into the past)
+      const currentDate = new Date();
+      currentDate.setMonth(currentDate.getMonth() - 6);
+      const currentYear = currentDate.getFullYear();
 
-    if (isRangeType) {
+      // Calculate ages from birth years
+      const ageFrom = bin.attributes.range?.end
+        ? (currentYear - bin.attributes.range.end).toString()
+        : undefined;
+      const ageTo = bin.attributes.range?.begin
+        ? (currentYear - bin.attributes.range.begin).toString()
+        : undefined;
+
+      return {
+        [fromKey]: ageFrom,
+        [toKey]: ageTo,
+      };
+    }
+    if (isRangeBin) {
       // For range type bins
       const fromKey = `${keyPrefix}${fieldId}_from`;
       const toKey = `${keyPrefix}${fieldId}_to`;
@@ -115,6 +135,8 @@ const SummarizeButton = ({ row, column, cell, buttonStyle }: Props) => {
 
   const handleSummarize = () => {
     if (!cell || column.relationships.custom_field_option === null) return;
+
+    trackEventByName(tracks.autoInsightSummarize);
 
     const filters = {
       ...formFilters(row, 'row'),
