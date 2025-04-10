@@ -2,9 +2,9 @@ import { defineMessages } from 'react-intl';
 
 export default defineMessages({
   analysisSubtitle: {
-    id: 'app.containers.Admin.projects.project.ideas.analysisText1',
+    id: 'app.containers.Admin.projects.project.ideas.analysisText2',
     defaultMessage:
-      'Exprore AI-powered summaries and view individual submissions.',
+      'Explore AI-powered summaries and view individual submissions.',
   },
   analysisButton: {
     id: 'app.containers.Admin.projects.project.ideas.analysisAction1',
