@@ -6,7 +6,7 @@ import fetcher from 'utils/cl-react-query/fetcher';
 import customFieldOptionsKeys from './keys';
 import { ICustomFieldOption, CustomFieldOptionsKeys } from './types';
 
-export const fetchOption = ({ optionId }: { optionId: string }) =>
+export const fetchOption = ({ optionId }: { optionId?: string }) =>
   fetcher<ICustomFieldOption>({
     path: `/custom_field_options/${optionId}`,
     action: 'get',
@@ -16,7 +16,7 @@ const useCustomFieldOption = ({
   optionId,
   enabled = true,
 }: {
-  optionId: string;
+  optionId?: string;
   enabled?: boolean;
 }) => {
   return useQuery<
@@ -27,7 +27,7 @@ const useCustomFieldOption = ({
   >({
     queryKey: customFieldOptionsKeys.item({ optionId }),
     queryFn: () => fetchOption({ optionId }),
-    enabled,
+    enabled: !!optionId && enabled,
   });
 };
 

@@ -8,6 +8,7 @@ import {
   Tbody,
   stylingConsts,
   Select,
+  Text,
 } from '@citizenlab/cl2-component-library';
 import { useParams } from 'react-router-dom';
 
@@ -17,10 +18,10 @@ import useAnalysisHeatmapCells from 'api/analysis_heat_map_cells/useAnalysisHeat
 import useAnalysisTags from 'api/analysis_tags/useAnalysisTags';
 import { ICustomFieldBinData } from 'api/custom_field_bins/types';
 import useCustomFieldBins from 'api/custom_field_bins/useCustomFieldBins';
+import useCustomFieldOption from 'api/custom_field_options/useCustomFieldOption';
+import useCustomFieldOptions from 'api/custom_field_options/useCustomFieldOptions';
 import { IFlatCustomField } from 'api/custom_fields/types';
 import { IUserCustomFieldData } from 'api/user_custom_fields/types';
-import { ICustomFieldOptions } from 'api/custom_field_options/types';
-import useCustomFieldOptions from 'api/custom_field_options/useCustomFieldOptions';
 
 import useLocalize from 'hooks/useLocalize';
 
@@ -36,19 +37,23 @@ import HeatmapTableHead from './HeatmapTableHead';
 import StyledTable from './StyledTable';
 import { useGetOptionText } from './utils';
 
-const OptionTextTd = ({
-  bin,
-  options,
-}: {
-  bin: ICustomFieldBinData;
-  options?: ICustomFieldOptions;
-}) => {
+const OptionTextTd = ({ bin }: { bin: ICustomFieldBinData }) => {
+  const { data: option } = useCustomFieldOption({
+    optionId: bin.relationships.custom_field_option?.data?.id,
+    enabled: !!bin.relationships.custom_field_option?.data?.id,
+  });
   const optionText = useGetOptionText({
     bin,
-    options,
+    option,
   });
 
-  return <Td>{optionText}</Td>;
+  return (
+    <Td>
+      <Text fontWeight="bold" m="0px" color="inherit" fontSize="s">
+        {optionText}
+      </Text>
+    </Td>
+  );
 };
 
 interface HeatMapProps {
