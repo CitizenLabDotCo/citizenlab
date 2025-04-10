@@ -46,6 +46,10 @@ export default defineMessages({
     id: 'app.containers.Admin.inspirationHub.Proposals',
     defaultMessage: 'Proposals',
   },
+  communityMonitorSurvey: {
+    id: 'app.containers.Admin.inspirationHub.communityMonitorSurvey',
+    defaultMessage: 'Community monitor survey',
+  },
   resetFilters: {
     id: 'app.containers.Admin.inspirationHub.resetFilters',
     defaultMessage: 'Reset filters',

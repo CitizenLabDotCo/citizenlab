@@ -53,7 +53,6 @@ describe 'db/seeds.rb' do
       expect(Analytics::DimensionReferrerType.count).to be > 0
       expect(Analytics::FactVisit.count).to be 3
       expect(Project.find_by(slug: 'community-monitor')).not_to be_nil
-      binding.pry
     end
   end
 

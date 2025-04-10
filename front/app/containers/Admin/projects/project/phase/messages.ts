@@ -62,6 +62,10 @@ export default defineMessages({
     id: 'app.components.app.containers.AdminPage.ProjectEdit.phaseHeader.inPlatformSurveyPhase',
     defaultMessage: 'In platform survey phase',
   },
+  communityMonitorSurveyPhase: {
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.phaseHeader.communityMonitorSurveyPhase',
+    defaultMessage: 'Community monitor survey phase',
+  },
   everyone: {
     id: 'app.components.app.containers.AdminPage.ProjectEdit.phaseHeader.everyone',
     defaultMessage: 'Everyone',

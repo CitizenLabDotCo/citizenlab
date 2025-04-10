@@ -21,7 +21,7 @@ module MultiTenancy
 
       def create_survey_response(created_at)
         answers = @question_keys.index_with { |_k| rand(1..5) }
-        follow_ups = @question_keys.each_with_object({}) { |k, accu| accu[k + '_follow_up'] = Faker::Movie.quote }
+        follow_ups = @question_keys.each_with_object({}) { |k, accu| accu["#{k}_follow_up"] = Faker::Movie.quote }
 
         Idea.create!({
           project: @project,
@@ -29,7 +29,7 @@ module MultiTenancy
           creation_phase: @phase,
           publication_status: 'published',
           created_at: created_at,
-          custom_field_values: answers.merge(follow_ups),
+          custom_field_values: answers.merge(follow_ups)
         })
       end
     end
