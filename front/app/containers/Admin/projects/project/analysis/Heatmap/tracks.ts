@@ -6,4 +6,5 @@ export default {
   heatmapChangeRowValues: 'Change heatmap row values',
   heatmapChangeColumnValues: 'Change heatmap column values',
   heatmapChangeUnit: 'Change heatmap unit',
+  useAutoInsightsCarrousel: 'Use auto insights carousel',
 };

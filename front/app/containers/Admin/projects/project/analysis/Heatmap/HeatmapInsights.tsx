@@ -82,6 +82,7 @@ const HeatMapInsights = ({ onExploreClick }: HeatMapInsightsProps) => {
   if (!analysisHeatmapCells) return <Spinner />;
 
   const handleChangeInsight = (offset: number) => {
+    trackEventByName(tracks.useAutoInsightsCarrousel);
     setSelectedInsightId((currentId) => {
       const insights = analysisHeatmapCells.data;
       const currentIndex = insights.findIndex(
