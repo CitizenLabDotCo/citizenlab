@@ -75,9 +75,10 @@ const FileUploader = ({
     filesCopy.splice(toIndex, 0, movedFile);
 
     // Create a new array with updated ordering properties
-    updatedFiles.forEach((file, index) => {
-      file.ordering = index;
-    });
+    const reorderedFiles = filesCopy.map((file, index) => ({
+      ...file,
+      ordering: index,
+    }));
 
     // Update state and notify parent component about the change
     setFiles(reorderedFiles);
