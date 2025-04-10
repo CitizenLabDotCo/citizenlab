@@ -7,11 +7,16 @@ import { useParams } from 'react-router-dom';
 import useAnalysisInput from 'api/analysis_inputs/useAnalysisInput';
 import useComments from 'api/comments/useComments';
 
+import useFeatureFlag from 'hooks/useFeatureFlag';
+
+import Warning from 'components/UI/Warning';
+
 import { useIntl } from 'utils/cl-intl';
 
 import { useSelectedInputContext } from '../../../SelectedInputContext';
 
 import messages from './messages';
+import Summary from './Summary';
 import TopLevelComment from './TopLevelComment';
 
 const Comments = () => {
@@ -20,6 +25,10 @@ const Comments = () => {
   const { ref: loadMoreRef, inView } = useInView({
     rootMargin: '200px',
     threshold: 0,
+  });
+
+  const commentsSummariesActive = useFeatureFlag({
+    name: 'comments_summaries',
   });
 
   const {
@@ -43,7 +52,6 @@ const Comments = () => {
   // Then we loop over these top-level comments, and for each comment we make another request for the child comments. But part of the child comments were already included in the original request for the top level comments, which is why we filter them out here... so yeah, pretty inefficient and unnecessary way of doing this.
   // So why did I do it like this? Because this is exactly how it works on the idea page.
   // We can fix it here once we fix it there. We decided it was out of scope for this tandem.
-
   const topLevelComments = useMemo(() => {
     if (!comments) return;
     const commentsList = comments.pages.flatMap((page) => page.data);
@@ -57,11 +65,24 @@ const Comments = () => {
     }
   }, [inView, hasNextPage, fetchNextPage]);
 
+  if (!selectedInputId) return null;
+
   return (
     <Box>
       <Title variant="h4">
         {formatMessage(messages.comments)} ({commentsCount})
       </Title>
+      {commentsSummariesActive && (
+        <Box>
+          {(commentsCount || 0) >= 5 ? (
+            <Summary analysisId={analysisId} inputId={selectedInputId} />
+          ) : (
+            <Warning>
+              {formatMessage(messages.commentsSummaryVisibilityExplanation)}
+            </Warning>
+          )}
+        </Box>
+      )}
       <Box>
         {topLevelComments?.map((comment) => (
           <TopLevelComment key={comment.id} comment={comment} />

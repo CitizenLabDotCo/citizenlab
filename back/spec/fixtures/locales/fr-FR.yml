@@ -54,16 +54,24 @@ fr:
       attachments:
         title: Pièces jointes
         description:
-      section1:
+      page1:
         description:
-      section2:
+      page2:
         title: Images et pièces jointes
         description:
-      section3:
-        title: Details
+      page3:
+        title: Détails 
         description:
       other_input_field:
         title: Tapez votre réponse
+    community_monitor:
+      question_categories:
+        quality_of_life: Qualité de vie
+        service_delivery: Prestation de services
+        governance_and_trust: Gouvernance et confiance
+        other: Autre
+      form_end:
+        button_text: Retour à l'accueil
   custom_forms:
     categories:
       main_content:

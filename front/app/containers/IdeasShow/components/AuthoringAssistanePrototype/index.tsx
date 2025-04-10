@@ -18,7 +18,7 @@ import TextArea from 'components/UI/TextArea';
 
 const AuthoringAssistanePrototype = ({ ideaId }: { ideaId: string }) => {
   const isAuthoringAssistanceOn = useFeatureFlag({
-    name: 'authoring_assistance',
+    name: 'authoring_assistance_prototype',
   });
 
   const [customPrompt, setCustomPrompt] = useState<string>('');

@@ -59,6 +59,7 @@ export type IAppConfigurationSettingsCore = {
   customer_portal_url?: string | null;
   anonymous_name_scheme?: string | null;
   private_attributes_in_export: boolean;
+  country_code: string | null;
 };
 
 export type TSeatNumber = number | null | undefined;
@@ -243,8 +244,10 @@ export interface IAppConfigurationSettings {
   power_bi?: AppConfigurationFeature;
   analysis?: AppConfigurationFeature;
   large_summaries?: AppConfigurationFeature;
+  comments_summaries?: AppConfigurationFeature;
   ask_a_question?: AppConfigurationFeature;
   advanced_autotagging?: AppConfigurationFeature;
+  auto_insights?: AppConfigurationFeature;
   import_printed_forms?: AppConfigurationFeature;
   input_importer?: AppConfigurationFeature;
   user_session_recording?: AppConfigurationFeature;
@@ -257,12 +260,11 @@ export interface IAppConfigurationSettings {
   prescreening_ideation?: AppConfigurationFeature;
   input_cosponsorship?: AppConfigurationFeature;
   project_review?: AppConfigurationFeature;
-  similar_inputs?: AppConfigurationFeature & {
-    admins_only: boolean;
-  };
-  platform_templates?: AppConfigurationFeature;
   authoring_assistance?: AppConfigurationFeature;
+  platform_templates?: AppConfigurationFeature;
+  authoring_assistance_prototype?: AppConfigurationFeature;
   project_library?: AppConfigurationFeature;
+  user_fields_in_surveys?: AppConfigurationFeature;
 }
 
 export type TAppConfigurationSettingCore = keyof IAppConfigurationSettingsCore;

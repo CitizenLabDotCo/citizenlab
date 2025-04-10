@@ -310,53 +310,44 @@ RSpec.describe Phase do
     end
   end
 
-  describe '#native_survey?' do
-    it 'returns true when the participation method is native_survey' do
-      phase = create(:native_survey_phase)
-      expect(phase.native_survey?).to be true
+  describe 'native_survey_title_multiloc and native_survey_button_multiloc' do
+    %i[
+      native_survey_phase
+      community_monitor_survey_phase
+    ].each do |factory|
+      context factory do
+        let(:phase) { build(factory) }
+
+        it 'must contain a survey title' do
+          phase.native_survey_title_multiloc = { en: 'Survey' }
+          expect(phase).to be_valid
+
+          phase.native_survey_title_multiloc = {}
+          expect(phase).not_to be_valid
+
+          phase.native_survey_title_multiloc = nil
+          expect(phase).not_to be_valid
+        end
+
+        it 'must contain survey button text' do
+          phase.native_survey_button_multiloc = { en: 'Take the survey' }
+          expect(phase).to be_valid
+
+          phase.native_survey_button_multiloc = {}
+          expect(phase).not_to be_valid
+
+          phase.native_survey_button_multiloc = nil
+          expect(phase).not_to be_valid
+        end
+      end
     end
 
-    it 'returns false otherwise' do
-      phase = create(:poll_phase)
-      expect(phase.native_survey?).to be false
-    end
-  end
-
-  describe 'native_survey_title_multiloc' do
-    it 'must contain a survey title if a native survey phase' do
-      phase = build(:native_survey_phase)
-
-      phase.native_survey_title_multiloc = { en: 'Survey' }
-      expect(phase).to be_valid
-
-      phase.native_survey_title_multiloc = {}
-      expect(phase).not_to be_valid
-
-      phase.native_survey_title_multiloc = nil
-      expect(phase).not_to be_valid
-    end
-
-    it 'does not need a survey title if not native survey' do
+    it 'does not need a survey title if not a type of native survey' do
       phase = build(:phase, native_survey_title_multiloc: {})
       expect(phase).to be_valid
     end
-  end
 
-  describe 'native_survey_button_multiloc' do
-    it 'must contain survey button text if a native survey phase' do
-      phase = build(:native_survey_phase)
-
-      phase.native_survey_button_multiloc = { en: 'Take the survey' }
-      expect(phase).to be_valid
-
-      phase.native_survey_button_multiloc = {}
-      expect(phase).not_to be_valid
-
-      phase.native_survey_button_multiloc = nil
-      expect(phase).not_to be_valid
-    end
-
-    it 'does not need a survey title if not native survey' do
+    it 'does not need a survey button if not a type of native survey' do
       phase = build(:phase, native_survey_button_multiloc: {})
       expect(phase).to be_valid
     end
@@ -466,9 +457,46 @@ RSpec.describe Phase do
     end
   end
 
+  describe '#validate_community_monitor_phase' do
+    let(:project) { create(:project) }
+    let(:survey_phase) { create(:native_survey_phase, project: project, start_at: Time.zone.today, end_at: nil) }
+
+    context 'survey is not a community monitor survey' do
+      it 'is valid when the phase is not a community monitor native survey' do
+        expect(survey_phase).to be_valid
+      end
+    end
+
+    context 'survey is a community monitor survey' do
+      before do
+        project.update! hidden: true, internal_role: 'community_monitor'
+        survey_phase.update! participation_method: 'community_monitor_survey'
+      end
+
+      it 'is valid' do
+        expect(survey_phase).to be_valid
+      end
+
+      it 'is not valid when the project has more than one phase' do
+        project.phases << create(:phase, project: project, start_at: survey_phase.start_at - 10.days, end_at: survey_phase.start_at - 5.days)
+        expect(survey_phase).not_to be_valid
+      end
+
+      it 'is not valid when the phase has an end date' do
+        survey_phase.end_at = Time.zone.today + 1.day
+        expect(survey_phase).not_to be_valid
+      end
+
+      it 'is not valid when the project is not hidden' do
+        project.hidden = false
+        # survey_phase.project.admin_publication.publication_status = 'published'
+        expect(survey_phase).not_to be_valid
+      end
+    end
+  end
+
   describe '#disliking_enabled' do
     it 'defaults to false when disable_disliking feature flag is enabled (default)' do
-      # binding.pry
       phase = build(:phase)
       expect(phase.reacting_dislike_enabled).to be false
     end

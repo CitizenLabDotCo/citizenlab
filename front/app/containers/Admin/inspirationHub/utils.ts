@@ -1,20 +1,30 @@
-import { useMemo } from 'react';
+import { useCallback, useMemo } from 'react';
 
 import { useSearchParams } from 'react-router-dom';
+import { Multiloc, SupportedLocale } from 'typings';
 
+import { Country } from 'api/project_library_countries/types';
+import useProjectLibraryCountries from 'api/project_library_countries/useProjectLibraryCountries';
 import { RansackParams } from 'api/project_library_projects/types';
+
+import useLocale from 'hooks/useLocale';
 
 import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
+import { keys } from 'utils/helperUtils';
+import { findSimilarLocale } from 'utils/i18n';
 
 export const setRansackParam = <ParamName extends keyof RansackParams>(
   paramName: ParamName,
   paramValue: RansackParams[ParamName]
 ) => {
-  if (paramValue) {
-    updateSearchParams({ [paramName]: paramValue });
-  } else {
+  const isNullishParam =
+    !paramValue || (Array.isArray(paramValue) && paramValue.length === 0);
+
+  if (isNullishParam) {
     removeSearchParams([paramName]);
+  } else {
+    updateSearchParams({ [paramName]: paramValue });
   }
 };
 
@@ -22,17 +32,20 @@ export const useRansackParam = <ParamName extends keyof RansackParams>(
   paramName: ParamName
 ): RansackParams[ParamName] => {
   const [searchParams] = useSearchParams();
-  return searchParams.get(paramName) as RansackParams[typeof paramName];
+
+  const paramValue = searchParams.get(paramName);
+
+  if (paramName.endsWith('in]')) {
+    return paramValue === null ? [] : JSON.parse(paramValue);
+  }
+
+  return paramValue as RansackParams[typeof paramName];
 };
 
 const RANSACK_PARAMS: (keyof RansackParams)[] = [
-  'q[tenant_country_alpha2]',
-  'q[tenant_population_group_eq]',
-  'q[score_total_gteq]',
-  'q[phases_participation_method_eq]',
-  'q[topic_id_eq]',
-  'q[status_eq]',
-  'q[visibility_eq]',
+  'q[tenant_country_code_in]',
+  'q[phases_participation_method_in]',
+  'q[tenant_population_group_in]',
   'q[practical_end_at_gteq]',
   'q[practical_end_at_lt]',
   'q[title_en_or_description_en_or_tenant_name_cont]',
@@ -44,10 +57,14 @@ export const useRansackParams = () => {
   return useMemo(
     () =>
       RANSACK_PARAMS.reduce((acc, paramName) => {
-        const value = searchParams.get(paramName);
+        let value = searchParams.get(paramName);
 
         if (value === null) {
           return acc;
+        }
+
+        if (paramName.endsWith('in]')) {
+          value = JSON.parse(value);
         }
 
         return {
@@ -57,4 +74,48 @@ export const useRansackParams = () => {
       }, {} as RansackParams),
     [searchParams]
   );
+};
+
+export const useLocalizeProjectLibrary = () => {
+  const locale = useLocale();
+
+  return useCallback(
+    (multiloc: Multiloc, fallback: string | null) => {
+      return getWithFallback(locale, multiloc, fallback);
+    },
+    [locale]
+  );
+};
+
+const getWithFallback = (
+  currentLocale: SupportedLocale,
+  multiloc: Multiloc,
+  fallback: string | null
+) => {
+  // Try grabbing the title in the current locale
+  const currentLocaleTitle = multiloc[currentLocale];
+
+  // If not available, try grabbing the title in a similar locale
+  const similarLocale = findSimilarLocale(currentLocale, keys(multiloc));
+  const similarLocaleTitle = similarLocale
+    ? multiloc[similarLocale]
+    : undefined;
+
+  // If neither of those are available, fallback to English
+  return currentLocaleTitle ?? similarLocaleTitle ?? fallback ?? '';
+};
+
+export const useCountriesByCode = () => {
+  const { data: countries } = useProjectLibraryCountries();
+
+  const countriesByCode = useMemo(() => {
+    if (!countries) return;
+
+    return countries.data.attributes.reduce((acc, country) => {
+      acc[country.code] = country;
+      return acc;
+    }, {} as Record<string, Country>);
+  }, [countries]);
+
+  return countriesByCode;
 };

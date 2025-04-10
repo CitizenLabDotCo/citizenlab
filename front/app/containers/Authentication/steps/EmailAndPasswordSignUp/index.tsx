@@ -99,7 +99,7 @@ const EmailAndPasswordSignUp = ({
       });
       setProfanityApiError(false);
     } catch (e) {
-      const profanityApiError = Array.isArray(e.errors.base)
+      const profanityApiError = Array.isArray(e?.errors?.base)
         ? e.errors.base.find(
             (apiError) => apiError.error === 'includes_banned_words'
           )

@@ -7,24 +7,25 @@ import { Keys } from 'utils/cl-react-query/types';
 
 import miniProjectsKeys from './keys';
 
-export type Status = 'draft' | 'active' | 'finished' | 'stale' | 'archived';
+type Status = 'active' | 'finished' | 'stale' | 'archived';
 
-type PopulationGroup = 'XS' | 'S' | 'M' | 'L' | 'XL';
+export type PopulationGroup = 'XS' | 'S' | 'M' | 'L' | 'XL';
 
-export type SortType = 'start_at asc' | 'start_at desc';
+export type SortType =
+  | 'start_at asc'
+  | 'start_at desc'
+  | 'participants asc'
+  | 'participants desc';
 
 export type RansackParams = {
   // filters
-  'q[tenant_country_alpha2]'?: string;
-  'q[tenant_population_group_eq]'?: PopulationGroup;
-  'q[score_total_gteq]'?: '1' | '2' | '3' | '4';
-  'q[phases_participation_method_eq]'?: ParticipationMethod;
-  'q[topic_id_eq]'?: string;
-  'q[status_eq]'?: Status;
-  'q[visibility_eq]'?: 'public' | 'restricted'; // TODO check if this is correct / matches the response?
+  'q[tenant_country_code_in]'?: string[];
+  'q[phases_participation_method_in]'?: ParticipationMethod[];
+  'q[tenant_population_group_in]'?: PopulationGroup[];
   'q[practical_end_at_gteq]'?: string;
   'q[practical_end_at_lt]'?: string;
   'q[title_en_or_description_en_or_tenant_name_cont]'?: string;
+  'q[pin_country_code_eq]'?: string;
 
   // sorting
   'q[s]'?: SortType;
@@ -42,10 +43,15 @@ export interface ProjectLibraryProjects {
   links: ILinks;
 }
 
+export interface ProjectLibraryProject {
+  data: ProjectLibraryProjectData;
+}
+
 export interface ProjectLibraryProjectData {
   id: string;
   type: 'project_library_project';
   attributes: {
+    annotation_multiloc: Multiloc | null;
     cl_created_at: string;
     cl_updated_at: string;
     comments_count: number;
@@ -54,8 +60,9 @@ export interface ProjectLibraryProjectData {
     description_multiloc: Multiloc;
     end_at: string | null;
     folder_id: string | null;
-    folder_title_en: string;
-    folder_title_multiloc: Multiloc;
+    folder_title_en: string | null;
+    folder_title_multiloc: Multiloc | null;
+    image_url: string | null;
     participants: number;
     practical_end_at: string | null;
     publication_status: PublicationStatus;
@@ -68,14 +75,14 @@ export interface ProjectLibraryProjectData {
     slug: string;
     start_at: string;
     status: Status;
-    tenant_country_alpha2: string | null;
+    tenant_country_code: string | null;
     tenant_host: string;
     tenant_id: string;
     tenant_lifecycle_stage: string;
     tenant_map_center_lat: number | null;
     tenant_map_center_long: number | null;
     tenant_name: string;
-    tenant_population_group: PopulationGroup;
+    tenant_population_group: PopulationGroup | null;
     title_en: string;
     title_multiloc: Multiloc;
     topic_id: string;

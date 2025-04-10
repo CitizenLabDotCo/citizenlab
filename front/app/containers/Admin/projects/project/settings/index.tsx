@@ -79,7 +79,7 @@ const Settings = () => {
         </NavigationTabs>
         <Box mt="58px">
           <NavigationTabs>
-            {tabs.map(({ url, label }) => (
+            {tabs.map(({ url, label, className }) => (
               <Tab
                 label={label}
                 url={url}
@@ -89,6 +89,7 @@ const Settings = () => {
                   pathname,
                   url
                 )}
+                className={className}
               />
             ))}
           </NavigationTabs>

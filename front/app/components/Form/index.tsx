@@ -49,7 +49,10 @@ const Title = styled.h1`
 interface Props {
   schema: JsonSchema7;
   uiSchema: Layout;
-  onSubmit: (formData: FormValues) => void | Promise<any>;
+  onSubmit: (
+    formData: FormValues,
+    onSubmitCallback?: () => void
+  ) => void | Promise<any>;
   initialFormData: FormValues;
   title?: ReactElement;
   /** A function that returns a translation message given the fieldname and the error key returned by the API */
@@ -62,9 +65,9 @@ interface Props {
   inputId?: string | undefined;
   config?: 'default' | 'input' | 'survey';
   layout?: 'inline' | 'fullpage';
-  footer?: React.ReactNode;
   // Optional loading state from parent. If set, the loading state will be controlled by the parent.
   loading?: boolean;
+  showSubmitButton?: boolean;
 }
 
 const Form = memo(
@@ -78,9 +81,9 @@ const Form = memo(
     getApiErrorMessage,
     config,
     layout,
-    footer,
     onSubmit,
     loading: externalLoading,
+    showSubmitButton,
   }: Props) => {
     const { formatMessage } = useIntl();
     const locale = useLocale();
@@ -97,7 +100,6 @@ const Form = memo(
     const [showAllErrors, setShowAllErrors] = useState(false);
 
     const isSurvey = config === 'survey';
-    const showSubmitButton = !isSurvey;
 
     useEffect(() => {
       if (scrollToError) {
@@ -110,22 +112,35 @@ const Form = memo(
     }, [scrollToError]);
 
     useEffect(() => {
-      setData(parseRequiredMultilocsData(schema, locale, initialFormData));
+      // We will again clone the data here, just to be sure that
+      // json forms doesn't mess around with the original variable
+      setData({
+        ...parseRequiredMultilocsData(schema, locale, initialFormData),
+      });
     }, [schema, locale, initialFormData]);
 
     const layoutType =
       layout || (isCategorization(uiSchema) ? 'fullpage' : 'inline');
 
     const handleSubmit = async (
-      formData?: any,
+      formData?: { data?: FormValues },
       showErrors = true,
-      userPagePath: PageType[] = []
+      userPagePath: PageType[] = [],
+      onSubmitCallback?: () => void
     ) => {
       // Any specified formData has priority over data attribute
       const submissionData = formData && formData.data ? formData.data : data;
       const sanitizedFormData = sanitizeFormData(submissionData);
 
-      setData(sanitizedFormData);
+      // At this point, we need to clone the sanitiziedFormData
+      // before we pass it to setData.
+      // Somewhere downstream the 'data' variable is mutated in place-
+      // from what I can tell it seems to happen inside of the JSON forms library.
+      // This really bad behavior of the JSON forms library was causing a lot of
+      // bugs- for example, it was removing important attributes like
+      // the anonymous participation one.
+      // Another very good reason to get rid of this library.
+      setData({ ...sanitizedFormData });
       setShowAllErrors(showErrors);
 
       let response;
@@ -148,7 +163,7 @@ const Form = memo(
           internalSetLoading(true);
         }
         try {
-          response = await onSubmit(submissionData);
+          response = await onSubmit(sanitizedFormData, onSubmitCallback);
           if (isSurvey) {
             trackEventByName(tracks.surveyFormSubmitted);
           } else {
@@ -197,16 +212,13 @@ const Form = memo(
             inputId={inputId}
             config={config}
             locale={locale}
-            onChange={setData}
+            onChange={(data) => {
+              // And here we clone the data another time
+              // because who knows what JSON forms is doing here
+              setData({ ...data });
+            }}
             onSubmit={handleSubmit}
           />
-          {footer && (
-            <Box display="flex" flexDirection="row" justifyContent="center">
-              <Box w="100%" maxWidth="700px" px="20px" mt="0px" mb="40px">
-                {footer}
-              </Box>
-            </Box>
-          )}
         </Box>
         {showSubmitButton && (
           <>

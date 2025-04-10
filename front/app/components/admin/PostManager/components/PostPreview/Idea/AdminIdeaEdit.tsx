@@ -7,19 +7,18 @@ import { useTheme } from 'styled-components';
 import useIdeaFiles from 'api/idea_files/useIdeaFiles';
 import useDeleteIdeaImage from 'api/idea_images/useDeleteIdeaImage';
 import useIdeaImages from 'api/idea_images/useIdeaImages';
+import { IIdeaUpdate } from 'api/ideas/types';
 import useIdeaById from 'api/ideas/useIdeaById';
 import useUpdateIdea from 'api/ideas/useUpdateIdea';
 import useProjectById from 'api/projects/useProjectById';
 
 import useInputSchema from 'hooks/useInputSchema';
 
+import { FormValues } from 'containers/IdeasEditPage/IdeasEditForm';
 import { getLocationGeojson } from 'containers/IdeasEditPage/utils';
 import ideaFormMessages from 'containers/IdeasNewPage/messages';
 
-import {
-  Content,
-  Top,
-} from 'components/admin/PostManager/components/PostPreview';
+import { Top } from 'components/admin/PostManager/components/PostPreview';
 import Form from 'components/Form';
 import { AjvErrorGetter, ApiErrorGetter } from 'components/Form/typings';
 
@@ -115,7 +114,11 @@ const AdminIdeaEdit = ({
       idea.data.attributes.location_point_geojson;
   }
 
-  const onSubmit = async (data) => {
+  const onSubmit = async (data: FormValues) => {
+    if (data.publication_status !== 'published') {
+      return;
+    }
+
     const { idea_images_attributes, ...ideaWithoutImages } = data;
 
     const location_point_geojson = await getLocationGeojson(
@@ -134,22 +137,23 @@ const AdminIdeaEdit = ({
       });
     }
 
-    const payload = {
+    const payload: IIdeaUpdate = {
       ...ideaWithoutImages,
       idea_images_attributes,
       location_point_geojson,
-      // TODO: Fix this the next time the file is edited.
-      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-      project_id: project?.data.id,
-      publication_status: 'published',
+      project_id: project.data.id,
     };
 
-    updateIdea(
+    const idea = updateIdea(
       {
         id: ideaId,
         requestBody: isImageNew
-          ? omit(payload, 'idea_files_attributes')
-          : omit(payload, ['idea_images_attributes', 'idea_files_attributes']),
+          ? omit(payload, ['idea_files_attributes', 'publication_status'])
+          : omit(payload, [
+              'idea_images_attributes',
+              'idea_files_attributes',
+              'publication_status',
+            ]),
       },
       {
         onSuccess: () => {
@@ -157,6 +161,7 @@ const AdminIdeaEdit = ({
         },
       }
     );
+    return idea;
   };
 
   const getApiErrorMessage: ApiErrorGetter = (error) => {
@@ -190,14 +195,19 @@ const AdminIdeaEdit = ({
   };
 
   return (
-    <Box border="1px solid white" borderRadius={theme.borderRadius}>
+    <Box
+      border="1px solid white"
+      borderRadius={theme.borderRadius}
+      height="100%"
+      background={theme.colors.background}
+    >
       <Top>
         <Button onClick={goBack}>
           <FormattedMessage {...messages.cancelEdit} />
         </Button>
       </Top>
 
-      <Content className="idea-form">
+      <Box className="idea-form">
         {schema && uiSchema ? (
           <Form
             schema={schema}
@@ -209,11 +219,12 @@ const AdminIdeaEdit = ({
             getApiErrorMessage={getApiErrorMessage}
             config={'input'}
             layout={'inline'}
+            showSubmitButton={false}
           />
         ) : projectStatus === 'error' || inputSchemaError ? null : (
           <Spinner />
         )}
-      </Content>
+      </Box>
     </Box>
   );
 };

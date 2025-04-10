@@ -30,10 +30,9 @@ const IconsAndBadges = ({ field, displayBuiltInFields }: Props) => {
 
   const showVisibilityIcon =
     displayBuiltInFields &&
-    field.input_type !== 'section' &&
+    field.input_type !== 'page' &&
     !builtInFieldKeys.includes(field.key);
-
-  const isFieldGrouping = ['page', 'section'].includes(field.input_type);
+  const isFieldGrouping = field.input_type === 'page';
 
   return (
     <Box pr="32px" display="flex" height="100%" alignContent="center">

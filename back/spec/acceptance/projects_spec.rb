@@ -1681,4 +1681,92 @@ resource 'Projects' do
       end
     end
   end
+
+  get 'web_api/v1/projects/community_monitor' do
+    context 'when resident' do
+      context 'hidden project exists' do
+        let!(:project) { create(:community_monitor_project) }
+
+        context 'community monitor project ID already saved in settings' do
+          example 'Community monitor project is returned' do
+            settings = AppConfiguration.instance.settings
+            settings['community_monitor'] = { 'enabled' => true, 'allowed' => true, 'project_id' => project.id }
+            AppConfiguration.instance.update!(settings:)
+
+            do_request
+            assert_status 200
+          end
+        end
+      end
+
+      context 'hidden project does not exist' do
+        example 'Error: Community monitor project not found' do
+          do_request
+          assert_status 404
+        end
+      end
+    end
+
+    context 'when project admin' do
+      before { admin_header_token }
+
+      context 'hidden project exists' do
+        let!(:project) { create(:community_monitor_project) }
+
+        context 'community monitor project ID NOT saved in settings' do
+          example 'Community monitor project found and saved in settings' do
+            SettingsService.new.activate_feature! 'community_monitor'
+            expect(AppConfiguration.instance.settings['community_monitor']['project_id']).to be_nil
+
+            do_request
+            assert_status 200
+            expect(AppConfiguration.instance.settings['community_monitor']['project_id']).to eq project.id
+          end
+        end
+      end
+
+      context 'hidden project does not exist' do
+        example 'Community monitor project is created and returned' do
+          SettingsService.new.activate_feature! 'community_monitor'
+
+          do_request
+          assert_status 200
+
+          created_project = Project.first
+          created_phase = Phase.first
+          created_permission = Permission.first
+          created_form = CustomForm.first
+          expect(created_project.hidden).to be true
+          expect(created_project.internal_role).to eq 'community_monitor'
+          expect(created_project.title_multiloc['en']).to eq 'Community monitor'
+          expect(created_phase.project).to eq created_project
+          expect(created_phase.participation_method).to eq 'community_monitor_survey'
+          expect(created_phase.title_multiloc['en']).to eq 'Community monitor'
+          expect(created_permission.permission_scope).to eq created_phase
+          expect(created_permission.permitted_by).to eq 'everyone'
+          expect(created_form.participation_context).to eq created_phase
+          expect(created_form.custom_fields.count).to eq 15
+
+          settings = AppConfiguration.instance.settings
+          expect(settings['community_monitor']['project_id']).to eq created_project.id
+        end
+
+        example 'Error: Hidden project does not get created without feature flag' do
+          do_request
+          assert_status 404
+        end
+      end
+
+      context 'stored community monitor project ID is incorrect' do
+        example 'Error: Hidden project does not exist' do
+          settings = AppConfiguration.instance.settings
+          settings['community_monitor'] = { 'enabled' => true, 'allowed' => true, 'project_id' => 'NON_EXISTENT' }
+          AppConfiguration.instance.update!(settings:)
+
+          do_request
+          assert_status 404
+        end
+      end
+    end
+  end
 end

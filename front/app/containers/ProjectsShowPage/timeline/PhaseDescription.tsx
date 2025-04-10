@@ -17,6 +17,7 @@ import useLocalize from 'hooks/useLocalize';
 
 import EventPreviews from 'components/EventPreviews';
 import ReadMoreWrapper from 'components/ReadMoreWrapper/ReadMoreWrapper';
+import T from 'components/T';
 import FileAttachments from 'components/UI/FileAttachments';
 
 import { pastPresentOrFuture } from 'utils/dateUtils';
@@ -74,11 +75,7 @@ const PhaseDescription = ({ projectId, selectedPhaseId }: Props) => {
     return null;
   }
 
-  // TODO: Fix this the next time the file is edited.
-  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-  const content = phase
-    ? localize(phase.data.attributes.description_multiloc)
-    : '';
+  const content = localize(phase.data.attributes.description_multiloc);
   const contentIsEmpty =
     content === '' || content === '<p></p>' || content === '<p><br></p>';
   const descriptionHasContent = !contentIsEmpty || !isEmpty(phaseFiles);
@@ -99,16 +96,17 @@ const PhaseDescription = ({ projectId, selectedPhaseId }: Props) => {
         phaseId={selectedPhaseId}
         descriptionHasContent={descriptionHasContent}
       />
-      {/* TODO: Fix this the next time the file is edited. */}
-      {/* eslint-disable-next-line @typescript-eslint/no-unnecessary-condition */}
-      {phase && descriptionHasContent && (
+      {descriptionHasContent && (
         <Box id={`phase-description-${selectedPhaseId}`}>
           <ReadMoreWrapper
             fontSize="base"
             contentId="phase-description"
-            // TODO: Fix this the next time the file is edited.
-            // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-            value={phase.data.attributes?.description_multiloc}
+            content={
+              <T
+                value={phase.data.attributes.description_multiloc}
+                supportHtml
+              />
+            }
           />
 
           {!isNilOrError(phaseFiles) && !isEmpty(phaseFiles) && (
@@ -117,9 +115,7 @@ const PhaseDescription = ({ projectId, selectedPhaseId }: Props) => {
         </Box>
       )}
       {isActivePhase && (
-        // TODO: Fix this the next time the file is edited.
-        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-        <EventPreviews projectId={phase?.data.relationships.project.data.id} />
+        <EventPreviews projectId={phase.data.relationships.project.data.id} />
       )}
     </Container>
   );

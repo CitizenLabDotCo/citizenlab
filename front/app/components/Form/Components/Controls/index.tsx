@@ -47,12 +47,9 @@ import UserPickerControl, {
 import WYSIWYGControl, {
   WYSIWYGControlTester,
 } from 'components/Form/Components/Controls/WYSIWYGControl';
-import CLCategoryLayout, {
-  clCategoryTester,
-} from 'components/Form/Components/Layouts/CLCategoryLayout';
-import CLSurveyPageLayout, {
+import CLPageLayout, {
   clPageTester,
-} from 'components/Form/Components/Layouts/CLSurveyPageLayout';
+} from 'components/Form/Components/Layouts/CLPageLayout';
 import OrderedLayout, {
   orderedLayoutTester,
 } from 'components/Form/Components/Layouts/OrderedLayout';
@@ -72,6 +69,9 @@ import MultiSelectCheckboxControl, {
   multiSelectCheckboxControlTester,
 } from './MultiSelectCheckboxControl';
 import RatingControl, { ratingControlTester } from './RatingControl';
+import SentimentLinearScaleControl, {
+  sentimentLinearScaleControlTester,
+} from './SentimentLinearScaleControl';
 import ShapefileUploadControl, {
   shapefileUploadControlTester,
 } from './ShapefileUploadControl';
@@ -89,9 +89,7 @@ import SingleSelectRadioEnumControl, {
 } from './SingleSelectRadioEnumControl';
 
 export {
-  CLCategoryLayout,
-  clCategoryTester,
-  CLSurveyPageLayout,
+  CLPageLayout,
   clPageTester,
   OrderedLayout,
   orderedLayoutTester,
@@ -151,4 +149,6 @@ export {
   shapefileUploadControlTester,
   CosponsorsControl,
   cosponsorsControlTester,
+  SentimentLinearScaleControl,
+  sentimentLinearScaleControlTester,
 };

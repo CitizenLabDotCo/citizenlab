@@ -138,8 +138,10 @@ export type Color =
   | 'tenantPrimary'
   | 'tenantPrimaryLighten75'
   | 'tenantPrimaryLighten95'
+  | 'tenantPrimaryLighten90'
   | 'tenantSecondary'
-  | 'tenantText';
+  | 'tenantText'
+  | 'inherit';
 
 export const fontSizes = {
   xs: 12,
@@ -480,6 +482,9 @@ export function getTheme(tenant: any = null): MainThemeProps {
       tenantPrimaryLighten95: core
         ? transparentize(0.95, core.color_main)
         : transparentize(0.95, '#ef0071'),
+      tenantPrimaryLighten90: core
+        ? transparentize(0.9, core.color_main)
+        : transparentize(0.9, '#ef0071'),
     },
     fontFamily,
     fontSizes,

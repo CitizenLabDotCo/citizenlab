@@ -214,7 +214,6 @@
   "app.components.ProjectFolderCards.components.Topbar.a11y_projectFilterTabInfo": "{count, plural, no {# projects} one {# project} other {# projects}}",
   "app.components.ProjectFolderCards.components.Topbar.all": "All",
   "app.components.ProjectFolderCards.components.Topbar.archived": "Archived",
-  "app.components.ProjectFolderCards.components.Topbar.areaTitle": "Area",
   "app.components.ProjectFolderCards.components.Topbar.draft": "Draft",
   "app.components.ProjectFolderCards.components.Topbar.filterBy": "Filter by",
   "app.components.ProjectFolderCards.components.Topbar.topicTitle": "Tag",

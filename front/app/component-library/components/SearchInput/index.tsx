@@ -22,7 +22,7 @@ const StyledInputWrapper = styled.div`
   width: 100%;
 `;
 
-const StyledLabel = styled.label<{ isFloating: boolean }>`
+const StyledLabel = styled.label<{ isFloating: boolean; color?: string }>`
   position: absolute;
   left: 12px;
   top: ${({ isFloating }) => (isFloating ? '0px' : '50%')};
@@ -33,6 +33,7 @@ const StyledLabel = styled.label<{ isFloating: boolean }>`
   transform: translateY(-50%);
   transition: all 0.2s ease;
   z-index: 2;
+  ${({ color }) => (color ? `color: ${color};` : '')}
 
   ${isRtl`
     left: auto;
@@ -79,6 +80,7 @@ export interface Props {
   className?: string;
   size?: InputSize;
   setInputRef?: (arg: HTMLInputElement) => void;
+  labelColor?: string;
 }
 
 const SearchInput = ({
@@ -92,6 +94,7 @@ const SearchInput = ({
   className,
   size,
   setInputRef,
+  labelColor,
 }: Props) => {
   const [internalSearchTerm, setInternalSearchTerm] = useState(
     defaultValue ?? null
@@ -139,7 +142,11 @@ const SearchInput = ({
   return (
     <Box className={className || ''} position="relative">
       <StyledInputWrapper>
-        <StyledLabel htmlFor={id} isFloating={isLabelFloating}>
+        <StyledLabel
+          htmlFor={id}
+          isFloating={isLabelFloating}
+          color={labelColor}
+        >
           {placeholder}
         </StyledLabel>
         <StyledInput

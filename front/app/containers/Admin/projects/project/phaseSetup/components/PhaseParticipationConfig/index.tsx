@@ -20,10 +20,14 @@ import {
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
+import projectMessages from 'containers/Admin/projects/project/general/messages';
+
 import { SectionField, SubSectionTitle } from 'components/admin/Section';
 import Error from 'components/UI/Error';
+import Warning from 'components/UI/Warning';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
+import Link from 'utils/cl-router/Link';
 import { anyIsDefined } from 'utils/helperUtils';
 
 import { ValidationErrors } from '../../typings';
@@ -85,6 +89,8 @@ const PhaseParticipationConfig = ({
   const microsoft_forms_enabled = useFeatureFlag({
     name: 'microsoft_forms_surveys',
   });
+
+  const project_library_enabled = useFeatureFlag({ name: 'project_library' });
 
   const { formatMessage } = useIntl();
 
@@ -205,6 +211,13 @@ const PhaseParticipationConfig = ({
     updateFormData((state) => ({
       ...state,
       allow_anonymous_participation,
+    }));
+  };
+
+  const handleUserFieldsInFormOnChange = (user_fields_in_form: boolean) => {
+    updateFormData((state) => ({
+      ...state,
+      user_fields_in_form,
     }));
   };
 
@@ -407,6 +420,7 @@ const PhaseParticipationConfig = ({
     expire_days_limit,
     reacting_threshold,
     prescreening_enabled,
+    user_fields_in_form,
   } = formData;
 
   const showSurveys =
@@ -427,6 +441,22 @@ const PhaseParticipationConfig = ({
           apiErrors={apiErrors}
           handleParticipationMethodOnChange={handleParticipationMethodOnChange}
         />
+        {project_library_enabled && (
+          <Box mb="20px">
+            <Warning>
+              <FormattedMessage
+                {...projectMessages.needInspiration}
+                values={{
+                  inspirationHubLink: (
+                    <Link to="/admin/inspiration-hub" target="_blank">
+                      <FormattedMessage {...projectMessages.inspirationHub} />
+                    </Link>
+                  ),
+                }}
+              />
+            </Warning>
+          </Box>
+        )}
 
         {participation_method === 'voting' && (
           <VotingInputs
@@ -581,12 +611,14 @@ const PhaseParticipationConfig = ({
         {participation_method === 'native_survey' && (
           <NativeSurveyInputs
             allow_anonymous_participation={allow_anonymous_participation}
+            user_fields_in_form={user_fields_in_form}
             apiErrors={apiErrors}
             phase={phase}
             formData={formData}
             handleAllowAnonymousParticipationOnChange={
               handleAllowAnonymousParticipationOnChange
             }
+            handleUserFieldsInFormOnChange={handleUserFieldsInFormOnChange}
             handleSurveyTitleChange={handleSurveyTitleChange}
             handleSurveyCTAChange={handleSurveyCTAChange}
           />

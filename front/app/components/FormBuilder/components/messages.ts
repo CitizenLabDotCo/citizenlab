@@ -31,6 +31,10 @@ export default defineMessages({
     id: 'app.components.formBuilder.matrix',
     defaultMessage: 'Matrix',
   },
+  sentiment: {
+    id: 'app.components.formBuilder.sentiment',
+    defaultMessage: 'Sentiment scale',
+  },
   longAnswer: {
     id: 'app.components.formBuilder.longAnswer',
     defaultMessage: 'Long answer',
@@ -38,10 +42,6 @@ export default defineMessages({
   page: {
     id: 'app.components.formBuilder.page',
     defaultMessage: 'Page',
-  },
-  section: {
-    id: 'app.components.formBuilder.section',
-    defaultMessage: 'Section',
   },
   surveyEnd: {
     id: 'app.containers.AdminPage.ProjectEdit.formBuilder.surveyEnd',
@@ -268,9 +268,9 @@ export default defineMessages({
     defaultMessage:
       'Adding custom content is not part of your current license. Reach out to your GovSuccess Manager to learn more about it.',
   },
-  sectionCannotBeDeleted: {
-    id: 'app.components.formBuilder.sectionCannotBeDeleted',
-    defaultMessage: "This section can't be deleted.",
+  pageCannotBeDeleted: {
+    id: 'app.components.formBuilder.pageCannotBeDeleted',
+    defaultMessage: "This page can't be deleted.",
   },
   questionCannotBeDeleted: {
     id: 'app.components.formBuilder.questionCannotBeDeleted',
@@ -337,5 +337,25 @@ export default defineMessages({
   lastPage: {
     id: 'app.components.formBuilder.lastPage',
     defaultMessage: 'Ending',
+  },
+  veryBad: {
+    id: 'app.components.formBuilder.veryBad',
+    defaultMessage: 'Very bad',
+  },
+  bad: {
+    id: 'app.components.formBuilder.bad',
+    defaultMessage: 'Bad',
+  },
+  ok: {
+    id: 'app.components.formBuilder.ok',
+    defaultMessage: 'Ok',
+  },
+  good: {
+    id: 'app.components.formBuilder.good',
+    defaultMessage: 'Good',
+  },
+  veryGood: {
+    id: 'app.components.formBuilder.veryGood',
+    defaultMessage: 'Very good',
   },
 });

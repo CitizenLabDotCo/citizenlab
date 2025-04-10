@@ -236,6 +236,9 @@ class Idea < ApplicationRecord
     native_survey.where(publication_status: 'draft')
   }
 
+  # Equivalent to pmethod.supports_survey_form?
+  scope :supports_survey, -> { where(creation_phase: Phase.where(participation_method: %w[native_survey community_monitor_survey])) }
+
   # Filters out all the ideas for which the ParticipationMethod responds truety
   # to the given block. The block receives the ParticipationMethod object as an
   # argument

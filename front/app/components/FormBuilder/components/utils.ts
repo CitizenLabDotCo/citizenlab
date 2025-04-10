@@ -3,7 +3,7 @@ import { IFlatCustomField } from 'api/custom_fields/types';
 type NumberHash = Record<string, number>;
 
 /* This function is used to calculate the right numbers for each
- * page, section or question.
+ * page or question.
  * E.g. if you have a page, a question, a question, and a page,
  * you will get page 1, question 1, question 2, page 2.
  * These page numbers are stored by field id, and used throughout
@@ -17,7 +17,6 @@ type NumberHash = Record<string, number>;
  */
 export const getFieldNumbers = (formCustomFields: IFlatCustomField[]) => {
   let pageNumber = 0;
-  let sectionNumber = 0;
   let questionNumber = 0;
 
   const pageNumbers: NumberHash = {};
@@ -32,11 +31,6 @@ export const getFieldNumbers = (formCustomFields: IFlatCustomField[]) => {
 
       pageNumbers[id] = pageNumber;
       if (temp_id) pageNumbers[temp_id] = pageNumber;
-    } else if (input_type === 'section') {
-      sectionNumber++;
-
-      sectionNumbers[id] = sectionNumber;
-      if (temp_id) sectionNumbers[temp_id] = sectionNumber;
     } else {
       questionNumber++;
 
