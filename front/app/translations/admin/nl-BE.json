@@ -2339,7 +2339,7 @@
   "app.containers.AdminPage.groups.permissions.permissionAction_comment_inputs_subtitle": "Wie kan reageren op bijdragen?",
   "app.containers.AdminPage.groups.permissions.permissionAction_comment_proposals_subtitle": "Wie kan reageren op voorstellen?",
   "app.containers.AdminPage.groups.permissions.permissionAction_post_proposal_subtitle": "Wie kan een voorstel plaatsen?",
-  "app.containers.AdminPage.groups.permissions.permissionAction_reaction_input_subtitle": "Wie kan reageren op bijdragen?",
+  "app.containers.AdminPage.groups.permissions.permissionAction_reaction_input_subtitle": "Wie kan bijdragen liken/unliken?",
   "app.containers.AdminPage.groups.permissions.permissionAction_submit_input_subtitle": "Wie kan bijdragen indienen?",
   "app.containers.AdminPage.groups.permissions.permissionAction_take_poll_subtitle": "Wie kan deelnemen aan de peiling?",
   "app.containers.AdminPage.groups.permissions.permissionAction_take_survey_subtitle": "Wie kan de vragenlijst invullen?",
