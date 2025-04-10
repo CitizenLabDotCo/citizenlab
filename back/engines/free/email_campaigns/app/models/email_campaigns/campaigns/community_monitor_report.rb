@@ -77,7 +77,9 @@ module EmailCampaigns
 
     def generate_commands(recipient:)
       [{
-        event_payload: {}
+        event_payload: {
+          report_url: 'https://example.com/report',
+        }
       }]
     end
 

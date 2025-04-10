@@ -9,11 +9,7 @@ module EmailCampaigns
       command = {
         recipient: recipient_user,
         event_payload: {
-          event_payload: {
-            quarter: 1,
-            year: 2025,
-            report_url: 'https://example.com/report'
-          }
+          report_url: 'https://example.com/report',
         }
       }
       campaign.mailer_class.with(campaign:, command:).campaign_mail
