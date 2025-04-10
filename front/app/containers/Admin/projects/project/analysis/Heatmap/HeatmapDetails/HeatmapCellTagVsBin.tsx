@@ -97,7 +97,16 @@ const HeatmapCellTagVsBin = ({ cell, row, column }: Props) => {
           textAlign="center"
           fontWeight="bold"
           color="inherit"
-          fontSize="xs"
+          fontSize="xl"
+        >
+          {cell.attributes.count}
+        </Text>
+        <Text
+          m="0px"
+          textAlign="center"
+          fontWeight="bold"
+          color={cellTextColor === colors.white ? 'inherit' : 'textSecondary'}
+          fontSize="s"
         >
           {convertLiftToPercentage(lift)}
         </Text>
