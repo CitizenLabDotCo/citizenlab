@@ -114,9 +114,7 @@ const HeatmapDetails = ({
   });
 
   const { data: columnOptions } = useCustomFieldOptions(selectedColumnFieldId);
-  const { data: rowOptions } = useCustomFieldOptions(
-    !isSelectedRowTypeTags ? selectedRowType : undefined
-  );
+
   const { data: columnBins } = useCustomFieldBins(selectedColumnFieldId);
   const { data: rowBins } = useCustomFieldBins(
     !isSelectedRowTypeTags ? selectedRowType : undefined
@@ -262,7 +260,7 @@ const HeatmapDetails = ({
               {rowBins?.data.map((rowBin) => (
                 <Tr key={rowBin.id}>
                   <Td>
-                    <OptionTextTd bin={rowBin} options={rowOptions} />
+                    <OptionTextTd bin={rowBin} />
                   </Td>
                   {columnBins.data.map((columnBin) => {
                     const cell = analysisHeatmapCells?.data.find(
