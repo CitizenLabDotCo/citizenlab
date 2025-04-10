@@ -69,6 +69,38 @@ RSpec.describe CustomFieldBins::ValueBin do
     end
   end
 
+  describe '#sql_select_in_bin' do
+    let(:scope) { Idea.all }
+
+    context 'with a custom field of type checkbox' do
+      let(:bin) { create(:value_bin, custom_field: create(:custom_field_checkbox), values: [true]) }
+
+      it 'adds a boolean column indicating if values are in the bin' do
+        idea1 = create(:idea, custom_field_values: { bin.custom_field.key => true })
+        idea2 = create(:idea, custom_field_values: { bin.custom_field.key => false })
+
+        augmented_scope = bin.sql_select_in_bin(scope)
+
+        expect(augmented_scope.find(idea1.id).send(bin.to_column_name)).to be true
+        expect(augmented_scope.find(idea2.id).send(bin.to_column_name)).to be false
+      end
+    end
+
+    context 'with a custom field of type linear_scale' do
+      let(:bin) { create(:value_bin, custom_field: create(:custom_field_linear_scale), values: [1]) }
+
+      it 'adds a boolean column indicating if values are in the bin' do
+        idea1 = create(:idea, custom_field_values: { bin.custom_field.key => 1 })
+        idea2 = create(:idea, custom_field_values: { bin.custom_field.key => 2 })
+
+        augmented_scope = bin.sql_select_in_bin(scope)
+
+        expect(augmented_scope.find(idea1.id).send(bin.to_column_name)).to be true
+        expect(augmented_scope.find(idea2.id).send(bin.to_column_name)).to be false
+      end
+    end
+  end
+
   describe '#generate_bins' do
     let(:custom_field) { create(:custom_field_linear_scale) }
 

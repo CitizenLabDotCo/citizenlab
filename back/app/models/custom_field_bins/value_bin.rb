@@ -46,6 +46,15 @@ module CustomFieldBins
       end
     end
 
+    def sql_select_in_bin(scope)
+      case custom_field.input_type
+      when 'checkbox'
+        scope.select("((custom_field_values->>'#{custom_field.key}')::boolean in (#{values.map { |v| v.to_s == 'true' ? 'TRUE' : 'FALSE' }.join(', ')})) AS \"#{to_column_name}\"")
+      when 'linear_scale', 'rating', 'sentiment_linear_scale'
+        scope.select("((custom_field_values->>'#{custom_field.key}')::integer in (#{values.join(', ')})) AS \"#{to_column_name}\"")
+      end
+    end
+
     def self.supports_custom_field?(custom_field)
       %w[checkbox linear_scale rating number sentiment_linear_scale].include?(custom_field.input_type)
     end

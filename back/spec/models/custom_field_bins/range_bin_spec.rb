@@ -46,6 +46,26 @@ RSpec.describe CustomFieldBins::RangeBin do
     end
   end
 
+  describe '#sql_select_in_bin' do
+    let(:scope) { Idea.all }
+    let(:custom_field) { create(:custom_field_number) }
+    let(:bin) { create(:range_bin, custom_field: custom_field, range: 10...20) }
+
+    it 'adds a boolean column indicating if values are in the range' do
+      idea1 = create(:idea, custom_field_values: { custom_field.key => 15 })
+      idea2 = create(:idea, custom_field_values: { custom_field.key => 5 })
+      idea3 = create(:idea, custom_field_values: { custom_field.key => 20 })
+      idea4 = create(:idea)
+
+      augmented_scope = bin.sql_select_in_bin(scope)
+
+      expect(augmented_scope.find(idea1.id).send(bin.to_column_name)).to be true
+      expect(augmented_scope.find(idea2.id).send(bin.to_column_name)).to be false
+      expect(augmented_scope.find(idea3.id).send(bin.to_column_name)).to be false
+      expect(augmented_scope.find(idea4.id).send(bin.to_column_name)).to be false
+    end
+  end
+
   describe '.generate_bins' do
     context 'when bins already exist' do
       let!(:custom_field) { create(:custom_field_number) }

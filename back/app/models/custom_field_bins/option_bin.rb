@@ -44,10 +44,10 @@ module CustomFieldBins
 
     def sql_select_in_bin(scope)
       case custom_field.input_type
-      when 'select'
-        scope.select("(custom_field_values->>'#{custom_field.key}' = '#{custom_field_option_value}') AS \"#{to_column_name}\"")
-      when 'multiselect'
-        scope.select("(custom_field_values->'#{custom_field.key}' @> '#{custom_field_option_value.to_json}') AS \"#{to_column_name}\"")
+      when 'select', 'select_image'
+        scope.select("CASE WHEN custom_field_values->>'#{custom_field.key}' IS NULL THEN FALSE ELSE custom_field_values->>'#{custom_field.key}' = '#{custom_field_option_value}' END AS \"#{to_column_name}\"")
+      when 'multiselect', 'multiselect_image'
+        scope.select("CASE WHEN custom_field_values->>'#{custom_field.key}' IS NULL THEN FALSE ELSE custom_field_values->'#{custom_field.key}' @> '#{custom_field_option_value.to_json}' END AS \"#{to_column_name}\"")
       end
     end
 

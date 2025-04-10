@@ -58,6 +58,35 @@ RSpec.describe CustomFieldBins::AgeBin do
     end
   end
 
+  describe '#sql_select_in_bin' do
+    let(:custom_field) { create(:custom_field_birthyear) }
+    let(:bin) { create(:age_bin, custom_field:, range: 20...40) }
+    let(:scope) { User.all }
+
+    it 'adds a boolean column indicating if birthyear is in the range' do
+      user1 = create(:user, custom_field_values: { custom_field.key => 1990 })
+      user2 = create(:user, custom_field_values: { custom_field.key => 2010 })
+      user3 = create(:user, custom_field_values: { custom_field.key => nil })
+      user4 = create(:user)
+
+      augmented_scope = bin.sql_select_in_bin(scope)
+
+      expect(augmented_scope.find(user1.id).send(bin.to_column_name)).to be true
+      expect(augmented_scope.find(user2.id).send(bin.to_column_name)).to be false
+      expect(augmented_scope.find(user3.id).send(bin.to_column_name)).to be false
+      expect(augmented_scope.find(user4.id).send(bin.to_column_name)).to be false
+    end
+
+    it 'handles open-ended ranges correctly' do
+      open_bin = create(:age_bin, custom_field:, range: 80...nil)
+      user = create(:user, custom_field_values: { custom_field.key => 1940 })
+
+      augmented_scope = open_bin.sql_select_in_bin(scope)
+
+      expect(augmented_scope.find(user.id).send(open_bin.to_column_name)).to be true
+    end
+  end
+
   describe '.generate_bins' do
     let(:custom_field) { create(:custom_field_birthyear) }
 

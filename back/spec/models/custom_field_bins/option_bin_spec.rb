@@ -124,11 +124,31 @@ RSpec.describe CustomFieldBins::OptionBin do
       it 'adds a boolean column named after the bin ID' do
         idea1 = create(:idea, custom_field_values: { custom_field.key => 'option1' })
         idea2 = create(:idea, custom_field_values: { custom_field.key => 'option2' })
+        idea3 = create(:idea)
 
         augmented_scope = bin.sql_select_in_bin(scope)
 
         expect(augmented_scope.find(idea1.id).send(bin.to_column_name)).to be true
         expect(augmented_scope.find(idea2.id).send(bin.to_column_name)).to be false
+        expect(augmented_scope.find(idea3.id).send(bin.to_column_name)).to be false
+      end
+    end
+
+    context 'with a custom field of type multi_select' do
+      let(:custom_field) { create(:custom_field_multiselect) }
+      let(:option) { create(:custom_field_option, custom_field:, key: 'option1') }
+      let(:bin) { create(:option_bin, custom_field:, custom_field_option: option) }
+
+      it 'adds a boolean column named after the bin ID' do
+        idea1 = create(:idea, custom_field_values: { custom_field.key => %w[option1 option2] })
+        idea2 = create(:idea, custom_field_values: { custom_field.key => ['option2'] })
+        idea3 = create(:idea)
+
+        augmented_scope = bin.sql_select_in_bin(scope)
+
+        expect(augmented_scope.find(idea1.id).send(bin.to_column_name)).to be true
+        expect(augmented_scope.find(idea2.id).send(bin.to_column_name)).to be false
+        expect(augmented_scope.find(idea3.id).send(bin.to_column_name)).to be false
       end
     end
   end

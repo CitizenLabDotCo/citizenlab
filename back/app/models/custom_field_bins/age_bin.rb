@@ -41,6 +41,19 @@ module CustomFieldBins
       scope.where("(custom_field_values->>'#{custom_field.key}')::integer IN (?)", birthyear_range)
     end
 
+    def sql_select_in_bin(scope)
+      birth_start = birthyear_range.begin == -Float::INFINITY ? 'NULL' : birthyear_range.begin
+      birth_end = birthyear_range.end == Float::INFINITY ? 'NULL' : birthyear_range.end
+
+      condition = "CASE WHEN custom_field_values->>'#{custom_field.key}' IS NULL THEN FALSE ELSE ("
+      condition += "#{birth_start} IS NULL OR (custom_field_values->>'#{custom_field.key}')::integer >= #{birth_start}"
+      condition += ') AND ('
+      condition += "#{birth_end} IS NULL OR (custom_field_values->>'#{custom_field.key}')::integer < #{birth_end}"
+      condition += ') END'
+
+      scope.select("#{condition} AS \"#{to_column_name}\"")
+    end
+
     def self.generate_bins(custom_field)
       return if custom_field.custom_field_bins.any?
 

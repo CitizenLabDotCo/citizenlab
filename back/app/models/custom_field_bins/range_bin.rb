@@ -38,6 +38,10 @@ module CustomFieldBins
       scope.where("(custom_field_values->>'#{custom_field.key}')::integer IN (?)", range)
     end
 
+    def sql_select_in_bin(scope)
+      scope.select("CASE WHEN custom_field_values->>'#{custom_field.key}' IS NULL THEN FALSE ELSE ((custom_field_values->>'#{custom_field.key}')::integer >= #{range.begin} AND (custom_field_values->>'#{custom_field.key}')::integer < #{range.end}) END AS \"#{to_column_name}\"")
+    end
+
     def self.generate_bins(custom_field,
       lower_bound: find_lowest_value(custom_field),
       upper_bound: find_highest_value(custom_field),
