@@ -478,7 +478,7 @@ class CustomField < ApplicationRecord
     # indicating whether the record is contained in the bin
     rows_with_bins = bins.inject(scope) do |s, bin|
       bin.sql_select_in_bin(s)
-    end
+    end.select("custom_field_values->>'#{key}' IS NULL as _blank")
 
     # Iterate over the query results and count the number of true values for each
     # bin.
@@ -486,6 +486,7 @@ class CustomField < ApplicationRecord
     bins.each do |bin|
       counts[bin.id] = rows_with_bins.count { |row| row[bin.to_column_name] }
     end
+    counts['_blank'] = rows_with_bins.count { |row| row['_blank'] }
 
     counts
   end

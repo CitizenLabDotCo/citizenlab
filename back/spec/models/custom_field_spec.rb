@@ -718,7 +718,8 @@ RSpec.describe CustomField do
     it 'counts 0 is there are no users' do
       expect(field.count_by_bins(User.all)).to eq({
         bin1.id => 0,
-        bin2.id => 0
+        bin2.id => 0,
+        '_blank' => 0
       })
     end
 
@@ -728,7 +729,8 @@ RSpec.describe CustomField do
 
       expect(field.count_by_bins(User.all)).to eq({
         bin1.id => 1,
-        bin2.id => 0
+        bin2.id => 0,
+        '_blank' => 1
       })
     end
   end
