@@ -24,7 +24,7 @@ const useProjectLibraryCountries = () => {
     ProjectLibraryCountries,
     ProjectLibraryCountriesKeys
   >({
-    queryKey: projectLibraryCountriesKeys.all(),
+    queryKey: projectLibraryCountriesKeys.all(locale),
     queryFn: () => fetchProjectLibraryCountries(),
   });
 };
