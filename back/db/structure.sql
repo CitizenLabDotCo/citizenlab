@@ -1630,8 +1630,7 @@ CREATE TABLE public.phases (
     survey_popup_frequency integer,
     user_fields_in_form boolean DEFAULT false NOT NULL,
     similarity_threshold_title double precision DEFAULT 0.3,
-    similarity_threshold_body double precision DEFAULT 0.4,
-    user_fields_in_form boolean DEFAULT false NOT NULL
+    similarity_threshold_body double precision DEFAULT 0.4
 );
 
 
