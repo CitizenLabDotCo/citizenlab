@@ -22,9 +22,13 @@ class CommunityMonitorService
     # Check first if the project exists but has not been added to settings (eg when creating platform from template)
     project = Project.find_by(internal_role: 'community_monitor', hidden: true)
 
+    create_and_set_project(project: project, current_user: current_user)
+  end
+
+  # Create the hidden project, phase & default form
+  def create_and_set_project(project: nil, current_user: nil)
     unless project
       ActiveRecord::Base.transaction do
-        # Create the hidden project and phase
         multiloc_service = MultilocService.new
         project = Project.create!(
           hidden: true,
@@ -33,7 +37,7 @@ class CommunityMonitorService
           internal_role: 'community_monitor'
         )
 
-        SideFxProjectService.new.after_create(project, current_user) if project
+        SideFxProjectService.new.after_create(project, current_user) if project && current_user
 
         phase = Phase.create!(
           title_multiloc: multiloc_service.i18n_to_multiloc('phases.community_monitor_title'),
