@@ -9,6 +9,8 @@ import Legend from '@arcgis/core/widgets/Legend';
 
 import { AppConfigurationMapSettings } from 'api/app_configuration/types';
 
+import { calculateScaleFromZoom } from 'utils/mapUtils/map';
+
 import { InitialData } from './types';
 
 export const configureMapView = (
@@ -21,11 +23,19 @@ export const configureMapView = (
   setMapCenter(mapView, initialData, globalMapSettings);
 
   // Set initial extent
-  mapView.zoom = initialData?.zoom || globalMapSettings.zoom_level || 18;
+  const zoomLevel = initialData?.zoom || globalMapSettings.zoom_level || 18;
+  mapView.zoom = zoomLevel;
   mapView.constraints = {
     maxZoom: initialData?.maxZoom || 22,
     minZoom: 5,
   };
+
+  // If the map is not in the standard Web Mercator projection (3857),
+  // ensure that the map scale is set, so the zoom level works as intended.
+  const spatialReferenceId = mapView.center.spatialReference.wkid;
+  if (spatialReferenceId !== 3857) {
+    mapView.scale = calculateScaleFromZoom(zoomLevel);
+  }
 
   // Change location of zoom widget if specified
   if (initialData?.showZoomControls === false || isMobileOrSmaller) {

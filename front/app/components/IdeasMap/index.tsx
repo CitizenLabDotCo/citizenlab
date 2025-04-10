@@ -49,6 +49,7 @@ import { useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
 import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
+import { projectPointToWebMercator } from 'utils/mapUtils/map';
 import { isAdmin } from 'utils/permissions/roles';
 
 import IdeaMapOverlay from './desktop/IdeaMapOverlay';
@@ -318,7 +319,8 @@ const IdeasMap = memo<Props>(
     const onMapClick = useCallback(
       (event: any, mapView: MapView) => {
         // Save clicked location
-        setClickedMapLocation(esriPointToGeoJson(event.mapPoint));
+        const clickedPointProjected = projectPointToWebMercator(event.mapPoint);
+        setClickedMapLocation(esriPointToGeoJson(clickedPointProjected));
 
         const ideaPostingEnabled =
           (phase?.data.attributes.submission_enabled && authUser) ||
@@ -426,6 +428,17 @@ const IdeasMap = memo<Props>(
                     popupTitle: formatMessage(messages.submitIdea),
                   });
                 }
+              }
+            } else if (topElement.type === 'media') {
+              // If the user clicked on a media layer (E.g. image overlay), show the idea popup
+              if (ideaPostingEnabled) {
+                showAddInputPopup({
+                  event,
+                  mapView,
+                  setSelectedInput: setSelectedIdea,
+                  popupContentNode: startIdeaButtonNode,
+                  popupTitle: formatMessage(messages.submitIdea),
+                });
               }
             }
           } else {
