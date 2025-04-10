@@ -54,9 +54,6 @@ const HeatmapCellTagVsBin = ({ cell, row, column }: Props) => {
   const cellBgColor = getCellBgColor(lift, isSignificant);
   const cellTextColor = getCellTextColor(lift, isSignificant);
 
-  if (cell.attributes.count === 0) {
-    return null;
-  }
   return (
     <Tooltip
       disabled={!cell}

@@ -4,24 +4,27 @@ import { setupServer } from 'msw/node';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
 
-import useDeleteUserCustomFieldsOption from './useDeleteUserCustomFieldsOption';
+import { customFieldOptionsData } from './__mocks__/useCustomFieldOptions';
+import useReorderCustomFieldOption from './useReorderCustomFieldOption';
 
 const apiPath =
-  '*/users/custom_fields/:customFieldId/custom_field_options/:optionId';
-
+  '*/custom_field_options/:optionId/reorder';
 const server = setupServer(
-  http.delete(apiPath, () => {
-    return HttpResponse.json(null, { status: 200 });
+  http.patch(apiPath, () => {
+    return HttpResponse.json(
+      { data: customFieldOptionsData[0] },
+      { status: 200 }
+    );
   })
 );
 
-describe('useDeleteUserCustomFieldsOption', () => {
+describe('useReorderCustomFieldOption', () => {
   beforeAll(() => server.listen());
   afterAll(() => server.close());
 
   it('mutates data correctly', async () => {
     const { result, waitFor } = renderHook(
-      () => useDeleteUserCustomFieldsOption(),
+      () => useReorderCustomFieldOption(),
       {
         wrapper: createQueryClientWrapper(),
       }
@@ -29,35 +32,34 @@ describe('useDeleteUserCustomFieldsOption', () => {
 
     act(() => {
       result.current.mutate({
-        optionId: 'optionId',
-        customFieldId: 'customFieldId',
+        optionId: 'id',
+        ordering: 1,
       });
     });
 
     await waitFor(() => expect(result.current.isSuccess).toBe(true));
+    expect(result.current.data?.data).toEqual(customFieldOptionsData[0]);
   });
 
   it('returns error correctly', async () => {
     server.use(
-      http.delete(apiPath, () => {
+      http.patch(apiPath, () => {
         return HttpResponse.json(null, { status: 500 });
       })
     );
 
     const { result, waitFor } = renderHook(
-      () => useDeleteUserCustomFieldsOption(),
+      () => useReorderCustomFieldOption(),
       {
         wrapper: createQueryClientWrapper(),
       }
     );
-
     act(() => {
       result.current.mutate({
-        optionId: 'optionId',
-        customFieldId: 'customFieldId',
+        optionId: 'id',
+        ordering: 1,
       });
     });
-
     await waitFor(() => expect(result.current.isError).toBe(true));
     expect(result.current.error).toBeDefined();
   });
