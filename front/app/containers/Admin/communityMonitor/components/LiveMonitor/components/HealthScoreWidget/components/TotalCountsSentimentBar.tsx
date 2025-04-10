@@ -18,16 +18,16 @@ type Props = {
   year?: string;
   quarter?: string;
 };
-const TotalCountsSentimentBar = ({ sentimentScores, year, quarter }: Props) => {
+const TotalCountsSentimentBar = ({ sentimentScores, ...props }: Props) => {
   const [search] = useSearchParams();
 
   // Get the current year/quarter filter
-  const yearSelected = year || getYearFilter(search);
-  const quarterSelected = quarter || getQuarterFilter(search);
+  const year = props.year || getYearFilter(search);
+  const quarter = props.quarter || getQuarterFilter(search);
 
   // Get the total counts data for the current quarter
   const quarterData = sentimentScores?.totalHealthScoreCounts.find(
-    (healthScore) => healthScore.period === `${yearSelected}-${quarterSelected}`
+    (healthScore) => healthScore.period === `${year}-${quarter}`
   );
 
   // Calculate the total # of responses for the quarter, so we can calculate a % next

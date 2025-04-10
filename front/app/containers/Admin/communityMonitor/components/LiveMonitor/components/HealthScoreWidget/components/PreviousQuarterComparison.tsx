@@ -14,18 +14,14 @@ type Props = {
   quarter?: string;
 };
 
-const PreviousQuarterComparison = ({
-  sentimentScores,
-  year,
-  quarter,
-}: Props) => {
+const PreviousQuarterComparison = ({ sentimentScores, ...props }: Props) => {
   const [search] = useSearchParams();
 
-  const yearSelected = year || getYearFilter(search);
-  const quarterSelected = quarter || getQuarterFilter(search);
+  const year = props.year || getYearFilter(search);
+  const quarter = props.quarter || getQuarterFilter(search);
 
   const thisPeriodIndex = sentimentScores?.overallHealthScores.findIndex(
-    (value) => value.period === `${yearSelected}-${quarterSelected}`
+    (value) => value.period === `${year}-${quarter}`
   );
 
   const thisPeriodAvg =

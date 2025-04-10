@@ -15,13 +15,13 @@ type Props = {
   quarter?: string;
 };
 
-const CategoryScores = ({ sentimentScores, year, quarter }: Props) => {
+const CategoryScores = ({ sentimentScores, ...props }: Props) => {
   const [search] = useSearchParams();
 
   // Extract year and quarter from search params or defaults
-  const yearSelected = year || getYearFilter(search);
-  const quarterSelected = quarter || getQuarterFilter(search);
-  const periodKey = `${yearSelected}-${quarterSelected}`;
+  const year = props.year || getYearFilter(search);
+  const quarter = props.quarter || getQuarterFilter(search);
+  const periodKey = `${year}-${quarter}`;
 
   // Helper function to get score data for a category
   const getCategoryScoreData = (
