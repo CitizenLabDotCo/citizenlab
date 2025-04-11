@@ -1,4 +1,4 @@
-import { IUserCustomFieldOptionData } from 'api/user_custom_fields_options/types';
+import { ICustomFieldOptionData } from 'api/custom_field_options/types';
 
 import { Localize } from 'hooks/useLocalize';
 
@@ -79,13 +79,13 @@ export const getPercentages = (
   }, {});
 };
 
-export const formatUserCustomFieldOptions = (
-  userCustomFieldOptions: IUserCustomFieldOptionData[],
+export const formatCustomFieldOptions = (
+  customFieldOptions: ICustomFieldOptionData[],
   localize: Localize
 ) =>
-  userCustomFieldOptions.map((userCustomFieldOption) => ({
-    id: userCustomFieldOption.id,
-    label: localize(userCustomFieldOption.attributes.title_multiloc),
+  customFieldOptions.map((customFieldOption) => ({
+    id: customFieldOption.id,
+    label: localize(customFieldOption.attributes.title_multiloc),
   }));
 
 export const formatBinOptions = (bins: Bins, andOverText: string) =>

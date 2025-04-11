@@ -4,27 +4,28 @@ import { setupServer } from 'msw/node';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
 
-import { userCustomFieldsOptionsData } from './__mocks__/useUserCustomFieldsOptions';
-import useReorderUserCustomFieldsOption from './useReorderUserCustomFieldsOption';
+import { customFieldOptionsData } from './__mocks__/useCustomFieldOptions';
+import useUpdateCustomFieldOption from './useUpdateCustomFieldOption';
 
 const apiPath =
-  '*/users/custom_fields/:customFieldId/custom_field_options/:optionId/reorder';
+  '*/custom_field_options/:optionId';
+
 const server = setupServer(
   http.patch(apiPath, () => {
     return HttpResponse.json(
-      { data: userCustomFieldsOptionsData[0] },
+      { data: customFieldOptionsData[0] },
       { status: 200 }
     );
   })
 );
 
-describe('useReorderUserCustomFieldsOption', () => {
+describe('useUpdateCustomFieldOption', () => {
   beforeAll(() => server.listen());
   afterAll(() => server.close());
 
   it('mutates data correctly', async () => {
     const { result, waitFor } = renderHook(
-      () => useReorderUserCustomFieldsOption(),
+      () => useUpdateCustomFieldOption(),
       {
         wrapper: createQueryClientWrapper(),
       }
@@ -32,14 +33,13 @@ describe('useReorderUserCustomFieldsOption', () => {
 
     act(() => {
       result.current.mutate({
-        customFieldId: 'id',
-        optionId: 'id',
-        ordering: 1,
+        optionId: 'optionId',
+        title_multiloc: { en: 'mock title' },
       });
     });
 
     await waitFor(() => expect(result.current.isSuccess).toBe(true));
-    expect(result.current.data?.data).toEqual(userCustomFieldsOptionsData[0]);
+    expect(result.current.data?.data).toEqual(customFieldOptionsData[0]);
   });
 
   it('returns error correctly', async () => {
@@ -50,18 +50,19 @@ describe('useReorderUserCustomFieldsOption', () => {
     );
 
     const { result, waitFor } = renderHook(
-      () => useReorderUserCustomFieldsOption(),
+      () => useUpdateCustomFieldOption(),
       {
         wrapper: createQueryClientWrapper(),
       }
     );
+
     act(() => {
       result.current.mutate({
-        customFieldId: 'id',
-        optionId: 'id',
-        ordering: 1,
+        optionId: 'optionId',
+        title_multiloc: { en: 'mock title' },
       });
     });
+
     await waitFor(() => expect(result.current.isError).toBe(true));
     expect(result.current.error).toBeDefined();
   });
