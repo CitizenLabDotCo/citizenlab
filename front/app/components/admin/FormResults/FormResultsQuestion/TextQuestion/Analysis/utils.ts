@@ -1,4 +1,5 @@
 import { UseQueryResult } from '@tanstack/react-query';
+import moment from 'moment';
 
 import { IInputsFilterParams } from 'api/analysis_inputs/types';
 import { IInsights } from 'api/analysis_insights/types';
@@ -76,4 +77,38 @@ export const filterForCommunityMonitorQuarter = ({
   return {
     data: filteredInsights ?? [],
   };
+};
+
+// getPublishAtFromFilter
+// Description: This function generates a "published_at_from" date from the URL quarter parameters.
+export const getPublishAtFromFilter = (search: URLSearchParams) => {
+  // Get the year/quarter from URL
+  const yearFilter = getYearFilter(search);
+  const quarterFilter = getQuarterFilter(search);
+
+  // Parse quarter and year filters
+  const quarter = quarterFilter ? parseInt(quarterFilter, 10) : null;
+  const year = yearFilter ? parseInt(yearFilter, 10) : null;
+
+  if (year && quarter) {
+    return moment(new Date(year, (quarter - 1) * 3, 1)).format('YYYY-MM-DD');
+  }
+  return undefined;
+};
+
+// getPublishedAtToFilter
+// Description: This function generates a "published_at_to" date from the URL quarter parameters.
+export const getPublishedAtToFilter = (search: URLSearchParams) => {
+  // Get the year/quarter from URL
+  const yearFilter = getYearFilter(search);
+  const quarterFilter = getQuarterFilter(search);
+
+  // Parse quarter and year filters
+  const quarter = quarterFilter ? parseInt(quarterFilter, 10) : null;
+  const year = yearFilter ? parseInt(yearFilter, 10) : null;
+
+  if (year && quarter) {
+    return moment(new Date(year, quarter * 3, 0)).format('YYYY-MM-DD');
+  }
+  return undefined;
 };

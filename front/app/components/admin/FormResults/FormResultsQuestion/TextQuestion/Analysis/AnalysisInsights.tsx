@@ -7,7 +7,6 @@ import {
   Text,
   Spinner,
 } from '@citizenlab/cl2-component-library';
-import moment from 'moment';
 import { useSearchParams } from 'react-router-dom';
 
 import { IAnalysisData } from 'api/analyses/types';
@@ -19,17 +18,13 @@ import useAddAnalysisSummaryPreCheck from 'api/analysis_summary_pre_check/useAdd
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
-import {
-  getYearFilter,
-  getQuarterFilter,
-} from 'containers/Admin/communityMonitor/components/LiveMonitor/components/HealthScoreWidget/utils';
-
 import { useIntl } from 'utils/cl-intl';
 
 import messages from '../../../messages';
 
 import Question from './Question';
 import Summary from './Summary';
+import { getPublishAtFromFilter, getPublishedAtToFilter } from './utils';
 
 const AnalysisInsights = ({
   analysis,
@@ -43,14 +38,6 @@ const AnalysisInsights = ({
   const [search] = useSearchParams();
   const [automaticSummaryCreated, setAutomaticSummaryCreated] = useState(false);
   const [selectedInsightIndex, setSelectedInsightIndex] = useState(0);
-
-  // Get the year/quarter from URL
-  const yearFilter = getYearFilter(search);
-  const quarterFilter = getQuarterFilter(search);
-
-  // Parse quarter and year filters
-  const quarter = quarterFilter ? parseInt(quarterFilter, 10) : null;
-  const year = yearFilter ? parseInt(yearFilter, 10) : null;
 
   const { formatMessage } = useIntl();
 
@@ -90,16 +77,8 @@ const AnalysisInsights = ({
           analysisId: analysis.id,
           filters: {
             input_custom_field_no_empty_values: true,
-            published_at_from:
-              year && quarter
-                ? moment(new Date(year, (quarter - 1) * 3, 1)).format(
-                    'YYYY-MM-DD'
-                  )
-                : undefined,
-            published_at_to:
-              year && quarter
-                ? moment(new Date(year, quarter * 3, 0)).format('YYYY-MM-DD')
-                : undefined,
+            published_at_from: getPublishAtFromFilter(search),
+            published_at_to: getPublishedAtToFilter(search),
           },
         },
         {
@@ -110,18 +89,8 @@ const AnalysisInsights = ({
             if (!data.data.attributes.impossible_reason) {
               const filters = {
                 input_custom_field_no_empty_values: true,
-                published_at_from:
-                  year && quarter
-                    ? moment(new Date(year, (quarter - 1) * 3, 1)).format(
-                        'YYYY-MM-DD'
-                      )
-                    : undefined,
-                published_at_to:
-                  year && quarter
-                    ? moment(new Date(year, quarter * 3, 0)).format(
-                        'YYYY-MM-DD'
-                      )
-                    : undefined,
+                published_at_from: getPublishAtFromFilter(search),
+                published_at_to: getPublishedAtToFilter(search),
                 limit: !largeSummariesAllowed ? 30 : undefined,
               };
               if (hasOtherResponses && customFieldId) {
@@ -146,8 +115,7 @@ const AnalysisInsights = ({
     preCheck,
     hasOtherResponses,
     analysis.relationships.main_custom_field?.data?.id,
-    year,
-    quarter,
+    search,
   ]);
 
   if (addSummaryIsLoading || preCheckIsLoading) {
