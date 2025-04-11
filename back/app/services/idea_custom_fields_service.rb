@@ -7,18 +7,24 @@ class IdeaCustomFieldsService
   end
 
   def all_fields
-    if @custom_form.custom_field_ids.empty?
-      @participation_method.default_fields @custom_form
+    fields = if @custom_form.custom_field_ids.empty?
+      @participation_method.default_fields(@custom_form)
     else
-      @custom_form.custom_fields.includes(
-        :map_config,
-        options: [:image]
-      )
+      @custom_form.custom_fields.includes(:map_config, options: [:image])
     end
+
+    fields = fields.to_a
+
+    form_end_field = fields.find(&:form_end_page?)
+    if form_end_field
+      fields.delete(form_end_field)
+      fields << form_end_field
+    end
+
+    fields
   end
 
   def xlsx_exportable_fields
-    # TODO: JS - Why does this not use enabled_fields?
     add_user_fields(all_fields).filter(&:supports_xlsx_export?)
   end
 
@@ -31,8 +37,7 @@ class IdeaCustomFieldsService
   end
 
   def submittable_fields
-    unsubmittable_input_types = %w[page section]
-    enabled_fields.reject { |field| unsubmittable_input_types.include? field.input_type }
+    enabled_fields.select(&:submittable?)
   end
 
   def submittable_fields_with_other_options
@@ -41,14 +46,11 @@ class IdeaCustomFieldsService
 
   # Used in the printable PDF export
   def printable_fields
-    ignore_field_types = %w[section page date files image_files point file_upload shapefile_upload topic_ids cosponsor_ids ranking matrix_linear_scale]
-    fields = enabled_fields.reject { |field| ignore_field_types.include? field.input_type }
-    insert_other_option_text_fields(fields)
+    enabled_fields_with_other_options.select(&:printable?)
   end
 
   def importable_fields
-    ignore_field_types = %w[page section date files image_files file_upload shapefile_upload point line polygon cosponsor_ids ranking matrix_linear_scale]
-    enabled_fields_with_other_options.reject { |field| ignore_field_types.include? field.input_type }
+    enabled_fields_with_other_options.select(&:importable?)
   end
 
   def enabled_fields
@@ -61,11 +63,43 @@ class IdeaCustomFieldsService
   end
 
   def enabled_public_fields
-    enabled_fields.select { |field| field.answer_visible_to == CustomField::VISIBLE_TO_PUBLIC }
+    enabled_fields.select(&:visible_to_public?)
   end
 
   def extra_visible_fields
     visible_fields.reject(&:built_in?)
+  end
+
+  def survey_results_fields(structure_by_category: false)
+    return enabled_fields unless structure_by_category && @participation_method.supports_custom_field_categories?
+
+    # Restructure the results to order by category with each category as a page
+
+    # Remove the original pages
+    fields = enabled_fields.reject { |field| field.input_type == 'page' }
+
+    # Order fields by the order of categories in custom field
+    categories = CustomField::QUESTION_CATEGORIES
+    sorted_fields = fields.sort_by do |field|
+      [categories.index(field.question_category) || categories.size, field.ordering]
+    end
+
+    # Add a page per category
+    categorised_fields = []
+    current_category = nil
+    sorted_fields.each do |field|
+      if field.question_category != current_category
+        categorised_fields << CustomField.new(
+          id: SecureRandom.uuid,
+          input_type: 'page',
+          key: "category_#{field.question_category}",
+          title_multiloc: field.question_category_multiloc
+        )
+      end
+      current_category = field.question_category
+      categorised_fields << field
+    end
+    categorised_fields
   end
 
   def validate_constraints_against_updates(field, field_params)
@@ -78,7 +112,7 @@ class IdeaCustomFieldsService
     field_params = field_params.to_h if field_params.is_a?(ActionController::Parameters)
 
     constraints[:locks]&.each do |attribute, value|
-      if value == true && field_params[attribute] != field[attribute] && !section1_title?(field, attribute)
+      if value == true && field_params[attribute] != field[attribute] && !page1_title?(field, attribute)
         field.errors.add :constraints, "Cannot change #{attribute}. It is locked."
       end
     end
@@ -92,7 +126,7 @@ class IdeaCustomFieldsService
     default_field = default_fields.find { |f| f.code == field.code }
 
     constraints[:locks]&.each do |attribute, value|
-      if value == true && field[attribute] != default_field[attribute] && !section1_title?(field, attribute)
+      if value == true && field[attribute] != default_field[attribute] && !page1_title?(field, attribute)
         field.errors.add :constraints, "Cannot change #{attribute} from default value. It is locked."
       end
     end
@@ -103,31 +137,18 @@ class IdeaCustomFieldsService
     field_params.except(:code, :input_type)
   end
 
-  def check_form_structure(fields, errors)
-    return if fields.empty?
+  def check_form_structure(fields_from_params, errors)
+    return if fields_from_params.empty?
 
-    # Check the first field is of the correct type
-    first_field_type = @participation_method.supports_pages_in_form? ? 'page' : 'section'
-    cannot_have_type = @participation_method.supports_pages_in_form? ? 'section' : 'page'
-    if fields[0][:input_type] != first_field_type
-      error = { error: "First field must be of type '#{first_field_type}'" }
+    unless fields_from_params.first[:input_type] == 'page'
+      error = { error: "First field must be of type 'page'" }
       errors['0'] = { structure: [error] }
     end
 
     # Check the last field is a page
-    if @participation_method.supports_pages_in_form? && fields.last[:input_type] != 'page'
-      errors[(fields.length - 1).to_s] = { structure: [{ error: "Last field must be of type 'page'" }] }
-    end
-
-    fields.each_with_index do |field, index|
-      next unless field[:input_type] == cannot_have_type
-
-      error = { error: "Method '#{participation_method}' cannot contain fields with an input_type of '#{cannot_have_type}'" }
-      if errors[index.to_s] && errors[index.to_s][:structure]
-        errors[index.to_s][:structure] << error
-      else
-        errors[index.to_s] = { structure: [error] }
-      end
+    last_field = fields_from_params.last
+    unless last_field[:input_type] == 'page' && last_field[:key] == 'form_end'
+      errors[(fields_from_params.length - 1).to_s] = { structure: [{ error: "Last field must be of type 'page' with a key of 'form_end'" }] }
     end
   end
 
@@ -202,19 +223,19 @@ class IdeaCustomFieldsService
     all_fields
   end
 
-  # Check required as it doesn't matter what is saved in title for section 1
+  # Check required as it doesn't matter what is saved in title for page 1
   # Constraints required for the front-end but response will always return input specific method
-  def section1_title?(field, attribute)
-    field.code == 'ideation_section1' && attribute == :title_multiloc
+  def page1_title?(field, attribute)
+    field.code == 'ideation_page1' && attribute == :title_multiloc
   end
 
   def add_user_fields(fields)
-    return fields unless @participation_method.supports_user_fields_in_form?
+    return fields unless @participation_method.user_fields_in_form?
 
     fields = fields.to_a # sometimes array passed in, sometimes active record relations
 
-    last_page = fields.last
-    fields.pop # Remove the last page so we can add it back later
+    # Remove the last page so we can add it back later
+    last_page = fields.pop if fields.last.form_end_page?
 
     # Get the user fields from the permission (returns platform defaults if they don't exist)
     phase = @custom_form.participation_context

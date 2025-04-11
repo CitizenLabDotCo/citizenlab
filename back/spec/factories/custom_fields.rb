@@ -234,20 +234,10 @@ FactoryBot.define do
       end
       input_type { 'page' }
       page_layout { 'default' }
-    end
 
-    factory :custom_field_section do
-      title_multiloc do
-        {
-          'en' => 'A section'
-        }
+      factory :custom_field_form_end_page do
+        key { 'form_end' }
       end
-      description_multiloc do
-        {
-          'en' => 'This is a section.'
-        }
-      end
-      input_type { 'section' }
     end
 
     factory :custom_field_multiselect do
@@ -378,6 +368,7 @@ FactoryBot.define do
     end
 
     factory :custom_field_gender do
+      resource_type { 'User' }
       key { 'gender' }
       title_multiloc { { 'en' => 'gender' } }
       code { 'gender' }

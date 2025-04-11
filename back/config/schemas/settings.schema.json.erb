@@ -19,10 +19,11 @@
           "color_secondary",
           "color_text",
           "lifecycle_stage",
+          "country_code",
           "authentication_token_lifetime_in_days"
         ],
         "additionalProperties": false,
-        "required": ["allowed", "enabled", "lifecycle_stage"],
+        "required": ["allowed", "enabled", "lifecycle_stage", "country_code"],
         "properties": {
           "allowed": { "type": "boolean", "default": true},
           "enabled": { "type": "boolean", "default": true},
@@ -1223,6 +1224,18 @@
         }
       },
 
+      "comments_summaries": {
+        "type": "object",
+        "title": "AI-powered analysis of comments in ideation",
+        "description": "Enables the use of AI-powered analysis for comments in ideation. When active, the comments under an input can be summarized, and the comments are included in the main summarization feature.",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": false },
+          "enabled": { "type": "boolean", "default": false }
+        }
+      },
+
       "ask_a_question": {
         "type": "object",
         "title": "AI-powered questions and answers feature for surveys and ideation",
@@ -1239,6 +1252,18 @@
         "type": "object",
         "title": "AI-powered advanced autotagging for surveys and ideation",
         "description": "Enables the use of AI-powered advanced autotagging feature for surveys and ideation.",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": false },
+          "enabled": { "type": "boolean", "default": false }
+        }
+      },
+
+      "auto_insights": {
+        "type": "object",
+        "title": "Statistical insights for surveys and ideation",
+        "description": "Enables the use of statistical insights in an analysis for surveys and ideation",
         "additionalProperties": false,
         "required": ["allowed", "enabled"],
         "properties": {
@@ -1319,28 +1344,22 @@
         }
       },
 
-      "similar_inputs": {
+      "authoring_assistance_prototype": {
         "type": "object",
-        "title": "Experimental feature: Similar inputs",
-        "description":	"Show similar inputs (ideas) when viewing the page of an input, using AI (Cohere multilingual word embeddings). Inputs posted while the feature was disabled will not be included.",
+        "title": "Experimental feature: Authoring assistance prototype",
+        "description":	"Show an informative box to admins on the idea pages with guidance on how the written text could be improved (duplicate detection, toxicity, free custom prompt...). Inputs posted while the feature was disabled will not be included as duplicates.",
         "additionalProperties": false,
         "required": ["allowed", "enabled"],
-        "required-settings": ["admins_only"],
         "properties": {
           "allowed": { "type": "boolean", "default": false},
-          "enabled": { "type": "boolean", "default": false},
-          "admins_only": {
-            "title": "Only admins can see similar inputs",
-            "type": "boolean",
-            "default": true
-          }
+          "enabled": { "type": "boolean", "default": false}
         }
       },
 
       "authoring_assistance": {
         "type": "object",
-        "title": "Experimental feature: Authoring assistance",
-        "description":	"Show an informative box to admins on the idea pages with guidance on how the written text could be improved (duplicate detection, toxicity, free custom prompt...). Inputs posted while the feature was disabled will not be included as duplicates.",
+        "title": "Authoring assistance",
+        "description":	"Help the user with writing better ideas and proposals through AI assistance while typing in the input form. Inputs posted while the feature was disabled will not be listed as similar inputs.",
         "additionalProperties": false,
         "required": ["allowed", "enabled"],
         "properties": {
@@ -1460,6 +1479,8 @@
     "large_summaries": ["analysis"],
     "ask_a_question": ["analysis"],
     "advanced_autotagging": ["analysis"],
+    "comments_summaries": ["analysis"],
+    "auto_insights": ["analysis"],
     "import_printed_forms": ["input_importer"]
   },
   "definitions": {

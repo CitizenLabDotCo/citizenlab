@@ -39,6 +39,9 @@
 #  linear_scale_label_10_multiloc :jsonb            not null
 #  linear_scale_label_11_multiloc :jsonb            not null
 #  ask_follow_up                  :boolean          default(FALSE), not null
+#  question_category              :string
+#  page_button_label_multiloc     :jsonb            not null
+#  page_button_link               :string
 #
 # Indexes
 #
@@ -63,19 +66,22 @@ class CustomField < ApplicationRecord
   has_many :permissions_custom_fields, dependent: :destroy
   has_many :permissions, through: :permissions_custom_fields
 
+  has_many :custom_field_bins, dependent: :destroy
+
   FIELDABLE_TYPES = %w[User CustomForm].freeze
   INPUT_TYPES = %w[
     checkbox date file_upload files html html_multiloc image_files linear_scale rating multiline_text multiline_text_multiloc
     multiselect multiselect_image number page point line polygon select select_image shapefile_upload text text_multiloc
-    topic_ids section cosponsor_ids ranking matrix_linear_scale sentiment_linear_scale
+    topic_ids cosponsor_ids ranking matrix_linear_scale sentiment_linear_scale
   ].freeze
   CODES = %w[
     author_id birthyear body_multiloc budget domicile gender idea_files_attributes idea_images_attributes
-    ideation_section1 ideation_section2 ideation_section3 location_description proposed_budget title_multiloc topic_ids cosponsor_ids
+    location_description proposed_budget title_multiloc topic_ids cosponsor_ids ideation_page1 ideation_page2 ideation_page3
   ].freeze
   VISIBLE_TO_PUBLIC = 'public'
   VISIBLE_TO_ADMINS = 'admins'
   PAGE_LAYOUTS = %w[default map].freeze
+  QUESTION_CATEGORIES = %w[quality_of_life service_delivery governance_and_trust other].freeze
 
   validates :resource_type, presence: true, inclusion: { in: FIELDABLE_TYPES }
   validates(
@@ -85,7 +91,7 @@ class CustomField < ApplicationRecord
     if: :accepts_input?
   )
   validates :input_type, presence: true, inclusion: INPUT_TYPES
-  validates :title_multiloc, presence: true, multiloc: { presence: true }, unless: :page_or_section?
+  validates :title_multiloc, presence: true, multiloc: { presence: true }, unless: :page?
   validates :description_multiloc, multiloc: { presence: false, html: true }
   validates :required, inclusion: { in: [true, false] }
   validates :enabled, inclusion: { in: [true, false] }
@@ -97,6 +103,9 @@ class CustomField < ApplicationRecord
   validates :minimum_select_count, comparison: { greater_than_or_equal_to: 0 }, if: :multiselect?, allow_nil: true
   validates :page_layout, presence: true, inclusion: { in: PAGE_LAYOUTS }, if: :page?
   validates :page_layout, absence: true, unless: :page?
+  validates :question_category, absence: true, unless: :supports_category?
+  validates :question_category, inclusion: { in: QUESTION_CATEGORIES }, allow_nil: true, if: :supports_category?
+  validates :maximum, presence: true, inclusion: 2..11, if: :supports_linear_scale?
 
   before_validation :set_default_enabled
   before_validation :set_default_answer_visible_to
@@ -110,6 +119,17 @@ class CustomField < ApplicationRecord
   scope :required, -> { where(required: true) }
   scope :not_hidden, -> { where(hidden: false) }
   scope :hidden, -> { where(hidden: true) }
+
+  def policy_class
+    case resource_type
+    when 'User'
+      UserCustomFields::UserCustomFieldPolicy
+    when 'CustomForm'
+      IdeaCustomFields::IdeaCustomFieldPolicy
+    else
+      raise "Polcy not implemented for resource type: #{resource_type}"
+    end
+  end
 
   def logic?
     logic.present? && logic != { 'rules' => [] }
@@ -138,13 +158,13 @@ class CustomField < ApplicationRecord
   def supports_xlsx_export?
     return false if code == 'idea_images_attributes' # Is this still applicable?
 
-    %w[page section].exclude?(input_type)
+    !page?
   end
 
   def supports_geojson?
     return false if code == 'idea_images_attributes' # Is this still applicable?
 
-    %w[page section].exclude?(input_type)
+    !page?
   end
 
   def supports_linear_scale?
@@ -157,6 +177,10 @@ class CustomField < ApplicationRecord
 
   def supports_linear_scale_labels?
     %w[linear_scale matrix_linear_scale sentiment_linear_scale].include?(input_type)
+  end
+
+  def supports_average?
+    %w[linear_scale sentiment_linear_scale rating number].include?(input_type)
   end
 
   def supports_single_selection?
@@ -221,6 +245,24 @@ class CustomField < ApplicationRecord
     required
   end
 
+  def visible_to_public?
+    answer_visible_to == VISIBLE_TO_PUBLIC
+  end
+
+  def submittable?
+    !page?
+  end
+
+  def printable?
+    ignore_field_types = %w[page date files image_files point file_upload shapefile_upload topic_ids cosponsor_ids ranking matrix_linear_scale]
+    ignore_field_types.exclude? input_type
+  end
+
+  def importable?
+    ignore_field_types = %w[page date files image_files file_upload shapefile_upload point line polygon cosponsor_ids ranking matrix_linear_scale]
+    ignore_field_types.exclude? input_type
+  end
+
   def domicile?
     (key == 'domicile' && code == 'domicile') || key == 'u_domicile'
   end
@@ -233,8 +275,8 @@ class CustomField < ApplicationRecord
     input_type == 'page'
   end
 
-  def section?
-    input_type == 'section'
+  def form_end_page?
+    page? && key == 'form_end'
   end
 
   def multiselect?
@@ -253,8 +295,8 @@ class CustomField < ApplicationRecord
     input_type == 'rating'
   end
 
-  def page_or_section?
-    page? || section?
+  def checkbox?
+    input_type == 'checkbox'
   end
 
   def dropdown_layout_type?
@@ -262,11 +304,25 @@ class CustomField < ApplicationRecord
   end
 
   def accepts_input?
-    !page_or_section?
+    !page?
   end
 
   def custom_form_type?
     resource_type == 'CustomForm'
+  end
+
+  def user_type?
+    resource_type == 'User'
+  end
+
+  def items_claz
+    if custom_form_type?
+      Idea
+    elsif user_type?
+      User
+    else
+      raise 'Unsupported resource type'
+    end
   end
 
   def multiloc?
@@ -284,9 +340,9 @@ class CustomField < ApplicationRecord
     visitor.send visitor_method, self
   end
 
-  # Special behaviour for ideation section 1
+  # Special behaviour for ideation page 1
   def title_multiloc
-    if code == 'ideation_section1'
+    if code == 'ideation_page1'
       key = "custom_forms.categories.main_content.#{input_term}.title"
       MultilocService.new.i18n_to_multiloc key
     else
@@ -346,6 +402,10 @@ class CustomField < ApplicationRecord
     )
   end
 
+  def additional_text_question_key
+    other_option_text_field&.key || follow_up_text_field&.key
+  end
+
   def ordered_options
     @ordered_options ||= if random_option_ordering
       options.shuffle.sort_by { |o| o.other ? 1 : 0 }
@@ -391,6 +451,25 @@ class CustomField < ApplicationRecord
     phase&.input_term || Phase::FALLBACK_INPUT_TERM
   end
 
+  def supports_category?
+    participation_context = resource&.participation_context
+    return false unless participation_context
+
+    participation_context.pmethod.supports_custom_field_categories?
+  end
+
+  def question_category
+    return 'other' if super.nil? && supports_category?
+
+    super
+  end
+
+  def question_category_multiloc
+    return nil unless supports_category?
+
+    MultilocService.new.i18n_to_multiloc("custom_fields.community_monitor.question_categories.#{question_category}")
+  end
+
   private
 
   def set_default_enabled
@@ -400,7 +479,7 @@ class CustomField < ApplicationRecord
   def set_default_answer_visible_to
     return unless answer_visible_to.nil?
 
-    self.answer_visible_to = if custom_form_type? && (built_in? || page_or_section?)
+    self.answer_visible_to = if custom_form_type? && (built_in? || page?)
       VISIBLE_TO_PUBLIC
     else
       VISIBLE_TO_ADMINS

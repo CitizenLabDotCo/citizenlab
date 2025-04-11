@@ -34,6 +34,7 @@ module IdeaCustomFields
 
       fields = params[:copy] == 'true' ? service.duplicate_all_fields : service.all_fields
       fields = fields.filter(&:support_free_text_value?) if params[:support_free_text_value].present?
+      fields = fields.filter { |field| params[:input_types].include?(field.input_type) } if params[:input_types].present?
 
       render json: ::WebApi::V1::CustomFieldSerializer.new(
         fields,
@@ -64,7 +65,6 @@ module IdeaCustomFields
     def update_all
       authorize CustomField.new(resource: @custom_form), :update_all?, policy_class: IdeaCustomFieldPolicy
       raise_error_if_stale_form_data
-      raise_error_if_no_end_page_for_survey
 
       page_temp_ids_to_ids_mapping = {}
       option_temp_ids_to_ids_mapping = {}
@@ -112,16 +112,6 @@ module IdeaCustomFields
                     @custom_form.updated_at.to_i > update_all_params[:form_last_updated_at].to_datetime.to_i
 
       raise UpdateAllFailedError, { form: [{ error: 'stale_data' }] }
-    end
-
-    def raise_error_if_no_end_page_for_survey
-      is_survey = @custom_form.participation_context.pmethod.class.method_str == 'native_survey'
-      return unless is_survey
-
-      last_field = update_all_params.fetch(:custom_fields).last
-      return if last_field['key'] == 'survey_end' && last_field['input_type'] == 'page'
-
-      raise UpdateAllFailedError, { form: [{ error: 'no_end_page' }] }
     end
 
     def update_fields!(page_temp_ids_to_ids_mapping, option_temp_ids_to_ids_mapping, errors)
@@ -376,7 +366,6 @@ module IdeaCustomFields
       update_payload = {
         save_type: update_all_params[:form_save_type],
         pages: @page_count,
-        sections: @section_count,
         fields: @field_count,
         params_size: params.to_s.size,
         form_opened_at: update_all_params[:form_opened_at]&.to_datetime,
@@ -390,8 +379,6 @@ module IdeaCustomFields
       @section_count ||= 0
       @field_count ||= 0
       case field.input_type
-      when 'section'
-        @section_count += 1
       when 'page'
         @page_count += 1
       else
@@ -415,10 +402,13 @@ module IdeaCustomFields
         :random_option_ordering,
         :dropdown_layout,
         :page_layout,
+        :page_button_link,
         :map_config_id,
         :ask_follow_up,
+        :question_category,
         { title_multiloc: CL2_SUPPORTED_LOCALES,
           description_multiloc: CL2_SUPPORTED_LOCALES,
+          page_button_label_multiloc: CL2_SUPPORTED_LOCALES,
           linear_scale_label_1_multiloc: CL2_SUPPORTED_LOCALES,
           linear_scale_label_2_multiloc: CL2_SUPPORTED_LOCALES,
           linear_scale_label_3_multiloc: CL2_SUPPORTED_LOCALES,

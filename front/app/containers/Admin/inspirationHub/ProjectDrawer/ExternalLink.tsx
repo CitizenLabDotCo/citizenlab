@@ -9,6 +9,10 @@ import {
 } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
+import { trackEventByName } from 'utils/analytics';
+
+import tracks from './tracks';
+
 const StyledBox = styled(Box)`
   text-decoration: none;
   font-weight: bold;
@@ -30,6 +34,11 @@ const ExternalLink = ({ children, ...props }: Props) => {
       display="flex"
       flexDirection="row"
       alignItems="center"
+      onClick={() => {
+        trackEventByName(tracks.otherPlatformClickthrough, {
+          href: props.href,
+        });
+      }}
       {...props}
     >
       {children}

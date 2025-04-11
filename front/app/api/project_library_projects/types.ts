@@ -19,12 +19,9 @@ export type SortType =
 
 export type RansackParams = {
   // filters
-  'q[tenant_country_alpha2_eq]'?: string;
-  'q[tenant_population_group_eq]'?: PopulationGroup;
-  'q[score_total_gteq]'?: '1' | '2' | '3' | '4';
-  'q[phases_participation_method_eq]'?: ParticipationMethod;
-  'q[topic_id_eq]'?: string;
-  'q[status_eq]'?: Status;
+  'q[tenant_country_code_in]'?: string[];
+  'q[phases_participation_method_in]'?: ParticipationMethod[];
+  'q[tenant_population_group_in]'?: PopulationGroup[];
   'q[practical_end_at_gteq]'?: string;
   'q[practical_end_at_lt]'?: string;
   'q[title_en_or_description_en_or_tenant_name_cont]'?: string;
@@ -54,6 +51,7 @@ export interface ProjectLibraryProjectData {
   id: string;
   type: 'project_library_project';
   attributes: {
+    annotation_multiloc: Multiloc | null;
     cl_created_at: string;
     cl_updated_at: string;
     comments_count: number;
@@ -63,7 +61,7 @@ export interface ProjectLibraryProjectData {
     end_at: string | null;
     folder_id: string | null;
     folder_title_en: string | null;
-    folder_title_multiloc: Multiloc;
+    folder_title_multiloc: Multiloc | null;
     image_url: string | null;
     participants: number;
     practical_end_at: string | null;
@@ -77,7 +75,7 @@ export interface ProjectLibraryProjectData {
     slug: string;
     start_at: string;
     status: Status;
-    tenant_country_alpha2: string | null;
+    tenant_country_code: string | null;
     tenant_host: string;
     tenant_id: string;
     tenant_lifecycle_stage: string;

@@ -4,12 +4,11 @@ class AuthoringAssistanceService
   end
 
   def analyze!
-    duplicate_inputs_thread = start_thread { duplicate_inputs_response(_1) }
     toxicity_thread = start_thread { toxicity_response(_1) }
     custom_free_prompt_thread = start_thread { custom_free_prompt_response(_1) }
-    [duplicate_inputs_thread, toxicity_thread, custom_free_prompt_thread].each(&:join)
+    [toxicity_thread, custom_free_prompt_thread].each(&:join)
     prompt_response = {
-      **duplicate_inputs_thread[:response],
+      **duplicate_inputs_response(@authoring_assistance_response),
       **toxicity_thread[:response],
       **custom_free_prompt_thread[:response]
     }
@@ -20,14 +19,14 @@ class AuthoringAssistanceService
 
   def duplicate_inputs_response(authoring_assistance_response)
     service = SimilarIdeasService.new(authoring_assistance_response.idea)
-    service.upsert_embedding!
-    distance_threshold = 0.4
     limit = 5
+    title_threshold = phase_for_input(authoring_assistance_response.idea).similarity_threshold_title
+    body_threshold = phase_for_input(authoring_assistance_response.idea).similarity_threshold_body
     scope = authoring_assistance_response.idea.project.ideas
     if authoring_assistance_response.idea.author_id
       scope = scope.where.not(author_id: authoring_assistance_response.idea.author_id)
     end
-    ideas = service.similar_ideas(scope:, limit:, distance_threshold:)
+    ideas = service.similar_ideas(scope:, limit:, title_threshold:, body_threshold:)
     {
       duplicate_inputs: ideas.ids
     }
@@ -50,5 +49,9 @@ class AuthoringAssistanceService
         Thread.current[:response] = yield(local_authoring_assistance_response)
       end
     end
+  end
+
+  def phase_for_input(input)
+    @phase_for_input ||= TimelineService.new.current_phase_not_archived(input.project) || input.creation_phase || input.phases.last
   end
 end

@@ -13,8 +13,8 @@ module ParticipationMethod
     end
 
     def assign_defaults_for_phase
+      super
       phase.ideas_order ||= 'random'
-      phase.input_term ||= default_input_term if supports_input_term?
       voting_method.assign_defaults_for_phase
     end
 

@@ -22,7 +22,8 @@ module MultiTenancy
           logo: Rails.root.join('spec/fixtures/logo.png').open,
           settings: SettingsService.new.minimal_required_settings(
             locales: runner.seed_locales,
-            lifecycle_stage: 'active'
+            lifecycle_stage: 'active',
+            country_code: 'BE'
           ).deep_merge({
             core: {
               organization_type: "#{runner.seed_size}_city",
@@ -431,11 +432,19 @@ module MultiTenancy
               enabled: true,
               allowed: true
             },
+            comments_summaries: {
+              enabled: true,
+              allowed: true
+            },
             ask_a_question: {
               enabled: true,
               allowed: true
             },
             advanced_autotagging: {
+              enabled: true,
+              allowed: true
+            },
+            auto_insights: {
               enabled: true,
               allowed: true
             },

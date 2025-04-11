@@ -44,29 +44,43 @@ RSpec.describe ParticipationMethod::CommunityMonitorSurvey do
     end
   end
 
-  describe '#create_default_form!' do
-    it 'persists a default form with a page for the participation context' do
-      expect(phase.custom_form).to be_nil
+  describe '#default_fields' do
+    it 'returns an empty list if form is persisted' do
+      form = create(:custom_form, participation_context: phase)
+      expect(participation_method.default_fields(form)).to eq []
+    end
 
-      participation_method.create_default_form!
-      # create_default_form! does not reload associations for form/fields/options,
-      # so fetch the project from the database. The associations will be fetched
-      # when they are needed.
-      # Not doing this makes this test flaky, as create_default_form! creates fields
-      # and CustomField uses acts_as_list for ordering fields. The ordering is ok
-      # in the database, but not necessarily in memory.
-      phase_in_db = Phase.find(phase.id)
+    it 'returns the default fields if the form is not persisted' do
+      form = build(:custom_form, participation_context: phase)
+      expect(participation_method.default_fields(form).count).to eq 15
+      expect(participation_method.default_fields(form).pluck(:key)).to eq(%w[
+        page_quality_of_life place_to_live sense_of_safety access_to_parks affordable_housing employment_opportunities
+        page_service_delivery quality_of_services overall_value cleanliness_and_maintenance
+        page_governance_and_trust trust_in_government responsiveness_of_officials transparency_of_money_spent
+        form_end
+      ])
 
-      expect(phase_in_db.custom_form.custom_fields.size).to eq 4
-      expect(phase_in_db.custom_form.custom_fields.pluck(:input_type)).to match_array %w[page rating rating page]
+      # Labels
+      expect(participation_method.default_fields(form)[1].linear_scale_label_1_multiloc['en']).to eq 'Very poor'
+      expect(participation_method.default_fields(form)[2].linear_scale_label_2_multiloc['en']).to eq 'Poor'
+      expect(participation_method.default_fields(form)[3].linear_scale_label_3_multiloc['en']).to eq 'Fair'
+      expect(participation_method.default_fields(form)[4].linear_scale_label_4_multiloc['en']).to eq 'Good'
+      expect(participation_method.default_fields(form)[5].linear_scale_label_5_multiloc['en']).to eq 'Excellent'
+
+      # Last page
+      expect(participation_method.default_fields(form).last.page_button_link).to eq '/'
+      expect(participation_method.default_fields(form).last.page_button_label_multiloc).to match(
+        { 'en' => 'Back to home', 'fr-FR' => "Retour à l'accueil", 'nl-NL' => 'Terug naar home' }
+      )
     end
   end
 
-  describe '#default_fields' do
-    it 'returns an empty list' do
-      expect(
-        participation_method.default_fields(create(:custom_form, participation_context: phase)).map(&:code)
-      ).to eq []
+  describe '#create_default_form!' do
+    it 'persists a default form for the phase' do
+      expect(phase.custom_form).to be_nil
+      participation_method.create_default_form!
+      phase_in_db = Phase.find(phase.id)
+      expect(phase_in_db.custom_form.custom_fields.size).to eq 15
     end
   end
 
@@ -143,6 +157,17 @@ RSpec.describe ParticipationMethod::CommunityMonitorSurvey do
     end
   end
 
+  describe '#user_fields_in_form?' do
+    it 'returns false when not enabled' do
+      expect(participation_method.user_fields_in_form?).to be false
+    end
+
+    it 'returns true when enabled' do
+      phase.user_fields_in_form = true
+      expect(participation_method.user_fields_in_form?).to be true
+    end
+  end
+
   its(:additional_export_columns) { is_expected.to eq [] }
   its(:allowed_ideas_orders) { is_expected.to be_empty }
   its(:return_disabled_actions?) { is_expected.to be true }
@@ -154,7 +179,6 @@ RSpec.describe ParticipationMethod::CommunityMonitorSurvey do
   its(:supports_input_term?) { is_expected.to be false }
   its(:supports_inputs_without_author?) { is_expected.to be true }
   its(:supports_multiple_posts?) { is_expected.to be false }
-  its(:supports_pages_in_form?) { is_expected.to be true }
   its(:supports_permitted_by_everyone?) { is_expected.to be true }
   its(:supports_public_visibility?) { is_expected.to be false }
   its(:supports_reacting?) { is_expected.to be false }
@@ -165,6 +189,8 @@ RSpec.describe ParticipationMethod::CommunityMonitorSurvey do
   its(:transitive?) { is_expected.to be false }
   its(:form_logic_enabled?) { is_expected.to be false }
   its(:follow_idea_on_idea_submission?) { is_expected.to be false }
+  its(:supports_custom_field_categories?) { is_expected.to be true }
+  its(:supports_multiple_phase_reports?) { is_expected.to be true }
 
   describe 'proposed_budget_in_form?' do # private method
     it 'is expected to be false' do

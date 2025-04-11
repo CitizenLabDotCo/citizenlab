@@ -1,46 +1,45 @@
 import React from 'react';
 
-import { Box, Select } from '@citizenlab/cl2-component-library';
-
 import useProjectLibraryCountries from 'api/project_library_countries/useProjectLibraryCountries';
-import { RansackParams } from 'api/project_library_projects/types';
 
+import FilterSelector from 'components/FilterSelector';
+
+import { trackEventByName } from 'utils/analytics';
 import { useIntl } from 'utils/cl-intl';
 
 import { setRansackParam, useRansackParam } from '../utils';
 
 import messages from './messages';
-
-type Option = {
-  value: RansackParams['q[tenant_country_alpha2_eq]'];
-  label: string;
-};
+import tracks from './tracks';
 
 const Country = () => {
+  const values = useRansackParam('q[tenant_country_code_in]');
   const { formatMessage } = useIntl();
-  const value = useRansackParam('q[tenant_country_alpha2_eq]');
+
   const { data: countries } = useProjectLibraryCountries();
 
   const options = countries?.data.attributes.map(
     ({ code, name, emoji_flag }) => ({
       value: code,
-      label: `${emoji_flag} ${name}`,
+      text: `${emoji_flag} ${name}`,
     })
   );
 
   return (
-    <Box>
-      <Select
-        value={value}
-        options={options ?? []}
-        canBeEmpty
-        onChange={(option: Option) =>
-          setRansackParam('q[tenant_country_alpha2_eq]', option.value)
-        }
-        placeholder={formatMessage(messages.country)}
-        mr="28px"
-      />
-    </Box>
+    <FilterSelector
+      multipleSelectionAllowed
+      selected={values ?? []}
+      values={options ?? []}
+      title={formatMessage(messages.country)}
+      name="country-select"
+      mr="0px"
+      onChange={(countryCodes) => {
+        setRansackParam('q[tenant_country_code_in]', countryCodes);
+        trackEventByName(tracks.setCountry, {
+          country_codes: JSON.stringify(countryCodes),
+        });
+      }}
+    />
   );
 };
 

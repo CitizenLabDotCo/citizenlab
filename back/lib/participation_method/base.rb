@@ -118,10 +118,6 @@ module ParticipationMethod
       true
     end
 
-    def supports_pages_in_form?
-      false
-    end
-
     def supports_permitted_by_everyone?
       false
     end
@@ -182,7 +178,15 @@ module ParticipationMethod
       true
     end
 
-    def supports_user_fields_in_form?
+    def supports_custom_field_categories?
+      false
+    end
+
+    def user_fields_in_form?
+      false
+    end
+
+    def supports_multiple_phase_reports?
       false
     end
 

@@ -216,12 +216,15 @@ class SideFxIdeaService
   end
 
   def enqueue_embeddings_job(idea)
-    UpsertEmbeddingJob.perform_later(idea) if AppConfiguration.instance.feature_activated?('similar_inputs')
+    return if !AppConfiguration.instance.feature_activated?('authoring_assistance')
+    return if !idea.participation_method_on_creation.supports_public_visibility?
+
+    UpsertEmbeddingJob.perform_later(idea)
   end
 
   # update the user profile if user fields are changed as part of a survey
   def update_user_profile(idea, user)
-    return unless user && idea.participation_method_on_creation.supports_user_fields_in_form?
+    return unless user && idea.participation_method_on_creation.user_fields_in_form?
 
     user_values_from_idea = idea.custom_field_values.select { |key, _value| key.start_with?('u_') }.transform_keys { |key| key[2..] }
     user.update!(custom_field_values: user.custom_field_values.merge(user_values_from_idea))

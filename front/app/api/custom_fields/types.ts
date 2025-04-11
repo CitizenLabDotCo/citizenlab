@@ -25,7 +25,6 @@ export type ICustomFieldInputType =
   | 'ranking'
   | 'rating'
   | 'matrix_linear_scale'
-  | 'section'
   | 'page'
   | 'file_upload'
   | 'shapefile_upload'
@@ -72,6 +71,8 @@ export interface IAttributes {
   input_type: ICustomFieldInputType;
   map_config_id?: string | null;
   page_layout?: 'default' | 'map' | null;
+  page_button_label_multiloc?: Multiloc;
+  page_button_link?: string;
   required: boolean;
   isRequiredEditable?: boolean;
   isEnabledEditable?: boolean;
@@ -107,6 +108,7 @@ export interface IAttributes {
   other?: boolean;
   random_option_ordering?: boolean;
   dropdown_layout?: boolean;
+  question_category?: string;
 }
 
 export interface ICustomFieldResponse {
@@ -172,6 +174,7 @@ export type IFlatCreateCustomField = Optional<
   | 'maximum'
   | 'random_option_ordering'
   | 'dropdown_layout'
+  | 'question_category'
 > & {
   isLocalOnly: boolean;
 };
