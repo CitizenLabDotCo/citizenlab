@@ -158,7 +158,7 @@ const Step1 = ({
           tagType="custom"
           title={formatMessage(messages.classificationByLabelTitle)}
           onSelect={() => onSelectMethod('label_classification')}
-          isDisabled={isLoading}
+          isDisabled={!advancedAutotaggingAllowed}
           isLoading={isLoading && loadingMethod === 'label_classification'}
           tooltip={formatMessage(messages.classificationByLabelTooltip)}
         >

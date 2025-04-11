@@ -9,7 +9,7 @@ module EmailCampaigns
     end
 
     def header_title
-      format_message('title', values: { firstName: recipient_first_name })
+      format_message('title')
     end
 
     def header_message

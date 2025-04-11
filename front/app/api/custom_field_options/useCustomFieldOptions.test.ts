@@ -4,32 +4,24 @@ import { setupServer } from 'msw/node';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
 
-import { userCustomFieldsOptionsData } from './__mocks__/useUserCustomFieldsOptions';
-import useUserCustomFieldsOption from './useUserCustomFieldsOption';
+import { customFieldOptionsData } from './__mocks__/useCustomFieldOptions';
+import useCustomFieldOptions from './useCustomFieldOptions';
 
-const apiPath =
-  '*/users/custom_fields/:customFieldId/custom_field_options/:optionId';
+const apiPath = '*/custom_fields/:customFieldId/custom_field_options';
 
 const server = setupServer(
   http.get(apiPath, () => {
-    return HttpResponse.json(
-      { data: userCustomFieldsOptionsData[0] },
-      { status: 200 }
-    );
+    return HttpResponse.json({ data: customFieldOptionsData }, { status: 200 });
   })
 );
 
-describe('useUserCustomFieldsOption', () => {
+describe('useCustomFieldOptions', () => {
   beforeAll(() => server.listen());
   afterAll(() => server.close());
 
   it('returns data correctly', async () => {
     const { result, waitFor } = renderHook(
-      () =>
-        useUserCustomFieldsOption({
-          customFieldId: 'customFieldId',
-          optionId: 'optionId',
-        }),
+      () => useCustomFieldOptions('questionId'),
       {
         wrapper: createQueryClientWrapper(),
       }
@@ -40,7 +32,7 @@ describe('useUserCustomFieldsOption', () => {
     await waitFor(() => expect(result.current.isSuccess).toBe(true));
 
     expect(result.current.isLoading).toBe(false);
-    expect(result.current.data?.data).toEqual(userCustomFieldsOptionsData[0]);
+    expect(result.current.data?.data).toEqual(customFieldOptionsData);
   });
 
   it('returns error correctly', async () => {
@@ -51,11 +43,7 @@ describe('useUserCustomFieldsOption', () => {
     );
 
     const { result, waitFor } = renderHook(
-      () =>
-        useUserCustomFieldsOption({
-          customFieldId: 'customFieldId',
-          optionId: 'optionId',
-        }),
+      () => useCustomFieldOptions('questionId'),
       {
         wrapper: createQueryClientWrapper(),
       }

@@ -4,10 +4,9 @@ import { setupServer } from 'msw/node';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
 
-import useDeleteUserCustomFieldsOption from './useDeleteUserCustomFieldsOption';
+import useDeleteCustomFieldOption from './useDeleteCustomFieldOption';
 
-const apiPath =
-  '*/users/custom_fields/:customFieldId/custom_field_options/:optionId';
+const apiPath = '*/custom_field_options/:optionId';
 
 const server = setupServer(
   http.delete(apiPath, () => {
@@ -15,22 +14,18 @@ const server = setupServer(
   })
 );
 
-describe('useDeleteUserCustomFieldsOption', () => {
+describe('useDeleteCustomFieldOption', () => {
   beforeAll(() => server.listen());
   afterAll(() => server.close());
 
   it('mutates data correctly', async () => {
-    const { result, waitFor } = renderHook(
-      () => useDeleteUserCustomFieldsOption(),
-      {
-        wrapper: createQueryClientWrapper(),
-      }
-    );
+    const { result, waitFor } = renderHook(() => useDeleteCustomFieldOption(), {
+      wrapper: createQueryClientWrapper(),
+    });
 
     act(() => {
       result.current.mutate({
         optionId: 'optionId',
-        customFieldId: 'customFieldId',
       });
     });
 
@@ -44,17 +39,13 @@ describe('useDeleteUserCustomFieldsOption', () => {
       })
     );
 
-    const { result, waitFor } = renderHook(
-      () => useDeleteUserCustomFieldsOption(),
-      {
-        wrapper: createQueryClientWrapper(),
-      }
-    );
+    const { result, waitFor } = renderHook(() => useDeleteCustomFieldOption(), {
+      wrapper: createQueryClientWrapper(),
+    });
 
     act(() => {
       result.current.mutate({
         optionId: 'optionId',
-        customFieldId: 'customFieldId',
       });
     });
 

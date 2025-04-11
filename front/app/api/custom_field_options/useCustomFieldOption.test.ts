@@ -4,27 +4,30 @@ import { setupServer } from 'msw/node';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
 
-import { userCustomFieldsOptionsData } from './__mocks__/useUserCustomFieldsOptions';
-import useUserCustomFieldsOptions from './useUserCustomFieldsOptions';
+import { customFieldOptionsData } from './__mocks__/useCustomFieldOptions';
+import useCustomFieldOption from './useCustomFieldOption';
 
-const apiPath = '*/users/custom_fields/:customFieldId/custom_field_options';
+const apiPath = '*/custom_field_options/:optionId';
 
 const server = setupServer(
   http.get(apiPath, () => {
     return HttpResponse.json(
-      { data: userCustomFieldsOptionsData },
+      { data: customFieldOptionsData[0] },
       { status: 200 }
     );
   })
 );
 
-describe('useUserCustomFieldsOptions', () => {
+describe('useCustomFieldOption', () => {
   beforeAll(() => server.listen());
   afterAll(() => server.close());
 
   it('returns data correctly', async () => {
     const { result, waitFor } = renderHook(
-      () => useUserCustomFieldsOptions('questionId'),
+      () =>
+        useCustomFieldOption({
+          optionId: 'optionId',
+        }),
       {
         wrapper: createQueryClientWrapper(),
       }
@@ -35,7 +38,7 @@ describe('useUserCustomFieldsOptions', () => {
     await waitFor(() => expect(result.current.isSuccess).toBe(true));
 
     expect(result.current.isLoading).toBe(false);
-    expect(result.current.data?.data).toEqual(userCustomFieldsOptionsData);
+    expect(result.current.data?.data).toEqual(customFieldOptionsData[0]);
   });
 
   it('returns error correctly', async () => {
@@ -46,7 +49,10 @@ describe('useUserCustomFieldsOptions', () => {
     );
 
     const { result, waitFor } = renderHook(
-      () => useUserCustomFieldsOptions('questionId'),
+      () =>
+        useCustomFieldOption({
+          optionId: 'optionId',
+        }),
       {
         wrapper: createQueryClientWrapper(),
       }

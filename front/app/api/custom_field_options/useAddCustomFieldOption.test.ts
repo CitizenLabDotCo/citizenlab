@@ -4,31 +4,25 @@ import { setupServer } from 'msw/node';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
 
-import { userCustomFieldsOptionsData } from './__mocks__/useUserCustomFieldsOptions';
-import useAddUserCustomFieldOption from './useAddUserCustomFieldOption';
+import { customFieldOptionsData } from './__mocks__/useCustomFieldOptions';
+import useAddCustomFieldOption from './useAddCustomFieldOption';
 
-const apiPath = '*/users/custom_fields/:customFieldId/custom_field_options';
+const apiPath = '*/custom_fields/:customFieldId/custom_field_options';
 
 const server = setupServer(
   http.post(apiPath, () => {
-    return HttpResponse.json(
-      { data: userCustomFieldsOptionsData },
-      { status: 200 }
-    );
+    return HttpResponse.json({ data: customFieldOptionsData }, { status: 200 });
   })
 );
 
-describe('useAddUserCustomFieldOption', () => {
+describe('useAddCustomFieldOption', () => {
   beforeAll(() => server.listen());
   afterAll(() => server.close());
 
   it('mutates data correctly', async () => {
-    const { result, waitFor } = renderHook(
-      () => useAddUserCustomFieldOption(),
-      {
-        wrapper: createQueryClientWrapper(),
-      }
-    );
+    const { result, waitFor } = renderHook(() => useAddCustomFieldOption(), {
+      wrapper: createQueryClientWrapper(),
+    });
 
     act(() => {
       result.current.mutate({
@@ -38,7 +32,7 @@ describe('useAddUserCustomFieldOption', () => {
     });
 
     await waitFor(() => expect(result.current.isSuccess).toBe(true));
-    expect(result.current.data?.data).toEqual(userCustomFieldsOptionsData);
+    expect(result.current.data?.data).toEqual(customFieldOptionsData);
   });
 
   it('returns error correctly', async () => {
@@ -48,12 +42,9 @@ describe('useAddUserCustomFieldOption', () => {
       })
     );
 
-    const { result, waitFor } = renderHook(
-      () => useAddUserCustomFieldOption(),
-      {
-        wrapper: createQueryClientWrapper(),
-      }
-    );
+    const { result, waitFor } = renderHook(() => useAddCustomFieldOption(), {
+      wrapper: createQueryClientWrapper(),
+    });
 
     act(() => {
       result.current.mutate({
