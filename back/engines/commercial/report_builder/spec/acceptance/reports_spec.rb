@@ -88,6 +88,25 @@ resource 'Reports' do
         assert_status 200
         expect(response_ids).to match_array(reports.pluck(:id))
       end
+
+      example 'Find community monitor reports' do
+        community_monitor_phase = create(:community_monitor_survey_phase)
+        settings = AppConfiguration.instance.settings
+        settings['community_monitor'] = { 'enabled' => true, 'allowed' => true, 'project_id' => community_monitor_phase.project.id }
+        AppConfiguration.instance.update!(settings:)
+
+        report = create(:report, phase: community_monitor_phase)
+
+        do_request(community_monitor: 'true')
+        assert_status 200
+        expect(response_ids).to eq [report.id]
+      end
+
+      example 'Find community monitor reports (community monitor not configured)' do
+        do_request(community_monitor: 'true')
+        assert_status 200
+        expect(response_data).to be_empty
+      end
     end
 
     include_examples 'not authorized to visitors'

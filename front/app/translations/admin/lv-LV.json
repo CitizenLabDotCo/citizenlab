@@ -1886,7 +1886,6 @@
   "app.containers.AdminPage.ProjectEdit.survey.file_upload": "Failu augšupielāde",
   "app.containers.AdminPage.ProjectEdit.survey.goBackButtonMessage": "Atgriezties",
   "app.containers.AdminPage.ProjectEdit.survey.importInputs": "Importēt",
-  "app.containers.AdminPage.ProjectEdit.survey.informationText3": "Īso un garo atbilžu jautājumu AI kopsavilkumiem var piekļūt no AI cilnes kreisajā sānjoslā.",
   "app.containers.AdminPage.ProjectEdit.survey.linear_scale2": "Lineārā skala",
   "app.containers.AdminPage.ProjectEdit.survey.matrix_linear_scale2": "Matrica",
   "app.containers.AdminPage.ProjectEdit.survey.multiline_text2": "Garā atbilde",

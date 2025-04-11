@@ -1886,7 +1886,6 @@
   "app.containers.AdminPage.ProjectEdit.survey.file_upload": "تحميل الملف",
   "app.containers.AdminPage.ProjectEdit.survey.goBackButtonMessage": "عُد",
   "app.containers.AdminPage.ProjectEdit.survey.importInputs": "يستورد",
-  "app.containers.AdminPage.ProjectEdit.survey.informationText3": "يمكن الوصول إلى ملخصات الذكاء الاصطناعي لأسئلة الإجابات القصيرة والطويلة من علامة تبويب الذكاء الاصطناعي في الشريط الجانبي الأيسر.",
   "app.containers.AdminPage.ProjectEdit.survey.linear_scale2": "مقياس خطي",
   "app.containers.AdminPage.ProjectEdit.survey.matrix_linear_scale2": "المصفوفة",
   "app.containers.AdminPage.ProjectEdit.survey.multiline_text2": "اجابة طويلة",

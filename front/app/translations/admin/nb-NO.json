@@ -1886,7 +1886,6 @@
   "app.containers.AdminPage.ProjectEdit.survey.file_upload": "Filopplasting",
   "app.containers.AdminPage.ProjectEdit.survey.goBackButtonMessage": "Gå tilbake",
   "app.containers.AdminPage.ProjectEdit.survey.importInputs": "Import",
-  "app.containers.AdminPage.ProjectEdit.survey.informationText3": "AI-sammendrag av korte og lange spørsmål er tilgjengelige fra AI-fanen i venstre sidefelt.",
   "app.containers.AdminPage.ProjectEdit.survey.linear_scale2": "Lineær skala",
   "app.containers.AdminPage.ProjectEdit.survey.matrix_linear_scale2": "Matrise",
   "app.containers.AdminPage.ProjectEdit.survey.multiline_text2": "Langt svar",

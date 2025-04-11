@@ -9,4 +9,8 @@ export default defineMessages({
     id: 'app.containers.admin.ReportBuilder.start1',
     defaultMessage: 'Start',
   },
+  quarterReport: {
+    id: 'app.containers.admin.ReportBuilder.quarterReport1',
+    defaultMessage: 'Community Monitor Report: {year} Q{quarter}',
+  },
 });

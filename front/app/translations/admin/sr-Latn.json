@@ -1886,7 +1886,6 @@
   "app.containers.AdminPage.ProjectEdit.survey.file_upload": "File upload",
   "app.containers.AdminPage.ProjectEdit.survey.goBackButtonMessage": "Go back",
   "app.containers.AdminPage.ProjectEdit.survey.importInputs": "Import",
-  "app.containers.AdminPage.ProjectEdit.survey.informationText3": "AI summaries of short and long answer questions can be accessed from the AI tab in the left sidebar.",
   "app.containers.AdminPage.ProjectEdit.survey.linear_scale2": "Linearna skala",
   "app.containers.AdminPage.ProjectEdit.survey.matrix_linear_scale2": "Matrix",
   "app.containers.AdminPage.ProjectEdit.survey.multiline_text2": "Long answer",

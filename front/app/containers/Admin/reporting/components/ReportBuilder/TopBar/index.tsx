@@ -11,6 +11,7 @@ import { useEditor } from '@craftjs/core';
 import { RouteType } from 'routes';
 import { SupportedLocale } from 'typings';
 
+import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import usePhase from 'api/phases/usePhase';
 import useProjectById from 'api/projects/useProjectById';
 import useUpdateReportLayout from 'api/report_layout/useUpdateReportLayout';
@@ -28,6 +29,7 @@ import Button from 'components/UI/ButtonWithLink';
 
 import { useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
+import { isCommunityMonitorProject } from 'utils/projectUtils';
 
 import { PLATFORM_TEMPLATE_MIN_NUMBER_OF_NODES_BEFORE_AUTOSAVE } from '../Templates/PlatformTemplate/constants';
 import { PROJECT_TEMPLATE_MIN_NUMBER_OF_NODES_BEFORE_AUTOSAVE } from '../Templates/ProjectTemplate/constants';
@@ -72,6 +74,7 @@ const ContentBuilderTopBar = ({
   setSaved,
   setSelectedLocale,
 }: ContentBuilderTopBarProps) => {
+  const { data: appConfig } = useAppConfiguration();
   const [initialized, setInitialized] = useState(false);
   const [showQuitModal, setShowQuitModal] = useState(false);
   const { query } = useEditor();
@@ -100,6 +103,11 @@ const ContentBuilderTopBar = ({
     }
   };
   const doGoBack = () => {
+    if (projectId && isCommunityMonitorProject(projectId, appConfig)) {
+      clHistory.push('/admin/community-monitor/reports');
+      return;
+    }
+
     const goBackUrl: RouteType =
       projectId && phaseId
         ? `/admin/projects/${projectId}/phases/${phaseId}/report`

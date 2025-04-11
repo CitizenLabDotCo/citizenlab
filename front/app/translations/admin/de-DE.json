@@ -1886,7 +1886,6 @@
   "app.containers.AdminPage.ProjectEdit.survey.file_upload": "Dateien hochladen",
   "app.containers.AdminPage.ProjectEdit.survey.goBackButtonMessage": "Zurück",
   "app.containers.AdminPage.ProjectEdit.survey.importInputs": "Importieren",
-  "app.containers.AdminPage.ProjectEdit.survey.informationText3": "Auf KI-Zusammenfassungen von Fragen mit kurzen und langen Antworten kann über die Registerkarte „KI“ in der linken Seitenleiste zugegriffen werden.",
   "app.containers.AdminPage.ProjectEdit.survey.linear_scale2": "Lineare Skala",
   "app.containers.AdminPage.ProjectEdit.survey.matrix_linear_scale2": "Matrix",
   "app.containers.AdminPage.ProjectEdit.survey.multiline_text2": "Lange Antwort",
