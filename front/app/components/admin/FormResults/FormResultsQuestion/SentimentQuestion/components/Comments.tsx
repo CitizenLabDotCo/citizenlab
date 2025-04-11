@@ -77,7 +77,6 @@ const Comments = ({
                 <Analysis
                   customFieldId={customFieldId}
                   textResponsesCount={textResponses.length}
-                  hasOtherResponses={false}
                   projectId={projectId}
                   phaseId={phaseId}
                 />
