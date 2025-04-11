@@ -99,7 +99,6 @@ class Project < ApplicationRecord
   validate :admin_publication_must_exist, unless: proc { Current.loading_tenant_template } # TODO: This should always be validated!
 
   scope :not_hidden, -> { where(hidden: false) }
-  scope :hidden, -> { where(hidden: true) }
 
   pg_search_scope :search_by_all,
     against: %i[title_multiloc description_multiloc description_preview_multiloc slug],

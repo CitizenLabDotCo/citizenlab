@@ -39,7 +39,7 @@ const LABELS: Record<ParticipationMethod, MessageDescriptor> = {
   poll: messages.poll,
   survey: messages.survey,
   document_annotation: messages.document_annotation,
-  community_monitor_survey: messages.document_annotation,
+  community_monitor_survey: messages.communityMonitorSurvey,
 };
 
 const MethodsUsedCard = ({
