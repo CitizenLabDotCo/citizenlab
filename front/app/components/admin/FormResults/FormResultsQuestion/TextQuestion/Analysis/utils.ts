@@ -29,57 +29,51 @@ type FilterForQuarterArgs = {
   analysisSummaries?: UseQueryResult<ISummary, unknown>[];
 };
 
-/* For Community Monitor, we only want to show insights for the selected quarter (URL params)
- *
- * Description: We want to filter the insights using the published_at_from and published_at_from filters
- * on the insight summaries.
+/**
+ * Filters insights to only include those published within the selected quarter (from URL params).
+ * Used by Community Monitor.
  */
 export const filterForCommunityMonitorQuarter = ({
   analysisSummaries,
   insights,
   search,
 }: FilterForQuarterArgs) => {
-  // Get the year/quarter from URL
-  const yearFilter = getYearFilter(search);
-  const quarterFilter = getQuarterFilter(search);
+  const year = getYearFilter(search)
+    ? parseInt(getYearFilter(search), 10)
+    : null;
+  const quarter = getQuarterFilter(search)
+    ? parseInt(getQuarterFilter(search), 10)
+    : null;
 
-  // Parse quarter and year filters
-  const quarter = quarterFilter ? parseInt(quarterFilter, 10) : null;
-  const year = yearFilter ? parseInt(yearFilter, 10) : null;
+  if (!year || !quarter) {
+    return { data: insights?.data ?? [] }; // If no valid filter, return all
+  }
 
-  // Filter insights to only select those insights with a summary created for the selected quarter
-  const quarterInsights = insights?.data.filter((insight) => {
-    // Find the associated summary for the insight
+  const quarterStart = new Date(year, (quarter - 1) * 3, 1);
+  const quarterEnd = new Date(year, quarter * 3, 0, 23, 59, 59, 999); // Inclusive to end of quarter
+
+  const filteredInsights = insights?.data.filter((insight) => {
     const summary = analysisSummaries?.find(
       (summary) =>
         summary.data?.data.id === insight.relationships.insightable.data.id
     );
 
-    // Get any date filters for the summary
     const filters = summary?.data?.data.attributes.filters;
-    const publishedAtFrom = filters?.published_at_from;
-    const publishedAtTo = filters?.published_at_to;
+    const publishedFrom = filters?.published_at_from;
+    const publishedTo = filters?.published_at_to;
 
-    if (year && quarter && publishedAtFrom && publishedAtTo) {
-      // Define quarter start and end dates
-      const quarterStart = new Date(year, (quarter - 1) * 3, 1);
-      const quarterEnd = new Date(year, quarter * 3, 0);
+    if (publishedFrom && publishedTo) {
+      const fromDate = new Date(publishedFrom);
 
-      // Convert published date to actual Date object
-      const publishedAtFromDate = new Date(publishedAtFrom);
-
-      // Check if published within the quarter
-      const isWithinQuarter =
-        publishedAtFromDate >= quarterStart &&
-        publishedAtFromDate <= quarterEnd;
-
-      return isWithinQuarter;
+      // Return insights where "from" date falls within the quarter
+      return fromDate >= quarterStart && fromDate <= quarterEnd;
     }
 
-    return true; // If there are summaries an admin created scross all quarters, show those still.
+    // Keep any insights without date filters (e.g. admin-created summaries over multiple quarters)
+    return true;
   });
 
   return {
-    data: quarterInsights ?? [],
+    data: filteredInsights ?? [],
   };
 };
