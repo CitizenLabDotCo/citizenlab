@@ -339,7 +339,6 @@ const methodToConfig: {
   poll: pollConfig,
   volunteering: volunteeringConfig,
   document_annotation: documentAnnotationConfig,
-  community_monitor_survey: nativeSurveyConfig,
 };
 
 /** Get the configuration object for the given participation method
