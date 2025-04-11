@@ -33,7 +33,7 @@ export const nativeSurveyConfig: FormBuilderConfig = {
     'ranking',
     'rating',
     'matrix_linear_scale',
-    // 'sentiment_linear_scale', ToDo: Uncomment once fully released.
+    'sentiment_linear_scale',
     'page',
     'file_upload',
     'shapefile_upload',

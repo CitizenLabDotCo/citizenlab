@@ -2,7 +2,7 @@ import React from 'react';
 
 import { Box, Title, Text } from '@citizenlab/cl2-component-library';
 
-import { ResultUngrouped } from 'api/survey_results/types';
+import { ResultGrouped, ResultUngrouped } from 'api/survey_results/types';
 
 import TrendIndicator from 'components/TrendIndicator';
 
@@ -11,7 +11,7 @@ import { getPercentageDifference } from '../utils';
 import SentimentScore from './SentimentScore';
 
 type Props = {
-  result: ResultUngrouped;
+  result: ResultUngrouped | ResultGrouped;
 };
 
 const SentimentStats = ({ result }: Props) => {
