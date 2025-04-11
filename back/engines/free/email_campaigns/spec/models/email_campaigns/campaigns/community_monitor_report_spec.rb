@@ -49,17 +49,12 @@ RSpec.describe EmailCampaigns::Campaigns::CommunityMonitorReport do
 
     context 'when community monitor not enabled' do
       it 'returns false' do
+        SettingsService.new.deactivate_feature! 'community_monitor'
         expect(campaign.send(:content_worth_sending?, {})).to be false
       end
     end
 
     context 'when community monitor enabled' do
-      before do
-        settings = AppConfiguration.instance.settings
-        settings['community_monitor'] = { 'enabled' => true, 'allowed' => true, 'project_id' => phase.project_id }
-        AppConfiguration.instance.update!(settings:)
-      end
-
       it 'returns false when there are no responses' do
         expect(campaign.send(:content_worth_sending?, {})).to be false
       end
