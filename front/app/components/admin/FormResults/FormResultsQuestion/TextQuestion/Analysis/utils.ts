@@ -79,9 +79,9 @@ export const filterForCommunityMonitorQuarter = ({
   };
 };
 
-// getPublishAtFromFilter
+// getPublishedAtFromFilter
 // Description: This function generates a "published_at_from" date from the URL quarter parameters.
-export const getPublishAtFromFilter = (search: URLSearchParams) => {
+export const getPublishedAtFromFilter = (search: URLSearchParams) => {
   // Get the year/quarter from URL
   const yearFilter = getYearFilter(search);
   const quarterFilter = getQuarterFilter(search);

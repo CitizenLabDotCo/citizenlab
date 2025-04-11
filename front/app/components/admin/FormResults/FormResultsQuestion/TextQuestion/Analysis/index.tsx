@@ -79,13 +79,14 @@ const Analysis = ({
         analysis.relationships.main_custom_field?.data?.id === customFieldId
     );
 
-  const { data: insights, isLoading: isInsightsLoading } = useAnalysisInsights({
-    analysisId: relevantAnalysis?.id,
-  });
+  const { data: insightsData, isLoading: isInsightsLoading } =
+    useAnalysisInsights({
+      analysisId: relevantAnalysis?.id,
+    });
 
   // Fetch the analysis summaries if we're looking at the Community Monitor
   // (So we can filter the analyses by quarter)
-  const analysisSummaryIds = insights?.data.map(
+  const analysisSummaryIds = insightsData?.data.map(
     (insight) => insight.relationships.insightable.data.id
   );
   const analysisSummaries = useAnalysisSummaries({
@@ -97,13 +98,14 @@ const Analysis = ({
     enabled: isCommunityMonitor,
   });
 
-  const filteredInsights = isCommunityMonitor
+  // Filter the insights if necessary
+  const insights = isCommunityMonitor
     ? filterForCommunityMonitorQuarter({
-        insights,
+        insights: insightsData,
         search,
         analysisSummaries,
       })
-    : insights;
+    : insightsData;
 
   // Create an analysis if there are no analyses yet
   useEffect(() => {
@@ -111,7 +113,7 @@ const Analysis = ({
       analyses &&
       customFieldId &&
       !relevantAnalysis &&
-      textResponsesCount > 0
+      textResponsesCount > 10
     ) {
       addAnalysis({
         projectId: phaseId ? undefined : projectId,
@@ -139,7 +141,7 @@ const Analysis = ({
   const hideAnalysisInsights =
     relevantAnalysis && !relevantAnalysis.attributes.show_insights;
 
-  const noInsights = !relevantAnalysis || filteredInsights?.data.length === 0;
+  const noInsights = !relevantAnalysis || insights?.data.length === 0;
 
   const goToAnalysis = () => {
     if (relevantAnalysis?.id) {
@@ -243,7 +245,7 @@ const Analysis = ({
 
           <AnalysisInsights
             analysis={relevantAnalysis}
-            filteredInsights={filteredInsights}
+            insights={insights}
             hasOtherResponses={hasOtherResponses}
           />
         </>

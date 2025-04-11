@@ -12,7 +12,6 @@ import { useSearchParams } from 'react-router-dom';
 import { IAnalysisData } from 'api/analyses/types';
 import useInfiniteAnalysisInputs from 'api/analysis_inputs/useInfiniteAnalysisInputs';
 import { IInsights } from 'api/analysis_insights/types';
-import useAnalysisInsights from 'api/analysis_insights/useAnalysisInsights';
 import useAddAnalysisSummary from 'api/analysis_summaries/useAddAnalysisSummary';
 import useAddAnalysisSummaryPreCheck from 'api/analysis_summary_pre_check/useAddAnalysisSummaryPreCheck';
 
@@ -24,16 +23,16 @@ import messages from '../../../messages';
 
 import Question from './Question';
 import Summary from './Summary';
-import { getPublishAtFromFilter, getPublishedAtToFilter } from './utils';
+import { getPublishedAtFromFilter, getPublishedAtToFilter } from './utils';
 
 const AnalysisInsights = ({
   analysis,
   hasOtherResponses,
-  filteredInsights,
+  insights,
 }: {
   analysis: IAnalysisData;
   hasOtherResponses?: boolean;
-  filteredInsights?: IInsights;
+  insights?: IInsights;
 }) => {
   const [search] = useSearchParams();
   const [automaticSummaryCreated, setAutomaticSummaryCreated] = useState(false);
@@ -44,11 +43,6 @@ const AnalysisInsights = ({
   const { data: inputs } = useInfiniteAnalysisInputs({
     analysisId: analysis.id,
   });
-  const { data: insightsData } = useAnalysisInsights({
-    analysisId: analysis.id,
-  });
-
-  const insights = filteredInsights || insightsData;
 
   const { mutate: addAnalysisSummary, isLoading: addSummaryIsLoading } =
     useAddAnalysisSummary();
@@ -77,7 +71,7 @@ const AnalysisInsights = ({
           analysisId: analysis.id,
           filters: {
             input_custom_field_no_empty_values: true,
-            published_at_from: getPublishAtFromFilter(search),
+            published_at_from: getPublishedAtFromFilter(search),
             published_at_to: getPublishedAtToFilter(search),
           },
         },
@@ -89,7 +83,7 @@ const AnalysisInsights = ({
             if (!data.data.attributes.impossible_reason) {
               const filters = {
                 input_custom_field_no_empty_values: true,
-                published_at_from: getPublishAtFromFilter(search),
+                published_at_from: getPublishedAtFromFilter(search),
                 published_at_to: getPublishedAtToFilter(search),
                 limit: !largeSummariesAllowed ? 30 : undefined,
               };
