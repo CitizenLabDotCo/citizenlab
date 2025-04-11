@@ -42,6 +42,7 @@ module EmailCampaigns
 
     def schedule_multiloc_value
       rules = schedule['rrules'][0]
+      return unless rules
 
       # Quarterly schedule
       if rules['rule_type'] == 'IceCube::MonthlyRule' && rules['interval'] == 3

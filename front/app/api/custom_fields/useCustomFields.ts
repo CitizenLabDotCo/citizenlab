@@ -1,4 +1,4 @@
-import useCustomFieldOptions from 'api/custom_field_options/useCustomFieldOptions';
+import useCustomFieldOptionsBulk from 'api/custom_field_options/useCustomFieldOptionsBulk';
 import useCustomFieldStatements from 'api/custom_field_statements/useCustomFieldStatements';
 
 import { ICustomFieldsParameters, IFlatCustomField } from './types';
@@ -12,9 +12,7 @@ const useCustomFields = ({
 }: ICustomFieldsParameters) => {
   const result = useRawCustomFields({ projectId, phaseId, inputTypes, copy });
 
-  const options = useCustomFieldOptions({
-    projectId,
-    phaseId,
+  const options = useCustomFieldOptionsBulk({
     customFields: result.data,
   });
 

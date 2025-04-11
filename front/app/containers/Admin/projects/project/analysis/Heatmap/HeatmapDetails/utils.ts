@@ -1,7 +1,7 @@
 import { colors } from '@citizenlab/cl2-component-library';
 
 import { ICustomFieldBinData } from 'api/custom_field_bins/types';
-import { IUserCustomFieldOptions } from 'api/user_custom_fields_options/types';
+import { ICustomFieldOption } from 'api/custom_field_options/types';
 
 import useLocalize from 'hooks/useLocalize';
 
@@ -14,9 +14,9 @@ export const getCellBgColor = (
   isSignificant?: boolean
 ): string => {
   if (lift === undefined) return colors.grey200;
-  if (lift >= 1.5 && isSignificant) return colors.success;
+  if (lift >= 1.3 && isSignificant) return colors.success;
   if (lift >= 1) return colors.successLight;
-  if (lift >= 0.5 && isSignificant) return colors.error;
+  if (lift <= 0.7 && isSignificant) return colors.error;
   return colors.errorLight;
 };
 
@@ -25,9 +25,9 @@ export const getCellTextColor = (
   isSignificant?: boolean
 ): string => {
   if (lift === undefined) return colors.grey800;
-  if (lift >= 1.5 && isSignificant) return colors.white;
+  if (lift >= 1.3 && isSignificant) return colors.white;
   if (lift >= 1) return colors.grey800;
-  if (lift >= 0.5 && isSignificant) return colors.white;
+  if (lift <= 0.7 && isSignificant) return colors.white;
   return colors.grey800;
 };
 
@@ -58,21 +58,16 @@ export const formatRangeText = (
 
 export const useGetOptionText = ({
   bin,
-  options,
+  option,
 }: {
   bin: ICustomFieldBinData;
-  options?: IUserCustomFieldOptions;
+  option?: ICustomFieldOption;
 }) => {
   const localize = useLocalize();
   const { formatMessage } = useIntl();
   switch (bin.attributes.type) {
     case 'CustomFieldBins::OptionBin':
-      return localize(
-        options?.data.find(
-          (option) =>
-            option.id === bin.relationships.custom_field_option?.data?.id
-        )?.attributes.title_multiloc
-      );
+      return localize(option?.data.attributes.title_multiloc);
     case 'CustomFieldBins::RangeBin':
       return formatRangeText(bin.attributes.range);
 
