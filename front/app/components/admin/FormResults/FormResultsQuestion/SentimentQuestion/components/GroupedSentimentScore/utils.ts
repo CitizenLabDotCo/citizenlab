@@ -1,50 +1,10 @@
 import { Answer, GroupedAnswer } from 'api/survey_results/types';
 
-/**
- * Converts a list of grouped answers into a flat array of answers
- * enriched with group-specific counts based on a fixed legend.
- *
- * Each returned Answer will include one key for each group in the legend,
- * initialized to 0 and populated with actual counts where available.
- *
- * @param answers - Array of grouped answers containing nested group data.
- * @param legend - List of all possible group keys (e.g. ['male', 'female', null]).
- * @returns Array of answers with group count breakdowns.
- */
-export function formatAnswersByLegend(
-  answers: GroupedAnswer[],
-  legend: (string | null)[]
-): Answer[] {
-  return answers.map((entry) => {
-    const row: Answer = {
-      answer: entry.answer,
-      count: entry.count,
-    };
+import { calculateResponseCountForGroup, SentimentAnswers } from '../../utils';
 
-    // Add all legend group keys with default count of 0
-    for (const groupKey of legend) {
-      const key = groupKey === null ? 'null' : groupKey;
-      row[key] = 0;
-    }
-
-    // Overwrite with actual group counts where available
-    for (const group of entry.groups) {
-      const key = group.group === null ? 'null' : group.group;
-      row[key] = group.count;
-    }
-
-    return row;
-  });
-}
-
-/**
- * Reduces a full set of grouped answers down to counts for a specific group.
- * This is useful for filtering sentiment or response data by demographic group.
- *
- * @param groupedAnswer - Full array of grouped answers.
- * @param groupKey - Specific group key to extract (e.g. 'female').
- * @returns A simplified array of { answer, count } for the specified group.
- */
+// transformGroupedAnswerUsableArray:
+// Description: Reduces a full set of grouped answers down to counts for a specific group.
+// This is useful for filtering sentiment or response data by demographic group.
 export function transformGroupedAnswerUsableArray(
   groupedAnswer: GroupedAnswer[],
   groupKey: string
@@ -61,3 +21,21 @@ export function transformGroupedAnswerUsableArray(
 
   return answersForSpecificGroup;
 }
+
+// getAverageValue
+// Description: Helper function to calculate average sentiment
+export const getAverageValue = (
+  groupAnswers: SentimentAnswers,
+  groupAnswersArray?: ReturnType<typeof transformGroupedAnswerUsableArray>
+): number | undefined => {
+  const totalResponses =
+    groupAnswersArray && calculateResponseCountForGroup(groupAnswersArray);
+
+  const totalValue = groupAnswers?.reduce((acc, { answer, count }) => {
+    return answer && count ? acc + answer * count : acc;
+  }, 0);
+
+  return totalResponses && totalValue && totalResponses > 0
+    ? Math.round(totalValue / totalResponses)
+    : undefined;
+};

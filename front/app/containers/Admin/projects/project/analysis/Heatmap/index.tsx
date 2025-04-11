@@ -12,6 +12,7 @@ import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import Warning from 'components/UI/Warning';
 
+import { trackEventByName } from 'utils/analytics';
 import { useIntl } from 'utils/cl-intl';
 
 import useRelevantToHeatmapInputCustomFields from '../hooks/useRelevantToHeatmapInputCustomFields';
@@ -19,9 +20,10 @@ import useRelevantToHeatmapInputCustomFields from '../hooks/useRelevantToHeatmap
 import HeatmapDetails from './HeatmapDetails';
 import HeatmapInsights from './HeatmapInsights';
 import messages from './messages';
+import tracks from './tracks';
 
 const Heatmap = () => {
-  const [isReadMoreOpen, setIsReadMoreOpen] = useState(false);
+  const [isHeatmapDetailsOpen, setIsHeatmapDetailsOpen] = useState(false);
   const [initialUnit, setInitialUnit] = useState<Unit>('inputs');
   const [initialColumnFieldId, setInitialColumnFieldId] = useState<
     string | undefined
@@ -96,17 +98,19 @@ const Heatmap = () => {
     setInitialUnit(unit);
     setInitialColumnFieldId(columnCustomFieldId);
     setInitialRowType(rowType);
-    setIsReadMoreOpen(true);
+    setIsHeatmapDetailsOpen(true);
+    trackEventByName(tracks.heatmapOpened);
   };
 
   return (
     <div>
       <>
         <HeatmapInsights onExploreClick={onExploreClick} />
-        {isReadMoreOpen && (
+        {isHeatmapDetailsOpen && (
           <HeatmapDetails
             onClose={() => {
-              setIsReadMoreOpen(false);
+              setIsHeatmapDetailsOpen(false);
+              trackEventByName(tracks.heatmapClosed);
             }}
             userCustomFields={userCustomFields.data}
             inputCustomFields={filteredInputCustomFields}

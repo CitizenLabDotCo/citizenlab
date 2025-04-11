@@ -317,11 +317,15 @@ Rails.application.routes.draw do
 
       # Somewhat confusingly, custom_fields are accessed separately as a
       # resource as either user custom_fields (in separate engine) or input
-      # custom_fields (nested under projects/phases). custom_field_bins behave
-      # exactly the same for both types of custom fields, so we define them here
-      # and mount them under the otherwise empty custom_fields route.
+      # custom_fields (nested under projects/phases). custom_field_bins and
+      # custom_field_options behave exactly the same for both types of custom
+      # fields, so we define them here and mount them under the otherwise empty
+      # custom_fields route.
       resources :custom_fields, only: [] do
         resources :custom_field_bins, only: %i[index show], shallow: true
+        resources :custom_field_options, controller: '/web_api/v1/custom_field_options', shallow: true do
+          patch 'reorder', on: :member
+        end
       end
     end
   end

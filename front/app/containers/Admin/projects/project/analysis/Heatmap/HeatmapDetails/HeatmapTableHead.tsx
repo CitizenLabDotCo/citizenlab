@@ -4,8 +4,7 @@ import { Thead, Tr, Th } from '@citizenlab/cl2-component-library';
 
 import { ICustomFieldBinData } from 'api/custom_field_bins/types';
 import useCustomFieldBins from 'api/custom_field_bins/useCustomFieldBins';
-import { IUserCustomFieldOptions } from 'api/user_custom_fields_options/types';
-import useCustomFieldsOptions from 'api/user_custom_fields_options/useUserCustomFieldsOptions';
+import useCustomFieldOption from 'api/custom_field_options/useCustomFieldOption';
 
 import { useGetOptionText } from './utils';
 
@@ -13,16 +12,14 @@ interface CustomFieldOptionsProps {
   customFieldId: string;
 }
 
-const OptionTextTh = ({
-  bin,
-  options,
-}: {
-  bin: ICustomFieldBinData;
-  options?: IUserCustomFieldOptions;
-}) => {
+const OptionTextTh = ({ bin }: { bin: ICustomFieldBinData }) => {
+  const { data: option } = useCustomFieldOption({
+    optionId: bin.relationships.custom_field_option?.data?.id,
+    enabled: !!bin.relationships.custom_field_option?.data?.id,
+  });
   const optionText = useGetOptionText({
     bin,
-    options,
+    option,
   });
 
   return <Th>{optionText}</Th>;
@@ -31,7 +28,6 @@ const OptionTextTh = ({
 const HeatmapTableHead: React.FC<CustomFieldOptionsProps> = ({
   customFieldId,
 }) => {
-  const { data: options } = useCustomFieldsOptions(customFieldId);
   const { data: bins } = useCustomFieldBins(customFieldId);
 
   return (
@@ -39,7 +35,7 @@ const HeatmapTableHead: React.FC<CustomFieldOptionsProps> = ({
       <Tr>
         <Th />
         {bins?.data.map((bin) => (
-          <OptionTextTh key={bin.id} bin={bin} options={options} />
+          <OptionTextTh key={bin.id} bin={bin} />
         ))}
       </Tr>
     </Thead>
