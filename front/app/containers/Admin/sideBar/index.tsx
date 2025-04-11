@@ -15,7 +15,6 @@ import { InsertConfigurationOptions } from 'typings';
 
 import { IAppConfiguration } from 'api/app_configuration/types';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
-import useCommunityMonitorProject from 'api/community_monitor/useCommunityMonitorProject';
 import useIdeasCount from 'api/idea_count/useIdeasCount';
 import useAuthUser from 'api/me/useAuthUser';
 import { IUser } from 'api/users/types';
@@ -90,9 +89,6 @@ interface Props {
 const Sidebar = ({ authUser, appConfiguration }: Props) => {
   const { formatMessage } = useIntl();
   const { pathname } = useLocation();
-  const { data: communityMonitorProject, isError } = useCommunityMonitorProject(
-    {}
-  );
 
   const { data: ideasCount } = useIdeasCount(
     {
@@ -110,15 +106,6 @@ const Sidebar = ({ authUser, appConfiguration }: Props) => {
   );
   const isPagesAndMenuPage = isPage('pages_menu', pathname);
   const isSmallerThanPhone = useBreakpoint('tablet');
-
-  // If the current user can't moderate the Community Monitor, remove it from navItems
-  useEffect(() => {
-    if (communityMonitorProject && isError) {
-      setNavItems((prevNavItems) =>
-        prevNavItems.filter((navItem) => navItem.name !== 'community_monitor')
-      );
-    }
-  }, [communityMonitorProject, isError]);
 
   useEffect(() => {
     setNavItems((prevNavItems) => {
