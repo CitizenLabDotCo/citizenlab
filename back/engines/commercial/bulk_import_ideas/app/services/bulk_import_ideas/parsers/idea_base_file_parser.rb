@@ -176,7 +176,7 @@ module BulkImportIdeas::Parsers
           end
           field[:value] = options
         end
-      elsif %w[number linear_scale rating].include?(field[:input_type]) && field[:value].present?
+      elsif %w[number linear_scale sentiment_linear_scale rating].include?(field[:input_type]) && field[:value].present?
         field[:value] = field[:value].to_i
       else
         field[:value] = field[:value].to_s

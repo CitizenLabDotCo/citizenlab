@@ -63,7 +63,10 @@ const Comments = ({
         <>
           {/* Follow Up Text Responses */}
           <Box flexGrow={1}>
-            <TextResponses textResponses={textResponses} />
+            <TextResponses
+              textResponses={textResponses}
+              hasFollowUpResponses={true}
+            />
           </Box>
 
           {/* AI Summary */}

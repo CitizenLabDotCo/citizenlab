@@ -1,8 +1,18 @@
 import React from 'react';
 
 import { Box, colors, stylingConsts } from '@citizenlab/cl2-component-library';
+import styled from 'styled-components';
 
 import { getSentimentGroupColour } from '../../utils';
+
+// Required so the report print will show background colours correctly.
+const StyledBox = styled(Box)`
+  @media print {
+    * {
+      -webkit-print-color-adjust: exact;
+    }
+  }
+`;
 
 const SentimentBar = ({
   answerGroups,
@@ -10,10 +20,10 @@ const SentimentBar = ({
   answerGroups?: { answer: string; percentage: number }[] | null | undefined;
 }) => {
   return (
-    <Box display="flex" alignItems="center" width="160px" gap="2px">
+    <StyledBox display="flex" alignItems="center" width="160px" gap="2px">
       {answerGroups ? (
         answerGroups.map(({ answer, percentage }) => (
-          <Box
+          <StyledBox
             key={answer}
             background={getSentimentGroupColour(answer)}
             width={`${percentage}%`}
@@ -23,14 +33,14 @@ const SentimentBar = ({
         ))
       ) : (
         // If no answers, show a solid grey bar.
-        <Box
+        <StyledBox
           background={colors.grey300}
           width={`100%`}
           height="8px"
           borderRadius={stylingConsts.borderRadius}
         />
       )}
-    </Box>
+    </StyledBox>
   );
 };
 
