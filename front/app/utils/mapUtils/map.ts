@@ -1,5 +1,5 @@
 import * as projection from '@arcgis/core/geometry/projection.js';
-import { isNumber } from 'lodash-es';
+import { isArray, isNumber } from 'lodash-es';
 import { SupportedLocale } from 'typings';
 
 import { IAppConfigurationData } from 'api/app_configuration/types';
@@ -15,10 +15,18 @@ import {
 
 export type LatLngTuple = [number, number, number?];
 
-export const projectPointToWebMercator = (geometry: __esri.Geometry) => {
-  return projection.project([geometry], {
+export const projectPointToWebMercator = (
+  geometry: __esri.Geometry
+): __esri.Point => {
+  const projectedPoint = projection.project(geometry, {
     wkid: 3857, // Web Mercator
-  })[0];
+  });
+
+  if (isArray(projectedPoint)) {
+    return projectedPoint[0] as __esri.Point;
+  }
+
+  return projectedPoint as __esri.Point;
 };
 
 export const getCenter = (
@@ -64,6 +72,30 @@ export const getZoomLevel = (
   }
 
   return baseGetZoomLevel(undefined, appConfig);
+};
+
+// getMapZoom
+// Description: This function calculates the map zoom level based on the provided Esri mapZoom and mapScale values.
+export const getMapZoom = (mapZoom: number, mapScale: number) => {
+  // If the mapView has a zoom, use it directly
+  if (mapZoom > 0) {
+    return mapZoom.toString();
+  }
+
+  // If the mapView doesn't have a zoom, calculate it based on the scale
+  let zoom = 0;
+  if (mapScale > 0) {
+    zoom = Math.round(Math.log(591657550.5 / (mapScale / 2)) / Math.log(2));
+  }
+  return zoom.toString();
+};
+
+// calculateScaleFromZoom
+// Description: This function calculates the scale based on the provided zoom level.
+export const calculateScaleFromZoom = (zoom: number) => {
+  // Calculate the scale based on the zoom level
+  const scale = 591657550.5 / Math.pow(2, zoom);
+  return scale;
 };
 
 export const getTileProvider = (
