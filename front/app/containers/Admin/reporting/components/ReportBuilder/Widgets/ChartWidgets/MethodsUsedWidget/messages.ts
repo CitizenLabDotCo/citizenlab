@@ -21,10 +21,6 @@ export default defineMessages({
     id: 'app.containers.Admin.reporting.widgets.MethodsUsed.nativeSurvey',
     defaultMessage: 'Survey',
   },
-  communityMonitorSurvey: {
-    id: 'app.containers.Admin.reporting.widgets.MethodsUsed.communityMonitorSurvey',
-    defaultMessage: 'Community monitor survey',
-  },
   voting: {
     id: 'app.containers.Admin.reporting.widgets.MethodsUsed.voting',
     defaultMessage: 'Voting',
