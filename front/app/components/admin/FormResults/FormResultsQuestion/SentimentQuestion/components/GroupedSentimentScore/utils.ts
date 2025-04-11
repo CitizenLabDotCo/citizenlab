@@ -1,13 +1,10 @@
 import { Answer, GroupedAnswer } from 'api/survey_results/types';
 
-/**
- * Reduces a full set of grouped answers down to counts for a specific group.
- * This is useful for filtering sentiment or response data by demographic group.
- *
- * @param groupedAnswer - Full array of grouped answers.
- * @param groupKey - Specific group key to extract (e.g. 'female').
- * @returns A simplified array of { answer, count } for the specified group.
- */
+import { calculateResponseCountForGroup, SentimentAnswers } from '../../utils';
+
+// transformGroupedAnswerUsableArray:
+// Description: Reduces a full set of grouped answers down to counts for a specific group.
+// This is useful for filtering sentiment or response data by demographic group.
 export function transformGroupedAnswerUsableArray(
   groupedAnswer: GroupedAnswer[],
   groupKey: string
@@ -24,3 +21,21 @@ export function transformGroupedAnswerUsableArray(
 
   return answersForSpecificGroup;
 }
+
+// getAverageValue
+// Description: Helper function to calculate average sentiment
+export const getAverageValue = (
+  groupAnswers: SentimentAnswers,
+  groupAnswersArray?: ReturnType<typeof transformGroupedAnswerUsableArray>
+): number | undefined => {
+  const totalResponses =
+    groupAnswersArray && calculateResponseCountForGroup(groupAnswersArray);
+
+  const totalValue = groupAnswers?.reduce((acc, { answer, count }) => {
+    return answer && count ? acc + answer * count : acc;
+  }, 0);
+
+  return totalResponses && totalValue && totalResponses > 0
+    ? Math.round(totalValue / totalResponses)
+    : undefined;
+};

@@ -7,7 +7,7 @@ import { getSentimentGroupColour } from '../../utils';
 
 import { AnswerGroups } from './types';
 
-// Required so the report print will show background colours correctly.
+// Ensure background colors print correctly
 const StyledBox = styled(Box)`
   @media print {
     * {
@@ -16,15 +16,33 @@ const StyledBox = styled(Box)`
   }
 `;
 
-const SentimentBar = ({ answerGroups }: { answerGroups?: AnswerGroups }) => {
-  const answerGroupsWithPercentages = answerGroups?.filter(
+type Props = {
+  answerGroups?: AnswerGroups;
+};
+
+const SentimentBar = ({ answerGroups }: Props) => {
+  const hasValidAnswers = answerGroups?.some(
     ({ percentage }) => percentage > 0
   );
 
+  if (!hasValidAnswers) {
+    return (
+      <StyledBox
+        display="flex"
+        alignItems="center"
+        width="160px"
+        height="8px"
+        borderRadius={stylingConsts.borderRadius}
+        background={colors.grey300}
+      />
+    );
+  }
+
   return (
     <StyledBox display="flex" alignItems="center" width="160px" gap="2px">
-      {answerGroupsWithPercentages ? (
-        answerGroupsWithPercentages.map(({ answer, percentage }) => (
+      {answerGroups!
+        .filter(({ percentage }) => percentage > 0)
+        .map(({ answer, percentage }) => (
           <StyledBox
             key={answer}
             background={getSentimentGroupColour(answer)}
@@ -32,16 +50,7 @@ const SentimentBar = ({ answerGroups }: { answerGroups?: AnswerGroups }) => {
             height="8px"
             borderRadius={stylingConsts.borderRadius}
           />
-        ))
-      ) : (
-        // If no answers, show a solid grey bar.
-        <StyledBox
-          background={colors.grey300}
-          width={`100%`}
-          height="8px"
-          borderRadius={stylingConsts.borderRadius}
-        />
-      )}
+        ))}
     </StyledBox>
   );
 };

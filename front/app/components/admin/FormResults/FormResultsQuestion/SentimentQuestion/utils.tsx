@@ -17,36 +17,33 @@ export type SentimentAnswer = {
 
 export type SentimentAnswers = SentimentAnswer[] | undefined;
 
-export const calculateResponseCountForGroup = (answers: Answer[]) => {
-  return answers.reduce((acc, { count }) => {
-    if (count) {
-      return acc + count;
-    }
-    return acc;
-  }, 0);
-};
+// Calculates the total number of responses in a given group of answers
+export const calculateResponseCountForGroup = (answers: Answer[]): number =>
+  answers.reduce((total, { count = 0 }) => total + count, 0);
 
-// parseResult:
-// Parses survey results and extracts sentiment-related data.
+// Parses a grouped survey result into sentiment scores with percentages
 export const parseGroupedResult = (
   result: ResultUngrouped | ResultGrouped,
   groupAnswers: Answer[]
 ): SentimentAnswers => {
-  const totalResponseCountForGroup =
-    calculateResponseCountForGroup(groupAnswers);
+  const totalCount = calculateResponseCountForGroup(groupAnswers);
 
-  if (totalResponseCountForGroup > 0) {
-    return groupAnswers.map(({ answer, count }) => ({
-      answer: answer ? parseInt(answer.toString(), 10) : null,
+  if (totalCount === 0) return [];
+
+  return groupAnswers.map(({ answer, count }) => {
+    const parsedAnswer =
+      answer != null ? parseInt(answer.toString(), 10) : null;
+
+    return {
+      answer: parsedAnswer,
       count,
-      percentage: Math.round((count / totalResponseCountForGroup) * 100),
-      label: answer
-        ? result.multilocs?.answer[answer].title_multiloc
-        : undefined,
-    }));
-  }
-
-  return [];
+      percentage: count ? Math.round((count / totalCount) * 100) : 0,
+      label:
+        parsedAnswer != null
+          ? result.multilocs?.answer[parsedAnswer].title_multiloc
+          : undefined,
+    };
+  });
 };
 
 // parseResult:
