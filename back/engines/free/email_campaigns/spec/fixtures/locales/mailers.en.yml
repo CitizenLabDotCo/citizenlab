@@ -117,6 +117,12 @@ en:
       today: Today
       wrong_content: 'The comment is not relevant.'
       yesterday: Yesterday
+    community_monitor_report:
+      subject: 'A new community monitor report is available'
+      title: 'A new community monitor report is available'
+      text_introduction: 'A community monitor report has been created for the previous quarter. You can access it by clicking the button below and logging in.'
+      cta_report_button: 'View report'
+      report_name: 'Community monitor report'
     assignee_digest:
       subject: 'Ideas requiring your feedback: %{numberIdeas}'
       preheader: 'Assignee digest of %{organizationName}'

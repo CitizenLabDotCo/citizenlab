@@ -4,7 +4,7 @@ module ReportBuilder
   module WebApi
     module V1
       class ReportSerializer < ::WebApi::V1::BaseSerializer
-        attributes :name, :created_at, :updated_at, :visible
+        attributes :name, :created_at, :updated_at, :visible, :year, :quarter
 
         attribute :action_descriptors do |object, params|
           @permissions_service = ReportBuilder::Permissions::ReportPermissionsService.new

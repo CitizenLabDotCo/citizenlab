@@ -4,4 +4,5 @@ export const FieldsHideGroupBy = [
   'polygon',
   'ranking',
   'matrix_linear_scale',
+  'sentiment_linear_scale',
 ];

@@ -17,6 +17,7 @@ import { IUserData } from 'api/users/types';
 import useLocalize from 'hooks/useLocalize';
 import useObserveEvent from 'hooks/useObserveEvent';
 
+import { triggerPostActionEvents } from 'containers/App/events';
 import { triggerAuthenticationFlow } from 'containers/Authentication/events';
 import { SuccessAction } from 'containers/Authentication/SuccessActions/actions';
 
@@ -207,7 +208,10 @@ const EventAttendanceButton = ({ event }: EventAttendanceButtonProps) => {
       <ConfirmationModal
         opened={confirmationModalVisible}
         event={event}
-        onClose={() => setConfirmationModalVisible(false)}
+        onClose={() => {
+          setConfirmationModalVisible(false);
+          triggerPostActionEvents({});
+        }}
       />
     </>
   );
