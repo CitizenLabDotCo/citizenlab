@@ -4,7 +4,7 @@ require 'rails_helper'
 
 describe CommunityMonitorService do
   let(:service) { described_class.new }
-  let!(:project) { create(:community_monitor_project)}
+  let!(:project) { create(:community_monitor_project) }
   let(:current_user) { create(:admin) }
 
   describe '#enabled?' do
@@ -50,8 +50,6 @@ describe CommunityMonitorService do
   end
 
   describe '#find_or_create_project' do
-
-
     context 'when project exists' do
       context 'when feature is enabled' do
         context 'when project ID is set' do
@@ -111,7 +109,6 @@ describe CommunityMonitorService do
           expect(settings['community_monitor']['project_id']).not_to eq old_project_id
         end
       end
-
 
       context 'when user is not an admin' do
         let(:current_user) { create(:user) }
