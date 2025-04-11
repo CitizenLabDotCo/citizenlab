@@ -43,7 +43,7 @@ sv:
       "user_digest": Veckoöversikt
       "voting_basket_submitted": Bekräftelse av röstning
       "native_survey_not_submitted": Enkät ej inlämnad
-      "voting_basket_not_submitted": Ej avgivna röster
+      "voting_basket_not_submitted": Röster ej inlämnade
       "voting_last_chance": Sista chansen att rösta
       "voting_phase_started": Ny projektfas med omröstning
       "voting_results": Resultat av omröstningen
@@ -446,7 +446,7 @@ sv:
       preheader: 'Du röstade framgångsrikt på deltagandeplattformen för %{organizationName}'
       title_basket_submitted: 'Du röstade framgångsrikt'
       event_description: 'Tack för ert deltagande. Dina röster har registrerats. Besök plattformen %{organizationName} för att se och hantera dina röster.'
-      cta_see_votes_submitted: 'Se avgivna röster'
+      cta_see_votes_submitted: 'Se inlämnade röster'
       cta_message: 'Klicka på knappen nedan för att delta'
     native_survey_not_submitted:
       subject: '%{organizationName}: Nästan där! Skicka in dina svar'
@@ -605,5 +605,5 @@ sv:
         user_replies_to_internal_comment: 'Användaren svarar på intern kommentar'
         voting_1_day_after_last_votes: '1 dag efter att användaren senast röstade'
         voting_2_days_before_phase_closes: '2 dagar innan omröstningen avslutas'
-        voting_basket_submitted: 'Rösterna är avgivna'
+        voting_basket_submitted: 'Rösterna är inlämnade'
         voting_phase_ended: 'Omröstningsfasen avslutad'
