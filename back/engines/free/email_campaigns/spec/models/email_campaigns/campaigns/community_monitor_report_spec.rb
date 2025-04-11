@@ -59,6 +59,7 @@ RSpec.describe EmailCampaigns::Campaigns::CommunityMonitorReport do
 
     context 'when community monitor not enabled' do
       it 'returns false' do
+        SettingsService.new.deactivate_feature! 'community_monitor'
         expect(campaign.send(:content_worth_sending?, {})).to be false
       end
     end

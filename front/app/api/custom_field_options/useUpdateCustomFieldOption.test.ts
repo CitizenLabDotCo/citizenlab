@@ -7,8 +7,7 @@ import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
 import { customFieldOptionsData } from './__mocks__/useCustomFieldOptions';
 import useUpdateCustomFieldOption from './useUpdateCustomFieldOption';
 
-const apiPath =
-  '*/custom_field_options/:optionId';
+const apiPath = '*/custom_field_options/:optionId';
 
 const server = setupServer(
   http.patch(apiPath, () => {
@@ -24,12 +23,9 @@ describe('useUpdateCustomFieldOption', () => {
   afterAll(() => server.close());
 
   it('mutates data correctly', async () => {
-    const { result, waitFor } = renderHook(
-      () => useUpdateCustomFieldOption(),
-      {
-        wrapper: createQueryClientWrapper(),
-      }
-    );
+    const { result, waitFor } = renderHook(() => useUpdateCustomFieldOption(), {
+      wrapper: createQueryClientWrapper(),
+    });
 
     act(() => {
       result.current.mutate({
@@ -49,12 +45,9 @@ describe('useUpdateCustomFieldOption', () => {
       })
     );
 
-    const { result, waitFor } = renderHook(
-      () => useUpdateCustomFieldOption(),
-      {
-        wrapper: createQueryClientWrapper(),
-      }
-    );
+    const { result, waitFor } = renderHook(() => useUpdateCustomFieldOption(), {
+      wrapper: createQueryClientWrapper(),
+    });
 
     act(() => {
       result.current.mutate({
