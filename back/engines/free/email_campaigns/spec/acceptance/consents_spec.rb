@@ -13,6 +13,7 @@ resource 'Campaign consents' do
 
   get '/web_api/v1/consents' do
     before do
+      SettingsService.new.activate_feature! 'community_monitor' # Turn on optional campaigns (only community monitor for now)
       @campaigns = EmailCampaigns::DeliveryService.new.campaign_classes.select do |klaz|
         klaz.ancestors.include?(EmailCampaigns::Consentable) && klaz.consentable_for?(@user)
       end.map do |klaz|
