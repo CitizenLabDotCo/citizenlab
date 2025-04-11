@@ -1,6 +1,12 @@
 import React from 'react';
 
-import { Box, colors, Icon, Text } from '@citizenlab/cl2-component-library';
+import {
+  Box,
+  colors,
+  Icon,
+  stylingConsts,
+  Text,
+} from '@citizenlab/cl2-component-library';
 import { stringify } from 'qs';
 import { useParams } from 'react-router-dom';
 
@@ -97,32 +103,29 @@ const ViewSingleSubmissionNotice = () => {
   return (
     <Box
       display="flex"
-      width="720px"
-      border={`1px solid ${colors.primary}`}
-      p="12px"
-      mb="16px"
+      justifyContent="space-between"
+      alignItems="center"
+      borderRadius={stylingConsts.borderRadius}
+      p="8px 16px"
+      mb="24px"
+      bgColor={colors.teal100}
     >
-      <Icon
-        width="32px"
-        height="32px"
-        mr="12px"
-        my="auto"
-        name="info-outline"
-        fill={colors.primary}
-      />
-      <Box display="flex" gap="16px">
-        <Text color="primary" fontSize="s" m="0px" mt="4px">
-          {formatMessage(messages.viewIndividualSubmissions)}
-        </Text>
-        <Button
-          onClick={goToAnalysis}
-          fontSize="14px"
-          buttonStyle="admin-dark-outlined"
-          processing={isAddLoading || isUpdateLoading}
-        >
-          {formatMessage(messages.aiAnalysis)}
-        </Button>
+      <Box display="flex" gap="16px" alignItems="center">
+        <Icon name="stars" width="30px" height="30px" fill={colors.teal500} />
+        <Text>{formatMessage(messages.viewIndividualSubmissions)}</Text>
       </Box>
+
+      <Button
+        buttonStyle="text"
+        textColor={colors.teal500}
+        fontWeight="bold"
+        icon={'stars'}
+        iconColor={colors.teal500}
+        onClick={goToAnalysis}
+        processing={isAddLoading || isUpdateLoading}
+      >
+        {formatMessage(messages.aiAnalysis)}
+      </Button>
     </Box>
   );
 };
