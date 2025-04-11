@@ -12,7 +12,7 @@ resource 'User Custom Field Options' do
     @custom_field_options = create_list(:custom_field_option, 3, custom_field: @custom_field)
   end
 
-  get 'web_api/v1/users/custom_fields/:custom_field_id/custom_field_options' do
+  get 'web_api/v1/custom_fields/:custom_field_id/custom_field_options' do
     with_options scope: :page do
       parameter :number, 'Page number'
       parameter :size, 'Number of custom fields per page'
@@ -27,7 +27,7 @@ resource 'User Custom Field Options' do
     end
   end
 
-  get 'web_api/v1/users/custom_fields/:custom_field_id/custom_field_options/:id' do
+  get 'web_api/v1/custom_field_options/:id' do
     let(:id) { @custom_field_options.first.id }
 
     example_request 'Get one custom field option by id' do
@@ -40,7 +40,7 @@ resource 'User Custom Field Options' do
   context 'when admin' do
     before { admin_header_token }
 
-    post 'web_api/v1/users/custom_fields/:custom_field_id/custom_field_options' do
+    post 'web_api/v1/custom_fields/:custom_field_id/custom_field_options' do
       with_options scope: :custom_field_option do
         parameter :key, "A unique internal name for the option. Only letters, numbers and underscores allowed. Auto-generated from the title if not provided. Can't be changed afterwards", required: false
         parameter :title_multiloc, 'The title of the field as shown to users, in multiple locales', required: true
@@ -76,7 +76,7 @@ resource 'User Custom Field Options' do
       end
     end
 
-    patch 'web_api/v1/users/custom_fields/:custom_field_id/custom_field_options/:id' do
+    patch 'web_api/v1/custom_field_options/:id' do
       with_options scope: :custom_field_option do
         parameter :title_multiloc, 'The title of the option as shown to users, in multiple locales', required: false
       end
@@ -92,7 +92,7 @@ resource 'User Custom Field Options' do
       end
     end
 
-    patch 'web_api/v1/users/custom_fields/:custom_field_id/custom_field_options/:id/reorder' do
+    patch 'web_api/v1/custom_field_options/:id/reorder' do
       with_options scope: :custom_field_option do
         parameter :ordering, 'The position, starting from 0, where the option should be at within its field. Options after will move down.', required: true
       end
@@ -109,7 +109,7 @@ resource 'User Custom Field Options' do
       end
     end
 
-    delete 'web_api/v1/users/custom_fields/:custom_field_id/custom_field_options/:id' do
+    delete 'web_api/v1/custom_field_options/:id' do
       let(:custom_field_option) { create(:custom_field_option, custom_field: @custom_field) }
       let(:id) { custom_field_option.id }
 
