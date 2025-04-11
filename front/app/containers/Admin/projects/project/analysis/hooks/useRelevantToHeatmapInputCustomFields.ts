@@ -25,13 +25,7 @@ const useRelevantToHeatmapInputCustomFields = ({
     inputTypes: inputCustomFieldInputTypes,
   });
 
-  return (
-    inputCustomFields
-      // Temporary front-end filter for input custom fields
-      ?.filter((customField) =>
-        inputCustomFieldInputTypes.includes(customField.input_type)
-      )
-  );
+  return inputCustomFields;
 };
 
 export default useRelevantToHeatmapInputCustomFields;

@@ -4,28 +4,27 @@ import { setupServer } from 'msw/node';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
 
-import { userCustomFieldsOptionsData } from './__mocks__/useUserCustomFieldsOptions';
-import useUpdateUserCustomFieldsOption from './useUpdateUserCustomFieldsOption';
+import { customFieldOptionsData } from './__mocks__/useCustomFieldOptions';
+import useAddCustomFieldOption from './useAddCustomFieldOption';
 
-const apiPath =
-  '*/users/custom_fields/:customFieldId/custom_field_options/:optionId';
+const apiPath = '*/custom_fields/:customFieldId/custom_field_options';
 
 const server = setupServer(
-  http.patch(apiPath, () => {
+  http.post(apiPath, () => {
     return HttpResponse.json(
-      { data: userCustomFieldsOptionsData[0] },
+      { data: customFieldOptionsData },
       { status: 200 }
     );
   })
 );
 
-describe('useUpdateUserCustomFieldsOption', () => {
+describe('useAddCustomFieldOption', () => {
   beforeAll(() => server.listen());
   afterAll(() => server.close());
 
   it('mutates data correctly', async () => {
     const { result, waitFor } = renderHook(
-      () => useUpdateUserCustomFieldsOption(),
+      () => useAddCustomFieldOption(),
       {
         wrapper: createQueryClientWrapper(),
       }
@@ -33,25 +32,24 @@ describe('useUpdateUserCustomFieldsOption', () => {
 
     act(() => {
       result.current.mutate({
-        optionId: 'optionId',
         customFieldId: 'customFieldId',
         title_multiloc: { en: 'mock title' },
       });
     });
 
     await waitFor(() => expect(result.current.isSuccess).toBe(true));
-    expect(result.current.data?.data).toEqual(userCustomFieldsOptionsData[0]);
+    expect(result.current.data?.data).toEqual(customFieldOptionsData);
   });
 
   it('returns error correctly', async () => {
     server.use(
-      http.patch(apiPath, () => {
+      http.post(apiPath, () => {
         return HttpResponse.json(null, { status: 500 });
       })
     );
 
     const { result, waitFor } = renderHook(
-      () => useUpdateUserCustomFieldsOption(),
+      () => useAddCustomFieldOption(),
       {
         wrapper: createQueryClientWrapper(),
       }
@@ -59,7 +57,6 @@ describe('useUpdateUserCustomFieldsOption', () => {
 
     act(() => {
       result.current.mutate({
-        optionId: 'optionId',
         customFieldId: 'customFieldId',
         title_multiloc: { en: 'mock title' },
       });

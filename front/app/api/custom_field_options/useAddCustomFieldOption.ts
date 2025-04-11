@@ -3,8 +3,8 @@ import { CLErrors, Multiloc } from 'typings';
 
 import fetcher from 'utils/cl-react-query/fetcher';
 
-import userCustomFieldsOptionsKeys from './keys';
-import { IUserCustomFieldOption } from './types';
+import customFieldOptionsKeys from './keys';
+import { ICustomFieldOption } from './types';
 
 type AddCustomFieldOption = {
   customFieldId: string;
@@ -14,25 +14,25 @@ const addOption = async ({
   customFieldId,
   title_multiloc,
 }: AddCustomFieldOption) =>
-  fetcher<IUserCustomFieldOption>({
-    path: `/users/custom_fields/${customFieldId}/custom_field_options`,
+  fetcher<ICustomFieldOption>({
+    path: `/custom_fields/${customFieldId}/custom_field_options`,
     action: 'post',
     body: {
       title_multiloc,
     },
   });
 
-const useAddUserCustomFieldOption = () => {
+const useAddCustomFieldOption = () => {
   const queryClient = useQueryClient();
   return useMutation<
-    IUserCustomFieldOption,
+    ICustomFieldOption,
     { errors: CLErrors },
     AddCustomFieldOption
   >({
     mutationFn: addOption,
     onSuccess: (_data, variables) => {
       queryClient.invalidateQueries({
-        queryKey: userCustomFieldsOptionsKeys.list({
+        queryKey: customFieldOptionsKeys.list({
           customFieldId: variables.customFieldId,
         }),
       });
@@ -40,4 +40,4 @@ const useAddUserCustomFieldOption = () => {
   });
 };
 
-export default useAddUserCustomFieldOption;
+export default useAddCustomFieldOption;

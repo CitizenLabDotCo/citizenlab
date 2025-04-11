@@ -1,30 +1,32 @@
-import { IAttributes } from 'api/custom_fields/types';
+import { IRelationship, Multiloc } from 'typings';
 
-export interface ICustomFieldOptionParameters {
-  id: string;
-  projectId: string;
-  phaseId?: string;
-  customFieldId?: string;
-}
-export type OptionAttributes = Omit<
-  IAttributes,
-  'description_multiloc' | 'input_type' | 'required' | 'enabled'
->;
+import { Keys } from 'utils/cl-react-query/types';
 
-export interface IFormCustomFieldOptionData {
+import customFieldOptionsKeys from './keys';
+
+export type CustomFieldOptionsKeys = Keys<typeof customFieldOptionsKeys>;
+
+export interface ICustomFieldOptionData {
   id: string;
-  type: string;
-  attributes: OptionAttributes;
+  type: 'custom_field_option';
+  attributes: {
+    key: string;
+    title_multiloc: Multiloc;
+    ordering: number;
+    other: boolean;
+    temp_id?: string;
+    created_at: string;
+    updated_at: string;
+  };
   relationships: {
-    image: {
-      data: {
-        id: string;
-        type: string;
-      } | null;
-    };
+    image: { data?: IRelationship };
   };
 }
 
-export interface IFormCustomFieldOption {
-  data: IFormCustomFieldOptionData;
+export interface ICustomFieldOptions {
+  data: ICustomFieldOptionData[];
+}
+
+export interface ICustomFieldOption {
+  data: ICustomFieldOptionData;
 }
