@@ -5,20 +5,21 @@ import { get, set } from 'js-cookie';
 import { useLocation } from 'react-router-dom';
 
 import useCommunityMonitorProject from 'api/community_monitor/useCommunityMonitorProject';
-import useCustomFields from 'api/custom_fields/useCustomFields';
 import usePhase from 'api/phases/usePhase';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
 import useInputSchema from 'hooks/useInputSchema';
 
+import { PageCategorization } from 'components/Form/typings';
 import Modal from 'components/UI/Modal';
 
 import { useIntl } from 'utils/cl-intl';
+import { calculateEstimatedSurveyTime } from 'utils/surveyUtils';
 
 import QuestionPreview from './components/QuestionPreview';
 import { triggerCommunityMonitorModal$ } from './events';
 import messages from './messages';
-import { calculateEstimatedSurveyTime, isAllowedOnUrl } from './utils';
+import { isAllowedOnUrl } from './utils';
 
 type CommunityMonitorModalProps = {
   showModal?: boolean;
@@ -68,18 +69,16 @@ const CommunityMonitorModal = ({
     project?.data.attributes.action_descriptors.posting_idea.disabled_reason !==
       'posting_limited_max_reached';
 
-  // Get the custom fields for the survey & JSON schemas
-  const { data: customFields } = useCustomFields({
-    projectId: project?.data.id || '',
-    phaseId,
-  });
+  // Get the survey schemas
   const { schema, uiSchema, isLoading } = useInputSchema({
     projectId: project?.data.id,
     phaseId,
   });
 
   // Calculate estimated time to complete survey
-  const estimatedMinutesToComplete = calculateEstimatedSurveyTime(customFields);
+  const estimatedMinutesToComplete = calculateEstimatedSurveyTime(
+    uiSchema as PageCategorization
+  );
 
   // Get the survey popup frequency, so we can show the modal at a certain rate
   const surveyPopupFrequency =
