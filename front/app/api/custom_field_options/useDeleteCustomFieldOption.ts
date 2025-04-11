@@ -5,27 +5,25 @@ import fetcher from 'utils/cl-react-query/fetcher';
 import optionKeys from './keys';
 
 const deleteOption = async ({
-  customFieldId,
   optionId,
 }: {
-  customFieldId: string;
   optionId: string;
 }) =>
   fetcher({
-    path: `/users/custom_fields/${customFieldId}/custom_field_options/${optionId}`,
+    path: `/custom_field_options/${optionId}`,
     action: 'delete',
   });
 
-const useDeleteUserCustomFieldsOption = () => {
+const useDeleteCustomFieldOption = () => {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: deleteOption,
-    onSuccess: (_data, variables) => {
+    onSuccess: (_data) => {
       queryClient.invalidateQueries({
-        queryKey: optionKeys.list({ customFieldId: variables.customFieldId }),
+        queryKey: optionKeys.lists(),
       });
     },
   });
 };
 
-export default useDeleteUserCustomFieldsOption;
+export default useDeleteCustomFieldOption;
