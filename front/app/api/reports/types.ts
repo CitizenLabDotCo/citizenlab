@@ -33,6 +33,8 @@ export interface Report {
       editing_report: EditingReport;
     };
     visible: boolean;
+    year?: number | null;
+    quarter?: number | null;
   };
   relationships: {
     layout: {

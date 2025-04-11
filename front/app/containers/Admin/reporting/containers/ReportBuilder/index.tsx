@@ -181,9 +181,15 @@ const ReportBuilderWrapper = () => {
   const [startDatePlatformReport] = useState(
     search.get('startDatePlatformReport')
   );
+
   const [endDatePlatformReport] = useState(search.get('endDatePlatformReport'));
-  const [templateYear] = useState(search.get('year'));
-  const [templateQuarter] = useState(search.get('quarter'));
+
+  const [templateYear] = useState(
+    report?.data.attributes.year?.toString() || search.get('year')
+  );
+  const [templateQuarter] = useState(
+    report?.data.attributes.quarter?.toString() || search.get('quarter')
+  );
 
   useEffect(() => {
     removeSearchParams([
