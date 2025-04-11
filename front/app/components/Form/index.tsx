@@ -112,7 +112,11 @@ const Form = memo(
     }, [scrollToError]);
 
     useEffect(() => {
-      setData(parseRequiredMultilocsData(schema, locale, initialFormData));
+      // We will again clone the data here, just to be sure that
+      // json forms doesn't mess around with the original variable
+      setData({
+        ...parseRequiredMultilocsData(schema, locale, initialFormData),
+      });
     }, [schema, locale, initialFormData]);
 
     const layoutType =
@@ -128,7 +132,15 @@ const Form = memo(
       const submissionData = formData && formData.data ? formData.data : data;
       const sanitizedFormData = sanitizeFormData(submissionData);
 
-      setData(sanitizedFormData);
+      // At this point, we need to clone the sanitiziedFormData
+      // before we pass it to setData.
+      // Somewhere downstream the 'data' variable is mutated in place-
+      // from what I can tell it seems to happen inside of the JSON forms library.
+      // This really bad behavior of the JSON forms library was causing a lot of
+      // bugs- for example, it was removing important attributes like
+      // the anonymous participation one.
+      // Another very good reason to get rid of this library.
+      setData({ ...sanitizedFormData });
       setShowAllErrors(showErrors);
 
       let response;
@@ -200,7 +212,11 @@ const Form = memo(
             inputId={inputId}
             config={config}
             locale={locale}
-            onChange={setData}
+            onChange={(data) => {
+              // And here we clone the data another time
+              // because who knows what JSON forms is doing here
+              setData({ ...data });
+            }}
             onSubmit={handleSubmit}
           />
         </Box>

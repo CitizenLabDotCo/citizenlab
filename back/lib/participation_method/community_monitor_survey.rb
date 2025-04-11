@@ -62,6 +62,10 @@ module ParticipationMethod
       true
     end
 
+    def supports_multiple_phase_reports?
+      true
+    end
+
     private
 
     def page_field(custom_form, key)
@@ -81,10 +85,10 @@ module ParticipationMethod
         key: key,
         resource: custom_form,
         input_type: 'sentiment_linear_scale',
-        title_multiloc: multiloc_service.i18n_to_multiloc("custom_fields.community_monitor.questions.#{key}.title"),
-        question_category: category,
         maximum: 5,
         ask_follow_up: true,
+        title_multiloc: multiloc_service.i18n_to_multiloc("custom_fields.community_monitor.questions.#{key}.title"),
+        question_category: category,
         linear_scale_label_1_multiloc: multiloc_service.i18n_to_multiloc('custom_fields.community_monitor.labels.label_1'),
         linear_scale_label_2_multiloc: multiloc_service.i18n_to_multiloc('custom_fields.community_monitor.labels.label_2'),
         linear_scale_label_3_multiloc: multiloc_service.i18n_to_multiloc('custom_fields.community_monitor.labels.label_3'),

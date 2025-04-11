@@ -52,7 +52,7 @@ const participationMethodMessage: Record<
   volunteering: messages.volunteeringPhase,
   document_annotation: messages.documentPhase,
   native_survey: messages.inPlatformSurveyPhase,
-  community_monitor_survey: messages.communityMonitorSurveyPhase,
+  community_monitor_survey: messages.inPlatformSurveyPhase,
 };
 
 interface Props {
