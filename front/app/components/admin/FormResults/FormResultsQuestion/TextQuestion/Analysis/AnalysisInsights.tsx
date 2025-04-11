@@ -7,14 +7,22 @@ import {
   Text,
   Spinner,
 } from '@citizenlab/cl2-component-library';
+import moment from 'moment';
+import { useSearchParams } from 'react-router-dom';
 
 import { IAnalysisData } from 'api/analyses/types';
 import useInfiniteAnalysisInputs from 'api/analysis_inputs/useInfiniteAnalysisInputs';
+import { IInsights } from 'api/analysis_insights/types';
 import useAnalysisInsights from 'api/analysis_insights/useAnalysisInsights';
 import useAddAnalysisSummary from 'api/analysis_summaries/useAddAnalysisSummary';
 import useAddAnalysisSummaryPreCheck from 'api/analysis_summary_pre_check/useAddAnalysisSummaryPreCheck';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
+
+import {
+  getYearFilter,
+  getQuarterFilter,
+} from 'containers/Admin/communityMonitor/components/LiveMonitor/components/HealthScoreWidget/utils';
 
 import { useIntl } from 'utils/cl-intl';
 
@@ -26,21 +34,35 @@ import Summary from './Summary';
 const AnalysisInsights = ({
   analysis,
   hasOtherResponses,
+  filteredInsights,
 }: {
   analysis: IAnalysisData;
   hasOtherResponses?: boolean;
+  filteredInsights?: IInsights;
 }) => {
+  const [search] = useSearchParams();
   const [automaticSummaryCreated, setAutomaticSummaryCreated] = useState(false);
   const [selectedInsightIndex, setSelectedInsightIndex] = useState(0);
+
+  // Get the year/quarter from URL
+  const yearFilter = getYearFilter(search);
+  const quarterFilter = getQuarterFilter(search);
+
+  // Parse quarter and year filters
+  const quarter = quarterFilter ? parseInt(quarterFilter, 10) : null;
+  const year = yearFilter ? parseInt(yearFilter, 10) : null;
 
   const { formatMessage } = useIntl();
 
   const { data: inputs } = useInfiniteAnalysisInputs({
     analysisId: analysis.id,
   });
-  const { data: insights } = useAnalysisInsights({
+  const { data: insightsData } = useAnalysisInsights({
     analysisId: analysis.id,
   });
+
+  const insights = filteredInsights || insightsData;
+
   const { mutate: addAnalysisSummary, isLoading: addSummaryIsLoading } =
     useAddAnalysisSummary();
   const { mutate: preCheck, isLoading: preCheckIsLoading } =
@@ -55,7 +77,6 @@ const AnalysisInsights = ({
   const selectedInsight = insights?.data[selectedInsightIndex];
 
   // Create a summary if there are no insights yet
-
   useEffect(() => {
     if (
       analysis.id &&
@@ -69,6 +90,16 @@ const AnalysisInsights = ({
           analysisId: analysis.id,
           filters: {
             input_custom_field_no_empty_values: true,
+            published_at_from:
+              year && quarter
+                ? moment(new Date(year, (quarter - 1) * 3, 1)).format(
+                    'YYYY-MM-DD'
+                  )
+                : undefined,
+            published_at_to:
+              year && quarter
+                ? moment(new Date(year, quarter * 3, 0)).format('YYYY-MM-DD')
+                : undefined,
           },
         },
         {
@@ -79,6 +110,18 @@ const AnalysisInsights = ({
             if (!data.data.attributes.impossible_reason) {
               const filters = {
                 input_custom_field_no_empty_values: true,
+                published_at_from:
+                  year && quarter
+                    ? moment(new Date(year, (quarter - 1) * 3, 1)).format(
+                        'YYYY-MM-DD'
+                      )
+                    : undefined,
+                published_at_to:
+                  year && quarter
+                    ? moment(new Date(year, quarter * 3, 0)).format(
+                        'YYYY-MM-DD'
+                      )
+                    : undefined,
                 limit: !largeSummariesAllowed ? 30 : undefined,
               };
               if (hasOtherResponses && customFieldId) {
@@ -103,6 +146,8 @@ const AnalysisInsights = ({
     preCheck,
     hasOtherResponses,
     analysis.relationships.main_custom_field?.data?.id,
+    year,
+    quarter,
   ]);
 
   if (addSummaryIsLoading || preCheckIsLoading) {
