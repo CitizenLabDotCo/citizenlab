@@ -17,9 +17,7 @@ const IdeaFormBuilder = lazy(
 const SurveyFormBuilder = lazy(
   () => import('./project/nativeSurvey/SurveyFormBuilder')
 );
-const ProjectParticipation = lazy(
-  () => import('../../../components/admin/participation')
-);
+const ProjectParticipation = lazy(() => import('./project/participation'));
 const ProjectTraffic = lazy(() => import('./project/traffic'));
 const ProjectMessaging = lazy(() => import('./project/messaging/All'));
 const ProjectMessagingNew = lazy(() => import('./project/messaging/New'));

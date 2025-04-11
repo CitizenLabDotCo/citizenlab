@@ -32,15 +32,13 @@ const ToolboxItem = forwardRef(
         alignItems="center"
         ref={ref}
       >
-        <Box>
-          <Icon
-            marginRight="16px"
-            width="20px"
-            height="20px"
-            fill={colors.primary}
-            name={icon}
-          />
-        </Box>
+        <Icon
+          marginRight="16px"
+          width="20px"
+          height="20px"
+          fill={colors.primary}
+          name={icon}
+        />
 
         <Text color="textPrimary" lineHeight="1">
           {label}

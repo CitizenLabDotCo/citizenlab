@@ -13,7 +13,6 @@ export interface Props<Row> extends BaseProps<Row, Payload> {
   xaxis?: XAxisProps;
   yaxis?: YAxisProps;
   grid?: GridProps;
-  showEmptyGraph?: boolean;
 }
 
 interface Payload {

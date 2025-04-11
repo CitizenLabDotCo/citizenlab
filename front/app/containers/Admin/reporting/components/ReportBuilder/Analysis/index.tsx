@@ -99,11 +99,7 @@ const Analysis = ({ selectedLocale }: { selectedLocale: string }) => {
               label={formatMessage(messages.selectPhase)}
               projectId={projectId}
               phaseId={phaseId}
-              participationMethods={[
-                'native_survey',
-                'ideation',
-                'community_monitor_survey',
-              ]}
+              participationMethods={['native_survey', 'ideation']}
               onPhaseFilter={handlePhaseFilter}
             />
           )}
@@ -113,11 +109,9 @@ const Analysis = ({ selectedLocale }: { selectedLocale: string }) => {
               phaseId={phaseId}
               questionId={questionId}
               filterQuestion={({ attributes }) => {
-                return [
-                  'text',
-                  'multiline_text',
-                  'sentiment_linear_scale',
-                ].includes(attributes.input_type);
+                return ['text', 'multiline_text'].includes(
+                  attributes.input_type
+                );
               }}
               label={formatMessage(messages.question)}
               onChange={handleQuestion}

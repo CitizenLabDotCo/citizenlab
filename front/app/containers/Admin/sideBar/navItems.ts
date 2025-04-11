@@ -75,13 +75,6 @@ const getDefaultNavItems = ({ data }: IAppConfiguration): NavItem[] => {
       featureNames: ['report_builder'],
     },
     {
-      name: 'community_monitor',
-      link: '/admin/community-monitor',
-      iconName: 'community_monitor',
-      message: 'community_monitor',
-      featureNames: ['community_monitor'],
-    },
-    {
       name: 'inspirationHub',
       link: getInspirationHubLink(country_code),
       iconName: 'globe',

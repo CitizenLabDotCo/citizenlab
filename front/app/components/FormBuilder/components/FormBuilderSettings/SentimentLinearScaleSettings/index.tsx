@@ -33,6 +33,7 @@ const SentimentLinearScaleSettings = ({
   return (
     <Box mb="32px">
       <ScaleLabelInput
+        inputType="sentiment_linear_scale"
         platformLocale={platformLocale}
         labelBaseName={labelBaseName}
         maximumName={maximumName}

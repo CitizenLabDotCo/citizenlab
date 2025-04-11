@@ -264,9 +264,6 @@ export interface IAppConfigurationSettings {
   platform_templates?: AppConfigurationFeature;
   authoring_assistance_prototype?: AppConfigurationFeature;
   project_library?: AppConfigurationFeature;
-  community_monitor?: AppConfigurationFeature & {
-    project_id: string;
-  };
   user_fields_in_surveys?: AppConfigurationFeature;
 }
 

@@ -15,8 +15,6 @@ import {
   animation,
 } from 'components/admin/Graphs/styling';
 
-import { isNilOrError } from 'utils/helperUtils';
-
 import Container from '../_components/Container';
 import EmptyState from '../_components/EmptyState';
 import Legend from '../_components/Legend';
@@ -48,7 +46,6 @@ const LineChart = <Row,>({
   innerRef,
   onMouseOver,
   onMouseOut,
-  showEmptyGraph = false,
 }: Props<Row>) => {
   const [graphDimensions, setGraphDimensions] = useState<
     GraphDimensions | undefined
@@ -57,7 +54,7 @@ const LineChart = <Row,>({
     LegendDimensions | undefined
   >();
 
-  if (hasNoData(data) && !showEmptyGraph) {
+  if (hasNoData(data)) {
     return <EmptyState emptyContainerContent={emptyContainerContent} />;
   }
 
@@ -89,7 +86,7 @@ const LineChart = <Row,>({
       onUpdateLegendDimensions={setLegendDimensions}
     >
       <RechartsLineChart
-        data={isNilOrError(data) ? undefined : data}
+        data={data}
         margin={parseMargin(
           margin,
           legend,

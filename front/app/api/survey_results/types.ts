@@ -11,8 +11,6 @@ export type SurveyResultsKeys = Keys<typeof surveyResultsKeys>;
 export type IParameters = {
   phaseId: string | null;
   filterLogicIds: string[];
-  quarter?: number;
-  year?: number;
 };
 
 export interface Answer {
@@ -48,7 +46,7 @@ type BaseResult = {
   totalPickCount: number;
   questionResponseCount: number;
   questionNumber: number;
-  pageNumber: number | null;
+  pageNumber: number;
   logic?: ResultLogic;
   numberResponses?: { answer: number }[];
 
@@ -84,23 +82,13 @@ export type MatrixLinearScaleResult = {
   answers: MatrixLinearScaleAnswer[];
 };
 
-type LinearScaleAverage = {
-  this_period: number | null;
-  last_period: number | null;
-};
-
 export type ResultUngrouped = BaseResult & {
   grouped: false;
   answers?: Answer[];
-  questionCategory?: string;
-  questionCategoryMultiloc?: Multiloc;
 
   // Rankings
   average_rankings?: AverageRankings;
   rankings_counts?: RankingsCounts;
-
-  // Linear scales
-  averages?: LinearScaleAverage;
 
   // Undefined for text and file upload questions
   multilocs?: AnswerMultilocs;
@@ -121,7 +109,6 @@ export type ResultUngrouped = BaseResult & {
 export type ResultGrouped = BaseResult & {
   grouped: true;
   answers: GroupedAnswer[];
-  averages?: LinearScaleAverage;
   multilocs: AnswerMultilocsGrouped;
   legend: (string | null)[];
 };

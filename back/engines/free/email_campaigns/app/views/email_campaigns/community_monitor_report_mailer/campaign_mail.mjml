@@ -1,2 +1,0 @@
-    <!-- CTA button -->
-    <%= render partial: 'application/cta_button', locals: { href: event.report_url, message: format_message('cta_report_button') } %>

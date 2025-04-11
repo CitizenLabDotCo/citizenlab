@@ -13,6 +13,14 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.survey.downloadAllResults2',
     defaultMessage: 'Download all survey results',
   },
+  totalSurveyResponses: {
+    id: 'app.containers.AdminPage.ProjectEdit.survey.totalSurveyResponses2',
+    defaultMessage: 'Total {count} responses',
+  },
+  noSurveyResponses: {
+    id: 'app.containers.AdminPage.ProjectEdit.survey.noSurveyResponses2',
+    defaultMessage: 'No survey responses yet',
+  },
   surveyResponses: {
     id: 'app.containers.AdminPage.ProjectEdit.survey.surveyResponses',
     defaultMessage: 'Survey responses',
@@ -34,6 +42,14 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.survey.informationText3',
     defaultMessage:
       'AI summaries of short and long answer questions can be accessed from the AI tab in the left sidebar.',
+  },
+  required: {
+    id: 'app.containers.AdminPage.ProjectEdit.survey.required2',
+    defaultMessage: 'Required',
+  },
+  optional: {
+    id: 'app.containers.AdminPage.ProjectEdit.survey.optional2',
+    defaultMessage: 'Optional',
   },
   openForResponses: {
     id: 'app.containers.AdminPage.ProjectEdit.survey.openForResponses2',
@@ -134,10 +150,6 @@ export default defineMessages({
   linear_scale: {
     id: 'app.containers.AdminPage.ProjectEdit.survey.linear_scale2',
     defaultMessage: 'Linear scale',
-  },
-  sentiment_linear_scale: {
-    id: 'app.containers.AdminPage.ProjectEdit.survey.sentiment_linear_scale',
-    defaultMessage: 'Sentiment linear scale',
   },
   rating: {
     id: 'app.containers.AdminPage.ProjectEdit.survey.rating',

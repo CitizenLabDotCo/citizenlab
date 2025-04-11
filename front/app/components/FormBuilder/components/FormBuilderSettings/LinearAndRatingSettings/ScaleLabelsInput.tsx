@@ -11,10 +11,13 @@ import { useFormContext } from 'react-hook-form';
 import styled from 'styled-components';
 import { SupportedLocale } from 'typings';
 
+import { ICustomFieldInputType } from 'api/custom_fields/types';
+
 import { useIntl } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
 
 import messages from './messages';
+import { getNumberLabelForIndex } from './utils';
 
 const StyledLabel = styled(Label)`
   margin-top: auto;
@@ -26,6 +29,7 @@ interface Props {
   onSelectedLocaleChange?: (locale: SupportedLocale) => void;
   locales: SupportedLocale[];
   platformLocale: SupportedLocale;
+  inputType: ICustomFieldInputType;
 }
 
 const ScaleLabelsInput = ({
@@ -34,6 +38,7 @@ const ScaleLabelsInput = ({
   onSelectedLocaleChange,
   locales,
   platformLocale,
+  inputType,
 }: Props) => {
   const { setValue, getValues } = useFormContext();
   const [selectedLocale, setSelectedLocale] = useState<SupportedLocale | null>(
@@ -98,7 +103,9 @@ const ScaleLabelsInput = ({
           return (
             <Box display="flex" gap="36px" marginBottom="16px" key={index}>
               <Box mt="12px">
-                <Label value={(index + 1).toString()} />
+                <Label
+                  value={getNumberLabelForIndex(inputType, index).toString()}
+                />
               </Box>
               <Input
                 className={`e2e-linear-scale-label`}

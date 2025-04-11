@@ -117,8 +117,6 @@ en:
       today: Today
       wrong_content: 'The comment is not relevant.'
       yesterday: Yesterday
-    community_monitor_report:
-      subject: 'A new community monitor report is available'
     assignee_digest:
       subject: 'Ideas requiring your feedback: %{numberIdeas}'
       preheader: 'Assignee digest of %{organizationName}'

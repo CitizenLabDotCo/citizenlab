@@ -30,10 +30,6 @@ export default defineMessages({
     id: 'app.containers.Admin.inspirationHub.Voting',
     defaultMessage: 'Voting',
   },
-  communityMonitorSurvey: {
-    id: 'app.containers.Admin.inspirationHub.CommunityMonitorSurvey',
-    defaultMessage: 'Community monitor',
-  },
   poll: {
     id: 'app.containers.Admin.inspirationHub.Poll',
     defaultMessage: 'Poll',

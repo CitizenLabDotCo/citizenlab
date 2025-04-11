@@ -10,7 +10,6 @@ import moment from 'moment';
 import Transition from 'react-transition-group/Transition';
 import { SupportedLocale } from 'typings';
 
-import useCommunityMonitorProject from 'api/community_monitor/useCommunityMonitorProject';
 import useAuthUser from 'api/me/useAuthUser';
 import usePhases from 'api/phases/usePhases';
 import useProjects from 'api/projects/useProjects';
@@ -34,11 +33,7 @@ import {
   useFormatMessageWithLocale,
   MessageDescriptor,
 } from 'utils/cl-intl';
-import {
-  isModerator,
-  isProjectModerator,
-  isSuperAdmin,
-} from 'utils/permissions/roles';
+import { isModerator } from 'utils/permissions/roles';
 
 import Analysis from '../Analysis';
 import { WIDGET_TITLES } from '../Widgets';
@@ -49,7 +44,6 @@ import ParticipationWidget from '../Widgets/ChartWidgets/ParticipationWidget';
 import RegistrationsWidget from '../Widgets/ChartWidgets/RegistrationsWidget';
 import VisitorsTrafficSourcesWidget from '../Widgets/ChartWidgets/VisitorsTrafficSourcesWidget';
 import VisitorsWidget from '../Widgets/ChartWidgets/VisitorsWidget';
-import CommunityMonitorHealthScoreWidget from '../Widgets/CommunityMonitorHealthScoreWidget';
 import IframeMultiloc from '../Widgets/IframeMultiloc';
 import ImageMultiloc from '../Widgets/ImageMultiloc';
 import MostReactedIdeasWidget from '../Widgets/MostReactedIdeasWidget';
@@ -74,8 +68,8 @@ const ReportBuilderToolbox = ({
   const formatMessageWithLocale = useFormatMessageWithLocale();
   const { projectId } = useReportContext();
   const appConfigurationLocales = useAppConfigurationLocales();
-
   const { data: authUser } = useAuthUser();
+
   const userIsModerator = !!authUser && isModerator(authUser);
 
   const { data: projects } = useProjects(
@@ -87,14 +81,6 @@ const ReportBuilderToolbox = ({
       enabled: userIsModerator,
     }
   );
-
-  // Check if the user moderates the communtiy monitor, to decide if
-  // we want to show this widget in the toolbox.
-  const { data: communityMonitorProject } = useCommunityMonitorProject({});
-  const moderatesCommunityMonitor =
-    communityMonitorProject &&
-    (isSuperAdmin(authUser) ||
-      isProjectModerator(authUser, communityMonitorProject.data.id));
 
   const { data: phases } = usePhases(projectId);
   const { data: userFields } = useUserCustomFields({ inputTypes: ['select'] });
@@ -257,17 +243,6 @@ const ReportBuilderToolbox = ({
           </Section>
 
           <Section>
-            {moderatesCommunityMonitor && (
-              <DraggableElement
-                id="e2e-draggable-community-monitor-health-score-widget"
-                component={<CommunityMonitorHealthScoreWidget />}
-                icon="chart-bar"
-                label={formatMessage(
-                  WIDGET_TITLES.CommunityMonitorHealthScoreWidget
-                )}
-              />
-            )}
-
             <DraggableElement
               id="e2e-draggable-visitors-timeline-widget"
               component={

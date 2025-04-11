@@ -50,7 +50,6 @@ import {
 import { usePermission } from 'utils/permissions';
 import { isAdmin, isModerator } from 'utils/permissions/roles';
 
-import CommunityMonitorModal from './CommunityMonitorModal';
 import messages from './messages';
 import Meta from './Meta';
 import UserSessionRecordingModal from './UserSessionRecordingModal';
@@ -349,7 +348,6 @@ const App = ({ children }: Props) => {
         >
           <Meta />
           <UserSessionRecordingModal />
-          <CommunityMonitorModal />
           <ErrorBoundary>
             <Suspense fallback={null}>
               <UserDeletedModal
