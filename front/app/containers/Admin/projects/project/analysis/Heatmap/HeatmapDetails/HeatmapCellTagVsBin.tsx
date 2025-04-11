@@ -54,9 +54,6 @@ const HeatmapCellTagVsBin = ({ cell, row, column }: Props) => {
   const cellBgColor = getCellBgColor(lift, isSignificant);
   const cellTextColor = getCellTextColor(lift, isSignificant);
 
-  if (cell.attributes.count === 0) {
-    return null;
-  }
   return (
     <Tooltip
       disabled={!cell}
@@ -97,7 +94,16 @@ const HeatmapCellTagVsBin = ({ cell, row, column }: Props) => {
           textAlign="center"
           fontWeight="bold"
           color="inherit"
-          fontSize="xs"
+          fontSize="xl"
+        >
+          {cell.attributes.count}
+        </Text>
+        <Text
+          m="0px"
+          textAlign="center"
+          fontWeight="bold"
+          color={cellTextColor === colors.white ? 'inherit' : 'textSecondary'}
+          fontSize="s"
         >
           {convertLiftToPercentage(lift)}
         </Text>

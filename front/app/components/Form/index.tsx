@@ -112,11 +112,7 @@ const Form = memo(
     }, [scrollToError]);
 
     useEffect(() => {
-      // We will again clone the data here, just to be sure that
-      // json forms doesn't mess around with the original variable
-      setData({
-        ...parseRequiredMultilocsData(schema, locale, initialFormData),
-      });
+      setData(parseRequiredMultilocsData(schema, locale, initialFormData));
     }, [schema, locale, initialFormData]);
 
     const layoutType =
@@ -212,11 +208,7 @@ const Form = memo(
             inputId={inputId}
             config={config}
             locale={locale}
-            onChange={(data) => {
-              // And here we clone the data another time
-              // because who knows what JSON forms is doing here
-              setData({ ...data });
-            }}
+            onChange={setData}
             onSubmit={handleSubmit}
           />
         </Box>
