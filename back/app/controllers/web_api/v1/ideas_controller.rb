@@ -161,6 +161,7 @@ class WebApi::V1::IdeasController < ApplicationController
   #   Normal users always post in an active phase. They should never provide a phase id.
   #   Users who can moderate projects post in an active phase if no phase id is given.
   #   Users who can moderate projects post in the given phase if a phase id is given.
+  #  TODO: Reject bots from this endpoint so that anonymous participation is not gamed
   def create
     send_error and return if !phase_for_input
 
@@ -170,6 +171,9 @@ class WebApi::V1::IdeasController < ApplicationController
     input = Idea.new params_for_create
     input.creation_phase = (phase_for_input if !phase_for_input.pmethod.transitive?)
     input.phase_ids = [phase_for_input.id] if params.dig(:idea, :phase_ids).blank?
+
+    # Non persisted attribute needed by policy & input for 'everyone' participation only
+    input.request = request if phase.pmethod.supports_everyone_tracking?
 
     # NOTE: Needs refactor allow_anonymous_participation? so anonymous_participation can be allow or force
     if phase_for_input.pmethod.supports_survey_form? && phase_for_input.allow_anonymous_participation?
@@ -197,6 +201,7 @@ class WebApi::V1::IdeasController < ApplicationController
       if input.save(**save_options)
         update_file_upload_fields input, form, params_for_create
         sidefx.after_create(input, current_user)
+        write_everyone_tracking_cookie input
         render json: WebApi::V1::IdeaSerializer.new(
           input.reload,
           params: jsonapi_serializer_params,
@@ -519,6 +524,14 @@ class WebApi::V1::IdeasController < ApplicationController
     if !input.participation_method_on_creation.transitive? && input.ideas_phases.find_index(&:changed?)
       { errors: { phase_ids: [{ error: 'Cannot change the phases of non-transitive inputs', value: input.phase_ids }] } }
     end
+  end
+
+  def write_everyone_tracking_cookie(input)
+    Permissions::EveryoneTrackingService.new(
+      input.author,
+      input.creation_phase,
+      input.request
+    ).write_everyone_tracking_cookie(cookies, input.author_hash)
   end
 end
 
