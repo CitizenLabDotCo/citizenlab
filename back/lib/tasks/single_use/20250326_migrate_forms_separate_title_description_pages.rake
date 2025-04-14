@@ -32,7 +32,7 @@ namespace :migrate_custom_forms do
         # Add the body page in front of the body field
         fields_per_page, _, body_page = rake_20250326_group_field_by_page(form.custom_fields)
         if body_page
-          body_field = fields_per_page[body_page].find { |field| field.code == 'body_multiloc' }
+          body_field = fields_per_page[body_page]&.find { |field| field.code == 'body_multiloc' }
           next if !body_field # This should not be possible, but just in case.
 
           field_before_body = fields_per_page[body_page].find { |field| field.ordering == (body_field.ordering - 1) } || body_page
@@ -47,8 +47,10 @@ namespace :migrate_custom_forms do
         end
 
         # If the body field is not the last field of the body page, start a new page after it.
+        # Unless the body field is followed by the title field, in which case a new title page
+        # will be created in the next steps.
         fields_per_page, _, body_page = rake_20250326_group_field_by_page(form.reload.custom_fields)
-        if body_page && fields_per_page[body_page].last&.code != 'body_multiloc' && fields_per_page[body_page].second&.code != 'title_multiloc'
+        if body_page && fields_per_page[body_page].present? && fields_per_page[body_page].last&.code != 'body_multiloc' && fields_per_page[body_page].second&.code != 'title_multiloc'
           rake_20250326_create_and_report_page(rake_20250326_new_normal_page(form), (body_field.reload.ordering + 1), reporter, 'add_body_page')
         end
 
@@ -56,7 +58,7 @@ namespace :migrate_custom_forms do
         fields_per_page, title_page, = rake_20250326_group_field_by_page(form.reload.custom_fields)
         real_title_page = form.custom_fields.find_by(code: 'title_page')
         if title_page
-          title_field = fields_per_page[title_page].find { |field| field.code == 'title_multiloc' }
+          title_field = fields_per_page[title_page]&.find { |field| field.code == 'title_multiloc' }
           next if !title_field # This should not be possible, but just in case.
 
           if real_title_page

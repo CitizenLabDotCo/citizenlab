@@ -20,7 +20,8 @@ describe 'migrate_custom_forms:separate_title_body_pages rake task' do
     %i[page extra extra title body extra extra page] => %i[page extra extra title_page title body_page body page extra extra page],
     %i[title_page title extra extra body page] => %i[title_page title page extra extra body_page body page],
     %i[title_page body extra title extra page] => %i[body_page body page extra title_page title page extra page],
-    %i[title_page extra title body page] => %i[page extra title_page title body_page body page],
+    %i[title_page extra body extra title extra page] => %i[page extra body_page body page extra title_page title page extra page],
+    %i[title_page extra title body page] => %i[page extra title_page title body_page body page]
   }.each do |form_from, form_to|
     it "Migrates #{form_from} to #{form_to}" do
       form = create(:custom_form)
@@ -57,8 +58,20 @@ describe 'migrate_custom_forms:separate_title_body_pages rake task' do
     end
   end
 
+  it 'Maps the old default page codes to the new ones' do
+    form = create(:custom_form)
+    %w[ideation_page2 ideation_page1 ideation_page3].each do |code|
+      create(:custom_field_page, resource: form).tap do |field|
+        field.update_columns(code: code)
+      end
+    end
+
+    Rake::Task['migrate_custom_forms:separate_title_body_pages'].invoke
+
+    expect(form.reload.custom_fields.pluck(:code)).to eq %w[uploads_page title_page details_page]
+  end
+
   # TODO: Test preservation of custom copy (title and description)
-  # TODO: Test mapping of codes
 
   def create_field_before(sym, form)
     case sym
