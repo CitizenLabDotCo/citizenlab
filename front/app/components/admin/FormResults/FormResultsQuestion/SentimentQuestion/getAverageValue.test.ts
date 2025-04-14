@@ -79,8 +79,8 @@ describe('getAverageValue', () => {
       { answer: 5, count: 1 },
     ];
 
-    // totalValue = 11, responses = 3 → avg = 3.666 → rounds to 4
+    // totalValue = 11, responses = 3 → avg = 3.666 → rounds to 3.7
     const result = getAverageValue(groupAnswers, groupAnswersArray);
-    expect(result).toBe(4);
+    expect(result).toBe(3.7);
   });
 });
