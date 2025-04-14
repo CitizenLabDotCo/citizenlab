@@ -4,7 +4,6 @@ import {
   useWindowSize,
   defaultCardStyle,
   useBreakpoint,
-  Box,
 } from '@citizenlab/cl2-component-library';
 import CSSTransition from 'react-transition-group/CSSTransition';
 import styled from 'styled-components';
@@ -16,7 +15,6 @@ import IdeasShow from 'containers/IdeasShow';
 import IdeaShowPageTopBar from 'containers/IdeasShowPage/IdeaShowPageTopBar';
 
 import { InputFiltersProps } from 'components/IdeaCards/IdeasWithFiltersSidebar/InputFilters';
-import GoBackButton from 'components/UI/GoBackButton';
 
 import MapIdeasList from './MapIdeasList';
 
@@ -188,14 +186,6 @@ const IdeaMapOverlay = memo<Props>(
                 // Ref to use to focus on the overlay after selecting an idea
                 ref={overlayRef}
               >
-                <Box display="flex" mt="16px" ml="24px">
-                  <GoBackButton
-                    onClick={() => {
-                      onSelectIdea(null);
-                    }}
-                  />
-                </Box>
-
                 <IdeaShowPageTopBar
                   idea={idea.data}
                   deselectIdeaOnMap={() => {
