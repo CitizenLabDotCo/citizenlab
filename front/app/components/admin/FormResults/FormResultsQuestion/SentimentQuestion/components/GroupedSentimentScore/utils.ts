@@ -3,8 +3,7 @@ import { Answer, GroupedAnswer } from 'api/survey_results/types';
 import { calculateResponseCountForGroup, SentimentAnswers } from '../../utils';
 
 // transformGroupedAnswerUsableArray:
-// Description: Reduces a full set of grouped answers down to counts for a specific group.
-// This is useful for filtering sentiment or response data by demographic group.
+// Description: Converts a grouped answer into a more usable array.
 export function transformGroupedAnswerUsableArray(
   groupedAnswer: GroupedAnswer[],
   groupKey: string
