@@ -2,7 +2,7 @@ import React from 'react';
 
 import { useParams } from 'react-router-dom';
 
-import useAddUserCustomFieldOption from 'api/user_custom_fields_options/useAddUserCustomFieldOption';
+import useAddCustomFieldOption from 'api/custom_field_options/useAddCustomFieldOption';
 
 import { Section, SectionTitle } from 'components/admin/Section';
 
@@ -16,11 +16,11 @@ import RegistrationCustomFieldOptionsForm, {
 } from './RegistrationCustomFieldOptionsForm';
 
 const RegistrationCustomFieldOptionsNew = () => {
-  const { mutate: addUserCustomFieldOption } = useAddUserCustomFieldOption();
+  const { mutate: addCustomFieldOption } = useAddCustomFieldOption();
   const { userCustomFieldId } = useParams() as { userCustomFieldId: string };
 
   const handleSubmit = (values: FormValues) => {
-    addUserCustomFieldOption(
+    addCustomFieldOption(
       {
         customFieldId: userCustomFieldId,
         title_multiloc: values.title_multiloc,
