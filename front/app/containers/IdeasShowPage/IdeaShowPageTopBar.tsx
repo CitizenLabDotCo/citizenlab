@@ -123,14 +123,11 @@ const IdeaShowPageTopBar = ({
     }
   }, [goBack, deselectIdeaOnMap, project]);
 
-  if (!phase) return null;
-
-  const votingConfig = getVotingMethodConfig(phase.attributes.voting_method);
-  const ideaIsInParticipationContext = isIdeaInParticipationContext(
-    idea,
-    phase
-  );
-  const participationMethod = phase.attributes.participation_method;
+  const votingConfig = getVotingMethodConfig(phase?.attributes.voting_method);
+  const ideaIsInParticipationContext = phase
+    ? isIdeaInParticipationContext(idea, phase)
+    : false;
+  const participationMethod = phase?.attributes.participation_method;
 
   return (
     <Container className={className || ''}>
@@ -162,15 +159,17 @@ const IdeaShowPageTopBar = ({
                 variant={'text'}
               />
             )}
-          {participationMethod === 'voting' && ideaIsInParticipationContext && (
-            <Box mr="8px">
-              {votingConfig?.getIdeaPageVoteInput({
-                ideaId,
-                phase,
-                compact: true,
-              })}
-            </Box>
-          )}
+          {participationMethod === 'voting' &&
+            ideaIsInParticipationContext &&
+            phase && (
+              <Box mr="8px">
+                {votingConfig?.getIdeaPageVoteInput({
+                  ideaId,
+                  phase,
+                  compact: true,
+                })}
+              </Box>
+            )}
         </Right>
       </TopBarInner>
     </Container>
