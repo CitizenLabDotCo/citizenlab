@@ -116,13 +116,16 @@ export function getMapZoom(mapZoom: number, scale: number): string {
 
   // Use reduce to iterate over each zoom level and find the one with the smallest difference to the input scale
   const closestZoom = Object.entries(zoomToScale).reduce(
-    (closest, [zoomLevel, zoomScaleValue]) => {
-      const zoom = parseInt(zoomLevel, 10); // Convert zoom key from string to number
+    (currentClosestZoom, [zoomLevel, zoomScaleValue]) => {
       const currentZoomLevelDiff = Math.abs(zoomScaleValue - scale); // Difference between current scale value and input
-      const closestZoomLevelDiff = Math.abs(zoomToScale[closest] - scale); // Difference for the current best match
+      const closestZoomLevelDiff = Math.abs(
+        zoomToScale[currentClosestZoom] - scale
+      ); // Difference for the current best match
 
       // Return the zoom level that is closer to the target scale
-      return currentZoomLevelDiff < closestZoomLevelDiff ? zoom : closest;
+      return currentZoomLevelDiff < closestZoomLevelDiff
+        ? zoomLevel
+        : currentClosestZoom;
     },
     0
   ); // Start assuming zoom level 0 is the closest
