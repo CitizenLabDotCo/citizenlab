@@ -1,3 +1,5 @@
+import Geometry from '@arcgis/core/geometry/Geometry';
+import Point from '@arcgis/core/geometry/Point';
 import * as projection from '@arcgis/core/geometry/projection.js';
 import { isArray, isNumber } from 'lodash-es';
 import { SupportedLocale } from 'typings';
@@ -15,18 +17,19 @@ import {
 
 export type LatLngTuple = [number, number, number?];
 
-export const projectPointToWebMercator = (
-  geometry: __esri.Geometry
-): __esri.Point => {
+export const projectPointToWebMercator = (geometry: Geometry): Point => {
   const projectedPoint = projection.project(geometry, {
-    wkid: 3857, // Web Mercator
+    wkid: 3857, // Web Mercator Projection
   });
 
+  // Typing is a bit off with the ArcGIS Library,
+  // but we can cast it to a Point when we return.
+
   if (isArray(projectedPoint)) {
-    return projectedPoint[0] as __esri.Point;
+    return projectedPoint[0] as Point;
   }
 
-  return projectedPoint as __esri.Point;
+  return projectedPoint as Point;
 };
 
 export const getCenter = (
