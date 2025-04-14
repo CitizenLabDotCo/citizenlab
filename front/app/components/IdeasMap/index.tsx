@@ -332,6 +332,7 @@ const IdeasMap = memo<Props>(
         };
 
         // Save clicked location
+        // First, project the point to Web Mercator to guarantee the correct coordinate system
         const clickedPointProjected = projectPointToWebMercator(event.mapPoint);
         setClickedMapLocation(esriPointToGeoJson(clickedPointProjected));
 
