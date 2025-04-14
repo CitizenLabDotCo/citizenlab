@@ -1,3 +1,20 @@
 ach:
   analysis:
     example_tag_n: crwdns4280560:0%{n}crwdne4280560:0
+    cell_statement:
+      percent_more: "crwdns4305388:0%{percent}crwdne4305388:0"
+      percent_less: "crwdns4305390:0%{percent}crwdne4305390:0"
+      range_min_max: "crwdns4305392:0%{min}crwdnd4305392:0%{max}crwdne4305392:0"
+      range_min: "crwdns4305394:0%{min}crwdne4305394:0"
+      range_max: "crwdns4305396:0%{max}crwdne4305396:0"
+      tag_vs_bin:
+        inputs: "crwdns4305398:0%{answer}crwdnd4305398:0%{question}crwdnd4305398:0%{percent_more_less}crwdnd4305398:0%{tag}crwdne4305398:0"
+        likes: "crwdns4305400:0%{answer}crwdnd4305400:0%{question}crwdnd4305400:0%{percent_more_less}crwdnd4305400:0%{tag}crwdne4305400:0"
+        dislikes: "crwdns4305402:0%{answer}crwdnd4305402:0%{question}crwdnd4305402:0%{percent_more_less}crwdnd4305402:0%{tag}crwdne4305402:0"
+        participants: "crwdns4305404:0%{answer}crwdnd4305404:0%{question}crwdnd4305404:0%{percent_more_less}crwdnd4305404:0%{tag}crwdne4305404:0"
+      bin_vs_bin:
+        inputs: "crwdns4305406:0%{answer1}crwdnd4305406:0%{question1}crwdnd4305406:0%{answer2}crwdnd4305406:0%{question2}crwdnd4305406:0%{percent_more_less}crwdne4305406:0"
+        likes: "crwdns4305408:0%{answer1}crwdnd4305408:0%{question1}crwdnd4305408:0%{percent_more_less}crwdnd4305408:0%{answer2}crwdnd4305408:0%{question2}crwdne4305408:0"
+        dislikes: "crwdns4305410:0%{answer1}crwdnd4305410:0%{question1}crwdnd4305410:0%{percent_more_less}crwdnd4305410:0%{answer2}crwdnd4305410:0%{question2}crwdne4305410:0"
+        participants: "crwdns4305412:0%{answer1}crwdnd4305412:0%{question1}crwdnd4305412:0%{percent_more_less}crwdnd4305412:0%{answer2}crwdnd4305412:0%{question2}crwdne4305412:0"
+
