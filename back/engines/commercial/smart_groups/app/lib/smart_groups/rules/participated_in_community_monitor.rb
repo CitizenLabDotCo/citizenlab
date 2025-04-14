@@ -4,7 +4,7 @@ module SmartGroups::Rules
   class ParticipatedInCommunityMonitor
     include ActiveModel::Validations
 
-    PREDICATE_VALUES = %w[posted_in not_posted_in].freeze
+    PREDICATE_VALUES = %w[taken_survey not_taken_survey].freeze
 
     attr_accessor :predicate, :value
 
@@ -34,7 +34,7 @@ module SmartGroups::Rules
     end
 
     def self.rule_type
-      'partcipated_in_community_monitor'
+      'participated_in_community_monitor'
     end
 
     def self.from_json(json)
@@ -56,10 +56,10 @@ module SmartGroups::Rules
       return unless project
 
       case predicate
-      when 'posted_in'
+      when 'taken_survey'
         participants = participants_service.projects_participants([project], actions: [:posting])
         users_scope.where(id: participants)
-      when 'not_posted_in'
+      when 'not_taken_survey'
         participants = participants_service.projects_participants([project], actions: [:posting])
         users_scope.where.not(id: participants)
       else

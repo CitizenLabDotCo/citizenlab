@@ -310,6 +310,14 @@ export default defineMessages({
     id: 'app.components.admin.UserFilterConditions.predicate_is_not_area',
     defaultMessage: 'excludes area',
   },
+  predicate_taken_survey: {
+    id: 'app.components.admin.UserFilterConditions.predicate_taken_survey',
+    defaultMessage: 'has taken survey',
+  },
+  predicate_not_taken_survey: {
+    id: 'app.components.admin.UserFilterConditions.predicate_not_taken_survey',
+    defaultMessage: 'has not taken survey',
+  },
 
   rulesFormLabelField: {
     id: 'app.components.admin.UserFilterConditions.rulesFormLabelField',

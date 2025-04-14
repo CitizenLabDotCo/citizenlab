@@ -64,7 +64,6 @@ const FieldSelector = memo(
         follow: messages.field_follow,
         verified: messages.field_verified,
       };
-      console.log(ruleTypeConstraints);
 
       const staticOptions = keys(ruleTypeConstraints)
         .filter((ruleType) => !/^custom_field_.*$/.test(ruleType))

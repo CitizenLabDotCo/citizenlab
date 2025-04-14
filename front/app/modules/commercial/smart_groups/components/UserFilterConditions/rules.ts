@@ -66,7 +66,8 @@ type TStaticPredicate =
   | TParticipatedInTopicPredicate
   | TParticipatedInStatusPredicate
   | TVerifiedPredicate
-  | TFollowPredicate;
+  | TFollowPredicate
+  | TParticipatedInCommunityMonitorPredicate;
 
 type TFollowPredicate =
   | 'something'
@@ -162,6 +163,10 @@ type TParticipatedInStatusPredicate =
   | 'not_reacted_idea_in'
   | 'reacted_comment_in'
   | 'not_reacted_comment_in';
+
+type TParticipatedInCommunityMonitorPredicate =
+  | 'taken_survey'
+  | 'not_taken_survey';
 
 type TVerifiedPredicate = 'is_verified' | 'not_is_verified';
 
@@ -494,6 +499,10 @@ export type TRule =
   | {
       ruleType?: 'verified';
       predicate?: 'is_verified' | 'not_is_verified';
+    }
+  | {
+      ruleType?: 'participated_in_community_monitor';
+      predicate?: 'taken_survey' | 'not_taken_survey';
     };
 
 export const ruleTypeConstraints = {
@@ -638,8 +647,8 @@ export const ruleTypeConstraints = {
     not_is_verified: null,
   },
   participated_in_community_monitor: {
-    posted_in: null,
-    not_posted_in: null,
+    taken_survey: null,
+    not_taken_survey: null,
   },
 };
 
