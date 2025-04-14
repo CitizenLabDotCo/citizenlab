@@ -13,9 +13,10 @@ import { getMailLink } from './utils';
 
 interface Props {
   ideaId: string;
+  isNativeSurvey: boolean;
 }
 
-const SubmissionReference = ({ ideaId }: Props) => {
+const SubmissionReference = ({ ideaId, isNativeSurvey }: Props) => {
   const { formatMessage } = useIntl();
   const { data: authUser } = useAuthUser();
 
@@ -46,7 +47,11 @@ const SubmissionReference = ({ ideaId }: Props) => {
           icon="email"
           paddingLeft="0"
         >
-          <FormattedMessage {...messages.sendSurveySubmission} />
+          <FormattedMessage
+            {...(isNativeSurvey
+              ? messages.sendSurveySubmission
+              : messages.sendSubmission)}
+          />
         </ButtonWithLink>
       </Box>
     </Box>
