@@ -51,7 +51,7 @@ export const filterForCommunityMonitorQuarter = ({
   }
 
   const quarterStart = new Date(year, (quarter - 1) * 3, 1);
-  const quarterEnd = new Date(year, quarter * 3, 0, 23, 59, 59, 999); // Inclusive to end of quarter
+  const nextQuarterStart = new Date(year, quarter * 3, 1);
 
   const filteredInsights = insights?.data.filter((insight) => {
     const summary = analysisSummaries?.find(
@@ -67,7 +67,7 @@ export const filterForCommunityMonitorQuarter = ({
       const fromDate = new Date(publishedFrom);
 
       // Return insights where "from" date falls within the quarter
-      return fromDate >= quarterStart && fromDate <= quarterEnd;
+      return fromDate >= quarterStart && fromDate < nextQuarterStart;
     }
 
     // Keep any insights without date filters (e.g. admin-created summaries over multiple quarters)
