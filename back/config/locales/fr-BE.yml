@@ -303,6 +303,8 @@ fr-BE:
     form_end_page:
       title_text_3: 'Merci pour votre participation !'
       description_text_3: "Votre contribution a été soumise avec succès."
+    form_user_page:
+      title_text: 'À propos de vous'
     pdf_export:
       personal_data: 'Données personnelles'
       personal_data_explanation_public: "Cette contribution sera soumise sur la plateforme de participation en ligne de %{organizationName}. Si vous souhaitez que votre nom soit affiché en tant qu'auteur et recevoir par e-mail des mises à jours concernant votre soumission, veuillez remplir les champs suivants et nous créerons un compte pour vous. Votre adresse e-mail ne sera pas publique et sera uniquement utilisée par %{organizationName}. Si vous préférez rester anonyme ou ne souhaitez pas que nous utilisions vos données personnelles à cette fin, vous pouvez laisser ces champs vides."
