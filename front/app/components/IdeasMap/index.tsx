@@ -318,6 +318,19 @@ const IdeasMap = memo<Props>(
 
     const onMapClick = useCallback(
       (event: any, mapView: MapView) => {
+        // Function to trigger the "Submit an idea" popup
+        const triggerShowInputPopup = () => {
+          if (ideaPostingEnabled) {
+            showAddInputPopup({
+              event,
+              mapView,
+              setSelectedInput: setSelectedIdea,
+              popupContentNode: startIdeaButtonNode,
+              popupTitle: formatMessage(messages.submitIdea),
+            });
+          }
+        };
+
         // Save clicked location
         const clickedPointProjected = projectPointToWebMercator(event.mapPoint);
         setClickedMapLocation(esriPointToGeoJson(clickedPointProjected));
@@ -419,39 +432,15 @@ const IdeasMap = memo<Props>(
                 }
               } else {
                 // Show the "Submit an idea" popup
-                if (ideaPostingEnabled) {
-                  showAddInputPopup({
-                    event,
-                    mapView,
-                    setSelectedInput: setSelectedIdea,
-                    popupContentNode: startIdeaButtonNode,
-                    popupTitle: formatMessage(messages.submitIdea),
-                  });
-                }
+                triggerShowInputPopup();
               }
             } else if (topElement.type === 'media') {
               // If the user clicked on a media layer (E.g. image overlay), show the idea popup
-              if (ideaPostingEnabled) {
-                showAddInputPopup({
-                  event,
-                  mapView,
-                  setSelectedInput: setSelectedIdea,
-                  popupContentNode: startIdeaButtonNode,
-                  popupTitle: formatMessage(messages.submitIdea),
-                });
-              }
+              triggerShowInputPopup();
             }
           } else {
             // If the user clicked elsewhere on the map, show the "Submit an idea" popup
-            if (ideaPostingEnabled) {
-              showAddInputPopup({
-                event,
-                mapView,
-                setSelectedInput: setSelectedIdea,
-                popupContentNode: startIdeaButtonNode,
-                popupTitle: formatMessage(messages.submitIdea),
-              });
-            }
+            triggerShowInputPopup();
           }
         });
       },

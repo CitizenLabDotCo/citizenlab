@@ -13,7 +13,7 @@ describe('calculateScaleFromZoom', () => {
 });
 
 describe('getMapZoom', () => {
-  it('returns the input zoom if greater than 0', () => {
+  it('returns the input zoom (mapZoom argument) if greater than 0', () => {
     expect(getMapZoom(5, 100000)).toBe('5');
   });
 
