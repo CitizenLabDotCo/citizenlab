@@ -543,8 +543,10 @@ const CLPageLayout = memo(
                   flex="1"
                 >
                   <SubmissionReference
-                    ideaId={ideaId}
-                    isNativeSurvey={isNativeSurvey}
+                    inputId={ideaId}
+                    participationMethod={
+                      phase?.data.attributes.participation_method
+                    }
                   />
                 </Box>
               )}
