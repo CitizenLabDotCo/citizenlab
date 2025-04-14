@@ -59,12 +59,11 @@ const ReviewFlow = ({ project }: { project: IProjectData }) => {
   const approvalPending = projectReview?.data.attributes.state === 'pending';
   const approvalGranted = projectReview?.data.attributes.state === 'approved';
 
-  const showPublishButton =
-    (canPublish || !isProjectReviewEnabled) && !approvalPending;
-
+  const showProjectApprovalButton = approvalPending && canReview;
   const showReviewRequestButton =
     isProjectReviewEnabled && !canReview && !approvalGranted;
-  const showProjectApprovalButton = approvalPending && canReview;
+  const showPublishButton =
+    !showProjectApprovalButton && !showReviewRequestButton;
 
   return (
     <Box>
