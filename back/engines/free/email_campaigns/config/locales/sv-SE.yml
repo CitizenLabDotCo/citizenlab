@@ -550,7 +550,7 @@ sv:
         content_moderation: 'Moderering av innehåll'
         events: 'Händelser'
         general: 'Allmänt'
-        inputs: 'Ingångar'
+        inputs: 'Bidrag'
         internal_comments: 'Interna kommentarer'
         permissions: 'Behörigheter'
         projects: 'Projekt'
