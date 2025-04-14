@@ -70,7 +70,8 @@ const ReviewFlow = ({ project }: { project: IProjectData }) => {
       {showPublishButton && (
         <Tooltip
           content={formatMessage(
-            messages.onlyAdminsAndFolderManagersCanPublish
+            messages.onlyAdminsAndFolderManagersCanPublish,
+            { inFolder: !!project.attributes.folder_id }
           )}
           placement="bottom"
           disabled={canPublish}
@@ -95,6 +96,7 @@ const ReviewFlow = ({ project }: { project: IProjectData }) => {
         <Box position="relative">
           <ReviewRequestButton
             projectId={project.id}
+            inFolder={!!project.attributes.folder_id}
             approvalPending={approvalPending}
             processing={isProjectReviewLoading}
           />
