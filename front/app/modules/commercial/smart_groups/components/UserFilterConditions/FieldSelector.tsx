@@ -22,6 +22,7 @@ import {
   TCustomRuleType,
   ruleTypeConstraints,
 } from './rules';
+import useFeatureFlag from 'hooks/useFeatureFlag';
 
 export interface FieldDescriptor {
   ruleType?: TRule['ruleType'];
@@ -65,8 +66,19 @@ const FieldSelector = memo(
         verified: messages.field_verified,
       };
 
+      const isCommunityMonitorEnabled = useFeatureFlag({
+        name: 'community_monitor',
+      });
+
       const staticOptions = keys(ruleTypeConstraints)
         .filter((ruleType) => !/^custom_field_.*$/.test(ruleType))
+        .filter((ruleType) => {
+          // Remove the community monitor rule type if the feature flag is not enabled
+          return (
+            isCommunityMonitorEnabled ||
+            ruleType !== 'participated_in_community_monitor'
+          );
+        })
         .map((ruleType) => {
           return {
             value: descriptorToOptionValue({
@@ -75,6 +87,7 @@ const FieldSelector = memo(
             label: formatMessage(labelMessages[ruleType]),
           };
         });
+
       const customFieldOptions = userCustomFields
         .filter(
           (userCustomField) => userCustomField.attributes.code !== 'domicile'
