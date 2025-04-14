@@ -6,12 +6,12 @@ import { useSearchParams } from 'react-router-dom';
 import SentimentBar from 'components/admin/FormResults/FormResultsQuestion/SentimentQuestion/components/SentimentScore/SentimentBar';
 import SentimentTooltip from 'components/admin/FormResults/FormResultsQuestion/SentimentQuestion/components/SentimentScore/SentimentTooltip';
 import { getAnswerGroups } from 'components/admin/FormResults/FormResultsQuestion/SentimentQuestion/components/SentimentScore/utils';
+import { SentimentAnswers } from 'components/admin/FormResults/FormResultsQuestion/SentimentQuestion/utils';
 
 import { isNil } from 'utils/helperUtils';
 
 import { QuarterlyScores } from '../types';
 import { getQuarterFilter, getYearFilter } from '../utils';
-import { SentimentAnswers } from 'components/admin/FormResults/FormResultsQuestion/SentimentQuestion/utils';
 
 type Props = {
   sentimentScores: QuarterlyScores | null;

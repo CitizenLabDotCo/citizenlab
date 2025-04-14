@@ -162,6 +162,10 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.survey.otherResponses',
     defaultMessage: 'Other responses',
   },
+  followUpResponses: {
+    id: 'app.containers.Admin.projects.project.survey.followUpResponses',
+    defaultMessage: 'Follow up responses',
+  },
   allFiles: {
     id: 'app.containers.Admin.projects.project.survey.allFiles',
     defaultMessage: 'All files',

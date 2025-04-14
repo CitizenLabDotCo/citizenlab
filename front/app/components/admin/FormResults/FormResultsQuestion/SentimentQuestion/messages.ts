@@ -7,7 +7,7 @@ export default defineMessages({
       '{count, plural, =0 {0 comments} one {1 comment} other {# comments}}',
   },
   noAnswers: {
-    id: 'app.containers.survey.sentiment.noAnswers',
-    defaultMessage: 'No answers to display.',
+    id: 'app.containers.survey.sentiment.noAnswers2',
+    defaultMessage: 'No responses at this time.',
   },
 });

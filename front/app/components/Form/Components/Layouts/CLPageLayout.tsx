@@ -36,6 +36,7 @@ import useProjectBySlug from 'api/projects/useProjectBySlug';
 
 import useLocalize from 'hooks/useLocalize';
 
+import { supportsNativeSurvey as methodSupportsNativeSurvey } from 'containers/Admin/projects/project/inputImporter/ReviewSection/utils';
 import { triggerPostActionEvents } from 'containers/App/events';
 import ProfileVisiblity from 'containers/IdeasNewPage/IdeasNewIdeationForm/ProfileVisibility';
 
@@ -130,8 +131,9 @@ const CLPageLayout = memo(
     const phaseId =
       phaseIdFromSearchParams || getCurrentPhase(phases?.data)?.id;
     const { data: phase } = usePhase(phaseId);
-    const isNativeSurvey =
-      phase?.data.attributes.participation_method === 'native_survey';
+    const supportsNativeSurvey = methodSupportsNativeSurvey(
+      phase?.data.attributes.participation_method
+    );
     const allowAnonymousPosting =
       phase?.data.attributes.allow_anonymous_participation;
 
@@ -142,8 +144,9 @@ const CLPageLayout = memo(
      * to choose whether to post anonymously or not.
      */
     const allowsAnonymousPostingInNativeSurvey =
-      isNativeSurvey && allowAnonymousPosting;
-    const showTogglePostAnonymously = allowAnonymousPosting && !isNativeSurvey;
+      supportsNativeSurvey && allowAnonymousPosting;
+    const showTogglePostAnonymously =
+      allowAnonymousPosting && !supportsNativeSurvey;
 
     // Map-related variables
     const { data: projectMapConfig } = useProjectMapConfig(project?.data.id);
@@ -256,7 +259,7 @@ const CLPageLayout = memo(
       }
 
       if (pageVariant === 'after-submission') {
-        if (isNativeSurvey) {
+        if (supportsNativeSurvey) {
           if (currentPage.options.page_button_link) {
             // Page is using a custom button link
             window.location.href = currentPage.options.page_button_link;
