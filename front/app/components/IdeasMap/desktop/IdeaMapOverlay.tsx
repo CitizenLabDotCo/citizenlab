@@ -189,13 +189,6 @@ const IdeaMapOverlay = memo<Props>(
                   // Ref to use to focus on the overlay after selecting an idea
                   ref={overlayRef}
                 >
-                  {/* <Box display="flex" mt="16px" ml="24px">
-                    <GoBackButton
-                      onClick={() => {
-                        onSelectIdea(null);
-                      }}
-                    />
-                  </Box> */}
                   <IdeaShowPageTopBar
                     idea={idea.data}
                     deselectIdeaOnMap={() => {
