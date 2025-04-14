@@ -44,6 +44,9 @@ const FieldSelector = memo(
   }: Props & WrappedComponentProps) => {
     const localize = useLocalize();
     const { data: userCustomFields } = useUserCustomFields({});
+    const isCommunityMonitorEnabled = useFeatureFlag({
+      name: 'community_monitor',
+    });
 
     const generateOptions = (
       userCustomFields: IUserCustomFieldData[]
@@ -65,10 +68,6 @@ const FieldSelector = memo(
         follow: messages.field_follow,
         verified: messages.field_verified,
       };
-
-      const isCommunityMonitorEnabled = useFeatureFlag({
-        name: 'community_monitor',
-      });
 
       const staticOptions = keys(ruleTypeConstraints)
         .filter((ruleType) => !/^custom_field_.*$/.test(ruleType))
