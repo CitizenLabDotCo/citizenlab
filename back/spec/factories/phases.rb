@@ -115,7 +115,7 @@ FactoryBot.define do
     end
 
     factory :community_monitor_survey_phase do
-      association :project, factory: :community_monitor_project
+      association :project, factory: :community_monitor_project, with_phase: false
       participation_method { 'community_monitor_survey' }
       native_survey_title_multiloc { { 'en' => 'Community Monitor', 'nl-BE' => 'Gemeenschapsmonitor' } }
       native_survey_button_multiloc { { 'en' => 'Take the survey', 'nl-BE' => 'De enquete invullen' } }
