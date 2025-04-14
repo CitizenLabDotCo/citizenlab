@@ -73,7 +73,7 @@ describe('parseGroupedResult', () => {
   it('parses null answers and sets label to undefined', () => {
     const groupAnswers = [
       { answer: 1, count: 1 },
-      { answer: null, count: 0 }, // intentionally excluded from percentage base
+      { answer: null, count: 5 }, // intentionally excluded from percentage base
     ];
 
     const result = parseGroupedResult(mockResult as any, groupAnswers);
@@ -84,12 +84,6 @@ describe('parseGroupedResult', () => {
         count: 1,
         percentage: 100,
         label: { en: '1 - Very poor' },
-      },
-      {
-        answer: null,
-        count: 0,
-        percentage: 0,
-        label: undefined,
       },
     ]);
   });

@@ -29,11 +29,13 @@ export const parseGroupedResult = (
   result: ResultUngrouped | ResultGrouped,
   groupAnswers: Answer[]
 ): SentimentAnswers => {
-  const totalCount = calculateResponseCountForGroup(groupAnswers);
+  // Only include answers that are not null
+  const validAnswers = groupAnswers.filter((a) => a.answer !== null);
 
+  const totalCount = calculateResponseCountForGroup(validAnswers);
   if (totalCount === 0) return [];
 
-  return groupAnswers.map(({ answer, count }) => {
+  return validAnswers.map(({ answer, count }) => {
     const parsedAnswer =
       answer != null ? parseInt(answer.toString(), 10) : null;
 
