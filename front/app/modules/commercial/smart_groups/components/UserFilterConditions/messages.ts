@@ -33,6 +33,10 @@ export default defineMessages({
     id: 'app.components.admin.UserFilterConditions.field_participated_in_project',
     defaultMessage: 'Contributed to project',
   },
+  field_participated_in_community_monitor: {
+    id: 'app.components.admin.UserFilterConditions.field_participated_in_community_monitor',
+    defaultMessage: 'Community monitor survey',
+  },
   field_participated_in_topic: {
     id: 'app.components.admin.UserFilterConditions.field_participated_in_topic',
     defaultMessage: 'Contributed to topic',

@@ -56,12 +56,16 @@ const FieldSelector = memo(
         registration_completed_at: messages.field_registration_completed_at,
         role: messages.field_role,
         participated_in_project: messages.field_participated_in_project,
+        participated_in_community_monitor:
+          messages.field_participated_in_community_monitor,
         participated_in_topic: messages.field_participated_in_topic,
         participated_in_idea_status:
           messages.field_participated_in_input_status,
         follow: messages.field_follow,
         verified: messages.field_verified,
       };
+      console.log(ruleTypeConstraints);
+
       const staticOptions = keys(ruleTypeConstraints)
         .filter((ruleType) => !/^custom_field_.*$/.test(ruleType))
         .map((ruleType) => {

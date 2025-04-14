@@ -44,7 +44,8 @@ export type TStaticRuleType =
   | 'participated_in_project'
   | 'participated_in_topic'
   | 'participated_in_idea_status'
-  | 'verified';
+  | 'verified'
+  | 'participated_in_community_monitor';
 
 export type TCustomRuleType =
   | 'custom_field_text'
@@ -635,6 +636,10 @@ export const ruleTypeConstraints = {
   verified: {
     is_verified: null,
     not_is_verified: null,
+  },
+  participated_in_community_monitor: {
+    posted_in: null,
+    not_posted_in: null,
   },
 };
 
