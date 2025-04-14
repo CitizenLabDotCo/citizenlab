@@ -175,19 +175,6 @@ const FormFields = ({
           )}
         </Box>
         {lastPage.key === 'form_end' && (
-<<<<<<< HEAD
-          <Box mt="40px">
-            <FormField
-              field={lastPage}
-              selectedFieldId={selectedFieldId}
-              onEditField={onEditField}
-              builderConfig={builderConfig}
-              fieldNumbers={fieldNumbers}
-              closeSettings={closeSettings}
-              hasFullPageRestriction={false}
-            />
-          </Box>
-=======
           <>
             {userFieldsInFormNotice && userFieldsInFormNotice()}
             <Box mt={userFieldsInFormNotice ? '0' : '40px'}>
@@ -198,10 +185,10 @@ const FormFields = ({
                 builderConfig={builderConfig}
                 fieldNumbers={fieldNumbers}
                 closeSettings={closeSettings}
+                hasFullPageRestriction={false}
               />
             </Box>
           </>
->>>>>>> master
         )}
       </Box>
     </>

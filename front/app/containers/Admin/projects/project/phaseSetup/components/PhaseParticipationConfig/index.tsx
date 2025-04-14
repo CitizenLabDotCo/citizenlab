@@ -437,13 +437,10 @@ const PhaseParticipationConfig = ({
     expire_days_limit,
     reacting_threshold,
     prescreening_enabled,
-<<<<<<< HEAD
     similarity_enabled,
     similarity_threshold_title,
     similarity_threshold_body,
-=======
     user_fields_in_form,
->>>>>>> master
   } = formData;
 
   const showSurveys =
