@@ -158,7 +158,7 @@ module Surveys
         questionResponseCount: response_count,
         pageNumber: nil,
         questionNumber: nil,
-        questionCategory: field.question_category,
+        questionCategory: field.question_category
       }
     end
 
