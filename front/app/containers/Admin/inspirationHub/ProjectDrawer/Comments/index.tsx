@@ -18,8 +18,11 @@ import useProjectLibraryExternalComments from 'api/project_library_external_comm
 
 import TextArea from 'components/HookForm/TextArea';
 
+import { useIntl } from 'utils/cl-intl';
+
 import Comment from './Comment';
 import getAuthorNames from './getAuthorNames';
+import messages from './messages';
 
 const StyledTextArea = styled(TextArea)`
   font-size: ${fontSizes.base}px;
@@ -44,7 +47,10 @@ interface Props {
 const Comments = ({ projectId }: Props) => {
   const { data: authUser } = useAuthUser();
   const { mutate: addExternalComment } = useAddProjectLibraryExternalComment();
-  const { data: comments } = useProjectLibraryExternalComments({ projectId });
+  const { data: comments } = useProjectLibraryExternalComments({
+    projectId,
+    'page[size]': 100, // just a high number since we don't have pagination
+  });
 
   const methods = useForm<FormValues>({
     mode: 'onBlur',
@@ -54,16 +60,25 @@ const Comments = ({ projectId }: Props) => {
     resolver: yupResolver(schema),
   });
 
+  const { formatMessage } = useIntl();
+
   if (!authUser) return null;
 
   const onFormSubmit = ({ comment_body }: FormValues) => {
-    addExternalComment({
-      projectId,
-      externalCommentReqBody: {
-        body: comment_body,
-        ...getAuthorNames(authUser),
+    addExternalComment(
+      {
+        projectId,
+        externalCommentReqBody: {
+          body: comment_body,
+          ...getAuthorNames(authUser),
+        },
       },
-    });
+      {
+        onSuccess: () => {
+          methods.reset();
+        },
+      }
+    );
   };
 
   return (
@@ -74,7 +89,7 @@ const Comments = ({ projectId }: Props) => {
           <StyledTextArea
             rows={5}
             name="comment_body"
-            placeholder="Write your comment here"
+            placeholder={formatMessage(messages.writeYourCommentHere)}
           />
           <Box w="100%" mt="8px" display="flex">
             <Button
@@ -84,7 +99,7 @@ const Comments = ({ projectId }: Props) => {
               onClick={methods.handleSubmit(onFormSubmit)}
               processing={methods.formState.isSubmitting}
             >
-              Post your comment
+              {formatMessage(messages.postYourComment)}
             </Button>
           </Box>
         </form>

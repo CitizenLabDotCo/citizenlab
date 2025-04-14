@@ -10,7 +10,10 @@ import useUpdateProjectLibraryExternalComment from 'api/project_library_external
 
 import TextArea from 'components/HookForm/TextArea';
 
+import { useIntl } from 'utils/cl-intl';
+
 import getAuthorNames from './getAuthorNames';
+import messages from './messages';
 
 const schema = object({
   comment_body: string(),
@@ -39,6 +42,8 @@ const CommentEdit = ({ projectId, commentId, body, onCancel }: Props) => {
     },
     resolver: yupResolver(schema),
   });
+
+  const { formatMessage } = useIntl();
 
   if (!authUser) return null;
 
@@ -71,10 +76,10 @@ const CommentEdit = ({ projectId, commentId, body, onCancel }: Props) => {
           processing={isLoading}
           onClick={methods.handleSubmit(onFormSubmit)}
         >
-          Save
+          {formatMessage(messages.save)}
         </Button>
         <Button buttonStyle="secondary" p="4px 8px" onClick={onCancel}>
-          Cancel
+          {formatMessage(messages.cancel)}
         </Button>
       </Box>
     </FormProvider>

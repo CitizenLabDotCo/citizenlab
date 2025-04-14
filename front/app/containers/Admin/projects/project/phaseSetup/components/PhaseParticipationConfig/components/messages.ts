@@ -161,6 +161,7 @@ export default defineMessages({
     id: 'app.components.formBuilder.cancelMethodChange1',
     defaultMessage: 'Cancel',
   },
+<<<<<<< HEAD
   similarInputDetectionTitle: {
     id: 'app.containers.phaseConfig.similarInputDetectionTitle',
     defaultMessage: 'Similar input detection',
@@ -191,5 +192,19 @@ export default defineMessages({
     id: 'app.containers.phaseConfig.similarityThresholdBodyTooltip1',
     defaultMessage:
       'This controls how similar two descriptions must be to show suggestions. Use values between 0 and 1. Only adjust if you know what you’re doing.',
+=======
+  userFieldsInSurveyTitle: {
+    id: 'app.containers.AdminPage.ProjectEdit.NativeSurvey.userFieldsInSurveyTitle2',
+    defaultMessage: 'Demographic fields in survey form',
+  },
+  userFieldsInSurveyToggle: {
+    id: 'app.containers.AdminPage.ProjectEdit.NativeSurvey.userFieldsInSurveyToggle2',
+    defaultMessage: 'Show demographic fields in survey?',
+  },
+  userFieldsInSurveyDescription: {
+    id: 'app.containers.AdminPage.ProjectEdit.NativeSurvey.userFieldsInSurveyDescription2',
+    defaultMessage:
+      'If you enable this option, user registration fields will be shown as the last page in the survey instead of as part of the signup process.',
+>>>>>>> master
   },
 });

@@ -11,7 +11,7 @@ import { useRansackParam } from '../utils';
 import Sort from './Sort';
 
 const SortAndReset = () => {
-  const countryCode = useRansackParam('q[tenant_country_code_eq]');
+  const countryCode = useRansackParam('q[tenant_country_code_in]');
 
   return (
     <Box display="flex" mt="8px">
@@ -22,7 +22,7 @@ const SortAndReset = () => {
         ml="8px"
         onClick={() => {
           const search = countryCode
-            ? `?q[tenant_country_code_eq]=${countryCode}`
+            ? `?q[tenant_country_code_in]=${JSON.stringify([countryCode])}`
             : '';
 
           clHistory.replace({

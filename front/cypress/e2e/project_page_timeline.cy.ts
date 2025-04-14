@@ -9,12 +9,11 @@ describe('Existing Timeline project', () => {
     cy.wait(1000);
   });
 
-  beforeEach(() => {
-    cy.visit('/projects/test-project-1-timeline-with-file');
+  it('shows the correct elements', () => {
+    // shows the project page
     cy.get('#e2e-project-page');
-  });
 
-  it('shows the correct project header', () => {
+    // shows the project header
     cy.get('#e2e-project-header-image');
     cy.get('#e2e-project-description');
     cy.get('#e2e-project-sidebar');
@@ -23,29 +22,23 @@ describe('Existing Timeline project', () => {
     cy.get('.e2e-project-info')
       .contains('20190110_rueil_intermediaire.pdf')
       .should('have.attr', 'href');
-  });
 
-  it('shows the timeline', () => {
+    // shows the timeline
     cy.get('#project-timeline');
-  });
 
-  it('shows the timeline phases', () => {
+    // shows the timeline phases
     cy.get('.e2e-phases');
-  });
 
-  it('shows the phase navigation buttons', () => {
+    // shows the phase navigation buttons
     cy.get('.e2e-timeline-phase-navigation');
-  });
 
-  it('has a selected phase', () => {
+    // has a selected phase
     cy.get('.e2e-phases .selectedPhase');
-  });
 
-  it('shows the phase title', () => {
+    // shows the phase title
     cy.get('.e2e-phase-title');
-  });
 
-  it('shows the phase description', () => {
+    // shows the phase description
     cy.get('.e2e-phase-description');
   });
 });
@@ -148,29 +141,42 @@ describe('New timeline project', () => {
       .contains(phaseCurrentTitle);
     cy.get('.e2e-project-process-page').contains(phaseLongDescription);
 
+    // Verify that the description is collapsed by default
     cy.get('#e2e-project-phase-description-see-less-button').should(
       'not.exist'
     );
-    cy.get('#e2e-project-phase-description-read-more-button')
-      .should('exist')
-      .click();
 
+    // Read more/less button functionality
+    cy.get('#e2e-project-phase-description-read-more-button')
+      .should('be.visible')
+      .click();
     cy.get('#e2e-project-phase-description-read-more-button').should(
       'not.exist'
     );
+
     cy.get('#e2e-project-phase-description-see-less-button')
-      .should('exist')
-      .click();
+      .should('be.visible')
+      .then(($btn) => {
+        cy.wrap($btn).click();
+      });
+
+    // Verify that the description is collapsed again
+    cy.get('#e2e-project-phase-description-read-more-button').should(
+      'be.visible'
+    );
+    cy.get('#e2e-project-phase-description-see-less-button').should(
+      'not.exist'
+    );
   });
 
   it('shows the event CTA button', () => {
     // Shows the event CTA when there is an upcoming event
-    cy.get('#e2e-project-see-events-button').should('exist');
+    cy.get('#e2e-project-see-events-button').should('be.visible');
   });
 
   it('shows the previous phase', () => {
     cy.intercept(`**/phases/**`).as('phaseRequests');
-    cy.get('.e2e-previous-phase').should('exist');
+    cy.get('.e2e-previous-phase').should('be.visible');
     cy.get('.e2e-previous-phase').click({ force: true });
     cy.wait('@phaseRequests');
     cy.get('.e2e-previous-phase')
@@ -190,7 +196,7 @@ describe('New timeline project', () => {
   it('shows the next phase', () => {
     cy.intercept(`**/phases/**`).as('phaseRequests');
     // go to the next (and last) phase
-    cy.get('.e2e-next-phase').should('exist');
+    cy.get('.e2e-next-phase').should('be.visible');
     cy.get('.e2e-next-phase').click({ force: true });
     cy.wait('@phaseRequests');
     // verify it's not possible to go to a next phase
@@ -209,7 +215,7 @@ describe('New timeline project', () => {
   });
 
   it('shows the events viewer even in draft projects', () => {
-    cy.get('[data-testid="EventInformation"]').should('exist');
+    cy.get('[data-testid="EventInformation"]').should('be.visible');
   });
 
   it('correctly handles phaseNumber URL parameter', () => {

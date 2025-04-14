@@ -75,6 +75,7 @@ const FormFields = ({
 
   const conflictsByPage = detectConflictsByPage(nestedGroupData);
   const fieldNumbers = getFieldNumbers(formCustomFields);
+  const userFieldsInFormNotice = builderConfig.getUserFieldsNotice;
 
   return (
     <>
@@ -174,6 +175,7 @@ const FormFields = ({
           )}
         </Box>
         {lastPage.key === 'form_end' && (
+<<<<<<< HEAD
           <Box mt="40px">
             <FormField
               field={lastPage}
@@ -185,6 +187,21 @@ const FormFields = ({
               hasFullPageRestriction={false}
             />
           </Box>
+=======
+          <>
+            {userFieldsInFormNotice && userFieldsInFormNotice()}
+            <Box mt={userFieldsInFormNotice ? '0' : '40px'}>
+              <FormField
+                field={lastPage}
+                selectedFieldId={selectedFieldId}
+                onEditField={onEditField}
+                builderConfig={builderConfig}
+                fieldNumbers={fieldNumbers}
+                closeSettings={closeSettings}
+              />
+            </Box>
+          </>
+>>>>>>> master
         )}
       </Box>
     </>

@@ -34,6 +34,7 @@ module IdeaCustomFields
 
       fields = params[:copy] == 'true' ? service.duplicate_all_fields : service.all_fields
       fields = fields.filter(&:support_free_text_value?) if params[:support_free_text_value].present?
+      fields = fields.filter { |field| params[:input_types].include?(field.input_type) } if params[:input_types].present?
 
       render json: ::WebApi::V1::CustomFieldSerializer.new(
         fields,
@@ -131,7 +132,7 @@ module IdeaCustomFields
     end
 
     def validate_end_page!(fields)
-      return if fields.last.end_page?
+      return if fields.last.form_end_page?
 
       raise UpdateAllFailedError, { form: [{ error: 'no_end_page' }] }
     end

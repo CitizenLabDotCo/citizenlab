@@ -2,12 +2,16 @@ import { QueryKeys } from 'utils/cl-react-query/types';
 
 const baseKey = { type: 'custom_field_option' };
 
-const customFieldOptionKeys = {
+const customFieldOptionsKeys = {
   all: () => [baseKey],
+  lists: () => [{ ...baseKey, operation: 'list' }],
+  list: ({ customFieldId }: { customFieldId?: string }) => [
+    { ...baseKey, operation: 'list', parameters: { customFieldId } },
+  ],
   items: () => [{ ...baseKey, operation: 'item' }],
-  item: (params: { id: string }) => [
-    { ...baseKey, operation: 'item', parameters: params },
+  item: ({ optionId }: { optionId?: string }) => [
+    { ...baseKey, operation: 'item', parameters: { id: optionId } },
   ],
 } satisfies QueryKeys;
 
-export default customFieldOptionKeys;
+export default customFieldOptionsKeys;
