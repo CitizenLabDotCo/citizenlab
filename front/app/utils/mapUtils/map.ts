@@ -76,7 +76,7 @@ export const getZoomLevel = (
 
 // Esri Zoom to Scale Mapping
 // https://developers.arcgis.com/documentation/mapping-and-location-services/reference/zoom-levels-and-scale/
-const zoomToScale: { [zoom: number]: number } = {
+export const zoomToScale: { [zoom: number]: number } = {
   0: 591657527.591555,
   1: 295828763.795777,
   2: 147914381.897889,
@@ -130,10 +130,9 @@ export function getMapZoom(mapZoom: number, scale: number): string {
 
 // calculateScaleFromZoom
 // Description: Calculates the approximate map scale for a given zoom level using
-// Web Mercator projection assumptions. Based on Esri's default scale at zoom level 0 (1:591,657,550.5).
-export const calculateScaleFromZoom = (zoom: number) => {
-  const scale = 591657550.5 / Math.pow(2, zoom);
-  return scale;
+// Esri's zoom-to-scale mapping.
+export const calculateScaleFromZoom = (zoom: number): number => {
+  return zoomToScale[zoom] || zoomToScale[16]; // Fall back to zoom level 16 if not found
 };
 
 export const getTileProvider = (
