@@ -36,6 +36,7 @@ import useProjectBySlug from 'api/projects/useProjectBySlug';
 
 import useLocalize from 'hooks/useLocalize';
 
+import { supportsNativeSurvey as methodSupportsNativeSurvey } from 'containers/Admin/projects/project/inputImporter/ReviewSection/utils';
 import { triggerPostActionEvents } from 'containers/App/events';
 import ProfileVisiblity from 'containers/IdeasNewPage/IdeasNewIdeationForm/ProfileVisibility';
 
@@ -130,10 +131,9 @@ const CLPageLayout = memo(
     const phaseId =
       phaseIdFromSearchParams || getCurrentPhase(phases?.data)?.id;
     const { data: phase } = usePhase(phaseId);
-    const supportsNativeSurvey =
-      phase?.data.attributes.participation_method === 'native_survey' ||
-      phase?.data.attributes.participation_method ===
-        'community_monitor_survey';
+    const supportsNativeSurvey = methodSupportsNativeSurvey(
+      phase?.data.attributes.participation_method
+    );
     const allowAnonymousPosting =
       phase?.data.attributes.allow_anonymous_participation;
 
