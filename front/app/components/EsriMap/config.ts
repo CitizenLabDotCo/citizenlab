@@ -30,10 +30,10 @@ export const configureMapView = (
     minZoom: 5,
   };
 
-  // If the map is not in the standard Web Mercator projection (3857),
+  // If the map is not in the standard Web Mercator projection (3857) or WGS 84 (4326),
   // ensure that the map scale is set, so the zoom level works as intended.
   const spatialReferenceId = mapView.center.spatialReference.wkid;
-  if (spatialReferenceId !== 3857) {
+  if (spatialReferenceId !== 3857 && spatialReferenceId !== 4326) {
     mapView.scale = calculateScaleFromZoom(zoomLevel);
   }
 
