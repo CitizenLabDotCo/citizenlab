@@ -2,7 +2,11 @@ import { colors } from '@citizenlab/cl2-component-library';
 import { lighten } from 'polished';
 import { Multiloc } from 'typings';
 
-import { ResultUngrouped } from 'api/survey_results/types';
+import {
+  Answer,
+  ResultGrouped,
+  ResultUngrouped,
+} from 'api/survey_results/types';
 
 export type SentimentAnswer = {
   answer: number | null;
@@ -13,9 +17,45 @@ export type SentimentAnswer = {
 
 export type SentimentAnswers = SentimentAnswer[] | undefined;
 
+// Calculates the total number of responses in a given group of answers
+export const calculateResponseCountForGroup = (answers: Answer[]): number =>
+  answers.reduce(
+    (total, { count = 0, answer }) => (answer !== null ? total + count : total),
+    0
+  );
+
+// Parses a grouped survey result into sentiment scores with percentages
+export const parseGroupedResult = (
+  result: ResultUngrouped | ResultGrouped,
+  groupAnswers: Answer[]
+): SentimentAnswers => {
+  // Only include answers that are not null
+  const validAnswers = groupAnswers.filter((a) => a.answer !== null);
+
+  const totalCount = calculateResponseCountForGroup(validAnswers);
+  if (totalCount === 0) return [];
+
+  return validAnswers.map(({ answer, count }) => {
+    const parsedAnswer =
+      answer != null ? parseInt(answer.toString(), 10) : null;
+
+    return {
+      answer: parsedAnswer,
+      count,
+      percentage: count ? Math.round((count / totalCount) * 100) : 0,
+      label:
+        parsedAnswer != null
+          ? result.multilocs?.answer[parsedAnswer].title_multiloc
+          : undefined,
+    };
+  });
+};
+
 // parseResult:
 // Parses survey results and extracts sentiment-related data.
-export const parseResult = (result: ResultUngrouped): SentimentAnswers => {
+export const parseResult = (
+  result: ResultUngrouped | ResultGrouped
+): SentimentAnswers => {
   return result.answers?.map(({ answer, count }) => ({
     answer: answer ? parseInt(answer.toString(), 10) : null,
     count,

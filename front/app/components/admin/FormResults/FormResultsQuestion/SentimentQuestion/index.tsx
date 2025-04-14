@@ -7,19 +7,24 @@ import {
   BoxProps,
 } from '@citizenlab/cl2-component-library';
 
-import { ResultUngrouped } from 'api/survey_results/types';
+import { ResultGrouped, ResultUngrouped } from 'api/survey_results/types';
+
+import { DEFAULT_CATEGORICAL_COLORS } from 'components/admin/Graphs/styling';
 
 import Comments from './components/Comments';
+import GroupedSentimentScore from './components/GroupedSentimentScore/GroupedSentimentScore';
 import SentimentResultTitle from './components/SentimentResultTitle';
 
 type Props = {
-  result: ResultUngrouped;
+  result: ResultUngrouped | ResultGrouped;
   showAnalysis?: boolean;
+  legendLabels?: string[];
 };
 
 const SentimentQuestion = ({
   result,
   showAnalysis,
+  legendLabels,
   ...props
 }: Props & BoxProps) => {
   const { textResponses } = result;
@@ -43,6 +48,19 @@ const SentimentQuestion = ({
           result={result}
           textResponsesCount={textResponsesCount}
         />
+        {result.grouped && (
+          <>
+            {result.legend.map((groupKey, index) => (
+              <GroupedSentimentScore
+                key={groupKey}
+                result={result}
+                groupKey={groupKey}
+                color={DEFAULT_CATEGORICAL_COLORS[index]}
+                label={legendLabels?.[index] || groupKey}
+              />
+            ))}
+          </>
+        )}
       </Box>
     );
   }
@@ -70,6 +88,19 @@ const SentimentQuestion = ({
           />
         )}
       </Accordion>
+      {result.grouped && (
+        <>
+          {result.legend.map((groupKey, index) => (
+            <GroupedSentimentScore
+              key={groupKey}
+              result={result}
+              groupKey={groupKey}
+              color={DEFAULT_CATEGORICAL_COLORS[index]}
+              label={legendLabels?.[index] || groupKey}
+            />
+          ))}
+        </>
+      )}
     </Box>
   );
 };
