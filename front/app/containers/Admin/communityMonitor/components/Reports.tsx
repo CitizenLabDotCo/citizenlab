@@ -2,10 +2,14 @@ import React from 'react';
 
 import { Box } from '@citizenlab/cl2-component-library';
 
+import ReportBuilderPage from 'containers/Admin/reporting/containers/ReportBuilderPage';
+
 const Reports = () => {
   return (
     <Box mt="48px">
-      <h1>WIP Reports - PLACEHOLDER</h1>
+      <ReportBuilderPage
+        tabsToHide={['your-reports', 'service-reports', 'all-reports']}
+      />
     </Box>
   );
 };

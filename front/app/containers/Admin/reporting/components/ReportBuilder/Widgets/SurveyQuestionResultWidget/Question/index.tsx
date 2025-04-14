@@ -29,6 +29,8 @@ interface Props {
   questionId: string;
   groupMode?: GroupMode;
   groupFieldId?: string;
+  year?: number;
+  quarter?: number;
   heatmap?: boolean;
 }
 
@@ -39,12 +41,16 @@ const SurveyQuestionResult = ({
   groupMode,
   groupFieldId,
   heatmap,
+  year,
+  quarter,
 }: Props) => {
   const { data, error } = useSurveyQuestionResult({
     phase_id: phaseId,
     question_id: questionId,
     group_mode: groupMode,
     group_field_id: groupFieldId,
+    year: year?.toString(),
+    quarter: quarter?.toString(),
   });
 
   const localize = useLocalize();
@@ -66,7 +72,11 @@ const SurveyQuestionResult = ({
         ) : null;
       case 'sentiment_linear_scale':
         return !attributes.grouped ? (
-          <SentimentQuestion result={attributes} showAnalysis={false} />
+          <SentimentQuestion
+            result={attributes}
+            showAnalysis={false}
+            mr="20px"
+          />
         ) : null;
       case 'point':
       case 'line':

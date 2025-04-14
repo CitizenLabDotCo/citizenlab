@@ -1886,7 +1886,6 @@
   "app.containers.AdminPage.ProjectEdit.survey.file_upload": "Tiedoston lataus",
   "app.containers.AdminPage.ProjectEdit.survey.goBackButtonMessage": "Mene takaisin",
   "app.containers.AdminPage.ProjectEdit.survey.importInputs": "Tuonti",
-  "app.containers.AdminPage.ProjectEdit.survey.informationText3": "Tekoälyyhteenvedot lyhyistä ja pitkistä vastauskysymyksistä ovat käytettävissä vasemman sivupalkin AI-välilehdellä.",
   "app.containers.AdminPage.ProjectEdit.survey.linear_scale2": "Lineaarinen asteikko",
   "app.containers.AdminPage.ProjectEdit.survey.matrix_linear_scale2": "Matrix",
   "app.containers.AdminPage.ProjectEdit.survey.multiline_text2": "Pitkä vastaus",

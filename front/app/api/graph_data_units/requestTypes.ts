@@ -43,6 +43,8 @@ export interface SurveyQuestionResultProps {
   question_id: string;
   group_mode?: GroupMode;
   group_field_id?: string;
+  year?: string;
+  quarter?: string;
 }
 
 export interface SurveyQuestionResultParams extends BaseParams {
