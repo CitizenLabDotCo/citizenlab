@@ -10,13 +10,15 @@ import { getQuarterFilter, getYearFilter } from '../utils';
 
 type Props = {
   sentimentScores: QuarterlyScores | null;
+  year?: string;
+  quarter?: string;
 };
 
-const PreviousQuarterComparison = ({ sentimentScores }: Props) => {
+const PreviousQuarterComparison = ({ sentimentScores, ...props }: Props) => {
   const [search] = useSearchParams();
 
-  const year = getYearFilter(search);
-  const quarter = getQuarterFilter(search);
+  const year = props.year || getYearFilter(search);
+  const quarter = props.quarter || getQuarterFilter(search);
 
   const thisPeriodIndex = sentimentScores?.overallHealthScores.findIndex(
     (value) => value.period === `${year}-${quarter}`
