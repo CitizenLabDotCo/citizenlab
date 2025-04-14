@@ -487,7 +487,7 @@ export const showAddInputPopup = ({
   popupContentNode,
   popupTitle,
 }: AddInputPopupProps) => {
-  // In case the map is using a different projection, we need to project the point to Web Mercator
+  // Project the point to Web Mercator to guarantee the correct coordinate system
   const clickedPointProjected = projectPointToWebMercator(event.mapPoint);
 
   goToMapLocation(esriPointToGeoJson(clickedPointProjected), mapView).then(
