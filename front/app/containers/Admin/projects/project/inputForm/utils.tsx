@@ -27,7 +27,7 @@ export const ideationConfig: FormBuilderConfig = {
     'ranking',
     'rating',
     'matrix_linear_scale',
-    'sentiment_linear_scale',
+    // 'sentiment_linear_scale', ToDo: Uncomment once fully released.
     'title_multiloc',
     'html_multiloc',
     'files',
@@ -81,7 +81,7 @@ export const proposalsConfig: FormBuilderConfig = {
     'ranking',
     'rating',
     'matrix_linear_scale',
-    'sentiment_linear_scale',
+    // 'sentiment_linear_scale', ToDo: Uncomment once fully released.
     'title_multiloc',
     'html_multiloc',
     'files',
