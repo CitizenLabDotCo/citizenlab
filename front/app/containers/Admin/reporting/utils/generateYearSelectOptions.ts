@@ -4,6 +4,11 @@ export const generateYearSelectOptions = (
   startYear: number,
   endYear?: number
 ) => {
+  // Guard against invalid year inputs
+  if (endYear && endYear < startYear) {
+    return [];
+  }
+
   // Start at startYear, and go up to present
   const years: IOption[] = [];
 

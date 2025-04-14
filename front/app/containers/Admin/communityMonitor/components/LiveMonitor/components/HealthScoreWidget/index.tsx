@@ -111,14 +111,26 @@ const HealthScoreWidget = ({ phaseId, ...props }: Props) => {
             </Text>
           </Box>
           <Box mt="20px">
-            <PreviousQuarterComparison sentimentScores={sentimentScores} />
-            <TotalCountsSentimentBar sentimentScores={sentimentScores} />
+            <PreviousQuarterComparison
+              sentimentScores={sentimentScores}
+              year={year}
+              quarter={quarter}
+            />
+            <TotalCountsSentimentBar
+              sentimentScores={sentimentScores}
+              year={year}
+              quarter={quarter}
+            />
           </Box>
         </Box>
         <HealthScoreChart sentimentScores={sentimentScores} />
       </Box>
       <Box mt="20px">
-        <CategoryScores sentimentScores={sentimentScores} />
+        <CategoryScores
+          sentimentScores={sentimentScores}
+          year={year}
+          quarter={quarter}
+        />
       </Box>
     </Box>
   );

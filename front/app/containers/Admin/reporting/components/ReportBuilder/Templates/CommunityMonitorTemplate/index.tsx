@@ -39,11 +39,10 @@ const CommunityMonitorTemplateContent = ({ year, quarter }: Props) => {
     return null;
   }
 
-  const filteredSurveyQuestions = surveyQuestions
-    ? surveyQuestions.data.filter(
-        (field) => field.attributes.input_type === 'sentiment_linear_scale'
-      )
-    : undefined;
+  const filteredSurveyQuestions =
+    surveyQuestions?.data.filter(
+      (field) => field.attributes.input_type === 'sentiment_linear_scale'
+    ) ?? [];
 
   return (
     <Element id="community-monitor-report-template" is={Box} canvas>
@@ -64,7 +63,7 @@ const CommunityMonitorTemplateContent = ({ year, quarter }: Props) => {
         quarter={quarter.toString()}
       />
       <WhiteSpace />
-      {filteredSurveyQuestions?.map((question) => (
+      {filteredSurveyQuestions.map((question) => (
         <Element is={Container} canvas key={question.id}>
           <SurveyQuestionResultWidget
             projectId={project.data.id}
@@ -85,9 +84,8 @@ const CommunityMonitorTemplate = ({ year, quarter }: Props) => {
 
   if (enabled) {
     return <CommunityMonitorTemplateContent year={year} quarter={quarter} />;
-  } else {
-    return <Element id="community-monitor-report-template" is={Box} canvas />;
   }
+  return <Element id="community-monitor-report-template" is={Box} canvas />;
 };
 
 export default CommunityMonitorTemplate;

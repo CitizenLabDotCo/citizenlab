@@ -11,10 +11,7 @@ const apiPath = '*/custom_fields/:customFieldId/custom_field_options';
 
 const server = setupServer(
   http.post(apiPath, () => {
-    return HttpResponse.json(
-      { data: customFieldOptionsData },
-      { status: 200 }
-    );
+    return HttpResponse.json({ data: customFieldOptionsData }, { status: 200 });
   })
 );
 
@@ -23,12 +20,9 @@ describe('useAddCustomFieldOption', () => {
   afterAll(() => server.close());
 
   it('mutates data correctly', async () => {
-    const { result, waitFor } = renderHook(
-      () => useAddCustomFieldOption(),
-      {
-        wrapper: createQueryClientWrapper(),
-      }
-    );
+    const { result, waitFor } = renderHook(() => useAddCustomFieldOption(), {
+      wrapper: createQueryClientWrapper(),
+    });
 
     act(() => {
       result.current.mutate({
@@ -48,12 +42,9 @@ describe('useAddCustomFieldOption', () => {
       })
     );
 
-    const { result, waitFor } = renderHook(
-      () => useAddCustomFieldOption(),
-      {
-        wrapper: createQueryClientWrapper(),
-      }
-    );
+    const { result, waitFor } = renderHook(() => useAddCustomFieldOption(), {
+      wrapper: createQueryClientWrapper(),
+    });
 
     act(() => {
       result.current.mutate({
