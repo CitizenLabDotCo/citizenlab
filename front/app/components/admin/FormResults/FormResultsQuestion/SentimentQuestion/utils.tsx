@@ -19,7 +19,10 @@ export type SentimentAnswers = SentimentAnswer[] | undefined;
 
 // Calculates the total number of responses in a given group of answers
 export const calculateResponseCountForGroup = (answers: Answer[]): number =>
-  answers.reduce((total, { count = 0 }) => total + count, 0);
+  answers.reduce(
+    (total, { count = 0, answer }) => (answer !== null ? total + count : total),
+    0
+  );
 
 // Parses a grouped survey result into sentiment scores with percentages
 export const parseGroupedResult = (
