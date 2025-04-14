@@ -8,15 +8,15 @@ sv:
       "comment_marked_as_spam": Kommentera skräppostrapport
       "comment_on_your_comment": Ett svar på min kommentar
       "comment_on_idea_you_follow": En kommentar till en idé som du följer
-      "cosponsor_of_your_idea": En användare accepterar min inbjudan att medsponsra mitt förslag
+      "cosponsor_of_your_idea": En användare accepterar min inbjudan att stödja mitt förslag
       "event_registration_confirmation": Bekräftelse på registrering av evenemang
       "idea_marked_as_spam": Skräppostrapport för idé
       "idea_published": Publicering av min idé
-      "invitation_to_cosponsor_idea": Inbjudan att sponsra ett förslag
+      "invitation_to_cosponsor_idea": Inbjudan att stödja ett förslag
       "invite_received": Inbjudan
       "invite_reminder": Påminnelse om inbjudan
       "internal_comment_on_idea_assigned_to_you": Intern kommentar om input som tilldelats mig
-      "internal_comment_on_idea_you_commented_internally_on": Intern kommentar på input Jag kommenterade internt på
+      "internal_comment_on_idea_you_commented_internally_on": Intern kommentar på input jag kommenterade internt på
       "internal_comment_on_idea_you_moderate": Intern kommentar om input i projekt eller mappar som jag hanterar
       "internal_comment_on_unassigned_unmoderated_idea": Intern kommentar om icke tilldelad input i icke hanterat projekt
       "internal_comment_on_your_internal_comment": Intern kommentar till min interna kommentar
@@ -43,11 +43,11 @@ sv:
       "user_digest": Veckoöversikt
       "voting_basket_submitted": Bekräftelse av röstning
       "native_survey_not_submitted": Enkät ej inlämnad
-      "voting_basket_not_submitted": Ej avgivna röster
+      "voting_basket_not_submitted": Röster ej inlämnade
       "voting_last_chance": Sista chansen att rösta
       "voting_phase_started": Ny projektfas med omröstning
       "voting_results": Resultat av omröstningen
-      "your_input_in_screening": Min input väntar på screening
+      "your_input_in_screening": Mitt bidrag väntar på bedömning
     general:
       by_author: 'av %{authorName}'
       author_wrote: '%{authorName} skrev:'
@@ -446,7 +446,7 @@ sv:
       preheader: 'Du röstade framgångsrikt på deltagandeplattformen för %{organizationName}'
       title_basket_submitted: 'Du röstade framgångsrikt'
       event_description: 'Tack för ert deltagande. Dina röster har registrerats. Besök plattformen %{organizationName} för att se och hantera dina röster.'
-      cta_see_votes_submitted: 'Se avgivna röster'
+      cta_see_votes_submitted: 'Se inlämnade röster'
       cta_message: 'Klicka på knappen nedan för att delta'
     native_survey_not_submitted:
       subject: '%{organizationName}: Nästan där! Skicka in dina svar'
@@ -509,25 +509,25 @@ sv:
     admin_labels:
       recipient_role:
         admins: 'Till administratörer'
-        admins_and_managers: 'Till administratörer och chefer'
-        managers: 'Till chefer'
+        admins_and_managers: 'Till administratörer och projektledare'
+        managers: 'Till projektledare'
         project_participants: 'Till projektdeltagare'
         registered_users: 'Till registrerade användare'
       recipient_segment:
         admins: 'Administratörer'
-        admins_and_managers: 'Administratörer och chefer'
-        admins_and_managers_assigned_to_the_input: 'Administratörer och chefer som har tilldelats ingången'
-        admins_and_managers_managing_the_project: 'Administratörer och chefer som förvaltar projektet'
+        admins_and_managers: 'Administratörer och projektledare'
+        admins_and_managers_assigned_to_the_input: 'Administratörer och projektledare som har tilldelats ingången'
+        admins_and_managers_managing_the_project: 'Administratörer och projektledare som förvaltar projektet'
         admins_assigned_to_a_proposal: 'Administratörer som har tilldelats ett förslag'
         all_users: 'Alla användare'
         all_users_who_uploaded_proposals: 'Alla användare som laddat upp förslag'
-        managers: 'Chefer'
-        managers_managing_the_project: 'Chefer som leder projektet'
+        managers: 'Projektledare'
+        managers_managing_the_project: 'Projektledare som leder projektet'
         new_attendee: 'Nyligen registrerad användare'
         project_reviewers: 'Projektgranskare och mapphanterare'
         project_review_requester: 'Användare som begärde projektgranskning'
         user_who_commented: 'Användare som kommenterade'
-        user_who_is_invited_to_cosponsor_a_proposal: 'Användare som inbjuds att vara medsponsor för ett förslag'
+        user_who_is_invited_to_cosponsor_a_proposal: 'Användare som bjuds in att stödja ett förslag'
         user_who_is_mentioned: 'Användare som nämns'
         user_who_is_receiving_admin_rights: 'Användare som får administratörsrättigheter'
         user_who_is_receiving_folder_moderator_rights: 'Användare som får rättigheter som mappmoderator'
@@ -550,7 +550,7 @@ sv:
         content_moderation: 'Moderering av innehåll'
         events: 'Händelser'
         general: 'Allmänt'
-        inputs: 'Ingångar'
+        inputs: 'Bidrag'
         internal_comments: 'Interna kommentarer'
         permissions: 'Behörigheter'
         projects: 'Projekt'
@@ -577,7 +577,7 @@ sv:
         internal_comment_is_posted_on_unassigned_unmoderated_idea: 'Intern kommentar publiceras på icke tilldelad input i icke hanterat projekt'
         project_review_request: 'Moderator begärde en projektgenomgång'
         project_review_state_change: 'Granskaren godkände projektet'
-        new_input_awaits_screening: 'Ny input väntar på screening'
+        new_input_awaits_screening: 'Mitt bidrag väntar på bedömning'
         new_input_is_published: 'Ny input publiceras'
         new_proposal_is_posted: 'Ett nytt förslag har lagts fram.'
         project_phase_changes: 'Förändringar i projektfas'
@@ -605,5 +605,5 @@ sv:
         user_replies_to_internal_comment: 'Användaren svarar på intern kommentar'
         voting_1_day_after_last_votes: '1 dag efter att användaren senast röstade'
         voting_2_days_before_phase_closes: '2 dagar innan omröstningen avslutas'
-        voting_basket_submitted: 'Rösterna är avgivna'
+        voting_basket_submitted: 'Rösterna är inlämnade'
         voting_phase_ended: 'Omröstningsfasen avslutad'
