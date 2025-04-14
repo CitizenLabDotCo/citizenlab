@@ -1886,7 +1886,6 @@
   "app.containers.AdminPage.ProjectEdit.survey.file_upload": "فائل اپ لوڈ کریں۔",
   "app.containers.AdminPage.ProjectEdit.survey.goBackButtonMessage": "واپس جاؤ",
   "app.containers.AdminPage.ProjectEdit.survey.importInputs": "درآمد کریں۔",
-  "app.containers.AdminPage.ProjectEdit.survey.informationText3": "مختصر اور طویل جوابات کے سوالات کے AI خلاصوں تک بائیں سائڈبار میں موجود AI ٹیب سے رسائی حاصل کی جا سکتی ہے۔",
   "app.containers.AdminPage.ProjectEdit.survey.linear_scale2": "لکیری پیمانہ",
   "app.containers.AdminPage.ProjectEdit.survey.matrix_linear_scale2": "میٹرکس",
   "app.containers.AdminPage.ProjectEdit.survey.multiline_text2": "لمبا جواب",

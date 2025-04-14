@@ -4,6 +4,8 @@ import { Box, Select } from '@citizenlab/cl2-component-library';
 import { useNode } from '@craftjs/core';
 import { IOption } from 'typings';
 
+import { generateYearSelectOptions } from 'containers/Admin/reporting/utils/generateYearSelectOptions';
+
 import { useIntl } from 'utils/cl-intl';
 
 import messages from '../messages';
@@ -39,23 +41,11 @@ const Settings = () => {
     [setProp]
   );
 
-  const generateYearOptions = () => {
-    // Start at 2025, and go up to present
-    const currentYear = new Date().getFullYear();
-
-    const years: IOption[] = [];
-
-    for (let i = 2025; i <= currentYear; i++) {
-      years.push({ value: i.toString(), label: i.toString() });
-    }
-    return years;
-  };
-
   return (
     <Box display="flex" flexDirection="column" gap="20px" mb="20px">
       <Select
         label={formatMessage(messages.year)}
-        options={generateYearOptions()}
+        options={generateYearSelectOptions(2025)} // Genereates list: 2025 until current year
         value={year}
         onChange={setYear}
       />

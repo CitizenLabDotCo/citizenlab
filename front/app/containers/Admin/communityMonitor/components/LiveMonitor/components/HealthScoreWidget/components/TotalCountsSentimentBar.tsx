@@ -6,22 +6,24 @@ import { useSearchParams } from 'react-router-dom';
 import SentimentBar from 'components/admin/FormResults/FormResultsQuestion/SentimentQuestion/components/SentimentScore/SentimentBar';
 import SentimentTooltip from 'components/admin/FormResults/FormResultsQuestion/SentimentQuestion/components/SentimentScore/SentimentTooltip';
 import { getAnswerGroups } from 'components/admin/FormResults/FormResultsQuestion/SentimentQuestion/components/SentimentScore/utils';
+import { SentimentAnswers } from 'components/admin/FormResults/FormResultsQuestion/SentimentQuestion/utils';
 
 import { isNil } from 'utils/helperUtils';
 
 import { QuarterlyScores } from '../types';
 import { getQuarterFilter, getYearFilter } from '../utils';
-import { SentimentAnswers } from 'components/admin/FormResults/FormResultsQuestion/SentimentQuestion/utils';
 
 type Props = {
   sentimentScores: QuarterlyScores | null;
+  year?: string;
+  quarter?: string;
 };
-const TotalCountsSentimentBar = ({ sentimentScores }: Props) => {
+const TotalCountsSentimentBar = ({ sentimentScores, ...props }: Props) => {
   const [search] = useSearchParams();
 
   // Get the current year/quarter filter
-  const year = getYearFilter(search);
-  const quarter = getQuarterFilter(search);
+  const year = props.year || getYearFilter(search);
+  const quarter = props.quarter || getQuarterFilter(search);
 
   // Get the total counts data for the current quarter
   const quarterData = sentimentScores?.totalHealthScoreCounts.find(

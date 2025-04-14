@@ -1886,7 +1886,6 @@
   "app.containers.AdminPage.ProjectEdit.survey.file_upload": "Uwchlwytho ffeil",
   "app.containers.AdminPage.ProjectEdit.survey.goBackButtonMessage": "Mynd yn ôl",
   "app.containers.AdminPage.ProjectEdit.survey.importInputs": "Mewnforio",
-  "app.containers.AdminPage.ProjectEdit.survey.informationText3": "Gellir cyrchu crynodebau AI o gwestiynau atebion byr a hir o'r tab AI yn y bar ochr chwith.",
   "app.containers.AdminPage.ProjectEdit.survey.linear_scale2": "Graddfa linol",
   "app.containers.AdminPage.ProjectEdit.survey.matrix_linear_scale2": "Matrics",
   "app.containers.AdminPage.ProjectEdit.survey.multiline_text2": "Ateb hir",
