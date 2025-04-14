@@ -15,13 +15,15 @@ import { getQuarterFilter, getYearFilter } from '../utils';
 
 type Props = {
   sentimentScores: QuarterlyScores | null;
+  year?: string;
+  quarter?: string;
 };
-const TotalCountsSentimentBar = ({ sentimentScores }: Props) => {
+const TotalCountsSentimentBar = ({ sentimentScores, ...props }: Props) => {
   const [search] = useSearchParams();
 
   // Get the current year/quarter filter
-  const year = getYearFilter(search);
-  const quarter = getQuarterFilter(search);
+  const year = props.year || getYearFilter(search);
+  const quarter = props.quarter || getQuarterFilter(search);
 
   // Get the total counts data for the current quarter
   const quarterData = sentimentScores?.totalHealthScoreCounts.find(

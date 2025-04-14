@@ -35,6 +35,6 @@ export const getAverageValue = (
   }, 0);
 
   return totalResponses && totalValue && totalResponses > 0
-    ? Math.round(totalValue / totalResponses)
+    ? parseFloat((totalValue / totalResponses).toFixed(1))
     : undefined;
 };

@@ -19,18 +19,23 @@ export type SentimentAnswers = SentimentAnswer[] | undefined;
 
 // Calculates the total number of responses in a given group of answers
 export const calculateResponseCountForGroup = (answers: Answer[]): number =>
-  answers.reduce((total, { count = 0 }) => total + count, 0);
+  answers.reduce(
+    (total, { count = 0, answer }) => (answer !== null ? total + count : total),
+    0
+  );
 
 // Parses a grouped survey result into sentiment scores with percentages
 export const parseGroupedResult = (
   result: ResultUngrouped | ResultGrouped,
   groupAnswers: Answer[]
 ): SentimentAnswers => {
-  const totalCount = calculateResponseCountForGroup(groupAnswers);
+  // Only include answers that are not null
+  const validAnswers = groupAnswers.filter((a) => a.answer !== null);
 
+  const totalCount = calculateResponseCountForGroup(validAnswers);
   if (totalCount === 0) return [];
 
-  return groupAnswers.map(({ answer, count }) => {
+  return validAnswers.map(({ answer, count }) => {
     const parsedAnswer =
       answer != null ? parseInt(answer.toString(), 10) : null;
 
