@@ -74,6 +74,35 @@ export const getZoomLevel = (
   return baseGetZoomLevel(undefined, appConfig);
 };
 
+// Esri Zoom to Scale Mapping
+// https://developers.arcgis.com/documentation/mapping-and-location-services/reference/zoom-levels-and-scale/
+const zoomToScale: { [zoom: number]: number } = {
+  0: 591657527.591555,
+  1: 295828763.795777,
+  2: 147914381.897889,
+  3: 73957190.948944,
+  4: 36978595.474472,
+  5: 18489297.737236,
+  6: 9244648.868618,
+  7: 4622324.434309,
+  8: 2311162.217155,
+  9: 1155581.108577,
+  10: 577790.554289,
+  11: 288895.277144,
+  12: 144447.638572,
+  13: 72223.819286,
+  14: 36111.909643,
+  15: 18055.954822,
+  16: 9027.977411,
+  17: 4513.988705,
+  18: 2256.994353,
+  19: 1128.497176,
+  20: 564.248588,
+  21: 282.124294,
+  22: 141.062147,
+  23: 70.5310735,
+};
+
 // getMapZoom
 // Description: This function calculates the map zoom level based on the provided Esri mapZoom and mapScale values.
 export function getMapZoom(mapZoom: number, scale: number): string {
@@ -81,35 +110,6 @@ export function getMapZoom(mapZoom: number, scale: number): string {
   if (mapZoom > 0) {
     return mapZoom.toString();
   }
-
-  // Esri Zoom to Scale Mapping
-  // https://developers.arcgis.com/documentation/mapping-and-location-services/reference/zoom-levels-and-scale/
-  const zoomToScale: { [zoom: number]: number } = {
-    0: 591657527.591555,
-    1: 295828763.795777,
-    2: 147914381.897889,
-    3: 73957190.948944,
-    4: 36978595.474472,
-    5: 18489297.737236,
-    6: 9244648.868618,
-    7: 4622324.434309,
-    8: 2311162.217155,
-    9: 1155581.108577,
-    10: 577790.554289,
-    11: 288895.277144,
-    12: 144447.638572,
-    13: 72223.819286,
-    14: 36111.909643,
-    15: 18055.954822,
-    16: 9027.977411,
-    17: 4513.988705,
-    18: 2256.994353,
-    19: 1128.497176,
-    20: 564.248588,
-    21: 282.124294,
-    22: 141.062147,
-    23: 70.5310735,
-  };
 
   // Use reduce to iterate over each zoom level and find the one with the smallest difference to the input scale
   const closestZoom = Object.entries(zoomToScale).reduce(
@@ -124,10 +124,6 @@ export function getMapZoom(mapZoom: number, scale: number): string {
     0
   ); // Start assuming zoom level 0 is the closest
 
-  console.log(
-    `calculateZoomFromScale --> Closest Zoom: ${closestZoom}, Scale: ${scale}`
-  );
-
   // Return the closest zoom level
   return closestZoom.toString();
 }
@@ -137,9 +133,6 @@ export function getMapZoom(mapZoom: number, scale: number): string {
 // Web Mercator projection assumptions. Based on Esri's default scale at zoom level 0 (1:591,657,550.5).
 export const calculateScaleFromZoom = (zoom: number) => {
   const scale = 591657550.5 / Math.pow(2, zoom);
-  console.log(
-    `calculateScaleFromZoom --> Zoom level: ${zoom}, Scale: ${scale}`
-  );
   return scale;
 };
 
