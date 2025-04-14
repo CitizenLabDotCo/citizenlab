@@ -9,13 +9,15 @@ import {
   Spinner,
 } from '@citizenlab/cl2-component-library';
 import { stringify } from 'qs';
-import { useParams } from 'react-router-dom';
+import { useParams, useSearchParams } from 'react-router-dom';
 import styled from 'styled-components';
 
 import useAddAnalysis from 'api/analyses/useAddAnalysis';
 import useAnalyses from 'api/analyses/useAnalyses';
 import useUpdateAnalysis from 'api/analyses/useUpdateAnalysis';
 import useAnalysisInsights from 'api/analysis_insights/useAnalysisInsights';
+import useAnalysisSummaries from 'api/analysis_summaries/useAnalysisSummaries';
+import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 
 import Button from 'components/UI/ButtonWithLink';
 
@@ -25,6 +27,7 @@ import clHistory from 'utils/cl-router/history';
 import messages from '../../../messages';
 
 import AnalysisInsights from './AnalysisInsights';
+import { filterForCommunityMonitorQuarter } from './utils';
 
 const StyledDropdownListItem = styled(DropdownListItem)`
   text-align: left;
@@ -44,6 +47,8 @@ const Analysis = ({
   hasOtherResponses,
   ...props
 }: Props) => {
+  const [search] = useSearchParams();
+  const { data: appConfig } = useAppConfiguration();
   const [dropdownOpened, setDropdownOpened] = useState(false);
   const { formatMessage } = useIntl();
   const { mutate: addAnalysis, isLoading: isAddAnalysisLoading } =
@@ -58,6 +63,10 @@ const Analysis = ({
   const projectId = props.projectId || projectIdParam;
   const phaseId = props.phaseId || phaseIdParam;
 
+  const isCommunityMonitor =
+    appConfig?.data.attributes.settings.community_monitor?.project_id ===
+    projectId;
+
   const { data: analyses, isLoading: isAnalysesLoading } = useAnalyses({
     projectId: phaseId ? undefined : projectId,
     phaseId,
@@ -70,9 +79,33 @@ const Analysis = ({
         analysis.relationships.main_custom_field?.data?.id === customFieldId
     );
 
-  const { data: insights, isLoading: isInsightsLoading } = useAnalysisInsights({
-    analysisId: relevantAnalysis?.id,
+  const { data: insightsData, isLoading: isInsightsLoading } =
+    useAnalysisInsights({
+      analysisId: relevantAnalysis?.id,
+    });
+
+  // Fetch the analysis summaries if we're looking at the Community Monitor
+  // (So we can filter the analyses by quarter)
+  const analysisSummaryIds = insightsData?.data.map(
+    (insight) => insight.relationships.insightable.data.id
+  );
+  const analysisSummaries = useAnalysisSummaries({
+    ids:
+      analysisSummaryIds?.map((id) => ({
+        analysisId: relevantAnalysis?.id,
+        summaryId: id,
+      })) || [],
+    enabled: isCommunityMonitor,
   });
+
+  // Filter the insights if necessary
+  const insights = isCommunityMonitor
+    ? filterForCommunityMonitorQuarter({
+        insights: insightsData,
+        search,
+        analysisSummaries,
+      })
+    : insightsData;
 
   // Create an analysis if there are no analyses yet
   useEffect(() => {
@@ -212,6 +245,7 @@ const Analysis = ({
 
           <AnalysisInsights
             analysis={relevantAnalysis}
+            insights={insights}
             hasOtherResponses={hasOtherResponses}
           />
         </>

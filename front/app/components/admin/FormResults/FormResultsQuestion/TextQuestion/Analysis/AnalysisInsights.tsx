@@ -7,10 +7,11 @@ import {
   Text,
   Spinner,
 } from '@citizenlab/cl2-component-library';
+import { useSearchParams } from 'react-router-dom';
 
 import { IAnalysisData } from 'api/analyses/types';
 import useInfiniteAnalysisInputs from 'api/analysis_inputs/useInfiniteAnalysisInputs';
-import useAnalysisInsights from 'api/analysis_insights/useAnalysisInsights';
+import { IInsights } from 'api/analysis_insights/types';
 import useAddAnalysisSummary from 'api/analysis_summaries/useAddAnalysisSummary';
 import useAddAnalysisSummaryPreCheck from 'api/analysis_summary_pre_check/useAddAnalysisSummaryPreCheck';
 
@@ -22,14 +23,18 @@ import messages from '../../../messages';
 
 import Question from './Question';
 import Summary from './Summary';
+import { getPublishedAtFromFilter, getPublishedAtToFilter } from './utils';
 
 const AnalysisInsights = ({
   analysis,
   hasOtherResponses,
+  insights,
 }: {
   analysis: IAnalysisData;
   hasOtherResponses?: boolean;
+  insights?: IInsights;
 }) => {
+  const [search] = useSearchParams();
   const [automaticSummaryCreated, setAutomaticSummaryCreated] = useState(false);
   const [selectedInsightIndex, setSelectedInsightIndex] = useState(0);
 
@@ -38,9 +43,7 @@ const AnalysisInsights = ({
   const { data: inputs } = useInfiniteAnalysisInputs({
     analysisId: analysis.id,
   });
-  const { data: insights } = useAnalysisInsights({
-    analysisId: analysis.id,
-  });
+
   const { mutate: addAnalysisSummary, isLoading: addSummaryIsLoading } =
     useAddAnalysisSummary();
   const { mutate: preCheck, isLoading: preCheckIsLoading } =
@@ -55,7 +58,6 @@ const AnalysisInsights = ({
   const selectedInsight = insights?.data[selectedInsightIndex];
 
   // Create a summary if there are no insights yet
-
   useEffect(() => {
     if (
       analysis.id &&
@@ -69,6 +71,8 @@ const AnalysisInsights = ({
           analysisId: analysis.id,
           filters: {
             input_custom_field_no_empty_values: true,
+            published_at_from: getPublishedAtFromFilter(search),
+            published_at_to: getPublishedAtToFilter(search),
           },
         },
         {
@@ -79,6 +83,8 @@ const AnalysisInsights = ({
             if (!data.data.attributes.impossible_reason) {
               const filters = {
                 input_custom_field_no_empty_values: true,
+                published_at_from: getPublishedAtFromFilter(search),
+                published_at_to: getPublishedAtToFilter(search),
                 limit: !largeSummariesAllowed ? 30 : undefined,
               };
               if (hasOtherResponses && customFieldId) {
@@ -103,6 +109,7 @@ const AnalysisInsights = ({
     preCheck,
     hasOtherResponses,
     analysis.relationships.main_custom_field?.data?.id,
+    search,
   ]);
 
   if (addSummaryIsLoading || preCheckIsLoading) {
