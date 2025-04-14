@@ -172,7 +172,7 @@ const Settings = () => {
           label={formatMessage(messages.surveyPhase)}
           projectId={projectId}
           phaseId={phaseId}
-          participationMethods={['native_survey']}
+          participationMethods={['native_survey', 'community_monitor_survey']}
           onPhaseFilter={handlePhaseFilter}
         />
       )}
