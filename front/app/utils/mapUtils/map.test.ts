@@ -7,8 +7,8 @@ describe('calculateScaleFromZoom', () => {
   });
 
   it('returns default of 16 for unknown zoom levels', () => {
-    expect(calculateScaleFromZoom(-1)).toBe(zoomToScale[16]);
-    expect(calculateScaleFromZoom(99)).toBe(zoomToScale[16]);
+    expect(calculateScaleFromZoom(-1)).toBe(zoomToScale[18]);
+    expect(calculateScaleFromZoom(99)).toBe(zoomToScale[18]);
   });
 });
 

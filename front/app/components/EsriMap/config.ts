@@ -24,7 +24,7 @@ export const configureMapView = (
 
   // Set initial extent
   const zoomLevel = initialData?.zoom || globalMapSettings.zoom_level || 18;
-  mapView.zoom = zoomLevel;
+  mapView.zoom = initialData?.zoom || globalMapSettings.zoom_level || 18;
   mapView.constraints = {
     maxZoom: initialData?.maxZoom || 22,
     minZoom: 5,

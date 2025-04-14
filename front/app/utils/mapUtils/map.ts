@@ -132,7 +132,7 @@ export function getMapZoom(mapZoom: number, scale: number): string {
 // Description: Calculates the approximate map scale for a given zoom level using
 // Esri's zoom-to-scale mapping.
 export const calculateScaleFromZoom = (zoom: number): number => {
-  return zoomToScale[zoom] || zoomToScale[16]; // Fall back to zoom level 16 if not found
+  return zoomToScale[zoom] || zoomToScale[18]; // Fall back to zoom level 18 if not found
 };
 
 export const getTileProvider = (
