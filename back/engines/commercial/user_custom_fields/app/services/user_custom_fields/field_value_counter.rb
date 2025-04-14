@@ -11,12 +11,13 @@ module UserCustomFields
     # who do not have a value for the custom field. The key of this entry is equal to
     # +UNKNOWN_VALUE_LABEL+.
     #
-    # @param [ActiveRecord::Relation] users || ideas
+    # @param [ActiveRecord::Relation] records - users OR ideas
     # @param [UserCustomField] user_custom_field
     # @param [Symbol] by index the counts by
     #   - option id if +by+ is +:option_id+
     #   - area id if +by+ is +:area_id+ (only for domicile field)
     #   - option key otherwise.
+    # @param [String] record_type - are the records passed in users (default) or ideas
     # @return [ActiveSupport::HashWithIndifferentAccess]
     def self.counts_by_field_option(records, custom_field, by: :option_key, record_type: 'users')
       field_values = select_field_values(records, custom_field, record_type)
