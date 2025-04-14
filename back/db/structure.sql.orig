@@ -6932,15 +6932,12 @@ ALTER TABLE ONLY public.ideas_topics
 SET search_path TO public,shared_extensions;
 
 INSERT INTO "schema_migrations" (version) VALUES
-<<<<<<< HEAD
-('20250218094339'),
-=======
 ('20250305111507'),
 ('20250224150953'),
 ('20250219104523'),
+('20250218094339'),
 ('20250217295025'),
 ('20250210181753'),
->>>>>>> master
 ('20250204143605'),
 ('20250120125531'),
 ('20250117121004'),

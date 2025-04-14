@@ -80,6 +80,7 @@ export interface IPhaseAttributes {
   similarity_enabled?: boolean;
   similarity_threshold_title?: number | null;
   similarity_threshold_body?: number | null;
+  user_fields_in_form?: boolean;
 }
 
 export interface IPhases {
@@ -132,6 +133,7 @@ export interface IUpdatedPhaseProperties {
   similarity_enabled?: boolean | null;
   similarity_threshold_title?: number | null;
   similarity_threshold_body?: number | null;
+  user_fields_in_form?: boolean;
 }
 
 export interface AddPhaseObject extends IUpdatedPhaseProperties {

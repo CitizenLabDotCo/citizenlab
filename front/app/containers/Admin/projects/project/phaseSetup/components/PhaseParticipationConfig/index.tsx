@@ -214,6 +214,13 @@ const PhaseParticipationConfig = ({
     }));
   };
 
+  const handleUserFieldsInFormOnChange = (user_fields_in_form: boolean) => {
+    updateFormData((state) => ({
+      ...state,
+      user_fields_in_form,
+    }));
+  };
+
   const handleVotingMethodOnChange = (voting_method: VotingMethod) => {
     const maxVotes = MAX_VOTES_PER_VOTING_METHOD[voting_method];
 
@@ -433,6 +440,7 @@ const PhaseParticipationConfig = ({
     similarity_enabled,
     similarity_threshold_title,
     similarity_threshold_body,
+    user_fields_in_form,
   } = formData;
 
   const showSurveys =
@@ -638,12 +646,14 @@ const PhaseParticipationConfig = ({
         {participation_method === 'native_survey' && (
           <NativeSurveyInputs
             allow_anonymous_participation={allow_anonymous_participation}
+            user_fields_in_form={user_fields_in_form}
             apiErrors={apiErrors}
             phase={phase}
             formData={formData}
             handleAllowAnonymousParticipationOnChange={
               handleAllowAnonymousParticipationOnChange
             }
+            handleUserFieldsInFormOnChange={handleUserFieldsInFormOnChange}
             handleSurveyTitleChange={handleSurveyTitleChange}
             handleSurveyCTAChange={handleSurveyCTAChange}
           />

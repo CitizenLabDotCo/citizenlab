@@ -234,7 +234,7 @@ RSpec.describe InputUiSchemaGeneratorService do
                 type: 'Page',
                 options: {
                   input_type: 'page',
-                  id: custom_form.custom_fields.find(&:end_page?).id,
+                  id: custom_form.custom_fields.find(&:form_end_page?).id,
                   title: 'Thank you for sharing your input!',
                   description: 'Your input has been successfully submitted.',
                   page_layout: 'default',
@@ -752,9 +752,8 @@ RSpec.describe InputUiSchemaGeneratorService do
         end
         let!(:page3) do
           create(
-            :custom_field_page,
+            :custom_field_end_page,
             resource: custom_form,
-            key: 'form_end',
             title_multiloc: { 'en' => 'This is the end of the survey' },
             description_multiloc: { 'en' => 'Thank you for participating 🚀' }
           )
@@ -912,9 +911,8 @@ RSpec.describe InputUiSchemaGeneratorService do
         end
         let!(:page_end) do
           create(
-            :custom_field_page,
+            :custom_field_end_page,
             resource: custom_form,
-            key: 'form_end',
             title_multiloc: { 'en' => 'Almost done' },
             description_multiloc: { 'en' => "You are about to submit your answers. By clicking 'Submit' you give us permission to analyse your answers.<br/>After you submit, you will no longer be able to go back and change any of your answers." }
           )

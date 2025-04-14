@@ -4,6 +4,10 @@ import projectLibraryPhasesKeys from './keys';
 
 export type ProjectLibraryCountriesKeys = Keys<typeof projectLibraryPhasesKeys>;
 
+export interface ILocaleParameters {
+  locale?: string;
+}
+
 export type Country = {
   code: string;
   emoji_flag: string;
