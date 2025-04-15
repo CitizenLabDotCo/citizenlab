@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
 module Surveys
-  class ResultsWithGroupGenerator < ResultsGenerator
-    def initialize(phase, group_mode: nil, group_field_id: nil)
-      super(phase)
+  class ResultsWithGroupGenerator < ResultsWithDateGenerator
+    def initialize(phase, group_mode: nil, group_field_id: nil, year: nil, quarter: nil)
+      super(phase, year:, quarter:)
       @group_mode = group_mode
       @group_field_id = group_field_id
     end
