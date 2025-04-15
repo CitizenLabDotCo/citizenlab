@@ -92,9 +92,6 @@ const CLPageLayout = memo(
     const theme = useTheme();
     const { pathname } = useLocation();
     const isAdminPage = isPage('admin', pathname);
-    const [postAnonymously, setPostAnonymously] = useState(false);
-    const [showAnonymousConfirmationModal, setShowAnonymousConfirmationModal] =
-      useState(false);
     const { onIdeaSelect } = useIdeaSelect();
     const isIdeaEditPage = isPage('idea_edit', location.pathname);
 
