@@ -173,7 +173,7 @@ class WebApi::V1::IdeasController < ApplicationController
     input.phase_ids = [phase_for_input.id] if params.dig(:idea, :phase_ids).blank?
 
     # Non persisted attribute needed by policy & input for 'everyone' participation only
-    input.request = request if phase.pmethod.supports_everyone_tracking?
+    input.request = request if phase_for_input.pmethod.supports_everyone_tracking?
 
     # NOTE: Needs refactor allow_anonymous_participation? so anonymous_participation can be allow or force
     if phase_for_input.pmethod.supports_survey_form? && phase_for_input.allow_anonymous_participation?
