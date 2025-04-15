@@ -1108,6 +1108,7 @@
   "app.containers.Admin.projects.project.survey.consentModalText4Link": "https://openai.com/api-data-privacy",
   "app.containers.Admin.projects.project.survey.consentModalText4LinkText": "ਇਥੇ",
   "app.containers.Admin.projects.project.survey.consentModalTitle": "ਇਸ ਤੋਂ ਪਹਿਲਾਂ ਕਿ ਤੁਸੀਂ ਜਾਰੀ ਰੱਖੋ",
+  "app.containers.Admin.projects.project.survey.customFieldsNotPersisted3": "ਫਾਰਮ ਨੂੰ ਸੰਪਾਦਿਤ ਕਰਨ ਤੋਂ ਪਹਿਲਾਂ ਤੁਸੀਂ ਵਿਸ਼ਲੇਸ਼ਣ ਦਰਜ ਨਹੀਂ ਕਰ ਸਕਦੇ।",
   "app.containers.Admin.projects.project.survey.deleteAnalysis": "ਮਿਟਾਓ",
   "app.containers.Admin.projects.project.survey.deleteAnalysisConfirmation": "ਕੀ ਤੁਸੀਂ ਯਕੀਨੀ ਤੌਰ 'ਤੇ ਇਸ ਵਿਸ਼ਲੇਸ਼ਣ ਨੂੰ ਮਿਟਾਉਣਾ ਚਾਹੁੰਦੇ ਹੋ? ਇਸ ਕਾਰਵਾਈ ਨੂੰ ਅਣਕੀਤਾ ਨਹੀਂ ਕੀਤਾ ਜਾ ਸਕਦਾ।",
   "app.containers.Admin.projects.project.survey.explore": "ਪੜਚੋਲ ਕਰੋ",
