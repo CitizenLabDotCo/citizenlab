@@ -48,7 +48,7 @@ RSpec.describe ReportBuilder::Queries::Registrations do
           }
         ],
         registrations_whole_period: 10,
-        registration_rate: 0.5
+        registration_rate_whole_period: 0.5
       })
     end
 
@@ -66,7 +66,34 @@ RSpec.describe ReportBuilder::Queries::Registrations do
           }
         ],
         registrations_whole_period: 3,
-        registration_rate: 0.5
+        registration_rate_whole_period: 0.5
+      })
+    end
+
+    it 'returns correct data with compared period' do
+      start_at = Date.new(2022, 10, 1)
+      end_at = Date.new(2022, 11, 1)
+      compare_start_at = Date.new(2022, 9, 1)
+      compare_end_at = Date.new(2022, 10, 1)
+
+      result = query.run_query_untransformed(
+        start_at, 
+        end_at,
+        compare_start_at: compare_start_at,
+        compare_end_at: compare_end_at
+      )
+
+      expect(result).to eq({
+        registrations_timeseries: [
+          {
+            registrations: 7,
+            date_group: Date.new(2022, 10, 1)
+          }
+        ],
+        registrations_whole_period: 7,
+        registration_rate_whole_period: 0.5,
+        registrations_compared_period: 3,
+        registration_rate_compared_period: 0.5
       })
     end
   end

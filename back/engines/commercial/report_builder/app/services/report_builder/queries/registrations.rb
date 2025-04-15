@@ -52,21 +52,42 @@ module ReportBuilder
           }
         end
 
-      # Registrations whole period
       registrations_whole_period = registrations_in_period.count
 
-      # Visitors whole period
+      response = {
+        registrations_timeseries: registrations_timeseries,
+        registrations_whole_period: registrations_whole_period,
+        registration_rate_whole_period: registration_rate(
+          registrations_whole_period, 
+          start_at, 
+          end_at
+        )
+      }
+
+      if compare_start_at && compare_end_at
+        registrations_compared_period = User
+          .where(registration_completed_at: compare_start_at..compare_end_at)
+          .count
+
+        response[:registrations_compared_period] = registrations_compared_period
+        response[:registration_rate_compared_period] = registration_rate(
+          registrations_compared_period,
+          compare_start_at,
+          compare_end_at
+        )
+      end
+
+      response
+    end
+
+    def registration_rate(registrations, start_at, end_at)
       visitors = ImpactTracking::Session
         .where(created_at: start_at..end_at)
         .distinct
         .pluck(:monthly_user_hash)
         .count
 
-      {
-        registrations_timeseries: registrations_timeseries,
-        registrations_whole_period: registrations_whole_period,
-        registration_rate: visitors.zero? ? 0 : (registrations_whole_period / visitors.to_f)
-      }
+      visitors.zero? ? 0 : (registrations / visitors.to_f)
     end
   end
 end
