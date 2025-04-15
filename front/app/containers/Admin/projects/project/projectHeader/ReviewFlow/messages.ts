@@ -5,6 +5,11 @@ export default defineMessages({
     id: 'app.components.app.containers.AdminPage.ProjectEdit.projectHeader.publish',
     defaultMessage: 'Publish',
   },
+  onlyAdminsAndFolderManagersCanPublish: {
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.projectHeader.onlyAdminsAndFolderManagersCanPublish2',
+    defaultMessage:
+      'Only admins{inFolder, select, true { or the Folder Managers} other {}} can publish the project',
+  },
   requestApprovalDescription: {
     id: 'app.components.app.containers.AdminPage.ProjectEdit.projectHeader.requestApprovalDescription2',
     defaultMessage:

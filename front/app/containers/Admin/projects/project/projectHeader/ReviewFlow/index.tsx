@@ -17,20 +17,15 @@ import ReviewRequestButton from './ReviewRequestButton';
 
 const ReviewFlow = ({ project }: { project: IProjectData }) => {
   const isProjectReviewEnabled = useFeatureFlag({ name: 'project_review' });
-
   const { formatMessage } = useIntl();
-
   const { data: projectReview, isLoading: isProjectReviewLoading } =
     useProjectReview(project.id);
-
   const { mutate: updateProject, isLoading: isUpdatingProjectLoading } =
     useUpdateProject();
-
   const {
     mutate: approveProjectReview,
     isLoading: isApprovingProjectReviewLoading,
   } = useApproveProjectReview();
-
   const canPublish = usePermission({
     item: project,
     action: 'publish',
@@ -56,7 +51,13 @@ const ReviewFlow = ({ project }: { project: IProjectData }) => {
 
   return (
     <Box display="flex" gap="8px">
-      {canPublish && (
+      <Tooltip
+        content={formatMessage(messages.onlyAdminsAndFolderManagersCanPublish, {
+          inFolder: !!project.attributes.folder_id,
+        })}
+        placement="bottom"
+        disabled={canPublish}
+      >
         <Button
           buttonStyle="admin-dark"
           icon="send"
@@ -65,12 +66,12 @@ const ReviewFlow = ({ project }: { project: IProjectData }) => {
           size="s"
           padding="4px 8px"
           iconSize="20px"
+          disabled={!canPublish}
           id="e2e-publish"
         >
           {formatMessage(messages.publish)}
         </Button>
-      )}
-
+      </Tooltip>
       {isProjectReviewEnabled && (
         <>
           {showReviewRequestButton && (
