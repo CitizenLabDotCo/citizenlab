@@ -134,12 +134,6 @@ const ReportBuilder = ({ report, reportLayout, templateConfig }: Props) => {
                 )}
                 <ViewContainer view={view}>
                   <Frame editorData={initialData}>
-                    {templateConfig?.template === 'community-monitor' ? (
-                      <CommunityMonitorTemplate
-                        quarter={templateConfig.quarter}
-                        year={templateConfig.year}
-                      />
-                    ) : null}
                     {emptyReportOnInit &&
                     templateConfig?.template === 'project' ? (
                       <ProjectTemplate
@@ -154,6 +148,12 @@ const ReportBuilder = ({ report, reportLayout, templateConfig }: Props) => {
                       <PlatformTemplate
                         startDate={templateConfig.startDate}
                         endDate={templateConfig.endDate}
+                      />
+                    ) : emptyReportOnInit &&
+                      templateConfig?.template === 'community-monitor' ? (
+                      <CommunityMonitorTemplate
+                        quarter={templateConfig.quarter}
+                        year={templateConfig.year}
                       />
                     ) : null}
                   </Frame>
