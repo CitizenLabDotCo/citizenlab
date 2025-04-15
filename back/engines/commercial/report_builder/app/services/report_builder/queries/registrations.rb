@@ -30,7 +30,7 @@ module ReportBuilder
     def run_query_untransformed(
       start_at,
       end_at,
-      resolution: nil,
+      resolution: 'month',
       compare_start_at: nil,
       compare_end_at: nil,
       **_other_props
@@ -40,7 +40,7 @@ module ReportBuilder
       # Time series
       registrations_timeseries = registrations_in_period
         .select("
-          count(*) as registrations
+          count(*) as registrations,
           date_trunc('#{resolution}', registration_completed_at) as date_group
         ")
         .group('date_group')
