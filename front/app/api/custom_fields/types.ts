@@ -125,6 +125,9 @@ export interface ICustomFieldResponse {
     map_config?: {
       data: IRelationship;
     };
+    resource?: {
+      data: IRelationship;
+    };
   };
 }
 

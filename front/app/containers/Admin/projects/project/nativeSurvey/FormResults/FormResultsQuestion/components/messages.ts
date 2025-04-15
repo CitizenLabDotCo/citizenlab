@@ -10,4 +10,9 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.survey.aiAnalysis2',
     defaultMessage: 'Open AI analysis',
   },
+  customFieldsNotPersisted: {
+    id: 'app.containers.Admin.projects.project.survey.customFieldsNotPersisted3',
+    defaultMessage:
+      "You can't enter the analysis before you have edited the form",
+  },
 });

@@ -12,7 +12,7 @@ import messages from '../messages';
 
 import FormResultsPage from './FormResultsPage';
 import FormResultsQuestion from './FormResultsQuestion';
-import ViewSingleSubmissionNotice from './FormResultsQuestion/components/ViewSingleSubmissionNotice';
+import AnalysisBanner from './FormResultsQuestion/components/AnalysisBanner';
 
 const FormResults = () => {
   const { projectId, phaseId } = useParams() as {
@@ -50,13 +50,6 @@ const FormResults = () => {
         })
       : formatMessage(messages.noSurveyResponses);
 
-  // If a text question exists, we use it to show the notice to view
-  // individual submissions in the AI analysis view.
-  const firstTextQuestion = results.find(
-    (result) =>
-      result.inputType === 'text' || result.inputType === 'multiline_text'
-  );
-
   const logicConfig = {
     toggleLogicIds,
     filterLogicIds,
@@ -70,7 +63,7 @@ const FormResults = () => {
           {surveyResponseMessage}
         </Text>
       </Box>
-      {firstTextQuestion?.customFieldId && <ViewSingleSubmissionNotice />}
+      <AnalysisBanner />
       <Box mt="24px">
         {totalSubmissions > 0 &&
           results.map((result, index) => {
