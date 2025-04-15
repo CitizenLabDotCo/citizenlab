@@ -5,6 +5,7 @@ import { get, set } from 'js-cookie';
 import { useLocation } from 'react-router-dom';
 
 import useCommunityMonitorProject from 'api/community_monitor/useCommunityMonitorProject';
+import useAuthUser from 'api/me/useAuthUser';
 import usePhase from 'api/phases/usePhase';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
@@ -14,6 +15,7 @@ import { PageCategorization } from 'components/Form/typings';
 import Modal from 'components/UI/Modal';
 
 import { useIntl } from 'utils/cl-intl';
+import { isAdmin, isModerator } from 'utils/permissions/roles';
 import { calculateEstimatedSurveyTime } from 'utils/surveyUtils';
 
 import QuestionPreview from './components/QuestionPreview';
@@ -31,13 +33,11 @@ const CommunityMonitorModal = ({
   const { formatMessage } = useIntl();
   const location = useLocation();
 
-  // ----- TODO: RE-ENABLE BEFORE RELEASE: -----
-  // const { data: authUser } = useAuthUser();
-  // const isAdminOrModerator = isAdmin(authUser) || isModerator(authUser);
+  const { data: authUser } = useAuthUser();
+  const isAdminOrModerator = isAdmin(authUser) || isModerator(authUser);
 
-  // ----- TODO: RE-ENABLE BEFORE RELEASE: -----
-  // const isDevelopmentOrCI =
-  //   process.env.CI === 'true' || process.env.NODE_ENV === 'development';
+  const isDevelopmentOrCI =
+    process.env.CI === 'true' || process.env.NODE_ENV === 'development';
 
   // If the user is on a custom page or the homepage, we can show the modal
   const allowedOnUrl = isAllowedOnUrl(location.pathname);
@@ -89,23 +89,23 @@ const CommunityMonitorModal = ({
   const shouldShowModal = useCallback(
     (overrideAllowdOnUrl?: boolean) => {
       const show =
-        // ----- TODO: RE-ENABLE BEFORE RELEASE: -----
-        // !isAdminOrModerator &&
+        !isAdminOrModerator &&
         (allowedOnUrl || overrideAllowdOnUrl) && // After certain actions or for admin preview, we can ovverride this check
         isCommunityMonitorEnabled &&
         isSurveyLive &&
         userPermittedToTakeSurvey &&
-        Math.random() < surveyPopupFrequency / 100;
-      // ----- TODO: RE-ENABLE BEFORE RELEASE: -----
-      // !isDevelopmentOrCI;
+        Math.random() < surveyPopupFrequency / 100 &&
+        !isDevelopmentOrCI;
       return show;
     },
     [
+      isAdminOrModerator,
       allowedOnUrl,
       isCommunityMonitorEnabled,
       isSurveyLive,
       userPermittedToTakeSurvey,
       surveyPopupFrequency,
+      isDevelopmentOrCI,
     ]
   );
 
