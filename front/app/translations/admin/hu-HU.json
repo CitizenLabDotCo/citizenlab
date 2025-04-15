@@ -1887,7 +1887,7 @@
   "app.containers.AdminPage.ProjectEdit.survey.file_upload": "File upload",
   "app.containers.AdminPage.ProjectEdit.survey.goBackButtonMessage": "Go back",
   "app.containers.AdminPage.ProjectEdit.survey.importInputs": "Importálás",
-  "app.containers.AdminPage.ProjectEdit.survey.informationText3": "AI summaries of short and long answer questions can be accessed from the AI tab in the left sidebar.",
+  "app.containers.AdminPage.ProjectEdit.survey.informationText3": "A rövid és hosszú válaszkérdések mesterséges intelligencia összefoglalói a bal oldalsáv AI lapjáról érhetők el.",
   "app.containers.AdminPage.ProjectEdit.survey.linear_scale2": "Linear scale",
   "app.containers.AdminPage.ProjectEdit.survey.matrix_linear_scale2": "Mátrix",
   "app.containers.AdminPage.ProjectEdit.survey.multiline_text2": "Long answer",
