@@ -5,7 +5,7 @@ require 'rails_helper'
 RSpec.describe ReportBuilder::Queries::Registrations do
   subject(:query) { described_class.new(build(:user)) }
 
-  describe "#run_query_untransformed" do
+  describe "#run_query" do
     before_all do
       # Registrations
       create_list(:user, 3, registration_completed_at: Date.new(2022, 9, 10))
@@ -34,7 +34,7 @@ RSpec.describe ReportBuilder::Queries::Registrations do
       start_at = Date.new(2022, 8, 1)
       end_at = Date.new(2022, 11, 1)
 
-      result = query.run_query_untransformed(start_at, end_at)
+      result = query.run_query(start_at, end_at)
 
       expect(result).to eq({
         registrations_timeseries: [
@@ -56,7 +56,7 @@ RSpec.describe ReportBuilder::Queries::Registrations do
       start_at = Date.new(2022, 8, 1)
       end_at = Date.new(2022, 10, 2)
 
-      result = query.run_query_untransformed(start_at, end_at)
+      result = query.run_query(start_at, end_at)
 
       expect(result).to eq({
         registrations_timeseries: [
@@ -76,7 +76,7 @@ RSpec.describe ReportBuilder::Queries::Registrations do
       compare_start_at = Date.new(2022, 9, 1)
       compare_end_at = Date.new(2022, 10, 1)
 
-      result = query.run_query_untransformed(
+      result = query.run_query(
         start_at, 
         end_at,
         compare_start_at: compare_start_at,
