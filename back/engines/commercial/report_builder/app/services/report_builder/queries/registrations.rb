@@ -56,11 +56,16 @@ module ReportBuilder
       registrations_whole_period = registrations_in_period.count
 
       # Visitors whole period
-      # TODO
+      visitors = ImpactTracking::Session
+        .where(created_at: start_at..end_at)
+        .distinct
+        .pluck(:monthly_user_hash)
+        .count
 
       {
         registrations_timeseries: registrations_timeseries,
-        registrations_whole_period: registrations_whole_period
+        registrations_whole_period: registrations_whole_period,
+        registration_rate: visitors.zero? ? 0 : (registrations_whole_period / visitors)
       }
     end
   end
