@@ -1886,7 +1886,6 @@
   "app.containers.AdminPage.ProjectEdit.survey.file_upload": "Failų įkėlimas",
   "app.containers.AdminPage.ProjectEdit.survey.goBackButtonMessage": "Grįžti atgal",
   "app.containers.AdminPage.ProjectEdit.survey.importInputs": "Importas",
-  "app.containers.AdminPage.ProjectEdit.survey.informationText3": "AI trumpų ir ilgų atsakymų į klausimus santraukas galima rasti kairėje šoninėje juostoje esančiame skirtuke AI.",
   "app.containers.AdminPage.ProjectEdit.survey.linear_scale2": "Linijinė skalė",
   "app.containers.AdminPage.ProjectEdit.survey.matrix_linear_scale2": "Matrica",
   "app.containers.AdminPage.ProjectEdit.survey.multiline_text2": "Ilgas atsakymas",
