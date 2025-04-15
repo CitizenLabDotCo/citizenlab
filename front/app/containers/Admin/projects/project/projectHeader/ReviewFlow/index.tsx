@@ -59,68 +59,59 @@ const ReviewFlow = ({ project }: { project: IProjectData }) => {
   const approvalPending = projectReview?.data.attributes.state === 'pending';
   const approvalGranted = projectReview?.data.attributes.state === 'approved';
 
+  const showReviewRequestButton = !canReview && !approvalGranted;
   const showProjectApprovalButton = approvalPending && canReview;
-  const showReviewRequestButton =
-    isProjectReviewEnabled && !canReview && !approvalGranted;
-  const showPublishButton =
-    !showProjectApprovalButton && !showReviewRequestButton;
 
   return (
-    <Box>
-      {showPublishButton && (
-        <Tooltip
-          content={formatMessage(
-            messages.onlyAdminsAndFolderManagersCanPublish,
-            { inFolder: !!project.attributes.folder_id }
+    <Box display="flex" gap="8px">
+      {canPublish && (
+        <Button
+          buttonStyle="admin-dark"
+          icon="send"
+          onClick={publishProject}
+          processing={isUpdatingProjectLoading}
+          size="s"
+          padding="4px 8px"
+          iconSize="20px"
+          id="e2e-publish"
+        >
+          {formatMessage(messages.publish)}
+        </Button>
+      )}
+
+      {isProjectReviewEnabled && (
+        <>
+          {showReviewRequestButton && (
+            <Box position="relative">
+              <ReviewRequestButton
+                projectId={project.id}
+                inFolder={!!project.attributes.folder_id}
+                approvalPending={approvalPending}
+                processing={isProjectReviewLoading}
+              />
+            </Box>
           )}
-          placement="bottom"
-          disabled={canPublish}
-        >
-          <Button
-            buttonStyle="admin-dark"
-            icon="send"
-            onClick={publishProject}
-            processing={isUpdatingProjectLoading}
-            size="s"
-            padding="4px 8px"
-            iconSize="20px"
-            disabled={!canPublish}
-            id="e2e-publish"
-          >
-            {formatMessage(messages.publish)}
-          </Button>
-        </Tooltip>
-      )}
 
-      {showReviewRequestButton && (
-        <Box position="relative">
-          <ReviewRequestButton
-            projectId={project.id}
-            inFolder={!!project.attributes.folder_id}
-            approvalPending={approvalPending}
-            processing={isProjectReviewLoading}
-          />
-        </Box>
-      )}
-
-      {showProjectApprovalButton && (
-        <Tooltip
-          content={formatMessage(messages.approveTooltip)}
-          placement="bottom"
-        >
-          <Button
-            buttonStyle="admin-dark"
-            icon="unlock"
-            onClick={() => approveProjectReview(project.id)}
-            processing={isApprovingProjectReviewLoading}
-            size="s"
-            padding="4px 8px"
-            iconSize="20px"
-            id="e2e-approve-project"
-          >
-            {formatMessage(messages.approve)}
-          </Button>
-        </Tooltip>
+          {showProjectApprovalButton && (
+            <Tooltip
+              content={formatMessage(messages.approveTooltip)}
+              placement="bottom"
+            >
+              <Button
+                buttonStyle="admin-dark"
+                icon="unlock"
+                onClick={() => approveProjectReview(project.id)}
+                processing={isApprovingProjectReviewLoading}
+                size="s"
+                padding="4px 8px"
+                iconSize="20px"
+                id="e2e-approve-project"
+              >
+                {formatMessage(messages.approve)}
+              </Button>
+            </Tooltip>
+          )}
+        </>
       )}
     </Box>
   );
