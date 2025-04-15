@@ -17,7 +17,7 @@ import messages from 'containers/Admin/CustomMapConfigPage/messages';
 import { goToMapLocation } from 'components/EsriMap/utils';
 
 import { useIntl } from 'utils/cl-intl';
-import { projectPointToWebMercator } from 'utils/mapUtils/map';
+import { getMapZoom, projectPointToWebMercator } from 'utils/mapUtils/map';
 
 type Props = {
   mapView: MapView | null;
@@ -59,7 +59,7 @@ const MapHelperOptions = ({ mapConfig, mapView }: Props) => {
           coordinates: [projectedPoint.longitude, projectedPoint.latitude],
         },
 
-        zoom_level: mapView.zoom.toString(),
+        zoom_level: getMapZoom(mapView.zoom, mapView.scale),
       });
     }
   };

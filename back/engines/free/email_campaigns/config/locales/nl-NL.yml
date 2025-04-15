@@ -488,7 +488,7 @@ nl:
           location: 'Locatie'
           online_link: 'Online link'
           description: 'Beschrijving'
-          project: 'projecten'
+          project: 'Projecten'
       cta_go_to_event: 'Bekijk het evenement'
       cta_add_to_calendar: 'Toevoegen aan je kalender'
     voting_phase_started:
