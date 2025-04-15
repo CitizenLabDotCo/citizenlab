@@ -52,6 +52,8 @@ module AnonymousParticipation
     end
 
     def everyone_tracking_author_hash
+      return unless self.class == Idea
+
       Permissions::EveryoneTrackingService.new(author, creation_phase, request).logged_out_author_hash
     end
   end
