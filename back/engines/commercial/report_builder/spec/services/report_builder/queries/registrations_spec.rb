@@ -31,5 +31,22 @@ RSpec.describe ReportBuilder::Queries::Registrations do
         registrations_whole_period: 10,
       })
     end
+
+    it 'filters dates correctly' do
+      start_at = Date.new(2022, 8, 1)
+      end_at = Date.new(2022, 10, 2)
+
+      result = query.run_query_untransformed(start_at, end_at)
+
+      expect(result).to eq({
+        registrations_timeseries: [
+          {
+            registrations: 3,
+            date_group: Date.new(2022, 9, 1)
+          }
+        ],
+        registrations_whole_period: 3,
+      })
+    end
   end
 end
