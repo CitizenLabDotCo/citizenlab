@@ -1887,7 +1887,7 @@
   "app.containers.AdminPage.ProjectEdit.survey.file_upload": "File upload",
   "app.containers.AdminPage.ProjectEdit.survey.goBackButtonMessage": "Πηγαίνετε πίσω",
   "app.containers.AdminPage.ProjectEdit.survey.importInputs": "Εισαγωγή",
-  "app.containers.AdminPage.ProjectEdit.survey.informationText3": "AI summaries of short and long answer questions can be accessed from the AI tab in the left sidebar.",
+  "app.containers.AdminPage.ProjectEdit.survey.informationText3": "Οι περιλήψεις ΤΝ των ερωτήσεων σύντομης και μακράς απάντησης είναι προσβάσιμες από την καρτέλα ΤΝ στην αριστερή πλαϊνή μπάρα.",
   "app.containers.AdminPage.ProjectEdit.survey.linear_scale2": "Linear scale",
   "app.containers.AdminPage.ProjectEdit.survey.matrix_linear_scale2": "Μήτρα",
   "app.containers.AdminPage.ProjectEdit.survey.multiline_text2": "Long answer",
