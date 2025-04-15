@@ -11,6 +11,8 @@ interface Params {
   selectedProjectId: string | undefined;
   template: Template;
   dates: Partial<DateRange>;
+  year: number | null;
+  quarter: number | null;
 }
 
 export const getRedirectUrl = ({
@@ -18,6 +20,8 @@ export const getRedirectUrl = ({
   selectedProjectId,
   template,
   dates: { from, to },
+  year,
+  quarter,
 }: Params) => {
   const reportBuilderRoute = '/admin/reporting/report-builder';
   const reportRoute = `${reportBuilderRoute}/${reportId}/editor`;
@@ -26,6 +30,10 @@ export const getRedirectUrl = ({
 
   if (template === 'project' && selectedProjectId) {
     params = `?templateProjectId=${selectedProjectId}`;
+  }
+
+  if (template === 'community-monitor' && year && quarter) {
+    params = `?year=${year}&quarter=${quarter}`;
   }
 
   if (template === 'platform' && from && to) {

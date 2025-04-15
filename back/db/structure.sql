@@ -1627,9 +1627,10 @@ CREATE TABLE public.phases (
     manual_voters_amount integer,
     manual_voters_last_updated_by_id uuid,
     manual_voters_last_updated_at timestamp(6) without time zone,
-    user_fields_in_form boolean DEFAULT false NOT NULL,
+    survey_popup_frequency integer,
     similarity_threshold_title double precision DEFAULT 0.3,
-    similarity_threshold_body double precision DEFAULT 0.4
+    similarity_threshold_body double precision DEFAULT 0.4,
+    user_fields_in_form boolean DEFAULT false NOT NULL
 );
 
 
@@ -7073,6 +7074,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20250409111817'),
 ('20250320010716'),
 ('20250319145637'),
+('20250317825496'),
 ('20250317143543'),
 ('20250311141109'),
 ('20250307924725'),
