@@ -535,16 +535,7 @@ const CLPageLayout = memo(
                       )}
                     {pageVariant === 'after-submission' &&
                       ideaId &&
-                      showIdeaId && (
-                        <Box
-                          display="flex"
-                          flexDirection="column"
-                          alignItems="center"
-                          flex="1"
-                        >
-                          <SubmissionReference ideaId={ideaId} />
-                        </Box>
-                      )}
+                      showIdeaId && <SubmissionReference ideaId={ideaId} />}
                   </Box>
                 </Box>
               </Box>
