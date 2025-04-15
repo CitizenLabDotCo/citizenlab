@@ -1108,6 +1108,7 @@
   "app.containers.Admin.projects.project.survey.consentModalText4Link": "https://openai.com/api-data-privacy",
   "app.containers.Admin.projects.project.survey.consentModalText4LinkText": "یہاں",
   "app.containers.Admin.projects.project.survey.consentModalTitle": "اس سے پہلے کہ آپ جاری رکھیں",
+  "app.containers.Admin.projects.project.survey.customFieldsNotPersisted3": "فارم میں ترمیم کرنے سے پہلے آپ تجزیہ درج نہیں کر سکتے",
   "app.containers.Admin.projects.project.survey.deleteAnalysis": "حذف کریں۔",
   "app.containers.Admin.projects.project.survey.deleteAnalysisConfirmation": "کیا آپ واقعی اس تجزیہ کو حذف کرنا چاہتے ہیں؟ اس کارروائی کو کالعدم نہیں کیا جا سکتا۔",
   "app.containers.Admin.projects.project.survey.explore": "دریافت کریں۔",
