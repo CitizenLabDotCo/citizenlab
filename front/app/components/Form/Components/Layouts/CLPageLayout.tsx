@@ -93,9 +93,7 @@ const CLPageLayout = memo(
     const theme = useTheme();
     const { pathname } = useLocation();
     const isAdminPage = isPage('admin', pathname);
-    const [postAnonymously, setPostAnonymously] = useState(false);
-    const [showAnonymousConfirmationModal, setShowAnonymousConfirmationModal] =
-      useState(false);
+    const isIdeaEditPage = isPage('idea_edit', location.pathname);
 
     // We can cast types because the tester made sure we only get correct values
     const pageTypeElements = (uischema as PageCategorization).elements;
@@ -121,6 +119,11 @@ const CLPageLayout = memo(
     // on the success page.
     const showIdeaId = idea ? !idea.data.relationships.author?.data : false;
 
+    const [postAnonymously, setPostAnonymously] = useState(
+      idea?.data.attributes.anonymous || false
+    );
+    const [showAnonymousConfirmationModal, setShowAnonymousConfirmationModal] =
+      useState(false);
     const draggableDivRef = useRef<HTMLDivElement>(null);
     const dragDividerRef = useRef<HTMLDivElement>(null);
     const pagesRef = useRef<HTMLDivElement>(null);
@@ -531,7 +534,8 @@ const CLPageLayout = memo(
                       );
                     })}
                     {pageVariant === 'submission' &&
-                      showTogglePostAnonymously && (
+                      showTogglePostAnonymously &&
+                      !isIdeaEditPage && (
                         <ProfileVisiblity
                           postAnonymously={postAnonymously}
                           onChange={handleOnChangeAnonymousPosting}
