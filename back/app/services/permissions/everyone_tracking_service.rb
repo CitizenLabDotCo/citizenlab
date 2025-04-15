@@ -73,6 +73,6 @@ class Permissions::EveryoneTrackingService
   end
 
   def enabled?
-    @request && @phase&.pmethod&.supports_everyone_tracking?
+    @request && @phase&.pmethod&.everyone_tracking_enabled?
   end
 end

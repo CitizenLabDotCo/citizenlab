@@ -59,6 +59,10 @@ module ParticipationMethod
       []
     end
 
+    def everyone_tracking_enabled?
+      false
+    end
+
     def generate_slug(input)
       # Input is not created in this participation method,
       # so the default is to return nothing.
@@ -119,10 +123,6 @@ module ParticipationMethod
     end
 
     def supports_permitted_by_everyone?
-      false
-    end
-
-    def supports_everyone_tracking?
       false
     end
 

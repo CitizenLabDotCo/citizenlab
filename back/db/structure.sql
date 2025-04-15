@@ -1629,7 +1629,8 @@ CREATE TABLE public.phases (
     manual_voters_last_updated_at timestamp(6) without time zone,
     user_fields_in_form boolean DEFAULT false NOT NULL,
     similarity_threshold_title double precision DEFAULT 0.3,
-    similarity_threshold_body double precision DEFAULT 0.4
+    similarity_threshold_body double precision DEFAULT 0.4,
+    everyone_tracking_enabled boolean DEFAULT false NOT NULL
 );
 
 
@@ -7070,6 +7071,7 @@ ALTER TABLE ONLY public.ideas_topics
 SET search_path TO public,shared_extensions;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20250415132943'),
 ('20250409111817'),
 ('20250320010716'),
 ('20250319145637'),

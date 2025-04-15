@@ -71,6 +71,12 @@ module ParticipationMethod
       true
     end
 
+    # TODO: JS - Move only to community_monitor_survey once working
+    def everyone_tracking_enabled?
+      # TODO: Add in a setting for this to the phase also
+      phase.permissions&.find_by(action: 'posting_idea')&.permitted_by_everyone?
+    end
+
     # Survey responses do not have a fixed field that can be used
     # to generate a slug, so use the id as the basis for the slug.
     def generate_slug(input)
@@ -96,18 +102,11 @@ module ParticipationMethod
     end
 
     def allow_posting_again_after
-      30.seconds
-      # nil # Never allow posting again
+      nil # Never allow posting again
     end
 
     def supports_permitted_by_everyone?
       true
-    end
-
-    # TODO: JS - Move only to community_monitor_survey once working
-    def supports_everyone_tracking?
-      # TODO: Add in a setting for this to the phase also
-      phase.permissions&.find_by(action: 'posting_idea')&.permitted_by_everyone?
     end
 
     def supports_serializing?(attribute)
