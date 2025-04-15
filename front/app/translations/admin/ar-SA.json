@@ -1108,6 +1108,7 @@
   "app.containers.Admin.projects.project.survey.consentModalText4Link": "https://openai.com/api-data-privacy",
   "app.containers.Admin.projects.project.survey.consentModalText4LinkText": "هنا",
   "app.containers.Admin.projects.project.survey.consentModalTitle": "قبل المتابعة",
+  "app.containers.Admin.projects.project.survey.customFieldsNotPersisted3": "لا يمكنك إدخال التحليل قبل تحرير النموذج",
   "app.containers.Admin.projects.project.survey.deleteAnalysis": "يمسح",
   "app.containers.Admin.projects.project.survey.deleteAnalysisConfirmation": "هل أنت متأكد أنك تريد حذف هذا التحليل؟ لا يمكن التراجع عن هذا الإجراء.",
   "app.containers.Admin.projects.project.survey.explore": "يستكشف",
