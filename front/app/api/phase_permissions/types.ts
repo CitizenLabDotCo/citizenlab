@@ -29,6 +29,7 @@ export interface IPhasePermissionData {
     global_custom_fields: boolean;
     verification_enabled: boolean;
     verification_expiry: number | null;
+    everyone_tracking_enabled: boolean;
   };
   relationships: {
     permission_scope: {
@@ -74,4 +75,5 @@ interface IPermissionUpdate {
   global_custom_fields: boolean;
   verification_expiry: number | null;
   access_denied_explanation_multiloc: Multiloc;
+  everyone_tracking_enabled: boolean;
 }

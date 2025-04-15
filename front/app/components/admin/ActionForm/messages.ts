@@ -45,6 +45,10 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.restrictParticipation',
     defaultMessage: 'Restrict participation to user group(s)',
   },
+  everyoneTracking: {
+    id: 'app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.everyoneTracking',
+    defaultMessage: 'Advanced tracking of logged out users',
+  },
   authentication: {
     id: 'app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.authentication',
     defaultMessage: 'Authentication',

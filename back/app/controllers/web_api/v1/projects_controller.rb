@@ -328,6 +328,7 @@ class WebApi::V1::ProjectsController < ApplicationController
     authorize project
 
     # TODO: JS: do we need request on all endpoints or only this one?
+    # Pass in projects_permissions service instead of user_requirements_service
 
     render json: WebApi::V1::ProjectSerializer.new(
       project,

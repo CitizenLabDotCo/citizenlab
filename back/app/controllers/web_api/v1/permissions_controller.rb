@@ -110,6 +110,7 @@ class WebApi::V1::PermissionsController < ApplicationController
       :permitted_by,
       :global_custom_fields,
       :verification_expiry,
+      :everyone_tracking_enabled,
       group_ids: [],
       access_denied_explanation_multiloc: CL2_SUPPORTED_LOCALES
     )
