@@ -7,8 +7,27 @@ RSpec.describe ReportBuilder::Queries::Registrations do
 
   describe "#run_query_untransformed" do
     before_all do
+      # Registrations
       create_list(:user, 3, registration_completed_at: Date.new(2022, 9, 10))
       create_list(:user, 7, registration_completed_at: Date.new(2022, 10, 10))
+
+      # Visitors september
+      (1..12).each do |i|
+        create(
+          :session, 
+          created_at: Date.new(2022, 9, 10), 
+          monthly_user_hash: i % 2 == 0 ? "hash_1_#{i - 1}" : "hash_1_#{i}"
+        )
+      end
+
+      # Visitors october
+      (1..28).each do |i|
+        create(
+          :session, 
+          created_at: Date.new(2022, 10, 10), 
+          monthly_user_hash: i % 2 == 0 ? "hash_2_#{i - 1}" : "hash_2_#{i}"
+        )
+      end
     end
 
     it 'returns correct data for current period' do
@@ -29,6 +48,7 @@ RSpec.describe ReportBuilder::Queries::Registrations do
           }
         ],
         registrations_whole_period: 10,
+        registration_rate: 0.5
       })
     end
 
@@ -46,6 +66,7 @@ RSpec.describe ReportBuilder::Queries::Registrations do
           }
         ],
         registrations_whole_period: 3,
+        registration_rate: 0.5
       })
     end
   end

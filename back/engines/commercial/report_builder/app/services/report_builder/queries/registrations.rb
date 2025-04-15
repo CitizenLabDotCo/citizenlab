@@ -65,7 +65,7 @@ module ReportBuilder
       {
         registrations_timeseries: registrations_timeseries,
         registrations_whole_period: registrations_whole_period,
-        registration_rate: visitors.zero? ? 0 : (registrations_whole_period / visitors)
+        registration_rate: visitors.zero? ? 0 : (registrations_whole_period / visitors.to_f)
       }
     end
   end
