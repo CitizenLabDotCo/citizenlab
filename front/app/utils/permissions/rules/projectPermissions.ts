@@ -31,6 +31,8 @@ definePermissionRule(
 
     return (
       isAdmin(user) ||
+      // We don't want any folder moderator,
+      // hence the folder id needs to be defined so we can do a check for the particular folder
       (!!project.attributes.folder_id &&
         userModeratesFolder(user, project.attributes.folder_id)) ||
       (isProjectReviewEnabled &&
