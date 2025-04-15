@@ -8,13 +8,13 @@ import {
   media,
   viewportWidths,
   isRtl,
+  Button,
 } from '@citizenlab/cl2-component-library';
 import ReactResizeDetector from 'react-resize-detector';
 import styled, { useTheme } from 'styled-components';
 
 import messages from 'containers/ProjectsShowPage/messages';
 
-import Button from 'components/UI/ButtonWithLink';
 import QuillEditedContent from 'components/UI/QuillEditedContent';
 
 import { FormattedMessage } from 'utils/cl-intl';
@@ -69,7 +69,9 @@ const ReadMoreWrapper = memo<Props>(
 
     const [expanded, setExpanded] = useState(false);
     const [contentHeight, setContentHeight] = useState<number | null>(null);
-    const buttonContainerRef = useRef<HTMLDivElement>(null);
+
+    const readMoreButtonRef = useRef<HTMLButtonElement>(null);
+    const seeLessButtonRef = useRef<HTMLButtonElement>(null);
 
     const smallerThanLargeTablet = windowWidth <= viewportWidths.tablet;
     const collapsedContentMaxHeight = smallerThanLargeTablet
@@ -81,23 +83,16 @@ const ReadMoreWrapper = memo<Props>(
     }, [content]);
 
     useEffect(() => {
-      // We use the button container ref because we currently don't support refs
-      // on the buttons themselves. Adding that for this use case would be a bit more complex since
-      // the button component handles links too
-      const container = buttonContainerRef.current;
-      if (!container) return;
+      const buttonToFocus = expanded
+        ? seeLessButtonRef.current
+        : readMoreButtonRef.current;
 
-      const readMoreButton = container.querySelector<HTMLButtonElement>(
-        `#e2e-project-${contentId}-read-more-button button`
-      );
-      const seeLessButton = container.querySelector<HTMLButtonElement>(
-        `#e2e-project-${contentId}-see-less-button button`
-      );
-
-      const buttonToFocus = readMoreButton || seeLessButton;
       if (buttonToFocus) {
-        // We move focus to the other button after clicking to make sure the screen reader reads it
-        buttonToFocus.focus({ preventScroll: true });
+        // Add a small timeout to ensure DOM is stable before focusing.
+        setTimeout(() => {
+          // We move focus to the other button after clicking to make sure the screen reader reads it
+          buttonToFocus.focus({ preventScroll: true });
+        }, 0);
       }
     }, [contentId, expanded]);
 
@@ -144,7 +139,7 @@ const ReadMoreWrapper = memo<Props>(
                   right="0"
                   background="linear-gradient(0deg, rgba(255, 255, 255, 1) 30%, rgba(255, 255, 255, 0) 100%)"
                 >
-                  <Box position="relative" flex="1" ref={buttonContainerRef}>
+                  <Box position="relative" flex="1">
                     <ReadMoreButton
                       id={`e2e-project-${contentId}-read-more-button`}
                       buttonStyle="text"
@@ -157,9 +152,10 @@ const ReadMoreWrapper = memo<Props>(
                       fontSize={`${fontSizes.m}px`}
                       padding="0"
                       ariaExpanded={expanded}
-                      icon="arrow-right"
+                      icon="arrow-down"
                       iconPos="right"
                       iconSize="16px"
+                      ref={readMoreButtonRef}
                     >
                       <FormattedMessage {...messages.readMore} />
                     </ReadMoreButton>
@@ -169,12 +165,7 @@ const ReadMoreWrapper = memo<Props>(
             {contentHeight &&
               contentHeight > collapsedContentMaxHeight &&
               expanded && (
-                <Box
-                  display="flex"
-                  justifyContent="flex-start"
-                  mt="20px"
-                  ref={buttonContainerRef}
-                >
+                <Box display="flex" justifyContent="flex-start" mt="20px">
                   <Button
                     id={`e2e-project-${contentId}-see-less-button`}
                     buttonStyle="text"
@@ -187,9 +178,10 @@ const ReadMoreWrapper = memo<Props>(
                     fontSize={`${fontSizes.m}px`}
                     padding="0"
                     ariaExpanded={expanded}
-                    icon="arrow-down"
+                    icon="arrow-up"
                     iconPos="right"
                     iconSize="16px"
+                    ref={seeLessButtonRef}
                   >
                     <FormattedMessage {...messages.readLess} />
                   </Button>

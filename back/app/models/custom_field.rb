@@ -125,7 +125,7 @@ class CustomField < ApplicationRecord
     when 'User'
       UserCustomFields::UserCustomFieldPolicy
     when 'CustomForm'
-      CustomFormPolicy
+      IdeaCustomFields::IdeaCustomFieldPolicy
     else
       raise "Polcy not implemented for resource type: #{resource_type}"
     end
@@ -177,6 +177,10 @@ class CustomField < ApplicationRecord
 
   def supports_linear_scale_labels?
     %w[linear_scale matrix_linear_scale sentiment_linear_scale].include?(input_type)
+  end
+
+  def supports_average?
+    %w[linear_scale sentiment_linear_scale rating number].include?(input_type)
   end
 
   def supports_single_selection?
@@ -241,8 +245,26 @@ class CustomField < ApplicationRecord
     required
   end
 
+  def visible_to_public?
+    answer_visible_to == VISIBLE_TO_PUBLIC
+  end
+
+  def submittable?
+    !page?
+  end
+
+  def printable?
+    ignore_field_types = %w[page date files image_files point file_upload shapefile_upload topic_ids cosponsor_ids ranking matrix_linear_scale]
+    ignore_field_types.exclude? input_type
+  end
+
+  def importable?
+    ignore_field_types = %w[page date files image_files file_upload shapefile_upload point line polygon cosponsor_ids ranking matrix_linear_scale]
+    ignore_field_types.exclude? input_type
+  end
+
   def domicile?
-    key == 'domicile' && code == 'domicile'
+    (key == 'domicile' && code == 'domicile') || key == 'u_domicile'
   end
 
   def file_upload?
@@ -251,6 +273,10 @@ class CustomField < ApplicationRecord
 
   def page?
     input_type == 'page'
+  end
+
+  def form_end_page?
+    page? && key == 'form_end'
   end
 
   def multiselect?
@@ -267,6 +293,10 @@ class CustomField < ApplicationRecord
 
   def rating?
     input_type == 'rating'
+  end
+
+  def checkbox?
+    input_type == 'checkbox'
   end
 
   def dropdown_layout_type?
@@ -370,6 +400,10 @@ class CustomField < ApplicationRecord
       required: false,
       enabled: true
     )
+  end
+
+  def additional_text_question_key
+    other_option_text_field&.key || follow_up_text_field&.key
   end
 
   def ordered_options

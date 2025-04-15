@@ -49,7 +49,7 @@ class InputUiSchemaGeneratorService < UiSchemaGeneratorService
     }
 
     # Add these attributes only if the page key is "form_end"
-    if field.key == 'form_end'
+    if field.form_end_page?
       page_data[:options][:page_button_label_multiloc] = field.page_button_label_multiloc
       page_data[:options][:page_button_link] = field.page_button_link
     end
@@ -94,7 +94,7 @@ class InputUiSchemaGeneratorService < UiSchemaGeneratorService
         rules = form_logic.ui_schema_rules_for(field)
         field_schema[:ruleArray] = rules if rules.present?
 
-        if field.key == 'form_end'
+        if field.form_end_page?
           form_end_page = field_schema
         else
           field_schemas << field_schema

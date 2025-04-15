@@ -247,6 +247,7 @@ export interface IAppConfigurationSettings {
   comments_summaries?: AppConfigurationFeature;
   ask_a_question?: AppConfigurationFeature;
   advanced_autotagging?: AppConfigurationFeature;
+  auto_insights?: AppConfigurationFeature;
   import_printed_forms?: AppConfigurationFeature;
   input_importer?: AppConfigurationFeature;
   user_session_recording?: AppConfigurationFeature;
@@ -263,6 +264,7 @@ export interface IAppConfigurationSettings {
   platform_templates?: AppConfigurationFeature;
   authoring_assistance_prototype?: AppConfigurationFeature;
   project_library?: AppConfigurationFeature;
+  user_fields_in_surveys?: AppConfigurationFeature;
 }
 
 export type TAppConfigurationSettingCore = keyof IAppConfigurationSettingsCore;

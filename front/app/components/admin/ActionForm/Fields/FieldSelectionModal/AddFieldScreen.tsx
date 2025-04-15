@@ -6,9 +6,9 @@ import { FormProvider, useForm } from 'react-hook-form';
 import { Multiloc } from 'typings';
 import { object, string } from 'yup';
 
+import useAddCustomFieldOption from 'api/custom_field_options/useAddCustomFieldOption';
 import { IOptionsType } from 'api/custom_fields/types';
 import useAddUserCustomField from 'api/user_custom_fields/useAddUserCustomField';
-import useAddUserCustomFieldOption from 'api/user_custom_fields_options/useAddUserCustomFieldOption';
 
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 import useLocale from 'hooks/useLocale';
@@ -50,8 +50,7 @@ export const AddFieldScreen = ({
   setShowAddFieldPage,
   defaultValues,
 }: AddFieldScreenProps) => {
-  const { mutateAsync: addUserCustomFieldOption } =
-    useAddUserCustomFieldOption();
+  const { mutateAsync: addCustomFieldOption } = useAddCustomFieldOption();
   const { mutateAsync: addCustomFieldForUsers } = useAddUserCustomField();
   const { formatMessage } = useIntl();
   const locale = useLocale();
@@ -102,7 +101,7 @@ export const AddFieldScreen = ({
             // TODO: Fix this the next time the file is edited.
             // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
             formValues?.options?.forEach(async (option) => {
-              await addUserCustomFieldOption({
+              await addCustomFieldOption({
                 customFieldId: newField.data.id,
                 title_multiloc: option.title_multiloc,
               });

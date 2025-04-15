@@ -26,7 +26,9 @@ const getInspirationHubLink = (country_code: string | null) => {
   }
 
   const pinnedProjectsCountryFilter = `q[pin_country_code_eq]=${country_code}`;
-  const allProjectsCountryFilter = `q[tenant_country_code_eq]=${country_code}`;
+  const allProjectsCountryFilter = `q[tenant_country_code_in]=${JSON.stringify([
+    country_code,
+  ])}`;
 
   return `/admin/inspiration-hub?${pinnedProjectsCountryFilter}&${allProjectsCountryFilter}` as RouteType;
 };

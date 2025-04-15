@@ -1,27 +1,38 @@
 # frozen_string_literal: true
 
+# Base class for generating survey results - others inherit as follows:
+# - ResultsWithGroupGenerator - allow grouping of single results
+# - ResultsWithDateGenerator - allow filtering by year and quarter
+# - ResultsWithLogicGenerator - apply survey logic to the results
+
 module Surveys
   class ResultsGenerator < FieldVisitorService
-    def initialize(phase)
+    def initialize(phase, structure_by_category: false)
       super()
+      @phase = phase
       form = phase.custom_form || CustomForm.new(participation_context: phase)
-      @fields = IdeaCustomFieldsService.new(form).enabled_fields
-      @inputs = phase.ideas.supports_survey.published
+      @fields = IdeaCustomFieldsService.new(form).survey_results_fields(structure_by_category:)
       @locales = AppConfiguration.instance.settings('core', 'locales')
+      @inputs = phase.ideas.supports_survey.published
     end
 
     # Get the results for a single survey question
     def generate_result_for_field(field_id)
       field = find_question(field_id)
-      visit field
+      result = visit field
+      add_averages([result]).first
     end
 
-    # Get the results for a all survey questions
+    # Get the results for all survey questions
     def generate_results
       results = fields.filter_map { |f| visit f }
-      results = add_question_numbers_to_results results
-      results = add_page_response_count_to_results results
-      results = cleanup_results results
+      if results.present?
+        results = add_question_numbers_to_results results
+        results = add_page_response_count_to_results results
+        results = add_averages results
+        results = add_additional_fields_to_results results
+        results = cleanup_results results
+      end
 
       {
         results: results,
@@ -127,7 +138,11 @@ module Surveys
 
     private
 
-    attr_reader :fields, :inputs, :locales
+    attr_reader :phase, :fields, :inputs, :locales
+
+    def add_additional_fields_to_results(results)
+      results # This method is a placeholder for overriding in subclasses
+    end
 
     def core_field_attributes(field, response_count: nil)
       response_count ||= base_responses(field).size
@@ -142,7 +157,8 @@ module Surveys
         totalResponseCount: @inputs.size,
         questionResponseCount: response_count,
         pageNumber: nil,
-        questionNumber: nil
+        questionNumber: nil,
+        questionCategory: field.question_category
       }
     end
 
@@ -197,7 +213,7 @@ module Surveys
         multilocs: get_multilocs(field)
       })
 
-      attributes[:textResponses] = get_text_responses("#{field.key}_other") if field.other_option_text_field
+      attributes[:textResponses] = get_text_responses(field.additional_text_question_key) if field.additional_text_question_key
 
       attributes
     end
@@ -290,6 +306,7 @@ module Surveys
       })
     end
 
+    # Get any associated text responses - where follow up question or other option is used
     def get_text_responses(field_key)
       inputs
         .select("custom_field_values->'#{field_key}' as value")
@@ -337,6 +354,21 @@ module Surveys
           result[:pageNumber] = nil
         end
         result
+      end
+    end
+
+    def add_averages(results)
+      # By default 'this_period' is all time
+      averages = AverageGenerator.new(phase).field_averages
+
+      # Merge the averages into the main results
+      results.each do |result|
+        field_average = averages[result[:customFieldId]]
+        if field_average
+          result[:averages] = {
+            this_period: field_average
+          }
+        end
       end
     end
 

@@ -444,6 +444,10 @@ module MultiTenancy
               enabled: true,
               allowed: true
             },
+            auto_insights: {
+              enabled: true,
+              allowed: true
+            },
             multi_language_platform: {
               enabled: true,
               allowed: true
@@ -489,6 +493,10 @@ module MultiTenancy
               enabled: true,
               allowed: true,
               project_id: ''
+            },
+            user_fields_in_surveys: {
+              enabled: true,
+              allowed: true
             }
           })
         )

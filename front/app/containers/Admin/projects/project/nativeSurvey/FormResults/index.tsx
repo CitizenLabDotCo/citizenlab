@@ -70,11 +70,7 @@ const FormResults = () => {
           {surveyResponseMessage}
         </Text>
       </Box>
-      {firstTextQuestion?.customFieldId && (
-        <ViewSingleSubmissionNotice
-          customFieldId={firstTextQuestion.customFieldId}
-        />
-      )}
+      {firstTextQuestion?.customFieldId && <ViewSingleSubmissionNotice />}
       <Box mt="24px">
         {totalSubmissions > 0 &&
           results.map((result, index) => {
