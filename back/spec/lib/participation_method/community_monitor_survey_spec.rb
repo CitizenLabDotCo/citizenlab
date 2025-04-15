@@ -168,6 +168,28 @@ RSpec.describe ParticipationMethod::CommunityMonitorSurvey do
     end
   end
 
+  describe '#everyone_tracking_enabled?' do
+    let(:phase) { create(:community_monitor_survey_phase, with_permissions: true) }
+
+    it 'returns true when enabled on phase and everyone permissions' do
+      phase.permissions.first.update!(permitted_by: 'everyone')
+      phase.everyone_tracking_enabled = true
+      expect(participation_method.everyone_tracking_enabled?).to be true
+    end
+
+    it 'returns false when not enabled on phase' do
+      phase.permissions.first.update!(permitted_by: 'everyone')
+      phase.everyone_tracking_enabled = false
+      expect(participation_method.everyone_tracking_enabled?).to be false
+    end
+
+    it 'returns false when phase does not have "everyone" permissions' do
+      phase.permissions.first.update!(permitted_by: 'users')
+      phase.everyone_tracking_enabled = true
+      expect(participation_method.everyone_tracking_enabled?).to be false
+    end
+  end
+
   its(:additional_export_columns) { is_expected.to eq [] }
   its(:allowed_ideas_orders) { is_expected.to be_empty }
   its(:return_disabled_actions?) { is_expected.to be true }

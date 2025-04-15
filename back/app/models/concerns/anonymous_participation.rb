@@ -38,7 +38,7 @@ module AnonymousParticipation
     end
 
     def set_author_hash
-      if author_id_changed? || anonymous_changed?
+      if author_id.present? && (author_id_changed? || anonymous_changed?)
         # Set for records with an author
         self.author_hash = self.class.create_author_hash author_id, project_string, anonymous?
       elsif author_id.blank? && !persisted? && everyone_tracking_author_hash
