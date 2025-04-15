@@ -1,5 +1,8 @@
+import useProjectReview from 'api/project_reviews/useProjectReview';
 import { IProjectData } from 'api/projects/types';
 import { IUser } from 'api/users/types';
+
+import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import { definePermissionRule } from 'utils/permissions/permissions';
 
@@ -19,29 +22,20 @@ definePermissionRule('project', 'reorder', (_project: IProjectData, user) => {
   return isAdmin(user);
 });
 
-const canReview = (project: IProjectData, user: IUser | undefined) =>
-  isAdmin(user) ||
-  (!!project.attributes.folder_id &&
-    userModeratesFolder(user, project.attributes.folder_id));
-
-definePermissionRule(
-  'project',
-  'review',
-  (project: IProjectData, user, _tenant) => canReview(project, user)
-);
-
 definePermissionRule(
   'project',
   'publish',
-  (
-    project: IProjectData,
-    user,
-    _tenant,
-    { isProjectApproved }: { isProjectApproved: boolean }
-  ) => {
+  (project: IProjectData, user, _tenant) => {
+    const isProjectReviewEnabled = useFeatureFlag({ name: 'project_review' });
+    const { data: projectReview } = useProjectReview(project.id);
+
     return (
-      canReview(project, user) ||
-      (isProjectApproved && isProjectModerator(user, project.id))
+      isAdmin(user) ||
+      (!!project.attributes.folder_id &&
+        userModeratesFolder(user, project.attributes.folder_id)) ||
+      (isProjectReviewEnabled &&
+        projectReview?.data.attributes.state === 'approved' &&
+        isProjectModerator(user, project.id))
     );
   }
 );
