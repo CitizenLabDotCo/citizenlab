@@ -3,9 +3,11 @@ import React from 'react';
 import { BoxMarginProps, Text } from '@citizenlab/cl2-component-library';
 import { get } from 'lodash-es';
 
+import messages from 'containers/Admin/projects/project/nativeSurvey/messages';
+
 import { useIntl } from 'utils/cl-intl';
 
-import messages from '../messages';
+import inputTypeMessages from '../messages';
 
 interface Props {
   inputType: string;
@@ -26,8 +28,8 @@ const InputType = ({
   const inputTypeText = get(messages, inputType, '');
 
   const requiredOrOptionalText = required
-    ? formatMessage(messages.required)
-    : formatMessage(messages.optional);
+    ? formatMessage(inputTypeMessages.required)
+    : formatMessage(inputTypeMessages.optional);
 
   // TODO: Fix this the next time the file is edited.
   // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
