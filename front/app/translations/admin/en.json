@@ -1074,6 +1074,7 @@
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.edit": "Edit",
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.emailConfirmation": "Email confirmation",
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.emailConfirmationSubtitle": "Participants need to confirm their email with a one-time code.",
+  "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.everyoneTracking": "Advanced tracking of logged out users",
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.extraQuestions": "Extra questions asked to participants",
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.none": "None",
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.noneSubtitle": "Anyone can participate without signing up or logging in.",
