@@ -188,7 +188,6 @@ const ActionForm = ({ phaseId, permissionData, onChange, onReset }: Props) => {
               <Title variant="h4" color="primary" mb={'8px'}>
                 <FormattedMessage {...messages.everyoneTracking} />
               </Title>
-
               <Toggle
                 checked={everyone_tracking_enabled || false}
                 onChange={() => {

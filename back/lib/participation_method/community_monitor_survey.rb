@@ -33,11 +33,18 @@ module ParticipationMethod
     end
 
     def constraints
-      {} # TODO: Any constraints to be added once we know what the fields are
+      {} # TODO: JS - Any constraints to be added once we know what the fields are
     end
 
     def form_logic_enabled?
       false
+    end
+
+    def everyone_tracking_enabled?
+      permission = phase.permissions&.find_by(action: 'posting_idea')
+      return false unless permission
+
+      permission.everyone_tracking_enabled?
     end
 
     def validate_phase

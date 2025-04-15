@@ -71,14 +71,6 @@ module ParticipationMethod
       true
     end
 
-    # TODO: JS - Move only to community_monitor_survey once working
-    def everyone_tracking_enabled?
-      permission = phase.permissions&.find_by(action: 'posting_idea')
-      return false unless permission
-
-      permission.everyone_tracking_enabled?
-    end
-
     # Survey responses do not have a fixed field that can be used
     # to generate a slug, so use the id as the basis for the slug.
     def generate_slug(input)
