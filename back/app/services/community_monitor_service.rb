@@ -11,6 +11,12 @@ class CommunityMonitorService
     settings.dig('community_monitor', 'project_id')
   end
 
+  def project
+    return nil unless enabled?
+
+    Project.find(project_id)
+  end
+
   def find_or_create_project(current_user)
     raise ActiveRecord::RecordNotFound unless enabled?
 
