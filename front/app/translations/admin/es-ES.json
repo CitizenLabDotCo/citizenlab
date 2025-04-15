@@ -1108,6 +1108,7 @@
   "app.containers.Admin.projects.project.survey.consentModalText4Link": "https://openai.com/api-data-privacy",
   "app.containers.Admin.projects.project.survey.consentModalText4LinkText": "aquí",
   "app.containers.Admin.projects.project.survey.consentModalTitle": "Antes de continuar",
+  "app.containers.Admin.projects.project.survey.customFieldsNotPersisted3": "No puedes introducir el análisis antes de haber editado el formulario",
   "app.containers.Admin.projects.project.survey.deleteAnalysis": "Borrar",
   "app.containers.Admin.projects.project.survey.deleteAnalysisConfirmation": "¿Estás seguro de que quieres borrar este análisis? Esta acción no se puede deshacer.",
   "app.containers.Admin.projects.project.survey.explore": "Explora",
