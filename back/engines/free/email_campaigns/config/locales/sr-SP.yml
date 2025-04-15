@@ -8,6 +8,7 @@ sr-Cyrl:
       "comment_marked_as_spam": Извештај о нежељеној пошти коментара
       "comment_on_your_comment": Одговор на мој коментар
       "comment_on_idea_you_follow": Коментар идеје коју пратите
+      "community_monitor_report": Community monitor report
       "cosponsor_of_your_idea": A user accepts my invitation to co-sponsor my proposal
       "event_registration_confirmation": Потврда регистрације догађаја
       "idea_marked_as_spam": Извештај о нежељеној пошти идеја
@@ -82,6 +83,7 @@ sr-Cyrl:
         "4": "Седмично, четвртком у %{hourOfDay}"
         "5": "Недељно, петком у %{hourOfDay}"
         "6": "Седмично, суботом у %{hourOfDay}"
+      quarterly: "Quarterly, on the first day of the quarter"
     footer:
       "link_privacy_policy": "Правила приватности"
       "link_terms_conditions": "Услови коришћења"
@@ -147,6 +149,12 @@ sr-Cyrl:
       today: Данас
       wrong_content: 'Коментар није релевантан.'
       yesterday: Јучер
+    community_monitor_report:
+      subject: 'A new community monitor report is available'
+      title: 'A new community monitor report is available'
+      text_introduction: 'A community monitor report has been created for the previous quarter. You can access it by clicking the button below and logging in.'
+      cta_report_button: 'View report'
+      report_name: 'Community monitor report'
     cosponsor_of_your_idea:
       cta_reply_to: 'View your proposal'
       event_description: 'Congratulations! %{cosponsorName} has accepted your invitation to co-sponsor your proposal.'
