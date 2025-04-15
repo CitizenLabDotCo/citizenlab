@@ -49,30 +49,38 @@ const ReviewFlow = ({ project }: { project: IProjectData }) => {
   const showReviewRequestButton = isProjectReviewEnabled && !canPublish;
   const showProjectApprovalButton =
     isProjectReviewEnabled && canPublish && approvalPending;
+  // showPublishButton could in practice only result in false if the
+  // project_review feature is enabled and the user is a project or folder manager trying to publish at the root level
+  const showPublishButton = !showReviewRequestButton;
 
   return (
     <Box display="flex" gap="8px">
-      <Tooltip
-        content={formatMessage(messages.onlyAdminsAndFolderManagersCanPublish, {
-          inFolder: !!project.attributes.folder_id,
-        })}
-        placement="bottom"
-        disabled={canPublish}
-      >
-        <Button
-          buttonStyle="admin-dark"
-          icon="send"
-          onClick={publishProject}
-          processing={isUpdatingProjectLoading}
-          size="s"
-          padding="4px 8px"
-          iconSize="20px"
-          disabled={!canPublish}
-          id="e2e-publish"
+      {showPublishButton && (
+        <Tooltip
+          content={formatMessage(
+            messages.onlyAdminsAndFolderManagersCanPublish,
+            {
+              inFolder: !!project.attributes.folder_id,
+            }
+          )}
+          placement="bottom"
+          disabled={canPublish}
         >
-          {formatMessage(messages.publish)}
-        </Button>
-      </Tooltip>
+          <Button
+            buttonStyle="admin-dark"
+            icon="send"
+            onClick={publishProject}
+            processing={isUpdatingProjectLoading}
+            size="s"
+            padding="4px 8px"
+            iconSize="20px"
+            disabled={!canPublish}
+            id="e2e-publish"
+          >
+            {formatMessage(messages.publish)}
+          </Button>
+        </Tooltip>
+      )}
       {showReviewRequestButton && (
         <Box position="relative">
           <ReviewRequestButton
