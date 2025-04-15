@@ -14,6 +14,7 @@
 #  global_custom_fields               :boolean          default(FALSE), not null
 #  verification_expiry                :integer
 #  access_denied_explanation_multiloc :jsonb            not null
+#  everyone_tracking_enabled          :boolean          default(FALSE), not null
 #
 # Indexes
 #
@@ -97,8 +98,8 @@ class Permission < ApplicationRecord
     false
   end
 
-  def permitted_by_everyone?
-    permitted_by == 'everyone'
+  def everyone_tracking_enabled?
+    permitted_by == 'everyone' && everyone_tracking_enabled
   end
 
   private

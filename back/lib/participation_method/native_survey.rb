@@ -73,7 +73,10 @@ module ParticipationMethod
 
     # TODO: JS - Move only to community_monitor_survey once working
     def everyone_tracking_enabled?
-      phase.everyone_tracking_enabled && phase.permissions&.find_by(action: 'posting_idea')&.permitted_by_everyone?
+      permission = phase.permissions&.find_by(action: 'posting_idea')
+      return false unless permission
+
+      permission.everyone_tracking_enabled?
     end
 
     # Survey responses do not have a fixed field that can be used

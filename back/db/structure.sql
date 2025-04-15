@@ -1629,8 +1629,7 @@ CREATE TABLE public.phases (
     manual_voters_last_updated_at timestamp(6) without time zone,
     user_fields_in_form boolean DEFAULT false NOT NULL,
     similarity_threshold_title double precision DEFAULT 0.3,
-    similarity_threshold_body double precision DEFAULT 0.4,
-    everyone_tracking_enabled boolean DEFAULT false NOT NULL
+    similarity_threshold_body double precision DEFAULT 0.4
 );
 
 
@@ -2815,7 +2814,8 @@ CREATE TABLE public.permissions (
     updated_at timestamp without time zone NOT NULL,
     global_custom_fields boolean DEFAULT false NOT NULL,
     verification_expiry integer,
-    access_denied_explanation_multiloc jsonb DEFAULT '{}'::jsonb NOT NULL
+    access_denied_explanation_multiloc jsonb DEFAULT '{}'::jsonb NOT NULL,
+    everyone_tracking_enabled boolean DEFAULT false NOT NULL
 );
 
 

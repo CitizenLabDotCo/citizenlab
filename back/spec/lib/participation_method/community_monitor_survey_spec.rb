@@ -172,20 +172,17 @@ RSpec.describe ParticipationMethod::CommunityMonitorSurvey do
     let(:phase) { create(:community_monitor_survey_phase, with_permissions: true) }
 
     it 'returns true when enabled on phase and everyone permissions' do
-      phase.permissions.first.update!(permitted_by: 'everyone')
-      phase.everyone_tracking_enabled = true
+      phase.permissions.first.update!(permitted_by: 'everyone', everyone_tracking_enabled: true)
       expect(participation_method.everyone_tracking_enabled?).to be true
     end
 
     it 'returns false when not enabled on phase' do
-      phase.permissions.first.update!(permitted_by: 'everyone')
-      phase.everyone_tracking_enabled = false
+      phase.permissions.first.update!(permitted_by: 'everyone', everyone_tracking_enabled: false)
       expect(participation_method.everyone_tracking_enabled?).to be false
     end
 
     it 'returns false when phase does not have "everyone" permissions' do
-      phase.permissions.first.update!(permitted_by: 'users')
-      phase.everyone_tracking_enabled = true
+      phase.permissions.first.update!(permitted_by: 'users', everyone_tracking_enabled: true)
       expect(participation_method.everyone_tracking_enabled?).to be false
     end
   end
