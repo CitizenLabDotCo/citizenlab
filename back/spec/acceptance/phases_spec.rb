@@ -742,6 +742,7 @@ resource 'Phases' do
             hidden: false,
             pageNumber: nil,
             questionNumber: 1,
+            questionCategory: nil,
             logic: {},
             totalResponseCount: 2,
             questionResponseCount: 2,
