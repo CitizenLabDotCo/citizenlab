@@ -397,9 +397,6 @@ const CLPageLayout = memo(
       (page) => page === currentPage
     );
 
-    const showSubmissionReference =
-      ideaId && pageVariant === 'after-submission' && showIdeaId;
-
     return (
       <>
         <Box
@@ -536,19 +533,21 @@ const CLPageLayout = memo(
                           onChange={handleOnChangeAnonymousPosting}
                         />
                       )}
+                    {pageVariant === 'after-submission' &&
+                      ideaId &&
+                      showIdeaId && (
+                        <Box
+                          display="flex"
+                          flexDirection="column"
+                          alignItems="center"
+                          flex="1"
+                        >
+                          <SubmissionReference ideaId={ideaId} />
+                        </Box>
+                      )}
                   </Box>
                 </Box>
               </Box>
-              {showSubmissionReference && (
-                <Box
-                  display="flex"
-                  flexDirection="column"
-                  alignItems="center"
-                  flex="1"
-                >
-                  <SubmissionReference ideaId={ideaId} />
-                </Box>
-              )}
             </Box>
           </Box>
         </Box>
