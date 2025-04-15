@@ -1108,6 +1108,7 @@
   "app.containers.Admin.projects.project.survey.consentModalText4Link": "https://openai.com/api-data-privacy",
   "app.containers.Admin.projects.project.survey.consentModalText4LinkText": "šeit",
   "app.containers.Admin.projects.project.survey.consentModalTitle": "Pirms turpināt",
+  "app.containers.Admin.projects.project.survey.customFieldsNotPersisted3": "Jūs nevarat ievadīt analīzi, pirms neesat rediģējis veidlapu.",
   "app.containers.Admin.projects.project.survey.deleteAnalysis": "Dzēst",
   "app.containers.Admin.projects.project.survey.deleteAnalysisConfirmation": "Vai esat pārliecināts, ka vēlaties dzēst šo analīzi? Šo darbību nevar atcelt.",
   "app.containers.Admin.projects.project.survey.explore": "Izpētīt",
