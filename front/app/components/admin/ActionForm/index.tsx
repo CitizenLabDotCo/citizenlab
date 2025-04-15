@@ -78,9 +78,9 @@ const ActionForm = ({ phaseId, permissionData, onChange, onReset }: Props) => {
 
   const userFieldsInForm = !!phase?.data.attributes.user_fields_in_form;
 
-  // TODO: JS - Change to community monitor once merge is done
+  // Currently only community monitor supports everyone tracking
   const canUseEveryoneTracking =
-    participation_method === 'native_survey' &&
+    participation_method === 'community_monitor_survey' &&
     action === 'posting_idea' &&
     permitted_by === 'everyone';
   const handleEveryoneTrackingUpdate = (everyone_tracking_enabled: boolean) => {
@@ -184,7 +184,7 @@ const ActionForm = ({ phaseId, permissionData, onChange, onReset }: Props) => {
             </Box>
           )}
           {canUseEveryoneTracking && (
-            <Box mt="28px">
+            <Box mt="28px" width="90%">
               <Title variant="h4" color="primary" mb={'8px'}>
                 <FormattedMessage {...messages.everyoneTracking} />
               </Title>
@@ -195,7 +195,7 @@ const ActionForm = ({ phaseId, permissionData, onChange, onReset }: Props) => {
                   handleEveryoneTrackingUpdate(!everyone_tracking_enabled);
                 }}
                 label={
-                  <Box ml="8px" id="e2e-user-fields-in-form-toggle">
+                  <Box ml="8px" id="e2e-everyone-tracking-toggle">
                     <Box display="flex">
                       <Text
                         color="primary"
@@ -203,15 +203,19 @@ const ActionForm = ({ phaseId, permissionData, onChange, onReset }: Props) => {
                         fontSize="m"
                         fontWeight="semi-bold"
                       >
-                        Enable advanced tracking
+                        <FormattedMessage
+                          {...messages.everyoneTrackingToggle}
+                        />
                       </Text>
                     </Box>
 
                     <Text color="coolGrey600" mt="0px" fontSize="m">
-                      This experimental feature prevents multiple submissions by
-                      attempting to identify unique users. This will not be as
-                      accurate as requiring a login but may prevent some
-                      duplication.
+                      <FormattedMessage
+                        {...messages.everyoneTrackingDescription}
+                      />{' '}
+                      <span style={{ fontStyle: 'italic' }}>
+                        <FormattedMessage {...messages.everyoneTrackingNote} />
+                      </span>
                     </Text>
                   </Box>
                 }
