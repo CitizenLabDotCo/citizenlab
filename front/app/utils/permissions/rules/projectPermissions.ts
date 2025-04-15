@@ -40,6 +40,8 @@ definePermissionRule(
         isProjectFolderModerator(user, project.attributes.folder_id)) ||
       (isProjectReviewEnabled &&
         projectReview?.data.attributes.state === 'approved' &&
+        // If you try to create a root-level project that needs approval,
+        // you automatically become project moderator of this project
         isProjectModerator(user, project.id))
     );
   }
