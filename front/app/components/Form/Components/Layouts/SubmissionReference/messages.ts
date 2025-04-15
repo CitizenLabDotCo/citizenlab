@@ -10,6 +10,10 @@ export default defineMessages({
     id: 'app.utils.Projects.sendSurveySubmission',
     defaultMessage: 'Send survey submission identifier to my email',
   },
+  sendSubmission: {
+    id: 'app.utils.Projects.sendSubmission',
+    defaultMessage: 'Send submission identifier to my email',
+  },
   surveySubmission: {
     id: 'app.utils.Projects.surveySubmission',
     defaultMessage: 'Survey submission',
