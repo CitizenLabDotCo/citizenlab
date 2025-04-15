@@ -8,7 +8,10 @@ import { definePermissionRule } from 'utils/permissions/permissions';
 
 import { isAdmin, isProjectModerator } from '../roles';
 
-import { userModeratesFolder } from './projectFolderPermissions';
+import {
+  isProjectFolderModerator,
+  userModeratesFolder,
+} from './projectFolderPermissions';
 
 definePermissionRule('project', 'create', (_project: IProjectData, user) => {
   return isAdmin(user);
@@ -34,7 +37,7 @@ definePermissionRule(
       // We don't want any folder moderator,
       // hence the folder id needs to be defined so we can do a check for the particular folder
       (!!project.attributes.folder_id &&
-        userModeratesFolder(user, project.attributes.folder_id)) ||
+        isProjectFolderModerator(user, project.attributes.folder_id)) ||
       (isProjectReviewEnabled &&
         projectReview?.data.attributes.state === 'approved' &&
         isProjectModerator(user, project.id))
