@@ -34,7 +34,9 @@ const ReviewFlow = ({ project }: { project: IProjectData }) => {
   const canPublish = usePermission({
     item: project,
     action: 'publish',
-    context: projectReview?.data.attributes.state === 'approved',
+    context: {
+      isProjectApproved: projectReview?.data.attributes.state === 'approved',
+    },
   });
 
   const canReview = usePermission({

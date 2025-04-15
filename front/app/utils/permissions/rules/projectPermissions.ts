@@ -33,7 +33,12 @@ definePermissionRule(
 definePermissionRule(
   'project',
   'publish',
-  (project: IProjectData, user, _tenant, isProjectApproved: boolean) => {
+  (
+    project: IProjectData,
+    user,
+    _tenant,
+    { isProjectApproved }: { isProjectApproved: boolean }
+  ) => {
     return (
       canReview(project, user) ||
       (isProjectApproved && isProjectModerator(user, project.id))
