@@ -12,23 +12,6 @@ namespace :migrate_custom_forms do
       end
 
       CustomForm.all.each do |form|
-        # If we have a real title page with first the body field then the title field,
-        # we need to move the title page after the body field (in this case, before the
-        # title field), to avoid creating an extra page in front of the body page.
-        # fields_per_page, title_page, body_page = rake_20250326_group_field_by_page(form.custom_fields)
-        # if title_page == body_page && title_page.code == 'title_page'
-        #   title_field = fields_per_page[title_page].find { |field| field.code == 'title_multiloc' }
-        #   body_field = fields_per_page[title_page].find { |field| field.code == 'body_multiloc' }
-        #   if title_field && body_field && title_field.ordering > body_field.ordering
-        #     # We can just move the title page if it's right before the body field,
-        #     # because we will add a body page in front of the body field later.
-        #     prev_ordering = rake_20250326_reorder_and_report_page(title_page, title_field.ordering, reporter)
-        #     if title_page.ordering != (body_field.ordering - 1)
-        #       rake_20250326_create_and_report_page(rake_20250326_new_normal_page(form), prev_ordering, reporter, 'add_body_page')
-        #     end
-        #   end
-        # end
-
         # Add the body page in front of the body field
         fields_per_page, _, body_page = rake_20250326_group_field_by_page(form.custom_fields)
         if body_page

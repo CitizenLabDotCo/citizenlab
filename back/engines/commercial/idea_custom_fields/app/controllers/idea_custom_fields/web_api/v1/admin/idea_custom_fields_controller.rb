@@ -109,7 +109,7 @@ module IdeaCustomFields
         CustomField.new(field.slice(:code, :key, :input_type, :title_multiloc, :description_multiloc, :required, :enabled, :ordering))
       end
       validate_non_empty_form!(fields)
-      validate_stale_form_data!(fields)
+      validate_stale_form_data!
       validate_end_page!(fields)
       validate_first_page!(fields)
       validate_separate_title_body_pages!(fields)
@@ -123,7 +123,7 @@ module IdeaCustomFields
 
     # To try and avoid forms being overwritten with stale data, we check if the form has been updated since the form editor last loaded it
     # But ONLY if the FE sends the form_last_updated_at param
-    def validate_stale_form_data!(_)
+    def validate_stale_form_data!
       return unless update_all_params[:form_last_updated_at].present? &&
                     @custom_form.persisted? &&
                     @custom_form.updated_at.to_i > update_all_params[:form_last_updated_at].to_datetime.to_i
