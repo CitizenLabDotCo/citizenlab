@@ -11,11 +11,24 @@ const Participants = lazy(() => import('./components/Participants'));
 
 import { AdminRoute } from '../routes';
 
-import CommunityMonitorSurveyFormBuilder from './CommunityMonitorFormBuilder';
-import AccessRights from './components/Settings/components/AccessRights';
-import CommunityMonitorManagement from './components/Settings/components/CommunityMonitorManagement';
-import SurveySettings from './components/Settings/components/SurveySettings';
-import PopupSettings from './components/Settings/components/SurveySettings/components/PopupSettings';
+const CommunityMonitorSurveyFormBuilder = lazy(
+  () => import('./CommunityMonitorFormBuilder')
+);
+const AccessRights = lazy(
+  () => import('./components/Settings/components/AccessRights')
+);
+const CommunityMonitorManagement = lazy(
+  () => import('./components/Settings/components/CommunityMonitorManagement')
+);
+const SurveySettings = lazy(
+  () => import('./components/Settings/components/SurveySettings')
+);
+const PopupSettings = lazy(
+  () =>
+    import(
+      './components/Settings/components/SurveySettings/components/PopupSettings'
+    )
+);
 
 const CommunityMonitor = lazy(() => import('./index'));
 
