@@ -1886,7 +1886,7 @@
   "app.containers.AdminPage.ProjectEdit.survey.file_upload": "File upload",
   "app.containers.AdminPage.ProjectEdit.survey.goBackButtonMessage": "Torna",
   "app.containers.AdminPage.ProjectEdit.survey.importInputs": "Importar",
-  "app.containers.AdminPage.ProjectEdit.survey.informationText3": "AI summaries of short and long answer questions can be accessed from the AI tab in the left sidebar.",
+  "app.containers.AdminPage.ProjectEdit.survey.informationText3": "Es pot accedir als resums d'IA de preguntes de resposta curta i llarga des de la pestanya AI a la barra lateral esquerra.",
   "app.containers.AdminPage.ProjectEdit.survey.linear_scale2": "Linear scale",
   "app.containers.AdminPage.ProjectEdit.survey.matrix_linear_scale2": "Matriu",
   "app.containers.AdminPage.ProjectEdit.survey.multiline_text2": "Long answer",
