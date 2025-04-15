@@ -142,31 +142,21 @@ describe('New timeline project', () => {
     cy.get('.e2e-project-process-page').contains(phaseLongDescription);
 
     // Verify that the description is collapsed by default
-    cy.get('#e2e-project-phase-description-see-less-button').should(
-      'not.exist'
-    );
+    cy.get('[id*="see-less-button"]').should('not.exist');
 
     // Read more/less button functionality
-    cy.get('#e2e-project-phase-description-read-more-button')
-      .should('be.visible')
-      .click();
-    cy.get('#e2e-project-phase-description-read-more-button').should(
-      'not.exist'
-    );
+    cy.get('[id*="read-more-button"]').should('be.visible').click();
+    cy.get('[id*="read-more-button"]').should('not.exist');
 
-    cy.get('#e2e-project-phase-description-see-less-button')
+    cy.get('[id*="see-less-button"]')
       .should('be.visible')
       .then(($btn) => {
         cy.wrap($btn).click();
       });
 
     // Verify that the description is collapsed again
-    cy.get('#e2e-project-phase-description-read-more-button').should(
-      'be.visible'
-    );
-    cy.get('#e2e-project-phase-description-see-less-button').should(
-      'not.exist'
-    );
+    cy.get('[id*="read-more-button"]').should('be.visible');
+    cy.get('[id*="see-less-button"]').should('not.exist');
   });
 
   it('shows the event CTA button', () => {
