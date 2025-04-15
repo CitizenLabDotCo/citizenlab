@@ -1,6 +1,6 @@
 import Geometry from '@arcgis/core/geometry/Geometry';
 import Point from '@arcgis/core/geometry/Point';
-import projection from '@arcgis/core/geometry/projection';
+import * as projection from '@arcgis/core/geometry/projection.js';
 import { isArray, isNumber } from 'lodash-es';
 import { SupportedLocale } from 'typings';
 
