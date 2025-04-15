@@ -15,16 +15,14 @@ module ReportBuilder
       service = if group_field_id && group_mode
         Surveys::ResultsWithGroupGenerator.new(
           phase,
-          group_mode:,
-          group_field_id:,
-          year:,
-          quarter:
+          group_mode: group_mode,
+          group_field_id: group_field_id
         )
       elsif year && quarter
         Surveys::ResultsWithDateGenerator.new(
           phase,
-          year:,
-          quarter:
+          year: year,
+          quarter: quarter
         )
       else
         Surveys::ResultsGenerator.new(phase)

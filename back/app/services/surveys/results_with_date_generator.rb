@@ -20,7 +20,7 @@ module Surveys
     end
 
     def add_averages(results)
-      return super unless @year && @quarter
+      super unless @year && @quarter
 
       # Get the averages by quarter
       averages = AverageGenerator.new(phase).field_averages_by_quarter
