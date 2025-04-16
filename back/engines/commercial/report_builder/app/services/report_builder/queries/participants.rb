@@ -19,7 +19,7 @@ module ReportBuilder
       )
         .select("
           count(distinct participant_id) as participants,
-          date_trunc('#{resolution}', dimension_date_created) as date_group
+          date_trunc('#{resolution}', dimension_date_created_id) as date_group
         ")
         .group('date_group')
         .order('date_group')

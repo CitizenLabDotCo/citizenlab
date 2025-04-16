@@ -12,6 +12,10 @@ RSpec.describe ReportBuilder::Queries::Participants do
 
       @date_september = Date.new(2022, 9, 10)
       @date_october = Date.new(2022, 10, 5)
+
+      @dimension_date_sept = create(:dimension_date, date: @date_september)
+      @dimension_date_oct = create(:dimension_date, date: @date_october)
+      Analytics::PopulateDimensionsService.populate_types
     end
 
     it 'returns participants' do
