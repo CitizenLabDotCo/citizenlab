@@ -10,9 +10,9 @@ export default defineMessages({
     defaultMessage: 'Preview',
   },
   popupDescription: {
-    id: 'app.containers.Admin.communityMonitor.settings.popupDescription2',
+    id: 'app.containers.Admin.communityMonitor.settings.popupDescription3',
     defaultMessage:
-      'A popup is periodically displayed to residents encouraging them to complete the Community Monitor Survey. You can adjust the frequency which determines the percentage of residents who will randomly see the popup when the conditions outlined below are met.',
+      'A popup is periodically displayed to users encouraging them to complete the Community Monitor Survey. You can adjust the frequency which determines the percentage of users who will randomly see the popup when the conditions outlined below are met.',
   },
   defaultFrequency: {
     id: 'app.containers.Admin.communityMonitor.settings.defaultFrequency2',
