@@ -17,19 +17,19 @@ const reorder = <ListType>(
   return result;
 };
 
+// Mapping of community monitor page keys to their category keys
+const categoryPageKeyMapping: Record<string, string> = {
+  page_quality_of_life: 'quality_of_life',
+  page_service_delivery: 'service_delivery',
+  page_governance_and_trust: 'governance_and_trust',
+};
+
 export const getQuestionCategory = (
   field: IFlatCustomField,
   customFields: IFlatCustomField[]
 ): string | undefined => {
   // Skip categorization for page-type fields
   if (field.input_type === 'page') return undefined;
-
-  // Mapping of page keys to their corresponding category names
-  const categoryPageKeyMapping: Record<string, string> = {
-    page_quality_of_life: 'quality_of_life',
-    page_service_delivery: 'service_delivery',
-    page_governance_and_trust: 'governance_and_trust',
-  };
 
   // Find the index of the current field
   const fieldIndex = customFields.findIndex((f) => f.id === field.id);
