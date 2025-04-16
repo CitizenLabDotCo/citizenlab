@@ -100,10 +100,10 @@ describe('Idea show page actions', () => {
       );
     });
 
-    describe('Map idea card', () => {
+    describe('Map view', () => {
       it('displays correct likes and dislikes on map idea card', () => {
         cy.visit(`/projects/${projectSlug}`);
-        cy.get('#view-tab-2').should('exist');
+        cy.get('#view-tab-2').should('be.visible');
         cy.get('#view-tab-2').click();
         cy.get('#e2e-idea-map-card')
           .first()
@@ -111,6 +111,11 @@ describe('Idea show page actions', () => {
             cy.get('#e2e-map-card-like-count').should('contain', '1');
             cy.get('#e2e-map-card-dislike-count').should('contain', '0');
           });
+      });
+
+      it('displays the top bar of the input', () => {
+        cy.visit(`/projects/${projectSlug}?view=map&idea_map_id=${ideaId}`);
+        cy.get('[data-cy="e2e-ideashowpage-topbar"]').should('be.visible');
       });
     });
   });

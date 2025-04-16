@@ -130,7 +130,7 @@ const IdeaShowPageTopBar = ({
   const participationMethod = phase?.attributes.participation_method;
 
   return (
-    <Container className={className || ''}>
+    <Container className={className || ''} data-cy="e2e-ideashowpage-topbar">
       <TopBarInner>
         <Left>
           <GoBackButtonSolid
