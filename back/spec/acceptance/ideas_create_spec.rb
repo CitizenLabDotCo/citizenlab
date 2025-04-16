@@ -642,8 +642,6 @@ resource 'Ideas' do
               # Saves a new idea with the last author hash from the cookie
               expect(Idea.all.pluck(:author_hash)).to eq %w[LOGGED_OUT_HASH LOGGED_IN_HASH]
             end
-
-            # TODO: JS - tests for if the user is not logged in but they have previously submitted whilst logged in
           end
         end
       end
