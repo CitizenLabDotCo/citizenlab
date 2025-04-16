@@ -8,6 +8,7 @@ sv:
       "comment_marked_as_spam": Kommentera skräppostrapport
       "comment_on_your_comment": Ett svar på min kommentar
       "comment_on_idea_you_follow": En kommentar till en idé som du följer
+      "community_monitor_report": Rapport från gemenskapens övervakare
       "cosponsor_of_your_idea": En användare accepterar min inbjudan att stödja mitt förslag
       "event_registration_confirmation": Bekräftelse på registrering av evenemang
       "idea_marked_as_spam": Skräppostrapport för idé
@@ -82,6 +83,7 @@ sv:
         "4": "Varje vecka på torsdagar %{hourOfDay}"
         "5": "Veckovis på fredagar %{hourOfDay}"
         "6": "Veckovis på lördagar %{hourOfDay}"
+      quarterly: "Kvartalsvis, den första dagen i kvartalet"
     footer:
       "link_privacy_policy": "Sekretesspolicy"
       "link_terms_conditions": "Villkor"
@@ -147,6 +149,12 @@ sv:
       today: I dag
       wrong_content: 'Kommentaren är inte relevant.'
       yesterday: I går
+    community_monitor_report:
+      subject: 'En ny rapport om övervakning av samhället finns tillgänglig'
+      title: 'En ny rapport om övervakning av samhället finns tillgänglig'
+      text_introduction: 'En community monitor-rapport har skapats för föregående kvartal. Du kan komma åt den genom att klicka på knappen nedan och logga in.'
+      cta_report_button: 'Visa rapport'
+      report_name: 'Rapport från gemenskapens övervakare'
     cosponsor_of_your_idea:
       cta_reply_to: 'Se ditt förslag'
       event_description: 'Grattis! %{cosponsorName} har accepterat din inbjudan att vara medsponsor för ditt förslag.'
@@ -253,8 +261,8 @@ sv:
       cta_publication: 'Ge feedback till %{authorName}'
       main_header_prescreening: 'En inmatning kräver din granskning'
       event_description_prescreening: '%{authorName} har lämnat in ett nytt inlägg på din plattform.'
-      input_not_visible_prescreening: '<b>Inmatningen kommer inte att synas</b> förrän du ändrar dess status.'
-      cta_prescreening: 'Granska inmatningen'
+      input_not_visible_prescreening: '<b>Bidraget kommer inte att synas</b> förrän du ändrar dess status.'
+      cta_prescreening: 'Granska bidraget'
       days_ago: '%{numberOfDays} dagar sedan'
       preheader: '%{authorName} publicerade en ny idé på din plattform'
       today: I dag
@@ -535,7 +543,7 @@ sv:
         user_who_published_the_input: 'Användare som publicerade inmatningen'
         user_who_published_the_proposal: 'Användare som publicerade förslaget'
         user_who_registers: 'Användare som registrerar sig'
-        user_who_submitted_the_input: 'Användare som skickade inmatningen'
+        user_who_submitted_the_input: 'Användare som skickade bidraget'
         user_who_voted: 'Användare som röstade'
         user_who_was_invited: 'Användare som bjöds in'
         user_with_unsubmitted_survey: 'Användare som har påbörjat men inte skickat in sin undersökning'
