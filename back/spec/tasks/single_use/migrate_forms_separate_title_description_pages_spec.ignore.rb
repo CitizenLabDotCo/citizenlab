@@ -6,22 +6,23 @@ describe 'migrate_custom_forms:separate_title_body_pages rake task' do
   after { Rake::Task['migrate_custom_forms:separate_title_body_pages'].reenable }
 
   {
-    %i[title_page title body page] => %i[title_page title body_page body page],
-    %i[page title body page] => %i[title_page title body_page body page],
-    %i[title_page title body page extra page] => %i[title_page title body_page body page extra page],
-    %i[title_page title page body page] => %i[title_page title body_page body page],
-    %i[title_page title body_page body page] => %i[title_page title body_page body page],
-    %i[page title page body page] => %i[title_page title body_page body page],
-    %i[title_page body title page] => %i[body_page body title_page title page],
-    %i[page body title page] => %i[body_page body title_page title page],
-    %i[page body title_page title page] => %i[body_page body title_page title page],
-    %i[page body page title page] => %i[body_page body title_page title page],
-    %i[title_page extra title extra body extra page] => %i[page extra title_page title page extra body_page body page extra page],
-    %i[page extra extra title body extra extra page] => %i[page extra extra title_page title body_page body page extra extra page],
-    %i[title_page title extra extra body page] => %i[title_page title page extra extra body_page body page],
-    %i[title_page body extra title extra page] => %i[body_page body page extra title_page title page extra page],
-    %i[title_page extra body extra title extra page] => %i[page extra body_page body page extra title_page title page extra page],
-    %i[title_page extra title body page] => %i[page extra title_page title body_page body page]
+    %i[title_page title body end_page] => %i[title_page title body_page body end_page],
+    %i[page title body end_page] => %i[title_page title body_page body end_page],
+    %i[title_page title body page extra end_page] => %i[title_page title body_page body page extra end_page],
+    %i[title_page title page body end_page] => %i[title_page title body_page body end_page],
+    %i[title_page title body_page body end_page] => %i[title_page title body_page body end_page],
+    %i[page title page body end_page] => %i[title_page title body_page body end_page],
+    %i[title_page body title end_page] => %i[body_page body title_page title end_page],
+    %i[page body title end_page] => %i[body_page body title_page title end_page],
+    %i[page body title_page title end_page] => %i[body_page body title_page title end_page],
+    %i[page body page title end_page] => %i[body_page body title_page title end_page],
+    %i[title_page extra title extra body extra end_page] => %i[page extra title_page title page extra body_page body page extra end_page],
+    %i[page extra extra title body extra extra end_page] => %i[page extra extra title_page title body_page body page extra extra end_page],
+    %i[title_page title extra extra body end_page] => %i[title_page title page extra extra body_page body end_page],
+    %i[title_page body extra title extra end_page] => %i[body_page body page extra title_page title page extra end_page],
+    %i[title_page extra body extra title extra end_page] => %i[page extra body_page body page extra title_page title page extra end_page],
+    %i[title_page extra title body end_page] => %i[page extra title_page title body_page body end_page],
+    %i[title_page title body disabled page extra end_page] => %i[title_page title body_page body page extra disabled end_page]
   }.each do |form_from, form_to|
     it "Migrates #{form_from} to #{form_to}" do
       form = create(:custom_form)
@@ -38,6 +39,10 @@ describe 'migrate_custom_forms:separate_title_body_pages rake task' do
         when :page
           expect(field_after.input_type).to eq 'page'
           expect(field_after.code).to be_nil
+        when :end_page
+          expect(field_after.input_type).to eq 'page'
+          expect(field_after.code).to be_nil
+          expect(field_after.key).to eq 'form_end'
         when :title
           expect(field_after.input_type).to eq 'text_multiloc'
           expect(field_after.code).to eq 'title_multiloc'
@@ -53,6 +58,8 @@ describe 'migrate_custom_forms:separate_title_body_pages rake task' do
         when :body_page
           expect(field_after.input_type).to eq 'page'
           expect(field_after.code).to eq 'body_page'
+        when :disabled
+          expect(field_after.enabled).to be false
         end
       end
     end
@@ -210,6 +217,8 @@ describe 'migrate_custom_forms:separate_title_body_pages rake task' do
     case sym
     when :page
       create(:custom_field_page, resource: form)
+    when :end_page
+      create(:custom_field_form_end_page, resource: form)
     when :title
       create(:custom_field, code: 'title_multiloc', input_type: 'text_multiloc', resource: form)
     when :body
@@ -222,6 +231,8 @@ describe 'migrate_custom_forms:separate_title_body_pages rake task' do
       end
     when :body_page
       create(:custom_field_page, code: 'body_page', resource: form)
+    when :disabled
+      create(:custom_field_number, resource: form, enabled: false)
     else
       raise "Unknown field type: #{sym}"
     end

@@ -12,8 +12,16 @@ namespace :migrate_custom_forms do
       end
 
       CustomForm.all.each do |form|
+        # Move disabled fields to the end of the form
+        end_page = form.custom_fields.find_by(key: 'form_end')
+        if end_page
+          form.custom_fields.disabled.each do |field|
+            rake_20250326_reorder_and_report_field(field, end_page.ordering, reporter, 'move_disabled_fields')
+          end
+        end
+
         # Add the body page in front of the body field
-        fields_per_page, _, body_page = rake_20250326_group_field_by_page(form.custom_fields)
+        fields_per_page, _, body_page = rake_20250326_group_field_by_page(form.reload.custom_fields)
         if body_page
           body_field = fields_per_page[body_page]&.find { |field| field.code == 'body_multiloc' }
           next if !body_field # This should not be possible, but just in case.
@@ -48,7 +56,7 @@ namespace :migrate_custom_forms do
             if fields_per_page[title_page].first&.code != 'title_multiloc'
               # Move the existing title page to right before the title field and replace it by a normal page, if the next field is not a page.
               next_real_title_page_field = form.custom_fields.find_by(ordering: (real_title_page.ordering + 1))
-              prev_ordering = rake_20250326_reorder_and_report_page(real_title_page, title_field.ordering, reporter)
+              prev_ordering = rake_20250326_reorder_and_report_field(real_title_page, title_field.ordering, reporter, 'add_title_page')
               if !next_real_title_page_field.page?
                 rake_20250326_create_and_report_page(rake_20250326_new_normal_page(form), prev_ordering, reporter, 'add_title_page')
               end
@@ -156,12 +164,12 @@ def rake_20250326_create_and_report_page(page, ordering, reporter, migration)
     reporter.add_create(
       'CustomField',
       page.attributes,
-      context: { tenant: Tenant.current.host, page: page.id }
+      context: { tenant: Tenant.current.host, page: page.id, migration: }
     )
   else
     reporter.add_error(
       page.errors.details,
-      context: { tenant: Tenant.current.host, form: page.custom_form.id, migration: migration }
+      context: { tenant: Tenant.current.host, form: page.custom_form.id, migration: }
     )
   end
 end
@@ -200,12 +208,12 @@ def rake_20250326_turn_into_title_and_report_page(page, reporter, migration)
     reporter.add_change(
       attrs_before,
       attrs_after,
-      context: { tenant: Tenant.current.host, page: page.id }
+      context: { tenant: Tenant.current.host, page: page.id, migration: }
     )
   else
     reporter.add_error(
       page.errors.details,
-      context: { tenant: Tenant.current.host, form: page.custom_form.id, migration: migration }
+      context: { tenant: Tenant.current.host, form: page.custom_form.id, migration: }
     )
   end
 end
@@ -244,24 +252,24 @@ def rake_20250326_turn_into_body_and_report_page(page, reporter, migration)
     reporter.add_change(
       attrs_before,
       attrs_after,
-      context: { tenant: Tenant.current.host, page: page.id }
+      context: { tenant: Tenant.current.host, page: page.id, migration: }
     )
   else
     reporter.add_error(
       page.errors.details,
-      context: { tenant: Tenant.current.host, form: page.custom_form.id, migration: migration }
+      context: { tenant: Tenant.current.host, form: page.custom_form.id, migration: }
     )
   end
 end
 
-def rake_20250326_reorder_and_report_page(page, new_ordering, reporter)
-  prev_ordering = page.ordering
+def rake_20250326_reorder_and_report_field(field, new_ordering, reporter, migration)
+  prev_ordering = field.ordering
   new_ordering -= 1 if prev_ordering < new_ordering
-  page.insert_at(new_ordering)
+  field.insert_at(new_ordering)
   reporter.add_change(
     { ordering: prev_ordering },
     { ordering: new_ordering },
-    context: { tenant: Tenant.current.host, page: page.id }
+    context: { tenant: Tenant.current.host, field: field.id, migration: }
   )
   prev_ordering
 end
