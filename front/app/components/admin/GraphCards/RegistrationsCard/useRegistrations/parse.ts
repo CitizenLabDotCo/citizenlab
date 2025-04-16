@@ -50,7 +50,8 @@ export const parseTimeSeries = (
 
 const formatPercentage = (value: number | undefined) => {
   if (value === undefined) return '0%';
-  return value.toLocaleString(undefined, { style: 'percent' });
+  const cappedValue = Math.min(value, 1);
+  return cappedValue.toLocaleString(undefined, { style: 'percent' });
 };
 
 export const parseStats = (
