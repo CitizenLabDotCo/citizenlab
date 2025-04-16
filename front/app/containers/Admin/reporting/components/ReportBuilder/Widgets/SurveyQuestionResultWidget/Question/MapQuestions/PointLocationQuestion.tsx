@@ -5,7 +5,7 @@ import { Spinner } from '@citizenlab/cl2-component-library';
 import useMapConfigById from 'api/map_config/useMapConfigById';
 import useProjectMapConfig from 'api/map_config/useProjectMapConfig';
 
-import surveyResultMessages from 'containers/Admin/projects/project/nativeSurvey/FormResults/messages';
+import surveyResultMessages from 'components/admin/FormResults/messages';
 
 import PointMap from 'components/admin/Graphs/PointMap';
 

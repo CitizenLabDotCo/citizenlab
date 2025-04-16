@@ -3,6 +3,8 @@ interface Params {
   templatePhaseId: string | null;
   startDatePlatformReport: string | null;
   endDatePlatformReport: string | null;
+  templateYear: string | null;
+  templateQuarter: string | null;
 }
 
 export const getTemplateConfig = ({
@@ -10,6 +12,8 @@ export const getTemplateConfig = ({
   templatePhaseId,
   startDatePlatformReport,
   endDatePlatformReport,
+  templateYear,
+  templateQuarter,
 }: Params): TemplateConfig | undefined => {
   if (templateProjectId) {
     return {
@@ -22,6 +26,14 @@ export const getTemplateConfig = ({
     return {
       template: 'phase',
       phaseId: templatePhaseId,
+    };
+  }
+
+  if (templateYear && templateQuarter) {
+    return {
+      template: 'community-monitor',
+      year: Number(templateYear),
+      quarter: Number(templateQuarter),
     };
   }
 
@@ -39,7 +51,14 @@ export const getTemplateConfig = ({
 export type TemplateConfig =
   | ProjectTemplateConfig
   | PhaseTemplateConfig
-  | PlatformTemplateConfig;
+  | PlatformTemplateConfig
+  | CommunityMonitorTemplateConfig;
+
+type CommunityMonitorTemplateConfig = {
+  template: 'community-monitor';
+  year: number;
+  quarter: number;
+};
 
 type ProjectTemplateConfig = {
   template: 'project';
