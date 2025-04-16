@@ -32,7 +32,8 @@ RSpec.describe ReportBuilder::Queries::Participants do
         participants_timeseries: [{
           participants: 1,
           date_group: Date.new(2022, 9, 1)
-        }]
+        }],
+        participants_whole_period: 1
       })
     end
 
@@ -76,7 +77,8 @@ RSpec.describe ReportBuilder::Queries::Participants do
             participants: 2,
             date_group: Date.new(2022, 10, 1)
           }
-        ]
+        ],
+        participants_whole_period: 8
       })
     end
 

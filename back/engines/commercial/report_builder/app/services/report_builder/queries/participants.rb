@@ -29,9 +29,15 @@ module ReportBuilder
             date_group: row.date_group.to_date
           }
         end
-      
+
+      participants_whole_period = participations(
+        start_date, end_date, project_id: project_id
+      )
+        .count('distinct participant_id')
+
       {
         participants_timeseries: participants_timeseries,
+        participants_whole_period: participants_whole_period
       }
     end
 
