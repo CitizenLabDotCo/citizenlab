@@ -2848,7 +2848,6 @@
   "app.modules.commercial.analytics.admin.components.ProjectStatus.totalProjectsToolTip": "Alustalla näkyvien projektien määrä",
   "app.modules.commercial.analytics.admin.components.RegistrationsCard.newRegistrations": "Uudet rekisteröinnit",
   "app.modules.commercial.analytics.admin.components.RegistrationsCard.registrationRate": "Rekisteröintiprosentti",
-  "app.modules.commercial.analytics.admin.components.RegistrationsCard.registrationRateTooltip2": "Prosenttiosuus vierailijoista, joista tulee rekisteröityneitä käyttäjiä. Vain evästeet hyväksyneet käyttäjät ja vierailijat lasketaan.",
   "app.modules.commercial.analytics.admin.components.RegistrationsCard.registrations": "Rekisteröinnit",
   "app.modules.commercial.analytics.admin.components.RegistrationsCard.totalRegistrations": "Ilmoittautumiset yhteensä",
   "app.modules.commercial.analytics.admin.components.Tab": "Vierailijat",

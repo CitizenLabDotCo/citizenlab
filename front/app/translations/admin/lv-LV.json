@@ -2848,7 +2848,6 @@
   "app.modules.commercial.analytics.admin.components.ProjectStatus.totalProjectsToolTip": "Kopējais platformā redzamo projektu skaits",
   "app.modules.commercial.analytics.admin.components.RegistrationsCard.newRegistrations": "Jaunas reģistrācijas",
   "app.modules.commercial.analytics.admin.components.RegistrationsCard.registrationRate": "Reģistrācijas rādītājs",
-  "app.modules.commercial.analytics.admin.components.RegistrationsCard.registrationRateTooltip2": "Apmeklētāju, kas kļūst par reģistrētiem lietotājiem, īpatsvars. Tiek uzskaitīti tikai tie lietotāji un apmeklētāji, kas ir pieņēmuši sīkfailus.",
   "app.modules.commercial.analytics.admin.components.RegistrationsCard.registrations": "Reģistrācijas",
   "app.modules.commercial.analytics.admin.components.RegistrationsCard.totalRegistrations": "Kopējais reģistrāciju skaits",
   "app.modules.commercial.analytics.admin.components.Tab": "Apmeklētāji",
