@@ -7,9 +7,10 @@ it:
     inappropriate_content_flagged:
       subject: 'Un post sulla tua piattaforma è stato segnalato per la revisione'
       header_title: 'Un post sulla tua piattaforma è stato segnalato per la revisione'
-      comment_author: '%{authorName} ha commentato:'
-      idea_author: '%{authorName} ha inserito un messaggio:'
-      initiative_author: '%{authorName} ha presentato una proposta:'
-      this_post_was_flagged: >
-        <p>Questo post è stato automaticamente rilevato come potenzialmente contenente contenuti inappropriati. Ti stiamo inviando questa notifica in modo che tu possa rivedere il post secondo le tue linee guida di moderazione.</p><p>Se il post non contiene contenuti inappropriati, puoi rimuovere l'avviso tramite la tua piattaforma nella scheda Attività nel pannello di amministrazione.</p>
-      cta_review_post: 'Messaggio di revisione'
+      author_wrote: '%{authorName} ha scritto:'
+      preheader: 'Un post sulla tua piattaforma è stato segnalato per una revisione'
+      automatically_flagged: >
+        Questo post è stato rilevato automaticamente come potenzialmente contenente contenuti inappropriati. Ti inviamo questa notifica affinché tu possa rivedere il post secondo le tue linee guida di moderazione.
+      how_to_review: >
+        Se il post non contiene contenuti inappropriati, puoi rimuovere l'avviso tramite la tua piattaforma nella scheda Attività del pannello di amministrazione.
+      cta_review: 'Recensione'
