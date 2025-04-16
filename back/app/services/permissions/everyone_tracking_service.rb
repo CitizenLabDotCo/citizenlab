@@ -45,7 +45,7 @@ class Permissions::EveryoneTrackingService
     return unless enabled?
 
     if consent?
-      # If consent then cookie can contain 1 or 2 values
+      # If user has consented then cookie can contain 1 or 2 values
       # { lo: 'LOGGED OUT HASH', li: 'LOGGED IN HASH (author_hash)' }
       new_cookie = tracking_cookie || {}
       if @user
@@ -55,9 +55,9 @@ class Permissions::EveryoneTrackingService
       end
       response_cookies[@phase.id] = { value: new_cookie, expires: 1.year.from_now }
     else
-      # TODO: Put the correct expiry time from the pmethod
-      # we set an empty value {} to merely indicate the user has taken the survey
-      response_cookies[@phase.id] = { value: {}, expires: 3.months.from_now }
+      # without consent we just set an empty value {} to indicate the user has taken the survey
+      expiry = @phase.pmethod.allow_posting_again_after&.from_now || @phase.end_at || 1.year.from_now
+      response_cookies[@phase.id] = { value: {}, expires: expiry }
     end
   end
 

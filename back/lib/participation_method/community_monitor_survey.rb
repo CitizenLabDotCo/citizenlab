@@ -32,10 +32,6 @@ module ParticipationMethod
       ]
     end
 
-    def constraints
-      {} # TODO: JS - Any constraints to be added once we know what the fields are
-    end
-
     def form_logic_enabled?
       false
     end
