@@ -1,13 +1,20 @@
 import React from 'react';
 
-import { Box, colors, Icon, Text } from '@citizenlab/cl2-component-library';
+import {
+  Box,
+  colors,
+  Icon,
+  stylingConsts,
+  Text,
+  Tooltip,
+} from '@citizenlab/cl2-component-library';
 import { stringify } from 'qs';
 import { useParams } from 'react-router-dom';
 
 import useAddAnalysis from 'api/analyses/useAddAnalysis';
 import useAnalyses from 'api/analyses/useAnalyses';
 import useUpdateAnalysis from 'api/analyses/useUpdateAnalysis';
-import useCustomFields from 'api/custom_fields/useCustomFields';
+import useRawCustomFields from 'api/custom_fields/useRawCustomFields';
 
 import Button from 'components/UI/ButtonWithLink';
 
@@ -16,7 +23,7 @@ import clHistory from 'utils/cl-router/history';
 
 import messages from './messages';
 
-const ViewSingleSubmissionNotice = () => {
+const AnalysisBanner = () => {
   const { formatMessage } = useIntl();
 
   const { mutate: addAnalysis, isLoading: isAddLoading } = useAddAnalysis();
@@ -32,21 +39,36 @@ const ViewSingleSubmissionNotice = () => {
     projectId: phaseId ? undefined : projectId,
     phaseId,
   });
-  const { data: inputCustomFields } = useCustomFields({
+  const { data: inputCustomFields } = useRawCustomFields({
     projectId,
     phaseId,
   });
 
-  const inputCustomFieldsIds = inputCustomFields?.map(
+  // When a survey phase is just initialized, the custom fields endpoint returns
+  // custom fields that are generated on the fly by the back-end, which are not
+  // persisted yet. In such case, we can't create the analysis, since we can't
+  // yet add any custom fields. To detect this scenario, we can check whether
+  // the custom fields have the resource relationship set. If their custom_form
+  // is already persisted, this is the custom_form, if not, it is
+  // null.
+  // Not the most elegant fix, also see
+  // https://go-vocal.slack.com/archives/C65GX921W/p1744705183425669
+  const customFieldArePersisted = inputCustomFields?.data.every(
+    (customField) => !!customField.relationships.resource?.data
+  );
+
+  const inputCustomFieldsIds = inputCustomFields?.data.map(
     (customField) => customField.id
   );
 
-  const relevantAnalysis = analyses?.data.find(
+  // Each context has a 'main' analysis: The one with no main custom field and
+  // all custom fields in the additional custom fields.
+  const mainAnalysis = analyses?.data.find(
     (analysis) => analysis.relationships.main_custom_field?.data === null
   );
 
   const analysisCustomFieldIds =
-    relevantAnalysis?.relationships.additional_custom_fields?.data.map(
+    mainAnalysis?.relationships.additional_custom_fields?.data.map(
       (field) => field.id
     ) || [];
 
@@ -64,21 +86,21 @@ const ViewSingleSubmissionNotice = () => {
   };
 
   const goToAnalysis = () => {
-    if (relevantAnalysis?.id) {
+    if (mainAnalysis?.id) {
       if (!customFieldsMatchAnalysisAdditionalFields) {
         updateAnalysis(
           {
             additional_custom_field_ids: inputCustomFieldsIds,
-            id: relevantAnalysis.id,
+            id: mainAnalysis.id,
           },
           {
             onSuccess: () => {
-              openAnalysis(relevantAnalysis.id);
+              openAnalysis(mainAnalysis.id);
             },
           }
         );
       } else {
-        openAnalysis(relevantAnalysis.id);
+        openAnalysis(mainAnalysis.id);
       }
     } else {
       addAnalysis(
@@ -97,34 +119,37 @@ const ViewSingleSubmissionNotice = () => {
   return (
     <Box
       display="flex"
-      width="720px"
-      border={`1px solid ${colors.primary}`}
-      p="12px"
-      mb="16px"
+      justifyContent="space-between"
+      alignItems="center"
+      borderRadius={stylingConsts.borderRadius}
+      p="8px 16px"
+      mb="24px"
+      bgColor={colors.teal100}
     >
-      <Icon
-        width="32px"
-        height="32px"
-        mr="12px"
-        my="auto"
-        name="info-outline"
-        fill={colors.primary}
-      />
-      <Box display="flex" gap="16px">
-        <Text color="primary" fontSize="s" m="0px" mt="4px">
-          {formatMessage(messages.viewIndividualSubmissions)}
-        </Text>
+      <Box display="flex" gap="16px" alignItems="center">
+        <Icon name="stars" width="30px" height="30px" fill={colors.teal500} />
+        <Text>{formatMessage(messages.viewIndividualSubmissions)}</Text>
+      </Box>
+
+      <Tooltip
+        disabled={customFieldArePersisted}
+        content={formatMessage(messages.customFieldsNotPersisted)}
+      >
         <Button
+          buttonStyle="text"
+          textColor={colors.teal500}
+          fontWeight="bold"
+          icon={'stars'}
+          iconColor={colors.teal500}
           onClick={goToAnalysis}
-          fontSize="14px"
-          buttonStyle="admin-dark-outlined"
           processing={isAddLoading || isUpdateLoading}
+          disabled={!customFieldArePersisted}
         >
           {formatMessage(messages.aiAnalysis)}
         </Button>
-      </Box>
+      </Tooltip>
     </Box>
   );
 };
 
-export default ViewSingleSubmissionNotice;
+export default AnalysisBanner;
