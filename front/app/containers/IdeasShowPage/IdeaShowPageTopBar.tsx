@@ -66,7 +66,7 @@ interface Props {
   idea: IIdeaData;
   deselectIdeaOnMap?: () => void;
   className?: string;
-  phase?: IPhaseData;
+  phase: IPhaseData | undefined;
 }
 
 const IdeaShowPageTopBar = ({
