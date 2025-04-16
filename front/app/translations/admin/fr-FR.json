@@ -1880,7 +1880,7 @@
   "app.containers.AdminPage.ProjectEdit.survey.downloadResults2": "Télécharger les résultats de l'enquête",
   "app.containers.AdminPage.ProjectEdit.survey.downloadSurvey": "Télécharger l'enquête au format PDF",
   "app.containers.AdminPage.ProjectEdit.survey.duplicateAnotherSurvey": "Dupliquer une autre enquête",
-  "app.containers.AdminPage.ProjectEdit.survey.editSurvey1": "Editer",
+  "app.containers.AdminPage.ProjectEdit.survey.editSurvey1": "Modifier",
   "app.containers.AdminPage.ProjectEdit.survey.editSurveyContent2": "Modifier le contenu de l'enquête",
   "app.containers.AdminPage.ProjectEdit.survey.existingSubmissionsWarning": "Les réponses à ce sondage commencent à arriver. Des modifications apportées au sondage pourraient entraîner des pertes de données et des données incomplètes dans les fichiers exportés.",
   "app.containers.AdminPage.ProjectEdit.survey.file_upload": "Téléchargement de fichier",
