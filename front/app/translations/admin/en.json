@@ -754,6 +754,7 @@
   "app.containers.Admin.Users.userInsights": "User insights",
   "app.containers.Admin.Users.youCantDeleteYourself": "You cannot delete your own account via the user admin page",
   "app.containers.Admin.Users.youCantUnadminYourself": "You cannot give up your role as an admin now",
+  "app.containers.Admin.communityMonitor.betaLabel": "Beta",
   "app.containers.Admin.communityMonitor.communityMonitorLabel": "Community monitor",
   "app.containers.Admin.communityMonitor.healthScore": "Health Score",
   "app.containers.Admin.communityMonitor.lastQuarter": "last quarter",
