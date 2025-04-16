@@ -261,10 +261,9 @@ const AuthProviders = memo<Props>(
             />
           </StyledAuthProviderButton>
         )}
-        /* TODO: This */
         {twodayLoginEnabled && (
           <StyledAuthProviderButton
-            icon="idporten"
+            icon="bankId"
             flow={flow}
             authProvider="twoday"
             onContinue={onSelectAuthProvider}
@@ -272,7 +271,7 @@ const AuthProviders = memo<Props>(
             <FormattedMessage
               {...messages.continueWithLoginMechanism}
               values={{
-                loginMechanismName: 'Twoday???',
+                loginMechanismName: 'BankID or FrejaID',
               }}
             />
           </StyledAuthProviderButton>

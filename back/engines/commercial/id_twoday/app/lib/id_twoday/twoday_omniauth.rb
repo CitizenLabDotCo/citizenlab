@@ -27,7 +27,7 @@ module IdTwoday
         secret: config[:client_secret],
         redirect_uri: "#{configuration.base_backend_uri}/auth/twoday/callback",
 
-        # https://idp-test.ciceron.cloud/.well-known/openid-configuration
+        # https://ticket-test1.siriusit.net/.well-known/openid-configuration
         discovery: true
       }
     end
@@ -54,7 +54,7 @@ module IdTwoday
     end
 
     def issuer
-      "https://#{host}/oidc-login"
+      "https://#{host}/oidc-login" # TODO: converting to /oauth
     end
 
     def updateable_user_attrs

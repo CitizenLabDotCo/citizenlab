@@ -32,7 +32,7 @@ module IdTwoday
         ui_method_name: {
           type: 'string',
           description: 'The name this verification method will have in the UI',
-          default: 'Bank ID'
+          default: 'BankID and FrejaID'
         },
         enabled_for_verified_actions: {
           private: true,

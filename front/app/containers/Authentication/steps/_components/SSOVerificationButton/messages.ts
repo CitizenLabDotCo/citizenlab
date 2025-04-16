@@ -19,7 +19,7 @@ export default defineMessages({
   },
   verifyTwoday: {
     id: 'app.components.VerificationModal.verifyTwoday',
-    defaultMessage: 'Verify with Twoday',
+    defaultMessage: 'Verify with BankID or FrejaID',
   },
   verifyAuth0: {
     id: 'app.components.VerificationModal.verifyAuth0',
