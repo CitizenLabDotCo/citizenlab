@@ -354,4 +354,8 @@ export default defineMessages({
     defaultMessage:
       'Verification cannot be completed as another account has been verified using the same details.',
   },
+  number_invalid: {
+    id: 'app.errors.number_invalid',
+    defaultMessage: 'Please enter a valid number.',
+  },
 });

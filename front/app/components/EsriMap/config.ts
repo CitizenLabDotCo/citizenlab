@@ -30,8 +30,15 @@ export const configureMapView = (
     minZoom: 5,
   };
 
-  // If the map is not in the standard Web Mercator projection (3857) or WGS 84 (4326),
-  // ensure that the map scale is set based on the zoom, so the zoom level works as intended.
+  // Note: Here we set the map scale manually if the spatial reference is not Web Mercator (3857) or WGS84 (4326).
+  //
+  // Why? - Only Web Mercator & WGS84 can work with fixed zoom levels — other projections (like national/local grids)
+  // don't support zoom levels in the same way, so mapView.zoom won't behave as expected.
+  //
+  // The vast majority of maps on our platform are in Web Mercator, but some maps (like the UK and Finnish maps)
+  // sometimes use a different projection and need this specific handling.
+  //
+  // Setting mapView.scale ensures consistent map zooming behavior across all projections.
   const spatialReferenceId = mapView.center.spatialReference.wkid;
   if (spatialReferenceId !== 3857 && spatialReferenceId !== 4326) {
     mapView.scale = calculateScaleFromZoom(zoomLevel);
