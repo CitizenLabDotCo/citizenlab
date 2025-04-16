@@ -26,15 +26,16 @@ import { API_PATH } from 'containers/App/constants';
 import UpsellTooltip from 'components/UpsellTooltip';
 
 import { FormattedMessage } from 'utils/cl-intl';
+import { getFormActionsConfig } from 'utils/configs/formActionsConfig/utils';
 import { isNilOrError } from 'utils/helperUtils';
 import { requestBlob } from 'utils/requestBlob';
 
 import { saveIdeaFormAsPDF } from '../../inputForm/saveIdeaFormAsPDF';
 import { saveSurveyAsPDF } from '../../nativeSurvey/saveSurveyAsPDF';
-import { getFormActionsConfig } from '../../nativeSurvey/utils';
 import sharedMessages from '../messages';
 
 import messages from './messages';
+import { isPDFUploadSupported, supportsNativeSurvey } from './utils';
 
 const EmptyState = () => {
   const [exportModalOpen, setExportModalOpen] = useState(false);
@@ -45,14 +46,20 @@ const EmptyState = () => {
   };
   const { data: project } = useProjectById(projectId);
   const { data: phase } = usePhase(phaseId);
+
+  const participationMethod = phase?.data.attributes.participation_method;
+
   const importPrintedFormsAllowed = useFeatureFlag({
     name: 'import_printed_forms',
     onlyCheckAllowed: true,
   });
+
   const inputImporterAllowed = useFeatureFlag({
     name: 'input_importer',
     onlyCheckAllowed: true,
   });
+
+  const pdfImportSupported = isPDFUploadSupported(participationMethod);
 
   if (!project || !phase) {
     return null;
@@ -77,9 +84,7 @@ const EmptyState = () => {
   const handleExportPDF = async ({ personal_data }: FormValues) => {
     if (isNilOrError(locale)) return;
 
-    // TODO: Fix this the next time the file is edited.
-    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-    if (phase?.data.attributes.participation_method === 'native_survey') {
+    if (supportsNativeSurvey(participationMethod)) {
       await saveSurveyAsPDF({
         downloadPdfLink: surveyDownloadPdfLink,
         locale,
@@ -113,27 +118,32 @@ const EmptyState = () => {
         </Title>
         <Text>
           <FormattedMessage
-            {...messages.noIdeasYet}
+            {...(pdfImportSupported
+              ? messages.noIdeasYet
+              : messages.noIdeasYetNoPdf)}
             values={{
               importFile: <FormattedMessage {...sharedMessages.importFile} />,
             }}
           />
         </Text>
         <Box display="flex">
-          <UpsellTooltip disabled={importPrintedFormsAllowed}>
-            <Button
-              bgColor={colors.primary}
-              onClick={handleDownloadPDF}
-              width="auto"
-              icon="download"
-              data-cy="e2e-save-input-form-pdf"
-              mr="8px"
-              disabled={!importPrintedFormsAllowed}
-            >
-              {/* TODO: distinguish copies between surveys and inputs */}
-              <FormattedMessage {...buttonMessages.downloadInputForm} />
-            </Button>
-          </UpsellTooltip>
+          {pdfImportSupported && (
+            <UpsellTooltip disabled={importPrintedFormsAllowed}>
+              <Button
+                bgColor={colors.primary}
+                onClick={handleDownloadPDF}
+                width="auto"
+                icon="download"
+                data-cy="e2e-save-input-form-pdf"
+                mr="8px"
+                disabled={!importPrintedFormsAllowed}
+              >
+                {/* TODO: distinguish copies between surveys and inputs */}
+                <FormattedMessage {...buttonMessages.downloadInputForm} />
+              </Button>
+            </UpsellTooltip>
+          )}
+
           <UpsellTooltip disabled={inputImporterAllowed}>
             <Button
               buttonStyle="secondary-outlined"
@@ -149,11 +159,7 @@ const EmptyState = () => {
       <PDFExportModal
         open={exportModalOpen}
         formType={
-          // TODO: Fix this the next time the file is edited.
-          // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-          phase?.data.attributes.participation_method === 'native_survey'
-            ? 'survey'
-            : 'idea_form'
+          supportsNativeSurvey(participationMethod) ? 'survey' : 'idea_form'
         }
         onClose={() => setExportModalOpen(false)}
         onExport={handleExportPDF}

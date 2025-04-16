@@ -92,7 +92,7 @@ module Analysis
       # TODO: move-participation-method-logic
       allowed_project_methods = %w[ideation voting]
       project_or_nil = project || nil
-      if phase && %w[native_survey proposals].exclude?(phase.participation_method)
+      if phase && %w[native_survey proposals community_monitor_survey].exclude?(phase.participation_method)
         errors.add(:base, :project_or_phase_form_context, message: 'An analysis should be associated with a valid form context. The passed phase is not associated with a form definition.')
       elsif project_or_nil&.phases&.none? { |phase| allowed_project_methods.include?(phase.participation_method) }
         errors.add(:base, :project_or_phase_form_context, message: 'An analysis should be associated with a valid form context. The passed project has no phases supporting a participation method that can hold inputs')

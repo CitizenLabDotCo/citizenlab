@@ -137,6 +137,7 @@ const AdminPage = memo<Props>(({ className }) => {
     pathname.includes('admin/messaging') ||
     pathname.includes('admin/settings') ||
     pathname.includes('admin/ideas') ||
+    pathname.includes('admin/community-monitor') ||
     isProjectPage;
 
   return (
