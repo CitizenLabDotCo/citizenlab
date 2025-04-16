@@ -193,6 +193,8 @@ const IdeaMapOverlay = memo<Props>(
                   deselectIdeaOnMap={() => {
                     onSelectIdea(null);
                   }}
+                  // This component is only used when there's timeline context atm.
+                  // This means that, in practice, there should always be a phase (id).
                   phase={phase?.data}
                 />
                 <StyledIdeasShow
