@@ -10,25 +10,21 @@ RSpec.describe ReportBuilder::Queries::Registrations do
       # Make TimeBoundariesParser work as expected
       AppConfiguration.instance.update!(created_at: Date.new(2021, 1, 1))
 
-      # Registrations
+      # Setup September data: 3 registrations, 6 unique visitors
       create_list(:user, 3, registration_completed_at: Date.new(2022, 9, 10))
-      create_list(:user, 7, registration_completed_at: Date.new(2022, 10, 10))
-
-      # Visitors september
-      (1..12).each do |i|
-        create(
-          :session,
+      6.times do |i|
+        create(:session, 
           created_at: Date.new(2022, 9, 10),
-          monthly_user_hash: i.even? ? "hash_1_#{i - 1}" : "hash_1_#{i}"
+          monthly_user_hash: "september_visitor_#{i}"
         )
       end
 
-      # Visitors october
-      (1..28).each do |i|
-        create(
-          :session,
+      # Setup October data: 7 registrations, 14 unique visitors
+      create_list(:user, 7, registration_completed_at: Date.new(2022, 10, 10))
+      14.times do |i|
+        create(:session, 
           created_at: Date.new(2022, 10, 10),
-          monthly_user_hash: i.even? ? "hash_2_#{i - 1}" : "hash_2_#{i}"
+          monthly_user_hash: "october_visitor_#{i}"
         )
       end
     end
