@@ -36,6 +36,8 @@ import useProjectBySlug from 'api/projects/useProjectBySlug';
 
 import useLocalize from 'hooks/useLocalize';
 
+import { supportsNativeSurvey as methodSupportsNativeSurvey } from 'containers/Admin/projects/project/inputImporter/ReviewSection/utils';
+import { triggerPostActionEvents } from 'containers/App/events';
 import ProfileVisiblity from 'containers/IdeasNewPage/IdeasNewIdeationForm/ProfileVisibility';
 
 import AnonymousParticipationConfirmationModal from 'components/AnonymousParticipationConfirmationModal';
@@ -134,8 +136,9 @@ const CLPageLayout = memo(
     const phaseId =
       phaseIdFromSearchParams || getCurrentPhase(phases?.data)?.id;
     const { data: phase } = usePhase(phaseId);
-    const isNativeSurvey =
-      phase?.data.attributes.participation_method === 'native_survey';
+    const supportsNativeSurvey = methodSupportsNativeSurvey(
+      phase?.data.attributes.participation_method
+    );
     const allowAnonymousPosting =
       phase?.data.attributes.allow_anonymous_participation;
 
@@ -146,8 +149,9 @@ const CLPageLayout = memo(
      * to choose whether to post anonymously or not.
      */
     const allowsAnonymousPostingInNativeSurvey =
-      isNativeSurvey && allowAnonymousPosting;
-    const showTogglePostAnonymously = allowAnonymousPosting && !isNativeSurvey;
+      supportsNativeSurvey && allowAnonymousPosting;
+    const showTogglePostAnonymously =
+      allowAnonymousPosting && !supportsNativeSurvey;
 
     // Map-related variables
     const { data: projectMapConfig } = useProjectMapConfig(project?.data.id);
@@ -262,7 +266,7 @@ const CLPageLayout = memo(
       }
 
       if (pageVariant === 'after-submission') {
-        if (isNativeSurvey) {
+        if (supportsNativeSurvey) {
           if (currentPage.options.page_button_link) {
             // Page is using a custom button link
             window.location.href = currentPage.options.page_button_link;
@@ -271,6 +275,7 @@ const CLPageLayout = memo(
               pathname: `/projects/${project?.data.attributes.slug}`,
             });
           }
+          triggerPostActionEvents({});
         } else {
           clHistory.push({
             pathname: `/ideas/${idea?.data.attributes.slug}`,
@@ -403,9 +408,6 @@ const CLPageLayout = memo(
       (page) => page === currentPage
     );
 
-    const showSubmissionReference =
-      ideaId && pageVariant === 'after-submission' && showIdeaId;
-
     return (
       <>
         <Box
@@ -492,7 +494,7 @@ const CLPageLayout = memo(
                         as="h1"
                         variant={isMobileOrSmaller ? 'h2' : 'h1'}
                         m="0"
-                        mb="8px"
+                        mb="20px"
                         color="tenantPrimary"
                       >
                         {currentPage.options.title}
@@ -542,19 +544,12 @@ const CLPageLayout = memo(
                           onChange={handleOnChangeAnonymousPosting}
                         />
                       )}
+                    {pageVariant === 'after-submission' &&
+                      ideaId &&
+                      showIdeaId && <SubmissionReference ideaId={ideaId} />}
                   </Box>
                 </Box>
               </Box>
-              {showSubmissionReference && (
-                <Box
-                  display="flex"
-                  flexDirection="column"
-                  alignItems="center"
-                  flex="1"
-                >
-                  <SubmissionReference ideaId={ideaId} />
-                </Box>
-              )}
             </Box>
           </Box>
         </Box>

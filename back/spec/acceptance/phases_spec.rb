@@ -768,7 +768,7 @@ resource 'Phases' do
     end
 
     get 'web_api/v1/phases/:id/sentiment_by_quarter' do
-      let(:project) { create(:community_monitor_project_with_active_phase) }
+      let(:project) { create(:community_monitor_project) }
       let(:active_phase) { project.phases.first }
       let(:form) { create(:custom_form, participation_context: active_phase) }
       let(:sentiment_question1) { create(:custom_field_sentiment_linear_scale, resource: form, question_category: 'quality_of_life') }

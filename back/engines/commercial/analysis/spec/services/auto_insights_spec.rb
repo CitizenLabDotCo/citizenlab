@@ -169,8 +169,8 @@ describe Analysis::AutoInsightsService do
         )
         expect(Analysis::HeatmapCell.find_by(row: tag2, column: male)).to have_attributes(
           count: 2,
-          p_value: 1.0,
-          lift: 0.9333333333333333,
+          p_value: 1,
+          lift: 0.933333333333333,
           row: tag2,
           column: male,
           unit: 'participants'
@@ -178,7 +178,7 @@ describe Analysis::AutoInsightsService do
         expect(Analysis::HeatmapCell.find_by(row: tag2, column: female)).to have_attributes(
           count: 1,
           p_value: 1.0,
-          lift: 1.1666666666666667,
+          lift: 1.166666666666667,
           row: tag2,
           column: female,
           unit: 'participants'
