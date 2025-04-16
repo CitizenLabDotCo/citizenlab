@@ -1627,10 +1627,10 @@ CREATE TABLE public.phases (
     manual_voters_amount integer,
     manual_voters_last_updated_by_id uuid,
     manual_voters_last_updated_at timestamp(6) without time zone,
-    user_fields_in_form boolean DEFAULT false NOT NULL,
+    survey_popup_frequency integer,
     similarity_threshold_title double precision DEFAULT 0.3,
     similarity_threshold_body double precision DEFAULT 0.4,
-    survey_popup_frequency integer
+    user_fields_in_form boolean DEFAULT false NOT NULL
 );
 
 
@@ -7073,6 +7073,7 @@ SET search_path TO public,shared_extensions;
 
 INSERT INTO "schema_migrations" (version) VALUES
 ('20250416120221'),
+('20250415132943'),
 ('20250415094344'),
 ('20250409111817'),
 ('20250320010716'),
