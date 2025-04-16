@@ -17,6 +17,36 @@ const reorder = <ListType>(
   return result;
 };
 
+export const getQuestionCategory = (
+  field: IFlatCustomField,
+  customFields: IFlatCustomField[]
+): string | undefined => {
+  // Skip categorization for page-type fields
+  if (field.input_type === 'page') return undefined;
+
+  // Mapping of page keys to their corresponding category names
+  const categoryPageKeyMapping: Record<string, string> = {
+    page_quality_of_life: 'quality_of_life',
+    page_service_delivery: 'service_delivery',
+    page_governance_and_trust: 'governance_and_trust',
+  };
+
+  // Find the index of the current field
+  const fieldIndex = customFields.findIndex((f) => f.id === field.id);
+
+  // Search backwards from the current field to find the most recent page field
+  const page = customFields
+    .slice(0, fieldIndex)
+    .reverse()
+    .find((field) => field.input_type === 'page');
+
+  // If a page is found and its key maps to a category, return the category
+  // Otherwise, return 'other'
+  return page?.key && categoryPageKeyMapping[page.key]
+    ? categoryPageKeyMapping[page.key]
+    : 'other';
+};
+
 export const supportsLinearScaleLabels = (inputType: ICustomFieldInputType) => {
   return [
     'linear_scale',
