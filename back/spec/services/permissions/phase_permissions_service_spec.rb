@@ -66,12 +66,12 @@ describe Permissions::PhasePermissionsService do
         let(:user) { create(:user) }
 
         it 'returns nil when no survey response yet posted' do
-          expect(service.denied_reason_for_action('posting_idea')).to eq nil
+          expect(service.denied_reason_for_action('posting_idea')).to be_nil
         end
 
         it 'returns nil when last survey response was posted more over 3 months ago' do
           create(:native_survey_response, author: user, project: phase.project, creation_phase: phase, phases: [phase], published_at: 4.months.ago)
-          expect(service.denied_reason_for_action('posting_idea')).to eq nil
+          expect(service.denied_reason_for_action('posting_idea')).to be_nil
         end
 
         it 'returns "posting_limited_max_reached" when last survey response was posted less than 3 months ago' do
@@ -84,7 +84,7 @@ describe Permissions::PhasePermissionsService do
         let(:user) { nil }
 
         it 'returns nil when no survey response yet posted' do
-          expect(service.denied_reason_for_action('posting_idea')).to eq nil
+          expect(service.denied_reason_for_action('posting_idea')).to be_nil
         end
 
         context 'without cookie consent' do
@@ -109,7 +109,7 @@ describe Permissions::PhasePermissionsService do
           context 'using logged out hash - created when posting response when logged out' do
             it 'returns nil when last survey response was posted more over 3 months ago' do
               create(:native_survey_response, author: nil, author_hash: 'LOGGED_OUT_HASH', project: phase.project, published_at: 4.months.ago)
-              expect(service.denied_reason_for_action('posting_idea')).to eq nil
+              expect(service.denied_reason_for_action('posting_idea')).to be_nil
             end
 
             it 'returns "posting_limited_max_reached" if survey response was posted less than 3 months ago' do
@@ -121,7 +121,7 @@ describe Permissions::PhasePermissionsService do
           context 'using logged in hash - created from author when posting previously logged in' do
             it 'returns nil when last survey response was posted more over 3 months ago' do
               create(:native_survey_response, author: nil, author_hash: 'LOGGED_IN_HASH', project: phase.project, published_at: 4.months.ago)
-              expect(service.denied_reason_for_action('posting_idea')).to eq nil
+              expect(service.denied_reason_for_action('posting_idea')).to be_nil
             end
 
             it 'returns "posting_limited_max_reached" if survey response was posted less than 3 months ago' do
@@ -130,9 +130,7 @@ describe Permissions::PhasePermissionsService do
             end
           end
         end
-
       end
-
     end
   end
 end
