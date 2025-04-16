@@ -2955,6 +2955,7 @@
   "app.modules.commercial.analytics.admin.components.ProjectStatus.totalProjectsToolTip": "Nifer y prosiectau sydd i'w gweld ar y platfform",
   "app.modules.commercial.analytics.admin.components.RegistrationsCard.newRegistrations": "Cofrestriadau newydd",
   "app.modules.commercial.analytics.admin.components.RegistrationsCard.registrationRate": "Cyfradd gofrestru",
+  "app.modules.commercial.analytics.admin.components.RegistrationsCard.registrationRateTooltip3": "Canran yr ymwelwyr sy'n dod yn ddefnyddwyr cofrestredig.",
   "app.modules.commercial.analytics.admin.components.RegistrationsCard.registrations": "Cofrestriadau",
   "app.modules.commercial.analytics.admin.components.RegistrationsCard.totalRegistrations": "Cyfanswm cofrestriadau",
   "app.modules.commercial.analytics.admin.components.Tab": "Ymwelwyr",
