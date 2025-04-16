@@ -35,7 +35,7 @@ const getDate = (row: TimeSeriesResponseRow) => {
 const _parseTimeSeries = timeSeriesParser(getDate, parseRow);
 
 export const parseTimeSeries = (
-  responseTimeSeries: RegistrationsResponse['data']['attributes']['registrations_time_series'],
+  responseTimeSeries: RegistrationsResponse['data']['attributes']['registrations_timeseries'],
   startAtMoment: Moment | null | undefined,
   endAtMoment: Moment | null,
   resolution: IResolution
