@@ -26,39 +26,41 @@ const UpsellNudge = () => {
   const { formatMessage } = useIntl();
 
   return (
-    <Box
-      p="32px"
-      background={colors.white}
-      borderRadius={stylingConsts.borderRadius}
-      display="flex"
-      gap="32px"
-      maxWidth="960px"
-    >
-      <Box maxWidth="480px">
-        <Title>{formatMessage(messages.upsellTitle)}</Title>
-        <Text>{formatMessage(messages.upsellDescription)}</Text>
-        {UPSELL_BULLET_POINTS.map((message, index) => (
-          <Box display="flex" key={index} alignItems="center">
-            <Box mr="4px">✅</Box>
-            <Text m="0px">{formatMessage(message)}</Text>
-          </Box>
-        ))}
-        <Box mt="28px" display="flex" gap="12px">
-          <Tooltip
-            disabled={false}
-            content={formatMessage(messages.featureNotIncluded)}
-          >
-            <Button disabled={true} icon="lock">
-              {formatMessage(messages.enableInspirationHub)}
-            </Button>
-          </Tooltip>
+    <Box pt="45px" pr="51px" pb="45px" pl="51px">
+      <Box
+        p="32px"
+        background={colors.white}
+        borderRadius={stylingConsts.borderRadius}
+        display="flex"
+        gap="32px"
+        maxWidth="960px"
+      >
+        <Box maxWidth="480px">
+          <Title>{formatMessage(messages.upsellTitle)}</Title>
+          <Text>{formatMessage(messages.upsellDescription)}</Text>
+          {UPSELL_BULLET_POINTS.map((message, index) => (
+            <Box display="flex" key={index} alignItems="center">
+              <Box mr="4px">✅</Box>
+              <Text m="0px">{formatMessage(message)}</Text>
+            </Box>
+          ))}
+          <Box mt="28px" display="flex" gap="12px">
+            <Tooltip
+              disabled={false}
+              content={formatMessage(messages.featureNotIncluded)}
+            >
+              <Button disabled={true} icon="lock">
+                {formatMessage(messages.enableInspirationHub)}
+              </Button>
+            </Tooltip>
 
-          <Button buttonStyle="text" textColor={theme.colors.tenantPrimary}>
-            {formatMessage(messages.learnMore)}
-          </Button>
+            <Button buttonStyle="text" textColor={theme.colors.tenantPrimary}>
+              {formatMessage(messages.learnMore)}
+            </Button>
+          </Box>
         </Box>
+        <Box>TODO</Box>
       </Box>
-      <Box>TODO</Box>
     </Box>
   );
 };
