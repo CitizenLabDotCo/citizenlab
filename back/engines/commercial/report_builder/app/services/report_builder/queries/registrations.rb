@@ -9,7 +9,7 @@ module ReportBuilder
       **_other_props
     )
       start_date, end_date = TimeBoundariesParser.new(start_at, end_at).parse
-      registrations_in_period = User.where(registration_completed_at: start_at..end_at)
+      registrations_in_period = User.where(registration_completed_at: start_date..end_date)
 
       # Time series
       registrations_timeseries = registrations_in_period
@@ -32,9 +32,9 @@ module ReportBuilder
         registrations_timeseries: registrations_timeseries,
         registrations_whole_period: registrations_whole_period,
         registration_rate_whole_period: registration_rate(
-          registrations_whole_period, 
-          start_at, 
-          end_at
+          registrations_whole_period,
+          start_date,
+          end_date
         )
       }
 
@@ -54,9 +54,9 @@ module ReportBuilder
       response
     end
 
-    def registration_rate(registrations, start_at, end_at)
+    def registration_rate(registrations, start_date, end_date)
       visitors = ImpactTracking::Session
-        .where(created_at: start_at..end_at)
+        .where(created_at: start_date..end_date)
         .distinct
         .pluck(:monthly_user_hash)
         .count

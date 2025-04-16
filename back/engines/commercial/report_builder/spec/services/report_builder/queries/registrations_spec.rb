@@ -5,7 +5,7 @@ require 'rails_helper'
 RSpec.describe ReportBuilder::Queries::Registrations do
   subject(:query) { described_class.new(build(:user)) }
 
-  describe "#run_query" do
+  describe '#run_query' do
     before_all do
       # Registrations
       create_list(:user, 3, registration_completed_at: Date.new(2022, 9, 10))
@@ -14,8 +14,8 @@ RSpec.describe ReportBuilder::Queries::Registrations do
       # Visitors september
       (1..12).each do |i|
         create(
-          :session, 
-          created_at: Date.new(2022, 9, 10), 
+          :session,
+          created_at: Date.new(2022, 9, 10),
           monthly_user_hash: i % 2 == 0 ? "hash_1_#{i - 1}" : "hash_1_#{i}"
         )
       end
@@ -23,8 +23,8 @@ RSpec.describe ReportBuilder::Queries::Registrations do
       # Visitors october
       (1..28).each do |i|
         create(
-          :session, 
-          created_at: Date.new(2022, 10, 10), 
+          :session,
+          created_at: Date.new(2022, 10, 10),
           monthly_user_hash: i % 2 == 0 ? "hash_2_#{i - 1}" : "hash_2_#{i}"
         )
       end
