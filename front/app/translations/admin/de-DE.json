@@ -2954,7 +2954,7 @@
   "app.modules.commercial.analytics.admin.components.ProjectStatus.totalProjectsToolTip": "Die Anzahl der Projekte, die auf der Plattform sichtbar sind",
   "app.modules.commercial.analytics.admin.components.RegistrationsCard.newRegistrations": "Neue Registrierungen",
   "app.modules.commercial.analytics.admin.components.RegistrationsCard.registrationRate": "Registrierungsrate",
-  "app.modules.commercial.analytics.admin.components.RegistrationsCard.registrationRateTooltip3": "Prozentsatz der Besucher, die zu registrierten Benutzern werden.",
+  "app.modules.commercial.analytics.admin.components.RegistrationsCard.registrationRateTooltip3": "Prozentsatz der Besucher*innen, die zu registrierten Nutzer*innen werden.",
   "app.modules.commercial.analytics.admin.components.RegistrationsCard.registrations": "Registrierungen",
   "app.modules.commercial.analytics.admin.components.RegistrationsCard.totalRegistrations": "Registrierungen insgesamt",
   "app.modules.commercial.analytics.admin.components.Tab": "Besucher*innen",
