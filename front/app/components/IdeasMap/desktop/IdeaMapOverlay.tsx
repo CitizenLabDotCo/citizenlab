@@ -173,38 +173,36 @@ const IdeaMapOverlay = memo<Props>(
             />
           )}
           {!isMobileOrSmaller && idea && (
-            <>
-              <CSSTransition
-                classNames="animation"
-                in={true}
-                timeout={timeout}
-                mountOnEnter={true}
-                unmountOnExit={true}
-                enter={true}
-                exit={true}
+            <CSSTransition
+              classNames="animation"
+              in={true}
+              timeout={timeout}
+              mountOnEnter={true}
+              unmountOnExit={true}
+              enter={true}
+              exit={true}
+            >
+              <InnerOverlay
+                right={smallerThan1440px ? '-100px' : '-150px'}
+                tabIndex={-1}
+                // Ref to use to focus on the overlay after selecting an idea
+                ref={overlayRef}
               >
-                <InnerOverlay
-                  right={smallerThan1440px ? '-100px' : '-150px'}
-                  tabIndex={-1}
-                  // Ref to use to focus on the overlay after selecting an idea
-                  ref={overlayRef}
-                >
-                  <IdeaShowPageTopBar
-                    idea={idea.data}
-                    deselectIdeaOnMap={() => {
-                      onSelectIdea(null);
-                    }}
-                    phase={phase?.data}
-                  />
-                  <StyledIdeasShow
-                    ideaId={idea.data.id}
-                    projectId={projectId}
-                    compact={true}
-                    setRef={handleIdeasShowSetRef}
-                  />
-                </InnerOverlay>
-              </CSSTransition>
-            </>
+                <IdeaShowPageTopBar
+                  idea={idea.data}
+                  deselectIdeaOnMap={() => {
+                    onSelectIdea(null);
+                  }}
+                  phase={phase?.data}
+                />
+                <StyledIdeasShow
+                  ideaId={idea.data.id}
+                  projectId={projectId}
+                  compact={true}
+                  setRef={handleIdeasShowSetRef}
+                />
+              </InnerOverlay>
+            </CSSTransition>
           )}
         </Container>
       );
