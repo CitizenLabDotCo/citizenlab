@@ -438,7 +438,6 @@
   "app.containers.Admin.reporting.components.ReportBuilderPage.blankTemplate": "Start with a blank page",
   "app.containers.Admin.reporting.components.ReportBuilderPage.createReportModalInputLabel": "Report title",
   "app.containers.Admin.reporting.components.ReportBuilderPage.emptyStateButtonText": "Create a report",
-  "app.containers.Admin.reporting.components.ReportBuilderPage.emptyStateTitle": "Create your first project report",
   "app.containers.Admin.reporting.components.ReportBuilderPage.printToPdf": "Print to PDF",
   "app.containers.Admin.reporting.components.ReportBuilderPage.projectTemplate": "Start with a project template",
   "app.containers.Admin.reporting.components.ReportBuilderPage.reportTemplate": "Report template",
