@@ -7,6 +7,9 @@ RSpec.describe ReportBuilder::Queries::Registrations do
 
   describe '#run_query' do
     before_all do
+      # Make TimeBoundariesParser work as expected
+      AppConfiguration.instance.update!(created_at: Date.new(2021, 1, 1))
+
       # Registrations
       create_list(:user, 3, registration_completed_at: Date.new(2022, 9, 10))
       create_list(:user, 7, registration_completed_at: Date.new(2022, 10, 10))
@@ -31,10 +34,7 @@ RSpec.describe ReportBuilder::Queries::Registrations do
     end
 
     it 'returns correct data for current period' do
-      start_at = Date.new(2022, 8, 1)
-      end_at = Date.new(2022, 11, 1)
-
-      result = query.run_query(start_at, end_at)
+      result = query.run_query()
 
       expect(result).to eq({
         registrations_timeseries: [
@@ -56,7 +56,7 @@ RSpec.describe ReportBuilder::Queries::Registrations do
       start_at = Date.new(2022, 8, 1)
       end_at = Date.new(2022, 10, 2)
 
-      result = query.run_query(start_at, end_at)
+      result = query.run_query(start_at: start_at, end_at: end_at)
 
       expect(result).to eq({
         registrations_timeseries: [
@@ -77,8 +77,8 @@ RSpec.describe ReportBuilder::Queries::Registrations do
       compare_end_at = Date.new(2022, 10, 1)
 
       result = query.run_query(
-        start_at, 
-        end_at,
+        start_at: start_at,
+        end_at: end_at,
         compare_start_at: compare_start_at,
         compare_end_at: compare_end_at
       )
