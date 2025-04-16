@@ -4,7 +4,7 @@ class ReportBuilder::Queries::Base
   end
 
   def validate_resolution(resolution)
-    valid_resolutions = ['day', 'week', 'month']
+    valid_resolutions = %w[day week month]
     unless valid_resolutions.include?(resolution)
       raise ArgumentError, "Invalid resolution: #{resolution}. Must be one of: #{valid_resolutions.join(', ')}"
     end

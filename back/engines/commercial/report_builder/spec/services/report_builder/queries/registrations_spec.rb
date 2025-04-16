@@ -13,7 +13,8 @@ RSpec.describe ReportBuilder::Queries::Registrations do
       # Setup September data: 3 registrations, 6 unique visitors
       create_list(:user, 3, registration_completed_at: Date.new(2022, 9, 10))
       6.times do |i|
-        create(:session, 
+        create(
+          :session,
           created_at: Date.new(2022, 9, 10),
           monthly_user_hash: "september_visitor_#{i}"
         )
@@ -22,7 +23,8 @@ RSpec.describe ReportBuilder::Queries::Registrations do
       # Setup October data: 7 registrations, 14 unique visitors
       create_list(:user, 7, registration_completed_at: Date.new(2022, 10, 10))
       14.times do |i|
-        create(:session, 
+        create(
+          :session,
           created_at: Date.new(2022, 10, 10),
           monthly_user_hash: "october_visitor_#{i}"
         )
