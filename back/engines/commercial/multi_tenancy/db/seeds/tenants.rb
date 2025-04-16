@@ -345,6 +345,7 @@ module MultiTenancy
                   name: 'twoday',
                   client_id: ENV.fetch('DEFAULT_ID_TWODAY_CLIENT_ID', 'fake id'),
                   client_secret: ENV.fetch('DEFAULT_ID_TWODAY_CLIENT_SECRET', 'fake secret'),
+                  domain: ENV.fetch('DEFAULT_ID_TWODAY_DOMAIN', 'fake domain'),
                   ui_method_name: 'Bank ID',
                   enabled_for_verified_actions: true
                 }
