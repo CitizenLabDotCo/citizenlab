@@ -93,7 +93,7 @@ class WebApi::V1::IdeasController < ApplicationController
     ideas = policy_scope(Idea)
       .where(author: current_user)
       .submitted_or_published
-      .native_survey
+      .supports_survey
 
     ideas = paginate ideas
 

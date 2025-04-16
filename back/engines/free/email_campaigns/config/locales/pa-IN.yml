@@ -8,6 +8,7 @@ pa:
       "comment_marked_as_spam": ਟਿੱਪਣੀ ਸਪੈਮ ਰਿਪੋਰਟ
       "comment_on_your_comment": ਮੇਰੀ ਟਿੱਪਣੀ 'ਤੇ ਇੱਕ ਜਵਾਬ
       "comment_on_idea_you_follow": ਇੱਕ ਵਿਚਾਰ 'ਤੇ ਇੱਕ ਟਿੱਪਣੀ ਜਿਸਦਾ ਤੁਸੀਂ ਅਨੁਸਰਣ ਕਰਦੇ ਹੋ
+      "community_monitor_report": ਕਮਿਊਨਿਟੀ ਮਾਨੀਟਰ ਰਿਪੋਰਟ
       "cosponsor_of_your_idea": ਇੱਕ ਉਪਭੋਗਤਾ ਮੇਰੇ ਪ੍ਰਸਤਾਵ ਨੂੰ ਸਹਿ-ਪ੍ਰਾਯੋਜਿਤ ਕਰਨ ਲਈ ਮੇਰੇ ਸੱਦੇ ਨੂੰ ਸਵੀਕਾਰ ਕਰਦਾ ਹੈ
       "event_registration_confirmation": ਘਟਨਾ ਰਜਿਸਟ੍ਰੇਸ਼ਨ ਪੁਸ਼ਟੀ
       "idea_marked_as_spam": ਆਈਡੀਆ ਸਪੈਮ ਰਿਪੋਰਟ
@@ -82,6 +83,7 @@ pa:
         "4": "ਹਫਤਾਵਾਰੀ, ਵੀਰਵਾਰ ਨੂੰ %{hourOfDay}'ਤੇ"
         "5": "ਹਫਤਾਵਾਰੀ, ਸ਼ੁੱਕਰਵਾਰ ਨੂੰ %{hourOfDay}'ਤੇ"
         "6": "ਹਫਤਾਵਾਰੀ, ਸ਼ਨੀਵਾਰ ਨੂੰ %{hourOfDay}'ਤੇ"
+      quarterly: "ਤਿਮਾਹੀ, ਤਿਮਾਹੀ ਦੇ ਪਹਿਲੇ ਦਿਨ"
     footer:
       "link_privacy_policy": "ਪਰਾਈਵੇਟ ਨੀਤੀ"
       "link_terms_conditions": "ਨਿਯਮ ਅਤੇ ਸ਼ਰਤਾਂ"
@@ -147,6 +149,12 @@ pa:
       today: ਅੱਜ
       wrong_content: 'ਟਿੱਪਣੀ ਢੁਕਵੀਂ ਨਹੀਂ ਹੈ।'
       yesterday: ਕੱਲ੍ਹ
+    community_monitor_report:
+      subject: 'ਇੱਕ ਨਵੀਂ ਕਮਿਊਨਿਟੀ ਮਾਨੀਟਰ ਰਿਪੋਰਟ ਉਪਲਬਧ ਹੈ।'
+      title: 'ਇੱਕ ਨਵੀਂ ਕਮਿਊਨਿਟੀ ਮਾਨੀਟਰ ਰਿਪੋਰਟ ਉਪਲਬਧ ਹੈ।'
+      text_introduction: 'ਪਿਛਲੀ ਤਿਮਾਹੀ ਲਈ ਇੱਕ ਕਮਿਊਨਿਟੀ ਮਾਨੀਟਰ ਰਿਪੋਰਟ ਬਣਾਈ ਗਈ ਹੈ। ਤੁਸੀਂ ਹੇਠਾਂ ਦਿੱਤੇ ਬਟਨ ''ਤੇ ਕਲਿੱਕ ਕਰਕੇ ਅਤੇ ਲੌਗਇਨ ਕਰਕੇ ਇਸਨੂੰ ਐਕਸੈਸ ਕਰ ਸਕਦੇ ਹੋ।'
+      cta_report_button: 'ਰਿਪੋਰਟ ਵੇਖੋ'
+      report_name: 'ਕਮਿਊਨਿਟੀ ਮਾਨੀਟਰ ਰਿਪੋਰਟ'
     cosponsor_of_your_idea:
       cta_reply_to: 'ਆਪਣਾ ਪ੍ਰਸਤਾਵ ਦੇਖੋ'
       event_description: 'ਵਧਾਈਆਂ! %{cosponsorName} ਨੇ ਤੁਹਾਡੇ ਪ੍ਰਸਤਾਵ ਨੂੰ ਸਹਿ-ਪ੍ਰਾਯੋਜਿਤ ਕਰਨ ਲਈ ਤੁਹਾਡੇ ਸੱਦੇ ਨੂੰ ਸਵੀਕਾਰ ਕਰ ਲਿਆ ਹੈ।'

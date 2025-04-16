@@ -5,6 +5,7 @@ import { Box, Text } from '@citizenlab/cl2-component-library';
 import useAuthUser from 'api/me/useAuthUser';
 
 import ButtonWithLink from 'components/UI/ButtonWithLink';
+import Warning from 'components/UI/Warning';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 
@@ -20,20 +21,21 @@ const SubmissionReference = ({ ideaId }: Props) => {
   const { data: authUser } = useAuthUser();
 
   return (
-    <Box w="100%" p="24px">
-      <Text color="tenantText">
-        <FormattedMessage {...messages.ifYouLaterDecide} />
-      </Text>
-      <Text
-        color="tenantText"
-        fontWeight="bold"
-        id="idea-id-success-modal"
-        mb="8px"
-      >
-        {ideaId}
-      </Text>
-      <Box w="100%" display="flex">
+    <Warning hideIcon>
+      <Box display="flex" flexDirection="column" alignItems="flex-start">
+        <Text mb="0" color="tenantText">
+          <FormattedMessage {...messages.ifYouLaterDecide} />
+        </Text>
+        <Text
+          color="tenantText"
+          fontWeight="bold"
+          id="idea-id-success-modal"
+          mb="0"
+        >
+          {ideaId}
+        </Text>
         <ButtonWithLink
+          p="0"
           linkTo={getMailLink({
             email: authUser?.data.attributes.email,
             subject: formatMessage(messages.surveySubmission),
@@ -42,14 +44,15 @@ const SubmissionReference = ({ ideaId }: Props) => {
             }),
           })}
           buttonStyle="text"
-          w="auto"
           icon="email"
-          paddingLeft="0"
+          iconSize="20px"
         >
-          <FormattedMessage {...messages.sendSurveySubmission} />
+          <Text fontSize="s" color="primary">
+            <FormattedMessage {...messages.sendSurveySubmission} />
+          </Text>
         </ButtonWithLink>
       </Box>
-    </Box>
+    </Warning>
   );
 };
 

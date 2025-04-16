@@ -5,9 +5,11 @@ import {
   Button,
   Icon,
   Table,
+  Tbody,
   Td,
   Text,
   Th,
+  Thead,
   Tr,
 } from '@citizenlab/cl2-component-library';
 import { ControlProps } from '@jsonforms/core';
@@ -141,108 +143,112 @@ const SentimentLinearScaleControl = ({
       >
         <Box>
           <Table style={{ tableLayout: 'fixed' }}>
-            <Tr>
-              {[...Array(maximum).keys()].map((i) => {
-                // The currentAnswer is 1-indexed, so it's easier here to add 1 to the mapped
-                // index for when we want to compare it to the currently selected value;
-                const visualIndex = i + 1;
-                const isSelected = currentAnswer === visualIndex;
+            <Thead>
+              <Tr>
+                {[...Array(maximum).keys()].map((i) => {
+                  // The currentAnswer is 1-indexed, so it's easier here to add 1 to the mapped
+                  // index for when we want to compare it to the currently selected value;
+                  const visualIndex = i + 1;
+                  const isSelected = currentAnswer === visualIndex;
 
-                return (
-                  <Td py="4px" key={`${path}-radio-${visualIndex}`}>
-                    <Box
-                      display="flex"
-                      flexDirection="column"
-                      alignItems="center"
-                    >
-                      <Button
-                        p="0px"
-                        m="0px"
-                        id={`${path}-linear-scale-option-${visualIndex}`}
-                        aria-pressed={isSelected}
-                        width="100%"
-                        tabIndex={-1}
-                        onClick={() => {
-                          if (isSelected) {
-                            // Clear data from this question and any follow-up question
-                            handleChange(path, undefined);
-                            handleChange(`${path}_follow_up`, undefined);
-                          } else {
-                            handleChange(path, visualIndex);
-                          }
-                        }}
-                        onFocus={() => {
-                          sliderRef.current?.focus();
-                        }}
-                        buttonStyle="text"
+                  return (
+                    <Td py="4px" key={`${path}-radio-${visualIndex}`}>
+                      <Box
+                        display="flex"
+                        flexDirection="column"
+                        alignItems="center"
                       >
-                        <ScreenReaderOnly>
-                          {getAriaLabel(visualIndex, maximum)}
-                        </ScreenReaderOnly>
-                        <Box>
-                          {isSelected && (
-                            <Box
-                              borderRadius="45px"
-                              background="white"
-                              position="absolute"
-                              ml="36px"
-                              mt="-10px" // Required for precise positioning
+                        <Button
+                          p="0px"
+                          m="0px"
+                          id={`${path}-linear-scale-option-${visualIndex}`}
+                          aria-pressed={isSelected}
+                          width="100%"
+                          tabIndex={-1}
+                          onClick={() => {
+                            if (isSelected) {
+                              // Clear data from this question and any follow-up question
+                              handleChange(path, undefined);
+                              handleChange(`${path}_follow_up`, undefined);
+                            } else {
+                              handleChange(path, visualIndex);
+                            }
+                          }}
+                          onFocus={() => {
+                            sliderRef.current?.focus();
+                          }}
+                          buttonStyle="text"
+                        >
+                          <ScreenReaderOnly>
+                            {getAriaLabel(visualIndex, maximum)}
+                          </ScreenReaderOnly>
+                          <Box>
+                            {isSelected && (
+                              <Box
+                                borderRadius="45px"
+                                background="white"
+                                position="absolute"
+                                ml="36px"
+                                mt="-10px" // Required for precise positioning
+                                aria-hidden
+                              >
+                                <Icon
+                                  name="check-circle"
+                                  fill={theme.colors.tenantPrimary}
+                                />
+                              </Box>
+                            )}
+
+                            <StyledImg
+                              src={getSentimentEmoji(visualIndex)}
+                              alt=""
                               aria-hidden
-                            >
-                              <Icon
-                                name="check-circle"
-                                fill={theme.colors.tenantPrimary}
-                              />
-                            </Box>
-                          )}
-
-                          <StyledImg
-                            src={getSentimentEmoji(visualIndex)}
-                            alt=""
-                            aria-hidden
-                            className={isSelected ? 'isSelected' : ''}
-                          />
-                        </Box>
-                      </Button>
-                    </Box>
-                  </Td>
-                );
-              })}
-            </Tr>
-            <Tr>
-              {[...Array(maximum).keys()].map((index) => {
-                return (
-                  <Th
-                    p="0px"
-                    maxWidth="20%"
-                    key={`${path}-radio-${index}`}
-                    scope="col"
-                    tabIndex={-1}
-                    pb="8px"
-                  >
-                    <Text
-                      textAlign="center"
-                      m="0px"
-                      px="4px"
-                      color="grey700"
-                      wordBreak="break-word"
-                      lineHeight="1.2"
+                              className={isSelected ? 'isSelected' : ''}
+                            />
+                          </Box>
+                        </Button>
+                      </Box>
+                    </Td>
+                  );
+                })}
+              </Tr>
+            </Thead>
+            <Tbody>
+              <Tr>
+                {[...Array(maximum).keys()].map((index) => {
+                  return (
+                    <Th
+                      p="0px"
+                      maxWidth="20%"
+                      key={`${path}-radio-${index}`}
+                      scope="col"
+                      tabIndex={-1}
+                      pb="8px"
                     >
-                      {labelsFromSchema[index]}
+                      <Text
+                        textAlign="center"
+                        m="0px"
+                        px="4px"
+                        color="grey700"
+                        wordBreak="break-word"
+                        lineHeight="1.2"
+                      >
+                        {labelsFromSchema[index]}
 
-                      <ScreenReaderOnly>
-                        {/* If there is not a label for this index, make sure that we still generate
+                        <ScreenReaderOnly>
+                          {/* If there is not a label for this index, make sure that we still generate
                       a meaningful aria-label for screen readers.
                       */}
-                        {!labelsFromSchema[index] &&
-                          getAriaLabel(index + 1, maximum)}
-                        {/* We use index + 1 because the index is 0-indexed, but the values are 1-indexed. */}
-                      </ScreenReaderOnly>
-                    </Text>
-                  </Th>
-                );
-              })}
-            </Tr>
+                          {!labelsFromSchema[index] &&
+                            getAriaLabel(index + 1, maximum)}
+                          {/* We use index + 1 because the index is 0-indexed, but the values are 1-indexed. */}
+                        </ScreenReaderOnly>
+                      </Text>
+                    </Th>
+                  );
+                })}
+              </Tr>
+            </Tbody>
           </Table>
         </Box>
 

@@ -1,4 +1,10 @@
-import React, { useEffect, useState, useCallback, useRef } from 'react';
+import React, {
+  useEffect,
+  useState,
+  useCallback,
+  useRef,
+  useMemo,
+} from 'react';
 
 import { Box, colors, useBreakpoint } from '@citizenlab/cl2-component-library';
 import { parse } from 'qs';
@@ -96,24 +102,32 @@ const IdeasNewIdeationForm = ({ project, phaseId }: Props) => {
   const [initialFormData, setInitialFormData] = useState({});
   const participationMethodConfig = getConfig(phaseFromUrl?.data, phases);
 
-  // Click on map flow : Reverse geocode the location if it's in the url params
-  useEffect(() => {
-    const { lat, lng } = parse(search, {
+  // Parse the latitude and longitude from the URL query parameters once using useMemo.
+  // This ensures that the geocoding effect only triggers if these specific values (or locale) change,
+  // avoiding unnecessary re-executions when unrelated parts of the URL update.
+  const { lat, lng } = useMemo(() => {
+    const parsed = parse(search, {
       ignoreQueryPrefix: true,
-      decoder: (str, _defaultEncoder, _charset, type) => {
-        return type === 'value' ? parseFloat(str) : str;
-      },
+      decoder: (str, _defaultEncoder, _charset, type) =>
+        type === 'value' ? parseFloat(str) : str,
     }) as { [key: string]: string | number };
+    return {
+      lat: typeof parsed.lat === 'number' ? parsed.lat : undefined,
+      lng: typeof parsed.lng === 'number' ? parsed.lng : undefined,
+    };
+  }, [search]);
 
+  useEffect(() => {
     if (
       typeof lat === 'number' &&
       typeof lng === 'number' &&
       !isNilOrError(locale)
     ) {
       setProcessingLocation(true);
+      // Click on map flow : Reverse geocode the location if it's in the url params
       reverseGeocode(lat, lng, locale).then((address) => {
-        setInitialFormData((initialFormData) => ({
-          ...initialFormData,
+        setInitialFormData((prevFormData) => ({
+          ...prevFormData,
           location_description: address,
           location_point_geojson: {
             type: 'Point',
@@ -123,7 +137,7 @@ const IdeasNewIdeationForm = ({ project, phaseId }: Props) => {
         setProcessingLocation(false);
       });
     }
-  }, [search, locale]);
+  }, [lat, lng, locale]);
 
   useEffect(() => {
     const subscription = eventEmitter
