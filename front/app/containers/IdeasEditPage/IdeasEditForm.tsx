@@ -77,8 +77,10 @@ const IdeasEditForm = ({ ideaId }: Props) => {
   });
   const phaseId = idea?.data.relationships.phases.data[0].id;
   const { data: phase } = usePhase(phaseId);
+  const during_trial_period = new Date() < new Date('2025-06-30');
   const showSimilarInputs = !!(
-    phase?.data.attributes.similarity_enabled && isAuthoringAssistanceEnabled
+    phase?.data.attributes.similarity_enabled &&
+    (isAuthoringAssistanceEnabled || during_trial_period)
   );
 
   const {
