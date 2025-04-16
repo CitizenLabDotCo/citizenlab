@@ -2662,7 +2662,7 @@
   "app.containers.AdminPage.projects.project.analysis.heatmap.true": "Wahr",
   "app.containers.AdminPage.projects.project.analysis.heatmap.units": "Einheiten",
   "app.containers.AdminPage.projects.project.analysis.heatmap.viewAllInsights": "Alle Einblicke ansehen",
-  "app.containers.AdminPage.projects.project.analysis.heatmap.viewAutoInsights": "Auto-Insights anzeigen",
+  "app.containers.AdminPage.projects.project.analysis.heatmap.viewAutoInsights": "Automatische Einblicke anzeigen",
   "app.containers.AdminPage.projects.project.analysis.inputsWIthoutTags": "Eingaben ohne Tags",
   "app.containers.AdminPage.projects.project.analysis.invalidShapefile": "Ein ungültiges Shapefile wurde hochgeladen und kann nicht angezeigt werden.",
   "app.containers.AdminPage.projects.project.analysis.limit": "Limit",
