@@ -2546,7 +2546,7 @@
   "app.containers.AdminPage.projects.project.analysis.heatmap.dislikes": "Tycker illa om",
   "app.containers.AdminPage.projects.project.analysis.heatmap.explore": "Utforska",
   "app.containers.AdminPage.projects.project.analysis.heatmap.false": "Falsk",
-  "app.containers.AdminPage.projects.project.analysis.heatmap.inputs": "Ingångar",
+  "app.containers.AdminPage.projects.project.analysis.heatmap.inputs": "Bidrag",
   "app.containers.AdminPage.projects.project.analysis.heatmap.likes": "Gillar",
   "app.containers.AdminPage.projects.project.analysis.heatmap.nextHeatmap": "Nästa värmekarta",
   "app.containers.AdminPage.projects.project.analysis.heatmap.nextInsight": "Nästa insikt",
