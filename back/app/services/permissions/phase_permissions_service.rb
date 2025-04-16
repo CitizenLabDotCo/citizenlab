@@ -186,7 +186,6 @@ module Permissions
         end
       elsif request
         tracking_service = Permissions::EveryoneTrackingService.new(user, phase, request)
-        # binding.pry
 
         return true if tracking_service.submitted_without_tracking_consent?
 

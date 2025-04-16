@@ -546,7 +546,11 @@ resource 'Ideas' do
     end
 
     context 'in a community monitor survey phase' do
-      let(:phase) { create(:community_monitor_survey_phase, with_permissions: true) }
+      let(:phase) do
+        phase = create(:community_monitor_survey_phase, with_permissions: true)
+        phase.permissions.find_by(action: 'posting_idea').update!(permitted_by: 'everyone', everyone_tracking_enabled: true)
+        phase
+      end
       let(:project) do
         project = phase.project
         project.update! default_assignee_id: create(:admin).id
