@@ -409,7 +409,7 @@ resource 'Idea Custom Fields' do
         end
 
         example 'Put other disabled fields on the body page', document: false do
-          title_field, body_field, topics_field = default_fields_param.select { |field| field[:code].in? %w[title_multiloc body_multiloc topic_ids] }
+          title_field, body_field = default_fields_param.select { |field| field[:code].in? %w[title_multiloc body_multiloc] }
           fields_param = [
             {
               input_type: 'page',
