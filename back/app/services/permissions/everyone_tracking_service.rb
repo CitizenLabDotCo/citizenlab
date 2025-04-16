@@ -25,7 +25,7 @@ class Permissions::EveryoneTrackingService
     return if @user # Author hash created in anonymous_participation.rb
     return unless enabled?
 
-    # Get from the cookie and Prefer the logged in author hash ['li'] if it exists
+    # Get from the cookie and prefer the logged in author hash ['li'] if it exists
     author_hash = tracking_cookie ? tracking_cookie['li'] || tracking_cookie['lo'] : nil
     return author_hash if author_hash.present?
 
@@ -45,8 +45,8 @@ class Permissions::EveryoneTrackingService
     return unless enabled?
 
     if consent?
-      # If user has consented then cookie can contain 1 or 2 values
-      # { lo: 'LOGGED OUT HASH', li: 'LOGGED IN HASH (author_hash)' }
+      # If user has consented then the cookie may contain 1 or 2 values
+      # { lo: 'LOGGED_OUT_HASH', li: 'LOGGED_IN_HASH (author_hash)' }
       new_cookie = tracking_cookie || {}
       if @user
         new_cookie['li'] = author_hash

@@ -61,7 +61,7 @@ class IdeaPolicy < ApplicationPolicy
     reason = Permissions::ProjectPermissionsService.new(
       record.project,
       user,
-      request: record.request
+      request: record.request # Only present if pmethod.everyone_tracking_enabled? is true
     ).denied_reason_for_action 'posting_idea'
     raise_not_authorized(reason) if reason
 
