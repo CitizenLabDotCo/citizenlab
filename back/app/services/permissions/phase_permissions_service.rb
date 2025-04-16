@@ -184,13 +184,13 @@ module Permissions
           author_hash = Idea.create_author_hash(user.id, phase.project.id, true)
           return true if phase.ideas.published_after(allow_posting_again_after.ago).exists?(author_hash: author_hash)
         end
-      elsif request
+      elsif request # Note: Only present if method.supports_everyone_tracking? is true
         tracking_service = Permissions::EveryoneTrackingService.new(user, phase, request)
 
+        # No consent, so only empty cookie present
         return true if tracking_service.submitted_without_tracking_consent?
 
         # Check cookies for author_hashes for the 'everyone' permission
-        # NOTE: author_hashes will only ever be present if pmethod.supports_everyone_tracking? is true
         author_hashes = tracking_service.author_hashes_from_request
 
         return true if author_hashes && phase.ideas.published_after(allow_posting_again_after.ago).exists?(author_hash: author_hashes)

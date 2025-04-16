@@ -581,7 +581,7 @@ resource 'Ideas' do
             # No consent hash based on ip and user agent
             user_agent = 'User-Agent: Mozilla/5.0'
             ip = '1.2.3.4'
-            "n_#{Idea.create_author_hash(ip + user_agent, phase.project.id, true)}"
+            "n_#{Idea.create_author_hash(ip + user_agent, project.id, true)}"
           end
           let!(:response) { create(:native_survey_response, project: project, creation_phase: phase, author: nil, author_hash: author_hash) }
 

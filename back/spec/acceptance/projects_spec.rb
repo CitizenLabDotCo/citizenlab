@@ -1754,11 +1754,7 @@ resource 'Projects' do
       context 'hidden community monitor project exists & everyone tracking enabled' do
         let!(:phase) do
           phase = create(:community_monitor_survey_phase, with_permissions: true)
-          project = phase.project
           phase.permissions.first.update!(permitted_by: 'everyone', everyone_tracking_enabled: true)
-          settings = AppConfiguration.instance.settings
-          settings['community_monitor'] = { 'enabled' => true, 'allowed' => true, 'project_id' => project.id }
-          AppConfiguration.instance.update!(settings:)
           phase
         end
 
