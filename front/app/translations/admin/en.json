@@ -757,6 +757,7 @@
   "app.containers.Admin.communityMonitor.betaLabel": "Beta",
   "app.containers.Admin.communityMonitor.communityMonitorLabel": "Community monitor",
   "app.containers.Admin.communityMonitor.healthScore": "Health Score",
+  "app.containers.Admin.communityMonitor.healthScoreDescription": "This score is the average of all sentiment-scale questions answered by participants for the period selected.",
   "app.containers.Admin.communityMonitor.lastQuarter": "last quarter",
   "app.containers.Admin.communityMonitor.liveMonitor": "Live monitor",
   "app.containers.Admin.communityMonitor.noResults": "No results for this period.",
