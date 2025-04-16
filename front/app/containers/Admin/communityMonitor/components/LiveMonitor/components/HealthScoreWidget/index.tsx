@@ -4,6 +4,7 @@ import {
   Box,
   colors,
   Icon,
+  IconTooltip,
   stylingConsts,
   Text,
   Title,
@@ -87,6 +88,10 @@ const HealthScoreWidget = ({ phaseId, ...props }: Props) => {
             <Title m="0px" variant="h5" color="textPrimary">
               {formatMessage(messages.healthScore)}
             </Title>
+            <IconTooltip
+              ml="4px"
+              content={formatMessage(messages.healthScoreDescription)}
+            />
           </Box>
           <Box display="flex" mt="12px" ml="8px">
             <Text
