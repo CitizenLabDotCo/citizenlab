@@ -25,6 +25,11 @@ const calculateRegistrationsStats = (
   };
 };
 
+const toPercentage = (value: number | undefined) => {
+  if (value === undefined) return 0;
+  return Math.round(Math.min(value, 1) * 100);
+};
+
 const calculateRegistrationRateStats = (
   data: RegistrationsResponse['data']['attributes']
 ) => {
@@ -32,14 +37,11 @@ const calculateRegistrationRateStats = (
     data;
 
   return {
-    value: Math.round(registration_rate_whole_period * 100),
+    value: toPercentage(registration_rate_whole_period),
     delta:
       registration_rate_compared_period !== undefined
-        ? Math.round(
-            (registration_rate_whole_period -
-              registration_rate_compared_period) *
-              100
-          )
+        ? toPercentage(registration_rate_whole_period) -
+          toPercentage(registration_rate_compared_period)
         : undefined,
   };
 };
