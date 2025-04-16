@@ -2955,6 +2955,7 @@
   "app.modules.commercial.analytics.admin.components.ProjectStatus.totalProjectsToolTip": "Antall prosjekter som er synlige på plattformen",
   "app.modules.commercial.analytics.admin.components.RegistrationsCard.newRegistrations": "Nye registreringer",
   "app.modules.commercial.analytics.admin.components.RegistrationsCard.registrationRate": "Registreringspris",
+  "app.modules.commercial.analytics.admin.components.RegistrationsCard.registrationRateTooltip3": "Prosentandel av besøkende som blir registrerte brukere.",
   "app.modules.commercial.analytics.admin.components.RegistrationsCard.registrations": "Registreringer",
   "app.modules.commercial.analytics.admin.components.RegistrationsCard.totalRegistrations": "Registreringer totalt",
   "app.modules.commercial.analytics.admin.components.Tab": "Besøkende",
