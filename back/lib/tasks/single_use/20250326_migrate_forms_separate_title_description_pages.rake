@@ -37,11 +37,11 @@ namespace :migrate_custom_forms do
           end
         end
 
-        # If the body field is not the last field of the body page, start a new page after it.
-        # Unless the body field is followed by the title field, in which case a new title page
+        # If the body field is not the last endabled field of the body page, start a new page after
+        # it. Unless the body field is followed by the title field, in which case a new title page
         # will be created in the next steps.
         fields_per_page, _, body_page = rake_20250326_group_field_by_page(form.reload.custom_fields)
-        if body_page && fields_per_page[body_page].present? && fields_per_page[body_page].last&.code != 'body_multiloc' && fields_per_page[body_page].second&.code != 'title_multiloc'
+        if body_page && fields_per_page[body_page].present? && fields_per_page[body_page].reverse.find(&:enabled)&.code != 'body_multiloc' && fields_per_page[body_page].second&.code != 'title_multiloc'
           rake_20250326_create_and_report_page(rake_20250326_new_normal_page(form), (body_field.reload.ordering + 1), reporter, 'add_body_page')
         end
 
@@ -69,9 +69,9 @@ namespace :migrate_custom_forms do
           end
         end
 
-        # If the title field is not the last field of the title page, start a new page after it.
+        # If the title field is not the last disabled field of the title page, start a new page after it.
         fields_per_page, title_page, = rake_20250326_group_field_by_page(form.reload.custom_fields)
-        if title_page && fields_per_page[title_page].last&.code != 'title_multiloc'
+        if title_page && fields_per_page[title_page].reverse.find(&:enabled)&.code != 'title_multiloc'
           title_field = fields_per_page[title_page].find { |field| field.code == 'title_multiloc' }
           next if !title_field # This should not be possible, but just in case.
 

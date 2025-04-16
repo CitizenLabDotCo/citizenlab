@@ -22,7 +22,10 @@ describe 'migrate_custom_forms:separate_title_body_pages rake task' do
     %i[title_page body extra title extra end_page] => %i[body_page body page extra title_page title page extra end_page],
     %i[title_page extra body extra title extra end_page] => %i[page extra body_page body page extra title_page title page extra end_page],
     %i[title_page extra title body end_page] => %i[page extra title_page title body_page body end_page],
-    %i[title_page title body disabled page extra end_page] => %i[title_page title body_page body page extra disabled end_page]
+    %i[title_page title body disabled page extra end_page] => %i[title_page title body_page body page extra disabled end_page],
+    %i[title_page title body disabled end_page] => %i[title_page title body_page body disabled end_page],
+    %i[page body extra disabled page title disabled end_page] => %i[body_page body page extra title_page title disabled disabled end_page],
+    %i[page body extra disabled page title extra disabled end_page] => %i[body_page body page extra title_page title page extra disabled disabled end_page]
   }.each do |form_from, form_to|
     it "Migrates #{form_from} to #{form_to}" do
       form = create(:custom_form)
