@@ -169,11 +169,11 @@ module IdeaCustomFields
         raise UpdateAllFailedError, { form: [{ error: 'title_and_body_on_same_page' }] }
       end
 
-      if title_page && fields_per_page[title_page].count > 1
+      if title_page && fields_per_page[title_page].count { |field| field[:enabled] } > 1
         raise UpdateAllFailedError, { form: [{ error: 'title_page_with_other_fields' }] }
       end
 
-      if body_page && fields_per_page[body_page].count > 1
+      if body_page && fields_per_page[body_page].count { |field| field[:enabled] } > 1
         raise UpdateAllFailedError, { form: [{ error: 'body_page_with_other_fields' }] }
       end
     end
