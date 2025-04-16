@@ -21,4 +21,8 @@ export default defineMessages({
     id: 'app.containers.Admin.communityMonitor.participants',
     defaultMessage: 'Participants',
   },
+  betaLabel: {
+    id: 'app.containers.Admin.communityMonitor.betaLabel',
+    defaultMessage: 'Beta',
+  },
 });
