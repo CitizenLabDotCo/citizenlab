@@ -15,15 +15,15 @@ import { useIntl } from 'utils/cl-intl';
 
 import messages from './messages';
 
+const UPSELL_BULLET_POINTS = [
+  messages.bulletPoint1,
+  messages.bulletPoint2,
+  messages.bulletPoint3,
+];
+
 const UpsellNudge = () => {
   const theme = useTheme();
   const { formatMessage } = useIntl();
-
-  const upsellBulletPoints = [
-    messages.bulletPoint1,
-    messages.bulletPoint2,
-    messages.bulletPoint3,
-  ];
 
   return (
     <Box
@@ -37,7 +37,7 @@ const UpsellNudge = () => {
       <Box maxWidth="480px">
         <Title>{formatMessage(messages.upsellTitle)}</Title>
         <Text>{formatMessage(messages.upsellDescription)}</Text>
-        {upsellBulletPoints.map((message, index) => (
+        {UPSELL_BULLET_POINTS.map((message, index) => (
           <Box display="flex" key={index} alignItems="center">
             <Box mr="4px">✅</Box>
             <Text m="0px">{formatMessage(message)}</Text>
