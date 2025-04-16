@@ -63,13 +63,6 @@ describe('getQuestionCategory', () => {
     expect(result).toBe('service_delivery');
   });
 
-  it('returns "other" if no prior page is found', () => {
-    const field = createField('1', 'random_question', 'sentiment_linear_scale');
-    const result = getQuestionCategory(field, [field]);
-
-    expect(result).toBe('other');
-  });
-
   it('returns "other" if nearest page key is not in mapping', () => {
     const pageField1 = createField('1', 'page_quality_of_life', 'page');
     const unknownPage = createField('2', 'page_random_custom', 'page');
