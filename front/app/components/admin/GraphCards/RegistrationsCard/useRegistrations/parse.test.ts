@@ -6,7 +6,7 @@ import { parseTimeSeries, parseStats } from './parse';
 
 describe('parseTimeSeries', () => {
   it('works', () => {
-    const timeSeries: RegistrationsResponse['data']['attributes']['registrations_time_series'] =
+    const timeSeries: RegistrationsResponse['data']['attributes']['registrations_timeseries'] =
       [
         {
           date_group: '2022-09-01',
@@ -38,7 +38,7 @@ describe('parseTimeSeries', () => {
 describe('parseStats', () => {
   it('works', () => {
     const response: RegistrationsResponse['data']['attributes'] = {
-      registrations_time_series: [],
+      registrations_timeseries: [],
       registrations_whole_period: 10,
       registration_rate_whole_period: 0.5,
       registrations_compared_period: 8,

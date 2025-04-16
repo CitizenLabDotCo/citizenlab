@@ -7,7 +7,7 @@ const TIME_SERIES = [];
 describe('parseStats', () => {
   it('works when all stats data is empty', () => {
     const responseData: RegistrationsResponse['data']['attributes'] = {
-      registrations_time_series: [],
+      registrations_timeseries: [],
       registrations_whole_period: 0,
       registration_rate_whole_period: 0,
     };
@@ -28,7 +28,7 @@ describe('parseStats', () => {
 
   it('works when only data for registrations in whole period', () => {
     const responseData: RegistrationsResponse['data']['attributes'] = {
-      registrations_time_series: TIME_SERIES,
+      registrations_timeseries: TIME_SERIES,
       registrations_whole_period: 4,
       registration_rate_whole_period: 0,
     };
@@ -49,7 +49,7 @@ describe('parseStats', () => {
 
   it('correctly calculates registrations delta', () => {
     const responseData: RegistrationsResponse['data']['attributes'] = {
-      registrations_time_series: TIME_SERIES,
+      registrations_timeseries: TIME_SERIES,
       registrations_whole_period: 4,
       registration_rate_whole_period: 0,
       registrations_compared_period: 1,
@@ -72,7 +72,7 @@ describe('parseStats', () => {
 
   it('correctly calculates registration rate whole period', () => {
     const responseData: RegistrationsResponse['data']['attributes'] = {
-      registrations_time_series: TIME_SERIES,
+      registrations_timeseries: TIME_SERIES,
       registrations_whole_period: 4,
       registration_rate_whole_period: 0.5,
     };
@@ -93,7 +93,7 @@ describe('parseStats', () => {
 
   it('correctly calculates registration rate previous period', () => {
     const responseData: RegistrationsResponse['data']['attributes'] = {
-      registrations_time_series: TIME_SERIES,
+      registrations_timeseries: TIME_SERIES,
       registrations_whole_period: 4,
       registration_rate_whole_period: 0.5,
       registrations_compared_period: 3,
