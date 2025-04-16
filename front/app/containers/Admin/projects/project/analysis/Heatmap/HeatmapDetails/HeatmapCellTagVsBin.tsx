@@ -14,11 +14,10 @@ import { IAnalysisHeatmapCellData } from 'api/analysis_heat_map_cells/types';
 import { ITagData } from 'api/analysis_tags/types';
 import { ICustomFieldBinData } from 'api/custom_field_bins/types';
 
-import useLocalize from 'hooks/useLocalize';
-
 import { FormattedMessage } from 'utils/cl-intl';
 
 import messages from '../messages';
+import StatementText from '../StatementText';
 import SummarizeButton from '../SummarizeButton';
 
 import {
@@ -33,8 +32,6 @@ interface Props {
 }
 
 const HeatmapCellTagVsBin = ({ cell, row, column }: Props) => {
-  const localize = useLocalize();
-
   if (!cell) {
     return (
       <Shimmer
@@ -59,7 +56,7 @@ const HeatmapCellTagVsBin = ({ cell, row, column }: Props) => {
       disabled={!cell}
       content={
         <Box p="12px">
-          <Text>{localize(cell.attributes.statement_multiloc)}</Text>
+          <StatementText cell={cell} />
           <Text color="textSecondary">
             <FormattedMessage
               {...messages.instances}

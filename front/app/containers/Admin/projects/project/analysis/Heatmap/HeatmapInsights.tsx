@@ -15,12 +15,11 @@ import useAnalysisHeatmapCells from 'api/analysis_heat_map_cells/useAnalysisHeat
 import useAnalysisTags from 'api/analysis_tags/useAnalysisTags';
 import useCustomFieldBin from 'api/custom_field_bins/useCustomFieldBin';
 
-import useLocalize from 'hooks/useLocalize';
-
 import { trackEventByName } from 'utils/analytics';
 import { useIntl } from 'utils/cl-intl';
 
 import messages from './messages';
+import StatementText from './StatementText';
 import SummarizeButton from './SummarizeButton';
 import tracks from './tracks';
 
@@ -41,7 +40,6 @@ const HeatMapInsights = ({ onExploreClick }: HeatMapInsightsProps) => {
     string | undefined
   >();
 
-  const localize = useLocalize();
   const { formatMessage } = useIntl();
 
   const { analysisId } = useParams() as { analysisId: string };
@@ -160,7 +158,7 @@ const HeatMapInsights = ({ onExploreClick }: HeatMapInsightsProps) => {
           bg={colors.teal50}
           borderRadius="3px"
         >
-          <Text>{localize(selectedCell.attributes.statement_multiloc)}</Text>
+          <StatementText cell={selectedCell} />
           <Box display="flex">
             <Button
               buttonStyle="text"
