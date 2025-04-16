@@ -23,9 +23,8 @@ RSpec.describe ReportBuilder::Queries::Participants do
       create(:idea, created_at: @date_september, project: project)
 
       params = {
-        start_at: (@date_september - 1.day).to_s,
-        end_at: (@date_september + 1.day).to_s,
-        project_id: project.id
+        start_at: @date_september - 1.day,
+        end_at: @date_september + 1.day
       }
 
       expect(query.run_query(**params)).to eq({
@@ -33,7 +32,8 @@ RSpec.describe ReportBuilder::Queries::Participants do
           participants: 1,
           date_group: Date.new(2022, 9, 1)
         }],
-        participants_whole_period: 1
+        participants_whole_period: 1,
+        participation_rate_whole_period: 0
       })
     end
 
@@ -66,7 +66,7 @@ RSpec.describe ReportBuilder::Queries::Participants do
       create(:idea, project: project, author: pp1, created_at: @date_october) # 1
       create(:idea, project: project, author: pp2, created_at: @date_october) # 2
 
-      params = { start_at: @date_september - 1.day, end_at: @date_october + 1.day, project_id: project.id }
+      params = { start_at: @date_september - 1.day, end_at: @date_october + 1.day }
       expect(query.run_query(**params)).to eq({
         participants_timeseries: [
           {
@@ -78,7 +78,32 @@ RSpec.describe ReportBuilder::Queries::Participants do
             date_group: Date.new(2022, 10, 1)
           }
         ],
-        participants_whole_period: 8
+        participants_whole_period: 8,
+        participation_rate_whole_period: 0
+      })
+    end
+
+    it 'returns participation rate' do
+      user = create(:user)
+
+      create(:session, created_at: @dimension_date_sept, monthly_user_hash: 'hash_1')
+      create(:session, created_at: @dimension_date_sept, monthly_user_hash: 'hash_2')
+
+      project = create(:single_phase_ideation_project)
+      create(:idea, created_at: @date_september, project: project, author: user)
+
+      params = {
+        start_at: @date_september - 1.day,
+        end_at: @date_september + 1.day
+      }
+      
+      expect(query.run_query(**params)).to eq({
+        participants_timeseries: [{
+          participants: 1,
+          date_group: Date.new(2022, 9, 1)
+        }],
+        participants_whole_period: 1,
+        participation_rate_whole_period: 0.5
       })
     end
 
@@ -125,40 +150,6 @@ RSpec.describe ReportBuilder::Queries::Participants do
     #       [],
     #       [{
     #         'count_participant_id' => 0
-    #       }]
-    #     ]
-    #   )
-    # end
-
-    # it 'returns visitors and a separate count for participants filtered by has_visits' do
-    #   user = create(:user)
-
-    #   create(:fact_visit, dimension_date_first_action: @dimension_date_sept, dimension_user_id: user.id)
-    #   create(:fact_visit, dimension_date_first_action: @dimension_date_sept)
-
-    #   project = create(:single_phase_ideation_project)
-    #   create(:idea, created_at: @date_september, project: project)
-    #   create(:idea, created_at: @date_september, project: project, author: user)
-
-    #   params = {
-    #     start_at: (@date_september - 1.day).to_s,
-    #     end_at: (@date_september + 1.day).to_s
-    #   }
-    #   expect(query.run_query(**params)).to eq(
-    #     [
-    #       [{
-    #         'count_participant_id' => 2,
-    #         'dimension_date_created.month' => '2022-09',
-    #         'first_dimension_date_created_date' => @date_september
-    #       }],
-    #       [{
-    #         'count_participant_id' => 2
-    #       }],
-    #       [{
-    #         'count_visitor_id' => 2
-    #       }],
-    #       [{
-    #         'count_participant_id' => 1
     #       }]
     #     ]
     #   )
