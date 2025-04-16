@@ -8,6 +8,8 @@ module ReportBuilder
       compare_end_at: nil,
       **_other_props
     )
+      validate_resolution(resolution)
+
       start_date, end_date = TimeBoundariesParser.new(start_at, end_at).parse
       registrations_in_period = User.where(registration_completed_at: start_date..end_date)
 
