@@ -1062,8 +1062,8 @@ CREATE TABLE public.analysis_heatmap_cells (
     column_id uuid NOT NULL,
     unit character varying NOT NULL,
     count integer NOT NULL,
-    lift double precision NOT NULL,
-    p_value double precision NOT NULL,
+    lift numeric(20,15) NOT NULL,
+    p_value numeric(20,15) NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL
 );
@@ -7071,6 +7071,7 @@ ALTER TABLE ONLY public.ideas_topics
 SET search_path TO public,shared_extensions;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20250415094344'),
 ('20250409111817'),
 ('20250320010716'),
 ('20250319145637'),
