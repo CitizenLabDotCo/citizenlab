@@ -1768,26 +1768,39 @@ resource 'Projects' do
         end
 
         context 'Survey has already been submitted' do
-          # See also ideas_create_spec for the same use of author_hash
-          let!(:author_hash) do
-            # No consent hash based on ip and user agent
-            user_agent = 'User-Agent: Mozilla/5.0'
-            ip = '1.2.3.4'
-            "n_#{Idea.create_author_hash(ip + user_agent, phase.project.id, true)}"
-          end
           let!(:response) { create(:native_survey_response, project: phase.project, creation_phase: phase, author: nil, author_hash: author_hash) }
 
-          example 'Get community monitor project when survey already submitted' do
-            header 'User-Agent', 'User-Agent: Mozilla/5.0'
-            header 'X-Forwarded-For', '1.2.3.4'
-            do_request
-            assert_status 200
+          context 'when no consent given' do
+            let(:author_hash) do
+              # No consent hash based on ip and user agent
+              user_agent = 'User-Agent: Mozilla/5.0'
+              ip = '1.2.3.4'
+              "n_#{Idea.create_author_hash(ip + user_agent, phase.project.id, true)}"
+            end
 
-            disabled_reason = response_data.dig(:attributes, :action_descriptors, :posting_idea, :disabled_reason)
-            expect(disabled_reason).to eq 'posting_limited_max_reached'
+            example 'Get community monitor project when survey already submitted without consent' do
+              header 'User-Agent', 'User-Agent: Mozilla/5.0'
+              header 'X-Forwarded-For', '1.2.3.4'
+              do_request
+              assert_status 200
+
+              disabled_reason = response_data.dig(:attributes, :action_descriptors, :posting_idea, :disabled_reason)
+              expect(disabled_reason).to eq 'posting_limited_max_reached'
+            end
           end
 
-          # TODO: JS - Another test based on cookie
+          context 'when consent given - using hash from cookie' do
+            let(:author_hash) { 'COOKIE_AUTHOR_HASH' }
+
+            example 'Get community monitor project when survey already submitted with consent' do
+              header('Cookie', "#{phase.id}={\"lo\": \"#{author_hash}\"};cl2_consent={\"analytics\": true}")
+              do_request
+              assert_status 200
+
+              disabled_reason = response_data.dig(:attributes, :action_descriptors, :posting_idea, :disabled_reason)
+              expect(disabled_reason).to eq 'posting_limited_max_reached'
+            end
+          end
         end
       end
     end

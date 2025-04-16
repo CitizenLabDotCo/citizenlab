@@ -37,7 +37,7 @@ class Permissions::EveryoneTrackingService
       Idea.create_author_hash(SecureRandom.uuid, @phase.project_id, true)
     end
 
-    # Prefix author hash based on consent, so know the difference in stats
+    # Prefix author hash based on consent, so we can see the difference in stats
     consent? ? "y_#{author_hash}" : "n_#{author_hash}"
   end
 
