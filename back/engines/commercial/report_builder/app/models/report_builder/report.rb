@@ -20,7 +20,7 @@
 #  index_report_builder_reports_on_name           (name) UNIQUE
 #  index_report_builder_reports_on_name_tsvector  (name_tsvector) USING gin
 #  index_report_builder_reports_on_owner_id       (owner_id)
-#  index_report_builder_reports_on_phase_id       (phase_id) UNIQUE
+#  index_report_builder_reports_on_phase_id       (phase_id)
 #
 # Foreign Keys
 #

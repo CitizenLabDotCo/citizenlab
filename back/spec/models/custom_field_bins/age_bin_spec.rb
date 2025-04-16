@@ -13,6 +13,13 @@ RSpec.describe CustomFieldBins::AgeBin do
     end
   end
 
+  describe 'validations' do
+    it 'validates a range with infinity as valid' do
+      bin = build(:age_bin, range: 20...Float::INFINITY)
+      expect(bin).to be_valid
+    end
+  end
+
   describe '#in_bin?' do
     let(:age_counter) { instance_double(UserCustomFields::AgeCounter) }
     let(:bin) { build(:age_bin, range: 20...40) }
