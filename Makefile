@@ -60,6 +60,11 @@ be-up-keycloak:
 	BASE_DEV_URI=https://keycloak-r3tyu.loca.lt docker compose up -d
 	lt --print-requests --port 3000 --subdomain keycloak-r3tyu
 
+be-up-twoday:
+	docker compose down
+	BASE_DEV_URI=https://twoday-h5jkg.loca.lt docker compose up -d
+	lt --print-requests --port 3000 --subdomain twoday-h5jkg
+
 # Run it with:
 # make c
 # # or
