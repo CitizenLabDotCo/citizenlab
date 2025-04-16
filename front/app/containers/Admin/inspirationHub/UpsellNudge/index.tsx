@@ -13,6 +13,7 @@ import { useTheme } from 'styled-components';
 
 import { useIntl } from 'utils/cl-intl';
 
+import CardSkeletons from './CardSkeletons.svg';
 import messages from './messages';
 
 const UPSELL_BULLET_POINTS = [
@@ -59,7 +60,15 @@ const UpsellNudge = () => {
             </Button>
           </Box>
         </Box>
-        <Box>TODO</Box>
+        <Box
+          display="flex"
+          maxWidth="480px"
+          w="100%"
+          alignItems="flex-start"
+          justifyContent="center"
+        >
+          <img src={CardSkeletons} alt="" width="100%" />
+        </Box>
       </Box>
     </Box>
   );
