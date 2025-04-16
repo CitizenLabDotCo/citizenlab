@@ -6,7 +6,6 @@ import {
   Text,
   Button,
   IconButton,
-  Spinner,
 } from '@citizenlab/cl2-component-library';
 import { useParams } from 'react-router-dom';
 
@@ -73,13 +72,14 @@ const HeatMapInsights = ({ onExploreClick }: HeatMapInsightsProps) => {
     : tags?.data.find(
         (tag) => tag.id === selectedCell?.relationships.row.data.id
       );
+
   useEffect(() => {
     if (analysisHeatmapCells && analysisHeatmapCells.data.length > 0) {
       setSelectedInsightId(analysisHeatmapCells.data[0].id);
     }
   }, [analysisHeatmapCells]);
 
-  if (!analysisHeatmapCells) return <Spinner />;
+  if (!analysisHeatmapCells) return null;
 
   const handleChangeInsight = (offset: number) => {
     trackEventByName(tracks.useAutoInsightsCarrousel);
