@@ -19,7 +19,7 @@ RSpec.describe ReportBuilder::Queries::Registrations do
         create(
           :session,
           created_at: Date.new(2022, 9, 10),
-          monthly_user_hash: i % 2 == 0 ? "hash_1_#{i - 1}" : "hash_1_#{i}"
+          monthly_user_hash: i.even? ? "hash_1_#{i - 1}" : "hash_1_#{i}"
         )
       end
 
@@ -28,13 +28,13 @@ RSpec.describe ReportBuilder::Queries::Registrations do
         create(
           :session,
           created_at: Date.new(2022, 10, 10),
-          monthly_user_hash: i % 2 == 0 ? "hash_2_#{i - 1}" : "hash_2_#{i}"
+          monthly_user_hash: i.even? ? "hash_2_#{i - 1}" : "hash_2_#{i}"
         )
       end
     end
 
     it 'returns correct data for current period' do
-      result = query.run_query()
+      result = query.run_query
 
       expect(result).to eq({
         registrations_timeseries: [
