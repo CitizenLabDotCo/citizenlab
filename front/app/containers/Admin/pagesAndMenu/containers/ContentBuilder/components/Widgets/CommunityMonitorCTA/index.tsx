@@ -13,6 +13,7 @@ import {
 import { useTheme } from 'styled-components';
 import { Multiloc } from 'typings';
 
+import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useCommunityMonitorProject from 'api/community_monitor/useCommunityMonitorProject';
 import usePhase from 'api/phases/usePhase';
 
@@ -21,6 +22,7 @@ import useLocalize from 'hooks/useLocalize';
 
 import { PageCategorization } from 'components/Form/typings';
 
+import { trackEventByName } from 'utils/analytics';
 import { useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
 import { calculateEstimatedSurveyTime } from 'utils/surveyUtils';
@@ -28,6 +30,7 @@ import { calculateEstimatedSurveyTime } from 'utils/surveyUtils';
 import SentimentQuestionPreview from './assets/SentimentQuestionPreview.png';
 import messages from './messages';
 import Settings from './Settings';
+import tracks from './tracks';
 interface Props {
   title: Multiloc;
   description: Multiloc;
@@ -42,6 +45,7 @@ const CommunityMonitorCTA = ({
   const theme = useTheme();
   const localize = useLocalize();
   const { formatMessage } = useIntl();
+  const { data: appConfig } = useAppConfiguration();
 
   const isTabletOrSmaller = useBreakpoint('tablet');
   const isMobileOrSmaller = useBreakpoint('phone');
@@ -66,6 +70,15 @@ const CommunityMonitorCTA = ({
 
   const goToCommunityMonitorSurvey = () => {
     if (phaseId) {
+      // Track the homepage CTA interaction
+      trackEventByName(
+        tracks.communityMonitorHomepageWidgetClickedAndRedirected,
+        {
+          tenantId: appConfig?.data.id,
+        }
+      );
+
+      // Redirect to the survey page
       clHistory.push(
         `/projects/${project.data.attributes.slug}/surveys/new?phase_id=${phaseId}`
       );
