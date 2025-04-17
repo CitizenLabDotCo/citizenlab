@@ -32,8 +32,13 @@ module ParticipationMethod
       ]
     end
 
+    # Default category names are locked
     def constraints
-      {} # TODO: Any constraints to be added once we know what the fields are
+      {
+        page_quality_of_life: { locks: { title_multiloc: true } },
+        page_service_delivery: { locks: { title_multiloc: true } },
+        page_governance_and_trust: { locks: { title_multiloc: true } }
+      }
     end
 
     def form_logic_enabled?
@@ -72,6 +77,7 @@ module ParticipationMethod
       CustomField.new(
         id: SecureRandom.uuid,
         key: "page_#{key}",
+        code: "page_#{key}",
         title_multiloc: multiloc_service.i18n_to_multiloc("custom_fields.community_monitor.question_categories.#{key}"),
         resource: custom_form,
         input_type: 'page',

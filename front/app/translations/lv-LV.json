@@ -678,6 +678,7 @@
   "app.components.formBuilder.buttonLabel": "Pogas etiķete",
   "app.components.formBuilder.buttonLink": "Pogas saite",
   "app.components.formBuilder.cancelLeaveBuilderButtonText": "Atcelt",
+  "app.components.formBuilder.category": "Kategorija",
   "app.components.formBuilder.chooseMany": "Izvēlieties daudzus",
   "app.components.formBuilder.chooseOne": "Izvēlieties vienu",
   "app.components.formBuilder.close": "Aizvērt",

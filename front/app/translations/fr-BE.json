@@ -678,6 +678,7 @@
   "app.components.formBuilder.buttonLabel": "Texte du bouton",
   "app.components.formBuilder.buttonLink": "Lien du bouton",
   "app.components.formBuilder.cancelLeaveBuilderButtonText": "Annuler",
+  "app.components.formBuilder.category": "Catégorie",
   "app.components.formBuilder.chooseMany": "Choix multiple",
   "app.components.formBuilder.chooseOne": "Choisissez une option",
   "app.components.formBuilder.close": "Fermer",
