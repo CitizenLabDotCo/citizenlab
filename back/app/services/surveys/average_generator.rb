@@ -7,7 +7,6 @@ module Surveys
       @fields = IdeaCustomFieldsService.new(form).enabled_fields.select do |f|
         input_type ? f.input_type == input_type : f.supports_average? # Defaults to returning all fields that support averages
       end
-
       @inputs = phase.ideas.supports_survey.published
       @phase = phase
     end
@@ -57,7 +56,6 @@ module Surveys
       averages = grouped_answers.transform_values do |answers|
         field_group_averages(answers, 'question_category')
       end
-
       averages = order_by_quarter(averages)
       averages = switch_keys(averages)
       averages['other'] = averages.delete(nil) if averages.key?(nil) # NOTE: custom_field model should have return 'other' but does not
@@ -76,7 +74,6 @@ module Surveys
 
     # Calculate the averages for groups of custom fields - grouped by custom field attribute
     def field_group_averages(answers, custom_field_attribute)
-      # binding.pry
       # Get an array of keys grouped by attribute
       key_group = @fields.group_by { |item| item[custom_field_attribute] }.map do |attribute, items|
         { attribute: attribute, keys: items.map { |item| item[:key] } } # TODO: item?
