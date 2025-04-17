@@ -26,8 +26,8 @@ export default defineMessages({
     defaultMessage: 'Beta',
   },
   betaTooltipExplanation: {
-    id: 'app.containers.Admin.communityMonitor.betaTooltipExplanation',
+    id: 'app.containers.Admin.communityMonitor.betaTooltipExplanation2',
     defaultMessage:
-      'This is a Premium+ and Enterprise feature available in open beta for all plans until June 30th 2025.',
+      'This feature is available in open beta for your plan until June 30th 2025.',
   },
 });
