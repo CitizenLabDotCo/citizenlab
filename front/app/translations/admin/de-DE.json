@@ -2638,7 +2638,6 @@
   "app.containers.AdminPage.projects.project.analysis.filterEmptyCustomFields": "Leere Antworten ausblenden",
   "app.containers.AdminPage.projects.project.analysis.heatmap.columnValues": "Spaltenwerte",
   "app.containers.AdminPage.projects.project.analysis.heatmap.count": "Es gibt {count} Beispiele für diese Kombination.",
-  "app.containers.AdminPage.projects.project.analysis.heatmap.demographicInsights": "Demografische Einblicke",
   "app.containers.AdminPage.projects.project.analysis.heatmap.dislikes": "Gefällt mir nicht",
   "app.containers.AdminPage.projects.project.analysis.heatmap.explore": "Erkunden",
   "app.containers.AdminPage.projects.project.analysis.heatmap.false": "Falsch",

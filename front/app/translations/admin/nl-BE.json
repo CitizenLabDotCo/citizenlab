@@ -2638,7 +2638,6 @@
   "app.containers.AdminPage.projects.project.analysis.filterEmptyCustomFields": "Verberg reacties zonder antwoord",
   "app.containers.AdminPage.projects.project.analysis.heatmap.columnValues": "Kolomwaarden",
   "app.containers.AdminPage.projects.project.analysis.heatmap.count": "Er zijn {count} gevallen van deze combinatie.",
-  "app.containers.AdminPage.projects.project.analysis.heatmap.demographicInsights": "Demografische inzichten",
   "app.containers.AdminPage.projects.project.analysis.heatmap.dislikes": "Dislikes",
   "app.containers.AdminPage.projects.project.analysis.heatmap.explore": "Verken",
   "app.containers.AdminPage.projects.project.analysis.heatmap.false": "Niet waar",

@@ -2638,7 +2638,6 @@
   "app.containers.AdminPage.projects.project.analysis.filterEmptyCustomFields": "Ukryj odpowiedzi bez odpowiedzi",
   "app.containers.AdminPage.projects.project.analysis.heatmap.columnValues": "Wartości kolumn",
   "app.containers.AdminPage.projects.project.analysis.heatmap.count": "Istnieje {count} przypadków tej kombinacji.",
-  "app.containers.AdminPage.projects.project.analysis.heatmap.demographicInsights": "Dane demograficzne",
   "app.containers.AdminPage.projects.project.analysis.heatmap.dislikes": "Nie lubi",
   "app.containers.AdminPage.projects.project.analysis.heatmap.explore": "Eksploruj",
   "app.containers.AdminPage.projects.project.analysis.heatmap.false": "Fałsz",

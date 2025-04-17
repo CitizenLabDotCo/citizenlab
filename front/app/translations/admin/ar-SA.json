@@ -2638,7 +2638,6 @@
   "app.containers.AdminPage.projects.project.analysis.filterEmptyCustomFields": "إخفاء الردود بدون إجابة",
   "app.containers.AdminPage.projects.project.analysis.heatmap.columnValues": "قيم العمود",
   "app.containers.AdminPage.projects.project.analysis.heatmap.count": "هناك {count} حالات من هذه المجموعة.",
-  "app.containers.AdminPage.projects.project.analysis.heatmap.demographicInsights": "رؤى ديموغرافية",
   "app.containers.AdminPage.projects.project.analysis.heatmap.dislikes": "لا يحب",
   "app.containers.AdminPage.projects.project.analysis.heatmap.explore": "يستكشف",
   "app.containers.AdminPage.projects.project.analysis.heatmap.false": "خطأ شنيع",
