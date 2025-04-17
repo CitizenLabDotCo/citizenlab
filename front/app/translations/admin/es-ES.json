@@ -770,7 +770,6 @@
   "app.containers.Admin.communityMonitor.settings.frequencyInputLabel2": "Frecuencia de la ventana emergente (de 0 a 100)",
   "app.containers.Admin.communityMonitor.settings.management2": "Gestión",
   "app.containers.Admin.communityMonitor.settings.popup": "Ventana emergente",
-  "app.containers.Admin.communityMonitor.settings.popupDescription2": "Periódicamente se muestra una ventana emergente a los residentes animándoles a rellenar el barómetro de satisfacción ciudadana. Puedes ajustar la frecuencia, que determina el porcentaje de residentes que verán aleatoriamente la ventana emergente cuando se cumplan las condiciones que se indican a continuación.",
   "app.containers.Admin.communityMonitor.settings.popupSettings": "Configuración de la ventana emergente",
   "app.containers.Admin.communityMonitor.settings.preview": "Vista previa",
   "app.containers.Admin.communityMonitor.settings.save": "Guarda",
