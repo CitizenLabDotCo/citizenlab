@@ -2638,7 +2638,6 @@
   "app.containers.AdminPage.projects.project.analysis.filterEmptyCustomFields": "Cevapsız yanıtları gizle",
   "app.containers.AdminPage.projects.project.analysis.heatmap.columnValues": "Sütun değerleri",
   "app.containers.AdminPage.projects.project.analysis.heatmap.count": "Bu kombinasyonun {count} örneği bulunmaktadır.",
-  "app.containers.AdminPage.projects.project.analysis.heatmap.demographicInsights": "Demografik bilgiler",
   "app.containers.AdminPage.projects.project.analysis.heatmap.dislikes": "Sevmediğim",
   "app.containers.AdminPage.projects.project.analysis.heatmap.explore": "Keşfedin",
   "app.containers.AdminPage.projects.project.analysis.heatmap.false": "Yanlış",

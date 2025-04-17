@@ -2638,7 +2638,6 @@
   "app.containers.AdminPage.projects.project.analysis.filterEmptyCustomFields": "Paslėpti atsakymus be atsakymo",
   "app.containers.AdminPage.projects.project.analysis.heatmap.columnValues": "Stulpelio reikšmės",
   "app.containers.AdminPage.projects.project.analysis.heatmap.count": "Šio derinio atvejų yra {count} .",
-  "app.containers.AdminPage.projects.project.analysis.heatmap.demographicInsights": "Demografinės įžvalgos",
   "app.containers.AdminPage.projects.project.analysis.heatmap.dislikes": "Nemėgsta",
   "app.containers.AdminPage.projects.project.analysis.heatmap.explore": "Naršykite",
   "app.containers.AdminPage.projects.project.analysis.heatmap.false": "Klaidingas",

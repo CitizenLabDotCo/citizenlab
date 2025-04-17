@@ -2638,7 +2638,6 @@
   "app.containers.AdminPage.projects.project.analysis.filterEmptyCustomFields": "Skjul svar uten svar",
   "app.containers.AdminPage.projects.project.analysis.heatmap.columnValues": "Kolonneverdier",
   "app.containers.AdminPage.projects.project.analysis.heatmap.count": "Det finnes {count} eksempler på denne kombinasjonen.",
-  "app.containers.AdminPage.projects.project.analysis.heatmap.demographicInsights": "Demografisk innsikt",
   "app.containers.AdminPage.projects.project.analysis.heatmap.dislikes": "Misliker",
   "app.containers.AdminPage.projects.project.analysis.heatmap.explore": "Utforsk",
   "app.containers.AdminPage.projects.project.analysis.heatmap.false": "Falsk",

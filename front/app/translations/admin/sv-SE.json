@@ -2638,7 +2638,6 @@
   "app.containers.AdminPage.projects.project.analysis.filterEmptyCustomFields": "Dölj svar utan svar",
   "app.containers.AdminPage.projects.project.analysis.heatmap.columnValues": "Kolumnvärden",
   "app.containers.AdminPage.projects.project.analysis.heatmap.count": "Det finns {count} exempel på denna kombination.",
-  "app.containers.AdminPage.projects.project.analysis.heatmap.demographicInsights": "Demografiska insikter",
   "app.containers.AdminPage.projects.project.analysis.heatmap.dislikes": "Tycker illa om",
   "app.containers.AdminPage.projects.project.analysis.heatmap.explore": "Utforska",
   "app.containers.AdminPage.projects.project.analysis.heatmap.false": "Falsk",

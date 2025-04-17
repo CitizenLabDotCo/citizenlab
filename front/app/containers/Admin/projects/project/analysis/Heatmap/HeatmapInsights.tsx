@@ -47,7 +47,7 @@ const HeatMapInsights = ({ onExploreClick }: HeatMapInsightsProps) => {
   const { data: analysisHeatmapCells } = useAnalysisHeatmapCells({
     analysisId,
     maxPValue: 0.05,
-    pageSize: 12,
+    pageSize: 25,
   });
 
   const selectedCell = analysisHeatmapCells?.data.find(
@@ -120,9 +120,7 @@ const HeatMapInsights = ({ onExploreClick }: HeatMapInsightsProps) => {
   return (
     <>
       <Box display="flex" alignItems="center" justifyContent="space-between">
-        <Text fontWeight="bold">
-          {formatMessage(messages.demographicInsights)}
-        </Text>
+        <Text fontWeight="bold">{formatMessage(messages.autoInsights)}</Text>
         <Box display="flex" alignItems="center" justifyContent="flex-end">
           <IconButton
             iconName="chevron-left"

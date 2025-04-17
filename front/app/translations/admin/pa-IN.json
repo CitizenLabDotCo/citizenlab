@@ -2638,7 +2638,6 @@
   "app.containers.AdminPage.projects.project.analysis.filterEmptyCustomFields": "ਬਿਨਾਂ ਜਵਾਬ ਦੇ ਜਵਾਬਾਂ ਨੂੰ ਲੁਕਾਓ",
   "app.containers.AdminPage.projects.project.analysis.heatmap.columnValues": "ਕਾਲਮ ਮੁੱਲ",
   "app.containers.AdminPage.projects.project.analysis.heatmap.count": "ਇਸ ਸੁਮੇਲ ਦੀਆਂ {count} ਉਦਾਹਰਣਾਂ ਹਨ।",
-  "app.containers.AdminPage.projects.project.analysis.heatmap.demographicInsights": "ਜਨਸੰਖਿਆ ਸੂਝ",
   "app.containers.AdminPage.projects.project.analysis.heatmap.dislikes": "ਨਾਪਸੰਦਾਂ",
   "app.containers.AdminPage.projects.project.analysis.heatmap.explore": "ਪੜਚੋਲ ਕਰੋ",
   "app.containers.AdminPage.projects.project.analysis.heatmap.false": "ਝੂਠਾ",

@@ -39,7 +39,7 @@ const HeatmapCellTagVsBin = ({ cell, row, column }: Props) => {
         bgColor={colors.grey200}
         py="20px"
         position="relative"
-        minHeight="60px"
+        minHeight="92px"
       />
     );
   }
@@ -64,10 +64,15 @@ const HeatmapCellTagVsBin = ({ cell, row, column }: Props) => {
             />
           </Text>
           {isSignificant ? (
-            <Text fontWeight="bold">
+            <Text fontWeight="bold" display="flex">
+              <Icon name="check-circle" mr="4px" width="20px" height="20px" />
               <FormattedMessage {...messages.statisticalSignificance} />
             </Text>
-          ) : null}
+          ) : (
+            <Text fontWeight="bold">
+              <FormattedMessage {...messages.noStatisticalSignificance} />
+            </Text>
+          )}
 
           <SummarizeButton
             row={row}
