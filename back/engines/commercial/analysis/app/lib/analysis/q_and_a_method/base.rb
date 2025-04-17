@@ -9,7 +9,7 @@ module Analysis
     ]
 
     LLMS = [
-      LLM::GPT4o.new,
+      LLM::GPT41.new,
       LLM::GPT4oMini.new
     ]
 

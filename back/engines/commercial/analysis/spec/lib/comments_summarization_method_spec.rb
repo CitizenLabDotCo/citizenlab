@@ -29,7 +29,7 @@ RSpec.describe Analysis::CommentsSummarizationMethod do
 
       comments_summary = create(:comments_summary, idea: input, summary: nil)
 
-      mock_llm = Analysis::LLM::GPT4o.new
+      mock_llm = Analysis::LLM::GPT41.new
       summarization_method = Analysis::CommentsSummarizationMethod::OnePassLLM.new(comments_summary, llm: mock_llm)
       expect(mock_llm).to receive(:chat_async).with(kind_of(String)) do |prompt, &block|
         expect(prompt).to include('a very good idea')
