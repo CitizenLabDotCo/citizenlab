@@ -4,6 +4,12 @@ import { ICustomFieldInputType } from 'api/custom_fields/types';
 
 import { builtInFieldKeys } from 'components/FormBuilder/utils';
 
+export const communityMonitorDefaultPageKeys = [
+  'page_quality_of_life',
+  'page_service_delivery',
+  'page_governance_and_trust',
+];
+
 const getBuiltinFieldIcon = (key: string): IconNames => {
   switch (key) {
     case 'title_multiloc':
