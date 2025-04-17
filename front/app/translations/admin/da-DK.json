@@ -463,7 +463,6 @@
   "app.components.formBuilder.editWarningModal.title4": "Rediger igangværende undersøgelse",
   "app.components.formBuilder.editWarningModal.yesContinue": "Ja, fortsæt",
   "app.components.formBuilder.nativeSurvey.UserFieldsInFormNotice.accessRightsSettings": "Indstillinger for adgangsrettigheder til denne undersøgelse",
-  "app.components.formBuilder.nativeSurvey.UserFieldsInFormNotice.fieldsEnabledMessage": "'Brugerfelter i undersøgelsesformular' er aktiveret. Når undersøgelsesformularen vises, vil alle konfigurerede demografiske spørgsmål blive tilføjet på en ny side her. Disse spørgsmål kan ændres på {accessRightsSettingsLink}.",
   "app.components.formBuilder.nativeSurvey.accessRightsNotice.accessRightsSettings": "indstillinger for adgangsrettigheder til denne fase.",
   "app.components.formBuilder.nativeSurvey.accessRightsNotice.anyoneBullet1": "Respondenterne skal ikke tilmelde sig eller logge ind for at indsende svar, hvilket kan resultere i dobbelte indsendelser.",
   "app.components.formBuilder.nativeSurvey.accessRightsNotice.anyoneBullet2": "Ved at springe tilmeldings-/login-trinnet over, accepterer du ikke at indsamle demografiske oplysninger om respondenterne, hvilket kan påvirke dine dataanalysefunktioner.",
