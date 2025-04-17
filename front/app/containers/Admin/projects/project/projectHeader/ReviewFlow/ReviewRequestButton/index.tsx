@@ -12,12 +12,14 @@ import ReviewRequestDropdown from './ReviewRequestDropdown';
 
 interface Props {
   projectId: string;
+  inFolder: boolean;
   approvalPending: boolean;
   processing: boolean;
 }
 
 const ReviewRequestButton = ({
   projectId,
+  inFolder,
   approvalPending,
   processing,
 }: Props) => {
@@ -60,6 +62,7 @@ const ReviewRequestButton = ({
           trackEventByName(tracks.projectReviewDropdownOpened);
         }}
         projectId={projectId}
+        inFolder={inFolder}
       />
     </>
   );
