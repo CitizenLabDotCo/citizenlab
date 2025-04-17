@@ -6,23 +6,27 @@ import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import Link from 'utils/cl-router/Link';
 
 import messages from './messages';
+import { RouteType } from 'routes';
 
 type UserFieldsInFormNoticeProps = {
   projectId: string;
   phaseId: string;
+  communityMonitor?: boolean;
 };
 
 const UserFieldsInFormNotice = ({
   projectId,
   phaseId,
+  communityMonitor = false,
 }: UserFieldsInFormNoticeProps) => {
   const { formatMessage } = useIntl();
 
+  const accessRightsPath: RouteType = communityMonitor
+    ? `/admin/community-monitor/settings/access-rights`
+    : `/admin/projects/${projectId}/phases/${phaseId}/access-rights`;
+
   const accessRightsSettingsLink = (
-    <Link
-      to={`/admin/projects/${projectId}/phases/${phaseId}/access-rights`}
-      target="_blank"
-    >
+    <Link to={accessRightsPath} target="_blank">
       {formatMessage(messages.accessRightsSettings)}
     </Link>
   );
