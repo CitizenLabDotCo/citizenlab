@@ -8,13 +8,13 @@ en-CA:
       range_min: "%{min} or more"
       range_max: "%{max} or less"
       tag_vs_bin:
-        inputs: "People who respond '%{answer}' to '%{question}' post %{percent_more_less} in '%{tag}' than average."
-        likes: "People who respond '%{answer}' to '%{question}' like %{percent_more_less} inputs in '%{tag}' than average."
-        dislikes: "People who respond '%{answer}' to '%{question}' dislike %{percent_more_less} inputs in '%{tag}' than average."
-        participants: "People who respond '%{answer}' to '%{question}' participate %{percent_more_less} in '%{tag}' than average."
+        inputs: "People who respond %{answer} to %{question} post %{percent_more_less} in %{tag} than average."
+        likes: "People who respond %{answer} to %{question} like %{percent_more_less} inputs in %{tag} than average."
+        dislikes: "People who respond %{answer} to %{question} dislike %{percent_more_less} inputs in %{tag} than average."
+        participants: "People who respond %{answer} to %{question} participate %{percent_more_less} in %{tag} than average."
       bin_vs_bin:
-        inputs: "People who respond '%{answer1}' to '%{question1}' answer '%{answer2}' to '%{question2}' %{percent_more_less} than average."
-        likes: "People who respond '%{answer1}' to '%{question1}' like %{percent_more_less} inputs when they answer '%{answer2}' to '%{question2}' than average."
-        dislikes: "People who respond '%{answer1}' to '%{question1}' dislike %{percent_more_less} inputs when they answer '%{answer2}' to '%{question2}' than average."
-        participants: "People who respond '%{answer1}' to '%{question1}' participate %{percent_more_less} when they answer '%{answer2}' to '%{question2}' than average."
+        inputs: "People who respond %{answer1} to %{question1} answer %{answer2} to %{question2} %{percent_more_less} than average."
+        likes: "People who respond %{answer1} to %{question1} like %{percent_more_less} inputs when they answer %{answer2} to %{question2} than average."
+        dislikes: "People who respond %{answer1} to %{question1} dislike %{percent_more_less} inputs when they answer %{answer2} to %{question2} than average."
+        participants: "People who respond %{answer1} to %{question1} participate %{percent_more_less} when they answer %{answer2} to %{question2} than average."
 
