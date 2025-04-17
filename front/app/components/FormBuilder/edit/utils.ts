@@ -41,10 +41,10 @@ export const getQuestionCategory = (
     .find((field) => field.input_type === 'page');
 
   // If a page is found and its key maps to a category, return the category
-  // Otherwise, return 'other'
+  // Otherwise, return undefined
   return page?.key && categoryPageKeyMapping[page.key]
     ? categoryPageKeyMapping[page.key]
-    : 'other';
+    : undefined;
 };
 
 export const supportsLinearScaleLabels = (inputType: ICustomFieldInputType) => {
