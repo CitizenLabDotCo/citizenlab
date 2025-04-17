@@ -43,9 +43,9 @@ const CommunityMonitorModal = ({
   const allowedOnUrl = isAllowedOnUrl(location.pathname);
 
   // Check if the community monitor is enabled
-  const isCommunityMonitorEnabled =
-    useFeatureFlag({ name: 'community_monitor' }) ||
-    new Date() < new Date('2025-07-01'); // TODO: Remove trial period after 2025-06-30;
+  const isCommunityMonitorEnabled = useFeatureFlag({
+    name: 'community_monitor',
+  });
 
   // Check if we have already stored a cookie, indicating the user has seen the modal
   const hasSeenModal = get('community_monitor_modal_seen');
