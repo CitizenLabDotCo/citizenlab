@@ -6,16 +6,17 @@ import { parseTimeSeries, parseStats } from './parse';
 
 describe('parseTimeSeries', () => {
   it('works', () => {
-    const timeSeries = [
-      {
-        first_dimension_date_registration_date: '2022-09-29',
-        count: 10,
-      },
-      {
-        first_dimension_date_registration_date: '2022-10-02',
-        count: 5,
-      },
-    ];
+    const timeSeries: RegistrationsResponse['data']['attributes']['registrations_timeseries'] =
+      [
+        {
+          date_group: '2022-09-01',
+          registrations: 10,
+        },
+        {
+          date_group: '2022-10-01',
+          registrations: 5,
+        },
+      ];
 
     const output = parseTimeSeries(
       timeSeries,
@@ -36,15 +37,13 @@ describe('parseTimeSeries', () => {
 
 describe('parseStats', () => {
   it('works', () => {
-    const response: RegistrationsResponse['data']['attributes'] = [
-      [],
-      [{ count: 10 }],
-      [{ count_visitor_id: 20 }],
-      [{ count: 10 }],
-      [{ count: 8 }],
-      [{ count_visitor_id: 32 }],
-      [{ count: 8 }],
-    ];
+    const response: RegistrationsResponse['data']['attributes'] = {
+      registrations_timeseries: [],
+      registrations_whole_period: 10,
+      registration_rate_whole_period: 0.5,
+      registrations_compared_period: 8,
+      registration_rate_compared_period: 0.25,
+    };
 
     const expectedOutput = {
       registrations: {
