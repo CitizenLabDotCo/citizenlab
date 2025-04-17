@@ -93,7 +93,7 @@ describe('Edit community monitor survey', () => {
       // Check that the new question is in the correct category
       expect(newCustomField.attributes).to.have.property(
         'question_category',
-        'other'
+        undefined
       );
     });
   });
