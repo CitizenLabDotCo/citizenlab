@@ -10,7 +10,7 @@ import { useIntl } from 'utils/cl-intl';
 
 import FormResultsPage from './FormResultsPage';
 import FormResultsQuestion from './FormResultsQuestion';
-import ViewSingleSubmissionNotice from './FormResultsQuestion/components/ViewSingleSubmissionNotice';
+import AnalysisBanner from './FormResultsQuestion/components/AnalysisBanner';
 import messages from './messages';
 
 type Props = {
@@ -58,13 +58,6 @@ const FormResults = (props: Props) => {
         })
       : formatMessage(messages.noSurveyResponses);
 
-  // If a text question exists, we use it to show the notice to view
-  // individual submissions in the AI analysis view.
-  const firstTextQuestion = results.find(
-    (result) =>
-      result.inputType === 'text' || result.inputType === 'multiline_text'
-  );
-
   const logicConfig = {
     toggleLogicIds,
     filterLogicIds,
@@ -78,7 +71,7 @@ const FormResults = (props: Props) => {
           {surveyResponseMessage}
         </Text>
       </Box>
-      {firstTextQuestion?.customFieldId && <ViewSingleSubmissionNotice />}
+      <AnalysisBanner />
       <Box mt="24px">
         {totalSubmissions > 0 &&
           results.map((result, index) => {

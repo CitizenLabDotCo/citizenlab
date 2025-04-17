@@ -6,13 +6,14 @@ export default defineMessages({
     defaultMessage: 'Publish',
   },
   onlyAdminsAndFolderManagersCanPublish: {
-    id: 'app.components.app.containers.AdminPage.ProjectEdit.projectHeader.onlyAdminsAndFolderManagersCanPublish',
-    defaultMessage: 'Only admins and Folder Managers can publish projects.',
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.projectHeader.onlyAdminsAndFolderManagersCanPublish2',
+    defaultMessage:
+      'Only admins{inFolder, select, true { or the Folder Managers} other {}} can publish the project',
   },
   requestApprovalDescription: {
-    id: 'app.components.app.containers.AdminPage.ProjectEdit.projectHeader.requestApprovalDescription1',
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.projectHeader.requestApprovalDescription2',
     defaultMessage:
-      'Only admins and Folder Managers can approve projects. Click the button to ask for approval.',
+      'The project must be approved by an admin{inFolder, select, true { or one of the Folder Managers} other {}} before you can publish it. Click the button below to request approval.',
   },
   requestApproval: {
     id: 'app.components.app.containers.AdminPage.ProjectEdit.projectHeader.requestApproval',
@@ -23,17 +24,15 @@ export default defineMessages({
     defaultMessage: 'Waiting for approval',
   },
   pendingApprovalTooltip: {
-    id: 'app.components.app.containers.AdminPage.ProjectEdit.projectHeader.pendingApprovalTooltip',
-    defaultMessage:
-      'Admins and Folder Managers have been notified to approve your project.',
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.projectHeader.pendingApprovalTooltip2',
+    defaultMessage: 'Project reviewers have been notified.',
   },
   approve: {
     id: 'app.components.app.containers.AdminPage.ProjectEdit.projectHeader.approve',
     defaultMessage: 'Approve',
   },
   approveTooltip: {
-    id: 'app.components.app.containers.AdminPage.ProjectEdit.projectHeader.approveTooltip',
-    defaultMessage:
-      'Approving allows the Project Manager to publish the project.',
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.projectHeader.approveTooltip2',
+    defaultMessage: 'Approving allows Project Managers to publish the project.',
   },
 });
