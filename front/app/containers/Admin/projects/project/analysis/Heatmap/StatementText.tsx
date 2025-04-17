@@ -22,7 +22,6 @@ const percentRegex =
 const QuestionWrapper = styled.span`
   padding: 2px;
   text-decoration: underline;
-  text-decoration-style: dashed;
   text-underline-offset: 2px;
 `;
 const AnswerWrapper = styled.span`
@@ -38,7 +37,7 @@ const TagWrapper = styled.span`
 const PositivePercentWrapper = styled.span`
   font-weight: bold;
   padding: 2px;
-  color: ${({ theme }) => theme.colors.green700};
+  color: ${({ theme }) => theme.colors.green500};
 `;
 
 const NegativePercentWrapper = styled.span`
@@ -53,13 +52,13 @@ const StatementText = ({ cell }: { cell: IAnalysisHeatmapCellData }) => {
 
   let output: React.ReactNode[];
   output = reactStringReplace(text, answerRegex, (match) => (
-    <Tooltip content={match} disabled={match.length < 30}>
-      <AnswerWrapper>{truncate(match, 30)}</AnswerWrapper>
+    <Tooltip content={match} disabled={match.length < 40}>
+      <AnswerWrapper>{truncate(match, 40)}</AnswerWrapper>
     </Tooltip>
   ));
   output = reactStringReplace(output, questionRegex, (match) => (
-    <Tooltip content={match} disabled={match.length < 20}>
-      <QuestionWrapper>{truncate(match, 20)}</QuestionWrapper>
+    <Tooltip content={match} disabled={match.length < 40}>
+      <QuestionWrapper>{truncate(match, 40)}</QuestionWrapper>
     </Tooltip>
   ));
   output = reactStringReplace(output, tagRegex, (match) => (
