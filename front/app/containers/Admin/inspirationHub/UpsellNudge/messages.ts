@@ -6,9 +6,9 @@ export default defineMessages({
     defaultMessage: 'Join a network of pioneering democracy practitioners',
   },
   upsellDescription: {
-    id: 'app.containers.Admin.inspirationHub.UpsellNudge.upsellDescription',
+    id: 'app.containers.Admin.inspirationHub.UpsellNudge.upsellDescriptionV2',
     defaultMessage:
-      'The Inspiration Hub connects you to a curated feed exceptional participation projects on Go Vocal platforms across the world. Learn how other cities run successful projects & talk to other practitioners.',
+      'The Inspiration Hub connects you to a curated feed of exceptional participation projects on Go Vocal platforms across the world. Learn how other cities run successful projects & talk to other practitioners.',
   },
   featureNotIncluded: {
     id: 'app.containers.Admin.inspirationHub.UpsellNudge.featureNotIncluded',
@@ -28,8 +28,8 @@ export default defineMessages({
     defaultMessage: 'Curated list of the best projects around the globe.',
   },
   bulletPoint2: {
-    id: 'app.containers.Admin.inspirationHub.UpsellNudge.bulletPoint2',
-    defaultMessage: 'Talk & learn from fellow practitioners.',
+    id: 'app.containers.Admin.inspirationHub.UpsellNudge.bulletPoint2V2',
+    defaultMessage: 'Talk to, and learn from, fellow practitioners.',
   },
   bulletPoint3: {
     id: 'app.containers.Admin.inspirationHub.UpsellNudge.bulletPoint3',
