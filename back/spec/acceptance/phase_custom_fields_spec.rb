@@ -71,7 +71,7 @@ resource 'Phase level Custom Fields' do
         expect(ui_schema.keys).to match_array %i[type options elements]
         expect(ui_schema[:type]).to eq 'Categorization'
         expect(ui_schema[:options]).to eq({ formId: 'idea-form', inputTerm: 'question' })
-        expect(ui_schema[:elements].size).to eq 4
+        expect(ui_schema[:elements].size).to eq 5
       end
 
       describe 'Random ordering' do
