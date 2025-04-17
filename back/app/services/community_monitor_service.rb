@@ -2,7 +2,7 @@
 
 class CommunityMonitorService
   def enabled?
-    return true if Time.zone.now < Date.parse('2025-07-01') # TODO: Remove this after 2025-06-30
+    return true if Time.zone.now < Date.parse('2025-07-01') # TODO: Remove trial period after 2025-06-30
 
     settings.dig('community_monitor', 'enabled') || false
   end
@@ -81,9 +81,47 @@ class CommunityMonitorService
     project
   end
 
+  def find_or_create_previous_quarter_report
+    # Check if any responses for the previous quarter exist
+    # Assumes this is scheduled as planned on the first day of the quarter
+    start_of_day = Time.zone.now.beginning_of_day
+    responses = phase.ideas.where(created_at: start_of_day - 3.months..start_of_day)
+    return false if responses.blank?
+
+    year, quarter = previous_quarter
+
+    # Does the report already exist?
+    existing_report = ReportBuilder::Report.find_by(
+      phase: phase,
+      year: year,
+      quarter: quarter
+    )
+    return existing_report if existing_report
+
+    # Create a new report for the previous quarter if one does not already exist
+    ReportBuilder::Report.create!(
+      name: "#{year}-#{quarter} #{I18n.t('email_campaigns.community_monitor_report.report_name')}",
+      phase: phase,
+      year: year,
+      quarter: quarter
+    )
+  end
+
   private
 
   def settings
     AppConfiguration.instance.settings
+  end
+
+  def previous_quarter
+    date = 1.month.ago
+    year = date.year
+    quarter = case date.month
+              when 1..3 then 1
+              when 4..6 then 2
+              when 7..9 then 3
+              when 10..12 then 4
+              end
+    [year, quarter]
   end
 end

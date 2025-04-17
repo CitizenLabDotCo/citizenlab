@@ -46,7 +46,7 @@ const FieldSelector = memo(
     const { data: userCustomFields } = useUserCustomFields({});
     const isCommunityMonitorEnabled =
       useFeatureFlag({ name: 'community_monitor' }) ||
-      new Date() < new Date('2025-07-01'); // TODO: Remove this after 2025-06-30
+      new Date() < new Date('2025-07-01'); // TODO: Remove trial period after 2025-06-30
 
     const generateOptions = (
       userCustomFields: IUserCustomFieldData[]
