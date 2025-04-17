@@ -678,6 +678,7 @@
   "app.components.formBuilder.buttonLabel": "Düğme etiketi",
   "app.components.formBuilder.buttonLink": "Düğme bağlantısı",
   "app.components.formBuilder.cancelLeaveBuilderButtonText": "İptal",
+  "app.components.formBuilder.category": "Kategori",
   "app.components.formBuilder.chooseMany": "Çok sayıda seçin",
   "app.components.formBuilder.chooseOne": "Birini seçin",
   "app.components.formBuilder.close": "Kapat",
