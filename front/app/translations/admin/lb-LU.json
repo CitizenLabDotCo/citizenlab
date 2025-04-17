@@ -2542,7 +2542,7 @@
   "app.containers.AdminPage.projects.project.analysis.filterEmptyCustomFields": "Verstoppen Äntwerte ouni Äntwert",
   "app.containers.AdminPage.projects.project.analysis.heatmap.columnValues": "Column values",
   "app.containers.AdminPage.projects.project.analysis.heatmap.count": "There are {count} instances of this combination.",
-  "app.containers.AdminPage.projects.project.analysis.heatmap.demographicInsights": "Demographic insights",
+  "app.containers.AdminPage.projects.project.analysis.heatmap.demographicInsights": "Demographesch Abléck",
   "app.containers.AdminPage.projects.project.analysis.heatmap.dislikes": "Dislikes",
   "app.containers.AdminPage.projects.project.analysis.heatmap.explore": "Explore",
   "app.containers.AdminPage.projects.project.analysis.heatmap.false": "False",
