@@ -678,6 +678,7 @@
   "app.components.formBuilder.buttonLabel": "ملصق الزر",
   "app.components.formBuilder.buttonLink": "رابط الزر",
   "app.components.formBuilder.cancelLeaveBuilderButtonText": "يلغي",
+  "app.components.formBuilder.category": "فئة",
   "app.components.formBuilder.chooseMany": "اختيار متعدد",
   "app.components.formBuilder.chooseOne": "اختيار واحد",
   "app.components.formBuilder.close": "إغلاق",
