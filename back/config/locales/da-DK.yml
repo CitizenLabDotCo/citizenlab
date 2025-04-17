@@ -171,12 +171,15 @@ da:
       attachments:
         title: Vedhæftede filer
         description:
-      page1:
+      title_page:
         description:
-      page2:
+      body_page:
+        title: Fortæl os mere
+        description:
+      uploads_page:
         title: Billeder og vedhæftede filer
         description:
-      page3:
+      details_page:
         title: Detaljer
         description:
       other_input_field:
