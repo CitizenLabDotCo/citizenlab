@@ -78,7 +78,7 @@ const HealthScoreWidget = ({ phaseId, ...props }: Props) => {
         gap="20px"
       >
         <Box>
-          <Box display="flex">
+          <Box display="flex" alignItems="center">
             <Icon
               my="auto"
               height="18px"
@@ -90,6 +90,8 @@ const HealthScoreWidget = ({ phaseId, ...props }: Props) => {
             </Title>
             <IconTooltip
               ml="4px"
+              iconSize="16px"
+              icon="info-outline"
               content={formatMessage(messages.healthScoreDescription)}
             />
           </Box>
