@@ -678,6 +678,7 @@
   "app.components.formBuilder.buttonLabel": "Knappetikett",
   "app.components.formBuilder.buttonLink": "Länk till knapp",
   "app.components.formBuilder.cancelLeaveBuilderButtonText": "Avbryt",
+  "app.components.formBuilder.category": "Kategori",
   "app.components.formBuilder.chooseMany": "Välj flera",
   "app.components.formBuilder.chooseOne": "Välj en",
   "app.components.formBuilder.close": "Stäng",

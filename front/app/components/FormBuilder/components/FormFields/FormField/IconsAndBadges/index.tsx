@@ -18,7 +18,7 @@ import { useIntl, FormattedMessage } from 'utils/cl-intl';
 import messages from '../../../messages';
 import { getTranslatedFieldBadgeLabel } from '../../utils';
 
-import { getFieldIcon } from './utils';
+import { communityMonitorDefaultPageKeys, getFieldIcon } from './utils';
 
 interface Props {
   field: IFlatCustomField;
@@ -44,6 +44,21 @@ const IconsAndBadges = ({ field, displayBuiltInFields }: Props) => {
           content={formatMessage(messages.fieldIsNotVisibleTooltip)}
           maxTooltipWidth={250}
         />
+      )}
+      {communityMonitorDefaultPageKeys.includes(field.key) && (
+        <Box mt="auto" mb="auto" ml="12px">
+          <Badge className="inverse" color={colors.orange100}>
+            <Text
+              color="orange500"
+              py="0px"
+              my="0px"
+              fontSize="xs"
+              fontWeight="bold"
+            >
+              <FormattedMessage {...messages.category} />
+            </Text>
+          </Badge>
+        </Box>
       )}
       {field.required && (
         <Box mt="auto" mb="auto" ml="12px">
