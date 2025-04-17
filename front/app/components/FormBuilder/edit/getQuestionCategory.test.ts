@@ -63,7 +63,7 @@ describe('getQuestionCategory', () => {
     expect(result).toBe('service_delivery');
   });
 
-  it('returns "other" if nearest page key is not in mapping', () => {
+  it('returns "undefined" if nearest page key is not in mapping', () => {
     const pageField1 = createField('1', 'page_quality_of_life', 'page');
     const unknownPage = createField('2', 'page_random_custom', 'page');
     const question = createField(
@@ -78,6 +78,6 @@ describe('getQuestionCategory', () => {
       question,
     ]);
 
-    expect(result).toBe('other');
+    expect(result).toBe(undefined);
   });
 });
