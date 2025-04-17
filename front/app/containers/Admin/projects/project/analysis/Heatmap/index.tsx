@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 
+import { Button, Tooltip } from '@citizenlab/cl2-component-library';
 import { useParams } from 'react-router-dom';
 
 import useAnalysis from 'api/analyses/useAnalysis';
@@ -40,7 +41,7 @@ const Heatmap = () => {
 
   const { data: project } = useProjectById(projectId);
 
-  const statisticalInsightsEnabled = useFeatureFlag({
+  const autoInsightsAllowed = useFeatureFlag({
     name: 'auto_insights',
     onlyCheckAllowed: true,
   });
@@ -69,11 +70,18 @@ const Heatmap = () => {
   if (
     !userCustomFields ||
     !filteredInputCustomFields ||
-    !statisticalInsightsEnabled ||
     !project ||
     authUser?.data.attributes.highest_role !== 'super_admin'
   ) {
     return null;
+  }
+
+  if (!autoInsightsAllowed) {
+    return (
+      <Tooltip content={formatMessage(messages.autoInsightsUpsellNudge)}>
+        <Button icon="lock">{formatMessage(messages.viewAutoInsights)}</Button>
+      </Tooltip>
+    );
   }
 
   if (project.data.attributes.participants_count < 30) {

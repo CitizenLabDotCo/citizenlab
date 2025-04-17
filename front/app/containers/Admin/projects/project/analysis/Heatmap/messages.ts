@@ -90,4 +90,13 @@ export default defineMessages({
     id: 'app.containers.AdminPage.projects.project.analysis.heatmap.tags',
     defaultMessage: 'Analysis tags',
   },
+  viewAutoInsights: {
+    id: 'app.containers.AdminPage.projects.project.analysis.heatmap.viewAutoInsights',
+    defaultMessage: 'View auto-insights',
+  },
+  autoInsightsUpsellNudge: {
+    id: 'app.containers.AdminPage.projects.project.analysis.heatmap.autoInsightsUpsellNudge',
+    defaultMessage:
+      'This feature is not included in your current plan. Talk to your Government Success Manager or admin to unlock it.',
+  },
 });
