@@ -1,6 +1,13 @@
 import React from 'react';
 
-import { Badge, Box, colors, Title } from '@citizenlab/cl2-component-library';
+import {
+  Badge,
+  Box,
+  colors,
+  Icon,
+  Title,
+  Tooltip,
+} from '@citizenlab/cl2-component-library';
 
 import useCommunityMonitorProject from 'api/community_monitor/useCommunityMonitorProject';
 
@@ -37,9 +44,19 @@ const LiveMonitor = () => {
             {formatMessage(messages.communityMonitorLabel)}
           </Title>
           <Box display="flex" mt="4px">
-            <Badge color={colors.primary}>
-              {formatMessage(messages.betaLabel)}
-            </Badge>
+            <Tooltip content={formatMessage(messages.betaTooltipExplanation)}>
+              <Badge color={colors.primary}>
+                <Box display="flex" alignItems="center">
+                  {formatMessage(messages.betaLabel)}
+                  <Icon
+                    ml="4px"
+                    width="16px"
+                    name="info-outline"
+                    fill={colors.primary}
+                  />
+                </Box>
+              </Badge>
+            </Tooltip>
           </Box>
         </Box>
 
