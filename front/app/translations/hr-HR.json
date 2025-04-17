@@ -678,6 +678,7 @@
   "app.components.formBuilder.buttonLabel": "Oznaka gumba",
   "app.components.formBuilder.buttonLink": "Veza gumba",
   "app.components.formBuilder.cancelLeaveBuilderButtonText": "Otkazati",
+  "app.components.formBuilder.category": "Kategorija",
   "app.components.formBuilder.chooseMany": "Odaberite mnogo",
   "app.components.formBuilder.chooseOne": "Odaberite jedan",
   "app.components.formBuilder.close": "Zatvori",

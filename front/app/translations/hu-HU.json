@@ -678,6 +678,7 @@
   "app.components.formBuilder.buttonLabel": "Gomb címke",
   "app.components.formBuilder.buttonLink": "Gomb link",
   "app.components.formBuilder.cancelLeaveBuilderButtonText": "Mégsem",
+  "app.components.formBuilder.category": "Kategória",
   "app.components.formBuilder.chooseMany": "Válassz sokat",
   "app.components.formBuilder.chooseOne": "Válassz egyet",
   "app.components.formBuilder.close": "Közeli",
