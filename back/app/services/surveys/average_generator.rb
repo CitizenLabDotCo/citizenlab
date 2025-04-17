@@ -58,7 +58,7 @@ module Surveys
       end
       averages = order_by_quarter(averages)
       averages = switch_keys(averages)
-      averages['other'] = averages.delete(nil) if averages.key?(nil) # NOTE: custom_field model should have return 'other' but does not
+      averages['other'] = averages.delete(nil) if averages.key?(nil) # NOTE: custom_field model should return 'other' but does not
 
       CustomField::QUESTION_CATEGORIES.each { |c| averages[c] ||= {} } # Add in any missing categories
       averages
