@@ -112,6 +112,7 @@ const CommunityMonitorCTA = ({
           <Image
             src={SentimentQuestionPreview}
             alt={formatMessage(messages.sentimentQuestionPreviewAltText)}
+            width="240px"
           />
         </Box>
 
