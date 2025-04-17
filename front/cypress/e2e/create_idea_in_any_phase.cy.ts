@@ -68,6 +68,9 @@ describe('Idea creation', () => {
     cy.get('#e2e-idea-title-input input').type('x');
     cy.get('#e2e-idea-title-input input').clear();
     cy.get('#e2e-idea-title-input input').type(`${newIdeaTitle}`);
+
+    cy.get('[data-cy="e2e-next-page"]').should('be.visible').click();
+
     cy.get('#e2e-idea-description-input .ql-editor').type(newIdeaContent);
 
     // Go to the next page of the idea form
