@@ -2,6 +2,8 @@
 
 class CommunityMonitorService
   def enabled?
+    return true if Time.zone.now < Date.parse('2025-07-01') # TODO: Remove this after 2025-06-30
+
     settings.dig('community_monitor', 'enabled') || false
   end
 
@@ -12,9 +14,15 @@ class CommunityMonitorService
   end
 
   def project
-    return nil unless enabled?
+    return nil unless enabled? && project_id
 
-    Project.find(project_id)
+    @project ||= Project.find(project_id)
+  end
+
+  def phase
+    return nil unless enabled? && project_id
+
+    @phase ||= Phase.find_by(project_id: project_id)
   end
 
   def find_or_create_project(current_user)

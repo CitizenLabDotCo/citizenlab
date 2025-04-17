@@ -127,12 +127,7 @@ module EmailCampaigns
 
     # Return the community monitor phase if enabled
     def community_monitor_phase
-      @community_monitor_phase ||= begin
-        settings = AppConfiguration.instance.settings
-        enabled = settings.dig('community_monitor', 'enabled')
-        project_id = settings.dig('community_monitor', 'project_id')
-        Phase.find_by(project_id: project_id) if enabled && project_id
-      end
+      @community_monitor_phase ||= CommunityMonitorService.new.phase
     end
 
     def previous_quarter

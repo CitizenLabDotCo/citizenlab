@@ -39,9 +39,9 @@ const RadioButtons = ({ value, onChange }: Props) => {
   const platformTemplatesEnabled = useFeatureFlag({
     name: 'platform_templates',
   });
-  const communityMonitorEnabled = useFeatureFlag({
-    name: 'community_monitor',
-  });
+  const communityMonitorEnabled =
+    useFeatureFlag({ name: 'community_monitor' }) ||
+    new Date() < new Date('2025-07-01'); // TODO: Remove this after 2025-06-30;
 
   let templateTypes = TEMPLATE_TYPES;
 
