@@ -678,6 +678,7 @@
   "app.components.formBuilder.buttonLabel": "Ετικέτα κουμπιού",
   "app.components.formBuilder.buttonLink": "Σύνδεσμος κουμπιών",
   "app.components.formBuilder.cancelLeaveBuilderButtonText": "Ακύρωση",
+  "app.components.formBuilder.category": "Κατηγορία",
   "app.components.formBuilder.chooseMany": "Επιλέξτε πολλά",
   "app.components.formBuilder.chooseOne": "Επιλέξτε ένα",
   "app.components.formBuilder.close": "Κλείστε το",
