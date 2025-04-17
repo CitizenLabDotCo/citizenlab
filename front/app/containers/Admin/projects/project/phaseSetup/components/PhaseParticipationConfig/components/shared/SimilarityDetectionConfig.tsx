@@ -66,7 +66,7 @@ const SimilarityDetectionConfig = ({
             label={
               <FormattedMessage {...messages.enableSimilarInputDetection} />
             }
-            checked={!!similarity_enabled}
+            checked={!!similarity_enabled && isAuthoringAssistanceAllowed}
             onChange={() => handleSimilarityEnabledChange(!similarity_enabled)}
             id="similarity_enabled"
             disabled={!isAuthoringAssistanceAllowed}
