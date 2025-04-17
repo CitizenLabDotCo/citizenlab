@@ -78,7 +78,7 @@ RSpec.describe EmailCampaigns::Campaigns::CommunityMonitorReport do
 
       it 'returns true and creates a new report when there are responses in the previous quarter' do
         travel_to(Date.parse('2025-04-01')) do
-          create(:native_survey_response, project: phase.project, creation_phase: phase, created_at: 2.months.ago)
+          create(:native_survey_response, project: phase.project, creation_phase: phase, published_at: 2.months.ago)
           expect(ReportBuilder::Report.count).to eq 0
           expect(campaign.send(:content_worth_sending?, {})).to be true
           expect(ReportBuilder::Report.count).to eq 1
@@ -89,7 +89,7 @@ RSpec.describe EmailCampaigns::Campaigns::CommunityMonitorReport do
 
       it 'returns true and does not create a new report if one exists for the previous quarter' do
         travel_to(Date.parse('2025-04-01')) do
-          create(:native_survey_response, project: phase.project, creation_phase: phase, created_at: 2.months.ago)
+          create(:native_survey_response, project: phase.project, creation_phase: phase, published_at: 2.months.ago)
           create(:report, name: 'Existing Community Monitor Report', phase: phase, year: 2025, quarter: 1)
           expect(ReportBuilder::Report.count).to eq 1
           expect(campaign.send(:content_worth_sending?, {})).to be true
@@ -99,7 +99,7 @@ RSpec.describe EmailCampaigns::Campaigns::CommunityMonitorReport do
 
       it 'returns false when there are only responses in other quarters' do
         travel_to(Date.parse('2025-04-01')) do
-          create(:native_survey_response, project: phase.project, creation_phase: phase, created_at: 4.months.ago)
+          create(:native_survey_response, project: phase.project, creation_phase: phase, published_at: 4.months.ago)
           expect(campaign.send(:content_worth_sending?, {})).to be false
           expect(ReportBuilder::Report.count).to eq 0
         end
