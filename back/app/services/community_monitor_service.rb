@@ -82,21 +82,22 @@ class CommunityMonitorService
   end
 
   def find_or_create_previous_quarter_report
-    # Check if any responses for the previous quarter exist
-    # Assumes this is scheduled as planned on the first day of the quarter
-    start_of_day = Time.zone.now.beginning_of_day
-    responses = phase.ideas.where(created_at: start_of_day - 3.months..start_of_day)
-    return false if responses.blank?
+    return nil unless enabled? && project_id
 
-    year, quarter = previous_quarter
+    start_date, end_date = previous_quarter_range
+    year, quarter = previous_quarter(start_date)
 
-    # Does the report already exist?
+    # Return existing report if it exists
     existing_report = ReportBuilder::Report.find_by(
       phase: phase,
       year: year,
       quarter: quarter
     )
     return existing_report if existing_report
+
+    # Do not create a report if there are no responses for the previous quarter
+    responses = phase.ideas.where(published_at: start_date..end_date)
+    return nil if responses.blank?
 
     # Create a new report for the previous quarter if one does not already exist
     ReportBuilder::Report.create!(
@@ -113,15 +114,26 @@ class CommunityMonitorService
     AppConfiguration.instance.settings
   end
 
-  def previous_quarter
-    date = 1.month.ago
+  def previous_quarter(date)
     year = date.year
     quarter = case date.month
-              when 1..3 then 1
-              when 4..6 then 2
-              when 7..9 then 3
-              when 10..12 then 4
-              end
+    when 1..3 then 1
+    when 4..6 then 2
+    when 7..9 then 3
+    when 10..12 then 4
+    end
     [year, quarter]
+  end
+
+  def previous_quarter_range
+    today = Time.zone.today
+    previous_quarter_date = today << 3 # Subtract 3 months to get a date in the previous quarter
+
+    # Determine the start and end months of the previous quarter
+    start_month = (((previous_quarter_date.month - 1) / 3) * 3) + 1
+    start_date = Date.new(previous_quarter_date.year, start_month, 1)
+    end_date = (start_date >> 3) # Add 3 months for the start of the next quarter
+
+    [start_date, end_date]
   end
 end
