@@ -76,7 +76,7 @@ const Heatmap = () => {
     return null;
   }
 
-  if (autoInsightsAllowed) {
+  if (!autoInsightsAllowed) {
     return (
       <Tooltip content={formatMessage(messages.autoInsightsUpsellNudge)}>
         <Button icon="lock">{formatMessage(messages.viewAutoInsights)}</Button>
