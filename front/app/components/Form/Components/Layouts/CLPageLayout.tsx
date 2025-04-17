@@ -63,6 +63,7 @@ import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 import eventEmitter from 'utils/eventEmitter';
 import { isPage } from 'utils/helperUtils';
 
+import { useIdeaSelect } from '../../../../containers/IdeasNewPage/SimilarInputs/InputSelectContext';
 import getPageSchema from '../../utils/getPageSchema';
 import { useErrorToRead } from '../Fields/ErrorToReadContext';
 
@@ -93,6 +94,7 @@ const CLPageLayout = memo(
     const theme = useTheme();
     const { pathname } = useLocation();
     const isAdminPage = isPage('admin', pathname);
+    const { onIdeaSelect } = useIdeaSelect();
     const isIdeaEditPage = isPage('idea_edit', location.pathname);
 
     // We can cast types because the tester made sure we only get correct values
@@ -248,6 +250,8 @@ const CLPageLayout = memo(
     const handleNextAndSubmit = async () => {
       if (!onSubmit) return;
 
+      // Hide idea details when going to the next page
+      onIdeaSelect(null);
       const sanitizedData = sanitizeFormData(data);
 
       const isValid = customAjv.validate(
@@ -333,6 +337,8 @@ const CLPageLayout = memo(
     };
 
     const handlePrevious = () => {
+      // Hide idea details when going back to a previous page
+      onIdeaSelect(null);
       // Get scopes of elements with rules on the current page
       const ruleElementsScopes = currentPage.elements
         .filter((element) => {
