@@ -1208,7 +1208,7 @@
   "app.containers.Admin.reporting.components.ReportBuilderPage.createReportModalTitle2": "Create a report",
   "app.containers.Admin.reporting.components.ReportBuilderPage.customizeReport": "Customise your report and share it with internal stakeholders or community as a PDF file.",
   "app.containers.Admin.reporting.components.ReportBuilderPage.emptyStateButtonText": "Create a report",
-  "app.containers.Admin.reporting.components.ReportBuilderPage.emptyStateTitle": "Create your first project report",
+  "app.containers.Admin.reporting.components.ReportBuilderPage.emptyStateTitle": "Készítse el első projektjelentését",
   "app.containers.Admin.reporting.components.ReportBuilderPage.noProjectSelected": "No project selected",
   "app.containers.Admin.reporting.components.ReportBuilderPage.platformTemplate": "Start with a platform template",
   "app.containers.Admin.reporting.components.ReportBuilderPage.printToPdf": "Print to PDF",
