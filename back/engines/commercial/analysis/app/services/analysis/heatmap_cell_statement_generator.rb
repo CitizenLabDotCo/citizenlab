@@ -37,7 +37,7 @@ module Analysis
           "analysis.cell_statement.tag_vs_bin.#{cell.unit}",
           answer:,
           question:,
-          tag: tag_name,
+          tag: "<span data-type=\"tag\" data-tag-id=\"#{tag.id}\">#{tag_name}</span>",
           percent_more_less:
         )
       end
@@ -62,11 +62,11 @@ module Analysis
     end
 
     def bin_to_question_str(bin)
-      @multiloc_service.t(bin.custom_field.title_multiloc)
+      "<span data-type=\"question\" data-bin-id=\"#{bin.id}\">#{@multiloc_service.t(bin.custom_field.title_multiloc)}</span>"
     end
 
     def bin_to_answer_str(bin)
-      case bin
+      answer = case bin
       when CustomFieldBins::OptionBin
         @multiloc_service.t(bin.custom_field_option.title_multiloc)
       when CustomFieldBins::ValueBin
@@ -82,12 +82,14 @@ module Analysis
       else
         raise "Unsupported bin type for statement generation: #{bin.class}"
       end
+      "<span data-type=\"answer\" data-bin-id=\"#{bin.id}\">#{answer}</span>"
     end
 
     def lift_to_percentage_more_less_str(lift)
       more_or_less = lift >= 1 ? 'more' : 'less'
       percent = decimal_to_percentage(lift)
-      I18n.t("analysis.cell_statement.percent_#{more_or_less}", percent:)
+      str = I18n.t("analysis.cell_statement.percent_#{more_or_less}", percent:)
+      "<span data-type=\"percent\">#{str}</span>"
     end
 
     def decimal_to_percentage(decimal)
