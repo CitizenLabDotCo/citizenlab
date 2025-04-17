@@ -32,12 +32,15 @@ module ParticipationMethod
       ]
     end
 
-    def constraints
-      {} # TODO: Any constraints to be added once we know what the fields are
-    end
-
     def form_logic_enabled?
       false
+    end
+
+    def everyone_tracking_enabled?
+      permission = phase.permissions&.find_by(action: 'posting_idea')
+      return false unless permission
+
+      permission.everyone_tracking_enabled?
     end
 
     def validate_phase
@@ -52,6 +55,10 @@ module ParticipationMethod
       if phase.end_at.present?
         phase.errors.add(:base, :has_end_at, message: 'community_monitor projects cannot have an end date')
       end
+    end
+
+    def allow_posting_again_after
+      3.months
     end
 
     def supports_event_attendance?
