@@ -4,6 +4,7 @@ import { JsonFormsCore, Layout } from '@jsonforms/core';
 import { JsonForms } from '@jsonforms/react';
 import { isEmpty } from 'lodash-es';
 
+import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import { JsonFormsSchema } from 'api/idea_json_form_schema/types';
 
 import useLocale from 'hooks/useLocale';
@@ -12,9 +13,11 @@ import { ErrorToReadProvider } from 'components/Form/Components/Fields/ErrorToRe
 import { selectRenderers } from 'components/Form/Components/Fields/formConfig';
 import { APIErrorsContext, FormContext } from 'components/Form/contexts';
 
+import { trackEventByName } from 'utils/analytics';
 import clHistory from 'utils/cl-router/history';
 
 import messages from '../messages';
+import tracks from '../tracks';
 import {
   findFirstSentimentLinearScale,
   schemaWithRequiredFirstQuestion,
@@ -36,6 +39,7 @@ const QuestionPreview = ({
   onClose,
 }: QuestionPreviewProps) => {
   const locale = useLocale();
+  const { data: appConfig } = useAppConfiguration();
 
   // Extract the first sentiment question from the UI Schema
   const uiSchemaFirstQuestion = findFirstSentimentLinearScale(uiSchema);
@@ -46,6 +50,12 @@ const QuestionPreview = ({
     if (!isEmpty(data.data)) {
       // Close the modal
       onClose();
+
+      // Track the popup interaction
+      trackEventByName(tracks.communityMonitorPopupAnsweredAndRedirected, {
+        tenantId: appConfig?.data.id,
+      });
+
       // Redirect to full survey page
       clHistory.push(
         `/projects/${projectSlug}/surveys/new?phase_id=${phaseId}`
