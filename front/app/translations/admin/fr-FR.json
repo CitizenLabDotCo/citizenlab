@@ -61,7 +61,7 @@
   "app.components.AnonymousPostingToggle.userAnonymitySupportTooltipLinkText": "article d'assistance",
   "app.components.AnonymousPostingToggle.userAnonymitySupportTooltipLinkUrl": "https://support.govocal.com/fr/articles/7946486-activer-la-participation-anonyme",
   "app.components.BillingWarning.billingWarning": "Si des sièges supplémentaires sont ajoutés, votre facturation sera adaptée. Contactez votre Spécialiste en participation Go Vocal pour en savoir plus.",
-  "app.components.CommunityMonitorModal.surveyCompletedUntilNextQuarter": "Merci d'avoir répondu à l'enquête ! Nous vous invitons à y répondre à nouveau au cours du prochain trimestre.",
+  "app.components.CommunityMonitorModal.surveyCompletedUntilNextQuarter": "Merci d'avoir complété l'enquête ! N'hésitez pas à y participer à nouveau au prochain trimestre.",
   "app.components.CommunityMonitorModal.xMinutesToComplete": "{minutes, plural, =0 {Prend <1 minute} one {Prend 1 minute} other {Prend # minutes}}",
   "app.components.ProjectTemplatePreview.close": "Fermer",
   "app.components.ProjectTemplatePreview.createProject": "Créer un projet",
