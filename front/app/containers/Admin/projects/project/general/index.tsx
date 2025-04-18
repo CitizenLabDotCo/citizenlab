@@ -150,15 +150,14 @@ const AdminProjectsProjectGeneral = () => {
     (async () => {
       if (remoteProjectFiles) {
         const nextProjectFilesPromises = remoteProjectFiles.data.map(
-          (projectFile, index) => {
+          (projectFile) => {
             const url = projectFile.attributes.file.url;
             const filename = projectFile.attributes.name;
             const id = projectFile.id;
             const projectUploadFilePromise = convertUrlToUploadFile(
               url,
               id,
-              filename,
-              index
+              filename
             );
             return projectUploadFilePromise;
           }

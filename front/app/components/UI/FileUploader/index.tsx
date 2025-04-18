@@ -49,8 +49,7 @@ const FileUploader = ({
 
   const handleFileOnAdd = (fileToAdd: UploadFile) => {
     if (!files.find((file) => file.base64 === fileToAdd.base64)) {
-      const filesCopy = [...files];
-      const updatedFiles = [...filesCopy, fileToAdd as FileType];
+      const updatedFiles = [...files, fileToAdd as FileType];
       updatedFiles.forEach((file, index) => {
         file.ordering = index;
       });
@@ -63,14 +62,8 @@ const FileUploader = ({
     (fileToRemove: FileType) => (event: React.FormEvent) => {
       event.preventDefault();
       event.stopPropagation();
-      const filesCopy = [...files];
-      const updatedFiles = filesCopy.filter(
-        (file) => file.id !== fileToRemove.id
-      );
-      // Update the ordering of the remaining files
-      updatedFiles.forEach((file, index) => {
-        file.ordering = index;
-      });
+      const updatedFiles = files.filter((file) => file.id !== fileToRemove.id);
+
       setFiles(updatedFiles);
       onFileRemove?.(fileToRemove);
     };
