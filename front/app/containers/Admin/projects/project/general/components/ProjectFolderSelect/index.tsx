@@ -93,7 +93,8 @@ const ProjectFolderSelect = ({
     isNewProject,
   ]);
 
-  const noFolderOption = { value: '', label: '' };
+  const noFolderId = '/'; // This sentinel must not be a valid folder id.
+  const noFolderOption = { value: noFolderId, label: '— No folder —' };
   const folderOptions: IOption[] = projectFolders?.data
     ? [
         noFolderOption,
@@ -106,14 +107,10 @@ const ProjectFolderSelect = ({
       ]
     : [];
 
-  const handleSelectFolderChange = ({ value: folderId }) => {
-    if (typeof folderId === 'string') {
-      if (folderId === '') {
-        handleFolderIdChange(null, 'disabled');
-      } else {
-        handleFolderIdChange(folderId, 'enabled');
-      }
-    }
+  const handleSelectFolderChange = ({ value }) => {
+    const folderId = value === noFolderId ? null : value;
+    const submitState = folderId ? 'disabled' : 'enabled';
+    handleFolderIdChange(folderId, submitState);
   };
 
   const handleFolderIdChange = (
@@ -121,7 +118,6 @@ const ProjectFolderSelect = ({
     submitState: 'enabled' | 'disabled'
   ) => {
     setFolderSelected(!!folderId);
-
     onProjectAttributesDiffChange({ folder_id: folderId }, submitState);
   };
 
