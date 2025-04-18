@@ -39,7 +39,7 @@ const FileUploader = ({
   enableDragAndDrop = false,
   multiple = false,
 }: Props) => {
-  const [files, setFiles] = useState<FileType[]>(initialFiles || []);
+  const [files, setFiles] = useState<FileType[]>([]);
 
   useEffect(() => {
     if (initialFiles) {
@@ -49,7 +49,11 @@ const FileUploader = ({
 
   const handleFileOnAdd = (fileToAdd: UploadFile) => {
     if (!files.find((file) => file.base64 === fileToAdd.base64)) {
-      const updatedFiles = [...files, fileToAdd as FileType];
+      const filesCopy = [...files];
+      const updatedFiles = [...filesCopy, fileToAdd as FileType];
+      updatedFiles.forEach((file, index) => {
+        file.ordering = index;
+      });
       setFiles(updatedFiles);
       onFileAdd(fileToAdd);
     }
@@ -59,7 +63,13 @@ const FileUploader = ({
     (fileToRemove: FileType) => (event: React.FormEvent) => {
       event.preventDefault();
       event.stopPropagation();
-      const updatedFiles = files.filter((file) => file.id !== fileToRemove.id);
+      const filesCopy = [...files];
+      const updatedFiles = filesCopy.filter(
+        (file) => file.id !== fileToRemove.id
+      );
+      updatedFiles.forEach((file, index) => {
+        file.ordering = index;
+      });
       setFiles(updatedFiles);
       onFileRemove?.(fileToRemove);
     };

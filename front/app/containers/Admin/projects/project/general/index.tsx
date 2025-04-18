@@ -150,14 +150,15 @@ const AdminProjectsProjectGeneral = () => {
     (async () => {
       if (remoteProjectFiles) {
         const nextProjectFilesPromises = remoteProjectFiles.data.map(
-          (projectFile) => {
+          (projectFile, index) => {
             const url = projectFile.attributes.file.url;
             const filename = projectFile.attributes.name;
             const id = projectFile.id;
             const projectUploadFilePromise = convertUrlToUploadFile(
               url,
               id,
-              filename
+              filename,
+              index
             );
             return projectUploadFilePromise;
           }
@@ -375,7 +376,11 @@ const AdminProjectsProjectGeneral = () => {
             if (latestProjectId) {
               return addProjectFile({
                 projectId: latestProjectId,
-                file: { file: file.base64, name: file.name },
+                file: {
+                  file: file.base64,
+                  name: file.name,
+                  ordering: file.ordering,
+                },
               });
             }
 
