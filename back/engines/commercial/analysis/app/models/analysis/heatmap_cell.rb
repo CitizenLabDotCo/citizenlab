@@ -49,6 +49,5 @@ module Analysis
     }
 
     scope :significant, ->(max_p_value = 0.05) { where(p_value: ..max_p_value) }
-
   end
 end
