@@ -55,6 +55,9 @@ import { validateSlug } from 'utils/textUtils';
 import { fragmentId } from '../projectHeader';
 import { fragmentId as folderFragmentId } from '../projectHeader/LinkToFolderSettings';
 
+import { isAdmin } from 'utils/permissions/roles';
+import { isProjectFolderModerator } from 'utils/permissions/rules/projectFolderPermissions';
+
 import AttachmentsDropzone from './components/AttachmentsDropzone';
 import GeographicAreaInputs from './components/GeographicAreaInputs';
 import ProjectCardImageDropzone from './components/ProjectCardImageDropzone';
@@ -137,6 +140,11 @@ const AdminProjectsProjectGeneral = () => {
 
   const [slug, setSlug] = useState<string | null>(null);
   const [showSlugErrorMessage, setShowSlugErrorMessage] = useState(false);
+
+  const { data: user } = useAuthUser();
+  const showProjectFolderSelect =
+    isProjectFoldersEnabled &&
+    (isAdmin(user) || isProjectFolderModerator(user));
 
   useEffect(() => {
     (async () => {
@@ -594,7 +602,7 @@ const AdminProjectsProjectGeneral = () => {
             onProjectAttributesDiffChange={handleProjectAttributeDiffOnChange}
           />
 
-          {isProjectFoldersEnabled && (
+          {showProjectFolderSelect && (
             <Highlighter fragmentId={folderFragmentId}>
               <ProjectFolderSelect
                 projectAttrs={projectAttrs}
