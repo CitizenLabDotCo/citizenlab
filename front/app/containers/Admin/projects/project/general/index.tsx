@@ -5,6 +5,7 @@ import { isEmpty, isString } from 'lodash-es';
 import { useParams, useLocation } from 'react-router-dom';
 import { Multiloc, UploadFile, CLErrors } from 'typings';
 
+import useAuthUser from 'api/me/useAuthUser';
 import useAddProjectFile from 'api/project_files/useAddProjectFile';
 import useDeleteProjectFile from 'api/project_files/useDeleteProjectFile';
 import useProjectFiles from 'api/project_files/useProjectFiles';
@@ -609,7 +610,6 @@ const AdminProjectsProjectGeneral = () => {
                 onProjectAttributesDiffChange={
                   handleProjectAttributeDiffOnChange
                 }
-                isNewProject={!projectId}
               />
             </Highlighter>
           )}
