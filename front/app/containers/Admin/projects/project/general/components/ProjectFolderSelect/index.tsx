@@ -93,20 +93,16 @@ const ProjectFolderSelect = ({
     isNewProject,
   ]);
 
+  const noFolderOption = { value: '', label: '' };
   const folderOptions: IOption[] = projectFolders?.data
     ? [
-        {
-          value: '',
-          label: '',
-        },
+        noFolderOption,
         ...projectFolders.data
           .filter((folder) => userModeratesFolder(authUser, folder.id))
-          .map((folder) => {
-            return {
-              value: folder.id,
-              label: localize(folder.attributes.title_multiloc),
-            };
-          }),
+          .map((folder) => ({
+            value: folder.id,
+            label: localize(folder.attributes.title_multiloc),
+          })),
       ]
     : [];
 
@@ -124,7 +120,7 @@ const ProjectFolderSelect = ({
     folderId: string | null,
     submitState: 'enabled' | 'disabled'
   ) => {
-    setFolderSelected(folderId ? true : false);
+    setFolderSelected(!!folderId);
 
     onProjectAttributesDiffChange({ folder_id: folderId }, submitState);
   };
@@ -139,59 +135,57 @@ const ProjectFolderSelect = ({
     );
   };
 
-  if (folderOptions.length > 0) {
-    const defaultFolderSelectOptionValue = folderOptions[0].value;
+  if (folderOptions.length === 0) return null;
 
-    return (
-      <StyledSectionField
-        data-testid="projectFolderSelect"
-        data-cy="e2e-project-folder-setting-field"
-      >
-        <SubSectionTitle>
-          <FormattedMessage {...messages.projectFolderSelectTitle} />
-          <IconTooltip
-            content={
-              <FormattedMessage
-                {...(userCanCreateProjectInFolderOnly
-                  ? messages.folderAdminProjectFolderSelectTooltip
-                  : messages.adminProjectFolderSelectTooltip)}
-              />
-            }
-          />
-        </SubSectionTitle>
-        <Radio
-          onChange={onRadioFolderSelectChange}
-          currentValue={radioFolderSelect}
-          value={false}
-          name="folderSelect"
-          id="folderSelect-no"
-          label={<FormattedMessage {...messages.optionNo} />}
-          disabled={!userCanCreateProjectAtTopLevel}
-        />
-        <Radio
-          onChange={onRadioFolderSelectChange}
-          currentValue={radioFolderSelect}
-          value={true}
-          name="folderSelect"
-          id="folderSelect-yes"
-          label={<FormattedMessage {...messages.optionYes} />}
-          disabled={!userCanCreateProjectAtTopLevel}
-        />
-        {radioFolderSelect && (
-          <Select
-            value={folder_id || defaultFolderSelectOptionValue}
-            options={folderOptions}
-            onChange={handleSelectFolderChange}
-          />
-        )}
-        {radioFolderSelect && !folder_id && !folderSelected && (
-          <Error text={formatMessage(messages.folderSelectError)} />
-        )}
-      </StyledSectionField>
-    );
-  }
+  const defaultFolderSelectOptionValue = folderOptions[0].value;
 
-  return null;
+  return (
+    <StyledSectionField
+      data-testid="projectFolderSelect"
+      data-cy="e2e-project-folder-setting-field"
+    >
+      <SubSectionTitle>
+        <FormattedMessage {...messages.projectFolderSelectTitle} />
+        <IconTooltip
+          content={
+            <FormattedMessage
+              {...(userCanCreateProjectInFolderOnly
+                ? messages.folderAdminProjectFolderSelectTooltip
+                : messages.adminProjectFolderSelectTooltip)}
+            />
+          }
+        />
+      </SubSectionTitle>
+      <Radio
+        onChange={onRadioFolderSelectChange}
+        currentValue={radioFolderSelect}
+        value={false}
+        name="folderSelect"
+        id="folderSelect-no"
+        label={<FormattedMessage {...messages.optionNo} />}
+        disabled={!userCanCreateProjectAtTopLevel}
+      />
+      <Radio
+        onChange={onRadioFolderSelectChange}
+        currentValue={radioFolderSelect}
+        value={true}
+        name="folderSelect"
+        id="folderSelect-yes"
+        label={<FormattedMessage {...messages.optionYes} />}
+        disabled={!userCanCreateProjectAtTopLevel}
+      />
+      {radioFolderSelect && (
+        <Select
+          value={folder_id || defaultFolderSelectOptionValue}
+          options={folderOptions}
+          onChange={handleSelectFolderChange}
+        />
+      )}
+      {radioFolderSelect && !folder_id && !folderSelected && (
+        <Error text={formatMessage(messages.folderSelectError)} />
+      )}
+    </StyledSectionField>
+  );
 };
 
 export default ProjectFolderSelect;
