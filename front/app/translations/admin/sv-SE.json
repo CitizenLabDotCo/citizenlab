@@ -463,7 +463,6 @@
   "app.components.formBuilder.editWarningModal.title4": "Redigera live-undersökning",
   "app.components.formBuilder.editWarningModal.yesContinue": "Ja, fortsätt",
   "app.components.formBuilder.nativeSurvey.UserFieldsInFormNotice.accessRightsSettings": "inställningar för åtkomsträttigheter för denna undersökning",
-  "app.components.formBuilder.nativeSurvey.UserFieldsInFormNotice.fieldsEnabledMessage": "\"Användarfält i undersökningsformuläret\" är aktiverat. När undersökningsformuläret visas kommer alla konfigurerade demografiska frågor att läggas till på en ny sida här. Dessa frågor kan ändras på {accessRightsSettingsLink}.",
   "app.components.formBuilder.nativeSurvey.accessRightsNotice.accessRightsSettings": "inställningar för åtkomsträttigheter för denna fas.",
   "app.components.formBuilder.nativeSurvey.accessRightsNotice.anyoneBullet1": "Undersökningens respondenter kommer inte att behöva registrera sig eller logga in för att skicka in svar, vilket kan leda till dubbla inlämningar",
   "app.components.formBuilder.nativeSurvey.accessRightsNotice.anyoneBullet2": "Genom att hoppa över registrerings-/inloggningssteget accepterar du att inte samla in demografisk information om respondenterna, vilket kan påverka dina dataanalysmöjligheter",

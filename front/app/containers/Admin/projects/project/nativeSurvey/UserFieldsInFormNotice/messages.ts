@@ -2,9 +2,9 @@ import { defineMessages } from 'react-intl';
 
 export default defineMessages({
   fieldsEnabledMessage: {
-    id: 'app.components.formBuilder.nativeSurvey.UserFieldsInFormNotice.fieldsEnabledMessage',
+    id: 'app.components.formBuilder.nativeSurvey.UserFieldsInFormNotice.fieldsEnabledMessage2',
     defaultMessage:
-      "'User fields in survey form' is enabled. When the survey form is displayed any configured demographic questions will be added on a new page here. These questions can be changed in the {accessRightsSettingsLink}.",
+      "'Demographic fields in survey form' is enabled. When the survey form is displayed any configured demographic questions will be added on a new page immediately before the end of the survey. These questions can be changed in the {accessRightsSettingsLink}.",
   },
   accessRightsSettings: {
     id: 'app.components.formBuilder.nativeSurvey.UserFieldsInFormNotice.accessRightsSettings',
