@@ -56,15 +56,10 @@ module ReportBuilder
     def filter_by_community_monitor(reports)
       return reports if community_monitor.blank?
 
-      settings = AppConfiguration.instance.settings
-      return Report.none unless settings.dig('community_monitor', 'enabled')
+      service = CommunityMonitorService.new
+      return Report.none unless service.enabled? && service.phase
 
-      # Find the community monitor phase id
-      project_id = settings.dig('community_monitor', 'project_id')
-      community_monitor_phase = Phase.find_by(project_id: project_id)
-      return Report.none unless community_monitor_phase
-
-      reports.where(phase_id: community_monitor_phase.id)
+      reports.where(phase_id: service.phase.id)
     end
   end
 end

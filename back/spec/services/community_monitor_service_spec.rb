@@ -7,6 +7,8 @@ describe CommunityMonitorService do
   let!(:project) { create(:community_monitor_project) }
   let(:current_user) { create(:admin) }
 
+  before { travel_to(Date.parse('2025-07-01')) } # TODO: Remove trial period after 2025-06-30
+
   describe '#enabled?' do
     context 'when feature is enabled' do
       it 'returns true' do
@@ -116,6 +118,39 @@ describe CommunityMonitorService do
         it 'raises not found' do
           expect { service.find_or_create_project(current_user) }.to raise_error(ActiveRecord::RecordNotFound)
         end
+      end
+    end
+  end
+
+  describe '#find_or_create_previous_quarter_report' do
+    before do
+      travel_to(Date.parse('2025-07-05'))
+      create(:idea_status_proposed)
+      create(:native_survey_response, project: project, published_at: '2025-05-23')
+    end
+
+    context 'when there is no previous quarter report' do
+      it 'creates a new report' do
+        report = service.find_or_create_previous_quarter_report
+        expect(report).to be_present
+        expect(report.phase).to eq project.phases.first
+        expect(report.year).to eq 2025
+        expect(report.quarter).to eq 2
+      end
+
+      it 'does not create a report when there are no responses' do
+        travel_to(Date.parse('2025-10-05'))
+        report = service.find_or_create_previous_quarter_report
+        expect(report).to be_nil
+      end
+    end
+
+    context 'when there is an existing previous quarter report' do
+      let!(:existing_report) { create(:report, phase: project.phases.first, year: 2025, quarter: 2) }
+
+      it 'returns the existing report' do
+        report = service.find_or_create_previous_quarter_report
+        expect(report).to eq existing_report
       end
     end
   end
