@@ -49,12 +49,5 @@ module Analysis
     }
 
     scope :significant, ->(max_p_value = 0.05) { where(p_value: ..max_p_value) }
-
-    def swap_row_column
-      original_column = column
-      self.column = row
-      self.row = original_column
-      self
-    end
   end
 end
