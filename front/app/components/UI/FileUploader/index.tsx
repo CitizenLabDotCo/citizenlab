@@ -67,6 +67,7 @@ const FileUploader = ({
       const updatedFiles = filesCopy.filter(
         (file) => file.id !== fileToRemove.id
       );
+      // Update the ordering of the remaining files
       updatedFiles.forEach((file, index) => {
         file.ordering = index;
       });
@@ -84,6 +85,7 @@ const FileUploader = ({
     // Insert the file at its new position
     filesCopy.splice(toIndex, 0, movedFile);
 
+    // Update the ordering of all files
     filesCopy.forEach((file, index) => {
       file.ordering = index;
     });
