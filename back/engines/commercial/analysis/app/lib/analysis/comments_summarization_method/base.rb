@@ -11,7 +11,7 @@ module Analysis
       @comments_summary = comments_summary
       @task = comments_summary.background_task
       @analysis = comments_summary.analysis
-      @llm = kwargs[:llm] || LLM::GPT4o.new
+      @llm = kwargs[:llm] || LLM::GPT41.new
     end
 
     def execute

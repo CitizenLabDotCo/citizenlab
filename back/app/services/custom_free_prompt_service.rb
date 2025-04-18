@@ -11,7 +11,7 @@ class CustomFreePromptService
   def response
     return {} if authoring_assistance_response.custom_free_prompt.blank?
 
-    llm = Analysis::LLM::GPT4o.new
+    llm = Analysis::LLM::GPT41.new
     prompt = Analysis::LLM::Prompt.new.fetch('custom_free_prompt', input_text:, phase_text:, body_field_text:, custom_free_prompt: authoring_assistance_response.custom_free_prompt)
     llm.chat(prompt).strip
   end
