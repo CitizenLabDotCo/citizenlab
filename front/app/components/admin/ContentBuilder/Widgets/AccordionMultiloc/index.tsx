@@ -85,9 +85,6 @@ const AccordionSettings = () => {
       <Box flex="0 1 100%" background="#ffffff">
         <QuillMutilocWithLocaleSwitcher
           label={formatMessage(messages.accordionMultilocTextLabel)}
-          maxHeight="225px"
-          noImages
-          noVideos
           id="quill-editor"
           valueMultiloc={text}
           onChange={(value) => {
