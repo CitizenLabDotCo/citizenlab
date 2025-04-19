@@ -2955,6 +2955,7 @@
   "app.modules.commercial.analytics.admin.components.ProjectStatus.totalProjectsToolTip": "Platformoje matomų projektų skaičius",
   "app.modules.commercial.analytics.admin.components.RegistrationsCard.newRegistrations": "Naujos registracijos",
   "app.modules.commercial.analytics.admin.components.RegistrationsCard.registrationRate": "Registracijos tarifas",
+  "app.modules.commercial.analytics.admin.components.RegistrationsCard.registrationRateTooltip3": "Lankytojų, kurie tampa registruotais vartotojais, procentinė dalis.",
   "app.modules.commercial.analytics.admin.components.RegistrationsCard.registrations": "Registracijos",
   "app.modules.commercial.analytics.admin.components.RegistrationsCard.totalRegistrations": "Iš viso registracijų",
   "app.modules.commercial.analytics.admin.components.Tab": "Lankytojai",
