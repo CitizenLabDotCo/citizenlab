@@ -1,5 +1,9 @@
 import React from 'react';
 
+// TODO: tooltips
+// TODO: projects cannot be deleted on demo.stg
+// TODO: user is made an admin when there is no seat available
+
 import { Select, IconTooltip } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 import { IOption } from 'typings';
@@ -16,7 +20,11 @@ import { SectionField, SubSectionTitle } from 'components/admin/Section';
 
 import { FormattedMessage } from 'utils/cl-intl';
 import { usePermission } from 'utils/permissions';
-import { userModeratesFolder } from 'utils/permissions/rules/projectFolderPermissions';
+import { isAdmin } from 'utils/permissions/roles';
+import {
+  isProjectFolderModerator,
+  userModeratesFolder,
+} from 'utils/permissions/rules/projectFolderPermissions';
 
 import messages from './messages';
 
@@ -27,11 +35,13 @@ const StyledSectionField = styled(SectionField)`
 interface Props {
   projectAttrs: IUpdatedProjectProperties;
   onProjectAttributesDiffChange: TOnProjectAttributesDiffChangeFunction;
+  isNewProject: boolean;
 }
 
 const ProjectFolderSelect = ({
   projectAttrs: { folder_id },
   onProjectAttributesDiffChange,
+  isNewProject,
 }: Props) => {
   const { data: projectFolders } = useProjectFolders({});
   const { data: authUser } = useAuthUser();
@@ -53,7 +63,13 @@ const ProjectFolderSelect = ({
           .map((folder) => ({
             value: folder.id,
             label: localize(folder.attributes.title_multiloc),
-          })),
+          }))
+          .sort((a, b) =>
+            a.label.localeCompare(b.label, undefined, {
+              sensitivity: 'base',
+              numeric: true,
+            })
+          ),
       ]
     : [];
 
@@ -65,6 +81,8 @@ const ProjectFolderSelect = ({
   if (folderOptions.length === 0) return null;
 
   const defaultFolderSelectOptionValue = folderOptions[0].value;
+  const selectEnabled =
+    isAdmin(authUser) || (isNewProject && isProjectFolderModerator(authUser));
 
   return (
     <StyledSectionField
@@ -88,6 +106,7 @@ const ProjectFolderSelect = ({
         value={folder_id || defaultFolderSelectOptionValue}
         options={folderOptions}
         onChange={handleSelectFolderChange}
+        disabled={!selectEnabled}
       />
     </StyledSectionField>
   );

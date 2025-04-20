@@ -610,6 +610,7 @@ const AdminProjectsProjectGeneral = () => {
                 onProjectAttributesDiffChange={
                   handleProjectAttributeDiffOnChange
                 }
+                isNewProject={isNewProject}
               />
             </Highlighter>
           )}
