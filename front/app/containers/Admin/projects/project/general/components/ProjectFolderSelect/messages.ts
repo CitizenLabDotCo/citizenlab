@@ -2,8 +2,8 @@ import { defineMessages } from 'react-intl';
 
 export default defineMessages({
   projectFolderSelectTitle: {
-    id: 'app.containers.AdminPage.ProjectEdit.projectFolderSelectTitle',
-    defaultMessage: 'Add project to a folder?',
+    id: 'app.containers.AdminPage.ProjectEdit.projectFolderSelectTitle1',
+    defaultMessage: 'Folder',
   },
   adminProjectFolderSelectTooltip: {
     id: 'app.containers.AdminPage.ProjectEdit.adminProjectFolderSelectTooltip',
