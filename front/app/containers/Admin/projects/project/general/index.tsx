@@ -531,6 +531,8 @@ const AdminProjectsProjectGeneral = () => {
     setSubmitState('enabled');
   };
 
+  const isNewProject = !projectId;
+
   return (
     <Box ref={containerRef}>
       <StyledForm
@@ -549,7 +551,13 @@ const AdminProjectsProjectGeneral = () => {
               </SectionDescription>
             </>
           )}
-          <Warning>{formatMessage(messages.publicationStatusWarning)}</Warning>
+
+          {!isNewProject && (
+            <Warning>
+              {formatMessage(messages.publicationStatusWarning)}
+            </Warning>
+          )}
+
           <Highlighter fragmentId={fragmentId}>
             <ProjectNameInput
               titleMultiloc={projectAttrs.title_multiloc}
