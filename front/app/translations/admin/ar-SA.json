@@ -2968,6 +2968,7 @@
   "app.modules.commercial.analytics.admin.components.ProjectStatus.totalProjectsToolTip": "عدد المشاريع المرئية في المنصة",
   "app.modules.commercial.analytics.admin.components.RegistrationsCard.newRegistrations": "تسجيلات جديدة",
   "app.modules.commercial.analytics.admin.components.RegistrationsCard.registrationRate": "معدل التسجيل",
+  "app.modules.commercial.analytics.admin.components.RegistrationsCard.registrationRateTooltip3": "نسبة الزوار الذين أصبحوا مستخدمين مسجلين.",
   "app.modules.commercial.analytics.admin.components.RegistrationsCard.registrations": "التسجيلات",
   "app.modules.commercial.analytics.admin.components.RegistrationsCard.totalRegistrations": "إجمالي التسجيلات",
   "app.modules.commercial.analytics.admin.components.Tab": "زوار",

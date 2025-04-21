@@ -2968,6 +2968,7 @@
   "app.modules.commercial.analytics.admin.components.ProjectStatus.totalProjectsToolTip": "O número de projetos visíveis na plataforma",
   "app.modules.commercial.analytics.admin.components.RegistrationsCard.newRegistrations": "Novos inscritos",
   "app.modules.commercial.analytics.admin.components.RegistrationsCard.registrationRate": "Taxa de registro",
+  "app.modules.commercial.analytics.admin.components.RegistrationsCard.registrationRateTooltip3": "Porcentagem de visitantes que se tornam usuários registrados.",
   "app.modules.commercial.analytics.admin.components.RegistrationsCard.registrations": "Inscrições",
   "app.modules.commercial.analytics.admin.components.RegistrationsCard.totalRegistrations": "Total de inscritos",
   "app.modules.commercial.analytics.admin.components.Tab": "Visitantes",
