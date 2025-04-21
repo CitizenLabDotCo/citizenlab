@@ -86,8 +86,8 @@ RSpec.describe ReportBuilder::Queries::Participants do
     it 'returns participation rate' do
       user = create(:user)
 
-      create(:session, created_at: @dimension_date_sept, monthly_user_hash: 'hash_1')
-      create(:session, created_at: @dimension_date_sept, monthly_user_hash: 'hash_2')
+      create(:session, created_at: @date_september, monthly_user_hash: 'hash_1')
+      create(:session, created_at: @date_september, monthly_user_hash: 'hash_2')
 
       project = create(:single_phase_ideation_project)
       create(:idea, created_at: @date_september, project: project, author: user)
