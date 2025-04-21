@@ -9,13 +9,14 @@ describe SideFxIdeaService do
   describe 'after_create' do
     it "logs a 'created' action activity job" do
       idea = create(:idea, author: user)
+
       expect { service.after_create(idea, user) }
         .to enqueue_job(LogActivityJob)
         .with(
           idea,
           'created',
           user,
-          idea.created_at.to_i,
+          idea.updated_at.to_i,
           project_id: idea.project_id,
           payload: { idea: service.send(:serialize_idea, idea) }
         )
