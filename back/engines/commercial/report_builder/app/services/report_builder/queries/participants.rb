@@ -46,7 +46,17 @@ module ReportBuilder
       }
 
       if compare_start_at && compare_end_at
-        # TODO
+        participants_compared_period = participations(
+          compare_start_at, compare_end_at, project_id: project_id
+        )
+          .count('distinct participant_id')
+
+        response[:participants_compared_period] = participants_compared_period
+        response[:participation_rate_compared_period] = participation_rate(
+          participants_compared_period,
+          compare_start_at,
+          compare_end_at
+        )
       end
 
       response
