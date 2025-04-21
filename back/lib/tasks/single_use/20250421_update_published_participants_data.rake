@@ -52,16 +52,23 @@ namespace :single_use do
           }
         end
 
+        # Extract statistics
         participants_whole_period = data_unit.data[1]["count_participant_id"]
-
         matomo_visitors_whole_period = data_unit.data[2]["count_visitor_id"]
         participants_filtered_by_matomo = data_unit.data[3]["count_participant_id"]
 
+        # Make 0 as fallback if missing
+        participants_whole_period = participants_whole_period.nil? 0 : participants_whole_period
+        matomo_visitors_whole_period = matomo_visitors_whole_period.nil? 0 : matomo_visitors_whole_period
+        participants_filtered_by_matomo = participants_filtered_by_matomo.nil? 0 : participants_filtered_by_matomo
+
+        # Calculate participation rate
         participation_rate_whole_period = participants_filtered_by_matomo.to_f /
           matomo_visitors_whole_period.to_f
 
         # if compare period...
         if data_unit.data[4].is_a?(Hash) && data_unit.data[5].is_a?(Hash) && data_unit.data[6].is_a?(Hash)
+          # Extract statistics
           participants_compared_period = data_unit.data[4]["count_participant_id"]
           matomo_visitors_compared_period = data_unit.data[5]["count_visitor_id"]
           participants_filtered_by_matomo_compared = data_unit.data[6]["count_participant_id"]
@@ -71,6 +78,7 @@ namespace :single_use do
           matomo_visitors_compared_period = matomo_visitors_compared_period.nil? 0 : matomo_visitors_compared_period
           participants_filtered_by_matomo_compared = participants_filtered_by_matomo_compared.nil? 0 : participants_filtered_by_matomo_compared
 
+          # Calculate participation rate
           participation_rate_compared_period = participants_filtered_by_matomo_compared.to_f /
             matomo_visitors_compared_period.to_f
         end
