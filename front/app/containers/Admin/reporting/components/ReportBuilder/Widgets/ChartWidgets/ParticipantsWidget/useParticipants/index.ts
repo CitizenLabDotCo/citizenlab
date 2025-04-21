@@ -39,7 +39,7 @@ export default function useParticipants({
     () =>
       analytics?.data
         ? parseTimeSeries(
-            analytics.data.attributes[0],
+            analytics.data.attributes.participants_timeseries,
             start_at ? moment(start_at) : null,
             end_at ? moment(end_at) : null,
             currentResolution

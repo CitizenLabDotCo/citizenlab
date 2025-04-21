@@ -32,3 +32,8 @@ export const getDaysInRange = (
   if (!(startAt && endAt)) return undefined;
   return moment(endAt).diff(moment(startAt), 'days');
 };
+
+export const toPercentage = (value: number | undefined) => {
+  if (value === undefined) return 0;
+  return Math.round(Math.min(value, 1) * 100);
+};
