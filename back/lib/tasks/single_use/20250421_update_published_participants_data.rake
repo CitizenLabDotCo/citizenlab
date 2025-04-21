@@ -66,6 +66,11 @@ namespace :single_use do
           matomo_visitors_compared_period = data_unit.data[5]["count_visitor_id"]
           participants_filtered_by_matomo_compared = data_unit.data[6]["count_participant_id"]
 
+          # Make 0 as fallback if missing
+          participants_compared_period = participants_compared_period.nil? 0 : participants_compared_period
+          matomo_visitors_compared_period = matomo_visitors_compared_period.nil? 0 : matomo_visitors_compared_period
+          participants_filtered_by_matomo_compared = participants_filtered_by_matomo_compared.nil? 0 : participants_filtered_by_matomo_compared
+
           participation_rate_compared_period = participants_filtered_by_matomo_compared.to_f /
             matomo_visitors_compared_period.to_f
         end
