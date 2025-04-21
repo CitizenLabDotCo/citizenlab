@@ -107,6 +107,43 @@ RSpec.describe ReportBuilder::Queries::Participants do
       })
     end
 
+    it 'returns correct data with compared period' do
+      project = create(:single_phase_ideation_project)
+      pp1, pp2, pp3 = create_list(:user, 3)
+
+      # Setup september data: 1 participant, 2 unique visitors
+      create(:idea, created_at: @date_september, project: project, author: pp1)
+      create(:session, created_at: @date_september, monthly_user_hash: 'september_visitor_1')
+      create(:session, created_at: @date_september, monthly_user_hash: 'september_visitor_2')
+
+      # Setup october data: 3 participants, 4 unique visitors
+      create(:idea, created_at: @date_october, project: project, author: pp1)
+      create(:idea, created_at: @date_october, project: project, author: pp2)
+      create(:idea, created_at: @date_october, project: project, author: pp3)
+
+      4.times do |i|
+        create(:session, created_at: @date_october, monthly_user_hash: "october_visitor_#{i}")
+      end
+
+      params = {
+        start_at: Date.new(2022, 10, 1),
+        end_at: Date.new(2022, 10, 31),
+        compare_start_at: Date.new(2022, 9, 1),
+        compare_end_at: Date.new(2022, 9, 30)
+      }
+
+      expect(query.run_query(**params)).to eq({
+        participants_timeseries: [{
+          participants: 3,
+          date_group: Date.new(2022, 10, 1)
+        }],
+        participants_whole_period: 3,
+        participation_rate_whole_period: 0.75,
+        participants_compared_period: 1,
+        participation_rate_compared_period: 0.5
+      })
+    end
+
     # it 'returns participants in compared period' do
     #   project = create(:project)
     #   pp1, pp2, pp3, pp4 = create_list(:user, 4)
