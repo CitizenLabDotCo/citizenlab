@@ -96,7 +96,7 @@ RSpec.describe ReportBuilder::Queries::Participants do
         start_at: @date_september - 1.day,
         end_at: @date_september + 1.day
       }
-      
+
       expect(query.run_query(**params)).to eq({
         participants_timeseries: [{
           participants: 1,
@@ -149,7 +149,7 @@ RSpec.describe ReportBuilder::Queries::Participants do
       another_project = create(:single_phase_ideation_project)
 
       # Create 4 participants and 8 visitors for project
-      4.times do |i|
+      4.times do
         create(:idea, created_at: @date_september, project: project, author: create(:user))
       end
 
@@ -159,7 +159,7 @@ RSpec.describe ReportBuilder::Queries::Participants do
       end
 
       # Create 3 participants and 4 visitors for other project
-      3.times do |i|
+      3.times do
         create(:idea, created_at: @date_september, project: another_project, author: create(:user))
       end
 
