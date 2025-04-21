@@ -2962,7 +2962,7 @@
   "app.modules.commercial.analytics.admin.components.ProjectStatus.totalProjectsToolTip": "The number of projects that are visible on the platform",
   "app.modules.commercial.analytics.admin.components.RegistrationsCard.newRegistrations": "New registrations",
   "app.modules.commercial.analytics.admin.components.RegistrationsCard.registrationRate": "Registration rate",
-  "app.modules.commercial.analytics.admin.components.RegistrationsCard.registrationRateTooltip2": "Percentage of visitors that become registered users. Only users and visitors that accepted cookies are counted.",
+  "app.modules.commercial.analytics.admin.components.RegistrationsCard.registrationRateTooltip2": "A regisztrált felhasználóvá vált látogatók százalékos aránya. Csak a cookie-kat elfogadó felhasználók és látogatók számítanak bele.",
   "app.modules.commercial.analytics.admin.components.RegistrationsCard.registrations": "Registrations",
   "app.modules.commercial.analytics.admin.components.RegistrationsCard.totalRegistrations": "Total registrations",
   "app.modules.commercial.analytics.admin.components.Tab": "Visitors",
