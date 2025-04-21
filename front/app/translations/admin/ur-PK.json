@@ -2968,7 +2968,7 @@
   "app.modules.commercial.analytics.admin.components.ProjectStatus.totalProjectsToolTip": "پلیٹ فارم پر نظر آنے والے منصوبوں کی تعداد",
   "app.modules.commercial.analytics.admin.components.RegistrationsCard.newRegistrations": "نئی رجسٹریشنز",
   "app.modules.commercial.analytics.admin.components.RegistrationsCard.registrationRate": "رجسٹریشن کی شرح",
-  "app.modules.commercial.analytics.admin.components.RegistrationsCard.registrationRateTooltip2": "ان زائرین کا فیصد جو رجسٹرڈ صارفین بن جاتے ہیں۔ کوکیز کو قبول کرنے والے صرف صارفین اور زائرین ہی شمار کیے جاتے ہیں۔",
+  "app.modules.commercial.analytics.admin.components.RegistrationsCard.registrationRateTooltip3": "ان زائرین کا فیصد جو رجسٹرڈ صارفین بن جاتے ہیں۔",
   "app.modules.commercial.analytics.admin.components.RegistrationsCard.registrations": "رجسٹریشنز",
   "app.modules.commercial.analytics.admin.components.RegistrationsCard.totalRegistrations": "کل رجسٹریشنز",
   "app.modules.commercial.analytics.admin.components.Tab": "زائرین",
