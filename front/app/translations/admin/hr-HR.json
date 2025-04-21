@@ -2968,7 +2968,6 @@
   "app.modules.commercial.analytics.admin.components.ProjectStatus.totalProjectsToolTip": "Broj projekata koji su vidljivi na platformi",
   "app.modules.commercial.analytics.admin.components.RegistrationsCard.newRegistrations": "Nove registracije",
   "app.modules.commercial.analytics.admin.components.RegistrationsCard.registrationRate": "Postotak registracije",
-  "app.modules.commercial.analytics.admin.components.RegistrationsCard.registrationRateTooltip2": "Postotak posjetitelja koji postaju registrirani korisnici. Računaju se samo korisnici i posjetitelji koji su prihvatili kolačiće.",
   "app.modules.commercial.analytics.admin.components.RegistrationsCard.registrations": "Registracije",
   "app.modules.commercial.analytics.admin.components.RegistrationsCard.totalRegistrations": "Ukupno registracija",
   "app.modules.commercial.analytics.admin.components.Tab": "Posjetitelji",
