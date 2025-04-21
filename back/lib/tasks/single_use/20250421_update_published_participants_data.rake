@@ -11,6 +11,15 @@ namespace :single_use do
       date_str.slice(0, 8) + '01'
     end
 
+    def safe_get(entry, key)
+      return 0 if entry.nil?
+      inner = entry[0]
+      return 0 unless inner.is_a?(Hash)
+      value = inner[key]
+      return 0 unless value.is_a?(Integer)
+      value
+    end
+
     reporter = ScriptReporter.new
 
     Tenant.safe_switch_each do |tenant|
@@ -58,30 +67,20 @@ namespace :single_use do
         end
 
         # Extract statistics
-        participants_whole_period = data_unit.data[1][0]["count_participant_id"]
-        matomo_visitors_whole_period = data_unit.data[2][0]["count_visitor_id"]
-        participants_filtered_by_matomo = data_unit.data[3][0]["count_participant_id"]
-
-        # Make 0 as fallback if missing
-        participants_whole_period = participants_whole_period.nil? ? 0 : participants_whole_period
-        matomo_visitors_whole_period = matomo_visitors_whole_period.nil? ? 0 : matomo_visitors_whole_period
-        participants_filtered_by_matomo = participants_filtered_by_matomo.nil? ? 0 : participants_filtered_by_matomo
+        participants_whole_period = safe_get(data_unit.data[1], "count_participant_id")
+        matomo_visitors_whole_period = safe_get(data_unit.data[2], "count_visitor_id")
+        participants_filtered_by_matomo = safe_get(data_unit.data[3], "count_participant_id")
 
         # Calculate participation rate
         participation_rate_whole_period = participants_filtered_by_matomo.to_f /
           matomo_visitors_whole_period.to_f
 
         # if compare period...
-        if (
-          data_unit.data.length > 4 &&
-          data_unit.data[4][0].present? && 
-          data_unit.data[5][0].present? && 
-          data_unit.data[6][0].present?
-        )
+        if data_unit.data.length > 4
           # Extract statistics
-          participants_compared_period = data_unit.data[4][0]["count_participant_id"]
-          matomo_visitors_compared_period = data_unit.data[5][0]["count_visitor_id"]
-          participants_filtered_by_matomo_compared = data_unit.data[6][0]["count_participant_id"]
+          participants_compared_period = safe_get(data_unit.data[4], "count_participant_id")
+          matomo_visitors_compared_period = safe_get(data_unit.data[5], "count_visitor_id")
+          participants_filtered_by_matomo_compared = safe_get(data_unit.data[6], "count_participant_id")
 
           # Make 0 as fallback if missing
           participants_compared_period = participants_compared_period.nil? ? 0 : participants_compared_period
