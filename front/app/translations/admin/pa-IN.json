@@ -2968,6 +2968,7 @@
   "app.modules.commercial.analytics.admin.components.ProjectStatus.totalProjectsToolTip": "ਪਲੇਟਫਾਰਮ 'ਤੇ ਦਿਖਾਈ ਦੇਣ ਵਾਲੇ ਪ੍ਰੋਜੈਕਟਾਂ ਦੀ ਗਿਣਤੀ",
   "app.modules.commercial.analytics.admin.components.RegistrationsCard.newRegistrations": "ਨਵੀਆਂ ਰਜਿਸਟ੍ਰੇਸ਼ਨਾਂ",
   "app.modules.commercial.analytics.admin.components.RegistrationsCard.registrationRate": "ਰਜਿਸਟ੍ਰੇਸ਼ਨ ਦਰ",
+  "app.modules.commercial.analytics.admin.components.RegistrationsCard.registrationRateTooltip3": "ਰਜਿਸਟਰਡ ਉਪਭੋਗਤਾ ਬਣਨ ਵਾਲੇ ਸੈਲਾਨੀਆਂ ਦਾ ਪ੍ਰਤੀਸ਼ਤ।",
   "app.modules.commercial.analytics.admin.components.RegistrationsCard.registrations": "ਰਜਿਸਟ੍ਰੇਸ਼ਨਾਂ",
   "app.modules.commercial.analytics.admin.components.RegistrationsCard.totalRegistrations": "ਕੁੱਲ ਰਜਿਸਟ੍ਰੇਸ਼ਨਾਂ",
   "app.modules.commercial.analytics.admin.components.Tab": "ਵਿਜ਼ਟਰ",

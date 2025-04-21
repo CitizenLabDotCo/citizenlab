@@ -2968,6 +2968,7 @@
   "app.modules.commercial.analytics.admin.components.ProjectStatus.totalProjectsToolTip": "Platformda görünür olan proje sayısı",
   "app.modules.commercial.analytics.admin.components.RegistrationsCard.newRegistrations": "Yeni kayıtlar",
   "app.modules.commercial.analytics.admin.components.RegistrationsCard.registrationRate": "Kayıt ücreti",
+  "app.modules.commercial.analytics.admin.components.RegistrationsCard.registrationRateTooltip3": "Kayıtlı kullanıcı haline gelen ziyaretçilerin yüzdesi.",
   "app.modules.commercial.analytics.admin.components.RegistrationsCard.registrations": "Kayıtlar",
   "app.modules.commercial.analytics.admin.components.RegistrationsCard.totalRegistrations": "Toplam kayıtlar",
   "app.modules.commercial.analytics.admin.components.Tab": "Ziyaretçiler",
