@@ -24,19 +24,19 @@ const parseRow = (date: Moment, row?: TimeSeriesResponseRow): TimeSeriesRow => {
   if (!row) return getEmptyRow(date);
 
   return {
-    participants: row.count_participant_id,
+    participants: row.participants,
     date: date.format('YYYY-MM-DD'),
   };
 };
 
 const getDate = (row: TimeSeriesResponseRow) => {
-  return moment(get(row, 'first_dimension_date_created_date'));
+  return moment(get(row, 'date_group'));
 };
 
 const _parseTimeSeries = timeSeriesParser(getDate, parseRow);
 
 export const parseTimeSeries = (
-  responseTimeSeries: ParticipantsResponse['data']['attributes'][0],
+  responseTimeSeries: ParticipantsResponse['data']['attributes']['participants_timeseries'],
   startAtMoment: Moment | null | undefined,
   endAtMoment: Moment | null,
   resolution: IResolution
