@@ -2968,7 +2968,6 @@
   "app.modules.commercial.analytics.admin.components.ProjectStatus.totalProjectsToolTip": "Antalet projekt som är synliga på plattformen.",
   "app.modules.commercial.analytics.admin.components.RegistrationsCard.newRegistrations": "Nya registreringar",
   "app.modules.commercial.analytics.admin.components.RegistrationsCard.registrationRate": "Registreringsfrekvens",
-  "app.modules.commercial.analytics.admin.components.RegistrationsCard.registrationRateTooltip2": "Procentandel av besökarna som blir registrerade användare. Endast användare och besökare som accepterat cookies räknas.",
   "app.modules.commercial.analytics.admin.components.RegistrationsCard.registrations": "Registreringar",
   "app.modules.commercial.analytics.admin.components.RegistrationsCard.totalRegistrations": "Totalt antal registreringar",
   "app.modules.commercial.analytics.admin.components.Tab": "Besökare",
