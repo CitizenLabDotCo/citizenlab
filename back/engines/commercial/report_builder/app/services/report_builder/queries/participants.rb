@@ -41,7 +41,8 @@ module ReportBuilder
         participation_rate_whole_period: participation_rate(
           participants_whole_period,
           start_date,
-          end_date
+          end_date,
+          project_id: project_id
         )
       }
 
@@ -55,7 +56,8 @@ module ReportBuilder
         response[:participation_rate_compared_period] = participation_rate(
           participants_compared_period,
           compare_start_at,
-          compare_end_at
+          compare_end_at,
+          project_id: project_id
         )
       end
 
@@ -66,7 +68,7 @@ module ReportBuilder
       participations = Analytics::FactParticipation
         .where(dimension_date_created_id: start_date..end_date)
 
-      if project_id
+      if project_id.present?
         participations = participations
           .where(dimension_project_id: project_id)
       end
@@ -74,8 +76,15 @@ module ReportBuilder
       participations
     end
 
-    def participation_rate(participants, start_date, end_date)
-      visitors = ImpactTracking::Session
+    def participation_rate(participants, start_date, end_date, project_id: nil)
+      sessions = ImpactTracking::Session
+
+      if project_id.present?
+        sessions_with_project = ImpactTracking::Pageview.where(project_id: project_id).select(:session_id)
+        sessions = sessions.where(id: sessions_with_project)
+      end
+
+      visitors = sessions
         .where(created_at: start_date..end_date)
         .distinct
         .pluck(:monthly_user_hash)
