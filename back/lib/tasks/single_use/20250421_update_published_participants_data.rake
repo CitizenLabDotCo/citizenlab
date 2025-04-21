@@ -6,6 +6,11 @@ namespace :single_use do
       type['resolvedName'] if type.is_a?(Hash)
     end
 
+    def floor_month(date_str)
+      throw ArgumentError, 'Invalid date format' unless date_str.length === 10
+      date_str.slice(0, 8) + '01'
+    end
+
     reporter = ScriptReporter.new
 
     Tenant.safe_switch_each do |tenant|
@@ -47,7 +52,7 @@ namespace :single_use do
 
         participants_timeseries = data_unit.data[0].map do |row|
           {
-            date_group: row["first_dimension_date_created_date"],
+            date_group: floor_month(row["first_dimension_date_created_date"]),
             participants: row["count_participant_id"]
           }
         end
