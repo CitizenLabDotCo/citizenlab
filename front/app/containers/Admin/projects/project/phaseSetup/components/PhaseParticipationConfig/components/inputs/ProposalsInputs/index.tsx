@@ -16,6 +16,7 @@ import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../../../../../../messages';
 import CustomFieldPicker from '../../shared/CustomFieldPicker';
 import DefaultViewPicker from '../../shared/DefaultViewPicker';
+import SimilarityDetectionConfig from '../../shared/SimilarityDetectionConfig';
 import PrescreeningToggle from '../_shared/PrescreeningToggle';
 import SortingPicker from '../_shared/SortingPicker';
 import UserActions from '../_shared/UserActions';
@@ -53,6 +54,14 @@ interface Props {
   handleReactingThresholdChange: (threshold: string) => void;
   prescreening_enabled: boolean | null | undefined;
   togglePrescreeningEnabled: (prescreening_enabled: boolean) => void;
+  similarity_enabled?: boolean | null;
+  similarity_threshold_title: number | null | undefined;
+  similarity_threshold_body: number | null | undefined;
+  handleSimilarityEnabledChange: (value: boolean) => void;
+  handleThresholdChange: (
+    field: 'similarity_threshold_title' | 'similarity_threshold_body',
+    value: number
+  ) => void;
 }
 
 const ProposalsInputs = ({
@@ -84,6 +93,11 @@ const ProposalsInputs = ({
   handleReactingThresholdChange,
   prescreening_enabled,
   togglePrescreeningEnabled,
+  similarity_enabled,
+  similarity_threshold_title,
+  similarity_threshold_body,
+  handleSimilarityEnabledChange,
+  handleThresholdChange,
 }: Props) => {
   const prescreeningFeatureAllowed = useFeatureFlag({
     name: 'prescreening',
@@ -154,6 +168,15 @@ const ProposalsInputs = ({
         noLikingLimitError={noLikingLimitError}
         handleReactingLikeMethodOnChange={handleReactingLikeMethodOnChange}
         handleLikingLimitOnChange={handleLikingLimitOnChange}
+      />
+
+      <SimilarityDetectionConfig
+        apiErrors={apiErrors}
+        similarity_enabled={similarity_enabled}
+        similarity_threshold_title={similarity_threshold_title}
+        similarity_threshold_body={similarity_threshold_body}
+        handleSimilarityEnabledChange={handleSimilarityEnabledChange}
+        handleThresholdChange={handleThresholdChange}
       />
 
       <DefaultViewPicker

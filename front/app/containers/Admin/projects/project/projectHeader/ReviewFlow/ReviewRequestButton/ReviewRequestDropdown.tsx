@@ -14,10 +14,12 @@ const ReviewRequestDropdown = ({
   isOpen,
   onClose,
   projectId,
+  inFolder = false,
 }: {
   isOpen: boolean;
   onClose: () => void;
   projectId: string;
+  inFolder?: boolean;
 }) => {
   const { formatMessage } = useIntl();
   const { mutate: requestProjectReview } = useRequestProjectReview();
@@ -37,7 +39,7 @@ const ReviewRequestDropdown = ({
       content={
         <div>
           <Text color="textSecondary">
-            {formatMessage(messages.requestApprovalDescription)}
+            {formatMessage(messages.requestApprovalDescription, { inFolder })}
           </Text>
           <Button
             buttonStyle="primary"

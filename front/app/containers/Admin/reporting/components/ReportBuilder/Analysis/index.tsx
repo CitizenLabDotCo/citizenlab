@@ -13,6 +13,7 @@ import usePhase from 'api/phases/usePhase';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
+import { supportsNativeSurvey } from 'containers/Admin/projects/project/inputImporter/ReviewSection/utils';
 import { useReportContext } from 'containers/Admin/reporting/context/ReportContext';
 
 import PhaseFilter from 'components/UI/PhaseFilter';
@@ -59,10 +60,11 @@ const Analysis = ({ selectedLocale }: { selectedLocale: string }) => {
     setQuestionId(questionId);
   }, []);
 
-  const isNativeSurveyPhase =
-    phase?.data.attributes.participation_method === 'native_survey';
+  const supportsSurvey = supportsNativeSurvey(
+    phase?.data.attributes.participation_method
+  );
 
-  const showAnalyses = isNativeSurveyPhase
+  const showAnalyses = supportsSurvey
     ? projectId && phaseId && questionId
     : projectId && phaseId;
 
@@ -126,9 +128,7 @@ const Analysis = ({ selectedLocale }: { selectedLocale: string }) => {
           {showAnalyses && (
             <Analyses
               projectId={projectId}
-              phaseId={
-                isNativeSurveyPhase || isIdeationPhase ? phaseId : undefined
-              }
+              phaseId={supportsSurvey || isIdeationPhase ? phaseId : undefined}
               questionId={questionId}
               selectedLocale={selectedLocale}
               participationMethod={phase?.data.attributes.participation_method}
