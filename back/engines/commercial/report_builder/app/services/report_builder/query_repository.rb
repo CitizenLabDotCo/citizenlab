@@ -11,7 +11,7 @@ module ReportBuilder
       'MostReactedIdeasWidget' => Queries::MostReactedIdeas,
       'SingleIdeaWidget' => Queries::SingleIdea,
       'DemographicsWidget' => Queries::Demographics,
-      'RegistrationsWidget' => Queries::Analytics::Registrations,
+      'RegistrationsWidget' => Queries::Registrations,
       'MethodsUsedWidget' => Queries::MethodsUsed,
       'ParticipationWidget' => Queries::Analytics::Participation,
       'ProjectsWidget' => Queries::Projects

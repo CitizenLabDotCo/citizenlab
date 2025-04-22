@@ -678,6 +678,7 @@
   "app.components.formBuilder.buttonLabel": "Label voor de knop",
   "app.components.formBuilder.buttonLink": "Link voor de knop",
   "app.components.formBuilder.cancelLeaveBuilderButtonText": "Annuleer",
+  "app.components.formBuilder.category": "Categorie",
   "app.components.formBuilder.chooseMany": "Kies er meer",
   "app.components.formBuilder.chooseOne": "Kies er één",
   "app.components.formBuilder.close": "Sluiten",

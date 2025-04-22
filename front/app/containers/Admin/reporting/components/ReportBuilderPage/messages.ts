@@ -2,8 +2,8 @@ import { defineMessages } from 'react-intl';
 
 export default defineMessages({
   emptyStateTitle: {
-    id: 'app.containers.Admin.reporting.components.ReportBuilderPage.emptyStateTitle',
-    defaultMessage: 'Create your first project report',
+    id: 'app.containers.Admin.reporting.components.ReportBuilderPage.emptyStateTitle2',
+    defaultMessage: 'Create your first report',
   },
   customizeReport: {
     id: 'app.containers.Admin.reporting.components.ReportBuilderPage.customizeReport',

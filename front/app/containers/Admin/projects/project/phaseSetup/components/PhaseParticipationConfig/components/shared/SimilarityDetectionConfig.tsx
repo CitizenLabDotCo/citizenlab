@@ -47,7 +47,8 @@ const SimilarityDetectionConfig = ({
   });
   const { data: user } = useAuthUser();
 
-  const allowConfiguringThreshold = isSuperAdmin(user);
+  const allowConfiguringThreshold =
+    isSuperAdmin(user) && isAuthoringAssistanceAllowed;
 
   return (
     <SectionField display="flex">

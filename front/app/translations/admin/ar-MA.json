@@ -399,7 +399,6 @@
   "app.containers.Admin.reporting.components.ReportBuilderPage.blankTemplate": "البدء بصفحة فارغة",
   "app.containers.Admin.reporting.components.ReportBuilderPage.createReportModalInputLabel": "عنوان التقرير",
   "app.containers.Admin.reporting.components.ReportBuilderPage.emptyStateButtonText": "إنشاء تقرير",
-  "app.containers.Admin.reporting.components.ReportBuilderPage.emptyStateTitle": "أنشئ التقرير الأول لمشروعك",
   "app.containers.Admin.reporting.components.ReportBuilderPage.printToPdf": "طباعة إلى PDF",
   "app.containers.Admin.reporting.components.ReportBuilderPage.projectTemplate": "البدء بنموذج مشروع",
   "app.containers.Admin.reporting.components.ReportBuilderPage.reportTemplate": "نموذج تقرير",

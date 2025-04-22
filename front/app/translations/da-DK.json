@@ -678,6 +678,7 @@
   "app.components.formBuilder.buttonLabel": "Etiket til knap",
   "app.components.formBuilder.buttonLink": "Link til knap",
   "app.components.formBuilder.cancelLeaveBuilderButtonText": "Afbryd",
+  "app.components.formBuilder.category": "Kategori",
   "app.components.formBuilder.chooseMany": "Vælg mange",
   "app.components.formBuilder.chooseOne": "Vælg en",
   "app.components.formBuilder.close": "Luk",

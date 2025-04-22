@@ -678,6 +678,7 @@
   "app.components.formBuilder.buttonLabel": "Knappemerke",
   "app.components.formBuilder.buttonLink": "Knappelink",
   "app.components.formBuilder.cancelLeaveBuilderButtonText": "Avbryt",
+  "app.components.formBuilder.category": "Kategori",
   "app.components.formBuilder.chooseMany": "Velg mange",
   "app.components.formBuilder.chooseOne": "Velg én",
   "app.components.formBuilder.close": "Lukk",

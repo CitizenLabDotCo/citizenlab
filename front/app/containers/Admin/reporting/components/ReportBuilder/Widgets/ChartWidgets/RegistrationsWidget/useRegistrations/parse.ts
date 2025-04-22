@@ -1,7 +1,5 @@
 import { RegistrationsResponse } from 'api/graph_data_units/responseTypes/RegistrationsWidget';
 
-import { calculateConversionRate } from 'components/admin/GraphCards/_utils/parse';
-
 export const parseStats = (
   data: RegistrationsResponse['data']['attributes']
 ) => {
@@ -14,57 +12,36 @@ export const parseStats = (
 const calculateRegistrationsStats = (
   data: RegistrationsResponse['data']['attributes']
 ) => {
-  const registrationsWholePeriod = data[1][0];
-  const registrationsPreviousPeriod = data[4]?.[0];
-
-  const registrationsWholePeriodValue = registrationsWholePeriod?.count ?? 0;
-  const registrationsPreviousPeriodValue = registrationsPreviousPeriod?.count;
+  const { registrations_whole_period, registrations_compared_period } = data;
 
   const registrationsDelta =
-    registrationsPreviousPeriodValue !== undefined
-      ? registrationsWholePeriodValue - registrationsPreviousPeriodValue
+    registrations_compared_period !== undefined
+      ? registrations_whole_period - registrations_compared_period
       : undefined;
 
   return {
-    value: registrationsWholePeriodValue,
+    value: registrations_whole_period,
     delta: registrationsDelta,
   };
+};
+
+const toPercentage = (value: number | undefined) => {
+  if (value === undefined) return 0;
+  return Math.round(Math.min(value, 1) * 100);
 };
 
 const calculateRegistrationRateStats = (
   data: RegistrationsResponse['data']['attributes']
 ) => {
-  const visitorsWholePeriod = data[2][0];
-  const visitorsPreviousPeriod = data[5]?.[0];
-
-  const registrationsVisitorsWholePeriod = data[3][0];
-  const registrationsVisitorsLastPeriod = data[6]?.[0];
-
-  const registrationRateWholePeriod = calculateConversionRate(
-    registrationsVisitorsWholePeriod?.count ?? 0,
-    visitorsWholePeriod?.count_visitor_id ?? 0
-  );
-
-  const registrationsVisitorsLastPeriodValue =
-    registrationsVisitorsLastPeriod?.count;
-
-  const visitorsPreviousPeriodValue = visitorsPreviousPeriod?.count_visitor_id;
-
-  const registrationRateRateLastPeriod =
-    registrationsVisitorsLastPeriodValue !== undefined
-      ? calculateConversionRate(
-          registrationsVisitorsLastPeriodValue,
-          visitorsPreviousPeriodValue ?? 0
-        )
-      : undefined;
-
-  const registrationRateDelta =
-    registrationRateRateLastPeriod !== undefined
-      ? registrationRateWholePeriod - registrationRateRateLastPeriod
-      : undefined;
+  const { registration_rate_whole_period, registration_rate_compared_period } =
+    data;
 
   return {
-    value: registrationRateWholePeriod,
-    delta: registrationRateDelta,
+    value: toPercentage(registration_rate_whole_period),
+    delta:
+      registration_rate_compared_period !== undefined
+        ? toPercentage(registration_rate_whole_period) -
+          toPercentage(registration_rate_compared_period)
+        : undefined,
   };
 };
