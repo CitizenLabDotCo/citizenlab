@@ -15,7 +15,7 @@ import { usePermission } from 'utils/permissions';
 import messages from './messages';
 import ReviewRequestButton from './ReviewRequestButton';
 
-const ReviewFlow = ({ project }: { project: IProjectData }) => {
+const PublicationButtons = ({ project }: { project: IProjectData }) => {
   const isProjectReviewEnabled = useFeatureFlag({ name: 'project_review' });
 
   const { formatMessage } = useIntl();
@@ -126,4 +126,4 @@ const ReviewFlow = ({ project }: { project: IProjectData }) => {
   );
 };
 
-export default ReviewFlow;
+export default PublicationButtons;
