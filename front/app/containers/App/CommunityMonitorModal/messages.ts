@@ -15,8 +15,4 @@ export default defineMessages({
     id: 'app.components.CommunityMonitorModal.formError',
     defaultMessage: 'Encountered an error.',
   },
-  remindMeLater: {
-    id: 'app.components.CommunityMonitorModal.remindMeLater',
-    defaultMessage: 'Remind me later',
-  },
 });
