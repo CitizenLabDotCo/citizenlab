@@ -14,6 +14,10 @@ export default defineMessages({
     defaultMessage:
       'If you have access to our AI package, you will be able to summarise and categorise text responses with AI',
   },
+  category: {
+    id: 'app.components.formBuilder.category',
+    defaultMessage: 'Category',
+  },
   mappingNotInCurrentLicense: {
     id: 'app.components.formBuilder.mappingNotInCurrentLicense',
     defaultMessage:
@@ -267,6 +271,11 @@ export default defineMessages({
     id: 'app.components.formBuilder.disabledCustomFieldsTooltip1',
     defaultMessage:
       'Adding custom content is not part of your current license. Reach out to your GovSuccess Manager to learn more about it.',
+  },
+  pageCannotBeDeletedNorNewFieldsAdded: {
+    id: 'app.components.formBuilder.pageCannotBeDeletedNorNewFieldsAdded',
+    defaultMessage:
+      'This page cannot be deleted and does not allow any additional fields to be added.',
   },
   pageCannotBeDeleted: {
     id: 'app.components.formBuilder.pageCannotBeDeleted',

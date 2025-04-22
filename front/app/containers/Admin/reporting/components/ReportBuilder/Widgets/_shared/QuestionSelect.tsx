@@ -9,6 +9,8 @@ import usePhase from 'api/phases/usePhase';
 
 import useLocalize, { Localize } from 'hooks/useLocalize';
 
+import { supportsNativeSurvey } from 'containers/Admin/projects/project/inputImporter/ReviewSection/utils';
+
 interface Props {
   phaseId: string;
   questionId?: string;
@@ -64,7 +66,7 @@ const QuestionSelect = ({
     ? generateOptions(questions, filterQuestion, localize)
     : [];
 
-  if (phase?.data.attributes.participation_method !== 'native_survey') {
+  if (!supportsNativeSurvey(phase?.data.attributes.participation_method)) {
     return null;
   }
 

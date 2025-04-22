@@ -171,12 +171,15 @@ hr:
       attachments:
         title: Privici
         description:
-      page1:
+      title_page:
         description:
-      page2:
+      body_page:
+        title: Recite nam više
+        description:
+      uploads_page:
         title: Slike i prilozi
         description:
-      page3:
+      details_page:
         title: pojedinosti
         description:
       other_input_field:

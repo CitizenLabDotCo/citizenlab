@@ -43,16 +43,14 @@ module Analysis
           end
 
         add_lift!(cells)
+
         HeatmapCell.insert_all!(
-          cells.flat_map do |original_cell|
-            transposed_cell = original_cell.dup.swap_row_column
-            [original_cell, transposed_cell].map do |cell|
-              cell.attributes.except('id', 'created_at', 'updated_at')
-                .merge(
-                  created_at: Time.current,
-                  updated_at: Time.current
-                )
-            end
+          cells.map do |cell|
+            cell.attributes.except('id', 'created_at', 'updated_at')
+              .merge(
+                created_at: Time.current,
+                updated_at: Time.current
+              )
           end
         )
       end

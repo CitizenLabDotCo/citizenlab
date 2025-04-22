@@ -220,6 +220,7 @@ resource 'Phases' do
         parameter :native_survey_title_multiloc, 'A title for the native survey.'
         parameter :native_survey_button_multiloc, 'Text for native survey call to action button.'
         parameter :prescreening_enabled, 'Do inputs need to go through pre-screening before being published? Defaults to false', required: false
+        parameter :similarity_enabled, 'Enable searching for similar inputs during submission. Defaults to false.', required: false
         parameter :similarity_threshold_title, 'The similarity threshold for the title of the input. Defaults to 0.3', required: false
         parameter :similarity_threshold_body, 'The similarity threshold for the body of the input. Defaults to 0.4', required: false
       end
@@ -504,8 +505,9 @@ resource 'Phases' do
         parameter :poll_anonymous, "Are users associated with their answer? Only applies if participation_method is 'poll'. Can't be changed after first answer.", required: false
         parameter :ideas_order, 'The default order of ideas.'
         parameter :prescreening_enabled, 'Do inputs need to go through pre-screening before being published?', required: false
-        parameter :similarity_threshold_title, 'The similarity threshold for the title of the input. Defaults to 0.3', required: false
-        parameter :similarity_threshold_body, 'The similarity threshold for the body of the input. Defaults to 0.4', required: false
+        parameter :similarity_enabled, 'Enable searching for similar inputs during submission.', required: false
+        parameter :similarity_threshold_title, 'The similarity threshold for the title of the input.', required: false
+        parameter :similarity_threshold_body, 'The similarity threshold for the body of the input.', required: false
       end
       ValidationErrorHelper.new.error_fields(self, Phase)
       response_field :project, "Array containing objects with signature {error: 'is_not_timeline_project'}", scope: :errors
@@ -523,6 +525,7 @@ resource 'Phases' do
       let(:presentation_mode) { 'map' }
       let(:allow_anonymous_participation) { true }
       let(:prescreening_enabled) { true }
+      let(:similarity_enabled) { true }
       let(:similarity_threshold_body) { 0.2 }
 
       example_request 'Update a phase' do
@@ -537,6 +540,7 @@ resource 'Phases' do
         expect(json_response.dig(:data, :attributes, :presentation_mode)).to eq presentation_mode
         expect(json_response.dig(:data, :attributes, :allow_anonymous_participation)).to eq allow_anonymous_participation
         expect(json_response.dig(:data, :attributes, :prescreening_enabled)).to eq prescreening_enabled
+        expect(json_response.dig(:data, :attributes, :similarity_enabled)).to eq similarity_enabled
         expect(json_response.dig(:data, :attributes, :similarity_threshold_body)).to eq similarity_threshold_body
       end
 
@@ -742,6 +746,7 @@ resource 'Phases' do
             hidden: false,
             pageNumber: nil,
             questionNumber: 1,
+            questionCategory: nil,
             logic: {},
             totalResponseCount: 2,
             questionResponseCount: 2,
@@ -763,7 +768,7 @@ resource 'Phases' do
     end
 
     get 'web_api/v1/phases/:id/sentiment_by_quarter' do
-      let(:project) { create(:community_monitor_project_with_active_phase) }
+      let(:project) { create(:community_monitor_project) }
       let(:active_phase) { project.phases.first }
       let(:form) { create(:custom_form, participation_context: active_phase) }
       let(:sentiment_question1) { create(:custom_field_sentiment_linear_scale, resource: form, question_category: 'quality_of_life') }

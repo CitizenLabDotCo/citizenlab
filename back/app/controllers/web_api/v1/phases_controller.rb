@@ -150,6 +150,8 @@ class WebApi::V1::PhasesController < ApplicationController
       :reacting_threshold,
       :expire_days_limit,
       :manual_voters_amount,
+      :similarity_enabled,
+      :survey_popup_frequency,
       :similarity_threshold_title,
       :similarity_threshold_body,
       :user_fields_in_form,

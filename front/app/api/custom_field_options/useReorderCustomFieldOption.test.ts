@@ -7,8 +7,7 @@ import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
 import { customFieldOptionsData } from './__mocks__/useCustomFieldOptions';
 import useReorderCustomFieldOption from './useReorderCustomFieldOption';
 
-const apiPath =
-  '*/custom_field_options/:optionId/reorder';
+const apiPath = '*/custom_field_options/:optionId/reorder';
 const server = setupServer(
   http.patch(apiPath, () => {
     return HttpResponse.json(

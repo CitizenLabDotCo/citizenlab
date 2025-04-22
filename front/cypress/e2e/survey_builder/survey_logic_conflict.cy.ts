@@ -5,7 +5,11 @@ describe('Survey logic conflict', () => {
   let projectSlug: string | undefined;
   let phaseId: string | undefined;
 
-  before(() => {
+  beforeEach(() => {
+    // Defensive cleanup in case a previous test left a project behind
+    if (projectId) {
+      cy.apiRemoveProject(projectId);
+    }
     createSurveyProject(cy).then((res: any) => {
       projectId = res.projectId;
       projectSlug = res.projectSlug;
@@ -14,6 +18,7 @@ describe('Survey logic conflict', () => {
   });
 
   after(() => {
+    // Clean up after the test
     if (projectId) {
       cy.apiRemoveProject(projectId);
     }

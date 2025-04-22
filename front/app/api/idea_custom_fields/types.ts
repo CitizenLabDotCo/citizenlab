@@ -14,6 +14,7 @@ export type IIdeaCustomFieldInputType =
   | 'multiselect'
   | 'ranking'
   | 'matrix_linear_scale'
+  | 'sentiment_linear_scale'
   | 'checkbox'
   | 'date'
   | 'linear_scale'
@@ -38,9 +39,9 @@ export type TCustomFieldCode =
   | 'idea_files_attributes'
   | 'author_id'
   | 'budget'
-  | 'ideation_page1'
-  | 'ideation_page2'
-  | 'ideation_page3';
+  | 'title_page'
+  | 'uploads_page'
+  | 'details_page';
 
 export interface IIdeaCustomFieldData {
   id: string;
