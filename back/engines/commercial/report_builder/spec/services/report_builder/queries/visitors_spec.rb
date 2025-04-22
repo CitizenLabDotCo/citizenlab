@@ -154,7 +154,7 @@ RSpec.describe ReportBuilder::Queries::Visitors do
         project_id: @project_id
       }
 
-      expect(query.run_query(**params).to eq({
+      expect(query.run_query(**params)).to eq({
         time_series: [
           {
             visits: 2,
