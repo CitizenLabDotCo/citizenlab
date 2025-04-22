@@ -7,8 +7,8 @@ import useRequestProjectReview from 'api/project_reviews/useRequestProjectReview
 import { trackEventByName } from 'utils/analytics';
 import { useIntl } from 'utils/cl-intl';
 
-import messages from '../messages';
-import tracks from '../tracks';
+import messages from '../../messages';
+import tracks from '../../tracks';
 
 const ReviewRequestDropdown = ({
   isOpen,
