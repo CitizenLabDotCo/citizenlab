@@ -7,6 +7,9 @@ RSpec.describe ReportBuilder::Queries::Visitors do
 
   describe '#run_query' do
     before_all do
+      # Make TimeBoundariesParser work as expected
+      AppConfiguration.instance.update!(created_at: Date.new(2021, 1, 1))
+
       ### SEPTEMBER
       september = Date.new(2022, 9, 10)
 
