@@ -8,6 +8,7 @@ import {
 } from '@citizenlab/cl2-component-library';
 import { CLErrors } from 'typings';
 
+import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useAuthUser from 'api/me/useAuthUser';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
@@ -18,6 +19,7 @@ import Warning from 'components/UI/Warning';
 import UpsellTooltip from 'components/UpsellTooltip';
 
 import { FormattedMessage } from 'utils/cl-intl';
+import { getPeriodRemainingUntil } from 'utils/dateUtils';
 import { isSuperAdmin } from 'utils/permissions/roles';
 
 import messages from '../messages';
@@ -48,7 +50,17 @@ const SimilarityDetectionConfig = ({
   });
   const { data: user } = useAuthUser();
 
-  const isTrialOver = new Date() > new Date('2025-06-30');
+  const { data: appConfiguration } = useAppConfiguration();
+  const tenantTimezone =
+    appConfiguration?.data.attributes.settings.core.timezone;
+  if (!tenantTimezone) return null;
+
+  const timeLeft = getPeriodRemainingUntil(
+    '2025-06-30',
+    tenantTimezone,
+    'days'
+  );
+  const isTrialOver = timeLeft < 0;
   const showWarningMessage = !isTrialOver && !isAuthoringAssistanceAllowed;
   const showUpsellTooltip = isTrialOver && !isAuthoringAssistanceAllowed;
   const featureAllowed = isAuthoringAssistanceAllowed || !isTrialOver;
