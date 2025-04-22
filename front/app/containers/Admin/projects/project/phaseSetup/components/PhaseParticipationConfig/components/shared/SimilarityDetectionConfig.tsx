@@ -44,7 +44,7 @@ const SimilarityDetectionConfig = ({
   handleSimilarityEnabledChange,
   handleThresholdChange,
 }: Props) => {
-  const isAuthoringAssistanceAllowed = useFeatureFlag({
+  const isInputIQAllowed = useFeatureFlag({
     name: 'input_iq',
     onlyCheckAllowed: true,
   });
@@ -61,9 +61,9 @@ const SimilarityDetectionConfig = ({
     'days'
   );
   const isTrialOver = timeLeft < 0;
-  const showWarningMessage = !isTrialOver && !isAuthoringAssistanceAllowed;
-  const showUpsellTooltip = isTrialOver && !isAuthoringAssistanceAllowed;
-  const featureAllowed = isAuthoringAssistanceAllowed || !isTrialOver;
+  const showWarningMessage = !isTrialOver && !isInputIQAllowed;
+  const showUpsellTooltip = isTrialOver && !isInputIQAllowed;
+  const featureAllowed = isInputIQAllowed || !isTrialOver;
   const allowConfiguringThreshold = isSuperAdmin(user) && featureAllowed;
 
   return (
