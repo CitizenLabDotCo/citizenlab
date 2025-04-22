@@ -20,8 +20,6 @@ namespace :single_use do
       value
     end
 
-    reporter = ScriptReporter.new
-
     Tenant.safe_switch_each do |tenant|
       puts "\nProcessing tenant #{tenant.host} \n\n"
 
@@ -75,6 +73,12 @@ namespace :single_use do
         participation_rate_whole_period = participants_filtered_by_matomo.to_f /
           matomo_visitors_whole_period.to_f
 
+        new_data = {
+          "participants_timeseries" => participants_timeseries,
+          "participants_whole_period" => participants_whole_period,
+          "participation_rate_whole_period" => participation_rate_whole_period
+        }
+
         # if compare period...
         if data_unit.data.length > 4
           # Extract statistics
@@ -82,15 +86,17 @@ namespace :single_use do
           matomo_visitors_compared_period = safe_get(data_unit.data[5], "count_visitor_id")
           participants_filtered_by_matomo_compared = safe_get(data_unit.data[6], "count_participant_id")
 
-          # Make 0 as fallback if missing
-          participants_compared_period = participants_compared_period.nil? ? 0 : participants_compared_period
-          matomo_visitors_compared_period = matomo_visitors_compared_period.nil? ? 0 : matomo_visitors_compared_period
-          participants_filtered_by_matomo_compared = participants_filtered_by_matomo_compared.nil? ? 0 : participants_filtered_by_matomo_compared
-
           # Calculate participation rate
           participation_rate_compared_period = participants_filtered_by_matomo_compared.to_f /
             matomo_visitors_compared_period.to_f
+
+          new_data["participants_compared_period"] = participants_compared_period
+          new_data["participation_rate_compared_period"] = participation_rate_compared_period
         end
+
+        # Update the data
+        data_unit.data = new_data.to_json
+        data_unit.save!
       end
     end
   end
