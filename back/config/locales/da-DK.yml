@@ -171,12 +171,15 @@ da:
       attachments:
         title: Vedhæftede filer
         description:
-      page1:
+      title_page:
         description:
-      page2:
+      body_page:
+        title: Fortæl os mere
+        description:
+      uploads_page:
         title: Billeder og vedhæftede filer
         description:
-      page3:
+      details_page:
         title: Detaljer
         description:
       other_input_field:
@@ -300,6 +303,8 @@ da:
     form_end_page:
       title_text_3: 'Tak fordi du deler dit input!'
       description_text_3: "Dit input er blevet sendt med succes."
+    form_user_page:
+      title_text: 'Om dig'
     pdf_export:
       personal_data: 'Personlige data'
       personal_data_explanation_public: "Vi sender dit input til %{organizationName}'s online borgerinddragelsesplatform. Hvis du ønsker, at dit navn skal vises som forfatter til dette input og modtage opdateringer, der er relevante for dit input via e-mail, bedes du udfylde følgende felter på denne side, så opretter vi en konto til dig. Din e-mail vil ikke være offentlig og vil kun blive brugt af %{organizationName}. Hvis du ønsker at forblive anonym eller ikke accepterer, at vi bruger dine personlige data på denne måde, kan du lade dem være tomme."

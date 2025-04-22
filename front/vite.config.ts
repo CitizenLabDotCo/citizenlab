@@ -42,31 +42,31 @@ export default defineConfig(({ mode }) => {
       proxy: {
         '/web_api/': {
           target: `http://${API_HOST}:${API_PORT}`,
-          changeOrigin: true,
+          changeOrigin: false,
         },
         '/auth/': {
           target: `http://${API_HOST}:${API_PORT}`,
-          changeOrigin: true,
+          changeOrigin: false,
         },
         '/widgets/': {
           target: `http://${API_HOST}:3200`,
-          changeOrigin: true,
+          changeOrigin: false,
         },
         '/admin_templates_api': {
           target: `http://${GRAPHQL_HOST}:${GRAPHQL_PORT}`,
-          changeOrigin: true,
+          changeOrigin: false,
         },
         '/uploads': {
           target: `http://${API_HOST}:${API_PORT}`,
-          changeOrigin: true,
+          changeOrigin: false,
         },
         '/workshops': {
           target: `http://${DEV_WORKSHOPS_HOST}:${DEV_WORKSHOPS_PORT}`,
-          changeOrigin: true,
+          changeOrigin: false,
         },
         '/project_library_api': {
           target: `http://${DEV_LIBRARY_HOST}:${DEV_LIBRARY_PORT}`,
-          changeOrigin: true,
+          changeOrigin: false,
         },
       },
     },

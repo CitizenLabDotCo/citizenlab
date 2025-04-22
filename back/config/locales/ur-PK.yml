@@ -171,12 +171,15 @@ ur:
       attachments:
         title: منسلکات
         description:
-      page1:
+      title_page:
         description:
-      page2:
+      body_page:
+        title: ہمیں مزید بتائیں
+        description:
+      uploads_page:
         title: تصاویر اور منسلکات
         description:
-      page3:
+      details_page:
         title: تفصیلات
         description:
       other_input_field:
@@ -300,6 +303,8 @@ ur:
     form_end_page:
       title_text_3: 'اپنے ان پٹ کا اشتراک کرنے کے لیے آپ کا شکریہ!'
       description_text_3: "آپ کا ان پٹ کامیابی کے ساتھ جمع کر دیا گیا ہے۔"
+    form_user_page:
+      title_text: 'آپ کے بارے میں'
     pdf_export:
       personal_data: 'ذاتی ڈیٹا'
       personal_data_explanation_public: "ہم آپ کا ان پٹ %{organizationName}کے آن لائن شرکت کے پلیٹ فارم پر جمع کرائیں گے۔ اگر آپ چاہتے ہیں کہ آپ کا نام اس ان پٹ کے مصنف کے طور پر ظاہر ہو اور ای میل کے ذریعے آپ کے ان پٹ سے متعلقہ اپ ڈیٹس حاصل کریں، تو براہ کرم اس صفحہ پر درج ذیل فیلڈز کو پُر کریں اور ہم آپ کے لیے ایک اکاؤنٹ بنائیں گے۔ آپ کا ای میل عوامی نہیں ہوگا اور صرف %{organizationName}کے ذریعے استعمال کیا جائے گا۔ اگر آپ گمنام رہنا چاہتے ہیں، یا آپ کے ذاتی ڈیٹا کو اس طرح استعمال کرنے کے لیے ہم سے اتفاق نہیں کرتے، تو آپ انہیں خالی چھوڑ سکتے ہیں۔"

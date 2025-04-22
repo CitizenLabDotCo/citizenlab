@@ -46,6 +46,7 @@ RSpec.describe Surveys::ResultsWithGroupGenerator do
           hidden: false,
           pageNumber: nil,
           questionNumber: 3,
+          questionCategory: nil,
           totalResponseCount: 27,
           questionResponseCount: 4,
           totalPickCount: 33,
@@ -116,9 +117,9 @@ RSpec.describe Surveys::ResultsWithGroupGenerator do
             }
           ]
           result[:multilocs][:group] = {
-            'female' => { title_multiloc: { 'en' => 'youth council', 'fr-FR' => 'conseil des jeunes', 'nl-NL' => 'jeugdraad' } },
-            'male' => { title_multiloc: { 'en' => 'youth council', 'fr-FR' => 'conseil des jeunes', 'nl-NL' => 'jeugdraad' } },
-            'unspecified' => { title_multiloc: { 'en' => 'youth council', 'fr-FR' => 'conseil des jeunes', 'nl-NL' => 'jeugdraad' } }
+            'female' => { title_multiloc: { 'en' => 'Female' } },
+            'male' => { title_multiloc: { 'en' => 'Male' } },
+            'unspecified' => { title_multiloc: { 'en' => 'Unspecified' } }
           }
         end
       end
@@ -217,9 +218,11 @@ RSpec.describe Surveys::ResultsWithGroupGenerator do
           hidden: false,
           pageNumber: nil,
           questionNumber: nil,
+          questionCategory: nil,
           totalResponseCount: 27,
           questionResponseCount: 22,
           totalPickCount: 27,
+          averages: { this_period: 3.5 },
           answers: [
             { answer: 1, count: 2, groups: [
               { count: 2, group: nil }
@@ -276,6 +279,31 @@ RSpec.describe Surveys::ResultsWithGroupGenerator do
         result = generator.generate_result_for_field(linear_scale_field.id)
         expect(result).to match grouped_linear_scale_results
       end
+
+      it 'returns a grouped result filtered by quarter for a linear scale field' do
+        generator = described_class.new(
+          survey_phase,
+          group_mode: 'survey_question',
+          group_field_id: select_field.id,
+          year: 2025,
+          quarter: 1
+        )
+        result = generator.generate_result_for_field(linear_scale_field.id)
+        expect(result[:totalResponseCount]).to eq 23
+        expect(result[:answers]).to match(
+          [
+            { answer: 1, count: 2, groups: [{ count: 2, group: nil }] },
+            { answer: 2, count: 5, groups: [{ count: 5, group: nil }] },
+            { answer: 3, count: 7, groups: [{ count: 7, group: nil }] },
+            { answer: 4, count: 0, groups: [] },
+            { answer: 5, count: 1, groups: [{ count: 1, group: nil }] },
+            { answer: 6, count: 2, groups: [{ count: 2, group: nil }] },
+            { answer: 7, count: 3, groups: [{ count: 3, group: nil }] },
+            { answer: nil, count: 3, groups: [{ count: 1, group: 'la' }, { count: 1, group: 'other' }, { count: 1, group: nil }] }
+          ]
+        )
+        expect(result[:averages]).to match({ this_period: 3.6, last_period: nil })
+      end
     end
 
     describe 'rating field' do
@@ -294,9 +322,11 @@ RSpec.describe Surveys::ResultsWithGroupGenerator do
           hidden: false,
           pageNumber: nil,
           questionNumber: nil,
+          questionCategory: nil,
           totalResponseCount: 27,
           questionResponseCount: 22,
           totalPickCount: 27,
+          averages: { this_period: 3.5 },
           answers: [
             { answer: 1, count: 2, groups: [
               { count: 2, group: nil }
@@ -371,6 +401,7 @@ RSpec.describe Surveys::ResultsWithGroupGenerator do
           hidden: false,
           pageNumber: nil,
           questionNumber: nil,
+          questionCategory: nil,
           totalResponseCount: 27,
           questionResponseCount: 6,
           totalPickCount: 27,
@@ -430,9 +461,9 @@ RSpec.describe Surveys::ResultsWithGroupGenerator do
             }
           ]
           result[:multilocs][:group] = {
-            'female' => { title_multiloc: { 'en' => 'youth council', 'fr-FR' => 'conseil des jeunes', 'nl-NL' => 'jeugdraad' } },
-            'male' => { title_multiloc: { 'en' => 'youth council', 'fr-FR' => 'conseil des jeunes', 'nl-NL' => 'jeugdraad' } },
-            'unspecified' => { title_multiloc: { 'en' => 'youth council', 'fr-FR' => 'conseil des jeunes', 'nl-NL' => 'jeugdraad' } }
+            'female' => { title_multiloc: { 'en' => 'Female' } },
+            'male' => { title_multiloc: { 'en' => 'Male' } },
+            'unspecified' => { title_multiloc: { 'en' => 'Unspecified' } }
           }
         end
       end
@@ -497,6 +528,7 @@ RSpec.describe Surveys::ResultsWithGroupGenerator do
           hidden: false,
           pageNumber: nil,
           questionNumber: nil,
+          questionCategory: nil,
           totalResponseCount: 27,
           questionResponseCount: 6,
           totalPickCount: 27,

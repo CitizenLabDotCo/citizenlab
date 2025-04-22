@@ -51,6 +51,7 @@ import {
   getReorderedFields,
   DragAndDropResult,
   supportsLinearScaleLabels,
+  getQuestionCategory,
 } from './utils';
 
 interface FormValues {
@@ -252,6 +253,7 @@ const FormEdit = ({
         title_multiloc: field.title_multiloc || {},
         key: field.key,
         code: field.code,
+        question_category: getQuestionCategory(field, customFields),
         ...(field.page_layout || field.input_type === 'page'
           ? {
               page_layout: field.page_layout || 'default',

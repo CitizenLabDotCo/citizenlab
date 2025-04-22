@@ -11,7 +11,8 @@ class WebApi::V1::PhaseSerializer < WebApi::V1::BaseSerializer
     :reacting_dislike_enabled, :reacting_dislike_method, :reacting_dislike_limited_max,
     :allow_anonymous_participation, :presentation_mode, :ideas_order, :input_term,
     :prescreening_enabled, :manual_voters_amount, :manual_votes_count,
-    :similarity_threshold_title, :similarity_threshold_body
+    :similarity_enabled, :similarity_threshold_title, :similarity_threshold_body,
+    :survey_popup_frequency
 
   %i[
     voting_method voting_max_total voting_min_total
@@ -23,6 +24,10 @@ class WebApi::V1::PhaseSerializer < WebApi::V1::BaseSerializer
       phase.pmethod.supports_serializing?(attribute_name)
     }
   end
+
+  attribute :user_fields_in_form, if: proc { |phase|
+    phase.pmethod.user_fields_in_form?
+  }
 
   attribute :votes_count, if: proc { |phase, params|
     phase.pmethod.supports_serializing?(:votes_count) && view_votes?(phase, current_user(params))

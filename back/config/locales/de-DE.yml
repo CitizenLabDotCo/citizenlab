@@ -171,12 +171,15 @@ de:
       attachments:
         title: Anhänge
         description:
-      page1:
+      title_page:
         description:
-      page2:
+      body_page:
+        title: Erzähl uns mehr
+        description:
+      uploads_page:
         title: Bilder und Anhänge
         description:
-      page3:
+      details_page:
         title: Details
         description:
       other_input_field:
@@ -188,7 +191,7 @@ de:
         place_to_live:
           title: Die Stadt als Lebensraum
         sense_of_safety:
-          title: Allgemeines Gefühl der Sicherheit
+          title: Allgemeines Sicherheitsgefühl
         access_to_parks:
           title: Zugang zu Parks, Grünflächen und Erholungsmöglichkeiten
         affordable_housing:
@@ -300,6 +303,8 @@ de:
     form_end_page:
       title_text_3: 'Vielen Dank für Ihren Beitrag!'
       description_text_3: "Ihr Beitrag wurde erfolgreich übermittelt."
+    form_user_page:
+      title_text: 'Über dich'
     pdf_export:
       personal_data: 'Persönliche Daten'
       personal_data_explanation_public: "Wir werden Ihren Beitrag auf der Online-Beteiligungsplattform von %{organizationName} veröffentlichen. Wenn Sie möchten, dass Ihr Name als Autor*in dieses Beitrags angezeigt wird und Sie Aktualisierungen zu Ihrem Beitrag per E-Mail erhalten, füllen Sie bitte die folgenden Felder auf dieser Seite aus und wir erstellen ein Konto für Sie. Ihre E-Mail ist nicht öffentlich und wird nur von %{organizationName} verwendet. Wenn Sie anonym bleiben möchten oder nicht damit einverstanden sind, dass wir Ihre persönlichen Daten auf diese Weise verwenden, können Sie die Felder leer lassen."

@@ -411,7 +411,7 @@ RSpec.describe CustomField do
       page = described_class.new(
         resource: resource,
         input_type: 'page',
-        code: 'ideation_page1',
+        code: 'title_page',
         title_multiloc: ignored_title
       )
       expected_english_title = 'What is your question?'
@@ -427,7 +427,7 @@ RSpec.describe CustomField do
       page = described_class.new(
         resource: resource,
         input_type: 'page',
-        code: 'ideation_page1',
+        code: 'title_page',
         title_multiloc: ignored_title
       )
       expected_english_title = 'What is your contribution?'
@@ -640,7 +640,7 @@ RSpec.describe CustomField do
     let(:field) { create(:custom_field, resource: form) }
 
     context 'community_monitor_survey project' do
-      let(:project) { create(:community_monitor_project_with_active_phase) }
+      let(:project) { create(:community_monitor_project) }
 
       it 'can have an allowed category associated' do
         field.question_category = 'quality_of_life'

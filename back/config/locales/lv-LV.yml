@@ -171,12 +171,15 @@ lv:
       attachments:
         title: Pielikumi
         description:
-      page1:
+      title_page:
         description:
-      page2:
+      body_page:
+        title: Pastāstiet mums vairāk
+        description:
+      uploads_page:
         title: Attēli un pielikumi
         description:
-      page3:
+      details_page:
         title: Sīkāka informācija
         description:
       other_input_field:
@@ -300,6 +303,8 @@ lv:
     form_end_page:
       title_text_3: 'Paldies, ka dalījāties ar savu ieguldījumu!'
       description_text_3: "Jūsu dati ir veiksmīgi iesniegti."
+    form_user_page:
+      title_text: 'Par jums'
     pdf_export:
       personal_data: 'Personas dati'
       personal_data_explanation_public: "Mēs iesniegsim jūsu viedokli tiešsaistes līdzdalības platformā %{organizationName}. Ja vēlaties, lai jūsu vārds un uzvārds būtu redzams kā šī ieguldījuma autors un jūs saņemtu jauninājumus, kas saistīti ar jūsu ieguldījumu, pa e-pastu, lūdzu, aizpildiet turpmāk norādītos laukus šajā lapā, un mēs izveidosim jums kontu. Jūsu e-pasts nebūs publiski pieejams, un to izmantos tikai %{organizationName}. Ja vēlaties palikt anonīms vai nepiekrītat, ka mēs šādā veidā izmantojam jūsu personas datus, varat tos atstāt tukšus."

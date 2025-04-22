@@ -15,47 +15,59 @@ import styled from 'styled-components';
 import Combobox from './Combobox';
 import MultiSelectDropdown from './MultiSelectDropdown';
 
-const Container = styled(Box)`
+const Container = styled(Box)<{ mr?: string; ml?: string }>`
   display: inline-block;
   position: relative;
 
-  &:not(:last-child) {
-    margin-right: 40px;
-
-    ${media.tablet`
-      margin-right: 30px;
-    `}
-
-    ${media.phone`
-      margin-right: 25px;
-    `}
-
-    ${media.phone`
-      margin-right: 20px;
-    `}
-  }
-
-  &.last {
-    margin-right: 0px;
-  }
-
-  ${isRtl`
+  ${({ mr }) =>
+    mr === undefined
+      ? `
     &:not(:last-child) {
-      margin-left: 40px;
+      margin-right: 40px;
 
       ${media.tablet`
-        margin-left: 30px;
+        margin-right: 30px;
       `}
 
       ${media.phone`
-        margin-left: 20px;
+        margin-right: 25px;
+      `}
+
+      ${media.phone`
+        margin-right: 20px;
       `}
     }
 
     &.last {
-      margin-left: 0px;
+      margin-right: 0px;
     }
+  `
+      : `
+    margin-right: ${mr};
   `}
+
+  ${({ ml }) =>
+    ml === undefined
+      ? `
+    ${isRtl`
+      &:not(:last-child) {
+        margin-left: 40px;
+
+        ${media.tablet`
+          margin-left: 30px;
+        `}
+
+        ${media.phone`
+          margin-left: 20px;
+        `}
+      }
+
+      &.last {
+        margin-left: 0px;
+      }
+    `}
+  `
+      : `margin-left: ${ml};`}
 `;
 
 export interface IFilterSelectorValue {
@@ -88,6 +100,8 @@ interface Props extends DefaultProps {
   className?: string;
   filterSelectorStyle?: 'button' | 'text';
   minWidth?: string;
+  mr?: string;
+  ml?: string;
 }
 
 const FilterSelector = ({
@@ -112,6 +126,8 @@ const FilterSelector = ({
   textColor,
   last,
   filterSelectorStyle = 'text',
+  mr,
+  ml,
 }: Props) => {
   const baseID = `filter-${Math.floor(Math.random() * 10000000)}`;
   const [opened, setOpened] = useState(false);
@@ -222,6 +238,8 @@ const FilterSelector = ({
       className={`e2e-filter-selector-${name} ${className} ${
         last ? 'last' : ''
       }`}
+      mr={mr}
+      ml={ml}
     >
       {multipleSelectionAllowed ? (
         <MultiSelectDropdown

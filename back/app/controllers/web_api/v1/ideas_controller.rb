@@ -93,7 +93,7 @@ class WebApi::V1::IdeasController < ApplicationController
     ideas = policy_scope(Idea)
       .where(author: current_user)
       .submitted_or_published
-      .native_survey
+      .supports_survey
 
     ideas = paginate ideas
 
@@ -149,6 +149,12 @@ class WebApi::V1::IdeasController < ApplicationController
     draft_idea =
       (current_user && Idea.find_by(creation_phase_id: params[:phase_id], author: current_user, publication_status: 'draft')) ||
       Idea.new(project: phase.project, author: current_user, publication_status: 'draft')
+
+    # Merge custom field values from the user's profile if user fields are presented in the idea form
+    if current_user && phase.pmethod.user_fields_in_form?
+      user_values = current_user.custom_field_values&.transform_keys { |key| "u_#{key}" }
+      draft_idea.custom_field_values = user_values.merge(draft_idea.custom_field_values) if current_user
+    end
     render_show draft_idea, check_auth: false
   end
 

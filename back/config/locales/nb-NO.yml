@@ -171,12 +171,15 @@ nb:
       attachments:
         title: Vedlegg
         description:
-      page1:
+      title_page:
         description:
-      page2:
+      body_page:
+        title: Fortell oss mer
+        description:
+      uploads_page:
         title: Bilder og vedlegg
         description:
-      page3:
+      details_page:
         title: Detaljer
         description:
       other_input_field:
@@ -300,6 +303,8 @@ nb:
     form_end_page:
       title_text_3: 'Takk for at du deler dine innspill!'
       description_text_3: "Innspillet ditt har blitt sendt inn."
+    form_user_page:
+      title_text: 'Om deg'
     pdf_export:
       personal_data: 'Personopplysninger'
       personal_data_explanation_public: "Vi sender innspillet ditt til %{organizationName} sin digitale medvirkningsplattform. Hvis du vil at navnet ditt skal vises som forfatter av dette innspillet, og motta oppdateringer som er relevante for innspillet ditt via e-post, kan du fylle ut følgende felt på denne siden. Da opprettes en konto for deg. E-postadressen din vil ikke bli offentliggjort, og vil kun bli brukt av %{organizationName}. Hvis du ønsker å være anonym, eller ikke godtar at vi bruker personopplysningene dine på denne måten, kan du la feltene stå tomme."

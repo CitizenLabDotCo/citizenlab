@@ -13,6 +13,7 @@ import usePhase from 'api/phases/usePhase';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
+import { supportsNativeSurvey } from 'containers/Admin/projects/project/inputImporter/ReviewSection/utils';
 import { useReportContext } from 'containers/Admin/reporting/context/ReportContext';
 
 import PhaseFilter from 'components/UI/PhaseFilter';
@@ -59,10 +60,11 @@ const Analysis = ({ selectedLocale }: { selectedLocale: string }) => {
     setQuestionId(questionId);
   }, []);
 
-  const isNativeSurveyPhase =
-    phase?.data.attributes.participation_method === 'native_survey';
+  const supportsSurvey = supportsNativeSurvey(
+    phase?.data.attributes.participation_method
+  );
 
-  const showAnalyses = isNativeSurveyPhase
+  const showAnalyses = supportsSurvey
     ? projectId && phaseId && questionId
     : projectId && phaseId;
 
@@ -99,7 +101,11 @@ const Analysis = ({ selectedLocale }: { selectedLocale: string }) => {
               label={formatMessage(messages.selectPhase)}
               projectId={projectId}
               phaseId={phaseId}
-              participationMethods={['native_survey', 'ideation']}
+              participationMethods={[
+                'native_survey',
+                'ideation',
+                'community_monitor_survey',
+              ]}
               onPhaseFilter={handlePhaseFilter}
             />
           )}
@@ -109,9 +115,11 @@ const Analysis = ({ selectedLocale }: { selectedLocale: string }) => {
               phaseId={phaseId}
               questionId={questionId}
               filterQuestion={({ attributes }) => {
-                return ['text', 'multiline_text'].includes(
-                  attributes.input_type
-                );
+                return [
+                  'text',
+                  'multiline_text',
+                  'sentiment_linear_scale',
+                ].includes(attributes.input_type);
               }}
               label={formatMessage(messages.question)}
               onChange={handleQuestion}
@@ -120,9 +128,7 @@ const Analysis = ({ selectedLocale }: { selectedLocale: string }) => {
           {showAnalyses && (
             <Analyses
               projectId={projectId}
-              phaseId={
-                isNativeSurveyPhase || isIdeationPhase ? phaseId : undefined
-              }
+              phaseId={supportsSurvey || isIdeationPhase ? phaseId : undefined}
               questionId={questionId}
               selectedLocale={selectedLocale}
               participationMethod={phase?.data.attributes.participation_method}

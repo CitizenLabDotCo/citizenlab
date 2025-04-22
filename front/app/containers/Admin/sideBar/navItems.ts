@@ -26,7 +26,9 @@ const getInspirationHubLink = (country_code: string | null) => {
   }
 
   const pinnedProjectsCountryFilter = `q[pin_country_code_eq]=${country_code}`;
-  const allProjectsCountryFilter = `q[tenant_country_code_eq]=${country_code}`;
+  const allProjectsCountryFilter = `q[tenant_country_code_in]=${JSON.stringify([
+    country_code,
+  ])}`;
 
   return `/admin/inspiration-hub?${pinnedProjectsCountryFilter}&${allProjectsCountryFilter}` as RouteType;
 };
@@ -71,6 +73,13 @@ const getDefaultNavItems = ({ data }: IAppConfiguration): NavItem[] => {
       iconName: 'reports',
       message: 'reporting',
       featureNames: ['report_builder'],
+    },
+    {
+      name: 'community_monitor',
+      link: '/admin/community-monitor',
+      iconName: 'community_monitor',
+      message: 'community_monitor',
+      featureNames: ['community_monitor'],
     },
     {
       name: 'inspirationHub',

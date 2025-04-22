@@ -171,12 +171,15 @@ pl:
       attachments:
         title: Załączniki
         description:
-      page1:
+      title_page:
         description:
-      page2:
+      body_page:
+        title: Powiedz nam więcej
+        description:
+      uploads_page:
         title: Obrazy i załączniki
         description:
-      page3:
+      details_page:
         title: Szczegóły
         description:
       other_input_field:
@@ -300,6 +303,8 @@ pl:
     form_end_page:
       title_text_3: 'Dziękujemy za podzielenie się Twoimi uwagami!'
       description_text_3: "Twoje dane zostały pomyślnie przesłane."
+    form_user_page:
+      title_text: 'O Tobie'
     pdf_export:
       personal_data: 'Dane osobowe'
       personal_data_explanation_public: "Prześlemy Twój wkład na platformę uczestnictwa online %{organizationName}. Jeśli chcesz, aby Twoje imię i nazwisko było wyświetlane jako autor tego wkładu i otrzymywać aktualizacje dotyczące Twojego wkładu pocztą elektroniczną, wypełnij poniższe pola na tej stronie, a my utworzymy dla Ciebie konto. Twój adres e-mail nie będzie publiczny i będzie używany wyłącznie przez %{organizationName}. Jeśli chcesz pozostać anonimowy lub nie zgadzasz się na wykorzystanie przez nas Twoich danych osobowych w ten sposób, możesz pozostawić je puste."

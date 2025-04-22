@@ -150,7 +150,7 @@ sv:
         title: Beskrivning
         description:
       author_id:
-        title: Författare
+        title: Deltagare
       topic_ids:
         title: Topics
         description:
@@ -171,12 +171,15 @@ sv:
       attachments:
         title: Bilagor
         description:
-      page1:
+      title_page:
         description:
-      page2:
+      body_page:
+        title: Berätta mer för oss
+        description:
+      uploads_page:
         title: Bilder och bilagor
         description:
-      page3:
+      details_page:
         title: Detaljer
         description:
       other_input_field:
@@ -300,6 +303,8 @@ sv:
     form_end_page:
       title_text_3: 'Tack för att du delar med dig av dina synpunkter!'
       description_text_3: "Din input har skickats in på ett framgångsrikt sätt."
+    form_user_page:
+      title_text: 'Om dig'
     pdf_export:
       personal_data: 'Personuppgifter'
       personal_data_explanation_public: "Vi kommer att skicka dina synpunkter till %{organizationName}:s onlineplattform för deltagande. Om du vill att ditt namn ska visas som författare till detta inlägg och få uppdateringar som är relevanta för ditt inlägg via e-post, vänligen fyll i följande fält på denna sida så skapar vi ett konto åt dig. Ditt e-postmeddelande kommer inte att vara offentligt och kommer endast att användas av %{organizationName}. Om du vill vara anonym eller inte samtycker till att vi använder dina personuppgifter på detta sätt kan du lämna dem tomma."
@@ -351,7 +356,7 @@ sv:
       for_more_information: "Mer information om detta finns på %{termsAndConditionsPage}."
       you_can_sign_in_again_from: "Du kan logga in igen från %{date}"
   user:
-    anon_first_name: "Användare"
+    anon_first_name: "Deltagare"
     anon_scheme:
       animals: 'alligator,krokodil,alpaca,myra,antilop,apa,bältdjur,babian,grävling,fladdermus,björn,bäver,bi,skalbagge,buffel,fjäril,kamel,vattenbuffel,caribou,katt,nötkreatur,gepard,schimpans,chinchilla,cikada,mussla,kackerlacka,torsk,prärievarg,krabba,syrsa,kråka,korp,hjort,dinosaurie,hund,delfin,tumlare,anka,örn,ål,elefant,älg,iller,fisk,fluga,räv,groda,padda,gerbil,giraff,mygga,gnu,gnu, gnu, get,guldfisk,gås,gorilla,gräshoppa,marsvin,hamster,hare,igelkott,sill,flodhäst,geting,häst,hundhyena,impala,schakal,manet,känguru,wallaby,koala,leopard,lejon,ödla,lama,gräshoppa,lus,ara,gräsand,mammut,manatee,mård,mink,minnow,mullvad,älg,mygga,mus,råtta,mula,bisamråtta,utter,oxe,ostron,panda,gris,näbbdjur,piggsvin,präriehund,mops,kanin,tvättbjörn,ren,noshörning,lax,sardin,skorpion,säl,sjölejon,serval,haj,får,skunk,snigel,orm,spindel,ekorre,svan,termit,tiger,öring,sköldpadda,sköldpadda,valross,geting,val,varg,wombat,woodchuck,mask,jak,guljacka,zebra'
   time:

@@ -214,6 +214,13 @@ const PhaseParticipationConfig = ({
     }));
   };
 
+  const handleUserFieldsInFormOnChange = (user_fields_in_form: boolean) => {
+    updateFormData((state) => ({
+      ...state,
+      user_fields_in_form,
+    }));
+  };
+
   const handleVotingMethodOnChange = (voting_method: VotingMethod) => {
     const maxVotes = MAX_VOTES_PER_VOTING_METHOD[voting_method];
 
@@ -373,6 +380,23 @@ const PhaseParticipationConfig = ({
     }));
   };
 
+  const handleSimilarityEnabledChange = (value: boolean) => {
+    updateFormData((state) => ({
+      ...state,
+      similarity_enabled: value,
+    }));
+  };
+
+  const handleThresholdChange = (
+    field: 'similarity_threshold_title' | 'similarity_threshold_body',
+    value: number
+  ) => {
+    updateFormData((state) => ({
+      ...state,
+      [field]: value,
+    }));
+  };
+
   const surveyProviders = {
     typeform: typeform_enabled,
     enalyzer: enalyzer_enabled,
@@ -413,6 +437,10 @@ const PhaseParticipationConfig = ({
     expire_days_limit,
     reacting_threshold,
     prescreening_enabled,
+    similarity_enabled,
+    similarity_threshold_title,
+    similarity_threshold_body,
+    user_fields_in_form,
   } = formData;
 
   const showSurveys =
@@ -472,6 +500,11 @@ const PhaseParticipationConfig = ({
             voting_term_plural_multiloc={voting_term_plural_multiloc}
             voting_term_singular_multiloc={voting_term_singular_multiloc}
             handleMaxVotesPerOptionAmountChange={handleVotingMaxPerIdeaChange}
+            similarity_enabled={similarity_enabled}
+            similarity_threshold_title={similarity_threshold_title}
+            similarity_threshold_body={similarity_threshold_body}
+            handleSimilarityEnabledChange={handleSimilarityEnabledChange}
+            handleThresholdChange={handleThresholdChange}
           />
         )}
 
@@ -514,6 +547,11 @@ const PhaseParticipationConfig = ({
             }
             prescreening_enabled={prescreening_enabled}
             togglePrescreeningEnabled={togglePrescreeningEnabled}
+            similarity_enabled={similarity_enabled}
+            similarity_threshold_title={similarity_threshold_title}
+            similarity_threshold_body={similarity_threshold_body}
+            handleSimilarityEnabledChange={handleSimilarityEnabledChange}
+            handleThresholdChange={handleThresholdChange}
           />
         )}
 
@@ -551,6 +589,11 @@ const PhaseParticipationConfig = ({
             reactingThresholdError={validationErrors.reactingThresholdError}
             prescreening_enabled={prescreening_enabled}
             togglePrescreeningEnabled={togglePrescreeningEnabled}
+            similarity_enabled={similarity_enabled}
+            similarity_threshold_title={similarity_threshold_title}
+            similarity_threshold_body={similarity_threshold_body}
+            handleSimilarityEnabledChange={handleSimilarityEnabledChange}
+            handleThresholdChange={handleThresholdChange}
           />
         )}
 
@@ -603,12 +646,14 @@ const PhaseParticipationConfig = ({
         {participation_method === 'native_survey' && (
           <NativeSurveyInputs
             allow_anonymous_participation={allow_anonymous_participation}
+            user_fields_in_form={user_fields_in_form}
             apiErrors={apiErrors}
             phase={phase}
             formData={formData}
             handleAllowAnonymousParticipationOnChange={
               handleAllowAnonymousParticipationOnChange
             }
+            handleUserFieldsInFormOnChange={handleUserFieldsInFormOnChange}
             handleSurveyTitleChange={handleSurveyTitleChange}
             handleSurveyCTAChange={handleSurveyCTAChange}
           />
