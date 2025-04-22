@@ -71,7 +71,7 @@ RSpec.describe Analysis::SummarizationMethod do
         accuracy: 0.8,
         include_id: true,
         shorten_labels: false,
-        include_comments: false
+        include_comments: true
       })
 
       mock_llm = instance_double(Analysis::LLM::GPT4o)
@@ -94,7 +94,7 @@ RSpec.describe Analysis::SummarizationMethod do
       })
     end
 
-    it 'includes the comments in the prompt if the comments_summaries feature flag is active' do
+    it 'includes the comments in the prompt' do
       create(:comment, idea: inputs[1], body_multiloc: { en: 'I want to comment on that' })
 
       plan = Analysis::SummarizationMethod::OnePassLLM.new(summary).generate_plan

@@ -71,7 +71,7 @@ RSpec.describe Analysis::QAndAMethod do
         accuracy: 0.8,
         include_id: true,
         shorten_labels: false,
-        include_comments: false
+        include_comments: true
       })
 
       mock_llm = instance_double(Analysis::LLM::GPT4o)
