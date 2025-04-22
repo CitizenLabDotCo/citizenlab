@@ -6,87 +6,12 @@ module ReportBuilder
       resolution: 'month',
       project_id: nil,
       compare_start_at: nil,
-      compare_end_at: nil,
-      **_other_props
+      compare_end_at: nil
     )
       validate_resolution(resolution)
       start_date, end_date = TimeBoundariesParser.new(start_at, end_at).parse
 
-      # Why do we need to call run_query_untransformed and then transform_response?
-      # Because this was first implemented in a completely different way, using
-      # the analytics API.
-      # This API created a very wonky response structure.
-      # Now, we don't use the analytics api anymore, and we want to return a more
-      # easy to read response structure.
-      # Unfortunately, we can't just change the response structure, because
-      # of the published data that still uses the old structure.
-      # So that's why we take our nice new response structure and transform it
-      # back into the old wonky one for now.
-      # Hopefully in the future we can switch over to the new, nice response structure
-      untransformed_response = run_query_untransformed(
-        start_date,
-        end_date,
-        resolution: resolution,
-        project_id: project_id,
-        compare_start_at: compare_start_at,
-        compare_end_at: compare_end_at
-      )
-
-      transform_response(untransformed_response)
-    end
-
-    def transform_response(untransformed_response)
-      time_series = untransformed_response[:time_series].map do |row|
-        {
-          'count' => row[:visits],
-          'count_monthly_user_hash' => row[:visitors],
-          'dimension_date_created.month' => row[:date_group].strftime('%Y-%m'),
-          'first_dimension_date_created_date' => row[:date_group]
-        }
-      end
-
-      totals = [{
-        'count' => untransformed_response[:visits_total],
-        'count_monthly_user_hash' => untransformed_response[:visitors_total]
-      }]
-
-      averages = [{
-        'avg_duration' => untransformed_response[:avg_seconds_on_page],
-        'avg_pages_visited' => untransformed_response[:avg_pages_visited]
-      }]
-
-      response = [time_series, totals, averages]
-
-      if untransformed_response[:compare_visits_total].present?
-        compared_totals = [{
-          'count' => untransformed_response[:compare_visits_total],
-          'count_monthly_user_hash' => untransformed_response[:compare_visitors_total]
-        }]
-
-        compared_averages = [{
-          'avg_duration' => untransformed_response[:compare_avg_seconds_on_page],
-          'avg_pages_visited' => untransformed_response[:compare_avg_pages_visited]
-        }]
-
-        response = [
-          *response,
-          compared_totals,
-          compared_averages
-        ]
-      end
-
-      response
-    end
-
-    def run_query_untransformed(
-      start_at,
-      end_at,
-      resolution: 'month',
-      project_id: nil,
-      compare_start_at: nil,
-      compare_end_at: nil
-    )
-      sessions = ImpactTracking::Session.where(created_at: start_at..end_at)
+      sessions = ImpactTracking::Session.where(created_at: start_date..end_date)
       sessions = apply_project_filter_if_needed(sessions, project_id)
 
       time_series = sessions
@@ -143,7 +68,7 @@ module ReportBuilder
       visits_total = sessions.count
       visitors_total = sessions.distinct.pluck(:monthly_user_hash).count
 
-      ### Avg seconds on page, and avg pages visited per session
+      # Avg pages visited per session
       pageviews = ImpactTracking::Pageview.where(session_id: sessions.select(:id))
 
       # Avg seconds on page
