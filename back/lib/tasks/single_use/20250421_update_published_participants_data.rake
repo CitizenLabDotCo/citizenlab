@@ -20,6 +20,11 @@ namespace :single_use do
       value
     end
 
+    def safe_divide(numerator, denominator)
+      return 0 if denominator == 0
+      numerator.to_f / denominator.to_f
+    end
+
     Tenant.safe_switch_each do |tenant|
       puts "\nProcessing tenant #{tenant.host} \n\n"
 
@@ -70,8 +75,10 @@ namespace :single_use do
         participants_filtered_by_matomo = safe_get(data_unit.data[3], "count_participant_id")
 
         # Calculate participation rate
-        participation_rate_whole_period = participants_filtered_by_matomo.to_f /
-          matomo_visitors_whole_period.to_f
+        participation_rate_whole_period = safe_divide(
+          participants_filtered_by_matomo,
+          matomo_visitors_whole_period
+        )
 
         new_data = {
           "participants_timeseries" => participants_timeseries,
@@ -87,8 +94,10 @@ namespace :single_use do
           participants_filtered_by_matomo_compared = safe_get(data_unit.data[6], "count_participant_id")
 
           # Calculate participation rate
-          participation_rate_compared_period = participants_filtered_by_matomo_compared.to_f /
-            matomo_visitors_compared_period.to_f
+          participation_rate_compared_period = safe_divide(
+            participants_filtered_by_matomo_compared,
+            matomo_visitors_compared_period
+          )
 
           new_data["participants_compared_period"] = participants_compared_period
           new_data["participation_rate_compared_period"] = participation_rate_compared_period
