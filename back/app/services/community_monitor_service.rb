@@ -2,7 +2,7 @@
 
 class CommunityMonitorService
   def enabled?
-    return true if Time.zone.now < Date.parse('2025-07-01') # TODO: Remove trial period after 2025-06-30
+    return true if settings.dig('community_monitor', 'allowed') && Time.zone.now < Date.parse('2025-07-01') # TODO: Remove trial period after 2025-06-30
 
     settings.dig('community_monitor', 'enabled') || false
   end

@@ -16,10 +16,14 @@ export default function useFeatureFlag({
 
   if (!appConfiguration) return false;
 
-  if (name === 'community_monitor' && new Date() < new Date('2025-07-01'))
-    return true; // TODO: Remove trial period after 2025-06-30;
-
   const setting = appConfiguration.data.attributes.settings[name];
+
+  if (
+    name === 'community_monitor' &&
+    setting?.allowed &&
+    new Date() < new Date('2025-07-01')
+  )
+    return true; // TODO: Remove trial period after 2025-06-30;
 
   return setting
     ? setting.allowed && (onlyCheckAllowed || setting.enabled)
