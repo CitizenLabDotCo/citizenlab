@@ -7,8 +7,8 @@ namespace :single_use do
     end
 
     def floor_month(date_str)
-      throw ArgumentError, 'Invalid date format' unless date_str.length === 10
-      date_str.slice(0, 8) + '01'
+      throw ArgumentError, 'Invalid date format' unless date_str.length == 10
+      "#{date_str.slice(0, 8)}01"
     end
 
     def safe_get(entry, key)
@@ -33,8 +33,8 @@ namespace :single_use do
       puts "\nProcessing tenant #{tenant.host} \n\n"
 
       # 1. Get published reports
-      published_reports = ReportBuilder::Report.where(
-        'phase_id IS NOT NULL'
+      published_reports = ReportBuilder::Report.where.not(
+        phase_id: nil
       )
 
       # 2. Get layouts associated with reports
