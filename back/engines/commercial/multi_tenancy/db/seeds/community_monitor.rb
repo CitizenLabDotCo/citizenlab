@@ -5,16 +5,20 @@ require_relative 'base'
 module MultiTenancy
   module Seeds
     class CommunityMonitor < Base
+      def initialize(runner:, num_quarters: 2)
+        @num_quarters = num_quarters
+        super(runner: runner)
+      end
+
       def run
-        @project = CommunityMonitorService.new.create_and_set_project
+        service = CommunityMonitorService.new
+        @project = service.project || service.create_and_set_project
         @phase = @project.phases.first
         @question_keys = @phase.custom_form.custom_fields.reject(&:page?).pluck(:key)
 
-        # Responses for this quarter
-        runner.num_ideas.times { create_survey_response(Time.zone.now) }
-
-        # Responses for previous quarter
-        runner.num_ideas.times { create_survey_response(3.months.ago) }
+        @num_quarters.times.with_index do |num_quarters_ago| # NOTE: 0 = current quarter
+          runner.num_ideas.times { create_survey_response((3 * num_quarters_ago).months.ago) }
+        end
       end
 
       private
