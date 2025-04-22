@@ -18,7 +18,7 @@ import { TOnProjectAttributesDiffChangeFunction } from 'containers/Admin/project
 
 import { SectionField, SubSectionTitle } from 'components/admin/Section';
 
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import { usePermission } from 'utils/permissions';
 import { isAdmin } from 'utils/permissions/roles';
 import {
@@ -43,6 +43,7 @@ const ProjectFolderSelect = ({
   onProjectAttributesDiffChange,
   isNewProject,
 }: Props) => {
+  const { formatMessage } = useIntl();
   const { data: projectFolders } = useProjectFolders({});
   const { data: authUser } = useAuthUser();
 
@@ -54,7 +55,9 @@ const ProjectFolderSelect = ({
   const localize = useLocalize();
 
   const noFolderId = '/'; // This sentinel must not be a valid folder id.
-  const noFolderOption = { value: noFolderId, label: '— No folder —' };
+  const noFolderLabel = formatMessage(messages.noFolderLabel);
+  const noFolderOption = { value: noFolderId, label: noFolderLabel };
+
   const folderOptions: IOption[] = projectFolders?.data
     ? [
         noFolderOption,
