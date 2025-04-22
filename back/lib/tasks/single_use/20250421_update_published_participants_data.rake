@@ -95,8 +95,9 @@ namespace :single_use do
         end
 
         # Update the data
-        data_unit.data = new_data.to_json
+        data_unit.data = new_data
         data_unit.save!
+        puts "Updated #{data_unit.graph_id}"
       end
     end
   end
