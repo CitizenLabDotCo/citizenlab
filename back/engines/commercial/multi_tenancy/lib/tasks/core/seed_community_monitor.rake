@@ -4,20 +4,26 @@ require Rails.root.join('engines/commercial/multi_tenancy/db/seeds/runner')
 
 namespace :demos do
   desc 'Enable community monitor (if not enabled) and seed with demo data'
-  task :seed_community_monitor, %i[host num_quarters] => [:environment] do |_, args|
+  task :seed_community_monitor, %i[host num_quarters locale] => [:environment] do |_, args|
     Apartment::Tenant.switch(args[:host].tr('.', '_')) do
       unless args[:host] == 'localhost' || AppConfiguration.instance.settings.dig('core', 'lifecycle_stage') == 'demo'
         Rails.logger.error 'Lifecycle stage is not demo, exiting'
         exit
       end
 
-      # TODO: Enable community monitor first
+      # Ensure community monitor is enabled first
+      settings = AppConfiguration.instance.settings
+      settings['community_monitor']['allowed'] = true
+      settings['community_monitor']['enabled'] = true
+      AppConfiguration.instance.update!(settings:)
 
       num_quarters = args[:num_quarters].to_i || 2
-      Rails.logger.info "Seeding community monitor with #{num_quarters} quarters of data"
-      CommunityMonitorSeedsRunner.new(num_quarters:).execute
+      locale = args[:locale]
+      num_existing_ideas = Idea.count
 
-      # TODO: Get the first locale of the tenant
+      Rails.logger.info "Seeding community monitor with #{num_quarters} quarters of data"
+      CommunityMonitorSeedsRunner.new(num_quarters:, locale:).execute
+      Rails.logger.info "DONE: Added #{Idea.count - num_existing_ideas} responses"
     end
   end
 end
@@ -25,12 +31,19 @@ end
 class CommunityMonitorSeedsRunner < MultiTenancy::Seeds::Runner
   attr_accessor :num_ideas
 
-  def initialize(num_ideas: 4, num_quarters: 2)
-    @num_ideas = num_ideas # NOTE: Currently always set to 4
+  def initialize(num_quarters: 2, locale: nil)
+    @num_ideas = 4 # 4 ideas per quarter
     @num_quarters = num_quarters
+    @locale = locale
+    super()
   end
 
   def execute
-    MultiTenancy::Seeds::CommunityMonitor.new(runner: self, num_quarters: @num_quarters).run
+    MultiTenancy::Seeds::CommunityMonitor.new(
+      runner: self,
+      num_quarters: @num_quarters,
+      ai_responses: true,
+      locale: @locale
+    ).run
   end
 end
