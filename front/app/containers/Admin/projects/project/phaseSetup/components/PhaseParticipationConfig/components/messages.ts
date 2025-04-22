@@ -173,7 +173,7 @@ export default defineMessages({
   warningSimilarInputDetectionTrial: {
     id: 'app.containers.phaseConfig.warningSimilarInputDetectionTrial',
     defaultMessage:
-      'This is a beta feature and will only remain available until the trial period ends on June 30th, 2025. Talk to your Government Success Manager or admin if you want to keep it after the trial period.',
+      "This feature is available as part of an early access offering until June 30th, 2025. If you'd like to continue using it beyond that date, please reach out to your Government Success Manager or admin to discuss activation options.",
   },
   enableSimilarInputDetection: {
     id: 'app.containers.phaseConfig.enableSimilarInputDetection',
