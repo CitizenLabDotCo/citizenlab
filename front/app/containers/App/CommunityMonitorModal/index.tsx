@@ -1,12 +1,6 @@
 import React, { useState, useCallback, useEffect } from 'react';
 
-import {
-  Box,
-  Button,
-  colors,
-  Icon,
-  Text,
-} from '@citizenlab/cl2-component-library';
+import { Box, colors, Icon, Text } from '@citizenlab/cl2-component-library';
 import { get, set } from 'js-cookie';
 import { useLocation } from 'react-router-dom';
 
@@ -134,9 +128,9 @@ const CommunityMonitorModal = ({
     return () => subscription.unsubscribe();
   }, [shouldShowModal]);
 
-  const onClose = (expireDayLimit?: number) => {
+  const onClose = () => {
     set('community_monitor_modal_seen', 'true', {
-      expires: expireDayLimit || 90, // Cookie expires by default after 90 days
+      expires: 90, // Cookie expires by default after 90 days
     });
     setModalOpened(false);
   };
@@ -178,16 +172,6 @@ const CommunityMonitorModal = ({
             })}
           </Text>
         </Box>
-        <Button
-          mt="20px"
-          py="4px"
-          fontSize="s"
-          onClick={() => {
-            onClose(1); // Set cookie to expire in 1 day
-          }}
-        >
-          {formatMessage(messages.remindMeLater)}
-        </Button>
       </Box>
     </Modal>
   );
