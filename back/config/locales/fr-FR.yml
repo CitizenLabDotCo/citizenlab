@@ -171,12 +171,15 @@ fr:
       attachments:
         title: Pièces jointes
         description:
-      page1:
+      title_page:
         description:
-      page2:
+      body_page:
+        title: Dites-nous en plus
+        description:
+      uploads_page:
         title: Images et pièces jointes
         description:
-      page3:
+      details_page:
         title: Détails 
         description:
       other_input_field:
