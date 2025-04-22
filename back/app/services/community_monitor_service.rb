@@ -12,7 +12,7 @@ class CommunityMonitorService
   end
 
   def project
-    return nil unless enabled?
+    return nil unless enabled? && project_id.present?
 
     Project.find(project_id)
   end

@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 require Rails.root.join('engines/commercial/multi_tenancy/db/seeds/runner')
 
 namespace :demos do

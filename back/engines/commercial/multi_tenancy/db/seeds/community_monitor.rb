@@ -16,7 +16,7 @@ module MultiTenancy
         @phase = @project.phases.first
         @question_keys = @phase.custom_form.custom_fields.reject(&:page?).pluck(:key)
 
-        @num_quarters.times.with_index do |num_quarters_ago| # NOTE: 0 = current quarter
+        @num_quarters.times do |num_quarters_ago| # NOTE: 0 = current quarter
           runner.num_ideas.times { create_survey_response((3 * num_quarters_ago).months.ago) }
         end
       end
