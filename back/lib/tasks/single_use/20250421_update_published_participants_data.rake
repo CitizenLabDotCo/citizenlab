@@ -13,16 +13,20 @@ namespace :single_use do
 
     def safe_get(entry, key)
       return 0 if entry.nil?
+
       inner = entry[0]
       return 0 unless inner.is_a?(Hash)
+
       value = inner[key]
       return 0 unless value.is_a?(Integer)
+
       value
     end
 
     def safe_divide(numerator, denominator)
       return 0 if denominator == 0
-      numerator.to_f / denominator.to_f
+
+      numerator / denominator.to_f
     end
 
     Tenant.safe_switch_each do |tenant|
@@ -30,7 +34,7 @@ namespace :single_use do
 
       # 1. Get published reports
       published_reports = ReportBuilder::Report.where(
-        "phase_id IS NOT NULL",
+        'phase_id IS NOT NULL'
       )
 
       # 2. Get layouts associated with reports
@@ -64,15 +68,15 @@ namespace :single_use do
 
         participants_timeseries = data_unit.data[0].map do |row|
           {
-            date_group: floor_month(row["first_dimension_date_created_date"]),
-            participants: row["count_participant_id"]
+            date_group: floor_month(row['first_dimension_date_created_date']),
+            participants: row['count_participant_id']
           }
         end
 
         # Extract statistics
-        participants_whole_period = safe_get(data_unit.data[1], "count_participant_id")
-        matomo_visitors_whole_period = safe_get(data_unit.data[2], "count_visitor_id")
-        participants_filtered_by_matomo = safe_get(data_unit.data[3], "count_participant_id")
+        participants_whole_period = safe_get(data_unit.data[1], 'count_participant_id')
+        matomo_visitors_whole_period = safe_get(data_unit.data[2], 'count_visitor_id')
+        participants_filtered_by_matomo = safe_get(data_unit.data[3], 'count_participant_id')
 
         # Calculate participation rate
         participation_rate_whole_period = safe_divide(
@@ -81,17 +85,17 @@ namespace :single_use do
         )
 
         new_data = {
-          "participants_timeseries" => participants_timeseries,
-          "participants_whole_period" => participants_whole_period,
-          "participation_rate_whole_period" => participation_rate_whole_period
+          'participants_timeseries' => participants_timeseries,
+          'participants_whole_period' => participants_whole_period,
+          'participation_rate_whole_period' => participation_rate_whole_period
         }
 
         # if compare period...
         if data_unit.data.length > 4
           # Extract statistics
-          participants_compared_period = safe_get(data_unit.data[4], "count_participant_id")
-          matomo_visitors_compared_period = safe_get(data_unit.data[5], "count_visitor_id")
-          participants_filtered_by_matomo_compared = safe_get(data_unit.data[6], "count_participant_id")
+          participants_compared_period = safe_get(data_unit.data[4], 'count_participant_id')
+          matomo_visitors_compared_period = safe_get(data_unit.data[5], 'count_visitor_id')
+          participants_filtered_by_matomo_compared = safe_get(data_unit.data[6], 'count_participant_id')
 
           # Calculate participation rate
           participation_rate_compared_period = safe_divide(
@@ -99,8 +103,8 @@ namespace :single_use do
             matomo_visitors_compared_period
           )
 
-          new_data["participants_compared_period"] = participants_compared_period
-          new_data["participation_rate_compared_period"] = participation_rate_compared_period
+          new_data['participants_compared_period'] = participants_compared_period
+          new_data['participation_rate_compared_period'] = participation_rate_compared_period
         end
 
         # Update the data
