@@ -216,7 +216,7 @@ class SideFxIdeaService
   end
 
   def enqueue_embeddings_job(idea)
-    return if !AppConfiguration.instance.feature_activated?('input_iq') && (Time.zone.now > Date.parse('2025-06-30'))
+    return if !AppConfiguration.instance.feature_activated?('input_iq') && AppConfiguration.timezone.at(time).to_date > Date.parse('2025-06-30')
     return if !idea.participation_method_on_creation.supports_public_visibility?
 
     UpsertEmbeddingJob.perform_later(idea)
