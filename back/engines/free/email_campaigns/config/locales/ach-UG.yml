@@ -8,6 +8,7 @@ ach:
       "comment_marked_as_spam": crwdns4304158:0crwdne4304158:0
       "comment_on_your_comment": crwdns4304160:0crwdne4304160:0
       "comment_on_idea_you_follow": crwdns4304162:0crwdne4304162:0
+      "community_monitor_report": crwdns4368562:0crwdne4368562:0
       "cosponsor_of_your_idea": crwdns4304164:0crwdne4304164:0
       "event_registration_confirmation": crwdns4304166:0crwdne4304166:0
       "idea_marked_as_spam": crwdns4304168:0crwdne4304168:0
@@ -82,6 +83,7 @@ ach:
         "4": "crwdns4304296:0%{hourOfDay}crwdne4304296:0"
         "5": "crwdns4304298:0%{hourOfDay}crwdne4304298:0"
         "6": "crwdns4304300:0%{hourOfDay}crwdne4304300:0"
+      quarterly: "crwdns4368564:0crwdne4368564:0"
     footer:
       "link_privacy_policy": "crwdns4304302:0crwdne4304302:0"
       "link_terms_conditions": "crwdns4304304:0crwdne4304304:0"
@@ -147,6 +149,12 @@ ach:
       today: crwdns4304412:0crwdne4304412:0
       wrong_content: 'crwdns4304414:0crwdne4304414:0'
       yesterday: crwdns4304416:0crwdne4304416:0
+    community_monitor_report:
+      subject: 'crwdns4368566:0crwdne4368566:0'
+      title: 'crwdns4368568:0crwdne4368568:0'
+      text_introduction: 'crwdns4368570:0crwdne4368570:0'
+      cta_report_button: 'crwdns4368572:0crwdne4368572:0'
+      report_name: 'crwdns4368574:0crwdne4368574:0'
     cosponsor_of_your_idea:
       cta_reply_to: 'crwdns4304418:0crwdne4304418:0'
       event_description: 'crwdns4304420:0%{cosponsorName}crwdne4304420:0'
