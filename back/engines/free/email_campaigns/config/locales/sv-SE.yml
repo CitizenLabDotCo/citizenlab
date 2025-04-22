@@ -8,6 +8,7 @@ sv:
       "comment_marked_as_spam": Kommentera skräppostrapport
       "comment_on_your_comment": Ett svar på min kommentar
       "comment_on_idea_you_follow": En kommentar till en idé som du följer
+      "community_monitor_report": Rapport från gemenskapens övervakare
       "cosponsor_of_your_idea": En användare accepterar min inbjudan att stödja mitt förslag
       "event_registration_confirmation": Bekräftelse på registrering av evenemang
       "idea_marked_as_spam": Skräppostrapport för idé
@@ -82,6 +83,7 @@ sv:
         "4": "Varje vecka på torsdagar %{hourOfDay}"
         "5": "Veckovis på fredagar %{hourOfDay}"
         "6": "Veckovis på lördagar %{hourOfDay}"
+      quarterly: "Kvartalsvis, den första dagen i kvartalet"
     footer:
       "link_privacy_policy": "Sekretesspolicy"
       "link_terms_conditions": "Villkor"
@@ -147,6 +149,12 @@ sv:
       today: I dag
       wrong_content: 'Kommentaren är inte relevant.'
       yesterday: I går
+    community_monitor_report:
+      subject: 'En ny rapport om övervakning av samhället finns tillgänglig'
+      title: 'En ny rapport om övervakning av samhället finns tillgänglig'
+      text_introduction: 'En community monitor-rapport har skapats för föregående kvartal. Du kan komma åt den genom att klicka på knappen nedan och logga in.'
+      cta_report_button: 'Visa rapport'
+      report_name: 'Rapport från gemenskapens övervakare'
     cosponsor_of_your_idea:
       cta_reply_to: 'Se ditt förslag'
       event_description: 'Grattis! %{cosponsorName} har accepterat din inbjudan att vara medsponsor för ditt förslag.'
