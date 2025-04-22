@@ -73,7 +73,7 @@ const IdeasEditForm = ({ ideaId }: Props) => {
   const [usingMapView, setUsingMapView] = useState(false);
   const [selectedIdeaId, setSelectedIdeaId] = useState<string | null>(null);
   const isAuthoringAssistanceEnabled = useFeatureFlag({
-    name: 'authoring_assistance',
+    name: 'input_iq',
   });
   const phaseId = idea?.data.relationships.phases.data[0].id;
   const { data: phase } = usePhase(phaseId);

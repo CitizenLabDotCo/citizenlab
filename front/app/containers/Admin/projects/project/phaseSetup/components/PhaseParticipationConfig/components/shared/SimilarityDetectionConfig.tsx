@@ -42,7 +42,7 @@ const SimilarityDetectionConfig = ({
   handleThresholdChange,
 }: Props) => {
   const isAuthoringAssistanceAllowed = useFeatureFlag({
-    name: 'authoring_assistance',
+    name: 'input_iq',
     onlyCheckAllowed: true,
   });
   const { data: user } = useAuthUser();
