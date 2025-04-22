@@ -19,7 +19,6 @@ import { TOnProjectAttributesDiffChangeFunction } from 'containers/Admin/project
 import { SectionField, SubSectionTitle } from 'components/admin/Section';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
-import { usePermission } from 'utils/permissions';
 import { isAdmin } from 'utils/permissions/roles';
 import {
   isProjectFolderModerator,
@@ -44,15 +43,9 @@ const ProjectFolderSelect = ({
   isNewProject,
 }: Props) => {
   const { formatMessage } = useIntl();
+  const localize = useLocalize();
   const { data: projectFolders } = useProjectFolders({});
   const { data: authUser } = useAuthUser();
-
-  const userCanCreateProjectInFolderOnly = usePermission({
-    item: 'project_folder',
-    action: 'create_project_in_folder_only',
-  });
-
-  const localize = useLocalize();
 
   const noFolderId = '/'; // This sentinel must not be a valid folder id.
   const noFolderLabel = formatMessage(messages.noFolderLabel);
@@ -84,8 +77,15 @@ const ProjectFolderSelect = ({
   if (folderOptions.length === 0) return null;
 
   const defaultFolderSelectOptionValue = folderOptions[0].value;
-  const selectEnabled =
-    isAdmin(authUser) || (isNewProject && isProjectFolderModerator(authUser));
+  const isAdminUser = isAdmin(authUser);
+  const isFolderModerator = isProjectFolderModerator(authUser);
+  const selectEnabled = isAdminUser || (isNewProject && isFolderModerator);
+
+  const sectionTooltip = formatMessage(
+    isAdminUser
+      ? messages.adminProjectFolderSelectTooltip
+      : messages.folderAdminProjectFolderSelectTooltip
+  );
 
   return (
     <StyledSectionField
@@ -94,15 +94,7 @@ const ProjectFolderSelect = ({
     >
       <SubSectionTitle>
         <FormattedMessage {...messages.projectFolderSelectTitle} />
-        <IconTooltip
-          content={
-            <FormattedMessage
-              {...(userCanCreateProjectInFolderOnly
-                ? messages.folderAdminProjectFolderSelectTooltip
-                : messages.adminProjectFolderSelectTooltip)}
-            />
-          }
-        />
+        <IconTooltip content={sectionTooltip} />
       </SubSectionTitle>
 
       <Select
