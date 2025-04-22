@@ -9,6 +9,7 @@ module ReportBuilder
       compare_end_at: nil,
       **_other_props
     )
+      validate_resolution(resolution)
       start_date, end_date = TimeBoundariesParser.new(start_at, end_at).parse
 
       # Why do we need to call run_query_untransformed and then transform_response?
