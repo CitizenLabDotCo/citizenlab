@@ -171,7 +171,7 @@ class WebApi::V1::IdeasController < ApplicationController
     input.creation_phase = (phase_for_input if !phase_for_input.pmethod.transitive?)
     input.phase_ids = [phase_for_input.id] if params.dig(:idea, :phase_ids).blank?
 
-    # Non persisted attribute needed by policy & input for 'everyone' participation only
+    # Non persisted attribute needed by policy & anonymous_participation concern for 'everyone' participation only
     input.request = request if phase_for_input.pmethod.everyone_tracking_enabled?
 
     # NOTE: Needs refactor allow_anonymous_participation? so anonymous_participation can be allow or force

@@ -628,7 +628,7 @@ resource 'Ideas' do
               do_request
               assert_status 201
               # Saves a new idea with the same author hash from the cookie
-              expect(Idea.all.pluck(:author_hash)).to eq %w[LOGGED_OUT_HASH LOGGED_OUT_HASH]
+              expect(Idea.all.pluck(:author_hash)).to match_array %w[LOGGED_OUT_HASH LOGGED_OUT_HASH]
 
               # Check that the cookie is written in the response
               expect(response_headers['Set-Cookie']).to include("#{phase.id}=%7B%22lo%22%3D%3E%22LOGGED_OUT_HASH%22%7D")
@@ -640,7 +640,7 @@ resource 'Ideas' do
               do_request
               assert_status 201
               # Saves a new idea with the last author hash from the cookie
-              expect(Idea.all.pluck(:author_hash)).to eq %w[LOGGED_OUT_HASH LOGGED_IN_HASH]
+              expect(Idea.all.pluck(:author_hash)).to match_array %w[LOGGED_OUT_HASH LOGGED_IN_HASH]
             end
           end
         end
@@ -695,7 +695,7 @@ resource 'Ideas' do
 
           context 'response has already been submitted' do
             let!(:response) do
-              author_hash = Idea.create_author_hash(resident.id, phase.project.id, true)
+              author_hash = Idea.create_author_hash(resident.id, phase.project_id, true)
               create(:native_survey_response, project: project, creation_phase: phase, author: nil, author_hash: author_hash)
             end
 
