@@ -1,7 +1,7 @@
 module ReportBuilder
   class Queries::Visitors < ReportBuilder::Queries::Base
     def run_query(
-      start_at: nil, 
+      start_at: nil,
       end_at: nil,
       resolution: 'month',
       project_id: nil,
@@ -78,7 +78,7 @@ module ReportBuilder
     end
 
     def run_query_untransformed(
-      start_at, 
+      start_at,
       end_at,
       resolution: 'month',
       project_id: nil,
@@ -92,8 +92,8 @@ module ReportBuilder
         .select(
           "count(*) as visits, count(distinct(monthly_user_hash)) as visitors, date_trunc('#{resolution}', created_at) as date_group"
         )
-        .group("date_group")
-        .order("date_group")
+        .group('date_group')
+        .order('date_group')
         .map do |row|
           {
             visits: row.visits,
@@ -149,15 +149,15 @@ module ReportBuilder
 
       # Here we need to apply the project filter too on the subquery.
       # We already sort of applied this filter above, when we did apply_project_filter_if_needed.
-      # However, with just that step, we're saying 
+      # However, with just that step, we're saying
       # "give me the average time spent per page during sessions where someone visited the project"
       # while what we probably want is
       # "give me the average time spent on project page"
       # So we need to apply the filter again here.
-      additional_select_statement = ""
+      additional_select_statement = ''
 
       if project_id.present?
-        additional_select_statement = ", project_id"
+        additional_select_statement = ', project_id'
       end
 
       seconds_on_page_subqery = pageviews
@@ -170,7 +170,7 @@ module ReportBuilder
         )
         .to_sql
 
-      additional_where_clause = ""
+      additional_where_clause = ''
 
       if project_id.present?
         additional_where_clause = "and project_id = '#{project_id}'"
@@ -188,14 +188,14 @@ module ReportBuilder
 
       aggregations = seconds_on_page_query.to_a[0]
 
-      secs_sum = aggregations["sum"] || 0
-      secs_count = aggregations["count"] || 0
+      secs_sum = aggregations['sum'] || 0
+      secs_count = aggregations['count'] || 0
       avg_seconds_on_page = secs_count == 0 ? 0 : secs_sum / secs_count
 
       # Avg pages visited per sessions
       # Or, if project filter is applied:
       # Avg pages visited per session where someone visited the project during the session
-      page_count = pageviews.count || 0
+      pageviews.count || 0
       avg_pages_visited = visits_total == 0 ? 0 : pageviews.count / visits_total
 
       {
