@@ -153,6 +153,14 @@ const Tags = () => {
     });
   };
 
+  const toggleTagContainerClick = (id: string) => {
+    updateSearchParams({ tag_ids: [id] });
+    queryClient.invalidateQueries(inputsKeys.lists());
+    trackEventByName(tracks.tagFilterUsed, {
+      tagId: id,
+    });
+  };
+
   return (
     <Box
       display="flex"
@@ -242,7 +250,7 @@ const Tags = () => {
             id={`tag-${tag.id}`}
             key={tag.id}
             onClick={() => {
-              toggleТаgCheckboxClick(tag.id);
+              toggleTagContainerClick(tag.id);
             }}
             className={selectedTags?.includes(tag.id) ? 'selected' : ''}
             data-cy="e2e-analysis-tag-container"
@@ -279,9 +287,8 @@ const Tags = () => {
             </Box>
           </TagContainer>
         ))}
-        {/* TODO: Fix this the next time the file is edited. */}
-        {/* eslint-disable-next-line @typescript-eslint/no-unnecessary-condition */}
-        {!isLoadingTags && emptyState && (
+
+        {emptyState && (
           <Box>
             <Text p="6px" color="grey600" textAlign="center">
               {formatMessage(messages.noTags)}
