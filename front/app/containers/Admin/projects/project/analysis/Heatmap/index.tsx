@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-import { Button, Tooltip } from '@citizenlab/cl2-component-library';
+import { Button } from '@citizenlab/cl2-component-library';
 import { useParams } from 'react-router-dom';
 
 import useAnalysis from 'api/analyses/useAnalysis';
@@ -11,6 +11,7 @@ import useUserCustomFields from 'api/user_custom_fields/useUserCustomFields';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import Warning from 'components/UI/Warning';
+import UpsellTooltip from 'components/UpsellTooltip';
 
 import { trackEventByName } from 'utils/analytics';
 import { useIntl } from 'utils/cl-intl';
@@ -71,9 +72,9 @@ const Heatmap = () => {
 
   if (!autoInsightsAllowed) {
     return (
-      <Tooltip content={formatMessage(messages.autoInsightsUpsellNudge)}>
+      <UpsellTooltip disabled={false}>
         <Button icon="lock">{formatMessage(messages.viewAutoInsights)}</Button>
-      </Tooltip>
+      </UpsellTooltip>
     );
   }
 
