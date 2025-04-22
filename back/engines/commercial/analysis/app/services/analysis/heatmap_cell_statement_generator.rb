@@ -5,19 +5,19 @@ module Analysis
     end
 
     def generate(cell)
-      if cell.row.is_a?(Tag) && cell.column.is_a?(CustomFieldBin)
+      if cell.row.is_a?(::Analysis::Tag) && cell.column.is_a?(::CustomFieldBin)
         generate_tag_vs_bin(
           cell,
           tag: cell.row,
           bin: cell.column
         )
-      elsif cell.row.is_a?(CustomFieldBin) && cell.column.is_a?(Tag)
+      elsif cell.row.is_a?(::CustomFieldBin) && cell.column.is_a?(::Analysis::Tag)
         generate_tag_vs_bin(
           cell,
           tag: cell.column,
           bin: cell.row
         )
-      elsif cell.row.is_a?(CustomFieldBin) && cell.column.is_a?(CustomFieldBin)
+      elsif cell.row.is_a?(::CustomFieldBin) && cell.column.is_a?(::CustomFieldBin)
         generate_bin_vs_bin(cell)
       else
         raise "Unsupported cell type for statement generation: #{cell.row_type} - #{cell.column_type}"
@@ -37,7 +37,7 @@ module Analysis
           "analysis.cell_statement.tag_vs_bin.#{cell.unit}",
           answer:,
           question:,
-          tag: tag_name,
+          tag: "<span data-type=\"tag\" data-tag-id=\"#{tag.id}\">#{tag_name}</span>",
           percent_more_less:
         )
       end
@@ -62,11 +62,11 @@ module Analysis
     end
 
     def bin_to_question_str(bin)
-      @multiloc_service.t(bin.custom_field.title_multiloc)
+      "<span data-type=\"question\" data-bin-id=\"#{bin.id}\">#{@multiloc_service.t(bin.custom_field.title_multiloc)}</span>"
     end
 
     def bin_to_answer_str(bin)
-      case bin
+      answer = case bin
       when CustomFieldBins::OptionBin
         @multiloc_service.t(bin.custom_field_option.title_multiloc)
       when CustomFieldBins::ValueBin
@@ -82,12 +82,14 @@ module Analysis
       else
         raise "Unsupported bin type for statement generation: #{bin.class}"
       end
+      "<span data-type=\"answer\" data-bin-id=\"#{bin.id}\">#{answer}</span>"
     end
 
     def lift_to_percentage_more_less_str(lift)
       more_or_less = lift >= 1 ? 'more' : 'less'
       percent = decimal_to_percentage(lift)
-      I18n.t("analysis.cell_statement.percent_#{more_or_less}", percent:)
+      str = I18n.t("analysis.cell_statement.percent_#{more_or_less}", percent:)
+      "<span data-type=\"percent\">#{str}</span>"
     end
 
     def decimal_to_percentage(decimal)

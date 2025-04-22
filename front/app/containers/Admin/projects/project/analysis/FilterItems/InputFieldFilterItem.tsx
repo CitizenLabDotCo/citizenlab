@@ -75,6 +75,7 @@ const InputFieldFilterItem = ({
       <EllipsisFilterValue>
         {Array.isArray(filterValue) &&
           customField.data.attributes.input_type !== 'multiselect' &&
+          customField.data.attributes.input_type !== 'multiselect_image' &&
           filterValue.map((filterItem, index) => (
             <>
               {index !== 0 && ', '}
@@ -86,7 +87,8 @@ const InputFieldFilterItem = ({
             </>
           ))}
         {(!Array.isArray(filterValue) ||
-          customField.data.attributes.input_type === 'multiselect') && (
+          customField.data.attributes.input_type === 'multiselect' ||
+          customField.data.attributes.input_type === 'multiselect_image') && (
           <ShortFieldValue customField={customField} rawValue={filterValue} />
         )}
       </EllipsisFilterValue>

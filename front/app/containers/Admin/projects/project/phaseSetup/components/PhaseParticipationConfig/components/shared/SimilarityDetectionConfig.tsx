@@ -47,7 +47,8 @@ const SimilarityDetectionConfig = ({
   });
   const { data: user } = useAuthUser();
 
-  const allowConfiguringThreshold = isSuperAdmin(user);
+  const allowConfiguringThreshold =
+    isSuperAdmin(user) && isAuthoringAssistanceAllowed;
 
   return (
     <SectionField display="flex">
@@ -66,7 +67,7 @@ const SimilarityDetectionConfig = ({
             label={
               <FormattedMessage {...messages.enableSimilarInputDetection} />
             }
-            checked={!!similarity_enabled}
+            checked={!!similarity_enabled && isAuthoringAssistanceAllowed}
             onChange={() => handleSimilarityEnabledChange(!similarity_enabled)}
             id="similarity_enabled"
             disabled={!isAuthoringAssistanceAllowed}

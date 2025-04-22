@@ -76,8 +76,9 @@ class CustomField < ApplicationRecord
   ].freeze
   CODES = %w[
     author_id birthyear body_multiloc budget domicile gender idea_files_attributes idea_images_attributes
-    location_description proposed_budget title_multiloc topic_ids cosponsor_ids title_page body_page
-    uploads_page details_page
+    location_description proposed_budget title_multiloc topic_ids cosponsor_ids
+    title_page body_page uploads_page details_page
+    page_quality_of_life page_service_delivery page_governance_and_trust
   ].freeze
   VISIBLE_TO_PUBLIC = 'public'
   VISIBLE_TO_ADMINS = 'admins'

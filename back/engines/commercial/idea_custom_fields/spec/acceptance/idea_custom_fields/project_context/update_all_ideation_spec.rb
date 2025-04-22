@@ -358,6 +358,32 @@ resource 'Idea Custom Fields' do
           expect(json_response).to eq({ errors: { form: [{ error: 'title_page_with_other_fields' }] } })
         end
 
+        example 'Put other disabled fields on the title page', document: false do
+          title_field, body_field = default_fields_param.select { |field| field[:code].in? %w[title_multiloc body_multiloc] }
+          fields_param = [
+            {
+              input_type: 'page',
+              page_layout: 'default'
+            },
+            title_field,
+            {
+              input_type: 'number',
+              enabled: false,
+              title_multiloc: { 'en' => 'How many?' }
+            },
+            {
+              input_type: 'page',
+              page_layout: 'default'
+            },
+            body_field,
+            final_page
+          ]
+
+          do_request custom_fields: fields_param
+
+          assert_status 200
+        end
+
         example '[error] Put other fields on the body page' do
           title_field, body_field, topics_field = default_fields_param.select { |field| field[:code].in? %w[title_multiloc body_multiloc topic_ids] }
           fields_param = [
@@ -380,6 +406,37 @@ resource 'Idea Custom Fields' do
           assert_status 422
           json_response = json_parse response_body
           expect(json_response).to eq({ errors: { form: [{ error: 'body_page_with_other_fields' }] } })
+        end
+
+        example 'Put other disabled fields on the body page', document: false do
+          title_field, body_field = default_fields_param.select { |field| field[:code].in? %w[title_multiloc body_multiloc] }
+          fields_param = [
+            {
+              input_type: 'page',
+              page_layout: 'default'
+            },
+            title_field,
+            {
+              input_type: 'page',
+              page_layout: 'default'
+            },
+            {
+              input_type: 'number',
+              enabled: false,
+              title_multiloc: { 'en' => 'How many?' }
+            },
+            body_field,
+            {
+              input_type: 'number',
+              enabled: false,
+              title_multiloc: { 'en' => 'How many?' }
+            },
+            final_page
+          ]
+
+          do_request custom_fields: fields_param
+
+          assert_status 200
         end
 
         example 'Updating custom fields when there are responses', document: false do
