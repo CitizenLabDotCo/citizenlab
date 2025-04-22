@@ -11,7 +11,7 @@ module Analysis
 
     def generate_plan
       plan = nil
-      include_comments = AppConfiguration.instance.feature_activated?('comments_summaries')
+      include_comments = true
       # We try whether OnePassLLM can process the complete prompt, with
       # descending amounts of information
       [
