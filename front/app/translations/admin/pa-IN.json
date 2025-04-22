@@ -2644,7 +2644,6 @@
   "app.containers.AdminPage.projects.project.analysis.filter": "ਸਿਰਫ਼ ਇਸ ਮੁੱਲ ਦੇ ਨਾਲ ਇਨਪੁੱਟ ਦਿਖਾਓ",
   "app.containers.AdminPage.projects.project.analysis.filterEmptyCustomFields": "ਬਿਨਾਂ ਜਵਾਬ ਦੇ ਜਵਾਬਾਂ ਨੂੰ ਲੁਕਾਓ",
   "app.containers.AdminPage.projects.project.analysis.heatmap.autoInsights": "ਸਵੈ-ਝਾਤਾਂ",
-  "app.containers.AdminPage.projects.project.analysis.heatmap.autoInsightsUpsellNudge": "ਇਹ ਵਿਸ਼ੇਸ਼ਤਾ ਤੁਹਾਡੇ ਮੌਜੂਦਾ ਪਲਾਨ ਵਿੱਚ ਸ਼ਾਮਲ ਨਹੀਂ ਹੈ। ਇਸਨੂੰ ਅਨਲੌਕ ਕਰਨ ਲਈ ਆਪਣੇ ਸਰਕਾਰੀ ਸਫਲਤਾ ਪ੍ਰਬੰਧਕ ਜਾਂ ਪ੍ਰਸ਼ਾਸਕ ਨਾਲ ਗੱਲ ਕਰੋ।",
   "app.containers.AdminPage.projects.project.analysis.heatmap.columnValues": "ਕਾਲਮ ਮੁੱਲ",
   "app.containers.AdminPage.projects.project.analysis.heatmap.count": "ਇਸ ਸੁਮੇਲ ਦੀਆਂ {count} ਉਦਾਹਰਣਾਂ ਹਨ।",
   "app.containers.AdminPage.projects.project.analysis.heatmap.dislikes": "ਨਾਪਸੰਦਾਂ",

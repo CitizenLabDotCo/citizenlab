@@ -2644,7 +2644,6 @@
   "app.containers.AdminPage.projects.project.analysis.filter": "إظهار المدخلات بهذه القيمة فقط",
   "app.containers.AdminPage.projects.project.analysis.filterEmptyCustomFields": "إخفاء الردود بدون إجابة",
   "app.containers.AdminPage.projects.project.analysis.heatmap.autoInsights": "الرؤى التلقائية",
-  "app.containers.AdminPage.projects.project.analysis.heatmap.autoInsightsUpsellNudge": "هذه الميزة غير مشمولة في خطتك الحالية. تواصل مع مدير نجاح الحكومة أو المسؤول لتفعيلها.",
   "app.containers.AdminPage.projects.project.analysis.heatmap.columnValues": "قيم العمود",
   "app.containers.AdminPage.projects.project.analysis.heatmap.count": "هناك {count} حالات من هذه المجموعة.",
   "app.containers.AdminPage.projects.project.analysis.heatmap.dislikes": "لا يحب",
