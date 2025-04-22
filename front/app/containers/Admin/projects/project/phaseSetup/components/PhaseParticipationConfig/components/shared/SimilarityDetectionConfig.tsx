@@ -14,6 +14,7 @@ import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import { SectionField, SubSectionTitle } from 'components/admin/Section';
 import Error from 'components/UI/Error';
+import Warning from 'components/UI/Warning';
 import UpsellTooltip from 'components/UpsellTooltip';
 
 import { FormattedMessage } from 'utils/cl-intl';
@@ -47,8 +48,11 @@ const SimilarityDetectionConfig = ({
   });
   const { data: user } = useAuthUser();
 
-  const allowConfiguringThreshold =
-    isSuperAdmin(user) && isAuthoringAssistanceAllowed;
+  const isTrialOver = new Date() > new Date('2025-06-30');
+  const showWarningMessage = !isTrialOver && !isAuthoringAssistanceAllowed;
+  const showUpsellTooltip = isTrialOver && !isAuthoringAssistanceAllowed;
+  const featureAllowed = isAuthoringAssistanceAllowed || !isTrialOver;
+  const allowConfiguringThreshold = isSuperAdmin(user) && featureAllowed;
 
   return (
     <SectionField display="flex">
@@ -62,15 +66,20 @@ const SimilarityDetectionConfig = ({
       </SubSectionTitle>
 
       <Box display="flex" flexDirection="column" gap="16px" width="100%">
-        <UpsellTooltip disabled={isAuthoringAssistanceAllowed}>
+        {showWarningMessage && (
+          <Warning>
+            <FormattedMessage {...messages.warningSimilarInputDetectionTrial} />
+          </Warning>
+        )}
+        <UpsellTooltip disabled={!showUpsellTooltip}>
           <Toggle
             label={
               <FormattedMessage {...messages.enableSimilarInputDetection} />
             }
-            checked={!!similarity_enabled && isAuthoringAssistanceAllowed}
+            checked={!!similarity_enabled && featureAllowed}
             onChange={() => handleSimilarityEnabledChange(!similarity_enabled)}
             id="similarity_enabled"
-            disabled={!isAuthoringAssistanceAllowed}
+            disabled={!featureAllowed}
           />
         </UpsellTooltip>
         <Error apiErrors={apiErrors?.similarity_enabled} />

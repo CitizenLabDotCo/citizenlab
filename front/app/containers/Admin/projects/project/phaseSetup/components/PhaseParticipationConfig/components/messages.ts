@@ -170,6 +170,11 @@ export default defineMessages({
     defaultMessage:
       'Show participants similar input while they type to help avoid duplicates.',
   },
+  warningSimilarInputDetectionTrial: {
+    id: 'app.containers.phaseConfig.warningSimilarInputDetectionTrial',
+    defaultMessage:
+      'This is a beta feature and will only remain available until the trial period ends on June 30th, 2025. Talk to your Government Success Manager or admin if you want to keep it after the trial period.',
+  },
   enableSimilarInputDetection: {
     id: 'app.containers.phaseConfig.enableSimilarInputDetection',
     defaultMessage: 'Enable similar input detection',
