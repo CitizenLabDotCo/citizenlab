@@ -10,6 +10,7 @@ import Warning from 'components/UI/Warning';
 import { FormattedMessage } from 'utils/cl-intl';
 
 import messages from './messages';
+import UserFieldsInFormNotice from 'containers/Admin/projects/project/nativeSurvey/UserFieldsInFormNotice';
 
 export const communityMonitorConfig: FormBuilderConfig = {
   type: 'survey',
@@ -43,5 +44,8 @@ export const communityMonitorConfig: FormBuilderConfig = {
         handleClose={handleClose}
       />
     ) : null;
+  },
+  getUserFieldsNotice: () => {
+    return <UserFieldsInFormNotice communityMonitor={true} />;
   },
 };

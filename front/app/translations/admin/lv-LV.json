@@ -463,7 +463,6 @@
   "app.components.formBuilder.editWarningModal.title4": "Rediģēt tiešraides apsekojumu",
   "app.components.formBuilder.editWarningModal.yesContinue": "Jā, turpiniet",
   "app.components.formBuilder.nativeSurvey.UserFieldsInFormNotice.accessRightsSettings": "šīs aptaujas piekļuves tiesību iestatījumi",
-  "app.components.formBuilder.nativeSurvey.UserFieldsInFormNotice.fieldsEnabledMessage": "\"Lietotāja lauki aptaujas veidlapā\" ir iespējota. Kad tiek parādīta aptaujas veidlapa, visi konfigurētie demogrāfiskie jautājumi tiks pievienoti jaunā lapā. Šos jautājumus var mainīt vietnē {accessRightsSettingsLink}.",
   "app.components.formBuilder.nativeSurvey.accessRightsNotice.accessRightsSettings": "piekļuves tiesību iestatījumi šajā posmā.",
   "app.components.formBuilder.nativeSurvey.accessRightsNotice.anyoneBullet1": "Aptaujas respondentiem nebūs jāreģistrējas vai jāpiesakās, lai iesniegtu atbildes uz aptaujas jautājumiem, kā rezultātā atbildes var tikt iesniegtas divreiz.",
   "app.components.formBuilder.nativeSurvey.accessRightsNotice.anyoneBullet2": "Izlaižot reģistrēšanās/pierakstīšanās posmu, jūs piekrītat, ka netiks vākti aptaujas respondentu demogrāfiskie dati, kas var ietekmēt jūsu datu analīzes iespējas.",

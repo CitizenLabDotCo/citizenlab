@@ -463,7 +463,6 @@
   "app.components.formBuilder.editWarningModal.title4": "Editar pesquisa ao vivo",
   "app.components.formBuilder.editWarningModal.yesContinue": "Sim, continuar",
   "app.components.formBuilder.nativeSurvey.UserFieldsInFormNotice.accessRightsSettings": "configurações de direitos de acesso para esta pesquisa",
-  "app.components.formBuilder.nativeSurvey.UserFieldsInFormNotice.fieldsEnabledMessage": "'Campos de usuário no formulário de pesquisa' está ativado. Quando o formulário de pesquisa for exibido, todas as perguntas demográficas configuradas serão adicionadas em uma nova página aqui. Essas perguntas podem ser alteradas em {accessRightsSettingsLink}.",
   "app.components.formBuilder.nativeSurvey.accessRightsNotice.accessRightsSettings": "configurações de direitos de acesso para essa fase.",
   "app.components.formBuilder.nativeSurvey.accessRightsNotice.anyoneBullet1": "Os respondentes da pesquisa não precisarão se inscrever ou fazer login para enviar as respostas da pesquisa, o que pode resultar em envios duplicados",
   "app.components.formBuilder.nativeSurvey.accessRightsNotice.anyoneBullet2": "Ao ignorar a etapa de inscrição/logon, você aceita não coletar informações demográficas sobre os respondentes do questionário, o que pode afetar seus recursos de análise de dados",

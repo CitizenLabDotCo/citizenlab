@@ -463,7 +463,6 @@
   "app.components.formBuilder.editWarningModal.title4": "Edytuj ankietę na żywo",
   "app.components.formBuilder.editWarningModal.yesContinue": "Tak, kontynuuj",
   "app.components.formBuilder.nativeSurvey.UserFieldsInFormNotice.accessRightsSettings": "ustawienia praw dostępu dla tej ankiety",
-  "app.components.formBuilder.nativeSurvey.UserFieldsInFormNotice.fieldsEnabledMessage": "Opcja \"Pola użytkownika w formularzu ankiety\" jest włączona. Po wyświetleniu formularza ankiety wszelkie skonfigurowane pytania demograficzne zostaną dodane na nowej stronie w tym miejscu. Pytania te można zmienić na stronie {accessRightsSettingsLink}.",
   "app.components.formBuilder.nativeSurvey.accessRightsNotice.accessRightsSettings": "ustawienia praw dostępu dla tej fazy.",
   "app.components.formBuilder.nativeSurvey.accessRightsNotice.anyoneBullet1": "Respondenci ankiety nie będą musieli się rejestrować ani logować, aby przesłać odpowiedzi na pytania ankiety, co może skutkować powielaniem zgłoszeń.",
   "app.components.formBuilder.nativeSurvey.accessRightsNotice.anyoneBullet2": "Pomijając krok rejestracji/zalogowania, zgadzasz się nie zbierać informacji demograficznych o respondentach ankiety, co może mieć wpływ na możliwości analizy danych.",
