@@ -463,7 +463,7 @@
   "app.components.formBuilder.editWarningModal.title4": "Editar encuesta en directo",
   "app.components.formBuilder.editWarningModal.yesContinue": "Sí, continúa",
   "app.components.formBuilder.nativeSurvey.UserFieldsInFormNotice.accessRightsSettings": "configuración de los derechos de acceso a esta encuesta",
-  "app.components.formBuilder.nativeSurvey.UserFieldsInFormNotice.fieldsEnabledMessage": "'Campos de usuario en formulario de encuesta' está activado. Cuando se muestre el formulario de la encuesta, las preguntas demográficas configuradas se añadirán en una nueva página aquí. Estas preguntas pueden modificarse en {accessRightsSettingsLink}.",
+  "app.components.formBuilder.nativeSurvey.UserFieldsInFormNotice.fieldsEnabledMessage2": "'Demographic fields in survey form' is enabled. When the survey form is displayed any configured demographic questions will be added on a new page immediately before the end of the survey. These questions can be changed in the {accessRightsSettingsLink}.",
   "app.components.formBuilder.nativeSurvey.accessRightsNotice.accessRightsSettings": "configuración de los derechos de acceso para esta fase.",
   "app.components.formBuilder.nativeSurvey.accessRightsNotice.anyoneBullet1": "No se exigirá a los encuestados que se registren o inicien sesión para enviar las respuestas de la encuesta, lo que puede dar lugar a envíos duplicados",
   "app.components.formBuilder.nativeSurvey.accessRightsNotice.anyoneBullet2": "Al omitir el paso de registro/inicio de sesión, aceptas no recopilar información demográfica sobre los encuestados, lo que puede afectar a tus capacidades de análisis de datos.",
