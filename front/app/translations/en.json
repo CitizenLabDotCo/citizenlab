@@ -78,7 +78,6 @@
   "app.components.Comments.seeTranslation": "See translation",
   "app.components.Comments.yourComment": "Your comment",
   "app.components.CommunityMonitorModal.formError": "Encountered an error.",
-  "app.components.CommunityMonitorModal.remindMeLater": "Remind me later",
   "app.components.CommunityMonitorModal.surveyDescription2": "This ongoing survey tracks how you feel about governance and public services.",
   "app.components.CommunityMonitorModal.xMinutesToComplete": "{minutes, plural, =0 {Takes <1 minute} one {Takes 1 minute} other {Takes # minutes}}",
   "app.components.ConfirmationModal.anExampleCodeHasBeenSent": "An email with a confirmation code has been sent to {userEmail}.",
