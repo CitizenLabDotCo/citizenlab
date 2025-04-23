@@ -1,6 +1,12 @@
+# Usage:
+#
+# Dry run: rake single_use:update_published_participants_data
+# Execute: rake single_use:update_published_participants_data[execute]
 namespace :single_use do
   desc 'Update published participants data'
-  task update_published_participants_data: :environment do
+  task :update_published_participants_data, %i[execute] => [:environment] do |_t, args|
+    execute = args[:execute] == 'execute'
+
     def resolved_name(node)
       type = node['type']
       type['resolvedName'] if type.is_a?(Hash)
@@ -108,10 +114,23 @@ namespace :single_use do
           new_data['participation_rate_compared_period'] = participation_rate_compared_period
         end
 
-        # Update the data
-        data_unit.data = new_data
-        data_unit.save!
-        puts "Updated #{data_unit.graph_id}"
+        # Update the data if execute == true
+        if execute
+          data_unit.data = new_data
+          data_unit.save!
+          puts "\n\n"
+          puts "Updated #{data_unit.graph_id}"
+          puts "\n\n"
+        else
+          puts "\n\n"
+          puts "Would update #{data_unit.graph_id}\n"
+          puts "Old data:\n"
+          puts data_unit.data.to_json
+          puts "\n\n"
+          puts "New data:\n"
+          puts new_data.to_json
+          puts "\n\n"
+        end
       end
     end
   end
