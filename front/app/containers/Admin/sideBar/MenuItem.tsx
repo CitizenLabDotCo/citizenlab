@@ -123,7 +123,11 @@ const MenuItem = ({ navItem }: Props) => {
         >
           <Icon name={navItem.iconName} height="20px" />
         </Box>
-        <Text>
+        <Text
+          style={{
+            wordBreak: 'break-word',
+          }}
+        >
           <FormattedMessage {...messages[navItem.message]} />
           {!!navItem.count && <CountBadge count={navItem.count} />}
         </Text>
