@@ -83,7 +83,7 @@ module ReportBuilder
       if project_id.present?
         query = query
           .joins('INNER JOIN impact_tracking_pageviews ON impact_tracking_pageviews.session_id = impact_tracking_sessions.id')
-          .where('impact_tracking_pageviews.project_id = ?', project_id)
+          .where(impact_tracking_pageviews: { project_id: project_id })
       end
 
       visitors = query.distinct.count(:monthly_user_hash)
