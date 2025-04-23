@@ -3,8 +3,8 @@ import React, { useMemo } from 'react';
 import { isNil } from 'lodash-es';
 import { FormattedDate } from 'react-intl';
 
-import { IIdeaCustomField } from 'api/idea_custom_fields/types';
 import useUserCustomFieldsOptions from 'api/custom_field_options/useCustomFieldOptions';
+import { IIdeaCustomField } from 'api/idea_custom_fields/types';
 
 import T from 'components/T';
 
