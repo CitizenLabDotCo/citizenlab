@@ -2,6 +2,8 @@
 
 class CommunityMonitorService
   def enabled?
+    return true if settings.dig('community_monitor', 'allowed') && Time.zone.now < Date.parse('2025-07-01') # TODO: Remove trial period after 2025-06-30
+
     settings.dig('community_monitor', 'enabled') || false
   end
 
@@ -14,7 +16,13 @@ class CommunityMonitorService
   def project
     return nil unless enabled? && project_id.present?
 
-    Project.find(project_id)
+    @project ||= Project.find(project_id)
+  end
+
+  def phase
+    return nil unless enabled? && project_id
+
+    @phase ||= Phase.find_by(project_id: project_id)
   end
 
   def find_or_create_project(current_user)
@@ -72,9 +80,59 @@ class CommunityMonitorService
     project
   end
 
+  def find_or_create_previous_quarter_report
+    return nil unless enabled? && project_id
+
+    start_date, end_date = previous_quarter_range
+    year, quarter = previous_quarter(start_date)
+
+    # Return existing report if it exists
+    existing_report = ReportBuilder::Report.find_by(
+      phase: phase,
+      year: year,
+      quarter: quarter
+    )
+    return existing_report if existing_report
+
+    # Do not create a report if there are no responses for the previous quarter
+    responses = phase.ideas.where(published_at: start_date..end_date)
+    return nil if responses.blank?
+
+    # Create a new report for the previous quarter if one does not already exist
+    ReportBuilder::Report.create!(
+      name: "#{year}-#{quarter} #{I18n.t('email_campaigns.community_monitor_report.report_name')}",
+      phase: phase,
+      year: year,
+      quarter: quarter
+    )
+  end
+
   private
 
   def settings
     AppConfiguration.instance.settings
+  end
+
+  def previous_quarter(date)
+    year = date.year
+    quarter = case date.month
+    when 1..3 then 1
+    when 4..6 then 2
+    when 7..9 then 3
+    when 10..12 then 4
+    end
+    [year, quarter]
+  end
+
+  def previous_quarter_range
+    today = Time.zone.today
+    previous_quarter_date = today << 3 # Subtract 3 months to get a date in the previous quarter
+
+    # Determine the start and end months of the previous quarter
+    start_month = (((previous_quarter_date.month - 1) / 3) * 3) + 1
+    start_date = Date.new(previous_quarter_date.year, start_month, 1)
+    end_date = (start_date >> 3) # Add 3 months for the start of the next quarter
+
+    [start_date, end_date]
   end
 end
