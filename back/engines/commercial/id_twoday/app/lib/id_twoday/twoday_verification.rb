@@ -9,7 +9,7 @@ module IdTwoday
     end
 
     def id
-      'd6938fe6-4bee-4490-b80c-b14dafb5da1b' # TODO: new ID
+      '535bc0d4-cc3a-44e8-a339-2595ec330759'
     end
 
     def name
