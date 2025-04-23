@@ -10,40 +10,40 @@ export default defineMessages({
     defaultMessage: 'Preview',
   },
   popupDescription: {
-    id: 'app.containers.Admin.communityMonitor.settings.popupDescription2',
+    id: 'app.containers.Admin.communityMonitor.settings.popupDescription3',
     defaultMessage:
-      'A popup is periodically displayed to residents encouraging them to complete the Community Monitor Survey. You can adjust the frequency which determines the percentage of residents who will randomly see the popup when the conditions outlined below are met.',
+      'A popup is periodically displayed to users encouraging them to complete the Community Monitor Survey. You can adjust the frequency which determines the percentage of users who will randomly see the popup when the conditions outlined below are met.',
   },
   defaultFrequency: {
     id: 'app.containers.Admin.communityMonitor.settings.defaultFrequency2',
     defaultMessage: 'The default frequency value is 100%.',
   },
   whatConditionsPopup: {
-    id: 'app.containers.Admin.communityMonitor.settings.whatConditionsPopup',
-    defaultMessage: 'Under what conditions can the popup appear for residents?',
+    id: 'app.containers.Admin.communityMonitor.settings.whatConditionsPopup2',
+    defaultMessage: 'Under what conditions can the popup appear for users?',
   },
   acceptingSubmissions: {
     id: 'app.containers.Admin.communityMonitor.settings.acceptingSubmissions',
     defaultMessage: 'Community Monitor Survey is accepting submissions.',
   },
   residentNotSeenPopup: {
-    id: 'app.containers.Admin.communityMonitor.settings.residentNotSeenPopup',
+    id: 'app.containers.Admin.communityMonitor.settings.residentNotSeenPopup2',
     defaultMessage:
-      'Resident has not already seen the popup in the previous 3 months.',
+      'User has not already seen the popup in the previous 3 months.',
   },
   residentHasFilledOutSurvey: {
-    id: 'app.containers.Admin.communityMonitor.settings.residentHasFilledOutSurvey',
+    id: 'app.containers.Admin.communityMonitor.settings.residentHasFilledOutSurvey2',
     defaultMessage:
-      ' Resident has not already filled out the survey in the previous 3 months.',
+      ' User has not already filled out the survey in the previous 3 months.',
   },
   uponLoadingPage: {
     id: 'app.containers.Admin.communityMonitor.settings.uponLoadingPage',
     defaultMessage: 'Upon loading the Homepage or a Custom Page.',
   },
   afterResidentAction: {
-    id: 'app.containers.Admin.communityMonitor.settings.afterResidentAction',
+    id: 'app.containers.Admin.communityMonitor.settings.afterResidentAction2',
     defaultMessage:
-      ' After a resident registers an event attendance, submits a vote, or returns to a project page after submitting a survey.',
+      ' After a user registers an event attendance, submits a vote, or returns to a project page after submitting a survey.',
   },
   frequencyInputLabel: {
     id: 'app.containers.Admin.communityMonitor.settings.frequencyInputLabel2',

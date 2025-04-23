@@ -678,6 +678,7 @@
   "app.components.formBuilder.buttonLabel": "Button label",
   "app.components.formBuilder.buttonLink": "Button link",
   "app.components.formBuilder.cancelLeaveBuilderButtonText": "Cancel",
+  "app.components.formBuilder.category": "Category",
   "app.components.formBuilder.chooseMany": "Izaberi više",
   "app.components.formBuilder.chooseOne": "Izaberi jedno",
   "app.components.formBuilder.close": "Zatvori",

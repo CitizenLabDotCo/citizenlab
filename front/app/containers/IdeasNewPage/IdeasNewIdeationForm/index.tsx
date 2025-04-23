@@ -91,7 +91,7 @@ const IdeasNewIdeationForm = ({ project, phaseId }: Props) => {
   const isSmallerThanPhone = useBreakpoint('phone');
   const [usingMapView, setUsingMapView] = useState(false);
   const isAuthoringAssistanceEnabled = useFeatureFlag({
-    name: 'authoring_assistance',
+    name: 'input_iq',
   });
   const {
     schema,

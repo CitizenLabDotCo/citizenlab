@@ -548,7 +548,6 @@
   "app.containers.Admin.reporting.components.ReportBuilderPage.blankTemplate": "Start with a blank page",
   "app.containers.Admin.reporting.components.ReportBuilderPage.createReportModalInputLabel": "Títol de l'informe",
   "app.containers.Admin.reporting.components.ReportBuilderPage.emptyStateButtonText": "Creeu un informe",
-  "app.containers.Admin.reporting.components.ReportBuilderPage.emptyStateTitle": "Creeu el vostre primer informe del projecte",
   "app.containers.Admin.reporting.components.ReportBuilderPage.printToPdf": "Print to PDF",
   "app.containers.Admin.reporting.components.ReportBuilderPage.projectTemplate": "Start with a project template",
   "app.containers.Admin.reporting.components.ReportBuilderPage.reportTemplate": "Report template",

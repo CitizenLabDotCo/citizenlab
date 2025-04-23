@@ -678,6 +678,7 @@
   "app.components.formBuilder.buttonLabel": "بٹن کا لیبل",
   "app.components.formBuilder.buttonLink": "بٹن لنک",
   "app.components.formBuilder.cancelLeaveBuilderButtonText": "منسوخ کریں۔",
+  "app.components.formBuilder.category": "زمرہ",
   "app.components.formBuilder.chooseMany": "بہت سے منتخب کریں۔",
   "app.components.formBuilder.chooseOne": "ایک کا انتخاب کریں۔",
   "app.components.formBuilder.close": "بند",

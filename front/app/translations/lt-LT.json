@@ -678,6 +678,7 @@
   "app.components.formBuilder.buttonLabel": "Mygtuko etiketė",
   "app.components.formBuilder.buttonLink": "Mygtuko nuoroda",
   "app.components.formBuilder.cancelLeaveBuilderButtonText": "Atšaukti",
+  "app.components.formBuilder.category": "Kategorija",
   "app.components.formBuilder.chooseMany": "Pasirinkite daug",
   "app.components.formBuilder.chooseOne": "Pasirinkite vieną",
   "app.components.formBuilder.close": "Uždaryti",

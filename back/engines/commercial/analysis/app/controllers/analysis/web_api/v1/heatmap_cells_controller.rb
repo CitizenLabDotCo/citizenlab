@@ -27,22 +27,35 @@ module Analysis
         def apply_filters(heatmap_cells)
           heatmap_cells = heatmap_cells.where(unit: params[:unit]) if params[:unit].present?
 
+          row_column_filters = {}
           if params[:row_category_type].present?
             row_type = category_type_to_item_type(params[:row_category_type])
-            heatmap_cells = heatmap_cells.where(row_type:)
+            row_column_filters[:row_type] = row_type
             if params[:row_category_id].present?
               row_id = category_to_item_id(params[:row_category_type], params[:row_category_id])
-              heatmap_cells = heatmap_cells.where(row_id:)
+              row_column_filters[:row_id] = row_id
             end
           end
 
           if params[:column_category_type].present?
             column_type = category_type_to_item_type(params[:column_category_type])
-            heatmap_cells = heatmap_cells.where(column_type:)
+            row_column_filters[:column_type] = column_type
             if params[:column_category_id].present?
               column_id = category_to_item_id(params[:column_category_type], params[:column_category_id])
-              heatmap_cells = heatmap_cells.where(column_id:)
+              row_column_filters[:column_id] = column_id
             end
+          end
+
+          if row_column_filters.present?
+            # Because the front-end needs to control what's in the rows and what's in the columns, we not only query for the requested row/column combination, but also for the transposed version (row and column swapped). In the back-end we only generate one version, not the transposed versions too.
+            heatmap_cells = heatmap_cells.where(row_column_filters).or(
+              heatmap_cells.where(
+                row_type: row_column_filters[:column_type],
+                row_id: row_column_filters[:column_id],
+                column_type: row_column_filters[:row_type],
+                column_id: row_column_filters[:row_id]
+              )
+            )
           end
 
           heatmap_cells = heatmap_cells.where(p_value: ..(params[:max_p_value])) if params[:max_p_value].present?

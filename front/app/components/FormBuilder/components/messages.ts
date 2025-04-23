@@ -14,6 +14,10 @@ export default defineMessages({
     defaultMessage:
       'If you have access to our AI package, you will be able to summarise and categorise text responses with AI',
   },
+  category: {
+    id: 'app.components.formBuilder.category',
+    defaultMessage: 'Category',
+  },
   mappingNotInCurrentLicense: {
     id: 'app.components.formBuilder.mappingNotInCurrentLicense',
     defaultMessage:

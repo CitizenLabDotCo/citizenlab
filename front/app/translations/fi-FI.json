@@ -678,6 +678,7 @@
   "app.components.formBuilder.buttonLabel": "Painikkeen etiketti",
   "app.components.formBuilder.buttonLink": "Painikkeen linkki",
   "app.components.formBuilder.cancelLeaveBuilderButtonText": "Peruuta",
+  "app.components.formBuilder.category": "Luokka",
   "app.components.formBuilder.chooseMany": "Valitse monta",
   "app.components.formBuilder.chooseOne": "Valitse yksi",
   "app.components.formBuilder.close": "kiinni",

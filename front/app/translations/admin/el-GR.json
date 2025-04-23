@@ -548,7 +548,6 @@
   "app.containers.Admin.reporting.components.ReportBuilderPage.blankTemplate": "Start with a blank page",
   "app.containers.Admin.reporting.components.ReportBuilderPage.createReportModalInputLabel": "Αναφορά τίτλου",
   "app.containers.Admin.reporting.components.ReportBuilderPage.emptyStateButtonText": "Δημιουργία αναφοράς",
-  "app.containers.Admin.reporting.components.ReportBuilderPage.emptyStateTitle": "Δημιουργήστε το πρώτο σας έργο",
   "app.containers.Admin.reporting.components.ReportBuilderPage.printToPdf": "Print to PDF",
   "app.containers.Admin.reporting.components.ReportBuilderPage.projectTemplate": "Start with a project template",
   "app.containers.Admin.reporting.components.ReportBuilderPage.reportTemplate": "Report template",

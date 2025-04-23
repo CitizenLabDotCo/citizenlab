@@ -678,6 +678,7 @@
   "app.components.formBuilder.buttonLabel": "Knäppchen Label",
   "app.components.formBuilder.buttonLink": "Knäppchen Link",
   "app.components.formBuilder.cancelLeaveBuilderButtonText": "Ofbriechen",
+  "app.components.formBuilder.category": "Kategorie",
   "app.components.formBuilder.chooseMany": "Vill auswielen",
   "app.components.formBuilder.chooseOne": "Een auswielen",
   "app.components.formBuilder.close": "Zoumaachen",

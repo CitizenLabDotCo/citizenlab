@@ -438,7 +438,6 @@
   "app.containers.Admin.reporting.components.ReportBuilderPage.blankTemplate": "Fänkt mat enger eideler Säit un",
   "app.containers.Admin.reporting.components.ReportBuilderPage.createReportModalInputLabel": "Rapportstitel",
   "app.containers.Admin.reporting.components.ReportBuilderPage.emptyStateButtonText": "Leet e Rapport un",
-  "app.containers.Admin.reporting.components.ReportBuilderPage.emptyStateTitle": "Leet Ären éischte Projetsrapport un",
   "app.containers.Admin.reporting.components.ReportBuilderPage.printToPdf": "Eng PDF-Datei erstellen",
   "app.containers.Admin.reporting.components.ReportBuilderPage.projectTemplate": "Fänkt mat enger Projetsvirlag un",
   "app.containers.Admin.reporting.components.ReportBuilderPage.reportTemplate": "Rapportsvirlag",

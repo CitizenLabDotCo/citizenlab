@@ -1,6 +1,11 @@
 import React from 'react';
 
-import { Box, Icon, Text } from '@citizenlab/cl2-component-library';
+import {
+  Box,
+  Icon,
+  Text,
+  useBreakpoint,
+} from '@citizenlab/cl2-component-library';
 import { useSearchParams } from 'react-router-dom';
 
 import { getPercentageDifference } from 'components/admin/FormResults/FormResultsQuestion/SentimentQuestion/utils';
@@ -17,6 +22,7 @@ type Props = {
 
 const CategoryScores = ({ sentimentScores, ...props }: Props) => {
   const [search] = useSearchParams();
+  const isMobileOrSmaller = useBreakpoint('phone');
 
   // Extract year and quarter from search params or defaults
   const year = props.year || getYearFilter(search);
@@ -40,7 +46,12 @@ const CategoryScores = ({ sentimentScores, ...props }: Props) => {
   };
 
   return (
-    <Box display="flex" mt="12px">
+    <Box
+      display="flex"
+      mt="12px"
+      flexDirection={isMobileOrSmaller ? 'column' : 'row'}
+      gap={isMobileOrSmaller ? '16px' : undefined}
+    >
       {sentimentScores?.categoryHealthScores.map(
         ({ category, localizedLabel, scores }) => {
           const { currentScore, percentageDifference } =

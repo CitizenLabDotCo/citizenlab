@@ -4,6 +4,7 @@ import {
   Box,
   colors,
   Icon,
+  IconTooltip,
   stylingConsts,
   Text,
   Title,
@@ -77,7 +78,7 @@ const HealthScoreWidget = ({ phaseId, ...props }: Props) => {
         gap="20px"
       >
         <Box>
-          <Box display="flex">
+          <Box display="flex" alignItems="center">
             <Icon
               my="auto"
               height="18px"
@@ -87,6 +88,12 @@ const HealthScoreWidget = ({ phaseId, ...props }: Props) => {
             <Title m="0px" variant="h5" color="textPrimary">
               {formatMessage(messages.healthScore)}
             </Title>
+            <IconTooltip
+              ml="4px"
+              iconSize="16px"
+              icon="info-outline"
+              content={formatMessage(messages.healthScoreDescription)}
+            />
           </Box>
           <Box display="flex" mt="12px" ml="8px">
             <Text

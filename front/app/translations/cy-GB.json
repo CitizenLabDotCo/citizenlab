@@ -678,6 +678,7 @@
   "app.components.formBuilder.buttonLabel": "Label botwm",
   "app.components.formBuilder.buttonLink": "Cyswllt botwm",
   "app.components.formBuilder.cancelLeaveBuilderButtonText": "Canslo",
+  "app.components.formBuilder.category": "Categori",
   "app.components.formBuilder.chooseMany": "Dewiswch lawer",
   "app.components.formBuilder.chooseOne": "Dewis un",
   "app.components.formBuilder.close": "Cau",

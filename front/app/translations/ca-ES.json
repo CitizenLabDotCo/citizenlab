@@ -678,6 +678,7 @@
   "app.components.formBuilder.buttonLabel": "Etiqueta del botó",
   "app.components.formBuilder.buttonLink": "Enllaç del botó",
   "app.components.formBuilder.cancelLeaveBuilderButtonText": "Cancel · lar",
+  "app.components.formBuilder.category": "Categoria",
   "app.components.formBuilder.chooseMany": "Trieu-ne molts",
   "app.components.formBuilder.chooseOne": "Escull un",
   "app.components.formBuilder.close": "Tanca",

@@ -11,14 +11,19 @@ import {
 } from '@citizenlab/cl2-component-library';
 import { useTheme } from 'styled-components';
 
+import { trackEventByName } from 'utils/analytics';
 import { useIntl } from 'utils/cl-intl';
 
 import HealthScorePreview from './HealthScorePreview';
 import messages from './messages';
+import tracks from './tracks';
 
 const CommunityMonitorUpsell = () => {
   const theme = useTheme();
   const { formatMessage } = useIntl();
+
+  // Track the upsell being seen
+  trackEventByName(tracks.communityMonitorUpsellSeen);
 
   const upsellBulletPoints = [
     messages.upsellDescription3,
@@ -57,7 +62,17 @@ const CommunityMonitorUpsell = () => {
             </Button>
           </Tooltip>
 
-          <Button buttonStyle="text" textColor={theme.colors.tenantPrimary}>
+          <Button
+            buttonStyle="text"
+            textColor={theme.colors.tenantPrimary}
+            onClick={() => {
+              trackEventByName(tracks.communityMonitorUpsellLearnMoreClicked);
+              window.open(
+                'https://support.govocal.com/en/articles/10981781-community-monitoring-resident-satisfaction-survey',
+                '_blank'
+              );
+            }}
+          >
             {formatMessage(messages.learnMore)}
           </Button>
         </Box>

@@ -19,6 +19,7 @@ export const SURVEY_QUESTION_INPUT_TYPES = new Set([
 export const SLICE_SURVEY_QUESTION_INPUT_TYPES = new Set([
   'select',
   'linear_scale',
+  'sentiment_linear_scale',
   'rating',
 ]);
 
