@@ -463,7 +463,7 @@
   "app.components.formBuilder.editWarningModal.title4": "Muokkaa live-kyselyä",
   "app.components.formBuilder.editWarningModal.yesContinue": "Kyllä, jatka",
   "app.components.formBuilder.nativeSurvey.UserFieldsInFormNotice.accessRightsSettings": "tämän kyselyn käyttöoikeusasetukset",
-  "app.components.formBuilder.nativeSurvey.UserFieldsInFormNotice.fieldsEnabledMessage": "\"Käyttäjäkentät kyselylomakkeessa\" on käytössä. Kun kyselylomake tulee näkyviin, kaikki määritetyt demografiset kysymykset lisätään uudelle sivulle tähän. Näitä kysymyksiä voi muuttaa kohdassa {accessRightsSettingsLink}.",
+  "app.components.formBuilder.nativeSurvey.UserFieldsInFormNotice.fieldsEnabledMessage2": "'Demographic fields in survey form' is enabled. When the survey form is displayed any configured demographic questions will be added on a new page immediately before the end of the survey. These questions can be changed in the {accessRightsSettingsLink}.",
   "app.components.formBuilder.nativeSurvey.accessRightsNotice.accessRightsSettings": "käyttöoikeusasetukset tälle vaiheelle.",
   "app.components.formBuilder.nativeSurvey.accessRightsNotice.anyoneBullet1": "Kyselyyn vastaajien ei tarvitse rekisteröityä tai kirjautua sisään lähettääkseen kyselyvastauksia, mikä voi johtaa päällekkäisiin lähetyksiin",
   "app.components.formBuilder.nativeSurvey.accessRightsNotice.anyoneBullet2": "Ohitamalla rekisteröitymis-/sisäänkirjautumisvaiheen hyväksyt, että et kerää väestötietoja kyselyyn vastanneista, mikä saattaa vaikuttaa data-analyysikykyysi.",
