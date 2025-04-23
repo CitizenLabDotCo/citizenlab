@@ -1,5 +1,3 @@
-import { ICustomField } from '../../../app/api/custom_fields/types';
-
 describe('Edit community monitor survey', () => {
   let communityMonitorProjectId: string;
   let communityMonitorPhaseId: string;
@@ -7,9 +5,8 @@ describe('Edit community monitor survey', () => {
 
   before(() => {
     cy.setAdminLoginCookie();
-    cy.apiGetAppConfiguration().then((response) => {
-      communityMonitorProjectId =
-        response.body.data.attributes.settings.community_monitor.project_id;
+    cy.apiGetCommunityMonitorProject().then((project) => {
+      communityMonitorProjectId = project.body.data.id;
       cy.getProjectById(communityMonitorProjectId).then((project) => {
         communityMonitorPhaseId =
           project.body.data.relationships.current_phase.data.id;
@@ -93,7 +90,7 @@ describe('Edit community monitor survey', () => {
       // Check that the new question is in the correct category
       expect(newCustomField.attributes).to.have.property(
         'question_category',
-        undefined
+        'other'
       );
     });
   });
