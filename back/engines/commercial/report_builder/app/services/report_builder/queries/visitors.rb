@@ -77,7 +77,6 @@ module ReportBuilder
       # Calculate avg pages visited per session
       # Or, if project filter is applied:
       # Avg pages visited per session where someone visited the project during the session
-      pageviews.count || 0
       avg_pages_visited = visits == 0 ? 0 : pageviews.count / visits.to_f
 
       # Avg seconds per session
