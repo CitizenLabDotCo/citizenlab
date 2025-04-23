@@ -12,7 +12,7 @@ class CommunityMonitorService
   end
 
   def project
-    return nil unless enabled?
+    return nil unless enabled? && project_id.present?
 
     Project.find(project_id)
   end
@@ -25,14 +25,13 @@ class CommunityMonitorService
 
     raise ActiveRecord::RecordNotFound unless current_user&.admin? # Only allow project to be created if an admin hits this endpoint
 
-    # Check first if the project exists but has not been added to settings (eg when creating platform from template)
-    project = Project.find_by(internal_role: 'community_monitor', hidden: true)
-
     create_and_set_project(project: project, current_user: current_user)
   end
 
   # Create the hidden project, phase & default form
   def create_and_set_project(project: nil, current_user: nil)
+    # Also check if the project exists but has not been added to settings (eg when creating platform from template)
+    project ||= Project.find_by(internal_role: 'community_monitor', hidden: true)
     unless project
       ActiveRecord::Base.transaction do
         multiloc_service = MultilocService.new
