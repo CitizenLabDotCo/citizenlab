@@ -32,13 +32,11 @@ describe('Submit community monitor survey', () => {
     cy.get('#place_to_live-linear-scale-option-1').click();
 
     // Go to last page
-    cy.get('[data-cy="e2e-next-page"]')
-      .should('be.visible')
-      .click({ force: true });
-    cy.wait(1000);
-    cy.get('[data-cy="e2e-next-page"]')
-      .should('be.visible')
-      .click({ force: true });
+    cy.contains('Next').should('be.visible').click({ force: true });
+    cy.contains('Service delivery').should('be.visible');
+    cy.contains('Next').should('be.visible').click({ force: true });
+    cy.contains('Governance and trust').should('be.visible');
+    cy.contains('Next').should('be.visible').click({ force: true });
 
     // save the form
     cy.get('[data-cy="e2e-submit-form"]').should('be.visible').click();
@@ -62,13 +60,11 @@ describe('Submit community monitor survey', () => {
     cy.get('#place_to_live-linear-scale-option-1').click();
 
     // Go to last page
-    cy.get('[data-cy="e2e-next-page"]')
-      .should('be.visible')
-      .click({ force: true });
-    cy.wait(1000);
-    cy.get('[data-cy="e2e-next-page"]')
-      .should('be.visible')
-      .click({ force: true });
+    cy.contains('Next').should('be.visible').click({ force: true });
+    cy.contains('Service delivery').should('be.visible');
+    cy.contains('Next').should('be.visible').click({ force: true });
+    cy.contains('Governance and trust').should('be.visible');
+    cy.contains('Next').should('be.visible').click({ force: true });
 
     // save the form
     cy.get('[data-cy="e2e-submit-form"]').should('be.visible').click();
