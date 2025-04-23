@@ -58,7 +58,7 @@ RSpec.describe ReportBuilder::Queries::Visitors do
       }
 
       expect(query.run_query(**params)).to eq({
-        time_series: [
+        visitors_timeseries: [
           {
             visits: 3,
             visitors: 2,
@@ -70,10 +70,10 @@ RSpec.describe ReportBuilder::Queries::Visitors do
             date_group: Date.new(2022, 10, 1)
           }
         ],
-        visits_total: 8,
-        visitors_total: 4,
-        avg_seconds_on_page: 90,
-        avg_pages_visited: 12 / 8
+        visits_whole_period: 8,
+        visitors_whole_period: 4,
+        avg_seconds_on_page_whole_period: 90,
+        avg_pages_visited_whole_period: 12 / 8
       })
     end
 
@@ -84,17 +84,17 @@ RSpec.describe ReportBuilder::Queries::Visitors do
       }
 
       expect(query.run_query(**params)).to eq({
-        time_series: [
+        visitors_timeseries: [
           {
             visits: 3,
             visitors: 2,
             date_group: Date.new(2022, 9, 1)
           }
         ],
-        visits_total: 3,
-        visitors_total: 2,
-        avg_seconds_on_page: 100,
-        avg_pages_visited: 6 / 3
+        visits_whole_period: 3,
+        visitors_whole_period: 2,
+        avg_seconds_on_page_whole_period: 100,
+        avg_pages_visited_whole_period: 6 / 3
       })
     end
 
@@ -105,7 +105,7 @@ RSpec.describe ReportBuilder::Queries::Visitors do
         resolution: 'week'
       }
 
-      expect(query.run_query(**params)[:time_series]).to eq([
+      expect(query.run_query(**params)[:visitors_timeseries]).to eq([
         {
           visits: 3,
           visitors: 2,
@@ -131,7 +131,7 @@ RSpec.describe ReportBuilder::Queries::Visitors do
         resolution: 'day'
       }
 
-      expect(query.run_query(**params)[:time_series]).to eq([
+      expect(query.run_query(**params)[:visitors_timeseries]).to eq([
         {
           visits: 3,
           visitors: 2,
@@ -158,17 +158,17 @@ RSpec.describe ReportBuilder::Queries::Visitors do
       }
 
       expect(query.run_query(**params)).to eq({
-        time_series: [
+        visitors_timeseries: [
           {
             visits: 2,
             visitors: 2,
             date_group: Date.new(2022, 9, 1)
           }
         ],
-        visits_total: 2,
-        visitors_total: 2,
-        avg_seconds_on_page: 120,
-        avg_pages_visited: 2
+        visits_whole_period: 2,
+        visitors_whole_period: 2,
+        avg_seconds_on_page_whole_period: 120,
+        avg_pages_visited_whole_period: 2
       })
     end
 
@@ -181,22 +181,22 @@ RSpec.describe ReportBuilder::Queries::Visitors do
       }
 
       expect(query.run_query(**params)).to eq({
-        time_series: [
+        visitors_timeseries: [
           {
             visits: 5,
             visitors: 2,
             date_group: Date.new(2022, 10, 1)
           }
         ],
-        visits_total: 5,
-        visitors_total: 2,
-        avg_seconds_on_page: 60,
-        avg_pages_visited: 6 / 5,
+        visits_whole_period: 5,
+        visitors_whole_period: 2,
+        avg_seconds_on_page_whole_period: 60,
+        avg_pages_visited_whole_period: 6 / 5,
 
-        compare_visits_total: 3,
-        compare_visitors_total: 2,
-        compare_avg_seconds_on_page: 100,
-        compare_avg_pages_visited: 6 / 3
+        visits_compared_period: 3,
+        visitors_compared_period: 2,
+        avg_seconds_on_page_compared_period: 100,
+        avg_pages_visited_compared_period: 6 / 3
       })
     end
 
@@ -207,11 +207,11 @@ RSpec.describe ReportBuilder::Queries::Visitors do
       }
 
       expect(query.run_query(**params)).to eq({
-        time_series: [],
-        visits_total: 0,
-        visitors_total: 0,
-        avg_seconds_on_page: 0,
-        avg_pages_visited: 0
+        visitors_timeseries: [],
+        visits_whole_period: 0,
+        visitors_whole_period: 0,
+        avg_seconds_on_page_whole_period: 0,
+        avg_pages_visited_whole_period: 0
       })
     end
   end

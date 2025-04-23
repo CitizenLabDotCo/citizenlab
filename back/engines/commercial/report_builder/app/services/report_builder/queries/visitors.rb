@@ -14,7 +14,7 @@ module ReportBuilder
       sessions = ImpactTracking::Session.where(created_at: start_date..end_date)
       sessions = apply_project_filter_if_needed(sessions, project_id)
 
-      time_series = sessions
+      visitors_timeseries = sessions
         .select(
           "count(*) as visits, count(distinct(monthly_user_hash)) as visitors, date_trunc('#{resolution}', created_at) as date_group"
         )
@@ -31,8 +31,11 @@ module ReportBuilder
       stats = calculate_stats(sessions, project_id)
 
       response = {
-        time_series: time_series,
-        **stats
+        visitors_timeseries: visitors_timeseries,
+        visits_whole_period: stats[:visits],
+        visitors_whole_period: stats[:visitors],
+        avg_seconds_on_page_whole_period: stats[:avg_seconds_on_page],
+        avg_pages_visited_whole_period: stats[:avg_pages_visited],
       }
 
       # If compare_start_at and compare_end_at are present:
@@ -44,10 +47,10 @@ module ReportBuilder
 
         response = {
           **response,
-          compare_visits_total: compare_stats[:visits_total],
-          compare_visitors_total: compare_stats[:visitors_total],
-          compare_avg_seconds_on_page: compare_stats[:avg_seconds_on_page],
-          compare_avg_pages_visited: compare_stats[:avg_pages_visited]
+          visits_compared_period: compare_stats[:visits],
+          visitors_compared_period: compare_stats[:visitors],
+          avg_seconds_on_page_compared_period: compare_stats[:avg_seconds_on_page],
+          avg_pages_visited_compared_period: compare_stats[:avg_pages_visited]
         }
       end
 
@@ -65,8 +68,8 @@ module ReportBuilder
 
     def calculate_stats(sessions, project_id)
       # Total number of visits and visitors
-      visits_total = sessions.count
-      visitors_total = sessions.distinct.pluck(:monthly_user_hash).count
+      visits = sessions.count
+      visitors = sessions.distinct.pluck(:monthly_user_hash).count
 
       # Avg pages visited per session
       pageviews = ImpactTracking::Pageview.where(session_id: sessions.select(:id))
@@ -122,11 +125,11 @@ module ReportBuilder
       # Or, if project filter is applied:
       # Avg pages visited per session where someone visited the project during the session
       pageviews.count || 0
-      avg_pages_visited = visits_total == 0 ? 0 : pageviews.count / visits_total
+      avg_pages_visited = visits == 0 ? 0 : pageviews.count / visits
 
       {
-        visits_total: visits_total,
-        visitors_total: visitors_total,
+        visits: visits,
+        visitors: visitors,
         avg_seconds_on_page: avg_seconds_on_page,
         avg_pages_visited: avg_pages_visited
       }
