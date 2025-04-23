@@ -155,12 +155,12 @@ const IdeasEditForm = ({ ideaId }: Props) => {
   const tenantTimezone =
     appConfiguration?.data.attributes.settings.core.timezone;
   if (!tenantTimezone) return null;
-  const timeLeft = getPeriodRemainingUntil(
+  const timeLeftInDays = getPeriodRemainingUntil(
     '2025-06-30',
     tenantTimezone,
     'days'
   );
-  const isTrialOver = timeLeft < 0;
+  const isTrialOver = timeLeftInDays < 0;
   const showSimilarInputs = !!(
     phase?.data.attributes.similarity_enabled &&
     (isInputIQEnabled || !isTrialOver)
