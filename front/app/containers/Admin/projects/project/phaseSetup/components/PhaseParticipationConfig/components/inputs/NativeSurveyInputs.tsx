@@ -1,17 +1,11 @@
 import React from 'react';
 
-import {
-  Box,
-  IconTooltip,
-  Text,
-  Toggle,
-} from '@citizenlab/cl2-component-library';
+import { Box, IconTooltip, Text } from '@citizenlab/cl2-component-library';
 import { CLErrors, Multiloc } from 'typings';
 
 import { IPhase, IUpdatedPhaseProperties } from 'api/phases/types';
 import useProjectById from 'api/projects/useProjectById';
 
-import useFeatureFlag from 'hooks/useFeatureFlag';
 import useLocalize from 'hooks/useLocalize';
 
 import AnonymousPostingToggle from 'components/admin/AnonymousPostingToggle/AnonymousPostingToggle';
@@ -24,6 +18,7 @@ import { FormattedMessage, useIntl } from 'utils/cl-intl';
 
 import parentMessages from '../../../../messages';
 import messages from '../messages';
+import UserFieldsInSurveyToggle from 'components/admin/UserFieldsInSurveyToggle/UserFieldsInSurveyToggle';
 
 interface Props {
   allow_anonymous_participation: boolean | null | undefined;
@@ -58,9 +53,6 @@ const NativeSurveyInputs = ({
   const { data: project } = useProjectById(
     phase?.data.relationships.project.data.id
   );
-  const userFieldsInSurveysEnabled = useFeatureFlag({
-    name: 'user_fields_in_surveys',
-  });
 
   return (
     <>
@@ -94,39 +86,11 @@ const NativeSurveyInputs = ({
           </Box>
         }
       />
-      {userFieldsInSurveysEnabled && (
-        <SectionField>
-          <SubSectionTitle style={{ marginBottom: '0px' }}>
-            <FormattedMessage {...messages.userFieldsInSurveyTitle} />
-          </SubSectionTitle>
-          <Toggle
-            checked={user_fields_in_form || false}
-            onChange={() => {
-              handleUserFieldsInFormOnChange(!user_fields_in_form);
-            }}
-            label={
-              <Box ml="8px" id="e2e-user-fields-in-form-toggle">
-                <Box display="flex">
-                  <Text
-                    color="primary"
-                    mb="0px"
-                    fontSize="m"
-                    fontWeight="semi-bold"
-                  >
-                    <FormattedMessage {...messages.userFieldsInSurveyToggle} />
-                  </Text>
-                </Box>
 
-                <Text color="coolGrey600" mt="0px" fontSize="m">
-                  <FormattedMessage
-                    {...messages.userFieldsInSurveyDescription}
-                  />
-                </Text>
-              </Box>
-            }
-          />
-        </SectionField>
-      )}
+      <UserFieldsInSurveyToggle
+        userFieldsInForm={user_fields_in_form}
+        handleUserFieldsInFormOnChange={handleUserFieldsInFormOnChange}
+      />
 
       <SectionField>
         <SubSectionTitle>

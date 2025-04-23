@@ -37,7 +37,7 @@ const CommunityMonitorModal = ({
   const isAdminOrModerator = isAdmin(authUser) || isModerator(authUser);
 
   const isDevelopmentOrCI =
-    process.env.CI === 'true' || process.env.NODE_ENV === 'development';
+    process.env.NODE_ENV === 'development' || process.env.NODE_ENV === 'test';
 
   // If the user is on a custom page or the homepage, we can show the modal
   const allowedOnUrl = isAllowedOnUrl(location.pathname);
@@ -96,6 +96,7 @@ const CommunityMonitorModal = ({
         userPermittedToTakeSurvey &&
         Math.random() < surveyPopupFrequency / 100 &&
         !isDevelopmentOrCI;
+
       return show;
     },
     [
@@ -128,7 +129,13 @@ const CommunityMonitorModal = ({
   }, [shouldShowModal]);
 
   const onClose = () => {
-    set('community_monitor_modal_seen', 'true');
+    // Set cookie expiration date to 3 months from today
+    const expirationDate = new Date();
+    expirationDate.setMonth(expirationDate.getMonth() + 3);
+
+    set('community_monitor_modal_seen', 'true', {
+      expires: expirationDate,
+    });
     setModalOpened(false);
   };
 
