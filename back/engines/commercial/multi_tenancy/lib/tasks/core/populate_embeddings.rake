@@ -9,6 +9,8 @@ namespace :embeddings do
         Idea.all
       end
       ideas_scope.published.publicly_visible.order(likes_count: :desc).each do |idea|
+        next if idea.title_multiloc.blank? || idea.body_multiloc.blank?
+
         puts "Processing idea #{idea.slug}"
         SimilarIdeasService.new(idea).upsert_embeddings!
       end
