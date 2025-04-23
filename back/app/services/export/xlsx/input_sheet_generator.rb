@@ -159,6 +159,7 @@ module Export
             end
             input_fields << Export::CustomFieldForExport.new(field, @value_visitor)
             input_fields << Export::CustomFieldForExport.new(field.other_option_text_field, @value_visitor) if field.other_option_text_field
+            input_fields << Export::CustomFieldForExport.new(field.follow_up_text_field, @value_visitor) if field.follow_up_text_field
           end
         end
       end
@@ -202,6 +203,8 @@ module Export
       end
 
       def user_report_fields
+        return [] if participation_method.user_fields_in_form? # User fields are returned from the idea if they are included in the form
+
         registration_fields.map do |field|
           Export::CustomFieldForExport.new(field, @value_visitor, :author)
         end

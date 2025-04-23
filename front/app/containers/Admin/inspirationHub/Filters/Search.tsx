@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 
 import { colors } from '@citizenlab/cl2-component-library';
+import { debounce } from 'lodash-es';
 
 import SearchInput from 'components/UI/SearchInput';
 
@@ -18,6 +19,12 @@ const Search = () => {
     'q[title_en_or_description_en_or_tenant_name_cont]'
   );
 
+  const trackSearchEvent = useMemo(() => {
+    return debounce((search: string) => {
+      trackEventByName(tracks.setSearch, { search });
+    }, 2500);
+  }, []);
+
   return (
     <SearchInput
       defaultValue={value}
@@ -26,7 +33,10 @@ const Search = () => {
           'q[title_en_or_description_en_or_tenant_name_cont]',
           search ?? undefined
         );
-        trackEventByName(tracks.setSearch, { search });
+
+        if (search) {
+          trackSearchEvent(search);
+        }
       }}
       a11y_numberOfSearchResults={0}
       placeholder={formatMessage(messages.search)}

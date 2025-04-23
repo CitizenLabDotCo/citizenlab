@@ -59,19 +59,19 @@ const ReviewFlow = ({ project }: { project: IProjectData }) => {
   const approvalPending = projectReview?.data.attributes.state === 'pending';
   const approvalGranted = projectReview?.data.attributes.state === 'approved';
 
-  const showPublishButton =
-    (canPublish || !isProjectReviewEnabled) && !approvalPending;
-
+  const showProjectApprovalButton =
+    isProjectReviewEnabled && approvalPending && canReview;
   const showReviewRequestButton =
     isProjectReviewEnabled && !canReview && !approvalGranted;
-  const showProjectApprovalButton = approvalPending && canReview;
+  const showPublishButton = !isProjectReviewEnabled || canPublish;
 
   return (
-    <Box>
+    <Box display="flex" gap="8px">
       {showPublishButton && (
         <Tooltip
           content={formatMessage(
-            messages.onlyAdminsAndFolderManagersCanPublish
+            messages.onlyAdminsAndFolderManagersCanPublish,
+            { inFolder: !!project.attributes.folder_id }
           )}
           placement="bottom"
           disabled={canPublish}
@@ -96,6 +96,7 @@ const ReviewFlow = ({ project }: { project: IProjectData }) => {
         <Box position="relative">
           <ReviewRequestButton
             projectId={project.id}
+            inFolder={!!project.attributes.folder_id}
             approvalPending={approvalPending}
             processing={isProjectReviewLoading}
           />

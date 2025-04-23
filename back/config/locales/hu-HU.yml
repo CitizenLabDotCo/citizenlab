@@ -171,12 +171,15 @@ hu:
       attachments:
         title: Mellékletek
         description:
-      page1:
+      title_page:
         description:
-      page2:
+      body_page:
+        title: Mesélj többet
+        description:
+      uploads_page:
         title: Képek és mellékletek
         description:
-      page3:
+      details_page:
         title: Részletek
         description:
       other_input_field:
@@ -300,6 +303,8 @@ hu:
     form_end_page:
       title_text_3: 'Köszönjük, hogy megosztotta véleményét!'
       description_text_3: "Befejezését sikeresen elküldte."
+    form_user_page:
+      title_text: 'Rólad'
     pdf_export:
       personal_data: 'Személyes adatok'
       personal_data_explanation_public: "Hozzászólásodat elküldjük %{organizationName}online részvételi platformjára. Ha azt szeretné, hogy az Ön neve jelenjen meg a bemenet szerzőjeként, és e-mailben kapja meg a bemenetével kapcsolatos frissítéseket, kérjük, töltse ki az alábbi mezőket ezen az oldalon, és mi létrehozunk Önnek egy fiókot. Az Ön e-mailje nem lesz nyilvános, és csak %{organizationName}fogja használni. Ha névtelen szeretne maradni, vagy nem járul hozzá ahhoz, hogy személyes adatait ilyen módon használjuk fel, akkor ezeket üresen hagyhatja."

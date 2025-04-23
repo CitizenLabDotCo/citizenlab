@@ -60,7 +60,7 @@ const AutoTagOption = ({
 }: Props) => {
   const { formatMessage } = useIntl();
   return (
-    <Box w="30%">
+    <Box w="30%" bgColor={colors.grey100}>
       <Tooltip
         content={
           <p>{formatMessage(messages.advancedAutotaggingUpsellMessage)}</p>

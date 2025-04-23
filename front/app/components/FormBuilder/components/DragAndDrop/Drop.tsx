@@ -6,11 +6,17 @@ type DropProps = {
   id: string;
   type: string;
   children: React.ReactNode;
+  isDropDisabled?: boolean;
 };
 
-export const Drop = ({ id, type, ...props }: DropProps) => {
+export const Drop = ({
+  id,
+  type,
+  isDropDisabled = false,
+  ...props
+}: DropProps) => {
   return (
-    <Droppable droppableId={id} type={type}>
+    <Droppable droppableId={id} type={type} isDropDisabled={isDropDisabled}>
       {(provided) => {
         return (
           <div ref={provided.innerRef} {...provided.droppableProps} {...props}>

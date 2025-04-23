@@ -125,6 +125,9 @@ export interface ICustomFieldResponse {
     map_config?: {
       data: IRelationship;
     };
+    resource?: {
+      data: IRelationship;
+    };
   };
 }
 
@@ -175,6 +178,7 @@ export type IFlatCreateCustomField = Optional<
   | 'random_option_ordering'
   | 'dropdown_layout'
   | 'question_category'
+  | 'ask_follow_up'
 > & {
   isLocalOnly: boolean;
 };

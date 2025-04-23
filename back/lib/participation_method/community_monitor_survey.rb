@@ -32,8 +32,13 @@ module ParticipationMethod
       ]
     end
 
+    # Default category names are locked
     def constraints
-      {} # TODO: Any constraints to be added once we know what the fields are
+      {
+        page_quality_of_life: { locks: { title_multiloc: true } },
+        page_service_delivery: { locks: { title_multiloc: true } },
+        page_governance_and_trust: { locks: { title_multiloc: true } }
+      }
     end
 
     def form_logic_enabled?
@@ -62,12 +67,17 @@ module ParticipationMethod
       true
     end
 
+    def supports_multiple_phase_reports?
+      true
+    end
+
     private
 
     def page_field(custom_form, key)
       CustomField.new(
         id: SecureRandom.uuid,
         key: "page_#{key}",
+        code: "page_#{key}",
         title_multiloc: multiloc_service.i18n_to_multiloc("custom_fields.community_monitor.question_categories.#{key}"),
         resource: custom_form,
         input_type: 'page',
@@ -81,10 +91,10 @@ module ParticipationMethod
         key: key,
         resource: custom_form,
         input_type: 'sentiment_linear_scale',
-        title_multiloc: multiloc_service.i18n_to_multiloc("custom_fields.community_monitor.questions.#{key}.title"),
-        question_category: category,
         maximum: 5,
         ask_follow_up: true,
+        title_multiloc: multiloc_service.i18n_to_multiloc("custom_fields.community_monitor.questions.#{key}.title"),
+        question_category: category,
         linear_scale_label_1_multiloc: multiloc_service.i18n_to_multiloc('custom_fields.community_monitor.labels.label_1'),
         linear_scale_label_2_multiloc: multiloc_service.i18n_to_multiloc('custom_fields.community_monitor.labels.label_2'),
         linear_scale_label_3_multiloc: multiloc_service.i18n_to_multiloc('custom_fields.community_monitor.labels.label_3'),

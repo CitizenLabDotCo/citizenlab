@@ -61,7 +61,13 @@ describe('Idea new page for continuous project', () => {
   });
 
   it('shows an error when the description is less than 30 characters long', () => {
+    const title = randomString(12);
     cy.get('#idea-form');
+    cy.get('#e2e-idea-title-input input').type(title);
+    cy.get('#e2e-idea-title-input input').should('contain.value', title);
+
+    cy.get('[data-cy="e2e-next-page"]').should('be.visible').click();
+
     cy.get('#e2e-idea-description-input .ql-editor').type(randomString(20));
     cy.get('#e2e-idea-description-input .ql-editor').blur();
     cy.wait(1000);
@@ -86,12 +92,14 @@ describe('Idea new page for continuous project', () => {
     cy.get('#idea-form');
     cy.contains('Add new idea').should('exist');
 
-    // add a title and description
+    // Add a title
     cy.get('#e2e-idea-title-input input').type(ideaTitle);
-    cy.get('#e2e-idea-description-input .ql-editor').type(ideaContent);
-
-    // verify the title and description
     cy.get('#e2e-idea-title-input input').should('contain.value', ideaTitle);
+
+    cy.get('[data-cy="e2e-next-page"]').should('be.visible').click();
+
+    // Add a description
+    cy.get('#e2e-idea-description-input .ql-editor').type(ideaContent);
     cy.get('#e2e-idea-description-input .ql-editor').contains(ideaContent);
 
     // Go to the next page of the idea form
@@ -125,10 +133,11 @@ describe('Idea new page for continuous project', () => {
     cy.contains('Add new idea').should('exist');
     // add a title and description
     cy.get('#e2e-idea-title-input input').type(ideaTitle);
-    cy.get('#e2e-idea-description-input .ql-editor').type(ideaContent);
-
-    // verify the title and description
     cy.get('#e2e-idea-title-input input').should('contain.value', ideaTitle);
+
+    cy.get('[data-cy="e2e-next-page"]').should('be.visible').click();
+
+    cy.get('#e2e-idea-description-input .ql-editor').type(ideaContent);
     cy.get('#e2e-idea-description-input .ql-editor').contains(ideaContent);
 
     // Go to the next page of the idea form
@@ -240,12 +249,15 @@ describe('Idea new page for timeline project', () => {
     cy.get('#e2e-idea-new-page');
     cy.get('#idea-form');
     cy.contains('Add new idea').should('exist');
-    // add a title and description
-    cy.get('#e2e-idea-title-input input').type(ideaTitle);
-    cy.get('#e2e-idea-description-input .ql-editor').type(ideaContent);
 
-    // verify the title and description
+    // Add a title
+    cy.get('#e2e-idea-title-input input').type(ideaTitle);
     cy.get('#e2e-idea-title-input input').should('contain.value', ideaTitle);
+
+    cy.get('[data-cy="e2e-next-page"]').should('be.visible').click();
+
+    // Add a description
+    cy.get('#e2e-idea-description-input .ql-editor').type(ideaContent);
     cy.get('#e2e-idea-description-input .ql-editor').contains(ideaContent);
 
     // Go to the next page of the idea form

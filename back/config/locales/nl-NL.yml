@@ -171,12 +171,15 @@ nl:
       attachments:
         title: Bijlagen
         description:
-      page1:
+      title_page:
         description:
-      page2:
+      body_page:
+        title: Vertel ons meer
+        description:
+      uploads_page:
         title: Afbeeldingen en bijlagen
         description:
-      page3:
+      details_page:
         title: Details
         description:
       other_input_field:
@@ -194,17 +197,17 @@ nl:
         affordable_housing:
           title: Beschikbaarheid van betaalbare huisvesting
         employment_opportunities:
-          title: Kansen op werk en economische vooruitgang
+          title: Werkgelegenheid en economische ontwikkelingskansen
         quality_of_services:
-          title: Algehele kwaliteit van de diensten van de stad
+          title: Algemene kwaliteit van de diensten die de stad levert
         overall_value:
-          title: Totale waarde die je krijgt voor je stadsbelastingen en leges
+          title: Totale waarde die je krijgt voor de belastingen en toeslagen in jouw stad
         cleanliness_and_maintenance:
-          title: Algehele netheid en onderhoud van straten en openbare ruimten
+          title: Algemene netheid en onderhoud van straten en openbare ruimtes
         trust_in_government:
           title: Vertrouwen in lokale overheid
         responsiveness_of_officials:
-          title: Reactievermogen van gekozen ambtenaren op zorgen van de gemeenschap
+          title: Responsiviteit van gekozen functionarissen op zorgen van de gemeenschap
         transparency_of_money_spent:
           title: Transparantie over hoe gemeentelijk belastinggeld wordt besteed
       question_categories:
@@ -214,12 +217,12 @@ nl:
         other: Overig
       labels:
         label_1: Zeer slecht
-        label_2: Zeer zwak
-        label_3: Eerlijk
+        label_2: Slecht
+        label_3: Gemiddeld
         label_4: Goed
         label_5: Uitstekend
       form_end:
-        button_text: Terug naar home
+        button_text: Terug naar startpagina
   custom_forms:
     categories:
       main_content:
@@ -300,6 +303,8 @@ nl:
     form_end_page:
       title_text_3: 'Bedankt voor het delen van je invoer!'
       description_text_3: "Je invoer is succesvol ingediend."
+    form_user_page:
+      title_text: 'Over jou'
     pdf_export:
       personal_data: 'Persoonlijke gegevens'
       personal_data_explanation_public: "We zullen je bijdrage versturen naar het online participatieplatform van %{organizationName}. Als je wilt dat je naam wordt weergegeven als auteur van deze bijdrage en als je per e-mail updates wilt ontvangen die relevant zijn voor je bijdrage, vul dan de volgende velden op deze pagina in en we maken een account voor je aan. Je e-mailadres is niet openbaar en wordt alleen gebruikt door %{organizationName}. Als je anoniem wilt blijven of er niet mee akkoord gaat dat we je persoonlijke gegevens op deze manier gebruiken, kun je ze leeg laten."

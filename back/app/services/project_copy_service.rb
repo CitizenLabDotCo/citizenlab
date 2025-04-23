@@ -333,6 +333,7 @@ class ProjectCopyService < TemplateService # rubocop:disable Metrics/ClassLength
       if yml_phase['participation_method'] == 'survey'
         yml_phase['survey_embed_url'] = phase.survey_embed_url
         yml_phase['survey_service'] = phase.survey_service
+        yml_phase['survey_popup_frequency'] = phase.survey_popup_frequency
       end
 
       if yml_phase['participation_method'] == 'document_annotation'
@@ -342,6 +343,7 @@ class ProjectCopyService < TemplateService # rubocop:disable Metrics/ClassLength
       if phase.pmethod.supports_survey_form?
         yml_phase['native_survey_title_multiloc'] = phase.native_survey_title_multiloc
         yml_phase['native_survey_button_multiloc'] = phase.native_survey_button_multiloc
+        yml_phase['user_fields_in_form'] = phase.user_fields_in_form
       end
 
       store_ref yml_phase, phase.id, :phase

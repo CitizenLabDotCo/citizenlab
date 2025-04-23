@@ -8,6 +8,7 @@ fi:
       "comment_marked_as_spam": Kommentoi roskapostiraportti
       "comment_on_your_comment": Vastaus kommenttiini
       "comment_on_idea_you_follow": Kommentti ideaan, jota seuraat
+      "community_monitor_report": Yhteisön valvontaraportti
       "cosponsor_of_your_idea": Käyttäjä hyväksyy kutsuni sponsoroida ehdotustani
       "event_registration_confirmation": Tapahtuman ilmoittautumisvahvistus
       "idea_marked_as_spam": Idea roskapostiraportti
@@ -22,7 +23,7 @@ fi:
       "internal_comment_on_your_internal_comment": Sisäinen kommentti sisäiseen kommenttiini
       "mention_in_official_feedback": Mainitse päivityksessä
       "mention_in_internal_comment": Mainitse sisäisessä kommentissa
-      "new_comment_for_admin": Uusi kommentti moderaattorissani projektissa
+      "new_comment_for_admin": Uusi kommentti moderoimassani projektissa
       "new_idea_for_admin": Uusi idea moderoimassani projektissa
       "official_feedback_on_idea_you_follow": Päivitä ajatus, jota seuraat
       "password_reset": Salasanan nollaus
@@ -82,6 +83,7 @@ fi:
         "4": "Viikoittain, torstaisin %{hourOfDay}"
         "5": "Viikoittain, perjantaisin kello %{hourOfDay}"
         "6": "Viikoittain lauantaisin kello %{hourOfDay}"
+      quarterly: "Neljännesvuosittain, neljänneksen ensimmäisenä päivänä"
     footer:
       "link_privacy_policy": "Tietosuojakäytäntö"
       "link_terms_conditions": "käyttöehdot"
@@ -147,6 +149,12 @@ fi:
       today: Tänään
       wrong_content: 'Kommentti ei liity asiaan.'
       yesterday: Eilen
+    community_monitor_report:
+      subject: 'Uusi yhteisön valvontaraportti on saatavilla'
+      title: 'Uusi yhteisön valvontaraportti on saatavilla'
+      text_introduction: 'Yhteisömonitoriraportti on luotu edelliseltä vuosineljännekseltä. Pääset siihen klikkaamalla alla olevaa painiketta ja kirjautumalla sisään.'
+      cta_report_button: 'Näytä raportti'
+      report_name: 'Yhteisön valvontaraportti'
     cosponsor_of_your_idea:
       cta_reply_to: 'Katso ehdotuksesi'
       event_description: 'Onnittelut! %{cosponsorName} on hyväksynyt kutsusi tukea ehdotustasi.'
@@ -157,7 +165,7 @@ fi:
       subject: 'Palautteesi vaativat ideat: %{numberIdeas}'
       preheader: 'Vastaanotetun tiivistelmä %{organizationName}'
       title_your_weekly_report: '%{firstName}, kansalaisten palaute odottaa palautettasi'
-      cta_manage_your_input: 'Hallitse syötteitäsi'
+      cta_manage_your_input: 'Muokkaa syötteitäsi'
       x_inputs_need_your_feedback: 'syötteet tarvitsevat palautettasi'
       title_assignment_past_week: 'Uusimmat sinulle osoitetut ideat'
       title_no_assignment_past_week: 'Sinulle ei ole määrätty uusia ideoita viime viikolla'
@@ -213,7 +221,7 @@ fi:
       preheader: 'Projektipäällikkö tiivistelmä %{organizationName}'
       title_your_weekly_report: '%{firstName}, viikkoraporttisi'
       text_introduction: 'Olemme koonneet sinulle panoksen, joka on aiheuttanut eniten aktiivisuutta kuluneen viikon aikana. Ota selvää, mitä projektillesi tapahtuu!'
-      cta_manage: 'Hallitse projektiasi'
+      cta_manage: 'Muokkaa projektiasi'
       new_users: 'Uudet käyttäjät'
       new_ideas: 'Uusia ideoita'
       new_comments: 'Uusia kommentteja'
@@ -333,7 +341,7 @@ fi:
       text_design_participatory_process: 'Voit hallita kansiossasi olevia erilaisia osallistumisprojekteja - määrittää osallistumistavan, lisätä projektin kuvauksen, liittää kuvia ja viestiä liittyvistä tapahtumista. Voit myös hallita, miten osallistujat ovat vuorovaikutuksessa projektiesi kanssa, mukaan lukien käyttöoikeuksien määrittäminen ja lähetys-, äänestys- ja kommentointiasetusten määrittäminen.'
       title_design_participatory_process: 'Suunnittele osallistuva prosessi'
       title_moderate_analyse_input: 'Moderoi ja analysoi syötettä'
-      title_manage_folder: 'Hallitse kansion asetuksia ja luo uusia projekteja.'
+      title_manage_folder: 'Muokkaa kansion asetuksia ja luo uusia projekteja.'
       title_what_can_you_do_folderadmin: 'Mitä voit tehdä kansioiden ylläpitäjänä?'
       title_added_as_folderadmin: 'Sinut on lisätty kansion ylläpitäjäksi'
       x_projects: '%{numberOfProjects} projekteja'
@@ -361,12 +369,12 @@ fi:
     project_review_request:
       subject: 'Tarkastuspyyntö: Projekti odottaa hyväksyntää.'
       header: '%{requesterName} on kutsunut sinut arvostelemaan projektia "%{projectTitle}"'
-      header_message: "Tällä hetkellä projekti on luonnostilassa, eikä se näy käyttäjille. Kun olet tarkistanut ja hyväksynyt sen, valvoja voi julkaista sen."
+      header_message: "Tällä hetkellä projekti on luonnostilassa, eikä se näy käyttäjille. Kun olet tarkistanut ja hyväksynyt sen, valvoja voi julkaise sen."
       cta_review_project: "Tarkista projekti"
     project_review_state_change:
       subject: '"%{projectTitle}" on hyväksytty'
       header: '%{reviewerName} hyväksyi projektin "%{projectTitle}"'
-      header_message: "Projekti on nyt valmis julkaistavaksi. Voit julkaista sen aina, kun olet valmis!"
+      header_message: "Projekti on nyt valmis julkaistavaksi. Voit julkaise sen aina, kun olet valmis!"
       cta_go_to_project: "Siirry projektiasetuksiin"
     status_change_on_idea_you_follow:
       status_change: 'Tämän syötteen uusi tila on%{status}'

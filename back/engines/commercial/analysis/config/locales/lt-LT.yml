@@ -1,3 +1,20 @@
 lt:
   analysis:
     example_tag_n: Žymos pavyzdys %{n}
+    cell_statement:
+      percent_more: "%{percent}% daugiau"
+      percent_less: "%{percent}% mažiau"
+      range_min_max: "%{min} į %{max}"
+      range_min: "%{min} arba daugiau"
+      range_max: "%{max} arba mažiau"
+      tag_vs_bin:
+        inputs: "Žmonės, kurie atsako '%{answer}' į '%{question}', skelbia %{percent_more_less} į '%{tag}' daugiau nei vidutiniškai."
+        likes: "Žmonės, kurie atsako '%{answer}' į '%{question}', mėgsta %{percent_more_less} įvestis į '%{tag}' nei vidutiniškai."
+        dislikes: "Žmonės, kurie atsako '%{answer}' į '%{question}', nemėgsta %{percent_more_less} įvesties į '%{tag}' nei vidutiniškai."
+        participants: "Žmonės, kurie atsako '%{answer}' į '%{question}', dalyvauja %{percent_more_less} '%{tag}' daugiau nei vidutiniškai."
+      bin_vs_bin:
+        inputs: "Žmonės, kurie atsako '%{answer1}' į '%{question1}' atsako '%{answer2}' į '%{question2}' %{percent_more_less} nei vidutiniškai."
+        likes: "Žmonėms, kurie į atsakymus nuo '%{answer1}' iki '%{question1}' atsakydami nuo '%{answer2}' iki '%{question2}' mėgsta %{percent_more_less} įvestis, nei vidutiniškai."
+        dislikes: "Žmonėms, kurie į atsakymus nuo '%{answer1}' iki '%{question1}' atsakydami nuo '%{answer2}' iki '%{question2}' nemėgsta %{percent_more_less} įvesties, nei vidutiniškai."
+        participants: "Žmonės, kurie atsakydami '%{answer1}' į '%{question1}' dalyvauja %{percent_more_less} , kai atsako '%{answer2}' į '%{question2}' nei vidutiniškai."
+

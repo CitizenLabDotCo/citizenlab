@@ -171,12 +171,15 @@ hr:
       attachments:
         title: Privici
         description:
-      page1:
+      title_page:
         description:
-      page2:
+      body_page:
+        title: Recite nam više
+        description:
+      uploads_page:
         title: Slike i prilozi
         description:
-      page3:
+      details_page:
         title: pojedinosti
         description:
       other_input_field:
@@ -300,6 +303,8 @@ hr:
     form_end_page:
       title_text_3: 'Hvala što ste podijelili svoj doprinos!'
       description_text_3: "Vaš unos je uspješno poslan."
+    form_user_page:
+      title_text: 'O tebi'
     pdf_export:
       personal_data: 'Osobni podaci'
       personal_data_explanation_public: "Poslat ćemo vaš doprinos online platformi za sudjelovanje %{organizationName}. Ako želite da se vaše ime prikaže kao autor ovog unosa i da putem e-pošte primate ažuriranja relevantna za vaš unos, ispunite sljedeća polja na ovoj stranici i mi ćemo za vas kreirati račun. Vaša e-pošta neće biti javna i koristit će je samo %{organizationName}. Ukoliko želite ostati anonimni ili ne pristajete na korištenje Vaših osobnih podataka na ovaj način, možete ih ostaviti prazne."

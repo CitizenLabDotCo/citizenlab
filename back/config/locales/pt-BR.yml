@@ -171,12 +171,15 @@ pt:
       attachments:
         title: Anexos
         description:
-      page1:
+      title_page:
         description:
-      page2:
+      body_page:
+        title: Conte-nos mais
+        description:
+      uploads_page:
         title: Imagens e anexos
         description:
-      page3:
+      details_page:
         title: Detalhes
         description:
       other_input_field:
@@ -300,6 +303,8 @@ pt:
     form_end_page:
       title_text_3: 'Obrigado por compartilhar sua opinião!'
       description_text_3: "Sua entrada foi enviada com sucesso."
+    form_user_page:
+      title_text: 'Sobre você'
     pdf_export:
       personal_data: 'Dados pessoais'
       personal_data_explanation_public: "Enviaremos sua contribuição para a plataforma de participação on-line do %{organizationName}. Se você quiser que seu nome seja exibido como autor desta contribuição e receber atualizações relevantes à sua contribuição por e-mail, preencha os campos a seguir nesta página e criaremos uma conta para você. Seu e-mail não será público e será usado apenas por %{organizationName}. Se quiser permanecer anônimo ou não concordar com o uso de seus dados pessoais dessa forma, você pode deixá-los em branco."

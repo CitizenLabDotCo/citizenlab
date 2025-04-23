@@ -171,12 +171,15 @@ ar-MA:
       attachments:
         title: المُرفقات
         description:
-      page1:
+      title_page:
         description:
-      page2:
+      body_page:
+        title: أخبرنا المزيد
+        description:
+      uploads_page:
         title: الصور والمرفقات
         description:
-      page3:
+      details_page:
         title: تفاصيل
         description:
       other_input_field:
@@ -300,6 +303,8 @@ ar-MA:
     form_end_page:
       title_text_3: 'شكرا لك على مشاركتك بمدخلاتك!'
       description_text_3: "لقد تم تقديم مدخلاتك بنجاح."
+    form_user_page:
+      title_text: 'عنك'
     pdf_export:
       personal_data: 'بيانات شخصية'
       personal_data_explanation_public: "سوف نقوم بإرسال مدخلاتك إلى منصة المشاركة عبر الإنترنت الخاصة بـ %{organizationName}. إذا كنت تريد أن يتم عرض اسمك كمؤلف لهذا الإدخال وتلقي التحديثات ذات الصلة بإدخالك عبر البريد الإلكتروني، فيرجى ملء الحقول التالية في هذه الصفحة وسنقوم بإنشاء حساب لك. لن يكون بريدك الإلكتروني عامًا ولن يستخدمه إلا %{organizationName}. إذا كنت تريد أن تظل مجهول الهوية، أو لا توافق على استخدام بياناتك الشخصية بهذه الطريقة، فيمكنك تركها فارغة."

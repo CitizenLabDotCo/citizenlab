@@ -171,12 +171,15 @@ fi:
       attachments:
         title: Liitteet
         description:
-      page1:
+      title_page:
         description:
-      page2:
+      body_page:
+        title: Kerro meille lisää
+        description:
+      uploads_page:
         title: Kuvat ja liitteet
         description:
-      page3:
+      details_page:
         title: Yksityiskohdat
         description:
       other_input_field:
@@ -300,6 +303,8 @@ fi:
     form_end_page:
       title_text_3: 'Kiitos palautteen jakamisesta!'
       description_text_3: "Palautteesi on lähetetty onnistuneesti."
+    form_user_page:
+      title_text: 'Sinusta'
     pdf_export:
       personal_data: 'Henkilökohtaiset tiedot'
       personal_data_explanation_public: "Lähetämme palautetta %{organizationName}:n online-osallistumisalustalle. Jos haluat, että nimesi näytetään tämän syötteen kirjoittajana ja että saat sähköpostiisi syöttöäsi koskevia päivityksiä, täytä seuraavat tämän sivun kentät, niin luomme sinulle tilin. Sähköpostisi ei ole julkinen, ja vain %{organizationName}käyttää sitä. Jos haluat pysyä nimettömänä tai et suostu siihen, että käytämme henkilötietojasi tällä tavalla, voit jättää ne tyhjiksi."

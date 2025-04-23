@@ -8,17 +8,8 @@ module Surveys
     end
 
     def generate_results(logic_ids: [])
-      results = fields.filter_map { |f| visit f }
-      results = add_question_numbers_to_results results
-      results = add_page_response_count_to_results results
-      results = add_logic_to_results results, logic_ids
-      results = change_counts_for_logic results, inputs.pluck(:custom_field_values)
-      results = cleanup_results results
-
-      {
-        results: results,
-        totalSubmissions: inputs.size
-      }
+      @logic_ids = logic_ids
+      super()
     end
 
     def visit_page(field)
@@ -28,6 +19,11 @@ module Surveys
     end
 
     private
+
+    def add_additional_fields_to_results(results)
+      results = add_logic_to_results results, @logic_ids
+      change_counts_for_logic results, inputs.pluck(:custom_field_values)
+    end
 
     def core_field_attributes(field, response_count: nil)
       super.merge({

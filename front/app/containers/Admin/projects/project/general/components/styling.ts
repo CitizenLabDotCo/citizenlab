@@ -5,8 +5,10 @@ import FileUploader from 'components/UI/FileUploader';
 import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
 import MultipleSelect from 'components/UI/MultipleSelect';
 
-export const StyledForm = styled.form`
+export const StyledForm = styled.form<{ showStickySaveButton: boolean }>`
   width: 500px;
+  // Needed to ensure an uploaded file (or whichever field is last) is visible
+  padding-bottom: ${(props) => (props.showStickySaveButton ? '80px' : '0')};
 `;
 
 export const StyledInputMultiloc = styled(InputMultilocWithLocaleSwitcher)`

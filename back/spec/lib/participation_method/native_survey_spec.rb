@@ -168,6 +168,17 @@ RSpec.describe ParticipationMethod::NativeSurvey do
     end
   end
 
+  describe '#user_fields_in_form?' do
+    it 'returns false when not enabled' do
+      expect(participation_method.user_fields_in_form?).to be false
+    end
+
+    it 'returns true when enabled' do
+      phase.user_fields_in_form = true
+      expect(participation_method.user_fields_in_form?).to be true
+    end
+  end
+
   its(:additional_export_columns) { is_expected.to eq [] }
   its(:allowed_ideas_orders) { is_expected.to be_empty }
   its(:return_disabled_actions?) { is_expected.to be true }
@@ -191,6 +202,7 @@ RSpec.describe ParticipationMethod::NativeSurvey do
   its(:follow_idea_on_idea_submission?) { is_expected.to be false }
   its(:validate_phase) { is_expected.to be_nil }
   its(:supports_custom_field_categories?) { is_expected.to be false }
+  its(:supports_multiple_phase_reports?) { is_expected.to be false }
 
   describe 'proposed_budget_in_form?' do # private method
     it 'is expected to be false' do

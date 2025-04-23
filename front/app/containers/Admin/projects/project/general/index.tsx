@@ -527,6 +527,7 @@ const AdminProjectsProjectGeneral = () => {
       <StyledForm
         className="e2e-project-general-form intercom-projects-new-project-form"
         onSubmit={onSubmit}
+        showStickySaveButton={showStickySaveButton}
       >
         <Section>
           {projectId && (
@@ -669,39 +670,33 @@ const AdminProjectsProjectGeneral = () => {
             handleProjectFileOnRemove={handleProjectFileOnRemove}
             onFileReorder={handleFilesReorder}
           />
-
-          {/* 
-            The sticky save button is only shown when you edit a form so that the user 
-            is not forced to scroll to the bottom of the page to save it.
-          */}
-
-          <Box
-            {...(showStickySaveButton && {
-              position: 'fixed',
-              borderTop: `1px solid ${colors.divider}`,
-              bottom: '0',
-              w: `calc(${width}px + ${defaultAdminCardPadding * 2}px)`,
-              ml: `-${defaultAdminCardPadding}px`,
-              background: colors.white,
-              display: 'flex',
-              justifyContent: 'flex-start',
-              px: `${defaultAdminCardPadding}px`,
-            })}
-            py="8px"
-          >
-            <SubmitWrapper
-              className="intercom-projects-new-project-save-button"
-              loading={processing}
-              status={submitState}
-              messages={{
-                buttonSave: messages.saveProject,
-                buttonSuccess: messages.saveSuccess,
-                messageError: messages.saveErrorMessage,
-                messageSuccess: messages.saveSuccessMessage,
-              }}
-            />
-          </Box>
         </Section>
+        <Box
+          {...(showStickySaveButton && {
+            position: 'fixed',
+            borderTop: `1px solid ${colors.divider}`,
+            bottom: '0',
+            w: `calc(${width}px + ${defaultAdminCardPadding * 2}px)`,
+            ml: `-${defaultAdminCardPadding}px`,
+            background: colors.white,
+            display: 'flex',
+            justifyContent: 'flex-start',
+            px: `${defaultAdminCardPadding}px`,
+          })}
+          py="8px"
+        >
+          <SubmitWrapper
+            className="intercom-projects-new-project-save-button"
+            loading={processing}
+            status={submitState}
+            messages={{
+              buttonSave: messages.saveProject,
+              buttonSuccess: messages.saveSuccess,
+              messageError: messages.saveErrorMessage,
+              messageSuccess: messages.saveSuccessMessage,
+            }}
+          />
+        </Box>
       </StyledForm>
     </Box>
   );

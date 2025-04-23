@@ -8,6 +8,7 @@ lt:
       "comment_marked_as_spam": Pranešti apie komentarų šlamštą
       "comment_on_your_comment": Atsakymas į mano komentarą
       "comment_on_idea_you_follow": Komentaras apie idėją, kurios laikotės
+      "community_monitor_report": Bendrijos stebėtojo ataskaita
       "cosponsor_of_your_idea": Naudotojas priima mano kvietimą tapti vienu iš mano pasiūlymo rėmėjų
       "event_registration_confirmation": Renginio registracijos patvirtinimas
       "idea_marked_as_spam": Pranešimas apie idėjų šlamštą
@@ -82,6 +83,7 @@ lt:
         "4": "Kas savaitę, ketvirtadieniais %{hourOfDay}"
         "5": "Kas savaitę, penktadieniais %{hourOfDay}"
         "6": "Kas savaitę, šeštadieniais %{hourOfDay}"
+      quarterly: "Kas ketvirtį, pirmąją ketvirčio dieną"
     footer:
       "link_privacy_policy": "Privatumo politika"
       "link_terms_conditions": "Taisyklės ir sąlygos"
@@ -147,6 +149,12 @@ lt:
       today: Šiandien
       wrong_content: 'Šis komentaras nėra aktualus.'
       yesterday: Vakar
+    community_monitor_report:
+      subject: 'Pateikta nauja bendruomenės stebėsenos ataskaita'
+      title: 'Pateikta nauja bendruomenės stebėsenos ataskaita'
+      text_introduction: 'Sukurta praėjusio ketvirčio bendruomenės stebėsenos ataskaita. Ją galite pasiekti spustelėję toliau esantį mygtuką ir prisijungę.'
+      cta_report_button: 'Peržiūrėti ataskaitą'
+      report_name: 'Bendrijos stebėtojo ataskaita'
     cosponsor_of_your_idea:
       cta_reply_to: 'Peržiūrėkite savo pasiūlymą'
       event_description: 'Sveikiname! %{cosponsorName} priėmė jūsų kvietimą tapti vienu iš jūsų pasiūlymo rėmėjų.'

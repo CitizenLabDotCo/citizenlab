@@ -161,4 +161,35 @@ export default defineMessages({
     id: 'app.components.formBuilder.cancelMethodChange1',
     defaultMessage: 'Cancel',
   },
+  similarInputDetectionTitle: {
+    id: 'app.containers.phaseConfig.similarInputDetectionTitle',
+    defaultMessage: 'Similar input detection',
+  },
+  similarInputDetectionTooltip: {
+    id: 'app.containers.phaseConfig.similarInputDetectionTooltip',
+    defaultMessage:
+      'Show participants similar input while they type to help avoid duplicates.',
+  },
+  enableSimilarInputDetection: {
+    id: 'app.containers.phaseConfig.enableSimilarInputDetection',
+    defaultMessage: 'Enable similar input detection',
+  },
+  similarityThresholdTitle: {
+    id: 'app.containers.phaseConfig.similarityThresholdTitle',
+    defaultMessage: 'Similarity threshold (title)',
+  },
+  similarityThresholdTitleTooltip: {
+    id: 'app.containers.phaseConfig.similarityThresholdTitleTooltip1',
+    defaultMessage:
+      'This controls how similar two titles need to be before being flagged as similar. Use values between 0 and 1. Only modify this if you understand the implications.',
+  },
+  similarityThresholdBody: {
+    id: 'app.containers.phaseConfig.similarityThresholdBody',
+    defaultMessage: 'Similarity threshold (body)',
+  },
+  similarityThresholdBodyTooltip: {
+    id: 'app.containers.phaseConfig.similarityThresholdBodyTooltip1',
+    defaultMessage:
+      'This controls how similar two descriptions must be to show suggestions. Use values between 0 and 1. Only adjust if you know what you’re doing.',
+  },
 });

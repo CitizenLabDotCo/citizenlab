@@ -2,10 +2,10 @@ import React, { memo } from 'react';
 
 import { WrappedComponentProps } from 'react-intl';
 
-import { IUserCustomFieldOptionData } from 'api/user_custom_fields_options/types';
-import useDeleteUserCustomFieldsOption from 'api/user_custom_fields_options/useDeleteUserCustomFieldsOption';
-import useReorderUserCustomFieldOption from 'api/user_custom_fields_options/useReorderUserCustomFieldsOption';
-import useUserCustomFieldOptions from 'api/user_custom_fields_options/useUserCustomFieldsOptions';
+import { ICustomFieldOptionData } from 'api/custom_field_options/types';
+import useCustomFieldOptions from 'api/custom_field_options/useCustomFieldOptions';
+import useDeleteUserCustomFieldsOption from 'api/custom_field_options/useDeleteCustomFieldOption';
+import useReorderCustomFieldOption from 'api/custom_field_options/useReorderCustomFieldOption';
 
 import useLocalize from 'hooks/useLocalize';
 
@@ -27,19 +27,17 @@ const RegistrationCustomFieldOptions = memo(
     params: { userCustomFieldId },
   }: WrappedComponentProps & WithRouterProps) => {
     const { data: userCustomFieldOptions } =
-      useUserCustomFieldOptions(userCustomFieldId);
-    const { mutate: deleteUserCustomFieldOption } =
+      useCustomFieldOptions(userCustomFieldId);
+    const { mutate: deleteCustomFieldOption } =
       useDeleteUserCustomFieldsOption();
-    const { mutate: reorderUserCustomFieldOption } =
-      useReorderUserCustomFieldOption();
+    const { mutate: reorderCustomFieldOption } = useReorderCustomFieldOption();
     const localize = useLocalize();
 
     const handleReorderCustomFieldOption = (
       customFieldOptionId: string,
       ordering: number
     ) => {
-      reorderUserCustomFieldOption({
-        customFieldId: userCustomFieldId,
+      reorderCustomFieldOption({
         optionId: customFieldOptionId,
         ordering,
       });
@@ -53,8 +51,7 @@ const RegistrationCustomFieldOptions = memo(
         event.preventDefault();
 
         if (window.confirm(deleteMessage)) {
-          deleteUserCustomFieldOption({
-            customFieldId: userCustomFieldId,
+          deleteCustomFieldOption({
             optionId: userCustomFieldOptionId,
           });
         }
@@ -83,7 +80,7 @@ const RegistrationCustomFieldOptions = memo(
               <>
                 {itemsList.map(
                   (
-                    userCustomFieldOption: IUserCustomFieldOptionData,
+                    userCustomFieldOption: ICustomFieldOptionData,
                     index: number
                   ) => {
                     const userCustomFieldOptionId = userCustomFieldOption.id;

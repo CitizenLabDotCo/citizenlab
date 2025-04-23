@@ -8,19 +8,20 @@ sv:
       "comment_marked_as_spam": Kommentera skräppostrapport
       "comment_on_your_comment": Ett svar på min kommentar
       "comment_on_idea_you_follow": En kommentar till en idé som du följer
-      "cosponsor_of_your_idea": En användare accepterar min inbjudan att medsponsra mitt förslag
+      "community_monitor_report": Rapport från gemenskapens övervakare
+      "cosponsor_of_your_idea": En användare accepterar min inbjudan att stödja mitt förslag
       "event_registration_confirmation": Bekräftelse på registrering av evenemang
       "idea_marked_as_spam": Skräppostrapport för idé
       "idea_published": Publicering av min idé
-      "invitation_to_cosponsor_idea": Inbjudan att sponsra ett förslag
+      "invitation_to_cosponsor_idea": Inbjudan att stödja ett förslag
       "invite_received": Inbjudan
       "invite_reminder": Påminnelse om inbjudan
       "internal_comment_on_idea_assigned_to_you": Intern kommentar om input som tilldelats mig
-      "internal_comment_on_idea_you_commented_internally_on": Intern kommentar på input Jag kommenterade internt på
+      "internal_comment_on_idea_you_commented_internally_on": Intern kommentar på input jag kommenterade internt på
       "internal_comment_on_idea_you_moderate": Intern kommentar om input i projekt eller mappar som jag hanterar
-      "internal_comment_on_unassigned_unmoderated_idea": Intern kommentar om icke tilldelad input i icke hanterat projekt
+      "internal_comment_on_unassigned_unmoderated_idea": Intern kommentar om icke tilldelade bidrag i icke hanterade projekt
       "internal_comment_on_your_internal_comment": Intern kommentar till min interna kommentar
-      "mention_in_official_feedback": Nämn i en uppdatering
+      "mention_in_official_feedback": Nämnd i en uppdatering
       "mention_in_internal_comment": Omnämnande i en intern kommentar
       "new_comment_for_admin": Ny kommentar i ett projekt jag modererar
       "new_idea_for_admin": Ny idé i ett projekt jag modererar
@@ -43,11 +44,11 @@ sv:
       "user_digest": Veckoöversikt
       "voting_basket_submitted": Bekräftelse av röstning
       "native_survey_not_submitted": Enkät ej inlämnad
-      "voting_basket_not_submitted": Ej avgivna röster
+      "voting_basket_not_submitted": Röster ej inlämnade
       "voting_last_chance": Sista chansen att rösta
       "voting_phase_started": Ny projektfas med omröstning
       "voting_results": Resultat av omröstningen
-      "your_input_in_screening": Min input väntar på screening
+      "your_input_in_screening": Mitt bidrag väntar på bedömning
     general:
       by_author: 'av %{authorName}'
       author_wrote: '%{authorName} skrev:'
@@ -82,6 +83,7 @@ sv:
         "4": "Varje vecka på torsdagar %{hourOfDay}"
         "5": "Veckovis på fredagar %{hourOfDay}"
         "6": "Veckovis på lördagar %{hourOfDay}"
+      quarterly: "Kvartalsvis, den första dagen i kvartalet"
     footer:
       "link_privacy_policy": "Sekretesspolicy"
       "link_terms_conditions": "Villkor"
@@ -147,6 +149,12 @@ sv:
       today: I dag
       wrong_content: 'Kommentaren är inte relevant.'
       yesterday: I går
+    community_monitor_report:
+      subject: 'En ny rapport om övervakning av samhället finns tillgänglig'
+      title: 'En ny rapport om övervakning av samhället finns tillgänglig'
+      text_introduction: 'En community monitor-rapport har skapats för föregående kvartal. Du kan komma åt den genom att klicka på knappen nedan och logga in.'
+      cta_report_button: 'Visa rapport'
+      report_name: 'Rapport från gemenskapens övervakare'
     cosponsor_of_your_idea:
       cta_reply_to: 'Se ditt förslag'
       event_description: 'Grattis! %{cosponsorName} har accepterat din inbjudan att vara medsponsor för ditt förslag.'
@@ -235,7 +243,7 @@ sv:
       yesterday: I går
     comment_on_idea_you_follow:
       cta_reply_to: 'Svara på %{commentAuthor}'
-      event_description: '%{authorNameFull} placed a reaction on ''%{inputTitle}''. Click the button below to continue the conversation with %{authorName}.'
+      event_description: '%{authorNameFull} lade en reaktion på ''%{inputTitle}''. Klicka på knappen nedan för att fortsätta konversationen med %{authorName}.'
       main_header:
         idea: '%{authorName} kommenterat en idé som du följer'
         question: '%{authorName} kommenterat en fråga som du följer'
@@ -245,7 +253,7 @@ sv:
         option: '%{authorName} kommenterade ett alternativ som du följer'
         proposal: '%{authorName} kommenterat ett förslag som du följer'
         petition: '%{authorName} kommenterat en petition som du följer'
-      subject: 'There''s a new comment on "%{input_title}"'
+      subject: 'Det finns en ny kommentar på "%{input_title}"'
       preheader: '%{authorName} lämnade en kommentar till en idé för %{organizationName}'
     new_idea_for_admin:
       main_header_publication: 'Ett nytt inlägg har publicerats på din plattform'
@@ -253,8 +261,8 @@ sv:
       cta_publication: 'Ge feedback till %{authorName}'
       main_header_prescreening: 'En inmatning kräver din granskning'
       event_description_prescreening: '%{authorName} har lämnat in ett nytt inlägg på din plattform.'
-      input_not_visible_prescreening: '<b>Inmatningen kommer inte att synas</b> förrän du ändrar dess status.'
-      cta_prescreening: 'Granska inmatningen'
+      input_not_visible_prescreening: '<b>Bidraget kommer inte att synas</b> förrän du ändrar dess status.'
+      cta_prescreening: 'Granska bidraget'
       days_ago: '%{numberOfDays} dagar sedan'
       preheader: '%{authorName} publicerade en ny idé på din plattform'
       today: I dag
@@ -297,10 +305,10 @@ sv:
       main_header: '''%{post}'' har en ny intern kommentar'
       preheader: '''%{post}'' har en ny intern kommentar'
     official_feedback_on_idea_you_follow:
-      header_message: '%{feedback_author_name} gave an update on ''%{input_title}''.'
-      header_title: 'There''s an update on "%{input_title}"'
-      subject: 'Official feedback was posted on "%{input_title}"'
-      preheader: 'There''s an update on an input you follow'
+      header_message: '%{feedback_author_name} gav en uppdatering om ''%{input_title}''.'
+      header_title: 'Det finns en uppdatering om "%{input_title}"'
+      subject: 'Officiell feedback postades på "%{input_title}"'
+      preheader: 'Det finns en uppdatering om en ingång du följer'
     mention_in_official_feedback:
       cta_reply_to: 'Svara till %{organizationName}'
       event_description: '%{organizationName} nämnde dig i sin återkoppling för idén %{post}. Klicka på länken nedan för att gå in i konversationen med %{organizationName}'
@@ -369,11 +377,11 @@ sv:
       header_message: "Projektet är nu redo att gå live. Du kan publicera det när du är redo!"
       cta_go_to_project: "Gå till projektinställningar"
     status_change_on_idea_you_follow:
-      status_change: 'The new status of this input is ''%{status}'''
-      header_message: '%{organizationName} updated the status of the input ''%{input_title}'' on their digital participation platform.'
-      header_title: 'An input you follow has a new status'
-      subject: 'The status of "%{input_title}" has changed'
-      preheader: 'An input you follow has a new status'
+      status_change: 'Den nya statusen för denna ingång är ''%{status}'''
+      header_message: '%{organizationName} uppdaterade statusen för inmatningen "%{input_title}" på deras digitala deltagandeplattform.'
+      header_title: 'En ingång du följer har en ny status'
+      subject: 'Statusen för "%{input_title}" har ändrats'
+      preheader: 'En ingång du följer har en ny status'
     user_digest:
       subject: "Din aktivitet på plattformen för deltagande för %{organizationName}"
       commented: "%{authorFirstName} kommenterade:"
@@ -446,7 +454,7 @@ sv:
       preheader: 'Du röstade framgångsrikt på deltagandeplattformen för %{organizationName}'
       title_basket_submitted: 'Du röstade framgångsrikt'
       event_description: 'Tack för ert deltagande. Dina röster har registrerats. Besök plattformen %{organizationName} för att se och hantera dina röster.'
-      cta_see_votes_submitted: 'Se avgivna röster'
+      cta_see_votes_submitted: 'Se inlämnade röster'
       cta_message: 'Klicka på knappen nedan för att delta'
     native_survey_not_submitted:
       subject: '%{organizationName}: Nästan där! Skicka in dina svar'
@@ -509,40 +517,40 @@ sv:
     admin_labels:
       recipient_role:
         admins: 'Till administratörer'
-        admins_and_managers: 'Till administratörer och chefer'
-        managers: 'Till chefer'
+        admins_and_managers: 'Till administratörer och projektledare'
+        managers: 'Till projektledare'
         project_participants: 'Till projektdeltagare'
         registered_users: 'Till registrerade användare'
       recipient_segment:
         admins: 'Administratörer'
-        admins_and_managers: 'Administratörer och chefer'
-        admins_and_managers_assigned_to_the_input: 'Administratörer och chefer som har tilldelats ingången'
-        admins_and_managers_managing_the_project: 'Administratörer och chefer som förvaltar projektet'
+        admins_and_managers: 'Administratörer och projektledare'
+        admins_and_managers_assigned_to_the_input: 'Administratörer och projektledare som har tilldelats bidraget'
+        admins_and_managers_managing_the_project: 'Administratörer och projektledare som förvaltar projektet'
         admins_assigned_to_a_proposal: 'Administratörer som har tilldelats ett förslag'
         all_users: 'Alla användare'
         all_users_who_uploaded_proposals: 'Alla användare som laddat upp förslag'
-        managers: 'Chefer'
-        managers_managing_the_project: 'Chefer som leder projektet'
+        managers: 'Projektledare'
+        managers_managing_the_project: 'Projektledare som leder projektet'
         new_attendee: 'Nyligen registrerad användare'
         project_reviewers: 'Projektgranskare och mapphanterare'
         project_review_requester: 'Användare som begärde projektgranskning'
         user_who_commented: 'Användare som kommenterade'
-        user_who_is_invited_to_cosponsor_a_proposal: 'Användare som inbjuds att vara medsponsor för ett förslag'
+        user_who_is_invited_to_cosponsor_a_proposal: 'Användare som bjuds in att stödja ett förslag'
         user_who_is_mentioned: 'Användare som nämns'
         user_who_is_receiving_admin_rights: 'Användare som får administratörsrättigheter'
         user_who_is_receiving_folder_moderator_rights: 'Användare som får rättigheter som mappmoderator'
         user_who_is_receiving_project_moderator_rights: 'Användare som får rättigheter som projektmoderator'
-        user_who_published_the_input: 'Användare som publicerade inmatningen'
+        user_who_published_the_input: 'Användare som publicerade bidraget'
         user_who_published_the_proposal: 'Användare som publicerade förslaget'
         user_who_registers: 'Användare som registrerar sig'
-        user_who_submitted_the_input: 'Användare som skickade inmatningen'
+        user_who_submitted_the_input: 'Användare som skickade bidraget'
         user_who_voted: 'Användare som röstade'
         user_who_was_invited: 'Användare som bjöds in'
         user_with_unsubmitted_survey: 'Användare som har påbörjat men inte skickat in sin undersökning'
         user_with_unsubmitted_votes: 'Användare som inte har lämnat sina röster'
         users_who_engaged_but_not_voted: 'Användare som engagerat sig i projektet men inte röstat'
         users_who_engaged_with_the_project: 'Användare som engagerade sig i projektet'
-        users_who_follow_the_input: 'Användare som följer inmatningen'
+        users_who_follow_the_input: 'Användare som följer bidraget'
         users_who_follow_the_project: 'Användare som följer projektet'
         users_who_follow_the_proposal: 'Användare som följer förslaget'
       content_type:
@@ -550,7 +558,7 @@ sv:
         content_moderation: 'Moderering av innehåll'
         events: 'Händelser'
         general: 'Allmänt'
-        inputs: 'Ingångar'
+        inputs: 'Bidrag'
         internal_comments: 'Interna kommentarer'
         permissions: 'Behörigheter'
         projects: 'Projekt'
@@ -563,21 +571,21 @@ sv:
         7_days_before_the_project_changes_phase: '7 dagar innan projektet byter fas'
         comment_is_deleted: 'Kommentaren tas bort.'
         comment_is_flagged_as_spam: 'Kommentaren flaggas som skräppost'
-        content_gets_flagged_as_innapropiate: 'Innehållet markeras som oproportionerligt'
+        content_gets_flagged_as_innapropiate: 'Innehållet markeras som olämpligt'
         initiative_resubmitted_for_review: 'Förslaget lämnas in på nytt för granskning'
-        input_is_assigned: 'Ingången är tilldelad'
+        input_is_assigned: 'Bidraget är tilldelad'
         input_is_flagged_as_spam: 'Inmatning markeras som skräppost'
         input_is_published: 'Input publiceras'
-        input_is_updated: 'Inmatningen uppdateras'
-        input_status_changes: 'Ändringar av ingångsstatus'
+        input_is_updated: 'Bidraget uppdateras'
+        input_status_changes: 'Ändringar av bidragets status'
         internal_comment_is_posted_on_idea_assigned_to_user: 'Intern kommentar publiceras på input som tilldelats användaren'
         internal_comment_is_posted_on_idea_in_project_or_folder_user_manages: 'Intern kommentar publiceras om input i projekt eller mapp som användaren hanterar'
         internal_comment_is_posted_on_idea_user_has_commented_internally_on: 'Intern kommentar publiceras på input användaren kommenterade internt på'
         internal_comment_is_posted_on_idea_user_moderates: 'Intern kommentar publiceras på input som användaren modererar'
-        internal_comment_is_posted_on_unassigned_unmoderated_idea: 'Intern kommentar publiceras på icke tilldelad input i icke hanterat projekt'
+        internal_comment_is_posted_on_unassigned_unmoderated_idea: 'Intern kommentar publiceras på icke tilldelade bidrag i icke hanterat projekt'
         project_review_request: 'Moderator begärde en projektgenomgång'
         project_review_state_change: 'Granskaren godkände projektet'
-        new_input_awaits_screening: 'Ny input väntar på screening'
+        new_input_awaits_screening: 'Mitt bidrag väntar på bedömning'
         new_input_is_published: 'Ny input publiceras'
         new_proposal_is_posted: 'Ett nytt förslag har lagts fram.'
         project_phase_changes: 'Förändringar i projektfas'
@@ -605,5 +613,5 @@ sv:
         user_replies_to_internal_comment: 'Användaren svarar på intern kommentar'
         voting_1_day_after_last_votes: '1 dag efter att användaren senast röstade'
         voting_2_days_before_phase_closes: '2 dagar innan omröstningen avslutas'
-        voting_basket_submitted: 'Rösterna är avgivna'
+        voting_basket_submitted: 'Rösterna är inlämnade'
         voting_phase_ended: 'Omröstningsfasen avslutad'

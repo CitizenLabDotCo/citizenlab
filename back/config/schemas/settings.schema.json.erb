@@ -1260,6 +1260,18 @@
         }
       },
 
+      "auto_insights": {
+        "type": "object",
+        "title": "Statistical insights for surveys and ideation",
+        "description": "Enables the use of statistical insights in an analysis for surveys and ideation",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": false },
+          "enabled": { "type": "boolean", "default": false }
+        }
+      },
+
       "multi_language_platform": {
         "type": "object",
         "title": "Multi-language platform",
@@ -1370,8 +1382,20 @@
 
       "project_library": {
         "type": "object",
-        "title": "Project library - do not enable!",
+        "title": "Inspiration hub",
         "description": "Temporary feature flag we are using to be able to hide our work in progress from the live platforms. Do not enable this feature!",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": false },
+          "enabled": { "type": "boolean", "default": false }
+        }
+      },
+
+      "user_fields_in_surveys": {
+        "type": "object",
+        "title": "User fields in surveys",
+        "description": "Allow surveys to embed user fields directly in the survey form, instead of asking through registration. DO NOT ENABLE EXCEPT ON TEST PLATFORMS. Currently in live test on community monitor.",
         "additionalProperties": false,
         "required": ["allowed", "enabled"],
         "properties": {
@@ -1456,6 +1480,7 @@
     "ask_a_question": ["analysis"],
     "advanced_autotagging": ["analysis"],
     "comments_summaries": ["analysis"],
+    "auto_insights": ["analysis"],
     "import_printed_forms": ["input_importer"]
   },
   "definitions": {

@@ -10,7 +10,7 @@ import {
 import { useSearchParams } from 'react-router-dom';
 
 import useUserCustomFields from 'api/user_custom_fields/useUserCustomFields';
-import useUserCustomFieldsOptions from 'api/user_custom_fields_options/useUserCustomFieldsOptions';
+import useUserCustomFieldsOptions from 'api/custom_field_options/useCustomFieldOptions';
 
 import useLocalize from 'hooks/useLocalize';
 

@@ -79,7 +79,7 @@ module Notifications
         reviewers = User.project_reviewers
         folder = project_review.project.folder
         reviewers = reviewers.or(folder.moderators) if folder
-        reviewers.presence || User.admin.not_citizenlab_member
+        reviewers.presence || User.admin
       end
 
       reviewers.map do |reviewer|

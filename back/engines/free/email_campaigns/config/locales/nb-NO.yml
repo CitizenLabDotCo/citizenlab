@@ -8,6 +8,7 @@ nb:
       "comment_marked_as_spam": Rapportere spam-kommentarer
       "comment_on_your_comment": Et svar på min kommentar
       "comment_on_idea_you_follow": En kommentar til en idé som du følger
+      "community_monitor_report": Rapport fra fellesskapsovervåkeren
       "cosponsor_of_your_idea": En bruker aksepterer min invitasjon til å være medsponsor for forslaget mitt
       "event_registration_confirmation": Bekreftelse på påmelding til arrangementet
       "idea_marked_as_spam": Idé spam-rapport
@@ -82,6 +83,7 @@ nb:
         "4": "Ukentlig, på torsdager på %{hourOfDay}"
         "5": "Ukentlig, på fredager på %{hourOfDay}"
         "6": "Ukentlig, på lørdager på %{hourOfDay}"
+      quarterly: "Kvartalsvis, på den første dagen i kvartalet"
     footer:
       "link_privacy_policy": "Personvernerklæring"
       "link_terms_conditions": "Vilkår og betingelser"
@@ -147,6 +149,12 @@ nb:
       today: I dag
       wrong_content: 'Kommentaren er ikke relevant.'
       yesterday: I går
+    community_monitor_report:
+      subject: 'En ny rapport fra Community Monitor er tilgjengelig'
+      title: 'En ny rapport fra Community Monitor er tilgjengelig'
+      text_introduction: 'Det er opprettet en community monitor-rapport for forrige kvartal. Du får tilgang til den ved å klikke på knappen nedenfor og logge deg inn.'
+      cta_report_button: 'Vis rapport'
+      report_name: 'Rapport fra fellesskapsovervåkeren'
     cosponsor_of_your_idea:
       cta_reply_to: 'Se forslaget ditt'
       event_description: 'Gratulerer! %{cosponsorName} har takket ja til invitasjonen om å være medsponsor for forslaget ditt.'

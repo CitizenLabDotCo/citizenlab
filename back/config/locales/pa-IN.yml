@@ -171,12 +171,15 @@ pa:
       attachments:
         title: ਅਟੈਚਮੈਂਟਸ
         description:
-      page1:
+      title_page:
         description:
-      page2:
+      body_page:
+        title: ਸਾਨੂੰ ਹੋਰ ਦੱਸੋ
+        description:
+      uploads_page:
         title: ਚਿੱਤਰ ਅਤੇ ਅਟੈਚਮੈਂਟਾਂ
         description:
-      page3:
+      details_page:
         title: ਵੇਰਵੇ
         description:
       other_input_field:
@@ -300,6 +303,8 @@ pa:
     form_end_page:
       title_text_3: 'ਆਪਣਾ ਇਨਪੁਟ ਸਾਂਝਾ ਕਰਨ ਲਈ ਧੰਨਵਾਦ!'
       description_text_3: "ਤੁਹਾਡਾ ਇਨਪੁਟ ਸਫਲਤਾਪੂਰਵਕ ਸਪੁਰਦ ਕੀਤਾ ਗਿਆ ਹੈ।"
+    form_user_page:
+      title_text: 'ਤੁਹਾਡੇ ਬਾਰੇ'
     pdf_export:
       personal_data: 'ਨਿੱਜੀ ਡਾਟਾ'
       personal_data_explanation_public: "ਅਸੀਂ ਤੁਹਾਡੇ ਇਨਪੁਟ ਨੂੰ %{organizationName}ਦੇ ਔਨਲਾਈਨ ਭਾਗੀਦਾਰੀ ਪਲੇਟਫਾਰਮ 'ਤੇ ਜਮ੍ਹਾਂ ਕਰਾਵਾਂਗੇ। ਜੇਕਰ ਤੁਸੀਂ ਚਾਹੁੰਦੇ ਹੋ ਕਿ ਤੁਹਾਡਾ ਨਾਮ ਇਸ ਇਨਪੁਟ ਦੇ ਲੇਖਕ ਵਜੋਂ ਪ੍ਰਦਰਸ਼ਿਤ ਕੀਤਾ ਜਾਵੇ ਅਤੇ ਈਮੇਲ ਦੁਆਰਾ ਤੁਹਾਡੇ ਇਨਪੁਟ ਨਾਲ ਸੰਬੰਧਿਤ ਅੱਪਡੇਟ ਪ੍ਰਾਪਤ ਕਰੋ, ਤਾਂ ਕਿਰਪਾ ਕਰਕੇ ਇਸ ਪੰਨੇ 'ਤੇ ਹੇਠਾਂ ਦਿੱਤੇ ਖੇਤਰਾਂ ਨੂੰ ਭਰੋ ਅਤੇ ਅਸੀਂ ਤੁਹਾਡੇ ਲਈ ਇੱਕ ਖਾਤਾ ਬਣਾਵਾਂਗੇ। ਤੁਹਾਡੀ ਈਮੇਲ ਜਨਤਕ ਨਹੀਂ ਹੋਵੇਗੀ ਅਤੇ ਸਿਰਫ਼ %{organizationName}ਦੁਆਰਾ ਵਰਤੀ ਜਾਵੇਗੀ। ਜੇ ਤੁਸੀਂ ਅਗਿਆਤ ਰਹਿਣਾ ਚਾਹੁੰਦੇ ਹੋ, ਜਾਂ ਇਸ ਤਰੀਕੇ ਨਾਲ ਤੁਹਾਡੇ ਨਿੱਜੀ ਡੇਟਾ ਦੀ ਵਰਤੋਂ ਕਰਨ ਲਈ ਸਾਡੇ ਲਈ ਸਹਿਮਤ ਨਹੀਂ ਹੋ, ਤਾਂ ਤੁਸੀਂ ਉਹਨਾਂ ਨੂੰ ਖਾਲੀ ਛੱਡ ਸਕਦੇ ਹੋ।"

@@ -39,9 +39,9 @@
 #  linear_scale_label_10_multiloc :jsonb            not null
 #  linear_scale_label_11_multiloc :jsonb            not null
 #  ask_follow_up                  :boolean          default(FALSE), not null
-#  question_category              :string
 #  page_button_label_multiloc     :jsonb            not null
 #  page_button_link               :string
+#  question_category              :string
 #
 # Indexes
 #
@@ -76,7 +76,9 @@ class CustomField < ApplicationRecord
   ].freeze
   CODES = %w[
     author_id birthyear body_multiloc budget domicile gender idea_files_attributes idea_images_attributes
-    location_description proposed_budget title_multiloc topic_ids cosponsor_ids ideation_page1 ideation_page2 ideation_page3
+    location_description proposed_budget title_multiloc topic_ids cosponsor_ids
+    title_page body_page uploads_page details_page
+    page_quality_of_life page_service_delivery page_governance_and_trust
   ].freeze
   VISIBLE_TO_PUBLIC = 'public'
   VISIBLE_TO_ADMINS = 'admins'
@@ -125,7 +127,7 @@ class CustomField < ApplicationRecord
     when 'User'
       UserCustomFields::UserCustomFieldPolicy
     when 'CustomForm'
-      CustomFormPolicy
+      IdeaCustomFields::IdeaCustomFieldPolicy
     else
       raise "Polcy not implemented for resource type: #{resource_type}"
     end
@@ -147,8 +149,12 @@ class CustomField < ApplicationRecord
     ask_follow_up
   end
 
+  def support_follow_up?
+    %w[sentiment_linear_scale].include?(input_type)
+  end
+
   def support_free_text_value?
-    %w[text multiline_text text_multiloc multiline_text_multiloc html_multiloc].include?(input_type) || (support_options? && includes_other_option?)
+    %w[text multiline_text text_multiloc multiline_text_multiloc html_multiloc].include?(input_type) || (support_options? && includes_other_option?) || support_follow_up?
   end
 
   def support_option_images?
@@ -177,6 +183,10 @@ class CustomField < ApplicationRecord
 
   def supports_linear_scale_labels?
     %w[linear_scale matrix_linear_scale sentiment_linear_scale].include?(input_type)
+  end
+
+  def supports_average?
+    %w[linear_scale sentiment_linear_scale rating number].include?(input_type)
   end
 
   def supports_single_selection?
@@ -260,7 +270,7 @@ class CustomField < ApplicationRecord
   end
 
   def domicile?
-    key == 'domicile' && code == 'domicile'
+    (key == 'domicile' && code == 'domicile') || key == 'u_domicile'
   end
 
   def file_upload?
@@ -289,6 +299,10 @@ class CustomField < ApplicationRecord
 
   def rating?
     input_type == 'rating'
+  end
+
+  def checkbox?
+    input_type == 'checkbox'
   end
 
   def dropdown_layout_type?
@@ -332,9 +346,9 @@ class CustomField < ApplicationRecord
     visitor.send visitor_method, self
   end
 
-  # Special behaviour for ideation page 1
+  # Special behaviour for the title page
   def title_multiloc
-    if code == 'ideation_page1'
+    if code == 'title_page'
       key = "custom_forms.categories.main_content.#{input_term}.title"
       MultilocService.new.i18n_to_multiloc key
     else
@@ -392,6 +406,10 @@ class CustomField < ApplicationRecord
       required: false,
       enabled: true
     )
+  end
+
+  def additional_text_question_key
+    other_option_text_field&.key || follow_up_text_field&.key
   end
 
   def ordered_options

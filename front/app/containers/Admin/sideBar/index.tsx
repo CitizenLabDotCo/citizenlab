@@ -89,6 +89,7 @@ interface Props {
 const Sidebar = ({ authUser, appConfiguration }: Props) => {
   const { formatMessage } = useIntl();
   const { pathname } = useLocation();
+
   const { data: ideasCount } = useIdeasCount(
     {
       feedback_needed: true,

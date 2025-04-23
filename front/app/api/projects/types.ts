@@ -43,6 +43,7 @@ export interface Props {
   publicationStatuses: PublicationStatus[];
   canModerate?: boolean;
   projectIds?: string[];
+  includeHidden?: boolean;
 }
 
 export interface QueryParameters {
@@ -53,6 +54,7 @@ export interface QueryParameters {
   publication_statuses: PublicationStatus[];
   filter_can_moderate?: boolean;
   filter_ids?: string[];
+  include_hidden?: boolean;
 }
 
 // Responses

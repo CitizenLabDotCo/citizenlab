@@ -1,6 +1,6 @@
 import { isEqual } from 'lodash-es';
 
-import { IUserCustomFieldOptionData } from 'api/user_custom_fields_options/types';
+import { ICustomFieldOptionData } from 'api/custom_field_options/types';
 
 import {
   IBinnedDistribution,
@@ -15,7 +15,7 @@ import { forEachBin } from './bins';
 export type FormValues = Record<string, number | null>;
 
 export const getInitialValues = (
-  userCustomFieldOptions: IUserCustomFieldOptionData[],
+  userCustomFieldOptions: ICustomFieldOptionData[],
   referenceDataUploaded: boolean,
   remoteFormValues?: RemoteFormValues
 ): FormValues | null => {
@@ -124,7 +124,7 @@ export const isEmptyObject = (formValues: FormValues) => {
 
 // UTILS
 const getInitialEmptyValues = (
-  userCustomFieldOptions: IUserCustomFieldOptionData[]
+  userCustomFieldOptions: ICustomFieldOptionData[]
 ): FormValues => {
   return userCustomFieldOptions.reduce((acc, { id }) => {
     return {

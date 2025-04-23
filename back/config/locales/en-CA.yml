@@ -171,12 +171,15 @@ en-CA:
       attachments:
         title: Other files
         description:
-      page1:
+      title_page:
         description:
-      page2:
+      body_page:
+        title: Tell us more
+        description:
+      uploads_page:
         title: Images and attachments
         description:
-      page3:
+      details_page:
         title: Details
         description:
       other_input_field:
@@ -300,6 +303,8 @@ en-CA:
     form_end_page:
       title_text_3: 'Thank you for sharing your input!'
       description_text_3: "Your input has been successfully submitted."
+    form_user_page:
+      title_text: 'About you'
     pdf_export:
       personal_data: 'Personal data'
       personal_data_explanation_public: "We will submit your input to %{organizationName}'s online participation platform. If you want your name to be displayed as author of this input and receive updates relevant to your input by email, please fill out the following fields on this page and we will create an account for you. Your email will not be public and will only be used by %{organizationName}. If you want to remain anonymous, or do not agree for us to use your personal data in this way, you can leave them empty."

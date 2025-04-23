@@ -60,6 +60,7 @@ const ProjectFilter = ({
       projectId={projectId}
       emptyOptionMessage={getEmptyOptionMessage()}
       onProjectFilter={handleProjectFilter}
+      includeHiddenProjects={true}
     />
   );
 };

@@ -5,4 +5,6 @@ File names should start with the date the task was created in the format `YYYYMM
 
 Any tests should be placed in spec/tasks/single_use and named `*_spec.ignore.rb` once the task has been released and run so that CI does not run these tests . 
 
+Can rake not find your task? Double check that you gave it a .rake and not a .rb extension. (tricks me every time!)
+
 Any supporting single use services/classes should be placed in the `services` directory.

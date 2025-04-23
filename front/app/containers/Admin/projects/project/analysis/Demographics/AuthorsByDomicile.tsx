@@ -6,6 +6,7 @@ import {
   defaultStyles,
   Title,
   Text,
+  stylingConsts,
 } from '@citizenlab/cl2-component-library';
 import { xor } from 'lodash-es';
 import { useParams } from 'react-router-dom';
@@ -20,7 +21,7 @@ import {
 } from 'recharts';
 
 import useAuthorsByDomicile from 'api/analysis_stats/useAuthorsByDomicile';
-import useUserCustomFieldsOptions from 'api/user_custom_fields_options/useUserCustomFieldsOptions';
+import useUserCustomFieldsOptions from 'api/custom_field_options/useCustomFieldOptions';
 
 import useLocalize from 'hooks/useLocalize';
 
@@ -157,10 +158,16 @@ const AuthorsByDomicile = ({ customFieldId }: Props) => {
   }
 
   return (
-    <Box display="flex" flexDirection="column" alignItems="center">
-      <Title my="0" variant="h6">
-        <FormattedMessage {...messages.authorsByDomicile} />
-      </Title>
+    <Box
+      display="flex"
+      flexDirection="column"
+      alignItems="center"
+      border="1px solid"
+      borderColor={colors.borderLight}
+      borderRadius={stylingConsts.borderRadius}
+      px="8px"
+      py="16px"
+    >
       <ResponsiveContainer width="100%" height={100}>
         <BarChart
           data={chartData}

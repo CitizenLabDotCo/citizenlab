@@ -1195,7 +1195,7 @@ function apiCreateCustomFieldOption(optionName: string, customFieldId: string) {
         Authorization: `Bearer ${adminJwt}`,
       },
       method: 'POST',
-      url: `web_api/v1/users/custom_fields/${customFieldId}/custom_field_options`,
+      url: `web_api/v1/custom_fields/${customFieldId}/custom_field_options`,
       body: {
         title_multiloc: {
           en: optionName,

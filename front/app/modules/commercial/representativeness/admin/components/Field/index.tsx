@@ -3,8 +3,8 @@ import React, { useState, useEffect } from 'react';
 import { Accordion, ListItem } from '@citizenlab/cl2-component-library';
 import { omit } from 'lodash-es';
 
+import useCustomFieldOptions from 'api/custom_field_options/useCustomFieldOptions';
 import useUserCustomField from 'api/user_custom_fields/useUserCustomField';
-import useUserCustomFieldOptions from 'api/user_custom_fields_options/useUserCustomFieldsOptions';
 
 import { isNilOrError, NilOrError } from 'utils/helperUtils';
 
@@ -187,7 +187,7 @@ const Field = ({
 
 const FieldWrapper = ({ userCustomFieldId }: Props) => {
   const { data: userCustomFieldOptions } =
-    useUserCustomFieldOptions(userCustomFieldId);
+    useCustomFieldOptions(userCustomFieldId);
   const { referenceDistribution, referenceDataUploaded, remoteFormValues } =
     useReferenceDistributionData(userCustomFieldId);
 

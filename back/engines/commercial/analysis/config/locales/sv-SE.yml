@@ -1,3 +1,20 @@
 sv:
   analysis:
     example_tag_n: Exempel på tagg %{n}
+    cell_statement:
+      percent_more: "%{percent}% mer"
+      percent_less: "%{percent}% mindre"
+      range_min_max: "%{min} till %{max}"
+      range_min: "%{min} eller mer"
+      range_max: "%{max} eller mindre"
+      tag_vs_bin:
+        inputs: "Personer som svarar '%{answer}' på '%{question}' posta %{percent_more_less} i '%{tag}' än genomsnittet."
+        likes: "Människor som svarar '%{answer}' på '%{question}' gillar %{percent_more_less} ingångar i '%{tag}' än genomsnittet."
+        dislikes: "Människor som svarar '%{answer}' på '%{question}' ogillar %{percent_more_less} ingångar i '%{tag}' än genomsnittet."
+        participants: "Personer som svarar '%{answer}' på '%{question}' deltar %{percent_more_less} i '%{tag}' än genomsnittet."
+      bin_vs_bin:
+        inputs: "Personer som svarar '%{answer1}' på '%{question1}' svarar '%{answer2}' på '%{question2}' %{percent_more_less} än genomsnittet."
+        likes: "Personer som svarar '%{answer1}' på '%{question1}' gillar %{percent_more_less} ingångar när de svarar '%{answer2}' på '%{question2}' än genomsnittet."
+        dislikes: "Personer som svarar '%{answer1}' på '%{question1}' ogillar %{percent_more_less} ingångar när de svarar '%{answer2}' på '%{question2}' än genomsnittet."
+        participants: "Personer som svarar '%{answer1}' på '%{question1}' deltar %{percent_more_less} när de svarar '%{answer2}' på '%{question2}' än genomsnittet."
+

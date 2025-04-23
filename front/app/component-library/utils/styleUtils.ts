@@ -140,7 +140,8 @@ export type Color =
   | 'tenantPrimaryLighten95'
   | 'tenantPrimaryLighten90'
   | 'tenantSecondary'
-  | 'tenantText';
+  | 'tenantText'
+  | 'inherit';
 
 export const fontSizes = {
   xs: 12,

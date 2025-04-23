@@ -8,6 +8,7 @@ en-CA:
       "comment_marked_as_spam": Comment spam report
       "comment_on_your_comment": A reply on my comment
       "comment_on_idea_you_follow": A comment on an idea that you follow
+      "community_monitor_report": Community monitor report
       "cosponsor_of_your_idea": A user accepts my invitation to co-sponsor my proposal
       "event_registration_confirmation": Event registration confirmation
       "idea_marked_as_spam": Idea spam report
@@ -82,6 +83,7 @@ en-CA:
         "4": "Weekly, on Thursdays at %{hourOfDay}"
         "5": "Weekly, on Fridays at %{hourOfDay}"
         "6": "Weekly, on Saturdays at %{hourOfDay}"
+      quarterly: "Quarterly, on the first day of the quarter"
     footer:
       "link_privacy_policy": "Privacy Policy"
       "link_terms_conditions": "Terms & Conditions"
@@ -147,6 +149,12 @@ en-CA:
       today: Today
       wrong_content: 'The comment is not relevant.'
       yesterday: Yesterday
+    community_monitor_report:
+      subject: 'A new community monitor report is available'
+      title: 'A new community monitor report is available'
+      text_introduction: 'A community monitor report has been created for the previous quarter. You can access it by clicking the button below and logging in.'
+      cta_report_button: 'View report'
+      report_name: 'Community monitor report'
     cosponsor_of_your_idea:
       cta_reply_to: 'View your proposal'
       event_description: 'Congratulations! %{cosponsorName} has accepted your invitation to co-sponsor your proposal.'

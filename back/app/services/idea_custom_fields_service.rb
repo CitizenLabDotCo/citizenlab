@@ -25,7 +25,7 @@ class IdeaCustomFieldsService
   end
 
   def xlsx_exportable_fields
-    all_fields.filter(&:supports_xlsx_export?)
+    add_user_fields(all_fields).filter(&:supports_xlsx_export?)
   end
 
   def geojson_supported_fields
@@ -46,7 +46,9 @@ class IdeaCustomFieldsService
 
   # Used in the printable PDF export
   def printable_fields
-    enabled_fields_with_other_options.select(&:printable?)
+    # TODO: temporarily remove any user fields from the printable fields - currently unsupported
+    fields = enabled_fields_with_other_options.reject { |field| field.key&.start_with?('u_') }
+    fields.select(&:printable?)
   end
 
   def importable_fields
@@ -54,7 +56,8 @@ class IdeaCustomFieldsService
   end
 
   def enabled_fields
-    all_fields.select(&:enabled?)
+    fields = all_fields.select(&:enabled?)
+    add_user_fields(fields)
   end
 
   def enabled_fields_with_other_options
@@ -67,6 +70,38 @@ class IdeaCustomFieldsService
 
   def extra_visible_fields
     visible_fields.reject(&:built_in?)
+  end
+
+  def survey_results_fields(structure_by_category: false)
+    return enabled_fields unless structure_by_category && @participation_method.supports_custom_field_categories?
+
+    # Restructure the results to order by category with each category as a page
+
+    # Remove the original pages
+    fields = enabled_fields.reject { |field| field.input_type == 'page' }
+
+    # Order fields by the order of categories in custom field
+    categories = CustomField::QUESTION_CATEGORIES
+    sorted_fields = fields.sort_by do |field|
+      [categories.index(field.question_category) || categories.size, field.ordering]
+    end
+
+    # Add a page per category
+    categorised_fields = []
+    current_category = nil
+    sorted_fields.each do |field|
+      if field.question_category != current_category
+        categorised_fields << CustomField.new(
+          id: SecureRandom.uuid,
+          input_type: 'page',
+          key: "category_#{field.question_category}",
+          title_multiloc: field.question_category_multiloc
+        )
+      end
+      current_category = field.question_category
+      categorised_fields << field
+    end
+    categorised_fields
   end
 
   def validate_constraints_against_updates(field, field_params)
@@ -102,21 +137,6 @@ class IdeaCustomFieldsService
   # The following params should not be editable after they have been created
   def remove_ignored_update_params(field_params)
     field_params.except(:code, :input_type)
-  end
-
-  def check_form_structure(fields_from_params, errors)
-    return if fields_from_params.empty?
-
-    unless fields_from_params.first[:input_type] == 'page'
-      error = { error: "First field must be of type 'page'" }
-      errors['0'] = { structure: [error] }
-    end
-
-    # Check the last field is a page
-    last_field = fields_from_params.last
-    unless last_field[:input_type] == 'page' && last_field[:key] == 'form_end'
-      errors[(fields_from_params.length - 1).to_s] = { structure: [{ error: "Last field must be of type 'page' with a key of 'form_end'" }] }
-    end
   end
 
   def duplicate_all_fields
@@ -193,7 +213,54 @@ class IdeaCustomFieldsService
   # Check required as it doesn't matter what is saved in title for page 1
   # Constraints required for the front-end but response will always return input specific method
   def page1_title?(field, attribute)
-    field.code == 'ideation_page1' && attribute == :title_multiloc
+    field.code == 'title_page' && attribute == :title_multiloc
+  end
+
+  def add_user_fields(fields)
+    return fields unless @participation_method.user_fields_in_form?
+
+    fields = fields.to_a # sometimes array passed in, sometimes active record relations
+
+    # Remove the last page so we can add it back later
+    last_page = fields.pop if fields.last.form_end_page?
+
+    # Get the user fields from the permission (returns platform defaults if they don't exist)
+    phase = @custom_form.participation_context
+    permission = phase.permissions.find_by(action: 'posting_idea')
+    user_fields = Permissions::UserRequirementsService.new.requirements_custom_fields(permission)
+
+    # TODO: Hide any user fields that are locked for the user through the verification method
+
+    # Transform the user fields to pretend to be idea fields
+    user_fields.each do |field|
+      field.dropdown_layout = true if field.dropdown_layout_type?
+      field.code = nil # Remove the code so it doesn't appear as built in
+      field.key = "u_#{field.key}" # Change the key so we cans clearly identify user data in the saved data
+      field.resource = custom_form # User field pretend to be part of the form
+    end
+
+    user_page = CustomField.new(
+      id: SecureRandom.uuid,
+      key: 'user_page',
+      title_multiloc: MultilocService.new.i18n_to_multiloc('form_builder.form_user_page.title_text'),
+      resource: custom_form,
+      input_type: 'page',
+      page_layout: 'default'
+    )
+
+    # Change any logic end pages to reference the user page instead
+    fields.each do |field|
+      if field.logic['rules']
+        field.logic['rules'].map! do |rule|
+          rule['goto_page_id'] = user_page.id if rule['goto_page_id'] == last_page.id
+          rule
+        end
+      elsif field.logic['next_page_id'] == last_page.id
+        field.logic['next_page_id'] = user_page.id
+      end
+    end
+
+    fields + [user_page] + user_fields + [last_page]
   end
 
   attr_reader :custom_form, :participation_method

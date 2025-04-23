@@ -128,7 +128,15 @@ const Form = memo(
       const submissionData = formData && formData.data ? formData.data : data;
       const sanitizedFormData = sanitizeFormData(submissionData);
 
-      setData(sanitizedFormData);
+      // At this point, we need to clone the sanitiziedFormData
+      // before we pass it to setData.
+      // Somewhere downstream the 'data' variable is mutated in place-
+      // from what I can tell it seems to happen inside of the JSON forms library.
+      // This really bad behavior of the JSON forms library was causing a lot of
+      // bugs- for example, it was removing important attributes like
+      // the anonymous participation one.
+      // Another very good reason to get rid of this library.
+      setData({ ...sanitizedFormData });
       setShowAllErrors(showErrors);
 
       let response;

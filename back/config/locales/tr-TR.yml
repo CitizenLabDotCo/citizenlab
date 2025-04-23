@@ -171,12 +171,15 @@ tr:
       attachments:
         title: Ekler
         description:
-      page1:
+      title_page:
         description:
-      page2:
+      body_page:
+        title: Bize daha fazlasını anlatın
+        description:
+      uploads_page:
         title: Resimler ve ekler
         description:
-      page3:
+      details_page:
         title: Detaylar
         description:
       other_input_field:
@@ -300,6 +303,8 @@ tr:
     form_end_page:
       title_text_3: 'Görüşlerinizi paylaştığınız için teşekkür ederiz!'
       description_text_3: "Girdiniz başarıyla gönderildi."
+    form_user_page:
+      title_text: 'Senin hakkında'
     pdf_export:
       personal_data: 'Kişisel veriler'
       personal_data_explanation_public: "Girdinizi %{organizationName}'un çevrimiçi katılım platformuna göndereceğiz. Adınızın bu girdinin yazarı olarak görüntülenmesini ve girdinizle ilgili güncellemeleri e-posta ile almak istiyorsanız, lütfen bu sayfadaki aşağıdaki alanları doldurun ve sizin için bir hesap oluşturalım. E-postanız herkese açık olmayacak ve sadece %{organizationName}tarafından kullanılacaktır. Anonim kalmak istiyorsanız veya kişisel verilerinizi bu şekilde kullanmamızı kabul etmiyorsanız, bu alanları boş bırakabilirsiniz."

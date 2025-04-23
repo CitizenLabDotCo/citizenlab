@@ -614,13 +614,28 @@ FactoryBot.define do
       end
 
       factory :community_monitor_project do
+        transient do
+          with_phase { true }
+        end
+
+        slug { 'community-monitor' }
         internal_role { 'community_monitor' }
         hidden { true }
 
-        factory :community_monitor_project_with_active_phase do
-          after(:create) do |project, _evaluator|
-            project.phases << create(:community_monitor_survey_phase, project: project)
+        after(:create) do |project, evaluator|
+          # Add the phase
+          if evaluator.with_phase
+            project.phases << create(
+              :community_monitor_survey_phase,
+              project: project,
+              **evaluator.phase_attrs
+            )
           end
+
+          # Enable the feature
+          settings = AppConfiguration.instance.settings
+          settings['community_monitor'] = { 'enabled' => true, 'allowed' => true, 'project_id' => project.id }
+          AppConfiguration.instance.update!(settings:)
         end
       end
     end

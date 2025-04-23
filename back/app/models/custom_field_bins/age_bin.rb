@@ -52,14 +52,15 @@ module CustomFieldBins
       end
     end
 
-    def self.supported_custom_field_input_types
-      %w[number]
+    def self.supports_custom_field?(custom_field)
+      # We only support the birthyear field
+      custom_field.code == 'birthyear'
     end
 
     private
 
     def range_is_numerical
-      errors.add(:range, 'must be numerical') unless range.begin.is_a?(Integer) && (range.end.is_a?(Integer) || range.end.nil?)
+      errors.add(:range, 'must be numerical') unless range.begin.is_a?(Integer) && (range.end.is_a?(Integer) || range.end.nil? || range.end == Float::INFINITY)
     end
 
     def range_is_positive
@@ -78,8 +79,8 @@ module CustomFieldBins
     # to compare to the database content
     def birthyear_range
       age_counter = UserCustomFields::AgeCounter.new
-      start_year = age_counter.convert_to_birthyear(range.end)
-      end_year = age_counter.convert_to_birthyear(range.begin)
+      start_year = age_counter.convert_to_birthyear(range.end || Float::INFINITY)
+      end_year = age_counter.convert_to_birthyear(range.begin || -Float::INFINITY)
       start_year...end_year
     end
   end
