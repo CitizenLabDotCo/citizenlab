@@ -463,7 +463,7 @@
   "app.components.formBuilder.editWarningModal.title4": "Uredite anketu uživo",
   "app.components.formBuilder.editWarningModal.yesContinue": "Da, nastavi",
   "app.components.formBuilder.nativeSurvey.UserFieldsInFormNotice.accessRightsSettings": "postavke prava pristupa za ovu anketu",
-  "app.components.formBuilder.nativeSurvey.UserFieldsInFormNotice.fieldsEnabledMessage2": "'Demographic fields in survey form' is enabled. When the survey form is displayed any configured demographic questions will be added on a new page immediately before the end of the survey. These questions can be changed in the {accessRightsSettingsLink}.",
+  "app.components.formBuilder.nativeSurvey.UserFieldsInFormNotice.fieldsEnabledMessage2": "Omogućena je 'Demografska polja u anketnom obrascu'. Kada se prikaže obrazac za anketu, sva konfigurirana demografska pitanja bit će dodana na novu stranicu neposredno prije završetka ankete. Ova pitanja se mogu promijeniti u {accessRightsSettingsLink}.",
   "app.components.formBuilder.nativeSurvey.accessRightsNotice.accessRightsSettings": "postavke prava pristupa za ovu fazu.",
   "app.components.formBuilder.nativeSurvey.accessRightsNotice.anyoneBullet1": "Ispitanici u anketi neće se morati prijaviti ili prijaviti za slanje odgovora na anketu, što može rezultirati dvostrukim slanjem",
   "app.components.formBuilder.nativeSurvey.accessRightsNotice.anyoneBullet2": "Preskakanjem koraka prijave/prijave prihvaćate da nećete prikupljati demografske podatke o ispitanicima, što može utjecati na vaše mogućnosti analize podataka",
