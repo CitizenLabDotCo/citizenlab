@@ -463,7 +463,7 @@
   "app.components.formBuilder.editWarningModal.title4": "لائیو سروے میں ترمیم کریں۔",
   "app.components.formBuilder.editWarningModal.yesContinue": "ہاں، جاری رکھیں",
   "app.components.formBuilder.nativeSurvey.UserFieldsInFormNotice.accessRightsSettings": "اس سروے کے لیے حقوق کی ترتیبات تک رسائی حاصل کریں۔",
-  "app.components.formBuilder.nativeSurvey.UserFieldsInFormNotice.fieldsEnabledMessage2": "'Demographic fields in survey form' is enabled. When the survey form is displayed any configured demographic questions will be added on a new page immediately before the end of the survey. These questions can be changed in the {accessRightsSettingsLink}.",
+  "app.components.formBuilder.nativeSurvey.UserFieldsInFormNotice.fieldsEnabledMessage2": "'سروے فارم میں آبادیاتی فیلڈز' فعال ہے۔ جب سروے فارم ظاہر ہوتا ہے تو سروے کے اختتام سے فوراً پہلے کسی بھی ترتیب شدہ آبادیاتی سوالات کو ایک نئے صفحہ پر شامل کر دیا جائے گا۔ ان سوالات کو {accessRightsSettingsLink}میں تبدیل کیا جا سکتا ہے۔",
   "app.components.formBuilder.nativeSurvey.accessRightsNotice.accessRightsSettings": "اس مرحلے کے لیے حقوق کی ترتیبات تک رسائی حاصل کریں۔",
   "app.components.formBuilder.nativeSurvey.accessRightsNotice.anyoneBullet1": "سروے کے جواب دہندگان کو سروے کے جوابات جمع کرانے کے لیے سائن اپ کرنے یا لاگ ان کرنے کی ضرورت نہیں ہوگی، جس کے نتیجے میں ڈپلیکیٹ گذارشات ہو سکتی ہیں۔",
   "app.components.formBuilder.nativeSurvey.accessRightsNotice.anyoneBullet2": "سائن اپ/لاگ ان مرحلہ کو چھوڑ کر، آپ سروے کے جواب دہندگان پر آبادیاتی معلومات اکٹھا نہ کرنے کو قبول کرتے ہیں، جو آپ کے ڈیٹا کے تجزیہ کی صلاحیتوں کو متاثر کر سکتی ہے۔",
