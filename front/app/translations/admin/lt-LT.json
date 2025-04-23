@@ -463,7 +463,7 @@
   "app.components.formBuilder.editWarningModal.title4": "Redaguoti tiesioginę apklausą",
   "app.components.formBuilder.editWarningModal.yesContinue": "Taip, tęsti",
   "app.components.formBuilder.nativeSurvey.UserFieldsInFormNotice.accessRightsSettings": "šios apklausos prieigos teisių nustatymai",
-  "app.components.formBuilder.nativeSurvey.UserFieldsInFormNotice.fieldsEnabledMessage": "\"Vartotojo laukai apklausos formoje\" yra įjungta. Kai rodoma apklausos forma, visi sukonfigūruoti demografiniai klausimai bus įtraukti į naują puslapį. Šiuos klausimus galima keisti svetainėje {accessRightsSettingsLink}.",
+  "app.components.formBuilder.nativeSurvey.UserFieldsInFormNotice.fieldsEnabledMessage2": "'Demographic fields in survey form' is enabled. When the survey form is displayed any configured demographic questions will be added on a new page immediately before the end of the survey. These questions can be changed in the {accessRightsSettingsLink}.",
   "app.components.formBuilder.nativeSurvey.accessRightsNotice.accessRightsSettings": "šio etapo prieigos teisių nustatymus.",
   "app.components.formBuilder.nativeSurvey.accessRightsNotice.anyoneBullet1": "Norint pateikti apklausos atsakymus, iš apklausos respondentų nebus reikalaujama užsiregistruoti ar prisijungti, todėl gali būti, kad atsakymai bus pateikiami du kartus.",
   "app.components.formBuilder.nativeSurvey.accessRightsNotice.anyoneBullet2": "Atmesdami registracijos ir (arba) prisijungimo žingsnį, sutinkate, kad nebūtų renkama demografinė informacija apie apklausos respondentus, o tai gali turėti įtakos jūsų duomenų analizės galimybėms.",
