@@ -5,19 +5,19 @@ module Analysis
     end
 
     def generate(cell)
-      if cell.row.is_a?(Tag) && cell.column.is_a?(CustomFieldBin)
+      if cell.row.is_a?(::Analysis::Tag) && cell.column.is_a?(::CustomFieldBin)
         generate_tag_vs_bin(
           cell,
           tag: cell.row,
           bin: cell.column
         )
-      elsif cell.row.is_a?(CustomFieldBin) && cell.column.is_a?(Tag)
+      elsif cell.row.is_a?(::CustomFieldBin) && cell.column.is_a?(::Analysis::Tag)
         generate_tag_vs_bin(
           cell,
           tag: cell.column,
           bin: cell.row
         )
-      elsif cell.row.is_a?(CustomFieldBin) && cell.column.is_a?(CustomFieldBin)
+      elsif cell.row.is_a?(::CustomFieldBin) && cell.column.is_a?(::CustomFieldBin)
         generate_bin_vs_bin(cell)
       else
         raise "Unsupported cell type for statement generation: #{cell.row_type} - #{cell.column_type}"
