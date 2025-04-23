@@ -463,7 +463,7 @@
   "app.components.formBuilder.editWarningModal.title4": "ਲਾਈਵ ਸਰਵੇਖਣ ਦਾ ਸੰਪਾਦਨ ਕਰੋ",
   "app.components.formBuilder.editWarningModal.yesContinue": "ਹਾਂ, ਜਾਰੀ ਰੱਖੋ",
   "app.components.formBuilder.nativeSurvey.UserFieldsInFormNotice.accessRightsSettings": "ਇਸ ਸਰਵੇਖਣ ਲਈ ਪਹੁੰਚ ਅਧਿਕਾਰ ਸੈਟਿੰਗਾਂ",
-  "app.components.formBuilder.nativeSurvey.UserFieldsInFormNotice.fieldsEnabledMessage": "'ਸਰਵੇਖਣ ਫਾਰਮ ਵਿੱਚ ਉਪਭੋਗਤਾ ਖੇਤਰ' ਯੋਗ ਹੈ। ਜਦੋਂ ਸਰਵੇਖਣ ਫਾਰਮ ਪ੍ਰਦਰਸ਼ਿਤ ਹੁੰਦਾ ਹੈ ਤਾਂ ਕੋਈ ਵੀ ਸੰਰਚਿਤ ਜਨਸੰਖਿਆ ਸੰਬੰਧੀ ਸਵਾਲ ਇੱਥੇ ਇੱਕ ਨਵੇਂ ਪੰਨੇ 'ਤੇ ਜੋੜੇ ਜਾਣਗੇ। ਇਹਨਾਂ ਸਵਾਲਾਂ ਨੂੰ {accessRightsSettingsLink}ਵਿੱਚ ਬਦਲਿਆ ਜਾ ਸਕਦਾ ਹੈ।",
+  "app.components.formBuilder.nativeSurvey.UserFieldsInFormNotice.fieldsEnabledMessage2": "'Demographic fields in survey form' is enabled. When the survey form is displayed any configured demographic questions will be added on a new page immediately before the end of the survey. These questions can be changed in the {accessRightsSettingsLink}.",
   "app.components.formBuilder.nativeSurvey.accessRightsNotice.accessRightsSettings": "ਇਸ ਪੜਾਅ ਲਈ ਅਧਿਕਾਰ ਸੈਟਿੰਗਾਂ ਤੱਕ ਪਹੁੰਚ ਕਰੋ।",
   "app.components.formBuilder.nativeSurvey.accessRightsNotice.anyoneBullet1": "ਸਰਵੇਖਣ ਉੱਤਰਦਾਤਾਵਾਂ ਨੂੰ ਸਰਵੇਖਣ ਦੇ ਜਵਾਬ ਜਮ੍ਹਾਂ ਕਰਾਉਣ ਲਈ ਸਾਈਨ ਅੱਪ ਜਾਂ ਲੌਗ ਇਨ ਕਰਨ ਦੀ ਲੋੜ ਨਹੀਂ ਹੋਵੇਗੀ, ਜਿਸ ਦੇ ਨਤੀਜੇ ਵਜੋਂ ਡੁਪਲੀਕੇਟ ਸਬਮਿਸ਼ਨ ਹੋ ਸਕਦੇ ਹਨ",
   "app.components.formBuilder.nativeSurvey.accessRightsNotice.anyoneBullet2": "ਸਾਈਨ ਅੱਪ/ਲੌਗ ਇਨ ਪਗ ਨੂੰ ਛੱਡ ਕੇ, ਤੁਸੀਂ ਸਰਵੇਖਣ ਉੱਤਰਦਾਤਾਵਾਂ 'ਤੇ ਜਨਸੰਖਿਆ ਸੰਬੰਧੀ ਜਾਣਕਾਰੀ ਇਕੱਠੀ ਨਾ ਕਰਨ ਨੂੰ ਸਵੀਕਾਰ ਕਰਦੇ ਹੋ, ਜਿਸ ਨਾਲ ਤੁਹਾਡੀ ਡਾਟਾ ਵਿਸ਼ਲੇਸ਼ਣ ਸਮਰੱਥਾਵਾਂ 'ਤੇ ਅਸਰ ਪੈ ਸਕਦਾ ਹੈ।",
