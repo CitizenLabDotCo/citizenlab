@@ -31,7 +31,7 @@ class CommunityMonitorService
   # Create the hidden project, phase & default form
   def create_and_set_project(project: nil, current_user: nil)
     # Also check if the project exists but has not been added to settings (eg when creating platform from template)
-    project = project || Project.find_by(internal_role: 'community_monitor', hidden: true)
+    project ||= Project.find_by(internal_role: 'community_monitor', hidden: true)
     unless project
       ActiveRecord::Base.transaction do
         multiloc_service = MultilocService.new

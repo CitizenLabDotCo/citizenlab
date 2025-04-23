@@ -64,7 +64,6 @@ module MultiTenancy
           )
           response = llm.chat(prompt).strip
           raw_statements = response.match(/\[.+\]/m)&.try(:[], 0)
-          pp raw_statements
           raw_statements ? JSON.parse(raw_statements) : []
         end
       end
