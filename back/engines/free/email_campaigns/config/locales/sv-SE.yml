@@ -64,7 +64,7 @@ sv:
         proposal: 'Gå till detta förslag'
         petition: 'Gå till denna framställan'
       cta_goto_your:
-        idea: 'Gå till din idé'
+        idea: 'Gå till ditt bidrag'
         question: 'Gå till din fråga'
         contribution: 'Gå till ditt bidrag'
         project: 'Gå till ditt projekt'
@@ -411,7 +411,7 @@ sv:
       cta_join_platform: 'Upptäck plattformen'
       subject: 'Välkommen till plattformen för involvering från %{organizationName}'
       main_header: Välkommen!
-      message_welcome: 'Grattis, du har registrerat dig på plattformen för %{organizationName}. Du kan nu upptäcka plattformen och göra din röst hörd. Du kan också lägga till en profilbild och en kort beskrivning för att berätta för andra vem du är.'
+      message_welcome: 'Grattis! Du har registrerat dig på plattformen för involvering från %{organizationName}. Du kan nu upptäcka plattformen och göra din röst hörd. Du kan också lägga till en profilbild och en kort beskrivning för att berätta för andra vem du är.'
       preheader: 'Här är vad du kan göra på plattformen för %{organizationName}'
     idea_published:
       subject:
@@ -438,7 +438,7 @@ sv:
       preheader: '%{firstName}, grattis till att du har publicerat din idé på plattformen för %{organizationName}. Samla nu in stöd.'
     your_input_in_screening:
       main_header:
-        idea: 'Din idé finns i "%{prescreening_status_title}"'
+        idea: 'Ditt bidrag finns i "%{prescreening_status_title}"'
         question: 'Din fråga finns i "%{prescreening_status_title}"'
         contribution: 'Ditt bidrag finns i "%{prescreening_status_title}"'
         project: 'Ditt projekt finns i "%{prescreening_status_title}"'
@@ -447,7 +447,7 @@ sv:
         proposal: 'Ditt förslag finns i "%{prescreening_status_title}"'
         petition: 'Din framställan finns i "%{prescreening_status_title}"'
       message: '"%{input_title}" blir synligt för andra när det har granskats och godkänts.'
-      subject: '"%{input_title}" är nästan publicerad'
+      subject: '"%{input_title}" förhandsgranskas'
       preheader: 'Den finns för närvarande på %{prescreening_status_title}'
     voting_basket_submitted:
       subject: '%{organizationName}: Ditt val är registrerat'
