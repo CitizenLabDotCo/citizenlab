@@ -4,6 +4,7 @@ import { Box, colors, useBreakpoint } from '@citizenlab/cl2-component-library';
 import { omit } from 'lodash-es';
 import { Multiloc } from 'typings';
 
+import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useIdeaFiles from 'api/idea_files/useIdeaFiles';
 import useDeleteIdeaImage from 'api/idea_images/useDeleteIdeaImage';
 import useIdeaImages from 'api/idea_images/useIdeaImages';
@@ -29,6 +30,7 @@ import FullPageSpinner from 'components/UI/FullPageSpinner';
 
 import { FormattedMessage } from 'utils/cl-intl';
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
+import { getPeriodRemainingUntil } from 'utils/dateUtils';
 import eventEmitter from 'utils/eventEmitter';
 import { getFieldNameFromPath } from 'utils/JSONFormUtils';
 
@@ -72,14 +74,11 @@ const IdeasEditForm = ({ ideaId }: Props) => {
   const callbackRef = useRef<(() => void) | null>(null);
   const [usingMapView, setUsingMapView] = useState(false);
   const [selectedIdeaId, setSelectedIdeaId] = useState<string | null>(null);
-  const isAuthoringAssistanceEnabled = useFeatureFlag({
-    name: 'authoring_assistance',
+  const isInputIQEnabled = useFeatureFlag({
+    name: 'input_iq',
   });
   const phaseId = idea?.data.relationships.phases.data[0].id;
   const { data: phase } = usePhase(phaseId);
-  const showSimilarInputs = !!(
-    phase?.data.attributes.similarity_enabled && isAuthoringAssistanceEnabled
-  );
 
   const {
     schema,
@@ -150,6 +149,21 @@ const IdeasEditForm = ({ ideaId }: Props) => {
       );
     },
     [uiSchema]
+  );
+
+  const { data: appConfiguration } = useAppConfiguration();
+  const tenantTimezone =
+    appConfiguration?.data.attributes.settings.core.timezone;
+  if (!tenantTimezone) return null;
+  const timeLeftInDays = getPeriodRemainingUntil(
+    '2025-06-30',
+    tenantTimezone,
+    'days'
+  );
+  const isTrialOver = timeLeftInDays < 0;
+  const showSimilarInputs = !!(
+    phase?.data.attributes.similarity_enabled &&
+    (isInputIQEnabled || !isTrialOver)
   );
 
   if (isLoadingInputSchema) return <FullPageSpinner />;
