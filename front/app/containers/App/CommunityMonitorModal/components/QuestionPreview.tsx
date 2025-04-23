@@ -4,7 +4,6 @@ import { JsonFormsCore, Layout } from '@jsonforms/core';
 import { JsonForms } from '@jsonforms/react';
 import { isEmpty } from 'lodash-es';
 
-import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import { JsonFormsSchema } from 'api/idea_json_form_schema/types';
 
 import useLocale from 'hooks/useLocale';
@@ -39,7 +38,6 @@ const QuestionPreview = ({
   onClose,
 }: QuestionPreviewProps) => {
   const locale = useLocale();
-  const { data: appConfig } = useAppConfiguration();
 
   // Extract the first sentiment question from the UI Schema
   const uiSchemaFirstQuestion = findFirstSentimentLinearScale(uiSchema);
@@ -52,9 +50,7 @@ const QuestionPreview = ({
       onClose();
 
       // Track the popup interaction
-      trackEventByName(tracks.communityMonitorPopupAnsweredAndRedirected, {
-        tenantId: appConfig?.data.id,
-      });
+      trackEventByName(tracks.communityMonitorPopupAnsweredAndRedirected);
 
       // Redirect to full survey page
       clHistory.push(
