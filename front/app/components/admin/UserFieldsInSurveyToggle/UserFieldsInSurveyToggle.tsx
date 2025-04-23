@@ -15,17 +15,19 @@ interface UserFieldsInSurveyToggleProps {
   handleUserFieldsInFormOnChange: (
     allow_anonymous_participation: boolean
   ) => void;
+  enabledByDefault?: boolean; // Used to override the feature flag for beta testing only on community monitor
 }
 
 const UserFieldsInSurveyToggle = ({
   userFieldsInForm,
   handleUserFieldsInFormOnChange,
+  enabledByDefault,
 }: UserFieldsInSurveyToggleProps) => {
   const userFieldsInSurveysEnabled = useFeatureFlag({
     name: 'user_fields_in_surveys',
   });
 
-  if (!userFieldsInSurveysEnabled) return null;
+  if (!userFieldsInSurveysEnabled && !enabledByDefault) return null;
 
   return (
     <SectionField>
