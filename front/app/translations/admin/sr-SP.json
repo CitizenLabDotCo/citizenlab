@@ -463,7 +463,7 @@
   "app.components.formBuilder.editWarningModal.title4": "Измените анкету уживо",
   "app.components.formBuilder.editWarningModal.yesContinue": "Да, настави",
   "app.components.formBuilder.nativeSurvey.UserFieldsInFormNotice.accessRightsSettings": "access rights settings for this survey",
-  "app.components.formBuilder.nativeSurvey.UserFieldsInFormNotice.fieldsEnabledMessage": "'User fields in survey form' is enabled. When the survey form is displayed any configured demographic questions will be added on a new page here. These questions can be changed in the {accessRightsSettingsLink}.",
+  "app.components.formBuilder.nativeSurvey.UserFieldsInFormNotice.fieldsEnabledMessage2": "'Demographic fields in survey form' is enabled. When the survey form is displayed any configured demographic questions will be added on a new page immediately before the end of the survey. These questions can be changed in the {accessRightsSettingsLink}.",
   "app.components.formBuilder.nativeSurvey.accessRightsNotice.accessRightsSettings": "access rights settings for this phase.",
   "app.components.formBuilder.nativeSurvey.accessRightsNotice.anyoneBullet1": "Survey respondents will not be required to sign up or log in to submit survey answers, which may result in duplicate submissions",
   "app.components.formBuilder.nativeSurvey.accessRightsNotice.anyoneBullet2": "By skipping the sign up/log in step, you accept not to collect demographic information on survey respondents, which may impact your data analysis capabilities",
