@@ -25,10 +25,13 @@ module IdTwoday
         host: host,
         identifier: config[:client_id],
         secret: config[:client_secret],
-        redirect_uri: "#{configuration.base_backend_uri}/auth/twoday/callback",
+        authorization_endpoint: 'https://ticket-test1.siriusit.net/oidc-login',
+        token_endpoint: 'https://ticket-test1.siriusit.net/token',
+        jwks_uri: 'https://ticket-test1.siriusit.net/oidc/certs',
+        redirect_uri: "#{configuration.base_backend_uri}/auth/twoday/callback"
 
         # https://ticket-test1.siriusit.net/.well-known/openid-configuration
-        discovery: true
+        # discovery: true
       }
     end
 
@@ -40,7 +43,7 @@ module IdTwoday
       true
     end
 
-    def email_confirmed?(auth)
+    def email_confirmed?(_auth)
       false # No email returned from SSO
     end
 
@@ -54,7 +57,7 @@ module IdTwoday
     end
 
     def issuer
-      "https://#{host}/oidc-login" # TODO: converting to /oauth
+      "https://#{host}"
     end
 
     def updateable_user_attrs
