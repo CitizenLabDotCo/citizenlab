@@ -30,6 +30,7 @@ declare global {
       apiGetUsersCount: typeof apiGetUsersCount;
       apiGetSeats: typeof apiGetSeats;
       apiGetAppConfiguration: typeof apiGetAppConfiguration;
+      apiGetCommunityMonitorProject: typeof apiGetCommunityMonitorProject;
       logout: typeof logout;
       acceptCookies: typeof acceptCookies;
       getIdeaById: typeof getIdeaById;
@@ -423,6 +424,21 @@ function apiGetAppConfiguration() {
       },
       method: 'GET',
       url: `web_api/v1/app_configuration`,
+    });
+  });
+}
+
+function apiGetCommunityMonitorProject() {
+  return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
+    const adminJwt = response.body.jwt;
+
+    return cy.request({
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${adminJwt}`,
+      },
+      method: 'GET',
+      url: `web_api/v1/projects/community_monitor`,
     });
   });
 }
@@ -1829,6 +1845,10 @@ Cypress.Commands.add('apiRemoveUser', apiRemoveUser);
 Cypress.Commands.add('apiGetUsersCount', apiGetUsersCount);
 Cypress.Commands.add('apiGetSeats', apiGetSeats);
 Cypress.Commands.add('apiGetAppConfiguration', apiGetAppConfiguration);
+Cypress.Commands.add(
+  'apiGetCommunityMonitorProject',
+  apiGetCommunityMonitorProject
+);
 Cypress.Commands.add('apiUpdateAppConfiguration', apiUpdateAppConfiguration);
 Cypress.Commands.add('apiGetPhasePermission', apiGetPhasePermission);
 Cypress.Commands.add('apiSetPhasePermission', apiSetPhasePermission);

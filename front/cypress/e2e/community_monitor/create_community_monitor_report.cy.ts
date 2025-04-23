@@ -9,7 +9,7 @@ describe('create community monitor report', () => {
     cy.visit(`admin/community-monitor/reports`);
 
     // Can create new report using community monitor template
-    cy.get('[data-cy="e2e-create-report-button"]').should('be.visible').click();
+    cy.contains('Create a report').should('be.visible').click();
     cy.get('.e2e-create-report-modal-title-input').type(randomString());
 
     // Select community monitor template

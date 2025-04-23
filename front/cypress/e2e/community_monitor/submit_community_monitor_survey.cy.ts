@@ -4,9 +4,8 @@ describe('Submit community monitor survey', () => {
 
   before(() => {
     cy.setAdminLoginCookie();
-    cy.apiGetAppConfiguration().then((response) => {
-      communityMonitorProjectId =
-        response.body.data.attributes.settings.community_monitor.project_id;
+    cy.apiGetCommunityMonitorProject().then((project) => {
+      communityMonitorProjectId = project.body.data.id;
       cy.getProjectById(communityMonitorProjectId).then((project) => {
         communityMonitorPhaseId =
           project.body.data.relationships.current_phase.data.id;
