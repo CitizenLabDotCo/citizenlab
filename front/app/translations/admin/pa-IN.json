@@ -2940,6 +2940,7 @@
   "app.containers.phaseConfig.similarityThresholdBodyTooltip1": "ਇਹ ਕੰਟਰੋਲ ਕਰਦਾ ਹੈ ਕਿ ਸੁਝਾਅ ਦਿਖਾਉਣ ਲਈ ਦੋ ਵਰਣਨ ਕਿੰਨੇ ਸਮਾਨ ਹੋਣੇ ਚਾਹੀਦੇ ਹਨ। 0 ਅਤੇ 1 ਦੇ ਵਿਚਕਾਰ ਮੁੱਲਾਂ ਦੀ ਵਰਤੋਂ ਕਰੋ। ਸਿਰਫ਼ ਤਾਂ ਹੀ ਵਿਵਸਥਿਤ ਕਰੋ ਜੇਕਰ ਤੁਹਾਨੂੰ ਪਤਾ ਹੋਵੇ ਕਿ ਤੁਸੀਂ ਕੀ ਕਰ ਰਹੇ ਹੋ।",
   "app.containers.phaseConfig.similarityThresholdTitle": "ਸਮਾਨਤਾ ਸੀਮਾ (ਸਿਰਲੇਖ)",
   "app.containers.phaseConfig.similarityThresholdTitleTooltip1": "ਇਹ ਕੰਟਰੋਲ ਕਰਦਾ ਹੈ ਕਿ ਦੋ ਸਿਰਲੇਖਾਂ ਨੂੰ ਇੱਕੋ ਜਿਹੇ ਵਜੋਂ ਫਲੈਗ ਕੀਤੇ ਜਾਣ ਤੋਂ ਪਹਿਲਾਂ ਕਿੰਨੇ ਇੱਕੋ ਜਿਹੇ ਹੋਣੇ ਚਾਹੀਦੇ ਹਨ। 0 ਅਤੇ 1 ਦੇ ਵਿਚਕਾਰ ਮੁੱਲਾਂ ਦੀ ਵਰਤੋਂ ਕਰੋ। ਇਸਨੂੰ ਸਿਰਫ਼ ਤਾਂ ਹੀ ਸੋਧੋ ਜੇਕਰ ਤੁਸੀਂ ਇਸਦੇ ਅਰਥਾਂ ਨੂੰ ਸਮਝਦੇ ਹੋ।",
+  "app.containers.phaseConfig.warningSimilarInputDetectionTrial": "ਇਹ ਵਿਸ਼ੇਸ਼ਤਾ 30 ਜੂਨ, 2025 ਤੱਕ ਅਰਲੀ ਐਕਸੈਸ ਪੇਸ਼ਕਸ਼ ਦੇ ਹਿੱਸੇ ਵਜੋਂ ਉਪਲਬਧ ਹੈ। ਜੇਕਰ ਤੁਸੀਂ ਉਸ ਮਿਤੀ ਤੋਂ ਬਾਅਦ ਇਸਦੀ ਵਰਤੋਂ ਜਾਰੀ ਰੱਖਣਾ ਚਾਹੁੰਦੇ ਹੋ, ਤਾਂ ਕਿਰਪਾ ਕਰਕੇ ਸਰਗਰਮੀ ਵਿਕਲਪਾਂ ਬਾਰੇ ਚਰਚਾ ਕਰਨ ਲਈ ਆਪਣੇ ਸਰਕਾਰੀ ਸਫਲਤਾ ਪ੍ਰਬੰਧਕ ਜਾਂ ਪ੍ਰਸ਼ਾਸਕ ਨਾਲ ਸੰਪਰਕ ਕਰੋ।",
   "app.containers.survey.sentiment.noAnswers2": "ਇਸ ਸਮੇਂ ਕੋਈ ਜਵਾਬ ਨਹੀਂ।",
   "app.containers.survey.sentiment.numberComments": "{count, plural, =0 {0 ਟਿੱਪਣੀਆਂ} one {1 ਟਿੱਪਣੀ} other {# ਟਿੱਪਣੀਆਂ}}",
   "app.modules.commercial.analytics.admin.components.ActiveUsersCard.cardTitleTooltipMessage4": "ਭਾਗੀਦਾਰ ਉਹ ਉਪਭੋਗਤਾ ਜਾਂ ਵਿਜ਼ਟਰ ਹੁੰਦੇ ਹਨ ਜਿਨ੍ਹਾਂ ਨੇ ਕਿਸੇ ਪ੍ਰੋਜੈਕਟ ਵਿੱਚ ਹਿੱਸਾ ਲਿਆ ਹੈ, ਕਿਸੇ ਪ੍ਰਸਤਾਵ ਨਾਲ ਪੋਸਟ ਕੀਤਾ ਜਾਂ ਇੰਟਰੈਕਟ ਕੀਤਾ ਹੈ ਜਾਂ ਸਮਾਗਮਾਂ ਵਿੱਚ ਭਾਗ ਲਿਆ ਹੈ।",

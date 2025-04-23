@@ -2940,6 +2940,7 @@
   "app.containers.phaseConfig.similarityThresholdBodyTooltip1": "Detta styr hur lika två beskrivningar måste vara för att visa förslag. Använd värden mellan 0 och 1. Justera endast om du vet vad du gör.",
   "app.containers.phaseConfig.similarityThresholdTitle": "Tröskelvärde för likhet (titel)",
   "app.containers.phaseConfig.similarityThresholdTitleTooltip1": "Detta styr hur lika två titlar måste vara innan de flaggas som liknande. Använd värden mellan 0 och 1. Ändra endast detta om du förstår konsekvenserna.",
+  "app.containers.phaseConfig.warningSimilarInputDetectionTrial": "Den här funktionen är tillgänglig som en del av ett erbjudande om tidig åtkomst till och med den 30 juni 2025. Om du vill fortsätta använda den efter det datumet kan du kontakta din Government Success Manager eller administratör för att diskutera aktiveringsalternativ.",
   "app.containers.survey.sentiment.noAnswers2": "Inga svar för närvarande.",
   "app.containers.survey.sentiment.numberComments": "{count, plural, =0 {0 kommentarer} one {1 kommentar} other {# kommentarer}}",
   "app.modules.commercial.analytics.admin.components.ActiveUsersCard.cardTitleTooltipMessage4": "Deltagare är användare eller besökare som har deltagit i ett projekt, publicerat eller interagerat med ett förslag eller deltagit i evenemang.",
