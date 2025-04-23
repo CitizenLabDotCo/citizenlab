@@ -67,7 +67,7 @@ export const getDaysUntilCookieExpires = () => {
 
   // Calculate the difference in days
   const daysUntilExpiration = Math.ceil(
-    (expirationDate.getTime() - todaysDate.getTime()) / (1000 * 3600 * 24)
+    (expirationDate.getTime() - todaysDate.getTime()) / (1000 * 3600 * 24) // Divide by milliseconds in a day
   );
 
   return daysUntilExpiration;
