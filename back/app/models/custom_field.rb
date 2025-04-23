@@ -76,7 +76,9 @@ class CustomField < ApplicationRecord
   ].freeze
   CODES = %w[
     author_id birthyear body_multiloc budget domicile gender idea_files_attributes idea_images_attributes
-    location_description proposed_budget title_multiloc topic_ids cosponsor_ids ideation_page1 ideation_page2 ideation_page3
+    location_description proposed_budget title_multiloc topic_ids cosponsor_ids
+    title_page body_page uploads_page details_page
+    page_quality_of_life page_service_delivery page_governance_and_trust
   ].freeze
   VISIBLE_TO_PUBLIC = 'public'
   VISIBLE_TO_ADMINS = 'admins'
@@ -344,9 +346,9 @@ class CustomField < ApplicationRecord
     visitor.send visitor_method, self
   end
 
-  # Special behaviour for ideation page 1
+  # Special behaviour for the title page
   def title_multiloc
-    if code == 'ideation_page1'
+    if code == 'title_page'
       key = "custom_forms.categories.main_content.#{input_term}.title"
       MultilocService.new.i18n_to_multiloc key
     else

@@ -57,7 +57,16 @@ const CommunityMonitorUpsell = () => {
             </Button>
           </Tooltip>
 
-          <Button buttonStyle="text" textColor={theme.colors.tenantPrimary}>
+          <Button
+            buttonStyle="text"
+            textColor={theme.colors.tenantPrimary}
+            onClick={() => {
+              window.open(
+                'https://support.govocal.com/en/articles/10981781-community-monitoring-resident-satisfaction-survey',
+                '_blank'
+              );
+            }}
+          >
             {formatMessage(messages.learnMore)}
           </Button>
         </Box>

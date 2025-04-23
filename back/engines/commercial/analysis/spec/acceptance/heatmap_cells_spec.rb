@@ -87,6 +87,38 @@ resource 'HeatmapCells' do
       expect(response_data.first[:id]).to eq(heatmap_cells.first.id)
     end
 
+    example 'Respects the combination of row_category and column_category filters' do
+      create(:heatmap_cell, analysis:, row: create(:option_bin), column: create(:option_bin))
+      cell = create(:heatmap_cell, analysis:, row: create(:option_bin), column: create(:option_bin))
+      custom_field = cell.row.custom_field
+      row_category_type = 'user_custom_field'
+      row_category_id = custom_field.id
+      column_category_type = 'input_custom_field'
+      column_category_id = cell.column.custom_field.id
+
+      do_request(row_category_type:, row_category_id:, column_category_type:, column_category_id:)
+
+      expect(status).to eq 200
+      expect(response_data.size).to eq(1)
+      expect(response_data.first[:id]).to eq(cell.id)
+    end
+
+    example 'It also searches for swapped row/column category filters' do
+      create(:heatmap_cell, analysis:, row: create(:option_bin), column: create(:option_bin))
+      cell = create(:heatmap_cell, analysis:, row: create(:option_bin), column: create(:option_bin))
+      custom_field = cell.row.custom_field
+      column_category_type = 'user_custom_field'
+      column_category_id = custom_field.id
+      row_category_type = 'input_custom_field'
+      row_category_id = cell.column.custom_field.id
+
+      do_request(row_category_type:, row_category_id:, column_category_type:, column_category_id:)
+
+      expect(status).to eq 200
+      expect(response_data.size).to eq(1)
+      expect(response_data.first[:id]).to eq(cell.id)
+    end
+
     example 'Respects the unit filter' do
       cell = create(:heatmap_cell, analysis:, unit: 'likes')
 

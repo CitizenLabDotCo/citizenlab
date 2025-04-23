@@ -171,12 +171,15 @@ de:
       attachments:
         title: Anhänge
         description:
-      page1:
+      title_page:
         description:
-      page2:
+      body_page:
+        title: Erzähl uns mehr
+        description:
+      uploads_page:
         title: Bilder und Anhänge
         description:
-      page3:
+      details_page:
         title: Details
         description:
       other_input_field:

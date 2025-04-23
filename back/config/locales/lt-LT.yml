@@ -171,12 +171,15 @@ lt:
       attachments:
         title: Priedai
         description:
-      page1:
+      title_page:
         description:
-      page2:
+      body_page:
+        title: Papasakokite mums daugiau
+        description:
+      uploads_page:
         title: Vaizdai ir priedai
         description:
-      page3:
+      details_page:
         title: Išsami informacija
         description:
       other_input_field:

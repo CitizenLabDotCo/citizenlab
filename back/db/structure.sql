@@ -1630,6 +1630,7 @@ CREATE TABLE public.phases (
     survey_popup_frequency integer,
     similarity_threshold_title double precision DEFAULT 0.3,
     similarity_threshold_body double precision DEFAULT 0.4,
+    similarity_enabled boolean DEFAULT true NOT NULL,
     user_fields_in_form boolean DEFAULT false NOT NULL
 );
 
@@ -7076,6 +7077,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20250415132943'),
 ('20250415094344'),
 ('20250409111817'),
+('20250327095857'),
 ('20250320010716'),
 ('20250319145637'),
 ('20250317825496'),

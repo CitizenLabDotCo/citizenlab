@@ -21,4 +21,13 @@ export default defineMessages({
     id: 'app.containers.Admin.communityMonitor.participants',
     defaultMessage: 'Participants',
   },
+  betaLabel: {
+    id: 'app.containers.Admin.communityMonitor.betaLabel',
+    defaultMessage: 'Beta',
+  },
+  betaTooltipExplanation: {
+    id: 'app.containers.Admin.communityMonitor.betaTooltipExplanation2',
+    defaultMessage:
+      'This feature is available in open beta for your plan until June 30th 2025.',
+  },
 });
