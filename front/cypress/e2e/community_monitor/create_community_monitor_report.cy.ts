@@ -1,6 +1,6 @@
 import { randomString } from '../../support/commands';
 
-describe('Submit community monitor survey', () => {
+describe('create community monitor report', () => {
   before(() => {
     cy.setConsentAndAdminLoginCookies();
   });
