@@ -70,7 +70,10 @@ const SurveyHeading = ({ titleText, phaseId }: Props) => {
 
   const showEditSurveyButton =
     !isSmallerThanPhone && canModerateProject(project.data, authUser);
-  const linkToSurveyBuilder: RouteType = `/admin/projects/${project.data.id}/phases/${phaseId}/native-survey/edit`;
+  const linkToSurveyBuilder: RouteType =
+    phaseParticipationMethod === 'community_monitor_survey'
+      ? `/admin/community-monitor/projects/${project.data.id}/phases/${phaseId}/survey/edit`
+      : `/admin/projects/${project.data.id}/phases/${phaseId}/native-survey/edit`;
 
   const leaveForm = () => {
     const leaveFormDestination = getLeaveFormDestination(

@@ -6,23 +6,32 @@ import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import Link from 'utils/cl-router/Link';
 
 import messages from './messages';
+import { RouteType } from 'routes';
+import usePhase from 'api/phases/usePhase';
+import { useParams } from 'react-router-dom';
 
 type UserFieldsInFormNoticeProps = {
-  projectId: string;
-  phaseId: string;
+  communityMonitor?: boolean;
 };
 
 const UserFieldsInFormNotice = ({
-  projectId,
-  phaseId,
+  communityMonitor = false,
 }: UserFieldsInFormNoticeProps) => {
   const { formatMessage } = useIntl();
+  const { phaseId, projectId } = useParams() as {
+    projectId: string;
+    phaseId: string;
+  };
+  const { data: phase } = usePhase(phaseId);
+
+  if (!phase?.data.attributes.user_fields_in_form) return null;
+
+  const accessRightsPath: RouteType = communityMonitor
+    ? `/admin/community-monitor/settings/access-rights`
+    : `/admin/projects/${projectId}/phases/${phaseId}/access-rights`;
 
   const accessRightsSettingsLink = (
-    <Link
-      to={`/admin/projects/${projectId}/phases/${phaseId}/access-rights`}
-      target="_blank"
-    >
+    <Link to={accessRightsPath} target="_blank">
       {formatMessage(messages.accessRightsSettings)}
     </Link>
   );

@@ -369,7 +369,7 @@ nl-BE:
     project_review_request:
       subject: 'Beoordelingsverzoek: Een project wacht op goedkeuring.'
       header: '%{requesterName} heeft je uitgenodigd om het project "%{projectTitle}" te beoordelen'
-      header_message: "Momenteel staat het project in conceptmodus en is het niet zichtbaar voor gebruikers. Zodra je het hebt beoordeeld en goedgekeurd, kan de moderator het publiceren."
+      header_message: "Momenteel staat het project in conceptmodus en is het niet zichtbaar voor gebruikers. Zodra je het hebt goedgekeurd, kan de moderator het publiceren."
       cta_review_project: "Het project beoordelen"
     project_review_state_change:
       subject: '"%{projectTitle}" is goedgekeurd'

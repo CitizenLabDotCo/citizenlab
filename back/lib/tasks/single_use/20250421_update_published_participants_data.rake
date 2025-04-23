@@ -7,7 +7,7 @@ namespace :single_use do
     end
 
     def floor_month(date_str)
-      throw ArgumentError, 'Invalid date format' unless date_str.length == 10
+      raise ArgumentError, 'Invalid date format' unless date_str.length == 10
       "#{date_str.slice(0, 8)}01"
     end
 

@@ -170,6 +170,11 @@ export default defineMessages({
     defaultMessage:
       'Show participants similar input while they type to help avoid duplicates.',
   },
+  warningSimilarInputDetectionTrial: {
+    id: 'app.containers.phaseConfig.warningSimilarInputDetectionTrial',
+    defaultMessage:
+      "This feature is available as part of an early access offering until June 30th, 2025. If you'd like to continue using it beyond that date, please reach out to your Government Success Manager or admin to discuss activation options.",
+  },
   enableSimilarInputDetection: {
     id: 'app.containers.phaseConfig.enableSimilarInputDetection',
     defaultMessage: 'Enable similar input detection',
@@ -191,18 +196,5 @@ export default defineMessages({
     id: 'app.containers.phaseConfig.similarityThresholdBodyTooltip1',
     defaultMessage:
       'This controls how similar two descriptions must be to show suggestions. Use values between 0 and 1. Only adjust if you know what you’re doing.',
-  },
-  userFieldsInSurveyTitle: {
-    id: 'app.containers.AdminPage.ProjectEdit.NativeSurvey.userFieldsInSurveyTitle2',
-    defaultMessage: 'Demographic fields in survey form',
-  },
-  userFieldsInSurveyToggle: {
-    id: 'app.containers.AdminPage.ProjectEdit.NativeSurvey.userFieldsInSurveyToggle2',
-    defaultMessage: 'Show demographic fields in survey?',
-  },
-  userFieldsInSurveyDescription: {
-    id: 'app.containers.AdminPage.ProjectEdit.NativeSurvey.userFieldsInSurveyDescription2',
-    defaultMessage:
-      'If you enable this option, user registration fields will be shown as the last page in the survey instead of as part of the signup process.',
   },
 });

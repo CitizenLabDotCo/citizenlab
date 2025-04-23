@@ -77,18 +77,16 @@ module ReportBuilder
     end
 
     def participation_rate(participants, start_date, end_date, project_id: nil)
-      sessions = ImpactTracking::Session
+      query = ImpactTracking::Session
+        .where(created_at: start_date..end_date)
 
       if project_id.present?
-        sessions_with_project = ImpactTracking::Pageview.where(project_id: project_id).select(:session_id)
-        sessions = sessions.where(id: sessions_with_project)
+        query = query
+          .joins('INNER JOIN impact_tracking_pageviews ON impact_tracking_pageviews.session_id = impact_tracking_sessions.id')
+          .where('impact_tracking_pageviews.project_id = ?', project_id)
       end
 
-      visitors = sessions
-        .where(created_at: start_date..end_date)
-        .distinct
-        .pluck(:monthly_user_hash)
-        .count
+      visitors = query.distinct.count(:monthly_user_hash)
 
       visitors.zero? ? 0 : (participants / visitors.to_f)
     end
