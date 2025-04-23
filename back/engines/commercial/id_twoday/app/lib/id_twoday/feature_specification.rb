@@ -11,7 +11,7 @@ module IdTwoday
     end
 
     def self.feature_title
-      'Twoday (Helsingborg) Login'
+      'Twoday Login (Helsingborg BankID & Freja eID+)'
     end
 
     def self.feature_description

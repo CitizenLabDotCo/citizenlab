@@ -25,13 +25,13 @@ module IdTwoday
         host: host,
         identifier: config[:client_id],
         secret: config[:client_secret],
-        authorization_endpoint: 'https://ticket-test1.siriusit.net/oidc-login',
-        token_endpoint: 'https://ticket-test1.siriusit.net/token',
-        jwks_uri: 'https://ticket-test1.siriusit.net/oidc/certs',
+        authorization_endpoint: "#{issuer}/oidc-login",
+        token_endpoint: "#{issuer}/token",
+        jwks_uri: "#{issuer}/oidc/certs",
         redirect_uri: "#{configuration.base_backend_uri}/auth/twoday/callback"
 
+        # config endpoint - NOTE: discovery cannot be used because the URLs are slightly non-standard
         # https://ticket-test1.siriusit.net/.well-known/openid-configuration
-        # discovery: true
       }
     end
 
