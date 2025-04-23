@@ -35,7 +35,7 @@ module ReportBuilder
         visits_whole_period: stats[:visits],
         visitors_whole_period: stats[:visitors],
         avg_seconds_per_session_whole_period: stats[:avg_seconds_per_session],
-        avg_pages_visited_whole_period: stats[:avg_pages_visited],
+        avg_pages_visited_whole_period: stats[:avg_pages_visited]
       }
 
       # If compare_start_at and compare_end_at are present:
@@ -66,7 +66,7 @@ module ReportBuilder
       sessions
     end
 
-    def calculate_stats(sessions, project_id)
+    def calculate_stats(sessions, _project_id)
       # Total number of visits and visitors
       visits = sessions.count
       visitors = sessions.distinct.pluck(:monthly_user_hash).count

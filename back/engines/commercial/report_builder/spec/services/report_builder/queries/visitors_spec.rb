@@ -54,7 +54,7 @@ RSpec.describe ReportBuilder::Queries::Visitors do
     it 'returns correct data for current period' do
       params = {
         start_at: Date.new(2022, 8, 1),
-        end_at: Date.new(2022, 11, 1),
+        end_at: Date.new(2022, 11, 1)
       }
 
       expect(query.run_query(**params)).to eq({
@@ -80,7 +80,7 @@ RSpec.describe ReportBuilder::Queries::Visitors do
     it 'filters dates correctly' do
       params = {
         start_at: Date.new(2022, 8, 1),
-        end_at: Date.new(2022, 10, 1),
+        end_at: Date.new(2022, 10, 1)
       }
 
       expect(query.run_query(**params)).to eq({
@@ -203,7 +203,7 @@ RSpec.describe ReportBuilder::Queries::Visitors do
     it 'works if everything is nil' do
       params = {
         start_at: Date.new(2023, 10, 1),
-        end_at: Date.new(2023, 11, 1),
+        end_at: Date.new(2023, 11, 1)
       }
 
       expect(query.run_query(**params)).to eq({
