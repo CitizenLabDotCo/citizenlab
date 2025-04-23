@@ -463,7 +463,7 @@
   "app.components.formBuilder.editWarningModal.title4": "Rediger live-undersøkelse",
   "app.components.formBuilder.editWarningModal.yesContinue": "Ja, fortsett",
   "app.components.formBuilder.nativeSurvey.UserFieldsInFormNotice.accessRightsSettings": "innstillinger for tilgangsrettigheter for denne undersøkelsen",
-  "app.components.formBuilder.nativeSurvey.UserFieldsInFormNotice.fieldsEnabledMessage2": "'Demographic fields in survey form' is enabled. When the survey form is displayed any configured demographic questions will be added on a new page immediately before the end of the survey. These questions can be changed in the {accessRightsSettingsLink}.",
+  "app.components.formBuilder.nativeSurvey.UserFieldsInFormNotice.fieldsEnabledMessage2": "\"Demografiske felt i undersøkelsesskjemaet\" er aktivert. Når undersøkelsesskjemaet vises, blir eventuelle konfigurerte demografiske spørsmål lagt til på en ny side rett før slutten av undersøkelsen. Disse spørsmålene kan endres på {accessRightsSettingsLink}.",
   "app.components.formBuilder.nativeSurvey.accessRightsNotice.accessRightsSettings": "innstillinger for tilgangsrettigheter for denne fasen.",
   "app.components.formBuilder.nativeSurvey.accessRightsNotice.anyoneBullet1": "Respondentene trenger ikke å registrere seg eller logge inn for å sende inn svar på undersøkelsen, noe som kan føre til dobbeltinnsendinger",
   "app.components.formBuilder.nativeSurvey.accessRightsNotice.anyoneBullet2": "Ved å hoppe over registrerings-/innloggingstrinnet godtar du å ikke samle inn demografisk informasjon om respondentene i undersøkelsen, noe som kan påvirke dataanalysemulighetene dine",
