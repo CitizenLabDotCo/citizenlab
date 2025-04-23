@@ -463,7 +463,7 @@
   "app.components.formBuilder.editWarningModal.title4": "Golygu arolwg byw",
   "app.components.formBuilder.editWarningModal.yesContinue": "Ie, parhewch",
   "app.components.formBuilder.nativeSurvey.UserFieldsInFormNotice.accessRightsSettings": "gosodiadau hawliau mynediad ar gyfer yr arolwg hwn",
-  "app.components.formBuilder.nativeSurvey.UserFieldsInFormNotice.fieldsEnabledMessage2": "'Demographic fields in survey form' is enabled. When the survey form is displayed any configured demographic questions will be added on a new page immediately before the end of the survey. These questions can be changed in the {accessRightsSettingsLink}.",
+  "app.components.formBuilder.nativeSurvey.UserFieldsInFormNotice.fieldsEnabledMessage2": "Mae 'meysydd demograffig ar ffurf arolwg' wedi'i alluogi. Pan fydd ffurflen yr arolwg yn cael ei harddangos, bydd unrhyw gwestiynau demograffig cyfluniedig yn cael eu hychwanegu ar dudalen newydd yn union cyn diwedd yr arolwg. Gellir newid y cwestiynau hyn yn y {accessRightsSettingsLink}.",
   "app.components.formBuilder.nativeSurvey.accessRightsNotice.accessRightsSettings": "gosodiadau hawliau mynediad ar gyfer y cam hwn.",
   "app.components.formBuilder.nativeSurvey.accessRightsNotice.anyoneBullet1": "Ni fydd yn ofynnol i ymatebwyr yr arolwg gofrestru na mewngofnodi i gyflwyno atebion i'r arolwg, a allai arwain at gyflwyniadau dyblyg",
   "app.components.formBuilder.nativeSurvey.accessRightsNotice.anyoneBullet2": "Drwy hepgor y cam cofrestru/mewngofnodi, rydych yn derbyn i beidio â chasglu gwybodaeth ddemograffig ar ymatebwyr arolwg, a allai effeithio ar eich galluoedd dadansoddi data",
