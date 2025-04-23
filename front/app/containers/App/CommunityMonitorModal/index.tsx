@@ -21,7 +21,7 @@ import { calculateEstimatedSurveyTime } from 'utils/surveyUtils';
 import QuestionPreview from './components/QuestionPreview';
 import { triggerCommunityMonitorModal$ } from './events';
 import messages from './messages';
-import { getDaysUntilCookieExpires, isAllowedOnUrl } from './utils';
+import { isAllowedOnUrl } from './utils';
 
 type CommunityMonitorModalProps = {
   showModal?: boolean;
@@ -129,8 +129,12 @@ const CommunityMonitorModal = ({
   }, [shouldShowModal]);
 
   const onClose = () => {
+    // Set cookie expiration date to 3 months from today
+    const expirationDate = new Date();
+    expirationDate.setMonth(expirationDate.getMonth() + 3);
+
     set('community_monitor_modal_seen', 'true', {
-      expires: getDaysUntilCookieExpires(), // Cookie expires by default after 3 months
+      expires: expirationDate,
     });
     setModalOpened(false);
   };

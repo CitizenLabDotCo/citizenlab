@@ -56,19 +56,3 @@ export const isAllowedOnUrl = (location: string) => {
 
   return location.match(customPageRegex) || location.match(homepageRegex);
 };
-
-export const getDaysUntilCookieExpires = () => {
-  // Get today's date
-  const todaysDate = new Date();
-
-  // Set the expiration date to 3 months from today
-  const expirationDate = new Date(todaysDate);
-  expirationDate.setMonth(expirationDate.getMonth() + 3);
-
-  // Calculate the difference in days
-  const daysUntilExpiration = Math.ceil(
-    (expirationDate.getTime() - todaysDate.getTime()) / (1000 * 3600 * 24) // Divide by milliseconds in a day
-  );
-
-  return daysUntilExpiration;
-};
