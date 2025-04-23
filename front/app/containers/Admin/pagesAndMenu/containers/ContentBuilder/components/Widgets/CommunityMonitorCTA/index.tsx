@@ -13,7 +13,6 @@ import {
 import { useTheme } from 'styled-components';
 import { Multiloc } from 'typings';
 
-import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useCommunityMonitorProject from 'api/community_monitor/useCommunityMonitorProject';
 import usePhase from 'api/phases/usePhase';
 
@@ -45,7 +44,6 @@ const CommunityMonitorCTA = ({
   const theme = useTheme();
   const localize = useLocalize();
   const { formatMessage } = useIntl();
-  const { data: appConfig } = useAppConfiguration();
 
   const isTabletOrSmaller = useBreakpoint('tablet');
   const isMobileOrSmaller = useBreakpoint('phone');
@@ -72,10 +70,7 @@ const CommunityMonitorCTA = ({
     if (phaseId) {
       // Track the homepage CTA interaction
       trackEventByName(
-        tracks.communityMonitorHomepageWidgetClickedAndRedirected,
-        {
-          tenantId: appConfig?.data.id,
-        }
+        tracks.communityMonitorHomepageWidgetClickedAndRedirected
       );
 
       // Redirect to the survey page
