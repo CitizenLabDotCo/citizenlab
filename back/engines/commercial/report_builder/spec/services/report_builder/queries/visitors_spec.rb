@@ -72,8 +72,8 @@ RSpec.describe ReportBuilder::Queries::Visitors do
         ],
         visits_whole_period: 8,
         visitors_whole_period: 4,
-        avg_seconds_on_page_whole_period: 90,
-        avg_pages_visited_whole_period: 12 / 8
+        avg_seconds_per_session_whole_period: 135,
+        avg_pages_visited_whole_period: 1.5
       })
     end
 
@@ -93,8 +93,8 @@ RSpec.describe ReportBuilder::Queries::Visitors do
         ],
         visits_whole_period: 3,
         visitors_whole_period: 2,
-        avg_seconds_on_page_whole_period: 100,
-        avg_pages_visited_whole_period: 6 / 3
+        avg_seconds_per_session_whole_period: 200,
+        avg_pages_visited_whole_period: 2
       })
     end
 
@@ -167,7 +167,7 @@ RSpec.describe ReportBuilder::Queries::Visitors do
         ],
         visits_whole_period: 2,
         visitors_whole_period: 2,
-        avg_seconds_on_page_whole_period: 120,
+        avg_seconds_per_session_whole_period: 240,
         avg_pages_visited_whole_period: 2
       })
     end
@@ -190,13 +190,13 @@ RSpec.describe ReportBuilder::Queries::Visitors do
         ],
         visits_whole_period: 5,
         visitors_whole_period: 2,
-        avg_seconds_on_page_whole_period: 60,
-        avg_pages_visited_whole_period: 6 / 5,
+        avg_seconds_per_session_whole_period: 60 * 1.2,
+        avg_pages_visited_whole_period: 1.2,
 
         visits_compared_period: 3,
         visitors_compared_period: 2,
-        avg_seconds_on_page_compared_period: 100,
-        avg_pages_visited_compared_period: 6 / 3
+        avg_seconds_per_session_compared_period: 200,
+        avg_pages_visited_compared_period: 2
       })
     end
 
@@ -210,7 +210,7 @@ RSpec.describe ReportBuilder::Queries::Visitors do
         visitors_timeseries: [],
         visits_whole_period: 0,
         visitors_whole_period: 0,
-        avg_seconds_on_page_whole_period: 0,
+        avg_seconds_per_session_whole_period: 0,
         avg_pages_visited_whole_period: 0
       })
     end
