@@ -1,9 +1,5 @@
 import React from 'react';
 
-// TODO: tooltips
-// TODO: projects cannot be deleted on demo.stg
-// TODO: user is made an admin when there is no seat available
-
 import { Select, IconTooltip } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 import { IOption } from 'typings';
