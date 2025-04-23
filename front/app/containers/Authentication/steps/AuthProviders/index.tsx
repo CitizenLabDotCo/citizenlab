@@ -271,7 +271,7 @@ const AuthProviders = memo<Props>(
             <FormattedMessage
               {...messages.continueWithLoginMechanism}
               values={{
-                loginMechanismName: 'BankID or FrejaID',
+                loginMechanismName: 'BankID eller Freja eID+',
               }}
             />
           </StyledAuthProviderButton>

@@ -9,7 +9,7 @@ require 'id_twoday/version'
 Gem::Specification.new do |s|
   s.name        = 'id_twoday'
   s.version     = IdTwoday::VERSION
-  s.summary     = 'SSO & Verification using Twoday (Bank ID & Freja ID)'
+  s.summary     = 'SSO & Verification using Twoday (BankID & Freja eID+)'
   s.authors     = ['Go Vocal']
   s.licenses    = [Gem::Licenses::NONSTANDARD] # ['Go Vocal Commercial License V2']
   s.files = Dir['{app,config,db,lib}/**/*', 'Rakefile', 'README.md']

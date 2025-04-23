@@ -15,7 +15,7 @@ module IdTwoday
     end
 
     def self.feature_description
-      'Allow users to authenticate with a Swedish BankID or FrejaID (via Twoday).'
+      'Allow users to authenticate with a Swedish BankID or Freja eID+ (via Twoday).'
     end
 
     def self.allowed_by_default
