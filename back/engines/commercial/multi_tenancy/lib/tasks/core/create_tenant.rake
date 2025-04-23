@@ -89,6 +89,10 @@ namespace :cl2_back do
           enabled: true,
           allowed: true
         },
+        community_monitor: {
+          enabled: true,
+          allowed: true
+        },
         segment: {
           enabled: true,
           allowed: true
