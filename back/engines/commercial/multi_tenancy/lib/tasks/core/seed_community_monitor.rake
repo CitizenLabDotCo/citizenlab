@@ -28,6 +28,7 @@ namespace :demos do
   end
 end
 
+# Stripped back seeds runner for community monitor seeds only
 class CommunityMonitorSeedsRunner < MultiTenancy::Seeds::Runner
   attr_accessor :num_ideas
 
