@@ -47,7 +47,7 @@ class IdeaCustomFieldsService
   # Used in the printable PDF export
   def printable_fields
     # TODO: temporarily remove any user fields from the printable fields - currently unsupported
-    fields = enabled_fields_with_other_options.reject { |field| field.key.start_with?('u_') }
+    fields = enabled_fields_with_other_options.reject { |field| field.key&.start_with?('u_') }
     fields.select(&:printable?)
   end
 
