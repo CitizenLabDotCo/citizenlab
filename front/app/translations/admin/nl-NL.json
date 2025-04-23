@@ -2940,6 +2940,7 @@
   "app.containers.phaseConfig.similarityThresholdBodyTooltip1": "Dit bepaalt hoe gelijk twee beschrijvingen aan elkaar moeten zijn om suggesties te tonen. Gebruik waarden tussen 0 en 1. Pas alleen aan als je weet wat je doet.",
   "app.containers.phaseConfig.similarityThresholdTitle": "Drempelwaarde gelijkheid (titel)",
   "app.containers.phaseConfig.similarityThresholdTitleTooltip1": "Dit bepaalt hoe gelijk twee titels aan elkaar moeten zijn om als vergelijkbaar gemarkeerd te worden. Gebruik waarden tussen 0 en 1. Pas dit alleen aan als je de implicaties begrijpt.",
+  "app.containers.phaseConfig.warningSimilarInputDetectionTrial": "Deze functie is beschikbaar als onderdeel van een early access-aanbod tot 30 juni 2025. Als je deze functie ook na die datum wilt blijven gebruiken, neem dan contact op met je Government Success Manager of beheerder om de activeringsopties te bespreken.",
   "app.containers.survey.sentiment.noAnswers2": "Geen reacties op dit moment.",
   "app.containers.survey.sentiment.numberComments": "{count, plural, =0 {geen reacties} one {1 reactie} other {# reacties}}",
   "app.modules.commercial.analytics.admin.components.ActiveUsersCard.cardTitleTooltipMessage4": "Deelnemers zijn gebruikers of bezoekers die hebben deelgenomen aan een project, een voorstel hebben gepost of er interactie mee hebben gehad, of evenementen hebben bijgewoond.",

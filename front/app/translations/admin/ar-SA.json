@@ -2940,6 +2940,7 @@
   "app.containers.phaseConfig.similarityThresholdBodyTooltip1": "يتحكم هذا في مدى تشابه الوصفين لعرض الاقتراحات. استخدم قيمًا بين ٠ و١. عدّل فقط إذا كنت تعرف ما تفعله.",
   "app.containers.phaseConfig.similarityThresholdTitle": "عتبة التشابه (العنوان)",
   "app.containers.phaseConfig.similarityThresholdTitleTooltip1": "يتحكم هذا بمدى تشابه عنوانين قبل تصنيفهما كعنوانين متشابهين. استخدم قيمًا بين 0 و1. عدّل هذا فقط إذا كنت تفهم دلالاته.",
+  "app.containers.phaseConfig.warningSimilarInputDetectionTrial": "تتوفر هذه الميزة كجزء من عرض الوصول المبكر حتى 30 يونيو 2025. إذا كنت ترغب في الاستمرار في استخدامها بعد هذا التاريخ، فيرجى التواصل مع مدير نجاح الحكومة أو المسؤول لمناقشة خيارات التنشيط.",
   "app.containers.survey.sentiment.noAnswers2": "لا توجد ردود في هذا الوقت.",
   "app.containers.survey.sentiment.numberComments": "{count, plural, =0 {0 تعليقات} one {1 تعليق} other {# تعليقات}}",
   "app.modules.commercial.analytics.admin.components.ActiveUsersCard.cardTitleTooltipMessage4": "المشاركون هم المستخدمون أو الزوار الذين شاركوا في مشروع أو نشروا أو تفاعلوا مع اقتراح أو حضروا أحداثًا.",
