@@ -9,7 +9,6 @@ import useProjectById from 'api/projects/useProjectById';
 import FormBuilder from 'components/FormBuilder/edit';
 
 import { communityMonitorConfig } from './utils';
-import UserFieldsInFormNotice from 'containers/Admin/projects/project/nativeSurvey/UserFieldsInFormNotice';
 
 const CommunityMonitorSurveyFormBuilder = () => {
   const { phaseId, projectId } = useParams() as {
@@ -35,15 +34,6 @@ const CommunityMonitorSurveyFormBuilder = () => {
           ...communityMonitorConfig,
           formCustomFields,
           goBackUrl: `/admin/community-monitor/settings`,
-          getUserFieldsNotice: () => {
-            return phase.data.attributes.user_fields_in_form ? (
-              <UserFieldsInFormNotice
-                projectId={projectId}
-                phaseId={phase.data.id}
-                communityMonitor={true}
-              />
-            ) : null;
-          },
         }}
         viewFormLink={`/projects/${project.data.attributes.slug}/surveys/new?phase_id=${phase.data.id}`}
       />

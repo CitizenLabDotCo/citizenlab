@@ -24,7 +24,7 @@ const UserFieldsToggle = ({ phaseId }: Props) => {
 
   return (
     <UserFieldsInSurveyToggle
-      user_fields_in_form={phase?.data.attributes.user_fields_in_form}
+      userFieldsInForm={phase?.data.attributes.user_fields_in_form}
       handleUserFieldsInFormOnChange={handleToggleChange}
     />
   );

@@ -11,6 +11,7 @@ import { FormattedMessage } from 'utils/cl-intl';
 
 import AccessRightsNotice from './AccessRightsNotice';
 import messages from './messages';
+import UserFieldsInFormNotice from 'containers/Admin/projects/project/nativeSurvey/UserFieldsInFormNotice';
 
 export const nativeSurveyConfig: FormBuilderConfig = {
   type: 'survey',
@@ -72,6 +73,9 @@ export const nativeSurveyConfig: FormBuilderConfig = {
         handleClose={handleClose}
       />
     ) : null;
+  },
+  getUserFieldsNotice: () => {
+    return <UserFieldsInFormNotice />;
   },
 };
 

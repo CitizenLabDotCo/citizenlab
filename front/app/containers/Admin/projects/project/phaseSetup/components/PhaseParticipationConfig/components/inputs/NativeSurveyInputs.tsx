@@ -88,7 +88,7 @@ const NativeSurveyInputs = ({
       />
 
       <UserFieldsInSurveyToggle
-        user_fields_in_form={user_fields_in_form}
+        userFieldsInForm={user_fields_in_form}
         handleUserFieldsInFormOnChange={handleUserFieldsInFormOnChange}
       />
 

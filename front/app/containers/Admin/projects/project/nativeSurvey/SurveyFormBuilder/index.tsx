@@ -11,7 +11,6 @@ import useLocale from 'hooks/useLocale';
 import PDFExportModal, {
   FormValues,
 } from 'containers/Admin/projects/components/PDFExportModal';
-import UserFieldsInFormNotice from 'containers/Admin/projects/project/nativeSurvey/UserFieldsInFormNotice';
 import { API_PATH } from 'containers/App/constants';
 
 import FormBuilder from 'components/FormBuilder/edit';
@@ -62,14 +61,6 @@ const SurveyFormBuilder = () => {
           formCustomFields: newCustomFields,
           goBackUrl: `/admin/projects/${projectId}/phases/${phaseId}/native-survey`,
           onDownloadPDF: handleDownloadPDF,
-          getUserFieldsNotice: () => {
-            return phase.data.attributes.user_fields_in_form ? (
-              <UserFieldsInFormNotice
-                projectId={projectId}
-                phaseId={phase.data.id}
-              />
-            ) : null;
-          },
         }}
         viewFormLink={`/projects/${project.data.attributes.slug}/surveys/new?phase_id=${phase.data.id}`}
       />

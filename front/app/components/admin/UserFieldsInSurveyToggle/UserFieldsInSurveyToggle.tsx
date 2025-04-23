@@ -11,19 +11,16 @@ import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
 interface UserFieldsInSurveyToggleProps {
-  user_fields_in_form: boolean | null | undefined;
+  userFieldsInForm?: boolean | null;
   handleUserFieldsInFormOnChange: (
     allow_anonymous_participation: boolean
   ) => void;
-  // toggleLabel?: JSX.Element;
 }
 
 const UserFieldsInSurveyToggle = ({
-  user_fields_in_form,
+  userFieldsInForm,
   handleUserFieldsInFormOnChange,
-}: // toggleLabel,
-UserFieldsInSurveyToggleProps) => {
-  // const { formatMessage } = useIntl();
+}: UserFieldsInSurveyToggleProps) => {
   const userFieldsInSurveysEnabled = useFeatureFlag({
     name: 'user_fields_in_surveys',
   });
@@ -36,9 +33,9 @@ UserFieldsInSurveyToggleProps) => {
         <FormattedMessage {...messages.userFieldsInSurveyTitle} />
       </SubSectionTitle>
       <Toggle
-        checked={user_fields_in_form || false}
+        checked={userFieldsInForm || false}
         onChange={() => {
-          handleUserFieldsInFormOnChange(!user_fields_in_form);
+          handleUserFieldsInFormOnChange(!userFieldsInForm);
         }}
         label={
           <Box ml="8px" id="e2e-user-fields-in-form-toggle">
