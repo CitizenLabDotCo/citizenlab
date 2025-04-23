@@ -79,6 +79,8 @@ RSpec.describe Surveys::AverageGenerator do
 
     before do
       survey_phase.pmethod.create_default_form!
+      # Additional question with no category
+      create(:custom_field_sentiment_linear_scale, key: 'another_question', resource: survey_phase.custom_form)
       create(:idea_status_proposed)
       create(:native_survey_response,
         project: survey_phase.project,
@@ -96,13 +98,13 @@ RSpec.describe Surveys::AverageGenerator do
         project: survey_phase.project,
         creation_phase: survey_phase,
         phases: [survey_phase],
-        custom_field_values: { 'affordable_housing' => 4, 'cleanliness_and_maintenance' => 3, 'transparency_of_money_spent' => 1 },
+        custom_field_values: { 'affordable_housing' => 4, 'cleanliness_and_maintenance' => 3, 'transparency_of_money_spent' => 1, 'another_question' => 2 },
         created_at: '2025-04-20')
       create(:native_survey_response,
         project: survey_phase.project,
         creation_phase: survey_phase,
         phases: [survey_phase],
-        custom_field_values: { 'sense_of_safety' => 1, 'quality_of_services' => 5, 'responsiveness_of_officials' => 2 },
+        custom_field_values: { 'sense_of_safety' => 1, 'quality_of_services' => 5, 'responsiveness_of_officials' => 2, 'another_question' => 1 },
         created_at: '2025-04-20')
     end
 
@@ -111,10 +113,10 @@ RSpec.describe Surveys::AverageGenerator do
         averages = generator.summary_averages_by_quarter
         expect(averages).to eq({
           overall: {
-            averages: { '2025-1' => 2.3, '2025-2' => 2.7 },
+            averages: { '2025-1' => 2.3, '2025-2' => 2.4 },
             totals: {
               '2025-1' => { 1 => 1, 2 => 2, 3 => 3, 4 => 0, 5 => 0 },
-              '2025-2' => { 1 => 2, 2 => 1, 3 => 1, 4 => 1, 5 => 1 }
+              '2025-2' => { 1 => 3, 2 => 2, 3 => 1, 4 => 1, 5 => 1 }
             }
           },
           categories: {
@@ -122,7 +124,7 @@ RSpec.describe Surveys::AverageGenerator do
               'quality_of_life' => { '2025-1' => 2.5, '2025-2' => 2.5 },
               'service_delivery' => { '2025-1' => 2.5, '2025-2' => 4.0 },
               'governance_and_trust' => { '2025-1' => 2.0, '2025-2' => 1.5 },
-              'other' => {}
+              'other' => { '2025-1' => 0.0, '2025-2' => 1.5 }
             },
             multilocs: {
               'quality_of_life' => { 'en' => 'Quality of life', 'fr-FR' => 'Qualité de vie', 'nl-NL' => 'Kwaliteit van leven' },
@@ -171,7 +173,7 @@ RSpec.describe Surveys::AverageGenerator do
           'quality_of_life' => { '2025-1' => 2.5, '2025-2' => 2.5 },
           'service_delivery' => { '2025-1' => 2.5, '2025-2' => 4.0 },
           'governance_and_trust' => { '2025-1' => 2.0, '2025-2' => 1.5 },
-          'other' => {}
+          'other' => { '2025-1' => 0.0, '2025-2' => 1.5 }
         })
       end
     end
@@ -181,7 +183,7 @@ RSpec.describe Surveys::AverageGenerator do
         totals = generator.send(:totals_by_quarter)
         expect(totals).to eq({
           '2025-1' => { 1 => 1, 2 => 2, 3 => 3, 4 => 0, 5 => 0 },
-          '2025-2' => { 1 => 2, 2 => 1, 3 => 1, 4 => 1, 5 => 1 }
+          '2025-2' => { 1 => 3, 2 => 2, 3 => 1, 4 => 1, 5 => 1 }
         })
       end
     end

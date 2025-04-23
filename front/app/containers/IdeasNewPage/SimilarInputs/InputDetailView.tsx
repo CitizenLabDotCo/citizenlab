@@ -13,9 +13,11 @@ import useIdeaById from 'api/ideas/useIdeaById';
 import ButtonWithLink from 'components/UI/ButtonWithLink';
 import QuillEditedContent from 'components/UI/QuillEditedContent';
 
+import { trackEventByName } from 'utils/analytics';
 import { useIntl } from 'utils/cl-intl';
 
 import messages from './messages';
+import tracks from './tracks';
 
 interface IdeaDetailViewProps {
   ideaId: string | null;
@@ -107,6 +109,10 @@ const IdeaDetailView = ({ ideaId }: IdeaDetailViewProps) => {
           buttonStyle="primary"
           linkTo={`/ideas/${idea.data.attributes.slug}`}
           bgColor={colors.primary}
+          onClick={() => {
+            trackEventByName(tracks.clickedSimilarInputFromSuggestions);
+            window.open(`/ideas/${idea.data.attributes.slug}`, '_blank');
+          }}
           openLinkInNewTab
         >
           {formatMessage(messages.engageHere)}
