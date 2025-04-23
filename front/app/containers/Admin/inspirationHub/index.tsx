@@ -16,10 +16,15 @@ import PinnedProjects from './PinnedProjects';
 import ProjectCards from './ProjectCards';
 import ProjectDrawer from './ProjectDrawer';
 import SortAndReset from './SortAndReset';
+import UpsellNudge from './UpsellNudge';
 
 const InspirationHub = () => {
-  const projectLibraryEnabled = useFeatureFlag({ name: 'project_library' });
-  if (!projectLibraryEnabled) return null;
+  const projectLibraryEnabled = useFeatureFlag({
+    name: 'project_library',
+    onlyCheckEnabled: true,
+  });
+
+  if (!projectLibraryEnabled) return <UpsellNudge />;
 
   return (
     <Box>

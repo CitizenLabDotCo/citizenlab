@@ -85,7 +85,6 @@ const getDefaultNavItems = ({ data }: IAppConfiguration): NavItem[] => {
       link: getInspirationHubLink(country_code),
       iconName: 'globe',
       message: 'inspirationHub',
-      featureNames: ['project_library'],
     },
     {
       name: 'tools',
