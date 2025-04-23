@@ -463,7 +463,7 @@
   "app.components.formBuilder.editWarningModal.title4": "تحرير الاستطلاع المباشر",
   "app.components.formBuilder.editWarningModal.yesContinue": "نعم، استمر",
   "app.components.formBuilder.nativeSurvey.UserFieldsInFormNotice.accessRightsSettings": "إعدادات حقوق الوصول لهذا الاستطلاع",
-  "app.components.formBuilder.nativeSurvey.UserFieldsInFormNotice.fieldsEnabledMessage2": "'Demographic fields in survey form' is enabled. When the survey form is displayed any configured demographic questions will be added on a new page immediately before the end of the survey. These questions can be changed in the {accessRightsSettingsLink}.",
+  "app.components.formBuilder.nativeSurvey.UserFieldsInFormNotice.fieldsEnabledMessage2": "تم تفعيل \"الحقول الديموغرافية في نموذج الاستبيان\". عند عرض نموذج الاستبيان، ستُضاف أي أسئلة ديموغرافية مُعدّة إلى صفحة جديدة قبل انتهاء الاستبيان مباشرةً. يمكن تغيير هذه الأسئلة في {accessRightsSettingsLink}.",
   "app.components.formBuilder.nativeSurvey.accessRightsNotice.accessRightsSettings": "إعدادات حقوق الوصول لهذه المرحلة.",
   "app.components.formBuilder.nativeSurvey.accessRightsNotice.anyoneBullet1": "لن يُطلب من المشاركين في الاستطلاع التسجيل أو تسجيل الدخول لإرسال إجابات الاستطلاع، مما قد يؤدي إلى إرسالات مكررة",
   "app.components.formBuilder.nativeSurvey.accessRightsNotice.anyoneBullet2": "من خلال تخطي خطوة الاشتراك/تسجيل الدخول، فإنك توافق على عدم جمع معلومات ديموغرافية عن المشاركين في الاستطلاع، مما قد يؤثر على قدرات تحليل البيانات لديك",
