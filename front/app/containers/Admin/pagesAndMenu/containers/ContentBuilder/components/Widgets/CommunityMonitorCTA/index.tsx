@@ -86,7 +86,7 @@ const CommunityMonitorCTA = ({
 
   // If the survey is not live and we're not on the homepage builder, don't render the CTA
   if (!isSurveyLive && !onHomepageBuilder) {
-    null;
+    return null;
   }
 
   // Check if the user has already submitted the survey
