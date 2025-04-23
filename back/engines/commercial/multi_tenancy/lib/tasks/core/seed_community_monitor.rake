@@ -12,12 +12,9 @@ namespace :demos do
       end
 
       # Ensure community monitor is enabled first
-      settings = AppConfiguration.instance.settings
-      settings['community_monitor']['allowed'] = true
-      settings['community_monitor']['enabled'] = true
-      AppConfiguration.instance.update!(settings:)
+      SettingsService.new.activate_feature! 'community_monitor'
 
-      num_quarters = args[:num_quarters].to_i || 2
+      num_quarters = args[:num_quarters]&.to_i || 2
       locale = args[:locale]
       num_existing_ideas = Idea.count
 

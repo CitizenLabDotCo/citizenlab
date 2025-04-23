@@ -7,11 +7,8 @@ module MultiTenancy
     class CommunityMonitor < Base
       def initialize(runner:, num_quarters: 2, ai_responses: false, locale: nil)
         @num_quarters = num_quarters
-        @ai_responses = ai_responses
-        @locale = locale ||
-                  Locale.monolingual&.to_s ||
-                  AppConfiguration.instance.settings('core', 'locales').first ||
-                  I18n.default_locale
+        @ai_responses = ai_responses # NOTE: Never set this to true for any tests or environment resets
+        @locale = locale || Locale.default.to_s
         super(runner: runner)
       end
 
