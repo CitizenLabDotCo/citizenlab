@@ -80,13 +80,14 @@ module ReportBuilder
       avg_pages_visited = visits == 0 ? 0 : pageviews.count / visits.to_f
 
       # Avg seconds per session
-      # Because we can only know the time spent between two pages,
-      # We can't just calculate the difference between the created_at of
-      # the first and last page during a session. Because this would
-      # not include the last page. This might not be a problem if
-      # every session has a ton of page views, but for shorter sessions
+      # Because we can only know the time spent on a page if there is
+      # a next page, we can't just calculate the difference between the
+      # created_at of the first and last page during a session. Because
+      # this would not include the last page. 
+      # This might not be a problem if every session has a ton of page 
+      # views, but assuming most session will be relatively short,
       # this would be a problem and would lead to a too low average.
-      # So instead, we calculate the average time spent on per page
+      # So instead, we calculate the average time spent per page
       # insofar as we know, and then multiply this by the average
       # number of pages per session. This should probably give a pretty
       # ok approximation of the average time spent on a session.
