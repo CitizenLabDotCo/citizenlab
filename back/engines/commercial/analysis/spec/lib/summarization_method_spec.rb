@@ -74,7 +74,7 @@ RSpec.describe Analysis::SummarizationMethod do
         include_comments: true
       })
 
-      mock_llm = instance_double(Analysis::LLM::GPT4o)
+      mock_llm = instance_double(Analysis::LLM::GPT41)
       plan.llm = mock_llm
       expect(mock_llm).to receive(:chat_async).with(kind_of(String)) do |prompt, &block|
         expect(prompt).to include(inputs[2].id)
@@ -98,7 +98,7 @@ RSpec.describe Analysis::SummarizationMethod do
       create(:comment, idea: inputs[1], body_multiloc: { en: 'I want to comment on that' })
 
       plan = Analysis::SummarizationMethod::OnePassLLM.new(summary).generate_plan
-      mock_llm = instance_double(Analysis::LLM::GPT4o)
+      mock_llm = instance_double(Analysis::LLM::GPT41)
       plan.llm = mock_llm
       expect(mock_llm).to receive(:chat_async).with(kind_of(String)) do |prompt|
         expect(prompt).to include('I want to comment on that')
