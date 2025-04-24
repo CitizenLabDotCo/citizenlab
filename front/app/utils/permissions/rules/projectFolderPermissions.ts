@@ -103,3 +103,20 @@ definePermissionRule(
     return !isAdmin(user) && isProjectFolderModerator(user);
   }
 );
+
+// Permission to add or remove projects from folders
+definePermissionRule(
+  'project_folder',
+  'manage_projects',
+  (_folder: IProjectFolderData, user) => {
+    return isAdmin(user);
+  }
+);
+
+definePermissionRule(
+  'project_folder',
+  'create_project_in_folder',
+  (_folder: IProjectFolderData, user) => {
+    return isAdmin(user) || isProjectFolderModerator(user);
+  }
+);

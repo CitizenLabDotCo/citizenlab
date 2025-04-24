@@ -5,7 +5,6 @@ import { isEmpty, isString } from 'lodash-es';
 import { useParams, useLocation } from 'react-router-dom';
 import { Multiloc, UploadFile, CLErrors } from 'typings';
 
-import useAuthUser from 'api/me/useAuthUser';
 import useAddProjectFile from 'api/project_files/useAddProjectFile';
 import useDeleteProjectFile from 'api/project_files/useDeleteProjectFile';
 import useProjectFiles from 'api/project_files/useProjectFiles';
@@ -50,8 +49,7 @@ import Link from 'utils/cl-router/Link';
 import eventEmitter from 'utils/eventEmitter';
 import { convertUrlToUploadFile, isUploadFile } from 'utils/fileUtils';
 import { isNilOrError } from 'utils/helperUtils';
-import { isAdmin } from 'utils/permissions/roles';
-import { isProjectFolderModerator } from 'utils/permissions/rules/projectFolderPermissions';
+import { usePermission } from 'utils/permissions';
 import { defaultAdminCardPadding } from 'utils/styleConstants';
 import { validateSlug } from 'utils/textUtils';
 
@@ -141,10 +139,11 @@ const AdminProjectsProjectGeneral = () => {
   const [slug, setSlug] = useState<string | null>(null);
   const [showSlugErrorMessage, setShowSlugErrorMessage] = useState(false);
 
-  const { data: user } = useAuthUser();
   const showProjectFolderSelect =
-    isProjectFoldersEnabled &&
-    (isAdmin(user) || isProjectFolderModerator(user));
+    usePermission({
+      item: 'project_folder',
+      action: 'create_project_in_folder',
+    }) && isProjectFoldersEnabled;
 
   useEffect(() => {
     (async () => {

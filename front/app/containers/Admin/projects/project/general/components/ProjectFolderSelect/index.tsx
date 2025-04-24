@@ -15,11 +15,9 @@ import { TOnProjectAttributesDiffChangeFunction } from 'containers/Admin/project
 import { SectionField, SubSectionTitle } from 'components/admin/Section';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
+import { usePermission } from 'utils/permissions';
 import { isAdmin } from 'utils/permissions/roles';
-import {
-  isProjectFolderModerator,
-  userModeratesFolder,
-} from 'utils/permissions/rules/projectFolderPermissions';
+import { userModeratesFolder } from 'utils/permissions/rules/projectFolderPermissions';
 
 import messages from './messages';
 
@@ -27,6 +25,7 @@ const StyledSectionField = styled(SectionField)`
   max-width: 100%;
   margin-bottom: 40px;
 `;
+
 interface Props {
   projectAttrs: IUpdatedProjectProperties;
   onProjectAttributesDiffChange: TOnProjectAttributesDiffChangeFunction;
@@ -70,12 +69,21 @@ const ProjectFolderSelect = ({
     onProjectAttributesDiffChange({ folder_id: folderId }, 'enabled');
   };
 
+  const canCreateInFolder = usePermission({
+    item: 'project_folder',
+    action: 'create_project_in_folder',
+  });
+  const canManage = usePermission({
+    item: 'project_folder',
+    action: 'manage_projects',
+  });
+
+  const selectEnabled = canManage || (isNewProject && canCreateInFolder);
+
   if (folderOptions.length === 0) return null;
 
   const defaultFolderSelectOptionValue = folderOptions[0].value;
   const isAdminUser = isAdmin(authUser);
-  const isFolderModerator = isProjectFolderModerator(authUser);
-  const selectEnabled = isAdminUser || (isNewProject && isFolderModerator);
 
   const sectionTooltip = formatMessage(
     isAdminUser
