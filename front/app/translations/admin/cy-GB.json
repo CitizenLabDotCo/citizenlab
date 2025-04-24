@@ -434,7 +434,6 @@
   "app.components.app.containers.AdminPage.ProjectEdit.reactingThresholdRequired": "Mae angen lleiafswm o bleidleisiau",
   "app.components.app.containers.AdminPage.ProjectEdit.report": "Adroddiad",
   "app.components.app.containers.AdminPage.ProjectEdit.screeningText": "Angen sgrinio mewnbynnau",
-  "app.components.app.containers.AdminPage.ProjectEdit.screeningTooltip": "Nid yw sgrinio wedi'i gynnwys yn eich cynllun presennol. Siaradwch â'ch Rheolwr Llwyddiant Llywodraeth neu weinyddwr i'w ddatgloi.",
   "app.components.app.containers.AdminPage.ProjectEdit.timelineTab": "Llinell Amser",
   "app.components.app.containers.AdminPage.ProjectEdit.trafficTab": "Traffig",
   "app.components.formBuilder.cancelMethodChange1": "Canslo",
