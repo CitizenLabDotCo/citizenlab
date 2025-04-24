@@ -500,6 +500,7 @@
   "app.components.VerificationModal.verifyIdAustria": "ID ਆਸਟਰੀਆ ਨਾਲ ਪੁਸ਼ਟੀ ਕਰੋ",
   "app.components.VerificationModal.verifyKeycloak": "ID-Porten ਨਾਲ ਪੁਸ਼ਟੀ ਕਰੋ",
   "app.components.VerificationModal.verifyNemLogIn": "MitID ਨਾਲ ਪੁਸ਼ਟੀ ਕਰੋ",
+  "app.components.VerificationModal.verifyTwoday2": "BankID ਜਾਂ Freja eID+ ਨਾਲ ਪੁਸ਼ਟੀ ਕਰੋ",
   "app.components.VerificationModal.verifyYourIdentity": "ਆਪਣੀ ਪਛਾਣ ਦੀ ਪੁਸ਼ਟੀ ਕਰੋ",
   "app.components.VoteControl.budgetingFutureEnabled": "ਤੁਸੀਂ ਆਪਣਾ ਬਜਟ {enabledFromDate}ਤੋਂ ਸ਼ੁਰੂ ਕਰਕੇ ਨਿਰਧਾਰਤ ਕਰ ਸਕਦੇ ਹੋ।",
   "app.components.VoteControl.budgetingNotPermitted": "ਭਾਗੀਦਾਰੀ ਬਜਟਿੰਗ ਵਰਤਮਾਨ ਵਿੱਚ ਸਮਰੱਥ ਨਹੀਂ ਹੈ।",
