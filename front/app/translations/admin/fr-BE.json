@@ -2644,7 +2644,6 @@
   "app.containers.AdminPage.projects.project.analysis.filter": "Afficher uniquement les contributions ayant cette valeur",
   "app.containers.AdminPage.projects.project.analysis.filterEmptyCustomFields": "Cacher les réponses vides",
   "app.containers.AdminPage.projects.project.analysis.heatmap.autoInsights": "Aperçus automatiques",
-  "app.containers.AdminPage.projects.project.analysis.heatmap.autoInsightsUpsellNudge": "Cette fonctionnalité n'est pas incluse dans votre plan actuel. Adressez-vous à votre Spécialiste en participation Go Vocal ou à votre administrateur pour la débloquer.",
   "app.containers.AdminPage.projects.project.analysis.heatmap.columnValues": "Colonnes",
   "app.containers.AdminPage.projects.project.analysis.heatmap.count": "Il y a {count} occurrences de cette combinaison.",
   "app.containers.AdminPage.projects.project.analysis.heatmap.dislikes": "Dislikes",

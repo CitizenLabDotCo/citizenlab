@@ -2644,7 +2644,6 @@
   "app.containers.AdminPage.projects.project.analysis.filter": "Rodyti tik įvestis su šia reikšme",
   "app.containers.AdminPage.projects.project.analysis.filterEmptyCustomFields": "Paslėpti atsakymus be atsakymo",
   "app.containers.AdminPage.projects.project.analysis.heatmap.autoInsights": "Automatinės įžvalgos",
-  "app.containers.AdminPage.projects.project.analysis.heatmap.autoInsightsUpsellNudge": "Ši funkcija neįtraukta į dabartinį planą. Norėdami ją atrakinti, pasitarkite su savo Vyriausybės sėkmės vadybininku arba administratoriumi.",
   "app.containers.AdminPage.projects.project.analysis.heatmap.columnValues": "Stulpelio reikšmės",
   "app.containers.AdminPage.projects.project.analysis.heatmap.count": "Šio derinio atvejų yra {count} .",
   "app.containers.AdminPage.projects.project.analysis.heatmap.dislikes": "Nemėgsta",

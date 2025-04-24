@@ -2644,7 +2644,6 @@
   "app.containers.AdminPage.projects.project.analysis.filter": "Toon alleen bijdragen met deze waarde",
   "app.containers.AdminPage.projects.project.analysis.filterEmptyCustomFields": "Verberg reacties zonder antwoord",
   "app.containers.AdminPage.projects.project.analysis.heatmap.autoInsights": "Auto-insights",
-  "app.containers.AdminPage.projects.project.analysis.heatmap.autoInsightsUpsellNudge": "Deze functionaliteit is niet inbegrepen in je huidige plan. Praat met je Government Success Manager of beheerder om het in te schakelen.",
   "app.containers.AdminPage.projects.project.analysis.heatmap.columnValues": "Kolomwaarden",
   "app.containers.AdminPage.projects.project.analysis.heatmap.count": "Er zijn {count} gevallen van deze combinatie.",
   "app.containers.AdminPage.projects.project.analysis.heatmap.dislikes": "Dislikes",

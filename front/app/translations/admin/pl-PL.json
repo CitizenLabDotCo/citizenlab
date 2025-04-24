@@ -2644,7 +2644,6 @@
   "app.containers.AdminPage.projects.project.analysis.filter": "Wyświetlaj tylko wejścia z tą wartością",
   "app.containers.AdminPage.projects.project.analysis.filterEmptyCustomFields": "Ukryj odpowiedzi bez odpowiedzi",
   "app.containers.AdminPage.projects.project.analysis.heatmap.autoInsights": "Automatyczne podglądy",
-  "app.containers.AdminPage.projects.project.analysis.heatmap.autoInsightsUpsellNudge": "Ta funkcja nie jest uwzględniona w Twoim bieżącym planie. Porozmawiaj ze swoim Government Success Managerem lub administratorem, aby ją odblokować.",
   "app.containers.AdminPage.projects.project.analysis.heatmap.columnValues": "Wartości kolumn",
   "app.containers.AdminPage.projects.project.analysis.heatmap.count": "Istnieje {count} przypadków tej kombinacji.",
   "app.containers.AdminPage.projects.project.analysis.heatmap.dislikes": "Nie lubi",

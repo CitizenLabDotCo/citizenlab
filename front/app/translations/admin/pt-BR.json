@@ -2644,7 +2644,6 @@
   "app.containers.AdminPage.projects.project.analysis.filter": "Mostrar apenas entradas com este valor",
   "app.containers.AdminPage.projects.project.analysis.filterEmptyCustomFields": "Ocultar respostas sem resposta",
   "app.containers.AdminPage.projects.project.analysis.heatmap.autoInsights": "Insights automáticos",
-  "app.containers.AdminPage.projects.project.analysis.heatmap.autoInsightsUpsellNudge": "Esse recurso não está incluído em seu plano atual. Fale com seu gerente de sucesso do governo ou administrador para desbloqueá-lo.",
   "app.containers.AdminPage.projects.project.analysis.heatmap.columnValues": "Valores de coluna",
   "app.containers.AdminPage.projects.project.analysis.heatmap.count": "Há {count} instâncias dessa combinação.",
   "app.containers.AdminPage.projects.project.analysis.heatmap.dislikes": "Não gosta",

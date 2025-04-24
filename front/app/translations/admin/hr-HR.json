@@ -2644,7 +2644,6 @@
   "app.containers.AdminPage.projects.project.analysis.filter": "Prikaži samo unose s ovom vrijednošću",
   "app.containers.AdminPage.projects.project.analysis.filterEmptyCustomFields": "Sakrij odgovore bez odgovora",
   "app.containers.AdminPage.projects.project.analysis.heatmap.autoInsights": "Automatski uvidi",
-  "app.containers.AdminPage.projects.project.analysis.heatmap.autoInsightsUpsellNudge": "Ova značajka nije uključena u vaš trenutni plan. Razgovarajte sa svojim upraviteljem uspjeha vlade ili administratorom da ga otključate.",
   "app.containers.AdminPage.projects.project.analysis.heatmap.columnValues": "Vrijednosti stupaca",
   "app.containers.AdminPage.projects.project.analysis.heatmap.count": "Postoji {count} primjeraka ove kombinacije.",
   "app.containers.AdminPage.projects.project.analysis.heatmap.dislikes": "Nesviđanja",

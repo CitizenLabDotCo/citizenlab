@@ -2644,7 +2644,6 @@
   "app.containers.AdminPage.projects.project.analysis.filter": "Dangos mewnbynnau gyda'r gwerth hwn yn unig",
   "app.containers.AdminPage.projects.project.analysis.filterEmptyCustomFields": "Cuddio ymatebion heb unrhyw ateb",
   "app.containers.AdminPage.projects.project.analysis.heatmap.autoInsights": "Auto-mewnwelediadau",
-  "app.containers.AdminPage.projects.project.analysis.heatmap.autoInsightsUpsellNudge": "Nid yw'r nodwedd hon wedi'i chynnwys yn eich cynllun cyfredol. Siaradwch â'ch Rheolwr Llwyddiant Llywodraeth neu weinyddwr i'w ddatgloi.",
   "app.containers.AdminPage.projects.project.analysis.heatmap.columnValues": "Gwerthoedd colofn",
   "app.containers.AdminPage.projects.project.analysis.heatmap.count": "Mae {count} enghreifftiau o'r cyfuniad hwn.",
   "app.containers.AdminPage.projects.project.analysis.heatmap.dislikes": "Cas bethau",
