@@ -82,6 +82,10 @@ module MultiTenancy
               allowed: true,
               enabled: true
             },
+            twoday_login: {
+              allowed: true,
+              enabled: true
+            },
             franceconnect_login: {
               allowed: true,
               enabled: false,
@@ -335,6 +339,14 @@ module MultiTenancy
                   client_id: ENV.fetch('DEFAULT_ID_AUSTRIA_CLIENT_ID', 'fake id'),
                   client_secret: ENV.fetch('DEFAULT_ID_AUSTRIA_CLIENT_SECRET', 'fake secret'),
                   ui_method_name: 'ID Austria',
+                  enabled_for_verified_actions: true
+                },
+                {
+                  name: 'twoday',
+                  client_id: ENV.fetch('DEFAULT_ID_TWODAY_CLIENT_ID', 'fake id'),
+                  client_secret: ENV.fetch('DEFAULT_ID_TWODAY_CLIENT_SECRET', 'fake secret'),
+                  domain: ENV.fetch('DEFAULT_ID_TWODAY_DOMAIN', 'fake domain'),
+                  ui_method_name: 'Bank ID',
                   enabled_for_verified_actions: true
                 }
               ]
