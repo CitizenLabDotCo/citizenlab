@@ -500,6 +500,7 @@
   "app.components.VerificationModal.verifyIdAustria": "التحقق من خلال هوية النمسا",
   "app.components.VerificationModal.verifyKeycloak": "التحقق باستخدام ID-Porten",
   "app.components.VerificationModal.verifyNemLogIn": "تحقق مع MitID",
+  "app.components.VerificationModal.verifyTwoday2": "التحقق باستخدام BankID أو Freja eID+",
   "app.components.VerificationModal.verifyYourIdentity": "تحقق من هويتك",
   "app.components.VoteControl.budgetingFutureEnabled": "يُمكنك تخصيص ميزانيتك بداية من {enabledFromDate}. ",
   "app.components.VoteControl.budgetingNotPermitted": "يُمكن تفعيل إعداد الميزانية القائمة على المشاركة لمجموعات مُعينة فقط. ",
