@@ -183,5 +183,29 @@ RSpec.describe ReportBuilder::Queries::Participants do
         participation_rate_whole_period: 0.5
       })
     end
+
+    it 'applies exclude_roles filter' do
+      project = create(:single_phase_ideation_project)
+
+      # Create 4 participants and 8 visitors for project with user role
+      4.times do
+        create(:idea, created_at: @date_september, project: project, author: create(:user))
+      end
+
+      8.times do |i|
+        session = create(:session, created_at: @date_september, monthly_user_hash: "visitor_#{i}")
+        create(:pageview, created_at: @date_september, session_id: session.id, project_id: project.id)
+      end
+
+      # Create 3 participants and 4 visitors with admin role
+      3.times do
+        create(:idea, created_at: @date_september, project: project, author: create(:user))
+      end
+
+      4.times do |i|
+        session = create(:session, created_at: @date_september, monthly_user_hash: "another_visitor_#{i}")
+        create(:pageview, created_at: @date_september, session_id: session.id, project_id: project.id)
+      end
+    end
   end
 end
