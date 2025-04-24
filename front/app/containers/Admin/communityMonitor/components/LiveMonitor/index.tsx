@@ -29,8 +29,8 @@ const LiveMonitor = () => {
   // Determine if the community monitor feature is allowed
   const communityMonitorSetting =
     appConfiguration?.data.attributes.settings.community_monitor;
-  const isCommunityMonitorAllowed =
-    communityMonitorSetting && communityMonitorSetting.allowed;
+  const isCommunityMonitorEnabled =
+    communityMonitorSetting && communityMonitorSetting.enabled;
 
   const { data: project, isError, isLoading } = useCommunityMonitorProject({});
   const projectId = project?.data.id;
@@ -51,7 +51,7 @@ const LiveMonitor = () => {
           <Title color="primary">
             {formatMessage(messages.communityMonitorLabel)}
           </Title>
-          {!isCommunityMonitorAllowed && ( // If the feature is enabled, but not allowed, it's in Beta
+          {!isCommunityMonitorEnabled && ( // If the feature is not "enabled", it's in Beta
             <Box display="flex" mt="4px">
               <Tooltip content={formatMessage(messages.betaTooltipExplanation)}>
                 <Badge color={colors.primary}>
