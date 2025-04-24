@@ -27,7 +27,7 @@ const Comments = () => {
     threshold: 0,
   });
 
-  const analysisEnabled = useFeatureFlag({
+  const analysisActive = useFeatureFlag({
     name: 'analysis',
   });
 
@@ -72,7 +72,7 @@ const Comments = () => {
       <Title variant="h4">
         {formatMessage(messages.comments)} ({commentsCount})
       </Title>
-      {analysisEnabled && (
+      {analysisActive && (
         <Box>
           {(commentsCount || 0) >= 5 ? (
             <Summary analysisId={analysisId} inputId={selectedInputId} />
