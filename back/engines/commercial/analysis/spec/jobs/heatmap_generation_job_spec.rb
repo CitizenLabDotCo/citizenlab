@@ -44,7 +44,7 @@ RSpec.describe Analysis::HeatmapGenerationJob do
 
     it 'generates the heatmap for all units' do
       expect { described_class.perform_now(analysis.reload) }
-        .to change { analysis.heatmap_cells.count }.by(32)
+        .to change { analysis.heatmap_cells.count }.by(16)
 
       expect(Analysis::HeatmapCell.all.pluck(:unit).uniq)
         .to match_array(%w[inputs likes dislikes participants])

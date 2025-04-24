@@ -2154,6 +2154,7 @@
   "app.utils.IdeasNewPage.viewYourProject": "Gweld eich prosiect",
   "app.utils.IdeasNewPage.viewYourProposal": "Gweld eich cynnig",
   "app.utils.IdeasNewPage.viewYourQuestion": "Gweld eich cwestiwn",
+  "app.utils.Projects.sendSubmission": "Anfon dynodwr cyflwyniad i fy e-bost",
   "app.utils.Projects.sendSurveySubmission": "Anfon dynodwr cyflwyniad arolwg i fy e-bost",
   "app.utils.Projects.surveySubmission": "Cyflwyno arolwg",
   "app.utils.Projects.yourResponseHasTheFollowingId": "Mae gan eich ymateb y dynodwr canlynol: {identifier}",

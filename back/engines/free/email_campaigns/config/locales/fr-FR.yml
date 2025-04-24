@@ -83,7 +83,7 @@ fr:
         "4": "Chaque semaine, le jeudi à %{hourOfDay}"
         "5": "Chaque semaine, le vendredi à %{hourOfDay}"
         "6": "Chaque semaine, le samedi à %{hourOfDay}"
-      quarterly: "Trimestriellement, le premier jour du trimestre"
+      quarterly: "Le premier jour de chaque trimestre"
     footer:
       "link_privacy_policy": "Politique de confidentialité"
       "link_terms_conditions": "Conditions Générales d'Utilisation"

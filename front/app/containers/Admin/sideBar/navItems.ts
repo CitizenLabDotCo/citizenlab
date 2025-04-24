@@ -79,14 +79,12 @@ const getDefaultNavItems = ({ data }: IAppConfiguration): NavItem[] => {
       link: '/admin/community-monitor',
       iconName: 'community_monitor',
       message: 'community_monitor',
-      featureNames: ['community_monitor'],
     },
     {
       name: 'inspirationHub',
       link: getInspirationHubLink(country_code),
       iconName: 'globe',
       message: 'inspirationHub',
-      featureNames: ['project_library'],
     },
     {
       name: 'tools',
