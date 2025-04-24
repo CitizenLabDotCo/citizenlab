@@ -2652,7 +2652,6 @@
   "app.containers.AdminPage.projects.project.analysis.filter": "crwdns1199782:0crwdne1199782:0",
   "app.containers.AdminPage.projects.project.analysis.filterEmptyCustomFields": "crwdns1550948:0crwdne1550948:0",
   "app.containers.AdminPage.projects.project.analysis.heatmap.autoInsights": "crwdns4368172:0crwdne4368172:0",
-  "app.containers.AdminPage.projects.project.analysis.heatmap.autoInsightsUpsellNudge": "crwdns4368174:0crwdne4368174:0",
   "app.containers.AdminPage.projects.project.analysis.heatmap.columnValues": "crwdns4280830:0crwdne4280830:0",
   "app.containers.AdminPage.projects.project.analysis.heatmap.count": "crwdns4280832:0{count}crwdne4280832:0",
   "app.containers.AdminPage.projects.project.analysis.heatmap.dislikes": "crwdns4280836:0crwdne4280836:0",
