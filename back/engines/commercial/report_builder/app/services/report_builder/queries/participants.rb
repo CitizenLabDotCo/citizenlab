@@ -101,6 +101,11 @@ module ReportBuilder
           .where(impact_tracking_pageviews: { project_id: project_id })
       end
 
+      if exclude_roles.present?
+        query = query
+          .where.not(highest_role: exclude_roles)
+      end
+
       visitors = query.distinct.count(:monthly_user_hash)
 
       visitors.zero? ? 0 : (participants / visitors.to_f)
