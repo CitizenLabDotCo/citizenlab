@@ -36,7 +36,9 @@ export const useRansackParam = <ParamName extends keyof RansackParams>(
   const paramValue = searchParams.get(paramName);
 
   if (paramName.endsWith('in]')) {
-    return paramValue === null ? [] : JSON.parse(paramValue);
+    return (
+      paramValue === null ? [] : JSON.parse(paramValue)
+    ) as RansackParams[typeof paramName];
   }
 
   return paramValue as RansackParams[typeof paramName];
