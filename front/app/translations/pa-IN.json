@@ -2154,6 +2154,7 @@
   "app.utils.IdeasNewPage.viewYourProject": "ਆਪਣਾ ਪ੍ਰੋਜੈਕਟ ਵੇਖੋ",
   "app.utils.IdeasNewPage.viewYourProposal": "ਆਪਣਾ ਪ੍ਰਸਤਾਵ ਵੇਖੋ",
   "app.utils.IdeasNewPage.viewYourQuestion": "ਆਪਣਾ ਸਵਾਲ ਵੇਖੋ",
+  "app.utils.Projects.sendSubmission": "ਮੇਰੇ ਈਮੇਲ 'ਤੇ ਸਬਮਿਸ਼ਨ ਪਛਾਣਕਰਤਾ ਭੇਜੋ",
   "app.utils.Projects.sendSurveySubmission": "ਸਰਵੇਖਣ ਸਬਮਿਸ਼ਨ ਪਛਾਣਕਰਤਾ ਨੂੰ ਮੇਰੀ ਈਮੇਲ 'ਤੇ ਭੇਜੋ",
   "app.utils.Projects.surveySubmission": "ਸਰਵੇਖਣ ਸਪੁਰਦਗੀ",
   "app.utils.Projects.yourResponseHasTheFollowingId": "ਤੁਹਾਡੇ ਜਵਾਬ ਵਿੱਚ ਨਿਮਨਲਿਖਤ ਪਛਾਣਕਰਤਾ ਹੈ: {identifier}",
