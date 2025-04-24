@@ -2154,6 +2154,7 @@
   "app.utils.IdeasNewPage.viewYourProject": "Δείτε το έργο σας",
   "app.utils.IdeasNewPage.viewYourProposal": "Δείτε την πρότασή σας",
   "app.utils.IdeasNewPage.viewYourQuestion": "Δείτε την ερώτησή σας",
+  "app.utils.Projects.sendSubmission": "Στείλτε το αναγνωριστικό υποβολής στο email μου",
   "app.utils.Projects.sendSurveySubmission": "Αποστολή αναγνωριστικού υποβολής έρευνας στο email μου",
   "app.utils.Projects.surveySubmission": "Υποβολή έρευνας",
   "app.utils.Projects.yourResponseHasTheFollowingId": "Η απάντησή σας έχει το ακόλουθο αναγνωριστικό: {identifier}",
