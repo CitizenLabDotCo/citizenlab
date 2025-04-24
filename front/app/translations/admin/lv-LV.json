@@ -434,7 +434,6 @@
   "app.components.app.containers.AdminPage.ProjectEdit.reactingThresholdRequired": "Nepieciešams minimālais balsu skaits",
   "app.components.app.containers.AdminPage.ProjectEdit.report": "Ziņojums",
   "app.components.app.containers.AdminPage.ProjectEdit.screeningText": "Pieprasīt izejvielu pārbaudi",
-  "app.components.app.containers.AdminPage.ProjectEdit.screeningTooltip": "Skrīnings nav iekļauts jūsu pašreizējā plānā. Lai to atbloķētu, sazinieties ar savu valdības veiksmes menedžeri vai administratoru.",
   "app.components.app.containers.AdminPage.ProjectEdit.timelineTab": "Laika grafiks",
   "app.components.app.containers.AdminPage.ProjectEdit.trafficTab": "Satiksme",
   "app.components.formBuilder.cancelMethodChange1": "Atcelt",
