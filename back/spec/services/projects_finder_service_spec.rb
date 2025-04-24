@@ -262,7 +262,7 @@ describe ProjectsFinderService do
       it 'excludes projects in draft folder' do
         folder = create(:project_folder, projects: [finished_project1])
         folder.admin_publication.update!(publication_status: 'draft')
-  
+
         expect(Project.count).to eq 2
         expect(result).not_to include(finished_project1)
       end
@@ -367,7 +367,7 @@ describe ProjectsFinderService do
       it 'excludes projects in draft folder' do
         folder = create(:project_folder, projects: [archived_project])
         folder.admin_publication.update!(publication_status: 'draft')
-  
+
         expect(Project.count).to eq 5
         expect(result).not_to include(archived_project)
       end
@@ -437,7 +437,7 @@ describe ProjectsFinderService do
       it 'excludes projects in draft folder' do
         folder = create(:project_folder, projects: [unfinished_project1, archived_project])
         folder.admin_publication.update!(publication_status: 'draft')
-  
+
         expect(Project.count).to eq 7
         expect(result).not_to include(unfinished_project1)
         expect(result).not_to include(archived_project)
