@@ -9,9 +9,11 @@ export type Parameters = any;
 export type ProjectLibraryTopics = {
   data: {
     id: string;
-    type: 'project_library_topics';
+    type: 'project_library_topic';
     attributes: {
-      // TODO
+      l1: string;
+      l2: string;
+      ordering: number;
     };
   }[];
 };
