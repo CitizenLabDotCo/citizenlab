@@ -943,6 +943,7 @@
   "app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.CraftComponents.CommunityMonitor.communityMonitorDescription": "ਵੇਰਵਾ",
   "app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.CraftComponents.CommunityMonitor.communityMonitorSubmitBtnText": "ਬਟਨ",
   "app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.CraftComponents.CommunityMonitor.communityMonitorTitle": "ਟਾਈਟਲ",
+  "app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.CraftComponents.CommunityMonitor.important": "ਮਹੱਤਵਪੂਰਨ:",
   "app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.CraftComponents.CommunityMonitor.sentimentQuestionPreviewAltText": "ਭਾਵਨਾ ਸਰਵੇਖਣ ਸਵਾਲ ਦੀ ਉਦਾਹਰਣ",
   "app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.CraftComponents.OpenToParticipation.ProjectCarrousel.noEndDate": "ਕੋਈ ਸਮਾਪਤੀ ਮਿਤੀ ਨਹੀਂ",
   "app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.CraftComponents.OpenToParticipation.ProjectCarrousel.skipCarrousel": "ਕੈਰੋਸੇਲ ਨੂੰ ਛੱਡਣ ਲਈ escape ਦਬਾਓ",
