@@ -434,7 +434,7 @@
   "app.components.app.containers.AdminPage.ProjectEdit.reactingThresholdRequired": "Minimum number of votes is required",
   "app.components.app.containers.AdminPage.ProjectEdit.report": "Report",
   "app.components.app.containers.AdminPage.ProjectEdit.screeningText": "Require screening of inputs",
-  "app.components.app.containers.AdminPage.ProjectEdit.screeningTooltip": "Screening is not included in your current plan. Talk to your Government Success Manager or admin to unlock it.",
+  "app.components.app.containers.AdminPage.ProjectEdit.screeningTooltip": "A szűrést nem tartalmazza a jelenlegi terv. A zárolás feloldásához forduljon kormányzati sikermenedzseréhez vagy rendszergazdájához.",
   "app.components.app.containers.AdminPage.ProjectEdit.timelineTab": "Timeline",
   "app.components.app.containers.AdminPage.ProjectEdit.trafficTab": "Traffic",
   "app.components.formBuilder.cancelMethodChange1": "Cancel",
