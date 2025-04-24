@@ -91,21 +91,27 @@ module ReportBuilder
         participations = participations
           .joins('INNER JOIN users ON users.id = analytics_fact_participations.dimension_user_id')
           .select("
-            *,
-            CASE
+            analytics_fact_participations.*,
+            (CASE
               WHEN users.roles::TEXT LIKE '%admin%' THEN 'admin'
               WHEN users.roles::TEXT LIKE '%project_folder_moderator%' THEN 'project_folder_moderator'
               WHEN users.roles::TEXT LIKE '%project_moderator%' THEN 'project_moderator'
               ELSE 'user'
-            END as highest_role
+            END) AS highest_role
           ")
-          .where.not(highest_role: { role: exclude_roles })
+          .where.not("highest_role IN (?)", exclude_roles)
       end
 
       participations
     end
 
-    def participation_rate(participants, start_date, end_date, project_id: nil)
+    def participation_rate(
+      participants, 
+      start_date,
+      end_date, 
+      project_id: nil,
+      exclude_roles: nil
+    )
       query = ImpactTracking::Session
         .where(created_at: start_date..end_date)
 

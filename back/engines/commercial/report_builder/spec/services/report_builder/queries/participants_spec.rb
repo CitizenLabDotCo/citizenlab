@@ -193,19 +193,45 @@ RSpec.describe ReportBuilder::Queries::Participants do
       end
 
       8.times do |i|
-        session = create(:session, created_at: @date_september, monthly_user_hash: "visitor_#{i}")
+        session = create(
+          :session, 
+          created_at: 
+          @date_september, monthly_user_hash: "visitor_#{i}",
+          highest_role: 'user'
+        )
         create(:pageview, created_at: @date_september, session_id: session.id, project_id: project.id)
       end
 
       # Create 3 participants and 4 visitors with admin role
       3.times do
-        create(:idea, created_at: @date_september, project: project, author: create(:user))
+        create(:idea, created_at: @date_september, project: project, author: create(:admin))
       end
 
       4.times do |i|
-        session = create(:session, created_at: @date_september, monthly_user_hash: "another_visitor_#{i}")
+        session = create(
+          :session, 
+          created_at: 
+          @date_september, 
+          monthly_user_hash: "another_visitor_#{i}",
+          highest_role: 'admin'
+        )
         create(:pageview, created_at: @date_september, session_id: session.id, project_id: project.id)
       end
+
+      params = {
+        start_at: @date_september - 1.day,
+        end_at: @date_september + 1.day,
+        exclude_roles: ['admin']
+      }
+
+      expect(query.run_query(**params)).to eq({
+        participants_timeseries: [{
+          participants: 4,
+          date_group: Date.new(2022, 9, 1)
+        }],
+        participants_whole_period: 4,
+        participation_rate_whole_period: 0.5
+      })
     end
   end
 end
