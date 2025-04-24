@@ -2652,7 +2652,6 @@
   "app.containers.AdminPage.projects.project.analysis.filter": "Nur Eingaben mit diesem Wert anzeigen",
   "app.containers.AdminPage.projects.project.analysis.filterEmptyCustomFields": "Leere Antworten ausblenden",
   "app.containers.AdminPage.projects.project.analysis.heatmap.autoInsights": "Automatische Einblicke",
-  "app.containers.AdminPage.projects.project.analysis.heatmap.autoInsightsUpsellNudge": "Diese Funktion ist in Ihrer aktuellen Lizenz nicht enthalten. Sprechen Sie mit Ihrer Kundenbetreuerin oder Ihrem Admin, um sie freizuschalten.",
   "app.containers.AdminPage.projects.project.analysis.heatmap.columnValues": "Spaltenwerte",
   "app.containers.AdminPage.projects.project.analysis.heatmap.count": "Es gibt {count} Beispiele für diese Kombination.",
   "app.containers.AdminPage.projects.project.analysis.heatmap.dislikes": "Gefällt mir nicht",

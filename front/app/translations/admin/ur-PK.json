@@ -2652,7 +2652,6 @@
   "app.containers.AdminPage.projects.project.analysis.filter": "صرف اس قدر کے ساتھ ان پٹ دکھائیں۔",
   "app.containers.AdminPage.projects.project.analysis.filterEmptyCustomFields": "بغیر کسی جواب کے جوابات چھپائیں۔",
   "app.containers.AdminPage.projects.project.analysis.heatmap.autoInsights": "خودکار بصیرتیں۔",
-  "app.containers.AdminPage.projects.project.analysis.heatmap.autoInsightsUpsellNudge": "یہ خصوصیت آپ کے موجودہ پلان میں شامل نہیں ہے۔ اسے غیر مقفل کرنے کے لیے اپنے حکومتی کامیابی کے مینیجر یا منتظم سے بات کریں۔",
   "app.containers.AdminPage.projects.project.analysis.heatmap.columnValues": "کالم کی قدریں۔",
   "app.containers.AdminPage.projects.project.analysis.heatmap.count": "اس مجموعہ کی {count} مثالیں ہیں۔",
   "app.containers.AdminPage.projects.project.analysis.heatmap.dislikes": "ناپسندیدگی",

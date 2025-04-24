@@ -2652,7 +2652,6 @@
   "app.containers.AdminPage.projects.project.analysis.filter": "Vis kun input med denne værdi",
   "app.containers.AdminPage.projects.project.analysis.filterEmptyCustomFields": "Skjul besvarelser uden svar",
   "app.containers.AdminPage.projects.project.analysis.heatmap.autoInsights": "Automatisk indsigt",
-  "app.containers.AdminPage.projects.project.analysis.heatmap.autoInsightsUpsellNudge": "Denne funktion er ikke inkluderet i din nuværende plan. Tal med Søren Kielgast eller jeres administrator for at låse den op.",
   "app.containers.AdminPage.projects.project.analysis.heatmap.columnValues": "Kolonneværdier",
   "app.containers.AdminPage.projects.project.analysis.heatmap.count": "Der findes {count} eksempler på denne kombination.",
   "app.containers.AdminPage.projects.project.analysis.heatmap.dislikes": "Dislikes",

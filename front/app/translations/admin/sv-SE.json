@@ -2652,7 +2652,6 @@
   "app.containers.AdminPage.projects.project.analysis.filter": "Visa endast inmatningar med detta värde",
   "app.containers.AdminPage.projects.project.analysis.filterEmptyCustomFields": "Dölj svar utan svar",
   "app.containers.AdminPage.projects.project.analysis.heatmap.autoInsights": "Auto-insikter",
-  "app.containers.AdminPage.projects.project.analysis.heatmap.autoInsightsUpsellNudge": "Den här funktionen ingår inte i din nuvarande plan. Prata med din Government Success Manager eller administratör för att låsa upp den.",
   "app.containers.AdminPage.projects.project.analysis.heatmap.columnValues": "Kolumnvärden",
   "app.containers.AdminPage.projects.project.analysis.heatmap.count": "Det finns {count} exempel på denna kombination.",
   "app.containers.AdminPage.projects.project.analysis.heatmap.dislikes": "Tycker illa om",
