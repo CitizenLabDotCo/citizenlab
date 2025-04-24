@@ -115,13 +115,12 @@ namespace :single_use do
         end
 
         puts "\n\n"
-        
+
         # Update the data if execute == true
         if execute
           data_unit.data = new_data
           data_unit.save!
           puts "Updated #{data_unit.graph_id}"
-          puts "\n\n"
         else
           puts "Would update #{data_unit.graph_id}\n"
           puts "Old data:\n"
@@ -129,8 +128,9 @@ namespace :single_use do
           puts "\n\n"
           puts "New data:\n"
           puts new_data.to_json
-          puts "\n\n"
         end
+
+        puts "\n\n"
       end
     end
   end
