@@ -11,47 +11,43 @@ import messages from '../../../../../../messages';
 interface Props {
   prescreening_enabled: boolean | null | undefined;
   togglePrescreeningEnabled: (prescreening_enabled: boolean) => void;
-  prescreeningFeatureAllowed: boolean;
 }
 
 const PrescreeningToggle = ({
   prescreening_enabled,
   togglePrescreeningEnabled,
-  prescreeningFeatureAllowed,
 }: Props) => {
   return (
     <SectionField>
       <SubSectionTitle style={{ marginBottom: '0px' }}>
         <FormattedMessage {...messages.participationOptions} />
       </SubSectionTitle>
-      {prescreeningFeatureAllowed && (
-        <Box>
-          <Toggle
-            checked={prescreening_enabled || false}
-            onChange={() => {
-              togglePrescreeningEnabled(!prescreening_enabled);
-            }}
-            label={
-              <Box ml="8px" id="e2e-participation-options-toggle">
-                <Box display="flex">
-                  <Text
-                    color="primary"
-                    mb="0px"
-                    fontSize="m"
-                    fontWeight="semi-bold"
-                  >
-                    <FormattedMessage {...messages.prescreeningText} />
-                  </Text>
-                </Box>
-
-                <Text color="coolGrey600" mt="0px" fontSize="m">
-                  <FormattedMessage {...messages.prescreeningSubtext} />
+      <Box>
+        <Toggle
+          checked={prescreening_enabled || false}
+          onChange={() => {
+            togglePrescreeningEnabled(!prescreening_enabled);
+          }}
+          label={
+            <Box ml="8px" id="e2e-participation-options-toggle">
+              <Box display="flex">
+                <Text
+                  color="primary"
+                  mb="0px"
+                  fontSize="m"
+                  fontWeight="semi-bold"
+                >
+                  <FormattedMessage {...messages.prescreeningText} />
                 </Text>
               </Box>
-            }
-          />
-        </Box>
-      )}
+
+              <Text color="coolGrey600" mt="0px" fontSize="m">
+                <FormattedMessage {...messages.prescreeningSubtext} />
+              </Text>
+            </Box>
+          }
+        />
+      </Box>
     </SectionField>
   );
 };
