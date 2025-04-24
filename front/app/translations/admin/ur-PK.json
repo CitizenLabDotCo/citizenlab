@@ -434,7 +434,6 @@
   "app.components.app.containers.AdminPage.ProjectEdit.reactingThresholdRequired": "ووٹوں کی کم از کم تعداد درکار ہے۔",
   "app.components.app.containers.AdminPage.ProjectEdit.report": "رپورٹ",
   "app.components.app.containers.AdminPage.ProjectEdit.screeningText": "آدانوں کی اسکریننگ کی ضرورت ہے۔",
-  "app.components.app.containers.AdminPage.ProjectEdit.screeningTooltip": "اسکریننگ آپ کے موجودہ پلان میں شامل نہیں ہے۔ اسے غیر مقفل کرنے کے لیے اپنے حکومتی کامیابی کے مینیجر یا منتظم سے بات کریں۔",
   "app.components.app.containers.AdminPage.ProjectEdit.timelineTab": "ٹائم لائن",
   "app.components.app.containers.AdminPage.ProjectEdit.trafficTab": "ٹریفک",
   "app.components.formBuilder.cancelMethodChange1": "منسوخ کریں۔",
