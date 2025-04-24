@@ -42,6 +42,7 @@ const SentimentQuestion = ({
         background={colors.white}
         border={`1px solid ${colors.borderLight}`}
         borderRadius="4px"
+        className="e2e-sentiment-question"
         {...props}
       >
         <SentimentResultTitle
@@ -67,7 +68,13 @@ const SentimentQuestion = ({
 
   // Otherwise, show an accordion with the text responses in the body
   return (
-    <Box mb="20px" background={colors.white} borderRadius="4px" {...props}>
+    <Box
+      mb="20px"
+      background={colors.white}
+      borderRadius="4px"
+      {...props}
+      className="e2e-sentiment-question"
+    >
       <Accordion
         borderRadius="4px"
         title={

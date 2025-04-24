@@ -238,7 +238,8 @@ commercial_engines = [
   'id_nemlog_in',
   'id_oostende_rrn',
   'id_hoplr',
-  'id_vienna_saml'
+  'id_vienna_saml',
+  'id_twoday'
 ]
 
 commercial_engines.each do |engine_name|

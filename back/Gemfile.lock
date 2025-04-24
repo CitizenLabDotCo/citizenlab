@@ -185,6 +185,13 @@ PATH
       rails (~> 7.0)
 
 PATH
+  remote: engines/commercial/id_twoday
+  specs:
+    id_twoday (1.0.0)
+      omniauth_openid_connect (~> 0.7.1)
+      rails (~> 7.0)
+
+PATH
   remote: engines/commercial/id_vienna_saml
   specs:
     id_vienna_saml (1.0.0)
@@ -1352,6 +1359,7 @@ DEPENDENCIES
   id_keycloak!
   id_nemlog_in!
   id_oostende_rrn!
+  id_twoday!
   id_vienna_saml!
   idea_assignment!
   idea_custom_fields!
