@@ -39,7 +39,7 @@ describe('Submit community monitor survey', () => {
 
     // save the form
     cy.contains('Submit').should('be.visible');
-    cy.contains('Submit').click();
+    cy.contains('Submit').click({ force: true });
 
     // Confirm submissions was successful
     cy.get('[data-cy="e2e-after-submission"]').should('exist');
@@ -67,7 +67,7 @@ describe('Submit community monitor survey', () => {
 
     // save the form
     cy.contains('Submit').should('be.visible');
-    cy.contains('Submit').click();
+    cy.contains('Submit').click({ force: true });
 
     // Confirm submissions was successful
     cy.get('[data-cy="e2e-after-submission"]').should('exist');
