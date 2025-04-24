@@ -96,14 +96,6 @@ definePermissionRule(
   }
 );
 
-definePermissionRule(
-  'project_folder',
-  'create_project_in_folder_only',
-  (_folder, user) => {
-    return !isAdmin(user) && isProjectFolderModerator(user);
-  }
-);
-
 // Permission to add or remove projects from folders
 definePermissionRule(
   'project_folder',
