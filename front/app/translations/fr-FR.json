@@ -2154,6 +2154,7 @@
   "app.utils.IdeasNewPage.viewYourProject": "Voir votre projet",
   "app.utils.IdeasNewPage.viewYourProposal": "Voir votre proposition",
   "app.utils.IdeasNewPage.viewYourQuestion": "Voir votre question",
+  "app.utils.Projects.sendSubmission": "Envoyez l'identifiant de soumission à mon adresse électronique",
   "app.utils.Projects.sendSurveySubmission": "Envoyer l'identifiant de la soumission à mon adresse e-mail",
   "app.utils.Projects.surveySubmission": "Soumission de l'enquête",
   "app.utils.Projects.yourResponseHasTheFollowingId": "Votre réponse a l'identifiant suivant : {identifier}",

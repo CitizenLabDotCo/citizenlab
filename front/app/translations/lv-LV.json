@@ -2154,6 +2154,7 @@
   "app.utils.IdeasNewPage.viewYourProject": "Skatīt savu projektu",
   "app.utils.IdeasNewPage.viewYourProposal": "Pārskatīt savu priekšlikumu",
   "app.utils.IdeasNewPage.viewYourQuestion": "Skatīt savu jautājumu",
+  "app.utils.Projects.sendSubmission": "Nosūtīt iesniegšanas identifikatoru uz manu e-pastu",
   "app.utils.Projects.sendSurveySubmission": "Nosūtīt aptaujas iesniegšanas identifikatoru uz manu e-pastu",
   "app.utils.Projects.surveySubmission": "Aptaujas iesniegšana",
   "app.utils.Projects.yourResponseHasTheFollowingId": "Jūsu atbildei ir šāds identifikators: {identifier}.",

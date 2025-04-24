@@ -2154,6 +2154,7 @@
   "app.utils.IdeasNewPage.viewYourProject": "Se prosjektet ditt",
   "app.utils.IdeasNewPage.viewYourProposal": "Se forslaget ditt",
   "app.utils.IdeasNewPage.viewYourQuestion": "Se spørsmålet ditt",
+  "app.utils.Projects.sendSubmission": "Send innsendingsidentifikator til min e-post",
   "app.utils.Projects.sendSurveySubmission": "Send identifikator for innsending av undersøkelsen til min e-post",
   "app.utils.Projects.surveySubmission": "Innsending av spørreundersøkelse",
   "app.utils.Projects.yourResponseHasTheFollowingId": "Svaret ditt har følgende identifikator: {identifier}",

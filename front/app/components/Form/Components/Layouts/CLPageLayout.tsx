@@ -546,7 +546,14 @@ const CLPageLayout = memo(
                       )}
                     {pageVariant === 'after-submission' &&
                       ideaId &&
-                      showIdeaId && <SubmissionReference ideaId={ideaId} />}
+                      showIdeaId && (
+                        <SubmissionReference
+                          inputId={ideaId}
+                          participationMethod={
+                            phase?.data.attributes.participation_method
+                          }
+                        />
+                      )}
                   </Box>
                 </Box>
               </Box>
