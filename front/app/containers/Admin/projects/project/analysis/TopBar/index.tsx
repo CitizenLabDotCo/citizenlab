@@ -91,6 +91,11 @@ const TopBar = () => {
       clHistory.push(
         `/admin/projects/${projectId}/phases/${phaseId}/native-survey`
       );
+    } else if (
+      analysis?.data.attributes.participation_method ===
+      'community_monitor_survey'
+    ) {
+      clHistory.push(`/admin/community-monitor/live-monitor`);
     } else {
       clHistory.push(`/admin/projects/${projectId}/phases/${phaseId}/ideas`);
     }
