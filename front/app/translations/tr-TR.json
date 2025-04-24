@@ -500,6 +500,7 @@
   "app.components.VerificationModal.verifyIdAustria": "ID Austria ile doğrulayın",
   "app.components.VerificationModal.verifyKeycloak": "ID-Porten ile doğrulayın",
   "app.components.VerificationModal.verifyNemLogIn": "MitID ile doğrulayın",
+  "app.components.VerificationModal.verifyTwoday2": "BankID veya Freja eID+ ile doğrulayın",
   "app.components.VerificationModal.verifyYourIdentity": "Kimliğinizi doğrulayın",
   "app.components.VoteControl.budgetingFutureEnabled": "Bütçenizi {enabledFromDate} tarihinden itibaren ayırabilirsiniz.",
   "app.components.VoteControl.budgetingNotPermitted": "Katılım için bütçe ayırma şu an için etkin değil.",
