@@ -69,7 +69,7 @@ const SSOVerificationButton = ({
     },
     twoday: {
       label: messages.verifyTwoday,
-      icon: 'bullseye', // TODO: this
+      icon: 'bankId',
     },
     auth0: {
       label: messages.verifyAuth0,
