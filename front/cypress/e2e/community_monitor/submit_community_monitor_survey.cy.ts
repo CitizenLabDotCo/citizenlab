@@ -9,6 +9,11 @@ describe('Submit community monitor survey', () => {
       cy.getProjectById(communityMonitorProjectId).then((project) => {
         communityMonitorPhaseId =
           project.body.data.relationships.current_phase.data.id;
+
+        cy.apiEditPhase({
+          phaseId: communityMonitorPhaseId,
+          submission_enabled: true,
+        });
       });
     });
   });
