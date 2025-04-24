@@ -2154,6 +2154,7 @@
   "app.utils.IdeasNewPage.viewYourProject": "Pogledajte svoj projekt",
   "app.utils.IdeasNewPage.viewYourProposal": "Pogledajte svoj prijedlog",
   "app.utils.IdeasNewPage.viewYourQuestion": "Pogledajte svoje pitanje",
+  "app.utils.Projects.sendSubmission": "Pošalji identifikator prijave na moju e-poštu",
   "app.utils.Projects.sendSurveySubmission": "Pošalji identifikator podnošenja ankete na moju e-poštu",
   "app.utils.Projects.surveySubmission": "Podnošenje ankete",
   "app.utils.Projects.yourResponseHasTheFollowingId": "Vaš odgovor ima sljedeći identifikator: {identifier}",

@@ -493,7 +493,7 @@ resource 'Ideas' do
             embeddings['pizza']
           end
 
-          SettingsService.new.activate_feature! 'authoring_assistance'
+          SettingsService.new.activate_feature! 'input_iq'
           project.phases.first.update!(similarity_threshold_title: 0.3, similarity_threshold_body: 0.0)
         end
 

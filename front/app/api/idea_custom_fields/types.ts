@@ -23,7 +23,8 @@ export type IIdeaCustomFieldInputType =
   | 'shapefile_upload'
   | 'point'
   | 'line'
-  | 'polygon';
+  | 'polygon'
+  | 'multiselect_image';
 
 export type TCustomFieldCode =
   | 'gender'

@@ -2154,6 +2154,7 @@
   "app.utils.IdeasNewPage.viewYourProject": "Se dit projekt",
   "app.utils.IdeasNewPage.viewYourProposal": "Se dit forslag",
   "app.utils.IdeasNewPage.viewYourQuestion": "Se dit spørgsmål",
+  "app.utils.Projects.sendSubmission": "Send referencekode til min e-mail",
   "app.utils.Projects.sendSurveySubmission": "Send kvittering for indsendelse af survey til min e-mail",
   "app.utils.Projects.surveySubmission": "Indsendelse af undersøgelse",
   "app.utils.Projects.yourResponseHasTheFollowingId": "Dit svar har følgende identifikation: {identifier}",
