@@ -500,6 +500,7 @@
   "app.components.VerificationModal.verifyIdAustria": "Patikrinkite su ID Austria",
   "app.components.VerificationModal.verifyKeycloak": "Patikrinkite su \"ID-Porten",
   "app.components.VerificationModal.verifyNemLogIn": "Patikrinkite su \"MitID",
+  "app.components.VerificationModal.verifyTwoday2": "Patikrinkite naudodami \"BankID\" arba \"Freja eID+",
   "app.components.VerificationModal.verifyYourIdentity": "Patikrinkite savo tapatybę",
   "app.components.VoteControl.budgetingFutureEnabled": "Biudžetą galite skirti nuo {enabledFromDate}.",
   "app.components.VoteControl.budgetingNotPermitted": "Šiuo metu nėra galimybės sudaryti dalyvaujamąjį biudžetą.",
