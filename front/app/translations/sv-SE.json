@@ -2154,6 +2154,7 @@
   "app.utils.IdeasNewPage.viewYourProject": "Visa ditt projekt",
   "app.utils.IdeasNewPage.viewYourProposal": "Se ditt förslag",
   "app.utils.IdeasNewPage.viewYourQuestion": "Visa din fråga",
+  "app.utils.Projects.sendSubmission": "Skicka inlämningsidentifierare till min e-post",
   "app.utils.Projects.sendSurveySubmission": "Skicka identifierare för enkätinlämning till min e-post",
   "app.utils.Projects.surveySubmission": "Inlämning av enkät",
   "app.utils.Projects.yourResponseHasTheFollowingId": "Ditt svar har följande identifierare: {identifier}",
