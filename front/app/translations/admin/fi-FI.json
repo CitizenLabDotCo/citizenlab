@@ -2652,7 +2652,6 @@
   "app.containers.AdminPage.projects.project.analysis.filter": "Näytä vain syötteet tällä arvolla",
   "app.containers.AdminPage.projects.project.analysis.filterEmptyCustomFields": "Piilota vastaukset ilman vastausta",
   "app.containers.AdminPage.projects.project.analysis.heatmap.autoInsights": "Automaattiset tilastot",
-  "app.containers.AdminPage.projects.project.analysis.heatmap.autoInsightsUpsellNudge": "Tämä ominaisuus ei sisälly nykyiseen suunnitelmaasi. Keskustele hallituksen menestyspäällikön tai järjestelmänvalvojan kanssa avataksesi sen.",
   "app.containers.AdminPage.projects.project.analysis.heatmap.columnValues": "Sarakearvot",
   "app.containers.AdminPage.projects.project.analysis.heatmap.count": "Tästä yhdistelmästä on {count} esiintymiä.",
   "app.containers.AdminPage.projects.project.analysis.heatmap.dislikes": "Ei pidä",

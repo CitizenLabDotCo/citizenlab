@@ -29,7 +29,7 @@ import LinkToFolderSettings from './LinkToFolderSettings';
 import messages from './messages';
 import ProjectDescriptionPreview from './ProjectDescriptionPreview';
 import PublicationStatus from './PublicationStatus';
-import ReviewFlow from './ReviewFlow';
+import PublicationButtons from './PublicationButtons';
 import ShareLink from './ShareLink';
 
 const StyledTitle = styled(Title)`
@@ -150,7 +150,7 @@ const ProjectHeader = ({ projectId }: Props) => {
               {formatMessage(messages.settings)}
             </ButtonWithLink>
 
-            <ReviewFlow project={project.data} />
+            <PublicationButtons project={project.data} />
           </Box>
         </Box>
         <Box display="flex" gap="8px">

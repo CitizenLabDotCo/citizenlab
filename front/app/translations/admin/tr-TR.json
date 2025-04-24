@@ -2652,7 +2652,6 @@
   "app.containers.AdminPage.projects.project.analysis.filter": "Yalnızca bu değere sahip girdileri göster",
   "app.containers.AdminPage.projects.project.analysis.filterEmptyCustomFields": "Cevapsız yanıtları gizle",
   "app.containers.AdminPage.projects.project.analysis.heatmap.autoInsights": "Otomatik içgörüler",
-  "app.containers.AdminPage.projects.project.analysis.heatmap.autoInsightsUpsellNudge": "Bu özellik mevcut planınıza dahil değildir. Kilidi açmak için Kamu Başarı Yöneticinizle veya yöneticinizle konuşun.",
   "app.containers.AdminPage.projects.project.analysis.heatmap.columnValues": "Sütun değerleri",
   "app.containers.AdminPage.projects.project.analysis.heatmap.count": "Bu kombinasyonun {count} örneği bulunmaktadır.",
   "app.containers.AdminPage.projects.project.analysis.heatmap.dislikes": "Sevmediğim",

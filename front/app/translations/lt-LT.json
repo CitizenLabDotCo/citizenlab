@@ -2154,6 +2154,7 @@
   "app.utils.IdeasNewPage.viewYourProject": "Peržiūrėkite savo projektą",
   "app.utils.IdeasNewPage.viewYourProposal": "Peržiūrėkite savo pasiūlymą",
   "app.utils.IdeasNewPage.viewYourQuestion": "Peržiūrėti savo klausimą",
+  "app.utils.Projects.sendSubmission": "Siųsti pateikimo identifikatorių į mano el. paštą",
   "app.utils.Projects.sendSurveySubmission": "Siųsti apklausos pateikimo identifikatorių į mano el. paštą",
   "app.utils.Projects.surveySubmission": "Apklausos pateikimas",
   "app.utils.Projects.yourResponseHasTheFollowingId": "Jūsų atsakymas turi tokį identifikatorių: {identifier}",

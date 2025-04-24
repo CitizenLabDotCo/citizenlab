@@ -2652,7 +2652,6 @@
   "app.containers.AdminPage.projects.project.analysis.filter": "Rādīt tikai ievades ar šo vērtību",
   "app.containers.AdminPage.projects.project.analysis.filterEmptyCustomFields": "Paslēpt atbildes bez atbildes",
   "app.containers.AdminPage.projects.project.analysis.heatmap.autoInsights": "Automātiskās norādes",
-  "app.containers.AdminPage.projects.project.analysis.heatmap.autoInsightsUpsellNudge": "Šī funkcija nav iekļauta jūsu pašreizējā plānā. Lai to atbloķētu, sazinieties ar savu valdības veiksmes menedžeri vai administratoru.",
   "app.containers.AdminPage.projects.project.analysis.heatmap.columnValues": "Kolonnu vērtības",
   "app.containers.AdminPage.projects.project.analysis.heatmap.count": "Ir {count} šādas kombinācijas piemēru.",
   "app.containers.AdminPage.projects.project.analysis.heatmap.dislikes": "Nepatīk",
