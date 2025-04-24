@@ -11,10 +11,7 @@ const apiPath = '*/custom_fields/:customFieldId/custom_field_options';
 
 const server = setupServer(
   http.get(apiPath, () => {
-    return HttpResponse.json(
-      { data: customFieldOptionsData },
-      { status: 200 }
-    );
+    return HttpResponse.json({ data: customFieldOptionsData }, { status: 200 });
   })
 );
 

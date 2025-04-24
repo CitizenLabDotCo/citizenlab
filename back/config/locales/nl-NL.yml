@@ -171,12 +171,15 @@ nl:
       attachments:
         title: Bijlagen
         description:
-      page1:
+      title_page:
         description:
-      page2:
+      body_page:
+        title: Vertel ons meer
+        description:
+      uploads_page:
         title: Afbeeldingen en bijlagen
         description:
-      page3:
+      details_page:
         title: Details
         description:
       other_input_field:

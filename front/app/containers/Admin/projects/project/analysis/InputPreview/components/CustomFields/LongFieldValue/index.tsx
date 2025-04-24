@@ -11,6 +11,7 @@ import LineLongField from './CustomFieldLongFieldValues/LineLongField';
 import LocationDescriptionLongField from './CustomFieldLongFieldValues/LocationDescriptionLongField';
 import MatrixLongField from './CustomFieldLongFieldValues/MatrixLongField';
 import MultilineTextLongField from './CustomFieldLongFieldValues/MultilineTextLongField';
+import MultiselectImageLongField from './CustomFieldLongFieldValues/MultiselectImageLongField';
 import MultiselectLongField from './CustomFieldLongFieldValues/MultiselectLongField';
 import PointfileLongField from './CustomFieldLongFieldValues/PointLongField';
 import PolygonLongField from './CustomFieldLongFieldValues/PolygonLongField';
@@ -70,6 +71,7 @@ const FieldValue = ({ projectId, phaseId, customFieldId, input }: Props) => {
           return <TextLongField input={input} customField={customField} />;
         case 'number':
         case 'rating':
+        case 'sentiment_linear_scale':
         case 'linear_scale': {
           return (
             <LinearScaleLongField
@@ -92,6 +94,14 @@ const FieldValue = ({ projectId, phaseId, customFieldId, input }: Props) => {
         case 'multiselect': {
           return (
             <MultiselectLongField
+              rawValue={rawValue}
+              customField={customField}
+            />
+          );
+        }
+        case 'multiselect_image': {
+          return (
+            <MultiselectImageLongField
               rawValue={rawValue}
               customField={customField}
             />

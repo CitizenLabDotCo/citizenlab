@@ -6,8 +6,7 @@ import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
 
 import useDeleteCustomFieldOption from './useDeleteCustomFieldOption';
 
-const apiPath =
-  '*/custom_field_options/:optionId';
+const apiPath = '*/custom_field_options/:optionId';
 
 const server = setupServer(
   http.delete(apiPath, () => {
@@ -20,16 +19,13 @@ describe('useDeleteCustomFieldOption', () => {
   afterAll(() => server.close());
 
   it('mutates data correctly', async () => {
-    const { result, waitFor } = renderHook(
-      () => useDeleteCustomFieldOption(),
-      {
-        wrapper: createQueryClientWrapper(),
-      }
-    );
+    const { result, waitFor } = renderHook(() => useDeleteCustomFieldOption(), {
+      wrapper: createQueryClientWrapper(),
+    });
 
     act(() => {
       result.current.mutate({
-        optionId: 'optionId'
+        optionId: 'optionId',
       });
     });
 
@@ -43,16 +39,13 @@ describe('useDeleteCustomFieldOption', () => {
       })
     );
 
-    const { result, waitFor } = renderHook(
-      () => useDeleteCustomFieldOption(),
-      {
-        wrapper: createQueryClientWrapper(),
-      }
-    );
+    const { result, waitFor } = renderHook(() => useDeleteCustomFieldOption(), {
+      wrapper: createQueryClientWrapper(),
+    });
 
     act(() => {
       result.current.mutate({
-        optionId: 'optionId'
+        optionId: 'optionId',
       });
     });
 

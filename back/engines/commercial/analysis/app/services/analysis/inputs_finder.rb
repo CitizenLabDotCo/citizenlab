@@ -182,13 +182,18 @@ module Analysis
           else
             scope.where("ideas.custom_field_values->>'#{cf.key}' IN (?)", value)
           end
-        when 'multiselect'
+        when 'multiselect', 'multiselect_image'
           scope = if value.include?(nil)
             scope.where("ideas.custom_field_values->>'#{cf.key}' IS NULL OR jsonb_array_length(ideas.custom_field_values->'#{cf.key}') = 0")
           else
             scope.where("(ideas.custom_field_values->>'#{cf.key}')::jsonb ?| array[:value]", value: value)
           end
-        when 'number', 'linear_scale', 'rating'
+          scope = if value.include?(nil)
+            scope.where("ideas.custom_field_values->>'#{cf.key}' IS NULL OR jsonb_array_length(ideas.custom_field_values->'#{cf.key}') = 0")
+          else
+            scope.where("(ideas.custom_field_values->>'#{cf.key}')::jsonb ?| array[:value]", value: value)
+          end
+        when 'number', 'linear_scale', 'rating', 'sentiment_linear_scale'
           scope = if value.include?(nil)
             scope.where("ideas.custom_field_values->>'#{cf.key}' IS NULL")
           else

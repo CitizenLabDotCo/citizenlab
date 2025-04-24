@@ -171,14 +171,17 @@ ach:
       attachments:
         title: crwdns207892:0crwdne207892:0
         description: crwdns207894:0crwdne207894:0
-      page1:
-        description: crwdns4243953:0crwdne4243953:0
-      page2:
-        title: crwdns4243955:0crwdne4243955:0
-        description: crwdns4243957:0crwdne4243957:0
-      page3:
-        title: crwdns4243959:0crwdne4243959:0
-        description: crwdns4243961:0crwdne4243961:0
+      title_page:
+        description: crwdns4368150:0crwdne4368150:0
+      body_page:
+        title: crwdns4368152:0crwdne4368152:0
+        description: crwdns4368154:0crwdne4368154:0
+      uploads_page:
+        title: crwdns4368156:0crwdne4368156:0
+        description: crwdns4368158:0crwdne4368158:0
+      details_page:
+        title: crwdns4368160:0crwdne4368160:0
+        description: crwdns4368162:0crwdne4368162:0
       other_input_field:
         title: crwdns3058777:0crwdne3058777:0
       ask_follow_up_field:

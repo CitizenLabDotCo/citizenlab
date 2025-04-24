@@ -36,6 +36,8 @@ import useProjectBySlug from 'api/projects/useProjectBySlug';
 
 import useLocalize from 'hooks/useLocalize';
 
+import { supportsNativeSurvey as methodSupportsNativeSurvey } from 'containers/Admin/projects/project/inputImporter/ReviewSection/utils';
+import { triggerPostActionEvents } from 'containers/App/events';
 import ProfileVisiblity from 'containers/IdeasNewPage/IdeasNewIdeationForm/ProfileVisibility';
 
 import AnonymousParticipationConfirmationModal from 'components/AnonymousParticipationConfirmationModal';
@@ -61,6 +63,7 @@ import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 import eventEmitter from 'utils/eventEmitter';
 import { isPage } from 'utils/helperUtils';
 
+import { useIdeaSelect } from '../../../../containers/IdeasNewPage/SimilarInputs/InputSelectContext';
 import getPageSchema from '../../utils/getPageSchema';
 import { useErrorToRead } from '../Fields/ErrorToReadContext';
 
@@ -91,9 +94,8 @@ const CLPageLayout = memo(
     const theme = useTheme();
     const { pathname } = useLocation();
     const isAdminPage = isPage('admin', pathname);
-    const [postAnonymously, setPostAnonymously] = useState(false);
-    const [showAnonymousConfirmationModal, setShowAnonymousConfirmationModal] =
-      useState(false);
+    const { onIdeaSelect } = useIdeaSelect();
+    const isIdeaEditPage = isPage('idea_edit', location.pathname);
 
     // We can cast types because the tester made sure we only get correct values
     const pageTypeElements = (uischema as PageCategorization).elements;
@@ -119,6 +121,11 @@ const CLPageLayout = memo(
     // on the success page.
     const showIdeaId = idea ? !idea.data.relationships.author?.data : false;
 
+    const [postAnonymously, setPostAnonymously] = useState(
+      idea?.data.attributes.anonymous || false
+    );
+    const [showAnonymousConfirmationModal, setShowAnonymousConfirmationModal] =
+      useState(false);
     const draggableDivRef = useRef<HTMLDivElement>(null);
     const dragDividerRef = useRef<HTMLDivElement>(null);
     const pagesRef = useRef<HTMLDivElement>(null);
@@ -129,8 +136,9 @@ const CLPageLayout = memo(
     const phaseId =
       phaseIdFromSearchParams || getCurrentPhase(phases?.data)?.id;
     const { data: phase } = usePhase(phaseId);
-    const isNativeSurvey =
-      phase?.data.attributes.participation_method === 'native_survey';
+    const supportsNativeSurvey = methodSupportsNativeSurvey(
+      phase?.data.attributes.participation_method
+    );
     const allowAnonymousPosting =
       phase?.data.attributes.allow_anonymous_participation;
 
@@ -141,8 +149,9 @@ const CLPageLayout = memo(
      * to choose whether to post anonymously or not.
      */
     const allowsAnonymousPostingInNativeSurvey =
-      isNativeSurvey && allowAnonymousPosting;
-    const showTogglePostAnonymously = allowAnonymousPosting && !isNativeSurvey;
+      supportsNativeSurvey && allowAnonymousPosting;
+    const showTogglePostAnonymously =
+      allowAnonymousPosting && !supportsNativeSurvey;
 
     // Map-related variables
     const { data: projectMapConfig } = useProjectMapConfig(project?.data.id);
@@ -241,6 +250,8 @@ const CLPageLayout = memo(
     const handleNextAndSubmit = async () => {
       if (!onSubmit) return;
 
+      // Hide idea details when going to the next page
+      onIdeaSelect(null);
       const sanitizedData = sanitizeFormData(data);
 
       const isValid = customAjv.validate(
@@ -255,7 +266,7 @@ const CLPageLayout = memo(
       }
 
       if (pageVariant === 'after-submission') {
-        if (isNativeSurvey) {
+        if (supportsNativeSurvey) {
           if (currentPage.options.page_button_link) {
             // Page is using a custom button link
             window.location.href = currentPage.options.page_button_link;
@@ -264,6 +275,7 @@ const CLPageLayout = memo(
               pathname: `/projects/${project?.data.attributes.slug}`,
             });
           }
+          triggerPostActionEvents({});
         } else {
           clHistory.push({
             pathname: `/ideas/${idea?.data.attributes.slug}`,
@@ -325,6 +337,8 @@ const CLPageLayout = memo(
     };
 
     const handlePrevious = () => {
+      // Hide idea details when going back to a previous page
+      onIdeaSelect(null);
       // Get scopes of elements with rules on the current page
       const ruleElementsScopes = currentPage.elements
         .filter((element) => {
@@ -393,9 +407,6 @@ const CLPageLayout = memo(
     const currentPageIndex = pageTypeElements.findIndex(
       (page) => page === currentPage
     );
-
-    const showSubmissionReference =
-      ideaId && pageVariant === 'after-submission' && showIdeaId;
 
     return (
       <>
@@ -483,7 +494,7 @@ const CLPageLayout = memo(
                         as="h1"
                         variant={isMobileOrSmaller ? 'h2' : 'h1'}
                         m="0"
-                        mb="8px"
+                        mb="20px"
                         color="tenantPrimary"
                       >
                         {currentPage.options.title}
@@ -526,25 +537,26 @@ const CLPageLayout = memo(
                       );
                     })}
                     {pageVariant === 'submission' &&
-                      showTogglePostAnonymously && (
+                      showTogglePostAnonymously &&
+                      !isIdeaEditPage && (
                         <ProfileVisiblity
                           postAnonymously={postAnonymously}
                           onChange={handleOnChangeAnonymousPosting}
                         />
                       )}
+                    {pageVariant === 'after-submission' &&
+                      ideaId &&
+                      showIdeaId && (
+                        <SubmissionReference
+                          inputId={ideaId}
+                          participationMethod={
+                            phase?.data.attributes.participation_method
+                          }
+                        />
+                      )}
                   </Box>
                 </Box>
               </Box>
-              {showSubmissionReference && (
-                <Box
-                  display="flex"
-                  flexDirection="column"
-                  alignItems="center"
-                  flex="1"
-                >
-                  <SubmissionReference ideaId={ideaId} />
-                </Box>
-              )}
             </Box>
           </Box>
         </Box>

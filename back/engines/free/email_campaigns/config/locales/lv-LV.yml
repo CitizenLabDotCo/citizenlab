@@ -8,6 +8,7 @@ lv:
       "comment_marked_as_spam": Ziņot par surogātpastu komentārā
       "comment_on_your_comment": Atbilde uz manu komentāru
       "comment_on_idea_you_follow": Komentārs par ideju, kurai jūs sekojat
+      "community_monitor_report": Kopienas uzraudzības ziņojums
       "cosponsor_of_your_idea": Lietotājs pieņem manu uzaicinājumu atbalstīt manu priekšlikumu.
       "event_registration_confirmation": Pasākuma reģistrācijas apstiprinājums
       "idea_marked_as_spam": Ziņot par ideju kā surogātpastu
@@ -82,6 +83,7 @@ lv:
         "4": "Ik nedēļu, ceturtdienās %{hourOfDay}"
         "5": "Ik nedēļu, piektdienās %{hourOfDay}"
         "6": "Ik nedēļu sestdienās %{hourOfDay}"
+      quarterly: "Ceturkšņa ceturksnis, ceturkšņa pirmajā dienā"
     footer:
       "link_privacy_policy": "Privātuma politika"
       "link_terms_conditions": "Noteikumi un nosacījumi"
@@ -147,6 +149,12 @@ lv:
       today: Šodien
       wrong_content: 'Komentārs nav būtisks.'
       yesterday: Vakar
+    community_monitor_report:
+      subject: 'Ir pieejams jauns Kopienas monitoringa ziņojums'
+      title: 'Ir pieejams jauns Kopienas monitoringa ziņojums'
+      text_introduction: 'Par iepriekšējo ceturksni ir izveidots kopienas uzraudzības ziņojums. Tam var piekļūt, noklikšķinot uz zemāk redzamās pogas un pieslēdzoties.'
+      cta_report_button: 'Apskatīt ziņojumu'
+      report_name: 'Kopienas uzraudzības ziņojums'
     cosponsor_of_your_idea:
       cta_reply_to: 'Pārskatīt savu priekšlikumu'
       event_description: 'Apsveicam! %{cosponsorName} ir pieņēmis jūsu uzaicinājumu līdzfinansēt jūsu priekšlikumu.'

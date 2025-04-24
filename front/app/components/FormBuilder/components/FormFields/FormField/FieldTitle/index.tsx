@@ -20,9 +20,15 @@ interface Props {
   hasErrors: boolean;
   field: IFlatCustomField;
   fieldNumber?: number;
+  hasFullPageRestriction: boolean;
 }
 
-const FieldTitle = ({ hasErrors, field, fieldNumber }: Props) => {
+const FieldTitle = ({
+  hasErrors,
+  field,
+  fieldNumber,
+  hasFullPageRestriction,
+}: Props) => {
   const { formatMessage } = useIntl();
 
   let rowTitle = messages.question;
@@ -37,6 +43,24 @@ const FieldTitle = ({ hasErrors, field, fieldNumber }: Props) => {
 
   const lockedAttributes = field.constraints?.locks;
   const titleColor = field.input_type === 'page' ? 'blue500' : 'teal400';
+  const getLockMessage = () => {
+    if (field.input_type === 'page') {
+      if (hasFullPageRestriction) {
+        return formatMessage(messages.pageCannotBeDeletedNorNewFieldsAdded);
+      }
+      if (lockedAttributes?.enabled) {
+        return formatMessage(messages.pageCannotBeDeleted);
+      }
+    }
+
+    if (lockedAttributes?.enabled) {
+      return formatMessage(messages.questionCannotBeDeleted);
+    }
+
+    return undefined;
+  };
+
+  const lockMessage = getLockMessage();
 
   return (
     <Box
@@ -82,18 +106,14 @@ const FieldTitle = ({ hasErrors, field, fieldNumber }: Props) => {
         >
           <Box display="flex" alignItems="center">
             <T value={field.title_multiloc} />
-            {lockedAttributes?.enabled && (
+            {lockMessage && (
               <IconTooltip
                 placement="top-start"
                 iconColor={colors.coolGrey500}
                 iconSize="16px"
                 ml="4px"
                 icon="lock"
-                content={
-                  field.input_type === 'page'
-                    ? formatMessage(messages.pageCannotBeDeleted)
-                    : formatMessage(messages.questionCannotBeDeleted)
-                }
+                content={lockMessage}
               />
             )}
           </Box>

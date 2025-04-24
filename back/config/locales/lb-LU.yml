@@ -171,12 +171,15 @@ lb:
       attachments:
         title: Annexen
         description:
-      page1:
+      title_page:
         description:
-      page2:
+      body_page:
+        title: Sot eis méi
+        description:
+      uploads_page:
         title: Biller an Uschlëss
         description:
-      page3:
+      details_page:
         title: Detailer
         description:
       other_input_field:

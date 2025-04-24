@@ -49,6 +49,7 @@ import { useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
 import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
+import { projectPointToWebMercator } from 'utils/mapUtils/map';
 import { isAdmin } from 'utils/permissions/roles';
 
 import IdeaMapOverlay from './desktop/IdeaMapOverlay';
@@ -317,8 +318,23 @@ const IdeasMap = memo<Props>(
 
     const onMapClick = useCallback(
       (event: any, mapView: MapView) => {
+        // Function to trigger the "Submit an idea" popup
+        const triggerShowInputPopup = () => {
+          if (ideaPostingEnabled) {
+            showAddInputPopup({
+              event,
+              mapView,
+              setSelectedInput: setSelectedIdea,
+              popupContentNode: startIdeaButtonNode,
+              popupTitle: formatMessage(messages.submitIdea),
+            });
+          }
+        };
+
         // Save clicked location
-        setClickedMapLocation(esriPointToGeoJson(event.mapPoint));
+        // First, project the point to Web Mercator to guarantee the correct coordinate system
+        const clickedPointProjected = projectPointToWebMercator(event.mapPoint);
+        setClickedMapLocation(esriPointToGeoJson(clickedPointProjected));
 
         const ideaPostingEnabled =
           (phase?.data.attributes.submission_enabled && authUser) ||
@@ -417,28 +433,15 @@ const IdeasMap = memo<Props>(
                 }
               } else {
                 // Show the "Submit an idea" popup
-                if (ideaPostingEnabled) {
-                  showAddInputPopup({
-                    event,
-                    mapView,
-                    setSelectedInput: setSelectedIdea,
-                    popupContentNode: startIdeaButtonNode,
-                    popupTitle: formatMessage(messages.submitIdea),
-                  });
-                }
+                triggerShowInputPopup();
               }
+            } else if (topElement.type === 'media') {
+              // If the user clicked on a media layer (E.g. image overlay), show the idea popup
+              triggerShowInputPopup();
             }
           } else {
             // If the user clicked elsewhere on the map, show the "Submit an idea" popup
-            if (ideaPostingEnabled) {
-              showAddInputPopup({
-                event,
-                mapView,
-                setSelectedInput: setSelectedIdea,
-                popupContentNode: startIdeaButtonNode,
-                popupTitle: formatMessage(messages.submitIdea),
-              });
-            }
+            triggerShowInputPopup();
           }
         });
       },

@@ -1062,8 +1062,8 @@ CREATE TABLE public.analysis_heatmap_cells (
     column_id uuid NOT NULL,
     unit character varying NOT NULL,
     count integer NOT NULL,
-    lift double precision NOT NULL,
-    p_value double precision NOT NULL,
+    lift numeric(20,15) NOT NULL,
+    p_value numeric(20,15) NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL
 );
@@ -1627,9 +1627,11 @@ CREATE TABLE public.phases (
     manual_voters_amount integer,
     manual_voters_last_updated_by_id uuid,
     manual_voters_last_updated_at timestamp(6) without time zone,
-    user_fields_in_form boolean DEFAULT false NOT NULL,
+    survey_popup_frequency integer,
     similarity_threshold_title double precision DEFAULT 0.3,
-    similarity_threshold_body double precision DEFAULT 0.4
+    similarity_threshold_body double precision DEFAULT 0.4,
+    similarity_enabled boolean DEFAULT true NOT NULL,
+    user_fields_in_form boolean DEFAULT false NOT NULL
 );
 
 
@@ -3101,7 +3103,9 @@ CREATE TABLE public.report_builder_reports (
     updated_at timestamp(6) without time zone NOT NULL,
     phase_id uuid,
     visible boolean DEFAULT false NOT NULL,
-    name_tsvector tsvector GENERATED ALWAYS AS (to_tsvector('simple'::regconfig, (name)::text)) STORED
+    name_tsvector tsvector GENERATED ALWAYS AS (to_tsvector('simple'::regconfig, (name)::text)) STORED,
+    year integer,
+    quarter integer
 );
 
 
@@ -5758,7 +5762,7 @@ CREATE INDEX index_report_builder_reports_on_owner_id ON public.report_builder_r
 -- Name: index_report_builder_reports_on_phase_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE UNIQUE INDEX index_report_builder_reports_on_phase_id ON public.report_builder_reports USING btree (phase_id);
+CREATE INDEX index_report_builder_reports_on_phase_id ON public.report_builder_reports USING btree (phase_id);
 
 
 --
@@ -7068,8 +7072,13 @@ ALTER TABLE ONLY public.ideas_topics
 SET search_path TO public,shared_extensions;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20250416120221'),
+('20250415094344'),
+('20250409111817'),
+('20250327095857'),
 ('20250320010716'),
 ('20250319145637'),
+('20250317825496'),
 ('20250317143543'),
 ('20250311141109'),
 ('20250307924725'),

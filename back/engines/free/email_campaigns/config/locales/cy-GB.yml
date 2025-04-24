@@ -8,6 +8,7 @@ cy:
       "comment_marked_as_spam": Sylw adroddiad sbam
       "comment_on_your_comment": Ateb ar fy sylw
       "comment_on_idea_you_follow": Sylw ar syniad rydych chi'n ei ddilyn
+      "community_monitor_report": Adroddiad monitro cymunedol
       "cosponsor_of_your_idea": Mae defnyddiwr yn derbyn fy ngwahoddiad i gyd-noddi fy nghynnig
       "event_registration_confirmation": Cadarnhad cofrestru digwyddiad
       "idea_marked_as_spam": Adroddiad sbam syniad
@@ -82,6 +83,7 @@ cy:
         "4": "Yn wythnosol, ar ddydd Iau am %{hourOfDay}"
         "5": "Yn wythnosol, ar ddydd Gwener am %{hourOfDay}"
         "6": "Yn wythnosol, ar ddydd Sadwrn am %{hourOfDay}"
+      quarterly: "Chwarterol, ar y dydd cyntaf o'r chwarter"
     footer:
       "link_privacy_policy": "Polisi Preifatrwydd"
       "link_terms_conditions": "Telerau ac Amodau"
@@ -147,6 +149,12 @@ cy:
       today: Heddiw
       wrong_content: 'Nid yw''r sylw yn berthnasol.'
       yesterday: Ddoe
+    community_monitor_report:
+      subject: 'Mae adroddiad monitro cymunedol newydd ar gael'
+      title: 'Mae adroddiad monitro cymunedol newydd ar gael'
+      text_introduction: 'Mae adroddiad monitro cymunedol wedi''i greu ar gyfer y chwarter blaenorol. Gallwch gael mynediad iddo trwy glicio ar y botwm isod a mewngofnodi.'
+      cta_report_button: 'Gweld adroddiad'
+      report_name: 'Adroddiad monitro cymunedol'
     cosponsor_of_your_idea:
       cta_reply_to: 'Gweld eich cynnig'
       event_description: 'Llongyfarchiadau! Mae %{cosponsorName} wedi derbyn eich gwahoddiad i gyd-noddi eich cynnig.'

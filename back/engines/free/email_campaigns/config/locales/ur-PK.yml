@@ -8,6 +8,7 @@ ur:
       "comment_marked_as_spam": سپیم رپورٹ پر تبصرہ کریں۔
       "comment_on_your_comment": میرے تبصرے کا جواب
       "comment_on_idea_you_follow": کسی خیال پر تبصرہ جس کی آپ پیروی کرتے ہیں۔
+      "community_monitor_report": کمیونٹی مانیٹر رپورٹ
       "cosponsor_of_your_idea": ایک صارف میری تجویز کو شریک سپانسر کرنے کے لیے میری دعوت قبول کرتا ہے۔
       "event_registration_confirmation": ایونٹ رجسٹریشن کی تصدیق
       "idea_marked_as_spam": آئیڈیا سپیم رپورٹ
@@ -82,6 +83,7 @@ ur:
         "4": "ہفتہ وار، جمعرات کو %{hourOfDay}پر"
         "5": "ہفتہ وار، جمعہ کو %{hourOfDay}پر"
         "6": "ہفتہ وار، ہفتہ کو %{hourOfDay}پر"
+      quarterly: "سہ ماہی، سہ ماہی کے پہلے دن"
     footer:
       "link_privacy_policy": "رازداری کی پالیسی"
       "link_terms_conditions": "شرائط و ضوابط"
@@ -147,6 +149,12 @@ ur:
       today: آج
       wrong_content: 'تبصرہ متعلقہ نہیں ہے۔'
       yesterday: کل
+    community_monitor_report:
+      subject: 'کمیونٹی مانیٹر کی ایک نئی رپورٹ دستیاب ہے۔'
+      title: 'کمیونٹی مانیٹر کی ایک نئی رپورٹ دستیاب ہے۔'
+      text_introduction: 'پچھلی سہ ماہی کے لیے کمیونٹی مانیٹر رپورٹ بنائی گئی ہے۔ آپ نیچے دیئے گئے بٹن پر کلک کرکے اور لاگ ان کرکے اس تک رسائی حاصل کرسکتے ہیں۔'
+      cta_report_button: 'رپورٹ دیکھیں'
+      report_name: 'کمیونٹی مانیٹر رپورٹ'
     cosponsor_of_your_idea:
       cta_reply_to: 'اپنی تجویز دیکھیں'
       event_description: 'مبارک ہو! %{cosponsorName} نے آپ کی تجویز کو شریک سپانسر کرنے کے لیے آپ کی دعوت قبول کر لی ہے۔'

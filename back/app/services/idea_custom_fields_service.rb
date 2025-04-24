@@ -46,7 +46,9 @@ class IdeaCustomFieldsService
 
   # Used in the printable PDF export
   def printable_fields
-    enabled_fields_with_other_options.select(&:printable?)
+    # TODO: temporarily remove any user fields from the printable fields - currently unsupported
+    fields = enabled_fields_with_other_options.reject { |field| field.key&.start_with?('u_') }
+    fields.select(&:printable?)
   end
 
   def importable_fields
@@ -137,21 +139,6 @@ class IdeaCustomFieldsService
     field_params.except(:code, :input_type)
   end
 
-  def check_form_structure(fields_from_params, errors)
-    return if fields_from_params.empty?
-
-    unless fields_from_params.first[:input_type] == 'page'
-      error = { error: "First field must be of type 'page'" }
-      errors['0'] = { structure: [error] }
-    end
-
-    # Check the last field is a page
-    last_field = fields_from_params.last
-    unless last_field[:input_type] == 'page' && last_field[:key] == 'form_end'
-      errors[(fields_from_params.length - 1).to_s] = { structure: [{ error: "Last field must be of type 'page' with a key of 'form_end'" }] }
-    end
-  end
-
   def duplicate_all_fields
     fields = all_fields
     logic_id_map = {}
@@ -226,7 +213,7 @@ class IdeaCustomFieldsService
   # Check required as it doesn't matter what is saved in title for page 1
   # Constraints required for the front-end but response will always return input specific method
   def page1_title?(field, attribute)
-    field.code == 'ideation_page1' && attribute == :title_multiloc
+    field.code == 'title_page' && attribute == :title_multiloc
   end
 
   def add_user_fields(fields)

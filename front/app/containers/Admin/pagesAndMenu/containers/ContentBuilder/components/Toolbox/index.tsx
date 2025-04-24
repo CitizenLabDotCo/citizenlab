@@ -44,6 +44,9 @@ import {
 import messages from '../../messages';
 import Areas, { areasTitle } from '../Widgets/Areas';
 import CallToAction, { callToActionTitle } from '../Widgets/CallToAction';
+import CommunityMonitorCTA, {
+  communityMonitorCTATitle,
+} from '../Widgets/CommunityMonitorCTA';
 import Events from '../Widgets/Events';
 import FinishedOrArchived, {
   finishedOrArchivedTitle,
@@ -86,6 +89,8 @@ const HomepageBuilderToolbox = ({
   const formatMessageWithLocale = useFormatMessageWithLocale();
   const appConfigurationLocales = useAppConfigurationLocales();
   const followEnabled = useFeatureFlag({ name: 'follow' });
+  const communityMonitorEnabled = useFeatureFlag({ name: 'community_monitor' });
+
   const { data: appConfiguration } = useAppConfiguration();
 
   if (!appConfigurationLocales || !appConfiguration) return null;
@@ -195,6 +200,24 @@ const HomepageBuilderToolbox = ({
           icon="button"
           label={formatMessage(callToActionTitle)}
         />
+        {communityMonitorEnabled && (
+          <DraggableElement
+            id="e2e-draggable-community-monitor-cta"
+            component={
+              <CommunityMonitorCTA
+                title={toMultiloc(messages.communityMonitorCtaDefaultTitle)}
+                description={toMultiloc(
+                  messages.communityMonitorCtaDefaultDescription
+                )}
+                surveyButtonText={toMultiloc(
+                  messages.communityMonitorCtaDefaultSurveyButtonText
+                )}
+              />
+            }
+            icon="survey"
+            label={formatMessage(communityMonitorCTATitle)}
+          />
+        )}
         {platformCreatedBeforeReleaseNewWidgets(
           appConfiguration.data.attributes.created_at
         ) && (

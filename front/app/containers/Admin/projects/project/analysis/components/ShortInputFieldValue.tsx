@@ -3,8 +3,8 @@ import React, { useMemo } from 'react';
 import { isNil } from 'lodash-es';
 import { FormattedDate } from 'react-intl';
 
-import { IIdeaCustomField } from 'api/idea_custom_fields/types';
 import useUserCustomFieldsOptions from 'api/custom_field_options/useCustomFieldOptions';
+import { IIdeaCustomField } from 'api/idea_custom_fields/types';
 
 import T from 'components/T';
 
@@ -57,6 +57,7 @@ const ShortInputFieldValue = ({ customField, rawValue }: Props) => {
     case 'number':
     case 'checkbox':
     case 'rating':
+    case 'sentiment_linear_scale':
     case 'linear_scale': {
       if (rawValue === null || rawValue === undefined || rawValue === '') {
         return <>No Answer</>;
@@ -73,6 +74,22 @@ const ShortInputFieldValue = ({ customField, rawValue }: Props) => {
       );
     }
     case 'multiselect': {
+      return (
+        <>
+          {(rawValue as string[]).map((optionKey, index) => (
+            <>
+              {index !== 0 && ', '}
+              <SelectOptionText
+                key={`${optionKey}-${index}`}
+                customFieldId={customField.data.id}
+                selectedOptionKey={optionKey}
+              />
+            </>
+          ))}
+        </>
+      );
+    }
+    case 'multiselect_image': {
       return (
         <>
           {(rawValue as string[]).map((optionKey, index) => (

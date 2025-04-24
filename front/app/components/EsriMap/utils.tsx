@@ -487,24 +487,29 @@ export const showAddInputPopup = ({
   popupContentNode,
   popupTitle,
 }: AddInputPopupProps) => {
-  goToMapLocation(esriPointToGeoJson(event.mapPoint), mapView).then(() => {
-    // Create an Esri popup
-    mapView.popup = new Popup({
-      collapseEnabled: false,
-      dockEnabled: false,
-      dockOptions: {
-        buttonEnabled: false,
-        breakpoint: false,
-      },
-      location: event.mapPoint,
-      title: popupTitle,
-    });
-    // Set content of the popup to the node we created (so we can insert our React component via a portal)
-    mapView.popup.content = popupContentNode;
-    // Close any open UI elements and open the popup
-    setSelectedInput(null);
-    mapView.openPopup();
-  });
+  // Project the point to Web Mercator to guarantee the correct coordinate system
+  const clickedPointProjected = projectPointToWebMercator(event.mapPoint);
+
+  goToMapLocation(esriPointToGeoJson(clickedPointProjected), mapView).then(
+    () => {
+      // Create an Esri popup
+      mapView.popup = new Popup({
+        collapseEnabled: false,
+        dockEnabled: false,
+        dockOptions: {
+          buttonEnabled: false,
+          breakpoint: false,
+        },
+        location: clickedPointProjected,
+        title: popupTitle,
+      });
+      // Set content of the popup to the node we created (so we can insert our React component via a portal)
+      mapView.popup.content = popupContentNode;
+      // Close any open UI elements and open the popup
+      setSelectedInput(null);
+      mapView.openPopup();
+    }
+  );
 };
 
 // createEsriFeatureLayers

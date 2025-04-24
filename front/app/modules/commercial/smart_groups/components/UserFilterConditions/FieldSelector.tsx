@@ -22,6 +22,7 @@ import {
   TCustomRuleType,
   ruleTypeConstraints,
 } from './rules';
+import useFeatureFlag from 'hooks/useFeatureFlag';
 
 export interface FieldDescriptor {
   ruleType?: TRule['ruleType'];
@@ -43,6 +44,9 @@ const FieldSelector = memo(
   }: Props & WrappedComponentProps) => {
     const localize = useLocalize();
     const { data: userCustomFields } = useUserCustomFields({});
+    const isCommunityMonitorEnabled = useFeatureFlag({
+      name: 'community_monitor',
+    });
 
     const generateOptions = (
       userCustomFields: IUserCustomFieldData[]
@@ -56,14 +60,24 @@ const FieldSelector = memo(
         registration_completed_at: messages.field_registration_completed_at,
         role: messages.field_role,
         participated_in_project: messages.field_participated_in_project,
+        participated_in_community_monitor:
+          messages.field_participated_in_community_monitor,
         participated_in_topic: messages.field_participated_in_topic,
         participated_in_idea_status:
           messages.field_participated_in_input_status,
         follow: messages.field_follow,
         verified: messages.field_verified,
       };
+
       const staticOptions = keys(ruleTypeConstraints)
         .filter((ruleType) => !/^custom_field_.*$/.test(ruleType))
+        .filter((ruleType) => {
+          // Remove the community monitor rule type if the feature flag is not enabled
+          return (
+            isCommunityMonitorEnabled ||
+            ruleType !== 'participated_in_community_monitor'
+          );
+        })
         .map((ruleType) => {
           return {
             value: descriptorToOptionValue({
@@ -72,6 +86,7 @@ const FieldSelector = memo(
             label: formatMessage(labelMessages[ruleType]),
           };
         });
+
       const customFieldOptions = userCustomFields
         .filter(
           (userCustomField) => userCustomField.attributes.code !== 'domicile'

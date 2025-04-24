@@ -32,6 +32,7 @@ const Country = () => {
       values={options ?? []}
       title={formatMessage(messages.country)}
       name="country-select"
+      ml="12px"
       mr="0px"
       onChange={(countryCodes) => {
         setRansackParam('q[tenant_country_code_in]', countryCodes);

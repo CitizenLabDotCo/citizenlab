@@ -171,12 +171,15 @@ pl:
       attachments:
         title: Załączniki
         description:
-      page1:
+      title_page:
         description:
-      page2:
+      body_page:
+        title: Powiedz nam więcej
+        description:
+      uploads_page:
         title: Obrazy i załączniki
         description:
-      page3:
+      details_page:
         title: Szczegóły
         description:
       other_input_field:

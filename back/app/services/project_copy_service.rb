@@ -333,6 +333,7 @@ class ProjectCopyService < TemplateService # rubocop:disable Metrics/ClassLength
       if yml_phase['participation_method'] == 'survey'
         yml_phase['survey_embed_url'] = phase.survey_embed_url
         yml_phase['survey_service'] = phase.survey_service
+        yml_phase['survey_popup_frequency'] = phase.survey_popup_frequency
       end
 
       if yml_phase['participation_method'] == 'document_annotation'

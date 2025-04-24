@@ -7,11 +7,14 @@ import {
   Input,
   Label,
   colors,
+  Select,
 } from '@citizenlab/cl2-component-library';
 import { IOption } from 'typings';
 
-import useAddReport from 'api/reports/useAddReport';
+import useCommunityMonitorProject from 'api/community_monitor/useCommunityMonitorProject';
+import useAddReport, { AddReport } from 'api/reports/useAddReport';
 
+import { generateYearSelectOptions } from 'containers/Admin/reporting/utils/generateYearSelectOptions';
 import reportTitleIsTaken from 'containers/Admin/reporting/utils/reportTitleIsTaken';
 
 import { DateRange } from 'components/admin/DatePickers/_shared/typings';
@@ -37,6 +40,9 @@ interface Props {
 
 const CreateReportModal = ({ open, onClose }: Props) => {
   const { mutate: createReport, isLoading } = useAddReport();
+  const { data: project } = useCommunityMonitorProject({});
+  const communityMonitorPhaseId =
+    project?.data.relationships.current_phase?.data?.id;
 
   const [reportTitle, setReportTitle] = useState('');
   const [template, setTemplate] = useState<Template>('blank');
@@ -44,6 +50,8 @@ const CreateReportModal = ({ open, onClose }: Props) => {
     string | undefined
   >();
   const [dates, setDates] = useState<Partial<DateRange>>({});
+  const [year, setYear] = useState<number | null>(null);
+  const [quarter, setQuarter] = useState<number | null>(null);
 
   const [errorMessage, setErrorMessage] = useState<string | undefined>();
   const { formatMessage } = useIntl();
@@ -52,7 +60,8 @@ const CreateReportModal = ({ open, onClose }: Props) => {
   const blockSubmit =
     reportTitleTooShort ||
     (template === 'project' ? selectedProjectId === undefined : false) ||
-    (template === 'platform' ? !dates.from || !dates.to : false);
+    (template === 'platform' ? !dates.from || !dates.to : false) ||
+    (template === 'community-monitor' ? !year || !quarter : false);
 
   const handleProjectFilter = (option: IOption) => {
     setSelectedProjectId(option.value === '' ? undefined : option.value);
@@ -62,28 +71,33 @@ const CreateReportModal = ({ open, onClose }: Props) => {
     if (blockSubmit) return;
     setErrorMessage(undefined);
 
-    createReport(
-      { name: reportTitle },
-      {
-        onSuccess: (report) => {
-          clHistory.push(
-            getRedirectUrl({
-              reportId: report.data.id,
-              selectedProjectId,
-              template,
-              dates,
-            })
-          );
-        },
-        onError: (e) => {
-          if (reportTitleIsTaken(e)) {
-            setErrorMessage(formatMessage(messages.reportTitleAlreadyExists));
-          } else {
-            setErrorMessage(formatMessage(messages.anErrorOccurred));
-          }
-        },
-      }
-    );
+    const createReportParams: AddReport = {
+      phase_id:
+        template === 'community-monitor' ? communityMonitorPhaseId : undefined,
+      name: reportTitle,
+    };
+
+    createReport(createReportParams, {
+      onSuccess: (report) => {
+        clHistory.push(
+          getRedirectUrl({
+            reportId: report.data.id,
+            selectedProjectId,
+            year,
+            quarter,
+            template,
+            dates,
+          })
+        );
+      },
+      onError: (e) => {
+        if (reportTitleIsTaken(e)) {
+          setErrorMessage(formatMessage(messages.reportTitleAlreadyExists));
+        } else {
+          setErrorMessage(formatMessage(messages.anErrorOccurred));
+        }
+      },
+    });
   };
 
   return (
@@ -113,6 +127,32 @@ const CreateReportModal = ({ open, onClose }: Props) => {
           <Label>{formatMessage(messages.reportTemplate)}</Label>
           <RadioButtons value={template} onChange={setTemplate} />
         </Box>
+        {template === 'community-monitor' && (
+          <Box width="100%" mt="12px">
+            <Box mb="16px">
+              <Select
+                id="e2e-year-select"
+                placeholder={formatMessage(messages.selectYear)}
+                value={year}
+                options={generateYearSelectOptions(2025)} // Genereates list: 2025 until current year
+                onChange={(option) => setYear(option.value)}
+              />
+            </Box>
+
+            <Select
+              id="e2e-quarter-select"
+              placeholder={formatMessage(messages.selectQuarter)}
+              value={quarter}
+              options={[1, 2, 3, 4].map((quarter) => ({
+                label: formatMessage(messages.quarter, {
+                  quarterValue: quarter,
+                }), // e.g., "Quarter 1"
+                value: quarter,
+              }))}
+              onChange={(option) => setQuarter(option.value)}
+            />
+          </Box>
+        )}
         {template === 'project' && (
           <Box width="100%" mt="12px">
             <ProjectFilter

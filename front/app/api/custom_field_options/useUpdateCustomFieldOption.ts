@@ -11,10 +11,7 @@ type UpdateOption = {
   title_multiloc: Multiloc;
 };
 
-const updateOption = async ({
-  optionId,
-  title_multiloc,
-}: UpdateOption) =>
+const updateOption = async ({ optionId, title_multiloc }: UpdateOption) =>
   fetcher<ICustomFieldOption>({
     path: `/custom_field_options/${optionId}`,
     action: 'patch',
@@ -23,11 +20,7 @@ const updateOption = async ({
 
 const useUpdateCustomFieldOption = () => {
   const queryClient = useQueryClient();
-  return useMutation<
-    ICustomFieldOption,
-    { errors: CLErrors },
-    UpdateOption
-  >({
+  return useMutation<ICustomFieldOption, { errors: CLErrors }, UpdateOption>({
     mutationFn: updateOption,
     onSuccess: (_data, variables) => {
       queryClient.invalidateQueries({

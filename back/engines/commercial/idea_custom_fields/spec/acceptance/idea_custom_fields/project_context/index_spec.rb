@@ -22,9 +22,10 @@ resource 'Idea Custom Fields' do
       example_request 'List all allowed custom fields for a project' do
         assert_status 200
         json_response = json_parse response_body
-        expect(json_response[:data].size).to eq 12
+        expect(json_response[:data].size).to eq 13
         expect(json_response[:data].map { |d| d.dig(:attributes, :key) }).to eq [
-          nil, 'title_multiloc', 'body_multiloc',
+          nil, 'title_multiloc',
+          nil, 'body_multiloc',
           nil, 'idea_images_attributes', 'idea_files_attributes',
           nil, 'topic_ids', 'location_description', 'proposed_budget',
           custom_field.key, 'form_end'
@@ -37,7 +38,8 @@ resource 'Idea Custom Fields' do
         assert_status 200
         json_response = json_parse response_body
         expect(json_response[:data].map { |d| d.dig(:attributes, :key) }).to eq [
-          nil, 'title_multiloc', 'body_multiloc',
+          nil, 'title_multiloc',
+          nil, 'body_multiloc',
           nil, 'idea_images_attributes', 'idea_files_attributes',
           nil, 'topic_ids', 'location_description', 'proposed_budget',
           'extra_field1', 'extra_field2', 'form_end'

@@ -5,8 +5,19 @@ class AdminPublicationPolicy < ApplicationPolicy
     def resolve
       AdminPublication
         .publication_types
-        .map { |klass| scope.where(publication: klass == Project ? scope_for(klass).not_hidden : scope_for(klass)) } # scope per publication type
+        .map { |klass| scope.where(publication: scope_for_klass(klass)) } # scope per publication type
         .reduce(&:or) # joining partial scopes
+    end
+
+    private
+
+    def scope_for_klass(klass)
+      # If the publication is a project, we usually hide hidden projects
+      if klass == Project && !context[:include_hidden]
+        scope_for(klass).not_hidden
+      else
+        scope_for(klass)
+      end
     end
   end
 

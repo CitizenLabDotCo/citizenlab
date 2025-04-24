@@ -115,11 +115,14 @@ class Phase < ApplicationRecord
   # therefore updated manually by calling update_manual_votes_count! through the idea sidefx service.
   validates :manual_votes_count, numericality: { only_integer: true, greater_than_or_equal_to: 0, allow_nil: true }
 
+  validates :survey_popup_frequency, numericality: { only_integer: true, greater_than_or_equal_to: 0, less_than_or_equal_to: 100 }, allow_nil: true
+
   validates :participation_method, inclusion: { in: PARTICIPATION_METHODS }
 
   with_options if: ->(phase) { phase.pmethod.supports_public_visibility? } do
     validates :presentation_mode, inclusion: { in: PRESENTATION_MODES }
     validates :presentation_mode, presence: true
+    validates :similarity_enabled, inclusion: { in: [true, false] }
     validates :similarity_threshold_title, :similarity_threshold_body, presence: true, numericality: { greater_than_or_equal_to: 0, less_than_or_equal_to: 1 }
   end
 

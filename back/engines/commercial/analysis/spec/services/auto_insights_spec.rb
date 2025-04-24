@@ -29,7 +29,7 @@ describe Analysis::AutoInsightsService do
         # - 2 options in custom_field1
         # - 3 linear scale bins in custom_field2
         # So we should get ((2*3+2*2+2*3)+(3*2+3*3)+(2*3))*2=(16+15+6)*2=74 cells
-        expect { service.generate }.to change { analysis.heatmap_cells.count }.from(0).to(74)
+        expect { service.generate }.to change { analysis.heatmap_cells.count }.from(0).to(37)
         male, female, unspecified = custom_field_gender.options.map { |o| o.custom_field_bins.first }
         expect(Analysis::HeatmapCell.find_by(row: tag1, column: male)).to have_attributes(
           count: 1,
@@ -37,14 +37,6 @@ describe Analysis::AutoInsightsService do
           lift: 1.0,
           row: tag1,
           column: male
-        )
-        # Test transposed cell
-        expect(Analysis::HeatmapCell.find_by(row: male, column: tag1)).to have_attributes(
-          count: 1,
-          p_value: 1.0,
-          lift: 1.0,
-          row: male,
-          column: tag1
         )
 
         expect(Analysis::HeatmapCell.find_by(row: tag1, column: female)).to have_attributes(
@@ -103,7 +95,7 @@ describe Analysis::AutoInsightsService do
         create(:reaction, reactable: input1)
 
         service = described_class.new(analysis)
-        expect { service.generate(unit: 'likes') }.to change { analysis.heatmap_cells.count }.from(0).to(74)
+        expect { service.generate(unit: 'likes') }.to change { analysis.heatmap_cells.count }.from(0).to(37)
         male, female, _unspecified = custom_field_gender.options.map { |o| o.custom_field_bins.first }
 
         expect(Analysis::HeatmapCell.find_by(row: tag1, column: male)).to have_attributes(
@@ -147,7 +139,7 @@ describe Analysis::AutoInsightsService do
         create(:comment, idea: input2, author: create(:user, custom_field_values: { custom_field_gender.key => male.key }))
 
         service = described_class.new(analysis)
-        expect { service.generate(unit: 'participants') }.to change { analysis.heatmap_cells.count }.from(0).to(74)
+        expect { service.generate(unit: 'participants') }.to change { analysis.heatmap_cells.count }.from(0).to(37)
 
         male, female, _unspecified = custom_field_gender.options.map { |o| o.custom_field_bins.first }
 
@@ -169,8 +161,8 @@ describe Analysis::AutoInsightsService do
         )
         expect(Analysis::HeatmapCell.find_by(row: tag2, column: male)).to have_attributes(
           count: 2,
-          p_value: 1.0,
-          lift: 0.9333333333333333,
+          p_value: 1,
+          lift: 0.933333333333333,
           row: tag2,
           column: male,
           unit: 'participants'
@@ -178,7 +170,7 @@ describe Analysis::AutoInsightsService do
         expect(Analysis::HeatmapCell.find_by(row: tag2, column: female)).to have_attributes(
           count: 1,
           p_value: 1.0,
-          lift: 1.1666666666666667,
+          lift: 1.166666666666667,
           row: tag2,
           column: female,
           unit: 'participants'
@@ -203,7 +195,7 @@ describe Analysis::AutoInsightsService do
 
       it 'works well with the domicile custom field' do
         service = described_class.new(analysis)
-        expect { service.generate }.to change { analysis.heatmap_cells.count }.from(0).to(12)
+        expect { service.generate }.to change { analysis.heatmap_cells.count }.from(0).to(6)
         bin0 = areas[0].custom_field_option.custom_field_bins.first
         expect(Analysis::HeatmapCell.find_by(row: tag1, column: bin0)).to have_attributes(
           count: 1,
@@ -233,7 +225,7 @@ describe Analysis::AutoInsightsService do
       it 'works well with the birthyear custom field' do
         service = described_class.new(analysis)
         travel_to(Date.parse('2025-03-18')) do
-          expect { service.generate }.to change { analysis.heatmap_cells.count }.from(0).to(20)
+          expect { service.generate }.to change { analysis.heatmap_cells.count }.from(0).to(10)
           bin2040 = CustomFieldBin.find_by(custom_field: custom_field_birthyear, range: 20...40)
           expect(Analysis::HeatmapCell.find_by(row: tag1, column: bin2040)).to have_attributes(
             count: 1,

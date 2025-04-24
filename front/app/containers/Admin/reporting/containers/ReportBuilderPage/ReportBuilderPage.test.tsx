@@ -112,9 +112,7 @@ describe('<ReportBuilderPage />', () => {
       render(<ReportBuilderPage />);
 
       document.body.innerHTML;
-      expect(
-        screen.getByText('Create your first project report')
-      ).toBeInTheDocument();
+      expect(screen.getByText('Create your first report')).toBeInTheDocument();
     });
 
     it('opens modal if button is clicked', () => {
@@ -151,7 +149,7 @@ describe('<ReportBuilderPage />', () => {
       render(<ReportBuilderPage />);
 
       expect(
-        screen.queryByText('Create your first project report')
+        screen.queryByText('Create your first report')
       ).not.toBeInTheDocument();
     });
 

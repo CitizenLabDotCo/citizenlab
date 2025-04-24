@@ -7,8 +7,7 @@ import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
 import { customFieldOptionsData } from './__mocks__/useCustomFieldOptions';
 import useCustomFieldOption from './useCustomFieldOption';
 
-const apiPath =
-  '*/custom_field_options/:optionId';
+const apiPath = '*/custom_field_options/:optionId';
 
 const server = setupServer(
   http.get(apiPath, () => {

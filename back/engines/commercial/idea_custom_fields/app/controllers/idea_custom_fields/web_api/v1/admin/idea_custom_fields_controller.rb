@@ -64,7 +64,7 @@ module IdeaCustomFields
 
     def update_all
       authorize CustomField.new(resource: @custom_form), :update_all?, policy_class: IdeaCustomFieldPolicy
-      raise_error_if_stale_form_data
+      validate!
 
       page_temp_ids_to_ids_mapping = {}
       option_temp_ids_to_ids_mapping = {}
@@ -104,14 +104,78 @@ module IdeaCustomFields
       raise "Custom field with input_type: '#{@custom_field.input_type}' is not a geographic type"
     end
 
+    def validate!
+      fields = update_all_params.fetch(:custom_fields).map do |field|
+        CustomField.new(field.slice(:code, :key, :input_type, :title_multiloc, :description_multiloc, :required, :enabled, :ordering))
+      end
+      validate_non_empty_form!(fields)
+      validate_stale_form_data!
+      validate_end_page!(fields)
+      validate_first_page!(fields)
+      validate_separate_title_body_pages!(fields)
+    end
+
+    def validate_non_empty_form!(fields)
+      return if !fields.empty?
+
+      raise UpdateAllFailedError, { form: [{ error: 'empty' }] }
+    end
+
     # To try and avoid forms being overwritten with stale data, we check if the form has been updated since the form editor last loaded it
     # But ONLY if the FE sends the form_last_updated_at param
-    def raise_error_if_stale_form_data
+    def validate_stale_form_data!
       return unless update_all_params[:form_last_updated_at].present? &&
                     @custom_form.persisted? &&
                     @custom_form.updated_at.to_i > update_all_params[:form_last_updated_at].to_datetime.to_i
 
       raise UpdateAllFailedError, { form: [{ error: 'stale_data' }] }
+    end
+
+    def validate_end_page!(fields)
+      return if fields.last.form_end_page?
+
+      raise UpdateAllFailedError, { form: [{ error: 'no_end_page' }] }
+    end
+
+    def validate_first_page!(fields)
+      return if fields.first.page?
+
+      raise UpdateAllFailedError, { form: [{ error: 'no_first_page' }] }
+    end
+
+    def validate_separate_title_body_pages!(fields)
+      title_page = nil
+      body_page = nil
+      fields_per_page = {}
+      prev_page = nil
+      fields.each do |field|
+        if field.page?
+          break if title_page && body_page
+
+          prev_page = field
+        else
+          fields_per_page[prev_page] ||= []
+          fields_per_page[prev_page] << field
+
+          if field.code == 'title_multiloc'
+            title_page = prev_page
+          elsif field.code == 'body_multiloc'
+            body_page = prev_page
+          end
+        end
+      end
+
+      if title_page && body_page && title_page == body_page
+        raise UpdateAllFailedError, { form: [{ error: 'title_and_body_on_same_page' }] }
+      end
+
+      if title_page && fields_per_page[title_page].count { |field| field[:enabled] } > 1
+        raise UpdateAllFailedError, { form: [{ error: 'title_page_with_other_fields' }] }
+      end
+
+      if body_page && fields_per_page[body_page].count { |field| field[:enabled] } > 1
+        raise UpdateAllFailedError, { form: [{ error: 'body_page_with_other_fields' }] }
+      end
     end
 
     def update_fields!(page_temp_ids_to_ids_mapping, option_temp_ids_to_ids_mapping, errors)
@@ -120,9 +184,6 @@ module IdeaCustomFields
       fields_by_id = fields.index_by(&:id)
       given_fields = update_all_params.fetch :custom_fields, []
       given_field_ids = given_fields.pluck(:id)
-
-      idea_custom_fields_service.check_form_structure given_fields, errors
-      raise UpdateAllFailedError, errors if errors.present?
 
       ActiveRecord::Base.transaction do
         delete_fields = fields.reject { |field| given_field_ids.include? field.id }
