@@ -15,7 +15,7 @@ module Analysis
           access_token: ENV.fetch('AZURE_OPENAI_API_KEY'),
           uri_base: [ENV.fetch('AZURE_OPENAI_URI'), '/openai/deployments/', azure_deployment_name].join,
           api_type: :azure,
-          api_version: '2023-09-01-preview',
+          api_version: '2025-01-01-preview',
           request_timeout: 900,
           **params
         )
@@ -45,7 +45,7 @@ module Analysis
       # model name, stripping out any characters that are not allowed in Azure
       # deployment names.
       def azure_deployment_name
-        gpt_model.gsub(/[^a-zA-Z0-9-]/, '')
+        gpt_model.gsub(/[^a-zA-Z0-9-]\./, '')
       end
 
       def self.token_count(str)

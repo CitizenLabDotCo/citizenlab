@@ -71,10 +71,10 @@ RSpec.describe Analysis::QAndAMethod do
         accuracy: 0.8,
         include_id: true,
         shorten_labels: false,
-        include_comments: false
+        include_comments: true
       })
 
-      mock_llm = instance_double(Analysis::LLM::GPT4o)
+      mock_llm = instance_double(Analysis::LLM::GPT41)
       plan.llm = mock_llm
       expect(mock_llm).to receive(:chat_async).with(kind_of(String)) do |prompt, &block|
         expect(prompt).to include(inputs[2].id)
@@ -95,38 +95,14 @@ RSpec.describe Analysis::QAndAMethod do
       })
     end
 
-    it 'includes the comments in the prompt if the comments_summaries feature flag is active' do
-      configuration = AppConfiguration.instance
-      configuration.settings['comments_summaries'] = {
-        'enabled' => true,
-        'allowed' => true
-      }
-      configuration.save!
+    it 'includes the comments in the prompt' do
       create(:comment, idea: inputs[1], body_multiloc: { en: 'I want to comment on that' })
 
       plan = Analysis::QAndAMethod::OnePassLLM.new(question).generate_plan
-      mock_llm = instance_double(Analysis::LLM::GPT4o)
+      mock_llm = instance_double(Analysis::LLM::GPT41)
       plan.llm = mock_llm
       expect(mock_llm).to receive(:chat_async) do |prompt|
         expect(prompt).to include('I want to comment on that')
-      end
-      plan.q_and_a_method_class.new(question).execute(plan)
-    end
-
-    it 'does not include the comments in the prompt if the comments_summaries feature flag is not active' do
-      configuration = AppConfiguration.instance
-      configuration.settings['comments_summaries'] = {
-        'enabled' => false,
-        'allowed' => true
-      }
-      configuration.save!
-      create(:comment, idea: inputs[1], body_multiloc: { en: 'I want to comment on that' })
-
-      plan = Analysis::QAndAMethod::OnePassLLM.new(question).generate_plan
-      mock_llm = instance_double(Analysis::LLM::GPT4o)
-      plan.llm = mock_llm
-      expect(mock_llm).to receive(:chat_async) do |prompt|
-        expect(prompt).not_to include('I want to comment on that')
       end
       plan.q_and_a_method_class.new(question).execute(plan)
     end

@@ -76,6 +76,7 @@ const HealthScoreWidget = ({ phaseId, ...props }: Props) => {
         display="flex"
         flexDirection={isMobileOrSmaller ? 'column' : 'row'}
         gap="20px"
+        id="e2e-health-score-widget"
       >
         <Box>
           <Box display="flex" alignItems="center">

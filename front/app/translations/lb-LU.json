@@ -2154,6 +2154,7 @@
   "app.utils.IdeasNewPage.viewYourProject": "Kuckt Äre Projet",
   "app.utils.IdeasNewPage.viewYourProposal": "Kuckt Är Propositioun",
   "app.utils.IdeasNewPage.viewYourQuestion": "Kuckt Är Fro",
+  "app.utils.Projects.sendSubmission": "Schéckt Soumissioun Identifizéierer op meng E-Mail",
   "app.utils.Projects.sendSurveySubmission": "Schéckt Ëmfro Soumissioun Identifizéierer op meng E-Mail",
   "app.utils.Projects.surveySubmission": "Ëmfro Soumissioun",
   "app.utils.Projects.yourResponseHasTheFollowingId": "Är Äntwert huet de folgenden Identifizéierer: {identifier}",
