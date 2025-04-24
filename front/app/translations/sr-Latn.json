@@ -500,6 +500,7 @@
   "app.components.VerificationModal.verifyIdAustria": "Verify with ID Austria",
   "app.components.VerificationModal.verifyKeycloak": "Verify with ID-Porten",
   "app.components.VerificationModal.verifyNemLogIn": "Verify with MitID",
+  "app.components.VerificationModal.verifyTwoday2": "Verify with BankID or Freja eID+",
   "app.components.VerificationModal.verifyYourIdentity": "Verifikujte vaš identitet.",
   "app.components.VoteControl.budgetingFutureEnabled": "Bićete u mogućnosti da rasporedite budžetska sredstva od dana {enabledFromDate}.",
   "app.components.VoteControl.budgetingNotPermitted": "Participativno budžetiranje trenutno nije omogućeno.",
