@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Box, Toggle, Tooltip, Text } from '@citizenlab/cl2-component-library';
+import { Box, Toggle, Text } from '@citizenlab/cl2-component-library';
 
 import { SectionField, SubSectionTitle } from 'components/admin/Section';
 
@@ -24,13 +24,9 @@ const PrescreeningToggle = ({
       <SubSectionTitle style={{ marginBottom: '0px' }}>
         <FormattedMessage {...messages.participationOptions} />
       </SubSectionTitle>
-      <Tooltip
-        disabled={prescreeningFeatureAllowed}
-        content={<FormattedMessage {...messages.prescreeningTooltip} />}
-      >
+      {prescreeningFeatureAllowed && (
         <Box>
           <Toggle
-            disabled={!prescreeningFeatureAllowed}
             checked={prescreening_enabled || false}
             onChange={() => {
               togglePrescreeningEnabled(!prescreening_enabled);
@@ -55,7 +51,7 @@ const PrescreeningToggle = ({
             }
           />
         </Box>
-      </Tooltip>
+      )}
     </SectionField>
   );
 };
