@@ -2154,6 +2154,7 @@
   "app.utils.IdeasNewPage.viewYourProject": "Visualitza el teu projecte",
   "app.utils.IdeasNewPage.viewYourProposal": "Consulta la teva proposta",
   "app.utils.IdeasNewPage.viewYourQuestion": "Consulta la teva pregunta",
+  "app.utils.Projects.sendSubmission": "Envia l'identificador d'enviament al meu correu electrònic",
   "app.utils.Projects.sendSurveySubmission": "Envia l'identificador d'enviament de l'enquesta al meu correu electrònic",
   "app.utils.Projects.surveySubmission": "Presentació de l'enquesta",
   "app.utils.Projects.yourResponseHasTheFollowingId": "La vostra resposta té l'identificador següent: {identifier}",

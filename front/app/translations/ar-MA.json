@@ -2154,6 +2154,7 @@
   "app.utils.IdeasNewPage.viewYourProject": "عرض مشروعك",
   "app.utils.IdeasNewPage.viewYourProposal": "عرض اقتراحك",
   "app.utils.IdeasNewPage.viewYourQuestion": "عرض سؤالك",
+  "app.utils.Projects.sendSubmission": "إرسال معرف الإرسال إلى بريدي الإلكتروني",
   "app.utils.Projects.sendSurveySubmission": "إرسال معرف إرسال الاستطلاع إلى بريدي الإلكتروني",
   "app.utils.Projects.surveySubmission": "إرسال الاستطلاع",
   "app.utils.Projects.yourResponseHasTheFollowingId": "إجابتك تحتوي على المعرف التالي: {identifier}",
