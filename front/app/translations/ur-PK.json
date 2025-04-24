@@ -500,6 +500,7 @@
   "app.components.VerificationModal.verifyIdAustria": "ID آسٹریا کے ساتھ تصدیق کریں۔",
   "app.components.VerificationModal.verifyKeycloak": "ID-Porten کے ساتھ تصدیق کریں۔",
   "app.components.VerificationModal.verifyNemLogIn": "MitID کے ساتھ تصدیق کریں۔",
+  "app.components.VerificationModal.verifyTwoday2": "BankID یا Freja eID+ کے ساتھ تصدیق کریں۔",
   "app.components.VerificationModal.verifyYourIdentity": "اپنی شناخت کی تصدیق کریں۔",
   "app.components.VoteControl.budgetingFutureEnabled": "آپ اپنا بجٹ {enabledFromDate}سے شروع کر کے مختص کر سکتے ہیں۔",
   "app.components.VoteControl.budgetingNotPermitted": "شراکتی بجٹ فی الحال فعال نہیں ہے۔",
