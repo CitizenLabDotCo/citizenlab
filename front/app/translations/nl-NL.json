@@ -500,6 +500,7 @@
   "app.components.VerificationModal.verifyIdAustria": "Verifieer met ID Oostenrijk",
   "app.components.VerificationModal.verifyKeycloak": "Verifiëren met ID-Porten",
   "app.components.VerificationModal.verifyNemLogIn": "Verifieer met MitID",
+  "app.components.VerificationModal.verifyTwoday2": "Verifiëren met BankID of Freja eID+",
   "app.components.VerificationModal.verifyYourIdentity": "Verifieer je identiteit",
   "app.components.VoteControl.budgetingFutureEnabled": "Je kan je budget verdelen vanaf {enabledFromDate}.",
   "app.components.VoteControl.budgetingNotPermitted": "Burgerbegroting is momenteel niet mogelijk.",
