@@ -116,7 +116,11 @@ export interface DemographicsParams extends BaseParams {
   props: DemographicsProps;
 }
 
-export interface ParticipantsProps extends AnalyticsProps, CompareProps {}
+type Role = 'admin' | 'project_folder_moderator' | 'project_moderator' | 'user';
+
+export interface ParticipantsProps extends AnalyticsProps, CompareProps {
+  exclude_roles?: Role[];
+}
 
 export interface ParticipantsParams extends BaseParams {
   resolved_name: 'ParticipantsWidget';
