@@ -434,7 +434,6 @@
   "app.components.app.containers.AdminPage.ProjectEdit.reactingThresholdRequired": "Se requiere un número mínimo de votos",
   "app.components.app.containers.AdminPage.ProjectEdit.report": "Reporte",
   "app.components.app.containers.AdminPage.ProjectEdit.screeningText": "Exigir la pre-revisión de aportes antes de su publicación",
-  "app.components.app.containers.AdminPage.ProjectEdit.screeningTooltip": "La pre-revisión de aportes previa a su publicación no está incluida en tu plan actual. Habla con tu Gestor de Éxito Gubernamental o con el administrador para desbloquearla.",
   "app.components.app.containers.AdminPage.ProjectEdit.timelineTab": "Con una línea de tiempo",
   "app.components.app.containers.AdminPage.ProjectEdit.trafficTab": "Tráfico",
   "app.components.formBuilder.cancelMethodChange1": "Cancelar",

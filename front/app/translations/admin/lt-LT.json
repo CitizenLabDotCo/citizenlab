@@ -434,7 +434,6 @@
   "app.components.app.containers.AdminPage.ProjectEdit.reactingThresholdRequired": "Reikalingas minimalus balsų skaičius",
   "app.components.app.containers.AdminPage.ProjectEdit.report": "Ataskaita",
   "app.components.app.containers.AdminPage.ProjectEdit.screeningText": "Reikalavimas atlikti sąnaudų atranką",
-  "app.components.app.containers.AdminPage.ProjectEdit.screeningTooltip": "Į dabartinį planą atrankinė patikra neįtraukta. Pasitarkite su savo Vyriausybės sėkmės vadybininku arba administratoriumi, kad jį atrakintumėte.",
   "app.components.app.containers.AdminPage.ProjectEdit.timelineTab": "Laiko juosta",
   "app.components.app.containers.AdminPage.ProjectEdit.trafficTab": "Eismo",
   "app.components.formBuilder.cancelMethodChange1": "Atšaukti",

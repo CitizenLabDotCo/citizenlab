@@ -434,7 +434,6 @@
   "app.components.app.containers.AdminPage.ProjectEdit.reactingThresholdRequired": "Minimum aantal stemmen is vereist",
   "app.components.app.containers.AdminPage.ProjectEdit.report": "Rapport",
   "app.components.app.containers.AdminPage.ProjectEdit.screeningText": "Vereis voorselectie van bijdragen",
-  "app.components.app.containers.AdminPage.ProjectEdit.screeningTooltip": "Voorselectie is niet inbegrepen in je huidige plan. Praat met je Government Success Manager of beheerder om het in te schakelen.",
   "app.components.app.containers.AdminPage.ProjectEdit.timelineTab": "Tijdlijn",
   "app.components.app.containers.AdminPage.ProjectEdit.trafficTab": "Verkeer",
   "app.components.formBuilder.cancelMethodChange1": "Annuleer",

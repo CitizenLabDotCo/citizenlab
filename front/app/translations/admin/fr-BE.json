@@ -434,7 +434,6 @@
   "app.components.app.containers.AdminPage.ProjectEdit.reactingThresholdRequired": "Le champ « Nombre minimum de votes » est obligatoire",
   "app.components.app.containers.AdminPage.ProjectEdit.report": "Rapport",
   "app.components.app.containers.AdminPage.ProjectEdit.screeningText": "Exiger la révision des contributions",
-  "app.components.app.containers.AdminPage.ProjectEdit.screeningTooltip": "La révision des contributions n'est pas inclus dans votre plan actuel. Adressez-vous à votre Conseiller en Participation ou à votre administrateur pour le débloquer.",
   "app.components.app.containers.AdminPage.ProjectEdit.timelineTab": "Ligne du temps",
   "app.components.app.containers.AdminPage.ProjectEdit.trafficTab": "Trafic",
   "app.components.formBuilder.cancelMethodChange1": "Annuler",
