@@ -434,7 +434,6 @@
   "app.components.app.containers.AdminPage.ProjectEdit.reactingThresholdRequired": "Minsta antal röster krävs",
   "app.components.app.containers.AdminPage.ProjectEdit.report": "Rapport",
   "app.components.app.containers.AdminPage.ProjectEdit.screeningText": "Kräv granskning av bidrag",
-  "app.components.app.containers.AdminPage.ProjectEdit.screeningTooltip": "Screening ingår inte i din nuvarande plan. Prata med din Government Success Manager eller administratör för att låsa upp den.",
   "app.components.app.containers.AdminPage.ProjectEdit.timelineTab": "Tidslinje",
   "app.components.app.containers.AdminPage.ProjectEdit.trafficTab": "Trafik",
   "app.components.formBuilder.cancelMethodChange1": "Avbryt",

@@ -434,7 +434,6 @@
   "app.components.app.containers.AdminPage.ProjectEdit.reactingThresholdRequired": "Minimum oy sayısı gereklidir",
   "app.components.app.containers.AdminPage.ProjectEdit.report": "Rapor",
   "app.components.app.containers.AdminPage.ProjectEdit.screeningText": "Girdilerin taranmasını gerektirir",
-  "app.components.app.containers.AdminPage.ProjectEdit.screeningTooltip": "Tarama mevcut planınıza dahil değildir. Kilidi açmak için Kamu Başarı Yöneticinizle veya yöneticinizle konuşun.",
   "app.components.app.containers.AdminPage.ProjectEdit.timelineTab": "Zaman Çizelgesi",
   "app.components.app.containers.AdminPage.ProjectEdit.trafficTab": "Trafik",
   "app.components.formBuilder.cancelMethodChange1": "İptal",

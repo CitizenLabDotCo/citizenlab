@@ -434,7 +434,6 @@
   "app.components.app.containers.AdminPage.ProjectEdit.reactingThresholdRequired": "مطلوب الحد الأدنى لعدد الأصوات",
   "app.components.app.containers.AdminPage.ProjectEdit.report": "تقرير",
   "app.components.app.containers.AdminPage.ProjectEdit.screeningText": "تتطلب فحص المدخلات",
-  "app.components.app.containers.AdminPage.ProjectEdit.screeningTooltip": "لا يشمل خطتك الحالية الفحص. تحدث إلى مدير نجاح الحكومة أو المسؤول لإلغاء تأمين الفحص.",
   "app.components.app.containers.AdminPage.ProjectEdit.timelineTab": "الجدول الزمني",
   "app.components.app.containers.AdminPage.ProjectEdit.trafficTab": "مرور",
   "app.components.formBuilder.cancelMethodChange1": "يلغي",

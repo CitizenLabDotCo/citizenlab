@@ -434,7 +434,6 @@
   "app.components.app.containers.AdminPage.ProjectEdit.reactingThresholdRequired": "Potreban je minimalan broj glasova",
   "app.components.app.containers.AdminPage.ProjectEdit.report": "izvješće",
   "app.components.app.containers.AdminPage.ProjectEdit.screeningText": "Zahtijevati provjeru ulaza",
-  "app.components.app.containers.AdminPage.ProjectEdit.screeningTooltip": "Probir nije uključen u vaš trenutni plan. Razgovarajte sa svojim upraviteljem uspjeha vlade ili administratorom da ga otključate.",
   "app.components.app.containers.AdminPage.ProjectEdit.timelineTab": "Vremenska Crta",
   "app.components.app.containers.AdminPage.ProjectEdit.trafficTab": "Promet",
   "app.components.formBuilder.cancelMethodChange1": "Otkazati",

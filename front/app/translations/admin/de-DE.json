@@ -434,7 +434,6 @@
   "app.components.app.containers.AdminPage.ProjectEdit.reactingThresholdRequired": "Eine Mindestanzahl von Stimmen ist erforderlich",
   "app.components.app.containers.AdminPage.ProjectEdit.report": "Bericht",
   "app.components.app.containers.AdminPage.ProjectEdit.screeningText": "Vorabprüfung der Eingaben verlangen",
-  "app.components.app.containers.AdminPage.ProjectEdit.screeningTooltip": "Die Vorabprüfung ist in Ihrer aktuellen Lizenz nicht enthalten. Sprechen Sie mit Ihrer Kundenbetreuerin oder dem Admin, um sie freizuschalten.",
   "app.components.app.containers.AdminPage.ProjectEdit.timelineTab": "Zeitleiste",
   "app.components.app.containers.AdminPage.ProjectEdit.trafficTab": "Daten",
   "app.components.formBuilder.cancelMethodChange1": "Abbrechen",
