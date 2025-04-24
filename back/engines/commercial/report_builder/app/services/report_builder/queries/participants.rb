@@ -46,13 +46,17 @@ module ReportBuilder
           participants_whole_period,
           start_date,
           end_date,
-          project_id: project_id
+          project_id: project_id,
+          exclude_roles: exclude_roles
         )
       }
 
       if compare_start_at && compare_end_at
         participants_compared_period = participations(
-          compare_start_at, compare_end_at, project_id: project_id
+          compare_start_at, 
+          compare_end_at, 
+          project_id: project_id,
+          exclude_roles: exclude_roles
         )
           .count('distinct participant_id')
 
@@ -61,7 +65,8 @@ module ReportBuilder
           participants_compared_period,
           compare_start_at,
           compare_end_at,
-          project_id: project_id
+          project_id: project_id,
+          exclude_roles: exclude_roles
         )
       end
 
