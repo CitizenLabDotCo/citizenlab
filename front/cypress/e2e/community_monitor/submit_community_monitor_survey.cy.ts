@@ -18,6 +18,8 @@ describe('Submit community monitor survey', () => {
     // Confirm access rights are set to Anyone for the community monitor
     cy.visit(`admin/community-monitor/settings/access-rights`);
     cy.get('#e2e-permission-anyone').click();
+    cy.wait(1000);
+    cy.reload();
   });
 
   it('can be submitted by an admin user', () => {
