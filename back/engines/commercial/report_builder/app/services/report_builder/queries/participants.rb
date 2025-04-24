@@ -5,6 +5,7 @@ module ReportBuilder
       end_at: nil,
       project_id: nil,
       resolution: 'month',
+      exclude_roles: nil,
       compare_start_at: nil,
       compare_end_at: nil,
       **_other_props
@@ -14,7 +15,10 @@ module ReportBuilder
       start_date, end_date = TimeBoundariesParser.new(start_at, end_at).parse
 
       participations_in_period = participations(
-        start_date, end_date, project_id: project_id
+        start_date, 
+        end_date, 
+        project_id: project_id,
+        exclude_roles: exclude_roles
       )
 
       # Time series
@@ -64,13 +68,24 @@ module ReportBuilder
       response
     end
 
-    def participations(start_date, end_date, project_id: nil)
+    def participations(
+      start_date, 
+      end_date, 
+      project_id: nil,
+      exclude_roles: nil
+    )
       participations = Analytics::FactParticipation
         .where(dimension_date_created_id: start_date..end_date)
 
       if project_id.present?
         participations = participations
           .where(dimension_project_id: project_id)
+      end
+
+      if exclude_roles.present?
+        participations = participations
+          .joins('INNER JOIN users ON users.id = analytics_fact_participations.dimension_user_id')
+          .where.not(users: { role: exclude_roles })
       end
 
       participations
