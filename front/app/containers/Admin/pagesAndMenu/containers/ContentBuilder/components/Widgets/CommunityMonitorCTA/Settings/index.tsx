@@ -30,7 +30,12 @@ const Settings = () => {
       flexDirection="column"
       gap="16px"
     >
-      <Text>{formatMessage(messages.communityMonitorCTADescription)}</Text>
+      <Text m="0px" fontWeight="bold">
+        {formatMessage(messages.important)}
+      </Text>
+      <Text m="0px">
+        {formatMessage(messages.communityMonitorCTADescription)}
+      </Text>
       <InputMultilocWithLocaleSwitcher
         id="community_monitor_title"
         type="text"

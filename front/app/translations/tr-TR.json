@@ -2154,6 +2154,7 @@
   "app.utils.IdeasNewPage.viewYourProject": "Projenizi görüntüleyin",
   "app.utils.IdeasNewPage.viewYourProposal": "Teklifinizi görüntüleyin",
   "app.utils.IdeasNewPage.viewYourQuestion": "Sorunuzu görüntüleyin",
+  "app.utils.Projects.sendSubmission": "Gönderim tanımlayıcısını e-postama gönderin",
   "app.utils.Projects.sendSurveySubmission": "Anket gönderme tanımlayıcısını e-postama gönder",
   "app.utils.Projects.surveySubmission": "Anket gönderimi",
   "app.utils.Projects.yourResponseHasTheFollowingId": "Yanıtınız aşağıdaki tanımlayıcıya sahiptir: {identifier}",

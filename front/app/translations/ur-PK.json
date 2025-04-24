@@ -2154,6 +2154,7 @@
   "app.utils.IdeasNewPage.viewYourProject": "اپنا پروجیکٹ دیکھیں",
   "app.utils.IdeasNewPage.viewYourProposal": "اپنی تجویز دیکھیں",
   "app.utils.IdeasNewPage.viewYourQuestion": "اپنا سوال دیکھیں",
+  "app.utils.Projects.sendSubmission": "میرے ای میل پر جمع کرانے کا شناخت کنندہ بھیجیں۔",
   "app.utils.Projects.sendSurveySubmission": "سروے جمع کرانے والے شناخت کنندہ کو میرے ای میل پر بھیجیں۔",
   "app.utils.Projects.surveySubmission": "سروے جمع کروانا",
   "app.utils.Projects.yourResponseHasTheFollowingId": "آپ کے جواب میں درج ذیل شناخت کنندہ ہے: {identifier}",

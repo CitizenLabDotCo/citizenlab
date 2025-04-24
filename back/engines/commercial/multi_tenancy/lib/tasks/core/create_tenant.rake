@@ -89,6 +89,10 @@ namespace :cl2_back do
           enabled: true,
           allowed: true
         },
+        community_monitor: {
+          enabled: true,
+          allowed: true
+        },
         segment: {
           enabled: true,
           allowed: true
@@ -288,10 +292,6 @@ namespace :cl2_back do
           allowed: true
         },
         large_summaries: {
-          enabled: true,
-          allowed: true
-        },
-        comments_summaries: {
           enabled: true,
           allowed: true
         },
