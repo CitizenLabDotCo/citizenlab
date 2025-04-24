@@ -90,7 +90,16 @@ module ReportBuilder
       if exclude_roles.present?
         participations = participations
           .joins('INNER JOIN users ON users.id = analytics_fact_participations.dimension_user_id')
-          .where.not(users: { role: exclude_roles })
+          .select("
+            *,
+            CASE
+              WHEN users.roles::TEXT LIKE '%admin%' THEN 'admin'
+              WHEN users.roles::TEXT LIKE '%project_folder_moderator%' THEN 'project_folder_moderator'
+              WHEN users.roles::TEXT LIKE '%project_moderator%' THEN 'project_moderator'
+              ELSE 'user'
+            END as highest_role
+          ")
+          .where.not(highest_role: { role: exclude_roles })
       end
 
       participations
