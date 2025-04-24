@@ -434,7 +434,6 @@
   "app.components.app.containers.AdminPage.ProjectEdit.reactingThresholdRequired": "É necessário um número mínimo de votos",
   "app.components.app.containers.AdminPage.ProjectEdit.report": "Relatório",
   "app.components.app.containers.AdminPage.ProjectEdit.screeningText": "Exigir a triagem de insumos",
-  "app.components.app.containers.AdminPage.ProjectEdit.screeningTooltip": "A triagem não está incluída em seu plano atual. Fale com seu gerente de sucesso do governo ou administrador para desbloqueá-lo.",
   "app.components.app.containers.AdminPage.ProjectEdit.timelineTab": "Linha do tempo",
   "app.components.app.containers.AdminPage.ProjectEdit.trafficTab": "Tráfego",
   "app.components.formBuilder.cancelMethodChange1": "Cancelar",
