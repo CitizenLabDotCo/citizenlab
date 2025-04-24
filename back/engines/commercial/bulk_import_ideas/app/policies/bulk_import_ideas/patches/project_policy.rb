@@ -7,8 +7,12 @@ module BulkImportIdeas
         active_moderator?
       end
 
+      # def export_form?
+      #   active_moderator?
+      # end
+
       def export_form?
-        active_moderator?
+        true
       end
 
       def draft_records?

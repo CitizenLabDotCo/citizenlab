@@ -38,6 +38,7 @@ services:
       - BASE_DEV_URI
     tty: true
     stdin_open: true
+  #    platform: linux/amd64
 
   que:
     container_name: cl-que

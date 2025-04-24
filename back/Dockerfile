@@ -41,12 +41,14 @@ RUN apt-get update                                        \
    libjemalloc2 \
    # tiktoken_ruby
    clang                                                  \
+   # For Ferrum PDF generation - NOT INSTALLED IN BUILD - WHY?
+  chromium chromium-sandbox fonts-liberation libappindicator3-1 xdg-utils \
    && curl -sL https://deb.nodesource.com/setup_18.x  | bash - \
    && apt-get -y --no-install-recommends install nodejs        \
    # Install MJML parser required by email engine.
    && npm install -g mjml@4.4.1                                \
    && apt-get clean                                            \
-   && rm -rf /var/lib/apt/lists/*
+   && rm -rf /var/lib/apt/lists/* /var/cache/apt
 
 # Install Postgres client:
 # Import the PostgreSQL repository signing key, add the repository, and install the package.

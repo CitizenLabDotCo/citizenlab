@@ -35,14 +35,43 @@ module BulkImportIdeas
       render json: { errors: { file: [{ error: e.key, **e.params }] } }, status: :unprocessable_entity
     end
 
+    # def export_form
+    #   send_not_found unless supported_model? && supported_format?
+    #
+    #   locale = params[:locale] || current_user.locale
+    #   personal_data_enabled = params[:personal_data] == 'true'
+    #
+    #   service = form_exporter_service.new(@phase, locale, personal_data_enabled)
+    #   send_data service.export, type: service.mime_type, filename: service.filename
+    # end
+
     def export_form
-      send_not_found unless supported_model? && supported_format?
+      # pdf = ::Grover.new('<html><body><h1>Heading</h1></body></html>').to_pdf
 
-      locale = params[:locale] || current_user.locale
-      personal_data_enabled = params[:personal_data] == 'true'
+      options = {
+        browser_path: '/usr/bin/chromium',
+        process_timeout: 30,
+        browser_options: {
+          'no-sandbox' => nil
+        }
+      }
 
-      service = form_exporter_service.new(@phase, locale, personal_data_enabled)
-      send_data service.export, type: service.mime_type, filename: service.filename
+      ::FerrumPdf.browser(
+        browser_path: '/usr/bin/chromium',
+                          process_timeout: 30,
+        headless: true,
+                          browser_options: {
+                            'no-sandbox' => nil
+                          }
+      )
+
+      # process_timeout
+
+      pdf = ::FerrumPdf.render_pdf(html: '<html><body><h1>Heading</h1></body></html>')
+
+      # pdf = Prawn::Document.new(page_size: 'A4')
+      # pdf.text 'This is a placeholder for the PDF export functionality.'
+      send_data pdf, type: 'application/pdf', filename: 'file.pdf'
     end
 
     def approve_all
