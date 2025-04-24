@@ -114,15 +114,15 @@ namespace :single_use do
           new_data['participation_rate_compared_period'] = participation_rate_compared_period
         end
 
+        puts "\n\n"
+        
         # Update the data if execute == true
         if execute
           data_unit.data = new_data
           data_unit.save!
-          puts "\n\n"
           puts "Updated #{data_unit.graph_id}"
           puts "\n\n"
         else
-          puts "\n\n"
           puts "Would update #{data_unit.graph_id}\n"
           puts "Old data:\n"
           puts data_unit.data.to_json
