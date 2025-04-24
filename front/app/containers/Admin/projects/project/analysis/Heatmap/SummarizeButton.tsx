@@ -144,6 +144,10 @@ const SummarizeButton = ({ row, column, cell, buttonStyle }: Props) => {
 
   const isDisabled = !cell || column.relationships.custom_field_option === null;
 
+  if (cell?.attributes.unit !== 'inputs') {
+    return null;
+  }
+
   return (
     <Button
       icon="stars"
