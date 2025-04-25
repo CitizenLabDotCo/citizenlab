@@ -7,7 +7,7 @@ import { useTheme } from 'styled-components';
 import { IAdminPublicationData } from 'api/admin_publications/types';
 import useAdminPublications from 'api/admin_publications/useAdminPublications';
 
-import { useDebouncedValue } from 'hooks/useDebouncedValue';
+import useDebouncedValue from 'hooks/useDebouncedValue';
 
 import selectStyles from 'components/UI/MultipleSelect/styles';
 
