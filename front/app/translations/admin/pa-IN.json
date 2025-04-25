@@ -434,7 +434,6 @@
   "app.components.app.containers.AdminPage.ProjectEdit.reactingThresholdRequired": "ਘੱਟੋ-ਘੱਟ ਵੋਟਾਂ ਦੀ ਗਿਣਤੀ ਜ਼ਰੂਰੀ ਹੈ",
   "app.components.app.containers.AdminPage.ProjectEdit.report": "ਰਿਪੋਰਟ",
   "app.components.app.containers.AdminPage.ProjectEdit.screeningText": "ਇਨਪੁਟਸ ਦੀ ਸਕ੍ਰੀਨਿੰਗ ਦੀ ਲੋੜ ਹੈ",
-  "app.components.app.containers.AdminPage.ProjectEdit.screeningTooltip": "ਸਕ੍ਰੀਨਿੰਗ ਤੁਹਾਡੀ ਮੌਜੂਦਾ ਯੋਜਨਾ ਵਿੱਚ ਸ਼ਾਮਲ ਨਹੀਂ ਹੈ। ਇਸਨੂੰ ਅਨਲੌਕ ਕਰਨ ਲਈ ਆਪਣੇ ਸਰਕਾਰੀ ਸਫਲਤਾ ਪ੍ਰਬੰਧਕ ਜਾਂ ਪ੍ਰਸ਼ਾਸਕ ਨਾਲ ਗੱਲ ਕਰੋ।",
   "app.components.app.containers.AdminPage.ProjectEdit.timelineTab": "ਸਮਾਂਰੇਖਾ",
   "app.components.app.containers.AdminPage.ProjectEdit.trafficTab": "ਆਵਾਜਾਈ",
   "app.components.formBuilder.cancelMethodChange1": "ਰੱਦ ਕਰੋ",

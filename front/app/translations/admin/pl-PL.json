@@ -434,7 +434,6 @@
   "app.components.app.containers.AdminPage.ProjectEdit.reactingThresholdRequired": "Wymagana jest minimalna liczba głosów",
   "app.components.app.containers.AdminPage.ProjectEdit.report": "Raport",
   "app.components.app.containers.AdminPage.ProjectEdit.screeningText": "Wymagaj sprawdzania danych wejściowych",
-  "app.components.app.containers.AdminPage.ProjectEdit.screeningTooltip": "Screening nie jest uwzględniony w Twoim obecnym planie. Porozmawiaj ze swoim Government Success Managerem lub administratorem, aby ją odblokować.",
   "app.components.app.containers.AdminPage.ProjectEdit.timelineTab": "Oś czasu",
   "app.components.app.containers.AdminPage.ProjectEdit.trafficTab": "Ruch drogowy",
   "app.components.formBuilder.cancelMethodChange1": "Anuluj",

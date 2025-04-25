@@ -434,7 +434,6 @@
   "app.components.app.containers.AdminPage.ProjectEdit.reactingThresholdRequired": "Äänten vähimmäismäärä vaaditaan",
   "app.components.app.containers.AdminPage.ProjectEdit.report": "Raportoi",
   "app.components.app.containers.AdminPage.ProjectEdit.screeningText": "Vaadi tulojen seulonta",
-  "app.components.app.containers.AdminPage.ProjectEdit.screeningTooltip": "Seulonta ei sisälly nykyiseen suunnitelmaasi. Keskustele hallituksen menestyspäällikön tai järjestelmänvalvojan kanssa avataksesi sen.",
   "app.components.app.containers.AdminPage.ProjectEdit.timelineTab": "Aikajana",
   "app.components.app.containers.AdminPage.ProjectEdit.trafficTab": "Liikenne",
   "app.components.formBuilder.cancelMethodChange1": "Peruuta",

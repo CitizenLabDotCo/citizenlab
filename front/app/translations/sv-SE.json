@@ -500,6 +500,7 @@
   "app.components.VerificationModal.verifyIdAustria": "Verifiera med ID Österrike",
   "app.components.VerificationModal.verifyKeycloak": "Verifiera med ID-Porten",
   "app.components.VerificationModal.verifyNemLogIn": "Verifiera med MitID",
+  "app.components.VerificationModal.verifyTwoday2": "Verifiera med BankID eller Freja eID+",
   "app.components.VerificationModal.verifyYourIdentity": "Verifiera din identitet",
   "app.components.VoteControl.budgetingFutureEnabled": "Du kan fördela din budget från och med {enabledFromDate}.",
   "app.components.VoteControl.budgetingNotPermitted": "Deltagandebudgetering är för närvarande inte aktiverad.",

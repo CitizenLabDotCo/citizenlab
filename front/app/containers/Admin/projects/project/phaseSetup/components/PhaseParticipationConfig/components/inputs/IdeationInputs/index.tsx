@@ -107,9 +107,8 @@ const IdeationInputs = ({
   handleSimilarityEnabledChange,
   handleThresholdChange,
 }: Props) => {
-  const prescreeningIdeationAllowed = useFeatureFlag({
+  const prescreeningIdeationEnabled = useFeatureFlag({
     name: 'prescreening_ideation',
-    onlyCheckAllowed: true,
   });
 
   return (
@@ -124,11 +123,12 @@ const IdeationInputs = ({
         input_term={input_term}
         handleInputTermChange={handleInputTermChange}
       />
-      <PrescreeningToggle
-        prescreening_enabled={prescreening_enabled}
-        togglePrescreeningEnabled={togglePrescreeningEnabled}
-        prescreeningFeatureAllowed={prescreeningIdeationAllowed}
-      />
+      {prescreeningIdeationEnabled && (
+        <PrescreeningToggle
+          prescreening_enabled={prescreening_enabled}
+          togglePrescreeningEnabled={togglePrescreeningEnabled}
+        />
+      )}
       <UserActions
         submission_enabled={submission_enabled || false}
         commenting_enabled={commenting_enabled || false}

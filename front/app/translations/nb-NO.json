@@ -500,6 +500,7 @@
   "app.components.VerificationModal.verifyIdAustria": "Bekreft med ID Austria",
   "app.components.VerificationModal.verifyKeycloak": "Bekreft med ID-Porten",
   "app.components.VerificationModal.verifyNemLogIn": "Verifiser med MitID",
+  "app.components.VerificationModal.verifyTwoday2": "Verifiser med BankID eller Freja eID+",
   "app.components.VerificationModal.verifyYourIdentity": "Bekreft identiteten din",
   "app.components.VoteControl.budgetingFutureEnabled": "Du kan tildele budsjettet ditt fra {enabledFromDate}.",
   "app.components.VoteControl.budgetingNotPermitted": "Deltakende budsjettering er ikke aktivert for øyeblikket.",
