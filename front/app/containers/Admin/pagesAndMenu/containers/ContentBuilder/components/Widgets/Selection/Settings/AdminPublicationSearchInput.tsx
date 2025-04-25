@@ -24,7 +24,7 @@ const AdminPublicationSearchInput = ({
   onChange,
 }: Props) => {
   const [search, setSearch] = useState('');
-  const debouncedSearch = useDebouncedValue(search, 300);
+  const debouncedSearch = useDebouncedValue(search, 200);
   const theme = useTheme();
 
   const {
