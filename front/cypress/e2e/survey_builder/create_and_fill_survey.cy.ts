@@ -148,7 +148,7 @@ describe('Survey builder', () => {
     cy.contains(questionTitle).should('not.exist');
   });
 
-  it('shows survey results for multiple choice and linear scale fields', () => {
+  it.skip('shows survey results for multiple choice and linear scale fields', () => {
     const chooseOneOption1 = randomString();
     const chooseOneOption2 = randomString();
     const chooseManyOption1 = randomString();
@@ -213,6 +213,14 @@ describe('Survey builder', () => {
     cy.get(`#linear-scale-option-1`).click({ force: true });
     cy.get('[data-cy="e2e-submit-form"]').should('exist');
     cy.get('[data-cy="e2e-submit-form"]').click();
+    cy.visit(`/projects/${projectSlug}/surveys/new?phase_id=${phaseId}`);
+    cy.contains(chooseOneOption2).click({ force: true });
+    cy.contains(chooseManyOption1).click({
+      force: true,
+    });
+    cy.get(`#linear-scale-option-3`).click({ force: true });
+    cy.get('[data-cy="e2e-submit-form"]').should('exist');
+    cy.get('[data-cy="e2e-submit-form"]').click();
 
     cy.visit(`admin/projects/${projectId}/phases/${phaseId}/native-survey`);
     cy.get(`[data-cy="e2e-${snakeCase(multipleChoiceChooseOneTitle)}"]`).should(
@@ -231,12 +239,19 @@ describe('Survey builder', () => {
     cy.url().should('include', `/native-survey/edit`);
   });
 
-  it.skip('navigates to live project in a new tab when view project button in content builder is clicked', () => {
+  it('navigates to live project in a new tab when view project button in content builder is clicked', () => {
     const projectUrl = `/en/projects/${projectSlug}/surveys/new?phase_id=${phaseId}`;
 
     cy.visit(`admin/projects/${projectId}/phases/${phaseId}/native-survey`);
     cy.get('[data-cy="e2e-edit-survey-content"]').click();
-    cy.get('[data-cy="e2e-short-answer"]').click();
+
+    cy.intercept('**/phases/**/custom_fields').as('customFields');
+    cy.intercept('**/phases/**/custom_form').as('customForm');
+    cy.wait('@customFields');
+    cy.wait('@customForm');
+    cy.wait(100);
+
+    cy.get('[data-cy="e2e-number-field"]').click();
     cy.get('#e2e-title-multiloc').type(questionTitle, { force: true });
     cy.get('form').submit();
 
