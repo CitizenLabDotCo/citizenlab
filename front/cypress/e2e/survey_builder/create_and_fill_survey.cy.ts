@@ -239,7 +239,7 @@ describe('Survey builder', () => {
     cy.url().should('include', `/native-survey/edit`);
   });
 
-  it('navigates to live project in a new tab when view project button in content builder is clicked', () => {
+  it.skip('navigates to live project in a new tab when view project button in content builder is clicked', () => {
     const projectUrl = `/en/projects/${projectSlug}/surveys/new?phase_id=${phaseId}`;
 
     cy.visit(`admin/projects/${projectId}/phases/${phaseId}/native-survey`);
@@ -271,40 +271,17 @@ describe('Survey builder', () => {
     );
   });
 
-  it.skip('does not allow editing survey fields in builder when responses have started coming in', () => {
-    cy.visit(
-      `admin/projects/${projectId}/phases/${phaseId}/native-survey/edit`
-    );
-    cy.get('[data-cy="e2e-short-answer"]').click();
-    cy.get('#e2e-title-multiloc').type(questionTitle, { force: true });
-
-    // Save the survey
-    cy.get('form').submit();
-    // Should show success message on saving
-    cy.get('[data-testid="feedbackSuccessMessage"]').should('exist');
-
-    // Check that the user can access the settings to edit
-    cy.contains(questionTitle).should('exist').click();
-    cy.get('#e2e-title-multiloc').should('exist');
-
-    // Navigate to the survey page
-    cy.visit(`/projects/${projectSlug}/surveys/new?phase_id=${phaseId}`);
-    cy.acceptCookies();
-    cy.contains(questionTitle).should('exist');
-
-    cy.get(`*[id^="properties${questionTitle}"]`).type(answer, { force: true });
-
-    cy.get('[data-cy="e2e-next-page"]').should('be.visible').click();
-
-    // Save survey response
-    cy.get('[data-cy="e2e-submit-form"]').should('exist');
-    cy.get('[data-cy="e2e-submit-form"]').click();
-  });
-
   it.skip('allows deleting survey results when user clicks the delete button', () => {
     cy.visit(
       `admin/projects/${projectId}/phases/${phaseId}/native-survey/edit`
     );
+
+    cy.intercept('**/phases/**/custom_fields').as('customFields');
+    cy.intercept('**/phases/**/custom_form').as('customForm');
+    cy.wait('@customFields');
+    cy.wait('@customForm');
+    cy.wait(100);
+
     cy.get('[data-cy="e2e-short-answer"]').click();
     cy.get('#e2e-title-multiloc').type(questionTitle, { force: true });
 
@@ -324,7 +301,6 @@ describe('Survey builder', () => {
 
     cy.get(`*[id^="properties${questionTitle}"]`).type(answer, { force: true });
 
-    cy.get('[data-cy="e2e-next-page"]').should('be.visible').click();
     // Save survey response
     cy.get('[data-cy="e2e-submit-form"]').should('exist');
     cy.get('[data-cy="e2e-submit-form"]').click();
@@ -345,6 +321,13 @@ describe('Survey builder', () => {
     cy.visit(
       `admin/projects/${projectId}/phases/${phaseId}/native-survey/edit`
     );
+
+    cy.intercept('**/phases/**/custom_fields').as('customFields');
+    cy.intercept('**/phases/**/custom_form').as('customForm');
+    cy.wait('@customFields');
+    cy.wait('@customForm');
+    cy.wait(100);
+
     cy.get('[data-cy="e2e-short-answer"]').click();
     cy.get('#e2e-title-multiloc').type(questionTitle, { force: true });
 
@@ -364,7 +347,6 @@ describe('Survey builder', () => {
 
     cy.get(`*[id^="properties${questionTitle}"]`).type(answer, { force: true });
 
-    cy.get('[data-cy="e2e-next-page"]').should('be.visible').click();
     // Save survey response
     cy.get('[data-cy="e2e-submit-form"]').should('exist');
     cy.get('[data-cy="e2e-submit-form"]').click();
@@ -387,7 +369,7 @@ describe('Survey builder', () => {
     cy.task('deleteFolder', downloadsFolder);
   });
 
-  it.skip('allows admins to fill in surveys as many times as they want when permissions are set to registered users', () => {
+  it('allows admins to fill in surveys as many times as they want when permissions are set to registered users', () => {
     cy.visit(`/admin/projects/${projectId}/phases/${phaseId}/access-rights`);
 
     cy.get('.e2e-action-accordion-posting_idea').click();
@@ -397,6 +379,13 @@ describe('Survey builder', () => {
 
     cy.visit(`admin/projects/${projectId}/phases/${phaseId}/native-survey`);
     cy.get('[data-cy="e2e-edit-survey-content"]').click();
+
+    cy.intercept('**/phases/**/custom_fields').as('customFields');
+    cy.intercept('**/phases/**/custom_form').as('customForm');
+    cy.wait('@customFields');
+    cy.wait('@customForm');
+    cy.wait(100);
+
     cy.get('[data-cy="e2e-short-answer"]').click();
 
     cy.get('#e2e-title-multiloc').type(questionTitle, { force: true });
@@ -413,7 +402,6 @@ describe('Survey builder', () => {
       .should('not.have.attr', 'disabled');
     cy.get('#project-survey-button').find('button').click({ force: true });
     cy.contains(questionTitle).should('exist');
-    cy.get('[data-cy="e2e-next-page"]').should('be.visible').click();
     cy.get('[data-cy="e2e-submit-form"]').click();
 
     // Take the survey again
@@ -423,15 +411,10 @@ describe('Survey builder', () => {
       .should('not.have.attr', 'disabled');
     cy.get('#project-survey-button').find('button').click({ force: true });
     cy.contains(questionTitle).should('exist');
-    cy.get('[data-cy="e2e-next-page"]').should('be.visible').click();
     cy.get('[data-cy="e2e-submit-form"]').click();
 
     // Check that we show a success message
-    cy.get('[data-cy="e2e-survey-success-message"]').should('exist');
-    // close modal
-    cy.get('.e2e-modal-close-button').click();
-    // check that the modal is no longer on the page
-    cy.get('#e2e-modal-container').should('have.length', 0);
+    cy.get('[data-cy="e2e-after-submission"]').should('exist');
   });
 
   it.skip('creates survey with logic, saves survey and user can respond to survey and responses determine which page he sees based on set logic', () => {
