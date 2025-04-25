@@ -5,6 +5,10 @@ export default defineMessages({
     id: 'app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.CraftComponents.CommunityMonitor.communityMonitorCTATitle2',
     defaultMessage: 'Community Monitor',
   },
+  important: {
+    id: 'app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.CraftComponents.CommunityMonitor.important',
+    defaultMessage: 'Important:',
+  },
   communityMonitorCTADescription: {
     id: 'app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.CraftComponents.CommunityMonitor.communityMonitorCTADescription',
     defaultMessage:

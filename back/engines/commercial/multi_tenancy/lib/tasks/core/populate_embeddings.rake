@@ -1,13 +1,16 @@
 namespace :embeddings do
   desc 'Populate embeddings for the ideas and proposals.'
   task :populate_ideas, %i[host project_slug] => [:environment] do |_t, args|
-    Apartment::Tenant.switch(args[:host].tr('.', '_')) do
+    scope = args[:host] ? Tenant.where(host: args[:host]) : Tenant.with_lifecycle('active')
+    Tenant.safe_switch_each(scope: scope) do
       ideas_scope = if args[:project_slug]
         Project.find_by!(slug: args[:project_slug]).ideas
       else
         Idea.all
       end
-      ideas_scope.publicly_visible.order(likes_count: :desc).each do |idea|
+      ideas_scope.published.publicly_visible.order(likes_count: :desc).each do |idea|
+        next if idea.title_multiloc.blank? || idea.body_multiloc.blank?
+
         puts "Processing idea #{idea.slug}"
         SimilarIdeasService.new(idea).upsert_embeddings!
       end

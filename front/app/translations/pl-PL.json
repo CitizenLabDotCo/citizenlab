@@ -2154,6 +2154,7 @@
   "app.utils.IdeasNewPage.viewYourProject": "Wyświetl swój projekt",
   "app.utils.IdeasNewPage.viewYourProposal": "Wyświetl swoją propozycję",
   "app.utils.IdeasNewPage.viewYourQuestion": "Wyświetl swoje pytanie",
+  "app.utils.Projects.sendSubmission": "Wyślij identyfikator zgłoszenia na mój adres e-mail",
   "app.utils.Projects.sendSurveySubmission": "Wyślij identyfikator ankiety na mój adres e-mail",
   "app.utils.Projects.surveySubmission": "Przesyłanie ankiet",
   "app.utils.Projects.yourResponseHasTheFollowingId": "Twoja odpowiedź ma następujący identyfikator: {identifier}",

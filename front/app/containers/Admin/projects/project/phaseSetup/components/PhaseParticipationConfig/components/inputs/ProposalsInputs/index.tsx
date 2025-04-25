@@ -99,9 +99,8 @@ const ProposalsInputs = ({
   handleSimilarityEnabledChange,
   handleThresholdChange,
 }: Props) => {
-  const prescreeningFeatureAllowed = useFeatureFlag({
+  const prescreeningFeatureEnabled = useFeatureFlag({
     name: 'prescreening',
-    onlyCheckAllowed: true,
   });
 
   return (
@@ -150,11 +149,12 @@ const ProposalsInputs = ({
           handleAllowAnonymousParticipationOnChange
         }
       />
-      <PrescreeningToggle
-        prescreening_enabled={prescreening_enabled}
-        togglePrescreeningEnabled={togglePrescreeningEnabled}
-        prescreeningFeatureAllowed={prescreeningFeatureAllowed}
-      />
+      {prescreeningFeatureEnabled && (
+        <PrescreeningToggle
+          prescreening_enabled={prescreening_enabled}
+          togglePrescreeningEnabled={togglePrescreeningEnabled}
+        />
+      )}
       <UserActions
         submission_enabled={submission_enabled || false}
         commenting_enabled={commenting_enabled || false}

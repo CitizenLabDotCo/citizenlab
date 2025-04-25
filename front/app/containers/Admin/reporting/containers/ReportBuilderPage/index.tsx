@@ -187,6 +187,7 @@ const ReportBuilderPage = ({ tabsToHide }: ReportBuilderPageProps) => {
                 icon="plus-circle"
                 buttonStyle="admin-dark"
                 disabled={!isReportBuilderAllowed}
+                data-cy="e2e-create-report-button"
               >
                 <FormattedMessage {...messages.createAReport} />
               </Button>

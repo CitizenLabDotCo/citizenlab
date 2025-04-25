@@ -131,6 +131,7 @@ const CreateReportModal = ({ open, onClose }: Props) => {
           <Box width="100%" mt="12px">
             <Box mb="16px">
               <Select
+                id="e2e-year-select"
                 placeholder={formatMessage(messages.selectYear)}
                 value={year}
                 options={generateYearSelectOptions(2025)} // Genereates list: 2025 until current year
@@ -139,6 +140,7 @@ const CreateReportModal = ({ open, onClose }: Props) => {
             </Box>
 
             <Select
+              id="e2e-quarter-select"
               placeholder={formatMessage(messages.selectQuarter)}
               value={quarter}
               options={[1, 2, 3, 4].map((quarter) => ({

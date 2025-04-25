@@ -21,6 +21,7 @@ import useLocalize from 'hooks/useLocalize';
 
 import { PageCategorization } from 'components/Form/typings';
 
+import { trackEventByName } from 'utils/analytics';
 import { useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
 import { calculateEstimatedSurveyTime } from 'utils/surveyUtils';
@@ -28,6 +29,7 @@ import { calculateEstimatedSurveyTime } from 'utils/surveyUtils';
 import SentimentQuestionPreview from './assets/SentimentQuestionPreview.png';
 import messages from './messages';
 import Settings from './Settings';
+import tracks from './tracks';
 interface Props {
   title: Multiloc;
   description: Multiloc;
@@ -66,13 +68,24 @@ const CommunityMonitorCTA = ({
 
   const goToCommunityMonitorSurvey = () => {
     if (phaseId) {
+      // Track the homepage CTA interaction
+      trackEventByName(
+        tracks.communityMonitorHomepageWidgetClickedAndRedirected
+      );
+
+      // Redirect to the survey page
       clHistory.push(
         `/projects/${project.data.attributes.slug}/surveys/new?phase_id=${phaseId}`
       );
     }
   };
 
-  if (!isSurveyLive) {
+  // Check if we're currently in the homepage builder
+  const onHomepageBuilder =
+    window.location.pathname.includes('homepage-builder/');
+
+  // If the survey is not live and we're not on the homepage builder, don't render the CTA
+  if (!isSurveyLive && !onHomepageBuilder) {
     return null;
   }
 
