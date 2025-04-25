@@ -1088,7 +1088,7 @@
   "app.containers.ChangeEmail.emailEmptyError": "Ange en e-postadress",
   "app.containers.ChangeEmail.emailInvalidError": "Ange en e-postadress i rätt format, till exempel name@provider.com.",
   "app.containers.ChangeEmail.emailRequired": "Ange en e-postadress.",
-  "app.containers.ChangeEmail.emailTaken": "Detta e-postmeddelande används redan.",
+  "app.containers.ChangeEmail.emailTaken": "Denna e-postadress används redan.",
   "app.containers.ChangeEmail.emailUpdateCancelled": "Uppdateringen av e-postmeddelandet har avbrutits.",
   "app.containers.ChangeEmail.emailUpdateCancelledDescription": "Om du vill uppdatera din e-postadress startar du om processen.",
   "app.containers.ChangeEmail.helmetDescription": "Ändra din e-postsida",
