@@ -319,7 +319,7 @@ sv:
       choose_exactly:
         one: 'Välj exakt %{count} alternativ'
         other: 'Välj exakt %{count} alternativ'
-      choose_between: 'Välj mellan %{min} och %{max} alternativ'
+      choose_between: 'Väl minst %{min} och upp till %{max} alternativ'
       choose_at_least: 'Välj minst %{count} alternativ'
       choose_at_most: 'Välj högst %{count} alternativ'
       this_answer: 'Detta svar kommer endast att delas med moderatorer och inte med allmänheten.'
