@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 
 import { Box } from '@citizenlab/cl2-component-library';
-import { debounce } from 'lodash-es';
 import ReactSelect from 'react-select';
 import { useTheme } from 'styled-components';
 
@@ -11,7 +10,7 @@ import useAdminPublications from 'api/admin_publications/useAdminPublications';
 import selectStyles from 'components/UI/MultipleSelect/styles';
 
 import OptionLabel from './OptionLabel';
-import useDebounce from './useDebounce';
+import { useDebouncedValue } from './useDebouncedValue';
 import { LoadMore, getOptionId, getOptions } from './utils';
 
 interface Props {
@@ -23,8 +22,8 @@ const AdminPublicationSearchInput = ({
   adminPublicationIds,
   onChange,
 }: Props) => {
-  // const [visibleSearchTerm, setVisibleSearchTerm] = useState('');
   const [search, setSearch] = useState('');
+  const debouncedSearch = useDebouncedValue(search, 300);
   const theme = useTheme();
 
   const {
@@ -33,15 +32,9 @@ const AdminPublicationSearchInput = ({
     hasNextPage,
     isFetchingNextPage,
   } = useAdminPublications({
-    search,
+    search: debouncedSearch,
     publicationStatusFilter: ['published', 'archived'],
     pageSize: 6,
-  });
-
-  const debouncedChangeSearch = useDebounce(() => {
-    return debounce((searchTerm: string) => {
-      setSearch(searchTerm);
-    }, 200);
   });
 
   const handleInputChange = (searchTerm: string) => {
