@@ -2937,7 +2937,6 @@
   "app.containers.phaseConfig.similarInputDetectionTooltip": "Zeigen Sie den Teilnehmenden ähnliche Beiträge an, während sie tippen, um Doppeleingaben zu vermeiden.",
   "app.containers.phaseConfig.similarityThresholdBody": "Ähnlichkeitsschwelle (Hauptteil)",
   "app.containers.phaseConfig.similarityThresholdTitle": "Ähnlichkeitsschwelle (Titel)",
-  "app.containers.phaseConfig.similarityThresholdTitleTooltip1": "Dies steuert, wie ähnlich zwei Titel sein müssen, damit sie als ähnlich gekennzeichnet werden. Verwenden Sie Werte zwischen 0 und 1. Ändern Sie dies nur, wenn Sie die Auswirkungen verstehen.",
   "app.containers.phaseConfig.warningSimilarInputDetectionTrial": "Diese Funktion ist im Rahmen eines frühzeitigen Zugangs bis zum 30. Juni 2025 verfügbar. Wenn Sie die Funktion über dieses Datum hinaus nutzen möchten, wenden Sie sich bitte an Ihre Kundenbetreuerin oder Ihren Admin, um die Aktivierungsoptionen zu besprechen.",
   "app.containers.survey.sentiment.noAnswers2": "Keine Antworten zu diesem Zeitpunkt.",
   "app.containers.survey.sentiment.numberComments": "{count, plural, =0 {keine Kommentare} one {1 Kommentar} other {# Kommentare}}",

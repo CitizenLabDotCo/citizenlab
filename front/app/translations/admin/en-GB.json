@@ -2937,7 +2937,6 @@
   "app.containers.phaseConfig.similarInputDetectionTooltip": "Show participants similar input while they type to help avoid duplicates.",
   "app.containers.phaseConfig.similarityThresholdBody": "Similarity threshold (body)",
   "app.containers.phaseConfig.similarityThresholdTitle": "Similarity threshold (title)",
-  "app.containers.phaseConfig.similarityThresholdTitleTooltip1": "This controls how similar two titles need to be before being flagged as similar. Use values between 0 and 1. Only modify this if you understand the implications.",
   "app.containers.phaseConfig.warningSimilarInputDetectionTrial": "This feature is available as part of an early access offering until June 30th, 2025. If you'd like to continue using it beyond that date, please reach out to your Government Success Manager or admin to discuss activation options.",
   "app.containers.survey.sentiment.noAnswers2": "No responses at this time.",
   "app.containers.survey.sentiment.numberComments": "{count, plural, =0 {0 comments} one {1 comment} other {# comments}}",

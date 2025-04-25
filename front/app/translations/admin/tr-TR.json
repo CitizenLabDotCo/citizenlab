@@ -2937,7 +2937,6 @@
   "app.containers.phaseConfig.similarInputDetectionTooltip": "Yinelemeleri önlemeye yardımcı olmak için katılımcılara yazarken benzer girdileri gösterin.",
   "app.containers.phaseConfig.similarityThresholdBody": "Benzerlik eşiği (gövde)",
   "app.containers.phaseConfig.similarityThresholdTitle": "Benzerlik eşiği (başlık)",
-  "app.containers.phaseConfig.similarityThresholdTitleTooltip1": "Bu, iki başlığın benzer olarak işaretlenmeden önce ne kadar benzer olması gerektiğini kontrol eder. 0 ile 1 arasında değerler kullanın. Bunu yalnızca sonuçlarını anlıyorsanız değiştirin.",
   "app.containers.phaseConfig.warningSimilarInputDetectionTrial": "Bu özellik, 30 Haziran 2025 tarihine kadar erken erişim teklifinin bir parçası olarak kullanılabilir. Bu tarihten sonra da kullanmaya devam etmek isterseniz, etkinleştirme seçeneklerini görüşmek için lütfen Kamu Başarı Yöneticinize veya yöneticinize ulaşın.",
   "app.containers.survey.sentiment.noAnswers2": "Şu anda yanıt yok.",
   "app.containers.survey.sentiment.numberComments": "{count, plural, =0 {0 yorum} one {1 yorum} other {# yorum}}",

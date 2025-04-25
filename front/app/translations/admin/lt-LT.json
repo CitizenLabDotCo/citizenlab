@@ -2937,7 +2937,6 @@
   "app.containers.phaseConfig.similarInputDetectionTooltip": "Parodykite dalyviams panašius įvesties duomenis, kol jie rašo tekstą, kad išvengtumėte pasikartojimų.",
   "app.containers.phaseConfig.similarityThresholdBody": "Panašumo riba (kūnas)",
   "app.containers.phaseConfig.similarityThresholdTitle": "Panašumo riba (pavadinimas)",
-  "app.containers.phaseConfig.similarityThresholdTitleTooltip1": "Taip nustatoma, kiek panašūs turi būti du pavadinimai, kad jie būtų pažymėti kaip panašūs. Naudokite reikšmes nuo 0 iki 1. Šią reikšmę keiskite tik tada, jei suprantate jos reikšmes.",
   "app.containers.phaseConfig.warningSimilarInputDetectionTrial": "Šią funkciją kaip ankstyvosios prieigos dalį galima naudoti iki 2025 m. birželio 30 d. Jei norite ja naudotis ir po šios datos, susisiekite su savo Vyriausybės sėkmės vadybininku arba administratoriumi ir aptarkite aktyvavimo galimybes.",
   "app.containers.survey.sentiment.noAnswers2": "Šiuo metu atsakymų nėra.",
   "app.containers.survey.sentiment.numberComments": "{count, plural, =0 {0 komentarų} one {1 komentaras} other {# komentarai}}",
