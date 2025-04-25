@@ -500,6 +500,7 @@
   "app.components.VerificationModal.verifyIdAustria": "Pārbaudiet ar ID Austrija",
   "app.components.VerificationModal.verifyKeycloak": "Pārbaudiet ar ID-Porten",
   "app.components.VerificationModal.verifyNemLogIn": "Pārbaudiet ar MitID",
+  "app.components.VerificationModal.verifyTwoday2": "Verifikācija ar BankID vai Freja eID+",
   "app.components.VerificationModal.verifyYourIdentity": "Pārbaudiet savu identitāti",
   "app.components.VoteControl.budgetingFutureEnabled": "Jūs varat piešķirt savu budžetu, sākot no {enabledFromDate}.",
   "app.components.VoteControl.budgetingNotPermitted": "Pašlaik līdzdalības budžeta veidošana nav iespējota.",

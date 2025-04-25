@@ -500,6 +500,7 @@
   "app.components.VerificationModal.verifyIdAustria": "Verificar amb ID Àustria",
   "app.components.VerificationModal.verifyKeycloak": "Verifica amb ID-Porten",
   "app.components.VerificationModal.verifyNemLogIn": "Verifiqueu amb MitID",
+  "app.components.VerificationModal.verifyTwoday2": "Verifiqueu amb BankID o Freja eID+",
   "app.components.VerificationModal.verifyYourIdentity": "Verificar la vostra identitat",
   "app.components.VoteControl.budgetingFutureEnabled": "Podeu assignar el vostre pressupost a partir de {enabledFromDate}.",
   "app.components.VoteControl.budgetingNotPermitted": "Els pressupostos participatius no estan activats actualment.",

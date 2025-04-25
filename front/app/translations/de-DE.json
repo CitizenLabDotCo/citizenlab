@@ -500,6 +500,7 @@
   "app.components.VerificationModal.verifyIdAustria": "Verifizierung mit ID Austria",
   "app.components.VerificationModal.verifyKeycloak": "Verifizierung mit ID-Porten",
   "app.components.VerificationModal.verifyNemLogIn": "Überprüfen Sie mit MitID",
+  "app.components.VerificationModal.verifyTwoday2": "Überprüfen Sie mit BankID oder Freja eID+",
   "app.components.VerificationModal.verifyYourIdentity": "Werden Sie verifizierte:r Bürger:in",
   "app.components.VoteControl.budgetingFutureEnabled": "Sie können Ihr Budget ab {enabledFromDate} zuweisen.\n",
   "app.components.VoteControl.budgetingNotPermitted": "Ein Bürgerhaushalt ist derzeit nicht möglich.",
