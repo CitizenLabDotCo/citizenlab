@@ -2106,7 +2106,6 @@
   "app.containers.AdminPage.ProjectIdeaForm.collapseAll": "Luk alle felter",
   "app.containers.AdminPage.ProjectIdeaForm.descriptionLabel": "Beskrivelse af feltet",
   "app.containers.AdminPage.ProjectIdeaForm.downloadExcelTemplate": "Download en Excel-skabelon",
-  "app.containers.AdminPage.ProjectIdeaForm.downloadInputForm": "Download indtastningsformular som pdf",
   "app.containers.AdminPage.ProjectIdeaForm.editInputForm": "Rediger input-formularen",
   "app.containers.AdminPage.ProjectIdeaForm.enabled": "Aktiveret",
   "app.containers.AdminPage.ProjectIdeaForm.enabledTooltipContent": "Medtag dette felt.",

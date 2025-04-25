@@ -2106,7 +2106,6 @@
   "app.containers.AdminPage.ProjectIdeaForm.collapseAll": "Skjul alle felt",
   "app.containers.AdminPage.ProjectIdeaForm.descriptionLabel": "Feltbeskrivelse",
   "app.containers.AdminPage.ProjectIdeaForm.downloadExcelTemplate": "Last ned en Excel-mal",
-  "app.containers.AdminPage.ProjectIdeaForm.downloadInputForm": "Last ned inndataskjema som pdf",
   "app.containers.AdminPage.ProjectIdeaForm.editInputForm": "Rediger inndataskjema",
   "app.containers.AdminPage.ProjectIdeaForm.enabled": "Aktivert",
   "app.containers.AdminPage.ProjectIdeaForm.enabledTooltipContent": "Ta med dette feltet.",

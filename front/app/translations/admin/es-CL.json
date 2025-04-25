@@ -2106,7 +2106,6 @@
   "app.containers.AdminPage.ProjectIdeaForm.collapseAll": "Colapsar todos los campos",
   "app.containers.AdminPage.ProjectIdeaForm.descriptionLabel": "Descripción del campo",
   "app.containers.AdminPage.ProjectIdeaForm.downloadExcelTemplate": "Descargar una plantilla Excel",
-  "app.containers.AdminPage.ProjectIdeaForm.downloadInputForm": "Descargar formulario de entrada como pdf",
   "app.containers.AdminPage.ProjectIdeaForm.editInputForm": "Editar formulario de entrada",
   "app.containers.AdminPage.ProjectIdeaForm.enabled": "Activado",
   "app.containers.AdminPage.ProjectIdeaForm.enabledTooltipContent": "Incluye este campo.",

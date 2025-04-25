@@ -2106,7 +2106,6 @@
   "app.containers.AdminPage.ProjectIdeaForm.collapseAll": "Ukryj wszystkie pola",
   "app.containers.AdminPage.ProjectIdeaForm.descriptionLabel": "Opis pola",
   "app.containers.AdminPage.ProjectIdeaForm.downloadExcelTemplate": "Pobierz szablon Excel",
-  "app.containers.AdminPage.ProjectIdeaForm.downloadInputForm": "Pobierz formularz wejściowy jako pdf",
   "app.containers.AdminPage.ProjectIdeaForm.editInputForm": "Edycja formularza wejściowego",
   "app.containers.AdminPage.ProjectIdeaForm.enabled": "Włączony",
   "app.containers.AdminPage.ProjectIdeaForm.enabledTooltipContent": "Uwzględnij to pole.",

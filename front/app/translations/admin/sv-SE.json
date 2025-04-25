@@ -2106,7 +2106,6 @@
   "app.containers.AdminPage.ProjectIdeaForm.collapseAll": "Minimera alla fält",
   "app.containers.AdminPage.ProjectIdeaForm.descriptionLabel": "Fältbeskrivning",
   "app.containers.AdminPage.ProjectIdeaForm.downloadExcelTemplate": "Ladda ner en Excel-mall",
-  "app.containers.AdminPage.ProjectIdeaForm.downloadInputForm": "Ladda ner inmatningsformuläret som pdf",
   "app.containers.AdminPage.ProjectIdeaForm.editInputForm": "Redigera inmatningsformulär",
   "app.containers.AdminPage.ProjectIdeaForm.enabled": "Aktiverad",
   "app.containers.AdminPage.ProjectIdeaForm.enabledTooltipContent": "Inkludera det här fältet.",

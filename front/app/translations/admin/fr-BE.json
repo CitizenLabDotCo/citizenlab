@@ -2106,7 +2106,6 @@
   "app.containers.AdminPage.ProjectIdeaForm.collapseAll": "Réduire tous les champs",
   "app.containers.AdminPage.ProjectIdeaForm.descriptionLabel": "Description du champ",
   "app.containers.AdminPage.ProjectIdeaForm.downloadExcelTemplate": "Télécharger un modèle Excel",
-  "app.containers.AdminPage.ProjectIdeaForm.downloadInputForm": "Télécharger le formulaire au format PDF",
   "app.containers.AdminPage.ProjectIdeaForm.editInputForm": "Modifier le formulaire de saisie",
   "app.containers.AdminPage.ProjectIdeaForm.enabled": "Activé",
   "app.containers.AdminPage.ProjectIdeaForm.enabledTooltipContent": "Incluez ce champ.",
