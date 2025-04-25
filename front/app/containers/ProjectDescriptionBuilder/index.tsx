@@ -139,6 +139,7 @@ const ProjectDescriptionBuilderPage = () => {
         <Box
           mt={`${stylingConsts.menuHeight}px`}
           display={previewEnabled ? 'none' : 'flex'}
+          id="e2e-project-description-content-builder-page"
         >
           <ProjectDescriptionBuilderToolbox selectedLocale={selectedLocale} />
           <LanguageProvider

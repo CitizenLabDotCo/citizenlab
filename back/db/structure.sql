@@ -17,11 +17,13 @@ ALTER TABLE IF EXISTS ONLY public.comments DROP CONSTRAINT IF EXISTS fk_rails_f4
 ALTER TABLE IF EXISTS ONLY public.cosponsorships DROP CONSTRAINT IF EXISTS fk_rails_f32533b783;
 ALTER TABLE IF EXISTS ONLY public.report_builder_published_graph_data_units DROP CONSTRAINT IF EXISTS fk_rails_f21a19c203;
 ALTER TABLE IF EXISTS ONLY public.notifications DROP CONSTRAINT IF EXISTS fk_rails_f1d8986d29;
+ALTER TABLE IF EXISTS ONLY public.custom_field_bins DROP CONSTRAINT IF EXISTS fk_rails_f09b1bc4cd;
 ALTER TABLE IF EXISTS ONLY public.idea_files DROP CONSTRAINT IF EXISTS fk_rails_efb12f53ad;
 ALTER TABLE IF EXISTS ONLY public.static_pages_topics DROP CONSTRAINT IF EXISTS fk_rails_edc8786515;
 ALTER TABLE IF EXISTS ONLY public.polls_response_options DROP CONSTRAINT IF EXISTS fk_rails_e871bf6e26;
 ALTER TABLE IF EXISTS ONLY public.nav_bar_items DROP CONSTRAINT IF EXISTS fk_rails_e8076fb9f6;
-ALTER TABLE IF EXISTS ONLY public.cosponsors_initiatives DROP CONSTRAINT IF EXISTS fk_rails_e48253715f;
+ALTER TABLE IF EXISTS ONLY public.custom_field_bins DROP CONSTRAINT IF EXISTS fk_rails_e6f48b841d;
+ALTER TABLE IF EXISTS ONLY public.analysis_comments_summaries DROP CONSTRAINT IF EXISTS fk_rails_e51f754cf7;
 ALTER TABLE IF EXISTS ONLY public.permissions_custom_fields DROP CONSTRAINT IF EXISTS fk_rails_e211dc8f99;
 ALTER TABLE IF EXISTS ONLY public.baskets_ideas DROP CONSTRAINT IF EXISTS fk_rails_dfb57cbce2;
 ALTER TABLE IF EXISTS ONLY public.project_reviews DROP CONSTRAINT IF EXISTS fk_rails_de7c38cbc4;
@@ -42,6 +44,7 @@ ALTER TABLE IF EXISTS ONLY public.reactions DROP CONSTRAINT IF EXISTS fk_rails_c
 ALTER TABLE IF EXISTS ONLY public.idea_import_files DROP CONSTRAINT IF EXISTS fk_rails_c93392afae;
 ALTER TABLE IF EXISTS ONLY public.email_campaigns_deliveries DROP CONSTRAINT IF EXISTS fk_rails_c87ec11171;
 ALTER TABLE IF EXISTS ONLY public.notifications DROP CONSTRAINT IF EXISTS fk_rails_c76d81b062;
+ALTER TABLE IF EXISTS ONLY public.custom_field_matrix_statements DROP CONSTRAINT IF EXISTS fk_rails_c379cdcd80;
 ALTER TABLE IF EXISTS ONLY public.idea_images DROP CONSTRAINT IF EXISTS fk_rails_c349bb4ac3;
 ALTER TABLE IF EXISTS ONLY public.ideas DROP CONSTRAINT IF EXISTS fk_rails_c32c787647;
 ALTER TABLE IF EXISTS ONLY public.project_files DROP CONSTRAINT IF EXISTS fk_rails_c26fbba4b3;
@@ -59,7 +62,6 @@ ALTER TABLE IF EXISTS ONLY public.maps_layers DROP CONSTRAINT IF EXISTS fk_rails
 ALTER TABLE IF EXISTS ONLY public.memberships DROP CONSTRAINT IF EXISTS fk_rails_aaf389f138;
 ALTER TABLE IF EXISTS ONLY public.analytics_fact_visits DROP CONSTRAINT IF EXISTS fk_rails_a9aa810ecf;
 ALTER TABLE IF EXISTS ONLY public.ideas DROP CONSTRAINT IF EXISTS fk_rails_a7a91f1df3;
-ALTER TABLE IF EXISTS ONLY public.areas_initiatives DROP CONSTRAINT IF EXISTS fk_rails_a67ac3c9d1;
 ALTER TABLE IF EXISTS ONLY public.groups_permissions DROP CONSTRAINT IF EXISTS fk_rails_a5c3527604;
 ALTER TABLE IF EXISTS ONLY public.event_files DROP CONSTRAINT IF EXISTS fk_rails_a590d6ddde;
 ALTER TABLE IF EXISTS ONLY public.analytics_fact_visits DROP CONSTRAINT IF EXISTS fk_rails_a34b51c948;
@@ -69,10 +71,10 @@ ALTER TABLE IF EXISTS ONLY public.areas_projects DROP CONSTRAINT IF EXISTS fk_ra
 ALTER TABLE IF EXISTS ONLY public.event_images DROP CONSTRAINT IF EXISTS fk_rails_9dd6f2f888;
 ALTER TABLE IF EXISTS ONLY public.analytics_fact_visits DROP CONSTRAINT IF EXISTS fk_rails_9b5a82cb55;
 ALTER TABLE IF EXISTS ONLY public.memberships DROP CONSTRAINT IF EXISTS fk_rails_99326fb65d;
+ALTER TABLE IF EXISTS ONLY public.authoring_assistance_responses DROP CONSTRAINT IF EXISTS fk_rails_98155ccbce;
 ALTER TABLE IF EXISTS ONLY public.notifications DROP CONSTRAINT IF EXISTS fk_rails_97eb4c3a35;
 ALTER TABLE IF EXISTS ONLY public.notifications DROP CONSTRAINT IF EXISTS fk_rails_9268535f02;
 ALTER TABLE IF EXISTS ONLY public.areas DROP CONSTRAINT IF EXISTS fk_rails_901fc7a65b;
-ALTER TABLE IF EXISTS ONLY public.initiative_files DROP CONSTRAINT IF EXISTS fk_rails_8fcd2c6036;
 ALTER TABLE IF EXISTS ONLY public.areas_projects DROP CONSTRAINT IF EXISTS fk_rails_8fb43a173d;
 ALTER TABLE IF EXISTS ONLY public.static_pages_topics DROP CONSTRAINT IF EXISTS fk_rails_8e3f01dacd;
 ALTER TABLE IF EXISTS ONLY public.user_custom_fields_representativeness_ref_distributions DROP CONSTRAINT IF EXISTS fk_rails_8cabeff294;
@@ -82,7 +84,6 @@ ALTER TABLE IF EXISTS ONLY public.notifications DROP CONSTRAINT IF EXISTS fk_rai
 ALTER TABLE IF EXISTS ONLY public.ideas_phases DROP CONSTRAINT IF EXISTS fk_rails_845d7ca944;
 ALTER TABLE IF EXISTS ONLY public.impact_tracking_pageviews DROP CONSTRAINT IF EXISTS fk_rails_82dc979276;
 ALTER TABLE IF EXISTS ONLY public.notifications DROP CONSTRAINT IF EXISTS fk_rails_81c11ef894;
-ALTER TABLE IF EXISTS ONLY public.areas_initiatives DROP CONSTRAINT IF EXISTS fk_rails_81a9922de4;
 ALTER TABLE IF EXISTS ONLY public.projects_topics DROP CONSTRAINT IF EXISTS fk_rails_812b6d9149;
 ALTER TABLE IF EXISTS ONLY public.projects_allowed_input_topics DROP CONSTRAINT IF EXISTS fk_rails_812b6d9149;
 ALTER TABLE IF EXISTS ONLY public.report_builder_reports DROP CONSTRAINT IF EXISTS fk_rails_81137213da;
@@ -90,13 +91,13 @@ ALTER TABLE IF EXISTS ONLY public.polls_response_options DROP CONSTRAINT IF EXIS
 ALTER TABLE IF EXISTS ONLY public.comments DROP CONSTRAINT IF EXISTS fk_rails_7fbb3b1416;
 ALTER TABLE IF EXISTS ONLY public.email_campaigns_campaign_email_commands DROP CONSTRAINT IF EXISTS fk_rails_7f284a4f09;
 ALTER TABLE IF EXISTS ONLY public.activities DROP CONSTRAINT IF EXISTS fk_rails_7e11bb717f;
+ALTER TABLE IF EXISTS ONLY public.analysis_heatmap_cells DROP CONSTRAINT IF EXISTS fk_rails_7a39fbbdee;
 ALTER TABLE IF EXISTS ONLY public.analysis_questions DROP CONSTRAINT IF EXISTS fk_rails_74e779db86;
 ALTER TABLE IF EXISTS ONLY public.analysis_additional_custom_fields DROP CONSTRAINT IF EXISTS fk_rails_74744744a6;
 ALTER TABLE IF EXISTS ONLY public.groups_projects DROP CONSTRAINT IF EXISTS fk_rails_73e1dee5fd;
 ALTER TABLE IF EXISTS ONLY public.ideas DROP CONSTRAINT IF EXISTS fk_rails_730408dafc;
 ALTER TABLE IF EXISTS ONLY public.email_campaigns_campaigns_groups DROP CONSTRAINT IF EXISTS fk_rails_712f4ad915;
 ALTER TABLE IF EXISTS ONLY public.groups_permissions DROP CONSTRAINT IF EXISTS fk_rails_6fa6389d80;
-ALTER TABLE IF EXISTS ONLY public.initiatives_topics DROP CONSTRAINT IF EXISTS fk_rails_6ee3ffe8e1;
 ALTER TABLE IF EXISTS ONLY public.ideas DROP CONSTRAINT IF EXISTS fk_rails_6c9ab6d4f8;
 ALTER TABLE IF EXISTS ONLY public.report_builder_reports DROP CONSTRAINT IF EXISTS fk_rails_6988c9886e;
 ALTER TABLE IF EXISTS ONLY public.idea_imports DROP CONSTRAINT IF EXISTS fk_rails_67f00886f9;
@@ -106,23 +107,20 @@ ALTER TABLE IF EXISTS ONLY public.internal_comments DROP CONSTRAINT IF EXISTS fk
 ALTER TABLE IF EXISTS ONLY public.analysis_taggings DROP CONSTRAINT IF EXISTS fk_rails_604cfbcd8d;
 ALTER TABLE IF EXISTS ONLY public.idea_imports DROP CONSTRAINT IF EXISTS fk_rails_5ea1f11fd5;
 ALTER TABLE IF EXISTS ONLY public.ideas DROP CONSTRAINT IF EXISTS fk_rails_5ac7668cd3;
-ALTER TABLE IF EXISTS ONLY public.cosponsors_initiatives DROP CONSTRAINT IF EXISTS fk_rails_5ac54ec4a5;
 ALTER TABLE IF EXISTS ONLY public.notifications DROP CONSTRAINT IF EXISTS fk_rails_575368d182;
 ALTER TABLE IF EXISTS ONLY public.notifications DROP CONSTRAINT IF EXISTS fk_rails_5471f55cd6;
 ALTER TABLE IF EXISTS ONLY public.identities DROP CONSTRAINT IF EXISTS fk_rails_5373344100;
 ALTER TABLE IF EXISTS ONLY public.permissions_custom_fields DROP CONSTRAINT IF EXISTS fk_rails_50335fc43f;
 ALTER TABLE IF EXISTS ONLY public.analytics_dimension_projects_fact_visits DROP CONSTRAINT IF EXISTS fk_rails_4ecebb6e8a;
-ALTER TABLE IF EXISTS ONLY public.initiative_images DROP CONSTRAINT IF EXISTS fk_rails_4df6f76970;
 ALTER TABLE IF EXISTS ONLY public.notifications DROP CONSTRAINT IF EXISTS fk_rails_4aea6afa11;
 ALTER TABLE IF EXISTS ONLY public.notifications DROP CONSTRAINT IF EXISTS fk_rails_47abdd0847;
 ALTER TABLE IF EXISTS ONLY public.notifications DROP CONSTRAINT IF EXISTS fk_rails_46dd2ccfd1;
 ALTER TABLE IF EXISTS ONLY public.email_campaigns_examples DROP CONSTRAINT IF EXISTS fk_rails_465d6356b2;
 ALTER TABLE IF EXISTS ONLY public.followers DROP CONSTRAINT IF EXISTS fk_rails_3d258d3942;
 ALTER TABLE IF EXISTS ONLY public.analysis_analyses DROP CONSTRAINT IF EXISTS fk_rails_3c57357702;
-ALTER TABLE IF EXISTS ONLY public.initiatives DROP CONSTRAINT IF EXISTS fk_rails_3a983c39e6;
 ALTER TABLE IF EXISTS ONLY public.baskets_ideas DROP CONSTRAINT IF EXISTS fk_rails_39a1b51358;
-ALTER TABLE IF EXISTS ONLY public.initiatives_topics DROP CONSTRAINT IF EXISTS fk_rails_39768eb1c3;
 ALTER TABLE IF EXISTS ONLY public.custom_field_option_images DROP CONSTRAINT IF EXISTS fk_rails_3814d72daa;
+ALTER TABLE IF EXISTS ONLY public.analysis_comments_summaries DROP CONSTRAINT IF EXISTS fk_rails_37becdebb0;
 ALTER TABLE IF EXISTS ONLY public.nav_bar_items DROP CONSTRAINT IF EXISTS fk_rails_34143a680f;
 ALTER TABLE IF EXISTS ONLY public.volunteering_volunteers DROP CONSTRAINT IF EXISTS fk_rails_33a154a9ba;
 ALTER TABLE IF EXISTS ONLY public.phase_files DROP CONSTRAINT IF EXISTS fk_rails_33852a9a71;
@@ -138,7 +136,6 @@ ALTER TABLE IF EXISTS ONLY public.analysis_analyses DROP CONSTRAINT IF EXISTS fk
 ALTER TABLE IF EXISTS ONLY public.spam_reports DROP CONSTRAINT IF EXISTS fk_rails_121f3a2011;
 ALTER TABLE IF EXISTS ONLY public.ideas DROP CONSTRAINT IF EXISTS fk_rails_0e5b472696;
 ALTER TABLE IF EXISTS ONLY public.invites DROP CONSTRAINT IF EXISTS fk_rails_0b6ac3e1da;
-ALTER TABLE IF EXISTS ONLY public.initiatives DROP CONSTRAINT IF EXISTS fk_rails_06c1835844;
 ALTER TABLE IF EXISTS ONLY public.invites DROP CONSTRAINT IF EXISTS fk_rails_06b2d7a3a8;
 ALTER TABLE IF EXISTS ONLY public.internal_comments DROP CONSTRAINT IF EXISTS fk_rails_04be8cf6ba;
 ALTER TABLE IF EXISTS ONLY public.events DROP CONSTRAINT IF EXISTS fk_rails_0434b48643;
@@ -249,19 +246,6 @@ DROP INDEX IF EXISTS public.index_internal_comments_on_lft;
 DROP INDEX IF EXISTS public.index_internal_comments_on_idea_id;
 DROP INDEX IF EXISTS public.index_internal_comments_on_created_at;
 DROP INDEX IF EXISTS public.index_internal_comments_on_author_id;
-DROP INDEX IF EXISTS public.index_initiatives_topics_on_topic_id;
-DROP INDEX IF EXISTS public.index_initiatives_topics_on_initiative_id_and_topic_id;
-DROP INDEX IF EXISTS public.index_initiatives_topics_on_initiative_id;
-DROP INDEX IF EXISTS public.index_initiatives_search;
-DROP INDEX IF EXISTS public.index_initiatives_on_slug;
-DROP INDEX IF EXISTS public.index_initiatives_on_location_point;
-DROP INDEX IF EXISTS public.index_initiatives_on_author_id;
-DROP INDEX IF EXISTS public.index_initiative_status_changes_on_user_id;
-DROP INDEX IF EXISTS public.index_initiative_status_changes_on_official_feedback_id;
-DROP INDEX IF EXISTS public.index_initiative_status_changes_on_initiative_status_id;
-DROP INDEX IF EXISTS public.index_initiative_status_changes_on_initiative_id;
-DROP INDEX IF EXISTS public.index_initiative_images_on_initiative_id;
-DROP INDEX IF EXISTS public.index_initiative_files_on_initiative_id;
 DROP INDEX IF EXISTS public.index_impact_tracking_sessions_on_monthly_user_hash;
 DROP INDEX IF EXISTS public.index_identities_on_user_id;
 DROP INDEX IF EXISTS public.index_ideas_topics_on_topic_id;
@@ -331,10 +315,12 @@ DROP INDEX IF EXISTS public.index_custom_fields_on_resource_type_and_resource_id
 DROP INDEX IF EXISTS public.index_custom_field_options_on_custom_field_id_and_key;
 DROP INDEX IF EXISTS public.index_custom_field_options_on_custom_field_id;
 DROP INDEX IF EXISTS public.index_custom_field_option_images_on_custom_field_option_id;
+DROP INDEX IF EXISTS public.index_custom_field_matrix_statements_on_key;
+DROP INDEX IF EXISTS public.index_custom_field_matrix_statements_on_custom_field_id;
+DROP INDEX IF EXISTS public.index_custom_field_bins_on_custom_field_option_id;
+DROP INDEX IF EXISTS public.index_custom_field_bins_on_custom_field_id;
 DROP INDEX IF EXISTS public.index_cosponsorships_on_user_id;
 DROP INDEX IF EXISTS public.index_cosponsorships_on_idea_id;
-DROP INDEX IF EXISTS public.index_cosponsors_initiatives_on_user_id;
-DROP INDEX IF EXISTS public.index_cosponsors_initiatives_on_initiative_id;
 DROP INDEX IF EXISTS public.index_content_builder_layouts_content_buidable_type_id_code;
 DROP INDEX IF EXISTS public.index_common_passwords_on_password;
 DROP INDEX IF EXISTS public.index_comments_on_rgt;
@@ -349,6 +335,7 @@ DROP INDEX IF EXISTS public.index_baskets_on_submitted_at;
 DROP INDEX IF EXISTS public.index_baskets_on_phase_id;
 DROP INDEX IF EXISTS public.index_baskets_ideas_on_idea_id;
 DROP INDEX IF EXISTS public.index_baskets_ideas_on_basket_id_and_idea_id;
+DROP INDEX IF EXISTS public.index_authoring_assistance_responses_on_idea_id;
 DROP INDEX IF EXISTS public.index_areas_static_pages_on_static_page_id;
 DROP INDEX IF EXISTS public.index_areas_static_pages_on_area_id;
 DROP INDEX IF EXISTS public.index_areas_projects_on_project_id_and_area_id;
@@ -356,9 +343,6 @@ DROP INDEX IF EXISTS public.index_areas_projects_on_project_id;
 DROP INDEX IF EXISTS public.index_areas_projects_on_area_id;
 DROP INDEX IF EXISTS public.index_areas_on_include_in_onboarding;
 DROP INDEX IF EXISTS public.index_areas_on_custom_field_option_id;
-DROP INDEX IF EXISTS public.index_areas_initiatives_on_initiative_id_and_area_id;
-DROP INDEX IF EXISTS public.index_areas_initiatives_on_initiative_id;
-DROP INDEX IF EXISTS public.index_areas_initiatives_on_area_id;
 DROP INDEX IF EXISTS public.index_analytics_dimension_types_on_name_and_parent;
 DROP INDEX IF EXISTS public.index_analytics_dimension_locales_on_name;
 DROP INDEX IF EXISTS public.index_analysis_tags_on_analysis_id_and_name;
@@ -370,6 +354,12 @@ DROP INDEX IF EXISTS public.index_analysis_summaries_on_background_task_id;
 DROP INDEX IF EXISTS public.index_analysis_questions_on_background_task_id;
 DROP INDEX IF EXISTS public.index_analysis_insights_on_insightable;
 DROP INDEX IF EXISTS public.index_analysis_insights_on_analysis_id;
+DROP INDEX IF EXISTS public.index_analysis_heatmap_cells_uniqueness;
+DROP INDEX IF EXISTS public.index_analysis_heatmap_cells_on_row;
+DROP INDEX IF EXISTS public.index_analysis_heatmap_cells_on_column;
+DROP INDEX IF EXISTS public.index_analysis_heatmap_cells_on_analysis_id;
+DROP INDEX IF EXISTS public.index_analysis_comments_summaries_on_idea_id;
+DROP INDEX IF EXISTS public.index_analysis_comments_summaries_on_background_task_id;
 DROP INDEX IF EXISTS public.index_analysis_background_tasks_on_analysis_id;
 DROP INDEX IF EXISTS public.index_analysis_analyses_on_project_id;
 DROP INDEX IF EXISTS public.index_analysis_analyses_on_phase_id;
@@ -453,12 +443,6 @@ ALTER TABLE IF EXISTS ONLY public.maps_layers DROP CONSTRAINT IF EXISTS maps_lay
 ALTER TABLE IF EXISTS ONLY public.machine_translations_machine_translations DROP CONSTRAINT IF EXISTS machine_translations_machine_translations_pkey;
 ALTER TABLE IF EXISTS ONLY public.invites DROP CONSTRAINT IF EXISTS invites_pkey;
 ALTER TABLE IF EXISTS ONLY public.internal_comments DROP CONSTRAINT IF EXISTS internal_comments_pkey;
-ALTER TABLE IF EXISTS ONLY public.initiatives_topics DROP CONSTRAINT IF EXISTS initiatives_topics_pkey;
-ALTER TABLE IF EXISTS ONLY public.initiatives DROP CONSTRAINT IF EXISTS initiatives_pkey;
-ALTER TABLE IF EXISTS ONLY public.initiative_statuses DROP CONSTRAINT IF EXISTS initiative_statuses_pkey;
-ALTER TABLE IF EXISTS ONLY public.initiative_status_changes DROP CONSTRAINT IF EXISTS initiative_status_changes_pkey;
-ALTER TABLE IF EXISTS ONLY public.initiative_images DROP CONSTRAINT IF EXISTS initiative_images_pkey;
-ALTER TABLE IF EXISTS ONLY public.initiative_files DROP CONSTRAINT IF EXISTS initiative_files_pkey;
 ALTER TABLE IF EXISTS ONLY public.impact_tracking_sessions DROP CONSTRAINT IF EXISTS impact_tracking_sessions_pkey;
 ALTER TABLE IF EXISTS ONLY public.impact_tracking_salts DROP CONSTRAINT IF EXISTS impact_tracking_salts_pkey;
 ALTER TABLE IF EXISTS ONLY public.impact_tracking_pageviews DROP CONSTRAINT IF EXISTS impact_tracking_pageviews_pkey;
@@ -494,18 +478,19 @@ ALTER TABLE IF EXISTS ONLY public.custom_forms DROP CONSTRAINT IF EXISTS custom_
 ALTER TABLE IF EXISTS ONLY public.custom_fields DROP CONSTRAINT IF EXISTS custom_fields_pkey;
 ALTER TABLE IF EXISTS ONLY public.custom_field_options DROP CONSTRAINT IF EXISTS custom_field_options_pkey;
 ALTER TABLE IF EXISTS ONLY public.custom_field_option_images DROP CONSTRAINT IF EXISTS custom_field_option_images_pkey;
+ALTER TABLE IF EXISTS ONLY public.custom_field_matrix_statements DROP CONSTRAINT IF EXISTS custom_field_matrix_statements_pkey;
+ALTER TABLE IF EXISTS ONLY public.custom_field_bins DROP CONSTRAINT IF EXISTS custom_field_bins_pkey;
 ALTER TABLE IF EXISTS ONLY public.cosponsorships DROP CONSTRAINT IF EXISTS cosponsorships_pkey;
-ALTER TABLE IF EXISTS ONLY public.cosponsors_initiatives DROP CONSTRAINT IF EXISTS cosponsors_initiatives_pkey;
 ALTER TABLE IF EXISTS ONLY public.content_builder_layouts DROP CONSTRAINT IF EXISTS content_builder_layouts_pkey;
 ALTER TABLE IF EXISTS ONLY public.content_builder_layout_images DROP CONSTRAINT IF EXISTS content_builder_layout_images_pkey;
 ALTER TABLE IF EXISTS ONLY public.common_passwords DROP CONSTRAINT IF EXISTS common_passwords_pkey;
 ALTER TABLE IF EXISTS ONLY public.comments DROP CONSTRAINT IF EXISTS comments_pkey;
 ALTER TABLE IF EXISTS ONLY public.baskets DROP CONSTRAINT IF EXISTS baskets_pkey;
 ALTER TABLE IF EXISTS ONLY public.baskets_ideas DROP CONSTRAINT IF EXISTS baskets_ideas_pkey;
+ALTER TABLE IF EXISTS ONLY public.authoring_assistance_responses DROP CONSTRAINT IF EXISTS authoring_assistance_responses_pkey;
 ALTER TABLE IF EXISTS ONLY public.areas_static_pages DROP CONSTRAINT IF EXISTS areas_static_pages_pkey;
 ALTER TABLE IF EXISTS ONLY public.areas_projects DROP CONSTRAINT IF EXISTS areas_projects_pkey;
 ALTER TABLE IF EXISTS ONLY public.areas DROP CONSTRAINT IF EXISTS areas_pkey;
-ALTER TABLE IF EXISTS ONLY public.areas_initiatives DROP CONSTRAINT IF EXISTS areas_initiatives_pkey;
 ALTER TABLE IF EXISTS ONLY public.ar_internal_metadata DROP CONSTRAINT IF EXISTS ar_internal_metadata_pkey;
 ALTER TABLE IF EXISTS ONLY public.app_configurations DROP CONSTRAINT IF EXISTS app_configurations_pkey;
 ALTER TABLE IF EXISTS ONLY public.analytics_fact_visits DROP CONSTRAINT IF EXISTS analytics_fact_visits_pkey;
@@ -518,6 +503,8 @@ ALTER TABLE IF EXISTS ONLY public.analysis_taggings DROP CONSTRAINT IF EXISTS an
 ALTER TABLE IF EXISTS ONLY public.analysis_summaries DROP CONSTRAINT IF EXISTS analysis_summaries_pkey;
 ALTER TABLE IF EXISTS ONLY public.analysis_questions DROP CONSTRAINT IF EXISTS analysis_questions_pkey;
 ALTER TABLE IF EXISTS ONLY public.analysis_insights DROP CONSTRAINT IF EXISTS analysis_insights_pkey;
+ALTER TABLE IF EXISTS ONLY public.analysis_heatmap_cells DROP CONSTRAINT IF EXISTS analysis_heatmap_cells_pkey;
+ALTER TABLE IF EXISTS ONLY public.analysis_comments_summaries DROP CONSTRAINT IF EXISTS analysis_comments_summaries_pkey;
 ALTER TABLE IF EXISTS ONLY public.analysis_background_tasks DROP CONSTRAINT IF EXISTS analysis_background_tasks_pkey;
 ALTER TABLE IF EXISTS ONLY public.analysis_analyses DROP CONSTRAINT IF EXISTS analysis_analyses_pkey;
 ALTER TABLE IF EXISTS ONLY public.analysis_additional_custom_fields DROP CONSTRAINT IF EXISTS analysis_analyses_custom_fields_pkey;
@@ -566,12 +553,6 @@ DROP TABLE IF EXISTS public.maps_map_configs;
 DROP TABLE IF EXISTS public.maps_layers;
 DROP TABLE IF EXISTS public.machine_translations_machine_translations;
 DROP TABLE IF EXISTS public.internal_comments;
-DROP TABLE IF EXISTS public.initiatives_topics;
-DROP TABLE IF EXISTS public.initiatives;
-DROP TABLE IF EXISTS public.initiative_statuses;
-DROP TABLE IF EXISTS public.initiative_status_changes;
-DROP TABLE IF EXISTS public.initiative_images;
-DROP TABLE IF EXISTS public.initiative_files;
 DROP TABLE IF EXISTS public.impact_tracking_salts;
 DROP TABLE IF EXISTS public.impact_tracking_pageviews;
 DROP TABLE IF EXISTS public.identities;
@@ -602,16 +583,17 @@ DROP TABLE IF EXISTS public.custom_forms;
 DROP TABLE IF EXISTS public.custom_fields;
 DROP TABLE IF EXISTS public.custom_field_options;
 DROP TABLE IF EXISTS public.custom_field_option_images;
+DROP TABLE IF EXISTS public.custom_field_matrix_statements;
+DROP TABLE IF EXISTS public.custom_field_bins;
 DROP TABLE IF EXISTS public.cosponsorships;
-DROP TABLE IF EXISTS public.cosponsors_initiatives;
 DROP TABLE IF EXISTS public.content_builder_layouts;
 DROP TABLE IF EXISTS public.content_builder_layout_images;
 DROP TABLE IF EXISTS public.common_passwords;
 DROP TABLE IF EXISTS public.baskets_ideas;
+DROP TABLE IF EXISTS public.authoring_assistance_responses;
 DROP SEQUENCE IF EXISTS public.areas_static_pages_id_seq;
 DROP TABLE IF EXISTS public.areas_static_pages;
 DROP TABLE IF EXISTS public.areas_projects;
-DROP TABLE IF EXISTS public.areas_initiatives;
 DROP TABLE IF EXISTS public.areas;
 DROP TABLE IF EXISTS public.ar_internal_metadata;
 DROP TABLE IF EXISTS public.app_configurations;
@@ -656,6 +638,8 @@ DROP TABLE IF EXISTS public.analysis_taggings;
 DROP TABLE IF EXISTS public.analysis_summaries;
 DROP TABLE IF EXISTS public.analysis_questions;
 DROP TABLE IF EXISTS public.analysis_insights;
+DROP TABLE IF EXISTS public.analysis_heatmap_cells;
+DROP TABLE IF EXISTS public.analysis_comments_summaries;
 DROP TABLE IF EXISTS public.analysis_background_tasks;
 DROP TABLE IF EXISTS public.analysis_analyses;
 DROP TABLE IF EXISTS public.analysis_additional_custom_fields;
@@ -1048,6 +1032,44 @@ CREATE TABLE public.analysis_background_tasks (
 
 
 --
+-- Name: analysis_comments_summaries; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.analysis_comments_summaries (
+    id uuid DEFAULT gen_random_uuid() NOT NULL,
+    idea_id uuid,
+    background_task_id uuid NOT NULL,
+    summary text,
+    prompt text,
+    accuracy double precision,
+    generated_at timestamp(6) without time zone,
+    comments_ids jsonb NOT NULL,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: analysis_heatmap_cells; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.analysis_heatmap_cells (
+    id uuid DEFAULT gen_random_uuid() NOT NULL,
+    analysis_id uuid NOT NULL,
+    row_type character varying NOT NULL,
+    row_id uuid NOT NULL,
+    column_type character varying NOT NULL,
+    column_id uuid NOT NULL,
+    unit character varying NOT NULL,
+    count integer NOT NULL,
+    lift numeric(20,15) NOT NULL,
+    p_value numeric(20,15) NOT NULL,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
 -- Name: analysis_insights; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -1223,7 +1245,8 @@ CREATE TABLE public.projects (
     votes_count integer DEFAULT 0 NOT NULL,
     followers_count integer DEFAULT 0 NOT NULL,
     preview_token character varying NOT NULL,
-    header_bg_alt_text_multiloc jsonb DEFAULT '{}'::jsonb
+    header_bg_alt_text_multiloc jsonb DEFAULT '{}'::jsonb,
+    hidden boolean DEFAULT false NOT NULL
 );
 
 
@@ -1603,7 +1626,12 @@ CREATE TABLE public.phases (
     manual_votes_count integer DEFAULT 0 NOT NULL,
     manual_voters_amount integer,
     manual_voters_last_updated_by_id uuid,
-    manual_voters_last_updated_at timestamp(6) without time zone
+    manual_voters_last_updated_at timestamp(6) without time zone,
+    survey_popup_frequency integer,
+    similarity_threshold_title double precision DEFAULT 0.3,
+    similarity_threshold_body double precision DEFAULT 0.4,
+    similarity_enabled boolean DEFAULT true NOT NULL,
+    user_fields_in_form boolean DEFAULT false NOT NULL
 );
 
 
@@ -1944,17 +1972,6 @@ CREATE TABLE public.areas (
 
 
 --
--- Name: areas_initiatives; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.areas_initiatives (
-    id uuid DEFAULT shared_extensions.gen_random_uuid() NOT NULL,
-    area_id uuid,
-    initiative_id uuid
-);
-
-
---
 -- Name: areas_projects; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -1995,6 +2012,20 @@ CREATE SEQUENCE public.areas_static_pages_id_seq
 --
 
 ALTER SEQUENCE public.areas_static_pages_id_seq OWNED BY public.areas_static_pages.id;
+
+
+--
+-- Name: authoring_assistance_responses; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.authoring_assistance_responses (
+    id uuid DEFAULT gen_random_uuid() NOT NULL,
+    idea_id uuid NOT NULL,
+    prompt_response jsonb DEFAULT '{}'::jsonb NOT NULL,
+    custom_free_prompt character varying,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
 
 
 --
@@ -2051,20 +2082,6 @@ CREATE TABLE public.content_builder_layouts (
 
 
 --
--- Name: cosponsors_initiatives; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.cosponsors_initiatives (
-    id uuid DEFAULT shared_extensions.gen_random_uuid() NOT NULL,
-    status character varying DEFAULT 'pending'::character varying NOT NULL,
-    user_id uuid NOT NULL,
-    initiative_id uuid NOT NULL,
-    created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL
-);
-
-
---
 -- Name: cosponsorships; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -2073,6 +2090,37 @@ CREATE TABLE public.cosponsorships (
     status character varying DEFAULT 'pending'::character varying NOT NULL,
     user_id uuid NOT NULL,
     idea_id uuid NOT NULL,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: custom_field_bins; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.custom_field_bins (
+    id uuid DEFAULT gen_random_uuid() NOT NULL,
+    type character varying NOT NULL,
+    custom_field_id uuid,
+    custom_field_option_id uuid,
+    "values" jsonb,
+    range int4range,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: custom_field_matrix_statements; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.custom_field_matrix_statements (
+    id uuid DEFAULT gen_random_uuid() NOT NULL,
+    custom_field_id uuid NOT NULL,
+    title_multiloc jsonb DEFAULT '{}'::jsonb NOT NULL,
+    key character varying NOT NULL,
+    ordering integer NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL
 );
@@ -2142,7 +2190,15 @@ CREATE TABLE public.custom_fields (
     linear_scale_label_5_multiloc jsonb DEFAULT '{}'::jsonb NOT NULL,
     linear_scale_label_6_multiloc jsonb DEFAULT '{}'::jsonb NOT NULL,
     linear_scale_label_7_multiloc jsonb DEFAULT '{}'::jsonb NOT NULL,
-    dropdown_layout boolean DEFAULT false NOT NULL
+    dropdown_layout boolean DEFAULT false NOT NULL,
+    linear_scale_label_8_multiloc jsonb DEFAULT '{}'::jsonb NOT NULL,
+    linear_scale_label_9_multiloc jsonb DEFAULT '{}'::jsonb NOT NULL,
+    linear_scale_label_10_multiloc jsonb DEFAULT '{}'::jsonb NOT NULL,
+    linear_scale_label_11_multiloc jsonb DEFAULT '{}'::jsonb NOT NULL,
+    ask_follow_up boolean DEFAULT false NOT NULL,
+    page_button_label_multiloc jsonb DEFAULT '{}'::jsonb NOT NULL,
+    page_button_link character varying,
+    question_category character varying
 );
 
 
@@ -2540,108 +2596,6 @@ CREATE TABLE public.impact_tracking_salts (
     salt character varying,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL
-);
-
-
---
--- Name: initiative_files; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.initiative_files (
-    id uuid DEFAULT shared_extensions.gen_random_uuid() NOT NULL,
-    initiative_id uuid,
-    file character varying,
-    name character varying,
-    ordering integer,
-    created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
-);
-
-
---
--- Name: initiative_images; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.initiative_images (
-    id uuid DEFAULT shared_extensions.gen_random_uuid() NOT NULL,
-    initiative_id uuid,
-    image character varying,
-    ordering integer,
-    created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
-);
-
-
---
--- Name: initiative_status_changes; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.initiative_status_changes (
-    id uuid DEFAULT shared_extensions.gen_random_uuid() NOT NULL,
-    user_id uuid,
-    initiative_id uuid,
-    initiative_status_id uuid,
-    official_feedback_id uuid,
-    created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
-);
-
-
---
--- Name: initiative_statuses; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.initiative_statuses (
-    id uuid DEFAULT shared_extensions.gen_random_uuid() NOT NULL,
-    title_multiloc jsonb DEFAULT '{}'::jsonb,
-    description_multiloc jsonb DEFAULT '{}'::jsonb,
-    ordering integer,
-    code character varying,
-    color character varying,
-    created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
-);
-
-
---
--- Name: initiatives; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.initiatives (
-    id uuid DEFAULT shared_extensions.gen_random_uuid() NOT NULL,
-    title_multiloc jsonb DEFAULT '{}'::jsonb,
-    body_multiloc jsonb DEFAULT '{}'::jsonb,
-    publication_status character varying,
-    published_at timestamp without time zone,
-    author_id uuid,
-    likes_count integer DEFAULT 0 NOT NULL,
-    dislikes_count integer DEFAULT 0 NOT NULL,
-    location_point shared_extensions.geography(Point,4326),
-    location_description character varying,
-    slug character varying,
-    comments_count integer DEFAULT 0 NOT NULL,
-    created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL,
-    header_bg character varying,
-    assignee_id uuid,
-    official_feedbacks_count integer DEFAULT 0 NOT NULL,
-    assigned_at timestamp without time zone,
-    author_hash character varying,
-    anonymous boolean DEFAULT false NOT NULL,
-    internal_comments_count integer DEFAULT 0 NOT NULL,
-    followers_count integer DEFAULT 0 NOT NULL,
-    editing_locked boolean DEFAULT false NOT NULL
-);
-
-
---
--- Name: initiatives_topics; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.initiatives_topics (
-    id uuid DEFAULT shared_extensions.gen_random_uuid() NOT NULL,
-    initiative_id uuid,
-    topic_id uuid
 );
 
 
@@ -3149,7 +3103,9 @@ CREATE TABLE public.report_builder_reports (
     updated_at timestamp(6) without time zone NOT NULL,
     phase_id uuid,
     visible boolean DEFAULT false NOT NULL,
-    name_tsvector tsvector GENERATED ALWAYS AS (to_tsvector('simple'::regconfig, (name)::text)) STORED
+    name_tsvector tsvector GENERATED ALWAYS AS (to_tsvector('simple'::regconfig, (name)::text)) STORED,
+    year integer,
+    quarter integer
 );
 
 
@@ -3395,6 +3351,22 @@ ALTER TABLE ONLY public.analysis_background_tasks
 
 
 --
+-- Name: analysis_comments_summaries analysis_comments_summaries_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.analysis_comments_summaries
+    ADD CONSTRAINT analysis_comments_summaries_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: analysis_heatmap_cells analysis_heatmap_cells_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.analysis_heatmap_cells
+    ADD CONSTRAINT analysis_heatmap_cells_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: analysis_insights analysis_insights_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -3491,14 +3463,6 @@ ALTER TABLE ONLY public.ar_internal_metadata
 
 
 --
--- Name: areas_initiatives areas_initiatives_pkey; Type: CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.areas_initiatives
-    ADD CONSTRAINT areas_initiatives_pkey PRIMARY KEY (id);
-
-
---
 -- Name: areas areas_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -3520,6 +3484,14 @@ ALTER TABLE ONLY public.areas_projects
 
 ALTER TABLE ONLY public.areas_static_pages
     ADD CONSTRAINT areas_static_pages_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: authoring_assistance_responses authoring_assistance_responses_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.authoring_assistance_responses
+    ADD CONSTRAINT authoring_assistance_responses_pkey PRIMARY KEY (id);
 
 
 --
@@ -3571,19 +3543,27 @@ ALTER TABLE ONLY public.content_builder_layouts
 
 
 --
--- Name: cosponsors_initiatives cosponsors_initiatives_pkey; Type: CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.cosponsors_initiatives
-    ADD CONSTRAINT cosponsors_initiatives_pkey PRIMARY KEY (id);
-
-
---
 -- Name: cosponsorships cosponsorships_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.cosponsorships
     ADD CONSTRAINT cosponsorships_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: custom_field_bins custom_field_bins_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.custom_field_bins
+    ADD CONSTRAINT custom_field_bins_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: custom_field_matrix_statements custom_field_matrix_statements_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.custom_field_matrix_statements
+    ADD CONSTRAINT custom_field_matrix_statements_pkey PRIMARY KEY (id);
 
 
 --
@@ -3864,54 +3844,6 @@ ALTER TABLE ONLY public.impact_tracking_salts
 
 ALTER TABLE ONLY public.impact_tracking_sessions
     ADD CONSTRAINT impact_tracking_sessions_pkey PRIMARY KEY (id);
-
-
---
--- Name: initiative_files initiative_files_pkey; Type: CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.initiative_files
-    ADD CONSTRAINT initiative_files_pkey PRIMARY KEY (id);
-
-
---
--- Name: initiative_images initiative_images_pkey; Type: CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.initiative_images
-    ADD CONSTRAINT initiative_images_pkey PRIMARY KEY (id);
-
-
---
--- Name: initiative_status_changes initiative_status_changes_pkey; Type: CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.initiative_status_changes
-    ADD CONSTRAINT initiative_status_changes_pkey PRIMARY KEY (id);
-
-
---
--- Name: initiative_statuses initiative_statuses_pkey; Type: CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.initiative_statuses
-    ADD CONSTRAINT initiative_statuses_pkey PRIMARY KEY (id);
-
-
---
--- Name: initiatives initiatives_pkey; Type: CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.initiatives
-    ADD CONSTRAINT initiatives_pkey PRIMARY KEY (id);
-
-
---
--- Name: initiatives_topics initiatives_topics_pkey; Type: CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.initiatives_topics
-    ADD CONSTRAINT initiatives_topics_pkey PRIMARY KEY (id);
 
 
 --
@@ -4546,6 +4478,48 @@ CREATE INDEX index_analysis_background_tasks_on_analysis_id ON public.analysis_b
 
 
 --
+-- Name: index_analysis_comments_summaries_on_background_task_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_analysis_comments_summaries_on_background_task_id ON public.analysis_comments_summaries USING btree (background_task_id);
+
+
+--
+-- Name: index_analysis_comments_summaries_on_idea_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_analysis_comments_summaries_on_idea_id ON public.analysis_comments_summaries USING btree (idea_id);
+
+
+--
+-- Name: index_analysis_heatmap_cells_on_analysis_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_analysis_heatmap_cells_on_analysis_id ON public.analysis_heatmap_cells USING btree (analysis_id);
+
+
+--
+-- Name: index_analysis_heatmap_cells_on_column; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_analysis_heatmap_cells_on_column ON public.analysis_heatmap_cells USING btree (column_type, column_id);
+
+
+--
+-- Name: index_analysis_heatmap_cells_on_row; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_analysis_heatmap_cells_on_row ON public.analysis_heatmap_cells USING btree (row_type, row_id);
+
+
+--
+-- Name: index_analysis_heatmap_cells_uniqueness; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_analysis_heatmap_cells_uniqueness ON public.analysis_heatmap_cells USING btree (analysis_id, row_id, column_id, unit);
+
+
+--
 -- Name: index_analysis_insights_on_analysis_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -4623,27 +4597,6 @@ CREATE UNIQUE INDEX index_analytics_dimension_types_on_name_and_parent ON public
 
 
 --
--- Name: index_areas_initiatives_on_area_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_areas_initiatives_on_area_id ON public.areas_initiatives USING btree (area_id);
-
-
---
--- Name: index_areas_initiatives_on_initiative_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_areas_initiatives_on_initiative_id ON public.areas_initiatives USING btree (initiative_id);
-
-
---
--- Name: index_areas_initiatives_on_initiative_id_and_area_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE UNIQUE INDEX index_areas_initiatives_on_initiative_id_and_area_id ON public.areas_initiatives USING btree (initiative_id, area_id);
-
-
---
 -- Name: index_areas_on_custom_field_option_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -4690,6 +4643,13 @@ CREATE INDEX index_areas_static_pages_on_area_id ON public.areas_static_pages US
 --
 
 CREATE INDEX index_areas_static_pages_on_static_page_id ON public.areas_static_pages USING btree (static_page_id);
+
+
+--
+-- Name: index_authoring_assistance_responses_on_idea_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_authoring_assistance_responses_on_idea_id ON public.authoring_assistance_responses USING btree (idea_id);
 
 
 --
@@ -4791,20 +4751,6 @@ CREATE UNIQUE INDEX index_content_builder_layouts_content_buidable_type_id_code 
 
 
 --
--- Name: index_cosponsors_initiatives_on_initiative_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_cosponsors_initiatives_on_initiative_id ON public.cosponsors_initiatives USING btree (initiative_id);
-
-
---
--- Name: index_cosponsors_initiatives_on_user_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_cosponsors_initiatives_on_user_id ON public.cosponsors_initiatives USING btree (user_id);
-
-
---
 -- Name: index_cosponsorships_on_idea_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -4816,6 +4762,34 @@ CREATE INDEX index_cosponsorships_on_idea_id ON public.cosponsorships USING btre
 --
 
 CREATE INDEX index_cosponsorships_on_user_id ON public.cosponsorships USING btree (user_id);
+
+
+--
+-- Name: index_custom_field_bins_on_custom_field_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_custom_field_bins_on_custom_field_id ON public.custom_field_bins USING btree (custom_field_id);
+
+
+--
+-- Name: index_custom_field_bins_on_custom_field_option_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_custom_field_bins_on_custom_field_option_id ON public.custom_field_bins USING btree (custom_field_option_id);
+
+
+--
+-- Name: index_custom_field_matrix_statements_on_custom_field_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_custom_field_matrix_statements_on_custom_field_id ON public.custom_field_matrix_statements USING btree (custom_field_id);
+
+
+--
+-- Name: index_custom_field_matrix_statements_on_key; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_custom_field_matrix_statements_on_key ON public.custom_field_matrix_statements USING btree (key);
 
 
 --
@@ -5299,97 +5273,6 @@ CREATE INDEX index_identities_on_user_id ON public.identities USING btree (user_
 --
 
 CREATE INDEX index_impact_tracking_sessions_on_monthly_user_hash ON public.impact_tracking_sessions USING btree (monthly_user_hash);
-
-
---
--- Name: index_initiative_files_on_initiative_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_initiative_files_on_initiative_id ON public.initiative_files USING btree (initiative_id);
-
-
---
--- Name: index_initiative_images_on_initiative_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_initiative_images_on_initiative_id ON public.initiative_images USING btree (initiative_id);
-
-
---
--- Name: index_initiative_status_changes_on_initiative_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_initiative_status_changes_on_initiative_id ON public.initiative_status_changes USING btree (initiative_id);
-
-
---
--- Name: index_initiative_status_changes_on_initiative_status_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_initiative_status_changes_on_initiative_status_id ON public.initiative_status_changes USING btree (initiative_status_id);
-
-
---
--- Name: index_initiative_status_changes_on_official_feedback_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_initiative_status_changes_on_official_feedback_id ON public.initiative_status_changes USING btree (official_feedback_id);
-
-
---
--- Name: index_initiative_status_changes_on_user_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_initiative_status_changes_on_user_id ON public.initiative_status_changes USING btree (user_id);
-
-
---
--- Name: index_initiatives_on_author_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_initiatives_on_author_id ON public.initiatives USING btree (author_id);
-
-
---
--- Name: index_initiatives_on_location_point; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_initiatives_on_location_point ON public.initiatives USING gist (location_point);
-
-
---
--- Name: index_initiatives_on_slug; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE UNIQUE INDEX index_initiatives_on_slug ON public.initiatives USING btree (slug);
-
-
---
--- Name: index_initiatives_search; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_initiatives_search ON public.initiatives USING gin (((to_tsvector('simple'::regconfig, COALESCE((title_multiloc)::text, ''::text)) || to_tsvector('simple'::regconfig, COALESCE((body_multiloc)::text, ''::text)))));
-
-
---
--- Name: index_initiatives_topics_on_initiative_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_initiatives_topics_on_initiative_id ON public.initiatives_topics USING btree (initiative_id);
-
-
---
--- Name: index_initiatives_topics_on_initiative_id_and_topic_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE UNIQUE INDEX index_initiatives_topics_on_initiative_id_and_topic_id ON public.initiatives_topics USING btree (initiative_id, topic_id);
-
-
---
--- Name: index_initiatives_topics_on_topic_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_initiatives_topics_on_topic_id ON public.initiatives_topics USING btree (topic_id);
 
 
 --
@@ -5879,7 +5762,7 @@ CREATE INDEX index_report_builder_reports_on_owner_id ON public.report_builder_r
 -- Name: index_report_builder_reports_on_phase_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE UNIQUE INDEX index_report_builder_reports_on_phase_id ON public.report_builder_reports USING btree (phase_id);
+CREATE INDEX index_report_builder_reports_on_phase_id ON public.report_builder_reports USING btree (phase_id);
 
 
 --
@@ -6167,14 +6050,6 @@ ALTER TABLE ONLY public.invites
 
 
 --
--- Name: initiatives fk_rails_06c1835844; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.initiatives
-    ADD CONSTRAINT fk_rails_06c1835844 FOREIGN KEY (author_id) REFERENCES public.users(id);
-
-
---
 -- Name: invites fk_rails_0b6ac3e1da; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -6295,6 +6170,14 @@ ALTER TABLE ONLY public.nav_bar_items
 
 
 --
+-- Name: analysis_comments_summaries fk_rails_37becdebb0; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.analysis_comments_summaries
+    ADD CONSTRAINT fk_rails_37becdebb0 FOREIGN KEY (background_task_id) REFERENCES public.analysis_background_tasks(id);
+
+
+--
 -- Name: custom_field_option_images fk_rails_3814d72daa; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -6303,27 +6186,11 @@ ALTER TABLE ONLY public.custom_field_option_images
 
 
 --
--- Name: initiatives_topics fk_rails_39768eb1c3; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.initiatives_topics
-    ADD CONSTRAINT fk_rails_39768eb1c3 FOREIGN KEY (initiative_id) REFERENCES public.initiatives(id);
-
-
---
 -- Name: baskets_ideas fk_rails_39a1b51358; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.baskets_ideas
     ADD CONSTRAINT fk_rails_39a1b51358 FOREIGN KEY (idea_id) REFERENCES public.ideas(id);
-
-
---
--- Name: initiatives fk_rails_3a983c39e6; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.initiatives
-    ADD CONSTRAINT fk_rails_3a983c39e6 FOREIGN KEY (assignee_id) REFERENCES public.users(id);
 
 
 --
@@ -6375,14 +6242,6 @@ ALTER TABLE ONLY public.notifications
 
 
 --
--- Name: initiative_images fk_rails_4df6f76970; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.initiative_images
-    ADD CONSTRAINT fk_rails_4df6f76970 FOREIGN KEY (initiative_id) REFERENCES public.initiatives(id);
-
-
---
 -- Name: analytics_dimension_projects_fact_visits fk_rails_4ecebb6e8a; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -6420,14 +6279,6 @@ ALTER TABLE ONLY public.notifications
 
 ALTER TABLE ONLY public.notifications
     ADD CONSTRAINT fk_rails_575368d182 FOREIGN KEY (project_id) REFERENCES public.projects(id);
-
-
---
--- Name: cosponsors_initiatives fk_rails_5ac54ec4a5; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.cosponsors_initiatives
-    ADD CONSTRAINT fk_rails_5ac54ec4a5 FOREIGN KEY (initiative_id) REFERENCES public.initiatives(id);
 
 
 --
@@ -6503,14 +6354,6 @@ ALTER TABLE ONLY public.ideas
 
 
 --
--- Name: initiatives_topics fk_rails_6ee3ffe8e1; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.initiatives_topics
-    ADD CONSTRAINT fk_rails_6ee3ffe8e1 FOREIGN KEY (topic_id) REFERENCES public.topics(id);
-
-
---
 -- Name: groups_permissions fk_rails_6fa6389d80; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -6556,6 +6399,14 @@ ALTER TABLE ONLY public.analysis_additional_custom_fields
 
 ALTER TABLE ONLY public.analysis_questions
     ADD CONSTRAINT fk_rails_74e779db86 FOREIGN KEY (background_task_id) REFERENCES public.analysis_background_tasks(id);
+
+
+--
+-- Name: analysis_heatmap_cells fk_rails_7a39fbbdee; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.analysis_heatmap_cells
+    ADD CONSTRAINT fk_rails_7a39fbbdee FOREIGN KEY (analysis_id) REFERENCES public.analysis_analyses(id);
 
 
 --
@@ -6612,14 +6463,6 @@ ALTER TABLE ONLY public.projects_allowed_input_topics
 
 ALTER TABLE ONLY public.projects_topics
     ADD CONSTRAINT fk_rails_812b6d9149 FOREIGN KEY (project_id) REFERENCES public.projects(id);
-
-
---
--- Name: areas_initiatives fk_rails_81a9922de4; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.areas_initiatives
-    ADD CONSTRAINT fk_rails_81a9922de4 FOREIGN KEY (area_id) REFERENCES public.areas(id);
 
 
 --
@@ -6695,14 +6538,6 @@ ALTER TABLE ONLY public.areas_projects
 
 
 --
--- Name: initiative_files fk_rails_8fcd2c6036; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.initiative_files
-    ADD CONSTRAINT fk_rails_8fcd2c6036 FOREIGN KEY (initiative_id) REFERENCES public.initiatives(id);
-
-
---
 -- Name: areas fk_rails_901fc7a65b; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -6724,6 +6559,14 @@ ALTER TABLE ONLY public.notifications
 
 ALTER TABLE ONLY public.notifications
     ADD CONSTRAINT fk_rails_97eb4c3a35 FOREIGN KEY (invite_id) REFERENCES public.invites(id);
+
+
+--
+-- Name: authoring_assistance_responses fk_rails_98155ccbce; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.authoring_assistance_responses
+    ADD CONSTRAINT fk_rails_98155ccbce FOREIGN KEY (idea_id) REFERENCES public.ideas(id);
 
 
 --
@@ -6796,14 +6639,6 @@ ALTER TABLE ONLY public.event_files
 
 ALTER TABLE ONLY public.groups_permissions
     ADD CONSTRAINT fk_rails_a5c3527604 FOREIGN KEY (group_id) REFERENCES public.groups(id);
-
-
---
--- Name: areas_initiatives fk_rails_a67ac3c9d1; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.areas_initiatives
-    ADD CONSTRAINT fk_rails_a67ac3c9d1 FOREIGN KEY (initiative_id) REFERENCES public.initiatives(id);
 
 
 --
@@ -6940,6 +6775,14 @@ ALTER TABLE ONLY public.ideas
 
 ALTER TABLE ONLY public.idea_images
     ADD CONSTRAINT fk_rails_c349bb4ac3 FOREIGN KEY (idea_id) REFERENCES public.ideas(id);
+
+
+--
+-- Name: custom_field_matrix_statements fk_rails_c379cdcd80; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.custom_field_matrix_statements
+    ADD CONSTRAINT fk_rails_c379cdcd80 FOREIGN KEY (custom_field_id) REFERENCES public.custom_fields(id);
 
 
 --
@@ -7103,11 +6946,19 @@ ALTER TABLE ONLY public.permissions_custom_fields
 
 
 --
--- Name: cosponsors_initiatives fk_rails_e48253715f; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: analysis_comments_summaries fk_rails_e51f754cf7; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY public.cosponsors_initiatives
-    ADD CONSTRAINT fk_rails_e48253715f FOREIGN KEY (user_id) REFERENCES public.users(id);
+ALTER TABLE ONLY public.analysis_comments_summaries
+    ADD CONSTRAINT fk_rails_e51f754cf7 FOREIGN KEY (idea_id) REFERENCES public.ideas(id);
+
+
+--
+-- Name: custom_field_bins fk_rails_e6f48b841d; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.custom_field_bins
+    ADD CONSTRAINT fk_rails_e6f48b841d FOREIGN KEY (custom_field_option_id) REFERENCES public.custom_field_options(id);
 
 
 --
@@ -7140,6 +6991,14 @@ ALTER TABLE ONLY public.static_pages_topics
 
 ALTER TABLE ONLY public.idea_files
     ADD CONSTRAINT fk_rails_efb12f53ad FOREIGN KEY (idea_id) REFERENCES public.ideas(id);
+
+
+--
+-- Name: custom_field_bins fk_rails_f09b1bc4cd; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.custom_field_bins
+    ADD CONSTRAINT fk_rails_f09b1bc4cd FOREIGN KEY (custom_field_id) REFERENCES public.custom_fields(id);
 
 
 --
@@ -7213,488 +7072,508 @@ ALTER TABLE ONLY public.ideas_topics
 SET search_path TO public,shared_extensions;
 
 INSERT INTO "schema_migrations" (version) VALUES
-('20170301182502'),
-('20170302155043'),
-('20170314053812'),
-('20170317133413'),
-('20170317151309'),
-('20170318141825'),
-('20170318143940'),
-('20170318144700'),
-('20170318155729'),
-('20170318181018'),
-('20170319000059'),
-('20170330122943'),
-('20170407113052'),
-('20170410152320'),
-('20170415160722'),
-('20170418104454'),
-('20170424201042'),
-('20170503161621'),
-('20170509093623'),
-('20170520132308'),
-('20170520134018'),
-('20170525125712'),
-('20170531144653'),
-('20170602105428'),
-('20170607123146'),
-('20170620074738'),
-('20170620083943'),
-('20170703234313'),
-('20170704729304'),
-('20170705093051'),
-('20170705093317'),
-('20170718095819'),
-('20170718121258'),
-('20170719160834'),
-('20170719172958'),
-('20170918101800'),
-('20171010091219'),
-('20171010114629'),
-('20171010114644'),
-('20171020101837'),
-('20171022182428'),
-('20171023192224'),
-('20171029143741'),
-('20171031131310'),
-('20171101102506'),
-('20171106212610'),
-('20171113100102'),
-('20171115092024'),
-('20171117114456'),
-('20171117155422'),
-('20171127103900'),
-('20171204155602'),
-('20171209082850'),
-('20171218134052'),
-('20171221145649'),
-('20180103163513'),
-('20180108134711'),
-('20180108144026'),
-('20180108144119'),
-('20180108153406'),
-('20180117103530'),
-('20180117105551'),
-('20180118125241'),
-('20180206132516'),
-('20180209161249'),
-('20180215090033'),
-('20180215130118'),
-('20180220142344'),
-('20180220144702'),
-('20180221143137'),
-('20180302100342'),
-('20180302145039'),
-('20180307132304'),
-('20180309160219'),
-('20180327085216'),
-('20180327132833'),
-('20180328123240'),
-('20180404092302'),
-('20180405090646'),
-('20180405195146'),
-('20180412140227'),
-('20180423120217'),
-('20180423123552'),
-('20180423123610'),
-('20180423123634'),
-('20180424190023'),
-('20180424190024'),
-('20180516143348'),
-('20180610165230'),
-('20180705085133'),
-('20180801130039'),
-('20180809133236'),
-('20180809134021'),
-('20180813093429'),
-('20180815114121'),
-('20180815114122'),
-('20180815114123'),
-('20180815114124'),
-('20180824094903'),
-('20180829162620'),
-('20180912135727'),
-('20180913085107'),
-('20180913085920'),
-('20180913155502'),
-('20180919144612'),
-('20180920155012'),
-('20180920155127'),
-('20181011143305'),
-('20181022092934'),
-('20181205134744'),
-('20181210113428'),
-('20190107123605'),
-('20190124094814'),
-('20190129100321'),
-('20190211103921'),
-('20190211134223'),
-('20190215155920'),
-('20190220152327'),
-('20190312154517'),
-('20190313091027'),
-('20190318145229'),
-('20190325142711'),
-('20190325155516'),
-('20190527091133'),
-('20190528101954'),
-('20190531143638'),
-('20190603100709'),
-('20190603100803'),
-('20190603135926'),
-('20190603141415'),
-('20190603142853'),
-('20190604135000'),
-('20190605125206'),
-('20190607132326'),
-('20190701091036'),
-('20190724095644'),
-('20190730131947'),
-('20190816143358'),
-('20190904135343'),
-('20190904135344'),
-('20190905123108'),
-('20190905123110'),
-('20190906093107'),
-('20190909124937'),
-('20190909124938'),
-('20191008115234'),
-('20191014135916'),
-('20191023121111'),
-('20191114092523'),
-('20191209135917'),
-('20191209183623'),
-('20191210205216'),
-('20191211104007'),
-('20191213112024'),
-('20191213130342'),
-('20191218161144'),
-('20200109163736'),
-('20200131124534'),
-('20200131130350'),
-('20200131133006'),
-('20200206081103'),
-('20200206162013'),
-('20200206165218'),
-('20200213001613'),
-('20200226124456'),
-('20200306160918'),
-('20200310101259'),
-('20200311132551'),
-('20200316142820'),
-('20200316142821'),
-('20200316142822'),
-('20200316155355'),
-('20200318220614'),
-('20200318220615'),
-('20200319101312'),
-('20200325160114'),
-('20200423123927'),
-('20200519164633'),
-('20200527093956'),
-('20200527094026'),
-('20200805132331'),
-('20200807132541'),
-('20200820141351'),
-('20200902151045'),
-('20200911150057'),
-('20201001174500'),
-('20201007102916'),
-('20201014180247'),
-('20201015180356'),
-('20201018122834'),
-('20201022160000'),
-('20201029180155'),
-('20201102093045'),
-('20201116092906'),
-('20201116092907'),
-('20201120173700'),
-('20201120190900'),
-('20201127160903'),
-('20201130161115'),
-('20201204134337'),
-('20201217170635'),
-('20210112155555'),
-('20210119144531'),
-('20210127105555'),
-('20210127112755'),
-('20210127112825'),
-('20210127112937'),
-('20210211144443'),
-('20210217112905'),
-('20210304203413'),
-('20210312123927'),
-('20210316113654'),
-('20210317114360'),
-('20210317114361'),
-('20210319100008'),
-('20210319161957'),
-('20210324164613'),
-('20210324164740'),
-('20210324181315'),
-('20210324181814'),
-('20210402103419'),
-('20210413172107'),
-('20210430154637'),
-('20210506151054'),
-('20210512094502'),
-('20210518143118'),
-('20210521101107'),
-('20210601061247'),
-('20210619133856'),
-('20210624163536'),
-('20210722110109'),
-('20210902121355'),
-('20210902121356'),
-('20210902121357'),
-('20211806161354'),
-('20211806161355'),
-('20211806161356'),
-('20211806161357'),
-('20211906161359'),
-('20211906161360'),
-('20211906161361'),
-('20211906161362'),
-('20212006161357'),
-('20212006161358'),
-('20220112081701'),
-('20220114095033'),
-('20220120154239'),
-('20220126110341'),
-('20220207103216'),
-('20220211143841'),
-('20220214110500'),
-('20220302143958'),
-('20220308184000'),
-('20220324073642'),
-('20220407131522'),
-('20220415074726'),
-('20220523110954'),
-('20220531123916'),
-('20220610072149'),
-('20220614135644'),
-('20220615095516'),
-('20220620101315'),
-('20220630084221'),
-('20220707102050'),
-('20220713141438'),
-('20220719103052'),
-('20220808074431'),
-('20220810084347'),
-('20220818165037'),
-('20220822140949'),
-('20220822140950'),
-('20220826025840'),
-('20220826025841'),
-('20220826025842'),
-('20220826025843'),
-('20220826025844'),
-('20220826025845'),
-('20220826025846'),
-('20220830144847'),
-('20220831102114'),
-('20220831142106'),
-('20220831171634'),
-('20220906074349'),
-('20220927091942'),
-('20220927114325'),
-('20220929125456'),
-('20220929125457'),
-('20221001123808'),
-('20221006071220'),
-('20221006095042'),
-('20221006100512'),
-('20221011092349'),
-('20221018135644'),
-('20221021140619'),
-('20221025100507'),
-('20221025131832'),
-('20221027125738'),
-('20221027170719'),
-('20221028082913'),
-('20221103153024'),
-('20221107124858'),
-('20221110105544'),
-('20221111132019'),
-('20221114094435'),
-('20221115113353'),
-('20221118094022'),
-('20221202110054'),
-('20221205095831'),
-('20221205112729'),
-('20230127201927'),
-('20230131091656'),
-('20230131122140'),
-('20230131143907'),
-('20230206090743'),
-('20230208142802'),
-('20230213120148'),
-('20230307101320'),
-('20230314110825'),
-('20230321153659'),
-('20230403145652'),
-('20230405162820'),
-('20230516135820'),
-('20230516150847'),
-('20230517064632'),
-('20230517145937'),
-('20230518094411'),
-('20230518133943'),
-('20230519085843'),
-('20230524085443'),
-('20230524151508'),
-('20230601085753'),
-('20230605133845'),
-('20230606132255'),
-('20230607142901'),
-('20230607162320'),
-('20230608120051'),
-('20230608120425'),
-('20230609161522'),
-('20230616134441'),
-('20230620114801'),
-('20230621091448'),
-('20230621144312'),
-('20230622132238'),
-('20230623085057'),
-('20230629095724'),
-('20230629120434'),
-('20230703112343'),
-('20230703175732'),
-('20230705172856'),
-('20230710143815'),
-('20230718121501'),
-('20230718124121'),
-('20230718214736'),
-('20230719221539'),
-('20230719221540'),
-('20230725121109'),
-('20230725142113'),
-('20230726150159'),
-('20230726160134'),
-('20230727090914'),
-('20230727145653'),
-('20230728130913'),
-('20230728160743'),
-('20230801095755'),
-('20230801135355'),
-('20230801141534'),
-('20230803112021'),
-('20230804142723'),
-('20230811123114'),
-('20230814115846'),
-('20230815085922'),
-('20230815119289'),
-('20230815182301'),
-('20230816104548'),
-('20230817133411'),
-('20230817134213'),
-('20230823204209'),
-('20230825121818'),
-('20230825121819'),
-('20230906104541'),
-('20230911121820'),
-('20230913121819'),
-('20230915391649'),
-('20230927135924'),
-('20231003095622'),
-('20231018083110'),
-('20231024082513'),
-('20231031175023'),
-('20231103094549'),
-('20231109101517'),
-('20231110112415'),
-('20231120090516'),
-('20231123141534'),
-('20231123161330'),
-('20231123173159'),
-('20231124090234'),
-('20231124112723'),
-('20231124114112'),
-('20231130093345'),
-('20231212151032'),
-('20231214100537'),
-('20240112103545'),
-('20240115142433'),
-('20240123102956'),
-('20240124173411'),
-('20240126122702'),
-('20240130142750'),
-('20240130170644'),
-('20240201141520'),
-('20240206165004'),
-('20240212133704'),
-('20240214125557'),
-('20240219104430'),
-('20240219104431'),
-('20240221145522'),
-('20240226170510'),
-('20240227092300'),
-('20240228145938'),
-('20240229195843'),
-('20240301120023'),
-('20240305122502'),
-('20240328141200'),
-('20240409150000'),
-('20240417064819'),
-('20240417150820'),
-('20240418081854'),
-('20240419100508'),
-('20240504212048'),
-('20240508124400'),
-('20240508133950'),
-('20240510103700'),
-('20240516113700'),
-('20240606112752'),
-('20240612134240'),
-('202407081751'),
-('20240710101033'),
-('20240722090955'),
-('20240729141927'),
-('20240730093933'),
-('20240731181623'),
-('20240731223530'),
-('20240805121645'),
-('20240806161121'),
-('20240812115140'),
-('20240814133336'),
-('20240814163522'),
-('20240821135150'),
-('20240826083227'),
-('20240829185625'),
-('20240911143007'),
-('20240917181018'),
-('20240923112800'),
-('20240923112801'),
-('20240926175000'),
-('20241001101704'),
-('20241002200522'),
-('20241008143004'),
-('20241011101454'),
-('20241011816395'),
-('20241016201503'),
-('20241022101049'),
-('20241024110349'),
-('20241028162618'),
-('20241029080612'),
-('20241105053818'),
-('20241105053934'),
-('20241105081014'),
-('20241112110758'),
-('20241115141553'),
-('20241115141717'),
-('20241125094000'),
-('20241125094100'),
-('20241127074734'),
-('20241127093339'),
-('20241203151945'),
-('20241204133717'),
-('20241204144321'),
-('20241224115952'),
-('20241226093506'),
-('20241227103433'),
-('20241230165323'),
+('20250416120221'),
+('20250415094344'),
+('20250409111817'),
+('20250327095857'),
+('20250320010716'),
+('20250319145637'),
+('20250317825496'),
+('20250317143543'),
+('20250311141109'),
+('20250307924725'),
+('20250305202848'),
+('20250305111507'),
+('20250224150953'),
+('20250220161323'),
+('20250219104523'),
+('20250218094339'),
+('20250217295025'),
+('20250210181753'),
+('20250204143605'),
+('20250120125531'),
+('20250117121004'),
+('20241230172612'),
 ('20241230165518'),
-('20241230172612');
-
+('20241230165323'),
+('20241227103433'),
+('20241226093506'),
+('20241224115952'),
+('20241204144321'),
+('20241204133717'),
+('20241203151945'),
+('20241127093339'),
+('20241127074734'),
+('20241125094100'),
+('20241125094000'),
+('20241115141717'),
+('20241115141553'),
+('20241112110758'),
+('20241105081014'),
+('20241105053934'),
+('20241105053818'),
+('20241029080612'),
+('20241028162618'),
+('20241024110349'),
+('20241022101049'),
+('20241016201503'),
+('20241011816395'),
+('20241011101454'),
+('20241008143004'),
+('20241002200522'),
+('20241001101704'),
+('20240926175000'),
+('20240923112801'),
+('20240923112800'),
+('20240917181018'),
+('20240911143007'),
+('20240829185625'),
+('20240826083227'),
+('20240821135150'),
+('20240814163522'),
+('20240814133336'),
+('20240812115140'),
+('20240806161121'),
+('20240805121645'),
+('20240731223530'),
+('20240731181623'),
+('20240730093933'),
+('20240729141927'),
+('20240722090955'),
+('20240710101033'),
+('202407081751'),
+('20240612134240'),
+('20240606112752'),
+('20240516113700'),
+('20240510103700'),
+('20240508133950'),
+('20240508124400'),
+('20240504212048'),
+('20240419100508'),
+('20240418081854'),
+('20240417150820'),
+('20240417064819'),
+('20240409150000'),
+('20240328141200'),
+('20240305122502'),
+('20240301120023'),
+('20240229195843'),
+('20240228145938'),
+('20240227092300'),
+('20240226170510'),
+('20240221145522'),
+('20240219104431'),
+('20240219104430'),
+('20240214125557'),
+('20240212133704'),
+('20240206165004'),
+('20240201141520'),
+('20240130170644'),
+('20240130142750'),
+('20240126122702'),
+('20240124173411'),
+('20240123102956'),
+('20240115142433'),
+('20240112103545'),
+('20231214100537'),
+('20231212151032'),
+('20231130093345'),
+('20231124114112'),
+('20231124112723'),
+('20231124090234'),
+('20231123173159'),
+('20231123161330'),
+('20231123141534'),
+('20231120090516'),
+('20231110112415'),
+('20231109101517'),
+('20231103094549'),
+('20231031175023'),
+('20231024082513'),
+('20231018083110'),
+('20231003095622'),
+('20230927135924'),
+('20230915391649'),
+('20230913121819'),
+('20230911121820'),
+('20230906104541'),
+('20230825121819'),
+('20230825121818'),
+('20230823204209'),
+('20230817134213'),
+('20230817133411'),
+('20230816104548'),
+('20230815182301'),
+('20230815119289'),
+('20230815085922'),
+('20230814115846'),
+('20230811123114'),
+('20230804142723'),
+('20230803112021'),
+('20230801141534'),
+('20230801135355'),
+('20230801095755'),
+('20230728160743'),
+('20230728130913'),
+('20230727145653'),
+('20230727090914'),
+('20230726160134'),
+('20230726150159'),
+('20230725142113'),
+('20230725121109'),
+('20230719221540'),
+('20230719221539'),
+('20230718214736'),
+('20230718124121'),
+('20230718121501'),
+('20230710143815'),
+('20230705172856'),
+('20230703175732'),
+('20230703112343'),
+('20230629120434'),
+('20230629095724'),
+('20230623085057'),
+('20230622132238'),
+('20230621144312'),
+('20230621091448'),
+('20230620114801'),
+('20230616134441'),
+('20230609161522'),
+('20230608120425'),
+('20230608120051'),
+('20230607162320'),
+('20230607142901'),
+('20230606132255'),
+('20230605133845'),
+('20230601085753'),
+('20230524151508'),
+('20230524085443'),
+('20230519085843'),
+('20230518133943'),
+('20230518094411'),
+('20230517145937'),
+('20230517064632'),
+('20230516150847'),
+('20230516135820'),
+('20230405162820'),
+('20230403145652'),
+('20230321153659'),
+('20230314110825'),
+('20230307101320'),
+('20230213120148'),
+('20230208142802'),
+('20230206090743'),
+('20230131143907'),
+('20230131122140'),
+('20230131091656'),
+('20230127201927'),
+('20221205112729'),
+('20221205095831'),
+('20221202110054'),
+('20221118094022'),
+('20221115113353'),
+('20221114094435'),
+('20221111132019'),
+('20221110105544'),
+('20221107124858'),
+('20221103153024'),
+('20221028082913'),
+('20221027170719'),
+('20221027125738'),
+('20221025131832'),
+('20221025100507'),
+('20221021140619'),
+('20221018135644'),
+('20221011092349'),
+('20221006100512'),
+('20221006095042'),
+('20221006071220'),
+('20221001123808'),
+('20220929125457'),
+('20220929125456'),
+('20220927114325'),
+('20220927091942'),
+('20220906074349'),
+('20220831171634'),
+('20220831142106'),
+('20220831102114'),
+('20220830144847'),
+('20220826025846'),
+('20220826025845'),
+('20220826025844'),
+('20220826025843'),
+('20220826025842'),
+('20220826025841'),
+('20220826025840'),
+('20220822140950'),
+('20220822140949'),
+('20220818165037'),
+('20220810084347'),
+('20220808074431'),
+('20220719103052'),
+('20220713141438'),
+('20220707102050'),
+('20220630084221'),
+('20220620101315'),
+('20220615095516'),
+('20220614135644'),
+('20220610072149'),
+('20220531123916'),
+('20220523110954'),
+('20220415074726'),
+('20220407131522'),
+('20220324073642'),
+('20220308184000'),
+('20220302143958'),
+('20220214110500'),
+('20220211143841'),
+('20220207103216'),
+('20220126110341'),
+('20220120154239'),
+('20220114095033'),
+('20220112081701'),
+('20212006161358'),
+('20212006161357'),
+('20211906161362'),
+('20211906161361'),
+('20211906161360'),
+('20211906161359'),
+('20211806161357'),
+('20211806161356'),
+('20211806161355'),
+('20211806161354'),
+('20210902121357'),
+('20210902121356'),
+('20210902121355'),
+('20210722110109'),
+('20210624163536'),
+('20210619133856'),
+('20210601061247'),
+('20210521101107'),
+('20210518143118'),
+('20210512094502'),
+('20210506151054'),
+('20210430154637'),
+('20210413172107'),
+('20210402103419'),
+('20210324181814'),
+('20210324181315'),
+('20210324164740'),
+('20210324164613'),
+('20210319161957'),
+('20210319100008'),
+('20210317114361'),
+('20210317114360'),
+('20210316113654'),
+('20210312123927'),
+('20210304203413'),
+('20210217112905'),
+('20210211144443'),
+('20210127112937'),
+('20210127112825'),
+('20210127112755'),
+('20210127105555'),
+('20210119144531'),
+('20210112155555'),
+('20201217170635'),
+('20201204134337'),
+('20201130161115'),
+('20201127160903'),
+('20201120190900'),
+('20201120173700'),
+('20201116092907'),
+('20201116092906'),
+('20201102093045'),
+('20201029180155'),
+('20201022160000'),
+('20201018122834'),
+('20201015180356'),
+('20201014180247'),
+('20201007102916'),
+('20201001174500'),
+('20200911150057'),
+('20200902151045'),
+('20200820141351'),
+('20200807132541'),
+('20200805132331'),
+('20200527094026'),
+('20200527093956'),
+('20200519164633'),
+('20200423123927'),
+('20200325160114'),
+('20200319101312'),
+('20200318220615'),
+('20200318220614'),
+('20200316155355'),
+('20200316142822'),
+('20200316142821'),
+('20200316142820'),
+('20200311132551'),
+('20200310101259'),
+('20200306160918'),
+('20200226124456'),
+('20200213001613'),
+('20200206165218'),
+('20200206162013'),
+('20200206081103'),
+('20200131133006'),
+('20200131130350'),
+('20200131124534'),
+('20200109163736'),
+('20191218161144'),
+('20191213130342'),
+('20191213112024'),
+('20191211104007'),
+('20191210205216'),
+('20191209183623'),
+('20191209135917'),
+('20191114092523'),
+('20191023121111'),
+('20191014135916'),
+('20191008115234'),
+('20190909124938'),
+('20190909124937'),
+('20190906093107'),
+('20190905123110'),
+('20190905123108'),
+('20190904135344'),
+('20190904135343'),
+('20190816143358'),
+('20190730131947'),
+('20190724095644'),
+('20190701091036'),
+('20190607132326'),
+('20190605125206'),
+('20190604135000'),
+('20190603142853'),
+('20190603141415'),
+('20190603135926'),
+('20190603100803'),
+('20190603100709'),
+('20190531143638'),
+('20190528101954'),
+('20190527091133'),
+('20190325155516'),
+('20190325142711'),
+('20190318145229'),
+('20190313091027'),
+('20190312154517'),
+('20190220152327'),
+('20190215155920'),
+('20190211134223'),
+('20190211103921'),
+('20190129100321'),
+('20190124094814'),
+('20190107123605'),
+('20181210113428'),
+('20181205134744'),
+('20181022092934'),
+('20181011143305'),
+('20180920155127'),
+('20180920155012'),
+('20180919144612'),
+('20180913155502'),
+('20180913085920'),
+('20180913085107'),
+('20180912135727'),
+('20180829162620'),
+('20180824094903'),
+('20180815114124'),
+('20180815114123'),
+('20180815114122'),
+('20180815114121'),
+('20180813093429'),
+('20180809134021'),
+('20180809133236'),
+('20180801130039'),
+('20180705085133'),
+('20180610165230'),
+('20180516143348'),
+('20180424190024'),
+('20180424190023'),
+('20180423123634'),
+('20180423123610'),
+('20180423123552'),
+('20180423120217'),
+('20180412140227'),
+('20180405195146'),
+('20180405090646'),
+('20180404092302'),
+('20180328123240'),
+('20180327132833'),
+('20180327085216'),
+('20180309160219'),
+('20180307132304'),
+('20180302145039'),
+('20180302100342'),
+('20180221143137'),
+('20180220144702'),
+('20180220142344'),
+('20180215130118'),
+('20180215090033'),
+('20180209161249'),
+('20180206132516'),
+('20180118125241'),
+('20180117105551'),
+('20180117103530'),
+('20180108153406'),
+('20180108144119'),
+('20180108144026'),
+('20180108134711'),
+('20180103163513'),
+('20171221145649'),
+('20171218134052'),
+('20171209082850'),
+('20171204155602'),
+('20171127103900'),
+('20171117155422'),
+('20171117114456'),
+('20171115092024'),
+('20171113100102'),
+('20171106212610'),
+('20171101102506'),
+('20171031131310'),
+('20171029143741'),
+('20171023192224'),
+('20171022182428'),
+('20171020101837'),
+('20171010114644'),
+('20171010114629'),
+('20171010091219'),
+('20170918101800'),
+('20170719172958'),
+('20170719160834'),
+('20170718121258'),
+('20170718095819'),
+('20170705093317'),
+('20170705093051'),
+('20170704729304'),
+('20170703234313'),
+('20170620083943'),
+('20170620074738'),
+('20170607123146'),
+('20170602105428'),
+('20170531144653'),
+('20170525125712'),
+('20170520134018'),
+('20170520132308'),
+('20170509093623'),
+('20170503161621'),
+('20170424201042'),
+('20170418104454'),
+('20170415160722'),
+('20170410152320'),
+('20170407113052'),
+('20170330122943'),
+('20170319000059'),
+('20170318181018'),
+('20170318155729'),
+('20170318144700'),
+('20170318143940'),
+('20170318141825'),
+('20170317151309'),
+('20170317133413'),
+('20170314053812'),
+('20170302155043'),
+('20170301182502');
 

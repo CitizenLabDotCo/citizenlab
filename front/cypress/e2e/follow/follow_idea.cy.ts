@@ -103,7 +103,7 @@ describe('Follow idea', () => {
     cy.get('[data-cy="e2e-follow-button"]').should('exist');
   });
 
-  it('shows a follow option to a new user and shows the idea in the activity following page after following where it can be unfollowed', () => {
+  it('shows a follow option and an unfollow option after following', () => {
     cy.setLoginCookie(email, password);
 
     cy.visit(`/ideas/${ideaSlug2}`);
@@ -117,16 +117,6 @@ describe('Follow idea', () => {
     // Check that it shows unfollow after
     cy.get('[data-cy="e2e-unfollow-button"]').should('exist');
     cy.get('[data-cy="e2e-follow-button"]').should('not.exist');
-
-    cy.visit(`/profile/${userSlug}/following`);
-    cy.get('#tab-Idea').click();
-
-    cy.get('.e2e-idea-card-title').contains(ideaTitle2);
-
-    cy.get('[data-cy="e2e-unfollow-button"]').should('exist');
-    cy.get('[data-cy="e2e-unfollow-button"]').click();
-
-    cy.get('.e2e-idea-card-title').should('not.exist');
   });
 
   it('uses a light login flow when a user is not looged in and follows after', () => {

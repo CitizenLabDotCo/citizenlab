@@ -11,6 +11,7 @@ resource 'Idea Custom Fields' do
   get 'web_api/v1/admin/phases/:phase_id/custom_fields' do
     parameter :support_free_text_value, 'Only return custom fields that have a freely written textual answer', type: :boolean, required: false
     parameter :copy, 'Return non-persisted copies of all custom fields with new IDs', type: :boolean, required: false
+    parameter :input_types, 'Filter custom fields by input types', type: :array, items: { type: :string }, required: false
 
     let(:context) { create(:native_survey_phase) }
     let(:phase_id) { context.id }
@@ -46,6 +47,15 @@ resource 'Idea Custom Fields' do
         expect(response_data.size).to eq 2
         expect(response_data[0][:id]).not_to eq custom_field1.id
         expect(response_data[1][:id]).not_to eq custom_field2.id
+      end
+
+      example 'List all relevant custom fields for a phase with a filter on input_types' do
+        do_request(input_types: ['number'])
+        assert_status 200
+        expect(response_data.size).to eq 1
+        expect(response_data.map { |d| d.dig(:attributes, :key) }).to eq [
+          custom_field2.key
+        ]
       end
     end
   end

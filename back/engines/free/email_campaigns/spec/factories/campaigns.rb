@@ -42,6 +42,10 @@ FactoryBot.define do
     enabled { true }
   end
 
+  factory :community_monitor_report_campaign, class: EmailCampaigns::Campaigns::CommunityMonitorReport do
+    enabled { true }
+  end
+
   factory :cosponsor_of_your_idea_campaign, class: EmailCampaigns::Campaigns::CosponsorOfYourIdea do
     enabled { true }
   end
@@ -139,6 +143,10 @@ FactoryBot.define do
   end
 
   factory :status_change_on_idea_you_follow_campaign, class: EmailCampaigns::Campaigns::StatusChangeOnIdeaYouFollow do
+    enabled { true }
+  end
+
+  factory :survey_submitted_campaign, class: EmailCampaigns::Campaigns::SurveySubmitted do
     enabled { true }
   end
 

@@ -31,7 +31,7 @@ const StatusFilterDropdown = ({
   const { formatMessage } = useIntl();
 
   const { data: ideaStatuses } = useIdeaStatuses({
-    participation_method: participationMethod,
+    queryParams: { participation_method: participationMethod },
   });
 
   const options = useMemo(() => {

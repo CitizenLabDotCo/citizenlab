@@ -6,7 +6,7 @@ class WebApi::V1::CustomFieldOptionsController < ApplicationController
   skip_before_action :authenticate_user
 
   def index
-    @options = policy_scope(CustomFieldOption).where(custom_field: @custom_field).order(:ordering)
+    @options = policy_scope(CustomFieldOption).where(custom_field: @custom_field).order(:ordering).includes(:image)
     render json: WebApi::V1::CustomFieldOptionSerializer.new(@options, params: jsonapi_serializer_params).serializable_hash
   end
 
@@ -59,16 +59,10 @@ class WebApi::V1::CustomFieldOptionsController < ApplicationController
   end
 
   def destroy
-    SideFxCustomFieldOptionService.new.before_destroy(@option, current_user)
-    frozen_option = @option.destroy
-    if frozen_option
-      SideFxCustomFieldOptionService.new.after_destroy(frozen_option, current_user)
-      head :ok
-    elsif @option.errors
-      render json: { errors: @option.errors.details }, status: :unprocessable_entity
-    else
-      head :internal_server_error
-    end
+    CustomFields::Options::DestroyService.new.destroy!(@option, current_user)
+    head :ok
+  rescue ActiveRecord::RecordNotDestroyed
+    @option.errors.present? ? send_unprocessable_entity(@option) : raise
   end
 
   private

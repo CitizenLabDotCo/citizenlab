@@ -22,7 +22,7 @@ interface Props {
   icon: IconNames;
   onClick: () => void;
   'data-cy'?: string;
-  fieldsToExclude?: ICustomFieldInputType[];
+  fieldsToInclude?: ICustomFieldInputType[];
   inputType?: ICustomFieldInputType;
   disabled?: boolean;
   disabledTooltipMessage?: MessageDescriptor;
@@ -56,7 +56,7 @@ const ToolboxItem = ({
   icon,
   label,
   onClick,
-  fieldsToExclude,
+  fieldsToInclude,
   inputType,
   disabled,
   disabledTooltipMessage,
@@ -65,7 +65,7 @@ const ToolboxItem = ({
 }: Props) => {
   const { formatMessage } = useIntl();
 
-  if (fieldsToExclude && inputType && fieldsToExclude.includes(inputType)) {
+  if (fieldsToInclude && inputType && !fieldsToInclude.includes(inputType)) {
     return null;
   }
 

@@ -8,6 +8,7 @@ import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useAppConfigurationLocales, {
   createMultiloc,
 } from 'hooks/useAppConfigurationLocales';
+import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import Container from 'components/admin/ContentBuilder/Toolbox/Container';
 import DraggableElement from 'components/admin/ContentBuilder/Toolbox/DraggableElement';
@@ -41,7 +42,11 @@ import {
 } from 'utils/cl-intl';
 
 import messages from '../../messages';
+import Areas, { areasTitle } from '../Widgets/Areas';
 import CallToAction, { callToActionTitle } from '../Widgets/CallToAction';
+import CommunityMonitorCTA, {
+  communityMonitorCTATitle,
+} from '../Widgets/CommunityMonitorCTA';
 import Events from '../Widgets/Events';
 import FinishedOrArchived, {
   finishedOrArchivedTitle,
@@ -83,6 +88,9 @@ const HomepageBuilderToolbox = ({
   const { formatMessage } = useIntl();
   const formatMessageWithLocale = useFormatMessageWithLocale();
   const appConfigurationLocales = useAppConfigurationLocales();
+  const followEnabled = useFeatureFlag({ name: 'follow' });
+  const communityMonitorEnabled = useFeatureFlag({ name: 'community_monitor' });
+
   const { data: appConfiguration } = useAppConfiguration();
 
   if (!appConfigurationLocales || !appConfiguration) return null;
@@ -142,7 +150,14 @@ const HomepageBuilderToolbox = ({
           icon="sportsScore"
           label={formatMessage(finishedOrArchivedTitle)}
         />
-
+        {followEnabled && (
+          <DraggableElement
+            id="e2e-draggable-areas"
+            component={<Areas titleMultiloc={toMultiloc(areasTitle)} />}
+            icon="home"
+            label={formatMessage(areasTitle)}
+          />
+        )}
         <DraggableElement
           id="e2e-draggable-spotlight"
           component={
@@ -154,7 +169,6 @@ const HomepageBuilderToolbox = ({
           icon="flash"
           label={formatMessage(spotlightTitle)}
         />
-
         <DraggableElement
           id="e2e-draggable-selection"
           component={
@@ -166,7 +180,6 @@ const HomepageBuilderToolbox = ({
           icon="folder-outline"
           label={formatMessage(selectionTitle)}
         />
-
         <DraggableElement
           id="e2e-draggable-published"
           component={<Published titleMultiloc={toMultiloc(publishedTitle)} />}
@@ -187,6 +200,24 @@ const HomepageBuilderToolbox = ({
           icon="button"
           label={formatMessage(callToActionTitle)}
         />
+        {communityMonitorEnabled && (
+          <DraggableElement
+            id="e2e-draggable-community-monitor-cta"
+            component={
+              <CommunityMonitorCTA
+                title={toMultiloc(messages.communityMonitorCtaDefaultTitle)}
+                description={toMultiloc(
+                  messages.communityMonitorCtaDefaultDescription
+                )}
+                surveyButtonText={toMultiloc(
+                  messages.communityMonitorCtaDefaultSurveyButtonText
+                )}
+              />
+            }
+            icon="survey"
+            label={formatMessage(communityMonitorCTATitle)}
+          />
+        )}
         {platformCreatedBeforeReleaseNewWidgets(
           appConfiguration.data.attributes.created_at
         ) && (

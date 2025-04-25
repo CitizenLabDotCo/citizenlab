@@ -18,9 +18,12 @@ import { IProjectData } from 'api/projects/types';
 
 import useLocalize from 'hooks/useLocalize';
 
+import { triggerPostActionEvents } from 'containers/App/events';
+
 import { ScreenReaderOnly } from 'utils/a11y';
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
+import useFormatCurrency from 'utils/currency/useFormatCurrency';
 import { scrollToElement } from 'utils/scroll';
 
 import messages from '../messages';
@@ -70,6 +73,7 @@ const CTAButton = ({ phase, project }: Props) => {
   const { mutate: updateBasket } = useUpdateBasket();
   const { numberOfVotesCast, processing: votingProcessing } = useVoting();
   const { data: appConfig } = useAppConfiguration();
+  const formatCurrency = useFormatCurrency();
   const theme = useTheme();
   const { formatMessage } = useIntl();
   const localize = useLocalize();
@@ -111,6 +115,8 @@ const CTAButton = ({ phase, project }: Props) => {
                   `/projects/${project.attributes.slug}?scrollToStatusModule=true`
                 );
               }
+
+              triggerPostActionEvents({});
             },
           }
         );
@@ -136,7 +142,7 @@ const CTAButton = ({ phase, project }: Props) => {
     phase,
     permissionsDisabledReason,
     numberOfVotesCast,
-    appConfig.data.attributes.settings.core.currency
+    formatCurrency
   );
 
   return (
@@ -151,12 +157,9 @@ const CTAButton = ({ phase, project }: Props) => {
         <Box width="100%" tabIndex={disabledExplanation ? 0 : -1}>
           <StyledButton
             icon="vote-ballot"
-            buttonStyle="secondary-outlined"
-            iconColor={theme.colors.tenantText}
+            buttonStyle="primary-inverse"
             onClick={handleSubmitOnClick}
             fontWeight="500"
-            bgColor={theme.colors.white}
-            textColor={theme.colors.tenantText}
             id="e2e-voting-submit-button"
             textHoverColor={theme.colors.black}
             padding="6px 12px"

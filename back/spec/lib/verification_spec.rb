@@ -4,6 +4,12 @@ require 'rails_helper'
 
 describe Verification do
   describe '.add_method' do
+    around do |example|
+      methods = described_class.all_methods.dup
+      example.run
+      described_class.all_methods = methods
+    end
+
     it 'adds methods that are exposed through #all_methods' do
       mthd = Struct.new(:id).new('9fb591e7-f577-40a7-8596-03e406d7eebe')
       described_class.add_method(mthd)

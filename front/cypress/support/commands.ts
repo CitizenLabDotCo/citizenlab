@@ -30,6 +30,7 @@ declare global {
       apiGetUsersCount: typeof apiGetUsersCount;
       apiGetSeats: typeof apiGetSeats;
       apiGetAppConfiguration: typeof apiGetAppConfiguration;
+      apiGetCommunityMonitorProject: typeof apiGetCommunityMonitorProject;
       logout: typeof logout;
       acceptCookies: typeof acceptCookies;
       getIdeaById: typeof getIdeaById;
@@ -48,6 +49,7 @@ declare global {
       apiRemoveComment: typeof apiRemoveComment;
       apiCreateProject: typeof apiCreateProject;
       apiEditProject: typeof apiEditProject;
+      apiEditPhase: typeof apiEditPhase;
       apiCreateFolder: typeof apiCreateFolder;
       apiRemoveFolder: typeof apiRemoveFolder;
       apiRemoveProject: typeof apiRemoveProject;
@@ -427,6 +429,21 @@ function apiGetAppConfiguration() {
   });
 }
 
+function apiGetCommunityMonitorProject() {
+  return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
+    const adminJwt = response.body.jwt;
+
+    return cy.request({
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${adminJwt}`,
+      },
+      method: 'GET',
+      url: `web_api/v1/projects/community_monitor`,
+    });
+  });
+}
+
 function apiCreateModeratorForProject({
   firstName,
   lastName,
@@ -779,7 +796,7 @@ function apiCreateProject({
   visibleTo,
 }: {
   title: string;
-  descriptionPreview: string;
+  descriptionPreview?: string;
   description: string;
   publicationStatus?: IProjectAttributes['publication_status'];
   assigneeId?: string;
@@ -822,6 +839,33 @@ function apiCreateProject({
   });
 }
 
+// apiEditPhase can be extended with other phase attributes as needed.
+function apiEditPhase({
+  phaseId,
+  submission_enabled,
+}: {
+  phaseId: string;
+  submission_enabled?: boolean;
+}) {
+  return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
+    const adminJwt = response.body.jwt;
+
+    return cy.request({
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${adminJwt}`,
+      },
+      method: 'PATCH',
+      url: `web_api/v1/phases/${phaseId}`,
+      body: {
+        phase: {
+          submission_enabled,
+        },
+      },
+    });
+  });
+}
+
 function apiEditProject({
   projectId,
   title,
@@ -829,6 +873,7 @@ function apiEditProject({
   description,
   publicationStatus = 'published',
   assigneeId,
+  submission_enabled,
 }: {
   projectId: string;
   title?: string;
@@ -838,6 +883,7 @@ function apiEditProject({
   assigneeId?: string;
   surveyUrl?: string;
   votingMaxTotal?: number;
+  submission_enabled?: boolean;
   surveyService?: 'typeform' | 'survey_monkey' | 'google_forms';
 }) {
   return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
@@ -856,6 +902,7 @@ function apiEditProject({
             admin_publication_attributes: {
               publication_status: publicationStatus,
             },
+            submission_enabled,
           }),
           ...(title && {
             title_multiloc: {
@@ -875,6 +922,9 @@ function apiEditProject({
               'nl-BE': description,
             },
           }),
+          ...(submission_enabled && {
+            submission_enabled,
+          }),
           ...(assigneeId && { default_assignee_id: assigneeId }),
         },
       },
@@ -889,10 +939,9 @@ function apiCreateFolder({
   publicationStatus = 'published',
 }: {
   title: string;
-  descriptionPreview: string;
+  descriptionPreview?: string;
   description: string;
   publicationStatus?: 'draft' | 'published' | 'archived';
-  projectIds?: string[];
 }) {
   return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
     const adminJwt = response.body.jwt;
@@ -1196,7 +1245,7 @@ function apiCreateCustomFieldOption(optionName: string, customFieldId: string) {
         Authorization: `Bearer ${adminJwt}`,
       },
       method: 'POST',
-      url: `web_api/v1/users/custom_fields/${customFieldId}/custom_field_options`,
+      url: `web_api/v1/custom_fields/${customFieldId}/custom_field_options`,
       body: {
         title_multiloc: {
           en: optionName,
@@ -1624,7 +1673,25 @@ function apiCreateSurveyQuestions(
       method: 'PATCH',
       url: `web_api/v1/admin/phases/${phaseId}/custom_fields/update_all`,
       body: {
-        custom_fields: inputTypes.map(createBaseCustomField(imageId)),
+        custom_fields: [
+          ...inputTypes.map(createBaseCustomField(imageId)),
+          {
+            id: randomString(),
+            input_type: 'page',
+            logic: {},
+            required: false,
+            enabled: true,
+            title_multiloc: {
+              en: 'Thank you for sharing your input!',
+            },
+            key: 'form_end',
+            code: null,
+            page_layout: 'default',
+            description_multiloc: {
+              en: 'Your input has been successfully submitted.',
+            },
+          },
+        ],
       },
     });
   });
@@ -1812,6 +1879,10 @@ Cypress.Commands.add('apiRemoveUser', apiRemoveUser);
 Cypress.Commands.add('apiGetUsersCount', apiGetUsersCount);
 Cypress.Commands.add('apiGetSeats', apiGetSeats);
 Cypress.Commands.add('apiGetAppConfiguration', apiGetAppConfiguration);
+Cypress.Commands.add(
+  'apiGetCommunityMonitorProject',
+  apiGetCommunityMonitorProject
+);
 Cypress.Commands.add('apiUpdateAppConfiguration', apiUpdateAppConfiguration);
 Cypress.Commands.add('apiGetPhasePermission', apiGetPhasePermission);
 Cypress.Commands.add('apiSetPhasePermission', apiSetPhasePermission);
@@ -1836,6 +1907,7 @@ Cypress.Commands.add('apiAddComment', apiAddComment);
 Cypress.Commands.add('apiRemoveComment', apiRemoveComment);
 Cypress.Commands.add('apiCreateProject', apiCreateProject);
 Cypress.Commands.add('apiEditProject', apiEditProject);
+Cypress.Commands.add('apiEditPhase', apiEditPhase);
 Cypress.Commands.add('apiCreateFolder', apiCreateFolder);
 Cypress.Commands.add('apiRemoveFolder', apiRemoveFolder);
 Cypress.Commands.add('apiRemoveProject', apiRemoveProject);

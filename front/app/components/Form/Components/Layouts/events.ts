@@ -1,1 +1,1 @@
-export const SURVEY_PAGE_CHANGE_EVENT = 'surveyPageChangeEvent';
+export const FORM_PAGE_CHANGE_EVENT = 'surveyPageChangeEvent';

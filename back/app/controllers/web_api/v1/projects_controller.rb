@@ -7,6 +7,9 @@ class WebApi::V1::ProjectsController < ApplicationController
   skip_after_action :verify_policy_scoped, only: :index
 
   def index
+    # Hidden community monitor project not included by default via AdminPublication policy scope
+    policy_context[:include_hidden] = true if params[:include_hidden] == 'true'
+
     publications = policy_scope(AdminPublication)
     publications = AdminPublicationsFilteringService.new.filter(publications, params.merge(current_user: current_user))
       .where(publication_type: Project.name)
@@ -193,10 +196,14 @@ class WebApi::V1::ProjectsController < ApplicationController
     # A final authorization check is performed afterward on the actual copied project.
     Project.transaction do
       source_project.dup.tap do |p|
-        p.assign_attributes(slug: nil, admin_publication_attributes: {
-          publication_status: 'draft',
-          parent_id: dest_folder&.admin_publication&.id
-        })
+        p.assign_attributes(
+          slug: nil,
+          default_assignee_id: nil,
+          admin_publication_attributes: {
+            publication_status: 'draft',
+            parent_id: dest_folder&.admin_publication&.id
+          }
+        )
 
         p.save!
         authorize(p, :create?)
@@ -311,6 +318,17 @@ class WebApi::V1::ProjectsController < ApplicationController
       params: jsonapi_serializer_params,
       include: [:admin_publication]
     ).serializable_hash, status: :ok
+  end
+
+  def community_monitor
+    project = CommunityMonitorService.new.find_or_create_project(current_user)
+
+    authorize project
+    render json: WebApi::V1::ProjectSerializer.new(
+      project,
+      params: jsonapi_serializer_params,
+      include: %i[current_phase]
+    ).serializable_hash
   end
 
   private

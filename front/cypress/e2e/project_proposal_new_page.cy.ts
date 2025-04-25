@@ -63,16 +63,28 @@ describe('Project proposal new page', () => {
     cy.get('#e2e-idea-new-page');
     cy.get('#idea-form');
     cy.contains('Add new idea').should('exist'); // Change to proposal later
-    // add a title and description
+    // Add a title
     cy.get('#e2e-idea-title-input input').type(proposalTitle);
-    cy.get('#e2e-idea-description-input .ql-editor').type(proposalContent);
-
-    // verify the title and description
     cy.get('#e2e-idea-title-input input').should(
       'contain.value',
       proposalTitle
     );
+
+    cy.get('[data-cy="e2e-next-page"]').should('be.visible').click();
+
+    // Add a description
+    cy.get('#e2e-idea-description-input .ql-editor').type(proposalContent);
     cy.get('#e2e-idea-description-input .ql-editor').contains(proposalContent);
+
+    // Go to the next page of the form
+    cy.get('[data-cy="e2e-next-page"]').should('be.visible').click();
+
+    // verify that image and file upload components are present
+    cy.get('#e2e-idea-image-upload');
+    cy.get('#e2e-idea-file-upload');
+
+    // Go to the next page of the form
+    cy.get('[data-cy="e2e-next-page"]').should('be.visible').click();
 
     // add a topic
     cy.get('.e2e-topics-picker').find('button').eq(4).click();
@@ -86,15 +98,15 @@ describe('Project proposal new page', () => {
     cy.get('.e2e-idea-form-location-input-field input').type(
       'Boulevard Anspach Brussels'
     );
-    cy.wait(5000);
+    cy.wait(7000);
     cy.get('.e2e-idea-form-location-input-field input').type('{enter}');
 
-    // verify that image and file upload components are present
-    cy.get('#e2e-idea-image-upload');
-    cy.get('#e2e-idea-file-upload');
-
     // save the form
-    cy.get('.e2e-submit-idea-form').click();
+    cy.get('[data-cy="e2e-submit-form"]').click();
+    cy.wait(3000);
+
+    cy.get('[data-cy="e2e-after-submission"]').should('exist');
+    cy.get('[data-cy="e2e-after-submission"]').click();
 
     // verify the content of the newly created idea page
     cy.get('#e2e-idea-show');

@@ -84,7 +84,16 @@ export const DropdownListItem = styled.button`
   &:hover,
   &:focus,
   &.selected {
-    background: ${colors.grey300};
+    background: ${colors.grey200};
+  }
+
+  &:disabled {
+    color: ${colors.grey400};
+    cursor: not-allowed;
+
+    &:hover {
+      background: transparent;
+    }
   }
 `;
 

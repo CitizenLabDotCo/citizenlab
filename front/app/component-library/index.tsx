@@ -46,6 +46,7 @@ import InputMultilocWithLocaleSwitcher, {
 import Label from './components/Label';
 import ListItem from './components/ListItem';
 import LocaleSwitcher from './components/LocaleSwitcher';
+import Quote from './components/Quote';
 import Radio, { Props as RadioProps } from './components/Radio';
 import SearchInput, {
   Props as SearchInputProps,
@@ -199,4 +200,5 @@ export {
   Tooltip,
   Shimmer,
   Divider,
+  Quote,
 };

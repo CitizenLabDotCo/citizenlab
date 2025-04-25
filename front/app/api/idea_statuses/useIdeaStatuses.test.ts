@@ -20,7 +20,7 @@ describe('useIdeaStatuses', () => {
     const { result, waitFor } = renderHook(
       () =>
         useIdeaStatuses({
-          participation_method: 'ideation',
+          queryParams: { participation_method: 'ideation' },
         }),
       {
         wrapper: createQueryClientWrapper(),
@@ -45,7 +45,7 @@ describe('useIdeaStatuses', () => {
     const { result, waitFor } = renderHook(
       () =>
         useIdeaStatuses({
-          participation_method: 'ideation',
+          queryParams: { participation_method: 'ideation' },
         }),
       {
         wrapper: createQueryClientWrapper(),

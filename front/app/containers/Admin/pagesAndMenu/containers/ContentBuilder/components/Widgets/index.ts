@@ -25,7 +25,11 @@ import { MessageDescriptor } from 'utils/cl-intl';
 
 // Homepage builder widggets
 import Proposals from './_deprecated/Proposals';
+import Areas, { areasTitle } from './Areas';
 import CallToAction, { callToActionTitle } from './CallToAction';
+import CommunityMonitorCTA, {
+  communityMonitorCTATitle,
+} from './CommunityMonitorCTA';
 import Events, { eventsTitle } from './Events';
 import FinishedOrArchived, {
   finishedOrArchivedTitle,
@@ -54,7 +58,9 @@ export const WIDGETS = {
   WhiteSpace,
 
   // Homepage builder widgets
+  Areas,
   CallToAction,
+  CommunityMonitorCTA,
   Events,
   FollowedItems,
   FinishedOrArchived,
@@ -87,7 +93,9 @@ export const WIDGET_TITLES: Record<WidgetName, MessageDescriptor> = {
   WhiteSpace: whiteSpaceTitle,
 
   // Homepage builder widgets
+  Areas: areasTitle,
   CallToAction: callToActionTitle,
+  CommunityMonitorCTA: communityMonitorCTATitle,
   Events: eventsTitle,
   FollowedItems: followedItemsTitle,
   FinishedOrArchived: finishedOrArchivedTitle,
@@ -122,7 +130,9 @@ const WIDGETS_WITHOUT_POINTER_EVENTS = new Set<string>([
   'IframeMultiloc',
 
   // Homepage builder widgets
+  'Areas',
   'CallToAction',
+  'CommunityMonitorCTA',
   'Events',
   'FollowedItems',
   'FinishedOrArchived',

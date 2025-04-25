@@ -30,7 +30,6 @@ describe('Project selection page', () => {
           descriptionPreview: randomString(30),
           description: folderDescription,
           publicationStatus: 'published',
-          projectIds: [projectOneId, projectTwoId],
         }).then((folder) => {
           folderId = folder.body.data.id;
           folderSlug = folder.body.data.attributes.slug;

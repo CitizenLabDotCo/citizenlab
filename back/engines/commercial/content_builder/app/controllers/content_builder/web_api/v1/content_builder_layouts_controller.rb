@@ -80,7 +80,10 @@ module ContentBuilder
         end
 
         def params_for_upsert
-          params.require(:content_builder_layout).permit(:enabled, { craftjs_json: {} })
+          params
+            .require(:content_builder_layout)
+            .permit(:enabled, { craftjs_json: {} })
+            .to_h
         end
 
         def params_for_create

@@ -11,6 +11,7 @@ import { useEditor } from '@craftjs/core';
 import { RouteType } from 'routes';
 import { SupportedLocale } from 'typings';
 
+import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import usePhase from 'api/phases/usePhase';
 import useProjectById from 'api/projects/useProjectById';
 import useUpdateReportLayout from 'api/report_layout/useUpdateReportLayout';
@@ -26,8 +27,10 @@ import LocaleSelect from 'components/admin/ContentBuilder/TopBar/LocaleSelect';
 import SaveButton from 'components/admin/ContentBuilder/TopBar/SaveButton';
 import Button from 'components/UI/ButtonWithLink';
 
+import { trackEventByName } from 'utils/analytics';
 import { useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
+import { isCommunityMonitorProject } from 'utils/projectUtils';
 
 import { PLATFORM_TEMPLATE_MIN_NUMBER_OF_NODES_BEFORE_AUTOSAVE } from '../Templates/PlatformTemplate/constants';
 import { PROJECT_TEMPLATE_MIN_NUMBER_OF_NODES_BEFORE_AUTOSAVE } from '../Templates/ProjectTemplate/constants';
@@ -37,6 +40,7 @@ import ViewPicker from '../ViewContainer/ViewPicker';
 import messages from './messages';
 import QuitModal from './QuitModal';
 import ReportTitle from './ReportTitle';
+import tracks from './tracks';
 
 type ContentBuilderTopBarProps = {
   hasPendingState: boolean;
@@ -72,6 +76,7 @@ const ContentBuilderTopBar = ({
   setSaved,
   setSelectedLocale,
 }: ContentBuilderTopBarProps) => {
+  const { data: appConfig } = useAppConfiguration();
   const [initialized, setInitialized] = useState(false);
   const [showQuitModal, setShowQuitModal] = useState(false);
   const { query } = useEditor();
@@ -100,6 +105,11 @@ const ContentBuilderTopBar = ({
     }
   };
   const doGoBack = () => {
+    if (projectId && isCommunityMonitorProject(projectId, appConfig)) {
+      clHistory.push('/admin/community-monitor/reports');
+      return;
+    }
+
     const goBackUrl: RouteType =
       projectId && phaseId
         ? `/admin/projects/${projectId}/phases/${phaseId}/report`
@@ -259,7 +269,19 @@ const ContentBuilderTopBar = ({
                 iconSize="16px"
                 px="12px"
                 py="8px"
-                linkTo={`/admin/reporting/report-builder/${reportId}/print`}
+                onClick={() => {
+                  // track any community monitor report print for user analytics
+                  if (
+                    projectId &&
+                    isCommunityMonitorProject(projectId, appConfig)
+                  ) {
+                    trackEventByName(tracks.communinityMonitorReportPrinted);
+                  }
+
+                  clHistory.push(
+                    `/admin/reporting/report-builder/${reportId}/print`
+                  );
+                }}
                 openLinkInNewTab
                 disabled={disablePrint}
               />

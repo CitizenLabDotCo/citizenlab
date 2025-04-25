@@ -41,6 +41,7 @@ import { isNilOrError } from 'utils/helperUtils';
 import validateElementTitle from 'utils/yup/validateElementTitle';
 import validateLogic from 'utils/yup/validateLogic';
 import validateOneOptionForMultiSelect from 'utils/yup/validateOneOptionForMultiSelect';
+import validateOneStatementForMatrix from 'utils/yup/validateOneStatementForMatrix';
 
 import messages from '../messages';
 import { FormBuilderConfig } from '../utils';
@@ -49,6 +50,8 @@ import {
   NestedGroupingStructure,
   getReorderedFields,
   DragAndDropResult,
+  supportsLinearScaleLabels,
+  getQuestionCategory,
 } from './utils';
 
 interface FormValues {
@@ -117,6 +120,10 @@ const FormEdit = ({
           formatMessage(messages.emptyTitleMessage),
           { multiselect_image: formatMessage(messages.emptyImageOptionError) }
         ),
+        matrix_statements: validateOneStatementForMatrix(
+          formatMessage(messages.emptyStatementError),
+          formatMessage(messages.emptyTitleStatementMessage)
+        ),
         maximum: number(),
         linear_scale_label_1_multiloc: object(),
         linear_scale_label_2_multiloc: object(),
@@ -125,7 +132,12 @@ const FormEdit = ({
         linear_scale_label_5_multiloc: object(),
         linear_scale_label_6_multiloc: object(),
         linear_scale_label_7_multiloc: object(),
+        linear_scale_label_8_multiloc: object(),
+        linear_scale_label_9_multiloc: object(),
+        linear_scale_label_10_multiloc: object(),
+        linear_scale_label_11_multiloc: object(),
         required: boolean(),
+        ask_follow_up: boolean(),
         temp_id: string(),
         logic: validateLogic(formatMessage(messages.logicValidationError)),
       })
@@ -147,7 +159,7 @@ const FormEdit = ({
     reset,
   } = methods;
 
-  const { append, move, replace } = useFieldArray({
+  const { move, replace, insert } = useFieldArray({
     name: 'customFields',
     control,
   });
@@ -185,6 +197,7 @@ const FormEdit = ({
 
   // Remove copy_from param on save to avoid overwriting a saved survey when reloading
   const [searchParams, setSearchParams] = useSearchParams();
+
   const resetCopyFrom = () => {
     if (searchParams.has('copy_from')) {
       searchParams.delete('copy_from');
@@ -193,13 +206,15 @@ const FormEdit = ({
   };
 
   const onAddField = (field: IFlatCreateCustomField, index: number) => {
+    if (!formCustomFields) return;
+
     const newField = {
       ...field,
       index,
     };
 
     if (isNewCustomFieldObject(newField)) {
-      append(newField);
+      insert(index, newField);
       setSelectedField(newField);
     }
   };
@@ -217,7 +232,14 @@ const FormEdit = ({
         ...(field.input_type === 'page' && {
           temp_id: field.temp_id,
         }),
-        ...(['linear_scale', 'select', 'page'].includes(field.input_type)
+        ...([
+          'multiselect',
+          'linear_scale',
+          'select',
+          'page',
+          'rating',
+          'multiselect_image',
+        ].includes(field.input_type)
           ? {
               logic: field.logic,
             }
@@ -231,8 +253,14 @@ const FormEdit = ({
         title_multiloc: field.title_multiloc || {},
         key: field.key,
         code: field.code,
+        question_category: getQuestionCategory(field, customFields),
         ...(field.page_layout || field.input_type === 'page'
-          ? { page_layout: field.page_layout || 'default' }
+          ? {
+              page_layout: field.page_layout || 'default',
+              page_button_label_multiloc:
+                field.page_button_label_multiloc || {},
+              page_button_link: field.page_button_link || '',
+            }
           : {}),
         ...(field.map_config_id && {
           map_config_id: field.map_config_id,
@@ -255,7 +283,17 @@ const FormEdit = ({
           random_option_ordering: field.random_option_ordering,
           dropdown_layout: field.dropdown_layout,
         }),
-        ...(field.input_type === 'linear_scale' && {
+        ...(field.input_type === 'ranking' && {
+          options: field.options || {},
+          random_option_ordering: field.random_option_ordering,
+        }),
+        ...(field.input_type === 'matrix_linear_scale' && {
+          matrix_statements: field.matrix_statements || {},
+        }),
+        ...(field.input_type === 'sentiment_linear_scale' && {
+          ask_follow_up: field.ask_follow_up || false,
+        }),
+        ...(supportsLinearScaleLabels(field.input_type) && {
           linear_scale_label_1_multiloc:
             field.linear_scale_label_1_multiloc || {},
           linear_scale_label_2_multiloc:
@@ -270,6 +308,17 @@ const FormEdit = ({
             field.linear_scale_label_6_multiloc || {},
           linear_scale_label_7_multiloc:
             field.linear_scale_label_7_multiloc || {},
+          linear_scale_label_8_multiloc:
+            field.linear_scale_label_8_multiloc || {},
+          linear_scale_label_9_multiloc:
+            field.linear_scale_label_9_multiloc || {},
+          linear_scale_label_10_multiloc:
+            field.linear_scale_label_10_multiloc || {},
+          linear_scale_label_11_multiloc:
+            field.linear_scale_label_11_multiloc || {},
+          maximum: field.maximum?.toString() || '5',
+        }),
+        ...(field.input_type === 'rating' && {
           maximum: field.maximum?.toString() || '5',
         }),
       }));
@@ -295,7 +344,9 @@ const FormEdit = ({
       );
     } catch (error) {
       const errorType =
-        error?.errors?.form[0].error === 'stale_data'
+        Array.isArray(error?.errors?.form) &&
+        error.errors.form.length > 0 &&
+        error.errors.form[0].error === 'stale_data'
           ? 'staleData'
           : 'customFields';
       handleHookFormSubmissionError(error, setError, errorType);
@@ -312,7 +363,7 @@ const FormEdit = ({
       replace(reorderedFields);
     }
 
-    if (!isNilOrError(selectedField) && reorderedFields) {
+    if (selectedField && reorderedFields) {
       const newSelectedFieldIndex = reorderedFields.findIndex(
         (field) => field.id === selectedField.id
       );
@@ -419,20 +470,13 @@ const FormEdit = ({
                     />
                   )}
                   {showWarnings()}
-                  <Box
-                    borderRadius="3px"
-                    boxShadow="0px 2px 4px rgba(0, 0, 0, 0.2)"
-                    bgColor="white"
-                    minHeight="300px"
-                  >
-                    <FormFields
-                      onEditField={setSelectedField}
-                      selectedFieldId={selectedField?.id}
-                      handleDragEnd={reorderFields}
-                      builderConfig={builderConfig}
-                      closeSettings={closeSettings}
-                    />
-                  </Box>
+                  <FormFields
+                    onEditField={setSelectedField}
+                    selectedFieldId={selectedField?.id}
+                    handleDragEnd={reorderFields}
+                    builderConfig={builderConfig}
+                    closeSettings={closeSettings}
+                  />
                 </Box>
               </Box>
               <Box flex={!isNilOrError(selectedField) ? '1' : '0'}>

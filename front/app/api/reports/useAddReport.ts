@@ -8,13 +8,18 @@ import fetcher from 'utils/cl-react-query/fetcher';
 import reportsKeys from './keys';
 import { ReportResponse } from './types';
 
-type AddReport =
+export type AddReport =
   | {
       name: string;
-      phase_id?: never;
+      phase_id?: null;
     }
   | {
-      name?: never;
+      name?: null;
+      phase_id: string;
+    }
+  | {
+      // For the Community Monitor, we want to send both.
+      name: string;
       phase_id: string;
     };
 

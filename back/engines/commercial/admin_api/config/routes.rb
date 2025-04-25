@@ -13,6 +13,7 @@ AdminApi::Engine.routes.draw do
     post :template_import, on: :collection
     resources :phases, only: [:index]
     get :participants_count, controller: 'participants', on: :member
+    get :project_description_layout_multiloc, controller: 'content_builder_layouts', on: :member
   end
 
   resources :users, only: %i[index create update show] do

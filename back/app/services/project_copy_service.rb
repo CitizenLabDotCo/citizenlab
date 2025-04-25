@@ -160,6 +160,7 @@ class ProjectCopyService < TemplateService # rubocop:disable Metrics/ClassLength
         'answer_visible_to' => field.answer_visible_to,
         'hidden' => field.hidden,
         'maximum' => field.maximum,
+        'ask_follow_up' => field.ask_follow_up,
         'linear_scale_label_1_multiloc' => field.linear_scale_label_1_multiloc,
         'linear_scale_label_2_multiloc' => field.linear_scale_label_2_multiloc,
         'linear_scale_label_3_multiloc' => field.linear_scale_label_3_multiloc,
@@ -167,12 +168,18 @@ class ProjectCopyService < TemplateService # rubocop:disable Metrics/ClassLength
         'linear_scale_label_5_multiloc' => field.linear_scale_label_5_multiloc,
         'linear_scale_label_6_multiloc' => field.linear_scale_label_6_multiloc,
         'linear_scale_label_7_multiloc' => field.linear_scale_label_7_multiloc,
+        'linear_scale_label_8_multiloc' => field.linear_scale_label_8_multiloc,
+        'linear_scale_label_9_multiloc' => field.linear_scale_label_9_multiloc,
+        'linear_scale_label_10_multiloc' => field.linear_scale_label_10_multiloc,
+        'linear_scale_label_11_multiloc' => field.linear_scale_label_11_multiloc,
         'select_count_enabled' => field.select_count_enabled,
         'maximum_select_count' => field.maximum_select_count,
         'minimum_select_count' => field.minimum_select_count,
         'random_option_ordering' => field.random_option_ordering,
         'dropdown_layout' => field.dropdown_layout,
         'page_layout' => field.page_layout,
+        'page_button_link' => field.page_button_link,
+        'page_button_label_multiloc' => field.page_button_label_multiloc,
         'text_images_attributes' => field.text_images.map do |text_image|
           {
             'imageable_field' => text_image.imageable_field,
@@ -238,7 +245,8 @@ class ProjectCopyService < TemplateService # rubocop:disable Metrics/ClassLength
           'updated_at' => ti.updated_at.to_s
         }
       end,
-      'include_all_areas' => @project.include_all_areas
+      'include_all_areas' => @project.include_all_areas,
+      'hidden' => @project.hidden
     }
     yml_project['slug'] = new_slug if new_slug.present?
     store_ref yml_project, @project.id, :project
@@ -325,15 +333,17 @@ class ProjectCopyService < TemplateService # rubocop:disable Metrics/ClassLength
       if yml_phase['participation_method'] == 'survey'
         yml_phase['survey_embed_url'] = phase.survey_embed_url
         yml_phase['survey_service'] = phase.survey_service
+        yml_phase['survey_popup_frequency'] = phase.survey_popup_frequency
       end
 
       if yml_phase['participation_method'] == 'document_annotation'
         yml_phase['document_annotation_embed_url'] = phase.document_annotation_embed_url
       end
 
-      if yml_phase['participation_method'] == 'native_survey'
+      if phase.pmethod.supports_survey_form?
         yml_phase['native_survey_title_multiloc'] = phase.native_survey_title_multiloc
         yml_phase['native_survey_button_multiloc'] = phase.native_survey_button_multiloc
+        yml_phase['user_fields_in_form'] = phase.user_fields_in_form
       end
 
       store_ref yml_phase, phase.id, :phase

@@ -9,11 +9,11 @@ module UserCustomFields
     end
 
     def create?
-      user&.active? && user&.admin? && !record.code
+      user&.active? && user.admin? && !record.code
     end
 
     def update?
-      user&.active? && user&.admin?
+      user&.active? && user.admin?
     end
 
     def reorder?
@@ -25,7 +25,7 @@ module UserCustomFields
     end
 
     def destroy?
-      user&.active? && user&.admin? && !record.code
+      user&.active? && user.admin? && !record.code
     end
 
     def permitted_attributes_for_create

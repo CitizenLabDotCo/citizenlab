@@ -1,11 +1,10 @@
 import React from 'react';
 
-import { useBreakpoint, Title, Box } from '@citizenlab/cl2-component-library';
-
-import { DEFAULT_PADDING } from 'components/admin/ContentBuilder/constants';
+import { useBreakpoint, Box } from '@citizenlab/cl2-component-library';
 
 import { CARD_GAP } from '../../BaseCarrousel/constants';
 import { CarrouselContainer } from '../../BaseCarrousel/Containers';
+import CarrouselTitle from '../../CarrouselTitle';
 
 import CardSkeleton from './CardSkeleton';
 
@@ -18,14 +17,7 @@ const Skeleton = ({ title }: Props) => {
 
   return (
     <CarrouselContainer>
-      <Title
-        variant="h2"
-        mt="0px"
-        ml={isSmallerThanPhone ? DEFAULT_PADDING : undefined}
-        color="tenantText"
-      >
-        {title}
-      </Title>
+      <CarrouselTitle>{title}</CarrouselTitle>
 
       <Box display="flex" flexDirection="row">
         <CardSkeleton

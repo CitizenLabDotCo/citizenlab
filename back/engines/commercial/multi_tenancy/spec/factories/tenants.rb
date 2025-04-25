@@ -7,12 +7,13 @@ FactoryBot.define do
     transient do
       lifecycle { 'active' }
       locales { %w[en nl-BE fr-FR] }
+      country_code { 'BE' }
     end
 
     name { Faker::Address.city }
     sequence(:host) { |n| "tenant-#{n}.govocal.com" }
     style { {} }
-    settings { SettingsService.new.minimal_required_settings(locales: locales, lifecycle_stage: lifecycle) }
+    settings { SettingsService.new.minimal_required_settings(locales: locales, lifecycle_stage: lifecycle, country_code: country_code) }
 
     after(:create) do |tenant, evaluator|
       tenant.switch do
@@ -38,7 +39,8 @@ FactoryBot.define do
     settings do
       SettingsService.new.minimal_required_settings(
         locales: %w[en fr-FR nl-NL],
-        lifecycle_stage: 'active'
+        lifecycle_stage: 'active',
+        country_code: 'BE'
       ).deep_merge({
         core: {
           organization_name: {

@@ -72,7 +72,7 @@ class JsonSchemaGeneratorService < FieldVisitorService
     {
       type: 'string'
     }.tap do |json|
-      options = field.ordered_options
+      options = field.ordered_transformed_options
 
       unless options.empty?
         json[:enum] = options.map(&:key)
@@ -124,6 +124,13 @@ class JsonSchemaGeneratorService < FieldVisitorService
       end
     end
     select
+  end
+
+  def visit_ranking(field)
+    visit_multiselect(field).tap do |schema_item|
+      schema_item[:minItems] = field.options.size
+      schema_item[:maxItems] = field.options.size
+    end
   end
 
   def visit_checkbox(_field)
@@ -255,6 +262,22 @@ class JsonSchemaGeneratorService < FieldVisitorService
     }
   end
 
+  def visit_sentiment_linear_scale(_field)
+    {
+      type: 'number',
+      minimum: 1,
+      maximum: 5
+    }
+  end
+
+  def visit_rating(field)
+    {
+      type: 'number',
+      minimum: 1,
+      maximum: field.maximum
+    }
+  end
+
   def visit_file_upload(_field)
     {
       type: 'object',
@@ -276,6 +299,21 @@ class JsonSchemaGeneratorService < FieldVisitorService
     visit_file_upload(field)
   end
 
+  def visit_matrix_linear_scale(field)
+    {
+      type: 'object',
+      minProperties: (field.required ? field.matrix_statement_ids.size : 0),
+      maxProperties: field.matrix_statement_ids.size,
+      properties: field.matrix_statements.pluck(:key).map(&:to_sym).index_with do
+        {
+          type: 'number',
+          minimum: 1,
+          maximum: field.maximum
+        }
+      end
+    }
+  end
+
   private
 
   attr_reader :locales, :multiloc_service
@@ -287,6 +325,7 @@ class JsonSchemaGeneratorService < FieldVisitorService
 
       accu[field.key] = field_schema
       accu[field.other_option_text_field.key] = visit(field.other_option_text_field) if field.other_option_text_field
+      accu[field.follow_up_text_field.key] = visit(field.follow_up_text_field) if field.follow_up_text_field
     end
     {
       type: 'object',

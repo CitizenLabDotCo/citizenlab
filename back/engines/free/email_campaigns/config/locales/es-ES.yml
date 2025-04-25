@@ -8,6 +8,7 @@ es:
       "comment_marked_as_spam": Informar de comentarios de spam
       "comment_on_your_comment": Una respuesta a mi comentario
       "comment_on_idea_you_follow": Un comentario sobre una idea que sigues
+      "community_monitor_report": Informe del barómetro de satisfacción ciudadana
       "cosponsor_of_your_idea": Un usuario acepta mi invitación a copatrocinar mi propuesta
       "event_registration_confirmation": Confirmación de inscripción al evento
       "idea_marked_as_spam": Informar de spam de ideas
@@ -34,6 +35,7 @@ es:
       "project_review_request": Solicitud de revisión del proyecto
       "project_review_state_change": Proyecto aprobado
       "status_change_on_idea_you_follow": Cambio de estado de una idea que sigues
+      "survey_submitted": Encuesta enviada
       "threshold_reached_for_admin": La propuesta ha alcanzado el umbral de votación
       "welcome": Después del registro
       "admin_digest": Resumen semanal para administradores
@@ -81,6 +83,7 @@ es:
         "4": "Semanalmente los jueves a las %{hourOfDay}"
         "5": "Semanalmente los viernes a las %{hourOfDay}"
         "6": "Semanalmente los sábados a las %{hourOfDay}"
+      quarterly: "Trimestralmente, el primer día del trimestre"
     footer:
       "link_privacy_policy": "Política de privacidad"
       "link_terms_conditions": "Términos & Condiciones"
@@ -146,6 +149,12 @@ es:
       today: Hoy
       wrong_content: 'Este comentario no es relevante.'
       yesterday: Ayer
+    community_monitor_report:
+      subject: 'Está disponible un nuevo informe del barómetro de satisfacción ciudadana'
+      title: 'Está disponible un nuevo informe del barómetro de satisfacción ciudadana'
+      text_introduction: 'Se ha creado un informe del barómetro de satisfacción ciudadana correspondiente al trimestre anterior. Puedes acceder a él haciendo clic en el botón de abajo e iniciando sesión.'
+      cta_report_button: 'Ver informe'
+      report_name: 'Informe del barómetro de satisfacción ciudadana'
     cosponsor_of_your_idea:
       cta_reply_to: 'Ver tu propuesta'
       event_description: 'Enhorabuena! %{cosponsorName} ha aceptado tu invitación para copatrocinar tu propuesta.'
@@ -496,6 +505,15 @@ es:
       event_description: 'El proyecto "%{projectName}" te pide que votes entre las opciones de %{numIdeas} :'
       cta_message: 'Haz clic en el botón de abajo para participar'
       cta_vote: 'Ir a la plataforma para votar'
+    survey_submitted:
+      subject: '%{organizationName}: Gracias por tu respuesta. 🎉'
+      preheader: 'Aquí tienes los detalles de tu aporte.'
+      main_header: '¡Gracias por compartir tu opinión sobre "%{projectName}"!'
+      your_input_submitted: 'Tu aporte en "%{projectName}" se ha enviado correctamente.'
+      if_you_would_like_to_review: 'Si quieres revisar tu aporte, puedes descargar tus respuestas a continuación.'
+      your_submission_has_id: 'Tu envío tiene el siguiente identificador único:'
+      you_can_use_this_id: 'Puedes utilizar este identificador para ponerte en contacto con los administradores de la plataforma en caso de que quieras que se elimine tu aporte.'
+      download_responses: 'Descarga tus respuestas'
     admin_labels:
       recipient_role:
         admins: 'A los administradores'

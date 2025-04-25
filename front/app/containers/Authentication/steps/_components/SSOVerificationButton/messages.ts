@@ -17,6 +17,10 @@ export default defineMessages({
     id: 'app.components.VerificationModal.verifyKeycloak',
     defaultMessage: 'Verify with ID-Porten',
   },
+  verifyTwoday: {
+    id: 'app.components.VerificationModal.verifyTwoday2',
+    defaultMessage: 'Verify with BankID or Freja eID+',
+  },
   verifyAuth0: {
     id: 'app.components.VerificationModal.verifyAuth0',
     defaultMessage: 'Verify with NemID',

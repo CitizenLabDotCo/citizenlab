@@ -46,7 +46,7 @@ const BuiltInFields = ({ move, builderConfig }: BuiltInFieldsProps) => {
     if (field) {
       const updatedField = { ...field, enabled: true };
       setValue(`customFields.${fieldIndex}`, updatedField);
-      move(fieldIndex, formCustomFields.length - 1);
+      move(fieldIndex, formCustomFields.length - 2);
       trigger();
     }
   };
@@ -110,7 +110,7 @@ const BuiltInFields = ({ move, builderConfig }: BuiltInFieldsProps) => {
             label={formatMessage(messages.cosponsors)}
             onClick={() => enableField('cosponsor_ids')}
             data-cy="e2e-cosponsors-field"
-            fieldsToExclude={builderConfig.toolboxFieldsToExclude}
+            fieldsToInclude={builderConfig.toolboxFieldsToInclude}
             inputType="cosponsor_ids"
             disabled={!enabledBuiltInFieldKeys.includes('cosponsor_ids')}
             disabledTooltipMessage={messages.disabledBuiltInFieldTooltip}

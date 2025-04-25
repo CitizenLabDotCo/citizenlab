@@ -8,7 +8,7 @@ class ExperimentPolicy < ApplicationPolicy
   end
 
   def index?
-    user&.active? && user&.admin?
+    user&.active? && user.admin?
   end
 
   def create?

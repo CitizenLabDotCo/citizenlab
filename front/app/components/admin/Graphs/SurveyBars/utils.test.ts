@@ -17,6 +17,11 @@ describe('parseQuestionResult', () => {
       totalResponseCount: 4,
       questionResponseCount: 4,
       totalPickCount: 4,
+      description: {},
+      questionNumber: 1,
+      pageNumber: 1,
+      hidden: false,
+      logic: {},
       answers: [
         {
           answer: 'select_option_1_q90',
@@ -83,6 +88,8 @@ describe('parseQuestionResult', () => {
         label: 'select: Option 1',
         count: 2,
         percentage: 50,
+        logicFilterId: null,
+        logic: {},
         bars: [
           {
             type: 'single',
@@ -96,6 +103,8 @@ describe('parseQuestionResult', () => {
         label: 'select: Option 2',
         count: 2,
         percentage: 50,
+        logicFilterId: null,
+        logic: {},
         bars: [
           {
             type: 'single',
@@ -109,6 +118,8 @@ describe('parseQuestionResult', () => {
         label: 'No answer',
         count: 0,
         percentage: 0,
+        logicFilterId: null,
+        logic: {},
         bars: [
           {
             type: 'single',
@@ -139,9 +150,14 @@ describe('parseQuestionResult', () => {
       customFieldId: '894c900b-fc12-4aaa-884b-e313cea89321',
       required: false,
       grouped: true,
+      hidden: false,
       totalResponseCount: 4,
       questionResponseCount: 4,
       totalPickCount: 8,
+      description: {},
+      questionNumber: 1,
+      pageNumber: 1,
+      logic: {},
       answers: [
         {
           answer: 'multiselect_option_1_s2e',
@@ -216,6 +232,8 @@ describe('parseQuestionResult', () => {
         label: 'multiselect: Option 1',
         count: 4,
         percentage: 50,
+        logicFilterId: null,
+        logic: {},
         bars: [
           {
             type: 'first',
@@ -235,6 +253,8 @@ describe('parseQuestionResult', () => {
         label: 'multiselect: Option 2',
         count: 4,
         percentage: 50,
+        logicFilterId: null,
+        logic: {},
         bars: [
           {
             type: 'first',
@@ -254,6 +274,8 @@ describe('parseQuestionResult', () => {
         label: 'No answer',
         count: 0,
         percentage: 0,
+        logicFilterId: null,
+        logic: {},
         bars: [
           {
             type: 'single',

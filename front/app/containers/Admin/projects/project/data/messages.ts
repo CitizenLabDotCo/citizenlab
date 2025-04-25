@@ -10,10 +10,6 @@ export default defineMessages({
     defaultMessage:
       'Clear ideas, comments, votes, reactions, survey responses, poll responses, volunteers and event attendees. In the case of voting phases, this action will clear the votes but not the options.',
   },
-  dataWarning: {
-    id: 'app.containers.AdminPage.Project.data.warningMessage',
-    defaultMessage: 'This action cannot be undone.',
-  },
   resetParticipationData: {
     id: 'app.containers.AdminPage.Project.resetParticipationData',
     defaultMessage: 'Reset all participation data',

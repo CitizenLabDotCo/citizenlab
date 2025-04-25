@@ -28,6 +28,7 @@ import ReportRow from '../../components/ReportBuilderPage/ReportRow';
 import sharedMessages from '../../messages';
 
 import messages from './messages';
+import { getDefaultTab } from './utils';
 
 const BuilderNotAllowedTooltip = ({ disabled, children }) => {
   const { formatMessage } = useIntl();
@@ -70,9 +71,18 @@ const ListContainer = ({ children }) => (
   </Box>
 );
 
-const tabNames = ['all-reports', 'your-reports', 'service-reports'];
+const tabNames = [
+  'all-reports',
+  'your-reports',
+  'service-reports',
+  'community-monitor',
+];
 
-const ReportBuilderPage = () => {
+type ReportBuilderPageProps = {
+  tabsToHide?: string[];
+};
+
+const ReportBuilderPage = ({ tabsToHide }: ReportBuilderPageProps) => {
   const { formatMessage } = useIntl();
   const [searchParams] = useSearchParams();
   const { data: me } = useAuthUser();
@@ -89,24 +99,33 @@ const ReportBuilderPage = () => {
       search,
       owner_id: tab === 'your-reports' ? me?.data.id : undefined,
       service: tab === 'service-reports' ? true : undefined,
+      community_monitor: tab === 'community-monitor' ? true : undefined,
     };
   }
 
   const { data: yourReports, isLoading: isLoadingYourRpts } = useReports(getParams('your-reports')); // prettier-ignore
   const { data: serviceReports, isLoading: isLoadingServiceRpts } = useReports(getParams('service-reports')); // prettier-ignore
   const { data: allReports, isLoading: isLoadingAllRpts } = useReports(getParams('all-reports')); // prettier-ignore
+  const { data: communityMonitorReports, isLoading: isLoadingCommunityMonitorRpts } = useReports(getParams('community-monitor')); // prettier-ignore
 
-  if (isLoadingYourRpts || isLoadingServiceRpts || isLoadingAllRpts) {
+  if (
+    isLoadingYourRpts ||
+    isLoadingServiceRpts ||
+    isLoadingAllRpts ||
+    isLoadingCommunityMonitorRpts
+  ) {
     return null;
   }
 
-  const defaultTab = isAdmin(me) ? 'all-reports' : 'your-reports';
+  const defaultTab = getDefaultTab(me);
+
   const currentTab =
     tabNames.find((tab) => tab === searchParams.get('tab')) ?? defaultTab;
 
   const reports = {
     'your-reports': yourReports,
     'service-reports': serviceReports,
+    'community-monitor': communityMonitorReports,
     'all-reports': allReports,
   }[currentTab];
 
@@ -122,8 +141,18 @@ const ReportBuilderPage = () => {
   const allReportsCount = allReports?.data.length ?? 0;
   const yourReportsCount = yourReports?.data.length ?? 0;
   const serviceReportsCount = serviceReports?.data.length ?? 0;
+  const communityMonitorReportsCount =
+    communityMonitorReports?.data.length ?? 0;
 
-  const showServiceReportsTab = isAdmin(me) && serviceReportsCount > 0;
+  const showServiceReportsTab =
+    isAdmin(me) &&
+    serviceReportsCount > 0 &&
+    !tabsToHide?.includes('service-reports');
+
+  const showCommunityMonitorReportsTab =
+    isAdmin(me) &&
+    communityMonitorReportsCount > 0 &&
+    !tabsToHide?.includes('community-monitor');
 
   const showEmptyState =
     currentTab === defaultTab &&
@@ -158,6 +187,7 @@ const ReportBuilderPage = () => {
                 icon="plus-circle"
                 buttonStyle="admin-dark"
                 disabled={!isReportBuilderAllowed}
+                data-cy="e2e-create-report-button"
               >
                 <FormattedMessage {...messages.createAReport} />
               </Button>
@@ -185,15 +215,17 @@ const ReportBuilderPage = () => {
             <Box>
               <TabContainer>
                 <NavigationTabs position="relative">
-                  <Tab
-                    label={`${formatMessage(
-                      messages.yourReports
-                    )} (${yourReportsCount})`}
-                    url={`/admin/reporting/report-builder?tab=your-reports`}
-                    active={currentTab === 'your-reports'}
-                  />
+                  {!tabsToHide?.includes('your-reports') && (
+                    <Tab
+                      label={`${formatMessage(
+                        messages.yourReports
+                      )} (${yourReportsCount})`}
+                      url={`/admin/reporting/report-builder?tab=your-reports`}
+                      active={currentTab === 'your-reports'}
+                    />
+                  )}
 
-                  {isAdmin(me) && (
+                  {isAdmin(me) && !tabsToHide?.includes('all-reports') && (
                     <Tab
                       label={`${formatMessage(
                         messages.allReports
@@ -216,6 +248,25 @@ const ReportBuilderPage = () => {
                           )} (${serviceReportsCount})`}
                           url={`/admin/reporting/report-builder?tab=service-reports`}
                           active={currentTab === 'service-reports'}
+                        />
+                      </div>
+                    </Tooltip>
+                  )}
+                  {showCommunityMonitorReportsTab && (
+                    <Tooltip
+                      content={formatMessage(
+                        messages.communityMonitorReportsTooltip
+                      )}
+                      placement="top-start"
+                      delay={500}
+                    >
+                      <div>
+                        <Tab
+                          label={`${formatMessage(
+                            messages.communityMonitorReports
+                          )} (${communityMonitorReportsCount})`}
+                          url={`/admin/reporting/report-builder?tab=community-monitor`}
+                          active={currentTab === 'community-monitor'}
                         />
                       </div>
                     </Tooltip>

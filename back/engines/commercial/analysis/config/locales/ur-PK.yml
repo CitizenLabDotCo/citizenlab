@@ -1,3 +1,20 @@
 ur:
   analysis:
     example_tag_n: مثال ٹیگ %{n}
+    cell_statement:
+      percent_more: "%{percent}% مزید"
+      percent_less: "%{percent}% کم"
+      range_min_max: "%{min} سے %{max}"
+      range_min: "%{min} یا زیادہ"
+      range_max: "%{max} یا کم"
+      tag_vs_bin:
+        inputs: "وہ لوگ جو '%{answer}' کا جواب دیتے ہیں '%{question}' پوسٹ %{percent_more_less} کو '%{tag}' میں اوسط سے زیادہ۔"
+        likes: "وہ لوگ جو '%{question}' کو '%{answer}' کا جواب دیتے ہیں جیسے %{percent_more_less} ان پٹ '%{tag}' میں اوسط سے زیادہ۔"
+        dislikes: "وہ لوگ جو '%{answer}' کا جواب دیتے ہیں '%{question}' کو ناپسند کرتے ہیں %{percent_more_less} ان پٹ کو '%{tag}' میں اوسط سے زیادہ۔"
+        participants: "وہ لوگ جو '%{question}' کو '%{answer}' کا جواب دیتے ہیں وہ اوسط سے '%{tag}' میں %{percent_more_less} حصہ لیتے ہیں۔"
+      bin_vs_bin:
+        inputs: "وہ لوگ جو '%{question1}' کا جواب '%{answer1}' کا جواب دیتے ہیں '%{answer2}' سے '%{question2}' %{percent_more_less} اوسط سے۔"
+        likes: "وہ لوگ جو '%{question1}' کو '%{answer1}' کا جواب دیتے ہیں جب وہ اوسط سے '%{answer2}' سے '%{question2}' کا جواب دیتے ہیں تو %{percent_more_less} ان پٹ پسند کرتے ہیں۔"
+        dislikes: "People who respond %{answer1} to %{question1} dislike %{percent_more_less} inputs when they answer %{answer2} to %{question2} than average."
+        participants: "وہ لوگ جو '%{question1}' کو '%{answer1}' کا جواب دیتے ہیں %{percent_more_less} اس وقت حصہ لیتے ہیں جب وہ اوسط سے '%{answer2}' کو '%{question2}' جواب دیتے ہیں۔"
+

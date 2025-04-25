@@ -11,6 +11,8 @@ export const CARD_IMAGE_ASPECT_RATIO_HEIGHT = 3;
 export const CARD_IMAGE_ASPECT_RATIO =
   CARD_IMAGE_ASPECT_RATIO_WIDTH / CARD_IMAGE_ASPECT_RATIO_HEIGHT;
 
+export const CARD_IMAGE_ASPECT_RATIO_STR = `${CARD_IMAGE_ASPECT_RATIO_WIDTH} / ${CARD_IMAGE_ASPECT_RATIO_HEIGHT}`;
+
 const fetchProjectImages = ({ projectId }: { projectId: string | null }) =>
   fetcher<IProjectImages>({
     path: `/projects/${projectId}/images`,

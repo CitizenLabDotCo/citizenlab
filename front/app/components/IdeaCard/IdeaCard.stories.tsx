@@ -55,7 +55,6 @@ export const Standard: Story = {
   render: (props) => <IdeaCards {...props} />,
   args: {
     ideaId: '1',
-    showFollowButton: false,
     hideImage: false,
     hideImagePlaceholder: false,
   },

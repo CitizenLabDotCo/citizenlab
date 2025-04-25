@@ -23,6 +23,14 @@ export default defineMessages({
     id: 'app.components.formBuilder.emptyTitleMessage',
     defaultMessage: 'Provide a title for all the answers',
   },
+  emptyStatementError: {
+    id: 'app.components.formBuilder.emptyStatementError',
+    defaultMessage: 'Provide at least 1 statement',
+  },
+  emptyTitleStatementMessage: {
+    id: 'app.components.formBuilder.emptyTitleStatementMessage',
+    defaultMessage: 'Provide a title for all the statements',
+  },
   emptyImageOptionError: {
     id: 'app.components.formBuilder.emptyImageOptionError',
     defaultMessage:

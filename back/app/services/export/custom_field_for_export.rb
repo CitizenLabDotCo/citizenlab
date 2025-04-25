@@ -34,7 +34,7 @@ module Export
     attr_reader :custom_field, :scope, :multiloc_service, :options
 
     def option_index
-      @option_index ||= custom_field.options.index_by(&:key)
+      @option_index ||= custom_field.ordered_transformed_options.index_by(&:key)
     end
   end
 end

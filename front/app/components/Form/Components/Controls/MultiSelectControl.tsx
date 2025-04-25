@@ -10,7 +10,7 @@ import {
 import { withJsonFormsControlProps } from '@jsonforms/react';
 import styled from 'styled-components';
 
-import { dropdownLayoutTester } from 'components/Form/utils';
+import dropdownLayoutTester from 'components/Form/utils/dropdownLayoutTester';
 import { FormLabel } from 'components/UI/FormComponents';
 import MultipleSelect from 'components/UI/MultipleSelect';
 

@@ -4,7 +4,7 @@ import { isNil } from 'lodash-es';
 import { FormattedDate } from 'react-intl';
 
 import { IUserCustomField } from 'api/user_custom_fields/types';
-import useUserCustomFieldsOptions from 'api/user_custom_fields_options/useUserCustomFieldsOptions';
+import useUserCustomFieldsOptions from 'api/custom_field_options/useCustomFieldOptions';
 
 import T from 'components/T';
 

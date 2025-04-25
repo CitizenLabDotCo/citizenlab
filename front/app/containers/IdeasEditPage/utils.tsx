@@ -35,11 +35,12 @@ export const getLocationGeojson = async (
 };
 
 export const getFormValues = (
-  idea: IIdea,
-  schema: JsonFormsSchema,
+  idea: IIdea | undefined,
+  schema: JsonFormsSchema | null,
   remoteImages?: IIdeaImages,
   remoteFiles?: IIdeaFiles
 ) => {
+  if (!idea || !schema) return {};
   return Object.fromEntries(
     Object.keys(schema.properties).map((prop) => {
       if (prop === 'author_id') {

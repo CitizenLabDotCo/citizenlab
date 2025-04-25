@@ -41,9 +41,17 @@ module EmailCampaigns
     end
 
     def schedule_multiloc_value
-      # We currently only support weekly schedules here.
-      weekly_day_key = "email_campaigns.schedules.weekly.#{schedule['rrules'][0]['validations']['day'][0].to_i % 7}"
-      hour = schedule['rrules'][0]['validations']['hour_of_day'][0].to_i
+      rules = schedule['rrules'][0]
+      return unless rules
+
+      # Quarterly schedule
+      if rules['rule_type'] == 'IceCube::MonthlyRule' && rules['interval'] == 3
+        return I18n.t('email_campaigns.schedules.quarterly')
+      end
+
+      # Weekly schedule
+      weekly_day_key = "email_campaigns.schedules.weekly.#{rules['validations']['day'][0].to_i % 7}"
+      hour = rules['validations']['hour_of_day'][0].to_i
       time_obj = Time.new(-2000, 1, 1, hour, 0, 0)
 
       I18n.t(weekly_day_key, hourOfDay: (LocalizationService.new.hour_of_day time_obj))

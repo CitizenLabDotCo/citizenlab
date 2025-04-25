@@ -18,14 +18,22 @@ module UserCustomFields
       Result.new(binned_counts, unknown_age_count, bins)
     end
 
-    private
-
     def convert_to_age(birthyear, time: Time.zone.now)
       # Since we don't known the exact birth date, we estimate it as the middle of the
       # year: July 1st of the year of birth.
       birth_time = Time.zone.local(birthyear, 7, 1)
       (time - birth_time) / 1.year
     end
+
+    def convert_to_birthyear(age, time: Time.zone.now)
+      if age == Float::INFINITY
+        - Float::INFINITY
+      else
+        (time - (age.year + 6.months)).year
+      end
+    end
+
+    private
 
     # @param [Hash] counts
     # @param [Array<Numeric,nil>] bins

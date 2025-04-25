@@ -42,9 +42,32 @@ describe('Input form builder', () => {
   });
 
   it('allows user to turn off the tags default field but not edit its question title', () => {
+    const title = randomString(12);
+    const description = randomString(42);
+
+    // Visit the project page and accept cookies. This is needed because the cookie banner is not interactive on the input form
+    cy.visit(`/projects/${projectSlug}`);
+    cy.acceptCookies();
+
     // Check that the tags field is present on the idea form before turning it off
     cy.visit(`/projects/${projectSlug}/ideas/new?phase_id=${phaseId}`);
-    cy.acceptCookies();
+
+    // Fill in the title since it is required
+    cy.get('#e2e-idea-title-input input').type(title);
+    cy.get('#e2e-idea-title-input input').should('contain.value', title);
+
+    // Go to the next page of the input form
+    cy.get('[data-cy="e2e-next-page"]').should('be.visible').click();
+
+    // Fill in the description since it is required
+    cy.get('#e2e-idea-description-input .ql-editor').type(description);
+    cy.get('#e2e-idea-description-input .ql-editor').contains(description);
+
+    // Go to the next page of the idea form
+    cy.get('[data-cy="e2e-next-page"]').should('be.visible').click();
+
+    // Tags are on page three
+    cy.get('[data-cy="e2e-next-page"]').should('be.visible').click();
 
     cy.get('.e2e-topics-picker').should('exist');
 
@@ -83,6 +106,19 @@ describe('Input form builder', () => {
     // Fill in the form
     cy.visit(`/projects/${projectSlug}/ideas/new?phase_id=${phaseId}`);
 
+    // Fill in the title and description since these are required
+    cy.get('#e2e-idea-title-input input').type(title);
+    cy.get('#e2e-idea-title-input input').should('contain.value', title);
+
+    cy.get('[data-cy="e2e-next-page"]').should('be.visible').click();
+
+    cy.get('#e2e-idea-description-input .ql-editor').type(description);
+    cy.get('#e2e-idea-description-input .ql-editor').contains(description);
+
+    cy.get('[data-cy="e2e-next-page"]').should('be.visible').click();
+
+    // Tags was previously on page three so it should not be present
+    cy.get('[data-cy="e2e-next-page"]').should('be.visible').click();
     cy.get('.e2e-topics-picker').should('not.exist');
   });
 });

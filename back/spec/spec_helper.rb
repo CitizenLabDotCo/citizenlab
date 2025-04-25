@@ -125,6 +125,8 @@ RSpec.configure do |config|
     require './engines/commercial/public_api/spec/factories/api_clients'
     require './engines/commercial/analysis/spec/factories/analyses'
     require './engines/commercial/analysis/spec/factories/background_tasks'
+    require './engines/commercial/analysis/spec/factories/comments_summaries'
+    require './engines/commercial/analysis/spec/factories/heatmap_cells'
     require './engines/commercial/analysis/spec/factories/insights'
     require './engines/commercial/analysis/spec/factories/summaries'
     require './engines/commercial/analysis/spec/factories/taggings'

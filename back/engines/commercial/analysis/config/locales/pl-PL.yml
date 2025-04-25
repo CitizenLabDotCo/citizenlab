@@ -1,3 +1,20 @@
 pl:
   analysis:
     example_tag_n: Przykładowy tag %{n}
+    cell_statement:
+      percent_more: "%{percent}% więcej"
+      percent_less: "%{percent}% mniej"
+      range_min_max: "%{min} na %{max}"
+      range_min: "%{min} lub więcej"
+      range_max: "%{max} lub mniej"
+      tag_vs_bin:
+        inputs: "Osoby, które odpowiadają '%{answer}' na '%{question}' publikują %{percent_more_less} w '%{tag}' niż przeciętnie."
+        likes: "Osoby, które odpowiadają '%{answer}' na '%{question}' lubią wejścia %{percent_more_less} w '%{tag}' niż przeciętnie."
+        dislikes: "Osoby, które odpowiadają '%{answer}' na '%{question}' nie lubią wejść %{percent_more_less} w '%{tag}' bardziej niż przeciętnie."
+        participants: "Osoby, które odpowiadają '%{answer}' na '%{question}' uczestniczą %{percent_more_less} w '%{tag}' niż przeciętnie."
+      bin_vs_bin:
+        inputs: "Osoby, które odpowiadają '%{answer1}' na '%{question1}' odpowiadają '%{answer2}' na '%{question2}' %{percent_more_less} niż przeciętnie."
+        likes: "Osoby, które odpowiadają \"%{answer1}\" na \"%{question1}\" lubią wejścia %{percent_more_less} , gdy odpowiadają \"%{answer2}\" na \"%{question2}\" niż przeciętnie."
+        dislikes: "Osoby, które odpowiadają \"%{answer1}\" na \"%{question1}\" nie lubią wejść na %{percent_more_less} , gdy odpowiadają \"%{answer2}\" na \"%{question2}\" niż przeciętnie."
+        participants: "Osoby, które odpowiadają \"%{answer1}\" na \"%{question1}\" biorą udział w %{percent_more_less} , gdy odpowiadają \"%{answer2}\" na \"%{question2}\" niż przeciętnie."
+

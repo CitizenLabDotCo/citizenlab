@@ -132,8 +132,10 @@ describe JsonFormsService do
           create(:custom_field, key: 'field4', input_type: 'multiselect'),
           create(:custom_field, key: 'field5', input_type: 'checkbox'),
           create(:custom_field, key: 'field6', input_type: 'date'),
-          create(:custom_field, key: 'field7', input_type: 'multiline_text', enabled: false, required: true),
-          create(:custom_field, key: 'field8', input_type: 'text', hidden: true, enabled: true)
+          create(:custom_field_ranking, :with_options, key: 'field7'),
+          create(:custom_field_matrix_linear_scale, key: 'field8'),
+          create(:custom_field, key: 'field9', input_type: 'multiline_text', enabled: false, required: true),
+          create(:custom_field, key: 'field10', input_type: 'text', hidden: true, enabled: true)
         ]
         create(:custom_field_option, key: 'option1', custom_field: fields[2])
         create(:custom_field_option, key: 'option2', custom_field: fields[2])
@@ -201,6 +203,39 @@ describe JsonFormsService do
               description: 'Which councils are you attending in our city?'
             },
             scope: '#/properties/field6'
+          },
+          {
+            type: 'Control',
+            label: 'Rank your favourite means of public transport',
+            options: {
+              input_type: 'ranking',
+              description: 'Which councils are you attending in our city?'
+            },
+            scope: '#/properties/field7'
+          },
+          {
+            type: 'Control',
+            scope: '#/properties/field8',
+            label: 'Please indicate how strong you agree or disagree with the following statements.',
+            options: {
+              description: 'Which councils are you attending in our city?',
+              input_type: 'matrix_linear_scale',
+              statements: [
+                { key: 'send_more_animals_to_space', label: 'We should send more animals into space' },
+                { key: 'ride_bicycles_more_often', label: 'We should ride our bicycles more often' }
+              ],
+              linear_scale_label1: 'Strongly disagree',
+              linear_scale_label2: '',
+              linear_scale_label3: '',
+              linear_scale_label4: '',
+              linear_scale_label5: 'Strongly agree',
+              linear_scale_label6: '',
+              linear_scale_label7: '',
+              linear_scale_label8: '',
+              linear_scale_label9: '',
+              linear_scale_label10: '',
+              linear_scale_label11: ''
+            }
           }
         ])
       end
@@ -215,12 +250,12 @@ describe JsonFormsService do
       let(:input_term) { 'question' }
       let(:project) { create(:single_phase_budgeting_project, phase_attrs: { input_term: input_term }) }
       let(:custom_form) { create(:custom_form, :with_default_fields, participation_context: project) }
-      let!(:section) do
+      let!(:page) do
         create(
-          :custom_field_section,
+          :custom_field_page,
           :for_custom_form, resource: custom_form,
-          title_multiloc: { 'en' => 'My section title' },
-          description_multiloc: { 'en' => 'My section description' }
+          title_multiloc: { 'en' => 'My page title' },
+          description_multiloc: { 'en' => 'My page description' }
         )
       end
       let!(:required_field) do
@@ -296,13 +331,15 @@ describe JsonFormsService do
                 'en' => {
                   type: 'Categorization',
                   options: { formId: 'idea-form', inputTerm: 'question' },
-                  elements: [
-                    hash_including(type: 'Category', label: 'What is your question?'),
+                  elements: array_including(
                     hash_including(
-                      type: 'Category',
-                      label: 'Images and attachments',
-                      options: hash_including(description: 'Upload your favourite files here'),
-                      elements: [
+                      type: 'Page',
+                      options: hash_including(title: 'What is your question?')
+                    ),
+                    hash_including(
+                      type: 'Page',
+                      options: hash_including(title: 'Images and attachments'),
+                      elements: array_including(
                         hash_including(
                           type: 'Control',
                           scope: '#/properties/idea_images_attributes',
@@ -315,12 +352,12 @@ describe JsonFormsService do
                           label: 'Attachments',
                           options: hash_including(input_type: 'files')
                         )
-                      ]
+                      )
                     ),
                     hash_including(
-                      type: 'Category',
-                      label: 'Details',
-                      elements: [
+                      type: 'Page',
+                      options: hash_including(title: 'Details'),
+                      elements: array_including(
                         hash_including(
                           type: 'Control',
                           scope: '#/properties/topic_ids',
@@ -333,13 +370,12 @@ describe JsonFormsService do
                           label: 'Location',
                           options: hash_including(input_type: 'text')
                         )
-                      ]
+                      )
                     ),
                     hash_including(
-                      type: 'Category',
-                      label: 'My section title',
-                      options: { id: section.id, description: 'My section description' },
-                      elements: [
+                      type: 'Page',
+                      options: hash_including(title: 'My page title'),
+                      elements: array_including(
                         hash_including(
                           type: 'Control',
                           scope: "#/properties/#{required_field.key}",
@@ -352,9 +388,9 @@ describe JsonFormsService do
                           label: 'My optional field',
                           options: hash_including(input_type: 'select')
                         )
-                      ]
+                      )
                     )
-                  ]
+                  )
                 }
               )
             }
@@ -365,8 +401,8 @@ describe JsonFormsService do
           expect(output[:json_schema_multiloc]['en'][:properties]).not_to have_key 'author_id'
           expect(output[:json_schema_multiloc]['en'][:properties]).not_to have_key 'budget'
 
-          expect(output[:ui_schema_multiloc]['en'][:elements][0][:elements][1][:scope]).not_to eq '#/properties/author_id'
-          expect(output[:ui_schema_multiloc]['en'][:elements][2][:elements][0][:scope]).not_to eq '#/properties/budget'
+          expect(output.dig(:ui_schema_multiloc, 'en', :elements, 0, :elements, 0, :scope)).not_to eq '#/properties/author_id'
+          expect(output.dig(:ui_schema_multiloc, 'en', :elements, 2, :elements, 0, :scope)).not_to eq '#/properties/budget'
         end
 
         it 'renders text images for fields' do
@@ -405,7 +441,7 @@ describe JsonFormsService do
           expect(output[:json_schema_multiloc]['en'][:properties]['author_id']).to eq({ type: 'string' })
           expect(output[:json_schema_multiloc]['en'][:properties]['budget']).to eq({ type: 'number' })
 
-          expect(output[:ui_schema_multiloc]['en'][:elements][0][:elements][1]).to eq({
+          expect(output[:ui_schema_multiloc]['en'][:elements][0][:elements][0]).to eq({
             type: 'Control',
             scope: '#/properties/author_id',
             label: 'Author',
@@ -418,7 +454,7 @@ describe JsonFormsService do
               description: ''
             }
           })
-          expect(output[:ui_schema_multiloc]['en'][:elements][2][:elements][0]).to eq({
+          expect(output[:ui_schema_multiloc]['en'][:elements][3][:elements][0]).to eq({
             type: 'Control',
             scope: '#/properties/budget',
             label: 'Budget',
@@ -432,24 +468,24 @@ describe JsonFormsService do
           })
         end
 
-        it 'includes the budget field on top of the proposed budget field when there is no details section but there is a proposed budget field' do
-          custom_form.custom_fields.find { |field| field.code == 'ideation_section3' }.destroy!
+        it 'includes the budget field on top of the proposed budget field when there is no details page but there is a proposed budget field' do
+          custom_form.custom_fields.find { |field| field.code == 'details_page' }.destroy!
           custom_form.custom_fields.find { |field| field.code == 'proposed_budget' }.update!(enabled: true)
           custom_form.reload
 
           expect(output[:json_schema_multiloc]['en'][:properties]['budget']).to eq({ type: 'number' })
-          expect(output[:ui_schema_multiloc]['en'][:elements][1][:elements][4][:scope]).to eq '#/properties/budget'
-          expect(output[:ui_schema_multiloc]['en'][:elements][1][:elements][5][:scope]).to eq '#/properties/proposed_budget'
+          expect(output[:ui_schema_multiloc]['en'][:elements][2][:elements][4][:scope]).to eq '#/properties/budget'
+          expect(output[:ui_schema_multiloc]['en'][:elements][2][:elements][5][:scope]).to eq '#/properties/proposed_budget'
         end
 
-        it 'includes the budget field under the body multiloc field when there is no details section and no proposed budget field' do
-          custom_form.custom_fields.find { |field| field.code == 'ideation_section3' }.destroy!
+        it 'includes the budget field under the body multiloc field when there is no details page and no proposed budget field' do
+          custom_form.custom_fields.find { |field| field.code == 'details_page' }.destroy!
           custom_form.custom_fields.find { |field| field.code == 'proposed_budget' }.update!(enabled: false)
           custom_form.reload
 
           expect(output[:json_schema_multiloc]['en'][:properties]['budget']).to eq({ type: 'number' })
-          expect(output[:ui_schema_multiloc]['en'][:elements][0][:elements][2][:options]).to eq({ input_type: 'html_multiloc', render: 'multiloc' }) # body_multiloc
-          expect(output[:ui_schema_multiloc]['en'][:elements][0][:elements][3][:scope]).to eq '#/properties/budget'
+          expect(output[:ui_schema_multiloc]['en'][:elements][1][:elements][0][:options]).to include({ input_type: 'html_multiloc', render: 'multiloc' }) # body_multiloc
+          expect(output[:ui_schema_multiloc]['en'][:elements][1][:elements][1][:scope]).to eq '#/properties/budget'
         end
       end
     end

@@ -53,6 +53,8 @@ describe('Form builder number field', () => {
     cy.visit(
       `admin/projects/${projectId}/phases/${phaseId}/native-survey/edit`
     );
+    cy.get('[data-cy="e2e-number-field"]');
+    cy.wait(2000);
     cy.get('[data-cy="e2e-number-field"]').click();
 
     // Save the survey
@@ -73,8 +75,9 @@ describe('Form builder number field', () => {
     cy.acceptCookies();
     cy.contains(questionTitle).should('exist');
 
-    // Try going to the next page without entering data for required field
-    cy.get('[data-cy="e2e-next-page"]').click();
+    // Try submitting without entering data for required field
+    cy.get('[data-cy="e2e-submit-form"]').click();
+
     // verify that an error is shown and that we stay on the page
     cy.get('.e2e-error-message');
     cy.url().should(
@@ -94,16 +97,15 @@ describe('Form builder number field', () => {
     cy.get(`*[id^="properties${questionTitle}"]`).type('45', { force: true });
     cy.get('.e2e-error-message').should('have.length', 0);
 
-    cy.get('[data-cy="e2e-next-page"]').click();
     // Save survey response
     cy.get('[data-cy="e2e-submit-form"]').should('exist');
     cy.get('[data-cy="e2e-submit-form"]').click();
 
-    // Check that we show a success message
-    cy.get('[data-cy="e2e-survey-success-message"]').should('exist');
-    // close modal
-    cy.get('.e2e-modal-close-button').click();
-    // check that the modal is no longer on the page
-    cy.get('#e2e-modal-container').should('have.length', 0);
+    // Check that we're on final page and return to project
+    cy.get('[data-cy="e2e-after-submission"]').should('exist');
+    cy.get('[data-cy="e2e-after-submission"]').click();
+
+    // Make sure we're back at the project
+    cy.url().should('include', `projects/${projectSlug}`);
   });
 });

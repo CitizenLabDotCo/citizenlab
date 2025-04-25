@@ -33,6 +33,10 @@ export default defineMessages({
     id: 'app.components.admin.UserFilterConditions.field_participated_in_project',
     defaultMessage: 'Contributed to project',
   },
+  field_participated_in_community_monitor: {
+    id: 'app.components.admin.UserFilterConditions.field_participated_in_community_monitor',
+    defaultMessage: 'Community monitor survey',
+  },
   field_participated_in_topic: {
     id: 'app.components.admin.UserFilterConditions.field_participated_in_topic',
     defaultMessage: 'Contributed to topic',
@@ -305,6 +309,14 @@ export default defineMessages({
   predicate_is_not_area: {
     id: 'app.components.admin.UserFilterConditions.predicate_is_not_area',
     defaultMessage: 'excludes area',
+  },
+  predicate_taken_survey: {
+    id: 'app.components.admin.UserFilterConditions.predicate_taken_survey',
+    defaultMessage: 'has taken survey',
+  },
+  predicate_not_taken_survey: {
+    id: 'app.components.admin.UserFilterConditions.predicate_not_taken_survey',
+    defaultMessage: 'has not taken survey',
   },
 
   rulesFormLabelField: {

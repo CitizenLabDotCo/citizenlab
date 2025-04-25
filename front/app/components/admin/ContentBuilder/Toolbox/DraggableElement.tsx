@@ -6,7 +6,6 @@ import {
   IconNames,
   Text,
   colors,
-  Tooltip,
 } from '@citizenlab/cl2-component-library';
 import { useEditor } from '@craftjs/core';
 import styled from 'styled-components';
@@ -21,14 +20,10 @@ const StyledBox = styled(Box)`
 interface ToolboxItemProps {
   label: string;
   icon: IconNames;
-  disabled?: boolean;
 }
 
 const ToolboxItem = forwardRef(
-  (
-    { disabled, icon, label }: ToolboxItemProps,
-    ref: React.RefObject<HTMLDivElement>
-  ) => {
+  ({ icon, label }: ToolboxItemProps, ref: React.RefObject<HTMLDivElement>) => {
     return (
       <StyledBox
         width="100%"
@@ -37,18 +32,17 @@ const ToolboxItem = forwardRef(
         alignItems="center"
         ref={ref}
       >
-        <Icon
-          marginRight="16px"
-          width="20px"
-          height="20px"
-          fill={disabled ? colors.textSecondary : colors.primary}
-          name={icon}
-        />
+        <Box>
+          <Icon
+            marginRight="16px"
+            width="20px"
+            height="20px"
+            fill={colors.primary}
+            name={icon}
+          />
+        </Box>
 
-        <Text
-          color={disabled ? 'textSecondary' : 'textPrimary'}
-          style={{ lineHeight: '1' }}
-        >
+        <Text color="textPrimary" lineHeight="1">
           {label}
         </Text>
       </StyledBox>
@@ -64,18 +58,9 @@ const DraggableContainer = styled.div<{ disabled?: boolean }>`
 interface Props extends ToolboxItemProps {
   id: string;
   component: React.ReactElement;
-  disabled?: boolean;
-  tooltipContent?: React.ReactNode;
 }
 
-const DraggableElement = ({
-  id,
-  component,
-  icon,
-  label,
-  disabled,
-  tooltipContent,
-}: Props) => {
+const DraggableElement = ({ id, component, icon, label }: Props) => {
   const {
     connectors,
     actions: { selectNode },
@@ -83,11 +68,9 @@ const DraggableElement = ({
 
   return (
     <DraggableContainer
-      disabled={disabled}
       id={id}
       ref={(ref) =>
         ref &&
-        !disabled &&
         connectors.create(ref, component, {
           onCreate: (node) => {
             selectNode(node.rootNodeId);
@@ -95,16 +78,7 @@ const DraggableElement = ({
         })
       }
     >
-      <Tooltip
-        content={tooltipContent}
-        maxWidth="250px"
-        placement="bottom-end"
-        hideOnClick={false}
-        disabled={!disabled || !tooltipContent}
-        zIndex={999999}
-      >
-        <ToolboxItem icon={icon} label={label} disabled={disabled} />
-      </Tooltip>
+      <ToolboxItem icon={icon} label={label} />
     </DraggableContainer>
   );
 };

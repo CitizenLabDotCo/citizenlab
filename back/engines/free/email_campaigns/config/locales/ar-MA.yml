@@ -8,6 +8,7 @@ ar-MA:
       "comment_marked_as_spam": الإبلاغ عن التعليق كـ مزعج
       "comment_on_your_comment": رد على تعليقي
       "comment_on_idea_you_follow": تعليق على فكرة تتابعها
+      "community_monitor_report": تقرير مراقبة المجتمع
       "cosponsor_of_your_idea": يقبل المستخدم دعوتي للمشاركة في رعاية اقتراحي
       "event_registration_confirmation": تأكيد تسجيل الحدث
       "idea_marked_as_spam": الإبلاغ عن الفكرة كـإزعاج
@@ -34,6 +35,7 @@ ar-MA:
       "project_review_request": طلب مراجعة المشروع
       "project_review_state_change": تمت الموافقة على المشروع
       "status_change_on_idea_you_follow": تغيير حالة الفكرة التي تتابعها
+      "survey_submitted": تم تقديم الاستطلاع
       "threshold_reached_for_admin": بلغ المُقترح حد التصويت المطلوب
       "welcome": بعد التسجيل
       "admin_digest": نظرة عامة أسبوعية للمسؤولين
@@ -81,6 +83,7 @@ ar-MA:
         "4": "أسبوعيًا يوم الخميس %{hourOfDay}"
         "5": "أسبوعيًا أيام الجمعة %{hourOfDay}"
         "6": "أسبوعيًا أيام السبت %{hourOfDay}"
+      quarterly: "ربع سنوي، في اليوم الأول من الربع"
     footer:
       "link_privacy_policy": "سياسة الخصوصية"
       "link_terms_conditions": "الشروط والأحكام"
@@ -146,6 +149,12 @@ ar-MA:
       today: اليوم
       wrong_content: 'التعليق غير ذي صلة.'
       yesterday: الأمس
+    community_monitor_report:
+      subject: 'تقرير مراقبة المجتمع الجديد متاح الآن'
+      title: 'تقرير مراقبة المجتمع الجديد متاح الآن'
+      text_introduction: 'تم إنشاء تقرير مراقبة المجتمع للربع السابق. يمكنك الوصول إليه بالنقر على الزر أدناه وتسجيل الدخول.'
+      cta_report_button: 'عرض التقرير'
+      report_name: 'تقرير مراقبة المجتمع'
     cosponsor_of_your_idea:
       cta_reply_to: 'عرض اقتراحك'
       event_description: 'تهانينا! لقد قبل %{cosponsorName} دعوتك للمشاركة في رعاية اقتراحك.'
@@ -496,6 +505,15 @@ ar-MA:
       event_description: 'يطلب منك المشروع "%{projectName}" التصويت بين %{numIdeas}:'
       cta_message: 'انقر فوق الزر أدناه للمشاركة'
       cta_vote: 'اذهب إلى المنصة للتصويت'
+    survey_submitted:
+      subject: '%{organizationName}: شكرًا لك على ردك! 🎉'
+      preheader: 'فيما يلي تفاصيل إرسالكم.'
+      main_header: 'شكرًا لك على مشاركة أفكارك حول "%{projectName}"!'
+      your_input_submitted: 'لقد تم إرسال مدخلاتك لـ "%{projectName}" بنجاح.'
+      if_you_would_like_to_review: 'إذا كنت ترغب في مراجعة إرساليتك، يمكنك تنزيل ردودك أدناه.'
+      your_submission_has_id: 'إرسالكم لديه المعرف الفريد التالي:'
+      you_can_use_this_id: 'بإمكانك استخدام هذا المعرف للتواصل مع مسؤولي المنصة في حالة رغبتك في إزالة مشاركتك.'
+      download_responses: 'تنزيل ردودكم'
     admin_labels:
       recipient_role:
         admins: 'للمسؤولين'

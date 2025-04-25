@@ -12,7 +12,6 @@ import {
 } from '@citizenlab/cl2-component-library';
 import { useTheme } from 'styled-components';
 
-import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useBasket from 'api/baskets/useBasket';
 import useUpdateBasket from 'api/baskets/useUpdateBasket';
 import { IPhaseData, VotingMethod } from 'api/phases/types';
@@ -24,6 +23,7 @@ import Warning from 'components/UI/Warning';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import { getVotingMethodConfig } from 'utils/configs/votingMethodConfig';
+import useFormatCurrency from 'utils/currency/useFormatCurrency';
 import { getLocalisedDateString, pastPresentOrFuture } from 'utils/dateUtils';
 
 import ConfettiSvg from './ConfettiSvg';
@@ -46,7 +46,7 @@ const unsubmitBasket = async (
 };
 
 const StatusModule = ({ votingMethod, phase, project }: StatusModuleProps) => {
-  const { data: appConfig } = useAppConfiguration();
+  const formatCurrency = useFormatCurrency();
 
   const theme = useTheme();
   const isSmallerThanPhone = useBreakpoint('phone');
@@ -111,9 +111,9 @@ const StatusModule = ({ votingMethod, phase, project }: StatusModuleProps) => {
                 project,
                 phase,
                 submissionState: basketStatus,
-                appConfig,
                 localize,
                 formatMessage,
+                formatCurrency,
               })}
           </Box>
           {showDate && phase.attributes.end_at && (

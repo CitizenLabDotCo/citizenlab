@@ -1,4 +1,4 @@
-import React, { MouseEvent, ButtonHTMLAttributes } from 'react';
+import React, { MouseEvent, ButtonHTMLAttributes, forwardRef } from 'react';
 
 import { isNil, get } from 'lodash-es';
 import { darken, transparentize, opacify, rgba } from 'polished';
@@ -514,7 +514,6 @@ export interface Props extends ButtonContainerProps {
   hiddenText?: string | JSX.Element;
   icon?: IconProps['name'];
   iconPos?: 'left' | 'right';
-  setSubmitButtonRef?: (value: any) => void;
   text?: string | JSX.Element;
   theme?: MainThemeProps | undefined;
   type?: ButtonHTMLAttributes<HTMLButtonElement>['type'];
@@ -526,11 +525,13 @@ export interface Props extends ButtonContainerProps {
   ariaExpanded?: boolean;
   ariaPressed?: boolean;
   ariaDescribedby?: string;
+  ariaControls?: string;
   as?: React.ElementType;
   tabIndex?: number;
 }
+export type Ref = HTMLButtonElement;
 
-const Button = (props: Props) => {
+const Button = forwardRef<Ref, Props>((props, ref) => {
   const handleOnClick = (event: MouseEvent<HTMLDivElement>) => {
     const { onClick, processing, disabled } = props;
 
@@ -594,6 +595,7 @@ const Button = (props: Props) => {
     ariaExpanded,
     ariaPressed,
     ariaDescribedby,
+    ariaControls,
     opacityDisabled,
     className,
     onClick: _onClick,
@@ -698,8 +700,8 @@ const Button = (props: Props) => {
         aria-expanded={ariaExpanded}
         aria-pressed={ariaPressed}
         aria-describedby={ariaDescribedby}
+        aria-controls={ariaControls}
         aria-disabled={disabled || processing}
-        ref={props.setSubmitButtonRef}
         className={buttonClassNames}
         form={form}
         type={buttonType}
@@ -707,11 +709,12 @@ const Button = (props: Props) => {
         autoFocus={autoFocus}
         as={as}
         tabIndex={tabIndex}
+        ref={ref}
       >
         {childContent}
       </StyledButton>
     </Container>
   );
-};
+});
 
 export default Button;

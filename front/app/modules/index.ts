@@ -24,6 +24,7 @@ import idGentRrnConfiguration from './commercial/id_gent_rrn';
 import idIdAustriaConfiguration from './commercial/id_id_austria';
 import idIdCardLookupConfiguration from './commercial/id_id_card_lookup';
 import idKeycloakConfiguration from './commercial/id_keycloak';
+import idTwodayConfiguration from './commercial/id_twoday';
 import idNemLogInConfiguration from './commercial/id_nemlog_in';
 import idOostendeRrnConfiguration from './commercial/id_oostende_rrn';
 import idViennaSamlConfiguration from './commercial/id_vienna_saml';
@@ -36,6 +37,7 @@ import moderationConfiguration, {
   moderationRouteTypes,
 } from './commercial/moderation';
 import posthogConfiguration from './commercial/posthog_integration';
+import posthogUserTrackingConfiguration from './commercial/posthog_user_tracking';
 import representativenessConfiguration, {
   representativenessRouteTypes,
 } from './commercial/representativeness';
@@ -64,6 +66,9 @@ export default loadModules([
   },
   {
     configuration: posthogConfiguration,
+  },
+  {
+    configuration: posthogUserTrackingConfiguration,
   },
   {
     configuration: googleAnalyticsConfiguration,
@@ -115,6 +120,9 @@ export default loadModules([
   },
   {
     configuration: idKeycloakConfiguration,
+  },
+  {
+    configuration: idTwodayConfiguration,
   },
   {
     configuration: idBogusConfiguration,

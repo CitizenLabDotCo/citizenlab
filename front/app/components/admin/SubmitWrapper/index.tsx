@@ -73,10 +73,7 @@ const Message = styled.p`
 `;
 
 interface Props
-  extends Omit<
-    OriginalButtonProps,
-    'text' | 'disabled' | 'setSubmitButtonRef' | 'processing'
-  > {
+  extends Omit<OriginalButtonProps, 'text' | 'disabled' | 'processing'> {
   status: ISubmitState;
   loading: boolean;
   customError?: string | null;
@@ -101,7 +98,6 @@ const SubmitWrapper = (props: Props) => {
     'processing',
     'disabled',
     'onClick',
-    'setSubmitButtonRef',
     'messages',
     'loading',
   ]);
@@ -140,7 +136,7 @@ const SubmitWrapper = (props: Props) => {
         processing={loading}
         disabled={isSubmitButtonDisabled}
         onClick={onClick}
-        setSubmitButtonRef={setSubmitButtonRef}
+        ref={setSubmitButtonRef}
         {...buttonProps}
       >
         {(status === 'enabled' ||

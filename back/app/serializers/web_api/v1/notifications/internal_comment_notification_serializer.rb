@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class WebApi::V1::Notifications::InternalCommentNotificationSerializer < WebApi::V1::Notifications::NotificationSerializer
-  attributes :project_id, :internal_comment_id
+  attributes :project_id, :internal_comment_id, :idea_id
 
   attribute :initiating_user_first_name do |object|
     object.initiating_user&.first_name

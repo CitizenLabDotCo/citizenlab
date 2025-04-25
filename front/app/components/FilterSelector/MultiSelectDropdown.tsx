@@ -166,7 +166,7 @@ const MultiSelectDropdown = ({
             minWidth={minWidth}
             onKeyDown={handleKeyDown}
             ariaExpanded={opened}
-            aria-controls={baseID}
+            ariaControls={baseID}
           >
             <Box display="flex" gap="8px">
               {currentTitle}

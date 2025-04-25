@@ -8,6 +8,7 @@ it:
       "comment_marked_as_spam": Segnalazione di spam di commenti
       "comment_on_your_comment": Una risposta al mio commento
       "comment_on_idea_you_follow": Un commento su un'idea che segui
+      "community_monitor_report": Rapporto di monitoraggio della comunità
       "cosponsor_of_your_idea": Un utente accetta il mio invito a co-sponsorizzare la mia proposta
       "event_registration_confirmation": Conferma della registrazione all'evento
       "idea_marked_as_spam": Segnalazione di spam di idee
@@ -34,6 +35,7 @@ it:
       "project_review_request": Richiesta di revisione del progetto
       "project_review_state_change": Progetto approvato
       "status_change_on_idea_you_follow": Cambiamento di stato di un'idea che segui
+      "survey_submitted": Sondaggio inviato
       "threshold_reached_for_admin": La proposta ha raggiunto la soglia di voto
       "welcome": Dopo la registrazione
       "admin_digest": Panoramica settimanale per gli amministratori
@@ -81,6 +83,7 @@ it:
         "4": "Settimanalmente, il giovedì %{hourOfDay}"
         "5": "Settimanalmente, il venerdì %{hourOfDay}"
         "6": "Settimanalmente, il sabato %{hourOfDay}"
+      quarterly: "Trimestralmente, il primo giorno del trimestre"
     footer:
       "link_privacy_policy": "Politica sulla privacy"
       "link_terms_conditions": "Termini e condizioni"
@@ -146,6 +149,12 @@ it:
       today: Oggi
       wrong_content: 'Il commento non è pertinente.'
       yesterday: Ieri
+    community_monitor_report:
+      subject: 'È disponibile un nuovo rapporto di monitoraggio della comunità'
+      title: 'È disponibile un nuovo rapporto di monitoraggio della comunità'
+      text_introduction: 'È stato creato un rapporto di monitoraggio della comunità per il trimestre precedente. Puoi accedervi cliccando sul pulsante qui sotto ed effettuando il login.'
+      cta_report_button: 'Visualizza il rapporto'
+      report_name: 'Rapporto di monitoraggio della comunità'
     cosponsor_of_your_idea:
       cta_reply_to: 'Visualizza la tua proposta'
       event_description: 'Congratulazioni! %{cosponsorName} ha accettato l''invito a co-sponsorizzare la tua proposta.'
@@ -496,6 +505,15 @@ it:
       event_description: 'Il progetto "%{projectName}" ti chiede di votare tra le opzioni di %{numIdeas} :'
       cta_message: 'Clicca sul pulsante qui sotto per partecipare'
       cta_vote: 'Vai alla piattaforma per votare'
+    survey_submitted:
+      subject: '%{organizationName}Grazie per la tua risposta! 🎉'
+      preheader: 'Ecco i dettagli del tuo invio.'
+      main_header: 'Grazie per aver condiviso i tuoi pensieri su "%{projectName}"!'
+      your_input_submitted: 'Il tuo contributo per "%{projectName}" è stato inviato con successo.'
+      if_you_would_like_to_review: 'Se vuoi rivedere la tua candidatura, puoi scaricare le tue risposte qui sotto.'
+      your_submission_has_id: 'Il tuo invio ha il seguente identificativo unico:'
+      you_can_use_this_id: 'Puoi utilizzare questo identificativo per contattare gli amministratori della piattaforma nel caso in cui desideri che il tuo invio venga rimosso.'
+      download_responses: 'Scarica le tue risposte'
     admin_labels:
       recipient_role:
         admins: 'Agli amministratori'

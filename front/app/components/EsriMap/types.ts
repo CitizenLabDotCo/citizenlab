@@ -1,5 +1,7 @@
 import MapView from '@arcgis/core/views/MapView';
 
+export type DefaultBasemapType = 'BasemapAt' | 'MapTiler';
+
 export type EsriUiElement = {
   position:
     | 'top-left'

@@ -17,13 +17,13 @@ describe('Admin: proposal phase', () => {
     const projectTitleFRBE = randomString();
 
     // Type random project titles for these required fields
-    cy.get('#project-title').type(projectTitleEN);
+    cy.get('#e2e-project-title-setting-field').type(projectTitleEN);
     cy.get('.e2e-localeswitcher.nl-BE').click();
-    cy.get('#project-title').type(projectTitleNLBE);
+    cy.get('#e2e-project-title-setting-field').type(projectTitleNLBE);
     cy.get('.e2e-localeswitcher.nl-NL').click();
-    cy.get('#project-title').type(projectTitleNLNL);
+    cy.get('#e2e-project-title-setting-field').type(projectTitleNLNL);
     cy.get('.e2e-localeswitcher.fr-BE').click();
-    cy.get('#project-title').type(projectTitleFRBE);
+    cy.get('#e2e-project-title-setting-field').type(projectTitleFRBE);
 
     // Submit project
     cy.get('.e2e-submit-wrapper-button button').click();

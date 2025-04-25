@@ -73,7 +73,7 @@ Apartment.configure do |config|
     require 'gem_extensions/active_record/connection_adapters/postgre_sql_adapter'
     ActiveRecord::Migrator.prepend(GemExtensions::ActiveRecord::Migrator)
     ActiveRecord::ConnectionAdapters::AbstractAdapter.prepend(GemExtensions::ActiveRecord::ConnectionAdapters::AbstractAdapter)
-    ActiveRecord::ConnectionAdapters::PostgreSQLAdapter.prepend(GemExtensions::ActiveRecord::ConnectionAdapters::PostgreSqlAdapter)
+    ActiveRecord::ConnectionAdapters::PostgreSQLAdapter.prepend(GemExtensions::ActiveRecord::ConnectionAdapters::PostgreSqlAdapter) # rubocop:disable Rails/ActiveSupportOnLoad
 
     config.parallel_migration_threads = parallel_migration_threads
   end
@@ -130,7 +130,12 @@ class RescuedApartmentMiddleware < Apartment::Elevators::Generic
       nil
     else
       host = if Rails.env.development? || Rails.env.staging?
-        ENV.fetch('OVERRIDE_HOST', request.host)
+        if request.host.end_with?('.localhost')
+          # This lets you do my.city.localhost in local development to switch tenants without having to set OVERRIDE_HOST
+          request.host.sub(/\.localhost$/, '')
+        else
+          ENV.fetch('OVERRIDE_HOST', request.host)
+        end
       else
         request.host
       end

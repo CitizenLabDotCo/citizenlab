@@ -185,6 +185,10 @@ class ProjectPolicy < ApplicationPolicy
     UserRoleService.new.can_moderate_project? record, user
   end
 
+  def community_monitor?
+    show?
+  end
+
   private
 
   def update_status?

@@ -25,7 +25,7 @@ class IdeaPolicy < ApplicationPolicy
           .left_outer_joins(project: [:admin_publication])
           .published
           .where_pmethod(&:supports_public_visibility?)
-          .where(projects: project_scope)
+          .where(project: project_scope)
       end
     end
 
@@ -46,6 +46,10 @@ class IdeaPolicy < ApplicationPolicy
 
   def index_mini?
     active_admin?
+  end
+
+  def index_survey_submissions?
+    active?
   end
 
   def create?
@@ -70,6 +74,10 @@ class IdeaPolicy < ApplicationPolicy
     end
 
     active? && (owner? || UserRoleService.new.can_moderate_project?(record.project, user))
+  end
+
+  def show_xlsx?
+    owner?
   end
 
   def by_slug?

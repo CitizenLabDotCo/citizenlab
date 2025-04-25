@@ -8,6 +8,7 @@ lb:
       "comment_marked_as_spam": Kommentéiert de Bericht vum Spam
       "comment_on_your_comment": Eng Äntwert op mäi Kommentar
       "comment_on_idea_you_follow": E Kommentar zu enger Iddi déi Dir verfollegt
+      "community_monitor_report": Communautéit Monitor Rapport
       "cosponsor_of_your_idea": E Benotzer akzeptéiert meng Invitatioun fir meng Propositioun ze sponsoren
       "event_registration_confirmation": Event Aschreiwung Bestätegung
       "idea_marked_as_spam": Spambericht iwwer d'Iddien
@@ -34,6 +35,7 @@ lb:
       "project_review_request": Projet review Ufro
       "project_review_state_change": Projet guttgeheescht
       "status_change_on_idea_you_follow": Status Ännerung vun enger Iddi déi Dir verfollegt
+      "survey_submitted": Ëmfro presentéiert
       "threshold_reached_for_admin": Virschlag huet d'Schwell vun de Stëmmen erreecht. 
       "welcome": No der Aschreiwung
       "admin_digest": Wéchentlechen Iwwerbléck fir Verwalteren
@@ -81,6 +83,7 @@ lb:
         "4": "Wochemaart, op Donneschden %{hourOfDay}"
         "5": "Wochemaart, Freideg %{hourOfDay}"
         "6": "Wochemaart, Samschdes %{hourOfDay}"
+      quarterly: "Trimester, um éischten Dag vum Véierel"
     footer:
       "link_privacy_policy": "Dateschutzrichtlinn"
       "link_terms_conditions": "Geschäftsbedéngungen"
@@ -146,6 +149,12 @@ lb:
       today: Haut
       wrong_content: 'De Kommentar ass net relevant.'
       yesterday: Gëschter
+    community_monitor_report:
+      subject: 'En neie Communautéitsmonitor Bericht ass verfügbar'
+      title: 'En neie Communautéitsmonitor Bericht ass verfügbar'
+      text_introduction: 'E Communautéitsmonitor Bericht gouf fir de leschte Quartal erstallt. Dir kënnt et zougräifen andeems Dir op de Knäppchen hei drënner klickt an aloggen.'
+      cta_report_button: 'Kuckt de Bericht'
+      report_name: 'Communautéit Monitor Rapport'
     cosponsor_of_your_idea:
       cta_reply_to: 'Kuckt Är Propositioun'
       event_description: 'Gratulatioun! %{cosponsorName} huet Är Invitatioun ugeholl fir Är Propositioun ze co-sponsoren.'
@@ -496,6 +505,15 @@ lb:
       event_description: 'De Projet "%{projectName}" freet Iech tëscht %{numIdeas} Optiounen ze stëmmen:'
       cta_message: 'Klickt op de Knäppchen hei ënnen fir matzemaachen'
       cta_vote: 'Gitt op d''Plattform fir ze wielen'
+    survey_submitted:
+      subject: '%{organizationName}: Merci fir Är Äntwert! 🎉'
+      preheader: 'Hei sinn d''Detailer vun Ärer Soumissioun.'
+      main_header: 'Merci fir Är Gedanken iwwer "%{projectName}" ze deelen!'
+      your_input_submitted: 'Ären Input fir "%{projectName}" gouf erfollegräich ofginn.'
+      if_you_would_like_to_review: 'Wann Dir Är Soumissioun wëllt iwwerpréiwen, kënnt Dir Är Äntwerten hei ënnen eroflueden.'
+      your_submission_has_id: 'Är Soumissioun huet de folgenden eenzegaartegen Identifizéierer:'
+      you_can_use_this_id: 'Dir kënnt dësen Identifizéierer benotze fir d''Plattformadministrateuren ze kontaktéieren am Fall wou Dir wëllt datt Är Soumissioun ewechgeholl gëtt.'
+      download_responses: 'Luet Är Äntwerten erof'
     admin_labels:
       recipient_role:
         admins: 'An den Admins'

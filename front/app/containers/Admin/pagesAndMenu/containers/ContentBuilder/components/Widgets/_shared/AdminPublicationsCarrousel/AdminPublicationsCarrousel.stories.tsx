@@ -14,7 +14,6 @@ type Story = StoryObj<typeof meta>;
 
 export const Primary: Story = {
   args: {
-    title: 'AdminPublicationsCarrousel',
     adminPublications: mockFolderChildAdminPublicationsList,
     hasMore: false,
     onLoadMore: () => new Promise(() => {}),

@@ -100,7 +100,6 @@ describe('Copy projects inside folder', () => {
       descriptionPreview: folderShortDescription,
       description: randomString(),
       publicationStatus: 'published',
-      projectIds: [projectId],
     }).then((folder) => {
       folderId = folder.body.data.id;
       cy.apiAddProjectsToFolder([projectId], folderId);

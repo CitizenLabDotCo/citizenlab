@@ -9,8 +9,8 @@ module Analysis
     ]
 
     LLMS = [
-      LLM::GPT4Turbo.new,
-      LLM::GPT35Turbo.new
+      LLM::GPT41.new,
+      LLM::GPT4oMini.new
     ]
 
     class SummarizationFailedError < StandardError; end
@@ -47,7 +47,6 @@ module Analysis
         task.set_succeeded!
       rescue SummarizationFailedError => e
         ErrorReporter.report(e)
-
         task.set_failed!
         summary.update!(accuracy: old_accuracy, summary: old_summary)
         summary.insight.update!(inputs_ids: old_input_ids, custom_field_ids: old_custom_field_ids)

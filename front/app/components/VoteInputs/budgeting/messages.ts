@@ -5,8 +5,8 @@ export default defineMessages({
     id: 'app.components.AssignBudgetControl.a11y_price',
     defaultMessage: 'Price: ',
   },
-  currencyLeft: {
-    id: 'app.components.VoteInputs._shared.currencyLeft',
-    defaultMessage: 'You have {budgetLeft} / {totalBudget} {currency} left',
+  currencyLeft1: {
+    id: 'app.components.VoteInputs._shared.currencyLeft1',
+    defaultMessage: 'You have {budgetLeft} / {totalBudget} left',
   },
 });

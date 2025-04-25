@@ -59,7 +59,7 @@ const ProjectProposalsManager = ({
   const [previewPostId, setPreviewPostId] = useState<string | null>(null);
   const [previewMode, setPreviewMode] = useState<PreviewMode>('view');
   const { data: ideaStatuses } = useIdeaStatuses({
-    participation_method: 'proposals',
+    queryParams: { participation_method: 'proposals' },
   });
   const { data: proposalTopics } = useTopics();
   const [queryParameters, setQueryParameters] = useState<IIdeaQueryParameters>({

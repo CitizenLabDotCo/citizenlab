@@ -1,7 +1,7 @@
 import { first, last, sortBy } from 'lodash-es';
 import { SupportedLocale } from 'typings';
 
-import { IIdea } from 'api/ideas/types';
+import { IIdeaData } from 'api/ideas/types';
 import { IProjectData } from 'api/projects/types';
 
 import { pastPresentOrFuture } from 'utils/dateUtils';
@@ -106,14 +106,14 @@ export function getLatestRelevantPhase(phases: IPhaseData[]) {
 }
 
 export const isIdeaInParticipationContext = (
-  idea: IIdea,
+  idea: IIdeaData,
   participationContext: IProjectData | IPhaseData
 ) => {
   if (participationContext.type === 'project') {
-    return idea.data.relationships.project.data.id === participationContext.id;
+    return idea.relationships.project.data.id === participationContext.id;
   }
 
-  return idea.data.relationships.phases.data.some(
+  return idea.relationships.phases.data.some(
     (phase) => participationContext.id === phase.id
   );
 };

@@ -88,6 +88,25 @@ resource 'Reports' do
         assert_status 200
         expect(response_ids).to match_array(reports.pluck(:id))
       end
+
+      example 'Find community monitor reports' do
+        community_monitor_phase = create(:community_monitor_survey_phase)
+        settings = AppConfiguration.instance.settings
+        settings['community_monitor'] = { 'enabled' => true, 'allowed' => true, 'project_id' => community_monitor_phase.project.id }
+        AppConfiguration.instance.update!(settings:)
+
+        report = create(:report, phase: community_monitor_phase)
+
+        do_request(community_monitor: 'true')
+        assert_status 200
+        expect(response_ids).to eq [report.id]
+      end
+
+      example 'Find community monitor reports (community monitor not configured)' do
+        do_request(community_monitor: 'true')
+        assert_status 200
+        expect(response_data).to be_empty
+      end
     end
 
     include_examples 'not authorized to visitors'
@@ -118,7 +137,9 @@ resource 'Reports' do
             name: report.name,
             created_at: report.created_at.iso8601(3),
             updated_at: report.updated_at.iso8601(3),
-            visible: false
+            visible: false,
+            year: nil,
+            quarter: nil
           },
           relationships: {
             layout: { data: { id: layout.id, type: 'content_builder_layout' } },
@@ -279,9 +300,13 @@ resource 'Reports' do
 
   post 'web_api/v1/reports' do
     parameter :name, name_param_desc, scope: :report, required: false
+    parameter :year, 'Year of report (Community monitor)', scope: :report, required: false
+    parameter :quarter, 'Quarter of report (Community monitor)', scope: :report, required: false
     parameter :craftjs_json, craftjs_json_param_desc, scope: %i[report layout]
 
     let(:name) { 'my-report' }
+    let(:quarter) { '1' }
+    let(:year) { '2025' }
     let(:craftjs_json) do
       {
         'nl-BE': {
@@ -312,7 +337,9 @@ resource 'Reports' do
             name: name,
             created_at: be_a(String),
             updated_at: be_a(String),
-            visible: false
+            visible: false,
+            year: 2025,
+            quarter: 1
           },
           relationships: {
             layout: { data: { id: be_a(String), type: 'content_builder_layout' } },

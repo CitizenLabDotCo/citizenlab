@@ -5,16 +5,18 @@ export default defineMessages({
     id: 'app.utils.FormattedCurrency.tokens',
     defaultMessage: 'tokens',
   },
-  oneCredit: {
-    id: 'app.utils.FormattedCurrency.oneCredit',
-    defaultMessage: '1 credit',
+  xTokens: {
+    id: 'app.utils.FormattedCurrency.xTokens',
+    defaultMessage:
+      '{numberOfTokens, plural, =0 {# tokens} one {# token} other {# tokens}}',
+  },
+  xCredits: {
+    id: 'app.utils.FormattedCurrency.xCredits',
+    defaultMessage:
+      '{numberOfCredits, plural, =0 {# credits} one {# credit} other {# credits}}',
   },
   credits: {
     id: 'app.utils.FormattedCurrency.credits',
     defaultMessage: 'credits',
-  },
-  multipleCredits: {
-    id: 'app.utils.FormattedCurrency.multipleCredits',
-    defaultMessage: '{numberOfTokens} credits',
   },
 });

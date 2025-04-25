@@ -66,8 +66,13 @@ const ActionForm = ({ phaseId, permissionData, onChange, onReset }: Props) => {
   const participation_method = phase?.data.attributes.participation_method;
 
   const isSurveyAction =
-    (participation_method === 'native_survey' && action === 'posting_idea') ||
+    (participation_method &&
+      ['native_survey', 'community_monitor_survey'].includes(
+        participation_method
+      )) ||
     (participation_method === 'survey' && action === 'taking_survey');
+
+  const userFieldsInForm = !!phase?.data.attributes.user_fields_in_form;
 
   if (!permissionsCustomFields) return null;
 
@@ -105,13 +110,15 @@ const ActionForm = ({ phaseId, permissionData, onChange, onReset }: Props) => {
               onChangeVerificationExpiry={(verification_expiry) => {
                 onChange({ verification_expiry });
               }}
+              userFieldsInForm={userFieldsInForm}
             />
           </Box>
           <Box mt="20px">
             <Fields
               phaseId={phaseId}
               action={action}
-              showAddQuestion={permitted_by !== 'everyone'}
+              showAddQuestion={permitted_by !== 'everyone' || userFieldsInForm}
+              userFieldsInForm={userFieldsInForm}
             />
           </Box>
           {permitted_by !== 'everyone' && (

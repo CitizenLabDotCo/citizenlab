@@ -87,7 +87,6 @@ RSpec.describe ParticipationMethod::Volunteering do
 
   its(:additional_export_columns) { is_expected.to eq [] }
   its(:allowed_ideas_orders) { is_expected.to be_empty }
-  its(:proposed_budget_in_form?) { is_expected.to be false }
   its(:return_disabled_actions?) { is_expected.to be false }
   its(:supports_assignment?) { is_expected.to be false }
   its(:supports_built_in_fields?) { is_expected.to be false }
@@ -97,7 +96,6 @@ RSpec.describe ParticipationMethod::Volunteering do
   its(:supports_input_term?) { is_expected.to be false }
   its(:supports_inputs_without_author?) { is_expected.to be true }
   its(:supports_multiple_posts?) { is_expected.to be true }
-  its(:supports_pages_in_form?) { is_expected.to be false }
   its(:supports_permitted_by_everyone?) { is_expected.to be false }
   its(:supports_public_visibility?) { is_expected.to be false }
   its(:supports_reacting?) { is_expected.to be false }
@@ -107,4 +105,16 @@ RSpec.describe ParticipationMethod::Volunteering do
   its(:use_reactions_as_votes?) { is_expected.to be false }
   its(:transitive?) { is_expected.to be false }
   its(:supports_private_attributes_in_export?) { is_expected.to be false }
+  its(:form_logic_enabled?) { is_expected.to be false }
+  its(:follow_idea_on_idea_submission?) { is_expected.to be false }
+  its(:validate_phase) { is_expected.to be_nil }
+  its(:supports_custom_field_categories?) { is_expected.to be false }
+  its(:user_fields_in_form?) { is_expected.to be false }
+  its(:supports_multiple_phase_reports?) { is_expected.to be false }
+
+  describe 'proposed_budget_in_form?' do # private method
+    it 'is expected to be false' do
+      expect(participation_method.send(:proposed_budget_in_form?)).to be false
+    end
+  end
 end

@@ -634,6 +634,72 @@ resource 'Projects' do
         copied_project = Project.find(json_response.dig(:data, :id))
         expect(copied_project.title_multiloc['en']).to include(source_project.title_multiloc['en'])
       end
+
+      example 'Copy non-draft project', document: false do
+        expect(source_project.admin_publication.publication_status).not_to eq 'draft'
+
+        do_request
+        assert_status 201
+
+        copied_project = Project.find(json_response.dig(:data, :id))
+        expect(copied_project.admin_publication.publication_status).to eq 'draft'
+      end
+
+      example 'Copy a project in a folder', document: false do
+        folder = create(:project_folder, projects: [source_project])
+
+        do_request
+        assert_status 201
+
+        copied_project = Project.find(json_response.dig(:data, :id))
+        expect(copied_project.folder_id).to eq folder.id
+      end
+
+      example 'Copy a project with a project moderator as default_assignee', document: false do
+        moderator = create(:project_moderator, projects: [source_project])
+        source_project.update!(default_assignee: moderator)
+
+        do_request
+        assert_status 201
+
+        copied_project = Project.find(json_response.dig(:data, :id))
+        expect(copied_project.default_assignee_id).to eq @user.id
+      end
+
+      context 'as a project moderator' do
+        before do
+          header 'Content-Type', 'application/json'
+          @user = create(:user, roles: [{ type: 'project_moderator', project_id: source_project.id }])
+          header_token_for @user
+        end
+
+        example 'Copying a project in a folder copies to root', document: false do
+          create(:project_folder, projects: [source_project])
+
+          do_request
+          assert_status 201
+
+          copied_project = Project.find(json_response.dig(:data, :id))
+          expect(copied_project.folder_id).to be_nil
+        end
+      end
+
+      context 'as a folder moderator' do
+        let(:folder) { create(:project_folder, projects: [source_project]) }
+
+        before do
+          header 'Content-Type', 'application/json'
+          @user = create(:user, roles: [{ type: 'project_folder_moderator', project_folder_id: folder.id }])
+          header_token_for @user
+        end
+
+        example_request 'Copying a project in a folder copies to the same folder', document: false do
+          assert_status 201
+
+          copied_project = Project.find(json_response.dig(:data, :id))
+          expect(copied_project.folder_id).to eq folder.id
+        end
+      end
     end
 
     get 'web_api/v1/projects/:id/as_xlsx' do
@@ -1088,6 +1154,24 @@ resource 'Projects' do
         do_request filter_can_moderate: true, publication_statuses: AdminPublication::PUBLICATION_STATUSES
         assert_status 200
         expect(json_response[:data].size).to eq @projects.size
+      end
+
+      context 'When community monitor project exists' do
+        before { @projects << create(:community_monitor_project) }
+
+        example 'Does not include hidden community monitor project by default', document: false do
+          do_request filter_can_moderate: true, publication_statuses: AdminPublication::PUBLICATION_STATUSES
+          assert_status 200
+          expect(json_response[:data].size).to eq(@projects.size - 1)
+          expect(response_data.map { |d| d.dig(:attributes, :slug) }).not_to include 'community-monitor'
+        end
+
+        example 'Return all projects including hidden community monitor project', document: false do
+          do_request include_hidden: true, filter_can_moderate: true, publication_statuses: AdminPublication::PUBLICATION_STATUSES
+          assert_status 200
+          expect(json_response[:data].size).to eq @projects.size
+          expect(response_data.map { |d| d.dig(:attributes, :slug) }).to include 'community-monitor'
+        end
       end
     end
 
@@ -1611,6 +1695,57 @@ resource 'Projects' do
         example '[Unauthorized] Copy a project in the folder', document: false do
           do_request
           assert_status 401
+        end
+      end
+    end
+  end
+
+  get 'web_api/v1/projects/community_monitor' do
+    context 'hidden project exists' do
+      let!(:project) { create(:community_monitor_project) }
+
+      context 'community monitor project ID already saved in settings' do
+        example 'Community monitor project is returned' do
+          do_request
+          assert_status 200
+        end
+      end
+    end
+
+    context 'hidden project does not exist' do
+      before { SettingsService.new.activate_feature! 'community_monitor' }
+
+      context 'when resident' do
+        example 'Error: Community monitor project not found' do
+          do_request
+          assert_status 404
+        end
+      end
+
+      context 'when admin' do
+        before { admin_header_token }
+
+        example 'Community monitor project is created and returned' do
+          do_request
+          assert_status 200
+
+          created_project = Project.first
+          created_phase = Phase.first
+          created_permission = Permission.first
+          created_form = CustomForm.first
+          expect(created_project.hidden).to be true
+          expect(created_project.internal_role).to eq 'community_monitor'
+          expect(created_project.title_multiloc['en']).to eq 'Community monitor'
+          expect(created_phase.project).to eq created_project
+          expect(created_phase.participation_method).to eq 'community_monitor_survey'
+          expect(created_phase.title_multiloc['en']).to eq 'Community monitor'
+          expect(created_permission.permission_scope).to eq created_phase
+          expect(created_permission.permitted_by).to eq 'everyone'
+          expect(created_form.participation_context).to eq created_phase
+          expect(created_form.custom_fields.count).to eq 15
+
+          settings = AppConfiguration.instance.settings
+          expect(settings['community_monitor']['project_id']).to eq created_project.id
         end
       end
     end

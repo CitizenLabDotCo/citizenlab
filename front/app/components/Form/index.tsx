@@ -13,6 +13,8 @@ import { CLErrors } from 'typings';
 
 import useLocale from 'hooks/useLocale';
 
+import { FormValues, PageType } from 'components/Form/typings';
+
 import { trackEventByName } from 'utils/analytics';
 import { useIntl } from 'utils/cl-intl';
 
@@ -22,8 +24,11 @@ import FormWrapper from './Components/FormWrapper';
 import messages from './messages';
 import { parseRequiredMultilocsData } from './parseRequiredMultilocs';
 import tracks from './tracks';
-import { ApiErrorGetter, AjvErrorGetter, FormData } from './typings';
-import { sanitizeFormData, isValidData, customAjv } from './utils';
+import { ApiErrorGetter, AjvErrorGetter } from './typings';
+import customAjv from './utils/customAjv';
+import removeRequiredOtherFields from './utils/removeRequiredOtherFields';
+import sanitizeFormData from './utils/sanitizeFormData';
+import validateSurveyData from './utils/validateSurveyData';
 
 // hopefully we can standardize this someday
 const Title = styled.h1`
@@ -44,8 +49,11 @@ const Title = styled.h1`
 interface Props {
   schema: JsonSchema7;
   uiSchema: Layout;
-  onSubmit: (formData: FormData) => void | Promise<any>;
-  initialFormData: FormData;
+  onSubmit: (
+    formData: FormValues,
+    onSubmitCallback?: () => void
+  ) => void | Promise<any>;
+  initialFormData: FormValues;
   title?: ReactElement;
   /** A function that returns a translation message given the fieldname and the error key returned by the API */
   getApiErrorMessage?: ApiErrorGetter;
@@ -57,9 +65,9 @@ interface Props {
   inputId?: string | undefined;
   config?: 'default' | 'input' | 'survey';
   layout?: 'inline' | 'fullpage';
-  footer?: React.ReactNode;
   // Optional loading state from parent. If set, the loading state will be controlled by the parent.
   loading?: boolean;
+  showSubmitButton?: boolean;
 }
 
 const Form = memo(
@@ -73,14 +81,14 @@ const Form = memo(
     getApiErrorMessage,
     config,
     layout,
-    footer,
     onSubmit,
     loading: externalLoading,
+    showSubmitButton,
   }: Props) => {
     const { formatMessage } = useIntl();
     const locale = useLocale();
 
-    const [data, setData] = useState<FormData>(() => {
+    const [data, setData] = useState<Record<string, any>>(() => {
       return parseRequiredMultilocsData(schema, locale, initialFormData);
     });
     const [apiErrors, setApiErrors] = useState<CLErrors | undefined>();
@@ -92,7 +100,6 @@ const Form = memo(
     const [showAllErrors, setShowAllErrors] = useState(false);
 
     const isSurvey = config === 'survey';
-    const showSubmitButton = !isSurvey;
 
     useEffect(() => {
       if (scrollToError) {
@@ -111,20 +118,48 @@ const Form = memo(
     const layoutType =
       layout || (isCategorization(uiSchema) ? 'fullpage' : 'inline');
 
-    const handleSubmit = async (formData?: any, showErrors = true) => {
+    const handleSubmit = async (
+      formData?: { data?: FormValues },
+      showErrors = true,
+      userPagePath: PageType[] = [],
+      onSubmitCallback?: () => void
+    ) => {
       // Any specified formData has priority over data attribute
       const submissionData = formData && formData.data ? formData.data : data;
       const sanitizedFormData = sanitizeFormData(submissionData);
 
-      setData(sanitizedFormData);
+      // At this point, we need to clone the sanitiziedFormData
+      // before we pass it to setData.
+      // Somewhere downstream the 'data' variable is mutated in place-
+      // from what I can tell it seems to happen inside of the JSON forms library.
+      // This really bad behavior of the JSON forms library was causing a lot of
+      // bugs- for example, it was removing important attributes like
+      // the anonymous participation one.
+      // Another very good reason to get rid of this library.
+      setData({ ...sanitizedFormData });
       setShowAllErrors(showErrors);
 
-      if (isValidData(schema, uiSchema, submissionData, customAjv, isSurvey)) {
+      let response;
+
+      const schemaWithoutRequiredOtherFields = removeRequiredOtherFields(
+        schema,
+        sanitizedFormData
+      );
+
+      const dataIsValid = isSurvey
+        ? validateSurveyData(
+            schemaWithoutRequiredOtherFields,
+            userPagePath,
+            submissionData
+          )
+        : customAjv.validate(schemaWithoutRequiredOtherFields, submissionData);
+
+      if (dataIsValid) {
         if (externalLoading === undefined) {
           internalSetLoading(true);
         }
         try {
-          await onSubmit(submissionData);
+          response = await onSubmit(sanitizedFormData, onSubmitCallback);
           if (isSurvey) {
             trackEventByName(tracks.surveyFormSubmitted);
           } else {
@@ -139,6 +174,8 @@ const Form = memo(
         }
       }
       setScrollToError(true);
+
+      return response;
     };
 
     return (
@@ -174,13 +211,6 @@ const Form = memo(
             onChange={setData}
             onSubmit={handleSubmit}
           />
-          {footer && (
-            <Box display="flex" flexDirection="row" justifyContent="center">
-              <Box w="100%" maxWidth="700px" px="20px" mt="0px" mb="40px">
-                {footer}
-              </Box>
-            </Box>
-          )}
         </Box>
         {showSubmitButton && (
           <>

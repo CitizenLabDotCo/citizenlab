@@ -13,12 +13,9 @@ const generateOptions = (n: number) =>
 
 let mockOptions;
 
-jest.mock(
-  'api/user_custom_fields_options/useUserCustomFieldsOptions',
-  () => () => ({
-    data: { data: mockOptions },
-  })
-);
+jest.mock('api/custom_field_options/useCustomFieldOptions', () => () => ({
+  data: { data: mockOptions },
+}));
 
 let mockField;
 

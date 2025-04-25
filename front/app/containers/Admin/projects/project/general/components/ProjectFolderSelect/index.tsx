@@ -20,7 +20,7 @@ import { TOnProjectAttributesDiffChangeFunction } from 'containers/Admin/project
 import { SectionField, SubSectionTitle } from 'components/admin/Section';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
-import { isNilOrError, isNil } from 'utils/helperUtils';
+import { isNil } from 'utils/helperUtils';
 import { usePermission } from 'utils/permissions';
 import { userModeratesFolder } from 'utils/permissions/rules/projectFolderPermissions';
 
@@ -80,7 +80,7 @@ const ProjectFolderSelect = ({
         return false;
       }
     }
-    if (isNil(radioFolderSelect) && !isNilOrError(authUser)) {
+    if (isNil(radioFolderSelect) && authUser) {
       setRadioFolderSelect(
         getInitialRadioFolderSelect(userCanCreateProjectInFolderOnly, folder_id)
       );
@@ -93,29 +93,22 @@ const ProjectFolderSelect = ({
     isNewProject,
   ]);
 
-  if (isNilOrError(authUser)) {
-    return null;
-  }
-
-  const folderOptions: IOption[] =
-    // TODO: Fix this the next time the file is edited.
-    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-    !isNilOrError(projectFolders) && !isNilOrError(projectFolders?.data)
-      ? [
-          {
-            value: '',
-            label: '',
-          },
-          ...projectFolders.data
-            .filter((folder) => userModeratesFolder(authUser, folder.id))
-            .map((folder) => {
-              return {
-                value: folder.id,
-                label: localize(folder.attributes.title_multiloc),
-              };
-            }),
-        ]
-      : [];
+  const folderOptions: IOption[] = projectFolders?.data
+    ? [
+        {
+          value: '',
+          label: '',
+        },
+        ...projectFolders.data
+          .filter((folder) => userModeratesFolder(authUser, folder.id))
+          .map((folder) => {
+            return {
+              value: folder.id,
+              label: localize(folder.attributes.title_multiloc),
+            };
+          }),
+      ]
+    : [];
 
   const handleSelectFolderChange = ({ value: folderId }) => {
     if (typeof folderId === 'string') {
@@ -150,7 +143,10 @@ const ProjectFolderSelect = ({
     const defaultFolderSelectOptionValue = folderOptions[0].value;
 
     return (
-      <StyledSectionField data-testid="projectFolderSelect">
+      <StyledSectionField
+        data-testid="projectFolderSelect"
+        data-cy="e2e-project-folder-setting-field"
+      >
         <SubSectionTitle>
           <FormattedMessage {...messages.projectFolderSelectTitle} />
           <IconTooltip

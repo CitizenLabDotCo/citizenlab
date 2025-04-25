@@ -67,6 +67,10 @@ const SSOVerificationButton = ({
       label: messages.verifyKeycloak,
       icon: 'idporten',
     },
+    twoday: {
+      label: messages.verifyTwoday,
+      icon: 'bankId',
+    },
     auth0: {
       label: messages.verifyAuth0,
       icon: 'shield-check',

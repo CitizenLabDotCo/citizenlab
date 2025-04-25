@@ -137,11 +137,14 @@ const Combobox = ({
             minWidth={minWidth ? minWidth : undefined}
             onKeyDown={handleKeyDown}
             ariaExpanded={opened}
-            aria-controls={baseID}
+            ariaControls={baseID}
             // Needed to track aria-labelledby
             id={`${baseID}-label`}
             role="combobox"
             aria-haspopup="listbox"
+            ariaLabel={
+              typeof currentTitle === 'string' ? currentTitle : undefined
+            }
           >
             <Box display="flex" gap="8px">
               {currentTitle}

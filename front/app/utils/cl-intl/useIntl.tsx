@@ -16,7 +16,9 @@ import { getLocalizedWithFallback } from 'utils/i18n';
 import { localeStream } from 'utils/localeStream';
 
 export type FormatMessageValues =
-  | { [key: string]: string | number | boolean | Date }
+  | {
+      [key: string]: string | number | boolean | Date;
+    }
   | undefined;
 
 export const handleFormatMessage = (

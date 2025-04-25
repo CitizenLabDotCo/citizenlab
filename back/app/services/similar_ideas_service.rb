@@ -1,6 +1,5 @@
 class SimilarIdeasService
-  DEFAULT_NUM_SIMILAR_IDEAS = 10
-  DEFAULT_EMBEDDED_ATTRIBUTES = 'title_body'
+  DEFAULT_EMBEDDED_ATTRIBUTES = %w[body title]
 
   attr_reader :idea
 
@@ -8,46 +7,69 @@ class SimilarIdeasService
     @idea = idea
   end
 
-  def similar_ideas(scope: nil, limit: DEFAULT_NUM_SIMILAR_IDEAS, embedded_attributes: DEFAULT_EMBEDDED_ATTRIBUTES, distance_threshold: nil)
-    embedding = idea.embeddings_similarities.where(embedded_attributes:).first
-    return (scope || Idea).none if !embedding
+  def similar_ideas(scope: nil, limit: nil, title_threshold: 0.0, body_threshold: 0.0, embedded_attributes: DEFAULT_EMBEDDED_ATTRIBUTES)
+    ids = []
+    embedded_attributes.each do |embedded_attribute|
+      case embedded_attribute
+      when 'body'
+        if body_threshold && body_threshold > 0.0 && idea.body_multiloc.present?
+          ids += similar_by_text_attribute(locale.resolve_multiloc(idea.body_multiloc), 'body', body_threshold, scope:).pluck(:embeddable_id)
+        end
+      when 'title'
+        if title_threshold && title_threshold > 0.0 && idea.title_multiloc.present?
+          ids += similar_by_text_attribute(locale.resolve_multiloc(idea.title_multiloc), 'title', title_threshold, scope:).pluck(:embeddable_id)
+        end
+      end
+    end
+    ids = ids.take(limit) if limit
 
-    # embedding.nearest_neighbors(:embedding, distance: 'cosine') does not support
-    # applying a threshold on the neighbor_distance.
-    embeddings_pgvector = "[#{embedding.embedding.join(',')}]"
-    similarities = EmbeddingsSimilarity
-      .where.not(embedding: nil)
-      .order(ActiveRecord::Base.sanitize_sql_for_order(Arel.sql("\"embedding\" <=> '#{embeddings_pgvector}'")))
-    similarities = similarities.where('"embedding" <=> :embeddings_pgvector < :distance_threshold', embeddings_pgvector:, distance_threshold:) if distance_threshold
-
-    similarities = similarities
-      .where.not(embeddable_id: idea.id)
-      .where(embedded_attributes:)
-    similarities = similarities.where(embeddable: scope) if scope
-    similarities = similarities.limit(limit) if limit
-
-    ids = similarities.pluck(:embeddable_id)
     (scope || Idea).where(id: ids).order_as_specified(id: ids)
   end
 
-  def upsert_embedding!(embedded_attributes: DEFAULT_EMBEDDED_ATTRIBUTES)
+  def upsert_embeddings!(embedded_attributes: DEFAULT_EMBEDDED_ATTRIBUTES)
+    DEFAULT_EMBEDDED_ATTRIBUTES.each do |embedded_attribute|
+      case embedded_attribute
+      when 'title'
+        upsert_embedding!(locale.resolve_multiloc(idea.title_multiloc), embedded_attribute)
+      when 'body'
+        upsert_embedding!(locale.resolve_multiloc(idea.body_multiloc), embedded_attribute)
+      end
+    end
+  end
+
+  def upsert_embedding!(text, embedded_attributes)
     embeddings_similarity = idea.embeddings_similarities.find_or_initialize_by(embedded_attributes:)
-    embedding = CohereMultilingualEmbeddings.new.embedding(embeddings_text(embedded_attributes:))
+    embedding = CohereMultilingualEmbeddings.new.embedding(text)
     embeddings_similarity.embedding = embedding
     embeddings_similarity.save!
   end
 
-  def embeddings_text(embedded_attributes: DEFAULT_EMBEDDED_ATTRIBUTES)
-    embeddings_text_title_body
-  end
-
   private
 
-  def embeddings_text_title_body
-    locale = Locale.new(idea.author&.locale || AppConfiguration.instance.settings('core', 'locales').first)
-    title_text = locale.resolve_multiloc(idea.title_multiloc)
-    body_text = Nokogiri::HTML(locale.resolve_multiloc(idea.body_multiloc)).text
-    text = "#{title_text}\n\n#{body_text}"
-    text[...2048] # 2048 is the character limit for the text with Cohere multilingual embeddings
+  def similar_by_text_attribute(text, embedded_attributes, distance_threshold, scope: nil)
+    # Watch out when editing the code of this method! Make sure the HNSW index is used.
+    # https://www.notion.so/govocal/Research-Duplicate-Detection-1a19663b7b268080b211fdbd88ca2cd2?pvs=4#1a19663b7b2680a7a8d4fee6988baf0a
+
+    # embsim.nearest_neighbors(:embedding, distance: 'cosine') does not support
+    # applying a threshold on the neighbor_distance.
+
+    embedding = embedding_for_text(text)
+    embsims = EmbeddingsSimilarity
+      .where.not(embedding: nil)
+      .order(ActiveRecord::Base.sanitize_sql_for_order(Arel.sql("\"embedding\" <=> '#{embedding}'")))
+    embsims = embsims.where('"embedding" <=> \'[:embedding]\' < :distance_threshold', embedding:, distance_threshold:) if distance_threshold
+    embsims = embsims.where(embeddable: scope) if scope
+
+    embsims
+      .where.not(embeddable_id: idea.id)
+      .where(embedded_attributes:)
+  end
+
+  def embedding_for_text(text)
+    CohereMultilingualEmbeddings.new.embedding(text)
+  end
+
+  def locale
+    @locale ||= Locale.new(idea.author&.locale || AppConfiguration.instance.settings('core', 'locales').first)
   end
 end

@@ -53,11 +53,11 @@ const UserCustomFieldsForm = ({
   const initialFormData = authUser.data.attributes.custom_field_values;
 
   const [data, setData] = useState(() => {
-    return parseRequiredMultilocsData(schema, locale, initialFormData);
+    return parseRequiredMultilocsData(schema, locale, initialFormData ?? {});
   });
 
   useEffect(() => {
-    setData(parseRequiredMultilocsData(schema, locale, initialFormData));
+    setData(parseRequiredMultilocsData(schema, locale, initialFormData ?? {}));
   }, [schema, locale, initialFormData]);
 
   const getAjvErrorMessage = (error: ErrorObject) => {

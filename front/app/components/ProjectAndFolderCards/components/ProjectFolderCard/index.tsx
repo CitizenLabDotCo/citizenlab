@@ -26,7 +26,6 @@ import useProjectFolderById from 'api/project_folders/useProjectFolderById';
 import useLocalize from 'hooks/useLocalize';
 
 import AvatarBubbles from 'components/AvatarBubbles';
-import FollowUnfollow from 'components/FollowUnfollow';
 import { TLayout } from 'components/ProjectAndFolderCards';
 import T from 'components/T';
 import Image from 'components/UI/Image';
@@ -314,11 +313,10 @@ export interface Props {
   size: TProjectFolderCardSize;
   layout: TLayout;
   className?: string;
-  showFollowButton?: boolean;
 }
 
 const ProjectFolderCard = memo<Props>(
-  ({ folderId, size, layout, className, showFollowButton }) => {
+  ({ folderId, size, layout, className }) => {
     const isSmallerThanPhone = useBreakpoint('phone');
     const { data: projectFolder } = useProjectFolderById(folderId);
     const localize = useLocalize();
@@ -505,22 +503,6 @@ const ProjectFolderCard = memo<Props>(
                   />
                 </Box>
               </ContentFooter>
-            </Box>
-          )}
-          {showFollowButton && (
-            <Box display="flex" justifyContent="flex-end" mt="24px">
-              <FollowUnfollow
-                followableType="projects"
-                followableId={projectFolder.data.id}
-                followersCount={projectFolder.data.attributes.followers_count}
-                followerId={
-                  // TODO: Fix this the next time the file is edited.
-                  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-                  projectFolder.data.relationships.user_follower?.data?.id
-                }
-                w="100%"
-                toolTipType="projectOrFolder"
-              />
             </Box>
           )}
         </FolderContent>

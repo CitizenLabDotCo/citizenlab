@@ -8,6 +8,7 @@ sr-Cyrl:
       "comment_marked_as_spam": Извештај о нежељеној пошти коментара
       "comment_on_your_comment": Одговор на мој коментар
       "comment_on_idea_you_follow": Коментар идеје коју пратите
+      "community_monitor_report": Community monitor report
       "cosponsor_of_your_idea": A user accepts my invitation to co-sponsor my proposal
       "event_registration_confirmation": Потврда регистрације догађаја
       "idea_marked_as_spam": Извештај о нежељеној пошти идеја
@@ -34,6 +35,7 @@ sr-Cyrl:
       "project_review_request": Project review request
       "project_review_state_change": Project approved
       "status_change_on_idea_you_follow": Промена статуса идеје коју пратите
+      "survey_submitted": Survey submitted
       "threshold_reached_for_admin": Предлог је достигао цензус за гласање
       "welcome": Након регистрације
       "admin_digest": Недељни преглед за администраторе
@@ -81,6 +83,7 @@ sr-Cyrl:
         "4": "Седмично, четвртком у %{hourOfDay}"
         "5": "Недељно, петком у %{hourOfDay}"
         "6": "Седмично, суботом у %{hourOfDay}"
+      quarterly: "Quarterly, on the first day of the quarter"
     footer:
       "link_privacy_policy": "Правила приватности"
       "link_terms_conditions": "Услови коришћења"
@@ -146,6 +149,12 @@ sr-Cyrl:
       today: Данас
       wrong_content: 'Коментар није релевантан.'
       yesterday: Јучер
+    community_monitor_report:
+      subject: 'A new community monitor report is available'
+      title: 'A new community monitor report is available'
+      text_introduction: 'A community monitor report has been created for the previous quarter. You can access it by clicking the button below and logging in.'
+      cta_report_button: 'View report'
+      report_name: 'Community monitor report'
     cosponsor_of_your_idea:
       cta_reply_to: 'View your proposal'
       event_description: 'Congratulations! %{cosponsorName} has accepted your invitation to co-sponsor your proposal.'
@@ -496,6 +505,15 @@ sr-Cyrl:
       event_description: 'Пројекат "%{projectName}" тражи од вас да гласате између %{numIdeas} опције:'
       cta_message: 'Кликните на дугме испод да бисте учествовали'
       cta_vote: 'Идите на платформу да гласате'
+    survey_submitted:
+      subject: '%{organizationName}: Thank you for your response! 🎉'
+      preheader: 'Here are the details of your submission.'
+      main_header: 'Thank you for sharing your thoughts on "%{projectName}"!'
+      your_input_submitted: 'Your input for "%{projectName}" has been submitted successfully.'
+      if_you_would_like_to_review: 'If you would like to review your submission, you can download your responses below.'
+      your_submission_has_id: 'Your submission has the following unique identifier:'
+      you_can_use_this_id: 'You can use this identifier to contact the platform administrators in case you want your submission to be removed.'
+      download_responses: 'Download your responses'
     admin_labels:
       recipient_role:
         admins: 'За администраторе'

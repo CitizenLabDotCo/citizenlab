@@ -40,15 +40,20 @@ import {
 } from 'components/admin/Section';
 import SlugInput from 'components/admin/SlugInput';
 import SubmitWrapper, { ISubmitState } from 'components/admin/SubmitWrapper';
+import Highlighter from 'components/Highlighter';
 import Warning from 'components/UI/Warning';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import { queryClient } from 'utils/cl-react-query/queryClient';
+import Link from 'utils/cl-router/Link';
 import eventEmitter from 'utils/eventEmitter';
 import { convertUrlToUploadFile, isUploadFile } from 'utils/fileUtils';
 import { isNilOrError } from 'utils/helperUtils';
 import { defaultAdminCardPadding } from 'utils/styleConstants';
 import { validateSlug } from 'utils/textUtils';
+
+import { fragmentId } from '../projectHeader';
+import { fragmentId as folderFragmentId } from '../projectHeader/LinkToFolderSettings';
 
 import AttachmentsDropzone from './components/AttachmentsDropzone';
 import GeographicAreaInputs from './components/GeographicAreaInputs';
@@ -81,6 +86,7 @@ const AdminProjectsProjectGeneral = () => {
   const { data: project } = useProjectById(projectId);
 
   const isProjectFoldersEnabled = useFeatureFlag({ name: 'project_folders' });
+  const isProjectLibraryEnabled = useFeatureFlag({ name: 'project_library' });
   const appConfigLocales = useAppConfigurationLocales();
   const { width, containerRef } = useContainerWidthAndHeight();
   const { pathname } = useLocation();
@@ -521,6 +527,7 @@ const AdminProjectsProjectGeneral = () => {
       <StyledForm
         className="e2e-project-general-form intercom-projects-new-project-form"
         onSubmit={onSubmit}
+        showStickySaveButton={showStickySaveButton}
       >
         <Section>
           {projectId && (
@@ -534,12 +541,30 @@ const AdminProjectsProjectGeneral = () => {
             </>
           )}
           <Warning>{formatMessage(messages.publicationStatusWarning)}</Warning>
-          <ProjectNameInput
-            titleMultiloc={projectAttrs.title_multiloc}
-            titleError={titleError}
-            apiErrors={apiErrors}
-            handleTitleMultilocOnChange={handleTitleMultilocOnChange}
-          />
+          <Highlighter fragmentId={fragmentId}>
+            <ProjectNameInput
+              titleMultiloc={projectAttrs.title_multiloc}
+              titleError={titleError}
+              apiErrors={apiErrors}
+              handleTitleMultilocOnChange={handleTitleMultilocOnChange}
+            />
+          </Highlighter>
+          {isProjectLibraryEnabled && (
+            <Box mb="20px">
+              <Warning>
+                <FormattedMessage
+                  {...messages.needInspiration}
+                  values={{
+                    inspirationHubLink: (
+                      <Link to="/admin/inspiration-hub" target="_blank">
+                        <FormattedMessage {...messages.inspirationHub} />
+                      </Link>
+                    ),
+                  }}
+                />
+              </Warning>
+            </Box>
+          )}
 
           {/* Only show this field when slug is already saved to project (i.e. not when creating a new project, which uses this form as well) */}
           {!isNilOrError(project) && slug && (
@@ -548,6 +573,7 @@ const AdminProjectsProjectGeneral = () => {
                 <FormattedMessage {...messages.url} />
               </SubSectionTitle>
               <SlugInput
+                intercomLabelClassname="intercom-product-tour-project-slug-label"
                 slug={slug}
                 pathnameWithoutSlug={'projects'}
                 apiErrors={apiErrors}
@@ -569,14 +595,18 @@ const AdminProjectsProjectGeneral = () => {
           />
 
           {isProjectFoldersEnabled && (
-            <ProjectFolderSelect
-              projectAttrs={projectAttrs}
-              onProjectAttributesDiffChange={handleProjectAttributeDiffOnChange}
-              isNewProject={!projectId}
-            />
+            <Highlighter fragmentId={folderFragmentId}>
+              <ProjectFolderSelect
+                projectAttrs={projectAttrs}
+                onProjectAttributesDiffChange={
+                  handleProjectAttributeDiffOnChange
+                }
+                isNewProject={!projectId}
+              />
+            </Highlighter>
           )}
 
-          <SectionField>
+          <SectionField className="intercom-product-tour-project-header-image-field">
             <SubSectionTitle>
               <FormattedMessage {...messages.headerImageInputLabel} />
               <ProjectHeaderImageTooltip />
@@ -640,39 +670,33 @@ const AdminProjectsProjectGeneral = () => {
             handleProjectFileOnRemove={handleProjectFileOnRemove}
             onFileReorder={handleFilesReorder}
           />
-
-          {/* 
-            The sticky save button is only shown when you edit a form so that the user 
-            is not forced to scroll to the bottom of the page to save it.
-          */}
-
-          <Box
-            {...(showStickySaveButton && {
-              position: 'fixed',
-              borderTop: `1px solid ${colors.divider}`,
-              bottom: '0',
-              w: `calc(${width}px + ${defaultAdminCardPadding * 2}px)`,
-              ml: `-${defaultAdminCardPadding}px`,
-              background: colors.white,
-              display: 'flex',
-              justifyContent: 'flex-start',
-              px: `${defaultAdminCardPadding}px`,
-            })}
-            py="8px"
-          >
-            <SubmitWrapper
-              className="intercom-projects-new-project-save-button"
-              loading={processing}
-              status={submitState}
-              messages={{
-                buttonSave: messages.saveProject,
-                buttonSuccess: messages.saveSuccess,
-                messageError: messages.saveErrorMessage,
-                messageSuccess: messages.saveSuccessMessage,
-              }}
-            />
-          </Box>
         </Section>
+        <Box
+          {...(showStickySaveButton && {
+            position: 'fixed',
+            borderTop: `1px solid ${colors.divider}`,
+            bottom: '0',
+            w: `calc(${width}px + ${defaultAdminCardPadding * 2}px)`,
+            ml: `-${defaultAdminCardPadding}px`,
+            background: colors.white,
+            display: 'flex',
+            justifyContent: 'flex-start',
+            px: `${defaultAdminCardPadding}px`,
+          })}
+          py="8px"
+        >
+          <SubmitWrapper
+            className="intercom-projects-new-project-save-button"
+            loading={processing}
+            status={submitState}
+            messages={{
+              buttonSave: messages.saveProject,
+              buttonSuccess: messages.saveSuccess,
+              messageError: messages.saveErrorMessage,
+              messageSuccess: messages.saveSuccessMessage,
+            }}
+          />
+        </Box>
       </StyledForm>
     </Box>
   );

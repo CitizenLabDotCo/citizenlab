@@ -8,6 +8,7 @@ en-GB:
       "comment_marked_as_spam": Comment spam report
       "comment_on_your_comment": A reply on my comment
       "comment_on_idea_you_follow": A comment on an idea that you follow
+      "community_monitor_report": Community monitor report
       "cosponsor_of_your_idea": A user accepts my invitation to co-sponsor my proposal
       "event_registration_confirmation": Event registration confirmation
       "idea_marked_as_spam": Idea spam report
@@ -34,6 +35,7 @@ en-GB:
       "project_review_request": Project review request
       "project_review_state_change": Project approved
       "status_change_on_idea_you_follow": Status change of an input that you follow
+      "survey_submitted": Survey submitted
       "threshold_reached_for_admin": Proposal reached the voting threshold
       "welcome": After registration
       "admin_digest": Weekly overview for admins
@@ -81,6 +83,7 @@ en-GB:
         "4": "Weekly, on Thursdays at %{hourOfDay}"
         "5": "Weekly, on Fridays at %{hourOfDay}"
         "6": "Weekly, on Saturdays at %{hourOfDay}"
+      quarterly: "Quarterly, on the first day of the quarter"
     footer:
       "link_privacy_policy": "Privacy Policy"
       "link_terms_conditions": "Terms & Conditions"
@@ -146,6 +149,12 @@ en-GB:
       today: Today
       wrong_content: 'The comment is not relevant.'
       yesterday: Yesterday
+    community_monitor_report:
+      subject: 'A new community monitor report is available'
+      title: 'A new community monitor report is available'
+      text_introduction: 'A community monitor report has been created for the previous quarter. You can access it by clicking the button below and logging in.'
+      cta_report_button: 'View report'
+      report_name: 'Community monitor report'
     cosponsor_of_your_idea:
       cta_reply_to: 'View your proposal'
       event_description: 'Congratulations! %{cosponsorName} has accepted your invitation to co-sponsor your proposal.'
@@ -496,6 +505,15 @@ en-GB:
       event_description: 'The project "%{projectName}" is asking you to vote between %{numIdeas} options:'
       cta_message: 'Click the button below to participate'
       cta_vote: 'Go to the platform to vote'
+    survey_submitted:
+      subject: '%{organizationName}: Thank you for your response! 🎉'
+      preheader: 'Here are the details of your submission.'
+      main_header: 'Thank you for sharing your thoughts on "%{projectName}"!'
+      your_input_submitted: 'Your input for "%{projectName}" has been submitted successfully.'
+      if_you_would_like_to_review: 'If you would like to review your submission, you can download your responses below.'
+      your_submission_has_id: 'Your submission has the following unique identifier:'
+      you_can_use_this_id: 'You can use this identifier to contact the platform administrators in case you want your submission to be removed.'
+      download_responses: 'Download your responses'
     admin_labels:
       recipient_role:
         admins: 'To admins'

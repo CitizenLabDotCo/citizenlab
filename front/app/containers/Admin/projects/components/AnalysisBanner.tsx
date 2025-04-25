@@ -48,7 +48,7 @@ const AnalysisBanner = ({ projectId, phaseId }: Props) => {
   const { mutate: createAnalysis, isLoading } = useAddAnalysis();
   const { formatMessage } = useIntl();
 
-  const isAnalysisEnabled = useFeatureFlag({
+  const isAnalysisAllowed = useFeatureFlag({
     name: 'analysis',
     onlyCheckAllowed: true,
   });
@@ -92,29 +92,27 @@ const AnalysisBanner = ({ projectId, phaseId }: Props) => {
       borderRadius={stylingConsts.borderRadius}
       p="8px 16px"
       mb="24px"
-      bgColor={colors.errorLight}
+      bgColor={colors.teal100}
     >
       <Box display="flex" gap="16px" alignItems="center">
-        <Icon name="stars" width="50px" height="50px" fill={colors.orange500} />
-        <Text fontWeight="bold">
-          {formatMessage(messages.analysisSubtitle)}
-        </Text>
+        <Icon name="stars" width="30px" height="30px" fill={colors.teal500} />
+        <Text>{formatMessage(messages.analysisSubtitle)}</Text>
       </Box>
       <Tooltip
         content={<p>{formatMessage(messages.analysisUpsellTooltip)}</p>}
-        disabled={isAnalysisEnabled}
+        disabled={isAnalysisAllowed}
       >
         <Box>
           <Button
             buttonStyle="text"
-            textColor={colors.orange500}
+            textColor={colors.teal500}
             onClick={handleGoToAnalysis}
             fontWeight="bold"
-            icon={isAnalysisEnabled ? 'stars' : 'lock'}
-            iconColor={colors.orange500}
+            icon={isAnalysisAllowed ? 'stars' : 'lock'}
+            iconColor={colors.teal500}
             id="e2e-analysis-banner-button"
             processing={isLoading}
-            disabled={!isAnalysisEnabled}
+            disabled={!isAnalysisAllowed}
           >
             {formatMessage(messages.analysisButton)}
           </Button>

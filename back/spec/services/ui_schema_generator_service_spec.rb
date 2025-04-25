@@ -220,28 +220,15 @@ RSpec.describe UiSchemaGeneratorService do
 
     it 'returns the schema for the given field' do
       expect(generator.visit_text_multiloc(field)).to eq({
-        type: 'VerticalLayout',
-        options: { input_type: field.input_type, render: 'multiloc' },
-        elements: [
-          {
-            type: 'Control',
-            scope: "#/properties/#{field_key}/properties/en",
-            label: 'Text multiloc field title',
-            options: { description: 'Text multiloc field description', trim_on_blur: true, locale: 'en' }
-          },
-          {
-            type: 'Control',
-            scope: "#/properties/#{field_key}/properties/fr-FR",
-            label: 'Text multiloc field title',
-            options: { description: 'Text multiloc field description', trim_on_blur: true, locale: 'fr-FR' }
-          },
-          {
-            type: 'Control',
-            scope: "#/properties/#{field_key}/properties/nl-NL",
-            label: 'Text multiloc field title',
-            options: { description: 'Text multiloc field description', trim_on_blur: true, locale: 'nl-NL' }
-          }
-        ]
+        type: 'Control',
+        scope: "#/properties/#{field_key}/properties/en",
+        label: 'Text multiloc field title',
+        options: {
+          description: 'Text multiloc field description',
+          trim_on_blur: true,
+          input_type: 'text_multiloc',
+          render: 'multiloc'
+        }
       })
     end
   end
@@ -259,28 +246,15 @@ RSpec.describe UiSchemaGeneratorService do
 
     it 'returns the schema for the given field' do
       expect(generator.visit_multiline_text_multiloc(field)).to eq({
-        type: 'VerticalLayout',
-        options: { input_type: field.input_type, render: 'multiloc' },
-        elements: [
-          {
-            type: 'Control',
-            scope: "#/properties/#{field_key}/properties/en",
-            label: 'Multiline multiloc field title',
-            options: { description: 'Multiline multiloc field description', trim_on_blur: true, textarea: true, locale: 'en' }
-          },
-          {
-            type: 'Control',
-            scope: "#/properties/#{field_key}/properties/fr-FR",
-            label: 'Multiline multiloc field title',
-            options: { description: 'Multiline multiloc field description', trim_on_blur: true, textarea: true, locale: 'fr-FR' }
-          },
-          {
-            type: 'Control',
-            scope: "#/properties/#{field_key}/properties/nl-NL",
-            label: 'Multiline multiloc field title',
-            options: { description: 'Multiline multiloc field description', trim_on_blur: true, textarea: true, locale: 'nl-NL' }
-          }
-        ]
+        type: 'Control',
+        scope: "#/properties/#{field_key}/properties/en",
+        label: 'Multiline multiloc field title',
+        options: {
+          description: 'Multiline multiloc field description',
+          trim_on_blur: true, textarea: true,
+          input_type: 'multiline_text_multiloc',
+          render: 'multiloc'
+        }
       })
     end
   end
@@ -298,28 +272,15 @@ RSpec.describe UiSchemaGeneratorService do
 
     it 'returns the schema for the given field' do
       expect(generator.visit_html_multiloc(field)).to eq({
-        type: 'VerticalLayout',
-        options: { input_type: field.input_type, render: 'multiloc' },
-        elements: [
-          {
-            type: 'Control',
-            scope: "#/properties/#{field_key}/properties/en",
-            label: 'HTML multiloc field title',
-            options: { description: 'HTML multiloc field description', render: 'WYSIWYG', trim_on_blur: true, locale: 'en' }
-          },
-          {
-            type: 'Control',
-            scope: "#/properties/#{field_key}/properties/fr-FR",
-            label: 'HTML multiloc field title',
-            options: { description: 'HTML multiloc field description', render: 'WYSIWYG', trim_on_blur: true, locale: 'fr-FR' }
-          },
-          {
-            type: 'Control',
-            scope: "#/properties/#{field_key}/properties/nl-NL",
-            label: 'HTML multiloc field title',
-            options: { description: 'HTML multiloc field description', render: 'WYSIWYG', trim_on_blur: true, locale: 'nl-NL' }
-          }
-        ]
+        type: 'Control',
+        scope: "#/properties/#{field_key}/properties/en",
+        label: 'HTML multiloc field title',
+        options: {
+          description: 'HTML multiloc field description',
+          render: 'multiloc',
+          trim_on_blur: true,
+          input_type: 'html_multiloc'
+        }
       })
     end
   end
@@ -458,6 +419,27 @@ RSpec.describe UiSchemaGeneratorService do
           options: { input_type: field.input_type, description: 'Multiselect field description' }
         })
       end
+    end
+  end
+
+  describe '#visit_ranking' do
+    let(:field) do
+      create(
+        :custom_field_ranking,
+        :with_options,
+        key: field_key,
+        title_multiloc: { 'en' => 'Ranking field title' },
+        description_multiloc: { 'en' => 'Ranking field description' }
+      )
+    end
+
+    it 'returns the schema for the given field' do
+      expect(generator.visit_ranking(field)).to eq({
+        type: 'Control',
+        scope: "#/properties/#{field_key}",
+        label: 'Ranking field title',
+        options: { input_type: field.input_type, description: 'Ranking field description' }
+      })
     end
   end
 
@@ -628,7 +610,90 @@ RSpec.describe UiSchemaGeneratorService do
           linear_scale_label4: 'Agree',
           linear_scale_label5: 'Strongly agree',
           linear_scale_label6: '',
-          linear_scale_label7: ''
+          linear_scale_label7: '',
+          linear_scale_label8: '',
+          linear_scale_label9: '',
+          linear_scale_label10: '',
+          linear_scale_label11: ''
+        }
+      })
+    end
+  end
+
+  describe '#visit_sentiment_linear_scale' do
+    let(:field) do
+      create(
+        :custom_field_sentiment_linear_scale,
+        key: field_key
+      )
+    end
+
+    it 'returns the schema for the given field' do
+      expect(generator.visit_sentiment_linear_scale(field)).to eq({
+        type: 'Control',
+        scope: "#/properties/#{field_key}",
+        label: 'We need a swimming pool.',
+        options: {
+          input_type: field.input_type,
+          description: 'Please indicate how strong you agree or disagree.',
+          ask_follow_up: false,
+          linear_scale_label1: 'Strongly disagree',
+          linear_scale_label2: 'Disagree',
+          linear_scale_label3: 'Neutral',
+          linear_scale_label4: 'Agree',
+          linear_scale_label5: 'Strongly agree'
+        }
+      })
+    end
+  end
+
+  describe '#visit_rating' do
+    let(:field) do
+      create(
+        :custom_field_rating,
+        key: field_key
+      )
+    end
+
+    it 'returns the schema for the given field' do
+      expect(generator.visit_rating(field)).to eq({
+        type: 'Control',
+        scope: "#/properties/#{field_key}",
+        label: 'How would you rate our service?',
+        options: {
+          input_type: field.input_type,
+          description: 'Please rate your experience from 1 (poor) to 5 (excellent).'
+        }
+      })
+    end
+  end
+
+  describe '#visit_matrix_linear_scale' do
+    let(:field) { create(:custom_field_matrix_linear_scale, key: field_key) }
+
+    it 'returns the schema for the given field' do
+      expect(generator.visit_matrix_linear_scale(field)).to eq({
+        type: 'Control',
+        scope: "#/properties/#{field_key}",
+        label: 'Please indicate how strong you agree or disagree with the following statements.',
+        options: {
+          description: 'Which councils are you attending in our city?',
+          input_type: 'matrix_linear_scale',
+          statements: [
+            { key: 'send_more_animals_to_space', label: 'We should send more animals into space' },
+            { key: 'ride_bicycles_more_often', label: 'We should ride our bicycles more often' }
+          ],
+          linear_scale_label1: 'Strongly disagree',
+          linear_scale_label2: '',
+          linear_scale_label3: '',
+          linear_scale_label4: '',
+          linear_scale_label5: 'Strongly agree',
+          linear_scale_label6: '',
+          linear_scale_label7: '',
+          linear_scale_label8: '',
+          linear_scale_label9: '',
+          linear_scale_label10: '',
+          linear_scale_label11: ''
         }
       })
     end

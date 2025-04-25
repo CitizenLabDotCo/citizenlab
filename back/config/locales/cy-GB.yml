@@ -91,6 +91,9 @@ cy:
     services_description: Gwasanaethau cyhoeddus
     other: Arall
     other_description: Arall
+    quality_of_life: Ansawdd bywyd
+    service_delivery: Cyflwyno gwasanaeth
+    governance_and_trust: Llywodraethu ac ymddiriedaeth
   static_pages:
     terms_and_conditions_title: Telerau ac amodau
     terms_and_conditions_body: >
@@ -118,7 +121,7 @@ cy:
     faq:
       title: FAQ
   projects:
-    open_idea_project_title: Syniad? Dewch ag ef i'ch cyngor!
+    open_idea_project_title: Syniad? Rhowch wybod i’r cyngor amdano!
     open_idea_project_description_preview: Efallai bod gennych chi syniad nad yw'n cyd-fynd ag un o'r prosiectau presennol? Na phostio fan hyn, casglu cefnogaeth a'i gael ar yr agenda wleidyddol!
     open_idea_project_description: >
       <p>Yma, gallwch ddechrau eich syniad eich hun os nad yw'n cyd-fynd ag un o'r prosiectau presennol.</p><p><strong>Yr amcan?</strong> I gael eich syniad ar yr agenda wleidyddol.</p><p><strong>Sut?</strong> Trwy gasglu cefnogaeth, sef o leiaf 100 pleidlais mewn 3 mis. Gallwch wneud hynny drwy wneud eich syniad yn 'ddeniadol' yn gyntaf. Ysgrifennwch ef mewn ffordd glir a deniadol, ychwanegwch ddelweddau, rhowch ddadleuon cryf yn seiliedig ar ffeithiau, ychwanegwch atodiadau gyda manylion pellach neu wybodaeth gefndir, ... Ar ôl i chi wneud hynny, dechreuwch rannu'ch syniad ar gyfryngau cymdeithasol neu drwy e-bost. Gwahoddwch bobl i ymuno â'r drafodaeth ar eich syniad, neu'n syml, darbwyllwch nhw i'w gefnogi drwy bleidleisio o'i blaid.</p><p><strong>Am beth?</strong> Gall eich syniad ymwneud â llawer o bethau, cyn belled â'i fod yn gysylltiedig â'ch dinas a'i pholisi. Gall fod yn broblem rydych chi'n ei chael, yn ddatrysiad rydych chi'n ei ragweld neu hyd yn oed yn gyfuniad o'r ddau. Gall fod yn wyllt ac yn y tymor hir, neu'n ddiriaethol iawn ac yn fuddugoliaeth gyflym.</p><p><strong>Ac wedyn? </strong>A wnaethoch chi gyrraedd 100 pleidlais mewn 3 mis? Llongyfarchiadau! Bydd y ddinas nawr yn cymryd eich syniad i ystyriaeth. Os ystyrir bod eich syniad yn ymarferol ac nad yw'n niweidio grwpiau neu unigolion penodol, cewch gyfle i gyflwyno'ch cynnig yn ystod cyfarfod y cyngor. Yn ystod yr un cyfarfod, bydd aelodau'r cyngor yn rhoi adborth uniongyrchol i chi ar yr hyn y byddant neu na fyddant yn ei wneud â'ch syniad a pham. Os na fyddwch yn casglu 100 o bleidleisiau mewn 3 mis, ni fydd eich cynnig yn cael ei ystyried.</p><p>Rydym yn chwilfrydig i ddysgu am eich syniadau!</p>
@@ -126,6 +129,7 @@ cy:
     open_idea_phase_title: Cyfnod presennol
     native_survey_title: Arolwg
     native_survey_button: Cymerwch yr arolwg
+    community_monitor_title: Monitor cymunedol
   events:
     council_meeting_title: Cyfarfod y Cyngor
     council_meeting_description: >
@@ -138,8 +142,6 @@ cy:
         title: Blwyddyn geni
       domicile:
         title: Man preswylio
-      education:
-        title: Addysg
     ideas:
       title:
         title: Teitl
@@ -169,16 +171,58 @@ cy:
       attachments:
         title: Ymlyniadau
         description:
-      section1:
+      title_page:
         description:
-      section2:
+      body_page:
+        title: Dywedwch fwy wrthym
+        description:
+      uploads_page:
         title: Delweddau ac atodiadau
         description:
-      section3:
+      details_page:
         title: Manylion
         description:
       other_input_field:
         title: Teipiwch eich ateb
+      ask_follow_up_field:
+        title: Dywedwch wrthym pam
+    community_monitor:
+      questions:
+        place_to_live:
+          title: Dinas fel lle i fyw
+        sense_of_safety:
+          title: Synnwyr cyffredinol o ddiogelwch
+        access_to_parks:
+          title: Mynediad i barciau, mannau gwyrdd, a chyfleoedd hamdden
+        affordable_housing:
+          title: Argaeledd tai fforddiadwy
+        employment_opportunities:
+          title: Cyfleoedd cyflogaeth a datblygiad economaidd
+        quality_of_services:
+          title: Ansawdd cyffredinol y gwasanaethau a ddarperir gan y ddinas
+        overall_value:
+          title: Gwerth cyffredinol a gewch am eich trethi a'ch ffioedd dinas
+        cleanliness_and_maintenance:
+          title: Glanweithdra cyffredinol a chynnal a chadw strydoedd a mannau cyhoeddus
+        trust_in_government:
+          title: Ymddiried mewn llywodraeth leol
+        responsiveness_of_officials:
+          title: Ymatebolrwydd swyddogion etholedig i bryderon cymunedol
+        transparency_of_money_spent:
+          title: Tryloywder ynghylch sut mae arian treth dinesig yn cael ei wario
+      question_categories:
+        quality_of_life: Ansawdd bywyd
+        service_delivery: Cyflwyno gwasanaeth
+        governance_and_trust: Llywodraethu ac ymddiriedaeth
+        other: Arall
+      labels:
+        label_1: Gwael iawn
+        label_2: Gwael
+        label_3: Teg
+        label_4: Da
+        label_5: Ardderchog
+      form_end:
+        button_text: Yn ôl adref
   custom_forms:
     categories:
       main_content:
@@ -207,19 +251,11 @@ cy:
       unspecified: Amhenodol
     domicile:
       outside: Rhywle arall
-    education:
-      ISCED2: Addysg uwchradd is
-      ISCED3: Addysg uwchradd uwch
-      ISCED4: Addysg ôl-uwchradd nad yw'n drydyddol
-      ISCED5: Addysg drydyddol cylch byr
-      ISCED6: Baglor neu gyfwerth
-      ISCED7: Meistr neu gyfwerth
-      ISCED8: Doethurol neu gyfwerth
   reset_password_mailer:
     send_reset_password:
       preheader: 'Ailosodwch eich cyfrinair ar gyfer %{organizationName}'
       cta_reset_password: 'Ailosod eich cyfrinair'
-      message_you_reset_your_password: 'Gwnaethoch gais am ailosodiad cyfrinair ar gyfer y llwyfan cyfranogiad o %{organizationName}. Cliciwch y botwm isod i ddewis cyfrinair newydd, diogel. Daw''r ddolen i ben mewn 1 awr.'
+      message_you_reset_your_password: 'Gwnaethoch gais i ailosodiad cyfrinair ar gyfer y llwyfan cyfranogi %{organizationName}. Cliciwch y botwm isod i ddewis cyfrinair newydd, diogel. Daw''r ddolen i ben mewn 1 awr.'
       subject: '%{organizationName}: Ailosodwch eich cyfrinair'
       title_reset_your_password: 'Dewiswch gyfrinair newydd'
   xlsx_export:
@@ -265,8 +301,10 @@ cy:
       option1: 'Opsiwn 1'
       option2: 'Opsiwn 2'
     form_end_page:
-      title_text: 'Bron wedi''i wneud'
-      description_text_2: "Rydych ar fin cyflwyno eich atebion. Drwy glicio ar 'Cyflwyno' rydych yn rhoi caniatâd i ni ddadansoddi eich atebion.<br/>Ar ôl i chi gyflwyno, ni fyddwch yn gallu mynd yn ôl a newid unrhyw un o'ch atebion mwyach."
+      title_text_3: 'Diolch am rannu eich mewnbwn!'
+      description_text_3: "Mae eich mewnbwn wedi'i gyflwyno'n llwyddiannus."
+    form_user_page:
+      title_text: 'Amdanoch chi'
     pdf_export:
       personal_data: 'Data personol'
       personal_data_explanation_public: "Byddwn yn cyflwyno eich mewnbwn i %{organizationName}'s llwyfan cyfranogiad ar-lein. Os hoffech i'ch enw gael ei arddangos fel awdur y mewnbwn hwn a derbyn diweddariadau sy'n berthnasol i'ch mewnbwn trwy e-bost, llenwch y meysydd canlynol ar y dudalen hon a byddwn yn creu cyfrif i chi. Ni fydd eich e-bost yn gyhoeddus a bydd yn cael ei ddefnyddio gan %{organizationName}yn unig. Os ydych am aros yn ddienw, neu os nad ydych yn cytuno i ni ddefnyddio eich data personol yn y modd hwn, gallwch eu gadael yn wag."
@@ -304,7 +342,7 @@ cy:
       header: "Eich Cod Cadarnhau"
       header_message: "Helo %{firstName}!"
       confirm_email_address: "Cadarnhewch eich cyfeiriad e-bost"
-      thanks_for_signing_up1: "Diolch am eich cyfranogiad. Rhowch y cod cadarnhau hwn yn y ffenestr ar lwyfan cyfranogiad %{organizationName}:"
+      thanks_for_signing_up1: "Diolch am gymryd rhan. Rhowch y cod cadarnhau hwn yn y ffenestr ar lwyfan %{organizationName}:"
       best_regards: "Cofion gorau,"
       ignore_email: "Os na wnaethoch ofyn am god, gallwch anwybyddu'r e-bost hwn yn ddiogel."
       expire_code: "Bydd y cod hwn yn dod i ben yn "
@@ -318,7 +356,7 @@ cy:
       preheader: 'Mae eich cyfrif ar y llwyfan cyfranogiad o %{organizationName} wedi''i analluogi dros dro'
       title_user_blocked: 'Mae''ch cyfrif wedi''i analluogi dros dro'
       paragraph_1_without_reason: "Mae eich cyfrif ar y platfform cyfranogiad o %{organizationName} wedi'i analluogi dros dro am dorri'r canllawiau cymunedol."
-      paragraph_1_with_reason: "Mae eich cyfrif ar y platfform cyfranogiad o %{organizationName} wedi'i analluogi dros dro am y rheswm canlynol:"
+      paragraph_1_with_reason: "Mae eich cyfrif ar lwyfan cyfranogi %{organizationName} wedi'i analluogi dros dro am y rheswm canlynol:"
       for_more_information: "I gael rhagor o wybodaeth am hyn, gallwch edrych ar y %{termsAndConditionsPage}"
       you_can_sign_in_again_from: "Gallwch fewngofnodi eto o %{date}"
   user:

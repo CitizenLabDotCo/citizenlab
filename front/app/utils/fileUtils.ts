@@ -121,3 +121,23 @@ export function returnFileSize(size: number) {
 export function isUploadFile(file: UploadFile | null): file is UploadFile {
   return file !== null;
 }
+
+export const base64ToBlob = (base64: string): Blob | null => {
+  try {
+    const matches = base64.match(/^data:(.*?);base64,(.*)$/);
+    if (!matches || matches.length < 3) {
+      return null;
+    }
+
+    const mimeType = matches[1];
+    const byteCharacters = atob(matches[2]);
+    const byteNumbers = new Array(byteCharacters.length)
+      .fill(0)
+      .map((_, i) => byteCharacters.charCodeAt(i));
+    const byteArray = new Uint8Array(byteNumbers);
+    return new Blob([byteArray], { type: mimeType });
+  } catch (error) {
+    console.error('Failed to convert base64 to Blob:', error);
+    return null;
+  }
+};

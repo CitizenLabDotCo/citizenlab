@@ -178,15 +178,7 @@ jobs:
     environment:
       RAILS_ENV: development
     steps:
-      # GHSA-xc9x-jj77-9p9j
-      # Solutions: upgrade Nokogiri (requires newer Ruby) or
-      # Compile and link Nokogiri against new libxml2
-      # https://github.com/sparklemotion/nokogiri/security/advisories/GHSA-xc9x-jj77-9p9j
-      #
-      # CVE-2023-51774
-      # It has been fixed by upgrading to json-jwt to 1.16.6, but the CVE data has not
-      # been updated yet. So we can safely ignore it.
-      - run: bundle exec bundle-audit check --update --ignore GHSA-xc9x-jj77-9p9j CVE-2023-51774
+      - run: bundle exec bundle-audit check --update
 
   back-license-check:
     resource_class: small
@@ -370,9 +362,39 @@ jobs:
         default: .env-production
     steps:
       - run:
-          command: ssh << parameters.ssh_user >>@<< parameters.ssh_host >> -o StrictHostKeyChecking=no "docker pull citizenlabdotco/back-ee:$CIRCLE_BRANCH && docker run --env-file cl2-deployment/<< parameters.env_file >> citizenlabdotco/back-ee:$CIRCLE_BRANCH bin/rake db:migrate_if_pending cl2back:clean_tenant_settings email_campaigns:assure_campaign_records fix_existing_tenants:update_permissions cl2back:clear_cache_store email_campaigns:remove_deprecated"
-      - deploy:
-          command: ssh << parameters.ssh_user >>@<< parameters.ssh_host >> -o StrictHostKeyChecking=no "cd cl2-deployment && docker stack deploy --compose-file << parameters.compose_file >> << parameters.stack_name >> --with-registry-auth --prune"
+          name: Pull Docker image and run pre-deployment tasks
+          command: |
+            ssh << parameters.ssh_user >>@<< parameters.ssh_host >> -o StrictHostKeyChecking=no \<<EOF
+            docker pull citizenlabdotco/back-ee:$CIRCLE_BRANCH && \
+            docker run \
+              --env-file cl2-deployment/<< parameters.env_file >> \
+              citizenlabdotco/back-ee:$CIRCLE_BRANCH \
+              bin/rake \
+              db:migrate_if_pending \
+              cl2back:clean_tenant_settings \
+              email_campaigns:assure_campaign_records \
+              fix_existing_tenants:update_permissions \
+              cl2back:clear_cache_store \
+              email_campaigns:remove_deprecated
+            EOF
+      - run:
+          name: Deploy the stack
+          # Down nodes are removed before deploying the stack. These nodes are produced by
+          # the auto-scaling group and build up over time. When terminated, ASG nodes
+          # don't leave the swarm gracefully. As a result, these "zombie" nodes can
+          # disrupt the swarm and lead to various issues such as deployment updates
+          # failing on some nodes.
+          command: |
+            ssh << parameters.ssh_user >>@<< parameters.ssh_host >> -o StrictHostKeyChecking=no \<<EOF
+              down_nodes=$(docker node ls | grep Down | awk '{print $1}') && \
+              [ -n "$down_nodes" ] && echo "$down_nodes" | xargs -n25 docker node rm || echo "No down nodes found." && \
+              cd cl2-deployment && \
+              docker stack deploy \
+                --compose-file << parameters.compose_file >> \
+                << parameters.stack_name >> \
+                --with-registry-auth \
+                --prune
+            EOF
 
   back-generate-tenant-templates:
     resource_class: small
@@ -617,7 +639,7 @@ jobs:
           no_output_timeout: "30m"
       - run:
           command: rm build/*.map
-      - deploy:
+      - run:
           name: Deploy to S3 if tests pass and branch is Master
           command: |
             aws s3 sync build/ s3://cl2-front-staging/ --acl public-read --exclude "index.html"
@@ -643,12 +665,12 @@ jobs:
           no_output_timeout: "30m"
       - run:
           command: rm build/*.map
-      - deploy:
+      - run:
           name: Deploy production version
           command: |
             aws s3 sync build/ s3://cl2-front-production-benelux/ --acl public-read --exclude "index.html"
             aws s3 cp build/index.html s3://cl2-front-production-benelux/index.html --acl public-read --cache-control no-cache
-      - deploy:
+      - run:
           name: Invalidate the static assets on the CDN
           command: aws cloudfront create-invalidation --distribution-id E2MY732QC516J3 --paths '/*'
 

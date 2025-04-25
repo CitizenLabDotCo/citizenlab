@@ -1,26 +1,17 @@
-interface RegistrationsCountRow {
-  count: number;
-}
-
-export interface TimeSeriesResponseRow extends RegistrationsCountRow {
-  first_dimension_date_registration_date: string;
-}
-
-interface VisitorsCountRow {
-  count_visitor_id: number;
+export interface TimeSeriesResponseRow {
+  date_group: string;
+  registrations: number;
 }
 
 export type RegistrationsResponse = {
   data: {
     type: 'report_builder_data_units';
-    attributes: [
-      TimeSeriesResponseRow[] | [], // time series
-      [RegistrationsCountRow] | [], // registrations whole period
-      [VisitorsCountRow] | [], // visitors whole period
-      [RegistrationsCountRow] | [], // registrations who accepted cookies whole period
-      [RegistrationsCountRow] | [] | undefined, // registrations previous period
-      [VisitorsCountRow] | [] | undefined, // visitors previous period
-      [RegistrationsCountRow] | [] | undefined // registrations who accepted cookies previous period
-    ];
+    attributes: {
+      registrations_timeseries: TimeSeriesResponseRow[];
+      registrations_whole_period: number;
+      registration_rate_whole_period: number;
+      registrations_compared_period?: number;
+      registration_rate_compared_period?: number;
+    };
   };
 };

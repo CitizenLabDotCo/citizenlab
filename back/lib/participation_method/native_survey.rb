@@ -7,8 +7,9 @@ module ParticipationMethod
     end
 
     def allowed_extra_field_input_types
-      %w[page number linear_scale text multiline_text select multiselect
-        multiselect_image file_upload shapefile_upload point line polygon]
+      %w[page number linear_scale rating text multiline_text select multiselect
+        multiselect_image file_upload shapefile_upload point line polygon
+        ranking matrix_linear_scale sentiment_linear_scale]
     end
 
     def assign_defaults(input)
@@ -40,18 +41,11 @@ module ParticipationMethod
 
       multiloc_service = MultilocService.new
       [
-        CustomField.new(
-          id: SecureRandom.uuid,
-          key: 'page1',
-          resource: custom_form,
-          input_type: 'page',
-          page_layout: 'default'
-        ),
+        start_page_field(custom_form),
         CustomField.new(
           id: SecureRandom.uuid,
           key: CustomFieldService.new.generate_key(
-            multiloc_service.i18n_to_multiloc('form_builder.default_select_field.title').values.first,
-            false
+            multiloc_service.i18n_to_multiloc('form_builder.default_select_field.title').values.first
           ),
           resource: custom_form,
           input_type: 'select',
@@ -68,8 +62,13 @@ module ParticipationMethod
               title_multiloc: multiloc_service.i18n_to_multiloc('form_builder.default_select_field.option2')
             )
           ]
-        )
+        ),
+        end_page_field(custom_form, multiloc_service)
       ]
+    end
+
+    def form_logic_enabled?
+      true
     end
 
     # Survey responses do not have a fixed field that can be used
@@ -100,10 +99,6 @@ module ParticipationMethod
       false
     end
 
-    def supports_pages_in_form?
-      true
-    end
-
     def supports_permitted_by_everyone?
       true
     end
@@ -122,6 +117,34 @@ module ParticipationMethod
 
     def supports_toxicity_detection?
       false
+    end
+
+    def user_fields_in_form?
+      phase.user_fields_in_form
+    end
+
+    private
+
+    def start_page_field(custom_form)
+      CustomField.new(
+        id: SecureRandom.uuid,
+        key: 'page1',
+        resource: custom_form,
+        input_type: 'page',
+        page_layout: 'default'
+      )
+    end
+
+    def end_page_field(custom_form, multiloc_service)
+      CustomField.new(
+        id: SecureRandom.uuid,
+        key: 'form_end',
+        resource: custom_form,
+        input_type: 'page',
+        page_layout: 'default',
+        title_multiloc: multiloc_service.i18n_to_multiloc('form_builder.form_end_page.title_text_3'),
+        description_multiloc: multiloc_service.i18n_to_multiloc('form_builder.form_end_page.description_text_3')
+      )
     end
   end
 end

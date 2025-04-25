@@ -1,4 +1,4 @@
-import { Box, colors } from '@citizenlab/cl2-component-library';
+import { Box, Text, colors } from '@citizenlab/cl2-component-library';
 import { rgba } from 'polished';
 import styled from 'styled-components';
 
@@ -22,4 +22,8 @@ export const StyledBox = styled(Box)`
   &:hover {
     background: rgba(0, 0, 0, 0.7);
   }
+`;
+
+export const StyledText = styled(Text)`
+  font-size: 15px;
 `;

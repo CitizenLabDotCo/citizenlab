@@ -8,6 +8,8 @@ import {
 import CSSTransition from 'react-transition-group/CSSTransition';
 import styled from 'styled-components';
 
+import useIdeaById from 'api/ideas/useIdeaById';
+import usePhase from 'api/phases/usePhase';
 import useProjectById from 'api/projects/useProjectById';
 
 import IdeasShow from 'containers/IdeasShow';
@@ -95,7 +97,7 @@ interface Props {
   phaseId?: string;
   className?: string;
   onSelectIdea: (ideaId: string | null) => void;
-  selectedIdea?: string | null;
+  selectedIdeaId: string | null;
   inputFiltersProps?: InputFiltersProps;
 }
 
@@ -104,11 +106,15 @@ const IdeaMapOverlay = memo<Props>(
     projectId,
     phaseId,
     className,
-    selectedIdea,
+    selectedIdeaId,
     onSelectIdea,
     inputFiltersProps,
   }) => {
     const { data: project } = useProjectById(projectId);
+    const { data: idea } = useIdeaById(
+      typeof selectedIdeaId === 'string' ? selectedIdeaId : undefined
+    );
+    const { data: phase } = usePhase(phaseId);
     const { windowWidth } = useWindowSize();
     const timeoutRef = useRef<number>();
     const smallerThan1440px = !!(windowWidth && windowWidth <= 1440);
@@ -120,10 +126,10 @@ const IdeaMapOverlay = memo<Props>(
     const overlayRef = useRef<HTMLDivElement | null>(null);
 
     useEffect(() => {
-      if (scrollContainerElement && selectedIdea) {
+      if (scrollContainerElement && selectedIdeaId) {
         scrollContainerElement.scrollTop = 0;
       }
-    }, [scrollContainerElement, selectedIdea]);
+    }, [scrollContainerElement, selectedIdeaId]);
 
     useEffect(() => {
       const currentTimeout = timeoutRef.current;
@@ -153,7 +159,7 @@ const IdeaMapOverlay = memo<Props>(
         }
       }, 0);
     };
-    const showList = isMobileOrSmaller ? true : !selectedIdea;
+    const showList = isMobileOrSmaller ? true : !selectedIdeaId;
 
     if (project) {
       return (
@@ -166,10 +172,10 @@ const IdeaMapOverlay = memo<Props>(
               inputFiltersProps={inputFiltersProps}
             />
           )}
-          {!isMobileOrSmaller && (
+          {!isMobileOrSmaller && idea && (
             <CSSTransition
               classNames="animation"
-              in={!!selectedIdea}
+              in={true}
               timeout={timeout}
               mountOnEnter={true}
               unmountOnExit={true}
@@ -183,20 +189,20 @@ const IdeaMapOverlay = memo<Props>(
                 ref={overlayRef}
               >
                 <IdeaShowPageTopBar
-                  ideaId={selectedIdea ?? undefined}
+                  idea={idea.data}
                   deselectIdeaOnMap={() => {
                     onSelectIdea(null);
                   }}
-                  projectId={projectId}
+                  // This component is only used when there's timeline context atm.
+                  // This means that, in practice, there should always be a phase (id).
+                  phase={phase?.data}
                 />
-                {selectedIdea && (
-                  <StyledIdeasShow
-                    ideaId={selectedIdea}
-                    projectId={projectId}
-                    compact={true}
-                    setRef={handleIdeasShowSetRef}
-                  />
-                )}
+                <StyledIdeasShow
+                  ideaId={idea.data.id}
+                  projectId={projectId}
+                  compact={true}
+                  setRef={handleIdeasShowSetRef}
+                />
               </InnerOverlay>
             </CSSTransition>
           )}

@@ -8,7 +8,7 @@ class AreaPolicy < ApplicationPolicy
   end
 
   def create?
-    user&.active? && user&.admin?
+    user&.active? && user.admin?
   end
 
   def show?
@@ -16,7 +16,7 @@ class AreaPolicy < ApplicationPolicy
   end
 
   def update?
-    user&.active? && user&.admin?
+    user&.active? && user.admin?
   end
 
   def destroy?

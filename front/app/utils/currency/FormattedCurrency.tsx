@@ -1,34 +1,28 @@
 import React from 'react';
 
-import { WrappedComponentProps } from 'react-intl';
-
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 
-import { injectIntl } from 'utils/cl-intl';
-import { isNilOrError } from 'utils/helperUtils';
+import { useIntl } from 'utils/cl-intl';
 
 import messages from './messages';
 
-const FormattedCurrency = ({
-  intl: { formatMessage },
-}: WrappedComponentProps) => {
+const FormattedCurrency = () => {
   const { data: appConfiguration } = useAppConfiguration();
+  const { formatMessage } = useIntl();
 
-  if (!isNilOrError(appConfiguration)) {
-    const currency = appConfiguration.data.attributes.settings.core.currency;
+  if (!appConfiguration) return null;
 
-    // custom implementations for custom currencies
-    // see appConfiguration.ts for all currencies
-    if (currency === 'TOK') {
-      return <>{formatMessage(messages.tokens)}</>;
-    } else if (currency === 'CRE') {
-      return <>{formatMessage(messages.credits)}</>;
-    } else {
-      return <>{currency}</>;
-    }
+  const currency = appConfiguration.data.attributes.settings.core.currency;
+
+  // custom implementations for custom currencies
+  // see appConfiguration.ts for all currencies
+  if (currency === 'TOK') {
+    return <>{formatMessage(messages.tokens)}</>;
+  } else if (currency === 'CRE') {
+    return <>{formatMessage(messages.credits)}</>;
+  } else {
+    return <>{currency}</>;
   }
-
-  return null;
 };
 
-export default injectIntl(FormattedCurrency);
+export default FormattedCurrency;

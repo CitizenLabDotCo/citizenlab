@@ -219,7 +219,7 @@ const MentionsTextArea = ({
     if (isString(query) && !isEmpty(query)) {
       const queryParameters = {
         mention: query.toLowerCase(),
-        post_id: postId,
+        idea_id: postId,
         roles,
       };
 

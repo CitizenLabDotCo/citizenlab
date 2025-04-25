@@ -14,7 +14,7 @@ import {
 } from 'containers/Authentication/typings';
 
 import FormWrapper from 'components/Form/Components/FormWrapper';
-import { isValidData, customAjv } from 'components/Form/utils';
+import customAjv from 'components/Form/utils/customAjv';
 import Button from 'components/UI/ButtonWithLink';
 import UserCustomFieldsForm from 'components/UserCustomFields';
 
@@ -68,7 +68,7 @@ const CustomFields = ({
   }
 
   const handleSubmit = async () => {
-    if (!isValidData(schema, uiSchema, formData, customAjv)) {
+    if (!customAjv.validate(schema, formData)) {
       setShowAllErrors(true);
     } else {
       try {

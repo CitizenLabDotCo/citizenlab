@@ -5,16 +5,32 @@ module ReportBuilder
       question_id: nil,
       group_mode: nil,
       group_field_id: nil,
+      year: nil,
+      quarter: nil,
       **_other_props
     )
       return {} if phase_id.blank? || question_id.blank?
 
       phase = Phase.find(phase_id)
-      service = SurveyResultsGeneratorService.new(phase,
-        group_mode: group_mode,
-        group_field_id: group_field_id)
+      service = if group_field_id && group_mode
+        Surveys::ResultsWithGroupGenerator.new(
+          phase,
+          group_mode:,
+          group_field_id:,
+          year:,
+          quarter:
+        )
+      elsif year && quarter
+        Surveys::ResultsWithDateGenerator.new(
+          phase,
+          year:,
+          quarter:
+        )
+      else
+        Surveys::ResultsGenerator.new(phase)
+      end
 
-      service.generate_results(field_id: question_id)
+      service.generate_result_for_field(question_id)
     end
   end
 end

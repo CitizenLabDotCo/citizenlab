@@ -15,6 +15,7 @@ export const verificationTypesLeavingPlatform = [
   'franceconnect',
   'nemlog_in',
   'keycloak',
+  'twoday',
   'fake_sso',
 ];
 
@@ -30,6 +31,7 @@ export type TVerificationMethodName =
   | 'gent_rrn'
   | 'id_card_lookup'
   | 'keycloak'
+  | 'twoday'
   | 'nemlog_in'
   | 'oostende_rrn'
   | 'id_austria';
@@ -103,6 +105,16 @@ export type IDKeycloakMethod = {
   };
 };
 
+export type IDTwodayMethod = {
+  id: string;
+  type: 'verification_method';
+  attributes: {
+    name: 'twoday';
+    method_metadata?: MethodMetadata;
+    ui_method_name: string;
+  };
+};
+
 export type IDAuth0Method = {
   id: string;
   type: 'verification_method';
@@ -129,6 +141,7 @@ export type TVerificationMethod =
   | IDLookupMethod
   | IDCriiptoMethod
   | IDKeycloakMethod
+  | IDTwodayMethod
   | IDAuth0Method
   | IDIdAustriaMethod;
 // TODO: JS - No Fake SSO?

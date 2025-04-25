@@ -12,12 +12,11 @@ import {
 import * as Sentry from '@sentry/react';
 import GlobalStyle from 'global-styles';
 import 'intersection-observer';
-import { includes, uniq } from 'lodash-es';
-import 'moment-timezone';
-import moment from 'moment';
+// moment-timezone extends the regular moment library,
+// so there's no need to import both moment and moment-timezone
+import moment from 'moment-timezone';
 import { useLocation } from 'react-router-dom';
 import styled, { ThemeProvider } from 'styled-components';
-import { SupportedLocale } from 'typings';
 
 import { IAppConfigurationStyle } from 'api/app_configuration/types';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
@@ -25,8 +24,13 @@ import useAuthUser from 'api/me/useAuthUser';
 import useDeleteSelf from 'api/users/useDeleteSelf';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
+import useLocale from 'hooks/useLocale';
 
-import { appLocalesMomentPairs, locales } from 'containers/App/constants';
+import {
+  appLocalesMomentPairs,
+  localeGetter,
+  locales,
+} from 'containers/App/constants';
 import Authentication from 'containers/Authentication';
 import MainHeader from 'containers/MainHeader';
 
@@ -43,10 +47,10 @@ import {
   isIdeaShowPage,
   isPage,
 } from 'utils/helperUtils';
-import { localeStream } from 'utils/localeStream';
 import { usePermission } from 'utils/permissions';
 import { isAdmin, isModerator } from 'utils/permissions/roles';
 
+import CommunityMonitorModal from './CommunityMonitorModal';
 import messages from './messages';
 import Meta from './Meta';
 import UserSessionRecordingModal from './UserSessionRecordingModal';
@@ -74,12 +78,22 @@ interface Props {
   children: React.ReactNode;
 }
 
-const locale$ = localeStream().observable;
+const importedLocales = new Set();
+async function importMomentLocaleFilePromise(momentLocale: string) {
+  try {
+    await localeGetter(momentLocale);
+    importedLocales.add(momentLocale);
+  } catch (error) {
+    console.error(`Error processing locale: ${momentLocale}`, error);
+  }
+}
 
 const App = ({ children }: Props) => {
   const isSmallerThanTablet = useBreakpoint('tablet');
   const location = useLocation();
   const { formatMessage } = useIntl();
+  const locale = useLocale();
+  const momentLocale = appLocalesMomentPairs[locale] || 'en';
 
   const { mutate: signOutAndDeleteAccount } = useDeleteSelf();
   const [isAppInitialized, setIsAppInitialized] = useState(false);
@@ -93,9 +107,36 @@ const App = ({ children }: Props) => {
   ] = useState(false);
   const [userSuccessfullyDeleted, setUserSuccessfullyDeleted] = useState(false);
 
-  const [locale, setLocale] = useState<SupportedLocale | null>(null);
-
   const redirectsEnabled = useFeatureFlag({ name: 'redirects' });
+
+  useEffect(() => {
+    moment.locale(momentLocale);
+  }, [momentLocale]);
+
+  useEffect(() => {
+    if (!appConfiguration) return;
+
+    const appConfigMomentLocales = [
+      // The set ensures that locales are unique. Some of our locales share the same moment locale.
+      ...new Set(
+        appConfiguration.data.attributes.settings.core.locales
+          .filter((loc) => loc !== 'en')
+          .map((loc) => appLocalesMomentPairs[loc])
+      ),
+    ];
+    const importPromises = appConfigMomentLocales
+      .filter(
+        (appConfigMomentLocale) => !importedLocales.has(appConfigMomentLocale)
+      )
+      .map((appConfigMomentLocale) =>
+        importMomentLocaleFilePromise(appConfigMomentLocale)
+      );
+
+    Promise.all(importPromises).then(() => {
+      // The latest imported locale file would overwrite the moment locale (for some reason).
+      moment.locale(momentLocale);
+    });
+  }, [appConfiguration, momentLocale]);
 
   useEffect(() => {
     if (appConfiguration && !isAppInitialized) {
@@ -103,25 +144,6 @@ const App = ({ children }: Props) => {
       moment.tz.setDefault(
         appConfiguration.data.attributes.settings.core.timezone
       );
-
-      // Dynamically load Moment.js locales
-      const localeImports = import.meta.glob(
-        '/node_modules/moment/locale/*.js'
-      );
-
-      uniq(
-        appConfiguration.data.attributes.settings.core.locales
-          .filter((locale) => locale !== 'en')
-          .map((locale) => appLocalesMomentPairs[locale])
-      ).forEach((locale) => {
-        const localePath = `/node_modules/moment/locale/${locale}.js`;
-        const loadLocale = localeImports[localePath];
-
-        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-        if (loadLocale) {
-          loadLocale();
-        }
-      });
 
       // Weglot initialization
       if (appConfiguration.data.attributes.settings.core.weglot_api_key) {
@@ -141,10 +163,7 @@ const App = ({ children }: Props) => {
       }
 
       // Custom Adobe fonts or custom font URLs
-      if (
-        appConfiguration.data.attributes.style &&
-        appConfiguration.data.attributes.style.customFontAdobeId
-      ) {
+      if (appConfiguration.data.attributes.style?.customFontAdobeId) {
         import('webfontloader').then((WebfontLoader) => {
           WebfontLoader.load({
             typekit: {
@@ -154,10 +173,7 @@ const App = ({ children }: Props) => {
             },
           });
         });
-      } else if (
-        appConfiguration.data.attributes.style &&
-        appConfiguration.data.attributes.style.customFontURL
-      ) {
+      } else if (appConfiguration.data.attributes.style?.customFontURL) {
         import('webfontloader').then((WebfontLoader) => {
           const fontName = (
             appConfiguration.data.attributes.style as IAppConfigurationStyle
@@ -184,20 +200,18 @@ const App = ({ children }: Props) => {
     const handleCustomRedirect = () => {
       const { pathname } = location;
       const urlSegments = pathname.replace(/^\/+/g, '').split('/');
+      const localeInUrl = urlSegments[0];
       const pathnameWithoutLocale = removeLocale(pathname).pathname?.replace(
         /\//,
         ''
       );
 
-      if (
-        appConfiguration &&
-        appConfiguration.data.attributes.settings.redirects
-      ) {
+      if (appConfiguration?.data.attributes.settings.redirects) {
         const { rules } = appConfiguration.data.attributes.settings.redirects;
         rules.forEach((rule) => {
           if (
             urlSegments.length > 1 &&
-            includes(locales, urlSegments[0]) &&
+            locales.includes(localeInUrl) &&
             pathnameWithoutLocale === rule.path
           ) {
             window.location.href = rule.target;
@@ -213,11 +227,6 @@ const App = ({ children }: Props) => {
 
   useEffect(() => {
     const subscriptions = [
-      locale$.subscribe((locale) => {
-        const momentLoc = appLocalesMomentPairs[locale] || 'en';
-        moment.locale(momentLoc);
-        setLocale(locale);
-      }),
       eventEmitter
         .observeEvent('deleteProfileAndShowSuccessModal')
         .subscribe(() => {
@@ -241,7 +250,7 @@ const App = ({ children }: Props) => {
 
   useEffect(() => {
     if (authUser) {
-      Sentry.getCurrentScope()?.setUser({
+      Sentry.getCurrentScope().setUser({
         id: authUser.data.id,
       });
     }
@@ -291,7 +300,7 @@ const App = ({ children }: Props) => {
     }
 
     // citizen
-    if (isNativeSurveyPage) return false;
+    if (isNativeSurveyPage || isIdeaFormPage || isIdeaEditPage) return false;
 
     if (isSmallerThanTablet) {
       if (isEventPage || isIdeaShowPage(urlSegments)) {
@@ -320,7 +329,7 @@ const App = ({ children }: Props) => {
           <Spinner />
         </Box>
       )}
-      <ThemeProvider theme={{ ...theme, isRtl: !!locale?.startsWith('ar') }}>
+      <ThemeProvider theme={{ ...theme, isRtl: locale.startsWith('ar') }}>
         <GlobalStyle />
         <Box
           className={appContainerClassName}
@@ -333,6 +342,7 @@ const App = ({ children }: Props) => {
         >
           <Meta />
           <UserSessionRecordingModal />
+          <CommunityMonitorModal />
           <ErrorBoundary>
             <Suspense fallback={null}>
               <UserDeletedModal

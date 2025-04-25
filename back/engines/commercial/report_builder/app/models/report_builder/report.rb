@@ -12,13 +12,15 @@
 #  phase_id      :uuid
 #  visible       :boolean          default(FALSE), not null
 #  name_tsvector :tsvector
+#  year          :integer
+#  quarter       :integer
 #
 # Indexes
 #
 #  index_report_builder_reports_on_name           (name) UNIQUE
 #  index_report_builder_reports_on_name_tsvector  (name_tsvector) USING gin
 #  index_report_builder_reports_on_owner_id       (owner_id)
-#  index_report_builder_reports_on_phase_id       (phase_id) UNIQUE
+#  index_report_builder_reports_on_phase_id       (phase_id)
 #
 # Foreign Keys
 #
@@ -47,8 +49,10 @@ module ReportBuilder
     }
 
     validates :name, uniqueness: true, allow_nil: true
-    validates :phase_id, uniqueness: true, allow_nil: true
+    validates :phase_id, uniqueness: true, unless: :supports_multiple_phase_reports?, allow_nil: true
     validates :visible, inclusion: { in: [false], unless: :phase? }
+    validates :year, numericality: { in: 2024..2050 }, allow_nil: true
+    validates :quarter, numericality: { in: 1..4 }, allow_nil: true
 
     def phase?
       !phase_id.nil?
@@ -56,6 +60,12 @@ module ReportBuilder
 
     def public?
       phase? && phase.started? && visible?
+    end
+
+    private
+
+    def supports_multiple_phase_reports?
+      phase&.pmethod&.supports_multiple_phase_reports?
     end
   end
 end

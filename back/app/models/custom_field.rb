@@ -4,36 +4,44 @@
 #
 # Table name: custom_fields
 #
-#  id                            :uuid             not null, primary key
-#  resource_type                 :string
-#  key                           :string
-#  input_type                    :string
-#  title_multiloc                :jsonb
-#  description_multiloc          :jsonb
-#  required                      :boolean          default(FALSE)
-#  ordering                      :integer
-#  created_at                    :datetime         not null
-#  updated_at                    :datetime         not null
-#  enabled                       :boolean          default(TRUE), not null
-#  code                          :string
-#  resource_id                   :uuid
-#  hidden                        :boolean          default(FALSE), not null
-#  maximum                       :integer
-#  logic                         :jsonb            not null
-#  answer_visible_to             :string
-#  select_count_enabled          :boolean          default(FALSE), not null
-#  maximum_select_count          :integer
-#  minimum_select_count          :integer
-#  random_option_ordering        :boolean          default(FALSE), not null
-#  page_layout                   :string
-#  linear_scale_label_1_multiloc :jsonb            not null
-#  linear_scale_label_2_multiloc :jsonb            not null
-#  linear_scale_label_3_multiloc :jsonb            not null
-#  linear_scale_label_4_multiloc :jsonb            not null
-#  linear_scale_label_5_multiloc :jsonb            not null
-#  linear_scale_label_6_multiloc :jsonb            not null
-#  linear_scale_label_7_multiloc :jsonb            not null
-#  dropdown_layout               :boolean          default(FALSE), not null
+#  id                             :uuid             not null, primary key
+#  resource_type                  :string
+#  key                            :string
+#  input_type                     :string
+#  title_multiloc                 :jsonb
+#  description_multiloc           :jsonb
+#  required                       :boolean          default(FALSE)
+#  ordering                       :integer
+#  created_at                     :datetime         not null
+#  updated_at                     :datetime         not null
+#  enabled                        :boolean          default(TRUE), not null
+#  code                           :string
+#  resource_id                    :uuid
+#  hidden                         :boolean          default(FALSE), not null
+#  maximum                        :integer
+#  logic                          :jsonb            not null
+#  answer_visible_to              :string
+#  select_count_enabled           :boolean          default(FALSE), not null
+#  maximum_select_count           :integer
+#  minimum_select_count           :integer
+#  random_option_ordering         :boolean          default(FALSE), not null
+#  page_layout                    :string
+#  linear_scale_label_1_multiloc  :jsonb            not null
+#  linear_scale_label_2_multiloc  :jsonb            not null
+#  linear_scale_label_3_multiloc  :jsonb            not null
+#  linear_scale_label_4_multiloc  :jsonb            not null
+#  linear_scale_label_5_multiloc  :jsonb            not null
+#  linear_scale_label_6_multiloc  :jsonb            not null
+#  linear_scale_label_7_multiloc  :jsonb            not null
+#  dropdown_layout                :boolean          default(FALSE), not null
+#  linear_scale_label_8_multiloc  :jsonb            not null
+#  linear_scale_label_9_multiloc  :jsonb            not null
+#  linear_scale_label_10_multiloc :jsonb            not null
+#  linear_scale_label_11_multiloc :jsonb            not null
+#  ask_follow_up                  :boolean          default(FALSE), not null
+#  page_button_label_multiloc     :jsonb            not null
+#  page_button_link               :string
+#  question_category              :string
 #
 # Indexes
 #
@@ -48,26 +56,34 @@ class CustomField < ApplicationRecord
   acts_as_list column: :ordering, top_of_list: 0, scope: [:resource_id]
 
   has_many :options, -> { order(:ordering) }, dependent: :destroy, class_name: 'CustomFieldOption', inverse_of: :custom_field
+  has_many :matrix_statements, -> { order(:ordering) }, dependent: :destroy, class_name: 'CustomFieldMatrixStatement', inverse_of: :custom_field
   has_many :text_images, as: :imageable, dependent: :destroy
   accepts_nested_attributes_for :text_images
 
   belongs_to :resource, polymorphic: true, optional: true
+  belongs_to :custom_form, foreign_key: :resource_id, optional: true, inverse_of: :custom_fields
+
   has_many :permissions_custom_fields, dependent: :destroy
   has_many :permissions, through: :permissions_custom_fields
 
+  has_many :custom_field_bins, dependent: :destroy
+
   FIELDABLE_TYPES = %w[User CustomForm].freeze
   INPUT_TYPES = %w[
-    checkbox date file_upload files html html_multiloc image_files linear_scale multiline_text multiline_text_multiloc
+    checkbox date file_upload files html html_multiloc image_files linear_scale rating multiline_text multiline_text_multiloc
     multiselect multiselect_image number page point line polygon select select_image shapefile_upload text text_multiloc
-    topic_ids section cosponsor_ids
+    topic_ids cosponsor_ids ranking matrix_linear_scale sentiment_linear_scale
   ].freeze
   CODES = %w[
-    author_id birthyear body_multiloc budget domicile education gender idea_files_attributes idea_images_attributes
-    ideation_section1 ideation_section2 ideation_section3 location_description proposed_budget title_multiloc topic_ids cosponsor_ids
+    author_id birthyear body_multiloc budget domicile gender idea_files_attributes idea_images_attributes
+    location_description proposed_budget title_multiloc topic_ids cosponsor_ids
+    title_page body_page uploads_page details_page
+    page_quality_of_life page_service_delivery page_governance_and_trust
   ].freeze
   VISIBLE_TO_PUBLIC = 'public'
   VISIBLE_TO_ADMINS = 'admins'
   PAGE_LAYOUTS = %w[default map].freeze
+  QUESTION_CATEGORIES = %w[quality_of_life service_delivery governance_and_trust other].freeze
 
   validates :resource_type, presence: true, inclusion: { in: FIELDABLE_TYPES }
   validates(
@@ -77,7 +93,7 @@ class CustomField < ApplicationRecord
     if: :accepts_input?
   )
   validates :input_type, presence: true, inclusion: INPUT_TYPES
-  validates :title_multiloc, presence: true, multiloc: { presence: true }, unless: :page_or_section?
+  validates :title_multiloc, presence: true, multiloc: { presence: true }, unless: :page?
   validates :description_multiloc, multiloc: { presence: false, html: true }
   validates :required, inclusion: { in: [true, false] }
   validates :enabled, inclusion: { in: [true, false] }
@@ -89,6 +105,9 @@ class CustomField < ApplicationRecord
   validates :minimum_select_count, comparison: { greater_than_or_equal_to: 0 }, if: :multiselect?, allow_nil: true
   validates :page_layout, presence: true, inclusion: { in: PAGE_LAYOUTS }, if: :page?
   validates :page_layout, absence: true, unless: :page?
+  validates :question_category, absence: true, unless: :supports_category?
+  validates :question_category, inclusion: { in: QUESTION_CATEGORIES }, allow_nil: true, if: :supports_category?
+  validates :maximum, presence: true, inclusion: 2..11, if: :supports_linear_scale?
 
   before_validation :set_default_enabled
   before_validation :set_default_answer_visible_to
@@ -102,23 +121,118 @@ class CustomField < ApplicationRecord
   scope :required, -> { where(required: true) }
   scope :not_hidden, -> { where(hidden: false) }
   scope :hidden, -> { where(hidden: true) }
-  scope :support_multiple_values, -> { where(input_type: 'multiselect') }
-  scope :support_single_value, -> { where.not(input_type: 'multiselect') }
+
+  def policy_class
+    case resource_type
+    when 'User'
+      UserCustomFields::UserCustomFieldPolicy
+    when 'CustomForm'
+      IdeaCustomFields::IdeaCustomFieldPolicy
+    else
+      raise "Polcy not implemented for resource type: #{resource_type}"
+    end
+  end
 
   def logic?
     logic.present? && logic != { 'rules' => [] }
   end
 
   def support_options?
-    %w[select multiselect select_image multiselect_image].include?(input_type)
+    %w[select multiselect select_image multiselect_image ranking].include?(input_type)
+  end
+
+  def includes_other_option?
+    options.any?(&:other)
+  end
+
+  def ask_follow_up?
+    ask_follow_up
+  end
+
+  def support_follow_up?
+    %w[sentiment_linear_scale].include?(input_type)
   end
 
   def support_free_text_value?
-    %w[text multiline_text text_multiloc multiline_text_multiloc html_multiloc].include?(input_type)
+    %w[text multiline_text text_multiloc multiline_text_multiloc html_multiloc].include?(input_type) || (support_options? && includes_other_option?) || support_follow_up?
   end
 
   def support_option_images?
     %w[select_image multiselect_image].include?(input_type)
+  end
+
+  def supports_xlsx_export?
+    return false if code == 'idea_images_attributes' # Is this still applicable?
+
+    !page?
+  end
+
+  def supports_geojson?
+    return false if code == 'idea_images_attributes' # Is this still applicable?
+
+    !page?
+  end
+
+  def supports_linear_scale?
+    %w[linear_scale matrix_linear_scale sentiment_linear_scale rating].include?(input_type)
+  end
+
+  def supports_matrix_statements?
+    input_type == 'matrix_linear_scale'
+  end
+
+  def supports_linear_scale_labels?
+    %w[linear_scale matrix_linear_scale sentiment_linear_scale].include?(input_type)
+  end
+
+  def supports_average?
+    %w[linear_scale sentiment_linear_scale rating number].include?(input_type)
+  end
+
+  def supports_single_selection?
+    %w[select linear_scale sentiment_linear_scale rating].include?(input_type)
+  end
+
+  def supports_multiple_selection?
+    %w[multiselect multiselect_image].include?(input_type)
+  end
+
+  def supports_selection?
+    supports_single_selection? || supports_multiple_selection?
+  end
+
+  def average_rankings(scope)
+    # This basically starts from all combinations of scope ID, option key (value)
+    # and position (ordinality) and then calculates the average position for each
+    # option. "#>> '{}'" is used to unescape the double quotes in the JSONB value.
+    return {} if input_type != 'ranking'
+
+    scope
+      .where.not("custom_field_values ->> '#{key}' IS NULL")
+      .joins("CROSS JOIN jsonb_array_elements(custom_field_values->'#{key}') WITH ORDINALITY AS elem(value, ordinality)")
+      .group("elem.value #>> '{}'")
+      .average('elem.ordinality')
+  end
+
+  def rankings_counts(scope)
+    # This basically starts from all combinations of scope ID, option key (value)
+    # and position (ordinality) and then calculates the count for each option and
+    # position. "#>> '{}'" is used to unescape the double quotes in the JSONB
+    # value.
+    return {} if input_type != 'ranking'
+
+    query_result = scope
+      .where.not("custom_field_values ->> '#{key}' IS NULL")
+      .joins("CROSS JOIN jsonb_array_elements(custom_field_values->'#{key}') WITH ORDINALITY AS elem(value, ordinality)")
+      .group("elem.value #>> '{}'", 'elem.ordinality')
+      .count
+
+    # Transform pair to ordinality hash into a hash of hashes
+    options.pluck(:key).index_with do |option_key|
+      (1..options.size).index_with do |ranking|
+        query_result[[option_key, ranking]] || 0
+      end
+    end
   end
 
   def built_in?
@@ -137,8 +251,26 @@ class CustomField < ApplicationRecord
     required
   end
 
+  def visible_to_public?
+    answer_visible_to == VISIBLE_TO_PUBLIC
+  end
+
+  def submittable?
+    !page?
+  end
+
+  def printable?
+    ignore_field_types = %w[page date files image_files point file_upload shapefile_upload topic_ids cosponsor_ids ranking matrix_linear_scale]
+    ignore_field_types.exclude? input_type
+  end
+
+  def importable?
+    ignore_field_types = %w[page date files image_files file_upload shapefile_upload point line polygon cosponsor_ids ranking matrix_linear_scale]
+    ignore_field_types.exclude? input_type
+  end
+
   def domicile?
-    key == 'domicile' && code == 'domicile'
+    (key == 'domicile' && code == 'domicile') || key == 'u_domicile'
   end
 
   def file_upload?
@@ -149,8 +281,8 @@ class CustomField < ApplicationRecord
     input_type == 'page'
   end
 
-  def section?
-    input_type == 'section'
+  def form_end_page?
+    page? && key == 'form_end'
   end
 
   def multiselect?
@@ -161,8 +293,16 @@ class CustomField < ApplicationRecord
     input_type == 'linear_scale'
   end
 
-  def page_or_section?
-    page? || section?
+  def sentiment_linear_scale?
+    input_type == 'sentiment_linear_scale'
+  end
+
+  def rating?
+    input_type == 'rating'
+  end
+
+  def checkbox?
+    input_type == 'checkbox'
   end
 
   def dropdown_layout_type?
@@ -170,11 +310,25 @@ class CustomField < ApplicationRecord
   end
 
   def accepts_input?
-    !page_or_section?
+    !page?
   end
 
   def custom_form_type?
     resource_type == 'CustomForm'
+  end
+
+  def user_type?
+    resource_type == 'User'
+  end
+
+  def items_claz
+    if custom_form_type?
+      Idea
+    elsif user_type?
+      User
+    else
+      raise 'Unsupported resource type'
+    end
   end
 
   def multiloc?
@@ -186,65 +340,15 @@ class CustomField < ApplicationRecord
   end
 
   def accept(visitor)
-    case input_type
-    when 'checkbox'
-      visitor.visit_checkbox self
-    when 'date'
-      visitor.visit_date self
-    when 'files'
-      visitor.visit_files self
-    when 'file_upload'
-      visitor.visit_file_upload self
-    when 'html'
-      visitor.visit_html self
-    when 'html_multiloc'
-      visitor.visit_html_multiloc self
-    when 'image_files'
-      visitor.visit_image_files self
-    when 'linear_scale'
-      visitor.visit_linear_scale self
-    when 'multiline_text'
-      visitor.visit_multiline_text self
-    when 'multiline_text_multiloc'
-      visitor.visit_multiline_text_multiloc self
-    when 'multiselect'
-      visitor.visit_multiselect self
-    when 'multiselect_image'
-      visitor.visit_multiselect_image self
-    when 'number'
-      visitor.visit_number self
-    when 'page'
-      visitor.visit_page self
-    when 'point'
-      visitor.visit_point self
-    when 'line'
-      visitor.visit_line self
-    when 'polygon'
-      visitor.visit_polygon self
-    when 'section'
-      visitor.visit_section self
-    when 'select'
-      visitor.visit_select self
-    when 'select_image'
-      visitor.visit_select_image self
-    when 'shapefile_upload'
-      visitor.visit_shapefile_upload self
-    when 'text'
-      visitor.visit_text self
-    when 'text_multiloc'
-      visitor.visit_text_multiloc self
-    when 'topic_ids'
-      visitor.visit_topic_ids self
-    when 'cosponsor_ids'
-      visitor.visit_cosponsor_ids self
-    else
-      raise "Unsupported input type: #{input_type}"
-    end
+    visitor_method = :"visit_#{input_type}"
+    raise "Unsupported input type: #{input_type}" if !visitor.respond_to? visitor_method
+
+    visitor.send visitor_method, self
   end
 
-  # Special behaviour for ideation section 1
+  # Special behaviour for the title page
   def title_multiloc
-    if code == 'ideation_section1'
+    if code == 'title_page'
       key = "custom_forms.categories.main_content.#{input_term}.title"
       MultilocService.new.i18n_to_multiloc key
     else
@@ -257,7 +361,7 @@ class CustomField < ApplicationRecord
   end
 
   def other_option_text_field
-    return if options.none?(&:other)
+    return unless includes_other_option?
 
     other_field_key = "#{key}_other"
     title_multiloc = MultilocService.new.i18n_to_multiloc(
@@ -286,12 +390,38 @@ class CustomField < ApplicationRecord
     )
   end
 
+  def follow_up_text_field
+    return unless ask_follow_up?
+
+    follow_up_field_key = "#{key}_follow_up"
+    title_multiloc = MultilocService.new.i18n_to_multiloc(
+      'custom_fields.ideas.ask_follow_up_field.title',
+      locales: CL2_SUPPORTED_LOCALES
+    )
+
+    CustomField.new(
+      key: follow_up_field_key,
+      input_type: 'multiline_text',
+      title_multiloc: title_multiloc,
+      required: false,
+      enabled: true
+    )
+  end
+
+  def additional_text_question_key
+    other_option_text_field&.key || follow_up_text_field&.key
+  end
+
   def ordered_options
     @ordered_options ||= if random_option_ordering
       options.shuffle.sort_by { |o| o.other ? 1 : 0 }
     else
       options.order(:ordering)
     end
+  end
+
+  def ordered_transformed_options
+    @ordered_transformed_options ||= domicile? ? domicile_options : ordered_options
   end
 
   def linear_scale_print_description(locale)
@@ -327,6 +457,25 @@ class CustomField < ApplicationRecord
     phase&.input_term || Phase::FALLBACK_INPUT_TERM
   end
 
+  def supports_category?
+    participation_context = resource&.participation_context
+    return false unless participation_context
+
+    participation_context.pmethod.supports_custom_field_categories?
+  end
+
+  def question_category
+    return 'other' if super.nil? && supports_category?
+
+    super
+  end
+
+  def question_category_multiloc
+    return nil unless supports_category?
+
+    MultilocService.new.i18n_to_multiloc("custom_fields.community_monitor.question_categories.#{question_category}")
+  end
+
   private
 
   def set_default_enabled
@@ -336,7 +485,7 @@ class CustomField < ApplicationRecord
   def set_default_answer_visible_to
     return unless answer_visible_to.nil?
 
-    self.answer_visible_to = if custom_form_type? && (built_in? || page_or_section?)
+    self.answer_visible_to = if custom_form_type? && (built_in? || page?)
       VISIBLE_TO_PUBLIC
     else
       VISIBLE_TO_ADMINS
@@ -350,7 +499,7 @@ class CustomField < ApplicationRecord
     title = title_multiloc.values.first
     return unless title
 
-    self.key = CustomFieldService.new.generate_key(title, false) do |key_proposal|
+    self.key = CustomFieldService.new.generate_key(title) do |key_proposal|
       self.class.find_by(key: key_proposal, resource_type: resource_type)
     end
   end
@@ -363,6 +512,20 @@ class CustomField < ApplicationRecord
     )
     self.description_multiloc = service.remove_multiloc_empty_trailing_tags description_multiloc
     self.description_multiloc = service.linkify_multiloc description_multiloc
+  end
+
+  # Return domicile options with IDs and descriptions taken from areas
+  def domicile_options
+    return options.order(:ordering) unless domicile?
+
+    areas = Area.where(custom_field_option_id: options.pluck(:id))
+    area_id_map = areas.map { |a| { a.custom_field_option_id => { id: a.id, title: a.title_multiloc } } }.reduce({}, :merge)
+
+    options.order(:ordering).map do |option|
+      option.key = area_id_map.dig(option.id, :id) || 'outside'
+      option.title_multiloc = area_id_map.dig(option.id, :title) || MultilocService.new.i18n_to_multiloc('custom_field_options.domicile.outside')
+      option
+    end
   end
 end
 

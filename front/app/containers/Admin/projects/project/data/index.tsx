@@ -1,6 +1,8 @@
 import React from 'react';
 
-import { Title, Text, Box } from '@citizenlab/cl2-component-library';
+import { Box } from '@citizenlab/cl2-component-library';
+
+import { SectionDescription, SectionTitle } from 'components/admin/Section';
 
 import { useIntl } from 'utils/cl-intl';
 
@@ -11,13 +13,10 @@ const Data = () => {
   const { formatMessage } = useIntl();
   return (
     <Box>
-      <Title color="primary" fontSize="xxl">
-        {formatMessage(messages.dataTitle)}
-      </Title>
-      <Text>{formatMessage(messages.dataDescription)}</Text>
-      <Text fontWeight="bold" mb="40px">
-        {formatMessage(messages.dataWarning)}
-      </Text>
+      <SectionTitle>{formatMessage(messages.dataTitle)}</SectionTitle>
+      <SectionDescription>
+        {formatMessage(messages.dataDescription)}
+      </SectionDescription>
       <ResetParticipationData />
     </Box>
   );

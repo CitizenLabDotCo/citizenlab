@@ -47,14 +47,27 @@ describe('Timeline ideation with anonymous participation allowed', () => {
 
     // add a title and description
     cy.get('#e2e-idea-title-input input').type(ideaTitle);
+
+    cy.get('[data-cy="e2e-next-page"]').should('be.visible').click();
+
     cy.get('#e2e-idea-description-input .ql-editor').type(ideaContent);
+
+    // Go to the next page of the idea form
+    cy.get('[data-cy="e2e-next-page"]').should('be.visible').click();
+
+    // Go to the next page of the idea form
+    cy.get('[data-cy="e2e-next-page"]').should('be.visible').click();
 
     // set to anonymous
     cy.get('[data-testid="e2e-post-idea-anonymously-checkbox"]').click();
     cy.get('#e2e-continue-anonymous-participation-btn').click();
 
     // save the form
-    cy.get('.e2e-submit-idea-form').click();
+    cy.get('[data-cy="e2e-submit-form"]').click();
+    cy.wait(3000);
+
+    cy.get('[data-cy="e2e-after-submission"]').should('exist');
+    cy.get('[data-cy="e2e-after-submission"]').click();
 
     // verify the content of the newly created idea page
     cy.location('pathname').should('eq', `/en/ideas/${ideaTitle}`);
@@ -72,16 +85,30 @@ describe('Timeline ideation with anonymous participation allowed', () => {
     cy.visit(`/projects/${projectSlug}/ideas/new`);
     cy.acceptCookies();
 
-    // add a title and description
+    // Add a title
     cy.get('#e2e-idea-title-input input').type(ideaTitle);
+
+    cy.get('[data-cy="e2e-next-page"]').should('be.visible').click();
+
+    // Add a description
     cy.get('#e2e-idea-description-input .ql-editor').type(ideaContent);
+
+    // Go to the next page of the idea form
+    cy.get('[data-cy="e2e-next-page"]').should('be.visible').click();
+
+    // Go to the next page of the idea form
+    cy.get('[data-cy="e2e-next-page"]').should('be.visible').click();
 
     // set to anonymous
     cy.get('[data-testid="e2e-post-idea-anonymously-checkbox"]').click();
     cy.get('#e2e-continue-anonymous-participation-btn').click();
 
     // save the form
-    cy.get('.e2e-submit-idea-form').click();
+    cy.get('[data-cy="e2e-submit-form"]').click();
+    cy.wait(3000);
+
+    cy.get('[data-cy="e2e-after-submission"]').should('exist');
+    cy.get('[data-cy="e2e-after-submission"]').click();
 
     // verify the content of the newly created idea page
     cy.location('pathname').should('eq', `/en/ideas/${ideaTitle}`);

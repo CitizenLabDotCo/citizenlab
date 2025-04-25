@@ -6,7 +6,6 @@ import dotenv from 'dotenv';
 import { defineConfig } from 'vite';
 import checker from 'vite-plugin-checker';
 import commonjs from 'vite-plugin-commonjs';
-import { createHtmlPlugin } from 'vite-plugin-html';
 import tsconfigPaths from 'vite-plugin-tsconfig-paths';
 
 // Load environment variables using dotenv
@@ -30,6 +29,8 @@ export default defineConfig(({ mode }) => {
   const GRAPHQL_PORT = process.env.GRAPHQL_PORT || '5001';
   const DEV_WORKSHOPS_HOST = process.env.DEV_WORKSHOPS_HOST || 'localhost';
   const DEV_WORKSHOPS_PORT = process.env.DEV_WORKSHOPS_PORT || '4005';
+  const DEV_LIBRARY_HOST = process.env.DEV_LIBRARY_HOST || 'localhost';
+  const DEV_LIBRARY_PORT = process.env.DEV_LIBRARY_PORT || '5005';
 
   return {
     root: path.resolve(__dirname, 'app'), // Root directory
@@ -37,30 +38,35 @@ export default defineConfig(({ mode }) => {
     server: {
       port: 3000,
       host: '0.0.0.0',
+      allowedHosts: true,
       proxy: {
-        '/web_api': {
+        '/web_api/': {
           target: `http://${API_HOST}:${API_PORT}`,
-          changeOrigin: true,
+          changeOrigin: false,
         },
         '/auth/': {
           target: `http://${API_HOST}:${API_PORT}`,
-          changeOrigin: true,
+          changeOrigin: false,
         },
         '/widgets/': {
           target: `http://${API_HOST}:3200`,
-          changeOrigin: true,
+          changeOrigin: false,
         },
         '/admin_templates_api': {
           target: `http://${GRAPHQL_HOST}:${GRAPHQL_PORT}`,
-          changeOrigin: true,
+          changeOrigin: false,
         },
         '/uploads': {
           target: `http://${API_HOST}:${API_PORT}`,
-          changeOrigin: true,
+          changeOrigin: false,
         },
         '/workshops': {
           target: `http://${DEV_WORKSHOPS_HOST}:${DEV_WORKSHOPS_PORT}`,
-          changeOrigin: true,
+          changeOrigin: false,
+        },
+        '/project_library_api': {
+          target: `http://${DEV_LIBRARY_HOST}:${DEV_LIBRARY_PORT}`,
+          changeOrigin: false,
         },
       },
     },
@@ -73,13 +79,6 @@ export default defineConfig(({ mode }) => {
           tsconfigPath: path.resolve(__dirname, 'app/tsconfig.json'),
         },
         overlay: false,
-      }),
-      createHtmlPlugin({
-        inject: {
-          data: {
-            GOOGLE_MAPS_API_KEY: process.env.GOOGLE_MAPS_API_KEY,
-          },
-        },
       }),
       ...[
         sourceMapToSentry &&
@@ -156,7 +155,6 @@ export default defineConfig(({ mode }) => {
         CIRCLE_BRANCH: process.env.CIRCLE_BRANCH,
         MATOMO_HOST: process.env.MATOMO_HOST,
         POSTHOG_API_KEY: process.env.POSTHOG_API_KEY,
-        GOOGLE_MAPS_API_KEY: process.env.GOOGLE_MAPS_API_KEY,
       },
     },
   };

@@ -72,18 +72,15 @@ module Notifications
 
     def self.make_notifications_on(activity)
       phase = activity.item
+      return [] unless phase.project.published?
 
-      if phase.project
-        recipients = UserRoleService.new.moderators_for phase
-        recipients.ids.map do |recipient_id|
-          new(
-            recipient_id: recipient_id,
-            phase: phase,
-            project: phase.project
-          )
-        end
-      else
-        []
+      recipients = UserRoleService.new.moderators_for phase
+      recipients.ids.map do |recipient_id|
+        new(
+          recipient_id: recipient_id,
+          phase: phase,
+          project: phase.project
+        )
       end
     end
   end

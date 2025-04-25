@@ -106,8 +106,14 @@ describe('Report builder Participants timeline widget', () => {
     cy.get('.e2e-statistic-delta').should('not.exist');
 
     cy.get('.date-range-picker-from').first().click();
+    cy.wait(1000);
     cy.get('.rdp-years_dropdown').first().select('2024');
-    cy.get('.rdp-week').eq(2).find('.rdp-day_button').first().click();
+    cy.wait(1000);
+    cy.get('.rdp-week')
+      .eq(3)
+      .find('.rdp-day_button')
+      .first()
+      .click({ force: true });
 
     // Close picker again
     cy.get('.date-range-picker-from').first().click();

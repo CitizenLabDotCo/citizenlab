@@ -1,6 +1,8 @@
 module Export
   module Xlsx
     class ValueVisitor < FieldVisitorService
+      VALUE_SEPARATOR = ';'
+
       def initialize(model, option_index, app_configuration: nil)
         super()
         @model = model
@@ -49,6 +51,10 @@ module Export
           value_for_multiloc option_title
         end
         option_titles.join(VALUE_SEPARATOR)
+      end
+
+      def visit_ranking(field)
+        visit_multiselect(field)
       end
 
       def visit_multiselect_image(field)
@@ -126,8 +132,6 @@ module Export
       private
 
       attr_reader :model, :option_index, :multiloc_service
-
-      VALUE_SEPARATOR = ', '
 
       def built_in_files
         return '' if model.idea_files.empty?

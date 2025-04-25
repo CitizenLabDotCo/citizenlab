@@ -17,8 +17,8 @@ import MapView from '@arcgis/core/views/MapView';
 import WebMap from '@arcgis/core/WebMap';
 import Popup from '@arcgis/core/widgets/Popup';
 import { colors } from '@citizenlab/cl2-component-library';
-import { uuid4 } from '@sentry/utils';
 import { transparentize } from 'polished';
+import { v4 as uuidv4 } from 'uuid';
 
 import { IMapConfig } from 'api/map_config/types';
 import { IMapLayerAttributes } from 'api/map_layers/types';
@@ -33,6 +33,19 @@ import {
   DEFAULT_TILE_PROVIDER,
   MAPTILER_ATTRIBUTION,
 } from './constants';
+import { DefaultBasemapType } from './types';
+
+// getBasemapType
+// Description: Gets the basemap type given a certain tileProvider URL.
+export const getDefaultBasemapType = (
+  tileProvider: string | undefined
+): DefaultBasemapType => {
+  if (tileProvider?.includes('wien.gv.at/basemap')) {
+    return 'BasemapAt';
+  }
+
+  return 'MapTiler';
+};
 
 // getDefaultBasemap
 // Description: Gets the correct basemap given a certain tileProvider URL.
@@ -474,24 +487,29 @@ export const showAddInputPopup = ({
   popupContentNode,
   popupTitle,
 }: AddInputPopupProps) => {
-  goToMapLocation(esriPointToGeoJson(event.mapPoint), mapView).then(() => {
-    // Create an Esri popup
-    mapView.popup = new Popup({
-      collapseEnabled: false,
-      dockEnabled: false,
-      dockOptions: {
-        buttonEnabled: false,
-        breakpoint: false,
-      },
-      location: event.mapPoint,
-      title: popupTitle,
-    });
-    // Set content of the popup to the node we created (so we can insert our React component via a portal)
-    mapView.popup.content = popupContentNode;
-    // Close any open UI elements and open the popup
-    setSelectedInput(null);
-    mapView.openPopup();
-  });
+  // Project the point to Web Mercator to guarantee the correct coordinate system
+  const clickedPointProjected = projectPointToWebMercator(event.mapPoint);
+
+  goToMapLocation(esriPointToGeoJson(clickedPointProjected), mapView).then(
+    () => {
+      // Create an Esri popup
+      mapView.popup = new Popup({
+        collapseEnabled: false,
+        dockEnabled: false,
+        dockOptions: {
+          buttonEnabled: false,
+          breakpoint: false,
+        },
+        location: clickedPointProjected,
+        title: popupTitle,
+      });
+      // Set content of the popup to the node we created (so we can insert our React component via a portal)
+      mapView.popup.content = popupContentNode;
+      // Close any open UI elements and open the popup
+      setSelectedInput(null);
+      mapView.openPopup();
+    }
+  );
 };
 
 // createEsriFeatureLayers
@@ -574,7 +592,7 @@ export const createEsriGeoJsonLayers = (
 
     // create new geojson layer using the created url
     const geoJsonLayer = new GeoJSONLayer({
-      id: `${uuid4()}`,
+      id: `${uuidv4()}`,
       url,
       customParameters: {
         layerId: layer.id,

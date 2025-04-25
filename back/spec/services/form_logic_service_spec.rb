@@ -16,7 +16,8 @@ describe FormLogicService do
       create(:custom_field_page, :for_custom_form, resource: form),
       create(:custom_field_page, :for_custom_form, resource: form),
       create(:custom_field_page, :for_custom_form, resource: form),
-      create(:custom_field_section, :for_custom_form, resource: form)
+      create(:custom_field_page, :for_custom_form, resource: form),
+      create(:custom_field_page, :for_custom_form, resource: form)
     ]
   end
 
@@ -32,6 +33,7 @@ describe FormLogicService do
     let(:page5) { fields[6] }
     let(:question1_value) { 1 }
     let(:question2_answer) { option2 }
+    let(:last_page) { fields[8] }
 
     context 'when there is no logic' do
       before do
@@ -80,7 +82,7 @@ describe FormLogicService do
 
     context 'when a page has an explicit next page, which is the end page' do
       before do
-        page2.update!(logic: { 'next_page_id' => 'survey_end' })
+        page2.update!(logic: { 'next_page_id' => last_page.id })
       end
 
       it 'returns a UI schema with rules for the given next page' do
@@ -125,7 +127,7 @@ describe FormLogicService do
         expect(form_logic.ui_schema_rules_for(question1)).to be_nil
         expect(form_logic.ui_schema_rules_for(page2)).to be_nil
         expect(form_logic.ui_schema_rules_for(question2)).to be_nil
-        expect(form_logic.ui_schema_rules_for(page3)).to eq([{
+        expect(form_logic.ui_schema_rules_for(page3)).to match_array([{
           effect: 'HIDE',
           condition: {
             type: 'HIDEPAGE',
@@ -147,8 +149,16 @@ describe FormLogicService do
               enum: [option1.key]
             }
           }
+        }, {
+          effect: 'HIDE',
+          condition: {
+            scope: "#/properties/#{question2.key}",
+            schema: {
+              enum: ['no_answer']
+            }
+          }
         }])
-        expect(form_logic.ui_schema_rules_for(page4)).to eq([{
+        expect(form_logic.ui_schema_rules_for(page4)).to match_array([{
           effect: 'HIDE',
           condition: {
             type: 'HIDEPAGE',
@@ -160,6 +170,14 @@ describe FormLogicService do
             scope: "#/properties/#{question2.key}",
             schema: {
               enum: [option1.key]
+            }
+          }
+        }, {
+          effect: 'HIDE',
+          condition: {
+            scope: "#/properties/#{question2.key}",
+            schema: {
+              enum: ['no_answer']
             }
           }
         }])
@@ -212,6 +230,15 @@ describe FormLogicService do
               type: 'HIDEPAGE',
               pageId: page1.id
             }
+          },
+          {
+            effect: 'HIDE',
+            condition: {
+              scope: "#/properties/#{question1.key}",
+              schema: {
+                enum: ['no_answer']
+              }
+            }
           }
         ])
         expect(form_logic.ui_schema_rules_for(question2)).to be_nil
@@ -240,6 +267,15 @@ describe FormLogicService do
               type: 'HIDEPAGE',
               pageId: page1.id
             }
+          },
+          {
+            effect: 'HIDE',
+            condition: {
+              scope: "#/properties/#{question1.key}",
+              schema: {
+                enum: ['no_answer']
+              }
+            }
           }
         ])
         expect(form_logic.ui_schema_rules_for(page4)).to match_array([
@@ -266,6 +302,15 @@ describe FormLogicService do
             condition: {
               type: 'HIDEPAGE',
               pageId: page1.id
+            }
+          },
+          {
+            effect: 'HIDE',
+            condition: {
+              scope: "#/properties/#{question1.key}",
+              schema: {
+                enum: ['no_answer']
+              }
             }
           }
         ])
@@ -390,7 +435,7 @@ describe FormLogicService do
       before do
         question1.update!(
           logic: {
-            'rules' => [{ 'if' => question1_value, 'goto_page_id' => 'survey_end' }]
+            'rules' => [{ 'if' => question1_value, 'goto_page_id' => last_page.id }]
           },
           required: true
         )
@@ -438,6 +483,181 @@ describe FormLogicService do
         }])
       end
     end
+
+    context 'when any other answer triggers going to another page' do
+      before do
+        question2.update!(logic: {
+          'rules' => [
+            { 'if' => 'any_other_answer', 'goto_page_id' => page4.id }
+          ]
+        })
+      end
+
+      it 'returns a UI schema with rules for the given page' do
+        expect(form_logic.ui_schema_rules_for(page1)).to be_nil
+        expect(form_logic.ui_schema_rules_for(question1)).to be_nil
+        expect(form_logic.ui_schema_rules_for(page2)).to be_nil
+        expect(form_logic.ui_schema_rules_for(question2)).to be_nil
+        expect(form_logic.ui_schema_rules_for(page3)).to eq([{
+          effect: 'HIDE',
+          condition: {
+            scope: "#/properties/#{question2.key}",
+            schema: {
+              enum: [option1.key]
+            }
+          }
+        },
+          {
+            effect: 'HIDE',
+            condition: {
+              scope: "#/properties/#{question2.key}",
+              schema: {
+                enum: [option2.key]
+              }
+            }
+          }])
+        expect(form_logic.ui_schema_rules_for(page4)).to be_nil
+        expect(form_logic.ui_schema_rules_for(page5)).to be_nil
+      end
+    end
+
+    context 'when one answer triggers going to one page and any other answer triggers going to another page' do
+      before do
+        question2.update!(logic: {
+          'rules' => [
+            { 'if' => option1.id, 'goto_page_id' => page4.id },
+            { 'if' => 'any_other_answer', 'goto_page_id' => page5.id }
+          ]
+        })
+      end
+
+      it 'returns a UI schema with rules for the given page' do
+        expect(form_logic.ui_schema_rules_for(page1)).to be_nil
+        expect(form_logic.ui_schema_rules_for(question1)).to be_nil
+        expect(form_logic.ui_schema_rules_for(page2)).to be_nil
+        expect(form_logic.ui_schema_rules_for(question2)).to be_nil
+        expect(form_logic.ui_schema_rules_for(page3)).to eq([{
+          effect: 'HIDE',
+          condition: {
+            scope: "#/properties/#{question2.key}",
+            schema: {
+              enum: [option1.key]
+            }
+          }
+        },
+          {
+            effect: 'HIDE',
+            condition: {
+              scope: "#/properties/#{question2.key}",
+              schema: {
+                enum: [option2.key]
+              }
+            }
+          }])
+        expect(form_logic.ui_schema_rules_for(page4)).to eq([{
+          effect: 'HIDE',
+          condition: {
+            scope: "#/properties/#{question2.key}",
+            schema: {
+              enum: [option2.key]
+            }
+          }
+        }])
+        expect(form_logic.ui_schema_rules_for(page5)).to be_nil
+      end
+    end
+
+    context 'when one answer triggers going to one page and any other answer triggers going to another page for linear scale' do
+      before do
+        question1.update!(logic: {
+          'rules' => [
+            { 'if' => 1, 'goto_page_id' => page3.id },
+            { 'if' => 'any_other_answer', 'goto_page_id' => page4.id }
+          ]
+        })
+      end
+
+      it 'returns a UI schema with rules for the given page' do
+        expect(form_logic.ui_schema_rules_for(page1)).to be_nil
+        expect(form_logic.ui_schema_rules_for(question1)).to be_nil
+        expect(form_logic.ui_schema_rules_for(page2)).to eq([{
+          effect: 'HIDE',
+          condition: {
+            scope: "#/properties/#{question1.key}",
+            schema: {
+              enum: [1]
+            }
+          }
+        },
+          {
+            effect: 'HIDE',
+            condition: {
+              scope: "#/properties/#{question1.key}",
+              schema: {
+                enum: [2]
+              }
+            }
+          },
+          {
+            effect: 'HIDE',
+            condition: {
+              scope: "#/properties/#{question1.key}",
+              schema: {
+                enum: [3]
+              }
+            }
+          }])
+        expect(form_logic.ui_schema_rules_for(question2)).to be_nil
+        expect(form_logic.ui_schema_rules_for(page3)).to eq([{
+          effect: 'HIDE',
+          condition: {
+            scope: "#/properties/#{question1.key}",
+            schema: {
+              enum: [2]
+            }
+          }
+        },
+          {
+            effect: 'HIDE',
+            condition: {
+              scope: "#/properties/#{question1.key}",
+              schema: {
+                enum: [3]
+              }
+            }
+          }])
+        expect(form_logic.ui_schema_rules_for(page4)).to be_nil
+        expect(form_logic.ui_schema_rules_for(page5)).to be_nil
+      end
+    end
+
+    context 'when no answer (empty field) triggers going to another page' do
+      before do
+        question2.update!(logic: {
+          'rules' => [
+            { 'if' => 'no_answer', 'goto_page_id' => page4.id }
+          ]
+        })
+      end
+
+      it 'returns a UI schema with rules for the given page' do
+        expect(form_logic.ui_schema_rules_for(page1)).to be_nil
+        expect(form_logic.ui_schema_rules_for(question1)).to be_nil
+        expect(form_logic.ui_schema_rules_for(page2)).to be_nil
+        expect(form_logic.ui_schema_rules_for(question2)).to be_nil
+        expect(form_logic.ui_schema_rules_for(page3)).to eq([{
+          effect: 'HIDE',
+          condition: {
+            scope: "#/properties/#{question2.key}",
+            schema: {
+              enum: ['no_answer']
+            }
+          }
+        }])
+        expect(form_logic.ui_schema_rules_for(page4)).to be_nil
+        expect(form_logic.ui_schema_rules_for(page5)).to be_nil
+      end
+    end
   end
 
   describe '#valid?' do
@@ -449,6 +669,7 @@ describe FormLogicService do
     let(:page4) { fields[5] }
     let(:page5) { fields[6] }
     let(:section1) { fields[7] }
+    let(:last_page) { fields[8] }
 
     context 'for logic on questions' do
       context 'when logic has a good structure' do
@@ -458,10 +679,12 @@ describe FormLogicService do
             { 'rules' => [] },
             { 'rules' => [{ 'if' => 1, 'goto_page_id' => page2.id }] },
             { 'rules' => [{ 'if' => 1, 'goto_page_id' => page2.id }] },
-            { 'rules' => [{ 'if' => 1, 'goto_page_id' => 'survey_end' }] },
+            { 'rules' => [{ 'if' => 1, 'goto_page_id' => last_page.id }] },
             { 'rules' => [
               { 'if' => 1, 'goto_page_id' => page2.id },
-              { 'if' => 2, 'goto_page_id' => page4.id }
+              { 'if' => 2, 'goto_page_id' => page4.id },
+              { 'if' => 'no_answer', 'goto_page_id' => page2.id },
+              { 'if' => 'any_other_answer', 'goto_page_id' => page2.id }
             ] }
           ].each do |good_logic|
             question1.update! logic: good_logic, required: true
@@ -479,8 +702,10 @@ describe FormLogicService do
         end
         let(:logic_for_question2) do
           { 'rules' => [
-            { 'if' => 1, 'goto_page_id' => 'survey_end' },
-            { 'if' => 2, 'goto_page_id' => page4.id }
+            { 'if' => 1, 'goto_page_id' => last_page.id },
+            { 'if' => 2, 'goto_page_id' => page4.id },
+            { 'if' => 'no_answer', 'goto_page_id' => last_page.id },
+            { 'if' => 'any_other_answer', 'goto_page_id' => page4.id }
           ] }
         end
 
@@ -516,41 +741,13 @@ describe FormLogicService do
         end
       end
 
-      context 'when a field has logic, but it is not required' do
-        let(:logic_for_question1) do
-          { 'rules' => [{ 'if' => 1, 'goto_page_id' => page2.id }] }
-        end
-        let(:logic_for_question2) do
-          { 'rules' => [{ 'if' => 1, 'goto_page_id' => 'survey_end' }] }
-        end
-
-        it 'returns false' do
-          question1.update! logic: logic_for_question1, required: false
-          question2.update! logic: logic_for_question2, required: false
-
-          expect(form_logic.valid?).to be false
-          expect(question1.errors.messages.to_h).to eq({
-            logic: ['allowed only on required fields']
-          })
-          expect(question1.errors.details).to eq({
-            logic: [{ error: :only_allowed_on_required_fields }]
-          })
-          expect(question2.errors.messages.to_h).to eq({
-            logic: ['allowed only on required fields']
-          })
-          expect(question2.errors.details).to eq({
-            logic: [{ error: :only_allowed_on_required_fields }]
-          })
-        end
-      end
-
       context 'when some logic in multiple fields has bad structure' do
         let(:logic_for_question1) do
           { 'rules' => [{ 'if' => 1, 'goto_page_id' => page2.id }] }
         end
         let(:logic_for_question2) do
           { 'rules' => [
-            { 'if' => 1, 'goto_page_id' => 'survey_end' },
+            { 'if' => 1, 'goto_page_id' => last_page.id },
             { 'if' => 2 }
           ] }
         end
@@ -763,22 +960,6 @@ describe FormLogicService do
         end
       end
     end
-
-    context 'for logic on sections' do
-      context 'when logic is added to sections' do
-        it 'returns false' do
-          logic = { 'next_page_id' => 1 }
-          section1.update! logic: logic, required: true
-          expect(form_logic.valid?).to be false
-          expect(section1.errors.messages.to_h).to eq({
-            logic: ['not allowed on section fields']
-          })
-          expect(section1.errors.details).to eq({
-            logic: [{ error: :not_allowed_on_section_fields }]
-          })
-        end
-      end
-    end
   end
 
   describe '#replace_temp_ids_in_field_logic!' do
@@ -787,6 +968,7 @@ describe FormLogicService do
     let(:option1) { question1.options[0] }
     let(:option2) { question1.options[1] }
     let(:page2) { fields[4] }
+    let(:last_page) { fields[8] }
 
     before do
       question1.update!(logic: {

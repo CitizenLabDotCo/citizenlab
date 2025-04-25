@@ -27,7 +27,6 @@ describe('Project selection page', () => {
           descriptionPreview: folderShortDescription,
           description: randomString(),
           publicationStatus: 'published',
-          projectIds: [projectOneId, projectTwoId],
         }).then((folder) => {
           folderId = folder.body.data.id;
 

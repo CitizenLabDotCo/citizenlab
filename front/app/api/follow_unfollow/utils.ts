@@ -5,6 +5,7 @@ import ideasKeys from 'api/ideas/keys';
 import meKeys from 'api/me/keys';
 import projectFoldersKeys from 'api/project_folders/keys';
 import projectsKeys from 'api/projects/keys';
+import miniProjectsKeys from 'api/projects_mini/keys';
 import topicsKeys from 'api/topics/keys';
 
 import followUnfollowKeys from './keys';
@@ -34,7 +35,10 @@ export const invalidateFollowQueries = (
       queryClient.invalidateQueries(topicsKeys.list({}));
       break;
     case 'areas':
-      queryClient.invalidateQueries(areasKeys.list({}));
+      queryClient.invalidateQueries(areasKeys.lists());
+      queryClient.invalidateQueries(
+        miniProjectsKeys.list({ endpoint: 'for_areas' })
+      );
       break;
     default:
       break;

@@ -38,6 +38,7 @@ const FileInfo = styled.div`
   flex: 1;
   display: flex;
   align-items: center;
+  justify-content: space-between;
 `;
 
 const FileDownloadLink = styled.a<{ error: boolean }>`

@@ -28,7 +28,7 @@ import useLocalize from 'hooks/useLocalize';
 import EsriMap from 'components/EsriMap';
 import ResetMapViewButton from 'components/EsriMap/components/ResetMapViewButton';
 import { parseLayers } from 'components/EsriMap/utils';
-import { FormData } from 'components/Form/typings';
+import { FormValues } from 'components/Form/typings';
 import { FormLabel } from 'components/UI/FormComponents';
 
 import { useIntl } from 'utils/cl-intl';
@@ -52,7 +52,7 @@ import {
 type Props = {
   setShowFullscreenMap: (show: boolean) => void;
   mapConfig?: IMapConfig;
-  data: FormData;
+  data: FormValues;
   handleSinglePointChange: (point: GeoJSON.Point | undefined) => void;
   handleMultiPointChange?: (points: number[][] | undefined) => void;
   inputType: MapInputType;

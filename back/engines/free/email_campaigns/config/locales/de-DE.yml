@@ -8,6 +8,7 @@ de:
       "comment_marked_as_spam": Kommentar wird als Spam markiert
       "comment_on_your_comment": Antwort auf einen Kommentar
       "comment_on_idea_you_follow": Ein Kommentar zu einer Idee, der Sie folgen
+      "community_monitor_report": Gemeinschaftspuls-Bericht
       "cosponsor_of_your_idea": Nutzer*in nimmt meine Einladung an, meinen Vorschlag zu unterstützen
       "event_registration_confirmation": Anmeldebestätigung für die Veranstaltung
       "idea_marked_as_spam": Beitrag wird als Spam gekennzeichnet
@@ -34,6 +35,7 @@ de:
       "project_review_request": Antrag auf Projektfreigabe
       "project_review_state_change": Projekt freigegeben
       "status_change_on_idea_you_follow": Statusänderung einer Idee, der Sie folgen
+      "survey_submitted": Umfrage eingereicht
       "threshold_reached_for_admin": Vorschlag hat die Abstimmungsschwelle erreicht
       "welcome": Nach der Registrierung
       "admin_digest": Wöchentliche Übersicht für Admins
@@ -81,6 +83,7 @@ de:
         "4": "Wöchentlich, donnerstags um %{hourOfDay}"
         "5": "Wöchentlich, freitags um %{hourOfDay}"
         "6": "Wöchentlich, samstags um %{hourOfDay}"
+      quarterly: "Vierteljährlich, am ersten Tag des Quartals"
     footer:
       "link_privacy_policy": "Impressum & Datenschutz"
       "link_terms_conditions": "Nutzungsbedingungen"
@@ -146,6 +149,12 @@ de:
       today: Heute
       wrong_content: 'Der Kommentar ist nicht relevant.'
       yesterday: Gestern
+    community_monitor_report:
+      subject: 'Ein neuer Gemeinschaftspuls-Bericht ist verfügbar'
+      title: 'Ein neuer Gemeinschaftspuls-Bericht ist verfügbar'
+      text_introduction: 'Ein Gemeinschaftspuls-Bericht wurde für das letzte Quartal erstellt. Sie können darauf zugreifen, indem Sie auf den Button unten klicken und sich anmelden.'
+      cta_report_button: 'Bericht ansehen'
+      report_name: 'Gemeinschaftspuls-Bericht'
     cosponsor_of_your_idea:
       cta_reply_to: 'Eigenen Vorschlag ansehen'
       event_description: 'Herzlichen Glückwunsch! %{cosponsorName} hat deine Einladung zum Unterstützen deines Vorschlags angenommen.'
@@ -496,6 +505,15 @@ de:
       event_description: 'Für das Projekt "%{projectName}" können Sie aus %{numIdeas} Optionen wählen:'
       cta_message: 'Auf den Button klicken, um teilzunehmen'
       cta_vote: 'Zur Plattform, um abzustimmen'
+    survey_submitted:
+      subject: '%{organizationName}: Vielen Dank für Ihre Antwort! 🎉'
+      preheader: 'Details zur Einreichung.'
+      main_header: 'Danke, dass Sie Ihre Gedanken zu "%{projectName}" mit uns teilen!'
+      your_input_submitted: 'Ihr Beitrag für "%{projectName}" wurde erfolgreich versendet.'
+      if_you_would_like_to_review: 'Wenn Sie Ihren Beitrag überprüfen möchten, können Sie Ihre Antworten unten herunterladen.'
+      your_submission_has_id: 'Ihr Beitrag hat die folgende eindeutige Kennung:'
+      you_can_use_this_id: 'Sie können diese Kennung verwenden, um die Admins der Plattform zu kontaktieren, falls Sie möchten, dass Ihr Beitrag entfernt wird.'
+      download_responses: 'Antworten herunterladen'
     admin_labels:
       recipient_role:
         admins: 'An Admins'

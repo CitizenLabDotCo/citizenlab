@@ -194,6 +194,14 @@ type BoxCursorProps = {
     | 'zoom-out';
 };
 
+type BoxAspectRatioProps = {
+  aspectRatio?: string;
+};
+
+type BoxTransformProps = {
+  transform?: string;
+};
+
 export type BoxProps = BoxColorProps &
   BoxShadowProps &
   BoxBackgroundProps &
@@ -209,6 +217,8 @@ export type BoxProps = BoxColorProps &
   BoxVisibilityProps &
   BoxZIndexProps &
   BoxCursorProps &
+  BoxAspectRatioProps &
+  BoxTransformProps &
   React.HTMLAttributes<HTMLDivElement>;
 
 const Box = styled.div<BoxProps>`
@@ -365,6 +375,16 @@ const Box = styled.div<BoxProps>`
   // cursor
   ${(props) => css`
     ${props.cursor ? `cursor: ${props.cursor}` : ''};
+  `}
+
+  // aspect ratio
+  ${(props) => css`
+    ${props.aspectRatio ? `aspect-ratio: ${props.aspectRatio}` : ''};
+  `}
+
+  // transformation
+  ${(props) => css`
+    ${props.transform ? `transform: ${props.transform}` : ''};
   `}
 `;
 

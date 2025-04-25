@@ -92,9 +92,13 @@ class WebApi::V1::IdeaStatusesController < ApplicationController
   end
 
   def apply_index_filters
-    return if params[:participation_method].blank?
+    if params[:participation_method].present?
+      @idea_statuses = @idea_statuses.where(participation_method: params[:participation_method])
+    end
 
-    @idea_statuses = @idea_statuses.where(participation_method: params[:participation_method])
+    if params[:exclude_codes].present?
+      @idea_statuses = @idea_statuses.where.not(code: params[:exclude_codes])
+    end
   end
 
   def idea_status_params_for_create

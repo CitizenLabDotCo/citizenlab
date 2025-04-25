@@ -19,6 +19,8 @@
 #
 module ContentBuilder
   class Layout < ApplicationRecord
+    TEXT_CRAFTJS_NODE_TYPES = %w[TextMultiloc AccordionMultiloc].freeze
+
     belongs_to :content_buildable, polymorphic: true, optional: true
 
     before_validation :swap_data_images, on: :create

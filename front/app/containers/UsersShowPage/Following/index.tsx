@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { Box, Title, useBreakpoint } from '@citizenlab/cl2-component-library';
 import { useParams } from 'react-router-dom';
@@ -53,9 +53,15 @@ const Following = () => {
     },
   };
 
-  // TODO: Fix this the next time the file is edited.
-  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-  if (!user || (isFollowingEnabled && authUser?.data?.id !== user.data.id)) {
+  const renderPage =
+    isFollowingEnabled && user && authUser?.data.id === user.data.id;
+
+  useEffect(() => {
+    if (!renderPage) return;
+    trackEventByName(tracks.browseFollowsInActivityPage);
+  }, [renderPage]);
+
+  if (!renderPage) {
     return null;
   }
 
@@ -63,16 +69,14 @@ const Following = () => {
     <FormattedMessage {...tabData[tab].label} />
   );
 
-  trackEventByName(tracks.browseFollowsInActivityPage);
-
   return (
-    <Box display="flex" w="100%" flexDirection="column">
+    <Box display="flex" w="100%" flexDirection="column" id="tab-following">
       {isSmallerThanPhone && (
         <Title mt="0px" variant="h3" as="h1">
           <FormattedMessage
             {...messages.followingWithCount}
             values={{
-              followingCount: authUser?.data.attributes.followings_count,
+              followingCount: authUser.data.attributes.followings_count,
             }}
           />
         </Title>

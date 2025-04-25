@@ -48,9 +48,7 @@ const FileUploader = ({
   }, [initialFiles]);
 
   const handleFileOnAdd = (fileToAdd: UploadFile) => {
-    // TODO: Fix this the next time the file is edited.
-    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-    if (!files?.find((file) => file.base64 === fileToAdd.base64)) {
+    if (!files.find((file) => file.base64 === fileToAdd.base64)) {
       const updatedFiles = [...files, fileToAdd as FileType];
       setFiles(updatedFiles);
       onFileAdd(fileToAdd);
@@ -67,20 +65,22 @@ const FileUploader = ({
     };
 
   const handleDragRow = (fromIndex: number, toIndex: number) => {
-    // TODO: Fix this the next time the file is edited.
-    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-    if (files) {
-      const updatedFiles = [...files];
-      const [movedFile] = updatedFiles.splice(fromIndex, 1);
-      updatedFiles.splice(toIndex, 0, movedFile);
+    // Create a working copy of the files array
+    const filesCopy = [...files];
 
-      updatedFiles.forEach((file, index) => {
-        file.ordering = index;
-      });
+    // Remove the file from its original position and store it
+    const [movedFile] = filesCopy.splice(fromIndex, 1);
 
-      setFiles(updatedFiles);
-      onFileReorder?.(updatedFiles);
-    }
+    // Insert the file at its new position
+    filesCopy.splice(toIndex, 0, movedFile);
+
+    filesCopy.forEach((file, index) => {
+      file.ordering = index;
+    });
+
+    // Update state and notify parent component about the change
+    setFiles(filesCopy);
+    onFileReorder?.(filesCopy);
   };
 
   const fileNames = files.map((file) => file.name).join(', ');

@@ -4,14 +4,12 @@ import { Box } from '@citizenlab/cl2-component-library';
 import Lottie, { LottieRefCurrentProps } from 'lottie-react';
 import styled, { useTheme } from 'styled-components';
 
-import { FormData } from 'components/Form/typings';
-
 import { MapInputType } from '../../utils';
 
 type InstructionAnimationProps = {
   instructionRef: React.RefObject<HTMLDivElement>;
   inputType: MapInputType;
-  data: FormData;
+  data?: any;
 };
 
 const StyledBox = styled(Box)<{ tenantColor: string }>`
@@ -44,13 +42,9 @@ const InstructionAnimation = ({
       case 'point':
         return !data?.coordinates;
       case 'line':
-        // TODO: Fix this the next time the file is edited.
-        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-        return !data || data?.coordinates?.length < 2;
+        return !data || data.coordinates?.length < 2;
       case 'polygon':
-        // TODO: Fix this the next time the file is edited.
-        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-        return !data || data?.coordinates?.[0]?.length < 4;
+        return !data || data.coordinates?.[0]?.length < 4;
     }
   };
 

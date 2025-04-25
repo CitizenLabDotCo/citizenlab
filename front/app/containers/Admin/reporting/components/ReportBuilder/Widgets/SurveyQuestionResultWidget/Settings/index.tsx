@@ -15,10 +15,9 @@ import { ICustomFields } from 'api/custom_fields/types';
 import useRawCustomFields from 'api/custom_fields/useRawCustomFields';
 import { GroupMode } from 'api/graph_data_units/requestTypes';
 
-import HeatmapTooltipContent from 'containers/Admin/projects/project/nativeSurvey/FormResults/FormResultsQuestion/MappingQuestions/PointLocationQuestion/HeatmapTooltipContent';
 import nativeSurveyMessages from 'containers/Admin/projects/project/nativeSurvey/messages';
 
-import { MapInputTypeArray } from 'components/Form/Components/Controls/MapInput/utils';
+import HeatmapTooltipContent from 'components/admin/FormResults/FormResultsQuestion/MappingQuestions/PointLocationQuestion/HeatmapTooltipContent';
 import PhaseFilter from 'components/UI/PhaseFilter';
 
 import { useIntl } from 'utils/cl-intl';
@@ -35,6 +34,7 @@ import { Props } from '../typings';
 import GroupModeSelect from './GroupModeSelect';
 import messages from './messages';
 import UserFieldSelect from './UserFieldSelect';
+import { FieldsHideGroupBy } from './utils';
 
 const findQuestion = (questions: ICustomFields, questionId: string) => {
   return questions.data.find((question) => question.id === questionId);
@@ -69,7 +69,7 @@ const Settings = () => {
   const showGroupingSettings =
     questionId &&
     selectedQuestion &&
-    !MapInputTypeArray.includes(selectedQuestion.attributes.input_type);
+    !FieldsHideGroupBy.includes(selectedQuestion.attributes.input_type);
 
   const showHeatmapSettings =
     questionId &&
@@ -172,7 +172,7 @@ const Settings = () => {
           label={formatMessage(messages.surveyPhase)}
           projectId={projectId}
           phaseId={phaseId}
-          participationMethods={['native_survey']}
+          participationMethods={['native_survey', 'community_monitor_survey']}
           onPhaseFilter={handlePhaseFilter}
         />
       )}

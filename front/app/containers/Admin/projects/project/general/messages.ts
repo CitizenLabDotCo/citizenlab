@@ -176,4 +176,13 @@ export default defineMessages({
     defaultMessage:
       'Looking for the project status? Now you can change it at any time directly from the project page header.',
   },
+  needInspiration: {
+    id: 'app.containers.AdminPage.ProjectEdit.needInspiration',
+    defaultMessage:
+      'Need inspiration? Explore similar projects from other cities in the {inspirationHubLink}',
+  },
+  inspirationHub: {
+    id: 'app.containers.AdminPage.ProjectEdit.inspirationHub',
+    defaultMessage: 'Inspiration hub',
+  },
 });

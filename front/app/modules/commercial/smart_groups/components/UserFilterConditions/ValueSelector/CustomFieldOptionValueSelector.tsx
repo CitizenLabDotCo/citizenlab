@@ -4,8 +4,8 @@ import { Select } from '@citizenlab/cl2-component-library';
 import { TRule } from 'modules/commercial/smart_groups/components/UserFilterConditions/rules';
 import { IOption } from 'typings';
 
-import { IUserCustomFieldOptionData } from 'api/user_custom_fields_options/types';
-import useUserCustomFieldOptions from 'api/user_custom_fields_options/useUserCustomFieldsOptions';
+import { ICustomFieldOptionData } from 'api/custom_field_options/types';
+import useCustomFieldOptions from 'api/custom_field_options/useCustomFieldOptions';
 
 import { isNilOrError, NilOrError } from 'utils/helperUtils';
 import localize, { InjectedLocalized } from 'utils/localize';
@@ -14,7 +14,7 @@ type Props = {
   rule: TRule;
   value: string;
   onChange: (customFieldOptionValue: string) => void;
-  options: IUserCustomFieldOptionData[] | NilOrError;
+  options: ICustomFieldOptionData[] | NilOrError;
 };
 
 interface State {}
@@ -60,7 +60,7 @@ export default (inputProps: Props) => {
   // TODO: Fix this the next time the file is edited.
   // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   const customFieldId = inputProps.rule?.['customFieldId'];
-  const { data: customFieldOptions } = useUserCustomFieldOptions(customFieldId);
+  const { data: customFieldOptions } = useCustomFieldOptions(customFieldId);
 
   return (
     <CustomFieldOptionValueSelectorWithHOC

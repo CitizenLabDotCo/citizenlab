@@ -60,6 +60,9 @@ const Meta = () => {
     const lifecycleStage = settings.core.lifecycle_stage;
     const blockIndexing = !['active', 'churned'].includes(lifecycleStage);
 
+    const esriApiKey =
+      tenant.data.attributes.settings.esri_integration?.api_key;
+
     // Show default tags only in the backoffice.
     // All other front office pages have their own title and description meta tags.
     // Ideally, we should ensure that all backoffice pages have their own meta tags and remove them from here..
@@ -139,6 +142,13 @@ const Meta = () => {
             )}
           </>
         )}
+        {/* // For clients using an Esri API Key to access private data,
+            // we need to make sure we're sending the platform URL as the referrer
+            // in these requests.
+
+            // In our nginx configuration, we're setting the referrer policy to 'no-referrer'
+            // by default, so we need to override it here so Esri network requests work properly. */}
+        {esriApiKey && <meta name="referrer" content="origin" />}
       </Helmet>
     );
   }

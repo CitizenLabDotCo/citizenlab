@@ -13,13 +13,13 @@ export default defineMessages({
     id: 'app.containers.AdminPage.SideBar.users',
     defaultMessage: 'Users',
   },
-  initiatives: {
-    id: 'app.containers.AdminPage.SideBar.initiatives',
-    defaultMessage: 'Initiatives',
-  },
   groups: {
     id: 'app.containers.AdminPage.SideBar.groups',
     defaultMessage: 'Groups',
+  },
+  community_monitor: {
+    id: 'app.containers.AdminPage.SideBar.community_monitor',
+    defaultMessage: 'Community monitor',
   },
   projects: {
     id: 'app.containers.AdminPage.SideBar.projects',
@@ -121,9 +121,8 @@ export default defineMessages({
     id: 'app.containers.AdminPage.SideBar.projectManager',
     defaultMessage: 'Project manager',
   },
-  proposalsTooltip: {
-    id: 'app.containers.AdminPage.SideBar.proposalsTooltip',
-    defaultMessage:
-      'Proposals are now a participation method. You can also pin individual projects to the navigation bar.',
+  inspirationHub: {
+    id: 'app.containers.AdminPage.SideBar.inspirationHub',
+    defaultMessage: 'Inspiration hub',
   },
 });

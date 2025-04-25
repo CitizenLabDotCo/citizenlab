@@ -199,6 +199,7 @@ const Calendar = ({
         mode="range"
         numberOfMonths={2}
         captionLayout="dropdown"
+        fixedWeeks
         locale={getLocale(locale)}
         startMonth={startMonth}
         endMonth={endMonth}

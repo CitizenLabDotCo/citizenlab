@@ -1,4 +1,6 @@
-import moment from 'moment';
+// moment-timezone extends the regular moment library,
+// so there's no need to import both moment and moment-timezone
+import moment from 'moment-timezone';
 
 import {
   pastPresentOrFuture,
@@ -7,7 +9,6 @@ import {
   getIsoDateForToday,
   timeAgo,
 } from './dateUtils';
-import 'moment-timezone';
 
 // test date is 1AM June 15 2020 UTC time (Z)
 const testDateStr = '2020-06-15T01:00:00Z';
@@ -74,11 +75,11 @@ describe('timeAgo is reported correctly', () => {
     expect(timeAgoResponse).toEqual('2 weeks ago');
   });
 
-  it.skip('should accurately return months passed since a date', () => {
+  it('should accurately return months passed since a date', () => {
     let date = new Date();
     date.setMonth(date.getMonth() - 1);
     let timeAgoResponse = timeAgo(date.valueOf(), 'en') || '';
-    // expect(timeAgoResponse).toEqual('1 month ago'); Comment out for today to get tests passing.
+    expect(timeAgoResponse).toEqual('1 month ago');
 
     date = new Date();
     date.setMonth(date.getMonth() - 2);

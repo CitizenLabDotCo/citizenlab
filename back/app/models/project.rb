@@ -23,6 +23,7 @@
 #  followers_count              :integer          default(0), not null
 #  preview_token                :string           not null
 #  header_bg_alt_text_multiloc  :jsonb
+#  hidden                       :boolean          default(FALSE), not null
 #
 # Indexes
 #
@@ -88,7 +89,7 @@ class Project < ApplicationRecord
   after_save :reassign_moderators, if: :folder_changed?
   after_commit :clear_folder_changes, if: :folder_changed?
 
-  INTERNAL_ROLES = %w[open_idea_box].freeze
+  INTERNAL_ROLES = %w[open_idea_box community_monitor].freeze
 
   validates :title_multiloc, presence: true, multiloc: { presence: true }
   validates :description_multiloc, multiloc: { presence: false, html: true }
@@ -96,6 +97,8 @@ class Project < ApplicationRecord
   validates :visible_to, presence: true, inclusion: { in: VISIBLE_TOS }
   validates :internal_role, inclusion: { in: INTERNAL_ROLES, allow_nil: true }
   validate :admin_publication_must_exist, unless: proc { Current.loading_tenant_template } # TODO: This should always be validated!
+
+  scope :not_hidden, -> { where(hidden: false) }
 
   pg_search_scope :search_by_all,
     against: %i[title_multiloc description_multiloc description_preview_multiloc slug],
@@ -130,13 +133,19 @@ class Project < ApplicationRecord
 
   scope :user_groups_visible, lambda { |user|
     user_groups = Group.joins(:projects).where(projects: self).with_user(user)
-    project_ids = GroupsProject.where(projects: self).where(groups: user_groups).select(:project_id).distinct
+    project_ids = GroupsProject.where(project: self).where(group: user_groups).select(:project_id)
     where(id: project_ids)
+  }
+
+  scope :not_in_draft_folder, lambda {
+    joins(:admin_publication)
+      .joins('LEFT OUTER JOIN admin_publications AS parent_pubs ON admin_publications.parent_id = parent_pubs.id')
+      .where("admin_publications.parent_id IS NULL OR parent_pubs.publication_status != 'draft'")
   }
 
   alias project_id id
 
-  delegate :ever_published?, :never_published?, to: :admin_publication, allow_nil: true
+  delegate :published?, :ever_published?, :never_published?, to: :admin_publication, allow_nil: true
 
   class << self
     def search_ids_by_all_including_patches(term)
@@ -215,6 +224,10 @@ class Project < ApplicationRecord
 
   def refresh_preview_token
     self.preview_token = self.class.generate_preview_token
+  end
+
+  def hidden?
+    hidden
   end
 
   private

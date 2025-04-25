@@ -83,18 +83,18 @@ export default defineMessages({
     defaultMessage:
       '{numberOfVotes} {numberOfVotes, plural, =0 {{votesTerm}} one {{voteTerm}} other {{votesTerm}}}',
   },
-  budgetingSubmissionInstructionsTotalBudget: {
-    id: 'app.utils.votingMethodUtils.budgetingSubmissionInstructionsTotalBudget',
+  budgetingSubmissionInstructionsTotalBudget2: {
+    id: 'app.utils.votingMethodUtils.budgetingSubmissionInstructionsTotalBudget2',
     defaultMessage:
-      'You have a total of <b>{maxBudget} {currency} to distribute between {optionCount} options</b>.',
+      'You have a total of <b>{maxBudget} to distribute between {optionCount} options</b>.',
   },
   budgetingSubmissionInstructionsPreferredOptions: {
     id: 'app.utils.votingMethodUtils.budgetingSubmissionInstructionsPreferredOptions',
     defaultMessage: 'Select your preferred options by tapping on "Add".',
   },
-  budgetingSubmissionInstructionsMinBudget: {
-    id: 'app.utils.votingMethodUtils.budgetingSubmissionInstructionsMinBudget',
-    defaultMessage: 'The minimum required budget is {amount} {currency}.',
+  budgetingSubmissionInstructionsMinBudget1: {
+    id: 'app.utils.votingMethodUtils.budgetingSubmissionInstructionsMinBudget1',
+    defaultMessage: 'The minimum required budget is {amount}.',
   },
   budgetingSubmissionInstructionsOnceYouAreDone: {
     id: 'app.utils.votingMethodUtils.budgetingSubmissionInstructionsOnceYouAreDone',
@@ -115,10 +115,10 @@ export default defineMessages({
     defaultMessage:
       '<b>Congratulations, your budget has been submitted!</b> You can check your options below at any point or modify them.',
   },
-  budgetParticipationEnded: {
-    id: 'app.utils.votingMethodUtils.budgetParticipationEnded',
+  budgetParticipationEnded1: {
+    id: 'app.utils.votingMethodUtils.budgetParticipationEnded1',
     defaultMessage:
-      '<b>Submitting budgets closed on {endDate}.</b> Participants had a total of <b>{maxBudget} {currency} each to distribute between {optionCount} options.</b>',
+      '<b>Submitting budgets closed on {endDate}.</b> Participants had a total of <b>{maxBudget} each to distribute between {optionCount} options.</b>',
   },
   submitYourBudget: {
     id: 'app.utils.votingMethodUtils.submitYourBudget',

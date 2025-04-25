@@ -1,11 +1,11 @@
 import React from 'react';
 
 import { Box, colors } from '@citizenlab/cl2-component-library';
-import { Editor as CraftEditor, QueryMethods } from '@craftjs/core';
-import { QueryCallbacksFor } from '@craftjs/utils';
+import { Editor as CraftEditor } from '@craftjs/core';
 
 import Container from 'components/admin/ContentBuilder/Widgets/Container';
 
+import CommunityMonitorTemplate from '../Templates/CommunityMonitorTemplate';
 import PhaseTemplate from '../Templates/PhaseTemplate';
 import PlatformTemplate from '../Templates/PlatformTemplate';
 import ProjectTemplate from '../Templates/ProjectTemplate';
@@ -16,7 +16,7 @@ import RenderNode from './RenderNode';
 type EditorProps = {
   children: React.ReactNode;
   isPreview: boolean;
-  onNodesChange?: (query: QueryCallbacksFor<typeof QueryMethods>) => void;
+  onNodesChange?: React.ComponentProps<typeof CraftEditor>['onNodesChange'];
 };
 
 const resolver = {
@@ -24,6 +24,7 @@ const resolver = {
   Container,
   ...WIDGETS,
   ProjectTemplate,
+  CommunityMonitorTemplate,
   PhaseTemplate,
   PlatformTemplate,
 };

@@ -17,6 +17,7 @@ import { IUserData } from 'api/users/types';
 import useLocalize from 'hooks/useLocalize';
 import useObserveEvent from 'hooks/useObserveEvent';
 
+import { triggerPostActionEvents } from 'containers/App/events';
 import { triggerAuthenticationFlow } from 'containers/Authentication/events';
 import { SuccessAction } from 'containers/Authentication/SuccessActions/actions';
 
@@ -182,33 +183,35 @@ const EventAttendanceButton = ({ event }: EventAttendanceButtonProps) => {
         disabled={!disabled_reason}
         placement="bottom"
         content={disabledMessage}
+        useContentWrapper={false}
       >
-        <div>
-          <Button
-            ml="auto"
-            width={'100%'}
-            iconPos={userIsAttending ? 'left' : 'right'}
-            icon={getButtonIcon()}
-            iconSize="20px"
-            bgColor={
-              userIsAttending ? colors.success : theme.colors.tenantPrimary
-            }
-            disabled={buttonDisabled}
-            onClick={(event) => {
-              event.preventDefault();
-              handleClick();
-            }}
-            processing={isLoading}
-            className="e2e-event-attendance-button"
-          >
-            {getButtonText()}
-          </Button>
-        </div>
+        <Button
+          ml="auto"
+          width={'100%'}
+          iconPos={userIsAttending ? 'left' : 'right'}
+          icon={getButtonIcon()}
+          iconSize="20px"
+          bgColor={
+            userIsAttending ? colors.success : theme.colors.tenantPrimary
+          }
+          disabled={buttonDisabled}
+          onClick={(event) => {
+            event.preventDefault();
+            handleClick();
+          }}
+          processing={isLoading}
+          className="e2e-event-attendance-button"
+        >
+          {getButtonText()}
+        </Button>
       </Tooltip>
       <ConfirmationModal
         opened={confirmationModalVisible}
         event={event}
-        onClose={() => setConfirmationModalVisible(false)}
+        onClose={() => {
+          setConfirmationModalVisible(false);
+          triggerPostActionEvents({});
+        }}
       />
     </>
   );

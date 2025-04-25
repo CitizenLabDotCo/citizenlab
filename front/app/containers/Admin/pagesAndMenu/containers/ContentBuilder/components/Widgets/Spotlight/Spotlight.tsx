@@ -11,6 +11,8 @@ import {
   Shimmer,
 } from '@citizenlab/cl2-component-library';
 
+import { CARD_IMAGE_ASPECT_RATIO_STR } from 'api/project_images/useProjectImages';
+
 import { DEFAULT_PADDING } from 'components/admin/ContentBuilder/constants';
 import AvatarBubbles from 'components/AvatarBubbles';
 import Skeleton from 'components/AvatarBubbles/Skeleton';
@@ -112,22 +114,26 @@ const Spotlight = ({
           alignItems="center"
         >
           {imgSrc ? (
-            <Image
-              src={imgSrc}
+            <Box
               width="100%"
               maxWidth="630px"
-              height={isSmallerThanPhone ? '188px' : '350px'}
-              alt="placeholder"
-              borderRadius={stylingConsts.borderRadius}
-              objectFit="cover"
-            />
+              aspectRatio={CARD_IMAGE_ASPECT_RATIO_STR}
+            >
+              <Image
+                src={imgSrc}
+                alt="placeholder"
+                borderRadius={stylingConsts.borderRadius}
+                objectFit="cover"
+                w="100%"
+              />
+            </Box>
           ) : (
             <>
               {loading && (
                 <Shimmer
                   w="100%"
                   maxWidth="630px"
-                  height={isSmallerThanPhone ? '188px' : '350px'}
+                  aspectRatio={CARD_IMAGE_ASPECT_RATIO_STR}
                   borderRadius={stylingConsts.borderRadius}
                   bgColor={colors.grey300}
                 />

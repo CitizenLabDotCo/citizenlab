@@ -6,6 +6,8 @@ import useAdminPublicationsByIds from 'api/admin_publications/useAdminPublicatio
 
 import AdminPublicationsCarrousel from '../_shared/AdminPublicationsCarrousel';
 import Skeleton from '../_shared/AdminPublicationsCarrousel/Skeleton';
+import { CarrouselContainer } from '../_shared/BaseCarrousel/Containers';
+import CarrouselTitle from '../_shared/CarrouselTitle';
 import EmptyState from '../_shared/EmptyState';
 import useLocalizeWithFallback from '../_shared/useLocalizeWithFallback';
 
@@ -48,12 +50,14 @@ const Selection = ({ titleMultiloc, adminPublicationIds }: Props) => {
   if (!adminPublications) return null;
 
   return (
-    <AdminPublicationsCarrousel
-      title={title}
-      adminPublications={adminPublications}
-      hasMore={!!hasNextPage}
-      onLoadMore={fetchNextPage}
-    />
+    <CarrouselContainer>
+      <CarrouselTitle>{title}</CarrouselTitle>
+      <AdminPublicationsCarrousel
+        adminPublications={adminPublications}
+        hasMore={!!hasNextPage}
+        onLoadMore={fetchNextPage}
+      />
+    </CarrouselContainer>
   );
 };
 

@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
 
-import { Box, Title, Image } from '@citizenlab/cl2-component-library';
+import { Box, Image } from '@citizenlab/cl2-component-library';
 import rocket from 'assets/img/rocket.png';
 import { useSearchParams } from 'react-router-dom';
 
+import useIdeaById from 'api/ideas/useIdeaById';
 import usePhases from 'api/phases/usePhases';
 import { getCurrentPhase } from 'api/phases/utils';
 import useProjectById from 'api/projects/useProjectById';
@@ -29,6 +30,10 @@ const SuccessModal = ({ projectId }: Props) => {
   const [queryParams] = useSearchParams();
   const showModalParam = !!queryParams.get('show_modal');
   const phaseIdParam = queryParams.get('phase_id');
+  const [newIdeaIdParam] = useState(
+    queryParams.get('new_idea_id') ?? undefined
+  );
+  const { data: idea } = useIdeaById(newIdeaIdParam);
 
   const [showModal, setShowModal] = useState<boolean>(false);
 
@@ -41,10 +46,12 @@ const SuccessModal = ({ projectId }: Props) => {
       }, 1500);
     }
 
-    removeSearchParams(['show_modal', 'phase_id']);
+    removeSearchParams(['show_modal', 'phase_id', 'new_idea_id']);
   }, [showModalParam]);
 
   if (!ready) return null;
+  // If there is a newIdeaIdParam, wait for idea to load
+  if (newIdeaIdParam && !idea) return null;
 
   const phaseInUrl =
     phaseIdParam && phases ? getPhase(phaseIdParam, phases.data) : undefined;
@@ -68,9 +75,11 @@ const SuccessModal = ({ projectId }: Props) => {
         justifyContent="center"
       >
         <Image width="80px" height="80px" src={rocket} alt="" />
-        <Title variant="h2" textAlign="center">
-          {config.getModalContent({})}
-        </Title>
+        <Box mt="24px">
+          {config.getModalContent?.({
+            ideaId: newIdeaIdParam,
+          })}
+        </Box>
       </Box>
     </Modal>
   );

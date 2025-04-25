@@ -89,6 +89,10 @@ namespace :cl2_back do
           enabled: true,
           allowed: true
         },
+        community_monitor: {
+          enabled: true,
+          allowed: true
+        },
         segment: {
           enabled: true,
           allowed: true
@@ -258,6 +262,10 @@ namespace :cl2_back do
           enabled: false,
           allowed: false
         },
+        posthog_user_tracking: {
+          enabled: false,
+          allowed: false
+        },
         user_blocking: {
           enabled: false,
           allowed: false,
@@ -295,6 +303,10 @@ namespace :cl2_back do
           enabled: true,
           allowed: true
         },
+        auto_insights: {
+          enabled: true,
+          allowed: true
+        },
         report_data_grouping: {
           enabled: true,
           allowed: true
@@ -312,6 +324,10 @@ namespace :cl2_back do
           allowed: true
         },
         platform_templates: {
+          enabled: false,
+          allowed: false
+        },
+        project_library: {
           enabled: false,
           allowed: false
         }

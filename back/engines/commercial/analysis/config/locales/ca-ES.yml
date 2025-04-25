@@ -1,3 +1,20 @@
 ca:
   analysis:
     example_tag_n: Exemple d'etiqueta %{n}
+    cell_statement:
+      percent_more: "%{percent}% més"
+      percent_less: "%{percent}% menys"
+      range_min_max: "%{min} a %{max}"
+      range_min: "%{min} o més"
+      range_max: "%{max} o menys"
+      tag_vs_bin:
+        inputs: "Les persones que responen \"%{answer}\" a \"%{question}\" publiquen %{percent_more_less} a \"%{tag}\" que la mitjana."
+        likes: "A les persones que responen \"%{answer}\" a \"%{question}\" els agrada %{percent_more_less} entrades a \"%{tag}\" que la mitjana."
+        dislikes: "A les persones que responen \"%{answer}\" a \"%{question}\" no els agraden les entrades %{percent_more_less} a \"%{tag}\" que la mitjana."
+        participants: "Les persones que responen \"%{answer}\" a \"%{question}\" participen %{percent_more_less} a \"%{tag}\" que la mitjana."
+      bin_vs_bin:
+        inputs: "Les persones que responen '%{answer1}' a '%{question1}' responen '%{answer2}' a '%{question2}' %{percent_more_less} que la mitjana."
+        likes: "A les persones que responen \"%{answer1}\" a \"%{question1}\" els agraden les entrades %{percent_more_less} quan responen \"%{answer2}\" a \"%{question2}\" que la mitjana."
+        dislikes: "A les persones que responen '%{answer1}' a '%{question1}' no els agraden les entrades %{percent_more_less} quan responen '%{answer2}' a '%{question2}' que la mitjana."
+        participants: "Les persones que responen \"%{answer1}\" a \"%{question1}\" participen %{percent_more_less} quan responen \"%{answer2}\" a \"%{question2}\" que la mitjana."
+

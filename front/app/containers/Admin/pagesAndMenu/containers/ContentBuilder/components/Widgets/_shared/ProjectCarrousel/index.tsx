@@ -16,20 +16,12 @@ import { CARD_WIDTH } from './constants';
 import LightProjectCard from './LightProjectCard';
 
 interface Props {
-  title: string;
   projects: MiniProjectData[];
   hasMore: boolean;
-  className?: string;
   onLoadMore: () => Promise<any>;
 }
 
-const ProjectCarrousel = ({
-  title,
-  projects,
-  hasMore,
-  className,
-  onLoadMore,
-}: Props) => {
+const ProjectCarrousel = ({ projects, hasMore, onLoadMore }: Props) => {
   const [scrollContainerRef, setScrollContainerRef] = useState<
     HTMLDivElement | undefined
   >(undefined);
@@ -68,12 +60,9 @@ const ProjectCarrousel = ({
 
   return (
     <ScrollableCarrousel
-      className={className}
-      title={title}
       scrollContainerRef={scrollContainerRef}
       setScrollContainerRef={setScrollContainerRef}
       cardWidth={CARD_WIDTH}
-      scrollButtonTop={120}
       hasMore={hasMore}
       endId={endId}
     >

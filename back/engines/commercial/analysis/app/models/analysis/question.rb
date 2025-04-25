@@ -29,6 +29,7 @@ module Analysis
     Q_AND_A_METHODS = %w[one_pass_llm bogus]
 
     belongs_to :background_task, class_name: 'Analysis::QAndATask', dependent: :destroy
+    has_many :activities, as: :item
 
     validates :q_and_a_method, inclusion: { in: Q_AND_A_METHODS }
     validates :accuracy, numericality: { in: 0..1 }, allow_blank: true

@@ -42,9 +42,27 @@ describe('Input form builder', () => {
   });
 
   it('allows user to turn on / off the attachments default field but not edit its question title', () => {
+    const title = randomString(12);
+    const description = randomString(42);
+
+    // Visit the project page and accept cookies. This is needed because the cookie banner is not interactive on the input form
+    cy.visit(`/projects/${projectSlug}`);
+    cy.acceptCookies();
+
     // Check that the Attachments field is present on the idea form before turning it off
     cy.visit(`/projects/${projectSlug}/ideas/new?phase_id=${phaseId}`);
-    cy.acceptCookies();
+
+    // Fill in the title and description since these are required
+    cy.get('#e2e-idea-title-input input').type(title);
+    cy.get('#e2e-idea-title-input input').should('contain.value', title);
+
+    cy.get('[data-cy="e2e-next-page"]').should('be.visible').click();
+
+    cy.get('#e2e-idea-description-input .ql-editor').type(description);
+    cy.get('#e2e-idea-description-input .ql-editor').contains(description);
+
+    // Go to the next page of the idea form that has the attachments field
+    cy.get('[data-cy="e2e-next-page"]').should('be.visible').click();
 
     cy.get('#e2e-idea-file-upload').should('exist');
 
@@ -82,6 +100,18 @@ describe('Input form builder', () => {
 
     // Fill in the form
     cy.visit(`/projects/${projectSlug}/ideas/new?phase_id=${phaseId}`);
+
+    // Fill in the title and description since these are required
+    cy.get('#e2e-idea-title-input input').type(title);
+    cy.get('#e2e-idea-title-input input').should('contain.value', title);
+
+    cy.get('[data-cy="e2e-next-page"]').should('be.visible').click();
+
+    cy.get('#e2e-idea-description-input .ql-editor').type(description);
+    cy.get('#e2e-idea-description-input .ql-editor').contains(description);
+
+    // Go to the page that had the attachments field
+    cy.get('[data-cy="e2e-next-page"]').should('be.visible').click();
 
     cy.get('#e2e-idea-file-upload').should('not.exist');
   });

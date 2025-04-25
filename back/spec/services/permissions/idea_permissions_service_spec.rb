@@ -125,6 +125,42 @@ describe Permissions::IdeaPermissionsService do
       expect(reason).to be_nil
     end
 
+    context "when idea has 'proposed' status" do
+      let(:proposed_status) { create(:idea_status, code: 'proposed') }
+      let(:input) { create(:idea, project: project, phases: [project.phases[2]], idea_status: proposed_status) }
+
+      it "does not return 'not_reactable_status_code'" do
+        expect(reason).to be_nil
+      end
+    end
+
+    context "when idea has 'prescreening' status" do
+      let(:prescreening_status) { create(:idea_status, code: 'prescreening') }
+      let(:input) { create(:idea, project: project, phases: [project.phases[2]], publication_status: 'submitted', idea_status: prescreening_status) }
+
+      it "returns 'not_reactable_status_code'" do
+        expect(reason).to eq 'not_reactable_status_code'
+      end
+    end
+
+    context "when idea has 'ineligible' status" do
+      let(:ineligible_status) { create(:idea_status, code: 'ineligible') }
+      let(:input) { create(:idea, project: project, phases: [project.phases[2]], idea_status: ineligible_status) }
+
+      it "returns 'not_reactable_status_code'" do
+        expect(reason).to eq 'not_reactable_status_code'
+      end
+    end
+
+    context "when idea has 'expired' status" do
+      let(:expired_status) { create(:idea_status, code: 'ineligible') }
+      let(:input) { create(:idea, project: project, phases: [project.phases[2]], idea_status: expired_status) }
+
+      it "returns 'not_reactable_status_code'" do
+        expect(reason).to eq 'not_reactable_status_code'
+      end
+    end
+
     context 'when the idea is not in the current phase' do
       let(:input) { create(:idea, project: project, phases: [project.phases[1]]) }
 
@@ -471,6 +507,7 @@ describe Permissions::IdeaPermissionsService do
         :idea_images, :idea_trending_info, :topics,
         :idea_import,
         :phases,
+        :idea_status,
         {
           project: [:admin_publication, { phases: { permissions: [:groups] } }, { custom_form: [:custom_fields] }],
           author: [:unread_notifications]

@@ -114,6 +114,15 @@ FactoryBot.define do
       end
     end
 
+    factory :community_monitor_survey_phase do
+      association :project, factory: :community_monitor_project, with_phase: false
+      participation_method { 'community_monitor_survey' }
+      native_survey_title_multiloc { { 'en' => 'Community Monitor', 'nl-BE' => 'Gemeenschapsmonitor' } }
+      native_survey_button_multiloc { { 'en' => 'Take the survey', 'nl-BE' => 'De enquete invullen' } }
+      start_at { Time.zone.today - 7.days }
+      end_at { nil }
+    end
+
     factory :single_voting_phase do
       participation_method { 'voting' }
       voting_method { 'single_voting' }

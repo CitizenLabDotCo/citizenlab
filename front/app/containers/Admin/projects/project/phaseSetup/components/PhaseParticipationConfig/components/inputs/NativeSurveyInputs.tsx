@@ -18,15 +18,18 @@ import { FormattedMessage, useIntl } from 'utils/cl-intl';
 
 import parentMessages from '../../../../messages';
 import messages from '../messages';
+import UserFieldsInSurveyToggle from 'components/admin/UserFieldsInSurveyToggle/UserFieldsInSurveyToggle';
 
 interface Props {
   allow_anonymous_participation: boolean | null | undefined;
+  user_fields_in_form: boolean | null | undefined;
   apiErrors: CLErrors | null;
   phase?: IPhase;
   formData: IUpdatedPhaseProperties;
   handleAllowAnonymousParticipationOnChange: (
     allow_anonymous_participation: boolean
   ) => void;
+  handleUserFieldsInFormOnChange: (user_fields_in_survey: boolean) => void;
   handleSurveyTitleChange: (
     value: Multiloc,
     locale: string | undefined
@@ -36,10 +39,12 @@ interface Props {
 
 const NativeSurveyInputs = ({
   allow_anonymous_participation,
+  user_fields_in_form,
   apiErrors,
   phase,
   formData,
   handleAllowAnonymousParticipationOnChange,
+  handleUserFieldsInFormOnChange,
   handleSurveyTitleChange,
   handleSurveyCTAChange,
 }: Props) => {
@@ -81,6 +86,12 @@ const NativeSurveyInputs = ({
           </Box>
         }
       />
+
+      <UserFieldsInSurveyToggle
+        userFieldsInForm={user_fields_in_form}
+        handleUserFieldsInFormOnChange={handleUserFieldsInFormOnChange}
+      />
+
       <SectionField>
         <SubSectionTitle>
           <FormattedMessage {...parentMessages.surveyTitleLabel} />

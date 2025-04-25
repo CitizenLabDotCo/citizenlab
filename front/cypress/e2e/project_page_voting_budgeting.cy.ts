@@ -83,22 +83,17 @@ describe('Budgeting project', () => {
     cy.apiRemoveUser(userId);
   });
 
-  it('shows the idea cards', () => {
+  it('shows the idea cards, sorting options and event CTA', () => {
     cy.get('.e2e-timeline-project-idea-cards');
-  });
-
-  it('hides the idea sorting options', () => {
     cy.get('.e2e-filter-selector-button').should('not.exist');
-  });
-
-  it('shows the event CTA when applicable', () => {
     cy.get('#e2e-project-see-events-button').should('exist');
   });
 
   it('can allocate the budget to ideas and show how much budget is left', () => {
     cy.contains('Submit your budget');
     cy.contains('How to participate');
-    cy.contains('500 / 500');
+    // EUR is the default currency in E2E seed data
+    cy.contains('EUR 500 / EUR 500');
 
     cy.get('#e2e-voting-submit-button')
       .should('exist')
@@ -120,7 +115,8 @@ describe('Budgeting project', () => {
       .should('exist')
       .should('not.have.class', 'disabled');
 
-    cy.contains('400 / 500');
+    // EUR is the default currency in E2E seed data
+    cy.contains('EUR 400 / EUR 500');
   });
 
   it('can submit the budget', () => {

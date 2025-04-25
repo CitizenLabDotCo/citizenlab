@@ -8,6 +8,7 @@ require_relative 'analytics'
 require_relative 'areas'
 require_relative 'baskets'
 require_relative 'common_passwords'
+require_relative 'community_monitor'
 require_relative 'custom_fields'
 require_relative 'custom_forms'
 require_relative 'custom_maps'
@@ -120,6 +121,7 @@ module MultiTenancy
         MultiTenancy::Seeds::Analytics.new(runner: self).run
         MultiTenancy::Seeds::Followers.new(runner: self).run
         MultiTenancy::Seeds::Events.new(runner: self).run
+        MultiTenancy::Seeds::CommunityMonitor.new(runner: self).run
       end
 
       # @return [Array[String]] default seed locales
