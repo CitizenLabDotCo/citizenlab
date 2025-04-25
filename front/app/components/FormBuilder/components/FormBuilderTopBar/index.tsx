@@ -18,7 +18,6 @@ import styled from 'styled-components';
 import usePhase from 'api/phases/usePhase';
 import useProjectById from 'api/projects/useProjectById';
 
-import useFeatureFlag from 'hooks/useFeatureFlag';
 import useLocalize from 'hooks/useLocalize';
 
 import {
@@ -28,7 +27,6 @@ import {
 import Button from 'components/UI/ButtonWithLink';
 import GoBackButton from 'components/UI/GoBackButton';
 import Modal from 'components/UI/Modal';
-import UpsellTooltip from 'components/UpsellTooltip';
 
 import { trackEventByName } from 'utils/analytics';
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
@@ -37,6 +35,7 @@ import clHistory from 'utils/cl-router/history';
 import messages from '../messages';
 import tracks from '../tracks';
 
+import DownloadPDFButtonWithModal from './DownloadPDFButtonWithModal';
 import ownMessages from './messages';
 
 const StyledStatusLabel = styled(StatusLabel)`
@@ -61,10 +60,6 @@ const FormBuilderTopBar = ({
   setAutosaveEnabled,
   showAutosaveToggle,
 }: FormBuilderTopBarProps) => {
-  const importPrintedFormsAllowed = useFeatureFlag({
-    name: 'import_printed_forms',
-    onlyCheckAllowed: true,
-  });
   const localize = useLocalize();
   const { formatMessage } = useIntl();
   const { projectId, phaseId } = useParams() as {
@@ -170,17 +165,12 @@ const FormBuilderTopBar = ({
           </Box>
         )}
         {builderConfig.onDownloadPDF && (
-          <UpsellTooltip disabled={importPrintedFormsAllowed}>
-            <Button
-              buttonStyle="secondary-outlined"
-              icon="download"
-              mr="20px"
-              onClick={builderConfig.onDownloadPDF}
-              disabled={!importPrintedFormsAllowed}
-            >
-              <FormattedMessage {...ownMessages.downloadPDF} />
-            </Button>
-          </UpsellTooltip>
+          <Box mr="20px">
+            <DownloadPDFButtonWithModal
+              onExport={builderConfig.onDownloadPDF}
+              formType={builderConfig.type}
+            />
+          </Box>
         )}
         <Button
           buttonStyle="secondary-outlined"

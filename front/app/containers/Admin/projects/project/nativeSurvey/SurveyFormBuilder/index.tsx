@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 
 import { useParams, useSearchParams } from 'react-router-dom';
 
@@ -8,9 +8,7 @@ import useProjectById from 'api/projects/useProjectById';
 
 import useLocale from 'hooks/useLocale';
 
-import PDFExportModal, {
-  FormValues,
-} from 'containers/Admin/projects/components/PDFExportModal';
+import { FormPDFExportFormValues } from 'containers/Admin/projects/components/PDFExportModal';
 import { API_PATH } from 'containers/App/constants';
 
 import FormBuilder from 'components/FormBuilder/edit';
@@ -19,7 +17,6 @@ import { saveSurveyAsPDF } from '../saveSurveyAsPDF';
 import { nativeSurveyConfig, clearOptionAndStatementIds } from '../utils';
 
 const SurveyFormBuilder = () => {
-  const [exportModalOpen, setExportModalOpen] = useState(false);
   const { projectId, phaseId } = useParams() as {
     projectId: string;
     phaseId?: string;
@@ -48,29 +45,22 @@ const SurveyFormBuilder = () => {
 
   // PDF downloading
   const downloadPdfLink = `${API_PATH}/phases/${phaseId}/importer/export_form/idea/pdf`;
-  const handleDownloadPDF = () => setExportModalOpen(true);
-  const handleExportPDF = async ({ personal_data }: FormValues) => {
+  const handleExportPDF = async ({
+    personal_data,
+  }: FormPDFExportFormValues) => {
     await saveSurveyAsPDF({ downloadPdfLink, locale, personal_data });
   };
 
   return (
-    <>
-      <FormBuilder
-        builderConfig={{
-          ...nativeSurveyConfig,
-          formCustomFields: newCustomFields,
-          goBackUrl: `/admin/projects/${projectId}/phases/${phaseId}/native-survey`,
-          onDownloadPDF: handleDownloadPDF,
-        }}
-        viewFormLink={`/projects/${project.data.attributes.slug}/surveys/new?phase_id=${phase.data.id}`}
-      />
-      <PDFExportModal
-        open={exportModalOpen}
-        formType="survey"
-        onClose={() => setExportModalOpen(false)}
-        onExport={handleExportPDF}
-      />
-    </>
+    <FormBuilder
+      builderConfig={{
+        ...nativeSurveyConfig,
+        formCustomFields: newCustomFields,
+        goBackUrl: `/admin/projects/${projectId}/phases/${phaseId}/native-survey`,
+        onDownloadPDF: handleExportPDF,
+      }}
+      viewFormLink={`/projects/${project.data.attributes.slug}/surveys/new?phase_id=${phase.data.id}`}
+    />
   );
 };
 
