@@ -4,7 +4,7 @@ import { debounce } from 'lodash-es';
 
 type Callback = () => void;
 
-const useDebounce = (callback: Callback) => {
+const useDebounce = (callback: Callback, delay?: number) => {
   // ref can be callback or null
   const ref = useRef<Callback>();
 
@@ -16,8 +16,8 @@ const useDebounce = (callback: Callback) => {
     const func = () => {
       ref.current?.();
     };
-    return debounce(func, 1000);
-  }, []);
+    return debounce(func, delay || 300);
+  }, [delay]);
 
   return debouncedCallback;
 };
