@@ -87,7 +87,6 @@ const PDFExportModal = ({ open, formType, onClose, onExport }: Props) => {
       niceHeader
     >
       <Box p="24px">
-        <Feedback onlyShowErrors />
         <CollapsibleContainer
           mb="24px"
           title={formatMessage(messages.notes)}
@@ -114,18 +113,18 @@ const PDFExportModal = ({ open, formType, onClose, onExport }: Props) => {
         </CollapsibleContainer>
         <FormProvider {...methods}>
           <form onSubmit={methods.handleSubmit(handleExport)}>
-            <Box mb="24px">
-              <CheckboxWithLabel
-                name="personal_data"
-                label={
-                  <Text m="0">
-                    <FormattedMessage {...messages.askPersonalData} />
-                  </Text>
-                }
-              />
-            </Box>
-            <Box w="100%" display="flex">
-              <Button width="auto" type="submit" processing={loading}>
+            <Feedback onlyShowErrors />
+            <CheckboxWithLabel
+              name="personal_data"
+              label={
+                <Text m="0">
+                  <FormattedMessage {...messages.askPersonalData} />
+                </Text>
+              }
+              mb="24px"
+            />
+            <Box display="flex">
+              <Button type="submit" processing={loading}>
                 <FormattedMessage {...messages.exportAsPDF} />
               </Button>
             </Box>
