@@ -1,0 +1,101 @@
+<html>
+<head>
+  <title>Form</title>
+  <style>
+      @page { size: A4;
+          margin: 40px 40px 80px;
+          @bottom-right {
+              font-family: Arial, sans-serif;
+              content: 'Page ' counter(page);
+              margin-bottom: 15px;
+          }
+      } /* TODO: Page bottom not quite right */
+      body { font-family: Arial, sans-serif; }
+      p, li { font-size: 12pt; }
+
+      #header {
+          img {
+              width: 225px;
+              height: auto;
+              margin-bottom: 0;
+          }
+
+          h1 {
+              margin-top: 0;
+          }
+
+          ul.instructions {
+              border-left: solid 4px #000;
+              padding-top: 5px;
+              padding-bottom: 5px
+          }
+      }
+
+
+      #questions {
+        h2 { margin-bottom: 10px; }
+        p { margin-top: 0; }
+        div.question { page-break-inside: avoid; margin-bottom: 30px; }
+        div.options p { margin-bottom: 8px; }
+        div.options input { margin-right: 10px; }
+        div.line { border-bottom: solid 1px #000; margin: 10px 0; height: 25px}
+          span.optional { font-weight: normal; }
+      }
+
+
+  </style>
+</head>
+<body>
+<div id="header">
+  <img src="<%= logo_url %>" alt="Logo" style="margin-bottom: 20px;" />
+  <h1><%= project.title_multiloc['en'] %> - <%= phase.title_multiloc['en'] %></h1>
+  <h2><%= instructions[:title] %></h2>
+  <ul class="instructions">
+    <li><%= instructions[:bullet1] %></li>
+    <li><%= instructions[:bullet2] %></li>
+  </ul>
+</div>
+
+<div id="questions">
+<% form_fields.each_with_index do |custom_field, i| %>
+  <div class="question">
+    <h2>
+      <%= custom_field.title_multiloc['en'] %>
+      <% unless custom_field.required? %>
+        <span class="optional">(<%= optional %>)</span>
+      <% end %>
+    </h2>
+    <%= sanitize custom_field.description_multiloc['en'] %>
+
+    <% if custom_field.input_type == 'select' %>
+      <div class="options">
+      <% custom_field.options.each do |option| %>
+        <p><input type="radio" /><%= option.title_multiloc['en'] %></p>
+      <% end %>
+      </div>
+    <% end %>
+
+    <% if custom_field.input_type == 'multiselect' %>
+      <div class="options">
+        <% custom_field.options.each do |option| %>
+          <p><input type="checkbox" /><%= option.title_multiloc['en'] %></p>
+        <% end %>
+      </div>
+    <% end %>
+
+    <% if custom_field.input_type == 'text' %>
+        <div class="line"></div>
+    <% end %>
+
+    <% if custom_field.input_type == 'multiline_text' %>
+      <% 7.times do %>
+        <div class="line"></div>
+      <% end %>
+    <% end %>
+
+  </div>
+<% end %>
+</div>
+
+</body>
+</html>

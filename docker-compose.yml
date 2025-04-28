@@ -38,7 +38,6 @@ services:
       - BASE_DEV_URI
     tty: true
     stdin_open: true
-  #    platform: linux/amd64
 
   que:
     container_name: cl-que
@@ -93,6 +92,14 @@ services:
       URLS: "[{ url: 'doc/open_api.json', name: 'Public API'}]"
     profiles:
       - openapi
+
+  # For generating PDFs
+  gotenberg:
+    container_name: cl-gotenberg
+    image: gotenberg/gotenberg:8
+    restart: always
+    ports:
+      - 7000:3000
 
 volumes:
   postgres:

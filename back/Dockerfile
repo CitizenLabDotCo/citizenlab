@@ -41,8 +41,6 @@ RUN apt-get update                                        \
    libjemalloc2 \
    # tiktoken_ruby
    clang                                                  \
-   # For Ferrum PDF generation - NOT INSTALLED IN BUILD - WHY?
-  chromium chromium-sandbox fonts-liberation libappindicator3-1 xdg-utils \
    && curl -sL https://deb.nodesource.com/setup_18.x  | bash - \
    && apt-get -y --no-install-recommends install nodejs        \
    # Install MJML parser required by email engine.

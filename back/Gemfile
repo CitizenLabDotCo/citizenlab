@@ -132,7 +132,7 @@ gem 'prawn', '~> 2.5'
 gem 'prawn-grouping', '~> 0.2.0'
 
 # TEMP: testing new PDF creation library
-gem 'ferrum_pdf'
+gem 'gotenberg-ruby'
 
 # Also required here to be able to initialize Mailgun in
 # e.g. production.rb, which would otherwise result in an
