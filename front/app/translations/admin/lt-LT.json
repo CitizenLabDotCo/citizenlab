@@ -1040,7 +1040,6 @@
   "app.containers.Admin.projects.all.itIsAlsoPossible1": "Galite derinti internetinius ir neprisijungus prie interneto teikiamus atsakymus. Norėdami įkelti ne internetu gautus atsakymus, eikite į šio projekto skirtuką \"Įvesties tvarkytuvas\" ir spustelėkite \"Importuoti\".",
   "app.containers.Admin.projects.all.itIsAlsoPossibleSurvey1": "Galite derinti internetinius ir neprisijungus prie interneto teikiamus atsakymus. Norėdami įkelti ne internetu gautus atsakymus, eikite į šio projekto skirtuką \"Apklausa\" ir spustelėkite \"Importuoti\".",
   "app.containers.Admin.projects.all.logicNotInPDF": "Apklausos logika neatsispindės atsisiųstame PDF dokumente. Respondentai, atsakę į popierinius klausimus, matys visus apklausos klausimus.",
-  "app.containers.Admin.projects.all.notIncludedInYourPlan": "Tačiau tai nėra įtraukta į jūsų dabartinį planą. Kreipkitės į savo vyriausybės sėkmės vadybininką arba administratorių, kad jį atrakintumėte.",
   "app.containers.Admin.projects.all.notes": "Pastabos",
   "app.containers.Admin.projects.all.personalDataExplanation2": "Pažymėkite toliau esantį langelį, jei norite, kad atsisiųstame PDF dokumente būtų vardo, pavardės ir el. pašto laukai. Įkėlus popierinę formą, naudosime šiuos naudotojo duomenis, kad automatiškai sukurtume neprisijungusio apklausos respondento paskyrą.",
   "app.containers.Admin.projects.project.analysis.Comments.aiSummary": "AI santrauka",

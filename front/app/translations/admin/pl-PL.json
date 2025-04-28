@@ -1040,7 +1040,6 @@
   "app.containers.Admin.projects.all.itIsAlsoPossible1": "Możesz łączyć odpowiedzi online i offline. Aby przesłać odpowiedzi offline, przejdź do zakładki \"Menedżer danych wejściowych\" tego projektu i kliknij \"Importuj\".",
   "app.containers.Admin.projects.all.itIsAlsoPossibleSurvey1": "Możesz łączyć odpowiedzi online i offline. Aby przesłać odpowiedzi offline, przejdź do zakładki \"Ankieta\" tego projektu i kliknij \"Importuj\".",
   "app.containers.Admin.projects.all.logicNotInPDF": "Logika ankiety nie zostanie odzwierciedlona w pobranym pliku PDF. Respondenci papierowi zobaczą wszystkie pytania ankiety.",
-  "app.containers.Admin.projects.all.notIncludedInYourPlan": "Nie jest to jednak uwzględnione w Twoim obecnym planie. Skontaktuj się ze swoim Government Success Managerem lub administratorem, aby ją odblokować.",
   "app.containers.Admin.projects.all.notes": "Uwagi",
   "app.containers.Admin.projects.all.personalDataExplanation2": "Zaznacz poniższe pole, jeśli chcesz, aby pobrany plik PDF zawierał pola imienia, nazwiska i adresu e-mail. Po przesłaniu papierowego formularza użyjemy tych danych użytkownika do automatycznego wygenerowania konta dla respondenta ankiety offline.",
   "app.containers.Admin.projects.project.analysis.Comments.aiSummary": "Podsumowanie AI",

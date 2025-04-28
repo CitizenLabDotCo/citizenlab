@@ -431,6 +431,7 @@ const FormEdit = ({
                   onAddField={onAddField}
                   builderConfig={builderConfig}
                   move={move}
+                  onSelectField={setSelectedField}
                 />
               </Box>
               <Box

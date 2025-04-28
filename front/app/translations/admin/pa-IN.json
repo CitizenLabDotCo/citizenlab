@@ -1040,7 +1040,6 @@
   "app.containers.Admin.projects.all.itIsAlsoPossible1": "ਤੁਸੀਂ ਔਨਲਾਈਨ ਅਤੇ ਔਫਲਾਈਨ ਜਵਾਬਾਂ ਨੂੰ ਜੋੜ ਸਕਦੇ ਹੋ। ਔਫਲਾਈਨ ਜਵਾਬਾਂ ਨੂੰ ਅੱਪਲੋਡ ਕਰਨ ਲਈ, ਇਸ ਪ੍ਰੋਜੈਕਟ ਦੇ 'ਇਨਪੁਟ ਮੈਨੇਜਰ' ਟੈਬ 'ਤੇ ਜਾਓ, ਅਤੇ 'ਆਯਾਤ' 'ਤੇ ਕਲਿੱਕ ਕਰੋ।",
   "app.containers.Admin.projects.all.itIsAlsoPossibleSurvey1": "ਤੁਸੀਂ ਔਨਲਾਈਨ ਅਤੇ ਔਫਲਾਈਨ ਜਵਾਬਾਂ ਨੂੰ ਜੋੜ ਸਕਦੇ ਹੋ। ਔਫਲਾਈਨ ਜਵਾਬ ਅੱਪਲੋਡ ਕਰਨ ਲਈ, ਇਸ ਪ੍ਰੋਜੈਕਟ ਦੇ 'ਸਰਵੇਖਣ' ਟੈਬ 'ਤੇ ਜਾਓ, ਅਤੇ 'ਆਯਾਤ' 'ਤੇ ਕਲਿੱਕ ਕਰੋ।",
   "app.containers.Admin.projects.all.logicNotInPDF": "ਸਰਵੇਖਣ ਤਰਕ ਡਾਊਨਲੋਡ ਕੀਤੀ PDF ਵਿੱਚ ਪ੍ਰਤੀਬਿੰਬਿਤ ਨਹੀਂ ਹੋਵੇਗਾ। ਪੇਪਰ ਉੱਤਰਦਾਤਾ ਸਾਰੇ ਸਰਵੇਖਣ ਸਵਾਲਾਂ ਨੂੰ ਦੇਖਣਗੇ।",
-  "app.containers.Admin.projects.all.notIncludedInYourPlan": "ਹਾਲਾਂਕਿ, ਇਹ ਤੁਹਾਡੀ ਮੌਜੂਦਾ ਯੋਜਨਾ ਵਿੱਚ ਸ਼ਾਮਲ ਨਹੀਂ ਹੈ। ਇਸਨੂੰ ਅਨਲੌਕ ਕਰਨ ਲਈ ਆਪਣੇ ਸਰਕਾਰੀ ਸਫਲਤਾ ਪ੍ਰਬੰਧਕ ਜਾਂ ਪ੍ਰਸ਼ਾਸਕ ਨਾਲ ਸੰਪਰਕ ਕਰੋ।",
   "app.containers.Admin.projects.all.notes": "ਨੋਟਸ",
   "app.containers.Admin.projects.all.personalDataExplanation2": "ਜੇਕਰ ਤੁਸੀਂ ਚਾਹੁੰਦੇ ਹੋ ਕਿ ਤੁਹਾਡੀ ਡਾਊਨਲੋਡ ਕੀਤੀ PDF ਵਿੱਚ ਨਾਮ, ਆਖਰੀ ਨਾਮ ਅਤੇ ਈਮੇਲ ਖੇਤਰ ਸ਼ਾਮਲ ਹੋਣ ਤਾਂ ਹੇਠਾਂ ਦਿੱਤੇ ਬਾਕਸ ਨੂੰ ਚੁਣੋ। ਪੇਪਰ ਫਾਰਮ ਨੂੰ ਅਪਲੋਡ ਕਰਨ 'ਤੇ, ਅਸੀਂ ਉਸ ਉਪਭੋਗਤਾ ਡੇਟਾ ਦੀ ਵਰਤੋਂ ਕਰਾਂਗੇ, ਔਫਲਾਈਨ ਸਰਵੇਖਣ ਉੱਤਰਦਾਤਾ ਲਈ ਇੱਕ ਖਾਤਾ ਸਵੈ-ਤਿਆਰ ਕਰਨ ਲਈ।",
   "app.containers.Admin.projects.project.analysis.Comments.aiSummary": "ਏਆਈ ਸੰਖੇਪ",

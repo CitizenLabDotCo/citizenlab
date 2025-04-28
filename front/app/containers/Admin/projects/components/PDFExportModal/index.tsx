@@ -5,8 +5,6 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm, FormProvider } from 'react-hook-form';
 import { object, boolean } from 'yup';
 
-import useFeatureFlag from 'hooks/useFeatureFlag';
-
 import CheckboxWithLabel from 'components/HookForm/CheckboxWithLabel';
 import Feedback from 'components/HookForm/Feedback';
 import Modal from 'components/UI/Modal';
@@ -42,9 +40,6 @@ const IT_IS_POSSIBLE_MESSAGES = {
 };
 
 const PDFExportModal = ({ open, formType, onClose, onExport }: Props) => {
-  const importPrintedFormsEnabled = useFeatureFlag({
-    name: 'import_printed_forms',
-  });
   const [loading, setLoading] = useState(false);
 
   const schema = object({
@@ -84,59 +79,46 @@ const PDFExportModal = ({ open, formType, onClose, onExport }: Props) => {
       }
       niceHeader
     >
-      <FormProvider {...methods}>
-        <form onSubmit={methods.handleSubmit(handleExport)}>
-          <Feedback onlyShowErrors />
-          <Box p="24px" w="100%">
-            <Title variant="h3" m="0" mb="24px">
-              <FormattedMessage {...messages.notes} />
-            </Title>
-            <Box as="ul" pl="28px">
-              <Text as="li" mb="4px" mt="0px" w="500px">
-                <FormattedMessage {...CLICK_EXPORT_MESSAGES[formType]} />
-              </Text>
-              {formType === 'survey' && (
-                <Text as="li" mb="4px" mt="0px" w="500px">
-                  <FormattedMessage {...messages.logicNotInPDF} />
+      <Box p="24px">
+        <Title variant="h3" m="0" mb="24px">
+          <FormattedMessage {...messages.notes} />
+        </Title>
+        <Box as="ul" pl="28px">
+          <Text as="li" mb="4px" mt="0px" w="500px">
+            <FormattedMessage {...CLICK_EXPORT_MESSAGES[formType]} />
+          </Text>
+          {formType === 'survey' && (
+            <Text as="li" mb="4px" mt="0px" w="500px">
+              <FormattedMessage {...messages.logicNotInPDF} />
+            </Text>
+          )}
+          <Text as="li" mb="4px">
+            <FormattedMessage {...IT_IS_POSSIBLE_MESSAGES[formType]} />
+          </Text>
+          <Text as="li" mb="24px">
+            <FormattedMessage {...messages.personalDataExplanation} />
+          </Text>
+        </Box>
+        <FormProvider {...methods}>
+          <form onSubmit={methods.handleSubmit(handleExport)}>
+            <Feedback onlyShowErrors />
+            <CheckboxWithLabel
+              name="personal_data"
+              label={
+                <Text m="0">
+                  <FormattedMessage {...messages.askPersonalData} />
                 </Text>
-              )}
-              <Text as="li" mb="4px">
-                <FormattedMessage {...IT_IS_POSSIBLE_MESSAGES[formType]} />
-                {importPrintedFormsEnabled || (
-                  <>
-                    {' '}
-                    <FormattedMessage {...messages.notIncludedInYourPlan} />
-                  </>
-                )}
-              </Text>
-              {importPrintedFormsEnabled ? (
-                <>
-                  <Text as="li" mb="24px">
-                    <FormattedMessage {...messages.personalDataExplanation} />
-                  </Text>
-                  <Box mb="24px" ml="-20px">
-                    <CheckboxWithLabel
-                      name="personal_data"
-                      label={
-                        <Text m="0">
-                          <FormattedMessage {...messages.askPersonalData} />
-                        </Text>
-                      }
-                    />
-                  </Box>
-                </>
-              ) : (
-                <Box mb="24px" />
-              )}
-            </Box>
-            <Box w="100%" display="flex">
-              <Button width="auto" type="submit" processing={loading}>
+              }
+              mb="24px"
+            />
+            <Box display="flex">
+              <Button type="submit" processing={loading}>
                 <FormattedMessage {...messages.exportAsPDF} />
               </Button>
             </Box>
-          </Box>
-        </form>
-      </FormProvider>
+          </form>
+        </FormProvider>
+      </Box>
     </Modal>
   );
 };
