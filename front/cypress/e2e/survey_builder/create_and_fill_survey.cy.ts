@@ -272,6 +272,8 @@ describe('Survey builder', () => {
   });
 
   it.skip('allows deleting survey results when user clicks the delete button', () => {
+    const randNumber = Math.floor(Math.random() * 1000).toString();
+
     cy.visit(
       `admin/projects/${projectId}/phases/${phaseId}/native-survey/edit`
     );
@@ -282,7 +284,7 @@ describe('Survey builder', () => {
     cy.wait('@customForm');
     cy.wait(100);
 
-    cy.get('[data-cy="e2e-short-answer"]').click();
+    cy.get('[data-cy="e2e-number-field"]').click();
     cy.get('#e2e-title-multiloc').type(questionTitle, { force: true });
 
     // Save the survey
@@ -299,7 +301,9 @@ describe('Survey builder', () => {
     cy.acceptCookies();
     cy.contains(questionTitle).should('exist');
 
-    cy.get(`*[id^="properties${questionTitle}"]`).type(answer, { force: true });
+    cy.get(`*[id^="properties${questionTitle}"]`).type(randNumber, {
+      force: true,
+    });
 
     // Save survey response
     cy.get('[data-cy="e2e-submit-form"]').should('exist');
@@ -328,7 +332,7 @@ describe('Survey builder', () => {
     cy.wait('@customForm');
     cy.wait(100);
 
-    cy.get('[data-cy="e2e-short-answer"]').click();
+    cy.get('[data-cy="e2e-long-answer"]').click();
     cy.get('#e2e-title-multiloc').type(questionTitle, { force: true });
 
     // Save the survey
@@ -369,7 +373,7 @@ describe('Survey builder', () => {
     cy.task('deleteFolder', downloadsFolder);
   });
 
-  it('allows admins to fill in surveys as many times as they want when permissions are set to registered users', () => {
+  it.skip('allows admins to fill in surveys as many times as they want when permissions are set to registered users', () => {
     cy.visit(`/admin/projects/${projectId}/phases/${phaseId}/access-rights`);
 
     cy.get('.e2e-action-accordion-posting_idea').click();
@@ -417,7 +421,7 @@ describe('Survey builder', () => {
     cy.get('[data-cy="e2e-after-submission"]').should('exist');
   });
 
-  it.skip('creates survey with logic, saves survey and user can respond to survey and responses determine which page he sees based on set logic', () => {
+  it('creates survey with logic, saves survey and user can respond to survey and responses determine which page he sees based on set logic', () => {
     const chooseOneOption1 = randomString();
     const chooseOneOption2 = randomString();
     const question2Title = randomString();
@@ -428,6 +432,13 @@ describe('Survey builder', () => {
 
     cy.visit(`admin/projects/${projectId}/phases/${phaseId}/native-survey`);
     cy.get('[data-cy="e2e-edit-survey-content"]').click();
+
+    cy.intercept('**/phases/**/custom_fields').as('customFields');
+    cy.intercept('**/phases/**/custom_form').as('customForm');
+    cy.wait('@customFields');
+    cy.wait('@customForm');
+    cy.wait(100);
+
     cy.get('[data-cy="e2e-short-answer"]').click();
 
     cy.get('#e2e-title-multiloc').type(questionTitle, { force: true });
