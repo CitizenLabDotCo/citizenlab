@@ -4,11 +4,13 @@ import {
   Box,
   Button,
   CollapsibleContainer,
+  colors,
   Text,
   Title,
 } from '@citizenlab/cl2-component-library';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm, FormProvider } from 'react-hook-form';
+import { useTheme } from 'styled-components';
 import { object, boolean } from 'yup';
 
 import CheckboxWithLabel from 'components/HookForm/CheckboxWithLabel';
@@ -48,6 +50,7 @@ const IT_IS_POSSIBLE_MESSAGES = {
 const PDFExportModal = ({ open, formType, onClose, onExport }: Props) => {
   const { formatMessage } = useIntl();
   const [loading, setLoading] = useState(false);
+  const theme = useTheme();
 
   const schema = object({
     personal_data: boolean(),
@@ -91,8 +94,11 @@ const PDFExportModal = ({ open, formType, onClose, onExport }: Props) => {
           mb="24px"
           title={formatMessage(messages.notes)}
           titleAs="h2"
-          titleVariant="h3"
+          titleVariant="h4"
           titleFontWeight="bold"
+          titlePadding="16px"
+          border={`1px solid ${colors.grey300}`}
+          borderRadius={theme.borderRadius}
         >
           <Box as="ul" pl="28px">
             <Text as="li" mb="4px" mt="0px" w="500px">
