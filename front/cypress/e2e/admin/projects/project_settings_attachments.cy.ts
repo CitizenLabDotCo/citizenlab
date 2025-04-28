@@ -63,7 +63,6 @@ describe('Project attachments settings', () => {
 
       // Swap the order of the files
       // Drag "example.txt" (index 1) above "example.pdf" (index 0)
-      // Create a real DataTransfer object
       const dataTransfer = new DataTransfer();
 
       cy.get('[data-cy="e2e-file-uploader-container"] .files-list')
