@@ -101,16 +101,15 @@ const PDFExportModal = ({ open, formType, onClose, onExport }: Props) => {
         </Box>
         <FormProvider {...methods}>
           <form onSubmit={methods.handleSubmit(handleExport)}>
-            <Box mb="24px">
-              <CheckboxWithLabel
-                name="personal_data"
-                label={
-                  <Text m="0">
-                    <FormattedMessage {...messages.askPersonalData} />
-                  </Text>
-                }
-              />
-            </Box>
+            <CheckboxWithLabel
+              name="personal_data"
+              label={
+                <Text m="0">
+                  <FormattedMessage {...messages.askPersonalData} />
+                </Text>
+              }
+              mb="24px"
+            />
             <Feedback onlyShowErrors />
             <Box w="100%" display="flex">
               <Button width="auto" type="submit" processing={loading}>
