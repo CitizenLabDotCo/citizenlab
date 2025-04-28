@@ -111,8 +111,8 @@ const PDFExportModal = ({ open, formType, onClose, onExport }: Props) => {
               mb="24px"
             />
             <Feedback onlyShowErrors />
-            <Box w="100%" display="flex">
-              <Button width="auto" type="submit" processing={loading}>
+            <Box display="flex">
+              <Button type="submit" processing={loading}>
                 <FormattedMessage {...messages.exportAsPDF} />
               </Button>
             </Box>
