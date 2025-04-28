@@ -79,47 +79,47 @@ const PDFExportModal = ({ open, formType, onClose, onExport }: Props) => {
       }
       niceHeader
     >
-      <FormProvider {...methods}>
-        <form onSubmit={methods.handleSubmit(handleExport)}>
-          <Feedback onlyShowErrors />
-          <Box p="24px" w="100%">
-            <Title variant="h3" m="0" mb="24px">
-              <FormattedMessage {...messages.notes} />
-            </Title>
-            <Box as="ul" pl="28px">
-              <Text as="li" mb="4px" mt="0px" w="500px">
-                <FormattedMessage {...CLICK_EXPORT_MESSAGES[formType]} />
-              </Text>
-              {formType === 'survey' && (
-                <Text as="li" mb="4px" mt="0px" w="500px">
-                  <FormattedMessage {...messages.logicNotInPDF} />
-                </Text>
-              )}
-              <Text as="li" mb="4px">
-                <FormattedMessage {...IT_IS_POSSIBLE_MESSAGES[formType]} />
-              </Text>
-              <Text as="li" mb="24px">
-                <FormattedMessage {...messages.personalDataExplanation} />
-              </Text>
-              <Box mb="24px" ml="-20px">
-                <CheckboxWithLabel
-                  name="personal_data"
-                  label={
-                    <Text m="0">
-                      <FormattedMessage {...messages.askPersonalData} />
-                    </Text>
-                  }
-                />
-              </Box>
+      <Box p="24px">
+        <Feedback onlyShowErrors />
+        <Title variant="h3" m="0" mb="24px">
+          <FormattedMessage {...messages.notes} />
+        </Title>
+        <Box as="ul" pl="28px">
+          <Text as="li" mb="4px" mt="0px" w="500px">
+            <FormattedMessage {...CLICK_EXPORT_MESSAGES[formType]} />
+          </Text>
+          {formType === 'survey' && (
+            <Text as="li" mb="4px" mt="0px" w="500px">
+              <FormattedMessage {...messages.logicNotInPDF} />
+            </Text>
+          )}
+          <Text as="li" mb="4px">
+            <FormattedMessage {...IT_IS_POSSIBLE_MESSAGES[formType]} />
+          </Text>
+          <Text as="li" mb="24px">
+            <FormattedMessage {...messages.personalDataExplanation} />
+          </Text>
+        </Box>
+        <FormProvider {...methods}>
+          <form onSubmit={methods.handleSubmit(handleExport)}>
+            <Box mb="24px">
+              <CheckboxWithLabel
+                name="personal_data"
+                label={
+                  <Text m="0">
+                    <FormattedMessage {...messages.askPersonalData} />
+                  </Text>
+                }
+              />
             </Box>
             <Box w="100%" display="flex">
               <Button width="auto" type="submit" processing={loading}>
                 <FormattedMessage {...messages.exportAsPDF} />
               </Button>
             </Box>
-          </Box>
-        </form>
-      </FormProvider>
+          </form>
+        </FormProvider>
+      </Box>
     </Modal>
   );
 };
