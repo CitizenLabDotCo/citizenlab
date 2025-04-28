@@ -14,6 +14,7 @@ import {
   ICustomFieldInputType,
   IFlatCreateCustomField,
   IFlatCustomField,
+  IFlatCustomFieldWithIndex,
 } from 'api/custom_fields/types';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
@@ -35,12 +36,15 @@ interface FormBuilderToolboxProps {
   onAddField: (field: IFlatCreateCustomField, index: number) => void;
   builderConfig: FormBuilderConfig;
   move: (indexA: number, indexB: number) => void;
+  // Callback to focus a field in the right-hand settings pane
+  onSelectField: (field: IFlatCustomFieldWithIndex) => void;
 }
 
 const FormBuilderToolbox = ({
   onAddField,
   builderConfig,
   move,
+  onSelectField,
 }: FormBuilderToolboxProps) => {
   const isInputFormCustomFieldsFlagEnabled = useFeatureFlag({
     name: 'input_form_custom_fields',
@@ -169,7 +173,12 @@ const FormBuilderToolbox = ({
       <Box overflowY="auto" w="100%" display="inline">
         <LayoutFields addField={addField} builderConfig={builderConfig} />
         {builderConfig.displayBuiltInFields && (
-          <BuiltInFields move={move} builderConfig={builderConfig} />
+          <BuiltInFields
+            move={move}
+            builderConfig={builderConfig}
+            addField={addField}
+            onSelectField={onSelectField}
+          />
         )}
         <Box display="flex" alignItems="center" ml="16px" mt="16px">
           <Title

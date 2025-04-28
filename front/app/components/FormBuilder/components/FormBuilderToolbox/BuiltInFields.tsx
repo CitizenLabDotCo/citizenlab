@@ -3,7 +3,11 @@ import React from 'react';
 import { Box, Title } from '@citizenlab/cl2-component-library';
 import { useFormContext } from 'react-hook-form';
 
-import { IFlatCustomField } from 'api/custom_fields/types';
+import {
+  IFlatCustomField,
+  ICustomFieldInputType,
+  IFlatCustomFieldWithIndex,
+} from 'api/custom_fields/types';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
@@ -21,9 +25,16 @@ import ToolboxItem from './ToolboxItem';
 interface BuiltInFieldsProps {
   move: (indexA: number, indexB: number) => void;
   builderConfig: FormBuilderConfig;
+  addField: (inputType: ICustomFieldInputType) => void;
+  onSelectField: (field: IFlatCustomFieldWithIndex) => void;
 }
 
-const BuiltInFields = ({ move, builderConfig }: BuiltInFieldsProps) => {
+const BuiltInFields = ({
+  move,
+  builderConfig,
+  addField,
+  onSelectField,
+}: BuiltInFieldsProps) => {
   const cosponsorsEnabled = useFeatureFlag({ name: 'input_cosponsorship' });
   const { watch, trigger, setValue } = useFormContext();
   const { formatMessage } = useIntl();
@@ -41,14 +52,32 @@ const BuiltInFields = ({ move, builderConfig }: BuiltInFieldsProps) => {
       return;
     }
 
-    const field = formCustomFields.find((field) => field.key === key);
-    const fieldIndex = formCustomFields.findIndex((field) => field.key === key);
-    if (field) {
-      const updatedField = { ...field, enabled: true };
-      setValue(`customFields.${fieldIndex}`, updatedField);
-      move(fieldIndex, formCustomFields.length - 2);
-      trigger();
+    const fields = formCustomFields;
+    const fieldsLength = fields.length;
+    const fieldIndex = fields.findIndex((f) => f.key === key);
+    if (fieldIndex === -1) return;
+    const field = fields[fieldIndex];
+    const updatedField = { ...field, enabled: true };
+    setValue(`customFields.${fieldIndex}`, updatedField);
+
+    const previousField = fields[fieldsLength - 2];
+    const isLastFieldTitleOrBody =
+      previousField.key === 'title_multiloc' ||
+      previousField.key === 'body_multiloc';
+
+    if (isLastFieldTitleOrBody) {
+      // We add a page and the move the enabled field to the end
+      addField('page');
+      const targetIndex = fieldsLength - 1;
+      move(fieldIndex, targetIndex);
+      onSelectField({ ...updatedField, index: targetIndex });
+    } else {
+      const targetIndex = fieldsLength - 2;
+      move(fieldIndex, targetIndex);
+      onSelectField({ ...updatedField, index: targetIndex });
     }
+
+    trigger();
   };
 
   return (
