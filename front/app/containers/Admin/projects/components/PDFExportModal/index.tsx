@@ -101,6 +101,7 @@ const PDFExportModal = ({ open, formType, onClose, onExport }: Props) => {
         </Box>
         <FormProvider {...methods}>
           <form onSubmit={methods.handleSubmit(handleExport)}>
+            <Feedback onlyShowErrors />
             <CheckboxWithLabel
               name="personal_data"
               label={
@@ -110,7 +111,6 @@ const PDFExportModal = ({ open, formType, onClose, onExport }: Props) => {
               }
               mb="24px"
             />
-            <Feedback onlyShowErrors />
             <Box display="flex">
               <Button type="submit" processing={loading}>
                 <FormattedMessage {...messages.exportAsPDF} />
