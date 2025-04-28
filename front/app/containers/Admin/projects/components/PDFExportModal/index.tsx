@@ -80,7 +80,6 @@ const PDFExportModal = ({ open, formType, onClose, onExport }: Props) => {
       niceHeader
     >
       <Box p="24px">
-        <Feedback onlyShowErrors />
         <Title variant="h3" m="0" mb="24px">
           <FormattedMessage {...messages.notes} />
         </Title>
@@ -112,6 +111,7 @@ const PDFExportModal = ({ open, formType, onClose, onExport }: Props) => {
                 }
               />
             </Box>
+            <Feedback onlyShowErrors />
             <Box w="100%" display="flex">
               <Button width="auto" type="submit" processing={loading}>
                 <FormattedMessage {...messages.exportAsPDF} />
