@@ -3,7 +3,7 @@ import { randomString } from '../../../support/commands';
 describe('Project attachments settings', () => {
   let projectId: string | null = null;
 
-  beforeEach(() => {
+  before(() => {
     cy.setConsentAndAdminLoginCookies();
 
     cy.apiCreateProject({
@@ -20,12 +20,8 @@ describe('Project attachments settings', () => {
     }
   });
 
-  // File attachments can be added, reordered and saved in a single go.
-
-  // After saving, another file can be added, reordered and saved. Final order should be correct.
-
   describe('Project attachments', () => {
-    it('File attachments can be added, reordered, and saved in a single go', () => {
+    it('File attachments can be added, reordered, and saved correctly', () => {
       cy.intercept(`**/projects/${projectId}/files`).as('saveProjectFiles');
 
       // Visit the project settings page
@@ -142,10 +138,6 @@ describe('Project attachments settings', () => {
           expect(files[1].innerText).to.contain('example.txt');
           expect(files[2].innerText).to.contain('example.pdf');
         });
-    });
-
-    it('A new attachment can be added to an existing list, reordered, and saved. Order after saving is correct.', () => {
-      cy.visit(`admin/projects/${projectId}`);
     });
   });
 });
