@@ -31,5 +31,14 @@ RSpec.describe EmailCampaigns::ActivityTriggerable do
     it 'returns false if no activity is specified' do
       expect(campaign.run_before_send_hooks).to be_falsy
     end
+
+    it 'returns false if the activity acted_at is more than 7 days ago' do
+      activity = create(:published_activity, acted_at: 8.days.ago)
+      campaign.activity_triggers = {
+        'Idea' => { 'published' => true }
+      }
+
+      expect(campaign.run_before_send_hooks(activity: activity)).to be_falsy
+    end
   end
 end
