@@ -108,7 +108,8 @@ const AnalysisBanner = ({ projectId, phaseId }: Props) => {
             textColor={colors.teal500}
             onClick={handleGoToAnalysis}
             fontWeight="bold"
-            icon={isAnalysisAllowed ? 'stars' : 'lock'}
+            icon="arrow-right"
+            iconPos="right"
             iconColor={colors.teal500}
             id="e2e-analysis-banner-button"
             processing={isLoading}
