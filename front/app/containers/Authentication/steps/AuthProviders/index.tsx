@@ -111,6 +111,10 @@ const AuthProviders = memo<Props>(
       useFeatureFlag({
         name: 'keycloak_login',
       }) || providerForTest === 'keycloak';
+    const twodayLoginEnabled =
+      useFeatureFlag({
+        name: 'twoday_login',
+      }) || providerForTest === 'twoday';
 
     const azureProviderName =
       tenantSettings?.azure_ad_login?.login_mechanism_name;
@@ -153,6 +157,7 @@ const AuthProviders = memo<Props>(
       hoplrLoginEnabled ||
       criiptoLoginEnabled ||
       keycloakLoginEnabled ||
+      twodayLoginEnabled ||
       nemlogInLoginEnabled ||
       idAustriaLoginEnabled;
 
@@ -171,9 +176,7 @@ const AuthProviders = memo<Props>(
             })}
           />
         )}
-
         {showMainAuthMethods && franceconnectLoginEnabled && <Or />}
-
         {fakeSsoEnabled && (
           <StyledAuthProviderButton
             icon="bullseye"
@@ -185,14 +188,12 @@ const AuthProviders = memo<Props>(
             <FormattedMessage {...messages.continueWithFakeSSO} />
           </StyledAuthProviderButton>
         )}
-
         {claveUnicaLoginEnabled && (
           <StyledClaveUnicaExpandedAuthProviderButton
             flow={flow}
             onSelectAuthProvider={onSelectAuthProvider}
           />
         )}
-
         {hoplrLoginEnabled && (
           <StyledAuthProviderButton
             icon="hoplr"
@@ -203,7 +204,6 @@ const AuthProviders = memo<Props>(
             <FormattedMessage {...messages.continueWithHoplr} />
           </StyledAuthProviderButton>
         )}
-
         {nemlogInLoginEnabled && (
           <StyledAuthProviderButton
             flow={flow}
@@ -213,7 +213,6 @@ const AuthProviders = memo<Props>(
             <FormattedMessage {...messages.continueWithNemlogIn} />
           </StyledAuthProviderButton>
         )}
-
         {idAustriaLoginEnabled && (
           <StyledAuthProviderButton
             icon="idaustria"
@@ -247,7 +246,6 @@ const AuthProviders = memo<Props>(
             />
           </StyledAuthProviderButton>
         )}
-
         {keycloakLoginEnabled && (
           <StyledAuthProviderButton
             icon="idporten"
@@ -263,13 +261,26 @@ const AuthProviders = memo<Props>(
             />
           </StyledAuthProviderButton>
         )}
-
+        {twodayLoginEnabled && (
+          <StyledAuthProviderButton
+            icon="bankId"
+            flow={flow}
+            authProvider="twoday"
+            onContinue={onSelectAuthProvider}
+          >
+            <FormattedMessage
+              {...messages.continueWithLoginMechanism}
+              values={{
+                loginMechanismName: 'BankID eller Freja eID+',
+              }}
+            />
+          </StyledAuthProviderButton>
+        )}
         <Outlet
           id="app.components.SignUpIn.AuthProviders.ContainerStart"
           flow={flow}
           onContinue={onSelectAuthProvider}
         />
-
         {isPasswordSigninOrSignupAllowed && (
           <StyledAuthProviderButton
             flow={flow}
@@ -285,7 +296,6 @@ const AuthProviders = memo<Props>(
             )}
           </StyledAuthProviderButton>
         )}
-
         {googleLoginEnabled && (
           <StyledAuthProviderButton
             flow={flow}
@@ -296,7 +306,6 @@ const AuthProviders = memo<Props>(
             <FormattedMessage {...messages.continueWithGoogle} />
           </StyledAuthProviderButton>
         )}
-
         {facebookLoginEnabled && (
           <StyledAuthProviderButton
             icon="facebook"
@@ -307,7 +316,6 @@ const AuthProviders = memo<Props>(
             <FormattedMessage {...messages.continueWithFacebook} />
           </StyledAuthProviderButton>
         )}
-
         {azureAdLoginEnabled && (
           <StyledAuthProviderButton
             icon="microsoft-windows"
@@ -321,7 +329,6 @@ const AuthProviders = memo<Props>(
             />
           </StyledAuthProviderButton>
         )}
-
         {azureAdB2cLoginEnabled && (
           <StyledAuthProviderButton
             icon="microsoft-windows"
@@ -335,7 +342,6 @@ const AuthProviders = memo<Props>(
             />
           </StyledAuthProviderButton>
         )}
-
         {passwordLoginEnabled && (
           <Text m="0">
             <FormattedMessage
@@ -358,7 +364,6 @@ const AuthProviders = memo<Props>(
             />
           </Text>
         )}
-
         {showAdminLoginLink && (
           <Link to="/sign-in/admin">
             <Text

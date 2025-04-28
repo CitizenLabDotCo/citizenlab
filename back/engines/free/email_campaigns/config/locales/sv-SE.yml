@@ -53,7 +53,7 @@ sv:
       by_author: 'av %{authorName}'
       author_wrote: '%{authorName} skrev:'
       cta_goto_idea: 'Gå till denna idé'
-      cta_goto_input: 'Gå till denna ingång'
+      cta_goto_input: 'Gå till bidraget'
       cta_goto:
         idea: 'Gå till denna idé'
         question: 'Gå till denna fråga'
@@ -64,7 +64,7 @@ sv:
         proposal: 'Gå till detta förslag'
         petition: 'Gå till denna framställan'
       cta_goto_your:
-        idea: 'Gå till din idé'
+        idea: 'Gå till ditt bidrag'
         question: 'Gå till din fråga'
         contribution: 'Gå till ditt bidrag'
         project: 'Gå till ditt projekt'
@@ -183,29 +183,29 @@ sv:
       title_spam_report: '%{firstName} %{lastName} rapporterade skräppost'
     invitation_to_cosponsor_idea:
       cta_reply_to: 'Stöd detta förslag'
-      event_description: '%{authorName} har skapat ett nytt förslag och vill att du ska stödja det.'
-      event_description_cosponsoring: 'Att vara medsponsor till ett förslag innebär att <strong>ditt namn kommer att visas</strong> tillsammans med namnen på de andra medsponsorerna till förslaget.'
-      event_description_before_action: 'För att kunna se förslaget och acceptera inbjudan måste du vara inloggad på ditt konto.'
+      event_description: '%{authorName} har skapat ett förslag och ber dig att att stödja det.'
+      event_description_cosponsoring: 'Att stödja ett förslag innebär att ditt namn visas tillsammans med namnen på andra som stödjer förslaget.'
+      event_description_before_action: 'För att se förslaget och acceptera inbjudan behöver du logga in på ditt konto.'
       event_description_action: 'Klicka nedan för att läsa förslaget.'
-      main_header: 'Du har blivit inbjuden att sponsra ett förslag'
-      subject: 'Du har blivit inbjuden att sponsra ett förslag'
-      preheader: 'Du har blivit inbjuden att stödja förslaget från %{authorName}'
+      main_header: 'Du har blivit inbjuden att stödja ett förslag'
+      subject: 'Du har blivit inbjuden att stödja ett förslag'
+      preheader: 'Du har blivit inbjuden att stödja ett förslag från %{authorName}'
     invite_reminder:
       cta_accept_invitation: 'Acceptera din inbjudan'
       invitation_header: 'Din inbjudan väntar'
       preheader: '%{organizationName} skickade en inbjudan till dig om att gå med i deras plattform för deltagande för några dagar sedan.'
       invitation_expiry_message: 'Denna inbjudan upphör att gälla om cirka %{expiryDaysRemaining} dagar.'
-      subject: 'Väntande inbjudan till plattformen för deltagande för %{organizationName}'
+      subject: 'Väntande inbjudan till plattformen för involvering för %{organizationName}'
     invite_received:
       added_a_message: '%{organizationName} skrev följande meddelande:'
       cta_accept_invitation: 'Acceptera din inbjudan'
       invitation_header: 'Du är inbjuden!'
-      invitation_header_message: '%{organizationName} bjöd in dig till deras plattform för deltagande.'
+      invitation_header_message: '%{organizationName} bjöd in dig till sin plattform för involvering.'
       invitation_expiry_message: 'Denna inbjudan upphör att gälla om %{expiryDays} dagar.'
       preheader: '%{organizationName} skickade en inbjudan till dig om att gå med i deras plattform för deltagande.'
-      subject: 'Du är inbjuden att gå med i plattformen för %{organizationName}'
+      subject: 'Du är inbjuden att gå med i %{organizationName} plattformen för involvering'
     mention_in_comment:
-      cta_reply_to: 'Svar till %{commentAuthor}'
+      cta_reply_to: 'Svara %{commentAuthor}'
       event_description: '%{commentAuthorFull} har nämnt dig i sin kommentar för idén %{post}. Klicka på länken nedan för att gå in i konversationen med %{commentAuthor}'
       main_header: 'Personer pratar om dig'
       subject: 'Någon nämnde dig på plattformen för %{organizationName}'
@@ -242,11 +242,11 @@ sv:
       today: I dag
       yesterday: I går
     comment_on_idea_you_follow:
-      cta_reply_to: 'Svara på %{commentAuthor}'
-      event_description: '%{authorNameFull} lade en reaktion på ''%{inputTitle}''. Klicka på knappen nedan för att fortsätta konversationen med %{authorName}.'
+      cta_reply_to: 'Svara %{commentAuthor}'
+      event_description: '%{authorNameFull} skickade en kommentar på ''%{inputTitle}''. Klicka på knappen nedan för att fortsätta konversationen med %{authorName}.'
       main_header:
         idea: '%{authorName} kommenterat en idé som du följer'
-        question: '%{authorName} kommenterat en fråga som du följer'
+        question: '%{authorName} har kommenterat ett förslag som du följer'
         contribution: '%{authorName} kommenterat ett bidrag som du följer'
         project: '%{authorName} kommenterat ett projekt som du följer'
         issue: '%{authorName} kommenterat en fråga som du följer'
@@ -269,7 +269,7 @@ sv:
       yesterday: I går
     comment_on_your_comment:
       cta_reply_to: 'Svara %{firstName}'
-      event_description: '%{authorNameFull} skrev ett svar på din kommentar för %{post} på plattformen för deltagande. Klicka på knappen nedan för att fortsätta konversationen med %{authorName}.'
+      event_description: '%{authorNameFull} skrev ett svar på din kommentar för %{post} på involveringsplattformen. Klicka på knappen nedan för att fortsätta konversationen med %{authorName}.'
       subject: 'Du har fått svar på din kommentar på plattformen för %{organizationName}'
       main_header: '%{authorName} svarade på din kommentar'
       preheader: '%{authorName} svarade på din kommentar på %{organizationName}s plattform'
@@ -305,12 +305,12 @@ sv:
       main_header: '''%{post}'' har en ny intern kommentar'
       preheader: '''%{post}'' har en ny intern kommentar'
     official_feedback_on_idea_you_follow:
-      header_message: '%{feedback_author_name} gav en uppdatering om ''%{input_title}''.'
-      header_title: 'Det finns en uppdatering om "%{input_title}"'
-      subject: 'Officiell feedback postades på "%{input_title}"'
-      preheader: 'Det finns en uppdatering om en ingång du följer'
+      header_message: '%{feedback_author_name} har kommenterat ''%{input_title}''.'
+      header_title: 'Det finns en återkoppling på "%{input_title}"'
+      subject: 'En officiell återkoppling har publicerats på "%{input_title}"'
+      preheader: 'Det finns en återkoppling om en idé som du följer'
     mention_in_official_feedback:
-      cta_reply_to: 'Svara till %{organizationName}'
+      cta_reply_to: 'Svara %{organizationName}'
       event_description: '%{organizationName} nämnde dig i sin återkoppling för idén %{post}. Klicka på länken nedan för att gå in i konversationen med %{organizationName}'
       main_header: 'Du har nämnts'
       subject: '%{organizationName} nämnde dig i sin återkoppling'
@@ -364,7 +364,7 @@ sv:
     project_published:
       subject: 'Ett nytt projekt publicerades på plattformen %{organizationName}'
       header_title: 'Ett nytt projekt publicerades'
-      header_message: 'Deltagarplattformen %{organizationName} har just publicerat följande projekt:'
+      header_message: 'Följande projekt är just publicerat på %{organizationName}s involveringsplattform:'
       preheader: 'Ett nytt projekt publicerades'
     project_review_request:
       subject: 'Begäran om granskning: Ett projekt väntar på godkännande.'
@@ -377,17 +377,17 @@ sv:
       header_message: "Projektet är nu redo att gå live. Du kan publicera det när du är redo!"
       cta_go_to_project: "Gå till projektinställningar"
     status_change_on_idea_you_follow:
-      status_change: 'Den nya statusen för denna ingång är ''%{status}'''
-      header_message: '%{organizationName} uppdaterade statusen för inmatningen "%{input_title}" på deras digitala deltagandeplattform.'
-      header_title: 'En ingång du följer har en ny status'
-      subject: 'Statusen för "%{input_title}" har ändrats'
-      preheader: 'En ingång du följer har en ny status'
+      status_change: 'Ny status för detta bidrag är ''%{status}'''
+      header_message: '%{organizationName} uppdateratde status för bidraget "%{input_title}" på deras digitala plattform för involvering.'
+      header_title: 'Ett bidrag du följer har ändrad status'
+      subject: 'Status för "%{input_title}" har ändrats'
+      preheader: 'Ett bidrag du följer har ändrad status'
     user_digest:
       subject: "Din aktivitet på plattformen för deltagande för %{organizationName}"
       commented: "%{authorFirstName} kommenterade:"
       preheader: "Veckoöversikt för %{organizationName}"
       title_your_weekly_report: "Upptäck vad som hände förra veckan"
-      intro_text: "Här är en sammanfattning av vad som hände på plattformen för deltagande för %{organizationName}."
+      intro_text: "Här är en sammanfattning av vad som hände på %{organizationName}s involveringsplattform."
       cta_go_to_the_platform: "Gå till plattformen"
       title_no_activity_past_week: "Ingen aktivitet under den senaste veckan"
       successful_proposals_title: "Nått tröskelvärdet"
@@ -409,9 +409,9 @@ sv:
       preheader: 'Se till att ta nästa steg'
     welcome:
       cta_join_platform: 'Upptäck plattformen'
-      subject: 'Välkommen till plattformen för %{organizationName}'
+      subject: 'Välkommen till plattformen för involvering från %{organizationName}'
       main_header: Välkommen!
-      message_welcome: 'Grattis, du har registrerat dig på plattformen för deltagande för %{organizationName}. Du kan nu upptäcka plattformen och göra din röst hörd. Du kan också lägga till en profilbild och en kort beskrivning för att berätta för andra vem du är.'
+      message_welcome: 'Grattis! Du har registrerat dig på plattformen för involvering från %{organizationName}. Du kan nu upptäcka plattformen och göra din röst hörd. Du kan också lägga till en profilbild och en kort beskrivning för att berätta för andra vem du är.'
       preheader: 'Här är vad du kan göra på plattformen för %{organizationName}'
     idea_published:
       subject:
@@ -438,7 +438,7 @@ sv:
       preheader: '%{firstName}, grattis till att du har publicerat din idé på plattformen för %{organizationName}. Samla nu in stöd.'
     your_input_in_screening:
       main_header:
-        idea: 'Din idé finns i "%{prescreening_status_title}"'
+        idea: 'Ditt bidrag finns i "%{prescreening_status_title}"'
         question: 'Din fråga finns i "%{prescreening_status_title}"'
         contribution: 'Ditt bidrag finns i "%{prescreening_status_title}"'
         project: 'Ditt projekt finns i "%{prescreening_status_title}"'
@@ -447,26 +447,26 @@ sv:
         proposal: 'Ditt förslag finns i "%{prescreening_status_title}"'
         petition: 'Din framställan finns i "%{prescreening_status_title}"'
       message: '"%{input_title}" blir synligt för andra när det har granskats och godkänts.'
-      subject: '"%{input_title}" är nästan publicerad'
+      subject: '"%{input_title}" förhandsgranskas'
       preheader: 'Den finns för närvarande på %{prescreening_status_title}'
     voting_basket_submitted:
-      subject: '%{organizationName}: Du röstade framgångsrikt'
-      preheader: 'Du röstade framgångsrikt på deltagandeplattformen för %{organizationName}'
-      title_basket_submitted: 'Du röstade framgångsrikt'
-      event_description: 'Tack för ert deltagande. Dina röster har registrerats. Besök plattformen %{organizationName} för att se och hantera dina röster.'
-      cta_see_votes_submitted: 'Se inlämnade röster'
+      subject: '%{organizationName}: Ditt val är registrerat'
+      preheader: 'Ditt val är registrerat på involveringsplattformen för %{organizationName}'
+      title_basket_submitted: 'Ditt val är registrerat'
+      event_description: 'Tack för ditt deltagande. Dina val är registrerade. Besök %{organizationName}s plattform för att se och hantera dina val.'
+      cta_see_votes_submitted: 'Se dina inskickade val'
       cta_message: 'Klicka på knappen nedan för att delta'
     native_survey_not_submitted:
-      subject: '%{organizationName}: Nästan där! Skicka in dina svar'
+      subject: '%{organizationName}: Nästan klar! Skicka in dina svar'
       preheader: 'Du slutförde inte ditt enkätsvar på deltagarplattformen på %{organizationName}'
-      title_native_survey_not_submitted: 'Nästan där! Skicka in dina svar'
+      title_native_survey_not_submitted: 'Nästan klar! Skicka in dina svar'
       body_native_survey_not_submitted: 'Du började dela dina svar på %{phaseTitle} men skickade inte in dem. Inlämningen kommer att stängas på %{phaseEndDate}. Klicka på knappen nedan för att fortsätta där du slutade.'
       body_native_survey_not_submitted_no_date: 'Du började dela dina svar på %{phaseTitle} men skickade inte in dem. Klicka på knappen nedan för att fortsätta där du slutade.'
       cta_complete_your_survey_response: 'Återuppta ditt svar på enkäten'
     voting_basket_not_submitted:
-      subject: '%{organizationName}: Du har inte skickat in dina röster'
-      preheader: 'Du har inte lämnat dina röster på deltagandeplattformen %{organizationName}'
-      title_basket_not_submitted: 'Du har inte avgett din röst'
+      subject: '%{organizationName}: Du har inte skickat in dina val'
+      preheader: 'Du har inte skickat in dina val på involveringsplattformen %{organizationName}'
+      title_basket_not_submitted: 'Du har inte skickat in dina val'
       event_description: 'Du valde några alternativ för %{contextTitle} men du skickade inte in ditt val.'
       cta_view_options_and_vote: 'Visa alternativ och rösta'
       cta_message: 'Klicka på knappen nedan för att skicka in dina valda alternativ'
@@ -475,16 +475,16 @@ sv:
       preheader: 'Sista chansen att rösta på %{phaseTitle} på deltagarplattformen för %{organizationName}'
       title_last_chance: 'Sista chansen att rösta på %{phaseTitle}'
       body_1: 'Omröstningsfasen för %{projectTitle} -projektet avslutas i morgon vid midnatt.'
-      body_2: 'Tiden rinner ut, och vi har märkt att du inte har röstat än! Gör det nu genom att klicka på knappen nedan för att delta.'
+      body_2: 'Tiden rinner ut, och vi har märkt att du inte har skickat in dina val ännu.'
       body_3: 'På så sätt får du tillgång till en rad olika alternativ och möjlighet att ge din syn på saken, vilket är avgörande för projektets framtid.'
       cta_vote: 'Omröstning'
     voting_results:
-      subject: '%{organizationName}: %{phaseTitle} omröstningsresultat avslöjade!'
-      preheader: '%{phaseTitle} röstresultat avslöjade på deltagandeplattformen %{organizationName}'
-      title_results: '%{phaseTitle} omröstningsresultaten avslöjade!'
+      subject: '%{organizationName}: %{phaseTitle} omröstningsresultatet klart!'
+      preheader: '%{phaseTitle} omröstningsresultatet klart på involveringsplattform %{organizationName}'
+      title_results: '%{phaseTitle} omröstningsresultatet klart!'
       body_1: 'Resultaten har kommit!'
       body_2: 'Resultatet av omröstningen på %{phaseTitle} i plattformen %{organizationName} har offentliggjorts!'
-      body_3: 'Vi uppmanar er att granska resultaten och hålla utkik efter ytterligare uppdateringar om nästa steg.'
+      body_3: 'Vi uppmanar dig att granska resultatet och hålla utkik efter ytterligare uppdateringar om nästa steg.'
       cta_see_results: 'Se resultat i plattformen'
     event_registration_confirmation:
       subject: "Du har kommit in! Din anmälan till \"%{eventTitle}\" är bekräftad."

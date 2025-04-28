@@ -17,4 +17,9 @@ export default defineMessages({
     id: 'app.containers.Admin.communityMonitor.lastQuarter',
     defaultMessage: ' last quarter',
   },
+  healthScoreDescription: {
+    id: 'app.containers.Admin.communityMonitor.healthScoreDescription',
+    defaultMessage:
+      'This score is the average of all sentiment-scale questions answered by participants for the period selected.',
+  },
 });

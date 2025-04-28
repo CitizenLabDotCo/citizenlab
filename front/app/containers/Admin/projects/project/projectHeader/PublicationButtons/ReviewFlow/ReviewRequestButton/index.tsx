@@ -5,19 +5,21 @@ import { Button, Tooltip } from '@citizenlab/cl2-component-library';
 import { trackEventByName } from 'utils/analytics';
 import { useIntl } from 'utils/cl-intl';
 
-import messages from '../messages';
-import tracks from '../tracks';
+import messages from '../../messages';
+import tracks from '../../tracks';
 
 import ReviewRequestDropdown from './ReviewRequestDropdown';
 
 interface Props {
   projectId: string;
+  inFolder: boolean;
   approvalPending: boolean;
   processing: boolean;
 }
 
 const ReviewRequestButton = ({
   projectId,
+  inFolder,
   approvalPending,
   processing,
 }: Props) => {
@@ -60,6 +62,7 @@ const ReviewRequestButton = ({
           trackEventByName(tracks.projectReviewDropdownOpened);
         }}
         projectId={projectId}
+        inFolder={inFolder}
       />
     </>
   );

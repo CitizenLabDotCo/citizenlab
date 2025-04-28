@@ -27,6 +27,7 @@ import LocaleSelect from 'components/admin/ContentBuilder/TopBar/LocaleSelect';
 import SaveButton from 'components/admin/ContentBuilder/TopBar/SaveButton';
 import Button from 'components/UI/ButtonWithLink';
 
+import { trackEventByName } from 'utils/analytics';
 import { useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
 import { isCommunityMonitorProject } from 'utils/projectUtils';
@@ -39,6 +40,7 @@ import ViewPicker from '../ViewContainer/ViewPicker';
 import messages from './messages';
 import QuitModal from './QuitModal';
 import ReportTitle from './ReportTitle';
+import tracks from './tracks';
 
 type ContentBuilderTopBarProps = {
   hasPendingState: boolean;
@@ -267,7 +269,19 @@ const ContentBuilderTopBar = ({
                 iconSize="16px"
                 px="12px"
                 py="8px"
-                linkTo={`/admin/reporting/report-builder/${reportId}/print`}
+                onClick={() => {
+                  // track any community monitor report print for user analytics
+                  if (
+                    projectId &&
+                    isCommunityMonitorProject(projectId, appConfig)
+                  ) {
+                    trackEventByName(tracks.communinityMonitorReportPrinted);
+                  }
+
+                  clHistory.push(
+                    `/admin/reporting/report-builder/${reportId}/print`
+                  );
+                }}
                 openLinkInNewTab
                 disabled={disablePrint}
               />

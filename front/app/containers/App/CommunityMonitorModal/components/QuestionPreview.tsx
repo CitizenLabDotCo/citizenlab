@@ -12,9 +12,11 @@ import { ErrorToReadProvider } from 'components/Form/Components/Fields/ErrorToRe
 import { selectRenderers } from 'components/Form/Components/Fields/formConfig';
 import { APIErrorsContext, FormContext } from 'components/Form/contexts';
 
+import { trackEventByName } from 'utils/analytics';
 import clHistory from 'utils/cl-router/history';
 
 import messages from '../messages';
+import tracks from '../tracks';
 import {
   findFirstSentimentLinearScale,
   schemaWithRequiredFirstQuestion,
@@ -46,6 +48,10 @@ const QuestionPreview = ({
     if (!isEmpty(data.data)) {
       // Close the modal
       onClose();
+
+      // Track the popup interaction
+      trackEventByName(tracks.communityMonitorPopupAnsweredAndRedirected);
+
       // Redirect to full survey page
       clHistory.push(
         `/projects/${projectSlug}/surveys/new?phase_id=${phaseId}`

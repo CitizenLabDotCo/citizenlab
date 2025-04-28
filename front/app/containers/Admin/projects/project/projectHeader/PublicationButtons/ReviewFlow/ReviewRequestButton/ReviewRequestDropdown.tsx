@@ -7,17 +7,19 @@ import useRequestProjectReview from 'api/project_reviews/useRequestProjectReview
 import { trackEventByName } from 'utils/analytics';
 import { useIntl } from 'utils/cl-intl';
 
-import messages from '../messages';
-import tracks from '../tracks';
+import messages from '../../messages';
+import tracks from '../../tracks';
 
 const ReviewRequestDropdown = ({
   isOpen,
   onClose,
   projectId,
+  inFolder = false,
 }: {
   isOpen: boolean;
   onClose: () => void;
   projectId: string;
+  inFolder?: boolean;
 }) => {
   const { formatMessage } = useIntl();
   const { mutate: requestProjectReview } = useRequestProjectReview();
@@ -37,7 +39,7 @@ const ReviewRequestDropdown = ({
       content={
         <div>
           <Text color="textSecondary">
-            {formatMessage(messages.requestApprovalDescription)}
+            {formatMessage(messages.requestApprovalDescription, { inFolder })}
           </Text>
           <Button
             buttonStyle="primary"

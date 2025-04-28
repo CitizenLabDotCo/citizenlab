@@ -14,7 +14,7 @@ hu:
         participants: "Azok az emberek, akik '%{answer}'-t válaszolnak a '%{question}'-ra, az átlagosnál %{percent_more_less} vesznek részt a '%{tag}'-ban."
       bin_vs_bin:
         inputs: "Azok az emberek, akik '%{answer1}' a '%{question1}'-re, a '%{answer2}'%{question2}' %{percent_more_less} válaszra adják az átlagosnál."
-        likes: "People who respond '%{answer1}' to '%{question1}' like %{percent_more_less} inputs when they answer '%{answer2}' to '%{question2}' than average."
+        likes: "People who respond %{answer1} to %{question1} like %{percent_more_less} inputs when they answer %{answer2} to %{question2} than average."
         dislikes: "Azok az emberek, akik '%{answer1}' a '%{question1}'-re válaszolnak, az átlagosnál nem szeretik a %{percent_more_less} bevitelt, amikor a '%{answer2}'%{question2}'-re válaszolnak."
         participants: "Azok az emberek, akik '%{answer1}' a '%{question1}'-re válaszolnak, %{percent_more_less} vesznek részt, amikor '%{answer2}' és '%{question2}' választ adnak az átlagosnál."
 

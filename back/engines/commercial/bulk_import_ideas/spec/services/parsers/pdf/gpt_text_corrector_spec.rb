@@ -29,7 +29,7 @@ RSpec.describe BulkImportIdeas::Parsers::Pdf::GPTTextCorrector do
 
       it 'returns idea_rows' do
         expect(corrector.correct).to eq(idea_rows)
-        expect_any_instance_of(Analysis::LLM::GPT4o).not_to receive(:chat)
+        expect_any_instance_of(Analysis::LLM::GPT41).not_to receive(:chat)
       end
     end
 
@@ -42,11 +42,11 @@ RSpec.describe BulkImportIdeas::Parsers::Pdf::GPTTextCorrector do
       end
 
       before do
-        allow_any_instance_of(Analysis::LLM::GPT4o).to receive(:chat).and_return(gpt_response)
+        allow_any_instance_of(Analysis::LLM::GPT41).to receive(:chat).and_return(gpt_response)
       end
 
       it 'returns idea_rows with corrected texts' do
-        expect_any_instance_of(Analysis::LLM::GPT4o).to receive(:chat).once.with(/title_multiloc.*field1/).and_return(gpt_response)
+        expect_any_instance_of(Analysis::LLM::GPT41).to receive(:chat).once.with(/title_multiloc.*field1/).and_return(gpt_response)
 
         expect(corrector.correct).to eq([
           { id: 1, project_id: '1', title_multiloc: { en: 'corrected title' }, custom_field_values: { field1: 'corrected value' } },
@@ -69,7 +69,7 @@ RSpec.describe BulkImportIdeas::Parsers::Pdf::GPTTextCorrector do
         end
 
         it 'returns idea_rows with corrected texts' do
-          expect_any_instance_of(Analysis::LLM::GPT4o).to receive(:chat).once.with(/title_multiloc/).and_return(gpt_response)
+          expect_any_instance_of(Analysis::LLM::GPT41).to receive(:chat).once.with(/title_multiloc/).and_return(gpt_response)
 
           expect(corrector.correct).to eq([
             { id: 1, project_id: '1', title_multiloc: { en: 'corrected title' } },

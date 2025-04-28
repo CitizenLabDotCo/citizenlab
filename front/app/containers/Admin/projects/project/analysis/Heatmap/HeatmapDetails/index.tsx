@@ -169,6 +169,7 @@ const HeatmapDetails = ({
               ...inputCustomFields.map((field) => ({
                 value: field.id,
                 label: localize(field.title_multiloc),
+                disabled: selectedColumnFieldId === field.id,
               })),
             ]}
             disabled={inputCustomFieldsIds.length === 0}
@@ -191,6 +192,7 @@ const HeatmapDetails = ({
               ...inputCustomFields.map((field) => ({
                 value: field.id,
                 label: localize(field.title_multiloc),
+                disabled: selectedRowType === field.id,
               })),
             ]}
           />
@@ -238,8 +240,10 @@ const HeatmapDetails = ({
                   {columnBins.data.map((bin) => {
                     const cell = analysisHeatmapCells?.data.find(
                       (cell) =>
-                        cell.relationships.row.data.id === tag.id &&
-                        cell.relationships.column.data.id === bin.id
+                        (cell.relationships.row.data.id === tag.id &&
+                          cell.relationships.column.data.id === bin.id) || //Also search for the transposed row/column, because the back-end only generates one version
+                        (cell.relationships.column.data.id === tag.id &&
+                          cell.relationships.row.data.id === bin.id)
                     );
 
                     return (
@@ -265,8 +269,10 @@ const HeatmapDetails = ({
                   {columnBins.data.map((columnBin) => {
                     const cell = analysisHeatmapCells?.data.find(
                       (cell) =>
-                        cell.relationships.row.data.id === rowBin.id &&
-                        cell.relationships.column.data.id === columnBin.id
+                        (cell.relationships.row.data.id === rowBin.id &&
+                          cell.relationships.column.data.id === columnBin.id) || //Also search for the transposed row/column, because the back-end only generates one version
+                        (cell.relationships.column.data.id === rowBin.id &&
+                          cell.relationships.row.data.id === columnBin.id)
                     );
 
                     return (

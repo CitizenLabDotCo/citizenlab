@@ -3,6 +3,7 @@ import React from 'react';
 import { Box, Text } from '@citizenlab/cl2-component-library';
 
 import useAuthUser from 'api/me/useAuthUser';
+import { ParticipationMethod } from 'api/phases/types';
 
 import ButtonWithLink from 'components/UI/ButtonWithLink';
 import Warning from 'components/UI/Warning';
@@ -13,12 +14,14 @@ import messages from './messages';
 import { getMailLink } from './utils';
 
 interface Props {
-  ideaId: string;
+  inputId: string;
+  participationMethod?: ParticipationMethod;
 }
 
-const SubmissionReference = ({ ideaId }: Props) => {
+const SubmissionReference = ({ inputId, participationMethod }: Props) => {
   const { formatMessage } = useIntl();
   const { data: authUser } = useAuthUser();
+  const isNativeSurvey = participationMethod === 'native_survey';
 
   return (
     <Warning hideIcon>
@@ -32,7 +35,7 @@ const SubmissionReference = ({ ideaId }: Props) => {
           id="idea-id-success-modal"
           mb="0"
         >
-          {ideaId}
+          {inputId}
         </Text>
         <ButtonWithLink
           p="0"
@@ -40,7 +43,7 @@ const SubmissionReference = ({ ideaId }: Props) => {
             email: authUser?.data.attributes.email,
             subject: formatMessage(messages.surveySubmission),
             body: formatMessage(messages.yourResponseHasTheFollowingId, {
-              identifier: ideaId,
+              identifier: inputId,
             }),
           })}
           buttonStyle="text"
@@ -48,7 +51,11 @@ const SubmissionReference = ({ ideaId }: Props) => {
           iconSize="20px"
         >
           <Text fontSize="s" color="primary">
-            <FormattedMessage {...messages.sendSurveySubmission} />
+            <FormattedMessage
+              {...(isNativeSurvey
+                ? messages.sendSurveySubmission
+                : messages.sendSubmission)}
+            />
           </Text>
         </ButtonWithLink>
       </Box>

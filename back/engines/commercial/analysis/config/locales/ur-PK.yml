@@ -15,6 +15,6 @@ ur:
       bin_vs_bin:
         inputs: "وہ لوگ جو '%{question1}' کا جواب '%{answer1}' کا جواب دیتے ہیں '%{answer2}' سے '%{question2}' %{percent_more_less} اوسط سے۔"
         likes: "وہ لوگ جو '%{question1}' کو '%{answer1}' کا جواب دیتے ہیں جب وہ اوسط سے '%{answer2}' سے '%{question2}' کا جواب دیتے ہیں تو %{percent_more_less} ان پٹ پسند کرتے ہیں۔"
-        dislikes: "People who respond '%{answer1}' to '%{question1}' dislike %{percent_more_less} inputs when they answer '%{answer2}' to '%{question2}' than average."
+        dislikes: "People who respond %{answer1} to %{question1} dislike %{percent_more_less} inputs when they answer %{answer2} to %{question2} than average."
         participants: "وہ لوگ جو '%{question1}' کو '%{answer1}' کا جواب دیتے ہیں %{percent_more_less} اس وقت حصہ لیتے ہیں جب وہ اوسط سے '%{answer2}' کو '%{question2}' جواب دیتے ہیں۔"
 
