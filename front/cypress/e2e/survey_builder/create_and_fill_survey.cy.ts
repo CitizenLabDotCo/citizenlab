@@ -405,7 +405,7 @@ describe('Survey builder', () => {
     cy.get('[data-cy="e2e-after-submission"]').should('exist');
   });
 
-  it.only('creates survey with logic, saves survey and user can respond to survey and responses determine which page he sees based on set logic', () => {
+  it('creates survey with logic, saves survey and user can respond to survey and responses determine which page he sees based on set logic', () => {
     const chooseOneOption1 = randomString();
     const chooseOneOption2 = randomString();
     const question2Title = randomString();
@@ -476,36 +476,28 @@ describe('Survey builder', () => {
 
     // Selecting the first option results in a submit button
     cy.contains(chooseOneOption1).click({ force: true });
-    cy.get('[data-cy="e2e-next-page"]').should('be.visible').click();
+    cy.get('[data-cy="e2e-submit-form"]').should('be.visible').click();
 
     // Check to see that the user is on the submit page
-    cy.get('[data-cy="e2e-submit-form"]').should('exist');
-    cy.get('[data-cy="e2e-page-number-3"]').should('exist');
+    cy.get('[data-cy="e2e-page-number-4"]').should('exist');
     cy.get('[data-cy="e2e-after-submission"]').should('exist');
 
-    // Go back to the previous page
-    cy.get('[data-cy="e2e-previous-page"]').click();
+    // Take the survey again
+    cy.visit(`/projects/${projectSlug}`);
+    cy.get('#project-survey-button').find('button').click({ force: true });
+    cy.contains(questionTitle).should('exist');
 
     // Select the second option and click next
-    cy.wait(2000);
     cy.contains(chooseOneOption2).click({ force: true });
-    cy.wait(2000);
     cy.get('[data-cy="e2e-next-page"]').should('be.visible').click();
 
     // Check to see that the user is on the third page
     cy.contains(page3Title).should('exist');
 
-    // Click next
-    cy.get('[data-cy="e2e-next-page"]').should('be.visible').click();
-
-    // Save survey response
-    cy.get('[data-cy="e2e-submit-form"]').should('exist');
-    cy.get('[data-cy="e2e-submit-form"]').click();
-    cy.get('[data-cy="e2e-page-number-3"]').should('exist');
+    // Submit
+    cy.get('[data-cy="e2e-submit-form"]').should('be.visible').click();
+    cy.get('[data-cy="e2e-page-number-4"]').should('exist');
     cy.get('[data-cy="e2e-after-submission"]').should('exist');
-    cy.get('[data-cy="e2e-survey-success-message"]').should('exist');
-    cy.get('.e2e-modal-close-button').click();
-    cy.get('#e2e-modal-container').should('have.length', 0);
   });
 
   it.skip('creates survey with logic and the user can navigate back and forth without previous logic options changing the order of pages', () => {
