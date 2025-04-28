@@ -1,6 +1,12 @@
 import React, { useState } from 'react';
 
-import { Box, Button, Text, Title } from '@citizenlab/cl2-component-library';
+import {
+  Box,
+  Button,
+  CollapsibleContainer,
+  Text,
+  Title,
+} from '@citizenlab/cl2-component-library';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm, FormProvider } from 'react-hook-form';
 import { object, boolean } from 'yup';
@@ -9,7 +15,7 @@ import CheckboxWithLabel from 'components/HookForm/CheckboxWithLabel';
 import Feedback from 'components/HookForm/Feedback';
 import Modal from 'components/UI/Modal';
 
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import { handleHookFormSubmissionError } from 'utils/errorUtils';
 
 import messages from './messages';
@@ -40,6 +46,7 @@ const IT_IS_POSSIBLE_MESSAGES = {
 };
 
 const PDFExportModal = ({ open, formType, onClose, onExport }: Props) => {
+  const { formatMessage } = useIntl();
   const [loading, setLoading] = useState(false);
 
   const schema = object({
@@ -81,25 +88,30 @@ const PDFExportModal = ({ open, formType, onClose, onExport }: Props) => {
     >
       <Box p="24px">
         <Feedback onlyShowErrors />
-        <Title variant="h3" m="0" mb="24px">
-          <FormattedMessage {...messages.notes} />
-        </Title>
-        <Box as="ul" pl="28px">
-          <Text as="li" mb="4px" mt="0px" w="500px">
-            <FormattedMessage {...CLICK_EXPORT_MESSAGES[formType]} />
-          </Text>
-          {formType === 'survey' && (
+        <CollapsibleContainer
+          mb="24px"
+          title={formatMessage(messages.notes)}
+          titleAs="h2"
+          titleVariant="h3"
+          titleFontWeight="bold"
+        >
+          <Box as="ul" pl="28px">
             <Text as="li" mb="4px" mt="0px" w="500px">
-              <FormattedMessage {...messages.logicNotInPDF} />
+              <FormattedMessage {...CLICK_EXPORT_MESSAGES[formType]} />
             </Text>
-          )}
-          <Text as="li" mb="4px">
-            <FormattedMessage {...IT_IS_POSSIBLE_MESSAGES[formType]} />
-          </Text>
-          <Text as="li" mb="24px">
-            <FormattedMessage {...messages.personalDataExplanation} />
-          </Text>
-        </Box>
+            {formType === 'survey' && (
+              <Text as="li" mb="4px" mt="0px" w="500px">
+                <FormattedMessage {...messages.logicNotInPDF} />
+              </Text>
+            )}
+            <Text as="li" mb="4px">
+              <FormattedMessage {...IT_IS_POSSIBLE_MESSAGES[formType]} />
+            </Text>
+            <Text as="li" mb="24px">
+              <FormattedMessage {...messages.personalDataExplanation} />
+            </Text>
+          </Box>
+        </CollapsibleContainer>
         <FormProvider {...methods}>
           <form onSubmit={methods.handleSubmit(handleExport)}>
             <Box mb="24px">
