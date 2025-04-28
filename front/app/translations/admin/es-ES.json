@@ -892,7 +892,7 @@
   "app.containers.Admin.inspirationHub.SortAndReset.start_at_asc": "Fecha de inicio (la más antigua primero)",
   "app.containers.Admin.inspirationHub.SortAndReset.start_at_desc": "Fecha de inicio (la más reciente primero)",
   "app.containers.Admin.inspirationHub.Survey": "Encuesta",
-  "app.containers.Admin.inspirationHub.UpsellNudge.bulletPoint1": "Lista seleccionada de los mejores proyectos de todo el mundo.",
+  "app.containers.Admin.inspirationHub.UpsellNudge.bulletPoint1": "Lista de los mejores proyectos alrededor del mundo.",
   "app.containers.Admin.inspirationHub.UpsellNudge.bulletPoint2V2": "Habla con otros profesionales y aprende de ellos.",
   "app.containers.Admin.inspirationHub.UpsellNudge.bulletPoint3": "Filtra por método, tamaño de ciudad y país.",
   "app.containers.Admin.inspirationHub.UpsellNudge.enableInspirationHub": "Habilitar el Centro de Inspiración",
