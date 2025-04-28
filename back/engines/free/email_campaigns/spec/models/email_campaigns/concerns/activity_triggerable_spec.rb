@@ -48,7 +48,7 @@ RSpec.describe EmailCampaigns::ActivityTriggerable do
       }
 
       expect(ErrorReporter).to receive(:report_msg).with(
-        "ActivityTriggerable attempted to process an old activity",
+        'ActivityTriggerable attempted to process an old activity',
         extra: {
           activity_id: activity.id,
           activity_type: activity.item_type,
