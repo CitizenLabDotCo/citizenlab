@@ -40,5 +40,26 @@ RSpec.describe EmailCampaigns::ActivityTriggerable do
 
       expect(campaign.run_before_send_hooks(activity: activity)).to be_falsy
     end
+
+    it 'creates a create an error report if the activity is too old' do
+      activity = create(:published_activity, acted_at: 8.days.ago)
+      campaign.activity_triggers = {
+        'Idea' => { 'published' => true }
+      }
+
+      expect(ErrorReporter).to receive(:report_msg).with(
+        "ActivityTriggerable attempted to process an old activity",
+        extra: {
+          activity_id: activity.id,
+          activity_type: activity.item_type,
+          activity_action: activity.action,
+          activity_acted_at: activity.acted_at,
+          campaign_id: campaign.id,
+          campaign_type: campaign.class.name
+        }
+      )
+
+      campaign.run_before_send_hooks(activity: activity)
+    end
   end
 end
