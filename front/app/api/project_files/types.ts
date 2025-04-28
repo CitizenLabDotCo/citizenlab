@@ -32,6 +32,7 @@ export interface AddProjectFileObject {
   file: {
     name: string;
     file: string;
+    ordering?: number;
   };
 }
 

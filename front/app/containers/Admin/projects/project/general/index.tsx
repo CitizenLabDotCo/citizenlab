@@ -375,12 +375,17 @@ const AdminProjectsProjectGeneral = () => {
             if (latestProjectId) {
               return addProjectFile({
                 projectId: latestProjectId,
-                file: { file: file.base64, name: file.name },
+                file: {
+                  file: file.base64,
+                  name: file.name,
+                  ordering: file.ordering,
+                },
               });
             }
 
             return;
           });
+
         const filesToRemovePromises = projectFilesToRemove
           .filter((file) => file.remote === true && isString(file.id))
           .map((file) => {
