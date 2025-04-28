@@ -15,17 +15,24 @@ class SanitizationService
   # @param features [Array<Symbol>] A list of allowed features
   # @note TODO: What exactly is a feature? HTML tags, attributes? Predefined list somewhere?
   def sanitize(text, features)
-    scrubber = IframeScrubber.new(features)
+    text = strip_script_tags_and_content(text) unless features.include?(:script)
 
-    sanitized = SANITIZER.sanitize(
-      text,
-      scrubber: scrubber
-    )
+    scrubber = IframeScrubber.new(features)
+    sanitized = SANITIZER.sanitize(text, scrubber: scrubber)
+    
     if sanitized == text
       sanitized
     else
       sanitize sanitized, features
     end
+  end
+
+  def strip_script_tags_and_content(text)
+    return text unless /<script[^>]*>.*?<\/script>/i.match?(text)
+
+    doc = Nokogiri::HTML.fragment(text)
+    doc.css('script').each(&:remove)
+    text = doc.to_html
   end
 
   def sanitize_multiloc(multiloc, features)
