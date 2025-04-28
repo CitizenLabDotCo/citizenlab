@@ -1040,7 +1040,6 @@
   "app.containers.Admin.projects.all.itIsAlsoPossible1": "يمكنك الجمع بين الاستجابات عبر الإنترنت وغير متصل. لتحميل الردود دون الاتصال بالإنترنت، انتقل إلى علامة التبويب \"مدير الإدخال\" لهذا المشروع، ثم انقر فوق \"استيراد\".",
   "app.containers.Admin.projects.all.itIsAlsoPossibleSurvey1": "يمكنك الجمع بين الاستجابات عبر الإنترنت وغير متصل. لتحميل الردود دون الاتصال بالإنترنت، انتقل إلى علامة التبويب \"استطلاع\" في هذا المشروع، ثم انقر فوق \"استيراد\".",
   "app.containers.Admin.projects.all.logicNotInPDF": "لن ينعكس منطق الاستطلاع في ملف PDF الذي تم تنزيله. سوف يرى المستجيبون الورقيون جميع أسئلة الاستطلاع.",
-  "app.containers.Admin.projects.all.notIncludedInYourPlan": "ومع ذلك، هذا غير مدرج في خطتك الحالية. تواصل مع مدير النجاح الحكومي أو المسؤول لفتحه.",
   "app.containers.Admin.projects.all.notes": "ملحوظات",
   "app.containers.Admin.projects.all.personalDataExplanation2": "حدد المربع أدناه، إذا كنت تريد أن يحتوي ملف PDF الذي تم تنزيله على حقول الاسم والاسم الأخير والبريد الإلكتروني. عند تحميل النموذج الورقي، سنستخدم بيانات المستخدم هذه لإنشاء حساب تلقائيًا للمستجيب للاستبيان غير المتصل بالإنترنت.",
   "app.containers.Admin.projects.project.analysis.Comments.aiSummary": "ملخص الذكاء الاصطناعي",

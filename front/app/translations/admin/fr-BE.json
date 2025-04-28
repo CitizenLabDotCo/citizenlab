@@ -1040,7 +1040,6 @@
   "app.containers.Admin.projects.all.itIsAlsoPossible1": "Vous pouvez combiner des réponses en ligne et hors ligne. Pour importer des réponses hors ligne, rendez-vous dans l'onglet « Gestion des contributions » de ce projet, puis cliquez sur « Importer ».",
   "app.containers.Admin.projects.all.itIsAlsoPossibleSurvey1": "Vous pouvez combiner des réponses en ligne et hors ligne. Pour importer des réponses hors ligne, rendez-vous dans l'onglet « Enquête » de ce projet, puis cliquez sur « Importer ».",
   "app.containers.Admin.projects.all.logicNotInPDF": "Il n'est pas possible de reproduire les sauts logiques dans le PDF téléchargé. Les répondants sur papier verront donc toutes les questions de l'enquête.",
-  "app.containers.Admin.projects.all.notIncludedInYourPlan": "Cependant, cette fonctionnalité n'est pas incluse dans votre plan actuel. Contactez votre Spécialiste en participation Go Vocal ou votre administrateur pour l'activer.",
   "app.containers.Admin.projects.all.notes": "Notes",
   "app.containers.Admin.projects.all.personalDataExplanation2": "Cochez la case ci-dessous si vous souhaitez que le formulaire PDF contienne les champs nom, prénom et e-mail. À l'importation, nous utiliserons ces données pour créer automatiquement un compte pour les répondants hors ligne.",
   "app.containers.Admin.projects.project.analysis.Comments.aiSummary": "Résumé",
