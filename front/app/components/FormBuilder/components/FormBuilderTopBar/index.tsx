@@ -165,12 +165,11 @@ const FormBuilderTopBar = ({
           </Box>
         )}
         {builderConfig.onDownloadPDF && (
-          <Box mr="20px">
-            <DownloadPDFButtonWithModal
-              onExport={builderConfig.onDownloadPDF}
-              formType={builderConfig.type}
-            />
-          </Box>
+          <DownloadPDFButtonWithModal
+            mr="20px"
+            onExport={builderConfig.onDownloadPDF}
+            formType={builderConfig.type}
+          />
         )}
         <Button
           buttonStyle="secondary-outlined"
