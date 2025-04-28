@@ -1040,7 +1040,6 @@
   "app.containers.Admin.projects.all.itIsAlsoPossible1": "Você pode combinar respostas on-line e off-line. Para carregar respostas off-line, vá para a guia \"Gerenciador de entrada\" deste projeto e clique em \"Importar\".",
   "app.containers.Admin.projects.all.itIsAlsoPossibleSurvey1": "Você pode combinar respostas on-line e off-line. Para carregar respostas off-line, vá para a guia \"Survey\" (Pesquisa) desse projeto e clique em \"Import\" (Importar).",
   "app.containers.Admin.projects.all.logicNotInPDF": "A lógica da pesquisa não será refletida no PDF baixado. Os questionados em papel verão todas as perguntas da pesquisa.",
-  "app.containers.Admin.projects.all.notIncludedInYourPlan": "No entanto, isso não está incluído em seu plano atual. Entre em contato com seu gerente de sucesso do governo ou administrador para desbloqueá-lo.",
   "app.containers.Admin.projects.all.notes": "Notas",
   "app.containers.Admin.projects.all.personalDataExplanation2": "Marque a caixa abaixo se você quiser que o PDF baixado contenha campos de nome, sobrenome e e-mail. Após o upload do formulário em papel, usaremos esses dados do usuário para gerar automaticamente uma conta para o respondente da pesquisa off-line.",
   "app.containers.Admin.projects.project.analysis.Comments.aiSummary": "Resumo da IA",
