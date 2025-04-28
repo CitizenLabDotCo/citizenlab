@@ -103,7 +103,7 @@ describe('Project attachments settings', () => {
       // Wait for the file to be visible
       cy.contains('icon.png').should('be.visible');
 
-      // Reorder the fiels, so icon.png is first
+      // Reorder the files, so icon.png is first
       const dataTransfer2 = new DataTransfer();
 
       cy.get('[data-cy="e2e-file-uploader-container"] .files-list')
