@@ -41,7 +41,7 @@ RSpec.describe AppConfiguration do
     end
   end
 
-  describe "#sanitize_organization_name" do
+  describe '#sanitize_organization_name' do
     before do
       @app_config = described_class.instance
 
@@ -56,20 +56,20 @@ RSpec.describe AppConfiguration do
       }
     end
 
-    it "removes all HTML tags from organization_name multiloc" do
+    it 'removes all HTML tags from organization_name multiloc' do
       # Trigger the callback manually (it runs before_validation)
       @app_config.send(:sanitize_organization_name)
-      
+
       # Get the sanitized organization name
       sanitized_name = @app_config.settings.dig('core', 'organization_name')
-      
+
       # Verify all HTML is removed from each language
       expect(sanitized_name['en']).to eq('City of  Springfield')
       expect(sanitized_name['fr']).to eq('South Elyse ')
       expect(sanitized_name['nl']).to eq('Plain text with formatting')
-      
+
       # Verify no HTML tags remain
-      sanitized_name.each do |_locale, value|
+      sanitized_name.each_value do |value|
         expect(value).not_to include('<')
         expect(value).not_to include('>')
       end
