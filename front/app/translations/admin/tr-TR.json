@@ -1040,7 +1040,6 @@
   "app.containers.Admin.projects.all.itIsAlsoPossible1": "Çevrimiçi ve çevrimdışı yanıtları birleştirebilirsiniz. Çevrimdışı yanıtları yüklemek için bu projenin 'Girdi yöneticisi' sekmesine gidin ve 'İçe aktar' seçeneğine tıklayın.",
   "app.containers.Admin.projects.all.itIsAlsoPossibleSurvey1": "Çevrimiçi ve çevrimdışı yanıtları birleştirebilirsiniz. Çevrimdışı yanıtları yüklemek için bu projenin 'Anket' sekmesine gidin ve 'İçe Aktar'a tıklayın.",
   "app.containers.Admin.projects.all.logicNotInPDF": "Anket mantığı indirilen PDF'ye yansıtılmayacaktır. Basılı anket katılımcıları tüm anket sorularını görecektir.",
-  "app.containers.Admin.projects.all.notIncludedInYourPlan": "Ancak, bu mevcut planınıza dahil değildir. Kilidi açmak için Kamu Başarı Yöneticinize veya yöneticinize ulaşın.",
   "app.containers.Admin.projects.all.notes": "Notlar",
   "app.containers.Admin.projects.all.personalDataExplanation2": "İndirdiğiniz PDF'nin ad, soyad ve e-posta alanlarını içermesini istiyorsanız aşağıdaki kutuyu işaretleyin. Kağıt formun yüklenmesinin ardından, çevrimdışı anket katılımcısı için otomatik olarak bir hesap oluşturmak üzere bu kullanıcı verilerini kullanacağız.",
   "app.containers.Admin.projects.project.analysis.Comments.aiSummary": "Yapay Zeka Özeti",

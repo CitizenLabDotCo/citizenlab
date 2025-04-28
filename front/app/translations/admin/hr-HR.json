@@ -1040,7 +1040,6 @@
   "app.containers.Admin.projects.all.itIsAlsoPossible1": "Možete kombinirati online i offline odgovore. Za prijenos izvanmrežnih odgovora idite na karticu \"Upravitelj unosa\" ovog projekta i kliknite \"Uvezi\".",
   "app.containers.Admin.projects.all.itIsAlsoPossibleSurvey1": "Možete kombinirati online i offline odgovore. Za prijenos izvanmrežnih odgovora idite na karticu \"Anketa\" ovog projekta i kliknite \"Uvezi\".",
   "app.containers.Admin.projects.all.logicNotInPDF": "Logika ankete neće se odraziti na preuzeti PDF. Papirnati ispitanici će vidjeti sva anketna pitanja.",
-  "app.containers.Admin.projects.all.notIncludedInYourPlan": "Međutim, to nije uključeno u vaš trenutni plan. Obratite se svom upravitelju uspjeha vlade ili administratoru da ga otključa.",
   "app.containers.Admin.projects.all.notes": "Bilješke",
   "app.containers.Admin.projects.all.personalDataExplanation2": "Označite okvir u nastavku ako želite da preuzeti PDF sadrži polja za ime, prezime i e-poštu. Nakon učitavanja papirnatog obrasca, koristit ćemo te korisničke podatke za automatsko generiranje računa za izvanmrežnog ispitanika.",
   "app.containers.Admin.projects.project.analysis.Comments.aiSummary": "AI Sažetak",

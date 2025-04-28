@@ -1040,7 +1040,6 @@
   "app.containers.Admin.projects.all.itIsAlsoPossible1": "Je kunt online en offline reacties combineren. Om offline reacties te uploaden, ga je naar het tabblad 'Beheer bijdragen' van dit project en klik je op 'Importeren'.",
   "app.containers.Admin.projects.all.itIsAlsoPossibleSurvey1": "Je kunt online en offline reacties combineren. Als je offline reacties wilt uploaden, ga je naar het tabblad 'Vragenlijst' van dit project en klik je op 'Importeren'.",
   "app.containers.Admin.projects.all.logicNotInPDF": "Enquêtelogica wordt niet weergegeven in de gedownloade PDF. Papieren respondenten zien alle enquêtevragen.",
-  "app.containers.Admin.projects.all.notIncludedInYourPlan": "Dit is echter niet inbegrepen in je huidige abonnement. Neem contact op met je Government Success Manager of platformbeheerder om dit te ontgrendelen.",
   "app.containers.Admin.projects.all.notes": "Opmerkingen",
   "app.containers.Admin.projects.all.personalDataExplanation2": "Vink het vakje hieronder aan als je wilt dat de gedownloade PDF velden voor naam, achternaam en e-mail bevat. Bij het uploaden van het papieren formulier zullen we deze gebruikersgegevens gebruiken om automatisch een account te genereren voor de offline respondent.",
   "app.containers.Admin.projects.project.analysis.Comments.aiSummary": "AI Samenvatting",
