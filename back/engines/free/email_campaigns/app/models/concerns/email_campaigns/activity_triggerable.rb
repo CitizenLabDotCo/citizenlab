@@ -23,7 +23,7 @@ module EmailCampaigns
       # on why this is happening (see: TAN-4469)
       if activity.acted_at < 7.days.ago
         ErrorReporter.report_msg(
-          "ActivityTriggerable attempted to process an old activity",
+          'ActivityTriggerable attempted to process an old activity',
           extra: {
             activity_id: activity.id,
             activity_type: activity.item_type,
