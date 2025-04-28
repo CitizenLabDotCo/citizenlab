@@ -63,29 +63,29 @@ module BulkImportIdeas
             bullet2: I18n.with_locale(@locale) { I18n.t('form_builder.pdf_export.write_in_language') }
           },
           optional: I18n.with_locale(@locale) { I18n.t('form_builder.pdf_export.optional') },
-          logo_url: AppConfiguration.instance.logo&.medium.url
+          logo_url: AppConfiguration.instance.logo&.medium&.url
         }
 
         if params[:format] == 'html'
-          render  'bulk_import_ideas/web_api/v1/export_form', formats: [:html], layout: false, locals:
+          render 'bulk_import_ideas/web_api/v1/export_form', formats: [:html], layout: false, locals:
         else
           # Hack for getting the correct URL for the logo in local dev
           locals[:logo_url].sub!('localhost:4000', 'cl-back-web:4000')
 
-            # Render the form as a PDF from the HTML
-            gotenberg_url = 'http://gotenberg:3000'
-            pdf = ::Gotenberg::Chromium.call(gotenberg_url) do |doc|
-              doc.html render_to_string(
-                         template: 'bulk_import_ideas/web_api/v1/export_form',
-                         formats: [:html],
-                         layout: false,
-                         locals:
-                       )
-              doc.prefer_css_page_size
-            end
-
-            send_data pdf.to_binary, type: 'application/pdf', filename: 'file.pdf'
+          # Render the form as a PDF from the HTML
+          gotenberg_url = 'http://gotenberg:3000'
+          pdf = ::Gotenberg::Chromium.call(gotenberg_url) do |doc|
+            doc.html render_to_string(
+              template: 'bulk_import_ideas/web_api/v1/export_form',
+              formats: [:html],
+              layout: false,
+              locals:
+            )
+            doc.prefer_css_page_size
           end
+
+          send_data pdf.to_binary, type: 'application/pdf', filename: 'file.pdf'
+        end
       else
         # OLD format
         send_not_found unless supported_model? && supported_format?
