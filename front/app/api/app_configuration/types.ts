@@ -248,7 +248,6 @@ export interface IAppConfigurationSettings {
   power_bi?: AppConfigurationFeature;
   analysis?: AppConfigurationFeature;
   large_summaries?: AppConfigurationFeature;
-  comments_summaries?: AppConfigurationFeature;
   ask_a_question?: AppConfigurationFeature;
   advanced_autotagging?: AppConfigurationFeature;
   auto_insights?: AppConfigurationFeature;
@@ -264,7 +263,7 @@ export interface IAppConfigurationSettings {
   prescreening_ideation?: AppConfigurationFeature;
   input_cosponsorship?: AppConfigurationFeature;
   project_review?: AppConfigurationFeature;
-  authoring_assistance?: AppConfigurationFeature;
+  input_iq?: AppConfigurationFeature;
   platform_templates?: AppConfigurationFeature;
   authoring_assistance_prototype?: AppConfigurationFeature;
   project_library?: AppConfigurationFeature;

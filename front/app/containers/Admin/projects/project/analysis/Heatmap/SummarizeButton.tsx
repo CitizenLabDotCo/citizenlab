@@ -144,6 +144,13 @@ const SummarizeButton = ({ row, column, cell, buttonStyle }: Props) => {
 
   const isDisabled = !cell || column.relationships.custom_field_option === null;
 
+  // Only show the button if the cell unit is of type 'inputs'
+  // This is the only filter we fully support for now so showing the button
+  // for other types would be misleading
+  if (cell?.attributes.unit !== 'inputs') {
+    return null;
+  }
+
   return (
     <Button
       icon="stars"

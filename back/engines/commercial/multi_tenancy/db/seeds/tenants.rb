@@ -444,10 +444,6 @@ module MultiTenancy
               enabled: true,
               allowed: true
             },
-            comments_summaries: {
-              enabled: true,
-              allowed: true
-            },
             ask_a_question: {
               enabled: true,
               allowed: true
