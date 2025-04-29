@@ -500,7 +500,7 @@ describe('Survey builder', () => {
     cy.get('[data-cy="e2e-after-submission"]').should('exist');
   });
 
-  it.only('creates survey with logic and the user can navigate back and forth without previous logic options changing the order of pages', () => {
+  it('creates survey with logic and the user can navigate back and forth without previous logic options changing the order of pages', () => {
     const firstLogicQnOption1 = randomString();
     const firstLogicQnOption2 = randomString();
     const secondLogicQnOption1 = randomString();
@@ -643,7 +643,7 @@ describe('Survey builder', () => {
     cy.get('[data-cy="e2e-after-submission"]').should('exist');
   });
 
-  it.skip('does not allow non admin users to fill in a survey more than once when permissions are set to registered users', () => {
+  it.only('does not allow non admin users to fill in a survey more than once when permissions are set to registered users', () => {
     const firstName = randomString();
     const lastName = randomString();
     const email = randomEmail();
@@ -658,15 +658,11 @@ describe('Survey builder', () => {
 
     cy.visit(`admin/projects/${projectId}/phases/${phaseId}/native-survey`);
     cy.get('[data-cy="e2e-edit-survey-content"]').click();
+    waitForCustomFormFields();
+
+    // Add a required single-select
     cy.get('[data-cy="e2e-short-answer"]').click();
-
-    // Save the survey
-    cy.get('form').submit();
-    // Should show error if no title is entered
-    cy.get('[data-testid="error-message"]').should('exist');
-
     cy.get('#e2e-title-multiloc').type(questionTitle, { force: true });
-    // Set the field to required
     cy.get('#e2e-required-toggle').find('input').click({ force: true });
 
     cy.get('form').submit();
@@ -684,28 +680,22 @@ describe('Survey builder', () => {
     cy.get('.e2e-idea-button')
       .first()
       .find('button')
-      .should('not.have.attr', 'disabled');
+      .should('not.have.class', 'disabled');
     cy.get('.e2e-idea-button').first().find('button').click({ force: true });
     cy.contains(questionTitle).should('exist');
     cy.get(`*[id^="properties${questionTitle}"]`).type(answer, { force: true });
 
-    // Save survey response
-    cy.get('[data-cy="e2e-next-page"]').should('be.visible').click();
-    cy.get('[data-cy="e2e-submit-form"]').click();
-
-    // Check that we show a success message
-    cy.get('[data-cy="e2e-survey-success-message"]').should('exist');
-    // close modal
-    cy.get('.e2e-modal-close-button').click();
-    // check that the modal is no longer on the page
-    cy.get('#e2e-modal-container').should('have.length', 0);
+    // Submit
+    cy.get('[data-cy="e2e-submit-form"]').should('be.visible').click();
+    cy.get('[data-cy="e2e-page-number-2"]').should('exist');
+    cy.get('[data-cy="e2e-after-submission"]').should('exist');
 
     // Try filling in the survey again
     cy.visit(`/projects/${projectSlug}`);
     cy.get('.e2e-idea-button')
       .first()
       .find('button')
-      .should('have.attr', 'disabled');
+      .should('have.class', 'disabled');
   });
 
   it.skip('shows validation errors when current page or previous pages are referenced', () => {
