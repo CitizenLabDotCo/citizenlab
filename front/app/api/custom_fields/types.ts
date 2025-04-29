@@ -17,6 +17,7 @@ export interface ICustomFieldsParameters {
 
 export type ICustomFieldInputType =
   | 'text'
+  | 'text_multiloc'
   | 'multiline_text'
   | 'multiselect'
   | 'number'

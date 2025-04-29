@@ -1,7 +1,10 @@
 import React, { useState } from 'react';
 
 import { Box, Title, useBreakpoint } from '@citizenlab/cl2-component-library';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { FormProvider, useForm } from 'react-hook-form';
 import { useTheme } from 'styled-components';
+import { object } from 'yup';
 
 import { IFlatCustomField } from 'api/custom_fields/types';
 import { IIdea } from 'api/ideas/types';
@@ -16,6 +19,9 @@ import SubmissionReference from 'components/Form/Components/Layouts/SubmissionRe
 import QuillEditedContent from 'components/UI/QuillEditedContent';
 
 import { isPage } from 'utils/helperUtils';
+import validateAtLeastOneLocale from 'utils/yup/validateAtLeastOneLocale';
+
+import TextMultiloc from './Fields/TextMultiloc';
 
 type CustomFieldsPage = {
   page: IFlatCustomField;
@@ -27,6 +33,18 @@ type CustomFieldsPage = {
   idea?: IIdea;
 };
 
+const generateYupValidationSchema = (pageQuestions: IFlatCustomField[]) => {
+  const schema: any = {};
+  pageQuestions.forEach((question) => {
+    if (question.input_type === 'text_multiloc') {
+      schema[question.key] = validateAtLeastOneLocale('invalid', {
+        validateEachNonEmptyLocale: (schema) => schema.min(10).max(120),
+      });
+    }
+  });
+  return object(schema);
+};
+
 const CustomFieldsPage = ({
   page,
   pageQuestions,
@@ -36,6 +54,7 @@ const CustomFieldsPage = ({
   participationMethod,
   idea,
 }: CustomFieldsPage) => {
+  console.log(pageQuestions);
   const pagesRef = React.useRef<HTMLDivElement>(null);
   const isMapPage = page.page_layout === 'map';
   const currentPageIndex = index; // Assuming this is the current page index
@@ -55,6 +74,17 @@ const CustomFieldsPage = ({
     }
 
     setPostAnonymously((postAnonymously) => !postAnonymously);
+  };
+
+  const schema = generateYupValidationSchema(pageQuestions);
+
+  const methods = useForm({
+    mode: 'onBlur',
+    resolver: yupResolver(schema),
+  });
+
+  const onFormSubmit = async (formValues) => {
+    console.log(formValues);
   };
 
   return (
@@ -155,6 +185,19 @@ const CustomFieldsPage = ({
                     />
                   </QuillEditedContent>
                 </Box>
+                <FormProvider {...methods}>
+                  <form onSubmit={methods.handleSubmit(onFormSubmit)}>
+                    {pageQuestions.map((question) => {
+                      if (question.input_type === 'text_multiloc') {
+                        return (
+                          <TextMultiloc key={question.id} question={question} />
+                        );
+                      }
+                      return null;
+                    })}
+                    <button type="submit">submit</button>
+                  </form>
+                </FormProvider>
 
                 {index === lastPageIndex - 1 &&
                   showTogglePostAnonymously &&

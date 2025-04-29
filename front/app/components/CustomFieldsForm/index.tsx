@@ -57,7 +57,7 @@ const CustomFieldsForm = ({
     participationMethod !== 'native_survey';
 
   return (
-    <Box overflow="scroll">
+    <Box overflow="scroll" w="100%">
       {nestedPagesData.map((pageData, index) => (
         <CustomFieldsPage
           key={pageData.page.id}
