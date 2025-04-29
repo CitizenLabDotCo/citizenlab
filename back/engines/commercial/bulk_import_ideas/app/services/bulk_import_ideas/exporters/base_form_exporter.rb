@@ -14,11 +14,11 @@ module BulkImportIdeas::Exporters
       raise NotImplementedError, 'This method is not yet implemented'
     end
 
-    def mime_type
+    def format
       raise NotImplementedError, 'This method is not yet implemented'
     end
 
-    def format
+    def mime_type
       raise NotImplementedError, 'This method is not yet implemented'
     end
 
@@ -29,10 +29,6 @@ module BulkImportIdeas::Exporters
     # Combines fields and options from the export into a single array for lookup on import
     def importer_data
       raise NotImplementedError, 'This method is not yet implemented'
-    end
-
-    def html_based?
-      false
     end
 
     private

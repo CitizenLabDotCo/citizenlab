@@ -7,12 +7,12 @@ module BulkImportIdeas::Exporters
       organization_name = AppConfiguration.instance.settings('core', 'organization_name')[@locale]
       personal_data_visibility = @phase.pmethod.supports_public_visibility? ? 'public' : 'private'
 
-      I18n.with_locale(@locale) {
+      I18n.with_locale(@locale) do
         I18n.t(
           "form_builder.pdf_export.personal_data_explanation_#{personal_data_visibility}",
           organizationName: organization_name
         )
-      }
+      end
 
       @template_values = {
         locale: @locale,
@@ -27,12 +27,12 @@ module BulkImportIdeas::Exporters
         personal_data: {
           enabled: @personal_data_enabled,
           heading: I18n.with_locale(@locale) { I18n.t('form_builder.pdf_export.personal_data') },
-          intro: I18n.with_locale(@locale) {
+          intro: I18n.with_locale(@locale) do
             I18n.t(
               "form_builder.pdf_export.personal_data_explanation_#{personal_data_visibility}",
               organizationName: organization_name
             )
-          },
+          end,
           first_name: I18n.with_locale(@locale) { I18n.t('form_builder.pdf_export.first_name') },
           last_name: I18n.with_locale(@locale) { I18n.t('form_builder.pdf_export.last_name') },
           email_address: I18n.with_locale(@locale) { I18n.t('form_builder.pdf_export.email_address') },
@@ -45,8 +45,18 @@ module BulkImportIdeas::Exporters
     end
 
     def export
-      nil
+      ActionController::Base.new.render_to_string render_config
     end
+
+    def format
+      'html'
+    end
+
+    def mime_type
+      'application/html'
+    end
+
+    private
 
     def render_config
       {
@@ -55,18 +65,6 @@ module BulkImportIdeas::Exporters
         layout: false,
         locals: @template_values
       }
-    end
-
-    def mime_type
-      'application/html'
-    end
-
-    def format
-      'html'
-    end
-
-    def html_based?
-      true
     end
   end
 end

@@ -53,17 +53,8 @@ module BulkImportIdeas
       service = form_exporter_service.new(@phase, locale, personal_data_enabled)
       file = service.export
 
-      # If the export is HTML-based, we need to render the HTML in the controller
-      if service.html_based?
-        self.class.include ActionController::Rendering
-        self.class.include ActionView::Rendering
-        if service.format == 'html'
-          render(service.render_config) and return
-        else
-          html = render_to_string service.render_config
-          file = service.render_file html
-        end
-      end
+      # If the export is HTML-based, we are not sending a binary file so need to render differently
+      render html: service.export and return if service.format == 'html'
 
       send_data file, type: service.mime_type, filename: service.filename
     end

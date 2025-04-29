@@ -35,7 +35,7 @@ resource 'Idea form exports' do
           end
         end
 
-        # TODO: Maybe only make this available in DEV
+        # TODO: Maybe only make this view available in DEV
         context 'HTML form (for rendering with other formats)' do
           let(:format) { 'html' }
 
@@ -45,6 +45,7 @@ resource 'Idea form exports' do
           end
         end
 
+        # TODO: Mock this method - stupid method
         context 'PDF rendered from HTML' do
           let(:format) { 'htmlpdf' }
 
