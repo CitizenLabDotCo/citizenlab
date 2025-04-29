@@ -183,18 +183,18 @@ export default defineMessages({
     id: 'app.containers.phaseConfig.similarityThresholdTitle',
     defaultMessage: 'Similarity threshold (title)',
   },
-  similarityThresholdTitleTooltip: {
-    id: 'app.containers.phaseConfig.similarityThresholdTitleTooltip1',
+  similarityThresholdTitleTooltipMessage: {
+    id: 'app.containers.phaseConfig.similarityThresholdTitleTooltipMessage',
     defaultMessage:
-      'This controls how similar two titles need to be before being flagged as similar. Use values between 0 and 1. Only modify this if you understand the implications.',
+      'This controls how similar two titles must be to be flagged as similar. Use a value between 0 (strict) and 1 (lenient). Lower values return fewer but more accurate matches.',
   },
   similarityThresholdBody: {
     id: 'app.containers.phaseConfig.similarityThresholdBody',
     defaultMessage: 'Similarity threshold (body)',
   },
-  similarityThresholdBodyTooltip: {
-    id: 'app.containers.phaseConfig.similarityThresholdBodyTooltip1',
+  similarityThresholdBodyTooltipMessage: {
+    id: 'app.containers.phaseConfig.similarityThresholdBodyTooltipMessage',
     defaultMessage:
-      'This controls how similar two descriptions must be to show suggestions. Use values between 0 and 1. Only adjust if you know what you’re doing.',
+      'This controls how similar two descriptions must be to be flagged as similar. Use a value between 0 (strict) and 1 (lenient). Lower values return fewer but more accurate matches.',
   },
 });

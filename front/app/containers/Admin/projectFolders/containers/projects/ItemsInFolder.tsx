@@ -14,7 +14,7 @@ import SortableRow from 'components/admin/ResourceList/SortableRow';
 
 import { FormattedMessage } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
-import { isAdmin } from 'utils/permissions/roles';
+import { usePermission } from 'utils/permissions';
 
 // localisation
 import messages from '../messages';
@@ -35,6 +35,11 @@ const ItemsInFolder = ({ projectFolderId }: Props) => {
   const { data } = useAdminPublications({
     childrenOfId: projectFolderId,
     publicationStatusFilter: publicationStatuses,
+  });
+
+  const canRemoveProjects = usePermission({
+    item: 'project_folder',
+    action: 'manage_projects',
   });
 
   const projectsInFolder = data?.pages.map((page) => page.data).flat();
@@ -73,10 +78,6 @@ const ItemsInFolder = ({ projectFolderId }: Props) => {
     // is also truthy, so we won't reach the fallback message
     projectsInFolder.length > 0
   ) {
-    // TODO: Fix this the next time the file is edited.
-    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-    const userIsAdmin = authUser && isAdmin(authUser);
-
     return (
       <SortableList
         key={`IN_FOLDER_LIST${projectsInFolder.length}`}
@@ -100,7 +101,7 @@ const ItemsInFolder = ({ projectFolderId }: Props) => {
                   <ProjectRow
                     publication={adminPublication}
                     actions={
-                      userIsAdmin
+                      canRemoveProjects
                         ? [
                             {
                               buttonContent: (
