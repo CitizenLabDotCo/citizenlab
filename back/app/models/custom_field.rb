@@ -472,7 +472,7 @@ class CustomField < ApplicationRecord
   end
 
   def print_visibility_disclaimer(locale)
-    phase.pmethod.supports_public_visibility? && answer_visible_to == 'admins' ? "*" + I18n.with_locale(locale) { I18n.t('form_builder.pdf_export.this_answer') } : ''
+    phase.pmethod.supports_public_visibility? && answer_visible_to == 'admins' ? "*#{I18n.with_locale(locale) { I18n.t('form_builder.pdf_export.this_answer') }}" : ''
   end
 
   def multiselect_print_instructions(locale)
@@ -498,9 +498,8 @@ class CustomField < ApplicationRecord
         I18n.t('form_builder.pdf_export.choose_as_many')
       end
     end
-    "*" + message
+    "*#{message}"
   end
-
 
   def nth_linear_scale_multiloc(n)
     send(:"linear_scale_label_#{n}_multiloc")

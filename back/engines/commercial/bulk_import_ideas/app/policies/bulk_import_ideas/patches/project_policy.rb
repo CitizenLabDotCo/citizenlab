@@ -7,10 +7,6 @@ module BulkImportIdeas
         active_moderator?
       end
 
-      # def export_form?
-      #   active_moderator?
-      # end
-
       def export_form?
         true
       end

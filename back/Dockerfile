@@ -46,7 +46,7 @@ RUN apt-get update                                        \
    # Install MJML parser required by email engine.
    && npm install -g mjml@4.4.1                                \
    && apt-get clean                                            \
-   && rm -rf /var/lib/apt/lists/* /var/cache/apt
+   && rm -rf /var/lib/apt/lists/*
 
 # Install Postgres client:
 # Import the PostgreSQL repository signing key, add the repository, and install the package.
