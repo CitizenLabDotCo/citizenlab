@@ -85,6 +85,8 @@ describe('Project attachments settings', () => {
       cy.contains('Your form has been saved!').should('be.visible');
 
       cy.reload();
+      cy.wait(4000);
+      cy.scrollTo('bottom');
 
       cy.get('[data-cy="e2e-file-uploader-container"]')
         .find('.files-list')
@@ -126,6 +128,7 @@ describe('Project attachments settings', () => {
       cy.contains('Your form has been saved!').should('be.visible');
 
       cy.reload();
+      cy.wait(2000);
 
       cy.get('[data-cy="e2e-file-uploader-container"]')
         .find('.files-list')
