@@ -1,6 +1,6 @@
 <html>
 <head>
-  <title>Form</title>
+  <title><%= project.title_multiloc[locale] %> - <%= phase.title_multiloc[locale] %></title>
   <style>
       @page { size: A4;
           margin: 40px 40px 80px;
@@ -67,7 +67,7 @@
     <%= sanitize custom_field.print_description(locale) %>
 
     <p>
-      <%= custom_field.print_visibility_disclaimer(locale) %>
+      <%= sanitize custom_field.print_visibility_disclaimer(locale) %>
       <%= custom_field.multiselect_print_instructions(locale) %>
     </p>
 
@@ -91,11 +91,22 @@
       <% end %>
 
     <% else %>
-      <!-- text text_multiloc number linear_scale etc -->
+      <!-- Fallback currently covers:
+            # text
+            # text_multiloc
+            # number
+            # linear_scale
+            # rating
+            # sentiment_linear_scale
+            # select_image
+            # multiselect_image
+            # checkbox
+            # html
+            # line
+            # polygon
+      -->
       <div class="line"></div>
     <% end %>
-
-
 
   </div>
 <% end %>
