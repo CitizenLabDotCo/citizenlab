@@ -5,40 +5,34 @@
       @page { size: A4;
           margin: 40px 40px 80px;
           @bottom-right {
-              font-family: "OpenSans", sans-serif; /* TODO: OpenSans does not work, but we intend to use the custom fonts for each platform anyway */
+              font-family: "OpenSans", sans-serif; /* NOTE: OpenSans does not work, but we intend to change to use the custom fonts for each platform anyway */
               content: '<%= page_copy %> ' counter(page);
               margin-bottom: 10px;
           }
-      } /* TODO: Page bottom margin not quite right */
+      }
       body { font-family: "OpenSans", sans-serif; }
+      h1 { font-size: 18pt; }
+      h2 { font-size: 15pt; }
       p, li { font-size: 12pt; }
+      div.line { border-bottom: solid 1px #000; margin: 10px 0; height: 25px; }
+      div.select { display: flex; align-items: center; margin-top: -6px; }
+      div.checkbox { border: solid 1px #000; width: 12px; height: 12px; margin: 8px 10px 8px 4px; display: inline-block; }
+      div.radio { border-radius: 50%; }
+
+      span.optional { font-weight: normal; }
 
       #header {
-          img {
-              width: 225px;
-              height: auto;
-              margin-bottom: 0;
-          }
-
-          h1 {
-              margin-top: 0;
-          }
-
-          ul.instructions {
-              border-left: solid 4px #000;
-              padding-top: 5px;
-              padding-bottom: 5px
-          }
+        img { width: 225px; height: auto; margin-bottom: 0; }
+        h1 { margin-top: 0; }
+        ul.instructions { border-left: solid 4px #000; padding-top: 5px; padding-bottom: 5px }
       }
 
+      #personal-data { page-break-after: always; }
+
       #questions {
-        h2 { margin-bottom: 10px; }
+        h2 { margin-bottom: 8px; }
         p { margin-top: 0; }
         div.question { page-break-inside: avoid; margin-bottom: 30px; }
-        div.options p { margin-bottom: 8px; }
-        div.options input { margin-right: 10px; }
-        div.line { border-bottom: solid 1px #000; margin: 10px 0; height: 25px}
-          span.optional { font-weight: normal; }
       }
   </style>
 </head>
@@ -48,15 +42,31 @@
   <h1><%= project.title_multiloc[locale] %> - <%= phase.title_multiloc[locale] %></h1>
   <h2><%= instructions[:title] %></h2>
   <ul class="instructions">
-    <li><%= instructions[:bullet1] %></li>
-    <li><%= instructions[:bullet2] %></li>
+    <li><%== instructions[:bullet1] %></li>
+    <li><%== instructions[:bullet2] %></li>
   </ul>
 </div>
 
 <!-- TODO: Personal data section -->
+<% if personal_data[:enabled] %>
+  <div id="personal-data">
+    <h2><%= personal_data[:heading] %></h2>
+    <p><%= personal_data[:intro] %></p>
+    <h2><%= personal_data[:first_name] %> <span class="optional">(<%= optional %>)</span></h2>
+    <div class="line"></div>
+    <h2><%= personal_data[:last_name] %> <span class="optional">(<%= optional %>)</span></h2>
+    <div class="line"></div>
+    <h2><%= personal_data[:email_address] %> <span class="optional">(<%= optional %>)</span></h2>
+    <div class="line"></div>
+    <div class="select">
+      <div class="checkbox"></div>
+      <p><%= personal_data[:checkbox] %></p>
+    </div>
+  </div>
+<% end %>
 
 <div id="questions">
-<% form_fields.each_with_index do |custom_field, i| %>
+<% form_fields.each_with_index do |custom_field, _i| %>
   <div class="question">
     <h2>
       <%= custom_field.title_multiloc[locale] %>
@@ -73,15 +83,21 @@
 
     <% if custom_field.input_type == 'select' %>
       <div class="options">
-      <% custom_field.options.each do |option| %>
-        <p><input type="radio" /><%= option.title_multiloc[locale] %></p>
-      <% end %>
+        <% custom_field.options.each do |option| %>
+            <div class="select">
+              <div class="checkbox radio"></div>
+              <div><%= option.title_multiloc[locale] %></div>
+            </div>
+        <% end %>
       </div>
 
     <% elsif custom_field.input_type == 'multiselect' %>
       <div class="options">
         <% custom_field.options.each do |option| %>
-          <p><input type="checkbox" /><%= option.title_multiloc[locale] %></p>
+          <div class="select">
+            <div class="checkbox"></div>
+            <div><%= option.title_multiloc[locale] %></div>
+          </div>
         <% end %>
       </div>
 

@@ -18,7 +18,7 @@ module BulkImportIdeas
         },
         'htmlpdf' => {
           exporter_class: Exporters::IdeaHtmlPdfFormExporter,
-          parser_class: Parsers::IdeaPdfFileParser # Not implemented for importing
+          parser_class: Parsers::IdeaPdfFileParser
         },
         'html' => {
           exporter_class: Exporters::IdeaHtmlFormExporter,

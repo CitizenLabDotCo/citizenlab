@@ -4,6 +4,15 @@ module BulkImportIdeas::Exporters
       super
       @form_fields = IdeaCustomFieldsService.new(phase.pmethod.custom_form).printable_fields
       @personal_data_enabled = personal_data_enabled
+      organization_name = AppConfiguration.instance.settings('core', 'organization_name')[@locale]
+      personal_data_visibility = @phase.pmethod.supports_public_visibility? ? 'public' : 'private'
+
+      I18n.with_locale(@locale) {
+        I18n.t(
+          "form_builder.pdf_export.personal_data_explanation_#{personal_data_visibility}",
+          organizationName: organization_name
+        )
+      }
 
       @template_values = {
         locale: @locale,
@@ -14,6 +23,20 @@ module BulkImportIdeas::Exporters
           title: I18n.with_locale(@locale) { I18n.t('form_builder.pdf_export.instructions') },
           bullet1: I18n.with_locale(@locale) { I18n.t('form_builder.pdf_export.write_as_clearly') },
           bullet2: I18n.with_locale(@locale) { I18n.t('form_builder.pdf_export.write_in_language') }
+        },
+        personal_data: {
+          enabled: @personal_data_enabled,
+          heading: I18n.with_locale(@locale) { I18n.t('form_builder.pdf_export.personal_data') },
+          intro: I18n.with_locale(@locale) {
+            I18n.t(
+              "form_builder.pdf_export.personal_data_explanation_#{personal_data_visibility}",
+              organizationName: organization_name
+            )
+          },
+          first_name: I18n.with_locale(@locale) { I18n.t('form_builder.pdf_export.first_name') },
+          last_name: I18n.with_locale(@locale) { I18n.t('form_builder.pdf_export.last_name') },
+          email_address: I18n.with_locale(@locale) { I18n.t('form_builder.pdf_export.email_address') },
+          checkbox: I18n.with_locale(@locale) { I18n.t('form_builder.pdf_export.by_checking_this_box', organizationName: organization_name) }
         },
         optional: I18n.with_locale(@locale) { I18n.t('form_builder.pdf_export.optional') },
         logo_url: AppConfiguration.instance.logo&.medium&.url,
