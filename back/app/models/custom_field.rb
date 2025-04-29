@@ -384,6 +384,7 @@ class CustomField < ApplicationRecord
     CustomField.new(
       key: other_field_key,
       input_type: 'text',
+      resource: resource,
       title_multiloc: replaced_title_multiloc,
       required: true,
       enabled: true
@@ -424,6 +425,14 @@ class CustomField < ApplicationRecord
     @ordered_transformed_options ||= domicile? ? domicile_options : ordered_options
   end
 
+  def print_description(locale)
+    if (linear_scale? || rating?) && description_multiloc[locale].blank? # TODO: Is rating correct here as it returns nil below (old code)
+      linear_scale_print_description(locale)
+    else
+      description_multiloc[locale]
+    end
+  end
+
   def linear_scale_print_description(locale)
     return nil unless linear_scale?
 
@@ -444,16 +453,42 @@ class CustomField < ApplicationRecord
     end
   end
 
+  def print_visibility_disclaimer(locale)
+    phase.pmethod.supports_public_visibility? && answer_visible_to == 'admins' ? "*" + I18n.with_locale(locale) { I18n.t('form_builder.pdf_export.this_answer') } : ''
+  end
+
+  def multiselect_print_instructions(locale)
+    return unless input_type == 'multiselect'
+
+    min = minimum_select_count
+    max = maximum_select_count
+    min = nil if min == 0
+    max = nil if max&.>= options.length
+
+    message = I18n.with_locale(locale) do
+      if select_count_enabled && (min || max)
+        if min && max && min == max
+          I18n.t('form_builder.pdf_export.choose_exactly', count: min)
+        elsif min && max
+          I18n.t('form_builder.pdf_export.choose_between', min: min, max: max)
+        elsif min
+          I18n.t('form_builder.pdf_export.choose_at_least', count: min)
+        else
+          I18n.t('form_builder.pdf_export.choose_at_most', count: max)
+        end
+      else
+        I18n.t('form_builder.pdf_export.choose_as_many')
+      end
+    end
+    "*" + message
+  end
+
+
   def nth_linear_scale_multiloc(n)
     send(:"linear_scale_label_#{n}_multiloc")
   end
 
   def input_term
-    phase = if resource.participation_context.instance_of?(Project)
-      TimelineService.new.current_or_backup_transitive_phase(resource.participation_context)
-    else
-      resource.participation_context
-    end
     phase&.input_term || Phase::FALLBACK_INPUT_TERM
   end
 
@@ -477,6 +512,17 @@ class CustomField < ApplicationRecord
   end
 
   private
+
+  # Which phase is this custom field associated with via the custom form?
+  def phase
+    return nil unless resource
+
+    if resource.participation_context.instance_of?(Project)
+      TimelineService.new.current_or_backup_transitive_phase(resource.participation_context)
+    else
+      resource.participation_context
+    end
+  end
 
   def set_default_enabled
     self.enabled = true if enabled.nil?

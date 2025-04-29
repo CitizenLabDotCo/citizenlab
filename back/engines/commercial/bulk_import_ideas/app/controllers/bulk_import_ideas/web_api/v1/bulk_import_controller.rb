@@ -2,8 +2,6 @@
 
 module BulkImportIdeas
   class WebApi::V1::BulkImportController < ApplicationController
-    # Dynamically include rendering modules for export_form
-
     skip_before_action :authenticate_user, only: %i[export_form]
     before_action :authorize_bulk_import_ideas, only: %i[bulk_create_async export_form draft_records approve_all]
 
@@ -17,6 +15,14 @@ module BulkImportIdeas
         'pdf' => {
           exporter_class: Exporters::IdeaPdfFormExporter,
           parser_class: Parsers::IdeaPdfFileParser
+        },
+        'htmlpdf' => {
+          exporter_class: Exporters::IdeaHtmlPdfFormExporter,
+          parser_class: Parsers::IdeaPdfFileParser # Not implemented for importing
+        },
+        'html' => {
+          exporter_class: Exporters::IdeaHtmlFormExporter,
+          parser_class: nil # Not implemented for importing
         }
       }
     }
@@ -38,66 +44,28 @@ module BulkImportIdeas
       render json: { errors: { file: [{ error: e.key, **e.params }] } }, status: :unprocessable_entity
     end
 
-    # def export_form
-    #   send_not_found unless supported_model? && supported_format?
-    #
-    #   locale = params[:locale] || current_user.locale
-    #   personal_data_enabled = params[:personal_data] == 'true'
-    #
-    #   service = form_exporter_service.new(@phase, locale, personal_data_enabled)
-    #   send_data service.export, type: service.mime_type, filename: service.filename
-    # end
-
     def export_form
-      if params[:new] == 'true'
+      send_not_found unless supported_model? && supported_format?
+
+      locale = params[:locale] || current_user.locale
+      personal_data_enabled = params[:personal_data] == 'true'
+
+      service = form_exporter_service.new(@phase, locale, personal_data_enabled)
+      file = service.export
+
+      # If the export is HTML-based, we need to render the HTML in the controller
+      if service.html_based?
         self.class.include ActionController::Rendering
         self.class.include ActionView::Rendering
-
-        @form_fields = IdeaCustomFieldsService.new(@phase.pmethod.custom_form).printable_fields
-
-        locals = {
-          phase: @phase,
-          project: @project,
-          form_fields: @form_fields,
-          instructions: {
-            title: I18n.with_locale(@locale) { I18n.t('form_builder.pdf_export.instructions') },
-            bullet1: I18n.with_locale(@locale) { I18n.t('form_builder.pdf_export.write_as_clearly') },
-            bullet2: I18n.with_locale(@locale) { I18n.t('form_builder.pdf_export.write_in_language') }
-          },
-          optional: I18n.with_locale(@locale) { I18n.t('form_builder.pdf_export.optional') },
-          logo_url: AppConfiguration.instance.logo&.medium&.url
-        }
-
-        if params[:format] == 'html'
-          render 'bulk_import_ideas/web_api/v1/export_form', formats: [:html], layout: false, locals:
+        if service.format == 'html'
+          render(service.render_config) and return
         else
-          # Hack for getting the correct URL for the logo in local dev
-          locals[:logo_url].sub!('localhost:4000', 'cl-back-web:4000')
-
-          # Render the form as a PDF from the HTML
-          gotenberg_url = 'http://gotenberg:3000'
-          pdf = ::Gotenberg::Chromium.call(gotenberg_url) do |doc|
-            doc.html render_to_string(
-              template: 'bulk_import_ideas/web_api/v1/export_form',
-              formats: [:html],
-              layout: false,
-              locals:
-            )
-            doc.prefer_css_page_size
-          end
-
-          send_data pdf.to_binary, type: 'application/pdf', filename: 'file.pdf'
+          html = render_to_string service.render_config
+          file = service.render_file html
         end
-      else
-        # OLD format
-        send_not_found unless supported_model? && supported_format?
-
-        locale = params[:locale] || current_user.locale
-        personal_data_enabled = params[:personal_data] == 'true'
-
-        service = form_exporter_service.new(@phase, locale, personal_data_enabled)
-        send_data service.export, type: service.mime_type, filename: service.filename
       end
+
+      send_data file, type: service.mime_type, filename: service.filename
     end
 
     def approve_all

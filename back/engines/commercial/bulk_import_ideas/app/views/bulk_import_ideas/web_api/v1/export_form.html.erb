@@ -5,12 +5,12 @@
       @page { size: A4;
           margin: 40px 40px 80px;
           @bottom-right {
-              font-family: Arial, sans-serif;
-              content: 'Page ' counter(page);
-              margin-bottom: 15px;
+              font-family: "OpenSans", sans-serif; /* TODO: OpenSans does not work, but we intend to use the custom fonts for each platform anyway */
+              content: '<%= page_copy %> ' counter(page);
+              margin-bottom: 10px;
           }
       } /* TODO: Page bottom margin not quite right */
-      body { font-family: Arial, sans-serif; }
+      body { font-family: "OpenSans", sans-serif; }
       p, li { font-size: 12pt; }
 
       #header {
@@ -45,7 +45,7 @@
 <body>
 <div id="header">
   <img src="<%= logo_url %>" alt="Logo" style="margin-bottom: 20px;" />
-  <h1><%= project.title_multiloc['en'] %> - <%= phase.title_multiloc['en'] %></h1>
+  <h1><%= project.title_multiloc[locale] %> - <%= phase.title_multiloc[locale] %></h1>
   <h2><%= instructions[:title] %></h2>
   <ul class="instructions">
     <li><%= instructions[:bullet1] %></li>
@@ -53,42 +53,49 @@
   </ul>
 </div>
 
+<!-- TODO: Personal data section -->
+
 <div id="questions">
 <% form_fields.each_with_index do |custom_field, i| %>
   <div class="question">
     <h2>
-      <%= custom_field.title_multiloc['en'] %>
+      <%= custom_field.title_multiloc[locale] %>
       <% unless custom_field.required? %>
         <span class="optional">(<%= optional %>)</span>
       <% end %>
     </h2>
-    <%= sanitize custom_field.description_multiloc['en'] %>
+    <%= sanitize custom_field.print_description(locale) %>
+
+    <p>
+      <%= custom_field.print_visibility_disclaimer(locale) %>
+      <%= custom_field.multiselect_print_instructions(locale) %>
+    </p>
 
     <% if custom_field.input_type == 'select' %>
       <div class="options">
       <% custom_field.options.each do |option| %>
-        <p><input type="radio" /><%= option.title_multiloc['en'] %></p>
+        <p><input type="radio" /><%= option.title_multiloc[locale] %></p>
       <% end %>
       </div>
-    <% end %>
 
-    <% if custom_field.input_type == 'multiselect' %>
+    <% elsif custom_field.input_type == 'multiselect' %>
       <div class="options">
         <% custom_field.options.each do |option| %>
-          <p><input type="checkbox" /><%= option.title_multiloc['en'] %></p>
+          <p><input type="checkbox" /><%= option.title_multiloc[locale] %></p>
         <% end %>
       </div>
-    <% end %>
 
-    <% if custom_field.input_type == 'text' %>
-        <div class="line"></div>
-    <% end %>
-
-    <% if custom_field.input_type == 'multiline_text' %>
+    <% elsif %w[multiline_text html_multiloc].include? custom_field.input_type %>
       <% 7.times do %>
         <div class="line"></div>
       <% end %>
+
+    <% else %>
+      <!-- text text_multiloc number linear_scale etc -->
+      <div class="line"></div>
     <% end %>
+
+
 
   </div>
 <% end %>
