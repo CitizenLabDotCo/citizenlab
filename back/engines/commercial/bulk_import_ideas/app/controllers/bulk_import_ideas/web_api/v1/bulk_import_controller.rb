@@ -45,7 +45,7 @@ module BulkImportIdeas
     end
 
     def export_form
-      send_not_found unless supported_model? && supported_format?
+      send_not_found and return unless supported_model? && supported_format?
 
       locale = params[:locale] || current_user.locale
       personal_data_enabled = params[:personal_data] == 'true'
