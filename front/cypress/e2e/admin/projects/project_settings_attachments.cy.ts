@@ -3,7 +3,7 @@ import { randomString } from '../../../support/commands';
 describe('Project attachments settings', () => {
   let projectId: string | null = null;
 
-  before(() => {
+  beforeEach(() => {
     cy.setConsentAndAdminLoginCookies();
 
     cy.apiCreateProject({
@@ -22,6 +22,8 @@ describe('Project attachments settings', () => {
 
   describe('Project attachments', () => {
     it('File attachments can be added, reordered, and saved correctly', () => {
+      cy.setConsentAndAdminLoginCookies();
+
       cy.intercept(`**/projects/${projectId}/files`).as('saveProjectFiles');
 
       // Visit the project settings page
@@ -69,7 +71,10 @@ describe('Project attachments settings', () => {
         .children()
         .children()
         .eq(0)
+        .scrollIntoView()
         .trigger('dragstart', { dataTransfer });
+
+      cy.wait(2000);
 
       cy.get('[data-cy="e2e-file-uploader-container"] .files-list')
         .children()
