@@ -1051,7 +1051,6 @@
   "app.containers.Admin.projects.project.analysis.aiSummaryTooltipText": "Dette er AI-genereret indhold. Det er måske ikke 100% nøjagtigt. Gennemgå og krydsreferer med de faktiske input for nøjagtighed. Vær opmærksom på, at nøjagtigheden sandsynligvis forbedres, hvis antallet af valgte input reduceres.",
   "app.containers.Admin.projects.project.ideas.analysisAction1": "Åben AI-analyse",
   "app.containers.Admin.projects.project.ideas.analysisText2": "Udforsk AI-drevne resuméer og se individuelle indsendelser.",
-  "app.containers.Admin.projects.project.ideas.analysisUpsellTooltip": "Denne funktion er ikke inkluderet i din nuværende plan. Tal med jeres administrator for at låse den op.",
   "app.containers.Admin.projects.project.ideas.importInputs": "Import",
   "app.containers.Admin.projects.project.information.ReportTab.afterCreating": "Når du har oprettet en rapport, kan du vælge at dele den med offentligheden, når fasen starter.",
   "app.containers.Admin.projects.project.information.ReportTab.createAMoreComplex": "Opret en mere kompleks side til informationsdeling",

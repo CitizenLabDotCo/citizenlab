@@ -1051,7 +1051,6 @@
   "app.containers.Admin.projects.project.analysis.aiSummaryTooltipText": "یہ AI سے تیار کردہ مواد ہے۔ یہ 100% درست نہیں ہو سکتا۔ براہ کرم جائزہ لیں اور درستگی کے لیے اصل آدانوں کے ساتھ کراس حوالہ دیں۔ آگاہ رہیں کہ اگر منتخب کردہ آدانوں کی تعداد کم کردی جاتی ہے تو درستگی بہتر ہونے کا امکان ہے۔",
   "app.containers.Admin.projects.project.ideas.analysisAction1": "AI تجزیہ کھولیں۔",
   "app.containers.Admin.projects.project.ideas.analysisText2": "AI سے چلنے والے خلاصے دریافت کریں اور انفرادی گذارشات دیکھیں۔",
-  "app.containers.Admin.projects.project.ideas.analysisUpsellTooltip": "یہ خصوصیت آپ کے موجودہ پلان میں شامل نہیں ہے۔ اسے غیر مقفل کرنے کے لیے اپنے حکومتی کامیابی کے مینیجر یا منتظم سے بات کریں۔",
   "app.containers.Admin.projects.project.ideas.importInputs": "درآمد کریں۔",
   "app.containers.Admin.projects.project.information.ReportTab.afterCreating": "رپورٹ بنانے کے بعد، مرحلہ شروع ہونے کے بعد آپ اسے عوام کے ساتھ شیئر کرنے کا انتخاب کر سکتے ہیں۔",
   "app.containers.Admin.projects.project.information.ReportTab.createAMoreComplex": "معلومات کے اشتراک کے لیے مزید پیچیدہ صفحہ بنائیں",

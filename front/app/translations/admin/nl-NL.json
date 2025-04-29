@@ -1051,7 +1051,6 @@
   "app.containers.Admin.projects.project.analysis.aiSummaryTooltipText": "Dit is AI-gegenereerde inhoud. Het is mogelijk niet 100% nauwkeurig. Controleer de nauwkeurigheid door te vergelijken met de werkelijke bijdragen. Houd er rekening mee dat de nauwkeurigheid waarschijnlijk verbetert als het aantal geselecteerde bijdragen wordt verminderd.",
   "app.containers.Admin.projects.project.ideas.analysisAction1": "Open AI-analyse",
   "app.containers.Admin.projects.project.ideas.analysisText2": "Ontdek samenvattingen op basis van AI en bekijk individuele inzendingen.",
-  "app.containers.Admin.projects.project.ideas.analysisUpsellTooltip": "Deze functionaliteit is niet in je huidige abonnement inbegrepen. Neem contact op met je Government Success Manager of platformbeheerder om deze functionaliteit te ontgrendelen.",
   "app.containers.Admin.projects.project.ideas.importInputs": "Importeren",
   "app.containers.Admin.projects.project.information.ReportTab.afterCreating": "Nadat je een rapport hebt gemaakt, kun je ervoor kiezen om het met het publiek te delen zodra de fase begint.",
   "app.containers.Admin.projects.project.information.ReportTab.createAMoreComplex": "Een complexere pagina te maken om informatie te delen",

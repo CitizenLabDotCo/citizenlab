@@ -1051,7 +1051,6 @@
   "app.containers.Admin.projects.project.analysis.aiSummaryTooltipText": "Este é um conteúdo gerado por IA. Ele pode não ser 100% preciso. Revise e faça referência cruzada com os inputs reais para verificar a precisão. Lembre-se de que a precisão provavelmente melhorará se o número de entradas selecionadas for reduzido.",
   "app.containers.Admin.projects.project.ideas.analysisAction1": "Análise de IA aberta",
   "app.containers.Admin.projects.project.ideas.analysisText2": "Explore resumos com tecnologia de IA e visualize envios individuais.",
-  "app.containers.Admin.projects.project.ideas.analysisUpsellTooltip": "Esse recurso não está incluído em seu plano atual. Fale com seu gerente de sucesso do governo ou administrador para desbloqueá-lo.",
   "app.containers.Admin.projects.project.ideas.importInputs": "Importação",
   "app.containers.Admin.projects.project.information.ReportTab.afterCreating": "Depois de criar um relatório, você pode optar por compartilhá-lo com o público assim que a fase começar.",
   "app.containers.Admin.projects.project.information.ReportTab.createAMoreComplex": "Criar uma página mais complexa para o compartilhamento de informações",
