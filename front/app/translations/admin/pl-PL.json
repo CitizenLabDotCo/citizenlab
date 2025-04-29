@@ -1051,7 +1051,6 @@
   "app.containers.Admin.projects.project.analysis.aiSummaryTooltipText": "To jest zawartość generowana przez sztuczną inteligencję. Może ona nie być w 100% dokładna. Sprawdź i porównaj z rzeczywistymi danymi wejściowymi pod kątem dokładności. Pamiętaj, że dokładność prawdopodobnie poprawi się, jeśli liczba wybranych danych wejściowych zostanie zmniejszona.",
   "app.containers.Admin.projects.project.ideas.analysisAction1": "Otwarta analiza sztucznej inteligencji",
   "app.containers.Admin.projects.project.ideas.analysisText2": "Przeglądaj podsumowania oparte na sztucznej inteligencji i przeglądaj poszczególne zgłoszenia.",
-  "app.containers.Admin.projects.project.ideas.analysisUpsellTooltip": "Ta funkcja nie jest uwzględniona w Twoim bieżącym planie. Porozmawiaj ze swoim Government Success Managerem lub administratorem, aby ją odblokować.",
   "app.containers.Admin.projects.project.ideas.importInputs": "Import",
   "app.containers.Admin.projects.project.information.ReportTab.afterCreating": "Po utworzeniu raportu możesz udostępnić go publicznie po rozpoczęciu fazy.",
   "app.containers.Admin.projects.project.information.ReportTab.createAMoreComplex": "Utwórz bardziej złożoną stronę do udostępniania informacji",
