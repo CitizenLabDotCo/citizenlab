@@ -3,7 +3,7 @@
 module IdeaCustomFields
   class IdeaCustomFieldPolicy < ApplicationPolicy
     def index?
-      can_configure_custom_fields? record
+      true
     end
 
     def show?
