@@ -780,7 +780,7 @@ describe('Survey builder', () => {
     cy.get('[data-testid="feedbackSuccessMessage"]').should('exist');
   });
 
-  it.only('creates survey with page logic and user fills in the survey based on that logic', () => {
+  it('creates survey with page logic and user fills in the survey based on that logic', () => {
     cy.intercept('POST', '**/ideas').as('saveSurvey');
 
     const chooseOneOption1 = randomString();
