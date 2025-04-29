@@ -780,6 +780,92 @@ describe('Survey builder', () => {
     cy.get('[data-testid="feedbackSuccessMessage"]').should('exist');
   });
 
+  it.only('creates survey with page logic and user fills in the survey based on that logic', () => {
+    cy.intercept('POST', '**/ideas').as('saveSurvey');
+
+    const chooseOneOption1 = randomString();
+    const chooseOneOption2 = randomString();
+    const question2Title = randomString();
+    const question3Title = randomString();
+    const question4Title = randomString();
+    const page2Title = randomString();
+    const page3Title = randomString();
+    const page4Title = randomString();
+    const multipleChoiceChooseOneTitle = 'multiplechoicechooseonefield';
+
+    cy.visit(`admin/projects/${projectId}/phases/${phaseId}/native-survey`);
+    cy.get('[data-cy="e2e-edit-survey-content"]').click();
+    waitForCustomFormFields();
+
+    cy.get('[data-cy="e2e-short-answer"]').click();
+    cy.get('#e2e-title-multiloc').type(questionTitle, { force: true });
+
+    cy.get('[data-cy="e2e-single-choice"]').click();
+    cy.get('#e2e-title-multiloc').type(multipleChoiceChooseOneTitle, {
+      force: true,
+    });
+    cy.get('#e2e-option-input-0').type(chooseOneOption1, { force: true });
+    cy.get('[data-cy="e2e-add-answer"]').click();
+    cy.get('#e2e-option-input-1').type(chooseOneOption2, { force: true });
+
+    // Add second page
+    cy.get('[data-cy="e2e-page"]').click();
+    cy.get('#e2e-field-group-title-multiloc').type(page2Title, { force: true });
+    cy.get('[data-cy="e2e-short-answer"]').click();
+    cy.get('#e2e-title-multiloc').type(question2Title, { force: true });
+
+    // Add third page
+    cy.get('[data-cy="e2e-page"]').click();
+    cy.get('#e2e-field-group-title-multiloc').type(page3Title, { force: true });
+    cy.get('[data-cy="e2e-short-answer"]').click();
+    cy.get('#e2e-title-multiloc').type(question3Title, { force: true });
+
+    // Add fourth page
+    cy.get('[data-cy="e2e-page"]').click();
+    cy.get('#e2e-field-group-title-multiloc').type(page4Title, { force: true });
+    cy.get('[data-cy="e2e-short-answer"]').click();
+    cy.get('#e2e-title-multiloc').type(question4Title, { force: true });
+
+    // Save the survey and reload the page before adding logic (bug with adding logic)
+    cy.get('form').submit();
+    cy.get('[data-testid="feedbackSuccessMessage"]').should('exist');
+    cy.reload();
+
+    // Add page logic to page 2 to go to survey end
+    cy.contains(page2Title).should('exist');
+    cy.contains(page2Title).click();
+    cy.get('[data-cy="e2e-form-builder-logic-tab"]').click();
+    cy.get('[data-cy="e2e-add-rule-button"]').click();
+    cy.get('[data-cy="e2e-rule-input-select"]').should('exist');
+    cy.get('[data-cy="e2e-rule-input-select"]').get('select').select(5);
+
+    // Save the survey
+    cy.get('form').submit();
+
+    // Try filling in the survey
+    cy.visit(`/projects/${projectSlug}/surveys/new?phase_id=${phaseId}`);
+    cy.acceptCookies();
+    // First page
+    cy.contains(questionTitle).should('exist');
+    cy.contains(multipleChoiceChooseOneTitle).should('exist');
+    cy.contains(chooseOneOption1).should('exist');
+    cy.contains(chooseOneOption1).click();
+
+    // Check to see that we are on the second page
+    cy.get('[data-cy="e2e-next-page"]').should('be.visible').click();
+    cy.contains(page2Title).should('exist');
+
+    // Submit
+    cy.get('[data-cy="e2e-submit-form"]').should('be.visible').click();
+    cy.wait('@saveSurvey').then((interception) => {
+      const keys = Object.keys(interception.request.body.idea);
+      const value: string = interception.request.body.idea[keys[0]];
+      expect(value).to.include(chooseOneOption1);
+    });
+    cy.get('[data-cy="e2e-page-number-5"]').should('exist');
+    cy.get('[data-cy="e2e-after-submission"]').should('exist');
+  });
+
   it('creates survey with page logic and question logic where question logic takes precedence over page logic', () => {
     cy.intercept('POST', '**/ideas').as('saveSurvey');
 
@@ -896,6 +982,4 @@ describe('Survey builder', () => {
     cy.get('[data-cy="e2e-page-number-4"]').should('exist');
     cy.get('[data-cy="e2e-after-submission"]').should('exist');
   });
-
-  // TODO: Jump with page logic
 });
