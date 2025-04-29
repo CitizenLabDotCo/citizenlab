@@ -4,7 +4,6 @@ import {
   Box,
   Button,
   CollapsibleContainer,
-  colors,
   Text,
   Title,
 } from '@citizenlab/cl2-component-library';
@@ -97,22 +96,22 @@ const PDFExportModal = ({ open, formType, onClose, onExport }: Props) => {
           titleAs="h2"
           titleFontWeight="bold"
           titlePadding="16px"
-          border={`1px solid ${colors.grey300}`}
+          border={`1px solid ${theme.colors.grey300}`}
           borderRadius={theme.borderRadius}
         >
-          <Box as="ul" pl="28px">
-            <Text as="li" mb="4px" mt="0px" w="500px">
+          <Box as="ul" py="24px" px="36px" m="0">
+            <Text as="li">
               <FormattedMessage {...CLICK_EXPORT_MESSAGES[formType]} />
             </Text>
             {formType === 'survey' && (
-              <Text as="li" mb="4px" mt="0px" w="500px">
+              <Text as="li">
                 <FormattedMessage {...messages.logicNotInPDF} />
               </Text>
             )}
-            <Text as="li" mb="4px">
+            <Text as="li">
               <FormattedMessage {...IT_IS_POSSIBLE_MESSAGES[formType]} />
             </Text>
-            <Text as="li" mb="24px">
+            <Text as="li" mb="0">
               <FormattedMessage {...messages.personalDataExplanation} />
             </Text>
           </Box>
