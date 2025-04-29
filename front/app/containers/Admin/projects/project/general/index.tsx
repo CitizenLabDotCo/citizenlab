@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 
 import { Box, colors, IconTooltip } from '@citizenlab/cl2-component-library';
-import { isEmpty, isString } from 'lodash-es';
+import { isEmpty } from 'lodash-es';
 import { useParams, useLocation } from 'react-router-dom';
 import { Multiloc, UploadFile, CLErrors } from 'typings';
 
@@ -52,6 +52,7 @@ import { isNilOrError } from 'utils/helperUtils';
 import { defaultAdminCardPadding } from 'utils/styleConstants';
 import { validateSlug } from 'utils/textUtils';
 
+import { useSyncFiles } from '../../../../../hooks/files/useSyncFiles';
 import { fragmentId } from '../projectHeader';
 import { fragmentId as folderFragmentId } from '../projectHeader/LinkToFolderSettings';
 
@@ -105,6 +106,12 @@ const AdminProjectsProjectGeneral = () => {
   const { mutateAsync: addProjectFile } = useAddProjectFile();
   const { mutateAsync: updateProjectFile } = useUpdateProjectFile();
   const { mutateAsync: deleteProjectFile } = useDeleteProjectFile();
+  const syncProjectFiles = useSyncFiles({
+    addFile: addProjectFile,
+    deleteFile: deleteProjectFile,
+    updateFile: updateProjectFile,
+  });
+
   const [submitState, setSubmitState] = useState<ISubmitState>('disabled');
 
   const [processing, setProcessing] = useState(false);
@@ -369,68 +376,17 @@ const AdminProjectsProjectGeneral = () => {
               })
             : null;
 
-        const filesToAddPromises = projectFiles
-          .filter((file) => !file.remote)
-          .map((file) => {
-            if (latestProjectId) {
-              return addProjectFile({
-                projectId: latestProjectId,
-                file: {
-                  file: file.base64,
-                  name: file.name,
-                  ordering: file.ordering,
-                },
-              });
-            }
-
-            return;
-          });
-
-        const filesToRemovePromises = projectFilesToRemove
-          .filter((file) => file.remote === true && isString(file.id))
-          .map((file) => {
-            if (latestProjectId && file.id) {
-              return deleteProjectFile({
-                projectId: latestProjectId,
-                fileId: file.id,
-              });
-            }
-
-            return;
-          });
-
-        const reorderedFiles = projectFiles.filter((file) => {
-          const initialOrdering = file.id
-            ? initialProjectFilesOrdering[file.id]
-            : undefined;
-          return (
-            file.remote &&
-            typeof file.ordering !== 'undefined' &&
-            (typeof initialOrdering === 'undefined' ||
-              file.ordering !== initialOrdering)
-          );
-        });
-
-        const filesToReorderPromises = reorderedFiles.map((file) => {
-          if (latestProjectId && file.id) {
-            return updateProjectFile({
-              projectId: latestProjectId,
-              fileId: file.id,
-              file: {
-                ordering: file.ordering,
-              },
-            });
-          }
-          return;
+        await syncProjectFiles({
+          projectId: latestProjectId,
+          files: projectFiles,
+          filesToRemove: projectFilesToRemove,
+          fileOrdering: initialProjectFilesOrdering,
         });
 
         await Promise.all([
           cardImageToAddPromise,
           cardImageToUpdatePromise,
           cardImageToRemovePromise,
-          ...filesToAddPromises,
-          ...filesToRemovePromises,
-          ...filesToReorderPromises,
         ] as Promise<any>[]);
 
         setSubmitState('success');
