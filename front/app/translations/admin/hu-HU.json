@@ -1044,7 +1044,7 @@
   "app.containers.Admin.projects.project.analysis.aiSummaryTooltipText": "This is AI-generated content. It may not be 100% accurate. Please review and cross-reference with the actual inputs for accuracy. Be aware that the accuracy is likely to improve if the number of selected inputs is reduced.",
   "app.containers.Admin.projects.project.ideas.analysisAction1": "Nyissa meg az AI-elemzést",
   "app.containers.Admin.projects.project.ideas.analysisText2": "Fedezze fel az AI-alapú összefoglalókat, és tekintse meg az egyes beküldött anyagokat.",
-  "app.containers.Admin.projects.project.ideas.analysisUpsellTooltip": "This feature is not included in your current plan. Talk to your Government Success Manager or admin to unlock it.",
+  "app.containers.Admin.projects.project.ideas.analysisUpsellTooltip": "Ez a funkció nem része a jelenlegi csomagjának. A feloldásához forduljon a kormányzati sikermenedzseréhez vagy az adminisztrátorhoz.",
   "app.containers.Admin.projects.project.ideas.importInputs": "Importálás",
   "app.containers.Admin.projects.project.information.ReportTab.afterCreating": "After creating a report, you can choose to share it with the public once the phase starts.",
   "app.containers.Admin.projects.project.information.ReportTab.createAMoreComplex": "Create a more complex page for information sharing",
