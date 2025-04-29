@@ -563,8 +563,8 @@ describe('Survey builder', () => {
     cy.get('[data-cy="e2e-form-builder-logic-tab"]').click();
     cy.get('[data-cy="e2e-add-rule-button"]').first().click();
     cy.get('[data-cy="e2e-rule-input-select"]').should('exist');
-    // Add rule to go to survey end
-    cy.get('[data-cy="e2e-rule-input-select"]').get('select').select(5);
+    // Add rule to go to page 4
+    cy.get('[data-cy="e2e-rule-input-select"]').get('select').select(4);
     // Add rule to go to page 2
     cy.get('[data-cy="e2e-add-rule-button"]').first().click();
     cy.get('[data-cy="e2e-rule-input-select"]').get('select').eq(1).select(2);
@@ -604,13 +604,11 @@ describe('Survey builder', () => {
     cy.acceptCookies();
     cy.contains(questionTitle).should('exist');
 
-    // Select the second option to go to page two
+    // Select the second option to go to page 2
     cy.contains(firstLogicQnOption2)
       .should('be.visible')
       .click({ force: true });
     cy.get('[data-cy="e2e-next-page"]').should('be.visible').click();
-
-    // Check to see that the user is on the second page
     cy.contains(page2Title).should('exist');
 
     // Selecting the first option turns the next button into a submit button
@@ -622,23 +620,20 @@ describe('Survey builder', () => {
     cy.get('[data-cy="e2e-next-page"]').should('not.exist');
     cy.get('[data-cy="e2e-submit-form"]').should('exist');
 
-    // Go back to the previous page to go to page 1
+    // Going back brings us to page 1
     cy.get('[data-cy="e2e-previous-page"]').click();
     cy.contains(questionTitle).should('exist');
 
-    // Go to page two and select the second option to navigate to the other pages
+    // Select the first option to go to page 4
+    cy.contains(firstLogicQnOption1).click({ force: true });
     cy.get('[data-cy="e2e-next-page"]').should('be.visible').click();
-    cy.contains(page2Title).should('exist');
-    cy.contains(secondLogicQnOption2).click({ force: true });
+    cy.contains(page4Title).should('exist');
 
-    // Go to page 3
-    cy.get('[data-cy="e2e-next-page"]').should('be.visible').click();
-    cy.contains(page3Title).should('exist');
-    cy.get(`*[id^="properties${page3QnTitle}"]`)
-      .should('be.visible')
-      .type(answer, { force: true });
+    // Going back brings us to page 1
+    cy.get('[data-cy="e2e-previous-page"]').click();
+    cy.contains(questionTitle).should('exist');
 
-    // Go to page 4
+    // Go to page 4 again (the chosen option is remembered)
     cy.get('[data-cy="e2e-next-page"]').click({ force: true });
     cy.contains(page4Title).should('exist');
 
