@@ -1051,7 +1051,6 @@
   "app.containers.Admin.projects.project.analysis.aiSummaryTooltipText": "Dies ist ein KI-generierter Inhalt. Dieser ist möglicherweise nicht 100%ig genau. Bitte überprüfen Sie die Genauigkeit und gleichen Sie sie mit den tatsächlichen Beiträgen ab. Beachten Sie, dass sich die Genauigkeit wahrscheinlich verbessert, wenn die Anzahl der ausgewählten Beiträge reduziert wird.",
   "app.containers.Admin.projects.project.ideas.analysisAction1": "Zur KI-Analyse",
   "app.containers.Admin.projects.project.ideas.analysisText2": "Erkunden Sie KI-gestützte Zusammenfassungen und sehen Sie sich einzelne Beiträge an.",
-  "app.containers.Admin.projects.project.ideas.analysisUpsellTooltip": "Diese Funktion ist in Ihrer aktuellen Lizenz nicht enthalten. Sprechen Sie mit Ihrer Kundenbetreuerin oder Ihrem Admin, um sie freizuschalten.",
   "app.containers.Admin.projects.project.ideas.importInputs": "Importieren",
   "app.containers.Admin.projects.project.information.ReportTab.afterCreating": "Nachdem Sie einen Bericht erstellt haben, können Sie ihn für die Öffentlichkeit freigeben, sobald die Phase beginnt.",
   "app.containers.Admin.projects.project.information.ReportTab.createAMoreComplex": "Erstellen Sie eine komplexere Seite für den Informationsaustausch",

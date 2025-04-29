@@ -1051,7 +1051,6 @@
   "app.containers.Admin.projects.project.analysis.aiSummaryTooltipText": "Tai dirbtinio intelekto sukurtas turinys. Jis gali būti ne 100 % tikslus. Peržiūrėkite ir palyginkite su faktiniais įvesties duomenimis, kad įsitikintumėte tikslumu. Turėkite omenyje, kad tikslumas greičiausiai padidės, jei sumažės pasirinktų įvesties duomenų skaičius.",
   "app.containers.Admin.projects.project.ideas.analysisAction1": "Atvira AI analizė",
   "app.containers.Admin.projects.project.ideas.analysisText2": "Peržiūrėkite dirbtinio intelekto valdomas santraukas ir peržiūrėkite atskiras paraiškas.",
-  "app.containers.Admin.projects.project.ideas.analysisUpsellTooltip": "Ši funkcija neįtraukta į dabartinį planą. Norėdami ją atrakinti, pasitarkite su savo Vyriausybės sėkmės vadybininku arba administratoriumi.",
   "app.containers.Admin.projects.project.ideas.importInputs": "Importas",
   "app.containers.Admin.projects.project.information.ReportTab.afterCreating": "Sukūrę ataskaitą, galite pasirinkti, kad prasidėjus etapui ja dalytumėtės su visuomene.",
   "app.containers.Admin.projects.project.information.ReportTab.createAMoreComplex": "Sukurti sudėtingesnį informacijos dalijimosi puslapį",

@@ -1051,7 +1051,6 @@
   "app.containers.Admin.projects.project.analysis.aiSummaryTooltipText": "هذا محتوى تم إنشاؤه بواسطة الذكاء الاصطناعي. وقد لا تكون دقيقة بنسبة 100%. يرجى المراجعة والإحالة المرجعية مع المدخلات الفعلية للتأكد من دقتها. انتبه إلى أنه من المرجح أن تتحسن الدقة إذا تم تقليل عدد المدخلات المحددة.",
   "app.containers.Admin.projects.project.ideas.analysisAction1": "تحليل الذكاء الاصطناعي المفتوح",
   "app.containers.Admin.projects.project.ideas.analysisText2": "استكشف الملخصات المدعومة بالذكاء الاصطناعي واعرض الإرساليات الفردية.",
-  "app.containers.Admin.projects.project.ideas.analysisUpsellTooltip": "لم يتم تضمين هذه الميزة في خطتك الحالية. تحدث إلى مدير النجاح الحكومي أو المسؤول لفتحه.",
   "app.containers.Admin.projects.project.ideas.importInputs": "يستورد",
   "app.containers.Admin.projects.project.information.ReportTab.afterCreating": "بعد إنشاء التقرير، يمكنك اختيار مشاركته مع الجمهور بمجرد بدء المرحلة.",
   "app.containers.Admin.projects.project.information.ReportTab.createAMoreComplex": "قم بإنشاء صفحة أكثر تعقيدًا لمشاركة المعلومات",

@@ -1051,7 +1051,6 @@
   "app.containers.Admin.projects.project.analysis.aiSummaryTooltipText": "Tämä on tekoälyn luomaa sisältöä. Se ei välttämättä ole 100 % tarkka. Tarkista ja vertaa todellisia syötteitä tarkkuuden varmistamiseksi. Huomaa, että tarkkuus todennäköisesti paranee, jos valittujen tulojen määrää vähennetään.",
   "app.containers.Admin.projects.project.ideas.analysisAction1": "Avaa AI-analyysi",
   "app.containers.Admin.projects.project.ideas.analysisText2": "Tutustu tekoälypohjaisiin yhteenvedoihin ja tarkastele yksittäisiä lähetyksiä.",
-  "app.containers.Admin.projects.project.ideas.analysisUpsellTooltip": "Tämä ominaisuus ei sisälly nykyiseen suunnitelmaasi. Keskustele hallituksen menestyspäällikön tai järjestelmänvalvojan kanssa avataksesi sen.",
   "app.containers.Admin.projects.project.ideas.importInputs": "Tuonti",
   "app.containers.Admin.projects.project.information.ReportTab.afterCreating": "Kun olet luonut raportin, voit halutessasi jakaa sen julkisesti vaiheen alkaessa.",
   "app.containers.Admin.projects.project.information.ReportTab.createAMoreComplex": "Luo monimutkaisempi sivu tiedon jakamista varten",

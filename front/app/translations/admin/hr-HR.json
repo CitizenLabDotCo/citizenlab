@@ -1051,7 +1051,6 @@
   "app.containers.Admin.projects.project.analysis.aiSummaryTooltipText": "Ovo je sadržaj generiran umjetnom inteligencijom. Možda nije 100% točno. Pregledajte i usporedite sa stvarnim unosima radi točnosti. Imajte na umu da će se točnost vjerojatno poboljšati ako se smanji broj odabranih ulaza.",
   "app.containers.Admin.projects.project.ideas.analysisAction1": "Otvorena AI analiza",
   "app.containers.Admin.projects.project.ideas.analysisText2": "Istražite sažetke koje pokreće AI i pregledajte pojedinačne podneske.",
-  "app.containers.Admin.projects.project.ideas.analysisUpsellTooltip": "Ova značajka nije uključena u vaš trenutni plan. Razgovarajte sa svojim upraviteljem uspjeha vlade ili administratorom da ga otključate.",
   "app.containers.Admin.projects.project.ideas.importInputs": "Uvoz",
   "app.containers.Admin.projects.project.information.ReportTab.afterCreating": "Nakon što izradite izvješće, možete ga podijeliti s javnošću nakon što faza započne.",
   "app.containers.Admin.projects.project.information.ReportTab.createAMoreComplex": "Napravite složeniju stranicu za razmjenu informacija",

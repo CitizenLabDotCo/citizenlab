@@ -1051,7 +1051,6 @@
   "app.containers.Admin.projects.project.analysis.aiSummaryTooltipText": "Šis ir mākslīgā intelekta radīts saturs. Tas var nebūt 100% precīzs. Lūdzu, pārbaudiet un salīdziniet ar faktiskajiem ievades datiem, lai pārliecinātos par precizitāti. Ņemiet vērā, ka precizitāte, visticamāk, uzlabosies, ja izvēlēto ievades datu skaits tiks samazināts.",
   "app.containers.Admin.projects.project.ideas.analysisAction1": "Atvērtā AI analīze",
   "app.containers.Admin.projects.project.ideas.analysisText2": "Izpētiet ar mākslīgo intelektu darbināmus kopsavilkumus un apskatiet atsevišķus iesniegumus.",
-  "app.containers.Admin.projects.project.ideas.analysisUpsellTooltip": "Šī funkcija nav iekļauta jūsu pašreizējā plānā. Lai to atbloķētu, sazinieties ar savu valdības veiksmes menedžeri vai administratoru.",
   "app.containers.Admin.projects.project.ideas.importInputs": "Importēt",
   "app.containers.Admin.projects.project.information.ReportTab.afterCreating": "Pēc ziņojuma izveides varat izvēlēties to kopīgot ar sabiedrību, tiklīdz posms ir sācies.",
   "app.containers.Admin.projects.project.information.ReportTab.createAMoreComplex": "Sarežģītākas informācijas kopīgošanas lapas izveide",

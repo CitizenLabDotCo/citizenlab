@@ -1051,7 +1051,6 @@
   "app.containers.Admin.projects.project.analysis.aiSummaryTooltipText": "Mae hwn yn gynnwys a gynhyrchir gan AI. Efallai nad yw'n 100% yn gywir. Adolygwch a chroesgyfeiriwch gyda'r mewnbynnau gwirioneddol i sicrhau cywirdeb. Byddwch yn ymwybodol bod y cywirdeb yn debygol o wella os bydd nifer y mewnbynnau dethol yn cael eu lleihau.",
   "app.containers.Admin.projects.project.ideas.analysisAction1": "Dadansoddiad AI agored",
   "app.containers.Admin.projects.project.ideas.analysisText2": "Archwiliwch grynodebau wedi'u pweru gan AI a gweld cyflwyniadau unigol.",
-  "app.containers.Admin.projects.project.ideas.analysisUpsellTooltip": "Nid yw'r nodwedd hon wedi'i chynnwys yn eich cynllun cyfredol. Siaradwch â'ch Rheolwr Llwyddiant Llywodraeth neu weinyddwr i'w ddatgloi.",
   "app.containers.Admin.projects.project.ideas.importInputs": "Mewnforio",
   "app.containers.Admin.projects.project.information.ReportTab.afterCreating": "Ar ôl creu adroddiad, gallwch ddewis ei rannu â'r cyhoedd unwaith y bydd y cam yn dechrau.",
   "app.containers.Admin.projects.project.information.ReportTab.createAMoreComplex": "Creu tudalen fwy cymhleth ar gyfer rhannu gwybodaeth",

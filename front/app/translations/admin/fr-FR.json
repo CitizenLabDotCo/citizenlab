@@ -1051,7 +1051,6 @@
   "app.containers.Admin.projects.project.analysis.aiSummaryTooltipText": "Ce contenu a été généré par un modèle d'intelligence artificielle. Il peut ne pas être totalement exact. Nous vous recommandons de le vérifier en le recoupant avec les contributions d'origine. Notez que la précision est susceptible de s'améliorer si le nombre de contributions sélectionnées est réduit.",
   "app.containers.Admin.projects.project.ideas.analysisAction1": "Accéder à l'outil d'analyse IA",
   "app.containers.Admin.projects.project.ideas.analysisText2": "Explorez les résumés générés par l'IA et consultez les contributions individuelles.",
-  "app.containers.Admin.projects.project.ideas.analysisUpsellTooltip": "Cette fonctionnalité n'est pas incluse dans votre plan actuel. Adressez-vous à votre Spécialiste en participation Go Vocal ou à votre administrateur pour l'activer.",
   "app.containers.Admin.projects.project.ideas.importInputs": "Importer",
   "app.containers.Admin.projects.project.information.ReportTab.afterCreating": "Après avoir créé un rapport, vous pouvez choisir de le partager avec le public dès que le début de la phase.",
   "app.containers.Admin.projects.project.information.ReportTab.createAMoreComplex": "créer une page plus élaborée pour le partage d'informations.",
