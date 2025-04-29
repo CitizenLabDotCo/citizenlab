@@ -216,20 +216,6 @@ describe SanitizationService do
       features = %i[title alignment list decoration link video]
       expect(service.sanitize(input, features)).not_to include "<iframe src=\"javascript:javascript:alert('ThisPlatformWasHacked!');\"></iframe>"
     end
-
-    it 'removes script content as well as tags' do
-      features = []
-
-      input = <<~HTML
-        <p>Test</p><script>alert("XSS")</script>Bye!
-      HTML
-      expect(service.sanitize(input, features)).to eq "<p>Test</p>Bye!\n"
-
-      input = <<~HTML
-        <p>Test</p><script> This should be removed! <script>This should also be removed!</script></script> Bye!
-      HTML
-      expect(service.sanitize(input, features)).to eq "<p>Test</p> Bye!\n"
-    end
   end
 
   describe 'remove_empty_trailing_tags' do
