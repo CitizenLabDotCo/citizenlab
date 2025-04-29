@@ -19,6 +19,7 @@ export const PARTICIPATION_METHOD_LABELS: Record<
   document_annotation: messages.documentAnnotation,
   proposals: messages.proposals,
   community_monitor_survey: messages.communityMonitorSurvey,
+  common_ground: messages.commnonGround,
 };
 
 const f = (n: number) => n.toLocaleString();
