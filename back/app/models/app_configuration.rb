@@ -138,10 +138,11 @@ class AppConfiguration < ApplicationRecord
   end
 
   def sanitize_organization_name
-    return unless settings.dig('core', 'organization_name')
+    organization_name = settings.dig('core', 'organization_name')
+    return unless organization_name.is_a?(Hash) && organization_name.any?
 
     settings['core']['organization_name'] = SanitizationService.new.sanitize_multiloc(
-      settings['core']['organization_name'],
+      organization_name,
       []
     )
   end

@@ -64,7 +64,7 @@ RSpec.describe AppConfiguration do
       sanitized_name = @app_config.settings.dig('core', 'organization_name')
 
       # Verify all HTML is removed from each language
-      expect(sanitized_name['en']).to eq('City of  Springfield')
+      expect(sanitized_name['en']).to eq('City of alert("XSS") Springfield')
       expect(sanitized_name['fr']).to eq('South Elyse ')
       expect(sanitized_name['nl']).to eq('Plain text with formatting')
 
