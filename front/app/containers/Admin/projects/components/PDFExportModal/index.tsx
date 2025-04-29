@@ -83,7 +83,7 @@ const PDFExportModal = ({ open, formType, onClose, onExport }: Props) => {
       opened={open}
       close={onClose}
       header={
-        <Title variant="h2" color="primary" m="0" px="24px">
+        <Title variant="h2" as="h1" color="primary" m="0" px="24px">
           <FormattedMessage {...messages.exportAsPDF} />
         </Title>
       }
@@ -93,8 +93,8 @@ const PDFExportModal = ({ open, formType, onClose, onExport }: Props) => {
         <CollapsibleContainer
           mb="24px"
           title={formatMessage(messages.notes)}
-          titleAs="h2"
           titleVariant="h4"
+          titleAs="h2"
           titleFontWeight="bold"
           titlePadding="16px"
           border={`1px solid ${colors.grey300}`}
