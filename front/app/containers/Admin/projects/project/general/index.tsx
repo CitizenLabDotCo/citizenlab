@@ -49,6 +49,7 @@ import Link from 'utils/cl-router/Link';
 import eventEmitter from 'utils/eventEmitter';
 import { convertUrlToUploadFile, isUploadFile } from 'utils/fileUtils';
 import { isNilOrError } from 'utils/helperUtils';
+import { usePermission } from 'utils/permissions';
 import { defaultAdminCardPadding } from 'utils/styleConstants';
 import { validateSlug } from 'utils/textUtils';
 
@@ -137,6 +138,12 @@ const AdminProjectsProjectGeneral = () => {
 
   const [slug, setSlug] = useState<string | null>(null);
   const [showSlugErrorMessage, setShowSlugErrorMessage] = useState(false);
+
+  const showProjectFolderSelect =
+    usePermission({
+      item: 'project_folder',
+      action: 'create_project_in_folder',
+    }) && isProjectFoldersEnabled;
 
   useEffect(() => {
     (async () => {
@@ -522,6 +529,8 @@ const AdminProjectsProjectGeneral = () => {
     setSubmitState('enabled');
   };
 
+  const isNewProject = !projectId;
+
   return (
     <Box ref={containerRef}>
       <StyledForm
@@ -540,7 +549,13 @@ const AdminProjectsProjectGeneral = () => {
               </SectionDescription>
             </>
           )}
-          <Warning>{formatMessage(messages.publicationStatusWarning)}</Warning>
+
+          {!isNewProject && (
+            <Warning>
+              {formatMessage(messages.publicationStatusWarning)}
+            </Warning>
+          )}
+
           <Highlighter fragmentId={fragmentId}>
             <ProjectNameInput
               titleMultiloc={projectAttrs.title_multiloc}
@@ -594,14 +609,14 @@ const AdminProjectsProjectGeneral = () => {
             onProjectAttributesDiffChange={handleProjectAttributeDiffOnChange}
           />
 
-          {isProjectFoldersEnabled && (
+          {showProjectFolderSelect && (
             <Highlighter fragmentId={folderFragmentId}>
               <ProjectFolderSelect
                 projectAttrs={projectAttrs}
                 onProjectAttributesDiffChange={
                   handleProjectAttributeDiffOnChange
                 }
-                isNewProject={!projectId}
+                isNewProject={isNewProject}
               />
             </Highlighter>
           )}
