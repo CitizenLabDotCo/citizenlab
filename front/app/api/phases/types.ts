@@ -159,6 +159,7 @@ export type TSurveyService =
 
 export type ParticipationMethod =
   | 'ideation'
+  | 'common_ground'
   | 'information'
   | 'native_survey'
   | 'community_monitor_survey'
