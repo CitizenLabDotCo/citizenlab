@@ -4,6 +4,7 @@ import { IPhaseData, ParticipationMethod } from 'api/phases/types';
 import { getCurrentPhase, getInputTerm } from 'api/phases/utils';
 import { IProjectData } from 'api/projects/types';
 
+import CommonGroundCTABar from 'components/ParticipationCTABars/CommonGroundCTABar';
 import DocumentAnnotationCTABar from 'components/ParticipationCTABars/DocumentAnnotationCTABar';
 import EmbeddedSurveyCTABar from 'components/ParticipationCTABars/EmbeddedSurveyCTABar';
 import EventsCTABar from 'components/ParticipationCTABars/EventsCTABar';
@@ -131,6 +132,25 @@ const ideationConfig: ParticipationMethodConfig = {
   },
   postSortingOptions: defaultSortingOptions,
   hideAuthorOnIdeas: false,
+};
+
+const commonGroundConfig: ParticipationMethodConfig = {
+  showInputCount: true,
+  showIdeaFilters: true,
+  formEditor: null,
+  inputsPageSize: 24,
+  supportsReactions: true,
+  supportsVotes: false, // Check analysis if we need to support them
+  supportsComments: false,
+  supportsTopicsCustomField: false,
+  postType: 'defaultInput',
+  getModalContent: null,
+  showInputManager: true,
+  inputManagerName: 'ideas',
+  renderCTABar: (props: CTABarProps) => {
+    return <CommonGroundCTABar project={props.project} phases={props.phases} />;
+  },
+  hideAuthorOnIdeas: true,
 };
 
 const proposalsConfig: ParticipationMethodConfig = {
@@ -330,7 +350,7 @@ const methodToConfig: {
   [method in ParticipationMethod]: ParticipationMethodConfig;
 } = {
   ideation: ideationConfig,
-  common_ground: ideationConfig,
+  common_ground: commonGroundConfig,
   proposals: proposalsConfig,
   native_survey: nativeSurveyConfig,
   community_monitor_survey: nativeSurveyConfig,
