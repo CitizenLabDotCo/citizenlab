@@ -16,6 +16,7 @@ import { IPhaseFiles } from 'api/phase_files/types';
 import useAddPhaseFile from 'api/phase_files/useAddPhaseFile';
 import useDeletePhaseFile from 'api/phase_files/useDeletePhaseFile';
 import usePhaseFiles from 'api/phase_files/usePhaseFiles';
+import useUpdatePhaseFile from 'api/phase_files/useUpdatePhaseFile';
 import { IPhase, IUpdatedPhaseProperties } from 'api/phases/types';
 import useAddPhase from 'api/phases/useAddPhase';
 import usePhase from 'api/phases/usePhase';
@@ -87,6 +88,7 @@ const AdminPhaseEdit = ({ projectId, phase, flatCampaigns }: Props) => {
 
   const { mutateAsync: addPhaseFile } = useAddPhaseFile();
   const { mutateAsync: deletePhaseFile } = useDeletePhaseFile();
+  const { mutateAsync: updatePhaseFile } = useUpdatePhaseFile();
   const { data: phaseFiles } = usePhaseFiles(phaseId || null);
   const { data: phases } = usePhases(projectId);
   const { mutate: addPhase } = useAddPhase();
@@ -228,6 +230,11 @@ const AdminPhaseEdit = ({ projectId, phase, flatCampaigns }: Props) => {
     setSubmitState('enabled');
   };
 
+  const handleFilesReorder = (updatedFiles: UploadFile[]) => {
+    setInStatePhaseFiles(updatedFiles);
+    setSubmitState('enabled');
+  };
+
   const handleOnSubmit = async (event: FormEvent<any>) => {
     event.preventDefault();
     if (!formData) return;
@@ -263,14 +270,48 @@ const AdminPhaseEdit = ({ projectId, phase, flatCampaigns }: Props) => {
     const filesToAddPromises = inStatePhaseFiles
       .filter((file): file is UploadFile => !file.remote)
       .map((file) =>
-        addPhaseFile({ phaseId, base64: file.base64, name: file.name })
+        addPhaseFile({
+          phaseId,
+          base64: file.base64,
+          name: file.name,
+          ordering: file.ordering,
+        })
       );
+
+    const reorderedFiles = inStatePhaseFiles.filter((file) => {
+      const originalFileOrder = phaseFiles?.data.find(
+        (phaseFile) => phaseFile.id === file.id
+      )?.attributes.ordering;
+
+      return (
+        typeof originalFileOrder === 'number' &&
+        originalFileOrder !== file.ordering
+      );
+    });
+
+    const filesToReorderPromises = reorderedFiles.map((file) => {
+      if (file.id) {
+        return updatePhaseFile({
+          phaseId,
+          fileId: file.id,
+          file: {
+            ordering: file.ordering,
+          },
+        });
+      }
+      return;
+    });
+
     const filesToRemovePromises = phaseFilesToRemove
       .filter((file) => file.remote)
       .map((file) => deletePhaseFile({ phaseId, fileId: file.id as string }));
 
-    await Promise.all([...filesToAddPromises, ...filesToRemovePromises])
-      .then(() => {
+    await Promise.all([
+      ...filesToAddPromises,
+      ...filesToReorderPromises,
+      ...filesToRemovePromises,
+    ])
+      .then(async () => {
         setPhaseFilesToRemove([]);
         setProcessing(false);
         setErrors(null);
@@ -416,8 +457,11 @@ const AdminPhaseEdit = ({ projectId, phase, flatCampaigns }: Props) => {
               id="project-timeline-edit-form-file-uploader"
               onFileAdd={handlePhaseFileOnAdd}
               onFileRemove={handlePhaseFileOnRemove}
+              onFileReorder={handleFilesReorder}
               files={inStatePhaseFiles}
               apiErrors={errors}
+              enableDragAndDrop
+              multiple
             />
           </SectionField>
           {Object.keys(flatCampaigns).length > 0 && (

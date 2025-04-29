@@ -27,3 +27,11 @@ export interface AddPhaseFileObject {
   name: string;
   ordering?: number | null;
 }
+
+export interface UpdatePhaseFileObject {
+  phaseId: string;
+  fileId: string;
+  file: {
+    ordering?: number;
+  };
+}
