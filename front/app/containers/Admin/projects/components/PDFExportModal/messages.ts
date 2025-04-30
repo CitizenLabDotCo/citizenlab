@@ -42,6 +42,6 @@ export default defineMessages({
   personalDataExplanation: {
     id: 'app.containers.Admin.projects.all.personalDataExplanation',
     defaultMessage:
-      'This option will add the name, last name, and email fields to the exported PDF. Upon upload of the paper form, we will use that data to auto-generate an account for the offline survey respondent. Or you can use it to manually create an account for the offline survey respondent.',
+      'This option will add the name, last name, and email fields to the exported PDF. Upon uploading the paper form, we will use that data to auto-generate an account for the offline survey respondent. Alternatively, you can use it to manually create an account for the offline survey respondent.',
   },
 });
