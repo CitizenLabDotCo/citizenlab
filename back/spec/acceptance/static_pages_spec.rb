@@ -290,7 +290,7 @@ resource 'StaticPages' do
       end
 
       context 'when the page has a code other than \'custom\'' do
-        before { page.update!(code: 'faq') }
+        before { page.update!(code: 'faq', slug: 'faq') }
 
         example_request 'Delete a static page' do
           assert_status 422

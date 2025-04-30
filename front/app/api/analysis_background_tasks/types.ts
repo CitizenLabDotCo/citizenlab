@@ -32,10 +32,17 @@ type SummarizingAttributes = SharedAttributes & {
   type: 'summarization_task';
 };
 
+type CommentsSummarizationAttributes = SharedAttributes & {
+  type: 'comments_summarization_task';
+};
+
 export interface IBackgroundTaskData {
   id: string;
   type: 'background_task';
-  attributes: AutoTaggingAttributes | SummarizingAttributes;
+  attributes:
+    | AutoTaggingAttributes
+    | SummarizingAttributes
+    | CommentsSummarizationAttributes;
 }
 
 export interface IBackgroundTasks {

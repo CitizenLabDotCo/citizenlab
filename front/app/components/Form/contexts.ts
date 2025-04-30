@@ -11,9 +11,10 @@ export const FormContext = createContext<{
   getApiErrorMessage: ApiErrorGetter;
   inputId?: string | undefined;
   onSubmit?: (
-    formData?: FormValues,
+    formData?: { data?: FormValues },
     showErrors?: boolean,
-    userPagePath?: PageType[]
+    userPagePath?: PageType[],
+    afterSubmitCallBack?: () => void
   ) => void | Promise<any>;
   setFormData?: (formData?: FormValues) => void;
   setShowAllErrors?: (showAllErrors: boolean) => void;

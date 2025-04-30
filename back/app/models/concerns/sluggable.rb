@@ -6,7 +6,7 @@ module Sluggable
   SLUG_REGEX = /\A[a-zA-Z0-9]+(?:-[a-zA-Z0-9]+)*\z/ # Inspired by https://ihateregex.io/expr/url-slug/
 
   module ClassMethods
-    attr_reader :slug_attribute, :slug_from, :slug_if
+    attr_reader :slug_attribute, :slug_from, :slug_if, :slug_except
 
     def slug?
       !!@has_slug
@@ -19,6 +19,7 @@ module Sluggable
       @slug_attribute = options[:attribute] || :slug
       @slug_from ||= options[:from] || proc { |_| generate_fallback_slug }
       @slug_if = options[:if]
+      @slug_except = options[:except].to_a
     end
   end
 
@@ -31,7 +32,7 @@ module Sluggable
     return if slug
 
     from_value = self.class.slug_from.call(self)
-    self.slug = SlugService.new.generate_slug self, from_value
+    self.slug = SlugService.new.generate_slug(self, from_value, excluded: self.class.slug_except)
     self.slug = generate_fallback_slug if !SLUG_REGEX.match?(slug)
   end
 

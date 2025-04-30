@@ -19,7 +19,7 @@ RSpec.describe InputUiSchemaGeneratorService do
       let(:fields) { IdeaCustomFieldsService.new(custom_form).enabled_fields }
       let(:ui_schema) { generator.generate_for fields }
 
-      context 'for a project with an ideation phase, a changed built-in field and an extra section and field' do
+      context 'for a project with an ideation phase, a changed built-in field and an extra page and field' do
         let(:project) { create(:single_phase_ideation_project, phase_attrs: { input_term: input_term }) }
         let!(:custom_form) do
           create(:custom_form, :with_default_fields, participation_context: project).tap do |form|
@@ -28,9 +28,9 @@ RSpec.describe InputUiSchemaGeneratorService do
             )
           end
         end
-        let!(:extra_section) do
+        let!(:extra_page) do
           create(
-            :custom_field_section,
+            :custom_field_page,
             :for_custom_form,
             resource: custom_form,
             title_multiloc: {
@@ -76,111 +76,67 @@ RSpec.describe InputUiSchemaGeneratorService do
             },
             elements: [
               {
-                type: 'Category',
-                label: 'What is your question?',
+                type: 'Page',
                 options: {
-                  id: custom_form.custom_fields.find_by(code: 'ideation_section1').id,
-                  description: ''
+                  input_type: 'page',
+                  id: custom_form.custom_fields.find_by(code: 'title_page').id,
+                  title: 'What is your question?',
+                  description: '',
+                  page_layout: 'default',
+                  map_config_id: nil
                 },
                 elements: [
                   {
-                    type: 'VerticalLayout',
-                    options: { input_type: 'text_multiloc', render: 'multiloc' },
-                    elements: [
-                      {
-                        type: 'Control',
-                        scope: '#/properties/title_multiloc/properties/en',
-                        label: 'Title',
-                        options: {
-                          answer_visible_to: 'public',
-                          description: 'My title description',
-                          isAdminField: false,
-                          hasRule: false,
-                          locale: 'en',
-                          trim_on_blur: true
-                        }
-                      },
-                      {
-                        type: 'Control',
-                        scope: '#/properties/title_multiloc/properties/fr-FR',
-                        label: 'Title',
-                        options: {
-                          answer_visible_to: 'public',
-                          description: 'My title description',
-                          isAdminField: false,
-                          hasRule: false,
-                          locale: 'fr-FR',
-                          trim_on_blur: true
-                        }
-                      },
-                      {
-                        type: 'Control',
-                        scope: '#/properties/title_multiloc/properties/nl-NL',
-                        label: 'Title',
-                        options: {
-                          answer_visible_to: 'public',
-                          description: 'My title description',
-                          isAdminField: false,
-                          hasRule: false,
-                          locale: 'nl-NL',
-                          trim_on_blur: true
-                        }
-                      }
-                    ]
-                  },
-                  {
-                    type: 'VerticalLayout',
-                    options: { input_type: 'html_multiloc', render: 'multiloc' },
-                    elements: [
-                      {
-                        type: 'Control',
-                        scope: '#/properties/body_multiloc/properties/en',
-                        label: 'Description',
-                        options: {
-                          answer_visible_to: 'public',
-                          description: '',
-                          isAdminField: false,
-                          hasRule: false,
-                          render: 'WYSIWYG',
-                          locale: 'en'
-                        }
-                      },
-                      {
-                        type: 'Control',
-                        scope: '#/properties/body_multiloc/properties/fr-FR',
-                        label: 'Description',
-                        options: {
-                          answer_visible_to: 'public',
-                          description: '',
-                          isAdminField: false,
-                          hasRule: false,
-                          render: 'WYSIWYG',
-                          locale: 'fr-FR'
-                        }
-                      },
-                      {
-                        type: 'Control',
-                        scope: '#/properties/body_multiloc/properties/nl-NL',
-                        label: 'Description',
-                        options: {
-                          answer_visible_to: 'public',
-                          description: '',
-                          isAdminField: false,
-                          hasRule: false,
-                          render: 'WYSIWYG',
-                          locale: 'nl-NL'
-                        }
-                      }
-                    ]
+                    type: 'Control',
+                    scope: '#/properties/title_multiloc/properties/en',
+                    label: 'Title',
+                    options: {
+                      answer_visible_to: 'public',
+                      description: 'My title description',
+                      isAdminField: false,
+                      hasRule: false,
+                      trim_on_blur: true,
+                      render: 'multiloc',
+                      input_type: 'text_multiloc'
+                    }
                   }
                 ]
               },
               {
-                type: 'Category',
-                label: 'Images and attachments',
+                type: 'Page',
                 options: {
-                  id: custom_form.custom_fields.find_by(code: 'ideation_section2').id,
-                  description: 'Upload your favourite files here'
+                  input_type: 'page',
+                  id: custom_form.custom_fields.find_by(code: 'body_page').id,
+                  title: 'Tell us more',
+                  description: '',
+                  page_layout: 'default',
+                  map_config_id: nil
+                },
+                elements: [
+                  {
+                    type: 'Control',
+                    scope: '#/properties/body_multiloc/properties/en',
+                    label: 'Description',
+                    options: {
+                      answer_visible_to: 'public',
+                      description: '',
+                      isAdminField: false,
+                      hasRule: false,
+                      render: 'multiloc',
+                      input_type: 'html_multiloc'
+                    }
+                  }
+                ]
+              },
+              {
+                type: 'Page',
+                options: {
+                  input_type: 'page',
+                  id: custom_form.custom_fields.find_by(code: 'uploads_page').id,
+                  title: 'Images and attachments',
+                  description: '',
+                  page_layout: 'default',
+                  map_config_id: nil
                 },
                 elements: [
                   {
@@ -210,11 +166,14 @@ RSpec.describe InputUiSchemaGeneratorService do
                 ]
               },
               {
-                type: 'Category',
-                label: 'Details',
+                type: 'Page',
                 options: {
-                  id: custom_form.custom_fields.find_by(code: 'ideation_section3').id,
-                  description: ''
+                  input_type: 'page',
+                  id: custom_form.custom_fields.find_by(code: 'details_page').id,
+                  title: 'Details',
+                  description: '',
+                  page_layout: 'default',
+                  map_config_id: nil
                 },
                 elements: [
                   {
@@ -245,59 +204,46 @@ RSpec.describe InputUiSchemaGeneratorService do
                 ]
               },
               {
-                type: 'Category',
-                label: 'Extra fields',
-                options: { id: extra_section.id, description: 'Custom stuff' },
+                type: 'Page',
+                options: {
+                  input_type: 'page',
+                  id: extra_page.id,
+                  title: 'Extra fields',
+                  description: 'Custom stuff',
+                  page_layout: 'default',
+                  map_config_id: nil
+                },
                 elements: [
                   {
-                    type: 'VerticalLayout',
-                    options: { input_type: 'html_multiloc', render: 'multiloc' },
-                    elements: [
-                      {
-                        type: 'Control',
-                        scope: '#/properties/extra_field/properties/en',
-                        label: 'Extra field title',
-                        options: {
-                          answer_visible_to: 'admins',
-                          description: 'Extra field description',
-                          isAdminField: false,
-                          hasRule: false,
-                          locale: 'en',
-                          render: 'WYSIWYG',
-                          trim_on_blur: true
-                        }
-                      },
-                      {
-                        type: 'Control',
-                        scope: '#/properties/extra_field/properties/fr-FR',
-                        label: 'Extra field title',
-                        options: {
-                          answer_visible_to: 'admins',
-                          description: 'Extra field description',
-                          isAdminField: false,
-                          hasRule: false,
-                          locale: 'fr-FR',
-                          render: 'WYSIWYG',
-                          trim_on_blur: true
-                        }
-                      },
-                      {
-                        type: 'Control',
-                        scope: '#/properties/extra_field/properties/nl-NL',
-                        label: 'Extra field title',
-                        options: {
-                          answer_visible_to: 'admins',
-                          description: 'Extra field description',
-                          isAdminField: false,
-                          hasRule: false,
-                          locale: 'nl-NL',
-                          render: 'WYSIWYG',
-                          trim_on_blur: true
-                        }
-                      }
-                    ]
+                    type: 'Control',
+                    scope: '#/properties/extra_field/properties/en',
+                    label: 'Extra field title',
+                    options: {
+                      answer_visible_to: 'admins',
+                      description: 'Extra field description',
+                      isAdminField: false,
+                      hasRule: false,
+                      render: 'multiloc',
+                      trim_on_blur: true,
+                      input_type: 'html_multiloc'
+                    }
                   }
                 ]
+              },
+              {
+                type: 'Page',
+                options: {
+                  input_type: 'page',
+                  id: custom_form.custom_fields.find(&:form_end_page?).id,
+                  title: 'Thank you for sharing your input!',
+                  description: 'Your input has been successfully submitted.',
+                  page_layout: 'default',
+                  map_config_id: nil,
+                  page_button_label_multiloc: {},
+                  page_button_link: nil
+
+                },
+                elements: []
               }
             ]
           )
@@ -310,56 +256,39 @@ RSpec.describe InputUiSchemaGeneratorService do
             },
             elements: [
               hash_including(
-                type: 'Category',
-                label: 'Quelle est votre question ?',
+                type: 'Page',
+                options: hash_including(
+                  description: '',
+                  title: 'Quelle est votre question ?'
+                ),
                 elements: [
                   hash_including(
-                    type: 'VerticalLayout',
-                    options: { input_type: 'text_multiloc', render: 'multiloc' },
-                    elements: [
-                      hash_including(
-                        scope: '#/properties/title_multiloc/properties/en',
-                        label: 'Titre',
-                        options: hash_including(locale: 'en')
-                      ),
-                      hash_including(
-                        scope: '#/properties/title_multiloc/properties/fr-FR',
-                        label: 'Titre',
-                        options: hash_including(locale: 'fr-FR')
-                      ),
-                      hash_including(
-                        scope: '#/properties/title_multiloc/properties/nl-NL',
-                        label: 'Titre',
-                        options: hash_including(locale: 'nl-NL')
-                      )
-                    ]
-                  ),
-                  hash_including(
-                    type: 'VerticalLayout',
-                    options: { input_type: 'html_multiloc', render: 'multiloc' },
-                    elements: [
-                      hash_including(
-                        scope: '#/properties/body_multiloc/properties/en',
-                        label: 'Description',
-                        options: hash_including(locale: 'en', render: 'WYSIWYG')
-                      ),
-                      hash_including(
-                        scope: '#/properties/body_multiloc/properties/fr-FR',
-                        label: 'Description',
-                        options: hash_including(locale: 'fr-FR', render: 'WYSIWYG')
-                      ),
-                      hash_including(
-                        scope: '#/properties/body_multiloc/properties/nl-NL',
-                        label: 'Description',
-                        options: hash_including(locale: 'nl-NL', render: 'WYSIWYG')
-                      )
-                    ]
+                    scope: '#/properties/title_multiloc/properties/fr-FR',
+                    label: 'Titre',
+                    options: hash_including(description: 'My title description')
                   )
                 ]
               ),
               hash_including(
-                type: 'Category',
-                label: 'Images et pièces jointes',
+                type: 'Page',
+                options: hash_including(
+                  description: '',
+                  title: 'Dites-nous plus'
+                ),
+                elements: [
+                  hash_including(
+                    scope: '#/properties/body_multiloc/properties/fr-FR',
+                    label: 'Description',
+                    options: hash_including(description: '', render: 'multiloc')
+                  )
+                ]
+              ),
+              hash_including(
+                type: 'Page',
+                options: hash_including(
+                  description: '',
+                  title: 'Images et pièces jointes'
+                ),
                 elements: [
                   hash_including(
                     type: 'Control',
@@ -376,8 +305,11 @@ RSpec.describe InputUiSchemaGeneratorService do
                 ]
               ),
               hash_including(
-                type: 'Category',
-                label: 'Details',
+                type: 'Page',
+                options: hash_including(
+                  description: '',
+                  title: 'Détails'
+                ),
                 elements: [
                   hash_including(
                     type: 'Control',
@@ -394,38 +326,31 @@ RSpec.describe InputUiSchemaGeneratorService do
                 ]
               ),
               hash_including(
-                type: 'Category',
-                label: 'Extra choses',
-                options: hash_including(description: 'Des choses en plus'),
+                type: 'Page',
+                options: hash_including(
+                  description: 'Des choses en plus',
+                  title: 'Extra choses'
+                ),
                 elements: [
                   hash_including(
-                    type: 'VerticalLayout',
-                    options: { input_type: 'html_multiloc', render: 'multiloc' },
-                    elements: [
-                      hash_including(
-                        type: 'Control',
-                        scope: '#/properties/extra_field/properties/en',
-                        label: 'Extra field title',
-                        options: hash_including(description: 'Extra field description', locale: 'en', render: 'WYSIWYG')
-                      ),
-                      hash_including(
-                        type: 'Control',
-                        scope: '#/properties/extra_field/properties/fr-FR',
-                        label: 'Extra field title',
-                        options: hash_including(description: 'Extra field description', locale: 'fr-FR', render: 'WYSIWYG')
-                      ),
-                      hash_including(
-                        type: 'Control',
-                        scope: '#/properties/extra_field/properties/nl-NL',
-                        label: 'Extra field title',
-                        options: hash_including(description: 'Extra field description', locale: 'nl-NL', render: 'WYSIWYG')
-                      )
-                    ]
+                    type: 'Control',
+                    scope: '#/properties/extra_field/properties/fr-FR',
+                    label: 'Extra field title',
+                    options: hash_including(description: 'Extra field description', render: 'multiloc')
                   )
                 ]
+              ),
+              hash_including(
+                type: 'Page',
+                options: hash_including(
+                  description: 'Votre contribution a été soumise avec succès.',
+                  title: 'Merci pour votre participation !'
+                ),
+                elements: []
               )
             ]
           )
+
           # nl-NL
           expect(ui_schema['nl-NL']).to match(
             type: 'Categorization',
@@ -435,56 +360,39 @@ RSpec.describe InputUiSchemaGeneratorService do
             },
             elements: [
               hash_including(
-                type: 'Category',
-                label: 'Wat is je vraag?',
+                type: 'Page',
+                options: hash_including(
+                  description: '',
+                  title: 'Wat is je vraag?'
+                ),
                 elements: [
                   hash_including(
-                    type: 'VerticalLayout',
-                    options: { input_type: 'text_multiloc', render: 'multiloc' },
-                    elements: [
-                      hash_including(
-                        scope: '#/properties/title_multiloc/properties/en',
-                        label: 'Titel',
-                        options: hash_including(locale: 'en', description: 'Mijn titel beschrijving')
-                      ),
-                      hash_including(
-                        scope: '#/properties/title_multiloc/properties/fr-FR',
-                        label: 'Titel',
-                        options: hash_including(locale: 'fr-FR', description: 'Mijn titel beschrijving')
-                      ),
-                      hash_including(
-                        scope: '#/properties/title_multiloc/properties/nl-NL',
-                        label: 'Titel',
-                        options: hash_including(locale: 'nl-NL', description: 'Mijn titel beschrijving')
-                      )
-                    ]
-                  ),
-                  hash_including(
-                    type: 'VerticalLayout',
-                    options: { input_type: 'html_multiloc', render: 'multiloc' },
-                    elements: [
-                      hash_including(
-                        scope: '#/properties/body_multiloc/properties/en',
-                        label: 'Beschrijving',
-                        options: hash_including(locale: 'en', render: 'WYSIWYG')
-                      ),
-                      hash_including(
-                        scope: '#/properties/body_multiloc/properties/fr-FR',
-                        label: 'Beschrijving',
-                        options: hash_including(locale: 'fr-FR', render: 'WYSIWYG')
-                      ),
-                      hash_including(
-                        scope: '#/properties/body_multiloc/properties/nl-NL',
-                        label: 'Beschrijving',
-                        options: hash_including(locale: 'nl-NL', render: 'WYSIWYG')
-                      )
-                    ]
+                    scope: '#/properties/title_multiloc/properties/nl-NL',
+                    label: 'Titel',
+                    options: hash_including(description: 'Mijn titel beschrijving')
                   )
                 ]
               ),
               hash_including(
-                type: 'Category',
-                label: 'Afbeeldingen en bijlagen',
+                type: 'Page',
+                options: hash_including(
+                  description: '',
+                  title: 'Vertel ons meer'
+                ),
+                elements: [
+                  hash_including(
+                    scope: '#/properties/body_multiloc/properties/nl-NL',
+                    label: 'Beschrijving',
+                    options: hash_including(description: '', render: 'multiloc')
+                  )
+                ]
+              ),
+              hash_including(
+                type: 'Page',
+                options: hash_including(
+                  description: '',
+                  title: 'Afbeeldingen en bijlagen'
+                ),
                 elements: [
                   hash_including(
                     type: 'Control',
@@ -501,8 +409,11 @@ RSpec.describe InputUiSchemaGeneratorService do
                 ]
               ),
               hash_including(
-                type: 'Category',
-                label: 'Details',
+                type: 'Page',
+                options: hash_including(
+                  description: '',
+                  title: 'Details'
+                ),
                 elements: [
                   hash_including(
                     type: 'Control',
@@ -519,50 +430,42 @@ RSpec.describe InputUiSchemaGeneratorService do
                 ]
               ),
               hash_including(
-                type: 'Category',
-                label: 'Extra fields',
-                options: hash_including(description: 'Custom stuff'),
+                type: 'Page',
+                options: hash_including(
+                  description: 'Custom stuff',
+                  title: 'Extra fields'
+                ),
                 elements: [
                   hash_including(
-                    type: 'VerticalLayout',
-                    options: { input_type: 'html_multiloc', render: 'multiloc' },
-                    elements: [
-                      hash_including(
-                        type: 'Control',
-                        scope: '#/properties/extra_field/properties/en',
-                        label: 'Extra veldtitel',
-                        options: hash_including(description: 'Extra veldbeschrijving', locale: 'en', render: 'WYSIWYG')
-                      ),
-                      hash_including(
-                        type: 'Control',
-                        scope: '#/properties/extra_field/properties/fr-FR',
-                        label: 'Extra veldtitel',
-                        options: hash_including(description: 'Extra veldbeschrijving', locale: 'fr-FR', render: 'WYSIWYG')
-                      ),
-                      hash_including(
-                        type: 'Control',
-                        scope: '#/properties/extra_field/properties/nl-NL',
-                        label: 'Extra veldtitel',
-                        options: hash_including(description: 'Extra veldbeschrijving', locale: 'nl-NL', render: 'WYSIWYG')
-                      )
-                    ]
+                    type: 'Control',
+                    scope: '#/properties/extra_field/properties/nl-NL',
+                    label: 'Extra veldtitel',
+                    options: hash_including(description: 'Extra veldbeschrijving', render: 'multiloc')
                   )
                 ]
+              ),
+              hash_including(
+                type: 'Page',
+                options: hash_including(
+                  description: 'Je invoer is succesvol ingediend.',
+                  title: 'Bedankt voor het delen van je invoer!'
+                ),
+                elements: []
               )
             ]
           )
         end
       end
 
-      context 'for a project with an ideation phase and with an empty custom section' do
+      context 'for a project with an ideation phase and with an empty custom page' do
         let(:project) { create(:single_phase_ideation_project, phase_attrs: { input_term: input_term }) }
         let!(:custom_form) { create(:custom_form, :with_default_fields, participation_context: project) }
-        let!(:extra_section) do
+        let!(:extra_page) do
           create(
-            :custom_field_section,
+            :custom_field_page,
             :for_custom_form,
             resource: custom_form,
-            title_multiloc: { 'en' => 'Empty custom section' }
+            title_multiloc: { 'en' => 'Empty custom page' }
           )
         end
 
@@ -575,10 +478,76 @@ RSpec.describe InputUiSchemaGeneratorService do
               inputTerm: input_term
             },
             elements: [
-              hash_including(type: 'Category', label: 'What is your question?'),
-              hash_including(type: 'Category', label: 'Images and attachments'),
-              hash_including(type: 'Category', label: 'Details'),
-              hash_including(type: 'Category', label: 'Empty custom section', elements: [])
+              hash_including(
+                type: 'Page',
+                options: hash_including(
+                  title: 'What is your question?'
+                ),
+                elements: array_including(
+                  hash_including(
+                    label: 'Title',
+                    options: hash_including(description: '', render: 'multiloc', input_type: 'text_multiloc')
+                  )
+                )
+              ),
+              hash_including(
+                type: 'Page',
+                options: hash_including(
+                  title: 'Tell us more'
+                ),
+                elements: array_including(
+                  hash_including(
+                    label: 'Description',
+                    options: hash_including(render: 'multiloc', input_type: 'html_multiloc')
+                  )
+                )
+              ),
+              hash_including(
+                type: 'Page',
+                options: hash_including(
+                  title: 'Images and attachments'
+                ),
+                elements: array_including(
+                  hash_including(
+                    label: 'Images',
+                    options: hash_including(input_type: 'image_files')
+                  ),
+                  hash_including(
+                    label: 'Attachments',
+                    options: hash_including(input_type: 'files')
+                  )
+                )
+              ),
+              hash_including(
+                type: 'Page',
+                options: hash_including(
+                  title: 'Details'
+                ),
+                elements: array_including(
+                  hash_including(
+                    label: 'Tags',
+                    options: hash_including(input_type: 'topic_ids')
+                  ),
+                  hash_including(
+                    label: 'Location',
+                    options: hash_including(input_type: 'text')
+                  )
+                )
+              ),
+              hash_including(
+                type: 'Page',
+                options: hash_including(
+                  title: 'Empty custom page'
+                ),
+                elements: []
+              ),
+              hash_including(
+                type: 'Page',
+                options: hash_including(
+                  title: 'Thank you for sharing your input!'
+                ),
+                elements: []
+              )
             ]
           )
         end
@@ -593,64 +562,43 @@ RSpec.describe InputUiSchemaGeneratorService do
           expect(ui_schema.keys).to match_array %w[en fr-FR nl-NL]
           expect(ui_schema['en']).to match(
             type: 'Categorization',
-            options: {
+            options: hash_including(
               formId: 'idea-form',
               inputTerm: input_term
-            },
+            ),
             elements: [
               hash_including(
-                type: 'Category',
-                label: 'What is your option?',
-                elements: [
+                type: 'Page',
+                options: hash_including(
+                  title: 'What is your option?'
+                ),
+                elements: array_including(
                   hash_including(
-                    type: 'VerticalLayout',
-                    options: { input_type: 'text_multiloc', render: 'multiloc' },
-                    elements: [
-                      hash_including(
-                        scope: '#/properties/title_multiloc/properties/en',
-                        label: 'Title',
-                        options: hash_including(locale: 'en')
-                      ),
-                      hash_including(
-                        scope: '#/properties/title_multiloc/properties/fr-FR',
-                        label: 'Title',
-                        options: hash_including(locale: 'fr-FR')
-                      ),
-                      hash_including(
-                        scope: '#/properties/title_multiloc/properties/nl-NL',
-                        label: 'Title',
-                        options: hash_including(locale: 'nl-NL')
-                      )
-                    ]
-                  ),
-                  hash_including(
-                    type: 'VerticalLayout',
-                    options: { input_type: 'html_multiloc', render: 'multiloc' },
-                    elements: [
-                      hash_including(
-                        scope: '#/properties/body_multiloc/properties/en',
-                        label: 'Description',
-                        options: hash_including(locale: 'en', render: 'WYSIWYG')
-                      ),
-                      hash_including(
-                        scope: '#/properties/body_multiloc/properties/fr-FR',
-                        label: 'Description',
-                        options: hash_including(locale: 'fr-FR', render: 'WYSIWYG')
-                      ),
-                      hash_including(
-                        scope: '#/properties/body_multiloc/properties/nl-NL',
-                        label: 'Description',
-                        options: hash_including(locale: 'nl-NL', render: 'WYSIWYG')
-                      )
-                    ]
+                    scope: '#/properties/title_multiloc/properties/en',
+                    label: 'Title',
+                    options: hash_including(description: '', render: 'multiloc', input_type: 'text_multiloc')
                   )
-                ]
+                )
               ),
               hash_including(
-                type: 'Category',
-                label: 'Images and attachments',
-                options: hash_including(description: 'Upload your favourite files here'),
-                elements: [
+                type: 'Page',
+                options: hash_including(
+                  title: 'Tell us more'
+                ),
+                elements: array_including(
+                  hash_including(
+                    scope: '#/properties/body_multiloc/properties/en',
+                    label: 'Description',
+                    options: hash_including(render: 'multiloc', input_type: 'html_multiloc')
+                  )
+                )
+              ),
+              hash_including(
+                type: 'Page',
+                options: hash_including(
+                  title: 'Images and attachments'
+                ),
+                elements: array_including(
                   hash_including(
                     type: 'Control',
                     scope: '#/properties/idea_images_attributes',
@@ -663,12 +611,14 @@ RSpec.describe InputUiSchemaGeneratorService do
                     label: 'Attachments',
                     options: hash_including(input_type: 'files')
                   )
-                ]
+                )
               ),
               hash_including(
-                type: 'Category',
-                label: 'Details',
-                elements: [
+                type: 'Page',
+                options: hash_including(
+                  title: 'Details'
+                ),
+                elements: array_including(
                   hash_including(
                     type: 'Control',
                     scope: '#/properties/topic_ids',
@@ -681,7 +631,14 @@ RSpec.describe InputUiSchemaGeneratorService do
                     label: 'Location',
                     options: hash_including(input_type: 'text')
                   )
-                ]
+                )
+              ),
+              hash_including(
+                type: 'Page',
+                options: hash_including(
+                  title: 'Thank you for sharing your input!'
+                ),
+                elements: []
               )
             ]
           )
@@ -733,7 +690,7 @@ RSpec.describe InputUiSchemaGeneratorService do
               inputTerm: input_term
             },
             elements: [{
-              type: 'Category',
+              type: 'Page',
               label: nil,
               options: { id: 'extra' },
               elements: [{
@@ -795,9 +752,8 @@ RSpec.describe InputUiSchemaGeneratorService do
         end
         let!(:page3) do
           create(
-            :custom_field_page,
+            :custom_field_form_end_page,
             resource: custom_form,
-            key: 'survey_end',
             title_multiloc: { 'en' => 'This is the end of the survey' },
             description_multiloc: { 'en' => 'Thank you for participating 🚀' }
           )
@@ -808,7 +764,7 @@ RSpec.describe InputUiSchemaGeneratorService do
             type: 'Categorization',
             options: {
               formId: 'idea-form',
-              inputTerm: 'idea'
+              inputTerm: 'question'
             },
             elements: [
               {
@@ -864,6 +820,8 @@ RSpec.describe InputUiSchemaGeneratorService do
                   id: page3.id,
                   title: 'This is the end of the survey',
                   description: 'Thank you for participating 🚀',
+                  page_button_label_multiloc: {},
+                  page_button_link: nil,
                   page_layout: 'default',
                   map_config_id: nil
                 },
@@ -953,9 +911,8 @@ RSpec.describe InputUiSchemaGeneratorService do
         end
         let!(:page_end) do
           create(
-            :custom_field_page,
+            :custom_field_form_end_page,
             resource: custom_form,
-            key: 'survey_end',
             title_multiloc: { 'en' => 'Almost done' },
             description_multiloc: { 'en' => "You are about to submit your answers. By clicking 'Submit' you give us permission to analyse your answers.<br/>After you submit, you will no longer be able to go back and change any of your answers." }
           )
@@ -978,7 +935,7 @@ RSpec.describe InputUiSchemaGeneratorService do
             type: 'Categorization',
             options: {
               formId: 'idea-form',
-              inputTerm: 'idea'
+              inputTerm: 'question'
             },
             elements: [
               {
@@ -1090,6 +1047,8 @@ RSpec.describe InputUiSchemaGeneratorService do
                   input_type: 'page',
                   id: page_end.id,
                   map_config_id: nil,
+                  page_button_label_multiloc: {},
+                  page_button_link: nil,
                   page_layout: 'default',
                   title: 'Almost done',
                   description: "You are about to submit your answers. By clicking 'Submit' you give us permission to analyse your answers.<br>After you submit, you will no longer be able to go back and change any of your answers."
@@ -1235,134 +1194,44 @@ RSpec.describe InputUiSchemaGeneratorService do
       it 'returns the schema for the given built-in field with translations in the current locale' do
         I18n.with_locale('en') do
           expect(generator.visit_html_multiloc(field)).to eq({
-            type: 'VerticalLayout',
-            options: { input_type: field.input_type, render: 'multiloc' },
-            elements: [
-              {
-                type: 'Control',
-                scope: "#/properties/#{field_key}/properties/en",
-                label: 'Body multiloc field title',
-                options: {
-                  description: 'Body multiloc field description',
-                  isAdminField: false,
-                  hasRule: false,
-                  render: 'WYSIWYG',
-                  locale: 'en'
-                }
-              },
-              {
-                type: 'Control',
-                scope: "#/properties/#{field_key}/properties/fr-FR",
-                label: 'Body multiloc field title',
-                options: {
-                  description: 'Body multiloc field description',
-                  isAdminField: false,
-                  hasRule: false,
-                  render: 'WYSIWYG',
-                  locale: 'fr-FR'
-                }
-              },
-              {
-                type: 'Control',
-                scope: "#/properties/#{field_key}/properties/nl-NL",
-                label: 'Body multiloc field title',
-                options: {
-                  description: 'Body multiloc field description',
-                  isAdminField: false,
-                  hasRule: false,
-                  render: 'WYSIWYG',
-                  locale: 'nl-NL'
-                }
-              }
-            ]
+            type: 'Control',
+            scope: "#/properties/#{field_key}/properties/en",
+            label: 'Body multiloc field title',
+            options: {
+              description: 'Body multiloc field description',
+              isAdminField: false,
+              hasRule: false,
+              render: 'multiloc',
+              input_type: 'html_multiloc'
+            }
           })
         end
         I18n.with_locale('fr-FR') do
           expect(generator.visit_html_multiloc(field)).to eq({
-            type: 'VerticalLayout',
-            options: { input_type: field.input_type, render: 'multiloc' },
-            elements: [
-              {
-                type: 'Control',
-                scope: "#/properties/#{field_key}/properties/en",
-                label: 'Body multiloc field title',
-                options: {
-                  description: 'Body multiloc field description',
-                  isAdminField: false,
-                  hasRule: false,
-                  render: 'WYSIWYG',
-                  locale: 'en'
-                }
-              },
-              {
-                type: 'Control',
-                scope: "#/properties/#{field_key}/properties/fr-FR",
-                label: 'Body multiloc field title',
-                options: {
-                  description: 'Body multiloc field description',
-                  isAdminField: false,
-                  hasRule: false,
-                  render: 'WYSIWYG',
-                  locale: 'fr-FR'
-                }
-              },
-              {
-                type: 'Control',
-                scope: "#/properties/#{field_key}/properties/nl-NL",
-                label: 'Body multiloc field title',
-                options: {
-                  description: 'Body multiloc field description',
-                  isAdminField: false,
-                  hasRule: false,
-                  render: 'WYSIWYG',
-                  locale: 'nl-NL'
-                }
-              }
-            ]
+            type: 'Control',
+            scope: "#/properties/#{field_key}/properties/fr-FR",
+            label: 'Body multiloc field title',
+            options: {
+              description: 'Body multiloc field description',
+              isAdminField: false,
+              hasRule: false,
+              render: 'multiloc',
+              input_type: 'html_multiloc'
+            }
           })
         end
         I18n.with_locale('nl-NL') do
           expect(generator.visit_html_multiloc(field)).to eq({
-            type: 'VerticalLayout',
-            options: { input_type: field.input_type, render: 'multiloc' },
-            elements: [
-              {
-                type: 'Control',
-                scope: "#/properties/#{field_key}/properties/en",
-                label: 'Body multiloc veldtitel',
-                options: {
-                  description: 'Body multiloc veldbeschrijving',
-                  isAdminField: false,
-                  hasRule: false,
-                  render: 'WYSIWYG',
-                  locale: 'en'
-                }
-              },
-              {
-                type: 'Control',
-                scope: "#/properties/#{field_key}/properties/fr-FR",
-                label: 'Body multiloc veldtitel',
-                options: {
-                  description: 'Body multiloc veldbeschrijving',
-                  isAdminField: false,
-                  hasRule: false,
-                  render: 'WYSIWYG',
-                  locale: 'fr-FR'
-                }
-              },
-              {
-                type: 'Control',
-                scope: "#/properties/#{field_key}/properties/nl-NL",
-                label: 'Body multiloc veldtitel',
-                options: {
-                  description: 'Body multiloc veldbeschrijving',
-                  isAdminField: false,
-                  hasRule: false,
-                  render: 'WYSIWYG',
-                  locale: 'nl-NL'
-                }
-              }
-            ]
+            type: 'Control',
+            scope: "#/properties/#{field_key}/properties/nl-NL",
+            label: 'Body multiloc veldtitel',
+            options: {
+              description: 'Body multiloc veldbeschrijving',
+              isAdminField: false,
+              hasRule: false,
+              render: 'multiloc',
+              input_type: 'html_multiloc'
+            }
           })
         end
       end
@@ -1381,49 +1250,17 @@ RSpec.describe InputUiSchemaGeneratorService do
 
       it 'returns the schema for the given field' do
         expect(generator.visit_html_multiloc(field)).to eq({
-          type: 'VerticalLayout',
-          options: { input_type: field.input_type, render: 'multiloc' },
-          elements: [
-            {
-              type: 'Control',
-              scope: "#/properties/#{field_key}/properties/en",
-              label: 'HTML multiloc field title',
-              options: {
-                description: 'HTML multiloc field description',
-                isAdminField: false,
-                hasRule: false,
-                render: 'WYSIWYG',
-                trim_on_blur: true,
-                locale: 'en'
-              }
-            },
-            {
-              type: 'Control',
-              scope: "#/properties/#{field_key}/properties/fr-FR",
-              label: 'HTML multiloc field title',
-              options: {
-                description: 'HTML multiloc field description',
-                isAdminField: false,
-                hasRule: false,
-                render: 'WYSIWYG',
-                trim_on_blur: true,
-                locale: 'fr-FR'
-              }
-            },
-            {
-              type: 'Control',
-              scope: "#/properties/#{field_key}/properties/nl-NL",
-              label: 'HTML multiloc field title',
-              options: {
-                description: 'HTML multiloc field description',
-                isAdminField: false,
-                hasRule: false,
-                render: 'WYSIWYG',
-                trim_on_blur: true,
-                locale: 'nl-NL'
-              }
-            }
-          ]
+          type: 'Control',
+          scope: "#/properties/#{field_key}/properties/en",
+          label: 'HTML multiloc field title',
+          options: {
+            description: 'HTML multiloc field description',
+            isAdminField: false,
+            hasRule: false,
+            trim_on_blur: true,
+            render: 'multiloc',
+            input_type: 'html_multiloc'
+          }
         })
       end
     end

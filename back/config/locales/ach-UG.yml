@@ -91,6 +91,9 @@ ach:
     services_description: crwdns207806:0crwdne207806:0
     other: crwdns207808:0crwdne207808:0
     other_description: crwdns207810:0crwdne207810:0
+    quality_of_life: crwdns4268414:0crwdne4268414:0
+    service_delivery: crwdns4268416:0crwdne4268416:0
+    governance_and_trust: crwdns4268418:0crwdne4268418:0
   static_pages:
     terms_and_conditions_title: crwdns207812:0crwdne207812:0
     terms_and_conditions_body: >
@@ -126,6 +129,7 @@ ach:
     open_idea_phase_title: crwdns1443018:0crwdne1443018:0
     native_survey_title: crwdns1930452:0crwdne1930452:0
     native_survey_button: crwdns1930454:0crwdne1930454:0
+    community_monitor_title: crwdns4243451:0crwdne4243451:0
   events:
     council_meeting_title: crwdns207852:0crwdne207852:0
     council_meeting_description: >
@@ -167,16 +171,58 @@ ach:
       attachments:
         title: crwdns207892:0crwdne207892:0
         description: crwdns207894:0crwdne207894:0
-      section1:
-        description: crwdns207896:0crwdne207896:0
-      section2:
-        title: crwdns207898:0crwdne207898:0
-        description: crwdns207900:0crwdne207900:0
-      section3:
-        title: crwdns207902:0crwdne207902:0
-        description: crwdns207904:0crwdne207904:0
+      title_page:
+        description: crwdns4368150:0crwdne4368150:0
+      body_page:
+        title: crwdns4368152:0crwdne4368152:0
+        description: crwdns4368154:0crwdne4368154:0
+      uploads_page:
+        title: crwdns4368156:0crwdne4368156:0
+        description: crwdns4368158:0crwdne4368158:0
+      details_page:
+        title: crwdns4368160:0crwdne4368160:0
+        description: crwdns4368162:0crwdne4368162:0
       other_input_field:
         title: crwdns3058777:0crwdne3058777:0
+      ask_follow_up_field:
+        title: crwdns4218549:0crwdne4218549:0
+    community_monitor:
+      questions:
+        place_to_live:
+          title: crwdns4268420:0crwdne4268420:0
+        sense_of_safety:
+          title: crwdns4268422:0crwdne4268422:0
+        access_to_parks:
+          title: crwdns4268424:0crwdne4268424:0
+        affordable_housing:
+          title: crwdns4268426:0crwdne4268426:0
+        employment_opportunities:
+          title: crwdns4268428:0crwdne4268428:0
+        quality_of_services:
+          title: crwdns4268430:0crwdne4268430:0
+        overall_value:
+          title: crwdns4268432:0crwdne4268432:0
+        cleanliness_and_maintenance:
+          title: crwdns4268434:0crwdne4268434:0
+        trust_in_government:
+          title: crwdns4268436:0crwdne4268436:0
+        responsiveness_of_officials:
+          title: crwdns4268438:0crwdne4268438:0
+        transparency_of_money_spent:
+          title: crwdns4268440:0crwdne4268440:0
+      question_categories:
+        quality_of_life: crwdns4268442:0crwdne4268442:0
+        service_delivery: crwdns4268444:0crwdne4268444:0
+        governance_and_trust: crwdns4268446:0crwdne4268446:0
+        other: crwdns4268448:0crwdne4268448:0
+      labels:
+        label_1: crwdns4268450:0crwdne4268450:0
+        label_2: crwdns4268452:0crwdne4268452:0
+        label_3: crwdns4268454:0crwdne4268454:0
+        label_4: crwdns4268456:0crwdne4268456:0
+        label_5: crwdns4268458:0crwdne4268458:0
+      form_end:
+        button_text: crwdns4268460:0crwdne4268460:0
   custom_forms:
     categories:
       main_content:
@@ -257,6 +303,8 @@ ach:
     form_end_page:
       title_text_3: 'crwdns4156807:0crwdne4156807:0'
       description_text_3: "crwdns4156809:0crwdne4156809:0"
+    form_user_page:
+      title_text: 'crwdns4280914:0crwdne4280914:0'
     pdf_export:
       personal_data: 'crwdns1160094:0crwdne1160094:0'
       personal_data_explanation_public: "crwdns2677453:0%{organizationName}crwdnd2677453:0%{organizationName}crwdne2677453:0"

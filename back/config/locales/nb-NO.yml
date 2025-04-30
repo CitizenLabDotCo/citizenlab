@@ -91,6 +91,9 @@ nb:
     services_description: Offentlige tjenester
     other: Annet
     other_description: Annet
+    quality_of_life: Livskvalitet
+    service_delivery: Levering av tjenester
+    governance_and_trust: Styring og tillit
   static_pages:
     terms_and_conditions_title: Vilkår og betingelser
     terms_and_conditions_body: >
@@ -126,6 +129,7 @@ nb:
     open_idea_phase_title: Nåværende fase
     native_survey_title: Spørreundersøkelse
     native_survey_button: Ta del i undersøkelsen
+    community_monitor_title: Fellesskapets overvåker
   events:
     council_meeting_title: Rådsmøte
     council_meeting_description: >
@@ -167,16 +171,58 @@ nb:
       attachments:
         title: Vedlegg
         description:
-      section1:
+      title_page:
         description:
-      section2:
+      body_page:
+        title: Fortell oss mer
+        description:
+      uploads_page:
         title: Bilder og vedlegg
         description:
-      section3:
+      details_page:
         title: Detaljer
         description:
       other_input_field:
         title: Skriv inn svaret ditt
+      ask_follow_up_field:
+        title: Fortell oss hvorfor
+    community_monitor:
+      questions:
+        place_to_live:
+          title: Byen som et sted å bo
+        sense_of_safety:
+          title: Overordnet følelse av trygghet
+        access_to_parks:
+          title: Tilgang til parker, grøntområder og rekreasjonsmuligheter
+        affordable_housing:
+          title: Tilgang på rimelige boliger
+        employment_opportunities:
+          title: Muligheter for sysselsetting og økonomisk fremgang
+        quality_of_services:
+          title: Den generelle kvaliteten på tjenestene som tilbys av byen
+        overall_value:
+          title: Den samlede verdien du får for byens skatter og avgifter
+        cleanliness_and_maintenance:
+          title: Generelt renhold og vedlikehold av gater og offentlige rom
+        trust_in_government:
+          title: Tillit til lokale myndigheter
+        responsiveness_of_officials:
+          title: De folkevalgtes lydhørhet overfor lokalsamfunnets bekymringer
+        transparency_of_money_spent:
+          title: Åpenhet om hvordan kommunale skattepenger brukes
+      question_categories:
+        quality_of_life: Livskvalitet
+        service_delivery: Levering av tjenester
+        governance_and_trust: Styring og tillit
+        other: Annet
+      labels:
+        label_1: Svært dårlig
+        label_2: Dårlig
+        label_3: Rimelig
+        label_4: Bra
+        label_5: Utmerket
+      form_end:
+        button_text: Tilbake til startsiden
   custom_forms:
     categories:
       main_content:
@@ -257,6 +303,8 @@ nb:
     form_end_page:
       title_text_3: 'Takk for at du deler dine innspill!'
       description_text_3: "Innspillet ditt har blitt sendt inn."
+    form_user_page:
+      title_text: 'Om deg'
     pdf_export:
       personal_data: 'Personopplysninger'
       personal_data_explanation_public: "Vi sender innspillet ditt til %{organizationName} sin digitale medvirkningsplattform. Hvis du vil at navnet ditt skal vises som forfatter av dette innspillet, og motta oppdateringer som er relevante for innspillet ditt via e-post, kan du fylle ut følgende felt på denne siden. Da opprettes en konto for deg. E-postadressen din vil ikke bli offentliggjort, og vil kun bli brukt av %{organizationName}. Hvis du ønsker å være anonym, eller ikke godtar at vi bruker personopplysningene dine på denne måten, kan du la feltene stå tomme."

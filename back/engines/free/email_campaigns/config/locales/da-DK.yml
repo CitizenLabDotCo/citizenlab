@@ -8,6 +8,7 @@ da:
       "comment_marked_as_spam": Rapportering af kommentar-spam
       "comment_on_your_comment": Et svar på min kommentar
       "comment_on_idea_you_follow": En kommentar til en idé, som du følger
+      "community_monitor_report": Rapport fra Borgerbarometer
       "cosponsor_of_your_idea": En bruger accepterer min invitation til at være medstiller på mit forslag
       "event_registration_confirmation": Bekræftelse af tilmelding til begivenhed
       "idea_marked_as_spam": Rapportering af idé-spam
@@ -82,6 +83,7 @@ da:
         "4": "Hver uge, om torsdagen %{hourOfDay}"
         "5": "Hver uge, om fredagen %{hourOfDay}"
         "6": "Hver uge, om lørdagen %{hourOfDay}"
+      quarterly: "Kvartalsvis på den første dag i kvartalet"
     footer:
       "link_privacy_policy": "Anonymitetspolitik"
       "link_terms_conditions": "Betingelser og vilkår"
@@ -147,6 +149,12 @@ da:
       today: I dag
       wrong_content: 'Kommentaren er ikke relevant.'
       yesterday: I går
+    community_monitor_report:
+      subject: 'En ny Borgerbarometer-rapport er tilgængelig'
+      title: 'En ny Borgerbarometer-rapport er tilgængelig'
+      text_introduction: 'Der er oprettet en Borgerbarometer-rapport for det foregående kvartal. Du kan få adgang til den ved at klikke på knappen nedenfor og logge ind.'
+      cta_report_button: 'Se rapport'
+      report_name: 'Rapport fra Borgerbarometer'
     cosponsor_of_your_idea:
       cta_reply_to: 'Se dit forslag'
       event_description: 'Tillykke! %{cosponsorName} har accepteret din invitation til at være medstiller på dit forslag.'
@@ -499,6 +507,7 @@ da:
       cta_vote: 'Gå til platformen for at stemme'
     survey_submitted:
       subject: '%{organizationName}: Tak for dit svar! 🎉'
+      preheader: 'Her er detaljerne om din indsendelse.'
       main_header: 'Tak, fordi du delte dine tanker om "%{projectName}"!'
       your_input_submitted: 'Dit input til "%{projectName}" er blevet sendt korrekt.'
       if_you_would_like_to_review: 'Hvis du gerne vil se dit bidrag igen, kan du downloade dine svar nedenfor.'

@@ -8,6 +8,7 @@ lb:
       "comment_marked_as_spam": Kommentéiert de Bericht vum Spam
       "comment_on_your_comment": Eng Äntwert op mäi Kommentar
       "comment_on_idea_you_follow": E Kommentar zu enger Iddi déi Dir verfollegt
+      "community_monitor_report": Communautéit Monitor Rapport
       "cosponsor_of_your_idea": E Benotzer akzeptéiert meng Invitatioun fir meng Propositioun ze sponsoren
       "event_registration_confirmation": Event Aschreiwung Bestätegung
       "idea_marked_as_spam": Spambericht iwwer d'Iddien
@@ -82,6 +83,7 @@ lb:
         "4": "Wochemaart, op Donneschden %{hourOfDay}"
         "5": "Wochemaart, Freideg %{hourOfDay}"
         "6": "Wochemaart, Samschdes %{hourOfDay}"
+      quarterly: "Trimester, um éischten Dag vum Véierel"
     footer:
       "link_privacy_policy": "Dateschutzrichtlinn"
       "link_terms_conditions": "Geschäftsbedéngungen"
@@ -147,6 +149,12 @@ lb:
       today: Haut
       wrong_content: 'De Kommentar ass net relevant.'
       yesterday: Gëschter
+    community_monitor_report:
+      subject: 'En neie Communautéitsmonitor Bericht ass verfügbar'
+      title: 'En neie Communautéitsmonitor Bericht ass verfügbar'
+      text_introduction: 'E Communautéitsmonitor Bericht gouf fir de leschte Quartal erstallt. Dir kënnt et zougräifen andeems Dir op de Knäppchen hei drënner klickt an aloggen.'
+      cta_report_button: 'Kuckt de Bericht'
+      report_name: 'Communautéit Monitor Rapport'
     cosponsor_of_your_idea:
       cta_reply_to: 'Kuckt Är Propositioun'
       event_description: 'Gratulatioun! %{cosponsorName} huet Är Invitatioun ugeholl fir Är Propositioun ze co-sponsoren.'
@@ -499,6 +507,7 @@ lb:
       cta_vote: 'Gitt op d''Plattform fir ze wielen'
     survey_submitted:
       subject: '%{organizationName}: Merci fir Är Äntwert! 🎉'
+      preheader: 'Hei sinn d''Detailer vun Ärer Soumissioun.'
       main_header: 'Merci fir Är Gedanken iwwer "%{projectName}" ze deelen!'
       your_input_submitted: 'Ären Input fir "%{projectName}" gouf erfollegräich ofginn.'
       if_you_would_like_to_review: 'Wann Dir Är Soumissioun wëllt iwwerpréiwen, kënnt Dir Är Äntwerten hei ënnen eroflueden.'

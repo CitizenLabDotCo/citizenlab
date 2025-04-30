@@ -102,7 +102,7 @@ gem 'interactor'
 gem 'interactor-rails'
 gem 'liquid', '~> 5.5'
 gem 'mini_magick', '~> 4.13'
-gem 'nokogiri', '~> 1.18.3'
+gem 'nokogiri', '~> 1.18.8'
 gem 'pg_search', '~> 2.3.5'
 gem 'premailer-rails', '~> 1.12.0'
 gem 'rest-client'
@@ -113,7 +113,7 @@ gem 'scientist', '~> 1.6.4'
 
 gem 'okcomputer'
 gem 'omniauth', '~> 2.1'
-gem 'omniauth-saml', '~> 2.2.0'
+gem 'omniauth-saml', '~> 2.2.3'
 gem 'omniauth-rails_csrf_protection'
 gem 'omniauth-facebook'
 gem 'omniauth-google-oauth2'
@@ -127,7 +127,7 @@ gem 'bunny', '>= 2.7.2'
 gem 'faker'
 gem 'order_as_specified'
 gem 'scenic'
-gem 'ice_cube', '~> 0.16'
+gem 'ice_cube', '~> 0.17'
 gem 'prawn', '~> 2.5'
 gem 'prawn-grouping', '~> 0.2.0'
 
@@ -238,7 +238,8 @@ commercial_engines = [
   'id_nemlog_in',
   'id_oostende_rrn',
   'id_hoplr',
-  'id_vienna_saml'
+  'id_vienna_saml',
+  'id_twoday'
 ]
 
 commercial_engines.each do |engine_name|

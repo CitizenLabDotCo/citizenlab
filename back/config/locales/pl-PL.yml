@@ -91,6 +91,9 @@ pl:
     services_description: Usługi publiczne
     other: Inny
     other_description: Inny
+    quality_of_life: Jakość życia
+    service_delivery: Świadczenie usług
+    governance_and_trust: Zarządzanie i zaufanie
   static_pages:
     terms_and_conditions_title: Regulamin
     terms_and_conditions_body: >
@@ -126,6 +129,7 @@ pl:
     open_idea_phase_title: Faza bieżąca
     native_survey_title: Ankieta
     native_survey_button: Weź udział w ankiecie
+    community_monitor_title: Monitor społeczności
   events:
     council_meeting_title: Posiedzenie Rady
     council_meeting_description: >
@@ -167,16 +171,58 @@ pl:
       attachments:
         title: Załączniki
         description:
-      section1:
+      title_page:
         description:
-      section2:
+      body_page:
+        title: Powiedz nam więcej
+        description:
+      uploads_page:
         title: Obrazy i załączniki
         description:
-      section3:
+      details_page:
         title: Szczegóły
         description:
       other_input_field:
         title: Wpisz swoją odpowiedź
+      ask_follow_up_field:
+        title: Powiedz nam dlaczego
+    community_monitor:
+      questions:
+        place_to_live:
+          title: Miasto jako miejsce do życia
+        sense_of_safety:
+          title: Ogólne poczucie bezpieczeństwa
+        access_to_parks:
+          title: Dostęp do parków, terenów zielonych i możliwości rekreacyjnych
+        affordable_housing:
+          title: Dostępność przystępnych cenowo mieszkań
+        employment_opportunities:
+          title: Możliwości zatrudnienia i rozwoju gospodarczego
+        quality_of_services:
+          title: Ogólna jakość usług świadczonych przez miasto
+        overall_value:
+          title: Ogólna wartość, jaką otrzymujesz za podatki i opłaty miejskie
+        cleanliness_and_maintenance:
+          title: Ogólna czystość i utrzymanie ulic i przestrzeni publicznych
+        trust_in_government:
+          title: Zaufanie do władz lokalnych
+        responsiveness_of_officials:
+          title: Reakcja wybranych urzędników na obawy społeczności
+        transparency_of_money_spent:
+          title: Przejrzystość w wydawaniu pieniędzy z podatków miejskich
+      question_categories:
+        quality_of_life: Jakość życia
+        service_delivery: Świadczenie usług
+        governance_and_trust: Zarządzanie i zaufanie
+        other: Inne
+      labels:
+        label_1: Bardzo słaby
+        label_2: Słaby
+        label_3: Uczciwy
+        label_4: Dobry
+        label_5: Doskonały
+      form_end:
+        button_text: Powrót do domu
   custom_forms:
     categories:
       main_content:
@@ -257,6 +303,8 @@ pl:
     form_end_page:
       title_text_3: 'Dziękujemy za podzielenie się Twoimi uwagami!'
       description_text_3: "Twoje dane zostały pomyślnie przesłane."
+    form_user_page:
+      title_text: 'O Tobie'
     pdf_export:
       personal_data: 'Dane osobowe'
       personal_data_explanation_public: "Prześlemy Twój wkład na platformę uczestnictwa online %{organizationName}. Jeśli chcesz, aby Twoje imię i nazwisko było wyświetlane jako autor tego wkładu i otrzymywać aktualizacje dotyczące Twojego wkładu pocztą elektroniczną, wypełnij poniższe pola na tej stronie, a my utworzymy dla Ciebie konto. Twój adres e-mail nie będzie publiczny i będzie używany wyłącznie przez %{organizationName}. Jeśli chcesz pozostać anonimowy lub nie zgadzasz się na wykorzystanie przez nas Twoich danych osobowych w ten sposób, możesz pozostawić je puste."

@@ -70,10 +70,11 @@ RSpec.describe Analysis::QAndAMethod do
         llm: kind_of(Analysis::LLM::Base),
         accuracy: 0.8,
         include_id: true,
-        shorten_labels: false
+        shorten_labels: false,
+        include_comments: true
       })
 
-      mock_llm = instance_double(Analysis::LLM::GPT4Turbo)
+      mock_llm = instance_double(Analysis::LLM::GPT41)
       plan.llm = mock_llm
       expect(mock_llm).to receive(:chat_async).with(kind_of(String)) do |prompt, &block|
         expect(prompt).to include(inputs[2].id)
@@ -81,16 +82,6 @@ RSpec.describe Analysis::QAndAMethod do
         block.call 'Nothing'
         block.call ' else'
       end
-
-      mock_locale = instance_double(Locale)
-      expect(Locale)
-        .to receive(:monolingual)
-        .and_return(mock_locale)
-      expect(mock_locale).to receive(:language_copy).and_return('High Valyrian')
-      expect_any_instance_of(Analysis::LLM::Prompt)
-        .to receive(:fetch)
-        .with('q_and_a', project_title: kind_of(String), question: kind_of(String), inputs_text: kind_of(String), language: 'High Valyrian')
-        .and_call_original
 
       expect { plan.q_and_a_method_class.new(question).execute(plan) }
         .to change { q_and_a_task.question.answer }.from(nil).to('Nothing else')
@@ -102,6 +93,18 @@ RSpec.describe Analysis::QAndAMethod do
         state: 'succeeded',
         progress: nil
       })
+    end
+
+    it 'includes the comments in the prompt' do
+      create(:comment, idea: inputs[1], body_multiloc: { en: 'I want to comment on that' })
+
+      plan = Analysis::QAndAMethod::OnePassLLM.new(question).generate_plan
+      mock_llm = instance_double(Analysis::LLM::GPT41)
+      plan.llm = mock_llm
+      expect(mock_llm).to receive(:chat_async) do |prompt|
+        expect(prompt).to include('I want to comment on that')
+      end
+      plan.q_and_a_method_class.new(question).execute(plan)
     end
   end
 end

@@ -91,10 +91,6 @@ class TestVisitor < FieldVisitorService
     'page from visitor'
   end
 
-  def visit_section(_field)
-    'section from visitor'
-  end
-
   def visit_topic_ids(_field)
     'topic_ids from visitor'
   end
@@ -113,6 +109,10 @@ class TestVisitor < FieldVisitorService
 
   def visit_ranking(_field)
     'ranking from visitor'
+  end
+
+  def visit_sentiment_linear_scale(_field)
+    'sentiment_linear_scale from visitor'
   end
 end
 
@@ -200,35 +200,6 @@ RSpec.describe CustomField do
     end
   end
 
-  describe '#section?' do
-    it 'returns true when the input_type is "section"' do
-      section_field = described_class.new input_type: 'section'
-      expect(section_field.section?).to be true
-    end
-
-    it 'returns false otherwise' do
-      other_field = described_class.new input_type: 'something_else'
-      expect(other_field.section?).to be false
-    end
-  end
-
-  describe '#page_or_section?' do
-    it 'returns true when the input_type is "page"' do
-      page_field = described_class.new input_type: 'page'
-      expect(page_field.page_or_section?).to be true
-    end
-
-    it 'returns true when the input_type is "section"' do
-      section_field = described_class.new input_type: 'section'
-      expect(section_field.page_or_section?).to be true
-    end
-
-    it 'returns false otherwise' do
-      other_field = described_class.new input_type: 'something_else'
-      expect(other_field.page_or_section?).to be false
-    end
-  end
-
   describe 'page_layout validation' do
     context 'for page custom_field' do
       let(:page_custom_field) { build(:custom_field_page) }
@@ -308,22 +279,6 @@ RSpec.describe CustomField do
       page_field.title_multiloc = nil
       expect(page_field.valid?).to be true
     end
-
-    it 'does not happen when the field is a section' do
-      section_field = described_class.new(
-        resource: form,
-        input_type: 'section',
-        key: 'field_key',
-        title_multiloc: { 'en' => '' }
-      )
-      expect(section_field.valid?).to be true
-
-      section_field.title_multiloc = {}
-      expect(section_field.valid?).to be true
-
-      section_field.title_multiloc = nil
-      expect(section_field.valid?).to be true
-    end
   end
 
   context 'hooks' do
@@ -386,6 +341,14 @@ RSpec.describe CustomField do
       # 'somewhere else' option should be the last.
       expect(domicile_field.options.last.area).to be_nil
     end
+
+    describe 'ordered_transformed_options' do
+      it 'returns the ordered domicile options with keys and titles from areas' do
+        options = domicile_field.ordered_transformed_options
+        expect(options.pluck(:key)).to eq(Area.order(:ordering).pluck(:id) + ['outside'])
+        expect(options.last.title_multiloc['en']).to eq 'Somewhere else'
+      end
+    end
   end
 
   describe 'description sanitizer' do
@@ -440,19 +403,19 @@ RSpec.describe CustomField do
     end
   end
 
-  describe 'title_multiloc behaviour for ideation section 1' do
+  describe 'title_multiloc behaviour for ideation page 1' do
     it 'returns a title containing the current ideation/budget phase input term if there is a current phase' do
       project = create(:project_with_current_phase, current_phase_attrs: { input_term: 'question' })
       resource = build(:custom_form, participation_context: project)
       ignored_title = { en: 'anything' }
-      section = described_class.new(
+      page = described_class.new(
         resource: resource,
-        input_type: 'section',
-        code: 'ideation_section1',
+        input_type: 'page',
+        code: 'title_page',
         title_multiloc: ignored_title
       )
       expected_english_title = 'What is your question?'
-      expect(section.title_multiloc['en']).to eq expected_english_title
+      expect(page.title_multiloc['en']).to eq expected_english_title
     end
 
     it 'returns a title containing the last phase input term if there is not a current ideation/budget phase' do
@@ -461,14 +424,14 @@ RSpec.describe CustomField do
       resource = build(:custom_form, participation_context: project)
 
       ignored_title = { en: 'anything' }
-      section = described_class.new(
+      page = described_class.new(
         resource: resource,
-        input_type: 'section',
-        code: 'ideation_section1',
+        input_type: 'page',
+        code: 'title_page',
         title_multiloc: ignored_title
       )
       expected_english_title = 'What is your contribution?'
-      expect(section.title_multiloc['en']).to eq expected_english_title
+      expect(page.title_multiloc['en']).to eq expected_english_title
     end
   end
 
@@ -486,12 +449,6 @@ RSpec.describe CustomField do
       it 'sets admins by default before validation' do
         field.validate!
         expect(field.answer_visible_to).to eq 'admins'
-      end
-
-      it 'sets public by default if field is a section' do
-        field.input_type = 'section'
-        field.validate!
-        expect(field.answer_visible_to).to eq 'public'
       end
 
       it 'sets public by default if field is a page' do
@@ -513,7 +470,7 @@ RSpec.describe CustomField do
 
       it 'always sets the value to "admins"' do
         field.input_type = 'page'
-        field.input_type = 'section'
+        field.page_layout = 'default'
         field.code = 'gender'
         field.validate!
         expect(field.answer_visible_to).to eq 'admins'
@@ -675,6 +632,81 @@ RSpec.describe CustomField do
           4 => 2
         }
       })
+    end
+  end
+
+  describe 'question_category' do
+    let(:form) { create(:custom_form, participation_context: TimelineService.new.current_phase(project)) }
+    let(:field) { create(:custom_field, resource: form) }
+
+    context 'community_monitor_survey project' do
+      let(:project) { create(:community_monitor_project) }
+
+      it 'can have an allowed category associated' do
+        field.question_category = 'quality_of_life'
+        expect(field).to be_valid
+      end
+
+      it 'cannot have a topic if it is not in the list of allowed topics' do
+        field.question_category = 'monkeys'
+        expect(field).not_to be_valid
+        expect(field.errors.first.type).to eq :inclusion
+      end
+
+      it 'returns "other" if the question category is not set' do
+        field.question_category = nil
+        expect(field.question_category).to eq 'other'
+      end
+
+      it 'returns the multiloc for the question' do
+        field.question_category = 'quality_of_life'
+        expect(field.question_category_multiloc['en']).to eq 'Quality of life'
+      end
+    end
+
+    context 'native_survey project' do
+      let(:project) { create(:project_with_active_native_survey_phase) }
+
+      it 'cannot have topics associated if the participation method does not allow it' do
+        field.question_category = 'quality_of_life'
+        expect(field).not_to be_valid
+        expect(field.errors.first.type).to eq :present
+      end
+
+      it 'returns nil if the question category is not set' do
+        field.question_category = nil
+        expect(field.question_category).to be_nil
+      end
+
+      it 'returns nil for question_category_multiloc' do
+        expect(field.question_category_multiloc).to be_nil
+      end
+    end
+  end
+
+  describe 'maximum' do
+    context 'linear scale fields' do
+      it 'is valid when maximum is between 2 & 11' do
+        field = build(:custom_field_linear_scale, maximum: 5)
+        expect(field).to be_valid
+      end
+
+      it 'is not valid when maximum is nil' do
+        field = build(:custom_field_linear_scale, maximum: nil)
+        expect(field).not_to be_valid
+      end
+
+      it 'is not valid when maximum is greater than 11' do
+        field = build(:custom_field_linear_scale, maximum: 16)
+        expect(field).not_to be_valid
+      end
+    end
+
+    context 'other fields' do
+      it 'is valid when maximum is nil' do
+        field = build(:custom_field_multiselect, maximum: nil)
+        expect(field).to be_valid
+      end
     end
   end
 end

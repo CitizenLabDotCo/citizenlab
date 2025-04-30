@@ -91,6 +91,9 @@ lb:
     services_description: Ëffentlech Déngschter
     other: Aner
     other_description: Aner
+    quality_of_life: Liewensqualitéit
+    service_delivery: Service Liwwerung
+    governance_and_trust: Gouvernance a Vertrauen
   static_pages:
     terms_and_conditions_title: Allgemeng Geschäftsbedéngungen
     terms_and_conditions_body: >
@@ -126,6 +129,7 @@ lb:
     open_idea_phase_title: Aktuell Phase
     native_survey_title: Ëmfro
     native_survey_button: Huelt d'Ëmfro
+    community_monitor_title: Communautéit Monitor
   events:
     council_meeting_title: Conseilssëtzung
     council_meeting_description: >
@@ -167,16 +171,58 @@ lb:
       attachments:
         title: Annexen
         description:
-      section1:
+      title_page:
         description:
-      section2:
-        title: Biller an Annexen
+      body_page:
+        title: Sot eis méi
         description:
-      section3:
+      uploads_page:
+        title: Biller an Uschlëss
+        description:
+      details_page:
         title: Detailer
         description:
       other_input_field:
         title: Typ Är Äntwert
+      ask_follow_up_field:
+        title: Sot eis firwat
+    community_monitor:
+      questions:
+        place_to_live:
+          title: Stad als Plaz fir ze liewen
+        sense_of_safety:
+          title: Allgemeng Gefill vu Sécherheet
+        access_to_parks:
+          title: Zougang zu Parken, Gréngflächen, a Fräizäitméiglechkeeten
+        affordable_housing:
+          title: Disponibilitéit vun bezuelbare Wunnengen
+        employment_opportunities:
+          title: Beschäftegung a wirtschaftlech Fortschrëtter Méiglechkeeten
+        quality_of_services:
+          title: Allgemeng Qualitéit vun de Servicer vun der Stad
+        overall_value:
+          title: Gesamtwäert kritt Dir fir Är Stadsteier a Fraisen
+        cleanliness_and_maintenance:
+          title: Allgemeng Propretéit an Ënnerhalt vu Stroossen an ëffentleche Plazen
+        trust_in_government:
+          title: Vertrauen an lokal Regierung
+        responsiveness_of_officials:
+          title: Reaktiounsfäegkeet vu gewielte Beamten op Gemeinschaftsbedéngungen
+        transparency_of_money_spent:
+          title: Transparenz iwwer wéi d’Gemengesteiergelder ausginn
+      question_categories:
+        quality_of_life: Liewensqualitéit
+        service_delivery: Service Liwwerung
+        governance_and_trust: Gouvernance a Vertrauen
+        other: Aner
+      labels:
+        label_1: Ganz aarm
+        label_2: Aarmséileg
+        label_3: Fair
+        label_4: Gutt
+        label_5: exzellent
+      form_end:
+        button_text: Zréck doheem
   custom_forms:
     categories:
       main_content:
@@ -257,6 +303,8 @@ lb:
     form_end_page:
       title_text_3: 'Merci fir Är Input ze deelen!'
       description_text_3: "Ären Input gouf erfollegräich presentéiert."
+    form_user_page:
+      title_text: 'Iwwer dech'
     pdf_export:
       personal_data: 'Perséinlech Daten'
       personal_data_explanation_public: "Mir wäerten Ären Input op %{organizationName}'s Online Participatiounsplattform ofginn. Wann Dir wëllt datt Ären Numm als Auteur vun dësem Input ugewise gëtt an Updates per E-Mail relevant fir Ären Input kritt, fëllt w.e.g. déi folgend Felder op dëser Säit aus a mir erstellen e Kont fir Iech. Är E-Mail wäert net ëffentlech sinn a gëtt nëmme vu %{organizationName}benotzt. Wann Dir anonym wëllt bleiwen, oder net averstane sidd datt mir Är perséinlech Donnéeën op dës Manéier benotzen, kënnt Dir se eidel loossen."

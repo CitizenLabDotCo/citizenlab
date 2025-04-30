@@ -8,6 +8,7 @@ fr-BE:
       "comment_marked_as_spam": Commenter le rapport de spam
       "comment_on_your_comment": Une réponse à mon commentaire
       "comment_on_idea_you_follow": Un commentaire sur une idée que vous suivez
+      "community_monitor_report": Rapport de suivi communautaire
       "cosponsor_of_your_idea": Un utilisateur accepte de soutenir ma proposition
       "event_registration_confirmation": Confirmation de l'inscription à l'événement
       "idea_marked_as_spam": Rapport sur le spam d'idées
@@ -82,6 +83,7 @@ fr-BE:
         "4": "Chaque semaine, le jeudi à %{hourOfDay}"
         "5": "Chaque semaine, le vendredi à %{hourOfDay}"
         "6": "Chaque semaine, le samedi à %{hourOfDay}"
+      quarterly: "Le premier jour de chaque trimestre"
     footer:
       "link_privacy_policy": "Politique de confidentialité"
       "link_terms_conditions": "Conditions Générales d'Utilisation"
@@ -147,6 +149,12 @@ fr-BE:
       today: Aujourd'hui
       wrong_content: 'Le commentaire n’est pas pertinent.'
       yesterday: Hier
+    community_monitor_report:
+      subject: 'Un nouveau rapport de suivi communautaire est disponible'
+      title: 'Un nouveau rapport de suivi communautaire est disponible'
+      text_introduction: 'Le rapport de suivi communautaire du trimestre précédent est disponible. Vous pouvez y accéder en cliquant sur le bouton ci-dessous et en vous connectant.'
+      cta_report_button: 'Voir le rapport'
+      report_name: 'Rapport de suivi communautaire'
     cosponsor_of_your_idea:
       cta_reply_to: 'Voir votre proposition'
       event_description: 'Félicitations ! %{cosponsorName} a accepté de soutenir votre proposition.'
@@ -499,6 +507,7 @@ fr-BE:
       cta_vote: 'Se rendre sur la plateforme pour voter'
     survey_submitted:
       subject: '%{organizationName}: Merci pour votre réponse ! 🎉'
+      preheader: 'Voici les détails de votre soumission.'
       main_header: 'Merci d''avoir partagé votre avis sur « %{projectName} » !'
       your_input_submitted: 'Votre contribution pour « %{projectName} » a été soumise avec succès.'
       if_you_would_like_to_review: 'Si vous souhaitez revoir votre soumission, vous pouvez télécharger vos réponses ci-dessous.'

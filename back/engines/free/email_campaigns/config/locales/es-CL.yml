@@ -8,6 +8,7 @@ es-CL:
       "comment_marked_as_spam": Informar de comentarios de spam
       "comment_on_your_comment": Una respuesta a mi comentario
       "comment_on_idea_you_follow": Un comentario sobre una idea que sigues
+      "community_monitor_report": Informe del barómetro de satisfacción ciudadana
       "cosponsor_of_your_idea": Un usuario acepta mi invitación a copatrocinar mi propuesta
       "event_registration_confirmation": Confirmación de inscripción al evento
       "idea_marked_as_spam": Informar de spam de ideas
@@ -82,6 +83,7 @@ es-CL:
         "4": "Semanalmente los jueves a las %{hourOfDay}"
         "5": "Semanalmente los viernes a las %{hourOfDay}"
         "6": "Semanalmente los sábados a las %{hourOfDay}"
+      quarterly: "Trimestralmente, el primer día del trimestre"
     footer:
       "link_privacy_policy": "Política de privacidad"
       "link_terms_conditions": "Términos & Condiciones"
@@ -147,6 +149,12 @@ es-CL:
       today: Hoy
       wrong_content: 'Este comentario no es relevante.'
       yesterday: Ayer
+    community_monitor_report:
+      subject: 'Está disponible un nuevo informe del barómetro de satisfacción ciudadana'
+      title: 'Está disponible un nuevo informe del barómetro de satisfacción ciudadana'
+      text_introduction: 'Se ha creado un informe del barómetro de satisfacción ciudadana correspondiente al trimestre anterior. Puedes acceder a él haciendo clic en el botón de abajo e iniciando sesión.'
+      cta_report_button: 'Ver informe'
+      report_name: 'Informe del barómetro de satisfacción ciudadana'
     cosponsor_of_your_idea:
       cta_reply_to: 'Ver tu propuesta'
       event_description: 'Enhorabuena! %{cosponsorName} ha aceptado tu invitación para copatrocinar tu propuesta.'
@@ -499,6 +507,7 @@ es-CL:
       cta_vote: 'Ir a la plataforma para votar'
     survey_submitted:
       subject: '%{organizationName}: Gracias por tu respuesta. 🎉'
+      preheader: 'Aquí tienes los detalles de tu aporte.'
       main_header: '¡Gracias por compartir tu opinión sobre "%{projectName}"!'
       your_input_submitted: 'Tu aporte en "%{projectName}" se ha enviado correctamente.'
       if_you_would_like_to_review: 'Si quieres revisar tu aporte, puedes descargar tus respuestas a continuación.'

@@ -35,9 +35,10 @@
 #  index_static_pages_on_slug  (slug) UNIQUE
 #
 class StaticPage < ApplicationRecord
-  CODES = %w[about terms-and-conditions privacy-policy faq custom].freeze
+  CODES = %w[about cookie-policy terms-and-conditions privacy-policy faq custom].freeze
+  RESERVED_SLUGS = (CODES - %w[custom]).freeze
 
-  slug from: proc { |page| page.title_multiloc.values.find(&:present?) }
+  slug from: proc { |page| page.title_multiloc.values.find(&:present?) }, except: RESERVED_SLUGS
 
   enum :projects_filter_type, { no_filter: 'no_filter', areas: 'areas', topics: 'topics' }
 
@@ -61,11 +62,12 @@ class StaticPage < ApplicationRecord
   before_validation :sanitize_bottom_info_section_multiloc
   before_validation :destroy_obsolete_associations
 
-  before_destroy :confirm_is_custom, prepend: true
+  before_destroy :check_if_destroyable, prepend: true
 
   validates :title_multiloc, presence: true, multiloc: { presence: true }
   validates :code, inclusion: { in: CODES }
   validates :code, uniqueness: true, unless: :custom?
+  validate :validate_slug
 
   validates :banner_enabled, inclusion: [true, false]
   validates :banner_layout, inclusion: %w[full_width_banner_layout two_column_layout two_row_layout fixed_ratio_layout]
@@ -143,11 +145,17 @@ class StaticPage < ApplicationRecord
 
   private
 
-  def confirm_is_custom
-    return if custom?
+  def check_if_destroyable
+    # The cookie policy page can be deleted because the frontend will automatically fall
+    # back to the default policy if it's missing (which is the usual case).
+    return if custom? || code == 'cookie-policy'
 
-    errors.add(:base, 'Cannot destroy static_page that does not have code: \'custom\'')
+    errors.add(:base, 'Only custom pages and the cookie policy page can be deleted')
     throw :abort
+  end
+
+  def validate_slug
+    errors.add(:slug, 'reserved') if custom? && slug.in?(RESERVED_SLUGS)
   end
 
   def set_code

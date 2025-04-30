@@ -43,8 +43,9 @@ module MultiTenancy
         attribute(:survey_embed_url, if: :survey?)
         attribute(:survey_service, if: :survey?)
         attribute(:document_annotation_embed_url, if: :document_annotation?)
-        attribute(:native_survey_title_multiloc, if: :native_survey?)
-        attribute(:native_survey_button_multiloc, if: :native_survey?)
+        attribute(:native_survey_title_multiloc, if: proc { |phase| phase.pmethod.supports_survey_form? })
+        attribute(:native_survey_button_multiloc, if: proc { |phase| phase.pmethod.supports_survey_form? })
+        attribute(:user_fields_in_form, if: proc { |phase| phase.pmethod.supports_survey_form? })
       end
     end
   end

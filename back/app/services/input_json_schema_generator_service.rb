@@ -11,7 +11,7 @@ class InputJsonSchemaGeneratorService < JsonSchemaGeneratorService
         {
           type: 'string',
           minLength: 10,
-          maxLength: 80
+          maxLength: 120
         }
       end
     }

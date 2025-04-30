@@ -91,6 +91,9 @@ de:
     services_description: Öffentliche Dienstleistungen
     other: Sonstiges
     other_description: Sonstiges
+    quality_of_life: Lebensqualität
+    service_delivery: Bereitstellung von Dienstleistungen
+    governance_and_trust: Verwaltung und Vertrauen
   static_pages:
     terms_and_conditions_title: Nutzungsbedingungen
     terms_and_conditions_body: >
@@ -126,6 +129,7 @@ de:
     open_idea_phase_title: Aktuelle Phase
     native_survey_title: Umfrage
     native_survey_button: Umfrage ausfüllen
+    community_monitor_title: Gemeinschaftspuls
   events:
     council_meeting_title: Ratssitzung
     council_meeting_description: >
@@ -167,16 +171,58 @@ de:
       attachments:
         title: Anhänge
         description:
-      section1:
+      title_page:
         description:
-      section2:
+      body_page:
+        title: Erzähl uns mehr
+        description:
+      uploads_page:
         title: Bilder und Anhänge
         description:
-      section3:
+      details_page:
         title: Details
         description:
       other_input_field:
         title: Antwort eingeben
+      ask_follow_up_field:
+        title: Erzähl uns mehr
+    community_monitor:
+      questions:
+        place_to_live:
+          title: Die Stadt als Lebensraum
+        sense_of_safety:
+          title: Allgemeines Sicherheitsgefühl
+        access_to_parks:
+          title: Zugang zu Parks, Grünflächen und Erholungsmöglichkeiten
+        affordable_housing:
+          title: Verfügbarkeit von bezahlbarem Wohnraum
+        employment_opportunities:
+          title: Beschäftigungs- und wirtschaftliche Aufstiegsmöglichkeiten
+        quality_of_services:
+          title: Gesamtqualität der von der Stadt angebotenen Dienstleistungen
+        overall_value:
+          title: Gesamtwert, den Sie für Ihre städtischen Steuern und Gebühren erhalten
+        cleanliness_and_maintenance:
+          title: Allgemeine Sauberkeit und Instandhaltung von Straßen und öffentlichen Plätzen
+        trust_in_government:
+          title: Vertrauen in die Kommunalverwaltung
+        responsiveness_of_officials:
+          title: Reaktionsfähigkeit gewählter Entscheidungsträger*innen auf die Anliegen der Bevölkerung
+        transparency_of_money_spent:
+          title: Transparenz darüber, wie kommunale Steuergelder ausgegeben werden
+      question_categories:
+        quality_of_life: Lebensqualität
+        service_delivery: Bereitstellung von Dienstleistungen
+        governance_and_trust: Verwaltung und Vertrauen
+        other: Sonstiges
+      labels:
+        label_1: Sehr schlecht
+        label_2: Schlecht
+        label_3: Neutral
+        label_4: Gut
+        label_5: Sehr gut
+      form_end:
+        button_text: Zurück zur Startseite
   custom_forms:
     categories:
       main_content:
@@ -257,6 +303,8 @@ de:
     form_end_page:
       title_text_3: 'Vielen Dank für Ihren Beitrag!'
       description_text_3: "Ihr Beitrag wurde erfolgreich übermittelt."
+    form_user_page:
+      title_text: 'Über dich'
     pdf_export:
       personal_data: 'Persönliche Daten'
       personal_data_explanation_public: "Wir werden Ihren Beitrag auf der Online-Beteiligungsplattform von %{organizationName} veröffentlichen. Wenn Sie möchten, dass Ihr Name als Autor*in dieses Beitrags angezeigt wird und Sie Aktualisierungen zu Ihrem Beitrag per E-Mail erhalten, füllen Sie bitte die folgenden Felder auf dieser Seite aus und wir erstellen ein Konto für Sie. Ihre E-Mail ist nicht öffentlich und wird nur von %{organizationName} verwendet. Wenn Sie anonym bleiben möchten oder nicht damit einverstanden sind, dass wir Ihre persönlichen Daten auf diese Weise verwenden, können Sie die Felder leer lassen."

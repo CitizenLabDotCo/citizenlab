@@ -25,15 +25,14 @@ import messages from '../messages';
 import RegenerateLinkModal from './RegenerateLinkModal';
 import tracks from './tracks';
 
-const ShareLink = ({
-  projectId,
-  projectSlug,
-  token,
-}: {
+interface Props {
   projectId: string;
   projectSlug: string;
   token: string;
-}) => {
+  className?: string;
+}
+
+const ShareLink = ({ projectId, projectSlug, token, className }: Props) => {
   const [refreshModalIsOpen, setRefreshModalIsOpen] = useState(false);
   const isPreviewLinkEnabled = useFeatureFlag({ name: 'project_preview_link' });
   const { data: appConfiguration } = useAppConfiguration();
@@ -67,7 +66,7 @@ const ShareLink = ({
     );
   };
   return (
-    <Box position="relative">
+    <Box position="relative" className={className}>
       <Button
         id="e2e-share-link"
         buttonStyle="secondary-outlined"

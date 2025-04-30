@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 
 import {
   Box,
@@ -17,25 +17,26 @@ import useProjectById from 'api/projects/useProjectById';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 import useLocale from 'hooks/useLocale';
 
-import PDFExportModal, {
-  FormValues,
-} from 'containers/Admin/projects/components/PDFExportModal';
+import { FormPDFExportFormValues } from 'containers/Admin/projects/components/PDFExportModal';
 import buttonMessages from 'containers/Admin/projects/project/inputForm/messages';
 import { API_PATH } from 'containers/App/constants';
 
+import DownloadPDFButtonWithModal from 'components/FormBuilder/components/FormBuilderTopBar/DownloadPDFButtonWithModal';
+import UpsellTooltip from 'components/UpsellTooltip';
+
 import { FormattedMessage } from 'utils/cl-intl';
+import { getFormActionsConfig } from 'utils/configs/formActionsConfig/utils';
 import { isNilOrError } from 'utils/helperUtils';
 import { requestBlob } from 'utils/requestBlob';
 
 import { saveIdeaFormAsPDF } from '../../inputForm/saveIdeaFormAsPDF';
 import { saveSurveyAsPDF } from '../../nativeSurvey/saveSurveyAsPDF';
-import { getFormActionsConfig } from '../../nativeSurvey/utils';
 import sharedMessages from '../messages';
 
 import messages from './messages';
+import { isPDFUploadSupported, supportsNativeSurvey } from './utils';
 
 const EmptyState = () => {
-  const [exportModalOpen, setExportModalOpen] = useState(false);
   const locale = useLocale();
   const { projectId, phaseId } = useParams() as {
     projectId: string;
@@ -43,9 +44,15 @@ const EmptyState = () => {
   };
   const { data: project } = useProjectById(projectId);
   const { data: phase } = usePhase(phaseId);
-  const importPrintedFormsEnabled = useFeatureFlag({
-    name: 'import_printed_forms',
+
+  const participationMethod = phase?.data.attributes.participation_method;
+
+  const inputImporterAllowed = useFeatureFlag({
+    name: 'input_importer',
+    onlyCheckAllowed: true,
   });
+
+  const pdfImportSupported = isPDFUploadSupported(participationMethod);
 
   if (!project || !phase) {
     return null;
@@ -65,14 +72,12 @@ const EmptyState = () => {
     saveAs(blob, 'example.xlsx');
   };
 
-  const handleDownloadPDF = () => setExportModalOpen(true);
-
-  const handleExportPDF = async ({ personal_data }: FormValues) => {
+  const handleExportPDF = async ({
+    personal_data,
+  }: FormPDFExportFormValues) => {
     if (isNilOrError(locale)) return;
 
-    // TODO: Fix this the next time the file is edited.
-    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-    if (phase?.data.attributes.participation_method === 'native_survey') {
+    if (supportsNativeSurvey(participationMethod)) {
       await saveSurveyAsPDF({
         downloadPdfLink: surveyDownloadPdfLink,
         locale,
@@ -106,49 +111,38 @@ const EmptyState = () => {
         </Title>
         <Text>
           <FormattedMessage
-            {...(importPrintedFormsEnabled
+            {...(pdfImportSupported
               ? messages.noIdeasYet
-              : messages.noIdeasYetPrintedFormsDisabled)}
+              : messages.noIdeasYetNoPdf)}
             values={{
               importFile: <FormattedMessage {...sharedMessages.importFile} />,
             }}
           />
         </Text>
-        <Box display="flex" flexDirection="row">
-          <Box mr="8px">
+        <Box display="flex">
+          {pdfImportSupported && (
+            <DownloadPDFButtonWithModal
+              formType={
+                supportsNativeSurvey(participationMethod)
+                  ? 'survey'
+                  : 'input_form'
+              }
+              onExport={handleExportPDF}
+              mr="8px"
+            />
+          )}
+          <UpsellTooltip disabled={inputImporterAllowed}>
             <Button
-              bgColor={colors.primary}
-              onClick={handleDownloadPDF}
-              width="auto"
+              buttonStyle="secondary-outlined"
               icon="download"
-              data-cy="e2e-save-input-form-pdf"
+              onClick={downloadExampleXlsxFile}
+              disabled={!inputImporterAllowed}
             >
-              {/* TODO: distinguish copies between surveys and inputs */}
-              <FormattedMessage {...buttonMessages.downloadInputForm} />
+              <FormattedMessage {...buttonMessages.downloadExcelTemplate} />
             </Button>
-          </Box>
-          <Button
-            mr="8px"
-            buttonStyle="secondary-outlined"
-            icon="download"
-            onClick={downloadExampleXlsxFile}
-          >
-            <FormattedMessage {...buttonMessages.downloadExcelTemplate} />
-          </Button>
+          </UpsellTooltip>
         </Box>
       </Box>
-      <PDFExportModal
-        open={exportModalOpen}
-        formType={
-          // TODO: Fix this the next time the file is edited.
-          // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-          phase?.data.attributes.participation_method === 'native_survey'
-            ? 'survey'
-            : 'idea_form'
-        }
-        onClose={() => setExportModalOpen(false)}
-        onExport={handleExportPDF}
-      />
     </Box>
   );
 };

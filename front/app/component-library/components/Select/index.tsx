@@ -59,7 +59,7 @@ const Container = styled.div`
   }
 `;
 
-export const SelectWrapper = styled.div`
+export const SelectWrapper = styled.div<{ mr?: string; size?: InputSize }>`
   width: 100%;
   position: relative;
   select {
@@ -68,6 +68,8 @@ export const SelectWrapper = styled.div`
     padding-right: 27px;
     cursor: pointer;
     outline: none !important;
+
+    ${({ mr }) => (mr ? `margin-right: ${mr};` : '')}
 
     ${isRtl`
     padding-right: 0;
@@ -97,6 +99,7 @@ export interface Props extends DefaultProps {
   className?: string;
   size?: InputSize;
   placeholder?: string;
+  mr?: string;
 }
 
 const DEFAULT_VALUE = 'DEFAULT_SELECT_VALUE';
@@ -125,7 +128,7 @@ class Select extends PureComponent<Props> {
 
     // comparing the string versions since event.target.value returns a string even when the value was defined as a number
     const selectedOption = options?.find(
-      (option) => option.value.toString() === event.target.value.toString()
+      (option) => option.value?.toString() === event.target.value.toString()
     );
     if (selectedOption) onChange(selectedOption);
     else if (event.target.value === 'DEFAULT_SELECT_VALUE') {
@@ -153,6 +156,7 @@ class Select extends PureComponent<Props> {
       size,
       value,
       placeholder,
+      mr,
     } = this.props;
 
     const safeValue =
@@ -177,7 +181,7 @@ class Select extends PureComponent<Props> {
             )}
           </Label>
         )}
-        <SelectWrapper size={size}>
+        <SelectWrapper size={size} mr={mr}>
           <select
             id={id}
             disabled={disabled}

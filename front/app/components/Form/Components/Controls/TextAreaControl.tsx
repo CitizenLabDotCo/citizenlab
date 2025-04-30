@@ -10,10 +10,11 @@ import {
 import { withJsonFormsControlProps } from '@jsonforms/react';
 import styled from 'styled-components';
 
+import getFollowUpControlKey from 'components/Form/utils/getFollowUpControlKey';
 import { FormLabel } from 'components/UI/FormComponents';
 import TextArea from 'components/UI/TextArea';
 
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import { isString } from 'utils/helperUtils';
 import { getLabel, sanitizeForClassname } from 'utils/JSONFormUtils';
 
@@ -38,6 +39,7 @@ const TextAreaControl = ({
   uischema,
   visible,
 }: ControlProps) => {
+  const { formatMessage } = useIntl();
   const [didBlur, setDidBlur] = useState(false);
   const answerNotPublic = uischema.options?.answer_visible_to === 'admins';
 
@@ -45,41 +47,51 @@ const TextAreaControl = ({
     return null;
   }
 
+  const isFollowUpField = !!getFollowUpControlKey(uischema.scope);
+
   return (
     <>
-      <FormLabel
-        htmlFor={sanitizeForClassname(id)}
-        labelValue={getLabel(uischema, schema, path)}
-        optional={!required}
-        subtextValue={getSubtextElement(uischema.options?.description)}
-        subtextSupportsHtml
-      />
+      {!isFollowUpField && (
+        <FormLabel
+          htmlFor={sanitizeForClassname(id)}
+          labelValue={getLabel(uischema, schema, path)}
+          optional={!required}
+          subtextValue={getSubtextElement(uischema.options?.description)}
+          subtextSupportsHtml
+        />
+      )}
+
       {answerNotPublic && (
         <Text mb="8px" mt="0px" fontSize="s">
           <FormattedMessage {...messages.notPublic} />
         </Text>
       )}
-      <Box display="flex" flexDirection="row">
+      <Box
+        display="flex"
+        flexDirection="row"
+        mt={isFollowUpField ? '-20px' : undefined} // Move the text input closer to the above control if its a follow-up input.
+      >
         <StyledTextArea
           onChange={(value) => handleChange(path, value)}
           rows={6}
           value={data}
           id={sanitizeForClassname(id)}
           onBlur={() => {
-            // TODO: Fix this the next time the file is edited.
-            // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-            uischema?.options?.transform === 'trim_on_blur' &&
+            uischema.options?.transform === 'trim_on_blur' &&
               isString(data) &&
               handleChange(path, data.trim());
             setDidBlur(true);
           }}
-          // TODO: Fix this the next time the file is edited.
-          // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-          disabled={uischema?.options?.readonly}
+          disabled={uischema.options?.readonly}
+          placeholder={
+            isFollowUpField
+              ? `${getLabel(uischema, schema, path)} ${formatMessage(
+                  messages.optionalParentheses
+                )}`
+              : ''
+          }
         />
-        {/* TODO: Fix this the next time the file is edited. */}
-        {/* eslint-disable-next-line @typescript-eslint/no-unnecessary-condition */}
-        <VerificationIcon show={uischema?.options?.verificationLocked} />
+        <VerificationIcon show={uischema.options?.verificationLocked} />
       </Box>
       <ErrorDisplay
         inputId={sanitizeForClassname(id)}

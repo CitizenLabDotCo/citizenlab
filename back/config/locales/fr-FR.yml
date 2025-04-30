@@ -91,6 +91,9 @@ fr:
     services_description: Services publics
     other: Autres
     other_description: Autres
+    quality_of_life: Qualité de vie
+    service_delivery: Services
+    governance_and_trust: Gouvernance et confiance
   static_pages:
     terms_and_conditions_title: Conditions Générales d'Utilisation
     terms_and_conditions_body: >
@@ -126,6 +129,7 @@ fr:
     open_idea_phase_title: Phase en cours
     native_survey_title: Enquête
     native_survey_button: Répondre à l'enquête
+    community_monitor_title: Observatoire de la communauté
   events:
     council_meeting_title: Conseil Communal
     council_meeting_description: >
@@ -167,16 +171,58 @@ fr:
       attachments:
         title: Pièces jointes
         description:
-      section1:
+      title_page:
         description:
-      section2:
+      body_page:
+        title: Dites-nous en plus
+        description:
+      uploads_page:
         title: Images et pièces jointes
         description:
-      section3:
-        title: Détails
+      details_page:
+        title: Détails 
         description:
       other_input_field:
         title: Saisissez votre réponse
+      ask_follow_up_field:
+        title: Dites-nous pourquoi
+    community_monitor:
+      questions:
+        place_to_live:
+          title: La ville comme lieu de vie
+        sense_of_safety:
+          title: Sentiment général de sécurité
+        access_to_parks:
+          title: Accès aux parcs, espaces verts et loisirs
+        affordable_housing:
+          title: Disponibilité de logements abordables
+        employment_opportunities:
+          title: Opportunités d'emploi et d'ascension économique
+        quality_of_services:
+          title: Qualité générale des services fournis par la ville
+        overall_value:
+          title: Valeur reçue en contrepartie de vos impôts et taxes municipaux
+        cleanliness_and_maintenance:
+          title: Propreté et entretien des rues et des espaces publics
+        trust_in_government:
+          title: Confiance dans le gouvernement local
+        responsiveness_of_officials:
+          title: Réactivité des élus aux préoccupations de la communauté
+        transparency_of_money_spent:
+          title: Transparence sur les dépenses des impôts municipaux
+      question_categories:
+        quality_of_life: Qualité de vie
+        service_delivery: Services
+        governance_and_trust: Gouvernance et confiance
+        other: Autre
+      labels:
+        label_1: Mauvais
+        label_2: Insuffisant
+        label_3: Correct
+        label_4: Bon
+        label_5: Excellent
+      form_end:
+        button_text: Retour à l'accueil
   custom_forms:
     categories:
       main_content:
@@ -257,6 +303,8 @@ fr:
     form_end_page:
       title_text_3: 'Merci pour votre participation !'
       description_text_3: "Votre contribution a été soumise avec succès."
+    form_user_page:
+      title_text: 'À propos de vous'
     pdf_export:
       personal_data: 'Données personnelles'
       personal_data_explanation_public: "Cette contribution sera soumise sur la plateforme de participation en ligne de %{organizationName}. Si vous souhaitez que votre nom soit affiché en tant qu'auteur et recevoir par e-mail des mises à jours concernant votre soumission, veuillez remplir les champs suivants et nous créerons un compte pour vous. Votre adresse e-mail ne sera pas publique et sera uniquement utilisée par %{organizationName}. Si vous préférez rester anonyme ou ne souhaitez pas que nous utilisions vos données personnelles à cette fin, vous pouvez laisser ces champs vides."

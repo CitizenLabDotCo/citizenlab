@@ -10,6 +10,7 @@ export const appConfigurationData: IAppConfigurationData = {
     settings: {
       core: {
         allowed: true,
+        country_code: 'BE',
         enabled: true,
         locales: ['en'],
         population: 12500,
@@ -34,6 +35,12 @@ export const appConfigurationData: IAppConfigurationData = {
         additional_moderators_number: 4,
         allow_sharing: true,
         private_attributes_in_export: true,
+        area_term: {
+          en: 'region',
+        },
+        areas_term: {
+          en: 'regions',
+        },
       },
       advanced_custom_pages: {
         allowed: true,

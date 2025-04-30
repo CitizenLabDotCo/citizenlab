@@ -127,6 +127,33 @@ const Pagination = ({
   useColorsTheme,
   loadPage,
 }: Props) => {
+  if (totalPages > 1) {
+    return (
+      <Box
+        display="flex"
+        justifyContent="flex-end"
+        className={className}
+        data-testid="pagination"
+      >
+        <PaginationWithoutPositioning
+          currentPage={currentPage}
+          totalPages={totalPages}
+          useColorsTheme={useColorsTheme}
+          loadPage={loadPage}
+        />
+      </Box>
+    );
+  }
+
+  return null;
+};
+
+export const PaginationWithoutPositioning = ({
+  currentPage,
+  totalPages,
+  useColorsTheme,
+  loadPage,
+}: Props) => {
   const { formatMessage } = useIntl();
   const calculateMenuItems = (currentPage: number, totalPages: number) => {
     const current = currentPage;
@@ -173,57 +200,46 @@ const Pagination = ({
 
   const pageItems = calculateMenuItems(currentPage, totalPages);
 
-  if (totalPages > 1) {
-    return (
-      <Box
-        display="flex"
-        justifyContent="flex-end"
-        className={className}
-        data-testid="pagination"
+  return (
+    <ContainerInner>
+      <Back
+        onMouseDown={removeFocusAfterMouseClick}
+        onClick={goTo(currentPage - 1)}
+        disabled={currentPage === 1}
+        className={currentPage === 1 ? 'disabled' : ''}
+        aria-label={formatMessage(messages.back)}
       >
-        <ContainerInner>
-          <Back
+        <ChevronIcon name="chevron-right" />
+      </Back>
+
+      <Pages>
+        {pageItems.map((item) => (
+          <Item
+            key={item}
+            className={`${item === currentPage ? 'active' : ''} ${
+              item < 0 ? 'disabled' : ''
+            }`}
             onMouseDown={removeFocusAfterMouseClick}
-            onClick={goTo(currentPage - 1)}
-            disabled={currentPage === 1}
-            className={currentPage === 1 ? 'disabled' : ''}
-            aria-label={formatMessage(messages.back)}
+            onClick={handleItemClick(item)}
+            disabled={item < 0}
+            useColorsTheme={useColorsTheme}
           >
-            <ChevronIcon name="chevron-right" />
-          </Back>
+            <span>{item < 0 ? '...' : item.toString()}</span>
+          </Item>
+        ))}
+      </Pages>
 
-          <Pages>
-            {pageItems.map((item) => (
-              <Item
-                key={item}
-                className={`${item === currentPage ? 'active' : ''} ${
-                  item < 0 ? 'disabled' : ''
-                }`}
-                onMouseDown={removeFocusAfterMouseClick}
-                onClick={handleItemClick(item)}
-                disabled={item < 0}
-                useColorsTheme={useColorsTheme}
-              >
-                <span>{item < 0 ? '...' : item.toString()}</span>
-              </Item>
-            ))}
-          </Pages>
-
-          <Next
-            onMouseDown={removeFocusAfterMouseClick}
-            onClick={goTo(currentPage + 1)}
-            disabled={currentPage === totalPages}
-            className={currentPage === totalPages ? 'disabled' : ''}
-            aria-label={formatMessage(messages.next)}
-          >
-            <ChevronIcon name="chevron-right" />
-          </Next>
-        </ContainerInner>
-      </Box>
-    );
-  }
-
-  return null;
+      <Next
+        onMouseDown={removeFocusAfterMouseClick}
+        onClick={goTo(currentPage + 1)}
+        disabled={currentPage === totalPages}
+        className={currentPage === totalPages ? 'disabled' : ''}
+        aria-label={formatMessage(messages.next)}
+      >
+        <ChevronIcon name="chevron-right" />
+      </Next>
+    </ContainerInner>
+  );
 };
 
 export default Pagination;

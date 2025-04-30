@@ -3,7 +3,7 @@
 module ParticipationMethod
   class Base
     def self.all_methods
-      [DocumentAnnotation, Ideation, Information, NativeSurvey, Poll, Proposals, Survey, Volunteering, Voting]
+      [DocumentAnnotation, Ideation, Information, NativeSurvey, CommunityMonitorSurvey, Poll, Proposals, Survey, Volunteering, Voting]
     end
 
     def initialize(phase)
@@ -49,6 +49,10 @@ module ParticipationMethod
     def custom_form
       context = transitive? ? phase.project : phase
       context.custom_form || CustomForm.new(participation_context: context)
+    end
+
+    def form_logic_enabled?
+      false
     end
 
     def default_fields(_custom_form)
@@ -114,10 +118,6 @@ module ParticipationMethod
       true
     end
 
-    def supports_pages_in_form?
-      false
-    end
-
     def supports_permitted_by_everyone?
       false
     end
@@ -159,6 +159,34 @@ module ParticipationMethod
     end
 
     def use_reactions_as_votes?
+      false
+    end
+
+    def follow_idea_on_idea_submission?
+      false
+    end
+
+    def validate_phase
+      # Default is to do nothing.
+    end
+
+    def automatically_assign_idea?
+      false
+    end
+
+    def supports_event_attendance?
+      true
+    end
+
+    def supports_custom_field_categories?
+      false
+    end
+
+    def user_fields_in_form?
+      false
+    end
+
+    def supports_multiple_phase_reports?
       false
     end
 

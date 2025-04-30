@@ -20,7 +20,7 @@ import Link from 'utils/cl-router/Link';
 
 import messages from './messages';
 
-const Name = styled.span<{
+export const Name = styled.span<{
   color?: string;
   fontWeight?: number;
   fontSize?: number;

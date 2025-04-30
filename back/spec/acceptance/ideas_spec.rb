@@ -395,13 +395,27 @@ resource 'Ideas' do
 
       context 'idea authored by user' do
         let!(:idea) do
-          create(:idea, project: phase.project, phases: [phase], creation_phase: phase, author: @user, publication_status: 'draft')
+          create(:native_survey_response, project: phase.project, author: @user, publication_status: 'draft', custom_field_values: { 'field' => 'value' })
         end
 
+        before { @user.update!(custom_field_values: { 'gender' => 'male' }) }
+
         example_request 'Get a single draft idea by phase' do
-          expect(status).to eq 200
-          json_response = json_parse(response_body)
-          expect(json_response.dig(:data, :id)).to eq idea.id
+          assert_status 200
+          expect(response_data[:id]).to eq idea.id
+          expect(response_data[:attributes]).to include(field: 'value')
+          expect(response_data[:attributes]).not_to include(u_gender: 'male')
+        end
+
+        context 'when user data in the survey form is enabled' do
+          example 'Get a single draft idea by phase including user data' do
+            phase.update!(user_fields_in_form: true)
+            @user.update!(custom_field_values: { 'gender' => 'male' })
+            do_request
+            assert_status 200
+            expect(response_data[:id]).to eq idea.id
+            expect(response_data[:attributes]).to include(field: 'value', u_gender: 'male')
+          end
         end
       end
 
@@ -451,31 +465,70 @@ resource 'Ideas' do
       end
     end
 
-    get 'web_api/v1/ideas/:id/similarities' do
+    post 'web_api/v1/ideas/similar_ideas' do
+      with_options scope: :idea do
+        parameter :title_multiloc, 'Multi-locale field with the idea title', extra: 'Maximum 100 characters'
+        parameter :body_multiloc, 'Multi-locale field with the idea body', extra: 'Required if not draft'
+        parameter :project_id, 'The identifier of the project that hosts the idea'
+        parameter :phase_ids, 'The phases the idea is part of, defaults to the current only, only allowed by admins'
+      end
       with_options scope: :page do
         parameter :number, 'Page number'
         parameter :size, 'Number of ideas per page'
       end
 
+      let(:project) { create(:project_with_active_ideation_phase) }
+      let(:project_id) { project.id }
+      let(:idea) { create(:idea, project:) }
+      let(:title_multiloc) { { 'en' => 'My similar idea' } }
       let(:embeddings) { JSON.parse(File.read('spec/fixtures/word_embeddings.json')) }
-      let!(:idea_pizza) { create(:embeddings_similarity, embedding: embeddings['pizza']).embeddable }
-      let!(:idea_burger) { create(:embeddings_similarity, embedding: embeddings['burger']).embeddable }
-      let!(:idea_moon) { create(:embeddings_similarity, embedding: embeddings['moon']).embeddable }
-      let!(:idea_bats) { create(:embeddings_similarity, embedding: embeddings['bats']).embeddable }
-      let(:id) { idea_pizza.id }
-
-      example_request 'Get similar ideas' do
-        assert_status 200
-        expect(json_parse(response_body)[:data].pluck(:id)).to eq [] # When no threshold: [idea_burger.id, idea_bats.id, idea_moon.id]
-      end
+      let!(:idea_pizza) { create(:embeddings_similarity, embedding: embeddings['pizza'], embeddable: create(:idea, project:)).embeddable }
+      let!(:idea_burger) { create(:embeddings_similarity, embedding: embeddings['burger'], embeddable: create(:idea, project:)).embeddable }
+      let!(:idea_moon) { create(:embeddings_similarity, embedding: embeddings['moon'], embeddable: create(:idea, project:)).embeddable }
+      let!(:idea_bats) { create(:embeddings_similarity, embedding: embeddings['bats'], embeddable: create(:idea, project:)).embeddable }
 
       describe do
-        before { create_list(:embeddings_similarity, 10) }
+        before do
+          allow_any_instance_of(CohereMultilingualEmbeddings).to receive(:embedding) do
+            embeddings['pizza']
+          end
 
-        example 'Do not return more than 10 inputs', document: false do
+          SettingsService.new.activate_feature! 'input_iq'
+          project.phases.first.update!(similarity_threshold_title: 0.3, similarity_threshold_body: 0.0)
+        end
+
+        example_request 'Get similar ideas' do
+          assert_status 200
+          expect(json_parse(response_body)[:data].pluck(:id)).to eq [idea_pizza.id]
+        end
+
+        example 'Caches the request' do
+          expect_any_instance_of(SimilarIdeasService).to receive(:similar_ideas).once.and_call_original
           do_request
           assert_status 200
-          expect(json_parse(response_body)[:data].size).to be <= 10
+          do_request
+          assert_status 200
+        end
+
+        example 'Fetches the similarity thresholds from the corresponding phase' do
+          expect_any_instance_of(SimilarIdeasService).to receive(:similar_ideas).with(
+            title_threshold: 0.3,
+            body_threshold: 0.0,
+            scope: anything,
+            limit: 5
+          ).and_call_original
+          do_request
+          assert_status 200
+        end
+
+        example 'Excludes ideas outside the project or not visible to the current user' do
+          idea_outside_project = create(:embeddings_similarity, embedding: embeddings['pizza'], embeddable: create(:idea, project: create(:project))).embeddable
+          idea_outside_scope = create(:embeddings_similarity, embedding: embeddings['pizza'], embeddable: create(:idea, project:, publication_status: 'draft')).embeddable
+          do_request
+          assert_status 200
+          expect(json_parse(response_body)[:data].pluck(:id)).to eq [idea_pizza.id]
+          expect(json_parse(response_body)[:data].pluck(:id)).not_to include(idea_outside_project.id)
+          expect(json_parse(response_body)[:data].pluck(:id)).not_to include(idea_outside_scope.id)
         end
       end
     end

@@ -50,19 +50,26 @@ const ImageControl = ({
   const [didBlur, setDidBlur] = useState(false);
 
   useEffect(() => {
-    if (
-      inputId &&
-      !isNilOrError(data) &&
-      data.length > 0 &&
-      data[0].attributes?.versions.medium
-    ) {
-      (async () => {
-        const newRemoteFile = await convertUrlToUploadFile(
-          data[0].attributes.versions.medium as string,
-          data[0].id
-        );
-        newRemoteFile && setImageFiles([newRemoteFile]);
-      })();
+    if (!isNilOrError(data) && data.length > 0) {
+      if (data[0].image) {
+        // Handle local file (base64 string)
+        const base64 = data[0].image;
+        const uploadFile = {
+          base64,
+          remote: false,
+          url: base64,
+        };
+        setImageFiles([uploadFile as UploadFile]);
+      } else if (inputId && data[0].attributes?.versions?.medium) {
+        // Handle remote file (URL)
+        (async () => {
+          const newRemoteFile = await convertUrlToUploadFile(
+            data[0].attributes.versions.medium as string,
+            data[0].id
+          );
+          newRemoteFile && setImageFiles([newRemoteFile]);
+        })();
+      }
     }
   }, [data, inputId]);
 

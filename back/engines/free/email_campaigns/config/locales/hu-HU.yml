@@ -8,6 +8,7 @@ hu:
       "comment_marked_as_spam": Megjegyzés spamjelentés
       "comment_on_your_comment": Válasz a hozzászólásomra
       "comment_on_idea_you_follow": Megjegyzés egy Ön által követett ötlethez
+      "community_monitor_report": Közösségi megfigyelő jelentés
       "cosponsor_of_your_idea": Egy felhasználó elfogadja a meghívásomat, hogy társszponzorálja ajánlatomat
       "event_registration_confirmation": Esemény regisztráció megerősítése
       "idea_marked_as_spam": Idea spam jelentés
@@ -82,6 +83,7 @@ hu:
         "4": "Hetente, csütörtökönként %{hourOfDay}-kor"
         "5": "Hetente, péntekenként %{hourOfDay}-kor"
         "6": "Hetente, szombatonként %{hourOfDay}-kor"
+      quarterly: "Negyedévenként, a negyedév első napján"
     footer:
       "link_privacy_policy": "Adatvédelmi szabályzat"
       "link_terms_conditions": "Általános Szerződési Feltételek"
@@ -147,6 +149,12 @@ hu:
       today: Ma
       wrong_content: 'A megjegyzés nem releváns.'
       yesterday: Tegnap
+    community_monitor_report:
+      subject: 'Elérhető egy új közösségfigyelő jelentés'
+      title: 'Elérhető egy új közösségfigyelő jelentés'
+      text_introduction: 'Közösségi megfigyelő jelentés készült az előző negyedévről. Az alábbi gombra kattintva és bejelentkezve érheti el.'
+      cta_report_button: 'Jelentés megtekintése'
+      report_name: 'Közösségi megfigyelő jelentés'
     cosponsor_of_your_idea:
       cta_reply_to: 'Tekintse meg ajánlatát'
       event_description: 'Gratulálok! %{cosponsorName} elfogadta a felkérését, hogy társszponzorálja ajánlatát.'
@@ -499,6 +507,7 @@ hu:
       cta_vote: 'Menjen a platformra szavazni'
     survey_submitted:
       subject: '%{organizationName}: Köszönöm válaszát! 🎉'
+      preheader: 'Íme a beadvány részletei.'
       main_header: 'Köszönjük, hogy megosztotta gondolatait a következővel kapcsolatban: "%{projectName}"!'
       your_input_submitted: 'A "%{projectName}" beírása sikeresen elküldve.'
       if_you_would_like_to_review: 'Ha szeretné felülvizsgálni beadványát, lentebb letöltheti válaszait.'

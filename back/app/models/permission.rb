@@ -29,6 +29,7 @@ class Permission < ApplicationRecord
     'ideation' => %w[posting_idea commenting_idea reacting_idea attending_event],
     'proposals' => %w[posting_idea commenting_idea reacting_idea attending_event],
     'native_survey' => %w[posting_idea attending_event],
+    'community_monitor_survey' => %w[posting_idea],
     'survey' => %w[taking_survey attending_event],
     'poll' => %w[taking_poll attending_event],
     'voting' => %w[voting commenting_idea attending_event],

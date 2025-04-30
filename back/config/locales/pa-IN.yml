@@ -91,6 +91,9 @@ pa:
     services_description: ਜਨਤਕ ਸੇਵਾਵਾਂ
     other: ਹੋਰ
     other_description: ਹੋਰ
+    quality_of_life: ਜੀਵਨ ਦੀ ਗੁਣਵੱਤਾ
+    service_delivery: ਸੇਵਾ ਪ੍ਰਦਾਨ ਕਰਨਾ
+    governance_and_trust: ਸ਼ਾਸਨ ਅਤੇ ਵਿਸ਼ਵਾਸ
   static_pages:
     terms_and_conditions_title: ਨਿਯਮ ਅਤੇ ਸ਼ਰਤਾਂ
     terms_and_conditions_body: >
@@ -126,6 +129,7 @@ pa:
     open_idea_phase_title: ਮੌਜੂਦਾ ਪੜਾਅ
     native_survey_title: ਸਰਵੇਖਣ
     native_survey_button: ਸਰਵੇਖਣ ਲਵੋ
+    community_monitor_title: ਕਮਿਊਨਿਟੀ ਮਾਨੀਟਰ
   events:
     council_meeting_title: ਕੌਂਸਲ ਦੀ ਮੀਟਿੰਗ
     council_meeting_description: >
@@ -167,16 +171,58 @@ pa:
       attachments:
         title: ਅਟੈਚਮੈਂਟਸ
         description:
-      section1:
+      title_page:
         description:
-      section2:
-        title: ਚਿੱਤਰ ਅਤੇ ਅਟੈਚਮੈਂਟ
+      body_page:
+        title: ਸਾਨੂੰ ਹੋਰ ਦੱਸੋ
         description:
-      section3:
+      uploads_page:
+        title: ਚਿੱਤਰ ਅਤੇ ਅਟੈਚਮੈਂਟਾਂ
+        description:
+      details_page:
         title: ਵੇਰਵੇ
         description:
       other_input_field:
         title: ਆਪਣਾ ਜਵਾਬ ਟਾਈਪ ਕਰੋ
+      ask_follow_up_field:
+        title: ਸਾਨੂੰ ਦੱਸੋ ਕਿਉਂ
+    community_monitor:
+      questions:
+        place_to_live:
+          title: ਰਹਿਣ ਲਈ ਇੱਕ ਜਗ੍ਹਾ ਦੇ ਰੂਪ ਵਿੱਚ ਸ਼ਹਿਰ
+        sense_of_safety:
+          title: ਸੁਰੱਖਿਆ ਦੀ ਸਮੁੱਚੀ ਭਾਵਨਾ
+        access_to_parks:
+          title: ਪਾਰਕਾਂ, ਹਰੀਆਂ ਥਾਵਾਂ ਅਤੇ ਮਨੋਰੰਜਨ ਦੇ ਮੌਕਿਆਂ ਤੱਕ ਪਹੁੰਚ
+        affordable_housing:
+          title: ਕਿਫਾਇਤੀ ਰਿਹਾਇਸ਼ ਦੀ ਉਪਲਬਧਤਾ
+        employment_opportunities:
+          title: ਰੁਜ਼ਗਾਰ ਅਤੇ ਆਰਥਿਕ ਤਰੱਕੀ ਦੇ ਮੌਕੇ
+        quality_of_services:
+          title: ਸ਼ਹਿਰ ਦੁਆਰਾ ਪ੍ਰਦਾਨ ਕੀਤੀਆਂ ਜਾਂਦੀਆਂ ਸੇਵਾਵਾਂ ਦੀ ਸਮੁੱਚੀ ਗੁਣਵੱਤਾ
+        overall_value:
+          title: ਤੁਹਾਡੇ ਸ਼ਹਿਰ ਦੇ ਟੈਕਸਾਂ ਅਤੇ ਫੀਸਾਂ ਲਈ ਤੁਹਾਨੂੰ ਪ੍ਰਾਪਤ ਹੋਣ ਵਾਲਾ ਕੁੱਲ ਮੁੱਲ
+        cleanliness_and_maintenance:
+          title: ਗਲੀਆਂ ਅਤੇ ਜਨਤਕ ਥਾਵਾਂ ਦੀ ਸਮੁੱਚੀ ਸਫਾਈ ਅਤੇ ਰੱਖ-ਰਖਾਅ
+        trust_in_government:
+          title: ਸਥਾਨਕ ਸਰਕਾਰ ਵਿੱਚ ਭਰੋਸਾ
+        responsiveness_of_officials:
+          title: ਚੁਣੇ ਹੋਏ ਅਧਿਕਾਰੀਆਂ ਦੀ ਭਾਈਚਾਰਕ ਚਿੰਤਾਵਾਂ ਪ੍ਰਤੀ ਜਵਾਬਦੇਹੀ
+        transparency_of_money_spent:
+          title: ਨਗਰ ਨਿਗਮ ਟੈਕਸ ਦੇ ਪੈਸੇ ਕਿਵੇਂ ਖਰਚੇ ਜਾਂਦੇ ਹਨ, ਇਸ ਬਾਰੇ ਪਾਰਦਰਸ਼ਤਾ
+      question_categories:
+        quality_of_life: ਜੀਵਨ ਦੀ ਗੁਣਵੱਤਾ
+        service_delivery: ਸੇਵਾ ਪ੍ਰਦਾਨ ਕਰਨਾ
+        governance_and_trust: ਸ਼ਾਸਨ ਅਤੇ ਵਿਸ਼ਵਾਸ
+        other: ਹੋਰ
+      labels:
+        label_1: ਬਹੁਤ ਮਾੜਾ
+        label_2: ਮਾੜਾ
+        label_3: ਮੇਲਾ
+        label_4: ਚੰਗਾ
+        label_5: ਸ਼ਾਨਦਾਰ
+      form_end:
+        button_text: ਘਰ ਵਾਪਸ
   custom_forms:
     categories:
       main_content:
@@ -257,6 +303,8 @@ pa:
     form_end_page:
       title_text_3: 'ਆਪਣਾ ਇਨਪੁਟ ਸਾਂਝਾ ਕਰਨ ਲਈ ਧੰਨਵਾਦ!'
       description_text_3: "ਤੁਹਾਡਾ ਇਨਪੁਟ ਸਫਲਤਾਪੂਰਵਕ ਸਪੁਰਦ ਕੀਤਾ ਗਿਆ ਹੈ।"
+    form_user_page:
+      title_text: 'ਤੁਹਾਡੇ ਬਾਰੇ'
     pdf_export:
       personal_data: 'ਨਿੱਜੀ ਡਾਟਾ'
       personal_data_explanation_public: "ਅਸੀਂ ਤੁਹਾਡੇ ਇਨਪੁਟ ਨੂੰ %{organizationName}ਦੇ ਔਨਲਾਈਨ ਭਾਗੀਦਾਰੀ ਪਲੇਟਫਾਰਮ 'ਤੇ ਜਮ੍ਹਾਂ ਕਰਾਵਾਂਗੇ। ਜੇਕਰ ਤੁਸੀਂ ਚਾਹੁੰਦੇ ਹੋ ਕਿ ਤੁਹਾਡਾ ਨਾਮ ਇਸ ਇਨਪੁਟ ਦੇ ਲੇਖਕ ਵਜੋਂ ਪ੍ਰਦਰਸ਼ਿਤ ਕੀਤਾ ਜਾਵੇ ਅਤੇ ਈਮੇਲ ਦੁਆਰਾ ਤੁਹਾਡੇ ਇਨਪੁਟ ਨਾਲ ਸੰਬੰਧਿਤ ਅੱਪਡੇਟ ਪ੍ਰਾਪਤ ਕਰੋ, ਤਾਂ ਕਿਰਪਾ ਕਰਕੇ ਇਸ ਪੰਨੇ 'ਤੇ ਹੇਠਾਂ ਦਿੱਤੇ ਖੇਤਰਾਂ ਨੂੰ ਭਰੋ ਅਤੇ ਅਸੀਂ ਤੁਹਾਡੇ ਲਈ ਇੱਕ ਖਾਤਾ ਬਣਾਵਾਂਗੇ। ਤੁਹਾਡੀ ਈਮੇਲ ਜਨਤਕ ਨਹੀਂ ਹੋਵੇਗੀ ਅਤੇ ਸਿਰਫ਼ %{organizationName}ਦੁਆਰਾ ਵਰਤੀ ਜਾਵੇਗੀ। ਜੇ ਤੁਸੀਂ ਅਗਿਆਤ ਰਹਿਣਾ ਚਾਹੁੰਦੇ ਹੋ, ਜਾਂ ਇਸ ਤਰੀਕੇ ਨਾਲ ਤੁਹਾਡੇ ਨਿੱਜੀ ਡੇਟਾ ਦੀ ਵਰਤੋਂ ਕਰਨ ਲਈ ਸਾਡੇ ਲਈ ਸਹਿਮਤ ਨਹੀਂ ਹੋ, ਤਾਂ ਤੁਸੀਂ ਉਹਨਾਂ ਨੂੰ ਖਾਲੀ ਛੱਡ ਸਕਦੇ ਹੋ।"

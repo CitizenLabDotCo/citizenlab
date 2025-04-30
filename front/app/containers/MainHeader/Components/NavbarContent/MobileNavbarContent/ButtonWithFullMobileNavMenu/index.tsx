@@ -9,22 +9,23 @@ const FullMobileNavMenu = lazy(() => import('../FullMobileNavMenu'));
 const ButtonWithFullMobileNavMenu = () => {
   const [isFullMenuOpened, setIsFullMenuOpened] = useState(false);
 
-  const toggleFullMenu = () => {
-    setIsFullMenuOpened(!isFullMenuOpened);
-    trackEventByName(
-      isFullMenuOpened
-        ? tracks.moreButtonClickedFullMenuOpened
-        : tracks.moreButtonClickedFullMenuClosed
-    );
+  const openMenu = () => {
+    setIsFullMenuOpened(true);
+    trackEventByName(tracks.moreButtonClickedFullMenuOpened);
+  };
+
+  const closeMenu = () => {
+    setIsFullMenuOpened(false);
+    trackEventByName(tracks.moreButtonClickedFullMenuClosed);
   };
 
   return (
     <>
-      <ShowFullMenuButton onClick={toggleFullMenu} />
+      <ShowFullMenuButton onClick={openMenu} />
       <Suspense fallback={null}>
         <FullMobileNavMenu
           isFullMenuOpened={isFullMenuOpened}
-          onClose={toggleFullMenu}
+          onClose={closeMenu}
         />
       </Suspense>
     </>

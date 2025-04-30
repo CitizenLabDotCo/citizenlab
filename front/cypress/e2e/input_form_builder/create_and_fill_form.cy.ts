@@ -65,13 +65,26 @@ describe('Input form builder', () => {
     cy.get('#e2e-idea-new-page');
     cy.get('#idea-form');
     cy.contains('Add new idea').should('exist');
-    // add a title and description
-    cy.get('#e2e-idea-title-input input').type(ideaTitle);
-    cy.get('#e2e-idea-description-input .ql-editor').type(ideaContent);
 
-    // verify the title and description
+    // Add a title
+    cy.get('#e2e-idea-title-input input').type(ideaTitle);
     cy.get('#e2e-idea-title-input input').should('contain.value', ideaTitle);
+
+    cy.get('[data-cy="e2e-next-page"]').should('be.visible').click();
+
+    // Add a description
+    cy.get('#e2e-idea-description-input .ql-editor').type(ideaContent);
     cy.get('#e2e-idea-description-input .ql-editor').contains(ideaContent);
+
+    // Go to the next page of the idea form
+    cy.get('[data-cy="e2e-next-page"]').should('be.visible').click();
+
+    // verify that image and file upload components are present
+    cy.get('#e2e-idea-image-upload').should('exist');
+    cy.get('#e2e-idea-file-upload').should('exist');
+
+    // Tags are on page three
+    cy.get('[data-cy="e2e-next-page"]').should('be.visible').click();
 
     // add a topic
     cy.get('.e2e-topics-picker').find('button').eq(4).click();
@@ -95,12 +108,12 @@ describe('Input form builder', () => {
       '{downArrow}{enter}'
     );
 
-    // verify that image and file upload components are present
-    cy.get('#e2e-idea-image-upload').should('exist');
-    cy.get('#e2e-idea-file-upload').should('exist');
-
     // save the form
-    cy.get('.e2e-submit-idea-form').click();
+    cy.get('[data-cy="e2e-submit-form"]').click();
+    cy.wait(3000);
+
+    cy.get('[data-cy="e2e-after-submission"]').should('exist');
+    cy.get('[data-cy="e2e-after-submission"]').click();
 
     // verify the content of the newly created idea page
     cy.location('pathname').should('eq', `/en/ideas/${ideaTitle}`);
@@ -148,13 +161,24 @@ describe('Input form builder', () => {
     cy.get('#e2e-idea-new-page');
     cy.get('#idea-form');
     cy.contains('Add new idea').should('exist');
-    // add a title and description
-    cy.get('#e2e-idea-title-input input').type(ideaTitle);
-    cy.get('#e2e-idea-description-input .ql-editor').type(ideaContent);
 
-    // verify the title and description
+    cy.get('#e2e-idea-title-input input').type(ideaTitle);
     cy.get('#e2e-idea-title-input input').should('contain.value', ideaTitle);
+
+    cy.get('[data-cy="e2e-next-page"]').should('be.visible').click();
+
+    cy.get('#e2e-idea-description-input .ql-editor').type(ideaContent);
     cy.get('#e2e-idea-description-input .ql-editor').contains(ideaContent);
+
+    // Go to the next page of the idea form
+    cy.get('[data-cy="e2e-next-page"]').should('be.visible').click();
+
+    // verify that image and file upload components are present
+    cy.get('#e2e-idea-image-upload').should('exist');
+    cy.get('#e2e-idea-file-upload').should('exist');
+
+    // Go to the next page of the idea form
+    cy.get('[data-cy="e2e-next-page"]').should('be.visible').click();
 
     cy.intercept(
       `**/location/autocomplete?input=Boulevard%20Anspach%20Brussels&language=en`
@@ -175,13 +199,12 @@ describe('Input form builder', () => {
     cy.contains(questionTitle).should('exist');
     cy.get(`*[id^="properties${questionTitle}"]`).type(answer, { force: true });
 
-    // verify that image and file upload components are present
-    cy.get('#e2e-idea-image-upload').should('exist');
-    cy.get('#e2e-idea-file-upload').should('exist');
-
     // save the form
-    cy.get('.e2e-submit-idea-form').click();
+    cy.get('[data-cy="e2e-submit-form"]').click();
     cy.wait(3000);
+
+    cy.get('[data-cy="e2e-after-submission"]').should('exist');
+    cy.get('[data-cy="e2e-after-submission"]').click();
 
     // verify the content of the newly created idea page
     cy.location('pathname').should('eq', `/en/ideas/${ideaTitle}`);

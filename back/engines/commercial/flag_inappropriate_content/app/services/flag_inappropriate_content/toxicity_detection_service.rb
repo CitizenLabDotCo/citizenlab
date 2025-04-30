@@ -9,35 +9,44 @@ module FlagInappropriateContent
       'D' => 'spam',
       'E' => nil
     }
+    FLAGGABLE_TO_DEFAULT_ATTRIBUTES = {
+      'Idea' => %i[title_multiloc body_multiloc location_description],
+      'Comment' => %i[body_multiloc]
+    }
 
     def initialize
       region = ENV.fetch('AWS_TOXICITY_DETECTION_REGION', nil) # Some clusters (e.g. Canada) are not allowed to send data to the US or Europe.
-      @llm = Analysis::LLM::ClaudeInstant1.new(region: region) if region
+      @llm = Analysis::LLM::Claude3Haiku.new(region: region) if region
     end
 
-    def flag_toxicity!(flaggable, attributes: [])
+    def flag_toxicity!(flaggable, attributes: nil)
       return unless AppConfiguration.instance.feature_activated? 'flag_inappropriate_content'
 
+      attributes ||= default_attributes(flaggable)
       flag_service = InappropriateContentFlagService.new
 
-      texts = extract_texts flaggable, attributes
-      if texts.blank?
-        if (flag = flaggable.inappropriate_content_flag)
-          flag.update! toxicity_label: nil
-          flag_service.maybe_delete! flag
-        end
-        return
-      end
-      toxicity_attrs = texts.filter_map { |text| classify_toxicity(text) }
-      if toxicity_attrs.present?
-        flag_service.introduce_flag! flaggable, toxicity_attrs.first
+      classification = check_toxicity(flaggable, attributes:)
+      if classification
+        flag_service.introduce_flag! flaggable, classification
       elsif (flag = flaggable.inappropriate_content_flag)
         flag.update! toxicity_label: nil
         flag_service.maybe_delete! flag
       end
     end
 
+    def check_toxicity(flaggable, attributes: nil)
+      attributes ||= default_attributes(flaggable)
+      texts = extract_texts flaggable, attributes
+      return if texts.blank?
+
+      texts.filter_map { |text| classify_toxicity(text) }.first
+    end
+
     private
+
+    def default_attributes(flaggable)
+      FLAGGABLE_TO_DEFAULT_ATTRIBUTES[flaggable.class.name]
+    end
 
     def extract_texts(flaggable, attributes)
       texts = []

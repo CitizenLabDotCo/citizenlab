@@ -28,6 +28,7 @@ module Analysis
     SUMMARIZATION_METHODS = %w[gpt one_pass_llm bogus] # gpt is legacy value
 
     belongs_to :background_task, class_name: 'Analysis::SummarizationTask', dependent: :destroy
+    has_many :activities, as: :item
 
     validates :summarization_method, inclusion: { in: SUMMARIZATION_METHODS }
     validates :accuracy, numericality: { in: 0..1 }, allow_blank: true

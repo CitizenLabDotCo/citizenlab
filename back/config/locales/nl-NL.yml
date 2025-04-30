@@ -91,6 +91,9 @@ nl:
     services_description: Openbare diensten
     other: Overige
     other_description: Overige
+    quality_of_life: Kwaliteit van leven
+    service_delivery: Dienstverlening
+    governance_and_trust: Bestuur en vertrouwen
   static_pages:
     terms_and_conditions_title: Gebruiksvoorwaarden
     terms_and_conditions_body: >
@@ -126,6 +129,7 @@ nl:
     open_idea_phase_title: Huidige fase
     native_survey_title: Vragenlijst
     native_survey_button: Vul de vragenlijst in
+    community_monitor_title: Gemeenschapsmonitor
   events:
     council_meeting_title: Gemeenteraad
     council_meeting_description: >
@@ -167,16 +171,58 @@ nl:
       attachments:
         title: Bijlagen
         description:
-      section1:
+      title_page:
         description:
-      section2:
+      body_page:
+        title: Vertel ons meer
+        description:
+      uploads_page:
         title: Afbeeldingen en bijlagen
         description:
-      section3:
+      details_page:
         title: Details
         description:
       other_input_field:
         title: Typ je antwoord
+      ask_follow_up_field:
+        title: Vertel ons waarom
+    community_monitor:
+      questions:
+        place_to_live:
+          title: Stad als plek om te wonen
+        sense_of_safety:
+          title: Algemeen gevoel van veiligheid
+        access_to_parks:
+          title: Toegang tot parken, groene ruimten en recreatiemogelijkheden
+        affordable_housing:
+          title: Beschikbaarheid van betaalbare huisvesting
+        employment_opportunities:
+          title: Werkgelegenheid en economische ontwikkelingskansen
+        quality_of_services:
+          title: Algemene kwaliteit van de diensten die de stad levert
+        overall_value:
+          title: Totale waarde die je krijgt voor de belastingen en toeslagen in jouw stad
+        cleanliness_and_maintenance:
+          title: Algemene netheid en onderhoud van straten en openbare ruimtes
+        trust_in_government:
+          title: Vertrouwen in lokale overheid
+        responsiveness_of_officials:
+          title: Responsiviteit van gekozen functionarissen op zorgen van de gemeenschap
+        transparency_of_money_spent:
+          title: Transparantie over hoe gemeentelijk belastinggeld wordt besteed
+      question_categories:
+        quality_of_life: Kwaliteit van leven
+        service_delivery: Dienstverlening
+        governance_and_trust: Bestuur en vertrouwen
+        other: Overig
+      labels:
+        label_1: Zeer slecht
+        label_2: Slecht
+        label_3: Gemiddeld
+        label_4: Goed
+        label_5: Uitstekend
+      form_end:
+        button_text: Terug naar startpagina
   custom_forms:
     categories:
       main_content:
@@ -257,6 +303,8 @@ nl:
     form_end_page:
       title_text_3: 'Bedankt voor het delen van je invoer!'
       description_text_3: "Je invoer is succesvol ingediend."
+    form_user_page:
+      title_text: 'Over jou'
     pdf_export:
       personal_data: 'Persoonlijke gegevens'
       personal_data_explanation_public: "We zullen je bijdrage versturen naar het online participatieplatform van %{organizationName}. Als je wilt dat je naam wordt weergegeven als auteur van deze bijdrage en als je per e-mail updates wilt ontvangen die relevant zijn voor je bijdrage, vul dan de volgende velden op deze pagina in en we maken een account voor je aan. Je e-mailadres is niet openbaar en wordt alleen gebruikt door %{organizationName}. Als je anoniem wilt blijven of er niet mee akkoord gaat dat we je persoonlijke gegevens op deze manier gebruiken, kun je ze leeg laten."

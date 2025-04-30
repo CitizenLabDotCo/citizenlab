@@ -29,6 +29,7 @@ import FullPageSpinner from 'components/UI/FullPageSpinner';
 import { FormattedMessage } from 'utils/cl-intl';
 import { usePermission } from 'utils/permissions';
 
+import AuthoringAssistanePrototype from './components/AuthoringAssistanePrototype';
 import Container from './components/Container';
 import Cosponsorship from './components/Cosponsorship';
 import IdeaTitle from './components/IdeaTitle';
@@ -132,6 +133,7 @@ export const IdeasShow = ({
             translateButtonClicked={translateButtonIsClicked}
           />
           <ProjectLink project={project.data} />
+          <AuthoringAssistanePrototype ideaId={idea.data.id} />
           {ideaImageLarge && (
             <Image src={ideaImageLarge} alt="" id="e2e-idea-image" />
           )}

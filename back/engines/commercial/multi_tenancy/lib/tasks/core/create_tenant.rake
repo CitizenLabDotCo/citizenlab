@@ -89,6 +89,10 @@ namespace :cl2_back do
           enabled: true,
           allowed: true
         },
+        community_monitor: {
+          enabled: true,
+          allowed: true
+        },
         segment: {
           enabled: true,
           allowed: true
@@ -296,6 +300,10 @@ namespace :cl2_back do
           allowed: true
         },
         advanced_autotagging: {
+          enabled: true,
+          allowed: true
+        },
+        auto_insights: {
           enabled: true,
           allowed: true
         },

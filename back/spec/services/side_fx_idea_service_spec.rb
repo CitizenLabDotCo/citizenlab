@@ -9,13 +9,14 @@ describe SideFxIdeaService do
   describe 'after_create' do
     it "logs a 'created' action activity job" do
       idea = create(:idea, author: user)
+
       expect { service.after_create(idea, user) }
         .to enqueue_job(LogActivityJob)
         .with(
           idea,
           'created',
           user,
-          idea.created_at.to_i,
+          idea.updated_at.to_i,
           project_id: idea.project_id,
           payload: { idea: service.send(:serialize_idea, idea) }
         )
@@ -64,16 +65,34 @@ describe SideFxIdeaService do
         .with(idea, 'published', any_args)
     end
 
-    it 'creates a follower' do
-      project = create(:project)
-      folder = create(:project_folder, projects: [project])
-      idea = create(:idea, project: project)
+    context 'followers' do
+      let!(:project) { create(:project) }
+      let!(:folder) { create(:project_folder, projects: [project]) }
+      let!(:idea) { create(:idea, project: project) }
 
-      expect do
-        service.after_create idea.reload, user
-      end.to change(Follower, :count).from(0).to(3)
+      it 'creates idea, project and folder followers' do
+        expect do
+          service.after_create idea.reload, user
+        end.to change(Follower, :count).from(0).to(3)
 
-      expect(user.follows.pluck(:followable_id)).to contain_exactly idea.id, project.id, folder.id
+        expect(user.follows.pluck(:followable_id)).to contain_exactly idea.id, project.id, folder.id
+      end
+
+      it 'does not create followers if the project is hidden' do
+        project.update!(hidden: true)
+        expect do
+          service.after_create idea.reload, user
+        end.not_to change(Follower, :count)
+      end
+
+      it 'creates only creates project and folder followers for native_survey responses' do
+        idea.update!(creation_phase: create(:native_survey_phase, project: project))
+        expect do
+          service.after_create idea.reload, user
+        end.to change(Follower, :count).from(0).to(2)
+
+        expect(user.follows.pluck(:followable_id)).to contain_exactly project.id, folder.id
+      end
     end
 
     it 'creates a cosponsorship' do
@@ -103,8 +122,8 @@ describe SideFxIdeaService do
       expect(phase2.reload.manual_votes_count).to eq 3
     end
 
-    it 'enqueues an upsert embedding job when the similar_inputs feature is turned on' do
-      SettingsService.new.activate_feature! 'similar_inputs'
+    it 'enqueues an upsert embedding job when the input_iq feature is turned on' do
+      SettingsService.new.activate_feature! 'input_iq'
       idea = create(:idea, author: user)
       expect { service.after_create(idea, user) }
         .to enqueue_job(UpsertEmbeddingJob)
@@ -112,8 +131,29 @@ describe SideFxIdeaService do
         .exactly(1).times
     end
 
-    it "doesn't enqueue an upsert embedding job when the similar_inputs feature is turned off" do
+    it 'enqueues an upsert embedding job when the input_iq feature is turned off (before trial period)' do
       idea = create(:idea, author: user)
+      travel_to(Date.parse('2025-06-29')) do
+        expect { service.after_create(idea, user) }
+          .to enqueue_job(UpsertEmbeddingJob)
+          .with(idea)
+          .exactly(1).times
+      end
+    end
+
+    it "doesn't enqueue an upsert embedding job when the input_iq feature is turned off (after trial period)" do
+      idea = create(:idea, author: user)
+      travel_to(Date.parse('2025-07-01')) do
+        expect { service.after_create(idea, user) }
+          .not_to enqueue_job(UpsertEmbeddingJob)
+          .with(idea)
+      end
+    end
+
+    it "doesn't enqueue an upsert embedding job for survey responses" do
+      SettingsService.new.activate_feature! 'input_iq'
+      create(:idea_status_proposed)
+      idea = create(:native_survey_response, author: user)
       expect { service.after_create(idea, user) }
         .not_to enqueue_job(UpsertEmbeddingJob)
         .with(idea)
@@ -317,8 +357,8 @@ describe SideFxIdeaService do
       expect(phase.reload.manual_votes_count).to eq 2
     end
 
-    it 'enqueues an upsert embedding job when the similar_inputs feature is turned on and the title changed' do
-      SettingsService.new.activate_feature! 'similar_inputs'
+    it 'enqueues an upsert embedding job when the input_iq feature is turned on and the title changed' do
+      SettingsService.new.activate_feature! 'input_iq'
       idea = create(:idea, author: user)
       idea.update!(title_multiloc: { en: 'changed' })
       expect { service.after_update(idea, user) }
@@ -327,8 +367,8 @@ describe SideFxIdeaService do
         .exactly(1).times
     end
 
-    it 'enqueues an upsert embedding job when the similar_inputs feature is turned on and the body changed' do
-      SettingsService.new.activate_feature! 'similar_inputs'
+    it 'enqueues an upsert embedding job when the input_iq feature is turned on and the body changed' do
+      SettingsService.new.activate_feature! 'input_iq'
       idea = create(:idea, author: user)
       idea.update!(body_multiloc: { en: 'changed' })
       expect { service.after_update(idea, user) }
@@ -337,20 +377,71 @@ describe SideFxIdeaService do
         .exactly(1).times
     end
 
-    it "doesn't enqueue an upsert embedding job when the similar_inputs feature is turned on but title and body didn't change" do
-      SettingsService.new.activate_feature! 'similar_inputs'
+    it "doesn't enqueue an upsert embedding job when the input_iq feature is turned on but title and body didn't change" do
+      SettingsService.new.activate_feature! 'input_iq'
       idea = create(:idea, author: user)
       expect { service.after_update(idea, user) }
         .not_to enqueue_job(UpsertEmbeddingJob)
         .with(idea)
     end
 
-    it "doesn't enqueue an upsert embedding job when the similar_inputs feature is turned off" do
+    it "doesn't enqueue an upsert embedding job when the input_iq feature is turned off (before trial period)" do
       idea = create(:idea, author: user)
       idea.update!(title_multiloc: { en: 'changed' })
+      travel_to(Date.parse('2025-06-29')) do
+        expect { service.after_update(idea, user) }
+          .to enqueue_job(UpsertEmbeddingJob)
+          .with(idea)
+          .exactly(1).times
+      end
+    end
+
+    it "doesn't enqueue an upsert embedding job when the input_iq feature is turned off (after trial period)" do
+      idea = create(:idea, author: user)
+      idea.update!(title_multiloc: { en: 'changed' })
+      travel_to(Date.parse('2025-07-01')) do
+        expect { service.after_update(idea, user) }
+          .not_to enqueue_job(UpsertEmbeddingJob)
+          .with(idea)
+      end
+    end
+
+    it "doesn't enqueue an upsert embedding job for survey responses" do
+      SettingsService.new.activate_feature! 'input_iq'
+      create(:idea_status_proposed)
+      idea = create(:native_survey_response, author: user)
       expect { service.after_update(idea, user) }
         .not_to enqueue_job(UpsertEmbeddingJob)
         .with(idea)
+    end
+
+    context 'user fields in survey form' do
+      let(:phase) { create(:native_survey_phase) }
+      let(:idea) do
+        create(
+          :native_survey_response,
+          creation_phase: phase,
+          project: phase.project,
+          publication_status: 'draft',
+          author: user,
+          custom_field_values: { 'field' => 'test', 'u_gender' => 'female' }
+        )
+      end
+
+      before { create(:idea_status_proposed) }
+
+      it "updates the user profile from the survey input fields when 'user_fields_in_form' is turned on" do
+        phase.update!(user_fields_in_form: true)
+        idea.update!(publication_status: 'published')
+        service.after_update(idea, user)
+        expect(user.custom_field_values).to eq({ 'gender' => 'female' })
+      end
+
+      it "does not update the user profile when 'user_fields_in_form' is turned off" do
+        idea.update!(publication_status: 'published')
+        service.after_update(idea, user)
+        expect(user.custom_field_values).to be_empty
+      end
     end
 
     # context 'native survey responses' do

@@ -1,0 +1,18 @@
+A human user is writing a public message on a forum run by a local government, where residents discuss local policy making. The message is posted in the project in which the local government describes the context for the message. Here is how the local government described the project:
+<content>
+  <%= phase_text %>
+</content>
+
+<% if body_field_text %>
+  Additionally, there could be more criteria for the message as specified by the local government here:
+  <content>
+    <%= body_field_text %>
+  </content>
+<% end %>
+
+Here is the message the user wrote:
+<content>
+  <%= input_text %>
+</content>
+
+<%= custom_free_prompt %>

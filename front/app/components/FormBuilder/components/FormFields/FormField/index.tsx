@@ -58,6 +58,7 @@ type Props = {
   fieldNumbers: Record<string, number>;
   closeSettings: (triggerAutosave?: boolean) => void;
   conflicts?: Conflict[];
+  hasFullPageRestriction: boolean;
 };
 
 export const FormField = ({
@@ -68,6 +69,7 @@ export const FormField = ({
   fieldNumbers,
   closeSettings,
   conflicts,
+  hasFullPageRestriction,
 }: Props) => {
   const {
     watch,
@@ -86,8 +88,7 @@ export const FormField = ({
   const { insert, move, remove } = useFieldArray({
     name: 'customFields',
   });
-  const { formEndPageLogicOption, displayBuiltInFields, groupingType } =
-    builderConfig;
+  const { formEndPageLogicOption, displayBuiltInFields } = builderConfig;
   const { mutateAsync: duplicateMapConfig } = useDuplicateMapConfig();
 
   const hasErrors = !!errors.customFields?.[index];
@@ -95,29 +96,25 @@ export const FormField = ({
 
   // NOTE: We always show the default page logic on a page field
   const showLogicOnRow = field.input_type !== 'page' ? field.logic.rules : true;
-
-  const isFieldGrouping = ['page', 'section'].includes(field.input_type);
+  const isFieldGrouping = field.input_type === 'page';
 
   // Group is only deletable when we have more than one group
   const getGroupDeletable = () => {
     const groupFields = formCustomFields.filter(
-      (field) => field.input_type === groupingType
+      (field) => field.input_type === 'page'
     );
 
-    if (builderConfig.type === 'survey') {
-      return groupFields.length > 2;
-    } else {
-      return groupFields.length > 1;
-    }
+    return builderConfig.type === 'survey'
+      ? groupFields.length > 2
+      : groupFields.length > 1;
   };
 
   const isGroupDeletable = getGroupDeletable();
-
-  const isDeleteShown =
-    // TODO: Fix this the next time the file is edited.
-    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-    !(field?.input_type !== groupingType || isGroupDeletable) ||
-    get(lockedAttributes, 'enabled', false);
+  const shouldShowDelete = !(
+    (field.input_type === 'page' && !isGroupDeletable) ||
+    get(lockedAttributes, 'enabled', false) ||
+    hasFullPageRestriction
+  );
 
   const editFieldAndValidate = (defaultTab: ICustomFieldSettingsTab) => {
     onEditField({ ...field, index, defaultTab });
@@ -213,10 +210,9 @@ export const FormField = ({
       const field = formCustomFields[fieldIndex];
 
       // When the first group is deleted, it's questions go to the next group
-      if (fieldIndex === 0 && field.input_type === groupingType) {
+      if (fieldIndex === 0 && field.input_type === 'page') {
         const nextGroupIndex = formCustomFields.findIndex(
-          (field, fieldIndex) =>
-            field.input_type === groupingType && fieldIndex !== 0
+          (field, fieldIndex) => field.input_type === 'page' && fieldIndex !== 0
         );
         move(nextGroupIndex, 0);
         remove(1);
@@ -294,7 +290,7 @@ export const FormField = ({
   };
 
   const actions = [
-    ...(field.input_type !== groupingType && !field.code // Do not copy built-in fields
+    ...(field.input_type !== 'page' && !field.code // Do not copy built-in fields
       ? [
           {
             handler: async (event: React.MouseEvent) => {
@@ -308,7 +304,7 @@ export const FormField = ({
           },
         ]
       : []),
-    ...(!isDeleteShown
+    ...(shouldShowDelete
       ? [
           {
             handler: (event: React.MouseEvent) => {
@@ -350,6 +346,7 @@ export const FormField = ({
                   hasErrors={hasErrors}
                   field={field}
                   fieldNumber={fieldNumbers[field.id]}
+                  hasFullPageRestriction={hasFullPageRestriction}
                 />
               </Box>
             </Box>
@@ -374,7 +371,7 @@ export const FormField = ({
               />
             </Box>
           </Box>
-          {field.key !== 'survey_end' && (
+          {field.key !== 'form_end' && (
             <Box
               mr="32px"
               ml="12px"
@@ -394,7 +391,7 @@ export const FormField = ({
             </Box>
           )}
         </FlexibleRow>
-        {showLogicOnRow && (
+        {showLogicOnRow && builderConfig.isLogicEnabled && (
           <Logic
             field={field}
             formCustomFields={formCustomFields}

@@ -17,6 +17,10 @@ export default defineMessages({
     id: 'app.containers.AdminPage.SideBar.groups',
     defaultMessage: 'Groups',
   },
+  community_monitor: {
+    id: 'app.containers.AdminPage.SideBar.community_monitor',
+    defaultMessage: 'Community monitor',
+  },
   projects: {
     id: 'app.containers.AdminPage.SideBar.projects',
     defaultMessage: 'Projects',
@@ -117,8 +121,8 @@ export default defineMessages({
     id: 'app.containers.AdminPage.SideBar.projectManager',
     defaultMessage: 'Project manager',
   },
-  projectLibrary: {
-    id: 'app.containers.AdminPage.SideBar.projectLibrary',
+  inspirationHub: {
+    id: 'app.containers.AdminPage.SideBar.inspirationHub',
     defaultMessage: 'Inspiration hub',
   },
 });

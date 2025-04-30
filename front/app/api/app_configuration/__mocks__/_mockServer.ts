@@ -18,6 +18,7 @@ export const getAppConfigurationData = (
     settings: {
       core: {
         allowed: true,
+        country_code: 'BE',
         enabled: true,
         locales: ['en'],
         population: 12500,

@@ -14,6 +14,7 @@ export type IIdeaCustomFieldInputType =
   | 'multiselect'
   | 'ranking'
   | 'matrix_linear_scale'
+  | 'sentiment_linear_scale'
   | 'checkbox'
   | 'date'
   | 'linear_scale'
@@ -22,7 +23,8 @@ export type IIdeaCustomFieldInputType =
   | 'shapefile_upload'
   | 'point'
   | 'line'
-  | 'polygon';
+  | 'polygon'
+  | 'multiselect_image';
 
 export type TCustomFieldCode =
   | 'gender'
@@ -38,9 +40,9 @@ export type TCustomFieldCode =
   | 'idea_files_attributes'
   | 'author_id'
   | 'budget'
-  | 'ideation_section1'
-  | 'ideation_section2'
-  | 'ideation_section3';
+  | 'title_page'
+  | 'uploads_page'
+  | 'details_page';
 
 export interface IIdeaCustomFieldData {
   id: string;

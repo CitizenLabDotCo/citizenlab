@@ -1,6 +1,6 @@
 class ProjectsFinderService
   def initialize(projects, user = nil, params = {})
-    @projects = projects
+    @projects = projects.not_hidden
     @user = user
     @page_size = (params.dig(:page, :size) || 500).to_i
     @page_number = (params.dig(:page, :number) || 1).to_i
@@ -22,7 +22,7 @@ class ProjectsFinderService
     subquery = projects_with_active_phase(subquery)
       .joins('INNER JOIN phases AS active_phases ON active_phases.project_id = projects.id')
       .where.not(phases: { participation_method: 'information' })
-      .select('projects.*, projects.created_at AS projects_created_at, projects.id AS projects_id')
+      .select('projects.created_at AS projects_created_at, projects.id AS projects_id')
 
     # Perform the SELECT DISTINCT on the outer query and order first by the end date of the active phase,
     # second by project created_at, and third by project ID.
@@ -109,6 +109,7 @@ class ProjectsFinderService
     @projects
       .joins("INNER JOIN (#{subquery.to_sql}) AS subquery ON projects.id = subquery.project_id")
       .select('projects.*, subquery.latest_follower_created_at')
+      .not_in_draft_folder
       .order('subquery.latest_follower_created_at DESC')
   end
 
@@ -118,7 +119,7 @@ class ProjectsFinderService
   # Ordered by created_at, newest first.
   # # => [Project]
   def projects_for_areas
-    @projects = @projects.not_draft
+    @projects = @projects.not_draft.not_in_draft_folder
 
     projects = if @areas.present?
       @projects.where(include_all_areas: true).or(@projects.with_some_areas(@areas))
@@ -146,6 +147,7 @@ class ProjectsFinderService
     base_scope = @projects
       .joins('INNER JOIN admin_publications AS admin_publications ON admin_publications.publication_id = projects.id')
       .joins('INNER JOIN phases ON phases.project_id = projects.id')
+      .not_in_draft_folder
 
     include_finished = %w[finished finished_and_archived].include?(@filter_by)
     include_archived = %w[archived finished_and_archived].include?(@filter_by)

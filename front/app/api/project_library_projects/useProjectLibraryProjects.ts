@@ -10,19 +10,22 @@ import {
   ProjectLibraryProjectsKeys,
 } from './types';
 
-const fetchLibraryProjects = ({ ...queryParameters }) =>
+export const fetchLibraryProjects = (queryParams: Parameters) =>
   fetcher<ProjectLibraryProjects>({
     path: `/projects`,
     action: 'get',
     queryParams: {
-      ...queryParameters,
-      'page[size]': queryParameters['page[size]'] ?? 6,
-      'page[number]': queryParameters['page[number]'] ?? 1,
+      ...queryParams,
+      'page[size]': queryParams['page[size]'] ?? 10,
+      'page[number]': queryParams['page[number]'] ?? 1,
     },
     apiPath: '/project_library_api',
   });
 
-const useProjectLibraryProjects = (queryParams: Parameters) => {
+const useProjectLibraryProjects = (
+  queryParams: Parameters,
+  { enabled = true } = {}
+) => {
   return useQuery<
     ProjectLibraryProjects,
     CLErrors,
@@ -31,6 +34,7 @@ const useProjectLibraryProjects = (queryParams: Parameters) => {
   >({
     queryKey: projectLibraryProjectsKeys.list(queryParams),
     queryFn: () => fetchLibraryProjects(queryParams),
+    enabled,
   });
 };
 

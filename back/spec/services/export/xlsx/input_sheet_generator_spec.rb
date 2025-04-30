@@ -109,7 +109,7 @@ describe Export::Xlsx::InputSheetGenerator do
                   ideation_response1.title_multiloc['en'],
                   'It would improve the air quality!', # html tags are removed
                   %r{\A/uploads/.+/idea_file/file/#{attachment1.id}/#{attachment1.name}\Z},
-                  "#{ideation_response1.topics[0].title_multiloc['en']}, #{ideation_response1.topics[1].title_multiloc['en']}",
+                  "#{ideation_response1.topics[0].title_multiloc['en']};#{ideation_response1.topics[1].title_multiloc['en']}",
                   ideation_response1.location_point.coordinates.last,
                   ideation_response1.location_point.coordinates.first,
                   ideation_response1.location_description,
@@ -199,7 +199,7 @@ describe Export::Xlsx::InputSheetGenerator do
                   ideation_response1.title_multiloc['en'],
                   'It would improve the air quality!', # html tags are removed
                   %r{\A/uploads/.+/idea_file/file/#{attachment1.id}/#{attachment1.name}\n/uploads/.+/idea_file/file/#{attachment2.id}/#{attachment2.name}\Z},
-                  "#{ideation_response1.topics[0].title_multiloc['en']}, #{ideation_response1.topics[1].title_multiloc['en']}",
+                  "#{ideation_response1.topics[0].title_multiloc['en']};#{ideation_response1.topics[1].title_multiloc['en']}",
                   ideation_response1.location_point.coordinates.last,
                   ideation_response1.location_point.coordinates.first,
                   ideation_response1.location_description,
@@ -228,7 +228,7 @@ describe Export::Xlsx::InputSheetGenerator do
     end
 
     context 'for a native survey context' do
-      let(:phase) { create(:native_survey_phase) }
+      let(:phase) { create(:native_survey_phase, with_permissions: true) }
       let(:form) { create(:custom_form, participation_context: phase) }
 
       # Create a page to describe that it is not included in the export.
@@ -249,6 +249,7 @@ describe Export::Xlsx::InputSheetGenerator do
       end
       let!(:ranking_field) { create(:custom_field_ranking, :with_options, resource: form) }
       let!(:matrix_field) { create(:custom_field_matrix_linear_scale, resource: form) }
+      let!(:end_page_field) { create(:custom_field_page, key: 'form_end', resource: form) }
 
       let(:survey_response1) do
         create(
@@ -256,7 +257,8 @@ describe Export::Xlsx::InputSheetGenerator do
           project: phase.project,
           creation_phase: phase,
           phases: [phase],
-          custom_field_values: { multiselect_field.key => %w[cat dog], ranking_field.key => %w[by_train by_bike] }
+          custom_field_values: { multiselect_field.key => %w[cat dog], ranking_field.key => %w[by_train by_bike] },
+          author: create(:user, custom_field_values: { 'birthyear' => 1999, 'gender' => 'female' })
         )
       end
       let(:survey_response2) do
@@ -304,8 +306,8 @@ describe Export::Xlsx::InputSheetGenerator do
               rows: [
                 [
                   survey_response1.id,
-                  'Cat, Dog',
-                  'By train, By bike',
+                  'Cat;Dog',
+                  'By train;By bike',
                   nil,
                   nil,
                   survey_response1.author_id,
@@ -325,7 +327,7 @@ describe Export::Xlsx::InputSheetGenerator do
                 [
                   survey_response3.id,
                   'Dog',
-                  'By bike, By train',
+                  'By bike;By train',
                   nil,
                   nil,
                   survey_response3.author_id,
@@ -358,7 +360,7 @@ describe Export::Xlsx::InputSheetGenerator do
                 rows: [
                   [
                     survey_response1.id,
-                    'Cat, Dog, Other',
+                    'Cat;Dog;Other',
                     'Fish',
                     '',
                     nil,
@@ -382,7 +384,7 @@ describe Export::Xlsx::InputSheetGenerator do
                     survey_response3.id,
                     'Dog',
                     '',
-                    'By bike, By train',
+                    'By bike;By train',
                     nil,
                     nil,
                     survey_response3.author_id,
@@ -391,6 +393,70 @@ describe Export::Xlsx::InputSheetGenerator do
                   ]
                 ]
               }
+            ])
+          end
+        end
+
+        # User custom fields appear in different places depending on whether they come from the user or the inputs
+        context 'user fields' do
+          before do
+            create(:custom_field_gender, :with_options, title_multiloc: { 'en' => 'Gender' })
+            create(:custom_field_birthyear, title_multiloc: { 'en' => 'Birth year' })
+          end
+
+          it 'Generates an sheet with user fields from the user' do
+            expect(xlsx.first[:column_headers]).to match([
+              'ID',
+              'What are your favourite pets?',
+              'Rank your favourite means of public transport',
+              'We should send more animals into space',
+              'We should ride our bicycles more often',
+              'Author ID',
+              'Submitted at',
+              'Project',
+              'Gender',
+              'Birth year'
+            ])
+            expect(xlsx.first[:rows].first).to match([
+              survey_response1.id,
+              'Cat;Dog',
+              'By train;By bike',
+              nil,
+              nil,
+              survey_response1.author_id,
+              an_instance_of(DateTime), # created_at
+              phase.project.title_multiloc['en'],
+              'Female',
+              1999
+            ])
+          end
+
+          it 'Generates an sheet with user fields from the inputs' do
+            phase.update!(user_fields_in_form: true)
+            survey_response1.update!(custom_field_values: { multiselect_field.key => %w[cat dog], 'u_birthyear' => 1998, 'u_gender' => 'male' })
+            expect(xlsx.first[:column_headers]).to match([
+              'ID',
+              'What are your favourite pets?',
+              'Rank your favourite means of public transport',
+              'We should send more animals into space',
+              'We should ride our bicycles more often',
+              'Gender',
+              'Birth year',
+              'Author ID',
+              'Submitted at',
+              'Project'
+            ])
+            expect(xlsx.first[:rows].first).to match([
+              survey_response1.id,
+              'Cat;Dog',
+              '',
+              nil,
+              nil,
+              'Male',
+              1998,
+              survey_response1.author_id,
+              an_instance_of(DateTime), # created_at
+              phase.project.title_multiloc['en']
             ])
           end
         end
@@ -447,8 +513,8 @@ describe Export::Xlsx::InputSheetGenerator do
               rows: [
                 [
                   survey_response1.id,
-                  'Cat, Dog',
-                  'By train, By bike',
+                  'Cat;Dog',
+                  'By train;By bike',
                   nil,
                   nil,
                   survey_response1.author_name,
@@ -472,7 +538,7 @@ describe Export::Xlsx::InputSheetGenerator do
                 [
                   survey_response3.id,
                   'Dog',
-                  'By bike, By train',
+                  'By bike;By train',
                   nil,
                   nil,
                   nil,
@@ -661,7 +727,7 @@ describe Export::Xlsx::InputSheetGenerator do
                   ideation_response1.title_multiloc['en'],
                   'It would improve the air quality!', # html tags are removed
                   %r{\A/uploads/.+/idea_file/file/#{attachment1.id}/#{attachment1.name}\Z},
-                  "#{ideation_response1.topics[0].title_multiloc['en']}, #{ideation_response1.topics[1].title_multiloc['en']}",
+                  "#{ideation_response1.topics[0].title_multiloc['en']};#{ideation_response1.topics[1].title_multiloc['en']}",
                   ideation_response1.location_point.coordinates.last,
                   ideation_response1.location_point.coordinates.first,
                   ideation_response1.location_description,
@@ -763,7 +829,7 @@ describe Export::Xlsx::InputSheetGenerator do
                     ideation_response1.title_multiloc['en'],
                     'It would improve the air quality!', # html tags are removed
                     %r{\A/uploads/.+/idea_file/file/#{attachment1.id}/#{attachment1.name}\n/uploads/.+/idea_file/file/#{attachment2.id}/#{attachment2.name}\Z},
-                    "#{ideation_response1.topics[0].title_multiloc['en']}, #{ideation_response1.topics[1].title_multiloc['en']}",
+                    "#{ideation_response1.topics[0].title_multiloc['en']};#{ideation_response1.topics[1].title_multiloc['en']}",
                     ideation_response1.location_point.coordinates.last,
                     ideation_response1.location_point.coordinates.first,
                     ideation_response1.location_description,
@@ -827,7 +893,7 @@ describe Export::Xlsx::InputSheetGenerator do
                     ideation_response1.title_multiloc['en'],
                     'It would improve the air quality!', # html tags are removed
                     %r{\A/uploads/.+/idea_file/file/#{attachment1.id}/#{attachment1.name}\n/uploads/.+/idea_file/file/#{attachment2.id}/#{attachment2.name}\Z},
-                    "#{ideation_response1.topics[0].title_multiloc['en']}, #{ideation_response1.topics[1].title_multiloc['en']}",
+                    "#{ideation_response1.topics[0].title_multiloc['en']};#{ideation_response1.topics[1].title_multiloc['en']}",
                     ideation_response1.location_point.coordinates.last,
                     ideation_response1.location_point.coordinates.first,
                     ideation_response1.location_description,

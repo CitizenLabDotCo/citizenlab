@@ -91,6 +91,9 @@ es-CL:
     services_description: Servicio público
     other: Otros
     other_description: Otros
+    quality_of_life: Calidad de vida
+    service_delivery: Prestación de servicios
+    governance_and_trust: Gobernanza y confianza
   static_pages:
     terms_and_conditions_title: Términos y Condiciones
     terms_and_conditions_body: >
@@ -126,6 +129,7 @@ es-CL:
     open_idea_phase_title: Fase actual
     native_survey_title: Encuesta
     native_survey_button: Responde la consulta
+    community_monitor_title: Monitor comunitario
   events:
     council_meeting_title: Reunión del Consejo
     council_meeting_description: >
@@ -167,16 +171,58 @@ es-CL:
       attachments:
         title: Archivos adjuntos
         description:
-      section1:
+      title_page:
         description:
-      section2:
-        title: Imágenes y adjuntos
+      body_page:
+        title: Cuéntanos más
         description:
-      section3:
+      uploads_page:
+        title: Imágenes y archivos adjuntos
+        description:
+      details_page:
         title: Detalles
         description:
       other_input_field:
         title: Escribe tu respuesta
+      ask_follow_up_field:
+        title: Dinos por qué
+    community_monitor:
+      questions:
+        place_to_live:
+          title: La ciudad como lugar para vivir
+        sense_of_safety:
+          title: Sensación general de seguridad
+        access_to_parks:
+          title: Acceso a parques, espacios verdes y oportunidades recreativas
+        affordable_housing:
+          title: Disponibilidad de viviendas asequibles
+        employment_opportunities:
+          title: Oportunidades de empleo y promoción económica
+        quality_of_services:
+          title: Calidad general de los servicios prestados por la ciudad
+        overall_value:
+          title: Valor global que recibes por tus impuestos y tasas municipales
+        cleanliness_and_maintenance:
+          title: Limpieza general y mantenimiento de calles y espacios públicos
+        trust_in_government:
+          title: Confianza en el gobierno local
+        responsiveness_of_officials:
+          title: Capacidad de respuesta de los cargos electos a las preocupaciones de la comunidad
+        transparency_of_money_spent:
+          title: Transparencia sobre cómo se gasta el dinero de los impuestos municipales
+      question_categories:
+        quality_of_life: Calidad de vida
+        service_delivery: Prestación de servicios
+        governance_and_trust: Gobernanza y confianza
+        other: Otro
+      labels:
+        label_1: Muy deficiente
+        label_2: Pobre
+        label_3: Justo/a
+        label_4: Bueno/a
+        label_5: Excelente
+      form_end:
+        button_text: Volver al inicio
   custom_forms:
     categories:
       main_content:
@@ -257,6 +303,8 @@ es-CL:
     form_end_page:
       title_text_3: '¡Gracias por compartir tu aportación!'
       description_text_3: "Tu aportación se ha enviado correctamente."
+    form_user_page:
+      title_text: 'Sobre ti'
     pdf_export:
       personal_data: 'Datos personales'
       personal_data_explanation_public: "Enviaremos tu aportación a la plataforma de participación online de %{organizationName}. Si quieres que tu nombre aparezca como autor de esta aportación y recibir por correo electrónico actualizaciones relacionadas con ella, rellena los siguientes campos de esta página y crearemos una cuenta para ti. Tu correo electrónico no será público y sólo lo utilizará %{organizationName}. Si quieres permanecer en el anonimato, o no estás de acuerdo en que utilicemos tus datos personales de esta forma, puedes dejarlos vacíos."

@@ -91,6 +91,9 @@ lv:
     services_description: Sabiedriskie pakalpojumi
     other: Cits
     other_description: Cits
+    quality_of_life: Dzīves kvalitāte
+    service_delivery: Pakalpojumu sniegšana
+    governance_and_trust: Pārvaldība un uzticēšanās
   static_pages:
     terms_and_conditions_title: Noteikumi un nosacījumi
     terms_and_conditions_body: >
@@ -126,6 +129,7 @@ lv:
     open_idea_phase_title: Pašreizējā fāze
     native_survey_title: Aptauja
     native_survey_button: Veiciet aptauju
+    community_monitor_title: Kopienas uzraudzītājs
   events:
     council_meeting_title: Padomes sēde
     council_meeting_description: >
@@ -167,16 +171,58 @@ lv:
       attachments:
         title: Pielikumi
         description:
-      section1:
+      title_page:
         description:
-      section2:
+      body_page:
+        title: Pastāstiet mums vairāk
+        description:
+      uploads_page:
         title: Attēli un pielikumi
         description:
-      section3:
+      details_page:
         title: Sīkāka informācija
         description:
       other_input_field:
         title: Ierakstiet savu atbildi
+      ask_follow_up_field:
+        title: Pastāstiet mums, kāpēc
+    community_monitor:
+      questions:
+        place_to_live:
+          title: Pilsēta kā dzīvesvieta
+        sense_of_safety:
+          title: Vispārējā drošības sajūta
+        access_to_parks:
+          title: Piekļuve parkiem, zaļajām zonām un atpūtas iespējām.
+        affordable_housing:
+          title: Pieejamu mājokļu pieejamība
+        employment_opportunities:
+          title: Nodarbinātības un ekonomiskās izaugsmes iespējas
+        quality_of_services:
+          title: Pilsētas sniegto pakalpojumu kopējā kvalitāte
+        overall_value:
+          title: Kopējā vērtība, ko saņemat par saviem pilsētas nodokļiem un nodevām
+        cleanliness_and_maintenance:
+          title: Ielu un sabiedrisko vietu vispārējā tīrība un uzturēšana
+        trust_in_government:
+          title: Uzticība vietējai pārvaldei
+        responsiveness_of_officials:
+          title: Ievēlēto amatpersonu spēja reaģēt uz kopienas problēmām
+        transparency_of_money_spent:
+          title: Pārredzamība par to, kā tiek tērēta pašvaldības nodokļu nauda.
+      question_categories:
+        quality_of_life: Dzīves kvalitāte
+        service_delivery: Pakalpojumu sniegšana
+        governance_and_trust: Pārvaldība un uzticēšanās
+        other: Citi
+      labels:
+        label_1: Ļoti slikti
+        label_2: Slikts
+        label_3: Godīgi
+        label_4: Labi
+        label_5: Lielisks
+      form_end:
+        button_text: Atgriezties mājās
   custom_forms:
     categories:
       main_content:
@@ -257,6 +303,8 @@ lv:
     form_end_page:
       title_text_3: 'Paldies, ka dalījāties ar savu ieguldījumu!'
       description_text_3: "Jūsu dati ir veiksmīgi iesniegti."
+    form_user_page:
+      title_text: 'Par jums'
     pdf_export:
       personal_data: 'Personas dati'
       personal_data_explanation_public: "Mēs iesniegsim jūsu viedokli tiešsaistes līdzdalības platformā %{organizationName}. Ja vēlaties, lai jūsu vārds un uzvārds būtu redzams kā šī ieguldījuma autors un jūs saņemtu jauninājumus, kas saistīti ar jūsu ieguldījumu, pa e-pastu, lūdzu, aizpildiet turpmāk norādītos laukus šajā lapā, un mēs izveidosim jums kontu. Jūsu e-pasts nebūs publiski pieejams, un to izmantos tikai %{organizationName}. Ja vēlaties palikt anonīms vai nepiekrītat, ka mēs šādā veidā izmantojam jūsu personas datus, varat tos atstāt tukšus."

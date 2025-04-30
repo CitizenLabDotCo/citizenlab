@@ -1,12 +1,7 @@
 import React from 'react';
 
-import {
-  media,
-  colors,
-  fontSizes,
-  Icon,
-  Box,
-} from '@citizenlab/cl2-component-library';
+import { media, colors, Icon, Box } from '@citizenlab/cl2-component-library';
+import { useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 
 import useAuthUser from 'api/me/useAuthUser';
@@ -26,9 +21,8 @@ import { NavItem } from './navItems';
 const Text = styled.div`
   flex: 1;
   color: #fff;
-  font-size: ${fontSizes.base}px;
+  font-size: 15px;
   font-weight: 400;
-  line-height: 19px;
   margin-left: 15px;
   display: flex;
   align-items: center;
@@ -39,7 +33,7 @@ const Text = styled.div`
   `}
 `;
 
-const MenuItemLink = styled(Link)`
+const MenuItemLink = styled(Link)<{ active: boolean }>`
   flex: 0 0 auto;
   width: 210px;
   display: flex;
@@ -82,6 +76,21 @@ const MenuItemLink = styled(Link)`
     }
   }
 
+  ${({ active }) =>
+    active
+      ? `
+    background: rgba(0, 0, 0, 0.7);
+    .cl-icon {
+      .cl-icon-primary {
+        fill: ${colors.teal400};
+      }
+      .cl-icon-accent {
+        fill: ${colors.blue400};
+      }
+    }
+  `
+      : ''}
+
   ${media.tablet`
     width: 56px;
     padding-right: 5px;
@@ -98,6 +107,7 @@ const MenuItem = ({ navItem }: Props) => {
     onlyCheckAllowed: navItem.onlyCheckAllowed,
   });
   const { data: user } = useAuthUser();
+  const { pathname } = useLocation();
 
   const hasPermission = usePermission({
     action: 'access',
@@ -115,10 +125,15 @@ const MenuItem = ({ navItem }: Props) => {
     if (!enabledAndHasPermission) return null;
   }
 
+  const inspirationHubActive =
+    navItem.link.startsWith('/admin/inspiration-hub') &&
+    pathname.includes('/admin/inspiration-hub');
+
   return (
     <MenuItemLink
       to={navItem.link}
       className={`intercom-admin-menu-item-${navItem.name}`}
+      active={inspirationHubActive}
     >
       <>
         <Box
@@ -128,9 +143,13 @@ const MenuItem = ({ navItem }: Props) => {
           justifyContent="center"
           className={navItem.iconName}
         >
-          <Icon name={navItem.iconName} />
+          <Icon name={navItem.iconName} height="20px" />
         </Box>
-        <Text>
+        <Text
+          style={{
+            wordBreak: 'break-word',
+          }}
+        >
           <FormattedMessage {...messages[navItem.message]} />
           {!!navItem.count && <CountBadge count={navItem.count} />}
         </Text>

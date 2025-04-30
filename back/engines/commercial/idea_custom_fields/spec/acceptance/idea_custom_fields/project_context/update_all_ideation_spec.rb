@@ -30,14 +30,25 @@ resource 'Idea Custom Fields' do
     let(:project_id) { context.id }
     let(:participation_method) { context.pmethod }
     let(:default_fields_param) do
-      attributes = %i[id code input_type title_multiloc description_multiloc required enabled]
-      IdeaCustomFieldsService.new(custom_form).all_fields.map do |field|
+      attributes = %i[id code input_type title_multiloc description_multiloc required enabled page_layout]
+      # Remove the end_page. We will add that manually in the tests
+      IdeaCustomFieldsService.new(custom_form).all_fields.reject(&:form_end_page?).map do |field|
         {}.tap do |field_param|
           attributes.each do |attribute|
             field_param[attribute] = field.send attribute
           end
         end
       end
+    end
+    let(:final_page) do
+      {
+        id: '1234',
+        key: 'form_end',
+        title_multiloc: { 'en' => 'Final page' },
+        description_multiloc: { 'en' => 'Thank you for participating!' },
+        input_type: 'page',
+        page_layout: 'default'
+      }
     end
 
     context 'when admin' do
@@ -53,12 +64,13 @@ resource 'Idea Custom Fields' do
           do_request(
             custom_fields: default_fields_param.tap do |params|
               params[1][:description_multiloc] = custom_description
+              params << final_page
             end
           )
 
           assert_status 200
           json_response = json_parse response_body
-          expect(json_response[:data].size).to eq 10
+          expect(json_response[:data].size).to eq 12
           expect(context.reload.custom_form.custom_fields[1].description_multiloc).to eq custom_description
         end
       end
@@ -75,8 +87,9 @@ resource 'Idea Custom Fields' do
           # Add extra field
           fields_param += [
             {
-              input_type: 'section',
-              title_multiloc: { 'en' => 'Extra fields' }
+              input_type: 'page',
+              title_multiloc: { 'en' => 'Extra fields' },
+              page_layout: 'default'
             },
             {
               input_type: 'select',
@@ -88,21 +101,23 @@ resource 'Idea Custom Fields' do
                 { title_multiloc: { 'en' => 'Field 1' } },
                 { title_multiloc: { 'en' => 'Field 2' } }
               ]
-            }
+            },
+            final_page
           ]
 
           do_request custom_fields: fields_param
 
           assert_status 200
           json_response = json_parse response_body
-          expect(json_response[:data].size).to eq 12
+
+          expect(json_response[:data].size).to eq 14
           expect(json_response[:data].pluck(:id)).not_to include(deleted_field.id)
           expect(json_response[:data]).to match([
             hash_including(
               attributes: hash_including(
-                code: 'ideation_section1',
+                code: 'title_page',
                 key: nil,
-                input_type: 'section',
+                input_type: 'page',
                 title_multiloc: { en: 'What is your idea?', 'fr-FR': 'Quelle est votre idée ?', 'nl-NL': 'Wat is je idee?' },
                 description_multiloc: {},
                 ordering: 0,
@@ -110,58 +125,118 @@ resource 'Idea Custom Fields' do
                 enabled: true,
                 created_at: an_instance_of(String),
                 updated_at: an_instance_of(String),
-                logic: {}
+                logic: {},
+                constraints: {
+                  locks: {
+                    enabled: true,
+                    title_multiloc: true
+                  }
+                },
+                answer_visible_to: 'public',
+                page_layout: 'default',
+                random_option_ordering: false
               ),
+              id: an_instance_of(String),
               type: 'custom_field',
-              relationships: { options: { data: [] }, resource: { data: { id: custom_form.id, type: 'custom_form' } } }
+              relationships: { options: { data: [] }, resource: { data: { id: custom_form.id, type: 'custom_form' } }, map_config: { data: nil } }
             ),
             hash_including(
               attributes: hash_including(
                 code: 'title_multiloc',
                 key: 'title_multiloc',
                 input_type: 'text_multiloc',
+                title_multiloc: hash_including(en: 'Title'),
                 description_multiloc: { en: 'New title description' },
                 ordering: 1,
                 required: true,
                 enabled: true,
                 created_at: an_instance_of(String),
                 updated_at: an_instance_of(String),
-                logic: {}
+                logic: {},
+                constraints: {
+                  locks: {
+                    enabled: true,
+                    title_multiloc: true,
+                    required: true
+                  }
+                },
+                answer_visible_to: 'public',
+                random_option_ordering: false
               ),
+              id: an_instance_of(String),
               type: 'custom_field',
               relationships: { options: { data: [] }, resource: { data: { id: custom_form.id, type: 'custom_form' } } }
+            ),
+            hash_including(
+              attributes: hash_including(
+                code: 'body_page',
+                key: nil,
+                input_type: 'page',
+                title_multiloc: hash_including(en: 'Tell us more', 'fr-FR': 'Dites-nous plus', 'nl-NL': 'Vertel ons meer'),
+                description_multiloc: {},
+                ordering: 2,
+                required: false,
+                enabled: true,
+                created_at: an_instance_of(String),
+                updated_at: an_instance_of(String),
+                logic: {},
+                constraints: {},
+                answer_visible_to: 'public',
+                page_layout: 'default',
+                random_option_ordering: false
+              ),
+              id: an_instance_of(String),
+              type: 'custom_field',
+              relationships: { options: { data: [] }, resource: { data: { id: custom_form.id, type: 'custom_form' } }, map_config: { data: nil } }
             ),
             hash_including(
               attributes: hash_including(
                 code: 'body_multiloc',
                 key: 'body_multiloc',
                 input_type: 'html_multiloc',
-                ordering: 2,
                 title_multiloc: hash_including(en: 'Description'),
+                ordering: 3,
                 description_multiloc: {},
                 required: true,
                 enabled: true,
                 created_at: an_instance_of(String),
                 updated_at: an_instance_of(String),
-                logic: {}
+                logic: {},
+                constraints: {
+                  locks: {
+                    enabled: true,
+                    required: true,
+                    title_multiloc: true
+                  }
+                },
+                answer_visible_to: 'public',
+                random_option_ordering: false
               ),
+              id: an_instance_of(String),
               type: 'custom_field',
               relationships: { options: { data: [] }, resource: { data: { id: custom_form.id, type: 'custom_form' } } }
             ),
-            hash_including(attributes: hash_including(code: 'ideation_section2', key: nil, input_type: 'section', ordering: 3)),
-            hash_including(attributes: hash_including(code: 'idea_images_attributes', key: 'idea_images_attributes', input_type: 'image_files', ordering: 4)),
-            hash_including(attributes: hash_including(code: 'idea_files_attributes', key: 'idea_files_attributes', input_type: 'files', ordering: 5)),
-            hash_including(attributes: hash_including(code: 'ideation_section3', key: nil, input_type: 'section', ordering: 6)),
-            hash_including(attributes: hash_including(code: 'topic_ids', key: 'topic_ids', input_type: 'topic_ids', ordering: 7)),
-            hash_including(attributes: hash_including(code: 'location_description', key: 'location_description', input_type: 'text', ordering: 8)),
-            hash_including(attributes: hash_including(code: 'proposed_budget', key: 'proposed_budget', input_type: 'number', ordering: 9)),
-            hash_including(attributes: hash_including(code: nil, key: nil, input_type: 'section', ordering: 10, title_multiloc: { en: 'Extra fields' })),
+            hash_including(
+              attributes: hash_including(
+                code: 'uploads_page',
+                key: nil,
+                input_type: 'page',
+                ordering: 4
+              )
+            ),
+            hash_including(attributes: hash_including(code: 'idea_images_attributes', key: 'idea_images_attributes', input_type: 'image_files', ordering: 5)),
+            hash_including(attributes: hash_including(code: 'idea_files_attributes', key: 'idea_files_attributes', input_type: 'files', ordering: 6)),
+            hash_including(attributes: hash_including(code: 'details_page', key: nil, input_type: 'page', ordering: 7)),
+            hash_including(attributes: hash_including(code: 'topic_ids', key: 'topic_ids', input_type: 'topic_ids', ordering: 8)),
+            hash_including(attributes: hash_including(code: 'location_description', key: 'location_description', input_type: 'text', ordering: 9)),
+            hash_including(attributes: hash_including(code: 'proposed_budget', key: 'proposed_budget', input_type: 'number', ordering: 10)),
+            hash_including(attributes: hash_including(code: nil, key: nil, input_type: 'page', ordering: 11, title_multiloc: { en: 'Extra fields' })),
             hash_including(
               attributes: hash_including(
                 code: nil,
                 key: Regexp.new('select_field_title'),
                 input_type: 'select',
-                ordering: 11,
+                ordering: 12,
                 title_multiloc: { en: 'Select field title' },
                 description_multiloc: { en: 'Select field description' },
                 required: false,
@@ -176,8 +251,29 @@ resource 'Idea Custom Fields' do
               relationships: { options: { data: [
                 hash_including(id: an_instance_of(String), type: 'custom_field_option'),
                 hash_including(id: an_instance_of(String), type: 'custom_field_option')
-              ] },
-                               resource: { data: { id: custom_form.id, type: 'custom_form' } } }
+              ] }, resource: { data: { id: custom_form.id, type: 'custom_form' } } }
+            ),
+            hash_including(
+              attributes: hash_including(
+                code: nil,
+                key: 'form_end',
+                input_type: 'page',
+                title_multiloc: { en: 'Final page' },
+                description_multiloc: { en: 'Thank you for participating!' },
+                ordering: 13,
+                required: false,
+                enabled: true,
+                created_at: an_instance_of(String),
+                updated_at: an_instance_of(String),
+                logic: {},
+                constraints: {},
+                answer_visible_to: 'public',
+                page_layout: 'default',
+                random_option_ordering: false
+              ),
+              id: an_instance_of(String),
+              type: 'custom_field',
+              relationships: { options: { data: [] }, resource: { data: { id: custom_form.id, type: 'custom_form' } }, map_config: { data: nil } }
             )
           ])
         end
@@ -187,8 +283,9 @@ resource 'Idea Custom Fields' do
           # Add extra field
           fields_param += [
             {
-              input_type: 'section',
-              title_multiloc: { 'en' => 'Extra fields' }
+              input_type: 'page',
+              title_multiloc: { 'en' => 'Extra fields' },
+              page_layout: 'default'
             },
             {
               input_type: 'html_multiloc',
@@ -196,14 +293,150 @@ resource 'Idea Custom Fields' do
               description_multiloc: { 'en' => 'HTML multliloc field description' },
               required: false,
               enabled: true
-            }
+            },
+            final_page
           ]
 
           do_request custom_fields: fields_param
 
           assert_status 422
           json_response = json_parse response_body
-          expect(json_response).to eq({ errors: { '11': { input_type: [{ error: 'inclusion', value: 'html_multiloc' }] } } })
+          expect(json_response).to eq({ errors: { '12': { input_type: [{ error: 'inclusion', value: 'html_multiloc' }] } } })
+        end
+
+        example '[error] Submitting an empty form' do
+          do_request custom_fields: []
+
+          assert_status 422
+          json_response = json_parse response_body
+          expect(json_response).to eq({ errors: { form: [{ error: 'empty' }] } })
+        end
+
+        example '[error] Put the title and body fields on the same page' do
+          title_field, body_field = default_fields_param.select { |field| field[:code].in? %w[title_multiloc body_multiloc] }
+          fields_param = [
+            {
+              input_type: 'page',
+              page_layout: 'default'
+            },
+            title_field,
+            body_field,
+            final_page
+          ]
+
+          do_request custom_fields: fields_param
+
+          assert_status 422
+          json_response = json_parse response_body
+          expect(json_response).to eq({ errors: { form: [{ error: 'title_and_body_on_same_page' }] } })
+        end
+
+        example '[error] Put other fields on the title page' do
+          title_field, body_field = default_fields_param.select { |field| field[:code].in? %w[title_multiloc body_multiloc] }
+          fields_param = [
+            {
+              input_type: 'page',
+              page_layout: 'default'
+            },
+            title_field,
+            {
+              input_type: 'number',
+              title_multiloc: { 'en' => 'How many?' }
+            },
+            {
+              input_type: 'page',
+              page_layout: 'default'
+            },
+            body_field,
+            final_page
+          ]
+
+          do_request custom_fields: fields_param
+
+          assert_status 422
+          json_response = json_parse response_body
+          expect(json_response).to eq({ errors: { form: [{ error: 'title_page_with_other_fields' }] } })
+        end
+
+        example 'Put other disabled fields on the title page', document: false do
+          title_field, body_field = default_fields_param.select { |field| field[:code].in? %w[title_multiloc body_multiloc] }
+          fields_param = [
+            {
+              input_type: 'page',
+              page_layout: 'default'
+            },
+            title_field,
+            {
+              input_type: 'number',
+              enabled: false,
+              title_multiloc: { 'en' => 'How many?' }
+            },
+            {
+              input_type: 'page',
+              page_layout: 'default'
+            },
+            body_field,
+            final_page
+          ]
+
+          do_request custom_fields: fields_param
+
+          assert_status 200
+        end
+
+        example '[error] Put other fields on the body page' do
+          title_field, body_field, topics_field = default_fields_param.select { |field| field[:code].in? %w[title_multiloc body_multiloc topic_ids] }
+          fields_param = [
+            {
+              input_type: 'page',
+              page_layout: 'default'
+            },
+            title_field,
+            {
+              input_type: 'page',
+              page_layout: 'default'
+            },
+            topics_field,
+            body_field,
+            final_page
+          ]
+
+          do_request custom_fields: fields_param
+
+          assert_status 422
+          json_response = json_parse response_body
+          expect(json_response).to eq({ errors: { form: [{ error: 'body_page_with_other_fields' }] } })
+        end
+
+        example 'Put other disabled fields on the body page', document: false do
+          title_field, body_field = default_fields_param.select { |field| field[:code].in? %w[title_multiloc body_multiloc] }
+          fields_param = [
+            {
+              input_type: 'page',
+              page_layout: 'default'
+            },
+            title_field,
+            {
+              input_type: 'page',
+              page_layout: 'default'
+            },
+            {
+              input_type: 'number',
+              enabled: false,
+              title_multiloc: { 'en' => 'How many?' }
+            },
+            body_field,
+            {
+              input_type: 'number',
+              enabled: false,
+              title_multiloc: { 'en' => 'How many?' }
+            },
+            final_page
+          ]
+
+          do_request custom_fields: fields_param
+
+          assert_status 200
         end
 
         example 'Updating custom fields when there are responses', document: false do
@@ -213,6 +446,7 @@ resource 'Idea Custom Fields' do
           do_request(
             custom_fields: default_fields_param.tap do |params|
               params[1][:description_multiloc] = custom_description
+              params << final_page
             end
           )
 
@@ -234,6 +468,7 @@ resource 'Idea Custom Fields' do
         do_request(
           custom_fields: default_fields_param.tap do |params|
             params[1][:description_multiloc] = custom_description
+            params << final_page
           end
         )
 

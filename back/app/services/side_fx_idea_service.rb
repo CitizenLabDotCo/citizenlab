@@ -143,6 +143,7 @@ class SideFxIdeaService
   end
 
   def after_publish(idea, user)
+    update_user_profile(idea, user)
     log_activity_jobs_after_published(idea, user)
   end
 
@@ -166,7 +167,9 @@ class SideFxIdeaService
   end
 
   def create_followers(idea, user)
-    Follower.find_or_create_by(followable: idea, user: user)
+    return if idea.project.hidden?
+
+    Follower.find_or_create_by(followable: idea, user: user) if idea.participation_method_on_creation.follow_idea_on_idea_submission?
     Follower.find_or_create_by(followable: idea.project, user: user)
     return if !idea.project.in_folder?
 
@@ -213,7 +216,18 @@ class SideFxIdeaService
   end
 
   def enqueue_embeddings_job(idea)
-    UpsertEmbeddingJob.perform_later(idea) if AppConfiguration.instance.feature_activated?('similar_inputs')
+    return if !AppConfiguration.instance.feature_activated?('input_iq') && AppConfiguration.timezone.at(Time.current).to_date > Date.parse('2025-06-30')
+    return if !idea.participation_method_on_creation.supports_public_visibility?
+
+    UpsertEmbeddingJob.perform_later(idea)
+  end
+
+  # update the user profile if user fields are changed as part of a survey
+  def update_user_profile(idea, user)
+    return unless user && idea.participation_method_on_creation.user_fields_in_form?
+
+    user_values_from_idea = idea.custom_field_values.select { |key, _value| key.start_with?('u_') }.transform_keys { |key| key[2..] }
+    user.update!(custom_field_values: user.custom_field_values.merge(user_values_from_idea))
   end
 end
 

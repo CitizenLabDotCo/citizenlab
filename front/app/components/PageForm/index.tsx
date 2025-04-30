@@ -23,7 +23,6 @@ import { isNilOrError } from 'utils/helperUtils';
 import validateAtLeastOneLocale from 'utils/yup/validateAtLeastOneLocale';
 
 import messages from './messages';
-import NavbarTitleField from './NavbarTitleField';
 
 export interface FormValues {
   nav_bar_item_title_multiloc?: Multiloc;
@@ -108,14 +107,6 @@ const PageForm = ({ onSubmit, defaultValues, pageId }: Props) => {
             successMessage={formatMessage(messages.savePageSuccessMessage)}
           />
         </SectionField>
-        <NavbarTitleField
-          pageId={pageId}
-          navbarItemId={
-            !isNilOrError(page) && page.data.relationships.nav_bar_item.data
-              ? page.data.relationships.nav_bar_item.data.id
-              : null
-          }
-        />
         <SectionField>
           <InputMultilocWithLocaleSwitcher
             label={formatMessage(messages.pageTitle)}

@@ -7,6 +7,9 @@ class WebApi::V1::ProjectsController < ApplicationController
   skip_after_action :verify_policy_scoped, only: :index
 
   def index
+    # Hidden community monitor project not included by default via AdminPublication policy scope
+    policy_context[:include_hidden] = true if params[:include_hidden] == 'true'
+
     publications = policy_scope(AdminPublication)
     publications = AdminPublicationsFilteringService.new.filter(publications, params.merge(current_user: current_user))
       .where(publication_type: Project.name)
@@ -315,6 +318,17 @@ class WebApi::V1::ProjectsController < ApplicationController
       params: jsonapi_serializer_params,
       include: [:admin_publication]
     ).serializable_hash, status: :ok
+  end
+
+  def community_monitor
+    project = CommunityMonitorService.new.find_or_create_project(current_user)
+
+    authorize project
+    render json: WebApi::V1::ProjectSerializer.new(
+      project,
+      params: jsonapi_serializer_params,
+      include: %i[current_phase]
+    ).serializable_hash
   end
 
   private

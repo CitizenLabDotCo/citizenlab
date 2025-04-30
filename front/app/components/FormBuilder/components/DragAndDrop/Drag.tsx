@@ -8,9 +8,16 @@ type DragProps = {
   index: number;
   children: React.ReactNode;
   useBorder?: boolean;
+  isDragDisabled?: boolean;
 };
 
-export const Drag = ({ id, index, useBorder = true, children }: DragProps) => {
+export const Drag = ({
+  id,
+  index,
+  useBorder = true,
+  children,
+  isDragDisabled = false,
+}: DragProps) => {
   const draggableRef = React.useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -20,7 +27,7 @@ export const Drag = ({ id, index, useBorder = true, children }: DragProps) => {
   }, []);
 
   return (
-    <Draggable draggableId={id} index={index}>
+    <Draggable draggableId={id} index={index} isDragDisabled={isDragDisabled}>
       {(provided, snapshot) => {
         return (
           <div ref={provided.innerRef} {...provided.draggableProps}>

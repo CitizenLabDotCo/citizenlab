@@ -8,6 +8,7 @@ hr:
       "comment_marked_as_spam": Izvješće o neželjenim komentarima
       "comment_on_your_comment": Odgovor na moj komentar
       "comment_on_idea_you_follow": Komentar na ideju koju slijedite
+      "community_monitor_report": Izvješće monitora zajednice
       "cosponsor_of_your_idea": Korisnik prihvaća moj poziv da susponzorira moj prijedlog
       "event_registration_confirmation": Potvrda prijave za događaj
       "idea_marked_as_spam": Izvješće o neželjenoj ideji
@@ -82,6 +83,7 @@ hr:
         "4": "Tjedno, četvrtkom u %{hourOfDay}"
         "5": "Tjedno, petkom u %{hourOfDay}"
         "6": "Tjedno, subotom u %{hourOfDay}"
+      quarterly: "Tromjesečno, prvog dana tromjesečja"
     footer:
       "link_privacy_policy": "Pravila o privatnosti"
       "link_terms_conditions": "Uvjeti korištenja"
@@ -147,6 +149,12 @@ hr:
       today: Danas
       wrong_content: 'Komentar nije relevantan.'
       yesterday: Jučer
+    community_monitor_report:
+      subject: 'Dostupno je novo izvješće o praćenju zajednice'
+      title: 'Dostupno je novo izvješće o praćenju zajednice'
+      text_introduction: 'Za prethodni kvartal izrađeno je izvješće o praćenju zajednice. Možete mu pristupiti klikom na gumb ispod i prijavom.'
+      cta_report_button: 'Pogledaj izvješće'
+      report_name: 'Izvješće monitora zajednice'
     cosponsor_of_your_idea:
       cta_reply_to: 'Pogledajte svoj prijedlog'
       event_description: 'čestitamo! %{cosponsorName} je prihvatio vaš poziv da bude susponzor vašeg prijedloga.'
@@ -499,6 +507,7 @@ hr:
       cta_vote: 'Idite na platformu za glasanje'
     survey_submitted:
       subject: '%{organizationName}: Hvala vam na odgovoru! 🎉'
+      preheader: 'Evo pojedinosti vašeg podneska.'
       main_header: 'Hvala što ste podijelili svoje mišljenje o "%{projectName}"!'
       your_input_submitted: 'Vaš unos za "%{projectName}" je uspješno poslan.'
       if_you_would_like_to_review: 'Ako želite pregledati svoj podnesak, svoje odgovore možete preuzeti u nastavku.'

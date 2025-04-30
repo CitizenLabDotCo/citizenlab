@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { IconTooltip } from '@citizenlab/cl2-component-library';
+import { Box, IconTooltip } from '@citizenlab/cl2-component-library';
 import { Multiloc, CLErrors } from 'typings';
 
 import { IUpdatedProjectProperties } from 'api/projects/types';
@@ -12,7 +12,7 @@ import { FormattedMessage } from 'utils/cl-intl';
 
 import messages from '../messages';
 
-import { StyledSectionField, StyledInputMultiloc } from './styling';
+import { StyledInputMultiloc } from './styling';
 
 interface Props {
   titleMultiloc: IUpdatedProjectProperties['title_multiloc'];
@@ -28,7 +28,7 @@ const ProjectNameInput = ({
   handleTitleMultilocOnChange,
 }: Props) => {
   return (
-    <StyledSectionField className="intercom-projects-new-project-name">
+    <Box mb="20px" className="intercom-projects-new-project-name">
       <SubSectionTitle>
         <FormattedMessage {...messages.projectName} />
         <IconTooltip
@@ -44,7 +44,7 @@ const ProjectNameInput = ({
         errorMultiloc={titleError}
       />
       <Error fieldName="title_multiloc" apiErrors={apiErrors.title_multiloc} />
-    </StyledSectionField>
+    </Box>
   );
 };
 

@@ -19,10 +19,11 @@
           "color_secondary",
           "color_text",
           "lifecycle_stage",
+          "country_code",
           "authentication_token_lifetime_in_days"
         ],
         "additionalProperties": false,
-        "required": ["allowed", "enabled", "lifecycle_stage"],
+        "required": ["allowed", "enabled", "lifecycle_stage", "country_code"],
         "properties": {
           "allowed": { "type": "boolean", "default": true},
           "enabled": { "type": "boolean", "default": true},
@@ -49,6 +50,14 @@
             "description": "The lifecycle stage of the customer.",
             "type": "string",
             "enum": ["trial", "expired_trial", "demo", "active", "churned", "not_applicable"]
+          },
+          <% country_codes_service = CountryCodesService.new %>
+          "country_code": {
+            "title": "Country",
+            "description": "The country where the platform's citizens are located. Type first letters of the country name, in English, to search.",
+            "type": ["string", "null"],
+            "enum": <%= country_codes_service.codes_in_name_order.to_json %>,
+            "enumNames": <%= country_codes_service.names_in_name_order.to_json %>
           },
           "timezone": {
             "title": "Time Zone",
@@ -560,7 +569,7 @@
           },
           "map_center": {
             "title": "Map Center",
-            "description": "The default center point of the platform maps (latitude/longitude). Use a dot as a decimal separator.",
+            "description": "The default center point of the platform maps (latitude/longitude). Use a dot as a decimal separator. South and West values should be negative.",
             "type": "object",
             "additionalProperties": false,
             "properties": {
@@ -1239,6 +1248,18 @@
         }
       },
 
+      "auto_insights": {
+        "type": "object",
+        "title": "Statistical insights for surveys and ideation",
+        "description": "Enables the use of statistical insights in an analysis for surveys and ideation",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": false },
+          "enabled": { "type": "boolean", "default": false }
+        }
+      },
+
       "multi_language_platform": {
         "type": "object",
         "title": "Multi-language platform",
@@ -1311,21 +1332,27 @@
         }
       },
 
-      "similar_inputs": {
+      "authoring_assistance_prototype": {
         "type": "object",
-        "title": "Experimental feature: Similar inputs",
-        "description":	"Show similar inputs (ideas) when viewing the page of an input, using AI (Cohere multilingual word embeddings). Inputs posted while the feature was disabled will not be included.",
+        "title": "Experimental feature: Authoring assistance prototype",
+        "description":	"Show an informative box to admins on the idea pages with guidance on how the written text could be improved (duplicate detection, toxicity, free custom prompt...). Inputs posted while the feature was disabled will not be included as duplicates.",
         "additionalProperties": false,
         "required": ["allowed", "enabled"],
-        "required-settings": ["admins_only"],
         "properties": {
           "allowed": { "type": "boolean", "default": false},
-          "enabled": { "type": "boolean", "default": false},
-          "admins_only": {
-            "title": "Only admins can see similar inputs",
-            "type": "boolean",
-            "default": true
-          }
+          "enabled": { "type": "boolean", "default": false}
+        }
+      },
+
+      "input_iq": {
+        "type": "object",
+        "title": "InputIQ",
+        "description":	"Help the user with writing better ideas and proposals through AI assistance while typing in the input form. Inputs posted while the feature was disabled will not be listed as similar inputs.",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": false},
+          "enabled": { "type": "boolean", "default": false}
         }
       },
 
@@ -1343,8 +1370,20 @@
 
       "project_library": {
         "type": "object",
-        "title": "Project library - do not enable!",
+        "title": "Inspiration hub",
         "description": "Temporary feature flag we are using to be able to hide our work in progress from the live platforms. Do not enable this feature!",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": false },
+          "enabled": { "type": "boolean", "default": false }
+        }
+      },
+
+      "user_fields_in_surveys": {
+        "type": "object",
+        "title": "User fields in surveys",
+        "description": "Allow surveys to embed user fields directly in the survey form, instead of asking through registration. DO NOT ENABLE EXCEPT ON TEST PLATFORMS. Currently in live test on community monitor.",
         "additionalProperties": false,
         "required": ["allowed", "enabled"],
         "properties": {
@@ -1370,6 +1409,32 @@
             "items": {
               "anyOf": <%= ::Verification::VerificationService.new.all_methods_json_schema %>
             }
+          }
+        }
+      },
+
+      "community_monitor": {
+        "type": "object",
+        "title": "Community Monitor",
+        "description": "Long running public survey.",
+        "additionalProperties": false,
+        "required": [
+          "allowed",
+          "enabled"
+        ],
+        "properties": {
+          "allowed": {
+            "type": "boolean",
+            "default": false
+          },
+          "enabled": {
+            "type": "boolean",
+            "default": false
+          },
+          "project_id": {
+            "title": "The ID of the required hidden project",
+            "description": "Do not edit unless you know what you're doing. This is usually set by the system",
+            "type": "string"
           }
         }
       }
@@ -1402,6 +1467,7 @@
     "large_summaries": ["analysis"],
     "ask_a_question": ["analysis"],
     "advanced_autotagging": ["analysis"],
+    "auto_insights": ["analysis"],
     "import_printed_forms": ["input_importer"]
   },
   "definitions": {

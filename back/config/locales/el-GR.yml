@@ -91,6 +91,9 @@ el:
     services_description: Δημόσιες υπηρεσίες
     other: Άλλο
     other_description: Άλλο
+    quality_of_life: Ποιότητα ζωής
+    service_delivery: Παροχή υπηρεσιών
+    governance_and_trust: Διακυβέρνηση και εμπιστοσύνη
   static_pages:
     terms_and_conditions_title: Όροι και προϋποθέσεις
     terms_and_conditions_body: >
@@ -126,6 +129,7 @@ el:
     open_idea_phase_title: Τρέχουσα φάση
     native_survey_title: Έρευνα
     native_survey_button: Πάρτε μέρος στην έρευνα
+    community_monitor_title: Κοινοτικός παρατηρητής
   events:
     council_meeting_title: Συνεδρίαση του Συμβουλίου
     council_meeting_description: >
@@ -167,16 +171,58 @@ el:
       attachments:
         title: Συνημμένα αρχεία
         description:
-      section1:
+      title_page:
         description:
-      section2:
+      body_page:
+        title: Πείτε μας περισσότερα
+        description:
+      uploads_page:
         title: Εικόνες και συνημμένα
         description:
-      section3:
+      details_page:
         title: Λεπτομέρειες
         description:
       other_input_field:
         title: Πληκτρολογήστε την απάντησή σας
+      ask_follow_up_field:
+        title: Πείτε μας γιατί
+    community_monitor:
+      questions:
+        place_to_live:
+          title: Η πόλη ως τόπος διαμονής
+        sense_of_safety:
+          title: Συνολική αίσθηση ασφάλειας
+        access_to_parks:
+          title: Πρόσβαση σε πάρκα, χώρους πρασίνου και ευκαιρίες αναψυχής
+        affordable_housing:
+          title: Διαθεσιμότητα οικονομικά προσιτής στέγασης
+        employment_opportunities:
+          title: Ευκαιρίες απασχόλησης και οικονομικής ανέλιξης
+        quality_of_services:
+          title: Συνολική ποιότητα των υπηρεσιών που παρέχει η πόλη
+        overall_value:
+          title: Συνολική αξία που λαμβάνετε για τους φόρους και τα τέλη της πόλης σας
+        cleanliness_and_maintenance:
+          title: Συνολική καθαριότητα και συντήρηση των δρόμων και των δημόσιων χώρων
+        trust_in_government:
+          title: Εμπιστοσύνη στην τοπική αυτοδιοίκηση
+        responsiveness_of_officials:
+          title: Ανταπόκριση των εκλεγμένων αξιωματούχων στις ανησυχίες της κοινότητας
+        transparency_of_money_spent:
+          title: Διαφάνεια σχετικά με τον τρόπο με τον οποίο δαπανώνται τα χρήματα των δημοτικών φόρων
+      question_categories:
+        quality_of_life: Ποιότητα ζωής
+        service_delivery: Παροχή υπηρεσιών
+        governance_and_trust: Διακυβέρνηση και εμπιστοσύνη
+        other: Άλλα
+      labels:
+        label_1: Πολύ κακή
+        label_2: Φτωχό
+        label_3: Δίκαιη
+        label_4: Καλή
+        label_5: Εξαιρετικό
+      form_end:
+        button_text: Επιστροφή στην αρχική σελίδα
   custom_forms:
     categories:
       main_content:
@@ -257,6 +303,8 @@ el:
     form_end_page:
       title_text_3: 'Σας ευχαριστούμε που μοιραστήκατε τη γνώμη σας!'
       description_text_3: "Η εισήγησή σας υποβλήθηκε με επιτυχία."
+    form_user_page:
+      title_text: 'Σχετικά με εσάς'
     pdf_export:
       personal_data: 'Προσωπικά δεδομένα'
       personal_data_explanation_public: "Θα υποβάλουμε την εισήγησή σας στην ηλεκτρονική πλατφόρμα συμμετοχής %{organizationName}. Εάν θέλετε να εμφανίζεται το όνομά σας ως συντάκτης αυτής της εισήγησης και να λαμβάνετε ενημερώσεις σχετικές με την εισήγησή σας μέσω ηλεκτρονικού ταχυδρομείου, παρακαλούμε συμπληρώστε τα ακόλουθα πεδία σε αυτή τη σελίδα και θα δημιουργήσουμε έναν λογαριασμό για εσάς. Το email σας δεν θα εμφανίζεται δημόσια και θα χρησιμοποιείται μόνο από τον %{organizationName}. Εάν θέλετε να παραμείνετε ανώνυμος ή δεν συμφωνείτε να χρησιμοποιήσουμε τα προσωπικά σας δεδομένα με αυτόν τον τρόπο, μπορείτε να τα αφήσετε κενά."

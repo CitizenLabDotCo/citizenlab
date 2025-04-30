@@ -22,6 +22,7 @@ import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
 
 import ImportButtons from './ImportButtons';
+import { getBackPath } from './utils';
 
 interface Props {
   onClickPDFImport: () => void;
@@ -43,12 +44,12 @@ const TopBar = ({ onClickPDFImport, onClickExcelImport }: Props) => {
     // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     (phase ? ` - ${localize(phase?.data.attributes.title_multiloc)}` : '');
 
-  const isSurvey =
-    phase?.data.attributes.participation_method === 'native_survey';
+  const participationMethod = phase?.data.attributes.participation_method;
 
-  const backPath: RouteType = isSurvey
-    ? `/admin/projects/${projectId}/phases/${phaseId}/native-survey`
-    : `/admin/projects/${projectId}/phases/${phaseId}/ideas`;
+  const backPath: RouteType =
+    projectId &&
+    phaseId &&
+    getBackPath(projectId, phaseId, participationMethod);
 
   return (
     <Box

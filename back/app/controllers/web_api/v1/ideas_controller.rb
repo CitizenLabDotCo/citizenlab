@@ -3,6 +3,8 @@
 class WebApi::V1::IdeasController < ApplicationController
   include BlockingProfanity
 
+  SIMILARITIES_LIMIT = 5
+
   before_action :authorize_project_or_ideas, only: %i[index_xlsx]
   skip_before_action :authenticate_user # TODO: temp fix to pass tests
   skip_after_action :verify_authorized, only: %i[index_xlsx index_mini index_idea_markers filter_counts]
@@ -91,7 +93,7 @@ class WebApi::V1::IdeasController < ApplicationController
     ideas = policy_scope(Idea)
       .where(author: current_user)
       .submitted_or_published
-      .native_survey
+      .supports_survey
 
     ideas = paginate ideas
 
@@ -147,6 +149,12 @@ class WebApi::V1::IdeasController < ApplicationController
     draft_idea =
       (current_user && Idea.find_by(creation_phase_id: params[:phase_id], author: current_user, publication_status: 'draft')) ||
       Idea.new(project: phase.project, author: current_user, publication_status: 'draft')
+
+    # Merge custom field values from the user's profile if user fields are presented in the idea form
+    if current_user && phase.pmethod.user_fields_in_form?
+      user_values = current_user.custom_field_values&.transform_keys { |key| "u_#{key}" }
+      draft_idea.custom_field_values = user_values.merge(draft_idea.custom_field_values) if current_user
+    end
     render_show draft_idea, check_auth: false
   end
 
@@ -154,41 +162,26 @@ class WebApi::V1::IdeasController < ApplicationController
   #   Users who can moderate projects post in an active phase if no phase id is given.
   #   Users who can moderate projects post in the given phase if a phase id is given.
   def create
-    project = Project.find(params.dig(:idea, :project_id))
-    phase_ids = params.dig(:idea, :phase_ids) || []
-    is_moderator = current_user && UserRoleService.new.can_moderate_project?(project, current_user)
+    send_error and return if !phase_for_input
 
-    if phase_ids.any?
-      send_error and return unless is_moderator
-
-      send_error and return if phase_ids.size != 1
-    end
-
-    phase = if is_moderator && phase_ids.any?
-      Phase.find(phase_ids.first)
-    else
-      TimelineService.new.current_phase_not_archived(project)
-    end
-    send_error and return unless phase
-
-    form = phase.pmethod.custom_form
+    form = phase_for_input.pmethod.custom_form
     extract_custom_field_values_from_params!(form)
-    params_for_create = idea_params form, is_moderator
+    params_for_create = idea_params form
     input = Idea.new params_for_create
-    input.creation_phase = (phase if !phase.pmethod.transitive?)
-    input.phase_ids = [phase.id] if phase_ids.empty?
+    input.creation_phase = (phase_for_input if !phase_for_input.pmethod.transitive?)
+    input.phase_ids = [phase_for_input.id] if params.dig(:idea, :phase_ids).blank?
 
     # NOTE: Needs refactor allow_anonymous_participation? so anonymous_participation can be allow or force
-    if phase.native_survey? && phase.allow_anonymous_participation?
+    if phase_for_input.pmethod.supports_survey_form? && phase_for_input.allow_anonymous_participation?
       input.anonymous = true
     end
     input.author ||= current_user
-    phase.pmethod.assign_defaults(input)
+    phase_for_input.pmethod.assign_defaults(input)
 
     sidefx.before_create(input, current_user)
 
     authorize input
-    if anonymous_not_allowed?(phase)
+    if anonymous_not_allowed?(phase_for_input)
       render json: { errors: { base: [{ error: :anonymous_participation_not_allowed }] } }, status: :unprocessable_entity
       return
     end
@@ -231,8 +224,7 @@ class WebApi::V1::IdeasController < ApplicationController
     params[:idea][:phase_ids] ||= [] if params[:idea].key?(:phase_ids)
     params_service.mark_custom_field_values_to_clear!(input.custom_field_values, params[:idea][:custom_field_values])
 
-    user_can_moderate_project = UserRoleService.new.can_moderate_project?(input.project, current_user)
-    update_params = idea_params(input.custom_form, user_can_moderate_project).to_h
+    update_params = idea_params(input.custom_form).to_h
     phase_ids = update_params.delete(:phase_ids) if update_params[:phase_ids]
     update_params[:custom_field_values] = params_service.updated_custom_field_values(input.custom_field_values, update_params[:custom_field_values])
     CustomFieldService.new.compact_custom_field_values! update_params[:custom_field_values]
@@ -287,15 +279,45 @@ class WebApi::V1::IdeasController < ApplicationController
     end
   end
 
-  def similarities
-    idea = Idea.find params[:id]
-    similar_ideas_options = { scope: policy_scope(Idea), distance_threshold: 0.4 }
-    similar_ideas_options[:limit] = nil if params.key?(:page)
-    similar_ideas = paginate SimilarIdeasService.new(idea).similar_ideas(**similar_ideas_options)
-    render json: linked_json(similar_ideas, WebApi::V1::IdeaSerializer, serialization_options_for(similar_ideas))
+  def similar_ideas
+    require_feature! 'input_iq' if AppConfiguration.timezone.at(Time.current).to_date > Date.parse('2025-06-30')
+
+    idea = Idea.new idea_params_for_similarities
+    service = SimilarIdeasService.new(idea)
+
+    title_threshold = phase_for_input.similarity_threshold_title
+    body_threshold = phase_for_input.similarity_threshold_body
+    cache_key = "similar_ideas/#{{ title_multiloc: idea.title_multiloc, body_multiloc: idea.body_multiloc, project_id: idea.project_id, title_threshold:, body_threshold: }}"
+
+    json_result = Rails.cache.fetch(cache_key, expires_in: 10.minutes) do
+      scope = policy_scope(Idea)
+      scope = scope.where(project_id: idea.project_id) if idea.project_id
+      results = service.similar_ideas(scope:, title_threshold:, body_threshold:, limit: SIMILARITIES_LIMIT)
+      WebApi::V1::IdeaSerializer.new(results, serialization_options_for(results)).serializable_hash
+    end
+
+    render json: json_result
   end
 
   private
+
+  def phase_for_input
+    return @phase_for_input if defined? @phase_for_input
+
+    project = Project.find(params.dig(:idea, :project_id))
+    phase_ids = params.dig(:idea, :phase_ids) || []
+    is_moderator = current_user && UserRoleService.new.can_moderate_project?(project, current_user)
+    return false if phase_ids.any? && !(is_moderator && phase_ids.size == 1)
+
+    @phase_for_input = if is_moderator && phase_ids.any?
+      Phase.find(phase_ids.first)
+    else
+      TimelineService.new.current_phase_not_archived(project)
+    end
+    return false if !@phase_for_input
+
+    @phase_for_input
+  end
 
   def render_show(input, check_auth: true)
     authorize input if check_auth # we should usually check auth, except when we're returning an empty draft idea
@@ -356,15 +378,16 @@ class WebApi::V1::IdeasController < ApplicationController
     @params_service ||= CustomFieldParamsService.new
   end
 
-  def idea_params(custom_form, user_can_moderate_project)
-    params.require(:idea).permit(idea_attributes(custom_form, user_can_moderate_project))
+  def idea_params(custom_form)
+    params.require(:idea).permit(idea_attributes(custom_form))
   end
 
-  def idea_attributes(custom_form, user_can_moderate_project)
+  def idea_attributes(custom_form)
     submittable_field_keys = submittable_custom_fields(custom_form).map { |x| x.key.to_sym }
     attributes = idea_simple_attributes(submittable_field_keys)
     complex_attributes = idea_complex_attributes(custom_form, submittable_field_keys)
     attributes << complex_attributes if complex_attributes.any?
+    user_can_moderate_project = current_user && UserRoleService.new.can_moderate_project?(custom_form.participation_context&.project, current_user)
     if user_can_moderate_project
       attributes.concat %i[author_id idea_status_id budget manual_votes_amount] + [phase_ids: []]
     end
@@ -411,6 +434,10 @@ class WebApi::V1::IdeasController < ApplicationController
     end
 
     complex_attributes
+  end
+
+  def idea_params_for_similarities
+    params.require(:idea).permit([:project_id, { title_multiloc: CL2_SUPPORTED_LOCALES, body_multiloc: CL2_SUPPORTED_LOCALES }])
   end
 
   def submittable_custom_fields(custom_form)

@@ -59,6 +59,7 @@ export type IAppConfigurationSettingsCore = {
   customer_portal_url?: string | null;
   anonymous_name_scheme?: string | null;
   private_attributes_in_export: boolean;
+  country_code: string | null;
 };
 
 export type TSeatNumber = number | null | undefined;
@@ -144,6 +145,10 @@ export interface IAppConfigurationSettings {
     enabled: boolean;
   };
   keycloak_login?: {
+    allowed: boolean;
+    enabled: boolean;
+  };
+  twoday_login?: {
     allowed: boolean;
     enabled: boolean;
   };
@@ -245,6 +250,7 @@ export interface IAppConfigurationSettings {
   large_summaries?: AppConfigurationFeature;
   ask_a_question?: AppConfigurationFeature;
   advanced_autotagging?: AppConfigurationFeature;
+  auto_insights?: AppConfigurationFeature;
   import_printed_forms?: AppConfigurationFeature;
   input_importer?: AppConfigurationFeature;
   user_session_recording?: AppConfigurationFeature;
@@ -257,11 +263,14 @@ export interface IAppConfigurationSettings {
   prescreening_ideation?: AppConfigurationFeature;
   input_cosponsorship?: AppConfigurationFeature;
   project_review?: AppConfigurationFeature;
-  similar_inputs?: AppConfigurationFeature & {
-    admins_only: boolean;
-  };
+  input_iq?: AppConfigurationFeature;
   platform_templates?: AppConfigurationFeature;
+  authoring_assistance_prototype?: AppConfigurationFeature;
   project_library?: AppConfigurationFeature;
+  community_monitor?: AppConfigurationFeature & {
+    project_id: string;
+  };
+  user_fields_in_surveys?: AppConfigurationFeature;
 }
 
 export type TAppConfigurationSettingCore = keyof IAppConfigurationSettingsCore;

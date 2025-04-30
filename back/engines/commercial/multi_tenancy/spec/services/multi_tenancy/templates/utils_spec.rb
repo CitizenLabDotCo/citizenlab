@@ -21,7 +21,7 @@ describe MultiTenancy::Templates::Utils do
     context 'when reading the manifest' do
       it 'returns expected templates' do
         s3_client.stub_responses(:get_object, lambda { |context|
-          expect(context.params).to eq(bucket: template_bucket, key: 'foo/manifest.json')
+          expect(context.params).to eq(bucket: template_bucket, checksum_mode: 'ENABLED', key: 'foo/manifest.json')
           { body: '{"bar": {"required_locales": ["en"]}, "qux": {"required_locales": ["en"]}}' }
         })
 
@@ -81,7 +81,7 @@ describe MultiTenancy::Templates::Utils do
   describe '#external_manifest' do
     it 'returns expected manifest' do
       s3_client.stub_responses(:get_object, lambda { |context|
-        expect(context.params).to eq(bucket: template_bucket, key: 'foo/manifest.json')
+        expect(context.params).to eq(bucket: template_bucket, checksum_mode: 'ENABLED', key: 'foo/manifest.json')
         { body: '{"template": {"required_locales": ["en"]}}' }
       })
 

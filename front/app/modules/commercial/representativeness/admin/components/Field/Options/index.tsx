@@ -3,8 +3,8 @@ import React, { useState } from 'react';
 import { Box, Text, Toggle } from '@citizenlab/cl2-component-library';
 import { WrappedComponentProps } from 'react-intl';
 
+import useCustomFieldOptions from 'api/custom_field_options/useCustomFieldOptions';
 import useUserCustomField from 'api/user_custom_fields/useUserCustomField';
-import useUserCustomFieldOptions from 'api/user_custom_fields_options/useUserCustomFieldsOptions';
 
 import useLocalize from 'hooks/useLocalize';
 
@@ -17,7 +17,7 @@ import { Bins } from '../../../api/reference_distribution/types';
 import { FormValues } from '../../../utils/form';
 import {
   getPercentages,
-  formatUserCustomFieldOptions,
+  formatCustomFieldOptions,
   formatBinOptions,
 } from '../../../utils/options';
 import binMessages from '../BinModal/messages';
@@ -46,25 +46,25 @@ const Options = injectIntl(
   }: Props & WrappedComponentProps) => {
     const [seeMore, setSeeMore] = useState(false);
     const { data: userCustomField } = useUserCustomField(userCustomFieldId);
-    const { data: userCustomFieldOptions } =
-      useUserCustomFieldOptions(userCustomFieldId);
+    const { data: customFieldOptions } =
+      useCustomFieldOptions(userCustomFieldId);
     const localize = useLocalize();
 
-    if (isNilOrError(userCustomFieldOptions) || isNilOrError(userCustomField)) {
+    if (isNilOrError(customFieldOptions) || isNilOrError(userCustomField)) {
       return null;
     }
 
     const options =
       userCustomField.data.attributes.key === 'birthyear' && bins
         ? formatBinOptions(bins, formatMessage(binMessages.andOver))
-        : formatUserCustomFieldOptions(userCustomFieldOptions.data, localize);
+        : formatCustomFieldOptions(customFieldOptions.data, localize);
 
     const visibleOptions = options.slice(
       0,
-      seeMore ? userCustomFieldOptions.data.length : 12
+      seeMore ? customFieldOptions.data.length : 12
     );
 
-    const showSeeMoreButton = userCustomFieldOptions.data.length > 12;
+    const showSeeMoreButton = customFieldOptions.data.length > 12;
     const showEditAgeGroupsButton =
       userCustomField.data.attributes.key === 'birthyear' && bins;
 

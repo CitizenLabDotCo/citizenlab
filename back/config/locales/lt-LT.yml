@@ -91,6 +91,9 @@ lt:
     services_description: Viešosios paslaugos
     other: Kita
     other_description: Kita
+    quality_of_life: Gyvenimo kokybė
+    service_delivery: Paslaugų teikimas
+    governance_and_trust: Valdymas ir pasitikėjimas
   static_pages:
     terms_and_conditions_title: Terminai ir sąlygos
     terms_and_conditions_body: >
@@ -126,6 +129,7 @@ lt:
     open_idea_phase_title: Dabartinis etapas
     native_survey_title: Apklausa
     native_survey_button: Atlikite apklausą
+    community_monitor_title: Bendrijos stebėtojas
   events:
     council_meeting_title: Tarybos posėdis
     council_meeting_description: >
@@ -167,16 +171,58 @@ lt:
       attachments:
         title: Priedai
         description:
-      section1:
+      title_page:
         description:
-      section2:
+      body_page:
+        title: Papasakokite mums daugiau
+        description:
+      uploads_page:
         title: Vaizdai ir priedai
         description:
-      section3:
+      details_page:
         title: Išsami informacija
         description:
       other_input_field:
         title: Įveskite atsakymą
+      ask_follow_up_field:
+        title: Papasakokite mums, kodėl
+    community_monitor:
+      questions:
+        place_to_live:
+          title: Miestas kaip vieta gyventi
+        sense_of_safety:
+          title: Bendras saugumo jausmas
+        access_to_parks:
+          title: Galimybė naudotis parkais, žaliosiomis erdvėmis ir poilsio galimybėmis
+        affordable_housing:
+          title: Galimybė įsigyti būstą už prieinamą kainą
+        employment_opportunities:
+          title: Užimtumo ir ekonominės pažangos galimybės
+        quality_of_services:
+          title: Bendra miesto teikiamų paslaugų kokybė
+        overall_value:
+          title: Bendra vertė, kurią gaunate už savo miesto mokesčius ir rinkliavas
+        cleanliness_and_maintenance:
+          title: Bendra gatvių ir viešųjų erdvių švara ir priežiūra
+        trust_in_government:
+          title: Pasitikėjimas vietos valdžia
+        responsiveness_of_officials:
+          title: Išrinktų pareigūnų reagavimas į bendruomenės problemas
+        transparency_of_money_spent:
+          title: Skaidrumas, kaip išleidžiami savivaldybės mokesčiams skirti pinigai
+      question_categories:
+        quality_of_life: Gyvenimo kokybė
+        service_delivery: Paslaugų teikimas
+        governance_and_trust: Valdymas ir pasitikėjimas
+        other: Kita
+      labels:
+        label_1: Labai prastas
+        label_2: Prastas
+        label_3: Sąžiningai
+        label_4: Geras
+        label_5: Puikus
+      form_end:
+        button_text: Grįžti namo
   custom_forms:
     categories:
       main_content:
@@ -257,6 +303,8 @@ lt:
     form_end_page:
       title_text_3: 'Dėkojame, kad dalijatės savo įžvalgomis!'
       description_text_3: "Jūsų duomenys sėkmingai pateikti."
+    form_user_page:
+      title_text: 'Apie jus'
     pdf_export:
       personal_data: 'Asmens duomenys'
       personal_data_explanation_public: "Jūsų nuomonę pateiksime internetinėje dalyvavimo platformoje %{organizationName}. Jei norite, kad jūsų vardas ir pavardė būtų rodomi kaip šio indėlio autorius ir gautumėte su jūsų indėliu susijusius atnaujinimus el. paštu, užpildykite šiuos laukelius šiame puslapyje ir mes sukursime jums paskyrą. Jūsų el. paštas nebus viešas ir bus naudojamas tik %{organizationName}. Jei norite išlikti anonimiškas arba nesutinkate, kad taip naudotume jūsų asmens duomenis, galite palikti juos tuščius."

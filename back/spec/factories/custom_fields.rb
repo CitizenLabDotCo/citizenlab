@@ -165,6 +165,47 @@ FactoryBot.define do
       linear_scale_label_11_multiloc { {} }
     end
 
+    factory :custom_field_sentiment_linear_scale do
+      title_multiloc do
+        {
+          'en' => 'We need a swimming pool.'
+        }
+      end
+      description_multiloc do
+        {
+          'en' => 'Please indicate how strong you agree or disagree.'
+        }
+      end
+      input_type { 'sentiment_linear_scale' }
+      maximum { 5 }
+      ask_follow_up { false }
+      linear_scale_label_1_multiloc do
+        {
+          'en' => 'Strongly disagree'
+        }
+      end
+      linear_scale_label_2_multiloc do
+        {
+          'en' => 'Disagree'
+        }
+      end
+      linear_scale_label_3_multiloc do
+        {
+          'en' => 'Neutral'
+        }
+      end
+      linear_scale_label_4_multiloc do
+        {
+          'en' => 'Agree'
+        }
+      end
+      linear_scale_label_5_multiloc do
+        {
+          'en' => 'Strongly agree'
+        }
+      end
+    end
+
     factory :custom_field_rating do
       title_multiloc do
         {
@@ -193,20 +234,10 @@ FactoryBot.define do
       end
       input_type { 'page' }
       page_layout { 'default' }
-    end
 
-    factory :custom_field_section do
-      title_multiloc do
-        {
-          'en' => 'A section'
-        }
+      factory :custom_field_form_end_page do
+        key { 'form_end' }
       end
-      description_multiloc do
-        {
-          'en' => 'This is a section.'
-        }
-      end
-      input_type { 'section' }
     end
 
     factory :custom_field_multiselect do
@@ -337,6 +368,7 @@ FactoryBot.define do
     end
 
     factory :custom_field_gender do
+      resource_type { 'User' }
       key { 'gender' }
       title_multiloc { { 'en' => 'gender' } }
       code { 'gender' }
@@ -344,9 +376,9 @@ FactoryBot.define do
 
       trait :with_options do
         after(:create) do |cf|
-          create(:custom_field_option, custom_field: cf, key: 'male')
-          create(:custom_field_option, custom_field: cf, key: 'female')
-          create(:custom_field_option, custom_field: cf, key: 'unspecified')
+          create(:custom_field_option, title_multiloc: { 'en' => 'Male' }, custom_field: cf, key: 'male')
+          create(:custom_field_option, title_multiloc: { 'en' => 'Female' }, custom_field: cf, key: 'female')
+          create(:custom_field_option, title_multiloc: { 'en' => 'Unspecified' }, custom_field: cf, key: 'unspecified')
         end
       end
     end

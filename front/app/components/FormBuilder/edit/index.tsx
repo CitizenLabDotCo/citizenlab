@@ -50,6 +50,8 @@ import {
   NestedGroupingStructure,
   getReorderedFields,
   DragAndDropResult,
+  supportsLinearScaleLabels,
+  getQuestionCategory,
 } from './utils';
 
 interface FormValues {
@@ -135,6 +137,7 @@ const FormEdit = ({
         linear_scale_label_10_multiloc: object(),
         linear_scale_label_11_multiloc: object(),
         required: boolean(),
+        ask_follow_up: boolean(),
         temp_id: string(),
         logic: validateLogic(formatMessage(messages.logicValidationError)),
       })
@@ -156,7 +159,7 @@ const FormEdit = ({
     reset,
   } = methods;
 
-  const { append, move, replace, insert } = useFieldArray({
+  const { move, replace, insert } = useFieldArray({
     name: 'customFields',
     control,
   });
@@ -205,28 +208,14 @@ const FormEdit = ({
   const onAddField = (field: IFlatCreateCustomField, index: number) => {
     if (!formCustomFields) return;
 
-    if (builderConfig.type === 'survey') {
-      const newField = {
-        ...field,
-        index,
-      };
+    const newField = {
+      ...field,
+      index,
+    };
 
-      if (isNewCustomFieldObject(newField)) {
-        insert(index, newField);
-        setSelectedField(newField);
-      }
-    }
-
-    if (builderConfig.type === 'input_form') {
-      const newField = {
-        ...field,
-        index: formCustomFields.length,
-      };
-
-      if (isNewCustomFieldObject(newField)) {
-        append(newField);
-        setSelectedField(newField);
-      }
+    if (isNewCustomFieldObject(newField)) {
+      insert(index, newField);
+      setSelectedField(newField);
     }
   };
 
@@ -264,8 +253,14 @@ const FormEdit = ({
         title_multiloc: field.title_multiloc || {},
         key: field.key,
         code: field.code,
+        question_category: getQuestionCategory(field, customFields),
         ...(field.page_layout || field.input_type === 'page'
-          ? { page_layout: field.page_layout || 'default' }
+          ? {
+              page_layout: field.page_layout || 'default',
+              page_button_label_multiloc:
+                field.page_button_label_multiloc || {},
+              page_button_link: field.page_button_link || '',
+            }
           : {}),
         ...(field.map_config_id && {
           map_config_id: field.map_config_id,
@@ -295,8 +290,10 @@ const FormEdit = ({
         ...(field.input_type === 'matrix_linear_scale' && {
           matrix_statements: field.matrix_statements || {},
         }),
-        ...((field.input_type === 'linear_scale' ||
-          field.input_type === 'matrix_linear_scale') && {
+        ...(field.input_type === 'sentiment_linear_scale' && {
+          ask_follow_up: field.ask_follow_up || false,
+        }),
+        ...(supportsLinearScaleLabels(field.input_type) && {
           linear_scale_label_1_multiloc:
             field.linear_scale_label_1_multiloc || {},
           linear_scale_label_2_multiloc:
@@ -347,7 +344,9 @@ const FormEdit = ({
       );
     } catch (error) {
       const errorType =
-        error?.errors?.form[0].error === 'stale_data'
+        Array.isArray(error?.errors?.form) &&
+        error.errors.form.length > 0 &&
+        error.errors.form[0].error === 'stale_data'
           ? 'staleData'
           : 'customFields';
       handleHookFormSubmissionError(error, setError, errorType);
@@ -432,6 +431,7 @@ const FormEdit = ({
                   onAddField={onAddField}
                   builderConfig={builderConfig}
                   move={move}
+                  onSelectField={setSelectedField}
                 />
               </Box>
               <Box

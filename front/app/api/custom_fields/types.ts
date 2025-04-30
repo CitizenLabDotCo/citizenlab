@@ -25,7 +25,6 @@ export type ICustomFieldInputType =
   | 'ranking'
   | 'rating'
   | 'matrix_linear_scale'
-  | 'section'
   | 'page'
   | 'file_upload'
   | 'shapefile_upload'
@@ -38,7 +37,8 @@ export type ICustomFieldInputType =
   | 'point'
   | 'line'
   | 'polygon'
-  | 'cosponsor_ids';
+  | 'cosponsor_ids'
+  | 'sentiment_linear_scale';
 
 export type IOptionsType = {
   id?: string;
@@ -71,11 +71,14 @@ export interface IAttributes {
   input_type: ICustomFieldInputType;
   map_config_id?: string | null;
   page_layout?: 'default' | 'map' | null;
+  page_button_label_multiloc?: Multiloc;
+  page_button_link?: string;
   required: boolean;
   isRequiredEditable?: boolean;
   isEnabledEditable?: boolean;
   isTitleEditable?: boolean;
   isDeleteEnabled?: boolean;
+  ask_follow_up?: boolean;
   constraints?: {
     locks: {
       title_multiloc?: boolean;
@@ -105,6 +108,7 @@ export interface IAttributes {
   other?: boolean;
   random_option_ordering?: boolean;
   dropdown_layout?: boolean;
+  question_category?: string;
 }
 
 export interface ICustomFieldResponse {
@@ -119,6 +123,9 @@ export interface ICustomFieldResponse {
       data: IRelationship[];
     };
     map_config?: {
+      data: IRelationship;
+    };
+    resource?: {
       data: IRelationship;
     };
   };
@@ -170,6 +177,8 @@ export type IFlatCreateCustomField = Optional<
   | 'maximum'
   | 'random_option_ordering'
   | 'dropdown_layout'
+  | 'question_category'
+  | 'ask_follow_up'
 > & {
   isLocalOnly: boolean;
 };

@@ -18,6 +18,8 @@ import { IProjectData } from 'api/projects/types';
 
 import useLocalize from 'hooks/useLocalize';
 
+import { triggerPostActionEvents } from 'containers/App/events';
+
 import { ScreenReaderOnly } from 'utils/a11y';
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
@@ -113,6 +115,8 @@ const CTAButton = ({ phase, project }: Props) => {
                   `/projects/${project.attributes.slug}?scrollToStatusModule=true`
                 );
               }
+
+              triggerPostActionEvents({});
             },
           }
         );
@@ -153,12 +157,9 @@ const CTAButton = ({ phase, project }: Props) => {
         <Box width="100%" tabIndex={disabledExplanation ? 0 : -1}>
           <StyledButton
             icon="vote-ballot"
-            buttonStyle="secondary-outlined"
-            iconColor={theme.colors.tenantText}
+            buttonStyle="primary-inverse"
             onClick={handleSubmitOnClick}
             fontWeight="500"
-            bgColor={theme.colors.white}
-            textColor={theme.colors.tenantText}
             id="e2e-voting-submit-button"
             textHoverColor={theme.colors.black}
             padding="6px 12px"

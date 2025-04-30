@@ -1,7 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 
 import { fontSizes, Radio } from '@citizenlab/cl2-component-library';
-import { WrappedComponentProps } from 'react-intl';
 import styled from 'styled-components';
 
 import useProjectById from 'api/projects/useProjectById';
@@ -15,7 +14,7 @@ import {
   SectionField,
 } from 'components/admin/Section';
 
-import { injectIntl, FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
 
 import messages from './messages';
 import ProjectGroupsList from './ProjectGroupsList';
@@ -49,21 +48,14 @@ interface Props {
   projectId: string;
 }
 
-const ProjectVisibility = ({
-  projectId,
-  intl: { formatMessage },
-}: Props & WrappedComponentProps) => {
+const ProjectVisibility = ({ projectId }: Props) => {
+  const { formatMessage } = useIntl();
   const { data: project } = useProjectById(projectId);
   const { mutate: updateProject } = useUpdateProject();
-  const [projectVisibility, setProjectVisibility] = useState<
-    'public' | 'admins' | 'groups'
-  >(project ? project.data.attributes.visible_to : 'public');
 
-  useEffect(() => {
-    if (project) {
-      setProjectVisibility(project.data.attributes.visible_to);
-    }
-  }, [project]);
+  if (!project) {
+    return null;
+  }
 
   const handlePermissionTypeChange = (
     projectVisibility: 'public' | 'groups' | 'admins'
@@ -71,9 +63,7 @@ const ProjectVisibility = ({
     updateProject({ projectId, visible_to: projectVisibility });
   };
 
-  const noOp = () => {
-    // empty
-  };
+  const projectVisibility = project.data.attributes.visible_to;
 
   return (
     <ViewingRightsSection>
@@ -113,10 +103,10 @@ const ProjectVisibility = ({
       </StyledSectionField>
 
       {projectVisibility === 'groups' && (
-        <ProjectGroupsList projectId={projectId} onAddButtonClicked={noOp} />
+        <ProjectGroupsList projectId={projectId} />
       )}
     </ViewingRightsSection>
   );
 };
 
-export default injectIntl(ProjectVisibility);
+export default ProjectVisibility;

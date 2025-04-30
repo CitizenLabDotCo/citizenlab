@@ -37,7 +37,7 @@ sv:
     outside: någon annanstans
   idea_statuses:
     prescreening: förhandsgranskning
-    prescreening_description: Denna inmatning granskas för närvarande av projektledaren och är ännu inte synlig för allmänheten.
+    prescreening_description: Detta bidrag granskas för närvarande av projektledaren och är ännu inte synligt för allmänheten.
     proposed: föreslagen
     proposed_description: Den här idén har föreslagits till staden
     viewed: har setts
@@ -65,8 +65,8 @@ sv:
     waste_description: Renlighet och avfall
     sustainability: Hållbar utveckling
     sustainability_description: Hållbar utveckling
-    mobility: Rörlighet
-    mobility_description: Rörlighet
+    mobility: Mobilitet
+    mobility_description: Mobilitet
     technology: Energi och teknik
     technology_description: Energi och teknik
     economy: Arbete, ekonomi och turism
@@ -91,6 +91,9 @@ sv:
     services_description: Offentliga tjänster
     other: Annat
     other_description: Annat
+    quality_of_life: Livskvalitet
+    service_delivery: Leverans av tjänster
+    governance_and_trust: Styrning och förtroende
   static_pages:
     terms_and_conditions_title: Villkor
     terms_and_conditions_body: >
@@ -126,6 +129,7 @@ sv:
     open_idea_phase_title: Nuvarande fas
     native_survey_title: Undersökning
     native_survey_button: Svara på enkäten
+    community_monitor_title: Gemenskapens övervakare
   events:
     council_meeting_title: Rådsmöte
     council_meeting_description: >
@@ -146,7 +150,7 @@ sv:
         title: Beskrivning
         description:
       author_id:
-        title: Författare
+        title: Deltagare
       topic_ids:
         title: Topics
         description:
@@ -167,16 +171,58 @@ sv:
       attachments:
         title: Bilagor
         description:
-      section1:
+      title_page:
         description:
-      section2:
+      body_page:
+        title: Berätta mer för oss
+        description:
+      uploads_page:
         title: Bilder och bilagor
         description:
-      section3:
+      details_page:
         title: Detaljer
         description:
       other_input_field:
         title: Skriv in ditt svar
+      ask_follow_up_field:
+        title: Berätta för oss varför
+    community_monitor:
+      questions:
+        place_to_live:
+          title: Staden som en plats att bo på
+        sense_of_safety:
+          title: Övergripande känsla av säkerhet
+        access_to_parks:
+          title: Tillgång till parker, grönområden och rekreationsmöjligheter
+        affordable_housing:
+          title: Tillgång till prisvärda bostäder
+        employment_opportunities:
+          title: Möjligheter till sysselsättning och ekonomisk utveckling
+        quality_of_services:
+          title: Övergripande kvalitet på de tjänster som staden tillhandahåller
+        overall_value:
+          title: Det totala värdet du får för dina kommunala skatter och avgifter
+        cleanliness_and_maintenance:
+          title: Övergripande renlighet och underhåll av gator och offentliga utrymmen
+        trust_in_government:
+          title: Förtroende för lokala myndigheter
+        responsiveness_of_officials:
+          title: De förtroendevaldas lyhördhet för samhällets angelägenheter
+        transparency_of_money_spent:
+          title: Öppenhet om hur kommunala skattepengar används
+      question_categories:
+        quality_of_life: Livskvalitet
+        service_delivery: Leverans av tjänster
+        governance_and_trust: Styrning och förtroende
+        other: Övriga
+      labels:
+        label_1: Mycket dålig
+        label_2: Dålig
+        label_3: Rättvist
+        label_4: Bra
+        label_5: Utmärkt
+      form_end:
+        button_text: Tillbaka till hemsidan
   custom_forms:
     categories:
       main_content:
@@ -209,7 +255,7 @@ sv:
     send_reset_password:
       preheader: 'Återställ ditt lösenord för %{organizationName}'
       cta_reset_password: 'Återställ ditt lösenord'
-      message_you_reset_your_password: 'Du begärde en lösenordsåterställning för plattformen för deltagande för %{organizationName}. Klicka på knappen nedan för att välja ett nytt, säkert lösenord. Länken upphör att gälla om 1 timme.'
+      message_you_reset_your_password: 'Du begärde en lösenordsåterställning på plattformen för involvering från %{organizationName}. Klicka på knappen nedan för att välja ett nytt, säkert lösenord. Länken upphör att gälla om 1 timme.'
       subject: '%{organizationName}: Återställ ditt lösenord'
       title_reset_your_password: 'Välj ett nytt lösenord'
   xlsx_export:
@@ -257,6 +303,8 @@ sv:
     form_end_page:
       title_text_3: 'Tack för att du delar med dig av dina synpunkter!'
       description_text_3: "Din input har skickats in på ett framgångsrikt sätt."
+    form_user_page:
+      title_text: 'Om dig'
     pdf_export:
       personal_data: 'Personuppgifter'
       personal_data_explanation_public: "Vi kommer att skicka dina synpunkter till %{organizationName}:s onlineplattform för deltagande. Om du vill att ditt namn ska visas som författare till detta inlägg och få uppdateringar som är relevanta för ditt inlägg via e-post, vänligen fyll i följande fält på denna sida så skapar vi ett konto åt dig. Ditt e-postmeddelande kommer inte att vara offentligt och kommer endast att användas av %{organizationName}. Om du vill vara anonym eller inte samtycker till att vi använder dina personuppgifter på detta sätt kan du lämna dem tomma."
@@ -271,7 +319,7 @@ sv:
       choose_exactly:
         one: 'Välj exakt %{count} alternativ'
         other: 'Välj exakt %{count} alternativ'
-      choose_between: 'Välj mellan %{min} och %{max}'
+      choose_between: 'Väl minst %{min} och upp till %{max} alternativ'
       choose_at_least: 'Välj minst %{count} alternativ'
       choose_at_most: 'Välj högst %{count} alternativ'
       this_answer: 'Detta svar kommer endast att delas med moderatorer och inte med allmänheten.'
@@ -285,12 +333,12 @@ sv:
     title_suffix: 'Kopia'
   confirmations_mailer:
     send_confirmation_code:
-      subject: "Bekräfta din e-postadress för %{organizationName}s plattform för deltagande"
+      subject: "Bekräfta din e-postadress för %{organizationName}s involveringsplattform"
       preheader: 'Bekräfta din e-postadress för %{organizationName}'
       header: "Din bekräftelsekod"
       header_message: "Hej %{firstName}!"
       confirm_email_address: "Bekräfta din e-postadress"
-      thanks_for_signing_up1: "Tack för din medverkan. Vänligen ange denna bekräftelsekod i fönstret på %{organizationName}:s plattform för deltagande:"
+      thanks_for_signing_up1: "Tack för din medverkan. Vänligen ange denna bekräftelsekod i fönstret på %{organizationName}s involveringsplattform:"
       best_regards: "Med vänliga hälsningar,"
       ignore_email: "Om du inte har begärt en kod kan du ignorera det här e-postmeddelandet."
       expire_code: "Den här koden kommer att gå ut om"
@@ -308,7 +356,7 @@ sv:
       for_more_information: "Mer information om detta finns på %{termsAndConditionsPage}."
       you_can_sign_in_again_from: "Du kan logga in igen från %{date}"
   user:
-    anon_first_name: "Användare"
+    anon_first_name: "Deltagare"
     anon_scheme:
       animals: 'alligator,krokodil,alpaca,myra,antilop,apa,bältdjur,babian,grävling,fladdermus,björn,bäver,bi,skalbagge,buffel,fjäril,kamel,vattenbuffel,caribou,katt,nötkreatur,gepard,schimpans,chinchilla,cikada,mussla,kackerlacka,torsk,prärievarg,krabba,syrsa,kråka,korp,hjort,dinosaurie,hund,delfin,tumlare,anka,örn,ål,elefant,älg,iller,fisk,fluga,räv,groda,padda,gerbil,giraff,mygga,gnu,gnu, gnu, get,guldfisk,gås,gorilla,gräshoppa,marsvin,hamster,hare,igelkott,sill,flodhäst,geting,häst,hundhyena,impala,schakal,manet,känguru,wallaby,koala,leopard,lejon,ödla,lama,gräshoppa,lus,ara,gräsand,mammut,manatee,mård,mink,minnow,mullvad,älg,mygga,mus,råtta,mula,bisamråtta,utter,oxe,ostron,panda,gris,näbbdjur,piggsvin,präriehund,mops,kanin,tvättbjörn,ren,noshörning,lax,sardin,skorpion,säl,sjölejon,serval,haj,får,skunk,snigel,orm,spindel,ekorre,svan,termit,tiger,öring,sköldpadda,sköldpadda,valross,geting,val,varg,wombat,woodchuck,mask,jak,guljacka,zebra'
   time:

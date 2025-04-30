@@ -91,6 +91,9 @@ hr:
     services_description: Javne usluge
     other: Ostalo
     other_description: Ostalo
+    quality_of_life: Kvaliteta života
+    service_delivery: Isporuka usluga
+    governance_and_trust: Upravljanje i povjerenje
   static_pages:
     terms_and_conditions_title: Uvjeti i odredbe
     terms_and_conditions_body: >
@@ -126,6 +129,7 @@ hr:
     open_idea_phase_title: Trenutna faza
     native_survey_title: Pregled
     native_survey_button: Popuni anketu
+    community_monitor_title: Monitor zajednice
   events:
     council_meeting_title: Sastanak vijeća
     council_meeting_description: >
@@ -167,16 +171,58 @@ hr:
       attachments:
         title: Privici
         description:
-      section1:
+      title_page:
         description:
-      section2:
+      body_page:
+        title: Recite nam više
+        description:
+      uploads_page:
         title: Slike i prilozi
         description:
-      section3:
-        title: Pojedinosti
+      details_page:
+        title: pojedinosti
         description:
       other_input_field:
         title: Upišite svoj odgovor
+      ask_follow_up_field:
+        title: Reci nam zašto
+    community_monitor:
+      questions:
+        place_to_live:
+          title: Grad kao mjesto za život
+        sense_of_safety:
+          title: Opći osjećaj sigurnosti
+        access_to_parks:
+          title: Pristup parkovima, zelenim površinama i mogućnostima za rekreaciju
+        affordable_housing:
+          title: Dostupnost pristupačnog stanovanja
+        employment_opportunities:
+          title: Mogućnosti zapošljavanja i ekonomskog napredovanja
+        quality_of_services:
+          title: Ukupna kvaliteta usluga koje pruža grad
+        overall_value:
+          title: Ukupna vrijednost koju dobivate za gradske poreze i naknade
+        cleanliness_and_maintenance:
+          title: Cjelokupna čistoća i održavanje ulica i javnih površina
+        trust_in_government:
+          title: Povjerenje u lokalnu vlast
+        responsiveness_of_officials:
+          title: Odaziv izabranih dužnosnika na probleme zajednice
+        transparency_of_money_spent:
+          title: Transparentnost o tome kako se troši novac od općinskih poreza
+      question_categories:
+        quality_of_life: Kvaliteta života
+        service_delivery: Isporuka usluga
+        governance_and_trust: Upravljanje i povjerenje
+        other: ostalo
+      labels:
+        label_1: Vrlo siromašan
+        label_2: Jadno
+        label_3: Fer
+        label_4: Dobro
+        label_5: Izvrsno
+      form_end:
+        button_text: Povratak kući
   custom_forms:
     categories:
       main_content:
@@ -257,6 +303,8 @@ hr:
     form_end_page:
       title_text_3: 'Hvala što ste podijelili svoj doprinos!'
       description_text_3: "Vaš unos je uspješno poslan."
+    form_user_page:
+      title_text: 'O tebi'
     pdf_export:
       personal_data: 'Osobni podaci'
       personal_data_explanation_public: "Poslat ćemo vaš doprinos online platformi za sudjelovanje %{organizationName}. Ako želite da se vaše ime prikaže kao autor ovog unosa i da putem e-pošte primate ažuriranja relevantna za vaš unos, ispunite sljedeća polja na ovoj stranici i mi ćemo za vas kreirati račun. Vaša e-pošta neće biti javna i koristit će je samo %{organizationName}. Ukoliko želite ostati anonimni ili ne pristajete na korištenje Vaših osobnih podataka na ovaj način, možete ih ostaviti prazne."

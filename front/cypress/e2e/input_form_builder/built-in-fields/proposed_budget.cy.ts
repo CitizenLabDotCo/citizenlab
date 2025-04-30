@@ -42,9 +42,30 @@ describe('Input form builder', () => {
   });
 
   it('allows user to turn on / off the proposed budget default field but not edit its question title', () => {
-    // Check that the tags field is not present on the idea form before turning it off
-    cy.visit(`/projects/${projectSlug}/ideas/new?phase_id=${phaseId}`);
+    const title = randomString(12);
+    const description = randomString(42);
+
+    // Visit the project page and accept cookies. This is needed because the cookie banner is not interactive on the input form
+    cy.visit(`/projects/${projectSlug}`);
     cy.acceptCookies();
+
+    // Check that the proposed budget field is not present on the idea form before turning it off
+    cy.visit(`/projects/${projectSlug}/ideas/new?phase_id=${phaseId}`);
+
+    // Fill in the title and description since these are required
+    cy.get('#e2e-idea-title-input input').type(title);
+    cy.get('#e2e-idea-title-input input').should('contain.value', title);
+
+    cy.get('[data-cy="e2e-next-page"]').should('be.visible').click();
+
+    cy.get('#e2e-idea-description-input .ql-editor').type(description);
+    cy.get('#e2e-idea-description-input .ql-editor').contains(description);
+
+    // Go to the next page of the idea form
+    cy.get('[data-cy="e2e-next-page"]').should('be.visible').click();
+
+    // Page 3 should have the proposed budget field but does not
+    cy.get('[data-cy="e2e-next-page"]').should('be.visible').click();
 
     cy.get('#propertiesproposed_budget').should('not.exist');
 
@@ -83,6 +104,21 @@ describe('Input form builder', () => {
 
     // Fill in the form
     cy.visit(`/projects/${projectSlug}/ideas/new?phase_id=${phaseId}`);
+
+    // Fill in the title and description since these are required
+    cy.get('#e2e-idea-title-input input').type(title);
+    cy.get('#e2e-idea-title-input input').should('contain.value', title);
+
+    cy.get('[data-cy="e2e-next-page"]').should('be.visible').click();
+
+    cy.get('#e2e-idea-description-input .ql-editor').type(description);
+    cy.get('#e2e-idea-description-input .ql-editor').contains(description);
+
+    // Go to the next page of the idea form
+    cy.get('[data-cy="e2e-next-page"]').should('be.visible').click();
+
+    // Page 3 should have the proposed budget field
+    cy.get('[data-cy="e2e-next-page"]').should('be.visible').click();
 
     cy.get('#propertiesproposed_budget').should('exist');
   });

@@ -12,13 +12,13 @@ import Error from 'components/UI/Error';
 import Warning from 'components/UI/Warning';
 
 import { useIntl, FormattedMessage } from 'utils/cl-intl';
-import { isNilOrError } from 'utils/helperUtils';
 
 import messages from './messages';
 
 type TApiErrors = CLErrors | null;
 
 export interface Props {
+  intercomLabelClassname?: string;
   slug: string;
   pathnameWithoutSlug: 'projects' | 'folders';
   apiErrors: TApiErrors;
@@ -28,6 +28,7 @@ export interface Props {
 }
 
 const SlugInput = ({
+  intercomLabelClassname,
   slug,
   pathnameWithoutSlug,
   apiErrors,
@@ -39,14 +40,18 @@ const SlugInput = ({
   const { data: appConfig } = useAppConfiguration();
   const { formatMessage } = useIntl();
 
-  if (!isNilOrError(locale) && !isNilOrError(appConfig)) {
+  if (appConfig) {
     const hostName = appConfig.data.attributes.host;
     const previewUrl = `${hostName}/${locale}/${pathnameWithoutSlug}/${slug}`;
 
     return (
       <>
         <Input
-          label={formatMessage(slugInputMessages.urlSlugLabel)}
+          label={
+            <span className={intercomLabelClassname}>
+              {formatMessage(slugInputMessages.urlSlugLabel)}
+            </span>
+          }
           labelTooltipText={formatMessage(slugInputMessages.slugTooltip)}
           type="text"
           onChange={onSlugChange}

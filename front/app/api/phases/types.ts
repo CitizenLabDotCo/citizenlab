@@ -56,6 +56,7 @@ export interface IPhaseAttributes {
   presentation_mode: PresentationMode;
   survey_service?: TSurveyService | null;
   survey_embed_url?: string | null;
+  survey_popup_frequency?: number | null;
   poll_anonymous?: boolean;
   ideas_order?: IdeaSortMethod;
   document_annotation_embed_url?: string | null;
@@ -77,6 +78,10 @@ export interface IPhaseAttributes {
   native_survey_button_multiloc?: Multiloc;
   prescreening_enabled?: boolean;
   manual_voters_amount?: number;
+  similarity_enabled?: boolean;
+  similarity_threshold_title?: number | null;
+  similarity_threshold_body?: number | null;
+  user_fields_in_form?: boolean;
 }
 
 export interface IPhases {
@@ -114,6 +119,7 @@ export interface IUpdatedPhaseProperties {
   voting_term_plural_multiloc?: Multiloc | null;
   survey_service?: TSurveyService | null;
   survey_embed_url?: string | null;
+  survey_popup_frequency?: number | null;
   poll_anonymous?: boolean;
   ideas_order?: IdeaSortMethod;
   document_annotation_embed_url?: string | null;
@@ -126,6 +132,10 @@ export interface IUpdatedPhaseProperties {
   allow_anonymous_participation?: boolean;
   expire_days_limit?: number;
   manual_voters_amount?: number;
+  similarity_enabled?: boolean | null;
+  similarity_threshold_title?: number | null;
+  similarity_threshold_body?: number | null;
+  user_fields_in_form?: boolean;
 }
 
 export interface AddPhaseObject extends IUpdatedPhaseProperties {
@@ -151,6 +161,7 @@ export type ParticipationMethod =
   | 'ideation'
   | 'information'
   | 'native_survey'
+  | 'community_monitor_survey'
   | 'survey'
   | 'voting'
   | 'poll'

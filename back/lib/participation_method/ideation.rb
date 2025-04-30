@@ -11,7 +11,7 @@ module ParticipationMethod
     end
 
     def allowed_extra_field_input_types
-      %w[section number linear_scale rating text multiline_text select multiselect multiselect_image ranking matrix_linear_scale]
+      %w[page number linear_scale rating text multiline_text select multiselect multiselect_image ranking sentiment_linear_scale matrix_linear_scale]
     end
 
     def allowed_ideas_orders
@@ -25,8 +25,10 @@ module ParticipationMethod
     end
 
     def assign_defaults_for_phase
-      phase.ideas_order ||= 'trending'
+      phase.ideas_order ||= 'trending' if allowed_ideas_orders.include?('trending')
       phase.input_term ||= default_input_term if supports_input_term?
+      phase.similarity_threshold_title ||= 0.3
+      phase.similarity_threshold_body ||= 0.4
     end
 
     def author_in_form?(user)
@@ -48,7 +50,7 @@ module ParticipationMethod
     # Locks mirror the name of the fields whose default values cannot be changed (ie are locked)
     def constraints
       result = {
-        ideation_section1: { locks: { enabled: true, title_multiloc: true } },
+        title_page: { locks: { enabled: true, title_multiloc: true } },
         title_multiloc: { locks: { enabled: true, required: true, title_multiloc: true } },
         body_multiloc: { locks: { enabled: true, required: true, title_multiloc: true } },
         idea_images_attributes: { locks: { enabled: true, title_multiloc: true } },
@@ -79,13 +81,14 @@ module ParticipationMethod
         CustomField.new(
           id: SecureRandom.uuid,
           resource: custom_form,
-          input_type: 'section',
-          code: 'ideation_section1',
+          input_type: 'page',
+          page_layout: 'default',
+          code: 'title_page',
           key: nil,
           title_multiloc: {},
           description_multiloc: begin
             multiloc_service.i18n_to_multiloc(
-              'custom_fields.ideas.section1.description',
+              'custom_fields.ideas.title_page.description',
               locales: CL2_SUPPORTED_LOCALES
             )
           rescue StandardError
@@ -122,6 +125,30 @@ module ParticipationMethod
         CustomField.new(
           id: SecureRandom.uuid,
           resource: custom_form,
+          input_type: 'page',
+          page_layout: 'default',
+          code: 'body_page',
+          key: nil,
+          title_multiloc: multiloc_service.i18n_to_multiloc(
+            'custom_fields.ideas.body_page.title',
+            locales: CL2_SUPPORTED_LOCALES
+          ),
+          description_multiloc: begin
+            multiloc_service.i18n_to_multiloc(
+              'custom_fields.ideas.body_page.description',
+              locales: CL2_SUPPORTED_LOCALES
+            )
+          rescue StandardError
+            {}
+          end,
+          required: false,
+          enabled: true,
+          ordering: 2,
+          answer_visible_to: CustomField::VISIBLE_TO_PUBLIC
+        ),
+        CustomField.new(
+          id: SecureRandom.uuid,
+          resource: custom_form,
           key: 'body_multiloc',
           code: 'body_multiloc',
           input_type: 'html_multiloc',
@@ -139,22 +166,23 @@ module ParticipationMethod
           end,
           required: true,
           enabled: true,
-          ordering: 2,
+          ordering: 3,
           answer_visible_to: CustomField::VISIBLE_TO_PUBLIC
         ),
         CustomField.new(
           id: SecureRandom.uuid,
           resource: custom_form,
-          input_type: 'section',
-          code: 'ideation_section2',
+          input_type: 'page',
+          page_layout: 'default',
+          code: 'uploads_page',
           key: nil,
           title_multiloc: multiloc_service.i18n_to_multiloc(
-            'custom_fields.ideas.section2.title',
+            'custom_fields.ideas.uploads_page.title',
             locales: CL2_SUPPORTED_LOCALES
           ),
           description_multiloc: begin
             multiloc_service.i18n_to_multiloc(
-              'custom_fields.ideas.section2.description',
+              'custom_fields.ideas.uploads_page.description',
               locales: CL2_SUPPORTED_LOCALES
             )
           rescue StandardError
@@ -162,7 +190,7 @@ module ParticipationMethod
           end,
           required: false,
           enabled: true,
-          ordering: 3,
+          ordering: 4,
           answer_visible_to: CustomField::VISIBLE_TO_PUBLIC
         ),
         CustomField.new(
@@ -185,7 +213,7 @@ module ParticipationMethod
           end,
           required: false,
           enabled: true,
-          ordering: 4,
+          ordering: 5,
           answer_visible_to: CustomField::VISIBLE_TO_PUBLIC
         ),
         CustomField.new(
@@ -208,22 +236,23 @@ module ParticipationMethod
           end,
           required: false,
           enabled: true,
-          ordering: 5,
+          ordering: 6,
           answer_visible_to: CustomField::VISIBLE_TO_PUBLIC
         ),
         CustomField.new(
           id: SecureRandom.uuid,
           resource: custom_form,
-          input_type: 'section',
-          code: 'ideation_section3',
+          input_type: 'page',
+          page_layout: 'default',
+          code: 'details_page',
           key: nil,
           title_multiloc: multiloc_service.i18n_to_multiloc(
-            'custom_fields.ideas.section3.title',
+            'custom_fields.ideas.details_page.title',
             locales: CL2_SUPPORTED_LOCALES
           ),
           description_multiloc: begin
             multiloc_service.i18n_to_multiloc(
-              'custom_fields.ideas.section3.description',
+              'custom_fields.ideas.details_page.description',
               locales: CL2_SUPPORTED_LOCALES
             )
           rescue StandardError
@@ -231,7 +260,7 @@ module ParticipationMethod
           end,
           required: false,
           enabled: true,
-          ordering: 6,
+          ordering: 7,
           answer_visible_to: CustomField::VISIBLE_TO_PUBLIC
         ),
         CustomField.new(
@@ -254,7 +283,7 @@ module ParticipationMethod
           end,
           required: false,
           enabled: true,
-          ordering: 7,
+          ordering: 8,
           answer_visible_to: CustomField::VISIBLE_TO_PUBLIC
         ),
         CustomField.new(
@@ -277,7 +306,7 @@ module ParticipationMethod
           end,
           required: false,
           enabled: true,
-          ordering: 8,
+          ordering: 9,
           answer_visible_to: CustomField::VISIBLE_TO_PUBLIC
         )
       ]
@@ -302,7 +331,7 @@ module ParticipationMethod
           end,
           required: false,
           enabled: false,
-          ordering: 9,
+          ordering: 10,
           answer_visible_to: CustomField::VISIBLE_TO_PUBLIC
         )
       end
@@ -328,10 +357,22 @@ module ParticipationMethod
           end,
           required: false,
           enabled: false,
-          ordering: proposed_budget_in_form? ? 10 : 9,
+          ordering: proposed_budget_in_form? ? 11 : 10,
           answer_visible_to: CustomField::VISIBLE_TO_PUBLIC
         )
       end
+
+      # Add the final form end page field
+      fields << CustomField.new(
+        id: SecureRandom.uuid,
+        key: 'form_end',
+        resource: custom_form,
+        input_type: 'page',
+        page_layout: 'default',
+        title_multiloc: multiloc_service.i18n_to_multiloc('form_builder.form_end_page.title_text_3'),
+        description_multiloc: multiloc_service.i18n_to_multiloc('form_builder.form_end_page.description_text_3')
+      )
+
       fields
     end
 
@@ -393,6 +434,14 @@ module ParticipationMethod
     end
 
     def transitive?
+      true
+    end
+
+    def follow_idea_on_idea_submission?
+      true
+    end
+
+    def automatically_assign_idea?
       true
     end
 

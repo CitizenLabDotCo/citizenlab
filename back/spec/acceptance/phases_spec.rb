@@ -30,6 +30,14 @@ resource 'Phases' do
         expect(json_response[:data].size).to eq 2
         expect(json_response[:included].pluck(:type)).to include 'permission'
       end
+
+      example 'List all phases of a project which is hidden (internal_role: community_monitor)' do
+        @project.update!(internal_role: 'community_monitor')
+        Permissions::PermissionsUpdateService.new.update_all_permissions
+        do_request
+        assert_status 200
+        expect(json_response[:data].size).to eq 2
+      end
     end
 
     context 'when admin' do
@@ -212,6 +220,9 @@ resource 'Phases' do
         parameter :native_survey_title_multiloc, 'A title for the native survey.'
         parameter :native_survey_button_multiloc, 'Text for native survey call to action button.'
         parameter :prescreening_enabled, 'Do inputs need to go through pre-screening before being published? Defaults to false', required: false
+        parameter :similarity_enabled, 'Enable searching for similar inputs during submission. Defaults to false.', required: false
+        parameter :similarity_threshold_title, 'The similarity threshold for the title of the input. Defaults to 0.3', required: false
+        parameter :similarity_threshold_body, 'The similarity threshold for the body of the input. Defaults to 0.4', required: false
       end
 
       ValidationErrorHelper.new.error_fields(self, Phase)
@@ -467,7 +478,7 @@ resource 'Phases' do
     patch 'web_api/v1/phases/:id' do
       with_options scope: :phase do
         parameter :project_id, 'The id of the project this phase belongs to'
-        parameter :title_multiloc, 'The title of the phase in nultiple locales'
+        parameter :title_multiloc, 'The title of the phase in multiple locales'
         parameter :description_multiloc, 'The description of the phase in multiple languages. Supports basic HTML.'
         parameter :participation_method, "The participation method of the project, either #{Phase::PARTICIPATION_METHODS.join(',')}. Defaults to ideation.", required: false
         parameter :submission_enabled, 'Can citizens post ideas in this phase?', required: false
@@ -494,6 +505,9 @@ resource 'Phases' do
         parameter :poll_anonymous, "Are users associated with their answer? Only applies if participation_method is 'poll'. Can't be changed after first answer.", required: false
         parameter :ideas_order, 'The default order of ideas.'
         parameter :prescreening_enabled, 'Do inputs need to go through pre-screening before being published?', required: false
+        parameter :similarity_enabled, 'Enable searching for similar inputs during submission.', required: false
+        parameter :similarity_threshold_title, 'The similarity threshold for the title of the input.', required: false
+        parameter :similarity_threshold_body, 'The similarity threshold for the body of the input.', required: false
       end
       ValidationErrorHelper.new.error_fields(self, Phase)
       response_field :project, "Array containing objects with signature {error: 'is_not_timeline_project'}", scope: :errors
@@ -511,6 +525,8 @@ resource 'Phases' do
       let(:presentation_mode) { 'map' }
       let(:allow_anonymous_participation) { true }
       let(:prescreening_enabled) { true }
+      let(:similarity_enabled) { true }
+      let(:similarity_threshold_body) { 0.2 }
 
       example_request 'Update a phase' do
         expect(response_status).to eq 200
@@ -524,6 +540,8 @@ resource 'Phases' do
         expect(json_response.dig(:data, :attributes, :presentation_mode)).to eq presentation_mode
         expect(json_response.dig(:data, :attributes, :allow_anonymous_participation)).to eq allow_anonymous_participation
         expect(json_response.dig(:data, :attributes, :prescreening_enabled)).to eq prescreening_enabled
+        expect(json_response.dig(:data, :attributes, :similarity_enabled)).to eq similarity_enabled
+        expect(json_response.dig(:data, :attributes, :similarity_threshold_body)).to eq similarity_threshold_body
       end
 
       describe do
@@ -668,6 +686,10 @@ resource 'Phases' do
     end
 
     get 'web_api/v1/phases/:id/survey_results' do
+      parameter :logic_ids, 'Array of page or option ids to filter the results by logic', required: false
+      parameter :year, 'First month to include in the survey results', required: false
+      parameter :quarter, 'Last month to include in the survey results', required: false
+
       let(:project) { create(:project_with_active_native_survey_phase) }
       let(:active_phase) { project.phases.first }
       let(:form) { create(:custom_form, participation_context: active_phase) }
@@ -724,6 +746,7 @@ resource 'Phases' do
             hidden: false,
             pageNumber: nil,
             questionNumber: 1,
+            questionCategory: nil,
             logic: {},
             totalResponseCount: 2,
             questionResponseCount: 2,
@@ -741,6 +764,64 @@ resource 'Phases' do
             }
           }
         )
+      end
+    end
+
+    get 'web_api/v1/phases/:id/sentiment_by_quarter' do
+      let(:project) { create(:community_monitor_project) }
+      let(:active_phase) { project.phases.first }
+      let(:form) { create(:custom_form, participation_context: active_phase) }
+      let(:sentiment_question1) { create(:custom_field_sentiment_linear_scale, resource: form, question_category: 'quality_of_life') }
+      let(:sentiment_question2) { create(:custom_field_sentiment_linear_scale, resource: form, question_category: 'service_delivery') }
+
+      let!(:survey_response1) do
+        create(
+          :native_survey_response,
+          project: project,
+          creation_phase: active_phase,
+          custom_field_values: { sentiment_question1.key => 2, sentiment_question2.key => 4 },
+          created_at: Time.new(2025, 1, 1)
+        )
+      end
+      let!(:survey_response2) do
+        create(
+          :native_survey_response,
+          project: project,
+          creation_phase: active_phase,
+          custom_field_values: { sentiment_question1.key => 3, sentiment_question2.key => 1 },
+          created_at: Time.new(2025, 4, 1)
+        )
+      end
+
+      let(:id) { active_phase.id }
+
+      example 'Get survey sentiment by quarter' do
+        do_request
+        expect(status).to eq 200
+        expect(response_data[:type]).to eq 'sentiment_by_quarter'
+        expect(response_data[:attributes]).to eq({
+          overall: {
+            averages: { '2025-1': 3.0, '2025-2': 2.0 },
+            totals: {
+              '2025-1': { '1': 0, '2': 1, '3': 0, '4': 1, '5': 0 },
+              '2025-2': { '1': 1, '2': 0, '3': 1, '4': 0, '5': 0 }
+            }
+          },
+          categories: {
+            averages: {
+              quality_of_life: { '2025-2': 3.0, '2025-1': 2.0 },
+              service_delivery: { '2025-2': 1.0, '2025-1': 4.0 },
+              governance_and_trust: {},
+              other: {}
+            },
+            multilocs: {
+              quality_of_life: { en: 'Quality of life', 'fr-FR': 'Qualité de vie', 'nl-NL': 'Kwaliteit van leven' },
+              service_delivery: { en: 'Service delivery', 'fr-FR': 'Prestation de services', 'nl-NL': 'Dienstverlening' },
+              governance_and_trust: { en: 'Governance and trust', 'fr-FR': 'Gouvernance et confiance', 'nl-NL': 'Bestuur en vertrouwen' },
+              other: { en: 'Other', 'fr-FR': 'Autre', 'nl-NL': 'Ander' }
+            }
+          }
+        })
       end
     end
 
@@ -871,7 +952,7 @@ resource 'Phases' do
                 rows: [
                   [
                     survey_response1.id,
-                    'Cat, Dog',
+                    'Cat;Dog',
                     survey_response1.author_name,
                     survey_response1.author.email,
                     survey_response1.author_id,
@@ -994,7 +1075,7 @@ resource 'Phases' do
             rows: [
               [
                 survey_response.id,
-                'Cat, Dog',
+                'Cat;Dog',
                 survey_response.author_name,
                 survey_response.author.email,
                 survey_response.author_id,

@@ -28,7 +28,7 @@ resource 'Idea Custom Fields' do
     let(:final_page) do
       {
         id: '1234',
-        key: 'survey_end',
+        key: 'form_end',
         title_multiloc: { 'en' => 'Final page' },
         description_multiloc: { 'en' => 'Thank you for participating!' },
         input_type: 'page',
@@ -425,6 +425,7 @@ resource 'Idea Custom Fields' do
               enabled: true,
               linear_scale_label_1_multiloc: { 'en' => 'Closest' },
               linear_scale_label_11_multiloc: { 'en' => 'Furthest' },
+              maximum: 11,
               matrix_statements: [
                 {
                   title_multiloc: { en: 'Statement 1' }
@@ -468,7 +469,7 @@ resource 'Idea Custom Fields' do
             linear_scale_label_9_multiloc: {},
             linear_scale_label_10_multiloc: {},
             linear_scale_label_11_multiloc: { en: 'Furthest' },
-            maximum: nil
+            maximum: 11
           },
           id: an_instance_of(String),
           type: 'custom_field',
@@ -658,7 +659,7 @@ resource 'Idea Custom Fields' do
         expect(json_response).to eq({ :errors => { :form => [{ :error => 'stale_data' }] } })
       end
 
-      example '[error] last custom field is not survey_end' do
+      example '[error] last custom field is not the end page' do
         custom_form.save!
         request = {
           custom_fields: [
@@ -745,10 +746,76 @@ resource 'Idea Custom Fields' do
         })
       end
 
+      example 'Update sentiment_linear_scale field' do
+        field_to_update = create(:custom_field_sentiment_linear_scale, resource: custom_form)
+        create(:custom_field, resource: custom_form) # field to destroy
+        request = {
+          custom_fields: [
+            {
+              input_type: 'page',
+              page_layout: 'default'
+            },
+            {
+              id: field_to_update.id,
+              title_multiloc: { 'en' => 'Select a value from the scale' },
+              description_multiloc: { 'en' => 'Description of question' },
+              required: true,
+              enabled: true,
+              maximum: 5,
+              ask_follow_up: true,
+              linear_scale_label_1_multiloc: { 'en' => 'Lowest' },
+              linear_scale_label_2_multiloc: { 'en' => 'Low' },
+              linear_scale_label_3_multiloc: { 'en' => 'Neutral' },
+              linear_scale_label_4_multiloc: { 'en' => 'High' },
+              linear_scale_label_5_multiloc: { 'en' => 'Highest' }
+            },
+            final_page
+          ]
+        }
+        do_request request
+
+        assert_status 200
+        json_response = json_parse(response_body)
+        expect(json_response[:data].size).to eq 3
+        expect(json_response[:data][1]).to match({
+          attributes: {
+            code: nil,
+            created_at: an_instance_of(String),
+            description_multiloc: { en: 'Description of question' },
+            enabled: true,
+            input_type: 'sentiment_linear_scale',
+            key: an_instance_of(String),
+            ordering: 1,
+            required: true,
+            title_multiloc: { en: 'Select a value from the scale' },
+            updated_at: an_instance_of(String),
+            maximum: 5,
+            ask_follow_up: true,
+            linear_scale_label_1_multiloc: { en: 'Lowest' },
+            linear_scale_label_2_multiloc: { en: 'Low' },
+            linear_scale_label_3_multiloc: { en: 'Neutral' },
+            linear_scale_label_4_multiloc: { en: 'High' },
+            linear_scale_label_5_multiloc: { en: 'Highest' },
+            linear_scale_label_6_multiloc: {},
+            linear_scale_label_7_multiloc: {},
+            linear_scale_label_8_multiloc: {},
+            linear_scale_label_9_multiloc: {},
+            linear_scale_label_10_multiloc: {},
+            linear_scale_label_11_multiloc: {},
+            logic: {},
+            random_option_ordering: false,
+            constraints: {}
+          },
+          id: an_instance_of(String),
+          type: 'custom_field',
+          relationships: { options: { data: [] }, resource: { data: { id: custom_form.id, type: 'custom_form' } } }
+        })
+      end
+
       example 'Update select field with logic' do
         field_to_update = create(:custom_field_select, :with_options, resource: custom_form)
-        survey_end_page = create(:custom_field_page, key: 'survey_end', resource: custom_form)
-        final_page[:id] = survey_end_page.id
+        form_end_page = create(:custom_field_form_end_page, resource: custom_form)
+        final_page[:id] = form_end_page.id
         request = {
           custom_fields: [
             {
@@ -764,7 +831,7 @@ resource 'Idea Custom Fields' do
                 rules: [
                   {
                     if: 'any_other_answer',
-                    goto_page_id: survey_end_page.id
+                    goto_page_id: form_end_page.id
                   }
                 ]
               },
@@ -791,7 +858,7 @@ resource 'Idea Custom Fields' do
           updated_at: an_instance_of(String),
           logic: { rules: [{
             if: 'any_other_answer',
-            goto_page_id: survey_end_page.id
+            goto_page_id: form_end_page.id
           }] },
           random_option_ordering: false,
           constraints: {}
@@ -3707,7 +3774,7 @@ resource 'Idea Custom Fields' do
             'changed',
             User.first,
             kind_of(Integer),
-            payload: { save_type: 'manual', pages: 2, sections: 0, fields: 2, params_size: 1347, form_opened_at: kind_of(DateTime), form_updated_at: kind_of(DateTime) },
+            payload: { save_type: 'manual', pages: 2, fields: 2, params_size: 1343, form_opened_at: kind_of(DateTime), form_updated_at: kind_of(DateTime) },
             project_id: custom_form.project_id
           ).exactly(1).times
       end

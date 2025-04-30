@@ -1,3 +1,20 @@
 lv:
   analysis:
     example_tag_n: Birkas piemērs %{n}
+    cell_statement:
+      percent_more: "%{percent}% vairāk"
+      percent_less: "%{percent}% mazāk"
+      range_min_max: "%{min} uz %{max}"
+      range_min: "%{min} vai vairāk"
+      range_max: "%{max} vai mazāk"
+      tag_vs_bin:
+        inputs: "Cilvēki, kuri atbild '%{answer}' uz '%{question}', publicē %{percent_more_less} '%{tag}' nekā vidēji."
+        likes: "Cilvēkiem, kuri atbild '%{answer}' uz '%{question}', patīk %{percent_more_less} ievadi '%{tag}' nekā vidēji."
+        dislikes: "Cilvēkiem, kuri atbild '%{answer}' uz '%{question}', nepatīk %{percent_more_less} ievadi '%{tag}' nekā vidēji."
+        participants: "Cilvēki, kuri atbild '%{answer}' uz '%{question}', piedalās %{percent_more_less} '%{tag}' nekā vidēji."
+      bin_vs_bin:
+        inputs: "Cilvēki, kuri atbild '%{answer1}' uz '%{question1}', atbild '%{answer2}' uz '%{question2}' %{percent_more_less} nekā vidēji."
+        likes: "Cilvēkiem, kuri atbild '%{answer1}' uz '%{question1}', patīk %{percent_more_less} ievadi, kad viņi atbild '%{answer2}' uz '%{question2}', nekā vidēji."
+        dislikes: "Cilvēkiem, kuri atbild no '%{answer1}' uz '%{question1}', nepatīk %{percent_more_less} ievadi, kad viņi atbild no '%{answer2}' uz '%{question2}', nekā vidēji."
+        participants: "Cilvēki, kuri atbild '%{answer1}' uz '%{question1}', piedalās %{percent_more_less} , kad viņi atbild '%{answer2}' uz '%{question2}', nekā vidēji."
+

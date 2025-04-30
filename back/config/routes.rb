@@ -71,7 +71,8 @@ Rails.application.routes.draw do
         end
         get 'comments/as_xlsx', on: :collection, to: 'comments#index_xlsx'
 
-        get :similarities, on: :member
+        post :similar_ideas, on: :collection
+        resources :authoring_assistance_responses, only: %i[create]
         get :as_xlsx, on: :member, action: 'show_xlsx'
       end
 
@@ -162,6 +163,7 @@ Rails.application.routes.draw do
       resources :phases, only: %i[show show_mini edit update destroy], concerns: :permissionable, defaults: { parent_param: :phase_id } do
         resources :files, defaults: { container_type: 'Phase' }, shallow: false
         get 'survey_results', on: :member
+        get 'sentiment_by_quarter', on: :member
         get :as_xlsx, on: :member, action: 'index_xlsx'
         get :mini, on: :member, action: 'show_mini'
         get 'submission_count', on: :member
@@ -192,6 +194,7 @@ Rails.application.routes.draw do
           get 'finished_or_archived', action: 'index_finished_or_archived'
           get 'for_followed_item', action: 'index_for_followed_item'
           get 'with_active_participatory_phase', action: 'index_with_active_participatory_phase'
+          get 'community_monitor', action: 'community_monitor'
         end
 
         resource :review, controller: 'project_reviews'
@@ -309,6 +312,19 @@ Rails.application.routes.draw do
           .select { |vm| vm.verification_method_type == :manual_sync }
           .each do |vm|
           post "#{vm.name}/verification", to: 'verifications#create', on: :collection, :defaults => { method_name: vm.name }
+        end
+      end
+
+      # Somewhat confusingly, custom_fields are accessed separately as a
+      # resource as either user custom_fields (in separate engine) or input
+      # custom_fields (nested under projects/phases). custom_field_bins and
+      # custom_field_options behave exactly the same for both types of custom
+      # fields, so we define them here and mount them under the otherwise empty
+      # custom_fields route.
+      resources :custom_fields, only: [] do
+        resources :custom_field_bins, only: %i[index show], shallow: true
+        resources :custom_field_options, controller: '/web_api/v1/custom_field_options', shallow: true do
+          patch 'reorder', on: :member
         end
       end
     end

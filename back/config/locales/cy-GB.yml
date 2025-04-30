@@ -91,6 +91,9 @@ cy:
     services_description: Gwasanaethau cyhoeddus
     other: Arall
     other_description: Arall
+    quality_of_life: Ansawdd bywyd
+    service_delivery: Cyflwyno gwasanaeth
+    governance_and_trust: Llywodraethu ac ymddiriedaeth
   static_pages:
     terms_and_conditions_title: Telerau ac amodau
     terms_and_conditions_body: >
@@ -126,6 +129,7 @@ cy:
     open_idea_phase_title: Cyfnod presennol
     native_survey_title: Arolwg
     native_survey_button: Cymerwch yr arolwg
+    community_monitor_title: Monitor cymunedol
   events:
     council_meeting_title: Cyfarfod y Cyngor
     council_meeting_description: >
@@ -167,16 +171,58 @@ cy:
       attachments:
         title: Ymlyniadau
         description:
-      section1:
+      title_page:
         description:
-      section2:
+      body_page:
+        title: Dywedwch fwy wrthym
+        description:
+      uploads_page:
         title: Delweddau ac atodiadau
         description:
-      section3:
+      details_page:
         title: Manylion
         description:
       other_input_field:
         title: Teipiwch eich ateb
+      ask_follow_up_field:
+        title: Dywedwch wrthym pam
+    community_monitor:
+      questions:
+        place_to_live:
+          title: Dinas fel lle i fyw
+        sense_of_safety:
+          title: Synnwyr cyffredinol o ddiogelwch
+        access_to_parks:
+          title: Mynediad i barciau, mannau gwyrdd, a chyfleoedd hamdden
+        affordable_housing:
+          title: Argaeledd tai fforddiadwy
+        employment_opportunities:
+          title: Cyfleoedd cyflogaeth a datblygiad economaidd
+        quality_of_services:
+          title: Ansawdd cyffredinol y gwasanaethau a ddarperir gan y ddinas
+        overall_value:
+          title: Gwerth cyffredinol a gewch am eich trethi a'ch ffioedd dinas
+        cleanliness_and_maintenance:
+          title: Glanweithdra cyffredinol a chynnal a chadw strydoedd a mannau cyhoeddus
+        trust_in_government:
+          title: Ymddiried mewn llywodraeth leol
+        responsiveness_of_officials:
+          title: Ymatebolrwydd swyddogion etholedig i bryderon cymunedol
+        transparency_of_money_spent:
+          title: Tryloywder ynghylch sut mae arian treth dinesig yn cael ei wario
+      question_categories:
+        quality_of_life: Ansawdd bywyd
+        service_delivery: Cyflwyno gwasanaeth
+        governance_and_trust: Llywodraethu ac ymddiriedaeth
+        other: Arall
+      labels:
+        label_1: Gwael iawn
+        label_2: Gwael
+        label_3: Teg
+        label_4: Da
+        label_5: Ardderchog
+      form_end:
+        button_text: Yn ôl adref
   custom_forms:
     categories:
       main_content:
@@ -257,6 +303,8 @@ cy:
     form_end_page:
       title_text_3: 'Diolch am rannu eich mewnbwn!'
       description_text_3: "Mae eich mewnbwn wedi'i gyflwyno'n llwyddiannus."
+    form_user_page:
+      title_text: 'Amdanoch chi'
     pdf_export:
       personal_data: 'Data personol'
       personal_data_explanation_public: "Byddwn yn cyflwyno eich mewnbwn i %{organizationName}'s llwyfan cyfranogiad ar-lein. Os hoffech i'ch enw gael ei arddangos fel awdur y mewnbwn hwn a derbyn diweddariadau sy'n berthnasol i'ch mewnbwn trwy e-bost, llenwch y meysydd canlynol ar y dudalen hon a byddwn yn creu cyfrif i chi. Ni fydd eich e-bost yn gyhoeddus a bydd yn cael ei ddefnyddio gan %{organizationName}yn unig. Os ydych am aros yn ddienw, neu os nad ydych yn cytuno i ni ddefnyddio eich data personol yn y modd hwn, gallwch eu gadael yn wag."

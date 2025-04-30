@@ -119,12 +119,28 @@ const AttachmentsControl = ({
             )
           )
         ).filter((f) => f);
-        // TODO: Fix this the next time the file is edited.
-        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-        newRemoteFiles && setFiles(newRemoteFiles as UploadFile[]);
+        setFiles(newRemoteFiles as UploadFile[]);
       })();
+    } else if (data && data.length > 0) {
+      // Handle local files (base64 strings)
+      const localFiles = data
+        .map((file) => {
+          if (file.file_by_content?.content) {
+            const base64 = file.file_by_content.content;
+            return {
+              base64,
+              filename: file.name,
+              remote: false,
+              url: base64,
+              name: file.name,
+            } as UploadFile;
+          }
+          return null;
+        })
+        .filter((file) => file !== null) as UploadFile[];
+      setFiles(localFiles);
     }
-  }, [remoteFiles, inputId]);
+  }, [remoteFiles, inputId, data]);
 
   if (!visible) {
     return null;

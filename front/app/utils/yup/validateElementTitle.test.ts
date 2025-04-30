@@ -19,17 +19,6 @@ describe('validateElementTitle', () => {
     expect(result).toBe(true);
   });
 
-  it('should not return an error if section element and all locales are empty', async () => {
-    const result = await schema.isValid({
-      input_type: 'section',
-      title_multiloc: {
-        en: '',
-        fr: '',
-      },
-    });
-    expect(result).toBe(true);
-  });
-
   it('should return an error if field element and all locales are empty', async () => {
     const result = await schema.isValid({
       input_type: 'text',

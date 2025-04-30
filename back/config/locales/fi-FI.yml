@@ -91,6 +91,9 @@ fi:
     services_description: Julkiset palvelut
     other: Muu
     other_description: Muu
+    quality_of_life: Elämänlaatu
+    service_delivery: Palvelun toimitus
+    governance_and_trust: Hallinto ja luottamus
   static_pages:
     terms_and_conditions_title: Käyttöehdot
     terms_and_conditions_body: >
@@ -126,6 +129,7 @@ fi:
     open_idea_phase_title: Nykyinen vaihe
     native_survey_title: Kysely
     native_survey_button: Vastaa kyselyyn
+    community_monitor_title: yhteisön valvoja
   events:
     council_meeting_title: Neuvoston kokous
     council_meeting_description: >
@@ -167,16 +171,58 @@ fi:
       attachments:
         title: Liitteet
         description:
-      section1:
+      title_page:
         description:
-      section2:
+      body_page:
+        title: Kerro meille lisää
+        description:
+      uploads_page:
         title: Kuvat ja liitteet
         description:
-      section3:
+      details_page:
         title: Yksityiskohdat
         description:
       other_input_field:
         title: Kirjoita vastauksesi
+      ask_follow_up_field:
+        title: Kerro meille miksi
+    community_monitor:
+      questions:
+        place_to_live:
+          title: Kaupunki asuinpaikkana
+        sense_of_safety:
+          title: Yleinen turvallisuuden tunne
+        access_to_parks:
+          title: Pääsy puistoihin, viheralueisiin ja virkistysmahdollisuuksiin
+        affordable_housing:
+          title: Edullisen asunnon saatavuus
+        employment_opportunities:
+          title: Työllistymis- ja etenemismahdollisuudet
+        quality_of_services:
+          title: Kaupungin tarjoamien palvelujen yleinen laatu
+        overall_value:
+          title: Kokonaisarvo, jonka saat kaupunkiveroistasi ja -maksuistasi
+        cleanliness_and_maintenance:
+          title: Katujen ja julkisten tilojen yleinen siisteys ja kunnossapito
+        trust_in_government:
+          title: Luota paikallishallintoon
+        responsiveness_of_officials:
+          title: Valittujen virkamiesten reagointi yhteisön huolenaiheisiin
+        transparency_of_money_spent:
+          title: Avoimuus kunnallisverovarojen käytön suhteen
+      question_categories:
+        quality_of_life: Elämänlaatu
+        service_delivery: Palvelun toimitus
+        governance_and_trust: Hallinto ja luottamus
+        other: Muut
+      labels:
+        label_1: Erittäin köyhä
+        label_2: Huono
+        label_3: Reilu
+        label_4: Hyvä
+        label_5: Erinomainen
+      form_end:
+        button_text: Takaisin kotiin
   custom_forms:
     categories:
       main_content:
@@ -257,6 +303,8 @@ fi:
     form_end_page:
       title_text_3: 'Kiitos palautteen jakamisesta!'
       description_text_3: "Palautteesi on lähetetty onnistuneesti."
+    form_user_page:
+      title_text: 'Sinusta'
     pdf_export:
       personal_data: 'Henkilökohtaiset tiedot'
       personal_data_explanation_public: "Lähetämme palautetta %{organizationName}:n online-osallistumisalustalle. Jos haluat, että nimesi näytetään tämän syötteen kirjoittajana ja että saat sähköpostiisi syöttöäsi koskevia päivityksiä, täytä seuraavat tämän sivun kentät, niin luomme sinulle tilin. Sähköpostisi ei ole julkinen, ja vain %{organizationName}käyttää sitä. Jos haluat pysyä nimettömänä tai et suostu siihen, että käytämme henkilötietojasi tällä tavalla, voit jättää ne tyhjiksi."
@@ -267,7 +315,7 @@ fi:
       by_checking_this_box: "Valitsemalla tämän ruudun hyväksyn sen, että tietojani käytetään tilin luomiseen %{organizationName}:n osallistumisalustalle."
       optional: 'valinnainen'
       permission: 'Lupa'
-      choose_as_many: 'Valitse niin monta kuin haluat'
+      choose_as_many: 'Valitse yksi tai useampi alla olevista vaihtoehdoista'
       choose_exactly:
         one: 'Valitse täsmälleen %{count} -vaihtoehto'
         other: 'Valitse täsmälleen %{count} vaihtoehdot'

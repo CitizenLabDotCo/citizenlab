@@ -91,6 +91,9 @@ ar:
     services_description: الخدمات العامة
     other: آخر
     other_description: آخر
+    quality_of_life: جودة الحياة
+    service_delivery: تقديم الخدمة
+    governance_and_trust: الحوكمة والثقة
   static_pages:
     terms_and_conditions_title: الشروط والأحكام
     terms_and_conditions_body: >
@@ -126,6 +129,7 @@ ar:
     open_idea_phase_title: المرحلة الحالية
     native_survey_title: استطلاع
     native_survey_button: خذ الاستطلاع
+    community_monitor_title: مراقب المجتمع
   events:
     council_meeting_title: اجتماع المجلس
     council_meeting_description: >
@@ -167,16 +171,58 @@ ar:
       attachments:
         title: المُرفقات
         description:
-      section1:
+      title_page:
         description:
-      section2:
+      body_page:
+        title: أخبرنا المزيد
+        description:
+      uploads_page:
         title: الصور والمرفقات
         description:
-      section3:
+      details_page:
         title: تفاصيل
         description:
       other_input_field:
         title: اكتب إجابتك
+      ask_follow_up_field:
+        title: أخبرنا لماذا
+    community_monitor:
+      questions:
+        place_to_live:
+          title: المدينة كمكان للعيش
+        sense_of_safety:
+          title: الشعور العام بالأمان
+        access_to_parks:
+          title: الوصول إلى الحدائق والمساحات الخضراء والفرص الترفيهية
+        affordable_housing:
+          title: توفر السكن بأسعار معقولة
+        employment_opportunities:
+          title: فرص العمل والتقدم الاقتصادي
+        quality_of_services:
+          title: الجودة الشاملة للخدمات المقدمة من قبل المدينة
+        overall_value:
+          title: القيمة الإجمالية التي تتلقاها مقابل الضرائب والرسوم التي تفرضها مدينتك
+        cleanliness_and_maintenance:
+          title: النظافة العامة وصيانة الشوارع والأماكن العامة
+        trust_in_government:
+          title: الثقة في الحكومة المحلية
+        responsiveness_of_officials:
+          title: استجابة المسؤولين المنتخبين لمخاوف المجتمع
+        transparency_of_money_spent:
+          title: الشفافية بشأن كيفية إنفاق أموال الضرائب البلدية
+      question_categories:
+        quality_of_life: جودة الحياة
+        service_delivery: تقديم الخدمة
+        governance_and_trust: الحوكمة والثقة
+        other: آخر
+      labels:
+        label_1: سيء للغاية
+        label_2: فقير
+        label_3: عدل
+        label_4: جيد
+        label_5: ممتاز
+      form_end:
+        button_text: العودة إلى المنزل
   custom_forms:
     categories:
       main_content:
@@ -257,6 +303,8 @@ ar:
     form_end_page:
       title_text_3: 'شكرا لك على مشاركتك بمدخلاتك!'
       description_text_3: "لقد تم تقديم مدخلاتك بنجاح."
+    form_user_page:
+      title_text: 'عنك'
     pdf_export:
       personal_data: 'بيانات شخصية'
       personal_data_explanation_public: "سوف نقوم بإرسال مدخلاتك إلى منصة المشاركة عبر الإنترنت الخاصة بـ %{organizationName}. إذا كنت تريد أن يتم عرض اسمك كمؤلف لهذا الإدخال وتلقي التحديثات ذات الصلة بإدخالك عبر البريد الإلكتروني، فيرجى ملء الحقول التالية في هذه الصفحة وسنقوم بإنشاء حساب لك. لن يكون بريدك الإلكتروني عامًا ولن يستخدمه إلا %{organizationName}. إذا كنت تريد أن تظل مجهول الهوية، أو لا توافق على استخدام بياناتك الشخصية بهذه الطريقة، فيمكنك تركها فارغة."

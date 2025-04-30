@@ -20,8 +20,20 @@ class WebApi::V1::CustomFieldSerializer < WebApi::V1::BaseSerializer
     object.input_type == 'page'
   }
 
+  attribute :page_button_link, if: proc { |object, _params|
+    object.form_end_page?
+  }
+
+  attribute :page_button_label_multiloc, if: proc { |object, _params|
+    object.form_end_page?
+  }
+
   attribute :dropdown_layout, if: proc { |object, _params|
     object.dropdown_layout_type?
+  }
+
+  attribute :ask_follow_up, if: proc { |object, _params|
+    object.input_type == 'sentiment_linear_scale'
   }
 
   attribute :constraints do |object, params|
@@ -32,7 +44,13 @@ class WebApi::V1::CustomFieldSerializer < WebApi::V1::BaseSerializer
     end
   end
 
-  attributes :maximum, if: proc { |object, _params| object.supports_linear_scale? }
+  attribute :maximum, if: proc { |object, _params|
+    object.supports_linear_scale?
+  }
+
+  attribute :question_category, if: proc { |object, _params|
+    object.supports_category?
+  }
 
   attributes :linear_scale_label_1_multiloc,
     :linear_scale_label_2_multiloc,
@@ -45,7 +63,7 @@ class WebApi::V1::CustomFieldSerializer < WebApi::V1::BaseSerializer
     :linear_scale_label_9_multiloc,
     :linear_scale_label_10_multiloc,
     :linear_scale_label_11_multiloc,
-    if: proc { |object, _params| object.linear_scale? || object.supports_matrix_statements? }
+    if: proc { |object, _params| object.supports_linear_scale_labels? }
 
   attributes :select_count_enabled, :maximum_select_count, :minimum_select_count, if: proc { |object, _params|
     object.multiselect?

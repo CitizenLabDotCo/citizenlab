@@ -6,12 +6,8 @@ import inputsKeys from './keys';
 
 export type InputsKeys = Keys<typeof inputsKeys>;
 
-type AuthorCustomFromFilterKey = `author_custom_${string}_from`;
-type AuthorCustomToFilterKey = `author_custom_${string}_to`;
-type AuthorCustomInFilterKey = `author_custom_${string}_in`;
-type InputCustomFromFilterKey = `input_custom_${string}_from`;
-type InputCustomToFilterKey = `input_custom_${string}_to`;
-type InputCustomInFilterKey = `input_custom_${string}_in`;
+export type AuthorCustomFilterKey = `author_custom_${string}`;
+export type InputCustomFilterKey = `input_custom_${string}`;
 
 export type IInputsFilterParams = {
   search?: string;
@@ -26,13 +22,9 @@ export type IInputsFilterParams = {
   comments_to?: number;
   input_custom_field_no_empty_values?: boolean;
   limit?: number;
-} & { [K in AuthorCustomFromFilterKey]?: string } & {
-  [K in AuthorCustomToFilterKey]?: string;
-} & { [K in AuthorCustomInFilterKey]?: string[] } & {
-  [K in InputCustomFromFilterKey]?: string;
-} & {
-  [K in InputCustomToFilterKey]?: string;
-} & { [K in InputCustomInFilterKey]?: string[] };
+} & { [K in AuthorCustomFilterKey]?: string[] | string } & {
+  [K in InputCustomFilterKey]?: string | string[] | boolean;
+};
 
 export type IInputsQueryParams = {
   pageNumber?: number;

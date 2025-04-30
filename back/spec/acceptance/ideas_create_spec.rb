@@ -544,6 +544,78 @@ resource 'Ideas' do
         end
       end
     end
+
+    context 'in a community monitor survey phase' do
+      let(:phase) { create(:community_monitor_survey_phase, with_permissions: true) }
+      let(:project) do
+        project = phase.project
+        project.update! default_assignee_id: create(:admin).id
+        project
+      end
+
+      let(:extra_field_name) { 'custom_field_name1' }
+      let(:form) { create(:custom_form, participation_context: phase) }
+      let!(:text_field) { create(:custom_field_text, key: extra_field_name, required: true, resource: form) }
+      let(:custom_field_name1) { 'test value' }
+
+      context "when visitor (permission is 'everyone')" do
+        before { phase.permissions.find_by(action: 'posting_idea').update! permitted_by: 'everyone' }
+
+        example_request 'Create a community monitor survey response without author' do
+          assert_status 201
+          idea_from_db = Idea.find(response_data[:id])
+          expect(idea_from_db.author_id).to be_nil
+          expect(idea_from_db.custom_field_values.to_h).to eq({
+            extra_field_name => 'test value'
+          })
+        end
+      end
+
+      context 'when resident' do
+        let(:resident) { create(:user) }
+
+        before { header_token_for(resident) }
+
+        example_request 'does not assign anyone to the created idea', document: false do
+          assert_status 201
+          idea = Idea.find(response_data[:id])
+          expect(idea.assignee_id).to be_nil
+          expect(idea.assigned_at).to be_nil
+        end
+
+        context 'creating a draft community monitor survey response' do
+          let(:publication_status) { 'draft' }
+
+          example_request 'sets the publication status to draft' do
+            assert_status 201
+            idea = Idea.find(response_data[:id])
+            expect(idea.publication_status).to eq 'draft'
+          end
+        end
+
+        context 'Creating a community monitor survey response when posting anonymously is enabled' do
+          before { phase.update! allow_anonymous_participation: true }
+
+          example_request 'Posting a survey automatically sets anonymous to true' do
+            assert_status 201
+            expect(response_data.dig(:attributes, :anonymous)).to be true
+            expect(response_data.dig(:attributes, :author_name)).to be_nil
+            expect(response_data.dig(:relationships, :author, :data)).to be_nil
+          end
+        end
+
+        context 'Creating a community monitor survey response when posting anonymously is not enabled' do
+          before { phase.update! allow_anonymous_participation: false }
+
+          example_request 'Posting a survey does not set the survey to anonymous' do
+            assert_status 201
+            expect(response_data.dig(:attributes, :anonymous)).to be false
+            expect(response_data.dig(:attributes, :author_name)).not_to be_nil
+            expect(response_data.dig(:relationships, :author, :data)).not_to be_nil
+          end
+        end
+      end
+    end
   end
 end
 

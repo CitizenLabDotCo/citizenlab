@@ -27,6 +27,7 @@ import { getFormValues as getIdeaFormValues } from 'containers/IdeasEditPage/uti
 
 import { FormValues } from 'components/Form/typings';
 import customAjv from 'components/Form/utils/customAjv';
+import removeRequiredOtherFields from 'components/Form/utils/removeRequiredOtherFields';
 
 import { FormattedMessage } from 'utils/cl-intl';
 import { geocode } from 'utils/locationTools';
@@ -133,8 +134,12 @@ const IdeaEditor = ({ ideaId, setIdeaId }: Props) => {
 
   const userFormDataValid = isUserFormDataValid(userFormData);
 
+  const schemaToValidate = removeRequiredOtherFields(
+    schema,
+    ideaFormData || {}
+  );
   const ideaFormDataValid = ideaFormData
-    ? customAjv.validate(schema, ideaFormData)
+    ? customAjv.validate(schemaToValidate, ideaFormData)
     : false;
 
   const onApproveIdea = async () => {
@@ -194,7 +199,6 @@ const IdeaEditor = ({ ideaId, setIdeaId }: Props) => {
       await updateIdea({
         id: ideaId,
         requestBody: {
-          publication_status: 'published',
           ...supportedFormData,
           ...(location_description ? { location_description } : {}),
           ...(location_point_geojson ? { location_point_geojson } : {}),

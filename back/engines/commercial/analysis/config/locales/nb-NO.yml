@@ -1,3 +1,20 @@
 nb:
   analysis:
     example_tag_n: Eksempel på tagg %{n}
+    cell_statement:
+      percent_more: "%{percent}% mer"
+      percent_less: "%{percent}% mindre"
+      range_min_max: "%{min} til %{max}"
+      range_min: "%{min} eller mer"
+      range_max: "%{max} eller mindre"
+      tag_vs_bin:
+        inputs: "Personer som svarer '%{answer}' på '%{question}' legger ut %{percent_more_less} i '%{tag}' enn gjennomsnittet."
+        likes: "Personer som svarer '%{answer}' på '%{question}', liker %{percent_more_less} innganger i '%{tag}' mer enn gjennomsnittet."
+        dislikes: "Personer som svarer '%{answer}' på '%{question}' misliker %{percent_more_less} innganger i '%{tag}' mer enn gjennomsnittet."
+        participants: "Personer som svarer '%{answer}' på '%{question}' deltar %{percent_more_less} i '%{tag}' enn gjennomsnittet."
+      bin_vs_bin:
+        inputs: "Personer som svarer '%{answer1}' til '%{question1}' svarer '%{answer2}' til '%{question2}' %{percent_more_less} enn gjennomsnittet."
+        likes: "Personer som svarer \"%{answer1}\" på \"%{question1}\", liker %{percent_more_less} mer enn gjennomsnittet når de svarer \"%{answer2}\" på \"%{question2}\"."
+        dislikes: "Personer som svarer \"%{answer1}\" på \"%{question1}\", liker ikke %{percent_more_less} -innganger når de svarer \"%{answer2}\" på \"%{question2}\"."
+        participants: "Personer som svarer '%{answer1}' på '%{question1}' deltar %{percent_more_less} når de svarer '%{answer2}' på '%{question2}' enn gjennomsnittet."
+

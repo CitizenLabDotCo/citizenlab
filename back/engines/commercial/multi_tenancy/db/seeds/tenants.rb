@@ -22,7 +22,8 @@ module MultiTenancy
           logo: Rails.root.join('spec/fixtures/logo.png').open,
           settings: SettingsService.new.minimal_required_settings(
             locales: runner.seed_locales,
-            lifecycle_stage: 'active'
+            lifecycle_stage: 'active',
+            country_code: 'BE'
           ).deep_merge({
             core: {
               organization_type: "#{runner.seed_size}_city",
@@ -78,6 +79,10 @@ module MultiTenancy
               enabled: true
             },
             criipto_login: {
+              allowed: true,
+              enabled: true
+            },
+            twoday_login: {
               allowed: true,
               enabled: true
             },
@@ -335,6 +340,14 @@ module MultiTenancy
                   client_secret: ENV.fetch('DEFAULT_ID_AUSTRIA_CLIENT_SECRET', 'fake secret'),
                   ui_method_name: 'ID Austria',
                   enabled_for_verified_actions: true
+                },
+                {
+                  name: 'twoday',
+                  client_id: ENV.fetch('DEFAULT_ID_TWODAY_CLIENT_ID', 'fake id'),
+                  client_secret: ENV.fetch('DEFAULT_ID_TWODAY_CLIENT_SECRET', 'fake secret'),
+                  domain: ENV.fetch('DEFAULT_ID_TWODAY_DOMAIN', 'fake domain'),
+                  ui_method_name: 'Bank ID',
+                  enabled_for_verified_actions: true
                 }
               ]
             },
@@ -439,6 +452,10 @@ module MultiTenancy
               enabled: true,
               allowed: true
             },
+            auto_insights: {
+              enabled: true,
+              allowed: true
+            },
             multi_language_platform: {
               enabled: true,
               allowed: true
@@ -479,6 +496,15 @@ module MultiTenancy
             project_library: {
               enabled: false,
               allowed: false
+            },
+            community_monitor: {
+              enabled: true,
+              allowed: true,
+              project_id: ''
+            },
+            user_fields_in_surveys: {
+              enabled: true,
+              allowed: true
             }
           })
         )

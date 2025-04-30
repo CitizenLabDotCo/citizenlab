@@ -18,7 +18,6 @@ import styled from 'styled-components';
 import usePhase from 'api/phases/usePhase';
 import useProjectById from 'api/projects/useProjectById';
 
-import useFeatureFlag from 'hooks/useFeatureFlag';
 import useLocalize from 'hooks/useLocalize';
 
 import {
@@ -36,6 +35,7 @@ import clHistory from 'utils/cl-router/history';
 import messages from '../messages';
 import tracks from '../tracks';
 
+import DownloadPDFButtonWithModal from './DownloadPDFButtonWithModal';
 import ownMessages from './messages';
 
 const StyledStatusLabel = styled(StatusLabel)`
@@ -60,10 +60,6 @@ const FormBuilderTopBar = ({
   setAutosaveEnabled,
   showAutosaveToggle,
 }: FormBuilderTopBarProps) => {
-  const printedFormsEnabled =
-    useFeatureFlag({
-      name: 'import_printed_forms',
-    }) && builderConfig.onDownloadPDF;
   const localize = useLocalize();
   const { formatMessage } = useIntl();
   const { projectId, phaseId } = useParams() as {
@@ -168,15 +164,12 @@ const FormBuilderTopBar = ({
             />
           </Box>
         )}
-        {printedFormsEnabled && (
-          <Button
-            buttonStyle="secondary-outlined"
-            icon="download"
+        {builderConfig.onDownloadPDF && (
+          <DownloadPDFButtonWithModal
             mr="20px"
-            onClick={builderConfig.onDownloadPDF}
-          >
-            <FormattedMessage {...ownMessages.downloadPDF} />
-          </Button>
+            onExport={builderConfig.onDownloadPDF}
+            formType={builderConfig.type}
+          />
         )}
         <Button
           buttonStyle="secondary-outlined"

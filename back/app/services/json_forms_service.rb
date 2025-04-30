@@ -58,16 +58,15 @@ class JsonFormsService
 
   def add_author_budget_fields!(fields, current_user, participation_method)
     if participation_method.author_in_form? current_user
-      title_idx = fields.index { |field| field.code == 'title_multiloc' }
-      author_idx = title_idx + 1 # Insert below the title field
+      author_idx = fields.index { |field| field.code == 'title_multiloc' } # Insert above the title field
       fields.insert(author_idx, AUTHOR_FIELD)
     end
 
     if participation_method.budget_in_form? current_user
       {
-        'ideation_section3' => 1, # Insert at the top of the details section if the section exists.
-        'proposed_budget'   => 0, # Insert before the proposed budget field if there is no details section.
-        'body_multiloc'     => 1  # Insert below the body field if there is no details section or proposed budget field.
+        'details_page' => 1, # Insert at the top of the details page if the page exists.
+        'proposed_budget' => 0, # Insert before the proposed budget field if there is no details page.
+        'body_multiloc' => 1 # Insert below the body field if there is no details page or proposed budget field.
       }.each do |field_code, idx_diff|
         field_idx = fields.index { |field| field.code == field_code }
         if field_idx

@@ -131,6 +131,7 @@ const SiteMap = () => {
         faq: true,
         'terms-and-conditions': true,
         'privacy-policy': true,
+        'cookie-policy': true,
         custom: false,
       };
 

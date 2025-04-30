@@ -91,6 +91,9 @@ hu:
     services_description: Közszolgáltatások
     other: Más
     other_description: Más
+    quality_of_life: Életminőség
+    service_delivery: Szolgáltatásnyújtás
+    governance_and_trust: Kormányzás és bizalom
   static_pages:
     terms_and_conditions_title: Feltételek
     terms_and_conditions_body: >
@@ -126,6 +129,7 @@ hu:
     open_idea_phase_title: Aktuális fázis
     native_survey_title: Felmérés
     native_survey_button: Vegye ki a felmérést
+    community_monitor_title: Közösségi monitor
   events:
     council_meeting_title: Tanácsülés
     council_meeting_description: >
@@ -167,16 +171,58 @@ hu:
       attachments:
         title: Mellékletek
         description:
-      section1:
+      title_page:
         description:
-      section2:
+      body_page:
+        title: Mesélj többet
+        description:
+      uploads_page:
         title: Képek és mellékletek
         description:
-      section3:
+      details_page:
         title: Részletek
         description:
       other_input_field:
         title: Írja be a választ
+      ask_follow_up_field:
+        title: Mondd el, miért
+    community_monitor:
+      questions:
+        place_to_live:
+          title: A város, mint lakóhely
+        sense_of_safety:
+          title: Általános biztonságérzet
+        access_to_parks:
+          title: Hozzáférés a parkokhoz, zöldterületekhez és kikapcsolódási lehetőségekhez
+        affordable_housing:
+          title: Megfizethető lakhatási lehetőség
+        employment_opportunities:
+          title: Munkavállalási és gazdasági előrelépési lehetőség
+        quality_of_services:
+          title: A város által nyújtott szolgáltatások általános minősége
+        overall_value:
+          title: A városi adók és díjak teljes összege
+        cleanliness_and_maintenance:
+          title: Az utcák és közterek általános tisztasága és karbantartása
+        trust_in_government:
+          title: Bízzon az önkormányzatban
+        responsiveness_of_officials:
+          title: A választott tisztségviselők reagálása a közösségi aggodalmakra
+        transparency_of_money_spent:
+          title: Az önkormányzati adópénzek elköltésének átláthatósága
+      question_categories:
+        quality_of_life: Életminőség
+        service_delivery: Szolgáltatásnyújtás
+        governance_and_trust: Kormányzás és bizalom
+        other: Más
+      labels:
+        label_1: Nagyon szegény
+        label_2: Szegény
+        label_3: Igazságos
+        label_4: Jó
+        label_5: Kiváló
+      form_end:
+        button_text: Vissza haza
   custom_forms:
     categories:
       main_content:
@@ -257,6 +303,8 @@ hu:
     form_end_page:
       title_text_3: 'Köszönjük, hogy megosztotta véleményét!'
       description_text_3: "Befejezését sikeresen elküldte."
+    form_user_page:
+      title_text: 'Rólad'
     pdf_export:
       personal_data: 'Személyes adatok'
       personal_data_explanation_public: "Hozzászólásodat elküldjük %{organizationName}online részvételi platformjára. Ha azt szeretné, hogy az Ön neve jelenjen meg a bemenet szerzőjeként, és e-mailben kapja meg a bemenetével kapcsolatos frissítéseket, kérjük, töltse ki az alábbi mezőket ezen az oldalon, és mi létrehozunk Önnek egy fiókot. Az Ön e-mailje nem lesz nyilvános, és csak %{organizationName}fogja használni. Ha névtelen szeretne maradni, vagy nem járul hozzá ahhoz, hogy személyes adatait ilyen módon használjuk fel, akkor ezeket üresen hagyhatja."

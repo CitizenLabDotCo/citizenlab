@@ -44,6 +44,10 @@ module Permissions
       not_volunteering: 'not_volunteering'
     }.freeze
 
+    ATTENDING_EVENT_DENIED_REASONS = {
+      attending_event_not_supported: 'attending_event_not_supported'
+    }.freeze
+
     # Actions not to block if the project is inactive - ie no current phase
     IGNORED_PHASE_ACTIONS = %w[attending_event].freeze
 
@@ -73,9 +77,11 @@ module Permissions
       when 'taking_poll'
         taking_poll_denied_reason_for_action
       when 'volunteering'
-        volunteering_denied_reason_for_phase
+        volunteering_denied_reason_for_action
+      when 'attending_event'
+        attending_event_denied_reason_for_action
       else
-        raise "Unsupported action: #{action}" if !supported_action? action
+        raise "Unsupported action: #{action}" unless supported_action? action
       end
       return phase_denied_reason if phase_denied_reason
 
@@ -98,7 +104,7 @@ module Permissions
     end
 
     def editing_idea_denied_reason_for_action
-      if !participation_method.supports_submission?
+      unless participation_method.supports_submission?
         POSTING_DENIED_REASONS[:posting_not_supported] # TODO: Rename to sumbission_not_supported
       end
     end
@@ -152,9 +158,15 @@ module Permissions
       end
     end
 
-    def volunteering_denied_reason_for_phase
+    def volunteering_denied_reason_for_action
       unless phase.volunteering?
         VOLUNTEERING_DENIED_REASONS[:not_volunteering]
+      end
+    end
+
+    def attending_event_denied_reason_for_action
+      if phase && !participation_method.supports_event_attendance?
+        ATTENDING_EVENT_DENIED_REASONS[:attending_event_not_supported]
       end
     end
 

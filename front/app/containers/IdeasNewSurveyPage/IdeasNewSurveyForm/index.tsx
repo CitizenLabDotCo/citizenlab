@@ -3,7 +3,6 @@ import React, { useState, useCallback, useEffect } from 'react';
 import {
   Box,
   colors,
-  stylingConsts,
   useBreakpoint,
   useWindowSize,
 } from '@citizenlab/cl2-component-library';
@@ -28,7 +27,7 @@ import useLocalize from 'hooks/useLocalize';
 import ideaFormMessages from 'containers/IdeasNewPage/messages';
 
 import Form from 'components/Form';
-import { SURVEY_PAGE_CHANGE_EVENT } from 'components/Form/Components/Layouts/events';
+import { FORM_PAGE_CHANGE_EVENT } from 'components/Form/Components/Layouts/events';
 import { AjvErrorGetter, ApiErrorGetter } from 'components/Form/typings';
 import FullPageSpinner from 'components/UI/FullPageSpinner';
 
@@ -42,7 +41,7 @@ import { getFormValues } from '../../IdeasEditPage/utils';
 import IdeasNewSurveyMeta from '../IdeasNewSurveyMeta';
 
 import SurveyHeading from './SurveyHeading';
-import { convertGeojsonToWKT } from './utils';
+import { convertGeojsonToWKT, calculateDynamicHeight } from './utils';
 
 const getConfig = (
   phaseFromUrl: IPhaseData | undefined,
@@ -162,9 +161,9 @@ const IdeasNewSurveyForm = ({ project, phaseId }: Props) => {
   // Listen for survey page change event
   useEffect(() => {
     const subscription = eventEmitter
-      .observeEvent(SURVEY_PAGE_CHANGE_EVENT)
+      .observeEvent(FORM_PAGE_CHANGE_EVENT)
       .subscribe(() => {
-        setUsingMapView(!!document.getElementById('survey_page_map'));
+        setUsingMapView(!!document.getElementById('map_page'));
       });
 
     return () => {
@@ -184,20 +183,27 @@ const IdeasNewSurveyForm = ({ project, phaseId }: Props) => {
     return null;
   }
 
-  const handleDraftIdeas = async (data: FormValues) => {
+  const handleDraftIdeas = async (
+    data: FormValues,
+    onSubmitCallback?: () => void
+  ) => {
     if (data.publication_status === 'published') {
-      return onSubmit(data, true);
+      return onSubmit(data, true, onSubmitCallback);
     } else {
       if (allowAnonymousPosting || !authUser) {
         // Anonymous or not logged in surveys should not save drafts
         return;
       }
 
-      return onSubmit(data, false);
+      return onSubmit(data, false, onSubmitCallback);
     }
   };
 
-  const onSubmit = async (data: FormValues, published?: boolean) => {
+  const onSubmit = async (
+    data: FormValues,
+    published?: boolean,
+    onSubmitCallback?: () => void
+  ) => {
     const requestBodyConvertedData = convertGeojsonToWKT(data);
 
     const requestBody = {
@@ -216,6 +222,7 @@ const IdeasNewSurveyForm = ({ project, phaseId }: Props) => {
         queryKey: projectsKeys.all(),
       });
     };
+
     // Update or add the idea depending on if we have an existing draft idea
     const idea = ideaId
       ? await updateIdea(
@@ -261,28 +268,11 @@ const IdeasNewSurveyForm = ({ project, phaseId }: Props) => {
 
     if (published) {
       clearDraftIdea(phaseId);
-      participationMethodConfig.onFormSubmission({
-        project: project.data,
-        idea,
-      });
     }
+    onSubmitCallback?.();
 
     return idea;
   };
-
-  function calculateDynamicHeight() {
-    const viewportHeight = window.innerHeight;
-    const menuHeight = stylingConsts.menuHeight;
-    const mobileTopBarHeight = stylingConsts.mobileTopBarHeight;
-    const extraSpace = 80;
-
-    const dynamicHeight =
-      viewportHeight -
-      (isSmallerThanPhone ? mobileTopBarHeight : menuHeight) -
-      extraSpace;
-
-    return `${dynamicHeight}px`;
-  }
 
   if (!phase) {
     return null;
@@ -322,7 +312,7 @@ const IdeasNewSurveyForm = ({ project, phaseId }: Props) => {
               maxWidth={usingMapView ? '1100px' : '700px'}
               w="100%"
               // Height is recalculated on window resize via useWindowSize hook
-              h={calculateDynamicHeight()}
+              h={calculateDynamicHeight(isSmallerThanPhone)}
               pb={isSmallerThanPhone ? '0' : '80px'}
             >
               <Form
@@ -334,6 +324,7 @@ const IdeasNewSurveyForm = ({ project, phaseId }: Props) => {
                 getApiErrorMessage={getApiErrorMessage}
                 inputId={ideaId}
                 config={'survey'}
+                showSubmitButton={false}
               />
             </Box>
           </Box>

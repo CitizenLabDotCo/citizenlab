@@ -91,6 +91,9 @@ en-CA:
     services_description: Public services
     other: Other
     other_description: Other
+    quality_of_life: Quality of life
+    service_delivery: Service delivery
+    governance_and_trust: Governance and trust
   static_pages:
     terms_and_conditions_title: Terms & conditions
     terms_and_conditions_body: >
@@ -126,6 +129,7 @@ en-CA:
     open_idea_phase_title: Current phase
     native_survey_title: Survey
     native_survey_button: Take the survey
+    community_monitor_title: Community monitor
   events:
     council_meeting_title: Council Meeting
     council_meeting_description: >
@@ -167,16 +171,58 @@ en-CA:
       attachments:
         title: Other files
         description:
-      section1:
+      title_page:
         description:
-      section2:
+      body_page:
+        title: Tell us more
+        description:
+      uploads_page:
         title: Images and attachments
         description:
-      section3:
+      details_page:
         title: Details
         description:
       other_input_field:
         title: Type your answer
+      ask_follow_up_field:
+        title: Tell us why
+    community_monitor:
+      questions:
+        place_to_live:
+          title: City as a place to live
+        sense_of_safety:
+          title: Overall sense of safety
+        access_to_parks:
+          title: Access to parks, green spaces, and recreational opportunities
+        affordable_housing:
+          title: Availability of affordable housing
+        employment_opportunities:
+          title: Employment and economic advancement opportunities
+        quality_of_services:
+          title: Overall quality of services provided by the city
+        overall_value:
+          title: Overall value you receive for your city taxes and fees
+        cleanliness_and_maintenance:
+          title: Overall cleanliness and maintenance of streets and public spaces
+        trust_in_government:
+          title: Trust in local government
+        responsiveness_of_officials:
+          title: Responsiveness of elected officials to community concerns
+        transparency_of_money_spent:
+          title: Transparency about how municipal tax money is spent
+      question_categories:
+        quality_of_life: Quality of life
+        service_delivery: Service delivery
+        governance_and_trust: Governance and trust
+        other: Other
+      labels:
+        label_1: Very poor
+        label_2: Poor
+        label_3: Fair
+        label_4: Good
+        label_5: Excellent
+      form_end:
+        button_text: Back to home
   custom_forms:
     categories:
       main_content:
@@ -257,6 +303,8 @@ en-CA:
     form_end_page:
       title_text_3: 'Thank you for sharing your input!'
       description_text_3: "Your input has been successfully submitted."
+    form_user_page:
+      title_text: 'About you'
     pdf_export:
       personal_data: 'Personal data'
       personal_data_explanation_public: "We will submit your input to %{organizationName}'s online participation platform. If you want your name to be displayed as author of this input and receive updates relevant to your input by email, please fill out the following fields on this page and we will create an account for you. Your email will not be public and will only be used by %{organizationName}. If you want to remain anonymous, or do not agree for us to use your personal data in this way, you can leave them empty."

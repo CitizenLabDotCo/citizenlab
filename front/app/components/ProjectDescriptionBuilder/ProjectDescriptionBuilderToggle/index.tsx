@@ -99,7 +99,11 @@ const ProjectDescriptionBuilderToggle = ({
 
   return (
     <Box data-testid="projectDescriptionBuilderToggle">
-      <Box display="flex" gap="12px">
+      <Box
+        className="intercom-product-tour-project-description-builder-toggle"
+        display="flex"
+        gap="12px"
+      >
         <StyledToggle
           id="e2e-toggle-enable-project-description-builder"
           checked={!!projectDescriptionBuilderLinkVisible}

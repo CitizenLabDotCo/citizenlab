@@ -8,6 +8,7 @@ tr:
       "comment_marked_as_spam": Yorumun spam olarak bildirilmesi
       "comment_on_your_comment": Yorumuma bir yanıt
       "comment_on_idea_you_follow": Takip ettiğiniz bir fikir hakkında yorum
+      "community_monitor_report": Topluluk gözlemci raporu
       "cosponsor_of_your_idea": Bir kullanıcı teklifime ortak sponsor olma davetimi kabul ediyor
       "event_registration_confirmation": Etkinlik kayıt onayı
       "idea_marked_as_spam": Fikrin spam olarak bildirilmesi
@@ -82,6 +83,7 @@ tr:
         "4": "Haftalık Perşembe günleri %{hourOfDay}"
         "5": "Haftalık Cuma günleri %{hourOfDay}"
         "6": "Haftalık Cumartesi günleri %{hourOfDay}"
+      quarterly: "Üç ayda bir, üç aylık dönemin ilk gününde"
     footer:
       "link_privacy_policy": "Gi̇zli̇li̇k Poli̇ti̇kası"
       "link_terms_conditions": "Hüküm ve Koşullar"
@@ -147,6 +149,12 @@ tr:
       today: Bugün
       wrong_content: 'Bu yorum konuyla alakasız.'
       yesterday: Dün
+    community_monitor_report:
+      subject: 'Yeni bir toplum izleme raporu hazırlandı'
+      title: 'Yeni bir toplum izleme raporu hazırlandı'
+      text_introduction: 'Bir önceki çeyrek için bir topluluk izleme raporu oluşturulmuştur. Aşağıdaki butona tıklayıp giriş yaparak rapora erişebilirsiniz.'
+      cta_report_button: 'Raporu görüntüle'
+      report_name: 'Topluluk gözlemci raporu'
     cosponsor_of_your_idea:
       cta_reply_to: 'Teklifinizi görüntüleyin'
       event_description: 'Tebrikler! %{cosponsorName} teklifinize eş sponsorluk yapma davetinizi kabul etti.'
@@ -499,6 +507,7 @@ tr:
       cta_vote: 'Oy vermek için platforma gidin'
     survey_submitted:
       subject: '%{organizationName}: Cevabınız için teşekkür ederim! 🎉'
+      preheader: 'İşte başvurunuzun ayrıntıları.'
       main_header: '"%{projectName}" hakkındaki düşüncelerinizi paylaştığınız için teşekkür ederiz!'
       your_input_submitted: '"%{projectName}" için girdiniz başarıyla gönderildi.'
       if_you_would_like_to_review: 'Gönderinizi gözden geçirmek isterseniz, yanıtlarınızı aşağıdan indirebilirsiniz.'

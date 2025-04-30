@@ -30,7 +30,6 @@ describe('useAddIdea', () => {
         title_multiloc: {
           en: 'test',
         },
-        publication_status: 'published',
         body_multiloc: {
           en: 'test',
         },
@@ -58,7 +57,6 @@ describe('useAddIdea', () => {
         title_multiloc: {
           en: 'test',
         },
-        publication_status: 'published',
         body_multiloc: {
           en: 'test',
         },

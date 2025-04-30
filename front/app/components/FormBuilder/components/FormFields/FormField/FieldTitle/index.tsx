@@ -20,27 +20,47 @@ interface Props {
   hasErrors: boolean;
   field: IFlatCustomField;
   fieldNumber?: number;
+  hasFullPageRestriction: boolean;
 }
 
-const FieldTitle = ({ hasErrors, field, fieldNumber }: Props) => {
+const FieldTitle = ({
+  hasErrors,
+  field,
+  fieldNumber,
+  hasFullPageRestriction,
+}: Props) => {
   const { formatMessage } = useIntl();
 
   let rowTitle = messages.question;
 
   if (field.input_type === 'page') {
-    if (field.key === 'survey_end') {
+    if (field.key === 'form_end') {
       rowTitle = messages.lastPage;
     } else {
       rowTitle = messages.page;
     }
-  } else if (field.input_type === 'section') {
-    rowTitle = messages.section;
   }
 
   const lockedAttributes = field.constraints?.locks;
-  const titleColor = ['page', 'section'].includes(field.input_type)
-    ? 'blue500'
-    : 'teal400';
+  const titleColor = field.input_type === 'page' ? 'blue500' : 'teal400';
+  const getLockMessage = () => {
+    if (field.input_type === 'page') {
+      if (hasFullPageRestriction) {
+        return formatMessage(messages.pageCannotBeDeletedNorNewFieldsAdded);
+      }
+      if (lockedAttributes?.enabled) {
+        return formatMessage(messages.pageCannotBeDeleted);
+      }
+    }
+
+    if (lockedAttributes?.enabled) {
+      return formatMessage(messages.questionCannotBeDeleted);
+    }
+
+    return undefined;
+  };
+
+  const lockMessage = getLockMessage();
 
   return (
     <Box
@@ -57,7 +77,7 @@ const FieldTitle = ({ hasErrors, field, fieldNumber }: Props) => {
           ml={hasErrors ? '8px' : '12px'}
           width="12px"
           fill={titleColor}
-          name={field.key === 'survey_end' ? 'lock' : 'sort'}
+          name={field.key === 'form_end' ? 'lock' : 'sort'}
           pb="4px"
         />
       </Box>
@@ -73,7 +93,7 @@ const FieldTitle = ({ hasErrors, field, fieldNumber }: Props) => {
         >
           <>
             <FormattedMessage {...rowTitle} />
-            {field.key === 'survey_end' ? '' : ` ${fieldNumber}`}
+            {field.key === 'form_end' ? '' : ` ${fieldNumber}`}
           </>
         </Text>
         <Text
@@ -86,18 +106,14 @@ const FieldTitle = ({ hasErrors, field, fieldNumber }: Props) => {
         >
           <Box display="flex" alignItems="center">
             <T value={field.title_multiloc} />
-            {lockedAttributes?.enabled && (
+            {lockMessage && (
               <IconTooltip
                 placement="top-start"
                 iconColor={colors.coolGrey500}
                 iconSize="16px"
                 ml="4px"
                 icon="lock"
-                content={
-                  field.input_type === 'section'
-                    ? formatMessage(messages.sectionCannotBeDeleted)
-                    : formatMessage(messages.questionCannotBeDeleted)
-                }
+                content={lockMessage}
               />
             )}
           </Box>

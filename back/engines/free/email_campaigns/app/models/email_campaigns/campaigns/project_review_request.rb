@@ -44,7 +44,12 @@ module EmailCampaigns
     end
 
     def notification_recipient(users_scope, activity:, time: nil)
-      users_scope.where(id: activity.item.recipient_id)
+      # This is a bit convoluted, but that's because we only want to send the email to
+      # superadmins if they’re explicitly set as project reviewers. In other words, when
+      # the request is being broadcast to all admins because project reviewers haven’t
+      # been configured, we don’t want to include the superadmins.
+      recipient_scope = users_scope.where(id: activity.item.recipient_id)
+      recipient_scope.not_citizenlab_member.or(recipient_scope.citizenlab_member.project_reviewers)
     end
 
     def self.recipient_role_multiloc_key

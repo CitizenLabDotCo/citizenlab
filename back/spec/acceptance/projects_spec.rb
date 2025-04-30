@@ -1155,6 +1155,24 @@ resource 'Projects' do
         assert_status 200
         expect(json_response[:data].size).to eq @projects.size
       end
+
+      context 'When community monitor project exists' do
+        before { @projects << create(:community_monitor_project) }
+
+        example 'Does not include hidden community monitor project by default', document: false do
+          do_request filter_can_moderate: true, publication_statuses: AdminPublication::PUBLICATION_STATUSES
+          assert_status 200
+          expect(json_response[:data].size).to eq(@projects.size - 1)
+          expect(response_data.map { |d| d.dig(:attributes, :slug) }).not_to include 'community-monitor'
+        end
+
+        example 'Return all projects including hidden community monitor project', document: false do
+          do_request include_hidden: true, filter_can_moderate: true, publication_statuses: AdminPublication::PUBLICATION_STATUSES
+          assert_status 200
+          expect(json_response[:data].size).to eq @projects.size
+          expect(response_data.map { |d| d.dig(:attributes, :slug) }).to include 'community-monitor'
+        end
+      end
     end
 
     context 'when non-moderator/non-admin user' do
@@ -1677,6 +1695,57 @@ resource 'Projects' do
         example '[Unauthorized] Copy a project in the folder', document: false do
           do_request
           assert_status 401
+        end
+      end
+    end
+  end
+
+  get 'web_api/v1/projects/community_monitor' do
+    context 'hidden project exists' do
+      let!(:project) { create(:community_monitor_project) }
+
+      context 'community monitor project ID already saved in settings' do
+        example 'Community monitor project is returned' do
+          do_request
+          assert_status 200
+        end
+      end
+    end
+
+    context 'hidden project does not exist' do
+      before { SettingsService.new.activate_feature! 'community_monitor' }
+
+      context 'when resident' do
+        example 'Error: Community monitor project not found' do
+          do_request
+          assert_status 404
+        end
+      end
+
+      context 'when admin' do
+        before { admin_header_token }
+
+        example 'Community monitor project is created and returned' do
+          do_request
+          assert_status 200
+
+          created_project = Project.first
+          created_phase = Phase.first
+          created_permission = Permission.first
+          created_form = CustomForm.first
+          expect(created_project.hidden).to be true
+          expect(created_project.internal_role).to eq 'community_monitor'
+          expect(created_project.title_multiloc['en']).to eq 'Community monitor'
+          expect(created_phase.project).to eq created_project
+          expect(created_phase.participation_method).to eq 'community_monitor_survey'
+          expect(created_phase.title_multiloc['en']).to eq 'Community monitor'
+          expect(created_permission.permission_scope).to eq created_phase
+          expect(created_permission.permitted_by).to eq 'everyone'
+          expect(created_form.participation_context).to eq created_phase
+          expect(created_form.custom_fields.count).to eq 15
+
+          settings = AppConfiguration.instance.settings
+          expect(settings['community_monitor']['project_id']).to eq created_project.id
         end
       end
     end

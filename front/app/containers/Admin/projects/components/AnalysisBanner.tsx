@@ -7,7 +7,6 @@ import {
   Button,
   Box,
   stylingConsts,
-  Tooltip,
 } from '@citizenlab/cl2-component-library';
 
 import useAddAnalysis from 'api/analyses/useAddAnalysis';
@@ -17,6 +16,8 @@ import usePhase from 'api/phases/usePhase';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import tracks from 'containers/Admin/projects/project/analysis/tracks';
+
+import UpsellTooltip from 'components/UpsellTooltip';
 
 import { trackEventByName } from 'utils/analytics';
 import { useIntl } from 'utils/cl-intl';
@@ -92,34 +93,28 @@ const AnalysisBanner = ({ projectId, phaseId }: Props) => {
       borderRadius={stylingConsts.borderRadius}
       p="8px 16px"
       mb="24px"
-      bgColor={colors.errorLight}
+      bgColor={colors.teal100}
     >
       <Box display="flex" gap="16px" alignItems="center">
-        <Icon name="stars" width="50px" height="50px" fill={colors.orange500} />
-        <Text fontWeight="bold">
-          {formatMessage(messages.analysisSubtitle)}
-        </Text>
+        <Icon name="stars" width="30px" height="30px" fill={colors.teal500} />
+        <Text>{formatMessage(messages.analysisSubtitle)}</Text>
       </Box>
-      <Tooltip
-        content={<p>{formatMessage(messages.analysisUpsellTooltip)}</p>}
-        disabled={isAnalysisAllowed}
-      >
-        <Box>
-          <Button
-            buttonStyle="text"
-            textColor={colors.orange500}
-            onClick={handleGoToAnalysis}
-            fontWeight="bold"
-            icon={isAnalysisAllowed ? 'stars' : 'lock'}
-            iconColor={colors.orange500}
-            id="e2e-analysis-banner-button"
-            processing={isLoading}
-            disabled={!isAnalysisAllowed}
-          >
-            {formatMessage(messages.analysisButton)}
-          </Button>
-        </Box>
-      </Tooltip>
+      <UpsellTooltip disabled={isAnalysisAllowed}>
+        <Button
+          buttonStyle="text"
+          textColor={colors.teal500}
+          onClick={handleGoToAnalysis}
+          fontWeight="bold"
+          icon="arrow-right"
+          iconPos="right"
+          iconColor={colors.teal500}
+          id="e2e-analysis-banner-button"
+          processing={isLoading}
+          disabled={!isAnalysisAllowed}
+        >
+          {formatMessage(messages.analysisButton)}
+        </Button>
+      </UpsellTooltip>
     </Box>
   );
 };

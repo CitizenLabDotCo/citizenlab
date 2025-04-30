@@ -119,7 +119,7 @@ RSpec.describe ParticipationMethod::Proposals do
   describe 'constraints' do
     it 'has constraints on built in fields to lock certain values from being changed' do
       expect(participation_method.constraints.keys).to match_array %i[
-        ideation_section1
+        title_page
         title_multiloc
         body_multiloc
         idea_images_attributes
@@ -153,17 +153,19 @@ RSpec.describe ParticipationMethod::Proposals do
     it 'returns the default proposals fields' do
       expect(
         participation_method.default_fields(create(:custom_form, participation_context: phase)).map(&:code)
-      ).to eq %w[
-        ideation_section1
-        title_multiloc
-        body_multiloc
-        ideation_section2
-        idea_images_attributes
-        idea_files_attributes
-        ideation_section3
-        topic_ids
-        location_description
-        cosponsor_ids
+      ).to eq [
+        'title_page',
+        'title_multiloc',
+        'body_page',
+        'body_multiloc',
+        'uploads_page',
+        'idea_images_attributes',
+        'idea_files_attributes',
+        'details_page',
+        'topic_ids',
+        'location_description',
+        'cosponsor_ids',
+        nil
       ]
     end
   end
@@ -225,7 +227,6 @@ RSpec.describe ParticipationMethod::Proposals do
   its(:supports_input_term?) { is_expected.to be true }
   its(:supports_inputs_without_author?) { is_expected.to be false }
   its(:supports_multiple_posts?) { is_expected.to be true }
-  its(:supports_pages_in_form?) { is_expected.to be false }
   its(:supports_permitted_by_everyone?) { is_expected.to be false }
   its(:supports_public_visibility?) { is_expected.to be true }
   its(:supports_reacting?) { is_expected.to be true }
@@ -235,6 +236,12 @@ RSpec.describe ParticipationMethod::Proposals do
   its(:use_reactions_as_votes?) { is_expected.to be true }
   its(:transitive?) { is_expected.to be false }
   its(:supports_private_attributes_in_export?) { is_expected.to be true }
+  its(:form_logic_enabled?) { is_expected.to be false }
+  its(:follow_idea_on_idea_submission?) { is_expected.to be true }
+  its(:validate_phase) { is_expected.to be_nil }
+  its(:supports_custom_field_categories?) { is_expected.to be false }
+  its(:user_fields_in_form?) { is_expected.to be false }
+  its(:supports_multiple_phase_reports?) { is_expected.to be false }
 
   describe 'proposed_budget_in_form?' do # private method
     it 'is expected to be false' do

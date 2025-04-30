@@ -38,14 +38,25 @@ nl:
       attachments:
         title: Bijlagen
         description:
-      section1:
+      title_page:
         description:
-      section2:
+      body_page:
+        title: Vertel ons meer
+        description:
+      uploads_page:
         title: Afbeeldingen en bijlagen
         description:
-      section3:
+      details_page:
         title: Details
         description:
+    community_monitor:
+      question_categories:
+        quality_of_life: Kwaliteit van leven
+        service_delivery: Dienstverlening
+        governance_and_trust: Bestuur en vertrouwen
+        other: Ander
+      form_end:
+        button_text: Terug naar home
   custom_forms:
     categories:
       main_content:

@@ -14,7 +14,7 @@ module BulkImportIdeas::Exporters
         locale_last_name_label => 'Test',
         locale_email_label => 'bill@govocal.com',
         locale_permission_label => 'X',
-        locale_published_label => '18-07-2022'
+        locale_published_label => Time.zone.today.strftime('%d-%m-%Y')
       }
 
       xlsx_utils = Export::Xlsx::Utils.new
@@ -71,7 +71,7 @@ module BulkImportIdeas::Exporters
         }
       end
       options = @form_fields.map do |field|
-        field.options.map do |option|
+        field.ordered_transformed_options.map do |option|
           {
             name: custom_field_service.handle_title(option, @locale),
             type: 'option',

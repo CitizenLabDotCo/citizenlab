@@ -24,11 +24,13 @@ const StyledBox = styled(Box)`
 interface CarrouselContainerProps {
   className?: string;
   children: React.ReactNode;
+  dataCy?: string;
 }
 
 export const CarrouselContainer = ({
   className,
   children,
+  dataCy,
 }: CarrouselContainerProps) => {
   const isSmallerThanPhone = useBreakpoint('phone');
 
@@ -41,6 +43,7 @@ export const CarrouselContainer = ({
       overflowX="hidden"
       justifyContent="center"
       className={className}
+      data-cy={dataCy}
     >
       <StyledBox w="100%" maxWidth="1200px" position="relative">
         {children}

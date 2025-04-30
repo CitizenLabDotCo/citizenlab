@@ -59,6 +59,7 @@ export type TextProps = {
   textAlign?: TextAlign;
   wordBreak?: WordBreak;
   textShadow?: string;
+  lineHeight?: string;
 } & BoxMarginProps &
   BoxPaddingProps &
   BoxPositionProps &
@@ -71,7 +72,6 @@ export type TextProps = {
   React.HTMLAttributes<HTMLParagraphElement>;
 
 const StyledText = styled(Box)<BoxProps & TextProps>`
-  line-height: 1.5;
   ${isRtl`direction: rtl;`}
   ${({
     variant,
@@ -86,7 +86,9 @@ const StyledText = styled(Box)<BoxProps & TextProps>`
     wordBreak,
     textShadow,
     theme,
+    lineHeight,
   }: TextProps & { theme: MainThemeProps }) => css`
+    line-height: ${lineHeight ? lineHeight : '1.5'};
     color: ${color ? theme.colors[color] : colors.textPrimary};
     font-weight: ${getFontWeightCSS(fontWeight || 'normal')};
     font-style: ${fontStyle ? fontStyle : 'normal'};

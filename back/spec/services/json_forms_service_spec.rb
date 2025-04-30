@@ -250,12 +250,12 @@ describe JsonFormsService do
       let(:input_term) { 'question' }
       let(:project) { create(:single_phase_budgeting_project, phase_attrs: { input_term: input_term }) }
       let(:custom_form) { create(:custom_form, :with_default_fields, participation_context: project) }
-      let!(:section) do
+      let!(:page) do
         create(
-          :custom_field_section,
+          :custom_field_page,
           :for_custom_form, resource: custom_form,
-          title_multiloc: { 'en' => 'My section title' },
-          description_multiloc: { 'en' => 'My section description' }
+          title_multiloc: { 'en' => 'My page title' },
+          description_multiloc: { 'en' => 'My page description' }
         )
       end
       let!(:required_field) do
@@ -331,13 +331,15 @@ describe JsonFormsService do
                 'en' => {
                   type: 'Categorization',
                   options: { formId: 'idea-form', inputTerm: 'question' },
-                  elements: [
-                    hash_including(type: 'Category', label: 'What is your question?'),
+                  elements: array_including(
                     hash_including(
-                      type: 'Category',
-                      label: 'Images and attachments',
-                      options: hash_including(description: 'Upload your favourite files here'),
-                      elements: [
+                      type: 'Page',
+                      options: hash_including(title: 'What is your question?')
+                    ),
+                    hash_including(
+                      type: 'Page',
+                      options: hash_including(title: 'Images and attachments'),
+                      elements: array_including(
                         hash_including(
                           type: 'Control',
                           scope: '#/properties/idea_images_attributes',
@@ -350,12 +352,12 @@ describe JsonFormsService do
                           label: 'Attachments',
                           options: hash_including(input_type: 'files')
                         )
-                      ]
+                      )
                     ),
                     hash_including(
-                      type: 'Category',
-                      label: 'Details',
-                      elements: [
+                      type: 'Page',
+                      options: hash_including(title: 'Details'),
+                      elements: array_including(
                         hash_including(
                           type: 'Control',
                           scope: '#/properties/topic_ids',
@@ -368,13 +370,12 @@ describe JsonFormsService do
                           label: 'Location',
                           options: hash_including(input_type: 'text')
                         )
-                      ]
+                      )
                     ),
                     hash_including(
-                      type: 'Category',
-                      label: 'My section title',
-                      options: { id: section.id, description: 'My section description' },
-                      elements: [
+                      type: 'Page',
+                      options: hash_including(title: 'My page title'),
+                      elements: array_including(
                         hash_including(
                           type: 'Control',
                           scope: "#/properties/#{required_field.key}",
@@ -387,9 +388,9 @@ describe JsonFormsService do
                           label: 'My optional field',
                           options: hash_including(input_type: 'select')
                         )
-                      ]
+                      )
                     )
-                  ]
+                  )
                 }
               )
             }
@@ -400,8 +401,8 @@ describe JsonFormsService do
           expect(output[:json_schema_multiloc]['en'][:properties]).not_to have_key 'author_id'
           expect(output[:json_schema_multiloc]['en'][:properties]).not_to have_key 'budget'
 
-          expect(output[:ui_schema_multiloc]['en'][:elements][0][:elements][1][:scope]).not_to eq '#/properties/author_id'
-          expect(output[:ui_schema_multiloc]['en'][:elements][2][:elements][0][:scope]).not_to eq '#/properties/budget'
+          expect(output.dig(:ui_schema_multiloc, 'en', :elements, 0, :elements, 0, :scope)).not_to eq '#/properties/author_id'
+          expect(output.dig(:ui_schema_multiloc, 'en', :elements, 2, :elements, 0, :scope)).not_to eq '#/properties/budget'
         end
 
         it 'renders text images for fields' do
@@ -440,7 +441,7 @@ describe JsonFormsService do
           expect(output[:json_schema_multiloc]['en'][:properties]['author_id']).to eq({ type: 'string' })
           expect(output[:json_schema_multiloc]['en'][:properties]['budget']).to eq({ type: 'number' })
 
-          expect(output[:ui_schema_multiloc]['en'][:elements][0][:elements][1]).to eq({
+          expect(output[:ui_schema_multiloc]['en'][:elements][0][:elements][0]).to eq({
             type: 'Control',
             scope: '#/properties/author_id',
             label: 'Author',
@@ -453,7 +454,7 @@ describe JsonFormsService do
               description: ''
             }
           })
-          expect(output[:ui_schema_multiloc]['en'][:elements][2][:elements][0]).to eq({
+          expect(output[:ui_schema_multiloc]['en'][:elements][3][:elements][0]).to eq({
             type: 'Control',
             scope: '#/properties/budget',
             label: 'Budget',
@@ -467,24 +468,24 @@ describe JsonFormsService do
           })
         end
 
-        it 'includes the budget field on top of the proposed budget field when there is no details section but there is a proposed budget field' do
-          custom_form.custom_fields.find { |field| field.code == 'ideation_section3' }.destroy!
+        it 'includes the budget field on top of the proposed budget field when there is no details page but there is a proposed budget field' do
+          custom_form.custom_fields.find { |field| field.code == 'details_page' }.destroy!
           custom_form.custom_fields.find { |field| field.code == 'proposed_budget' }.update!(enabled: true)
           custom_form.reload
 
           expect(output[:json_schema_multiloc]['en'][:properties]['budget']).to eq({ type: 'number' })
-          expect(output[:ui_schema_multiloc]['en'][:elements][1][:elements][4][:scope]).to eq '#/properties/budget'
-          expect(output[:ui_schema_multiloc]['en'][:elements][1][:elements][5][:scope]).to eq '#/properties/proposed_budget'
+          expect(output[:ui_schema_multiloc]['en'][:elements][2][:elements][4][:scope]).to eq '#/properties/budget'
+          expect(output[:ui_schema_multiloc]['en'][:elements][2][:elements][5][:scope]).to eq '#/properties/proposed_budget'
         end
 
-        it 'includes the budget field under the body multiloc field when there is no details section and no proposed budget field' do
-          custom_form.custom_fields.find { |field| field.code == 'ideation_section3' }.destroy!
+        it 'includes the budget field under the body multiloc field when there is no details page and no proposed budget field' do
+          custom_form.custom_fields.find { |field| field.code == 'details_page' }.destroy!
           custom_form.custom_fields.find { |field| field.code == 'proposed_budget' }.update!(enabled: false)
           custom_form.reload
 
           expect(output[:json_schema_multiloc]['en'][:properties]['budget']).to eq({ type: 'number' })
-          expect(output[:ui_schema_multiloc]['en'][:elements][0][:elements][2][:options]).to eq({ input_type: 'html_multiloc', render: 'multiloc' }) # body_multiloc
-          expect(output[:ui_schema_multiloc]['en'][:elements][0][:elements][3][:scope]).to eq '#/properties/budget'
+          expect(output[:ui_schema_multiloc]['en'][:elements][1][:elements][0][:options]).to include({ input_type: 'html_multiloc', render: 'multiloc' }) # body_multiloc
+          expect(output[:ui_schema_multiloc]['en'][:elements][1][:elements][1][:scope]).to eq '#/properties/budget'
         end
       end
     end

@@ -129,6 +129,7 @@ class Idea < ApplicationRecord
   has_many :idea_files, -> { order(:ordering) }, dependent: :destroy, inverse_of: :idea
   has_one :idea_trending_info
   has_many :embeddings_similarities, as: :embeddable, dependent: :destroy
+  has_many :authoring_assistance_responses, dependent: :destroy
 
   accepts_nested_attributes_for :text_images, :idea_images, :idea_files
 
@@ -235,6 +236,9 @@ class Idea < ApplicationRecord
     native_survey.where(publication_status: 'draft')
   }
 
+  # Equivalent to pmethod.supports_survey_form?
+  scope :supports_survey, -> { where(creation_phase: Phase.where(participation_method: %w[native_survey community_monitor_survey])) }
+
   # Filters out all the ideas for which the ParticipationMethod responds truety
   # to the given block. The block receives the ParticipationMethod object as an
   # argument
@@ -297,6 +301,13 @@ class Idea < ApplicationRecord
 
   def consultation_context
     creation_phase || project
+  end
+
+  def creation_phase_with_fallback
+    # This method could be used for migrating existing data when
+    # we would want to set the creation_phase for all existing
+    # ideation inputs.
+    creation_phase || phases.first || project.phases.where(participation_method: 'ideation').first || project.phases.first
   end
 
   def custom_form

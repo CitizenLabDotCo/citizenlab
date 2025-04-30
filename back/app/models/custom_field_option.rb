@@ -45,6 +45,7 @@ class CustomFieldOption < ApplicationRecord
   after_update :update_area
 
   has_one :image, dependent: :destroy, class_name: 'CustomFieldOptionImage', inverse_of: :custom_field_option
+  has_many :custom_field_bins, dependent: :destroy, class_name: 'CustomFieldBins::OptionBin', inverse_of: :custom_field_option
 
   delegate :project_id, to: :custom_field
 

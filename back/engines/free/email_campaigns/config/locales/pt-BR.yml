@@ -8,6 +8,7 @@ pt:
       "comment_marked_as_spam": Comente o relatório do lixo eletrônico
       "comment_on_your_comment": Uma resposta ao meu comentário
       "comment_on_idea_you_follow": Um comentário sobre uma ideia que segue
+      "community_monitor_report": Relatório do monitor comunitário
       "cosponsor_of_your_idea": Um usuário aceita meu convite para co-patrocinar minha proposta
       "event_registration_confirmation": Confirmação da inscrição no evento
       "idea_marked_as_spam": Relatório de ideias spam
@@ -82,6 +83,7 @@ pt:
         "4": "Semanalmente, às quintas-feiras às %{hourOfDay}"
         "5": "Semanalmente, às sextas-feiras às %{hourOfDay}"
         "6": "Semanalmente, aos sábados às %{hourOfDay}"
+      quarterly: "Trimestralmente, no primeiro dia do trimestre"
     footer:
       "link_privacy_policy": "Política de Privacidade"
       "link_terms_conditions": "Termos e condições"
@@ -147,6 +149,12 @@ pt:
       today: Hoje
       wrong_content: 'Esse comentário não é relevante.'
       yesterday: Ontem
+    community_monitor_report:
+      subject: 'Um novo relatório do monitor comunitário está disponível'
+      title: 'Um novo relatório do monitor comunitário está disponível'
+      text_introduction: 'Você pode acessá-lo clicando no botão abaixo e fazendo login. Você pode acessá-lo clicando no botão abaixo e fazendo login.'
+      cta_report_button: 'Ver relatório'
+      report_name: 'Relatório do monitor comunitário'
     cosponsor_of_your_idea:
       cta_reply_to: 'Ver sua proposta'
       event_description: 'Parabéns! O site %{cosponsorName} aceitou o seu convite para co-patrocinar a sua proposta.'
@@ -499,6 +507,7 @@ pt:
       cta_vote: 'Acesse a plataforma para votar'
     survey_submitted:
       subject: '%{organizationName}: Obrigado por sua resposta! 🎉'
+      preheader: 'Aqui estão os detalhes do seu envio.'
       main_header: 'Obrigado por compartilhar o que você pensa sobre "%{projectName}"!'
       your_input_submitted: 'Sua entrada para "%{projectName}" foi enviada com sucesso.'
       if_you_would_like_to_review: 'Se quiser revisar seu envio, você pode fazer o download das respostas abaixo.'

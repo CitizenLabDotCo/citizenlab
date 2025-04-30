@@ -1,4 +1,7 @@
-import { IFlatCustomField } from 'api/custom_fields/types';
+import {
+  ICustomFieldInputType,
+  IFlatCustomField,
+} from 'api/custom_fields/types';
 
 import { questionDNDType } from 'components/FormBuilder/components/FormFields/constants';
 
@@ -12,6 +15,44 @@ const reorder = <ListType>(
   result.splice(endIndex, 0, removed);
 
   return result;
+};
+
+// Mapping of community monitor page keys to their category keys
+const categoryPageKeyMapping: Record<string, string> = {
+  page_quality_of_life: 'quality_of_life',
+  page_service_delivery: 'service_delivery',
+  page_governance_and_trust: 'governance_and_trust',
+};
+
+export const getQuestionCategory = (
+  field: IFlatCustomField,
+  customFields: IFlatCustomField[]
+): string | undefined => {
+  // Skip categorization for page-type fields
+  if (field.input_type === 'page') return undefined;
+
+  // Find the index of the current field
+  const fieldIndex = customFields.findIndex((f) => f.id === field.id);
+
+  // Search backwards from the current field to find the most recent page field
+  const page = customFields
+    .slice(0, fieldIndex)
+    .reverse()
+    .find((field) => field.input_type === 'page');
+
+  // If a page is found and its key maps to a category, return the category
+  // Otherwise, return undefined
+  return page?.key && categoryPageKeyMapping[page.key]
+    ? categoryPageKeyMapping[page.key]
+    : undefined;
+};
+
+export const supportsLinearScaleLabels = (inputType: ICustomFieldInputType) => {
+  return [
+    'linear_scale',
+    'sentiment_linear_scale',
+    'matrix_linear_scale',
+  ].includes(inputType);
 };
 
 export type NestedGroupingStructure = {

@@ -1,4 +1,5 @@
 At the end of this message is a list of form responses filled out by respondents in the context of an online participation project titled '<%= project_title %>'. The responses are separated by lines.
+<% if include_comments %>Some responses might contain comments from other users, seperated by +++. You can include the information in the comments in your summary.<% end %>
   
 Your only goal is to answer the following question about these responses, as accurately and as quantified as possible: "<%= question %>"
 

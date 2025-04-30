@@ -91,6 +91,9 @@ tr:
     services_description: Kamu hizmetleri
     other: Diğer
     other_description: Diğer
+    quality_of_life: Yaşam kalitesi
+    service_delivery: Hizmet sunumu
+    governance_and_trust: Yönetişim ve güven
   static_pages:
     terms_and_conditions_title: Hüküm ve koşullar
     terms_and_conditions_body: >
@@ -126,6 +129,7 @@ tr:
     open_idea_phase_title: Mevcut aşama
     native_survey_title: Anket
     native_survey_button: Ankete katılın
+    community_monitor_title: Topluluk gözlemcisi
   events:
     council_meeting_title: Kurul Toplantısı
     council_meeting_description: >
@@ -167,16 +171,58 @@ tr:
       attachments:
         title: Ekler
         description:
-      section1:
+      title_page:
         description:
-      section2:
+      body_page:
+        title: Bize daha fazlasını anlatın
+        description:
+      uploads_page:
         title: Resimler ve ekler
         description:
-      section3:
+      details_page:
         title: Detaylar
         description:
       other_input_field:
         title: Cevabınızı yazın
+      ask_follow_up_field:
+        title: Bize nedenini söyleyin
+    community_monitor:
+      questions:
+        place_to_live:
+          title: Yaşanacak bir yer olarak şehir
+        sense_of_safety:
+          title: Genel güvenlik hissi
+        access_to_parks:
+          title: Parklara, yeşil alanlara ve rekreasyon olanaklarına erişim
+        affordable_housing:
+          title: Uygun fiyatlı konutların mevcudiyeti
+        employment_opportunities:
+          title: İstihdam ve ekonomik ilerleme fırsatları
+        quality_of_services:
+          title: Şehir tarafından sağlanan hizmetlerin genel kalitesi
+        overall_value:
+          title: Şehir vergileriniz ve harçlarınız için aldığınız toplam değer
+        cleanliness_and_maintenance:
+          title: Sokakların ve kamusal alanların genel temizliği ve bakımı
+        trust_in_government:
+          title: Yerel yönetime güven
+        responsiveness_of_officials:
+          title: Seçilmiş yetkililerin toplumun endişelerine karşı duyarlılığı
+        transparency_of_money_spent:
+          title: Belediye vergilerinin nasıl harcandığı konusunda şeffaflık
+      question_categories:
+        quality_of_life: Yaşam kalitesi
+        service_delivery: Hizmet sunumu
+        governance_and_trust: Yönetişim ve güven
+        other: Diğer
+      labels:
+        label_1: Çok zayıf
+        label_2: Zayıf
+        label_3: Adil
+        label_4: İyi
+        label_5: Mükemmel
+      form_end:
+        button_text: Eve dönüş
   custom_forms:
     categories:
       main_content:
@@ -257,6 +303,8 @@ tr:
     form_end_page:
       title_text_3: 'Görüşlerinizi paylaştığınız için teşekkür ederiz!'
       description_text_3: "Girdiniz başarıyla gönderildi."
+    form_user_page:
+      title_text: 'Senin hakkında'
     pdf_export:
       personal_data: 'Kişisel veriler'
       personal_data_explanation_public: "Girdinizi %{organizationName}'un çevrimiçi katılım platformuna göndereceğiz. Adınızın bu girdinin yazarı olarak görüntülenmesini ve girdinizle ilgili güncellemeleri e-posta ile almak istiyorsanız, lütfen bu sayfadaki aşağıdaki alanları doldurun ve sizin için bir hesap oluşturalım. E-postanız herkese açık olmayacak ve sadece %{organizationName}tarafından kullanılacaktır. Anonim kalmak istiyorsanız veya kişisel verilerinizi bu şekilde kullanmamızı kabul etmiyorsanız, bu alanları boş bırakabilirsiniz."
