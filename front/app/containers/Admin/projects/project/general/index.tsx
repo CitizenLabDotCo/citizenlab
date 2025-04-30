@@ -5,10 +5,7 @@ import { isEmpty } from 'lodash-es';
 import { useParams, useLocation } from 'react-router-dom';
 import { Multiloc, UploadFile, CLErrors } from 'typings';
 
-import useAddProjectFile from 'api/project_files/useAddProjectFile';
-import useDeleteProjectFile from 'api/project_files/useDeleteProjectFile';
 import useProjectFiles from 'api/project_files/useProjectFiles';
-import useUpdateProjectFile from 'api/project_files/useUpdateProjectFile';
 import useAddProjectImage from 'api/project_images/useAddProjectImage';
 import useDeleteProjectImage from 'api/project_images/useDeleteProjectImage';
 import useProjectImages, {
@@ -103,14 +100,7 @@ const AdminProjectsProjectGeneral = () => {
   const { mutateAsync: addProject } = useAddProject();
 
   const { data: remoteProjectFiles } = useProjectFiles(projectId || null);
-  const { mutateAsync: addProjectFile } = useAddProjectFile();
-  const { mutateAsync: updateProjectFile } = useUpdateProjectFile();
-  const { mutateAsync: deleteProjectFile } = useDeleteProjectFile();
-  const syncProjectFiles = useSyncFiles({
-    addFile: addProjectFile,
-    deleteFile: deleteProjectFile,
-    updateFile: updateProjectFile,
-  });
+  const syncProjectFiles = useSyncFiles();
 
   const [submitState, setSubmitState] = useState<ISubmitState>('disabled');
 

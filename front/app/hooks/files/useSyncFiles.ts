@@ -2,13 +2,26 @@ import { useCallback } from 'react';
 
 import { isString } from 'lodash-es';
 
-import { SyncFilesArguments, UseSyncFilesProps } from './types';
+import useAddPhaseFile from 'api/phase_files/useAddPhaseFile';
+import useDeletePhaseFile from 'api/phase_files/useDeletePhaseFile';
+import useUpdatePhaseFile from 'api/phase_files/useUpdatePhaseFile';
+import useAddProjectFile from 'api/project_files/useAddProjectFile';
+import useDeleteProjectFile from 'api/project_files/useDeleteProjectFile';
+import useUpdateProjectFile from 'api/project_files/useUpdateProjectFile';
 
-export function useSyncFiles({
-  addFile,
-  deleteFile,
-  updateFile,
-}: UseSyncFilesProps) {
+import { SyncFilesArguments } from './types';
+
+export function useSyncFiles() {
+  // ***** Project File Hooks *****
+  const { mutateAsync: addProjectFile } = useAddProjectFile();
+  const { mutateAsync: updateProjectFile } = useUpdateProjectFile();
+  const { mutateAsync: deleteProjectFile } = useDeleteProjectFile();
+
+  // ***** Phase File Hooks *****
+  const { mutateAsync: addPhaseFile } = useAddPhaseFile();
+  const { mutateAsync: deletePhaseFile } = useDeletePhaseFile();
+  const { mutateAsync: updatePhaseFile } = useUpdatePhaseFile();
+
   return useCallback(
     async ({
       projectId,
@@ -18,14 +31,14 @@ export function useSyncFiles({
       filesToRemove,
       fileOrdering,
     }: SyncFilesArguments) => {
+      // ***** Handle For Project Files *****
       if (projectFiles && projectId) {
         // Get any files that we need to add
         const filesToAddPromises = projectFiles
           .filter((file) => !file.remote)
           .map((file) =>
-            addFile({
+            addProjectFile({
               projectId,
-              phaseId,
               file: {
                 file: file.base64,
                 name: file.name,
@@ -38,9 +51,8 @@ export function useSyncFiles({
         const filesToRemovePromises = filesToRemove
           .filter((file) => file.remote && isString(file.id))
           .map((file) =>
-            deleteFile({
+            deleteProjectFile({
               projectId,
-              phaseId,
               fileId: file.id,
             })
           );
@@ -57,7 +69,7 @@ export function useSyncFiles({
         });
 
         const filesToReorderPromises = reorderedFiles.map((file) =>
-          updateFile({
+          updateProjectFile({
             projectId,
             fileId: file.id || '',
             file: {
@@ -74,15 +86,13 @@ export function useSyncFiles({
         ]);
       }
 
+      // ***** Handle For Phase Files *****
       if (phaseFiles && projectId && phaseId) {
-        console.log({ phaseFiles });
-
         // Get any files that we need to add
         const filesToAddPromises = phaseFiles
           .filter((file) => !file.remote)
           .map((file, index) =>
-            addFile({
-              projectId,
+            addPhaseFile({
               phaseId,
               base64: file.base64 || '',
               ordering: index,
@@ -92,12 +102,11 @@ export function useSyncFiles({
 
         // Get any files that we need to remove
         const filesToRemovePromises = filesToRemove
-          .filter((file) => file.attributes.remote && isString(file.id))
+          .filter((file) => file.remote && isString(file.id))
           .map((file) =>
-            deleteFile({
-              projectId,
+            deletePhaseFile({
               phaseId,
-              fileId: file.attributes.id,
+              fileId: file.id,
             })
           );
 
@@ -113,8 +122,8 @@ export function useSyncFiles({
         });
 
         const filesToReorderPromises = reorderedFiles.map((file) =>
-          updateFile({
-            projectId,
+          updatePhaseFile({
+            phaseId,
             fileId: file.id || '',
             file: {
               ordering: file.ordering,
@@ -130,6 +139,13 @@ export function useSyncFiles({
         ]);
       }
     },
-    [addFile, deleteFile, updateFile]
+    [
+      addPhaseFile,
+      addProjectFile,
+      deletePhaseFile,
+      deleteProjectFile,
+      updatePhaseFile,
+      updateProjectFile,
+    ]
   );
 }

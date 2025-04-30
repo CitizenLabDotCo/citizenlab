@@ -13,10 +13,7 @@ import { CLErrors, UploadFile, Multiloc } from 'typings';
 import { CampaignName, ICampaignData } from 'api/campaigns/types';
 import useCampaigns from 'api/campaigns/useCampaigns';
 import { IPhaseFiles } from 'api/phase_files/types';
-import useAddPhaseFile from 'api/phase_files/useAddPhaseFile';
-import useDeletePhaseFile from 'api/phase_files/useDeletePhaseFile';
 import usePhaseFiles from 'api/phase_files/usePhaseFiles';
-import useUpdatePhaseFile from 'api/phase_files/useUpdatePhaseFile';
 import { IPhase, IUpdatedPhaseProperties } from 'api/phases/types';
 import useAddPhase from 'api/phases/useAddPhase';
 import usePhase from 'api/phases/usePhase';
@@ -86,19 +83,11 @@ interface Props {
 
 const AdminPhaseEdit = ({ projectId, phase, flatCampaigns }: Props) => {
   const phaseId = phase?.data.id;
-
-  const { mutateAsync: addPhaseFile } = useAddPhaseFile();
-  const { mutateAsync: deletePhaseFile } = useDeletePhaseFile();
   const { data: phaseFiles } = usePhaseFiles(phaseId || null);
   const { data: phases } = usePhases(projectId);
   const { mutate: addPhase } = useAddPhase();
   const { mutate: updatePhase } = useUpdatePhase();
-  const { mutateAsync: updatePhaseFile } = useUpdatePhaseFile();
-  const syncPhaseFiles = useSyncFiles({
-    addFile: addPhaseFile,
-    deleteFile: deletePhaseFile,
-    updateFile: updatePhaseFile,
-  });
+  const syncPhaseFiles = useSyncFiles();
   const [errors, setErrors] = useState<CLErrors | null>(null);
   const [processing, setProcessing] = useState<boolean>(false);
   const [inStatePhaseFiles, setInStatePhaseFiles] = useState<FileType[]>(
