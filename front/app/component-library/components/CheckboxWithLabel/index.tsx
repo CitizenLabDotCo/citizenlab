@@ -44,6 +44,7 @@ const CheckboxWithLabel = ({
       onClick={handleLabelClick}
       data-testid={dataTestId || `${testEnv('check-mark-label')}`}
       style={{ cursor: 'pointer' }}
+      mr="4px"
       {...boxProps}
     >
       <Checkbox
@@ -58,8 +59,9 @@ const CheckboxWithLabel = ({
         aria-label={ariaLabel}
         mr="8px"
       />
-      <Box as="span" mr="4px">
-        {label}{' '}
+      <Box>
+        {label}
+        &nbsp;
         {labelTooltipText && (
           <IconTooltip
             display="inline"
