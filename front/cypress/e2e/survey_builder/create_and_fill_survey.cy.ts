@@ -971,7 +971,6 @@ describe('Survey builder', () => {
     // Submit and check that page 3 answer (not in final page path) is not sent to server
     cy.get('[data-cy="e2e-submit-form"]').should('be.visible').click();
 
-    // TODO: This doesn't seem to work
     cy.wait('@saveSurvey').then((interception) => {
       const keys = Object.keys(interception.request.body.idea);
       keys.forEach((key) => {
