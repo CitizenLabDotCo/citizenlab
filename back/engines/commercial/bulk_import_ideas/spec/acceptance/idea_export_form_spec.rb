@@ -35,11 +35,13 @@ resource 'Idea form exports' do
           end
         end
 
-        # TODO: Maybe only make this view available in DEV
+        # TODO: Maybe only make this view available in DEV?
         context 'HTML form (for rendering with other formats)' do
           let(:format) { 'html' }
 
           example 'Get an print HTML version of the idea form', document: false do
+            # TODO: Mock the export call instead of the Gotenberg call
+            allow(::Gotenberg::Chromium).to receive(:call).and_return(File.read(Rails.root.join('engines/commercial/bulk_import_ideas/spec/fixtures/scan_1.pdf')))
             do_request
             assert_status 200
           end
@@ -50,6 +52,7 @@ resource 'Idea form exports' do
           let(:format) { 'htmlpdf' }
 
           example 'Get an PDF version of the idea form', document: false do
+
             do_request
             assert_status 200
           end

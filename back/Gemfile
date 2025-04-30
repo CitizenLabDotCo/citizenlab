@@ -133,8 +133,8 @@ gem 'prawn-grouping', '~> 0.2.0'
 
 # TODO: Additional PDF libraries
 gem 'gotenberg-ruby'
-# gem 'pdf-reader'
-# gem 'stringio'
+gem 'pdf-reader'
+gem 'stringio'
 
 # Also required here to be able to initialize Mailgun in
 # e.g. production.rb, which would otherwise result in an

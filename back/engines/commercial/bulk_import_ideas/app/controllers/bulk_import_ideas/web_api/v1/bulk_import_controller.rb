@@ -51,12 +51,11 @@ module BulkImportIdeas
       personal_data_enabled = params[:personal_data] == 'true'
 
       service = form_exporter_service.new(@phase, locale, personal_data_enabled)
-      file = service.export
 
       # If the export is HTML-based, we are not sending a binary file so need to render differently
       render html: service.export and return if service.format == 'html'
 
-      send_data file, type: service.mime_type, filename: service.filename
+      send_data service.export, type: service.mime_type, filename: service.filename
     end
 
     def approve_all

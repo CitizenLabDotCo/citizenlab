@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module BulkImportIdeas::Exporters
   class IdeaHtmlFormExporter < BaseFormExporter
     def initialize(phase, locale, personal_data_enabled)
@@ -6,13 +8,6 @@ module BulkImportIdeas::Exporters
       @personal_data_enabled = personal_data_enabled
       organization_name = AppConfiguration.instance.settings('core', 'organization_name')[@locale]
       personal_data_visibility = @phase.pmethod.supports_public_visibility? ? 'public' : 'private'
-
-      I18n.with_locale(@locale) do
-        I18n.t(
-          "form_builder.pdf_export.personal_data_explanation_#{personal_data_visibility}",
-          organizationName: organization_name
-        )
-      end
 
       @template_values = {
         locale: @locale,
