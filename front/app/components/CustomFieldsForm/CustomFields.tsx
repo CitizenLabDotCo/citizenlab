@@ -28,7 +28,7 @@ const renderField = (question: IFlatCustomField) => {
     case 'number':
       return (
         <Input
-          type={question.type === 'number' ? 'number' : 'text'}
+          type={question.input_type === 'number' ? 'number' : 'text'}
           name={question.key}
         />
       );
