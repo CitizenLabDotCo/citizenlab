@@ -443,14 +443,7 @@ class CustomField < ApplicationRecord
     @ordered_transformed_options ||= domicile? ? domicile_options : ordered_options
   end
 
-  def print_description(locale)
-    if (linear_scale? || rating?) && description_multiloc[locale].blank? # TODO: Is rating correct here as it returns nil below (old code)
-      linear_scale_print_description(locale)
-    else
-      description_multiloc[locale]
-    end
-  end
-
+  # @deprecated New HTML PDF formatter does this in {IdeaHtmlFormExporter} instead.
   def linear_scale_print_description(locale)
     return nil unless linear_scale?
 
@@ -469,36 +462,6 @@ class CustomField < ApplicationRecord
         max_label: max_label
       )
     end
-  end
-
-  def print_visibility_disclaimer(locale)
-    phase.pmethod.supports_public_visibility? && answer_visible_to == 'admins' ? "*#{I18n.with_locale(locale) { I18n.t('form_builder.pdf_export.this_answer') }}" : ''
-  end
-
-  def multiselect_print_instructions(locale)
-    return unless input_type == 'multiselect'
-
-    min = minimum_select_count
-    max = maximum_select_count
-    min = nil if min == 0
-    max = nil if max&.>= options.length
-
-    message = I18n.with_locale(locale) do
-      if select_count_enabled && (min || max)
-        if min && max && min == max
-          I18n.t('form_builder.pdf_export.choose_exactly', count: min)
-        elsif min && max
-          I18n.t('form_builder.pdf_export.choose_between', min: min, max: max)
-        elsif min
-          I18n.t('form_builder.pdf_export.choose_at_least', count: min)
-        else
-          I18n.t('form_builder.pdf_export.choose_at_most', count: max)
-        end
-      else
-        I18n.t('form_builder.pdf_export.choose_as_many')
-      end
-    end
-    "*#{message}"
   end
 
   def nth_linear_scale_multiloc(n)

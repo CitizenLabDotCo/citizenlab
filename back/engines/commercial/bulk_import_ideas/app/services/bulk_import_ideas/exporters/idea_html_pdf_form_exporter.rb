@@ -2,13 +2,6 @@
 
 module BulkImportIdeas::Exporters
   class IdeaHtmlPdfFormExporter < IdeaHtmlFormExporter
-    def initialize(phase, locale, personal_data_enabled)
-      super
-
-      # Hack for getting the correct URL for the logo in local dev
-      @template_values[:logo_url]&.sub!('localhost:4000', 'cl-back-web:4000')
-    end
-
     def format
       'pdf'
     end
@@ -49,7 +42,6 @@ module BulkImportIdeas::Exporters
       @importer_fields = []
 
       # TODO: What about multiline titles?
-      # TODO: Need to add in the options too
       @form_fields.each do |field|
         add_to_importer_fields(field, pages, 'field')
         field.options.each do |option|
@@ -62,6 +54,8 @@ module BulkImportIdeas::Exporters
         fields: @importer_fields
       }
     end
+
+    private
 
     def add_to_importer_fields(field_or_option, pdf_pages, type = 'field')
       title = custom_field_service.handle_title(field_or_option, @locale)
@@ -92,6 +86,17 @@ module BulkImportIdeas::Exporters
           }
         end
       end
+    end
+
+    # Dev only methods to allow rendering of images in the PDF
+    def print_description(field)
+      description = super
+      description&.sub!('localhost:4000', 'cl-back-web:4000') # TEMP: Dev only?
+    end
+
+    def logo_url
+      url = super
+      url&.sub!('localhost:4000', 'cl-back-web:4000') # TEMP: Dev only?
     end
   end
 end
