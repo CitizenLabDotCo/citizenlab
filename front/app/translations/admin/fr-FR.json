@@ -760,7 +760,7 @@
   "app.containers.Admin.communityMonitor.healthScore": "Indice de santé",
   "app.containers.Admin.communityMonitor.healthScoreDescription": "Ce score correspond à la moyenne des réponses données aux questions à échelle de sentiment pendant la période sélectionnée.",
   "app.containers.Admin.communityMonitor.lastQuarter": "dernier trimestre",
-  "app.containers.Admin.communityMonitor.liveMonitor": "Moniteur en direct",
+  "app.containers.Admin.communityMonitor.liveMonitor": "En direct",
   "app.containers.Admin.communityMonitor.noResults": "Aucun résultat pour cette période.",
   "app.containers.Admin.communityMonitor.noSurveyResponses": "Aucune réponse à l'enquête",
   "app.containers.Admin.communityMonitor.participants": "Participants",
