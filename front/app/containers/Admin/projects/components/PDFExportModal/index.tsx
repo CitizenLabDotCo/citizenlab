@@ -99,6 +99,7 @@ const PDFExportModal = ({ open, formType, onClose, onExport }: Props) => {
           titlePadding="16px"
           border={`1px solid ${theme.colors.grey300}`}
           borderRadius={theme.borderRadius}
+          isOpenByDefault
         >
           <Box as="ul" py="24px" px="36px" m="0">
             <Text as="li">
