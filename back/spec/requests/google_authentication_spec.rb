@@ -167,6 +167,13 @@ describe 'google authentication' do
         user_id: user.id
       })
       expect(cookies[:cl2_jwt]).to be_present
+
+      expect(LogActivityJob).to have_been_enqueued.with(
+          user,
+          'completed_registration',
+          nil,
+          user.updated_at.to_i
+        )
     end
 
     it 'creates a new user with previously selected locale' do
