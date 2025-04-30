@@ -45,6 +45,8 @@ export type UseSyncFilesProps = {
 export type SyncFilesArguments = {
   projectId?: string;
   phaseId?: string;
+  projectFolderId?: string;
+  projectFolderFiles?: UploadFile[];
   projectFiles?: UploadFile[];
   phaseFiles?: FileType[];
   filesToRemove: any[];

@@ -8,6 +8,9 @@ import useUpdatePhaseFile from 'api/phase_files/useUpdatePhaseFile';
 import useAddProjectFile from 'api/project_files/useAddProjectFile';
 import useDeleteProjectFile from 'api/project_files/useDeleteProjectFile';
 import useUpdateProjectFile from 'api/project_files/useUpdateProjectFile';
+import useAddProjectFolderFile from 'api/project_folder_files/useAddProjectFolderFile';
+import useDeleteProjectFolderFile from 'api/project_folder_files/useDeleteProjectFolderFile';
+import useUpdateProjectFolderFile from 'api/project_folder_files/useUpdateProjectFolderFile';
 
 import { SyncFilesArguments } from './types';
 
@@ -22,10 +25,17 @@ export function useSyncFiles() {
   const { mutateAsync: deletePhaseFile } = useDeletePhaseFile();
   const { mutateAsync: updatePhaseFile } = useUpdatePhaseFile();
 
+  // ***** Project Folder File Hooks *****
+  const { mutateAsync: addProjectFolderFile } = useAddProjectFolderFile();
+  const { mutateAsync: updateProjectFolderFile } = useUpdateProjectFolderFile();
+  const { mutateAsync: deleteProjectFolderFile } = useDeleteProjectFolderFile();
+
   return useCallback(
     async ({
       projectId,
       phaseId,
+      projectFolderId,
+      projectFolderFiles,
       phaseFiles,
       projectFiles,
       filesToRemove,
@@ -91,11 +101,11 @@ export function useSyncFiles() {
         // Get any files that we need to add
         const filesToAddPromises = phaseFiles
           .filter((file) => !file.remote)
-          .map((file, index) =>
+          .map((file) =>
             addPhaseFile({
               phaseId,
               base64: file.base64 || '',
-              ordering: index,
+              ordering: file.ordering,
               name: file.name,
             })
           );
@@ -138,14 +148,65 @@ export function useSyncFiles() {
           ...filesToReorderPromises,
         ]);
       }
+
+      // ***** Handle For Project Folder Files *****
+      if (projectFolderFiles && projectFolderId) {
+        // Get any files that we need to add
+        const filesToAddPromises = projectFolderFiles
+          .filter((file) => !file.remote)
+          .map((file) =>
+            addProjectFolderFile({
+              projectFolderId,
+              file: file.base64,
+              name: file.name,
+              ordering: file.ordering,
+            })
+          );
+
+        // Get any files that we need to remove
+        const filesToRemovePromises = filesToRemove.map((fileId) =>
+          deleteProjectFolderFile({ projectFolderId, fileId })
+        );
+
+        // Get any files that we need to change the ordering of
+        const reorderedFiles = projectFolderFiles.filter((file) => {
+          const initialOrdering = file.id ? fileOrdering[file.id] : undefined;
+          return (
+            file.remote &&
+            typeof file.ordering !== 'undefined' &&
+            (typeof initialOrdering === 'undefined' ||
+              file.ordering !== initialOrdering)
+          );
+        });
+
+        const filesToReorderPromises = reorderedFiles.map((file) =>
+          updateProjectFolderFile({
+            projectFolderId,
+            fileId: file.id || '',
+            file: {
+              ordering: file.ordering,
+            },
+          })
+        );
+
+        // Wait for all the promises to resolve
+        await Promise.all([
+          ...filesToAddPromises,
+          ...filesToRemovePromises,
+          ...filesToReorderPromises,
+        ]);
+      }
     },
     [
       addPhaseFile,
       addProjectFile,
+      addProjectFolderFile,
       deletePhaseFile,
       deleteProjectFile,
+      deleteProjectFolderFile,
       updatePhaseFile,
       updateProjectFile,
+      updateProjectFolderFile,
     ]
   );
 }
