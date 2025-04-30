@@ -153,7 +153,7 @@ RSpec.describe Analysis::AutoTaggingTask do
         - planets
         - bananas
       RESPONSE
-      expect_any_instance_of(Analysis::LLM::GPT4o)
+      expect_any_instance_of(Analysis::LLM::GPT41)
         .to receive(:chat)
         .and_return(topics_response)
 
@@ -182,7 +182,7 @@ RSpec.describe Analysis::AutoTaggingTask do
       task = create(:auto_tagging_task, analysis: analysis, state: 'queued', auto_tagging_method: 'nlp_topic')
       idea = create(:idea, project: project)
 
-      expect_any_instance_of(Analysis::LLM::GPT4o)
+      expect_any_instance_of(Analysis::LLM::GPT41)
         .to receive(:chat)
         .and_return('- planets')
 
@@ -211,7 +211,7 @@ RSpec.describe Analysis::AutoTaggingTask do
     describe '#fit_inputs_in_context_window' do
       it 'recudes the inputs to fit in the context window' do
         stubbed_context_window = 1000
-        expect_any_instance_of(Analysis::LLM::GPT4o)
+        expect_any_instance_of(Analysis::LLM::GPT41)
           .to receive(:context_window)
           .at_least(:once)
           .and_return(stubbed_context_window)
@@ -311,7 +311,7 @@ RSpec.describe Analysis::AutoTaggingTask do
       idea3 = create(:idea, project: project, title_multiloc: { en: 'We need more houses' })
       create(:tagging, input: idea3, tag: tags[0])
 
-      mock_llm = instance_double(Analysis::LLM::GPT4o)
+      mock_llm = instance_double(Analysis::LLM::GPT41)
 
       expect_any_instance_of(Analysis::AutoTaggingMethod::FewShotClassification).to receive(:gpt4).and_return(mock_llm)
       expect(mock_llm).to receive(:chat) do |prompt|

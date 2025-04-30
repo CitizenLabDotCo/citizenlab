@@ -1224,18 +1224,6 @@
         }
       },
 
-      "comments_summaries": {
-        "type": "object",
-        "title": "AI-powered analysis of comments in ideation",
-        "description": "Enables the use of AI-powered analysis for comments in ideation. When active, the comments under an input can be summarized, and the comments are included in the main summarization feature.",
-        "additionalProperties": false,
-        "required": ["allowed", "enabled"],
-        "properties": {
-          "allowed": { "type": "boolean", "default": false },
-          "enabled": { "type": "boolean", "default": false }
-        }
-      },
-
       "ask_a_question": {
         "type": "object",
         "title": "AI-powered questions and answers feature for surveys and ideation",
@@ -1449,6 +1437,18 @@
             "type": "string"
           }
         }
+      },
+
+      "common_ground": {
+        "type": "object",
+        "title": "Common ground",
+        "description": "New participation method that is currently under development. [DO NOT ENABLE]",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": false },
+          "enabled": { "type": "boolean", "default": false }
+        }
       }
     },
   "dependencies": {
@@ -1479,7 +1479,6 @@
     "large_summaries": ["analysis"],
     "ask_a_question": ["analysis"],
     "advanced_autotagging": ["analysis"],
-    "comments_summaries": ["analysis"],
     "auto_insights": ["analysis"],
     "import_printed_forms": ["input_importer"]
   },

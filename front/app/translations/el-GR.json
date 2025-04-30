@@ -500,6 +500,7 @@
   "app.components.VerificationModal.verifyIdAustria": "Επαλήθευση με ID Austria",
   "app.components.VerificationModal.verifyKeycloak": "Επαλήθευση με ID-Porten",
   "app.components.VerificationModal.verifyNemLogIn": "Επαλήθευση με το MitID",
+  "app.components.VerificationModal.verifyTwoday2": "Επαλήθευση με BankID ή Freja eID+",
   "app.components.VerificationModal.verifyYourIdentity": "Επαληθεύστε την ταυτότητά σας",
   "app.components.VoteControl.budgetingFutureEnabled": "Μπορείτε να διαθέσετε τον προϋπολογισμό σας ξεκινώντας από τις {enabledFromDate}.",
   "app.components.VoteControl.budgetingNotPermitted": "Ο συμμετοχικός προϋπολογισμός δεν είναι προς το παρόν ενεργοποιημένος.",

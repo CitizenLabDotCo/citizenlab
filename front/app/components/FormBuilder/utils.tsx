@@ -11,6 +11,8 @@ import {
 } from 'api/custom_fields/types';
 import { IPhaseData } from 'api/phases/types';
 
+import { FormPDFExportFormValues } from 'containers/Admin/projects/components/PDFExportModal';
+
 import { isNilOrError } from 'utils/helperUtils';
 
 import ConfigOptionsWithLocaleSwitcher from './components/FormBuilderSettings/ConfigOptionsWithLocaleSwitcher';
@@ -38,8 +40,9 @@ export const builtInFieldKeys = [
 
 export type BuiltInKeyType = (typeof builtInFieldKeys)[number];
 
+export type FormType = 'survey' | 'input_form';
 export type FormBuilderConfig = {
-  type: 'survey' | 'input_form';
+  type: FormType;
   formBuilderTitle: MessageDescriptor;
   viewFormLinkCopy: MessageDescriptor;
   formSavedSuccessMessage: MessageDescriptor;
@@ -69,7 +72,7 @@ export type FormBuilderConfig = {
   ) => void;
   getUserFieldsNotice?: () => void;
 
-  onDownloadPDF?: () => void;
+  onDownloadPDF?: (formValues: FormPDFExportFormValues) => Promise<void>;
 };
 
 export const getIsPostingEnabled = (

@@ -89,6 +89,10 @@ namespace :cl2_back do
           enabled: true,
           allowed: true
         },
+        community_monitor: {
+          enabled: true,
+          allowed: true
+        },
         segment: {
           enabled: true,
           allowed: true
@@ -291,10 +295,6 @@ namespace :cl2_back do
           enabled: true,
           allowed: true
         },
-        comments_summaries: {
-          enabled: true,
-          allowed: true
-        },
         ask_a_question: {
           enabled: true,
           allowed: true
@@ -330,6 +330,10 @@ namespace :cl2_back do
         project_library: {
           enabled: false,
           allowed: false
+        },
+        common_ground: {
+          enabled: true,
+          allowed: true
         }
       }
     )
