@@ -16,7 +16,7 @@ class SideFxUserService
     if user.registration_completed_at # For example, when a user is created via SSO
       LogActivityJob.perform_later(user, 'completed_registration', current_user, user.updated_at.to_i)
     end
-  
+
     user.create_email_campaigns_unsubscription_token
     RequestConfirmationCodeJob.perform_now(user) if should_send_confirmation_email?(user)
     AdditionalSeatsIncrementer.increment_if_necessary(user, current_user) if user.roles_previously_changed?
