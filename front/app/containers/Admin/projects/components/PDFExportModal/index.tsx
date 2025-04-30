@@ -10,6 +10,7 @@ import {
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm, FormProvider } from 'react-hook-form';
 import { useTheme } from 'styled-components';
+import { Multiloc } from 'typings';
 import { object, boolean } from 'yup';
 
 import usePhase from 'api/phases/usePhase';
@@ -19,10 +20,12 @@ import useLocale from 'hooks/useLocale';
 import { FormType } from 'components/FormBuilder/utils';
 import CheckboxWithLabel from 'components/HookForm/CheckboxWithLabel';
 import Feedback from 'components/HookForm/Feedback';
+import QuillMultilocWithLocaleSwitcher from 'components/HookForm/QuillMultilocWithLocaleSwitcher';
 import Modal from 'components/UI/Modal';
 
 import { FormattedMessage, useIntl, MessageDescriptor } from 'utils/cl-intl';
 import { handleHookFormSubmissionError } from 'utils/errorUtils';
+import validateMultilocForEveryLocale from 'utils/yup/validateMultilocForEveryLocale';
 
 import { saveIdeaFormAsPDF } from '../../project/inputForm/saveIdeaFormAsPDF';
 import { supportsNativeSurvey } from '../../project/inputImporter/ReviewSection/utils';
@@ -31,10 +34,12 @@ import { saveSurveyAsPDF } from '../../project/nativeSurvey/saveSurveyAsPDF';
 import messages from './messages';
 
 export interface FormPDFExportFormValues {
+  instructions_start: Multiloc;
   personal_data: boolean;
 }
 
 const DEFAULT_VALUES = {
+  instructions_start: {},
   personal_data: false,
 } satisfies FormPDFExportFormValues;
 
@@ -64,6 +69,9 @@ const PDFExportModal = ({ open, formType, onClose, phaseId }: Props) => {
 
   const schema = object({
     personal_data: boolean(),
+    instructions_start: validateMultilocForEveryLocale(
+      formatMessage(messages.instructionsStartBodyError)
+    ),
   });
 
   const methods = useForm({
@@ -153,6 +161,27 @@ const PDFExportModal = ({ open, formType, onClose, phaseId }: Props) => {
         <FormProvider {...methods}>
           <form onSubmit={methods.handleSubmit(handleExport)}>
             <Feedback onlyShowErrors />
+            <CollapsibleContainer
+              mb="24px"
+              title={formatMessage(messages.instructionsStart)}
+              titleVariant="h4"
+              titleAs="h2"
+              titleFontWeight="bold"
+              titlePadding="16px"
+              border={`1px solid ${theme.colors.grey300}`}
+              borderRadius={theme.borderRadius}
+              isOpenByDefault
+            >
+              <Box p="24px">
+                <QuillMultilocWithLocaleSwitcher
+                  name="instructions_start"
+                  label={formatMessage(messages.instructionsStart)}
+                  noImages
+                  noVideos
+                  // noLinks
+                />
+              </Box>
+            </CollapsibleContainer>
             <CheckboxWithLabel
               name="personal_data"
               label={
