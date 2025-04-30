@@ -40,6 +40,28 @@ const generateYupValidationSchema = (
           : {};
       }
     }
+    if (question.input_type === 'html_multiloc') {
+      if (question.key === 'body_multiloc') {
+        schema[question.key] = validateAtLeastOneLocale(
+          formatMessage(messages.descriptionRequired),
+          {
+            validateEachNonEmptyLocale: (schema) =>
+              schema.min(
+                40,
+                formatMessage(messages.descriptionMinLength, {
+                  min: 40,
+                })
+              ),
+          }
+        );
+      } else {
+        schema[question.key] = question.required
+          ? validateAtLeastOneLocale(
+              formatMessage(messages.descriptionRequired)
+            )
+          : {};
+      }
+    }
     if (question.input_type === 'text') {
       schema[question.key] = question.required
         ? string().required(formatMessage(messages.titleRequired))
