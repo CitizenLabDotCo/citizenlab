@@ -11,6 +11,7 @@ import Input from 'components/HookForm/Input';
 import InputMultilocWithLocaleSwitcher from 'components/HookForm/InputMultilocWithLocaleSwitcher';
 import LocationInput from 'components/HookForm/LocationInput';
 import QuillMultilocWithLocaleSwitcher from 'components/HookForm/QuillMultilocWithLocaleSwitcher';
+import TextArea from 'components/HookForm/TextArea';
 import { FormLabel } from 'components/UI/FormComponents';
 
 const CustomFields = ({ questions }: { questions: IFlatCustomField[] }) => {
@@ -64,6 +65,13 @@ const CustomFields = ({ questions }: { questions: IFlatCustomField[] }) => {
                 key={question.id}
                 name={question.key}
               />
+            </>
+          );
+        } else if (question.input_type === 'multiline_text') {
+          return (
+            <>
+              <FormLabel {...labelProps} />
+              <TextArea key={question.id} name={question.key} />
             </>
           );
         } else if (question.key === 'body_multiloc') {

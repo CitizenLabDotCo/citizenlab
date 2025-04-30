@@ -69,7 +69,10 @@ const generateYupValidationSchema = ({
           : {};
       }
     }
-    if (question.input_type === 'text') {
+    if (
+      question.input_type === 'text' ||
+      question.input_type === 'multiline_text'
+    ) {
       schema[question.key] = question.required
         ? string().required(
             formatMessage(messages.fieldRequired, {
