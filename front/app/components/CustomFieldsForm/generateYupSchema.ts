@@ -65,12 +65,12 @@ const generateYupValidationSchema = (
     if (question.input_type === 'text') {
       schema[question.key] = question.required
         ? string().required(formatMessage(messages.titleRequired))
-        : {};
+        : string();
     }
     if (question.input_type === 'number') {
       schema[question.key] = question.required
         ? number().required(formatMessage(messages.titleRequired))
-        : {};
+        : number();
     }
   });
   return object(schema);

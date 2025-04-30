@@ -5,6 +5,8 @@ import { IFlatCustomField } from 'api/custom_fields/types';
 import useLocalize from 'hooks/useLocalize';
 
 import { getSubtextElement } from 'components/Form/Components/Controls/controlUtils';
+import FileUploader from 'components/HookForm/FileUploader';
+import ImagesDropzone from 'components/HookForm/ImagesDropzone';
 import Input from 'components/HookForm/Input';
 import InputMultilocWithLocaleSwitcher from 'components/HookForm/InputMultilocWithLocaleSwitcher';
 import LocationInput from 'components/HookForm/LocationInput';
@@ -17,20 +19,22 @@ const CustomFields = ({ questions }: { questions: IFlatCustomField[] }) => {
   return (
     <>
       {questions.map((question) => {
+        const labelProps = {
+          htmlFor: question.key,
+          labelValue: localize(question.title_multiloc),
+          optional: !question.required,
+          subtextValue: getSubtextElement(
+            localize(question.description_multiloc)
+          ),
+          subtextSupportsHtml: true,
+        };
         if (!question.enabled) {
           return null;
         }
         if (question.input_type === 'text_multiloc') {
           return (
             <Fragment key={question.id}>
-              <FormLabel
-                labelValue={localize(question.title_multiloc)}
-                optional={!question.required}
-                subtextValue={getSubtextElement(
-                  localize(question.description_multiloc)
-                )}
-                subtextSupportsHtml
-              />
+              <FormLabel {...labelProps} />
               <InputMultilocWithLocaleSwitcher
                 key={question.id}
                 name={question.key}
@@ -44,14 +48,7 @@ const CustomFields = ({ questions }: { questions: IFlatCustomField[] }) => {
         } else if (question.key === 'location_description') {
           return (
             <Fragment key={question.id}>
-              <FormLabel
-                labelValue={localize(question.title_multiloc)}
-                optional={!question.required}
-                subtextValue={getSubtextElement(
-                  localize(question.description_multiloc)
-                )}
-                subtextSupportsHtml
-              />
+              <FormLabel {...labelProps} />
               <LocationInput key={question.id} name={question.key} />
             </Fragment>
           );
@@ -61,15 +58,7 @@ const CustomFields = ({ questions }: { questions: IFlatCustomField[] }) => {
         ) {
           return (
             <>
-              <FormLabel
-                htmlFor={question.key}
-                labelValue={localize(question.title_multiloc)}
-                optional={!question.required}
-                subtextValue={getSubtextElement(
-                  localize(question.description_multiloc)
-                )}
-                subtextSupportsHtml
-              />
+              <FormLabel {...labelProps} />
               <Input
                 type={question.type === 'number' ? 'number' : 'text'}
                 key={question.id}
@@ -81,18 +70,28 @@ const CustomFields = ({ questions }: { questions: IFlatCustomField[] }) => {
         } else if (question.key === 'body_multiloc') {
           return (
             <Fragment key={question.id}>
-              <FormLabel
-                labelValue={localize(question.title_multiloc)}
-                optional={!question.required}
-                subtextValue={getSubtextElement(
-                  localize(question.description_multiloc)
-                )}
-                subtextSupportsHtml
-              />
+              <FormLabel {...labelProps} />
               <QuillMultilocWithLocaleSwitcher
                 name={question.key}
                 hideLocaleSwitcher
               />
+            </Fragment>
+          );
+        } else if (question.input_type === 'image_files') {
+          return (
+            <Fragment key={question.id}>
+              <FormLabel {...labelProps} />
+              <ImagesDropzone
+                name={question.key}
+                imagePreviewRatio={135 / 298}
+              />
+            </Fragment>
+          );
+        } else if (question.input_type === 'files') {
+          return (
+            <Fragment key={question.id}>
+              <FormLabel {...labelProps} />
+              <FileUploader name={question.key} />
             </Fragment>
           );
         }
