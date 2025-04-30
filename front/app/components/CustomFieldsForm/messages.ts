@@ -29,6 +29,10 @@ export default defineMessages({
     id: 'app.components.CustomFieldsForm.fileRequired',
     defaultMessage: 'At least one file is required',
   },
+  topicRequired: {
+    id: 'app.components.CustomFieldsForm.topicRequired',
+    defaultMessage: 'At least one tag is required',
+  },
   fieldRequired: {
     id: 'app.components.CustomFieldsForm.fieldRequired',
     defaultMessage: 'The field "{fieldName}" is required',

@@ -108,6 +108,16 @@ const generateYupValidationSchema = ({
           : array().nullable();
         break;
       }
+
+      case 'topic_ids': {
+        schema[key] = required
+          ? array()
+              .of(string())
+              .min(1, formatMessage(messages.topicRequired))
+              .required(formatMessage(messages.topicRequired))
+          : array().nullable();
+        break;
+      }
     }
   });
 

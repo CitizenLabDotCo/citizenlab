@@ -68,6 +68,7 @@ const CustomFieldsForm = ({
           showTogglePostAnonymously={showTogglePostAnonymously}
           participationMethod={participationMethod}
           idea={idea}
+          projectId={projectId}
         />
       ))}
     </Box>

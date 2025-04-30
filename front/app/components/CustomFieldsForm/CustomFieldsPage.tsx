@@ -31,6 +31,7 @@ type CustomFieldsPage = {
   showTogglePostAnonymously?: boolean;
   participationMethod?: ParticipationMethod;
   idea?: IIdea;
+  projectId: string;
 };
 
 const CustomFieldsPage = ({
@@ -41,6 +42,7 @@ const CustomFieldsPage = ({
   showTogglePostAnonymously,
   participationMethod,
   idea,
+  projectId,
 }: CustomFieldsPage) => {
   const { formatMessage } = useIntl();
   const pagesRef = React.useRef<HTMLDivElement>(null);
@@ -179,7 +181,10 @@ const CustomFieldsPage = ({
                 </Box>
                 <FormProvider {...methods}>
                   <form onSubmit={methods.handleSubmit(onFormSubmit)}>
-                    <CustomFields questions={pageQuestions} />
+                    <CustomFields
+                      questions={pageQuestions}
+                      projectId={projectId}
+                    />
                     <button type="submit">submit</button>
                   </form>
                 </FormProvider>
