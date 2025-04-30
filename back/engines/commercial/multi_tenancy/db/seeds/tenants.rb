@@ -505,6 +505,10 @@ module MultiTenancy
             user_fields_in_surveys: {
               enabled: true,
               allowed: true
+            },
+            common_ground: {
+              enabled: true,
+              allowed: true
             }
           })
         )

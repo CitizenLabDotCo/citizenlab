@@ -43,12 +43,4 @@ export default defineMessages({
     defaultMessage:
       'Check the box below, if you want your downloaded PDF to contain name, last name, and email fields. Upon upload of the paper form, we will use that user data, to auto-generate an account for the offline survey respondent.',
   },
-  phase: {
-    id: 'app.containers.Admin.projects.all.PDFExportModal.phase',
-    defaultMessage: 'Phase',
-  },
-  selectIdeationPhase: {
-    id: 'app.containers.Admin.projects.all.PDFExportModal.selectIdeationPhase',
-    defaultMessage: 'Please select an ideation phase.',
-  },
 });

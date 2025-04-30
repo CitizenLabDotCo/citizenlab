@@ -1437,6 +1437,18 @@
             "type": "string"
           }
         }
+      },
+
+      "common_ground": {
+        "type": "object",
+        "title": "Common ground",
+        "description": "New participation method that is currently under development. [DO NOT ENABLE]",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": false },
+          "enabled": { "type": "boolean", "default": false }
+        }
       }
     },
   "dependencies": {

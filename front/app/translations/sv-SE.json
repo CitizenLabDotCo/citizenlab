@@ -615,7 +615,7 @@
   "app.components.followUnfollow.followADiscussion": "Följ diskussionen",
   "app.components.followUnfollow.followTooltipInputPage2": "Följande triggar e-postuppdateringar om statusändringar, officiella uppdateringar och kommentarer. Du kan när som helst lämna {unsubscribeLink} .",
   "app.components.followUnfollow.followTooltipProjects2": "Följande triggar e-postuppdateringar om projektförändringar. Du kan när som helst avsluta {unsubscribeLink} .",
-  "app.components.followUnfollow.unFollow": "Unfollow",
+  "app.components.followUnfollow.unFollow": "Avfölj",
   "app.components.followUnfollow.unsubscribe": "avsluta prenumeration",
   "app.components.followUnfollow.unsubscribeUrl": "/profil/redigera",
   "app.components.form.ErrorDisplay.guidelinesLinkText": "våra riktlinjer",

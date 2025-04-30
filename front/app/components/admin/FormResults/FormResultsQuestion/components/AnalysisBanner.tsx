@@ -139,7 +139,8 @@ const AnalysisBanner = () => {
           buttonStyle="text"
           textColor={colors.teal500}
           fontWeight="bold"
-          icon={'stars'}
+          icon="arrow-right"
+          iconPos="right"
           iconColor={colors.teal500}
           onClick={goToAnalysis}
           processing={isAddLoading || isUpdateLoading}
