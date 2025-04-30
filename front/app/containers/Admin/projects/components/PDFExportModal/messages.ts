@@ -43,4 +43,12 @@ export default defineMessages({
     defaultMessage:
       'This option will add the first name, last name, and email fields to the exported PDF. Upon uploading the paper form, we will use that data to auto-generate an account for the offline survey respondent.',
   },
+  instructionsStart: {
+    id: 'app.containers.Admin.projects.all.instructionsStart',
+    defaultMessage: 'Instructions at the start',
+  },
+  instructionsStartBodyError: {
+    id: 'app.containers.Admin.projects.all.instructionsStartBodyError',
+    defaultMessage: 'Instructions at the start is required for every locale',
+  },
 });
