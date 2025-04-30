@@ -15,7 +15,7 @@ import TextArea from 'components/HookForm/TextArea';
 import Topics from 'components/HookForm/Topics';
 import { FormLabel } from 'components/UI/FormComponents';
 
-const renderField = (question: IFlatCustomField, projectId: string) => {
+const renderField = (question: IFlatCustomField, projectId?: string) => {
   switch (question.input_type) {
     case 'text_multiloc':
       return (
@@ -68,7 +68,6 @@ const CustomFields = ({
 }) => {
   const localize = useLocalize();
   console.log(questions);
-  console.log('projectId', projectId);
   return (
     <>
       {questions

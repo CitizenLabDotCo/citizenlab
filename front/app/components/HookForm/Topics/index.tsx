@@ -12,9 +12,13 @@ import TopicsPicker, {
   Props as TopicPickerProps,
 } from 'components/UI/TopicsPicker';
 
-interface Props extends Omit<TopicPickerProps, 'onChange' | 'value'> {
+interface Props
+  extends Omit<
+    TopicPickerProps,
+    'onClick' | 'availableTopics' | 'selectedTopicIds' | 'value'
+  > {
   name: string;
-  projectId: string;
+  projectId?: string;
 }
 
 const Topics = ({ name, projectId, ...rest }: Props) => {
