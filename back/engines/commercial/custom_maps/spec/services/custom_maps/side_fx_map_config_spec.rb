@@ -29,7 +29,13 @@ describe CustomMaps::SideFxMapConfigService do
       freeze_time do
         frozen_map_config = map_config.destroy
         expect { service.after_destroy(frozen_map_config, user) }
-          .to have_enqueued_job(LogActivityJob)
+          .to have_enqueued_job(LogActivityJob).with(
+            "CustomMaps::MapConfig/#{frozen_map_config.id}",
+            'deleted',
+            user,
+            anything,
+            anything
+          )
       end
     end
   end

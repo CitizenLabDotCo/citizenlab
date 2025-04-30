@@ -25,7 +25,13 @@ describe SideFxFollowerService do
       freeze_time do
         frozen_follower = follower.destroy
         expect { service.after_destroy(frozen_follower, user) }
-          .to enqueue_job(LogActivityJob)
+          .to enqueue_job(LogActivityJob).with(
+            "Follower/#{frozen_follower.id}",
+            'deleted',
+            user,
+            anything,
+            anything
+          )
       end
     end
 

@@ -98,7 +98,13 @@ describe SideFxProjectService do
       freeze_time do
         frozen_project = project.destroy
         expect { service.after_destroy(frozen_project, user) }
-          .to have_enqueued_job(LogActivityJob)
+          .to have_enqueued_job(LogActivityJob).with(
+            "Project/#{frozen_project.id}",
+            'deleted',
+            user,
+            anything,
+            anything
+          )
       end
     end
 

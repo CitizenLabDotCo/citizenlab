@@ -45,7 +45,13 @@ describe SideFxStaticPageService do
       freeze_time do
         frozen_page = page.destroy!
         expect { service.after_destroy(frozen_page, user) }
-          .to have_enqueued_job(LogActivityJob)
+          .to have_enqueued_job(LogActivityJob).with(
+            "StaticPage/#{frozen_page.id}",
+            'deleted',
+            user,
+            anything,
+            anything
+          )
       end
     end
   end

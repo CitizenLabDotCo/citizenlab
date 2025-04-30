@@ -40,8 +40,15 @@ describe ResetPasswordService do
     let(:user) { create(:user) }
     let(:token) { 'token' }
 
-    it 'schedules a LogAcitvityJob' do
-      expect { service.log_activity(user, token) }.to have_enqueued_job(LogActivityJob)
+    it 'schedules a LogActivityJob' do
+      expect { service.log_activity(user, token) }
+        .to have_enqueued_job(LogActivityJob).with(
+          user,
+          'requested_password_reset',
+          user,
+          anything,
+          payload: { token: token }
+        )
     end
   end
 end
