@@ -1,12 +1,18 @@
 import { UseMutateAsyncFunction } from '@tanstack/react-query';
-import { CLErrors } from 'typings';
+import { CLErrors, UploadFile } from 'typings';
 
-import { AddPhaseFileObject, IPhaseFile } from 'api/phase_files/types';
+import {
+  AddPhaseFileObject,
+  IPhaseFile,
+  UpdatePhaseFileObject,
+} from 'api/phase_files/types';
 import {
   AddProjectFileObject,
   IProjectFile,
   UpdateProjectFileObject,
 } from 'api/project_files/types';
+
+import { FileType } from 'components/UI/FileUploader/FileDisplay';
 
 import { BaseResponseData } from 'utils/cl-react-query/fetcher';
 
@@ -31,15 +37,16 @@ export type UseSyncFilesProps = {
   updateFile: UseMutateAsyncFunction<
     IProjectFile | IPhaseFile,
     CLErrors,
-    UpdateProjectFileObject, // ToDo: Will extend to cover phases in separate PR.
+    UpdateProjectFileObject | UpdatePhaseFileObject, // ToDo: Will extend to cover phases in separate PR.
     unknown
   >;
 };
 
-export type SyncFilesArgs = {
+export type SyncFilesArguments = {
   projectId?: string;
   phaseId?: string;
-  files: any[];
+  projectFiles?: UploadFile[];
+  phaseFiles?: FileType[];
   filesToRemove: any[];
   fileOrdering: Record<string, number | undefined>;
 };

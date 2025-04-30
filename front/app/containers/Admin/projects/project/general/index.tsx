@@ -23,6 +23,7 @@ import useAddProject from 'api/projects/useAddProject';
 import useProjectById from 'api/projects/useProjectById';
 import useUpdateProject from 'api/projects/useUpdateProject';
 
+import { useSyncFiles } from 'hooks/files/useSyncFiles';
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 import useContainerWidthAndHeight from 'hooks/useContainerWidthAndHeight';
 import useFeatureFlag from 'hooks/useFeatureFlag';
@@ -52,7 +53,6 @@ import { isNilOrError } from 'utils/helperUtils';
 import { defaultAdminCardPadding } from 'utils/styleConstants';
 import { validateSlug } from 'utils/textUtils';
 
-import { useSyncFiles } from '../../../../../hooks/files/useSyncFiles';
 import { fragmentId } from '../projectHeader';
 import { fragmentId as folderFragmentId } from '../projectHeader/LinkToFolderSettings';
 
@@ -378,7 +378,7 @@ const AdminProjectsProjectGeneral = () => {
 
         await syncProjectFiles({
           projectId: latestProjectId,
-          files: projectFiles,
+          projectFiles,
           filesToRemove: projectFilesToRemove,
           fileOrdering: initialProjectFilesOrdering,
         });

@@ -16,12 +16,14 @@ import { IPhaseFiles } from 'api/phase_files/types';
 import useAddPhaseFile from 'api/phase_files/useAddPhaseFile';
 import useDeletePhaseFile from 'api/phase_files/useDeletePhaseFile';
 import usePhaseFiles from 'api/phase_files/usePhaseFiles';
+import useUpdatePhaseFile from 'api/phase_files/useUpdatePhaseFile';
 import { IPhase, IUpdatedPhaseProperties } from 'api/phases/types';
 import useAddPhase from 'api/phases/useAddPhase';
 import usePhase from 'api/phases/usePhase';
 import usePhases from 'api/phases/usePhases';
 import useUpdatePhase from 'api/phases/useUpdatePhase';
 
+import { useSyncFiles } from 'hooks/files/useSyncFiles';
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 import useContainerWidthAndHeight from 'hooks/useContainerWidthAndHeight';
 import useLocalize from 'hooks/useLocalize';
@@ -91,6 +93,12 @@ const AdminPhaseEdit = ({ projectId, phase, flatCampaigns }: Props) => {
   const { data: phases } = usePhases(projectId);
   const { mutate: addPhase } = useAddPhase();
   const { mutate: updatePhase } = useUpdatePhase();
+  const { mutateAsync: updatePhaseFile } = useUpdatePhaseFile();
+  const syncPhaseFiles = useSyncFiles({
+    addFile: addPhaseFile,
+    deleteFile: deletePhaseFile,
+    updateFile: updatePhaseFile,
+  });
   const [errors, setErrors] = useState<CLErrors | null>(null);
   const [processing, setProcessing] = useState<boolean>(false);
   const [inStatePhaseFiles, setInStatePhaseFiles] = useState<FileType[]>(
@@ -228,6 +236,11 @@ const AdminPhaseEdit = ({ projectId, phase, flatCampaigns }: Props) => {
     setSubmitState('enabled');
   };
 
+  const handleFilesReorder = (updatedFiles: UploadFile[]) => {
+    setInStatePhaseFiles(updatedFiles);
+    setSubmitState('enabled');
+  };
+
   const handleOnSubmit = async (event: FormEvent<any>) => {
     event.preventDefault();
     if (!formData) return;
@@ -260,16 +273,21 @@ const AdminPhaseEdit = ({ projectId, phase, flatCampaigns }: Props) => {
   ) => {
     const phaseResponse = response.data;
     const phaseId = phaseResponse.id;
-    const filesToAddPromises = inStatePhaseFiles
-      .filter((file): file is UploadFile => !file.remote)
-      .map((file) =>
-        addPhaseFile({ phaseId, base64: file.base64, name: file.name })
-      );
-    const filesToRemovePromises = phaseFilesToRemove
-      .filter((file) => file.remote)
-      .map((file) => deletePhaseFile({ phaseId, fileId: file.id as string }));
 
-    await Promise.all([...filesToAddPromises, ...filesToRemovePromises])
+    const initialFileOrdering = phaseFiles?.data.reduce((acc, file) => {
+      if (file.id) {
+        acc[file.id] = file.attributes.ordering;
+      }
+      return acc;
+    }, {});
+
+    await syncPhaseFiles({
+      projectId,
+      phaseId,
+      phaseFiles: inStatePhaseFiles,
+      filesToRemove: phaseFilesToRemove,
+      fileOrdering: initialFileOrdering || {},
+    })
       .then(() => {
         setPhaseFilesToRemove([]);
         setProcessing(false);
@@ -416,7 +434,10 @@ const AdminPhaseEdit = ({ projectId, phase, flatCampaigns }: Props) => {
               id="project-timeline-edit-form-file-uploader"
               onFileAdd={handlePhaseFileOnAdd}
               onFileRemove={handlePhaseFileOnRemove}
+              onFileReorder={handleFilesReorder}
               files={inStatePhaseFiles}
+              enableDragAndDrop
+              multiple
               apiErrors={errors}
             />
           </SectionField>
