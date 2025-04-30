@@ -525,7 +525,7 @@
   "app.components.admin.UserFilterConditions.field_event_attendance": "Inscriptions aux événements",
   "app.components.admin.UserFilterConditions.field_follow": "Suivre",
   "app.components.admin.UserFilterConditions.field_lives_in": "Habite à",
-  "app.components.admin.UserFilterConditions.field_participated_in_community_monitor": "Enquête auprès des moniteurs communautaires",
+  "app.components.admin.UserFilterConditions.field_participated_in_community_monitor": "Enquête de l'Observatoire de communauté",
   "app.components.admin.UserFilterConditions.field_participated_in_input_status": "Interaction avec une entrée avec statut",
   "app.components.admin.UserFilterConditions.field_participated_in_project": "A participé au projet",
   "app.components.admin.UserFilterConditions.field_participated_in_topic": "Contribué à une étiquette",
