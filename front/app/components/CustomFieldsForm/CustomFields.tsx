@@ -63,7 +63,6 @@ const CustomFields = ({ questions }: { questions: IFlatCustomField[] }) => {
                 type={question.type === 'number' ? 'number' : 'text'}
                 key={question.id}
                 name={question.key}
-                required={question.required}
               />
             </>
           );

@@ -64,7 +64,11 @@ const CustomFieldsPage = ({
     setPostAnonymously((postAnonymously) => !postAnonymously);
   };
 
-  const schema = generateYupValidationSchema(pageQuestions, formatMessage);
+  const schema = generateYupValidationSchema({
+    pageQuestions,
+    formatMessage,
+    localize,
+  });
 
   const methods = useForm({
     mode: 'onBlur',

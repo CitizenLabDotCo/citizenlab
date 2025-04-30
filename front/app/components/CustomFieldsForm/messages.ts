@@ -21,4 +21,16 @@ export default defineMessages({
     id: 'app.components.CustomFieldsForm.descriptionMinLength',
     defaultMessage: 'The description must be at least {min} characters long',
   },
+  imageRequired: {
+    id: 'app.components.CustomFieldsForm.imageRequired',
+    defaultMessage: 'The image is required',
+  },
+  fileRequired: {
+    id: 'app.components.CustomFieldsForm.fileRequired',
+    defaultMessage: 'At least one file is required',
+  },
+  fieldRequired: {
+    id: 'app.components.CustomFieldsForm.fieldRequired',
+    defaultMessage: 'The field "{fieldName}" is required',
+  },
 });
