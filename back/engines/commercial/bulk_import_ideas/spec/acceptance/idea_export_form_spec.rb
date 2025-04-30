@@ -40,8 +40,6 @@ resource 'Idea form exports' do
           let(:format) { 'html' }
 
           example 'Get an print HTML version of the idea form', document: false do
-            # TODO: Mock the export call instead of the Gotenberg call
-            allow(Gotenberg::Chromium).to receive(:call).and_return(Rails.root.join('engines/commercial/bulk_import_ideas/spec/fixtures/scan_1.pdf').read)
             do_request
             assert_status 200
           end
@@ -52,6 +50,8 @@ resource 'Idea form exports' do
           let(:format) { 'htmlpdf' }
 
           example 'Get an PDF version of the idea form', document: false do
+            # Mock the PDF export to avoid call to Gutenberg
+            allow_any_instance_of(BulkImportIdeas::Exporters::IdeaHtmlPdfFormExporter).to receive(:export).and_return(Rails.root.join('engines/commercial/bulk_import_ideas/spec/fixtures/scan_1.pdf').read)
             do_request
             assert_status 200
           end

@@ -1164,6 +1164,18 @@
         }
       },
 
+      "html_pdfs": {
+        "type": "object",
+        "title": "Use HTML PDF generator",
+        "description": "Enables the new more advanced PDF generation for export and import (DO NOT USE UNTIL FURTHER NOTICE).",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": false },
+          "enabled": { "type": "boolean", "default": false }
+        }
+      },
+
       "input_importer": {
         "type": "object",
         "title": "Input importer",

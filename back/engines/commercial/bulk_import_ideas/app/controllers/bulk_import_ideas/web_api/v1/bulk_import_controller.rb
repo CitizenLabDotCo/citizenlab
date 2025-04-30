@@ -18,7 +18,7 @@ module BulkImportIdeas
         },
         'htmlpdf' => {
           exporter_class: Exporters::IdeaHtmlPdfFormExporter,
-          parser_class: Parsers::IdeaPdfFileParser
+          parser_class: Parsers::IdeaHtmlPdfFileParser
         },
         'html' => {
           exporter_class: Exporters::IdeaHtmlFormExporter,
@@ -130,20 +130,26 @@ module BulkImportIdeas
     end
 
     def file_parser_service
-      model = params[:model]
-      format = params[:format]
       locale = params[:import] ? bulk_create_params[:locale] : current_user.locale
       personal_data_enabled = params[:import] ? bulk_create_params[:personal_data] || false : false
       phase_id = params[:id]
 
-      service = CONSTANTIZER.fetch(model).fetch(format)[:parser_class]
+      service = find_class(:parser_class)
       @file_parser_service ||= service.new(current_user, locale, phase_id, personal_data_enabled)
     end
 
     def form_exporter_service
+      find_class(:exporter_class)
+    end
+
+    def find_class(class_type)
       model = params[:model]
       format = params[:format]
-      CONSTANTIZER.fetch(model).fetch(format)[:exporter_class]
+
+      # TEMP: If new pdf format feature flag is on then change format from pdf to htmlpdf is used
+      format = 'htmlpdf' if format == 'pdf' && AppConfiguration.instance.settings.dig('html_pdfs', 'enabled')
+
+      CONSTANTIZER.fetch(model).fetch(format)[class_type]
     end
 
     def serializer
