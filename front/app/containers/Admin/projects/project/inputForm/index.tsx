@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 
 import { Box } from '@citizenlab/cl2-component-library';
 import { saveAs } from 'file-saver';
@@ -7,12 +7,11 @@ import { useParams } from 'react-router-dom';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 import useLocale from 'hooks/useLocale';
 
-import PDFExportModal, {
-  FormValues,
-} from 'containers/Admin/projects/components/PDFExportModal';
+import { FormPDFExportFormValues } from 'containers/Admin/projects/components/PDFExportModal';
 import { API_PATH } from 'containers/App/constants';
 
 import { SectionTitle, SectionDescription } from 'components/admin/Section';
+import DownloadPDFButtonWithModal from 'components/FormBuilder/components/FormBuilderTopBar/DownloadPDFButtonWithModal';
 import Button from 'components/UI/ButtonWithLink';
 import UpsellTooltip from 'components/UpsellTooltip';
 
@@ -28,12 +27,7 @@ export const InputForm = () => {
     name: 'input_importer',
     onlyCheckAllowed: true,
   });
-  const importPrintedFormsAllowed = useFeatureFlag({
-    name: 'import_printed_forms',
-    onlyCheckAllowed: true,
-  });
 
-  const [exportModalOpen, setExportModalOpen] = useState(false);
   const { projectId, phaseId } = useParams() as {
     projectId: string;
     phaseId: string;
@@ -41,9 +35,9 @@ export const InputForm = () => {
 
   const locale = useLocale();
 
-  const handleDownloadPDF = () => setExportModalOpen(true);
-
-  const handleExportPDF = async ({ personal_data }: FormValues) => {
+  const handleExportPDF = async ({
+    personal_data,
+  }: FormPDFExportFormValues) => {
     if (isNilOrError(locale)) return;
     await saveIdeaFormAsPDF({ phaseId, locale, personal_data });
   };
@@ -77,18 +71,11 @@ export const InputForm = () => {
           >
             <FormattedMessage {...messages.editInputForm} />
           </Button>
-          <UpsellTooltip disabled={importPrintedFormsAllowed}>
-            <Button
-              mr="8px"
-              onClick={handleDownloadPDF}
-              width="auto"
-              icon="download"
-              data-cy="e2e-save-input-form-pdf"
-              disabled={!importPrintedFormsAllowed}
-            >
-              <FormattedMessage {...messages.downloadInputForm} />
-            </Button>
-          </UpsellTooltip>
+          <DownloadPDFButtonWithModal
+            mr="8px"
+            onExport={handleExportPDF}
+            formType="input_form"
+          />
           <UpsellTooltip disabled={inputImporterAllowed}>
             <Button
               mr="8px"
@@ -102,12 +89,6 @@ export const InputForm = () => {
           </UpsellTooltip>
         </Box>
       </Box>
-      <PDFExportModal
-        open={exportModalOpen}
-        formType="idea_form"
-        onClose={() => setExportModalOpen(false)}
-        onExport={handleExportPDF}
-      />
     </>
   );
 };

@@ -101,7 +101,7 @@ const CollapsibleContainer = ({
   titleVariant,
   titlePadding,
   titleFontSize,
-  titleFontWeight,
+  titleFontWeight = 'bold',
   titleAs,
   useRegionRole,
   ...boxProps

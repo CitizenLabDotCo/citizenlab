@@ -12,9 +12,7 @@ import { downloadSurveyResults } from 'api/survey_results/utils';
 
 import useLocale from 'hooks/useLocale';
 
-import PDFExportModal, {
-  FormValues,
-} from 'containers/Admin/projects/components/PDFExportModal';
+import { FormPDFExportFormValues } from 'containers/Admin/projects/components/PDFExportModal';
 
 import FormResults from 'components/admin/FormResults';
 import DeleteModal from 'components/admin/SurveyDeleteModal/SurveyDeleteModal';
@@ -50,7 +48,6 @@ const Forms = () => {
   });
 
   // Modal states
-  const [exportModalOpen, setExportModalOpen] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [showEditWarningModal, setShowEditWarningModal] = useState(false);
   const [showCopySurveyModal, setShowCopySurveyModal] = useState(false);
@@ -107,7 +104,9 @@ const Forms = () => {
       setIsDownloading(false);
     }
   };
-  const handleExportPDF = async ({ personal_data }: FormValues) => {
+  const handleExportPDF = async ({
+    personal_data,
+  }: FormPDFExportFormValues) => {
     await saveSurveyAsPDF({
       downloadPdfLink,
       locale,
@@ -185,11 +184,11 @@ const Forms = () => {
               haveSubmissionsComeIn={haveSubmissionsComeIn}
               setShowCopySurveyModal={setShowCopySurveyModal}
               handleDownloadResults={handleDownloadResults}
-              setExportModalOpen={setExportModalOpen}
               setDropdownOpened={setDropdownOpened}
               isDropdownOpened={isDropdownOpened}
               downloadExcelLink={downloadExcelLink}
               setShowDeleteModal={setShowDeleteModal}
+              onPDFExport={handleExportPDF}
             />
           </Box>
         </Box>
@@ -207,12 +206,6 @@ const Forms = () => {
           surveyFormPersisted={surveyFormPersisted}
         />
       </Box>
-      <PDFExportModal
-        open={exportModalOpen}
-        formType="survey"
-        onClose={() => setExportModalOpen(false)}
-        onExport={handleExportPDF}
-      />
       <DeleteModal
         showDeleteModal={showDeleteModal}
         closeDeleteModal={closeDeleteModal}

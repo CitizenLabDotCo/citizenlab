@@ -117,7 +117,7 @@ const SimilarityDetectionConfig = ({
                   <IconTooltip
                     content={
                       <FormattedMessage
-                        {...messages.similarityThresholdTitleTooltip}
+                        {...messages.similarityThresholdTitleTooltipMessage}
                       />
                     }
                   />
@@ -145,7 +145,7 @@ const SimilarityDetectionConfig = ({
                   <IconTooltip
                     content={
                       <FormattedMessage
-                        {...messages.similarityThresholdBodyTooltip}
+                        {...messages.similarityThresholdBodyTooltipMessage}
                       />
                     }
                   />
