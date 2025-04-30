@@ -50,11 +50,18 @@ export interface Props
   valueMultiloc: Multiloc | null | undefined;
   labelTooltipText?: string | JSX.Element | null;
   onChange: (value: Multiloc, locale: SupportedLocale) => void;
+  hideLocaleSwitcher?: boolean;
 }
 
 const QuillMutilocWithLocaleSwitcher = memo<Props>((props) => {
-  const { valueMultiloc, onChange, label, labelTooltipText, ...quillProps } =
-    props;
+  const {
+    valueMultiloc,
+    onChange,
+    label,
+    labelTooltipText,
+    hideLocaleSwitcher,
+    ...quillProps
+  } = props;
 
   const [selectedLocale, setSelectedLocale] = useState<SupportedLocale>(
     useLocale()
@@ -99,12 +106,14 @@ const QuillMutilocWithLocaleSwitcher = memo<Props>((props) => {
 
           {!label && <Spacer />}
 
-          <StyledLocaleSwitcher
-            onSelectedLocaleChange={handleOnSelectedLocaleChange}
-            locales={!isNilOrError(tenantLocales) ? tenantLocales : []}
-            selectedLocale={selectedLocale}
-            values={{ valueMultiloc }}
-          />
+          {!hideLocaleSwitcher && (
+            <StyledLocaleSwitcher
+              onSelectedLocaleChange={handleOnSelectedLocaleChange}
+              locales={!isNilOrError(tenantLocales) ? tenantLocales : []}
+              selectedLocale={selectedLocale}
+              values={{ valueMultiloc }}
+            />
+          )}
         </LabelContainer>
 
         <QuillEditor

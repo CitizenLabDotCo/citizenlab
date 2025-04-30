@@ -9,6 +9,7 @@ import { Controller, useFormContext, FieldError } from 'react-hook-form';
 import { CLError, SupportedLocale, RHFErrors } from 'typings';
 
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
+import useLocale from 'hooks/useLocale';
 
 import Error, { TFieldName } from 'components/UI/Error';
 
@@ -28,6 +29,7 @@ const InputMultilocWithLocaleSwitcher = ({ name, ...rest }: Props) => {
     control,
   } = useFormContext();
   const locales = useAppConfigurationLocales();
+  const locale = useLocale();
 
   if (isNilOrError(locales)) {
     return null;
@@ -63,6 +65,7 @@ const InputMultilocWithLocaleSwitcher = ({ name, ...rest }: Props) => {
               locales={locales}
               type="text"
               valueMultiloc={{ ...defaultValue, ...field.value }}
+              initiallySelectedLocale={locale}
             />
           );
         }}

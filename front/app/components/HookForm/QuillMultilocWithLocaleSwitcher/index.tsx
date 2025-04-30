@@ -18,6 +18,7 @@ type Props = {
   labelTooltipText?: string | JSX.Element | null;
   label?: string | JSX.Element | null;
   withCTAButton?: boolean;
+  hideLocaleSwitcher?: boolean;
 } & Omit<
   QuillMultilocWithLocaleSwitcherComponentProps,
   'onChange' | 'valueMultiloc' | 'id'
