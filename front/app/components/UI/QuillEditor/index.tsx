@@ -30,6 +30,7 @@ export interface Props {
   noImages?: boolean;
   noVideos?: boolean;
   noAlign?: boolean;
+  noLinks?: boolean;
   limitedTextFormatting?: boolean;
   maxHeight?: string;
   minHeight?: string;
@@ -50,6 +51,7 @@ const QuillEditor = ({
   noToolbar,
   noImages,
   noVideos,
+  noLinks,
   limitedTextFormatting,
   maxHeight,
   minHeight,
@@ -206,6 +208,7 @@ const QuillEditor = ({
           noImages={noImages}
           noVideos={noVideos}
           noAlign={noAlign}
+          noLinks={noLinks}
           editor={editor}
           setIsButtonsMenuVisible={setIsButtonsMenuVisible}
         />

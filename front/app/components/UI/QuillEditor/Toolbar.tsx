@@ -50,6 +50,7 @@ interface Props {
   noImages?: boolean;
   noVideos?: boolean;
   noAlign?: boolean;
+  noLinks?: boolean;
   editor: Quill | null;
   setIsButtonsMenuVisible: React.Dispatch<React.SetStateAction<boolean>>;
 }
@@ -62,6 +63,7 @@ const Toolbar = ({
   noImages,
   noVideos,
   noAlign,
+  noLinks,
   editor,
   setIsButtonsMenuVisible,
 }: Props) => {
@@ -183,7 +185,7 @@ const Toolbar = ({
           onClick={trackBasic('italic')}
           aria-label={formatMessage(messages.italic)}
         />
-        {withCTAButton ? (
+        {withCTAButton && (
           <Tooltip
             placement="bottom"
             theme="light"
@@ -219,7 +221,8 @@ const Toolbar = ({
               </svg>
             </button>
           </Tooltip>
-        ) : (
+        )}
+        {!withCTAButton && !noLinks && (
           <button
             className="ql-link"
             onClick={trackBasic('link')}
