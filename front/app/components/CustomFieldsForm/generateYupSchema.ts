@@ -18,93 +18,99 @@ const generateYupValidationSchema = ({
   formatMessage: FormatMessage;
   localize: Localize;
 }) => {
-  const schema: any = {};
+  const schema: Record<string, any> = {};
+
   pageQuestions.forEach((question) => {
-    if (question.input_type === 'text_multiloc') {
-      if (question.key === 'title_multiloc') {
-        schema[question.key] = validateAtLeastOneLocale(
-          formatMessage(messages.titleRequired),
-          {
-            validateEachNonEmptyLocale: (schema) =>
-              schema
-                .min(
-                  10,
-                  formatMessage(messages.titleMinLength, {
-                    min: 10,
-                  })
-                )
-                .max(
-                  120,
-                  formatMessage(messages.titleMaxLength, {
-                    max: 120,
-                  })
+    const { input_type, key, required, title_multiloc } = question;
+
+    switch (input_type) {
+      case 'text_multiloc': {
+        if (key === 'title_multiloc') {
+          schema[key] = validateAtLeastOneLocale(
+            formatMessage(messages.titleRequired),
+            {
+              validateEachNonEmptyLocale: (schema) =>
+                schema
+                  .min(10, formatMessage(messages.titleMinLength, { min: 10 }))
+                  .max(
+                    120,
+                    formatMessage(messages.titleMaxLength, { max: 120 })
+                  ),
+            }
+          );
+        } else {
+          schema[key] = required
+            ? validateAtLeastOneLocale(formatMessage(messages.titleRequired))
+            : {};
+        }
+        break;
+      }
+
+      case 'html_multiloc': {
+        if (key === 'body_multiloc') {
+          schema[key] = validateAtLeastOneLocale(
+            formatMessage(messages.descriptionRequired),
+            {
+              validateEachNonEmptyLocale: (schema) =>
+                schema.min(
+                  40,
+                  formatMessage(messages.descriptionMinLength, { min: 40 })
                 ),
-          }
-        );
-      } else {
-        schema[question.key] = question.required
-          ? validateAtLeastOneLocale(formatMessage(messages.titleRequired))
-          : {};
+            }
+          );
+        } else {
+          schema[key] = required
+            ? validateAtLeastOneLocale(
+                formatMessage(messages.descriptionRequired)
+              )
+            : {};
+        }
+        break;
       }
-    }
-    if (question.input_type === 'html_multiloc') {
-      if (question.key === 'body_multiloc') {
-        schema[question.key] = validateAtLeastOneLocale(
-          formatMessage(messages.descriptionRequired),
-          {
-            validateEachNonEmptyLocale: (schema) =>
-              schema.min(
-                40,
-                formatMessage(messages.descriptionMinLength, {
-                  min: 40,
-                })
-              ),
-          }
-        );
-      } else {
-        schema[question.key] = question.required
-          ? validateAtLeastOneLocale(
-              formatMessage(messages.descriptionRequired)
+
+      case 'text':
+      case 'multiline_text': {
+        schema[key] = required
+          ? string().required(
+              formatMessage(messages.fieldRequired, {
+                fieldName: localize(title_multiloc),
+              })
             )
-          : {};
+          : string();
+        break;
       }
-    }
-    if (
-      question.input_type === 'text' ||
-      question.input_type === 'multiline_text'
-    ) {
-      schema[question.key] = question.required
-        ? string().required(
-            formatMessage(messages.fieldRequired, {
-              fieldName: localize(question.title_multiloc),
-            })
-          )
-        : string();
-    }
-    if (question.input_type === 'number') {
-      schema[question.key] = question.required
-        ? number().required(
-            formatMessage(messages.fieldRequired, {
-              fieldName: localize(question.title_multiloc),
-            })
-          )
-        : number();
-    }
-    if (question.input_type === 'image_files') {
-      schema[question.key] = question.required
-        ? array()
-            .min(1, formatMessage(messages.imageRequired))
-            .required(formatMessage(messages.imageRequired))
-        : array().nullable();
-    }
-    if (question.input_type === 'files') {
-      schema[question.key] = question.required
-        ? array()
-            .min(1, formatMessage(messages.fileRequired))
-            .required(formatMessage(messages.fileRequired))
-        : array().nullable();
+
+      case 'number': {
+        schema[key] = required
+          ? number().required(
+              formatMessage(messages.fieldRequired, {
+                fieldName: localize(title_multiloc),
+              })
+            )
+          : number();
+        break;
+      }
+
+      case 'image_files': {
+        schema[key] = required
+          ? array()
+              .min(1, formatMessage(messages.imageRequired))
+              .required(formatMessage(messages.imageRequired))
+          : array().nullable();
+        break;
+      }
+
+      case 'files': {
+        schema[key] = required
+          ? array()
+              .min(1, formatMessage(messages.fileRequired))
+              .required(formatMessage(messages.fileRequired))
+          : array().nullable();
+        break;
+      }
     }
   });
+
   return object(schema);
 };
 
