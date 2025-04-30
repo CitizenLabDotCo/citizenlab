@@ -12,37 +12,38 @@ import { useForm, FormProvider } from 'react-hook-form';
 import { useTheme } from 'styled-components';
 import { object, boolean } from 'yup';
 
+import { FormType } from 'components/FormBuilder/utils';
 import CheckboxWithLabel from 'components/HookForm/CheckboxWithLabel';
 import Feedback from 'components/HookForm/Feedback';
 import Modal from 'components/UI/Modal';
 
-import { FormattedMessage, useIntl } from 'utils/cl-intl';
+import { FormattedMessage, useIntl, MessageDescriptor } from 'utils/cl-intl';
 import { handleHookFormSubmissionError } from 'utils/errorUtils';
 
 import messages from './messages';
 
-export interface FormValues {
+export interface FormPDFExportFormValues {
   personal_data: boolean;
 }
 
 const DEFAULT_VALUES = {
   personal_data: false,
-} satisfies FormValues;
+} satisfies FormPDFExportFormValues;
 
 interface Props {
   open: boolean;
-  formType: 'idea_form' | 'survey';
+  formType: FormType;
   onClose: () => void;
-  onExport: (params: FormValues) => Promise<void>;
+  onExport: (params: FormPDFExportFormValues) => Promise<void>;
 }
 
-const CLICK_EXPORT_MESSAGES = {
-  idea_form: messages.clickExportToPDFIdeaForm,
+const CLICK_EXPORT_MESSAGES: { [key in FormType]: MessageDescriptor } = {
+  input_form: messages.clickExportToPDFIdeaForm,
   survey: messages.clickExportToPDFSurvey,
-} as const;
+};
 
-const IT_IS_POSSIBLE_MESSAGES = {
-  idea_form: messages.itIsAlsoPossibleIdeation,
+const IT_IS_POSSIBLE_MESSAGES: { [key in FormType]: MessageDescriptor } = {
+  input_form: messages.itIsAlsoPossibleIdeation,
   survey: messages.itIsAlsoPossibleSurvey,
 };
 
@@ -61,7 +62,7 @@ const PDFExportModal = ({ open, formType, onClose, onExport }: Props) => {
     resolver: yupResolver(schema),
   });
 
-  const handleExport = async (formValues: FormValues) => {
+  const handleExport = async (formValues: FormPDFExportFormValues) => {
     setLoading(true);
 
     try {

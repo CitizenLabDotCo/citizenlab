@@ -1,4 +1,5 @@
 import { QueryKeys } from 'utils/cl-react-query/types';
+
 import { ILocaleParameters } from './types';
 
 const baseKey = { type: 'project_library_tenant_countries' };
