@@ -1388,6 +1388,34 @@ RSpec.describe User do
     end
   end
 
+  describe 'on_registration_completed' do
+    it 'logs registration_completed_at activity when value is saved' do
+      user = create(:invited_user)
+      user.registration_completed_at = Time.now
+      
+      expect { user.save! }.to have_enqueued_job(LogActivityJob).with(
+        user,
+        'completed_registration',
+        nil,
+        user.updated_at.to_i
+      )
+    end
+
+    it 'does not log registration_completed_at activity when value not saved' do
+      user = create(:invited_user)
+      user.registration_completed_at = nil
+
+      expect { user.save! }.not_to have_enqueued_job(LogActivityJob)
+    end
+
+    it 'does not log registration_completed_at activity when value set to nil' do
+      user = create(:user)
+      user.registration_completed_at = nil
+
+      expect { user.save! }.not_to have_enqueued_job(LogActivityJob)
+    end
+  end
+
   context '(super_admins scopes)' do
     let_it_be(:super_admins) { create_list(:super_admin, 1) }
     let_it_be(:non_super_admins) do

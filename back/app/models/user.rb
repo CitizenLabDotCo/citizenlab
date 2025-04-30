@@ -150,6 +150,7 @@ class User < ApplicationRecord
 
   before_validation :sanitize_bio_multiloc, if: :bio_multiloc
   before_validation :complete_registration
+  after_save :on_registration_completed, if: :saved_change_to_registration_completed_at?
 
   has_many :identities, dependent: :destroy
   has_many :spam_reports, dependent: :nullify
@@ -333,6 +334,12 @@ class User < ApplicationRecord
     return if confirmation_required? || invite_pending? || registration_completed_at_changed?
 
     self.registration_completed_at ||= Time.now
+  end
+
+  def on_registration_completed
+    return unless registration_completed_at
+    
+    LogActivityJob.perform_later(self, 'completed_registration', nil, self.updated_at.to_i)
   end
 
   def sanitize_bio_multiloc
