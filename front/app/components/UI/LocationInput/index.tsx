@@ -28,11 +28,11 @@ type TextSearchResponse = {
   };
 };
 
-const LocationInput = (
-  props: React.ComponentProps<typeof AsyncSelect> & {
-    value?: Option | null;
-  }
-) => {
+export type LocationInputProps = React.ComponentProps<typeof AsyncSelect> & {
+  value?: Option | null;
+};
+
+const LocationInput = (props: LocationInputProps) => {
   const { formatMessage } = useIntl();
   const locale = useLocale();
   const [defaultOptions, setDefaultOptions] = useState<Option[]>([]);

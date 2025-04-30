@@ -4,8 +4,6 @@ import { Box, Title, useBreakpoint } from '@citizenlab/cl2-component-library';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { FormProvider, useForm } from 'react-hook-form';
 import { useTheme } from 'styled-components';
-import { FormatMessage } from 'typings';
-import { object } from 'yup';
 
 import { IFlatCustomField } from 'api/custom_fields/types';
 import { IIdea } from 'api/ideas/types';
@@ -21,10 +19,9 @@ import QuillEditedContent from 'components/UI/QuillEditedContent';
 
 import { useIntl } from 'utils/cl-intl';
 import { isPage } from 'utils/helperUtils';
-import validateAtLeastOneLocale from 'utils/yup/validateAtLeastOneLocale';
 
 import CustomFields from './CustomFields';
-import messages from './messages';
+import generateYupValidationSchema from './generateYupSchema';
 
 type CustomFieldsPage = {
   page: IFlatCustomField;
@@ -34,43 +31,6 @@ type CustomFieldsPage = {
   showTogglePostAnonymously?: boolean;
   participationMethod?: ParticipationMethod;
   idea?: IIdea;
-};
-
-const generateYupValidationSchema = (
-  pageQuestions: IFlatCustomField[],
-  formatMessage: FormatMessage
-) => {
-  const schema: any = {};
-  pageQuestions.forEach((question) => {
-    if (question.input_type === 'text_multiloc') {
-      if (question.key === 'title_multiloc') {
-        schema[question.key] = validateAtLeastOneLocale(
-          formatMessage(messages.titleRequired),
-          {
-            validateEachNonEmptyLocale: (schema) =>
-              schema
-                .min(
-                  10,
-                  formatMessage(messages.titleMinLength, {
-                    min: 10,
-                  })
-                )
-                .max(
-                  120,
-                  formatMessage(messages.titleMaxLength, {
-                    max: 120,
-                  })
-                ),
-          }
-        );
-      } else {
-        schema[question.key] = question.required
-          ? validateAtLeastOneLocale(formatMessage(messages.titleRequired))
-          : {};
-      }
-    }
-  });
-  return object(schema);
 };
 
 const CustomFieldsPage = ({

@@ -7,6 +7,7 @@ import useLocalize from 'hooks/useLocalize';
 import { getSubtextElement } from 'components/Form/Components/Controls/controlUtils';
 import Input from 'components/HookForm/Input';
 import InputMultilocWithLocaleSwitcher from 'components/HookForm/InputMultilocWithLocaleSwitcher';
+import LocationInput from 'components/HookForm/LocationInput';
 import QuillMultilocWithLocaleSwitcher from 'components/HookForm/QuillMultilocWithLocaleSwitcher';
 import { FormLabel } from 'components/UI/FormComponents';
 
@@ -38,6 +39,20 @@ const CustomFields = ({ questions }: { questions: IFlatCustomField[] }) => {
                   question.key === 'title_multiloc' ? 120 : undefined
                 }
               />
+            </Fragment>
+          );
+        } else if (question.key === 'location_description') {
+          return (
+            <Fragment key={question.id}>
+              <FormLabel
+                labelValue={localize(question.title_multiloc)}
+                optional={!question.required}
+                subtextValue={getSubtextElement(
+                  localize(question.description_multiloc)
+                )}
+                subtextSupportsHtml
+              />
+              <LocationInput key={question.id} name={question.key} />
             </Fragment>
           );
         } else if (
