@@ -42,7 +42,7 @@ module BulkImportIdeas::Exporters
       pages = reader.pages.map do |page|
         page.text.split("\n").map do |line|
           # Remove the optional text from each line - maybe need to do from the end of the line?
-          line.sub("(#{ I18n.with_locale(@locale) { I18n.t('form_builder.pdf_export.optional') }})", '')&.strip
+          line.sub("(#{I18n.with_locale(@locale) { I18n.t('form_builder.pdf_export.optional') }})", '')&.strip
         end
       end
 
@@ -51,9 +51,9 @@ module BulkImportIdeas::Exporters
       # TODO: What about multiline titles?
       # TODO: Need to add in the options too
       @form_fields.each do |field|
-        add_to_importer_fields(field, pages,'field')
-        field.options.each do | option |
-          add_to_importer_fields(option, pages,'option')
+        add_to_importer_fields(field, pages, 'field')
+        field.options.each do |option|
+          add_to_importer_fields(option, pages, 'option')
         end
       end
 
