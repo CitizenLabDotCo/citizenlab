@@ -38,10 +38,9 @@ const CheckboxWithLabel = ({
   return (
     <Box
       as="label"
-      position="relative"
       display="flex"
       flex="1"
-      alignItems="center"
+      alignItems="flex-start"
       onClick={handleLabelClick}
       data-testid={dataTestId || `${testEnv('check-mark-label')}`}
       style={{ cursor: 'pointer' }}
@@ -60,14 +59,15 @@ const CheckboxWithLabel = ({
         mr="8px"
       />
       <Box as="span" mr="4px">
-        {label}
+        {label}{' '}
+        {labelTooltipText && (
+          <IconTooltip
+            display="inline"
+            content={labelTooltipText}
+            role={ariaLabel ? 'none' : undefined}
+          />
+        )}
       </Box>
-      {labelTooltipText && (
-        <IconTooltip
-          content={labelTooltipText}
-          role={ariaLabel ? 'none' : undefined}
-        />
-      )}
     </Box>
   );
 };

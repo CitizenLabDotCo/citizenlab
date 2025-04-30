@@ -117,11 +117,8 @@ const PDFExportModal = ({ open, formType, onClose, onExport }: Props) => {
                 <FormattedMessage {...messages.logicNotInPDF} />
               </Text>
             )}
-            <Text as="li">
-              <FormattedMessage {...IT_IS_POSSIBLE_MESSAGES[formType]} />
-            </Text>
             <Text as="li" mb="0">
-              <FormattedMessage {...messages.personalDataExplanation} />
+              <FormattedMessage {...IT_IS_POSSIBLE_MESSAGES[formType]} />
             </Text>
           </Box>
         </CollapsibleContainer>
@@ -131,9 +128,12 @@ const PDFExportModal = ({ open, formType, onClose, onExport }: Props) => {
             <CheckboxWithLabel
               name="personal_data"
               label={
-                <Text m="0">
-                  <FormattedMessage {...messages.askPersonalData} />
+                <Text as="span" m="0">
+                  <FormattedMessage {...messages.askPersonalData1} />
                 </Text>
+              }
+              labelTooltipText={
+                <FormattedMessage {...messages.personalDataExplanation} />
               }
               mb="24px"
             />
