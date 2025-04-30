@@ -16,14 +16,17 @@ import useLocalize from 'hooks/useLocalize';
 import ProfileVisiblity from 'containers/IdeasNewPage/IdeasNewIdeationForm/ProfileVisibility';
 
 import AnonymousParticipationConfirmationModal from 'components/AnonymousParticipationConfirmationModal';
+import { getSubtextElement } from 'components/Form/Components/Controls/controlUtils';
 import SubmissionReference from 'components/Form/Components/Layouts/SubmissionReference';
+import Input from 'components/HookForm/Input';
+import InputMultilocWithLocaleSwitcher from 'components/HookForm/InputMultilocWithLocaleSwitcher';
+import { FormLabel } from 'components/UI/FormComponents';
 import QuillEditedContent from 'components/UI/QuillEditedContent';
 
 import { useIntl } from 'utils/cl-intl';
 import { isPage } from 'utils/helperUtils';
 import validateAtLeastOneLocale from 'utils/yup/validateAtLeastOneLocale';
 
-import TextMultiloc from './Fields/TextMultiloc';
 import messages from './messages';
 
 type CustomFieldsPage = {
@@ -42,29 +45,32 @@ const generateYupValidationSchema = (
 ) => {
   const schema: any = {};
   pageQuestions.forEach((question) => {
-    if (
-      question.input_type === 'text_multiloc' &&
-      question.key === 'title_multiloc'
-    ) {
-      schema[question.key] = validateAtLeastOneLocale(
-        formatMessage(messages.titleRequired),
-        {
-          validateEachNonEmptyLocale: (schema) =>
-            schema
-              .min(
-                10,
-                formatMessage(messages.titleMinLength, {
-                  min: 10,
-                })
-              )
-              .max(
-                120,
-                formatMessage(messages.titleMaxLength, {
-                  max: 120,
-                })
-              ),
-        }
-      );
+    if (question.input_type === 'text_multiloc') {
+      if (question.key === 'title_multiloc') {
+        schema[question.key] = validateAtLeastOneLocale(
+          formatMessage(messages.titleRequired),
+          {
+            validateEachNonEmptyLocale: (schema) =>
+              schema
+                .min(
+                  10,
+                  formatMessage(messages.titleMinLength, {
+                    min: 10,
+                  })
+                )
+                .max(
+                  120,
+                  formatMessage(messages.titleMaxLength, {
+                    max: 120,
+                  })
+                ),
+          }
+        );
+      } else {
+        schema[question.key] = question.required
+          ? validateAtLeastOneLocale(formatMessage(messages.titleRequired))
+          : {};
+      }
     }
   });
   return object(schema);
@@ -213,9 +219,57 @@ const CustomFieldsPage = ({
                 <FormProvider {...methods}>
                   <form onSubmit={methods.handleSubmit(onFormSubmit)}>
                     {pageQuestions.map((question) => {
+                      if (!question.enabled) {
+                        return null;
+                      }
                       if (question.input_type === 'text_multiloc') {
                         return (
-                          <TextMultiloc key={question.id} question={question} />
+                          <>
+                            <FormLabel
+                              htmlFor={question.key}
+                              labelValue={localize(question.title_multiloc)}
+                              optional={!question.required}
+                              subtextValue={getSubtextElement(
+                                localize(question.description_multiloc)
+                              )}
+                              subtextSupportsHtml
+                            />
+                            <InputMultilocWithLocaleSwitcher
+                              key={question.id}
+                              name={question.key}
+                              hideLocaleSwitcher
+                              maxCharCount={
+                                question.key === 'title_multiloc'
+                                  ? 120
+                                  : undefined
+                              }
+                            />
+                          </>
+                        );
+                      } else if (
+                        question.input_type === 'text' ||
+                        question.input_type === 'number'
+                      ) {
+                        return (
+                          <>
+                            <FormLabel
+                              htmlFor={question.key}
+                              labelValue={localize(question.title_multiloc)}
+                              optional={!question.required}
+                              subtextValue={getSubtextElement(
+                                localize(question.description_multiloc)
+                              )}
+                              subtextSupportsHtml
+                            />
+                            <Input
+                              type={
+                                question.type === 'number' ? 'number' : 'text'
+                              }
+                              key={question.id}
+                              name={question.key}
+                              required={question.required}
+                            />
+                          </>
                         );
                       }
                       return null;
