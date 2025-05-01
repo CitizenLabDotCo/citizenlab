@@ -24,7 +24,7 @@ module IdeaCustomFields
     }
 
     before_action :set_custom_field, only: %i[show as_geojson]
-    before_action :set_custom_form, only: %i[index update_all custom_form]
+    before_action :set_custom_form, only: %i[index update_all]
     skip_after_action :verify_policy_scoped
     rescue_from UpdatingFormWithInputError, with: :render_updating_form_with_input_error
 
@@ -82,15 +82,6 @@ module IdeaCustomFields
       render json: { errors: e.errors }, status: :unprocessable_entity
     end
 
-    def custom_form
-      authorize CustomField.new(resource: @custom_form), :index?, policy_class: IdeaCustomFieldPolicy
-      render json: ::WebApi::V1::CustomFormSerializer.new(
-        @custom_form,
-        params: jsonapi_serializer_params,
-        include: []
-      ).serializable_hash
-    end
-
     private
 
     # Extended by CustomMaps::Patches::IdeaCustomFields::WebApi::V1::Admin::IdeaCustomFieldsController
@@ -122,11 +113,11 @@ module IdeaCustomFields
     end
 
     # To try and avoid forms being overwritten with stale data, we check if the form has been updated since the form editor last loaded it
-    # But ONLY if the FE sends the form_last_updated_at param
+    # But ONLY if the FE sends the fields_last_updated_at param
     def validate_stale_form_data!
-      return unless update_all_params[:form_last_updated_at].present? &&
+      return unless update_all_params[:fields_last_updated_at].present? &&
                     @custom_form.persisted? &&
-                    @custom_form.updated_at.to_i > update_all_params[:form_last_updated_at].to_datetime.to_i
+                    @custom_form.fields_last_updated_at.to_i > update_all_params[:fields_last_updated_at].to_datetime.to_i
 
       raise UpdateAllFailedError, { form: [{ error: 'stale_data' }] }
     end
@@ -419,11 +410,12 @@ module IdeaCustomFields
       raise UpdateAllFailedError, errors if errors.present?
     end
 
-    # Update the timestamp of the form and log the activity
+    # Update the timestamp that the fields were last updated (to avoid editing of old forms)
+    # Then log the activity
     def update_form!
       return unless @custom_form.persisted?
 
-      @custom_form.touch
+      @custom_form.fields_updated!
       update_payload = {
         save_type: update_all_params[:form_save_type],
         pages: @page_count,
@@ -448,7 +440,7 @@ module IdeaCustomFields
     end
 
     def update_all_params
-      params.permit(:form_last_updated_at, :form_opened_at, :form_save_type, custom_fields: [
+      params.permit(:fields_last_updated_at, :form_opened_at, :form_save_type, custom_fields: [
         :id,
         :temp_id,
         :code,
