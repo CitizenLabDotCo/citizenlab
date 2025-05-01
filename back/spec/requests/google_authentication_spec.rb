@@ -230,7 +230,6 @@ describe 'google authentication' do
         it "does not log 'registration_completed' activity job" do
           get '/auth/google'
           follow_redirect!
-          user = User.find_by(email: 'boris.brompton@orange.uk')
 
           expect(LogActivityJob).not_to have_been_enqueued.with(
             anything,
