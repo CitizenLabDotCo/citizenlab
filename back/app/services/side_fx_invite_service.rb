@@ -15,7 +15,7 @@ class SideFxInviteService
   end
 
   def after_accept(invite)
-    if invite.invitee.registration_completed_at_previously_changed? # For example, when a user is created via SSO
+    if invite.invitee.registration_completed_at_previously_changed?
       LogActivityJob.perform_later(invite.invitee, 'completed_registration', invite.invitee, invite.invitee.updated_at.to_i)
     end
 
