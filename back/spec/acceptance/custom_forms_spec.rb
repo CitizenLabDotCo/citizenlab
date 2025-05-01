@@ -19,7 +19,12 @@ resource 'Custom Forms' do
           assert_status 200
           expect(response_data[:id]).to eq form.id
           expect(response_data[:type]).to eq 'custom_form'
-          expect(response_data[:attributes].keys).to match_array %i[updated_at opened_at]
+          expect(response_data[:attributes].keys).to match_array %i[
+            opened_at
+            fields_last_updated_at
+            print_start_multiloc
+            print_end_multiloc
+          ]
         end
       end
     end
@@ -38,7 +43,12 @@ resource 'Custom Forms' do
           assert_status 200
           expect(response_data[:id]).to eq form.id
           expect(response_data[:type]).to eq 'custom_form'
-          expect(response_data[:attributes].keys).to match_array %i[updated_at opened_at]
+          expect(response_data[:attributes].keys).to match_array %i[
+            opened_at
+            fields_last_updated_at
+            print_start_multiloc
+            print_end_multiloc
+          ]
         end
       end
     end
