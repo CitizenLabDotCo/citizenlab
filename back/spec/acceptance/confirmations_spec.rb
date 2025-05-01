@@ -43,7 +43,7 @@ resource 'Confirmations' do
           'completed_registration',
           user,
           user.updated_at.to_i
-        )
+        ).exactly(1).times
       end
 
       example 'returns an unprocessable entity status passing no code' do

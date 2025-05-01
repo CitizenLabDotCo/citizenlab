@@ -352,7 +352,7 @@ resource 'Invites' do
           'completed_registration',
           invite.invitee,
           invite.invitee.updated_at.to_i
-        )
+        ).exactly(1).times
       end
 
       describe do

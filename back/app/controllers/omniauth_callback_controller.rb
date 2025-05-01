@@ -84,6 +84,7 @@ class OmniauthCallbackController < ApplicationController
           @invite.save!
           SideFxInviteService.new.after_accept @invite
           verify_and_sign_in(auth, @user, verify, sign_up: true)
+          SideFxUserService.new.after_update(@user, nil)
         rescue ActiveRecord::RecordInvalid => e
           ErrorReporter.report(e)
           signin_failure_redirect
@@ -92,6 +93,7 @@ class OmniauthCallbackController < ApplicationController
       else # !@user.invite_pending?
         begin
           update_user!(auth, @user, authver_method)
+          SideFxUserService.new.after_update(@user, nil)
         rescue ActiveRecord::RecordInvalid => e
           ErrorReporter.report(e)
           signin_failure_redirect
