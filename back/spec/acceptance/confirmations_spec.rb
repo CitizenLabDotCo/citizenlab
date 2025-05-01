@@ -36,7 +36,7 @@ resource 'Confirmations' do
         assert_status 200
       end
 
-      example 'logs activity job when passed the right code' do
+      example "logs 'completed_registration' activity job when passed the right code" do
         do_request(confirmation: { code: user.email_confirmation_code })
         expect(LogActivityJob).to have_been_enqueued.with(
           user,
