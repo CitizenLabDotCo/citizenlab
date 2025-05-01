@@ -233,10 +233,10 @@ describe 'google authentication' do
           user = User.find_by(email: 'boris.brompton@orange.uk')
 
           expect(LogActivityJob).not_to have_been_enqueued.with(
-            user,
+            anything,
             'completed_registration',
-            nil,
-            user.updated_at.to_i
+            anything,
+            anything
           )
         end
       end
