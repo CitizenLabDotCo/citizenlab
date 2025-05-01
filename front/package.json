@@ -161,7 +161,7 @@
     "@testing-library/jest-dom": "5.16.5",
     "@testing-library/react": "12.1.5",
     "@testing-library/react-hooks": "8.0.1",
-    "@testing-library/user-event": "14.3.0",
+    "@testing-library/user-event": "14.6.1",
     "@types/css-mediaquery": "0.1.4",
     "@types/file-saver": "2.0.5",
     "@types/formatcoords": "1.1.2",
