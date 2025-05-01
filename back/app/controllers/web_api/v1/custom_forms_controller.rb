@@ -22,10 +22,7 @@ class WebApi::V1::CustomFormsController < ApplicationController
     ).serializable_hash
   end
 
-  def update
-
-
-  end
+  def update; end
 
   def set_custom_form
     # TODO: Check the container type is valid
