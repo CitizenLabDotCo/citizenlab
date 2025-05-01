@@ -100,6 +100,10 @@ const SiteMap = () => {
   const { data: pages } = useCustomPages();
   const { data: authUser } = useAuthUser();
 
+  const hasStaticPageWithCode = (code: TCustomPageCode): boolean => {
+    return pages?.data?.some((page) => page.attributes.code === code) || false;
+  };
+
   const scrollTo =
     (component: RefObject<HTMLHeadingElement | null>) =>
     (event: MouseEvent | KeyboardEvent) => {
@@ -268,6 +272,16 @@ const SiteMap = () => {
                         </li>
                       );
                     })}
+                    {/* Default cookie policy link if no custom one exists */}
+                    {!hasStaticPageWithCode('cookie-policy') && (
+                      <li key="default-cookie-policy">
+                        <Link to="/pages/cookie-policy">
+                          <FormattedMessage
+                            {...messages.cookiePolicyLinkTitle}
+                          />
+                        </Link>
+                      </li>
+                    )}
                   </ul>
                   <>
                     {authUser && (
