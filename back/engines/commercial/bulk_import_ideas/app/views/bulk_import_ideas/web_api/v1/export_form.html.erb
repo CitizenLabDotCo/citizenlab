@@ -2,23 +2,25 @@
 <head>
   <title><%= project.title_multiloc[locale] %> - <%= phase.title_multiloc[locale] %></title>
   <style>
-      @page { size: A4;
-          margin: 40px 40px 80px;
-          @bottom-right {
-              font-family: "OpenSans", sans-serif; /* NOTE: OpenSans does not work, but we intend to change to use the custom fonts for each platform anyway */
-              content: '<%= page_copy %> ' counter(page);
-              margin-bottom: 10px;
-          }
+      @page {
+        size: A4;
+        margin: 40px 40px 80px;
+        @bottom-right {
+          font-family: "OpenSans", sans-serif; /* NOTE: OpenSans does not work, but we intend to change to use the custom fonts for each platform anyway */
+          content: '<%= page_copy %> ' counter(page);
+          margin-bottom: 10px;
+        }
       }
+
       body { font-family: "OpenSans", sans-serif; }
       h1 { font-size: 18pt; }
       h2 { font-size: 15pt; }
       p, li { font-size: 12pt; }
+
       div.line { border-bottom: solid 1px #000; margin: 10px 0; height: 25px; }
       div.select { display: flex; align-items: center; margin-top: -6px; }
       div.checkbox { border: solid 1px #000; width: 12px; height: 12px; margin: 8px 10px 8px 4px; display: inline-block; }
       div.radio { border-radius: 50%; }
-
       span.optional { font-weight: normal; }
 
       #header {

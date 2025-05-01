@@ -260,24 +260,6 @@ class CustomField < ApplicationRecord
   end
 
   def printable?
-    # CURRENTLY INCLUDED:
-    # checkbox
-    # html
-    # html_multiloc
-    # linear_scale
-    # rating
-    # sentiment_linear_scale
-    # multiline_text
-    # multiline_text_multiloc
-    # multiselect
-    # multiselect_image
-    # number
-    # line
-    # polygon
-    # select
-    # select_image
-    # text
-    # text_multiloc
     ignore_field_types = %w[page date files image_files point file_upload shapefile_upload topic_ids cosponsor_ids ranking matrix_linear_scale]
     ignore_field_types.exclude? input_type
   end
@@ -469,6 +451,11 @@ class CustomField < ApplicationRecord
   end
 
   def input_term
+    phase = if resource.participation_context.instance_of?(Project)
+      TimelineService.new.current_or_backup_transitive_phase(resource.participation_context)
+    else
+      resource.participation_context
+    end
     phase&.input_term || Phase::FALLBACK_INPUT_TERM
   end
 
@@ -492,17 +479,6 @@ class CustomField < ApplicationRecord
   end
 
   private
-
-  # Which phase is this custom field associated with via the custom form?
-  def phase
-    return nil unless resource
-
-    if resource.participation_context.instance_of?(Project)
-      TimelineService.new.current_or_backup_transitive_phase(resource.participation_context)
-    else
-      resource.participation_context
-    end
-  end
 
   def set_default_enabled
     self.enabled = true if enabled.nil?

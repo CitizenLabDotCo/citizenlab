@@ -21,7 +21,7 @@ module BulkImportIdeas
     end
 
     initializer 'bulk_import_ideas.add_view_paths' do |app|
-      # Add the engine's views to the application's view paths
+      # Add views for HTML/PDF generation to the view search paths
       app.config.paths['app/views'].unshift(root.join('app/views').to_s)
     end
   end

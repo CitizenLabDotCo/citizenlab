@@ -47,15 +47,18 @@ module BulkImportIdeas
     def export_form
       send_not_found and return unless supported_model? && supported_format?
 
-      locale = params[:locale] || current_user.locale
+      locale = params[:locale] || current_user.locale || Locale.default
       personal_data_enabled = params[:personal_data] == 'true'
 
       service = form_exporter_service.new(@phase, locale, personal_data_enabled)
+      file = service.export
+
+      send_not_found and return unless file
 
       # If the export is HTML-based, we are not sending a binary file so need to render differently
-      render html: service.export and return if service.format == 'html'
+      render html: file and return if service.format == 'html'
 
-      send_data service.export, type: service.mime_type, filename: service.filename
+      send_data file, type: service.mime_type, filename: service.filename
     end
 
     def approve_all
@@ -142,9 +145,12 @@ module BulkImportIdeas
       find_class(:exporter_class)
     end
 
+    # Find the class for the given type (exporter_class, parser_class, serializer_class)
     def find_class(class_type)
       model = params[:model]
       format = params[:format]
+
+      return CONSTANTIZER.fetch(model)[class_type] if class_type == :serializer_class
 
       # TEMP: If new pdf format feature flag is on then change format from pdf to htmlpdf is used
       format = 'htmlpdf' if format == 'pdf' && AppConfiguration.instance.settings.dig('html_pdfs', 'enabled')
@@ -153,8 +159,7 @@ module BulkImportIdeas
     end
 
     def serializer
-      model = params[:model]
-      CONSTANTIZER.fetch(model)[:serializer_class]
+      find_class(:serializer_class)
     end
 
     def supported_model?

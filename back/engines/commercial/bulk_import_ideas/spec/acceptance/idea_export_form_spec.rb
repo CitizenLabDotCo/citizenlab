@@ -35,17 +35,21 @@ resource 'Idea form exports' do
           end
         end
 
-        # TODO: Maybe only make this view available in DEV?
         context 'HTML form (for rendering with other formats)' do
           let(:format) { 'html' }
 
-          example 'Get an print HTML version of the idea form', document: false do
+          example 'Get an HTML version of the idea form for exporting to PDF', document: false do
             do_request
             assert_status 200
           end
+
+          example 'Does not return anything if in production environment', document: false do
+            allow(Rails.env).to receive(:production?).and_return(true)
+            do_request
+            assert_status 404
+          end
         end
 
-        # TODO: Mock this method - stupid method
         context 'PDF rendered from HTML' do
           let(:format) { 'htmlpdf' }
 

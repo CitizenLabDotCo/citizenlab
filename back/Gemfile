@@ -131,7 +131,7 @@ gem 'ice_cube', '~> 0.17'
 gem 'prawn', '~> 2.5'
 gem 'prawn-grouping', '~> 0.2.0'
 
-# TODO: Additional PDF libraries
+# Libraries for HTML to PDF
 gem 'gotenberg-ruby'
 gem 'pdf-reader'
 gem 'stringio'

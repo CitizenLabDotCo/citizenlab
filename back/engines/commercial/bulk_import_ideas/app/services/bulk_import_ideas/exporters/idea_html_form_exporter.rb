@@ -9,6 +9,8 @@ module BulkImportIdeas::Exporters
     end
 
     def export
+      return nil if Rails.env.production? # View is only required for developing/testing the template
+
       ActionController::Base.new.render_to_string render_config
     end
 
