@@ -63,7 +63,9 @@ module BulkImportIdeas::Exporters
         },
         optional: I18n.with_locale(@locale) { I18n.t('form_builder.pdf_export.optional') },
         logo_url: logo_url,
-        page_copy: I18n.with_locale(@locale) { I18n.t('form_builder.pdf_export.page') }
+        page_copy: I18n.with_locale(@locale) { I18n.t('form_builder.pdf_export.page') },
+        font_family: font_family,
+        font_config: font_config
       }
     end
 
@@ -144,6 +146,46 @@ module BulkImportIdeas::Exporters
         end
       end
       "*#{message}"
+    end
+
+    def style
+      @style ||= AppConfiguration.instance.style
+    end
+
+    def font_family
+      # TODO: Do we need to configure Public Sans somewhere?
+      default = "'Public Sans', 'Helvetica Neue', Arial, Helvetica, sans-serif"
+      return default unless style['customFontName']
+
+      "'#{style['customFontName']}', #{default}"
+    end
+
+    def font_config
+      return if style == {}
+
+      webfont_config = if style['customFontAdobeId']
+        {
+          typekit: {
+            id: style['customFontAdobeId']
+          }
+        }
+      elsif style['customFontURL'] && style['customFontName']
+        # TODO: Need to add the host into the CSS/font URLs if they are relative
+        # TODO: This is giving cross origin issues for CSS URL
+        # And needs to load cross origin as full URL the HTML is rendered locally by gutenberg
+        # Have tried to copy the CSS into the HTML but still get Cross Origin issues
+        # WienerMelange_W_Rg
+        # https://mitgestalten.wien.gv.at/fonts/042c3a7a-211a-4a6e-9a40-8773648b9c97/WienFont2.css
+        {
+          custom: {
+            families: [style['customFontName']],
+            urls: [style['customFontURL']]
+          }
+        }
+      end
+      return unless webfont_config
+
+      webfont_config.to_json
     end
   end
 end

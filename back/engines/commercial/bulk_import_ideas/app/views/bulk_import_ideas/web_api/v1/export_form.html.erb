@@ -1,18 +1,23 @@
 <html>
 <head>
   <title><%= project.title_multiloc[locale] %> - <%= phase.title_multiloc[locale] %></title>
+  <% if font_config %>
+    <script src="https://ajax.googleapis.com/ajax/libs/webfont/1.6.26/webfont.js"></script>
+    <script>WebFont.load(<%== font_config %>);</script>
+  <% end %>
+
   <style>
       @page {
         size: A4;
         margin: 40px 40px 80px;
         @bottom-right {
-          font-family: "OpenSans", sans-serif; /* NOTE: OpenSans does not work, but we intend to change to use the custom fonts for each platform anyway */
+          font-family: <%== font_family %>;
           content: '<%= page_copy %> ' counter(page);
           margin-bottom: 10px;
         }
       }
 
-      body { font-family: "OpenSans", sans-serif; }
+      body { font-family: <%== font_family %>; }
       h1 { font-size: 18pt; }
       h2 { font-size: 15pt; }
       p, li { font-size: 12pt; }
