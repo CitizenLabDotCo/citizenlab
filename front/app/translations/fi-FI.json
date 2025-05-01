@@ -1802,6 +1802,7 @@
   "app.containers.SignUp.viennaConsentUserName": "Käyttäjänimi",
   "app.containers.SignUp.viennaDataProtection": "Wienin tietosuojakäytäntö",
   "app.containers.SiteMap.contributions": "Avustukset",
+  "app.containers.SiteMap.cookiePolicyLinkTitle": "Evästeet",
   "app.containers.SiteMap.issues": "Kommentit",
   "app.containers.SiteMap.options": "Vaihtoehdot",
   "app.containers.SiteMap.projects": "Projektit",
