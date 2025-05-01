@@ -71,6 +71,20 @@ resource 'Confirmations' do
         json_response = json_parse response_body
         expect(json_response).to include_response_error(:code, 'invalid')
       end
+
+      example "does not log 'completed_registration' activity when the code is invalid" do
+        # Clear any previously enqueued jobs
+        ActiveJob::Base.queue_adapter.enqueued_jobs.clear
+
+        do_request(confirmation: { code: 'badcode' })
+
+        expect(LogActivityJob).not_to have_been_enqueued.with(
+          anything,
+          'completed_registration',
+          anything,
+          anything
+        )
+      end
     end
   end
 end
