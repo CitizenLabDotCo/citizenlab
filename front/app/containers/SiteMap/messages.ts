@@ -118,4 +118,9 @@ export default defineMessages({
     id: 'containers.SiteMap.folderInfo',
     defaultMessage: 'More info',
   },
+  // In messages.ts
+  cookiePolicyLinkTitle: {
+    id: 'app.containers.SiteMap.cookiePolicyLinkTitle',
+    defaultMessage: 'Cookies',
+  },
 });
