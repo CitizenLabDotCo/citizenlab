@@ -38,9 +38,10 @@ const CheckboxWithLabel = ({
   return (
     <Box
       as="label"
+      position="relative"
       display="flex"
       flex="1"
-      alignItems="flex-start"
+      alignItems="center"
       onClick={handleLabelClick}
       data-testid={dataTestId || `${testEnv('check-mark-label')}`}
       style={{ cursor: 'pointer' }}
