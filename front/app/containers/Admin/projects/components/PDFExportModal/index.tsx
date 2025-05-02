@@ -34,12 +34,12 @@ import { saveSurveyAsPDF } from '../../project/nativeSurvey/saveSurveyAsPDF';
 import messages from './messages';
 
 export interface FormPDFExportFormValues {
-  instructions_start: Multiloc;
+  print_start_multiloc: Multiloc;
   personal_data: boolean;
 }
 
 const DEFAULT_VALUES = {
-  instructions_start: {},
+  print_start_multiloc: {},
   personal_data: false,
 } satisfies FormPDFExportFormValues;
 
@@ -69,7 +69,7 @@ const PDFExportModal = ({ open, formType, onClose, phaseId }: Props) => {
 
   const schema = object({
     personal_data: boolean(),
-    instructions_start: validateMultilocForEveryLocale(
+    print_start_multiloc: validateMultilocForEveryLocale(
       formatMessage(messages.instructionsStartBodyError)
     ),
   });
@@ -174,7 +174,7 @@ const PDFExportModal = ({ open, formType, onClose, phaseId }: Props) => {
             >
               <Box p="24px">
                 <QuillMultilocWithLocaleSwitcher
-                  name="instructions_start"
+                  name="print_start_multiloc"
                   label={formatMessage(messages.instructionsStart)}
                   noImages
                   noVideos
