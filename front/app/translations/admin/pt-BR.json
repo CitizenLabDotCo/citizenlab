@@ -1039,7 +1039,7 @@
   "app.containers.Admin.projects.all.itIsAlsoPossibleSurvey1": "Você pode combinar respostas on-line e off-line. Para carregar respostas off-line, vá para a guia \"Survey\" (Pesquisa) desse projeto e clique em \"Import\" (Importar).",
   "app.containers.Admin.projects.all.logicNotInPDF": "A lógica da pesquisa não será refletida no PDF baixado. Os questionados em papel verão todas as perguntas da pesquisa.",
   "app.containers.Admin.projects.all.notes": "Notas",
-  "app.containers.Admin.projects.all.personalDataExplanation4": "Essa opção adicionará os campos de nome, sobrenome e email ao PDF exportado. Ao carregar o formulário impresso, usaremos esses dados para gerar automaticamente uma conta para o respondente do questionário offline. Como alternativa, você pode usá-la para criar manualmente uma conta para o respondente do questionário offline.",
+  "app.containers.Admin.projects.all.personalDataExplanation5": "Essa opção adicionará os campos de nome, sobrenome e email ao PDF exportado. Ao carregar o formulário impresso, usaremos esses dados para gerar automaticamente uma conta para o respondente da pesquisa off-line.",
   "app.containers.Admin.projects.project.analysis.Comments.aiSummary": "Resumo da IA",
   "app.containers.Admin.projects.project.analysis.Comments.comments": "Comentários",
   "app.containers.Admin.projects.project.analysis.Comments.commentsSummaryVisibilityExplanation": "O resumo do comentário está disponível quando há 5 ou mais comentários.",
