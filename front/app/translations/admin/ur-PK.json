@@ -1039,7 +1039,7 @@
   "app.containers.Admin.projects.all.itIsAlsoPossibleSurvey1": "آپ آن لائن اور آف لائن جوابات کو یکجا کر سکتے ہیں۔ آف لائن جوابات اپ لوڈ کرنے کے لیے، اس پروجیکٹ کے 'سروے' ٹیب پر جائیں، اور 'درآمد کریں' پر کلک کریں۔",
   "app.containers.Admin.projects.all.logicNotInPDF": "ڈاؤن لوڈ کردہ پی ڈی ایف میں سروے کی منطق کی عکاسی نہیں کی جائے گی۔ کاغذی جواب دہندگان سروے کے تمام سوالات دیکھیں گے۔",
   "app.containers.Admin.projects.all.notes": "نوٹس",
-  "app.containers.Admin.projects.all.personalDataExplanation3": "یہ اختیار برآمد شدہ پی ڈی ایف میں نام، آخری نام، اور ای میل فیلڈز کو شامل کرے گا۔ کاغذی فارم اپ لوڈ کرنے پر، ہم اس ڈیٹا کو آف لائن سروے کے جواب دہندہ کے لیے ایک اکاؤنٹ خودکار بنانے کے لیے استعمال کریں گے۔ متبادل طور پر، آپ اسے آف لائن سروے کے جواب دہندہ کے لیے دستی طور پر ایک اکاؤنٹ بنانے کے لیے استعمال کر سکتے ہیں۔",
+  "app.containers.Admin.projects.all.personalDataExplanation4": "یہ آپشن برآمد شدہ پی ڈی ایف میں پہلا نام، آخری نام اور ای میل فیلڈز شامل کر دے گا۔ کاغذی فارم اپ لوڈ کرنے پر، ہم اس ڈیٹا کو آف لائن سروے کے جواب دہندہ کے لیے ایک اکاؤنٹ خودکار بنانے کے لیے استعمال کریں گے۔ متبادل طور پر، آپ اسے آف لائن سروے کے جواب دہندہ کے لیے دستی طور پر ایک اکاؤنٹ بنانے کے لیے استعمال کر سکتے ہیں۔",
   "app.containers.Admin.projects.project.analysis.Comments.aiSummary": "AI کا خلاصہ",
   "app.containers.Admin.projects.project.analysis.Comments.comments": "تبصرے",
   "app.containers.Admin.projects.project.analysis.Comments.commentsSummaryVisibilityExplanation": "تبصرے کا خلاصہ دستیاب ہوتا ہے جب 5 یا زیادہ تبصرے ہوتے ہیں۔",
