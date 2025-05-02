@@ -1039,7 +1039,7 @@
   "app.containers.Admin.projects.all.itIsAlsoPossibleSurvey1": "Sie können Online- und Offline-Antworten kombinieren. Um Offline-Antworten hochzuladen, gehen Sie zur Registerkarte „Umfrage“ dieses Projekts und klicken Sie auf „Importieren“.",
   "app.containers.Admin.projects.all.logicNotInPDF": "Die Logik der Umfrage wird in der heruntergeladenen PDF-Datei nicht berücksichtigt. Befragte sehen auf Papier alle Fragen der Umfrage.",
   "app.containers.Admin.projects.all.notes": "Anmerkungen",
-  "app.containers.Admin.projects.all.personalDataExplanation4": "Mit dieser Option werden die Felder Vorname, Nachname und E-Mail in die exportierte PDF-Datei eingefügt. Beim Hochladen des Papierformulars verwenden wir diese Daten, um automatisch ein Konto für den Befragten der Offline-Umfrage zu erstellen. Alternativ können Sie mit dieser Option auch manuell ein Konto für den Befragten der Offline-Umfrage erstellen.",
+  "app.containers.Admin.projects.all.personalDataExplanation5": "Mit dieser Option werden die Felder Vorname, Nachname und E-Mail in die exportierte PDF-Datei eingefügt. Beim Hochladen des Papierformulars verwenden wir diese Daten, um automatisch ein Konto für den Offline-Umfrageteilnehmer zu erstellen.",
   "app.containers.Admin.projects.project.analysis.Comments.aiSummary": "KI-Zusammenfassung",
   "app.containers.Admin.projects.project.analysis.Comments.comments": "Vorhaben",
   "app.containers.Admin.projects.project.analysis.Comments.commentsSummaryVisibilityExplanation": "Die Zusammenfassung der Kommentare ist verfügbar, wenn es 5 oder mehr Kommentare gibt.",
