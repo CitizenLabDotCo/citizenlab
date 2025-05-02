@@ -1020,7 +1020,7 @@
   "app.containers.Admin.projectFolders.containers.settings.ProjectFolderForm.headerImageTooltip1": "Dieses Bild wird oben auf der Ordnerseite angezeigt. Weitere Informationen zu empfohlenen Bildauflösungen finden Sie in {supportPageLink}.",
   "app.containers.Admin.projectFolders.containers.settings.ProjectFolderForm.imageSupportPageURL": "https://support.govocal.com/de/articles/1346397-welche-dimensionen-und-grossen-sind-fur-bilder-auf-der-plattform-empfohlen",
   "app.containers.Admin.projectFolders.containers.settings.ProjectFolderForm.supportPageLinkText": "unserer Wissensdatenbank",
-  "app.containers.Admin.projects.all.askPersonalData1": "Fügen Sie Felder für Namen und E-Mail hinzu, um Konten für Offline-Teilnehmer zu erstellen.",
+  "app.containers.Admin.projects.all.askPersonalData2": "Fügen Sie Felder für Name und E-Mail hinzu.",
   "app.containers.Admin.projects.all.clickExportToPDFIdeaForm": "Fragen, die derzeit nicht unterstützt werden: Bilder, Themen-Tags und Anhänge hochladen.",
   "app.containers.Admin.projects.all.clickExportToPDFSurvey5": "Derzeit nicht unterstützte Fragen: Mapping-Fragen (Stecknadel setzen, Route zeichnen und Bereich zeichnen), Bildauswahlfragen, Ranking-Fragen, Matrix-Fragen und Dateiupload-Fragen.",
   "app.containers.Admin.projects.all.components.archived": "Archiviert",
