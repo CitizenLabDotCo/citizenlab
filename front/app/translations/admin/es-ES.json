@@ -1020,7 +1020,7 @@
   "app.containers.Admin.projectFolders.containers.settings.ProjectFolderForm.headerImageTooltip1": "Esta imagen se muestra en la parte superior de la página de la carpeta. Para más información sobre las resoluciones de imagen recomendadas, {supportPageLink}.",
   "app.containers.Admin.projectFolders.containers.settings.ProjectFolderForm.imageSupportPageURL": "https://support.govocal.com/en/articles/1346397-what-are-the-recommended-dimensions-and-sizes-of-the-platform-images",
   "app.containers.Admin.projectFolders.containers.settings.ProjectFolderForm.supportPageLinkText": "visite nuestro centro de soporte",
-  "app.containers.Admin.projects.all.askPersonalData1": "Añade campos para el nombre y el correo electrónico para crear cuentas para los participantes sin conexión.",
+  "app.containers.Admin.projects.all.askPersonalData2": "Add fields for name and email.",
   "app.containers.Admin.projects.all.clickExportToPDFIdeaForm": "Preguntas no admitidas actualmente: Imágenes, Etiquetas y Carga de archivos.",
   "app.containers.Admin.projects.all.clickExportToPDFSurvey5": "Preguntas no admitidas actualmente: Preguntas de mapeo (soltar alfiler, dibujar ruta y dibujar área), preguntas de elección de imagen, preguntas de clasificación, preguntas de matriz y preguntas de carga de archivos.",
   "app.containers.Admin.projects.all.components.archived": "Archivado",
