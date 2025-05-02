@@ -88,7 +88,8 @@ resource 'Idea Custom Fields' do
             updated_at: an_instance_of(String),
             logic: {},
             constraints: {},
-            random_option_ordering: false
+            random_option_ordering: false,
+            include_in_printed_form: true
           },
           id: an_instance_of(String),
           type: 'custom_field',
@@ -108,7 +109,8 @@ resource 'Idea Custom Fields' do
             updated_at: an_instance_of(String),
             logic: {},
             constraints: {},
-            random_option_ordering: false
+            random_option_ordering: false,
+            include_in_printed_form: true
           },
           id: an_instance_of(String),
           type: 'custom_field',
