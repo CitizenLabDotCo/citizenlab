@@ -116,7 +116,8 @@ resource 'Idea Custom Fields' do
             linear_scale_label_9_multiloc: {},
             linear_scale_label_10_multiloc: {},
             linear_scale_label_11_multiloc: {},
-            question_category: 'quality_of_life'
+            question_category: 'quality_of_life',
+            include_in_printed_form: true
           },
           id: an_instance_of(String),
           type: 'custom_field',
@@ -141,7 +142,8 @@ resource 'Idea Custom Fields' do
             constraints: {},
             random_option_ordering: false,
             page_layout: 'default',
-            question_category: 'other'
+            question_category: 'other',
+            include_in_printed_form: true
           },
           id: an_instance_of(String),
           type: 'custom_field',
