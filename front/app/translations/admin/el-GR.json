@@ -1039,7 +1039,7 @@
   "app.containers.Admin.projects.all.itIsAlsoPossibleSurvey1": "Μπορείτε να συνδυάσετε απαντήσεις σε απευθείας σύνδεση και εκτός σύνδεσης. Για να φορτώσετε απαντήσεις εκτός σύνδεσης, μεταβείτε στην καρτέλα \"Έρευνα\" αυτού του έργου και κάντε κλικ στην επιλογή \"Εισαγωγή\".",
   "app.containers.Admin.projects.all.logicNotInPDF": "Survey logic will not be reflected in the downloaded PDF. Paper respondents will see all survey questions.",
   "app.containers.Admin.projects.all.notes": "Σημειώσεις",
-  "app.containers.Admin.projects.all.personalDataExplanation3": "Αυτή η επιλογή θα προσθέσει τα πεδία όνομα, επώνυμο και email στο εξαγόμενο PDF. Κατά τη μεταφόρτωση της έντυπης φόρμας, θα χρησιμοποιήσουμε αυτά τα δεδομένα για την αυτόματη δημιουργία ενός λογαριασμού για τον ερωτώμενο της έρευνας εκτός σύνδεσης. Εναλλακτικά, μπορείτε να τη χρησιμοποιήσετε για να δημιουργήσετε χειροκίνητα έναν λογαριασμό για τον ερωτώμενο της έρευνας εκτός σύνδεσης.",
+  "app.containers.Admin.projects.all.personalDataExplanation4": "Αυτή η επιλογή θα προσθέσει τα πεδία όνομα, επώνυμο και email στο εξαγόμενο PDF. Κατά τη μεταφόρτωση της έντυπης φόρμας, θα χρησιμοποιήσουμε αυτά τα δεδομένα για την αυτόματη δημιουργία ενός λογαριασμού για τον ερωτώμενο της έρευνας εκτός σύνδεσης. Εναλλακτικά, μπορείτε να τη χρησιμοποιήσετε για να δημιουργήσετε χειροκίνητα έναν λογαριασμό για τον ερωτώμενο της έρευνας εκτός σύνδεσης.",
   "app.containers.Admin.projects.project.analysis.Comments.aiSummary": "AI Summary",
   "app.containers.Admin.projects.project.analysis.Comments.comments": "Comments",
   "app.containers.Admin.projects.project.analysis.Comments.commentsSummaryVisibilityExplanation": "Comment summary is available when there are 5 or more comments.",
