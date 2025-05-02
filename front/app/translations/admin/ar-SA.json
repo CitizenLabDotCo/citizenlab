@@ -1039,7 +1039,7 @@
   "app.containers.Admin.projects.all.itIsAlsoPossibleSurvey1": "يمكنك الجمع بين الاستجابات عبر الإنترنت وغير متصل. لتحميل الردود دون الاتصال بالإنترنت، انتقل إلى علامة التبويب \"استطلاع\" في هذا المشروع، ثم انقر فوق \"استيراد\".",
   "app.containers.Admin.projects.all.logicNotInPDF": "لن ينعكس منطق الاستطلاع في ملف PDF الذي تم تنزيله. سوف يرى المستجيبون الورقيون جميع أسئلة الاستطلاع.",
   "app.containers.Admin.projects.all.notes": "ملحوظات",
-  "app.containers.Admin.projects.all.personalDataExplanation3": "سيضيف هذا الخيار حقول الاسم واسم العائلة والبريد الإلكتروني إلى ملف PDF المُصدَّر. بعد تحميل النموذج الورقي، سنستخدم هذه البيانات لإنشاء حساب تلقائيًا للمستجيب غير المتصل بالاستبيان. أو يمكنك استخدامه لإنشاء حساب يدويًا للمستجيب غير المتصل بالاستبيان.",
+  "app.containers.Admin.projects.all.personalDataExplanation4": "سيضيف هذا الخيار حقول الاسم الأول والأخير والبريد الإلكتروني إلى ملف PDF المُصدَّر. بعد تحميل النموذج الورقي، سنستخدم هذه البيانات لإنشاء حساب تلقائيًا للمستجيب غير المتصل بالاستبيان. أو يمكنك استخدامه لإنشاء حساب يدويًا للمستجيب غير المتصل بالاستبيان.",
   "app.containers.Admin.projects.project.analysis.Comments.aiSummary": "ملخص الذكاء الاصطناعي",
   "app.containers.Admin.projects.project.analysis.Comments.comments": "تعليقات",
   "app.containers.Admin.projects.project.analysis.Comments.commentsSummaryVisibilityExplanation": "يصبح ملخص التعليقات متاحًا عند وجود 5 تعليقات أو أكثر.",
