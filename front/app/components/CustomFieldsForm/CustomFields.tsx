@@ -1,8 +1,10 @@
 import React, { Fragment } from 'react';
 
+import { IOption } from 'typings';
+
 import { IFlatCustomField } from 'api/custom_fields/types';
 
-import useLocalize from 'hooks/useLocalize';
+import useLocalize, { Localize } from 'hooks/useLocalize';
 
 import { getSubtextElement } from 'components/Form/Components/Controls/controlUtils';
 import FileUploader from 'components/HookForm/FileUploader';
@@ -11,11 +13,16 @@ import Input from 'components/HookForm/Input';
 import InputMultilocWithLocaleSwitcher from 'components/HookForm/InputMultilocWithLocaleSwitcher';
 import LocationInput from 'components/HookForm/LocationInput';
 import QuillMultilocWithLocaleSwitcher from 'components/HookForm/QuillMultilocWithLocaleSwitcher';
+import Select from 'components/HookForm/Select';
 import TextArea from 'components/HookForm/TextArea';
 import Topics from 'components/HookForm/Topics';
 import { FormLabel } from 'components/UI/FormComponents';
 
-const renderField = (question: IFlatCustomField, projectId?: string) => {
+const renderField = (
+  question: IFlatCustomField,
+  localize: Localize,
+  projectId?: string
+) => {
   switch (question.input_type) {
     case 'text_multiloc':
       return (
@@ -35,6 +42,19 @@ const renderField = (question: IFlatCustomField, projectId?: string) => {
       );
     case 'multiline_text':
       return <TextArea name={question.key} />;
+    case 'select': {
+      // TODO: Use keys instead of ids? And be able to unselect the option?
+      let selectOptions: IOption[] = [];
+      if (question.options) {
+        selectOptions = question.options.map((selectOption) => {
+          return {
+            value: selectOption.id,
+            label: localize(selectOption.title_multiloc),
+          } as IOption;
+        });
+      }
+      return <Select name={question.key} options={selectOptions} />;
+    }
     case 'image_files':
       return (
         <ImagesDropzone name={question.key} imagePreviewRatio={135 / 298} />
@@ -86,7 +106,7 @@ const CustomFields = ({
           return (
             <Fragment key={question.id}>
               <FormLabel {...labelProps} />
-              {renderField(question, projectId)}
+              {renderField(question, localize, projectId)}
             </Fragment>
           );
         })}

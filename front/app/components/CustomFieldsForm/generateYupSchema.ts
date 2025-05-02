@@ -91,6 +91,18 @@ const generateYupValidationSchema = ({
         break;
       }
 
+      case 'select': {
+        // Should we also enum the option keys?
+        schema[key] = required
+          ? string().required(
+              formatMessage(messages.fieldRequired, {
+                fieldName: localize(title_multiloc),
+              })
+            )
+          : string();
+        break;
+      }
+
       case 'image_files': {
         schema[key] = required
           ? array()
