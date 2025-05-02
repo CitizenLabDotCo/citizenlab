@@ -1020,7 +1020,7 @@
   "app.containers.Admin.projectFolders.containers.settings.ProjectFolderForm.headerImageTooltip1": "Dette billede vises øverst på mappesiden. Du kan få flere oplysninger om anbefalede billedopløsninger ved at klikke på {supportPageLink}.",
   "app.containers.Admin.projectFolders.containers.settings.ProjectFolderForm.imageSupportPageURL": "https://support.govocal.com/en/articles/1346397-what-are-the-recommended-dimensions-and-sizes-of-the-platform-images",
   "app.containers.Admin.projectFolders.containers.settings.ProjectFolderForm.supportPageLinkText": "besøg vores supportcenter",
-  "app.containers.Admin.projects.all.askPersonalData1": "Tilføj felter til navn og e-mail for at oprette konti til offline-deltagere.",
+  "app.containers.Admin.projects.all.askPersonalData2": "Tilføj felter til navn og e-mail.",
   "app.containers.Admin.projects.all.clickExportToPDFIdeaForm": "Spørgsmål, der ikke understøttes i øjeblikket: Billeder, tags og filupload.",
   "app.containers.Admin.projects.all.clickExportToPDFSurvey5": "Spørgsmål der ikke understøttes i øjeblikket: Kortlægningsspørgsmål (drop pin, tegn rute og tegn område), billedvalgsspørgsmål, rangordningsspørgsmål, matrixspørgsmål og spørgsmål om filupload.",
   "app.containers.Admin.projects.all.components.archived": "Arkiveret",
