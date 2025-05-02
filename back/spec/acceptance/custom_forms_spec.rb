@@ -6,15 +6,15 @@ require 'rspec_api_documentation/dsl'
 resource 'Custom Forms' do
   before { header 'Content-Type', 'application/json' }
 
-  context 'phase level forms' do
-    get 'web_api/v1/phases/:phase_id/custom_form' do
+  context 'when admin' do
+    before { admin_header_token }
+
+    context 'phase level forms' do
       let(:context) { create(:native_survey_phase) }
       let!(:form) { create(:custom_form, participation_context: context) }
       let(:phase_id) { context.id }
 
-      context 'when admin' do
-        before { admin_header_token }
-
+      get 'web_api/v1/phases/:phase_id/custom_form' do
         example_request 'Return the custom form for a phase' do
           assert_status 200
           expect(response_data[:id]).to eq form.id
@@ -27,18 +27,35 @@ resource 'Custom Forms' do
           ]
         end
       end
-    end
-  end
 
-  context 'project level forms' do
-    get 'web_api/v1/projects/:project_id/custom_form' do
+      patch 'web_api/v1/phases/:phase_id/custom_form' do
+        with_options scope: :custom_form do
+          parameter :print_start_multiloc, 'Configurable text for the start of the printed PDF form', required: false
+          parameter :print_end_multiloc, 'Configurable text for the end of the printed PDF form', required: false
+        end
+
+        let(:print_start_multiloc) { { 'en' => 'Start text' } }
+        let(:print_end_multiloc) { { 'en' => 'End text' } }
+
+        example 'Updates the print start and end text for a custom form & does not update fields_last_updated_at' do
+          fields_last_updated_at_before = form.fields_last_updated_at
+          do_request
+          assert_status 200
+          expect(response_data[:id]).to eq form.id
+          expect(response_data[:type]).to eq 'custom_form'
+          expect(response_data.dig(:attributes, :print_start_multiloc)).to eq({ en: 'Start text' })
+          expect(response_data.dig(:attributes, :print_end_multiloc)).to eq({ en: 'End text' })
+          expect(form.reload.fields_last_updated_at).to eq fields_last_updated_at_before
+        end
+      end
+    end
+
+    context 'project level forms' do
       let(:context) { create(:single_phase_ideation_project) }
       let!(:form) { create(:custom_form, :with_default_fields, participation_context: context) }
       let(:project_id) { context.id }
 
-      context 'when admin' do
-        before { admin_header_token }
-
+      get 'web_api/v1/projects/:project_id/custom_form' do
         example_request 'Return the custom form for a project' do
           assert_status 200
           expect(response_data[:id]).to eq form.id
@@ -49,6 +66,67 @@ resource 'Custom Forms' do
             print_start_multiloc
             print_end_multiloc
           ]
+        end
+      end
+
+      patch 'web_api/v1/projects/:project_id/custom_form' do
+        with_options scope: :custom_form do
+          parameter :print_start_multiloc, 'Configurable text for the start of the printed PDF form', required: false
+          parameter :print_end_multiloc, 'Configurable text for the end of the printed PDF form', required: false
+        end
+
+        let(:print_start_multiloc) { { 'en' => 'Start text' } }
+        let(:print_end_multiloc) { { 'en' => 'End text' } }
+
+        example 'Updates the print start and end text for a custom form & does not update fields_last_updated_at' do
+          fields_last_updated_at_before = form.fields_last_updated_at
+          do_request
+          assert_status 200
+          expect(response_data[:id]).to eq form.id
+          expect(response_data[:type]).to eq 'custom_form'
+          expect(response_data.dig(:attributes, :print_start_multiloc)).to eq({ en: 'Start text' })
+          expect(response_data.dig(:attributes, :print_end_multiloc)).to eq({ en: 'End text' })
+          expect(form.reload.fields_last_updated_at).to eq fields_last_updated_at_before
+        end
+      end
+    end
+  end
+
+  context 'when normal user' do
+    before { header_token_for create(:user) }
+
+    context 'phase level forms' do
+      let(:context) { create(:native_survey_phase) }
+      let!(:form) { create(:custom_form, participation_context: context) }
+      let(:phase_id) { context.id }
+
+      get 'web_api/v1/phases/:phase_id/custom_form' do
+        example_request 'Returns the custom form for a phase' do
+          assert_status 200
+        end
+      end
+
+      patch 'web_api/v1/phases/:phase_id/custom_form' do
+        example_request 'ERROR: Unauthorized' do
+          assert_status 401
+        end
+      end
+    end
+
+    context 'project level forms' do
+      let(:context) { create(:single_phase_ideation_project) }
+      let!(:form) { create(:custom_form, :with_default_fields, participation_context: context) }
+      let(:project_id) { context.id }
+
+      get 'web_api/v1/projects/:project_id/custom_form' do
+        example_request 'Returns the custom form for a phase' do
+          assert_status 200
+        end
+      end
+
+      patch 'web_api/v1/projects/:project_id/custom_form' do
+        example_request 'ERROR: Unauthorized' do
+          assert_status 401
         end
       end
     end
