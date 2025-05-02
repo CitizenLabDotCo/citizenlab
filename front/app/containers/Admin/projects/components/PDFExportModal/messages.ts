@@ -38,8 +38,8 @@ export default defineMessages({
     defaultMessage:
       'Survey logic will not be reflected in the downloaded PDF. Paper respondents will see all survey questions.',
   },
-  personalDataExplanation: {
-    id: 'app.containers.Admin.projects.all.personalDataExplanation',
+  personalDataExplanation5: {
+    id: 'app.containers.Admin.projects.all.personalDataExplanation5',
     defaultMessage:
       'This option will add the first name, last name, and email fields to the exported PDF. Upon uploading the paper form, we will use that data to auto-generate an account for the offline survey respondent.',
   },
