@@ -9,9 +9,9 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.all.notes',
     defaultMessage: 'Notes',
   },
-  askPersonalData2: {
-    id: 'app.containers.Admin.projects.all.askPersonalData2',
-    defaultMessage: 'Add fields for name and email.',
+  askPersonalData3: {
+    id: 'app.containers.Admin.projects.all.askPersonalData3',
+    defaultMessage: 'Add fields for name and email',
   },
   clickExportToPDFIdeaForm: {
     id: 'app.containers.Admin.projects.all.clickExportToPDFIdeaForm',

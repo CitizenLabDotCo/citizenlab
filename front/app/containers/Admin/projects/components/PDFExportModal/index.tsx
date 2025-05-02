@@ -129,7 +129,7 @@ const PDFExportModal = ({ open, formType, onClose, onExport }: Props) => {
               name="personal_data"
               label={
                 <Text as="span" m="0">
-                  <FormattedMessage {...messages.askPersonalData2} />
+                  <FormattedMessage {...messages.askPersonalData3} />
                 </Text>
               }
               labelTooltipText={
