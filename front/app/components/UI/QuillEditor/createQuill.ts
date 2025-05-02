@@ -10,6 +10,7 @@ interface Params {
   noAlign?: boolean;
   limitedTextFormatting?: boolean;
   withCTAButton?: boolean;
+  noLinks?: boolean;
   onBlur?: () => void;
 }
 
@@ -22,6 +23,7 @@ export const createQuill = (
     noAlign,
     noImages,
     noVideos,
+    noLinks,
     withCTAButton,
     onBlur,
   }: Params
@@ -31,7 +33,7 @@ export const createQuill = (
     formats: [
       'bold',
       'italic',
-      'link',
+      ...(!noLinks ? ['link'] : []),
       ...attributes,
       ...(withCTAButton ? ['button'] : []),
       ...(!limitedTextFormatting ? ['header', 'list'] : []),
