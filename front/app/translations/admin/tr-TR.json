@@ -1020,7 +1020,7 @@
   "app.containers.Admin.projectFolders.containers.settings.ProjectFolderForm.headerImageTooltip1": "Bu görüntü klasör sayfasının en üstünde gösterilir. Önerilen görüntü çözünürlükleri hakkında daha fazla bilgi için, {supportPageLink}.",
   "app.containers.Admin.projectFolders.containers.settings.ProjectFolderForm.imageSupportPageURL": "https://support.govocal.com/en/articles/1346397-what-are-the-recommended-dimensions-and-sizes-of-the-platform-images",
   "app.containers.Admin.projectFolders.containers.settings.ProjectFolderForm.supportPageLinkText": "destek merkezimizi ziyaret edin",
-  "app.containers.Admin.projects.all.askPersonalData1": "Çevrimdışı katılımcılar için hesap oluşturmak üzere ad ve e-posta alanları ekleyin.",
+  "app.containers.Admin.projects.all.askPersonalData2": "Ad ve e-posta için alanlar ekleyin.",
   "app.containers.Admin.projects.all.clickExportToPDFIdeaForm": "Şu anda desteklenmeyen sorular: Resimler, Etiketler ve Dosya Yükleme.",
   "app.containers.Admin.projects.all.clickExportToPDFSurvey5": "Şu anda desteklenmeyen sorular: Haritalama soruları (pim bırakma, rota çizme ve alan çizme), resim seçme soruları, sıralama soruları, matris soruları ve dosya yükleme soruları.",
   "app.containers.Admin.projects.all.components.archived": "Arşivlenmiş",
