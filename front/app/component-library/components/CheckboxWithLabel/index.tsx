@@ -60,17 +60,15 @@ const CheckboxWithLabel = ({
         aria-label={ariaLabel}
         mr="8px"
       />
-      <Box>
-        {label}
-        &nbsp;
-        {labelTooltipText && (
-          <IconTooltip
-            display="inline"
-            content={labelTooltipText}
-            role={ariaLabel ? 'none' : undefined}
-          />
-        )}
-      </Box>
+      {label}
+      &nbsp;
+      {labelTooltipText && (
+        <IconTooltip
+          display="inline"
+          content={labelTooltipText}
+          role={ariaLabel ? 'none' : undefined}
+        />
+      )}
     </Box>
   );
 };
