@@ -1039,7 +1039,7 @@
   "app.containers.Admin.projects.all.itIsAlsoPossibleSurvey1": "Vous pouvez combiner des réponses en ligne et hors ligne. Pour importer des réponses hors ligne, rendez-vous dans l'onglet « Enquête » de ce projet, puis cliquez sur « Importer ».",
   "app.containers.Admin.projects.all.logicNotInPDF": "Il n'est pas possible de reproduire les sauts logiques dans le PDF téléchargé. Les répondants sur papier verront donc toutes les questions de l'enquête.",
   "app.containers.Admin.projects.all.notes": "Notes",
-  "app.containers.Admin.projects.all.personalDataExplanation3": "Cette option ajoutera les champs nom, nom de famille et courriel au PDF exporté. Lors du téléchargement du formulaire papier, nous utiliserons ces données pour générer automatiquement un compte pour la personne interrogée hors ligne. Vous pouvez également l'utiliser pour créer manuellement un compte pour la personne interrogée hors ligne.",
+  "app.containers.Admin.projects.all.personalDataExplanation4": "Cette option ajoutera les champs prénom, nom et courriel au PDF exporté. Lors du téléchargement du formulaire papier, nous utiliserons ces données pour générer automatiquement un compte pour la personne interrogée hors ligne. Vous pouvez également l'utiliser pour créer manuellement un compte pour la personne interrogée hors ligne.",
   "app.containers.Admin.projects.project.analysis.Comments.aiSummary": "Résumé",
   "app.containers.Admin.projects.project.analysis.Comments.comments": "Commentaires",
   "app.containers.Admin.projects.project.analysis.Comments.commentsSummaryVisibilityExplanation": "La fonction résumé est uniquement disponible à partir de 5 commentaires.",
