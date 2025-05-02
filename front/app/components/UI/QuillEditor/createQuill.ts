@@ -5,12 +5,12 @@ import { attributes } from './altTextToImagesModule';
 interface Params {
   id: string;
   toolbarId?: string;
-  noImages?: boolean;
-  noVideos?: boolean;
-  noAlign?: boolean;
+  noImages: boolean;
+  noVideos: boolean;
+  noAlign: boolean;
   limitedTextFormatting?: boolean;
   withCTAButton?: boolean;
-  noLinks?: boolean;
+  noLinks: boolean;
   onBlur?: () => void;
 }
 

@@ -47,10 +47,10 @@ interface Props {
   limitedTextFormatting?: boolean;
   withCTAButton?: boolean;
   isButtonsMenuVisible: boolean;
-  noImages?: boolean;
-  noVideos?: boolean;
-  noAlign?: boolean;
-  noLinks?: boolean;
+  noImages: boolean;
+  noVideos: boolean;
+  noAlign: boolean;
+  noLinks: boolean;
   editor: Quill | null;
   setIsButtonsMenuVisible: React.Dispatch<React.SetStateAction<boolean>>;
 }

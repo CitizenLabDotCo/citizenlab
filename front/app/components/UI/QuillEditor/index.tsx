@@ -26,7 +26,6 @@ export interface Props {
   value?: string;
   label?: string | JSX.Element | null;
   labelTooltipText?: string | JSX.Element | null;
-  noToolbar?: boolean;
   noImages?: boolean;
   noVideos?: boolean;
   noAlign?: boolean;
@@ -47,11 +46,10 @@ const QuillEditor = ({
   value,
   label,
   labelTooltipText,
-  noAlign,
-  noToolbar,
-  noImages,
-  noVideos,
-  noLinks,
+  noAlign = false,
+  noImages = false,
+  noVideos = false,
+  noLinks = false,
   limitedTextFormatting,
   maxHeight,
   minHeight,
@@ -78,7 +76,7 @@ const QuillEditor = ({
     onFocusRef.current = onFocus;
   });
 
-  const toolbarId = !noToolbar ? `ql-editor-toolbar-${id}` : undefined;
+  const toolbarId = `ql-editor-toolbar-${id}`;
 
   // Initialize Quill
   // https://quilljs.com/playground/react
@@ -96,6 +94,7 @@ const QuillEditor = ({
       noImages,
       noVideos,
       noAlign,
+      noLinks,
       limitedTextFormatting,
       withCTAButton,
       onBlur: onBlurRef.current,
@@ -199,20 +198,18 @@ const QuillEditor = ({
           {labelTooltipText && <IconTooltip content={labelTooltipText} />}
         </Label>
       )}
-      {toolbarId && (
-        <Toolbar
-          id={toolbarId}
-          limitedTextFormatting={limitedTextFormatting}
-          withCTAButton={withCTAButton}
-          isButtonsMenuVisible={isButtonsMenuVisible}
-          noImages={noImages}
-          noVideos={noVideos}
-          noAlign={noAlign}
-          noLinks={noLinks}
-          editor={editor}
-          setIsButtonsMenuVisible={setIsButtonsMenuVisible}
-        />
-      )}
+      <Toolbar
+        id={toolbarId}
+        limitedTextFormatting={limitedTextFormatting}
+        withCTAButton={withCTAButton}
+        isButtonsMenuVisible={isButtonsMenuVisible}
+        noImages={noImages}
+        noVideos={noVideos}
+        noAlign={noAlign}
+        noLinks={noLinks}
+        editor={editor}
+        setIsButtonsMenuVisible={setIsButtonsMenuVisible}
+      />
       <div>
         <div ref={containerRef} />
       </div>
