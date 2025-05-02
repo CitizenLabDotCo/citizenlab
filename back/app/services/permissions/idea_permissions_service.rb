@@ -32,7 +32,7 @@ module Permissions
 
         IDEA_DENIED_REASONS[:published_after_screening] if idea.creation_phase&.prescreening_enabled && idea.published?
       else
-        if action == 'reacting_idea' && IdeaStatus::REACTING_NOT_ALLOWED_CODES.include?(idea.idea_status.code)
+        if action == 'reacting_idea' && IdeaStatus::REACTING_NOT_ALLOWED_CODES.include?(idea&.idea_status&.code)
           return IDEA_DENIED_REASONS[:not_reactable_status_code]
         end
 
