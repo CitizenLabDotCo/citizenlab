@@ -13,6 +13,11 @@ export type CustomFormAttributes = {
   print_end_multiloc: Multiloc;
 };
 
+export interface IUpdateCustomFormProperties {
+  print_start_multiloc: Multiloc;
+  print_end_multiloc: Multiloc;
+}
+
 export interface ICustomFormData {
   id: string;
   type: string;
