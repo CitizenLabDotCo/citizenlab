@@ -1039,7 +1039,7 @@
   "app.containers.Admin.projects.all.itIsAlsoPossibleSurvey1": "Možete kombinirati online i offline odgovore. Za prijenos izvanmrežnih odgovora idite na karticu \"Anketa\" ovog projekta i kliknite \"Uvezi\".",
   "app.containers.Admin.projects.all.logicNotInPDF": "Logika ankete neće se odraziti na preuzeti PDF. Papirnati ispitanici će vidjeti sva anketna pitanja.",
   "app.containers.Admin.projects.all.notes": "Bilješke",
-  "app.containers.Admin.projects.all.personalDataExplanation3": "Ova će opcija dodati polja za ime, prezime i e-poštu u izvezeni PDF. Nakon prijenosa papirnatog obrasca, te ćemo podatke koristiti za automatsko generiranje računa za ispitanika izvan mreže. Alternativno, možete ih koristiti za ručno stvaranje računa za ispitanika izvan mreže.",
+  "app.containers.Admin.projects.all.personalDataExplanation4": "Ova će opcija dodati polja za ime, prezime i e-poštu u izvezeni PDF. Nakon prijenosa papirnatog obrasca, te ćemo podatke koristiti za automatsko generiranje računa za ispitanika izvan mreže. Alternativno, možete ih koristiti za ručno stvaranje računa za ispitanika izvan mreže.",
   "app.containers.Admin.projects.project.analysis.Comments.aiSummary": "AI Sažetak",
   "app.containers.Admin.projects.project.analysis.Comments.comments": "Komentari",
   "app.containers.Admin.projects.project.analysis.Comments.commentsSummaryVisibilityExplanation": "Sažetak komentara dostupan je kada ima 5 ili više komentara.",
