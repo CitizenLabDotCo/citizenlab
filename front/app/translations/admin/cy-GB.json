@@ -1020,7 +1020,7 @@
   "app.containers.Admin.projectFolders.containers.settings.ProjectFolderForm.headerImageTooltip1": "Dangosir y ddelwedd hon ar frig y dudalen ffolder. I gael rhagor o wybodaeth am y penderfyniadau delwedd a argymhellir, {supportPageLink}.",
   "app.containers.Admin.projectFolders.containers.settings.ProjectFolderForm.imageSupportPageURL": "https://support.govocal.com/en/articles/1346397-what-are-the-recommended-dimenions-and-sizes-of-the-platform-images",
   "app.containers.Admin.projectFolders.containers.settings.ProjectFolderForm.supportPageLinkText": "ymweld â'n canolfan gymorth",
-  "app.containers.Admin.projects.all.askPersonalData1": "Ychwanegwch feysydd ar gyfer enw ac e-bost i greu cyfrifon ar gyfer cyfranogwyr all-lein.",
+  "app.containers.Admin.projects.all.askPersonalData2": "Ychwanegu meysydd ar gyfer enw ac e-bost.",
   "app.containers.Admin.projects.all.clickExportToPDFIdeaForm": "Cwestiynau nad ydynt yn cael eu cefnogi ar hyn o bryd: Delweddau, Tagiau a Lanlwytho Ffeil.",
   "app.containers.Admin.projects.all.clickExportToPDFSurvey5": "Cwestiynau nad ydynt yn cael eu cefnogi ar hyn o bryd: Cwestiynau mapio (pin gollwng, llwybr tynnu ac ardal dynnu), cwestiynau dewis delwedd, cwestiynau graddio, cwestiynau matrics a chwestiynau uwchlwytho ffeiliau.",
   "app.containers.Admin.projects.all.components.archived": "Wedi'i archifo",
