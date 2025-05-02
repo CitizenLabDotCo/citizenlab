@@ -81,7 +81,7 @@ class OmniauthCallbackController < ApplicationController
         ActiveRecord::Base.transaction do
           SideFxInviteService.new.before_accept @invite
           @user.save!
-          SideFxUserService.new.after_update(@user, nil) # Logs 'registration_completd' activity Job`
+          SideFxUserService.new.after_update(@user, nil) # Logs 'registration_completed' activity Job`
           @invite.save!
           SideFxInviteService.new.after_accept @invite # Logs 'accepted' activity Job
           verify_and_sign_in(auth, @user, verify, sign_up: true)
