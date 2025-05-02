@@ -1039,7 +1039,7 @@
   "app.containers.Admin.projects.all.itIsAlsoPossibleSurvey1": "Galite derinti internetinius ir neprisijungus prie interneto teikiamus atsakymus. Norėdami įkelti ne internetu gautus atsakymus, eikite į šio projekto skirtuką \"Apklausa\" ir spustelėkite \"Importuoti\".",
   "app.containers.Admin.projects.all.logicNotInPDF": "Apklausos logika neatsispindės atsisiųstame PDF dokumente. Respondentai, atsakę į popierinius klausimus, matys visus apklausos klausimus.",
   "app.containers.Admin.projects.all.notes": "Pastabos",
-  "app.containers.Admin.projects.all.personalDataExplanation3": "Pasirinkus šią parinktį, į eksportuojamą PDF failą bus įtraukti vardo, pavardės ir el. pašto laukai. Įkėlus popierinę formą, šiuos duomenis panaudosime automatiniam neprisijungusio apklausos respondento paskyros sukūrimui. Arba galite naudoti šią parinktį norėdami rankiniu būdu sukurti neprisijungusio apklausos respondento paskyrą.",
+  "app.containers.Admin.projects.all.personalDataExplanation4": "Naudojant šią parinktį į eksportuojamą PDF failą bus įtraukti vardo, pavardės ir el. pašto laukai. Įkėlus popierinę formą, šiuos duomenis panaudosime automatiniam neprisijungusio apklausos respondento paskyros sukūrimui. Arba galite naudoti šią parinktį norėdami rankiniu būdu sukurti neprisijungusio apklausos respondento paskyrą.",
   "app.containers.Admin.projects.project.analysis.Comments.aiSummary": "AI santrauka",
   "app.containers.Admin.projects.project.analysis.Comments.comments": "Komentarai",
   "app.containers.Admin.projects.project.analysis.Comments.commentsSummaryVisibilityExplanation": "Komentarų santrauka pateikiama, kai yra 5 ar daugiau komentarų.",
