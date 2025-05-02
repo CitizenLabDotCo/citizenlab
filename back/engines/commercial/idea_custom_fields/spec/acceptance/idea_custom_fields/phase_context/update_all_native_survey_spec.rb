@@ -32,7 +32,8 @@ resource 'Idea Custom Fields' do
         title_multiloc: { 'en' => 'Final page' },
         description_multiloc: { 'en' => 'Thank you for participating!' },
         input_type: 'page',
-        page_layout: 'default'
+        page_layout: 'default',
+        include_in_printed_form: false
       }
     end
 

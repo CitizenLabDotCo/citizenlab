@@ -161,6 +161,8 @@ class ProjectCopyService < TemplateService # rubocop:disable Metrics/ClassLength
         'hidden' => field.hidden,
         'maximum' => field.maximum,
         'ask_follow_up' => field.ask_follow_up,
+        'question_category' => field.question_category,
+        'include_in_printed_form' => field.include_in_printed_form,
         'linear_scale_label_1_multiloc' => field.linear_scale_label_1_multiloc,
         'linear_scale_label_2_multiloc' => field.linear_scale_label_2_multiloc,
         'linear_scale_label_3_multiloc' => field.linear_scale_label_3_multiloc,
