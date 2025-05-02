@@ -1020,7 +1020,7 @@
   "app.containers.Admin.projectFolders.containers.settings.ProjectFolderForm.headerImageTooltip1": "This image is shown at the top of the folder page. For more information on recommended image resolutions, {supportPageLink}.",
   "app.containers.Admin.projectFolders.containers.settings.ProjectFolderForm.imageSupportPageURL": "https://support.govocal.com/en/articles/1346397-what-are-the-recommended-dimensions-and-sizes-of-the-platform-images",
   "app.containers.Admin.projectFolders.containers.settings.ProjectFolderForm.supportPageLinkText": "visit our support center",
-  "app.containers.Admin.projects.all.askPersonalData1": "Προσθέστε πεδία για το όνομα και το email για να δημιουργήσετε λογαριασμούς για συμμετέχοντες εκτός σύνδεσης.",
+  "app.containers.Admin.projects.all.askPersonalData2": "Προσθέστε πεδία για το όνομα και το email.",
   "app.containers.Admin.projects.all.clickExportToPDFIdeaForm": "Ερωτήσεις που δεν υποστηρίζονται επί του παρόντος: Εικόνες, ετικέτες και φόρτωση αρχείων.",
   "app.containers.Admin.projects.all.clickExportToPDFSurvey5": "Ερωτήσεις που δεν υποστηρίζονται επί του παρόντος: ερωτήσεις επιλογής εικόνας, ερωτήσεις κατάταξης, ερωτήσεις πινάκων και ερωτήσεις μεταφόρτωσης αρχείων.",
   "app.containers.Admin.projects.all.components.archived": "Archived",
