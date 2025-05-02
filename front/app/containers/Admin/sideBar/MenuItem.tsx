@@ -35,7 +35,7 @@ const Text = styled.div`
 
 const MenuItemLink = styled(Link)<{ active: boolean }>`
   flex: 0 0 auto;
-  width: 210px;
+  width: 224px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -145,11 +145,7 @@ const MenuItem = ({ navItem }: Props) => {
         >
           <Icon name={navItem.iconName} height="20px" />
         </Box>
-        <Text
-          style={{
-            wordBreak: 'break-word',
-          }}
-        >
+        <Text>
           <FormattedMessage {...messages[navItem.message]} />
           {!!navItem.count && <CountBadge count={navItem.count} />}
         </Text>
