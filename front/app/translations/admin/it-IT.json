@@ -1020,7 +1020,7 @@
   "app.containers.Admin.projectFolders.containers.settings.ProjectFolderForm.headerImageTooltip1": "This image is shown at the top of the folder page. For more information on recommended image resolutions, {supportPageLink}.",
   "app.containers.Admin.projectFolders.containers.settings.ProjectFolderForm.imageSupportPageURL": "https://support.govocal.com/en/articles/1346397-what-are-the-recommended-dimensions-and-sizes-of-the-platform-images",
   "app.containers.Admin.projectFolders.containers.settings.ProjectFolderForm.supportPageLinkText": "visit our support center",
-  "app.containers.Admin.projects.all.askPersonalData1": "Aggiungi i campi per il nome e l'e-mail per creare account per i partecipanti offline.",
+  "app.containers.Admin.projects.all.askPersonalData2": "Aggiungi i campi per il nome e l'e-mail.",
   "app.containers.Admin.projects.all.clickExportToPDFIdeaForm": "Domande attualmente non supportate: Immagini, Tag e Caricamento file.",
   "app.containers.Admin.projects.all.clickExportToPDFSurvey5": "Domande attualmente non supportate: Domande di mappatura (drop pin, draw route e draw area), domande a scelta di immagini, domande di classificazione, domande a matrice e domande di caricamento di file.",
   "app.containers.Admin.projects.all.components.archived": "Archived",
