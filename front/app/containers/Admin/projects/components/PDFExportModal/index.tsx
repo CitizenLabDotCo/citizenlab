@@ -133,7 +133,7 @@ const PDFExportModal = ({ open, formType, onClose, onExport }: Props) => {
                 </Text>
               }
               labelTooltipText={
-                <FormattedMessage {...messages.personalDataExplanation3} />
+                <FormattedMessage {...messages.personalDataExplanation4} />
               }
               mb="24px"
             />
