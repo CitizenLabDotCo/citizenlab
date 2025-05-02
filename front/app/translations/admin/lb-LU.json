@@ -1020,7 +1020,7 @@
   "app.containers.Admin.projectFolders.containers.settings.ProjectFolderForm.headerImageTooltip1": "This image is shown at the top of the folder page. For more information on recommended image resolutions, {supportPageLink}.",
   "app.containers.Admin.projectFolders.containers.settings.ProjectFolderForm.imageSupportPageURL": "https://support.govocal.com/en/articles/1346397-what-are-the-recommended-dimensions-and-sizes-of-the-platform-images",
   "app.containers.Admin.projectFolders.containers.settings.ProjectFolderForm.supportPageLinkText": "visit our support center",
-  "app.containers.Admin.projects.all.askPersonalData1": "Füügt Felder fir Numm an E-Mail-Adress derbäi, fir Konten fir Offline-Participanten ze kreéieren.",
+  "app.containers.Admin.projects.all.askPersonalData2": "Felder fir Numm an E-Mail bäifügen.",
   "app.containers.Admin.projects.all.clickExportToPDFIdeaForm": "Froen déi momentan net ënnerstëtzt ginn: Biller, Tags a Datei Eroplueden.",
   "app.containers.Admin.projects.all.clickExportToPDFSurvey5": "Froen déi momentan net ënnerstëtzt ginn: Kartéierungsfroen (drop Pin, Zeechnen Streck an Zeechnen Beräich), Bildwahl Froen, Ranking Froen, Matrix Froen an Datei Eroplueden Froen.",
   "app.containers.Admin.projects.all.components.archived": "Archived",
