@@ -582,21 +582,30 @@ resource 'Ideas' do
   context 'when not logged in' do
     let(:user) { create(:user) }
     let(:project) { create(:single_phase_proposals_project) }
-    let(:ineligible_proposal) { create(
-      :idea,
-      project: project,
-      idea_status: create(:proposals_status, code: 'ineligible')
-    ) }
-    let(:expired_proposal) { create(
-      :idea,
-      project: project,
-      idea_status: create(:proposals_status, code: 'expired')
-    ) }
-    let(:proposed_proposal) { create(
-      :idea,
-      project: project,
-      idea_status: create(:proposals_status, code: 'proposed')
-    ) }
+
+    let(:ineligible_proposal) do
+      create(
+        :idea,
+        project: project,
+        idea_status: create(:proposals_status, code: 'ineligible')
+      )
+    end
+
+    let(:expired_proposal) do
+      create(
+        :idea,
+        project: project,
+        idea_status: create(:proposals_status, code: 'expired')
+      )
+    end
+
+    let(:proposed_proposal) do
+      create(
+        :idea,
+        project: project,
+        idea_status: create(:proposals_status, code: 'proposed')
+      )
+    end
 
     let(:upvote_disabled_reason) do
       response_data.dig(
