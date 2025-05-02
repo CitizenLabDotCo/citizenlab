@@ -4,7 +4,7 @@ import { attributes } from './altTextToImagesModule';
 
 interface Params {
   id: string;
-  toolbarId?: string;
+  toolbarId: string;
   noImages: boolean;
   noVideos: boolean;
   noAlign: boolean;
@@ -44,7 +44,7 @@ export const createQuill = (
     modules: {
       altTextToImages: true,
       blotFormatter: !noImages || !noVideos,
-      toolbar: toolbarId ? `#${toolbarId}` : false,
+      toolbar: `#${toolbarId}`,
       keyboard: {
         bindings: {
           // overwrite default tab behavior
