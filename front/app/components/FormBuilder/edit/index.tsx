@@ -97,8 +97,6 @@ const FormEdit = ({
     projectId,
     phaseId: isFormPhaseSpecific ? phaseId : undefined,
   });
-  const fieldsLastUpdatedAt =
-    customForm?.data.attributes.fields_last_updated_at;
 
   // Set the form opened at date from the API date only when the form is first loaded
   const [formOpenedAt, setFormOpenedAt] = useState<string | undefined>();
@@ -332,7 +330,8 @@ const FormEdit = ({
           customForm: {
             saveType: autosave ? 'auto' : 'manual',
             openedAt: formOpenedAt,
-            lastUpdatedAt: fieldsLastUpdatedAt,
+            fieldsLastUpdatedAt:
+              customForm?.data.attributes.fields_last_updated_at,
           },
         },
         {
