@@ -1020,7 +1020,7 @@
   "app.containers.Admin.projectFolders.containers.settings.ProjectFolderForm.headerImageTooltip1": "This image is shown at the top of the folder page. For more information on recommended image resolutions, {supportPageLink}.",
   "app.containers.Admin.projectFolders.containers.settings.ProjectFolderForm.imageSupportPageURL": "https://support.govocal.com/en/articles/1346397-what-are-the-recommended-dimensions-and-sizes-of-the-platform-images",
   "app.containers.Admin.projectFolders.containers.settings.ProjectFolderForm.supportPageLinkText": "visit our support center",
-  "app.containers.Admin.projects.all.askPersonalData1": "Afegiu camps per al nom i el correu electrònic per crear comptes per a participants fora de línia.",
+  "app.containers.Admin.projects.all.askPersonalData2": "Afegiu camps per al nom i el correu electrònic.",
   "app.containers.Admin.projects.all.clickExportToPDFIdeaForm": "Preguntes que no s'admeten actualment: imatges, etiquetes i càrrega de fitxers.",
   "app.containers.Admin.projects.all.clickExportToPDFSurvey5": "Preguntes que no s'admeten actualment: preguntes de mapeig (puntador, dibuix de ruta i àrea de dibuix), preguntes d'elecció d'imatges, preguntes de classificació, preguntes de matriu i preguntes de càrrega de fitxers.",
   "app.containers.Admin.projects.all.components.archived": "Archived",
