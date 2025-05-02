@@ -1039,7 +1039,7 @@
   "app.containers.Admin.projects.all.itIsAlsoPossibleSurvey1": "Varat apvienot tiešsaistes un bezsaistes atbildes. Lai augšupielādētu bezsaistes atbildes, dodieties uz šī projekta cilni \"Aptauja\" un noklikšķiniet uz \"Importēt\".",
   "app.containers.Admin.projects.all.logicNotInPDF": "Aptaujas loģika netiks atspoguļota lejupielādētajā PDF failā. Papīra formātā respondenti redzēs visus aptaujas jautājumus.",
   "app.containers.Admin.projects.all.notes": "Piezīmes",
-  "app.containers.Admin.projects.all.personalDataExplanation3": "Izmantojot šo opciju, eksportētajam PDF formātam tiks pievienoti vārda, uzvārda un e-pasta lauki. Pēc papīra veidlapas augšupielādes mēs izmantosim šos datus, lai automātiski izveidotu kontu bezsaistes aptaujas respondentam. Varat arī izmantot šo iespēju, lai manuāli izveidotu kontu bezsaistes aptaujas respondentam.",
+  "app.containers.Admin.projects.all.personalDataExplanation4": "Izmantojot šo opciju, eksportētajam PDF dokumentam tiks pievienoti vārda, uzvārda un e-pasta lauki. Pēc papīra veidlapas augšupielādes mēs izmantosim šos datus, lai automātiski izveidotu kontu bezsaistes aptaujas respondentam. Varat arī izmantot šo iespēju, lai manuāli izveidotu kontu bezsaistes aptaujas respondentam.",
   "app.containers.Admin.projects.project.analysis.Comments.aiSummary": "AI kopsavilkums",
   "app.containers.Admin.projects.project.analysis.Comments.comments": "Komentāri",
   "app.containers.Admin.projects.project.analysis.Comments.commentsSummaryVisibilityExplanation": "Komentāru kopsavilkums ir pieejams, ja ir 5 vai vairāk komentāri.",
