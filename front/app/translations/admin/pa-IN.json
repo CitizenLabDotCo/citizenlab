@@ -1039,7 +1039,7 @@
   "app.containers.Admin.projects.all.itIsAlsoPossibleSurvey1": "ਤੁਸੀਂ ਔਨਲਾਈਨ ਅਤੇ ਔਫਲਾਈਨ ਜਵਾਬਾਂ ਨੂੰ ਜੋੜ ਸਕਦੇ ਹੋ। ਔਫਲਾਈਨ ਜਵਾਬ ਅੱਪਲੋਡ ਕਰਨ ਲਈ, ਇਸ ਪ੍ਰੋਜੈਕਟ ਦੇ 'ਸਰਵੇਖਣ' ਟੈਬ 'ਤੇ ਜਾਓ, ਅਤੇ 'ਆਯਾਤ' 'ਤੇ ਕਲਿੱਕ ਕਰੋ।",
   "app.containers.Admin.projects.all.logicNotInPDF": "ਸਰਵੇਖਣ ਤਰਕ ਡਾਊਨਲੋਡ ਕੀਤੀ PDF ਵਿੱਚ ਪ੍ਰਤੀਬਿੰਬਿਤ ਨਹੀਂ ਹੋਵੇਗਾ। ਪੇਪਰ ਉੱਤਰਦਾਤਾ ਸਾਰੇ ਸਰਵੇਖਣ ਸਵਾਲਾਂ ਨੂੰ ਦੇਖਣਗੇ।",
   "app.containers.Admin.projects.all.notes": "ਨੋਟਸ",
-  "app.containers.Admin.projects.all.personalDataExplanation3": "ਇਹ ਵਿਕਲਪ ਨਿਰਯਾਤ ਕੀਤੇ PDF ਵਿੱਚ ਨਾਮ, ਆਖਰੀ ਨਾਮ ਅਤੇ ਈਮੇਲ ਖੇਤਰ ਜੋੜ ਦੇਵੇਗਾ। ਪੇਪਰ ਫਾਰਮ ਅਪਲੋਡ ਕਰਨ 'ਤੇ, ਅਸੀਂ ਉਸ ਡੇਟਾ ਦੀ ਵਰਤੋਂ ਔਫਲਾਈਨ ਸਰਵੇਖਣ ਜਵਾਬਦੇਹ ਲਈ ਇੱਕ ਖਾਤਾ ਸਵੈ-ਜਨਰੇਟ ਕਰਨ ਲਈ ਕਰਾਂਗੇ। ਵਿਕਲਪਕ ਤੌਰ 'ਤੇ, ਤੁਸੀਂ ਇਸਨੂੰ ਔਫਲਾਈਨ ਸਰਵੇਖਣ ਜਵਾਬਦੇਹ ਲਈ ਹੱਥੀਂ ਖਾਤਾ ਬਣਾਉਣ ਲਈ ਵਰਤ ਸਕਦੇ ਹੋ।",
+  "app.containers.Admin.projects.all.personalDataExplanation4": "ਇਹ ਵਿਕਲਪ ਨਿਰਯਾਤ ਕੀਤੇ PDF ਵਿੱਚ ਪਹਿਲਾ ਨਾਮ, ਆਖਰੀ ਨਾਮ, ਅਤੇ ਈਮੇਲ ਖੇਤਰ ਜੋੜ ਦੇਵੇਗਾ। ਪੇਪਰ ਫਾਰਮ ਅਪਲੋਡ ਕਰਨ 'ਤੇ, ਅਸੀਂ ਉਸ ਡੇਟਾ ਦੀ ਵਰਤੋਂ ਔਫਲਾਈਨ ਸਰਵੇਖਣ ਜਵਾਬਦੇਹ ਲਈ ਇੱਕ ਖਾਤਾ ਸਵੈ-ਜਨਰੇਟ ਕਰਨ ਲਈ ਕਰਾਂਗੇ। ਵਿਕਲਪਕ ਤੌਰ 'ਤੇ, ਤੁਸੀਂ ਇਸਨੂੰ ਔਫਲਾਈਨ ਸਰਵੇਖਣ ਜਵਾਬਦੇਹ ਲਈ ਹੱਥੀਂ ਖਾਤਾ ਬਣਾਉਣ ਲਈ ਵਰਤ ਸਕਦੇ ਹੋ।",
   "app.containers.Admin.projects.project.analysis.Comments.aiSummary": "ਏਆਈ ਸੰਖੇਪ",
   "app.containers.Admin.projects.project.analysis.Comments.comments": "ਟਿੱਪਣੀਆਂ",
   "app.containers.Admin.projects.project.analysis.Comments.commentsSummaryVisibilityExplanation": "ਟਿੱਪਣੀ ਦਾ ਸਾਰ ਉਦੋਂ ਉਪਲਬਧ ਹੁੰਦਾ ਹੈ ਜਦੋਂ 5 ਜਾਂ ਵੱਧ ਟਿੱਪਣੀਆਂ ਹੁੰਦੀਆਂ ਹਨ।",
