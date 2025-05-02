@@ -7,6 +7,25 @@ resource 'Idea Custom Fields' do
   explanation 'Fields in idea forms which are customized by the city, scoped on the project level.'
   before { header 'Content-Type', 'application/json' }
 
+  let!(:default_attributes) do
+    {
+      code: nil,
+      created_at: an_instance_of(String),
+      description_multiloc: {},
+      enabled: true,
+      input_type: 'text',
+      key: nil,
+      ordering: 0,
+      required: false,
+      title_multiloc: {},
+      updated_at: an_instance_of(String),
+      logic: {},
+      constraints: {},
+      random_option_ordering: false,
+      include_in_printed_form: true
+    }
+  end
+
   patch 'web_api/v1/admin/phases/:phase_id/custom_fields/update_all' do
     parameter :custom_fields, type: :array
     with_options scope: 'custom_fields[]' do
@@ -75,43 +94,27 @@ resource 'Idea Custom Fields' do
         json_response = json_parse(response_body)
         expect(json_response[:data].size).to eq 4
         expect(json_response[:data][1]).to match({
-          attributes: {
-            code: nil,
-            created_at: an_instance_of(String),
-            description_multiloc: {},
-            enabled: false,
-            input_type: 'text',
-            key: Regexp.new('inserted_field'),
-            ordering: 1,
-            required: false,
+          attributes: default_attributes.merge({
             title_multiloc: { en: 'Inserted field' },
-            updated_at: an_instance_of(String),
-            logic: {},
-            constraints: {},
-            random_option_ordering: false,
-            include_in_printed_form: true
-          },
+            description_multiloc: {},
+            input_type: 'text',
+            enabled: false,
+            key: Regexp.new('inserted_field'),
+            ordering: 1
+          }),
           id: an_instance_of(String),
           type: 'custom_field',
           relationships: { options: { data: [] }, resource: { data: { id: custom_form.id, type: 'custom_form' } } }
         })
         expect(json_response[:data][2]).to match({
-          attributes: {
-            code: nil,
-            created_at: an_instance_of(String),
+          attributes: default_attributes.merge({
+            title_multiloc: { en: 'Updated field' },
             description_multiloc: { en: 'Which councils are you attending in our city?' },
-            enabled: true,
             input_type: 'text',
             key: field_to_update.key,
             ordering: 2,
-            required: true,
-            title_multiloc: { en: 'Updated field' },
-            updated_at: an_instance_of(String),
-            logic: {},
-            constraints: {},
-            random_option_ordering: false,
-            include_in_printed_form: true
-          },
+            required: true
+          }),
           id: an_instance_of(String),
           type: 'custom_field',
           relationships: { options: { data: [] }, resource: { data: { id: custom_form.id, type: 'custom_form' } } }
@@ -165,26 +168,17 @@ resource 'Idea Custom Fields' do
         expect(CustomFieldOption.where(id: delete_options).count).to eq 0
         expect(json_response[:data].size).to eq 3
         expect(json_response[:data][1]).to match({
-          attributes: {
-            code: nil,
-            created_at: an_instance_of(String),
+          attributes: default_attributes.merge({
+            title_multiloc: { en: 'Inserted field' },
             description_multiloc: {},
             dropdown_layout: false,
-            enabled: true,
             input_type: 'multiselect',
             key: Regexp.new('inserted_field'),
             ordering: 1,
-            required: false,
             select_count_enabled: false,
             maximum_select_count: nil,
-            minimum_select_count: nil,
-            title_multiloc: { en: 'Inserted field' },
-            updated_at: an_instance_of(String),
-            logic: {},
-            constraints: {},
-            random_option_ordering: false,
-            include_in_printed_form: true
-          },
+            minimum_select_count: nil
+          }),
           id: an_instance_of(String),
           type: 'custom_field',
           relationships: {
@@ -270,22 +264,14 @@ resource 'Idea Custom Fields' do
 
         expect(json_response[:data].size).to eq 3
         expect(json_response[:data][1]).to match({
-          attributes: {
-            code: nil,
-            created_at: an_instance_of(String),
+          attributes: default_attributes.merge({
+            title_multiloc: { en: 'Inserted field' },
             description_multiloc: {},
-            enabled: true,
             input_type: 'ranking',
             key: Regexp.new('inserted_field'),
             ordering: 1,
-            required: false,
-            title_multiloc: { en: 'Inserted field' },
-            updated_at: an_instance_of(String),
-            logic: {},
-            constraints: {},
-            random_option_ordering: true,
-            include_in_printed_form: true
-          },
+            random_option_ordering: true
+          }),
           id: an_instance_of(String),
           type: 'custom_field',
           relationships: {
@@ -375,25 +361,17 @@ resource 'Idea Custom Fields' do
         expect(CustomFieldOption.all.count).to eq 2
         expect(CustomFieldOption.all.map { |c| c.image.id }).to match [image1.id, image2.id]
         expect(response_data[1]).to match({
-          attributes: {
-            code: nil,
-            created_at: an_instance_of(String),
+          attributes: default_attributes.merge({
+            title_multiloc: { en: 'Inserted field' },
             description_multiloc: {},
             enabled: true,
             input_type: 'multiselect_image',
             key: Regexp.new('inserted_field'),
             ordering: 1,
-            required: false,
             select_count_enabled: false,
             maximum_select_count: nil,
-            minimum_select_count: nil,
-            title_multiloc: { en: 'Inserted field' },
-            updated_at: an_instance_of(String),
-            logic: {},
-            constraints: {},
-            random_option_ordering: false,
-            include_in_printed_form: true
-          },
+            minimum_select_count: nil
+          }),
           id: an_instance_of(String),
           type: 'custom_field',
           relationships: {
@@ -450,7 +428,7 @@ resource 'Idea Custom Fields' do
 
         expect(json_response[:data].size).to eq 3
         expect(json_response[:data][1]).to match({
-          attributes: {
+          attributes: default_attributes.merge({
             code: nil,
             created_at: an_instance_of(String),
             description_multiloc: {},
@@ -477,7 +455,7 @@ resource 'Idea Custom Fields' do
             linear_scale_label_11_multiloc: { en: 'Furthest' },
             maximum: 11,
             include_in_printed_form: true
-          },
+          }),
           id: an_instance_of(String),
           type: 'custom_field',
           relationships: {
@@ -720,7 +698,7 @@ resource 'Idea Custom Fields' do
         json_response = json_parse(response_body)
         expect(json_response[:data].size).to eq 3
         expect(json_response[:data][1]).to match({
-          attributes: {
+          attributes: default_attributes.merge({
             code: nil,
             created_at: an_instance_of(String),
             description_multiloc: { en: 'Description of question' },
@@ -747,7 +725,7 @@ resource 'Idea Custom Fields' do
             random_option_ordering: false,
             constraints: {},
             include_in_printed_form: true
-          },
+          }),
           id: an_instance_of(String),
           type: 'custom_field',
           relationships: { options: { data: [] }, resource: { data: { id: custom_form.id, type: 'custom_form' } } }
@@ -786,7 +764,7 @@ resource 'Idea Custom Fields' do
         json_response = json_parse(response_body)
         expect(json_response[:data].size).to eq 3
         expect(json_response[:data][1]).to match({
-          attributes: {
+          attributes: default_attributes.merge({
             code: nil,
             created_at: an_instance_of(String),
             description_multiloc: { en: 'Description of question' },
@@ -814,7 +792,7 @@ resource 'Idea Custom Fields' do
             random_option_ordering: false,
             constraints: {},
             include_in_printed_form: true
-          },
+          }),
           id: an_instance_of(String),
           type: 'custom_field',
           relationships: { options: { data: [] }, resource: { data: { id: custom_form.id, type: 'custom_form' } } }
@@ -853,7 +831,7 @@ resource 'Idea Custom Fields' do
         assert_status 200
         json_response = json_parse(response_body)
         expect(json_response[:data].size).to eq 3
-        expect(json_response[:data][1][:attributes]).to match({
+        expect(json_response[:data][1][:attributes]).to match(default_attributes.merge({
           code: nil,
           created_at: an_instance_of(String),
           description_multiloc: { en: 'Description of question' },
@@ -872,7 +850,7 @@ resource 'Idea Custom Fields' do
           random_option_ordering: false,
           constraints: {},
           include_in_printed_form: true
-        })
+        }))
       end
 
       example 'Update rating field' do
@@ -901,7 +879,7 @@ resource 'Idea Custom Fields' do
         json_response = json_parse(response_body)
         expect(json_response[:data].size).to eq 3
         expect(json_response[:data][1]).to match({
-          attributes: {
+          attributes: default_attributes.merge({
             code: nil,
             created_at: an_instance_of(String),
             description_multiloc: { en: 'Description of question' },
@@ -917,7 +895,7 @@ resource 'Idea Custom Fields' do
             random_option_ordering: false,
             constraints: {},
             include_in_printed_form: true
-          },
+          }),
           id: an_instance_of(String),
           type: 'custom_field',
           relationships: { options: { data: [] }, resource: { data: { id: custom_form.id, type: 'custom_form' } } }
@@ -1173,7 +1151,7 @@ resource 'Idea Custom Fields' do
         expect(field.reload.options.count).to eq 0
         expect(json_response[:data].size).to eq 3
         expect(json_response[:data][1]).to match({
-          attributes: {
+          attributes: default_attributes.merge({
             code: nil,
             created_at: an_instance_of(String),
             description_multiloc: an_instance_of(Hash),
@@ -1189,7 +1167,7 @@ resource 'Idea Custom Fields' do
             constraints: {},
             random_option_ordering: false,
             include_in_printed_form: true
-          },
+          }),
           id: an_instance_of(String),
           type: 'custom_field',
           relationships: { options: { data: [] }, resource: { data: { id: custom_form.id, type: 'custom_form' } } }
@@ -1443,7 +1421,7 @@ resource 'Idea Custom Fields' do
         json_response = json_parse(response_body)
         expect(json_response[:data].size).to eq 5
         expect(json_response[:data][0]).to match({
-          attributes: {
+          attributes: default_attributes.merge({
             code: nil,
             created_at: an_instance_of(String),
             description_multiloc: page1.description_multiloc.symbolize_keys,
@@ -1459,13 +1437,13 @@ resource 'Idea Custom Fields' do
             constraints: {},
             random_option_ordering: false,
             include_in_printed_form: true
-          },
+          }),
           id: page1.id,
           type: 'custom_field',
           relationships: { map_config: { data: nil }, options: { data: [] }, resource: { data: { id: custom_form.id, type: 'custom_form' } } }
         })
         expect(json_response[:data][1]).to match({
-          attributes: {
+          attributes: default_attributes.merge({
             code: nil,
             created_at: an_instance_of(String),
             description_multiloc: field_to_update.description_multiloc.symbolize_keys,
@@ -1494,13 +1472,13 @@ resource 'Idea Custom Fields' do
             constraints: {},
             random_option_ordering: false,
             include_in_printed_form: true
-          },
+          }),
           id: field_to_update.id,
           type: 'custom_field',
           relationships: { options: { data: [] }, resource: { data: { id: custom_form.id, type: 'custom_form' } } }
         })
         expect(json_response[:data][2]).to match({
-          attributes: {
+          attributes: default_attributes.merge({
             code: nil,
             created_at: an_instance_of(String),
             description_multiloc: page2.description_multiloc.symbolize_keys,
@@ -1516,13 +1494,13 @@ resource 'Idea Custom Fields' do
             constraints: {},
             random_option_ordering: false,
             include_in_printed_form: true
-          },
+          }),
           id: page2.id,
           type: 'custom_field',
           relationships: { map_config: { data: nil }, options: { data: [] }, resource: { data: { id: custom_form.id, type: 'custom_form' } } }
         })
         expect(json_response[:data][3]).to match({
-          attributes: {
+          attributes: default_attributes.merge({
             code: nil,
             created_at: an_instance_of(String),
             description_multiloc: page3.description_multiloc.symbolize_keys,
@@ -1538,7 +1516,7 @@ resource 'Idea Custom Fields' do
             constraints: {},
             random_option_ordering: false,
             include_in_printed_form: true
-          },
+          }),
           id: page3.id,
           type: 'custom_field',
           relationships: { map_config: { data: nil }, options: { data: [] }, resource: { data: { id: custom_form.id, type: 'custom_form' } } }
@@ -1599,7 +1577,7 @@ resource 'Idea Custom Fields' do
         json_response = json_parse(response_body)
         expect(json_response[:data].size).to eq 5
         expect(json_response[:data][0]).to match({
-          attributes: {
+          attributes: default_attributes.merge({
             code: nil,
             created_at: an_instance_of(String),
             description_multiloc: page_to_update.description_multiloc.symbolize_keys,
@@ -1615,13 +1593,13 @@ resource 'Idea Custom Fields' do
             constraints: {},
             random_option_ordering: false,
             include_in_printed_form: true
-          },
+          }),
           id: page_to_update.id,
           type: 'custom_field',
           relationships: { map_config: { data: nil }, options: { data: [] }, resource: { data: { id: custom_form.id, type: 'custom_form' } } }
         })
         expect(json_response[:data][1]).to match({
-          attributes: {
+          attributes: default_attributes.merge({
             code: nil,
             created_at: an_instance_of(String),
             description_multiloc: page2.description_multiloc.symbolize_keys,
@@ -1637,13 +1615,13 @@ resource 'Idea Custom Fields' do
             constraints: {},
             random_option_ordering: false,
             include_in_printed_form: true
-          },
+          }),
           id: page2.id,
           type: 'custom_field',
           relationships: { map_config: { data: nil }, options: { data: [] }, resource: { data: { id: custom_form.id, type: 'custom_form' } } }
         })
         expect(json_response[:data][2]).to match({
-          attributes: {
+          attributes: default_attributes.merge({
             code: nil,
             created_at: an_instance_of(String),
             description_multiloc: page3.description_multiloc.symbolize_keys,
@@ -1659,13 +1637,13 @@ resource 'Idea Custom Fields' do
             constraints: {},
             random_option_ordering: false,
             include_in_printed_form: true
-          },
+          }),
           id: page3.id,
           type: 'custom_field',
           relationships: { map_config: { data: nil }, options: { data: [] }, resource: { data: { id: custom_form.id, type: 'custom_form' } } }
         })
         expect(json_response[:data][3]).to match({
-          attributes: {
+          attributes: default_attributes.merge({
             code: nil,
             created_at: an_instance_of(String),
             description_multiloc: page4.description_multiloc.symbolize_keys,
@@ -1681,7 +1659,7 @@ resource 'Idea Custom Fields' do
             constraints: {},
             random_option_ordering: false,
             include_in_printed_form: true
-          },
+          }),
           id: page4.id,
           type: 'custom_field',
           relationships: { map_config: { data: nil }, options: { data: [] }, resource: { data: { id: custom_form.id, type: 'custom_form' } } }
@@ -1744,7 +1722,7 @@ resource 'Idea Custom Fields' do
         json_response = json_parse(response_body)
         expect(json_response[:data].size).to eq 5
         expect(json_response[:data][0]).to match({
-          attributes: {
+          attributes: default_attributes.merge({
             code: nil,
             created_at: an_instance_of(String),
             description_multiloc: page_to_update.description_multiloc.symbolize_keys,
@@ -1760,13 +1738,13 @@ resource 'Idea Custom Fields' do
             constraints: {},
             random_option_ordering: false,
             include_in_printed_form: true
-          },
+          }),
           id: page_to_update.id,
           type: 'custom_field',
           relationships: { map_config: { data: nil }, options: { data: [] }, resource: { data: { id: custom_form.id, type: 'custom_form' } } }
         })
         expect(json_response[:data][1]).to match({
-          attributes: {
+          attributes: default_attributes.merge({
             code: nil,
             created_at: an_instance_of(String),
             description_multiloc: page2.description_multiloc.symbolize_keys,
@@ -1782,13 +1760,13 @@ resource 'Idea Custom Fields' do
             constraints: {},
             random_option_ordering: false,
             include_in_printed_form: true
-          },
+          }),
           id: page2.id,
           type: 'custom_field',
           relationships: { map_config: { data: nil }, options: { data: [] }, resource: { data: { id: custom_form.id, type: 'custom_form' } } }
         })
         expect(json_response[:data][2]).to match({
-          attributes: {
+          attributes: default_attributes.merge({
             code: nil,
             created_at: an_instance_of(String),
             description_multiloc: page3.description_multiloc.symbolize_keys,
@@ -1804,13 +1782,13 @@ resource 'Idea Custom Fields' do
             constraints: {},
             random_option_ordering: false,
             include_in_printed_form: true
-          },
+          }),
           id: page3.id,
           type: 'custom_field',
           relationships: { map_config: { data: nil }, options: { data: [] }, resource: { data: { id: custom_form.id, type: 'custom_form' } } }
         })
         expect(json_response[:data][3]).to match({
-          attributes: {
+          attributes: default_attributes.merge({
             code: nil,
             created_at: an_instance_of(String),
             description_multiloc: { en: 'Page 4 description' },
@@ -1826,7 +1804,7 @@ resource 'Idea Custom Fields' do
             constraints: {},
             random_option_ordering: false,
             include_in_printed_form: true
-          },
+          }),
           id: an_instance_of(String),
           type: 'custom_field',
           relationships: { map_config: { data: nil }, options: { data: [] }, resource: { data: { id: custom_form.id, type: 'custom_form' } } }
@@ -1874,7 +1852,7 @@ resource 'Idea Custom Fields' do
         json_response = json_parse(response_body)
         expect(json_response[:data].size).to eq 4
         expect(json_response[:data][0]).to match({
-          attributes: {
+          attributes: default_attributes.merge({
             code: nil,
             created_at: an_instance_of(String),
             description_multiloc: { en: 'New page with logic description' },
@@ -1890,13 +1868,13 @@ resource 'Idea Custom Fields' do
             constraints: {},
             random_option_ordering: false,
             include_in_printed_form: true
-          },
+          }),
           id: an_instance_of(String),
           type: 'custom_field',
           relationships: { map_config: { data: nil }, options: { data: [] }, resource: { data: { id: custom_form.id, type: 'custom_form' } } }
         })
         expect(json_response[:data][1]).to match({
-          attributes: {
+          attributes: default_attributes.merge({
             code: nil,
             created_at: an_instance_of(String),
             description_multiloc: existing_page.description_multiloc.symbolize_keys,
@@ -1912,13 +1890,13 @@ resource 'Idea Custom Fields' do
             constraints: {},
             random_option_ordering: false,
             include_in_printed_form: true
-          },
+          }),
           id: existing_page.id,
           type: 'custom_field',
           relationships: { map_config: { data: nil }, options: { data: [] }, resource: { data: { id: custom_form.id, type: 'custom_form' } } }
         })
         expect(json_response[:data][2]).to match({
-          attributes: {
+          attributes: default_attributes.merge({
             code: nil,
             created_at: an_instance_of(String),
             description_multiloc: { en: 'Target page description' },
@@ -1934,7 +1912,7 @@ resource 'Idea Custom Fields' do
             constraints: {},
             random_option_ordering: false,
             include_in_printed_form: true
-          },
+          }),
           id: an_instance_of(String),
           type: 'custom_field',
           relationships: { map_config: { data: nil }, options: { data: [] }, resource: { data: { id: custom_form.id, type: 'custom_form' } } }
@@ -1985,7 +1963,7 @@ resource 'Idea Custom Fields' do
         json_response = json_parse(response_body)
         expect(json_response[:data].size).to eq 4
         expect(json_response[:data][0]).to match({
-          attributes: {
+          attributes: default_attributes.merge({
             code: nil,
             created_at: an_instance_of(String),
             description_multiloc: page_to_update.description_multiloc.symbolize_keys,
@@ -2001,13 +1979,13 @@ resource 'Idea Custom Fields' do
             constraints: {},
             random_option_ordering: false,
             include_in_printed_form: true
-          },
+          }),
           id: page_to_update.id,
           type: 'custom_field',
           relationships: { map_config: { data: nil }, options: { data: [] }, resource: { data: { id: custom_form.id, type: 'custom_form' } } }
         })
         expect(json_response[:data][1]).to match({
-          attributes: {
+          attributes: default_attributes.merge({
             code: nil,
             created_at: an_instance_of(String),
             description_multiloc: page2.description_multiloc.symbolize_keys,
@@ -2023,13 +2001,13 @@ resource 'Idea Custom Fields' do
             constraints: {},
             random_option_ordering: false,
             include_in_printed_form: true
-          },
+          }),
           id: page2.id,
           type: 'custom_field',
           relationships: { map_config: { data: nil }, options: { data: [] }, resource: { data: { id: custom_form.id, type: 'custom_form' } } }
         })
         expect(json_response[:data][2]).to match({
-          attributes: {
+          attributes: default_attributes.merge({
             code: nil,
             created_at: an_instance_of(String),
             description_multiloc: page3.description_multiloc.symbolize_keys,
@@ -2045,7 +2023,7 @@ resource 'Idea Custom Fields' do
             constraints: {},
             random_option_ordering: false,
             include_in_printed_form: true
-          },
+          }),
           id: page3.id,
           type: 'custom_field',
           relationships: { map_config: { data: nil }, options: { data: [] }, resource: { data: { id: custom_form.id, type: 'custom_form' } } }
@@ -2087,7 +2065,7 @@ resource 'Idea Custom Fields' do
         json_response = json_parse(response_body)
         expect(json_response[:data].size).to eq 3
         expect(json_response[:data][0]).to match({
-          attributes: {
+          attributes: default_attributes.merge({
             code: nil,
             created_at: an_instance_of(String),
             description_multiloc: page_to_update.description_multiloc.symbolize_keys,
@@ -2103,13 +2081,13 @@ resource 'Idea Custom Fields' do
             constraints: {},
             random_option_ordering: false,
             include_in_printed_form: true
-          },
+          }),
           id: page_to_update.id,
           type: 'custom_field',
           relationships: { map_config: { data: nil }, options: { data: [] }, resource: { data: { id: custom_form.id, type: 'custom_form' } } }
         })
         expect(json_response[:data][1]).to match({
-          attributes: {
+          attributes: default_attributes.merge({
             code: nil,
             created_at: an_instance_of(String),
             description_multiloc: page2.description_multiloc.symbolize_keys,
@@ -2125,7 +2103,7 @@ resource 'Idea Custom Fields' do
             constraints: {},
             random_option_ordering: false,
             include_in_printed_form: true
-          },
+          }),
           id: page2.id,
           type: 'custom_field',
           relationships: { map_config: { data: nil }, options: { data: [] }, resource: { data: { id: custom_form.id, type: 'custom_form' } } }
@@ -2205,7 +2183,7 @@ resource 'Idea Custom Fields' do
         json_response = json_parse(response_body)
         expect(json_response[:data].size).to eq 5
         expect(json_response[:data][0]).to match({
-          attributes: {
+          attributes: default_attributes.merge({
             code: nil,
             created_at: an_instance_of(String),
             description_multiloc: page1.description_multiloc.symbolize_keys,
@@ -2221,13 +2199,13 @@ resource 'Idea Custom Fields' do
             constraints: {},
             random_option_ordering: false,
             include_in_printed_form: true
-          },
+          }),
           id: page1.id,
           type: 'custom_field',
           relationships: { map_config: { data: nil }, options: { data: [] }, resource: { data: { id: custom_form.id, type: 'custom_form' } } }
         })
         expect(json_response[:data][1]).to match({
-          attributes: {
+          attributes: default_attributes.merge({
             code: nil,
             created_at: an_instance_of(String),
             description_multiloc: field_to_update.description_multiloc.symbolize_keys,
@@ -2256,13 +2234,13 @@ resource 'Idea Custom Fields' do
             constraints: {},
             random_option_ordering: false,
             include_in_printed_form: true
-          },
+          }),
           id: field_to_update.id,
           type: 'custom_field',
           relationships: { options: { data: [] }, resource: { data: { id: custom_form.id, type: 'custom_form' } } }
         })
         expect(json_response[:data][2]).to match({
-          attributes: {
+          attributes: default_attributes.merge({
             code: nil,
             created_at: an_instance_of(String),
             description_multiloc: page2.description_multiloc.symbolize_keys,
@@ -2278,13 +2256,13 @@ resource 'Idea Custom Fields' do
             constraints: {},
             random_option_ordering: false,
             include_in_printed_form: true
-          },
+          }),
           id: page2.id,
           type: 'custom_field',
           relationships: { map_config: { data: nil }, options: { data: [] }, resource: { data: { id: custom_form.id, type: 'custom_form' } } }
         })
         expect(json_response[:data][3]).to match({
-          attributes: {
+          attributes: default_attributes.merge({
             code: nil,
             created_at: an_instance_of(String),
             description_multiloc: { en: 'Page 3 description' },
@@ -2300,7 +2278,7 @@ resource 'Idea Custom Fields' do
             constraints: {},
             random_option_ordering: false,
             include_in_printed_form: true
-          },
+          }),
           id: an_instance_of(String),
           type: 'custom_field',
           relationships: { map_config: { data: nil }, options: { data: [] }, resource: { data: { id: custom_form.id, type: 'custom_form' } } }
@@ -2381,7 +2359,7 @@ resource 'Idea Custom Fields' do
         json_response = json_parse(response_body)
         expect(json_response[:data].size).to eq 5
         expect(json_response[:data][0]).to match({
-          attributes: {
+          attributes: default_attributes.merge({
             code: nil,
             created_at: an_instance_of(String),
             description_multiloc: page1.description_multiloc.symbolize_keys,
@@ -2397,13 +2375,13 @@ resource 'Idea Custom Fields' do
             constraints: {},
             random_option_ordering: false,
             include_in_printed_form: true
-          },
+          }),
           id: page1.id,
           type: 'custom_field',
           relationships: { map_config: { data: nil }, options: { data: [] }, resource: { data: { id: custom_form.id, type: 'custom_form' } } }
         })
         expect(json_response[:data][1]).to match({
-          attributes: {
+          attributes: default_attributes.merge({
             code: nil,
             created_at: an_instance_of(String),
             description_multiloc: field_to_update.description_multiloc.symbolize_keys,
@@ -2432,13 +2410,13 @@ resource 'Idea Custom Fields' do
             constraints: {},
             random_option_ordering: false,
             include_in_printed_form: true
-          },
+          }),
           id: field_to_update.id,
           type: 'custom_field',
           relationships: { options: { data: [] }, resource: { data: { id: custom_form.id, type: 'custom_form' } } }
         })
         expect(json_response[:data][2]).to match({
-          attributes: {
+          attributes: default_attributes.merge({
             code: nil,
             created_at: an_instance_of(String),
             description_multiloc: page3.description_multiloc.symbolize_keys,
@@ -2454,13 +2432,13 @@ resource 'Idea Custom Fields' do
             constraints: {},
             random_option_ordering: false,
             include_in_printed_form: true
-          },
+          }),
           id: page3.id,
           type: 'custom_field',
           relationships: { map_config: { data: nil }, options: { data: [] }, resource: { data: { id: custom_form.id, type: 'custom_form' } } }
         })
         expect(json_response[:data][3]).to match({
-          attributes: {
+          attributes: default_attributes.merge({
             code: nil,
             created_at: an_instance_of(String),
             description_multiloc: page2.description_multiloc.symbolize_keys,
@@ -2476,7 +2454,7 @@ resource 'Idea Custom Fields' do
             constraints: {},
             random_option_ordering: false,
             include_in_printed_form: true
-          },
+          }),
           id: page2.id,
           type: 'custom_field',
           relationships: { map_config: { data: nil }, options: { data: [] }, resource: { data: { id: custom_form.id, type: 'custom_form' } } }
@@ -2545,7 +2523,7 @@ resource 'Idea Custom Fields' do
         json_response = json_parse(response_body)
         expect(json_response[:data].size).to eq 4
         expect(json_response[:data][0]).to match({
-          attributes: {
+          attributes: default_attributes.merge({
             code: nil,
             created_at: an_instance_of(String),
             description_multiloc: page1.description_multiloc.symbolize_keys,
@@ -2561,13 +2539,13 @@ resource 'Idea Custom Fields' do
             constraints: {},
             random_option_ordering: false,
             include_in_printed_form: true
-          },
+          }),
           id: page1.id,
           type: 'custom_field',
           relationships: { map_config: { data: nil }, options: { data: [] }, resource: { data: { id: custom_form.id, type: 'custom_form' } } }
         })
         expect(json_response[:data][1]).to match({
-          attributes: {
+          attributes: default_attributes.merge({
             code: nil,
             created_at: an_instance_of(String),
             description_multiloc: field_to_update.description_multiloc.symbolize_keys,
@@ -2594,13 +2572,13 @@ resource 'Idea Custom Fields' do
             constraints: {},
             random_option_ordering: false,
             include_in_printed_form: true
-          },
+          }),
           id: field_to_update.id,
           type: 'custom_field',
           relationships: { options: { data: [] }, resource: { data: { id: custom_form.id, type: 'custom_form' } } }
         })
         expect(json_response[:data][2]).to match({
-          attributes: {
+          attributes: default_attributes.merge({
             code: nil,
             created_at: an_instance_of(String),
             description_multiloc: page2.description_multiloc.symbolize_keys,
@@ -2616,7 +2594,7 @@ resource 'Idea Custom Fields' do
             constraints: {},
             random_option_ordering: false,
             include_in_printed_form: true
-          },
+          }),
           id: page2.id,
           type: 'custom_field',
           relationships: { map_config: { data: nil }, options: { data: [] }, resource: { data: { id: custom_form.id, type: 'custom_form' } } }
@@ -2677,7 +2655,7 @@ resource 'Idea Custom Fields' do
         json_response = json_parse(response_body)
         expect(json_response[:data].size).to eq 3
         expect(json_response[:data][0]).to match({
-          attributes: {
+          attributes: default_attributes.merge({
             code: nil,
             created_at: an_instance_of(String),
             description_multiloc: page1.description_multiloc.symbolize_keys,
@@ -2693,13 +2671,13 @@ resource 'Idea Custom Fields' do
             constraints: {},
             random_option_ordering: false,
             include_in_printed_form: true
-          },
+          }),
           id: page1.id,
           type: 'custom_field',
           relationships: { map_config: { data: nil }, options: { data: [] }, resource: { data: { id: custom_form.id, type: 'custom_form' } } }
         })
         expect(json_response[:data][1]).to match({
-          attributes: {
+          attributes: default_attributes.merge({
             code: nil,
             created_at: an_instance_of(String),
             description_multiloc: field_to_update.description_multiloc.symbolize_keys,
@@ -2726,7 +2704,7 @@ resource 'Idea Custom Fields' do
             constraints: {},
             random_option_ordering: false,
             include_in_printed_form: true
-          },
+          }),
           id: field_to_update.id,
           type: 'custom_field',
           relationships: { options: { data: [] }, resource: { data: { id: custom_form.id, type: 'custom_form' } } }
@@ -2767,7 +2745,7 @@ resource 'Idea Custom Fields' do
         json_response = json_parse(response_body)
         expect(json_response[:data].size).to eq 2
         expect(json_response[:data][0]).to match({
-          attributes: {
+          attributes: default_attributes.merge({
             code: nil,
             created_at: an_instance_of(String),
             description_multiloc: page1.description_multiloc.symbolize_keys,
@@ -2783,7 +2761,7 @@ resource 'Idea Custom Fields' do
             constraints: {},
             random_option_ordering: false,
             include_in_printed_form: true
-          },
+          }),
           id: page1.id,
           type: 'custom_field',
           relationships: { map_config: { data: nil }, options: { data: [] }, resource: { data: { id: custom_form.id, type: 'custom_form' } } }
@@ -2869,7 +2847,7 @@ resource 'Idea Custom Fields' do
         json_response = json_parse(response_body)
         expect(json_response[:data].size).to eq 5
         expect(json_response[:data][0]).to match({
-          attributes: {
+          attributes: default_attributes.merge({
             code: nil,
             created_at: an_instance_of(String),
             description_multiloc: page1.description_multiloc.symbolize_keys,
@@ -2885,13 +2863,13 @@ resource 'Idea Custom Fields' do
             constraints: {},
             random_option_ordering: false,
             include_in_printed_form: true
-          },
+          }),
           id: page1.id,
           type: 'custom_field',
           relationships: { map_config: { data: nil }, options: { data: [] }, resource: { data: { id: custom_form.id, type: 'custom_form' } } }
         })
         expect(json_response[:data][1]).to match({
-          attributes: {
+          attributes: default_attributes.merge({
             code: nil,
             created_at: an_instance_of(String),
             description_multiloc: field_to_update.description_multiloc.symbolize_keys,
@@ -2920,13 +2898,13 @@ resource 'Idea Custom Fields' do
             constraints: {},
             random_option_ordering: false,
             include_in_printed_form: true
-          },
+          }),
           id: field_to_update.id,
           type: 'custom_field',
           relationships: { options: { data: [] }, resource: { data: { id: custom_form.id, type: 'custom_form' } } }
         })
         expect(json_response[:data][2]).to match({
-          attributes: {
+          attributes: default_attributes.merge({
             code: nil,
             created_at: an_instance_of(String),
             description_multiloc: page2.description_multiloc.symbolize_keys,
@@ -2942,13 +2920,13 @@ resource 'Idea Custom Fields' do
             constraints: {},
             random_option_ordering: false,
             include_in_printed_form: true
-          },
+          }),
           id: page2.id,
           type: 'custom_field',
           relationships: { map_config: { data: nil }, options: { data: [] }, resource: { data: { id: custom_form.id, type: 'custom_form' } } }
         })
         expect(json_response[:data][3]).to match({
-          attributes: {
+          attributes: default_attributes.merge({
             code: nil,
             created_at: an_instance_of(String),
             description_multiloc: page3.description_multiloc.symbolize_keys,
@@ -2964,7 +2942,7 @@ resource 'Idea Custom Fields' do
             constraints: {},
             random_option_ordering: false,
             include_in_printed_form: true
-          },
+          }),
           id: page3.id,
           type: 'custom_field',
           relationships: { map_config: { data: nil }, options: { data: [] }, resource: { data: { id: custom_form.id, type: 'custom_form' } } }
@@ -3031,7 +3009,7 @@ resource 'Idea Custom Fields' do
         json_response = json_parse(response_body)
         expect(json_response[:data].size).to eq 4
         expect(json_response[:data][0]).to match({
-          attributes: {
+          attributes: default_attributes.merge({
             code: nil,
             created_at: an_instance_of(String),
             description_multiloc: page1.description_multiloc.symbolize_keys,
@@ -3047,13 +3025,13 @@ resource 'Idea Custom Fields' do
             constraints: {},
             random_option_ordering: false,
             include_in_printed_form: true
-          },
+          }),
           id: page1.id,
           type: 'custom_field',
           relationships: { map_config: { data: nil }, options: { data: [] }, resource: { data: { id: custom_form.id, type: 'custom_form' } } }
         })
         expect(json_response[:data][1]).to match({
-          attributes: {
+          attributes: default_attributes.merge({
             code: nil,
             created_at: an_instance_of(String),
             description_multiloc: field_to_update.description_multiloc.symbolize_keys,
@@ -3082,13 +3060,13 @@ resource 'Idea Custom Fields' do
             constraints: {},
             random_option_ordering: false,
             include_in_printed_form: true
-          },
+          }),
           id: field_to_update.id,
           type: 'custom_field',
           relationships: { options: { data: [] }, resource: { data: { id: custom_form.id, type: 'custom_form' } } }
         })
         expect(json_response[:data][2]).to match({
-          attributes: {
+          attributes: default_attributes.merge({
             code: nil,
             created_at: an_instance_of(String),
             description_multiloc: { en: 'Page 2 description' },
@@ -3104,7 +3082,7 @@ resource 'Idea Custom Fields' do
             constraints: {},
             random_option_ordering: false,
             include_in_printed_form: true
-          },
+          }),
           id: an_instance_of(String),
           type: 'custom_field',
           relationships: { map_config: { data: nil }, options: { data: [] }, resource: { data: { id: custom_form.id, type: 'custom_form' } } }
@@ -3202,7 +3180,7 @@ resource 'Idea Custom Fields' do
         json_response = json_parse(response_body)
         expect(json_response[:data].size).to eq 6
         expect(json_response[:data][0]).to match({
-          attributes: {
+          attributes: default_attributes.merge({
             code: nil,
             created_at: an_instance_of(String),
             description_multiloc: page1.description_multiloc.symbolize_keys,
@@ -3218,13 +3196,13 @@ resource 'Idea Custom Fields' do
             constraints: {},
             random_option_ordering: false,
             include_in_printed_form: true
-          },
+          }),
           id: page1.id,
           type: 'custom_field',
           relationships: { map_config: { data: nil }, options: { data: [] }, resource: { data: { id: custom_form.id, type: 'custom_form' } } }
         })
         expect(json_response[:data][1]).to match({
-          attributes: {
+          attributes: default_attributes.merge({
             code: nil,
             created_at: an_instance_of(String),
             description_multiloc: field1_to_update.description_multiloc.symbolize_keys,
@@ -3242,7 +3220,7 @@ resource 'Idea Custom Fields' do
             constraints: {},
             random_option_ordering: false,
             include_in_printed_form: true
-          },
+          }),
           id: field1_to_update.id,
           type: 'custom_field',
           relationships: {
@@ -3256,7 +3234,7 @@ resource 'Idea Custom Fields' do
           }
         })
         expect(json_response[:data][2]).to match({
-          attributes: {
+          attributes: default_attributes.merge({
             code: nil,
             created_at: an_instance_of(String),
             description_multiloc: field2_to_update.description_multiloc.symbolize_keys,
@@ -3274,7 +3252,7 @@ resource 'Idea Custom Fields' do
             constraints: {},
             random_option_ordering: false,
             include_in_printed_form: true
-          },
+          }),
           id: field2_to_update.id,
           type: 'custom_field',
           relationships: {
@@ -3288,7 +3266,7 @@ resource 'Idea Custom Fields' do
           }
         })
         expect(json_response[:data][3]).to match({
-          attributes: {
+          attributes: default_attributes.merge({
             code: nil,
             created_at: an_instance_of(String),
             description_multiloc: { en: 'Page 2 description' },
@@ -3304,13 +3282,13 @@ resource 'Idea Custom Fields' do
             constraints: {},
             random_option_ordering: false,
             include_in_printed_form: true
-          },
+          }),
           id: an_instance_of(String),
           type: 'custom_field',
           relationships: { map_config: { data: nil }, options: { data: [] }, resource: { data: { id: custom_form.id, type: 'custom_form' } } }
         })
         expect(json_response[:data][4]).to match({
-          attributes: {
+          attributes: default_attributes.merge({
             code: nil,
             created_at: an_instance_of(String),
             description_multiloc: { en: 'Page 3 description' },
@@ -3326,7 +3304,7 @@ resource 'Idea Custom Fields' do
             constraints: {},
             random_option_ordering: false,
             include_in_printed_form: true
-          },
+          }),
           id: an_instance_of(String),
           type: 'custom_field',
           relationships: { map_config: { data: nil }, options: { data: [] }, resource: { data: { id: custom_form.id, type: 'custom_form' } } }
@@ -3388,7 +3366,7 @@ resource 'Idea Custom Fields' do
         json_response = json_parse(response_body)
         expect(json_response[:data].size).to eq 4
         expect(json_response[:data][0]).to match({
-          attributes: {
+          attributes: default_attributes.merge({
             code: nil,
             created_at: an_instance_of(String),
             description_multiloc: page1.description_multiloc.symbolize_keys,
@@ -3404,13 +3382,13 @@ resource 'Idea Custom Fields' do
             constraints: {},
             random_option_ordering: false,
             include_in_printed_form: true
-          },
+          }),
           id: page1.id,
           type: 'custom_field',
           relationships: { map_config: { data: nil }, options: { data: [] }, resource: { data: { id: custom_form.id, type: 'custom_form' } } }
         })
         expect(json_response[:data][1]).to match({
-          attributes: {
+          attributes: default_attributes.merge({
             code: nil,
             created_at: an_instance_of(String),
             description_multiloc: { en: 'Description of question 1 on page 1' },
@@ -3439,13 +3417,13 @@ resource 'Idea Custom Fields' do
             constraints: {},
             random_option_ordering: false,
             include_in_printed_form: true
-          },
+          }),
           id: an_instance_of(String),
           type: 'custom_field',
           relationships: { options: { data: [] }, resource: { data: { id: custom_form.id, type: 'custom_form' } } }
         })
         expect(json_response[:data][2]).to match({
-          attributes: {
+          attributes: default_attributes.merge({
             code: nil,
             created_at: an_instance_of(String),
             description_multiloc: { en: 'Page 2 description' },
@@ -3461,7 +3439,7 @@ resource 'Idea Custom Fields' do
             constraints: {},
             random_option_ordering: false,
             include_in_printed_form: true
-          },
+          }),
           id: an_instance_of(String),
           type: 'custom_field',
           relationships: { map_config: { data: nil }, options: { data: [] }, resource: { data: { id: custom_form.id, type: 'custom_form' } } }
@@ -3547,7 +3525,7 @@ resource 'Idea Custom Fields' do
         json_response = json_parse(response_body)
         expect(json_response[:data].size).to eq 5
         expect(json_response[:data][0]).to match({
-          attributes: {
+          attributes: default_attributes.merge({
             code: nil,
             created_at: an_instance_of(String),
             description_multiloc: page1.description_multiloc.symbolize_keys,
@@ -3563,13 +3541,13 @@ resource 'Idea Custom Fields' do
             constraints: {},
             random_option_ordering: false,
             include_in_printed_form: true
-          },
+          }),
           id: page1.id,
           type: 'custom_field',
           relationships: { map_config: { data: nil }, options: { data: [] }, resource: { data: { id: custom_form.id, type: 'custom_form' } } }
         })
         expect(json_response[:data][1]).to match({
-          attributes: {
+          attributes: default_attributes.merge({
             code: nil,
             created_at: an_instance_of(String),
             description_multiloc: field_to_update.description_multiloc.symbolize_keys,
@@ -3601,13 +3579,13 @@ resource 'Idea Custom Fields' do
             constraints: {},
             random_option_ordering: false,
             include_in_printed_form: true
-          },
+          }),
           id: field_to_update.id,
           type: 'custom_field',
           relationships: { options: { data: [] }, resource: { data: { id: custom_form.id, type: 'custom_form' } } }
         })
         expect(json_response[:data][2]).to match({
-          attributes: {
+          attributes: default_attributes.merge({
             code: nil,
             created_at: an_instance_of(String),
             description_multiloc: page2.description_multiloc.symbolize_keys,
@@ -3623,13 +3601,13 @@ resource 'Idea Custom Fields' do
             constraints: {},
             random_option_ordering: false,
             include_in_printed_form: true
-          },
+          }),
           id: page2.id,
           type: 'custom_field',
           relationships: { map_config: { data: nil }, options: { data: [] }, resource: { data: { id: custom_form.id, type: 'custom_form' } } }
         })
         expect(json_response[:data][3]).to match({
-          attributes: {
+          attributes: default_attributes.merge({
             code: nil,
             created_at: an_instance_of(String),
             description_multiloc: page3.description_multiloc.symbolize_keys,
@@ -3645,7 +3623,7 @@ resource 'Idea Custom Fields' do
             constraints: {},
             random_option_ordering: false,
             include_in_printed_form: true
-          },
+          }),
           id: page3.id,
           type: 'custom_field',
           relationships: { map_config: { data: nil }, options: { data: [] }, resource: { data: { id: custom_form.id, type: 'custom_form' } } }
@@ -3690,7 +3668,7 @@ resource 'Idea Custom Fields' do
 
         expect(json_response[:data].size).to eq 3
         expect(json_response[:data][1]).to match({
-          attributes: {
+          attributes: default_attributes.merge({
             code: nil,
             created_at: an_instance_of(String),
             description_multiloc: {},
@@ -3706,7 +3684,7 @@ resource 'Idea Custom Fields' do
             constraints: {},
             random_option_ordering: false,
             include_in_printed_form: true
-          },
+          }),
           id: an_instance_of(String),
           type: 'custom_field',
           relationships: {
