@@ -1039,7 +1039,7 @@
   "app.containers.Admin.projects.all.itIsAlsoPossibleSurvey1": "Voit yhdistää online- ja offline-vastauksia. Voit ladata offline-vastauksia siirtymällä tämän projektin Kysely-välilehdelle ja napsauttamalla Tuo.",
   "app.containers.Admin.projects.all.logicNotInPDF": "Kyselylogiikka ei näy ladatussa PDF-tiedostossa. Paperivastaajat näkevät kaikki kyselyn kysymykset.",
   "app.containers.Admin.projects.all.notes": "Huomautuksia",
-  "app.containers.Admin.projects.all.personalDataExplanation4": "Tämä vaihtoehto lisää etunimen, sukunimen ja sähköpostiosoitteen kentät vietyyn PDF-tiedostoon. Kun paperilomake ladataan, käytämme näitä tietoja luodaksemme automaattisesti tilin offline-kyselyn vastaajalle. Vaihtoehtoisesti voit käyttää sitä luodaksesi tilin manuaalisesti offline-kyselyn vastaajalle.",
+  "app.containers.Admin.projects.all.personalDataExplanation5": "Tämä vaihtoehto lisää etunimen, sukunimen ja sähköpostiosoitteen kentät vietyyn PDF-tiedostoon. Kun paperilomake ladataan, käytämme näitä tietoja luodaksemme automaattisesti tilin offline-kyselyn vastaajalle.",
   "app.containers.Admin.projects.project.analysis.Comments.aiSummary": "AI yhteenveto",
   "app.containers.Admin.projects.project.analysis.Comments.comments": "Kommentit",
   "app.containers.Admin.projects.project.analysis.Comments.commentsSummaryVisibilityExplanation": "Kommenttien yhteenveto on käytettävissä, kun kommentteja on 5 tai enemmän.",
