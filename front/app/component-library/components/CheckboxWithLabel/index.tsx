@@ -66,6 +66,7 @@ const CheckboxWithLabel = ({
           display="inline"
           content={labelTooltipText}
           role={ariaLabel ? 'none' : undefined}
+          placement="auto"
         />
       )}
     </Box>
