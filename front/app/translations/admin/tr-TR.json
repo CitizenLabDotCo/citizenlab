@@ -1039,7 +1039,7 @@
   "app.containers.Admin.projects.all.itIsAlsoPossibleSurvey1": "Çevrimiçi ve çevrimdışı yanıtları birleştirebilirsiniz. Çevrimdışı yanıtları yüklemek için bu projenin 'Anket' sekmesine gidin ve 'İçe Aktar'a tıklayın.",
   "app.containers.Admin.projects.all.logicNotInPDF": "Anket mantığı indirilen PDF'ye yansıtılmayacaktır. Basılı anket katılımcıları tüm anket sorularını görecektir.",
   "app.containers.Admin.projects.all.notes": "Notlar",
-  "app.containers.Admin.projects.all.personalDataExplanation3": "Bu seçenek dışa aktarılan PDF'ye ad, soyad ve e-posta alanlarını ekleyecektir. Kağıt formu yükledikten sonra, çevrimdışı anket katılımcısı için otomatik olarak bir hesap oluşturmak üzere bu verileri kullanacağız. Alternatif olarak, çevrimdışı anket katılımcısı için manuel olarak bir hesap oluşturmak için de kullanabilirsiniz.",
+  "app.containers.Admin.projects.all.personalDataExplanation4": "Bu seçenek, dışa aktarılan PDF'ye ad, soyad ve e-posta alanlarını ekleyecektir. Kağıt formu yükledikten sonra, çevrimdışı anket katılımcısı için otomatik olarak bir hesap oluşturmak üzere bu verileri kullanacağız. Alternatif olarak, çevrimdışı anket katılımcısı için manuel olarak bir hesap oluşturmak için de kullanabilirsiniz.",
   "app.containers.Admin.projects.project.analysis.Comments.aiSummary": "Yapay Zeka Özeti",
   "app.containers.Admin.projects.project.analysis.Comments.comments": "Yorumlar",
   "app.containers.Admin.projects.project.analysis.Comments.commentsSummaryVisibilityExplanation": "Yorum özeti, 5 veya daha fazla yorum olduğunda kullanılabilir.",
