@@ -42,6 +42,7 @@
 #  page_button_label_multiloc     :jsonb            not null
 #  page_button_link               :string
 #  question_category              :string
+#  include_in_printed_form        :boolean          default(TRUE), not null
 #
 # Indexes
 #
