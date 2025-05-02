@@ -45,7 +45,6 @@ const CheckboxWithLabel = ({
       onClick={handleLabelClick}
       data-testid={dataTestId || `${testEnv('check-mark-label')}`}
       style={{ cursor: 'pointer' }}
-      mr="4px"
       {...boxProps}
     >
       <Checkbox
