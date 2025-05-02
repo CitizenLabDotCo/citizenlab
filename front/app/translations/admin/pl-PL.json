@@ -1039,7 +1039,7 @@
   "app.containers.Admin.projects.all.itIsAlsoPossibleSurvey1": "Możesz łączyć odpowiedzi online i offline. Aby przesłać odpowiedzi offline, przejdź do zakładki \"Ankieta\" tego projektu i kliknij \"Importuj\".",
   "app.containers.Admin.projects.all.logicNotInPDF": "Logika ankiety nie zostanie odzwierciedlona w pobranym pliku PDF. Respondenci papierowi zobaczą wszystkie pytania ankiety.",
   "app.containers.Admin.projects.all.notes": "Uwagi",
-  "app.containers.Admin.projects.all.personalDataExplanation3": "Ta opcja doda pola imienia, nazwiska i adresu e-mail do wyeksportowanego pliku PDF. Po przesłaniu papierowego formularza użyjemy tych danych do automatycznego wygenerowania konta dla respondenta ankiety offline. Alternatywnie możesz użyć tej opcji do ręcznego utworzenia konta dla respondenta ankiety offline.",
+  "app.containers.Admin.projects.all.personalDataExplanation4": "Ta opcja doda pola imienia, nazwiska i adresu e-mail do wyeksportowanego pliku PDF. Po przesłaniu papierowego formularza użyjemy tych danych do automatycznego wygenerowania konta dla respondenta ankiety offline. Alternatywnie możesz użyć tej opcji do ręcznego utworzenia konta dla respondenta ankiety offline.",
   "app.containers.Admin.projects.project.analysis.Comments.aiSummary": "Podsumowanie AI",
   "app.containers.Admin.projects.project.analysis.Comments.comments": "Komentarze",
   "app.containers.Admin.projects.project.analysis.Comments.commentsSummaryVisibilityExplanation": "Podsumowanie komentarzy jest dostępne, gdy jest ich 5 lub więcej.",
