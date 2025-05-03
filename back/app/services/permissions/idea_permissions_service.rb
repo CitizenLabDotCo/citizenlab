@@ -33,7 +33,7 @@ module Permissions
         IDEA_DENIED_REASONS[:published_after_screening] if idea.creation_phase&.prescreening_enabled && idea.published?
       else
         # Check for idea status reason first, to avoid situations where FE presents user
-        # with what looks like a possible action, (e.g. voting), redirects user to signin flow,
+        # with what looks like a possible action, (i.e. reacting), redirects user to signin flow,
         # and then once signed in, the user finds the action is not possible.
         if action == 'reacting_idea' && IdeaStatus::REACTING_NOT_ALLOWED_CODES.include?(idea&.idea_status&.code)
           return IDEA_DENIED_REASONS[:not_reactable_status_code]
