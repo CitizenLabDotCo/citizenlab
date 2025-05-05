@@ -13,13 +13,15 @@ import {
   stylingConsts,
   Button,
   Icon,
+  Checkbox,
 } from '@citizenlab/cl2-component-library';
 
 import { IIdeaData, IIdeaQueryParameters } from 'api/ideas/types';
-import useDeleteIdea from 'api/ideas/useDeleteIdea';
+// import useDeleteIdea from 'api/ideas/useDeleteIdea'; // deletion handled by ActionBar components
 import useIdeas from 'api/ideas/useIdeas';
 
 import { ManagerType, PreviewMode } from 'components/admin/PostManager';
+import ActionBar from 'components/admin/PostManager/components/ActionBar';
 import PostPreview from 'components/admin/PostManager/components/PostPreview';
 import {
   NoPostPage,
@@ -50,12 +52,18 @@ const CommonGroundInputManager = ({ projectId, phaseId }: Props) => {
     transitive: true,
   });
   const { data: ideas, isLoading } = useIdeas(queryParameters);
-  const { mutateAsync: deleteIdea } = useDeleteIdea();
   const [previewPostId, setPreviewPostId] = useState<string | null>(null);
   const [previewMode, setPreviewMode] = useState<PreviewMode>('view');
   const [selection, setSelection] = useState<Set<string>>(new Set());
-  const [warningOpen, setWarningOpen] = useState(false);
-  const [deleting, setDeleting] = useState(false);
+  // for edit/delete action bar
+  const resetSelection = () => setSelection(new Set());
+  const openPreviewEdit = () => {
+    const id = [...selection][0];
+    if (selection.size === 1 && id) {
+      setPreviewMode('edit');
+      setPreviewPostId(id);
+    }
+  };
 
   const openPreview = (id: string) => {
     setPreviewPostId(id);
@@ -66,10 +74,11 @@ const CommonGroundInputManager = ({ projectId, phaseId }: Props) => {
     setPreviewMode('view');
   };
   // Selection handlers
-  const allSelected =
+  const allSelected = !!(
     ideas &&
     ideas.data.length > 0 &&
-    ideas.data.every((i) => selection.has(i.id));
+    ideas.data.every((i) => selection.has(i.id))
+  );
   const toggleSelectAll = () => {
     if (allSelected) setSelection(new Set());
     else if (ideas) setSelection(new Set(ideas.data.map((i) => i.id)));
@@ -80,15 +89,6 @@ const CommonGroundInputManager = ({ projectId, phaseId }: Props) => {
       next.has(id) ? next.delete(id) : next.add(id);
       return next;
     });
-  };
-  const handleDeleteSelected = async () => {
-    setDeleting(true);
-    for (const id of selection) {
-      await deleteIdea(id);
-    }
-    setDeleting(false);
-    setSelection(new Set());
-    setWarningOpen(false);
   };
 
   if (isLoading || !ideas) {
@@ -126,6 +126,16 @@ const CommonGroundInputManager = ({ projectId, phaseId }: Props) => {
 
   return (
     <>
+      {/* Edit/Delete action bar for selected inputs */}
+      {selection.size > 0 && (
+        <Box mb="16px">
+          <ActionBar
+            selection={selection}
+            resetSelection={resetSelection}
+            handleClickEdit={openPreviewEdit}
+          />
+        </Box>
+      )}
       <Table
         border={`1px solid ${colors.grey300}`}
         borderRadius={stylingConsts.borderRadius}
@@ -134,6 +144,13 @@ const CommonGroundInputManager = ({ projectId, phaseId }: Props) => {
         <Thead>
           <Tr background={colors.grey50}>
             <Th>
+              <Checkbox
+                size="21px"
+                checked={allSelected}
+                onChange={toggleSelectAll}
+              />
+            </Th>
+            <Th>
               <FormattedMessage {...messages.title} />
             </Th>
           </Tr>
@@ -141,6 +158,13 @@ const CommonGroundInputManager = ({ projectId, phaseId }: Props) => {
         <Tbody>
           {ideas.data.map((idea: IIdeaData) => (
             <Tr key={idea.id}>
+              <Td>
+                <Checkbox
+                  size="21px"
+                  checked={selection.has(idea.id)}
+                  onChange={() => toggleSelect(idea.id)}
+                />
+              </Td>
               <Td borderBottom="none !important">
                 <TitleLink
                   className="e2e-common-ground-input-manager-title"
