@@ -42,7 +42,7 @@ describe('Idea new page for continuous project', () => {
   });
 
   it.skip('shows an error when no description is provided', () => {
-    const value = randomString(10);
+    const value = randomString(9);
     cy.get('#idea-form');
     cy.get('#e2e-idea-title-input input').type(value);
     cy.get('#e2e-idea-title-input input').should('contain.value', value);
