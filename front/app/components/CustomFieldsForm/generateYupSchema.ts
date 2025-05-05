@@ -31,7 +31,7 @@ const generateYupValidationSchema = ({
             {
               validateEachNonEmptyLocale: (schema) =>
                 schema
-                  .min(10, formatMessage(messages.titleMinLength, { min: 10 }))
+                  .min(3, formatMessage(messages.titleMinLength, { min: 3 }))
                   .max(
                     120,
                     formatMessage(messages.titleMaxLength, { max: 120 })
@@ -53,8 +53,8 @@ const generateYupValidationSchema = ({
             {
               validateEachNonEmptyLocale: (schema) =>
                 schema.min(
-                  40,
-                  formatMessage(messages.descriptionMinLength, { min: 40 })
+                  3, // I'm not seeing the error for this case
+                  formatMessage(messages.descriptionMinLength, { min: 3 })
                 ),
             }
           );
