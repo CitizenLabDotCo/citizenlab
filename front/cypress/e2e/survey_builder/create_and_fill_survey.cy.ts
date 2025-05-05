@@ -61,7 +61,7 @@ describe('Survey builder', () => {
     cy.visit(`admin/projects/${projectId}/phases/${phaseId}/native-survey`);
     cy.get('[data-cy="e2e-edit-survey-content"]').click();
     waitForCustomFormFields();
-    cy.get('[data-cy="e2e-short-answer"]').click({ force: true });
+    cy.get('[data-cy="e2e-short-answer"]').click();
 
     // Save the survey
     cy.get('form').submit();
