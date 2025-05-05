@@ -28,14 +28,13 @@ class WebApi::V1::CustomFormsController < ApplicationController
   private
 
   def set_custom_form
-    
     @phase = Phase.find(params[:phase_id])
     authorize @phase
-    
-    if @phase.participation_method == 'ideation'
-      @custom_form = CustomForm.find_or_initialize_by(participation_context: @phase.project)
+
+    @custom_form = if @phase.participation_method == 'ideation'
+      CustomForm.find_or_initialize_by(participation_context: @phase.project)
     else
-      @custom_form = CustomForm.find_or_initialize_by(participation_context: @phase)
+      CustomForm.find_or_initialize_by(participation_context: @phase)
     end
   end
 
