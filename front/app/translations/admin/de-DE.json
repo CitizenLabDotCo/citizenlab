@@ -871,6 +871,7 @@
   "app.containers.Admin.inspirationHub.Filters.Country": "Land",
   "app.containers.Admin.inspirationHub.Filters.Method": "Methode",
   "app.containers.Admin.inspirationHub.Filters.Search": "Suche",
+  "app.containers.Admin.inspirationHub.Filters.Topic": "Thema",
   "app.containers.Admin.inspirationHub.Filters.population": "Bevölkerung",
   "app.containers.Admin.inspirationHub.Highlighted": "Hervorgehoben",
   "app.containers.Admin.inspirationHub.Ideation": "Ideenfindung",

@@ -871,6 +871,7 @@
   "app.containers.Admin.inspirationHub.Filters.Country": "Land",
   "app.containers.Admin.inspirationHub.Filters.Method": "Metode",
   "app.containers.Admin.inspirationHub.Filters.Search": "Søk",
+  "app.containers.Admin.inspirationHub.Filters.Topic": "Emne",
   "app.containers.Admin.inspirationHub.Filters.population": "Befolkning",
   "app.containers.Admin.inspirationHub.Highlighted": "Uthevet",
   "app.containers.Admin.inspirationHub.Ideation": "Idéutvikling",
