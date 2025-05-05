@@ -3,11 +3,11 @@
 module IdeaCustomFields
   class IdeaCustomFieldPolicy < ApplicationPolicy
     def index?
-      can_configure_custom_fields? record
+      can_access_custom_fields? record
     end
 
     def show?
-      can_configure_custom_fields? record
+      can_access_custom_fields? record
     end
 
     def update_all?
@@ -19,6 +19,11 @@ module IdeaCustomFields
     end
 
     private
+
+    def can_access_custom_fields?(custom_field)
+      project = custom_field&.resource&.participation_context&.project
+      project && policy_for(project).show?
+    end
 
     def can_configure_custom_fields?(custom_field)
       project = custom_field&.resource&.participation_context&.project
