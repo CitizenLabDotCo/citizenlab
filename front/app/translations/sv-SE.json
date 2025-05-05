@@ -97,7 +97,7 @@
   "app.components.ConsentManager.Banner.mainText": "Genom att surfa godkänner du vår {policyLink}.",
   "app.components.ConsentManager.Banner.manage": "Hantera",
   "app.components.ConsentManager.Banner.policyLink": "Policy webbkakor",
-  "app.components.ConsentManager.Banner.reject": "Förkasta",
+  "app.components.ConsentManager.Banner.reject": "Avvisa",
   "app.components.ConsentManager.Modal.CancelDialog.confirm": "Bekräfta",
   "app.components.ConsentManager.Modal.CancelDialog.confirmation": "Om du avbryter, kommer dina inställningar att gå förlorade.",
   "app.components.ConsentManager.Modal.PreferencesDialog.advertising": "Reklam",
