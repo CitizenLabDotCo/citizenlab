@@ -42,7 +42,7 @@ describe('Idea new page for continuous project', () => {
   });
 
   it.skip('shows an error when no description is provided', () => {
-    const value = randomString(9);
+    const value = randomString(10);
     cy.get('#idea-form');
     cy.get('#e2e-idea-title-input input').type(value);
     cy.get('#e2e-idea-title-input input').should('contain.value', value);
@@ -52,16 +52,16 @@ describe('Idea new page for continuous project', () => {
     cy.get('#e2e-idea-description-input .e2e-error-message');
   });
 
-  it('shows an error when the title is less than 10 characters long', () => {
+  it('shows an error when the title is less than 3 characters long', () => {
     cy.get('#idea-form');
-    cy.get('#e2e-idea-title-input input').type(randomString(9));
+    cy.get('#e2e-idea-title-input input').type(randomString(2));
     // Try to go to the next page
     cy.get('[data-cy="e2e-next-page"]').should('be.visible').click();
     cy.get('#e2e-idea-title-input .e2e-error-message');
   });
 
-  it('shows an error when the description is less than 30 characters long', () => {
-    const title = randomString(12);
+  it('shows an error when the description is less than 3 characters long', () => {
+    const title = randomString(2);
     cy.get('#idea-form');
     cy.get('#e2e-idea-title-input input').type(title);
     cy.get('#e2e-idea-title-input input').should('contain.value', title);
