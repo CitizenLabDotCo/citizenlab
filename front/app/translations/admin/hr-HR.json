@@ -2744,7 +2744,6 @@
   "app.containers.ContentBuilder.homepage.bannerText": "Tekst natpisa",
   "app.containers.ContentBuilder.homepage.button": "Dugme",
   "app.containers.ContentBuilder.homepage.chooseLayout": "Izgled",
-  "app.containers.ContentBuilder.homepage.customizationNotAvailable": "Prilagođavanje postavki osim teksta na natpisu početne stranice nije uključeno u vašu trenutnu licencu. Obratite se svom GovSuccess Manageru da saznate više o tome.",
   "app.containers.ContentBuilder.homepage.customized_button": "Prilagođen",
   "app.containers.ContentBuilder.homepage.customized_button_text_label": "Tekst gumba",
   "app.containers.ContentBuilder.homepage.customized_button_url_label": "Veza gumba",

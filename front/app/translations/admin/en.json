@@ -2744,7 +2744,7 @@
   "app.containers.ContentBuilder.homepage.bannerText": "Banner text",
   "app.containers.ContentBuilder.homepage.button": "Button",
   "app.containers.ContentBuilder.homepage.chooseLayout": "Layout",
-  "app.containers.ContentBuilder.homepage.customizationNotAvailable": "Customizing settings other than the text on the homepage banner is not included in your current license. Reach out to your GovSuccess Manager to learn more about it.",
+  "app.containers.ContentBuilder.homepage.customizationNotAvailable2": "Customizing settings other than the image and text on the homepage banner is not included in your current license. Reach out to your GovSuccess Manager to learn more about it.",
   "app.containers.ContentBuilder.homepage.customized_button": "Custom",
   "app.containers.ContentBuilder.homepage.customized_button_text_label": "Button text",
   "app.containers.ContentBuilder.homepage.customized_button_url_label": "Button link",

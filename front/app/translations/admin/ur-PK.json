@@ -2744,7 +2744,6 @@
   "app.containers.ContentBuilder.homepage.bannerText": "بینر کا متن",
   "app.containers.ContentBuilder.homepage.button": "بٹن",
   "app.containers.ContentBuilder.homepage.chooseLayout": "لے آؤٹ",
-  "app.containers.ContentBuilder.homepage.customizationNotAvailable": "ہوم پیج بینر پر متن کے علاوہ دیگر ترتیبات کو حسب ضرورت بنانا آپ کے موجودہ لائسنس میں شامل نہیں ہے۔ اس کے بارے میں مزید جاننے کے لیے اپنے GovSuccess مینیجر سے رابطہ کریں۔",
   "app.containers.ContentBuilder.homepage.customized_button": "حسب ضرورت",
   "app.containers.ContentBuilder.homepage.customized_button_text_label": "بٹن کا متن",
   "app.containers.ContentBuilder.homepage.customized_button_url_label": "بٹن لنک",
