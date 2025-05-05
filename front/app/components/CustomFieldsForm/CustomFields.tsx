@@ -53,7 +53,13 @@ const renderField = (
           } as IOption;
         });
       }
-      return <RadioSingleSelect name={question.key} options={selectOptions} />; // <Select name={question.key} options={selectOptions} />;
+      return (
+        <RadioSingleSelect
+          name={question.key}
+          options={selectOptions}
+          required={question.required}
+        />
+      ); // <Select name={question.key} options={selectOptions} />;
     }
     case 'image_files':
       return (

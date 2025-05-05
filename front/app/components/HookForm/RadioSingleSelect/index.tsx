@@ -27,7 +27,7 @@ const StyledBox = styled(Box)`
   }
 `;
 
-const RadioSingleSelect = ({ name, options, ...rest }: Props) => {
+const RadioSingleSelect = ({ name, options, required, ...rest }: Props) => {
   const {
     trigger,
     watch,
@@ -65,8 +65,12 @@ const RadioSingleSelect = ({ name, options, ...rest }: Props) => {
                     }
                     currentValue={watch(name)}
                     value={option.value}
-                    onChange={(option_key) => {
-                      setValue(name, option_key);
+                    onChange={(newValue) => {
+                      let valueToSet = newValue;
+                      if (newValue === watch(name) && !required) {
+                        valueToSet = undefined;
+                      }
+                      setValue(name, valueToSet);
                       trigger(name);
                     }}
                   />
