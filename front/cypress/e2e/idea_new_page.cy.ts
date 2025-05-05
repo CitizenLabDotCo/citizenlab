@@ -68,9 +68,6 @@ describe('Idea new page for continuous project', () => {
 
     cy.get('[data-cy="e2e-next-page"]').should('be.visible').click();
 
-    cy.get('#e2e-idea-description-input .ql-editor').type(randomString(2));
-    cy.get('#e2e-idea-description-input .ql-editor').blur();
-    cy.wait(1000);
     // Try to go to the next page
     cy.get('[data-cy="e2e-next-page"]').should('be.visible').click();
     cy.get('#e2e-idea-description-input .e2e-error-message');
