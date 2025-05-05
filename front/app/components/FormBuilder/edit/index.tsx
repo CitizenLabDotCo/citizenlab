@@ -322,8 +322,9 @@ const FormEdit = ({
       await updateFormCustomFields(
         {
           projectId,
+          isFormPhaseSpecific,
+          phaseId,
           customFields: finalResponseArray,
-          phaseId: isFormPhaseSpecific ? phaseId : undefined,
           customForm: {
             saveType: autosave ? 'auto' : 'manual',
             openedAt: formOpenedAt,

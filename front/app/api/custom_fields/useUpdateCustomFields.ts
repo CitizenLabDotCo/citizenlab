@@ -10,7 +10,8 @@ import { ICustomField, ICustomFieldResponse } from './types';
 
 type IUpdateCustomFieldProperties = {
   projectId: string;
-  phaseId?: string;
+  phaseId: string;
+  isFormPhaseSpecific: boolean;
   customFields: (Omit<
     ICustomFieldResponse,
     'type' | 'attributes' | 'relationships' | 'id'
@@ -27,12 +28,14 @@ type IUpdateCustomFieldProperties = {
 const updateCustomField = async ({
   projectId,
   phaseId,
+  isFormPhaseSpecific,
   customFields,
   customForm,
 }: IUpdateCustomFieldProperties) => {
-  const apiEndpoint = phaseId
+  const apiEndpoint = isFormPhaseSpecific
     ? `admin/phases/${phaseId}/custom_fields/update_all`
     : `admin/projects/${projectId}/custom_fields/update_all`;
+
   return fetcher<ICustomField>({
     path: `/${apiEndpoint}`,
     action: 'patch',
@@ -49,17 +52,16 @@ const useUpdateCustomField = () => {
   const queryClient = useQueryClient();
   return useMutation<ICustomField, CLErrors, IUpdateCustomFieldProperties>({
     mutationFn: updateCustomField,
-    onSuccess: (_, variables) => {
+    onSuccess: (_, { phaseId, projectId }) => {
       queryClient.invalidateQueries({
         queryKey: customFieldsKeys.list({
-          projectId: variables.projectId,
-          phaseId: variables.phaseId,
+          projectId,
+          phaseId,
         }),
       });
       queryClient.invalidateQueries({
         queryKey: customFormKeys.item({
-          projectId: variables.projectId,
-          phaseId: variables.phaseId,
+          phaseId,
         }),
       });
     },
