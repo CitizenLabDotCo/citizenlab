@@ -389,7 +389,11 @@ module ParticipationMethod
       true
     end
 
-    def supports_built_in_fields?
+    def built_in_title_required?
+      true
+    end
+
+    def built_in_body_required?
       true
     end
 

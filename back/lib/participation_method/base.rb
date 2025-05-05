@@ -3,7 +3,19 @@
 module ParticipationMethod
   class Base
     def self.all_methods
-      [DocumentAnnotation, Ideation, Information, NativeSurvey, CommunityMonitorSurvey, Poll, Proposals, Survey, Volunteering, Voting]
+      [
+        CommonGround,
+        CommunityMonitorSurvey,
+        DocumentAnnotation,
+        Ideation,
+        Information,
+        NativeSurvey,
+        Poll,
+        Proposals,
+        Survey,
+        Volunteering,
+        Voting
+      ]
     end
 
     def initialize(phase)
@@ -86,7 +98,11 @@ module ParticipationMethod
       false
     end
 
-    def supports_built_in_fields?
+    def built_in_title_required?
+      false
+    end
+
+    def built_in_body_required?
       false
     end
 
