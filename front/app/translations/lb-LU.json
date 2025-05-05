@@ -1720,7 +1720,7 @@
   "app.containers.ProjectsShowPage.VolunteeringSection.signInLinkText": "Umellen",
   "app.containers.ProjectsShowPage.VolunteeringSection.signUpLinkText": "aschreiwen",
   "app.containers.ProjectsShowPage.VolunteeringSection.withdrawVolunteerButton": "Ech ka net méi hëllefen",
-  "app.containers.ProjectsShowPage.VolunteeringSection.xVolunteers": "{x, plural, one {# Volontaire} other {# Volontairen}}",
+  "app.containers.ProjectsShowPage.VolunteeringSection.xVolunteers": "{x, plural, one {# partizipant} other {# partizipanten}}",
   "app.containers.ProjectsShowPage.process.survey.embeddedSurveyScreenReaderWarning1": "Opgepasst: Déi embedded Ëmfro kann Accessibilitéitsprobleemer fir Screenreader Benotzer hunn. Wann Dir Erausfuerderunge erliewt, kontaktéiert w.e.g. den Plattformadministrator fir e Link op d'Ëmfro vun der ursprénglecher Plattform ze kréien. Alternativ kënnt Dir aner Weeër ufroen fir d'Ëmfro auszefëllen.",
   "app.containers.ProjectsShowPage.process.survey.survey": "Ëmfro",
   "app.containers.ProjectsShowPage.process.survey.surveyDisabledMaybeNotPermitted": "Fir gewuer ze ginn, ob Dir un dëser Ëmfro deelhuele kënnt, wgl. {logInLink} fir d’éischt op d’Plattform.",
