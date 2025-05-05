@@ -935,8 +935,6 @@ describe('Survey builder', () => {
     cy.get('[data-cy="e2e-rule-input-select"]').should('exist');
     cy.get('[data-cy="e2e-rule-input-select"]').get('select').select(3);
 
-    // TODO: Check for confilicting logic label
-
     // Save the survey
     cy.get('form').submit();
 
