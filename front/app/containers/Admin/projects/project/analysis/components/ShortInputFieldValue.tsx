@@ -78,10 +78,13 @@ const ShortInputFieldValue = ({
     }
     case 'select': {
       return (
-        <SelectOptionText
-          customFieldId={customField.data.id}
-          selectedOptionKey={rawValue}
-        />
+        <Box>
+          <SelectOptionText
+            customFieldId={customField.data.id}
+            selectedOptionKey={rawValue}
+          />
+          <Box>{rawValueRelatedTextAnswer}</Box>
+        </Box>
       );
     }
     case 'multiselect': {
@@ -97,6 +100,7 @@ const ShortInputFieldValue = ({
               />
             </>
           ))}
+          <Box>{rawValueRelatedTextAnswer}</Box>
         </>
       );
     }
