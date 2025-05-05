@@ -1,5 +1,6 @@
 import React, { useMemo } from 'react';
 
+import { Box } from '@citizenlab/cl2-component-library';
 import { isNil } from 'lodash-es';
 import { FormattedDate } from 'react-intl';
 
@@ -15,6 +16,7 @@ import messages from '../messages';
 type Props = {
   customField: IIdeaCustomField;
   rawValue?: any;
+  rawValueRelatedTextAnswer?: string;
 };
 
 const SelectOptionText = ({
@@ -41,7 +43,11 @@ const SelectOptionText = ({
  * the custom field for that input. Only renders anything for non-built-in
  * custom fields
  */
-const ShortInputFieldValue = ({ customField, rawValue }: Props) => {
+const ShortInputFieldValue = ({
+  customField,
+  rawValue,
+  rawValueRelatedTextAnswer,
+}: Props) => {
   const { formatMessage } = useIntl();
   // We only render non-built-in custom fields, assuming the parent has
   // dedicated logic to render the built-in fields
@@ -62,7 +68,12 @@ const ShortInputFieldValue = ({ customField, rawValue }: Props) => {
       if (rawValue === null || rawValue === undefined || rawValue === '') {
         return <>No Answer</>;
       } else {
-        return <>{rawValue}</>;
+        return (
+          <Box display="flex" flexDirection="column">
+            <Box>{rawValue}</Box>
+            <Box>{rawValueRelatedTextAnswer}</Box>
+          </Box>
+        );
       }
     }
     case 'select': {

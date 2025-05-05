@@ -49,6 +49,15 @@ const FieldValue = ({ projectId, phaseId, customFieldId, input }: Props) => {
   const rawValue =
     input.attributes.custom_field_values[customField.data.attributes.key];
 
+  // Get any related text answer for the custom field (E.g. "other" or "follow up" answer)
+  const rawValueRelatedTextAnswer =
+    input.attributes.custom_field_values[
+      `${customField.data.attributes.key}_follow_up`
+    ] ||
+    input.attributes.custom_field_values[
+      `${customField.data.attributes.key}_other`
+    ];
+
   switch (customField.data.attributes.code) {
     case 'title_multiloc':
       return <TitleMultilocLongField input={input} customField={customField} />;
@@ -78,17 +87,26 @@ const FieldValue = ({ projectId, phaseId, customFieldId, input }: Props) => {
               input={input}
               customField={customField}
               rawValue={rawValue}
+              rawValueRelatedTextAnswer={rawValueRelatedTextAnswer}
             />
           );
         }
         case 'multiline_text': {
           return (
-            <MultilineTextLongField input={input} customField={customField} />
+            <MultilineTextLongField
+              input={input}
+              customField={customField}
+              rawValueRelatedTextAnswer={rawValueRelatedTextAnswer}
+            />
           );
         }
         case 'select': {
           return (
-            <SelectLongField customField={customField} rawValue={rawValue} />
+            <SelectLongField
+              customField={customField}
+              rawValue={rawValue}
+              rawValueRelatedTextAnswer={rawValueRelatedTextAnswer}
+            />
           );
         }
         case 'multiselect': {
