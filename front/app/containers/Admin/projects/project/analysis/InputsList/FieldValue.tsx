@@ -4,6 +4,7 @@ import { IInputsData } from 'api/analysis_inputs/types';
 import useIdeaCustomField from 'api/idea_custom_fields/useIdeaCustomField';
 
 import ShortInputFieldValue from '../components/ShortInputFieldValue';
+import { getRelatedTextAnswer } from '../util';
 
 type Props = {
   customFieldId: string;
@@ -30,11 +31,22 @@ const FieldValue = ({ projectId, phaseId, customFieldId, input }: Props) => {
   });
 
   if (!customField) return null;
-
   const rawValue =
     input.attributes.custom_field_values[customField.data.attributes.key];
 
-  return <ShortInputFieldValue customField={customField} rawValue={rawValue} />;
+  // Get any related text answer for the custom field (E.g. "other" or "follow up" answer)
+  const rawValueRelatedTextAnswer = getRelatedTextAnswer(
+    input,
+    customField.data.attributes.key
+  );
+
+  return (
+    <ShortInputFieldValue
+      customField={customField}
+      rawValue={rawValue}
+      rawValueRelatedTextAnswer={rawValueRelatedTextAnswer}
+    />
+  );
 };
 
 export default FieldValue;
