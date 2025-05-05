@@ -43,17 +43,16 @@ const renderField = (
     case 'multiline_text':
       return <TextArea name={question.key} />;
     case 'select': {
-      // TODO: Use keys instead of ids? And be able to unselect the option?
       let selectOptions: IOption[] = [];
       if (question.options) {
         selectOptions = question.options.map((selectOption) => {
           return {
-            value: selectOption.id,
+            value: selectOption.key,
             label: localize(selectOption.title_multiloc),
           } as IOption;
         });
       }
-      return <Select name={question.key} options={selectOptions} />;
+      return <Select name={question.key} options={selectOptions} />; // Ideally, these should be radio buttons that also allow unselecting
     }
     case 'image_files':
       return (
