@@ -28,13 +28,15 @@ class WebApi::V1::CustomFormsController < ApplicationController
   private
 
   def set_custom_form
-    return unless %w[Project Phase].include? params[:container_type]
-
-    container_class = params[:container_type].constantize
-    container = container_class.find params[:id]
-    authorize container
-
-    @custom_form = CustomForm.find_or_initialize_by participation_context: container
+    
+    @phase = Phase.find(params[:phase_id])
+    authorize @phase
+    
+    if @phase.participation_method == 'ideation'
+      @custom_form = CustomForm.find_or_initialize_by(participation_context: @phase.project)
+    else
+      @custom_form = CustomForm.find_or_initialize_by(participation_context: @phase)
+    end
   end
 
   def update_params
