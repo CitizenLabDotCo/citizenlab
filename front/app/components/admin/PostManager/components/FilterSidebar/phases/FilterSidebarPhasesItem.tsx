@@ -55,6 +55,7 @@ const FilterSidebarPhasesItem = ({
         labelContent={
           <LabelContentWrapper>
             {localize(phase.attributes.title_multiloc)}
+            {/* Flex shrink needed to prevent number from becoming squished  */}
             <Box flexShrink={0}>
               <CircledPhaseNumber phaseNumber={phaseNumber} />
             </Box>
