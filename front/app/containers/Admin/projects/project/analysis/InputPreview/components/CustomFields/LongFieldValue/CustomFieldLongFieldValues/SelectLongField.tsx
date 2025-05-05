@@ -41,7 +41,9 @@ const SelectLongField = ({
           </Box>
         </Box>
       </Box>
-      <Text my="4px">{rawValueRelatedTextAnswer}</Text>
+      {rawValueRelatedTextAnswer && (
+        <Text my="4px">{rawValueRelatedTextAnswer}</Text>
+      )}
     </Box>
   );
 };

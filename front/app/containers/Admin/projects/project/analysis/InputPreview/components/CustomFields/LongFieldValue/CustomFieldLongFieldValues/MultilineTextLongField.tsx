@@ -35,7 +35,9 @@ const MultilineTextLongField = ({
           ] || formatMessage(messages.noAnswer)}
         </Text>
       </Box>
-      <Text my="4px">{rawValueRelatedTextAnswer}</Text>
+      {rawValueRelatedTextAnswer && (
+        <Text my="4px">{rawValueRelatedTextAnswer}</Text>
+      )}
     </Box>
   );
 };
