@@ -17,6 +17,7 @@ import Select from 'components/HookForm/Select';
 import TextArea from 'components/HookForm/TextArea';
 import Topics from 'components/HookForm/Topics';
 import { FormLabel } from 'components/UI/FormComponents';
+import RadioSingleSelect from 'components/HookForm/RadioSingleSelect';
 
 const renderField = (
   question: IFlatCustomField,
@@ -52,7 +53,7 @@ const renderField = (
           } as IOption;
         });
       }
-      return <Select name={question.key} options={selectOptions} />; // Ideally, these should be radio buttons that also allow unselecting
+      return <RadioSingleSelect name={question.key} options={selectOptions} />; // <Select name={question.key} options={selectOptions} />;
     }
     case 'image_files':
       return (
