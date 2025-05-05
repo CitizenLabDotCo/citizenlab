@@ -871,6 +871,7 @@
   "app.containers.Admin.inspirationHub.Filters.Country": "Gwlad",
   "app.containers.Admin.inspirationHub.Filters.Method": "Dull",
   "app.containers.Admin.inspirationHub.Filters.Search": "Chwiliwch",
+  "app.containers.Admin.inspirationHub.Filters.Topic": "Pwnc",
   "app.containers.Admin.inspirationHub.Filters.population": "Poblogaeth",
   "app.containers.Admin.inspirationHub.Highlighted": "Amlygwyd",
   "app.containers.Admin.inspirationHub.Ideation": "Syniad",

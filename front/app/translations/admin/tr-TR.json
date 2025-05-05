@@ -871,6 +871,7 @@
   "app.containers.Admin.inspirationHub.Filters.Country": "Ülke",
   "app.containers.Admin.inspirationHub.Filters.Method": "Yöntem",
   "app.containers.Admin.inspirationHub.Filters.Search": "Arama",
+  "app.containers.Admin.inspirationHub.Filters.Topic": "Konu",
   "app.containers.Admin.inspirationHub.Filters.population": "Nüfus",
   "app.containers.Admin.inspirationHub.Highlighted": "Vurgulandı",
   "app.containers.Admin.inspirationHub.Ideation": "Düşünce",
