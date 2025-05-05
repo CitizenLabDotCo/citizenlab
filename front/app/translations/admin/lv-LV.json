@@ -871,6 +871,7 @@
   "app.containers.Admin.inspirationHub.Filters.Country": "Valsts",
   "app.containers.Admin.inspirationHub.Filters.Method": "Metode",
   "app.containers.Admin.inspirationHub.Filters.Search": "Meklēšana",
+  "app.containers.Admin.inspirationHub.Filters.Topic": "Tēma",
   "app.containers.Admin.inspirationHub.Filters.population": "Iedzīvotāju skaits",
   "app.containers.Admin.inspirationHub.Highlighted": "Izcelts",
   "app.containers.Admin.inspirationHub.Ideation": "Ideju izstrāde",
