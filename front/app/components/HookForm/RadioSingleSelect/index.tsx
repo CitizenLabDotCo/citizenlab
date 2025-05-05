@@ -30,6 +30,7 @@ const StyledBox = styled(Box)`
 const RadioSingleSelect = ({ name, options, ...rest }: Props) => {
   const {
     trigger,
+    watch,
     setValue,
     formState: { errors: formContextErrors },
     control,
@@ -62,10 +63,10 @@ const RadioSingleSelect = ({ name, options, ...rest }: Props) => {
                         {option.label}
                       </Text>
                     }
-                    // currentValue={data}
+                    currentValue={watch(name)}
                     value={option.value}
-                    onChange={(option) => {
-                      setValue(name, option.value);
+                    onChange={(option_key) => {
+                      setValue(name, option_key);
                       trigger(name);
                     }}
                   />
