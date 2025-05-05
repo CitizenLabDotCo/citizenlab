@@ -871,6 +871,7 @@
   "app.containers.Admin.inspirationHub.Filters.Country": "Šalis",
   "app.containers.Admin.inspirationHub.Filters.Method": "Metodas",
   "app.containers.Admin.inspirationHub.Filters.Search": "Paieška",
+  "app.containers.Admin.inspirationHub.Filters.Topic": "Tema",
   "app.containers.Admin.inspirationHub.Filters.population": "Gyventojai",
   "app.containers.Admin.inspirationHub.Highlighted": "Pabrėžta",
   "app.containers.Admin.inspirationHub.Ideation": "Idėjos",
