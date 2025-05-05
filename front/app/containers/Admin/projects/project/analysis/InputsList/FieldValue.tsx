@@ -30,11 +30,25 @@ const FieldValue = ({ projectId, phaseId, customFieldId, input }: Props) => {
   });
 
   if (!customField) return null;
-
   const rawValue =
     input.attributes.custom_field_values[customField.data.attributes.key];
 
-  return <ShortInputFieldValue customField={customField} rawValue={rawValue} />;
+  // Get any related text answer for the custom field (E.g. "other" or "follow up" answer)
+  const rawValueRelatedTextAnswer =
+    input.attributes.custom_field_values[
+      `${customField.data.attributes.key}_follow_up`
+    ] ||
+    input.attributes.custom_field_values[
+      `${customField.data.attributes.key}_other`
+    ];
+
+  return (
+    <ShortInputFieldValue
+      customField={customField}
+      rawValue={rawValue}
+      rawValueRelatedTextAnswer={rawValueRelatedTextAnswer}
+    />
+  );
 };
 
 export default FieldValue;
