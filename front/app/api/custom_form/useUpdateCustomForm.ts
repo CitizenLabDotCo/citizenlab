@@ -7,10 +7,10 @@ import getApiEndPoint from './getApiEndpoint';
 import customFormKeys from './keys';
 import { ICustomForm, ICustomFormParameters } from './types';
 
-interface IUpdateCustomFormProperties {
-  print_start_multiloc: Multiloc;
-  print_end_multiloc: Multiloc;
-}
+type UpdateCustomFormProperties = {
+  printStartMultiloc: Multiloc;
+  printEndMultiloc: Multiloc;
+};
 
 const updateCustomForm = async ({
   apiEndpoint,
@@ -34,12 +34,12 @@ const updateCustomForm = async ({
 const useUpdateCustomForm = ({ projectId, phaseId }: ICustomFormParameters) => {
   const apiEndpoint = getApiEndPoint(projectId, phaseId);
   const queryClient = useQueryClient();
-  return useMutation<ICustomForm, CLErrors, IUpdateCustomFormProperties>({
-    mutationFn: (variables) =>
+  return useMutation<ICustomForm, CLErrors, UpdateCustomFormProperties>({
+    mutationFn: ({ printStartMultiloc, printEndMultiloc }) =>
       updateCustomForm({
         apiEndpoint,
-        printStartMultiloc: variables.print_start_multiloc,
-        printEndMultiloc: variables.print_end_multiloc,
+        printStartMultiloc,
+        printEndMultiloc,
       }),
     onSuccess: () => {
       queryClient.invalidateQueries({
