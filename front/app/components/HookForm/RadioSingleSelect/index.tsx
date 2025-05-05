@@ -17,6 +17,7 @@ import Error, { TFieldName } from 'components/UI/Error';
 interface Props extends Omit<SelectProps, 'onChange'> {
   name: string;
   options: IOption[];
+  required?: boolean;
 }
 
 const StyledBox = styled(Box)`
