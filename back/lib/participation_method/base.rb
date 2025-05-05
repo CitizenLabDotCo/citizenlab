@@ -138,10 +138,13 @@ module ParticipationMethod
       false
     end
 
+    # Returns whether this participation method supports idea statuses?
     def supports_status?
       false
     end
 
+    # Returns whether this participation method supports new input submissions from
+    # end-users.
     def supports_submission?
       false
     end
@@ -154,6 +157,7 @@ module ParticipationMethod
       true
     end
 
+    # Returns whether inputs in this participation method can be moved to another phase.
     def transitive?
       false
     end
