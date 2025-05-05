@@ -871,6 +871,7 @@
   "app.containers.Admin.inspirationHub.Filters.Country": "دولة",
   "app.containers.Admin.inspirationHub.Filters.Method": "طريقة",
   "app.containers.Admin.inspirationHub.Filters.Search": "يبحث",
+  "app.containers.Admin.inspirationHub.Filters.Topic": "عنوان",
   "app.containers.Admin.inspirationHub.Filters.population": "سكان",
   "app.containers.Admin.inspirationHub.Highlighted": "مُميّز",
   "app.containers.Admin.inspirationHub.Ideation": "الفكرة",
