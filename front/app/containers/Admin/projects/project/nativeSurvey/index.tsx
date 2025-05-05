@@ -68,7 +68,6 @@ const Forms = () => {
 
   // Variables from form config
   const {
-    downloadPdfLink,
     downloadExcelLink,
     postingEnabled,
     togglePostingEnabled,
@@ -108,7 +107,7 @@ const Forms = () => {
     personal_data,
   }: FormPDFExportFormValues) => {
     await saveSurveyAsPDF({
-      downloadPdfLink,
+      phaseId,
       locale,
       personal_data,
     });
