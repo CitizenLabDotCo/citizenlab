@@ -4,27 +4,19 @@ import { CLErrors } from 'typings';
 import fetcher from 'utils/cl-react-query/fetcher';
 
 import customFormKeys from './keys';
-import { CustomFormKeys, ICustomForm, ICustomFormParameters } from './types';
+import { CustomFormKeys, ICustomForm } from './types';
 
-const fetchCustomForm = ({ projectId, phaseId }: ICustomFormParameters) => {
-  const apiEndpoint = phaseId
-    ? `phases/${phaseId}/custom_form`
-    : `projects/${projectId}/custom_form`;
-
+const fetchCustomForm = (phaseId: string) => {
   return fetcher<ICustomForm>({
-    path: `/${apiEndpoint}`,
+    path: `/phases/${phaseId}/custom_form`,
     action: 'get',
   });
 };
 
-const useCustomForm = ({ projectId, phaseId }: ICustomFormParameters) => {
+const useCustomForm = (phaseId: string) => {
   return useQuery<ICustomForm, CLErrors, ICustomForm, CustomFormKeys>({
-    queryKey: customFormKeys.item({ projectId, phaseId }),
-    queryFn: () =>
-      fetchCustomForm({
-        projectId,
-        phaseId,
-      }),
+    queryKey: customFormKeys.item({ phaseId }),
+    queryFn: () => fetchCustomForm(phaseId),
   });
 };
 

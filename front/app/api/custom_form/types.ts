@@ -6,11 +6,6 @@ import customFormKeys from './keys';
 
 export type CustomFormKeys = Keys<typeof customFormKeys>;
 
-export interface ICustomFormParameters {
-  projectId: string;
-  phaseId?: string;
-}
-
 export type CustomFormAttributes = {
   opened_at: string;
   fields_last_updated_at: string;

@@ -63,7 +63,7 @@ type FormEditProps = {
     customFields: IFlatCustomField[];
   };
   projectId: string;
-  phaseId?: string;
+  phaseId: string;
   builderConfig: FormBuilderConfig;
   totalSubmissions: number;
   viewFormLink: RouteType;
@@ -93,10 +93,7 @@ const FormEdit = ({
     phaseId: isFormPhaseSpecific ? phaseId : undefined,
   });
 
-  const { data: customForm } = useCustomForm({
-    projectId,
-    phaseId: isFormPhaseSpecific ? phaseId : undefined,
-  });
+  const { data: customForm } = useCustomForm(phaseId);
 
   // Set the form opened at date from the API date only when the form is first loaded
   const [formOpenedAt, setFormOpenedAt] = useState<string | undefined>();
@@ -511,15 +508,16 @@ const FormBuilderPage = ({
   viewFormLink,
 }: FormBuilderPageProps) => {
   const modalPortalElement = document.getElementById('modal-portal');
-  const { projectId, phaseId } = useParams() as {
-    projectId: string;
-    phaseId?: string;
-  };
+  const { projectId, phaseId } = useParams();
   const { data: submissionCount } = useFormSubmissionCount({
     phaseId,
   });
 
   const formCustomFields = builderConfig.formCustomFields;
+
+  if (typeof projectId !== 'string' || typeof phaseId !== 'string') {
+    return null;
+  }
 
   if (isNilOrError(formCustomFields) || isNilOrError(submissionCount)) {
     return <Spinner />;
