@@ -28,7 +28,7 @@ const StyledBox = styled(Box)`
   }
 `;
 
-const RadioSingleSelect = ({ name, options, required, ...rest }: Props) => {
+const RadioSingleSelect = ({ name, options, required }: Props) => {
   const {
     trigger,
     watch,
@@ -48,7 +48,7 @@ const RadioSingleSelect = ({ name, options, required, ...rest }: Props) => {
       <Controller
         name={name}
         control={control}
-        render={({ field: { ref: _ref, ...field } }) => {
+        render={({ field: { ref: _ref } }) => {
           return (
             <Box display="block">
               {options.map((option, index: number) => (

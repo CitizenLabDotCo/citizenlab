@@ -13,7 +13,6 @@ import Input from 'components/HookForm/Input';
 import InputMultilocWithLocaleSwitcher from 'components/HookForm/InputMultilocWithLocaleSwitcher';
 import LocationInput from 'components/HookForm/LocationInput';
 import QuillMultilocWithLocaleSwitcher from 'components/HookForm/QuillMultilocWithLocaleSwitcher';
-import Select from 'components/HookForm/Select';
 import TextArea from 'components/HookForm/TextArea';
 import Topics from 'components/HookForm/Topics';
 import { FormLabel } from 'components/UI/FormComponents';
@@ -59,7 +58,7 @@ const renderField = (
           options={selectOptions}
           required={question.required}
         />
-      ); // <Select name={question.key} options={selectOptions} />;
+      ); // <Select name={question.key} options={selectOptions} />; // There seems to be an issue with the style?
     }
     case 'image_files':
       return (
