@@ -383,6 +383,8 @@ class Phase < ApplicationRecord
       ParticipationMethod::Poll.new(self)
     when 'volunteering'
       ParticipationMethod::Volunteering.new(self)
+    when 'common_ground'
+      ParticipationMethod::CommonGround.new(self)
     else
       ParticipationMethod::None.new
     end

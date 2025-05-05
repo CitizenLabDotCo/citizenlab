@@ -169,7 +169,8 @@ RSpec.describe ParticipationMethod::Voting do
   its(:allowed_ideas_orders) { is_expected.to eq ['random'] }
   its(:return_disabled_actions?) { is_expected.to be false }
   its(:supports_assignment?) { is_expected.to be true }
-  its(:supports_built_in_fields?) { is_expected.to be true }
+  its(:built_in_title_required?) { is_expected.to be(true) }
+  its(:built_in_body_required?) { is_expected.to be(true) }
   its(:supports_commenting?) { is_expected.to be true }
   its(:supports_edits_after_publication?) { is_expected.to be true }
   its(:supports_exports?) { is_expected.to be true }
