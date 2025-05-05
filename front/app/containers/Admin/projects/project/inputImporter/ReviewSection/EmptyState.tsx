@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 
 import {
   Box,
@@ -17,12 +17,11 @@ import useProjectById from 'api/projects/useProjectById';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 import useLocale from 'hooks/useLocale';
 
-import PDFExportModal, {
-  FormValues,
-} from 'containers/Admin/projects/components/PDFExportModal';
+import { FormPDFExportFormValues } from 'containers/Admin/projects/components/PDFExportModal';
 import buttonMessages from 'containers/Admin/projects/project/inputForm/messages';
 import { API_PATH } from 'containers/App/constants';
 
+import DownloadPDFButtonWithModal from 'components/FormBuilder/components/FormBuilderTopBar/DownloadPDFButtonWithModal';
 import UpsellTooltip from 'components/UpsellTooltip';
 
 import { FormattedMessage } from 'utils/cl-intl';
@@ -38,7 +37,6 @@ import messages from './messages';
 import { isPDFUploadSupported, supportsNativeSurvey } from './utils';
 
 const EmptyState = () => {
-  const [exportModalOpen, setExportModalOpen] = useState(false);
   const locale = useLocale();
   const { projectId, phaseId } = useParams() as {
     projectId: string;
@@ -48,11 +46,6 @@ const EmptyState = () => {
   const { data: phase } = usePhase(phaseId);
 
   const participationMethod = phase?.data.attributes.participation_method;
-
-  const importPrintedFormsAllowed = useFeatureFlag({
-    name: 'import_printed_forms',
-    onlyCheckAllowed: true,
-  });
 
   const inputImporterAllowed = useFeatureFlag({
     name: 'input_importer',
@@ -79,9 +72,9 @@ const EmptyState = () => {
     saveAs(blob, 'example.xlsx');
   };
 
-  const handleDownloadPDF = () => setExportModalOpen(true);
-
-  const handleExportPDF = async ({ personal_data }: FormValues) => {
+  const handleExportPDF = async ({
+    personal_data,
+  }: FormPDFExportFormValues) => {
     if (isNilOrError(locale)) return;
 
     if (supportsNativeSurvey(participationMethod)) {
@@ -128,22 +121,16 @@ const EmptyState = () => {
         </Text>
         <Box display="flex">
           {pdfImportSupported && (
-            <UpsellTooltip disabled={importPrintedFormsAllowed}>
-              <Button
-                bgColor={colors.primary}
-                onClick={handleDownloadPDF}
-                width="auto"
-                icon="download"
-                data-cy="e2e-save-input-form-pdf"
-                mr="8px"
-                disabled={!importPrintedFormsAllowed}
-              >
-                {/* TODO: distinguish copies between surveys and inputs */}
-                <FormattedMessage {...buttonMessages.downloadInputForm} />
-              </Button>
-            </UpsellTooltip>
+            <DownloadPDFButtonWithModal
+              formType={
+                supportsNativeSurvey(participationMethod)
+                  ? 'survey'
+                  : 'input_form'
+              }
+              onExport={handleExportPDF}
+              mr="8px"
+            />
           )}
-
           <UpsellTooltip disabled={inputImporterAllowed}>
             <Button
               buttonStyle="secondary-outlined"
@@ -156,14 +143,6 @@ const EmptyState = () => {
           </UpsellTooltip>
         </Box>
       </Box>
-      <PDFExportModal
-        open={exportModalOpen}
-        formType={
-          supportsNativeSurvey(participationMethod) ? 'survey' : 'idea_form'
-        }
-        onClose={() => setExportModalOpen(false)}
-        onExport={handleExportPDF}
-      />
     </Box>
   );
 };

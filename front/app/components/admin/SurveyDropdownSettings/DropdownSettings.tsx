@@ -16,11 +16,14 @@ import { useParams } from 'react-router-dom';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 import useInputSchema from 'hooks/useInputSchema';
 
+import { FormPDFExportFormValues } from 'containers/Admin/projects/components/PDFExportModal';
+
 import UpsellTooltip from 'components/UpsellTooltip';
 
 import { useIntl } from 'utils/cl-intl';
 import { requestBlob } from 'utils/requestBlob';
 
+import DownloadPDFDropdownListItemWithModal from './DownloadPDFDropdownListItemWithModal';
 import messages from './messages';
 
 type Props = {
@@ -29,20 +32,20 @@ type Props = {
   handleDownloadResults: () => void;
   isDropdownOpened: boolean;
   setShowDeleteModal: (show: boolean) => void;
-  setExportModalOpen?: (open: boolean) => void;
   setDropdownOpened: (opened: boolean) => void;
   downloadExcelLink: string;
+  onPDFExport?: (formValues: FormPDFExportFormValues) => Promise<void>;
 };
 
 const DropdownSettings = ({
   haveSubmissionsComeIn,
   setShowCopySurveyModal,
   handleDownloadResults,
-  setExportModalOpen,
   setDropdownOpened,
   isDropdownOpened,
   downloadExcelLink,
   setShowDeleteModal,
+  onPDFExport,
 }: Props) => {
   const { formatMessage } = useIntl();
   const { projectId, phaseId } = useParams() as {
@@ -55,10 +58,6 @@ const DropdownSettings = ({
   // Check feature flags
   const inputImporterAllowed = useFeatureFlag({
     name: 'input_importer',
-    onlyCheckAllowed: true,
-  });
-  const importPrintedFormsAllowed = useFeatureFlag({
-    name: 'import_printed_forms',
     onlyCheckAllowed: true,
   });
 
@@ -74,7 +73,6 @@ const DropdownSettings = ({
   };
 
   // Functions to handle downloads
-  const handleDownloadPDF = () => setExportModalOpen?.(true);
   const downloadExampleFile = async () => {
     const blob = await requestBlob(
       downloadExcelLink,
@@ -129,19 +127,11 @@ const DropdownSettings = ({
                     {formatMessage(messages.duplicateAnotherSurvey)}
                   </Text>
                 </DropdownListItem>
-                <UpsellTooltip
-                  disabled={importPrintedFormsAllowed}
-                  // Needed to ensure DropdownListItem takes up the full width of the dropdown
-                  width="100%"
-                >
-                  <DropdownListItem
-                    onClick={handleDownloadPDF}
-                    disabled={!importPrintedFormsAllowed}
-                  >
-                    <Icon name="download" fill={colors.coolGrey600} mr="4px" />
-                    {formatMessage(messages.downloadSurvey)}
-                  </DropdownListItem>
-                </UpsellTooltip>
+                {onPDFExport && (
+                  <DownloadPDFDropdownListItemWithModal
+                    onExport={onPDFExport}
+                  />
+                )}
                 <UpsellTooltip
                   disabled={inputImporterAllowed}
                   // Needed to ensure DropdownListItem takes up the full width of the dropdown

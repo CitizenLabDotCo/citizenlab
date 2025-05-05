@@ -1,5 +1,6 @@
 import React from 'react';
 
+import { Box } from '@citizenlab/cl2-component-library';
 import { useDrop } from 'react-dnd';
 
 import { IPhaseData } from 'api/phases/types';
@@ -54,7 +55,10 @@ const FilterSidebarPhasesItem = ({
         labelContent={
           <LabelContentWrapper>
             {localize(phase.attributes.title_multiloc)}
-            <CircledPhaseNumber phaseNumber={phaseNumber} />
+            {/* Flex shrink needed to prevent number from becoming squished  */}
+            <Box flexShrink={0}>
+              <CircledPhaseNumber phaseNumber={phaseNumber} />
+            </Box>
           </LabelContentWrapper>
         }
         id={id}
