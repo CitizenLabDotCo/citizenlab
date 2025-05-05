@@ -61,14 +61,14 @@ describe('Idea new page for continuous project', () => {
   });
 
   it('shows an error when the description is less than 3 characters long', () => {
-    const title = randomString(2);
+    const title = randomString(10);
     cy.get('#idea-form');
     cy.get('#e2e-idea-title-input input').type(title);
     cy.get('#e2e-idea-title-input input').should('contain.value', title);
 
     cy.get('[data-cy="e2e-next-page"]').should('be.visible').click();
 
-    cy.get('#e2e-idea-description-input .ql-editor').type(randomString(20));
+    cy.get('#e2e-idea-description-input .ql-editor').type(randomString(2));
     cy.get('#e2e-idea-description-input .ql-editor').blur();
     cy.wait(1000);
     // Try to go to the next page
