@@ -432,6 +432,10 @@ module MultiTenancy
               enabled: true,
               allowed: true
             },
+            html_pdfs: {
+              enabled: true,
+              allowed: true
+            },
             user_session_recording: {
               enabled: true,
               allowed: true
