@@ -36,7 +36,7 @@ const Container = styled.div`
       text-transform: uppercase;
     }
 
-    margin-right: 40px;
+    margin-right: 30px;
 
     ${disable ? 'cursor: not-allowed;' : 'cursor: pointer;'}
 
@@ -50,6 +50,7 @@ const Container = styled.div`
       padding-top: ${tabPadding}px;
       padding-bottom: ${tabPadding}px;
       transition: all 100ms ease-out;
+      font-size: ${fontSizes.s}px;
     }
 
     &:hover a {
