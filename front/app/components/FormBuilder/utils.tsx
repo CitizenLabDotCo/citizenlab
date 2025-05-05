@@ -11,8 +11,6 @@ import {
 } from 'api/custom_fields/types';
 import { IPhaseData } from 'api/phases/types';
 
-import { FormPDFExportFormValues } from 'containers/Admin/projects/components/PDFExportModal';
-
 import { isNilOrError } from 'utils/helperUtils';
 
 import ConfigOptionsWithLocaleSwitcher from './components/FormBuilderSettings/ConfigOptionsWithLocaleSwitcher';
@@ -74,8 +72,6 @@ export type FormBuilderConfig = {
     handleClose: () => void
   ) => void;
   getUserFieldsNotice?: () => void;
-
-  onDownloadPDF?: (formValues: FormPDFExportFormValues) => Promise<void>;
 };
 
 export const getIsPostingEnabled = (

@@ -12,8 +12,6 @@ import { downloadSurveyResults } from 'api/survey_results/utils';
 
 import useLocale from 'hooks/useLocale';
 
-import { FormPDFExportFormValues } from 'containers/Admin/projects/components/PDFExportModal';
-
 import FormResults from 'components/admin/FormResults';
 import DeleteModal from 'components/admin/SurveyDeleteModal/SurveyDeleteModal';
 import DropdownSettings from 'components/admin/SurveyDropdownSettings/DropdownSettings';
@@ -26,7 +24,6 @@ import { getFormActionsConfig } from 'utils/configs/formActionsConfig/utils';
 
 import CopySurveyModal from './CopySurveyModal';
 import messages from './messages';
-import { saveSurveyAsPDF } from './saveSurveyAsPDF';
 
 const Forms = () => {
   const locale = useLocale();
@@ -103,15 +100,6 @@ const Forms = () => {
       setIsDownloading(false);
     }
   };
-  const handleExportPDF = async ({
-    personal_data,
-  }: FormPDFExportFormValues) => {
-    await saveSurveyAsPDF({
-      phaseId,
-      locale,
-      personal_data,
-    });
-  };
 
   if (isDownloading) {
     return (
@@ -187,7 +175,6 @@ const Forms = () => {
               isDropdownOpened={isDropdownOpened}
               downloadExcelLink={downloadExcelLink}
               setShowDeleteModal={setShowDeleteModal}
-              onPDFExport={handleExportPDF}
             />
           </Box>
         </Box>
