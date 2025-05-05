@@ -1,19 +1,26 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { CLErrors } from 'typings';
+import { CLErrors, Multiloc } from 'typings';
 
 import fetcher from 'utils/cl-react-query/fetcher';
 
 import getApiEndPoint from './getApiEndpoint';
 import customFormKeys from './keys';
-import { ICustomForm, IUpdateCustomFormProperties } from './types';
+import { ICustomForm, ICustomFormParameters } from './types';
+
+interface IUpdateCustomFormProperties {
+  print_start_multiloc: Multiloc;
+  print_end_multiloc: Multiloc;
+}
 
 const updateCustomForm = async ({
-  projectId,
-  phaseId,
+  apiEndpoint,
   printStartMultiloc,
   printEndMultiloc,
+}: {
+  apiEndpoint: string;
+  printStartMultiloc: Multiloc;
+  printEndMultiloc: Multiloc;
 }) => {
-  const apiEndpoint = getApiEndPoint(projectId, phaseId);
   return fetcher<ICustomForm>({
     path: `/${apiEndpoint}`,
     action: 'patch',
@@ -24,15 +31,21 @@ const updateCustomForm = async ({
   });
 };
 
-const useUpdateCustomForm = () => {
+const useUpdateCustomForm = ({ projectId, phaseId }: ICustomFormParameters) => {
+  const apiEndpoint = getApiEndPoint(projectId, phaseId);
   const queryClient = useQueryClient();
   return useMutation<ICustomForm, CLErrors, IUpdateCustomFormProperties>({
-    mutationFn: updateCustomForm,
-    onSuccess: (_, variables) => {
+    mutationFn: (variables) =>
+      updateCustomForm({
+        apiEndpoint,
+        printStartMultiloc: variables.print_start_multiloc,
+        printEndMultiloc: variables.print_end_multiloc,
+      }),
+    onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: customFormKeys.item({
-          projectId: variables.projectId,
-          phaseId: variables.phaseId,
+          projectId,
+          phaseId,
         }),
       });
     },
