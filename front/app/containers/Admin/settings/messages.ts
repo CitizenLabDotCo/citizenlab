@@ -49,8 +49,8 @@ export default defineMessages({
     defaultMessage: 'Registration',
   },
   tabTopics: {
-    id: 'app.containers.AdminPage.SettingsPage.tabTopics',
-    defaultMessage: 'Tag manager',
+    id: 'app.containers.AdminPage.SettingsPage.tabTopics2',
+    defaultMessage: 'Tags',
   },
   organizationName: {
     id: 'app.containers.AdminPage.SettingsPage.organizationName',
