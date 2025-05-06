@@ -26,7 +26,7 @@
 
       body { font-family: <%== font_family %>; }
       h1 { font-size: 18pt; }
-      h2 { font-size: 15pt; }
+      h2, h3 { font-size: 15pt; }
       p, li { font-size: 12pt; }
 
       div.line { border-bottom: solid 1px #000; margin: 10px 0; height: 25px; }
@@ -66,11 +66,11 @@
   <div id="personal-data">
     <h2><%= personal_data[:heading] %></h2>
     <p><%= personal_data[:intro] %></p>
-    <h2><%= personal_data[:first_name] %> <span class="optional">(<%= optional %>)</span></h2>
+    <h3><%= personal_data[:first_name] %> <span class="optional">(<%= optional %>)</span></h3>
     <div class="line"></div>
-    <h2><%= personal_data[:last_name] %> <span class="optional">(<%= optional %>)</span></h2>
+    <h3><%= personal_data[:last_name] %> <span class="optional">(<%= optional %>)</span></h3>
     <div class="line"></div>
-    <h2><%= personal_data[:email_address] %> <span class="optional">(<%= optional %>)</span></h2>
+    <h3><%= personal_data[:email_address] %> <span class="optional">(<%= optional %>)</span></h3>
     <div class="line"></div>
     <div class="select">
       <div class="checkbox"></div>
@@ -121,20 +121,21 @@
       <% end %>
 
     <% else %>
-      <!-- Fallback currently covers:
-            # text
-            # text_multiloc
-            # number
-            # linear_scale
-            # rating
-            # sentiment_linear_scale
-            # select_image
-            # multiselect_image
-            # checkbox
-            # html
-            # line
-            # polygon
-      -->
+      <%
+        # Fallback currently covers:
+        # - text
+        # - text_multiloc
+        # - number
+        # - linear_scale
+        # - rating
+        # - sentiment_linear_scale
+        # - select_image
+        # - multiselect_image
+        # - checkbox
+        # - html
+        # - line
+        # - polygon
+      %>
       <div class="line"></div>
     <% end %>
 
