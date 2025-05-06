@@ -13,8 +13,8 @@ import { useParams } from 'react-router-dom';
 import { RouteType } from 'routes';
 import styled from 'styled-components';
 
-import { IIdeaData } from 'api/ideas/types';
 import useAuthUser from 'api/me/useAuthUser';
+import { IPhaseData } from 'api/phases/types';
 import useProjectBySlug from 'api/projects/useProjectBySlug';
 
 import Button from 'components/UI/ButtonWithLink';
@@ -35,15 +35,15 @@ const StyledTitle = styled(Text)`
 `;
 
 type Props = {
-  phaseId?: string;
-  idea?: IIdeaData;
+  phase: IPhaseData;
   titleText?: string | React.ReactNode;
 };
 
-const NewIdeaHeading = ({ phaseId, titleText, idea }: Props) => {
+const NewIdeaHeading = ({ phase, titleText }: Props) => {
   const { slug: projectSlug } = useParams();
   const { data: project } = useProjectBySlug(projectSlug);
   const { data: authUser } = useAuthUser();
+  const phaseId = phase.id;
 
   const { formatMessage } = useIntl();
   const isSmallerThanPhone = useBreakpoint('phone');
@@ -57,13 +57,20 @@ const NewIdeaHeading = ({ phaseId, titleText, idea }: Props) => {
 
   if (!project) return null;
 
+  const isCommonGround =
+    phase.attributes.participation_method === 'common_ground';
   const showEditFormButton =
-    !isSmallerThanPhone && canModerateProject(project.data, authUser);
+    !isSmallerThanPhone &&
+    canModerateProject(project.data, authUser) &&
+    !isCommonGround;
   const linkToFormBuilder: RouteType = `/admin/projects/${project.data.id}/phases/${phaseId}/form/edit`;
 
-  const returnToProject = () => {
-    if (idea) {
-      clHistory.push(`/ideas/${idea.attributes.slug}`);
+  const onClickClose = () => {
+    if (isCommonGround) {
+      clHistory.push(
+        `/admin/projects/${project.data.id}/phases/${phaseId}/ideas`
+      );
+      return;
     }
     clHistory.push(`/projects/${projectSlug}`);
   };
@@ -153,7 +160,7 @@ const NewIdeaHeading = ({ phaseId, titleText, idea }: Props) => {
               buttonStyle={authUser ? 'primary' : 'delete'}
               width="100%"
               mb={isSmallerThanPhone ? '16px' : undefined}
-              onClick={returnToProject}
+              onClick={onClickClose}
               data-cy="e2e-confirm-leave-new-idea-button"
             >
               <FormattedMessage {...messages.confirmLeaveFormButtonText} />

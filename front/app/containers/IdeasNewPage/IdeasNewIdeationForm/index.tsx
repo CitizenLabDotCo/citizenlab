@@ -273,7 +273,8 @@ const IdeasNewIdeationForm = ({ project, phaseId }: Props) => {
     !phaseId ||
     !schema ||
     !uiSchema ||
-    processingLocation
+    processingLocation ||
+    !phaseFromUrl
   ) {
     return null;
   }
@@ -281,7 +282,7 @@ const IdeasNewIdeationForm = ({ project, phaseId }: Props) => {
   const titleText = participationMethodConfig.getFormTitle?.({
     project: project.data,
     phases: phases?.data,
-    phaseFromUrl: phaseFromUrl?.data,
+    phaseFromUrl: phaseFromUrl.data,
   });
   const maxWidth = usingMapView ? '1100px' : '700px';
 
@@ -310,7 +311,10 @@ const IdeasNewIdeationForm = ({ project, phaseId }: Props) => {
                 position="relative"
                 top={isSmallerThanPhone ? '0' : '40px'}
               >
-                <NewIdeaHeading phaseId={phaseId} titleText={titleText} />
+                <NewIdeaHeading
+                  phase={phaseFromUrl.data}
+                  titleText={titleText}
+                />
               </Box>
               <main id="e2e-idea-new-page">
                 <Box
