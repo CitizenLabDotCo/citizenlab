@@ -83,8 +83,8 @@ module ReportBuilder
       # Because we can only know the time spent on a page if there is
       # a next page, we can't just calculate the difference between the
       # created_at of the first and last page during a session. Because
-      # this would not include the last page. 
-      # This might not be a problem if every session has a ton of page 
+      # this would not include the last page.
+      # This might not be a problem if every session has a ton of page
       # views, but assuming most session will be relatively short,
       # this would be a problem and would lead to a too low average.
       # So instead, we calculate the average time spent per page
