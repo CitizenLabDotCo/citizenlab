@@ -3077,6 +3077,7 @@
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Areas.done": "منتهي",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Areas.followAreas1": "تابع {areasTerm}",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Areas.thereAreCurrentlyNoProjects": "لا يوجد حاليًا أي مشاريع نشطة لك في {areasTerm} التي تتابعها.",
+  "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Areas.thisWidgetShows2": "تعرض هذه الأداة المشاريع المرتبطة بالمجالات التي يتابعها المستخدم. يُرجى ملاحظة أن منصتك قد تستخدم اسمًا مختلفًا للمجالات - راجع تبويب \"المجالات\" في إعدادات المنصة. إذا لم يتابع المستخدم أي مجال بعد، ستعرض الأداة المجالات المتاحة للمتابعة. في هذه الحالة، ستعرض الأداة 100 مجال كحد أقصى.",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Published.noData": "لا توجد مشاريع أو مجلدات منشورة متاحة",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Published.publishedTitle": "المشاريع والمجلدات المنشورة",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Published.thisWidgetWillShow": "ستقوم هذه الأداة بتصنيف المشاريع والمجلدات المنشورة حاليًا، مع مراعاة الترتيب المحدد في صفحة المشاريع. هذا السلوك هو نفس سلوك علامة التبويب \"النشطة\" في أداة المشاريع \"القديمة\".",
