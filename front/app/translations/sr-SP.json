@@ -1802,6 +1802,7 @@
   "app.containers.SignUp.viennaConsentUserName": "Корисничко име",
   "app.containers.SignUp.viennaDataProtection": "бечку политику приватности",
   "app.containers.SiteMap.contributions": "Прилози",
+  "app.containers.SiteMap.cookiePolicyLinkTitle": "Cookies",
   "app.containers.SiteMap.issues": "Коментари",
   "app.containers.SiteMap.options": "Опције",
   "app.containers.SiteMap.projects": "Пројекти",
