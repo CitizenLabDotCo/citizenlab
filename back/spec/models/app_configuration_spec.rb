@@ -57,7 +57,7 @@ RSpec.describe AppConfiguration do
     end
 
     it 'removes all HTML tags from organization_name multiloc' do
-      # Trigger the callback manually (it runs before_validation)
+      # Trigger the callback manually (avoids needing all the required fields)
       @app_config.send(:sanitize_organization_name)
 
       # Get the sanitized organization name
