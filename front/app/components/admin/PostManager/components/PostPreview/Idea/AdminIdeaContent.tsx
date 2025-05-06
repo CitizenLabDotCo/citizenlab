@@ -187,6 +187,8 @@ const AdminIdeaContent = ({
   };
 
   const currentPhase = getCurrentPhase(phases?.data);
+  const isCommonGround =
+    currentPhase?.attributes.participation_method === 'common_ground';
   const ideaTitle = localize(idea.data.attributes.title_multiloc);
   const ideaImageLarge =
     ideaImages && ideaImages.data.length > 0
@@ -218,15 +220,17 @@ const AdminIdeaContent = ({
         >
           <FormattedMessage {...messages.edit} />
         </Button>
-        <Button
-          linkTo={`/ideas/${idea.data.attributes.slug}`}
-          // We open in a new tab not lose state of the input manager
-          openLinkInNewTab
-          icon="eye"
-          buttonStyle="secondary-outlined"
-        >
-          <FormattedMessage {...messages.view} />
-        </Button>
+        {!isCommonGround && (
+          <Button
+            linkTo={`/ideas/${idea.data.attributes.slug}`}
+            // We open in a new tab not lose state of the input manager
+            openLinkInNewTab
+            icon="eye"
+            buttonStyle="secondary-outlined"
+          >
+            <FormattedMessage {...messages.view} />
+          </Button>
+        )}
         <Button
           id="e2e-input-manager-side-modal-delete-button"
           buttonStyle="text"
@@ -261,90 +265,93 @@ const AdminIdeaContent = ({
           authorId={authorId}
           anonymous={idea.data.attributes.anonymous}
         />
-        <Row>
-          <Left>
-            {ideaImageLarge && (
-              <IdeaImage
-                src={ideaImageLarge}
-                alt=""
-                className="e2e-ideaImage"
+        {/* We don't show these values for common ground. We are only interested in the title for now */}
+        {!isCommonGround && (
+          <Row>
+            <Left>
+              {ideaImageLarge && (
+                <IdeaImage
+                  src={ideaImageLarge}
+                  alt=""
+                  className="e2e-ideaImage"
+                />
+              )}
+
+              {proposedBudget && (
+                <>
+                  <BodySectionTitle>
+                    <FormattedMessage {...messages.proposedBudgetTitle} />
+                  </BodySectionTitle>
+                  <IdeaProposedBudget proposedBudget={proposedBudget} />
+                  <BodySectionTitle>
+                    <FormattedMessage {...messages.bodyTitle} />
+                  </BodySectionTitle>
+                </>
+              )}
+
+              <StyledBody
+                postId={ideaId}
+                body={localize(idea.data.attributes.body_multiloc)}
               />
-            )}
 
-            {proposedBudget && (
-              <>
-                <BodySectionTitle>
-                  <FormattedMessage {...messages.proposedBudgetTitle} />
-                </BodySectionTitle>
-                <IdeaProposedBudget proposedBudget={proposedBudget} />
-                <BodySectionTitle>
-                  <FormattedMessage {...messages.bodyTitle} />
-                </BodySectionTitle>
-              </>
-            )}
+              {!isNilOrError(project) && ideaGeoPosition && ideaAddress && (
+                <StyledMap
+                  address={ideaAddress}
+                  position={ideaGeoPosition}
+                  projectId={project.data.id}
+                />
+              )}
 
-            <StyledBody
-              postId={ideaId}
-              body={localize(idea.data.attributes.body_multiloc)}
-            />
+              {ideaFiles && (
+                <Box mb="25px">
+                  <FileAttachments files={ideaFiles.data} />
+                </Box>
+              )}
 
-            {!isNilOrError(project) && ideaGeoPosition && ideaAddress && (
-              <StyledMap
-                address={ideaAddress}
-                position={ideaGeoPosition}
-                projectId={project.data.id}
+              <StyledOfficialFeedback postId={ideaId} permissionToPost />
+
+              <CommentsSection
+                allowAnonymousParticipation={allowAnonymousParticipation}
+                postId={ideaId}
+                showInternalComments
               />
-            )}
+            </Left>
+            <Right>
+              <ReactionPreview ideaId={ideaId} />
 
-            {ideaFiles && (
-              <Box mb="25px">
-                <FileAttachments files={ideaFiles.data} />
-              </Box>
-            )}
+              {idea.data.attributes.budget && (
+                <>
+                  <BudgetBox>
+                    <FormattedBudget value={idea.data.attributes.budget} />
+                    <Picks>
+                      <FormattedMessage
+                        {...messages.picks}
+                        values={{
+                          picksNumber: idea.data.attributes.baskets_count,
+                        }}
+                      />
+                      &nbsp;
+                      <IconTooltip
+                        content={
+                          <FormattedMessage {...messages.pbItemCountTooltip} />
+                        }
+                      />
+                    </Picks>
+                  </BudgetBox>
+                </>
+              )}
 
-            <StyledOfficialFeedback postId={ideaId} permissionToPost />
-
-            <CommentsSection
-              allowAnonymousParticipation={allowAnonymousParticipation}
-              postId={ideaId}
-              showInternalComments
-            />
-          </Left>
-          <Right>
-            <ReactionPreview ideaId={ideaId} />
-
-            {idea.data.attributes.budget && (
-              <>
-                <BudgetBox>
-                  <FormattedBudget value={idea.data.attributes.budget} />
-                  <Picks>
-                    <FormattedMessage
-                      {...messages.picks}
-                      values={{
-                        picksNumber: idea.data.attributes.baskets_count,
-                      }}
-                    />
-                    &nbsp;
-                    <IconTooltip
-                      content={
-                        <FormattedMessage {...messages.pbItemCountTooltip} />
-                      }
-                    />
-                  </Picks>
-                </BudgetBox>
-              </>
-            )}
-
-            <FeedbackSettings ideaId={ideaId} projectId={project.data.id} />
-            {selectedPhaseId && votingMethod && (
-              <OfflineVoteSettings
-                phaseId={selectedPhaseId}
-                ideaId={ideaId}
-                votingMethod={votingMethod}
-              />
-            )}
-          </Right>
-        </Row>
+              <FeedbackSettings ideaId={ideaId} projectId={project.data.id} />
+              {selectedPhaseId && votingMethod && (
+                <OfflineVoteSettings
+                  phaseId={selectedPhaseId}
+                  ideaId={ideaId}
+                  votingMethod={votingMethod}
+                />
+              )}
+            </Right>
+          </Row>
+        )}
       </Content>
     </Container>
   );
