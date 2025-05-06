@@ -417,7 +417,7 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
               {}
             );
 
-            const folderFilePromises = await syncProjectFolderFiles({
+            const folderFilesPromise = await syncProjectFolderFiles({
               projectFolderId,
               projectFolderFiles,
               filesToRemove: projectFolderFilesToRemove,
@@ -428,7 +428,7 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
               cardToAddPromise,
               cardToEditPromise,
               cardToRemovePromises,
-              ...folderFilePromises,
+              folderFilesPromise,
             ]);
 
             const changedTitleMultiloc = !isEqual(

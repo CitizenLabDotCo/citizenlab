@@ -56,12 +56,12 @@ export function useSyncFolderFiles() {
         })
       );
 
-      // Return all the promises to resolve
-      return [
+      // Return a single promise that resolves when all mutations are done
+      await Promise.all([
         ...filesToAddPromises,
         ...filesToRemovePromises,
         ...filesToReorderPromises,
-      ];
+      ]);
     },
     [addProjectFolderFile, deleteProjectFolderFile, updateProjectFolderFile]
   );
