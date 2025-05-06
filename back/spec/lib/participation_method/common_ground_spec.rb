@@ -18,6 +18,25 @@ RSpec.describe ParticipationMethod::CommonGround do
     end
   end
 
+  describe '#default_fields' do
+    it 'returns the correct default fields' do
+      transient_form = create(:custom_form, participation_context: phase)
+      fields = participation_method.default_fields(transient_form)
+      expect(fields.size).to eq(1)
+      expect(fields.first.attributes).to include(
+        'resource_id' => transient_form.id,
+        'resource_type' => 'CustomForm',
+        'key' => 'title_multiloc',
+        'code' => 'title_multiloc',
+        'input_type' => 'text_multiloc',
+        'required' => true,
+        'enabled' => true,
+        'ordering' => 0,
+        'answer_visible_to' => CustomField::VISIBLE_TO_PUBLIC
+      )
+    end
+  end
+
   its(:supports_reacting?) { is_expected.to be(true) }
   its(:use_reactions_as_votes?) { is_expected.to be(false) }
 
