@@ -3,9 +3,10 @@
 require 'rails_helper'
 
 describe BulkImportIdeas::Exporters::IdeaHtmlPdfFormExporter do
+  let(:service) { described_class.new project.phases.first, 'en', false }
+
   let(:project) { create(:single_phase_ideation_project) }
   let(:custom_form) { create(:custom_form, :with_default_fields, participation_context: project) }
-  let(:service) { described_class.new project, 'en', false }
   let!(:custom_field) do
     field = create(:custom_field_select, resource: custom_form, key: 'text_field', title_multiloc: { 'en' => 'Would you like some help?' })
     field.options.create!(key: 'yes', title_multiloc: { 'en' => 'yes' })
@@ -31,15 +32,9 @@ describe BulkImportIdeas::Exporters::IdeaHtmlPdfFormExporter do
         yes
         no
       ]
+
+      # TODO: Make these positions correct
       expect(importer_data[:fields].pluck(:position)).to eq [8, 14, 33, 36, 38]
     end
-
-    # TODO: Make this test work
-    # it 'does not have HTML in the field descriptions' do
-    #   importer_data = service.importer_data
-    #   expect(importer_data[:fields][2][:description]).not_to include '<p>'
-    # end
-
-    # TODO: Test a multipage form too
   end
 end
