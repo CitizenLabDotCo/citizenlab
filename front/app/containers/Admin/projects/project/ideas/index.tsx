@@ -47,7 +47,7 @@ const AdminProjectIdeas = () => {
 
   return (
     <>
-      {!isCommonGround && <AnalysisBanner projectId={projectId} />}
+      <AnalysisBanner projectId={projectId} />
       <Box mb="30px">
         <Box
           display="flex"
