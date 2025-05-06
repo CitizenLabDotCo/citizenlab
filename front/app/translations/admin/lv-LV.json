@@ -3077,6 +3077,7 @@
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Areas.done": "Gatavs",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Areas.followAreas1": "Sekojiet {areasTerm}",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Areas.thereAreCurrentlyNoProjects": "Pašlaik {areasTerm} , kam jūs sekojat, nav aktīvu projektu.",
+  "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Areas.thisWidgetShows2": "Šajā logrīkā tiek rādīti projekti, kas saistīti ar lietotāja sekojamajām \"jomām\". Ņemiet vērā, ka jūsu platformā \"apgabaliem\" var izmantot citu nosaukumu - skatiet platformas iestatījumu cilni \"Apgabali\". Ja lietotājs vēl neseko nevienai jomai, logrīks parādīs pieejamās jomas, kurām sekot. Šajā gadījumā logrīks rādīs ne vairāk kā 100 apgabalus.",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Published.noData": "Nav pieejami publicēti projekti vai mapes",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Published.publishedTitle": "Publicētie projekti un mapes",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Published.thisWidgetWillShow": "Šis logrīks attēlo pašlaik publicētos projektus un mapes, ievērojot projektu lapā noteikto secību. Šī uzvedība ir tāda pati kā \"veco\" projektu logrīka cilnē \"aktīvais\".",
