@@ -17,7 +17,6 @@ module ReportBuilder
 
       sessions = ImpactTracking::Session.where(created_at: start_date..end_date)
       sessions = apply_project_filter_if_needed(sessions, project_id)
-      binding.pry
       sessions = exclude_roles_if_needed(sessions, exclude_roles)
 
       visitors_timeseries = sessions
@@ -76,7 +75,7 @@ module ReportBuilder
     def exclude_roles_if_needed(sessions, exclude_roles)
       if exclude_roles.present?
         sessions = sessions
-          .where.not(highest_role: exclude_roles)
+          .where("highest_role IS NULL OR highest_role NOT IN (#{exclude_roles.map { |r| "'#{r}'" }.join(', ')})")
       end
 
       sessions
