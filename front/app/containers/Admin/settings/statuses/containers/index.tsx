@@ -135,7 +135,7 @@ const IdeaStatuses = ({
                 data-testid="e2e-add-status-button"
                 buttonStyle="admin-dark"
                 icon="plus-circle"
-                linkTo={`/admin/settings/${variant}/statuses/new`}
+                linkTo={`/admin/settings/statuses/${variant}/new`}
                 disabled={!customIdeaStatusesAllowed}
               >
                 <FormattedMessage {...messages.addIdeaStatus} />
@@ -181,7 +181,7 @@ const IdeaStatuses = ({
                       tooltipContent={
                         <FormattedMessage {...messages.pricingPlanUpgrade} />
                       }
-                      linkTo={`/admin/settings/${variant}/statuses/${defaultStatus.id}`}
+                      linkTo={`/admin/settings/statuses/${variant}/${defaultStatus.id}`}
                     />
                   </Buttons>
                 </LockedRow>
@@ -231,7 +231,7 @@ const IdeaStatuses = ({
                       tooltipContent={
                         <FormattedMessage {...messages.pricingPlanUpgrade} />
                       }
-                      linkTo={`/admin/settings/${variant}/statuses/${ideaStatus.id}`}
+                      linkTo={`/admin/settings/statuses/${variant}/${ideaStatus.id}`}
                     />
                   </Buttons>
                 </SortableRow>

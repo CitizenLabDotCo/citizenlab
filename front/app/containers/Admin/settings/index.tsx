@@ -48,13 +48,8 @@ const SettingsPage = () => {
     },
     {
       name: 'statuses',
-      label: formatMessage(messages.tabInputStatuses),
-      url: '/admin/settings/ideation/statuses',
-    },
-    {
-      name: 'proposal-statuses',
-      label: formatMessage(messages.tabProposalStatuses1),
-      url: '/admin/settings/proposals/statuses',
+      label: formatMessage(messages.statuses),
+      url: '/admin/settings/statuses',
     },
     {
       name: 'policies',

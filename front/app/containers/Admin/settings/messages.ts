@@ -36,6 +36,10 @@ export default defineMessages({
     id: 'app.containers.AdminPage.SettingsPage.tabProposalStatuses1',
     defaultMessage: 'Proposal statuses',
   },
+  statuses: {
+    id: 'app.containers.AdminPage.SettingsPage.statuses',
+    defaultMessage: 'Statuses',
+  },
   tabApproval: {
     id: 'app.containers.AdminPage.SettingsPage.tabProjectApproval',
     defaultMessage: 'Project approval',

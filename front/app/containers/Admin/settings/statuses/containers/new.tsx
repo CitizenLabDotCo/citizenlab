@@ -38,7 +38,7 @@ const NewIdeaStatus = ({
   };
 
   const goBack = () => {
-    clHistory.push(`/admin/settings/${variant}/statuses`);
+    clHistory.push(`/admin/settings/statuses/${variant}`);
   };
 
   if (tenantLocales && ideaStatuses) {
