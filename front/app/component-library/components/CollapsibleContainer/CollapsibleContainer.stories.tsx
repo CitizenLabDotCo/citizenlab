@@ -22,7 +22,6 @@ export const Default: Story = {
     titleAs: 'h3',
     titleVariant: 'h3',
     titleFontSize: 's',
-    titleFontWeight: 'bold',
     width: '800px',
   },
 };

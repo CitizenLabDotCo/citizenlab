@@ -432,6 +432,10 @@ module MultiTenancy
               enabled: true,
               allowed: true
             },
+            html_pdfs: {
+              enabled: true,
+              allowed: true
+            },
             user_session_recording: {
               enabled: true,
               allowed: true
@@ -503,6 +507,10 @@ module MultiTenancy
               project_id: ''
             },
             user_fields_in_surveys: {
+              enabled: true,
+              allowed: true
+            },
+            common_ground: {
               enabled: true,
               allowed: true
             }

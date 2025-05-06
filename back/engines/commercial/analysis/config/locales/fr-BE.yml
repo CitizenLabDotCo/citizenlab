@@ -16,5 +16,5 @@ fr-BE:
         inputs: "Les personnes qui répondent « %{answer1} » à « %{question1} » répondent « %{answer2} » à « %{question2} » %{percent_more_less} souvent que la moyenne."
         likes: "Les personnes qui répondent « %{answer1} » à « %{question1} » aiment les contributions dont la réponse à « %{question2} » est « %{answer2} » %{percent_more_less} souvent que la moyenne."
         dislikes: "Les personnes qui répondent « %{answer1} » à « %{question1} » n'aiment pas les contributions dont la réponse à « %{question2} » est « %{answer2} » %{percent_more_less} souvent que la moyenne."
-        participants: "Les personnes qui répondent \"%{answer1}\" à \"%{question1}\" participent plus que la moyenne à %{percent_more_less} lorsqu'elles répondent \"%{answer2}\" à \"%{question2}\"."
+        participants: "Les personnes qui répondent %{answer1} à %{question1} et %{answer2} à %{question2} participent %{percent_more_less} souvent que la moyenne."
 

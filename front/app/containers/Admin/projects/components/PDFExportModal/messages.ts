@@ -33,11 +33,6 @@ export default defineMessages({
     defaultMessage:
       "You can combine online and offline responses. To upload offline responses, go to the 'Survey' tab of this project, and click 'Import'.",
   },
-  notIncludedInYourPlan: {
-    id: 'app.containers.Admin.projects.all.notIncludedInYourPlan',
-    defaultMessage:
-      'However, this is not included in your current plan. Reach out to your Government Success Manager or admin to unlock it.',
-  },
   logicNotInPDF: {
     id: 'app.containers.Admin.projects.all.logicNotInPDF',
     defaultMessage:
@@ -47,13 +42,5 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.all.personalDataExplanation2',
     defaultMessage:
       'Check the box below, if you want your downloaded PDF to contain name, last name, and email fields. Upon upload of the paper form, we will use that user data, to auto-generate an account for the offline survey respondent.',
-  },
-  phase: {
-    id: 'app.containers.Admin.projects.all.PDFExportModal.phase',
-    defaultMessage: 'Phase',
-  },
-  selectIdeationPhase: {
-    id: 'app.containers.Admin.projects.all.PDFExportModal.selectIdeationPhase',
-    defaultMessage: 'Please select an ideation phase.',
   },
 });
