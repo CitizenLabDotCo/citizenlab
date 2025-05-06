@@ -50,7 +50,6 @@ const Container = styled.div`
       padding-top: ${tabPadding}px;
       padding-bottom: ${tabPadding}px;
       transition: all 100ms ease-out;
-      font-size: ${fontSizes.s}px;
     }
 
     &:hover a {
