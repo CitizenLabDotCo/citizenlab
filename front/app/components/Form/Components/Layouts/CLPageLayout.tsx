@@ -277,8 +277,12 @@ const CLPageLayout = memo(
           }
           triggerPostActionEvents({});
         } else {
+          const pathname =
+            phase?.data.attributes.participation_method === 'common_ground'
+              ? `/admin/projects/${project?.data.id}/phases/${phaseId}/ideas`
+              : `/ideas/${idea?.data.attributes.slug}`;
           clHistory.push({
-            pathname: `/ideas/${idea?.data.attributes.slug}`,
+            pathname,
           });
         }
         return;
