@@ -625,6 +625,7 @@
   "app.components.form.ErrorDisplay.save": "Save",
   "app.components.form.ErrorDisplay.userPickerPlaceholder": "Start typing to search by user email or name...",
   "app.components.form.anonymousSurveyMessage2": "All responses to this survey are anonymized.",
+  "app.components.form.backToInputManager": "Back to input manager",
   "app.components.form.backToProject": "Back to project",
   "app.components.form.components.controls.mapInput.removeAnswer": "Remove answer",
   "app.components.form.components.controls.mapInput.undo": "Undo",

@@ -1832,6 +1832,7 @@
   "app.containers.AdminPage.ProjectEdit.conductVotingOrPrioritizationText": "Conduct a voting or prioritization exercise",
   "app.containers.AdminPage.ProjectEdit.createAProjectFromATemplate": "Create a project from a template",
   "app.containers.AdminPage.ProjectEdit.createExternalSurveyText": "Embed an external survey",
+  "app.containers.AdminPage.ProjectEdit.createInput": "Add new input",
   "app.containers.AdminPage.ProjectEdit.createNativeSurvey": "Create an in-platform survey",
   "app.containers.AdminPage.ProjectEdit.createNativeSurveyDescription": "Set up a survey without leaving our platform.",
   "app.containers.AdminPage.ProjectEdit.createPoll": "Create a poll",
