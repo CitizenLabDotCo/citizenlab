@@ -88,7 +88,9 @@ const PhaseDescription = ({ projectId, selectedPhaseId }: Props) => {
       id={`phase-description-panel-${phaseNumber}`}
       aria-labelledby={`phase-tab-${phaseNumber}`}
       hasBottomMargin={
-        phase.data.attributes.participation_method !== 'information'
+        !['information', 'common_ground'].includes(
+          phase.data.attributes.participation_method
+        )
       }
     >
       <PhaseTitle
