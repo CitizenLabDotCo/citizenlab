@@ -44,21 +44,18 @@ RSpec.describe AppConfiguration do
   describe '#sanitize_organization_name' do
     before do
       @app_config = described_class.instance
-
-      @app_config.settings = {
-        'core' => {
-          'organization_name' => {
-            'en' => 'City of <script>alert("XSS")</script> Springfield',
-            'fr' => 'South Elyse <img src=x onerror=alert(1)>',
-            'nl' => 'Plain <b>text</b> with <i>formatting</i>'
-          }
-        }
-      }
     end
 
     it 'removes all HTML tags from organization_name multiloc' do
-      # Trigger the callback manually (avoids needing all the required fields)
-      @app_config.send(:sanitize_organization_name)
+      @app_config.settings['core'] = {
+        'organization_name' => {
+          'en' => 'City of <script>alert("XSS")</script> Springfield',
+          'fr' => 'South Elyse <img src=x onerror=alert(1)>',
+          'nl' => 'Plain <b>text</b> with <i>formatting</i>'
+        }
+      }
+
+      @app_config.save!(validate: false)
 
       # Get the sanitized organization name
       sanitized_name = @app_config.settings.dig('core', 'organization_name')
