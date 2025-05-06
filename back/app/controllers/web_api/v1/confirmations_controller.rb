@@ -7,6 +7,8 @@ class WebApi::V1::ConfirmationsController < ApplicationController
     result = ConfirmUser.call(user: current_user, code: confirmation_params[:code])
 
     if result.success?
+      SideFxUserService.new.after_update(current_user, current_user)
+
       head :ok
     else
       render json: { errors: result.errors.details }, status: :unprocessable_entity

@@ -871,6 +871,7 @@
   "app.containers.Admin.inspirationHub.Filters.Country": "Zemlja",
   "app.containers.Admin.inspirationHub.Filters.Method": "metoda",
   "app.containers.Admin.inspirationHub.Filters.Search": "Pretraživanje",
+  "app.containers.Admin.inspirationHub.Filters.Topic": "Tema",
   "app.containers.Admin.inspirationHub.Filters.population": "Stanovništvo",
   "app.containers.Admin.inspirationHub.Highlighted": "Istaknuto",
   "app.containers.Admin.inspirationHub.Ideation": "Ideacija",

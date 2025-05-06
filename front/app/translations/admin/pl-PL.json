@@ -871,6 +871,7 @@
   "app.containers.Admin.inspirationHub.Filters.Country": "Kraj",
   "app.containers.Admin.inspirationHub.Filters.Method": "Metoda",
   "app.containers.Admin.inspirationHub.Filters.Search": "Szukaj",
+  "app.containers.Admin.inspirationHub.Filters.Topic": "Temat",
   "app.containers.Admin.inspirationHub.Filters.population": "Populacja",
   "app.containers.Admin.inspirationHub.Highlighted": "Wyróżnione",
   "app.containers.Admin.inspirationHub.Ideation": "Ideacja",
