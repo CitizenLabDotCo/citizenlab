@@ -7,9 +7,9 @@ import useAuthUser from 'api/me/useAuthUser';
 import { HeaderTitle } from 'containers/Admin/projects/all/StyledComponents';
 
 import { FormattedMessage } from 'utils/cl-intl';
+import { usePermission } from 'utils/permissions';
 import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 import { isNilOrError } from 'utils/helperUtils';
-import { isAdmin } from 'utils/permissions/roles';
 
 // localisation
 
@@ -52,13 +52,14 @@ const AdminFolderProjectsList = ({
 }: WithRouterProps) => {
   const { data: authUser } = useAuthUser();
 
+  const canManageProjects = usePermission({
+    item: 'project_folder',
+    action: 'manage_projects',
+  });
+
   if (isNilOrError(authUser)) {
     return null;
   }
-
-  // TODO: Fix this the next time the file is edited.
-  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-  const userIsAdmin = authUser && isAdmin(authUser);
 
   return (
     <Container>
@@ -72,7 +73,7 @@ const AdminFolderProjectsList = ({
 
         <ItemsInFolder projectFolderId={projectFolderId} />
 
-        {userIsAdmin && (
+        {canManageProjects && (
           <>
             <ListHeader>
               <StyledHeaderTitle>

@@ -85,7 +85,7 @@ gem 'json-schema', '~> 4.3'
 gem 'activerecord-postgis-adapter', '~> 9.0.2'
 
 gem 'carrierwave', '~> 3.0.7'
-gem 'carrierwave-base64', '~> 2.10'
+gem 'carrierwave-base64', '~> 2.11'
 gem 'fog-aws', '~> 3.24'
 
 gem 'api-pagination', '~> 5.0.0'
@@ -238,7 +238,8 @@ commercial_engines = [
   'id_nemlog_in',
   'id_oostende_rrn',
   'id_hoplr',
-  'id_vienna_saml'
+  'id_vienna_saml',
+  'id_twoday'
 ]
 
 commercial_engines.each do |engine_name|

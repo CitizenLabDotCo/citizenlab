@@ -500,6 +500,7 @@
   "app.components.VerificationModal.verifyIdAustria": "Gwiriwch gyda ID Awstria",
   "app.components.VerificationModal.verifyKeycloak": "Gwiriwch gyda ID-Porten",
   "app.components.VerificationModal.verifyNemLogIn": "Gwiriwch gyda MitID",
+  "app.components.VerificationModal.verifyTwoday2": "Dilyswch gyda BankID neu Freja eID+",
   "app.components.VerificationModal.verifyYourIdentity": "Gwiriwch eich hunaniaeth",
   "app.components.VoteControl.budgetingFutureEnabled": "Gallwch ddyrannu'ch cyllideb gan ddechrau o {enabledFromDate}.",
   "app.components.VoteControl.budgetingNotPermitted": "Nid yw cyllidebu cyfranogol wedi'i alluogi ar hyn o bryd.",

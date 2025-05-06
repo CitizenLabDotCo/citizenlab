@@ -59,15 +59,12 @@ module ReportBuilder
     def find_demographics_in_ideas(start_at, end_at, project_id)
       return unless project_id # Only do this if filtered by project
 
-      phases = StatUserPolicy::Scope.new(
-        @current_user,
-        Phase.where(project_id: project_id, user_fields_in_form: true)
-      ).resolve
+      phases = Phase.where(project_id: project_id, user_fields_in_form: true)
       return if phases.blank?
 
-      # Only find ideas with null users, as any user demographics will already be included
+      # Only find published ideas with null users, as any user demographics will already be included
       start_date, end_date = TimeBoundariesParser.new(start_at, end_at).parse
-      Idea.where(author: nil, creation_phase: phases, created_at: start_date..end_date)
+      Idea.published.where(author: nil, creation_phase: phases, created_at: start_date..end_date)
     end
   end
 end

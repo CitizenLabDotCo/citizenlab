@@ -500,6 +500,7 @@
   "app.components.VerificationModal.verifyIdAustria": "crwdns3548609:0crwdne3548609:0",
   "app.components.VerificationModal.verifyKeycloak": "crwdns3669013:0crwdne3669013:0",
   "app.components.VerificationModal.verifyNemLogIn": "crwdns845963:0crwdne845963:0",
+  "app.components.VerificationModal.verifyTwoday2": "crwdns4419150:0crwdne4419150:0",
   "app.components.VerificationModal.verifyYourIdentity": "crwdns213742:0crwdne213742:0",
   "app.components.VoteControl.budgetingFutureEnabled": "crwdns213744:0{enabledFromDate}crwdne213744:0",
   "app.components.VoteControl.budgetingNotPermitted": "crwdns213746:0crwdne213746:0",

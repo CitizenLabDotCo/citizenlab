@@ -500,6 +500,7 @@
   "app.components.VerificationModal.verifyIdAustria": "Igazoljon Austria ID-vel",
   "app.components.VerificationModal.verifyKeycloak": "Ellenőrizze az ID-Porten segítségével",
   "app.components.VerificationModal.verifyNemLogIn": "Ellenőrizze a MitID segítségével",
+  "app.components.VerificationModal.verifyTwoday2": "Igazolás BankID vagy Freja eID+ segítségével",
   "app.components.VerificationModal.verifyYourIdentity": "Igazolja személyazonosságát",
   "app.components.VoteControl.budgetingFutureEnabled": "Költségkeretét {enabledFromDate}kezdettel oszthatja fel.",
   "app.components.VoteControl.budgetingNotPermitted": "A részvételi költségvetés jelenleg nincs engedélyezve.",

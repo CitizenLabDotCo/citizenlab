@@ -36,6 +36,16 @@ resource 'Confirmations' do
         assert_status 200
       end
 
+      example "logs 'completed_registration' activity job when passed the right code" do
+        do_request(confirmation: { code: user.email_confirmation_code })
+        expect(LogActivityJob).to have_been_enqueued.with(
+          user,
+          'completed_registration',
+          user,
+          user.updated_at.to_i
+        ).exactly(1).times
+      end
+
       example 'returns an unprocessable entity status passing no code' do
         do_request(confirmation: { code: nil })
         assert_status 422
@@ -60,6 +70,20 @@ resource 'Confirmations' do
         assert_status 422
         json_response = json_parse response_body
         expect(json_response).to include_response_error(:code, 'invalid')
+      end
+
+      example "does not log 'completed_registration' activity when the code is invalid" do
+        # Clear any previously enqueued jobs
+        ActiveJob::Base.queue_adapter.enqueued_jobs.clear
+
+        do_request(confirmation: { code: 'badcode' })
+
+        expect(LogActivityJob).not_to have_been_enqueued.with(
+          anything,
+          'completed_registration',
+          anything,
+          anything
+        )
       end
     end
   end
