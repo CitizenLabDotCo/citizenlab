@@ -18,6 +18,24 @@ const sampleStatements: CommonGroundProgressStatement[] = [
     publishedAt: '5h ago',
     body: { en: 'More green spaces are needed in the city.' },
   },
+  {
+    id: '3',
+    author: 'Charlie',
+    publishedAt: '1d ago',
+    body: { en: 'Affordable housing should be a top priority.' },
+  },
+  {
+    id: '4',
+    author: 'Diana',
+    publishedAt: '3d ago',
+    body: { en: 'We need more bike lanes across the city.' },
+  },
+  {
+    id: '5',
+    author: 'Eve',
+    publishedAt: '4d ago',
+    body: { en: 'Community centers should be funded better.' },
+  },
 ];
 
 // Maintains stub state
@@ -29,7 +47,7 @@ let currentIndex = 0;
 export const fetchCommonGroundProgressStub = async (
   _phaseId: string | undefined | null
 ): Promise<ICommonGroundProgress> => {
-  const nextStatement = sampleStatements[currentIndex] || null;
+  const nextStatement = sampleStatements.at(currentIndex);
   return {
     data: {
       id: 'stub-phase-progress-1',
@@ -37,11 +55,13 @@ export const fetchCommonGroundProgressStub = async (
       attributes: {
         numIdeas: sampleStatements.length,
         numIdeasReacted: currentIndex,
-        nextIdea: nextStatement,
+        nextIdea: nextStatement || null,
       },
       relationships: {
         next_idea: {
-          data: [{ id: nextStatement.id, type: 'statement' }],
+          data: nextStatement
+            ? [{ id: nextStatement.id, type: 'statement' }]
+            : [],
         },
       },
     },
@@ -58,7 +78,8 @@ export const reactToIdeaStub = async (
 ): Promise<ICommonGroundProgress> => {
   await new Promise((resolve) => setTimeout(resolve, 300));
   currentIndex = Math.min(currentIndex + 1, sampleStatements.length);
-  const nextStatement = sampleStatements[currentIndex];
+  const nextStatement = sampleStatements.at(currentIndex);
+
   return {
     data: {
       id: 'stub-phase-progress-1',
@@ -66,11 +87,13 @@ export const reactToIdeaStub = async (
       attributes: {
         numIdeas: sampleStatements.length,
         numIdeasReacted: currentIndex,
-        nextIdea: nextStatement,
+        nextIdea: nextStatement || null,
       },
       relationships: {
         next_idea: {
-          data: [{ id: nextStatement.id, type: 'statement' }],
+          data: nextStatement
+            ? [{ id: nextStatement.id, type: 'statement' }]
+            : [],
         },
       },
     },
