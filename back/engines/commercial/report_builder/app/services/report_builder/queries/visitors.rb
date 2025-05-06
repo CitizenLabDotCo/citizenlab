@@ -122,7 +122,7 @@ module ReportBuilder
             count(subquery.seconds_on_page) as count,
             sum(subquery.seconds_on_page) as sum
           from (#{seconds_on_page_subqery}) as subquery
-          where subquery.seconds_on_page is not null
+          where subquery.seconds_on_page is not null and subquery.seconds_on_page <= 720
         SQL
       )
 
