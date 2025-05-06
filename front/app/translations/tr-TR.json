@@ -1802,6 +1802,7 @@
   "app.containers.SignUp.viennaConsentUserName": "Kullanıcı adı",
   "app.containers.SignUp.viennaDataProtection": "vienna gi̇zli̇li̇k poli̇ti̇kasi",
   "app.containers.SiteMap.contributions": "Katkılar",
+  "app.containers.SiteMap.cookiePolicyLinkTitle": "Çerezler",
   "app.containers.SiteMap.issues": "Yorumlar",
   "app.containers.SiteMap.options": "Seçenekler",
   "app.containers.SiteMap.projects": "Projeler",
