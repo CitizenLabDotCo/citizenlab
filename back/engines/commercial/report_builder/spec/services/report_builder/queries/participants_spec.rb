@@ -196,8 +196,7 @@ RSpec.describe ReportBuilder::Queries::Participants do
         session = create(
           :session,
           created_at:
-          @date_september, monthly_user_hash: "visitor_#{i}",
-          highest_role: 'user'
+          @date_september, monthly_user_hash: "visitor_#{i}"
         )
         create(:pageview, created_at: @date_september, session_id: session.id, project_id: project.id)
       end

@@ -119,7 +119,7 @@ module ReportBuilder
 
       if exclude_roles.present?
         query = query
-          .where.not(highest_role: exclude_roles)
+          .where("highest_role IS NULL OR highest_role NOT IN (#{exclude_roles.map { |r| "'#{r}'" }.join(', ')})")
       end
 
       visitors = query.distinct.count(:monthly_user_hash)
