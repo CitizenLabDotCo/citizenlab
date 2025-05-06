@@ -20,7 +20,7 @@ import usePhase from 'api/phases/usePhase';
 import usePhases from 'api/phases/usePhases';
 import useUpdatePhase from 'api/phases/useUpdatePhase';
 
-import { useSyncFiles } from 'hooks/files/useSyncFiles';
+import { useSyncPhaseFiles } from 'hooks/files/useSyncPhaseFiles';
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 import useContainerWidthAndHeight from 'hooks/useContainerWidthAndHeight';
 import useLocalize from 'hooks/useLocalize';
@@ -87,7 +87,7 @@ const AdminPhaseEdit = ({ projectId, phase, flatCampaigns }: Props) => {
   const { data: phases } = usePhases(projectId);
   const { mutate: addPhase } = useAddPhase();
   const { mutate: updatePhase } = useUpdatePhase();
-  const syncPhaseFiles = useSyncFiles();
+  const syncPhaseFiles = useSyncPhaseFiles();
   const [errors, setErrors] = useState<CLErrors | null>(null);
   const [processing, setProcessing] = useState<boolean>(false);
   const [inStatePhaseFiles, setInStatePhaseFiles] = useState<FileType[]>(
@@ -271,7 +271,6 @@ const AdminPhaseEdit = ({ projectId, phase, flatCampaigns }: Props) => {
     }, {});
 
     await syncPhaseFiles({
-      projectId,
       phaseId,
       phaseFiles: inStatePhaseFiles,
       filesToRemove: phaseFilesToRemove,

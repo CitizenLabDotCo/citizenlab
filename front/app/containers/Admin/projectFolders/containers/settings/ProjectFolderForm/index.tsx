@@ -19,7 +19,7 @@ import useAddProjectFolder from 'api/project_folders/useAddProjectFolder';
 import useProjectFolderById from 'api/project_folders/useProjectFolderById';
 import useUpdateProjectFolder from 'api/project_folders/useUpdateProjectFolder';
 
-import { useSyncFiles } from 'hooks/files/useSyncFiles';
+import { useSyncFolderFiles } from 'hooks/files/useSyncFolderFiles';
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 
 import projectMessages from 'containers/Admin/projects/project/general/messages';
@@ -71,7 +71,7 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
     ==============
   */
   const { mutateAsync: addProjectFolderFile } = useAddProjectFolderFile();
-  const syncProjectFolderFiles = useSyncFiles();
+  const syncProjectFolderFiles = useSyncFolderFiles();
 
   const { data: projectFolder } = useProjectFolderById(projectFolderId);
   const { data: projectFolderFilesRemote } = useProjectFolderFiles({
@@ -417,7 +417,7 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
               {}
             );
 
-            syncProjectFolderFiles({
+            const folderFilePromises = await syncProjectFolderFiles({
               projectFolderId,
               projectFolderFiles,
               filesToRemove: projectFolderFilesToRemove,
@@ -428,6 +428,7 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
               cardToAddPromise,
               cardToEditPromise,
               cardToRemovePromises,
+              ...folderFilePromises,
             ]);
 
             const changedTitleMultiloc = !isEqual(

@@ -20,7 +20,7 @@ import useAddProject from 'api/projects/useAddProject';
 import useProjectById from 'api/projects/useProjectById';
 import useUpdateProject from 'api/projects/useUpdateProject';
 
-import { useSyncFiles } from 'hooks/files/useSyncFiles';
+import { useSyncProjectFiles } from 'hooks/files/useSyncProjectFiles';
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 import useContainerWidthAndHeight from 'hooks/useContainerWidthAndHeight';
 import useFeatureFlag from 'hooks/useFeatureFlag';
@@ -101,7 +101,7 @@ const AdminProjectsProjectGeneral = () => {
   const { mutateAsync: addProject } = useAddProject();
 
   const { data: remoteProjectFiles } = useProjectFiles(projectId || null);
-  const syncProjectFiles = useSyncFiles();
+  const syncProjectFiles = useSyncProjectFiles();
 
   const [submitState, setSubmitState] = useState<ISubmitState>('disabled');
 
@@ -373,17 +373,20 @@ const AdminProjectsProjectGeneral = () => {
               })
             : null;
 
-        await syncProjectFiles({
-          projectId: latestProjectId,
-          projectFiles,
-          filesToRemove: projectFilesToRemove,
-          fileOrdering: initialProjectFilesOrdering,
-        });
+        const projectFilePromises = latestProjectId
+          ? await syncProjectFiles({
+              projectId: latestProjectId,
+              projectFiles,
+              filesToRemove: projectFilesToRemove,
+              fileOrdering: initialProjectFilesOrdering,
+            })
+          : [];
 
         await Promise.all([
           cardImageToAddPromise,
           cardImageToUpdatePromise,
           cardImageToRemovePromise,
+          ...projectFilePromises,
         ] as Promise<any>[]);
 
         setSubmitState('success');
