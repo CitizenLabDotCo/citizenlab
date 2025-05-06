@@ -196,7 +196,6 @@ const IdeasEditForm = ({ ideaId }: Props) => {
       data.idea_images_attributes ||
       Object.values(data.body_multiloc).some((value) => value.includes('<img'));
 
-    setInitialFormData(data);
     setFormData(data);
     if (data.publication_status === 'published') {
       if (disclaimerNeeded) {
@@ -233,13 +232,13 @@ const IdeasEditForm = ({ ideaId }: Props) => {
     const isImageNew =
       idea_images_attributes !== initialFormData.idea_images_attributes;
 
-    // Delete a remote image only on submission
-    // TODO: Fix this the next time the file is edited.
-    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-    if (isImageNew && initialFormData?.idea_images_attributes[0]?.id) {
-      deleteIdeaImage({
-        ideaId,
-        imageId: initialFormData.idea_images_attributes[0].id,
+    // Delete remote images only on submission
+    if (isImageNew && initialFormData.idea_images_attributes.length > 0) {
+      initialFormData.idea_images_attributes.forEach((image) => {
+        deleteIdeaImage({
+          ideaId,
+          imageId: image.id,
+        });
       });
     }
 

@@ -1802,6 +1802,7 @@
   "app.containers.SignUp.viennaConsentUserName": "Benotzernumm",
   "app.containers.SignUp.viennaDataProtection": "D'Dateschutzrichtlinn vu Wien",
   "app.containers.SiteMap.contributions": "Bäiträg",
+  "app.containers.SiteMap.cookiePolicyLinkTitle": "Cookien",
   "app.containers.SiteMap.issues": "Kommentaren",
   "app.containers.SiteMap.options": "Optiounen",
   "app.containers.SiteMap.projects": "Projeten",
