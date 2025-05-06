@@ -34,14 +34,14 @@ module BulkImportIdeas::Exporters
 
       pages = reader.pages.map do |page|
         page.text.split("\n").map do |line|
-          # Remove the optional text from each line - maybe need to do from the end of the line?
+          # Remove the optional text from each line
           line.sub("(#{I18n.with_locale(@locale) { I18n.t('form_builder.pdf_export.optional') }})", '')&.strip
         end
       end
 
       @importer_fields = []
 
-      # TODO: What about multiline titles?
+      # TODO: What happens to question titles over multiple lines?
       @form_fields.each do |field|
         add_to_importer_fields(field, pages, 'field')
         field.options.each do |option|
@@ -63,10 +63,11 @@ module BulkImportIdeas::Exporters
       pdf_pages.each_with_index do |lines, index|
         page_num = index + 1
         field_line_num = lines.find_index(title)
-        _total_lines = lines.length
+        total_lines = lines.length
         if field_line_num
-          position = field_line_num # TODO: Convert the position into equivalent of what form parser returns
-          # position = (810 - position) / 8.1 # Convert the position into equivalent of what form parser returns
+          # Convert the line number into a position 0 - 100 in the page (equivalent of what the google form parser returns)
+          position = ((field_line_num + 1) * (100 / total_lines.to_f)).round
+
           key = field_or_option.key
           parent_key = type == 'option' ? field_or_option.custom_field.key : nil
 

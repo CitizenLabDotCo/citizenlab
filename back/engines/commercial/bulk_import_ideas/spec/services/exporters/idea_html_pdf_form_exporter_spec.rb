@@ -32,9 +32,7 @@ describe BulkImportIdeas::Exporters::IdeaHtmlPdfFormExporter do
         yes
         no
       ]
-
-      # TODO: Make these positions correct
-      expect(importer_data[:fields].pluck(:position)).to eq [8, 14, 33, 36, 38]
+      expect(importer_data[:fields].pluck(:position)).to eq [23, 38, 85, 93, 98]
     end
   end
 end
