@@ -157,7 +157,10 @@ const CommonGroundInputManager = ({ projectId, phaseId }: Props) => {
         </Thead>
         <Tbody>
           {ideas.data.map((idea: IIdeaData) => (
-            <Tr key={idea.id}>
+            <Tr
+              key={idea.id}
+              background={selection.has(idea.id) ? colors.grey300 : undefined}
+            >
               <Td>
                 <Checkbox
                   size="21px"
@@ -165,7 +168,7 @@ const CommonGroundInputManager = ({ projectId, phaseId }: Props) => {
                   onChange={() => toggleSelect(idea.id)}
                 />
               </Td>
-              <Td borderBottom="none !important">
+              <Td>
                 <TitleLink
                   className="e2e-common-ground-input-manager-title"
                   onClick={(e) => {
