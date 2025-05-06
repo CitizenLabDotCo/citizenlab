@@ -194,8 +194,8 @@ RSpec.describe ReportBuilder::Queries::Participants do
 
       8.times do |i|
         session = create(
-          :session, 
-          created_at: 
+          :session,
+          created_at:
           @date_september, monthly_user_hash: "visitor_#{i}",
           highest_role: 'user'
         )
@@ -209,9 +209,9 @@ RSpec.describe ReportBuilder::Queries::Participants do
 
       4.times do |i|
         session = create(
-          :session, 
-          created_at: 
-          @date_september, 
+          :session,
+          created_at:
+          @date_september,
           monthly_user_hash: "another_visitor_#{i}",
           highest_role: 'admin'
         )

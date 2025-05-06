@@ -16,8 +16,8 @@ module ReportBuilder
       start_date, end_date = TimeBoundariesParser.new(start_at, end_at).parse
 
       participations_in_period = participations(
-        start_date, 
-        end_date, 
+        start_date,
+        end_date,
         project_id: project_id,
         exclude_roles: exclude_roles
       )
@@ -54,8 +54,8 @@ module ReportBuilder
 
       if compare_start_at && compare_end_at
         participants_compared_period = participations(
-          compare_start_at, 
-          compare_end_at, 
+          compare_start_at,
+          compare_end_at,
           project_id: project_id,
           exclude_roles: exclude_roles
         )
@@ -75,8 +75,8 @@ module ReportBuilder
     end
 
     def participations(
-      start_date, 
-      end_date, 
+      start_date,
+      end_date,
       project_id: nil,
       exclude_roles: nil
     )
@@ -102,9 +102,9 @@ module ReportBuilder
     end
 
     def participation_rate(
-      participants, 
+      participants,
       start_date,
-      end_date, 
+      end_date,
       project_id: nil,
       exclude_roles: nil
     )
