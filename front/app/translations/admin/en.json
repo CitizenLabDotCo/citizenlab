@@ -2308,6 +2308,7 @@
   "app.containers.AdminPage.SettingsPage.signed_out": "Button for non-registered visitors",
   "app.containers.AdminPage.SettingsPage.signupFormText": "Registration helper text",
   "app.containers.AdminPage.SettingsPage.signupFormTooltip": "Add a short description at the top of the sign-up form.",
+  "app.containers.AdminPage.SettingsPage.statuses": "Statuses",
   "app.containers.AdminPage.SettingsPage.step1": "Email and password step",
   "app.containers.AdminPage.SettingsPage.step1Tooltip": "This is shown on the top of the first page of the sign-up form (name, email, password).",
   "app.containers.AdminPage.SettingsPage.step2": "Registration questions step",
