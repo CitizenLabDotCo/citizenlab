@@ -66,13 +66,12 @@ const NewIdeaHeading = ({ phase, titleText }: Props) => {
   const linkToFormBuilder: RouteType = `/admin/projects/${project.data.id}/phases/${phaseId}/form/edit`;
 
   const onClickClose = () => {
-    if (isCommonGround) {
-      clHistory.push(
-        `/admin/projects/${project.data.id}/phases/${phaseId}/ideas`
-      );
-      return;
-    }
-    clHistory.push(`/projects/${projectSlug}`);
+    const pathname = isCommonGround
+      ? `/admin/projects/${project.data.id}/phases/${phaseId}/ideas`
+      : `/projects/${projectSlug}`;
+    clHistory.push({
+      pathname,
+    });
   };
 
   return (
