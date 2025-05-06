@@ -64,7 +64,7 @@ export function useSyncPhaseFiles() {
       );
 
       // Return a single promise that resolves when all mutations are done
-      return Promise.all([
+      await Promise.all([
         ...filesToAddPromises,
         ...filesToRemovePromises,
         ...filesToReorderPromises,
