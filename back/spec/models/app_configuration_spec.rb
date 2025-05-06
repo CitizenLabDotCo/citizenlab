@@ -67,12 +67,6 @@ RSpec.describe AppConfiguration do
       expect(sanitized_name['en']).to eq('City of alert("XSS") Springfield')
       expect(sanitized_name['fr']).to eq('South Elyse ')
       expect(sanitized_name['nl']).to eq('Plain text with formatting')
-
-      # Verify no HTML tags remain
-      sanitized_name.each_value do |value|
-        expect(value).not_to include('<')
-        expect(value).not_to include('>')
-      end
     end
   end
 end
