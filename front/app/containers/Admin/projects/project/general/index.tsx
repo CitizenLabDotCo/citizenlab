@@ -373,20 +373,20 @@ const AdminProjectsProjectGeneral = () => {
               })
             : null;
 
-        const projectFilePromises = latestProjectId
-          ? await syncProjectFiles({
+        const projectFilesPromise = latestProjectId
+          ? syncProjectFiles({
               projectId: latestProjectId,
               projectFiles,
               filesToRemove: projectFilesToRemove,
               fileOrdering: initialProjectFilesOrdering,
             })
-          : [];
+          : undefined;
 
         await Promise.all([
           cardImageToAddPromise,
           cardImageToUpdatePromise,
           cardImageToRemovePromise,
-          ...projectFilePromises,
+          projectFilesPromise,
         ] as Promise<any>[]);
 
         setSubmitState('success');
