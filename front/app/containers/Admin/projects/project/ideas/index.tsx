@@ -71,15 +71,18 @@ const AdminProjectIdeas = () => {
             )}
             {phase && (
               <NewIdeaButton
+                participationMethod={phase.data.attributes.participation_method}
                 inputTerm={phase.data.attributes.input_term}
                 linkTo={`/projects/${project.data.attributes.slug}/ideas/new?phase_id=${phaseId}`}
               />
             )}
           </Box>
         </Box>
-        <Text color="textSecondary">
-          <FormattedMessage {...messages.subtitleInputManager} />
-        </Text>
+        {!isCommonGround && (
+          <Text color="textSecondary">
+            <FormattedMessage {...messages.subtitleInputManager} />
+          </Text>
+        )}
         <Box display="flex">
           {phase?.data.attributes.participation_method === 'voting' &&
             // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
