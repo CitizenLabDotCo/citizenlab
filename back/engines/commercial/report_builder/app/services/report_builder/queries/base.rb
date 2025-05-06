@@ -11,6 +11,8 @@ class ReportBuilder::Queries::Base
   end
 
   def validate_roles(roles)
+    return if roles.nil?
+
     valid_roles = %w[admin project_folder_moderator project_moderator user]
 
     roles.each do |role|

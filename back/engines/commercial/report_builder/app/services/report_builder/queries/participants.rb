@@ -94,7 +94,7 @@ module ReportBuilder
 
         exclude_roles.each do |role|
           participations = participations
-            .where.not('users.roles::TEXT LIKE (?)', role)
+            .where.not("users.roles::TEXT LIKE '%#{role}%'")
         end
       end
 
