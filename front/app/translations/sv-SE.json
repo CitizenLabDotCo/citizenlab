@@ -1802,6 +1802,7 @@
   "app.containers.SignUp.viennaConsentUserName": "Användarnamn",
   "app.containers.SignUp.viennaDataProtection": "wiens sekretesspolicy",
   "app.containers.SiteMap.contributions": "Bidrag",
+  "app.containers.SiteMap.cookiePolicyLinkTitle": "Kakor",
   "app.containers.SiteMap.issues": "Kommentarer",
   "app.containers.SiteMap.options": "Alternativ",
   "app.containers.SiteMap.projects": "Projekt",
