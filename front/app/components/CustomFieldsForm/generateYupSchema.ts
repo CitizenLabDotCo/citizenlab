@@ -103,6 +103,18 @@ const generateYupValidationSchema = ({
         break;
       }
 
+      case 'multiselect': {
+        // TODO: Deal with minimum_select_count and maximum_select_count attributes
+        // Should we also enum the option keys?
+        schema[key] = required
+          ? array()
+              .of(string())
+              .min(1, formatMessage(messages.topicRequired))
+              .required(formatMessage(messages.topicRequired))
+          : array().nullable();
+        break;
+      }
+
       case 'image_files': {
         schema[key] = required
           ? array()

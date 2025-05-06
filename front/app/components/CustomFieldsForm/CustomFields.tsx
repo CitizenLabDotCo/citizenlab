@@ -17,6 +17,7 @@ import TextArea from 'components/HookForm/TextArea';
 import Topics from 'components/HookForm/Topics';
 import { FormLabel } from 'components/UI/FormComponents';
 import RadioSingleSelect from 'components/HookForm/RadioSingleSelect';
+import MultipleSelect from 'components/HookForm/MultipleSelect';
 
 const renderField = (
   question: IFlatCustomField,
@@ -42,24 +43,21 @@ const renderField = (
       );
     case 'multiline_text':
       return <TextArea name={question.key} />;
-    case 'select': {
-      let selectOptions: IOption[] = [];
-      if (question.options) {
-        selectOptions = question.options.map((selectOption) => {
-          return {
-            value: selectOption.key,
-            label: localize(selectOption.title_multiloc),
-          } as IOption;
-        });
-      }
+    case 'select':
       return (
         <RadioSingleSelect
           name={question.key}
-          options={selectOptions}
+          options={extractOptions(question, localize)}
           required={question.required}
         />
       ); // <Select name={question.key} options={selectOptions} />; // There seems to be an issue with the style?
-    }
+    case 'multiselect':
+      return (
+        <MultipleSelect
+          name={question.key}
+          options={extractOptions(question, localize)}
+        />
+      );
     case 'image_files':
       return (
         <ImagesDropzone name={question.key} imagePreviewRatio={135 / 298} />
@@ -117,6 +115,22 @@ const CustomFields = ({
         })}
     </>
   );
+};
+
+const extractOptions = (
+  question: IFlatCustomField,
+  localize: Localize
+): IOption[] => {
+  let result: IOption[] = [];
+  if (question.options) {
+    result = question.options.map((selectOption) => {
+      return {
+        value: selectOption.key,
+        label: localize(selectOption.title_multiloc),
+      } as IOption;
+    });
+  }
+  return result;
 };
 
 export default CustomFields;
