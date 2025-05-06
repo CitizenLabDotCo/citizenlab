@@ -3077,7 +3077,6 @@
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Areas.done": "ਹੋ ਗਿਆ",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Areas.followAreas1": "ਫਾਲੋ ਕਰੋ {areasTerm}",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Areas.thereAreCurrentlyNoProjects": "ਤੁਹਾਡੇ ਦੁਆਰਾ ਫਾਲੋ ਕੀਤੇ ਜਾ ਰਹੇ {areasTerm} ਵਿੱਚ ਇਸ ਵੇਲੇ ਤੁਹਾਡੇ ਲਈ ਕੋਈ ਸਰਗਰਮ ਪ੍ਰੋਜੈਕਟ ਨਹੀਂ ਹਨ।",
-  "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Areas.thisWidgetShows": "ਇਹ ਵਿਜੇਟ ਉਹਨਾਂ {areasTerm} ਨਾਲ ਜੁੜੇ ਪ੍ਰੋਜੈਕਟਾਂ ਨੂੰ ਦਰਸਾਉਂਦਾ ਹੈ ਜਿਨ੍ਹਾਂ ਨੂੰ ਉਪਭੋਗਤਾ ਫਾਲੋ ਕਰਦਾ ਹੈ। ਜੇਕਰ ਉਪਭੋਗਤਾ ਅਜੇ ਤੱਕ ਕਿਸੇ {areasTerm} ਨੂੰ ਫਾਲੋ ਨਹੀਂ ਕਰਦਾ ਹੈ, ਤਾਂ ਵਿਜੇਟ ਫਾਲੋ ਕਰਨ ਲਈ ਉਪਲਬਧ {areasTerm} ਦਿਖਾਏਗਾ। ਇਸ ਸਥਿਤੀ ਵਿੱਚ ਵਿਜੇਟ ਵੱਧ ਤੋਂ ਵੱਧ 100 {areasTerm}ਦਿਖਾਏਗਾ।",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Published.noData": "ਕੋਈ ਪ੍ਰਕਾਸ਼ਿਤ ਪ੍ਰੋਜੈਕਟ ਜਾਂ ਫੋਲਡਰ ਉਪਲਬਧ ਨਹੀਂ ਹਨ",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Published.publishedTitle": "ਪ੍ਰਕਾਸ਼ਿਤ ਪ੍ਰੋਜੈਕਟ ਅਤੇ ਫੋਲਡਰ",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Published.thisWidgetWillShow": "ਇਹ ਵਿਜੇਟ ਉਹਨਾਂ ਪ੍ਰੋਜੈਕਟਾਂ ਅਤੇ ਫੋਲਡਰਾਂ ਦਾ ਕੇਸ ਕਰੇਗਾ ਜੋ ਇਸ ਸਮੇਂ ਪ੍ਰਕਾਸ਼ਿਤ ਕੀਤੇ ਗਏ ਹਨ, ਪ੍ਰੋਜੈਕਟ ਪੰਨੇ 'ਤੇ ਪਰਿਭਾਸ਼ਿਤ ਕ੍ਰਮ ਦਾ ਸਨਮਾਨ ਕਰਦੇ ਹੋਏ। ਇਹ ਵਿਵਹਾਰ \"ਪੁਰਾਤਨ\" ਪ੍ਰੋਜੈਕਟ ਵਿਜੇਟ ਦੀ \"ਕਿਰਿਆਸ਼ੀਲ\" ਟੈਬ ਵਰਗਾ ਹੈ।",

@@ -3077,7 +3077,6 @@
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Areas.done": "Færdig",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Areas.followAreas1": "Følg {areasTerm}",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Areas.thereAreCurrentlyNoProjects": "Der er i øjeblikket ingen aktive projekter for dig på {areasTerm} , som du følger.",
-  "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Areas.thisWidgetShows": "Denne widget viser projekter, der er knyttet til {areasTerm} , som brugeren følger. Hvis brugeren ikke følger nogen {areasTerm} endnu, viser widgetten de tilgængelige {areasTerm} , der kan følges. I dette tilfælde viser widgetten maksimalt 100 {areasTerm}.",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Published.noData": "Ingen offentliggjorte projekter eller mapper tilgængelige",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Published.publishedTitle": "Publiserede projekter og mapper",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Published.thisWidgetWillShow": "Denne widget viser de projekter og mapper, der er udgivet i øjeblikket, og respekterer den rækkefølge, der er defineret på projektsiden. Denne visning er den samme som fanen \"aktiv\" i widgetten \"ældre\" projekter.",

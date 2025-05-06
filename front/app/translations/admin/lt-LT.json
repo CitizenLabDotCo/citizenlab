@@ -3077,7 +3077,6 @@
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Areas.done": "Atlikta",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Areas.followAreas1": "Sekite {areasTerm}",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Areas.thereAreCurrentlyNoProjects": "Šiuo metu {areasTerm} , kurį sekate, nėra jokių aktyvių projektų.",
-  "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Areas.thisWidgetShows": "Šiame valdiklyje rodomi projektai, susiję su {areasTerm} , kuriuos naudotojas seka. Jei naudotojas dar neseka jokio {areasTerm} , valdiklyje bus rodomi turimi {areasTerm} , kuriuos galima sekti. Šiuo atveju valdiklyje bus rodoma ne daugiau kaip 100 {areasTerm}.",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Published.noData": "Nėra paskelbtų projektų ar aplankų",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Published.publishedTitle": "Paskelbti projektai ir aplankai",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Published.thisWidgetWillShow": "Šiame valdiklyje bus rodomi šiuo metu paskelbti projektai ir aplankai, atsižvelgiant į projektų puslapyje nustatytą eiliškumą. Ši elgsena yra tokia pati, kaip ir \"senųjų\" projektų valdiklio skirtuko \"active\" (aktyvus).",

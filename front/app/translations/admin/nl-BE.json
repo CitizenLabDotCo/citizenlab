@@ -3077,7 +3077,6 @@
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Areas.done": "Klaar",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Areas.followAreas1": "Volg {areasTerm}",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Areas.thereAreCurrentlyNoProjects": "Er zijn momenteel geen actieve projecten voor je in de {areasTerm} die je volgt.",
-  "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Areas.thisWidgetShows": "Deze widget toont projecten die geassocieerd zijn met de {areasTerm} die de gebruiker volgt. Als de gebruiker nog geen {areasTerm} volgt, toont de widget de beschikbare {areasTerm} om te volgen. In dit geval toont de widget maximaal 100 {areasTerm}.",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Published.noData": "Geen gepubliceerde projecten of mappen beschikbaar",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Published.publishedTitle": "Gepubliceerde projecten en mappen",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Published.thisWidgetWillShow": "Deze widget toont de projecten en mappen die op dat moment gepubliceerd zijn, met inachtneming van de volgorde die is gedefinieerd op de projectenpagina. Dit gedrag is hetzelfde als het \"actief\" tabblad van de \"oude\" projecten widget.",
