@@ -11,6 +11,7 @@ module ReportBuilder
       **_other_props
     )
       validate_resolution(resolution)
+      validate_roles(exclude_roles)
 
       start_date, end_date = TimeBoundariesParser.new(start_at, end_at).parse
 
@@ -88,23 +89,13 @@ module ReportBuilder
       end
 
       if exclude_roles.present?
-        subquery = User
-          .select("
-            id,
-            (CASE
-              WHEN users.roles::TEXT LIKE '%admin%' THEN 'admin'
-              WHEN users.roles::TEXT LIKE '%project_folder_moderator%' THEN 'project_folder_moderator'
-              WHEN users.roles::TEXT LIKE '%project_moderator%' THEN 'project_moderator'
-              ELSE 'user'
-            END) AS highest_role
-          ")
-          
-        users_with_excluded_roles = User
-          .from("(#{subquery.to_sql}) AS users_with_roles")
-          .where.not("users_with_roles.highest_role IN (?)", exclude_roles)
-
         participations = participations
-          .where(dimension_user_id: users_with_excluded_roles.select(:id))
+          .joins('INNER JOIN users ON users.id = analytics_fact_participations.dimension_user_id')
+
+        exclude_roles.each do |role|
+          participations = participations
+            .where.not('users.roles::TEXT LIKE (?)', role)
+        end
       end
 
       participations
