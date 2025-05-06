@@ -9,15 +9,15 @@ resource 'Idea Custom Fields' do
 
   let!(:default_attributes) do
     {
-      code: nil,
-      created_at: an_instance_of(String),
+      title_multiloc: {},
       description_multiloc: {},
-      enabled: true,
       input_type: 'text',
       key: nil,
-      ordering: 0,
+      code: nil,
+      enabled: true,
       required: false,
-      title_multiloc: {},
+      ordering: 0,
+      created_at: an_instance_of(String),
       updated_at: an_instance_of(String),
       logic: {},
       constraints: {},
@@ -429,19 +429,11 @@ resource 'Idea Custom Fields' do
         expect(json_response[:data].size).to eq 3
         expect(json_response[:data][1]).to match({
           attributes: default_attributes.merge({
-            code: nil,
-            created_at: an_instance_of(String),
+            title_multiloc: { en: 'Inserted field' },
             description_multiloc: {},
-            enabled: true,
             input_type: 'matrix_linear_scale',
             key: Regexp.new('inserted_field'),
             ordering: 1,
-            required: false,
-            title_multiloc: { en: 'Inserted field' },
-            updated_at: an_instance_of(String),
-            logic: {},
-            constraints: {},
-            random_option_ordering: false,
             linear_scale_label_1_multiloc: { en: 'Closest' },
             linear_scale_label_2_multiloc: {},
             linear_scale_label_3_multiloc: {},
@@ -453,8 +445,7 @@ resource 'Idea Custom Fields' do
             linear_scale_label_9_multiloc: {},
             linear_scale_label_10_multiloc: {},
             linear_scale_label_11_multiloc: { en: 'Furthest' },
-            maximum: 11,
-            include_in_printed_form: true
+            maximum: 11
           }),
           id: an_instance_of(String),
           type: 'custom_field',
@@ -699,16 +690,12 @@ resource 'Idea Custom Fields' do
         expect(json_response[:data].size).to eq 3
         expect(json_response[:data][1]).to match({
           attributes: default_attributes.merge({
-            code: nil,
-            created_at: an_instance_of(String),
+            title_multiloc: { en: 'Select a value from the scale' },
             description_multiloc: { en: 'Description of question' },
-            enabled: true,
             input_type: 'linear_scale',
             key: an_instance_of(String),
             ordering: 1,
             required: true,
-            title_multiloc: { en: 'Select a value from the scale' },
-            updated_at: an_instance_of(String),
             maximum: 7,
             linear_scale_label_1_multiloc: { en: 'Lowest' },
             linear_scale_label_2_multiloc: { en: 'Low' },
@@ -720,11 +707,7 @@ resource 'Idea Custom Fields' do
             linear_scale_label_8_multiloc: {},
             linear_scale_label_9_multiloc: {},
             linear_scale_label_10_multiloc: {},
-            linear_scale_label_11_multiloc: {},
-            logic: {},
-            random_option_ordering: false,
-            constraints: {},
-            include_in_printed_form: true
+            linear_scale_label_11_multiloc: {}
           }),
           id: an_instance_of(String),
           type: 'custom_field',
@@ -765,16 +748,12 @@ resource 'Idea Custom Fields' do
         expect(json_response[:data].size).to eq 3
         expect(json_response[:data][1]).to match({
           attributes: default_attributes.merge({
-            code: nil,
-            created_at: an_instance_of(String),
+            title_multiloc: { en: 'Select a value from the scale' },
             description_multiloc: { en: 'Description of question' },
-            enabled: true,
             input_type: 'sentiment_linear_scale',
             key: an_instance_of(String),
             ordering: 1,
             required: true,
-            title_multiloc: { en: 'Select a value from the scale' },
-            updated_at: an_instance_of(String),
             maximum: 5,
             ask_follow_up: true,
             linear_scale_label_1_multiloc: { en: 'Lowest' },
@@ -787,11 +766,7 @@ resource 'Idea Custom Fields' do
             linear_scale_label_8_multiloc: {},
             linear_scale_label_9_multiloc: {},
             linear_scale_label_10_multiloc: {},
-            linear_scale_label_11_multiloc: {},
-            logic: {},
-            random_option_ordering: false,
-            constraints: {},
-            include_in_printed_form: true
+            linear_scale_label_11_multiloc: {}
           }),
           id: an_instance_of(String),
           type: 'custom_field',
@@ -832,24 +807,17 @@ resource 'Idea Custom Fields' do
         json_response = json_parse(response_body)
         expect(json_response[:data].size).to eq 3
         expect(json_response[:data][1][:attributes]).to match(default_attributes.merge({
-          code: nil,
-          created_at: an_instance_of(String),
+          title_multiloc: { en: 'Select a value' },
           description_multiloc: { en: 'Description of question' },
           dropdown_layout: false,
-          enabled: true,
           input_type: 'select',
           key: an_instance_of(String),
           ordering: 1,
           required: true,
-          title_multiloc: { en: 'Select a value' },
-          updated_at: an_instance_of(String),
           logic: { rules: [{
             if: 'any_other_answer',
             goto_page_id: form_end_page.id
-          }] },
-          random_option_ordering: false,
-          constraints: {},
-          include_in_printed_form: true
+          }] }
         }))
       end
 
@@ -880,21 +848,13 @@ resource 'Idea Custom Fields' do
         expect(json_response[:data].size).to eq 3
         expect(json_response[:data][1]).to match({
           attributes: default_attributes.merge({
-            code: nil,
-            created_at: an_instance_of(String),
+            title_multiloc: { en: 'Rate your experince with us' },
             description_multiloc: { en: 'Description of question' },
-            enabled: true,
             input_type: 'rating',
             key: an_instance_of(String),
             ordering: 1,
             required: true,
-            title_multiloc: { en: 'Rate your experince with us' },
-            updated_at: an_instance_of(String),
-            maximum: 7,
-            logic: {},
-            random_option_ordering: false,
-            constraints: {},
-            include_in_printed_form: true
+            maximum: 7
           }),
           id: an_instance_of(String),
           type: 'custom_field',
@@ -1152,21 +1112,13 @@ resource 'Idea Custom Fields' do
         expect(json_response[:data].size).to eq 3
         expect(json_response[:data][1]).to match({
           attributes: default_attributes.merge({
-            code: nil,
-            created_at: an_instance_of(String),
+            title_multiloc: { en: 'Updated field' },
             description_multiloc: an_instance_of(Hash),
             dropdown_layout: false,
-            enabled: true,
             input_type: 'select',
             key: field.key,
             ordering: 1,
-            required: true,
-            title_multiloc: { en: 'Updated field' },
-            updated_at: an_instance_of(String),
-            logic: {},
-            constraints: {},
-            random_option_ordering: false,
-            include_in_printed_form: true
+            required: true
           }),
           id: an_instance_of(String),
           type: 'custom_field',
@@ -1422,21 +1374,12 @@ resource 'Idea Custom Fields' do
         expect(json_response[:data].size).to eq 5
         expect(json_response[:data][0]).to match({
           attributes: default_attributes.merge({
-            code: nil,
-            created_at: an_instance_of(String),
+            title_multiloc: page1.title_multiloc.symbolize_keys,
             description_multiloc: page1.description_multiloc.symbolize_keys,
-            enabled: true,
             input_type: 'page',
             key: page1.key,
             ordering: 0,
-            page_layout: 'default',
-            required: false,
-            title_multiloc: page1.title_multiloc.symbolize_keys,
-            updated_at: an_instance_of(String),
-            logic: {},
-            constraints: {},
-            random_option_ordering: false,
-            include_in_printed_form: true
+            page_layout: 'default'
           }),
           id: page1.id,
           type: 'custom_field',
@@ -1444,16 +1387,12 @@ resource 'Idea Custom Fields' do
         })
         expect(json_response[:data][1]).to match({
           attributes: default_attributes.merge({
-            code: nil,
-            created_at: an_instance_of(String),
+            title_multiloc: field_to_update.title_multiloc.symbolize_keys,
             description_multiloc: field_to_update.description_multiloc.symbolize_keys,
-            enabled: true,
             input_type: 'linear_scale',
             key: field_to_update.key,
             ordering: 1,
             required: true,
-            title_multiloc: field_to_update.title_multiloc.symbolize_keys,
-            updated_at: an_instance_of(String),
             maximum: 5,
             linear_scale_label_1_multiloc: field_to_update.linear_scale_label_1_multiloc.symbolize_keys,
             linear_scale_label_2_multiloc: field_to_update.linear_scale_label_2_multiloc.symbolize_keys,
@@ -1468,10 +1407,7 @@ resource 'Idea Custom Fields' do
             linear_scale_label_11_multiloc: field_to_update.linear_scale_label_11_multiloc.symbolize_keys,
             logic: {
               rules: [{ if: 2, goto_page_id: page3.id }]
-            },
-            constraints: {},
-            random_option_ordering: false,
-            include_in_printed_form: true
+            }
           }),
           id: field_to_update.id,
           type: 'custom_field',
@@ -1479,21 +1415,12 @@ resource 'Idea Custom Fields' do
         })
         expect(json_response[:data][2]).to match({
           attributes: default_attributes.merge({
-            code: nil,
-            created_at: an_instance_of(String),
+            title_multiloc: page2.title_multiloc.symbolize_keys,
             description_multiloc: page2.description_multiloc.symbolize_keys,
-            enabled: true,
             input_type: 'page',
             key: page2.key,
             ordering: 2,
-            page_layout: 'default',
-            required: false,
-            title_multiloc: page2.title_multiloc.symbolize_keys,
-            updated_at: an_instance_of(String),
-            logic: {},
-            constraints: {},
-            random_option_ordering: false,
-            include_in_printed_form: true
+            page_layout: 'default'
           }),
           id: page2.id,
           type: 'custom_field',
@@ -1501,21 +1428,13 @@ resource 'Idea Custom Fields' do
         })
         expect(json_response[:data][3]).to match({
           attributes: default_attributes.merge({
-            code: nil,
-            created_at: an_instance_of(String),
+            title_multiloc: page3.title_multiloc.symbolize_keys,
             description_multiloc: page3.description_multiloc.symbolize_keys,
-            enabled: true,
             input_type: 'page',
             key: page3.key,
             ordering: 3,
             page_layout: 'default',
-            required: false,
-            title_multiloc: page3.title_multiloc.symbolize_keys,
-            updated_at: an_instance_of(String),
-            logic: {},
-            constraints: {},
-            random_option_ordering: false,
-            include_in_printed_form: true
+            required: false
           }),
           id: page3.id,
           type: 'custom_field',
@@ -1578,21 +1497,13 @@ resource 'Idea Custom Fields' do
         expect(json_response[:data].size).to eq 5
         expect(json_response[:data][0]).to match({
           attributes: default_attributes.merge({
-            code: nil,
-            created_at: an_instance_of(String),
+            title_multiloc: page_to_update.title_multiloc.symbolize_keys,
             description_multiloc: page_to_update.description_multiloc.symbolize_keys,
-            enabled: true,
             input_type: 'page',
             page_layout: 'default',
             key: page_to_update.key,
             ordering: 0,
-            required: false,
-            title_multiloc: page_to_update.title_multiloc.symbolize_keys,
-            updated_at: an_instance_of(String),
-            logic: { next_page_id: page4.id },
-            constraints: {},
-            random_option_ordering: false,
-            include_in_printed_form: true
+            logic: { next_page_id: page4.id }
           }),
           id: page_to_update.id,
           type: 'custom_field',
@@ -1600,21 +1511,12 @@ resource 'Idea Custom Fields' do
         })
         expect(json_response[:data][1]).to match({
           attributes: default_attributes.merge({
-            code: nil,
-            created_at: an_instance_of(String),
+            title_multiloc: page2.title_multiloc.symbolize_keys,
             description_multiloc: page2.description_multiloc.symbolize_keys,
-            enabled: true,
             input_type: 'page',
             key: page2.key,
             ordering: 1,
-            page_layout: 'default',
-            required: false,
-            title_multiloc: page2.title_multiloc.symbolize_keys,
-            updated_at: an_instance_of(String),
-            logic: {},
-            constraints: {},
-            random_option_ordering: false,
-            include_in_printed_form: true
+            page_layout: 'default'
           }),
           id: page2.id,
           type: 'custom_field',
@@ -1622,21 +1524,12 @@ resource 'Idea Custom Fields' do
         })
         expect(json_response[:data][2]).to match({
           attributes: default_attributes.merge({
-            code: nil,
-            created_at: an_instance_of(String),
+            title_multiloc: page3.title_multiloc.symbolize_keys,
             description_multiloc: page3.description_multiloc.symbolize_keys,
-            enabled: true,
             input_type: 'page',
             key: page3.key,
             ordering: 2,
-            page_layout: 'default',
-            required: false,
-            title_multiloc: page3.title_multiloc.symbolize_keys,
-            updated_at: an_instance_of(String),
-            logic: {},
-            constraints: {},
-            random_option_ordering: false,
-            include_in_printed_form: true
+            page_layout: 'default'
           }),
           id: page3.id,
           type: 'custom_field',
@@ -1644,21 +1537,12 @@ resource 'Idea Custom Fields' do
         })
         expect(json_response[:data][3]).to match({
           attributes: default_attributes.merge({
-            code: nil,
-            created_at: an_instance_of(String),
+            title_multiloc: page4.title_multiloc.symbolize_keys,
             description_multiloc: page4.description_multiloc.symbolize_keys,
-            enabled: true,
             input_type: 'page',
             key: page4.key,
             ordering: 3,
-            page_layout: 'default',
-            required: false,
-            title_multiloc: page4.title_multiloc.symbolize_keys,
-            updated_at: an_instance_of(String),
-            logic: {},
-            constraints: {},
-            random_option_ordering: false,
-            include_in_printed_form: true
+            page_layout: 'default'
           }),
           id: page4.id,
           type: 'custom_field',
@@ -1723,21 +1607,13 @@ resource 'Idea Custom Fields' do
         expect(json_response[:data].size).to eq 5
         expect(json_response[:data][0]).to match({
           attributes: default_attributes.merge({
-            code: nil,
-            created_at: an_instance_of(String),
+            title_multiloc: page_to_update.title_multiloc.symbolize_keys,
             description_multiloc: page_to_update.description_multiloc.symbolize_keys,
-            enabled: true,
             input_type: 'page',
             key: page_to_update.key,
             ordering: 0,
             page_layout: 'default',
-            required: false,
-            title_multiloc: page_to_update.title_multiloc.symbolize_keys,
-            updated_at: an_instance_of(String),
-            logic: { next_page_id: json_response[:data][3][:id] },
-            constraints: {},
-            random_option_ordering: false,
-            include_in_printed_form: true
+            logic: { next_page_id: json_response[:data][3][:id] }
           }),
           id: page_to_update.id,
           type: 'custom_field',
@@ -1745,21 +1621,12 @@ resource 'Idea Custom Fields' do
         })
         expect(json_response[:data][1]).to match({
           attributes: default_attributes.merge({
-            code: nil,
-            created_at: an_instance_of(String),
+            title_multiloc: page2.title_multiloc.symbolize_keys,
             description_multiloc: page2.description_multiloc.symbolize_keys,
-            enabled: true,
             input_type: 'page',
             key: page2.key,
             ordering: 1,
-            page_layout: 'default',
-            required: false,
-            title_multiloc: page2.title_multiloc.symbolize_keys,
-            updated_at: an_instance_of(String),
-            logic: {},
-            constraints: {},
-            random_option_ordering: false,
-            include_in_printed_form: true
+            page_layout: 'default'
           }),
           id: page2.id,
           type: 'custom_field',
@@ -1767,21 +1634,12 @@ resource 'Idea Custom Fields' do
         })
         expect(json_response[:data][2]).to match({
           attributes: default_attributes.merge({
-            code: nil,
-            created_at: an_instance_of(String),
+            title_multiloc: page3.title_multiloc.symbolize_keys,
             description_multiloc: page3.description_multiloc.symbolize_keys,
-            enabled: true,
             input_type: 'page',
             key: page3.key,
             ordering: 2,
-            page_layout: 'default',
-            required: false,
-            title_multiloc: page3.title_multiloc.symbolize_keys,
-            updated_at: an_instance_of(String),
-            logic: {},
-            constraints: {},
-            random_option_ordering: false,
-            include_in_printed_form: true
+            page_layout: 'default'
           }),
           id: page3.id,
           type: 'custom_field',
@@ -1789,21 +1647,12 @@ resource 'Idea Custom Fields' do
         })
         expect(json_response[:data][3]).to match({
           attributes: default_attributes.merge({
-            code: nil,
-            created_at: an_instance_of(String),
+            title_multiloc: { en: 'Page 4' },
             description_multiloc: { en: 'Page 4 description' },
-            enabled: true,
             input_type: 'page',
             key: nil,
             ordering: 3,
-            page_layout: 'default',
-            required: false,
-            title_multiloc: { en: 'Page 4' },
-            updated_at: an_instance_of(String),
-            logic: {},
-            constraints: {},
-            random_option_ordering: false,
-            include_in_printed_form: true
+            page_layout: 'default'
           }),
           id: an_instance_of(String),
           type: 'custom_field',
@@ -1853,21 +1702,13 @@ resource 'Idea Custom Fields' do
         expect(json_response[:data].size).to eq 4
         expect(json_response[:data][0]).to match({
           attributes: default_attributes.merge({
-            code: nil,
-            created_at: an_instance_of(String),
+            title_multiloc: { en: 'New page with logic' },
             description_multiloc: { en: 'New page with logic description' },
-            enabled: true,
             input_type: 'page',
             key: nil,
             ordering: 0,
             page_layout: 'default',
-            required: false,
-            title_multiloc: { en: 'New page with logic' },
-            updated_at: an_instance_of(String),
-            logic: { next_page_id: json_response[:data][2][:id] },
-            constraints: {},
-            random_option_ordering: false,
-            include_in_printed_form: true
+            logic: { next_page_id: json_response[:data][2][:id] }
           }),
           id: an_instance_of(String),
           type: 'custom_field',
@@ -1875,21 +1716,12 @@ resource 'Idea Custom Fields' do
         })
         expect(json_response[:data][1]).to match({
           attributes: default_attributes.merge({
-            code: nil,
-            created_at: an_instance_of(String),
+            title_multiloc: existing_page.title_multiloc.symbolize_keys,
             description_multiloc: existing_page.description_multiloc.symbolize_keys,
-            enabled: true,
             input_type: 'page',
             key: existing_page.key,
             ordering: 1,
-            page_layout: 'default',
-            required: false,
-            title_multiloc: existing_page.title_multiloc.symbolize_keys,
-            updated_at: an_instance_of(String),
-            logic: {},
-            constraints: {},
-            random_option_ordering: false,
-            include_in_printed_form: true
+            page_layout: 'default'
           }),
           id: existing_page.id,
           type: 'custom_field',
@@ -1897,21 +1729,12 @@ resource 'Idea Custom Fields' do
         })
         expect(json_response[:data][2]).to match({
           attributes: default_attributes.merge({
-            code: nil,
-            created_at: an_instance_of(String),
+            title_multiloc: { en: 'Target page' },
             description_multiloc: { en: 'Target page description' },
-            enabled: true,
             input_type: 'page',
             key: nil,
             ordering: 2,
-            page_layout: 'default',
-            required: false,
-            title_multiloc: { en: 'Target page' },
-            updated_at: an_instance_of(String),
-            logic: {},
-            constraints: {},
-            random_option_ordering: false,
-            include_in_printed_form: true
+            page_layout: 'default'
           }),
           id: an_instance_of(String),
           type: 'custom_field',
@@ -1964,21 +1787,12 @@ resource 'Idea Custom Fields' do
         expect(json_response[:data].size).to eq 4
         expect(json_response[:data][0]).to match({
           attributes: default_attributes.merge({
-            code: nil,
-            created_at: an_instance_of(String),
+            title_multiloc: page_to_update.title_multiloc.symbolize_keys,
             description_multiloc: page_to_update.description_multiloc.symbolize_keys,
-            enabled: true,
             input_type: 'page',
             key: page_to_update.key,
             ordering: 0,
-            page_layout: 'default',
-            required: false,
-            title_multiloc: page_to_update.title_multiloc.symbolize_keys,
-            updated_at: an_instance_of(String),
-            logic: {},
-            constraints: {},
-            random_option_ordering: false,
-            include_in_printed_form: true
+            page_layout: 'default'
           }),
           id: page_to_update.id,
           type: 'custom_field',
@@ -1986,21 +1800,12 @@ resource 'Idea Custom Fields' do
         })
         expect(json_response[:data][1]).to match({
           attributes: default_attributes.merge({
-            code: nil,
-            created_at: an_instance_of(String),
+            title_multiloc: page2.title_multiloc.symbolize_keys,
             description_multiloc: page2.description_multiloc.symbolize_keys,
-            enabled: true,
             input_type: 'page',
             key: page2.key,
             ordering: 1,
-            page_layout: 'default',
-            required: false,
-            title_multiloc: page2.title_multiloc.symbolize_keys,
-            updated_at: an_instance_of(String),
-            logic: {},
-            constraints: {},
-            random_option_ordering: false,
-            include_in_printed_form: true
+            page_layout: 'default'
           }),
           id: page2.id,
           type: 'custom_field',
@@ -2008,21 +1813,13 @@ resource 'Idea Custom Fields' do
         })
         expect(json_response[:data][2]).to match({
           attributes: default_attributes.merge({
-            code: nil,
-            created_at: an_instance_of(String),
+            title_multiloc: page3.title_multiloc.symbolize_keys,
             description_multiloc: page3.description_multiloc.symbolize_keys,
             enabled: true,
             input_type: 'page',
             key: page3.key,
             ordering: 2,
-            page_layout: 'default',
-            required: false,
-            title_multiloc: page3.title_multiloc.symbolize_keys,
-            updated_at: an_instance_of(String),
-            logic: {},
-            constraints: {},
-            random_option_ordering: false,
-            include_in_printed_form: true
+            page_layout: 'default'
           }),
           id: page3.id,
           type: 'custom_field',
@@ -2066,21 +1863,12 @@ resource 'Idea Custom Fields' do
         expect(json_response[:data].size).to eq 3
         expect(json_response[:data][0]).to match({
           attributes: default_attributes.merge({
-            code: nil,
-            created_at: an_instance_of(String),
+            title_multiloc: page_to_update.title_multiloc.symbolize_keys,
             description_multiloc: page_to_update.description_multiloc.symbolize_keys,
-            enabled: true,
             input_type: 'page',
             key: page_to_update.key,
             ordering: 0,
-            page_layout: 'default',
-            required: false,
-            title_multiloc: page_to_update.title_multiloc.symbolize_keys,
-            updated_at: an_instance_of(String),
-            logic: {},
-            constraints: {},
-            random_option_ordering: false,
-            include_in_printed_form: true
+            page_layout: 'default'
           }),
           id: page_to_update.id,
           type: 'custom_field',
@@ -2088,21 +1876,13 @@ resource 'Idea Custom Fields' do
         })
         expect(json_response[:data][1]).to match({
           attributes: default_attributes.merge({
-            code: nil,
-            created_at: an_instance_of(String),
+            title_multiloc: page2.title_multiloc.symbolize_keys,
             description_multiloc: page2.description_multiloc.symbolize_keys,
-            enabled: true,
             input_type: 'page',
             key: page2.key,
             ordering: 1,
             page_layout: 'default',
-            required: false,
-            title_multiloc: page2.title_multiloc.symbolize_keys,
-            updated_at: an_instance_of(String),
-            logic: {},
-            constraints: {},
-            random_option_ordering: false,
-            include_in_printed_form: true
+            required: false
           }),
           id: page2.id,
           type: 'custom_field',
@@ -2184,21 +1964,12 @@ resource 'Idea Custom Fields' do
         expect(json_response[:data].size).to eq 5
         expect(json_response[:data][0]).to match({
           attributes: default_attributes.merge({
-            code: nil,
-            created_at: an_instance_of(String),
+            title_multiloc: page1.title_multiloc.symbolize_keys,
             description_multiloc: page1.description_multiloc.symbolize_keys,
-            enabled: true,
             input_type: 'page',
             key: page1.key,
             ordering: 0,
-            page_layout: 'default',
-            required: false,
-            title_multiloc: page1.title_multiloc.symbolize_keys,
-            updated_at: an_instance_of(String),
-            logic: {},
-            constraints: {},
-            random_option_ordering: false,
-            include_in_printed_form: true
+            page_layout: 'default'
           }),
           id: page1.id,
           type: 'custom_field',
@@ -2206,16 +1977,13 @@ resource 'Idea Custom Fields' do
         })
         expect(json_response[:data][1]).to match({
           attributes: default_attributes.merge({
-            code: nil,
-            created_at: an_instance_of(String),
+            title_multiloc: field_to_update.title_multiloc.symbolize_keys,
+
             description_multiloc: field_to_update.description_multiloc.symbolize_keys,
-            enabled: true,
             input_type: 'linear_scale',
             key: field_to_update.key,
             ordering: 1,
             required: true,
-            title_multiloc: field_to_update.title_multiloc.symbolize_keys,
-            updated_at: an_instance_of(String),
             maximum: 5,
             linear_scale_label_1_multiloc: field_to_update.linear_scale_label_1_multiloc.symbolize_keys,
             linear_scale_label_2_multiloc: field_to_update.linear_scale_label_2_multiloc.symbolize_keys,
@@ -2230,10 +1998,7 @@ resource 'Idea Custom Fields' do
             linear_scale_label_11_multiloc: field_to_update.linear_scale_label_11_multiloc.symbolize_keys,
             logic: {
               rules: [{ if: 2, goto_page_id: json_response[:data][3][:id] }]
-            },
-            constraints: {},
-            random_option_ordering: false,
-            include_in_printed_form: true
+            }
           }),
           id: field_to_update.id,
           type: 'custom_field',
@@ -2241,21 +2006,12 @@ resource 'Idea Custom Fields' do
         })
         expect(json_response[:data][2]).to match({
           attributes: default_attributes.merge({
-            code: nil,
-            created_at: an_instance_of(String),
+            title_multiloc: page2.title_multiloc.symbolize_keys,
             description_multiloc: page2.description_multiloc.symbolize_keys,
-            enabled: true,
             input_type: 'page',
             key: page2.key,
             ordering: 2,
-            page_layout: 'default',
-            required: false,
-            title_multiloc: page2.title_multiloc.symbolize_keys,
-            updated_at: an_instance_of(String),
-            logic: {},
-            constraints: {},
-            random_option_ordering: false,
-            include_in_printed_form: true
+            page_layout: 'default'
           }),
           id: page2.id,
           type: 'custom_field',
@@ -2263,21 +2019,12 @@ resource 'Idea Custom Fields' do
         })
         expect(json_response[:data][3]).to match({
           attributes: default_attributes.merge({
-            code: nil,
-            created_at: an_instance_of(String),
+            title_multiloc: { en: 'Page 3' },
             description_multiloc: { en: 'Page 3 description' },
-            enabled: true,
             input_type: 'page',
             key: nil,
             ordering: 3,
-            page_layout: 'default',
-            required: false,
-            title_multiloc: { en: 'Page 3' },
-            updated_at: an_instance_of(String),
-            logic: {},
-            constraints: {},
-            random_option_ordering: false,
-            include_in_printed_form: true
+            page_layout: 'default'
           }),
           id: an_instance_of(String),
           type: 'custom_field',
@@ -2360,21 +2107,12 @@ resource 'Idea Custom Fields' do
         expect(json_response[:data].size).to eq 5
         expect(json_response[:data][0]).to match({
           attributes: default_attributes.merge({
-            code: nil,
-            created_at: an_instance_of(String),
+            title_multiloc: page1.title_multiloc.symbolize_keys,
             description_multiloc: page1.description_multiloc.symbolize_keys,
-            enabled: true,
             input_type: 'page',
             key: page1.key,
             ordering: 0,
-            page_layout: 'default',
-            required: false,
-            title_multiloc: page1.title_multiloc.symbolize_keys,
-            updated_at: an_instance_of(String),
-            logic: {},
-            constraints: {},
-            random_option_ordering: false,
-            include_in_printed_form: true
+            page_layout: 'default'
           }),
           id: page1.id,
           type: 'custom_field',
@@ -2382,16 +2120,12 @@ resource 'Idea Custom Fields' do
         })
         expect(json_response[:data][1]).to match({
           attributes: default_attributes.merge({
-            code: nil,
-            created_at: an_instance_of(String),
+            title_multiloc: field_to_update.title_multiloc.symbolize_keys,
             description_multiloc: field_to_update.description_multiloc.symbolize_keys,
-            enabled: true,
             input_type: 'linear_scale',
             key: field_to_update.key,
             ordering: 1,
             required: true,
-            title_multiloc: field_to_update.title_multiloc.symbolize_keys,
-            updated_at: an_instance_of(String),
             maximum: 5,
             linear_scale_label_1_multiloc: field_to_update.linear_scale_label_1_multiloc.symbolize_keys,
             linear_scale_label_2_multiloc: field_to_update.linear_scale_label_2_multiloc.symbolize_keys,
@@ -2406,10 +2140,7 @@ resource 'Idea Custom Fields' do
             linear_scale_label_11_multiloc: field_to_update.linear_scale_label_11_multiloc.symbolize_keys,
             logic: {
               rules: [{ if: 1, goto_page_id: page2.id }]
-            },
-            constraints: {},
-            random_option_ordering: false,
-            include_in_printed_form: true
+            }
           }),
           id: field_to_update.id,
           type: 'custom_field',
@@ -2417,21 +2148,12 @@ resource 'Idea Custom Fields' do
         })
         expect(json_response[:data][2]).to match({
           attributes: default_attributes.merge({
-            code: nil,
-            created_at: an_instance_of(String),
+            title_multiloc: page3.title_multiloc.symbolize_keys,
             description_multiloc: page3.description_multiloc.symbolize_keys,
-            enabled: true,
             input_type: 'page',
             key: page3.key,
             ordering: 2,
-            page_layout: 'default',
-            required: false,
-            title_multiloc: page3.title_multiloc.symbolize_keys,
-            updated_at: an_instance_of(String),
-            logic: {},
-            constraints: {},
-            random_option_ordering: false,
-            include_in_printed_form: true
+            page_layout: 'default'
           }),
           id: page3.id,
           type: 'custom_field',
@@ -2439,21 +2161,12 @@ resource 'Idea Custom Fields' do
         })
         expect(json_response[:data][3]).to match({
           attributes: default_attributes.merge({
-            code: nil,
-            created_at: an_instance_of(String),
+            title_multiloc: page2.title_multiloc.symbolize_keys,
             description_multiloc: page2.description_multiloc.symbolize_keys,
-            enabled: true,
             input_type: 'page',
             key: page2.key,
             ordering: 3,
-            page_layout: 'default',
-            required: false,
-            title_multiloc: page2.title_multiloc.symbolize_keys,
-            updated_at: an_instance_of(String),
-            logic: {},
-            constraints: {},
-            random_option_ordering: false,
-            include_in_printed_form: true
+            page_layout: 'default'
           }),
           id: page2.id,
           type: 'custom_field',
@@ -2524,21 +2237,12 @@ resource 'Idea Custom Fields' do
         expect(json_response[:data].size).to eq 4
         expect(json_response[:data][0]).to match({
           attributes: default_attributes.merge({
-            code: nil,
-            created_at: an_instance_of(String),
+            title_multiloc: page1.title_multiloc.symbolize_keys,
             description_multiloc: page1.description_multiloc.symbolize_keys,
-            enabled: true,
             input_type: 'page',
             key: page1.key,
             ordering: 0,
-            page_layout: 'default',
-            required: false,
-            title_multiloc: page1.title_multiloc.symbolize_keys,
-            updated_at: an_instance_of(String),
-            logic: {},
-            constraints: {},
-            random_option_ordering: false,
-            include_in_printed_form: true
+            page_layout: 'default'
           }),
           id: page1.id,
           type: 'custom_field',
@@ -2546,16 +2250,11 @@ resource 'Idea Custom Fields' do
         })
         expect(json_response[:data][1]).to match({
           attributes: default_attributes.merge({
-            code: nil,
-            created_at: an_instance_of(String),
+            title_multiloc: field_to_update.title_multiloc.symbolize_keys,
             description_multiloc: field_to_update.description_multiloc.symbolize_keys,
-            enabled: true,
             input_type: 'linear_scale',
             key: field_to_update.key,
             ordering: 1,
-            required: false,
-            title_multiloc: field_to_update.title_multiloc.symbolize_keys,
-            updated_at: an_instance_of(String),
             maximum: 5,
             linear_scale_label_1_multiloc: field_to_update.linear_scale_label_1_multiloc.symbolize_keys,
             linear_scale_label_2_multiloc: field_to_update.linear_scale_label_2_multiloc.symbolize_keys,
@@ -2567,11 +2266,7 @@ resource 'Idea Custom Fields' do
             linear_scale_label_8_multiloc: field_to_update.linear_scale_label_8_multiloc.symbolize_keys,
             linear_scale_label_9_multiloc: field_to_update.linear_scale_label_9_multiloc.symbolize_keys,
             linear_scale_label_10_multiloc: field_to_update.linear_scale_label_10_multiloc.symbolize_keys,
-            linear_scale_label_11_multiloc: field_to_update.linear_scale_label_11_multiloc.symbolize_keys,
-            logic: {},
-            constraints: {},
-            random_option_ordering: false,
-            include_in_printed_form: true
+            linear_scale_label_11_multiloc: field_to_update.linear_scale_label_11_multiloc.symbolize_keys
           }),
           id: field_to_update.id,
           type: 'custom_field',
@@ -2579,21 +2274,12 @@ resource 'Idea Custom Fields' do
         })
         expect(json_response[:data][2]).to match({
           attributes: default_attributes.merge({
-            code: nil,
-            created_at: an_instance_of(String),
+            title_multiloc: page2.title_multiloc.symbolize_keys,
             description_multiloc: page2.description_multiloc.symbolize_keys,
-            enabled: true,
             input_type: 'page',
             key: page2.key,
             ordering: 2,
-            page_layout: 'default',
-            required: false,
-            title_multiloc: page2.title_multiloc.symbolize_keys,
-            updated_at: an_instance_of(String),
-            logic: {},
-            constraints: {},
-            random_option_ordering: false,
-            include_in_printed_form: true
+            page_layout: 'default'
           }),
           id: page2.id,
           type: 'custom_field',
@@ -2656,21 +2342,12 @@ resource 'Idea Custom Fields' do
         expect(json_response[:data].size).to eq 3
         expect(json_response[:data][0]).to match({
           attributes: default_attributes.merge({
-            code: nil,
-            created_at: an_instance_of(String),
+            title_multiloc: page1.title_multiloc.symbolize_keys,
             description_multiloc: page1.description_multiloc.symbolize_keys,
-            enabled: true,
             input_type: 'page',
             key: page1.key,
             ordering: 0,
-            page_layout: 'default',
-            required: false,
-            title_multiloc: page1.title_multiloc.symbolize_keys,
-            updated_at: an_instance_of(String),
-            logic: {},
-            constraints: {},
-            random_option_ordering: false,
-            include_in_printed_form: true
+            page_layout: 'default'
           }),
           id: page1.id,
           type: 'custom_field',
@@ -2678,16 +2355,11 @@ resource 'Idea Custom Fields' do
         })
         expect(json_response[:data][1]).to match({
           attributes: default_attributes.merge({
-            code: nil,
-            created_at: an_instance_of(String),
+            title_multiloc: field_to_update.title_multiloc.symbolize_keys,
             description_multiloc: field_to_update.description_multiloc.symbolize_keys,
-            enabled: true,
             input_type: 'linear_scale',
             key: field_to_update.key,
             ordering: 1,
-            required: false,
-            title_multiloc: field_to_update.title_multiloc.symbolize_keys,
-            updated_at: an_instance_of(String),
             maximum: 5,
             linear_scale_label_1_multiloc: field_to_update.linear_scale_label_1_multiloc.symbolize_keys,
             linear_scale_label_2_multiloc: field_to_update.linear_scale_label_2_multiloc.symbolize_keys,
@@ -2699,11 +2371,7 @@ resource 'Idea Custom Fields' do
             linear_scale_label_8_multiloc: field_to_update.linear_scale_label_8_multiloc.symbolize_keys,
             linear_scale_label_9_multiloc: field_to_update.linear_scale_label_9_multiloc.symbolize_keys,
             linear_scale_label_10_multiloc: field_to_update.linear_scale_label_10_multiloc.symbolize_keys,
-            linear_scale_label_11_multiloc: field_to_update.linear_scale_label_11_multiloc.symbolize_keys,
-            logic: {},
-            constraints: {},
-            random_option_ordering: false,
-            include_in_printed_form: true
+            linear_scale_label_11_multiloc: field_to_update.linear_scale_label_11_multiloc.symbolize_keys
           }),
           id: field_to_update.id,
           type: 'custom_field',
@@ -2746,21 +2414,12 @@ resource 'Idea Custom Fields' do
         expect(json_response[:data].size).to eq 2
         expect(json_response[:data][0]).to match({
           attributes: default_attributes.merge({
-            code: nil,
-            created_at: an_instance_of(String),
+            title_multiloc: page1.title_multiloc.symbolize_keys,
             description_multiloc: page1.description_multiloc.symbolize_keys,
-            enabled: true,
             input_type: 'page',
             key: page1.key,
             ordering: 0,
-            page_layout: 'default',
-            required: false,
-            title_multiloc: page1.title_multiloc.symbolize_keys,
-            updated_at: an_instance_of(String),
-            logic: {},
-            constraints: {},
-            random_option_ordering: false,
-            include_in_printed_form: true
+            page_layout: 'default'
           }),
           id: page1.id,
           type: 'custom_field',
@@ -2848,21 +2507,12 @@ resource 'Idea Custom Fields' do
         expect(json_response[:data].size).to eq 5
         expect(json_response[:data][0]).to match({
           attributes: default_attributes.merge({
-            code: nil,
-            created_at: an_instance_of(String),
+            title_multiloc: page1.title_multiloc.symbolize_keys,
             description_multiloc: page1.description_multiloc.symbolize_keys,
-            enabled: true,
             input_type: 'page',
             key: page1.key,
             ordering: 0,
-            page_layout: 'default',
-            required: false,
-            title_multiloc: page1.title_multiloc.symbolize_keys,
-            updated_at: an_instance_of(String),
-            logic: {},
-            constraints: {},
-            random_option_ordering: false,
-            include_in_printed_form: true
+            page_layout: 'default'
           }),
           id: page1.id,
           type: 'custom_field',
@@ -2870,16 +2520,12 @@ resource 'Idea Custom Fields' do
         })
         expect(json_response[:data][1]).to match({
           attributes: default_attributes.merge({
-            code: nil,
-            created_at: an_instance_of(String),
+            title_multiloc: field_to_update.title_multiloc.symbolize_keys,
             description_multiloc: field_to_update.description_multiloc.symbolize_keys,
-            enabled: true,
             input_type: 'linear_scale',
             key: field_to_update.key,
             ordering: 1,
             required: true,
-            title_multiloc: field_to_update.title_multiloc.symbolize_keys,
-            updated_at: an_instance_of(String),
             maximum: 5,
             linear_scale_label_1_multiloc: field_to_update.linear_scale_label_1_multiloc.symbolize_keys,
             linear_scale_label_2_multiloc: field_to_update.linear_scale_label_2_multiloc.symbolize_keys,
@@ -2894,10 +2540,7 @@ resource 'Idea Custom Fields' do
             linear_scale_label_11_multiloc: field_to_update.linear_scale_label_11_multiloc.symbolize_keys,
             logic: {
               rules: [{ if: 2, goto_page_id: page3.id }]
-            },
-            constraints: {},
-            random_option_ordering: false,
-            include_in_printed_form: true
+            }
           }),
           id: field_to_update.id,
           type: 'custom_field',
@@ -2905,21 +2548,12 @@ resource 'Idea Custom Fields' do
         })
         expect(json_response[:data][2]).to match({
           attributes: default_attributes.merge({
-            code: nil,
-            created_at: an_instance_of(String),
+            title_multiloc: page2.title_multiloc.symbolize_keys,
             description_multiloc: page2.description_multiloc.symbolize_keys,
-            enabled: true,
             input_type: 'page',
             key: page2.key,
             ordering: 2,
-            page_layout: 'default',
-            required: false,
-            title_multiloc: page2.title_multiloc.symbolize_keys,
-            updated_at: an_instance_of(String),
-            logic: {},
-            constraints: {},
-            random_option_ordering: false,
-            include_in_printed_form: true
+            page_layout: 'default'
           }),
           id: page2.id,
           type: 'custom_field',
@@ -2927,21 +2561,12 @@ resource 'Idea Custom Fields' do
         })
         expect(json_response[:data][3]).to match({
           attributes: default_attributes.merge({
-            code: nil,
-            created_at: an_instance_of(String),
+            title_multiloc: page3.title_multiloc.symbolize_keys,
             description_multiloc: page3.description_multiloc.symbolize_keys,
-            enabled: true,
             input_type: 'page',
             key: page3.key,
             ordering: 3,
-            page_layout: 'default',
-            required: false,
-            title_multiloc: page3.title_multiloc.symbolize_keys,
-            updated_at: an_instance_of(String),
-            logic: {},
-            constraints: {},
-            random_option_ordering: false,
-            include_in_printed_form: true
+            page_layout: 'default'
           }),
           id: page3.id,
           type: 'custom_field',
@@ -3010,21 +2635,12 @@ resource 'Idea Custom Fields' do
         expect(json_response[:data].size).to eq 4
         expect(json_response[:data][0]).to match({
           attributes: default_attributes.merge({
-            code: nil,
-            created_at: an_instance_of(String),
+            title_multiloc: page1.title_multiloc.symbolize_keys,
             description_multiloc: page1.description_multiloc.symbolize_keys,
-            enabled: true,
             input_type: 'page',
             key: page1.key,
             ordering: 0,
-            page_layout: 'default',
-            required: false,
-            title_multiloc: page1.title_multiloc.symbolize_keys,
-            updated_at: an_instance_of(String),
-            logic: {},
-            constraints: {},
-            random_option_ordering: false,
-            include_in_printed_form: true
+            page_layout: 'default'
           }),
           id: page1.id,
           type: 'custom_field',
@@ -3032,16 +2648,12 @@ resource 'Idea Custom Fields' do
         })
         expect(json_response[:data][1]).to match({
           attributes: default_attributes.merge({
-            code: nil,
-            created_at: an_instance_of(String),
+            title_multiloc: field_to_update.title_multiloc.symbolize_keys,
             description_multiloc: field_to_update.description_multiloc.symbolize_keys,
-            enabled: true,
             input_type: 'linear_scale',
             key: field_to_update.key,
             ordering: 1,
             required: true,
-            title_multiloc: field_to_update.title_multiloc.symbolize_keys,
-            updated_at: an_instance_of(String),
             maximum: 5,
             linear_scale_label_1_multiloc: field_to_update.linear_scale_label_1_multiloc.symbolize_keys,
             linear_scale_label_2_multiloc: field_to_update.linear_scale_label_2_multiloc.symbolize_keys,
@@ -3056,10 +2668,7 @@ resource 'Idea Custom Fields' do
             linear_scale_label_11_multiloc: field_to_update.linear_scale_label_11_multiloc.symbolize_keys,
             logic: {
               rules: [{ if: 2, goto_page_id: json_response[:data][2][:id] }]
-            },
-            constraints: {},
-            random_option_ordering: false,
-            include_in_printed_form: true
+            }
           }),
           id: field_to_update.id,
           type: 'custom_field',
@@ -3067,21 +2676,12 @@ resource 'Idea Custom Fields' do
         })
         expect(json_response[:data][2]).to match({
           attributes: default_attributes.merge({
-            code: nil,
-            created_at: an_instance_of(String),
+            title_multiloc: { en: 'Page 2' },
             description_multiloc: { en: 'Page 2 description' },
-            enabled: true,
             input_type: 'page',
             key: nil,
             ordering: 2,
-            page_layout: 'default',
-            required: false,
-            title_multiloc: { en: 'Page 2' },
-            updated_at: an_instance_of(String),
-            logic: {},
-            constraints: {},
-            random_option_ordering: false,
-            include_in_printed_form: true
+            page_layout: 'default'
           }),
           id: an_instance_of(String),
           type: 'custom_field',
@@ -3181,21 +2781,13 @@ resource 'Idea Custom Fields' do
         expect(json_response[:data].size).to eq 6
         expect(json_response[:data][0]).to match({
           attributes: default_attributes.merge({
-            code: nil,
-            created_at: an_instance_of(String),
+            title_multiloc: page1.title_multiloc.symbolize_keys,
             description_multiloc: page1.description_multiloc.symbolize_keys,
-            enabled: true,
             input_type: 'page',
             key: page1.key,
             ordering: 0,
             page_layout: 'default',
-            required: false,
-            title_multiloc: page1.title_multiloc.symbolize_keys,
-            updated_at: an_instance_of(String),
-            logic: {},
-            constraints: {},
-            random_option_ordering: false,
-            include_in_printed_form: true
+            required: false
           }),
           id: page1.id,
           type: 'custom_field',
@@ -3203,23 +2795,16 @@ resource 'Idea Custom Fields' do
         })
         expect(json_response[:data][1]).to match({
           attributes: default_attributes.merge({
-            code: nil,
-            created_at: an_instance_of(String),
+            title_multiloc: field1_to_update.title_multiloc.symbolize_keys,
             description_multiloc: field1_to_update.description_multiloc.symbolize_keys,
             dropdown_layout: false,
-            enabled: true,
             input_type: 'select',
             key: field1_to_update.key,
             ordering: 1,
             required: true,
-            title_multiloc: field1_to_update.title_multiloc.symbolize_keys,
-            updated_at: an_instance_of(String),
             logic: {
               rules: [{ if: added_option1.id, goto_page_id: json_response[:data][3][:id] }]
-            },
-            constraints: {},
-            random_option_ordering: false,
-            include_in_printed_form: true
+            }
           }),
           id: field1_to_update.id,
           type: 'custom_field',
@@ -3235,23 +2820,16 @@ resource 'Idea Custom Fields' do
         })
         expect(json_response[:data][2]).to match({
           attributes: default_attributes.merge({
-            code: nil,
-            created_at: an_instance_of(String),
+            title_multiloc: field2_to_update.title_multiloc.symbolize_keys,
             description_multiloc: field2_to_update.description_multiloc.symbolize_keys,
             dropdown_layout: false,
-            enabled: true,
             input_type: 'select',
             key: field2_to_update.key,
             ordering: 2,
             required: true,
-            title_multiloc: field2_to_update.title_multiloc.symbolize_keys,
-            updated_at: an_instance_of(String),
             logic: {
               rules: [{ if: added_option2.id, goto_page_id: json_response[:data][4][:id] }]
-            },
-            constraints: {},
-            random_option_ordering: false,
-            include_in_printed_form: true
+            }
           }),
           id: field2_to_update.id,
           type: 'custom_field',
@@ -3267,21 +2845,12 @@ resource 'Idea Custom Fields' do
         })
         expect(json_response[:data][3]).to match({
           attributes: default_attributes.merge({
-            code: nil,
-            created_at: an_instance_of(String),
+            title_multiloc: { en: 'Page 2' },
             description_multiloc: { en: 'Page 2 description' },
-            enabled: true,
             input_type: 'page',
             key: nil,
             ordering: 3,
-            page_layout: 'default',
-            required: false,
-            title_multiloc: { en: 'Page 2' },
-            updated_at: an_instance_of(String),
-            logic: {},
-            constraints: {},
-            random_option_ordering: false,
-            include_in_printed_form: true
+            page_layout: 'default'
           }),
           id: an_instance_of(String),
           type: 'custom_field',
@@ -3289,21 +2858,12 @@ resource 'Idea Custom Fields' do
         })
         expect(json_response[:data][4]).to match({
           attributes: default_attributes.merge({
-            code: nil,
-            created_at: an_instance_of(String),
+            title_multiloc: { en: 'Page 3' },
             description_multiloc: { en: 'Page 3 description' },
-            enabled: true,
             input_type: 'page',
             key: nil,
             ordering: 4,
-            page_layout: 'default',
-            required: false,
-            title_multiloc: { en: 'Page 3' },
-            updated_at: an_instance_of(String),
-            logic: {},
-            constraints: {},
-            random_option_ordering: false,
-            include_in_printed_form: true
+            page_layout: 'default'
           }),
           id: an_instance_of(String),
           type: 'custom_field',
@@ -3367,21 +2927,12 @@ resource 'Idea Custom Fields' do
         expect(json_response[:data].size).to eq 4
         expect(json_response[:data][0]).to match({
           attributes: default_attributes.merge({
-            code: nil,
-            created_at: an_instance_of(String),
+            title_multiloc: page1.title_multiloc.symbolize_keys,
             description_multiloc: page1.description_multiloc.symbolize_keys,
-            enabled: true,
             input_type: 'page',
             key: page1.key,
             ordering: 0,
-            page_layout: 'default',
-            required: false,
-            title_multiloc: page1.title_multiloc.symbolize_keys,
-            updated_at: an_instance_of(String),
-            logic: {},
-            constraints: {},
-            random_option_ordering: false,
-            include_in_printed_form: true
+            page_layout: 'default'
           }),
           id: page1.id,
           type: 'custom_field',
@@ -3389,16 +2940,12 @@ resource 'Idea Custom Fields' do
         })
         expect(json_response[:data][1]).to match({
           attributes: default_attributes.merge({
-            code: nil,
-            created_at: an_instance_of(String),
+            title_multiloc: { en: 'Question 1 on page 1' },
             description_multiloc: { en: 'Description of question 1 on page 1' },
-            enabled: true,
             input_type: 'linear_scale',
             key: an_instance_of(String),
             ordering: 1,
             required: true,
-            title_multiloc: { en: 'Question 1 on page 1' },
-            updated_at: an_instance_of(String),
             maximum: 7,
             linear_scale_label_1_multiloc: { en: 'Lowest' },
             linear_scale_label_2_multiloc: { en: 'Low' },
@@ -3413,10 +2960,7 @@ resource 'Idea Custom Fields' do
             linear_scale_label_11_multiloc: {},
             logic: {
               rules: [{ if: 2, goto_page_id: json_response[:data][2][:id] }]
-            },
-            constraints: {},
-            random_option_ordering: false,
-            include_in_printed_form: true
+            }
           }),
           id: an_instance_of(String),
           type: 'custom_field',
@@ -3424,21 +2968,12 @@ resource 'Idea Custom Fields' do
         })
         expect(json_response[:data][2]).to match({
           attributes: default_attributes.merge({
-            code: nil,
-            created_at: an_instance_of(String),
+            title_multiloc: { en: 'Page 2' },
             description_multiloc: { en: 'Page 2 description' },
-            enabled: true,
             input_type: 'page',
             key: nil,
             ordering: 2,
-            page_layout: 'default',
-            required: false,
-            title_multiloc: { en: 'Page 2' },
-            updated_at: an_instance_of(String),
-            logic: {},
-            constraints: {},
-            random_option_ordering: false,
-            include_in_printed_form: true
+            page_layout: 'default'
           }),
           id: an_instance_of(String),
           type: 'custom_field',
@@ -3526,21 +3061,12 @@ resource 'Idea Custom Fields' do
         expect(json_response[:data].size).to eq 5
         expect(json_response[:data][0]).to match({
           attributes: default_attributes.merge({
-            code: nil,
-            created_at: an_instance_of(String),
+            title_multiloc: page1.title_multiloc.symbolize_keys,
             description_multiloc: page1.description_multiloc.symbolize_keys,
-            enabled: true,
             input_type: 'page',
             key: page1.key,
             ordering: 0,
-            page_layout: 'default',
-            required: false,
-            title_multiloc: page1.title_multiloc.symbolize_keys,
-            updated_at: an_instance_of(String),
-            logic: {},
-            constraints: {},
-            random_option_ordering: false,
-            include_in_printed_form: true
+            page_layout: 'default'
           }),
           id: page1.id,
           type: 'custom_field',
@@ -3548,16 +3074,12 @@ resource 'Idea Custom Fields' do
         })
         expect(json_response[:data][1]).to match({
           attributes: default_attributes.merge({
-            code: nil,
-            created_at: an_instance_of(String),
+            title_multiloc: field_to_update.title_multiloc.symbolize_keys,
             description_multiloc: field_to_update.description_multiloc.symbolize_keys,
-            enabled: true,
             input_type: 'linear_scale',
             key: field_to_update.key,
             ordering: 1,
             required: true,
-            title_multiloc: field_to_update.title_multiloc.symbolize_keys,
-            updated_at: an_instance_of(String),
             maximum: 5,
             linear_scale_label_1_multiloc: field_to_update.linear_scale_label_1_multiloc.symbolize_keys,
             linear_scale_label_2_multiloc: field_to_update.linear_scale_label_2_multiloc.symbolize_keys,
@@ -3575,10 +3097,7 @@ resource 'Idea Custom Fields' do
                 { if: 1, goto_page_id: page2.id },
                 { if: 2, goto_page_id: page3.id }
               ]
-            },
-            constraints: {},
-            random_option_ordering: false,
-            include_in_printed_form: true
+            }
           }),
           id: field_to_update.id,
           type: 'custom_field',
@@ -3586,21 +3105,12 @@ resource 'Idea Custom Fields' do
         })
         expect(json_response[:data][2]).to match({
           attributes: default_attributes.merge({
-            code: nil,
-            created_at: an_instance_of(String),
+            title_multiloc: page2.title_multiloc.symbolize_keys,
             description_multiloc: page2.description_multiloc.symbolize_keys,
-            enabled: true,
             input_type: 'page',
             key: page2.key,
             ordering: 2,
-            page_layout: 'default',
-            required: false,
-            title_multiloc: page2.title_multiloc.symbolize_keys,
-            updated_at: an_instance_of(String),
-            logic: {},
-            constraints: {},
-            random_option_ordering: false,
-            include_in_printed_form: true
+            page_layout: 'default'
           }),
           id: page2.id,
           type: 'custom_field',
@@ -3608,21 +3118,12 @@ resource 'Idea Custom Fields' do
         })
         expect(json_response[:data][3]).to match({
           attributes: default_attributes.merge({
-            code: nil,
-            created_at: an_instance_of(String),
+            title_multiloc: page3.title_multiloc.symbolize_keys,
             description_multiloc: page3.description_multiloc.symbolize_keys,
-            enabled: true,
             input_type: 'page',
             key: page3.key,
             ordering: 3,
-            page_layout: 'default',
-            required: false,
-            title_multiloc: page3.title_multiloc.symbolize_keys,
-            updated_at: an_instance_of(String),
-            logic: {},
-            constraints: {},
-            random_option_ordering: false,
-            include_in_printed_form: true
+            page_layout: 'default'
           }),
           id: page3.id,
           type: 'custom_field',
@@ -3669,21 +3170,13 @@ resource 'Idea Custom Fields' do
         expect(json_response[:data].size).to eq 3
         expect(json_response[:data][1]).to match({
           attributes: default_attributes.merge({
-            code: nil,
-            created_at: an_instance_of(String),
+            title_multiloc: { en: 'Changed field' },
             description_multiloc: {},
             dropdown_layout: false,
-            enabled: true,
             input_type: 'select',
             key: an_instance_of(String),
             ordering: 1,
-            required: true,
-            title_multiloc: { en: 'Changed field' },
-            updated_at: an_instance_of(String),
-            logic: {},
-            constraints: {},
-            random_option_ordering: false,
-            include_in_printed_form: true
+            required: true
           }),
           id: an_instance_of(String),
           type: 'custom_field',
