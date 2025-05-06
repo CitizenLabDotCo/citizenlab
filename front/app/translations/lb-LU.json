@@ -500,6 +500,7 @@
   "app.components.VerificationModal.verifyIdAustria": "Verifizéiert mat ID Éisträich",
   "app.components.VerificationModal.verifyKeycloak": "Verifizéiert mat ID-Porten",
   "app.components.VerificationModal.verifyNemLogIn": "Verifizéiert mat MitID",
+  "app.components.VerificationModal.verifyTwoday2": "Verifizéiert mat BankID oder Freja eID+",
   "app.components.VerificationModal.verifyYourIdentity": "Iwwerpréift Är Identitéit",
   "app.components.VoteControl.budgetingFutureEnabled": "Dir kënnt Äre Budget ab dem {enabledFromDate} verdeelen.",
   "app.components.VoteControl.budgetingNotPermitted": "D'partizipativ Budgetéierung ass momentan net aktivéiert.",
