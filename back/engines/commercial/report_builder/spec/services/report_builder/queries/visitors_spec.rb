@@ -49,6 +49,10 @@ RSpec.describe ReportBuilder::Queries::Visitors do
       session8 = create(:session, monthly_user_hash: 'hash4', created_at: Date.new(2022, 10, 10))
       create(:pageview, session_id: session8.id, path: '/en/', created_at: DateTime.new(2022, 10, 10, 11, 0, 0))
       create(:pageview, session_id: session8.id, path: '/en/ideas', created_at: DateTime.new(2022, 10, 10, 11, 1, 0))
+
+      # Create session december (admin)
+      session9 = create(:session, monthly_user_hash: 'hash3', created_at: Date.new(2022, 12, 2), highest_role: 'admin')
+      create(:pageview, session_id: session9.id, path: '/en/', created_at: DateTime.new(2022, 12, 2, 10, 0, 0))
     end
 
     it 'returns correct data for current period' do
@@ -212,6 +216,33 @@ RSpec.describe ReportBuilder::Queries::Visitors do
         visitors_whole_period: 0,
         avg_seconds_per_session_whole_period: 0,
         avg_pages_visited_whole_period: 0
+      })
+    end
+
+    it 'applies exclude_roles filter' do
+      params = {
+        start_at: Date.new(2022, 8, 1),
+        end_at: Date.new(2023, 1, 1),
+        exclude_roles: ['admin']
+      }
+
+      expect(query.run_query(**params)).to eq({
+        visitors_timeseries: [
+          {
+            visits: 3,
+            visitors: 2,
+            date_group: Date.new(2022, 9, 1)
+          },
+          {
+            visits: 5,
+            visitors: 2,
+            date_group: Date.new(2022, 10, 1)
+          }
+        ],
+        visits_whole_period: 8,
+        visitors_whole_period: 4,
+        avg_seconds_per_session_whole_period: 135,
+        avg_pages_visited_whole_period: 1.5
       })
     end
   end

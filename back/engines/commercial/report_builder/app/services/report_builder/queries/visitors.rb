@@ -3,16 +3,22 @@ module ReportBuilder
     def run_query(
       start_at: nil,
       end_at: nil,
-      resolution: 'month',
       project_id: nil,
+      resolution: 'month',
+      exclude_roles: nil,
       compare_start_at: nil,
-      compare_end_at: nil
+      compare_end_at: nil,
+      **_other_props
     )
       validate_resolution(resolution)
+      validate_roles(exclude_roles)
+
       start_date, end_date = TimeBoundariesParser.new(start_at, end_at).parse
 
       sessions = ImpactTracking::Session.where(created_at: start_date..end_date)
       sessions = apply_project_filter_if_needed(sessions, project_id)
+      binding.pry
+      sessions = exclude_roles_if_needed(sessions, exclude_roles)
 
       visitors_timeseries = sessions
         .select(
@@ -28,7 +34,7 @@ module ReportBuilder
           }
         end
 
-      stats = calculate_stats(sessions, project_id)
+      stats = calculate_stats(sessions)
 
       response = {
         visitors_timeseries: visitors_timeseries,
@@ -42,8 +48,9 @@ module ReportBuilder
       if compare_start_at.present? && compare_end_at.present?
         compare_sessions = ImpactTracking::Session.where(created_at: compare_start_at..compare_end_at)
         compare_sessions = apply_project_filter_if_needed(compare_sessions, project_id)
+        compare_sessions = exclude_roles_if_needed(compare_sessions, exclude_roles)
 
-        compare_stats = calculate_stats(compare_sessions, project_id)
+        compare_stats = calculate_stats(compare_sessions)
 
         response = {
           **response,
@@ -66,7 +73,16 @@ module ReportBuilder
       sessions
     end
 
-    def calculate_stats(sessions, _project_id)
+    def exclude_roles_if_needed(sessions, exclude_roles)
+      if exclude_roles.present?
+        sessions = sessions
+          .where.not(highest_role: exclude_roles)
+      end
+
+      sessions
+    end
+
+    def calculate_stats(sessions)
       # Total number of visits and visitors
       visits = sessions.count
       visitors = sessions.distinct.pluck(:monthly_user_hash).count
