@@ -4,6 +4,7 @@ import { CLErrors } from 'typings';
 import fetcher from 'utils/cl-react-query/fetcher';
 
 import { USE_STUB_COMMON_GROUND } from './config';
+import commonGroundProgressKeys from './keys/commonGroundProgressKeys';
 import commonGroundResultsKeys from './keys/commonGroundResultsKeys';
 import { reactToIdeaStub } from './stubs/progress';
 import { ICommonGroundProgress, ReactToIdeaObject } from './types';
@@ -33,6 +34,9 @@ const useReactToStatement = (phaseId: string | undefined) => {
     onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: commonGroundResultsKeys.list({ phaseId }),
+      });
+      queryClient.invalidateQueries({
+        queryKey: commonGroundProgressKeys.list({ phaseId }),
       });
     },
   });
