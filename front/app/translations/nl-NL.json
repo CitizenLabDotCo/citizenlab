@@ -1802,6 +1802,7 @@
   "app.containers.SignUp.viennaConsentUserName": "Gebruikersnaam",
   "app.containers.SignUp.viennaDataProtection": "het privacybeleid van wenen",
   "app.containers.SiteMap.contributions": "Bijdragen",
+  "app.containers.SiteMap.cookiePolicyLinkTitle": "Cookies",
   "app.containers.SiteMap.issues": "Reacties",
   "app.containers.SiteMap.options": "Opties",
   "app.containers.SiteMap.projects": "Projecten",

@@ -3,6 +3,8 @@ import React from 'react';
 import { IInputsData } from 'api/analysis_inputs/types';
 import useIdeaCustomField from 'api/idea_custom_fields/useIdeaCustomField';
 
+import { getRelatedTextAnswer } from '../../../../util';
+
 import BodyMultilocLongField from './CustomFieldLongFieldValues/BodyMultilocLongField';
 import CheckboxLongField from './CustomFieldLongFieldValues/CheckboxLongField';
 import DateLongField from './CustomFieldLongFieldValues/DateLongField';
@@ -49,6 +51,12 @@ const FieldValue = ({ projectId, phaseId, customFieldId, input }: Props) => {
   const rawValue =
     input.attributes.custom_field_values[customField.data.attributes.key];
 
+  // Get any related text answer for the custom field (E.g. "other" or "follow up" answer)
+  const rawValueRelatedTextAnswer = getRelatedTextAnswer(
+    input,
+    customField.data.attributes.key
+  );
+
   switch (customField.data.attributes.code) {
     case 'title_multiloc':
       return <TitleMultilocLongField input={input} customField={customField} />;
@@ -78,17 +86,26 @@ const FieldValue = ({ projectId, phaseId, customFieldId, input }: Props) => {
               input={input}
               customField={customField}
               rawValue={rawValue}
+              rawValueRelatedTextAnswer={rawValueRelatedTextAnswer}
             />
           );
         }
         case 'multiline_text': {
           return (
-            <MultilineTextLongField input={input} customField={customField} />
+            <MultilineTextLongField
+              input={input}
+              customField={customField}
+              rawValueRelatedTextAnswer={rawValueRelatedTextAnswer}
+            />
           );
         }
         case 'select': {
           return (
-            <SelectLongField customField={customField} rawValue={rawValue} />
+            <SelectLongField
+              customField={customField}
+              rawValue={rawValue}
+              rawValueRelatedTextAnswer={rawValueRelatedTextAnswer}
+            />
           );
         }
         case 'multiselect': {

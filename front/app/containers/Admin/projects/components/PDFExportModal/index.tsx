@@ -101,7 +101,14 @@ const PDFExportModal = ({ open, formType, onClose, onExport }: Props) => {
           borderRadius={theme.borderRadius}
           isOpenByDefault
         >
-          <Box as="ul" py="24px" px="36px" m="0">
+          <Box
+            as="ul"
+            // pt is less than pb because we have some "illusion" of padding coming from the title component
+            pt="12px"
+            pb="24px"
+            px="36px"
+            m="0"
+          >
             <Text as="li">
               <FormattedMessage {...CLICK_EXPORT_MESSAGES[formType]} />
             </Text>
