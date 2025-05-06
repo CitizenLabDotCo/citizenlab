@@ -3,7 +3,6 @@
 require 'rails_helper'
 
 describe WebApi::V1::CustomFieldSerializer do
-
   let!(:default_attributes) do
     {
       code: nil,
@@ -185,7 +184,7 @@ describe WebApi::V1::CustomFieldSerializer do
         maximum_select_count: nil,
         minimum_select_count: nil,
         key: 'multiselect',
-        select_count_enabled: false,
+        select_count_enabled: false
       }))
     end
   end
