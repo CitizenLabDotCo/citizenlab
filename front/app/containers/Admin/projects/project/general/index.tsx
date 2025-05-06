@@ -373,7 +373,7 @@ const AdminProjectsProjectGeneral = () => {
               })
             : null;
 
-        const projectFilePromises = latestProjectId
+        const projectFilesPromise = latestProjectId
           ? await syncProjectFiles({
               projectId: latestProjectId,
               projectFiles,
@@ -386,7 +386,7 @@ const AdminProjectsProjectGeneral = () => {
           cardImageToAddPromise,
           cardImageToUpdatePromise,
           cardImageToRemovePromise,
-          ...projectFilePromises,
+          ...projectFilesPromise,
         ] as Promise<any>[]);
 
         setSubmitState('success');

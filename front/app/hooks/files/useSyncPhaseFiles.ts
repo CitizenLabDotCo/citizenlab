@@ -63,8 +63,8 @@ export function useSyncPhaseFiles() {
         })
       );
 
-      // Wait for all the promises to resolve
-      await Promise.all([
+      // Return all the promises to resolve
+      return Promise.all([
         ...filesToAddPromises,
         ...filesToRemovePromises,
         ...filesToReorderPromises,

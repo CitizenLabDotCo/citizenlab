@@ -20,7 +20,6 @@ export function useSyncProjectFiles() {
       filesToRemove,
       fileOrdering,
     }: SyncProjectFilesArguments) => {
-      // Get any files that we need to add
       const filesToAddPromises = projectFiles
         .filter((file) => !file.remote)
         .map((file) =>
@@ -34,7 +33,6 @@ export function useSyncProjectFiles() {
           })
         );
 
-      // Get any files that we need to remove
       const filesToRemovePromises = filesToRemove
         .filter((file) => file.remote && isString(file.id))
         .map((file) =>
@@ -44,7 +42,6 @@ export function useSyncProjectFiles() {
           })
         );
 
-      // Get any files that we need to change the ordering of
       const reorderedFiles = projectFiles.filter((file) => {
         const initialOrdering = file.id ? fileOrdering[file.id] : undefined;
         return (
@@ -65,12 +62,12 @@ export function useSyncProjectFiles() {
         })
       );
 
-      // Wait for all the promises to resolve
-      return [
+      // Return a single promise that resolves when all mutations are done
+      return Promise.all([
         ...filesToAddPromises,
         ...filesToRemovePromises,
         ...filesToReorderPromises,
-      ];
+      ]);
     },
     [addProjectFile, deleteProjectFile, updateProjectFile]
   );
