@@ -261,6 +261,7 @@ class Phase < ApplicationRecord
     participation_method == 'voting'
   end
 
+  # @return [ParticipationMethod::Base]
   def pmethod
     reload_participation_method if !@pmethod
     @pmethod
