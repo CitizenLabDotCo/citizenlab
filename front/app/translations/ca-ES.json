@@ -1802,7 +1802,7 @@
   "app.containers.SignUp.viennaConsentUserName": "Nom d'usuari",
   "app.containers.SignUp.viennaDataProtection": "la política de privadesa de vienna",
   "app.containers.SiteMap.contributions": "Aportacions",
-  "app.containers.SiteMap.cookiePolicyLinkTitle": "Galetes",
+  "app.containers.SiteMap.cookiePolicyLinkTitle": "Cookies",
   "app.containers.SiteMap.issues": "Comentaris",
   "app.containers.SiteMap.options": "Opcions",
   "app.containers.SiteMap.projects": "Projectes",
