@@ -10,6 +10,7 @@ describe BulkImportIdeas::Exporters::IdeaHtmlFormExporter do
   let(:custom_form) { create(:custom_form, participation_context: phase) }
   let!(:page_field) { create(:custom_field_page, resource: custom_form) }
   let!(:text_field) { create(:custom_field_text, resource: custom_form, required: true, title_multiloc: { 'en' => 'Text field' }) }
+  let!(:multiline_field) { create(:custom_field_multiline_text, resource: custom_form, title_multiloc: { 'en' => 'Multiline field' }) }
   let!(:select_field) do
     field = create(:custom_field_select, resource: custom_form, key: 'select_field', title_multiloc: { 'en' => 'Select field' })
     field.options.create!(key: 'option1', title_multiloc: { 'en' => 'Option 1' })
@@ -52,12 +53,24 @@ describe BulkImportIdeas::Exporters::IdeaHtmlFormExporter do
 
       it 'returns title, description of all questions' do
         expect(titles[0]).to include 'Text field'
-        expect(titles[1]).to include 'Select field'
+        expect(titles[1]).to include 'Multiline field'
+        expect(titles[2]).to include 'Select field'
       end
 
       it 'shows optional if questions are not required' do
         expect(titles[0]).not_to include '(optional)'
         expect(titles[1]).to include '(optional)'
+        expect(titles[2]).to include '(optional)'
+      end
+
+      it 'shows 1 line for short text fields' do
+        single_line_text = parsed_html.css('div#questions div.question')[0]
+        expect(single_line_text.css('div.line').count).to eq 1
+      end
+
+      it 'shows 7 lines for longer text fields' do
+        multi_line_text = parsed_html.css('div#questions div.question')[1]
+        expect(multi_line_text.css('div.line').count).to eq 7
       end
     end
   end

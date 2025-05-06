@@ -109,20 +109,21 @@
       <% end %>
 
     <% else %>
-      <!-- Fallback currently covers:
-            # text
-            # text_multiloc
-            # number
-            # linear_scale
-            # rating
-            # sentiment_linear_scale
-            # select_image
-            # multiselect_image
-            # checkbox
-            # html
-            # line
-            # polygon
-      -->
+      <%
+        # Fallback currently covers:
+        # - text
+        # - text_multiloc
+        # - number
+        # - linear_scale
+        # - rating
+        # - sentiment_linear_scale
+        # - select_image
+        # - multiselect_image
+        # - checkbox
+        # - html
+        # - line
+        # - polygon
+      %>
       <div class="line"></div>
     <% end %>
 

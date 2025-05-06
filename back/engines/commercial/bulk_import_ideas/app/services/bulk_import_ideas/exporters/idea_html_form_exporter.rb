@@ -76,6 +76,7 @@ module BulkImportIdeas::Exporters
         {
           title: field.title_multiloc[@locale],
           description: print_description(field),
+          input_type: field.input_type,
           instructions: multiselect_print_instructions(field),
           visibility_disclaimer: print_visibility_disclaimer(field),
           optional: !field.required?,
