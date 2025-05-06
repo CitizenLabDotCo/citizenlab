@@ -84,6 +84,7 @@ namespace :single_use do
           avg_pages_visited_whole_period = safe_get(data_unit.data[2], 'avg_pages_visited')
   
           new_data = {
+            'visitors_timeseries' => visitors_timeseries,
             'visits_whole_period' => visits_whole_period,
             'visitors_whole_period' => visitors_whole_period,
             'avg_seconds_per_session_whole_period' => avg_seconds_per_session_whole_period,
